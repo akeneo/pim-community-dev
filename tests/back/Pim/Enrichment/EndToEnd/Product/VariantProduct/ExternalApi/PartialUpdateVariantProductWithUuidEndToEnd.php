@@ -14,6 +14,7 @@ use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
 use Doctrine\Common\Collections\Collection;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateVariantProductWithUuidEndToEnd extends AbstractProductTestCase
@@ -22,6 +23,11 @@ class PartialUpdateVariantProductWithUuidEndToEnd extends AbstractProductTestCas
 
     /** @var Collection */
     private $products;
+    
+    public function getUuidFromIdentifier(): UuidInterface
+    {
+        return $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_optionb_false')->getUuid();
+    }
 
     /**
      * {@inheritdoc}
@@ -305,7 +311,7 @@ JSON;
     public function testProductVariantPartialUpdateCannotUpdateFamily(): void
     {
         $client = $this->createAuthenticatedClient();
-        $uuid = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_optionb_false')->getUuid();
+        $uuid = $this->getUuidFromIdentifier();
 
         $data =
             <<<JSON
@@ -348,7 +354,7 @@ JSON;
     public function testProductVariantPartialUpdateCannotSetFamilyToNull(): void
     {
         $client = $this->createAuthenticatedClient();
-        $uuid = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_optionb_false')->getUuid();
+        $uuid = $this->getUuidFromIdentifier();
 
         $data =
             <<<JSON
@@ -391,7 +397,7 @@ JSON;
     public function testProductVariantPartialUpdateCannotSetFamilyToNullNoMatterTheOrder(): void
     {
         $client = $this->createAuthenticatedClient();
-        $uuid = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_optionb_false')->getUuid();
+        $uuid = $this->getUuidFromIdentifier();
 
         $data =
             <<<JSON
@@ -434,7 +440,7 @@ JSON;
     public function testProductVariantPartialUpdateWithTheGroupsUpdated(): void
     {
         $client = $this->createAuthenticatedClient();
-        $uuid = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_optionb_false')->getUuid();
+        $uuid = $this->getUuidFromIdentifier();
 
         $data =
             <<<JSON
@@ -522,7 +528,7 @@ JSON;
     public function testProductVariantPartialUpdateWithTheGroupsDeleted(): void
     {
         $client = $this->createAuthenticatedClient();
-        $uuid = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_optionb_false')->getUuid();
+        $uuid = $this->getUuidFromIdentifier();
 
         $data =
             <<<JSON
@@ -610,7 +616,7 @@ JSON;
     public function testProductVariantPartialUpdateWithTheCategoriesUpdated(): void
     {
         $client = $this->createAuthenticatedClient();
-        $uuid = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_optionb_false')->getUuid();
+        $uuid = $this->getUuidFromIdentifier();
 
         $data =
             <<<JSON
@@ -699,7 +705,7 @@ JSON;
     public function testProductVariantPartialUpdateWithTheCategoriesDeleted(): void
     {
         $client = $this->createAuthenticatedClient();
-        $uuid = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_optionb_false')->getUuid();
+        $uuid = $this->getUuidFromIdentifier();
 
         $data =
             <<<JSON
@@ -788,7 +794,7 @@ JSON;
     public function testProductVariantPartialUpdateWithTheAssociationsUpdated(): void
     {
         $client = $this->createAuthenticatedClient();
-        $uuid = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_optionb_false')->getUuid();
+        $uuid = $this->getUuidFromIdentifier();
 
         $data =
             <<<JSON
@@ -907,7 +913,7 @@ JSON;
     public function testProductVariantPartialUpdateWithTheAssociationsDeletedOnGroups(): void
     {
         $client = $this->createAuthenticatedClient();
-        $uuid = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_optionb_false')->getUuid();
+        $uuid = $this->getUuidFromIdentifier();
 
         $data =
             <<<JSON
@@ -1005,7 +1011,7 @@ JSON;
     public function testProductVariantPartialUpdateWithTheAssociationsDeleted(): void
     {
         $client = $this->createAuthenticatedClient();
-        $uuid = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_optionb_false')->getUuid();
+        $uuid = $this->getUuidFromIdentifier();
 
         $data =
             <<<JSON
@@ -1105,7 +1111,7 @@ JSON;
     public function testProductVariantPartialUpdateWithProductDisable(): void
     {
         $client = $this->createAuthenticatedClient();
-        $uuid = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_optionb_false')->getUuid();
+        $uuid = $this->getUuidFromIdentifier();
 
         $data =
             <<<JSON
@@ -1195,7 +1201,7 @@ JSON;
     public function testProductVariantPartialUpdateWhenProductValueAddedOnAttribute(): void
     {
         $client = $this->createAuthenticatedClient();
-        $uuid = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_optionb_false')->getUuid();
+        $uuid = $this->getUuidFromIdentifier();
 
         $akeneoJpgPath = $this->getFixturePath('akeneo.jpg');
 
@@ -1291,7 +1297,7 @@ JSON;
     public function testProductVariantPartialUpdateWhenProductValueDeletedOnAttribute(): void
     {
         $client = $this->createAuthenticatedClient();
-        $uuid = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_optionb_false')->getUuid();
+        $uuid = $this->getUuidFromIdentifier();
 
         $data =
             <<<JSON
@@ -1335,7 +1341,7 @@ JSON;
     public function testProductVariantPartialUpdateOnMultipleAttributes(): void
     {
         $client = $this->createAuthenticatedClient();
-        $uuid = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_optionb_false')->getUuid();
+        $uuid = $this->getUuidFromIdentifier();
 
         $files = [
             'akeneo_pdf' => $this->getFileInfoKey($this->getFixturePath('akeneo.pdf')),
@@ -1496,7 +1502,7 @@ JSON;
     public function testProductVariantCannotUpdateCommonAttribute(): void
     {
         $client = $this->createAuthenticatedClient();
-        $uuid = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_optionb_false')->getUuid();
+        $uuid = $this->getUuidFromIdentifier();
 
         $files = [
             'akeneo_pdf' => $this->getFileInfoKey($this->getFixturePath('akeneo.pdf')),
@@ -1656,7 +1662,7 @@ JSON;
     public function testProductVariantPartialUpdateWithIgnoredProperties(): void
     {
         $client = $this->createAuthenticatedClient();
-        $uuid = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_optionb_false')->getUuid();
+        $uuid = $this->getUuidFromIdentifier();
 
         $data =
             <<<JSON
@@ -1751,7 +1757,7 @@ JSON;
     public function testPartialUpdateResponseWhenIdentifierPropertyNotEqualsToIdentifierInValues(): void
     {
         $client = $this->createAuthenticatedClient();
-        $uuid = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_optionb_false')->getUuid();
+        $uuid = $this->getUuidFromIdentifier();
 
         $data =
             <<<JSON
@@ -1792,7 +1798,7 @@ JSON;
     public function testProductVariantPartialUpdateWithTheParentUpdated(): void
     {
         $client = $this->createAuthenticatedClient();
-        $uuid = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_optionb_false')->getUuid();
+        $uuid = $this->getUuidFromIdentifier();
 
         $data =
             <<<JSON
@@ -1883,7 +1889,7 @@ JSON;
     public function testPartialUpdateResponseWhenMissingIdentifierPropertyAndProvidedIdentifierInValues(): void
     {
         $client = $this->createAuthenticatedClient();
-        $uuid = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_optionb_false')->getUuid();
+        $uuid = $this->getUuidFromIdentifier();
 
         $data =
             <<<JSON

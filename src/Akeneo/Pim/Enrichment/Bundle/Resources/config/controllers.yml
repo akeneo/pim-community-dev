@@ -133,6 +133,7 @@ services:
             - '@pim_api.filter.product_attribute_filter'
             - '@database_connection'
             - '@pim_catalog.validator.product'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetProductUuids'
 
     Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\DeleteProductByUuidController:
         public: true

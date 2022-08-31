@@ -85,10 +85,7 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
     }
-
-    /*
-     * TODO To uncomment CPM-698
-     */
+    
     public function testCreateProductWithSameUuid()
     {
         $client = $this->createAuthenticatedClient();
@@ -454,8 +451,8 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "product_groups",
-        "groups": []
+        "groups": [],
+        "values": {"sku": [{"locale": null, "scope": null, "data": "product_groups" }]}
     }
 JSON;
 
@@ -498,8 +495,8 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "product_categories",
-        "categories": ["categoryA", "categoryA1"]
+        "categories": ["categoryA", "categoryA1"],
+        "values": {"sku": [{"locale": null, "scope": null, "data": "product_categories" }]}
     }
 JSON;
 
@@ -542,8 +539,8 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "product_categories",
-        "categories": []
+        "categories": [],
+        "values": {"sku": [{"locale": null, "scope": null, "data": "product_categories" }]}
     }
 JSON;
 
@@ -592,18 +589,21 @@ JSON;
 
         $client = $this->createAuthenticatedClient();
 
+        $uuidProductCategories = $this->getProductUuidFromIdentifier('product_categories')->toString();
+        $uuidProductFamily = $this->getProductUuidFromIdentifier('product_family')->toString();
+
         $data = <<<JSON
 {
-    "identifier": "product_associations",
     "associations": {
         "PACK": {
             "groups": ["groupA"],
-            "products": ["product_categories", "product_family"]
+            "products": ["{$uuidProductCategories}", "{$uuidProductFamily}"]
         },
         "SUBSTITUTION": {
             "product_models": ["a_product_model"]
         }
-    }
+    },
+    "values": {"sku": [{"locale": null, "scope": null, "data": "product_associations" }]}
 }
 JSON;
 
@@ -669,7 +669,7 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "product_associations",
+        "values": {"sku": [{"locale": null, "scope": null, "data": "product_associations" }]},
         "associations": {
             "X_SELL": {
                 "groups": []
@@ -721,7 +721,7 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "product_associations",
+        "values": {"sku": [{"locale": null, "scope": null, "data": "product_associations" }]},
         "associations": {
             "PACK": {
                 "groups": [],
@@ -779,7 +779,7 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "product_categories",
+        "values": {"sku": [{"locale": null, "scope": null, "data": "product_categories" }]},
         "enabled": false
     }
 JSON;
@@ -825,13 +825,13 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "localizable",
         "values": {
             "a_localizable_image": [{
                 "locale": "zh_CN",
                 "scope": null,
                 "data": "${akeneoJpgPath}"
-            }]
+            }],
+            "sku": [{"locale": null, "scope": null, "data": "localizable" }]
         }
     }
 JSON;
@@ -882,13 +882,13 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "localizable",
         "values": {
             "a_localizable_image": [{
                 "locale": "en_US",
                 "scope": null,
                 "data": "${ziggyPngPath}"
-            }]
+            }],
+            "sku": [{"locale": null, "scope": null, "data": "localizable" }]
         }
     }
 JSON;
@@ -935,13 +935,13 @@ JSON;
         $data =
             <<<JSON
                 {
-        "identifier": "localizable",
         "values": {
             "a_localizable_image": [{
                 "locale": "en_US",
                 "scope": null,
                 "data": null
-            }]
+            }],
+            "sku": [{"locale": null, "scope": null, "data": "localizable" }]
         }
     }
 JSON;
@@ -993,11 +993,11 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "complete",
         "groups": ["groupA", "groupB"],
         "family": "familyA2",
         "categories": ["master", "categoryA"],
         "values": {
+            "sku": [{"locale": null, "scope": null, "data": "complete" }],
             "a_metric": [{
                 "locale": null,
                 "scope": null,
@@ -1171,9 +1171,11 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "product_categories",
         "created": "2014-06-14T13:12:50+02:00",
-        "updated": "2014-06-14T13:12:50+02:00"
+        "updated": "2014-06-14T13:12:50+02:00",
+        "values": {
+         "sku": [{"locale": null, "scope": null, "data": "product_categories" }]
+        }
     }
 JSON;
 
@@ -1331,8 +1333,8 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "product_categories",
-        "enabled": null
+        "enabled": null,
+        "sku": [{"locale": null, "scope": null, "data": "product_categories"}]
     }
 JSON;
 
@@ -1405,8 +1407,8 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "product_family",
-        "family": ["familyA"]
+        "family": ["familyA"],
+        "sku": [{"locale": null, "scope": null, "data": "product_family"}]
     }
 JSON;
         $client->request('PATCH', sprintf(
@@ -1437,7 +1439,6 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "big_boot",
         "family": "familyA",
         "values": {
             "sku": [{"locale": null, "scope": null, "data": "big_boot"}],

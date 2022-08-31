@@ -17,7 +17,7 @@ use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterI
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\QuantifiedAssociations;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ExternalApi\PayloadFormat;
-use Akeneo\Pim\Permission\Component\Validator\GrantedQuantifiedAssociations;
+use Akeneo\Pim\Enrichment\Product\Domain\Query\GetProductUuids;
 use Akeneo\Tool\Bundle\ApiBundle\Checker\DuplicateValueChecker;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
 use Akeneo\Tool\Component\Api\Exception\DocumentedHttpException;
@@ -39,8 +39,8 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Validator\ConstraintViolation;
-use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -62,6 +62,7 @@ class UpdateProductByUuidController
         private AttributeFilterInterface $productAttributeFilter,
         private Connection $connection,
         private ValidatorInterface $productValidator,
+        private GetProductUuids $getProductUuids,
     ) {
     }
 
@@ -88,15 +89,15 @@ class UpdateProductByUuidController
 
         $product = $this->productRepository->find($uuid);
 
-        $isCreation = false;
+        $isUpdate = true;
         if (null === $product) {
-            $isCreation = true;
+            $isUpdate = false;
             $product = $this->productBuilder->createProduct(identifier: $data['identifier'] ?? null, uuid: $uuid);
         }
 
         $this->validateUuidConsistency($uuid, $data);
 
-        if (!$isCreation) {
+        if ($isUpdate) {
             $data = $this->filterEmptyValues($product, $data);
         }
 
@@ -106,11 +107,12 @@ class UpdateProductByUuidController
         $this->validateProduct($product);
         $this->saver->save($product);
 
-        return $this->getResponse($product->getUuid(), $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT);
+        return $this->getResponse($product->getUuid(), $isUpdate ? Response::HTTP_NO_CONTENT : Response::HTTP_CREATED);
     }
 
     private function getDecodedContent($content): array
     {
+        // TODO: CPM-718
         $decodedContent = json_decode($content, true);
 
         if (null === $decodedContent) {
@@ -122,54 +124,45 @@ class UpdateProductByUuidController
 
     private function updateProduct(ProductInterface $product, array $data): void
     {
-        if (array_key_exists('variant_group', $data)) {
-            throw new DocumentedHttpException(
-                Documentation::URL_DOCUMENTATION . 'products-with-variants.html',
-                'Property "variant_group" does not exist anymore. Check the link below to understand why.'
-            );
-        }
-
         try {
             if (isset($data['parent']) || $product->isVariant()) {
                 $data = $this->productAttributeFilter->filter($data);
             }
 
             $this->updater->update($product, $data);
+        } catch (PropertyException $exception) {
+            $this->eventDispatcher->dispatch(new TechnicalErrorEvent($exception));
+            $message = $exception->getMessage();
+            $matches = [];
+            // TODO: CPM-715
+            if (preg_match('/^Property "associations" expects a valid product identifier. The product does not exist, "(?P<identifier>.*)" given.$/', $message, $matches)) {
+                $message = sprintf(
+                    'Property "associations" expects a valid product uuid. The product does not exist, "%s" given.',
+                    $this->getProductUuids->fromIdentifier($matches['identifier'])
+                );
+            }
+
+            throw new DocumentedHttpException(
+                Documentation::URL . 'patch_products__code_',
+                sprintf('%s Check the expected format on the API documentation.', $message),
+                $exception
+            );
+        } catch (TwoWayAssociationWithTheSameProductException $exception) {
+            $this->eventDispatcher->dispatch(new TechnicalErrorEvent($exception));
+            throw new DocumentedHttpException(
+                TwoWayAssociationWithTheSameProductException::TWO_WAY_ASSOCIATIONS_HELP_URL,
+                TwoWayAssociationWithTheSameProductException::TWO_WAY_ASSOCIATIONS_ERROR_MESSAGE,
+                $exception
+            );
+        } catch (InvalidArgumentException | ProductInvalidArgumentException $exception) {
+            $this->eventDispatcher->dispatch(new TechnicalErrorEvent($exception));
+            throw new AccessDeniedHttpException($exception->getMessage(), $exception);
+        } catch (DomainErrorInterface $exception) {
+            $this->eventDispatcher->dispatch(new ProductDomainErrorEvent($exception, $product));
+
+            throw $exception;
         } catch (\Exception $exception) {
-            if ($exception instanceof DomainErrorInterface) {
-                $this->eventDispatcher->dispatch(new ProductDomainErrorEvent($exception, $product));
-            } else {
-                $this->eventDispatcher->dispatch(new TechnicalErrorEvent($exception));
-            }
-
-            if ($exception instanceof PropertyException) {
-                $message = $exception->getMessage();
-                $matches = [];
-                if (preg_match('/^Property "associations" expects a valid product identifier. The product does not exist, "(?P<identifier>.*)" given.$/', $message, $matches)) {
-                    $message = sprintf(
-                        'Property "associations" expects a valid product uuid. The product does not exist, "%s" given.',
-                        $this->getUuidFromIdentifier($matches['identifier'])
-                    );
-                }
-
-                throw new DocumentedHttpException(
-                    Documentation::URL . 'patch_products__code_',
-                    sprintf('%s Check the expected format on the API documentation.', $message),
-                    $exception
-                );
-            }
-
-            if ($exception instanceof TwoWayAssociationWithTheSameProductException) {
-                throw new DocumentedHttpException(
-                    TwoWayAssociationWithTheSameProductException::TWO_WAY_ASSOCIATIONS_HELP_URL,
-                    TwoWayAssociationWithTheSameProductException::TWO_WAY_ASSOCIATIONS_ERROR_MESSAGE,
-                    $exception
-                );
-            }
-
-            if ($exception instanceof InvalidArgumentException || $exception instanceof ProductInvalidArgumentException) {
-                throw new AccessDeniedHttpException($exception->getMessage(), $exception);
-            }
+            $this->eventDispatcher->dispatch(new TechnicalErrorEvent($exception));
 
             throw $exception;
         }
@@ -269,10 +262,11 @@ class UpdateProductByUuidController
         $violations = $this->productValidator->validate($product, null, ['Default', 'api']);
         if (0 !== $violations->count()) {
             foreach ($violations as $offset => $violation) {
-                /** @var ConstraintViolationInterface $violation */
+                Assert::isInstanceOf($violation, ConstraintViolation::class);
+                /** @var ConstraintViolation $violation */
                 if (QuantifiedAssociations::PRODUCTS_DO_NOT_EXIST_ERROR === $violation->getCode()) {
                     $parameters = $violation->getParameters();
-                    $uuid = $this->getUuidFromIdentifier($parameters['{{ values }}']);
+                    $uuid = $this->getProductUuids->fromIdentifier($parameters['{{ values }}']);
                     $parameters = ['{{values }}' => $uuid->toString()];
                     $message = sprintf('The following products don\'t exist: %s. Please make sure the products haven\'t been deleted in the meantime.', $uuid->toString());
 
@@ -319,16 +313,4 @@ class UpdateProductByUuidController
 
         return $result;
     }
-
-    private function getUuidFromIdentifier(string $identifier): ?UuidInterface
-    {
-        $uuid = $this->connection->fetchOne(
-            'SELECT BIN_TO_UUID(uuid) AS uuid FROM pim_catalog_product WHERE identifier = :identifier',
-            ['identifier' => $identifier]
-        );
-
-        return $uuid ? Uuid::fromString($uuid) : null;
-    }
-
-
 }
