@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Sql;
 
 use Akeneo\Category\Domain\Model\Category;
+use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface as CategoryDoctrine;
-use Akeneo\Category\Infrastructure\Storage\Sql\GetCategorySql;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
@@ -66,13 +66,13 @@ SQL;
 
     public function testDoNotGetCategoryByCode(): void
     {
-        $category = $this->get(GetCategorySql::class)->byCode('wrong_code');
+        $category = $this->get(GetCategoryInterface::class)->byCode('wrong_code');
         $this->assertNull($category);
     }
 
     public function testGetCategoryByCode(): void
     {
-        $category = $this->get(GetCategorySql::class)->byCode($this->category->getCode());
+        $category = $this->get(GetCategoryInterface::class)->byCode($this->category->getCode());
         $this->assertInstanceOf(Category::class, $category);
         $this->assertSame('Chaussettes', $category->getLabelCollection()->getLabel('fr_FR'));
         $this->assertSame('Socks', $category->getLabelCollection()->getLabel('en_US'));
@@ -107,13 +107,13 @@ SQL;
 
     public function testDoNotGetCategoryById(): void
     {
-        $category = $this->get(GetCategorySql::class)->byId(999);
+        $category = $this->get(GetCategoryInterface::class)->byId(999);
         $this->assertNull($category);
     }
 
     public function testGetCategoryById(): void
     {
-        $category = $this->get(GetCategorySql::class)->byId($this->category->getId());
+        $category = $this->get(GetCategoryInterface::class)->byId($this->category->getId());
         $this->assertInstanceOf(Category::class, $category);
         $this->assertSame('socks', (string)$category->getCode());
         $this->assertSame('Chaussettes', $category->getLabelCollection()->getLabel('fr_FR'));
@@ -157,11 +157,11 @@ SQL;
             'code' => 'hats',
             'labels' => []
         ]);
-        $tiesCategory = $this->get(GetCategorySql::class)->byCode('ties');
+        $tiesCategory = $this->get(GetCategoryInterface::class)->byCode('ties');
         $this->assertInstanceOf(Category::class, $tiesCategory);
         $this->assertEmpty($tiesCategory->getLabelCollection()->getLabels());
 
-        $hatsCategory = $this->get(GetCategorySql::class)->byCode('hats');
+        $hatsCategory = $this->get(GetCategoryInterface::class)->byCode('hats');
         $this->assertInstanceOf(Category::class, $hatsCategory);
         $this->assertEmpty($hatsCategory->getLabelCollection()->getLabels());
     }
