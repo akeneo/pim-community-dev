@@ -56,6 +56,9 @@ const Edit: FC<PropsWithChildren<Props>> = ({values, errors}) => {
                     errors={mapProductSelectionCriteriaErrors(errors, Object.keys(values.product_selection_criteria))}
                 />
             )}
+            {isCurrent(Tabs.FILTER_VALUES) && (
+                <div> Hello world!</div>
+            )}
         </>
     );
 };

@@ -13,9 +13,13 @@ const productSelectionCriteriaHasAnError = (errors: CatalogFormErrors): boolean 
     return errors.find(error => error.propertyPath.startsWith('[product_selection_criteria]')) !== undefined;
 };
 
+const filterValuesCriteriaHasAnError = (errors: CatalogFormErrors): boolean => {
+    return errors.find(error => error.propertyPath.startsWith('[filter_values]')) !== undefined;
+};
 export const getTabsValidationStatus = (errors: CatalogFormErrors): Status => {
     return {
         [Tabs.SETTINGS]: settingsHasAnError(errors),
         [Tabs.PRODUCT_SELECTION]: productSelectionCriteriaHasAnError(errors),
+        [Tabs.FILTER_VALUES]: filterValuesCriteriaHasAnError(errors),
     };
 };
