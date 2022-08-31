@@ -11,6 +11,7 @@ namespace Akeneo\Test\Category\Integration\Infrastructure\Storage\Save\Query;
 
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryTranslations;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
+use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Infrastructure\Storage\Save\Query\UpsertCategoryTranslationsSql;
 use Akeneo\Category\Infrastructure\Storage\Sql\GetCategorySql;
 use Akeneo\Test\Integration\Configuration;
@@ -20,13 +21,13 @@ class UpsertCategoryTranslationsSqlIntegration extends TestCase
 {
     use CategoryTestCase;
 
-    private GetCategorySql $getCategory;
+    private GetCategoryInterface $getCategory;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->getCategory = $this->get(GetCategorySql::class);
 
+        $this->getCategory = $this->get(GetCategoryInterface::class);
     }
 
     public function testInsertTranslationsInDatabase(): void
