@@ -13,7 +13,7 @@ class Category
     /**
      * @param int $id
      * @param string $code
-     * @param array<string, string> $labels
+     * @param array<string, string>|null $labels
      * @param int|null $parent
      * @param array<string, array<string, mixed>>|null $values
      * @param array<string, array<int>>|null $permissions
@@ -21,7 +21,7 @@ class Category
     public function __construct(
         private int $id,
         private string $code,
-        private array $labels,
+        private ?array $labels = null,
         private ?int $parent = null,
         private ?array $values = null,
         private ?array $permissions = null,
@@ -38,8 +38,8 @@ class Category
         return $this->code;
     }
 
-    /** @return array<string, string> */
-    public function getLabels(): array
+    /** @return array<string, string>|null */
+    public function getLabels(): ?array
     {
         return $this->labels;
     }

@@ -31,37 +31,7 @@ class GetCategorySqlIntegration extends TestCase
             ]
         ]);
 
-        $query = <<<SQL
-UPDATE pim_catalog_category SET value_collection = :value_collection WHERE code = :code;
-SQL;
-
-        $this->get('database_connection')->executeQuery($query, [
-            'value_collection' => json_encode([
-                "attribute_codes" => [
-                    "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030",
-                    "photo" . ValueCollection::SEPARATOR . "8587cda6-58c8-47fa-9278-033e1d8c735c",
-                ],
-                "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030" . ValueCollection::SEPARATOR . "en_US" => [
-                    "data" => "All the shoes you need!",
-                    "locale" => "en_US",
-                ],
-                "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030" . ValueCollection::SEPARATOR . "fr_FR" => [
-                    "data" => "Les chaussures dont vous avez besoin !",
-                    "locale" => "fr_FR",
-                ],
-                "photo" . ValueCollection::SEPARATOR . "8587cda6-58c8-47fa-9278-033e1d8c735c" => [
-                    "data" => [
-                        "size" => 168107,
-                        "extension" => "jpg",
-                        "file_path" => "8/8/3/d/883d041fc9f22ce42fee07d96c05b0b7ec7e66de_shoes.jpg",
-                        "mime_type" => "image/jpeg",
-                        "original_filename" => "shoes.jpg"
-                    ],
-                    "locale" => null,
-                ]
-            ], JSON_THROW_ON_ERROR),
-            'code' => $this->category->getCode()
-        ]);
+        $this->updateCategoryWithValues($this->category->getCode());
     }
 
     public function testDoNotGetCategoryByCode(): void
@@ -113,7 +83,7 @@ SQL;
 
     public function testGetCategoryById(): void
     {
-        $category = $this->get(GetCategoryInterface::class)->byId($this->category->getId());
+        $category = $this->get(GetCategoryInterface::class)->byCode($this->category->getCode());
         $this->assertInstanceOf(Category::class, $category);
         $this->assertSame('socks', (string)$category->getCode());
         $this->assertSame('Chaussettes', $category->getLabelCollection()->getLabel('fr_FR'));
@@ -149,22 +119,57 @@ SQL;
 
     public function testGetCategoryWithNoRelatedTranslations(): void
     {
-        $this->createCategory([
-            'code' => 'ties',
+        $ties = $this->createCategory([
+            'code' => 'ties'
         ]);
 
-        $this->createCategory([
+        $hats = $this->createCategory([
             'code' => 'hats',
             'labels' => []
         ]);
 
-        $tiesCategory = $this->get(GetCategoryInterface::class)->byCode('ties');
+        $tiesCategory = $this->get(GetCategoryInterface::class)->byCode($ties->getCode());
         $this->assertInstanceOf(Category::class, $tiesCategory);
-        $this->assertEmpty($tiesCategory->getLabelCollection()->getLabels());
+        $this->assertNull($tiesCategory->getLabelCollection());
 
-        $hatsCategory = $this->get(GetCategoryInterface::class)->byCode('hats');
+        $hatsCategory = $this->get(GetCategoryInterface::class)->byCode($hats->getCode());
         $this->assertInstanceOf(Category::class, $hatsCategory);
-        $this->assertEmpty($hatsCategory->getLabelCollection()->getLabels());
+        $this->assertNull($hatsCategory->getLabelCollection());
+    }
+
+    private function updateCategoryWithValues(string $code): void
+    {
+        $query = <<<SQL
+UPDATE pim_catalog_category SET value_collection = :value_collection WHERE code = :code;
+SQL;
+
+        $this->get('database_connection')->executeQuery($query, [
+            'value_collection' => json_encode([
+                "attribute_codes" => [
+                    "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030",
+                    "photo" . ValueCollection::SEPARATOR . "8587cda6-58c8-47fa-9278-033e1d8c735c",
+                ],
+                "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030" . ValueCollection::SEPARATOR . "en_US" => [
+                    "data" => "All the shoes you need!",
+                    "locale" => "en_US",
+                ],
+                "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030" . ValueCollection::SEPARATOR . "fr_FR" => [
+                    "data" => "Les chaussures dont vous avez besoin !",
+                    "locale" => "fr_FR",
+                ],
+                "photo" . ValueCollection::SEPARATOR . "8587cda6-58c8-47fa-9278-033e1d8c735c" => [
+                    "data" => [
+                        "size" => 168107,
+                        "extension" => "jpg",
+                        "file_path" => "8/8/3/d/883d041fc9f22ce42fee07d96c05b0b7ec7e66de_shoes.jpg",
+                        "mime_type" => "image/jpeg",
+                        "original_filename" => "shoes.jpg"
+                    ],
+                    "locale" => null,
+                ]
+            ], JSON_THROW_ON_ERROR),
+            'code' => $code
+        ]);
     }
 
     protected function getConfiguration(): Configuration
