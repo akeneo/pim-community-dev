@@ -71,7 +71,7 @@ class EditAction
 
         try {
             ($this->editRecordHandler)($command);
-        } catch (RecordNotFoundException $exception) {
+        } catch (RecordNotFoundException) {
             throw new NotFoundHttpException();
         }
 
