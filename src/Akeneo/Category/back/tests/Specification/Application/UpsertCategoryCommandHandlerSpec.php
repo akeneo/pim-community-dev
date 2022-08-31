@@ -15,10 +15,10 @@ use Akeneo\Category\Application\Applier\UserIntentApplierRegistry;
 use Akeneo\Category\Application\Storage\Save\CategorySaverProcessor;
 use Akeneo\Category\Application\UpsertCategoryCommandHandler;
 use Akeneo\Category\Domain\Model\Category;
+use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
-use Akeneo\Category\Infrastructure\Storage\Sql\GetCategorySql;
 use Exception;
 use InvalidArgumentException;
 use PhpSpec\ObjectBehavior;
@@ -36,7 +36,7 @@ class UpsertCategoryCommandHandlerSpec extends ObjectBehavior
 {
     function let(
         ValidatorInterface $validator,
-        GetCategorySql $getCategory,
+        GetCategoryInterface $getCategory,
         UserIntentApplierRegistry $applierRegistry,
         EventDispatcherInterface $eventDispatcher,
         CategorySaverProcessor $saver
@@ -56,7 +56,7 @@ class UpsertCategoryCommandHandlerSpec extends ObjectBehavior
     }
 
     function it_updates_and_saves_a_category(
-        GetCategorySql $getCategory,
+        GetCategoryInterface $getCategory,
         EventDispatcherInterface $eventDispatcher,
         ValidatorInterface $validator,
         CategorySaverProcessor $saver
@@ -79,7 +79,7 @@ class UpsertCategoryCommandHandlerSpec extends ObjectBehavior
     }
 
     function it_creates_and_saves_a_category(
-        GetCategorySql $getCategory,
+        GetCategoryInterface $getCategory,
         ValidatorInterface $validator,
         CategorySaverProcessor $saver
     ) {
@@ -99,7 +99,7 @@ class UpsertCategoryCommandHandlerSpec extends ObjectBehavior
 
     function it_throws_an_exception_when_command_is_not_valid(
         ValidatorInterface $validator,
-        GetCategorySql $getCategory,
+        GetCategoryInterface $getCategory,
         UserIntentApplierRegistry $applierRegistry,
         EventDispatcherInterface $eventDispatcher,
         CategorySaverProcessor $saver
@@ -120,7 +120,7 @@ class UpsertCategoryCommandHandlerSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_updater_throws_an_exception(
-        GetCategorySql $getCategory,
+        GetCategoryInterface $getCategory,
         UserIntentApplierRegistry $applierRegistry,
         UserIntentApplier $userIntentApplier,
         EventDispatcherInterface $eventDispatcher,
