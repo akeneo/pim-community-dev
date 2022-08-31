@@ -17,7 +17,7 @@ final class DatabaseRepository implements ProductFileRepository
     public function save(ProductFile $productFile): void
     {
         $sql = <<<SQL
-            REPLACE INTO `akeneo_supplier_portal_supplier_file` (
+            REPLACE INTO `akeneo_supplier_portal_supplier_product_file` (
                 identifier,
                 original_filename,
                 path,
