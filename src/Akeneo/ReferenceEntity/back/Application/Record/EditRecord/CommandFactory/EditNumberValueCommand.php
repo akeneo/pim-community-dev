@@ -21,13 +21,12 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\NumberAttribute;
  */
 class EditNumberValueCommand extends AbstractEditValueCommand
 {
-    /** @var string */
-    public $number;
-
-    public function __construct(NumberAttribute $attribute, ?string $channel, ?string $locale, string $number)
-    {
+    public function __construct(
+        NumberAttribute $attribute,
+        ?string $channel,
+        ?string $locale,
+        public string $number
+    ) {
         parent::__construct($attribute, $channel, $locale);
-
-        $this->number = $number;
     }
 }

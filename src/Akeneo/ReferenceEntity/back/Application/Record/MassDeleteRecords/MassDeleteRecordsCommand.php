@@ -18,12 +18,9 @@ namespace Akeneo\ReferenceEntity\Application\Record\MassDeleteRecords;
  */
 class MassDeleteRecordsCommand
 {
-    public string $referenceEntityIdentifier;
-    public array $query;
-
-    public function __construct(string $referenceEntityIdentifier, array $query)
-    {
-        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
-        $this->query = $query;
+    public function __construct(
+        public string $referenceEntityIdentifier,
+        public array $query
+    ) {
     }
 }

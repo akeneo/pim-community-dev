@@ -10,14 +10,14 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFact
  */
 class EditAttributeCommand extends AbstractEditAttributeCommand
 {
-    /** @var AbstractEditAttributeCommand[] */
-    public array $editCommands = [];
-
-    public function __construct(string $identifier, array $editCommands)
-    {
+    /**
+     * @param AbstractEditAttributeCommand[] $editCommands
+     */
+    public function __construct(
+        string $identifier,
+        public array $editCommands
+    ) {
         parent::__construct($identifier);
-
-        $this->editCommands = $editCommands;
     }
 
     public function findCommand(string $className): ?AbstractEditAttributeCommand

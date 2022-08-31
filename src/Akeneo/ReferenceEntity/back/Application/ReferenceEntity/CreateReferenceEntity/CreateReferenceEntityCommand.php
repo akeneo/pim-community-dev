@@ -19,15 +19,9 @@ namespace Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEnti
  */
 class CreateReferenceEntityCommand
 {
-    /** @var string */
-    public $code;
-
-    /** @var array */
-    public $labels;
-
-    public function __construct(string $code, array $labels)
-    {
-        $this->code = $code;
-        $this->labels = $labels;
+    public function __construct(
+        public string $code,
+        public array $labels
+    ) {
     }
 }

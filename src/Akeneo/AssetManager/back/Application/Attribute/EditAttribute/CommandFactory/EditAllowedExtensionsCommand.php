@@ -21,8 +21,10 @@ class EditAllowedExtensionsCommand extends AbstractEditAttributeCommand
 {
     public array $allowedExtensions;
 
-    public function __construct(string $identifier, array $allowedExtensions)
-    {
+    public function __construct(
+        string $identifier,
+        array $allowedExtensions
+    ) {
         parent::__construct($identifier);
 
         $this->allowedExtensions = $allowedExtensions;

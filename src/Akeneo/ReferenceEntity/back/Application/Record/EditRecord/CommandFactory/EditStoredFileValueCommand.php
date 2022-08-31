@@ -21,37 +21,16 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
  */
 class EditStoredFileValueCommand extends AbstractEditValueCommand
 {
-    /** @var string */
-    public $filePath;
-
-    /** @var string */
-    public $originalFilename;
-
-    /** @var int */
-    public $size;
-
-    /** @var string */
-    public $mimeType;
-
-    /** @var string */
-    public $extension;
-
     public function __construct(
         ImageAttribute $attribute,
         ?string $channel,
         ?string $locale,
-        string $filePath,
-        ?string $originalFilename,
-        ?int $size,
-        ?string $mimeType,
-        ?string $extension
+        public string $filePath,
+        public ?string $originalFilename,
+        public ?int $size,
+        public ?string $mimeType,
+        public ?string $extension
     ) {
         parent::__construct($attribute, $channel, $locale);
-
-        $this->filePath = $filePath;
-        $this->originalFilename = $originalFilename;
-        $this->size = $size;
-        $this->mimeType = $mimeType;
-        $this->extension = $extension;
     }
 }

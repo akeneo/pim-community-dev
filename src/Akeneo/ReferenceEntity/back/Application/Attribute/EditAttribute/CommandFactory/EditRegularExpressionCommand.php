@@ -10,13 +10,10 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFact
  */
 class EditRegularExpressionCommand extends AbstractEditAttributeCommand
 {
-    /** @var string|null */
-    public $regularExpression;
-
-    public function __construct(string $identifier, ?string $regularExpression)
-    {
+    public function __construct(
+        string $identifier,
+        public ?string $regularExpression
+    ) {
         parent::__construct($identifier);
-
-        $this->regularExpression = $regularExpression;
     }
 }
