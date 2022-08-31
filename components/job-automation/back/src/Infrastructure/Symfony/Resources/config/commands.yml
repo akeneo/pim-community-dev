@@ -6,7 +6,6 @@ services:
       - '@akeneo.job_automation.handler.get_due_job_instances'
       - '@akeneo.job_automation.handler.update_scheduled_job_instance'
       - '@akeneo_batch_queue.queue.publish_job_to_queue'
-      - '@validator'
       - '@event_dispatcher'
       - '@akeneo.job_automation.handler.notify_users_by_email_invalid_job_instance'
     tags:

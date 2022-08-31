@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\JobAutomation\Test\Acceptance\Infrastructure\Validation;
 
-use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
-use Akeneo\Platform\JobAutomation\Infrastructure\Validation\ScheduledJobInstance as ScheduledJobInstanceConstraint;
+use Akeneo\Tool\Bundle\BatchBundle\Validator\Constraints\Scheduling;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use AkeneoTest\Platform\Acceptance\ImportExport\Infrastructure\Validation\AbstractValidationTest;
 
-class ValidateScheduledJobInstanceTest extends AbstractValidationTest
+class ValidateSchedulingTest extends AbstractValidationTest
 {
     /**
      * @dataProvider validScheduledJobInstance
      */
     public function test_it_does_not_build_violations_when_scheduled_job_instance_is_valid(array $normalizedValue): void
     {
-        $value = $this->createScheduledJobInstance($normalizedValue);
-        $violations = $this->getValidator()->validate($value, new ScheduledJobInstanceConstraint());
+        $value = $this->createJobInstance($normalizedValue);
+        $violations = $this->getValidator()->validate($value, new Scheduling());
 
         $this->assertNoViolation($violations);
     }
@@ -29,8 +29,8 @@ class ValidateScheduledJobInstanceTest extends AbstractValidationTest
         string $expectedErrorMessage,
         string $expectedErrorPath,
     ): void {
-        $value = $this->createScheduledJobInstance($normalizedValue);
-        $violations = $this->getValidator()->validate($value, new ScheduledJobInstanceConstraint());
+        $value = $this->createJobInstance($normalizedValue);
+        $violations = $this->getValidator()->validate($value, new Scheduling());
 
         $this->assertHasValidationError(
             $expectedErrorMessage,
@@ -76,21 +76,6 @@ class ValidateScheduledJobInstanceTest extends AbstractValidationTest
     public function invalidScheduledJobInstance(): array
     {
         return [
-            'invalid job with scheduled disabled' => [
-                [
-                    'scheduled' => false,
-                    'type' => 'export',
-                    'raw_parameters' => [
-                        'storage' => [
-                            'type' => 'none'
-                        ],
-                    ],
-                    'notified_users' => [],
-                    'notified_user_groups' => [],
-                ],
-                'akeneo.job_automation.validation.scheduled_should_be_enabled',
-                '',
-            ],
             'invalid scheduled import job without storage' => [
                 [
                     'scheduled' => true,
@@ -103,25 +88,23 @@ class ValidateScheduledJobInstanceTest extends AbstractValidationTest
                     'notified_users' => [],
                     'notified_user_groups' => [],
                 ],
-                'akeneo.job_automation.validation.import_should_have_storage',
-                '',
+                'No storage has been configured in the Properties tab of your import profile.',
+                '[scheduled]',
             ],
         ];
     }
 
-    private function createScheduledJobInstance(array $normalizedScheduledJobInstance): ScheduledJobInstance {
-        return new ScheduledJobInstance(
+    private function createJobInstance(array $normalizedJobInstance): JobInstance
+    {
+        $jobInstance = new JobInstance(
+            'my_connector',
+            $normalizedJobInstance['type'],
             'my_job',
-            'my_job',
-            $normalizedScheduledJobInstance['type'],
-            $normalizedScheduledJobInstance['raw_parameters'],
-            $normalizedScheduledJobInstance['notified_users'],
-            $normalizedScheduledJobInstance['notified_user_groups'],
-            $normalizedScheduledJobInstance['scheduled'],
-            '* * * * *',
-            new \DateTimeImmutable(),
-            null,
-            'job_automated_my_job',
         );
+
+        $jobInstance->setScheduled($normalizedJobInstance['scheduled']);
+        $jobInstance->setRawParameters($normalizedJobInstance['raw_parameters']);
+
+        return $jobInstance;
     }
 }

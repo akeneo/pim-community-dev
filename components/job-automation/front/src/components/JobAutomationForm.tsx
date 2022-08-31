@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {SectionTitle, Field, BooleanInput} from 'akeneo-design-system';
+import {SectionTitle, Field, BooleanInput, Helper} from 'akeneo-design-system';
 import {Section, useTranslate, ValidationError, filterErrors, useFeatureFlags} from '@akeneo-pim-community/shared';
 import {Automation, CronExpression} from '../models';
 import {UserGroupsForm} from './UserGroupsForm';
@@ -59,6 +59,11 @@ const JobAutomationForm = ({
           readOnly={false}
           onChange={handleScheduledChange}
         />
+        {filterErrors(validationErrors, '[scheduled]').map((error, index) => (
+          <Helper key={index} inline={true} level="error">
+            {translate(error.messageTemplate, error.parameters)}
+          </Helper>
+        ))}
       </Field>
       {scheduled && (
         <>
@@ -70,13 +75,13 @@ const JobAutomationForm = ({
           <CronExpressionForm
             cronExpression={automation.cron_expression}
             onCronExpressionChange={handleCronExpressionChange}
-            validationErrors={filterErrors(validationErrors, '[cron_expression]')}
+            validationErrors={filterErrors(validationErrors, '[automation][cron_expression]')}
           />
           {isEnabled('permission') && (
             <UserGroupsForm
               userGroups={automation.running_user_groups}
               onUserGroupsChange={handleRunningUserGroupsChange}
-              validationErrors={filterErrors(validationErrors, '[running_user_groups]')}
+              validationErrors={filterErrors(validationErrors, '[automation][running_user_groups]')}
               label={translate('akeneo.job_automation.scheduling.running_user_groups.label')}
               disabledHelperMessage={translate('akeneo.job_automation.scheduling.running_user_groups.disabled_helper')}
             />
@@ -89,14 +94,14 @@ const JobAutomationForm = ({
           <UserGroupsForm
             userGroups={automation.notification_user_groups}
             onUserGroupsChange={handleNotificationUserGroupsChange}
-            validationErrors={filterErrors(validationErrors, '[notification_user_groups]')}
+            validationErrors={filterErrors(validationErrors, '[automation][notification_user_groups]')}
             label={translate('akeneo.job_automation.notification.user_groups.label')}
             disabledHelperMessage={translate('akeneo.job_automation.notification.user_groups.disabled_helper')}
           />
           <UsersForm
             users={automation.notification_users}
             onUsersChange={handleNotificationUsersChange}
-            validationErrors={filterErrors(validationErrors, '[notification_users]')}
+            validationErrors={filterErrors(validationErrors, '[automation][notification_users]')}
           />
         </>
       )}
