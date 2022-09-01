@@ -1,0 +1,123 @@
+<?php
+
+namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\VariantProduct;
+
+use Akeneo\Test\Integration\Configuration;
+use PHPUnit\Framework\Assert;
+use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\PermissionFixturesLoader;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\HttpFoundation\Response;
+
+class DeleteVariantProductWithPermissionWithUuidEndToEnd extends ApiTestCase
+{
+    /** @var PermissionFixturesLoader */
+    private $loader;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->loader = $this->get('akeneo_integration_tests.loader.permissions');
+    }
+
+    public function testDeleteNotViewableVariantProduct()
+    {
+        $this->loader->loadProductModelsFixturesForCategoryPermissions();
+
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+        $uuid = $this->getProductUuidFromIdentifier('colored_sized_sweat_no_view')->toString();
+        $client->request('DELETE', 'api/rest/v1/products-uuid/' . $uuid, [], [], [], '{"categories": ["own_category"]}');
+        $response = $client->getResponse();
+
+        $expectedContent = sprintf('{"code":%d,"message":"Product \"colored_sized_sweat_no_view\" does not exist or you do not have permission to access it."}', Response::HTTP_NOT_FOUND);
+
+        Assert::assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+        Assert::assertEquals($expectedContent, $response->getContent());
+    }
+
+    public function testDeleteOnlyViewableVariantProduct()
+    {
+        $this->loader->loadProductModelsFixturesForCategoryPermissions();
+
+        $message = 'You can delete a product only if it is classified in at least one category on which you have an own permission.';
+        $data = '{"categories": ["own_category"]}';
+
+        $this->assertUnauthorized('colored_sized_shoes_view', $data, sprintf($message, 'colored_sized_shoes_view'));
+        $this->assertUnauthorized('colored_sized_tshirt_view', $data, sprintf($message, 'colored_sized_tshirt_view'));
+    }
+
+    public function testDeleteOnlyEditableVariantProduct()
+    {
+        $this->loader->loadProductModelsFixturesForCategoryPermissions();
+
+        $message = 'You can delete a product only if it is classified in at least one category on which you have an own permission.';
+        $data = '{"categories": ["own_category"]}';
+
+        $this->assertUnauthorized('colored_sized_sweat_edit', $data, sprintf($message, 'colored_sized_sweat_edit'));
+        $this->assertUnauthorized('colored_sized_shoes_edit', $data, sprintf($message, 'colored_sized_shoes_edit'));
+    }
+
+    public function testDeleteOwnedVariantProduct()
+    {
+        $this->loader->loadProductModelsFixturesForCategoryPermissions();
+
+        $data = '{"categories": ["own_category", "view_category"]}';
+        $this->assertDeleted('colored_sized_sweat_own', $data);
+        $this->assertDeleted('colored_sized_shoes_own', $data);
+        $this->assertDeleted('colored_sized_trousers', $data);
+    }
+
+    /**
+     * @param string $identifier                code of the product
+     * @param string $data                      data submitted
+     * @param string $sql                       SQL for database query
+     * @param array  $expectedProductNormalized expected product data normalized in standard format
+     */
+    private function assertDeleted(string $identifier, string $data): void
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+        $uuid = $this->getProductUuidFromIdentifier($identifier)->toString();
+        $client->request('DELETE', 'api/rest/v1/products-uuid/' . $uuid, [], [], [], $data);
+        Assert::assertSame(Response::HTTP_NO_CONTENT, $client->getResponse()->getStatusCode());
+
+        $this->get('doctrine')->getManager()->clear();
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
+
+        Assert::assertNull($product);
+    }
+
+    /**
+     * @param string $identifier
+     * @param string $data
+     * @param string $message
+     */
+    private function assertUnauthorized(string $identifier, string $data, string $message):void
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+        $uuid = $this->getProductUuidFromIdentifier($identifier)->toString();
+        $client->request('DELETE', 'api/rest/v1/products-uuid/' . $uuid, [], [], [], $data);
+        $response = $client->getResponse();
+
+        $expected = sprintf('{"code":%d,"message":"%s"}', Response::HTTP_FORBIDDEN, addslashes($message));
+
+        Assert::assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        Assert::assertEquals($expected, $response->getContent());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConfiguration(): Configuration
+    {
+        return $this->catalog->useTechnicalCatalog();
+    }
+
+    private function getProductUuidFromIdentifier(string $productIdentifier): UuidInterface
+    {
+        return Uuid::fromString($this->get('database_connection')->fetchOne(
+            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?', [$productIdentifier]
+        ));
+    }
+}
