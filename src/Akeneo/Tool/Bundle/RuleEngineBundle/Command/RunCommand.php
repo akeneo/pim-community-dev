@@ -13,7 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\RuleEngineBundle\Command;
 
+use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
+use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvents;
+use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -24,9 +27,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
-use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
-use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 
 /**
  * Command to run a rule
@@ -47,8 +47,7 @@ class RunCommand extends Command
         JobLauncherInterface $jobLauncher,
         JobInstanceRepository $jobInstanceRepository,
         UserRepositoryInterface $userRepository
-    )
-    {
+    ) {
         parent::__construct();
         $this->logger = $logger;
         $this->jobLauncher = $jobLauncher;
@@ -98,7 +97,7 @@ class RunCommand extends Command
         $user = null;
 
         if (null !== $username) {
-            $user = $this->userRepository->findOneByIdentifier($username);;
+            $user = $this->userRepository->findOneByIdentifier($username);
         }
 
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier('rule_engine_execute_rules');
