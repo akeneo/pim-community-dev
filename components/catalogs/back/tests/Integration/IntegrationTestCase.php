@@ -13,6 +13,7 @@ use Akeneo\Connectivity\Connection\ServiceApi\Service\ConnectedAppFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionValue;
@@ -193,7 +194,11 @@ abstract class IntegrationTestCase extends WebTestCase
 
         Assert::notNull($userId);
 
-        $command = UpsertProductCommand::createFromCollection($userId, $identifier, $intents);
+        $command = UpsertProductCommand::createWithIdentifier(
+            $userId,
+            ProductIdentifier::fromIdentifier($identifier),
+            $intents
+        );
 
         $bus->dispatch($command);
 
