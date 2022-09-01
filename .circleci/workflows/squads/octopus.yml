@@ -171,7 +171,6 @@ workflows:
                   requires:
                       - test_cat_front
                       - test_cat_back
-                      - test_migrations
 
     octopus_migrations:
       when: << pipeline.parameters.run-database-migration-tests >>
