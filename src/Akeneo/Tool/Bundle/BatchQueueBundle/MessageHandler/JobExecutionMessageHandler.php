@@ -88,8 +88,6 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
                         $arguments[] = sprintf('--%s=%s', $optionName, $subOptionValue);
                     }
                     break;
-                default:
-                    throw new \Exception('Unsupported option type');
             }
         }
 
