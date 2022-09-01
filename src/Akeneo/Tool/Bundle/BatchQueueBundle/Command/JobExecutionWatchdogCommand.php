@@ -56,7 +56,7 @@ final class JobExecutionWatchdogCommand extends Command
             ->addOption(
                 'email',
                 null,
-                InputOption::VALUE_REQUIRED,
+                InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
                 'The email to notify at the end of the job execution'
             )
             ->addOption(
@@ -126,10 +126,18 @@ final class JobExecutionWatchdogCommand extends Command
         ];
 
         foreach ($watchdogOptions as $optionName => $optionValue) {
-            if (true === $optionValue) {
-                $processArguments[] = sprintf('--%s', $optionName);
-            } elseif (false !== $optionValue && null !== $optionValue) {
-                $processArguments[] = sprintf('--%s=%s', $optionName, $optionValue);
+            switch (true) {
+                case is_bool($optionValue) && $optionValue:
+                    $processArguments[] = sprintf('--%s', $optionName);
+                    break;
+                case is_scalar($optionValue) && $optionValue:
+                    $processArguments[] = sprintf('--%s=%s', $optionName, $optionValue);
+                    break;
+                case is_array($optionValue):
+                    foreach ($optionValue as $subOptionValue) {
+                        $processArguments[] = sprintf('--%s=%s', $optionName, $subOptionValue);
+                    }
+                    break;
             }
         }
 
