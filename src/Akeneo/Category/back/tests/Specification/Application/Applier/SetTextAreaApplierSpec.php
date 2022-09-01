@@ -20,12 +20,12 @@ use PHPUnit\Framework\Assert;
  */
 class SetTextAreaApplierSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    function it_is_initializable(): void
     {
         $this->shouldHaveType(SetTextAreaApplier::class);
     }
 
-    function it_updates_category_value_collection()
+    function it_updates_category_value_collection(): void
     {
         $valueKey = 'attribute_code'
             . ValueCollection::SEPARATOR . 'uuid' .

@@ -21,7 +21,7 @@ class SetTextAreaApplier implements UserIntentApplier
     public function apply(UserIntent $userIntent, Category $category): void
     {
         if (!$userIntent instanceof SetTextArea) {
-            throw new \InvalidArgumentException('Not expected class');
+            throw new \InvalidArgumentException('Unexpected class');
         }
 
         $valueCollection = $category->getValueCollection() ?? ValueCollection::fromArray([]);

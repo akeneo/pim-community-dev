@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
-use Akeneo\Category\Api\Query\GetCategoryQuery;
-use Akeneo\Category\Application\GetCategoryQueryHandler;
-use Akeneo\Category\Domain\ValueObject\CategoryId;
+use Akeneo\Category\ServiceApi\CategoryQueryInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
@@ -22,7 +19,7 @@ class GetCategoryController
 {
     public function __construct(
         private SecurityFacade $securityFacade,
-        private GetCategoryQueryHandler $handler
+        private CategoryQueryInterface $categoryQuery
     ) {
     }
 
@@ -34,13 +31,8 @@ class GetCategoryController
             throw new AccessDeniedException();
         }
 
-        $query = new GetCategoryQuery(new CategoryId($id));
+        $category = $this->categoryQuery->byId($id);
 
-        $category = ($this->handler)($query);
-        if (null === $category) {
-            throw new NotFoundHttpException();
-        }
-
-        return new JsonResponse($category->normalize(), Response::HTTP_OK);
+        return new JsonResponse($category, Response::HTTP_OK);
     }
 }

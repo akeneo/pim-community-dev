@@ -68,3 +68,8 @@ services:
 
     Akeneo\Pim\Enrichment\Product\Domain\Query\GetAttributeTypes:
         class: Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryGetAttributeTypes
+
+    Akeneo\Pim\Enrichment\Product\Domain\Query\GetProductUuids:
+        class: Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryGetProductUuids
+        arguments:
+            - '@pim_catalog.repository.product'

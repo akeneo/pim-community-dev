@@ -24,3 +24,9 @@ services:
       - '@pim_user.factory.user'
       - '@pim_user.saver.user'
       - '@validator'
+
+  Akeneo\UserManagement\ServiceApi\User\DeleteUserHandlerInterface:
+    class: Akeneo\UserManagement\Application\Handler\DeleteUserHandler
+    arguments:
+      - '@pim_user.repository.user'
+      - '@pim_user.manager'

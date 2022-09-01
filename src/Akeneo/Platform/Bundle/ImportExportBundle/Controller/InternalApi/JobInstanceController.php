@@ -217,7 +217,22 @@ class JobInstanceController
         }
 
         $data = json_decode($request->getContent(), true);
-        $data = $this->credentialsEncrypterRegistry->encryptCredentials($data);
+
+        $filteredData = $this->inputFilter->filterCollection(
+            $data,
+            'pim.internal_api.job_instance.edit',
+            ['preserve_keys' => true]
+        );
+
+        $this->updater->update($jobInstance, $filteredData);
+
+        $errors = $this->getValidationErrors($jobInstance);
+        if (0 < count($errors)) {
+            return new JsonResponse($errors, 400);
+        }
+
+        $encryptedData = $this->credentialsEncrypterRegistry->encryptCredentials($data);
+        $this->updater->update($jobInstance, $encryptedData);
 
         try {
             $this->eventDispatcher->dispatch(
@@ -226,18 +241,6 @@ class JobInstanceController
             );
         } catch (JobInstanceCannotBeUpdatedException $e) {
             return new JsonResponse(['message' => $e->getMessage()], 400);
-        }
-
-        $filteredData = $this->inputFilter->filterCollection(
-            $data,
-            'pim.internal_api.job_instance.edit',
-            ['preserve_keys' => true]
-        );
-        $this->updater->update($jobInstance, $filteredData);
-
-        $errors = $this->getValidationErrors($jobInstance);
-        if (count($errors) > 0) {
-            return new JsonResponse($errors, 400);
         }
 
         $this->saver->save($jobInstance);
