@@ -44,17 +44,17 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
                 'value' => true,
             ],
         ]);
-        $this->createProduct('blue', [new SetEnabled(true)]);
-        $this->createProduct('green', [new SetEnabled(true)]);
-        $this->createProduct('red', [new SetEnabled(false)]);
+        $this->createProduct('tshirt-blue', [new SetEnabled(true)]);
+        $this->createProduct('tshirt-green', [new SetEnabled(true)]);
+        $this->createProduct('tshirt-red', [new SetEnabled(false)]);
 
         $uuids = $this->getProductIdentifierToUuidMapping();
 
         $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
         $this->assertEquals([
-            $uuids['blue'],
-            $uuids['green'],
+            $uuids['tshirt-blue'],
+            $uuids['tshirt-green'],
         ], $result);
     }
 
@@ -72,17 +72,17 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
                 'value' => true,
             ],
         ]);
-        $this->createProduct('blue', [new SetEnabled(true)]);
-        $this->createProduct('green', [new SetEnabled(true)]);
-        $this->createProduct('red', [new SetEnabled(true)]);
-        $this->createProduct('yellow', [new SetEnabled(true)]);
+        $this->createProduct('tshirt-blue', [new SetEnabled(true)]);
+        $this->createProduct('tshirt-green', [new SetEnabled(true)]);
+        $this->createProduct('tshirt-red', [new SetEnabled(true)]);
+        $this->createProduct('tshirt-yellow', [new SetEnabled(true)]);
 
         $uuids = $this->getProductIdentifierToUuidMapping();
 
-        $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', $uuids['green'], 1);
+        $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', $uuids['tshirt-green'], 1);
 
         $this->assertEquals([
-            $uuids['red'],
+            $uuids['tshirt-red'],
         ], $result);
     }
 
@@ -128,7 +128,7 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
                 'locale' => 'fr_FR',
             ],
         ]);
-        $this->createProduct('blue', [
+        $this->createProduct('tshirt-blue', [
             new SetTextValue('name', 'mobile', 'en_US', 'Blue'),
             new SetTextValue('name', 'print', 'en_US', 'Light blue'),
             new SetTextValue('name', 'print', 'fr_FR', 'Bleu clair'),
@@ -143,7 +143,7 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
         $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
         $this->assertEquals([
-            $uuids['blue'],
+            $uuids['tshirt-blue'],
         ], $result);
     }
 
