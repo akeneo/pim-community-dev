@@ -163,33 +163,10 @@ workflows:
                   is_ee_built: false
                   requires:
                       - checkout_catalogs
-            - test_ce_migrations:
-                  name: test_migrations
-                  requires:
-                      - checkout_catalogs
             - pull_request_success:
                   requires:
                       - test_cat_front
                       - test_cat_back
-
-#    octopus_migrations:
-#      when: << pipeline.parameters.run-database-migration-tests >>
-#      jobs:
-#        - checkout_ee:
-#            filters:
-#              branches:
-#                only:
-#                  - /^(CXP|OCT)-.*/
-#        - build_dev:
-#            path_to_front_packages: vendor/akeneo/pim-community-dev/front-packages
-#            requires:
-#              - checkout_ee
-#        - test_database:
-#            requires:
-#              - build_dev
-#        - test_back_data_migrations:
-#            requires:
-#              - build_dev
 
     octopus_weekly_code_quality:
         when:
