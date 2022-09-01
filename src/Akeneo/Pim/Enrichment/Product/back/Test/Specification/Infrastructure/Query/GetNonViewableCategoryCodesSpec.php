@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Product\Infrastructure\Query;
 
 use Akeneo\Pim\Enrichment\Category\API\Query\GetViewableCategories;
-use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableCategoryCodes as GetNonViewableCategoryCodesInterface;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Query\GetNonViewableCategoryCodes;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 class GetNonViewableCategoryCodesSpec extends ObjectBehavior
 {
@@ -28,22 +28,22 @@ class GetNonViewableCategoryCodesSpec extends ObjectBehavior
         GetCategoryCodes $getCategoryCodes,
         GetViewableCategories $getViewableCategories
     ) {
-        $productIdentifier1 = ProductIdentifier::fromString('id1');
-        $productIdentifier2 = ProductIdentifier::fromString('id2');
-        $productIdentifier3 = ProductIdentifier::fromString('id3');
+        $productUuid1 = Uuid::uuid4();
+        $productUuid2 = Uuid::uuid4();
+        $productUuid3 = Uuid::uuid4();
 
-        $getCategoryCodes->fromProductIdentifiers([$productIdentifier1, $productIdentifier2, $productIdentifier3])
+        $getCategoryCodes->fromProductUuids([$productUuid1, $productUuid2, $productUuid3])
             ->willReturn([
-                'id1' => ['categoryA', 'categoryB', 'categoryC'],
-                'id2' => ['categoryA', 'categoryD', 'categoryE'],
+                $productUuid1->toString() => ['categoryA', 'categoryB', 'categoryC'],
+                $productUuid2->toString() => ['categoryA', 'categoryD', 'categoryE'],
             ]);
         $getViewableCategories->forUserId(['categoryA', 'categoryB', 'categoryC', 'categoryD', 'categoryE'], 10)
             ->willReturn(['categoryA', 'categoryB', 'categoryC', 'categoryD']);
 
-        $this->fromProductIdentifiers([$productIdentifier1, $productIdentifier2, $productIdentifier3], 10)
+        $this->fromProductUuids([$productUuid1, $productUuid2, $productUuid3], 10)
             ->shouldreturn([
-                'id1' => [],
-                'id2' => ['categoryE'],
+                $productUuid1->toString() => [],
+                $productUuid2->toString() => ['categoryE'],
             ]);
     }
 }
