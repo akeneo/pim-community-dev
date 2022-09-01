@@ -27,6 +27,20 @@ use Ramsey\Uuid\UuidInterface;
  */
 class GetProductsQuery implements GetProductsQueryInterface
 {
+    private const PROPERTIES = [
+      'uuid',
+      'enabled',
+      'family',
+      'categories',
+      'groups',
+      'parent',
+      'values',
+      'associations',
+      'quantified_associations',
+      'created',
+      'updated',
+    ];
+
     public function __construct(
         private GetProductUuidsQueryInterface $getProductUuidsQuery,
         private GetConnectorProducts $getConnectorProducts,
@@ -54,6 +68,7 @@ class GetProductsQuery implements GetProductsQueryInterface
 
         /** @var array<Product> $products */
         $products = $this->connectorProductWithUuidNormalizer->normalizeConnectorProductList($connectorProducts);
+        $products = $this->filterNormalizedProperties($products, self::PROPERTIES);
         $products = $this->filterChannels($products, $filters['channels'] ?? null);
 
         return $this->filterCurrencies($products, $filters['currencies'] ?? null);
@@ -109,6 +124,22 @@ class GetProductsQuery implements GetProductsQueryInterface
                     );
                 }
             }
+        }
+
+        return $products;
+    }
+
+    /**
+     * @param array<Product> $products
+     * @param array<string> $whitelist
+     * @return array<Product>
+     */
+    private function filterNormalizedProperties(array $products, array $whitelist): array
+    {
+        $keys = \array_flip($whitelist);
+
+        foreach ($products as &$product) {
+            $product = \array_intersect_key($product, $keys);
         }
 
         return $products;
