@@ -8,7 +8,7 @@ jobs:
       - when:
           condition: << pipeline.parameters.run-database-migration-tests >>
           steps:
-             - attach_workspace:
+            - attach_workspace:
                 at: ~/
             - run:
                 name: Change owner on project dir in order to archive the project into the workspace
