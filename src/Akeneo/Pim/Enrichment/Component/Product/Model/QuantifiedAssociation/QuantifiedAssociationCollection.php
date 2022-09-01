@@ -145,11 +145,13 @@ class QuantifiedAssociationCollection
         foreach ($this->quantifiedAssociations as $associations) {
             /** @var QuantifiedLink $quantifiedLink */
             foreach ($associations[self::PRODUCTS_QUANTIFIED_LINKS_KEY] as $quantifiedLink) {
-                $result[] = $quantifiedLink->identifier();
+                if (null !== $quantifiedLink->identifier()) {
+                    $result[] = $quantifiedLink->identifier();
+                }
             }
         }
 
-        return array_unique(array_filter($result));
+        return array_unique($result);
     }
 
     public function getQuantifiedAssociationsProductUuids(): array
@@ -158,11 +160,13 @@ class QuantifiedAssociationCollection
         foreach ($this->quantifiedAssociations as $associations) {
             /** @var QuantifiedLink $quantifiedLink */
             foreach ($associations[self::PRODUCTS_QUANTIFIED_LINKS_KEY] as $quantifiedLink) {
-                $result[] = $quantifiedLink->uuid();
+                if (null !== $quantifiedLink->uuid()) {
+                    $result[] = $quantifiedLink->uuid();
+                }
             }
         }
 
-        return array_unique(array_filter($result));
+        return array_unique($result);
     }
 
     public function getQuantifiedAssociationsProductModelCodes(): array
