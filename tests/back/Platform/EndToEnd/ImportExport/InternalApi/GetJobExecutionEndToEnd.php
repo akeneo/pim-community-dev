@@ -161,7 +161,7 @@ SQL;
                 'warning' => false,
                 'status'  => 'COMPLETED',
                 'currentStep' => 3,
-                'totalSteps' => 3,
+                'totalSteps' => 4,
                 'steps' => [
                     [
                         'jobName' => 'csv_product_import',

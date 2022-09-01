@@ -25,7 +25,6 @@ test('it renders the storage form', () => {
 
   renderWithProviders(
     <StorageForm
-      jobName="xlsx_product_export"
       jobType="export"
       storage={storage}
       fileExtension="xlsx"
@@ -35,32 +34,6 @@ test('it renders the storage form', () => {
   );
 
   expect(screen.getByText('pim_import_export.form.job_instance.storage_form.connection.none')).toBeInTheDocument();
-});
-
-test('it hides the storage form when local and remote storage are disabled', () => {
-  mockedUseFeatureFlags.mockImplementation(() => ({
-    isEnabled: (featureFlag: string): boolean => false,
-  }));
-
-  const storage: NoneStorage = {
-    type: 'none',
-    file_path: '/tmp/file.xlsx',
-  };
-
-  renderWithProviders(
-    <StorageForm
-      jobName="xlsx_attribute_export"
-      jobType="export"
-      storage={storage}
-      fileExtension="xlsx"
-      validationErrors={[]}
-      onStorageChange={jest.fn()}
-    />
-  );
-
-  expect(
-    screen.queryByText('pim_import_export.form.job_instance.storage_form.connection.none')
-  ).not.toBeInTheDocument();
 });
 
 test('it triggers onStorageChange callback when storage configurator onStorageChange is triggered', () => {
@@ -73,7 +46,6 @@ test('it triggers onStorageChange callback when storage configurator onStorageCh
 
   renderWithProviders(
     <StorageForm
-      jobName="xlsx_product_export"
       jobType="export"
       storage={storage}
       fileExtension="xlsx"
@@ -101,7 +73,6 @@ test('it does not render the storage form configurator if storage is none', () =
 
   renderWithProviders(
     <StorageForm
-      jobName="xlsx_product_export"
       jobType="export"
       storage={storage}
       fileExtension="xlsx"
@@ -123,7 +94,6 @@ test('it renders the storage form configurator if storage is local', () => {
 
   renderWithProviders(
     <StorageForm
-      jobName="xlsx_product_export"
       jobType="export"
       storage={storage}
       fileExtension="xlsx"
@@ -150,7 +120,6 @@ test('it renders the storage form configurator if storage is sftp', () => {
 
   renderWithProviders(
     <StorageForm
-      jobName="xlsx_product_export"
       jobType="export"
       storage={storage}
       fileExtension="xlsx"
@@ -177,7 +146,6 @@ test('it can select a local storage', () => {
 
   renderWithProviders(
     <StorageForm
-      jobName="xlsx_product_export"
       jobType="export"
       storage={storage}
       fileExtension="xlsx"
@@ -205,7 +173,6 @@ test('it can select a sftp storage', () => {
 
   renderWithProviders(
     <StorageForm
-      jobName="xlsx_product_export"
       jobType="export"
       storage={storage}
       fileExtension="csv"
@@ -252,7 +219,6 @@ test('it displays validation errors', () => {
 
   renderWithProviders(
     <StorageForm
-      jobName="xlsx_product_export"
       jobType="export"
       storage={storage}
       fileExtension="xlsx"
