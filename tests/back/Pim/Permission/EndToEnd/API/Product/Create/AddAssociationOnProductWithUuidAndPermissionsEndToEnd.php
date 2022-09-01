@@ -39,11 +39,11 @@ JSON;
 
         $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
         $response = $client->getResponse();
-        $this->assertSame(422, $response->getStatusCode());
         $this->assertSame(sprintf(
             '{"code":422,"message":"Property \"associations\" expects a valid product uuid. The product does not exist, \"%s\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#post_products"}}}',
             $productNotViewableUuid
         ), $response->getContent());
+        $this->assertSame(422, $response->getStatusCode());
     }
 
     public function testSuccessProductWithGrantedAssociatedProductForManager()
