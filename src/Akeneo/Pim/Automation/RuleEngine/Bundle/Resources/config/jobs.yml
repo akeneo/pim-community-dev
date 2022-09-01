@@ -19,6 +19,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
+                - '@akeneo.job_automation.connector.step.download'
                 - '@pim_connector.step.charset_validator'
                 - '@pimee_catalog_rule.step.csv_product.import'
                 - '@pimee_catalog_rule.step.csv_product.import_associations'
@@ -34,6 +35,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
+                - '@akeneo.job_automation.connector.step.download'
                 - '@pim_connector.step.charset_validator'
                 - '@pimee_catalog_rule.step.csv_root_product_model.import'
                 - '@pimee_catalog_rule.step.csv_sub_product_model.import'
@@ -51,6 +53,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
+                - '@akeneo.job_automation.connector.step.download'
                 - '@pim_connector.step.charset_validator'
                 - '@pimee_catalog_rule.step.xlsx_product.import'
                 - '@pimee_catalog_rule.step.xlsx_product.import_associations'
@@ -66,6 +69,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
+                - '@akeneo.job_automation.connector.step.download'
                 - '@pim_connector.step.charset_validator'
                 - '@pimee_catalog_rule.step.xlsx_root_product_model.import'
                 - '@pimee_catalog_rule.step.xlsx_sub_product_model.import'
@@ -83,6 +87,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
+                - '@akeneo.job_automation.connector.step.download'
                 - '@pimee_catalog_rule.step.yml_rule.import'
             - true
         tags:
@@ -97,6 +102,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pimee_catalog_rule.step.yml_rule.export'
+                - '@akeneo.job_automation.connector.step.upload'
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pimee_catalog_rule.connector_name.rule_engine%', type: '%pim_connector.job.export_type%', feature: 'product_rules' }

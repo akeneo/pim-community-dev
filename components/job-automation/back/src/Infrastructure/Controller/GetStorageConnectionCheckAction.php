@@ -42,7 +42,7 @@ final class GetStorageConnectionCheckAction
 
         $data = json_decode($request->getContent(), true);
 
-        $violations = $this->validator->validate($data, new SftpStorage(['xlsx', 'zip']));
+        $violations = $this->validator->validate($data, new SftpStorage([]));
         if (0 < $violations->count()) {
             return new JsonResponse($this->normalizer->normalize($violations), Response::HTTP_BAD_REQUEST);
         }
@@ -50,9 +50,7 @@ final class GetStorageConnectionCheckAction
         $storage = $this->storageHydrator->hydrate($data);
 
         try {
-            $this->storageConnectionCheckHandler->handle(new StorageConnectionCheckQuery(
-                $storage,
-            ));
+            $this->storageConnectionCheckHandler->handle(new StorageConnectionCheckQuery($storage));
 
             return new JsonResponse([], Response::HTTP_OK);
         } catch (\Exception) {

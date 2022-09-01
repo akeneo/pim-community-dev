@@ -147,7 +147,6 @@ services:
             - '@pim_catalog.filter.chained'
             - '@oneup_flysystem.jobs_storage_filesystem'
             - '@oro_security.security_facade'
-            - '@Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\RemoteStorageFeatureFlag'
             - '@Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Security\CredentialsEncrypterRegistry'
 
     Akeneo\Pim\Permission\Bundle\Controller\InternalApi\GetCategoriesForPermissionsAction:

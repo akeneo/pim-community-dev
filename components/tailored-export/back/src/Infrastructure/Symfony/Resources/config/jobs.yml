@@ -7,7 +7,7 @@ services:
       - '@akeneo_batch.job_repository'
       -
         - '@akeneo.tailored_export.connector.step.xlsx_product.export'
-        - '@akeneo.job_automation.connector.step.xlsx_product.upload'
+        - '@akeneo.job_automation.connector.step.upload'
       - true
     tags:
       - { name: akeneo_batch.job, connector: '%akeneo.tailored_export.connector.name%', type: '%pim_connector.job.export_type%' }
@@ -20,6 +20,7 @@ services:
       - '@akeneo_batch.job_repository'
       -
         - '@akeneo.tailored_export.connector.step.csv_product.export'
+        - '@akeneo.job_automation.connector.step.upload'
       - true
     tags:
       - { name: akeneo_batch.job, connector: '%akeneo.tailored_export.connector.name%', type: '%pim_connector.job.export_type%' }
@@ -32,6 +33,7 @@ services:
       - '@akeneo_batch.job_repository'
       -
         - '@akeneo.tailored_export.connector.step.xlsx_product_model.export'
+        - '@akeneo.job_automation.connector.step.upload'
       - true
     tags:
       - { name: akeneo_batch.job, connector: '%akeneo.tailored_export.connector.name%', type: '%pim_connector.job.export_type%' }
@@ -44,6 +46,7 @@ services:
       - '@akeneo_batch.job_repository'
       -
         - '@akeneo.tailored_export.connector.step.csv_product_model.export'
+        - '@akeneo.job_automation.connector.step.upload'
       - true
     tags:
       - { name: akeneo_batch.job, connector: '%akeneo.tailored_export.connector.name%', type: '%pim_connector.job.export_type%' }

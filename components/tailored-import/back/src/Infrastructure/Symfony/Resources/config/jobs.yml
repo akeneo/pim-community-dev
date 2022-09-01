@@ -6,7 +6,7 @@ services:
       - '@event_dispatcher'
       - '@akeneo_batch.job_repository'
       -
-        - '@akeneo.job_automation.connector.step.xlsx_product.download'
+        - '@akeneo.job_automation.connector.step.download'
         - '@pim_connector.step.charset_validator'
         - '@akeneo.tailored_import.connector.step.xlsx_product.import'
       - true

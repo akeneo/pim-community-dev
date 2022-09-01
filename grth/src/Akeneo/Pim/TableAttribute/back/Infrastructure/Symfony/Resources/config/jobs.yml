@@ -8,6 +8,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_table_attribute.step.csv_option_export'
+                - '@akeneo.job_automation.connector.step.upload'
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%' }
@@ -20,6 +21,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_table_attribute.step.xlsx_option_export'
+                - '@akeneo.job_automation.connector.step.upload'
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
@@ -32,6 +34,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_table_attribute.step.csv_product_table_values_export'
+                - '@akeneo.job_automation.connector.step.upload'
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%' }
@@ -44,6 +47,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_table_attribute.step.xlsx_product_table_values_export'
+                - '@akeneo.job_automation.connector.step.upload'
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
@@ -56,6 +60,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_table_attribute.step.csv_product_model_table_values_export'
+                - '@akeneo.job_automation.connector.step.upload'
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%' }
@@ -68,6 +73,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_table_attribute.step.xlsx_product_model_table_values_export'
+                - '@akeneo.job_automation.connector.step.upload'
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
@@ -79,6 +85,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
+                - '@akeneo.job_automation.connector.step.download'
                 - '@pim_connector.step.charset_validator'
                 - '@pim_table_attribute.step.csv_option_import'
             - true
@@ -92,6 +99,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
+                - '@akeneo.job_automation.connector.step.download'
                 - '@pim_connector.step.charset_validator'
                 - '@pim_table_attribute.step.xlsx_option_import'
             - true
@@ -105,6 +113,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
+                - '@akeneo.job_automation.connector.step.download'
                 - '@pim_connector.step.charset_validator'
                 - '@pim_table_attribute.step.csv_product_table_values_import'
             - true
@@ -118,6 +127,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
+                - '@akeneo.job_automation.connector.step.download'
                 - '@pim_connector.step.charset_validator'
                 - '@pim_table_attribute.step.xlsx_product_table_values_import'
             - true
@@ -131,6 +141,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
+                - '@akeneo.job_automation.connector.step.download'
                 - '@pim_connector.step.charset_validator'
                 - '@pim_table_attribute.step.csv_product_model_table_values_import'
             - true
@@ -144,6 +155,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
+                - '@akeneo.job_automation.connector.step.download'
                 - '@pim_connector.step.charset_validator'
                 - '@pim_table_attribute.step.xlsx_product_model_table_values_import'
             - true

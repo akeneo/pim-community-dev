@@ -23,6 +23,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
+                - '@akeneo.job_automation.connector.step.download'
                 - '@pimee_workflow.step.csv_product_proposal.import'
             - true
         tags:
@@ -35,6 +36,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
+                - '@akeneo.job_automation.connector.step.download'
                 - '@pimee_workflow.step.csv_product_model_proposal.import'
             - true
         tags:
@@ -49,6 +51,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pimee_workflow.step.csv_published_product.export'
+                - '@akeneo.job_automation.connector.step.upload'
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%', feature: 'published_product' }
@@ -61,6 +64,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
+                - '@akeneo.job_automation.connector.step.download'
                 - '@pimee_workflow.step.xlsx_product_proposal.import'
             - true
         tags:
@@ -73,6 +77,7 @@ services:
                 - '@event_dispatcher'
                 - '@akeneo_batch.job_repository'
                 -
+                    - '@akeneo.job_automation.connector.step.download'
                     - '@pimee_workflow.step.xlsx_product_model_proposal.import'
                 - true
             tags:
@@ -87,6 +92,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pimee_workflow.step.xlsx_published_product.export'
+                - '@akeneo.job_automation.connector.step.upload'
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%', feature: 'published_product' }

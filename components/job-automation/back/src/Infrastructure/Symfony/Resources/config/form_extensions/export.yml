@@ -1,0 +1,207 @@
+extensions:
+  pim-job-instance-xlsx-product-export-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-xlsx-product-export-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation
+
+  pim-job-instance-csv-tailored-product-export-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-csv-tailored-product-export-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation
+
+  pim-job-instance-csv-tailored-product-model-export-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-csv-tailored-product-model-export-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation
+
+  pim-job-instance-xlsx-tailored-product-export-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-xlsx-tailored-product-export-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation
+
+  pim-job-instance-xlsx-tailored-product-model-export-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-xlsx-tailored-product-model-export-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation
+
+  pim-job-instance-csv-product-model-table-values-export-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-csv-product-model-table-values-export-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation
+
+  pim-job-instance-csv-product-table-values-export-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-csv-product-table-values-export-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation
+
+  pim-job-instance-csv-table-select-options-export-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-csv-table-select-options-export-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation
+
+  pim-job-instance-xlsx-product-model-table-values-export-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-xlsx-product-model-table-values-export-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation
+
+  pim-job-instance-xlsx-product-table-values-export-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-xlsx-product-table-values-export-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation
+
+  pim-job-instance-xlsx-table-select-options-export-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-xlsx-table-select-options-export-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation
+
+  pim-job-instance-csv-asset-export-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-csv-asset-export-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation
+
+  pim-job-instance-xlsx-asset-export-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-xlsx-asset-export-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation
+
+  pim-job-instance-csv-published-product-export-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-csv-published-product-export-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation
+
+  pim-job-instance-xlsx-published-product-export-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-xlsx-published-product-export-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation
+
+  pim-job-instance-csv-reference-entity-record-export-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-csv-reference-entity-record-export-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation
+
+  pim-job-instance-xlsx-reference-entity-record-export-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-xlsx-reference-entity-record-export-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation
+
+  pim-job-instance-csv-base-export-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-csv-base-export-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation
+
+  pim-job-instance-csv-product-export-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-csv-product-export-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation
+
+  pim-job-instance-csv-product-model-export-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-csv-product-model-export-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation
+
+  pim-job-instance-xlsx-base-export-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-xlsx-base-export-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation
+
+  pim-job-instance-xlsx-product-model-export-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-xlsx-product-model-export-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation
+
+  pim-job-instance-yml-base-export-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-yml-base-export-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation
