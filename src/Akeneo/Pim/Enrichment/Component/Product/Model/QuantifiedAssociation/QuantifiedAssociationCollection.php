@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation;
 
+use Ramsey\Uuid\UuidInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -288,7 +289,28 @@ class QuantifiedAssociationCollection
             $filteredQuantifiedAssociations[$associationTypeCode]['products'] = array_filter(
                 $quantifiedAssociation['products'],
                 function (QuantifiedLink $quantifiedLink) use ($productIdentifiersToKeep) {
-                    return in_array($quantifiedLink->identifier(), $productIdentifiersToKeep);
+                    return null === $quantifiedLink->identifier() || in_array($quantifiedLink->identifier(), $productIdentifiersToKeep);
+                }
+            );
+        }
+
+        return new self($filteredQuantifiedAssociations);
+    }
+
+    /**
+     * @param UuidInterface[] $productUuidsToKeep
+     *
+     * @return QuantifiedAssociationCollection
+     */
+    public function filterProductUuids(array $productUuidsToKeep)
+    {
+        $filteredQuantifiedAssociations = [];
+        foreach ($this->quantifiedAssociations as $associationTypeCode => $quantifiedAssociation) {
+            $filteredQuantifiedAssociations[$associationTypeCode]['product_models'] = $quantifiedAssociation['product_models'];
+            $filteredQuantifiedAssociations[$associationTypeCode]['products'] = array_filter(
+                $quantifiedAssociation['products'],
+                function (QuantifiedLink $quantifiedLink) use ($productUuidsToKeep) {
+                    return null === $quantifiedLink->uuid() || in_array($quantifiedLink->uuid(), $productUuidsToKeep);
                 }
             );
         }

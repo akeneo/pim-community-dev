@@ -21,14 +21,18 @@ trait EntityWithQuantifiedAssociationTrait
     /**
      * @inheritDoc
      */
-    public function filterQuantifiedAssociations(array $productIdentifiersToKeep, array $productModelCodesToKeep): void
-    {
+    public function filterQuantifiedAssociations(
+        array $productIdentifiersToKeep,
+        array $productUuidsToKeep,
+        array $productModelCodesToKeep
+    ): void {
         if (null === $this->quantifiedAssociationCollection) {
             return;
         }
 
         $this->quantifiedAssociationCollection = $this->quantifiedAssociationCollection
             ->filterProductIdentifiers($productIdentifiersToKeep)
+            ->filterProductUuids($productUuidsToKeep)
             ->filterProductModelCodes($productModelCodesToKeep);
     }
 

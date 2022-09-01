@@ -40,10 +40,15 @@ interface EntityWithQuantifiedAssociationsInterface
     /**
      * Remove quantified association with product/product model not present in parameter
      *
-     * @param array $productIdentifiersToKeep
-     * @param array $productModelCodesToKeep
+     * @param string[] $productIdentifiersToKeep
+     * @param UuidInterface[] $productUuidsToKeep
+     * @param string[] $productModelCodesToKeep
      */
-    public function filterQuantifiedAssociations(array $productIdentifiersToKeep, array $productModelCodesToKeep): void;
+    public function filterQuantifiedAssociations(
+        array $productIdentifiersToKeep,
+        array $productUuidsToKeep,
+        array $productModelCodesToKeep
+    ): void;
 
     /**
      * Remove all quantified associations
