@@ -7,4 +7,6 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
 interface ProductCategoryAccessQueryInterface
 {
     public function getGrantedProductIdentifiers(array $productIdentifiers, UserInterface $user): array;
+
+    public function getGrantedProductUuids(array $productUuids, UserInterface $user): array;
 }
