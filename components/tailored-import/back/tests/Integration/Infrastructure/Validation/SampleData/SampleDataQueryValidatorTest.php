@@ -14,20 +14,20 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Test\Integration\Infrastructure\Validation\SampleData;
 
 use Akeneo\Platform\TailoredImport\Domain\Model\Filesystem\Storage;
-use Akeneo\Platform\TailoredImport\Infrastructure\Validation\SampleData\RefreshSampleDataQuery;
+use Akeneo\Platform\TailoredImport\Infrastructure\Validation\SampleData\SampleDataQuery;
 use Akeneo\Platform\TailoredImport\Test\Integration\Infrastructure\Validation\AbstractValidationTest;
 use Akeneo\Test\Integration\Configuration;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 
-final class RefreshSampleDataQueryValidatorTest extends AbstractValidationTest
+final class SampleDataQueryValidatorTest extends AbstractValidationTest
 {
     /**
      * @dataProvider validRequest
      */
     public function test_it_does_not_build_violations_when_request_is_valid(Request $value): void
     {
-        $violations = $this->getValidator()->validate($value, new RefreshSampleDataQuery());
+        $violations = $this->getValidator()->validate($value, new SampleDataQuery());
 
         $this->assertNoViolation($violations);
     }
@@ -40,7 +40,7 @@ final class RefreshSampleDataQueryValidatorTest extends AbstractValidationTest
         string $expectedErrorPath,
         Request $value
     ): void {
-        $violations = $this->getValidator()->validate($value, new RefreshSampleDataQuery());
+        $violations = $this->getValidator()->validate($value, new SampleDataQuery());
 
         $this->assertHasValidationError($expectedErrorMessage, $expectedErrorPath, $violations);
     }
@@ -56,22 +56,12 @@ final class RefreshSampleDataQueryValidatorTest extends AbstractValidationTest
                     'column_indices' => ['1'],
                     'sheet_name' => 'Sheet1',
                     'product_line' => '1',
-                    'current_sample' => ['product1', 'product2', 'product3'],
                 ])
             ],
             'valid request with multiple column indices' => [
                 new Request([
                     'file_key' => $filePath,
                     'column_indices' => ['1', '2'],
-                    'sheet_name' => 'Sheet1',
-                    'product_line' => '1',
-                    'current_sample' => ['product1', 'product2', 'product3'],
-                ])
-            ],
-            'valid request without current sample' => [
-                new Request([
-                    'file_key' => $filePath,
-                    'column_indices' => ['1'],
                     'sheet_name' => 'Sheet1',
                     'product_line' => '1',
                 ])
@@ -82,15 +72,14 @@ final class RefreshSampleDataQueryValidatorTest extends AbstractValidationTest
     public function invalidRequest(): array
     {
         return [
-            'invalid request with too many samples' => [
-                'This collection should contain 3 elements or less.',
-                '[current_sample]',
+            'invalid request with wrong sheet name type' => [
+                'This value should be of type string.',
+                '[sheet_name]',
                 new Request([
                     'file_key' => 'e/e/d/d/eedd05148a6311b2bffe29eb1adc80c2cf6ad9ca_bigfile.xlsx',
-                    'column_indices' => ['1'],
-                    'sheet_name' => 'Sheet1',
+                    'column_indices' => ['1', '2'],
+                    'sheet_name' => false,
                     'product_line' => '1',
-                    'current_sample' => ['product1', 'product2', 'product3', 'product4'],
                 ])
             ],
         ];

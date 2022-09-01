@@ -17,5 +17,4 @@ use Symfony\Component\Validator\Constraint;
 
 final class SearchAttributeOptionsQuery extends Constraint
 {
-    public const MISSING_QUERY_PARAMS = 'akeneo.tailored_import.validation.missing_query_params';
 }

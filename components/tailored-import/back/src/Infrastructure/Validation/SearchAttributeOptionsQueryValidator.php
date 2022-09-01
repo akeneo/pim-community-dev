@@ -15,6 +15,10 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\All;
+use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
@@ -30,20 +34,26 @@ class SearchAttributeOptionsQueryValidator extends ConstraintValidator
             return;
         }
 
-        $requiredParams = [
-            'attribute_code',
-            'search',
-            'locale',
-            'page',
-        ];
-
-        $missingParams = array_filter($requiredParams, static fn (string $param) => null === $value->get($param));
-
-        if (!empty($missingParams)) {
-            $this->context->buildViolation(
-                SearchAttributeOptionsQuery::MISSING_QUERY_PARAMS,
-                ['{{ missing_params }}' => implode(', ', $missingParams)],
-            )->addViolation();
-        }
+        $this->context->getValidator()->inContext($this->context)->validate($value->request->all(), new Collection([
+            'include_codes' => [
+                new Type('array'),
+                new All([
+                    new Type('string'),
+                ]),
+            ],
+            'exclude_codes' => [
+                new Type('array'),
+                new All([
+                    new Type('string'),
+                ]),
+            ],
+            'search' => new Type('string'),
+            'locale' => [
+                new Type('string'),
+                new NotBlank(),
+            ],
+            'page' => new Type('int'),
+            'limit' => new Type('int'),
+        ]));
     }
 }
