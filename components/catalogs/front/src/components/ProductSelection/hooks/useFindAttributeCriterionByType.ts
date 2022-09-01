@@ -1,5 +1,6 @@
 import {useCallback} from 'react';
 import {AnyAttributeCriterion} from '../models/Criterion';
+import AttributeIdentifierCriterion from '../criteria/AttributeIdentifierCriterion';
 import AttributeTextCriterion from '../criteria/AttributeTextCriterion';
 import AttributeTextareaCriterion from '../criteria/AttributeTextareaCriterion';
 import AttributeSimpleSelectCriterion from '../criteria/AttributeSimpleSelectCriterion';
@@ -13,6 +14,8 @@ type Return = (type: string) => AnyAttributeCriterion;
 export const useFindAttributeCriterionByType = (): Return => {
     return useCallback((type: string): AnyAttributeCriterion => {
         switch (type) {
+            case 'pim_catalog_identifier':
+                return AttributeIdentifierCriterion;
             case 'pim_catalog_text':
                 return AttributeTextCriterion;
             case 'pim_catalog_textarea':
