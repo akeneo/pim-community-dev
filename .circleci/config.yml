@@ -34,7 +34,7 @@ jobs:
                   command: cat /tmp/pipeline-parameters.json
             - continuation/continue:
                   configuration_path: .circleci/merged_config.yml
-#                  parameters: /tmp/pipeline-parameters.json
+                  parameters: /tmp/pipeline-parameters.json
 
 workflows:
     version: 2
