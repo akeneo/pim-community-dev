@@ -7,9 +7,7 @@ namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence;
 use Akeneo\Catalogs\Domain\Operator;
 use Akeneo\Catalogs\Infrastructure\Persistence\GetProductIdentifiersQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Doctrine\DBAL\Connection;
 
@@ -39,18 +37,18 @@ class GetProductIdentifiersQueryTest extends IntegrationTestCase
 
         $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'owner');
         $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
-        $this->createProduct('blue', [new SetEnabled(true)]);
-        $this->createProduct('green', [new SetEnabled(true)]);
-        $this->createProduct('red', [new SetEnabled(true)]);
-        $this->createProduct('yellow', [new SetEnabled(false)]);
+        $this->createProduct('tshirt-blue', [new SetEnabled(true)]);
+        $this->createProduct('tshirt-green', [new SetEnabled(true)]);
+        $this->createProduct('tshirt-red', [new SetEnabled(true)]);
+        $this->createProduct('tshirt-yellow', [new SetEnabled(false)]);
 
-        $expected = ['blue', 'green'];
+        $expected = ['tshirt-blue', 'tshirt-green'];
         $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', null, 2);
 
         $this->assertEquals($expected, $result);
 
-        $searchAfter = $this->findProductUuid('green');
-        $expected = ['red'];
+        $searchAfter = $this->findProductUuid('tshirt-green');
+        $expected = ['tshirt-red'];
         $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', $searchAfter, 2);
 
         $this->assertEquals($expected, $result);
@@ -78,7 +76,7 @@ class GetProductIdentifiersQueryTest extends IntegrationTestCase
             'scopable' => true,
             'localizable' => true,
         ]);
-        $this->createProduct('blue', [
+        $this->createProduct('tshirt-blue', [
             new SetTextValue('name', 'ecommerce', 'en_US', 'Blue'),
             new SetTextValue('name', 'print', 'en_US', 'Light blue'),
             new SetTextValue('name', 'print', 'fr_FR', 'Bleu clair'),
@@ -98,7 +96,7 @@ class GetProductIdentifiersQueryTest extends IntegrationTestCase
 
         $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
-        $this->assertEquals(['blue'], $result);
+        $this->assertEquals(['tshirt-blue'], $result);
     }
 
     private function findProductUuid(string $identifier): string

@@ -79,6 +79,7 @@ $rules = [
             'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
             'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
             'Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductWithUuidNormalizer',
 
             // @todo replace with the ones from category service API when available
             'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface',

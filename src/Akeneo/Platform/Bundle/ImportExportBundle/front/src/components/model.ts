@@ -25,42 +25,23 @@ type Storage = LocalStorage | SftpStorage | NoneStorage;
 
 type StorageType = 'none' | 'local' | 'sftp';
 
-const STORAGE_TYPES = ['none'];
-
-const REMOTE_STORAGE_JOB_CODES = [
-  'xlsx_product_export',
-  'xlsx_product_import',
-  'xlsx_tailored_product_export',
-  'xlsx_tailored_product_import',
-];
+const STORAGE_TYPES = ['none', 'sftp'];
 
 const localStorageIsEnabled = (featureFlags: FeatureFlags): boolean =>
   featureFlags.isEnabled('job_automation_local_storage');
 
-const remoteStorageIsEnabled = (jobCode: string): boolean => REMOTE_STORAGE_JOB_CODES.includes(jobCode);
-
-const shouldHideForm = (featureFlags: FeatureFlags, jobCode: string): boolean =>
-  !localStorageIsEnabled(featureFlags) && !remoteStorageIsEnabled(jobCode);
-
-const getEnabledStorageTypes = (featureFlags: FeatureFlags, jobCode: string): string[] => {
+const getEnabledStorageTypes = (featureFlags: FeatureFlags): string[] => {
   const enabledStorageTypes = [...STORAGE_TYPES];
 
   if (localStorageIsEnabled(featureFlags)) {
     enabledStorageTypes.push('local');
   }
 
-  if (remoteStorageIsEnabled(jobCode)) {
-    enabledStorageTypes.push('sftp');
-  }
-
   return enabledStorageTypes;
 };
 
-const isValidStorageType = (
-  storageType: string,
-  featureFlags: FeatureFlags,
-  jobCode: string
-): storageType is StorageType => getEnabledStorageTypes(featureFlags, jobCode).includes(storageType);
+const isValidStorageType = (storageType: string, featureFlags: FeatureFlags): storageType is StorageType =>
+  getEnabledStorageTypes(featureFlags).includes(storageType);
 
 const isExport = (jobType: JobType) => 'export' === jobType;
 
@@ -101,6 +82,4 @@ export {
   getDefaultFilePath,
   getEnabledStorageTypes,
   localStorageIsEnabled,
-  remoteStorageIsEnabled,
-  shouldHideForm,
 };

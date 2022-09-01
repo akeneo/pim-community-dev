@@ -120,6 +120,10 @@ services:
         arguments:
             - '@pim_catalog.repository.category'
 
+    Akeneo\Catalogs\Infrastructure\Persistence\GetProductsQuery:
+        arguments:
+            $getConnectorProducts: '@akeneo.pim.enrichment.product.connector.get_product_from_uuids'
+
     Akeneo\Catalogs\Infrastructure\Persistence\GetMeasurementsFamilyQuery:
         arguments:
             - '@akeneo_measure.persistence.measurement_family_repository'

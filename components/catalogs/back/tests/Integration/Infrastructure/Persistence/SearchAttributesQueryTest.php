@@ -41,6 +41,13 @@ class SearchAttributesQueryTest extends IntegrationTestCase
                 'localizable' => false,
             ],
             [
+                'code' => 'description',
+                'label' => '[description]',
+                'type' => 'pim_catalog_textarea',
+                'scopable' => false,
+                'localizable' => false,
+            ],
+            [
                 'code' => 'materials',
                 'label' => '[materials]',
                 'type' => 'pim_catalog_multiselect',

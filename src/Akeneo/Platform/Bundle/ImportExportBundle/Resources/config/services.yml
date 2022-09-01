@@ -20,8 +20,6 @@ services:
         tags:
             - { name: console.command }
 
-    Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\RemoteStorageFeatureFlag: ~
-
     Akeneo\Platform\Bundle\ImportExportBundle\Domain\ResolveScheduledJobRunningUsername: ~
 
     Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\UserManagement\UpsertRunningUser:

@@ -138,7 +138,7 @@ abstract class AbstractAttributeCriterionTest extends IntegrationTestCase
         $this->attributes[$data['code']] = $data;
     }
 
-    protected function createChannel(string $code, array $locales = []): void
+    protected function createChannel(string $code, array $locales = [], array $currencies = ['USD']): void
     {
         $this->channels[$code] = [
             'code' => $code,
