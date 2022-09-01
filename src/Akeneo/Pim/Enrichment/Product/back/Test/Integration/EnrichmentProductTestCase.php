@@ -18,7 +18,6 @@ use Akeneo\Test\Pim\Enrichment\Product\Helper\FeatureHelper;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 abstract class EnrichmentProductTestCase extends TestCase
 {
@@ -104,6 +103,7 @@ abstract class EnrichmentProductTestCase extends TestCase
         );
         $this->commandMessageBus->dispatch($command);
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->get('akeneo.pim.storage_utils.cache.cached_queries_clearer')->clear();
         $this->clearDoctrineUoW();
     }
 

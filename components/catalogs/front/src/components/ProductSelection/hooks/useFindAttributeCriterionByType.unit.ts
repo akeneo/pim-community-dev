@@ -5,12 +5,14 @@ import {useFindAttributeCriterionByType} from './useFindAttributeCriterionByType
 import {AnyAttributeCriterion} from '../models/Criterion';
 import AttributeTextCriterion from '../criteria/AttributeTextCriterion';
 import AttributeSimpleSelectCriterion from '../criteria/AttributeSimpleSelectCriterion';
+import AttributeMultiSelectCriterion from '../criteria/AttributeMultiSelectCriterion';
 import AttributeNumberCriterion from '../criteria/AttributeNumberCriterion';
 import AttributeBooleanCriterion from '../criteria/AttributeBooleanCriterion';
 
 const critera: [string, AnyAttributeCriterion][] = [
     ['pim_catalog_text', AttributeTextCriterion],
     ['pim_catalog_simpleselect', AttributeSimpleSelectCriterion],
+    ['pim_catalog_multiselect', AttributeMultiSelectCriterion],
     ['pim_catalog_number', AttributeNumberCriterion],
     ['pim_catalog_boolean', AttributeBooleanCriterion],
 ];

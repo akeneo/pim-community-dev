@@ -7,12 +7,12 @@ namespace Specification\Akeneo\Pim\Enrichment\Product\API\Command;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\AddToGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\SetGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\AssociateQuantifiedProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedAssociationUserIntentCollection;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedEntity;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetAssetValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\AddToGroups;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\SetGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
@@ -23,7 +23,10 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -31,22 +34,6 @@ use PhpSpec\ObjectBehavior;
  */
 class UpsertProductCommandSpec extends ObjectBehavior
 {
-    function let()
-    {
-        $this->beConstructedWith(
-            1,
-            'identifier1',
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            []
-        );
-    }
-
     function it_is_initializable()
     {
         $this->shouldHaveType(UpsertProductCommand::class);
@@ -65,37 +52,20 @@ class UpsertProductCommandSpec extends ObjectBehavior
             new AddMultiSelectValue('name', null, null, ['optionA']),
             new SetSimpleReferenceEntityValue('name', null, null, 'Akeneo'),
         ];
-        $this->beConstructedWith(
-            1,
-            'identifier1',
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            $valueUserIntents
-        );
+
+        $this->beConstructedThrough('createFromCollection', [1, 'identifier1', $valueUserIntents]);
+
+        $identifier = ProductIdentifier::fromIdentifier('identifier1');
+
         $this->userId()->shouldReturn(1);
-        $this->productIdentifier()->shouldReturn('identifier1');
+        $this->productIdentifierOrUuid()->shouldBeLike($identifier);
+        $this->productIdentifierOrUuid()->identifier()->shouldReturn('identifier1');
         $this->valueUserIntents()->shouldReturn($valueUserIntents);
     }
 
     function it_cannot_be_constructed_with_bad_value_user_intent()
     {
-        $this->beConstructedWith(
-            1,
-            '',
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            [new \stdClass]
-        );
+        $this->beConstructedThrough('createFromCollection', [1, '', [new \stdClass]]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
@@ -103,20 +73,14 @@ class UpsertProductCommandSpec extends ObjectBehavior
     {
         $familyUserIntent = new SetFamily('accessories');
         $categoryUserIntent = new SetCategories(['master']);
-        $this->beConstructedWith(
-            1,
-            'identifier1',
-            $familyUserIntent,
-            $categoryUserIntent,
-            null,
-            null,
-            null,
-            null,
-            null,
-            []
-        );
+
+        $this->beConstructedThrough('createFromCollection', [1, 'identifier1', [$familyUserIntent, $categoryUserIntent]]);
+
+        $identifier = ProductIdentifier::fromIdentifier('identifier1');
+
         $this->userId()->shouldReturn(1);
-        $this->productIdentifier()->shouldReturn('identifier1');
+        $this->productIdentifierOrUuid()->shouldBeLike($identifier);
+        $this->productIdentifierOrUuid()->identifier()->shouldReturn('identifier1');
         $this->familyUserIntent()->shouldReturn($familyUserIntent);
         $this->categoryUserIntent()->shouldReturn($categoryUserIntent);
         $this->valueUserIntents()->shouldReturn([]);
@@ -150,8 +114,11 @@ class UpsertProductCommandSpec extends ObjectBehavior
             ]
         ]);
 
+        $identifier = ProductIdentifier::fromIdentifier('identifier1');
+
         $this->userId()->shouldReturn(10);
-        $this->productIdentifier()->shouldReturn('identifier1');
+        $this->productIdentifierOrUuid()->shouldBeLike($identifier);
+        $this->productIdentifierOrUuid()->identifier()->shouldReturn('identifier1');
         $this->familyUserIntent()->shouldReturn($familyUserIntent);
         $this->categoryUserIntent()->shouldReturn($categoryUserIntent);
         $this->groupUserIntent()->shouldReturn($setGroupsIntent);
@@ -201,5 +168,36 @@ class UpsertProductCommandSpec extends ObjectBehavior
         ]);
 
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    function it_can_be_constructed_with_product_uuid()
+    {
+        $uuid = Uuid::uuid4();
+        $productUuid = ProductUuid::fromUuid($uuid);
+
+        $this->beConstructedThrough('createWithUuid', [
+            1,
+            $productUuid,
+            []
+        ]);
+
+        $this->userId()->shouldReturn(1);
+        $this->productIdentifierOrUuid()->shouldBeLike($productUuid);
+        $this->productIdentifierOrUuid()->uuid()->shouldReturn($uuid);
+    }
+
+    function it_can_be_constructed_with_identifier()
+    {
+        $productIdentifier = ProductIdentifier::fromIdentifier('identifier1');
+
+        $this->beConstructedThrough('createWithIdentifier', [
+            1,
+            $productIdentifier,
+            []
+        ]);
+
+        $this->userId()->shouldReturn(1);
+        $this->productIdentifierOrUuid()->shouldBeLike($productIdentifier);
+        $this->productIdentifierOrUuid()->identifier()->shouldReturn('identifier1');
     }
 }
