@@ -136,10 +136,10 @@ class GetProductsQuery implements GetProductsQueryInterface
      */
     private function filterNormalizedProperties(array $products, array $whitelist): array
     {
-        $keys = array_flip($whitelist);
+        $keys = \array_flip($whitelist);
 
         foreach ($products as &$product) {
-            $product = array_intersect_key($product, $keys);
+            $product = \array_intersect_key($product, $keys);
         }
 
         return $products;
