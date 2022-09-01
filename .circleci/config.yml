@@ -40,7 +40,8 @@ jobs:
                   command: |
                     du -sh .git
                     git diff --name-only origin/master..."$CIRCLE_SHA1"
-                    git fetch --shallow-since=2022-09-01
+                    git show-ref -s HEAD > .git/shallow
+                    git reflog expire --expire=0
                     git gc --prune=all
                     du -sh .git
             - continuation/continue:
