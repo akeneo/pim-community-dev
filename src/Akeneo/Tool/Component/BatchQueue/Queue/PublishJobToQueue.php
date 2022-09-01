@@ -99,6 +99,14 @@ class PublishJobToQueue
 
     private function getOptions(bool $noLog, array $emails): array
     {
+        $options = [
+            'env' => $this->kernelEnv,
+        ];
+
+        if (true === $noLog) {
+            $options['no-log'] = true;
+        }
+
         if (0 < count($emails)) {
             $errors = $this->validator->validate(
                 $emails,
@@ -114,13 +122,11 @@ class PublishJobToQueue
                     )
                 );
             }
+
+            $options['email'] = $emails;
         }
 
-        return [
-            'env' => $this->kernelEnv,
-            'email' => $emails,
-            'no-log' => $noLog,
-        ];
+        return $options;
     }
 
     private function createJobParameters(JobInterface $job, JobInstance $jobInstance, array $config): JobParameters
