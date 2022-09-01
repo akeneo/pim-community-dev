@@ -35,6 +35,8 @@ use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
  */
 class RunCommand extends Command
 {
+    protected static $defaultName = 'akeneo:rule:run';
+
     private LoggerInterface $logger;
     private JobLauncherInterface $jobLauncher;
     private JobInstanceRepository $jobInstanceRepository;
