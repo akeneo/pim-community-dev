@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Simple data holder for the results of an Elasticsearch search about products and product models.
@@ -19,17 +20,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
  */
 class IdentifierResult
 {
-    /** @var string */
-    private $identifier;
+    private ?string $identifier;
+    private string $id;
+    private string $type;
 
-    /** @var string */
-    private $type;
-
-    /**
-     * @param string $identifier
-     * @param string $type
-     */
-    public function __construct(string $identifier, string $type)
+    public function __construct(?string $identifier, string $type, string $id)
     {
         if ($type !== ProductInterface::class && $type !== ProductModelInterface::class) {
             throw new \InvalidArgumentException(
@@ -42,14 +37,23 @@ class IdentifierResult
             );
         }
 
-        $this->identifier = (string) $identifier;
+        if ($type === ProductInterface::class && !Uuid::isValid(\str_replace('product_', '', $id))) {
+            throw new \InvalidArgumentException(\sprintf("Product has an invalid uuid : %s", $id));
+        }
+
+        if ($type === ProductModelInterface::class && null === $identifier) {
+            throw new \InvalidArgumentException('A product model should have an identifier defined');
+        }
+
+        $this->identifier = $identifier;
         $this->type = $type;
+        $this->id = $id;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getIdentifier(): string
+    public function getIdentifier(): ?string
     {
         return $this->identifier;
     }
@@ -60,6 +64,11 @@ class IdentifierResult
     public function getType(): string
     {
         return $this->type;
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
     }
 
     /**

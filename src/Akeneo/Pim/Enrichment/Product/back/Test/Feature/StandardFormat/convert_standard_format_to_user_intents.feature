@@ -20,13 +20,21 @@ Feature: Convert standard format to user intents
       | a_simpleselect      | pim_catalog_simpleselect           |
       | a_price             | pim_catalog_price_collection       |
       | a_textarea          | pim_catalog_textarea               |
+
+  Scenario: Convert successfully a complete standard format in user intents
+    When I ask to convert standard format into user intents
+    Then there is no exception
+    And I obtain all expected user intents
+
+  @only-ee @reference-entity-feature-enabled @asset-manager-feature-enabled
+  Scenario: Convert successfully a complete standard format in user intents with enterprise attributes
+    Given the following attributes:
+      | code                | type                               |
       | a_record            | akeneo_reference_entity            |
       | a_record_collection | akeneo_reference_entity_collection |
       | an_asset_collection | pim_catalog_asset_collection       |
       | a_table             | pim_catalog_table                  |
-
-  Scenario: Convert successfully a complete standard format in user intents
-    When I ask to convert standard format into user intents
+    When I ask to convert standard format into user intents with enterprise attributes
     Then there is no exception
     And I obtain all expected user intents
 
@@ -103,18 +111,34 @@ Feature: Convert standard format to user intents
     When I ask to convert standard format with an invalid price attribute value
     Then there is an exception with message: Property "a_price" expects an array as data, "integer" given.
 
+  @only-ge-ee
   Scenario: Error when bad table attribute value
+    Given the following attributes:
+      | code                | type              |
+      | a_table             | pim_catalog_table |
     When I ask to convert standard format with an invalid table attribute value
     Then there is an exception with message: Property "a_table" expects an array as data, "string" given.
 
+  @only-ee @reference-entity-feature-enabled
   Scenario: Error when bad simple reference entity attribute value
+    Given the following attributes:
+      | code                | type                    |
+      | a_record            | akeneo_reference_entity |
     When I ask to convert standard format with an invalid simple reference entity attribute value
     Then there is an exception with message: Property "a_record" expects a string as data, "array" given.
 
+  @only-ee @reference-entity-feature-enabled
   Scenario: Error when bad multi reference entity attribute value
+    Given the following attributes:
+      | code                | type                               |
+      | a_record_collection | akeneo_reference_entity_collection |
     When I ask to convert standard format with an invalid multi reference entity attribute value
     Then there is an exception with message: Property "a_record_collection" expects an array as data, "string" given.
 
-  Scenario: Error when bad multi reference entity attribute value
+  @only-ee  @asset-manager-feature-enabled
+  Scenario: Error when bad asset collection attribute value
+    Given the following attributes:
+      | code                | type                         |
+      | an_asset_collection | pim_catalog_asset_collection |
     When I ask to convert standard format with an invalid asset collection attribute value
     Then there is an exception with message: Property "an_asset_collection" expects an array as data, "string" given.

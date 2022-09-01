@@ -77,12 +77,8 @@ services:
             - '@pim_connector.array_converter.flat_to_standard.group_type'
 
     # Yaml file readers
-    pim_connector.reader.file.yaml:
-        class: '%pim_connector.reader.file.yaml.class%'
-        arguments:
-            - '@pim_connector.array_converter.dummy'
-
     pim_connector.reader.file.yaml_job_instance:
         class: '%pim_connector.reader.file.yaml.class%'
         arguments:
             - '@pim_connector.array_converter.standard.job_instance'
+            - 'jobs'

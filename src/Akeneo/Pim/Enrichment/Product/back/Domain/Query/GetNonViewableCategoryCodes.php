@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\Domain\Query;
 
-use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -13,13 +13,13 @@ use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
 interface GetNonViewableCategoryCodes
 {
     /**
-     * @param ProductIdentifier[] $productIdentifiers
+     * @param UuidInterface[] $productUuids
      * @return array<string, string[]> example:
      *  {
-     *      "product1": ["categoryA", "categoryB"],
-     *      "product2": ["categoryA"],
+     *      "uuid1": ["categoryA", "categoryB"],
+     *      "uuid2": ["categoryA"],
      *      ...
      *  }
      */
-    public function fromProductIdentifiers(array $productIdentifiers, int $userId): array;
+    public function fromProductUuids(array $productUuids, int $userId): array;
 }

@@ -96,4 +96,3 @@ class ListRootCategoriesWithCountIncludingSubCategoriesIntegration extends TestC
         return $this->catalog->useMinimalCatalog();
     }
 }
-

@@ -133,7 +133,7 @@ final class EvaluateAllProductsCommand extends Command
     private function countProductsToEvaluate(): int
     {
         $query = <<<SQL
-SELECT COUNT(DISTINCT product_id) 
+SELECT COUNT(DISTINCT product_uuid) 
 FROM pim_data_quality_insights_product_criteria_evaluation
 WHERE status = 'pending';
 SQL;

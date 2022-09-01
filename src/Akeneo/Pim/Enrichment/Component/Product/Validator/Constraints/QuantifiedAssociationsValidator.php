@@ -151,6 +151,7 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
                 ]
             )
                 ->atPath($propertyPath)
+                ->setCode(QuantifiedAssociations::PRODUCTS_DO_NOT_EXIST_ERROR)
                 ->addViolation();
         }
     }
@@ -173,6 +174,7 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
                 ]
             )
                 ->atPath($propertyPath)
+                ->setCode(QuantifiedAssociations::PRODUCT_MODELS_DO_NOT_EXIST_ERROR)
                 ->addViolation();
         }
     }

@@ -1,14 +1,13 @@
 'use strict';
 
-define([
-  'jquery',
-  'underscore',
-  'oro/translator',
-  'pim/controller/front',
-  'pim/form-builder',
-  'pim/page-title',
-  'routing',
-], function ($, _, __, BaseController, FormBuilder, PageTitle, Routing) {
+define(['jquery', 'underscore', 'oro/translator', 'pim/controller/front', 'pim/form-builder', 'routing'], function (
+  $,
+  _,
+  __,
+  BaseController,
+  FormBuilder,
+  Routing
+) {
   return BaseController.extend({
     /**
      * {@inheritdoc}

@@ -90,7 +90,12 @@ final class CleanCompletenessEvaluationResultsCommand extends Command
         $limit = $this->bulkSize;
 
         $query = <<<SQL
-SELECT BIN_TO_UUID(product_uuid) AS product_uuid, criterion_code, status, result
+SELECT 
+    /*+ SET_VAR(sort_buffer_size = 1000000) */
+    BIN_TO_UUID(product_uuid) AS product_uuid, 
+    criterion_code, 
+    status, 
+    result
 FROM pim_data_quality_insights_product_criteria_evaluation
 WHERE product_uuid > :lastProductUuidAsBytes
     AND criterion_code IN (:criterionCodes)

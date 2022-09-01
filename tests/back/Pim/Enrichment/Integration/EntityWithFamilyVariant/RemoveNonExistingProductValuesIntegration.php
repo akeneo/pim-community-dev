@@ -35,6 +35,7 @@ final class RemoveNonExistingProductValuesIntegration extends TestCase
         $attributeOption->setAttribute($this->get('pim_api.repository.attribute')->findOneByIdentifier('brand'));
         $this->get('pim_catalog.saver.attribute_option')->save($attributeOption);
 
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: 'hiking_shoes',

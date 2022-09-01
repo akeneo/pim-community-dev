@@ -7,59 +7,61 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\Completeness;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\SqlGetCompletenessProductMasks;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProductMask;
 use Akeneo\Pim\Enrichment\Component\Product\Model\PriceCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPrice;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Test\Integration\TestCase;
+use Ramsey\Uuid\Uuid;
 
 class SqlGetCompletenessProductMasksIntegration extends TestCase
 {
     public function test_it_returns_mask_with_only_sku()
     {
-        $this->createProduct('simple_product', 'familyA', []);
+        $product = $this->createProduct('simple_product', 'familyA', []);
 
         $expected = [
-            new CompletenessProductMask('-1', 'simple_product', 'familyA', [
+            new CompletenessProductMask($product->getUuid()->toString(), 'familyA', [
                 'sku-<all_channels>-<all_locales>',
             ])
         ];
-        $result = $this->getCompletenessProductMasks()->fromProductIdentifiers(['simple_product']);
+        $result = $this->getCompletenessProductMasks()->fromProductUuids([$product->getUuid()]);
         $this->assertSameCompletenessProductMasks($expected, $result);
     }
 
     public function test_it_returns_several_masks()
     {
-        $this->createProduct('product1', 'familyA', []);
-        $this->createProduct('product2', 'familyA', []);
+        $product1 = $this->createProduct('product1', 'familyA', []);
+        $product2 = $this->createProduct('product2', 'familyA', []);
 
         $expected = [
-            new CompletenessProductMask('-1', 'product1', 'familyA', [
+            new CompletenessProductMask($product1->getUuid()->toString(), 'familyA', [
                 'sku-<all_channels>-<all_locales>',
             ]),
-            new CompletenessProductMask('-1', 'product2', 'familyA', [
+            new CompletenessProductMask($product2->getUuid()->toString(), 'familyA', [
                 'sku-<all_channels>-<all_locales>',
             ])
         ];
 
-        $result = $this->getCompletenessProductMasks()->fromProductIdentifiers(['product1', 'product2', 'nonExistingProduct']);
+        $result = $this->getCompletenessProductMasks()->fromProductUuids([$product1->getUuid(), $product2->getUuid(), Uuid::uuid4()]);
         $this->assertSameCompletenessProductMasks($expected, $result);
     }
 
     public function test_it_returns_mask_for_a_product_without_family()
     {
-        $this->createProduct('product_without_family', null, []);
+        $product = $this->createProduct('product_without_family', null, []);
 
         $expected = [
-            new CompletenessProductMask('-1', 'product_without_family', null, ['sku-<all_channels>-<all_locales>'])
+            new CompletenessProductMask($product->getUuid()->toString(), null, ['sku-<all_channels>-<all_locales>'])
         ];
-        $result = $this->getCompletenessProductMasks()->fromProductIdentifiers(['product_without_family']);
+        $result = $this->getCompletenessProductMasks()->fromProductUuids([$product->getUuid()]);
         $this->assertSameCompletenessProductMasks($expected, $result);
     }
 
     public function test_it_returns_default_masks()
     {
-        $this->createProduct('complex_product', 'familyA', [
+        $product = $this->createProduct('complex_product', 'familyA', [
             'a_date' => [['locale' => null, 'scope' => null, 'data' => '2010-10-10']],
             'a_file' => [['locale' => null, 'scope' => null, 'data' => $this->getFileInfoKey($this->getFixturePath('akeneo.txt'))]],
             'a_metric' => [['locale' => null, 'scope' => null, 'data' => ['amount' => 1, 'unit' => 'WATT']]],
@@ -77,7 +79,7 @@ class SqlGetCompletenessProductMasksIntegration extends TestCase
         ]);
 
         $expected = [
-            new CompletenessProductMask('-1', 'complex_product', 'familyA', [
+            new CompletenessProductMask($product->getUuid()->toString(), 'familyA', [
                 'a_date-<all_channels>-<all_locales>',
                 'a_file-<all_channels>-<all_locales>',
                 'a_metric-<all_channels>-<all_locales>',
@@ -95,13 +97,13 @@ class SqlGetCompletenessProductMasksIntegration extends TestCase
                 'sku-<all_channels>-<all_locales>',
             ])
         ];
-        $result = $this->getCompletenessProductMasks()->fromProductIdentifiers(['complex_product']);
+        $result = $this->getCompletenessProductMasks()->fromProductUuids([$product->getUuid()]);
         $this->assertSameCompletenessProductMasks($expected, $result);
     }
 
     public function test_it_returns_mask_with_specific_channels()
     {
-        $this->createProduct('product_with_scopable_data', 'familyA', [
+        $product = $this->createProduct('product_with_scopable_data', 'familyA', [
             'a_localized_and_scopable_text_area' => [
                 ['locale' => 'en_US', 'scope' => 'ecommerce', 'data' => 'foo']
             ],
@@ -111,19 +113,19 @@ class SqlGetCompletenessProductMasksIntegration extends TestCase
         ]);
 
         $expected = [
-            new CompletenessProductMask('-1', 'product_with_scopable_data', 'familyA', [
+            new CompletenessProductMask($product->getUuid()->toString(), 'familyA', [
                 'sku-<all_channels>-<all_locales>',
                 'a_localized_and_scopable_text_area-ecommerce-en_US',
                 'a_scopable_price-USD-ecommerce-<all_locales>',
             ])
         ];
-        $result = $this->getCompletenessProductMasks()->fromProductIdentifiers(['product_with_scopable_data']);
+        $result = $this->getCompletenessProductMasks()->fromProductUuids([$product->getUuid()]);
         $this->assertSameCompletenessProductMasks($expected, $result);
     }
 
     public function test_it_returns_mask_with_specific_locales()
     {
-        $this->createProduct('product_with_localizable_data', 'familyA', [
+        $product = $this->createProduct('product_with_localizable_data', 'familyA', [
             'a_localizable_image' => [
                 ['locale' => 'en_US', 'scope' => null, 'data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))]
             ],
@@ -133,19 +135,19 @@ class SqlGetCompletenessProductMasksIntegration extends TestCase
         ]);
 
         $expected = [
-            new CompletenessProductMask('-1', 'product_with_localizable_data', 'familyA', [
+            new CompletenessProductMask($product->getUuid()->toString(), 'familyA', [
                 'sku-<all_channels>-<all_locales>',
                 'a_localizable_image-<all_channels>-en_US',
                 'a_localized_and_scopable_text_area-ecommerce-en_US',
             ])
         ];
-        $result = $this->getCompletenessProductMasks()->fromProductIdentifiers(['product_with_localizable_data']);
+        $result = $this->getCompletenessProductMasks()->fromProductUuids([$product->getUuid()]);
         $this->assertSameCompletenessProductMasks($expected, $result);
     }
 
     public function test_it_returns_price_masks()
     {
-        $this->createProduct('product_with_prices', 'familyA', [
+        $product = $this->createProduct('product_with_prices', 'familyA', [
             'a_price' => [['locale' => null, 'scope' => null, 'data' => [['amount' => 50.00, 'currency' => 'EUR']]]],
             'a_scopable_price' => [
                 ['locale' => null, 'scope' => 'ecommerce', 'data' => [['amount' => '2000.00', 'currency' => 'USD']]]
@@ -153,19 +155,19 @@ class SqlGetCompletenessProductMasksIntegration extends TestCase
         ]);
 
         $expected = [
-            new CompletenessProductMask('-1', 'product_with_prices', 'familyA', [
+            new CompletenessProductMask($product->getUuid()->toString(), 'familyA', [
                 'sku-<all_channels>-<all_locales>',
                 'a_price-EUR-<all_channels>-<all_locales>',
                 'a_scopable_price-USD-ecommerce-<all_locales>',
             ])
         ];
-        $result = $this->getCompletenessProductMasks()->fromProductIdentifiers(['product_with_prices']);
+        $result = $this->getCompletenessProductMasks()->fromProductUuids([$product->getUuid()]);
         $this->assertSameCompletenessProductMasks($expected, $result);
     }
 
     function test_that_it_returns_masks_even_if_an_attribute_was_deleted()
     {
-        $this->createProduct(
+        $product = $this->createProduct(
             'productA',
             'familyA',
             [
@@ -180,13 +182,13 @@ class SqlGetCompletenessProductMasksIntegration extends TestCase
         );
         $expected = [
             new CompletenessProductMask(
-                '-1', 'productA', 'familyA', [
+                $product->getUuid()->toString(), 'familyA', [
                     'sku-<all_channels>-<all_locales>',
                     'a_price-EUR-<all_channels>-<all_locales>',
                 ]
             )
         ];
-        $result = $this->getCompletenessProductMasks()->fromProductIdentifiers(['productA']);
+        $result = $this->getCompletenessProductMasks()->fromProductUuids([$product->getUuid()]);
         $this->assertSameCompletenessProductMasks($expected, $result);
 
         $aPrice = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier('a_price');
@@ -194,12 +196,12 @@ class SqlGetCompletenessProductMasksIntegration extends TestCase
 
         $expected = [
             new CompletenessProductMask(
-                '-1', 'productA', 'familyA', [
+                $product->getUuid()->toString(), 'familyA', [
                     'sku-<all_channels>-<all_locales>',
                 ]
             ),
         ];
-        $result = $this->getCompletenessProductMasks()->fromProductIdentifiers(['productA']);
+        $result = $this->getCompletenessProductMasks()->fromProductUuids([$product->getUuid()]);
         $this->assertSameCompletenessProductMasks($expected, $result);
     }
 
@@ -223,14 +225,14 @@ class SqlGetCompletenessProductMasksIntegration extends TestCase
         );
         $expected = [
             new CompletenessProductMask(
-                '-1', 'productA', 'familyA', [
+                '-1', 'familyA', [
                     'sku-<all_channels>-<all_locales>',
                     'a_localized_and_scopable_text_area-ecommerce-en_US',
                     'a_scopable_price-USD-ecommerce-<all_locales>',
                 ]
             ),
         ];
-        $result = $this->getCompletenessProductMasks()->fromValueCollection('-1', 'productA', 'familyA', $values);
+        $result = $this->getCompletenessProductMasks()->fromValueCollection('-1', 'familyA', $values);
         $this->assertSameCompletenessProductMasks($expected, [$result]);
     }
 
@@ -238,10 +240,10 @@ class SqlGetCompletenessProductMasksIntegration extends TestCase
     {
         $values = new WriteValueCollection();
         $expected = [
-            new CompletenessProductMask('-1', 'productA', 'familyA', []),
+            new CompletenessProductMask('-1', 'familyA', []),
         ];
 
-        $result = $this->getCompletenessProductMasks()->fromValueCollection('-1', 'productA', 'familyA', $values);
+        $result = $this->getCompletenessProductMasks()->fromValueCollection('-1', 'familyA', $values);
         $this->assertSameCompletenessProductMasks($expected, [$result]);
     }
 
@@ -250,7 +252,7 @@ class SqlGetCompletenessProductMasksIntegration extends TestCase
         return $this->catalog->useTechnicalSqlCatalog();
     }
 
-    private function createProduct(string $identifier, ?string $familyCode, array $values): void
+    private function createProduct(string $identifier, ?string $familyCode, array $values): ProductInterface
     {
         $product = $this->get('pim_catalog.builder.product')->createProduct($identifier, $familyCode);
         $this->get('pim_catalog.updater.product')->update($product, ['values' => $values]);
@@ -259,6 +261,8 @@ class SqlGetCompletenessProductMasksIntegration extends TestCase
             throw new \Exception(sprintf('Impossible to setup test in %s: %s', static::class, $errors->get(0)->getMessage()));
         }
         $this->get('pim_catalog.saver.product')->save($product);
+
+        return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
     }
 
     private function getCompletenessProductMasks(): SqlGetCompletenessProductMasks {
@@ -278,7 +282,7 @@ class SqlGetCompletenessProductMasksIntegration extends TestCase
         foreach ($result as $resultMask) {
             $found = false;
             foreach ($expected as $expectedMask) {
-                if ($resultMask->identifier() === $expectedMask->identifier()) {
+                if ($resultMask->id() === $expectedMask->id()) {
                     $found = true;
                     $this->assertSame($expectedMask->familyCode(), $resultMask->familyCode());
                     $this->assertEqualsCanonicalizing($expectedMask->mask(), $resultMask->mask());
@@ -286,7 +290,7 @@ class SqlGetCompletenessProductMasksIntegration extends TestCase
             }
 
             if (!$found) {
-                throw new \Exception(sprintf('Can not find mask of product "%s"', $resultMask->identifier()));
+                throw new \Exception(sprintf('Can not find mask of product "%s"', $resultMask->id()));
             }
         }
     }

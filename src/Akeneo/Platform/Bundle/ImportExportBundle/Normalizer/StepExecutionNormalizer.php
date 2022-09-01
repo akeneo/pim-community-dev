@@ -107,7 +107,7 @@ class StepExecutionNormalizer implements NormalizerInterface, CacheableSupportsM
         $result = [];
         foreach ($summary as $key => $value) {
             $key = sprintf('job_execution.summary.%s', $key);
-            $result[$this->translator->trans($key)] = $this->translator->trans($value);
+            $result[$this->translator->trans($key)] = is_string($value) ? $this->translator->trans($value) : $value;
         }
 
         return $result;

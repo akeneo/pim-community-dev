@@ -29,14 +29,12 @@ Feature: Remove attribute from a family
     And I save the family
     Then I should not see the text "There are unsaved changes."
     And I should see the flash message "Attribute successfully removed from the family"
-    And I wait for the "compute_family_variant_structure_changes" job to finish
+    And I wait for the "compute_completeness_of_products_family" job to finish
     And I am on the "model-braided-hat" product model page
     Then I should see the text "Supplier"
     But I should not see the text "Material"
     And I am on the "braided-hat-m" product page
-    Then I should not see the Material field
-    And 0 event of type "product.updated" should have been raised
-    And 1 event of type "product_model.updated" should have been raised
+    Then I should not see the text "Material"
 
   Scenario: Impossible to remove some attributes from a family (used as label, used as image, used as axis)
     Given I am on the "shoes" family page

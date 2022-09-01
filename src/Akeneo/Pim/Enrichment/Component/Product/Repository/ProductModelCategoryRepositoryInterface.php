@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Repository;
 
-use Akeneo\Tool\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
-use Akeneo\Tool\Component\Classification\Repository\ItemCategoryRepositoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\ItemCategoryRepositoryInterface;
 
 /**
  * Product model category repository interface

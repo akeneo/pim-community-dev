@@ -14,6 +14,10 @@ $rules['php_unit_method_casing'] = [
     'case' => 'camel_case',
 ];
 
+$rules['single_quote'] = [
+    'strings_containing_single_quote_chars' => true,
+];
+
 $config
     ->setRiskyAllowed(true)
     ->setRules($rules)

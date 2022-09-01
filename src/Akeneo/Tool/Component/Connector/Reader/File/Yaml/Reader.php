@@ -9,7 +9,9 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Exception\DataArrayConversionException;
 use Akeneo\Tool\Component\Connector\Exception\InvalidItemFromViolationsException;
+use Akeneo\Tool\Component\Connector\Exception\InvalidYamlFileException;
 use Akeneo\Tool\Component\Connector\Reader\File\FileReaderInterface;
+use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -21,34 +23,21 @@ use Symfony\Component\Yaml\Yaml;
  */
 class Reader implements FileReaderInterface, TrackableItemReaderInterface
 {
-    /** @var ArrayConverterInterface */
-    protected $converter;
-
-    /** @var bool */
-    protected $multiple = false;
-
-    /** @var string */
-    protected $codeField = 'code';
-
-    /** @var bool */
-    protected $uploadAllowed = false;
-
-    /** @var StepExecution */
-    protected $stepExecution;
-
-    /** @var \ArrayIterator */
-    protected $yaml;
+    protected bool $uploadAllowed = false;
+    protected ?StepExecution $stepExecution = null;
+    protected ?\ArrayIterator $yaml = null;
 
     /**
      * @param ArrayConverterInterface $converter
      * @param bool                    $multiple
      * @param string                  $codeField
      */
-    public function __construct(ArrayConverterInterface $converter, $multiple = false, $codeField = 'code')
-    {
-        $this->converter = $converter;
-        $this->codeField = $codeField;
-        $this->multiple = $multiple;
+    public function __construct(
+        private ArrayConverterInterface $converter,
+        private string $rootLevel,
+        private bool $multiple = false,
+        private string $codeField = 'code'
+    ) {
     }
 
     /**
@@ -126,23 +115,39 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface
      * Returns the file data
      *
      * @return array
+     * @throws InvalidYamlFileException
      */
     protected function getFileData()
     {
         $jobParameters = $this->stepExecution->getJobParameters();
-        $filePath = $jobParameters->get('filePath');
-        $fileContent = file_get_contents($filePath);
-        if (false !== $fileContent) {
-            if (null !== $this->stepExecution) {
-                $this->stepExecution->setSummary(['item_position' => 0]);
-            }
+        $filePath = $jobParameters->get('storage')['file_path'];
+
+        if (!file_exists($filePath)) {
+            throw new FileNotFoundException(sprintf('File "%s" could not be found', $filePath));
         }
-        $fileData = current(Yaml::parse($fileContent));
+
+        $fileContent = file_get_contents($filePath);
+        if (false === $fileContent) {
+            return null;
+        }
+
+        $this->stepExecution?->setSummary(['item_position' => 0]);
+
+        $yamlContent = Yaml::parse($fileContent);
+        if (!array_key_exists($this->rootLevel, $yamlContent)) {
+            throw InvalidYamlFileException::doesNotContainRootLevel($this->rootLevel);
+        }
+
+        $fileData = $yamlContent[$this->rootLevel];
         if (null === $fileData) {
             return null;
         }
 
         foreach ($fileData as $key => $row) {
+            if (!is_array($row)) {
+                throw InvalidYamlFileException::rowShouldBeAnArray($key, $row);
+            }
+
             if ($this->codeField && !isset($row[$this->codeField])) {
                 $fileData[$key][$this->codeField] = $key;
             }

@@ -18,7 +18,7 @@ Feature: Configure export of products media
 
   Scenario: Successfully export products in csv with media
     Given the following job "csv_footwear_product_export" configuration:
-      | filePath   | %tmp%/product_export/product_export.csv |
+      | storage | {"type": "local", "file_path": "%tmp%/product_export/product_export.csv"} |
       | with_media | yes                                     |
     And I am logged in as "Julia"
     And I am on the "csv_footwear_product_export" export job page
@@ -35,7 +35,7 @@ Feature: Configure export of products media
 
   Scenario: Successfully export products in xlsx with media
     Given the following job "xlsx_product_export" configuration:
-      | filePath   | %tmp%/product_export/product_export.xlsx                         |
+      | storage | {"type": "local", "file_path": "%tmp%/product_export/product_export.xlsx"} |
       | with_media | yes                                                              |
       | filters    | {"structure":{"locales":["en_US"],"scope":"mobile"}, "data": []} |
     And I am logged in as "Julia"

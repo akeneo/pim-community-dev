@@ -40,9 +40,6 @@
             }
         }
     ],
-    "ignorePatterns": [
-        "**/*.test.*"
-    ],
     "settings": {
         "react": {
             "version": "detect"

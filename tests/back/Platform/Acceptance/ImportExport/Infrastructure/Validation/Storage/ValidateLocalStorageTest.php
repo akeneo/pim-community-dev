@@ -39,6 +39,12 @@ class ValidateLocalStorageTest extends AbstractValidationTest
                     'file_path' => '/tmp/products.xlsx',
                 ],
             ],
+            'a storage with null file_path' => [
+                [
+                    'type' => 'local',
+                    'file_path' => null,
+                ],
+            ]
         ];
     }
 
@@ -50,13 +56,6 @@ class ValidateLocalStorageTest extends AbstractValidationTest
                 '[type]',
                 [
                     'type' => 'invalid',
-                ],
-            ],
-            'local storage without file_path' => [
-                'This field is missing.',
-                '[file_path]',
-                [
-                    'type' => 'local',
                 ],
             ],
             'local storage with additional fields' => [

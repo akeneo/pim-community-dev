@@ -71,7 +71,7 @@ class BulkUpdateProductQualityScoresIndexSpec extends ObjectBehavior
             ], [
                 'product_df470d52-7723-4890-85a0-e79be625e2ed' => [
                     'script' => [
-                        'inline' => "ctx._source.data_quality_insights = params;",
+                        'source' => "ctx._source.data_quality_insights = params;",
                         'params' => [
                             'scores' => ['ecommerce' => ['en_US' => 5]],
                             'scores_partial_criteria' => ['ecommerce' => ['en_US' => 4]],
@@ -81,7 +81,7 @@ class BulkUpdateProductQualityScoresIndexSpec extends ObjectBehavior
                 ],
                 'product_fef37e64-a963-47a9-b087-2cc67968f0a2' => [
                     'script' => [
-                        'inline' => "ctx._source.data_quality_insights = params;",
+                        'source' => "ctx._source.data_quality_insights = params;",
                         'params' => [
                             'scores' => ['ecommerce' => ['en_US' => 1]],
                             'scores_partial_criteria' => ['ecommerce' => ['en_US' => 3]],
@@ -123,7 +123,7 @@ class BulkUpdateProductQualityScoresIndexSpec extends ObjectBehavior
             [
                 'product_model_123' => [
                     'script' => [
-                        'inline' => "ctx._source.data_quality_insights = params;",
+                        'source' => "ctx._source.data_quality_insights = params;",
                         'params' => [
                             'scores' => ['ecommerce' => ['en_US' => 5]],
                             'scores_partial_criteria' => ['ecommerce' => ['en_US' => 4]],
@@ -133,7 +133,7 @@ class BulkUpdateProductQualityScoresIndexSpec extends ObjectBehavior
                 ],
                 'product_model_456' => [
                     'script' => [
-                        'inline' => "ctx._source.data_quality_insights = params;",
+                        'source' => "ctx._source.data_quality_insights = params;",
                         'params' => [
                             'scores' => ['ecommerce' => ['en_US' => 1]],
                             'scores_partial_criteria' => ['ecommerce' => ['en_US' => 3]],

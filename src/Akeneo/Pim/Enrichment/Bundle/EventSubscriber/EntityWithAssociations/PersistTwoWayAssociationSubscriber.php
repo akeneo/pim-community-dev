@@ -15,20 +15,14 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class PersistTwoWayAssociationSubscriber implements EventSubscriberInterface
 {
-    private ManagerRegistry $registry;
-    private ProductIndexerInterface $productIndexer;
-    private ProductModelIndexerInterface $productModelIndexer;
-    private array $productIdentifiersToIndex = [];
+    private array $productUuidsToIndex = [];
     private array $productModelCodesToIndex = [];
 
     public function __construct(
-        ManagerRegistry $registry,
-        ProductIndexerInterface $productIndexer,
-        ProductModelIndexerInterface $productModelIndexer
+        private ManagerRegistry $registry,
+        private ProductIndexerInterface $productIndexer,
+        private ProductModelIndexerInterface $productModelIndexer
     ) {
-        $this->registry = $registry;
-        $this->productIndexer = $productIndexer;
-        $this->productModelIndexer = $productModelIndexer;
     }
 
     public static function getSubscribedEvents(): array
@@ -47,6 +41,11 @@ final class PersistTwoWayAssociationSubscriber implements EventSubscriberInterfa
             return;
         }
 
+        // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment
+        if ('Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct' === \get_class($entity)) {
+            return;
+        }
+
         $em = $this->registry->getManager();
 
         /** @var AssociationInterface $association */
@@ -59,7 +58,7 @@ final class PersistTwoWayAssociationSubscriber implements EventSubscriberInterfa
 
             foreach ($association->getProducts() as $product) {
                 $em->persist($product);
-                $this->productIdentifiersToIndex[] = $product->getIdentifier();
+                $this->productUuidsToIndex[] = $product->getUuid();
             }
 
             foreach ($association->getProductModels() as $productModel) {
@@ -71,10 +70,10 @@ final class PersistTwoWayAssociationSubscriber implements EventSubscriberInterfa
 
     public function indexAssociatedEntities()
     {
-        $this->productIndexer->indexFromProductIdentifiers($this->productIdentifiersToIndex);
+        $this->productIndexer->indexFromProductUuids($this->productUuidsToIndex);
         $this->productModelIndexer->indexFromProductModelCodes($this->productModelCodesToIndex);
 
-        $this->productIdentifiersToIndex = [];
+        $this->productUuidsToIndex = [];
         $this->productModelCodesToIndex = [];
     }
 }

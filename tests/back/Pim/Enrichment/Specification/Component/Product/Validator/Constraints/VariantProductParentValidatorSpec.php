@@ -71,9 +71,7 @@ class VariantProductParentValidatorSpec extends ObjectBehavior
         $productModel->getVariationLevel()->shouldNotBeCalled();
 
 
-        $context->buildViolation(VariantProductParent::NO_PARENT, [
-            '%variant_product%' => 'variant_product',
-        ])->willReturn($constraintViolationBuilder);
+        $context->buildViolation(VariantProductParent::NO_PARENT)->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->atPath('parent')->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->shouldBeCalled();
 
@@ -100,7 +98,6 @@ class VariantProductParentValidatorSpec extends ObjectBehavior
         $productModel->getCode()->willReturn('product_model');
 
         $context->buildViolation(VariantProductParent::INVALID_PARENT, [
-            '%variant_product%' => 'variant_product',
             '%product_model%' => 'product_model',
         ])->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->atPath('parent')->willReturn($constraintViolationBuilder);

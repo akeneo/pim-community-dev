@@ -22,27 +22,20 @@ use Ramsey\Uuid\UuidInterface;
  */
 class ProductAndAncestorsIndexer
 {
-    private ProductIndexerInterface $productIndexer;
-    private ProductModelIndexerInterface $productModelIndexer;
-    private GetAncestorProductModelCodes $getAncestorProductModelCodes;
-
     public function __construct(
-        ProductIndexerInterface $productIndexer,
-        ProductModelIndexerInterface $productModelIndexer,
-        GetAncestorProductModelCodes $getAncestorProductModelCodes
+        private ProductIndexerInterface $productIndexer,
+        private ProductModelIndexerInterface $productModelIndexer,
+        private GetAncestorProductModelCodes $getAncestorProductModelCodes
     ) {
-        $this->productIndexer = $productIndexer;
-        $this->productModelIndexer = $productModelIndexer;
-        $this->getAncestorProductModelCodes = $getAncestorProductModelCodes;
     }
 
-    public function indexFromProductIdentifiers(array $identifiers, array $options = []): void
+    public function indexFromProductUuids(array $uuids, array $options = []): void
     {
-        $ancestorProductModelCodes = $this->getAncestorProductModelCodes->fromProductIdentifiers($identifiers);
+        $ancestorProductModelCodes = $this->getAncestorProductModelCodes->fromProductUuids($uuids);
         if (!empty($ancestorProductModelCodes)) {
             $this->productModelIndexer->indexFromProductModelCodes($ancestorProductModelCodes, $options);
         }
-        $this->productIndexer->indexFromProductIdentifiers($identifiers, $options);
+        $this->productIndexer->indexFromProductUuids($uuids, $options);
     }
 
     /**

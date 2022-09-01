@@ -12,13 +12,13 @@ jobs:
         steps:
             - git-shallow-clone/checkout
             - run:
-                  name: Install yq
-                  command: |
-                      wget https://github.com/mikefarah/yq/releases/download/v4.13.2/yq_linux_386
-                      sudo mv yq_linux_386 /usr/local/bin/yq
-                      echo "3a011f37fd67ac2fe3b334b46a6e848698d5621d  /usr/local/bin/yq" > /tmp/checksum
-                      sha1sum -c /tmp/checksum
-                      sudo chmod +x /usr/local/bin/yq
+                name: Install yq (v4)
+                command: |
+                  wget https://github.com/mikefarah/yq/releases/download/v4.27.3/yq_linux_amd64
+                  sudo mv yq_linux_amd64 /usr/local/bin/yq
+                  echo "93c1f7fdbc86b3fba453164703e2eb90d3760344  /usr/local/bin/yq" > /tmp/checksum
+                  sha1sum -c /tmp/checksum
+                  sudo chmod +x /usr/local/bin/yq
             - run:
                   name: Merge all files
                   command: |

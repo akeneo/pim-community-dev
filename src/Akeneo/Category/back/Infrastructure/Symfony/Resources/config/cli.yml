@@ -1,0 +1,6 @@
+services:
+    Akeneo\Category\Infrastructure\Cli\CheckCategoryTrees\CheckCategoryTrees:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: console.command }

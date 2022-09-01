@@ -36,17 +36,18 @@ class UpsertQuantifiedAssociationsIntegration extends EnrichmentProductTestCase
         $this->loadEnrichmentProductFunctionalFixtures();
 
         $this->productRepository = $this->get('pim_catalog.repository.product');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('peter');
 
-        $this->commandMessageBus->dispatch(new UpsertProductCommand(userId: $this->getUserId('peter'), productIdentifier: 'identifier'));
+        $this->commandMessageBus->dispatch(UpsertProductCommand::createFromCollection(userId: $this->getUserId('peter'), productIdentifier: 'identifier', userIntents: []));
         Assert::assertNotNull($this->productRepository->findOneByIdentifier('identifier'));
 
-        $this->commandMessageBus->dispatch(new UpsertProductCommand(userId: $this->getUserId('peter'), productIdentifier: 'associated_product1'));
+        $this->commandMessageBus->dispatch(UpsertProductCommand::createFromCollection(userId: $this->getUserId('peter'), productIdentifier: 'associated_product1', userIntents: []));
         Assert::assertNotNull($this->productRepository->findOneByIdentifier('associated_product1'));
 
-        $this->commandMessageBus->dispatch(new UpsertProductCommand(userId: $this->getUserId('peter'), productIdentifier: 'associated_product2'));
+        $this->commandMessageBus->dispatch(UpsertProductCommand::createFromCollection(userId: $this->getUserId('peter'), productIdentifier: 'associated_product2', userIntents: []));
         Assert::assertNotNull($this->productRepository->findOneByIdentifier('associated_product1'));
 
-        $this->commandMessageBus->dispatch(new UpsertProductCommand(userId: $this->getUserId('peter'), productIdentifier: 'associated_product3'));
+        $this->commandMessageBus->dispatch(UpsertProductCommand::createFromCollection(userId: $this->getUserId('peter'), productIdentifier: 'associated_product3', userIntents: []));
         Assert::assertNotNull($this->productRepository->findOneByIdentifier('associated_product3'));
 
         $this->createProductModel('product_model1', 'color_variant_accessories', []);

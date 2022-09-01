@@ -44,6 +44,7 @@ SQL;
         $dbalConnection->executeQuery($sqlInsert, ['localeId' => $localeId]);
         $userId = $this->createAdminUser()->getId();
 
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $command = UpsertProductCommand::createFromCollection((int) $userId, 'foo', []);
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
         $this->get('pim_connector.doctrine.cache_clearer')->clear();

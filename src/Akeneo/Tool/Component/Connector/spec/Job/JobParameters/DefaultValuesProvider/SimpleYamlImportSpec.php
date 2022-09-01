@@ -22,7 +22,9 @@ class SimpleYamlImportSpec extends ObjectBehavior
     {
         $this->getDefaultValues()->shouldReturn(
             [
-                'filePath'                  => null,
+                'storage' => [
+                    'type' => 'none',
+                ],
                 'uploadAllowed'             => true,
                 'invalid_items_file_format' => 'yaml',
                 'user_to_notify'            => null,

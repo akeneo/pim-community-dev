@@ -2,11 +2,11 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\Ui;
 
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizerInterface;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounterInterface;
-use Akeneo\Pim\Enrichment\Component\Category\Form\CategoryFormViewNormalizerInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Query\CountTreesChildrenInterface;
-use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
-use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -302,7 +302,6 @@ class CategoryTreeController extends AbstractController
 
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
-
             if ($form->isValid()) {
                 $this->categorySaver->save($category);
             } else {
@@ -319,7 +318,6 @@ class CategoryTreeController extends AbstractController
         $normalizedCategory = array_merge($normalizedCategory, [
             'root' => $rootCategory === null ? null : $this->normalizer->normalize($rootCategory, 'internal_api')
         ]);
-
         $formData = $this->categoryFormViewNormalizer->normalizeFormView($form->createView());
 
         return new JsonResponse(['category' => $normalizedCategory, 'form' => $formData], $responseStatus);

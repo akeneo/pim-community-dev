@@ -10,7 +10,6 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
 use Symfony\Component\HttpFoundation\Response;
 

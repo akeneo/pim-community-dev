@@ -21,7 +21,7 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
     private ?UpsertCatalogQuery $query;
     private ?Connection $connection;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

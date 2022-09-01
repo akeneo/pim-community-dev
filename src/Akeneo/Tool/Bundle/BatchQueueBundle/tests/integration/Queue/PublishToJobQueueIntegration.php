@@ -97,13 +97,13 @@ class PublishToJobQueueIntegration extends TestCase
         $publishJobToQueue = $this->get('akeneo_batch_queue.queue.publish_job_to_queue');
         $publishJobToQueue->publish(
             'csv_product_export',
-            ['filePath' => $filePath]
+            ['storage' => ['type' => 'local', 'file_path' => $filePath]]
         );
 
         $jobExecution = $this->getJobExecution();
 
         $config = json_decode($jobExecution['raw_parameters'], true);
-        $this->assertEquals($filePath, $config['filePath']);
+        $this->assertEquals($filePath, $config['storage']['file_path']);
 
         $this->jobLauncher->launchConsumerOnce();
 

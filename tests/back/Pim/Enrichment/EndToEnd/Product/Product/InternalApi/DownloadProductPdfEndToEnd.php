@@ -73,11 +73,11 @@ class DownloadProductPdfEndToEnd extends InternalApiTestCase
 
     private function getRouter(): RouterInterface
     {
-        return self::$container->get('router');
+        return self::getContainer()->get('router');
     }
 
     private function getAdminUser(): UserInterface
     {
-        return self::$container->get('pim_user.repository.user')->findOneByIdentifier('admin');
+        return self::getContainer()->get('pim_user.repository.user')->findOneByIdentifier('admin');
     }
 }

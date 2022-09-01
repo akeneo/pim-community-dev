@@ -3,10 +3,17 @@ import {FC} from 'react';
 import {CriterionErrors} from './CriterionErrors';
 import {StatusCriterionState} from '../criteria/StatusCriterion';
 import {FamilyCriterionState} from '../criteria/FamilyCriterion';
+import {CompletenessCriterionState} from '../criteria/CompletenessCriterion';
+import {CategoryCriterionState} from '../criteria/CategoryCriterion';
+import {AttributeTextCriterionState} from '../criteria/AttributeTextCriterion';
+import {AttributeSimpleSelectCriterionState} from '../criteria/AttributeSimpleSelectCriterion';
+import {AttributeNumberCriterionState} from '../criteria/AttributeNumberCriterion';
 
 export type CriterionModule<State> = {
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     state: State & any;
-    onChange: (state: State) => void;
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+    onChange: (state: State & any) => void;
     onRemove: () => void;
     errors: CriterionErrors;
 };
@@ -14,7 +21,10 @@ export type CriterionModule<State> = {
 export type CriterionState = {
     field: string;
     operator: Operator;
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     value?: any;
+    locale?: string;
+    scope?: string;
 };
 
 export type Criterion<State extends CriterionState> = {
@@ -22,5 +32,23 @@ export type Criterion<State extends CriterionState> = {
     factory: (state?: Partial<State>) => State;
 };
 
-export type AnyCriterionState = StatusCriterionState | FamilyCriterionState;
-export type AnyCriterion = Criterion<StatusCriterionState> | Criterion<FamilyCriterionState>;
+export type AnyCriterionState =
+    | StatusCriterionState
+    | FamilyCriterionState
+    | CompletenessCriterionState
+    | CategoryCriterionState
+    | AttributeTextCriterionState
+    | AttributeSimpleSelectCriterionState
+    | AttributeNumberCriterionState;
+
+export type AnyAttributeCriterion =
+    | Criterion<AttributeTextCriterionState>
+    | Criterion<AttributeSimpleSelectCriterionState>
+    | Criterion<AttributeNumberCriterionState>;
+
+export type AnyCriterion =
+    | Criterion<StatusCriterionState>
+    | Criterion<FamilyCriterionState>
+    | Criterion<CompletenessCriterionState>
+    | Criterion<CategoryCriterionState>
+    | AnyAttributeCriterion;

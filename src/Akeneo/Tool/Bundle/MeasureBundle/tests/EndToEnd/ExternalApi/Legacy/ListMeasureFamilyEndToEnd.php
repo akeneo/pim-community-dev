@@ -53,7 +53,8 @@ JSON;
 
     private function getStandardizedMeasureFamilies()
     {
-        $measureFamilies['Angle'] = <<<JSON
+        return [
+            'Angle' => <<<JSON
 {
     "_links": {
         "self": {
@@ -128,9 +129,8 @@ JSON;
         }
     ]
 }
-JSON;
-
-        $measureFamilies['Area'] = <<<JSON
+JSON,
+            'Area' => <<<JSON
 {
   "_links": {
     "self": {
@@ -268,9 +268,8 @@ JSON;
     }
   ]
 }
-JSON;
-
-        $measureFamilies['Binary'] = <<<JSON
+JSON,
+            'Binary' => <<<JSON
 {
     "_links": {
         "self": {
@@ -352,9 +351,8 @@ JSON;
         }
     ]
 }
-JSON;
-
-        $measureFamilies['Brightness'] = <<<JSON
+JSON,
+            'Brightness' => <<<JSON
 {
   "_links": {
     "self": {
@@ -380,9 +378,8 @@ JSON;
     }
   ]
 }
-JSON;
-
-        $measureFamilies['Capacitance'] = <<<JSON
+JSON,
+            'Capacitance' => <<<JSON
 {
     "_links": {
         "self": {
@@ -443,9 +440,8 @@ JSON;
         }
     ]
 }
-JSON;
-
-        $measureFamilies['CaseBox'] = <<<JSON
+JSON,
+            'CaseBox' => <<<JSON
 {
   "_links": {
     "self": {
@@ -471,9 +467,8 @@ JSON;
     }
   ]
 }
-JSON;
-
-        $measureFamilies['Decibel'] = <<<JSON
+JSON,
+            'Decibel' => <<<JSON
 {
   "_links": {
     "self": {
@@ -492,9 +487,8 @@ JSON;
     }
   ]
 }
-JSON;
-
-        $measureFamilies['Duration'] = <<<JSON
+JSON,
+            'Duration' => <<<JSON
 {
   "_links": {
     "self": {
@@ -562,9 +556,8 @@ JSON;
     }
   ]
 }
-JSON;
-
-        $measureFamilies['ElectricCharge'] = <<<JSON
+JSON,
+            'ElectricCharge' => <<<JSON
 {
   "_links": {
     "self": {
@@ -639,9 +632,8 @@ JSON;
     }
   ]
 }
-JSON;
-
-        $measureFamilies['Energy'] = <<<JSON
+JSON,
+            'Energy' => <<<JSON
 {
   "_links": {
     "self": {
@@ -681,9 +673,8 @@ JSON;
     }
   ]
 }
-JSON;
-
-        $measureFamilies['Force'] = <<<JSON
+JSON,
+            'Force' => <<<JSON
 {
     "_links": {
         "self": {
@@ -723,10 +714,8 @@ JSON;
         }
     ]
 }
-JSON;
-
-
-        $measureFamilies['Frequency'] = <<<JSON
+JSON,
+            'Frequency' => <<<JSON
 {
   "_links": {
     "self": {
@@ -773,9 +762,8 @@ JSON;
     }
   ]
 }
-JSON;
-
-        $measureFamilies['Intensity'] = <<<JSON
+JSON,
+            'Intensity' => <<<JSON
 {
   "_links": {
     "self": {
@@ -836,9 +824,8 @@ JSON;
     }
   ]
 }
-JSON;
-
-        $measureFamilies['Length'] = <<<JSON
+JSON,
+            'Length' => <<<JSON
 {
     "_links": {
         "self": {
@@ -962,8 +949,8 @@ JSON;
         }
     ]
 }
-JSON;
-        $measureFamilies['Power'] = <<<JSON
+JSON,
+            'Power' => <<<JSON
 {
   "_links": {
     "self": {
@@ -1010,9 +997,8 @@ JSON;
     }
   ]
 }
-JSON;
-
-        $measureFamilies['Pressure'] = <<<JSON
+JSON,
+            'Pressure' => <<<JSON
 {
     "_links": {
         "self": {
@@ -1129,9 +1115,8 @@ JSON;
         }
     ]
 }
-JSON;
-
-        $measureFamilies['Resistance'] = <<<JSON
+JSON,
+            'Resistance' => <<<JSON
 {
   "_links": {
     "self": {
@@ -1199,9 +1184,8 @@ JSON;
     }
   ]
 }
-JSON;
-
-        $measureFamilies['Speed'] = <<<JSON
+JSON,
+            'Speed' => <<<JSON
 {
   "_links": {
     "self": {
@@ -1274,9 +1258,8 @@ JSON;
     }
   ]
 }
-JSON;
-
-        $measureFamilies['Temperature'] = <<<JSON
+JSON,
+            'Temperature' => <<<JSON
 {
   "_links": {
     "self": {
@@ -1326,9 +1309,8 @@ JSON;
     }
   ]
 }
-JSON;
-
-        $measureFamilies['Voltage'] = <<<JSON
+JSON,
+            'Voltage' => <<<JSON
 {
   "_links": {
     "self": {
@@ -1389,9 +1371,8 @@ JSON;
     }
   ]
 }
-JSON;
-
-        $measureFamilies['Volume'] = <<<JSON
+JSON,
+            'Volume' => <<<JSON
 {
   "_links": {
     "self": {
@@ -1512,9 +1493,8 @@ JSON;
     }
   ]
 }
-JSON;
-
-        $measureFamilies['VolumeFlow'] = <<<JSON
+JSON,
+            'VolumeFlow' => <<<JSON
 {
     "_links": {
         "self": {
@@ -1590,21 +1570,24 @@ JSON;
         {
             "code": "CUBIC_CENTIMETER_PER_MINUTE",
             "convert": {
-                "mul": "60"
+                "mul": "0.000001",
+                "div": "60"
             },
             "symbol": "cm³/min"
         },
         {
             "code": "CUBIC_CENTIMETER_PER_HOUR",
             "convert": {
-                "mul": "3600"
+                "mul": "0.000001",
+                "div": "3600"
             },
             "symbol": "cm³/h"
         },
         {
             "code": "CUBIC_CENTIMETER_PER_DAY",
             "convert": {
-                "mul": "86400"
+                "mul": "0.000001",
+                "div": "86400"
             },
             "symbol": "cm³/d"
         },
@@ -1632,21 +1615,24 @@ JSON;
         {
             "code": "LITER_PER_MINUTE",
             "convert": {
-                "mul": "60"
+                "mul": "0.001",
+                "div": "60"
             },
             "symbol": "l/min"
         },
         {
             "code": "LITER_PER_HOUR",
             "convert": {
-                "mul": "3600"
+                "mul": "0.001",
+                "div": "3600"
             },
             "symbol": "l/h"
         },
         {
             "code": "LITER_PER_DAY",
             "convert": {
-                "mul": "86400"
+                "mul": "0.001",
+                "div": "86400"
             },
             "symbol": "l/d"
         },
@@ -1659,10 +1645,8 @@ JSON;
         }
     ]
 }
-JSON;
-
-
-        $measureFamilies['Weight'] = <<<JSON
+JSON,
+            'Weight' => <<<JSON
 {
   "_links": {
     "self": {
@@ -1752,9 +1736,8 @@ JSON;
     }
   ]
 }
-JSON;
-
-        return $measureFamilies;
+JSON
+        ];
     }
 
     public function testOutOfRangeListMeasureFamily()

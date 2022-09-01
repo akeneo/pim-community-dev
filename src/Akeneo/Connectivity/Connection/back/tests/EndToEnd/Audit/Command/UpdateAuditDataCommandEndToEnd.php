@@ -31,8 +31,8 @@ class UpdateAuditDataCommandEndToEnd extends CommandTestCase
         parent::setUp();
 
         $this->command = $this->application->find('akeneo:connectivity-audit:update-data');
-        $this->dbalConnection = self::$container->get('database_connection');
-        $this->productClass = self::$container->getParameter('pim_catalog.entity.product.class');
+        $this->dbalConnection = self::getContainer()->get('database_connection');
+        $this->productClass = self::getContainer()->getParameter('pim_catalog.entity.product.class');
     }
 
     public function test_it_updates_audit_data(): void

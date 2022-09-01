@@ -2,9 +2,11 @@
 
 namespace spec\Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Saver;
 
+use Akeneo\Tool\Component\StorageUtils\Exception\DuplicateObjectException;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -13,7 +15,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class BaseSaverSpec extends ObjectBehavior
 {
-    function let(ObjectManager $objectManager, EventDispatcherInterface $eventDispatcher)
+    public function let(ObjectManager $objectManager, EventDispatcherInterface $eventDispatcher): void
     {
         $eventDispatcher->dispatch(Argument::any(), Argument::type('string'))->willReturn(Argument::type('object'));
         $this->beConstructedWith(
@@ -23,13 +25,13 @@ class BaseSaverSpec extends ObjectBehavior
         );
     }
 
-    function it_is_a_saver()
+    public function it_is_a_saver(): void
     {
         $this->shouldHaveType(SaverInterface::class);
         $this->shouldHaveType(BulkSaverInterface::class);
     }
 
-    function it_persists_the_object_and_flushes_the_unit_of_work($objectManager)
+    public function it_persists_the_object_and_flushes_the_unit_of_work(ObjectManager $objectManager): void
     {
         $type = new ModelToSave();
         $objectManager->persist($type)->shouldBeCalled();
@@ -38,7 +40,7 @@ class BaseSaverSpec extends ObjectBehavior
         $this->save($type);
     }
 
-    function it_persists_the_objects_and_flushes_the_unit_of_work($objectManager)
+    public function it_persists_the_objects_and_flushes_the_unit_of_work(ObjectManager $objectManager): void
     {
         $type1 = new ModelToSave();
         $type2 = new ModelToSave();
@@ -49,7 +51,7 @@ class BaseSaverSpec extends ObjectBehavior
         $this->saveAll([$type1, $type2]);
     }
 
-    function it_throws_exception_when_saving_anything_else_than_the_expected_class()
+    public function it_throws_exception_when_saving_anything_else_than_the_expected_class(): void
     {
         $anythingElse = new ModelNotToSave();
         $exception = new \InvalidArgumentException(
@@ -63,7 +65,7 @@ class BaseSaverSpec extends ObjectBehavior
         $this->shouldThrow($exception)->during('saveAll', [[$anythingElse, $anythingElse]]);
     }
 
-    function it_dispatches_events_according_to_the_objects_state_on_unitary_save($eventDispatcher)
+    public function it_dispatches_events_according_to_the_objects_state_on_unitary_save(EventDispatcherInterface $eventDispatcher): void
     {
         $newObject = new ModelToSave();
         $newObjectEvent = new GenericEvent($newObject, ['unitary' => true, 'is_new' => true]);
@@ -82,7 +84,7 @@ class BaseSaverSpec extends ObjectBehavior
         $this->save($updatedObject);
     }
 
-    function it_dispatches_events_according_to_the_objects_state_on_bulk_save($eventDispatcher)
+    public function it_dispatches_events_according_to_the_objects_state_on_bulk_save(EventDispatcherInterface $eventDispatcher): void
     {
         $newObject = new ModelToSave();
         $updatedObject = new ModelToSave(42);
@@ -99,6 +101,15 @@ class BaseSaverSpec extends ObjectBehavior
         $eventDispatcher->dispatch($bulkEvent, StorageEvents::POST_SAVE_ALL)->shouldBeCalled();
 
         $this->saveAll([$newObject, $updatedObject]);
+    }
+
+    public function it_catches_orm_exception_and_throws_a_business_exception(ObjectManager $objectManager): void
+    {
+        $type = new ModelToSave();
+        $objectManager->persist($type)->willThrow(UniqueConstraintViolationException::class);
+        $objectManager->flush()->shouldNotBeCalled();
+
+        $this->shouldThrow(DuplicateObjectException::class)->during('save', [$type]);
     }
 }
 

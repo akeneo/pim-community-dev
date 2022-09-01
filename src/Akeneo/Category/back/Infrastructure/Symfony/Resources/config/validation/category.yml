@@ -1,0 +1,29 @@
+Akeneo\Category\Infrastructure\Component\Model\Category:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+        - Akeneo\Tool\Component\StorageUtils\Validator\Constraints\Immutable:
+            properties:
+                - code
+    properties:
+        code:
+            - NotBlank: ~
+            - Regex:
+                pattern: /^[a-zA-Z0-9_]+$/
+                message: Category code may contain only letters, numbers and underscores
+            - Regex:
+                pattern: /^[^\n]+$/D
+                message: Category code may not contain line-feed characters
+            - Length:
+                max: 100
+        translations:
+            - Valid: ~
+
+Akeneo\Category\Infrastructure\Component\Model\CategoryTranslation:
+    properties:
+        label:
+            - Length:
+                max: 100
+        locale:
+            - Akeneo\Channel\Infrastructure\Component\Validator\Constraint\Locale:
+                payload:
+                    standardPropertyName: labels

@@ -3,5 +3,6 @@ src/Akeneo/Category/**/*
 src/Akeneo/Platform/Bundle/UIBundle/Resources/public/lib/**/*
 src/Akeneo/Platform/Job/front/process-tracker/coverage/**/*
 src/Akeneo/Platform/Job/front/process-tracker/lib/**/*
+src/Akeneo/Platform/Bundle/ImportExportBundle/front/**/*
 src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front/**/*
 src/Oro/Bundle/ConfigBundle/front/**/*

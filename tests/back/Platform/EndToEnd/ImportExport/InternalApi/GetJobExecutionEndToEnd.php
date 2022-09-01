@@ -98,9 +98,9 @@ SQL;
                     'job' => 'csv_product_import',
                     'status' => 'Completed',
                     'summary' => [
-                        'read lines' => '38',
-                        'skipped product (no differences)' => '37',
-                        'skipped' => '1',
+                        'read lines' => 38,
+                        'skipped product (no differences)' => 37,
+                        'skipped' => 1,
                     ],
                     'startedAt' => '10/13/2020 01:05 PM',
                     'endedAt' => '10/13/2020 01:06 PM',
@@ -131,7 +131,10 @@ SQL;
                 'type' => 'import',
                 'configuration' =>
                     [
-                        'filePath' => '/tmp/footwear_products.csv',
+                        'storage' => [
+                            'type' => 'local',
+                            'file_path' => '/tmp/footwear_products.csv',
+                        ],
                         'delimiter' => ';',
                         'enclosure' => '"',
                         'escape' => '\\',
@@ -150,13 +153,15 @@ SQL;
                         'realTimeVersioning' => true,
                         'convertVariantToSimple' => false,
                     ],
+                'automation' => null,
+                'scheduled' => false,
             ],
             'tracking' => [
                 'error'   => false,
                 'warning' => false,
                 'status'  => 'COMPLETED',
                 'currentStep' => 3,
-                'totalSteps' => 3,
+                'totalSteps' => 4,
                 'steps' => [
                     [
                         'jobName' => 'csv_product_import',

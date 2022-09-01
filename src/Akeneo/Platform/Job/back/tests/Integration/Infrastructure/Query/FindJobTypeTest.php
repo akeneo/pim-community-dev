@@ -14,7 +14,7 @@ class FindJobTypeTest extends IntegrationTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->query = $this->get('Akeneo\Platform\Job\Application\FindJobType\FindJobTypeInterface');
+        $this->query = $this->get(FindJobTypeInterface::class);
         $this->fixturesLoader->loadFixtures();
     }
 

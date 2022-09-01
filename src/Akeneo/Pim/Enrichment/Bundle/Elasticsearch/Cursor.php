@@ -103,7 +103,7 @@ class Cursor extends AbstractCursor implements CursorInterface, ResultAwareInter
         $this->count = $response['hits']['total']['value'];
 
         foreach ($response['hits']['hits'] as $hit) {
-            $identifiers->add($hit['_source']['identifier'], $hit['_source']['document_type']);
+            $identifiers->add($hit['_source']['identifier'], $hit['_source']['document_type'], $hit['_source']['id']);
         }
 
         $lastResult = end($response['hits']['hits']);

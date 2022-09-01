@@ -97,9 +97,11 @@ SQL;
 
     private function computeAndIndexFromProductModelCodes(array $productModelCodes): void
     {
+        /** Some method does not exist anymore, but this migration should not be run in a 7.0 */
+        /*
         $variantProductIdentifiers = $this
             ->container
-            ->get('akeneo.pim.enrichment.product.query.get_descendant_variant_product_identifiers')
+            ->get('akeneo.pim.enrichment.product.query.get_descendant_variant_product_uuids')
             ->fromProductModelCodes($productModelCodes);
         if (!empty($variantProductIdentifiers)) {
             $this
@@ -112,5 +114,6 @@ SQL;
             ->container
             ->get('pim_catalog.elasticsearch.indexer.product_model_descendants_and_ancestors')
             ->indexFromProductModelCodes($productModelCodes);
+        */
     }
 }

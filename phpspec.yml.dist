@@ -1,11 +1,33 @@
 ## Rename this file in phpspec.yml to customize the phpspec configuration
 suites:
+    ## Category context
+    LegacyCategory:
+        namespace: Akeneo\Test\Category\Acceptance
+        psr4_prefix: Akeneo\Test\Category\Acceptance
+        spec_path: tests/back/Category/Acceptance
+        src_path: tests/back/Category/Acceptance
+        spec_prefix: Specification
+
+    Category:
+        namespace: Akeneo\Category
+        psr4_prefix: Akeneo\Category
+        src_path: src/Akeneo/Category/back
+        spec_path: src/Akeneo/Category/back/tests
+        spec_prefix: Specification
+
     ## Channel context
     LegacyChannel:
         namespace: Akeneo\Channel
         psr4_prefix: Akeneo\Channel
         spec_path: tests/back/Channel
         src_path: src/Akeneo/Channel/back
+        spec_prefix: Specification
+
+    ChannelAcceptance:
+        namespace: Akeneo\Test\Channel\Acceptance
+        psr4_prefix: Akeneo\Test\Channel\Acceptance
+        spec_path: src/Akeneo/Channel/back/tests/Acceptance
+        src_path: src/Akeneo/Channel/back/tests/Acceptance
         spec_prefix: Specification
 
     Channel:
@@ -36,6 +58,13 @@ suites:
         psr4_prefix: Akeneo\Pim\Enrichment\Product
         src_path: src/Akeneo/Pim/Enrichment/Product/back
         spec_path: src/Akeneo/Pim/Enrichment/Product/back/Test
+        spec_prefix: Specification
+
+    EnrichmentCategoryAcceptance:
+        namespace: Akeneo\Pim\Enrichment\Category\Test\Acceptance
+        psr4_prefix: Akeneo\Pim\Enrichment\Category\Test\Acceptance
+        src_path: src/Akeneo/Pim/Enrichment/Category/back/Test/Acceptance
+        spec_path: src/Akeneo/Pim/Enrichment/Category/back/Test/Acceptance
         spec_prefix: Specification
 
     Enrichment:

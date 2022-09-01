@@ -53,6 +53,13 @@ abstract class ApiTestCase extends WebTestCase
     {
         static::bootKernel(['debug' => false]);
         $this->catalog = $this->get('akeneo_integration_tests.catalogs');
+        /** @var FilePersistedFeatureFlags $featureFlags*/
+        $featureFlags = $this->get('feature_flags');
+        $featureFlags->deleteFile();
+
+        foreach ($this->getConfiguration()->getFeatureFlagsBeforeInstall() as $featureFlag) {
+            $featureFlags->enable($featureFlag);
+        }
 
         $fixturesLoader = $this->get('akeneo_integration_tests.loader.fixtures_loader');
         $fixturesLoader->load($this->getConfiguration());
@@ -61,10 +68,6 @@ abstract class ApiTestCase extends WebTestCase
         $authenticator->createSystemUser();
 
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
-
-        /** @var FilePersistedFeatureFlags $featureFlags*/
-        $featureFlags = $this->get('feature_flags');
-        $featureFlags->deleteFile();
     }
 
     /**

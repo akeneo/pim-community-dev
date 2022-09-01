@@ -52,6 +52,8 @@ akeneo_connectivity.connection:
         title_without_apps: '{0} There is no connectors compatible with your PIM version.|{1} There is {{ count }} connector compatible with your PIM version.|[2,Inf] There are {{ count }} connectors compatible with your PIM version.'
         description: This is just an overview. For more details, take a look at the Akeneo App Store.
         link: Go to the Akeneo App Store
+      search:
+        total: '{0} No results|{1} 1 result|[2,Inf] {{ total }} results'
       card:
         developed_by: 'Developed by {{ author }}'
         read_more: read more

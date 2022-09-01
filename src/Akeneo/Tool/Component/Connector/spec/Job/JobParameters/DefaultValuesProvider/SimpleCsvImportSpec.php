@@ -22,7 +22,9 @@ class SimpleCsvImportSpec extends ObjectBehavior
     {
         $this->getDefaultValues()->shouldReturn(
             [
-                'filePath'                  => null,
+                'storage' => [
+                    'type' => 'none',
+                ],
                 'delimiter'                 => ";",
                 'enclosure'                 => '"',
                 'escape'                    => '\\',

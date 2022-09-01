@@ -20,11 +20,10 @@ services:
         tags:
             - { name: console.command }
 
-    akeneo.platform.import_export.feature_flag.is_remote_storage_enabled:
-        class: 'Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag'
-        arguments:
-            - '%env(bool:FLAG_JOB_AUTOMATION_REMOTE_STORAGE_ENABLED)%'
+    Akeneo\Platform\Bundle\ImportExportBundle\Domain\ResolveScheduledJobRunningUsername: ~
 
-    Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\RemoteStorageFeatureFlag:
+    Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\UserManagement\UpsertRunningUser:
         arguments:
-            - '@feature_flags'
+            - '@Akeneo\UserManagement\ServiceApi\User\UpsertUserHandlerInterface'
+            - '@Akeneo\UserManagement\ServiceApi\UserRole\ListUserRoleInterface'
+            - '@Akeneo\Platform\Bundle\ImportExportBundle\Domain\ResolveScheduledJobRunningUsername'

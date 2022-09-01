@@ -12,7 +12,7 @@ Feature: Import profiles
       my-jacket;red;jacket
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     Then I am logged in as "Peter"
 
   Scenario: Go to the job execution page for an "import" and then check buttons status on the header and "Show profile" button redirection

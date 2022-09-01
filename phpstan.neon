@@ -15,3 +15,4 @@ parameters:
         - %currentWorkingDirectory%/src/Akeneo/Pim/Platform/Job
         - %currentWorkingDirectory%/src/Akeneo/Pim/Enrichment/Product/back/Test/Specification
         - %currentWorkingDirectory%/src/Akeneo/Pim/Enrichment/Product/back/Test/Acceptance/Specification
+        - %currentWorkingDirectory%/src/Akeneo/Pim/Enrichment/Category/back/Test/Acceptance/Specification

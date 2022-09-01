@@ -52,7 +52,7 @@ class AttributeGroupShouldBeEditableValidatorSpec extends ObjectBehavior
     ): void {
         $isAttributeEditable->forCode('attributeCode', 1)->willReturn(false);
 
-        $executionContext->getRoot()->shouldBeCalledOnce()->willReturn(new UpsertProductCommand(1, 'identifier1'));
+        $executionContext->getRoot()->shouldBeCalledOnce()->willReturn(UpsertProductCommand::createFromCollection(1, 'identifier1', userIntents: []));
 
         $executionContext->buildViolation(
             'pim_enrich.product.validation.upsert.attribute_group_no_access_to_attributes',
@@ -76,7 +76,7 @@ class AttributeGroupShouldBeEditableValidatorSpec extends ObjectBehavior
     ): void {
         $isAttributeEditable->forCode('attributeCode', 1)->willReturn(true);
 
-        $executionContext->getRoot()->shouldBeCalledOnce()->willReturn(new UpsertProductCommand(1, 'identifier1'));
+        $executionContext->getRoot()->shouldBeCalledOnce()->willReturn(UpsertProductCommand::createFromCollection(1, 'identifier1', userIntents: []));
 
         $executionContext->buildViolation(Argument::any())->shouldNotBeCalled();
 

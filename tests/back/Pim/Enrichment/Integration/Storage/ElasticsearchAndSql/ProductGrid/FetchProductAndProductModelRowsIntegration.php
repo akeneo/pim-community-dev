@@ -61,7 +61,7 @@ class FetchProductAndProductModelRowsIntegration extends TestCase
                 true,
                 $product2->getCreated(),
                 $product2->getUpdated(),
-                '[baz]',
+                "[baz]",
                 null,
                 null,
                 $product2->getUuid()->toString(),

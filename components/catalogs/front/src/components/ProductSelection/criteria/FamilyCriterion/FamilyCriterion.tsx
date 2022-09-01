@@ -7,49 +7,58 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import {FamilyCriterionState} from './types';
 import {FamilyOperatorInput} from './FamilyOperatorInput';
 import {FamilySelectInput} from './FamilySelectInput';
+import {ErrorHelpers} from '../../components/ErrorHelpers';
 
-const Inputs = styled.div`
+const Fields = styled.div`
     display: flex;
     gap: 20px;
 `;
 
-const DefaultInputContainer = styled.div`
+const Field = styled.div`
     flex-basis: 200px;
     flex-shrink: 0;
+    flex-wrap: wrap;
+    flex-grow: 1;
 `;
 
-const LargeInputContainer = styled.div`
+const LargeField = styled.div`
     flex-basis: auto;
 `;
 
-const FamilyCriterion: FC<CriterionModule<FamilyCriterionState>> = ({state, onChange, onRemove}) => {
+const FamilyCriterion: FC<CriterionModule<FamilyCriterionState>> = ({state, errors, onChange, onRemove}) => {
     const translate = useTranslate();
     const [showFamilies, setShowFamilies] = useState<boolean>(false);
+    const hasError = Object.values(errors).filter(n => n).length > 0;
 
     useEffect(() => {
         setShowFamilies([Operator.IN_LIST, Operator.NOT_IN_LIST].includes(state.operator));
     }, [state.operator]);
 
     return (
-        <List.Row>
+        <List.Row isMultiline>
             <List.TitleCell width={150}>
                 {translate('akeneo_catalogs.product_selection.criteria.family.label')}
             </List.TitleCell>
             <List.Cell width='auto'>
-                <Inputs>
-                    <DefaultInputContainer>
-                        <FamilyOperatorInput state={state} onChange={onChange} />
-                    </DefaultInputContainer>
+                <Fields>
+                    <Field>
+                        <FamilyOperatorInput state={state} onChange={onChange} isInvalid={!!errors.operator} />
+                    </Field>
                     {showFamilies && (
-                        <LargeInputContainer>
-                            <FamilySelectInput state={state} onChange={onChange} />
-                        </LargeInputContainer>
+                        <LargeField>
+                            <FamilySelectInput state={state} onChange={onChange} isInvalid={!!errors.value} />
+                        </LargeField>
                     )}
-                </Inputs>
+                </Fields>
             </List.Cell>
             <List.RemoveCell>
                 <IconButton ghost='borderless' level='tertiary' icon={<CloseIcon />} title='' onClick={onRemove} />
             </List.RemoveCell>
+            {hasError && (
+                <List.RowHelpers>
+                    <ErrorHelpers errors={errors} />
+                </List.RowHelpers>
+            )}
         </List.Row>
     );
 };

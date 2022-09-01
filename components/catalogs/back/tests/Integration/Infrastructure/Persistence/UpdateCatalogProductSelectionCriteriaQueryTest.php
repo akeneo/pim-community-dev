@@ -20,7 +20,7 @@ class UpdateCatalogProductSelectionCriteriaQueryTest extends IntegrationTestCase
     private ?UpdateCatalogProductSelectionCriteriaQuery $query;
     private ?Connection $connection;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -74,6 +74,6 @@ class UpdateCatalogProductSelectionCriteriaQueryTest extends IntegrationTestCase
             'id' => Uuid::fromString($id)->getBytes(),
         ])->fetchOne();
 
-        $this->assertEquals($expected, \json_decode($row, true));
+        $this->assertEquals($expected, \json_decode($row, true, 512, JSON_THROW_ON_ERROR));
     }
 }

@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\Field;
 
+use Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\ClearerInterface;
-use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Webmozart\Assert\Assert;
 
 /**

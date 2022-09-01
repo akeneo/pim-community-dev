@@ -48,7 +48,7 @@ class FamilyAttributeAsLabelChangedSubscriberSpec extends ObjectBehavior
 
         $esClient->updateByQuery([
             'script' => [
-                'inline' => "ctx._source.label = ctx._source.values[params.attributeAsLabel]",
+                'source' => "ctx._source.label = ctx._source.values[params.attributeAsLabel]",
                 'params' => ['attributeAsLabel' => sprintf('%s-text', 'sku')],
             ],
             'query' => [

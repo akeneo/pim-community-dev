@@ -1,5 +1,59 @@
 # 5.0.x
 
+# 5.0.111 (2022-08-25)
+
+## Bug fixes
+
+- PIM-10601 [Backport PIM-9718]: Fix format of integer values for number attributes with decimals allowed
+- PIM-10577: Fix copy/paste on wysiwyg textarea links
+- PIM-10580 [Backport PIM-10499]: Fix MySQL's out of sort memory errors on variant product and product model edit form
+
+# 5.0.110 (2022-08-23)
+
+# 5.0.109 (2022-08-23)
+
+# 5.0.108 (2022-08-22)
+
+## Bug fixes
+
+- PIM-10587: Fix warnings count in process tracker
+
+# 5.0.107 (2022-08-17)
+
+## Bug fixes
+
+- PIM-10512: Fix empty group labels format for attribute endpoints
+- PIM-10555 [Backport PIM-10462]: Fix ComputeFamilyVariantStructureChanges job not launched after import
+- PIM-10559 [Backport PIM-10478]: Disable compute_family_variant_structure_changes on familySave
+
+# 5.0.106 (2022-08-08)
+
+## Bug fixes
+
+- PIM-10553: Fix initialization of the associations grid in product edit form
+- PIM-10556: [Backport PIM-10214] Fix can't create a measurement attribute if measurement family or unit code is too long
+
+# 5.0.105 (2022-08-03)
+
+## Bug fixes
+
+- PIM-10551: Add filtering on locale specific attributes when fetching values
+
+# 5.0.104 (2022-07-11)
+
+# 5.0.103 (2022-07-11)
+
+## Bug fixes
+
+- PIM-10523: fix CSV import profiles have the `download read file` option in Process Tracker but not XLSX import profiles
+- PIM-10506: Fix performance issues on process tracker
+
+# 5.0.102 (2022-07-07)
+
+## Bug fixes
+
+- PIM-10502: Fix API error when trying to post/patch a product with non-existing attribute code that is also a number
+
 # 5.0.101 (2022-07-01)
 
 # 5.0.100 (2022-06-29)
@@ -217,6 +271,7 @@
 ## Bug fixes
 
 - PIM-10040: Fix longtext types instead of json type in old catalogs
+- PIM-10053: Changed category tree to open node on label click on Product Export
 - PIM-10121: Fix metric to string converter to remove trailing 0
 
 # 5.0.51 (2021-10-18)
@@ -277,6 +332,7 @@
 ## Bug fixes
 
 - PIM-9944: Fix attribute group grid search
+- PIM-9945: Fix displayed number of elements in attribute group, locale and measurement family grids
 
 # 5.0.37 (2021-07-01)
 

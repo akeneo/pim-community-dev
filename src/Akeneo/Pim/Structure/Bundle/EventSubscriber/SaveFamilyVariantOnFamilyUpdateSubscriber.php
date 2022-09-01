@@ -41,10 +41,8 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
     /**
      * Validates and saves the family variants belonging to a family whenever it is updated.
      *
-     * As we are not in an import context, the `compute_family_variant_structure_changes` job is triggered
-     * by the bulkFamilyVariantSaver->saveAll(). We force the launch of this job because if an attribute
-     * at the common level is removed, the family variant stays unchanged but we need to recompute the root/sub
-     * product models.
+     * When the family variant are saved, we disable the launch of the 'compute_family_variant_structure_changes' job
+     * because the compute is already done by the ComputeCompletenessOfProductsFamilyTasklet job
      *
      * hence, updating the catalog asynchronously.
      *
@@ -66,8 +64,11 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
         $allViolations = $validationResponse['violations'];
 
         Assert::isArray($validFamilyVariants);
+        // This is an optimization to not trigger two times the jobs. Yet, it's not an ideal design because it means the
+        // caller know who are the listener. It means it introduced accidental coupling between the two components that
+        // should not know each other.
         $this->bulkFamilyVariantSaver->saveAll($validFamilyVariants, [
-            ComputeFamilyVariantStructureChangesSubscriber::FORCE_JOB_LAUNCHING => true,
+            ComputeFamilyVariantStructureChangesSubscriber::DISABLE_JOB_LAUNCHING => false,
         ]);
 
         if (!empty($allViolations)) {
@@ -102,6 +103,9 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
         $validFamilyVariants = $validationResponse['valid_family_variants'];
         $allViolations = $validationResponse['violations'];
 
+        // This is an optimization to not trigger two times the jobs. Yet, it's not an ideal design because it means the
+        // caller knows who are the listeners. It means it introduced accidental coupling between the two components that
+        // should not know each other.
         $this->bulkFamilyVariantSaver->saveAll(
             $validFamilyVariants,
             [ComputeFamilyVariantStructureChangesSubscriber::DISABLE_JOB_LAUNCHING => true]

@@ -42,7 +42,7 @@ class BatchCommandIntegration extends TestCase
         $this->assertNull($jobExecution['user']);
         $this->assertEquals('Export csv_product_export has been successfully executed.' . PHP_EOL, $output->fetch());
         $this->assertTrue((bool) $jobExecution['is_stoppable']);
-        $this->assertEquals(1, $jobExecution['step_count']);
+        $this->assertEquals(2, $jobExecution['step_count']);
     }
 
     public function testJobExecutionStateWithUsername()
@@ -68,7 +68,7 @@ class BatchCommandIntegration extends TestCase
             unlink($filePath);
         }
 
-        $output = $this->launchJob(['--config' => ['filePath' => $filePath]]);
+        $output = $this->launchJob(['--config' => ['storage' => ['type' => 'local', 'file_path' => $filePath]]]);
         $this->assertEquals('Export csv_product_export has been successfully executed.' . PHP_EOL, $output->fetch());
         $this->assertTrue(file_exists($filePath));
     }
@@ -130,7 +130,7 @@ class BatchCommandIntegration extends TestCase
 
     public function testLaunchJobExecutionWithConfigOverridden()
     {
-        $output = $this->launchJob(['execution' => '1', '--config' => ['filePath' => '/tmp/foo']]);
+        $output = $this->launchJob(['execution' => '1', '--config' => ['storage' => ['type' => 'local', 'file_path' => '/tmp/foo']]]);
         $this->assertStringContainsString('Configuration option cannot be specified when launching a job execution.', $output->fetch());
     }
 

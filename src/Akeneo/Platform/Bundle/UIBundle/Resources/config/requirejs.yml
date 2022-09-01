@@ -456,6 +456,7 @@ config:
     jquery.select2.placeholder:    pimui/lib/select2/select2-placeholder
     bootstrap:                     pimui/lib/bootstrap/js/bootstrap
     bootstrap-modal:               pimui/lib/bootstrap-modal/bootstrap-modal
+    summernote:                    pimui/lib/summernote/summernote
     oro/app:                       pimui/js/oro-app
     oro/error:                     pimui/js/error
     oro/init-layout:               pimui/js/init-layout
@@ -536,7 +537,7 @@ config:
     pim/controller/dashboard:              pimui/js/controller/dashboard.tsx
     pim/controller/settings:               pimui/js/controller/settings.tsx
     pim/controller/system-index:           pimui/js/controller/system-index.tsx
-    pim/controller/categories/index:       akeneopimstructure/js/controller/CategoriesSettings
+    pim/controller/categories/index:       akeneocategory/js/controller/CategoriesSettings
 
     pim/init:                           pimui/js/pim-init
     pim/asynctab:                       pimui/js/pim-async-tab

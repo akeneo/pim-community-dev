@@ -37,7 +37,13 @@ $rules = [
         'Oro\Bundle\SecurityBundle\SecurityFacade',
 
         // TIP-947: UI Locale Provider should be part of UserManagement
-        'Akeneo\Platform\Bundle\UIBundle\UiLocaleProvider'
+        'Akeneo\Platform\Bundle\UIBundle\UiLocaleProvider',
+
+        // These files moved from Tool to Category bounded context
+        // Usermanagement BC should query BC via exposed Commands
+        // Ticket created : GRF-180
+        'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface'
     ])->in('Akeneo\UserManagement\Component'),
     $builder->only([
         'Doctrine',
@@ -79,6 +85,13 @@ $rules = [
         'Twig\Environment',
         'Throwable',
         'Psr\Log\LoggerInterface',
+        
+        // These files moved from Tool to Category bounded context
+        // Usermanagement BC should query BC via exposed Commands
+        // Ticket created : GRF-180
+        'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface'
+
     ])->in('Akeneo\UserManagement\Bundle'),
 ];
 

@@ -2,18 +2,17 @@
 
 namespace Akeneo\UserManagement\Component\Model;
 
-use \Symfony\Component\Security\Core\User\UserInterface as SymfonyUserInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
-use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\NoopWordInflector;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Security\Core\User\UserInterface as SymfonyUserInterface;
 
 /**
  * @author    Nicolas Dupont <nicalas@akeneo.com>
@@ -28,6 +27,7 @@ class User implements UserInterface, EquatableInterface
     const DEFAULT_TIMEZONE = 'UTC';
     const TYPE_USER = 'user';
     const TYPE_API = 'api';
+    const TYPE_JOB = 'job';
 
     /** @var int|string */
     protected $id;
@@ -236,6 +236,9 @@ class User implements UserInterface, EquatableInterface
         return $this->getUserIdentifier();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getUserIdentifier()
     {
         return $this->username;
@@ -437,7 +440,7 @@ class User implements UserInterface, EquatableInterface
     public function isPasswordRequestNonExpired($ttl)
     {
         return $this->getPasswordRequestedAt() instanceof \DateTime &&
-               $this->getPasswordRequestedAt()->getTimestamp() + $ttl > time();
+            $this->getPasswordRequestedAt()->getTimestamp() + $ttl > time();
     }
 
     /**
@@ -551,7 +554,7 @@ class User implements UserInterface, EquatableInterface
      */
     public function setEnabled($enabled)
     {
-        $this->enabled = (boolean) $enabled;
+        $this->enabled = (bool) $enabled;
 
         return $this;
     }
@@ -1108,6 +1111,21 @@ class User implements UserInterface, EquatableInterface
     public function defineAsApiUser(): void
     {
         $this->type = self::TYPE_API;
+    }
+
+    public function isJobUser(): bool
+    {
+        return self::TYPE_JOB === $this->type;
+    }
+
+    public function defineAsJobUser(): void
+    {
+        $this->type = self::TYPE_JOB;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
     }
 
     /**

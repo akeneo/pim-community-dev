@@ -5,17 +5,19 @@ namespace spec\Akeneo\Tool\Component\Connector\Reader\File\Yaml;
 use Akeneo\Tool\Component\Connector\Exception\InvalidItemFromViolationsException;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Connector\Exception\InvalidYamlFileException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Exception\DataArrayConversionException;
 use Prophecy\Argument;
+use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Validator\ConstraintViolationList;
 
 class ReaderSpec extends ObjectBehavior
 {
     function let(ArrayConverterInterface $converter)
     {
-        $this->beConstructedWith($converter);
+        $this->beConstructedWith($converter, 'products');
     }
 
     function it_is_initializable()
@@ -31,16 +33,49 @@ class ReaderSpec extends ObjectBehavior
     }
 
     function it_return_empty_count_on_invalid_file(
+        ArrayConverterInterface $converter,
         StepExecution $stepExecution,
         JobParameters $jobParameters
     ) {
+        $this->beConstructedWith($converter, 'rules');
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $incorrectlyFormattedFilePath = realpath(__DIR__ . '/../../../fixtures/fake_incorrectly_formatted_yml_file.yml');
-        $jobParameters->get('filePath')->willReturn($incorrectlyFormattedFilePath);
+        $jobParameters->has('storage')->willReturn(true);
+        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => $incorrectlyFormattedFilePath]);
 
         $stepExecution->setSummary(['item_position' => 0])->shouldBeCalledTimes(1);
         $this->totalItems()->shouldReturn(0);
+    }
+
+    function it_return_an_error_if_file_does_not_contain_the_root_level(
+        ArrayConverterInterface $converter,
+        StepExecution $stepExecution,
+        JobParameters $jobParameters
+    ) {
+        $this->beConstructedWith($converter, 'an_non_existent_root_level');
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $incorrectlyFormattedFilePath = realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml');
+        $jobParameters->has('storage')->willReturn(true);
+        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => $incorrectlyFormattedFilePath]);
+        $stepExecution->setSummary(['item_position' => 0])->shouldBeCalledTimes(1);
+
+        $this->shouldThrow(InvalidYamlFileException::class)->during('read');
+    }
+
+    function it_return_an_error_if_file_does_not_exist(
+        ArrayConverterInterface $converter,
+        StepExecution $stepExecution,
+        JobParameters $jobParameters
+    ) {
+        $this->beConstructedWith($converter, 'products');
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->has('storage')->willReturn(true);
+        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => 'a_non_existent_file.yml']);
+
+        $this->shouldThrow(FileNotFoundException::class)->during('read');
     }
 
     function it_return_item_count(
@@ -50,7 +85,8 @@ class ReaderSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $incorrectlyFormattedFilePath = realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml');
-        $jobParameters->get('filePath')->willReturn($incorrectlyFormattedFilePath);
+        $jobParameters->has('storage')->willReturn(true);
+        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => $incorrectlyFormattedFilePath]);
 
         $stepExecution->setSummary(['item_position' => 0])->shouldBeCalledTimes(1);
         $this->totalItems()->shouldReturn(3);
@@ -61,11 +97,12 @@ class ReaderSpec extends ObjectBehavior
         StepExecution $stepExecution,
         JobParameters $jobParameters
     ) {
-        $this->beConstructedWith($converter, false, false);
+        $this->beConstructedWith($converter, 'rules', false, false);
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $incorrectlyFormattedFilePath = realpath(__DIR__ . '/../../../fixtures/fake_incorrectly_formatted_yml_file.yml');
-        $jobParameters->get('filePath')->willReturn($incorrectlyFormattedFilePath);
+        $jobParameters->has('storage')->willReturn(true);
+        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => $incorrectlyFormattedFilePath]);
 
         $stepExecution->setSummary(['item_position' => 0])->shouldBeCalledTimes(1);
         $this->read()->shouldReturn(null);
@@ -76,11 +113,11 @@ class ReaderSpec extends ObjectBehavior
         StepExecution $stepExecution,
         JobParameters $jobParameters
     ) {
-        $this->beConstructedWith($converter, false, false);
+        $this->beConstructedWith($converter, 'products', false, false);
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('filePath')->willReturn(realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml'));
-
+        $jobParameters->has('storage')->willReturn(true);
+        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml')]);
 
         $stepExecution->setSummary(['item_position' => 0])->shouldBeCalledTimes(1);
         $stepExecution->incrementSummaryInfo('item_position')->shouldBeCalledTimes(3);
@@ -112,10 +149,11 @@ class ReaderSpec extends ObjectBehavior
         StepExecution $stepExecution,
         JobParameters $jobParameters
     ) {
-        $this->beConstructedWith($converter, false, false);
+        $this->beConstructedWith($converter, 'products', false, false);
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('filePath')->willReturn(realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml'));
+        $jobParameters->has('storage')->willReturn(true);
+        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml')]);
 
         $stepExecution->setSummary(['item_position' => 0])->shouldBeCalledTimes(1);
         $stepExecution->incrementSummaryInfo('item_position')->shouldBeCalled();
@@ -138,10 +176,11 @@ class ReaderSpec extends ObjectBehavior
         StepExecution $stepExecution,
         JobParameters $jobParameters
     ) {
-        $this->beConstructedWith($converter, false, false);
+        $this->beConstructedWith($converter, 'products', false, false);
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('filePath')->willReturn(realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml'));
+        $jobParameters->has('storage')->willReturn(true);
+        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml')]);
 
         $stepExecution->setSummary(['item_position' => 0])->shouldBeCalledTimes(1);
         $stepExecution->incrementSummaryInfo(Argument::any())->shouldBeCalled();
@@ -173,10 +212,11 @@ class ReaderSpec extends ObjectBehavior
         StepExecution $stepExecution,
         JobParameters $jobParameters
     ) {
-        $this->beConstructedWith($converter, true, false);
+        $this->beConstructedWith($converter, 'products', true, false);
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('filePath')->willReturn(realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml'));
+        $jobParameters->has('storage')->willReturn(true);
+        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml')]);
 
         $stepExecution->setSummary(['item_position' => 0])->shouldBeCalledTimes(1);
         $stepExecution->incrementSummaryInfo('item_position')->shouldBeCalled();
@@ -204,11 +244,11 @@ class ReaderSpec extends ObjectBehavior
         StepExecution $stepExecution,
         JobParameters $jobParameters
     ) {
-        $this->beConstructedWith($converter, true, 'sku');
+        $this->beConstructedWith($converter, 'products', true, 'sku');
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('filePath')
-            ->willReturn(realpath(__DIR__ . '/../../../fixtures/fake_products_without_code.yml'));
+        $jobParameters->has('storage')->willReturn(true);
+        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => realpath(__DIR__ . '/../../../fixtures/fake_products_without_code.yml')]);
 
         $stepExecution->setSummary(['item_position' => 0])->shouldBeCalledTimes(1);
         $stepExecution->incrementSummaryInfo('item_position')->shouldBeCalled();
@@ -238,11 +278,11 @@ class ReaderSpec extends ObjectBehavior
         StepExecution $stepExecution,
         JobParameters $jobParameters
     ) {
-        $this->beConstructedWith($converter, false, false);
+        $this->beConstructedWith($converter, 'products', false, false);
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('filePath')
-            ->willReturn(realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml'));
+        $jobParameters->has('storage')->willReturn(true);
+        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml')]);
 
         $stepExecution->setSummary(['item_position' => 0])->shouldBeCalledTimes(1);
         $stepExecution->incrementSummaryInfo('item_position')->shouldBeCalled();

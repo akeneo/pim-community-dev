@@ -23,7 +23,7 @@ abstract class WebTestCase extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->client = self::$container->get('test.client');
+        $this->client = self::getContainer()->get('test.client');
     }
 
     protected function tearDown(): void
@@ -40,7 +40,7 @@ abstract class WebTestCase extends TestCase
     protected function getAdminUser(): UserInterface
     {
         if ($this->user === null) {
-            $this->user = self::$container->get('pim_user.manager')->findUserByUsername('admin') ?? $this->createAdminUser();
+            $this->user = self::getContainer()->get('pim_user.manager')->findUserByUsername('admin') ?? $this->createAdminUser();
         }
 
         return $this->user;

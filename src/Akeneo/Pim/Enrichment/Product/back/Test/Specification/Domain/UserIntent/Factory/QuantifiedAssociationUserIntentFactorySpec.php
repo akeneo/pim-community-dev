@@ -23,7 +23,7 @@ class QuantifiedAssociationUserIntentFactorySpec extends ObjectBehavior
 
     function it_returns_quantified_association_user_intents()
     {
-        $this->create('associations', [
+        $this->create('quantified_associations', [
             'QUANTIFIED_ASS' => [
                 'products' => [
                     ['identifier' => 'identifier1', 'quantity' => 10],
@@ -33,7 +33,15 @@ class QuantifiedAssociationUserIntentFactorySpec extends ObjectBehavior
                     ['identifier' => 'code1', 'quantity' => 20],
                     ['identifier' => 'code2', 'quantity' => 10]
                 ],
-            ]
+            ],
+            '123' => [
+                'products' => [
+                    ['identifier' => 'foo', 'quantity' => 2],
+                ],
+                'product_models' => [
+                    ['identifier' => 'bar', 'quantity' => 5],
+                ],
+            ],
         ])->shouldBeLike([
             new ReplaceAssociatedQuantifiedProducts('QUANTIFIED_ASS', [
                 new QuantifiedEntity('identifier1', 10),
@@ -42,6 +50,12 @@ class QuantifiedAssociationUserIntentFactorySpec extends ObjectBehavior
             new ReplaceAssociatedQuantifiedProductModels('QUANTIFIED_ASS', [
                 new QuantifiedEntity('code1', 20),
                 new QuantifiedEntity('code2', 10),
+            ]),
+            new ReplaceAssociatedQuantifiedProducts('123', [
+                new QuantifiedEntity('foo', 2),
+            ]),
+            new ReplaceAssociatedQuantifiedProductModels('123', [
+                new QuantifiedEntity('bar', 5),
             ]),
         ]);
     }

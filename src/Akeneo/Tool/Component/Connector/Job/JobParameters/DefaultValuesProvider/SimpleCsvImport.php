@@ -31,7 +31,7 @@ class SimpleCsvImport implements DefaultValuesProviderInterface
     public function getDefaultValues()
     {
         return [
-            'filePath'                  => null,
+            'storage'                  => ['type' => 'none'],
             'delimiter'                 => ';',
             'enclosure'                 => '"',
             'escape'                    => '\\',

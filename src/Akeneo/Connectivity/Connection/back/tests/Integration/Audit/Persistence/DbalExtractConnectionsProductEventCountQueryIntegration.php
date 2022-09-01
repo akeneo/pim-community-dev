@@ -43,8 +43,8 @@ class DbalExtractConnectionsProductEventCountQueryIntegration extends TestCase
 
         $this->connectionLoader = $this->get('akeneo_connectivity.connection.fixtures.connection_loader');
         $this->extractConnectionsProductEventCountQuery = $this->get(DbalExtractConnectionsProductEventCountQuery::class);
-        $this->dbalConnection = self::$container->get('database_connection');
-        $this->productClass = self::$container->getParameter('pim_catalog.entity.product.class');
+        $this->dbalConnection = self::getContainer()->get('database_connection');
+        $this->productClass = self::getContainer()->getParameter('pim_catalog.entity.product.class');
     }
 
     public function test_it_extracts_created_products_by_connection(): void

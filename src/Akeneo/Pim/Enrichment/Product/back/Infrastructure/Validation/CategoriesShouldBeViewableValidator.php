@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 
-use Akeneo\Pim\Enrichment\Category\API\Query\GetExistingCategories;
 use Akeneo\Pim\Enrichment\Category\API\Query\GetViewableCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\CategoryUserIntent;

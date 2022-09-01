@@ -28,6 +28,11 @@ class AssociationsUserIntentFactorySpec extends ObjectBehavior
                 'products' => [],
                 'product_models' => ['code1', 'code2'],
                 'groups' => [],
+            ],
+            11 => [
+                'products' => ['identifier1'],
+                'product_models' => [],
+                'groups' => [],
             ]
         ])->shouldBeLike([
             new ReplaceAssociatedProducts('PACK', ['identifier1', 'identifier2']),
@@ -36,6 +41,9 @@ class AssociationsUserIntentFactorySpec extends ObjectBehavior
             new ReplaceAssociatedProducts('X_SELL', []),
             new ReplaceAssociatedProductModels('X_SELL', ['code1', 'code2']),
             new ReplaceAssociatedGroups('X_SELL', []),
+            new ReplaceAssociatedProducts('11', ['identifier1']),
+            new ReplaceAssociatedProductModels('11', []),
+            new ReplaceAssociatedGroups('11', []),
         ]);
     }
 

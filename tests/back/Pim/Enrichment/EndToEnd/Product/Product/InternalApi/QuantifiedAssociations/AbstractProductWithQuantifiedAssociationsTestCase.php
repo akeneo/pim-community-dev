@@ -52,6 +52,6 @@ abstract class AbstractProductWithQuantifiedAssociationsTestCase extends Abstrac
 
     protected function getProductUpdater(): ObjectUpdaterInterface
     {
-        return self::$container->get('pim_catalog.updater.product');
+        return self::getContainer()->get('pim_catalog.updater.product');
     }
 }

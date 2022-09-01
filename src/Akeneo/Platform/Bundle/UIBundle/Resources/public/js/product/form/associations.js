@@ -221,7 +221,7 @@ define([
           );
           this.renderPanes();
 
-          if (0 !== associationTypes.length) {
+          if (0 !== associationTypes.length && !isQuantifiedAssociation) {
             const currentGrid = this.datagrids[this.getCurrentAssociationTarget()];
             this.renderGrid(currentGrid.name, currentGrid.getInitialParams(this.getCurrentAssociationType()));
             this.setListenerSelectors();
@@ -315,11 +315,13 @@ define([
         `quantifiedAssociations.${associationTypeCode}`
       );
 
+      const isUserOwner = this.getFormData().meta.is_owner ?? true;
       const props = {
         quantifiedAssociations,
         parentQuantifiedAssociations,
         errors,
         isCompact: false,
+        isUserOwner,
         onAssociationsChange: updatedAssociations => {
           const formData = this.getFormData();
           formData.quantified_associations = {
@@ -458,6 +460,12 @@ define([
       this.updateListenerSelectors();
 
       const currentGrid = this.datagrids[this.getCurrentAssociationTarget()];
+
+      if (!this.isGridRendered(currentGrid) && !isQuantifiedAssociation) {
+        this.renderGrid(currentGrid.name, currentGrid.getInitialParams(this.getCurrentAssociationType()));
+        this.setListenerSelectors();
+      }
+
       mediator
         .trigger(
           'datagrid:setParam:' + currentGrid.name,
@@ -502,7 +510,7 @@ define([
       this.updateListenerSelectors();
 
       const currentGrid = this.datagrids[this.getCurrentAssociationTarget()];
-      if (!this.isGridRendered(currentGrid)) {
+      if (!this.isGridRendered(currentGrid) && !isQuantifiedAssociation) {
         this.renderGrid(currentGrid.name, currentGrid.getInitialParams(this.getCurrentAssociationType()));
         this.setListenerSelectors();
       }

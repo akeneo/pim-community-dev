@@ -20,6 +20,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
+use Ramsey\Uuid\Uuid;
 
 class ComputeCompletenessOfProductsFamilyTaskletSpec extends ObjectBehavior
 {
@@ -64,6 +65,10 @@ class ComputeCompletenessOfProductsFamilyTaskletSpec extends ObjectBehavior
         ProductInterface $product2,
         ProductInterface $product3
     ) {
+        $uuid1 = Uuid::uuid4();
+        $uuid2 = Uuid::uuid4();
+        $uuid3 = Uuid::uuid4();
+
         $jobParameters->get('family_code')->willReturn('accessories');
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $familyRepository->findOneByIdentifier('accessories')->willReturn($family);
@@ -75,9 +80,9 @@ class ComputeCompletenessOfProductsFamilyTaskletSpec extends ObjectBehavior
 
         $cursor->valid()->willReturn(true, true, true, false);
         $cursor->current()->willReturn(
-            new IdentifierResult('identifier1', ProductInterface::class),
-            new IdentifierResult('identifier2', ProductInterface::class),
-            new IdentifierResult('identifier3', ProductInterface::class),
+            new IdentifierResult('identifier1', ProductInterface::class, 'product_' . $uuid1->toString()),
+            new IdentifierResult('identifier2', ProductInterface::class, 'product_' . $uuid2->toString()),
+            new IdentifierResult('identifier3', ProductInterface::class, 'product_' . $uuid3->toString()),
         );
         $cursor->next()->shouldBeCalled();
         $cursor->rewind()->shouldBeCalled();

@@ -19,6 +19,7 @@ This value should not be a decimal.: 该值不应为小数。
 "The {{ attribute_code }} attribute can not have the same value more than once. The {{ value }} value is already set on another product.": 属性 {{ attribute_code }} 的同一个值不能出现超过一次。已在其他产品上设置了 {{ value }} 值。
 The same identifier is already set on another product: 已在另一产品上设置了同一标识符
 regex.comma_or_semicolon_or_surrounding_space.message: 此字段不应包含任何逗号、分号或前/后空格
+regex.line_break.message: 此字段不应包含任何换行符
 file.extensions.message: '不允许的文件扩展名 (允许的扩展名︰ %extensions%)。'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": 此类型的值需要使用 {{ decimal_separator }} 来分隔小数。
 "This type of value expects the use of dot (.) to separate decimals.": 此类型的值需要使用点（.）来分隔小数。
@@ -65,8 +66,6 @@ pim_catalog:
     variant_product_invalid_family: '变型产品品类必须与其父类相同'
     php_int_max_reached: '最大数值必须小于 %php_int_max%。'
     not_null_family: 品类不能为“空 (null)”，因为具有标识符"%sku%"的产品是变型产品。
-    variant_product_has_parent: '变型产品"%variant_product%"必须有父产品'
-    invalid_variant_product_parent: '变型产品"%variant_product%"不能以产品模型"%product_model%"作为父模型， (此产品模型只能有其他产品模型作为子模型)'
     modified_variant_axis_value: '变型轴"%variant_axis%"不能修改，"%provided_value%" 已给定'
     family_variant_attributes_unique: 属性必须是唯一的，"%attributes%" 在变型属性集中多次使用
     family_variant_axes_unique: 变型轴必须是唯一的，"%attributes%" 在变型属性集中多次使用
