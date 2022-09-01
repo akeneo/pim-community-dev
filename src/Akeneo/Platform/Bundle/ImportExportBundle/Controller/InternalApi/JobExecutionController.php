@@ -31,10 +31,6 @@ class JobExecutionController
     private array $jobSecurityMapping;
     private FilesystemReader $logFilesystem;
 
-    // @todo pull-up-to-6.0 remove these line
-    /** @var FilesystemInterface|null */
-    private $logFileSystem;
-
     public function __construct(
         TranslatorInterface $translator,
         JobExecutionArchivist $archivist,
@@ -72,13 +68,6 @@ class JobExecutionController
         $context = ['limit_warnings' => 100];
 
         $jobResponse = $this->normalizer->normalize($jobExecution, 'internal_api', $context);
-
-        // @todo pull-up-to-6.0 remove these line
-        if (null === $this->logFileSystem) {
-            $logExists = file_exists($jobExecution->getLogFile());
-        } else {
-            $logExists = !empty($jobExecution->getLogFile()) && $this->logFileSystem->has(new LogKey($jobExecution));
-        }
 
         $jobResponse['meta'] = [
             'logExists' => !empty($jobExecution->getLogFile()) && $this->logFilesystem->fileExists(new LogKey($jobExecution)),
