@@ -1406,11 +1406,11 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "product_family",
         "family": "familyA2",
         "groups": [],
         "categories": [],
         "values": {
+            "sku": [{"locale": null, "scope": null, "data": "product_family"}],
             "unknown_attribute":[{
                 "locale": null,
                 "scope": null,

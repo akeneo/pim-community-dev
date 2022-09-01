@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Bundle\Event\TechnicalErrorEvent;
 use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Event\ProductDomainErrorEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException as ProductInvalidArgumentException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\TwoWayAssociationWithTheSameProductException;
@@ -63,6 +64,7 @@ class UpdateProductByUuidController
         private Connection $connection,
         private ValidatorInterface $productValidator,
         private GetProductUuids $getProductUuids,
+        private RemoveParentInterface $removeParent,
     ) {
     }
 
@@ -78,6 +80,12 @@ class UpdateProductByUuidController
         if (0 < $violations->count()) {
             $firstViolation = $violations->get(0);
             $this->throwDocumentedHttpException($firstViolation->getMessage(), new \LogicException($firstViolation->getMessage()));
+        }
+
+        if (isset($data['identifier'])) {
+            $this->throwDocumentedHttpException(
+                'Property "identifier" does not exist.'
+            );
         }
 
         try {
@@ -96,6 +104,7 @@ class UpdateProductByUuidController
         }
 
         $this->validateUuidConsistency($uuid, $data);
+        $data['uuid'] = $uuid;
 
         if ($isUpdate) {
             $data = $this->filterEmptyValues($product, $data);
@@ -125,6 +134,10 @@ class UpdateProductByUuidController
     private function updateProduct(ProductInterface $product, array $data): void
     {
         try {
+            if ($this->needUpdateFromVariantToSimple($product, $data)) {
+                $this->removeParent->from($product);
+            }
+
             if (isset($data['parent']) || $product->isVariant()) {
                 $data = $this->productAttributeFilter->filter($data);
             }
@@ -323,5 +336,17 @@ class UpdateProductByUuidController
         }
 
         return $result;
+    }
+
+    /**
+     * It is a conversion from variant product to simple product if
+     * - the product already exists
+     * - it is a variant product
+     * - and 'parent' is explicitly null
+     */
+    protected function needUpdateFromVariantToSimple(ProductInterface $product, array $data): bool
+    {
+        return null !== $product->getCreated() && $product->isVariant() &&
+            array_key_exists('parent', $data) && null === $data['parent'];
     }
 }

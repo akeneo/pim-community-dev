@@ -79,6 +79,12 @@ class CreateProductByUuidController
             $this->throwDocumentedHttpException($firstViolation->getMessage(), new \LogicException($firstViolation->getMessage()));
         }
 
+        if (isset($data['identifier'])) {
+            $this->throwDocumentedHttpException(
+                'Property "identifier" does not exist.'
+            );
+        }
+
         if (isset($data['uuid']) && $this->productExists($data['uuid'])) {
             $this->throwViolationException(
                 sprintf('The %s uuid is already used for another product.', $data['uuid']),
