@@ -1,10 +1,5 @@
 version: 2.1
 
-parameters:
-  run-database-migration-tests:
-    type: boolean
-    default: false
-
 orbs:
     slack-app: circleci/slack@4.8.3
 

@@ -1,0 +1,4 @@
+parameters:
+  run-database-migration-tests:
+    type: boolean
+    default: false
