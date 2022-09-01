@@ -1,0 +1,22 @@
+version: 2.1
+
+workflows:
+  version: 2
+  migrations:
+    when: << pipeline.parameters.run-database-migration-tests >>
+    jobs:
+      - checkout_ee:
+          name: checkout_migrations
+      - build_dev:
+          name: build_migrations
+          path_to_front_packages: vendor/akeneo/pim-community-dev/front-packages
+          requires:
+            - checkout_ee
+      - test_database:
+          name: test_database_structure
+          requires:
+            - build_dev
+      - test_back_data_migrations:
+          name: test_migrations
+          requires:
+            - build_dev

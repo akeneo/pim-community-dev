@@ -163,10 +163,15 @@ workflows:
                   is_ee_built: false
                   requires:
                       - checkout_catalogs
+            - test_ce_migrations:
+                  name: test_migrations
+                  requires:
+                      - checkout_catalogs
             - pull_request_success:
                   requires:
                       - test_cat_front
                       - test_cat_back
+                      - test_migrations
 
     octopus_migrations:
       when: << pipeline.parameters.run-database-migration-tests >>
