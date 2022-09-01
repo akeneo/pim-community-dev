@@ -1,6 +1,5 @@
 Feature: Supplier Portal - Authentication - validate a contributor password
 
-  @supplier-portal-contributor-authentication-enabled
   Scenario: Update the contributor password
     Given a contributor account with email "test@test.test"
     When I update the contributor account with email "test@test.test" by updating the password to "P@$$w0rd"
