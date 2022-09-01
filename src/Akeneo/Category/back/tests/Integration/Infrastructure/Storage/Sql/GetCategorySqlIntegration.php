@@ -44,8 +44,8 @@ class GetCategorySqlIntegration extends TestCase
     {
         $category = $this->get(GetCategoryInterface::class)->byCode($this->category->getCode());
         $this->assertInstanceOf(Category::class, $category);
-        $this->assertSame('Chaussettes', $category->getLabels()->getLabel('fr_FR'));
-        $this->assertSame('Socks', $category->getLabels()->getLabel('en_US'));
+        $this->assertSame('Chaussettes', $category->getLabels()->getTranslation('fr_FR'));
+        $this->assertSame('Socks', $category->getLabels()->getTranslation('en_US'));
         $this->assertSame(
             [
                 "data" => "Les chaussures dont vous avez besoin !",
@@ -86,8 +86,8 @@ class GetCategorySqlIntegration extends TestCase
         $category = $this->get(GetCategoryInterface::class)->byCode($this->category->getCode());
         $this->assertInstanceOf(Category::class, $category);
         $this->assertSame('socks', (string)$category->getCode());
-        $this->assertSame('Chaussettes', $category->getLabels()->getLabel('fr_FR'));
-        $this->assertSame('Socks', $category->getLabels()->getLabel('en_US'));
+        $this->assertSame('Chaussettes', $category->getLabels()->getTranslation('fr_FR'));
+        $this->assertSame('Socks', $category->getLabels()->getTranslation('en_US'));
         $this->assertSame(
             [
                 "data" => "Les chaussures dont vous avez besoin !",

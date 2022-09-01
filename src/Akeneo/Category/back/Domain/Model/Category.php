@@ -58,7 +58,7 @@ class Category
 
     public function setLabel(string $localeCode, string $label): void
     {
-        $this->labels->setLabel($localeCode, $label);
+        $this->labels->setTranslation($localeCode, $label);
     }
 
     public function setAttributes(ValueCollection $attributes): void

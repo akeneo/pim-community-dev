@@ -67,7 +67,7 @@ SQL;
 
     private function isIdenticalLabel(Category $category, string $localeCode, string $label): bool
     {
-        $existingLabels = $this->getCategory->byCode((string) $category->getCode())?->getLabels()?->getLabels();
+        $existingLabels = $this->getCategory->byCode((string) $category->getCode())?->getLabels()?->getTranslations();
 
         if ($existingLabels === null || !array_key_exists($localeCode, $existingLabels)) {
             return false;

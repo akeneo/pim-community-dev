@@ -60,7 +60,7 @@ class CategoryTestCase extends TestCase
         );
         $this->get(UpsertCategoryTranslations::class)->execute($categoryModelWithId);
 
-        $categoryTranslations = $this->get(GetCategoryInterface::class)->byCode((string) $categoryModelToCreate->getCode())->getLabelCollection()->getLabels();
+        $categoryTranslations = $this->get(GetCategoryInterface::class)->byCode((string) $categoryModelToCreate->getCode())->getLabels()->getTranslations();
 
         $createdParentId =
             $categoryBase->getParentId()?->getValue() > 0
