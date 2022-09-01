@@ -127,7 +127,7 @@ final class JobExecutionWatchdogCommand extends Command
 
         foreach ($watchdogOptions as $optionName => $optionValue) {
             switch (true) {
-                case is_bool($optionValue) && $optionValue:
+                case true === $optionValue:
                     $processArguments[] = sprintf('--%s', $optionName);
                     break;
                 case is_scalar($optionValue) && $optionValue:
