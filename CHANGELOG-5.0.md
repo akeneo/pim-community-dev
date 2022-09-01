@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.112 (2022-09-01)
+
 ## Bug fixes
 
 - PIM-10591: Fix download log should not be possible when job is running
