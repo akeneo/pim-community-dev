@@ -40,6 +40,9 @@ jobs:
                   command: |
                     du -sh .git
                     git diff --name-only origin/master..."$CIRCLE_SHA1"
+                    git fetch --shallow-exclude="$CIRCLE_SHA1"
+                    git gc --prune=all
+                    du -sh .git
             - continuation/continue:
                   configuration_path: .circleci/merged_config.yml
 #                  parameters: /tmp/pipeline-parameters.json
