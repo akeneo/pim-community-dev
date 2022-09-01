@@ -33,8 +33,8 @@ class GetChannelsQueryTest extends IntegrationTestCase
         $this->createChannel('tablet', ['en_US']);
         $this->createChannel('mobile', ['en_US']);
 
-        $page1 = $this->query->execute(1, 2);
-        $page2 = $this->query->execute(2, 2);
+        $page1 = $this->query->execute([], 1, 2);
+        $page2 = $this->query->execute([], 2, 2);
 
         $expectedPage1 = [
             [
@@ -56,5 +56,34 @@ class GetChannelsQueryTest extends IntegrationTestCase
 
         self::assertEquals($expectedPage1, $page1);
         self::assertEquals($expectedPage2, $page2);
+    }
+
+    public function testItSearchesPaginatedChannels(): void
+    {
+        //Already existing as part of minimal catalog: ecommerce with en_US
+        $this->createChannel('tablet', ['en_US']);
+        $this->createChannel('mobile', ['en_US']);
+
+        $page1 = $this->query->execute(['tablet', 'ecommerce'], 1, 1);
+        $page2 = $this->query->execute(['tablet', 'ecommerce'], 2, 1);
+        $page3 = $this->query->execute(['tablet', 'ecommerce'], 3, 1);
+
+        $expectedPage1 = [
+            [
+                'code' => 'ecommerce',
+                'label' => '[ecommerce]',
+            ],
+        ];
+        $expectedPage2 = [
+            [
+                'code' => 'tablet',
+                'label' => '[tablet]',
+            ],
+        ];
+        $expectedPage3 = [];
+
+        self::assertEquals($expectedPage1, $page1);
+        self::assertEquals($expectedPage2, $page2);
+        self::assertEquals($expectedPage3, $page3);
     }
 }

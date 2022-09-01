@@ -50,6 +50,7 @@ test('it returns the form values when catalog is loaded', () => {
                     value: true,
                 },
             ],
+            filter_values_criteria: {channel: ['ecommerce', 'print']},
         },
         error: null,
     }));
@@ -67,6 +68,7 @@ test('it returns the form values when catalog is loaded', () => {
                         value: true,
                     },
                 },
+                filter_values_criteria: {channel: ['ecommerce', 'print']},
             },
         },
         expect.any(Function),
@@ -92,6 +94,7 @@ test('it calls the API when save is called', async () => {
                     value: true,
                 },
             ],
+            filter_values_criteria: {channel: ['ecommerce', 'print']},
         },
         error: null,
     }));
@@ -117,6 +120,7 @@ test('it calls the API when save is called', async () => {
                     value: true,
                 },
             ],
+            filter_values_criteria: {channel: ['ecommerce', 'print']},
         },
     });
 });
@@ -145,6 +149,7 @@ test('it returns validation errors if the API call failed', async () => {
                     value: true,
                 },
             ],
+            filter_values_criteria: {channel: ['ecommerce', 'print']},
         },
         error: null,
     }));
@@ -183,6 +188,7 @@ test('it returns dirty at true after dispatching a change', () => {
                     value: true,
                 },
             ],
+            filter_values_criteria: {channel: ['ecommerce', 'print']},
         },
         error: null,
     }));
@@ -202,7 +208,7 @@ test('it returns dirty at true after dispatching a change', () => {
     expect(isDirty).toBeTruthy();
 });
 
-test("it forward the action to dispatch when it's a non-altering event", () => {
+test('it forwards the action to dispatch when it\'s a non-altering event', () => {
     mocked(useCatalog).mockImplementation(() => ({
         isLoading: false,
         isError: false,
@@ -217,6 +223,7 @@ test("it forward the action to dispatch when it's a non-altering event", () => {
                     value: true,
                 },
             ],
+            filter_values_criteria: {channel: ['ecommerce', 'print']},
         },
         error: null,
     }));
@@ -239,6 +246,7 @@ test("it forward the action to dispatch when it's a non-altering event", () => {
                             value: true,
                         },
                     },
+                    filter_values_criteria: {channel: ['ecommerce', 'print']},
                 },
             });
     });

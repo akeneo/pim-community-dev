@@ -10,6 +10,7 @@ import {useCatalogFormContext} from '../contexts/CatalogFormContext';
 import {CatalogFormActions} from '../reducers/CatalogFormReducer';
 import {mapProductSelectionCriteriaErrors} from '../utils/mapProductSelectionCriteriaErrors';
 import {getTabsValidationStatus} from '../utils/getTabsValidationStatus';
+import {FilterValues} from '../../FilterValues';
 
 type Props = {
     values: CatalogFormValues;
@@ -36,6 +37,11 @@ const Edit: FC<PropsWithChildren<Props>> = ({values, errors}) => {
         },
         [dispatch]
     );
+    /* istanbul ignore next */
+    const handleFilterValuesChange = useCallback(
+        value => dispatch({type: CatalogFormActions.SET_FILTER_VALUES_CRITERIA, value: value}),
+        [dispatch]
+    );
 
     return (
         <>
@@ -57,7 +63,11 @@ const Edit: FC<PropsWithChildren<Props>> = ({values, errors}) => {
                 />
             )}
             {isCurrent(Tabs.FILTER_VALUES) && (
-                <div> Hello world!</div>
+                <FilterValues
+                    filterValues={values.filter_values_criteria}
+                    onChange={handleFilterValuesChange}
+                    errors={errors}
+                />
             )}
         </>
     );

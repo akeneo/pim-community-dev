@@ -36,7 +36,7 @@ class GetChannelsActionTest extends TestCase
     {
         $this->getChannelsQuery
             ->method('execute')
-            ->with(1, 20)
+            ->with([], 1, 20)
             ->willReturn(['channelA', 'channelB', 'channelC']);
 
         $response = ($this->getChannelsAction)(
@@ -91,6 +91,11 @@ class GetChannelsActionTest extends TestCase
                     'limit' => 0,
                 ],
             ],
+            'codes is not a string' => [
+                [
+                    'codes' => ['ecommerce', 'print'],
+                ],
+            ],
         ];
     }
 
@@ -119,6 +124,7 @@ class GetChannelsActionTest extends TestCase
                 [
                     'page' => 1,
                     'limit' => 1,
+                    'codes' =>'ecommerce,print',
                 ],
             ],
         ];

@@ -13,5 +13,5 @@ interface GetChannelsQueryInterface
     /**
      * @return array<array-key, array{code: string, label: string}>
      */
-    public function execute(int $page = 1, int $limit = 20): array;
+    public function execute(array $search, int $page = 1, int $limit = 20): array;
 }
