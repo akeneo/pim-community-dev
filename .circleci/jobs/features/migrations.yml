@@ -4,6 +4,7 @@ jobs:
   test_ce_migrations:
     machine:
       image: *executor-machine
+      docker_layer_caching: true
     steps:
       - when:
           condition: << pipeline.parameters.run-database-migration-tests >>
@@ -11,8 +12,11 @@ jobs:
             - attach_workspace:
                 at: ~/
             - run:
-                name: Change owner on project dir in order to archive the project into the workspace
+                name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
                 command: sudo chown -R 1000:1000 ../project
+            - run:
+                name: Pull docker images
+                command: docker-compose pull php fpm mysql elasticsearch object-storage pubsub-emulator
             - run:
                 name: Start containers
                 command: |
@@ -20,7 +24,7 @@ jobs:
                   docker/wait_docker_up.sh
             - run:
                 name: Install database
-                command: APP_ENV=dev make database
+                command: APP_ENV=test O="--withoutFixtures" make database
             - run:
                 name: Migrations tests
                 command: make migration-back
