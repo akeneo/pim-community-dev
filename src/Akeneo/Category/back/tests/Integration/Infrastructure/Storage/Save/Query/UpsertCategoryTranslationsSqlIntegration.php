@@ -37,15 +37,15 @@ class UpsertCategoryTranslationsSqlIntegration extends CategoryTestCase
 
         $createdCategory->setLabel('fr_FR', 'chaussettes');
         $this->upsertCategoryTranslations->execute($createdCategory);
-        $translations = $this->getCategory->byCode((string) $createdCategory->getCode())->getLabelCollection()->getLabels();
+        $translations = $this->getCategory->byCode((string) $createdCategory->getCode())->getLabels()->getLabels();
 
         $this->assertNotNull($translations);
         $this->assertEqualsCanonicalizing(
-            $createdCategory->getLabelCollection()->getLabel('en_US'),
+            $createdCategory->getLabels()->getLabel('en_US'),
             $translations['en_US']
         );
         $this->assertEqualsCanonicalizing(
-            $createdCategory->getLabelCollection()->getLabel('fr_FR'),
+            $createdCategory->getLabels()->getLabel('fr_FR'),
             $translations['fr_FR']
         );
     }
@@ -61,7 +61,7 @@ class UpsertCategoryTranslationsSqlIntegration extends CategoryTestCase
         $createdCategory->setLabel('en_US', 'shirts');
         $createdCategory->setLabel('fr_FR', 'chemises');
         $this->upsertCategoryTranslations->execute($createdCategory);
-        $translations = $this->getCategory->byCode((string) $createdCategory->getCode())->getLabelCollection()->getLabels();
+        $translations = $this->getCategory->byCode((string) $createdCategory->getCode())->getLabels()->getLabels();
 
         $this->assertNotNull($translations);
         $this->assertEquals('shirts', $translations['en_US']);

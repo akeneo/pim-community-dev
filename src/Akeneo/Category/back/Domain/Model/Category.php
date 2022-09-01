@@ -19,7 +19,7 @@ class Category
     public function __construct(
         private ?CategoryId $id,
         private Code $code,
-        private ?LabelCollection $labelCollection = null,
+        private ?LabelCollection $labels = null,
         private ?CategoryId $parentId = null,
         private ?ValueCollection $attributes = null,
         private ?PermissionCollection $permissions = null,
@@ -36,9 +36,9 @@ class Category
         return $this->code;
     }
 
-    public function getLabelCollection(): ?LabelCollection
+    public function getLabels(): ?LabelCollection
     {
-        return $this->labelCollection;
+        return $this->labels;
     }
 
     public function getParentId(): ?CategoryId
@@ -46,22 +46,22 @@ class Category
         return $this->parentId;
     }
 
-    public function getValueCollection(): ?ValueCollection
+    public function getAttributes(): ?ValueCollection
     {
         return $this->attributes;
     }
 
-    public function getPermissionCollection(): ?PermissionCollection
+    public function getPermissions(): ?PermissionCollection
     {
         return $this->permissions;
     }
 
     public function setLabel(string $localeCode, string $label): void
     {
-        $this->labelCollection->setLabel($localeCode, $label);
+        $this->labels->setLabel($localeCode, $label);
     }
 
-    public function setValueCollection(ValueCollection $attributes): void
+    public function setAttributes(ValueCollection $attributes): void
     {
         $this->attributes = $attributes;
     }
@@ -81,10 +81,10 @@ class Category
         return [
             'id' => $this->getId()?->getValue(),
             'code' => (string) $this->getCode(),
-            'labels' => $this->getLabelCollection()?->normalize(),
+            'labels' => $this->getLabels()?->normalize(),
             'parent' => $this->getParentId()?->getValue(),
-            'values' => $this->getValueCollection()?->normalize(),
-            'permissions' => $this->getPermissionCollection()?->normalize(),
+            'attributes' => $this->getAttributes()?->normalize(),
+            'permissions' => $this->getPermissions()?->normalize(),
         ];
     }
 }

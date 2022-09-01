@@ -35,7 +35,7 @@ class CategoryQueryHandler implements CategoryQueryInterface
             $categoryNormalized['code'],
             $categoryNormalized['labels'],
             $categoryNormalized['parent'],
-            $categoryNormalized['values'],
+            $categoryNormalized['attributes'],
             $categoryNormalized['permissions'],
         );
     }
@@ -55,7 +55,7 @@ class CategoryQueryHandler implements CategoryQueryInterface
             $categoryNormalized['code'],
             $categoryNormalized['labels'],
             $categoryNormalized['parent'],
-            $categoryNormalized['values'],
+            $categoryNormalized['attributes'],
             $categoryNormalized['permissions'],
         );
     }

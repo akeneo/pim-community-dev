@@ -29,12 +29,12 @@ class SetLabelApplierSpec extends ObjectBehavior
         $setLabelNewEN = new SetLabel('en_US', 'The new label');
 
         $this->apply($setLabelEN, $category);
-        Assert::assertEquals('The label', $category->getLabelCollection()->getLabel('en_US'));
+        Assert::assertEquals('The label', $category->getLabels()->getLabel('en_US'));
 
         $this->apply($setLabelFR, $category);
-        Assert::assertEquals('The label', $category->getLabelCollection()->getLabel('en_US'));
+        Assert::assertEquals('The label', $category->getLabels()->getLabel('en_US'));
 
         $this->apply($setLabelNewEN, $category);
-        Assert::assertEquals('The new label', $category->getLabelCollection()->getLabel('en_US'));
+        Assert::assertEquals('The new label', $category->getLabels()->getLabel('en_US'));
     }
 }

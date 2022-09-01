@@ -21,7 +21,7 @@ class SetTextApplier implements UserIntentApplier
             throw new \InvalidArgumentException('Unexpected class');
         }
 
-        $valueCollection = $category->getValueCollection() ?? ValueCollection::fromArray([]);
+        $valueCollection = $category->getAttributes() ?? ValueCollection::fromArray([]);
         $valueCollection->setValue(
             $userIntent->attributeUuid(),
             $userIntent->attributeCode(),
@@ -29,7 +29,7 @@ class SetTextApplier implements UserIntentApplier
             $userIntent->value(),
         );
 
-        $category->setValueCollection($valueCollection);
+        $category->setAttributes($valueCollection);
     }
 
     /**

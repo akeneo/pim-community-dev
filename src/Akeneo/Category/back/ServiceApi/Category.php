@@ -19,14 +19,13 @@ class Category
      * @param array<string, array<int>>|null $permissions
      */
     public function __construct(
-        private int    $id,
+        private int $id,
         private string $code,
         private ?array $labels = null,
-        private ?int   $parent = null,
+        private ?int $parent = null,
         private ?array $attributes = null,
         private ?array $permissions = null,
-    )
-    {
+    ) {
     }
 
     public function getId(): int

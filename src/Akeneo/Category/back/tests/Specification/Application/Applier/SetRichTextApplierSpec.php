@@ -44,7 +44,7 @@ class SetRichTextApplierSpec extends ObjectBehavior
         $category = new Category(
             id: new CategoryId(1),
             code: new Code('code'),
-            labelCollection: LabelCollection::fromArray([]),
+            labels: LabelCollection::fromArray([]),
             attributes: $attributes
         );
 
@@ -68,14 +68,14 @@ class SetRichTextApplierSpec extends ObjectBehavior
         $expectedCategory = new Category(
             id: new CategoryId(1),
             code: new Code('code'),
-            labelCollection: LabelCollection::fromArray([]),
+            labels: LabelCollection::fromArray([]),
             attributes: $expectedAttributes
         );
 
         $this->apply($userIntent, $category);
         Assert::assertEquals(
-            $expectedCategory->getValueCollection(),
-            $category->getValueCollection()
+            $expectedCategory->getAttributes(),
+            $category->getAttributes()
         );
     }
 }

@@ -47,7 +47,7 @@ class SetTextApplierSpec extends ObjectBehavior
         $category = new Category(
             id: new CategoryId(1),
             code: new Code('code'),
-            labelCollection: LabelCollection::fromArray([]),
+            labels: LabelCollection::fromArray([]),
             valueCollection: $valueCollection
         );
 
@@ -71,14 +71,14 @@ class SetTextApplierSpec extends ObjectBehavior
         $expectedCategory = new Category(
             id: new CategoryId(1),
             code: new Code('code'),
-            labelCollection: LabelCollection::fromArray([]),
+            labels: LabelCollection::fromArray([]),
             valueCollection: $expectedValueCollection
         );
 
         $this->apply($userIntent, $category);
         Assert::assertEquals(
-            $expectedCategory->getValueCollection(),
-            $category->getValueCollection()
+            $expectedCategory->getAttributes(),
+            $category->getAttributes()
         );
     }
 }

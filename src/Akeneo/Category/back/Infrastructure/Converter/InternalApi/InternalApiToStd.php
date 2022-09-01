@@ -46,15 +46,10 @@ class InternalApiToStd implements ConverterInterface
      */
     public function convert(array $data): array
     {
-<<<<<<< HEAD
         // Validate the internal Api data and structure
         $this->checkArrayStructure($data);
         $this->checkProperties($data['properties']);
         $this->checkAttributes($data['attributes']);
-=======
-        $this->fieldsRequirementChecker->checkFieldsExist($data, ['code', 'labels']);
-        $this->fieldsRequirementChecker->checkFieldsNotEmpty($data, ['code']);
->>>>>>> 326ee84f91... GRF-223: Save labels
 
         // Normalize
         $convertedData = [];
