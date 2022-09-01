@@ -36,7 +36,7 @@ class UpsertProductCommandCleaner
 
         return UpsertProductCommand::createFromCollection(
             userId: $upsertProductCommand->userId(),
-            productIdentifier: $upsertProductCommand->productIdentifier(),
+            productIdentifier: $upsertProductCommand->productIdentifierOrUuid()->identifier(),
             userIntents: \array_merge([
                 $familyUserIntent,
                 $categoryUserIntent,
