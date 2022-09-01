@@ -11,7 +11,7 @@ jobs:
     merge_config:
         executor: continuation/default
         steps:
-            - checkout
+            - git-shallow-clone/checkout
             - run:
                 name: Install yq (v4)
                 command: |
