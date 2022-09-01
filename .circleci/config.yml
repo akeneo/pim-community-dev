@@ -41,8 +41,6 @@ jobs:
                     du -sh .git
                     git diff --name-only origin/master..."$CIRCLE_SHA1"
                     git fetch --shallow-since=2022-09-01
-#                    git pull --depth 1
-#                    git reflog expire --expire=all --all
                     git gc --prune=all
                     du -sh .git
             - continuation/continue:
