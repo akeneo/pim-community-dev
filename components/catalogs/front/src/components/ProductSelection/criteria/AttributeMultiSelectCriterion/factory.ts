@@ -1,7 +1,7 @@
-import {AttributeSimpleSelectCriterionState} from './types';
+import {AttributeMultiSelectCriterionState} from './types';
 import {Operator} from '../../models/Operator';
 
-export default (state?: Partial<AttributeSimpleSelectCriterionState>): AttributeSimpleSelectCriterionState => {
+export default (state?: Partial<AttributeMultiSelectCriterionState>): AttributeMultiSelectCriterionState => {
     if (!state?.field) {
         throw Error('You need to specify the attribute code when calling the attribute criterion factory');
     }
