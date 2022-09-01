@@ -36,6 +36,7 @@ akeneo_catalogs:
             label: Channel
             empty: No channel found
         criteria:
+            unknown: This attribute has been deleted.
             status:
                 label: Status
                 enabled: Enabled
