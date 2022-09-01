@@ -36,10 +36,12 @@ jobs:
                       SOURCE_PFID=<< parameters.SOURCE_PFID >>
                       INSTANCE_NAME_PREFIX=pimci<<# parameters.LONG_TTL_INSTANCE >>-long<</ parameters.LONG_TTL_INSTANCE >>-duplic
                       INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-$(echo "${SOURCE_PFID}" | cut -c1-15)-${CIRCLE_BUILD_NUM}
+                      PFID=${TYPE}-${INSTANCE_NAME}
 
                       echo export SOURCE_PFID=${SOURCE_PFID} >> $BASH_ENV
                       echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
                       echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+                      echo export PFID=${PFID} >> $BASH_ENV
 
                       echo "Source PFID: ${SOURCE_PFID}"
                       echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
@@ -63,6 +65,7 @@ jobs:
                       echo export SOURCE_PFID=${SOURCE_PFID} >> persisted_env_vars
                       echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> persisted_env_vars
                       echo export INSTANCE_NAME=${INSTANCE_NAME} >> persisted_env_vars
+                      echo export PFID=${PFID} >> persisted_env_vars
             - run:
                   name: Display login information
                   command: |

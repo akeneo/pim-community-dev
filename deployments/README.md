@@ -2,11 +2,12 @@
 
 ## List
 
-| Trigger name                     | Parameters                                   | Description                        |
-|----------------------------------|----------------------------------------------|------------------------------------|
-| delete_instance                  | **instance** (string) : Name of the instance | Delete instance given as parameter |
-| clone_and_upgrade_flex_customers |                                              |                                    |
-| jenkins_ge2ee_mig                |                                              |                                    |
+| Trigger name                     | Parameters                                                                                                                                               | Description                          |
+|----------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
+| delete_instance                  | **instance** (string) : Name of the instance                                                                                                             | Delete instance given as parameter   |
+| clone_and_upgrade_flex_customers |                                                                                                                                                          |                                      |
+| jenkins_ge2ee_mig                |                                                                                                                                                          |                                      |
+| load_tests                       | **instance** (string) : Name of the instance (only on dev cluster)<br/>**test** (string)(optional): Name of test to execute (execute all tests if empty) | Execute load tests on given instance |
 
 ## How to trigger jobs
 

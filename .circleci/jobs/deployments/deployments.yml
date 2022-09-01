@@ -130,15 +130,18 @@ jobs:
                       fi
                       INSTANCE_NAME_PREFIX=pimup
                       INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
+                      PFID=${TYPE}-${INSTANCE_NAME}
 
                       echo export LATEST_RELEASE=${LATEST_RELEASE} >> $BASH_ENV
                       echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
                       echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+                      echo export PFID=${PFID} >> $BASH_ENV
 
                       echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
                       echo "Instance name: ${INSTANCE_NAME}"
                       echo "Image tag: ${IMAGE_TAG}"
                       echo "Latest image tag: ${LATEST_RELEASE}"
+                      echo "PFID: ${PFID}"
             - show_datadog_logs_links:
                 pfid: ${TYPE}-${INSTANCE_NAME}
             - run:
@@ -171,6 +174,7 @@ jobs:
                   command: |
                       echo export TYPE=${TYPE} >> persisted_env_vars
                       echo export INSTANCE_NAME="${INSTANCE_NAME}" >> persisted_env_vars
+                      echo export PFID="${PFID}" >> persisted_env_vars
             - run:
                   name: Remove env on kubernetes
                   command: |

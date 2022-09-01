@@ -12,6 +12,9 @@ parameters:
   instance:
     default: ""
     type: string
+  test:
+    default: "*"
+    type: string
   ge2ee_script_release:
     default: ""
     type: string
