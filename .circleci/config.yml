@@ -12,7 +12,7 @@ jobs:
         executor: continuation/default
         steps:
             - git-shallow-clone/checkout_advanced:
-                fetch_options: '--deepen 10'
+                fetch_options: '--no-tags'
             - run:
                 name: Install yq (v4)
                 command: |
@@ -34,6 +34,9 @@ jobs:
             - run:
                   name: Debug parameters
                   command: cat /tmp/pipeline-parameters.json
+            - run:
+                  name: Debug git
+                  command: git diff 4de3f6b7..."$CIRCLE_SHA1"
             - continuation/continue:
                   configuration_path: .circleci/merged_config.yml
                   parameters: /tmp/pipeline-parameters.json
