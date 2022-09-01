@@ -1,5 +1,10 @@
 version: 2.1
 
+parameters:
+    run-database-migration-tests:
+        type: boolean
+        default: false
+
 workflows:
     version: 2
     pull_request:
