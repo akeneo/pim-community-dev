@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Validation\ProductSelection;
 
+use Akeneo\Catalogs\Application\Persistence\FindOneAttributeByCodeQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\GetMeasurementsFamilyQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\SearchAttributesQueryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -23,7 +23,7 @@ final class AttributeCriterionContainsValidMeasurementValidator extends Constrai
 {
     public function __construct(
         private GetMeasurementsFamilyQueryInterface $getMeasurementsFamilyQuery,
-        private SearchAttributesQueryInterface $searchAttributesQuery,
+        private FindOneAttributeByCodeQueryInterface $findOneAttributeByCodeQuery,
     ) {
     }
 
@@ -41,16 +41,14 @@ final class AttributeCriterionContainsValidMeasurementValidator extends Constrai
             return;
         }
 
-        $attributes = $this->searchAttributesQuery->execute($value['field'], 1, 1);
+        $attribute = $this->findOneAttributeByCodeQuery->execute($value['field']);
 
-        if (!\count($attributes) || !isset($attributes[0]['measurement_family'])) {
+        if (null === $attribute || !isset($attribute['measurement_family'])) {
             throw new \LogicException('Attribute not found');
         }
 
-        $measurementFamilyCode = $attributes[0]['measurement_family'];
-
         /** @var array{code: string, units: array<array{code: string, label: string}>}|null $measurementFamily */
-        $measurementFamily = $this->getMeasurementsFamilyQuery->execute($measurementFamilyCode, 'en_US');
+        $measurementFamily = $this->getMeasurementsFamilyQuery->execute($attribute['measurement_family'], 'en_US');
 
         if (null === $measurementFamily) {
             throw new \LogicException('Measurement family not found');

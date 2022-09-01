@@ -10,14 +10,12 @@ use Akeneo\Catalogs\Application\Persistence\GetChannelLocalesQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\GetChannelQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\GetLocalesQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\GetMeasurementsFamilyQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\SearchAttributesQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Persistence\FindOneAttributeByCodeQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\GetAttributeOptionsByCodeQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\GetChannelLocalesQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\GetChannelQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\GetLocalesQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\GetMeasurementsFamilyQuery;
-use Akeneo\Catalogs\Infrastructure\Persistence\SearchAttributesQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 
 /**
@@ -32,7 +30,6 @@ abstract class AbstractAttributeCriterionTest extends IntegrationTestCase
     protected ?GetLocalesQueryInterface $getLocalesQuery;
     protected ?GetChannelLocalesQueryInterface $getChannelLocalesQuery;
     protected ?GetMeasurementsFamilyQueryInterface $getMeasurementsFamilyQuery;
-    protected ?SearchAttributesQueryInterface $searchAttributesQuery;
 
     private array $attributes = [];
     private array $attributeOptions = [];
@@ -131,12 +128,6 @@ abstract class AbstractAttributeCriterionTest extends IntegrationTestCase
             ->method('execute')
             ->willReturnCallback(fn (string $code, string $locale): ?array => $this->measurementsFamily[$code] ?? null);
         self::getContainer()->set(GetMeasurementsFamilyQuery::class, $this->getMeasurementsFamilyQuery);
-
-        $this->searchAttributesQuery = $this->createMock(SearchAttributesQueryInterface::class);
-        $this->searchAttributesQuery
-            ->method('execute')
-            ->willReturnCallback(fn ($code, $page, $limit) => [$this->attributes[$code]] ?? null);
-        self::getContainer()->set(SearchAttributesQuery::class, $this->searchAttributesQuery);
     }
 
     protected function createAttribute(array $data): void
