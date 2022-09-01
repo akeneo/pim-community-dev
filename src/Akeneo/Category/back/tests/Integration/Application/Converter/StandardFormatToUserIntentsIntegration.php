@@ -40,22 +40,21 @@ class StandardFormatToUserIntentsIntegration extends TestCase
     /** @test */
     public function it_throws_an_exception_when_field_has_no_associated_factory(): void
     {
-        $this->markTestSkipped(
-            "The front sends the category code during the update of a category. The back should manage this situation instead of responding 500"
-        );
-        /*$standardFormat = [
-            "code" => "my_category",
+        $nonExistentAttributeCode = 'foobar';
+
+        $standardFormat = [
+            $nonExistentAttributeCode => "foo",
             "labels" => [
-                "en_US" => "sausages",
-                "fr_FR" => "saucisses"
+                "en_US" => "socks",
+                "fr_FR" => "chaussettes"
             ]
         ];
         $converter = $this->get('Akeneo\Category\Application\Converter\StandardFormatToUserIntentsInterface');
 
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Cannot create userIntent from code fieldName');
+        $this->expectExceptionMessage("Cannot create userIntent from ".$nonExistentAttributeCode." fieldName");
 
-        $converter->convert($standardFormat);*/
+        $converter->convert($standardFormat);
     }
 
     protected function getConfiguration(): Configuration
