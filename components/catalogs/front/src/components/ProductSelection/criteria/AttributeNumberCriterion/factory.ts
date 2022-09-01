@@ -3,7 +3,7 @@ import {Operator} from '../../models/Operator';
 
 export default (state?: Partial<AttributeNumberCriterionState>): AttributeNumberCriterionState => {
     if (!state?.field) {
-        throw Error('You need to specific the attribute code when calling the attribute criterion factory');
+        throw Error('You need to specify the attribute code when calling the attribute criterion factory');
     }
 
     return {

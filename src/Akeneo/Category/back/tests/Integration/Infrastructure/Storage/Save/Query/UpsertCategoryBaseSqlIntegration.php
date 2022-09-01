@@ -10,13 +10,12 @@ declare(strict_types=1);
 namespace Akeneo\Test\Category\Integration\Infrastructure\Storage\Save\Query;
 
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryBase;
-use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\Model\Category;
+use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Infrastructure\Storage\Save\Query\UpsertCategoryBaseSql;
-use Akeneo\Category\Infrastructure\Storage\Sql\GetCategorySql;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
@@ -37,7 +36,7 @@ class UpsertCategoryBaseSqlIntegration extends TestCase
         );
 
         $upsertCategoryBaseQuery->execute($category);
-        $getCategory = $this->get(GetCategorySql::class);
+        $getCategory = $this->get(GetCategoryInterface::class);
         /** @var Category $result */
         $result = $getCategory->byCode((string)$category->getCode());
 
@@ -60,7 +59,7 @@ class UpsertCategoryBaseSqlIntegration extends TestCase
         );
 
         $upsertCategoryBaseQuery->execute($category);
-        $getCategory = $this->get(GetCategorySql::class);
+        $getCategory = $this->get(GetCategoryInterface::class);
         /** @var Category $createdCategory */
         $createdCategory = $getCategory->byCode((string)$category->getCode());
         $this->assertNotNull($createdCategory);
@@ -73,7 +72,7 @@ class UpsertCategoryBaseSqlIntegration extends TestCase
         );
 
         $upsertCategoryBaseQuery->execute($updatedCategory);
-        $getCategory = $this->get(GetCategorySql::class);
+        $getCategory = $this->get(GetCategoryInterface::class);
         /** @var Category $editedCategoryData */
         $editedCategoryData = $getCategory->byCode((string)$updatedCategory->getCode());
 

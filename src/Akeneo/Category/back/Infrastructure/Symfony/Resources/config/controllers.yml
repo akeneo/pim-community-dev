@@ -36,13 +36,13 @@ services:
             - '@Akeneo\Category\Application\Filter\CategoryEditACLFilter'
             - '@Akeneo\Category\Application\Converter\StandardFormatToUserIntentsInterface'
             - '@Akeneo\Category\Application\Filter\CategoryEditUserIntentFilter'
-            - '@Akeneo\Category\Infrastructure\Storage\Sql\GetCategorySql'
+            - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
 
     Akeneo\Category\Infrastructure\Controller\InternalApi\GetCategoryController:
         public: true
         arguments:
             - '@oro_security.security_facade'
-            - '@Akeneo\Category\Application\GetCategoryQueryHandler'
+            - '@Akeneo\Category\ServiceApi\CategoryQueryInterface'
 
     Akeneo\Category\Infrastructure\Controller\InternalApi\GetTemplateController:
         arguments:

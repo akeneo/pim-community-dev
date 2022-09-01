@@ -12,6 +12,8 @@ use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Event\ProductWasCreated;
 use Akeneo\Pim\Enrichment\Product\API\Event\ProductWasUpdated;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplierRegistry;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -50,12 +52,18 @@ final class UpsertProductHandler
 
         $this->checkConsistencyWithConnectedUser($command->userId());
 
-        $product = $this->productRepository->findOneByIdentifier($command->productIdentifier());
-        $isCreation = false;
-        if (null === $product) {
-            $isCreation = true;
-            $product = $this->productBuilder->createProduct($command->productIdentifier());
+        if ($command->productIdentifierOrUuid() instanceof ProductIdentifier) {
+            $product = $this->productRepository->findOneByIdentifier($command->productIdentifierOrUuid()->identifier())
+                ?? $this->productBuilder->createProduct(identifier: $command->productIdentifierOrUuid()->identifier());
+        } elseif ($command->productIdentifierOrUuid() instanceof ProductUuid) {
+            $product = $this->productRepository->find($command->productIdentifierOrUuid()->uuid())
+                ?? $this->productBuilder->createProduct(uuid: $command->productIdentifierOrUuid()->uuid()->toString());
+        } else {
+            $product = $this->productBuilder->createProduct();
         }
+        Assert::isInstanceOf($product, ProductInterface::class);
+
+        $isCreation = (null === $product->getCreated());
 
         $this->updateProduct($product, $command);
 
