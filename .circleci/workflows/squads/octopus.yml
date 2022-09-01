@@ -134,17 +134,17 @@ workflows:
                       only:
                         - /^(CXP|OCT)-.*/
             - checkout_ce:
-                  name: checkout_catalogs
+                  name: checkout_ce
                   requires:
                     - start_catalogs?
             - install_ce_front_dependencies:
                   name: install_front_dependencies
                   requires:
-                      - checkout_catalogs
+                      - checkout_ce
             - install_ce_back_dependencies:
                   name: install_back_dependencies
                   requires:
-                      - checkout_catalogs
+                      - checkout_ce
             - test_front_catalogs:
                   name: test_cat_front
                   requires:
@@ -154,10 +154,23 @@ workflows:
                   requires:
                       - install_back_dependencies
             - build_dev:
-                  name: build
+                  name: build_ce
                   is_ee_built: false
                   requires:
-                      - checkout_catalogs
+                      - checkout_ce
+            - checkout_ee:
+                requires:
+                  - start_catalogs?
+            - build_dev:
+                  name: build_ee
+                  is_ee_built: true
+                  path_to_front_packages: vendor/akeneo/pim-community-dev/front-packages
+                  requires:
+                      - checkout_ee
+            - test_catalogs_ee:
+                  name: test_ee
+                  requires:
+                    - build_ee
             - pull_request_success:
                   requires:
                       - test_cat_front

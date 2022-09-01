@@ -47,10 +47,16 @@ jobs:
       - run:
           name: Acceptance back
           command: APP_ENV=test make catalogs-acceptance-back
-      - slack-app/notify:
-          channel: 'monitoring-octopus'
-          event: fail
-          template: basic_fail_1
+      - when:
+          condition: << pipeline.parameters.run-database-migration-tests >>
+          steps:
+            - run:
+                name: Database schema reference
+                command: PIM_CONTEXT=test APP_ENV=test make test-database-structure
+#      - slack-app/notify:
+#          channel: 'monitoring-octopus'
+#          event: fail
+#          template: basic_fail_1
 
   test_front_catalogs:
     machine:
