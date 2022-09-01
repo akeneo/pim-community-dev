@@ -6,6 +6,7 @@ namespace Akeneo\Catalogs\Infrastructure\Validation;
 
 use Akeneo\Catalogs\Application\Persistence\FindOneAttributeByCodeQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterion\AttributeBooleanCriterion;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterion\AttributeIdentifierCriterion;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterion\AttributeMeasurementCriterion;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterion\AttributeMultiSelectCriterion;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterion\AttributeNumberCriterion;
@@ -125,6 +126,7 @@ final class CatalogUpdatePayloadValidator extends ConstraintValidator
         $attribute = $this->findOneAttributeByCodeQuery->execute($field);
 
         return match ($attribute['type'] ?? null) {
+            'pim_catalog_identifier' => new AttributeIdentifierCriterion(),
             'pim_catalog_text' => new AttributeTextCriterion(),
             'pim_catalog_textarea' => new AttributeTextareaCriterion(),
             'pim_catalog_simpleselect' => new AttributeSimpleSelectCriterion(),
