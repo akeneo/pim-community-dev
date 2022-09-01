@@ -922,7 +922,7 @@ class ProductModelSpec extends ObjectBehavior
         );
         $this->cleanup();
 
-        $this->filterQuantifiedAssociations(['my_product'], ['model_tshirt_2']);
+        $this->filterQuantifiedAssociations(['my_product'], [], ['model_tshirt_2']);
         $this->isDirty()->shouldBe(true);
     }
 
@@ -955,6 +955,7 @@ class ProductModelSpec extends ObjectBehavior
 
         $this->filterQuantifiedAssociations(
             ['my_product', 'my_other_product'],
+            [],
             ['model_tshirt_1', 'model_tshirt_2']
         );
         $this->isDirty()->shouldBe(false);
