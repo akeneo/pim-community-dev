@@ -312,6 +312,7 @@ class ProductController
         }
 
         $data = $this->getDecodedContent($request->getContent());
+
         $violations = $this->validator->validate($data, new PayloadFormat());
         if (0 < $violations->count()) {
             $firstViolation = $violations->get(0);
