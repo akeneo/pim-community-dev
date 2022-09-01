@@ -18,6 +18,15 @@ akeneo_catalogs:
         inputs:
             yes: Yes
             no: No
+    filter_values:
+        action:
+            open: Open
+            remove: Remove
+        criteria:
+            channel:
+                label: Channel
+                no_matches: No matches found
+                placeholder: Select your channel
     product_selection:
         empty: Add selection criteria to create your product selection
         more_information: Check out our Help center for more information.

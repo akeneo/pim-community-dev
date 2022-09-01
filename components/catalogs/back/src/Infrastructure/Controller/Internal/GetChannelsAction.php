@@ -29,12 +29,15 @@ class GetChannelsAction
 
         $page = (int) $request->query->get('page', 1);
         $limit = (int) $request->query->get('limit', 20);
-
+        $concatCodes = $request->query->get('codes', '');
+        if (!is_string($concatCodes)) {
+            throw new BadRequestHttpException('Codes must be a string concatenated with comma.');
+        }
         if ($page < 1 || $limit < 1) {
             throw new BadRequestHttpException('Page and limit must be positive.');
         }
-
-        $channels = $this->getChannelsQuery->execute($page, $limit);
+        $codes = strlen($concatCodes) !== 0 ? explode(',', $concatCodes) : [];
+        $channels = $this->getChannelsQuery->execute($codes, $page, $limit);
 
         return new JsonResponse($channels);
     }

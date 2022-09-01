@@ -18,6 +18,7 @@ test('it can enable a catalog', () => {
         values: {
             enabled: true,
             product_selection_criteria: {},
+            filter_values_criteria: {channel: []},
         },
         dispatch: dispatch,
         errors: [],
@@ -46,6 +47,7 @@ test('it can change criteria in the product selection', async () => {
         values: {
             enabled: true,
             product_selection_criteria: {},
+            filter_values_criteria: {channel: []},
         },
         dispatch: dispatch,
         errors: [],
@@ -76,4 +78,30 @@ test('it can change criteria in the product selection', async () => {
             },
         },
     });
+});
+
+test('it says hello world!', () => {
+    const dispatch = jest.fn();
+    const form = {
+        values: {
+            enabled: true,
+            product_selection_criteria: {},
+            filter_values_criteria: {channel: []},
+        },
+        dispatch: dispatch,
+        errors: [],
+    };
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <QueryClientProvider client={new QueryClient()}>
+                <CatalogFormContext.Provider value={dispatch}>
+                    <CatalogEdit form={form} />
+                </CatalogFormContext.Provider>
+            </QueryClientProvider>
+        </ThemeProvider>
+    );
+
+    fireEvent.click(screen.getByText('akeneo_catalogs.catalog_edit.tabs.filter_values'));
+    expect(screen.findByText('Hello world!')).toBeInTheDocument();
 });

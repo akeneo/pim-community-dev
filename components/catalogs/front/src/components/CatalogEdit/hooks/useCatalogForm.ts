@@ -29,6 +29,7 @@ export const useCatalogForm = (id: string): Result => {
     const [values, dispatch] = useReducer(CatalogFormReducer, {
         enabled: false,
         product_selection_criteria: {},
+        filter_values_criteria: {channel: []},
     });
 
     const save = async () => {
@@ -80,6 +81,7 @@ export const useCatalogForm = (id: string): Result => {
             state: {
                 enabled: catalog.data.enabled,
                 product_selection_criteria: indexify(catalog.data.product_selection_criteria),
+                filter_values_criteria: catalog.data.filter_values_criteria,
             },
         });
 

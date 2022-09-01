@@ -21,11 +21,11 @@ final class GetChannelsQuery implements GetChannelsQueryInterface
     /**
      * @inheritDoc
      */
-    public function execute(int $page = 1, int $limit = 20): array
+    public function execute(array $search, int $page = 1, int $limit = 20): array
     {
         /** @var array<ChannelInterface> $channels */
         $channels = $this->channelRepository->findBy(
-            [],
+            !empty($search) ? ['code' => $search] : [],
             [],
             $limit,
             ($page - 1) * $limit
