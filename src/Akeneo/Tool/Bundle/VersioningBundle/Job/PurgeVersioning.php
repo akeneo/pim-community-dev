@@ -16,9 +16,10 @@ use Symfony\Component\Lock\LockFactory;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PurgeVersioning extends LockedTasklet
+final class PurgeVersioning extends LockedTasklet
 {
     protected const JOB_CODE = 'versioning_purge';
+    protected const LOCK_TTL_IN_SECONDS = 30;
 
     public function __construct(
         protected LockFactory $lockFactory,
@@ -27,12 +28,7 @@ class PurgeVersioning extends LockedTasklet
         private JobExecutionRepository $jobExecutionRepository,
         private LoggerInterface $logger,
     ) {
-        parent::__construct($this->lockFactory);
-    }
-
-    protected function getLockIdentifier(): string
-    {
-        return sprintf('scheduled-job-%s', static::JOB_CODE);
+        parent::__construct($this->lockFactory, self::JOB_CODE);
     }
 
     protected function lockedAbort(): void
@@ -47,7 +43,6 @@ class PurgeVersioning extends LockedTasklet
             ]
         );
 
-        //$this->executionManager->markAsFailed($this->stepExecution->getJobExecution());
         $jobExecution = $this->jobExecutionRepository->find($this->stepExecution->getJobExecution()->getId());
         $this->executionManager->markAsFailed($jobExecution);
     }

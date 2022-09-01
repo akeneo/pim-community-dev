@@ -45,7 +45,7 @@ class PurgeVersioningCommandIntegration extends TestCase
         /** @var LockFactory $lockFactory */
         $lockFactory = $this->get('akeneo.enrichment.lock.factory');
         $lockIdentifier = 'scheduled-job-versioning_purge';
-        $lock = $lockFactory->createLock($lockIdentifier, 30);
+        $lock = $lockFactory->createLock($lockIdentifier, 300);
         $lock->acquire();
 
         $expectedOriginalVersionsCount = 25;

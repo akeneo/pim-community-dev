@@ -17,23 +17,25 @@ use Webmozart\Assert\Assert;
 abstract class LockedTasklet implements TaskletInterface
 {
     /**
-     * Job code must be re-defined in child class
+     * Default Lock TTL < 1 day = 23 hours. Can be overidden in child class
      */
-    protected const JOB_CODE = '';
-    /**
-     * Default Lock TTL = 1 day = 24 hours can be overidden
-     */
-    protected const LOCK_TTL_IN_SECONDS = 3600 * 24;
+    protected const LOCK_TTL_IN_SECONDS = 3600 * 23;
 
     protected StepExecution $stepExecution;
 
-    public function __construct(protected LockFactory $lockFactory)
+    public function __construct(protected LockFactory $lockFactory, protected string $jobCode)
     {
     }
 
     public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
+    }
+
+    public static function getLockIdentifier(string $jobCode): string
+    {
+        Assert::notEmpty($jobCode, 'The job code must not be empty');
+        return sprintf('scheduled-job-%s', $jobCode);
     }
 
     public function execute(): void
@@ -60,18 +62,9 @@ abstract class LockedTasklet implements TaskletInterface
 
     abstract protected function doExecute(): void;
 
-    /**
-     * Default lock identifier = job_code
-     */
-    protected function getLockIdentifier(): string
-    {
-        return static::JOB_CODE;
-    }
-
     private function getLock(): LockInterface
     {
-        Assert::notEmpty(static::JOB_CODE, 'The job code must not be empty');
-        $lockIdentifier = $this->getLockIdentifier();
+        $lockIdentifier = static::getLockIdentifier($this->jobCode);
 
         return $this->lockFactory->createLock($lockIdentifier, static::LOCK_TTL_IN_SECONDS);
     }

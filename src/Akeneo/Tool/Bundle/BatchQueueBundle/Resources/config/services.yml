@@ -78,6 +78,15 @@ services:
         tags:
             - { name: console.command }
 
+    Akeneo\Tool\Bundle\BatchQueueBundle\Command\ScheduledJobWatchdogCommand:
+        arguments:
+            - '@akeneo_batch_queue.manager.job_execution_manager'
+            - '@logger'
+            - '@akeneo.enrichment.lock.factory'
+            - '%kernel.project_dir%'
+        tags:
+            - { name: console.command }
+
     akeneo_batch_queue.factory.job_execution_message:
         class: Akeneo\Tool\Component\BatchQueue\Factory\JobExecutionMessageFactory
         arguments:

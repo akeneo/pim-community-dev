@@ -25,13 +25,12 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
 
     public function __invoke(JobExecutionMessageInterface $jobExecutionMessage)
     {
-        $pathFinder = new PhpExecutableFinder();
-        $console = sprintf('%s%sbin%sconsole', $this->projectDir, DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR);
+        $console = sprintf('%s/bin/console', $this->projectDir);
 
         $startTime = time();
         try {
             $arguments = array_merge(
-                [$pathFinder->find(), $console, 'akeneo:batch:watchdog', '--quiet'],
+                [(new PhpExecutableFinder())->find(), $console, 'akeneo:batch:watchdog', '--quiet'],
                 $this->extractArgumentsFromMessage($jobExecutionMessage)
             );
 
