@@ -47,6 +47,7 @@ $rules = [
         'Akeneo\Pim\Permission\Bundle\User\UserContext',
 
         // internal API controllers
+        'Psr\Log\LoggerInterface',
         'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
