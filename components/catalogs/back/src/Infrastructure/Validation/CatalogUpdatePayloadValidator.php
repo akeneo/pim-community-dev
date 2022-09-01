@@ -97,6 +97,9 @@ final class CatalogUpdatePayloadValidator extends ConstraintValidator
                             }),
                         ]),
                     ],
+                    'filter_values_criteria' => [
+                        new Assert\Type('array'),
+                    ],
                 ],
                 'allowMissingFields' => false,
                 'allowExtraFields' => false,

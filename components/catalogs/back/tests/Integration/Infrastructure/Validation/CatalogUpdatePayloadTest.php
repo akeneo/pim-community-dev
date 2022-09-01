@@ -58,6 +58,9 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
                     'value' => [],
                 ],
             ],
+            'filter_values_criteria' => [
+                'channel' => ['print', 'ecommerce']
+            ]
         ], new CatalogUpdatePayload());
 
         $this->assertEmpty($violations);
