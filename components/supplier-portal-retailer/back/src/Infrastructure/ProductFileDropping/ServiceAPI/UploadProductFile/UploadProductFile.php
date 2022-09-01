@@ -22,8 +22,8 @@ final class UploadProductFile
             ($this->createProductFileHandler)(
                 new CreateProductFile($uploadProductFileCommand->uploadedFile, $uploadProductFileCommand->contributorEmail),
             );
-        } catch (InvalidProductFile | ContributorDoesNotExist | \RuntimeException) {
-            throw new InvalidUploadedProductFile();
+        } catch (InvalidProductFile | ContributorDoesNotExist | \RuntimeException $e) {
+            throw new InvalidUploadedProductFile(message: $e->getMessage(), previous: $e);
         }
     }
 }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DownloadStoredProductFile;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Storage;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 
 final class DownloadStoredProductFileFromGCSBucket implements DownloadStoredProductFile
