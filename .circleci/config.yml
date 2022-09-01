@@ -42,7 +42,8 @@ jobs:
                     git diff --name-only origin/master..."$CIRCLE_SHA1"
                     git show-ref -s HEAD > .git/shallow
                     git reflog expire --expire=0
-                    git gc --prune=all
+                    git prune
+                    git prune-packed
                     du -sh .git
             - continuation/continue:
                   configuration_path: .circleci/merged_config.yml
