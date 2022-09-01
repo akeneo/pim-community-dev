@@ -209,7 +209,7 @@ class CreateProductByUuidController
         if (isset($data['associations'])) {
             foreach ($data['associations'] as $associationCode => $associations) {
                 if (isset($associations['products'])) {
-                    $data['associations'][$associationCode]['products_uuid'] = $associations['products'];
+                    $data['associations'][$associationCode]['product_uuids'] = $associations['products'];
                     unset($data['associations'][$associationCode]['products']);
                 }
             }
