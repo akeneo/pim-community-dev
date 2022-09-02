@@ -1,7 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import {SectionTitle, Field, BooleanInput, Helper} from 'akeneo-design-system';
-import {Section, useTranslate, ValidationError, filterErrors, useFeatureFlags} from '@akeneo-pim-community/shared';
+import {
+  Section,
+  useTranslate,
+  ValidationError,
+  filterErrors,
+  useFeatureFlags,
+  useSecurity,
+} from '@akeneo-pim-community/shared';
 import {Automation, CronExpression} from '../models';
 import {UserGroupsForm} from './UserGroupsForm';
 import {UsersForm} from './UsersForm';
@@ -28,6 +35,7 @@ const JobAutomationForm = ({
 }: JobAutomationFormProps) => {
   const translate = useTranslate();
   const {isEnabled} = useFeatureFlags();
+  const {isGranted} = useSecurity();
 
   const handleRunningUserGroupsChange = (userGroupIds: number[]) =>
     onAutomationChange({...automation, running_user_groups: userGroupIds});
@@ -45,6 +53,8 @@ const JobAutomationForm = ({
       ...automation,
       cron_expression: cronExpression,
     });
+
+  const canViewAllJobs = isGranted('pim_enrich_job_tracker_view_all_jobs');
 
   return (
     <SpacedSection>
@@ -67,11 +77,14 @@ const JobAutomationForm = ({
       </Field>
       {scheduled && (
         <>
-          <SectionTitle>
-            <SectionTitle.Title level="secondary">
-              {translate('akeneo.job_automation.scheduling.title')}
-            </SectionTitle.Title>
-          </SectionTitle>
+          <div>
+            <SectionTitle>
+              <SectionTitle.Title level="secondary">
+                {translate('akeneo.job_automation.scheduling.title')}
+              </SectionTitle.Title>
+            </SectionTitle>
+            {!canViewAllJobs && <Helper>{translate('akeneo.job_automation.scheduling.cannot_view_all_jobs')}</Helper>}
+          </div>
           <CronExpressionForm
             cronExpression={automation.cron_expression}
             onCronExpressionChange={handleCronExpressionChange}

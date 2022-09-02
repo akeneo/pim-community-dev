@@ -55,8 +55,8 @@ jest.mock('../hooks/useUsers', () => ({
   },
 }));
 
-let mockedFeatureFlags = ['permission'];
-let mockedGrantedACL = ['pim_user_group_index', 'pim_user_user_index'];
+let mockedFeatureFlags: string[] = [];
+let mockedGrantedACL: string[] = [];
 
 jest.mock('@akeneo-pim-community/shared/lib/hooks/useFeatureFlags', () => ({
   useFeatureFlags: () => ({
@@ -76,7 +76,7 @@ jest.mock('@akeneo-pim-community/shared/lib/hooks/useSecurity', () => ({
 
 beforeEach(() => {
   mockedFeatureFlags = ['permission'];
-  mockedGrantedACL = ['pim_user_group_index', 'pim_user_user_index'];
+  mockedGrantedACL = ['pim_user_group_index', 'pim_user_user_index', 'pim_enrich_job_tracker_view_all_jobs'];
 });
 
 test('it renders the job automation form', () => {
@@ -97,6 +97,7 @@ test('it renders the job automation form', () => {
   expect(screen.getByText('akeneo.job_automation.notification.user_groups.label')).toBeInTheDocument();
   expect(screen.getByText('akeneo.job_automation.notification.users.label')).toBeInTheDocument();
   expect(screen.getByText('IT Support')).toBeInTheDocument();
+  expect(screen.queryByText('akeneo.job_automation.scheduling.cannot_view_all_jobs')).not.toBeInTheDocument();
 });
 
 test('it hides the running user group input if the permission is not enabled', () => {
@@ -130,6 +131,22 @@ test('it disables the running user group input if the user cannot list the user 
 
   expect(screen.getByLabelText('akeneo.job_automation.scheduling.running_user_groups.label')).toBeDisabled();
   expect(screen.getByText('akeneo.job_automation.scheduling.running_user_groups.disabled_helper')).toBeInTheDocument();
+});
+
+test('it displays a helper when user cannot view all jobs in process tracker', () => {
+  mockedGrantedACL = mockedGrantedACL.filter(acl => 'pim_enrich_job_tracker_view_all_jobs' !== acl);
+
+  renderWithProviders(
+    <JobAutomationForm
+      scheduled={true}
+      automation={automation}
+      validationErrors={[]}
+      onScheduledChange={jest.fn()}
+      onAutomationChange={jest.fn()}
+    />
+  );
+
+  expect(screen.getByText('akeneo.job_automation.scheduling.cannot_view_all_jobs')).toBeInTheDocument();
 });
 
 test('it can change the running user groups', () => {
