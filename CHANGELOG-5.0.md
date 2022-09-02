@@ -5,6 +5,7 @@
 ## Bug fixes
 
 - PIM-10591: Fix download log should not be possible when job is running
+- PIM-10610 [Backport PIM-10504]: Fix Job execution stuck in status in progress or stopping
 - PIM-10608 [Backport PIM-10584]: Fix measurement values for volume flow conversion 
 
 # 5.0.111 (2022-08-25)
