@@ -32,7 +32,7 @@ final class FindScheduledJobInstancesQuery implements FindScheduledJobInstancesQ
     public function all(): array
     {
         $sql = <<<SQL
-SELECT code, job_name, type, raw_parameters, scheduled, automation FROM akeneo_batch_job_instance
+SELECT code, label, type, raw_parameters, scheduled, automation FROM akeneo_batch_job_instance
 WHERE scheduled = 1 
 SQL;
 
@@ -47,7 +47,7 @@ SQL;
 
                 return new ScheduledJobInstance(
                     $result['code'],
-                    $result['job_name'],
+                    $result['label'],
                     $result['type'],
                     $rawParameters,
                     $automation['notification_users'],

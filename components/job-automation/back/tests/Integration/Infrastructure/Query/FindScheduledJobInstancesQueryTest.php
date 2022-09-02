@@ -24,7 +24,7 @@ class FindScheduledJobInstancesQueryTest extends IntegrationTestCase
         $expectedScheduledJobInstances = [
             new ScheduledJobInstance(
                 'a_product_import',
-                'a_product_import',
+                'A product import',
                 'import',
                 ['storage' => ['type' => 'local', 'file_path' => 'test.xlsx']],
                 [],
@@ -36,7 +36,7 @@ class FindScheduledJobInstancesQueryTest extends IntegrationTestCase
             ),
             new ScheduledJobInstance(
                 'another_product_import',
-                'another_product_import',
+                'Another product import',
                 'import',
                 ['storage' => ['type' => 'local', 'file_path' => 'test.xlsx']],
                 [],

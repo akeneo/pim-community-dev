@@ -8,7 +8,7 @@ services:
       - '@akeneo.job_automation.handler.update_scheduled_job_instance'
       - '@akeneo_batch_queue.queue.publish_job_to_queue'
       - '@event_dispatcher'
-      - '@akeneo.job_automation.handler.notify_users_by_email_invalid_job_instance'
       - '@akeneo.job_automation.query.find_users_to_notify'
+      - '@logger'
     tags:
       - { name: console.command }

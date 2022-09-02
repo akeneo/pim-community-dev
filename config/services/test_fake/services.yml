@@ -11,6 +11,7 @@ imports:
     - { resource: ../../../vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Enrichment/Product/back/Test/Acceptance/Resources/config/services.yml }
     - { resource: ../../../vendor/akeneo/pim-community-dev/src/Akeneo/Channel/back/tests/Acceptance/Resources/config/services.yml }
     - { resource: ../../../vendor/akeneo/pim-community-dev/tests/back/Category/Acceptance/Resources/config/services.yml }
+    - { resource: ../../../vendor/akeneo/pim-community-dev/tests/back/Platform/Acceptance/NotificationBundle/Resources/config/services.yml }
     - { resource: ../../../tests/back/Acceptance/Resources/config/pim/queries.yml }
     - { resource: ../../../tests/back/Acceptance/Resources/config/pim/repositories.yml }
     - { resource: ../../../tests/back/Platform/Acceptance/Resources/config/services.yml }

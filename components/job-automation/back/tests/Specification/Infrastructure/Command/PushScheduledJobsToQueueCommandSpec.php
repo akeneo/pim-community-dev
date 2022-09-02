@@ -3,8 +3,8 @@
 namespace Specification\Akeneo\Platform\JobAutomation\Infrastructure\Command;
 
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
-use Akeneo\Platform\JobAutomation\Application\NotifyUsers\NotifyUsersInvalidJobInstanceHandler;
 use Akeneo\Platform\JobAutomation\Application\UpdateScheduledJobInstanceLastExecution\UpdateScheduledJobInstanceLastExecutionHandler;
+use Akeneo\Platform\JobAutomation\Domain\Event\CouldNotLaunchAutomatedJobEvent;
 use Akeneo\Platform\JobAutomation\Domain\FilterDueJobInstances;
 use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
 use Akeneo\Platform\JobAutomation\Domain\Model\UserToNotify;
@@ -15,9 +15,12 @@ use Akeneo\Tool\Component\BatchQueue\Exception\InvalidJobException;
 use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueue;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationList;
 
 class PushScheduledJobsToQueueCommandSpec extends ObjectBehavior
 {
@@ -28,18 +31,19 @@ class PushScheduledJobsToQueueCommandSpec extends ObjectBehavior
         UpdateScheduledJobInstanceLastExecutionHandler $refreshScheduledJobInstancesHandler,
         PublishJobToQueue $publishJobToQueue,
         EventDispatcherInterface $eventDispatcher,
-        NotifyUsersInvalidJobInstanceHandler $emailNotifyUsersHandler,
         FindUsersToNotifyQueryInterface $findUsersToNotifyQuery,
-        NotifyUsersInvalidJobInstanceHandler $notifyUsersInvalidJobInstanceHandler,
+        LoggerInterface $logger
     ): void {
+        $eventDispatcher->addSubscriber(Argument::any())->shouldBeCalled();
+
         $this->beConstructedWith($jobAutomationFeatureFlag,
             $findScheduledJobInstancesQuery,
             $filterDueJobInstances,
             $refreshScheduledJobInstancesHandler,
             $publishJobToQueue,
             $eventDispatcher,
-            $emailNotifyUsersHandler,
             $findUsersToNotifyQuery,
+            $logger
         );
     }
 
@@ -107,6 +111,7 @@ class PushScheduledJobsToQueueCommandSpec extends ObjectBehavior
         FilterDueJobInstances $filterDueJobInstances,
         FindUsersToNotifyQueryInterface $findUsersToNotifyQuery,
         PublishJobToQueue $publishJobToQueue,
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $jobAutomationFeatureFlag->isEnabled()->shouldBeCalled()->willReturn(true);
 
@@ -122,9 +127,21 @@ class PushScheduledJobsToQueueCommandSpec extends ObjectBehavior
             new UserToNotify('admin', 'admin@akeneo.com'),
             new UserToNotify('julia', 'julia@akeneo.com'),
         ]);
-        $findUsersToNotifyQuery->byUserIdsAndUserGroupsIds([1], [2, 3])->willReturn($usersToNotify);
-        $publishJobToQueue->publish($scheduledJobInstance1->code, ['is_user_authenticated' => true], false,'job_automated_job1', ['admin@akeneo.com', 'julia@akeneo.com'])->willThrow(InvalidJobException::class);
 
+        $findUsersToNotifyQuery->byUserIdsAndUserGroupsIds([1], [2, 3])->willReturn($usersToNotify);
+        $violations = new ConstraintViolationList([
+            new ConstraintViolation('wrong', 'wrong', [], 'wrong', 'path', 'wrong'),
+            new ConstraintViolation('wrong2', 'wrong2', [], 'wrong2', 'path2', 'wrong2'),
+        ]);
+
+        $publishJobToQueue->publish(
+            $scheduledJobInstance1->code,
+            ['is_user_authenticated' => true], false,
+            'job_automated_job1',
+            ['admin@akeneo.com', 'julia@akeneo.com']
+        )->willThrow(new InvalidJobException('job1', 'dummy', $violations));
+
+        $eventDispatcher->dispatch(CouldNotLaunchAutomatedJobEvent::dueToInvalidJobInstance($scheduledJobInstance1, ['wrong', 'wrong2'], $usersToNotify))->shouldBeCalled();
         $emptyUsersToNotify = new UserToNotifyCollection([]);
         $findUsersToNotifyQuery->byUserIdsAndUserGroupsIds([], [])->shouldBeCalled()->willReturn($emptyUsersToNotify);
         $publishJobToQueue->publish($scheduledJobInstance2->code, ['is_user_authenticated' => true], false,'job_automated_job2', [])->shouldBeCalled();

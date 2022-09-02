@@ -17,7 +17,7 @@ final class ScheduledJobInstance
 {
     public function __construct(
         public string $code,
-        public string $jobName,
+        public string $label,
         public string $type,
         public array $rawParameters,
         public array $notifiedUsers,

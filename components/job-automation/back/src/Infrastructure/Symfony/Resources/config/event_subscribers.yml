@@ -1,0 +1,7 @@
+services:
+  Akeneo\Platform\JobAutomation\Infrastructure\EventSubscriber\SendEmailWhenJobInstanceCannotBeLaunched:
+    arguments:
+      - '@pim_notification.email.email_notifier'
+      - '@twig'
+    tags:
+      - { name: kernel.event_subscriber }
