@@ -7,12 +7,15 @@ namespace Akeneo\Catalogs\Test\Integration;
 use Akeneo\Catalogs\Application\Persistence\GetLocalesQueryInterface;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
+use Akeneo\Catalogs\Test\Integration\Fakes\Clock;
+use Akeneo\Catalogs\Test\Integration\Fakes\TimestampableSubscriber;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Connectivity\Connection\ServiceApi\Service\ConnectedAppFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionValue;
@@ -36,10 +39,22 @@ use Webmozart\Assert\Assert;
  */
 abstract class IntegrationTestCase extends WebTestCase
 {
+    protected ?Clock $clock;
+
     protected function setUp(): void
     {
         parent::setUp();
         static::bootKernel(['environment' => 'test', 'debug' => false]);
+
+        $this->clock = new Clock();
+        self::getContainer()->set(
+            'pim_catalog.event_subscriber.timestampable',
+            new TimestampableSubscriber($this->clock)
+        );
+        self::getContainer()->set(
+            'pim_versioning.event_subscriber.timestampable',
+            new TimestampableSubscriber($this->clock)
+        );
 
         self::getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
     }
@@ -193,7 +208,11 @@ abstract class IntegrationTestCase extends WebTestCase
 
         Assert::notNull($userId);
 
-        $command = UpsertProductCommand::createFromCollection($userId, $identifier, $intents);
+        $command = UpsertProductCommand::createWithIdentifier(
+            $userId,
+            ProductIdentifier::fromIdentifier($identifier),
+            $intents
+        );
 
         $bus->dispatch($command);
 
@@ -238,6 +257,21 @@ abstract class IntegrationTestCase extends WebTestCase
         );
     }
 
+    protected function setCatalogProductValueFilters(string $id, array $filters)
+    {
+        $connection = self::getContainer()->get(Connection::class);
+        $connection->executeQuery(
+            'UPDATE akeneo_catalog SET product_value_filters = :filters WHERE id = :id',
+            [
+                'id' => Uuid::fromString($id)->getBytes(),
+                'filters' => $filters,
+            ],
+            [
+                'filters' => Types::JSON,
+            ]
+        );
+    }
+
     /**
      * @param array{
      *     code: string,
@@ -270,7 +304,10 @@ abstract class IntegrationTestCase extends WebTestCase
     private function createAttributeOptions(AttributeInterface $attribute, array $codes): void
     {
         $factory = self::getContainer()->get('pim_catalog.factory.attribute_option');
-        $locales = \array_map(static fn ($locale) => $locale['code'], self::getContainer()->get(GetLocalesQueryInterface::class)->execute());
+        $locales = \array_map(
+            static fn ($locale) => $locale['code'],
+            self::getContainer()->get(GetLocalesQueryInterface::class)->execute()
+        );
 
         $options = [];
 
@@ -296,14 +333,14 @@ abstract class IntegrationTestCase extends WebTestCase
         self::getContainer()->get('pim_catalog.saver.attribute_option')->saveAll($options);
     }
 
-    protected function createChannel(string $code, array $locales = []): void
+    protected function createChannel(string $code, array $locales = [], array $currencies = ['USD']): void
     {
         /** @var ChannelInterface $channel */
         $channel = self::getContainer()->get('pim_catalog.factory.channel')->create();
         self::getContainer()->get('pim_catalog.updater.channel')->update($channel, [
             'code' => $code,
             'locales' => $locales,
-            'currencies' => ['USD'],
+            'currencies' => $currencies,
             'category_tree' => 'master',
         ]);
         self::getContainer()->get('pim_catalog.saver.channel')->save($channel);
@@ -323,5 +360,15 @@ abstract class IntegrationTestCase extends WebTestCase
         $category = self::getContainer()->get('pim_catalog.factory.category')->create();
         self::getContainer()->get('pim_catalog.updater.category')->update($category, $data);
         self::getContainer()->get('pim_catalog.saver.category')->save($category);
+    }
+
+    protected function enableCurrency(string $code): void
+    {
+        $currency = self::getContainer()->get('pim_catalog.repository.currency')->findOneByIdentifier($code);
+        self::getContainer()->get('pim_catalog.updater.currency')->update($currency, [
+            'code' => $code,
+            'enabled' => true,
+        ]);
+        self::getContainer()->get('pim_catalog.saver.currency')->save($currency);
     }
 }

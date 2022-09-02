@@ -25,6 +25,10 @@ class FilePathValidator extends ConstraintValidator
 
     private function validateFileExtension(string $filePath, array $supportedFileExtensions): void
     {
+        if (empty($supportedFileExtensions)) {
+            return;
+        }
+
         $fileExtension = pathinfo($filePath, PATHINFO_EXTENSION);
 
         if (!in_array($fileExtension, $supportedFileExtensions)) {

@@ -21,3 +21,7 @@ akeneo_catalogs:
                     unknown: 'At least one selected option does not exists.'
                 category:
                     value: 'The following categories do not exist anymore: {{ codes }}. Please remove them from the criterion value.'
+                measurement:
+                    unit:
+                        not_exist: 'The unit of the field "{{ field }}" does not exist.'
+                        not_empty: 'The unit must not be empty.'

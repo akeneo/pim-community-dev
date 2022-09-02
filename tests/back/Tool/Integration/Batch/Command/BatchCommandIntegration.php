@@ -42,7 +42,7 @@ class BatchCommandIntegration extends TestCase
         $this->assertNull($jobExecution['user']);
         $this->assertEquals('Export csv_product_export has been successfully executed.' . PHP_EOL, $output->fetch());
         $this->assertTrue((bool) $jobExecution['is_stoppable']);
-        $this->assertEquals(1, $jobExecution['step_count']);
+        $this->assertEquals(2, $jobExecution['step_count']);
     }
 
     public function testJobExecutionStateWithUsername()

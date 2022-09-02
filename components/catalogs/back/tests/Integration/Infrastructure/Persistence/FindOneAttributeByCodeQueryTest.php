@@ -44,6 +44,28 @@ class FindOneAttributeByCodeQueryTest extends IntegrationTestCase
         ], $result);
     }
 
+    public function testItReturnsTheNormalizedAttributeWithMeasurementFamilyAndDefaultMeasurementUnit(): void
+    {
+        $this->createAttribute([
+            'code' => 'weight',
+            'type' => 'pim_catalog_metric',
+            'metric_family' => 'Weight',
+            'default_metric_unit' => 'KILOGRAM',
+        ]);
+
+        $result = $this->query->execute('weight');
+
+        $this->assertEquals([
+            'code' => 'weight',
+            'label' => '[weight]',
+            'type' => 'pim_catalog_metric',
+            'scopable' => false,
+            'localizable' => false,
+            'measurement_family' => 'Weight',
+            'default_measurement_unit' => 'KILOGRAM',
+        ], $result);
+    }
+
     public function testItReturnsNullIfNotFound(): void
     {
         $result = $this->query->execute('unknown');
