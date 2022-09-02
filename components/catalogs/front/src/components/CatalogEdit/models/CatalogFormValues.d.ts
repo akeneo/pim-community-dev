@@ -1,8 +1,8 @@
 import {ProductSelectionValues} from '../../ProductSelection';
-import {FilterValuesValues} from '../../FilterValues';
+import {ProductValueFiltersValues} from '../../ProductValueFilters';
 
 export type CatalogFormValues = {
     enabled: boolean;
     product_selection_criteria: ProductSelectionValues;
-    filter_values_criteria: FilterValuesValues;
+    product_value_filters: ProductValueFiltersValues;
 };

@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @covers \Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdatePayload
+ * @covers \Akeneo\Catalogs\Infrastructure\Validation\ProductValueFilters\FilterContainsValidChannel
  */
 class CatalogUpdatePayloadTest extends IntegrationTestCase
 {
@@ -58,9 +59,9 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
                     'value' => [],
                 ],
             ],
-            'filter_values_criteria' => [
-                'channel' => ['print', 'ecommerce']
-            ]
+            'product_value_filters' => [
+                'channel' => ['print', 'ecommerce'],
+            ],
         ], new CatalogUpdatePayload());
 
         $this->assertEmpty($violations);
@@ -84,6 +85,7 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
                     'value' => true,
                 ],
             ],
+            'product_value_filters' => [],
         ], new CatalogUpdatePayload());
 
         $this->assertViolationsListContains($violations, 'Invalid array structure.');
@@ -103,9 +105,40 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
         $violations = $this->validator->validate([
             'enabled' => false,
             'product_selection_criteria' => [$criterion],
+            'product_value_filters' => [],
         ], new CatalogUpdatePayload());
 
         $this->assertViolationsListContains($violations, $expectedMessage);
+    }
+
+    /**
+     * @dataProvider invalidProductValueFiltersProvider
+     */
+    public function testItReturnsViolationsWhenProductValueFiltersAreInvalid(
+        array $filters,
+        string $expectedMessage
+    ): void {
+        $violations = $this->validator->validate([
+            'enabled' => false,
+            'product_selection_criteria' => [],
+            'product_value_filters' => $filters,
+        ], new CatalogUpdatePayload());
+
+        $this->assertViolationsListContains($violations, $expectedMessage);
+    }
+
+    public function invalidProductValueFiltersProvider(): array
+    {
+        return [
+            'channel is not a valid array' => [
+                'filters' => ['channel' => 'ecommerce'],
+                'expectedMessage' => 'This value should be of type array.',
+            ],
+            'channel does not exist' => [
+                'filters' => ['channel' => ['removed_channel']],
+                'expectedMessage' => 'The channel "removed_channel" has been deactivated. Please check your channel settings or remove this filter.',
+            ],
+        ];
     }
 
     public function invalidFieldDataProvider(): array

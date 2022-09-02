@@ -1,6 +1,6 @@
 import {useQuery} from 'react-query';
 import {AnyCriterionState} from '../components/ProductSelection';
-import {FilterValuesValues} from '../components/FilterValues';
+import {ProductValueFiltersValues} from '../components/ProductValueFilters';
 
 type Data = {
     id: string;
@@ -8,7 +8,7 @@ type Data = {
     enabled: boolean;
     owner_username: string;
     product_selection_criteria: AnyCriterionState[];
-    filter_values_criteria: FilterValuesValues;
+    product_value_filters: ProductValueFiltersValues;
 };
 type Error = string | null;
 type Result = {

@@ -1,13 +1,13 @@
 import {useCatalogQuery} from '../../../hooks/useCatalogQuery';
 import {AnyCriterionState} from '../../ProductSelection';
-import {FilterValuesValues} from '../../FilterValues';
+import {ProductValueFiltersValues} from '../../ProductValueFilters';
 
 type Data = {
     id: string;
     name: string;
     enabled: boolean;
     product_selection_criteria: AnyCriterionState[];
-    filter_values_criteria: FilterValuesValues;
+    product_value_filters: ProductValueFiltersValues;
 };
 type Error = string | null;
 type Result = {

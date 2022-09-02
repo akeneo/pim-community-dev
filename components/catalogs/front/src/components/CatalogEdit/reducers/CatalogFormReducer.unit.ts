@@ -9,27 +9,27 @@ const tests: {state: CatalogFormValues; action: CatalogFormAction; result: Catal
         state: {
             enabled: false,
             product_selection_criteria: {},
-            filter_values_criteria: {channel: []},
+            product_value_filters: {channel: []},
         },
         action: {
             type: CatalogFormActions.INITIALIZE,
             state: {
                 enabled: true,
                 product_selection_criteria: {},
-                filter_values_criteria: {channel: []},
+                product_value_filters: {channel: []},
             },
         },
         result: {
             enabled: true,
             product_selection_criteria: {},
-            filter_values_criteria: {channel: []},
+            product_value_filters: {channel: []},
         },
     },
     {
         state: {
             enabled: false,
             product_selection_criteria: {},
-            filter_values_criteria: {channel: []},
+            product_value_filters: {channel: []},
         },
         action: {
             type: CatalogFormActions.SET_ENABLED,
@@ -38,14 +38,14 @@ const tests: {state: CatalogFormValues; action: CatalogFormAction; result: Catal
         result: {
             enabled: true,
             product_selection_criteria: {},
-            filter_values_criteria: {channel: []},
+            product_value_filters: {channel: []},
         },
     },
     {
         state: {
             enabled: false,
             product_selection_criteria: {},
-            filter_values_criteria: {channel: []},
+            product_value_filters: {channel: []},
         },
         action: {
             type: CatalogFormActions.SET_PRODUCT_SELECTION_CRITERIA,
@@ -66,23 +66,23 @@ const tests: {state: CatalogFormValues; action: CatalogFormAction; result: Catal
                     value: true,
                 },
             },
-            filter_values_criteria: {channel: []},
+            product_value_filters: {channel: []},
         },
     },
     {
         state: {
             enabled: false,
             product_selection_criteria: {},
-            filter_values_criteria: {channel: []},
+            product_value_filters: {channel: []},
         },
         action: {
-            type: CatalogFormActions.SET_FILTER_VALUES_CRITERIA,
+            type: CatalogFormActions.SET_PRODUCT_VALUE_FILTERS,
             value: {channel: ['print', 'ecommerce']},
         },
         result: {
             enabled: false,
             product_selection_criteria: {},
-            filter_values_criteria: {channel: ['print', 'ecommerce']},
+            product_value_filters: {channel: ['print', 'ecommerce']},
         },
     },
 ];

@@ -50,7 +50,7 @@ test('it returns the form values when catalog is loaded', () => {
                     value: true,
                 },
             ],
-            filter_values_criteria: {channel: ['ecommerce', 'print']},
+            product_value_filters: {channel: ['ecommerce', 'print']},
         },
         error: null,
     }));
@@ -68,7 +68,7 @@ test('it returns the form values when catalog is loaded', () => {
                         value: true,
                     },
                 },
-                filter_values_criteria: {channel: ['ecommerce', 'print']},
+                product_value_filters: {channel: ['ecommerce', 'print']},
             },
         },
         expect.any(Function),
@@ -94,7 +94,7 @@ test('it calls the API when save is called', async () => {
                     value: true,
                 },
             ],
-            filter_values_criteria: {channel: ['ecommerce', 'print']},
+            product_value_filters: {channel: ['ecommerce', 'print']},
         },
         error: null,
     }));
@@ -120,7 +120,7 @@ test('it calls the API when save is called', async () => {
                     value: true,
                 },
             ],
-            filter_values_criteria: {channel: ['ecommerce', 'print']},
+            product_value_filters: {channel: ['ecommerce', 'print']},
         },
     });
 });
@@ -149,7 +149,7 @@ test('it returns validation errors if the API call failed', async () => {
                     value: true,
                 },
             ],
-            filter_values_criteria: {channel: ['ecommerce', 'print']},
+            product_value_filters: {channel: ['ecommerce', 'print']},
         },
         error: null,
     }));
@@ -188,7 +188,7 @@ test('it returns dirty at true after dispatching a change', () => {
                     value: true,
                 },
             ],
-            filter_values_criteria: {channel: ['ecommerce', 'print']},
+            product_value_filters: {channel: ['ecommerce', 'print']},
         },
         error: null,
     }));
@@ -223,7 +223,7 @@ test('it forwards the action to dispatch when it\'s a non-altering event', () =>
                     value: true,
                 },
             ],
-            filter_values_criteria: {channel: ['ecommerce', 'print']},
+            product_value_filters: {channel: ['ecommerce', 'print']},
         },
         error: null,
     }));
@@ -246,7 +246,7 @@ test('it forwards the action to dispatch when it\'s a non-altering event', () =>
                             value: true,
                         },
                     },
-                    filter_values_criteria: {channel: ['ecommerce', 'print']},
+                    product_value_filters: {channel: ['ecommerce', 'print']},
                 },
             });
     });
