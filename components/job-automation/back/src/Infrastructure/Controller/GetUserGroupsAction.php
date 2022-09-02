@@ -36,12 +36,14 @@ final class GetUserGroupsAction
 
         $searchAfterId = $request->query->get('search_after_id');
         $searchName = $request->query->get('search_name');
+        $limit = $request->query->get('limit');
 
         $userGroups = array_map(
             static fn (UserGroup $userGroup) => ['id' => $userGroup->getId(), 'label' => $userGroup->getLabel()],
             $this->listUserGroup->fromQuery(new UserGroupQuery(
                 searchName: $searchName,
                 searchAfterId: null !== $searchAfterId ? (int) $searchAfterId : null,
+                limit: null !== $limit ? (int) $limit : null,
             )),
         );
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Field, SelectInput, Helper, MultiSelectInput, useDebounce} from 'akeneo-design-system';
+import {Field, SelectInput, Helper, MultiSelectInput} from 'akeneo-design-system';
 import {useSecurity, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {removeDefaultUserGroup} from '../models';
 import {useUserGroups} from '../hooks';
@@ -21,9 +21,8 @@ const UserGroupsForm = ({
   disabledHelperMessage,
 }: UserGroupsFormProps) => {
   const translate = useTranslate();
-  const {availableUserGroups, loadNextPage, searchName} = useUserGroups();
+  const {availableUserGroups} = useUserGroups();
   const {isGranted} = useSecurity();
-  const debouncedLoadNextPage = useDebounce(loadNextPage);
 
   const handleUserGroupsChange = (userGroups: string[]) => {
     onUserGroupsChange(userGroups.map(userGroup => parseInt(userGroup)));
@@ -34,8 +33,6 @@ const UserGroupsForm = ({
       <MultiSelectInput
         value={userGroups.map(userGroup => userGroup.toString())}
         onChange={handleUserGroupsChange}
-        onNextPage={debouncedLoadNextPage}
-        onSearchChange={searchName}
         emptyResultLabel={translate('pim_common.no_result')}
         openLabel={translate('pim_common.open')}
         removeLabel={translate('pim_common.remove')}

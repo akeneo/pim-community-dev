@@ -1,5 +1,5 @@
 import React from 'react';
-import {Field, SelectInput, Helper, MultiSelectInput, useDebounce} from 'akeneo-design-system';
+import {Field, SelectInput, Helper, MultiSelectInput} from 'akeneo-design-system';
 import {useSecurity, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {useUsers} from '../hooks';
 
@@ -11,9 +11,8 @@ type UsersFormProps = {
 
 const UsersForm = ({users, validationErrors, onUsersChange}: UsersFormProps) => {
   const translate = useTranslate();
-  const {availableUsers, loadNextPage, search} = useUsers();
+  const {availableUsers} = useUsers();
   const {isGranted} = useSecurity();
-  const debouncedLoadNextPage = useDebounce(loadNextPage);
 
   const handleUsersChange = (users: string[]) => {
     onUsersChange(users.map(user => parseInt(user)));
@@ -24,8 +23,6 @@ const UsersForm = ({users, validationErrors, onUsersChange}: UsersFormProps) => 
       <MultiSelectInput
         value={users.map(user => user.toString())}
         onChange={handleUsersChange}
-        onNextPage={debouncedLoadNextPage}
-        onSearchChange={search}
         emptyResultLabel={translate('pim_common.no_result')}
         openLabel={translate('pim_common.open')}
         removeLabel={translate('pim_common.remove')}

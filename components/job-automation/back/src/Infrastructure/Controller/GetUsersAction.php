@@ -36,12 +36,14 @@ final class GetUsersAction
 
         $searchAfterId = $request->query->get('search_after_id');
         $search = $request->query->get('search');
+        $limit = $request->query->get('limit');
 
         $users = \array_map(
             static fn (User $user) => ['id' => $user->getId(), 'username' => $user->getUsername()],
             $this->listUsersHandler->fromQuery(new UsersQuery(
                 search: $search,
                 searchAfterId: null !== $searchAfterId ? (int) $searchAfterId : null,
+                limit: null !== $limit ? (int) $limit : null,
             )),
         );
 
