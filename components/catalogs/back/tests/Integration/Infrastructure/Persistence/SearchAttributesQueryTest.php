@@ -69,6 +69,13 @@ class SearchAttributesQueryTest extends IntegrationTestCase
                 'localizable' => false,
             ],
             [
+                'code' => 'certified',
+                'label' => '[certified]',
+                'type' => 'pim_catalog_boolean',
+                'scopable' => false,
+                'localizable' => false,
+            ],
+            [
                 'code' => 'weight',
                 'label' => '[weight]',
                 'type' => 'pim_catalog_metric',

@@ -6,6 +6,7 @@ import AttributeSimpleSelectCriterion from '../criteria/AttributeSimpleSelectCri
 import AttributeMultiSelectCriterion from '../criteria/AttributeMultiSelectCriterion';
 import AttributeNumberCriterion from '../criteria/AttributeNumberCriterion';
 import AttributeMeasurementCriterion from '../criteria/AttributeMeasurementCriterion';
+import AttributeBooleanCriterion from '../criteria/AttributeBooleanCriterion';
 
 type Return = (type: string) => AnyAttributeCriterion;
 
@@ -24,6 +25,8 @@ export const useFindAttributeCriterionByType = (): Return => {
                 return AttributeNumberCriterion;
             case 'pim_catalog_metric':
                 return AttributeMeasurementCriterion;
+            case 'pim_catalog_boolean':
+                return AttributeBooleanCriterion;
         }
 
         throw Error('Unknown attribute type');

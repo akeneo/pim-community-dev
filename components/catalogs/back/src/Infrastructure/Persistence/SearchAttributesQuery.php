@@ -21,6 +21,7 @@ final class SearchAttributesQuery implements SearchAttributesQueryInterface
         'pim_catalog_multiselect',
         'pim_catalog_number',
         'pim_catalog_metric',
+        'pim_catalog_boolean',
     ];
 
     public function __construct(
