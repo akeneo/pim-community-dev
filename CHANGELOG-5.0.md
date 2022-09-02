@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.113 (2022-09-02)
+
 ## Bug fixes
 
 - PIM-10610 [Backport PIM-10504]: Fix job execution stuck in status in progress or stopping
