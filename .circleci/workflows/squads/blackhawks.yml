@@ -184,28 +184,13 @@ workflows:
                           PRODUCT_TYPE: ["srnt", "grth"]
                   requires:
                       - "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
-            - prepare_load_tests:
-                  name: "[<< matrix.SOURCE_PFID >>] Prepare load tests"
-                  matrix:
-                      parameters:
-                          SOURCE_PFID: ["srnt", "grth"]
-                  requires:
-                      - "[<< matrix.SOURCE_PFID >>] Test deploy last release"
-            - execute_load_tests:
-                  name: "[<< matrix.SOURCE_PFID >>] Execute load tests"
-                  matrix:
-                      parameters:
-                          SOURCE_PFID: ["srnt", "grth"]
-                          DURATION: ["5m"]
-                  requires:
-                        - "[<< matrix.SOURCE_PFID >>] Prepare load tests"
             - test_upgrade_from_last_release:
                   name: "[<< matrix.PRODUCT_TYPE >>] Test upgrade from last release"
                   matrix:
                       parameters:
                           PRODUCT_TYPE: ["srnt", "grth"]
                   requires:
-                      - "[<< matrix.PRODUCT_TYPE >>] Prepare load tests"
+                      - "[<< matrix.PRODUCT_TYPE >>] Test deploy last release"
             - deploy_pr_environment?:
                   name: "[<< matrix.PRODUCT_TYPE >>] Deploy PR environment?"
                   type: approval
@@ -248,8 +233,7 @@ workflows:
                       - "[tria] Test deploy"
                       - "[srnt] Test upgrade from last release"
                       - "[grth] Test upgrade from last release"
-                      - "[srnt] Execute load tests"
-                      - "[grth] Execute load tests"
+
 
     # Description :
     #    Beta workflows, current test:
