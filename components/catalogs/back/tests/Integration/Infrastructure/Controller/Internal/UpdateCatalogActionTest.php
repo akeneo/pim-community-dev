@@ -55,6 +55,9 @@ class UpdateCatalogActionTest extends IntegrationTestCase
                         'value' => true,
                     ],
                 ],
+                'product_value_filters' => [
+                    'channel' => ['ecommerce'],
+                ],
             ]),
         );
 
@@ -69,6 +72,9 @@ class UpdateCatalogActionTest extends IntegrationTestCase
                 'operator' => '!=',
                 'value' => true,
             ],
+        ]);
+        $this->assertCatalogHasProductValueFilters('ed30425c-d9cf-468b-8bc7-fa346f41dd07', [
+            'channel' => ['ecommerce'],
         ]);
     }
 
@@ -92,6 +98,9 @@ class UpdateCatalogActionTest extends IntegrationTestCase
                         'operator' => '!=',
                         'value' => true,
                     ],
+                ],
+                'product_value_filters' => [
+                    'channel' => ['ecommerce'],
                 ],
             ]),
         );
@@ -152,6 +161,21 @@ class UpdateCatalogActionTest extends IntegrationTestCase
     {
         $query = <<<SQL
         SELECT catalog.product_selection_criteria
+        FROM akeneo_catalog catalog
+        WHERE id = :id
+        SQL;
+
+        $row = $this->connection->executeQuery($query, [
+            'id' => Uuid::fromString($id)->getBytes(),
+        ])->fetchOne();
+
+        $this->assertEquals($expected, \json_decode($row, true, 512, JSON_THROW_ON_ERROR));
+    }
+
+    private function assertCatalogHasProductValueFilters(string $id, array $expected): void
+    {
+        $query = <<<SQL
+        SELECT catalog.product_value_filters
         FROM akeneo_catalog catalog
         WHERE id = :id
         SQL;
