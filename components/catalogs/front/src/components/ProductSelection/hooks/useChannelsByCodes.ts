@@ -9,9 +9,9 @@ type Result = {
     error: ResultError;
 };
 
-export const useChannelsByCodes = (codes: string[] | null): Result => {
+export const useChannelsByCodes = (codes: string[] | undefined): Result => {
     return useQuery<Channel[], ResultError, Channel[]>(['channels', codes?.sort().join('')], async () => {
-        if (null === codes || codes.length === 0) {
+        if (undefined === codes || codes.length === 0) {
             return [];
         }
         const _codes = codes?.join(',');

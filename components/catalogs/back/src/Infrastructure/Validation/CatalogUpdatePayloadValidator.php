@@ -16,6 +16,7 @@ use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\SystemCriterion\C
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\SystemCriterion\CompletenessCriterion;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\SystemCriterion\EnabledCriterion;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\SystemCriterion\FamilyCriterion;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductValueFilters\FilterContainsValidChannel;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -101,8 +102,18 @@ final class CatalogUpdatePayloadValidator extends ConstraintValidator
                             }),
                         ]),
                     ],
-                    'filter_values_criteria' => [
-                        new Assert\Type('array'),
+                    'product_value_filters' => [
+                        new Assert\Collection([
+                            'channel' => new Assert\Optional([
+                                new Assert\Type('array'),
+                                new Assert\All([
+                                    'constraints' => [
+                                        new Assert\Type('string'),
+                                        new FilterContainsValidChannel(),
+                                    ],
+                                ]),
+                            ]),
+                        ]),
                     ],
                 ],
                 'allowMissingFields' => false,
