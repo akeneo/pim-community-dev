@@ -69,6 +69,13 @@ class SearchAttributesQueryTest extends IntegrationTestCase
                 'localizable' => false,
             ],
             [
+                'code' => 'certified',
+                'label' => '[certified]',
+                'type' => 'pim_catalog_boolean',
+                'scopable' => false,
+                'localizable' => false,
+            ],
+            [
                 'code' => 'weight',
                 'label' => '[weight]',
                 'type' => 'pim_catalog_metric',
@@ -76,13 +83,6 @@ class SearchAttributesQueryTest extends IntegrationTestCase
                 'localizable' => false,
                 'measurement_family' => 'Weight',
                 'default_measurement_unit' => 'KILOGRAM',
-            ],
-            [
-                'code' => 'certified',
-                'label' => '[certified]',
-                'type' => 'pim_catalog_boolean',
-                'scopable' => false,
-                'localizable' => false,
             ],
         ], $result);
     }
