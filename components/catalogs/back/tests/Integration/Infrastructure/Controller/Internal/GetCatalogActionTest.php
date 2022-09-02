@@ -40,6 +40,9 @@ class GetCatalogActionTest extends IntegrationTestCase
             'Store FR',
             'admin',
         ));
+        $this->setCatalogProductValueFilters('ed30425c-d9cf-468b-8bc7-fa346f41dd07', [
+            'channel' => ['print', 'ecommerce'],
+        ]);
 
         $client->request(
             'GET',
@@ -67,6 +70,9 @@ class GetCatalogActionTest extends IntegrationTestCase
                 'operator' => '=',
             ],
         ], $payload['product_selection_criteria']);
+        Assert::assertSame([
+            'channel' => ['print', 'ecommerce'],
+        ], $payload['product_value_filters']);
     }
 
     public function testItGetsNotFoundResponseWithWrongId(): void
