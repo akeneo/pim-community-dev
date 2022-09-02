@@ -26,7 +26,7 @@ class MailNotifier implements MailNotifierInterface
     /**
      * { @inheritDoc }
      */
-    public function notify(array $users, $subject, $txtBody, $htmlBody = null, array $options = [])
+    public function notify(array $users, $subject, $txtBody, $htmlBody = null, array $options = []): void
     {
         foreach ($users as $user) {
             $this->send($user->getEmail(), $subject, $txtBody, $htmlBody);

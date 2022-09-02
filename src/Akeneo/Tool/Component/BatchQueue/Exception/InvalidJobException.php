@@ -16,7 +16,7 @@ final class InvalidJobException extends \RuntimeException
     public function __construct(
         string $jobCode,
         string $jobName,
-        ConstraintViolationListInterface $violations,
+        private ConstraintViolationListInterface $violations,
     ) {
         parent::__construct(sprintf(
             'Job instance "%s" running the job "%s" is invalid because of "%s"',
@@ -35,5 +35,10 @@ final class InvalidJobException extends \RuntimeException
         }
 
         return $formattedViolations;
+    }
+
+    public function getViolations(): ConstraintViolationListInterface
+    {
+        return $this->violations;
     }
 }
