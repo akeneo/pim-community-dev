@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace Akeneo\Platform\JobAutomation\Test\Integration\Infrastructure\Query;
 
 use Akeneo\Platform\Job\Test\Integration\IntegrationTestCase;
-use Akeneo\Platform\JobAutomation\Infrastructure\Query\UpdateJobInstanceAutomationLastExecutionDateQuery;
+use Akeneo\Platform\JobAutomation\Infrastructure\Query\UpdateAutomationLastExecutionDateQuery;
 use Doctrine\DBAL\Connection;
 
-class UpdateJobInstanceAutomationLastExecutionDateQueryTest extends IntegrationTestCase
+class UpdateAutomationLastExecutionDateQueryTest extends IntegrationTestCase
 {
-    private UpdateJobInstanceAutomationLastExecutionDateQuery $query;
+    private UpdateAutomationLastExecutionDateQuery $query;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->query = $this->get('akeneo.job_automation.query.update_job_instance_automation_last_execution_date');
+        $this->query = $this->get('akeneo.job_automation.query.update_automation_last_execution_date');
         $this->loadFixtures();
     }
 

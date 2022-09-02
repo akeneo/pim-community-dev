@@ -22,7 +22,6 @@ final class ScheduledJobInstance
         public array $rawParameters,
         public array $notifiedUsers,
         public array $notifiedUserGroups,
-        public bool $isScheduled,
         public string $cronExpression,
         public \DateTimeImmutable $setupDate,
         public ?\DateTimeImmutable $lastExecutionDate,

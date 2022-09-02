@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\JobAutomation\Test\Integration\Infrastructure\Query;
 
-use Akeneo\Platform\JobAutomation\Infrastructure\Query\GetScheduledJobInstancesQuery;
+use Akeneo\Platform\JobAutomation\Infrastructure\Query\FindScheduledJobInstancesQuery;
 use Akeneo\Platform\Job\Test\Integration\IntegrationTestCase;
 use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
 
-class GetScheduledJobInstancesQueryTest extends IntegrationTestCase
+class FindScheduledJobInstancesQueryTest extends IntegrationTestCase
 {
-    private GetScheduledJobInstancesQuery $query;
+    private FindScheduledJobInstancesQuery $query;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->query = $this->get('akeneo.job_automation.query.get_scheduled_job_instances');
+        $this->query = $this->get('akeneo.job_automation.query.find_scheduled_job_instances');
         $this->loadFixtures();
     }
 
@@ -29,7 +29,6 @@ class GetScheduledJobInstancesQueryTest extends IntegrationTestCase
                 ['storage' => ['type' => 'local', 'file_path' => 'test.xlsx']],
                 [],
                 [],
-                true,
                 '* * 0 0 0',
                 new \DateTimeImmutable('2022-08-10T10:00:00+00:00'),
                 null,
@@ -42,7 +41,6 @@ class GetScheduledJobInstancesQueryTest extends IntegrationTestCase
                 ['storage' => ['type' => 'local', 'file_path' => 'test.xlsx']],
                 [],
                 [],
-                true,
                 '* * 0 0 0',
                 new \DateTimeImmutable('2022-08-10T10:00:00+00:00'),
                 new \DateTimeImmutable('2022-08-10T10:00:00+00:00'),

@@ -3,13 +3,12 @@
 namespace Akeneo\Platform\JobAutomation\Domain;
 
 use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
-use Akeneo\Platform\JobAutomation\Domain\Model\UserToNotify;
+use Akeneo\Platform\JobAutomation\Domain\Model\UserToNotifyCollection;
 
 interface UserNotifierInterface
 {
-    /** @param UserToNotify[] $usersToNotify */
     public function forInvalidJobInstance(
-        array $usersToNotify,
+        UserToNotifyCollection $usersToNotify,
         ScheduledJobInstance $jobInstance,
         string $errorMessage,
     ): void;

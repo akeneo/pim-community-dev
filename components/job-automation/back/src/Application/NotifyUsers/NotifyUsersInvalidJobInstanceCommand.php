@@ -3,18 +3,14 @@
 namespace Akeneo\Platform\JobAutomation\Application\NotifyUsers;
 
 use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
+use Akeneo\Platform\JobAutomation\Domain\Model\UserToNotifyCollection;
 
 class NotifyUsersInvalidJobInstanceCommand
 {
-    /**
-     * @param int[] $notifiedUserGroups
-     * @param int[] $notifiedUsers
-     */
     public function __construct(
         public string $errorMessage,
         public ScheduledJobInstance $scheduledJobInstance,
-        public array $notifiedUserGroups,
-        public array $notifiedUsers,
+        public UserToNotifyCollection $usersToNotify,
     ) {
     }
 }

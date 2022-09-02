@@ -3,10 +3,12 @@ services:
     class: Akeneo\Platform\JobAutomation\Infrastructure\Command\PushScheduledJobsToQueueCommand
     arguments:
       - '@akeneo.job_automation.feature'
-      - '@akeneo.job_automation.handler.get_due_job_instances'
+      - '@akeneo.job_automation.query.find_scheduled_job_instances'
+      - '@Akeneo\Platform\JobAutomation\Domain\FilterDueJobInstances'
       - '@akeneo.job_automation.handler.update_scheduled_job_instance'
       - '@akeneo_batch_queue.queue.publish_job_to_queue'
       - '@event_dispatcher'
       - '@akeneo.job_automation.handler.notify_users_by_email_invalid_job_instance'
+      - '@akeneo.job_automation.query.find_users_to_notify'
     tags:
       - { name: console.command }

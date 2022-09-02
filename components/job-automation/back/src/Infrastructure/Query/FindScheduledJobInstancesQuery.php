@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Akeneo\Platform\JobAutomation\Infrastructure\Query;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\ResolveScheduledJobRunningUsername;
-use Akeneo\Platform\JobAutomation\Application\GetDueJobInstances\GetScheduledJobInstancesInterface;
 use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
+use Akeneo\Platform\JobAutomation\Domain\Query\FindScheduledJobInstancesQueryInterface;
 use Doctrine\DBAL\Connection;
 
-final class GetScheduledJobInstancesQuery implements GetScheduledJobInstancesInterface
+final class FindScheduledJobInstancesQuery implements FindScheduledJobInstancesQueryInterface
 {
     public function __construct(
         private Connection $connection,
@@ -42,7 +42,6 @@ SQL;
             function (array $result) {
                 $automation = json_decode($result['automation'], true);
                 $rawParameters = unserialize($result['raw_parameters']);
-                $isScheduled = '1' === $result['scheduled'];
                 $setupDate = new \DateTimeImmutable($automation['setup_date']);
                 $lastExecutionDate = $automation['last_execution_date'] ? new \DateTimeImmutable($automation['last_execution_date']) : null;
 
@@ -53,7 +52,6 @@ SQL;
                     $rawParameters,
                     $automation['notification_users'],
                     $automation['notification_user_groups'],
-                    $isScheduled,
                     $automation['cron_expression'],
                     $setupDate,
                     $lastExecutionDate,

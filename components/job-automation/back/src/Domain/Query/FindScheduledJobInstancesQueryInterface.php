@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\JobAutomation\Application\GetDueJobInstances;
+namespace Akeneo\Platform\JobAutomation\Domain\Query;
 
 use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
 
-interface GetScheduledJobInstancesInterface
+interface FindScheduledJobInstancesQueryInterface
 {
     /**
      * @return ScheduledJobInstance[]
