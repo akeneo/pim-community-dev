@@ -95,7 +95,7 @@ class BatchCommandIntegration extends TestCase
 
     public function testLaunchJobWithValidEmail()
     {
-        $output = $this->launchJob(['--email' => 'ziggy@akeneo.com']);
+        $output = $this->launchJob(['--email' => ['ziggy@akeneo.com']]);
         $this->assertEquals('Export csv_product_export has been successfully executed.' . PHP_EOL, $output->fetch());
     }
 
@@ -107,8 +107,8 @@ class BatchCommandIntegration extends TestCase
 
     public function testLaunchJobWithInvalidEmail()
     {
-        $output = $this->launchJob(['--email' => 'email']);
-        $this->assertStringContainsString('Email "email" is invalid', $output->fetch());
+        $output = $this->launchJob(['--email' => ['email']]);
+        $this->assertStringContainsString('Emails "email" are invalid', $output->fetch());
     }
 
     public function testLaunchJobWithInvalidJobExecutionCode()
@@ -140,12 +140,7 @@ class BatchCommandIntegration extends TestCase
         $this->assertStringContainsString('Username option cannot be specified when launching a job execution', $output->fetch());
     }
 
-    /**
-     * @param array $arrayInput
-     *
-     * @return BufferedOutput
-     */
-    protected function launchJob(array $arrayInput = [])
+    private function launchJob(array $arrayInput = []): BufferedOutput
     {
         $this->resetShellVerbosity();
         $application = new Application(static::$kernel);
