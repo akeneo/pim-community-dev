@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Tool\Bundle\BatchBundle\Remover;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\UserManagement\DeleteRunningUser;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
@@ -12,12 +13,16 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class JobInstanceRemoverSpec extends ObjectBehavior
 {
-    function let(RemovableObjectRepositoryInterface $jobInstanceRepository, EventDispatcherInterface $eventDispatcher): void
-    {
+    function let(
+        RemovableObjectRepositoryInterface $jobInstanceRepository,
+        EventDispatcherInterface $eventDispatcher,
+        DeleteRunningUser $deleteRunningUser,
+    ): void {
         $eventDispatcher->dispatch(Argument::any(), Argument::type('string'))->willReturn(Argument::type('object'));
         $this->beConstructedWith(
             $jobInstanceRepository,
             $eventDispatcher,
+            $deleteRunningUser,
         );
     }
 
@@ -30,6 +35,7 @@ class JobInstanceRemoverSpec extends ObjectBehavior
     function it_removes_the_job_instance(RemovableObjectRepositoryInterface $jobInstanceRepository, JobInstance $jobInstance): void
     {
         $jobInstance->getId()->willReturn(1);
+        $jobInstance->isScheduled()->willReturn(false);
         $jobInstanceCode = 'my_job';
         $jobInstance->getCode()->willReturn($jobInstanceCode);
         $jobInstanceRepository->remove($jobInstanceCode)->shouldBeCalled();
@@ -51,6 +57,34 @@ class JobInstanceRemoverSpec extends ObjectBehavior
         $jobInstanceRepository->remove($jobInstanceCode2)->shouldBeCalled();
 
         $this->removeAll([$jobInstance1, $jobInstance2]);
+    }
+
+    function it_removes_the_running_user(
+        JobInstance $jobInstance,
+        DeleteRunningUser $deleteRunningUser,
+    ): void
+    {
+        $jobInstance->getId()->willReturn(1);
+        $jobInstance->isScheduled()->willReturn(true);
+        $jobInstanceCode = 'my_job';
+        $jobInstance->getCode()->willReturn($jobInstanceCode);
+        $deleteRunningUser->execute($jobInstanceCode)->shouldBeCalled();
+
+        $this->remove($jobInstance);
+    }
+
+    function it_does_not_remove_the_running_user_when_job_is_not_scheduled(
+        JobInstance $jobInstance,
+        DeleteRunningUser $deleteRunningUser,
+    ): void
+    {
+        $jobInstance->getId()->willReturn(1);
+        $jobInstance->isScheduled()->willReturn(false);
+        $jobInstanceCode = 'my_job';
+        $jobInstance->getCode()->willReturn($jobInstanceCode);
+        $deleteRunningUser->execute($jobInstanceCode)->shouldNotBeCalled();
+
+        $this->remove($jobInstance);
     }
 
     function it_throws_exception_when_remove_anything_else_than_a_job_instance(): void
