@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Connector\Tasklet;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\Exception\NonRunnableException;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
@@ -24,6 +25,7 @@ use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class ExecuteRulesTasklet implements TaskletInterface, TrackableTaskletInterface
@@ -35,6 +37,7 @@ final class ExecuteRulesTasklet implements TaskletInterface, TrackableTaskletInt
     private EventDispatcherInterface $eventDispatcher;
     private JobStopper $jobStopper;
     private JobRepositoryInterface $jobRepository;
+    private LoggerInterface $logger;
 
     public function __construct(
         RuleDefinitionRepositoryInterface $ruleDefinitionRepository,
@@ -42,7 +45,8 @@ final class ExecuteRulesTasklet implements TaskletInterface, TrackableTaskletInt
         DryRunnerInterface $dryRuleRunner,
         EventDispatcherInterface $eventDispatcher,
         JobRepositoryInterface $jobRepository,
-        JobStopper $jobStopper
+        JobStopper $jobStopper,
+        LoggerInterface $logger
     ) {
         $this->ruleDefinitionRepository = $ruleDefinitionRepository;
         $this->ruleRunner = $ruleRunner;
@@ -50,15 +54,22 @@ final class ExecuteRulesTasklet implements TaskletInterface, TrackableTaskletInt
         $this->eventDispatcher = $eventDispatcher;
         $this->jobRepository = $jobRepository;
         $this->jobStopper = $jobStopper;
+        $this->logger = $logger;
     }
 
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
     }
 
-    public function execute()
+    public function execute(): void
     {
+        $numberOfExecutedRules = 0;
+        $startedTime = new \DateTimeImmutable('now');
+        $this->eventDispatcher->addListener(RuleEvents::POST_EXECUTE, static function () use (&$numberOfExecutedRules) {
+            $numberOfExecutedRules++;
+        });
+
         $dryRun = $this->stepExecution->getJobParameters()->get('dry_run');
         $this->stepExecution->setTotalItems($this->getTotalItemImpacted());
         $this->stepExecution->setSummary(
@@ -73,6 +84,11 @@ final class ExecuteRulesTasklet implements TaskletInterface, TrackableTaskletInt
 
         $subscriber = new ProductRuleExecutionSubscriber($this->stepExecution, $this->jobRepository);
         $this->eventDispatcher->addSubscriber($subscriber);
+        $ruleRunDuration = $startedTime->diff(new \DateTimeImmutable('now'));
+        $this->logger->notice(
+            'rules run stats',
+            ['duration' => $ruleRunDuration->format('%s.%fs'), 'rules_count' => $numberOfExecutedRules]
+        );
 
         foreach ($this->getRuleDefinitions() as $ruleDefinition) {
             if ($this->jobStopper->isStopping($this->stepExecution)) {
@@ -146,7 +162,7 @@ final class ExecuteRulesTasklet implements TaskletInterface, TrackableTaskletInt
         return $totalProductsImpacted;
     }
 
-    private function countProducts(RuleDefinition $ruleDefinition)
+    private function countProducts(RuleDefinition $ruleDefinition): int
     {
         $ruleSubjectSet = $this->dryRuleRunner->dryRun($ruleDefinition);
         if (null === $ruleSubjectSet) {
