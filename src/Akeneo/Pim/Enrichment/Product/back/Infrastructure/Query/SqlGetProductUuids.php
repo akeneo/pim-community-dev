@@ -45,4 +45,26 @@ class SqlGetProductUuids implements GetProductUuids
 
         return $indexedUuidsByIdentifier;
     }
+
+    public function fromUuid(UuidInterface $uuid): ?UuidInterface
+    {
+        return $this->fromUuids([$uuid])[$uuid->toString()] ?? null;
+    }
+
+    public function fromUuids(array $uuids): array
+    {
+        if ([] === $uuids) {
+            return [];
+        }
+
+        return \array_reduce(
+            $this->connection->fetchFirstColumn(
+                'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE uuid IN (:uuids)',
+                ['uuids' => \array_map(static fn (UuidInterface $uuid): string => $uuid->getBytes(), $uuids)],
+                ['uuids' => Connection::PARAM_STR_ARRAY],
+            ),
+            static fn (array $carry, string $uuid): array => $carry + [$uuid => Uuid::fromString($uuid)],
+            []
+        );
+    }
 }
