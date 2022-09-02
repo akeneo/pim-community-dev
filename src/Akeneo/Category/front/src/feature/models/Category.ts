@@ -1,6 +1,6 @@
 import {LabelCollection, LocaleCode} from '@akeneo-pim-community/shared';
 import {TreeNode} from './Tree';
-import {CompositeKey, CompositeKeyWithoutLocale} from './CompositeKey';
+import {CompositeKeyWithoutLocale} from './CompositeKey';
 
 export type Category = {
   id: number;
@@ -28,7 +28,7 @@ export type CategoryPermissions = {
 };
 
 export interface CategoryAttributes {
-  [key: CompositeKey]: CategoryAttributeValueWrapper;
+  [key: string]: CategoryAttributeValueWrapper;
 }
 
 export interface CategoryAttributeValueWrapper {
