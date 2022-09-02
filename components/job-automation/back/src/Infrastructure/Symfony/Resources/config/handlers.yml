@@ -9,8 +9,3 @@ services:
     arguments:
       - '@Akeneo\Platform\JobAutomation\Domain\ClockInterface'
       - '@akeneo.job_automation.query.update_automation_last_execution_date'
-
-  akeneo.job_automation.handler.notify_users_by_email_invalid_job_instance:
-    class: Akeneo\Platform\JobAutomation\Application\NotifyUsers\NotifyUsersInvalidJobInstanceHandler
-    arguments:
-      - '@Akeneo\Platform\JobAutomation\Infrastructure\Email\MailNotifier'

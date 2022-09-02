@@ -8,6 +8,7 @@ imports:
     - { resource: ../../../vendor/akeneo/pim-community-dev/tests/back/Pim/Enrichment/Acceptance/Resources/config/behat/services.yml }
     - { resource: ../../../vendor/akeneo/pim-community-dev/tests/back/Acceptance/Resources/config/behat/services.yml }
     - { resource: ../../../vendor/akeneo/pim-community-dev/tests/back/Acceptance/Resources/config/pim/messenger.yml }
+    - { resource: ../../../vendor/akeneo/pim-community-dev/tests/back/Platform/Acceptance/NotificationBundle/Resources/config/services.yml }
     # Akeneo/Connectivity/Connection
     - { resource: ../../../vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back/tests/CatalogBuilder/Resources/config/loaders.yml }
     - { resource: ../../../vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/tests/Resources/config/services.yml }
