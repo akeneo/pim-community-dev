@@ -4,7 +4,6 @@
  */
 
 import {
-  CategoryAttributeCode,
   CategoryAttributeDefinition,
   CATEGORY_ATTRIBUTE_TYPE_IMAGE,
   CATEGORY_ATTRIBUTE_TYPE_TEXT,
@@ -14,7 +13,7 @@ import {buildCompositeKey} from './CompositeKey';
 
 // mocked attributes
 // TODO use attribute coming from GET template via props
-export const attributeDefinitions: {[attributeCode: CategoryAttributeCode]: CategoryAttributeDefinition} = {
+export const attributeDefinitions: {[attributeCode: string]: CategoryAttributeDefinition} = {
   description: {
     uuid: '840fcd1a-f66b-4f0c-9bbd-596629732950',
     code: 'description',
