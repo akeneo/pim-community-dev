@@ -47,7 +47,7 @@ const SourceDropdown = ({columns, onColumnSelected}: SourceDropdownProps) => {
         {translate('akeneo.tailored_import.data_mapping.sources.add.label')}
       </BlockButton>
       {isOpen && (
-        <Dropdown.Overlay verticalPosition="down" onClose={close} fullWidth={true}>
+        <Dropdown.Overlay onClose={close} fullWidth={true}>
           <Dropdown.Header>
             <Search
               onSearchChange={setSearchValue}
