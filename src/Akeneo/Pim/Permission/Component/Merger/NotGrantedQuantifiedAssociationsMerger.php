@@ -83,11 +83,17 @@ class NotGrantedQuantifiedAssociationsMerger implements NotGrantedDataMergerInte
         QuantifiedAssociationCollection $quantifiedAssociations
     ): QuantifiedAssociationCollection {
         $quantifiedAssociationsProductIdentifiers = $quantifiedAssociations->getQuantifiedAssociationsProductIdentifiers();
+        $quantifiedAssociationsProductUuids = $quantifiedAssociations->getQuantifiedAssociationsProductUuids();
         $quantifiedAssociationsProductModelCodes = $quantifiedAssociations->getQuantifiedAssociationsProductModelCodes();
         $user = $this->tokenStorage->getToken()->getUser();
 
         $grantedProductIdentifiers = $this->productCategoryAccessQuery->getGrantedProductIdentifiers(
             $quantifiedAssociationsProductIdentifiers,
+            $user
+        );
+
+        $grantedProductUuids = $this->productCategoryAccessQuery->getGrantedProductUuids(
+            $quantifiedAssociationsProductUuids,
             $user
         );
 
@@ -97,10 +103,12 @@ class NotGrantedQuantifiedAssociationsMerger implements NotGrantedDataMergerInte
         );
 
         $notGrantedProductIdentifiers = array_diff($quantifiedAssociationsProductIdentifiers, $grantedProductIdentifiers);
+        $notGrantedProductUuids = array_diff($quantifiedAssociationsProductUuids, $grantedProductUuids);
         $notGrantedProductModelCodes = array_diff($quantifiedAssociationsProductModelCodes, $grantedProductModelCodes);
 
-        $filteredQuantifiedAssociations = $quantifiedAssociations->filterProductIdentifiers($notGrantedProductIdentifiers);
-
-        return $filteredQuantifiedAssociations->filterProductModelCodes($notGrantedProductModelCodes);
+        return $quantifiedAssociations
+            ->filterProductIdentifiers($notGrantedProductIdentifiers)
+            ->filterProductUuids($notGrantedProductUuids)
+            ->filterProductModelCodes($notGrantedProductModelCodes);
     }
 }

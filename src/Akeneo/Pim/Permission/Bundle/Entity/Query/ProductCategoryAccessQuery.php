@@ -17,26 +17,11 @@ use Webmozart\Assert\Assert;
  */
 class ProductCategoryAccessQuery implements ProductCategoryAccessQueryInterface
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    /**
-     * @param EntityManagerInterface $entityManager
-     */
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
+    public function __construct(
+        private EntityManagerInterface $entityManager
+    ) {
     }
 
-    /**
-     * The query is an union of products belonging to categories where the given user has access
-     * and products without category.
-     *
-     * @param array $productIdentifiers
-     * @param UserInterface $user
-     *
-     * @return string[]
-     */
     public function getGrantedProductIdentifiers(array $productIdentifiers, UserInterface $user): array
     {
         if (empty($productIdentifiers)) {

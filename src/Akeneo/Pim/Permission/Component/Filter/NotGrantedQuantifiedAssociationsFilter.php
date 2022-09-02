@@ -58,11 +58,6 @@ class NotGrantedQuantifiedAssociationsFilter implements NotGrantedDataFilterInte
         $quantifiedAssociationsProductUuids = $quantifiedAssociations->getQuantifiedAssociationsProductUuids();
         $quantifiedAssociationsProductModelCodes = $quantifiedAssociations->getQuantifiedAssociationsProductModelCodes();
 
-        $grantedProductIdentifiers = $this->productCategoryAccessQuery->getGrantedProductIdentifiers(
-            $quantifiedAssociationsProductIdentifiers,
-            $user
-        );
-
         $grantedProductUuids = $this->productCategoryAccessQuery->getGrantedProductUuids(
             $quantifiedAssociationsProductUuids,
             $user
