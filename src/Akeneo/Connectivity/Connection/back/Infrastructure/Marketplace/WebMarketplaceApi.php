@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Marketplace;
 
+use Akeneo\Connectivity\Connection\Application\Marketplace\WebMarketplaceAliasesInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use GuzzleHttp\ClientInterface;
 use Psr\Log\LoggerInterface;
@@ -48,13 +49,13 @@ class WebMarketplaceApi implements WebMarketplaceApiInterface
             ],
         ]);
 
-        return json_decode($response->getBody()->getContents(), true);
+        return \json_decode($response->getBody()->getContents(), true);
     }
 
     public function getApps(int $offset = 0, int $limit = 10): array
     {
         if ($this->fakeAppsFeatureFlag->isEnabled()) {
-            return json_decode(file_get_contents($this->fixturePath . 'marketplace-data-apps.json'), true);
+            return \json_decode(\file_get_contents($this->fixturePath . 'marketplace-data-apps.json'), true);
         }
 
         $edition = $this->webMarketplaceAliases->getEdition();
@@ -70,7 +71,7 @@ class WebMarketplaceApi implements WebMarketplaceApiInterface
             ],
         ]);
 
-        return json_decode($response->getBody()->getContents(), true);
+        return \json_decode($response->getBody()->getContents(), true);
     }
 
     public function getApp(string $id): ?array
@@ -86,7 +87,7 @@ class WebMarketplaceApi implements WebMarketplaceApiInterface
                     return $item;
                 }
             }
-        } while (count($result['items']) > 0);
+        } while (\count($result['items']) > 0);
 
         return null;
     }
@@ -94,14 +95,14 @@ class WebMarketplaceApi implements WebMarketplaceApiInterface
     public function validateCodeChallenge(string $appId, string $codeIdentifier, string $codeChallenge): bool
     {
         try {
-            $response = $this->client->request('POST', sprintf('/api/1.0/app/%s/challenge', $appId), [
+            $response = $this->client->request('POST', \sprintf('/api/1.0/app/%s/challenge', $appId), [
                 'json' => [
                     'code_identifier' => $codeIdentifier,
                     'code_challenge' => $codeChallenge,
                 ],
             ]);
 
-            $payload = json_decode($response->getBody()->getContents(), true);
+            $payload = \json_decode($response->getBody()->getContents(), true);
 
             if ($response->getStatusCode() !== Response::HTTP_OK) {
                 $this->logger->warning(
@@ -124,7 +125,7 @@ class WebMarketplaceApi implements WebMarketplaceApiInterface
             return (bool) $payload['valid'];
         } catch (\Exception $e) {
             $this->logger->error(
-                sprintf('Exception thrown when validating a code challenge: %s', $e->getMessage()),
+                \sprintf('Exception thrown when validating a code challenge: %s', $e->getMessage()),
                 ['exception' => $e]
             );
 

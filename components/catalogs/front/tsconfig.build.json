@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "tsconfig.build.tsbuildinfo",
+    "module": "commonjs",
+    "noEmit": false
+  },
+  "include": [
+    "src/components",
+    "src/hooks",
+    "src/exports.ts"
+  ],
+  "exclude": [
+    "**/*.unit.*",
+    "**/*.integration.*",
+    "**/__mocks__/*"
+  ]
+}

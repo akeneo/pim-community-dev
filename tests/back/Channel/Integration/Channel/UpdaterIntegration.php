@@ -14,7 +14,7 @@ class UpdaterIntegration extends TestCase
     public function testUpdateObjectInChannelUpdater()
     {
         $this->expectException(InvalidObjectException::class);
-        $this->expectExceptionMessage('Expects a "Akeneo\Channel\Component\Model\ChannelInterface", "stdClass" given.');
+        $this->expectExceptionMessage('Expects a "Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface", "stdClass" given.');
 
         $this->getUpdater()->update(new \stdClass(), []);
     }
@@ -195,7 +195,7 @@ class UpdaterIntegration extends TestCase
     }
 
     /**
-     * @return \Akeneo\Channel\Component\Model\ChannelInterface
+     * @return \Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface
      */
     protected function createChannel()
     {

@@ -24,3 +24,7 @@ pim_enrich.acl_group.product:
     order: 110
 pim_enrich.acl_group.product_model:
     order: 120
+
+pim_system.acl_group.developer_mode:
+    order: 400
+    feature: app_developer_mode

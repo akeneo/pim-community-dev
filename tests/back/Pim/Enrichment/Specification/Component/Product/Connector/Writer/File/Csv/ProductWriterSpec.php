@@ -108,7 +108,7 @@ class ProductWriterSpec extends ObjectBehavior
         $jobParameters = new JobParameters(
             [
                 'withHeader' => true,
-                'filePath' => $this->directory . '%job_label%_product.csv',
+                'storage' => ['type' => 'local', 'file_path' => $this->directory . '%job_label%_product.csv'],
                 'with_media' => true,
                 'filters' => ['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']],
             ]
@@ -200,7 +200,7 @@ class ProductWriterSpec extends ObjectBehavior
 
         $arrayConverter->convert($productStandardWithMedia, [])->shouldBeCalled()->willReturn($flatProduct);
         $generateHeadersFromFamilyCodes->__invoke(["clothes"], "ecommerce", ["fr_FR", "en_US"])->shouldBeCalled()
-                                       ->willReturn([]);
+            ->willReturn([]);
 
         $flatRowBuffer->write([$flatProduct], ['withHeader' => true])->shouldBeCalled();
 
@@ -232,7 +232,7 @@ class ProductWriterSpec extends ObjectBehavior
         $jobParameters = new JobParameters(
             [
                 'withHeader' => true,
-                'filePath' => $this->directory . '%job_label%_product.csv',
+                'storage' => ['type' => 'local', 'file_path' => $this->directory . '%job_label%_product.csv'],
                 'with_media' => true,
                 'filters' => ['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']],
             ]
@@ -280,13 +280,13 @@ class ProductWriterSpec extends ObjectBehavior
             Argument::that(
                 function ($argument): bool {
                     return $argument instanceof InvalidItemInterface && $argument->getInvalidData() == [
-                            'from' => 'a/b/c/abc123_filename.png',
-                            'to' => [
-                                'filePath' => 'files/sku042/media',
-                                'filename' => 'filename.png',
-                            ],
-                            'storage' => 'catalogStorage',
-                        ];
+                        'from' => 'a/b/c/abc123_filename.png',
+                        'to' => [
+                            'filePath' => 'files/sku042/media',
+                            'filename' => 'filename.png',
+                        ],
+                        'storage' => 'catalogStorage',
+                    ];
                 }
             )
         )->shouldBeCalled();
@@ -315,7 +315,7 @@ class ProductWriterSpec extends ObjectBehavior
         $jobParameters = new JobParameters(
             [
                 'withHeader' => true,
-                'filePath' => $this->directory . '%job_label%_product.csv',
+                'storage' => ['type' => 'local', 'file_path' => $this->directory . '%job_label%_product.csv'],
                 'with_media' => false,
                 'with_label' => false,
                 'filters' => ['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']],
@@ -371,7 +371,7 @@ class ProductWriterSpec extends ObjectBehavior
 
         $arrayConverter->convert($productStandard, [])->shouldBeCalled()->willReturn($flatProduct);
         $generateHeadersFromFamilyCodes->__invoke(["clothes"], "ecommerce", ["fr_FR", "en_US"])->shouldBeCalled()
-                                       ->willReturn([]);
+            ->willReturn([]);
 
         $flatRowBuffer->write([$flatProduct], ['withHeader' => true])->shouldBeCalled();
 
@@ -393,7 +393,7 @@ class ProductWriterSpec extends ObjectBehavior
             [
                 'delimiter' => ';',
                 'enclosure' => '"',
-                'filePath' => $this->directory . '%job_label%_product.csv',
+                'storage' => ['type' => 'local', 'file_path' => $this->directory . '%job_label%_product.csv'],
                 'with_label' => false,
             ]
         );
@@ -408,12 +408,12 @@ class ProductWriterSpec extends ObjectBehavior
 
         $flusher->setStepExecution($stepExecution)->shouldBeCalled();
         $flusher->flush($flatRowBuffer, Argument::type('array'), Argument::type('string'), -1)
-                ->shouldBeCalled()
-                ->willReturn(
-                    [
-                        $this->directory . 'CSV_Product_export_product.csv',
-                    ]
-                );
+            ->shouldBeCalled()
+            ->willReturn(
+                [
+                    $this->directory . 'CSV_Product_export_product.csv',
+                ]
+            );
 
         $this->initialize();
         $this->flush();
@@ -441,7 +441,7 @@ class ProductWriterSpec extends ObjectBehavior
             [
                 'delimiter' => ';',
                 'enclosure' => '"',
-                'filePath' => $this->directory . '%job_label%_product.csv',
+                'storage' => ['type' => 'local', 'file_path' => $this->directory . '%job_label%_product.csv'],
                 'withHeader' => true,
                 'with_label' => false,
                 'filters' => ['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']],
@@ -469,12 +469,12 @@ class ProductWriterSpec extends ObjectBehavior
 
         $flusher->setStepExecution($stepExecution)->shouldBeCalled();
         $flusher->flush($flatRowBuffer, Argument::type('array'), Argument::type('string'), -1)
-                ->shouldBeCalled()
-                ->willReturn(
-                    [
-                        $this->directory . 'CSV_Product_export_product.csv',
-                    ]
-                );
+            ->shouldBeCalled()
+            ->willReturn(
+                [
+                    $this->directory . 'CSV_Product_export_product.csv',
+                ]
+            );
 
         $this->initialize();
         $this->write(
@@ -514,7 +514,7 @@ class ProductWriterSpec extends ObjectBehavior
             [
                 'delimiter' => ';',
                 'enclosure' => '"',
-                'filePath' => $this->directory . '%job_label%_product.csv',
+                'storage' => ['type' => 'local', 'file_path' => $this->directory . '%job_label%_product.csv'],
                 'withHeader' => true,
                 'with_label' => false,
                 'filters' => ['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']],
@@ -542,12 +542,12 @@ class ProductWriterSpec extends ObjectBehavior
 
         $flusher->setStepExecution($stepExecution)->shouldBeCalled();
         $flusher->flush($flatRowBuffer, Argument::type('array'), Argument::type('string'), -1)
-                ->shouldBeCalled()
-                ->willReturn(
-                    [
-                        $this->directory . 'CSV_Product_export_product.csv',
-                    ]
-                );
+            ->shouldBeCalled()
+            ->willReturn(
+                [
+                    $this->directory . 'CSV_Product_export_product.csv',
+                ]
+            );
 
         $this->initialize();
         $this->write(
@@ -577,7 +577,7 @@ class ProductWriterSpec extends ObjectBehavior
     ) {
         $jobParameters = new JobParameters(
             [
-                'filePath' => $this->directory . '%job_label%_product.csv',
+                'storage' => ['type' => 'local', 'file_path' => $this->directory . '%job_label%_product.csv'],
                 'withHeader' => true,
                 'with_label' => true,
                 'filters' => ['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']],

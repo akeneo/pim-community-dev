@@ -1,0 +1,75 @@
+import {useState} from 'react';
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {action} from '@storybook/addon-actions';
+import {Block} from './Block';
+import {IconButton} from '../IconButton/IconButton';
+import {CloseIcon, ArrowDownIcon, MoreIcon} from '../../icons';
+
+<Meta
+  title="Components/Block"
+  component={Block}
+  argTypes={{
+    title: {control: {type: 'text'}},
+    children: {control: {type: 'text'}},
+  }}
+  args={{
+    title: 'I am a block',
+    children: 'I am the block content',
+  }}
+/>
+
+# Block
+
+## Usage
+
+Block is a visual component that can be used to group content.
+When it is removable and hovered, it can be removed by clicking on the X icon.
+
+## Playground
+
+Use this playground to test the block component
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <Block {...args} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Without Actions
+
+<Canvas>
+  <Story name="Without Actions">
+    {args => {
+      return (
+        <>
+          <Block {...args} title="Block without action" />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+
+## With Actions
+
+<Canvas>
+  <Story name="With Actions">
+    {args => {
+      const [isOpen, setOpen] = useState(false);
+      return (
+        <>
+          <Block
+            {...args} title="Block with actions" isOpen={isOpen} onCollapse={setOpen} collapseButtonLabel="Collapse"
+            actions={<>
+              <IconButton level="danger" ghost size="small" key="remove" icon={<CloseIcon />} title='Remove' onClick={action('Remove block')} />
+            </>}
+          />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>

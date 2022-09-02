@@ -112,16 +112,15 @@ services:
             - '@akeneo_batch_queue.launcher.queue_job_launcher'
             - '@akeneo_batch.job.job_instance_repository'
             - '@logger'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory'
 
     akeneo.pim.automation.data_quality_insights.connector.tasklet.evaluate_products_and_product_models_criteria:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateProductsAndProductModelsCriteriaTasklet
         arguments:
-            - '@akeneo.pim.automation.data_quality_insights.evaluate_products_pending_criteria'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductScores'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\UpdateProductsIndex'
             - '@akeneo.pim.automation.data_quality_insights.query.get_product_ids_to_evaluate'
-            - '@akeneo.pim.automation.data_quality_insights.evaluate_product_models_pending_criteria'
             - '@akeneo.pim.automation.data_quality_insights.query.get_product_model_ids_to_evaluate'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProductModels'
 
     akeneo.pim.automation.data_quality_insights.infrastructure.connector.tasklet.prepare_products_criteria_evaluation:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\PrepareProductsCriteriaEvaluationTasklet

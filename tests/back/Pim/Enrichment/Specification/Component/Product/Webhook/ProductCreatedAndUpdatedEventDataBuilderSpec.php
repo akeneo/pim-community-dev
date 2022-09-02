@@ -17,6 +17,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductV
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\ProductNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductCreatedAndUpdatedEventDataBuilder;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\Webhook\Context;
@@ -25,6 +26,8 @@ use Akeneo\Platform\Component\Webhook\EventDataCollection;
 use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
@@ -32,11 +35,13 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
     public function let(
         GetConnectorProducts $getConnectorProductsQuery,
         ProductValueNormalizer $productValuesNormalizer,
-        RouterInterface $router
+        RouterInterface $router,
+        AttributeRepositoryInterface $attributeRepository
     ): void {
         $connectorProductNormalizer = new ConnectorProductNormalizer(
             new ValuesNormalizer($productValuesNormalizer->getWrappedObject(), $router->getWrappedObject()),
             new DateTimeNormalizer(),
+            $attributeRepository->getWrappedObject()
         );
         $productValuesNormalizer->normalize(Argument::type(ReadValueCollection::class), 'standard')->willReturn([]);
 
@@ -52,8 +57,14 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
     public function it_supports_a_bulk_event_of_product_created_and_updated_events(): void
     {
         $bulkEvent = new BulkEvent([
-            new ProductCreated(Author::fromNameAndType('julia', Author::TYPE_UI), ['identifier' => '1']),
-            new ProductUpdated(Author::fromNameAndType('julia', Author::TYPE_UI), ['identifier' => '2']),
+            new ProductCreated(Author::fromNameAndType('julia', Author::TYPE_UI), [
+                'identifier' => '1',
+                'uuid' => Uuid::uuid4(),
+            ]),
+            new ProductUpdated(Author::fromNameAndType('julia', Author::TYPE_UI), [
+                'identifier' => '2',
+                'uuid' => Uuid::uuid4(),
+            ]),
         ]);
 
         $this->supports($bulkEvent)->shouldReturn(true);
@@ -62,9 +73,13 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
     public function it_does_not_support_a_bulk_event_of_unsupported_product_events(): void
     {
         $bulkEvent = new BulkEvent([
-            new ProductCreated(Author::fromNameAndType('julia', Author::TYPE_UI), ['identifier' => '1']),
+            new ProductCreated(Author::fromNameAndType('julia', Author::TYPE_UI), [
+                'identifier' => '1',
+                'uuid' => Uuid::uuid4(),
+            ]),
             new ProductRemoved(Author::fromNameAndType('julia', Author::TYPE_UI), [
                 'identifier' => '1',
+                'uuid' => Uuid::uuid4(),
                 'category_codes' => [],
             ]),
         ]);
@@ -77,20 +92,26 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
     ): void {
         $context = new Context('ecommerce_0000', 10);
 
+        $blueJeanUuid = Uuid::uuid4();
         $blueJeanEvent = new ProductCreated(Author::fromNameAndType('julia', Author::TYPE_UI), [
             'identifier' => 'blue_jean',
+            'uuid' => $blueJeanUuid,
         ]);
+        $redJeanUuid = Uuid::uuid4();
         $redJeanEvent = new ProductUpdated(Author::fromNameAndType('julia', Author::TYPE_UI), [
             'identifier' => 'red_jean',
+            'uuid' => $redJeanUuid,
         ]);
         $bulkEvent = new BulkEvent([$blueJeanEvent, $redJeanEvent]);
 
         $productList = new ConnectorProductList(2, [
-            $this->buildConnectorProduct(1, 'blue_jean'),
-            $this->buildConnectorProduct(2, 'red_jean'),
+            $this->buildConnectorProduct($blueJeanUuid, 'blue_jean'),
+            $this->buildConnectorProduct($redJeanUuid, 'red_jean'),
         ]);
 
-        $getConnectorProductsQuery->fromProductIdentifiers(['blue_jean', 'red_jean'], 10, null, null, null)->willReturn($productList);
+        $getConnectorProductsQuery
+            ->fromProductUuids([$blueJeanUuid, $redJeanUuid], 10, null, null, null)
+            ->willReturn($productList);
 
         $expectedCollection = new EventDataCollection();
         $expectedCollection->setEventData($blueJeanEvent, [
@@ -134,15 +155,23 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
     ): void {
         $context = new Context('ecommerce_0000', 10);
 
-        $productList = new ConnectorProductList(1, [$this->buildConnectorProduct(1, 'blue_jean')]);
+        $blueJeanUuid = Uuid::uuid4();
+        $productList = new ConnectorProductList(1, [
+            $this->buildConnectorProduct($blueJeanUuid, 'blue_jean')
+        ]);
+        $redJeanUuid = Uuid::uuid4();
 
-        $getConnectorProductsQuery->fromProductIdentifiers(['blue_jean', 'red_jean'], 10, null, null, null)->willReturn($productList);
+        $getConnectorProductsQuery
+            ->fromProductUuids([$blueJeanUuid, $redJeanUuid], 10, null, null, null)
+            ->willReturn($productList);
 
         $blueJeanEvent = new ProductCreated(Author::fromNameAndType('julia', Author::TYPE_UI), [
             'identifier' => 'blue_jean',
+            'uuid' => $blueJeanUuid,
         ]);
         $redJeanEvent = new ProductUpdated(Author::fromNameAndType('julia', Author::TYPE_UI), [
             'identifier' => 'red_jean',
+            'uuid' => $redJeanUuid,
         ]);
         $bulkEvent = new BulkEvent([$blueJeanEvent, $redJeanEvent]);
 
@@ -162,17 +191,17 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
                 'quantified_associations' => (object) [],
             ],
         ]);
-        $expectedCollection->setEventDataError($redJeanEvent, new ProductNotFoundException('red_jean'));
+        $expectedCollection->setEventDataError($redJeanEvent, new ProductNotFoundException($redJeanUuid));
 
         $collection = $this->build($bulkEvent, $context)->getWrappedObject();
 
         Assert::assertEquals($expectedCollection, $collection);
     }
 
-    private function buildConnectorProduct(int $id, string $identifier)
+    private function buildConnectorProduct(UuidInterface $uuid, string $identifier): ConnectorProduct
     {
         return new ConnectorProduct(
-            $id,
+            $uuid,
             $identifier,
             new \DateTimeImmutable('2020-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2020-04-25 15:55:50', new \DateTimeZone('UTC')),

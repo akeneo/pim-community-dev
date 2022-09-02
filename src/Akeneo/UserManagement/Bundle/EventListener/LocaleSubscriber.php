@@ -3,6 +3,7 @@
 namespace Akeneo\UserManagement\Bundle\EventListener;
 
 use Akeneo\UserManagement\Component\Event\UserEvent;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\SecurityBundle\Security\FirewallConfig;
 use Symfony\Bundle\SecurityBundle\Security\FirewallMap;
@@ -74,6 +75,10 @@ class LocaleSubscriber implements EventSubscriberInterface
     {
         $user = $event->getAuthenticationToken()->getUser();
 
+        if (!$user instanceof UserInterface) {
+            return;
+        }
+
         $event->getRequest()->getSession()->remove('dataLocale');
         $event->getRequest()->getSession()->set('_locale', $user->getUiLocale()->getCode());
     }
@@ -97,6 +102,10 @@ class LocaleSubscriber implements EventSubscriberInterface
      */
     protected function getLocale(Request $request)
     {
+        if ('api' === $this->firewall->getFirewallConfig($request)->getName()) {
+            return 'en_US';
+        }
+
         return $this->hasActiveSession($request) && null !== $request->getSession()->get('_locale') ?
             $request->getSession()->get('_locale') : $this->getLocaleFromOroConfigValue();
     }

@@ -19,3 +19,11 @@ services:
             - '@akeneo.platform.import_export.purge_job_execution'
         tags:
             - { name: console.command }
+
+    Akeneo\Platform\Bundle\ImportExportBundle\Domain\ResolveScheduledJobRunningUsername: ~
+
+    Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\UserManagement\UpsertRunningUser:
+        arguments:
+            - '@Akeneo\UserManagement\ServiceApi\User\UpsertUserHandlerInterface'
+            - '@Akeneo\UserManagement\ServiceApi\UserRole\ListUserRoleInterface'
+            - '@Akeneo\Platform\Bundle\ImportExportBundle\Domain\ResolveScheduledJobRunningUsername'

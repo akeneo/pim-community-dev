@@ -2,11 +2,12 @@
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\DependencyInjection\Compiler\CredentialsEncrypterPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * The Pim Import Export Bundle
+ * The Pim Import Export Bundle.
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -19,5 +20,8 @@ class PimImportExportBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
+        $container
+            ->addCompilerPass(new CredentialsEncrypterPass())
+        ;
     }
 }

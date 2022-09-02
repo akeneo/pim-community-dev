@@ -6,8 +6,9 @@ namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\ErrorManagement;
 
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\BusinessError;
-use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Repository\BusinessErrorRepository;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Repository\BusinessErrorRepositoryInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
+use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Persistence\ElasticsearchBusinessErrorRepository;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use PHPUnit\Framework\Assert;
@@ -44,7 +45,7 @@ class GetConnectionBusinessErrorsEndToEnd extends WebTestCase
         $this->client->request('GET', '/rest/connections/erp/business-errors', [
             'end_date' => '2020-01-07',
         ]);
-        $result = json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true);
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         Assert::assertEquals($expectedResult, $result);
@@ -60,8 +61,8 @@ class GetConnectionBusinessErrorsEndToEnd extends WebTestCase
      */
     private function insertBusinessErrors(ConnectionCode $connectionCode, array $errors): void
     {
-        /** @var BusinessErrorRepository */
-        $repository = $this->get('akeneo_connectivity.connection.persistence.repository.business_error');
+        /** @var BusinessErrorRepositoryInterface */
+        $repository = $this->get(ElasticsearchBusinessErrorRepository::class);
         $repository->bulkInsert($connectionCode, $errors);
 
         /** @var Client */

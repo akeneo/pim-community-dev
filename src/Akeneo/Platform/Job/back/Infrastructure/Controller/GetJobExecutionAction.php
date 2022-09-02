@@ -76,6 +76,7 @@ final class GetJobExecutionAction
         if (!$this->securityFacade->isGranted('pim_enrich_job_tracker_view_all_jobs')) {
             $user = [$this->security->getUser()->getUserIdentifier()];
         }
+
         return $user;
     }
 }

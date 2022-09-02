@@ -20,11 +20,11 @@ class IdEncoder
      * Encode id and type to a type_id format.
      *
      * @param string $type
-     * @param int    $id
+     * @param int|string $id
      *
      * @return string
      */
-    public static function encode(string $type, int $id): string
+    public static function encode(string $type, $id): string
     {
         return sprintf('%s_%s', $type, $id);
     }
@@ -43,7 +43,7 @@ class IdEncoder
             self::PRODUCT_MODEL_TYPE;
 
         return [
-            'id'   => intval(str_replace($type . '_', '', $encodedId)),
+            'id'   => str_replace($type . '_', '', $encodedId),
             'type' => $type,
         ];
     }

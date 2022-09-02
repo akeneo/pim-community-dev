@@ -8,7 +8,7 @@ use Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionHan
 use Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionQuery;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConnectionWithCredentialsByCodeQuery;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConnectionWithCredentialsByCodeQueryInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -18,7 +18,7 @@ use PhpSpec\ObjectBehavior;
  */
 class FindAConnectionHandlerSpec extends ObjectBehavior
 {
-    public function let(SelectConnectionWithCredentialsByCodeQuery $selectConnectionWithCredentialsByCodeQuery)
+    public function let(SelectConnectionWithCredentialsByCodeQueryInterface $selectConnectionWithCredentialsByCodeQuery)
     {
         $this->beConstructedWith($selectConnectionWithCredentialsByCodeQuery);
     }

@@ -8,6 +8,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rank;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -15,8 +16,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
  */
 final class ChannelLocaleRateCollection implements \IteratorAggregate
 {
-    /** @var ChannelLocaleDataCollection */
-    private $rates;
+    private ChannelLocaleDataCollection $rates;
 
     public function __construct()
     {
@@ -49,18 +49,32 @@ final class ChannelLocaleRateCollection implements \IteratorAggregate
         return $rateCollection;
     }
 
-    public static function fromNormalizedRates(array $normalizedRates, \Closure $getNormalizedRateValue): self
+    /**
+     * Format of a normalized of a Rate:
+     *  [
+     *      'rank'  => int, // Rank of the rate (from 1 to 5)
+     *      'value' => int, // Raw value (from 0 to 100)
+     *  ]
+     * @param array<string, array<string, array{rank: int, value: int}>> $normalizedRates
+     */
+    public static function fromNormalizedRates(array $normalizedRates): self
     {
         $rateCollection = new self();
 
         $rateCollection->rates = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData(
             $normalizedRates,
-            function ($normalizedRate) use ($getNormalizedRateValue) {
-                return new Rate(intval($getNormalizedRateValue($normalizedRate)));
+            function (array $normalizedRate) {
+                Assert::keyExists($normalizedRate, 'value', 'The normalized rate is malformed');
+                return new Rate(intval($normalizedRate['value']));
             }
         );
 
         return $rateCollection;
+    }
+
+    public function isEmpty(): bool
+    {
+        return $this->rates->isEmpty();
     }
 
     public function toArrayLetter(): array
@@ -80,6 +94,19 @@ final class ChannelLocaleRateCollection implements \IteratorAggregate
     public function toArrayIntRank(): array
     {
         return $this->rates->mapWith(fn (Rate $rate) => Rank::fromRate($rate)->toInt());
+    }
+
+    /**
+     * @return array<string, array<string, array{rank: int, value: int}>>
+     **/
+    public function toNormalizedRates(): array
+    {
+        return $this->rates->mapWith(function (Rate $score) {
+            return [
+                'rank' => Rank::fromRate($score)->toInt(),
+                'value' => $score->toInt(),
+            ];
+        });
     }
 
     public function mapWith(\Closure $callback): array

@@ -19,7 +19,7 @@ class ScopeListSpec extends ObjectBehavior
         $this->beConstructedThrough(
             'fromScopeString',
             [
-                sprintf(
+                \sprintf(
                     "%s %s %s",
                     AuthenticationScope::SCOPE_EMAIL,
                     AuthenticationScope::SCOPE_PROFILE,
@@ -48,7 +48,7 @@ class ScopeListSpec extends ObjectBehavior
         $this->beConstructedThrough(
             'fromScopeString',
             [
-                sprintf(
+                \sprintf(
                     "%s %s %s",
                     AuthenticationScope::SCOPE_EMAIL,
                     AuthenticationScope::SCOPE_PROFILE,
@@ -99,5 +99,42 @@ class ScopeListSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('fromScopes', [['a_scope', 'another_scope']]);
         $this->toScopeString()->shouldReturn("a_scope another_scope");
+    }
+
+    public function it_compares_two_different_scope_lists(): void
+    {
+        $differentList = ScopeList::fromScopeString('another_scope other_scope');
+        $biggerList = ScopeList::fromScopeString('a_scope another_scope other_scope');
+        $smallerList = ScopeList::fromScopeString('a_scope');
+        $emptyList = ScopeList::fromScopeString('');
+
+        $this->beConstructedThrough('fromScopeString', ['']);
+        $this->equals($differentList)->shouldReturn(false);
+        $this->equals($biggerList)->shouldReturn(false);
+        $this->equals($smallerList)->shouldReturn(false);
+
+        $scopeList = $this->addScopes(ScopeList::fromScopeString('a_scope another_scope'));
+        $scopeList->equals($differentList)->shouldReturn(false);
+        $scopeList->equals($biggerList)->shouldReturn(false);
+        $scopeList->equals($smallerList)->shouldReturn(false);
+        $scopeList->equals($emptyList)->shouldReturn(false);
+    }
+
+    public function it_compares_the_same_two_scope_lists(): void
+    {
+        $emptyList = ScopeList::fromScopeString('');
+        $this->beConstructedThrough('fromScopeString', ['']);
+        $this->equals($emptyList)->shouldReturn(true);
+
+        $oneItemList = ScopeList::fromScopeString('a_scope');
+        $scopeList = $this->addScopes(ScopeList::fromScopeString('a_scope'));
+        $scopeList->equals($oneItemList)->shouldReturn(true);
+
+        $biggerList = ScopeList::fromScopeString('a_scope another_scope other_scope');
+        $scopeList = $this->addScopes(ScopeList::fromScopeString('a_scope another_scope other_scope'));
+        $scopeList->equals($biggerList)->shouldReturn(true);
+
+        $rearrangedList = ScopeList::fromScopeString('another_scope other_scope a_scope');
+        $scopeList->equals($rearrangedList)->shouldReturn(true);
     }
 }

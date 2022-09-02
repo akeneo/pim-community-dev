@@ -13,7 +13,8 @@ define([
   'pim/form',
   'pim/template/product/start-copy',
   'pim/analytics',
-], function ($, _, __, BaseForm, template, analytics) {
+  'pim/feature-flags',
+], function ($, _, __, BaseForm, template, analytics, FeatureFlags) {
   return BaseForm.extend({
     template: _.template(template),
     className: 'AknDropdown-menuLink start-copying',
@@ -35,13 +36,15 @@ define([
      * {@inheritdoc}
      */
     render() {
-      this.$el.html('');
-      if (!this.isCopying) {
-        this.$el.html(
-          this.template({
-            label: __('pim_enrich.entity.product.module.copy.label'),
-          })
-        );
+      if (!FeatureFlags.isEnabled('free_trial')) {
+        this.$el.html('');
+        if (!this.isCopying) {
+          this.$el.html(
+            this.template({
+              label: __('pim_enrich.entity.product.module.copy.label'),
+            })
+          );
+        }
       }
     },
 

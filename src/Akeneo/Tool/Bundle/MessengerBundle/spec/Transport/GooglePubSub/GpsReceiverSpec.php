@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub;
 
 use Akeneo\Tool\Bundle\MessengerBundle\Stamp\NativeMessageStamp;
+use Akeneo\Tool\Bundle\MessengerBundle\Stamp\TenantIdStamp;
 use Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\GpsReceiver;
 use Google\Cloud\Core\Exception\GoogleException;
 use Google\Cloud\PubSub\Message;
@@ -37,10 +38,13 @@ class GpsReceiverSpec extends ObjectBehavior
             [
                 'data' => 'My message!',
                 'messageId' => '123',
-                'attributes' => ['my_attribute' => 'My attribute!']
+                'attributes' => [
+                    'my_attribute' => 'My attribute!',
+                    'tenant_id' => 'my_tenant_id_value',
+                ],
             ]
         );
-        $envelope = new Envelope((object)['message' => 'My message!']);
+        $envelope = new Envelope((object)['message' => 'My message!'], [new TenantIdStamp('my_tenant_id_value')]);
 
         $subscription->pull([
             'maxMessages' => 1,
@@ -50,7 +54,10 @@ class GpsReceiverSpec extends ObjectBehavior
 
         $serializer->decode([
             'body' => 'My message!',
-            'headers' => ['my_attribute' => 'My attribute!']
+            'headers' => [
+                'my_attribute' => 'My attribute!',
+                'tenant_id' => 'my_tenant_id_value',
+            ],
         ])
             ->willReturn($envelope);
 
@@ -60,7 +67,7 @@ class GpsReceiverSpec extends ObjectBehavior
             ->shouldBeLike([
                 $envelope
                     ->with(new TransportMessageIdStamp('123'))
-                    ->with(new NativeMessageStamp($gpsMessage))
+                    ->with(new NativeMessageStamp($gpsMessage)),
             ]);
     }
 

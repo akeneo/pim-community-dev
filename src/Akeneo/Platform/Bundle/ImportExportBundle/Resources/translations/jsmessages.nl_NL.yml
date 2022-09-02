@@ -151,6 +151,26 @@ pim_import_export:
             title: Landinstelling bestand
             help: Definieer de taal waarin labels worden weergegeven
       file_path: Bestandspad
+      storage_form:
+        title: Opslag
+        connection:
+          label: Type
+          local: Lokaal
+          sftp: SFTP
+          none: Geen opslag geconfigureerd
+        file_path.label: Bestandspad
+        host.label: Host
+        port.label: Poort
+        username.label: Aanmelden
+        password.label: Wachtwoord
+      validation:
+        storage:
+          unavailable_type: Deze opslag is niet beschikbaar, alleen {{ available_types }} zijn beschikbaar.
+        file_path:
+          unsupported_extension: Niet-ondersteunde bestandsextensie
+      connection_checker:
+        label: Verbindingsinstellingen testen
+        exception: Er kan geen verbinding tot stand worden gebracht. Controleer de instellingen.
   widget:
     last_operations:
       empty: Er is op dit moment geen bewerking om weer te geven.

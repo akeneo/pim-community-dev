@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\CalculateProductCompletenessInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductIdentifierFromProductIdQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdentifier;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -20,10 +21,9 @@ use PhpSpec\ObjectBehavior;
 class CalculateProductCompletenessSpec extends ObjectBehavior
 {
     public function let(
-        GetProductIdentifierFromProductIdQueryInterface $getProductIdentifierFromProductIdQuery,
         CompletenessCalculator $completenessCalculator
     ) {
-        $this->beConstructedWith($getProductIdentifierFromProductIdQuery, $completenessCalculator);
+        $this->beConstructedWith($completenessCalculator);
     }
 
     public function it_calculate_product_completeness()
@@ -31,16 +31,21 @@ class CalculateProductCompletenessSpec extends ObjectBehavior
         $this->shouldImplement(CalculateProductCompletenessInterface::class);
     }
 
+    public function it_throws_exception_when_product_uuid_is_invalid()
+    {
+        $this->shouldThrow(\InvalidArgumentException::class)->during('calculate', [
+            new ProductModelId(42)
+        ]);
+    }
+
     public function it_evaluates_the_completeness_criterion(
-        GetProductIdentifierFromProductIdQueryInterface $getProductIdentifierFromProductIdQuery,
         CompletenessCalculator $completenessCalculator
     ) {
-        $productId = new ProductId(42);
-        $productIdentifier = new ProductIdentifier('ziggy_mug');
-        $getProductIdentifierFromProductIdQuery->execute($productId)->willReturn($productIdentifier);
+        $uuid = 'df470d52-7723-4890-85a0-e79be625e2ed';
+        $productUuid = ProductUuid::fromString($uuid);
 
-        $completenessCalculator->fromProductIdentifier('ziggy_mug')->willReturn(new ProductCompletenessWithMissingAttributeCodesCollection(
-            42, [
+        $completenessCalculator->fromProductUuid(Uuid::fromString($uuid))->willReturn(new ProductCompletenessWithMissingAttributeCodesCollection(
+            $uuid, [
                 new ProductCompletenessWithMissingAttributeCodes(
                     'ecommerce', 'en_US', 10, [
                         'name', 'description', 'weight', 'height'
@@ -64,7 +69,7 @@ class CalculateProductCompletenessSpec extends ObjectBehavior
             ]
         ));
 
-        $evaluationResult = $this->calculate($productId);
+        $evaluationResult = $this->calculate($productUuid);
 
         $evaluationResult->getRates()->toArrayInt()->shouldBeLike([
             'ecommerce' => [

@@ -1,0 +1,8 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\Audit\EventSubscriber\ReadProductsEventSubscriber:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\ConnectionContext'
+            - '@Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinationProductEventCountHandler'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
+        tags:
+            - { name: kernel.event_subscriber }

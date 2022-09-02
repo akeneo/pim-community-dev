@@ -2,8 +2,8 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle;
 
-use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Tool\Component\Localization\Provider\LocaleProviderInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 

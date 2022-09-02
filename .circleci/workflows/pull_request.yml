@@ -20,6 +20,33 @@ workflows:
                   path_to_front_packages: vendor/akeneo/pim-community-dev/front-packages
                   requires:
                       - checkout_ee
+            - build_prod:
+                  requires:
+                      - checkout_ee
+            - test_deploy:
+                  requires:
+                      - build_prod
+            - deploy_pr_environment?:
+                  type: approval
+                  filters:
+                      branches:
+                          ignore:
+                              - master
+            - deploy_pr_environment:
+                  requires:
+                      - deploy_pr_environment?
+                      - build_prod
+            - delete_pr_environment?:
+                  type: approval
+                  filters:
+                      branches:
+                          ignore:
+                              - master
+                  requires:
+                      - deploy_pr_environment
+            - delete_pr_environment:
+                  requires:
+                      - delete_pr_environment?
             - test_database:
                   requires:
                       - build_dev
@@ -45,6 +72,11 @@ workflows:
                       - test_back_static_and_acceptance
                       - test_front_static_acceptance_and_integration
                       - test_back_phpunit
+            - test_catalogs_ee:
+                  requires:
+                      - build_dev
+                  context:
+                      - octopus-slack
             - ready_to_build_only_ce?:
                   type: approval
                   filters:
@@ -93,4 +125,3 @@ workflows:
                       - test_onboarder_bundle
                       - test_database
                       - test_back_behat_legacy_ce
-

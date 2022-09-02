@@ -6,7 +6,7 @@ import {FlowType} from '../../model/flow-type.enum';
 import {fetchResult} from '../../shared/fetch-result';
 import {isOk} from '../../shared/fetch-result/result';
 import {useRoute} from '../../shared/router';
-import {Translate} from '../../shared/translate';
+import {Translate, useTranslate} from '../../shared/translate';
 import {connectionsFetched} from '../actions/connections-actions';
 import {ConnectionGrid} from '../components/ConnectionGrid';
 import {NoConnection} from '../components/NoConnection';
@@ -20,13 +20,13 @@ import {
 import {Breadcrumb} from 'akeneo-design-system';
 import {UserButtons} from '../../shared/user';
 import {useRouter} from '../../shared/router/use-router';
-
-const MAXIMUM_NUMBER_OF_ALLOWED_CONNECTIONS = 50;
+import {useConnectionsLimitReached} from '../../shared/hooks/use-connections-limit-reached';
 
 type ResultConnections = Array<Connection>;
 
 export const ListConnections = () => {
     const history = useHistory();
+    const translate = useTranslate();
 
     const connections = useConnectionsState();
     const dispatchConnection = useConnectionsDispatch();
@@ -39,6 +39,9 @@ export const ListConnections = () => {
             types: ['default'],
         }),
     });
+
+    const isLimitReached = useConnectionsLimitReached();
+
     useEffect(() => {
         let cancelled = false;
         fetchResult<ResultConnections, never>(listConnectionRoute).then(
@@ -77,7 +80,12 @@ export const ListConnections = () => {
     const createButton = (
         <ApplyButton
             onClick={handleCreate}
-            disabled={Object.keys(connections).length >= MAXIMUM_NUMBER_OF_ALLOWED_CONNECTIONS}
+            disabled={isLimitReached}
+            title={
+                isLimitReached
+                    ? translate('akeneo_connectivity.connection.connection.constraint.connections_number_limit_reached')
+                    : ''
+            }
             classNames={['AknButtonList-item']}
         >
             <Translate id='pim_common.create' />

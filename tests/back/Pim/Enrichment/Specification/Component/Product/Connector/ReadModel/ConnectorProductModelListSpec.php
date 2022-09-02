@@ -46,7 +46,8 @@ final class ConnectorProductModelListSpec extends ObjectBehavior
                     ],
                 ],
                 ['category_code_1', 'category_code_2'],
-                new ReadValueCollection()
+                new ReadValueCollection(),
+                null
             )
         ]);
     }

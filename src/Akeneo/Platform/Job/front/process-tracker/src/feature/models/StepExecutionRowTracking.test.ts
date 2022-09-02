@@ -5,7 +5,7 @@ import {
 } from './StepExecutionRowTracking';
 
 const stepTracking: StepExecutionRowTracking = {
-  error_count: 0,
+  has_error: false,
   warning_count: 0,
   is_trackable: true,
   processed_items: 2,
@@ -16,9 +16,9 @@ const stepTracking: StepExecutionRowTracking = {
 
 test('it can get the badge level for a given step tracking', () => {
   expect(getStepExecutionRowTrackingLevel(stepTracking)).toEqual('primary');
-  expect(getStepExecutionRowTrackingLevel({...stepTracking, error_count: 3})).toEqual('danger');
+  expect(getStepExecutionRowTrackingLevel({...stepTracking, has_error: true})).toEqual('danger');
   expect(getStepExecutionRowTrackingLevel({...stepTracking, warning_count: 2})).toEqual('warning');
-  expect(getStepExecutionRowTrackingLevel({...stepTracking, error_count: 3, warning_count: 2})).toEqual('danger');
+  expect(getStepExecutionRowTrackingLevel({...stepTracking, has_error: true, warning_count: 2})).toEqual('danger');
 });
 
 test('it can get the progress percent for a given step tracking', () => {

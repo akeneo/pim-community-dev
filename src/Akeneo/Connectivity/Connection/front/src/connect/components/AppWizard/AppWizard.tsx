@@ -1,54 +1,76 @@
 import React, {FC, useCallback, useEffect, useState} from 'react';
 import {useHistory} from 'react-router';
 import {AppWizardData} from '../../../model/Apps/wizard-data';
-import {NotificationLevel, useNotify} from '../../../shared/notify';
-import {useTranslate} from '../../../shared/translate';
-import {useConfirmAuthorization} from '../../hooks/use-confirm-authorization';
+import {PermissionsByProviderKey} from '../../../model/Apps/permissions-by-provider-key';
+import {PermissionFormProvider, usePermissionFormRegistry} from '../../../shared/permission-form-registry';
 import {useFetchAppWizardData} from '../../hooks/use-fetch-app-wizard-data';
 import {Authentication} from './steps/Authentication/Authentication';
 import {Authorizations} from './steps/Authorizations';
-import {WizardModal} from './WizardModal';
-
-type Step = {
-    name: 'authentication' | 'authorizations';
-    action: 'next' | 'allow_and_next' | 'confirm' | 'allow_and_finish';
-};
+import {Step, WizardModal} from './WizardModal';
+import {FullScreenLoader} from './FullScreenLoader';
+import {useConfirmHandler} from '../../hooks/use-confirm-handler';
+import {useFeatureFlags} from '../../../shared/feature-flags';
+import {Permissions} from './steps/Permissions';
+import {PermissionsSummary} from './steps/PermissionsSummary';
+import ScopeMessage from '../../../model/Apps/scope-message';
 
 interface Props {
     clientId: string;
 }
 
 export const AppWizard: FC<Props> = ({clientId}) => {
-    const translate = useTranslate();
-    const notify = useNotify();
+    const featureFlags = useFeatureFlags();
     const history = useHistory();
     const [wizardData, setWizardData] = useState<AppWizardData | null>(null);
     const fetchWizardData = useFetchAppWizardData(clientId);
-    const confirmAuthorization = useConfirmAuthorization(clientId);
     const [steps, setSteps] = useState<Step[]>([]);
+    const [authenticationScopesConsentGiven, setAuthenticationScopesConsent] = useState<boolean>(false);
+
+    const permissionFormRegistry = usePermissionFormRegistry();
+    const [providers, setProviders] = useState<PermissionFormProvider<any>[]>([]);
+    const [permissions, setPermissions] = useState<PermissionsByProviderKey>({});
+
+    useEffect(() => {
+        permissionFormRegistry.all().then(providers => setProviders(providers));
+    }, []);
 
     useEffect(() => {
         fetchWizardData().then(wizardData => {
-            if (wizardData.authenticationScopes.length === 0) {
-                setSteps([
-                    {
-                        name: 'authorizations',
-                        action: 'confirm',
-                    },
-                ]);
-            } else {
-                setSteps([
-                    {
-                        name: 'authentication',
-                        action: 'allow_and_next',
-                    },
-                    {
-                        name: 'authorizations',
-                        action: 'allow_and_finish',
-                    },
-                ]);
+            const steps: Step[] = [];
+
+            const supportsPermissions = true === featureFlags.isEnabled('connect_app_with_permissions');
+            const shouldDisplayPermissionsStep =
+                undefined !==
+                wizardData.scopeMessages.find((scopeMessage: ScopeMessage) => {
+                    return 'products' === scopeMessage.entities;
+                });
+            const requiresAuthentication = wizardData.authenticationScopes.length > 0;
+            const isAlreadyConnected = wizardData.oldScopeMessages !== null;
+
+            if (requiresAuthentication) {
+                steps.push({
+                    name: 'authentication',
+                    requires_explicit_approval: true,
+                });
             }
 
+            steps.push({
+                name: 'authorizations',
+                requires_explicit_approval: true,
+            });
+
+            if (!isAlreadyConnected && supportsPermissions && shouldDisplayPermissionsStep) {
+                steps.push({
+                    name: 'permissions',
+                    requires_explicit_approval: false,
+                });
+                steps.push({
+                    name: 'summary',
+                    requires_explicit_approval: false,
+                });
+            }
+
+            setSteps(steps);
             setWizardData(wizardData);
         });
     }, [fetchWizardData]);
@@ -57,41 +79,81 @@ export const AppWizard: FC<Props> = ({clientId}) => {
         history.push('/connect/app-store');
     }, [history]);
 
-    const handleConfirm = useCallback(async () => {
-        try {
-            const {redirectUrl} = await confirmAuthorization();
-            notify(
-                NotificationLevel.SUCCESS,
-                translate('akeneo_connectivity.connection.connect.apps.wizard.flash.success')
-            );
-            window.location.assign(redirectUrl);
-        } catch (e) {
-            notify(
-                NotificationLevel.ERROR,
-                translate('akeneo_connectivity.connection.connect.apps.wizard.flash.error')
-            );
-        }
-    }, [confirmAuthorization, notify, translate]);
+    const handleSetProviderPermissions = useCallback(
+        (providerKey: string, providerPermissions: object) => {
+            setPermissions(state => ({...state, [providerKey]: providerPermissions}));
+        },
+        [setPermissions]
+    );
 
+    const permissionsAreEditable = steps.find(step => step.name === 'permissions') !== undefined;
+
+    // @todo rethink useConfirmHandler signature
+    const {confirm, processing} = useConfirmHandler(
+        clientId,
+        permissionsAreEditable ? providers : [],
+        permissionsAreEditable ? permissions : {}
+    );
     if (wizardData === null) {
         return null;
     }
+
+    const onlyDisplayViewPermissions =
+        undefined ===
+        wizardData.scopeMessages.find((scopeMessage: ScopeMessage) => {
+            return 'products' === scopeMessage.entities && ['edit', 'delete'].includes(scopeMessage.type);
+        });
+
+    if (processing) {
+        return <FullScreenLoader />;
+    }
+
+    const userConsentRequired = wizardData.authenticationScopes.length !== 0 && !authenticationScopesConsentGiven;
 
     return (
         <WizardModal
             appLogo={wizardData.appLogo}
             appName={wizardData.appName}
             onClose={redirectToMarketplace}
-            onConfirm={handleConfirm}
+            onConfirm={confirm}
             steps={steps}
+            maxAllowedStep={userConsentRequired ? 'authentication' : null}
         >
             {step => (
                 <>
                     {step.name === 'authentication' && (
-                        <Authentication appName={wizardData.appName} scopes={wizardData.authenticationScopes} />
+                        <Authentication
+                            appName={wizardData.appName}
+                            scopes={wizardData.authenticationScopes}
+                            oldScopes={wizardData.oldAuthenticationScopes}
+                            appUrl={wizardData.appUrl}
+                            scopesConsentGiven={authenticationScopesConsentGiven}
+                            setScopesConsent={setAuthenticationScopesConsent}
+                        />
                     )}
                     {step.name === 'authorizations' && (
-                        <Authorizations appName={wizardData.appName} scopeMessages={wizardData.scopeMessages} />
+                        <Authorizations
+                            appName={wizardData.appName}
+                            scopeMessages={wizardData.scopeMessages}
+                            oldScopeMessages={wizardData.oldScopeMessages}
+                        />
+                    )}
+                    {step.name === 'permissions' && (
+                        <Permissions
+                            appName={wizardData.appName}
+                            providers={providers}
+                            setProviderPermissions={handleSetProviderPermissions}
+                            permissions={permissions}
+                            onlyDisplayViewPermissions={onlyDisplayViewPermissions}
+                        />
+                    )}
+                    {step.name === 'summary' && (
+                        <PermissionsSummary
+                            appName={wizardData.appName}
+                            providers={providers}
+                            permissions={permissions}
+                            onlyDisplayViewPermissions={onlyDisplayViewPermissions}
+                        />
                     )}
                 </>
             )}

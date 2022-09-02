@@ -13,6 +13,6 @@ class Sleep
 {
     public function sleep(int $second): void
     {
-        sleep($second);
+        \sleep($second);
     }
 }

@@ -3,6 +3,7 @@
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\ProductModel\ExternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use Psr\Log\Test\TestLogger;
@@ -781,7 +782,7 @@ JSON;
             'values'  => [],
         ]);
 
-        $this->createProduct('simple', ['enabled' => false]);
+        $this->createProduct('simple', [new SetEnabled(false)]);
 
         $client = $this->createAuthenticatedClient();
 
@@ -971,14 +972,6 @@ JSON;
 
         $client->request('POST', 'api/rest/v1/product-models', [], [], [], $data);
         $response = $client->getResponse();
-
-        $logger = self::$container->get('monolog.logger.pim_api_acl');
-        assert($logger instanceof TestLogger);
-
-        $this->assertTrue(
-            $logger->hasWarning('User "admin" with roles ROLE_ADMINISTRATOR is not granted "pim_api_product_edit"'),
-            'Expected warning not found in the logs.'
-        );
 
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }

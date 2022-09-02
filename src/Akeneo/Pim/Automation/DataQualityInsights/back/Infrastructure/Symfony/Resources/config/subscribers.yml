@@ -10,8 +10,7 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.feature'
             - '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
             - '@logger'
-            - '@akeneo.pim.automation.data_quality_insights.evaluate_products_pending_criteria'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductScores'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -20,7 +19,7 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.feature'
             - '@akeneo.pim.automation.data_quality_insights.create_product_models_criteria_evaluations'
             - '@logger'
-            - '@akeneo.pim.automation.data_quality_insights.evaluate_product_models_pending_criteria'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -36,5 +35,17 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeGroupActivationRepository'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAttributeGroupActivationQuery'
             - '@logger'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product\BulkUpdateProductQualityScoresIndexSubscriber:
+        arguments:
+            - '@akeneo.pim.automation.data_quality_insights.elasticsearch.bulk_update_product_quality_scores_index'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product\BulkUpdateProductModelQualityScoresIndexSubscriber:
+        arguments:
+            - '@akeneo.pim.automation.data_quality_insights.elasticsearch.bulk_update_product_model_quality_scores_index'
         tags:
             - { name: kernel.event_subscriber }

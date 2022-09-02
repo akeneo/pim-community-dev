@@ -4,11 +4,13 @@ namespace Context;
 
 use Acme\Bundle\AppBundle\Entity\Color;
 use Acme\Bundle\AppBundle\Entity\Fabric;
-use Akeneo\Channel\Component\Model\Channel;
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\Channel;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionCommand;
+use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Comment\Model\Comment;
 use Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
@@ -19,8 +21,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindProductIdentifiersInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
@@ -32,7 +32,6 @@ use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport;
 use Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvImport;
 use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
@@ -97,7 +96,7 @@ class FixturesContext extends BaseFixturesContext
     public function thereIsAConnection($connectionCode)
     {
         $createConnectionCommand = new CreateConnectionCommand($connectionCode, $connectionCode, FlowType::DATA_SOURCE);
-        $this->getContainer()->get('akeneo_connectivity.connection.application.handler.create_connection')->handle($createConnectionCommand);
+        $this->getContainer()->get(CreateConnectionHandler::class)->handle($createConnectionCommand);
     }
 
     /**
@@ -273,11 +272,11 @@ class FixturesContext extends BaseFixturesContext
         $this->getContainer()->get('doctrine')->getConnection()->update(
             'pim_catalog_product',
             ['created' => $createdAt],
-            ['id' => $product->getId()]
+            ['uuid' => $product->getUuid()->getBytes()]
         );
 
         $this->refresh($product);
-        $this->getContainer()->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductIdentifier($identifier);
+        $this->getContainer()->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductUuids([$product->getUuid()]);
     }
 
     /**
@@ -1433,7 +1432,7 @@ class FixturesContext extends BaseFixturesContext
             ->getJobInstance($code)
             ->getRawParameters();
 
-        $path = dirname($configuration['filePath']);
+        $path = dirname($configuration['storage']['file_path']);
 
         foreach ($table->getRows() as $data) {
             copy(__DIR__ . '/fixtures/'. $data[0], rtrim($path, '/') . '/' .$data[0]);
@@ -2394,7 +2393,11 @@ class FixturesContext extends BaseFixturesContext
         $comment->setRepliedAt($createdAt);
         $comment->setBody($data['message']);
         $comment->setResourceName(ClassUtils::getClass($resource));
-        $comment->setResourceId($resource->getId());
+        if ($resource instanceof ProductInterface) {
+            $comment->setResourceUuid($resource->getUuid());
+        } else {
+            $comment->setResourceId($resource->getId());
+        }
 
         if (isset($data['parent']) && !empty($data['parent'])) {
             $parent = $comments[$data['parent']];

@@ -4,7 +4,8 @@ import {Key, Override} from '../../../shared';
 import {InputProps} from '../common/InputProps';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../../theme';
 import {ImportIllustration} from '../../../illustrations';
-import {IconButton, IconButtonProps, Image} from '../../../components';
+import {IconButton, IconButtonProps} from '../../IconButton/IconButton';
+import {Image} from '../../Image/Image';
 import {ProgressBar} from '../../ProgressBar/ProgressBar';
 import {CloseIcon, LockIcon} from '../../../icons';
 import {useBooleanState, useShortcut} from '../../../hooks';
@@ -61,7 +62,7 @@ const MediaFileLabel = styled.div`
 `;
 
 const MediaFilePlaceholder = styled(MediaFileLabel)`
-  color: ${getColor('grey', 100)};
+  color: ${getColor('grey', 120)};
 `;
 
 const ReadOnlyIcon = styled(LockIcon)`
@@ -204,13 +205,14 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
       try {
         const uploadedFile = await uploader(file, setProgress);
         uploadSucceeded();
-        onChange?.(uploadedFile);
-      } catch (error) {
-        uploadFailed();
-        console.error(error);
-      } finally {
         setProgress(0);
         stopUploading();
+        onChange?.(uploadedFile);
+      } catch (error) {
+        setProgress(0);
+        stopUploading();
+        uploadFailed();
+        console.error(error);
       }
     };
 
@@ -277,6 +279,7 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
               width={isCompact ? 47 : 120}
               src={displayedThumbnailUrl}
               alt={value.originalFilename}
+              fit="contain"
               onError={() => setDisplayedThumbnailUrl(DefaultPictureIllustration)}
             />
             {readOnly ? (
@@ -287,7 +290,7 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
           </>
         ) : (
           <>
-            <ImportIllustration size={isCompact ? 47 : 180} />
+            <ImportIllustration size={isCompact ? 47 : 140} />
             <MediaFilePlaceholder>{hasUploadFailed ? uploadErrorLabel : placeholder}</MediaFilePlaceholder>
           </>
         )}

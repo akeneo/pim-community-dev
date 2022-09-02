@@ -16,8 +16,8 @@ final class ScopeList
      */
     private function __construct(array $scopes)
     {
-        $this->scopes = array_unique($scopes);
-        sort($this->scopes);
+        $this->scopes = \array_unique($scopes);
+        \sort($this->scopes);
     }
 
     /**
@@ -30,7 +30,7 @@ final class ScopeList
 
     public static function fromScopeString(string $scopeString): self
     {
-        $scopes = empty($scopeString) ? [] : explode(' ', $scopeString);
+        $scopes = empty($scopeString) ? [] : \explode(' ', $scopeString);
 
         return new self($scopes);
     }
@@ -48,16 +48,21 @@ final class ScopeList
      */
     public function addScopes(self $scopeList): self
     {
-        return self::fromScopes(array_unique(array_merge($this->scopes, $scopeList->scopes)));
+        return self::fromScopes(\array_unique(\array_merge($this->scopes, $scopeList->scopes)));
     }
 
     public function hasScope(string $scope): bool
     {
-        return in_array($scope, $this->scopes);
+        return \in_array($scope, $this->scopes);
     }
 
     public function toScopeString(): string
     {
-        return implode(' ', $this->scopes);
+        return \implode(' ', $this->scopes);
+    }
+
+    public function equals(self $scopeList): bool
+    {
+        return $this->toScopeString() === $scopeList->toScopeString();
     }
 }

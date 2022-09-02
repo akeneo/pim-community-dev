@@ -2,16 +2,17 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
+use Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface;
 use Akeneo\Pim\Enrichment\Component\Comment\Model\CommentSubjectInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
 use Akeneo\Tool\Component\StorageUtils\Model\StateUpdatedAware;
 use Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Product interface
@@ -32,21 +33,7 @@ interface ProductInterface extends
     EntityWithQuantifiedAssociationsInterface,
     StateUpdatedAware
 {
-    /**
-     * Get the ID of the product
-     *
-     * @return int|string
-     */
-    public function getId();
-
-    /**
-     * Set id
-     *
-     * @param int|string $id
-     *
-     * @return ProductInterface
-     */
-    public function setId($id);
+    public function getUuid(): UuidInterface;
 
     /**
      * @param string|null $identifierValue

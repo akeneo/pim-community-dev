@@ -30,10 +30,10 @@ class WebhookUserAuthenticator
         /** @var ?UserInterface $user */
         $user = $this->userRepository->find($userId);
         if (null === $user) {
-            throw new \RuntimeException(sprintf('User "%s" not found', $userId));
+            throw new \RuntimeException(\sprintf('User "%s" not found', $userId));
         }
 
-        $roles = array_map('strval', $user->getRoles());
+        $roles = \array_map('strval', $user->getRoles());
 
         $this->tokenStorage->setToken(new UsernamePasswordToken($user, 'main', $roles));
 

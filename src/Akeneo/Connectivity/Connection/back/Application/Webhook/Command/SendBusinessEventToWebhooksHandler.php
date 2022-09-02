@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventSubscriptionSkippedOwnEventLogger;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventSubscriptionSkippedOwnEventLoggerInterface;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookUserAuthenticator;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClientInterface;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuilderNotFoundException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQuery;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQueryInterface;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
@@ -24,21 +24,21 @@ use Psr\Log\LoggerInterface;
  */
 class SendBusinessEventToWebhooksHandler
 {
-    private SelectActiveWebhooksQuery $selectActiveWebhooksQuery;
+    private SelectActiveWebhooksQueryInterface $selectActiveWebhooksQuery;
     private WebhookUserAuthenticator $webhookUserAuthenticator;
-    private WebhookClient $client;
+    private WebhookClientInterface $client;
     private WebhookEventBuilder $builder;
     private LoggerInterface $logger;
-    private EventSubscriptionSkippedOwnEventLogger $eventSubscriptionSkippedOwnEventLogger;
+    private EventSubscriptionSkippedOwnEventLoggerInterface $eventSubscriptionSkippedOwnEventLogger;
     private string $pimSource;
 
     public function __construct(
-        SelectActiveWebhooksQuery $selectActiveWebhooksQuery,
+        SelectActiveWebhooksQueryInterface $selectActiveWebhooksQuery,
         WebhookUserAuthenticator $webhookUserAuthenticator,
-        WebhookClient $client,
+        WebhookClientInterface $client,
         WebhookEventBuilder $builder,
         LoggerInterface $logger,
-        EventSubscriptionSkippedOwnEventLogger $eventSubscriptionSkippedOwnEventLogger,
+        EventSubscriptionSkippedOwnEventLoggerInterface $eventSubscriptionSkippedOwnEventLogger,
         string $pimSource
     ) {
         $this->selectActiveWebhooksQuery = $selectActiveWebhooksQuery;
@@ -54,7 +54,7 @@ class SendBusinessEventToWebhooksHandler
     {
         $webhooks = $this->selectActiveWebhooksQuery->execute();
 
-        if (0 === count($webhooks)) {
+        if (0 === \count($webhooks)) {
             return;
         }
 
@@ -64,7 +64,11 @@ class SendBusinessEventToWebhooksHandler
             foreach ($webhooks as $webhook) {
                 $user = $this->webhookUserAuthenticator->authenticate($webhook->userId());
 
-                $filteredPimEventBulk = $this->filterConnectionOwnEvents($webhook, $user->getUsername(), $pimEventBulk);
+                $filteredPimEventBulk = $this->filterConnectionOwnEvents(
+                    $webhook,
+                    $user->getUserIdentifier(),
+                    $pimEventBulk
+                );
                 if (null === $filteredPimEventBulk) {
                     continue;
                 }
@@ -79,7 +83,7 @@ class SendBusinessEventToWebhooksHandler
                         ]
                     );
 
-                    if (0 === count($apiEvents)) {
+                    if (0 === \count($apiEvents)) {
                         continue;
                     }
 
@@ -101,7 +105,7 @@ class SendBusinessEventToWebhooksHandler
         string $username,
         BulkEventInterface $bulkEvent
     ): ?BulkEventInterface {
-        $events = array_filter(
+        $events = \array_filter(
             $bulkEvent->getEvents(),
             function (EventInterface $event) use ($username, $webhook) {
                 if ($username === $event->getAuthor()->name()) {
@@ -118,7 +122,7 @@ class SendBusinessEventToWebhooksHandler
             }
         );
 
-        if (count($events) === 0) {
+        if (\count($events) === 0) {
             return null;
         }
 

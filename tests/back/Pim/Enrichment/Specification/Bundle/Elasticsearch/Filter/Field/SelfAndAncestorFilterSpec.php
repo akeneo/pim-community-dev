@@ -2,7 +2,6 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field;
 
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\AbstractFieldFilter;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\SelfAndAncestorFilter;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
@@ -14,6 +13,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use PhpSpec\ObjectBehavior;
 
 class SelfAndAncestorFilterSpec extends ObjectBehavior
 {
@@ -63,18 +63,18 @@ class SelfAndAncestorFilterSpec extends ObjectBehavior
     ) {
         $productModelRepository->findOneBy(['id' => '1'])->shouldNotBeCalled();
         $productModelRepository->findOneBy(['id' => '2'])->willReturn($productModel);
-        $productRepository->findOneBy(['id' => '1'])->willReturn($product);
-        $productRepository->findOneBy(['id' => '2'])->shouldNotBeCalled();
+        $productRepository->findOneBy(['uuid' => 'faafa42d-15c6-4626-aaa9-f6edd26772bc'])->willReturn($product);
+        $productRepository->findOneBy(['uuid' => '2'])->shouldNotBeCalled();
 
         $sqb->addShould(
             [
-                'terms' => ['id' => ['product_1', 'product_model_2']],
+                'terms' => ['id' => ['product_faafa42d-15c6-4626-aaa9-f6edd26772bc', 'product_model_2']],
             ]
         )->shouldBeCalled();
 
         $sqb->addShould(
             [
-                'terms' => ['ancestors.ids' => ['product_1', 'product_model_2']],
+                'terms' => ['ancestors.ids' => ['product_faafa42d-15c6-4626-aaa9-f6edd26772bc', 'product_model_2']],
             ]
         )->shouldBeCalled();
 
@@ -82,7 +82,7 @@ class SelfAndAncestorFilterSpec extends ObjectBehavior
         $this->addFieldFilter(
             'self_and_ancestors.id',
             Operators::IN_LIST,
-            ['product_1', 'product_model_2'],
+            ['product_faafa42d-15c6-4626-aaa9-f6edd26772bc', 'product_model_2'],
             null,
             null,
             []
@@ -98,18 +98,18 @@ class SelfAndAncestorFilterSpec extends ObjectBehavior
     ) {
         $productModelRepository->findOneBy(['id' => '1'])->shouldNotBeCalled();
         $productModelRepository->findOneBy(['id' => '2'])->willReturn($productModel);
-        $productRepository->findOneBy(['id' => '1'])->willReturn($product);
-        $productRepository->findOneBy(['id' => '2'])->shouldNotBeCalled();
+        $productRepository->findOneBy(['uuid' => 'faafa42d-15c6-4626-aaa9-f6edd26772bc'])->willReturn($product);
+        $productRepository->findOneBy(['uuid' => '2'])->shouldNotBeCalled();
 
         $sqb->addMustNot(
             [
-                'terms' => ['id' => ['product_1', 'product_model_2']],
+                'terms' => ['id' => ['product_faafa42d-15c6-4626-aaa9-f6edd26772bc', 'product_model_2']],
             ]
         )->shouldBeCalled();
 
         $sqb->addMustNot(
             [
-                'terms' => ['ancestors.ids' => ['product_1', 'product_model_2']],
+                'terms' => ['ancestors.ids' => ['product_faafa42d-15c6-4626-aaa9-f6edd26772bc', 'product_model_2']],
             ]
         )->shouldBeCalled();
 
@@ -117,7 +117,7 @@ class SelfAndAncestorFilterSpec extends ObjectBehavior
         $this->addFieldFilter(
             'self_and_ancestors.id',
             Operators::NOT_IN_LIST,
-            ['product_1', 'product_model_2'],
+            ['product_faafa42d-15c6-4626-aaa9-f6edd26772bc', 'product_model_2'],
             null,
             null,
             []
@@ -128,7 +128,7 @@ class SelfAndAncestorFilterSpec extends ObjectBehavior
     {
         $this->shouldThrow(
             new \LogicException('The search query builder is not initialized in the filter.')
-        )->during('addFieldFilter', ['self_and_ancestors.id', Operators::IN_LIST, ['product_1'], null, null, []]);
+        )->during('addFieldFilter', ['self_and_ancestors.id', Operators::IN_LIST, ['product_faafa42d-15c6-4626-aaa9-f6edd26772bc'], null, null, []]);
     }
 
     function it_throws_an_exception_when_it_filters_on_an_unsupported_operator(
@@ -140,7 +140,7 @@ class SelfAndAncestorFilterSpec extends ObjectBehavior
                 'IN CHILDREN',
                 SelfAndAncestorFilter::class
             )
-        )->during('addFieldFilter', ['self_and_ancestors.id', Operators::IN_CHILDREN_LIST, ['product_1'], null, null, []]);
+        )->during('addFieldFilter', ['self_and_ancestors.id', Operators::IN_CHILDREN_LIST, ['product_faafa42d-15c6-4626-aaa9-f6edd26772bc'], null, null, []]);
     }
 
     function it_throws_if_the_value_is_not_a_product_id_nor_a_product_model_id(

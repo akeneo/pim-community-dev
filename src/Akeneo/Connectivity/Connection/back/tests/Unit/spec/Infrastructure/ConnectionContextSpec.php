@@ -6,9 +6,9 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
-use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Query\AreCredentialsValidCombinationQuery;
-use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Query\SelectConnectionCodeByClientIdQuery;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepositoryInterface;
+use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Query\AreCredentialsValidCombinationQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Query\SelectConnectionCodeByClientIdQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\ConnectionContext;
 use PhpSpec\ObjectBehavior;
 
@@ -20,9 +20,9 @@ use PhpSpec\ObjectBehavior;
 class ConnectionContextSpec extends ObjectBehavior
 {
     public function let(
-        AreCredentialsValidCombinationQuery $areCredentialsValidCombinationQuery,
-        SelectConnectionCodeByClientIdQuery $selectConnectionCode,
-        ConnectionRepository $connectionRepository
+        AreCredentialsValidCombinationQueryInterface $areCredentialsValidCombinationQuery,
+        SelectConnectionCodeByClientIdQueryInterface $selectConnectionCode,
+        ConnectionRepositoryInterface $connectionRepository
     ) {
         $this->beConstructedWith($areCredentialsValidCombinationQuery, $selectConnectionCode, $connectionRepository);
     }

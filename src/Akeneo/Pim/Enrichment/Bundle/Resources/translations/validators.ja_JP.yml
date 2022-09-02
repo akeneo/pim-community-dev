@@ -19,6 +19,7 @@ This value should not be a decimal.: この値に少数は利用できません�
 "The {{ attribute_code }} attribute can not have the same value more than once. The {{ value }} value is already set on another product.": '{{ attribute_code }} 属性に同じ値を 2 回以上使用することはできません。{{ value }} 値は別の商品にすでに設定されています。'
 The same identifier is already set on another product: この識別子は別の商品に設定済です
 regex.comma_or_semicolon_or_surrounding_space.message: このフィールドではコンマ、セミコロン、行頭/行末の空白を使用できません
+regex.line_break.message: このフィールドには改行を使用できません
 file.extensions.message: 'このファイル拡張子は許可されていません (利用できる拡張子: %extensions%)'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": この型の値は少数を分割するために{{ decimal_separator }} の使用を求めています
 "This type of value expects the use of dot (.) to separate decimals.": この型の値は少数を分割するためにドット(.) の使用を求めています
@@ -65,8 +66,6 @@ pim_catalog:
     variant_product_invalid_family: '商品バリエーションのファミリーは同じ上位に属する必要があります'
     php_int_max_reached: '最大数値は%php_int_max%より小さく指定してください'
     not_null_family: '%sku% 識別子を持つ商品はバリエーション商品であるため、ファミリーは「null」にはできません。'
-    variant_product_has_parent: '商品バリエーション「%variant_product%」は上位を持つ必要があります'
-    invalid_variant_product_parent: '商品バリエーション「%variant_product%」は、商品モデル「%product_model%」を上位にすることはできません(この商品モデルは別の商品モデルを下位にすることのみ可能です)'
     modified_variant_axis_value: '軸のバリエーション「%variant_axis%」は変更できず、「%provided_value%」に固定されいます'
     family_variant_attributes_unique: 属性は固有でなければなりません。「%attributes%」は属性セットのバリエーションで複数回使用されます
     family_variant_axes_unique: 軸のバリエーションは固有でなければなりません。「%attributes%」は属性セットのバリエーションで複数回使用されます
@@ -115,6 +114,9 @@ pim_catalog:
       association_type_does_not_exist: この関連タイプは存在しません。削除されていないことを確認してください。
       association_type_is_not_quantified: '「{{ association_type }}」は数量との関連付けに使用できません。数量に別の関連タイプを選択するか、「associations」プロパティを使用してください。'
       association_type_should_not_be_quantified: '「{{ association_type }}」は数量との関連付けにしか使用できません。別の関連タイプを選択するか、「quantified_associations」プロパティを使用してください。'
+    boolean:
+      boolean_value_is_required: '{{ attribute_code }} 属性には、データとしてブール値 (true または false) が必要です。{{ given_type }} が検出されました。'
+      boolean_value_is_required_in_import: '{{ attribute_code }} 属性には、データとしてブール値 (1 または 0) が必要です。{{ given_type }} が検出されました。'
 mass_edit:
   edit_common_attributes:
     invalid_values: 属性フォームにエラーがあります。
@@ -122,16 +124,3 @@ pim_datagrid:
   column_configurator:
     label:
       unique_message: ラベルは固有でなければなりません
-#TODO: move elsewhere?
-pim_enrich.product:
-  validation:
-    upsert:
-      set_value:
-        no_channel_code_provided_for_scopable_attribute: '{{ attributeCode }}属性にはチャンネルが必要です'
-        channel_code_provided_for_non_scopable_attribute: '{{ attributeCode }}属性はチャンネルを必要としません。"{{ channelCode }}" が検出されました'
-        no_locale_code_provided_for_localizable_attribute: '{{ attributeCode }}属性にはロケールが必要です'
-        locale_code_provided_for_non_localizable_attribute: '{{ attributeCode }}属性はロケールを必要としません。"{{ localeCode }}" が検出されました'
-        invalid_locale_code_for_locale_specific_attribute: '{{ attributeCode }}には次のいずれかのロケールが必要です: {{ availableLocales }}。"{{ localeCode }}" が検出されました'
-        channel_does_not_exist: '{{ channelCode }}チャンネルは存在しません'
-        locale_is_not_active: '{{ localeCode }}ロケールは存在しないか、有効になっていません'
-        locale_not_activated_for_channel: '{{ channelCode }}チャンネルの{{ localeCode }}ロケールが有効になっていません'

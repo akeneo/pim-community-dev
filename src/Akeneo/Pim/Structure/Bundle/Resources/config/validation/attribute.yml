@@ -465,7 +465,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
             - Valid: ~
         guidelinesLocaleCodes:
             - All:
-                - Akeneo\Channel\Component\Validator\Constraint\Locale:
+                - Akeneo\Channel\Infrastructure\Component\Validator\Constraint\Locale:
                     propertyPath: guidelines
 
 Akeneo\Pim\Structure\Component\Model\AttributeTranslation:
@@ -476,7 +476,7 @@ Akeneo\Pim\Structure\Component\Model\AttributeTranslation:
                 payload:
                     standardPropertyName: labels
         locale:
-            - Akeneo\Channel\Component\Validator\Constraint\Locale:
+            - Akeneo\Channel\Infrastructure\Component\Validator\Constraint\Locale:
                 payload:
                     standardPropertyName: labels
 

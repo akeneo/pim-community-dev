@@ -34,7 +34,7 @@ const JobExecutionStatus = ({
   const translate = useTranslate();
 
   let label = translate(`akeneo_job.job_status.${status}`);
-  if (['STARTING', 'STARTED', 'IN_PROGRESS'].includes(status)) {
+  if (['STARTING', 'IN_PROGRESS'].includes(status)) {
     label = `${label} ${currentStep}/${totalSteps}`;
   }
 

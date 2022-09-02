@@ -1,11 +1,16 @@
 import styled, {css} from 'styled-components';
-import React, {DetailedHTMLFactory, HTMLAttributes, ReactNode} from 'react';
+import React, {ReactNode} from 'react';
 import {AkeneoThemedProps, getColor} from '../../../../theme';
 import {Override} from '../../../../shared';
+import {highlightCell} from '../shared/highlightCell';
 
 const TableInputCellContainer = styled.div<
   {rowTitle: boolean; highlighted: boolean; inError: boolean} & AkeneoThemedProps
 >`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
   ${({rowTitle}) =>
     rowTitle &&
     css`
@@ -16,24 +21,11 @@ const TableInputCellContainer = styled.div<
   height: 39px;
   margin-right: 1px;
 
-  ${({highlighted, inError}) =>
-    highlighted &&
-    !inError &&
-    css`
-      background: ${getColor('green', 10)};
-      box-shadow: 0 0 0 1px ${getColor('green', 80)};
-    `};
-
-  ${({inError}) =>
-    inError &&
-    css`
-      background: ${getColor('red', 10)};
-      box-shadow: 0 0 0 1px ${getColor('red', 80)};
-    `};
+  ${highlightCell};
 `;
 
 type TableInputCellContentProps = Override<
-  DetailedHTMLFactory<HTMLAttributes<HTMLDivElement>, HTMLDivElement>,
+  React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>,
   {
     rowTitle?: boolean;
     highlighted?: boolean;

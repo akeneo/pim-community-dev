@@ -21,13 +21,13 @@ services:
 
     ### Catalog
     pim_catalog.repository.group:
-        class: '\Akeneo\Test\Acceptance\Catalog\InMemoryGroupRepository'
+        class: 'Akeneo\Test\Acceptance\Catalog\InMemoryGroupRepository'
 
     pim_catalog.repository.category:
         class: 'Akeneo\Test\Acceptance\Category\InMemoryCategoryRepository'
 
     pim_catalog.repository.group_type:
-        class: '\Akeneo\Test\Acceptance\Catalog\InMemoryGroupTypeRepository'
+        class: 'Akeneo\Test\Acceptance\Catalog\InMemoryGroupTypeRepository'
 
     pim_catalog.repository.product:
         class: 'Akeneo\Test\Acceptance\Product\InMemoryProductRepository'
@@ -40,6 +40,11 @@ services:
 
     akeneo_measure.persistence.measurement_family_repository:
         class: 'Akeneo\Test\Acceptance\MeasurementFamily\InMemoryMeasurementFamilyRepository'
+
+    akeneo_measurement.service_api.get_unit:
+        class: 'Akeneo\Test\Acceptance\MeasurementFamily\InMemoryGetUnit'
+        arguments:
+            - '@akeneo_measure.persistence.measurement_family_repository'
 
     ### Structure
     pim_catalog.repository.family:
@@ -64,8 +69,8 @@ services:
             -
                 'Akeneo\Pim\Structure\Component\Model\Attribute': '@pim_catalog.repository.attribute'
                 'Akeneo\Pim\Structure\Component\Model\AttributeGroup': '@pim_catalog.repository.attribute_group'
-                'Akeneo\Channel\Component\Model\Channel': '@pim_catalog.repository.channel'
-                'Akeneo\Channel\Component\Model\Locale': '@pim_catalog.repository.locale'
-                'Akeneo\Channel\Component\Model\Currency': '@pim_catalog.repository.currency'
+                'Akeneo\Channel\Infrastructure\Component\Model\Channel': '@pim_catalog.repository.channel'
+                'Akeneo\Channel\Infrastructure\Component\Model\Locale': '@pim_catalog.repository.locale'
+                'Akeneo\Channel\Infrastructure\Component\Model\Currency': '@pim_catalog.repository.currency'
         tags:
             - { name: validator.constraint_validator, alias: doctrine.orm.validator.unique }

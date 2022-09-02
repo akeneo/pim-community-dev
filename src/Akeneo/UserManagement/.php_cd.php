@@ -22,10 +22,10 @@ $rules = [
         'Doctrine\ORM\Mapping',
 
         // TIP-945: User Management should not depend on Channel and Enrichment
-        'Akeneo\Channel\Component\Model\LocaleInterface',
-        'Akeneo\Channel\Component\Model\ChannelInterface',
-        'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
-        'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface',
+        'Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface',
+        'Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface',
 
         // TIP-944: UserManager used in component
         'Akeneo\UserManagement\Bundle\Manager\UserManager',
@@ -34,13 +34,16 @@ $rules = [
         'Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager',
         'Oro\Bundle\SecurityBundle\Acl\AccessLevel',
         'Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository',
-        'Oro\Bundle\SecurityBundle\Model\AclPrivilege',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
 
-        'Oro\Bundle\UserBundle\Exception\UserCannotBeDeletedException',
-
         // TIP-947: UI Locale Provider should be part of UserManagement
-        'Akeneo\Platform\Bundle\UIBundle\UiLocaleProvider'
+        'Akeneo\Platform\Bundle\UIBundle\UiLocaleProvider',
+
+        // These files moved from Tool to Category bounded context
+        // Usermanagement BC should query BC via exposed Commands
+        // Ticket created : GRF-180
+        'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface'
     ])->in('Akeneo\UserManagement\Component'),
     $builder->only([
         'Doctrine',
@@ -53,23 +56,20 @@ $rules = [
         'Sensio\Bundle\FrameworkExtraBundle',
         'Symfony\Bundle\FrameworkBundle',
         'Symfony\Bundle\SecurityBundle',
-        'FOS\OAuthServerBundle\Entity\ClientManager', // used by API client controller
-        'OAuth2\OAuth2', // used by API client controller
-        'Swift_Mailer',
         'Twig\TwigFunction',
         'Oro\Bundle\DataGridBundle\Extension\Action\Actions\NavigateAction',
+        'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags',
 
         // TIP-1007: Clean VisibilityChecker system
         'Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker\NonEmptyPropertyVisibilityChecker',
 
         // TIP-945: User Management should not depend on Channel and Enrichment
-        'Akeneo\Channel\Component\Model\ChannelInterface',
-        'Akeneo\Channel\Component\Model\Channel',
-        'Akeneo\Channel\Component\Model\LocaleInterface',
-        'Akeneo\Channel\Component\Model\Locale',
-        'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
-        'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
-        'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\Channel',
+        'Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\Locale',
+        'Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface',
+        'Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface',
 
         // TIP-1005: Clean UI form types
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\EntityIdentifierType',
@@ -79,6 +79,19 @@ $rules = [
         // TIP-1539: clean installer events
         'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent',
         'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
+
+        // PLG-692: use email notification from Notification bundle
+        'Akeneo\Platform\Bundle\NotificationBundle\Email\MailNotifierInterface',
+        'Twig\Environment',
+        'Throwable',
+        'Psr\Log\LoggerInterface',
+        
+        // These files moved from Tool to Category bounded context
+        // Usermanagement BC should query BC via exposed Commands
+        // Ticket created : GRF-180
+        'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface'
+
     ])->in('Akeneo\UserManagement\Bundle'),
 ];
 

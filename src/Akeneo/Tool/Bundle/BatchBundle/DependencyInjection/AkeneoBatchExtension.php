@@ -40,5 +40,9 @@ class AkeneoBatchExtension extends Extension
                 ->getDefinition('akeneo_batch.mail_notifier')
                 ->addTag('akeneo_batch.notifier');
         }
+
+        if ('test' === $container->getParameter('kernel.environment')) {
+            $loader->load('test/jobs.yml');
+        }
     }
 }

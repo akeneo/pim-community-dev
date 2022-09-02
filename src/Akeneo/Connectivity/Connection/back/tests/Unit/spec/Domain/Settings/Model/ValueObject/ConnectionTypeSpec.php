@@ -29,7 +29,7 @@ class ConnectionTypeSpec extends ObjectBehavior
     public function it_cannot_contain_a_string_longer_than_30_characters(): void
     {
         $exceptionMessage = 'akeneo_connectivity.connection.connection.constraint.type.too_long';
-        $this->beConstructedWith(str_repeat('a', 31));
+        $this->beConstructedWith(\str_repeat('a', 31));
         $this->shouldThrow(new \InvalidArgumentException($exceptionMessage))->duringInstantiation();
     }
 

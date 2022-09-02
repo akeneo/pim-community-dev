@@ -29,7 +29,7 @@ final class SqlSearchAttributeOptionsIntegration extends TestCase
         $this->createAttributeOptions('color', 'white', ['fr_FR' => 'Blanc', 'en_US' => 'White'], 1);
     }
 
-    public function test_it_should_return_all_options_without_locale(): void
+    public function test_it_should_return_all_options_without_or_without_locales(): void
     {
         $searchParameters = new SearchAttributeOptionsParameters();
         $searchResult = $this->sqlSearchAttributeOptions->search('color', $searchParameters);

@@ -1,0 +1,42 @@
+default:
+    suites:
+        acceptance:
+            paths:
+                - '%paths.base%/Feature'
+            contexts:
+                - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\ConstraintViolationsContext
+                - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\ProductContext
+                - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\UserContext
+                - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\CategoryContext
+                - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\ChannelContext
+                - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\LocaleContext
+                - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\AttributeContext
+                - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\ExceptionContext
+                - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\UserIntentContext
+            filters:
+                tags: '@acceptance-back&&~@only-ee&&~@only-ge-ee'
+        acceptance_ee:
+            paths:
+                - '%paths.base%/Feature'
+            contexts:
+                - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\ConstraintViolationsContext
+                - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\ProductContext
+                - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\UserContext
+                - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\CategoryContext
+                - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\ChannelContext
+                - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\LocaleContext
+                - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\AttributeContext
+                - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\ExceptionContext
+                - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\UserIntentContext
+                - test.feature_flag.context
+            filters:
+                tags: '@acceptance-back'
+    extensions:
+        Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
+        FriendsOfBehat\SymfonyExtension:
+            bootstrap: config/bootstrap.php
+            kernel:
+                path: src/Kernel.php
+                class: Kernel
+                environment: test_fake
+                debug: false

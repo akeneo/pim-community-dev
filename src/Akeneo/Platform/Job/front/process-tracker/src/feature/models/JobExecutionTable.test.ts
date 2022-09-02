@@ -7,7 +7,7 @@ import {
 import {StepExecutionRowTracking} from './StepExecutionRowTracking';
 
 const stepTracking: StepExecutionRowTracking = {
-  error_count: 0,
+  has_error: false,
   warning_count: 0,
   is_trackable: true,
   processed_items: 2,
@@ -24,7 +24,7 @@ const jobExecutionRow: JobExecutionRow = {
     current_step: 1,
     steps: [stepTracking],
   },
-  error_count: 2,
+  has_error: true,
   type: 'export',
   username: 'admin',
   warning_count: 4,

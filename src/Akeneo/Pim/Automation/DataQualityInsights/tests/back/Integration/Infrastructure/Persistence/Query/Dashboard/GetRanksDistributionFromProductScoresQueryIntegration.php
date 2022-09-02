@@ -11,17 +11,20 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Dashboard\GetRanksDistributionFromProductScoresQuery;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductScoreRepository;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer;
 use Akeneo\Test\Integration\TestCase;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 final class GetRanksDistributionFromProductScoresQueryIntegration extends TestCase
 {
     private const CONSOLIDATION_DATE = '2020-01-15';
 
-    private int $lastProductId ;
+    private int $lastInsertedProductIdentifier ;
 
     private GetRanksDistributionFromProductScoresQuery $query;
 
@@ -33,7 +36,7 @@ final class GetRanksDistributionFromProductScoresQueryIntegration extends TestCa
 
         $this->productScoreRepository = $this->get(ProductScoreRepository::class);
         $this->query = $this->get(GetRanksDistributionFromProductScoresQuery::class);
-        $this->lastProductId = 0;
+        $this->lastInsertedProductIdentifier = 0;
     }
 
     protected function getConfiguration()
@@ -140,8 +143,7 @@ final class GetRanksDistributionFromProductScoresQueryIntegration extends TestCa
     private function givenProductsByRankAndAxisForWholeCatalog(int $countProducts, int $rank): void
     {
         $this->createProductAxesRatesWithDifferentDates($countProducts, $rank, function () {
-            $this->createProductWithFamily('mugs');
-            return new ProductId($this->lastProductId);
+            return $this->createProductWithFamily('mugs');
         });
     }
 
@@ -163,26 +165,30 @@ final class GetRanksDistributionFromProductScoresQueryIntegration extends TestCa
     {
         $consolidationDate = new \DateTimeImmutable(self::CONSOLIDATION_DATE);
 
-        $productIdentifiers = [];
+        $productUuids = [];
         for ($i = 0; $i < $nbProducts; $i++) {
-            $productId = $createProduct();
-            $productIdentifiers[] = 'product_' . $productId;
+            /** @var ProductUuid $productUuid */
+            $productUuid = $createProduct();
+            $productUuids[] = Uuid::fromString($productUuid->__toString());
 
             $this->get('database_connection')->executeQuery(
-                "DELETE FROM pim_data_quality_insights_product_score WHERE product_id = $productId"
+                "DELETE FROM pim_data_quality_insights_product_score WHERE product_uuid = ?",
+                [$productUuid->toBytes()]
             );
 
             $this->productScoreRepository->saveAll([
                 new ProductScores(
-                    $productId,
+                    $productUuid,
                     $consolidationDate,
                     (new ChannelLocaleRateCollection())
-                        ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), $this->getRateFromRank($rank))
+                        ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), $this->getRateFromRank($rank)),
+                    (new ChannelLocaleRateCollection())
+                        ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), $this->getRateFromRank($rank)),
                 ),
             ]);
         }
 
-        $this->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductIdentifiers($productIdentifiers);
+        $this->getProductIndexer()->indexFromProductUuids($productUuids);
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 
@@ -212,41 +218,39 @@ final class GetRanksDistributionFromProductScoresQueryIntegration extends TestCa
         ]);
     }
 
-    private function createProductWithFamily(string $family): ProductId
+    private function createProductWithFamily(string $family): ProductUuid
     {
-        $this->lastProductId++;
+        $this->lastInsertedProductIdentifier++;
         $product = $this->get('akeneo_integration_tests.catalog.product.builder')
-            ->withIdentifier(sprintf('product_%d', $this->lastProductId))
+            ->withIdentifier(sprintf('product_%d', $this->lastInsertedProductIdentifier))
             ->withFamily($family)
             ->build();
 
         $this->get('pim_catalog.saver.product')->save($product);
 
-        return new ProductId(intval($product->getId()));
+        return ProductUuid::fromUuid($product->getUuid());
     }
 
-    private function createProductWithCategories(array $categories): ProductId
+    private function createProductWithCategories(array $categories): ProductUuid
     {
-        $this->lastProductId++;
+        $this->lastInsertedProductIdentifier++;
         $product = $this->get('akeneo_integration_tests.catalog.product.builder')
-            ->withIdentifier(sprintf('product_%d', $this->lastProductId))
+            ->withIdentifier(sprintf('product_%d', $this->lastInsertedProductIdentifier))
             ->withCategories(...$categories)
             ->build();
 
         $this->get('pim_catalog.saver.product')->save($product);
 
-        return new ProductId(intval($product->getId()));
-    }
-
-    private function getDifferentRank(int $rank): int
-    {
-        $ranks = array_diff([1,2,3,4,5], [$rank]);
-
-        return $ranks[array_rand($ranks)];
+        return ProductUuid::fromUuid($product->getUuid());
     }
 
     private function getRateFromRank(int $rank): Rate
     {
         return new Rate(100 - $rank*10);
+    }
+
+    private function getProductIndexer(): ProductIndexer
+    {
+        return $this->get('pim_catalog.elasticsearch.indexer.product');
     }
 }

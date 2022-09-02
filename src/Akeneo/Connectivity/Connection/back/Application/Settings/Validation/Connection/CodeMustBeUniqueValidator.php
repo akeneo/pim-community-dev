@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Settings\Validation\Connection;
 
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -16,9 +16,9 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class CodeMustBeUniqueValidator extends ConstraintValidator
 {
-    private ConnectionRepository $repository;
+    private ConnectionRepositoryInterface $repository;
 
-    public function __construct(ConnectionRepository $repository)
+    public function __construct(ConnectionRepositoryInterface $repository)
     {
         $this->repository = $repository;
     }

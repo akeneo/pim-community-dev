@@ -1,9 +1,7 @@
-parameters:
-    pim_notification.email.email_notifier.class: Akeneo\Platform\Bundle\NotificationBundle\Email\MailNotifier
-
 services:
     pim_notification.email.email_notifier:
-        class: '%pim_notification.email.email_notifier.class%'
+        class: Akeneo\Platform\Bundle\NotificationBundle\Email\MailNotifier
         arguments:
             - '@mailer'
             - '%mailer_url%'
+            - '@logger'

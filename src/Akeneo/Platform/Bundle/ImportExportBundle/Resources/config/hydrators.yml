@@ -1,0 +1,16 @@
+services:
+  Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Hydrator\StorageHydrator:
+    arguments:
+      - !tagged pim_import_export.hydrator.storage
+
+  Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Hydrator\LocalStorageHydrator:
+    tags:
+      - { name: pim_import_export.hydrator.storage }
+
+  Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Hydrator\NoneStorageHydrator:
+    tags:
+      - { name: pim_import_export.hydrator.storage }
+
+  Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Hydrator\ManualUploadStorageHydrator:
+    tags:
+      - { name: pim_import_export.hydrator.storage }

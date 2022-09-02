@@ -7,6 +7,13 @@ import {ListConnections} from '@src/settings/pages/ListConnections';
 import {renderWithProviders} from '../../../test-utils';
 import {WrongCredentialsCombinationsProvider} from '@src/settings/wrong-credentials-combinations-context';
 
+jest.mock('@src/shared/hooks/use-connections-limit-reached', () => ({
+    ...jest.requireActual('@src/shared/hooks/use-connections-limit-reached'),
+    useConnectionsLimitReached: jest.fn(() => {
+        return false;
+    }),
+}));
+
 describe('testing ListConnections page', () => {
     beforeEach(() => {
         fetchMock.resetMocks();

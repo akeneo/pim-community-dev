@@ -4,31 +4,41 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetLatestProductScoresByIdentifiersQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScore;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScoreCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 class GetProductsWithQualityScoresSpec extends ObjectBehavior
 {
     function let(
-        GetLatestProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery,
+        GetProductScoresQueryInterface $getProductScoresQuery,
         FeatureFlag $dataQualityInsightsFeature
     ) {
-        $this->beConstructedWith($getLatestProductScoresByIdentifiersQuery, $dataQualityInsightsFeature);
+        $this->beConstructedWith($getProductScoresQuery, $dataQualityInsightsFeature);
     }
 
     function it_does_nothing_if_feature_flag_is_disabled(
-        GetLatestProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery,
         FeatureFlag $dataQualityInsightsFeature
     ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(false);
 
-        $connectorProduct = $this->buildConnectorProduct('identifier_5', null);
-        $productWithQualityScore = $this->buildConnectorProduct('identifier_5', new ChannelLocaleRateCollection());
+        $connectorProduct = $this->buildConnectorProduct(
+            'identifier_5',
+            null,
+            Uuid::fromString('4eaa6e58-b066-4eb2-9730-6b7d5cfecce9')
+        );
+        $productWithQualityScore = $this->buildConnectorProduct(
+            'identifier_5',
+            new QualityScoreCollection([]),
+            Uuid::fromString('4eaa6e58-b066-4eb2-9730-6b7d5cfecce9')
+        );
 
         $this->fromConnectorProduct($connectorProduct)->shouldBeLike($productWithQualityScore);
 
@@ -37,44 +47,58 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
         )->shouldBeLike(
             new ConnectorProductList(1, [$productWithQualityScore])
         );
-
-        $normalizedProduct = [
-            'enabled'    => true,
-            'categories' => ['cat1', 'cat2'],
-        ];
-        $this->fromNormalizedProduct('a_product', $normalizedProduct, 'ecommerce', ['en_US', 'fr_FR'])->shouldBe($normalizedProduct);
     }
 
     function it_return_a_new_connector_product_with_quality_scores(
-        GetLatestProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery,
+        GetProductScoresQueryInterface $getProductScoresQuery,
         FeatureFlag $dataQualityInsightsFeature
     ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
 
-        $connectorProduct = $this->buildConnectorProduct('identifier_5', null);
+        $connectorProduct = $this->buildConnectorProduct(
+            'identifier_5',
+            null,
+            Uuid::fromString('4eaa6e58-b066-4eb2-9730-6b7d5cfecce9')
+        );
 
-        $qualityScores = ChannelLocaleRateCollection::fromArrayInt(['ecommerce' => ['en_US' => 15]]);
-        $getLatestProductScoresByIdentifiersQuery->byProductIdentifier('identifier_5')->willReturn($qualityScores);
+        $qualityScores = new QualityScoreCollection(['ecommerce' => ['en_US' => new QualityScore('E', 15)]]);
+        $getProductScoresQuery->byProductUuid(Uuid::fromString('4eaa6e58-b066-4eb2-9730-6b7d5cfecce9'))->willReturn($qualityScores);
 
-        $productWithQualityScore = $this->buildConnectorProduct('identifier_5', $qualityScores);
+        $productWithQualityScore = $this->buildConnectorProduct(
+            'identifier_5',
+            $qualityScores,
+            Uuid::fromString('4eaa6e58-b066-4eb2-9730-6b7d5cfecce9')
+        );
 
         $this->fromConnectorProduct($connectorProduct)->shouldBeLike($productWithQualityScore);
     }
 
     function it_return_a_list_of_connector_product_with_quality_scores(
-        GetLatestProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery,
+        GetProductScoresQueryInterface $getProductScoresQuery,
         FeatureFlag $dataQualityInsightsFeature
     ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
 
-        $connectorProduct1 = $this->buildConnectorProduct('pdt_5', null);
-        $connectorProduct2 = $this->buildConnectorProduct('pdt_6', null);
+        $connectorProduct1 = $this->buildConnectorProduct(
+            'pdt_5',
+            null,
+            Uuid::fromString('4eaa6e58-b066-4eb2-9730-6b7d5cfecce9')
+        );
+        $connectorProduct2 = $this->buildConnectorProduct(
+            'pdt_6',
+            null,
+            Uuid::fromString('ae6a8f09-de38-449c-ac13-dfa2544e4559')
+        );
 
-        $qualityScores1 = ChannelLocaleRateCollection::fromArrayInt(['ecommerce' => ['en_US' => 15]]);
-        $qualityScores2 = ChannelLocaleRateCollection::fromArrayInt(['print' => ['en_US' => 99]]);
-        $getLatestProductScoresByIdentifiersQuery->byProductIdentifiers(['pdt_5','pdt_6'])->willReturn([
-            'pdt_5' => $qualityScores1,
-            'pdt_6' => $qualityScores2,
+        $qualityScores1 = new QualityScoreCollection(['ecommerce' => ['en_US' => new QualityScore('E', 15)]]);
+        $qualityScores2 = new QualityScoreCollection(['print' => ['en_US' => new QualityScore('A', 99)]]);
+
+        $getProductScoresQuery->byProductUuids([
+            Uuid::fromString('4eaa6e58-b066-4eb2-9730-6b7d5cfecce9'),
+            Uuid::fromString('ae6a8f09-de38-449c-ac13-dfa2544e4559'),
+        ])->willReturn([
+            '4eaa6e58-b066-4eb2-9730-6b7d5cfecce9' => $qualityScores1,
+            'ae6a8f09-de38-449c-ac13-dfa2544e4559' => $qualityScores2,
         ]);
 
         $this->fromConnectorProductList(
@@ -83,30 +107,41 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
             []
         )->shouldBeLike(
             new ConnectorProductList(2, [
-                $this->buildConnectorProduct('pdt_5', $qualityScores1),
-                $this->buildConnectorProduct('pdt_6', $qualityScores2),
+                $this->buildConnectorProduct('pdt_5', $qualityScores1, Uuid::fromString('4eaa6e58-b066-4eb2-9730-6b7d5cfecce9')),
+                $this->buildConnectorProduct('pdt_6', $qualityScores2, Uuid::fromString('ae6a8f09-de38-449c-ac13-dfa2544e4559')),
             ])
         );
     }
 
     function it_return_a_list_of_connector_product_with_quality_scores_filtered_by_channel(
-        GetLatestProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery,
+        GetProductScoresQueryInterface $getProductScoresQuery,
         FeatureFlag $dataQualityInsightsFeature
     ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
 
-        $connectorProduct1 = $this->buildConnectorProduct('pdt_5', null);
-        $connectorProduct2 = $this->buildConnectorProduct('pdt_6', null);
+        $connectorProduct1 = $this->buildConnectorProduct(
+            'pdt_5',
+            null,
+            Uuid::fromString('4eaa6e58-b066-4eb2-9730-6b7d5cfecce9')
+        );
+        $connectorProduct2 = $this->buildConnectorProduct(
+            'pdt_6',
+            null,
+            Uuid::fromString('ae6a8f09-de38-449c-ac13-dfa2544e4559')
+        );
 
-        $qualityScores1 = ChannelLocaleRateCollection::fromArrayInt([
-            'ecommerce' => ['en_US' => 15, 'fr_FR' => 42],
-            'print' => ['en_US' => 37]
+        $qualityScores1 = new QualityScoreCollection([
+            'ecommerce' => ['en_US' => new QualityScore('E', 15), 'fr_FR' => new QualityScore('D', 62)],
+            'print' => ['en_US' => new QualityScore('A', 99)],
         ]);
-        $qualityScores2 = ChannelLocaleRateCollection::fromArrayInt(['print' => ['en_US' => 99]]);
+        $qualityScores2 = new QualityScoreCollection(['print' => ['en_US' => new QualityScore('A', 99)]]);
 
-        $getLatestProductScoresByIdentifiersQuery->byProductIdentifiers(['pdt_5','pdt_6'])->willReturn([
-            'pdt_5' => $qualityScores1,
-            'pdt_6' => $qualityScores2,
+        $getProductScoresQuery->byProductUuids([
+            Uuid::fromString('4eaa6e58-b066-4eb2-9730-6b7d5cfecce9'),
+            Uuid::fromString('ae6a8f09-de38-449c-ac13-dfa2544e4559'),
+        ])->willReturn([
+            '4eaa6e58-b066-4eb2-9730-6b7d5cfecce9' => $qualityScores1,
+            'ae6a8f09-de38-449c-ac13-dfa2544e4559' => $qualityScores2,
         ]);
 
         $this->fromConnectorProductList(
@@ -115,32 +150,47 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
             []
         )->shouldBeLike(
             new ConnectorProductList(2, [
-                $this->buildConnectorProduct('pdt_5', ChannelLocaleRateCollection::fromArrayInt([
-                    'ecommerce' => ['en_US' => 15, 'fr_FR' => 42],
-                ])),
-                $this->buildConnectorProduct('pdt_6', new ChannelLocaleRateCollection()),
+                $this->buildConnectorProduct('pdt_5', new QualityScoreCollection([
+                    'ecommerce' => ['en_US' => new QualityScore('E', 15), 'fr_FR' => new QualityScore('D', 62)]
+                ]), Uuid::fromString('4eaa6e58-b066-4eb2-9730-6b7d5cfecce9')),
+                $this->buildConnectorProduct('pdt_6', new QualityScoreCollection([]), Uuid::fromString('ae6a8f09-de38-449c-ac13-dfa2544e4559')),
             ])
         );
     }
 
     function it_return_a_list_of_connector_product_with_quality_scores_filtered_by_locales(
-        GetLatestProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery,
+        GetProductScoresQueryInterface $getProductScoresQuery,
         FeatureFlag $dataQualityInsightsFeature
     ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
 
-        $connectorProduct1 = $this->buildConnectorProduct('pdt_5', null);
-        $connectorProduct2 = $this->buildConnectorProduct('pdt_6', null);
+        $connectorProduct1 = $this->buildConnectorProduct(
+            'pdt_5',
+            null,
+            Uuid::fromString('4eaa6e58-b066-4eb2-9730-6b7d5cfecce9')
+        );
+        $connectorProduct2 = $this->buildConnectorProduct(
+            'pdt_6',
+            null,
+            Uuid::fromString('ae6a8f09-de38-449c-ac13-dfa2544e4559')
+        );
 
-        $qualityScores1 = ChannelLocaleRateCollection::fromArrayInt([
-            'ecommerce' => ['en_US' => 15, 'fr_FR' => 42, 'de_DE' => 76],
-            'print' => ['de_DE' => 37],
+        $qualityScores1 = new QualityScoreCollection([
+            'ecommerce' => [
+                'en_US' => new QualityScore('E', 15),
+                'fr_FR' => new QualityScore('D', 62),
+                'de_DE' => new QualityScore('C', 76),
+            ],
+            'print' => ['en_US' => new QualityScore('D', 37)],
         ]);
-        $qualityScores2 = ChannelLocaleRateCollection::fromArrayInt(['print' => ['en_US' => 99]]);
+        $qualityScores2 = new QualityScoreCollection(['print' => ['en_US' => new QualityScore('A', 99)]]);
 
-        $getLatestProductScoresByIdentifiersQuery->byProductIdentifiers(['pdt_5','pdt_6'])->willReturn([
-            'pdt_5' => $qualityScores1,
-            'pdt_6' => $qualityScores2,
+        $getProductScoresQuery->byProductUuids([
+            Uuid::fromString('4eaa6e58-b066-4eb2-9730-6b7d5cfecce9'),
+            Uuid::fromString('ae6a8f09-de38-449c-ac13-dfa2544e4559'),
+        ])->willReturn([
+            '4eaa6e58-b066-4eb2-9730-6b7d5cfecce9' => $qualityScores1,
+            'ae6a8f09-de38-449c-ac13-dfa2544e4559' => $qualityScores2,
         ]);
 
         $this->fromConnectorProductList(
@@ -149,32 +199,54 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
             ['en_US', 'fr_FR']
         )->shouldBeLike(
             new ConnectorProductList(2, [
-                $this->buildConnectorProduct('pdt_5', ChannelLocaleRateCollection::fromArrayInt([
-                    'ecommerce' => ['en_US' => 15, 'fr_FR' => 42],
-                ])),
-                $this->buildConnectorProduct('pdt_6', $qualityScores2),
+                $this->buildConnectorProduct('pdt_5', new QualityScoreCollection([
+                    'ecommerce' => [
+                        'en_US' => new QualityScore('E', 15),
+                        'fr_FR' => new QualityScore('D', 62),
+                    ],
+                    'print' => ['en_US' => new QualityScore('D', 37)],
+                ]), Uuid::fromString('4eaa6e58-b066-4eb2-9730-6b7d5cfecce9')),
+                $this->buildConnectorProduct('pdt_6', $qualityScores2, Uuid::fromString('ae6a8f09-de38-449c-ac13-dfa2544e4559')),
             ])
         );
     }
 
     function it_return_a_list_of_connector_product_with_quality_scores_filtered_by_channel_and_locales(
-        GetLatestProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery,
+        GetProductScoresQueryInterface $getProductScoresQuery,
         FeatureFlag $dataQualityInsightsFeature
     ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
 
-        $connectorProduct1 = $this->buildConnectorProduct('pdt_5', null);
-        $connectorProduct2 = $this->buildConnectorProduct('pdt_6', null);
+        $connectorProduct1 = $this->buildConnectorProduct(
+            'pdt_5',
+            null,
+            Uuid::fromString('4eaa6e58-b066-4eb2-9730-6b7d5cfecce9')
+        );
+        $connectorProduct2 = $this->buildConnectorProduct(
+            'pdt_6',
+            null,
+            Uuid::fromString('ae6a8f09-de38-449c-ac13-dfa2544e4559')
+        );
 
-        $qualityScores1 = ChannelLocaleRateCollection::fromArrayInt([
-            'ecommerce' => ['en_US' => 15, 'fr_FR' => 42, 'de_DE' => 76],
-            'print' => ['en_US' => 98, 'fr_FR' => 13],
+        $qualityScores1 = new QualityScoreCollection([
+            'ecommerce' => [
+                'en_US' => new QualityScore('E', 15),
+                'fr_FR' => new QualityScore('D', 62),
+                'de_DE' => new QualityScore('C', 76),
+            ],
+            'print' => [
+                'en_US' => new QualityScore('D', 37),
+                'fr_FR' => new QualityScore('B', 81),
+            ],
         ]);
-        $qualityScores2 = ChannelLocaleRateCollection::fromArrayInt(['print' => ['en_US' => 99]]);
+        $qualityScores2 = new QualityScoreCollection(['print' => ['en_US' => new QualityScore('A', 99)]]);
 
-        $getLatestProductScoresByIdentifiersQuery->byProductIdentifiers(['pdt_5','pdt_6'])->willReturn([
-            'pdt_5' => $qualityScores1,
-            'pdt_6' => $qualityScores2,
+        $getProductScoresQuery->byProductUuids([
+            Uuid::fromString('4eaa6e58-b066-4eb2-9730-6b7d5cfecce9'),
+            Uuid::fromString('ae6a8f09-de38-449c-ac13-dfa2544e4559'),
+        ])->willReturn([
+            '4eaa6e58-b066-4eb2-9730-6b7d5cfecce9' => $qualityScores1,
+            'ae6a8f09-de38-449c-ac13-dfa2544e4559' => $qualityScores2,
         ]);
 
         $this->fromConnectorProductList(
@@ -183,46 +255,23 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
             ['en_US']
         )->shouldBeLike(
             new ConnectorProductList(2, [
-                $this->buildConnectorProduct('pdt_5', ChannelLocaleRateCollection::fromArrayInt([
-                    'ecommerce' => ['en_US' => 15],
-                ])),
-                $this->buildConnectorProduct('pdt_6', new ChannelLocaleRateCollection()),
+                $this->buildConnectorProduct('pdt_5', new QualityScoreCollection([
+                    'ecommerce' => [
+                        'en_US' => new QualityScore('E', 15),
+                    ],
+                ]), Uuid::fromString('4eaa6e58-b066-4eb2-9730-6b7d5cfecce9')),
+                $this->buildConnectorProduct('pdt_6', new QualityScoreCollection([]), Uuid::fromString('ae6a8f09-de38-449c-ac13-dfa2544e4559')),
             ])
         );
     }
 
-    public function it_returns_a_normalized_product_with_quality_scores(
-        GetLatestProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery,
-        FeatureFlag $dataQualityInsightsFeature
-    ) {
-        $dataQualityInsightsFeature->isEnabled()->willReturn(true);
-
-        $normalizedProduct = ['identifier' => 'identifier_5'];
-        $normalizedQualityScores = [
-            'ecommerce' => ['en_US' => 95, 'fr_FR' => 76, 'de_DE' => 83],
-            'mobile' => ['en_US' => 65, 'fr_FR' => 54, 'de_DE' => 73],
-        ];
-
-        $qualityScores = ChannelLocaleRateCollection::fromArrayInt($normalizedQualityScores);
-        $getLatestProductScoresByIdentifiersQuery->byProductIdentifier('identifier_5')->willReturn($qualityScores);
-
-        $normalizedProductWithQualityScores = array_merge($normalizedProduct, [
-            'quality_scores' => [
-                'ecommerce' => [
-                    'en_US' => 'A',
-                    'fr_FR' => 'C'
-                ]
-            ]
-        ]);
-
-        $this->fromNormalizedProduct('identifier_5', $normalizedProduct, 'ecommerce', ['en_US', 'fr_FR'])
-            ->shouldBeLike($normalizedProductWithQualityScores);
-    }
-
-    private function buildConnectorProduct($identifier, $qualityScore): ConnectorProduct
-    {
+    private function buildConnectorProduct(
+        string $identifier,
+        $qualityScore,
+        $uuid = null
+    ): ConnectorProduct {
         return new ConnectorProduct(
-            5,
+            $uuid ?? Uuid::uuid4(),
             $identifier,
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Enrichment;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Query\Completeness\CompletenessTestCase;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Query\Completeness\CompletenessTestCase;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -68,13 +68,16 @@ class CalculateProductModelCompletenessIntegration extends CompletenessTestCase
             ->build();
 
         $this->get('pim_catalog.saver.product_model')->save($productModel);
-        $productModelId = new ProductId((int) $productModel->getId());
+
+        $productModelId = $this->get(ProductModelIdFactory::class)->create((string)$productModel->getId());
 
         $completenessResult = $this->get('akeneo.pim.automation.calculate_product_model_completeness_of_required_attributes')
             ->calculate($productModelId);
 
         $expectedMissingAttributes = ['ecommerce' => ['en_US' => ['a_required_text', 'a_required_textarea']]];
         $this->assertEquals($expectedMissingAttributes, $completenessResult->getMissingAttributes()->toArray());
+        $expectedTotalNumberOfAttributes = ['ecommerce' => ['en_US' => 2]];
+        $this->assertEquals($expectedTotalNumberOfAttributes, $completenessResult->getTotalNumberOfAttributes()->toArray());
 
         $expectedRates = ['ecommerce' => ['en_US' => 0]];
         $this->assertEquals($expectedRates, $completenessResult->getRates()->toArrayInt());
@@ -97,6 +100,7 @@ class CalculateProductModelCompletenessIntegration extends CompletenessTestCase
 
         $expectedMissingAttributes = ['ecommerce' => ['en_US' => ['a_required_textarea']]];
         $this->assertEquals($expectedMissingAttributes, $completenessResult->getMissingAttributes()->toArray());
+        $this->assertEquals($expectedTotalNumberOfAttributes, $completenessResult->getTotalNumberOfAttributes()->toArray());
 
         $expectedRates = ['ecommerce' => ['en_US' => 50]];
         $this->assertEquals($expectedRates, $completenessResult->getRates()->toArrayInt());

@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel;
 
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScore;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScoreCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
@@ -67,7 +69,8 @@ final class ConnectorProductModelSpec extends ObjectBehavior
                     ScalarValue::localizableValue('description', 'an English description', 'en_US'),
                     ScalarValue::localizableValue('description', 'une description en français', 'fr_FR'),
                 ]
-            )
+            ),
+            null
         );
     }
 
@@ -276,5 +279,18 @@ final class ConnectorProductModelSpec extends ObjectBehavior
                 'some_metadata' => ['key' => 'value'],
             ]
         );
+    }
+
+    function it_can_be_built_with_quality_scores(): void
+    {
+        $qualityScores = new QualityScoreCollection([
+            'ecommerce' => [
+                'en_US' => new QualityScore('A', 98),
+                'fr_FR' => new QualityScore('B', 87),
+            ]
+        ]);
+        $connectorProductModel = $this->buildWithQualityScores($qualityScores);
+
+        $connectorProductModel->qualityScores()->shouldReturn($qualityScores);
     }
 }

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Marketplace;
 
-use Akeneo\Platform\VersionProviderInterface;
+use Akeneo\Connectivity\Connection\Application\Marketplace\WebMarketplaceAliasesInterface;
+use Akeneo\Platform\Bundle\PimVersionBundle\Version\PimVersion;
+use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -12,40 +14,33 @@ use Akeneo\Platform\VersionProviderInterface;
  */
 class WebMarketplaceAliases implements WebMarketplaceAliasesInterface
 {
-    private VersionProviderInterface $versionProvider;
-
     public function __construct(
-        VersionProviderInterface $versionProvider
+        private VersionProviderInterface $versionProvider,
+        private PimVersion $growthVersion,
     ) {
-        $this->versionProvider = $versionProvider;
     }
 
     public function getUtmCampaign(): ?string
     {
-        switch ($this->versionProvider->getEdition()) {
-            case 'GE':
-                return 'connect_ge';
-            default:
-                return null;
-        }
+        return match ($this->versionProvider->getEdition()) {
+            $this->growthVersion->editionName() => 'connect_ge',
+            default => null,
+        };
     }
 
     public function getEdition(): string
     {
-        switch ($this->versionProvider->getEdition()) {
-            case 'GE':
-                return 'growth-edition';
-            case 'CE':
-            default:
-                return 'community-edition';
-        }
+        return match ($this->versionProvider->getEdition()) {
+            $this->growthVersion->editionName() => 'growth-edition',
+            default => 'community-edition',
+        };
     }
 
     public function getVersion(): ?string
     {
         $version = $this->versionProvider->getVersion();
 
-        if (preg_match('|(\d\.\d)\.\d|', $version, $matches)) {
+        if (\preg_match('|(\d\.\d)\.\d|', $version, $matches)) {
             return $matches[1];
         }
 

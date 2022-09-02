@@ -40,7 +40,7 @@ final class HourlyInterval
     {
         if ('UTC' !== $dateTime->getTimezone()->getName() && '+00:00' !== $dateTime->getTimezone()->getName()) {
             throw new \InvalidArgumentException(
-                sprintf(
+                \sprintf(
                     'Parameter `$dateTime` "%s" with timezone "%s" must have a timezone "UTC".',
                     $dateTime->format(\DateTimeInterface::ATOM),
                     $dateTime->getTimezone()->getName()

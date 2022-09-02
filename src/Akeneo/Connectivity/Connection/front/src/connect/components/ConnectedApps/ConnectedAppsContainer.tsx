@@ -1,5 +1,5 @@
 import React, {FC, useRef} from 'react';
-import {ArrowSimpleUpIcon, getColor, IconButton, SectionTitle} from 'akeneo-design-system';
+import {ArrowSimpleUpIcon, DangerIcon, getColor, Helper, IconButton, SectionTitle} from 'akeneo-design-system';
 import {useTranslate} from '../../../shared/translate';
 import styled from 'styled-components';
 import {useDisplayScrollTopButton} from '../../../shared/scroll/hooks/useDisplayScrollTopButton';
@@ -10,6 +10,7 @@ import ConnectedAppsContainerHelper from './ConnectedAppsContainerHelper';
 import {ConnectedAppCard} from './ConnectedAppCard';
 import {NoConnectedApps} from './NoConnectedApps';
 import {CardGrid} from '../Section';
+import {ConnectedTestAppList} from './ConnectedTestAppList';
 
 const ScrollToTop = styled(IconButton)`
     position: fixed;
@@ -28,15 +29,23 @@ const ScrollToTop = styled(IconButton)`
 `;
 
 type Props = {
-    connectedApps: ConnectedApp[];
+    allConnectedApps: ConnectedApp[];
 };
 
-export const ConnectedAppsContainer: FC<Props> = ({connectedApps}) => {
+export const ConnectedAppsContainer: FC<Props> = ({allConnectedApps}) => {
     const translate = useTranslate();
     const featureFlag = useFeatureFlags();
     const ref = useRef(null);
     const scrollContainer = findScrollParent(ref.current);
     const displayScrollButton = useDisplayScrollTopButton(ref);
+
+    const connectedTestApps = allConnectedApps.filter((connectedApp: ConnectedApp) => connectedApp.is_test_app);
+    const connectedApps = allConnectedApps.filter((connectedApp: ConnectedApp) => !connectedApp.is_test_app);
+    const hasPendingApps = undefined !== allConnectedApps.find((connectedApp: ConnectedApp) => connectedApp.is_pending);
+
+    const atLeastOneAppIsNotListedOnTheAppStore: boolean =
+        undefined !== connectedApps.find(connectedApp => false === connectedApp.is_listed_on_the_appstore);
+
     const connectedAppCards = connectedApps.map((connectedApp: ConnectedApp) => (
         <ConnectedAppCard key={connectedApp.id} item={connectedApp} />
     ));
@@ -47,7 +56,9 @@ export const ConnectedAppsContainer: FC<Props> = ({connectedApps}) => {
     return (
         <>
             <div ref={ref} />
-            <ConnectedAppsContainerHelper count={connectedApps.length} />
+            <ConnectedAppsContainerHelper count={allConnectedApps.length} />
+
+            <ConnectedTestAppList connectedTestApps={connectedTestApps} />
 
             {featureFlag.isEnabled('marketplace_activate') && (
                 <>
@@ -66,6 +77,20 @@ export const ConnectedAppsContainer: FC<Props> = ({connectedApps}) => {
                             )}
                         </SectionTitle.Information>
                     </SectionTitle>
+
+                    {atLeastOneAppIsNotListedOnTheAppStore && (
+                        <Helper level='warning'>
+                            {translate(
+                                'akeneo_connectivity.connection.connect.connected_apps.list.apps.at_least_one_is_not_listed_on_the_appstore'
+                            )}
+                        </Helper>
+                    )}
+
+                    {hasPendingApps && (
+                        <Helper icon={<DangerIcon />} level='warning'>
+                            {translate('akeneo_connectivity.connection.connect.connected_apps.list.apps.pending_apps')}
+                        </Helper>
+                    )}
 
                     {0 === connectedAppCards.length && <NoConnectedApps />}
                     {connectedAppCards.length > 0 && <CardGrid>{connectedAppCards}</CardGrid>}

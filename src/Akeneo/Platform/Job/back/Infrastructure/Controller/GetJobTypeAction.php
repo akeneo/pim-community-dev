@@ -21,7 +21,7 @@ class GetJobTypeAction
 {
     public function __construct(
         private FindJobTypeHandler $findJobTypeHandler,
-        private SecurityFacade     $securityFacade,
+        private SecurityFacade $securityFacade,
     ) {
     }
 

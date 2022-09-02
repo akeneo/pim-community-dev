@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Model;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
@@ -23,9 +23,28 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\UuidInterface;
 
 class ProductSpec extends ObjectBehavior
 {
+    function it_can_be_instantiated_with_a_specific_uuid()
+    {
+        $this->beConstructedWith('af568ead-fa2a-4336-bc72-613ece4e4340');
+        $this->getUuid()->toString()->shouldBe('af568ead-fa2a-4336-bc72-613ece4e4340');
+    }
+
+    function it_cannot_be_instantiated_with_an_invalid_uuid()
+    {
+        $this->beConstructedWith('invalid_uuid');
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    function it_generates_a_uuid()
+    {
+        $this->beConstructedWith(null);
+        $this->getUuid()->shouldBeAnInstanceOf(UuidInterface::class);
+    }
+
     function it_has_family(FamilyInterface $family)
     {
         $family->getId()->willReturn(42);

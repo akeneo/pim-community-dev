@@ -6,7 +6,8 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -14,20 +15,14 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
  */
 final class CriterionEvaluation
 {
-    private CriterionCode $criterionCode;
-    private ProductId $productId;
-    private CriterionEvaluationStatus $status;
     private ?\DateTimeImmutable $evaluatedAt = null;
     private ?CriterionEvaluationResult $result = null;
 
     public function __construct(
-        CriterionCode $criterionCode,
-        ProductId $productId,
-        CriterionEvaluationStatus $status
+        private CriterionCode             $criterionCode,
+        private ProductEntityIdInterface  $entityId,
+        private CriterionEvaluationStatus $status
     ) {
-        $this->criterionCode = $criterionCode;
-        $this->productId = $productId;
-        $this->status = $status;
     }
 
     public function start(): self
@@ -78,9 +73,9 @@ final class CriterionEvaluation
         return $this->criterionCode;
     }
 
-    public function getProductId(): ProductId
+    public function getEntityId(): ProductEntityIdInterface
     {
-        return $this->productId;
+        return $this->entityId;
     }
 
     public function getEvaluatedAt(): ?\DateTimeImmutable

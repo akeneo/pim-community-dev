@@ -4,9 +4,14 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\VariantProduct\InternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\SetGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountInTransportTrait;
 use AkeneoTest\Pim\Enrichment\EndToEnd\InternalApiTestCase;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -19,30 +24,22 @@ class UpdateVariantProductEndToEnd extends InternalApiTestCase
         // apollon_blue_m & apollon_blue_l, categorized in 2 trees (master and categoryA1)
         $product = $this->createProduct(
             'apollon_optionb_false',
-            'clothing_colorsize',
+            'familyA',
             [
-                'categories' => ['master', 'categoryB'],
-                'parent' => 'amor',
-                'groups' => ['groupA'],
-                'values' => [
-                    'a_yes_no' => [
-                        [
-                            'locale' => null,
-                            'scope' => null,
-                            'data' => false,
-                        ],
-                    ],
-                ],
+                new SetCategories(['master', 'categoryB']),
+                new ChangeParent('amor'),
+                new SetGroups(['groupA']),
+                new SetBooleanValue('a_yes_no', null, null, false)
             ]
         );
-        $normalizedProduct = $this->getProductFromInternalApi((string) $product->getId());
+        $normalizedProduct = $this->getProductFromInternalApi($product->getUuid());
         $this->clearMessengerTransport();
         $normalizedProduct['categories'] = ['master'];
         unset($normalizedProduct['meta']);
 
         $this->client->request(
             'POST',
-            sprintf('/enrich/product/rest/%s', $product->getId()),
+            sprintf('/enrich/product/rest/%s', (string) $product->getUuid()),
             [],
             [],
             [
@@ -57,11 +54,11 @@ class UpdateVariantProductEndToEnd extends InternalApiTestCase
         $this->assertEventCount(1, ProductUpdated::class);
     }
 
-    protected function getProductFromInternalApi(string $productId): array
+    protected function getProductFromInternalApi(UuidInterface $productUuid): array
     {
         $this->client->request(
             'GET',
-            sprintf('/enrich/product/rest/%s', $productId),
+            sprintf('/enrich/product/rest/%s', $productUuid->toString()),
             [],
             [],
             [
@@ -108,7 +105,7 @@ class UpdateVariantProductEndToEnd extends InternalApiTestCase
 
     protected function getAdminUser(): UserInterface
     {
-        return self::$container->get('pim_user.repository.user')->findOneByIdentifier('admin');
+        return self::getContainer()->get('pim_user.repository.user')->findOneByIdentifier('admin');
     }
 
     protected function getConfiguration(): Configuration

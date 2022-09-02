@@ -90,6 +90,14 @@ extensions:
         aclResourceId: pim_enrich_product_model_edit_attributes
         position: 80
 
+    pim-free-trial-pim-product-model-edit-form-start-copy:
+        module: pim/product-edit-form/free-trial-start-copy
+        parent: pim-product-model-edit-form
+        targetZone: buttons
+        aclResourceId: pim_enrich_product_model_edit_attributes
+        position: 60
+        feature: free_trial
+
     pim-product-model-edit-form-delete:
         module: pim/product-model-edit-form/delete
         parent: pim-product-model-edit-form-secondary-actions
@@ -103,6 +111,7 @@ extensions:
                 content: pim_common.confirm_deletion
                 success: pim_enrich.entity.product_model.flash.delete.success
                 fail: pim_enrich.entity.product_model.flash.delete.fail
+                buttonText: pim_common.delete
             redirect: pim_enrich_product_index
 
     pim-product-model-edit-form-save-buttons:

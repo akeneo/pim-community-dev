@@ -79,6 +79,12 @@ class IndexProductModelCommand extends Command
                 'Index all existing product models into Elasticsearch'
             )
             ->addOption(
+                'diff',
+                'd',
+                InputOption::VALUE_NONE,
+                'Index both missing product models present in Mysql and not in ES and outdated product model documents in ES. It does not remove product model documents present in ES but not in Mysql. See pim:product-model:clean-removed-products for that. This option does not work with "all" option. '
+            )
+            ->addOption(
                 'batch-size',
                 false,
                 InputOption::VALUE_REQUIRED,
@@ -99,7 +105,10 @@ class IndexProductModelCommand extends Command
 
         if (true === $input->getOption('all')) {
             $chunkedProductModelCodes = $this->getAllRootProductModelCodes($batchSize);
-            $productModelCount = $this->getTotalNumberOfRootProductModels();
+            $productModelCount = 0;
+        } elseif (true === $input->getOption('diff')) {
+            $chunkedProductModelCodes = $this->getDiffProductModelCodes($batchSize);
+            $productModelCount = 0;
         } elseif (!empty($input->getArgument('codes'))) {
             $requestedCodes = $input->getArgument('codes');
             $existingroductModelCodes = $this->getExistingProductModelCodes($requestedCodes);
@@ -209,11 +218,65 @@ SQL;
         )->fetchFirstColumn();
     }
 
-    private function getTotalNumberOfRootProductModels(): int
+    private function getDiffProductModelCodes(int $batchSize): iterable
     {
-        return (int)$this->connection->executeQuery(
-            'SELECT COUNT(0) FROM pim_catalog_product_model WHERE parent_id IS NULL'
-        )->fetchOne();
+        $formerId = 0;
+        $sql = <<< SQL
+SELECT CONCAT('product_model_', id) AS _id, id, code, DATE_FORMAT(updated, '%Y-%m-%dT%TZ') AS updated
+FROM pim_catalog_product_model
+WHERE id > :formerId
+AND parent_id IS NULL
+ORDER BY id ASC
+LIMIT :limit
+SQL;
+        while (true) {
+            $rows = $this->connection->executeQuery(
+                $sql,
+                [
+                    'formerId' => $formerId,
+                    'limit' => $batchSize
+                ],
+                [
+                    'formerId' => \PDO::PARAM_INT,
+                    'limit' => \PDO::PARAM_INT
+                ]
+            )->fetchAllAssociative();
+
+            if (empty($rows)) {
+                return;
+            }
+
+            $formerId = (int)end($rows)['id'];
+            $existingMysqlIdentifiers = array_column($rows, '_id');
+            $existingMysqlUpdated = array_column($rows, 'updated');
+
+            $results = $this->productAndProductModelClient->search([
+               'query' => [
+                   'bool' => [
+                       'must' => [
+                           'ids' => [
+                               'values' => $existingMysqlIdentifiers
+                           ]
+                       ],
+                       'filter' => [
+                           'terms' => [
+                               'entity_updated' => $existingMysqlUpdated
+                           ]
+                       ]
+                   ]
+               ],
+                '_source' => false,
+                'size' => $batchSize
+            ]);
+
+            $esIdentifiers = array_map(function ($doc) {
+                return $doc['_id'];
+            }, $results['hits']['hits']);
+
+            $diff = array_diff($existingMysqlIdentifiers, $esIdentifiers);
+
+            yield $diff;
+        }
     }
 
     /**

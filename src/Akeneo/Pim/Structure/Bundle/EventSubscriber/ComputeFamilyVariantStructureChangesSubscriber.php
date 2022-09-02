@@ -29,42 +29,18 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberInterface
 {
     public const DISABLE_JOB_LAUNCHING = 'DISABLE_COMPUTE_FAMILY_VARIANT_STRUCTURE_CHANGES_LAUNCHING';
-    public const FORCE_JOB_LAUNCHING = 'FORCE_COMPUTE_FAMILY_VARIANT_STRUCTURE_CHANGES_LAUNCHING';
-
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-    /** @var JobLauncherInterface */
-    private $jobLauncher;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $jobInstanceRepository;
-
-    /** @var Connection */
-    private $connection;
-
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var string */
-    private $jobName;
 
     /** @var array<string, bool> */
     private array $isFamilyVariantNew = [];
 
     public function __construct(
-        TokenStorageInterface $tokenStorage,
-        JobLauncherInterface $jobLauncher,
-        IdentifiableObjectRepositoryInterface $jobInstanceRepository,
-        Connection $connection,
-        LoggerInterface $logger,
-        string $jobName
+        private TokenStorageInterface $tokenStorage,
+        private JobLauncherInterface $jobLauncher,
+        private IdentifiableObjectRepositoryInterface $jobInstanceRepository,
+        private Connection $connection,
+        private LoggerInterface $logger,
+        private string $jobName
     ) {
-        $this->tokenStorage = $tokenStorage;
-        $this->jobLauncher = $jobLauncher;
-        $this->jobInstanceRepository = $jobInstanceRepository;
-        $this->connection = $connection;
-        $this->logger = $logger;
-        $this->jobName = $jobName;
     }
 
     /**
@@ -89,9 +65,6 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
         $this->isFamilyVariantNew[$familyVariant->getCode()] = null === $familyVariant->getId();
     }
 
-    /**
-     * @param GenericEvent $event
-     */
     public function computeVariantStructureChanges(GenericEvent $event): void
     {
         $familyVariant = $event->getSubject();
@@ -99,11 +72,11 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
             return;
         }
 
-        $forceJobLaunching = $event->hasArgument(self::FORCE_JOB_LAUNCHING) && $event->getArgument(self::FORCE_JOB_LAUNCHING);
-        if (!$event->hasArgument('unitary') || false === $event->getArgument('unitary')
+        if (
+            !$event->hasArgument('unitary') || false === $event->getArgument('unitary')
             || ($event->hasArgument('is_new') && $event->getArgument('is_new'))
             || ($event->hasArgument(self::DISABLE_JOB_LAUNCHING) && $event->getArgument(self::DISABLE_JOB_LAUNCHING))
-            || (!$forceJobLaunching && !$this->variantAttributeSetOfFamilyVariantIsUpdated($familyVariant))
+            || (!$this->variantAttributeSetOfFamilyVariantIsUpdated($familyVariant))
         ) {
             return;
         }
@@ -126,8 +99,6 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
             return;
         }
 
-        $forceJobLaunching = $event->hasArgument(self::FORCE_JOB_LAUNCHING) && $event->getArgument(self::FORCE_JOB_LAUNCHING);
-
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->jobName);
         $familyVariantCodesToCompute = \array_values(\array_map(
             static fn (FamilyVariantInterface $familyVariant): string => $familyVariant->getCode(),
@@ -135,7 +106,7 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
                 $familyVariants,
                 fn (FamilyVariantInterface $familyVariant): bool =>
                     !($this->isFamilyVariantNew[$familyVariant->getCode()] ?? false)
-                    && ($forceJobLaunching || $this->variantAttributeSetOfFamilyVariantIsUpdated($familyVariant))
+                    && ($this->variantAttributeSetOfFamilyVariantIsUpdated($familyVariant))
                     && $this->noOtherJobExecutionIsPending($jobInstance->getId(), $familyVariant->getCode())
             )
         ));
@@ -168,7 +139,7 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
         $jobId = $this->connection->executeQuery(
             $query,
             ['instanceId' => $jobInstanceId, 'familyVariantCode' => $familyVariantCode]
-        )->fetchColumn();
+        )->fetchOne();
 
         if (false === $jobId) {
             return true;

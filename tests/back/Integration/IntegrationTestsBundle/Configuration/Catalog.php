@@ -34,7 +34,7 @@ class Catalog implements CatalogInterface
     /**
      * {@inheritdoc}
      */
-    public function useTechnicalCatalog(): Configuration
+    public function useTechnicalCatalog(array $featureFlags = []): Configuration
     {
         $catalogDirectories = [
             (string) new Path('tests', 'back', 'Integration', 'catalog', 'technical'),
@@ -45,13 +45,13 @@ class Catalog implements CatalogInterface
             $this->getReferenceDataFixtures()
         ];
 
-        return new Configuration($catalogDirectories, $fixtureDirectories);
+        return new Configuration($catalogDirectories, $fixtureDirectories, $featureFlags);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function useMinimalCatalog(): Configuration
+    public function useMinimalCatalog(array $featureFlags = []): Configuration
     {
         $catalogDirectories = [
             (string) new Path('src', 'Akeneo', 'Platform', 'Bundle', 'InstallerBundle', 'Resources', 'fixtures', 'minimal'),
@@ -62,13 +62,13 @@ class Catalog implements CatalogInterface
             $this->getTechnicalFixtures(),
         ];
 
-        return new Configuration($catalogDirectories, $fixtureDirectories);
+        return new Configuration($catalogDirectories, $fixtureDirectories, $featureFlags);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function useFunctionalCatalog(string $catalog): Configuration
+    public function useFunctionalCatalog(string $catalog, array $featureFlags = []): Configuration
     {
         $catalogDirectories = [
             (string) new Path('tests', 'legacy', 'features', 'Context', 'catalog', $catalog),
@@ -79,7 +79,7 @@ class Catalog implements CatalogInterface
             $this->getReferenceDataFixtures()
         ];
 
-        return new Configuration($catalogDirectories, $fixtureDirectories);
+        return new Configuration($catalogDirectories, $fixtureDirectories, $featureFlags);
     }
 
     /**

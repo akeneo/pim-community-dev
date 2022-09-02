@@ -95,7 +95,7 @@ class SendApiEventRequestLoggerSpec extends ObjectBehavior
             'min_propagation_seconds' => 26098197,
         ];
 
-        $logger->info(json_encode($expectedLog, JSON_THROW_ON_ERROR))->shouldBeCalled();
+        $logger->info(\json_encode($expectedLog, JSON_THROW_ON_ERROR))->shouldBeCalled();
 
         $this->log(
             $eventSubscriptionSendApiEventRequestLog->getWebhookRequest(),
@@ -173,7 +173,7 @@ class SendApiEventRequestLoggerSpec extends ObjectBehavior
             'min_propagation_seconds' => 26098197,
         ];
 
-        $logger->info(json_encode($expectedLog, JSON_THROW_ON_ERROR))->shouldBeCalled();
+        $logger->info(\json_encode($expectedLog, JSON_THROW_ON_ERROR))->shouldBeCalled();
 
         $this->log(
             $eventSubscriptionSendApiEventRequestLog->getWebhookRequest(),
@@ -252,7 +252,7 @@ class SendApiEventRequestLoggerSpec extends ObjectBehavior
             ],
         ];
 
-        $logger->info(json_encode($expectedLog, JSON_THROW_ON_ERROR))->shouldBeCalled();
+        $logger->info(\json_encode($expectedLog, JSON_THROW_ON_ERROR))->shouldBeCalled();
 
         $this->log(
             $eventSubscriptionSendApiEventRequestLog->getWebhookRequest(),

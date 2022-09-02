@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository;
+use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -188,8 +189,8 @@ class AclRoleHandler
     protected function filterPrivileges(ArrayCollection $privileges, array $rootIds)
     {
         return $privileges->filter(
-            function ($entry) use ($rootIds) {
-                return in_array($entry->getExtensionKey(), $rootIds);
+            function (AclPrivilege $entry) use ($rootIds) {
+                return in_array($entry->getExtensionKey(), $rootIds) && $entry->isVisible();
             }
         );
     }

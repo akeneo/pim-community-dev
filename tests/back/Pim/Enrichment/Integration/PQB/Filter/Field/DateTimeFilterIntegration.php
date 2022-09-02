@@ -2,12 +2,15 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 use Doctrine\DBAL\Types\Type;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -89,7 +92,7 @@ class DateTimeFilterIntegration extends AbstractProductQueryBuilderTestCase
 
     public function testOperatorDifferent()
     {
-        $barProduct = $this->get('pim_api.repository.product')->findOneByIdentifier('bar');
+        $barProduct = $this->get('pim_catalog.repository.product')->findOneByIdentifier('bar');
         $updatedAt = $barProduct->getUpdated();
         $updatedAt->setTimezone(new \DateTimeZone('UTC'));
 
@@ -230,7 +233,21 @@ SQL;
                 'updated_date' => Type::DATETIME
             ]);
 
-        $this->get('akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors')->indexFromProductIdentifiers([$identifier]);
+        $uuid = $this->getProductUuid($identifier);
+        $this->getProductAndAncestorsIndexer()->indexFromProductUuids([$uuid]);
+    }
 
+    private function getProductAndAncestorsIndexer(): ProductAndAncestorsIndexer
+    {
+        return $this->get('akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors');
+    }
+
+    private function getProductUuid(string $productIdentifier): UuidInterface
+    {
+        $result = $this
+            ->get('database_connection')
+            ->fetchOne('SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier=:identifier', ['identifier' => $productIdentifier]);
+
+        return Uuid::fromString($result);
     }
 }

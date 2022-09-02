@@ -17,7 +17,7 @@ class JobExecutionTrackingSpec extends ObjectBehavior
             1,
             10,
             0,
-            0,
+            false,
             0,
             0,
             false,
@@ -28,7 +28,7 @@ class JobExecutionTrackingSpec extends ObjectBehavior
             2,
             10,
             2,
-            3,
+            true,
             100,
             100,
             true,
@@ -53,7 +53,7 @@ class JobExecutionTrackingSpec extends ObjectBehavior
                     'id' => 1,
                     'duration' => 10,
                     'warning_count' => 0,
-                    'error_count' => 0,
+                    'has_error' => false,
                     'total_items' => 0,
                     'processed_items' => 0,
                     'is_trackable' => false,
@@ -63,7 +63,7 @@ class JobExecutionTrackingSpec extends ObjectBehavior
                     'id' => 2,
                     'duration' => 10,
                     'warning_count' => 2,
-                    'error_count' => 3,
+                    'has_error' => true,
                     'total_items' => 100,
                     'processed_items' => 100,
                     'is_trackable' => true,
@@ -73,9 +73,9 @@ class JobExecutionTrackingSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_returns_error_count()
+    public function it_returns_has_error()
     {
-        $this->getErrorCount()->shouldReturn(3);
+        $this->hasError()->shouldReturn(true);
     }
 
     public function it_returns_warning_count()

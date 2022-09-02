@@ -2,6 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\InternalApi\QuantifiedAssociations;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
 use Symfony\Component\HttpFoundation\Response;
 
 class ValidateQuantifiedAssociationsInProductEndToEnd extends AbstractProductWithQuantifiedAssociationsTestCase
@@ -14,17 +15,10 @@ class ValidateQuantifiedAssociationsInProductEndToEnd extends AbstractProductWit
         $product = $this->createProduct(
             'yellow_chair',
             'shoes',[
-            'values' => [
-                'sku' => [
-                    [
-                        'scope' => null,
-                        'locale' => null,
-                        'data' => 'yellow_chair',
-                    ],
-                ],
+                new SetIdentifierValue('sku', 'yellow_chair')
             ],
-        ]);
-        $normalizedProduct = $this->getProductFromInternalApi($product->getId());
+        );
+        $normalizedProduct = $this->getProductFromInternalApi($product->getUuid());
 
         $quantifiedAssociations = [
             'PRODUCTSET' => [
@@ -44,7 +38,7 @@ class ValidateQuantifiedAssociationsInProductEndToEnd extends AbstractProductWit
             ]
         );
 
-        $response = $this->updateProductWithInternalApi($product->getId(), $normalizedProductWithQuantifiedAssociations);
+        $response = $this->updateProductWithInternalApi($product->getUuid(), $normalizedProductWithQuantifiedAssociations);
 
         $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         $body = json_decode($response->getContent(), true);

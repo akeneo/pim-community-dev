@@ -2,9 +2,9 @@
 
 namespace Specification\Akeneo\UserManagement\Component\Normalizer;
 
-use Akeneo\Channel\Component\Model\Channel;
-use Akeneo\Channel\Component\Model\Locale;
-use Akeneo\Tool\Component\Classification\Model\Category;
+use Akeneo\Channel\Infrastructure\Component\Model\Channel;
+use Akeneo\Channel\Infrastructure\Component\Model\Locale;
+use Akeneo\Category\Infrastructure\Component\Classification\Model\Category;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Normalizer\UserNormalizer;
@@ -78,6 +78,7 @@ class UserNormalizerSpec extends ObjectBehavior
             'email_notifications'       => false,
             'timezone'                  => 'UTC',
             'groups'                    => [],
+            'visible_group_ids'         => [],
             'roles'                     => [],
             'product_grid_filters'      => [],
             'profile'                   => null,

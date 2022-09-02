@@ -315,11 +315,13 @@ define([
         `quantifiedAssociations.${associationTypeCode}`
       );
 
+      const isUserOwner = this.getFormData().meta.is_owner ?? true;
       const props = {
         quantifiedAssociations,
         parentQuantifiedAssociations,
         errors,
         isCompact: false,
+        isUserOwner,
         onAssociationsChange: updatedAssociations => {
           const formData = this.getFormData();
           formData.quantified_associations = {

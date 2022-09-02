@@ -121,7 +121,7 @@ JSON;
     "message":"${message}",
     "_links":{
         "documentation":{
-            "href": "http:\/\/api.akeneo.com\/documentation\/pagination.html#search-after-type"
+            "href": "http:\/\/api.akeneo.com\/documentation\/pagination.html#the-search-after-method"
         }
     }
 }
@@ -196,14 +196,6 @@ JSON;
 
         $client->request('GET', 'api/rest/v1/product-models');
         $response = $client->getResponse();
-
-        $logger = self::$container->get('monolog.logger.pim_api_acl');
-        assert($logger instanceof TestLogger);
-
-        $this->assertTrue(
-            $logger->hasWarning('User "admin" with roles ROLE_ADMINISTRATOR is not granted "pim_api_product_list"'),
-            'Expected warning not found in the logs.'
-        );
 
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }

@@ -3,10 +3,11 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Tool\Component\Connector\Exception\BusinessArrayConversionException;
 
 /**
- * Merge columns for single value that can be provided in many columns like prices and metric
+ * Merge columns for single value that can be provided in many columns like prices and metric.
  *
  * These two values supports two different formats, we standardize here to the one column format
  *
@@ -61,11 +62,7 @@ class ColumnsMerger
                 } elseif (AttributeTypes::BACKEND_TYPE_PRICE === $attribute->getBackendType()) {
                     // For XLSX import, the value could be already converted to a DateTime object (cf PIM-10167)
                     if ($fieldValue instanceof \DateTimeInterface) {
-                        throw new BusinessArrayConversionException(
-                            "Can not convert cell {$fieldName} with date format to attribute of type date",
-                            "pim_import_export.notification.import.warnings.xlsx_cell_date_conversion_error",
-                            ['{cellName}' => $fieldName, '{attributeType}' => 'price']
-                        );
+                        throw new BusinessArrayConversionException("Can not convert cell {$fieldName} with date format to attribute of type date", 'pim_import_export.notification.import.warnings.xlsx_cell_date_conversion_error', ['{cellName}' => $fieldName, '{attributeType}' => 'price']);
                     }
 
                     $collectedPrices = $this->collectPriceData($collectedPrices, $attributeInfos, $fieldValue);
@@ -91,9 +88,7 @@ class ColumnsMerger
     }
 
     /**
-     * Returns a clean field name with code, locale and scope (without unit, currency, etc in the field)
-     *
-     * @param array $attributeInfos
+     * Returns a clean field name with code, locale and scope (without unit, currency, etc in the field).
      *
      * @return string
      */
@@ -110,10 +105,8 @@ class ColumnsMerger
     }
 
     /**
-     * Collect metric data exploded in different columns
+     * Collect metric data exploded in different columns.
      *
-     * @param array  $collectedMetrics
-     * @param array  $attributeInfos
      * @param string $fieldValue
      *
      * @return array collected metrics
@@ -135,20 +128,23 @@ class ColumnsMerger
     }
 
     /**
-     * Merge collected metric in result rows
-     *
-     * @param array $resultRow
-     * @param array $collectedMetrics
+     * Merge collected metric in result rows.
      *
      * @return array
      */
     protected function mergeMetricData(array $resultRow, array $collectedMetrics)
     {
         foreach ($collectedMetrics as $fieldName => $metricData) {
+            $metricValue = $metricData['data'];
+
+            if (is_float($metricValue)) {
+                $metricValue = number_format($metricValue, decimals: MeasureConverter::SCALE, thousands_separator: '');
+            }
+
             $resultRow[$fieldName] = trim(
                 sprintf(
                     '%s%s%s',
-                    $metricData['data'],
+                    $metricValue,
                     AttributeColumnInfoExtractor::UNIT_SEPARATOR,
                     $metricData['unit']
                 )
@@ -159,10 +155,8 @@ class ColumnsMerger
     }
 
     /**
-     * Collect price data exploded in different columns
+     * Collect price data exploded in different columns.
      *
-     * @param array  $collectedPrices
-     * @param array  $attributeInfos
      * @param string $fieldValue
      *
      * @return array collected metrics
@@ -172,7 +166,7 @@ class ColumnsMerger
         $cleanField = $this->getCleanFieldName($attributeInfos);
         if (null !== $attributeInfos['price_currency']) {
             $collectedPrices[$cleanField] = $collectedPrices[$cleanField] ?? [];
-            if (trim($fieldValue) === '') {
+            if ('' === trim($fieldValue)) {
                 return $collectedPrices;
             }
             $collectedPrices[$cleanField][] = sprintf(
@@ -227,10 +221,7 @@ class ColumnsMerger
     }
 
     /**
-     * Merge collected price in result rows
-     *
-     * @param array $resultRow
-     * @param array $collectedPrices
+     * Merge collected price in result rows.
      *
      * @return array
      */

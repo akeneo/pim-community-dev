@@ -26,14 +26,14 @@ use Doctrine\Common\Collections\Collection;
  */
 class JobInstance
 {
-    const STATUS_READY = 0;
-    const STATUS_DRAFT = 1;
-    const STATUS_IN_PROGRESS = 2;
+    public const STATUS_READY = 0;
+    public const STATUS_DRAFT = 1;
+    public const STATUS_IN_PROGRESS = 2;
 
-    const TYPE_IMPORT = 'import';
-    const TYPE_EXPORT = 'export';
+    public const TYPE_IMPORT = 'import';
+    public const TYPE_EXPORT = 'export';
 
-    /** @var integer */
+    /** @var int */
     protected $id;
 
     /** @var string */
@@ -45,14 +45,14 @@ class JobInstance
     /** @var string */
     protected $jobName;
 
-    /** @var integer */
+    /** @var int */
     protected $status = self::STATUS_READY;
 
     /** @var string */
     protected $connector;
 
     /**
-     * JobInstance type export or import
+     * JobInstance type export or import.
      *
      * @var string
      */
@@ -61,11 +61,15 @@ class JobInstance
     /** @var array */
     protected $rawParameters = [];
 
+    protected bool $scheduled = false;
+
+    protected ?array $automation = null;
+
     /** @var Collection|JobExecution[] */
     protected $jobExecutions;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string $connector
      * @param string $type
@@ -80,7 +84,7 @@ class JobInstance
     }
 
     /**
-     * Reset id and clone job executions
+     * Reset id and clone job executions.
      */
     public function __clone()
     {
@@ -92,9 +96,9 @@ class JobInstance
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -102,7 +106,7 @@ class JobInstance
     }
 
     /**
-     * Set code
+     * Set code.
      *
      * @param string $code
      *
@@ -116,7 +120,7 @@ class JobInstance
     }
 
     /**
-     * Get code
+     * Get code.
      *
      * @return string
      */
@@ -126,7 +130,7 @@ class JobInstance
     }
 
     /**
-     * Set label
+     * Set label.
      *
      * @param string $label
      *
@@ -140,7 +144,7 @@ class JobInstance
     }
 
     /**
-     * Get label
+     * Get label.
      *
      * @return string
      */
@@ -150,7 +154,7 @@ class JobInstance
     }
 
     /**
-     * Get connector
+     * Get connector.
      *
      * @return string
      */
@@ -160,7 +164,7 @@ class JobInstance
     }
 
     /**
-     * Get job name
+     * Get job name.
      *
      * @return string
      */
@@ -170,9 +174,9 @@ class JobInstance
     }
 
     /**
-     * Get status
+     * Get status.
      *
-     * @return integer
+     * @return int
      */
     public function getStatus()
     {
@@ -180,9 +184,9 @@ class JobInstance
     }
 
     /**
-     * Set status
+     * Set status.
      *
-     * @param integer $status
+     * @param int $status
      *
      * @return JobInstance
      */
@@ -194,7 +198,7 @@ class JobInstance
     }
 
     /**
-     * Set type
+     * Set type.
      *
      * @param string $type
      *
@@ -208,7 +212,7 @@ class JobInstance
     }
 
     /**
-     * Get type
+     * Get type.
      *
      * @return string
      */
@@ -218,7 +222,7 @@ class JobInstance
     }
 
     /**
-     * This parameters can be used to create a JobParameters, stored like this in a legacy way
+     * This parameters can be used to create a JobParameters, stored like this in a legacy way.
      *
      * @param array $rawParameters
      *
@@ -232,13 +236,45 @@ class JobInstance
     }
 
     /**
-     * This parameters can be used to create a JobParameters, stored like this in a legacy way
+     * This parameters can be used to create a JobParameters, stored like this in a legacy way.
      *
      * @return array
      */
     public function getRawParameters()
     {
         return $this->rawParameters;
+    }
+
+    /**
+     * @param bool $scheduled
+     *
+     * @return JobInstance
+     */
+    public function setScheduled($scheduled)
+    {
+        $this->scheduled = $scheduled;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isScheduled()
+    {
+        return $this->scheduled;
+    }
+
+    public function setAutomation(?array $automation): self
+    {
+        $this->automation = $automation;
+
+        return $this;
+    }
+
+    public function getAutomation(): ?array
+    {
+        return $this->automation;
     }
 
     /**
@@ -250,8 +286,6 @@ class JobInstance
     }
 
     /**
-     * @param JobExecution $jobExecution
-     *
      * @return JobInstance
      */
     public function addJobExecution(JobExecution $jobExecution)
@@ -262,8 +296,6 @@ class JobInstance
     }
 
     /**
-     * @param JobExecution $jobExecution
-     *
      * @return JobInstance
      */
     public function removeJobExecution(JobExecution $jobExecution)
@@ -274,7 +306,7 @@ class JobInstance
     }
 
     /**
-     * Set job name
+     * Set job name.
      *
      * Throws logic exception if job name property is already set.
      *
@@ -286,7 +318,7 @@ class JobInstance
      */
     public function setJobName($jobName)
     {
-        if ($this->jobName !== null) {
+        if (null !== $this->jobName) {
             throw new \LogicException('Job name already set in JobInstance');
         }
 
@@ -307,7 +339,7 @@ class JobInstance
      */
     public function setConnector($connector)
     {
-        if ($this->connector !== null) {
+        if (null !== $this->connector) {
             throw new \LogicException('Connector already set in JobInstance');
         }
 

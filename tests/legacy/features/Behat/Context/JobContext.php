@@ -33,7 +33,7 @@ class JobContext extends PimContext
                 $value = 'yes' === $value;
             }
 
-            if ('filters' === $property) {
+            if (in_array($property, ['filters', 'storage'])) {
                 $value = json_decode($value, true);
             }
 

@@ -30,7 +30,7 @@ class ScopeMapperRegistrySpec extends ObjectBehavior
         $this
             ->shouldThrow(
                 new \InvalidArgumentException(
-                    sprintf(
+                    \sprintf(
                         '%s must implement %s',
                         ScopeMapperRegistry::class,
                         ScopeMapperInterface::class

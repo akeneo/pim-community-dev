@@ -36,7 +36,7 @@ define([
   sequentialEditProvider
 ) {
   const findObjectIndex = (objects, id, type) => {
-    return objects.findIndex(item => item.id === id && item.type === type);
+    return objects.findIndex(item => item.id + '' === id + '' && item.type === type);
   };
 
   const getObjectViewParams = object => {
@@ -169,7 +169,11 @@ define([
       });
     },
     goToProduct: function (type, id) {
-      router.redirectToRoute('pim_enrich_' + type + '_edit', {id: id});
+      if (type === 'product') {
+        router.redirectToRoute('pim_enrich_product_edit', {uuid: id});
+      } else {
+        router.redirectToRoute('pim_enrich_product_model_edit', {id});
+      }
     },
     finish: function () {
       router.redirectToRoute('pim_enrich_product_index');

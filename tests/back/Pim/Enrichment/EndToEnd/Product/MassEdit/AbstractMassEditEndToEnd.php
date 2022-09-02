@@ -96,7 +96,7 @@ SQL;
     {
         switch ($type) {
             case 'product':
-                $idFromDatabase = $this->getProductId($identifier);
+                $idFromDatabase = $this->getProductUuid($identifier);
                 break;
             case 'product_model':
                 $idFromDatabase = $this->getProductModelId($identifier);
@@ -110,12 +110,10 @@ SQL;
         return sprintf('%s_%s', $type, $idFromDatabase);
     }
 
-    protected function getProductId(string $identifier): string
+    protected function getProductUuid(string $identifier): string
     {
             $query = <<<SQL
-SELECT id
-FROM pim_catalog_product
-WHERE identifier = :identifier
+SELECT BIN_TO_UUID(uuid) AS uuid FROM pim_catalog_product WHERE identifier = :identifier
 SQL;
 
         $stmt = $this->dbalConnection->prepare($query);
@@ -158,7 +156,7 @@ SQL;
     {
         $this->client->request(
             'POST',
-            sprintf('/enrich/product/rest/%s', $this->getProductId($identifier)),
+            sprintf('/enrich/product/rest/%s', $this->getProductUuid($identifier)),
             [],
             [],
             [
@@ -222,6 +220,6 @@ SQL;
 
     protected function getAdminUser(): UserInterface
     {
-        return self::$container->get('pim_user.repository.user')->findOneByIdentifier('admin');
+        return self::getContainer()->get('pim_user.repository.user')->findOneByIdentifier('admin');
     }
 }

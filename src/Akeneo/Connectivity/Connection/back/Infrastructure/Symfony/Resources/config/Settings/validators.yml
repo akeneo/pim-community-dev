@@ -1,0 +1,24 @@
+services:
+    Akeneo\Connectivity\Connection\Application\Settings\Validation\Connection\CodeMustBeUniqueValidator:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
+        tags:
+            - { name: validator.constraint_validator, alias: connection_code_must_be_unique }
+
+    Akeneo\Connectivity\Connection\Application\Settings\Validation\Connection\ImageMustExistValidator:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\FileInfo\DoesImageExistQuery'
+        tags:
+            - { name: validator.constraint_validator, alias: connection_image_must_exist }
+
+    Akeneo\Connectivity\Connection\Application\Settings\Validation\Connection\IsConnectionsNumberLimitReachedValidator:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\IsConnectionsNumberLimitReachedQuery'
+        tags:
+            - { name: validator.constraint_validator }
+
+    Akeneo\Connectivity\Connection\Application\Settings\Validation\Connection\UserGroupMustExistValidator:
+        arguments:
+            $groupRepository: '@pim_user.repository.group'
+        tags:
+            - { name: validator.constraint_validator }

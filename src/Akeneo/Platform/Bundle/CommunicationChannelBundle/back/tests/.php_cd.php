@@ -22,7 +22,7 @@ $rules = [
             'Akeneo\Platform\CommunicationChannel\Application',
             'Akeneo\Platform\CommunicationChannel\Domain',
             'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
-            'Akeneo\Platform\VersionProviderInterface',
+            'Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface',
             'Akeneo\UserManagement\Bundle\Context\UserContext',
             'Symfony\Component',
             'Doctrine\DBAL\Connection',

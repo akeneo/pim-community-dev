@@ -7,6 +7,17 @@ interface ConfirmReturn {
     redirectUrl: string;
 }
 
+interface Error {
+    message: string;
+    property_path: string;
+}
+
+export interface RejectReason {
+    status: number;
+    statusText: string;
+    errors: Error[];
+}
+
 type hookType = (clientId: string) => () => Promise<ConfirmReturn>;
 
 export const useConfirmAuthorization: hookType = clientId => {
@@ -18,7 +29,13 @@ export const useConfirmAuthorization: hookType = clientId => {
             headers: [['X-Requested-With', 'XMLHttpRequest']],
         });
         if (!response.ok) {
-            return Promise.reject(`${response.status} ${response.statusText}`);
+            const json = await response.json();
+
+            return Promise.reject({
+                status: response.status,
+                statusText: response.statusText,
+                errors: json?.errors ?? [],
+            });
         }
 
         return response.json();

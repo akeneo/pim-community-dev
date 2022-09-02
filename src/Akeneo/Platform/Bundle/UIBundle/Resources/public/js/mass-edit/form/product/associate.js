@@ -161,6 +161,7 @@ define([
         parentQuantifiedAssociations: {products: [], product_models: []},
         errors: [],
         isCompact: true,
+        isUserOwner: true,
         onAssociationsChange: updatedAssociations => {
           const currentAssociationTypeCode = this.getCurrentAssociationTypeCode();
           this.setValue({[currentAssociationTypeCode]: updatedAssociations}, true);

@@ -128,11 +128,12 @@ config:
             urls:
               get: pim_enrich_family_variant_rest_get
         channel:
-          module: pim/base-fetcher
+          module: pim/channel-fetcher
           options:
             urls:
               list: pim_enrich_channel_rest_index
               get: pim_enrich_channel_rest_get
+              list_channel_category_tree: pim_enrich_channel_category_trees_get
         locale:
           module: pim/locale-fetcher
           options:
@@ -212,7 +213,11 @@ config:
           options:
             urls:
               get: pim_enrich_job_execution_rest_get
-
+        ui-locale:
+          module: pim/base-fetcher
+          options:
+            urls:
+              list: pim_localization_locale_index
     pim/controller-registry:
       defaultController:
         module: pim/controller/template
@@ -401,7 +406,7 @@ config:
           module: pim/controller/template
           aclResourceId: pim_enrich_grouptype_remove
         oro_config_configuration_system:
-          module: pim/controller/system
+          module: pim/controller/config
         pim_enrich_catalog_volume_index:
           module: pim/controller/catalog-volume
         pim_user_security_logout:
@@ -508,6 +513,7 @@ config:
     pim/controller/entity-with-family-variant: pimui/js/controller/entity-with-family-variant
     pim/controller/entity-categories-with-family-variant: pimui/js/controller/entity-categories-with-family-variant
     pim/controller/family:                 pimui/js/controller/family
+    pim/controller/config:                 pimui/js/controller/config
     pim/controller/catalog-volume:         pimui/js/controller/catalog-volume
     pim/controller/channel/edit:           pimui/js/controller/channel/edit
     pim/controller/common/index:           pimui/js/controller/common/index
@@ -531,11 +537,12 @@ config:
     pim/controller/dashboard:              pimui/js/controller/dashboard.tsx
     pim/controller/settings:               pimui/js/controller/settings.tsx
     pim/controller/system-index:           pimui/js/controller/system-index.tsx
-    pim/controller/categories/index:       akeneopimstructure/js/controller/CategoriesSettings
+    pim/controller/categories/index:       akeneocategory/js/controller/CategoriesSettings
 
     pim/init:                           pimui/js/pim-init
     pim/asynctab:                       pimui/js/pim-async-tab
     pim/optionform:                     pimui/js/pim-optionform
+    pim/config-registry:                pimui/js/config-registry
     pim/form-modal:                     pimui/js/form/form-modal
     pim/scopable:                       pimui/js/pim-scopable
     pim/currencyfield:                  pimui/js/pim-currencyfield
@@ -571,6 +578,7 @@ config:
     pim/product-fetcher:         pimui/js/fetcher/product-fetcher
     pim/product-model-fetcher:   pimui/js/fetcher/product-model-fetcher
     pim/family-fetcher:          pimui/js/fetcher/family-fetcher
+    pim/channel-fetcher:         pimui/js/fetcher/channel-fetcher
 
     # Remover
     pim/remover/base:                pimui/js/remover/base-remover
@@ -698,6 +706,7 @@ config:
     pim/product-edit-form/download-pdf:                      pimui/js/product/form/download-pdf
     pim/product-edit-form/attributes:                        pimui/js/product/form/attributes
     pim/product-edit-form/creation/identifier:               pimui/js/product/form/creation/identifier
+    pim/product-edit-form/free-trial-start-copy:             pimui/js/product/form/free-trial-start-copy
     pim/product-edit-form/start-copy:                        pimui/js/product/form/start-copy
     pim/product-edit-form/convert-to-simple-product:         pimui/js/product/form/convert-to-simple-product.ts
     pim/product-edit-form/variant-navigation:                pimui/js/product/form/variant-navigation

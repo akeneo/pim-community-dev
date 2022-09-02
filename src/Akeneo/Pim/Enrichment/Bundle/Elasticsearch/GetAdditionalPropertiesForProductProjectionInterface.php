@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
+use Ramsey\Uuid\UuidInterface;
+
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -14,13 +16,13 @@ interface GetAdditionalPropertiesForProductProjectionInterface
     /**
      * Returns an associative array of additional properties for the indexation of several products.
      *
-     * @param string[] $productIdentifiers
-     * @param array<string, mixed> $context
+     * @param UuidInterface[] $productUuids
+     * @param array<string, array> $context
      * @return array
      *      [
-     *          'product_1' => ['key_1_to_index' => 'value_1_to_index', 'key_2_to_index' => 'value_2_to_index'],
-     *          'product_2' => ['key_1_to_index' => 'value_3_to_index']
+     *          'product_1_uuid' => ['key_1_to_index' => 'value_1_to_index', 'key_2_to_index' => 'value_2_to_index'],
+     *          'product_2_uuid' => ['key_1_to_index' => 'value_3_to_index']
      *      ]
      */
-    public function fromProductIdentifiers(array $productIdentifiers, array $context = []): array;
+    public function fromProductUuids(array $productUuids, array $context): array;
 }

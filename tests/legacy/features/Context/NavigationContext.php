@@ -2,7 +2,7 @@
 
 namespace Context;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
+use Akeneo\Category\Infrastructure\Component\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
@@ -343,7 +343,7 @@ class NavigationContext extends BaseNavigationContext
      */
     public function iShouldBeOnTheProductEditPage(ProductInterface $product)
     {
-        $this->assertAddress($this->getPage('Product edit')->getUrl(['id' => $product->getId()]));
+        $this->assertAddress($this->getPage('Product edit')->getUrl(['uuid' => $product->getUuid()->toString()]));
 
         $this->getMainContext()->spin(function () {
             return $this->getCurrentPage()->find('css', '.AknTitleContainer-title');

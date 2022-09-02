@@ -12,6 +12,8 @@ import {EditIcon, pimTheme} from 'akeneo-design-system';
 import {ThemeProvider} from 'styled-components';
 import AxisEvaluation from './component/ProductEditForm/TabContent/DataQualityInsights/AxisEvaluation';
 import {Criterion, Icon} from './component/ProductEditForm/TabContent/DataQualityInsights';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import QualityScorePortal from './component/ProductEditForm/QualityScorePortal';
 
 interface ProductModelEditFormAppProps {
   catalogChannel: string;
@@ -25,28 +27,31 @@ const ProductModelEditFormApp: FunctionComponent<ProductModelEditFormAppProps> =
   catalogLocale,
 }) => {
   return (
-    <ThemeProvider theme={pimTheme}>
-      <Provider store={productEditFormStore}>
-        <CatalogContextListener catalogChannel={catalogChannel} catalogLocale={catalogLocale} />
-        <PageContextListener />
-        <ProductContextListener product={product} productFetcher={fetchProductModel} />
+    <DependenciesProvider>
+      <ThemeProvider theme={pimTheme}>
+        <Provider store={productEditFormStore}>
+          <CatalogContextListener catalogChannel={catalogChannel} catalogLocale={catalogLocale} />
+          <PageContextListener />
+          <ProductContextListener product={product} productFetcher={fetchProductModel} />
 
-        <AttributesTabContent product={product} />
+          <AttributesTabContent product={product} />
 
-        <AxesContextProvider axes={['enrichment']}>
-          <DataQualityInsightsTabContent product={product} productEvaluationFetcher={fetchProductModelEvaluation}>
-            <AxisEvaluation axis={'enrichment'}>
-              <Criterion code={'completeness_of_required_attributes'}>
-                <Icon type={EditIcon} />
-              </Criterion>
-              <Criterion code={'completeness_of_non_required_attributes'}>
-                <Icon type={EditIcon} />
-              </Criterion>
-            </AxisEvaluation>
-          </DataQualityInsightsTabContent>
-        </AxesContextProvider>
-      </Provider>
-    </ThemeProvider>
+          <AxesContextProvider axes={['enrichment']}>
+            <DataQualityInsightsTabContent product={product} productEvaluationFetcher={fetchProductModelEvaluation}>
+              <AxisEvaluation axis={'enrichment'}>
+                <Criterion code={'completeness_of_required_attributes'}>
+                  <Icon type={EditIcon} />
+                </Criterion>
+                <Criterion code={'completeness_of_non_required_attributes'}>
+                  <Icon type={EditIcon} />
+                </Criterion>
+              </AxisEvaluation>
+            </DataQualityInsightsTabContent>
+            <QualityScorePortal />
+          </AxesContextProvider>
+        </Provider>
+      </ThemeProvider>
+    </DependenciesProvider>
   );
 };
 

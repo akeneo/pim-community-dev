@@ -194,4 +194,39 @@ class AttributeOptionsExistValidatorSpec extends ObjectBehavior
             new AttributeOptionsExist()
         );
     }
+
+    function it_strictly_compares_numeric_option_codes(
+        GetExistingAttributeOptionCodes $getExistingAttributeOptionCodes,
+        ExecutionContextInterface $context,
+        ConstraintViolationBuilderInterface $violationBuilder
+    ) {
+        $getExistingAttributeOptionCodes->fromOptionCodesByAttributeCode(
+            [
+                'color' => ['1.000', '1'],
+            ]
+        )->shouldBeCalled()->willReturn(
+            [
+                'color' => ['1'],
+            ]
+        );
+
+        $constraint = new AttributeOptionsExist();
+        $context->buildViolation($constraint->message, [
+            '%attribute_code%' => 'color',
+            '%invalid_option%' => '1.000'
+        ])->willReturn($violationBuilder);
+        $violationBuilder->atPath('[color-<all_channels>-en_US]')->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->setCode(AttributeOptionsExist::ATTRIBUTE_OPTION_DOES_NOT_EXIST)->willReturn($violationBuilder);
+        $violationBuilder->addViolation()->shouldBeCalled();
+
+        $this->validate(
+            new WriteValueCollection(
+                [
+                    OptionValue::localizableValue('color', '1.000', 'en_US'),
+                    OptionValue::localizableValue('color', '1', 'fr_FR'),
+                ]
+            ),
+            $constraint
+        );
+    }
 }

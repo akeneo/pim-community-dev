@@ -2,9 +2,9 @@
 
 namespace Akeneo\UserManagement\Component\Updater;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
@@ -18,6 +18,7 @@ use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Persistence\ObjectRepository;
 use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
@@ -70,7 +71,7 @@ class UserUpdater implements ObjectUpdaterInterface
      * @param IdentifiableObjectRepositoryInterface $localeRepository
      * @param IdentifiableObjectRepositoryInterface $channelRepository
      * @param IdentifiableObjectRepositoryInterface $roleRepository
-     * @param IdentifiableObjectRepositoryInterface $groupRepository
+     * @param GroupRepositoryInterface              $groupRepository
      * @param ObjectRepository                      $gridViewRepository
      * @param FileInfoRepositoryInterface           $fileInfoRepository
      * @param FileStorerInterface                   $fileStorer
@@ -82,7 +83,7 @@ class UserUpdater implements ObjectUpdaterInterface
         IdentifiableObjectRepositoryInterface $localeRepository,
         IdentifiableObjectRepositoryInterface $channelRepository,
         IdentifiableObjectRepositoryInterface $roleRepository,
-        IdentifiableObjectRepositoryInterface $groupRepository,
+        GroupRepositoryInterface $groupRepository,
         ObjectRepository $gridViewRepository,
         FileInfoRepositoryInterface $fileInfoRepository,
         FileStorerInterface $fileStorer,
@@ -199,6 +200,13 @@ class UserUpdater implements ObjectUpdaterInterface
                 $groups = [];
                 foreach ($data as $code) {
                     $groups[] = $this->findGroup($code);
+                }
+                $user->setGroups($groups);
+                break;
+            case 'group_ids':
+                $groups = [];
+                foreach ($data as $groupId) {
+                    $groups[] = $this->findGroupById($groupId);
                 }
                 $user->setGroups($groups);
                 break;
@@ -404,6 +412,26 @@ class UserUpdater implements ObjectUpdaterInterface
                 'The group does not exist',
                 static::class,
                 $code
+            );
+        }
+
+        return $group;
+    }
+
+    /**
+     * @throws InvalidPropertyException
+     */
+    private function findGroupById(int $id): GroupInterface
+    {
+        $group = $this->groupRepository->findOneById($id);
+
+        if (null === $group) {
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'group_id',
+                'id',
+                'The group does not exist',
+                static::class,
+                $id
             );
         }
 

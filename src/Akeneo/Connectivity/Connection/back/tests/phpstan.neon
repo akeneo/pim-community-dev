@@ -1,0 +1,8 @@
+rules:
+    - Akeneo\Connectivity\Connection\Tests\PhpStan\Rule\CoverQueryByIntegrationTestRule
+    - Akeneo\Connectivity\Connection\Tests\PhpStan\Rule\FinalControllerRule
+    - Akeneo\Connectivity\Connection\Tests\PhpStan\Rule\InvokableControllerRule
+    - Akeneo\Connectivity\Connection\Tests\PhpStan\Rule\SuffixControllerByActionRule
+    - Akeneo\Connectivity\Connection\Tests\PhpStan\Rule\SuffixExceptionRule
+    - Akeneo\Connectivity\Connection\Tests\PhpStan\Rule\SuffixInterfaceRule
+    - Akeneo\Connectivity\Connection\Tests\PhpStan\Rule\SuffixTraitRule

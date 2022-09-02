@@ -2,8 +2,8 @@
 
 namespace Specification\Akeneo\Platform\Bundle\UIBundle;
 
-use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Platform\Bundle\UIBundle\UiLocaleProvider;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

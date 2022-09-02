@@ -33,6 +33,7 @@ final class AkeneoDataQualityInsightsExtension extends Extension
         $loader->load('services.yml');
         $loader->load('subscribers.yml');
         $loader->load('transformation.yml');
+        $loader->load('factories.yml');
 
         $loader->load('public_api/queries.yml');
     }

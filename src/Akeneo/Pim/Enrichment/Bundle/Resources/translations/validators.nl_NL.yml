@@ -19,6 +19,7 @@ This value should not be a decimal.: Deze waarde kan geen decimaal zijn.
 "The {{ attribute_code }} attribute can not have the same value more than once. The {{ value }} value is already set on another product.": Het {{ attribute_code }} attribuut kan niet meer dan één keer dezelfde waarde hebben. De {{ value }} waarde is al ingesteld op een ander product.
 The same identifier is already set on another product: Dit id-attribuut is al in gebruik bij een ander product
 regex.comma_or_semicolon_or_surrounding_space.message: Dit veld mag geen komma, puntkomma of spatie bevatten
+regex.line_break.message: Dit veld mag geen regeleinde bevatten
 file.extensions.message: 'De bestandsextensie is niet toegestaan (toegestane extensies: %extensions%).'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": Dit type waarde verwacht een {{ decimal_separator }} om decimalen te scheiden.
 "This type of value expects the use of dot (.) to separate decimals.": Dit type waarde verwacht een punt (.) om decimalen te scheiden.
@@ -65,8 +66,6 @@ pim_catalog:
     variant_product_invalid_family: 'De familie van het variantproduct moet hetzelfde zijn als zijn ouder'
     php_int_max_reached: 'Het maximale aantal moet lager zijn dan %php_int_max%.'
     not_null_family: De familie mag niet "null" zijn, omdat uw product met identificatie "%sku%" een product met variaties is.
-    variant_product_has_parent: 'Het variantproduct "%variant_product%" moet een ouder hebben'
-    invalid_variant_product_parent: 'Het variantproduct "%variant_product%" kan productmodel "%product_model%" niet als ouder hebben, (dit productmodel kan alleen andere productmodellen als kinderen hebben)'
     modified_variant_axis_value: 'Variant-as "%variant_axis%" kan niet worden gewijzigd, ''%provided_value%'' gegeven'
     family_variant_attributes_unique: Attributen moet uniek zijn, "%attributes%" worden meerdere malen gebruikt in attributensets van variantproducten
     family_variant_axes_unique: De variant-as moet uniek zijn, "%attributes%" worden meerdere malen gebruikt in attributensets van variantproducten
@@ -115,6 +114,9 @@ pim_catalog:
       association_type_does_not_exist: Dit koppelingstype bestaat niet. Zorg ervoor dat deze in de tussentijd niet verwijderd is.
       association_type_is_not_quantified: '"{{ association_type }}" kan niet worden gebruikt voor koppeling met hoeveelheden. Kies een ander koppelingstype met hoeveelheden of gebruik de "koppeling" eigenschap.'
       association_type_should_not_be_quantified: '"{{ association_type }}" kan niet worden gebruikt voor koppeling met hoeveelheden. Kies een ander koppelingstype met hoeveelheden of gebruik de "aantallen_koppeling" eigenschap.'
+    boolean:
+      boolean_value_is_required: Het attribuut {{ attribute_code }} vereist een booleaanse waarde (waar of niet waar) als data, er is een {{ given_type }} gedetecteerd.
+      boolean_value_is_required_in_import: Het attribuut {{ attribute_code }} vereist een booleaanse waarde (1 of 0) als data, er is een {{ given_type }} gedetecteerd.
 mass_edit:
   edit_common_attributes:
     invalid_values: Er zijn fouten in het attributenformulier
@@ -122,16 +124,3 @@ pim_datagrid:
   column_configurator:
     label:
       unique_message: Het label moet uniek zijn
-#TODO: move elsewhere?
-pim_enrich.product:
-  validation:
-    upsert:
-      set_value:
-        no_channel_code_provided_for_scopable_attribute: 'Voor attribuut {{ attributeCode }} is een kanaal vereist'
-        channel_code_provided_for_non_scopable_attribute: 'Voor attribuut {{ attributeCode }} is geen kanaal vereist. "{{ channelCode }}" werd gedetecteerd'
-        no_locale_code_provided_for_localizable_attribute: 'Voor attribuut {{ attributeCode }} is een taal vereist'
-        locale_code_provided_for_non_localizable_attribute: 'Voor attribuut {{ attributeCode }} is geen taal vereist. "{{ localeCode }}" werd gedetecteerd'
-        invalid_locale_code_for_locale_specific_attribute: 'Voor {{ attributeCode }} is een van de volgende talen vereist: {{ availableLocales }}; "{{ localeCode }}" werd gedetecteerd'
-        channel_does_not_exist: 'Het kanaal {{ channelCode }} bestaat niet'
-        locale_is_not_active: 'De taal {{ localeCode }} bestaat niet of is niet geactiveerd'
-        locale_not_activated_for_channel: 'De taal {{ localeCode }} is niet geactiveerd voor het kanaal {{ channelCode }}'

@@ -7,7 +7,7 @@ use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKe
 use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler;
 use Akeneo\Connectivity\Connection\Domain\Apps\AsymmetricKeysGeneratorInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AsymmetricKeys;
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\SaveAsymmetricKeysQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\SaveAsymmetricKeysQueryInterface;
 use PhpSpec\ObjectBehavior;
 
 /**

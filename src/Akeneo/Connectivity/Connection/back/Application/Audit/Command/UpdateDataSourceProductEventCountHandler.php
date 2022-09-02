@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Audit\Command;
 
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\ExtractConnectionsProductEventCountQuery;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Repository\EventCountRepository;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\BulkInsertEventCountsQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\ExtractConnectionsProductEventCountQueryInterface;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -14,26 +14,20 @@ use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Repository\EventCoun
  */
 final class UpdateDataSourceProductEventCountHandler
 {
-    private ExtractConnectionsProductEventCountQuery $extractConnectionsEventCountQuery;
-
-    private EventCountRepository $eventCountRepository;
-
     public function __construct(
-        ExtractConnectionsProductEventCountQuery $extractConnectionsEventCountQuery,
-        EventCountRepository $eventCountRepository
+        private ExtractConnectionsProductEventCountQueryInterface $extractConnectionsEventCountQuery,
+        private BulkInsertEventCountsQueryInterface $bulkInsertEventCountsQuery,
     ) {
-        $this->extractConnectionsEventCountQuery = $extractConnectionsEventCountQuery;
-        $this->eventCountRepository = $eventCountRepository;
     }
 
     public function handle(UpdateDataSourceProductEventCountCommand $command): void
     {
         $createdProductsCount = $this->extractConnectionsEventCountQuery
             ->extractCreatedProductsByConnection($command->hourlyInterval());
-        $this->eventCountRepository->bulkInsert($createdProductsCount);
+        $this->bulkInsertEventCountsQuery->execute($createdProductsCount);
 
         $updatedProductsCount = $this->extractConnectionsEventCountQuery
             ->extractUpdatedProductsByConnection($command->hourlyInterval());
-        $this->eventCountRepository->bulkInsert($updatedProductsCount);
+        $this->bulkInsertEventCountsQuery->execute($updatedProductsCount);
     }
 }

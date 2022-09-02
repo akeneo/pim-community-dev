@@ -2,12 +2,13 @@
 
 namespace Akeneo\UserManagement\Bundle\Context;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
-use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
-use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Bundle\SecurityBundle\Security\FirewallConfig;
 use Symfony\Bundle\SecurityBundle\Security\FirewallMap;
 use Symfony\Component\HttpFoundation\Request;
@@ -341,7 +342,7 @@ class UserContext
             'channel'  => $this->getUserChannelCode()
         ];
     }
-    
+
     /**
      * @return CategoryInterface
      */
@@ -439,6 +440,10 @@ class UserContext
 
         if ($token !== null) {
             $user = $token->getUser();
+            if (!$user instanceof UserInterface) {
+                return null;
+            }
+
             $method = sprintf('get%s', ucfirst($optionName));
 
             if (null === $user || !is_object($user)) {

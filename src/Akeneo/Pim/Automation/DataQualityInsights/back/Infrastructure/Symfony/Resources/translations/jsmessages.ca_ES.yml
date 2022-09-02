@@ -43,7 +43,10 @@ akeneo_data_quality_insights:
       day: dia
     key_indicators:
       title: Indicadors clau
-      products_to_work_on: '{1}Tens <button>1 producte</button> per treballar.|]1, 200[Tens <button>{{ count }} productes</button> per treballar.|[200, Inf[Tens <button>més de {{ count }} productes</button> per treballar.'
+      products: '{1}1 producte|]1, 200[{{ count }} productes|[200, Inf[més de {{ count }} productes'
+      product_models: '{1}1 model de producte|]1, 200[{{ count }} models de producte|[200, Inf[més de {{ count }} models de producte'
+      entities_to_work_on: 'Tens <improvable_products_count_link/> per treballar.'
+      entities_to_work_on_2_kinds: 'Tens <improvable_products_count_link/> i <improvable_product_models_count_link/> per treballar.'
       list:
         has_image:
           title: Productes sense una imatge
@@ -149,5 +152,8 @@ akeneo_data_quality_insights:
       to_improve: A millorar
       "yes": "Sí"
       "no": "No"
+  quality_score:
+    pending: En procés
+    title: "Puntuació de qualitat:"
 pim_title:
   akeneo_data_quality_insights_dashboard: Informació de la qualitat de dades

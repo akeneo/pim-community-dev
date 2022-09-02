@@ -12,7 +12,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Driver\ResultStatement;
+use Doctrine\DBAL\Driver\Result;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
@@ -59,7 +59,7 @@ class ComputeFamilyVariantStructureChangesSubscriberSpec extends ObjectBehavior
         UserInterface $user,
         JobInstance $jobInstance,
         Connection $connection,
-        ResultStatement $result
+        Result $result,
     ) {
         $event = new GenericEvent($familyVariant->getWrappedObject(), ['is_new' => false, 'unitary' => true]);
 
@@ -74,7 +74,7 @@ class ComputeFamilyVariantStructureChangesSubscriberSpec extends ObjectBehavior
         $familyVariant->releaseEvents()->willReturn([FamilyVariantInterface::ATTRIBUTES_WERE_UPDATED_ON_LEVEL]);
 
         $connection->executeQuery(Argument::cetera())->willReturn($result);
-        $result->fetchColumn()->willReturn(false);
+        $result->fetchOne()->willReturn(false);
 
         $jobLauncher->launch($jobInstance, $user, [
             'family_variant_codes' => ['family_variant_one']
@@ -154,7 +154,7 @@ class ComputeFamilyVariantStructureChangesSubscriberSpec extends ObjectBehavior
         UserInterface $user,
         JobInstance $jobInstance,
         Connection $connection,
-        ResultStatement $result
+        Result $result,
     ) {
         $event = new GenericEvent($familyVariant->getWrappedObject(), ['is_new' => false, 'unitary' => true]);
         $familyVariant->getId()->willReturn(12);
@@ -169,7 +169,7 @@ class ComputeFamilyVariantStructureChangesSubscriberSpec extends ObjectBehavior
         $familyVariant->getCode()->willReturn('family_variant_one');
 
         $connection->executeQuery(Argument::cetera())->willReturn($result);
-        $result->fetchColumn()->willReturn(4000);
+        $result->fetchOne()->willReturn(4000);
 
         $jobLauncher->launch(Argument::any())->shouldNotBeCalled();
 
@@ -187,9 +187,9 @@ class ComputeFamilyVariantStructureChangesSubscriberSpec extends ObjectBehavior
         UserInterface $user,
         JobInstance $jobInstance,
         Connection $connection,
-        ResultStatement $result,
-        ResultStatement $result2,
-        ResultStatement $result3
+        Result $result,
+        Result $result2,
+        Result $result3
     ) {
         $event = new GenericEvent([
             $familyVariant1->getWrappedObject(),
@@ -215,13 +215,13 @@ class ComputeFamilyVariantStructureChangesSubscriberSpec extends ObjectBehavior
 
         $connection->executeQuery(Argument::any(), ['instanceId' => 124, 'familyVariantCode' => 'family_variant_one'])
             ->willReturn($result);
-        $result->fetchColumn()->willReturn(4000);
+        $result->fetchOne()->willReturn(4000);
         $connection->executeQuery(Argument::any(), ['instanceId' => 124, 'familyVariantCode' => 'family_variant_two'])
             ->willReturn($result2);
-        $result2->fetchColumn()->willReturn(false);
+        $result2->fetchOne()->willReturn(false);
         $connection->executeQuery(Argument::any(), ['instanceId' => 124, 'familyVariantCode' => 'new_family_variant'])
             ->willReturn($result3);
-        $result3->fetchColumn()->willReturn(false);
+        $result3->fetchOne()->willReturn(false);
 
         $jobLauncher->launch($jobInstance, $user, [
             'family_variant_codes' => ['family_variant_two']

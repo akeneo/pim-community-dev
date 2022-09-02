@@ -83,16 +83,6 @@ datagrid:
                 frontend_type: complete-variant-product
             document_type: ~
             technical_id: ~
-            delete_link:
-                type: url
-                route: pim_enrich_product_rest_remove
-                params:
-                    - id
-            toggle_status_link:
-                type: url
-                route: pim_enrich_product_toggle_status
-                params:
-                    - id
         actions:
             edit:
                 type:      navigate-product-and-product-model

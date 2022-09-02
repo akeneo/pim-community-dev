@@ -6,6 +6,6 @@ Akeneo\Pim\Structure\Component\Model\AttributeOptionValue:
                 payload:
                   standardPropertyName: labels
         locale:
-            - Akeneo\Channel\Component\Validator\Constraint\Locale:
+            - Akeneo\Channel\Infrastructure\Component\Validator\Constraint\Locale:
                 payload:
                   standardPropertyName: labels

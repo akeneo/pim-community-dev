@@ -77,7 +77,7 @@ class ReferenceDataRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierProperties()
+    public function getIdentifierProperties(): array
     {
         return ['code'];
     }
@@ -103,22 +103,12 @@ class ReferenceDataRepository extends EntityRepository implements
             ->getResult();
     }
 
-    /**
-     * Alias of the repository
-     *
-     * @return string
-     */
-    protected function getAlias()
+    protected function getAlias(): string
     {
         return 'rd';
     }
 
-    /**
-     * The list of label property of the reference data
-     *
-     * @return string|null
-     */
-    private function getReferenceDataLabelProperty()
+    private function getReferenceDataLabelProperty(): ?string
     {
         /** @var ReferenceDataInterface $referenceDataClass */
         $referenceDataClass = $this->getEntityName();

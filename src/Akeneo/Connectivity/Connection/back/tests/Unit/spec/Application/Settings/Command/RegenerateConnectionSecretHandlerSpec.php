@@ -6,20 +6,20 @@ namespace spec\Akeneo\Connectivity\Connection\Application\Settings\Command;
 
 use Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionSecretCommand;
 use Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionSecretHandler;
-use Akeneo\Connectivity\Connection\Application\Settings\Service\RegenerateClientSecret;
+use Akeneo\Connectivity\Connection\Application\Settings\Service\RegenerateClientSecretInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ClientId;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\UserId;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class RegenerateConnectionSecretHandlerSpec extends ObjectBehavior
 {
     public function let(
-        ConnectionRepository $repository,
-        RegenerateClientSecret $regenerateClientSecret
+        ConnectionRepositoryInterface $repository,
+        RegenerateClientSecretInterface $regenerateClientSecret
     ): void {
         $this->beConstructedWith($repository, $regenerateClientSecret);
     }

@@ -15,9 +15,6 @@ beforeEach(() => {
 jest.mock('@src/connect/components/AppWizard/AppWizard', () => ({
     AppWizard: () => <div>AppWizard</div>,
 }));
-jest.mock('@src/connect/components/AppWizard/AppWizardWithPermissions', () => ({
-    AppWizardWithPermissions: () => <div>AppWizardWithPermissions</div>,
-}));
 jest.mock('@src/connect/components/AuthorizeClientError', () => ({
     AuthorizeClientError: () => <div>AuthorizeClientError</div>,
 }));
@@ -33,21 +30,7 @@ test('The wizard renders app wizard', async () => {
     await waitFor(() => screen.getByText('AppWizard'));
 
     expect(screen.queryByText('AppWizard')).toBeInTheDocument();
-    expect(screen.queryByText('AppWizardWithPermissions')).not.toBeInTheDocument();
     expect(screen.queryByText('AuthorizeClientError')).not.toBeInTheDocument();
-});
-
-test('The wizard renders app wizard with steps', async () => {
-    renderWithProviders(
-        <FeatureFlagsContext.Provider value={{isEnabled: () => true}}>
-            <AppAuthorizePage />
-        </FeatureFlagsContext.Provider>
-    );
-    await waitFor(() => screen.getByText('AppWizardWithPermissions'));
-
-    expect(screen.queryByText('AppWizard')).not.toBeInTheDocument();
-    expect(screen.queryByText('AuthorizeClientError')).not.toBeInTheDocument();
-    expect(screen.queryByText('AppWizardWithPermissions')).toBeInTheDocument();
 });
 
 test('The wizard renders client error', async () => {
@@ -59,5 +42,4 @@ test('The wizard renders client error', async () => {
 
     expect(screen.queryByText('AuthorizeClientError')).toBeInTheDocument();
     expect(screen.queryByText('AppWizard')).not.toBeInTheDocument();
-    expect(screen.queryByText('AppWizardWithPermissions')).not.toBeInTheDocument();
 });

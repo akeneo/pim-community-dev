@@ -4,12 +4,19 @@ import {useCallback} from 'react';
 type Result = {
     appName: string;
     appLogo: string;
+    appUrl: string | null;
     scopeMessages: Array<{
         icon: string;
         type: string;
         entities: string;
     }>;
+    oldScopeMessages: Array<{
+        icon: string;
+        type: string;
+        entities: string;
+    }> | null;
     authenticationScopes: Array<'email' | 'profile'>;
+    oldAuthenticationScopes: Array<'email' | 'profile'> | null;
 };
 
 export const useFetchAppWizardData = (clientId: string): (() => Promise<Result>) => {

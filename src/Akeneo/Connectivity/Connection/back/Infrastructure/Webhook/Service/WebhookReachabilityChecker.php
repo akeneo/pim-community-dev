@@ -48,14 +48,14 @@ class WebhookReachabilityChecker implements UrlReachabilityCheckerInterface
             new ExternalUrl(),
         ]);
 
-        if (0 !== count($violations)) {
+        if (0 !== \count($violations)) {
             return new UrlReachabilityStatus(
                 false,
                 $violations->get(0)->getMessage()
             );
         }
 
-        $timestamp = time();
+        $timestamp = \time();
         $signature = Signature::createSignature($secret, $timestamp);
 
         $headers = [
@@ -72,13 +72,13 @@ class WebhookReachabilityChecker implements UrlReachabilityCheckerInterface
             if ($this->isRedirectResponse($response->getStatusCode())) {
                 return new UrlReachabilityStatus(
                     false,
-                    sprintf("%s %s", $response->getStatusCode(), self::PROHIBITED_REDIRECTION)
+                    \sprintf("%s %s", $response->getStatusCode(), self::PROHIBITED_REDIRECTION)
                 );
             }
 
             return new UrlReachabilityStatus(
                 true,
-                sprintf("%s %s", $response->getStatusCode(), $response->getReasonPhrase())
+                \sprintf("%s %s", $response->getStatusCode(), $response->getReasonPhrase())
             );
         } catch (GuzzleException $e) {
             if ($e instanceof RequestException && $e->hasResponse()) {
@@ -88,7 +88,7 @@ class WebhookReachabilityChecker implements UrlReachabilityCheckerInterface
 
                 return new UrlReachabilityStatus(
                     false,
-                    sprintf("%s %s", $response->getStatusCode(), $response->getReasonPhrase())
+                    \sprintf("%s %s", $response->getStatusCode(), $response->getReasonPhrase())
                 );
             } else {
                 return new UrlReachabilityStatus(

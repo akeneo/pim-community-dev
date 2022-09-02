@@ -8,6 +8,7 @@ import ScopeMessage from '../../../model/Apps/scope-message';
 import {ConnectedAppScopeListIsLoading} from './ConnectedAppScopeListIsLoading';
 import {ScopeList} from '../ScopeList';
 import styled from 'styled-components';
+import isGrantedOnProduct from '../../is-granted-on-product';
 
 const ScopeListContainer = styled.div`
     margin: 10px 20px;
@@ -52,6 +53,7 @@ export const ConnectedAppAuthorizations: FC<Props> = ({connectedApp}) => {
     const informationLinkAnchor = translate(
         'akeneo_connectivity.connection.connect.connected_apps.edit.settings.authorizations.information_link_anchor'
     );
+    const isNotAllowedToViewProducts = !isGrantedOnProduct(connectedApp, 'view');
 
     return (
         <>
@@ -63,6 +65,14 @@ export const ConnectedAppAuthorizations: FC<Props> = ({connectedApp}) => {
                 </SectionTitle.Title>
             </SectionTitle>
             <Helper level='info'>
+                {isNotAllowedToViewProducts && (
+                    <span>
+                        {translate(
+                            'akeneo_connectivity.connection.connect.connected_apps.edit.settings.authorizations.no_access_to_product_information'
+                        )}
+                        &nbsp;
+                    </span>
+                )}
                 <div
                     dangerouslySetInnerHTML={{
                         __html: translate(

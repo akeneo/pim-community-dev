@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Job;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
@@ -18,18 +20,21 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
+use Ramsey\Uuid\Uuid;
 
 class ComputeCompletenessOfProductsFamilyTaskletSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $familyRepository,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
+        CursorableRepositoryInterface $productRepository,
         BulkSaverInterface $bulkProductSaver,
         EntityManagerClearerInterface $cacheClearer
     ) {
         $this->beConstructedWith(
             $familyRepository,
             $productQueryBuilderFactory,
+            $productRepository,
             $bulkProductSaver,
             $cacheClearer
         );
@@ -46,10 +51,11 @@ class ComputeCompletenessOfProductsFamilyTaskletSpec extends ObjectBehavior
     }
 
     function it_recomputes_the_completeness_of_all_the_products_belonging_the_given_family(
-        $familyRepository,
-        $productQueryBuilderFactory,
-        $bulkProductSaver,
-        $cacheClearer,
+        IdentifiableObjectRepositoryInterface $familyRepository,
+        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
+        CursorableRepositoryInterface $productRepository,
+        BulkSaverInterface $bulkProductSaver,
+        EntityManagerClearerInterface $cacheClearer,
         StepExecution $stepExecution,
         JobParameters $jobParameters,
         FamilyInterface $family,
@@ -59,6 +65,10 @@ class ComputeCompletenessOfProductsFamilyTaskletSpec extends ObjectBehavior
         ProductInterface $product2,
         ProductInterface $product3
     ) {
+        $uuid1 = Uuid::uuid4();
+        $uuid2 = Uuid::uuid4();
+        $uuid3 = Uuid::uuid4();
+
         $jobParameters->get('family_code')->willReturn('accessories');
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $familyRepository->findOneByIdentifier('accessories')->willReturn($family);
@@ -69,9 +79,17 @@ class ComputeCompletenessOfProductsFamilyTaskletSpec extends ObjectBehavior
         $pqb->execute()->willReturn($cursor);
 
         $cursor->valid()->willReturn(true, true, true, false);
-        $cursor->current()->willReturn($product1, $product2, $product3);
+        $cursor->current()->willReturn(
+            new IdentifierResult('identifier1', ProductInterface::class, 'product_' . $uuid1->toString()),
+            new IdentifierResult('identifier2', ProductInterface::class, 'product_' . $uuid2->toString()),
+            new IdentifierResult('identifier3', ProductInterface::class, 'product_' . $uuid3->toString()),
+        );
         $cursor->next()->shouldBeCalled();
         $cursor->rewind()->shouldBeCalled();
+
+        $productRepository->getItemsFromIdentifiers(['identifier1', 'identifier2', 'identifier3'])->willReturn(
+            [$product1, $product2, $product3]
+        );
 
         $bulkProductSaver->saveAll([$product1, $product2, $product3], ['force_save' => true])->shouldBeCalled();
         $cacheClearer->clear()->shouldBeCalled();
@@ -81,8 +99,8 @@ class ComputeCompletenessOfProductsFamilyTaskletSpec extends ObjectBehavior
     }
 
     function it_does_not_recompute_if_the_given_family_code_is_invalid(
-        $familyRepository,
-        $bulkProductSaver,
+        IdentifiableObjectRepositoryInterface $familyRepository,
+        BulkSaverInterface $bulkProductSaver,
         StepExecution $stepExecution,
         JobParameters $jobParameters
     ) {

@@ -51,12 +51,7 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
         $this->filesystem = new Filesystem();
     }
 
-    /**
-     * Get the job's name
-     *
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -69,12 +64,8 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
     /**
      * Retrieve the step with the given name. If there is no Step with the given
      * name, then return null.
-     *
-     * @param string $stepName
-     *
-     * @return StepInterface the Step
      */
-    public function getStep($stepName)
+    public function getStep(string $stepName): ?StepInterface
     {
         foreach ($this->steps as $step) {
             if ($step->getName() == $stepName) {
@@ -86,11 +77,9 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
     }
 
     /**
-     * Retrieve the step names.
-     *
-     * @return array the step names
+     * @return string[]
      */
-    public function getStepNames()
+    public function getStepNames(): array
     {
         $names = [];
         foreach ($this->steps as $step) {
@@ -100,24 +89,12 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
         return $names;
     }
 
-    /**
-     * Public getter for the {@link JobRepositoryInterface} that is needed to manage the
-     * state of the batch meta domain (jobs, steps, executions) during the life
-     * of a job.
-     *
-     * @return JobRepositoryInterface
-     */
-    public function getJobRepository()
+    public function getJobRepository(): JobRepositoryInterface
     {
         return $this->jobRepository;
     }
 
-    /**
-     * To string
-     *
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return get_class($this) . ': [name=' . $this->name . ']';
     }
@@ -133,7 +110,7 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
      * The working directory is created in the temporary filesystem. Its pathname is placed in the JobExecutionContext
      * via the key {@link \Akeneo\Tool\Component\Batch\Job\JobInterface::WORKING_DIRECTORY_PARAMETER}
      */
-    final public function execute(JobExecution $jobExecution)
+    final public function execute(JobExecution $jobExecution): void
     {
         try {
             $workingDirectory = $this->createWorkingDirectory();
@@ -251,14 +228,10 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
 
     /**
      * Handle a step and return the execution for it.
-     * @param StepInterface $step         Step
-     * @param JobExecution  $jobExecution Job execution
      *
      * @throws JobInterruptedException
-     *
-     * @return StepExecution
      */
-    protected function handleStep(StepInterface $step, JobExecution $jobExecution)
+    protected function handleStep(StepInterface $step, JobExecution $jobExecution): StepExecution
     {
         if ($jobExecution->isStopping()) {
             throw new JobInterruptedException("JobExecution interrupted.");
@@ -320,12 +293,8 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
     /**
      * Default mapping from throwable to {@link ExitStatus}. Clients can modify the exit code using a
      * {@link StepExecutionListener}.
-     *
-     * @param \Exception $e the cause of the failure
-     *
-     * @return ExitStatus an {@link ExitStatus}
      */
-    private function getDefaultExitStatusForFailure(\Exception $e)
+    private function getDefaultExitStatusForFailure(\Exception $e): ExitStatus
     {
         if ($e instanceof JobInterruptedException || $e->getPrevious() instanceof JobInterruptedException) {
             $exitStatus = new ExitStatus(ExitStatus::STOPPED);
@@ -341,23 +310,16 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
     /**
      * Default mapping from throwable to {@link ExitStatus}. Clients can modify the exit code using a
      * {@link StepExecutionListener}.
-     *
-     * @param JobExecution $jobExecution Execution of the job
-     * @param string       $status       Status of the execution
-     *
-     * @return an {@link ExitStatus}
      */
-    private function updateStatus(JobExecution $jobExecution, $status)
+    private function updateStatus(JobExecution $jobExecution, int $status): void
     {
         $jobExecution->setStatus(new BatchStatus($status));
     }
 
     /**
      * Create a unique working directory
-     *
-     * @return string the working directory path
      */
-    private function createWorkingDirectory()
+    private function createWorkingDirectory(): string
     {
         $path = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('akeneo_batch_') . DIRECTORY_SEPARATOR;
         try {
@@ -370,12 +332,7 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
         return $path;
     }
 
-    /**
-     * Delete the working directory
-     *
-     * @param string $directory
-     */
-    private function deleteWorkingDirectory($directory)
+    private function deleteWorkingDirectory(string $directory)
     {
         if ($this->filesystem->exists($directory)) {
             $this->filesystem->remove($directory);

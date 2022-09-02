@@ -44,9 +44,16 @@ type Props = {
     providers: PermissionFormProvider<any>[];
     setProviderPermissions: (providerKey: string, providerPermissions: object) => void;
     permissions: PermissionsByProviderKey;
+    onlyDisplayViewPermissions: boolean;
 };
 
-export const Permissions: FC<Props> = ({appName, providers, setProviderPermissions, permissions}) => {
+export const Permissions: FC<Props> = ({
+    appName,
+    providers,
+    setProviderPermissions,
+    permissions,
+    onlyDisplayViewPermissions,
+}) => {
     const translate = useTranslate();
 
     return (
@@ -77,6 +84,7 @@ export const Permissions: FC<Props> = ({appName, providers, setProviderPermissio
                         onPermissionsChange={handlePermissionsChange}
                         permissions={providerPermissions}
                         readOnly={readOnly}
+                        onlyDisplayViewPermissions={onlyDisplayViewPermissions}
                     />
                 );
             })}

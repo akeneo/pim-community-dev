@@ -4,10 +4,16 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\SetGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
-use PHPUnit\Framework\Assert;
-use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -15,31 +21,24 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class GetProductEndToEnd extends AbstractProductTestCase
 {
-
     public function test_it_gets_a_product_with_attribute_options_simple_select()
     {
         $this->createProduct('product', [
-            'family'     => 'familyA',
-            'categories' => [],
-            'groups'     => [],
-            'values'     => [
-                'a_simple_select' => [
-                    ['data' => 'optionA', 'locale' => null, 'scope' => null]
-                ],
-            ],
+            new SetFamily('familyA'),
+            new SetSimpleSelectValue('a_simple_select', null, null, 'optionA')
         ]);
 
         $client = $this->createAuthenticatedClient();
         $client->request('GET', 'api/rest/v1/products/product?with_attribute_options=true');
 
         $expectedProduct = [
-            'identifier'    => 'product',
-            'family'        => 'familyA',
-            'parent'        => null,
-            'groups'        => [],
-            'categories'    => [],
-            'enabled'       => true,
-            'values'        => [
+            'identifier' => 'product',
+            'family' => 'familyA',
+            'parent' => null,
+            'groups' => [],
+            'categories' => [],
+            'enabled' => true,
+            'values' => [
                 'a_simple_select' => [
                     [
                         'data' => 'optionA',
@@ -55,10 +54,10 @@ class GetProductEndToEnd extends AbstractProductTestCase
                     ],
                 ],
             ],
-            'created'       => '2016-06-14T13:12:50+02:00',
-            'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [
-                'PACK'   => ['groups' => [], 'products' => [], 'product_models' => []],
+            'created' => '2016-06-14T13:12:50+02:00',
+            'updated' => '2016-06-14T13:12:50+02:00',
+            'associations' => [
+                'PACK' => ['groups' => [], 'products' => [], 'product_models' => []],
                 'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
                 'UPSELL' => ['groups' => [], 'products' => [], 'product_models' => []],
                 'X_SELL' => ['groups' => [], 'products' => [], 'product_models' => []],
@@ -75,27 +74,21 @@ class GetProductEndToEnd extends AbstractProductTestCase
     public function test_it_gets_a_product_with_attribute_options_multi_select()
     {
         $this->createProduct('product', [
-            'family'     => 'familyA',
-            'categories' => [],
-            'groups'     => [],
-            'values'     => [
-                'a_multi_select' => [
-                    ['data' => ['optionA','optionB'], 'locale' => null, 'scope' => null]
-                ],
-            ],
+            new SetFamily('familyA'),
+            new SetMultiSelectValue('a_multi_select', null, null, ['optionA', 'optionB'])
         ]);
 
         $client = $this->createAuthenticatedClient();
         $client->request('GET', 'api/rest/v1/products/product?with_attribute_options=true');
 
         $expectedProduct = [
-            'identifier'    => 'product',
-            'family'        => 'familyA',
-            'parent'        => null,
-            'groups'        => [],
-            'categories'    => [],
-            'enabled'       => true,
-            'values'        => [
+            'identifier' => 'product',
+            'family' => 'familyA',
+            'parent' => null,
+            'groups' => [],
+            'categories' => [],
+            'enabled' => true,
+            'values' => [
                 'a_multi_select' => [
                     [
                         'data' => ['optionA', 'optionB'],
@@ -120,10 +113,69 @@ class GetProductEndToEnd extends AbstractProductTestCase
                     ],
                 ],
             ],
-            'created'       => '2016-06-14T13:12:50+02:00',
-            'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [
-                'PACK'   => ['groups' => [], 'products' => [], 'product_models' => []],
+            'created' => '2016-06-14T13:12:50+02:00',
+            'updated' => '2016-06-14T13:12:50+02:00',
+            'associations' => [
+                'PACK' => ['groups' => [], 'products' => [], 'product_models' => []],
+                'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
+                'UPSELL' => ['groups' => [], 'products' => [], 'product_models' => []],
+                'X_SELL' => ['groups' => [], 'products' => [], 'product_models' => []],
+            ],
+            'quantified_associations' => [],
+        ];
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertResponse($response, $expectedProduct);
+    }
+
+    public function test_it_gets_a_product_with_attribute_options_multi_select_with_wrong_case()
+    {
+        $this->createProduct('product', [
+            new SetFamily('familyA'),
+            new SetMultiSelectValue('a_multi_select', null, null, ['optionA', 'OptiONB'])
+        ]);
+
+        $client = $this->createAuthenticatedClient();
+        $client->request('GET', 'api/rest/v1/products/product?with_attribute_options=true');
+
+        $expectedProduct = [
+            'identifier' => 'product',
+            'family' => 'familyA',
+            'parent' => null,
+            'groups' => [],
+            'categories' => [],
+            'enabled' => true,
+            'values' => [
+                'a_multi_select' => [
+                    [
+                        'data' => ['OptiONB', 'optionA'],
+                        'locale' => null,
+                        'scope' => null,
+                        'linked_data' => [
+                            'optionA' => [
+                                'attribute' => 'a_multi_select',
+                                'code' => 'optionA',
+                                'labels' => [
+                                    'en_US' => 'Option A',
+                                ],
+                            ],
+                            'OptiONB' => [
+                                'attribute' => 'a_multi_select',
+                                'code' => 'optionB',
+                                'labels' => [
+                                    'en_US' => 'Option B',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'created' => '2016-06-14T13:12:50+02:00',
+            'updated' => '2016-06-14T13:12:50+02:00',
+            'associations' => [
+                'PACK' => ['groups' => [], 'products' => [], 'product_models' => []],
                 'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
                 'UPSELL' => ['groups' => [], 'products' => [], 'product_models' => []],
                 'X_SELL' => ['groups' => [], 'products' => [], 'product_models' => []],
@@ -143,36 +195,32 @@ class GetProductEndToEnd extends AbstractProductTestCase
     public function test_it_gets_a_product()
     {
         $this->createProduct('product', [
-            'family'     => 'familyA1',
-            'enabled'       => true,
-            'categories' => ['categoryA', 'master', 'master_china'],
-            'groups'     => ['groupA', 'groupB'],
-            'values'     => [
-                'a_date' => [
-                    ['data' => '2016-06-28', 'locale' => null, 'scope' => null]
-                ],
-            ],
+            new SetFamily('familyA1'),
+            new SetEnabled(true),
+            new SetCategories(['categoryA', 'master', 'master_china']),
+            new SetGroups(['groupA', 'groupB']),
+            new SetDateValue('a_date', null, null, new \DateTime('2016-06-28'))
         ]);
 
         $client = $this->createAuthenticatedClient();
         $client->request('GET', 'api/rest/v1/products/product');
 
         $standardProduct = [
-            'identifier'    => 'product',
-            'family'        => 'familyA1',
-            'parent'        => null,
-            'groups'        => ['groupA', 'groupB'],
-            'categories'    => ['categoryA', 'master', 'master_china'],
-            'enabled'       => true,
-            'values'        => [
+            'identifier' => 'product',
+            'family' => 'familyA1',
+            'parent' => null,
+            'groups' => ['groupA', 'groupB'],
+            'categories' => ['categoryA', 'master', 'master_china'],
+            'enabled' => true,
+            'values' => [
                 'a_date' => [
                     ['data' => '2016-06-28T00:00:00+02:00', 'locale' => null, 'scope' => null]
                 ],
             ],
-            'created'       => '2016-06-14T13:12:50+02:00',
-            'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [
-                'PACK'   => ['groups' => [], 'products' => [], 'product_models' => []],
+            'created' => '2016-06-14T13:12:50+02:00',
+            'updated' => '2016-06-14T13:12:50+02:00',
+            'associations' => [
+                'PACK' => ['groups' => [], 'products' => [], 'product_models' => []],
                 'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
                 'UPSELL' => ['groups' => [], 'products' => [], 'product_models' => []],
                 'X_SELL' => ['groups' => [], 'products' => [], 'product_models' => []],
@@ -201,28 +249,27 @@ class GetProductEndToEnd extends AbstractProductTestCase
 
     public function test_it_gets_a_product_with_quality_scores()
     {
-        $this->createProduct('product', [
-            'family'     => 'familyA',
-            'categories' => [],
-            'groups'     => [],
-            'values'     => [],
-        ]);
+        $product = $this->createProduct('product', [new SetFamily('familyA')]);
+
+        ($this->get('Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts'))(
+            ProductUuidCollection::fromString($product->getUuid()->toString())
+        );
 
         $client = $this->createAuthenticatedClient();
         $client->request('GET', 'api/rest/v1/products/product?with_quality_scores=true');
 
         $expectedProduct = [
-            'identifier'    => 'product',
-            'family'        => 'familyA',
-            'parent'        => null,
-            'groups'        => [],
-            'categories'    => [],
-            'enabled'       => true,
-            'values'        => [],
-            'created'       => '2016-06-14T13:12:50+02:00',
-            'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [
-                'PACK'   => ['groups' => [], 'products' => [], 'product_models' => []],
+            'identifier' => 'product',
+            'family' => 'familyA',
+            'parent' => null,
+            'groups' => [],
+            'categories' => [],
+            'enabled' => true,
+            'values' => [],
+            'created' => '2016-06-14T13:12:50+02:00',
+            'updated' => '2016-06-14T13:12:50+02:00',
+            'associations' => [
+                'PACK' => ['groups' => [], 'products' => [], 'product_models' => []],
                 'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
                 'UPSELL' => ['groups' => [], 'products' => [], 'product_models' => []],
                 'X_SELL' => ['groups' => [], 'products' => [], 'product_models' => []],
@@ -247,27 +294,21 @@ class GetProductEndToEnd extends AbstractProductTestCase
     public function test_it_gets_a_product_with_completenesses()
     {
         $this->createProduct('product', [
-            'family'     => 'familyA',
-            'categories' => [],
-            'groups'     => [],
-            'values'     => [
-                'a_simple_select' => [
-                    ['data' => 'optionA', 'locale' => null, 'scope' => null]
-                ],
-            ],
+            new SetFamily('familyA'),
+            new SetSimpleSelectValue('a_simple_select', null, null, 'optionA')
         ]);
 
         $client = $this->createAuthenticatedClient();
         $client->request('GET', 'api/rest/v1/products/product?with_completenesses=true');
 
         $expectedProduct = [
-            'identifier'    => 'product',
-            'family'        => 'familyA',
-            'parent'        => null,
-            'groups'        => [],
-            'categories'    => [],
-            'enabled'       => true,
-            'values'        => [
+            'identifier' => 'product',
+            'family' => 'familyA',
+            'parent' => null,
+            'groups' => [],
+            'categories' => [],
+            'enabled' => true,
+            'values' => [
                 'a_simple_select' => [
                     [
                         'data' => 'optionA',
@@ -276,10 +317,10 @@ class GetProductEndToEnd extends AbstractProductTestCase
                     ],
                 ],
             ],
-            'created'       => '2016-06-14T13:12:50+02:00',
-            'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [
-                'PACK'   => ['groups' => [], 'products' => [], 'product_models' => []],
+            'created' => '2016-06-14T13:12:50+02:00',
+            'updated' => '2016-06-14T13:12:50+02:00',
+            'associations' => [
+                'PACK' => ['groups' => [], 'products' => [], 'product_models' => []],
                 'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
                 'UPSELL' => ['groups' => [], 'products' => [], 'product_models' => []],
                 'X_SELL' => ['groups' => [], 'products' => [], 'product_models' => []],
@@ -303,22 +344,12 @@ class GetProductEndToEnd extends AbstractProductTestCase
 
     public function testAccessDeniedWhenRetrievingProductWithoutTheAcl()
     {
-        $this->createProduct('product', [
-            'family'     => 'familyA',
-        ]);
+        $this->createProduct('product', [new SetFamily('familyA')]);
         $client = $this->createAuthenticatedClient();
         $this->removeAclFromRole('action:pim_api_product_list');
 
         $client->request('GET', 'api/rest/v1/products/product');
         $response = $client->getResponse();
-
-        $logger = self::$container->get('monolog.logger.pim_api_acl');
-        assert($logger instanceof TestLogger);
-
-        $this->assertTrue(
-            $logger->hasWarning('User "admin" with roles ROLE_ADMINISTRATOR is not granted "pim_api_product_list"'),
-            'Expected warning not found in the logs.'
-        );
 
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }

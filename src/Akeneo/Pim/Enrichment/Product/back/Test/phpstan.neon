@@ -1,0 +1,9 @@
+parameters:
+    level: 8
+    paths:
+        - %rootDir%/../../../src/Akeneo/Pim/Enrichment/Product/back
+    excludePaths:
+        analyse:
+            - %rootDir%/../../../src/Akeneo/Pim/Enrichment/Product/back/Test
+includes:
+    - %rootDir%/../../../vendor/phpstan/phpstan-webmozart-assert/extension.neon

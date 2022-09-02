@@ -5,6 +5,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
@@ -26,7 +27,7 @@ class FamilyFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->get('pim_catalog.updater.family')->update($family, ['code' => 'familyB']);
         $this->get('pim_catalog.saver.family')->save($family);
 
-        $this->createProduct('foo', ['family' => 'familyA']);
+        $this->createProduct('foo', [new SetFamily('familyA')]);
         $this->createProduct('bar', []);
         $this->createProduct('baz', []);
     }

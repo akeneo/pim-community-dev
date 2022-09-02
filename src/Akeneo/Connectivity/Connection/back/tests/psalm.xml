@@ -7,5 +7,10 @@
         <directory name="../Domain" />
         <directory name="../Application" />
         <directory name="../Infrastructure" />
+        <ignoreFiles>
+            <directory name="../../../../../../vendor" />
+            <directory name="../Infrastructure/Symfony" />
+            <directory name="../Infrastructure/Persistence/InMemory" />
+        </ignoreFiles>
     </projectFiles>
 </psalm>

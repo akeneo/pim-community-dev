@@ -3,6 +3,8 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Text;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -36,42 +38,30 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
         ]);
 
         $this->createProduct('cat', [
-            'family' => 'a_family',
-            'values' => [
-                'a_localizable_scopable_text' => [
-                    ['data' => 'black cat', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => 'cat', 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['data' => 'chat noir', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                    ['data' => 'chat', 'locale' => 'fr_FR', 'scope' => 'tablet']
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetTextValue('a_localizable_scopable_text', 'ecommerce', 'en_US', 'black cat'),
+            new SetTextValue('a_localizable_scopable_text', 'tablet', 'en_US', 'cat'),
+            new SetTextValue('a_localizable_scopable_text', 'ecommerce', 'fr_FR', 'chat noir'),
+            new SetTextValue('a_localizable_scopable_text', 'tablet', 'fr_FR', 'chat'),
         ]);
 
         $this->createProduct('cattle', [
-            'family' => 'a_family',
-            'values' => [
-                'a_localizable_scopable_text' => [
-                    ['data' => 'cattle', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => 'cattle', 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['data' => 'bétail', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                    ['data' => 'bétail', 'locale' => 'fr_FR', 'scope' => 'tablet']
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetTextValue('a_localizable_scopable_text', 'ecommerce', 'en_US', 'cattle'),
+            new SetTextValue('a_localizable_scopable_text', 'tablet', 'en_US', 'cattle'),
+            new SetTextValue('a_localizable_scopable_text', 'ecommerce', 'fr_FR', 'bétail'),
+            new SetTextValue('a_localizable_scopable_text', 'tablet', 'fr_FR', 'bétail'),
         ]);
 
         $this->createProduct('dog', [
-            'family' => 'a_family',
-            'values' => [
-                'a_localizable_scopable_text' => [
-                    ['data' => 'just a dog...', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => 'dog', 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['data' => 'juste un chien...', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                    ['data' => 'chien', 'locale' => 'fr_FR', 'scope' => 'tablet']
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetTextValue('a_localizable_scopable_text', 'ecommerce', 'en_US', 'just a dog...'),
+            new SetTextValue('a_localizable_scopable_text', 'tablet', 'en_US', 'dog'),
+            new SetTextValue('a_localizable_scopable_text', 'ecommerce', 'fr_FR', 'juste un chien...'),
+            new SetTextValue('a_localizable_scopable_text', 'tablet', 'fr_FR', 'chien'),
         ]);
 
-        $this->createProduct('empty_product', ['family' => 'a_family']);
+        $this->createProduct('empty_product', [new SetFamily('a_family')]);
     }
 
     public function testOperatorStartsWith()

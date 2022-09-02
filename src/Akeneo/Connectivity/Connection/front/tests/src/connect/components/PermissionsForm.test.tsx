@@ -26,6 +26,7 @@ test('The permissions form renders', async () => {
             permissions={undefined}
             onPermissionsChange={jest.fn()}
             readOnly={undefined}
+            onlyDisplayViewPermissions={false}
         />
     );
 

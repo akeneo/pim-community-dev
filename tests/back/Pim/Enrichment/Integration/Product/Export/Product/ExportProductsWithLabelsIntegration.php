@@ -2,6 +2,21 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Export\Product;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProductModels;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\AssociateQuantifiedProductModels;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\AssociateQuantifiedProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedEntity;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceEntityValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase;
 
 /**
@@ -179,47 +194,35 @@ CSV;
                 ]
             ]
         );
-        $this->createVariantProduct(
+        $this->createProduct(
             'apollon_pink_m',
             [
-                'family' => 'clothing',
-                'parent' => 'apollon',
-                'categories' => [],
-                'values'  => [
-                    'size'  => [['data' => 'm', 'locale' => null, 'scope' => null]],
-                    'color'  => [['data' => ['pink','blue'], 'locale' => null, 'scope' => null]],
-                ]
+                new SetFamily('clothing'),
+                new ChangeParent('apollon'),
+                new SetCategories([]),
+                new SetSimpleSelectValue('size', null, null, 'm'),
+                new SetMultiSelectValue('color', null, null, ['pink','blue'])
             ]
         );
 
         $this->createProduct(
             'summer_shirt',
             [
-                'family' => 'clothing',
-                'categories' => ['tshirt', 'summer'],
-                'values'  => [
-                    'name' => [['data' => 'summer_shirt_2020', 'locale' => 'fr_FR', 'scope' => null]],
-                    'color' => [['data' => ['pink', 'blue'], 'locale' => null, 'scope' => null]],
-                    'size'  => [['data' => 'l', 'locale' => null, 'scope' => null]],
-                    'is_on_sale' => [['data' => false, 'locale' => null, 'scope' => null]],
-                    'metric'  => [['data' => ['amount' => 12, 'unit' => 'KILOGRAM'], 'locale' => null, 'scope' => null]],
-                ],
-                'associations' => [
-                    'X_SELL' => [
-                        'products'=> ['apollon_pink_m'],
-                        'product_models'=> ['apollon'],
-                    ]
-                ],
-                'quantified_associations' => [
-                    'QUANTITY' => [
-                        'products' => [
-                            ['identifier'=> 'apollon_pink_m', 'quantity' => 12]
-                        ],
-                        'product_models' => [
-                            ['identifier'=> 'apollon', 'quantity' => 5]
-                        ]
-                    ]
-                ]
+                new SetFamily('clothing'),
+                new SetCategories(['tshirt', 'summer']),
+                new SetTextValue('name', null, 'fr_FR', 'summer_shirt_2020'),
+                new SetMultiReferenceEntityValue('color', null, null, ['pink', 'blue']),
+                new SetSimpleSelectValue('size', null, null, 'l'),
+                new SetBooleanValue('is_on_sale', null, null, false),
+                new SetMeasurementValue('metric', null, null, 12, 'KILOGRAM'),
+                new AssociateProducts('X_SELL', ['apollon_pink_m']),
+                new AssociateProductModels('X_SELL', ['apollon']),
+                new AssociateQuantifiedProducts('QUANTITY', [
+                    new QuantifiedEntity('apollon_pink_m', 12)]
+                ),
+                new AssociateQuantifiedProductModels('QUANTITY', [
+                    new QuantifiedEntity('apollon', 5)
+                ])
             ]
         );
     }

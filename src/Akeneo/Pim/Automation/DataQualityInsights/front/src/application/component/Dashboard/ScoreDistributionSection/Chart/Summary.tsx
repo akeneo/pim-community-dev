@@ -2,6 +2,7 @@ import React, {FC} from 'react';
 import {QualityScore} from '../../../QualityScore';
 import styled, {css} from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/shared';
+import {QualityScoreValue} from '../../../../../domain';
 
 type ReversibleProps = {
   flip?: boolean;
@@ -12,7 +13,7 @@ type Props = ReversibleProps & {
   totalC: number;
   totalD: number;
   totalE: number;
-  averageScore: string | null;
+  averageScore: QualityScoreValue | null;
 };
 
 const Container = styled.div`
@@ -137,7 +138,7 @@ const Summary: FC<Props> = ({totalA, totalB, totalC, totalD, totalE, averageScor
             </ListItem>
           </List>
           <Footer>
-            <AverageScore score={averageScore} />
+            {averageScore === null ? 'N/A' : <AverageScore score={averageScore} />}
             <AverageScoreMessage>
               {translate(`akeneo_data_quality_insights.dqi_dashboard.average_grade`)}
             </AverageScoreMessage>

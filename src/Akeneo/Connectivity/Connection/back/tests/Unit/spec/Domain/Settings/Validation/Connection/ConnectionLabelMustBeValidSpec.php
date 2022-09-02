@@ -31,7 +31,7 @@ class ConnectionLabelMustBeValidSpec extends ObjectBehavior
         $context->buildViolation('akeneo_connectivity.connection.connection.constraint.label.too_long')->willReturn($builder);
         $builder->addViolation()->shouldBeCalled();
 
-        $this->validate(str_repeat('A', 103), $context);
+        $this->validate(\str_repeat('A', 103), $context);
     }
 
     public function it_adds_a_violation_when_the_label_is_empty(

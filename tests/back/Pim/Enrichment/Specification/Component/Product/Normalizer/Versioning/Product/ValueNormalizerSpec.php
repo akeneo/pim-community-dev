@@ -66,7 +66,29 @@ class ValueNormalizerSpec extends ObjectBehavior
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => '']);
     }
 
-    function it_normalizes_a_value_with_a_integer_data(
+    function it_normalizes_a_value_with_a_integer_data_with_decimals_allowed(
+        NumberLocalizer $numberLocalizer,
+        ValueInterface $value,
+        AttributeInterface $simpleAttribute,
+        $attributeRepository
+    ) {
+        $simpleAttribute->getType()->willReturn(AttributeTypes::NUMBER);
+        $simpleAttribute->isDecimalsAllowed()->willReturn(true);
+        $context = ['decimal_separator' => '.'];
+        $numberLocalizer->localize('12', $context)->willReturn(12);
+
+        $value->getData()->willReturn(12);
+        $value->getAttributeCode()->willReturn('simple');
+        $value->isLocalizable()->willReturn(false);
+        $value->isScopable()->willReturn(false);
+
+        $attributeRepository->findOneByIdentifier('simple')->willReturn($simpleAttribute);
+        $simpleAttribute->isLocaleSpecific()->willReturn(false);
+        $simpleAttribute->getBackendType()->willReturn('decimal');
+        $this->normalize($value, 'flat', $context)->shouldReturn(['simple' => '12.0000']);
+    }
+
+    function it_normalizes_a_value_with_a_integer_data_with_decimals_not_allowed(
         NumberLocalizer $numberLocalizer,
         ValueInterface $value,
         AttributeInterface $simpleAttribute,

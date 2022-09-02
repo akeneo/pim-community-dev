@@ -19,6 +19,7 @@ This value should not be a decimal.: Cette valeur ne doit pas être un nombre d�
 "The {{ attribute_code }} attribute can not have the same value more than once. The {{ value }} value is already set on another product.": L'attribut {{ attribute_code }} ne peut avoir la même valeur qu'une seule fois. La valeur {{ value }} est déjà enregistrée pour un autre produit.
 The same identifier is already set on another product: Le même identifiant est déjà défini sur un autre produit
 regex.comma_or_semicolon_or_surrounding_space.message: Ce champ ne doit pas contenir de virgule ou de point-virgule ni débuter/finir par un espace.
+regex.line_break.message: Ce champ ne doit pas contenir de saut de ligne
 file.extensions.message: 'L''extension du fichier n''est pas autorisée (les extensions autorisées sont : %extensions%).'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": Ce type de valeur attend {{ decimal_separator }} comme séparateur de décimales.
 "This type of value expects the use of dot (.) to separate decimals.": Ce type de valeur attend un point (.) comme séparateur de décimales.
@@ -65,8 +66,6 @@ pim_catalog:
     variant_product_invalid_family: 'La famille du produit variant doit être la même que son parent'
     php_int_max_reached: 'Le nombre maximum doit être inférieur à %php_int_max%.'
     not_null_family: La famille ne peut pas être vide car votre produit avec l'identifiant "%sku%" est un produit variant.
-    variant_product_has_parent: 'Le produit variant "%variant_product%" doit avoir un parent'
-    invalid_variant_product_parent: 'Le produit variant "%variant_product%" ne peut pas avoir le modèle de produit "%product_model%" comme parent, (ce modèle de produit ne peut avoir que d''autres modèles de produit comme enfants)'
     modified_variant_axis_value: 'L''axe de variante "%variant_axis%" ne peut pas être modifié, "%provided_value%" donné'
     family_variant_attributes_unique: Les attributs doivent être uniques, "%attributes%" sont utilisés plusieurs fois dans des ensembles d'attributs de variantes
     family_variant_axes_unique: Les axes de variantes doivent être uniques, "%attributes%" sont utilisés plusieurs fois dans des ensembles d'attributs de variantes
@@ -115,6 +114,9 @@ pim_catalog:
       association_type_does_not_exist: Ce type d'association n'existe pas. Merci de vérifier qu'il n'a pas été supprimé entre temps.
       association_type_is_not_quantified: '"{{ association_type }}" ne permet pas de renseigner des associations avec des quantités. Merci d’utiliser un autre type d’association avec quantités ou d’utiliser la propriété "associations".'
       association_type_should_not_be_quantified: '"{{ association_type }}" permet uniquement de renseigner des associations avec des quantités. Merci d’utiliser un autre type d’association ou d’utiliser la propriété "quantified_associations".'
+    boolean:
+      boolean_value_is_required: L'attribut {{ attribute_code }} requiert une valeur de type booléen ("1" ou "0"), or un {{ given_type }} a été détecté.
+      boolean_value_is_required_in_import: L'attribut {{ attribute_code }} requiert une valeur de type booléen ("1" ou "0"), or un {{ given_type }} a été détecté.
 mass_edit:
   edit_common_attributes:
     invalid_values: Il y a des erreurs dans le formulaire d'attributs
@@ -122,16 +124,3 @@ pim_datagrid:
   column_configurator:
     label:
       unique_message: Le libellé doit être unique
-#TODO: move elsewhere?
-pim_enrich.product:
-  validation:
-    upsert:
-      set_value:
-        no_channel_code_provided_for_scopable_attribute: 'L''attribut "{{ attributeCode }}" requiert un canal'
-        channel_code_provided_for_non_scopable_attribute: 'L''attribut {{ attributeCode }} ne nécessite pas de canal, "{{ channelCode }}" a été détecté'
-        no_locale_code_provided_for_localizable_attribute: 'L''attribut {{ attributeCode }} requiert une locale'
-        locale_code_provided_for_non_localizable_attribute: 'L''attribut {{ attributeCode }} ne nécessite pas de locale, "{{ localeCode }}" a été détecté'
-        invalid_locale_code_for_locale_specific_attribute: 'Le {{ attributeCode }} nécessite l''une des locales suivantes : {{ availableLocales }}; "{{ localeCode }}" a été détecté'
-        channel_does_not_exist: 'Le canal {{ channelCode }} n''existe pas'
-        locale_is_not_active: 'La locale {{ localeCode }} n''existe pas ou n''est pas activée'
-        locale_not_activated_for_channel: 'La locale {{ localeCode }} n''est pas activée pour le canal {{ channelCode }}'

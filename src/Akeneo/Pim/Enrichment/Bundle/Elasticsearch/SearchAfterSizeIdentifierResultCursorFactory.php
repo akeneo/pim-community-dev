@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResultCursor;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -33,7 +30,7 @@ class SearchAfterSizeIdentifierResultCursorFactory implements CursorFactoryInter
         $options = $this->resolveOptions($options);
         $sort = ['_id' => 'asc'];
 
-        $esQuery['_source'] = array_merge($esQuery['_source'], ['document_type']);
+        $esQuery['_source'] = array_merge($esQuery['_source'], ['document_type', 'id']);
         $esQuery['sort'] = isset($esQuery['sort']) ? array_merge($esQuery['sort'], $sort) : $sort;
         $esQuery['size'] = $options['limit'];
 
@@ -49,9 +46,7 @@ class SearchAfterSizeIdentifierResultCursorFactory implements CursorFactoryInter
 
         $identifiers = [];
         foreach ($response['hits']['hits'] as $hit) {
-            // TODO: add TODO with TIP card to merge index as we will use only one index instead of 3, removing coalesce
-            $documentType = $hit['_source']['document_type'] ?? ProductInterface::class;
-            $identifiers[] = new IdentifierResult($hit['_source']['identifier'], $documentType);
+            $identifiers[] = new IdentifierResult($hit['_source']['identifier'], $hit['_source']['document_type'], $hit['_source']['id']);
         }
 
         return new IdentifierResultCursor($identifiers, $totalCount, new ElasticsearchResult($response));

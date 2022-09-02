@@ -6,6 +6,10 @@ import {renderWithProviders} from '../../../../test-utils';
 import {ConnectedAppSettings} from '@src/connect/components/ConnectedApp/ConnectedAppSettings';
 import {FlowType} from '@src/model/flow-type.enum';
 
+jest.mock('@src/connect/components/ConnectedApp/Settings/Authentication', () => ({
+    Authentication: () => <div>ConnectedAppAuthentication</div>,
+}));
+
 test('Connected App Settings renders monitoring settings and authorizations', () => {
     const connectedApp = {
         id: '12345',
@@ -15,9 +19,13 @@ test('Connected App Settings renders monitoring settings and authorizations', ()
         logo: 'https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
         author: 'Author A',
         user_group_name: 'app_123456abcde',
+        connection_username: 'Connection Username',
         categories: ['e-commerce', 'print'],
         certified: false,
         partner: null,
+        is_test_app: false,
+        is_pending: false,
+        has_outdated_scopes: false,
     };
 
     const monitoringSettings = {
@@ -48,4 +56,6 @@ test('Connected App Settings renders monitoring settings and authorizations', ()
             exact: false,
         })
     ).toBeInTheDocument();
+
+    expect(screen.queryByText('ConnectedAppAuthentication')).toBeInTheDocument();
 });

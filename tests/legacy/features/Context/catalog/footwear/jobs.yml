@@ -5,7 +5,9 @@ jobs:
         label:     CSV footwear product import
         type:      import
         configuration:
-            filePath:           '/tmp/footwear_products.csv'
+            storage:
+                type: local
+                file_path:           '/tmp/footwear_products.csv'
             uploadAllowed:      true
             delimiter:          ;
             enclosure:          '"'
@@ -24,7 +26,9 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/products.csv
+            storage:
+                type: local
+                file_path: /tmp/products.csv
             filters:
                 data:
                     -
@@ -63,7 +67,9 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/category.csv
+            storage:
+                type: local
+                file_path: /tmp/category.csv
     csv_footwear_association_type_import:
         connector: Akeneo CSV Connector
         alias:     csv_association_type_import
@@ -82,7 +88,9 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/association_type.csv
+            storage:
+                type: local
+                file_path: /tmp/association_type.csv
     csv_footwear_group_import:
         connector: Akeneo CSV Connector
         alias:     csv_group_import
@@ -99,7 +107,9 @@ jobs:
         type:      import
         configuration:
             uploadAllowed: true
-            filePath:      /tmp/group.xlsx
+            storage:
+                type: local
+                file_path:      /tmp/group.xlsx
     csv_footwear_group_export:
         connector: Akeneo CSV Connector
         alias:     csv_group_export
@@ -109,7 +119,9 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/group.csv
+            storage:
+                type: local
+                file_path: /tmp/group.csv
     csv_footwear_attribute_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_import
@@ -128,7 +140,9 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/attribute.csv
+            storage:
+                type: local
+                file_path: /tmp/attribute.csv
     csv_footwear_option_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_option_import
@@ -147,7 +161,9 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/option.csv
+            storage:
+                type: local
+                file_path: /tmp/option.csv
     csv_footwear_family_export:
         connector: Akeneo CSV Connector
         alias:     csv_family_export
@@ -157,7 +173,9 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/family.csv
+            storage:
+                type: local
+                file_path: /tmp/family.csv
     csv_footwear_channel_export:
         connector: Akeneo CSV Connector
         alias:     csv_channel_export
@@ -167,7 +185,9 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/channel.csv
+            storage:
+                type: local
+                file_path: /tmp/channel.csv
     csv_footwear_currency_export:
         connector: Akeneo CSV Connector
         alias:     csv_currency_export
@@ -177,7 +197,9 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/currency.csv
+            storage:
+                type: local
+                file_path: /tmp/currency.csv
     csv_footwear_locale_export:
         connector: Akeneo CSV Connector
         alias:     csv_locale_export
@@ -187,7 +209,9 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/locale.csv
+            storage:
+                type: local
+                file_path: /tmp/locale.csv
     csv_footwear_group_type_export:
         connector: Akeneo CSV Connector
         alias:     csv_group_type_export
@@ -197,7 +221,9 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/group_type.csv
+            storage:
+                type: local
+                file_path: /tmp/group_type.csv
     csv_footwear_attribute_group_export:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_group_export
@@ -207,7 +233,9 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/attribute_group.csv
+            storage:
+                type: local
+                file_path: /tmp/attribute_group.csv
     csv_footwear_family_import:
         connector: Akeneo CSV Connector
         alias:     csv_family_import
@@ -356,7 +384,9 @@ jobs:
             groupsColumn:       groups
             realTimeVersioning: true
             decimalSeparator:   ,
-            filePath:           /tmp/footwear_products-fr.xlsx
+            storage:
+                type: local
+                file_path:           /tmp/footwear_products-fr.xlsx
     xlsx_footwear_product_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_product_import
@@ -371,7 +401,9 @@ jobs:
             realTimeVersioning: true
             decimalSeparator:   .
             dateFormat:         yyyy-MM-dd
-            filePath:           /tmp/footwear_products.xlsx
+            storage:
+                type: local
+                file_path:           /tmp/footwear_products.xlsx
     xlsx_footwear_category_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_category_import
@@ -460,7 +492,9 @@ jobs:
         configuration:
             withHeader: true
             linesPerFile: 10000
-            filePath: /tmp/family.xlsx
+            storage:
+                type: local
+                file_path: /tmp/family.xlsx
     xlsx_footwear_category_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_category_export
@@ -469,7 +503,9 @@ jobs:
         configuration:
             withHeader: true
             linesPerFile: 10000
-            filePath: /tmp/category.xlsx
+            storage:
+                type: local
+                file_path: /tmp/category.xlsx
     xlsx_footwear_attribute_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_attribute_export
@@ -478,7 +514,9 @@ jobs:
         configuration:
             withHeader: true
             linesPerFile: 10000
-            filePath: /tmp/attribute.xlsx
+            storage:
+                type: local
+                file_path: /tmp/attribute.xlsx
     xlsx_footwear_option_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_attribute_option_export
@@ -487,7 +525,9 @@ jobs:
         configuration:
             withHeader: true
             linesPerFile: 10000
-            filePath: /tmp/option.xlsx
+            storage:
+                type: local
+                file_path: /tmp/option.xlsx
     xlsx_footwear_association_type_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_association_type_export
@@ -496,7 +536,9 @@ jobs:
         configuration:
             withHeader: true
             linesPerFile: 10000
-            filePath: /tmp/association_type.xlsx
+            storage:
+                type: local
+                file_path: /tmp/association_type.xlsx
     xlsx_footwear_channel_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_channel_export
@@ -504,7 +546,9 @@ jobs:
         type:      export
         configuration:
             withHeader: true
-            filePath: /tmp/channel.xlsx
+            storage:
+                type: local
+                file_path: /tmp/channel.xlsx
             linesPerFile: 10000
     xlsx_footwear_currency_export:
         connector: Akeneo XLSX Connector
@@ -513,7 +557,9 @@ jobs:
         type:      export
         configuration:
             withHeader: true
-            filePath: /tmp/currency.xlsx
+            storage:
+                type: local
+                file_path: /tmp/currency.xlsx
             linesPerFile: 10000
     xlsx_footwear_locale_export:
         connector: Akeneo XLSX Connector
@@ -522,7 +568,9 @@ jobs:
         type:      export
         configuration:
             withHeader: true
-            filePath: /tmp/locale.xlsx
+            storage:
+                type: local
+                file_path: /tmp/locale.xlsx
             linesPerFile: 10000
     xlsx_footwear_group_type_export:
         connector: Akeneo XLSX Connector
@@ -531,7 +579,9 @@ jobs:
         type:      export
         configuration:
             withHeader: true
-            filePath: /tmp/group_type.xlsx
+            storage:
+                type: local
+                file_path: /tmp/group_type.xlsx
             linesPerFile: 10000
     xlsx_footwear_attribute_group_export:
         connector: Akeneo XLSX Connector
@@ -540,7 +590,9 @@ jobs:
         type:      export
         configuration:
             withHeader: true
-            filePath: /tmp/attribute_group.xlsx
+            storage:
+                type: local
+                file_path: /tmp/attribute_group.xlsx
             linesPerFile: 10000
     csv_product_grid_context_quick_export:
         connector: Akeneo CSV Connector

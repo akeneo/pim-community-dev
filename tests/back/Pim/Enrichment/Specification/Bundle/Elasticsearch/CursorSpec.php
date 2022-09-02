@@ -2,13 +2,14 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Cursor;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Cursor;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 
 class CursorSpec extends ObjectBehavior
 {
@@ -16,10 +17,10 @@ class CursorSpec extends ObjectBehavior
         Client $esClient,
         CursorableRepositoryInterface $productRepository,
         CursorableRepositoryInterface $productModelRepository,
-        ProductInterface $variantProduct,
         ProductModelInterface $subProductModel
     ) {
-        $variantProduct->getIdentifier()->willReturn('a-variant-product');
+        $variantProduct = new Product();
+        $variantProduct->setIdentifier('a-variant-product');
         $productRepository->getItemsFromIdentifiers(['a-variant-product'])->willReturn([$variantProduct]);
 
         $subProductModel->getCode()->willReturn('a-sub-product-model');
@@ -35,11 +36,11 @@ class CursorSpec extends ObjectBehavior
                     'total' => ['value' => 4, 'relation' => 'eq'],
                     'hits' => [
                         [
-                            '_source' => ['identifier' => 'a-variant-product', 'document_type' => ProductInterface::class],
+                            '_source' => ['identifier' => 'a-variant-product', 'document_type' => ProductInterface::class, 'id' => 'product_' . $variantProduct->getUuid()->toString()],
                             'sort' => ['#a-variant-product']
                         ],
                         [
-                            '_source' => ['identifier' => 'a-sub-product-model', 'document_type' => ProductModelInterface::class],
+                            '_source' => ['identifier' => 'a-sub-product-model', 'document_type' => ProductModelInterface::class, 'id' => 'product_model_a-sub-product-model'],
                             'sort' => ['#a-sub-product-model']
                         ],
                     ]
@@ -69,14 +70,16 @@ class CursorSpec extends ObjectBehavior
 
     function it_is_iterable(
         $esClient,
-        $variantProduct,
         $subProductModel,
         $productRepository,
         $productModelRepository,
-        ProductInterface $product,
-        ProductModelInterface $rootProductModel
+        ProductModelInterface $rootProductModel,
     ) {
-        $product->getIdentifier()->willReturn('a-product');
+        $product = new Product();
+        $product->setIdentifier('a-product');
+        $variantProduct = new Product();
+        $variantProduct->setIdentifier('a-variant-product');
+        $productRepository->getItemsFromIdentifiers(['a-variant-product'])->willReturn([$variantProduct]);
         $productRepository->getItemsFromIdentifiers(['a-product'])->willReturn([$product]);
 
         $rootProductModel->getCode()->willReturn('a-root-product-model');
@@ -94,11 +97,11 @@ class CursorSpec extends ObjectBehavior
                     'total' => ['value' => 4],
                     'hits' => [
                         [
-                            '_source' => ['identifier' => 'a-root-product-model', 'document_type' => ProductModelInterface::class],
+                            '_source' => ['identifier' => 'a-root-product-model', 'document_type' => ProductModelInterface::class, 'id' => 'product_model_a-root-product-model'],
                             'sort' => ['#a-root-product-model']
                         ],
                         [
-                            '_source' => ['identifier' => 'a-product', 'document_type' => ProductInterface::class],
+                            '_source' => ['identifier' => 'a-product', 'document_type' => ProductInterface::class, 'id' => 'product_' . $product->getUuid()->toString()],
                             'sort' => ['#a-product']
                         ],
                     ]
@@ -144,14 +147,17 @@ class CursorSpec extends ObjectBehavior
 
     function it_is_iterable_with_products_and_product_models_having_the_same_identifiers(
         $esClient,
-        $variantProduct,
         $subProductModel,
         $productRepository,
         $productModelRepository,
-        ProductInterface $product,
         ProductModelInterface $rootProductModel
     ) {
-        $product->getIdentifier()->willReturn('foo');
+        $variantProduct = new Product();
+        $variantProduct->setIdentifier('a-variant-product');
+        $productRepository->getItemsFromIdentifiers(['a-variant-product'])->willReturn([$variantProduct]);
+
+        $product = new Product();
+        $product->setIdentifier('foo');
         $productRepository->getItemsFromIdentifiers(['foo'])->willReturn([$product]);
 
         $rootProductModel->getCode()->willReturn('foo');
@@ -169,11 +175,11 @@ class CursorSpec extends ObjectBehavior
                     'total' => ['value' => 4],
                     'hits' => [
                         [
-                            '_source' => ['identifier' => 'foo', 'document_type' => ProductModelInterface::class],
+                            '_source' => ['identifier' => 'foo', 'document_type' => ProductModelInterface::class, 'id' => 'product_model_foo'],
                             'sort' => ['#foo']
                         ],
                         [
-                            '_source' => ['identifier' => 'foo', 'document_type' => ProductInterface::class],
+                            '_source' => ['identifier' => 'foo', 'document_type' => ProductInterface::class, 'id' => 'product_' . $product->getUuid()->toString()],
                             'sort' => ['#foo']
                         ],
                     ]
@@ -224,12 +230,15 @@ class CursorSpec extends ObjectBehavior
         Client $esClient,
         CursorableRepositoryInterface $productRepository,
         CursorableRepositoryInterface $productModelRepository,
-        ProductInterface $variantProduct,
         ProductModelInterface $subProductModel,
-        ProductInterface $product,
         ProductModelInterface $rootProductModel
     ) {
-        $product->getIdentifier()->willReturn('a-product2');
+        $variantProduct = new Product();
+        $variantProduct->setIdentifier('a-variant-product');
+        $productRepository->getItemsFromIdentifiers(['a-variant-product'])->willReturn([$variantProduct]);
+
+        $product = new Product();
+        $product->setIdentifier('a-product2');
         $productRepository->getItemsFromIdentifiers(['a-product'])->willReturn([]);
         $productRepository->getItemsFromIdentifiers(['a-product2'])->willReturn([$product]);
         $productRepository->getItemsFromIdentifiers([])->willReturn([]);
@@ -251,11 +260,11 @@ class CursorSpec extends ObjectBehavior
                     'total' => ['value' => 4],
                     'hits' => [
                         [
-                            '_source' => ['identifier' => 'a-root-product-model', 'document_type' => ProductModelInterface::class],
+                            '_source' => ['identifier' => 'a-root-product-model', 'document_type' => ProductModelInterface::class, 'id' => 'product_model_a-root-product-model'],
                             'sort' => ['#a-root-product-model']
                         ],
                         [
-                            '_source' => ['identifier' => 'a-product', 'document_type' => ProductInterface::class],
+                            '_source' => ['identifier' => 'a-product', 'document_type' => ProductInterface::class, 'id' => 'product_' . $product->getUuid()->toString()],
                             'sort' => ['#a-product']
                         ],
                     ]
@@ -273,7 +282,7 @@ class CursorSpec extends ObjectBehavior
                 'total' => ['value' => 4],
                 'hits' => [
                     [
-                        '_source' => ['identifier' => 'a-product2', 'document_type' => ProductInterface::class],
+                        '_source' => ['identifier' => 'a-product2', 'document_type' => ProductInterface::class, 'id' => 'product_' . $product->getUuid()->toString()],
                         'sort' => ['#a-product2'],
                     ],
                 ],

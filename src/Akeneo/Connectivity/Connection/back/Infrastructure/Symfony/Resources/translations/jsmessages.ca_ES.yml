@@ -16,11 +16,11 @@ pim_menu:
     connection_webhook_event_logs: Registre d'esdeveniments
     data_flows: Flux de dades
     connect_connection_settings: Configuració de la connexió
-    marketplace: Marketplace
-    connected_apps: Aplicacions
+    marketplace: App Store
+    connected_apps: Aplicacions connectades
 pim_title:
-  akeneo_connectivity_connection_connect_marketplace: Marketplace
-  akeneo_connectivity_connection_connect_marketplace_profile: Marketplace
+  akeneo_connectivity_connection_connect_marketplace: App Store
+  akeneo_connectivity_connection_connect_marketplace_profile: App Store
   akeneo_connectivity_connection_connect_apps_activate: Connectar
   akeneo_connectivity_connection_connect_apps_authorize: Connectar
   akeneo_connectivity_connection_connect_apps_authenticate: Connectar
@@ -35,28 +35,33 @@ pim_title:
   akeneo_connectivity_connection_webhook_regenerate_secret: Subscripció d'esdeveniment
   akeneo_connectivity_connection_webhook_event_logs: Registre d'esdeveniments
   akeneo_connectivity_connection_settings_redirect: Connexions
-  akeneo_connectivity_connection_connect_connected_apps: Aplicacions
+  akeneo_connectivity_connection_connect_connected_apps: Aplicacions connectades
   akeneo_connectivity_connection_connect_connected_apps_edit: Configuració de l'aplicació
   akeneo_connectivity_connection_connect_connected_apps_delete: Eliminació de l'aplicació
   akeneo_connectivity_connection_connect_marketplace_test_app_create: Crear una aplicació de prova
   akeneo_connectivity_connection_connect_marketplace_test_app_delete: Eliminar aplicació de prova
+  akeneo_connectivity_connection_connect_connected_apps_open: Obre l'aplicació
+  akeneo_connectivity_connection_connect_connected_apps_catalogs_edit: Edita el catàleg
 akeneo_connectivity.connection:
   connect:
     marketplace:
       title: Vol connectar el PIM amb una altra aplicació? 🤟
-      sub_title: Entra en el nostre marketplace per veure quines aplicacions es poden connectar al PIM d'Akeneo.
-      link: Accedir al marketplace
+      sub_title: Consulteu la nostra App Store per veure quina aplicació es pot connectar amb Akeneo PIM.
+      link: Accediu a l'App Store
       helper:
         title: '{0} No hi ha aplicacions o connectors compatibles amb la teva versió PIM.|{1} Hi ha {{ count }} aplicació o connector compatiblee amb la vostra versió PIM.|[2,Inf] Hi ha {{ count }} aplicacions i connectors compatibles amb la vostra versió de PIM.'
         title_without_apps: '{0} No hi ha connectors compatibles amb la seva versió de PIM.|{1} Hi ha {{ count }} connector compatible amb la teva versió de PIM.|[2,Inf] Hi ha {{ count }} connectors compatibles amb la vostra versió de PIM.'
-        description: Això només és un resum. Per veure més detalls, dona un cop d'ull al nostre marketplace.
-        link: Anar a la Marketplace
+        description: Això és només una visió general. Per obtenir més detalls, feu una ullada a l'Akeneo App Store.
+        link: Aneu a l'Akeneo App Store
+      search:
+        total: '{0} Sense resultats|{1} 1 resultat|[2,Inf] {{ total }} resultats'
       card:
         developed_by: 'Desenvolupat per {{ author }}'
         read_more: llegiu-ne més
         more_info: Més informació
         connect: Connectar
         connected: Connectat
+        pending: S'està esperant...
       extensions:
         title: Connectors
         total: '{0} Sense connectors|{1} 1 connector|[2,Inf] {{ total }} connectors'
@@ -65,7 +70,7 @@ akeneo_connectivity.connection:
         title: Aplicacions
         total: '{0} Cap aplicació|{1} 1 aplicació|[2,Inf] {{ total }} aplicacions'
         empty: No hi ha aplicacions compatibles amb la vostra versió
-      unreachable: No podem accedir al marketplace, torna més tard, si us plau.
+      unreachable: No podem arribar a l'App Store, torneu més tard.
       scroll_to_top: Desplaça't a fins a dalt
       test_apps:
         title: Les meves aplicacions de prova
@@ -87,8 +92,10 @@ akeneo_connectivity.connection:
             client_id: Identificador del client
             client_secret: Secret del client
         errors:
+          page_not_found: No s'ha trobat la pàgina
           creation:
             name:
+              min_length: El nom de l'aplicació de prova és massa curt. Ha de tenir 3 caràcters o més.
               max_length: El nom de l'aplicació de prova és massa llarg. Ha de tenir 255 caràcters o menys.
               not_blank: Es requereix el nom de l'aplicació de prova.
             client_id:
@@ -106,7 +113,7 @@ akeneo_connectivity.connection:
           subtitle: Aplicacions
           title: Confirmar l'eliminació
           description: Esteu a punt d'eliminar la vostra aplicació de prova d'aquest PIM.
-          warning: En confirmar l'eliminació, eliminareu l'aplicació de prova a la pàgina del marketplace i l'aplicació connectada relacionada.
+          warning: En confirmar la supressió, suprimiràs l'aplicació de prova de la pàgina de l'App Store i l'aplicació connectada relacionada.
           flash:
             success: Aplicació de prova eliminada correctament.
             error: Ho sentim, s'ha produït un error durant l'eliminació de l'aplicació de prova.
@@ -117,19 +124,24 @@ akeneo_connectivity.connection:
           total: '{0} Cap aplicació|{1} 1 aplicació|[2,Inf] {{ total }} aplicacions'
           empty: No hi ha aplicacions connectades
           check_marketplace: 'Comproveu {{ marketplaceLink }} per explorar tot el contingut disponible i instal·lar la vostra primera aplicació.'
-          marketplace_link_anchor: Marketplace
+          marketplace_link_anchor: App Store
+          at_least_one_is_not_listed_on_the_appstore: Algunes de les vostres aplicacions connectades no són compatibles amb la vostra versió PIM o ja no existeixen a l'Akeneo App Store. Contacta amb nosaltres per obtenir més informació.
+          pending_apps: Algunes de les teves aplicacions no estan connectades amb el teu PIM.
         test_apps:
           title: Les meves aplicacions de prova
           removed_user: Usuari suprimit
         helper:
           title: '[0,1] El vostre PIM està connectat amb l''aplicació {{ count }}.|[2,Inf] El vostre PIM està connectat amb {{ count }} aplicacions.'
-          description_1: Les noves aplicacions es desenvolupen regularment, així que estigueu atents i consulteu la nostra pàgina del mercat amb freqüència per descobrir com connectar el vostre PIM.
+          description_1: Les noves aplicacions es desenvolupen regularment, així que estigueu atents i consulteu la nostra pàgina de l'App Store amb freqüència per descobrir com connectar el vostre PIM.
           description_2: Vols saber més sobre les aplicacions?
           link: Consulteu el nostre Centre d'ajuda per obtenir més informació.
         card:
           developed_by: 'Desenvolupat per {{ author }}'
+          new_access_authorization_required: Cal una nova autorització d'accés.
+          not_listed_on_the_appstore: L'aplicació ja no apareix a l'Akeneo App Store. Poseu-vos en contacte amb l'assistència de l'aplicació.
           manage_app: Administra l'aplicació
           open_app: Obre l'aplicació
+          pending: L'aplicació no està connectada. L'obertura de l'aplicació hauria de solucionar els problemes de connexió.
         flash:
           error: Ho sentim, s'ha produït un error en obtenir la llista d'aplicacions connectades.
       edit:
@@ -137,6 +149,7 @@ akeneo_connectivity.connection:
         tabs:
           settings: Preferències
           permissions: Permisos
+          catalogs: Catàlegs
           error_monitoring: Monitorització d'errors
         settings:
           monitoring:
@@ -144,8 +157,15 @@ akeneo_connectivity.connection:
           authorizations:
             title: autoritzacions
             information: 'Per obtenir més informació sobre les autoritzacions d''aplicacions, consulteu el nostre {{ link }}.'
+            no_access_to_product_information: 'Aquesta aplicació connectada no accedeix a la informació del vostre producte.'
             information_link_anchor: Article del Centre d'ajuda
             no_scope: No s'han demanat autoritzacions específiques.
+          authentication:
+            title: autenticació
+            information: 'Per obtenir més informació sobre l''autenticació d''aplicacions, consulteu el nostre {{ link }}.'
+            information_link_anchor: Article del Centre d'ajuda
+            openid_only: Aquesta aplicació utilitza l'autenticació de l'aplicació Akeneo sense utilitzar les vostres dades personals.
+          pending: Aquesta aplicació no està connectada al vostre PIM. L'obertura de l'aplicació hauria de solucionar el problema de connexió. Si persisteix, poseu-vos en contacte amb l'assistència de l'aplicació.
         error_monitoring:
           error: Ups, alguna cosa va fallar!
           helper:
@@ -157,6 +177,9 @@ akeneo_connectivity.connection:
               1: Per fer un seguiment dels errors en aquesta aplicació,
               2: activar el seguiment
               3: a la configuració.
+        catalogs:
+          edit:
+            not_found: Catàleg no trobat
         flash:
           load_permissions_error.title: 'No s''han pogut carregar els permisos desats a {{ entity }}.'
           load_permissions_error.description: Si us plau, torna-ho a provar més tard.
@@ -172,6 +195,9 @@ akeneo_connectivity.connection:
         flash:
           success: L'aplicació s'ha suprimit correctament.
           error: Ho sentim, s'ha produït un error en suprimir l'aplicació.
+      open:
+        flash:
+          error: Ho sentim, s'ha produït un error en obrir l'aplicació.
     apps:
       loader:
         message: Carregant ...
@@ -186,7 +212,6 @@ akeneo_connectivity.connection:
           previous: Anterior
           next: Següent
           allow_and_next: Permetre i continuar
-          allow_and_finish: Permetre i acabar
         progress:
           authentication: Autentificació
           authorizations: Autoritzacions
@@ -196,8 +221,16 @@ akeneo_connectivity.connection:
           title: '{{ app_name }} necessita'
           helper: Per obtenir més informació sobre l'autenticació d'aplicacions, consulteu el nostre article
           helper_link: Com connecto el meu PIM amb les aplicacions?
-          scope_profile: Consulta el teu nom i cognom
-          scope_email: Consulta la teva adreça de correu electrònic
+          scope_profile: 'Consulta el teu {{ firstname }} i el teu {{ lastname }}'
+          scope_email: 'Consulta la teva adreça de {{ email }}'
+          consent:
+            label: 'Accepto la Política de privadesa i les Condicions d''ús d''aquesta aplicació, que es poden consultar a {{ app_marketplace_page }}.'
+            app_marketplace_page: Pàgina App Store
+            subtext: 'Reconeixeu i accepteu que se us redirigirà a una aplicació de tercers. Akeneo no es fa responsable ni es fa responsable del contingut d''aquesta aplicació. Si teniu cap problema mentre visiteu l''Akeneo App Store, {{ contact_us }}.'
+            contact_us: contacta amb nosaltres
+          firstname: nom
+          lastname: cognoms
+          email: correu electrònic
         authorize:
           title: '{{ app_name }} necessita'
           no_scope_title: '{{ app_name }} vol accedir al vostre PIM.'
@@ -231,8 +264,6 @@ akeneo_connectivity.connection:
           reference_entity_record: registres d'entitat de referència
           asset_families: famílies de recursos
           assets: recursos
-      error:
-        sub_text: Si us plau, contacta amb desenvolupador de l'aplicació o amb el servei d'assistència d'Akeneo
       constraint:
         client_id:
           not_blank: El client_id és obligatori.
@@ -537,3 +568,6 @@ pim_permissions:
       edit: Editar
       view: Vista
     all: Tot
+pim_notification:
+  connected_app_authorizations:
+    button_label: Obre l'aplicació

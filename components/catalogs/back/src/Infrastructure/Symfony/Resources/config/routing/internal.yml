@@ -1,0 +1,72 @@
+akeneo_catalogs_internal_get_catalogs_by_owner:
+    path: '/rest/catalogs'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetAllCatalogsByOwnerAction
+    methods: [ GET ]
+
+akeneo_catalogs_internal_get_catalog:
+    path: '/rest/catalogs/{catalogId}'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetCatalogAction
+    methods: [ GET ]
+    requirements:
+        catalogId: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+
+akeneo_catalogs_internal_update_catalog:
+    path: '/rest/catalogs/{catalogId}'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\UpdateCatalogAction
+    methods: [ PATCH ]
+    requirements:
+        catalogId: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+
+akeneo_catalogs_internal_get_families:
+    path: '/rest/catalogs/families'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetFamiliesAction
+    methods: [ GET ]
+
+akeneo_catalogs_internal_get_attribute_options:
+    path: '/rest/catalogs/attributes/{code}/options'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetAttributeOptionsAction
+    methods: [ GET ]
+
+akeneo_catalogs_internal_get_attribute:
+    path: '/rest/catalogs/attributes/{code}'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetAttributeAction
+    methods: [ GET ]
+
+akeneo_catalogs_internal_get_attributes:
+    path: '/rest/catalogs/attributes'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetAttributesAction
+
+akeneo_catalogs_internal_get_channel_locales:
+    path: '/rest/catalogs/channels/{code}/locales'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetChannelLocalesAction
+    methods: [ GET ]
+
+akeneo_catalogs_internal_get_channel:
+    path: '/rest/catalogs/channels/{code}'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetChannelAction
+    methods: [ GET ]
+
+akeneo_catalogs_internal_get_channels:
+    path: '/rest/catalogs/channels'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetChannelsAction
+    methods: [ GET ]
+
+akeneo_catalogs_internal_get_locales:
+    path: '/rest/catalogs/locales'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetLocalesAction
+    methods: [ GET ]
+
+akeneo_catalogs_internal_get_category_children:
+    path: '/rest/catalogs/categories/{categoryCode}/children'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetCategoryChildrenAction
+    methods: [ GET ]
+
+akeneo_catalogs_internal_get_categories:
+    path: '/rest/catalogs/categories'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetCategoriesAction
+    methods: [ GET ]
+
+akeneo_catalogs_internal_get_measurements_family_units:
+    path: '/rest/catalogs/measurement-families/{code}/units'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetMeasurementsFamilyUnitsAction
+    methods: [ GET ]

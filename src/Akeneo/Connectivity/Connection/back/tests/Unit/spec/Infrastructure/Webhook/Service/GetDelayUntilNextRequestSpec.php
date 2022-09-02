@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service;
 
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectEventsApiRequestCountWithinLastHourQuery;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectEventsApiRequestCountWithinLastHourQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\GetDelayUntilNextRequest;
 use PhpSpec\ObjectBehavior;
 
 class GetDelayUntilNextRequestSpec extends ObjectBehavior
 {
     public function let(
-        SelectEventsApiRequestCountWithinLastHourQuery $selectEventsApiRequestCountWithinLastHourQuery
+        SelectEventsApiRequestCountWithinLastHourQueryInterface $selectEventsApiRequestCountWithinLastHourQuery
     ): void {
         $this->beConstructedWith($selectEventsApiRequestCountWithinLastHourQuery);
     }
@@ -21,7 +21,7 @@ class GetDelayUntilNextRequestSpec extends ObjectBehavior
     }
 
     public function it_returns_the_delay_until_next_request_even_when_there_is_no_entry(
-        SelectEventsApiRequestCountWithinLastHourQuery $selectEventsApiRequestCountWithinLastHourQuery
+        SelectEventsApiRequestCountWithinLastHourQueryInterface $selectEventsApiRequestCountWithinLastHourQuery
     ) {
         $selectEventsApiRequestCountWithinLastHourQuery->execute(new \DateTimeImmutable('2021-01-08 10:12:30', new \DateTimeZone('UTC')))
             ->willReturn([]);
@@ -31,7 +31,7 @@ class GetDelayUntilNextRequestSpec extends ObjectBehavior
     }
 
     public function it_returns_the_delay_until_next_request(
-        SelectEventsApiRequestCountWithinLastHourQuery $selectEventsApiRequestCountWithinLastHourQuery
+        SelectEventsApiRequestCountWithinLastHourQueryInterface $selectEventsApiRequestCountWithinLastHourQuery
     ) {
         $selectEventsApiRequestCountWithinLastHourQuery->execute(new \DateTimeImmutable('2021-01-08 11:02:10', new \DateTimeZone('UTC')))
             ->willReturn([

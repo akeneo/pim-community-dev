@@ -19,6 +19,7 @@ This value should not be a decimal.: 이 값은 소수가 아니어야 합니다
 "The {{ attribute_code }} attribute can not have the same value more than once. The {{ value }} value is already set on another product.": '{{ attribute_code }} 특성은 같은 값을 두 번 이상 가질 수 없습니다. {{ value }} 값은 이미 다른 제품에 설정되어 있습니다.'
 The same identifier is already set on another product: 동일한 식별자가 이미 다른 제품에 설정되어 있습니다.
 regex.comma_or_semicolon_or_surrounding_space.message: 이 필드에는 쉼표 또는 세미콜론이나 선행/후행 공백이 포함되지 않아야 합니다.
+regex.line_break.message: 이 필드에는 줄 바꿈을 사용할 수 없습니다
 file.extensions.message: '이 파일 확장명은 허용되지 않습니다.(허용되는 확장명: %extensions%).'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": 이 유형의 값은 소수를 구분하기 위해 {{ decimal_separator }}을(를) 사용해야 합니다.
 "This type of value expects the use of dot (.) to separate decimals.": 이 유형의 값은 소수를 구분하기 위해 점(.)을 사용해야 합니다.
@@ -65,8 +66,6 @@ pim_catalog:
     variant_product_invalid_family: '변형 제품 패밀리는 상위와 같아야 합니다.'
     php_int_max_reached: '최대 수는 %php_int_max% 미만이어야 합니다.'
     not_null_family: 식별자가 %sku%인 제품은 변형 제품이기 때문에 패밀리가 'null'일 수 없습니다.
-    variant_product_has_parent: '변형 제품 ''%variant_product%''에는 상위가 있어야 합니다.'
-    invalid_variant_product_parent: '변형 제품 ''%variant_product%''은(는) 제품 모델 ''%product_model%''을(를) 상위 모델로 가질 수 없습니다.(이 제품 모델은 다른 제품 모델만 하위 모델로 가질 수 있습니다.)'
     modified_variant_axis_value: '변형 축 ''%variant_axis%''은(는) 수정할 수 없으며, ''%provided_value%''이(가) 지정되었습니다.'
     family_variant_attributes_unique: 특성은 고유해야 합니다. '%attributes%'은(는) 변형 특성 세트에서 여러 번 사용되었습니다.
     family_variant_axes_unique: 변형 축은 고유해야 합니다. '%attributes%'은(는) 변형 특성 세트에서 여러 번 사용되었습니다.
@@ -115,6 +114,9 @@ pim_catalog:
       association_type_does_not_exist: 이 연결 유형이 없습니다. 그동안 해당 유형이 삭제되지 않았는지 확인하십시오.
       association_type_is_not_quantified: '''{{ association_type }}''은(는) 수량 연결에 사용할 수 없습니다. 다른 수량 연결 유형을 선택하거나 ''associations'' 속성을 사용하십시오.'
       association_type_should_not_be_quantified: '''{{ association_type }}''은(는) 수량 연결에만 사용할 수 있습니다. 다른 수량 연결 유형을 선택하거나 ''quantified_associations'' 속성을 사용하십시오.'
+    boolean:
+      boolean_value_is_required: '{{ attribute_code }} 특성에 입력되어야 하는 데이터는 부울 값(true 또는 false)이지만, {{ given_type }}이(가) 탐지되었습니다.'
+      boolean_value_is_required_in_import: '{{ attribute_code }} 특성에 입력되어야 하는 데이터는 부울 값(1 또는 0)이지만, {{ given_type }}이(가) 탐지되었습니다.'
 mass_edit:
   edit_common_attributes:
     invalid_values: 특성 양식에 오류가 있습니다.
@@ -122,16 +124,3 @@ pim_datagrid:
   column_configurator:
     label:
       unique_message: 레이블은 고유해야 합니다.
-#TODO: move elsewhere?
-pim_enrich.product:
-  validation:
-    upsert:
-      set_value:
-        no_channel_code_provided_for_scopable_attribute: '{{ attributeCode }} 특성에 채널이 필요합니다'
-        channel_code_provided_for_non_scopable_attribute: '{{ attributeCode }} 특성에는 채널이 필요하지 않습니다. ''{{ channelCode }}''이(가) 탐지되었습니다'
-        no_locale_code_provided_for_localizable_attribute: '{{ attributeCode }} 특성에 로케일이 필요합니다.'
-        locale_code_provided_for_non_localizable_attribute: '{{ attributeCode }} 특성에는 로케일이 필요하지 않습니다. ''{{ localeCode }}''이(가) 탐지되었습니다'
-        invalid_locale_code_for_locale_specific_attribute: '{{ attributeCode }}에는 {{ availableLocales }} 중 하나의 로케일이 필요합니다. ''{{ localeCode }}''이(가) 탐지되었습니다'
-        channel_does_not_exist: '{{ channelCode }} 채널이 없습니다'
-        locale_is_not_active: '{{ localeCode }} 로케일이 없거나 활성화되지 않았습니다'
-        locale_not_activated_for_channel: '{{ localeCode }} 로케일이 {{ channelCode }} 채널에서 활성화되지 않았습니다'

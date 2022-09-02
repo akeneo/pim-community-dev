@@ -6,4 +6,5 @@ src/Akeneo/Pim/Enrichment/AssetManager/tests/front
 src/Akeneo/Pim/Automation/RuleEngine/front
 src/Akeneo/Pim/TableAttribute/front
 src/Akeneo/Platform/Job/front/process-tracker
-src/Akeneo/ReferenceEntity/tests/front
+src/Oro/Bundle/ConfigBundle/front
+components/**/front

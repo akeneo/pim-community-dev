@@ -63,4 +63,25 @@ class OptionsComparatorSpec extends ObjectBehavior
 
         $this->compare($changes, $originals)->shouldReturn(null);
     }
+
+    function it_returns_a_change_when_data_is_not_an_array_of_strings(): void
+    {
+        $changes = ['data' => 'toto', 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $originals = ['data' => 'toto'];
+
+        $this->compare($changes, $originals)->shouldReturn([
+            'data'  => 'toto',
+            'locale' => 'en_US',
+            'scope'  => 'ecommerce',
+        ]);
+
+        $changes = ['data' => ['toto', 42], 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $originals = ['data' => ['toto', 42]];
+
+        $this->compare($changes, $originals)->shouldReturn([
+            'data'  => ['toto', 42],
+            'locale' => 'en_US',
+            'scope'  => 'ecommerce',
+        ]);
+    }
 }

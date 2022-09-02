@@ -1,3 +1,8 @@
+<% if (freeTrialEnabled) { %>
+    <div id="appcues-launchpad-btn" style="margin-right: 10px;"></div>
+    <div id="invite-user-btn"></div>
+<% } %>
+
 <div class="AknDropdown">
     <div class="AknTitleContainer-userIcon"
         data-toggle="dropdown"
@@ -11,6 +16,8 @@
     </div>
 </div>
 
-<div class="AknCommunicationChannelMenu communication-channel"></div>
+<% if (!freeTrialEnabled) { %>
+    <div class="AknCommunicationChannelMenu communication-channel"></div>
+<% } %>
 
 <div class="AknNotificationMenu AknDropdown dropdown notification"></div>

@@ -195,7 +195,7 @@ JSON;
 
         $content = '';
         // Error: unknown attribute "description"
-        $content .= json_encode([
+        $content .= \json_encode([
             'identifier' => 'high-top_sneakers',
             'family' => 'shoes',
             'values' => [
@@ -208,7 +208,7 @@ JSON;
         ]);
         $content .= PHP_EOL;
         // Success
-        $content .= json_encode([
+        $content .= \json_encode([
             'identifier' => 'high-top_sneakers',
             'values' => [
                 'name' => [[
@@ -219,7 +219,7 @@ JSON;
             ]
         ]);
         $streamedContent = '';
-        ob_start(function ($buffer) use (&$streamedContent) {
+        \ob_start(function ($buffer) use (&$streamedContent) {
             $streamedContent .= $buffer;
             return '';
         });
@@ -231,7 +231,7 @@ JSON;
             ['HTTP_content_type' => StreamResourceResponse::CONTENT_TYPE],
             $content
         );
-        ob_end_flush();
+        \ob_end_flush();
 
         Assert::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 

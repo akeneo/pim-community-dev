@@ -29,7 +29,7 @@ class BooleanValidator extends ConstraintValidator
             return;
         }
 
-        $code = '';
+        $code = $constraint->attributeCode ?? '';
         $checkedValue = $value;
 
         if ($value instanceof ValueInterface) {

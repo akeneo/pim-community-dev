@@ -109,6 +109,7 @@ extensions:
                 content: pim_common.confirm_deletion
                 success: pim_enrich.entity.product.flash.delete.success
                 fail: pim_enrich.entity.product.flash.delete.fail
+                buttonText: pim_common.delete
             redirect: pim_enrich_product_index
 
     pim-product-edit-form-download-pdf:
@@ -124,6 +125,14 @@ extensions:
         targetZone: secondary-actions
         aclResourceId: pim_enrich_product_edit_attributes
         position: 80
+
+    pim-free-trial-product-edit-form-start-copy:
+        module: pim/product-edit-form/free-trial-start-copy
+        parent: pim-product-edit-form
+        targetZone: buttons
+        aclResourceId: pim_enrich_product_edit_attributes
+        position: 60
+        feature: free_trial
 
     pim-product-edit-form-convert-to-simple-product:
         module: pim/product-edit-form/convert-to-simple-product

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\ApiEventBuildErrorLogger;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\ApiEventBuildErrorLoggerInterface;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuilderNotFoundException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
@@ -24,14 +24,14 @@ class WebhookEventBuilder
 {
     /** @var iterable<EventDataBuilderInterface> */
     private iterable $eventDataBuilders;
-    private ApiEventBuildErrorLogger $apiEventBuildErrorLogger;
+    private ApiEventBuildErrorLoggerInterface $apiEventBuildErrorLogger;
 
     /**
      * @param iterable<EventDataBuilderInterface> $eventDataBuilders
      */
     public function __construct(
         iterable $eventDataBuilders,
-        ApiEventBuildErrorLogger $apiEventBuildErrorLogger
+        ApiEventBuildErrorLoggerInterface $apiEventBuildErrorLogger
     ) {
         $this->eventDataBuilders = $eventDataBuilders;
         $this->apiEventBuildErrorLogger = $apiEventBuildErrorLogger;
@@ -106,7 +106,7 @@ class WebhookEventBuilder
             $data = $eventDataCollection->getEventData($pimEvent);
 
             if (null === $data) {
-                throw new \LogicException(sprintf('Event %s should have event data', $pimEvent->getUuid()));
+                throw new \LogicException(\sprintf('Event %s should have event data', $pimEvent->getUuid()));
             }
 
             if ($data instanceof \Throwable) {
@@ -121,7 +121,7 @@ class WebhookEventBuilder
             $apiEvents[] = new WebhookEvent(
                 $pimEvent->getName(),
                 $pimEvent->getUuid(),
-                date(\DateTimeInterface::ATOM, $pimEvent->getTimestamp()),
+                \date(\DateTimeInterface::ATOM, $pimEvent->getTimestamp()),
                 $pimEvent->getAuthor(),
                 $context['pim_source'],
                 $data,

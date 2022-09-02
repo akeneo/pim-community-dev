@@ -9,7 +9,7 @@ use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\DatagridRepositoryInterface;
 
 /**
- * Job execution repository
+ * Job execution repository.
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

@@ -11,7 +11,7 @@ use Akeneo\Connectivity\Connection\Application\Settings\Service\CreateUserInterf
 use Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolationListException;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepositoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -21,28 +21,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 final class CreateConnectionHandler
 {
-    private ConnectionRepository $repository;
-
-    private CreateClientInterface $createClient;
-
-    private ValidatorInterface $validator;
-
-    private CreateUserInterface $createUser;
-
-    private FindAConnectionHandler $findAConnectionHandler;
-
     public function __construct(
-        ValidatorInterface $validator,
-        ConnectionRepository $repository,
-        CreateClientInterface $createClient,
-        CreateUserInterface $createUser,
-        FindAConnectionHandler $findAConnectionHandler
+        private ValidatorInterface $validator,
+        private ConnectionRepositoryInterface $repository,
+        private CreateClientInterface $createClient,
+        private CreateUserInterface $createUser,
+        private FindAConnectionHandler $findAConnectionHandler,
     ) {
-        $this->validator = $validator;
-        $this->repository = $repository;
-        $this->createClient = $createClient;
-        $this->createUser = $createUser;
-        $this->findAConnectionHandler = $findAConnectionHandler;
     }
 
     public function handle(CreateConnectionCommand $command): ConnectionWithCredentials
@@ -52,7 +37,9 @@ final class CreateConnectionHandler
             throw new ConstraintViolationListException($violations);
         }
 
-        $user = $this->createUser->execute($command->code(), $command->label(), ' ');
+        $groups = null === $command->userGroup() ? null : [$command->userGroup()];
+
+        $user = $this->createUser->execute($command->code(), $command->label(), ' ', $groups);
         $client = $this->createClient->execute($command->label());
 
         $connection = new Connection(

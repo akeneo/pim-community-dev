@@ -2,14 +2,14 @@
 
 namespace Specification\Akeneo\UserManagement\Bundle\Context;
 
-use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Bundle\SecurityBundle\Security\FirewallConfig;
 use Symfony\Bundle\SecurityBundle\Security\FirewallMap;
@@ -102,7 +102,7 @@ class UserContextSpec extends ObjectBehavior
     }
 
     function it_provides_user_locale_if_locale_is_not_present_in_user_session(
-        User $user,
+        UserInterface $user,
         $request,
         $session,
         $de
@@ -178,7 +178,7 @@ class UserContextSpec extends ObjectBehavior
         $this->getUserLocaleCodes()->shouldReturn(['en_US', 'fr_FR', 'de_DE']);
     }
 
-    function its_get_user_tree_method_returns_user_tree_if_available(User $user, $secondTree)
+    function its_get_user_tree_method_returns_user_tree_if_available(UserInterface $user, $secondTree)
     {
         $user->getDefaultTree()->willReturn($secondTree);
         $this->getUserProductCategoryTree()->shouldReturn($secondTree);

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Application\Audit\Query;
 
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\PeriodEventCount;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectPeriodErrorCountPerConnectionQuery;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\SelectPeriodErrorCountPerConnectionQueryInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -13,9 +13,9 @@ use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectPeriodEr
  */
 final class GetPeriodErrorCountPerConnectionHandler
 {
-    private SelectPeriodErrorCountPerConnectionQuery $selectPeriodErrorCountPerConnectionQuery;
+    private SelectPeriodErrorCountPerConnectionQueryInterface $selectPeriodErrorCountPerConnectionQuery;
 
-    public function __construct(SelectPeriodErrorCountPerConnectionQuery $selectPeriodErrorCountPerConnectionQuery)
+    public function __construct(SelectPeriodErrorCountPerConnectionQueryInterface $selectPeriodErrorCountPerConnectionQuery)
     {
         $this->selectPeriodErrorCountPerConnectionQuery = $selectPeriodErrorCountPerConnectionQuery;
     }

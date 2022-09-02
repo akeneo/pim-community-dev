@@ -96,7 +96,7 @@ describe('job execution', () => {
     expect(isJobFinished(getJobWithStatus('ABANDONED'))).toBe(true);
     expect(isJobFinished(getJobWithStatus('UNKNOWN'))).toBe(true);
     expect(isJobFinished(getJobWithStatus('STARTING'))).toBe(false);
-    expect(isJobFinished(getJobWithStatus('STARTED'))).toBe(false);
+    expect(isJobFinished(getJobWithStatus('IN_PROGRESS'))).toBe(false);
     expect(isJobFinished(getJobWithStatus('STOPPING'))).toBe(false);
   });
 });

@@ -2,7 +2,7 @@
 
 namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
-use Akeneo\Platform\CommunityVersion;
+use Akeneo\Platform\Bundle\PimVersionBundle\Version\CommunityVersion;
 use Akeneo\Platform\Requirements;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
@@ -20,22 +20,10 @@ class CheckRequirementsCommand extends Command
 {
     protected static $defaultName = 'pim:installer:check-requirements';
 
-    /** @var string */
-    private $pimVersion;
-
-    /** @var string */
-    private $env;
-
     public function __construct(
-        string $pimVersion,
-        string $env,
-        string $rootDirectory
+        private string $rootDirectory
     ) {
         parent::__construct();
-
-        $this->pimVersion = $pimVersion;
-        $this->env = $env;
-        $this->rootDirectory = $rootDirectory;
     }
 
     /**

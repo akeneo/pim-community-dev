@@ -10,28 +10,27 @@ use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\SerializerAwareInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class JobExecutionNormalizerSpec extends ObjectBehavior
 {
     function let(
-        SerializerInterface $serializer,
+        NormalizerInterface $normalizer,
         TranslatorInterface $translator,
         NormalizerInterface $jobInstanceNormalizer,
         JobRegistry $jobRegistry
     ) {
         $this->beConstructedWith($translator, $jobInstanceNormalizer, $jobRegistry);
 
-        $serializer->implement(NormalizerInterface::class);
-        $this->setSerializer($serializer);
+        $normalizer->implement(NormalizerInterface::class);
+        $this->setNormalizer($normalizer);
     }
 
     function it_is_a_serializer_aware_normalizer()
     {
-        $this->shouldBeAnInstanceOf(SerializerAwareInterface::class);
+        $this->shouldBeAnInstanceOf(NormalizerAwareInterface::class);
         $this->shouldImplement(NormalizerInterface::class);
     }
 
@@ -41,9 +40,9 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_job_execution_instance(
-        $serializer,
-        $translator,
-        $jobInstanceNormalizer,
+        NormalizerInterface $normalizer,
+        TranslatorInterface $translator,
+        NormalizerInterface $jobInstanceNormalizer,
         JobInstance $jobInstance,
         JobExecution $jobExecution,
         StepExecution $exportExecution,
@@ -65,8 +64,8 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
         $translator->trans('pim_import_export.batch_status.1')->willReturn('COMPLETED');
 
         $jobExecution->getStepExecutions()->willReturn([$exportExecution, $cleanExecution]);
-        $serializer->normalize($exportExecution, 'any', [])->willReturn('**exportExecution**');
-        $serializer->normalize($cleanExecution, 'any', [])->willReturn('**cleanExecution**');
+        $normalizer->normalize($exportExecution, 'any', [])->willReturn('**exportExecution**');
+        $normalizer->normalize($cleanExecution, 'any', [])->willReturn('**cleanExecution**');
         $jobInstanceNormalizer->normalize($jobInstance, 'standard', Argument::cetera())->willReturn(['Normalized job instance']);
 
         $this->normalize($jobExecution, 'any')->shouldReturn([
@@ -80,10 +79,10 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_stoppable_job_execution_instance(
-        $serializer,
-        $translator,
-        $jobInstanceNormalizer,
-        $jobRegistry,
+        NormalizerInterface $normalizer,
+        TranslatorInterface $translator,
+        NormalizerInterface $jobInstanceNormalizer,
+        JobRegistry $jobRegistry,
         JobInstance $jobInstance,
         JobExecution $jobExecution,
         StepExecution $exportExecution,
@@ -99,6 +98,7 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
         $jobInstance->getJobName()->willReturn('wow_job');
         $translator->trans('error', ['foo' => 'bar'])->willReturn('Such error');
 
+        $jobRegistry->has('wow_job')->willReturn(true);
         $jobRegistry->get('wow_job')->willReturn($job);
         $job->isStoppable()->willReturn(true);
         $jobExecution->isRunning()->willReturn(true);
@@ -108,8 +108,8 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
         $translator->trans('pim_import_export.batch_status.1')->willReturn('COMPLETED');
 
         $jobExecution->getStepExecutions()->willReturn([$exportExecution, $cleanExecution]);
-        $serializer->normalize($exportExecution, 'any', [])->willReturn('**exportExecution**');
-        $serializer->normalize($cleanExecution, 'any', [])->willReturn('**cleanExecution**');
+        $normalizer->normalize($exportExecution, 'any', [])->willReturn('**exportExecution**');
+        $normalizer->normalize($cleanExecution, 'any', [])->willReturn('**cleanExecution**');
         $jobInstanceNormalizer->normalize($jobInstance, 'standard', Argument::cetera())->willReturn(['Normalized job instance']);
 
         $this->normalize($jobExecution, 'any')->shouldReturn([
@@ -120,25 +120,5 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
             'status'         => 'COMPLETED',
             'jobInstance'    => ['Normalized job instance']
         ]);
-    }
-
-    function it_throws_exception_when_serializer_is_not_a_normalizer(
-        JobExecution $jobExecution,
-        SerializerInterface $nonNormalizeSerializer,
-        $exportExecution,
-        $cleanExecution
-    ) {
-        $this->setSerializer($nonNormalizeSerializer);
-        $jobExecution->getStepExecutions()->willReturn([$exportExecution, $cleanExecution]);
-        $jobExecution->getFailureExceptions()->willReturn([]);
-        $jobExecution->getLabel()->willReturn('My Job');
-
-        $this
-            ->shouldThrow(
-                new \RuntimeException(
-                    'Cannot normalize job execution of "My Job" because injected serializer is not a normalizer'
-                )
-            )
-            ->duringNormalize($jobExecution, 'any');
     }
 }

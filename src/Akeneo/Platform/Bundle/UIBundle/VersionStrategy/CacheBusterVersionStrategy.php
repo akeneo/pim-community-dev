@@ -2,7 +2,7 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\VersionStrategy;
 
-use Akeneo\Platform\VersionProviderInterface;
+use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use Symfony\Component\Asset\VersionStrategy\VersionStrategyInterface;
 
 class CacheBusterVersionStrategy implements VersionStrategyInterface

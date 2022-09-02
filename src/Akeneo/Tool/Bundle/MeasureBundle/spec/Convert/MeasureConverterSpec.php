@@ -48,6 +48,7 @@ YAML;
     public function it_allows_to_define_the_family()
     {
         $this->setFamily('Length')->shouldReturnAnInstanceOf(MeasureConverter::class);
+        $this->setFamily('length')->shouldReturnAnInstanceOf(MeasureConverter::class);
     }
 
     public function it_throws_an_exception_if_an_unknown_family_is_set()
@@ -69,22 +70,46 @@ YAML;
         )->shouldReturn('1000000.000000000000');
     }
 
+    public function it_converts_a_value_from_a_base_unit_to_a_final_unit_case_insensitive()
+    {
+        $this->setFamily('weight');
+        $this->convert(
+            'kilogram',
+            'milligram',
+            1
+        )->shouldReturn('1000000.000000000000');
+    }
+
     public function it_converts_a_value_to_a_standard_unit()
     {
         $this->setFamily('Weight');
+        $this->convertBaseToStandard('MILLIGRAM', 1000)->shouldReturn('1.000000000000');
+        $this->convertBaseToStandard('milligram', 1000)->shouldReturn('1.000000000000');
+    }
+
+    public function it_converts_a_very_small_value_to_a_standard_unit()
+    {
+        $this->setFamily('Weight');
         $this->convertBaseToStandard(
-              'MILLIGRAM',
-            1000
-        )->shouldReturn('1.000000000000');
+            'KILOGRAM',
+            1.0E-7
+        )->shouldReturn('0.000100000000');
+    }
+
+    public function it_returns_zero_when_value_is_not_numeric()
+    {
+        $this->setFamily('Weight');
+        $this->convertBaseToStandard(
+            'KILOGRAM',
+            '1.900.000'
+        )->shouldReturn('0');
     }
 
     public function it_converts_a_standard_value_to_a_final_unit()
     {
         $this->setFamily('Weight');
-        $this->convertStandardToResult(
-              'KILOGRAM',
-            10
-        )->shouldReturn('0.010000000000');
+        $this->convertStandardToResult('KILOGRAM', 10)->shouldReturn('0.010000000000');
+        $this->convertStandardToResult('KiloGram', 10)->shouldReturn('0.010000000000');
     }
 
     public function it_throws_an_exception_if_the_unit_measure_does_not_exist()

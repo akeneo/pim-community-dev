@@ -2,6 +2,9 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Export\ProductQueryBuilder;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase;
 
 class ExportProductsByLocalesIntegration extends AbstractExportTestCase
@@ -65,54 +68,30 @@ class ExportProductsByLocalesIntegration extends AbstractExportTestCase
         ]);
 
         $this->createProduct('french', [
-            'family' => 'localized',
-            'values' => [
-                'name'        => [
-                    ['data' => 'French name', 'locale' => 'fr_FR', 'scope' => null],
-                ],
-                'description' => [
-                    ['data' => 'French desc', 'locale' => 'fr_FR', 'scope' => null],
-                ],
-            ],
+            new SetFamily('localized'),
+            new SetTextValue('name', null, 'fr_FR', 'French name'),
+            new SetTextareaValue('description', null, 'fr_FR', 'French desc')
         ]);
 
         $this->createProduct('english', [
-            'family' => 'localized',
-            'values' => [
-                'name'        => [
-                    ['data' => 'English name', 'locale' => 'en_US', 'scope' => null],
-                ],
-                'description' => [
-                    ['data' => 'French desc', 'locale' => 'fr_FR', 'scope' => null],
-                ],
-            ],
+            new SetFamily('localized'),
+            new SetTextValue('name', null, 'en_US', 'English name'),
+            new SetTextareaValue('description', null, 'fr_FR', 'French desc')
         ]);
 
         $this->createProduct('complete', [
-            'family' => 'localized',
-            'values' => [
-                'name'        => [
-                    ['data' => 'French name', 'locale' => 'fr_FR', 'scope' => null],
-                    ['data' => 'English name', 'locale' => 'en_US', 'scope' => null],
-                ],
-                'description' => [
-                    ['data' => 'French desc', 'locale' => 'fr_FR', 'scope' => null],
-                ],
-            ],
+            new SetFamily('localized'),
+            new SetTextValue('name', null, 'fr_FR', 'French name'),
+            new SetTextValue('name', null, 'en_US', 'English name'),
+            new SetTextareaValue('description', null, 'fr_FR', 'French desc'),
         ]);
 
-        $this->createProduct('empty', ['family' => 'localized']);
+        $this->createProduct('empty', [new SetFamily('localized')]);
 
         $this->createProduct('withLocaleSpecificAttribute', [
-            'family' => 'accessories',
-            'values' => [
-                'name'        => [
-                    ['data' => 'English name', 'locale' => 'en_US', 'scope' => null],
-                ],
-                'localeSpecificAttribute' => [
-                    ['data' => 'Locale Specific Value', 'locale' => null, 'scope' => null, 'available_locales' => 'en_US'],
-                ],
-            ],
+            new SetFamily('accessories'),
+            new SetTextValue('name', null, 'en_US', 'English name'),
+            new SetTextareaValue('localeSpecificAttribute', null, null, 'Locale Specific Value')
         ]);
     }
 
@@ -120,10 +99,10 @@ class ExportProductsByLocalesIntegration extends AbstractExportTestCase
     {
         $expectedCsv = <<<CSV
 sku;categories;enabled;family;groups;description-fr_FR;name-fr_FR
-french;;1;localized;;"French desc";"French name"
-english;;1;localized;;"French desc";
 complete;;1;localized;;"French desc";"French name"
 empty;;1;localized;;;
+english;;1;localized;;"French desc";
+french;;1;localized;;"French desc";"French name"
 withLocaleSpecificAttribute;;1;accessories;;;
 
 CSV;
@@ -145,10 +124,10 @@ CSV;
     {
         $expectedCsv = <<<CSV
 sku;categories;enabled;family;groups;description-fr_FR;localeSpecificAttribute;name-en_US;name-fr_FR
-french;;1;localized;;"French desc";;;"French name"
-english;;1;localized;;"French desc";;"English name";
 complete;;1;localized;;"French desc";;"English name";"French name"
 empty;;1;localized;;;;;
+english;;1;localized;;"French desc";;"English name";
+french;;1;localized;;"French desc";;;"French name"
 withLocaleSpecificAttribute;;1;accessories;;;"Locale Specific Value";"English name";
 
 CSV;
@@ -174,8 +153,8 @@ CSV;
 
         $expectedCsv = <<<CSV
 sku;categories;enabled;family;groups;localeSpecificAttribute;name-en_US
-english;;1;localized;;;"English name"
 complete;;1;localized;;;"English name"
+english;;1;localized;;;"English name"
 withLocaleSpecificAttribute;;1;accessories;;"Locale Specific Value";"English name"
 
 CSV;

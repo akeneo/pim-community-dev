@@ -12,7 +12,7 @@ use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\ApiErrorCo
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\BusinessError;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\HourlyErrorCount;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\TechnicalError;
-use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Repository\BusinessErrorRepository;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Repository\BusinessErrorRepositoryInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use FOS\RestBundle\Context\Context;
@@ -26,7 +26,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  */
 class CollectApiError
 {
-    private BusinessErrorRepository $repository;
+    private BusinessErrorRepositoryInterface $repository;
 
     private ConnectionContextInterface $connectionContext;
 
@@ -38,7 +38,7 @@ class CollectApiError
 
     public function __construct(
         ConnectionContextInterface $connectionContext,
-        BusinessErrorRepository $repository,
+        BusinessErrorRepositoryInterface $repository,
         UpdateConnectionErrorCountHandler $updateErrorCountHandler,
         Serializer $serializer
     ) {
@@ -108,7 +108,7 @@ class CollectApiError
             $errorCounts[] = new HourlyErrorCount(
                 (string) $connection->code(),
                 HourlyInterval::createFromDateTime($now),
-                count($errors),
+                \count($errors),
                 $errorType
             );
         }

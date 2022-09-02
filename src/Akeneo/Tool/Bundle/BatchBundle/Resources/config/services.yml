@@ -43,11 +43,10 @@ services:
     akeneo_batch.mail_notifier:
         class: '%akeneo_batch.mail_notifier.class%'
         arguments:
-            - '@akeneo_batch.logger.batch_log_handler'
+            - '@logger'
             - '@security.token_storage'
             - '@twig'
-            - '@mailer'
-            - '%mailer_url%'
+            - '@pim_notification.email.email_notifier'
 
     akeneo_batch.logger.batch_log_handler:
         class: '%akeneo_batch.logger.batch_log_handler.class%'
@@ -82,6 +81,16 @@ services:
             - '%kernel.environment%'
             - '%kernel.logs_dir%'
 
+    akeneo_batch.launcher.synchronous_job_launcher:
+        class: Akeneo\Tool\Bundle\BatchBundle\Launcher\SynchronousJobLauncher
+        arguments:
+            - '@akeneo_batch_queue.manager.job_execution_manager'
+            - '@akeneo_batch.job_repository'
+            - '@pim_enrich.repository.job_execution'
+            - '@logger'
+            - '@akeneo_batch.job.job_registry'
+            - '%kernel.project_dir%'
+
     akeneo_batch.entity_manager.persisted_connection_entity_manager:
         class: '%akeneo_batch.entity_manager.persisted_connection_entity_manager.class%'
         arguments:
@@ -113,3 +122,20 @@ services:
           - '%kernel.environment%'
         tags:
           - { name: kernel.event_listener, event: console.command }
+
+    Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandler:
+        arguments:
+            - '@akeneo_batch.logger.batch_log_handler'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo_batch.job.job_registry'
+
+    Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler:
+        arguments:
+            - '@akeneo_batch.job_repository'
+            - '@doctrine'
+            - '@akeneo_batch.job.job_registry'
+            - '@akeneo_batch.job_parameters_factory'
+            - '@akeneo_batch.job.job_parameters_validator'
+
+    Akeneo\Tool\Component\Batch\Clock\ClockInterface:
+        class: Akeneo\Tool\Component\Batch\Clock\SystemClock

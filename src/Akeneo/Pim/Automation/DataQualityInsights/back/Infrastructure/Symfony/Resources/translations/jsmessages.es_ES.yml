@@ -43,7 +43,10 @@ akeneo_data_quality_insights:
       day: día
     key_indicators:
       title: Indicadores clave
-      products_to_work_on: '{1}Tiene <button>1 producto</button> para trabajar.|]1, 200[Tiene <button>{{ count }} productos</button> para trabajar.|[200, Inf[Tiene <button>más de {{ count }} productos</button> para trabajar.'
+      products: '{1}1 producto|]1, 200[{{ count }} productos|[200, Inf[más de {{ count }} productos'
+      product_models: '{1}1 modelo de producto|]1, 200[{{ count }} modelos de producto|[200, Inf[más de {{ count }} modelos de producto'
+      entities_to_work_on: 'Tienes <improvable_products_count_link/> para trabajar.'
+      entities_to_work_on_2_kinds: 'Tienes <improvable_products_count_link/> y <improvable_product_models_count_link/> para trabajar.'
       list:
         has_image:
           title: Productos con una imagen
@@ -152,5 +155,8 @@ akeneo_data_quality_insights:
       to_improve: Para mejorar
       "yes": "Sí"
       "no": "No"
+  quality_score:
+    pending: En progreso
+    title: "Puntuación de calidad:"
 pim_title:
   akeneo_data_quality_insights_dashboard: Información sobre la calidad de los datos

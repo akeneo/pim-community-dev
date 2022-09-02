@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Sorter\TextArea;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
@@ -31,30 +32,18 @@ class ScopableSorterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('cat', [
-            'values' => [
-                'a_scopable_text_area' => [
-                    ['data' => 'black cat', 'locale' => null, 'scope' => 'ecommerce'],
-                    ['data' => 'red cat', 'locale' => null, 'scope' => 'tablet'],
-                ]
-            ]
+            new SetTextareaValue('a_scopable_text_area', 'ecommerce', null, 'black cat'),
+            new SetTextareaValue('a_scopable_text_area', 'tablet', null, 'red cat'),
         ]);
 
         $this->createProduct('cattle', [
-            'values' => [
-                'a_scopable_text_area' => [
-                    ['data' => 'cattle', 'locale' => null, 'scope' => 'ecommerce'],
-                    ['data' => 'cattle', 'locale' => null, 'scope' => 'tablet']
-                ]
-            ]
+            new SetTextareaValue('a_scopable_text_area','ecommerce', null, 'cattle'),
+            new SetTextareaValue('a_scopable_text_area','tablet', null, 'cattle'),
         ]);
 
         $this->createProduct('dog', [
-            'values' => [
-                'a_scopable_text_area' => [
-                    ['data' => 'just a dog...', 'locale' => null, 'scope' => 'ecommerce'],
-                    ['data' => 'dog', 'locale' => null, 'scope' => 'tablet']
-                ]
-            ]
+            new SetTextareaValue('a_scopable_text_area', 'ecommerce', null,'just a dog...'),
+            new SetTextareaValue('a_scopable_text_area', 'tablet', null,'dog'),
         ]);
 
         $this->createProduct('empty_product', []);
@@ -84,17 +73,5 @@ class ScopableSorterIntegration extends AbstractProductQueryBuilderTestCase
         $this->expectExceptionMessage('Direction "A_BAD_DIRECTION" is not supported');
 
         $this->executeSorter([['a_scopable_text_area', 'A_BAD_DIRECTION', ['scope' => 'ecommerce']]]);
-    }
-
-    /**
-     * @jira https://akeneo.atlassian.net/browse/PIM-6872
-     */
-    public function testSorterWithNoDataOnSorterField()
-    {
-        $result = $this->executeSorter([['a_scopable_text_area', Directions::DESCENDING, ['scope' => 'ecommerce_china']]]);
-        $this->assertOrder($result, ['cat', 'cattle', 'dog', 'empty_product']);
-
-        $result = $this->executeSorter([['a_scopable_text_area', Directions::ASCENDING, ['scope' => 'ecommerce_china']]]);
-        $this->assertOrder($result, ['cat', 'cattle', 'dog', 'empty_product']);
     }
 }

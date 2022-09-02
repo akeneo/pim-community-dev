@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Query;
@@ -17,17 +18,8 @@ interface GetLastOperationsInterface
 {
     /**
      * Get data for the last operations widget.
-     *
-     * @param UserInterface|null $user
-     *
-     * @return array
      */
     public function execute(?UserInterface $user = null): array;
 
-    /**
-     * @param UserInterface|null $user
-     *
-     * @return QueryBuilder
-     */
     public function getQueryBuilder(?UserInterface $user = null): QueryBuilder;
 }

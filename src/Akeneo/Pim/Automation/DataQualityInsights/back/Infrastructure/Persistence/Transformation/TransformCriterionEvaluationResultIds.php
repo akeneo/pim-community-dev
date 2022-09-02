@@ -4,26 +4,52 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfNonRequiredAttributes;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\CriterionEvaluationResultData\TransformResultDataIdsInterface;
+
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 final class TransformCriterionEvaluationResultIds
 {
-    private Attributes $attributes;
-
-    private Channels $channels;
-
-    private Locales $locales;
-
-    public function __construct(Attributes $attributes, Channels $channels, Locales $locales)
-    {
-        $this->attributes = $attributes;
-        $this->channels = $channels;
-        $this->locales = $locales;
+    public function __construct(
+        private TransformChannelLocaleDataIds   $transformChannelLocaleDataIds,
+        private TransformResultDataIdsInterface $transformCommonCriterionResultData,
+        private TransformResultDataIdsInterface $transformCompletenessResultData,
+    ) {
     }
 
-    public function transformToCodes(array $evaluationResult): array
+    /**
+     * Example of array returned (with one channel and one locale)
+     * [
+     *   'data' => [
+     *     'total_number_of_attributes' => [
+     *       'ecommerce' => [
+     *         'en_US' => 5,
+     *       ],
+     *     ],
+     *     'number_of_improvable_attributes' => [
+     *       'ecommerce' => [
+     *         'en_US' => 2,
+     *       ],
+     *     ],
+     *   ],
+     *   'rates' => [
+     *     'ecommerce' => [
+     *       'en_US' => 60,
+     *     ],
+     *   ],
+     *   'status' => [
+     *     'ecommerce' => [
+     *       'en_US' => 'done',
+     *     ],
+     *   ],
+     * ]
+     */
+    public function transformToCodes(CriterionCode $criterionCode, array $evaluationResult): array
     {
         $resultByCodes = [];
         $propertiesIds = TransformCriterionEvaluationResultCodes::PROPERTIES_ID;
@@ -32,7 +58,7 @@ final class TransformCriterionEvaluationResultIds
         foreach ($evaluationResult as $propertyId => $propertyData) {
             switch ($propertyId) {
                 case $propertiesIds['data']:
-                    $propertyDataByCodes = $this->transformResultDataIdsToCodes($propertyData);
+                    $propertyDataByCodes = $this->getTransformResultData($criterionCode)->transformToCodes($propertyData);
                     break;
                 case $propertiesIds['rates']:
                     $propertyDataByCodes = $this->transformRatesIdsToCodes($propertyData);
@@ -50,73 +76,9 @@ final class TransformCriterionEvaluationResultIds
         return $resultByCodes;
     }
 
-    private function transformResultDataIdsToCodes(array $resultDataByIds): array
-    {
-        $dataByCodes = [];
-        foreach ($resultDataByIds as $dataType => $dataByIds) {
-            switch ($dataType) {
-                case TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['attributes_with_rates']:
-                    $dataByCodes['attributes_with_rates'] = $this->transformResultAttributeRatesIdsToCodes($dataByIds);
-                    break;
-                case TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['total_number_of_attributes']:
-                    $dataByCodes['total_number_of_attributes'] =
-                        $this->transformChannelLocaleDataFromIdsToCodes($dataByIds, fn ($number) => $number);
-                    break;
-                case TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['number_of_improvable_attributes']:
-                    $dataByCodes['number_of_improvable_attributes'] =
-                        $this->transformChannelLocaleDataFromIdsToCodes($dataByIds, fn ($number) => $number);
-                    break;
-                default:
-                    throw new CriterionEvaluationResultTransformationFailedException(sprintf('Unknown data type id "%s"', $dataType));
-            }
-        }
-
-        return $dataByCodes;
-    }
-
-    private function transformChannelLocaleDataFromIdsToCodes(array $channelLocaleData, \Closure $transformData): array
-    {
-        $channelLocaleDataByCodes = [];
-
-        foreach ($channelLocaleData as $channelId => $localeData) {
-            $channelCode = $this->channels->getCodeById($channelId);
-            if (null === $channelCode) {
-                continue;
-            }
-
-            foreach ($localeData as $localeId => $data) {
-                $localeCode = $this->locales->getCodeById($localeId);
-                if (null === $localeCode) {
-                    continue;
-                }
-
-                $channelLocaleDataByCodes[$channelCode][$localeCode] = $transformData($data);
-            }
-        }
-
-        return $channelLocaleDataByCodes;
-    }
-
-    private function transformResultAttributeRatesIdsToCodes(array $resultAttributeIdsRates): array
-    {
-        return $this->transformChannelLocaleDataFromIdsToCodes($resultAttributeIdsRates, function (array $attributeRates) {
-            $attributeCodesRates = [];
-            $attributesCodes = $this->attributes->getCodesByIds(array_keys($attributeRates));
-
-            foreach ($attributeRates as $attributeId => $attributeRate) {
-                $attributeCode = $attributesCodes[$attributeId] ?? null;
-                if (null !== $attributeCode) {
-                    $attributeCodesRates[$attributeCode] = $attributeRate;
-                }
-            }
-
-            return $attributeCodesRates;
-        });
-    }
-
     private function transformRatesIdsToCodes(array $ratesIds): array
     {
-        return $this->transformChannelLocaleDataFromIdsToCodes($ratesIds, function ($rate) {
+        return $this->transformChannelLocaleDataIds->transformToCodes($ratesIds, function ($rate) {
             return $rate;
         });
     }
@@ -124,12 +86,24 @@ final class TransformCriterionEvaluationResultIds
     private function transformStatusIdsToCodes(array $statusIds): array
     {
         $statusCodes = array_flip(TransformCriterionEvaluationResultCodes::STATUS_ID);
-        return $this->transformChannelLocaleDataFromIdsToCodes($statusIds, function ($statusId) use ($statusCodes) {
+        return $this->transformChannelLocaleDataIds->transformToCodes($statusIds, function ($statusId) use ($statusCodes) {
             if (!isset($statusCodes[$statusId])) {
                 throw new CriterionEvaluationResultTransformationFailedException(sprintf('Unknown status id "%s"', $statusId));
             }
 
             return $statusCodes[$statusId];
         });
+    }
+
+    public function getTransformResultData(CriterionCode $criterionCode): TransformResultDataIdsInterface
+    {
+        $stringCriterionCode = \strval($criterionCode);
+
+        if (EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE === $stringCriterionCode
+            || EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE === $stringCriterionCode) {
+            return $this->transformCompletenessResultData;
+        }
+
+        return $this->transformCommonCriterionResultData;
     }
 }

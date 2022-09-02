@@ -8,7 +8,7 @@ type Props = {
     count: number;
 };
 
-const MarketplaceHelper: FC<Props> = ({count}) => {
+export const MarketplaceHelper: FC<Props> = ({count}) => {
     const translate = useTranslate();
     const featureFlag = useFeatureFlags();
     const fetchMarketplaceUrl = useFetchMarketplaceUrl();
@@ -43,5 +43,3 @@ const MarketplaceHelper: FC<Props> = ({count}) => {
         </Information>
     );
 };
-
-export default MarketplaceHelper;

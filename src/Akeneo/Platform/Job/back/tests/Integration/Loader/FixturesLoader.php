@@ -13,19 +13,13 @@ use Doctrine\DBAL\Connection;
  */
 final class FixturesLoader
 {
-    private Connection $dbalConnection;
-    private FixturesJobHelper $fixturesJobHelper;
-    private FixturesUserHelper $fixturesUserHelper;
-    private array $jobInstances;
+    private array $jobInstances = [];
 
     public function __construct(
-        Connection $dbalConnection,
-        FixturesJobHelper $fixturesJobHelper,
-        FixturesUserHelper $fixturesUserHelper
+        private Connection $dbalConnection,
+        private FixturesJobHelper $fixturesJobHelper,
+        private FixturesUserHelper $fixturesUserHelper
     ) {
-        $this->dbalConnection = $dbalConnection;
-        $this->fixturesJobHelper = $fixturesJobHelper;
-        $this->fixturesUserHelper = $fixturesUserHelper;
     }
 
     public function resetFixtures(): void

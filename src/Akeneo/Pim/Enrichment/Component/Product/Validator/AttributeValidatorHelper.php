@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Validator;
 
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\LocalizableAttributeException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\NotLocalizableAttributeException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnavailableLocaleException;

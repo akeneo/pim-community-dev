@@ -24,10 +24,10 @@ final class GetAllAppsResult
     {
         foreach ($apps as $app) {
             if (!$app instanceof App) {
-                throw new \InvalidArgumentException(sprintf(
+                throw new \InvalidArgumentException(\sprintf(
                     'Expected an array of "%s", got "%s".',
                     App::class,
-                    gettype($app)
+                    \gettype($app)
                 ));
             }
         }
@@ -50,7 +50,7 @@ final class GetAllAppsResult
     {
         return self::create(
             $this->total,
-            array_map(function (App $app) use ($queryParameters) {
+            \array_map(function (App $app) use ($queryParameters) {
                 return $app->withAnalytics($queryParameters);
             }, $this->apps),
         );
@@ -63,7 +63,7 @@ final class GetAllAppsResult
     {
         return self::create(
             $this->total,
-            array_map(function (App $app) use ($queryParameters) {
+            \array_map(function (App $app) use ($queryParameters) {
                 return $app->withPimUrlSource($queryParameters);
             }, $this->apps),
         );

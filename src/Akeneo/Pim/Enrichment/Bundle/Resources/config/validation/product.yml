@@ -17,12 +17,18 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
         - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\OnlyExpectedAttributes: ~
 
     properties:
+        uuid:
+            - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsUuid4: ~
         identifier:
             - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotBlank:
                 attributeCode: 'identifier'
             - Regex:
                 pattern: '/^(?!\s)[^,;]+(?<!\s)$/'
                 message: 'regex.comma_or_semicolon_or_surrounding_space.message'
+            - Regex:
+                pattern: '/[\r\n]/'
+                message: 'regex.line_break.message'
+                match: false
             - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Length:
                 max: 255
                 attributeCode: 'identifier'

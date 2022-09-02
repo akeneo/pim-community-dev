@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
@@ -123,7 +123,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface, Cacheabl
         }
 
         return [
-            'id'                 => $entity->getId(),
+            'id' => $entity instanceof ProductInterface ? $entity->getUuid()->toString() : $entity->getId(),
             'identifier'         => $identifier,
             'axes_values_labels' => $this->getAxesValuesLabelsForLocales($entity, $localeCodes),
             'labels'             => $labels,
@@ -225,8 +225,9 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface, Cacheabl
         }
 
         if ($entity instanceof ProductInterface && $entity->isVariant()) {
-            $completenessCollection = $this->completenessCalculator->fromProductIdentifier($entity->getIdentifier());
+            $completenessCollection = $this->completenessCalculator->fromProductUuid($entity->getUuid());
             if (null === $completenessCollection) {
+                // TODO There is a remaining getId()
                 $completenessCollection = new ProductCompletenessWithMissingAttributeCodesCollection($entity->getId(), []);
             }
 

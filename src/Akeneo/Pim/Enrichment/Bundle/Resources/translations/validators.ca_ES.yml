@@ -65,8 +65,6 @@ pim_catalog:
     variant_product_invalid_family: 'La variant de la família de producte ha de ser igual que el seu pare'
     php_int_max_reached: 'El nombre màxim ha de ser inferior a %php_int_max%.'
     not_null_family: La família no pot ser "nul·la" perquè el vostre producte amb l'identificador %sku% és un producte variant.
-    variant_product_has_parent: 'La variant de producte "%variant_product%" ha de tenir un pare'
-    invalid_variant_product_parent: 'La variant de producte %variant_product% no pot tenir model de producte %product_model% com a pare (aquest model de producte només pot tenir un altre model de producte com a fill)'
     modified_variant_axis_value: 'Els variants d''eixos "%variant_axis%" no poden ser modificats, "%provided_value%" donats'
     family_variant_attributes_unique: Els atributs han de ser únics, "%attributes%" s'utilitzen diverses vegades en la configuració de variants d'atributs
     family_variant_axes_unique: Els variants d'eixos han de ser únics, "%attributes%" s'utilitzen diverses vegades en la configuració de variants d'atributs
@@ -115,6 +113,9 @@ pim_catalog:
       association_type_does_not_exist: Aquest tipus d'associació no existeix. Assegureu-vos que no s'hagi esborrat mentrestant.
       association_type_is_not_quantified: '"{{ association_type }}" no es pot utilitzar per a associacions amb quantitats. Si us plau, trieu un tipus d''associació diferent amb quantitats o utilitzeu la propietat "associacions".'
       association_type_should_not_be_quantified: '"{{ association_type }}" només es pot utilitzar per a associacions amb quantitats. Si us plau, trieu un tipus d''associació diferent o utilitzeu la propietat "quantified_associations".'
+    boolean:
+      boolean_value_is_required: L'atribut {{ attribute_code }} requereix un valor booleà (vertader o fals) com a dades, s'ha detectat un {{ given_type }}.
+      boolean_value_is_required_in_import: L'atribut {{ attribute_code }} requereix un valor booleà (1 o 0) com a dades, s'ha detectat un {{ given_type }}.
 mass_edit:
   edit_common_attributes:
     invalid_values: Hi ha errors en el formulari d'atributs
@@ -122,16 +123,3 @@ pim_datagrid:
   column_configurator:
     label:
       unique_message: L'etiqueta ha de ser única
-#TODO: move elsewhere?
-pim_enrich.product:
-  validation:
-    upsert:
-      set_value:
-        no_channel_code_provided_for_scopable_attribute: 'L''atribut {{ attributeCode }} requereix un canal'
-        channel_code_provided_for_non_scopable_attribute: 'L''atribut {{ attributeCode }} no requereix cap canal, s''ha detectat "{{ channelCode }}"'
-        no_locale_code_provided_for_localizable_attribute: 'L''atribut {{ attributeCode }} requereix una configuració regional'
-        locale_code_provided_for_non_localizable_attribute: 'L''atribut {{ attributeCode }} no requereix cap localització, s''ha detectat "{{ localeCode }}"'
-        invalid_locale_code_for_locale_specific_attribute: 'El {{ attributeCode }} requereix una de les configuracions regionals següents: {{ availableLocales }}; S''ha detectat "{{ localeCode }}"'
-        channel_does_not_exist: 'El canal {{ channelCode }} no existeix'
-        locale_is_not_active: 'La configuració regional {{ localeCode }} no existeix o no està activa'
-        locale_not_activated_for_channel: 'La configuració regional {{ localeCode }} no està activada per al canal {{ channelCode }}'

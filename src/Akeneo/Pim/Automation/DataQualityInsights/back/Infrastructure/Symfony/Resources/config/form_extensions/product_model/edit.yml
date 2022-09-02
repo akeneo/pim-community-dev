@@ -10,7 +10,7 @@ extensions:
         module: akeneo/data-quality-insights/infrastructure/product-edit-form/data-quality-insights-app
         parent: pim-product-model-edit-form
         targetZone: content
-        position: 10
+        position: 110
         feature: data_quality_insights
 
     pim-product-model-edit-form-attribute-filter-all-missing-attributes:
@@ -26,7 +26,7 @@ extensions:
         feature: data_quality_insights
 
     pim-product-model-edit-form-data-quality-insights-quality-score:
-        module: akeneo/data-quality-insights/infrastructure/product-edit-form/product-model-quality-score
+        module: akeneo/data-quality-insights/infrastructure/product-edit-form/product-quality-score
         parent: pim-product-model-edit-form
         targetZone: meta
         position: 90

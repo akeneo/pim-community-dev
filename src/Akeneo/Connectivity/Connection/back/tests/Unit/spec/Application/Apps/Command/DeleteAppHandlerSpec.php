@@ -11,12 +11,13 @@ use Akeneo\Connectivity\Connection\Application\Apps\Service\DeleteUserRoleInterf
 use Akeneo\Connectivity\Connection\Application\Settings\Service\DeleteClientInterface;
 use Akeneo\Connectivity\Connection\Application\Settings\Service\DeleteUserInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppDeletion;
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\DeleteConnectedAppQueryInterface;
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppDeletionQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\DeleteConnectedAppQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetAppDeletionQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\SaveRevokedAccessTokensOfDisconnectedAppQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ClientId;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\UserId;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 
 class DeleteAppHandlerSpec extends ObjectBehavior
@@ -24,11 +25,12 @@ class DeleteAppHandlerSpec extends ObjectBehavior
     public function let(
         GetAppDeletionQueryInterface $getAppDeletionQuery,
         DeleteConnectedAppQueryInterface $deleteConnectedAppQuery,
-        ConnectionRepository $connectionRepository,
+        ConnectionRepositoryInterface $connectionRepository,
         DeleteUserInterface $deleteUser,
         DeleteClientInterface $deleteClient,
         DeleteUserGroupInterface $deleteUserGroup,
-        DeleteUserRoleInterface $deleteUserRole
+        DeleteUserRoleInterface $deleteUserRole,
+        SaveRevokedAccessTokensOfDisconnectedAppQueryInterface $saveRevokedAccessTokensOfDisconnectedAppQuery
     ): void {
         $this->beConstructedWith(
             $getAppDeletionQuery,
@@ -37,7 +39,8 @@ class DeleteAppHandlerSpec extends ObjectBehavior
             $deleteUser,
             $deleteClient,
             $deleteUserGroup,
-            $deleteUserRole
+            $deleteUserRole,
+            $saveRevokedAccessTokensOfDisconnectedAppQuery
         );
     }
 
@@ -48,11 +51,12 @@ class DeleteAppHandlerSpec extends ObjectBehavior
 
     public function it_deletes_an_app(
         GetAppDeletionQueryInterface $getAppDeletionQuery,
-        ConnectionRepository $connectionRepository,
+        ConnectionRepositoryInterface $connectionRepository,
         DeleteUserInterface $deleteUser,
         DeleteClientInterface $deleteClient,
         DeleteUserGroupInterface $deleteUserGroup,
         DeleteUserRoleInterface $deleteUserRole,
+        SaveRevokedAccessTokensOfDisconnectedAppQueryInterface $saveRevokedAccessTokensOfDisconnectedAppQuery,
         Connection $connection,
         ClientId $clientId,
         UserId $userId
@@ -70,6 +74,7 @@ class DeleteAppHandlerSpec extends ObjectBehavior
         $connection->clientId()->willReturn($clientId);
         $connection->userId()->willReturn($userId);
 
+        $saveRevokedAccessTokensOfDisconnectedAppQuery->execute('app_id')->shouldBeCalled();
         $connectionRepository->delete($connection)->shouldBeCalled();
         $deleteClient->execute($clientId)->shouldBeCalled();
         $deleteUser->execute($userId)->shouldBeCalled();

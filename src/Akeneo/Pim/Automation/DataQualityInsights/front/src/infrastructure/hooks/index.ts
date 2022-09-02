@@ -4,10 +4,11 @@ import useFetchProductDataQualityEvaluation from './ProductEditForm/useFetchProd
 import useProductFamily from './ProductEditForm/useProductFamily';
 import useCatalogContext from './ProductEditForm/useCatalogContext';
 import useProduct from './ProductEditForm/useProduct';
-import {useFetchProductQualityScore} from './ProductEditForm/useFetchProductQualityScore';
+import {useFetchQualityScore} from './ProductEditForm/useFetchQualityScore';
 import usePageContext from './ProductEditForm/usePageContext';
 import useProductEvaluation from './ProductEditForm/useProductEvaluation';
 import {useFetchKeyIndicators} from './Dashboard/useFetchKeyIndicators';
+import {useEvaluateProduct} from './ProductEditForm/useEvaluateProduct';
 import {RawScoreEvolutionData, useFetchQualityScoreEvolution} from './Dashboard/useFetchQualityScoreEvolution';
 
 export * from './AttributeGroup';
@@ -19,10 +20,11 @@ export {
   useProductFamily,
   useCatalogContext,
   useProduct,
-  useFetchProductQualityScore,
+  useFetchQualityScore,
   usePageContext,
   useProductEvaluation,
   useFetchKeyIndicators,
   useFetchQualityScoreEvolution,
+  useEvaluateProduct,
   RawScoreEvolutionData,
 };

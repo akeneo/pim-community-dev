@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -13,11 +13,5 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
  */
 interface GetEvaluationRatesByProductsAndCriterionQueryInterface
 {
-    /**
-     * @param ProductId[] $productIds
-     * @param CriterionCode $criterionCode
-     *
-     * @return array
-     */
-    public function toArrayInt(array $productIds, CriterionCode $criterionCode): array;
+    public function execute(ProductEntityIdCollection $productIdCollection, CriterionCode $criterionCode): array;
 }

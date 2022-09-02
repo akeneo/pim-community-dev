@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\Currency;
 
-use Akeneo\Channel\Component\Model\Currency;
-use Akeneo\Channel\Component\Model\CurrencyInterface;
-use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\Currency;
+use Akeneo\Channel\Infrastructure\Component\Model\CurrencyInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\CurrencyRepositoryInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;

@@ -15,11 +15,10 @@ services:
             - '%pim_catalog.entity.group_type.class%'
 
     pim_catalog.remover.product:
-        class: '%pim_catalog.remover.base.class%'
+        class: Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Remover\ProductRemover
         arguments:
             - '@pim_catalog.object_manager.product'
             - '@event_dispatcher'
-            - '%pim_catalog.model.product.interface%'
 
     pim_catalog.remover.product_model:
         class: '%pim_catalog.remover.base.class%'

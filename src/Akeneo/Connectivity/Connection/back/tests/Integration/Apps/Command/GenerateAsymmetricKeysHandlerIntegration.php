@@ -8,7 +8,7 @@ use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKe
 use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AsymmetricKeys;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\OpenIdKeysNotFoundException;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAsymmetricKeysQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAsymmetricKeysQuery;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;

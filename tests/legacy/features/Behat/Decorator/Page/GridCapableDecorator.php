@@ -247,6 +247,30 @@ class GridCapableDecorator extends ElementDecorator
 
     /**
      * @throws TimeoutException
+     */
+    public function existViewType(string $type)
+    {
+        $this->spin(function () use ($type) {
+            $viewType = $this->find('css', sprintf('.view-type-item[title="%s"]', $type));
+
+            return null !== $viewType;
+        }, sprintf('View type "%s" does not exist but it should.', $type));
+    }
+
+    /**
+     * @throws TimeoutException
+     */
+    public function notExistViewType(string $type)
+    {
+        $this->spin(function () use ($type) {
+            $viewType = $this->find('css', sprintf('.view-type-item[title="%s"]', $type));
+
+            return null == $viewType;
+        }, sprintf('View type "%s" exists but it should not.', $type));
+    }
+
+    /**
+     * @throws TimeoutException
      *
      * @return string
      */

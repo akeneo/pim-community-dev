@@ -11,9 +11,26 @@ export type App = {
     activate_url: string;
     callback_url: string;
     connected: boolean;
+    isPending: boolean;
+};
+
+export type TestApp = {
+    id: string;
+    name: string;
+    logo: null;
+    author: string | null;
+    url: null;
+    activate_url: string;
+    callback_url: string;
+    connected: boolean;
 };
 
 export type Apps = {
     total: number;
     apps: App[];
+};
+
+export type TestApps = {
+    total: number;
+    apps: TestApp[];
 };

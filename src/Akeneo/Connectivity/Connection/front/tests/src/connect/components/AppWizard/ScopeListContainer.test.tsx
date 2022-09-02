@@ -34,7 +34,7 @@ test('The scope list renders with scopes', () => {
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.authorize.helper')
     ).toBeInTheDocument();
-    expect(ScopeList).toHaveBeenCalledWith({scopeMessages: scopes}, {});
+    expect(ScopeList).toHaveBeenCalledWith({scopeMessages: scopes, highlightMode: null}, {});
 });
 
 test('The scope list still renders with unknown scopes', () => {
@@ -51,7 +51,7 @@ test('The scope list still renders with unknown scopes', () => {
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.authorize.helper')
     ).toBeInTheDocument();
-    expect(ScopeList).toHaveBeenCalledWith({scopeMessages: scopes}, {});
+    expect(ScopeList).toHaveBeenCalledWith({scopeMessages: scopes, highlightMode: null}, {});
 });
 
 test('The scope list renders without scopes', () => {
@@ -66,4 +66,46 @@ test('The scope list renders without scopes', () => {
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.authorize.no_scope')
     ).toBeInTheDocument();
+});
+
+test('The scope list renders with oldScopeMessages', () => {
+    const oldScopeMessages = [
+        {
+            icon: 'products',
+            type: 'read',
+            entities: 'products',
+        },
+    ];
+
+    const scopeMessages = [
+        {
+            icon: 'foo',
+            type: 'read',
+            entities: 'foo',
+        },
+    ];
+
+    renderWithProviders(
+        <ScopeListContainer appName='MyApp' scopeMessages={scopeMessages} oldScopeMessages={oldScopeMessages} />
+    );
+
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.authorize.is_allowed_to')
+    ).toBeInTheDocument();
+
+    expect(ScopeList).toHaveBeenCalledWith(
+        {
+            scopeMessages: scopeMessages,
+            highlightMode: 'new',
+        },
+        {}
+    );
+
+    expect(ScopeList).toHaveBeenCalledWith(
+        {
+            scopeMessages: oldScopeMessages,
+            highlightMode: 'old',
+        },
+        {}
+    );
 });

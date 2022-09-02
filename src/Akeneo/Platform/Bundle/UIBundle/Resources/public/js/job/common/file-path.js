@@ -29,10 +29,13 @@ define(['underscore', 'oro/translator', 'pim/form', 'pim/template/import/file-pa
      * {@inheritdoc}
      */
     render: function () {
+      const {configuration} = this.getFormData();
+      const isSftp = 'sftp' === configuration.storage?.type;
+
       this.$el.html(
         this.template({
-          path: this.getFormData().configuration.filePath,
-          label: __(this.config.label),
+          path: isSftp ? configuration.storage.host : configuration.filePath,
+          label: __(isSftp ? 'pim_import_export.form.job_instance.storage_form.host.label' : this.config.label),
         })
       );
 

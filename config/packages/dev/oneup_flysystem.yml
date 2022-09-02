@@ -9,3 +9,6 @@ oneup_flysystem:
         archivist_adapter:
             local:
                 location: '%kernel.project_dir%/var/file_storage/archive'
+        local_storage_adapter:
+            local:
+                location: '/'

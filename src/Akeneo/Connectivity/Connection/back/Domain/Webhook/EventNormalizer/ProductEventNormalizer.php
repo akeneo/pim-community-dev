@@ -32,7 +32,8 @@ final class ProductEventNormalizer implements EventNormalizerInterface
         $normalizer = new EventNormalizer();
 
         return $normalizer->normalize($event) + [
-            'product_identifier' => $event->getIdentifier()
+            'product_identifier' => $event->getIdentifier(),
+            'product_uuid' => $event->getProductUuid()->toString(),
         ];
     }
 }

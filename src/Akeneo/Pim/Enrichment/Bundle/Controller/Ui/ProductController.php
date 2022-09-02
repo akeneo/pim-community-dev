@@ -2,13 +2,14 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\Ui;
 
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -45,13 +46,24 @@ class ProductController extends AbstractListCategoryController
     }
 
     /**
+     * List categories associated with the provided product and descending from the category
+     * defined by the parent parameter.
+     *
+     * httpparam include_category if true, will include the parentCategory in the response
+     */
+    public function listCategoriesAction(Request $request, string $uuid, string $categoryId): Response
+    {
+        return $this->doListCategoriesAction($request, $uuid, $categoryId);
+    }
+
+    /**
      * Toggle product status (enabled/disabled)
      *
      * @AclAncestor("pim_enrich_product_edit_attributes")
      */
-    public function toggleStatusAction(string $id): JsonResponse
+    public function toggleStatusAction(string $uuid): JsonResponse
     {
-        $product = $this->findEntityWithCategoriesOr404($id);
+        $product = $this->findEntityWithCategoriesOr404($uuid);
 
         $toggledStatus = !$product->isEnabled();
         $product->setEnabled($toggledStatus);
@@ -65,16 +77,16 @@ class ProductController extends AbstractListCategoryController
     }
 
     /**
-     * Find a product by its id or return a 404 response
+     * Find a product by its uuid or return a 404 response
      *
      * @throws NotFoundHttpException
      */
-    protected function findEntityWithCategoriesOr404(string $id): ProductInterface
+    protected function findEntityWithCategoriesOr404(string $uuid): ProductInterface
     {
-        $product = $this->productRepository->find($id);
+        $product = $this->productRepository->find($uuid);
         if (null === $product) {
             throw new NotFoundHttpException(
-                sprintf('Product with with ID "%s" could not be found.', $id)
+                sprintf('Product with uuid "%s" could not be found.', $uuid)
             );
         }
 

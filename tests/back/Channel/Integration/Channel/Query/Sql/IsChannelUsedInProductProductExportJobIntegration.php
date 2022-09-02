@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Channel\Integration\Channel\Query\Sql;
 
-use Akeneo\Channel\Bundle\Query\Sql\IsChannelUsedInProductProductExportJob;
+use Akeneo\Channel\Infrastructure\Query\Sql\IsChannelUsedInProductProductExportJob;
 use Akeneo\Test\Integration\TestCase;
 
 /**
@@ -25,7 +25,10 @@ class IsChannelUsedInProductProductExportJobIntegration extends TestCase
         $this->givenAProductExportJobUsingChannel('ecommerce');
         $this->assertFalse($isChannelUsedInProductProductExportJob->execute('mobile'));
 
-         $this->givenAProductExportJobUsingChannel('mobile');
+        $this->givenAProductExportJobUsingChannel('mobile_channel');
+        $this->assertFalse($isChannelUsedInProductProductExportJob->execute('mobile'));
+
+        $this->givenAProductExportJobUsingChannel('mobile');
         $this->assertTrue($isChannelUsedInProductProductExportJob->execute('mobile'));
     }
 
@@ -39,6 +42,9 @@ class IsChannelUsedInProductProductExportJobIntegration extends TestCase
         $this->assertFalse($isChannelUsedInProductProductExportJob->execute('mobile'));
 
         $this->givenAProductExportJobUsingChannel('ecommerce', 'csv_published_product_export');
+        $this->assertFalse($isChannelUsedInProductProductExportJob->execute('mobile'));
+
+        $this->givenAProductExportJobUsingChannel('mobile_channel', 'csv_published_product_export');
         $this->assertFalse($isChannelUsedInProductProductExportJob->execute('mobile'));
 
          $this->givenAProductExportJobUsingChannel('mobile', 'csv_published_product_export');

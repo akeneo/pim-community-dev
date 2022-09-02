@@ -5,7 +5,7 @@ namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\GenerateSecretInterface;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\ConnectionWebhookNotFoundException;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SaveWebhookSecretQuery;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SaveWebhookSecretQueryInterface;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -16,9 +16,9 @@ class GenerateWebhookSecretHandler
 {
     private GenerateSecretInterface $generateSecret;
 
-    private SaveWebhookSecretQuery $saveQuery;
+    private SaveWebhookSecretQueryInterface $saveQuery;
 
-    public function __construct(GenerateSecretInterface $generateSecret, SaveWebhookSecretQuery $saveQuery)
+    public function __construct(GenerateSecretInterface $generateSecret, SaveWebhookSecretQueryInterface $saveQuery)
     {
         $this->generateSecret = $generateSecret;
         $this->saveQuery = $saveQuery;

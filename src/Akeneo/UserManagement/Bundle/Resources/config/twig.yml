@@ -6,5 +6,6 @@ services:
         class: '%pim_user.twig.acl_groups_extension.class%'
         arguments:
             - '%kernel.bundles%'
+            - '@feature_flags'
         tags:
             - { name: twig.extension }

@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Doctrine\DBAL\Connection;
 
 /**
  * An ancestor is a product model that is either a parent or a grand parent.
@@ -38,26 +39,16 @@ class SelfAndAncestorFilter extends AbstractFieldFilter
 {
     private const ANCESTOR_ID_ES_FIELD = 'ancestors.ids';
 
-    /** @var ProductModelRepositoryInterface */
-    private $productModelRepository;
-
-    /** @var ProductRepositoryInterface */
-    private $productRepository;
-
     /**
-     * @param ProductModelRepositoryInterface $productModelRepository
-     * @param ProductRepositoryInterface      $productRepository
-     * @param array                           $supportedFields
-     * @param array                           $supportedOperators
+     * @param string[] $supportedFields
+     * @param string[] $supportedOperators
      */
     public function __construct(
-        ProductModelRepositoryInterface $productModelRepository,
-        ProductRepositoryInterface $productRepository,
+        private ProductModelRepositoryInterface $productModelRepository,
+        private ProductRepositoryInterface $productRepository,
         array $supportedFields,
         array $supportedOperators
     ) {
-        $this->productModelRepository = $productModelRepository;
-        $this->productRepository = $productRepository;
         $this->supportedFields = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
@@ -76,6 +67,7 @@ class SelfAndAncestorFilter extends AbstractFieldFilter
         }
 
         $this->checkValues($values);
+        $values = (array) $values;
 
         switch ($operator) {
             case Operators::IN_LIST:
@@ -156,8 +148,8 @@ class SelfAndAncestorFilter extends AbstractFieldFilter
             return false;
         }
 
-        $id = str_replace('product_', '', $value);
+        $uuid = str_replace('product_', '', $value);
 
-        return null !== $this->productRepository->findOneBy(['id' => $id]);
+        return null !== $this->productRepository->findOneBy(['uuid' => $uuid]);
     }
 }

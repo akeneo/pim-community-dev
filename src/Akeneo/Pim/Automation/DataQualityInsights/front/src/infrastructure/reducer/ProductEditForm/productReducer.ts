@@ -1,16 +1,22 @@
 import {Action, ActionCreator, Reducer} from 'redux';
 import {Product} from '../../../domain';
 
-export interface ProductState extends Product {}
+export type ProductState = Product;
 
-interface ProductAction extends Action {
+const INITIALIZE_PRODUCT = 'INITIALIZE_PRODUCT';
+const UNSET_PRODUCT = 'UNSET_PRODUCT';
+
+type InitializeProductAction = Action<typeof INITIALIZE_PRODUCT> & {
   payload: {
     product: Product;
   };
-}
+};
 
-const INITIALIZE_PRODUCT = 'INITIALIZE_PRODUCT';
-export const initializeProductAction: ActionCreator<ProductAction> = (product: Product) => {
+type UnsetProductAction = Action<typeof UNSET_PRODUCT>;
+
+type ProductAction = InitializeProductAction | UnsetProductAction;
+
+export const initializeProductAction: ActionCreator<InitializeProductAction> = (product: Product) => {
   return {
     type: INITIALIZE_PRODUCT,
     payload: {
@@ -18,6 +24,8 @@ export const initializeProductAction: ActionCreator<ProductAction> = (product: P
     },
   };
 };
+
+export const unsetProductAction: ActionCreator<UnsetProductAction> = () => ({type: UNSET_PRODUCT});
 
 const initialState: ProductState = {
   categories: [],
@@ -40,12 +48,14 @@ const initialState: ProductState = {
   },
 };
 
-const productReducer: Reducer<ProductState, ProductAction> = (previousState = initialState, {type, payload}) => {
-  switch (type) {
+const productReducer: Reducer<ProductState, ProductAction> = (previousState = initialState, action) => {
+  switch (action.type) {
     case INITIALIZE_PRODUCT:
       return {
-        ...payload.product,
+        ...action.payload.product,
       };
+    case UNSET_PRODUCT:
+      return initialState;
     default:
       return previousState;
   }

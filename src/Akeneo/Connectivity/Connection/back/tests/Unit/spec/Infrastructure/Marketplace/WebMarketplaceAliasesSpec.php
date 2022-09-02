@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Marketplace;
 
+use Akeneo\Connectivity\Connection\Application\Marketplace\WebMarketplaceAliasesInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceAliases;
-use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceAliasesInterface;
-use Akeneo\Platform\VersionProviderInterface;
+use Akeneo\Platform\Bundle\PimVersionBundle\Version\GrowthVersion;
+use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -18,7 +19,7 @@ class WebMarketplaceAliasesSpec extends ObjectBehavior
     public function let(
         VersionProviderInterface $versionProvider
     ) {
-        $this->beConstructedWith($versionProvider);
+        $this->beConstructedWith($versionProvider, new GrowthVersion());
     }
 
     public function it_is_initializable(): void
@@ -30,7 +31,7 @@ class WebMarketplaceAliasesSpec extends ObjectBehavior
     public function it_returns_the_utm_campaign_when_ge(
         VersionProviderInterface $versionProvider
     ) {
-        $versionProvider->getEdition()->willReturn('GE');
+        $versionProvider->getEdition()->willReturn('Growth Edition');
 
         $this->getUtmCampaign()->shouldReturn('connect_ge');
     }
@@ -46,7 +47,7 @@ class WebMarketplaceAliasesSpec extends ObjectBehavior
     public function it_returns_the_edition_when_ge(
         VersionProviderInterface $versionProvider
     ) {
-        $versionProvider->getEdition()->willReturn('GE');
+        $versionProvider->getEdition()->willReturn('Growth Edition');
 
         $this->getEdition()->shouldReturn('growth-edition');
     }

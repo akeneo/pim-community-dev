@@ -46,27 +46,16 @@ class BatchStatus
     const ABANDONED = 7;
     const UNKNOWN = 8;
 
-    protected static $statusLabels = [
+    protected static array $statusLabels = [
         self::COMPLETED => 'COMPLETED',
         self::STARTING  => 'STARTING',
-        self::STARTED   => 'STARTED',
+        self::STARTED   => 'IN_PROGRESS',
         self::STOPPING  => 'STOPPING',
         self::STOPPED   => 'STOPPED',
         self::FAILED    => 'FAILED',
         self::ABANDONED => 'ABANDONED',
         self::UNKNOWN   => 'UNKNOWN'
     ];
-
-    /**
-     * Get all labels associative array
-     * @static
-     *
-     * @return array
-     */
-    public static function getAllLabels()
-    {
-        return array_flip(self::$statusLabels);
-    }
 
     /**
      * Set the current status

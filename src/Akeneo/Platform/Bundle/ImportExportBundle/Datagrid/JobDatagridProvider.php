@@ -5,7 +5,7 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Datagrid;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 
 /**
- * Provider for job datagrid choice lists
+ * Provider for job datagrid choice lists.
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -14,22 +14,19 @@ use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 class JobDatagridProvider
 {
     /**
-     * Connector registry
+     * Connector registry.
      *
      * @var JobRegistry
      */
     protected $registry;
 
-    /**
-     * @param JobRegistry $registry
-     */
     public function __construct(JobRegistry $registry)
     {
         $this->registry = $registry;
     }
 
     /**
-     * Return filter choices for the job column of import grids
+     * Return filter choices for the job column of import grids.
      *
      * @return array
      */
@@ -39,7 +36,7 @@ class JobDatagridProvider
     }
 
     /**
-     * Return filter choices for the job column of export grids
+     * Return filter choices for the job column of export grids.
      *
      * @return array
      */
@@ -49,7 +46,7 @@ class JobDatagridProvider
     }
 
     /**
-     * Return filter choices for the connector column of import grids
+     * Return filter choices for the connector column of import grids.
      *
      * @return array
      */
@@ -59,7 +56,7 @@ class JobDatagridProvider
     }
 
     /**
-     * Return filter choices for the connector column of export grids
+     * Return filter choices for the connector column of export grids.
      *
      * @return array
      */
@@ -69,7 +66,7 @@ class JobDatagridProvider
     }
 
     /**
-     * Return filter choices for the job column
+     * Return filter choices for the job column.
      *
      * @param string $type
      *
@@ -91,7 +88,7 @@ class JobDatagridProvider
     }
 
     /**
-     * Return filter choices for the connector column
+     * Return filter choices for the connector column.
      *
      * @param string $type
      *

@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Query\ProductEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetProductModelRawValuesQuery;
 use Akeneo\Test\Integration\TestCase;
 
@@ -116,7 +117,7 @@ class GetProductModelRawValuesQueryIntegration extends TestCase
         $this->assertProductHasRawValues($expectedRawValues, $rawValues);
     }
 
-    private function givenAProductModelWithoutParent(array $values): ProductId
+    private function givenAProductModelWithoutParent(array $values): ProductModelId
     {
         $productModel = $this->get('akeneo_integration_tests.catalog.product_model.builder')
             ->withCode('a_product_model')
@@ -126,10 +127,10 @@ class GetProductModelRawValuesQueryIntegration extends TestCase
         $this->get('pim_catalog.updater.product_model')->update($productModel, ['values' => $values]);
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
-        return new ProductId($productModel->getId());
+        return $this->get(ProductModelIdFactory::class)->create((string)$productModel->getId());
     }
 
-    private function givenAProductModelWithParent(string $parentCode, array $values): ProductId
+    private function givenAProductModelWithParent(string $parentCode, array $values): ProductModelId
     {
         $productModel = $this->get('akeneo_integration_tests.catalog.product_model.builder')
             ->withCode('a_sub_product_model')
@@ -140,10 +141,10 @@ class GetProductModelRawValuesQueryIntegration extends TestCase
         $this->get('pim_catalog.updater.product_model')->update($productModel, ['values' => $values]);
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
-        return new ProductId($productModel->getId());
+        return $this->get(ProductModelIdFactory::class)->create((string)$productModel->getId());
     }
 
-    private function givenAProductModelParent(string $code, array $values): ProductId
+    private function givenAProductModelParent(string $code, array $values): ProductModelId
     {
         $productModel = $this->get('akeneo_integration_tests.catalog.product_model.builder')
             ->withCode($code)
@@ -153,7 +154,7 @@ class GetProductModelRawValuesQueryIntegration extends TestCase
         $this->get('pim_catalog.updater.product_model')->update($productModel, ['values' => $values]);
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
-        return new ProductId($productModel->getId());
+        return $this->get(ProductModelIdFactory::class)->create((string)$productModel->getId());
     }
 
     private function assertProductHasRawValues(array $expectedRawValues, $productRawValues): void

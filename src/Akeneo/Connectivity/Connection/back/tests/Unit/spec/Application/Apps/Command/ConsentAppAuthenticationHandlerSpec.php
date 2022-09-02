@@ -11,10 +11,10 @@ use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppConfirmation;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthenticationException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\CreateUserConsentQueryInterface;
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\CreateUserConsentQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetAppConfirmationQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
-use Akeneo\Connectivity\Connection\Domain\Clock;
+use Akeneo\Connectivity\Connection\Domain\ClockInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -31,7 +31,7 @@ class ConsentAppAuthenticationHandlerSpec extends ObjectBehavior
         GetAppConfirmationQueryInterface $getAppConfirmationQuery,
         AppAuthorizationSessionInterface $appAuthorizationSession,
         CreateUserConsentQueryInterface $createUserConsentQuery,
-        Clock $clock,
+        ClockInterface $clock,
         ValidatorInterface $validator
     ): void {
         $clock->now()->willReturn(
@@ -58,7 +58,7 @@ class ConsentAppAuthenticationHandlerSpec extends ObjectBehavior
         ValidatorInterface $validator,
         ConstraintViolationListInterface $constraintViolationList,
         CreateUserConsentQueryInterface $createUserConsentQuery,
-        Clock $clock
+        ClockInterface $clock
     ): void {
         $userGroup = 'a_user_group';
         $clientId = 'a_client_id';

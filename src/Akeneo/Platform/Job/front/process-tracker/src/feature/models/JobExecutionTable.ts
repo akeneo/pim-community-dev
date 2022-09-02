@@ -17,7 +17,7 @@ type JobExecutionRow = {
   username: string | null;
   status: JobStatus;
   warning_count: number;
-  error_count: number;
+  has_error: boolean;
   tracking: JobExecutionRowTracking;
   is_stoppable: boolean;
 };

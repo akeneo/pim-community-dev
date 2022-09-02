@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\Ui;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
-use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -41,17 +41,7 @@ abstract class AbstractListCategoryController extends AbstractController
         $this->template = $template;
     }
 
-    /**
-     * List categories associated with the provided product and descending from the category
-     * defined by the parent parameter.
-     *
-     * @param Request    $request    The request object
-     * @param string     $id         Product id
-     * @param int        $categoryId The parent category id
-     *
-     * httpparam include_category if true, will include the parentCategory in the response
-     */
-    public function listCategoriesAction(Request $request, $id, $categoryId): Response
+    protected function doListCategoriesAction(Request $request, string $id, string $categoryId): Response
     {
         if (!$this->securityFacade->isGranted($this->acl)) {
             throw new AccessDeniedException();
@@ -65,9 +55,9 @@ abstract class AbstractListCategoryController extends AbstractController
         }
 
         $categories = null;
-        $selectedCategoryIds = $request->get('selected', null);
-        if (null !== $selectedCategoryIds) {
-            $categories = $this->categoryRepository->getCategoriesByIds($selectedCategoryIds);
+        $selectedCategoryCodes = $request->get('selected', null);
+        if (null !== $selectedCategoryCodes) {
+            $categories = $this->categoryRepository->getCategoriesByCodes($selectedCategoryCodes);
         } elseif (null !== $entityWithCategories) {
             $categories = $entityWithCategories->getCategories();
         }

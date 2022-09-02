@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi;
 
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScore;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScoreCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
@@ -12,7 +14,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ValuesNormali
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Routing\RouterInterface;
@@ -78,7 +79,13 @@ class ConnectorProductModelNormalizerSpec extends ObjectBehavior
                 ],
             ],
             ['category_code_1', 'category_code_2'],
-            new ReadValueCollection()
+            new ReadValueCollection(),
+            new QualityScoreCollection([
+                'ecommerce' => [
+                    'en_US' => new QualityScore('A', 98),
+                    'fr_FR' => new QualityScore('B', 87),
+                ]
+            ])
         );
 
         $connector2 = new ConnectorProductModel(
@@ -93,7 +100,8 @@ class ConnectorProductModelNormalizerSpec extends ObjectBehavior
             [],
             [],
             [],
-            new ReadValueCollection()
+            new ReadValueCollection(),
+            null
         );
 
         $this->normalizeConnectorProductModelList(new ConnectorProductModelList(1, [$connector1, $connector2]))
@@ -137,6 +145,10 @@ class ConnectorProductModelNormalizerSpec extends ObjectBehavior
                              ],
                          ],
                          'metadata' => ['a_metadata_key' => 'a_metadata_value'],
+                         'quality_scores' => [
+                             ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => 'A'],
+                             ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'data' => 'B'],
+                         ]
                      ],
                      [
                          'code' => 'code_2',
@@ -198,7 +210,8 @@ class ConnectorProductModelNormalizerSpec extends ObjectBehavior
                 ],
             ],
             ['sportswear', 'men'],
-            new ReadValueCollection([$scalarValue])
+            new ReadValueCollection([$scalarValue]),
+            null
         );
 
         $this->normalizeConnectorProductModel($connectorProductModel)->shouldReturn(

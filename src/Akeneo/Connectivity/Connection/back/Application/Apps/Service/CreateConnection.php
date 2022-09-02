@@ -6,8 +6,8 @@ namespace Akeneo\Connectivity\Connection\Application\Apps\Service;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConnectionWithCredentialsByCodeQuery;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConnectionWithCredentialsByCodeQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepositoryInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -17,12 +17,12 @@ class CreateConnection implements CreateConnectionInterface
 {
     private const CONNECTION_TYPE_APP = 'app';
 
-    private ConnectionRepository $repository;
-    private SelectConnectionWithCredentialsByCodeQuery $selectConnectionWithCredentialsByCodeQuery;
+    private ConnectionRepositoryInterface $repository;
+    private SelectConnectionWithCredentialsByCodeQueryInterface $selectConnectionWithCredentialsByCodeQuery;
 
     public function __construct(
-        ConnectionRepository $repository,
-        SelectConnectionWithCredentialsByCodeQuery $selectConnectionWithCredentialsByCodeQuery
+        ConnectionRepositoryInterface $repository,
+        SelectConnectionWithCredentialsByCodeQueryInterface $selectConnectionWithCredentialsByCodeQuery
     ) {
         $this->repository = $repository;
         $this->selectConnectionWithCredentialsByCodeQuery = $selectConnectionWithCredentialsByCodeQuery;

@@ -2,7 +2,7 @@
 
 namespace Context\Page\Product;
 
-use Akeneo\Tool\Component\Classification\Model\Category;
+use Akeneo\Category\Infrastructure\Component\Classification\Model\Category;
 use Behat\Mink\Element\ElementInterface;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
@@ -25,7 +25,7 @@ class Edit extends ProductEditForm
     /**
      * @var string
      */
-    protected $path = '#/enrich/product/{id}';
+    protected $path = '#/enrich/product/{uuid}';
 
     /**
      * {@inheritdoc}

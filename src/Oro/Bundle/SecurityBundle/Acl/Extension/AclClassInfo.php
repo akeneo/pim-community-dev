@@ -28,4 +28,10 @@ interface AclClassInfo
     public function isEnabledAtCreation(): bool;
 
     public function getOrder(): int;
+
+    /**
+     * Returns true if the ACL must be visible in the UI. eg: the edit role permissions screen
+     * ACL that are not visible still exist and can be managed by the code.
+     */
+    public function isVisible(): bool;
 }

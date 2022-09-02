@@ -76,7 +76,7 @@ final class PurgeOutdatedDataCommand extends Command
             false
         );
 
-        if (!$this->questionHelper()->ask($input, $output, $question)) {
+        if (!$this->getQuestionHelper()->ask($input, $output, $question)) {
             $output->writeln('Purge aborted');
 
             return false;
@@ -85,7 +85,7 @@ final class PurgeOutdatedDataCommand extends Command
         return true;
     }
 
-    private function questionHelper(): QuestionHelper
+    private function getQuestionHelper(): QuestionHelper
     {
         return $this->getHelper('question');
     }

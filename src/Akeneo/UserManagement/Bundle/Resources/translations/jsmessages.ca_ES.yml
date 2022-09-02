@@ -30,7 +30,7 @@ pim_enrich:
 pim_user.profile:
   caption: En primer lloc, explica'ns quina és la teva missió principal, per tal que t'ajudem amb el contingut més rellevant.
   why_is_it_needed: Per què necessitem aquesta informació?
-  save_button: Desa i accedeix al marketplace
+  save_button: Desa i accedeix a l'App Store
   selector:
     placeholder: Escull una opció
     not_found: No s'han trobat resultats

@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndicators;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductIdsFromProductIdentifiersQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetLatestProductScoresQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\KeyIndicator\ComputeProductsKeyIndicators;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductProjectionInterface;
+use Ramsey\Uuid\UuidInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -15,38 +18,34 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProduct
  */
 final class GetDataQualityInsightsPropertiesForProductProjection implements GetAdditionalPropertiesForProductProjectionInterface
 {
-    private GetLatestProductScoresQueryInterface $getProductScoresQuery;
-
-    private GetProductIdsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery;
-
-    private ComputeProductsKeyIndicators $getProductsKeyIndicators;
-
     public function __construct(
-        GetLatestProductScoresQueryInterface $getProductScoresQuery,
-        GetProductIdsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery,
-        ComputeProductsKeyIndicators $getProductsKeyIndicators
+        private GetProductScoresQueryInterface $getProductScoresQuery,
+        private ComputeProductsKeyIndicators $getProductsKeyIndicators,
+        private ProductEntityIdFactoryInterface $idFactory
     ) {
-        $this->getProductScoresQuery = $getProductScoresQuery;
-        $this->getProductIdsFromProductIdentifiersQuery = $getProductIdsFromProductIdentifiersQuery;
-        $this->getProductsKeyIndicators = $getProductsKeyIndicators;
     }
 
     /**
-     * @inheritDoc
+     * @param array<UuidInterface> $productUuids
+     * @param array<string, mixed> $context
+     *
+     * @return array<string, array{data_quality_insights: array{scores: array, key_indicators: array}}>
      */
-    public function fromProductIdentifiers(array $productIdentifiers, array $context = []): array
+    public function fromProductUuids(array $productUuids, array $context = []): array
     {
-        $productIds = $this->getProductIdsFromProductIdentifiersQuery->execute($productIdentifiers);
-        $productScores = $this->getProductScoresQuery->byProductIds($productIds);
-        $productKeyIndicators = $this->getProductsKeyIndicators->compute($productIds);
+        $productUuidCollection = $this->idFactory->createCollection(array_map(fn (UuidInterface $productUuid) => $productUuid->toString(), array_values($productUuids)));
+        Assert::isInstanceOf($productUuidCollection, ProductUuidCollection::class);
+        $productScores = $this->getProductScoresQuery->byProductUuidCollection($productUuidCollection);
+        $productKeyIndicators = $this->getProductsKeyIndicators->compute($productUuidCollection);
 
         $additionalProperties = [];
-        foreach ($productIds as $productIdentifier => $productId) {
-            $productId = $productId->toInt();
-            $additionalProperties[$productIdentifier] = [
+        foreach ($productUuidCollection as $productUuid) {
+            $index = (string) $productUuid;
+            $additionalProperties[$index] = [
                 'data_quality_insights' => [
-                    'scores' => isset($productScores[$productId]) ? $productScores[$productId]->toArrayIntRank() : [],
-                    'key_indicators' => isset($productKeyIndicators[$productId]) ? $productKeyIndicators[$productId] : []
+                    'scores' => isset($productScores[$index]) ? $productScores[$index]->allCriteria()->toArrayIntRank() : [],
+                    'scores_partial_criteria' => isset($productScores[$index]) ? $productScores[$index]->partialCriteria()->toArrayIntRank() : [],
+                    'key_indicators' => isset($productKeyIndicators[$index]) ? $productKeyIndicators[$index] : []
                 ],
             ];
         }

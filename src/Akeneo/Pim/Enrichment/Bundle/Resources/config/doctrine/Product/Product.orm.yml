@@ -6,9 +6,9 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
     fields:
         id:
             type: integer
-            id: true
-            generator:
-                strategy: AUTO
+            unique: true
+            columnDefinition: INT AUTO_INCREMENT NOT NULL
+            generated: INSERT
         enabled:
             type: boolean
             column: is_enabled
@@ -16,7 +16,7 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
             type: string
             length: 255
             unique: true
-            nullable: false
+            nullable: true
         rawValues:
             type: json
             column: raw_values
@@ -28,6 +28,10 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
             type: json
             column: quantified_associations
             nullable: true
+        uuid:
+            type: uuid_binary
+            id: true
+            unique: true
     manyToOne:
         family:
             targetEntity: Akeneo\Pim\Structure\Component\Model\FamilyInterface
@@ -54,21 +58,21 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
             joinTable:
                 name: pim_catalog_group_product
                 joinColumns:
-                    product_id:
-                        referencedColumnName: id
+                    product_uuid:
+                        referencedColumnName: uuid
                         onDelete: CASCADE
                 inverseJoinColumns:
                     group_id:
                         referencedColumnName: id
                         onDelete: CASCADE
         categories:
-            targetEntity: Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface
+            targetEntity: Akeneo\Category\Infrastructure\Component\Model\CategoryInterface
             inversedBy: products
             joinTable:
                 name: pim_catalog_category_product
                 joinColumns:
-                    product_id:
-                        referencedColumnName: id
+                    product_uuid:
+                        referencedColumnName: uuid
                         onDelete: CASCADE
                 inverseJoinColumns:
                     category_id:

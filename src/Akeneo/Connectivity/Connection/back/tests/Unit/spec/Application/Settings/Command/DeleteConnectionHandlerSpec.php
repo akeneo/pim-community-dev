@@ -12,7 +12,7 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ClientId;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\UserId;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -23,7 +23,7 @@ use PhpSpec\ObjectBehavior;
 class DeleteConnectionHandlerSpec extends ObjectBehavior
 {
     public function let(
-        ConnectionRepository $repository,
+        ConnectionRepositoryInterface $repository,
         DeleteClientInterface $deleteClient,
         DeleteUserInterface $deleteUser
     ): void {

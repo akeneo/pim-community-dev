@@ -89,7 +89,7 @@ const SummaryTable = ({jobExecution}: SummaryTableProps) => {
                 </LargeCell>
               </Table.Row>
             ))}
-            {[...step.failures, ...jobExecution.failures].map((failure, index) => (
+            {step.failures.map((failure, index) => (
               <Table.Row key={index}>
                 <LargeCell>
                   <Helper level="error">{'string' === typeof failure ? failure : failure.label}</Helper>
@@ -97,6 +97,13 @@ const SummaryTable = ({jobExecution}: SummaryTableProps) => {
               </Table.Row>
             ))}
           </React.Fragment>
+        ))}
+        {jobExecution.failures.map((failure, index) => (
+          <Table.Row key={index}>
+            <LargeCell>
+              <Helper level="error">{'string' === typeof failure ? failure : failure.label}</Helper>
+            </LargeCell>
+          </Table.Row>
         ))}
       </Table.Body>
     </SpacedTable>

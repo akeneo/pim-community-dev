@@ -108,18 +108,30 @@ oro_config:
             tab:
                 system:
                     title: System
+            save_ok: Successfully saved configuration
+            save_error: Sorry, could not save the configuration ({{ reason }})
             group:
                 localization:
-                    title: Localization
-                    system_locale: Language
+                    title: Login page setting
+                    fields:
+                        system_locale:
+                            label: Language
                 notification:
-                    title: Notifications
-                    system_notification: New versions notifications
+                    title: New version notifications
+                    helper: When enabled, you receive a notification when new version is available for you.
+                    fields:
+                        enabler:
+                            label: Enabled
                 loading_message:
-                    title: Loading messages
-                    label: Enable loading messages
-                loading_messages:
-                    label: Available loading messages
+                    title: Customized loading messages
+                    helper: Entertain your users with customized messages for loading screens.
+                    placeholder: Please write your own message to be displayed on your loading screen
+                    fields:
+                        enabler:
+                            label: Enable loading messages
+                        messages:
+                            label: Add your own loading messages
+
 
 pim_ui:
   flash:

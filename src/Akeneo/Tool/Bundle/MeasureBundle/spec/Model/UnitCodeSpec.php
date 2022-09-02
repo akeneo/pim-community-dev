@@ -42,7 +42,7 @@ class UnitCodeSpec extends ObjectBehavior
     public function it_should_contain_only_letters_numbers_and_underscores()
     {
         $this->beConstructedThrough('fromString', ['badId!']);
-        $this->shouldThrow('\InvalidArgumentException')->duringInstantiation();
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
     public function it_cannot_be_constructed_with_a_string_too_long()

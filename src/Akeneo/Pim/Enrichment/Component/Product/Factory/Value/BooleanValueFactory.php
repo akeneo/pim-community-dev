@@ -16,17 +16,12 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
  */
 final class BooleanValueFactory extends ScalarValueFactory implements ValueFactory
 {
-    public function createWithoutCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
-    {
-        return parent::createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
-    }
-
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
-        if (!\is_scalar($data) || (\is_string($data) && '' === \trim($data))) {
+        if (!\is_bool($data)) {
             throw InvalidPropertyTypeException::booleanExpected(
                 $attribute->code(),
-                static::class,
+                self::class,
                 $data
             );
         }

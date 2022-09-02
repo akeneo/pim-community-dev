@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi;
 
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScoreCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
@@ -54,6 +55,28 @@ final class ConnectorProductModelNormalizer
             $normalizedProductModel['metadata'] = $connectorProductModel->metadata();
         }
 
+        $qualityScores = $connectorProductModel->qualityScores();
+        if ($qualityScores !== null) {
+            $normalizedProductModel['quality_scores'] = $this->normalizeQualityScores($qualityScores);
+        }
+
         return $normalizedProductModel;
+    }
+
+    private function normalizeQualityScores(QualityScoreCollection $productModelScores): array
+    {
+        $qualityScores = [];
+
+        foreach ($productModelScores->qualityScores as $channel => $localeScores) {
+            foreach ($localeScores as $locale => $score) {
+                $qualityScores[] = [
+                    'scope' => $channel,
+                    'locale' => $locale,
+                    'data' => $score->getLetter(),
+                ];
+            }
+        }
+
+        return $qualityScores;
     }
 }

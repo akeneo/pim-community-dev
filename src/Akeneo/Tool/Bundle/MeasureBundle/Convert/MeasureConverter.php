@@ -16,7 +16,7 @@ use Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider;
  */
 class MeasureConverter
 {
-    private const SCALE = 12;
+    public const SCALE = 12;
 
     private ?string $family = null;
     private LegacyMeasurementProvider $legacyMeasurementProvider;
@@ -29,22 +29,26 @@ class MeasureConverter
     /**
      * Set a family for the converter
      *
-     * @param string $family
-     *
-     * @return MeasureConverter
-     *
      * @throws MeasurementFamilyNotFoundException
      */
-    public function setFamily($family)
+    public function setFamily($familyCode): MeasureConverter
     {
         $measurementFamilies = $this->legacyMeasurementProvider->getMeasurementFamilies();
-        if (!isset($measurementFamilies[$family])) {
-            throw new MeasurementFamilyNotFoundException();
+        if (isset($measurementFamilies[$familyCode])) {
+            $this->family = $familyCode;
+
+            return $this;
         }
 
-        $this->family = $family;
+        foreach (\array_keys($measurementFamilies) as $measurementFamilyCode) {
+            if (\strtolower($measurementFamilyCode) === \strtolower($familyCode)) {
+                $this->family = $measurementFamilyCode;
 
-        return $this;
+                return $this;
+            }
+        }
+
+        throw new MeasurementFamilyNotFoundException();
     }
 
     /**
@@ -52,7 +56,7 @@ class MeasureConverter
      *
      * @param string $baseUnit  Base unit for value
      * @param string $finalUnit Result unit for value
-     * @param double $value     Value to convert
+     * @param int|float|string $value  Value to convert
      *
      * @return string
      */
@@ -67,26 +71,17 @@ class MeasureConverter
      * Convert a value in a base unit to the standard unit
      *
      * @param string $baseUnit Base unit for value
-     * @param double $value    Value to convert
+     * @param int|float|string $value Value to convert
      *
      * @return string
      *
-     *@throws UnitNotFoundException
+     * @throws UnitNotFoundException
      * @throws UnknownOperatorException
      */
     public function convertBaseToStandard($baseUnit, $value)
     {
-        $measurementFamilies = $this->legacyMeasurementProvider->getMeasurementFamilies();
-        if (!isset($measurementFamilies[$this->family]['units'][$baseUnit])) {
-            throw new UnitNotFoundException(
-                sprintf(
-                    'Could not find metric unit "%s" in family "%s"',
-                    $baseUnit,
-                    $this->family
-                )
-            );
-        }
-        $conversionConfig = $measurementFamilies[$this->family]['units'][$baseUnit]['convert'];
+        $unitInfo = $this->getUnitInfo($baseUnit);
+        $conversionConfig = $unitInfo['convert'];
         $convertedValue = $value;
 
         foreach ($conversionConfig as $operation) {
@@ -101,20 +96,20 @@ class MeasureConverter
     /**
      * Apply operation between value and operand by using operator
      *
-     * @param double $value    Value to convert
+     * @param int|float|string $value Value to convert
      * @param string $operator Operator to apply
      * @param string $operand  Operand to use
      *
-     * @throws UnknownOperatorException
      * @return string
+     *@throws UnknownOperatorException
      */
     protected function applyOperation($value, $operator, $operand)
     {
-        $processedValue = (string) $value;
-
-        if (!is_numeric($processedValue)) {
+        if (!is_numeric($value)) {
             return '0';
         }
+
+        $processedValue = is_float($value) ? \number_format($value, static::SCALE, '.', '') : (string) $value;
 
         switch ($operator) {
             case "div":
@@ -142,7 +137,7 @@ class MeasureConverter
      * Convert a value in a standard unit to a final unit
      *
      * @param string $finalUnit Final unit for value
-     * @param double $value     Value to convert
+     * @param int|float|string $value  Value to convert
      *
      * @throws UnknownOperatorException
      * @throws UnitNotFoundException
@@ -151,17 +146,8 @@ class MeasureConverter
      */
     public function convertStandardToResult($finalUnit, $value)
     {
-        $measurementFamilies = $this->legacyMeasurementProvider->getMeasurementFamilies();
-        if (!isset($measurementFamilies[$this->family]['units'][$finalUnit])) {
-            throw new UnitNotFoundException(
-                sprintf(
-                    'Could not find metric unit "%s" in family "%s"',
-                    $finalUnit,
-                    $this->family
-                )
-            );
-        }
-        $conversionConfig = $measurementFamilies[$this->family]['units'][$finalUnit]['convert'];
+        $unitInfo = $this->getUnitInfo($finalUnit);
+        $conversionConfig = $unitInfo['convert'];
         $convertedValue = $value;
 
         // calculate result with conversion config (calculs must be reversed and operation inversed)
@@ -177,12 +163,12 @@ class MeasureConverter
     /**
      * Apply reversed operation between value and operand by using operator
      *
-     * @param double $value    Value to convert
+     * @param int|float|string $value Value to convert
      * @param string $operator Operator to apply
      * @param string $operand  Operand to use
      *
-     * @throws UnknownOperatorException
      * @return string
+     * @throws UnknownOperatorException
      */
     protected function applyReversedOperation($value, $operator, $operand)
     {
@@ -208,5 +194,28 @@ class MeasureConverter
         }
 
         return $processedValue;
+    }
+
+    /**
+     * @throws UnitNotFoundException
+     */
+    private function getUnitInfo(string $unitCode): array
+    {
+        $measurementFamilies = $this->legacyMeasurementProvider->getMeasurementFamilies();
+        if (isset($measurementFamilies[$this->family]['units'][$unitCode])) {
+            return $measurementFamilies[$this->family]['units'][$unitCode];
+        }
+
+        foreach ($measurementFamilies[$this->family]['units'] as $familyUnitCode => $unitInfo) {
+            if (\strtolower($familyUnitCode) === \strtolower($unitCode)) {
+                return $unitInfo;
+            }
+        }
+
+        throw new UnitNotFoundException(\sprintf(
+            'Could not find metric unit "%s" in family "%s"',
+            $unitCode,
+            $this->family
+        ));
     }
 }

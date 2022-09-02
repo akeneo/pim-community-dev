@@ -1,12 +1,14 @@
+executor-machine: &executor-machine 'ubuntu-2004:2022.04.1'
+
 jobs:
     test_back_static_and_acceptance:
         machine:
-            image: ubuntu-2004:2022.04.1
+            image: *executor-machine
         steps:
             - attach_workspace:
                   at: ~/
             - run:
-                  name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+                  name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
                   command: sudo chown -R 1000:1000 ../project
             - run:
                   name: No legacy translation format
@@ -38,11 +40,14 @@ jobs:
 
     test_back_phpunit:
         machine:
-            image: ubuntu-2004:2022.04.1
+            image: *executor-machine
         parallelism: 20
         steps:
             - attach_workspace:
                   at: ~/
+            - install_yq_v3
+            - set_docker_gcp_mirror
+
             - run:
                   name: Change owner on project dir in order to archive the project into the workspace
                   command: sudo chown -R 1000:1000 ../project
@@ -70,11 +75,14 @@ jobs:
 
     cypress_sanity_checks:
         machine:
-            image: ubuntu-2004:2022.04.1
+            image: *executor-machine
         resource_class: large
         steps:
             - attach_workspace:
                   at: ~/
+            - install_yq_v3
+            - set_docker_gcp_mirror
+
             - run:
                   name: Change owner on project dir in order to archive the project into the workspace
                   command: sudo chown -R 1000:1000 ../project
@@ -82,7 +90,7 @@ jobs:
                   name: Create yarn cache folder
                   command: mkdir -p  ~/.cache/yarn
             - run:
-                  name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+                  name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
                   command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
             - run:
                   name: Start containers
@@ -103,11 +111,14 @@ jobs:
 
     test_back_behat_legacy:
         machine:
-            image: ubuntu-2004:2022.04.1
+            image: *executor-machine
         parallelism: 40
         steps:
             - attach_workspace:
                   at: ~/
+            - install_yq_v3
+            - set_docker_gcp_mirror
+
             - run:
                   name: Get Behat Suite name to run
                   command: |
@@ -159,7 +170,7 @@ jobs:
 
     test_front_static_acceptance_and_integration:
         machine:
-            image: ubuntu-2004:2022.04.1
+            image: *executor-machine
         steps:
             - attach_workspace:
                   at: ~/
@@ -167,7 +178,7 @@ jobs:
                   name: Create yarn cache folder
                   command: mkdir -p  ~/.cache/yarn
             - run:
-                  name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+                  name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
                   command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
             - run:
                   name: Front type checking
@@ -181,12 +192,12 @@ jobs:
 
     test_back_performance:
         machine:
-            image: ubuntu-2004:2022.04.1
+            image: *executor-machine
         steps:
             - attach_workspace:
                   at: ~/
             - run:
-                  name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+                  name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
                   command: sudo chown -R 1000:1000 ../project
             - run:
                   name: Start containers
@@ -207,7 +218,7 @@ jobs:
 
     test_back_missing_structure_migrations:
         machine:
-            image: ubuntu-2004:2022.04.1
+            image: *executor-machine
         steps:
             -   attach_workspace:
                     at: ~/
@@ -234,7 +245,7 @@ jobs:
 
     test_back_data_migrations:
         machine:
-            image: ubuntu-2004:2022.04.1
+            image: *executor-machine
         steps:
             - attach_workspace:
                   at: ~/
@@ -262,7 +273,7 @@ jobs:
 
     test_onboarder_bundle:
         machine:
-            image: ubuntu-2004:2022.04.1
+            image: *executor-machine
         environment:
             FLAG_ONBOARDER_ENABLED: 1
         steps:
@@ -279,7 +290,7 @@ jobs:
                   name: Create an empty service account
                   command: |
                       mkdir secret
-                      echo "{}" > secret/serviceAccount.json
+                      echo '{"project_id":"dummy"}' > secret/serviceAccount.json
             - run:
                   name: Load php pim image
                   command: docker load -i php-pim-image.tar
@@ -291,7 +302,7 @@ jobs:
                   command: PIM_CONTEXT=onboarder make add-bundle-specific-dev-dependencies
             - run:
                   name: Composer update for tests dependencies
-                  command: docker-compose run -u www-data --rm php composer update --no-interaction
+                  command: docker-compose run --rm php composer update --no-interaction
             - run:
                   name: Add configuration files to run the bundle tests from the PIM
                   command: |
@@ -320,9 +331,6 @@ jobs:
                   name: Execute acceptance tests
                   command: PIM_CONTEXT=onboarder make test-acceptance
             - run:
-                  name: "[workaround to revert] Use phpunit executable instead of composer proxy"
-                  command: cd vendor/bin && rm -f ./phpunit && ln -s ../phpunit/phpunit/phpunit ./phpunit
-            - run:
                   name: Execute PHPUnit integration tests
                   command: PIM_CONTEXT=onboarder make test-integration
             - run:
@@ -346,7 +354,7 @@ jobs:
 
     test_database:
         machine:
-            image: ubuntu-2004:202010-01
+            image: *executor-machine
         parallelism: 1
         steps:
             - attach_workspace:

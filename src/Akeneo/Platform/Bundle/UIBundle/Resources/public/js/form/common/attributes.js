@@ -449,10 +449,15 @@ define([
       var needRendering = false;
       if (event.scope) {
         this.setScope(event.scope, {silent: true});
+        this.getRoot().trigger('pim_enrich:form:channel_switcher:change');
         needRendering = true;
       }
       if (event.locale) {
         this.setLocale(event.locale, {silent: true});
+        this.getRoot().trigger('pim_enrich:form:locale_switcher:change', {
+          localeCode: event.locale,
+          context: 'base_product',
+        });
         needRendering = true;
       }
 

@@ -54,8 +54,6 @@ final class ListProductsQueryHandler
 
     private GetProductsWithCompletenessesInterface $getProductsWithCompletenesses;
 
-    private FindId $getProductId;
-
     public function __construct(
         IdentifiableObjectRepositoryInterface $channelRepository,
         ApplyProductSearchQueryParametersToPQB $applyProductSearchQueryParametersToPQB,
@@ -66,7 +64,6 @@ final class ListProductsQueryHandler
         EventDispatcherInterface $eventDispatcher,
         GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
         GetProductsWithCompletenessesInterface $getProductsWithCompletenesses,
-        FindId $getProductId
     ) {
         $this->channelRepository = $channelRepository;
         $this->applyProductSearchQueryParametersToPQB = $applyProductSearchQueryParametersToPQB;
@@ -77,7 +74,6 @@ final class ListProductsQueryHandler
         $this->eventDispatcher = $eventDispatcher;
         $this->getProductsWithQualityScores = $getProductsWithQualityScores;
         $this->getProductsWithCompletenesses = $getProductsWithCompletenesses;
-        $this->getProductId = $getProductId;
     }
 
     /**
@@ -153,9 +149,10 @@ final class ListProductsQueryHandler
         $pqbOptions = ['limit' => (int)$query->limit];
 
         if (null !== $query->searchAfter) {
-            $id = $this->getProductId->fromIdentifier($query->searchAfter);
-            $pqbOptions['search_after_unique_key'] = null === $id ? '' : \sprintf('product_%s', $id);
-            $pqbOptions['search_after'] = [\strtolower($query->searchAfter)];
+            // @TODO CPM-596: use product_<uuid> once the uuid migration will be done
+            // Today we cannot use it, because during the migration some products are indexed with id, and others by uuid
+            $pqbOptions['search_after_unique_key'] = 'product_z';
+            $pqbOptions['search_after'] = [\mb_strtolower($query->searchAfter)];
         }
 
         return $this->searchAfterPqbFactory->create($pqbOptions);

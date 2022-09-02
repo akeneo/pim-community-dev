@@ -7,10 +7,10 @@ namespace spec\Akeneo\Connectivity\Connection\Application\Apps\Command;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthenticationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthenticationHandler;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\UserConsentRequiredException;
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\CreateUserConsentQueryInterface;
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetUserConsentedAuthenticationScopesQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\CreateUserConsentQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetUserConsentedAuthenticationScopesQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
-use Akeneo\Connectivity\Connection\Domain\Clock;
+use Akeneo\Connectivity\Connection\Domain\ClockInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -25,7 +25,7 @@ class RequestAppAuthenticationHandlerSpec extends ObjectBehavior
     public function let(
         GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery,
         CreateUserConsentQueryInterface $createUserConsentQuery,
-        Clock $clock,
+        ClockInterface $clock,
         ValidatorInterface $validator
     ): void {
         $this->beConstructedWith(
@@ -63,7 +63,7 @@ class RequestAppAuthenticationHandlerSpec extends ObjectBehavior
     public function it_clears_consented_scopes_when_openid_is_not_requested(
         ValidatorInterface $validator,
         ConstraintViolationListInterface $constraintViolationList,
-        Clock $clock,
+        ClockInterface $clock,
         CreateUserConsentQueryInterface $createUserConsentQuery
     ): void {
         $command = new RequestAppAuthenticationCommand('a_app_id', 1, ScopeList::fromScopeString('a_scope'));
@@ -84,7 +84,7 @@ class RequestAppAuthenticationHandlerSpec extends ObjectBehavior
         ValidatorInterface $validator,
         ConstraintViolationListInterface $constraintViolationList,
         GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery,
-        Clock $clock,
+        ClockInterface $clock,
         CreateUserConsentQueryInterface $createUserConsentQuery
     ): void {
         $command = new RequestAppAuthenticationCommand('a_app_id', 1, ScopeList::fromScopeString('openid a_scope'));
@@ -108,7 +108,7 @@ class RequestAppAuthenticationHandlerSpec extends ObjectBehavior
         ValidatorInterface $validator,
         ConstraintViolationListInterface $constraintViolationList,
         GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery,
-        Clock $clock,
+        ClockInterface $clock,
         CreateUserConsentQueryInterface $createUserConsentQuery
     ): void {
         $command = new RequestAppAuthenticationCommand('a_app_id', 1, ScopeList::fromScopeString('openid'));
@@ -132,7 +132,7 @@ class RequestAppAuthenticationHandlerSpec extends ObjectBehavior
         ValidatorInterface $validator,
         ConstraintViolationListInterface $constraintViolationList,
         GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery,
-        Clock $clock
+        ClockInterface $clock
     ): void {
         $command = new RequestAppAuthenticationCommand('a_app_id', 1, ScopeList::fromScopeString('openid a_new_scope'));
 
@@ -145,7 +145,7 @@ class RequestAppAuthenticationHandlerSpec extends ObjectBehavior
         $getUserConsentedAuthenticationScopesQuery->execute(1, 'a_app_id')
             ->willReturn(['openid']);
 
-        $exception = new UserConsentRequiredException('a_app_id', 1, ['a_new_scope']);
+        $exception = new UserConsentRequiredException('a_app_id', 1);
         $this->shouldThrow($exception)->during('handle', [$command]);
     }
 }

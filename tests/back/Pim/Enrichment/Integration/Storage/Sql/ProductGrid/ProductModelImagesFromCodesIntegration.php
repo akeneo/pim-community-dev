@@ -5,6 +5,12 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\ProductGrid;
 
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValueInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -54,12 +60,10 @@ class ProductModelImagesFromCodesIntegration extends TestCase
             'family_variant' => 'variant',
         ]);
         $this->createProduct('child', [
-            'family' => 'familyA',
-            'parent' => 'parent',
-            'values' => [
-                'yesno' => [['locale' => null, 'scope' => null, 'data' => true]],
-                '123' => [['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => null, 'scope' => null]],
-            ],
+            new SetFamily('familyA'),
+            new ChangeParent('parent'),
+            new SetBooleanValue('yesno', null, null, true),
+            new SetImageValue('123', null, null, $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
         ]);
 
         $productModelImagesFromCodes = $this->get('akeneo.pim.enrichment.product.grid.query.product_model_images_from_codes');
@@ -131,16 +135,37 @@ class ProductModelImagesFromCodesIntegration extends TestCase
         $this->get('pim_catalog.saver.product_model')->save($model);
     }
 
-    private function createProduct(string $identifier, array $data): void
+    /**
+     * @param UserIntent[] $userIntents
+     */
+    private function createProduct(string $identifier, array $userIntents): void
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-        $violations = $this->get('pim_catalog.validator.product')->validate($product);
-        Assert::assertCount(
-            0,
-            $violations,
-            \sprintf('The product is invalid: %s', (string)$violations)
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: $identifier,
+            userIntents: $userIntents
         );
-        $this->get('pim_catalog.saver.product')->save($product);
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+    }
+
+    protected function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        if (null === $id) {
+            throw new \InvalidArgumentException(\sprintf('No user exists with username "%s"', $username));
+        }
+
+        return \intval($id);
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->createAdminUser();
     }
 }

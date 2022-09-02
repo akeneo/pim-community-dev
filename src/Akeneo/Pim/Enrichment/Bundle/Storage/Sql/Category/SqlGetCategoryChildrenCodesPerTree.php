@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category;
 
+use Akeneo\Category\Api\GetCategoryChildrenCodesPerTreeInterface;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CategoryCodeFilterInterface;
-use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\GetCategoryChildrenCodesPerTreeInterface;
 use Doctrine\DBAL\Connection;
 use Webmozart\Assert\Assert;
 

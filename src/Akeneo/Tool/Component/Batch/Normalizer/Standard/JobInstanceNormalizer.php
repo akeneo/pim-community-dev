@@ -29,6 +29,8 @@ class JobInstanceNormalizer implements NormalizerInterface, CacheableSupportsMet
             'connector'     => $object->getConnector(),
             'type'          => $object->getType(),
             'configuration' => $this->normalizeConfiguration($object),
+            'automation'    => $object->getAutomation(),
+            'scheduled'     => $object->isScheduled(),
         ];
 
         return $results;

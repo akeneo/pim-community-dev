@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Marketplace;
 
+use Akeneo\Connectivity\Connection\Application\Marketplace\WebMarketplaceAliasesInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetUserProfileQueryInterface;
-use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceAliasesInterface;
 use Akeneo\Platform\Bundle\FrameworkBundle\Service\PimUrl;
-use Akeneo\Platform\VersionProviderInterface;
+use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)

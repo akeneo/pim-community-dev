@@ -6,8 +6,8 @@ namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolationListException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Write\ConnectionWebhook;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectWebhookSecretQuery;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\ConnectionWebhookRepository;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectWebhookSecretQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\UpdateConnectionWebhookQueryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -17,24 +17,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class UpdateWebhookHandler
 {
-    private ConnectionWebhookRepository $repository;
-
-    private ValidatorInterface $validator;
-
-    private SelectWebhookSecretQuery $selectWehbookSecretQuery;
-
-    private GenerateWebhookSecretHandler $generateWebhookSecretHandler;
-
     public function __construct(
-        ConnectionWebhookRepository $repository,
-        ValidatorInterface $validator,
-        SelectWebhookSecretQuery $selectWehbookSecretQuery,
-        GenerateWebhookSecretHandler $generateWebhookSecretHandler
+        private UpdateConnectionWebhookQueryInterface $updateConnectionWebhookQuery,
+        private ValidatorInterface $validator,
+        private SelectWebhookSecretQueryInterface $selectWebhookSecretQuery,
+        private GenerateWebhookSecretHandler $generateWebhookSecretHandler
     ) {
-        $this->repository = $repository;
-        $this->validator = $validator;
-        $this->selectWehbookSecretQuery = $selectWehbookSecretQuery;
-        $this->generateWebhookSecretHandler = $generateWebhookSecretHandler;
     }
 
     public function handle(UpdateWebhookCommand $command): void
@@ -48,9 +36,9 @@ class UpdateWebhookHandler
             throw new ConstraintViolationListException($violations);
         }
 
-        $this->repository->update($webhook);
+        $this->updateConnectionWebhookQuery->execute($webhook);
 
-        $secret = $this->selectWehbookSecretQuery->execute($connectionCode);
+        $secret = $this->selectWebhookSecretQuery->execute($connectionCode);
         if (null === $secret) {
             $this->generateWebhookSecretHandler->handle(
                 new GenerateWebhookSecretCommand($connectionCode),

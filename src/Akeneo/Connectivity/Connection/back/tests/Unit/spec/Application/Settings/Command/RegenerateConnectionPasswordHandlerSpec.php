@@ -6,11 +6,11 @@ namespace spec\Akeneo\Connectivity\Connection\Application\Settings\Command;
 
 use Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionPasswordCommand;
 use Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionPasswordHandler;
-use Akeneo\Connectivity\Connection\Application\Settings\Service\RegenerateUserPassword;
+use Akeneo\Connectivity\Connection\Application\Settings\Service\RegenerateUserPasswordInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\UserId;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -22,8 +22,8 @@ use Prophecy\Argument;
 class RegenerateConnectionPasswordHandlerSpec extends ObjectBehavior
 {
     public function let(
-        ConnectionRepository $repository,
-        RegenerateUserPassword $regenerateUserPassword
+        ConnectionRepositoryInterface $repository,
+        RegenerateUserPasswordInterface $regenerateUserPassword
     ): void {
         $this->beConstructedWith($repository, $regenerateUserPassword);
     }

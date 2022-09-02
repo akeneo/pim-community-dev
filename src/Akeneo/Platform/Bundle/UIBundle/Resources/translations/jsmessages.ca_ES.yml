@@ -104,16 +104,17 @@ oro_config:
           title: Sistema
       group:
         localization:
-          title: Configuració regional
-          system_locale: Idioma
+          fields:
+            system_locale:
+              label: Idioma
         notification:
-          title: Notificacions
-          system_notification: Notificacions de noves versions
+          fields:
+            enabler:
+              label: Activat
         loading_message:
-          title: S'estan carregant els missatges
-          label: Permetre els missatges que s'estan carregant
-        loading_messages:
-          label: Missatges de càrrega disponibles
+          fields:
+            enabler:
+              label: Permetre els missatges que s'estan carregant
 pim_ui:
   flash:
     unsaved_changes: 'Té canvis no desats. Segur que voleu sortir?'

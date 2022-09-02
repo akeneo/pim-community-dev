@@ -15,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Process\PhpExecutableFinder;
@@ -76,7 +77,7 @@ class JobLauncher
             unlink($filePath);
         }
 
-        $config['filePath'] = $filePath;
+        $config['storage'] = ['type' => 'local', 'file_path' => $filePath];
 
         $arrayInput = [
             'command'  => 'akeneo:batch:job',
@@ -100,7 +101,7 @@ class JobLauncher
         }
 
         if (!is_readable($filePath)) {
-            throw new \Exception(sprintf('Exported file "%s" is not readable for the job "%s".', $filePath, $jobCode));
+            return '';
         }
 
         $content = file_get_contents($filePath);
@@ -146,7 +147,7 @@ class JobLauncher
             unlink($filePath);
         }
 
-        $config['filePath'] = $filePath;
+        $config['storage'] = ['type' => 'local', 'file_path' => $filePath];
 
         $pathFinder = new PhpExecutableFinder();
         $command = [
@@ -214,7 +215,7 @@ class JobLauncher
             $fs->copy($fixturePath, $fixturesPath, true);
         }
 
-        $config['filePath'] = $filePath;
+        $config['storage'] = ['type' => 'local', 'file_path' => $filePath];
 
         $arrayInput = [
             'command'  => 'akeneo:batch:job',
@@ -417,7 +418,7 @@ class JobLauncher
 
         file_put_contents($filePath, $content);
 
-        $config['filePath'] =  $filePath;
+        $config['storage'] = ['type' => 'local', 'file_path' => $filePath];
 
         $pathFinder = new PhpExecutableFinder();
         $command = [

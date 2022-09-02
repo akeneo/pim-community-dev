@@ -1,0 +1,22 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\Connections\Install\InstallSubscriber:
+        arguments:
+            - '@database_connection'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Connections\Install\FixturesLoader'
+        tags:
+            - {name: kernel.event_subscriber}
+
+    Akeneo\Connectivity\Connection\Infrastructure\Connections\Install\FixturesLoader:
+        arguments:
+            - '@database_connection'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+            - '@validator'
+            - '@pim_user.factory.user'
+            - '@pim_user.updater.user'
+            - '@pim_user.saver.user'
+            - '@pim_user.factory.role'
+            - '@pim_user.updater.role'
+            - '@pim_user.saver.role'
+            - '@pim_user.factory.group'
+            - '@pim_user.updater.group'
+            - '@pim_user.saver.group'

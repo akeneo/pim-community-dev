@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Sorter\Date;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
@@ -23,7 +24,7 @@ class LocalizableScopableSorterIntegration extends AbstractProductQueryBuilderTe
             Directions::ASCENDING,
             ['locale' => 'fr_FR', 'scope' => 'tablet'],
         ]]);
-        $this->assertOrder($result, ['product_three', 'product_two', 'product_one', 'product_four', 'empty_product']);
+        $this->assertOrder($result, ['product_three', 'product_two', 'product_one', 'empty_product', 'product_four']);
     }
 
     public function testSorterDescending()
@@ -33,7 +34,7 @@ class LocalizableScopableSorterIntegration extends AbstractProductQueryBuilderTe
             Directions::DESCENDING,
             ['locale' => 'fr_FR', 'scope' => 'tablet']
         ]]);
-        $this->assertOrder($result, ['product_one', 'product_two', 'product_three', 'product_four', 'empty_product']);
+        $this->assertOrder($result, ['product_one', 'product_two', 'product_three', 'empty_product', 'product_four']);
     }
 
     public function testErrorOperatorNotSupported()
@@ -46,18 +47,6 @@ class LocalizableScopableSorterIntegration extends AbstractProductQueryBuilderTe
             'A_BAD_DIRECTION',
             ['locale' => 'fr_FR', 'scope' => 'tablet']
         ]]);
-    }
-
-    /**
-     * @jira https://akeneo.atlassian.net/browse/PIM-6872
-     */
-    public function testSorterWithNoDataOnSorterField()
-    {
-        $result = $this->executeSorter([['a_localizable_scopable_date', Directions::DESCENDING, ['locale' => 'de_DE', 'scope' => 'ecommerce_china']]]);
-        $this->assertOrder($result, ['product_one', 'product_two', 'product_three', 'product_four', 'empty_product']);
-
-        $result = $this->executeSorter([['a_localizable_scopable_date', Directions::ASCENDING, ['locale' => 'de_DE', 'scope' => 'ecommerce_china']]]);
-        $this->assertOrder($result, ['product_one', 'product_two', 'product_three', 'product_four', 'empty_product']);
     }
 
     /**
@@ -75,35 +64,19 @@ class LocalizableScopableSorterIntegration extends AbstractProductQueryBuilderTe
         ]);
 
         $this->createProduct('product_one', [
-            'values' => [
-                'a_localizable_scopable_date' => [
-                    ['data' => '2017-04-11', 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                ],
-            ],
+            new SetDateValue('a_localizable_scopable_date', 'tablet', 'fr_FR', new \DateTime('2017-04-11'))
         ]);
 
         $this->createProduct('product_two', [
-            'values' => [
-                'a_localizable_scopable_date' => [
-                    ['data' => '2016-03-10', 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                ],
-            ],
+            new SetDateValue('a_localizable_scopable_date', 'tablet', 'fr_FR', new \DateTime('2016-03-10'))
         ]);
 
         $this->createProduct('product_three', [
-            'values' => [
-                'a_localizable_scopable_date' => [
-                    ['data' => '2015-02-09', 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                ],
-            ],
+            new SetDateValue('a_localizable_scopable_date', 'tablet', 'fr_FR', new \DateTime('2015-02-09'))
         ]);
 
         $this->createProduct('product_four', [
-            'values' => [
-                'a_localizable_scopable_date' => [
-                    ['data' => '2014-01-08', 'locale' => 'en_US', 'scope' => 'tablet'],
-                ],
-            ],
+            new SetDateValue('a_localizable_scopable_date', 'tablet', 'en_US', new \DateTime('2014-01-08'))
         ]);
 
         $this->createProduct('empty_product', []);

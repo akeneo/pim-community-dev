@@ -56,4 +56,27 @@ class InMemoryGetAttributes implements GetAttributes
     {
         return $this->forCodes([$attributeCode])[$attributeCode] ?? null;
     }
+
+    public function forType(string $attributeType): array
+    {
+        $rawAttributes = $this->attributeRepository->findBy(['type' => $attributeType]);
+        $attributes = [];
+
+        foreach ($rawAttributes as $attribute) {
+            $attributes[$attribute->getCode()] = new Attribute(
+                $attribute->getCode(),
+                $attribute->getType(),
+                $attribute->getProperties(),
+                (bool) $attribute->isLocalizable(),
+                (bool) $attribute->isScopable(),
+                $attribute->getMetricFamily(),
+                $attribute->getDefaultMetricUnit(),
+                $attribute->isDecimalsAllowed(),
+                $attribute->getBackendType(),
+                $attribute->getAvailableLocaleCodes()
+            );
+        }
+
+        return $attributes;
+    }
 }

@@ -7,56 +7,64 @@ namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ElasticsearchProjection;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductProjectionInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductProjectionInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductProjection;
-use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ReadValueCollectionFactory;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
+use Psr\Log\LoggerInterface;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Webmozart\Assert\Assert;
 
 /**
- * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 final class GetElasticsearchProductProjection implements GetElasticsearchProductProjectionInterface
 {
     private const INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX = 'indexing_product_and_product_model';
 
-    private Connection $connection;
-    private NormalizerInterface $valuesNormalizer;
-    private ReadValueCollectionFactory $readValueCollectionFactory;
-    /** @var GetAdditionalPropertiesForProductProjectionInterface[] */
-    private iterable $additionalDataProviders;
-
+    /**
+     * @param GetAdditionalPropertiesForProductProjectionInterface[] $additionalDataProviders
+     */
     public function __construct(
-        Connection $connection,
-        NormalizerInterface $valuesNormalizer,
-        ReadValueCollectionFactory $readValueCollectionFactory,
-        iterable $additionalDataProviders = []
+        private Connection $connection,
+        private NormalizerInterface $valuesNormalizer,
+        private ReadValueCollectionFactory $readValueCollectionFactory,
+        private LoggerInterface $logger,
+        private iterable $additionalDataProviders = []
     ) {
-        $this->connection = $connection;
-        $this->valuesNormalizer = $valuesNormalizer;
-        $this->readValueCollectionFactory = $readValueCollectionFactory;
-        $this->additionalDataProviders = $additionalDataProviders;
+        Assert::allIsInstanceOf(
+            $this->additionalDataProviders,
+            GetAdditionalPropertiesForProductProjectionInterface::class
+        );
     }
 
-    public function fromProductIdentifiers(array $productIdentifiers): iterable
+    /**
+     * {@inheritdoc}
+     */
+    public function fromProductUuids(array $productUuids): iterable
     {
-        if (empty($productIdentifiers)) {
+        if (empty($productUuids)) {
             return [];
         }
 
-        $rows = $this->fetchRows($productIdentifiers);
+        $rows = $this->fetchRows($productUuids);
         $rows = $this->calculateAttributeCodeAncestors($rows);
         $rows = $this->calculateAttributeCodeForOwnLevel($rows);
 
-        $rowIdentifiers = \array_map(
-            static fn (array $row): string => (string) $row['identifier'],
+        $rowUuids = \array_map(
+            static fn (array $row): string => (string) $row['uuid'],
             $rows
         );
-        $diffIdentifiers = \array_diff($productIdentifiers, $rowIdentifiers);
-        if (\count($diffIdentifiers) > 0) {
-            throw new ObjectNotFoundException(\sprintf('Product identifiers "%s" were not found.', \implode(',', $diffIdentifiers)));
+        $notFetchedUuids = \array_diff(
+            array_map(fn (UuidInterface $uuid): string => $uuid->toString(), $productUuids),
+            $rowUuids
+        );
+
+        if (\count($notFetchedUuids) > 0) {
+            $this->logger->warning(\sprintf('Trying to get ES product projection from product uuids "%s" which does not exist', \implode(',', $notFetchedUuids)));
         }
 
         $rows = $this->createValueCollectionInBatchFromRows($rows);
@@ -66,16 +74,17 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
             $rows
         )];
         $additionalData = [];
+        /** @var GetAdditionalPropertiesForProductProjectionInterface $additionalDataProvider */
         foreach ($this->additionalDataProviders as $additionalDataProvider) {
             $additionalData = \array_replace_recursive(
                 $additionalData,
-                $additionalDataProvider->fromProductIdentifiers($productIdentifiers, $context)
+                $additionalDataProvider->fromProductUuids($productUuids, $context)
             );
         }
 
         $platform = $this->connection->getDatabasePlatform();
         foreach ($rows as $row) {
-            $productIdentifier = (string) $row['identifier'];
+            $productUuid = (string) $row['uuid'];
             $rawValues = $row['raw_values'];
 
             $productLabels = [];
@@ -86,7 +95,7 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
             $values = $this->valuesNormalizer->normalize($row['values'], self::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX);
 
             $projection = new ElasticsearchProductProjection(
-                $row['id'],
+                Uuid::fromString($row['uuid']),
                 $row['identifier'],
                 Type::getType(Types::DATETIME_IMMUTABLE)->convertToPhpValue($row['created_date'], $platform),
                 Type::getType(Types::DATETIME_IMMUTABLE)->convertToPhpValue($row['updated_date'], $platform),
@@ -108,17 +117,17 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
                 $row['attribute_codes_for_this_level']
             );
 
-            yield $productIdentifier => $projection->addAdditionalData($additionalData[$productIdentifier] ?? []);
+            yield $productUuid => $projection->addAdditionalData($additionalData[$productUuid] ?? []);
         }
     }
 
-    private function fetchRows(array $productIdentifiers): array
+    private function fetchRows(array $productUuids): array
     {
         $sql = <<<SQL
 WITH
     product as (
         SELECT
-            product.id,
+            product.uuid,
             product.identifier,
             product.is_enabled,
             product.product_model_id AS parent_product_model_id,
@@ -132,7 +141,7 @@ WITH
             product.created AS created_date,
             GREATEST(product.updated, COALESCE(sub_product_model.updated, 0), COALESCE(root_product_model.updated, 0)) AS updated_date,
             product.updated AS entity_updated_date,
-            JSON_KEYS(product.raw_values) AS attribute_codes_in_product_raw_values,
+            COALESCE(JSON_KEYS(product.raw_values), JSON_OBJECT()) AS attribute_codes_in_product_raw_values,
             JSON_MERGE_PATCH(
                 product.raw_values,
                 COALESCE(sub_product_model.raw_values, JSON_OBJECT()),
@@ -148,29 +157,29 @@ WITH
             LEFT JOIN pim_catalog_family_variant family_variant ON family_variant.id = sub_product_model.family_variant_id
             LEFT JOIN pim_catalog_attribute attribute ON attribute.id = family.label_attribute_id
         WHERE
-            product.identifier IN (:identifiers)
+            product.uuid IN (:uuids)
     ),
     product_categories AS (
         SELECT
-            product.id AS product_id,
+            product.uuid AS product_uuid,
             JSON_ARRAYAGG(category.code) AS category_codes
         FROM
             product
-            JOIN pim_catalog_category_product category_product ON category_product.product_id = product.id
+            JOIN pim_catalog_category_product category_product ON category_product.product_uuid = product.uuid
             JOIN pim_catalog_category category ON category.id = category_product.category_id
-        GROUP BY product.id
+        GROUP BY product.uuid
     ),
     ancestor_categories AS (
-        SELECT product_id, JSON_ARRAYAGG(category_code) as category_codes
+        SELECT product_uuid, JSON_ARRAYAGG(category_code) as category_codes
         FROM (
-            SELECT product.id AS product_id, category.code AS category_code
+            SELECT product.uuid AS product_uuid, category.code AS category_code
             FROM
                 product
                 INNER JOIN pim_catalog_product_model model ON model.id = product.parent_product_model_id
                 INNER JOIN pim_catalog_category_product_model category_model ON category_model.product_model_id = model.id
                 INNER JOIN pim_catalog_category category ON category.id= category_model.category_id
             UNION ALL
-            SELECT product.id AS product_id, category.code AS category_code
+            SELECT product.uuid AS product_uuid, category.code AS category_code
             FROM
                 product
                 INNER JOIN pim_catalog_product_model model ON model.id = product.parent_product_model_id
@@ -178,25 +187,25 @@ WITH
                 INNER JOIN pim_catalog_category_product_model category_model ON category_model.product_model_id= parent.id
                 INNER JOIN pim_catalog_category category ON category.id = category_model.category_id
         ) results
-        GROUP BY product_id
+        GROUP BY product_uuid
     ),
     product_groups AS (
         SELECT
-            product.id AS product_id,
+            product.uuid AS product_uuid,
             JSON_ARRAYAGG(pim_group.code) AS group_codes
         FROM
             product
-            JOIN pim_catalog_group_product group_product ON group_product.product_id = product.id
+            JOIN pim_catalog_group_product group_product ON group_product.product_uuid = product.uuid
             JOIN pim_catalog_group pim_group ON pim_group.id = group_product.group_id
-        GROUP BY  product.id
+        GROUP BY product.uuid
     ),
     product_completeness AS (
         SELECT
-            completeness.product_id,
+            completeness.product_uuid,
             JSON_OBJECTAGG(channel_code, completeness.completeness_per_locale) as completeness_per_channel
         FROM (
             SELECT
-                product_id,
+                product_uuid,
                 JSON_OBJECTAGG(
                     locale.code,
                     IF(
@@ -208,12 +217,12 @@ WITH
                 channel.code as channel_code
             FROM
                 product
-                STRAIGHT_JOIN pim_catalog_completeness completeness ON completeness.product_id = product.id
+                STRAIGHT_JOIN pim_catalog_completeness completeness ON completeness.product_uuid = product.uuid
                 JOIN pim_catalog_channel channel ON channel.id = completeness.channel_id
                 JOIN pim_catalog_locale locale ON locale.id = completeness.locale_id
-            GROUP BY product_id, channel_code
+            GROUP BY product_uuid, channel_code
         ) as completeness
-        GROUP BY completeness.product_id
+        GROUP BY completeness.product_uuid
     ),
     product_family_label AS (
         SELECT
@@ -251,7 +260,7 @@ WITH
         GROUP BY family_variant.family_variant_id
     )
     SELECT
-        product.id,
+        BIN_TO_UUID(product.uuid) as uuid,
         product.identifier,
         product.is_enabled,
         product.parent_product_model_code,
@@ -277,18 +286,20 @@ WITH
         COALESCE(variant_product_attributes.attribute_codes_at_variant_product_level, JSON_ARRAY()) AS attribute_codes_at_variant_product_level
     FROM
         product
-        LEFT JOIN product_groups ON product_groups.product_id = product.id
-        LEFT JOIN product_categories ON product_categories.product_id = product.id
-        LEFT JOIN ancestor_categories ON ancestor_categories.product_id = product.id
+        LEFT JOIN product_groups ON product_groups.product_uuid = product.uuid
+        LEFT JOIN product_categories ON product_categories.product_uuid = product.uuid
+        LEFT JOIN ancestor_categories ON ancestor_categories.product_uuid = product.uuid
         LEFT JOIN product_family_label ON product_family_label.family_id = product.family_id
-        LEFT JOIN product_completeness ON product_completeness.product_id = product.id
+        LEFT JOIN product_completeness ON product_completeness.product_uuid = product.uuid
         LEFT JOIN family_attributes ON family_attributes.family_id = product.family_id
         LEFT JOIN variant_product_attributes ON variant_product_attributes.family_variant_id = product.family_variant_id
 SQL;
 
+        $productUuidsAsBytes = \array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
+
         return $this
             ->connection
-            ->fetchAllAssociative($sql, ['identifiers' => $productIdentifiers], ['identifiers' => Connection::PARAM_STR_ARRAY]);
+            ->fetchAllAssociative($sql, ['uuids' => $productUuidsAsBytes], ['uuids' => Connection::PARAM_STR_ARRAY]);
     }
 
     private function calculateAttributeCodeAncestors(array $rows): array
@@ -362,22 +373,22 @@ SQL;
      */
     private function createValueCollectionInBatchFromRows(array $rows): array
     {
-        $rowsIndexedByProductIdentifier = [];
+        $rowsIndexedByProductUuid = [];
         foreach ($rows as $row) {
             $row['raw_values'] = \json_decode($row['raw_values'], true);
-            $rowsIndexedByProductIdentifier[$row['identifier']] = $row;
+            $rowsIndexedByProductUuid[$row['uuid']] = $row;
         }
 
         $valueCollections = $this->readValueCollectionFactory->createMultipleFromStorageFormat(
             \array_map(
                 static fn (array $row): array => $row['raw_values'],
-                $rowsIndexedByProductIdentifier
+                $rowsIndexedByProductUuid
             )
         );
-        foreach ($valueCollections as $identifier => $valueCollection) {
-            $rowsIndexedByProductIdentifier[$identifier]['values'] = $valueCollection;
+        foreach ($valueCollections as $uuid => $valueCollection) {
+            $rowsIndexedByProductUuid[$uuid]['values'] = $valueCollection;
         }
 
-        return $rowsIndexedByProductIdentifier;
+        return $rowsIndexedByProductUuid;
     }
 }

@@ -15,6 +15,7 @@ batch_jobs:
     compute_completeness_of_products_family: Calcular la completesa de la família de productes
     index_family_products: Productes de la família d'índexs i models de productes
     delete_products_and_product_models: Esborrat massiu de productes
+    ensure_attribute_group_order: Comproveu l'ordre d'ordenació del grup d'atributs
     clean_attribute:
       register_clean_job: Afegir codi a la llista negre
       clean_product_model: Netejar models de producte

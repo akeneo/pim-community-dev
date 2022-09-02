@@ -1,0 +1,14 @@
+suites:
+    EnrichmentProductAcceptance:
+        namespace: Akeneo\Pim\Enrichment\Product\Test\Acceptance
+        psr4_prefix: Akeneo\Pim\Enrichment\Product\Test\Acceptance
+        src_path: src/Akeneo/Pim/Enrichment/Product/back/Test/Acceptance
+        spec_path: src/Akeneo/Pim/Enrichment/Product/back/Test/Acceptance
+        spec_prefix: Specification
+
+    EnrichmentProduct:
+        namespace: Akeneo\Pim\Enrichment\Product
+        psr4_prefix: Akeneo\Pim\Enrichment\Product
+        src_path: src/Akeneo/Pim/Enrichment/Product/back
+        spec_path: src/Akeneo/Pim/Enrichment/Product/back/Test
+        spec_prefix: Specification

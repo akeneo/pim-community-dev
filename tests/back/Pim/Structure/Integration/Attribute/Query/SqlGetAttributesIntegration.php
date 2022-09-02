@@ -74,7 +74,7 @@ final class SqlGetAttributesIntegration extends TestCase
 
     public function test_it_gets_attributes_by_giving_attribute_codes(): void
     {
-        $expected = $this->getExpected();
+        $expected = $this->getExpectedByAttributeCodes();
         $query = $this->getQuery();
         $actual = $query->forCodes(['a_text', 'a_boolean', 'a_textarea', 'unknown_attribute_code', '123', 'a_locale_specific_attribute', 'a_metric']);
         $this->assertEqualsCanonicalizing($expected, $actual);
@@ -82,13 +82,20 @@ final class SqlGetAttributesIntegration extends TestCase
 
     public function test_it_gets_attributes_by_giving_attribute_codes_with_cache(): void
     {
-        $expected = $this->getExpected();
+        $expected = $this->getExpectedByAttributeCodes();
         $query = $this->getCachedQuery();
         $actual = $query->forCodes(['a_text', 'a_boolean', 'a_textarea', 'unknown_attribute_code', '123', 'a_locale_specific_attribute', 'a_metric']);
         $this->assertEqualsCanonicalizing($expected, $actual);
     }
 
-    public function getExpected(): array
+    public function test_it_gets_attributes_by_given_attribute_type(): void
+    {
+        $expected = $this->getExpectedByType();
+        $actual = $this->getQuery()->forType('pim_catalog_text');
+        $this->assertEqualsCanonicalizing($expected, $actual);
+    }
+
+    public function getExpectedByAttributeCodes(): array
     {
         return [
             'a_text' => new Attribute('a_text', AttributeTypes::TEXT, [], false, false, null, null, false, 'text', []),
@@ -98,6 +105,14 @@ final class SqlGetAttributesIntegration extends TestCase
             '123' => new Attribute('123', AttributeTypes::TEXT, [], false, false, null, null, false, 'text', []),
             'a_locale_specific_attribute' => new Attribute('a_locale_specific_attribute', AttributeTypes::BOOLEAN, [], true, false, null, null, false, 'boolean', ['en_US']),
             'a_metric' => new Attribute('a_metric', AttributeTypes::METRIC, [], false, false, 'Length', 'CENTIMETER', true, 'metric', []),
+        ];
+    }
+
+    public function getExpectedByType(): array
+    {
+        return [
+            'a_text' => new Attribute('a_text', AttributeTypes::TEXT, [], false, false, null, null, false, 'text', []),
+            '123' => new Attribute('123', AttributeTypes::TEXT, [], false, false, null, null, false, 'text', []),
         ];
     }
 

@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeRequirement;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRequirementRepositoryInterface;

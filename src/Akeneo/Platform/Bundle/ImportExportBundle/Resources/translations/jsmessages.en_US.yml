@@ -156,29 +156,35 @@ pim_import_export:
                         title: File locale
                         help: Define the locale in which labels are displayed
             file_path: File path
+            storage_form:
+                title: Storage
+                connection:
+                    label: Type
+                    local: Local
+                    sftp: SFTP
+                    none: No storage configured
+                file_path.label: File path
+                host.label: Host
+                port.label: Port
+                username.label: Login
+                password.label: Password
+            validation:
+                storage:
+                    unavailable_type: This storage is not available, only {{ available_types }} are available.
+                file_path:
+                    unsupported_extension: Unsupported file extension
+            connection_checker:
+                label: Test connection settings
+                exception: Connection can't be established, please check your settings.
     widget:
         last_operations:
             empty: There is no operation to display for now.
-            date: Date
-            profile_name: Profile name
             details: Details
-            warning_count: Warnings
-            username: Username
-            job_type:
-                import: Import
-                export: Export
-                mass_edit: Mass edit
-                mass_edit_rule: Rules Settings
-                quick_export: Quick export
-                compute_family_variant_structure_changes: Compute family variant structure changes
-                compute_completeness_of_products_family: Compute completeness of products family
-                mass_delete: Mass delete products
-                clean_removed_attribute_job: Cleaning removed attribute values
             header.view_all: View all
     batch_status:
         1: Completed
         2: Starting
-        3: Started
+        3: In progress
         4: Stopping
         5: Stopped
         6: Failed
@@ -187,7 +193,7 @@ pim_import_export:
     job_status:
         COMPLETED: Completed
         STARTING: Starting
-        STARTED: Started
+        STARTED: In progress
         STOPPING: Stopping
         STOPPED: Stopped
         FAILED:  Failed

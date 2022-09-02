@@ -3,15 +3,18 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\ValueConverterInterface;
+use Akeneo\Pim\Structure\Component\Model\Attribute;
+use Akeneo\Tool\Component\Connector\Exception\DataArrayConversionException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\FieldSplitter;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class BooleanConverterSpec extends ObjectBehavior
 {
-    function let(FieldSplitter $fieldSplitter)
+    function let(FieldSplitter $fieldSplitter, TranslatorInterface $translator)
     {
-        $this->beConstructedWith($fieldSplitter, ['pim_catalog_boolean']);
+        $this->beConstructedWith($fieldSplitter, ['pim_catalog_boolean'], $translator);
     }
 
     function it_is_a_converter()
@@ -119,5 +122,24 @@ class BooleanConverterSpec extends ObjectBehavior
         ]]];
 
         $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);
+    }
+
+    function it_cannot_convert_a_string_value(TranslatorInterface $translator)
+    {
+        $attribute = new Attribute();
+        $attribute->setCode('attribute_code');
+        $fieldNameInfo = ['attribute' => $attribute, 'locale_code' => 'en_US', 'scope_code' => 'mobile'];
+
+        $translator->trans(
+            'pim_catalog.constraint.boolean.boolean_value_is_required_in_import',
+            [
+                '{{ attribute_code }}' => 'attribute_code',
+                '{{ given_type }}' => 'string',
+            ],
+            'validators'
+        )->willReturn('error_message');
+
+        $this->shouldThrow(new DataArrayConversionException('error_message'))
+            ->during('convert', [$fieldNameInfo, 'foo']);
     }
 }

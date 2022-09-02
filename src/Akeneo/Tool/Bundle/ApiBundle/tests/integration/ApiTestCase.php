@@ -3,9 +3,11 @@
 namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration;
 
 use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionCommand;
+use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
@@ -51,6 +53,13 @@ abstract class ApiTestCase extends WebTestCase
     {
         static::bootKernel(['debug' => false]);
         $this->catalog = $this->get('akeneo_integration_tests.catalogs');
+        /** @var FilePersistedFeatureFlags $featureFlags*/
+        $featureFlags = $this->get('feature_flags');
+        $featureFlags->deleteFile();
+
+        foreach ($this->getConfiguration()->getFeatureFlagsBeforeInstall() as $featureFlag) {
+            $featureFlags->enable($featureFlag);
+        }
 
         $fixturesLoader = $this->get('akeneo_integration_tests.loader.fixtures_loader');
         $fixturesLoader->load($this->getConfiguration());
@@ -130,8 +139,7 @@ abstract class ApiTestCase extends WebTestCase
     ): ConnectionWithCredentials {
         $createConnectionCommand = new CreateConnectionCommand($code, $label, $flowType, $auditable);
 
-        $connection = $this->get('akeneo_connectivity.connection.application.handler.create_connection')
-            ->handle($createConnectionCommand);
+        $connection = $this->get(CreateConnectionHandler::class)->handle($createConnectionCommand);
 
         $user = $this->get('pim_user.manager')->loadUserByUsername($connection->username());
 
@@ -196,7 +204,7 @@ abstract class ApiTestCase extends WebTestCase
      */
     protected function get(string $service)
     {
-        return self::$container->get($service);
+        return static::getContainer()->get($service);
     }
 
     /**
@@ -206,7 +214,7 @@ abstract class ApiTestCase extends WebTestCase
      */
     protected function getParameter(string $parameter)
     {
-        return self::$container->getParameter($parameter);
+        return static::getContainer()->getParameter($parameter);
     }
 
     /**
@@ -368,10 +376,10 @@ abstract class ApiTestCase extends WebTestCase
         return strtr(rawurlencode($string), $toReplace);
     }
 
-    protected function removeAclFromRole(string $aclPrivilegeIdentityId): void
+    protected function removeAclFromRole(string $aclPrivilegeIdentityId, string $role = 'ROLE_ADMINISTRATOR'): void
     {
         $aclManager = $this->get('oro_security.acl.manager');
-        $role = $this->get('pim_user.repository.role')->findOneByIdentifier('ROLE_ADMINISTRATOR');
+        $role = $this->get('pim_user.repository.role')->findOneByIdentifier($role);
         $privilege = new AclPrivilege();
         $identity = new AclPrivilegeIdentity($aclPrivilegeIdentityId);
         $privilege

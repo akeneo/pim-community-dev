@@ -21,3 +21,7 @@ Akeneo\Tool\Bundle\ApiBundle\Entity\AccessToken:
                     referencedColumnName: id
                     nullable: true
                     onDelete: CASCADE
+    attributeOverride:
+        scope:
+            length: 1000
+            nullable: true

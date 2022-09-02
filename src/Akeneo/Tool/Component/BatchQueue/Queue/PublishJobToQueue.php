@@ -6,6 +6,7 @@ namespace Akeneo\Tool\Component\BatchQueue\Queue;
 
 use Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
+use Akeneo\Tool\Bundle\BatchBundle\Validator\Constraints\JobInstance as JobInstanceConstraint;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
@@ -15,6 +16,7 @@ use Akeneo\Tool\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\BatchQueue\Exception\InvalidJobException;
 use Akeneo\Tool\Component\BatchQueue\Factory\JobExecutionMessageFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -31,67 +33,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class PublishJobToQueue
 {
-    /** @var string */
-    private $jobInstanceClass;
-
-    /** @var DoctrineJobRepository */
-    private $jobRepository;
-
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var string */
-    private $kernelEnv;
-
-    /** @var JobRegistry */
-    private $jobRegistry;
-
-    /** @var JobParametersFactory */
-    private $jobParametersFactory;
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    /** @var JobParametersValidator */
-    private $jobParametersValidator;
-
-    /** @var JobExecutionQueueInterface */
-    private $jobExecutionQueue;
-
-    private JobExecutionMessageFactory $jobExecutionMessageFactory;
-
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
-
-    /** @var BatchLogHandler */
-    private $batchLogHandler;
-
     public function __construct(
-        string $jobInstanceClass,
-        string $kernelEnv,
-        DoctrineJobRepository $jobRepository,
-        ValidatorInterface $validator,
-        JobRegistry $jobRegistry,
-        JobParametersFactory $jobParametersFactory,
-        EntityManagerInterface $entityManager,
-        JobParametersValidator $jobParametersValidator,
-        JobExecutionQueueInterface $jobExecutionQueue,
-        JobExecutionMessageFactory $jobExecutionMessageFactory,
-        EventDispatcherInterface $eventDispatcher,
-        BatchLogHandler $batchLogHandler
+        private string $kernelEnv,
+        private DoctrineJobRepository $jobRepository,
+        private ValidatorInterface $validator,
+        private JobRegistry $jobRegistry,
+        private JobParametersFactory $jobParametersFactory,
+        private EntityManagerInterface $entityManager,
+        private JobParametersValidator $jobParametersValidator,
+        private JobExecutionQueueInterface $jobExecutionQueue,
+        private JobExecutionMessageFactory $jobExecutionMessageFactory,
+        private EventDispatcherInterface $eventDispatcher,
+        private BatchLogHandler $batchLogHandler
     ) {
-        $this->jobInstanceClass = $jobInstanceClass;
-        $this->jobRepository = $jobRepository;
-        $this->validator = $validator;
-        $this->kernelEnv = $kernelEnv;
-        $this->jobRegistry = $jobRegistry;
-        $this->jobParametersFactory = $jobParametersFactory;
-        $this->entityManager = $entityManager;
-        $this->jobParametersValidator = $jobParametersValidator;
-        $this->jobExecutionQueue = $jobExecutionQueue;
-        $this->jobExecutionMessageFactory = $jobExecutionMessageFactory;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->batchLogHandler = $batchLogHandler;
     }
 
     public function publish(
@@ -99,12 +53,12 @@ class PublishJobToQueue
         array $config,
         bool $noLog = false,
         ?string $username = null,
-        ?string $email = null
+        ?string $email = null,
     ): void {
         /** @var JobInstance $jobInstance */
         $jobInstance = $this->jobRepository
             ->getJobManager()
-            ->getRepository($this->jobInstanceClass)
+            ->getRepository(JobInstance::class)
             ->findOneBy(['code' => $jobInstanceCode]);
 
         if (null === $jobInstance) {
@@ -129,14 +83,15 @@ class PublishJobToQueue
 
         $job = $this->jobRegistry->get($jobInstance->getJobName());
         $jobParameters = $this->createJobParameters($job, $jobInstance, $config);
-        $this->validateJobParameters($job, $jobInstance, $jobParameters, $jobInstanceCode);
+
+        $this->validateJob($job, $jobInstance, $jobParameters, $jobInstanceCode);
+
         $jobExecution = $this->jobRepository->createJobExecution($job, $jobInstance, $jobParameters);
 
         $this->batchLogHandler->setSubDirectory((string)$jobExecution->getId());
 
         if (null !== $username) {
             $jobExecution->setUser($username);
-            $this->jobRepository->updateJobExecution($jobExecution);
         }
 
         $this->jobRepository->updateJobExecution($jobExecution);
@@ -160,23 +115,22 @@ class PublishJobToQueue
         return $this->jobParametersFactory->create($job, $rawParameters);
     }
 
-    private function validateJobParameters(JobInterface $job, JobInstance $jobInstance, JobParameters $jobParameters, string $code) : void
+    private function validateJob(JobInterface $job, JobInstance $jobInstance, JobParameters $jobParameters, string $code): void
     {
         // We merge the JobInstance from the JobManager EntityManager to the DefaultEntityManager
         // in order to be able to have a working UniqueEntity validation
         $this->entityManager->merge($jobInstance);
-        $errors = $this->jobParametersValidator->validate($job, $jobParameters, ['Default', 'Execution']);
 
-        if (count($errors) > 0) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Job instance "%s" running the job "%s" with parameters "%s" is invalid because of "%s"',
-                    $code,
-                    $job->getName(),
-                    print_r($jobParameters->all(), true),
-                    $this->getErrorMessages($errors)
-                )
-            );
+        $jobInstanceViolations = $this->validator->validate($jobInstance, new JobInstanceConstraint());
+
+        if (0 < $jobInstanceViolations->count()) {
+            throw new InvalidJobException($code, $job->getName(), $jobInstanceViolations);
+        }
+
+        $jobParametersViolations = $this->jobParametersValidator->validate($job, $jobParameters, ['Default', 'Execution']);
+
+        if (0 < $jobParametersViolations->count()) {
+            throw new InvalidJobException($code, $job->getName(), $jobParametersViolations);
         }
 
         $this->entityManager->clear(get_class($jobInstance));

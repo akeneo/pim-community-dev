@@ -76,10 +76,10 @@ class GetJobExecutionTracking
         $stepExecutions = $jobExecution->getStepExecutions();
 
         $jobExecutionTracking = new JobExecutionTracking();
-        $jobExecutionTracking->status = (string)$jobExecution->getStatus();
+        $jobExecutionTracking->status = (string) $jobExecution->getStatus();
         $jobExecutionTracking->currentStep = count($jobExecution->getStepExecutions());
-        $jobExecutionTracking->totalSteps = count($job->getSteps());
-        $jobExecutionTracking->steps = $this->createStepExecutionsTrackingWithJob($job, $stepExecutions);
+        $jobExecutionTracking->totalSteps = $job instanceof JobWithStepsInterface ? count($job->getSteps()) : 0;
+        $jobExecutionTracking->steps = $this->createStepExecutionsTrackingWithJob($job, $stepExecutions, $jobExecution->getCreateTime());
 
         return $jobExecutionTracking;
     }
@@ -89,7 +89,7 @@ class GetJobExecutionTracking
         $stepExecutions = $jobExecution->getStepExecutions();
 
         $jobExecutionTracking = new JobExecutionTracking();
-        $jobExecutionTracking->status = (string)$jobExecution->getStatus();
+        $jobExecutionTracking->status = (string) $jobExecution->getStatus();
         $jobExecutionTracking->currentStep = count($jobExecution->getStepExecutions());
         $jobExecutionTracking->totalSteps = count($jobExecution->getStepExecutions());
         $jobExecutionTracking->steps = $this->createStepExecutionsTrackingWithoutJob(
@@ -100,7 +100,7 @@ class GetJobExecutionTracking
         return $jobExecutionTracking;
     }
 
-    private function createStepExecutionsTrackingWithJob(JobInterface $job, Collection $stepExecutions): array
+    private function createStepExecutionsTrackingWithJob(JobInterface $job, Collection $stepExecutions, \DateTime $createdTime): array
     {
         if (!$job instanceof JobWithStepsInterface) {
             return [];
@@ -110,7 +110,11 @@ class GetJobExecutionTracking
         foreach ($job->getSteps() as $step) {
             $stepName = $step->getName();
             $stepExecutionIndex = $this->searchFirstMatchingStepExecutionIndex($stepExecutions, $stepName);
-            if ($stepExecutionIndex === -1) {
+            if (-1 === $stepExecutionIndex) {
+                if ($this->shouldSkipStep($stepName, $createdTime)) {
+                    continue;
+                }
+
                 $stepsExecutionTracking[] = $this->createNotStartedStepExecutionTracking($step, $job->getName());
                 continue;
             }
@@ -126,6 +130,14 @@ class GetJobExecutionTracking
         }
 
         return $stepsExecutionTracking;
+    }
+
+    // TODO RAB-875: Remove this method and the check
+    private function shouldSkipStep(string $stepName, \DateTime $createdTime): bool
+    {
+        $downloadUploadStepsMergeDate = \DateTime::createFromFormat('Y-m-d', '2022-09-07');
+
+        return in_array($stepName, ['download_files', 'upload_files']) && $createdTime < $downloadUploadStepsMergeDate;
     }
 
     private function searchFirstMatchingStepExecutionIndex(Collection $stepExecutions, string $stepName): int
@@ -144,7 +156,7 @@ class GetJobExecutionTracking
         $stepExecutionTracking = new StepExecutionTracking();
         $stepExecutionTracking->jobName = $jobName;
         $stepExecutionTracking->stepName = $step->getName();
-        $stepExecutionTracking->status = (string)(new BatchStatus(BatchStatus::STARTING));
+        $stepExecutionTracking->status = (string) (new BatchStatus(BatchStatus::STARTING));
         if ($step instanceof TrackableStepInterface && $step->isTrackable()) {
             $stepExecutionTracking->isTrackable = true;
         }
@@ -170,7 +182,7 @@ class GetJobExecutionTracking
     private function computeDuration(StepExecution $stepExecution): int
     {
         $now = $this->clock->now();
-        if ($stepExecution->getStatus()->getValue() === BatchStatus::STARTING) {
+        if (BatchStatus::STARTING === $stepExecution->getStatus()->getValue()) {
             return 0;
         }
 
@@ -200,10 +212,10 @@ class GetJobExecutionTracking
         $stepExecutionTracking = new StepExecutionTracking();
         $stepExecutionTracking->jobName = $jobName;
         $stepExecutionTracking->stepName = $stepExecution->getStepName();
-        $stepExecutionTracking->status = (string)$stepExecution->getStatus();
+        $stepExecutionTracking->status = (string) $stepExecution->getStatus();
         $stepExecutionTracking->duration = $duration;
-        $stepExecutionTracking->hasError = count($stepExecution->getFailureExceptions()) !== 0 || count($stepExecution->getErrors()) !== 0;
-        $stepExecutionTracking->hasWarning = count($stepExecution->getWarnings()) !== 0;
+        $stepExecutionTracking->hasError = 0 !== count($stepExecution->getFailureExceptions()) || 0 !== count($stepExecution->getErrors());
+        $stepExecutionTracking->hasWarning = 0 !== count($stepExecution->getWarnings());
 
         return $stepExecutionTracking;
     }

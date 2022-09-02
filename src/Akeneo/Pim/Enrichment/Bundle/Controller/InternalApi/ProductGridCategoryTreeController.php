@@ -2,7 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Normalizer;
+use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Normalizer\ChildCategory;
+use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Normalizer\RootCategory;
 use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase\ListChildrenCategoriesWithCount;
 use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase\ListChildrenCategoriesWithCountHandler;
 use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase\ListRootCategoriesWithCount;
@@ -28,10 +29,10 @@ class ProductGridCategoryTreeController
     /** @var ListChildrenCategoriesWithCountHandler */
     private $listChildrenCategoriesWithCount;
 
-    /** @var Normalizer\RootCategory */
+    /** @var RootCategory */
     private $rootCategoryNormalizer;
 
-    /** @var Normalizer\ChildCategory */
+    /** @var ChildCategory */
     private $childCategoryNormalizer;
 
     /** @var UserContext */
@@ -41,18 +42,18 @@ class ProductGridCategoryTreeController
     private $securityFacade;
 
     /**
-     * @param ListRootCategoriesWithCountHandler     $listRootCategoriesWithCount
+     * @param ListRootCategoriesWithCountHandler $listRootCategoriesWithCount
      * @param ListChildrenCategoriesWithCountHandler $listChildrenCategoriesWithCount
-     * @param Normalizer\RootCategory                $rootCategoryNormalizer
-     * @param Normalizer\ChildCategory               $childCategoryNormalizer
-     * @param UserContext                            $userContext
-     * @param SecurityFacade                         $securityFacade
+     * @param RootCategory $rootCategoryNormalizer
+     * @param ChildCategory $childCategoryNormalizer
+     * @param UserContext $userContext
+     * @param SecurityFacade $securityFacade
      */
     public function __construct(
         ListRootCategoriesWithCountHandler $listRootCategoriesWithCount,
         ListChildrenCategoriesWithCountHandler $listChildrenCategoriesWithCount,
-        Normalizer\RootCategory $rootCategoryNormalizer,
-        Normalizer\ChildCategory $childCategoryNormalizer,
+        RootCategory $rootCategoryNormalizer,
+        ChildCategory $childCategoryNormalizer,
         UserContext $userContext,
         SecurityFacade $securityFacade
     ) {

@@ -53,6 +53,16 @@ services:
             - '@pim_catalog.updater.validator.quantified_associations_structure_validator'
             - ['identifier', 'created', 'updated', 'parent_associations', 'metadata', 'quality_scores', 'completenesses']
 
+    pim_catalog.updater.product_by_uuid:
+        class: '%pim_catalog.updater.product.class%'
+        arguments:
+            - '@pim_catalog.updater.property_setter'
+            - '@pim_catalog.updater.entity_with_values'
+            - '@pim_catalog.association.filter.parent_associations'
+            - '@pim_catalog.quantified_associations.quantified_associations_from_ancestors_filter'
+            - '@pim_catalog.updater.validator.quantified_associations_structure_validator'
+            - [ 'uuid', 'created', 'updated', 'parent_associations', 'metadata', 'quality_scores', 'completenesses' ]
+
     pim_catalog.updater.product_model:
         class: '%pim_catalog.updater.product_model.class%'
         arguments:

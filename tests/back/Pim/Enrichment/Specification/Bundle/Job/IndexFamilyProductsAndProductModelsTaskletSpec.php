@@ -7,10 +7,11 @@ namespace Specification\Akeneo\Pim\Enrichment\Bundle\Job;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsAndAncestorsIndexer;
 use Akeneo\Pim\Enrichment\Bundle\Job\IndexFamilyProductsAndProductModelsTasklet;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuidsQuery;
+use Akeneo\Pim\Enrichment\Product\API\Query\ProductUuidCursorInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Test\Common\FakeCursor;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
@@ -21,6 +22,11 @@ use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Prophecy\Promise\ReturnPromise;
+use Ramsey\Uuid\Uuid;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\HandledStamp;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -28,43 +34,23 @@ use Prophecy\Argument;
  */
 class IndexFamilyProductsAndProductModelsTaskletSpec extends ObjectBehavior
 {
-    private const PRODUCT_BATCHES = [
-        ['batchA_product1', 'batchA_product2', 'batchA_product3'],
-        ['batchB_product1', 'batchB_product2', 'batchB_product3'],
-        ['batchC_product1', 'batchC_product2'],
-    ];
-    private const PRODUCT_IDENTIFIERS = [
-        'batchA_product1',
-        'batchA_product2',
-        'batchA_product3',
-        'batchB_product1',
-        'batchB_product2',
-        'batchB_product3',
-        'batchC_product1',
-        'batchC_product2'
-    ];
-    private const PRODUCT_MODEL_CODES = [
-        'minerva',
-    ];
-
     function let(
-        StepExecution $stepExecution,
         JobRepositoryInterface $jobRepository,
         ItemReaderInterface $familyReader,
-        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         ProductQueryBuilderFactoryInterface $productModelQueryBuilderFactory,
         ProductAndAncestorsIndexer $productAndAncestorsIndexer,
         ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer,
-        EntityManagerClearerInterface $cacheClearer
+        EntityManagerClearerInterface $cacheClearer,
+        MessageBusInterface $messageBus
     ) {
         $this->beConstructedWith(
             $jobRepository,
             $familyReader,
-            $productQueryBuilderFactory,
             $productModelQueryBuilderFactory,
             $productAndAncestorsIndexer,
             $productModelDescendantsAndAncestorsIndexer,
             $cacheClearer,
+            $messageBus,
             3
         );
     }
@@ -86,87 +72,73 @@ class IndexFamilyProductsAndProductModelsTaskletSpec extends ObjectBehavior
 
     function it_batches_indexes_products_and_product_models_from_families(
         ItemReaderInterface $familyReader,
-        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         ProductQueryBuilderFactoryInterface $productModelQueryBuilderFactory,
         ProductAndAncestorsIndexer $productAndAncestorsIndexer,
         ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer,
         FamilyInterface $familyA,
         FamilyInterface $familyB,
-        ProductQueryBuilderInterface $productQueryBuilder,
         ProductQueryBuilderInterface $productModelQueryBuilder,
         StepExecution $stepExecution,
         JobRepositoryInterface $jobRepository,
-        ProductInterface $productA1,
-        ProductInterface $productA2,
-        ProductInterface $productA3,
-        ProductInterface $productB1,
-        ProductInterface $productB2,
-        ProductInterface $productB3,
-        ProductInterface $productC1,
-        ProductInterface $productC2,
-        ProductModelInterface $productModel1
+        ProductModelInterface $productModel1,
+        MessageBusInterface $messageBus,
+        ProductUuidCursorInterface $cursor
     ) {
+        $productUuids = [
+            Uuid::uuid4(), Uuid::uuid4(), Uuid::uuid4(),
+            Uuid::uuid4(), Uuid::uuid4(), Uuid::uuid4(),
+            Uuid::uuid4(), Uuid::uuid4()
+        ];
+
+        $productModelCodes = [
+            'minerva',
+        ];
+
         $familyA->getCode()->willReturn('family_code_a');
         $familyB->getCode()->willReturn('family_code_b');
         $familyReader->read()->willReturn($familyA, $familyB, null);
 
-        $productA1->getIdentifier()->willReturn('batchA_product1');
-        $productA2->getIdentifier()->willReturn('batchA_product2');
-        $productA3->getIdentifier()->willReturn('batchA_product3');
-        $productB1->getIdentifier()->willReturn('batchB_product1');
-        $productB2->getIdentifier()->willReturn('batchB_product2');
-        $productB3->getIdentifier()->willReturn('batchB_product3');
-        $productC1->getIdentifier()->willReturn('batchC_product1');
-        $productC2->getIdentifier()->willReturn('batchC_product2');
         $productModel1->getCode()->willReturn('minerva');
 
-        $productCursor = new FakeCursor([
-            $productA1->getWrappedObject(),
-            $productA2->getWrappedObject(),
-            $productA3->getWrappedObject(),
-            $productB1->getWrappedObject(),
-            $productB2->getWrappedObject(),
-            $productB3->getWrappedObject(),
-            $productC1->getWrappedObject(),
-            $productC2->getWrappedObject(),
-        ]);
+        $cursor->count()->willReturn(8);
+        $cursor->valid()->willReturn(true, true, true, true, true, true, true, true, false);
+        $cursor->current()->will(new ReturnPromise($productUuids));
+        $cursor->rewind()->shouldBeCalled();
+        $cursor->next()->shouldBeCalled();
 
         $productModelCursor = new FakeCursor([
             $productModel1->getWrappedObject(),
         ]);
 
-        $productQueryBuilder
-            ->addFilter(Argument::any(), Argument::any(), ['family_code_a', 'family_code_b'])
-            ->willReturn();
-
         $productModelQueryBuilder
             ->addFilter(Argument::any(), Argument::any(), ['family_code_a', 'family_code_b'])
             ->willReturn();
-
-        $productQueryBuilder->execute()->willReturn($productCursor);
         $productModelQueryBuilder->execute()->willReturn($productModelCursor);
 
-        $stepExecution->setTotalItems(count(self::PRODUCT_IDENTIFIERS) + count(self::PRODUCT_MODEL_CODES))->shouldBeCalled();
+        $stepExecution->setTotalItems(count($productUuids) + count($productModelCodes))->shouldBeCalled();
 
         $this->setStepExecution($stepExecution);
 
-        $productQueryBuilderFactory->create()->willReturn($productQueryBuilder);
+        $messageBus->dispatch(Argument::type(GetProductUuidsQuery::class))->willReturn(
+            new Envelope(new \stdClass(), [new HandledStamp($cursor->getWrappedObject(), '')])
+        );
+
         $productModelQueryBuilderFactory->create()->willReturn($productModelQueryBuilder);
 
-        $productAndAncestorsIndexer->indexFromProductIdentifiers(self::PRODUCT_BATCHES[0])->shouldBeCalledOnce();
-        $productAndAncestorsIndexer->indexFromProductIdentifiers(self::PRODUCT_BATCHES[1])->shouldBeCalledOnce();
-        $productAndAncestorsIndexer->indexFromProductIdentifiers(self::PRODUCT_BATCHES[2])->shouldBeCalledOnce();
-        $productModelDescendantsAndAncestorsIndexer->indexFromProductModelCodes(self::PRODUCT_MODEL_CODES)->shouldBeCalledOnce();
+        $productAndAncestorsIndexer->indexFromProductUuids(array_slice($productUuids, 0, 3))->shouldBeCalledOnce();
+        $productAndAncestorsIndexer->indexFromProductUuids(array_slice($productUuids, 3, 3))->shouldBeCalledOnce();
+        $productAndAncestorsIndexer->indexFromProductUuids(array_slice($productUuids, 6, 2))->shouldBeCalledOnce();
+        $productModelDescendantsAndAncestorsIndexer->indexFromProductModelCodes($productModelCodes)->shouldBeCalledOnce();
 
-        $stepExecution->incrementProcessedItems(count(self::PRODUCT_BATCHES[0]))->shouldBeCalled();
-        $stepExecution->incrementProcessedItems(count(self::PRODUCT_BATCHES[1]))->shouldBeCalled();
-        $stepExecution->incrementProcessedItems(count(self::PRODUCT_BATCHES[2]))->shouldBeCalled();
-        $stepExecution->incrementProcessedItems(count(self::PRODUCT_MODEL_CODES))->shouldBeCalled();
+        $stepExecution->incrementProcessedItems(3)->shouldBeCalled();
+        $stepExecution->incrementProcessedItems(3)->shouldBeCalled();
+        $stepExecution->incrementProcessedItems(2)->shouldBeCalled();
+        $stepExecution->incrementProcessedItems(1)->shouldBeCalled();
 
-        $stepExecution->incrementSummaryInfo('process', count(self::PRODUCT_BATCHES[0]))->shouldBeCalled();
-        $stepExecution->incrementSummaryInfo('process', count(self::PRODUCT_BATCHES[1]))->shouldBeCalled();
-        $stepExecution->incrementSummaryInfo('process', count(self::PRODUCT_BATCHES[2]))->shouldBeCalled();
-        $stepExecution->incrementSummaryInfo('process', count(self::PRODUCT_MODEL_CODES))->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('process', 3)->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('process', 3)->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('process', 2)->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('process', 1)->shouldBeCalled();
 
         $jobRepository->updateStepExecution($stepExecution)->shouldBeCalledTimes(4);
 

@@ -121,6 +121,9 @@ define([
         const options = {
           dropdownCssClass: 'variant-navigation',
           closeOnSelect: false,
+          id: function (e) {
+            return e.uuid || e.id;
+          },
 
           /**
            * Format result (product or product model variations) method of select2.
@@ -445,7 +448,7 @@ define([
         identifier: entity.identifier,
       });
 
-      const params = {id: entity.id};
+      const params = 'product_model' === entity.model_type ? {id: entity.id} : {uuid: entity.uuid || entity.id};
       const route = 'product_model' === entity.model_type ? 'pim_enrich_product_model_edit' : 'pim_enrich_product_edit';
       this.getRoot().trigger('pim:product:variant-navigation:navigate-to-level:before', entity);
       router.redirectToRoute(route, params);

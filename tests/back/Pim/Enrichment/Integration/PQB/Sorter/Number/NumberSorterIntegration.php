@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Sorter\Number;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
@@ -23,27 +24,15 @@ class NumberSorterIntegration extends AbstractProductQueryBuilderTestCase
         parent::setUp();
 
         $this->createProduct('product_one', [
-            'values' => [
-                'a_number_float_negative' => [
-                    ['data' => '192.103', 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetNumberValue('a_number_float_negative', null, null, '192.103'),
         ]);
 
         $this->createProduct('product_two', [
-            'values' => [
-                'a_number_float_negative' => [
-                    ['data' => '16', 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetNumberValue('a_number_float_negative', null, null, '16'),
         ]);
 
         $this->createProduct('product_three', [
-            'values' => [
-                'a_number_float_negative' => [
-                    ['data' => '-162.5654', 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetNumberValue('a_number_float_negative', null, null, '-162.5654'),
         ]);
 
         $this->createProduct('empty_product', []);

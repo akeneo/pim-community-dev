@@ -2,7 +2,7 @@ import React, {FC, ReactElement} from 'react';
 import ReactDOM from 'react-dom';
 import {ThemeProvider} from 'styled-components';
 import {render} from '@testing-library/react';
-import {renderHook} from '@testing-library/react-hooks';
+import {renderHook, RenderHookResult} from '@testing-library/react-hooks';
 import {pimTheme} from 'akeneo-design-system';
 import {DependenciesContext} from '../DependenciesContext';
 import {mockedDependencies} from './mockedDependencies';
@@ -18,6 +18,7 @@ const renderWithProviders = (ui: ReactElement) => render(ui, {wrapper: DefaultPr
 const renderDOMWithProviders = (ui: ReactElement, container: HTMLElement) =>
   ReactDOM.render(<DefaultProviders>{ui}</DefaultProviders>, container);
 
-const renderHookWithProviders = (hook: () => any) => renderHook(hook, {wrapper: DefaultProviders});
+const renderHookWithProviders: <P = {}, R = any>(hook: () => R) => RenderHookResult<P, R> = <P, R>(hook: () => R) =>
+  renderHook<P, R>(hook, {wrapper: DefaultProviders});
 
-export {renderWithProviders, renderDOMWithProviders, renderHookWithProviders};
+export {renderWithProviders, renderDOMWithProviders, renderHookWithProviders, DefaultProviders};

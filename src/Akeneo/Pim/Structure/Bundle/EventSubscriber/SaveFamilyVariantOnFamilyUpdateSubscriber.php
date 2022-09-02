@@ -21,18 +21,10 @@ use Webmozart\Assert\Assert;
  */
 class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterface
 {
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var BulkSaverInterface */
-    private $bulkFamilyVariantSaver;
-
     public function __construct(
-        ValidatorInterface $validator,
-        BulkSaverInterface $bulkFamilyVariantSaver
+        private ValidatorInterface $validator,
+        private BulkSaverInterface $bulkFamilyVariantSaver
     ) {
-        $this->validator = $validator;
-        $this->bulkFamilyVariantSaver = $bulkFamilyVariantSaver;
     }
 
     /**
@@ -76,7 +68,7 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
         // caller know who are the listener. It means it introduced accidental coupling between the two components that
         // should not know each other.
         $this->bulkFamilyVariantSaver->saveAll($validFamilyVariants, [
-            ComputeFamilyVariantStructureChangesSubscriber::DISABLE_JOB_LAUNCHING => true,
+            ComputeFamilyVariantStructureChangesSubscriber::DISABLE_JOB_LAUNCHING => false,
         ]);
 
         if (!empty($allViolations)) {

@@ -8,7 +8,7 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Field\FamilySorter;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 
 class FamilySorterSpec extends ObjectBehavior
 {

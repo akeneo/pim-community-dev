@@ -2462,11 +2462,29 @@ class WebUser extends PimContext
      */
     public function iSelectLanguage($language)
     {
-        $this->spin(function () use ($language) {
-            $this->getCurrentPage()->selectFieldOption('system-locale', $language);
+        $selectInput = $this->spin(function () {
+            $field =  $this->getCurrentPage()->find('named', array('id','system-locale'));
 
-            return true;
+            if (null === $field) {
+                throw new ElementNotFoundException($this->getCurrentPage()->getDriver());
+            }
+
+            return $field;
         }, 'System locale field was not found');
+      
+        $selectInput->click();
+
+        $optionElt =  $this->spin(function () use ($language) {
+            $elt  =$this->getCurrentPage()->find('css', "[title~=\"$language\"]");
+           
+            if (null === $elt) {
+                throw new ElementNotFoundException($this->getCurrentPage()->getDriver());
+            }
+
+            return  $elt;
+        }, 'Language option was not found');
+
+        $optionElt->click();
     }
 
     /**

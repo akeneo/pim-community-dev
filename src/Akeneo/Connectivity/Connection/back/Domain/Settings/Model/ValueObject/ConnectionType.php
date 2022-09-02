@@ -23,7 +23,7 @@ final class ConnectionType
             throw new \InvalidArgumentException('akeneo_connectivity.connection.connection.constraint.type.required');
         }
 
-        if (mb_strlen($type) > 30) {
+        if (\mb_strlen($type) > 30) {
             throw new \InvalidArgumentException('akeneo_connectivity.connection.connection.constraint.type.too_long');
         }
 

@@ -30,7 +30,7 @@ class UpdateIndexMappingWrapperIntegration extends TestCase
         }, $client->cat()->aliases());
 
         /** @var ProductQueryBuilderFactory $pqb */
-        $pqb = $this->get('pim_catalog.query.product_query_builder_factory');
+        $pqb = $this->get('pim_catalog.query.product_query_builder_factory_for_reading_purpose');
         $this->createProduct('product1');
         Assert::assertEquals(1, $pqb->create()->execute()->count());
         Assert::assertContains($this->getParameter('product_and_product_model_index_name'), $aliases);

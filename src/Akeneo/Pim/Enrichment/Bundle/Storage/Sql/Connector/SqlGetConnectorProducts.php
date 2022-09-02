@@ -5,20 +5,22 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\Association\GetGroupAssociationsByProductIdentifiers;
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\Association\GetProductAssociationsByProductIdentifiers;
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\Association\GetProductModelAssociationsByProductIdentifiers;
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetCategoryCodesByProductIdentifiers;
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetValuesAndPropertiesFromProductIdentifiers;
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\QuantifiedAssociation\GetProductModelQuantifiedAssociationsByProductIdentifiers;
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\QuantifiedAssociation\GetProductQuantifiedAssociationsByProductIdentifiers;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\Association\GetGroupAssociationsByProductUuids;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\Association\GetProductAssociationsByProductUuids;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\Association\GetProductModelAssociationsByProductUuids;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetCategoryCodesByProductUuids;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetValuesAndPropertiesFromProductUuids;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\QuantifiedAssociation\GetProductModelQuantifiedAssociationsByProductUuids;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\QuantifiedAssociation\GetProductQuantifiedAssociationsByProductUuids;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ReadValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Query;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Doctrine\DBAL\Connection;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @author    Pierre Allard <pierre.allard@akeneo.com>
@@ -27,53 +29,17 @@ use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
  */
 class SqlGetConnectorProducts implements Query\GetConnectorProducts
 {
-    /** @var GetValuesAndPropertiesFromProductIdentifiers */
-    private $getValuesAndPropertiesFromProductIdentifiers;
-
-    /** @var GetProductAssociationsByProductIdentifiers */
-    private $getProductAssociationsByProductIdentifiers;
-
-    /** @var GetProductModelAssociationsByProductIdentifiers */
-    private $getProductModelAssociationsByProductIdentifiers;
-
-    /** @var GetGroupAssociationsByProductIdentifiers */
-    private $getGroupAssociationsByProductIdentifiers;
-
-    /** @var GetProductQuantifiedAssociationsByProductIdentifiers */
-    private $getProductQuantifiedAssociationsByProductIdentifiers;
-
-    /** @var GetProductModelQuantifiedAssociationsByProductIdentifiers */
-    private $getProductModelQuantifiedAssociationsByProductIdentifiers;
-
-    /** @var GetCategoryCodesByProductIdentifiers */
-    private $getCategoryCodesByProductIdentifiers;
-
-    /** @var ReadValueCollectionFactory */
-    private $readValueCollectionFactory;
-
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
-
     public function __construct(
-        GetValuesAndPropertiesFromProductIdentifiers $getValuesAndPropertiesFromProductIdentifiers,
-        GetProductAssociationsByProductIdentifiers $getProductAssociationsByProductIdentifiers,
-        GetProductModelAssociationsByProductIdentifiers $getProductModelAssociationsByProductIdentifiers,
-        GetGroupAssociationsByProductIdentifiers $getGroupAssociationsByProductIdentifiers,
-        GetProductQuantifiedAssociationsByProductIdentifiers $getProductQuantifiedAssociationsByProductIdentifiers,
-        GetProductModelQuantifiedAssociationsByProductIdentifiers $getProductModelQuantifiedAssociationsByProductIdentifiers,
-        GetCategoryCodesByProductIdentifiers $getCategoryCodesByProductIdentifiers,
-        ReadValueCollectionFactory $readValueCollectionFactory,
-        AttributeRepositoryInterface $attributeRepository
+        private GetValuesAndPropertiesFromProductUuids $getValuesAndPropertiesFromProductUuids,
+        private GetProductAssociationsByProductUuids $getProductAssociationsByProductUuids,
+        private GetProductModelAssociationsByProductUuids $getProductModelAssociationsByProductUuids,
+        private GetGroupAssociationsByProductUuids $getGroupAssociationsByProductUuids,
+        private GetProductQuantifiedAssociationsByProductUuids $getProductQuantifiedAssociationsByProductUuids,
+        private GetProductModelQuantifiedAssociationsByProductUuids $getProductModelQuantifiedAssociationsByProductUuids,
+        private GetCategoryCodesByProductUuids $getCategoryCodesByProductUuids,
+        private ReadValueCollectionFactory $readValueCollectionFactory,
+        private Connection $connection
     ) {
-        $this->getProductQuantifiedAssociationsByProductIdentifiers = $getProductQuantifiedAssociationsByProductIdentifiers;
-        $this->getProductModelQuantifiedAssociationsByProductIdentifiers = $getProductModelQuantifiedAssociationsByProductIdentifiers;
-        $this->getValuesAndPropertiesFromProductIdentifiers = $getValuesAndPropertiesFromProductIdentifiers;
-        $this->getProductAssociationsByProductIdentifiers = $getProductAssociationsByProductIdentifiers;
-        $this->getProductModelAssociationsByProductIdentifiers = $getProductModelAssociationsByProductIdentifiers;
-        $this->getGroupAssociationsByProductIdentifiers = $getGroupAssociationsByProductIdentifiers;
-        $this->getCategoryCodesByProductIdentifiers = $getCategoryCodesByProductIdentifiers;
-        $this->readValueCollectionFactory = $readValueCollectionFactory;
-        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -87,26 +53,19 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         ?array $localesToFilterOn
     ): ConnectorProductList {
         $result = $pqb->execute();
-        $identifiers = array_map(function (IdentifierResult $identifier) {
-            return $identifier->getIdentifier();
+        $uuids = array_map(function (IdentifierResult $identifier) {
+            return $this->getUuidFromIdentifierResult($identifier->getId());
         }, iterator_to_array($result));
 
-        $products = $this->fromProductIdentifiers($identifiers, $userId, $attributesToFilterOn, $channelToFilterOn, $localesToFilterOn);
+        $products = $this->fromProductUuids($uuids, $userId, $attributesToFilterOn, $channelToFilterOn, $localesToFilterOn);
 
         // We use the pqb result count in order to keep paginated research working
         return new ConnectorProductList($result->count(), $products->connectorProducts());
     }
 
-    public function fromProductIdentifier(string $productIdentifier, int $userId): ConnectorProduct
-    {
-        $products = $this->fromProductIdentifiers([$productIdentifier], $userId, null, null, null);
-        if ($products->totalNumberOfProducts() === 0) {
-            throw new ObjectNotFoundException(sprintf('Product "%s" was not found.', $productIdentifier));
-        }
-
-        return $products->connectorProducts()[0];
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function fromProductIdentifiers(
         array $productIdentifiers,
         int $userId,
@@ -114,22 +73,46 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         ?string $channelToFilterOn,
         ?array $localesToFilterOn
     ): ConnectorProductList {
-        $identifierAttributeCode = $this->attributeRepository->getIdentifierCode();
+        return $this->fromProductUuids(
+            $this->getProductUuidsFromProductIdentifiers($productIdentifiers),
+            $userId,
+            $attributesToFilterOn,
+            $channelToFilterOn,
+            $localesToFilterOn
+        );
+    }
 
+    public function fromProductUuid(UuidInterface $productUuid, int $userId): ConnectorProduct
+    {
+        $products = $this->fromProductUuids([$productUuid], $userId, null, null, null);
+        if ($products->totalNumberOfProducts() === 0) {
+            throw new ObjectNotFoundException(sprintf('Product "%s" was not found.', $productUuid->toString()));
+        }
+
+        return $products->connectorProducts()[0];
+    }
+
+    public function fromProductUuids(
+        array $productUuids,
+        int $userId,
+        ?array $attributesToFilterOn,
+        ?string $channelToFilterOn,
+        ?array $localesToFilterOn
+    ): ConnectorProductList {
         $rows = array_replace_recursive(
-            $this->getValuesAndPropertiesFromProductIdentifiers->fetchByProductIdentifiers($productIdentifiers),
-            $this->fetchAssociationsIndexedByProductIdentifier($productIdentifiers),
-            $this->fetchQuantifiedAssociationsIndexedByProductIdentifier($productIdentifiers),
-            $this->fetchCategoryCodesIndexedByProductIdentifier($productIdentifiers)
+            $this->getValuesAndPropertiesFromProductUuids->fetchByProductUuids($productUuids),
+            $this->fetchAssociationsIndexedByProductUuids($productUuids),
+            $this->fetchQuantifiedAssociationsIndexedByProductUuids($productUuids),
+            $this->fetchCategoryCodesIndexedByProductUuids($productUuids)
         );
 
-        $rawValuesIndexedByProductIdentifier = [];
-        foreach ($productIdentifiers as $identifier) {
-            if (!isset($rows[$identifier]['identifier'])) {
+        $rawValuesIndexedByProductUuid = [];
+        foreach ($productUuids as $productUuid) {
+            if (!isset($rows[$productUuid->toString()]['uuid'])) {
                 continue;
             }
 
-            $rawValues = $this->removeIdentifierValue($rows[$identifier]['raw_values'], $identifierAttributeCode);
+            $rawValues = $rows[$productUuid->toString()]['raw_values'];
             if (null !== $attributesToFilterOn) {
                 $rawValues = $this->filterByAttributeCodes($rawValues, $attributesToFilterOn);
             }
@@ -140,21 +123,26 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
                 $rawValues = $this->filterByLocaleCodes($rawValues, $localesToFilterOn);
             }
 
-            $rows[$identifier]['raw_values'] = $rawValues;
-            $rawValuesIndexedByProductIdentifier[$identifier] = $rawValues;
+            $rows[$productUuid->toString()]['raw_values'] = $rawValues;
+            $rawValuesIndexedByProductUuid[$productUuid->toString()] = $rawValues;
         }
 
-        $filteredRawValuesIndexedByProductIdentifier = $this->readValueCollectionFactory->createMultipleFromStorageFormat($rawValuesIndexedByProductIdentifier);
+        $filteredRawValuesIndexedByProductIdentifier = $this->readValueCollectionFactory->createMultipleFromStorageFormat($rawValuesIndexedByProductUuid);
 
         $products = [];
-        foreach ($productIdentifiers as $identifier) {
-            if (!isset($rows[$identifier]['identifier'])) {
+        foreach ($productUuids as $productUuid) {
+            if (!isset($rows[$productUuid->toString()])) {
                 continue;
             }
-            $row = $rows[$identifier];
+            $row = $rows[$productUuid->toString()];
+
+            // if an unknown uuid is given, it will not have the uuid key
+            if (!\key_exists('uuid', $row)) {
+                continue;
+            }
 
             $products[] = new ConnectorProduct(
-                $row['id'],
+                $row['uuid'],
                 $row['identifier'],
                 $row['created'],
                 $row['updated'],
@@ -166,20 +154,13 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
                 $row['associations'] ?? [],
                 $row['quantified_associations'] ?? [],
                 [],
-                $filteredRawValuesIndexedByProductIdentifier[$identifier],
+                $filteredRawValuesIndexedByProductIdentifier[$productUuid->toString()],
                 null,
                 null
             );
         }
 
         return new ConnectorProductList(count($products), $products);
-    }
-
-    private function removeIdentifierValue(array $rawValues, string $identifierAttributeCode): array
-    {
-        unset($rawValues[$identifierAttributeCode]);
-
-        return $rawValues;
     }
 
     private function filterByAttributeCodes(array $rawValues, array $attributeCodes): array
@@ -224,49 +205,92 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         return $result;
     }
 
-    private function fetchCategoryCodesIndexedByProductIdentifier(array $identifiers): array
+    /**
+     * @param array<UuidInterface> $uuids
+     */
+    private function fetchCategoryCodesIndexedByProductUuids(array $uuids): array
     {
         $categoryCodes = [];
-        foreach ($this->getCategoryCodesByProductIdentifiers->fetchCategoryCodes($identifiers)
-                 as $productIdentifier => $productCategoryCodes) {
-            $categoryCodes[$productIdentifier] = ['category_codes' => $productCategoryCodes];
+        $categoryCodesByUuid = $this->getCategoryCodesByProductUuids->fetchCategoryCodes($uuids);
+
+        foreach ($categoryCodesByUuid as $productUuid => $productCategoryCodes) {
+            $categoryCodes[$productUuid] = ['category_codes' => $productCategoryCodes];
         }
 
         return $categoryCodes;
     }
 
-    private function fetchAssociationsIndexedByProductIdentifier(array $identifiers): array
+    private function fetchAssociationsIndexedByProductUuids(array $uuids): array
     {
         $associations = array_replace_recursive(
-            $this->getProductAssociationsByProductIdentifiers->fetchByProductIdentifiers($identifiers),
-            $this->getProductModelAssociationsByProductIdentifiers->fetchByProductIdentifiers($identifiers),
-            $this->getGroupAssociationsByProductIdentifiers->fetchByProductIdentifier($identifiers)
+            $this->getProductAssociationsByProductUuids->fetchByProductUuids($uuids),
+            $this->getProductModelAssociationsByProductUuids->fetchByProductUuids($uuids),
+            $this->getGroupAssociationsByProductUuids->fetchByProductUuids($uuids)
         );
 
-        $associationsIndexedByIdentifier = [];
-        foreach ($associations as $identifier => $association) {
-            $associationsIndexedByIdentifier[$identifier]['associations'] = $association;
+        $associationsIndexedByUuid = [];
+        foreach ($associations as $uuid => $association) {
+            $associationsIndexedByUuid[$uuid]['associations'] = $association;
         }
 
-        return $associationsIndexedByIdentifier;
+        return $associationsIndexedByUuid;
     }
 
-    private function fetchQuantifiedAssociationsIndexedByProductIdentifier(array $identifiers): array
+    private function fetchQuantifiedAssociationsIndexedByProductUuids(array $uuids): array
     {
         $quantifiedAssociations = array_replace_recursive(
-            $this->getProductQuantifiedAssociationsByProductIdentifiers->fromProductIdentifiers($identifiers),
-            $this->getProductModelQuantifiedAssociationsByProductIdentifiers->fromProductIdentifiers($identifiers),
+            $this->getProductQuantifiedAssociationsByProductUuids->fromProductUuids($uuids),
+            $this->getProductModelQuantifiedAssociationsByProductUuids->fromProductUuids($uuids),
         );
 
-        $quantifiedAssociationsIndexedByIdentifier = [];
-        foreach ($quantifiedAssociations as $identifier => $quantifiedAssociation) {
-            $associationTypes = array_keys($quantifiedAssociation);
-            $quantifiedAssociationsWithoutEntities = array_fill_keys($associationTypes, ['products' => [], 'product_models' => []]);
-            $quantifiedAssociation = array_merge_recursive($quantifiedAssociationsWithoutEntities, $quantifiedAssociation);
+        $quantifiedAssociationsIndexedByUuid = [];
+        foreach ($quantifiedAssociations as $uuid => $quantifiedAssociation) {
+            $associationTypes = array_map('strval', array_keys($quantifiedAssociation));
 
-            $quantifiedAssociationsIndexedByIdentifier[$identifier]['quantified_associations'] = $quantifiedAssociation;
+            $filledAssociations = [];
+            foreach ($associationTypes as $associationType) {
+                $filledAssociations[$associationType] = ['product_models' => [], 'products' => []];
+                if (\array_key_exists($associationType, $quantifiedAssociation)) {
+                    $filledAssociations[$associationType]['products'] = $quantifiedAssociation[$associationType]['products'] ?? [];
+                    $filledAssociations[$associationType]['product_models'] = $quantifiedAssociation[$associationType]['product_models'] ?? [];
+                }
+            }
+
+            $quantifiedAssociationsIndexedByUuid[$uuid]['quantified_associations'] = $filledAssociations;
         }
 
-        return $quantifiedAssociationsIndexedByIdentifier;
+        return $quantifiedAssociationsIndexedByUuid;
+    }
+
+    /**
+     * @param array<string> $productIdentifiers
+     * @return array<UuidInterface>
+     */
+    private function getProductUuidsFromProductIdentifiers(array $productIdentifiers): array
+    {
+        $sql = <<<SQL
+SELECT BIN_TO_UUID(uuid) AS uuid
+FROM pim_catalog_product
+WHERE identifier IN (:identifiers)
+SQL;
+
+        return array_map(
+            fn (string $uuidStr): UuidInterface => Uuid::fromString($uuidStr),
+            $this->connection->fetchFirstColumn(
+                $sql,
+                ['identifiers' => $productIdentifiers],
+                ['identifiers' => Connection::PARAM_STR_ARRAY]
+            )
+        );
+    }
+
+    private function getUuidFromIdentifierResult(string $esId): UuidInterface
+    {
+        $matches = [];
+        if (!\preg_match('/^product_(?P<uuid>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$/', $esId, $matches)) {
+            throw new \InvalidArgumentException(sprintf('Invalid Elasticsearch identifier %s', $esId));
+        }
+
+        return Uuid::fromString($matches['uuid']);
     }
 }

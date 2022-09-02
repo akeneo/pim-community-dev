@@ -2,16 +2,20 @@ import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import {screen, waitFor} from '@testing-library/react';
 import fetchMock from 'jest-fetch-mock';
-import {renderWithProviders, historyMock, MockFetchResponses, mockFetchResponses} from '../../../test-utils';
+import {historyMock, MockFetchResponses, mockFetchResponses, renderWithProviders} from '../../../test-utils';
 import {ConnectedAppsListPage} from '@src/connect/pages/ConnectedAppsListPage';
 import {NotificationLevel, NotifyContext} from '@src/shared/notify';
+import {useFeatureFlags} from '@src/shared/feature-flags';
+import {ConnectedAppsContainer} from '@src/connect/components/ConnectedApps/ConnectedAppsContainer';
 
 jest.mock('@src/shared/feature-flags/use-feature-flags', () => ({
-    useFeatureFlags: () => {
-        return {
-            isEnabled: () => true,
-        };
-    },
+    useFeatureFlags: jest.fn().mockImplementation(() => ({
+        isEnabled: () => true,
+    })),
+}));
+
+jest.mock('@src/connect/components/ConnectedApps/ConnectedAppsContainer', () => ({
+    ConnectedAppsContainer: jest.fn().mockImplementation(() => null),
 }));
 
 const notify = jest.fn();
@@ -30,7 +34,7 @@ test('The connected apps list page renders with 2 connected apps card', async ()
             scopes: ['scope A1'],
             connection_code: 'connectionCodeA',
             logo: 'http://www.example.test/path/to/logo/a',
-            author: 'authorA',
+            author: 'author A',
             user_group_name: 'app_123456abcde',
             categories: ['category A1', 'category A2'],
             certified: false,
@@ -42,7 +46,7 @@ test('The connected apps list page renders with 2 connected apps card', async ()
             scopes: ['scope B1', 'scope B2'],
             connection_code: 'connectionCodeB',
             logo: 'http://www.example.test/path/to/logo/b',
-            author: 'authorB',
+            author: 'author B',
             user_group_name: 'app_7891011ghijklm',
             categories: ['category B1'],
             certified: true,
@@ -61,93 +65,8 @@ test('The connected apps list page renders with 2 connected apps card', async ()
     });
 
     renderWithProviders(<ConnectedAppsListPage />);
-    await waitFor(() => screen.getByText('App A'));
 
-    expect(screen.queryByText('pim_menu.tab.connect')).toBeInTheDocument();
-    expect(screen.queryAllByText('pim_menu.item.connected_apps')).toHaveLength(2);
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.title', {exact: false})
-    ).toBeInTheDocument();
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.description_1')
-    ).toBeInTheDocument();
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.description_2')
-    ).toBeInTheDocument();
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.link')
-    ).toBeInTheDocument();
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.title')
-    ).toBeInTheDocument();
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.total', {exact: false})
-    ).toBeInTheDocument();
-    expect(
-        screen.queryAllByText('akeneo_connectivity.connection.connect.connected_apps.list.card.manage_app')
-    ).toHaveLength(2);
-    expect(screen.queryByText('App A')).toBeInTheDocument();
-    expect(
-        screen.queryByText(
-            'akeneo_connectivity.connection.connect.connected_apps.list.card.developed_by?author=authorA'
-        )
-    ).toBeInTheDocument();
-    expect(screen.queryByText('category A1')).toBeInTheDocument();
-    expect(screen.queryByText('category A2')).toBeNull();
-    expect(screen.queryByText('App B')).toBeInTheDocument();
-    expect(
-        screen.queryByText(
-            'akeneo_connectivity.connection.connect.connected_apps.list.card.developed_by?author=authorB'
-        )
-    ).toBeInTheDocument();
-    expect(screen.queryByText('category B1')).toBeInTheDocument();
-});
-
-test('The connected apps list page renders without connected apps', async () => {
-    const fetchConnectedAppsResponses: MockFetchResponses = {
-        akeneo_connectivity_connection_apps_rest_get_all_connected_apps: {
-            json: [],
-        },
-    };
-
-    mockFetchResponses({
-        ...fetchConnectedAppsResponses,
-    });
-
-    renderWithProviders(<ConnectedAppsListPage />);
-    await waitFor(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.empty'));
-
-    expect(screen.queryByText('pim_menu.tab.connect')).toBeInTheDocument();
-    expect(screen.queryAllByText('pim_menu.item.connected_apps')).toHaveLength(2);
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.title', {exact: false})
-    ).toBeInTheDocument();
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.description_1')
-    ).toBeInTheDocument();
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.description_2')
-    ).toBeInTheDocument();
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.link')
-    ).toBeInTheDocument();
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.title')
-    ).toBeInTheDocument();
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.total', {exact: false})
-    ).toBeInTheDocument();
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.empty')
-    ).toBeInTheDocument();
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.check_marketplace', {
-            exact: false,
-        })
-    ).toBeInTheDocument();
-    expect(
-        screen.queryAllByText('akeneo_connectivity.connection.connect.connected_apps.list.card.manage_app')
-    ).toHaveLength(0);
+    await waitFor(() => expect(ConnectedAppsContainer).toHaveBeenCalledWith({allConnectedApps: connectedApps}, {}));
 });
 
 test('The connected apps list page renders with internal api errors', async () => {
@@ -173,4 +92,26 @@ test('The connected apps list page renders with internal api errors', async () =
         NotificationLevel.ERROR,
         'akeneo_connectivity.connection.connect.connected_apps.list.flash.error'
     );
+});
+
+test('The connected apps list display the developer mode tag when enabled', async () => {
+    (useFeatureFlags as jest.Mock).mockImplementation(() => ({
+        isEnabled: () => true,
+    }));
+
+    renderWithProviders(<ConnectedAppsListPage />);
+
+    await waitFor(() => expect(ConnectedAppsContainer).toHaveBeenCalled());
+    expect(screen.queryByText('akeneo_connectivity.connection.developer_mode')).toBeInTheDocument();
+});
+
+test('The connected apps list do not display the developer mode tag when not enabled', async () => {
+    (useFeatureFlags as jest.Mock).mockImplementation(() => ({
+        isEnabled: () => false,
+    }));
+
+    renderWithProviders(<ConnectedAppsListPage />);
+
+    await waitFor(() => expect(ConnectedAppsContainer).toHaveBeenCalled());
+    expect(screen.queryByText('akeneo_connectivity.connection.developer_mode')).not.toBeInTheDocument();
 });

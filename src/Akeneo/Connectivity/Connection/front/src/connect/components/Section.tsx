@@ -1,5 +1,5 @@
 import React, {Children, FC} from 'react';
-import {AppIllustration, getColor, getFontSize, SectionTitle} from 'akeneo-design-system';
+import {AppIllustration, getColor, getFontSize, Helper, SectionTitle} from 'akeneo-design-system';
 import styled from 'styled-components';
 
 const CardGrid = styled.section`
@@ -22,10 +22,11 @@ const EmptyMessage = styled.p`
 type Props = {
     title: string;
     information: string;
+    warningMessage?: string | null | undefined;
     emptyMessage: string;
 };
 
-const Section: FC<Props> = ({title, information, emptyMessage, children}) => {
+const Section: FC<Props> = ({title, information, emptyMessage, warningMessage, children}) => {
     return (
         <>
             <SectionTitle>
@@ -33,6 +34,7 @@ const Section: FC<Props> = ({title, information, emptyMessage, children}) => {
                 <SectionTitle.Spacer />
                 <SectionTitle.Information>{information}</SectionTitle.Information>
             </SectionTitle>
+            {warningMessage && <Helper level={'warning'}> {warningMessage}</Helper>}
             {Children.count(children) === 0 ? (
                 <EmptyContainer>
                     <AppIllustration size={128} />

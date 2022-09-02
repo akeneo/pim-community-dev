@@ -4,11 +4,17 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfNonRequiredAttributes;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\Attributes;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\Channels;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\Attributes\InMemoryAttributes;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\Channels\InMemoryChannels;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\CriterionEvaluationResultData\TransformCommonCriterionResultDataIds;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\CriterionEvaluationResultData\TransformCompletenessResultDataIds;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\CriterionEvaluationResultTransformationFailedException;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\Locales;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\Locales\InMemoryLocales;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformChannelLocaleDataIds;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultCodes;
 use PhpSpec\ObjectBehavior;
 
@@ -18,74 +24,60 @@ use PhpSpec\ObjectBehavior;
  */
 final class TransformCriterionEvaluationResultIdsSpec extends ObjectBehavior
 {
-    public function let(Attributes $attributes, Channels $channels, Locales $locales)
+    public function let()
     {
-        $this->beConstructedWith($attributes, $channels, $locales);
+        $attributes = new InMemoryAttributes([
+            'name' => 12,
+            'description' => 34,
+        ]);
 
-        $attributes->getCodesByIds([12, 34])->willReturn([12 => 'name', 34 => 'description']);
-        $attributes->getCodesByIds([34])->willReturn([34 => 'description']);
+        $channels = new InMemoryChannels([
+            'ecommerce' => 1,
+            'mobile' => 2,
+        ]);
+        $locales = new InMemoryLocales([
+            'en_US' => 58,
+            'fr_FR' => 90,
+        ]);
 
-        $channels->getCodeById(1)->willReturn('ecommerce');
-        $locales->getCodeById(58)->willReturn('en_US');
-        $locales->getCodeById(90)->willReturn('fr_FR');
+        $transformChannelLocaleDataIds = new TransformChannelLocaleDataIds($channels, $locales);
+        $transformCommonCriterionResultData = new TransformCommonCriterionResultDataIds($transformChannelLocaleDataIds, $attributes);
+        $transformCompletenessResultData = new TransformCompletenessResultDataIds($transformChannelLocaleDataIds);
+
+        $this->beConstructedWith($transformChannelLocaleDataIds, $transformCommonCriterionResultData, $transformCompletenessResultData);
     }
 
-    public function it_transforms_a_criterion_evaluation_result_from_ids_to_codes()
+    public function it_transforms_a_common_criterion_evaluation_result_from_ids_to_codes()
     {
-        $criterionEvaluationResultIds = [
-            TransformCriterionEvaluationResultCodes::PROPERTIES_ID['data'] => [
-                1 => [
-                    1 => [
-                        58 => [
-                            12 => 50,
-                            34 => 0,
-                        ],
-                        90 => [
-                            34 => 20,
-                        ],
-                    ],
-                ],
-                2 => [
-                    1 => [
-                        58 => 4,
-                        90 => 5,
-                    ],
-                ],
-                3 => [
-                    1 => [
-                        58 => 2,
-                        90 => 1,
-                    ],
-                ],
-            ],
-            TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates'] => [
-                1 => [
-                    58 => 25,
-                    90 => 75,
-                ],
-            ],
-            TransformCriterionEvaluationResultCodes::PROPERTIES_ID['status'] => [
-                1 => [
-                    58 => TransformCriterionEvaluationResultCodes::STATUS_ID[CriterionEvaluationResultStatus::DONE],
-                    90 => TransformCriterionEvaluationResultCodes::STATUS_ID[CriterionEvaluationResultStatus::IN_PROGRESS],
-                ],
-            ]
-        ];
+        $criterionEvaluationResultIds = $this->getCommonCriterionResultIds();
 
-        $this->transformToCodes($criterionEvaluationResultIds)->shouldBeLike($this->getExpectedResult());
+        $this->transformToCodes(new CriterionCode('enrichment_image'), $criterionEvaluationResultIds)
+            ->shouldBeLike($this->getCommonCriterionResultCodes());
+    }
+
+    public function it_transforms_a_completeness_criterion_evaluation_result_from_ids_to_codes()
+    {
+        $criterionEvaluationResultIds = $this->getCompletenessCriterionResultIds();
+
+        $this->transformToCodes(new CriterionCode(EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE), $criterionEvaluationResultIds)
+            ->shouldBeLike($this->getCompletenessCriterionResultCodes());
+    }
+
+    public function it_transforms_a_deprecated_completeness_criterion_evaluation_result_from_ids_to_codes()
+    {
+        $criterionEvaluationResultIds = $this->getDeprecatedCompletenessCriterionResultIds();
+
+        $this->transformToCodes(new CriterionCode(EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE), $criterionEvaluationResultIds)
+            ->shouldBeLike($this->getCompletenessCriterionResultCodes());
     }
 
     public function it_throws_an_exception_if_the_evaluation_result_has_an_unknown_property()
     {
         $invalidEvaluationResult = [
-            TransformCriterionEvaluationResultCodes::PROPERTIES_ID['data'] => [
+            TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates'] => [
                 1 => [
-                    1 => [
-                        58 => [
-                            12 => 50,
-                            34 => 0,
-                        ],
-                    ],
+                    58 => 25,
+                    90 => 75,
                 ],
             ],
             999 => [
@@ -96,25 +88,13 @@ final class TransformCriterionEvaluationResultIdsSpec extends ObjectBehavior
             ],
         ];
 
-        $this->shouldThrow(CriterionEvaluationResultTransformationFailedException::class)->during('transformToCodes', [$invalidEvaluationResult]);
+        $this->shouldThrow(CriterionEvaluationResultTransformationFailedException::class)
+            ->during('transformToCodes', [new CriterionCode('enrichment_image'), $invalidEvaluationResult]);
     }
 
     public function it_throws_an_exception_if_the_evaluation_result_has_an_unknown_status()
     {
         $invalidEvaluationResult = [
-            TransformCriterionEvaluationResultCodes::PROPERTIES_ID['data'] => [
-                1 => [
-                    1 => [
-                        58 => [
-                            12 => 50,
-                            34 => 0,
-                        ],
-                        90 => [
-                            34 => 20,
-                        ],
-                    ],
-                ]
-            ],
             TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates'] => [
                 1 => [
                     58 => 25,
@@ -129,14 +109,14 @@ final class TransformCriterionEvaluationResultIdsSpec extends ObjectBehavior
             ]
         ];
 
-        $this->shouldThrow(CriterionEvaluationResultTransformationFailedException::class)->during('transformToCodes', [$invalidEvaluationResult]);
+        $this->shouldThrow(CriterionEvaluationResultTransformationFailedException::class)->during('transformToCodes', [new CriterionCode('enrichment_image'), $invalidEvaluationResult]);
     }
 
-    public function it_throws_an_exception_if_the_evaluation_result_has_an_unknown_data_type()
+    private function getCommonCriterionResultIds(): array
     {
-        $invalidEvaluationResult = [
+        return [
             TransformCriterionEvaluationResultCodes::PROPERTIES_ID['data'] => [
-                1 => [
+                TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['attributes_with_rates'] => [
                     1 => [
                         58 => [
                             12 => 50,
@@ -147,7 +127,7 @@ final class TransformCriterionEvaluationResultIdsSpec extends ObjectBehavior
                         ],
                     ],
                 ],
-                42 => [
+                TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['total_number_of_attributes'] => [
                     1 => [
                         58 => 4,
                         90 => 5,
@@ -158,60 +138,6 @@ final class TransformCriterionEvaluationResultIdsSpec extends ObjectBehavior
                 1 => [
                     58 => 25,
                     90 => 75,
-                ],
-            ],
-            TransformCriterionEvaluationResultCodes::PROPERTIES_ID['status'] => []
-        ];
-
-        $this->shouldThrow(CriterionEvaluationResultTransformationFailedException::class)->during('transformToCodes', [$invalidEvaluationResult]);
-    }
-
-    public function it_removes_unknown_channels($channels)
-    {
-        $channels->getCodeById(42)->willReturn(null);
-
-        $criterionEvaluationResultIds = [
-            TransformCriterionEvaluationResultCodes::PROPERTIES_ID['data'] => [
-                1 => [
-                    1 => [
-                        58 => [
-                            12 => 50,
-                            34 => 0,
-                        ],
-                        90 => [
-                            34 => 20,
-                        ],
-                    ],
-                    42 => [
-                        58 => [
-                            12 => 100,
-                        ],
-                    ],
-                ],
-                2 => [
-                    1 => [
-                        58 => 4,
-                        90 => 5,
-                    ],
-                    42 => [
-                        58 => 6,
-                    ],
-                ],
-                3 => [
-                    1 => [
-                        58 => 2,
-                        90 => 1,
-                    ],
-                ],
-            ],
-            TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates'] => [
-                1 => [
-                    58 => 25,
-                    90 => 75,
-                ],
-                42 => [
-                    58 => 100,
-                    90 => 0,
                 ],
             ],
             TransformCriterionEvaluationResultCodes::PROPERTIES_ID['status'] => [
@@ -219,70 +145,11 @@ final class TransformCriterionEvaluationResultIdsSpec extends ObjectBehavior
                     58 => TransformCriterionEvaluationResultCodes::STATUS_ID[CriterionEvaluationResultStatus::DONE],
                     90 => TransformCriterionEvaluationResultCodes::STATUS_ID[CriterionEvaluationResultStatus::IN_PROGRESS],
                 ],
-                42 => [
-                    58 => TransformCriterionEvaluationResultCodes::STATUS_ID[CriterionEvaluationResultStatus::DONE],
-                    90 => TransformCriterionEvaluationResultCodes::STATUS_ID[CriterionEvaluationResultStatus::DONE],
-                ],
             ]
         ];
-
-        $this->transformToCodes($criterionEvaluationResultIds)->shouldBeLike($this->getExpectedResult());
     }
 
-    public function it_removes_unknown_locales($locales)
-    {
-        $locales->getCodeById(987)->willReturn(null);
-
-        $criterionEvaluationResultIds = [
-            TransformCriterionEvaluationResultCodes::PROPERTIES_ID['data'] => [
-                1 => [
-                    1 => [
-                        58 => [
-                            12 => 50,
-                            34 => 0,
-                        ],
-                        90 => [
-                            34 => 20,
-                        ],
-                        987 => [
-                            12 => 56,
-                        ]
-                    ],
-                ],
-                2 => [
-                    1 => [
-                        58 => 4,
-                        90 => 5,
-                        987 => 6
-                    ],
-                ],
-                3 => [
-                    1 => [
-                        58 => 2,
-                        90 => 1,
-                    ],
-                ],
-            ],
-            TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates'] => [
-                1 => [
-                    58 => 25,
-                    90 => 75,
-                    987 => 49,
-                ],
-            ],
-            TransformCriterionEvaluationResultCodes::PROPERTIES_ID['status'] => [
-                1 => [
-                    58 => TransformCriterionEvaluationResultCodes::STATUS_ID[CriterionEvaluationResultStatus::DONE],
-                    90 => TransformCriterionEvaluationResultCodes::STATUS_ID[CriterionEvaluationResultStatus::IN_PROGRESS],
-                    987 => TransformCriterionEvaluationResultCodes::STATUS_ID[CriterionEvaluationResultStatus::DONE],
-                ],
-            ]
-        ];
-
-        $this->transformToCodes($criterionEvaluationResultIds)->shouldBeLike($this->getExpectedResult());
-    }
-
-    private function getExpectedResult(): array
+    private function getCommonCriterionResultCodes(): array
     {
         return [
             'data' => [
@@ -297,6 +164,64 @@ final class TransformCriterionEvaluationResultIdsSpec extends ObjectBehavior
                         ],
                     ],
                 ],
+                'total_number_of_attributes' => [
+                    'ecommerce' => [
+                        'en_US' => 4,
+                        'fr_FR' => 5,
+                    ],
+                ],
+            ],
+            'rates' => [
+                'ecommerce' => [
+                    'en_US' => 25,
+                    'fr_FR' => 75,
+                ],
+            ],
+            'status' => [
+                'ecommerce' => [
+                    'en_US' => CriterionEvaluationResultStatus::DONE,
+                    'fr_FR' => CriterionEvaluationResultStatus::IN_PROGRESS,
+                ],
+            ]
+        ];
+    }
+
+    private function getCompletenessCriterionResultIds(): array
+    {
+        return [
+            TransformCriterionEvaluationResultCodes::PROPERTIES_ID['data'] => [
+                TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['total_number_of_attributes'] => [
+                    1 => [
+                        58 => 4,
+                        90 => 5,
+                    ],
+                ],
+                TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['number_of_improvable_attributes'] => [
+                    1 => [
+                        58 => 2,
+                        90 => 1,
+                    ],
+                ],
+            ],
+            TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates'] => [
+                1 => [
+                    58 => 25,
+                    90 => 75,
+                ],
+            ],
+            TransformCriterionEvaluationResultCodes::PROPERTIES_ID['status'] => [
+                1 => [
+                    58 => TransformCriterionEvaluationResultCodes::STATUS_ID[CriterionEvaluationResultStatus::DONE],
+                    90 => TransformCriterionEvaluationResultCodes::STATUS_ID[CriterionEvaluationResultStatus::NOT_APPLICABLE],
+                ],
+            ]
+        ];
+    }
+
+    private function getCompletenessCriterionResultCodes(): array
+    {
+        return [
+            'data' => [
                 'total_number_of_attributes' => [
                     'ecommerce' => [
                         'en_US' => 4,
@@ -319,7 +244,44 @@ final class TransformCriterionEvaluationResultIdsSpec extends ObjectBehavior
             'status' => [
                 'ecommerce' => [
                     'en_US' => CriterionEvaluationResultStatus::DONE,
-                    'fr_FR' => CriterionEvaluationResultStatus::IN_PROGRESS,
+                    'fr_FR' => CriterionEvaluationResultStatus::NOT_APPLICABLE,
+                ],
+            ]
+        ];
+    }
+
+    private function getDeprecatedCompletenessCriterionResultIds(): array
+    {
+        return [
+            TransformCriterionEvaluationResultCodes::PROPERTIES_ID['data'] => [
+                TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['attributes_with_rates'] => [
+                    1 => [
+                        58 => [
+                            12 => 50,
+                            34 => 0,
+                        ],
+                        90 => [
+                            34 => 20,
+                        ],
+                    ],
+                ],
+                TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['total_number_of_attributes'] => [
+                    1 => [
+                        58 => 4,
+                        90 => 5,
+                    ],
+                ],
+            ],
+            TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates'] => [
+                1 => [
+                    58 => 25,
+                    90 => 75,
+                ],
+            ],
+            TransformCriterionEvaluationResultCodes::PROPERTIES_ID['status'] => [
+                1 => [
+                    58 => TransformCriterionEvaluationResultCodes::STATUS_ID[CriterionEvaluationResultStatus::DONE],
+                    90 => TransformCriterionEvaluationResultCodes::STATUS_ID[CriterionEvaluationResultStatus::NOT_APPLICABLE],
                 ],
             ]
         ];

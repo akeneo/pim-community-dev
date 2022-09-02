@@ -1,0 +1,21 @@
+pim_enrich.product:
+  validation:
+    upsert:
+      unknown_user: 'L''utilisateur "{{ user_id }}" n''existe pas'
+      category_no_access_to_products: Vous n'avez accès à aucun produit dans aucune arborescence, contactez votre administrateur pour résoudre le problème
+      should_keep_one_owned_category: Vous devez garder votre produit au moins dans une catégorie pour laquelle vous avez l'autorisation de gérer les produits qui en font partie. 
+      locale_no_access_to_products: Vous n'avez pas accès aux données du produit dans aucune locale activée, veuillez contacter votre administrateur
+      attribute_group_no_access_to_attributes: Vous n'avez pas accès à l'attribut {{ attributeCode }} de ce produit. Veuillez contacter votre administrateur.
+      product_identifier_empty: L'identifiant du produit nécessite une chaîne de caractères non vide
+      duplicated_user_intents: La valeur de l'attribut {{ attributeCode }} est mise à jour plusieurs fois
+      family_code_empty: Le code de la famille nécessite une chaîne de caractères non vide.
+      category_does_not_exist: '{1}La catégorie suivante n''existe pas: "{{ categoryCodes }}"|]1, Inf[Les catégories suivantes n''existent pas: "{{ categoryCodes }}"'
+      set_value:
+        no_channel_code_provided_for_scopable_attribute: 'L''attribut {{ attributeCode }} requiert un canal'
+        channel_code_provided_for_non_scopable_attribute: 'L''attribut {{ attributeCode }} ne nécessite pas de canal, "{{ channelCode }}" a été détecté'
+        no_locale_code_provided_for_localizable_attribute: 'L''attribut {{ attributeCode }} requiert une locale'
+        locale_code_provided_for_non_localizable_attribute: 'L''attribut {{ attributeCode }} ne nécessite pas de locale, "{{ localeCode }}" a été détecté'
+        invalid_locale_code_for_locale_specific_attribute: 'Le {{ attributeCode }} nécessite l''une des locales suivantes : {{ availableLocales }}; "{{ localeCode }}" a été détecté'
+        channel_does_not_exist: 'Le canal {{ channelCode }} n''existe pas'
+        locale_is_not_active: 'La locale {{ localeCode }} n''existe pas ou n''est pas activée'
+        locale_not_activated_for_channel: 'La locale {{ localeCode }} n''est pas activée pour le canal {{ channelCode }}'

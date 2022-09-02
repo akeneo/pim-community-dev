@@ -1,14 +1,15 @@
 import React from 'react';
 import {Badge} from '../../../Badge/Badge';
-import styled, {css} from 'styled-components';
+import styled from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../../theme';
 import {Override} from '../../../../shared';
 import {Dropdown} from '../../../Dropdown/Dropdown';
 import {ArrowDownIcon, CloseIcon} from '../../../../icons';
 import {useBooleanState} from '../../../../hooks';
 import {IconButton} from '../../../IconButton/IconButton';
-import {TableInputReadOnlyCell} from '../TableInputReadOnlyCell';
+import {TableInputReadOnlyCell} from '../shared/TableInputReadOnlyCell';
 import {TableInputContext} from '../TableInputContext';
+import {highlightCell} from '../shared/highlightCell';
 
 const BooleanButtonDropdown = styled(Dropdown)`
   width: 100%;
@@ -30,20 +31,7 @@ const BooleanButton = styled.button<{highlighted: boolean; inError: boolean} & A
   cursor: pointer;
   background: none;
 
-  ${({highlighted, inError}) =>
-    highlighted &&
-    !inError &&
-    css`
-      background: ${getColor('green', 10)};
-      box-shadow: 0 0 0 1px ${getColor('green', 80)};
-    `};
-
-  ${({inError}) =>
-    inError &&
-    css`
-      background: ${getColor('red', 10)};
-      box-shadow: 0 0 0 1px ${getColor('red', 80)};
-    `};
+  ${highlightCell};
 `;
 
 const IconsPart = styled.div`

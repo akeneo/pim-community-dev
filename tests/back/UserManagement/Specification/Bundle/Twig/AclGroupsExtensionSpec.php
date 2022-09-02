@@ -2,15 +2,16 @@
 
 namespace Specification\Akeneo\UserManagement\Bundle\Twig;
 
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use PhpSpec\ObjectBehavior;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class AclGroupsExtensionSpec extends ObjectBehavior
 {
-    function let()
+    function let(FeatureFlags $featureFlags)
     {
-        $this->beConstructedWith([]);
+        $this->beConstructedWith([], $featureFlags);
     }
 
     function it_is_a_twig_extension()

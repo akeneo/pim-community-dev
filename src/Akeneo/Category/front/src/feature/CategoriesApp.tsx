@@ -1,0 +1,35 @@
+import React, {FC} from 'react';
+import {HashRouter as Router, Route, Switch} from 'react-router-dom';
+import {CategoriesIndex, CategoriesTreePage, CategoryEditPage} from './pages';
+import {EditCategoryProvider} from './components';
+import {useFeatureFlags} from '@akeneo-pim-community/shared';
+import {LegacyCategoryEditPage} from './legacy/pages/LegacyCategoryEditPage';
+
+type Props = {
+  setCanLeavePage: (canLeavePage: boolean) => void;
+};
+
+const CategoriesApp: FC<Props> = ({setCanLeavePage}) => {
+  const featureFlags = useFeatureFlags();
+  const categoryEnrichmentIsEnabled = featureFlags.isEnabled('enriched_category');
+
+  return (
+    <Router basename="/enrich/product-category-tree">
+      <Switch>
+        <Route path="/:treeId/tree">
+          <CategoriesTreePage />
+        </Route>
+        <Route path="/:categoryId/edit">
+          <EditCategoryProvider setCanLeavePage={setCanLeavePage}>
+            {categoryEnrichmentIsEnabled ? <CategoryEditPage /> : <LegacyCategoryEditPage />}
+          </EditCategoryProvider>
+        </Route>
+        <Route path="/">
+          <CategoriesIndex />
+        </Route>
+      </Switch>
+    </Router>
+  );
+};
+
+export {CategoriesApp};

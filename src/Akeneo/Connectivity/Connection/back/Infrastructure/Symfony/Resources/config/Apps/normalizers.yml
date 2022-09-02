@@ -1,0 +1,2 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Normalizer\ViolationListNormalizer: ~

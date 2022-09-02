@@ -9,6 +9,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\Products
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\ComputeProductsKeyIndicator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEvaluationRatesByProductsAndCriterionQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\KeyIndicatorCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -16,22 +18,20 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
  */
 final class ComputeProductsWithImageQuery implements ComputeProductsKeyIndicator
 {
-    private GetEvaluationRatesByProductsAndCriterionQueryInterface $getEvaluationRatesByProductAndCriterionQuery;
-
-    public function __construct(GetEvaluationRatesByProductsAndCriterionQueryInterface $getEvaluationRatesByProductAndCriterionQuery)
-    {
-        $this->getEvaluationRatesByProductAndCriterionQuery = $getEvaluationRatesByProductAndCriterionQuery;
+    public function __construct(
+        private GetEvaluationRatesByProductsAndCriterionQueryInterface $getEvaluationRatesByProductAndCriterionQuery
+    ) {
     }
 
-    public function getName(): string
+    public function getCode(): KeyIndicatorCode
     {
-        return ProductsWithImage::CODE;
+        return new KeyIndicatorCode(ProductsWithImage::CODE);
     }
 
-    public function compute(array $productIds): array
+    public function compute(ProductEntityIdCollection $entityIdCollection): array
     {
-        $productsWithImageRates = $this->getEvaluationRatesByProductAndCriterionQuery->toArrayInt(
-            $productIds,
+        $productsWithImageRates = $this->getEvaluationRatesByProductAndCriterionQuery->execute(
+            $entityIdCollection,
             new CriterionCode(EvaluateImageEnrichment::CRITERION_CODE)
         );
 

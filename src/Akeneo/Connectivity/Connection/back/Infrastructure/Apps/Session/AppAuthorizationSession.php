@@ -31,7 +31,7 @@ class AppAuthorizationSession implements AppAuthorizationSessionInterface
     {
         $key = $this->getSessionKey($authorization->clientId);
 
-        $this->session->set($key, json_encode($authorization->normalize()));
+        $this->session->set($key, \json_encode($authorization->normalize()));
     }
 
     /**
@@ -49,7 +49,7 @@ class AppAuthorizationSession implements AppAuthorizationSessionInterface
             return null;
         }
 
-        return AppAuthorization::createFromNormalized(json_decode($sessionAppAuthorization, true));
+        return AppAuthorization::createFromNormalized(\json_decode($sessionAppAuthorization, true));
     }
 
     /**
@@ -58,6 +58,6 @@ class AppAuthorizationSession implements AppAuthorizationSessionInterface
      */
     private function getSessionKey(string $clientId): string
     {
-        return sprintf('%s%s', self::SESSION_PREFIX, $clientId);
+        return \sprintf('%s%s', self::SESSION_PREFIX, $clientId);
     }
 }

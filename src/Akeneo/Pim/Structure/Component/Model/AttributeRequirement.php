@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Component\Model;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 
 /**
  * The attribute requirement for a channel and a family

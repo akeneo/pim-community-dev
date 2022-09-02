@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\Application\Settings\Command;
 
 use Akeneo\Connectivity\Connection\Application\Settings\Service\DeleteClientInterface;
 use Akeneo\Connectivity\Connection\Application\Settings\Service\DeleteUserInterface;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepositoryInterface;
 
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
@@ -15,14 +15,14 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\Connec
  */
 class DeleteConnectionHandler
 {
-    private ConnectionRepository $repository;
+    private ConnectionRepositoryInterface $repository;
 
     private DeleteClientInterface $deleteClient;
 
     private DeleteUserInterface $deleteUser;
 
     public function __construct(
-        ConnectionRepository $repository,
+        ConnectionRepositoryInterface $repository,
         DeleteClientInterface $deleteClient,
         DeleteUserInterface $deleteUser
     ) {
@@ -36,7 +36,7 @@ class DeleteConnectionHandler
         $connection = $this->repository->findOneByCode($command->code());
         if (null === $connection) {
             throw new \InvalidArgumentException(
-                sprintf('Connection with code "%s" does not exist', $command->code())
+                \sprintf('Connection with code "%s" does not exist', $command->code())
             );
         }
 

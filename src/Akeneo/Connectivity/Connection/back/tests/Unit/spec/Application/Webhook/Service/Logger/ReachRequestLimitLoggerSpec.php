@@ -31,7 +31,7 @@ class ReachRequestLimitLoggerSpec extends ObjectBehavior
             'limit_reset' => '2021-01-01T00:01:30+00:00'
         ];
 
-        $logger->info(json_encode($expectedLog, JSON_THROW_ON_ERROR))->shouldBeCalled();
+        $logger->info(\json_encode($expectedLog, JSON_THROW_ON_ERROR))->shouldBeCalled();
 
         $this->log(
             666,

@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Sorter\Date;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
@@ -43,27 +44,15 @@ class DateSorterIntegration extends AbstractProductQueryBuilderTestCase
         parent::setUp();
 
         $this->createProduct('product_one', [
-            'values' => [
-                'a_date' => [
-                    ['data' => '2017-04-11', 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetDateValue('a_date', null, null, new \DateTime('2017-04-11'))
         ]);
 
         $this->createProduct('product_two', [
-            'values' => [
-                'a_date' => [
-                    ['data' => '2016-03-10', 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetDateValue('a_date', null, null, new \DateTime('2016-03-10'))
         ]);
 
         $this->createProduct('product_three', [
-            'values' => [
-                'a_date' => [
-                    ['data' => '2015-02-09', 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetDateValue('a_date', null, null, new \DateTime('2015-02-09'))
         ]);
 
         $this->createProduct('empty_product', []);

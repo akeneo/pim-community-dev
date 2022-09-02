@@ -1,0 +1,16 @@
+# Internal API
+akeneo_connectivity_connection_error_management_rest_get_connection_business_errors:
+    path: '/rest/connections/{connection_code}/business-errors'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Controller\Internal\ErrorManagementAction
+    methods: [GET]
+    requirements:
+        connection_code: '[a-zA-Z0-9_]+'
+
+# Front API
+akeneo_connectivity_connection_error_management_dashboard:
+    path: '/connect/data-flows/business-errors'
+
+akeneo_connectivity_connection_error_management_connection_monitoring:
+    path: '/connect/connection-settings/{code}/monitoring'
+    requirements:
+        code: '[a-zA-Z0-9_]+'

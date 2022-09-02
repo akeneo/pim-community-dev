@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Sorter\Date;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
@@ -37,18 +38,6 @@ class LocalizableSorterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @jira https://akeneo.atlassian.net/browse/PIM-6872
-     */
-    public function testSorterWithNoDataOnSorterField()
-    {
-        $result = $this->executeSorter([['a_localizable_date', Directions::DESCENDING, ['locale' => 'de_DE']]]);
-        $this->assertOrder($result, ['product_one', 'product_two', 'product_three', 'empty_product']);
-
-        $result = $this->executeSorter([['a_localizable_date', Directions::ASCENDING, ['locale' => 'de_DE']]]);
-        $this->assertOrder($result, ['product_one', 'product_two', 'product_three', 'empty_product']);
-    }
-
-    /**
      * {@inheritdoc}
      */
     protected function setUp(): void
@@ -63,27 +52,15 @@ class LocalizableSorterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('product_one', [
-            'values' => [
-                'a_localizable_date' => [
-                    ['data' => '2017-04-11', 'locale' => 'fr_FR', 'scope' => null],
-                ],
-            ],
+            new SetDateValue('a_localizable_date', null, 'fr_FR', new \DateTime('2017-04-11'))
         ]);
 
         $this->createProduct('product_two', [
-            'values' => [
-                'a_localizable_date' => [
-                    ['data' => '2016-03-10', 'locale' => 'fr_FR', 'scope' => null],
-                ],
-            ],
+            new SetDateValue('a_localizable_date', null, 'fr_FR', new \DateTime('2016-03-10'))
         ]);
 
         $this->createProduct('product_three', [
-            'values' => [
-                'a_localizable_date' => [
-                    ['data' => '2015-02-09', 'locale' => 'fr_FR', 'scope' => null],
-                ],
-            ],
+            new SetDateValue('a_localizable_date', null, 'fr_FR', new \DateTime('2015-02-09'))
         ]);
 
         $this->createProduct('empty_product', []);

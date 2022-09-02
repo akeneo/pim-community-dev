@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category;
 
+use Akeneo\Category\Api\CategoryTree;
+use Akeneo\Category\Api\FindCategoryTrees;
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Category\Infrastructure\Component\Model\Category;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
-use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
-use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\CategoryTree;
-use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\FindCategoryTrees;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer;
-use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -18,42 +18,28 @@ use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
  */
 class SqlFindCategoryTrees implements FindCategoryTrees
 {
-    private CategoryRepositoryInterface $categoryRepository;
-    private TranslationNormalizer $translationNormalizer;
-    private CollectionFilterInterface $collectionFilter;
-
     public function __construct(
-        CategoryRepositoryInterface $categoryRepository,
-        TranslationNormalizer $translationNormalizer,
-        CollectionFilterInterface $collectionFilter
+        private CategoryRepositoryInterface $categoryRepository,
+        private TranslationNormalizer $translationNormalizer
     ) {
-        $this->categoryRepository = $categoryRepository;
-        $this->translationNormalizer = $translationNormalizer;
-        $this->collectionFilter = $collectionFilter;
-    }
-
-    public function execute(): array
-    {
-        $categories = $this->categoryRepository->findBy(['parent' => null]);
-        $categoriesWithPermissions = $this->applyPermissions($categories);
-
-        return $this->categoryTrees($categoriesWithPermissions);
-    }
-
-    /**
-     * @param Category[] $categories
-     */
-    private function applyPermissions(array $categories): array
-    {
-        return $this->collectionFilter->filterCollection($categories, 'pim.internal_api.product_category.view');
     }
 
     /**
      * @return CategoryTree[]
      */
-    private function categoryTrees(
-        array $categoriesWithPermissions
-    ): array {
+    public function execute(): array
+    {
+        $categories = $this->categoryRepository->findBy(['parent' => null]);
+
+        return $this->categoryTrees($categories);
+    }
+
+    /**
+     * @param Category[] $categories
+     * @return CategoryTree[]
+     */
+    private function categoryTrees(array $categories): array
+    {
         $translationNormalizer = $this->translationNormalizer;
 
         return array_map(
@@ -61,10 +47,11 @@ class SqlFindCategoryTrees implements FindCategoryTrees
                 $categoryTree = new CategoryTree();
                 $categoryTree->code = $category->getCode();
                 $categoryTree->labels = $translationNormalizer->normalize($category, 'standard');
+                $categoryTree->id = $category->getId();
 
                 return $categoryTree;
             },
-            $categoriesWithPermissions
+            $categories
         );
     }
 }

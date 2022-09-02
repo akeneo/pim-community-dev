@@ -23,6 +23,11 @@ type TableProps = Override<
     isSelectable?: boolean;
 
     /**
+     * Define if the table has some warning.
+     */
+    hasWarningRows?: boolean;
+
+    /**
      * Define if the checkbox should be always displayed or displayed on hover.
      * This props should be true when one element is checked.
      */
@@ -60,6 +65,7 @@ type TableProps = Override<
  */
 const Table = ({
   isSelectable = false,
+  hasWarningRows = false,
   displayCheckbox = false,
   isDragAndDroppable = false,
   onReorder = undefined,
@@ -67,8 +73,8 @@ const Table = ({
   ...rest
 }: TableProps) => {
   const providerValue = useMemo(
-    () => ({isSelectable, displayCheckbox, isDragAndDroppable, onReorder}),
-    [isSelectable, displayCheckbox, isDragAndDroppable, onReorder]
+    () => ({isSelectable, hasWarningRows, displayCheckbox, isDragAndDroppable, onReorder}),
+    [isSelectable, hasWarningRows, displayCheckbox, isDragAndDroppable, onReorder]
   );
 
   return (

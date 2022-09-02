@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Application\Webhook\Query;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Query\GetAConnectionWebhookHandler;
-use Akeneo\Connectivity\Connection\Application\Webhook\Query\GetAConnectionWebhookQuery as Query;
+use Akeneo\Connectivity\Connection\Application\Webhook\Query\GetAConnectionWebhookQuery;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ConnectionWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\EventSubscriptionFormData;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\CountActiveEventSubscriptionsQuery;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\GetAConnectionWebhookQuery;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\CountActiveEventSubscriptionsQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\GetAConnectionWebhookQueryInterface;
 use PhpSpec\ObjectBehavior;
 
 class GetAConnectionWebhookHandlerSpec extends ObjectBehavior
@@ -17,8 +17,8 @@ class GetAConnectionWebhookHandlerSpec extends ObjectBehavior
     const ACTIVE_EVENT_SUBSCRIPTIONS_LIMIT = 3;
 
     public function let(
-        GetAConnectionWebhookQuery $getAConnectionWebhookQuery,
-        CountActiveEventSubscriptionsQuery $countActiveEventSubscriptionsQuery
+        GetAConnectionWebhookQueryInterface $getAConnectionWebhookQuery,
+        CountActiveEventSubscriptionsQueryInterface $countActiveEventSubscriptionsQuery
     ): void {
         $this->beConstructedWith(
             $getAConnectionWebhookQuery,
@@ -52,13 +52,13 @@ class GetAConnectionWebhookHandlerSpec extends ObjectBehavior
             2
         );
 
-        $this->handle(new Query('magento'))->shouldBeLike($expectedFormData);
+        $this->handle(new GetAConnectionWebhookQuery('magento'))->shouldBeLike($expectedFormData);
     }
 
     public function it_returns_null_if_no_connection_webhook_exists($getAConnectionWebhookQuery): void
     {
         $getAConnectionWebhookQuery->execute('magento')->willReturn(null);
 
-        $this->handle(new Query('magento'))->shouldReturn(null);
+        $this->handle(new GetAConnectionWebhookQuery('magento'))->shouldReturn(null);
     }
 }

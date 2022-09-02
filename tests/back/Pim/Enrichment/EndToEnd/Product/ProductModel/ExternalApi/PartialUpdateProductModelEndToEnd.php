@@ -4,6 +4,9 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\ProductModel\ExternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use Psr\Log\Test\TestLogger;
@@ -47,17 +50,9 @@ class PartialUpdateProductModelEndToEnd extends AbstractProductModelTestCase
         );
 
         $this->createVariantProduct('apollon_optionb_false', [
-            'categories' => ['categoryB'],
-            'parent' => 'sub_sweat',
-            'values' => [
-                'a_yes_no' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => false,
-                    ],
-                ],
-            ],
+            new SetCategories(['categoryB']),
+            new ChangeParent('sub_sweat'),
+            new SetBooleanValue('a_yes_no', null, null, false)
         ]);
     }
 
@@ -1325,14 +1320,6 @@ JSON;
 
         $client->request('PATCH', 'api/rest/v1/product-models/sub_sweat', [], [], [], $data);
         $response = $client->getResponse();
-
-        $logger = self::$container->get('monolog.logger.pim_api_acl');
-        assert($logger instanceof TestLogger);
-
-        $this->assertTrue(
-            $logger->hasWarning('User "admin" with roles ROLE_ADMINISTRATOR is not granted "pim_api_product_edit"'),
-            'Expected warning not found in the logs.'
-        );
 
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }

@@ -2,14 +2,14 @@
 
 namespace Akeneo\UserManagement\Bundle\Controller;
 
-use Akeneo\Tool\Component\Email\SenderAddress;
 use Akeneo\UserManagement\Bundle\Form\Handler\ResetHandler;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
+use Akeneo\UserManagement\Bundle\Notification\MailResetNotifier;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Swift_Mailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -18,49 +18,20 @@ class ResetController extends AbstractController
 {
     const SESSION_EMAIL = 'pim_user_reset_email';
 
-    /** @var UserManager */
-    private $userManager;
-
-    /** @var Swift_Mailer */
-    private $mailer;
-
-    /** @var SessionInterface */
-    private $session;
-
-    /** @var ResetHandler */
-    private $resetHandler;
-
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-
-    /** @var FormInterface */
-    private $form;
-
-    /** @var string */
-    private $mailerUrl;
-
     public function __construct(
-        UserManager $userManager,
-        Swift_Mailer $mailer,
-        SessionInterface $session,
-        ResetHandler $resetHandler,
-        TokenStorageInterface $tokenStorage,
-        FormInterface $form,
-        string $mailerUrl
+        private UserManager           $userManager,
+        private SessionInterface      $session,
+        private ResetHandler          $resetHandler,
+        private TokenStorageInterface $tokenStorage,
+        private FormInterface         $form,
+        private MailResetNotifier     $mailer
     ) {
-        $this->userManager = $userManager;
-        $this->mailer = $mailer;
-        $this->session = $session;
-        $this->resetHandler = $resetHandler;
-        $this->tokenStorage = $tokenStorage;
-        $this->form = $form;
-        $this->mailerUrl = $mailerUrl;
     }
 
     /**
      * @Template("@PimUser/Reset/request.html.twig")
      */
-    public function request()
+    public function request(): array
     {
         return [];
     }
@@ -70,7 +41,7 @@ class ResetController extends AbstractController
      *
      * @Template("@PimUser/Reset/sendEmail.html.twig")
      */
-    public function sendEmail(Request $request)
+    public function sendEmail(Request $request): RedirectResponse|array
     {
         $username = $request->request->get('username');
         $user = $this->userManager->findUserByUsernameOrEmail($username);
@@ -94,21 +65,10 @@ class ResetController extends AbstractController
 
         $this->session->set(static::SESSION_EMAIL, $this->getObfuscatedEmail($user));
 
-        /**
-         * @todo Move to postUpdate lifecycle event handler as service
-         */
-        $message = (new \Swift_Message('Reset password'))
-            ->setFrom((string) SenderAddress::fromMailerUrl($this->mailerUrl))
-            ->setTo($user->getEmail())
-            ->setBody(
-                $this->renderView('@PimUser/Mail/reset.html.twig', ['user' => $user]),
-                'text/html'
-            );
-
         $user->setPasswordRequestedAt(new \DateTime('now', new \DateTimeZone('UTC')));
-
-        $this->mailer->send($message);
         $this->userManager->updateUser($user);
+
+        $this->mailer->notify($user);
 
         return [];
     }
@@ -170,7 +130,7 @@ class ResetController extends AbstractController
 
         return [
             'token' => $token,
-            'form'  => $this->form->createView(),
+            'form' => $this->form->createView(),
         ];
     }
 

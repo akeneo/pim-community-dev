@@ -63,11 +63,11 @@ abstract class AbstractProductModelWithQuantifiedAssociationsTestCase extends Ab
 
     protected function getProductModelSaver(): SaverInterface
     {
-        return self::$container->get('pim_catalog.saver.product_model');
+        return self::getContainer()->get('pim_catalog.saver.product_model');
     }
 
     protected function getProductModelUpdater(): ObjectUpdaterInterface
     {
-        return self::$container->get('pim_catalog.updater.product_model');
+        return self::getContainer()->get('pim_catalog.updater.product_model');
     }
 }

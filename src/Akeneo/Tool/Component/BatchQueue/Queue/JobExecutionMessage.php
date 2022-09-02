@@ -16,31 +16,24 @@ use Ramsey\Uuid\UuidInterface;
  */
 abstract class JobExecutionMessage implements JobExecutionMessageInterface
 {
-    private UuidInterface $id;
-    private int $jobExecutionId;
-    private \DateTime $createTime;
-    private ?\DateTime $updatedTime;
-    private array $options = [];
+    private ?string $tenantId = null;
 
     private function __construct(
-        UuidInterface $id,
-        int $jobExecutionId,
-        \DateTime $createTime,
-        ?\DateTime $updatedTime,
-        array $options
+        private UuidInterface $id,
+        private int $jobExecutionId,
+        private \DateTime $createTime,
+        private ?\DateTime $updatedTime,
+        private array $options
     ) {
-        $this->id = $id;
-        $this->jobExecutionId = $jobExecutionId;
-        $this->createTime = $createTime;
-        $this->updatedTime = $updatedTime;
-        $this->options = $options;
     }
 
     /**
      * Create a new JobExecutionMessage that has never been persisted into database.
      */
-    public static function createJobExecutionMessage(int $jobExecutionId, array $options): JobExecutionMessageInterface
-    {
+    public static function createJobExecutionMessage(
+        int $jobExecutionId,
+        array $options
+    ): JobExecutionMessageInterface {
         $createTime = new \DateTime('now', new \DateTimeZone('UTC'));
 
         return new static(Uuid::uuid4(), $jobExecutionId, $createTime, null, $options);
@@ -82,5 +75,15 @@ abstract class JobExecutionMessage implements JobExecutionMessageInterface
     public function getOptions(): array
     {
         return $this->options;
+    }
+
+    public function getTenantId(): ?string
+    {
+        return $this->tenantId;
+    }
+
+    public function setTenantId(string $tenantId): void
+    {
+        $this->tenantId = $tenantId;
     }
 }

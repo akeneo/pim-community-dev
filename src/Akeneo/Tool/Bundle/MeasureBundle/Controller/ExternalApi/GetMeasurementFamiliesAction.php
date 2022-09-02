@@ -7,6 +7,7 @@ namespace Akeneo\Tool\Bundle\MeasureBundle\Controller\ExternalApi;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
 use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -15,17 +16,16 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class GetMeasurementFamiliesAction
 {
-    private MeasurementFamilyRepositoryInterface $measurementFamilyRepository;
-
-    public function __construct(MeasurementFamilyRepositoryInterface $measurementFamilyRepository)
-    {
-        $this->measurementFamilyRepository = $measurementFamilyRepository;
+    public function __construct(
+        private MeasurementFamilyRepositoryInterface $measurementFamilyRepository,
+        private NormalizerInterface $normalizer,
+    ) {
     }
 
     public function __invoke(): JsonResponse
     {
         $measurementFamilies = $this->measurementFamilyRepository->all();
-        $normalizedMeasurementFamilies = array_map(static fn (MeasurementFamily $measurementFamily) => $measurementFamily->normalizeWithIndexedUnits(), $measurementFamilies);
+        $normalizedMeasurementFamilies = array_map(fn (MeasurementFamily $measurementFamily) => $this->normalizer->normalize($measurementFamily), $measurementFamilies);
 
         return new JsonResponse($normalizedMeasurementFamilies);
     }

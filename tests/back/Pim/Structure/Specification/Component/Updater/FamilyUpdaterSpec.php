@@ -2,8 +2,9 @@
 
 namespace Specification\Akeneo\Pim\Structure\Component\Updater;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\Locale;
+use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Factory\AttributeRequirementFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -33,7 +34,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
         AttributeRequirementFactory $attrRequiFactory,
         AttributeRequirementRepositoryInterface $attributeRequirementRepo,
         TranslatableUpdater $translatableUpdater,
-        IdentifiableObjectRepositoryInterface $localeRepository
+        IdentifiableObjectRepositoryInterface $localeRepository,
 
     ) {
         $this->beConstructedWith(
@@ -759,5 +760,41 @@ class FamilyUpdaterSpec extends ObjectBehavior
         $family->addAttributeRequirement($nameNewChannelRqrmt)->shouldBeCalled();
 
         $this->update($family, $data);
+    }
+
+    function it_does_locale_code_normalization_when_updating_labels(
+        $localeRepository,
+        $translatableUpdater,
+        FamilyInterface $family
+    ) {
+        $inputLabels = [
+            'fr_FR' => 'Tablette',
+            'EN_us' => 'Tablet',
+            'foo_bar' => 'Tablefoo'
+        ];
+        $normalizedLabels = [
+            'fr_FR' => 'Tablette',
+            'en_US' => 'Tablet',
+            'foo_bar' => 'Tablefoo'
+        ];
+        $values = [
+            'code' => 'ecommerce',
+            'labels' => $inputLabels,
+        ];
+
+        $localeRepository->findOneByIdentifier('EN_us')->willReturn($this->makeLocale('en_US')); // by case-insentive matching BDD-side
+        $localeRepository->findOneByIdentifier('fr_FR')->willReturn($this->makeLocale('fr_FR'));
+        $localeRepository->findOneByIdentifier('foo_bar')->willReturn(null); // unknown to PIM
+
+        $this->update($family, $values, []);
+
+        $translatableUpdater->update($family, $normalizedLabels)->shouldBeCalled();
+    }
+
+    private function makeLocale(string $code): Locale
+    {
+        $locale = new Locale();
+        $locale->setCode($code);
+        return $locale;
     }
 }

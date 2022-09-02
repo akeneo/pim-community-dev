@@ -2,10 +2,11 @@
 
 namespace Akeneo\Tool\Bundle\BatchBundle\Notification;
 
-use Akeneo\Tool\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
+use Akeneo\Platform\Bundle\NotificationBundle\Email\MailNotifierInterface as MailNotification;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
-use Akeneo\Tool\Component\Email\SenderAddress;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Throwable;
 use Twig\Environment;
 
 /**
@@ -17,40 +18,23 @@ use Twig\Environment;
  */
 class MailNotifier implements Notifier
 {
-    protected BatchLogHandler $logger;
-    protected TokenStorageInterface $tokenStorage;
-    protected Environment $twig;
-    protected \Swift_Mailer $mailer;
-    protected string $mailerUrl;
     protected ?string $recipientEmail = null;
 
     public function __construct(
-        BatchLogHandler $logger,
-        TokenStorageInterface $tokenStorage,
-        Environment $twig,
-        \Swift_Mailer $mailer,
-        string $mailerUrl
+        protected LoggerInterface       $logger,
+        protected TokenStorageInterface $tokenStorage,
+        protected Environment           $twig,
+        protected MailNotification      $mailer
     ) {
-        $this->logger = $logger;
-        $this->tokenStorage = $tokenStorage;
-        $this->twig = $twig;
-        $this->mailer = $mailer;
-        $this->mailerUrl = $mailerUrl;
     }
 
-    /**
-     * @param string $recipientEmail
-     */
-    public function setRecipientEmail($recipientEmail): self
+    public function setRecipientEmail(string $recipientEmail): self
     {
         $this->recipientEmail = $recipientEmail;
 
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function notify(JobExecution $jobExecution)
     {
         if (null === $email = $this->getEmail()) {
@@ -59,20 +43,20 @@ class MailNotifier implements Notifier
 
         $parameters = [
             'jobExecution' => $jobExecution,
-            'log'          => $this->logger->getFilename(),
+            'email' => $email
         ];
 
-        $txtBody = $this->twig->render('@AkeneoBatch/Mails/notification.txt.twig', $parameters);
-        $htmlBody = $this->twig->render('@AkeneoBatch/Mails/notification.html.twig', $parameters);
-
-        $message = $this->mailer->createMessage();
-        $message->setSubject('Job has been executed');
-        $message->setFrom((string) SenderAddress::fromMailerUrl($this->mailerUrl));
-        $message->setTo($email);
-        $message->setBody($txtBody, 'text/plain');
-        $message->addPart($htmlBody, 'text/html');
-
-        $this->mailer->send($message);
+        try {
+            $txtBody = $this->twig->render('@AkeneoBatch/Email/notification.txt.twig', $parameters);
+            $htmlBody = $this->twig->render('@AkeneoBatch/Email/notification.html.twig', $parameters);
+            $this->mailer->notifyByEmail($email, 'Job has been executed', $txtBody, $htmlBody);
+        } catch (Throwable $exception) {
+            $this->logger->error(
+                MailNotifier::class . ' - Unable to send email : ' . $exception->getMessage(),
+                ['Exception' => $exception]
+            );
+            return;
+        }
     }
 
     /**
@@ -80,7 +64,7 @@ class MailNotifier implements Notifier
      *
      * @return null|string
      */
-    private function getEmail()
+    private function getEmail(): ?string
     {
         if ($this->recipientEmail) {
             return $this->recipientEmail;

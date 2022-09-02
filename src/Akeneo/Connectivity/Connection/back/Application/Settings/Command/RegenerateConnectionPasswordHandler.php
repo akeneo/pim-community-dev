@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Settings\Command;
 
-use Akeneo\Connectivity\Connection\Application\Settings\Service\RegenerateUserPassword;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
+use Akeneo\Connectivity\Connection\Application\Settings\Service\RegenerateUserPasswordInterface;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepositoryInterface;
 
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
@@ -14,11 +14,11 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\Connec
  */
 class RegenerateConnectionPasswordHandler
 {
-    private ConnectionRepository $repository;
+    private ConnectionRepositoryInterface $repository;
 
-    private RegenerateUserPassword $regenerateUserPassword;
+    private RegenerateUserPasswordInterface $regenerateUserPassword;
 
-    public function __construct(ConnectionRepository $repository, RegenerateUserPassword $regenerateUserPassword)
+    public function __construct(ConnectionRepositoryInterface $repository, RegenerateUserPasswordInterface $regenerateUserPassword)
     {
         $this->repository = $repository;
         $this->regenerateUserPassword = $regenerateUserPassword;
@@ -29,7 +29,7 @@ class RegenerateConnectionPasswordHandler
         $connection = $this->repository->findOneByCode($command->code());
         if (null === $connection) {
             throw new \InvalidArgumentException(
-                sprintf('Connection with code "%s" does not exist', $command->code())
+                \sprintf('Connection with code "%s" does not exist', $command->code())
             );
         }
 

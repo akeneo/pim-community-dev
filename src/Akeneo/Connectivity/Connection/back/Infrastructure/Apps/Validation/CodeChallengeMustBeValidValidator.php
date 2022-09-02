@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation;
 
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AccessTokenRequest;
+use Akeneo\Connectivity\Connection\Domain\Marketplace\TestApps\Persistence\GetTestAppQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApiInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Symfony\Component\Validator\Constraint;
@@ -17,15 +18,11 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class CodeChallengeMustBeValidValidator extends ConstraintValidator
 {
-    private WebMarketplaceApiInterface $webMarketplaceApi;
-    private FeatureFlag $fakeAppsFeatureFlag;
-
     public function __construct(
-        WebMarketplaceApiInterface $webMarketplaceApi,
-        FeatureFlag $fakeAppsFeatureFlag
+        private WebMarketplaceApiInterface $webMarketplaceApi,
+        private GetTestAppQueryInterface $getTestAppQuery,
+        private FeatureFlag $fakeAppsFeatureFlag
     ) {
-        $this->webMarketplaceApi = $webMarketplaceApi;
-        $this->fakeAppsFeatureFlag = $fakeAppsFeatureFlag;
     }
 
     public function validate($value, Constraint $constraint)
@@ -36,35 +33,52 @@ class CodeChallengeMustBeValidValidator extends ConstraintValidator
 
         if (!$value instanceof AccessTokenRequest) {
             throw new \InvalidArgumentException(
-                sprintf(
+                \sprintf(
                     'Expected an instance of %s, got %s',
                     AccessTokenRequest::class,
-                    get_debug_type($value)
+                    \get_debug_type($value)
                 )
             );
         }
 
-        if (true === $this->fakeAppsFeatureFlag->isEnabled()) {
+        if ($this->isAccessTokenRequestEmpty($value)) {
             return;
         }
 
-        if (empty($value->getClientId())
-            || empty($value->getCodeIdentifier())
-            || empty($value->getCodeChallenge())
-        ) {
+        if ($this->fakeAppsFeatureFlag->isEnabled()) {
             return;
         }
 
-        $codeChallengeIsValid = $this->webMarketplaceApi->validateCodeChallenge(
-            $value->getClientId(),
-            $value->getCodeIdentifier(),
-            $value->getCodeChallenge()
-        );
-
-        if (false === $codeChallengeIsValid) {
+        if (!$this->isCodeChallengeValid($value)) {
             $this->context->buildViolation($constraint->message)
                 ->atPath('codeChallenge')
                 ->addViolation();
         }
+    }
+
+    private function isAccessTokenRequestEmpty(AccessTokenRequest $value): bool
+    {
+        return empty($value->getClientId())
+            || empty($value->getCodeIdentifier())
+            || empty($value->getCodeChallenge());
+    }
+
+    private function isCodeChallengeValid(AccessTokenRequest $value): bool
+    {
+        $testApp = $this->getTestAppQuery->execute($value->getClientId());
+
+        if (null !== $testApp) {
+            $secret = $testApp['secret'];
+            $codeIdentifier = $value->getCodeIdentifier();
+            $expectedCodeChallenge = \hash('sha256', $codeIdentifier . $secret);
+
+            return $expectedCodeChallenge === $value->getCodeChallenge();
+        }
+
+        return $this->webMarketplaceApi->validateCodeChallenge(
+            $value->getClientId(),
+            $value->getCodeIdentifier(),
+            $value->getCodeChallenge()
+        );
     }
 }

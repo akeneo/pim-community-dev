@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetProductCompletenessRatio;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -63,15 +66,15 @@ class RemoveLocaleFromChannelEndToEnd extends InternalApiTestCase
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
         $this->waitForJobExecutionToEnd();
 
-        $blueJean = $this->getProductId('blue_jean');
-        $blueJeanRatioEn = $this->getCompletenessRatio->forChannelCodeAndLocaleCode($blueJean, 'ecommerce', 'en_US');
-        $blueJeanRatioFr = $this->getCompletenessRatio->forChannelCodeAndLocaleCode($blueJean, 'ecommerce', 'fr_FR');
+        $blueJeanUuid = $this->getProductUuid('blue_jean');
+        $blueJeanRatioEn = $this->getCompletenessRatio->forChannelCodeAndLocaleCode($blueJeanUuid, 'ecommerce', 'en_US');
+        $blueJeanRatioFr = $this->getCompletenessRatio->forChannelCodeAndLocaleCode($blueJeanUuid, 'ecommerce', 'fr_FR');
         $this->assertEquals(100, $blueJeanRatioEn);
         $this->assertNull($blueJeanRatioFr);
 
-        $yellowJean = $this->getProductId('yellow_jean');
-        $yellowJeanRatioEn = $this->getCompletenessRatio->forChannelCodeAndLocaleCode($yellowJean, 'ecommerce', 'en_US');
-        $yellowJeanRatioFr = $this->getCompletenessRatio->forChannelCodeAndLocaleCode($yellowJean, 'ecommerce', 'fr_FR');
+        $yellowJeanUuid = $this->getProductUuid('yellow_jean');
+        $yellowJeanRatioEn = $this->getCompletenessRatio->forChannelCodeAndLocaleCode($yellowJeanUuid, 'ecommerce', 'en_US');
+        $yellowJeanRatioFr = $this->getCompletenessRatio->forChannelCodeAndLocaleCode($yellowJeanUuid, 'ecommerce', 'fr_FR');
         $this->assertEquals(50, $yellowJeanRatioEn);
         $this->assertNull($yellowJeanRatioFr);
     }
@@ -106,29 +109,19 @@ class RemoveLocaleFromChannelEndToEnd extends InternalApiTestCase
         ]);
         $this->createFamilyWithRequirement('jeans', $attribute, $ecommerceChannel);
 
-        $this->createProduct('blue_jean', 'jeans',
-            [
-            'values' => [
-                'a_scopable_localizable_text' => [
-                    ['data' => 'blue', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => 'bleu', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                ]
-            ]
+        $this->createProduct('blue_jean', 'jeans', [
+            new SetTextValue('a_scopable_localizable_text', 'ecommerce', 'en_US', 'blue'),
+            new SetTextValue('a_scopable_localizable_text', 'ecommerce', 'fr_FR', 'bleu'),
         ]);
 
-
         $this->createProduct('yellow_jean', 'jeans', [
-            'values' => [
-                'a_scopable_localizable_text' => [
-                    ['data' => 'yellow_jean', 'locale' => 'fr_FR', 'scope' => 'ecommerce']
-                ]
-            ]
+            new SetTextValue('a_scopable_localizable_text', 'ecommerce', 'fr_FR', 'yellow_jean')
         ]);
     }
 
     private function getRouter(): RouterInterface
     {
-        return self::$container->get('router');
+        return self::getContainer()->get('router');
     }
 
     private function waitForJobExecutionToEnd()
@@ -210,13 +203,13 @@ class RemoveLocaleFromChannelEndToEnd extends InternalApiTestCase
         $this->get('pim_catalog.saver.family')->save($family);
     }
 
-    private function getProductId(string $productIdentifier): int
+    private function getProductUuid(string $productIdentifier): UuidInterface
     {
-        $productId = $this->get('database_connection')->executeQuery(
-            "SELECT id FROM pim_catalog_product WHERE identifier = :identifier;",
+        $productUuid = $this->get('database_connection')->executeQuery(
+            "SELECT BIN_TO_UUID(uuid) as uuid FROM pim_catalog_product WHERE identifier = :identifier;",
             ['identifier' => $productIdentifier]
         )->fetchOne();
 
-        return (int) $productId;
+        return Uuid::fromString($productUuid);
     }
 }

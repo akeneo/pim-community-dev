@@ -8,7 +8,7 @@ use Akeneo\Connectivity\Connection\Application\Audit\Query\GetPeriodEventCountPe
 use Akeneo\Connectivity\Connection\Application\Audit\Query\GetPeriodEventCountPerConnectionQuery;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\PeriodEventCount;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectPeriodEventCountPerConnectionQuery;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\SelectPeriodEventCountPerConnectionQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\DateTimePeriod;
 use PhpSpec\ObjectBehavior;
 
@@ -19,7 +19,7 @@ use PhpSpec\ObjectBehavior;
  */
 class GetPeriodEventCountPerConnectionHandlerSpec extends ObjectBehavior
 {
-    public function let(SelectPeriodEventCountPerConnectionQuery $selectPeriodEventCountsQuery): void
+    public function let(SelectPeriodEventCountPerConnectionQueryInterface $selectPeriodEventCountsQuery): void
     {
         $this->beConstructedWith($selectPeriodEventCountsQuery);
     }

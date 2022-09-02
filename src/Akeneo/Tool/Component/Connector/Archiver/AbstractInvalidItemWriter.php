@@ -140,7 +140,7 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
         );
 
         $workingDirectory = $jobExecution->getExecutionContext()->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
-        $localFilePath = $workingDirectory.$this->getFilename();
+        $localFilePath = $workingDirectory . $this->getFilename();
 
         if (is_readable($localFilePath)) {
             $localStream = fopen($localFilePath, 'r');
@@ -160,10 +160,13 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
     protected function setupWriter(JobExecution $jobExecution): void
     {
         $workingDirectory = $jobExecution->getExecutionContext()->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
-        $localFilePath = $workingDirectory.$this->getFilename();
+        $localFilePath = $workingDirectory . $this->getFilename();
 
         $writeParams = $this->defaultValuesProvider->getDefaultValues();
-        $writeParams['filePath'] = $localFilePath;
+        $writeParams['storage'] = [
+            'type' => 'local',
+            'file_path' => $localFilePath,
+        ];
         $writeParams['withHeader'] = true;
 
         $writeJobParameters = new JobParameters($writeParams);

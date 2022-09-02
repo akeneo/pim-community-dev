@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Application\Audit\Query;
 
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\ErrorCountPerConnection;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectErrorCountPerConnectionQuery;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\SelectErrorCountPerConnectionQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\ErrorType;
 
 /**
@@ -15,9 +15,9 @@ use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Erro
  */
 class GetErrorCountPerConnectionHandler
 {
-    private SelectErrorCountPerConnectionQuery $selectErrorCountPerConnectionQuery;
+    private SelectErrorCountPerConnectionQueryInterface $selectErrorCountPerConnectionQuery;
 
-    public function __construct(SelectErrorCountPerConnectionQuery $selectErrorCountPerConnectionQuery)
+    public function __construct(SelectErrorCountPerConnectionQueryInterface $selectErrorCountPerConnectionQuery)
     {
         $this->selectErrorCountPerConnectionQuery = $selectErrorCountPerConnectionQuery;
     }

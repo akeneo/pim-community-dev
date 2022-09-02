@@ -15,13 +15,10 @@ use Webmozart\Assert\Assert;
  */
 final class UpdateIndexMappingWithoutDowntime
 {
-    private ClockInterface $clock;
-    private ClientMigrationInterface $migrationClient;
-
-    public function __construct(ClockInterface $clock, ClientMigrationInterface $migrationClient)
-    {
-        $this->clock = $clock;
-        $this->migrationClient = $migrationClient;
+    public function __construct(
+        private ClockInterface $clock,
+        private ClientMigrationInterface $migrationClient
+    ) {
     }
 
     public function execute(
@@ -31,6 +28,11 @@ final class UpdateIndexMappingWithoutDowntime
         IndexConfiguration $indexConfiguration,
         \Closure $findUpdatedDocumentQuery
     ): void {
+        $indexToMigrateDoesNotHaveAlias = $this->indexToMigrateDoesNotHaveAlias($sourceIndexAlias);
+        if ($indexToMigrateDoesNotHaveAlias) {
+            $sourceIndexAlias = $this->createMigrationSourceAlias($sourceIndexAlias);
+        }
+
         $sourceIndexName = $this->getIndexNameFromAlias($sourceIndexAlias);
 
         $this->createDestinationIndex($destinationIndexName, $destinationIndexAlias, $indexConfiguration);
@@ -56,6 +58,18 @@ final class UpdateIndexMappingWithoutDowntime
         );
 
         $this->removeOldIndex($sourceIndexName);
+        if ($indexToMigrateDoesNotHaveAlias) {
+            $this->renameSourceAlias($sourceIndexAlias, $sourceIndexName, $destinationIndexName);
+        }
+    }
+
+    private function createMigrationSourceAlias($sourceIndexAlias): string
+    {
+        $migrationAlias = sprintf('%s_migration_alias', $sourceIndexAlias);
+
+        $this->migrationClient->createAlias($migrationAlias, $sourceIndexAlias);
+
+        return $migrationAlias;
     }
 
     private function createDestinationIndex(
@@ -151,12 +165,22 @@ final class UpdateIndexMappingWithoutDowntime
         string $destinationIndexAlias,
         \DateTimeImmutable $lastReferenceDatetime,
         \Closure $findUpdatedDocumentQuery
-    ) {
+    ): void {
         $this->reindexDocumentUpdatedAfterDatetime(
             $destinationIndexAlias,
             $sourceIndexAlias,
             $lastReferenceDatetime,
             $findUpdatedDocumentQuery
         );
+    }
+
+    private function indexToMigrateDoesNotHaveAlias(string $sourceIndexAlias): bool
+    {
+        return !$this->migrationClient->aliasExist($sourceIndexAlias);
+    }
+
+    private function renameSourceAlias(string $sourceIndexAlias, string $sourceIndexName, string $destinationIndexName): void
+    {
+        $this->migrationClient->renameAlias($sourceIndexAlias, $sourceIndexName, $destinationIndexName);
     }
 }

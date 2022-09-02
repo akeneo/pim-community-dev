@@ -7,13 +7,16 @@ use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Sets the association field
@@ -24,30 +27,16 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
  */
 class AssociationFieldSetter extends AbstractFieldSetter
 {
-    protected IdentifiableObjectRepositoryInterface $productRepository;
-    protected IdentifiableObjectRepositoryInterface $productModelRepository;
-    protected IdentifiableObjectRepositoryInterface $groupRepository;
-
-    private MissingAssociationAdder $missingAssociationAdder;
-    private AssociationTypeRepositoryInterface $associationTypeRepository;
-    private TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater;
-
     public function __construct(
-        IdentifiableObjectRepositoryInterface $productRepository,
-        IdentifiableObjectRepositoryInterface $productModelRepository,
-        IdentifiableObjectRepositoryInterface $groupRepository,
-        TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater,
-        MissingAssociationAdder $missingAssociationAdder,
-        AssociationTypeRepositoryInterface $associationTypeRepository,
+        protected ProductRepositoryInterface $productRepository,
+        protected ProductModelRepositoryInterface $productModelRepository,
+        protected GroupRepositoryInterface $groupRepository,
+        private TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater,
+        private MissingAssociationAdder $missingAssociationAdder,
+        private AssociationTypeRepositoryInterface $associationTypeRepository,
         array $supportedFields
     ) {
-        $this->productRepository = $productRepository;
-        $this->productModelRepository = $productModelRepository;
-        $this->groupRepository = $groupRepository;
-        $this->twoWayAssociationUpdater = $twoWayAssociationUpdater;
-        $this->missingAssociationAdder = $missingAssociationAdder;
         $this->supportedFields = $supportedFields;
-        $this->associationTypeRepository = $associationTypeRepository;
     }
 
     /**
@@ -58,12 +47,14 @@ class AssociationFieldSetter extends AbstractFieldSetter
      *     "XSELL": {
      *         "groups": ["group1", "group2"],
      *         "products": ["AKN_TS1", "AKN_TSH2"],
-     *         "product_models": ["MODEL_AKN_TS1", "MODEL_AKN_TSH2"]
+     *         "product_models": ["MODEL_AKN_TS1", "MODEL_AKN_TSH2"],
+     *         "product_uuids": ["662be899-6e69-43e2-88d0-0443e05ac5d7", "14ba0132-0202-4303-a997-f1b32469ef44"]
      *     },
      *     "UPSELL": {
      *         "groups": ["group3", "group4"],
      *         "products": ["AKN_TS3", "AKN_TSH4"],
-     *         "product_models": ["MODEL_AKN_TS3 "MODEL_AKN_TSH4"]
+     *         "product_models": ["MODEL_AKN_TS3 "MODEL_AKN_TSH4"],
+     *         "product_uuids": ["662be899-6e69-43e2-88d0-0443e05ac5d7", "14ba0132-0202-4303-a997-f1b32469ef44"]
      *     },
      * }
      */
@@ -93,7 +84,10 @@ class AssociationFieldSetter extends AbstractFieldSetter
                     $typeCode
                 );
             }
-            if (isset($items['products'])) {
+            if (isset($items['product_uuids'])) {
+                $this->updateAssociatedProductUuids($entity, $associationType, $items['product_uuids']);
+            }
+            if (isset($items['products']) && !isset($items['product_uuids'])) {
                 $this->updateAssociatedProducts($entity, $associationType, $items['products']);
             }
             if (isset($items['product_models'])) {
@@ -102,6 +96,37 @@ class AssociationFieldSetter extends AbstractFieldSetter
             if (isset($items['groups'])) {
                 $this->updateAssociatedGroups($entity, $associationType, $items['groups']);
             }
+        }
+    }
+
+    private function updateAssociatedProductUuids(
+        EntityWithAssociationsInterface $owner,
+        AssociationTypeInterface $associationType,
+        array $productsUuids
+    ): void {
+        $productsUuids = array_unique($productsUuids);
+        foreach ($owner->getAssociatedProducts($associationType->getCode()) as $associatedProduct) {
+            $index = array_search($associatedProduct->getUuid(), $productsUuids);
+
+            if (false === $index) {
+                $this->removeAssociatedProduct($owner, $associatedProduct, $associationType);
+            } else {
+                unset($productsUuids[$index]);
+            }
+        }
+
+        foreach ($productsUuids as $productUuid) {
+            $associatedProduct = $this->productRepository->find($productUuid);
+            if (null === $associatedProduct) {
+                throw InvalidPropertyException::validEntityCodeExpected(
+                    'associations',
+                    'product uuid',
+                    'The product does not exist',
+                    static::class,
+                    $productUuid
+                );
+            }
+            $this->addAssociatedProduct($owner, $associatedProduct, $associationType);
         }
     }
 
@@ -283,11 +308,20 @@ class AssociationFieldSetter extends AbstractFieldSetter
     protected function checkAssociationData(string $field, array $data, string $assocTypeCode, $items): void
     {
         if (!is_array($items) || !is_string($assocTypeCode) ||
-            (!isset($items['products']) && !isset($items['groups']) && !isset($items['product_models']))
+            (!isset($items['products']) && !isset($items['groups']) && !isset($items['product_models']) && !isset($items['product_uuids']))
         ) {
             throw InvalidPropertyTypeException::validArrayStructureExpected(
                 $field,
                 sprintf('association format is not valid for the association type "%s".', $assocTypeCode),
+                static::class,
+                $data
+            );
+        }
+
+        if (isset($items['products']) && isset($items['product_uuids'])) {
+            throw InvalidPropertyTypeException::validArrayStructureExpected(
+                $field,
+                \sprintf('association format is not valid for the association type "%s", only one of "products" or "product_uuids" is expected', $assocTypeCode),
                 static::class,
                 $data
             );
@@ -311,17 +345,28 @@ class AssociationFieldSetter extends AbstractFieldSetter
                 );
             }
 
-            $this->checkAssociationItems($field, $assocTypeCode, $data, $itemData);
+            $this->checkAssociationItems($field, $assocTypeCode, $data, $itemData, $type);
         }
     }
 
-    protected function checkAssociationItems(string $field, string $assocTypeCode, array $data, array $items): void
+    protected function checkAssociationItems(string $field, string $assocTypeCode, array $data, array $items, string $type): void
     {
-        foreach ($items as $code) {
-            if (!is_string($code)) {
+        foreach ($items as $item) {
+            if (!is_string($item)) {
                 throw InvalidPropertyTypeException::validArrayStructureExpected(
                     $field,
                     sprintf('association format is not valid for the association type "%s".', $assocTypeCode),
+                    static::class,
+                    $data
+                );
+            }
+            if ('product_uuids' === $type && !Uuid::isValid($item)) {
+                throw InvalidPropertyTypeException::validArrayStructureExpected(
+                    $field,
+                    sprintf(
+                        'association format is not valid for the association type "%s", "product_uuids" expects an array of valid uuids.',
+                        $assocTypeCode
+                    ),
                     static::class,
                     $data
                 );

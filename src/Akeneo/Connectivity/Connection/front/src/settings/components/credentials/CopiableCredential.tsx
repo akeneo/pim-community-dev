@@ -7,13 +7,14 @@ import {Credential} from './Credential';
 import {CopyIcon} from 'akeneo-design-system';
 
 interface Props {
+    icon?: ReactNode;
     label: string;
     children: string;
     actions?: ReactNode;
     helper?: ReactNode;
 }
 
-export const CopiableCredential: FC<Props> = ({label, children: value, actions, helper}: Props) => {
+export const CopiableCredential: FC<Props> = ({icon, label, children: value, actions, helper}: Props) => {
     const notify = useNotify();
     const translate = useContext(TranslateContext);
 
@@ -33,6 +34,7 @@ export const CopiableCredential: FC<Props> = ({label, children: value, actions, 
 
     return (
         <Credential
+            icon={icon}
             label={label}
             actions={
                 <>

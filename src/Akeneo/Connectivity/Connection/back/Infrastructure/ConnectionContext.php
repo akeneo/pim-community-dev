@@ -6,9 +6,9 @@ namespace Akeneo\Connectivity\Connection\Infrastructure;
 
 use Akeneo\Connectivity\Connection\Application\ConnectionContextInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
-use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Query\AreCredentialsValidCombinationQuery;
-use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Query\SelectConnectionCodeByClientIdQuery;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepositoryInterface;
+use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Query\AreCredentialsValidCombinationQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Query\SelectConnectionCodeByClientIdQueryInterface;
 
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
@@ -17,11 +17,11 @@ use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence
  */
 class ConnectionContext implements ConnectionContextInterface
 {
-    private AreCredentialsValidCombinationQuery $areCredentialsValidCombinationQuery;
+    private AreCredentialsValidCombinationQueryInterface $areCredentialsValidCombinationQuery;
 
-    private SelectConnectionCodeByClientIdQuery $selectConnectionCodeByClientIdQuery;
+    private SelectConnectionCodeByClientIdQueryInterface $selectConnectionCodeByClientIdQuery;
 
-    private ConnectionRepository $connectionRepository;
+    private ConnectionRepositoryInterface $connectionRepository;
 
     private ?string $clientId = null;
 
@@ -34,9 +34,9 @@ class ConnectionContext implements ConnectionContextInterface
     private ?bool $areCredentialsValidCombination = null;
 
     public function __construct(
-        AreCredentialsValidCombinationQuery $areCredentialsValidCombinationQuery,
-        SelectConnectionCodeByClientIdQuery $selectConnectionCodeByClientIdQuery,
-        ConnectionRepository $connectionRepository
+        AreCredentialsValidCombinationQueryInterface $areCredentialsValidCombinationQuery,
+        SelectConnectionCodeByClientIdQueryInterface $selectConnectionCodeByClientIdQuery,
+        ConnectionRepositoryInterface $connectionRepository
     ) {
         $this->areCredentialsValidCombinationQuery = $areCredentialsValidCombinationQuery;
         $this->selectConnectionCodeByClientIdQuery = $selectConnectionCodeByClientIdQuery;

@@ -38,7 +38,7 @@ class WrongCredentialsCombinations
      */
     public function normalize(): array
     {
-        return array_reduce(
+        return \array_reduce(
             $this->wrongCombinations,
             function (array $normalized, WrongCredentialsCombination $wrongCombination): array {
                 $normalized[$wrongCombination->connectionCode()] = $wrongCombination->normalize();

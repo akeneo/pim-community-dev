@@ -30,7 +30,7 @@ class ClientProvider implements ClientProviderInterface
             $client = $this->clientManager->createClient();
             if (!$client instanceof Client) {
                 throw new \LogicException(
-                    sprintf('Expected instance of %s, got %s', Client::class, get_debug_type($client))
+                    \sprintf('Expected instance of %s, got %s', Client::class, \get_debug_type($client))
                 );
             }
 
@@ -50,7 +50,7 @@ class ClientProvider implements ClientProviderInterface
 
         if (null !== $client && !$client instanceof Client) {
             throw new \LogicException(
-                sprintf('Expected null or instance of %s, got %s', Client::class, get_debug_type($client))
+                \sprintf('Expected null or instance of %s, got %s', Client::class, \get_debug_type($client))
             );
         }
 

@@ -40,7 +40,7 @@ class JobExecutionRowSpec extends ObjectBehavior
             'username' => 'admin',
             'status' => 'COMPLETED',
             'warning_count' => 0,
-            'error_count' => 0,
+            'has_error' => false,
             'tracking' => [
                 'current_step' => 1,
                 'total_step' => 3,
@@ -71,7 +71,7 @@ class JobExecutionRowSpec extends ObjectBehavior
             'username' => null,
             'status' => 'COMPLETED',
             'warning_count' => 0,
-            'error_count' => 0,
+            'has_error' => false,
             'tracking' => [
                 'current_step' => 1,
                 'total_step' => 1,

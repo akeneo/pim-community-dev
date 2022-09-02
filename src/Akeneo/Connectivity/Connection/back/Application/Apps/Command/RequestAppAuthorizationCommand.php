@@ -10,21 +10,13 @@ namespace Akeneo\Connectivity\Connection\Application\Apps\Command;
  */
 final class RequestAppAuthorizationCommand
 {
-    private string $clientId;
-    private string $responseType;
-    private string $scope;
-    private ?string $state;
-
     public function __construct(
-        string $clientId,
-        string $responseType,
-        string $scope,
-        ?string $state = null
+        private string $clientId,
+        private string $responseType,
+        private string $scope,
+        private string $callbackUrl,
+        private ?string $state = null
     ) {
-        $this->clientId = $clientId;
-        $this->responseType = $responseType;
-        $this->scope = $scope;
-        $this->state = $state;
     }
 
     public function getClientId(): string
@@ -40,6 +32,11 @@ final class RequestAppAuthorizationCommand
     public function getScope(): string
     {
         return $this->scope;
+    }
+
+    public function getCallbackUrl(): string
+    {
+        return $this->callbackUrl;
     }
 
     public function getState(): ?string

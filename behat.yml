@@ -41,6 +41,7 @@ contexts: &context
     -   Context\ConnectivityContext
     -   Pim\Behat\Context\Domain\Structure\AssociationTypeContext
     -   Pim\Behat\Context\Domain\Structure\CategoryContext
+    -   Pim\Behat\Context\FeatureFlagContext
 
 legacy:
     suites:

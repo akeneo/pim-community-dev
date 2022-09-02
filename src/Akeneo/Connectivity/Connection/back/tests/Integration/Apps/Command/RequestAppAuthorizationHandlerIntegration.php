@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\Tests\Integration\Apps\Command;
 
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler;
-use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
+use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use FOS\OAuthServerBundle\Model\ClientInterface;
@@ -58,7 +58,7 @@ class RequestAppAuthorizationHandlerIntegration extends TestCase
             '',
         );
 
-        $this->expectException(InvalidAppAuthorizationRequest::class);
+        $this->expectException(InvalidAppAuthorizationRequestException::class);
         $this->expectExceptionMessage('akeneo_connectivity.connection.connect.apps.constraint.client_id.must_be_valid');
         $this->handler->handle($command);
     }
@@ -76,8 +76,26 @@ class RequestAppAuthorizationHandlerIntegration extends TestCase
             '',
         );
 
-        $this->expectException(InvalidAppAuthorizationRequest::class);
+        $this->expectException(InvalidAppAuthorizationRequestException::class);
         $this->expectExceptionMessage('akeneo_connectivity.connection.connect.apps.constraint.response_type.must_be_code');
+        $this->handler->handle($command);
+    }
+
+    public function test_it_throws_when_the_scope_is_too_long()
+    {
+        $this->createOAuth2Client([
+            'marketplacePublicAppId' => 'e4d35502-08c9-40b4-a378-05d4cb255862',
+        ]);
+
+        $command = new RequestAppAuthorizationCommand(
+            'e4d35502-08c9-40b4-a378-05d4cb255862',
+            'code',
+            \str_repeat('a', 1001),
+            '',
+        );
+
+        $this->expectException(InvalidAppAuthorizationRequestException::class);
+        $this->expectExceptionMessage('akeneo_connectivity.connection.connect.apps.constraint.scope.too_long');
         $this->handler->handle($command);
     }
 }

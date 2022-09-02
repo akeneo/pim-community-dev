@@ -1,0 +1,129 @@
+parameters:
+    akeneo_catalog.max_number_of_catalogs_per_user: 15
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    _instanceof:
+        Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface:
+            tags: [ 'pim_api.security.scope_mapper' ]
+
+    Akeneo\Catalogs\:
+        resource: '../../../../'
+        exclude:
+            - '../../../Symfony/'
+            - '../../../../Domain/'
+            - '../../../../ServiceAPI/'
+            - '../../../../Application/Exception'
+
+    Akeneo\Catalogs\Application\Handler\:
+        resource: '../../../../Application/Handler/'
+        tags: [ 'messenger.message_handler' ]
+
+    Akeneo\Catalogs\Infrastructure\Controller\:
+        resource: '../../../../Infrastructure/Controller/'
+        tags: [ 'controller.service_arguments' ]
+        public: true
+
+    Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus:
+        arguments:
+            $messageBus: '@catalogs.command.bus'
+
+    Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus:
+        arguments:
+            $messageBus: '@catalogs.query.bus'
+
+    Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface:
+        alias: 'oro_security.security_facade'
+
+    Akeneo\UserManagement\Component\Repository\UserRepositoryInterface:
+        alias: 'pim_user.repository.user'
+
+    Akeneo\Catalogs\Infrastructure\Command\CatalogFixtureCommand:
+        arguments:
+            $env: '%kernel.environment%'
+
+    Akeneo\Tool\Component\Api\Pagination\OffsetHalPaginator:
+        alias: 'pim_api.pagination.offset_hal_paginator'
+
+    # @todo CXP-1186 REMOVE
+    Akeneo\Catalogs\Infrastructure\TemporaryEnrichmentBridge\SearchAfterSizeUuidResultCursorFactory:
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+
+    # @todo CXP-1186 REMOVE
+    Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface:
+        class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductQueryBuilderFactory
+        arguments:
+            - '%pim_catalog.query.product_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@Akeneo\Catalogs\Infrastructure\TemporaryEnrichmentBridge\SearchAfterSizeUuidResultCursorFactory'
+            - '@pim_catalog.elasticsearch.product_query_builder_search_after_resolver'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\IsCatalogsNumberLimitReachedQuery:
+        arguments:
+            $limit: '%akeneo_catalog.max_number_of_catalogs_per_user%'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\SearchFamilyQuery:
+        arguments:
+            - '@pim_enrich.repository.family.search'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\GetFamiliesByCodeQuery:
+        arguments:
+            - '@pim_enrich.repository.family.search'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\SearchAttributesQuery:
+        arguments:
+            - '@pim_enrich.repository.attribute.search'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\SearchAttributeOptionsQuery:
+        arguments:
+            - '@pim_enrich.repository.attribute_option.search'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\GetAttributeOptionsByCodeQuery:
+        arguments:
+            - '@pim_enrich.repository.attribute_option.search'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\FindOneAttributeByCodeQuery:
+        arguments:
+            $repository: '@pim_catalog.repository.attribute'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\GetChannelLocalesQuery:
+        arguments:
+            - '@pim_catalog.repository.channel'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\GetChannelQuery:
+        arguments:
+            - '@pim_catalog.repository.channel'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\GetChannelsQuery:
+        arguments:
+            - '@pim_catalog.repository.channel'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\GetLocalesQuery:
+        arguments:
+            - '@pim_catalog.repository.locale'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\GetCategoriesByCodeQuery:
+        arguments:
+            - '@pim_catalog.repository.category'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\GetCategoryTreeRootsQuery:
+        arguments:
+            - '@akeneo.enrichment.public_api.find_category_trees'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\GetCategoryChildrenQuery:
+        arguments:
+            - '@pim_catalog.repository.category'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\GetProductsQuery:
+        arguments:
+            $getConnectorProducts: '@akeneo.pim.enrichment.product.connector.get_product_from_uuids'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\GetMeasurementsFamilyQuery:
+        arguments:
+            - '@akeneo_measure.persistence.measurement_family_repository'

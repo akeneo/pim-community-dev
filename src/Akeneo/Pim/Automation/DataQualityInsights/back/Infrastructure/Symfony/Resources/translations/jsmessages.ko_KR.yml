@@ -43,7 +43,10 @@ akeneo_data_quality_insights:
       day: 일
     key_indicators:
       title: 주요 지표
-      products_to_work_on: '{1}작업 중인 <button>1개의 제품</button>이 있습니다.|]1, 200[작업 중인 <button>{{ count }}개의 제품</button>이 있습니다.|[200, Inf[작업 중인 <button>{{ count }}개 초과한 제품</button>이 있습니다.'
+      products: '{1}1개 제품|]1, 200[{{ count }}개 제품|[200, Inf[{{ count }}개 초과한 제품'
+      product_models: '{1}1개 제품 모델|]1, 200[{{ count }}개 제품 모델|[200, Inf[{{ count }}개 초과한 제품 모델'
+      entities_to_work_on: '처리해야 할 <improvable_products_count_link/>이(가) 있습니다.'
+      entities_to_work_on_2_kinds: '처리해야 할 <improvable_products_count_link/> 및 <improvable_product_models_count_link/>이(가) 있습니다.'
       list:
         has_image:
           title: 이미지 포함 제품
@@ -152,5 +155,8 @@ akeneo_data_quality_insights:
       to_improve: 개선 필요
       "yes": "예"
       "no": "아니요"
+  quality_score:
+    pending: 진행 중
+    title: "품질 점수:"
 pim_title:
   akeneo_data_quality_insights_dashboard: 데이터 품질 인사이트

@@ -38,7 +38,7 @@ class ApiFindAnnouncementItemsIntegration extends KernelTestCase
 
     public function test_it_finds_first_page_of_announcements()
     {
-        $query = self::$container->get('akeneo_communication_channel.query.api.find_announcement_items');
+        $query = self::getContainer()->get('akeneo_communication_channel.query.api.find_announcement_items');
         $result = $query->byPimVersion('Serenity', '2020105', 'en_US', null, 10);
         Assert::assertCount(10, $result);
         Assert::assertEquals(
@@ -59,7 +59,7 @@ class ApiFindAnnouncementItemsIntegration extends KernelTestCase
 
     public function test_it_finds_second_page_of_announcements()
     {
-        $query = self::$container->get('akeneo_communication_channel.query.api.find_announcement_items');
+        $query = self::getContainer()->get('akeneo_communication_channel.query.api.find_announcement_items');
         $result = $query->byPimVersion('Serenity', '2020105', 'en_US', 'update_1-new-screen-for-measurements-families_2020-05', 10);
         Assert::assertCount(1, $result);
         Assert::assertEquals(
@@ -83,7 +83,7 @@ class ApiFindAnnouncementItemsIntegration extends KernelTestCase
         $attempt = 0;
         do {
             try {
-                $httpClient = new Client(['base_uri' => self::$container->getParameter('comm_panel_api_url')]);
+                $httpClient = new Client(['base_uri' => self::getContainer()->getParameter('comm_panel_api_url')]);
                 $httpClient->get('/');
             } catch (ConnectException $e) {
                 usleep(100000);

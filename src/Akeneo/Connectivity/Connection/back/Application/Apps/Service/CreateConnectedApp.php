@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Application\Apps\Service;
 
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Repository\ConnectedAppRepositoryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\CreateConnectedAppQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App as MarketplaceApp;
 
 /**
@@ -14,15 +14,18 @@ use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App as MarketplaceAp
  */
 final class CreateConnectedApp implements CreateConnectedAppInterface
 {
-    private ConnectedAppRepositoryInterface $repository;
-
-    public function __construct(ConnectedAppRepositoryInterface $repository)
-    {
-        $this->repository = $repository;
+    public function __construct(
+        private CreateConnectedAppQueryInterface $createConnectedAppQuery,
+    ) {
     }
 
-    public function execute(MarketplaceApp $marketplaceApp, array $scopes, string $connectionCode, string $userGroupName): ConnectedApp
-    {
+    public function execute(
+        MarketplaceApp $marketplaceApp,
+        array $scopes,
+        string $connectionCode,
+        string $userGroupName,
+        string $connectionUsername
+    ): ConnectedApp {
         $app = new ConnectedApp(
             $marketplaceApp->getId(),
             $marketplaceApp->getName(),
@@ -31,12 +34,13 @@ final class CreateConnectedApp implements CreateConnectedAppInterface
             $marketplaceApp->getLogo(),
             $marketplaceApp->getAuthor(),
             $userGroupName,
+            $connectionUsername,
             $marketplaceApp->getCategories(),
             $marketplaceApp->isCertified(),
             $marketplaceApp->getPartner()
         );
 
-        $this->repository->create($app);
+        $this->createConnectedAppQuery->execute($app);
 
         return $app;
     }

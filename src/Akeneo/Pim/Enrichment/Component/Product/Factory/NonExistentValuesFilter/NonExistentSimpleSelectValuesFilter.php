@@ -14,12 +14,8 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetExistingAt
  */
 class NonExistentSimpleSelectValuesFilter implements NonExistentValuesFilter
 {
-    /** @var GetExistingAttributeOptionCodes */
-    private $getExistingAttributeOptionCodes;
-
-    public function __construct(GetExistingAttributeOptionCodes $getExistingAttributeOptionCodes)
+    public function __construct(private GetExistingAttributeOptionCodes $getExistingAttributeOptionCodes)
     {
-        $this->getExistingAttributeOptionCodes = $getExistingAttributeOptionCodes;
     }
 
     public function filter(OnGoingFilteredRawValues $onGoingFilteredRawValues): OnGoingFilteredRawValues

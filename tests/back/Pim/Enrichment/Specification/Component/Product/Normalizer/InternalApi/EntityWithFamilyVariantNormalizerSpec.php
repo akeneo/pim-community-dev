@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodes;
@@ -27,6 +27,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 
 class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
 {
@@ -110,7 +111,7 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         $variantProduct->getLabel('en_US', null)->willReturn('Tshirt White S');
         $variantProduct->getIdentifier()->willReturn('tshirt_white_s');
         $variantProduct->getImage()->willReturn(null);
-        $variantProduct->getId()->willReturn(42);
+        $variantProduct->getUuid()->willReturn(Uuid::fromString('359a2a04-5fa4-4f15-9c08-09b819327c8f'));
 
         $attributesProvider->getAxes($variantProduct)->willReturn([
             $colorAttribute,
@@ -146,7 +147,7 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
             new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 0, [])
         ]);
 
-        $completenessCalculator->fromProductIdentifier('tshirt_white_s')->willReturn($completenessCollection);
+        $completenessCalculator->fromProductUuid(Uuid::fromString('359a2a04-5fa4-4f15-9c08-09b819327c8f'))->willReturn($completenessCollection);
         $completenessCollectionNormalizer->normalize($completenessCollection)->willReturn(['NORMALIZED_COMPLETENESS']);
 
         $simpleSelectOptionNormalizer->normalize($whiteValue, 'fr_FR')->willReturn('Blanc');
@@ -157,7 +158,7 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         $metricNormalizer->normalize($weightValue, 'en_US')->willReturn('10 KILOGRAM');
 
         $this->normalize($variantProduct, 'internal_api', $context)->shouldReturn([
-            'id'                 => 42,
+            'id'                 => '359a2a04-5fa4-4f15-9c08-09b819327c8f',
             'identifier'         => 'tshirt_white_s',
             'axes_values_labels' => [
                 'fr_FR' => 'Blanc, S, 10 KILOGRAM',

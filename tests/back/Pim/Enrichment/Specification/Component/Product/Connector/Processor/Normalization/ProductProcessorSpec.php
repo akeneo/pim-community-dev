@@ -2,11 +2,11 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\GetNormalizedProductQualityScores;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\ProductProcessor;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScoresInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
@@ -22,6 +22,7 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductProcessorSpec extends ObjectBehavior
@@ -31,7 +32,7 @@ class ProductProcessorSpec extends ObjectBehavior
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
         FillMissingValuesInterface $fillMissingProductModelValues,
-        GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
+        GetNormalizedProductQualityScores $getNormalizedProductQualityScores,
         StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
@@ -39,7 +40,7 @@ class ProductProcessorSpec extends ObjectBehavior
             $channelRepository,
             $attributeRepository,
             $fillMissingProductModelValues,
-            $getProductsWithQualityScores
+            $getNormalizedProductQualityScores
         );
 
         $this->setStepExecution($stepExecution);
@@ -73,7 +74,11 @@ class ProductProcessorSpec extends ObjectBehavior
         $attribute->isLocaleSpecific()->willReturn(false);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('filePath')->willReturn('/my/path/product.csv');
+        $jobParameters->has('storage')->willReturn(true);
+        $jobParameters->get('storage')->willReturn([
+            'type' => 'local',
+            'file_path' => '/my/path/product.csv',
+        ]);
         $jobParameters->get('filters')->willReturn(
             [
                 'structure' => ['scope' => 'mobile', 'locales' => ['en_US', 'fr_FR']]
@@ -144,7 +149,11 @@ class ProductProcessorSpec extends ObjectBehavior
         $attribute->isLocaleSpecific()->willReturn(false);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('filePath')->willReturn('/my/path/product.csv');
+        $jobParameters->has('storage')->willReturn(true);
+        $jobParameters->get('storage')->willReturn([
+            'type' => 'local',
+            'file_path' => '/my/path/product.csv',
+        ]);
         $jobParameters->get('filters')->willReturn(
             [
                 'structure' => ['scope' => 'mobile', 'locales' => ['en_US', 'fr_FR']]
@@ -193,7 +202,7 @@ class ProductProcessorSpec extends ObjectBehavior
         NormalizerInterface $normalizer,
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
-        GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
+        GetNormalizedProductQualityScores $getNormalizedProductQualityScores,
         StepExecution $stepExecution,
         ChannelInterface $channel,
         LocaleInterface $locale,
@@ -201,7 +210,8 @@ class ProductProcessorSpec extends ObjectBehavior
         JobParameters $jobParameters,
         AttributeInterface $attribute
     ) {
-        $product->getIdentifier()->willReturn('a_product');
+        $uuid = Uuid::uuid4();
+        $product->getUuid()->willReturn($uuid);
         $attributeRepository->findMediaAttributeCodes()->willReturn(['picture']);
         $attributeRepository->findOneByIdentifier(Argument::any())->willReturn($attribute);
         $attribute->isLocaleSpecific()->willReturn(false);
@@ -263,8 +273,8 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $getProductsWithQualityScores->fromNormalizedProduct('a_product', Argument::any(), 'mobile', ['en_US', 'fr_FR'])
-            ->willReturn($normalizedProductWithQualityScores);
+        $getNormalizedProductQualityScores->__invoke($uuid,'mobile', ['en_US', 'fr_FR'])
+            ->willReturn($normalizedProductWithQualityScores['quality_scores']);
 
         $this->process($product)->shouldBeLike($normalizedProductWithQualityScores);
     }

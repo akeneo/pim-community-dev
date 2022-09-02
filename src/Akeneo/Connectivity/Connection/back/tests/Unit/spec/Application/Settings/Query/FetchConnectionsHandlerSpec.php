@@ -9,7 +9,7 @@ use Akeneo\Connectivity\Connection\Application\Settings\Query\FetchConnectionsQu
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\Connection;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConnectionsQuery;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConnectionsQueryInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -19,7 +19,7 @@ use PhpSpec\ObjectBehavior;
  */
 class FetchConnectionsHandlerSpec extends ObjectBehavior
 {
-    public function let(SelectConnectionsQuery $selectConnectionsQuery)
+    public function let(SelectConnectionsQueryInterface $selectConnectionsQuery)
     {
         $this->beConstructedWith($selectConnectionsQuery);
     }
@@ -29,7 +29,7 @@ class FetchConnectionsHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(FetchConnectionsHandler::class);
     }
 
-    public function it_fetches_connections(SelectConnectionsQuery $selectConnectionsQuery)
+    public function it_fetches_connections(SelectConnectionsQueryInterface $selectConnectionsQuery)
     {
         $connections = [
             new Connection('42', 'magento', 'Magento Connector', FlowType::DATA_DESTINATION, true),

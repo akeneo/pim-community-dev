@@ -6,16 +6,14 @@ namespace spec\Akeneo\Connectivity\Connection\Application\Webhook\Command;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksCommand;
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksHandler;
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventSubscriptionSkippedOwnEventLogger;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventSubscriptionSkippedOwnEventLoggerInterface;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookUserAuthenticator;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClientInterface;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQuery;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepository;
-use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Repository\DbalEventsApiRequestCountRepository;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQueryInterface;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\EventQueue\Event;
@@ -34,12 +32,12 @@ use Psr\Log\LoggerInterface;
 class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
 {
     public function let(
-        SelectActiveWebhooksQuery $selectActiveWebhooksQuery,
+        SelectActiveWebhooksQueryInterface $selectActiveWebhooksQuery,
         WebhookUserAuthenticator $webhookUserAuthenticator,
-        WebhookClient $client,
+        WebhookClientInterface $client,
         WebhookEventBuilder $builder,
         LoggerInterface $logger,
-        EventSubscriptionSkippedOwnEventLogger $eventSubscriptionSkippedOwnEventLogger
+        EventSubscriptionSkippedOwnEventLoggerInterface $eventSubscriptionSkippedOwnEventLogger
     ): void {
         $this->beConstructedWith(
             $selectActiveWebhooksQuery,
@@ -112,7 +110,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             ->bulkSend(
                 Argument::that(
                     function (iterable $iterable) {
-                        $requests = iterator_to_array($iterable);
+                        $requests = \iterator_to_array($iterable);
 
                         Assert::assertCount(1, $requests);
                         Assert::assertContainsOnlyInstancesOf(WebhookRequest::class, $requests);
@@ -203,7 +201,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             ->bulkSend(
                 Argument::that(
                     function (iterable $iterable) {
-                        $requests = iterator_to_array($iterable);
+                        $requests = \iterator_to_array($iterable);
 
                         Assert::assertCount(1, $requests);
                         Assert::assertContainsOnlyInstancesOf(WebhookRequest::class, $requests);
@@ -273,7 +271,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             ->bulkSend(
                 Argument::that(
                     function (iterable $iterable) {
-                        $requests = iterator_to_array($iterable);
+                        $requests = \iterator_to_array($iterable);
 
                         Assert::assertCount(0, $requests);
 
@@ -287,10 +285,10 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
     }
 
     public function test_it_logs_for_the_events_api_debug_when_an_event_subscription_skipped_its_own_event(
-        SelectActiveWebhooksQuery $selectActiveWebhooksQuery,
+        SelectActiveWebhooksQueryInterface $selectActiveWebhooksQuery,
         WebhookUserAuthenticator $webhookUserAuthenticator,
-        EventSubscriptionSkippedOwnEventLogger $eventSubscriptionSkippedOwnEventLogger,
-        WebhookClient $client
+        EventSubscriptionSkippedOwnEventLoggerInterface $eventSubscriptionSkippedOwnEventLogger,
+        WebhookClientInterface $client
     ): void {
         $user = new User();
         $user->setId(0);
@@ -314,7 +312,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $client->bulkSend(
             Argument::that(
                 function (iterable $iterable) {
-                    iterator_to_array($iterable); // Call the iterator to run the code.
+                    \iterator_to_array($iterable); // Call the iterator to run the code.
 
                     return true;
                 }

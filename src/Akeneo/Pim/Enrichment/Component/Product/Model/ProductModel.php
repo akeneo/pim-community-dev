@@ -2,11 +2,11 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\EntityWithQuantifiedAssociationTrait;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
-use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -239,7 +239,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreated(): \DateTimeInterface
+    public function getCreated(): ?\DateTimeInterface
     {
         return $this->created;
     }
@@ -997,5 +997,13 @@ class ProductModel implements ProductModelInterface
         $associationsCollection->add($association);
 
         return $associationsCollection;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isNew(): bool
+    {
+        return null === $this->id;
     }
 }

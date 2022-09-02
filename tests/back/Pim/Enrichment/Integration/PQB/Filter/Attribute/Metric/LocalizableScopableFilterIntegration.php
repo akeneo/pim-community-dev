@@ -3,6 +3,8 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Metric;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -40,29 +42,21 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
         ]);
 
         $this->createProduct('product_one', [
-            'family' => 'a_family',
-            'values' => [
-                'a_scopable_localizable_metric' => [
-                    ['data' => ['amount' => '-5.00', 'unit' => 'KILOWATT'], 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => ['amount' => '14', 'unit' => 'KILOWATT'], 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['data' => ['amount' => '100', 'unit' => 'KILOWATT'], 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                ],
-            ]
+            new SetFamily('a_family'),
+            new SetMeasurementValue('a_scopable_localizable_metric', 'ecommerce', 'en_US', '-5.00', 'KILOWATT'),
+            new SetMeasurementValue('a_scopable_localizable_metric', 'tablet', 'en_US', '14', 'KILOWATT'),
+            new SetMeasurementValue('a_scopable_localizable_metric', 'tablet', 'fr_FR', '100', 'KILOWATT'),
         ]);
 
         $this->createProduct('product_two', [
-            'family' => 'a_family',
-            'values' => [
-                'a_scopable_localizable_metric' => [
-                    ['data' => ['amount' => '-5.00', 'unit' => 'KILOWATT'], 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => ['amount' => '10', 'unit' => 'KILOWATT'], 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['data' => ['amount' => '75', 'unit' => 'KILOWATT'], 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                    ['data' => ['amount' => '75', 'unit' => 'KILOWATT'], 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                ],
-            ]
+            new SetFamily('a_family'),
+            new SetMeasurementValue('a_scopable_localizable_metric', 'ecommerce', 'en_US', '-5.00', 'KILOWATT'),
+            new SetMeasurementValue('a_scopable_localizable_metric', 'tablet', 'en_US', '10', 'KILOWATT'),
+            new SetMeasurementValue('a_scopable_localizable_metric', 'tablet', 'fr_FR', '75', 'KILOWATT'),
+            new SetMeasurementValue('a_scopable_localizable_metric', 'ecommerce', 'fr_FR', '75', 'KILOWATT'),
         ]);
 
-        $this->createProduct('empty_product', ['family' => 'a_family']);
+        $this->createProduct('empty_product', [new SetFamily('a_family')]);
     }
 
     public function testOperatorInferior()

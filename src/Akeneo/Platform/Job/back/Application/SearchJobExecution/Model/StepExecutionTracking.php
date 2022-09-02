@@ -16,7 +16,7 @@ final class StepExecutionTracking
         private int $id,
         private int $duration,
         private int $warningCount,
-        private int $errorCount,
+        private bool $hasError,
         private int $totalItems,
         private int $processedItems,
         private bool $isTrackable,
@@ -29,9 +29,9 @@ final class StepExecutionTracking
         return $this->id;
     }
 
-    public function getErrorCount(): int
+    public function hasError(): bool
     {
-        return $this->errorCount;
+        return $this->hasError;
     }
 
     public function getWarningCount(): int
@@ -45,7 +45,7 @@ final class StepExecutionTracking
             'id' => $this->id,
             'duration' => $this->duration,
             'warning_count' => $this->warningCount,
-            'error_count' => $this->errorCount,
+            'has_error' => $this->hasError,
             'total_items' => $this->totalItems,
             'processed_items' => $this->processedItems,
             'is_trackable' => $this->isTrackable,

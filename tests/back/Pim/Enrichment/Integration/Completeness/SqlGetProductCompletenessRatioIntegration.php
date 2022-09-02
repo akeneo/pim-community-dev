@@ -6,9 +6,16 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Completeness;
 
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompleteness;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetProductCompletenessRatio;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceCollectionValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 
@@ -41,14 +48,14 @@ class SqlGetProductCompletenessRatioIntegration extends TestCase
     public function it_returns_the_completeness_ratio_of_a_product_for_a_given_channel_and_locale()
     {
         $product = $this->createProduct();
-        $completenesses = $this->getProductCompletenesses->fromProductId($product->getId());
+        $completenesses = $this->getProductCompletenesses->fromProductUuid($product->getUuid());
 
         Assert::assertNotEmpty($completenesses);
 
         /** @var ProductCompleteness $completeness */
         foreach ($completenesses as $completeness) {
             $ratio = $this->getProductCompletenessRatio->forChannelCodeAndLocaleCode(
-                $product->getId(),
+                $product->getUuid(),
                 $completeness->channelCode(),
                 $completeness->localeCode()
             );
@@ -64,14 +71,14 @@ class SqlGetProductCompletenessRatioIntegration extends TestCase
     {
         $product = $this->createProduct();
         $this->get('database_connection')->executeUpdate(
-            'DELETE FROM pim_catalog_completeness WHERE product_id = :productId',
+            'DELETE FROM pim_catalog_completeness WHERE product_uuid = :productUuid',
             [
-                'productId' => $product->getId(),
+                'productUuid' => $product->getUuid()->getBytes(),
             ]
         );
 
         Assert::assertNull(
-            $this->getProductCompletenessRatio->forChannelCodeAndLocaleCode($product->getId(), 'ecommerce', 'en_US')
+            $this->getProductCompletenessRatio->forChannelCodeAndLocaleCode($product->getUuid(), 'ecommerce', 'en_US')
         );
     }
 
@@ -82,63 +89,38 @@ class SqlGetProductCompletenessRatioIntegration extends TestCase
 
     private function createProduct(): ProductInterface
     {
-        $product = new Product();
-        $this->get('pim_catalog.updater.product')->update(
-            $product,
-            [
-                'family' => 'familyA',
-                'values' => [
-                    'sku' => [
-                        [
-                            'scope' => null,
-                            'locale' => null,
-                            'data' => 'test_completeness',
-                        ],
-                    ],
-                    'a_date' => [
-                        [
-                            'scope' => null,
-                            'locale' => null,
-                            'data' => '2020-03-18T00:00:00+00:00',
-                        ],
-                    ],
-                    'a_text' => [
-                        [
-                            'scope' => null,
-                            'locale' => null,
-                            'data' => 'lorem ipsum',
-                        ],
-                    ],
-                    'a_yes_no' => [
-                        [
-                            'scope' => null,
-                            'locale' => null,
-                            'data' => false,
-                        ],
-                    ],
-                    'a_scopable_price' => [
-                        [
-                            'scope' => 'ecommerce',
-                            'locale' => null,
-                            'data' => [
-                                ['amount' => '10.00', 'currency' => 'EUR'],
-                                ['amount' => '12.00', 'currency' => 'USD'],
-                            ],
-                        ],
-                    ],
-                    'a_localized_and_scopable_text_area' => [
-                        [
-                            'scope' => 'ecommerce',
-                            'locale' => 'en_US',
-                            'data' => 'Lorem ipsum dolor sit amet',
-                        ],
-                    ],
-                ],
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'test_completeness',
+            userIntents: [
+                new SetFamily('familyA'),
+                new SetDateValue('a_date', null, null, new \DateTime('2020-03-18T00:00:00+00:00')),
+                new SetTextValue('a_text', null, null, 'lorem ipsum'),
+                new SetBooleanValue('a_yes_no', null, null, false),
+                new SetPriceCollectionValue('a_scopable_price', 'ecommerce', null, [
+                    new PriceValue('10.00', 'EUR'),
+                    new PriceValue('12.00', 'USD'),
+                ]),
+                new SetTextareaValue('a_localized_and_scopable_text_area', 'ecommerce', 'en_US', 'Lorem ipsum dolor sit amet')
             ]
         );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
 
-        $this->get('pim_catalog.saver.product')->save($product);
+        return $this->get('pim_catalog.repository.product')->findOneByIdentifier('test_completeness');
+    }
 
-        return $product;
+    protected function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        if (null === $id) {
+            throw new \InvalidArgumentException(\sprintf('No user exists with username "%s"', $username));
+        }
+
+        return \intval($id);
     }
 }

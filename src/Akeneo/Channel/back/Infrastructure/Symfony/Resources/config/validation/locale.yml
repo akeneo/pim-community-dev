@@ -1,0 +1,9 @@
+Akeneo\Channel\Infrastructure\Component\Model\Locale:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+        - Akeneo\Tool\Component\StorageUtils\Validator\Constraints\Immutable:
+            properties:
+                - code
+    properties:
+        code:
+            - Akeneo\Channel\Infrastructure\Component\Validator\Constraint\LocaleCode: ~
