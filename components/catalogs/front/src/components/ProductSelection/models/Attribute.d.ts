@@ -4,4 +4,6 @@ export type Attribute = {
     type: string;
     scopable: boolean;
     localizable: boolean;
+    measurement_family?: string;
+    default_measurement_unit?: string;
 };

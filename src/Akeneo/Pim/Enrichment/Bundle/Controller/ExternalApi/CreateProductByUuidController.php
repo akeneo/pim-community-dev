@@ -15,7 +15,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\QuantifiedAssociations;
-use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\VariantProductParent;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ExternalApi\PayloadFormat;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetProductUuids;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;

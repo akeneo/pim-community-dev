@@ -6,8 +6,7 @@ namespace Akeneo\Category\Infrastructure\Storage\Save\Query;
 
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryBase;
 use Akeneo\Category\Domain\Model\Category;
-use Akeneo\Category\Domain\ValueObject\Code;
-use Akeneo\Category\Infrastructure\Storage\Sql\GetCategorySql;
+use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 
@@ -22,7 +21,7 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
 {
     public function __construct(
         private Connection $connection,
-        private GetCategorySql $getCategory,
+        private GetCategoryInterface $getCategory,
     ) {
     }
 

@@ -140,20 +140,30 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->commandMessageBus->dispatch($command);
     }
 
-    /** @test */
-    public function it_throws_an_exception_when_creating_a_product_without_owned_category(): void
-    {
-        $this->expectException(ViolationsException::class);
-        $this->expectExceptionMessage("You should at least keep your product in one category on which you have an own permission");
-
-        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('betty');
-        $command = UpsertProductCommand::createFromCollection(
-            userId: $this->getUserId('betty'),
-            productIdentifier: 'identifier',
-            userIntents: [new SetCategories(['sales'])]
-        );
-        $this->commandMessageBus->dispatch($command);
-    }
+    /**
+     * @test
+     * @FIXME CPM-716: uncomment this test
+     */
+//    public function it_creates_a_product_without_owned_category(): void
+//    {
+//        $uuid = Uuid::uuid4();
+//        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('betty');
+//        $command = UpsertProductCommand::createWithUuid(
+//            userId: $this->getUserId('betty'),
+//            productUuid: ProductUuid::fromUuid($uuid),
+//            userIntents: [
+//                new SetIdentifierValue('sku', 'my_new_product'),
+//                new SetCategories(['sales'])
+//            ]
+//        );
+//        $this->commandMessageBus->dispatch($command);
+//
+//        $this->clearDoctrineUoW();
+//
+//        $product = $this->productRepository->find($uuid);
+//        Assert::assertNotNull($product);
+//        Assert::assertEqualsCanonicalizing(['sales'], $product->getCategoryCodes());
+//    }
 
     /** @test */
     public function it_throws_an_exception_when_there_is_no_more_owned_category_after_update(): void

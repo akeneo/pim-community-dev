@@ -50,6 +50,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTableValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
@@ -57,6 +58,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\Pim\Enrichment\Product\Helper\FeatureHelper;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 final class UpsertProductIntegration extends TestCase
@@ -258,7 +260,7 @@ final class UpsertProductIntegration extends TestCase
     /** @test */
     public function it_throws_an_exception_when_giving_an_empty_product_identifier(): void
     {
-        $this->expectException(ViolationsException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The product identifier requires a non empty string');
 
         $command = UpsertProductCommand::createFromCollection(userId: $this->getUserId('admin'), productIdentifier: '', userIntents: [
@@ -1392,6 +1394,59 @@ final class UpsertProductIntegration extends TestCase
             ['red', 'blue'],
             $product->getValue('color_ref_data')->getData()
         );
+    }
+
+    /** @test */
+    public function it_creates_an_empty_product_with_given_uuid(): void
+    {
+        $uuid = Uuid::uuid4();
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNull($product);
+
+        $productUuid = ProductUuid::fromUuid($uuid);
+        $command = UpsertProductCommand::createWithUuid($this->getUserId('admin'), $productUuid, [
+            new SetIdentifierValue('sku', 'product_sku'),
+        ]);
+        $this->messageBus->dispatch($command);
+
+        $this->clearDoctrineUoW();
+        $product = $this->productRepository->find($uuid);
+        Assert::assertNotNull($product);
+        Assert::assertSame('product_sku', $product->getIdentifier());
+        Assert::assertSame($uuid->toString(), $product->getUuid()->toString());
+    }
+
+    /** @test */
+    public function it_creates_a_product_without_identifier_nor_uuid_as_param()
+    {
+        $product = $this->productRepository->findOneByIdentifier('product_sku');
+        Assert::assertNull($product);
+
+        $command = UpsertProductCommand::createWithoutUuidNorIdentifier(
+            userId: $this->getUserId('admin'),
+            userIntents: [new SetIdentifierValue('sku', 'product_sku')]
+        );
+        $this->messageBus->dispatch($command);
+
+        $this->clearDoctrineUoW();
+        $product = $this->productRepository->findOneByIdentifier('product_sku');
+        Assert::assertNotNull($product);
+        Assert::assertSame('product_sku', $product->getIdentifier());
+    }
+
+    /**
+     * @test
+     * @TODO: remove this test once the identifier is rendered optional
+     */
+    public function it_cannot_create_a_product_without_identifier_value(): void
+    {
+        $this->expectException(LegacyViolationsException::class);
+        $this->expectDeprecationMessageMatches('/The identifier attribute cannot be empty/');
+
+        $this->messageBus->dispatch(UpsertProductCommand::createWithoutUuidNorIdentifier(
+            userId: $this->getUserId('admin'),
+            userIntents: [new SetEnabled(false)]
+        ));
     }
 
     private function getUserId(string $username): int

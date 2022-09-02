@@ -76,10 +76,18 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
         ];
 
         foreach ($jobExecutionMessage->getOptions() as $optionName => $optionValue) {
-            if (true === $optionValue) {
-                $arguments[] = sprintf('--%s', $optionName);
-            } elseif (false !== $optionValue && null !== $optionValue) {
-                $arguments[] = sprintf('--%s=%s', $optionName, $optionValue);
+            switch (true) {
+                case true === $optionValue:
+                    $arguments[] = sprintf('--%s', $optionName);
+                    break;
+                case is_scalar($optionValue) && $optionValue:
+                    $arguments[] = sprintf('--%s=%s', $optionName, $optionValue);
+                    break;
+                case is_array($optionValue):
+                    foreach ($optionValue as $subOptionValue) {
+                        $arguments[] = sprintf('--%s=%s', $optionName, $subOptionValue);
+                    }
+                    break;
             }
         }
 

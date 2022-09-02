@@ -63,6 +63,12 @@ akeneo_catalogs:
                 label: Category
                 remove: Remove category
                 category_tree: Category tree
+            measurement:
+                search: Select your unit
+                no_results: No matches found
+            boolean:
+                yes: Yes
+                no: No
         operators:
             "STARTS WITH": starts with
             "ENDS WITH": ends with

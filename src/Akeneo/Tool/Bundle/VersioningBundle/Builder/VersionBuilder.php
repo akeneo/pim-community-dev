@@ -206,11 +206,14 @@ class VersionBuilder
      *
      * @return bool|null True if the date has changed, False otherwise. Null if the comparison can't be done.
      */
-    private function hasLegacyDateChanged($old, $new)
+    private function hasLegacyDateChanged($old, $new): bool | null
     {
         if (!is_string($old) || !is_string($new)) {
             return null;
         }
+
+        $old = str_replace(chr(0), '', $old);
+        $new = str_replace(chr(0), '', $new);
 
         $oldDateTime = \DateTimeImmutable::createFromFormat('Y-m-d', $old, new \DateTimeZone('UTC'));
         if (false === $oldDateTime) {

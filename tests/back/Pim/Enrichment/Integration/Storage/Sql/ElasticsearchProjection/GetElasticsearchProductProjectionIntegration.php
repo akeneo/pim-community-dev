@@ -481,14 +481,12 @@ class GetElasticsearchProductProjectionIntegration extends TestCase
         $this->assertEquals('2030-10-01T14:34:56+02:00', $productProjection->toArray()['updated']);
     }
 
-    public function test_that_it_throws_an_exception_when_product_identifier_does_not_exist()
+    public function test_that_it_ignores_product_identifier_which_does_not_exist()
     {
-        $this->expectException(ObjectNotFoundException::class);
-
         $uuid = Uuid::uuid4();
         $query = $this->get('akeneo.pim.enrichment.product.query.get_elasticsearch_product_projection');
         $productProjections = $query->fromProductUuids([$uuid]);
-        \iterator_to_array($productProjections);
+        $this->assertEmpty(\iterator_to_array($productProjections));
     }
 
     public function test_that_it_returns_uuid_if_column_is_filled()

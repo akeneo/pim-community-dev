@@ -11,7 +11,7 @@ namespace Akeneo\Catalogs\Application\Persistence;
 interface FindOneAttributeByCodeQueryInterface
 {
     /**
-     * @return array{code: string, label: string, type: string, scopable: bool, localizable: bool}
+     * @return array{code: string, label: string, type: string, scopable: bool, localizable: bool, measurement_family?: string, default_measurement_unit?: string}
      */
     public function execute(string $code): ?array;
 }

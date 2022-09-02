@@ -20,23 +20,20 @@ class GetNonViewableCategoryCodes implements GetNonViewableCategoryCodesInterfac
     ) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function fromProductIdentifiers(array $productIdentifiers, int $userId): array
+    public function fromProductUuids(array $productUuids, int $userId): array
     {
-        $categoryCodesPerProductIdentifier = $this->getCategoryCodes->fromProductIdentifiers($productIdentifiers);
+        $categoryCodesPerProductUuids = $this->getCategoryCodes->fromProductUuids($productUuids);
         $categoryCodes = [];
-        foreach ($categoryCodesPerProductIdentifier as $categoryCodesForProduct) {
+
+        foreach ($categoryCodesPerProductUuids as $categoryCodesForProduct) {
             $categoryCodes = \array_merge($categoryCodes, $categoryCodesForProduct);
         }
         $categoryCodes = \array_values(\array_unique($categoryCodes));
-
         $viewableCategoryCodes = $this->getViewableCategories->forUserId($categoryCodes, $userId);
 
         return \array_map(
             static fn (array $categoryCodes): array => \array_values(\array_diff($categoryCodes, $viewableCategoryCodes)),
-            $categoryCodesPerProductIdentifier
+            $categoryCodesPerProductUuids
         );
     }
 }

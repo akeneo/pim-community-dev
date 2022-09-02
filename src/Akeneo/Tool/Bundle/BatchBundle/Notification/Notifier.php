@@ -8,17 +8,15 @@ use Akeneo\Tool\Component\Batch\Model\JobExecution;
  * Interface of the job execution result notifiers
  *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
- * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
+ * @copyright 2013 Akeneo SAS (https://www.akeneo.com)
+ * @license   https://opensource.org/licenses/MIT MIT
  */
 interface Notifier
 {
+    public function notify(JobExecution $jobExecution): void;
+
     /**
-     * Notify the user about the job execution
-     *
-     * @param JobExecution $jobExecution
-     *
-     * return null
+     * @param array<string> $recipients
      */
-    public function notify(JobExecution $jobExecution);
+    public function setRecipients(array $recipients): void;
 }
