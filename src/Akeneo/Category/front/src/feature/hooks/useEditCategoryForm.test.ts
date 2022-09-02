@@ -1,10 +1,11 @@
+import {set} from 'lodash/fp';
 import {act} from 'react-test-renderer';
 import {renderHookWithProviders} from '@akeneo-pim-community/shared';
 import {useCategory, UseCategoryResponseOK} from './useCategory';
 import {useEditCategoryForm} from './useEditCategoryForm';
 import {saveEditCategoryForm} from '../infrastructure';
-import {categoriesAreEqual, CategoryPermissions, EnrichCategory, permissionsAreEqual} from 'feature/models';
-import {set} from 'lodash/fp';
+import {CategoryPermissions, EnrichCategory} from '../models';
+import {categoriesAreEqual, permissionsAreEqual} from '../helpers';
 
 const aCategory: EnrichCategory = {
   id: 6,

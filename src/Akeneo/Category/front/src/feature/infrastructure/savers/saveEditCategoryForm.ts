@@ -2,6 +2,7 @@ import {Router} from '@akeneo-pim-community/shared';
 import {set} from 'lodash/fp';
 
 import {EnrichCategory} from '../../models';
+import {normalizeCategory} from '../../helpers';
 
 interface EditCategoryResponseOK {
   success: true;
@@ -72,10 +73,8 @@ const saveEditCategoryForm = async (
 
   if (responseContent && response.ok) {
     const category = (responseContent as EditCategoryResponseOK).category;
-    if (category.permissions === null) {
-      category.permissions = {view: [], edit: [], own: []};
-    }
-    return {success: true, category};
+
+    return {success: true, category: normalizeCategory(category)};
   }
 
   // TODO use(/create) real i18n keys below

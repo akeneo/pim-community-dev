@@ -6,14 +6,13 @@ import {saveEditCategoryForm} from '../infrastructure';
 import {useCategory} from './useCategory';
 import {EditCategoryContext} from '../components';
 import {
-  buildCompositionKey,
-  categoriesAreEqual,
-  CategoryAttribute,
+  buildCompositeKey,
+  CategoryAttributeDefinition,
   CategoryAttributeValueData,
   CategoryPermissions,
   EnrichCategory,
 } from '../models';
-import {alterPermissionsConsistently} from '../helpers';
+import {alterPermissionsConsistently, categoriesAreEqual} from '../helpers';
 
 const useEditCategoryForm = (categoryId: number) => {
   const router = useRouter();
@@ -101,7 +100,7 @@ const useEditCategoryForm = (categoryId: number) => {
   };
 
   const onChangeAttribute = (
-    attribute: CategoryAttribute,
+    attribute: CategoryAttributeDefinition,
     localeCode: string | null,
     attributeValue: CategoryAttributeValueData
   ) => {
@@ -109,8 +108,8 @@ const useEditCategoryForm = (categoryId: number) => {
       return;
     }
 
-    const compositeKey = buildCompositionKey(attribute, localeCode);
-    const compositeKeyWithoutLocale = buildCompositionKey(attribute);
+    const compositeKey = buildCompositeKey(attribute, localeCode);
+    const compositeKeyWithoutLocale = buildCompositeKey(attribute);
 
     const value = {
       data: attributeValue,

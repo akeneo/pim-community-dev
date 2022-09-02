@@ -1,6 +1,8 @@
+import {useMemo} from 'react';
 import {FetchStatus, useFetch, useRoute} from '@akeneo-pim-community/shared';
 import {EnrichCategory} from '../models';
 import type {EditCategoryForm} from '../models';
+import {normalizeCategory} from '../helpers';
 
 interface UseCategoryResponseCommon {
   load: () => Promise<void>;
@@ -29,9 +31,11 @@ const useCategory = (categoryId: number): UseCategoryResponse => {
 
   const [category, load, status, error] = useFetch<any>(url);
 
+  const normalizedCategory = useMemo(() => (category ? normalizeCategory(category) : null), [category]);
+
   switch (status) {
     case 'fetched':
-      return {load, status, category};
+      return {load, status, category: normalizedCategory!};
     case 'error':
       return {load, status, error: error!};
   }

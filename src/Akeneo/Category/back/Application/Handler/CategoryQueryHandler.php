@@ -32,8 +32,8 @@ class CategoryQueryHandler implements CategoryQueryInterface
 
         return new Category(
             $categoryNormalized['id'],
-            $categoryNormalized['code'],
-            $categoryNormalized['labels'],
+            $categoryNormalized['properties']['code'],
+            $categoryNormalized['properties']['labels'],
             $categoryNormalized['parent'],
             $categoryNormalized['attributes'],
             $categoryNormalized['permissions'],
@@ -52,8 +52,8 @@ class CategoryQueryHandler implements CategoryQueryInterface
 
         return new Category(
             $categoryNormalized['id'],
-            $categoryNormalized['code'],
-            $categoryNormalized['labels'],
+            $categoryNormalized['properties']['code'],
+            $categoryNormalized['properties']['labels'],
             $categoryNormalized['parent'],
             $categoryNormalized['attributes'],
             $categoryNormalized['permissions'],

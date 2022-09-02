@@ -68,10 +68,12 @@ class Category
 
     /**
      * @return array{
-     *     id: int,
-     *     code: string,
+     *     id: int|null,
      *     parent: int|null,
-     *     labels: array<string, string>,
+     *     properties: array{
+     *       code: string,
+     *       labels: array<string, string>|null
+     *     },
      *     attributes: array<string, array<string, mixed>> | null,
      *     permissions: array<string, array<int>>|null
      * }
@@ -80,9 +82,11 @@ class Category
     {
         return [
             'id' => $this->getId()?->getValue(),
-            'code' => (string) $this->getCode(),
-            'labels' => $this->getLabels()?->normalize(),
             'parent' => $this->getParentId()?->getValue(),
+            'properties' => [
+                'code' => (string) $this->getCode(),
+                'labels' => $this->getLabels()?->normalize(),
+            ],
             'attributes' => $this->getAttributes()?->normalize(),
             'permissions' => $this->getPermissions()?->normalize(),
         ];

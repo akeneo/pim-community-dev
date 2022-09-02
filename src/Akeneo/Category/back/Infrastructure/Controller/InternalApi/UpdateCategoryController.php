@@ -96,9 +96,8 @@ class UpdateCategoryController
         if ($category === null) {
             throw new NotFoundHttpException('Category not found');
         }
-        $readCategory = ReadCategory::fromDomain($category);
 
-        $normalizedCategory = $readCategory->normalize();
+        $normalizedCategory = $category->normalize();
 
         // return new JsonResponse(
         //     [

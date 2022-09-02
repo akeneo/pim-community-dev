@@ -1,4 +1,3 @@
-import {isEqual, sortBy} from 'lodash';
 import {LabelCollection, LocaleCode} from '@akeneo-pim-community/shared';
 import {TreeNode} from './Tree';
 import {CompositeKey, CompositeKeyWithoutLocale} from './CompositeKey';
@@ -28,7 +27,7 @@ export type CategoryPermissions = {
   own: number[];
 };
 
-interface CategoryAttributes {
+export interface CategoryAttributes {
   [key: CompositeKey]: CategoryAttributeValueWrapper;
 }
 
@@ -127,37 +126,4 @@ const buildTreeNodeFromCategoryTree = (
   };
 };
 
-function labelsAreEqual(l1: LabelCollection, l2: LabelCollection): boolean {
-  // maybe too strict of simplistic, to adjust
-  return isEqual(l1, l2);
-}
-
-function isEqualUnordered(a1: number[], a2: number[]): boolean {
-  return isEqual(sortBy(a1), sortBy(a2));
-}
-
-function permissionsAreEqual(cp1: CategoryPermissions, cp2: CategoryPermissions): boolean {
-  return (
-    isEqualUnordered(cp1.view, cp2.view) && isEqualUnordered(cp1.edit, cp2.edit) && isEqualUnordered(cp1.own, cp2.own)
-  );
-}
-
-function attributesAreEqual(a1: CategoryAttributes, a2: CategoryAttributes): boolean {
-  // maybe too strict of simplistic, to adjust
-  return isEqual(a1, a2);
-}
-
-function propertiesAreEqual(p1: CategoryProperties, p2: CategoryProperties): boolean {
-  return p1.code === p2.code && labelsAreEqual(p1.labels, p2.labels);
-}
-
-function categoriesAreEqual(c1: EnrichCategory, c2: EnrichCategory): boolean {
-  return (
-    c1.id === c2.id &&
-    propertiesAreEqual(c1.properties, c2.properties) &&
-    permissionsAreEqual(c1.permissions, c2.permissions) &&
-    attributesAreEqual(c1.attributes, c2.attributes)
-  );
-}
-
-export {convertToCategoryTree, buildTreeNodeFromCategoryTree, categoriesAreEqual, permissionsAreEqual};
+export {convertToCategoryTree, buildTreeNodeFromCategoryTree};

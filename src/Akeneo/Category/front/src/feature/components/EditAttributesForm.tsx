@@ -1,18 +1,16 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import styled from 'styled-components';
 
 import {Field, FileInfo, MediaFileInput, SectionTitle, TextAreaInput, TextInput} from 'akeneo-design-system';
 import {Locale, LocaleSelector, useTranslate} from '@akeneo-pim-community/shared';
 
 import {
-  CategoryAttribute,
-  CategoryAttributeCode,
+  CategoryAttributeDefinition,
   CategoryAttributeValueData,
   CategoryImageAttributeValueData,
-  CATEGORY_ATTRIBUTE_TYPE_IMAGE,
-  CATEGORY_ATTRIBUTE_TYPE_TEXT,
   EnrichCategory,
 } from '../models';
+import {attributeDefinitions} from '../models/TemplateMocking';
 
 const locales: Locale[] = [
   {
@@ -32,7 +30,7 @@ const locales: Locale[] = [
 interface Props {
   attributes: EnrichCategory['attributes'];
   onAttributeValueChange: (
-    attribute: CategoryAttribute,
+    attribute: CategoryAttributeDefinition,
     locale: string | null,
     attributeValue: CategoryAttributeValueData
   ) => void;
@@ -59,48 +57,15 @@ export const EditAttributesForm = ({onAttributeValueChange}: Props) => {
   const [locale, setLocale] = useState('en_US');
   const translate = useTranslate();
 
-  // mocked attributes
-  // TODO use attribute coming from GET template via props
-  const attributes = useMemo<{[attributeCode: CategoryAttributeCode]: CategoryAttribute}>(
-    () => ({
-      description: {
-        uuid: '87939c45-1d85-4134-9579-d594fff65030',
-        code: 'description',
-        type: CATEGORY_ATTRIBUTE_TYPE_TEXT,
-      },
-      banner: {
-        uuid: '8587cda6-58c8-47fa-9278-033e1d8c735c',
-        code: 'banner',
-        type: CATEGORY_ATTRIBUTE_TYPE_IMAGE,
-      },
-      seo_meta_title: {
-        uuid: 'ebdf744c-17e0-11ed-835e-0b2d6a7798db',
-        code: 'description',
-        type: CATEGORY_ATTRIBUTE_TYPE_TEXT,
-      },
-      seo_meta_description: {
-        uuid: 'ef7ace80-17e0-11ed-9ac6-2feec2ba2321',
-        code: 'description',
-        type: CATEGORY_ATTRIBUTE_TYPE_TEXT,
-      },
-      seo_keywords: {
-        uuid: '54f6725a-17e1-11ed-a002-73412755f3bd',
-        code: 'seo_keywords',
-        type: CATEGORY_ATTRIBUTE_TYPE_TEXT,
-      },
-    }),
-    []
-  );
-
   const handleTextChange = useCallback(
-    (attribute: CategoryAttribute) => (value: string) => {
+    (attribute: CategoryAttributeDefinition) => (value: string) => {
       onAttributeValueChange(attribute, locale, value);
     },
     [locale, onAttributeValueChange]
   );
 
   const handleImageChange = useCallback(
-    (attribute: CategoryAttribute) => (value: FileInfo | null) => {
+    (attribute: CategoryAttributeDefinition) => (value: FileInfo | null) => {
       // TODO handle value===null
       if (!value || !value.size || !value.mimeType || !value.extension) {
         return;
@@ -125,12 +90,17 @@ export const EditAttributesForm = ({onAttributeValueChange}: Props) => {
         <LocaleSelector value={locale} values={locales} onChange={setLocale} />
       </SectionTitle>
       <Field960 label="Description" locale={locale}>
-        <TextAreaInput isRichText name="description" value="" onChange={handleTextChange(attributes['description'])} />
+        <TextAreaInput
+          isRichText
+          name="description"
+          value=""
+          onChange={handleTextChange(attributeDefinitions['description'])}
+        />
       </Field960>
       <Field label="Banner Image">
         <MediaFileInput
           value={null}
-          onChange={handleImageChange(attributes['banner'])}
+          onChange={handleImageChange(attributeDefinitions['banner'])}
           placeholder="Drag and drop to upload or click here"
           uploadingLabel="Uploading..."
           uploadErrorLabel="An error occurred during upload"
@@ -140,17 +110,17 @@ export const EditAttributesForm = ({onAttributeValueChange}: Props) => {
         />
       </Field>
       <Field label="SEO Meta Title" locale={locale}>
-        <TextInput name="seo_meta_title" value="" onChange={handleTextChange(attributes['seo_meta_title'])} />
+        <TextInput name="seo_meta_title" value="" onChange={handleTextChange(attributeDefinitions['seo_meta_title'])} />
       </Field>
       <Field label="SEO Meta Description" locale={locale}>
         <TextAreaInput
           name="seo_meta_description"
           value=""
-          onChange={handleTextChange(attributes['seo_meta_description'])}
+          onChange={handleTextChange(attributeDefinitions['seo_meta_description'])}
         />
       </Field>
       <Field label="SEO Keywords" locale={locale}>
-        <TextAreaInput name="seo_keywords" value="" onChange={handleTextChange(attributes['seo_keywords'])} />
+        <TextAreaInput name="seo_keywords" value="" onChange={handleTextChange(attributeDefinitions['seo_keywords'])} />
       </Field>
     </FormContainer>
   );
