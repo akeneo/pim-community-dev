@@ -8,7 +8,6 @@ final class ProductFileDownloaded
 {
     public function __construct(
         public string $supplierFileIdentifier,
-        public string $supplierCode,
         public int $userId,
     ) {
     }

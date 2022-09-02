@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetAllSupplierFiles;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\SupplierFile;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetAllSupplierFiles;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFile;
 use Doctrine\DBAL\Connection;
 
 final class DatabaseGetAllSupplierFiles implements GetAllSupplierFiles
@@ -19,7 +19,7 @@ final class DatabaseGetAllSupplierFiles implements GetAllSupplierFiles
         $page = max($page, 1);
 
         $sql = <<<SQL
-            SELECT supplier_file.identifier, path, uploaded_by_contributor, supplier.label AS supplier, uploaded_at
+            SELECT supplier_file.identifier, original_filename, uploaded_by_contributor, supplier.label AS supplier, uploaded_at
             FROM akeneo_supplier_portal_supplier_file supplier_file
             INNER JOIN akeneo_supplier_portal_supplier supplier on supplier_file.uploaded_by_supplier = supplier.identifier
             ORDER BY uploaded_at DESC 
@@ -27,9 +27,9 @@ final class DatabaseGetAllSupplierFiles implements GetAllSupplierFiles
             OFFSET :offset
         SQL;
 
-        return array_map(fn (array $file) => new SupplierFile(
+        return array_map(fn (array $file) => new ProductFile(
             $file['identifier'],
-            $file['path'],
+            $file['original_filename'],
             $file['uploaded_by_contributor'],
             $file['supplier'],
             $file['uploaded_at'],

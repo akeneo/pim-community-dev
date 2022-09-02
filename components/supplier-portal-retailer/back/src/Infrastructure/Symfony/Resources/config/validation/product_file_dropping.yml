@@ -1,0 +1,10 @@
+Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CreateProductFile:
+    properties:
+        uploadedFile:
+            - File:
+                maxSize: 50M
+                maxSizeMessage: supplier_portal.supplier.product_file_dropping.validation.max_uploaded_file_size
+                mimeTypes: [ application/vnd.openxmlformats-officedocument.spreadsheetml.sheet ]
+                mimeTypesMessage: supplier_portal.supplier.product_file_dropping.validation.must_be_an_xlsx_file
+        uploadedByContributor:
+            - NotBlank: ~

@@ -39,10 +39,10 @@ $rules = [
             'Akeneo\SupplierPortal\Retailer\Domain',
 
             // Supplier Portal Supplier coupling
-            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\Event\SupplierFileAdded',
 
             // External dependencies coupling
             'Psr\Log\LoggerInterface',
+            'Symfony\Component\HttpFoundation\File\UploadedFile',
             'Symfony\Component\EventDispatcher\EventDispatcherInterface',
             'Symfony\Component\EventDispatcher\EventSubscriberInterface',
             'Symfony\Component\Validator\Validator\ValidatorInterface',
@@ -59,9 +59,6 @@ $rules = [
             'Akeneo\SupplierPortal\Retailer\Application',
 
             // Supplier Portal Supplier coupling
-            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\DeleteOldProductFiles',
-            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\GetProductFilePathsOfOldProductFiles',
-            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Storage',
 
             // PIM coupling
             'Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler',
@@ -108,11 +105,12 @@ $rules = [
             // Supplier Portal Retailer coupling
             'Akeneo\SupplierPortal\Retailer\Domain',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\Install\AddSupplierPortalJobs',
-            'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\DeleteUnknownSupplierDirectoriesInGCSBucket',
+            'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\Storage',
+            'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\DeleteUnknownSupplierDirectoriesInGCSBucket',
+            'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\StoreProductsFileInGCSBucket',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Encoder\SuppliersEncoder',
 
             // Supplier Portal Supplier coupling
-            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Storage',
 
             // PIM coupling
             'Akeneo\Tool\Component\Batch\Job\JobParameters',
@@ -134,8 +132,6 @@ $rules = [
             'Akeneo\SupplierPortal\Retailer\Infrastructure',
 
             // Supplier Portal Supplier coupling
-            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\Model\SupplierFile',
-            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\Event\SupplierFileAdded',
 
             // PIM coupling
             'Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification',
@@ -150,6 +146,7 @@ $rules = [
             'Psr\Log\Test\TestLogger',
             'Ramsey\Uuid\Uuid',
             'Symfony\Component\EventDispatcher\EventDispatcher',
+            'Symfony\Component\HttpFoundation\File\UploadedFile',
             'Symfony\Component\Validator\ConstraintViolationList',
             'Symfony\Component\Validator\Validator\ValidatorInterface',
         ],

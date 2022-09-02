@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Subscriber;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Notifier;
-use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\Event\SupplierFileAdded;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Event\SupplierFileAdded;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class NotifyUsersOnSupplierFileAdded implements EventSubscriberInterface

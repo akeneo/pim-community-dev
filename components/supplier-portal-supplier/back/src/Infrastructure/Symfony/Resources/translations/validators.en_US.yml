@@ -7,8 +7,3 @@ supplier_portal:
                 must_contain_an_uppercase_letter: The password must have at least one uppercase letter.
                 must_contain_a_lowercase_letter: The password must have at least one lowercase letter.
                 must_contain_a_digit: The password should have at least one number.
-        product_file_dropping:
-            validation:
-                max_uploaded_filename_length: The filename should not exceed 255 characters.
-                max_uploaded_file_size: The file size should not exceed 50 MB.
-                must_be_an_xlsx_file: Please upload a valid xlsx file.

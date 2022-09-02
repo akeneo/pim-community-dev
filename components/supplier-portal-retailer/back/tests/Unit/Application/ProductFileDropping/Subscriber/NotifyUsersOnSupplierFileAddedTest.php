@@ -6,9 +6,9 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Application\ProductFileDroppi
 
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Subscriber\NotifyUsersOnSupplierFileAdded;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Notifier;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Event\SupplierFileAdded;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\SupplierFile;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
-use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\Event\SupplierFileAdded;
-use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\Model\SupplierFile;
 use PHPUnit\Framework\TestCase;
 
 final class NotifyUsersOnSupplierFileAddedTest extends TestCase
