@@ -139,7 +139,7 @@ class PublishToJobQueueIntegration extends TestCase
             [],
             false,
             null,
-            'ziggy@akeneo.com'
+            ['ziggy@akeneo.com']
         );
 
         $jobExecutionMessage = $this->getJobExecutionMessage();
@@ -147,7 +147,7 @@ class PublishToJobQueueIntegration extends TestCase
         $jobExecutionMessage = \json_decode($jobExecutionMessage->data(), true);
 
         self::assertSame(
-            ['env' => 'test', 'email' => 'ziggy@akeneo.com'],
+            ['env' => 'test', 'email' => ['ziggy@akeneo.com']],
             $jobExecutionMessage['options']
         );
     }
@@ -175,7 +175,7 @@ class PublishToJobQueueIntegration extends TestCase
             [],
             false,
             null,
-            'email'
+            ['email']
         );
     }
 

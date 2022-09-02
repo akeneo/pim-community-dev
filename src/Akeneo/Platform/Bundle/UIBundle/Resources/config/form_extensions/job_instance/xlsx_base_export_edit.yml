@@ -86,7 +86,7 @@ extensions:
             label: pim_common.label
             readOnly: false
 
-    pim-job-instance-xlsx-base-export-edit-properties-label:
+    pim-job-instance-xlsx-base-export-edit-properties-storage:
         module: pimimportexport/js/job/common/edit/storage-form
         parent: pim-job-instance-xlsx-base-export-edit-properties
         position: 120

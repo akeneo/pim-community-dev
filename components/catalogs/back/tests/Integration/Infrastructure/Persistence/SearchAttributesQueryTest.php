@@ -68,6 +68,22 @@ class SearchAttributesQueryTest extends IntegrationTestCase
                 'scopable' => false,
                 'localizable' => false,
             ],
+            [
+                'code' => 'certified',
+                'label' => '[certified]',
+                'type' => 'pim_catalog_boolean',
+                'scopable' => false,
+                'localizable' => false,
+            ],
+            [
+                'code' => 'weight',
+                'label' => '[weight]',
+                'type' => 'pim_catalog_metric',
+                'scopable' => false,
+                'localizable' => false,
+                'measurement_family' => 'Weight',
+                'default_measurement_unit' => 'KILOGRAM',
+            ],
         ], $result);
     }
 
@@ -142,6 +158,8 @@ class SearchAttributesQueryTest extends IntegrationTestCase
         $this->createAttribute([
             'code' => 'weight',
             'type' => 'pim_catalog_metric',
+            'metric_family' => 'Weight',
+            'default_metric_unit' => 'KILOGRAM',
         ]);
     }
 }

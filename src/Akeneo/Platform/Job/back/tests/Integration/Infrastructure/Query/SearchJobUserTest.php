@@ -18,6 +18,15 @@ class SearchJobUserTest extends IntegrationTestCase
 
         $this->query = $this->get(SearchJobUserInterface::class);
 
+        $this->fixturesUserHelper->createRole('ROLE_NO_ACL', []);
+
+        $this->fixturesUserHelper->createUser('julia', ['ROLE_NO_ACL']);
+        $this->fixturesUserHelper->createUser('julien', ['ROLE_NO_ACL']);
+        $this->fixturesUserHelper->createUser('admin', ['ROLE_NO_ACL']);
+        $this->fixturesUserHelper->createUser('bob', ['ROLE_NO_ACL']);
+
+        $this->fixturesUserHelper->createJobUser('job_automated_nice_import', ['ROLE_NO_ACL']);
+
         $jobInstances = [
             'a_product_import' => $this->fixturesJobHelper->createJobInstance([
                 'code' => 'a_product_import',
@@ -50,13 +59,17 @@ class SearchJobUserTest extends IntegrationTestCase
             'job_instance_id' => $jobInstances['a_product_import'],
         ]);
         $this->fixturesJobHelper->createJobExecution([
+            'user' => 'job_automated_nice_import',
+            'job_instance_id' => $jobInstances['a_product_import'],
+        ]);
+        $this->fixturesJobHelper->createJobExecution([
             'user' => 'bob',
             'job_instance_id' => $jobInstances['a_not_visible_job'],
             'is_visible' => false,
         ]);
     }
 
-    public function test_it_returns_job_users(): void
+    public function test_it_returns_only_simple_users_on_visible_jobs(): void
     {
         $query = new SearchJobUserQuery();
 

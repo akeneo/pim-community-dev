@@ -19,8 +19,7 @@ final class Version_7_0_20220830000000_add_catalog_product_values_filters extend
         $this->addSql(
             <<<SQL
             ALTER TABLE akeneo_catalog
-            ADD product_value_filters JSON NOT NULL DEFAULT (JSON_OBJECT()) AFTER product_selection_criteria,
-            ALGORITHM=INPLACE, LOCK=NONE;
+            ADD product_value_filters JSON NOT NULL DEFAULT (JSON_OBJECT()) AFTER product_selection_criteria
             SQL
         );
     }
