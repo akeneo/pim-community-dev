@@ -1,0 +1,215 @@
+services:
+    # Controllers
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\DownloadProductFile:
+        public: true
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProductFileHandler'
+            - '@event_dispatcher'
+            - '@security.token_storage'
+
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\AllSupplierFilesList:
+        public: true
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetAllSupplierFiles'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetAllSupplierFilesCount'
+
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\SupplierFilesList:
+        public: true
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFiles'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetSupplierFilesCount'
+
+    # GCS Bucket services
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\StoreProductsFile:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\StoreProductsFileInGCSBucket
+        arguments:
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+        public: true
+
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DownloadStoredProductFile:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\DownloadStoredProductFileFromGCSBucket
+        arguments:
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DeleteProductFilesFromPaths:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\DeleteProductFilesFromPathsInGCSBucket
+        arguments:
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - '@monolog.logger.supplier_portal'
+
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\DeleteUnknownSupplierDirectoriesInGCSBucket:
+        arguments:
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\GetAllSupplierCodes'
+            - '@monolog.logger.supplier_portal'
+
+    # PIM Notification service
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Notifier:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\PIMNotifier
+        arguments:
+            - '@pim_notification.notifier'
+            - '@pim_user.repository.user'
+
+    # Command/Handlers
+    Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CreateProductFileHandler:
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\SupplierFileRepository'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\StoreProductsFile'
+            - '@validator'
+            - '@event_dispatcher'
+            - '@monolog.logger.supplier_portal'
+
+    # Query/Handlers
+    Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProductFileHandler:
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileName'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DownloadStoredProductFile'
+            - '@monolog.logger.supplier_portal'
+
+    Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProductFileHandlerForSupplier:
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileNameForSupplier'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DownloadStoredProductFile'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail'
+            - '@monolog.logger.supplier_portal'
+
+    # Queries
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileName:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetProductFilePathAndFileName
+        arguments:
+            - '@database_connection'
+
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileNameForSupplier:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetProductFilePathAndFileNameForSupplier
+        arguments:
+            - '@database_connection'
+
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFiles:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseListProductFiles
+        arguments:
+            - '@database_connection'
+
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFilesForSupplier:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseListProductFilesForSupplier
+        arguments:
+            - '@database_connection'
+
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathsOfOldProductFiles:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetProductFilePathsOfOldProductFiles
+        arguments:
+            - '@database_connection'
+
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DeleteOldProductFiles:
+        public: true
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseDeleteOldProductFiles
+        arguments:
+            - '@database_connection'
+
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetAllSupplierFilesCount:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetAllSupplierFilesCount
+        arguments:
+            - '@database_connection'
+
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetSupplierFilesCount:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetSupplierFilesCount
+        arguments:
+            - '@database_connection'
+
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetAllSupplierFiles:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetAllSupplierFiles
+        arguments:
+            - '@database_connection'
+
+    # Event subscribers
+    Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Subscriber\NotifyUsersOnSupplierFileAdded:
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Notifier'
+        tags:
+            - 'kernel.event_subscriber'
+
+    Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\SuccessMetrics\Subscriber\LogOnContributorAdded:
+        arguments:
+            - '@monolog.logger.supplier_portal'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\SuccessMetrics\Subscriber\LogOnProductFileDownloaded:
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierCodeFromSupplierFileIdentifier'
+            - '@monolog.logger.supplier_portal'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    # Jobs
+    supplier_portal.job.clean_supplier_product_files:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'supplier_portal_supplier_product_files_clean'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@supplier_portal.job.step.clean_supplier_product_files'
+            - false
+            - false
+        tags:
+            - { name: akeneo_batch.job, connector: 'Supplier Portal', type: 'scheduled_job' }
+
+    supplier_portal.job.step.clean_supplier_product_files:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'generate_dictionary'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Job\CleanSupplierProductFiles'
+
+    supplier_portal.job_parameters.default_values_provider.clean_supplier_product_files:
+        class: Akeneo\Tool\Component\Batch\Job\JobParameters\EmptyDefaultValuesProvider
+        arguments:
+            - [ 'supplier_portal_supplier_product_files_clean' ]
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    supplier_portal.job_parameters.constraint_collection_provider.clean_supplier_product_files:
+        class: Akeneo\Tool\Component\Batch\Job\JobParameters\EmptyConstraintCollectionProvider
+        arguments:
+            - [ 'supplier_portal_supplier_product_files_clean' ]
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Job\CleanSupplierProductFiles:
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathsOfOldProductFiles'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DeleteProductFilesFromPaths'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DeleteOldProductFiles'
+            - '@Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\DeleteUnknownSupplierDirectoriesInGCSBucket'
+            - '@monolog.logger.supplier_portal'
+
+    # Command
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Command\CleanSupplierProductFilesCommand:
+        arguments:
+            - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandler'
+            - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler'
+        tags:
+            - { name: console.command }
+
+    # Repositories
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\SupplierFileRepository:
+        public: true
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\Sql\DatabaseRepository
+        arguments:
+            - '@database_connection'
+
+    # Service APIs
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\DownloadProductFile\DownloadProductFile:
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProductFileHandlerForSupplier'
+
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\UploadProductFile\UploadProductFile:
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CreateProductFileHandler'
+
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\GetProductFiles\GetProductFiles:
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFilesForSupplier'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail'

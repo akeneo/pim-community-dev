@@ -10,7 +10,6 @@ use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\Media
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Prefix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
-use Doctrine\Common\Util\ClassUtils;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -30,7 +29,7 @@ class PrefixUpdater implements AttributeUpdaterInterface
                 sprintf(
                     'Expected command of type "%s", "%s" given',
                     EditPrefixCommand::class,
-                    ClassUtils::getClass($command)
+                    get_class($command),
                 )
             );
         }

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\TableAttribute\Integration\Value;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -36,7 +36,7 @@ final class ExportTableValueWithLabelsIntegration extends TestCase
         $csv = $this->jobLauncher->launchExport(self::CSV_EXPORT_JOB_CODE, null, $config);
         $expectedContent = <<<CSV
 SKU;Categories;Enabled;Family;Groups;Nutrition
-toto;"Master catalog";Yes;;;"[{""Ingredients"":""Salt"",""Is allergenic"":""No""},{""Ingredients"":""[egg]"",""Quantity"":2},{""Ingredients"":""[butter]"",""Quantity"":25,""Is allergenic"":""Yes""}]"
+toto;"Master catalog";Yes;;;"[{""Ingredients"":""Salt"",""Is allergenic"":""No""},{""Ingredients"":""[egg]"",""Quantity"":""2""},{""Ingredients"":""[butter]"",""Quantity"":""25"",""Is allergenic"":""Yes"",""Energy"":""3.5 kilocalorie""}]"
 
 CSV;
         Assert::assertSame($expectedContent, $csv);
@@ -49,7 +49,7 @@ CSV;
         $csv = $this->jobLauncher->launchExport(self::CSV_EXPORT_JOB_CODE, null, $config);
         $expectedContent = <<<CSV
 [sku];Catégories;Activé;Famille;Groupes;[nutrition]
-toto;[master];Oui;;;"[{""Ingredients"":""Sel"",""[is_allergenic]"":""Non""},{""Ingredients"":""[egg]"",""Quantité"":2},{""Ingredients"":""[butter]"",""Quantité"":25,""[is_allergenic]"":""Oui""}]"
+toto;[master];Oui;;;"[{""Ingredients"":""Sel"",""[is_allergenic]"":""Non""},{""Ingredients"":""[egg]"",""Quantité"":""2""},{""Ingredients"":""[butter]"",""Quantité"":""25"",""[is_allergenic]"":""Oui"",""[2]"":""3.5 kilocalorie""}]"
 
 CSV;
         Assert::assertSame($expectedContent, $csv);
@@ -74,7 +74,7 @@ CSV;
         }
         $header = \array_shift($lines);
 
-        $expectedNutritionValue = '[{"Ingredients":"Salt","Is allergenic":"No"},{"Ingredients":"[egg]","Quantity":2},{"Ingredients":"[butter]","Quantity":25,"Is allergenic":"Yes"}]';
+        $expectedNutritionValue = '[{"Ingredients":"Salt","Is allergenic":"No"},{"Ingredients":"[egg]","Quantity":"2"},{"Ingredients":"[butter]","Quantity":"25","Is allergenic":"Yes","Energy":"3.5 kilocalorie"}]';
 
         Assert::assertCount(1, $lines);
         foreach ($lines as $row) {
@@ -99,7 +99,7 @@ CSV;
                 'job_name' => self::CSV_EXPORT_JOB_CODE,
                 'status' => 0,
                 'type' => 'export',
-                'raw_parameters' => 'a:13:{s:8:"filePath";s:38:"/tmp/export_%job_label%_%datetime%.csv";s:9:"delimiter";s:1:";";s:9:"enclosure";s:1:""";s:10:"withHeader";b:1;s:14:"user_to_notify";N;s:21:"is_user_authenticated";b:0;s:16:"decimalSeparator";s:1:".";s:10:"dateFormat";s:10:"yyyy-MM-dd";s:10:"with_media";b:0;s:10:"with_label";b:0;s:17:"header_with_label";b:0;s:11:"file_locale";N;s:7:"filters";a:2:{s:4:"data";a:3:{i:0;a:3:{s:5:"field";s:7:"enabled";s:8:"operator";s:3:"ALL";s:5:"value";N;}i:1;a:3:{s:5:"field";s:10:"categories";s:8:"operator";s:11:"IN CHILDREN";s:5:"value";a:1:{i:0;s:6:"master";}}i:2;a:4:{s:5:"field";s:12:"completeness";s:8:"operator";s:3:"ALL";s:5:"value";i:100;s:7:"context";a:1:{s:7:"locales";a:1:{i:0;s:5:"en_US";}}}}s:9:"structure";a:2:{s:5:"scope";s:9:"ecommerce";s:7:"locales";a:1:{i:0;s:5:"en_US";}}}}',
+                'raw_parameters' => 'a:13:{s:7:"storage";a:2:{s:4:"type";s:5:"local";s:9:"file_path";s:38:"/tmp/export_%job_label%_%datetime%.csv";}s:9:"delimiter";s:1:";";s:9:"enclosure";s:1:""";s:10:"withHeader";b:1;s:14:"user_to_notify";N;s:21:"is_user_authenticated";b:0;s:16:"decimalSeparator";s:1:".";s:10:"dateFormat";s:10:"yyyy-MM-dd";s:10:"with_media";b:0;s:10:"with_label";b:0;s:17:"header_with_label";b:0;s:11:"file_locale";N;s:7:"filters";a:2:{s:4:"data";a:3:{i:0;a:3:{s:5:"field";s:7:"enabled";s:8:"operator";s:3:"ALL";s:5:"value";N;}i:1;a:3:{s:5:"field";s:10:"categories";s:8:"operator";s:11:"IN CHILDREN";s:5:"value";a:1:{i:0;s:6:"master";}}i:2;a:4:{s:5:"field";s:12:"completeness";s:8:"operator";s:3:"ALL";s:5:"value";i:100;s:7:"context";a:1:{s:7:"locales";a:1:{i:0;s:5:"en_US";}}}}s:9:"structure";a:2:{s:5:"scope";s:9:"ecommerce";s:7:"locales";a:1:{i:0;s:5:"en_US";}}}}',
             ]
         );
         $this->get(SqlCreateJobInstance::class)->createJobInstance(
@@ -109,7 +109,7 @@ CSV;
                 'job_name' => self::XLSX_EXPORT_JOB_CODE,
                 'status' => 0,
                 'type' => 'export',
-                'raw_parameters' => 'a:12:{s:8:"filePath";s:39:"/tmp/export_%job_label%_%datetime%.xlsx";s:10:"withHeader";b:1;s:12:"linesPerFile";i:10000;s:14:"user_to_notify";N;s:21:"is_user_authenticated";b:0;s:16:"decimalSeparator";s:1:".";s:10:"dateFormat";s:10:"yyyy-MM-dd";s:10:"with_media";b:1;s:10:"with_label";b:0;s:17:"header_with_label";b:0;s:11:"file_locale";N;s:7:"filters";a:2:{s:4:"data";a:3:{i:0;a:3:{s:5:"field";s:7:"enabled";s:8:"operator";s:3:"ALL";s:5:"value";N;}i:1;a:3:{s:5:"field";s:10:"categories";s:8:"operator";s:11:"IN CHILDREN";s:5:"value";a:1:{i:0;s:6:"master";}}i:2;a:4:{s:5:"field";s:12:"completeness";s:8:"operator";s:3:"ALL";s:5:"value";i:100;s:7:"context";a:1:{s:7:"locales";a:1:{i:0;s:5:"en_US";}}}}s:9:"structure";a:2:{s:5:"scope";s:9:"ecommerce";s:7:"locales";a:1:{i:0;s:5:"en_US";}}}}',
+                'raw_parameters' => 'a:12:{s:7:"storage";a:2:{s:4:"type";s:5:"local";s:9:"file_path";s:39:"/tmp/export_%job_label%_%datetime%.xlsx";}s:10:"withHeader";b:1;s:12:"linesPerFile";i:10000;s:14:"user_to_notify";N;s:21:"is_user_authenticated";b:0;s:16:"decimalSeparator";s:1:".";s:10:"dateFormat";s:10:"yyyy-MM-dd";s:10:"with_media";b:1;s:10:"with_label";b:0;s:17:"header_with_label";b:0;s:11:"file_locale";N;s:7:"filters";a:2:{s:4:"data";a:3:{i:0;a:3:{s:5:"field";s:7:"enabled";s:8:"operator";s:3:"ALL";s:5:"value";N;}i:1;a:3:{s:5:"field";s:10:"categories";s:8:"operator";s:11:"IN CHILDREN";s:5:"value";a:1:{i:0;s:6:"master";}}i:2;a:4:{s:5:"field";s:12:"completeness";s:8:"operator";s:3:"ALL";s:5:"value";i:100;s:7:"context";a:1:{s:7:"locales";a:1:{i:0;s:5:"en_US";}}}}s:9:"structure";a:2:{s:5:"scope";s:9:"ecommerce";s:7:"locales";a:1:{i:0;s:5:"en_US";}}}}',
             ]
         );
 
@@ -160,6 +160,15 @@ CSV;
                             'en_US' => 'Is allergenic',
                         ],
                     ],
+                    [
+                        'code' => '2',
+                        'data_type' => 'measurement',
+                        'labels' => [
+                            'en_US' => 'Energy',
+                        ],
+                        'measurement_family_code' => 'Energy',
+                        'measurement_default_unit_code' => 'KILOCALORIE',
+                    ],
                 ],
             ]
         );
@@ -170,7 +179,7 @@ CSV;
         $this->createProduct('toto', [
             ['ingredient' => 'salt', 'is_allergenic' => false],
             ['ingredient' => 'egg', 'quantity' => 2],
-            ['ingredient' => 'butter', 'quantity' => 25, 'is_allergenic' => true],
+            ['ingredient' => 'butter', 'quantity' => 25, 'is_allergenic' => true, '2' => ['amount' => 3.5, 'unit' => 'KILOCALORIE']],
         ]);
     }
 

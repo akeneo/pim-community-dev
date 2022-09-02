@@ -31,11 +31,8 @@ final class EditMediaLinkValueCommandValidator extends ConstraintValidator
         MediaType::OTHER,
     ];
 
-    private UrlChecker $urlChecker;
-
-    public function __construct(UrlChecker $urlChecker)
+    public function __construct(private UrlChecker $urlChecker)
     {
-        $this->urlChecker = $urlChecker;
     }
 
     public function validate($command, Constraint $constraint): void
@@ -53,12 +50,12 @@ final class EditMediaLinkValueCommandValidator extends ConstraintValidator
         Assert::isInstanceOf($command, EditMediaLinkValueCommand::class, \sprintf(
             'Expected argument to be of class "%s", "%s" given',
             EditMediaLinkValueCommand::class,
-            \get_class($command)
+            $command::class
         ));
         Assert::isInstanceOf($command->attribute, MediaLinkAttribute::class, \sprintf(
             'Expected attribute to be of class "%s", "%s" given',
             MediaLinkAttribute::class,
-            \get_class($command)
+            $command::class
         ));
     }
 

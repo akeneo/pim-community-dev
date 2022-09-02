@@ -1,11 +1,12 @@
-import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import {deleteJSON} from 'akeneoassetmanager/tools/fetch';
+import AssetFamilyIdentifier, {
+  assetFamilyIdentifierStringValue,
+} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {ValidationError} from '@akeneo-pim-community/shared';
 import Remover from 'akeneoassetmanager/domain/remover/remover';
-import errorHandler from 'akeneoassetmanager/infrastructure/tools/error-handler';
-import {attributeIdentifierStringValue} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import {handleResponse} from 'akeneoassetmanager/infrastructure/tools/handleResponse';
 
-const routing = require('routing');
+const generateRemoveUrl = (assetFamilyIdentifier: AssetFamilyIdentifier) =>
+  `/rest/asset_manager/${assetFamilyIdentifier}`;
 
 export interface AssetFamilyRemover extends Remover<AssetFamilyIdentifier> {}
 
@@ -15,11 +16,14 @@ export class AssetFamilyRemoverImplementation implements AssetFamilyRemover {
   }
 
   async remove(attributeIdentifier: AssetFamilyIdentifier): Promise<ValidationError[] | null> {
-    return await deleteJSON(
-      routing.generate('akeneo_asset_manager_asset_family_delete_rest', {
-        identifier: attributeIdentifierStringValue(attributeIdentifier),
-      })
-    ).catch(errorHandler);
+    const response = await fetch(generateRemoveUrl(assetFamilyIdentifierStringValue(attributeIdentifier)), {
+      method: 'DELETE',
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+    });
+
+    return await handleResponse(response);
   }
 }
 

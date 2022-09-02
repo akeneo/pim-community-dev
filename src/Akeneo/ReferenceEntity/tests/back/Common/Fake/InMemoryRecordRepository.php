@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Common\Fake;
 
+use Akeneo\ReferenceEntity\Domain\Exception\RecordAlreadyExistsError;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
@@ -28,12 +29,12 @@ use Ramsey\Uuid\Uuid;
 class InMemoryRecordRepository implements RecordRepositoryInterface
 {
     /** @var Record[] */
-    protected $records = [];
+    protected array $records = [];
 
     public function create(Record $record): void
     {
         if (isset($this->records[$record->getIdentifier()->__toString()])) {
-            throw new \RuntimeException('Record already exists');
+            throw RecordAlreadyExistsError::fromRecord($record);
         }
 
         try {
@@ -44,7 +45,7 @@ class InMemoryRecordRepository implements RecordRepositoryInterface
             return;
         }
 
-        throw new \RuntimeException('Record already exists');
+        throw RecordAlreadyExistsError::fromRecord($record);
     }
 
     public function update(Record $record): void

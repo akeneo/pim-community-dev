@@ -1,0 +1,168 @@
+envVarsDeployDev: &envVarsDeployDev
+dockerCloudDeployerCurrent: &dockerCloudDeployerCurrent
+dockerCloudDeployerNext: &dockerCloudDeployerNext
+executor-machine: &executor-machine
+
+jobs:
+    # Description :
+    #    Define parameters to use cypress in order to validate prod deployment
+    #    The check in done on grth (r2d2) and srnt (c3po) instances
+    configure_deployment_e2e_validation:
+        parameters:
+            PRODUCT_TYPE:
+                type: string
+                default: "srnt"
+            PFID:
+                type: string
+                default: "srnt-c3po"
+        machine:
+          image: *executor-machine
+        resource_class: medium
+        steps:
+            - attach_workspace:
+                  at: ~/
+            - checkout
+            - install_yq_v3
+            - run:
+                  name: Configure cypress deployment validation for <<parameters.PRODUCT_TYPE>>
+                  command: |
+                      CURRENT_TIME=$(date +%s)
+                      LAST_HOUR_TIME=$(( CURRENT_TIME - 60*60 ))
+                      VERSION=$(curl --location -s -g -H "Content-Type: application/json" -H "DD-API-KEY: ${DATADOG_API_KEY}" -H "DD-APPLICATION-KEY: ${DATADOG_APP_KEY}" --request GET "https://api.datadoghq.eu/api/v1/query?from=${LAST_HOUR_TIME}&to=${CURRENT_TIME}&query=sum:kubernetes.containers.running{project:akecld-saas-demo,short_image:pim-enterprise-dev,app:pim,component:pim-web,type:<<parameters.PRODUCT_TYPE>>,pfid:<<parameters.PFID>>}%20by%20{image_tag}" | yq r - 'series[*].tag_set[0]' | sort | tail -n1 | cut -c11-)
+                      TYPE=<<parameters.PRODUCT_TYPE>> LOGIN=${E2E_LOGIN_<<parameters.PRODUCT_TYPE>>} PASSWORD=${E2E_PASSWORD_<<parameters.PRODUCT_TYPE>>} VERSION=${VERSION} make -C deployments/ configure-cypress
+            - persist_to_workspace:
+                  root: /home/circleci
+                  paths:
+                      - project
+
+    # Description :
+    #    Use cypress to do UI sanity checks on dev instances
+    #    This job can be trigged after a deployment, clone, migration or upgrade job
+    ui_sanity_checks:
+        parameters:
+            SOURCE_PFID:
+                type: string
+                default: ""
+        machine:
+            image: *executor-machine
+        resource_class: large
+        steps:
+            - attach_workspace:
+                  at: ~/
+            - restore_persisted_env_vars
+            - run:
+                  name: Copy docker-compose.override.yml.dist
+                  command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
+            - run:
+                  name: Setup tests results folder and log folder
+                  command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.composer ~/.cache/Cypress
+            - run:
+                  name: Modify the password for the sanity check
+                  command: |
+                      sed -i "s/Q7sKB5xP2ttc5KnqFPOF1BrOkTRSulmEj528BpJzbDcLbYSHU1/${PIM_ADMIN_PASSWORD}/g" tests/front/e2e/product/edit.js
+            - run:
+                  name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                  command: |
+                      sudo chown -R 1000:1000 ../project
+                      sudo chown -R 1000:1000 ~/.composer
+                      sudo chown -R 1000:1000 ~/.cache/yarn
+                      sudo chown -R 1000:1000 ~/.cache/Cypress
+            - run:
+                  name: Build the latest Docker images
+                  command: |
+                      make php-image-dev
+            - when:
+                  condition:
+                      not:
+                          equal: [master, << pipeline.git.branch >>]
+                  steps:
+                      - run:
+                            name: Update composer.json if same branch exists in CE
+                            command: >
+                                curl --output /dev/null --silent --head --fail
+                                https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH} &&
+                                docker-compose run --rm -u www-data:www-data php php
+                                /usr/local/bin/composer require "akeneo/pim-community-dev:dev-${CIRCLE_BRANCH}" --no-update ||
+                                echo "No CE branch $CIRCLE_BRANCH found. I don't touch the composer.json file."
+            - run:
+                  name: Install back dependencies
+                  command: make dependencies
+            - run:
+                  name: Launch Cypress
+                  command: |
+                      PIM_CONTEXT=test CYPRESS_defaultCommandTimeout=10000 CYPRESS_requestTimeout=10000 CYPRESS_responseTimeout=50000 CYPRESS_baseUrl=https://${INSTANCE_NAME}.dev.cloud.akeneo.com make end-to-end-front
+            - store_artifacts:
+                  path: cypress/screenshots
+            - store_artifacts:
+                  path: cypress/videos
+            - store_artifacts:
+                  path: var/logs
+
+    validate_data_integrity:
+        parameters:
+          SOURCE_PFID_SOURCE_PROJECT_ID:
+            type: string
+            default: ""
+          PRODUCT_TYPE:
+            type: string
+            default: "srnt"
+        environment:
+          <<: *envVarsDeployDev
+        <<: *dockerCloudDeployerCurrent
+        resource_class: small
+        steps:
+          - attach_workspace:
+              at: ~/
+          - set_gcloud_config_dev
+          - restore_persisted_env_vars
+          - run:
+              name: Launch data referential integrity validation command
+              command: |
+                POD_DAEMON=$(kubectl get pods --no-headers --namespace=${TYPE}-${INSTANCE_NAME} -l component=pim-daemon-webhook-consumer-process | awk 'NR==1{print $1}')
+                kubectl exec -it -n ${TYPE}-${INSTANCE_NAME} ${POD_DAEMON} -- /bin/bash -c 'bin/console  pimee:database:batch-validate -vvv '
+
+    validate_db_schema:
+      parameters:
+        SOURCE_PFID_SOURCE_PROJECT_ID:
+          type: string
+          default: ""
+        PRODUCT_TYPE:
+          type: string
+          default: "srnt"
+      environment:
+        <<: *envVarsDeployDev
+      <<: *dockerCloudDeployerCurrent
+      resource_class: small
+      steps:
+        - attach_workspace:
+            at: ~/
+        - set_gcloud_config_dev
+        - restore_persisted_env_vars
+        - run:
+            name: Launch data referential integrity validation command
+            command: |
+              POD_DAEMON=$(kubectl get pods --no-headers --namespace=${TYPE}-${INSTANCE_NAME} -l component=pim-daemon-webhook-consumer-process | awk 'NR==1{print $1}')
+              kubectl exec -it -n ${TYPE}-${INSTANCE_NAME} ${POD_DAEMON} -- /bin/bash -c 'bin/console pimee:database:inspect -f && bin/console pimee:database:diff'
+
+    validate_indexing_diff:
+      parameters:
+        SOURCE_PFID_SOURCE_PROJECT_ID:
+          type: string
+          default: ""
+        PRODUCT_TYPE:
+          type: string
+          default: "srnt"
+      environment:
+        <<: *envVarsDeployDev
+      <<: *dockerCloudDeployerCurrent
+      resource_class: small
+      steps:
+        - attach_workspace:
+            at: ~/
+        - set_gcloud_config_dev
+        - restore_persisted_env_vars
+        - run:
+            name: Launch data referential integrity validation command
+            command: |
+              POD_DAEMON=$(kubectl get pods --no-headers --namespace=${TYPE}-${INSTANCE_NAME} -l component=pim-daemon-webhook-consumer-process | awk 'NR==1{print $1}')
+              kubectl exec -it -n ${TYPE}-${INSTANCE_NAME} ${POD_DAEMON} -- /bin/bash -c 'bin/console pimee:database:indexing-diff'

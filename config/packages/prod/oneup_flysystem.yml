@@ -15,3 +15,12 @@ oneup_flysystem:
         data_quality_insights_shared_adapter:
             custom:
                 service: 'akeneo_flysystem_adapter.googlecloudstorage.data_quality_insights_shared_adapter'
+        tailored_import_storage_adapter:
+            custom:
+                service: 'akeneo_flysystem_adapter.googlecloudstorage.tailored_import_storage_adapter'
+        supplier_portal_storage_adapter:
+            custom:
+                service: 'akeneo_flysystem_adapter.googlecloudstorage.supplier_portal_storage_adapter'
+        local_storage_adapter:
+            local:
+                location: '/'

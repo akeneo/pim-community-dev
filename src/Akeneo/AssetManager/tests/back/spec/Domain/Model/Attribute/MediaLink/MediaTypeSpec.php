@@ -45,6 +45,20 @@ class MediaTypeSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
+    public function it_throws_if_it_created_with_0_as_media_type()
+    {
+        $this->beConstructedThrough('fromString', ['0']);
+        $this->shouldThrow(
+            new \InvalidArgumentException(
+                sprintf(
+                    'Expected media types are "%s", "%s" given',
+                    implode(', ', MediaType::MEDIA_TYPES),
+                    '0'
+                )
+            )
+        )->duringInstantiation();
+    }
+
     public function it_throws_if_it_is_created_with_a_non_existing_type()
     {
         $this->beConstructedThrough('fromString', ['test']);

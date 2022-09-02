@@ -5,7 +5,6 @@ parameters:
     pimee_security.repository.locale_access.class:          Akeneo\Pim\Permission\Bundle\Entity\Repository\LocaleAccessRepository
     pimee_security.repository.product_model.class: Akeneo\Pim\Permission\Bundle\Persistence\ORM\EntityWithValue\ProductModelRepository
     pimee_security.repository.product.class: Akeneo\Pim\Permission\Bundle\Persistence\ORM\EntityWithValue\ProductRepository
-    pim_catalog.repository.product_mass_action.class: Akeneo\Pim\Permission\Bundle\Persistence\ORM\EntityWithValue\ProductMassActionRepository
     pim_catalog.repository.attribute.class: Akeneo\Pim\Permission\Bundle\Persistence\ORM\Attribute\AttributeRepository
     pim_enrich.repository.job_execution.class: Akeneo\Pim\Permission\Bundle\Entity\Repository\JobExecutionRepository
 
@@ -62,15 +61,6 @@ services:
             - '@pimee_security.deny_not_granted_categorized_entity'
             - '%pim_catalog.entity.product.class%'
 
-    pim_catalog.repository.product_mass_action:
-        class: '%pim_catalog.repository.product_mass_action.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '%pim_catalog.entity.product.class%'
-            - '@pimee_workflow.repository.published_product'
-            - '@security.token_storage'
-            - '%pimee_security.entity.product_category_access.class%'
-
     pimee_enrich.repository.attribute:
         class: 'Akeneo\Pim\Permission\Bundle\Entity\Repository\AttributeRepository'
         arguments:
@@ -89,6 +79,7 @@ services:
         class: 'Akeneo\Pim\Permission\Bundle\Entity\Repository\JobInstanceRepository'
         public: true
         arguments:
+            - '@akeneo_batch.job.job_registry'
             - '@doctrine.orm.entity_manager'
             - '%akeneo_batch.entity.job_instance.class%'
 

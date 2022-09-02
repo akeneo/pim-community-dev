@@ -19,8 +19,12 @@ namespace Akeneo\AssetManager\Domain\Model;
  */
 class LabelCollection
 {
+    /** @var array<string, string> */
     private array $translatedLabels;
 
+    /**
+     * @param array<string, string> $translatedLabels
+     */
     private function __construct(array $translatedLabels)
     {
         foreach ($translatedLabels as $code => $label) {

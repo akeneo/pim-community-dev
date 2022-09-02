@@ -1,4 +1,4 @@
-@javascript
+@javascript @teamwork-assistant-feature-enabled
 Feature: Select a project to display products to enrich
   In order to easily display products I have to enrich in a project
   As a contributor

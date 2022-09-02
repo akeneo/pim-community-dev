@@ -35,22 +35,12 @@ class MigrateAssetCategoryLabelsCommand extends Command
 
     private const DEFAULT_CATEGORIES_CODE = 'categories';
 
-    private AttributeRepositoryInterface $attributeRepository;
-
-    private EditAttributeHandler $editAttributeHandler;
-
-    private Connection $connection;
-
     public function __construct(
-        AttributeRepositoryInterface $attributeRepository,
-        EditAttributeHandler $editAttributeHandler,
-        Connection $connection
+        private AttributeRepositoryInterface $attributeRepository,
+        private EditAttributeHandler $editAttributeHandler,
+        private Connection $connection
     ) {
         parent::__construct($this::$defaultName);
-
-        $this->attributeRepository = $attributeRepository;
-        $this->editAttributeHandler = $editAttributeHandler;
-        $this->connection = $connection;
     }
 
     protected function configure()
@@ -76,7 +66,7 @@ class MigrateAssetCategoryLabelsCommand extends Command
                 AttributeCode::fromString($categoriesAttributeCode),
                 AssetFamilyIdentifier::fromString($familyCode)
             );
-        } catch (AttributeNotFoundException $e) {
+        } catch (AttributeNotFoundException) {
             $io->warning(sprintf('There is no attribute "%s" for the family "%s".', $categoriesAttributeCode, $familyCode));
 
             return -1;

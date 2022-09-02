@@ -1,4 +1,4 @@
-@javascript
+@javascript @permission-feature-enabled
 Feature: Mass add product value to products at once via a form
   In order to easily add value to products
   As a product manager

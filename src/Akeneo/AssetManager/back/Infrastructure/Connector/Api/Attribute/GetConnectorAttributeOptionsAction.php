@@ -17,7 +17,7 @@ use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeExistsInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeSupportsOptions;
 use Akeneo\AssetManager\Domain\Query\Attribute\Connector\FindConnectorAttributeOptionsInterface;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -25,28 +25,13 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class GetConnectorAttributeOptionsAction
 {
-    private FindConnectorAttributeOptionsInterface $findConnectorAttributeOptionsQuery;
-
-    private AssetFamilyExistsInterface $assetFamilyExists;
-
-    private AttributeExistsInterface $attributeExists;
-
-    private AttributeSupportsOptions $attributeSupportsOptions;
-
-    private SecurityFacade $securityFacade;
-
     public function __construct(
-        FindConnectorAttributeOptionsInterface $findConnectorAttributeOptionsQuery,
-        AssetFamilyExistsInterface $assetFamilyExists,
-        AttributeExistsInterface $attributeExists,
-        AttributeSupportsOptions $attributeSupportsOptions,
-        SecurityFacade $securityFacade
+        private FindConnectorAttributeOptionsInterface $findConnectorAttributeOptionsQuery,
+        private AssetFamilyExistsInterface $assetFamilyExists,
+        private AttributeExistsInterface $attributeExists,
+        private AttributeSupportsOptions $attributeSupportsOptions,
+        private SecurityFacadeInterface $securityFacade,
     ) {
-        $this->assetFamilyExists = $assetFamilyExists;
-        $this->findConnectorAttributeOptionsQuery = $findConnectorAttributeOptionsQuery;
-        $this->attributeExists = $attributeExists;
-        $this->attributeSupportsOptions = $attributeSupportsOptions;
-        $this->securityFacade = $securityFacade;
     }
 
     /**

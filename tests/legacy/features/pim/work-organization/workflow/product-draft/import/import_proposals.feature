@@ -1,3 +1,4 @@
+@proposal-feature-enabled
 Feature: Import proposals
   In order generate proposals
   As a redactor

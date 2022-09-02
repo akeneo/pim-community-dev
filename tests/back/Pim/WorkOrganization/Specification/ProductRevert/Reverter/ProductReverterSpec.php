@@ -12,6 +12,8 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -51,6 +53,7 @@ class ProductReverterSpec extends ObjectBehavior
         ];
         $version->getResourceName()->willReturn('foo');
         $version->getSnapshot()->willReturn($snapshot);
+        $version->getResourceUuid()->willReturn(null);
         $version->getResourceId()->willReturn('baz');
 
         $product->getValues()->willReturn($productValueCollection);
@@ -97,14 +100,15 @@ class ProductReverterSpec extends ObjectBehavior
         ];
         $version->getResourceName()->willReturn('foo');
         $version->getSnapshot()->willReturn($snapshot);
-        $version->getResourceId()->willReturn('baz');
+        $uuid = Uuid::fromString('75cfd06e-9c03-44cb-93d3-b2e93d8f82b3');
+        $version->getResourceUuid()->willReturn($uuid);
 
         $product->getValues()->willReturn($productValueCollection);
         $productValueCollection->clear()->shouldBecalled();
         $product->setValues($productValueCollection)->shouldBeCalled();
 
         $registry->getRepository('foo')->willReturn($repository);
-        $repository->find('baz')->willReturn($product);
+        $repository->find($uuid)->willReturn($product);
 
         $standardProduct = ['parent' => 'bar'];
         $converter->convert($snapshot)->willReturn($standardProduct);
@@ -143,6 +147,7 @@ class ProductReverterSpec extends ObjectBehavior
         ];
         $version->getResourceName()->willReturn('foo');
         $version->getSnapshot()->willReturn($snapshot);
+        $version->getResourceUuid()->willReturn(null);
         $version->getResourceId()->willReturn('baz');
 
         $product->getValues()->willReturn($productValueCollection);
@@ -189,6 +194,7 @@ class ProductReverterSpec extends ObjectBehavior
         ];
         $version->getResourceName()->willReturn('foo');
         $version->getSnapshot()->willReturn($snapshot);
+        $version->getResourceUuid()->willReturn(null);
         $version->getResourceId()->willReturn('baz');
 
         $product->getValues()->willReturn($productValueCollection);
@@ -234,6 +240,7 @@ class ProductReverterSpec extends ObjectBehavior
         ];
         $version->getResourceName()->willReturn('foo');
         $version->getSnapshot()->willReturn($snapshot);
+        $version->getResourceUuid()->willReturn(null);
         $version->getResourceId()->willReturn('baz');
 
         $product->getValues()->willReturn($productValueCollection);

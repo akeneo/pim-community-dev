@@ -1,0 +1,204 @@
+batch_jobs.xlsx_tailored_product_import.label: 以 XLSX 格式定制导入产品
+akeneo.tailored_import:
+  global_settings:
+    error_action:
+      label: 错误管理
+      skip_product: 跳过产品
+      skip_value: 跳过值
+      helper_message: 定义发生错误时的行为。
+  file_structure:
+    placeholder:
+      title: 您导入的配置文件是空的。
+      helper: 点击“初始化导入结构”以开始进行构建。
+      link: 查看我们的“帮助中心”获取更多信息。
+      button: 初始化导入结构
+    modal:
+      title: 定义您的导入结构
+      subtitle: 导入配置文件
+      helper: 首先定义您要配置导入的文件的结构。
+      link: 查看我们的“帮助中心”获取更多信息。
+      upload:
+        placeholder: 将您的文件拖到此处或浏览您的磁盘。
+        uploading: 正在上传...
+        error: 上传文件时出错。请检查您的文件，然后重试。
+      sheet: 工作表
+      header_row: 标题行
+      first_product_row: 第一产品行
+      first_column: 第一产品列
+      unique_identifier_column: 唯一标识符列
+  data_mapping_list:
+    title: 映射结构
+    no_sources: 没有源
+    add: 添加属性
+    remove: 确定要移除此映射吗？
+  data_mapping:
+    title: 设置 
+    no_data_mapping_selected: 未选择映射。
+    attribute_not_found: 此属性已被删除，不能再在映射中使用。
+    property_not_valid: 此属性无效。
+    preview:
+      button: 预览
+      input_title: 输入预览
+      output_title: 输出预览
+      placeholder: N/A
+      refresh: 刷新
+      unable_to_generate_preview_data: 无法生成预览
+    operations:
+      title: 操作
+      identifier: 标识符属性没有可用的操作
+      add: 添加操作
+      common:
+        collapse: 折叠
+      clean_html_tags:
+        title: 清理 HTML 标签
+      split:
+        title: 分割
+        separator: 选择分隔符
+        comma: 逗号 (,)
+        semicolon: 分号 (;)
+        pipe: 管道 (|)
+      simple_select_replacement:
+        title: 单选替换
+      multi_select_replacement:
+        title: 多选替换
+      categories_replacement:
+        title: 类别替换
+        modal:
+          title: 管理类别
+      family_replacement:
+        title: 品类替换
+        modal:
+          title: 管理品类
+      no_result: 无可用操作
+      no_source: 首先，选择一个源，然后您将能够访问操作
+      no_available:
+        text: 无更多可用操作。
+        link: 点击此处查看我们的“帮助中心”。
+      remove: 确定要移除此操作吗？
+      replacement:
+        to_placeholder: 定义文件中的源值。
+        modal:
+          options: 管理选项
+          subtitle: 替换
+          no_result:
+            title: 抱歉，此属性中没有值。
+          empty_result:
+            title: 抱歉，找不到与搜索相符的结果。
+            text: 请用新的搜索条件再进行搜索。
+          filters:
+            mapped:
+              label: 显示
+              unmapped: 所有未替换值
+              mapped: 所有替换值
+              all: 所有值
+          table:
+            header:
+              source_values: 源值
+          validation_error: 有些替换值无效，请参阅每个字段下面的错误消息。
+      boolean_replacement:
+        title: 布尔替换
+        field:
+          yes_value: '“是”值'
+          no_value: '“否”值'
+      enabled_replacement:
+        title: 已启用替换
+        field:
+          enabled_value: 已启用值
+          disabled_value: 已禁用值
+    sources:
+      title: 源
+      add:
+        title: 打开源下拉列表
+        label: 添加源
+        helper: "]-Inf, 1]该类属性只能添加一个源。|]1, Inf[该类属性最多只能添加 {{limit }} 个源。"
+    target:
+      title: 目标
+      identifier: 用作目标的标识符属性没有可用设置。
+      enabled: 用作目标的已启用属性没有可用设置。
+      locale_specific: 此属性为区域特定
+      action_if_not_empty:
+        title: 指派
+        add: 添加到现有值
+        set: 替换现有值
+      clear_if_empty: 如果文件为空则清除
+      parameters:
+        decimal_separator:
+          title: 小数分隔符
+          comma: 逗号 (,)
+          dot: 点 (.)
+          arabic_comma: 阿拉伯小数分隔符 (٫)
+        date_format: 日期格式
+        measurement_unit:
+          title: 单位
+      invalid:
+        attribute: 该属性已被删除并采用另一种类型重新创建，请移除此数据映射并重新添加。
+        property: 此属性无效，请移除此数据映射并再次添加。
+  form:
+    job_instance:
+      tab:
+        import-structure:
+          title: 导入结构
+      edit:
+        title: 要进行编辑，请向您的 PIM 管理员核实您的权限。
+      launch:
+        title: 要进行导入，请向您的 PIM 管理员核实您的权限。
+  validation:
+    required: 此值为必填项。
+    max_length_reached: 此值太长。其不应超过 {{ limit }} 个字符。
+    missing_query_params: "查询缺少以下参数：{{ missing_params }}"
+    source_values_should_be_unique: 有些源值已在其他替换中使用，请移除它们。
+    columns:
+      max_count_reached: 工作表不得超过 {{ limit }} 列。
+      at_least_one_required: 标题必须至少包含 {{ limit }} 列。
+      uuid:
+        should_be_unique: 此列 UUID 已存在，请新输入一个。
+      index:
+        should_be_unique: 此列指数已存在，请新输入一个。
+      label:
+        should_not_be_blank: 请定义列标签。
+        max_length_reached: 列标签太长。其不应超过 {{ limit }} 个字符。
+    data_mappings:
+      target_should_unique: 目标 "{{ code }}" 不能多次选择。
+      max_count_reached: 已达到映射的上限数目 {{ limit }} ，无法再将映射添加到导入中。
+      no_identifier_target_found: 没有针对标识符的映射，请添加一个。
+      too_many_identifier_target_found: 针对标识符的映射多于一个，请移除多余项。
+      uuid:
+        should_be_unique: 此映射 UUID 已存在，请新输入一个。
+      sources:
+        at_least_one_required: 需要为您的映射添加至少一个源。
+        max_count_reached: 已达到源的上限数目 {{ limit }} ，无法再将源添加到映射中。
+        should_be_unique: 此源已存在，请新输入一个。
+        should_exist: 其中一个源已不存在，请删除此映射的所有源并重试
+    target:
+      attribute_should_exist: 属性 {{ attribute_code }} 不存在。请进行创建或选择其他的目标。
+      property_should_exist: 属性 {{ property_code }} 不存在。请进行创建或选择其他的目标。
+      source_configuration:
+        unit_should_exist: 测量单位群 {{ measure_family }} 不存在单位 {{ unit_code }}。请选择一个有效的单位。
+    locale:
+      should_be_active: 区域 {{ locale_code }} 已被停用。可以将其重新激活或选择其他的区域。
+      should_be_bound_to_channel: 区域 {{ locale_code }} 已对渠道 {{ channel_code }} 停用。可以将其重新激活或选择其他的区域。
+    channel:
+      should_exist: 渠道 {{ channel_code }} 已被删除。请选择其他的渠道。
+    attribute:
+      locale_should_not_be_blank: 属性 {{ attribute_code }} 现在针对每个区域都有一个值。请进行创建或选择其他的目标。
+      channel_should_not_be_blank: 属性 {{ attribute_code }} 现在针对每个渠道都有一个值。请进行创建或选择其他的目标。
+      locale_should_be_blank: 属性 {{ attribute_code }} 不再针对每个区域提供值。请删除然后重新创建或选择其他的目标。
+      channel_should_be_blank: 属性 {{ attribute_code }} 不再针对每个渠道提供值。请删除然后重新创建或选择其他的目标。
+      invalid_specific_locale: 属性 {{ attribute_code }} 为区域特定。请选择其他的区域。
+    file_key:
+      does_not_exist: 未找到文件 {{ file_key }}。
+    uploaded_file:
+      max_size: 该文件太大。最大大小为 {{ limit }} {{ suffix }}。
+      not_allowed_mime_type: 只支持 XLSX 文件。
+      not_allowed_extension: 只支持 XLSX 文件。
+    file_structure:
+      first_product_row_should_be_after_header_row: 第一产品行应位于标题行之后。
+      unique_identifier_column_should_be_after_first_column_message: 唯一标识符列应始终是第一信息列。
+      header_row_should_not_contain_empty_cell: 标题行不应包含空单元格。
+    file_preview:
+      empty_sheet:
+        title: 此工作表为空。
+        description: 请选择另一张至少有一行的工作表。
+    operations:
+      incompatible_operation_type: 操作类型 {{ operation_type }} 与您的目标类型不兼容。
+      missing_required_operations: "缺少所需操作：{{ missing_required_operations }}"

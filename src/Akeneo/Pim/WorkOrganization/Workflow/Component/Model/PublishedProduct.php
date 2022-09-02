@@ -11,7 +11,8 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Model;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
@@ -23,15 +24,14 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\EntityWi
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
-use Akeneo\Tool\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Published product
@@ -119,6 +119,11 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
         $this->id = $id;
 
         return $this;
+    }
+
+    public function getUuid(): UuidInterface
+    {
+        throw new \LogicException("This method should not be used with a published product");
     }
 
     /**
@@ -946,5 +951,13 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
         $associationsCollection->add($association);
 
         return $associationsCollection;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isNew(): bool
+    {
+        return null === $this->id;
     }
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import {ManageOptionsModal as OriginalManageOptionsModal} from '../attribute';
-import {ColumnCode, SelectColumnDefinition, SelectOption} from '../models';
+import {castSelectColumnDefinition, ColumnCode, SelectOption} from '../models';
 import {useAttributeContext} from '../contexts';
 import {useBooleanState} from 'akeneo-design-system';
 import {SelectOptionRepository} from '../repositories';
@@ -27,16 +27,16 @@ const useManageOptions = (columnCode: ColumnCode) => {
     }
   };
 
+  const column = attribute?.table_configuration.find(({code}) => code === columnCode);
+
   const ManageOptionsModal = () => {
     return (
       <>
-        {attribute && isManageOptionsOpen && (
+        {attribute && isManageOptionsOpen && column && (
           <OriginalManageOptionsModal
             onClose={closeManageOptions}
             attribute={attribute}
-            columnDefinition={
-              attribute.table_configuration.find(column => column.code === columnCode) as SelectColumnDefinition
-            }
+            columnDefinition={castSelectColumnDefinition(column)}
             onChange={handleSaveOptions}
             confirmLabel={translate('pim_common.save')}
           />

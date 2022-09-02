@@ -19,14 +19,13 @@ use Webmozart\Assert\Assert;
  */
 final class ConnectorAssetResult
 {
-    /** @var ConnectorAsset[] */
-    private array $assets;
-    private ?array $lastSortValue;
-
-    private function __construct(array $assets, ?array $lastSortValue)
-    {
-        $this->assets = $assets;
-        $this->lastSortValue = $lastSortValue;
+    /**
+     * @param ConnectorAsset[] $assets
+     */
+    private function __construct(
+        private array $assets,
+        private ?array $lastSortValue
+    ) {
     }
 
     public static function createFromSearchAfterQuery(array $assets, ?array $lastSortValue)

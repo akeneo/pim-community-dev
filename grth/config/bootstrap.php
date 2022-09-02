@@ -1,18 +1,35 @@
 <?php
 
+use Akeneo\Platform\Component\Tenant\FirestoreContextFetcher;
+use Monolog\Formatter\JsonFormatter;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Symfony\Component\Dotenv\Dotenv;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-$dotenv = new Dotenv(true);
+$dotenv = new Dotenv();
+$dotenv->usePutenv(true);
+$dotenv->bootEnv(dirname(__DIR__) . '/.env');
 
-// Load cached env vars if the .env.local.php file exists
-// Run "composer dump-env prod" to create it (requires symfony/flex >=1.2)
-if (is_array($env = @include dirname(__DIR__) . '/.env.local.php')) {
-    $dotenv->populate($env);
-} else {
-    $path = dirname(__DIR__) . '/.env';
-    $dotenv->loadEnv($path);
+if (isset($_ENV['APP_TENANT_ID']) && '' !== $_ENV['APP_TENANT_ID']) {
+    $stream = match($_ENV['APP_ENV'] ?? '') {
+        'prod' => 'php://stderr',
+        default => __DIR__ . '/../var/logs/bootstrap.log',
+    };
+    $handler = new StreamHandler($stream, $_ENV['LOGGING_LEVEL'] ?? Logger::DEBUG);
+    $jsonFormatter = new JsonFormatter();
+    $jsonFormatter->includeStacktraces();
+    $handler->setFormatter($jsonFormatter);
+
+    $contextFetcher = new FirestoreContextFetcher(
+        logger: new Logger('bootstrap', [$handler]),
+        googleProjectId: $_ENV['GOOGLE_CLOUD_PROJECT']
+    );
+    $dotenv->populate(
+        values: $contextFetcher->getTenantContext($_ENV['APP_TENANT_ID']),
+        overrideExistingVars: true
+    );
 }
 
 $_SERVER += $_ENV;

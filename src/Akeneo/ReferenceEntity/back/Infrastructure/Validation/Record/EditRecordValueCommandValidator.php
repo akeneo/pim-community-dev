@@ -72,6 +72,15 @@ class EditRecordValueCommandValidator extends ConstraintValidator
             return;
         }
 
+        $this->context->getValidator()
+            ->inContext($this->context)
+            ->atPath((string) $command->attribute->getCode())
+            ->validate($command->recordCode, new Code());
+
+        if ($this->context->getViolations()->count() > 0) {
+            return;
+        }
+
         $recordsFound = $this->recordExists->withReferenceEntityAndCode(
             ReferenceEntityIdentifier::fromString($command->attribute->getRecordType()->normalize()),
             RecordCode::fromString($command->recordCode)

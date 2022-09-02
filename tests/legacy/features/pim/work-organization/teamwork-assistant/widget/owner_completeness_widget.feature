@@ -1,4 +1,4 @@
-@javascript
+@javascript @teamwork-assistant-feature-enabled
 Feature: Follow project completeness
   In order to follow the project progress
   As a project creator

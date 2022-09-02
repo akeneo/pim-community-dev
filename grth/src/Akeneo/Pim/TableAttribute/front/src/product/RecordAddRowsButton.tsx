@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useMemo, useCallback} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import styled from 'styled-components';
 import {
   AddingValueIllustration,
@@ -6,15 +6,15 @@ import {
   Button,
   Checkbox,
   Dropdown,
+  getColor,
+  LoaderIcon,
   Placeholder,
   Search,
   useBooleanState,
-  LoaderIcon,
-  getColor,
   useDebounce,
 } from 'akeneo-design-system';
 import {getLabel, useSecurity, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {RecordColumnDefinition, SelectOptionCode} from '../models';
+import {castReferenceEntityColumnDefinition, SelectOptionCode} from '../models';
 import {useAttributeContext} from '../contexts';
 import {RECORD_FETCHER_DEFAULT_LIMIT} from '../fetchers';
 import {useRecords} from './useRecords';
@@ -57,7 +57,9 @@ const RecordAddRowsButton: React.FC<RecordAddRowsButtonProps> = ({
     () => checkedOptionCodes.map(code => code.toLowerCase()),
     [checkedOptionCodes]
   );
-  const referenceEntityCode = (attribute?.table_configuration[0] as RecordColumnDefinition)?.reference_entity_code;
+  const referenceEntityCode = attribute
+    ? castReferenceEntityColumnDefinition(attribute?.table_configuration[0]).reference_entity_identifier
+    : undefined;
   const {items, isLoading, handleNextPage} = useRecords({
     itemsPerPage,
     referenceEntityCode,
@@ -99,7 +101,7 @@ const RecordAddRowsButton: React.FC<RecordAddRowsButtonProps> = ({
           </Dropdown.Header>
           <Dropdown.ItemCollection onNextPage={handleNextPage} data-testid={'item_collection'}>
             {items?.map((item, index) => {
-              const label = getLabel(item.labels, catalogLocale, item.identifier);
+              const label = getLabel(item.labels, catalogLocale, item.code);
               return (
                 <Dropdown.Item
                   key={item.code}
@@ -109,9 +111,8 @@ const RecordAddRowsButton: React.FC<RecordAddRowsButtonProps> = ({
                     checked={lowercaseCheckedOptionCodes.includes(item.code.toLowerCase())}
                     onChange={createToggleChange(item.code)}
                     data-testid={`checkbox-${index}`}
-                    title={item.code}
                   >
-                    {label}
+                    <span title={item.code}>{label}</span>
                   </Checkbox>
                 </Dropdown.Item>
               );

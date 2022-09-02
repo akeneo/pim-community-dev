@@ -4,5 +4,4 @@ extensions:
         parent: pim-attribute-create-form
         targetZone: content
         position: 110
-        feature: data_quality_insights
-
+        feature: data_quality_insights_all_criteria

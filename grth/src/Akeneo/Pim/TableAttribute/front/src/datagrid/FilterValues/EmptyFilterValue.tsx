@@ -6,9 +6,7 @@ const EmptyFilterValue: TableFilterValueRenderer = () => {
 };
 
 const useValueRenderer: FilteredValueRenderer = () => {
-  return () => {
-    return '';
-  };
+  return '';
 };
 
 export {useValueRenderer};

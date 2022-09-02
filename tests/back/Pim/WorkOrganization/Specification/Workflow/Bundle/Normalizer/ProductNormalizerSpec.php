@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttribut
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\MissingRequiredAttributesNormalizerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
@@ -18,6 +19,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -78,15 +80,15 @@ class ProductNormalizerSpec extends ObjectBehavior
         NormalizerInterface $chainedNormalizer
     ) {
         $product = new Product();
-        $product->setId(42);
-        $productRepository->find(42)->willReturn($product);
+        $uuid = $product->getUuid();
+        $productRepository->find($uuid)->willReturn($product);
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(true);
         $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
 
         $publishedProduct = new PublishedProduct();
-        $version = new Version(PublishedProduct::class, 25, 'julia');
+        $version = new Version(PublishedProduct::class, 25, null, 'julia');
         $publishedProduct->setVersion($version);
-        $publishedManager->findPublishedProductByOriginalId(42)->willReturn($publishedProduct);
+        $publishedManager->findPublishedProductByOriginal($product)->willReturn($publishedProduct);
         $chainedNormalizer->normalize($version, 'internal_api', [])
             ->willReturn(['normalized_published_product_version']);
 
@@ -96,7 +98,7 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'name' => 'Catalog Manager',
             ],
         ];
-        $categoryAccessRepo->getGrantedUserGroupsForEntityWithValues($product, Attributes::OWN_PRODUCTS)
+        $categoryAccessRepo->getGrantedUserGroupsForEntityWithValues($product, Attributes::OWN_PRODUCTS, true)
                            ->willReturn($ownerGroups);
         $chainedNormalizer->normalize($ownerGroups, 'internal_api', [])->willReturn($ownerGroups);
 
@@ -144,8 +146,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         EntityWithValuesDraftInterface $productDraft
     ) {
         $product = new Product();
-        $product->setId(42);
-        $productRepository->find(42)->willReturn($product);
+        $uuid = $product->getUuid();
+        $productRepository->find($uuid)->willReturn($product);
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
         $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
 
@@ -154,7 +156,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $draftRepository->findUserEntityWithValuesDraft($product, 'mary')->willReturn($productDraft);
         $draftApplier->applyAllChanges($product, $productDraft)->shouldBeCalled();
 
-        $publishedManager->findPublishedProductByOriginalId(42)->willReturn(null);
+        $publishedManager->findPublishedProductByOriginal($product)->willReturn(null);
 
         $ownerGroups = [
             [
@@ -162,7 +164,7 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'name' => 'Catalog Manager',
             ],
         ];
-        $categoryAccessRepo->getGrantedUserGroupsForEntityWithValues($product, Attributes::OWN_PRODUCTS)
+        $categoryAccessRepo->getGrantedUserGroupsForEntityWithValues($product, Attributes::OWN_PRODUCTS, true)
                            ->willReturn($ownerGroups);
         $chainedNormalizer->normalize($ownerGroups, 'internal_api', [])->willReturn($ownerGroups);
 
@@ -215,12 +217,12 @@ class ProductNormalizerSpec extends ObjectBehavior
         NormalizerInterface $chainedNormalizer
     ) {
         $product = new Product();
-        $product->setId(42);
-        $productRepository->find(42)->willReturn($product);
+        $uuid = $product->getUuid();
+        $productRepository->find($uuid)->willReturn($product);
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
         $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(false);
 
-        $publishedManager->findPublishedProductByOriginalId(42)->willReturn(null);
+        $publishedManager->findPublishedProductByOriginal($product)->willReturn(null);
 
         $ownerGroups = [
             [
@@ -228,7 +230,7 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'name' => 'Catalog Manager',
             ],
         ];
-        $categoryAccessRepo->getGrantedUserGroupsForEntityWithValues($product, Attributes::OWN_PRODUCTS)
+        $categoryAccessRepo->getGrantedUserGroupsForEntityWithValues($product, Attributes::OWN_PRODUCTS, true)
                            ->willReturn($ownerGroups);
         $chainedNormalizer->normalize($ownerGroups, 'internal_api', [])->willReturn($ownerGroups);
 

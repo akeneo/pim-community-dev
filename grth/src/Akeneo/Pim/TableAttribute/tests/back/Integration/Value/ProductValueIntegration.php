@@ -25,7 +25,6 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\FetchMode;
 use PHPUnit\Framework\Assert;
 
 final class ProductValueIntegration extends TestCase
@@ -48,6 +47,7 @@ final class ProductValueIntegration extends TestCase
             'table_configuration' => [
                 ['code' => 'ingredient', 'data_type' => 'select', 'labels' => ['en_US' => 'Ingredients'], 'options' => [['code' => 'bar']]],
                 ['code' => 'quantity', 'data_type' => 'number', 'labels' => ['en_US' => 'Quantity']],
+                ['code' => 'manufacturing_time', 'data_type' => 'measurement', 'measurement_family_code' => 'Duration', 'measurement_default_unit_code' => 'DAY'],
             ],
         ]);
         $violations = $this->get('validator')->validate($attribute);
@@ -62,7 +62,9 @@ final class ProductValueIntegration extends TestCase
         $product = $this->get('pim_catalog.builder.product')->createProduct('id1');
         $this->get('pim_catalog.updater.product')->update($product, ['values' => [
             'NUTRITION' => [
-                ['locale' => null, 'scope' => null, 'data' => [['INGredient' => 'BAR', 'quantity' => 10]]],
+                ['locale' => null, 'scope' => null, 'data' => [
+                    ['INGredient' => 'BAR', 'quantity' => 10, 'manufacturing_time' => ['unit' => 'DAY', 'amount' => 10]],
+                ]],
             ],
         ]]);
         self::assertInstanceOf(TableValue::class, $product->getValue('nutrition'));
@@ -72,11 +74,10 @@ final class ProductValueIntegration extends TestCase
 
         $this->get('pim_catalog.saver.product')->save($product);
         $this->assertProductIsInDatabase($product);
-        $this->assertIndexingFormat(\sprintf('product_%d', $product->getId()));
+        $this->assertIndexingFormat(\sprintf('product_%s', $product->getUuid()->toString()));
         $this->assertValuesAreSanitized();
     }
 
-    /** @test */
     public function it_updates_and_validates_then_saves_a_table_product_model_value(): void
     {
         $this->createAttribute([
@@ -112,7 +113,9 @@ final class ProductValueIntegration extends TestCase
             'family_variant' => 'shoe_size',
             'values' => [
                 'NUTRITION' => [
-                    ['locale' => null, 'scope' => null, 'data' => [['INGredient' => 'BAR', 'quantity' => 10]]],
+                    ['locale' => null, 'scope' => null, 'data' => [
+                        ['INGredient' => 'BAR', 'quantity' => 10, 'manufacturing_time' => ['unit' => 'DAY', 'amount' => 10]]],
+                    ],
                 ],
             ],
         ]);
@@ -134,7 +137,7 @@ final class ProductValueIntegration extends TestCase
         $rawValues = $connection->executeQuery(
             'SELECT raw_values FROM pim_catalog_product WHERE identifier = :identifier',
             ['identifier' => $product->getIdentifier()]
-        )->fetch(FetchMode::COLUMN);
+        )->fetchOne();
         self::assertNotNull($rawValues);
         self::assertJsonStringEqualsJsonString(\json_encode($product->getRawValues()), $rawValues);
 
@@ -143,15 +146,15 @@ final class ProductValueIntegration extends TestCase
         self::assertNotNull($nutrition);
         self::assertIsArray($nutrition);
         self::assertCount(1, $nutrition);
-        self::assertCount(2, $nutrition[0]);
+        self::assertCount(3, $nutrition[0]);
         foreach ($nutrition[0] as $columnId => $value) {
             self::assertDoesNotMatchRegularExpression(
-                '/^(quantity|ingredient)$/',
+                '/^(quantity|ingredient|manufacturing_time)$/',
                 $columnId,
                 'The key should not be the code but the id'
             );
             self::assertMatchesRegularExpression(
-                '/^(quantity|ingredient)_[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}$/',
+                '/^(quantity|ingredient|manufacturing_time)_[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}$/',
                 $columnId,
                 'The id is malformed'
             );
@@ -166,7 +169,7 @@ final class ProductValueIntegration extends TestCase
         $rawValues = $connection->executeQuery(
             'SELECT raw_values FROM pim_catalog_product_model WHERE code = :code',
             ['code' => $productModel->getCode()]
-        )->fetch(FetchMode::COLUMN);
+        )->fetchOne();
         self::assertNotNull($rawValues);
         self::assertJsonStringEqualsJsonString(\json_encode($productModel->getRawValues()), $rawValues);
 
@@ -175,15 +178,15 @@ final class ProductValueIntegration extends TestCase
         self::assertNotNull($nutrition);
         self::assertIsArray($nutrition);
         self::assertCount(1, $nutrition);
-        self::assertCount(2, $nutrition[0]);
+        self::assertCount(3, $nutrition[0]);
         foreach ($nutrition[0] as $columnId => $value) {
             self::assertDoesNotMatchRegularExpression(
-                '/^(quantity|ingredient)$/',
+                '/^(quantity|ingredient|manufacturing_time)$/',
                 $columnId,
                 'The key should not be the code but the id'
             );
             self::assertMatchesRegularExpression(
-                '/^(quantity|ingredient)_[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}$/',
+                '/^(quantity|ingredient|manufacturing_time)_[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}$/',
                 $columnId,
                 'The id is malformed'
             );
@@ -215,6 +218,12 @@ final class ProductValueIntegration extends TestCase
                 'row' => 'bar',
                 'column' => 'ingredient',
                 'value-select' => 'bar',
+                'is_column_complete' => true,
+            ],
+            [
+                'row' => 'bar',
+                'column' => 'manufacturing_time',
+                'value-measurement' => 864000.0, // 10 days = 864000 seconds
                 'is_column_complete' => true,
             ],
         ];
@@ -267,6 +276,9 @@ final class ProductValueIntegration extends TestCase
         $tableValue = $product->getValue('nutrition');
 
         self::assertNotNull($tableValue);
-        self::assertEqualsCanonicalizing(['bar', 10], \array_values($tableValue->getData()->normalize()[0]));
+        self::assertEqualsCanonicalizing(
+            ['bar', 10, ['unit' => 'DAY', 'amount' => 10]],
+            \array_values($tableValue->getData()->normalize()[0])
+        );
     }
 }

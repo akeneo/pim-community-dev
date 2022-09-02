@@ -18,9 +18,7 @@ class AttributeValidationRule
     public const URL = 'url';
     public const VALIDATION_RULE_TYPES = [self::EMAIL, self::REGULAR_EXPRESSION, self::URL, self::NONE];
 
-    private ?string $validationRule = null;
-
-    private function __construct(?string $validationRule)
+    private function __construct(private ?string $validationRule)
     {
         Assert::true(
             in_array($validationRule, self::VALIDATION_RULE_TYPES),
@@ -30,7 +28,6 @@ class AttributeValidationRule
                 $validationRule
             )
         );
-        $this->validationRule = $validationRule;
     }
 
     public static function fromString(string $validationRule): self

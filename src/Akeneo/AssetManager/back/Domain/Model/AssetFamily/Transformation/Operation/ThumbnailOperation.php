@@ -25,12 +25,10 @@ class ThumbnailOperation implements Operation
 
     private const OPERATION_NAME = 'thumbnail';
 
-    private ?int $width = null;
-
-    private ?int $height = null;
-
-    public function __construct(?int $width, ?int $height)
-    {
+    public function __construct(
+        private ?int $width,
+        private ?int $height
+    ) {
         if (null === $width && null === $height) {
             throw new \InvalidArgumentException(
                 "No parameter is provided for 'thumbnail' operation. At least one of parameter 'width' and 'height' must be defined."
@@ -50,9 +48,6 @@ class ThumbnailOperation implements Operation
                 ));
             }
         }
-
-        $this->width = $width;
-        $this->height = $height;
     }
 
     public static function getType(): string

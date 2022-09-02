@@ -9,7 +9,6 @@ use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditI
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsTextarea;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
-use Doctrine\Common\Util\ClassUtils;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -29,7 +28,7 @@ class IsTextareaUpdater implements AttributeUpdaterInterface
                 sprintf(
                     'Expected command of type "%s", "%s" given',
                     EditIsTextareaCommand::class,
-                    ClassUtils::getClass($command)
+                    get_class($command),
                 )
             );
         }

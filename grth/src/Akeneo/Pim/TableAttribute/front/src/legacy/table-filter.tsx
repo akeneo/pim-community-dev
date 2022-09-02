@@ -1,5 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const AbstractFilter = require('oro/datafilter/abstract-filter');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const UserContext = require('pim/user-context');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {pimTheme} from 'akeneo-design-system';
@@ -7,6 +9,7 @@ import {ThemeProvider} from 'styled-components';
 import {DatagridTableFilter} from '../datagrid';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {NotEmptyDatagridTableFilter} from '../datagrid/NotEmptyDatagridTableFilter';
+import {LocaleCodeContext} from '../contexts';
 
 class TableFilter extends AbstractFilter {
   private initialDataFilter = {};
@@ -67,14 +70,16 @@ class TableFilter extends AbstractFilter {
               initialDataFilter={this.initialDataFilter}
             />
           ) : (
-            <DatagridTableFilter
-              showLabel={this.showLabel}
-              canDisable={this.canDisable}
-              onDisable={onDisable}
-              attributeCode={this.name}
-              onChange={onChange}
-              initialDataFilter={this.initialDataFilter}
-            />
+            <LocaleCodeContext.Provider value={{localeCode: UserContext.get('catalogLocale')}}>
+              <DatagridTableFilter
+                showLabel={this.showLabel}
+                canDisable={this.canDisable}
+                onDisable={onDisable}
+                attributeCode={this.name}
+                onChange={onChange}
+                initialDataFilter={this.initialDataFilter}
+              />
+            </LocaleCodeContext.Provider>
           )}
         </ThemeProvider>
       </DependenciesProvider>,

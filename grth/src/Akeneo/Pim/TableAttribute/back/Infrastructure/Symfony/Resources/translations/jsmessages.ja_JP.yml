@@ -162,6 +162,10 @@ pim_table_attribute:
       completeness_helper_text: "テーブル属性の完全性がどう機能するのかを理解するには、"
       completeness_helper_link: ヘルプセンターをご覧ください。
       reference_entity: 参照エンティティ
+      import_from_existing_attribute: 既存の属性からインポート
+      option_count: "{0,1}{{ count }} 個のオプション|]1, Inf[{{ count }} 個のオプション"
+      measurement_family: 測定ファミリー
+      measurement_default_unit: 測定の既定ユニット
     product:
       items_per_page: ページあたりのアイテム数
       current_items: "{{ minItem }}-{{ maxItem }} / {{ itemCount }}"
@@ -191,6 +195,7 @@ pim_table_attribute:
       boolean: はい/いいえ
       select: 選択
       reference_entity: 参照エンティティ
+      measurement: 測定
   validations:
     column_code_must_be_filled: コードを入力する必要があります
     not_available_code: この列コー​​ドは使用できません
@@ -251,3 +256,7 @@ batch_jobs:
   xlsx_product_table_values_import.label: 商品のテーブル値をXLSX形式でインポート
   csv_product_model_table_values_import.label: 商品モデルのテーブル値をCSV形式でインポート
   xlsx_product_model_table_values_import.label: 商品モデルのテーブル値をXLSX形式でインポート
+  default_steps.clean: 存在しないテーブルオプション値の削除
+akeneo_job_process_tracker:
+  type_filter:
+    clean_table_values_following_deleted_options: 商品と商品モデルから存在しないテーブルオプション値を削除

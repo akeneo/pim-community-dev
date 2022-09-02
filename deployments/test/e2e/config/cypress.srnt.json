@@ -1,5 +1,6 @@
 {
   "extends": "../cypress.json",
+  "projectId": "srnt-validation",
   "baseUrl": "https://c3po.demo.cloud.akeneo.com/",
   "env":{}
 }

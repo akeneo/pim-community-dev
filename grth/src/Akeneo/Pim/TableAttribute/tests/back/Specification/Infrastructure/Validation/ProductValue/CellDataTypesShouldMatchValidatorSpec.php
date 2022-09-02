@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\MeasurementColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
@@ -42,6 +44,17 @@ final class CellDataTypesShouldMatchValidatorSpec extends ObjectBehavior
                 SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
                 NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
                 BooleanColumn::fromNormalized(['id' => ColumnIdGenerator::isAllergenic(), 'code' => 'isAllergen']),
+                ReferenceEntityColumn::fromNormalized([
+                    'id' => ColumnIdGenerator::record(),
+                    'code' => 'brand',
+                    'reference_entity_identifier' => 'brand',
+                ]),
+                MeasurementColumn::fromNormalized([
+                    'id' => ColumnIdGenerator::duration(),
+                    'code' => 'duration',
+                    'measurement_family_code' => 'Duration',
+                    'measurement_default_unit_code' => 'second',
+                ]),
             ])
         );
     }
@@ -76,6 +89,8 @@ final class CellDataTypesShouldMatchValidatorSpec extends ObjectBehavior
             [ColumnIdGenerator::ingredient() => 12, ColumnIdGenerator::quantity() => 1],
             [ColumnIdGenerator::ingredient() => 'pepper', ColumnIdGenerator::quantity() => 'foo'],
             [ColumnIdGenerator::ingredient() => 'salt', ColumnIdGenerator::isAllergenic() => 'yes'],
+            [ColumnIdGenerator::ingredient() => 'garlic', ColumnIdGenerator::record() => 12],
+            [ColumnIdGenerator::ingredient() => 'sugar', ColumnIdGenerator::duration() => 12],
         ]));
 
         $context->buildViolation(Argument::type('string'), ['{{ expected }}' => 'string', '{{ given }}' => 'integer', '{{ columnCode }}' => 'ingredient'])
@@ -90,7 +105,15 @@ final class CellDataTypesShouldMatchValidatorSpec extends ObjectBehavior
             ->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->atPath('[2].isAllergen')->shouldBeCalledOnce()->willReturn($violationBuilder);
 
-        $violationBuilder->addViolation()->shouldBeCalledTimes(3);
+        $context->buildViolation(Argument::type('string'), ['{{ expected }}' => 'string', '{{ given }}' => 'integer', '{{ columnCode }}' => 'brand'])
+            ->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->atPath('[3].brand')->shouldBeCalledOnce()->willReturn($violationBuilder);
+
+        $context->buildViolation(Argument::type('string'), ['{{ given }}' => 12, '{{ columnCode }}' => 'duration'])
+            ->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->atPath('[4].duration')->shouldBeCalledOnce()->willReturn($violationBuilder);
+
+        $violationBuilder->addViolation()->shouldBeCalledTimes(5);
 
         $this->validate($tableValue, new CellDataTypesShouldMatch());
     }
@@ -101,6 +124,7 @@ final class CellDataTypesShouldMatchValidatorSpec extends ObjectBehavior
             ColumnIdGenerator::ingredient() => 'red hot chili peppers',
             ColumnIdGenerator::quantity() => 4,
             ColumnIdGenerator::isAllergenic() => true,
+            ColumnIdGenerator::duration() => ['amount' => '12.500', 'unit' => 'second'],
         ]]));
 
         $context->buildViolation(Argument::cetera())

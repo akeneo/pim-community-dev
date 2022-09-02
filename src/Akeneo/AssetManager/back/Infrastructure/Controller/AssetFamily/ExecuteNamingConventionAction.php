@@ -18,7 +18,7 @@ use Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\ExecuteAssetFa
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,24 +31,12 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class ExecuteNamingConventionAction
 {
-    private ExecuteAssetFamilyNamingConventionHandler $executeAssetFamilyNamingConventionHandler;
-
-    private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler;
-
-    private SecurityFacade $securityFacade;
-
-    private TokenStorageInterface $tokenStorage;
-
     public function __construct(
-        ExecuteAssetFamilyNamingConventionHandler $executeAssetFamilyNamingConventionHandler,
-        CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
-        TokenStorageInterface $tokenStorage,
-        SecurityFacade $securityFacade
+        private ExecuteAssetFamilyNamingConventionHandler $executeAssetFamilyNamingConventionHandler,
+        private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
+        private TokenStorageInterface $tokenStorage,
+        private SecurityFacadeInterface $securityFacade,
     ) {
-        $this->executeAssetFamilyNamingConventionHandler = $executeAssetFamilyNamingConventionHandler;
-        $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
-        $this->tokenStorage = $tokenStorage;
-        $this->securityFacade = $securityFacade;
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier): JsonResponse
@@ -63,7 +51,7 @@ class ExecuteNamingConventionAction
         $command = new ExecuteAssetFamilyNamingConventionCommand($assetFamilyIdentifier);
         try {
             ($this->executeAssetFamilyNamingConventionHandler)($command);
-        } catch (AssetFamilyNotFoundException $e) {
+        } catch (AssetFamilyNotFoundException) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 

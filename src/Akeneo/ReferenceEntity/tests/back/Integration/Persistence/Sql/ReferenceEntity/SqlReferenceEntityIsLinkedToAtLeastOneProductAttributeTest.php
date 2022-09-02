@@ -16,6 +16,7 @@ namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\ReferenceEntity;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityType;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\InMemoryFeatureFlags;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
@@ -34,6 +35,10 @@ class SqlReferenceEntityIsLinkedToAtLeastOneProductAttributeTest extends SqlInte
     public function setUp(): void
     {
         parent::setUp();
+
+        /** @var InMemoryFeatureFlags $featureFlags */
+        $featureFlags = $this->get('feature_flags');
+        $featureFlags->enable('reference_entity');
 
         $this->query = $this->get('akeneo_referenceentity.infrastructure.persistence.query.reference_entity_is_linked_to_at_least_one_product_attribute');
         $this->resetDB();

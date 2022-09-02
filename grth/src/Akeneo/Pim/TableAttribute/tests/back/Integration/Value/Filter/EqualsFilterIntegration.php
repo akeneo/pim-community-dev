@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\TableAttribute\Integration\Value\Filter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 final class EqualsFilterIntegration extends AbstractFilterIntegration
@@ -232,6 +233,102 @@ final class EqualsFilterIntegration extends AbstractFilterIntegration
         $this->assertFilter(
             'localizable_scopable_nutrition',
             ['column' => 'additional_info', 'row' => 'sugar', 'locale' => 'en_US', 'scope' => 'mobile', 'value' => 'foo'],
+            []
+        );
+    }
+
+    /** @test */
+    public function it_filters_on_equals_operator_with_measurement_column(): void
+    {
+        $this->createNutritionAttributeWithMeasurementColumn();
+        $this->createProductWithValues('empty_product', [], 'family_with_table');
+        $this->createProductWithValues('product_with_every_cell_filled', [
+            'nutrition_with_measurement' => [
+                [
+                    'locale' => null,
+                    'scope' => null,
+                    'data' => [
+                        [
+                            'ingredient' => 'sugar',
+                            'energy_per_100g' => ['unit' => 'KILOCALORIE', 'amount' => '2.77'],
+                        ],
+                        [
+                            'ingredient' => 'egg',
+                            'energy_per_100g' => ['unit' => 'CALORIE', 'amount' => 1050],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+        $this->createProductWithValues('product_with_every_an_empty_measurement_cell', [
+            'nutrition_with_measurement' => [
+                [
+                    'locale' => null,
+                    'scope' => null,
+                    'data' => [
+                        [
+                            'ingredient' => 'sugar',
+                        ],
+                        [
+                            'ingredient' => 'egg',
+                            'energy_per_100g' => ['unit' => 'CALORIE', 'amount' => '2770'],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+
+        // Filter on column
+        $this->assertFilter(
+            'nutrition_with_measurement',
+            ['column' => 'energy_per_100g', 'value' => ['unit' => 'CALORIE', 'amount' => 2770]],
+            ['product_with_every_cell_filled', 'product_with_every_an_empty_measurement_cell']
+        );
+        $this->assertFilter(
+            'nutrition_with_measurement',
+            ['column' => 'energy_per_100g', 'value' => ['unit' => 'KILOCALORIE', 'amount' => '1.05']],
+            ['product_with_every_cell_filled']
+        );
+        $this->assertFilter(
+            'nutrition_with_measurement',
+            ['column' => 'energy_per_100g', 'value' => ['unit' => 'KILOCALORIE', 'amount' => '20']],
+            []
+        );
+        $this->assertFilter(
+            'nutrition_with_measurement',
+            ['column' => 'energy_per_100g', 'value' => ['unit' => 'CALORIE', 'amount' => 1050], 'row' => 'egg'],
+            ['product_with_every_cell_filled']
+        );
+        $this->assertFilter(
+            'nutrition_with_measurement',
+            ['column' => 'energy_per_100g', 'value' => ['unit' => 'KILOCALORIE', 'amount' => 2.77], 'row' => 'egg'],
+            ['product_with_every_an_empty_measurement_cell']
+        );
+
+        $this->expectException(InvalidPropertyException::class);
+        $this->assertFilter(
+            'nutrition_with_measurement',
+            ['column' => 'energy_per_100g', 'value' => ['unit' => 'NONEXISTING', 'amount' => 10]],
+            []
+        );
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->assertFilter(
+            'nutrition_with_measurement',
+            ['column' => 'energy_per_100g', 'value' => ['unit' => 'CALORIE', 'amount' => 'abc']],
+            []
+        );
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->assertFilter(
+            'nutrition_with_measurement',
+            ['column' => 'energy_per_100g', 'value' => ['foo' => 'bar']],
+            []
+        );
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->assertFilter(
+            'nutrition_with_measurement',
+            ['column' => 'energy_per_100g', 'value' => 10],
             []
         );
     }

@@ -24,8 +24,8 @@ const assetFamily = {
   attributes: [imageAttribute],
 };
 
-const dataProvider = {
-  assetFamilyFetcher: {
+jest.mock('akeneoassetmanager/infrastructure/fetcher/useAssetFamilyFetcher', () => ({
+  useAssetFamilyFetcher: () => ({
     fetch: () =>
       Promise.resolve({
         assetFamily,
@@ -34,7 +34,10 @@ const dataProvider = {
           edit: true,
         },
       }),
-  },
+  }),
+}));
+
+const dataProvider = {
   channelFetcher: {
     fetchAll: () =>
       Promise.resolve([

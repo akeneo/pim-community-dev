@@ -69,7 +69,7 @@ class MediaFileUpdater implements ValueUpdaterInterface
         $existingValue = $asset->findValue($valueKey);
 
         if (null === $existingValue || $existingValue->getData()->getKey() !== $command->filePath) {
-            $fileInfo = new FileInfo();
+            $fileInfo = new FileInfo(); // TODO: Redeclare a AM FileInfo
             $fileInfo->setKey($command->filePath);
             $fileInfo->setOriginalFilename($command->originalFilename);
             $fileInfo->setSize($command->size);

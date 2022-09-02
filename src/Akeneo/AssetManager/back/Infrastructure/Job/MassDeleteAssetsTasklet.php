@@ -36,30 +36,16 @@ use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 class MassDeleteAssetsTasklet implements TaskletInterface, TrackableTaskletInterface
 {
     private ?StepExecution $stepExecution = null;
-    private AssetQueryBuilderInterface $assetQueryBuilder;
-    private Client $assetClient;
-    private DeleteAssetsHandler $deleteAssetsHandler;
-    private JobRepositoryInterface $jobRepository;
-    private int $batchSize;
-    private AssetIndexerInterface $assetIndexer;
-    private JobStopper $jobStopper;
 
     public function __construct(
-        DeleteAssetsHandler $deleteAssetsHandler,
-        AssetQueryBuilderInterface $assetQueryBuilder,
-        Client $assetClient,
-        JobRepositoryInterface $jobRepository,
-        AssetIndexerInterface $assetIndexer,
-        JobStopper $jobStopper,
-        int $batchSize
+        private DeleteAssetsHandler $deleteAssetsHandler,
+        private AssetQueryBuilderInterface $assetQueryBuilder,
+        private Client $assetClient,
+        private JobRepositoryInterface $jobRepository,
+        private AssetIndexerInterface $assetIndexer,
+        private JobStopper $jobStopper,
+        private int $batchSize,
     ) {
-        $this->deleteAssetsHandler = $deleteAssetsHandler;
-        $this->assetQueryBuilder = $assetQueryBuilder;
-        $this->assetClient = $assetClient;
-        $this->jobRepository = $jobRepository;
-        $this->assetIndexer = $assetIndexer;
-        $this->batchSize = $batchSize;
-        $this->jobStopper = $jobStopper;
     }
 
     public function setStepExecution(StepExecution $stepExecution): void
@@ -117,7 +103,7 @@ class MassDeleteAssetsTasklet implements TaskletInterface, TrackableTaskletInter
             return;
         }
 
-        if (count($assetCodesToDelete) > 0) {
+        if (!empty($assetCodesToDelete)) {
             $this->deleteAssets($assetFamilyIdentifier, $assetCodesToDelete);
         }
 

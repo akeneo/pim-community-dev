@@ -1,4 +1,4 @@
-import {Channel} from '../../../../../vendor/akeneo/pim-community-dev/front-packages/shared/lib';
+import {Channel} from '@akeneo-pim-community/shared';
 import {Attribute} from './Attribute';
 import {
   createColumn,
@@ -250,7 +250,7 @@ test('it adds a locale specific attribute source', () => {
 
 test('it adds property source', () => {
   const columnConfiguration = createColumn('The first column', 'fbf9cff9-e95c-4e7d-983b-2947c7df90df');
-  const newColumnConfiguration = addPropertySource(columnConfiguration, 'categories');
+  const newColumnConfiguration = addPropertySource(columnConfiguration, 'categories', []);
   const firstSourceUuid = newColumnConfiguration.sources[0].uuid;
 
   expect(newColumnConfiguration).toEqual({

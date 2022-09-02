@@ -1,5 +1,5 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import {JsonEditor as Editor} from 'jsoneditor-react';
 import 'jsoneditor-react/es/editor.min.css';
 import {Link, Button, Helper, SectionTitle} from 'akeneo-design-system';
@@ -27,6 +27,7 @@ import {getErrorsView} from 'akeneoassetmanager/application/component/app/valida
 import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset-family/edit/form';
 import schema from 'akeneoassetmanager/infrastructure/model/asset-family/transformations.schema.json';
 import {UserNavigation} from 'akeneoassetmanager/application/component/app/user-navigation';
+import {useAssetFamilyFetcher} from 'akeneoassetmanager/infrastructure/fetcher/useAssetFamilyFetcher';
 
 const ajv = new Ajv({allErrors: true, verbose: true});
 
@@ -87,7 +88,6 @@ const AssetFamilyTransformationEditor = ({
 interface DispatchProps {
   events: {
     onAssetFamilyTransformationsUpdated: (transformations: TransformationCollection) => void;
-    onSaveEditForm: () => void;
     onLaunchComputeTransformations: () => void;
   };
 }
@@ -95,6 +95,8 @@ interface DispatchProps {
 const Transformation = ({assetFamily, context, events, rights, form, errors}: StateProps & DispatchProps) => {
   const translate = useTranslate();
   const {isGranted} = useSecurity();
+  const dispatch = useDispatch();
+  const assetFamilyFetcher = useAssetFamilyFetcher();
   const assetFamilyLabel = getAssetFamilyLabel(assetFamily, context.locale);
 
   const canEditTransformations =
@@ -116,7 +118,9 @@ const Transformation = ({assetFamily, context, events, rights, form, errors}: St
             {translate('pim_asset_manager.asset.button.launch_transformations')}
           </Button>
           {canEditTransformations && (
-            <Button onClick={events.onSaveEditForm}>{translate('pim_asset_manager.asset_family.button.save')}</Button>
+            <Button onClick={() => dispatch(saveAssetFamily(assetFamilyFetcher))}>
+              {translate('pim_asset_manager.asset_family.button.save')}
+            </Button>
           )}
         </PageHeader.Actions>
         <PageHeader.State>{form.state.isDirty && <UnsavedChanges />}</PageHeader.State>
@@ -171,9 +175,6 @@ export default connect(
       events: {
         onAssetFamilyTransformationsUpdated: (transformations: TransformationCollection) => {
           dispatch(assetFamilyTransformationsUpdated(transformations));
-        },
-        onSaveEditForm: () => {
-          dispatch(saveAssetFamily());
         },
         onLaunchComputeTransformations: () => {
           dispatch(launchComputeTransformations());

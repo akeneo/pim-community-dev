@@ -11,6 +11,12 @@ class PublishedAssociationRepositoryIntegration extends TestCase
 
     use PublishedProductBuilder;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->get('feature_flags')->enable('published_product');
+    }
+
     /**
      * @test
      */

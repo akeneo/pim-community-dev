@@ -1,14 +1,9 @@
 import EditionAsset from 'akeneoassetmanager/domain/model/asset/edition-asset';
-import {postJSON} from 'akeneoassetmanager/tools/fetch';
 import {ValidationError} from '@akeneo-pim-community/shared';
-import handleError from 'akeneoassetmanager/infrastructure/tools/error-handler';
 import {assetCodeStringValue} from 'akeneoassetmanager/domain/model/asset/code';
 import {assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {CreationAsset} from 'akeneoassetmanager/application/asset-upload/model/creation-asset';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
-
-const routing = require('routing');
-
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import LabelCollection from 'akeneoassetmanager/domain/model/label-collection';
@@ -16,6 +11,7 @@ import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/ident
 import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
 import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
 import Data from 'akeneoassetmanager/domain/model/asset/data';
+import {handleResponse} from 'akeneoassetmanager/infrastructure/tools/handleResponse';
 
 type BackendValue = {
   attribute: AttributeIdentifier;
@@ -61,6 +57,11 @@ export const normalizeEditionAsset = (asset: EditionAsset): BackendEditionAsset 
   updatedAt: asset.updatedAt,
 });
 
+const generateAssetEditUrl = (assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode) =>
+  `/rest/asset_manager/${assetFamilyIdentifier}/asset/${assetCode}`;
+const generateAssetCreateUrl = (assetFamilyIdentifier: AssetFamilyIdentifier) =>
+  `/rest/asset_manager/${assetFamilyIdentifier}/asset`;
+
 interface AssetSaver {
   save: (entity: EditionAsset) => Promise<ValidationError[] | null>;
   create: (entity: CreationAsset) => Promise<ValidationError[] | null>;
@@ -74,29 +75,48 @@ export class AssetSaverImplementation implements AssetSaver {
   async save(asset: EditionAsset): Promise<ValidationError[] | null> {
     const normalizedAsset = normalizeEditionAsset(asset);
 
-    const result = await postJSON(
-      routing.generate('akeneo_asset_manager_asset_edit_rest', {
-        assetFamilyIdentifier: assetFamilyIdentifierStringValue(asset.assetFamily.identifier),
-        assetCode: assetCodeStringValue(asset.code),
-      }),
-      normalizedAsset
-    ).catch(handleError);
+    const response = await fetch(
+      generateAssetEditUrl(
+        assetFamilyIdentifierStringValue(asset.assetFamily.identifier),
+        assetCodeStringValue(asset.code)
+      ),
+      {
+        method: 'POST',
+        cache: 'no-cache',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+        body: JSON.stringify(normalizedAsset),
+      }
+    );
 
-    return undefined === result ? null : result;
+    const result = await handleResponse(response);
+
+    return result ?? null;
   }
 
   async create(asset: CreationAsset): Promise<ValidationError[] | null> {
     const normalizedAsset = normalizeCreationAsset(asset);
 
-    const result = await postJSON(
-      routing.generate('akeneo_asset_manager_asset_create_rest', {
-        assetFamilyIdentifier: assetFamilyIdentifierStringValue(asset.assetFamilyIdentifier),
-      }),
-      normalizedAsset
-    ).catch(handleError);
+    const response = await fetch(
+      generateAssetCreateUrl(assetFamilyIdentifierStringValue(asset.assetFamilyIdentifier)),
+      {
+        method: 'POST',
+        cache: 'no-cache',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+        body: JSON.stringify(normalizedAsset),
+      }
+    );
 
-    return undefined === result ? null : result;
+    const result = await handleResponse(response);
+
+    return result ?? null;
   }
 }
 
-export default new AssetSaverImplementation();
+const assetSaver = new AssetSaverImplementation();
+export default assetSaver;

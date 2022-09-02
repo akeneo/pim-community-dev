@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
 
 use Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent;
+use Akeneo\ReferenceEntity\Domain\Event\RecordsDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\RecordUpdatedEvent;
+use Akeneo\ReferenceEntity\Domain\Exception\RecordAlreadyExistsError;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
@@ -29,6 +31,7 @@ use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordHydratorInterface;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Ramsey\Uuid\Uuid;
@@ -71,22 +74,27 @@ class SqlRecordRepository implements RecordRepositoryInterface
             (identifier, code, reference_entity_identifier, value_collection)
         VALUES (:identifier, :code, :reference_entity_identifier, :value_collection);
 SQL;
-        $affectedRows = $this->sqlConnection->executeUpdate(
-            $insert,
-            [
-                'identifier' => (string) $record->getIdentifier(),
-                'code' => (string) $record->getCode(),
-                'reference_entity_identifier' => (string) $record->getReferenceEntityIdentifier(),
-                'value_collection' => $valueCollection,
-                'created_at' => $record->getCreatedAt(),
-                'updated_at' => $record->getUpdatedAt(),
-            ],
-            [
-                'value_collection' => Types::JSON,
-                'created_at' => Types::DATETIME_IMMUTABLE,
-                'updated_at' => Types::DATETIME_IMMUTABLE,
-            ]
-        );
+        try {
+            $affectedRows = $this->sqlConnection->executeUpdate(
+                $insert,
+                [
+                    'identifier' => (string) $record->getIdentifier(),
+                    'code' => (string) $record->getCode(),
+                    'reference_entity_identifier' => (string) $record->getReferenceEntityIdentifier(),
+                    'value_collection' => $valueCollection,
+                    'created_at' => $record->getCreatedAt(),
+                    'updated_at' => $record->getUpdatedAt(),
+                ],
+                [
+                    'value_collection' => Types::JSON,
+                    'created_at' => Types::DATETIME_IMMUTABLE,
+                    'updated_at' => Types::DATETIME_IMMUTABLE,
+                ]
+            );
+        } catch (UniqueConstraintViolationException) {
+            throw RecordAlreadyExistsError::fromRecord($record);
+        }
+
         if ($affectedRows > 1) {
             throw new \RuntimeException(
                 sprintf('Expected to create one record, but %d rows were affected', $affectedRows)
@@ -222,6 +230,16 @@ SQL;
             ]
         );
 
+        if ($recordCodes !== []) {
+            $this->eventDispatcher->dispatch(
+                new RecordsDeletedEvent(
+                    $identifiers,
+                    $recordCodes,
+                    $referenceEntityIdentifier
+                ),
+                RecordsDeletedEvent::class
+            );
+        }
         foreach ($recordCodes as $recordCode) {
             if (!array_key_exists($recordCode->normalize(), $identifiers)) {
                 continue;
@@ -259,6 +277,15 @@ SQL;
         if (0 === $affectedRowsCount) {
             throw new RecordNotFoundException();
         }
+
+        $this->eventDispatcher->dispatch(
+            new RecordsDeletedEvent(
+                $identifiers,
+                [$code],
+                $referenceEntityIdentifier
+            ),
+            RecordsDeletedEvent::class
+        );
 
         $this->eventDispatcher->dispatch(
             new RecordDeletedEvent(

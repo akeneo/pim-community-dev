@@ -17,7 +17,9 @@ use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
 use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordHandler;
 use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQuery;
 use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQueryHandler;
+use Akeneo\ReferenceEntity\Domain\Exception\RecordAlreadyExistsError;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordIndexerInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Normalizer\ErrorFacingFrontendNormalizer;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -43,7 +45,8 @@ class CreateAction
         private TokenStorageInterface $tokenStorage,
         private NormalizerInterface $normalizer,
         private ValidatorInterface $validator,
-        private SecurityFacade $securityFacade
+        private SecurityFacade $securityFacade,
+        private ErrorFacingFrontendNormalizer $errorFacingFrontendNormalizer,
     ) {
     }
 
@@ -72,7 +75,14 @@ class CreateAction
             );
         }
 
-        $this->createRecord($command);
+        try {
+            $this->createRecord($command);
+        } catch (RecordAlreadyExistsError $error) {
+            return new JsonResponse(
+                $this->errorFacingFrontendNormalizer->normalize($error, 'code'),
+                Response::HTTP_BAD_REQUEST
+            );
+        }
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
@@ -112,6 +122,8 @@ class CreateAction
     /**
      * When creating multiple records in a row using the UI "Create another",
      * we force refresh of the index so that the grid is up to date when the users dismisses the creation modal.
+     *
+     * @throws RecordAlreadyExistsError
      */
     private function createRecord(CreateRecordCommand $command): void
     {

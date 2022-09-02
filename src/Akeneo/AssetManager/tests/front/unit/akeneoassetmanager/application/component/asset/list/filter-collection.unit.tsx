@@ -1,4 +1,7 @@
-import React from 'react';
+import React, {FC} from 'react';
+import {ThemeProvider} from 'styled-components';
+import {pimTheme} from 'akeneo-design-system';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {fireEvent, screen} from '@testing-library/react';
 import FilterCollection, {
   useFilterViews,
@@ -7,46 +10,54 @@ import FilterCollection, {
 import {denormalize} from 'akeneoassetmanager/domain/model/attribute/type/option';
 import {renderHook} from '@testing-library/react-hooks';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
+import {FilterView} from 'akeneoassetmanager/application/configuration/value';
+import {Filter} from 'akeneoassetmanager/application/reducer/grid';
+import {fakeConfig, FakeConfigProvider} from '../../../../utils/FakeConfigProvider';
+import {ConfigProvider} from '../../../../../../../../front/application/hooks/useConfig';
+import {NormalizedOptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
 
-const attributes = [
-  {
-    type: 'option',
-    identifier: 'shooted_by_packshot_fingerprint',
-    asset_family_identifier: 'packshot',
-    code: 'shooted_by',
-    order: 1,
-    is_required: true,
-    is_read_only: true,
-    labels: {en_US: 'Shooted By'},
-    value_per_locale: false,
-    value_per_channel: false,
-    options: [],
-  },
-  {
-    type: 'option',
-    identifier: 'created_by_packshot_fingerprint',
-    asset_family_identifier: 'packshot',
-    code: 'created_by',
-    order: 0,
-    is_required: true,
-    is_read_only: true,
-    labels: {en_US: 'Created by'},
-    value_per_locale: false,
-    value_per_channel: false,
-    options: [],
-  },
-];
-const dataProvider = {
-  assetAttributeFetcher: {
-    fetchAll: () => {
-      return new Promise(resolve => resolve(attributes));
+let attributes: NormalizedOptionAttribute[] = [];
+beforeEach(() => {
+  attributes = [
+    {
+      type: 'option',
+      identifier: 'shooted_by_packshot_fingerprint',
+      asset_family_identifier: 'packshot',
+      code: 'shooted_by',
+      order: 1,
+      is_required: true,
+      is_read_only: true,
+      labels: {en_US: 'Shooted By'},
+      value_per_locale: false,
+      value_per_channel: false,
+      options: [],
     },
-  },
-};
+    {
+      type: 'option',
+      identifier: 'created_by_packshot_fingerprint',
+      asset_family_identifier: 'packshot',
+      code: 'created_by',
+      order: 0,
+      is_required: true,
+      is_read_only: true,
+      labels: {en_US: 'Created by'},
+      value_per_locale: false,
+      value_per_channel: false,
+      options: [],
+    },
+  ];
+});
+
+jest.mock('akeneoassetmanager/infrastructure/fetcher/useAttributeFetcher', () => ({
+  ...jest.requireActual('akeneoassetmanager/infrastructure/fetcher/useAttributeFetcher'),
+  useAttributeFetcher: () => ({
+    fetchAllNormalized: () => Promise.resolve(attributes),
+  }),
+}));
 
 describe('Tests filter collection', () => {
-  it('It displays a filter collection in order of the attribute order', () => {
-    const FilterView = ({attribute}) => <div data-code={attribute.code}></div>;
+  it('It displays a filter collection in order of the attribute order', async () => {
+    const FilterView: FilterView = ({attribute}) => <div data-code={attribute.code}></div>;
 
     const {container} = renderWithProviders(
       <FilterCollection
@@ -54,7 +65,6 @@ describe('Tests filter collection', () => {
           {view: FilterView, attribute: denormalize(attributes[1])},
           {view: FilterView, attribute: denormalize(attributes[0])},
         ]}
-        dataProvider={dataProvider}
         filterViewsProvider={{}}
         filterCollection={[]}
         assetFamilyIdentifier={'packshot'}
@@ -71,7 +81,6 @@ describe('Tests filter collection', () => {
     const {container} = renderWithProviders(
       <FilterCollection
         orderedFilterViews={[]}
-        dataProvider={dataProvider}
         filterViewsProvider={{getFilterViews: () => []}}
         filterCollection={[]}
         assetFamilyIdentifier={'packshot'}
@@ -97,34 +106,27 @@ describe('Tests filter collection', () => {
       </div>
     );
 
-    let actualFilterCollection = [{field: attributes[0].code, operator: 'IN', value: []}];
+    const handleFilterCollectionChange = jest.fn();
+    const actualFilterCollection: Filter[] = [{field: attributes[0].code, operator: 'IN', value: [], context: {}}];
     renderWithProviders(
       <FilterCollection
         orderedFilterViews={[{view: ClickableFilterView, attribute: denormalize(attributes[0])}]}
-        dataProvider={dataProvider}
         filterViewsProvider={{}}
         filterCollection={actualFilterCollection}
         assetFamilyIdentifier={'packshot'}
         context={{channel: 'ecommerce', locale: 'locale'}}
-        onFilterCollectionChange={filterCollection => {
-          actualFilterCollection = filterCollection;
-        }}
+        onFilterCollectionChange={handleFilterCollectionChange}
       />
     );
 
     fireEvent.click(screen.getByTestId('my-filter'));
 
-    expect(actualFilterCollection).toEqual(expectedFilterCollection);
+    expect(handleFilterCollectionChange).toBeCalledWith(expectedFilterCollection);
   });
 
   test('I get a null collection view if there is no attributes', async () => {
-    const {result, waitForNextUpdate} = renderHook(() =>
-      useFilterViews('notice', {
-        assetAttributeFetcher: {
-          fetchAll: () => new Promise(resolve => resolve([])),
-        },
-      })
-    );
+    attributes = [];
+    const {result, waitForNextUpdate} = renderHook(() => useFilterViews('notice'), {wrapper: FakeConfigProvider});
 
     expect(result.current).toBe(null);
     await waitForNextUpdate();
@@ -133,7 +135,17 @@ describe('Tests filter collection', () => {
   });
 
   test('I get an empty collection view if there is no attributes', async () => {
-    const {result, waitForNextUpdate} = renderHook(() => useFilterViews('notice', dataProvider));
+    const DefaultProviders: FC = ({children}) => (
+      <DependenciesProvider>
+        <ThemeProvider theme={pimTheme}>
+          <ConfigProvider config={{...fakeConfig, value: {}}}>{children}</ConfigProvider>
+        </ThemeProvider>
+      </DependenciesProvider>
+    );
+
+    const {result, waitForNextUpdate} = renderHook(() => useFilterViews('notice'), {
+      wrapper: DefaultProviders,
+    });
 
     expect(result.current).toBe(null);
     await waitForNextUpdate();
@@ -142,7 +154,7 @@ describe('Tests filter collection', () => {
   });
 
   test('I get an empty collection view if the asset family is null', () => {
-    const {result} = renderHook(() => useFilterViews(null, dataProvider));
+    const {result} = renderHook(() => useFilterViews(null), {wrapper: FakeConfigProvider});
 
     expect(result.current).toBe(null);
   });

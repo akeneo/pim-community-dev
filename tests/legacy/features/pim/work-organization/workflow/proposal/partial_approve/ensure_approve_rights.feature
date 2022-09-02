@@ -1,4 +1,4 @@
-@javascript
+@javascript @proposal-feature-enabled
 Feature: Partial approve
   In order to easily accept changes in proposals
   As a product owner

@@ -1,4 +1,4 @@
-@javascript
+@javascript @product-rules-feature-enabled
 Feature: List all rules
   In order ease the enrichment of the catalog
   As a regular user

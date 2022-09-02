@@ -13,13 +13,9 @@ use Webmozart\Assert\Assert;
  */
 class MediaLinkData implements ValueDataInterface
 {
-    private string $text;
-
-    private function __construct(string $text)
+    private function __construct(private string $text)
     {
         Assert::stringNotEmpty($text, 'Text data should be a non empty string');
-
-        $this->text = $text;
     }
 
     public function equals(ValueDataInterface $valueData): bool
@@ -27,9 +23,6 @@ class MediaLinkData implements ValueDataInterface
         return $valueData instanceof self && $valueData->normalize() === $this->normalize();
     }
 
-    /**
-     * @return string
-     */
     public function normalize(): string
     {
         return $this->text;

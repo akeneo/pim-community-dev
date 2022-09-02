@@ -13,54 +13,56 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\KeyIndicator\GetKeyIndicatorsInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\KeyIndicator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\KeyIndicator\ComputeStructureKeyIndicator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 
 final class PimEnterpriseGetKeyIndicators implements GetKeyIndicatorsInterface
 {
-    private GetKeyIndicatorsInterface $getProductsKeyIndicators;
-
-    private ComputeStructureKeyIndicator $computeAttributesPerfectSpelling;
-
-    public function __construct(GetKeyIndicatorsInterface $getProductsKeyIndicators, ComputeStructureKeyIndicator $computeAttributesPerfectSpelling)
-    {
-        $this->getProductsKeyIndicators = $getProductsKeyIndicators;
-        $this->computeAttributesPerfectSpelling = $computeAttributesPerfectSpelling;
+    public function __construct(
+        private GetKeyIndicatorsInterface $getProductsAndProductModelsKeyIndicators,
+        private ComputeStructureKeyIndicator $computeAttributesPerfectSpelling,
+        private FeatureFlag $allCriteriaFeature,
+    ) {
     }
 
     public function all(ChannelCode $channelCode, LocaleCode $localeCode): array
     {
-        return $this->mergeProductsAndStructureKeyIndicators(
-            $this->getProductsKeyIndicators->all($channelCode, $localeCode),
-            $this->computeAttributesPerfectSpelling->computeByLocale($localeCode)
-        );
+        return $this->allCriteriaFeature->isEnabled()
+            ? $this->mergeProductsAndStructureKeyIndicators(
+                $this->getProductsAndProductModelsKeyIndicators->all($channelCode, $localeCode),
+                $this->computeAttributesPerfectSpelling->computeByLocale($localeCode)
+            )
+            : $this->getProductsAndProductModelsKeyIndicators->all($channelCode, $localeCode);
     }
 
     public function byFamily(ChannelCode $channelCode, LocaleCode $localeCode, FamilyCode $family): array
     {
-        return $this->mergeProductsAndStructureKeyIndicators(
-            $this->getProductsKeyIndicators->byFamily($channelCode, $localeCode, $family),
-            $this->computeAttributesPerfectSpelling->computeByLocaleAndFamily($localeCode, $family)
-        );
+        return $this->allCriteriaFeature->isEnabled()
+            ? $this->mergeProductsAndStructureKeyIndicators(
+                $this->getProductsAndProductModelsKeyIndicators->byFamily($channelCode, $localeCode, $family),
+                $this->computeAttributesPerfectSpelling->computeByLocaleAndFamily($localeCode, $family)
+            )
+            : $this->getProductsAndProductModelsKeyIndicators->byFamily($channelCode, $localeCode, $family);
     }
 
     public function byCategory(ChannelCode $channelCode, LocaleCode $localeCode, CategoryCode $category): array
     {
-        return $this->mergeProductsAndStructureKeyIndicators(
-            $this->getProductsKeyIndicators->byCategory($channelCode, $localeCode, $category),
-            $this->computeAttributesPerfectSpelling->computeByLocaleAndCategory($localeCode, $category)
-        );
+        return $this->allCriteriaFeature->isEnabled()
+            ? $this->mergeProductsAndStructureKeyIndicators(
+                $this->getProductsAndProductModelsKeyIndicators->byCategory($channelCode, $localeCode, $category),
+                $this->computeAttributesPerfectSpelling->computeByLocaleAndCategory($localeCode, $category)
+            )
+            : $this->getProductsAndProductModelsKeyIndicators->byCategory($channelCode, $localeCode, $category);
     }
 
-    private function mergeProductsAndStructureKeyIndicators(array $productsKeyIndicators, KeyIndicator $structureKeyIndicator): array
+    private function mergeProductsAndStructureKeyIndicators(array $productsAndProductModelsKeyIndicators, KeyIndicator $structureKeyIndicator): array
     {
-        return $structureKeyIndicator->isEmpty()
-            ? $productsKeyIndicators
-            : array_merge($productsKeyIndicators, [strval($structureKeyIndicator->getCode()) => $structureKeyIndicator->toArray()])
-        ;
+        return array_merge($productsAndProductModelsKeyIndicators, [strval($structureKeyIndicator->getCode()) => $structureKeyIndicator->toArray()]);
     }
 }

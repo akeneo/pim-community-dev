@@ -1,4 +1,4 @@
-@javascript
+@javascript @published-product-feature-enabled
 Feature: Published products datagrid views
   In order to easily manage the published products datagrid
   As a contributor

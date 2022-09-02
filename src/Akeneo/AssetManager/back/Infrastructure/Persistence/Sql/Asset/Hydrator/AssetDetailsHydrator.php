@@ -36,20 +36,11 @@ use Doctrine\DBAL\Types\Types;
  */
 class AssetDetailsHydrator implements AssetDetailsHydratorInterface
 {
-    private AbstractPlatform $platform;
-
-    private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType;
-
-    private ValueHydratorInterface $valueHydrator;
-
     public function __construct(
-        Connection $connection,
-        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
-        ValueHydratorInterface $valueHydrator
+        private Connection $connection,
+        private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
+        private ValueHydratorInterface $valueHydrator
     ) {
-        $this->platform = $connection->getDatabasePlatform();
-        $this->findValueKeysByAttributeType = $findValueKeysByAttributeType;
-        $this->valueHydrator = $valueHydrator;
     }
 
     public function hydrate(
@@ -58,19 +49,21 @@ class AssetDetailsHydrator implements AssetDetailsHydratorInterface
         ValueKeyCollection $valueKeyCollection,
         array $attributes
     ): AssetDetails {
-        $attributeAsLabel = Type::getType(Types::STRING)->convertToPHPValue($row['attribute_as_label'], $this->platform);
-        $attributeAsMainMedia = Type::getType(Types::STRING)->convertToPHPValue($row['attribute_as_main_media'], $this->platform);
-        $valueCollection = Type::getType(Types::JSON)->convertToPHPValue($row['value_collection'], $this->platform);
+        $platform = $this->connection->getDatabasePlatform();
+
+        $attributeAsLabel = Type::getType(Types::STRING)->convertToPHPValue($row['attribute_as_label'], $platform);
+        $attributeAsMainMedia = Type::getType(Types::STRING)->convertToPHPValue($row['attribute_as_main_media'], $platform);
+        $valueCollection = Type::getType(Types::JSON)->convertToPHPValue($row['value_collection'], $platform);
         $assetIdentifier = Type::getType(Types::STRING)
-            ->convertToPHPValue($row['identifier'], $this->platform);
+            ->convertToPHPValue($row['identifier'], $platform);
         $assetFamilyIdentifier = Type::getType(Types::STRING)
-            ->convertToPHPValue($row['asset_family_identifier'], $this->platform);
+            ->convertToPHPValue($row['asset_family_identifier'], $platform);
         $assetCode = Type::getType(Types::STRING)
-            ->convertToPHPValue($row['code'], $this->platform);
+            ->convertToPHPValue($row['code'], $platform);
         $createdAt = Type::getType(Types::DATETIME_IMMUTABLE)
-            ->convertToPHPValue($row['created_at'], $this->platform);
+            ->convertToPHPValue($row['created_at'], $platform);
         $updatedAt = Type::getType(Types::DATETIME_IMMUTABLE)
-            ->convertToPHPValue($row['updated_at'], $this->platform);
+            ->convertToPHPValue($row['updated_at'], $platform);
         $values = $this->hydrateValues($valueKeyCollection, $attributes, $valueCollection);
         $normalizedValues = [];
         foreach ($values as $key => $value) {

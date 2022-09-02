@@ -78,8 +78,8 @@ SQL;
         if (false !== $row && null !== $row['default_permissions']) {
             $defaultPermissions = \json_decode($row['default_permissions'], true);
 
-            $permissions['edit']['all'] = $defaultPermissions['locale_edit'] ?: false;
-            $permissions['view']['all'] = $defaultPermissions['locale_view'] ?: false;
+            $permissions['edit']['all'] = $defaultPermissions['locale_edit'] ?? false;
+            $permissions['view']['all'] = $defaultPermissions['locale_view'] ?? false;
         }
     }
 

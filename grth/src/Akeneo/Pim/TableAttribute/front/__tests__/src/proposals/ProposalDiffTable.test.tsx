@@ -5,6 +5,7 @@ import ProposalDiffTable from '../../../src/proposals/ProposalDiffTable';
 
 jest.mock('../../../src/fetchers/AttributeFetcher');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
+jest.mock('../../../src/fetchers/RecordFetcher');
 
 const defaultChange = {
   before: [
@@ -24,6 +25,26 @@ const defaultChange = {
     },
   ],
   attributeCode: 'nutrition',
+};
+
+const refEntityChanges = {
+  before: [
+    {
+      city: 'vannes00bcf56a_2aa9_47c5_ac90_a973460b18a3',
+      city_column: 'brest00bcf56a_2aa9_47c5_ac90_a973460b18a3',
+    },
+  ],
+  after: [
+    {
+      city: 'nantes00e3cffd_f60e_4a51_925b_d2952bd947e1',
+      city_column: 'coueron00893335_2e73_41e3_ac34_763fb6a35107',
+    },
+    {
+      city: 'coueron00893335_2e73_41e3_ac34_763fb6a35107',
+      city_column: 'lannion00893335_2e73_41e3_ac34_763fb6a35107',
+    },
+  ],
+  attributeCode: 'city',
 };
 
 const deletedChanges = {
@@ -79,5 +100,20 @@ describe('ProposalDiffTable', () => {
     renderWithProviders(<ProposalDiffTable change={deletedChanges} accessor='after' />);
 
     expect(await screen.findByText('pim_table_attribute.form.product.order')).toBeInTheDocument();
+  });
+
+  it('should render diff with reference entities as value (before)', async () => {
+    renderWithProviders(<ProposalDiffTable change={refEntityChanges} accessor='before' />);
+
+    expect(await screen.findByText('Vannes')).toBeInTheDocument();
+    expect(screen.getByText('Brest')).toBeInTheDocument();
+  });
+
+  it('should render diff with reference entities as value (after)', async () => {
+    renderWithProviders(<ProposalDiffTable change={refEntityChanges} accessor='after' />);
+
+    expect(await screen.findByText('Lannion')).toBeInTheDocument();
+    expect(screen.getByText('Nantes')).toBeInTheDocument();
+    expect(screen.getAllByText('Coueron')).toHaveLength(2);
   });
 });

@@ -3,17 +3,13 @@ import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/fro
 import {act, fireEvent, screen} from '@testing-library/react';
 import {TableFieldApp} from '../../../src';
 import {TemplateContext} from '../../../src/legacy/table-field';
-import {
-  defaultCellInputsMapping,
-  defaultCellMatchersMapping,
-  getComplexTableAttribute,
-  getTableValueSelectRow,
-} from '../../factories';
+import {getComplexTableAttribute, getTableValueSelectRow} from '../../factories';
 import {mockScroll} from '../../shared/mockScroll';
 
 jest.mock('../../../src/attribute/LocaleLabel');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
 jest.mock('../../../src/product/AddRowsButton');
+jest.mock('../../../src/fetchers/MeasurementFamilyFetcher');
 mockScroll();
 
 const getTemplateContext: () => TemplateContext = () => {
@@ -51,8 +47,6 @@ describe('TableFieldApp', () => {
           },
         ]}
         onCopyCheckboxChange={jest.fn()}
-        cellInputsMapping={defaultCellInputsMapping}
-        cellMatchersMapping={defaultCellMatchersMapping}
       />
     );
 
@@ -92,8 +86,6 @@ describe('TableFieldApp', () => {
           footer: {from_smart: elementAsHtml},
         }}
         onCopyCheckboxChange={jest.fn()}
-        cellInputsMapping={defaultCellInputsMapping}
-        cellMatchersMapping={defaultCellMatchersMapping}
       />
     );
 
@@ -110,14 +102,7 @@ describe('TableFieldApp', () => {
   it('should add and remove a row', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TableFieldApp
-        {...getTemplateContext()}
-        onChange={handleChange}
-        elements={{}}
-        onCopyCheckboxChange={jest.fn()}
-        cellInputsMapping={defaultCellInputsMapping}
-        cellMatchersMapping={defaultCellMatchersMapping}
-      />
+      <TableFieldApp {...getTemplateContext()} onChange={handleChange} elements={{}} onCopyCheckboxChange={jest.fn()} />
     );
 
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
@@ -157,8 +142,6 @@ describe('TableFieldApp', () => {
           comparison: {nutrition: elementAsHtml},
         }}
         onCopyCheckboxChange={jest.fn()}
-        cellInputsMapping={defaultCellInputsMapping}
-        cellMatchersMapping={defaultCellMatchersMapping}
       />
     );
 
@@ -176,8 +159,6 @@ describe('TableFieldApp', () => {
         copyContext={copyContext}
         onCopyCheckboxChange={handleCopyCheckboxChange}
         elements={{}}
-        cellInputsMapping={defaultCellInputsMapping}
-        cellMatchersMapping={defaultCellMatchersMapping}
       />
     );
 

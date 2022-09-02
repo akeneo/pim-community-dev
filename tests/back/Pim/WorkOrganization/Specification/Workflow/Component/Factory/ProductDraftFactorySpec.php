@@ -8,6 +8,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\EntityWithValuesDraft
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\DraftSource;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 class ProductDraftFactorySpec extends ObjectBehavior
 {
@@ -25,8 +26,9 @@ class ProductDraftFactorySpec extends ObjectBehavior
     {
         $draftSource = new DraftSource('pim','PIM', 'admin', 'Administrator');
 
-        $productRepository->find(1)->willReturn($fullProduct);
-        $product->getId()->willReturn(1);
+        $uuid = Uuid::uuid4();
+        $product->getUuid()->willReturn($uuid);
+        $productRepository->find($uuid)->willReturn($fullProduct);
 
         $productDraft = $this->createEntityWithValueDraft($product, $draftSource);
 

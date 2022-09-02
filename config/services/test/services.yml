@@ -1,8 +1,12 @@
 imports:
     - { resource: ../../../src/Akeneo/ReferenceEntity/tests/back/Common/Resources/helpers.yml }
+    - { resource: ../../../src/Akeneo/ReferenceEntity/tests/back/Common/Resources/test_services.yml }
     - { resource: ../../../src/Akeneo/AssetManager/tests/back/Common/Resources/helpers.yml }
     - { resource: ../../../src/Akeneo/AssetManager/tests/back/Common/Resources/fake_anti_corruption_layer.yml }
+    - { resource: ../../../src/Akeneo/AssetManager/tests/back/Common/Resources/test_services.yml }
     - { resource: ../../../vendor/akeneo/pim-community-dev/config/services/behat/services.yml }
+    - { resource: ../../../components/tailored-import/back/tests/Integration/Resources/config/services.yml }
+    - { resource: ../../../components/job-automation/back/tests/Integration/Resources/config/services.yml }
 
 services:
 
@@ -28,3 +32,4 @@ services:
         arguments:
             - '@akeneo_legacy_behat_tests.loader.fixtures_loader.base'
             - '@akeneo_legacy_behat_tests.loader.permission_cleaner'
+            - '@feature_flags'

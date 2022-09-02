@@ -55,7 +55,7 @@ import {ValidationError} from 'akeneoassetmanager/platform/model/validation-erro
 import {ValidationErrorCollection} from 'akeneoassetmanager/platform/component/common/validation-error-collection';
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import {AssetPicker} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker';
-import ListAsset, {addAssetsToCollection, emptyCollection} from 'akeneoassetmanager/domain/model/asset/list-asset';
+import {addAssetsToCollection, emptyCollection} from 'akeneoassetmanager/domain/model/asset/list-asset';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {MassUploader} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/mass-uploader';
 import {
@@ -64,25 +64,9 @@ import {
 } from 'akeneoassetmanager/platform/model/structure/attribute-group';
 import {RulesNumberByAttribute} from 'akeneoassetmanager/platform/model/structure/rule-relation';
 import {ReloadPreviewProvider} from 'akeneoassetmanager/application/hooks/useReloadPreview';
-import {AssetFamilyFetcher} from 'akeneoassetmanager/domain/fetcher/asset-family';
-import {Query, SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
-import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 
-type AssetFamilyIdentifier = string;
 type DataProvider = {
-  assetFamilyFetcher: AssetFamilyFetcher;
   channelFetcher: {fetchAll: () => Promise<Channel[]>};
-  assetFetcher: {
-    fetchByCode: (
-      assetFamilyIdentifier: AssetFamilyIdentifier,
-      assetCodeCollection: AssetCode[],
-      context: Context
-    ) => Promise<ListAsset[]>;
-    search: (query: Query) => Promise<SearchResult<ListAsset>>;
-  };
-  assetAttributeFetcher: {
-    fetchAll: (assetFamilyIdentifier: string) => Promise<NormalizedAttribute[]>;
-  };
 };
 
 type ListStateProps = {
@@ -164,7 +148,7 @@ const DisplayValues = ({
         <AssetCollectionContainer key={value.attribute.code} data-attribute={value.attribute.code}>
           <SectionTitle>
             {!value.editable && <LockIcon size={18} />}
-            <SectionTitle.Title readonly={!value.editable}>
+            <SectionTitle.Title>
               {getAttributeGroupLabel(attributeGroups, value.attribute.group, context.locale)}&nbsp;/&nbsp;
               {getAttributeLabel(value.attribute, context.locale)}
             </SectionTitle.Title>

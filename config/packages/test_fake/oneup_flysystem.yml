@@ -10,3 +10,9 @@ oneup_flysystem:
             memory: ~
         data_quality_insights_shared_adapter:
             memory: ~
+        tailored_import_storage_adapter:
+            memory: ~
+        supplier_portal_storage_adapter:
+            memory: ~
+        local_storage_adapter:
+            memory: ~

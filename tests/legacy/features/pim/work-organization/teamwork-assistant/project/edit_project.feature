@@ -1,4 +1,4 @@
-@javascript
+@javascript @teamwork-assistant-feature-enabled
 Feature: Edit basic project informations
   In order to easily have project with consistent informations
   As a project creator

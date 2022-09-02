@@ -6,3 +6,17 @@ pim_table_attribute_get_select_options:
         attributeCode: '[a-zA-Z0-9_]+'
         columnCode: '[a-zA-Z0-9_]+'
     methods: [ GET ]
+
+pim_table_attribute_get_select_attributes_with_options_count:
+    path: /rest/table-attribute/select-attributes-with-options-count
+    defaults:
+        _controller: Akeneo\Pim\TableAttribute\Infrastructure\Controller\InternalApi\GetSelectAttributesWithOptionsCountController
+    methods: [ GET ]
+
+pim_table_attribute_get_attribute_options:
+    path: /rest/table-attribute/attribute-options/{selectAttributeCode}
+    defaults:
+        _controller: Akeneo\Pim\TableAttribute\Infrastructure\Controller\InternalApi\GetAttributeOptionsController
+    requirements:
+        selectAttributeCode: '[a-zA-Z0-9_]+'
+    methods: [ GET ]

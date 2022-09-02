@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamilyPermission;
 
 use Doctrine\DBAL\Connection;
-use PDO;
 
 /**
  * This query finds the Asset Family identifiers for which the given user group is the last one
@@ -25,11 +24,8 @@ use PDO;
  */
 class SqlFindAssetFamilyWhereUserGroupIsLastToHaveEditRight
 {
-    private Connection $sqlConnection;
-
-    public function __construct(Connection $sqlConnection)
+    public function __construct(private Connection $sqlConnection)
     {
-        $this->sqlConnection = $sqlConnection;
     }
 
     public function find(int $userGroupId): array
@@ -48,7 +44,7 @@ class SqlFindAssetFamilyWhereUserGroupIsLastToHaveEditRight
         $statement = $this->sqlConnection->executeQuery(
             $sql,
             ['userGroupIdentifier' => $userGroupId],
-            ['userGroupId' => PDO::PARAM_INT]
+            ['userGroupId' => \PDO::PARAM_INT],
         );
 
         return $statement->fetchFirstColumn();

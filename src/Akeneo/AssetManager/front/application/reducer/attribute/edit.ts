@@ -1,7 +1,7 @@
 import {ValidationError} from '@akeneo-pim-community/shared';
 import {NormalizedTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
-import {getAttributeReducer, Reducer} from 'akeneoassetmanager/application/configuration/attribute';
+import {Reducer} from 'akeneoassetmanager/application/configuration/attribute';
 
 export interface EditState {
   isActive: boolean;
@@ -41,7 +41,7 @@ const isDirty = (state: EditState, newData: NormalizedAttribute) => {
   return state.originalData !== JSON.stringify(newData);
 };
 
-export const editReducer = (getAttributeReducer: (normalizedAttribute: NormalizedAttribute) => Reducer) => (
+const editReducer = (getAttributeReducer: (normalizedAttribute: NormalizedAttribute) => Reducer) => (
   state: EditState = initEditState(),
   {
     type,
@@ -194,4 +194,4 @@ export const editReducer = (getAttributeReducer: (normalizedAttribute: Normalize
   return state;
 };
 
-export default editReducer(getAttributeReducer);
+export {editReducer};

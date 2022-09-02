@@ -25,10 +25,10 @@ use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAssetCommand;
 use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAssetHandler;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
-use Akeneo\AssetManager\Domain\Repository\AssetIndexerInterface;
+use Akeneo\AssetManager\Domain\Exception\AssetAlreadyExistsError;
+use Akeneo\AssetManager\Infrastructure\Normalizer\ErrorFacingFrontendNormalizer;
 use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\EventAggregatorInterface;
-use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\IndexAssetEventAggregator;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,63 +48,24 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CreateAction
 {
-    private CreateAssetHandler $createAssetHandler;
-
-    private EditAssetHandler $editAssetHandler;
-
-    private AssetIndexerInterface $assetIndexer;
-
-    private NormalizerInterface $normalizer;
-
-    private ValidatorInterface $validator;
-
-    private SecurityFacade $securityFacade;
-
-    private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler;
-
-    private TokenStorageInterface $tokenStorage;
-
-    private \Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommandFactory $editAssetCommandFactory;
-
-    private NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory;
-
-    private LinkAssetHandler $linkAssetHandler;
-
-    private \Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\EventAggregatorInterface $indexAssetEventAggregator;
-
-    private ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator;
-
     public function __construct(
-        CreateAssetHandler $createAssetHandler,
-        EditAssetHandler $editAssetHandler,
-        AssetIndexerInterface $assetIndexer,
-        CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
-        TokenStorageInterface $tokenStorage,
-        NormalizerInterface $normalizer,
-        ValidatorInterface $validator,
-        SecurityFacade $securityFacade,
-        EditAssetCommandFactory $editAssetCommandFactory,
-        NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory,
-        LinkAssetHandler $linkAssetHandler,
-        EventAggregatorInterface $indexAssetEventAggregator,
-        ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator
+        private CreateAssetHandler $createAssetHandler,
+        private EditAssetHandler $editAssetHandler,
+        private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
+        private TokenStorageInterface $tokenStorage,
+        private NormalizerInterface $normalizer,
+        private ValidatorInterface $validator,
+        private SecurityFacadeInterface $securityFacade,
+        private EditAssetCommandFactory $editAssetCommandFactory,
+        private NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory,
+        private LinkAssetHandler $linkAssetHandler,
+        private EventAggregatorInterface $indexAssetEventAggregator,
+        private ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator,
+        private ErrorFacingFrontendNormalizer $errorFacingFrontendNormalizer,
     ) {
-        $this->createAssetHandler = $createAssetHandler;
-        $this->editAssetHandler = $editAssetHandler;
-        $this->assetIndexer = $assetIndexer;
-        $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
-        $this->tokenStorage = $tokenStorage;
-        $this->normalizer = $normalizer;
-        $this->validator = $validator;
-        $this->securityFacade = $securityFacade;
-        $this->editAssetCommandFactory = $editAssetCommandFactory;
-        $this->namingConventionEditAssetCommandFactory = $namingConventionEditAssetCommandFactory;
-        $this->linkAssetHandler = $linkAssetHandler;
-        $this->indexAssetEventAggregator = $indexAssetEventAggregator;
-        $this->computeTransformationEventAggregator = $computeTransformationEventAggregator;
     }
 
-    public function __invoke(Request $request, string $assetFamilyIdentifier): Response
+    public function __invoke(Request $request): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -172,7 +133,15 @@ class CreateAction
             );
         }
 
-        ($this->createAssetHandler)($createCommand);
+        try {
+            ($this->createAssetHandler)($createCommand);
+        } catch (AssetAlreadyExistsError $exception) {
+            return new JsonResponse(
+                $this->errorFacingFrontendNormalizer->normalize($exception, 'code'),
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
         if (null !== $namingConventionEditCommand) {
             $editCommand->editAssetValueCommands = array_merge($editCommand->editAssetValueCommands, $namingConventionEditCommand->editAssetValueCommands);
         }

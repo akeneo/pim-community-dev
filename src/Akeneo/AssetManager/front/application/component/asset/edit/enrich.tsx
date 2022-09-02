@@ -1,5 +1,5 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import styled from 'styled-components';
 import {getColor, SectionTitle} from 'akeneo-design-system';
 import {Section, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
@@ -11,8 +11,9 @@ import {ValueCollection} from 'akeneoassetmanager/application/component/asset/ed
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import {canEditAssetFamily, canEditLocale} from 'akeneoassetmanager/application/reducer/right';
 import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
-import LinkedProducts from 'akeneoassetmanager/application/component/asset/edit/linked-products';
+import {LinkedProducts} from 'akeneoassetmanager/application/component/asset/edit/linked-products';
 import {MainMediaPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/main-media-preview';
+import {useAssetFetcher} from 'akeneoassetmanager/infrastructure/fetcher/useAssetFetcher';
 
 const Container = styled.div`
   display: flex;
@@ -52,7 +53,6 @@ type DispatchProps = {
   events: {
     form: {
       onValueChange: (value: EditionValue) => void;
-      onSubmit: () => void;
     };
   };
 };
@@ -60,6 +60,8 @@ type DispatchProps = {
 const Enrich = ({form, context, events, canEditCurrentLocale, canEditCurrentFamily}: StateProps & DispatchProps) => {
   const translate = useTranslate();
   const {isGranted} = useSecurity();
+  const dispatch = useDispatch();
+  const assetFetcher = useAssetFetcher();
   const asset = form.data;
 
   return (
@@ -75,7 +77,7 @@ const Enrich = ({form, context, events, canEditCurrentLocale, canEditCurrentFami
             locale={denormalizeLocaleReference(context.locale)}
             errors={form.errors}
             onValueChange={events.form.onValueChange}
-            onFieldSubmit={events.form.onSubmit}
+            onFieldSubmit={() => dispatch(saveAsset(assetFetcher))}
             canEditLocale={canEditCurrentLocale}
             canEditAsset={canEditCurrentFamily && isGranted('akeneo_assetmanager_asset_edit')}
           />
@@ -84,7 +86,7 @@ const Enrich = ({form, context, events, canEditCurrentLocale, canEditCurrentFami
       <Separator />
       <RightColumn>
         <MainMediaPreview asset={asset} context={context} />
-        <LinkedProducts />
+        <LinkedProducts assetFamilyIdentifier={asset.assetFamily.identifier} assetCode={asset.code} />
       </RightColumn>
     </Container>
   );
@@ -110,9 +112,6 @@ export default connect(
         form: {
           onValueChange: (value: EditionValue) => {
             dispatch(assetValueUpdated(value));
-          },
-          onSubmit: () => {
-            dispatch(saveAsset());
           },
         },
       },

@@ -15,15 +15,12 @@ class AttributeLimit
 {
     private const LIMITLESS = null;
 
-    private ?string $limit = null;
-
-    private function __construct(?string $limit)
+    private function __construct(private ?string $limit)
     {
         Assert::nullOrStringNotEmpty($limit, 'The limit cannot be empty');
         if (self::LIMITLESS !== $limit) {
             Assert::numeric($limit);
         }
-        $this->limit = $limit;
     }
 
     public static function fromString(string $minValue): self

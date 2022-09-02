@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository;
 
-use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\TableConfigurationFactory;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
@@ -30,11 +30,17 @@ use Ramsey\Uuid\Uuid;
  */
 final class SqlTableConfigurationRepository implements TableConfigurationRepository
 {
+    /** @var string[] */
+    private array $propertyKeys = [
+        'reference_entity_identifier',
+        'measurement_family_code',
+        'measurement_default_unit_code',
+    ];
+
     public function __construct(
         private  Connection $connection,
         private TableConfigurationFactory $tableConfigurationFactory,
-        // PULL-UP: remove nullable
-        private ?ChannelExistsWithLocaleInterface $channelExistsWithLocale = null
+        private ChannelExistsWithLocaleInterface $channelExistsWithLocale
     ) {
     }
 
@@ -80,8 +86,10 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
         foreach ($tableConfiguration->normalize() as $columnOrder => $columnDefinition) {
             $properties = [];
 
-            if (\array_key_exists('reference_entity_identifier', $columnDefinition)) {
-                $properties['reference_entity_identifier'] = $columnDefinition['reference_entity_identifier'];
+            foreach ($this->propertyKeys as $propertyKey) {
+                if (\array_key_exists($propertyKey, $columnDefinition)) {
+                    $properties[$propertyKey] = $columnDefinition[$propertyKey];
+                }
             }
 
             $insertValues = [
@@ -152,8 +160,10 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
                     ];
 
                     $properties = \json_decode($row['properties'], true);
-                    if (\array_key_exists('reference_entity_identifier', $properties)) {
-                        $data['reference_entity_identifier'] = $properties['reference_entity_identifier'];
+                    foreach ($this->propertyKeys as $propertyKey) {
+                        if (\array_key_exists($propertyKey, $properties)) {
+                            $data[$propertyKey] = $properties[$propertyKey];
+                        }
                     }
 
                     return $data;
@@ -169,11 +179,6 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
      */
     private function filterNonActiveLabels(array $labels): array
     {
-        // PULL-UP: remove this if
-        if (null === $this->channelExistsWithLocale) {
-            return $labels;
-        }
-
         return \array_filter(
             $labels,
             fn ($localeCode) => $this->channelExistsWithLocale->isLocaleActive($localeCode),

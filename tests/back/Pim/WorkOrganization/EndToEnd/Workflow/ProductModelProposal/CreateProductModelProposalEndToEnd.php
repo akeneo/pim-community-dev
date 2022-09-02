@@ -5,10 +5,16 @@ namespace AkeneoTestEnterprise\Pim\WorkOrganization\EndToEnd\Workflow\ProductMod
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateProductModelProposalEndToEnd extends ApiTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+    }
+
     public function testCreateProductModelProposal()
     {
         $productModelDraft = $this->createProductModelDraft('mary', 'jack');
@@ -111,12 +117,25 @@ JSON;
         $this->assertSame($response->getContent(), $expectedResponseContent);
     }
 
+    public function testAccessDeniedWhenCreateProductProposalWithoutTheAcl()
+    {
+        $this->createProductModelDraft('mary', 'jack');
+        $this->removeAclFromRole('action:pim_api_product_edit', 'ROLE_USER');
+
+        $client = $this->createAuthenticatedClient([], [], null, null, 'Mary', 'Mary');
+        $client->request('POST', 'api/rest/v1/product-models/jack/proposal', [], [], [], '{}');
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function getConfiguration()
     {
-        return $this->catalog->useFunctionalCatalog('catalog_modeling');
+        return $this->catalog->useFunctionalCatalog('catalog_modeling', featureFlags: ['permission', 'proposal']);
+
     }
 
     private function createProductModelDraft(string $userName, string $identifier): EntityWithValuesDraftInterface

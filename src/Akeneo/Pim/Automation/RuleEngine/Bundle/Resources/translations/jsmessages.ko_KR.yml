@@ -175,7 +175,7 @@ pimee_catalog_rule:
           subtitle: 패밀리 선택
         set_attribute:
           title: 특성 값 설정
-          helper: 특성에 값을 설정하려면 먼저 대상 특성과 설정하려는 값을 차례로 선택하십시오.
+          helper: 특성에 값을 설정하려면 먼저 대상 특성과 설정하려는 값을 차례로 선택하십시오. 선택된 모든 제품에서 이전 값이 대체됩니다.
           target_subtitle: 대상 선택
           value_subtitle: 값 정의
           attribute_label: 특성

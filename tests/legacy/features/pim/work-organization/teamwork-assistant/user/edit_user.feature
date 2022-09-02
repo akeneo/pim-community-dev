@@ -1,4 +1,4 @@
-@javascript
+@javascript @teamwork-assistant-feature-enabled
 Feature: Update the use information
   In order to set a default view to user
   As an administrator

@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {ProductEditFormApp, ProductModelEditFormApp} from 'akeneodataqualityinsights-react';
 
 import {
   CATALOG_CONTEXT_CHANNEL_CHANGED,
@@ -19,8 +18,14 @@ import {
   PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME,
   PRODUCT_MODEL_LEVEL_CHANGED,
   PRODUCT_TAB_CHANGED,
-} from '@akeneo-pim-community/data-quality-insights/src';
-import {DATA_QUALITY_INSIGHTS_EDIT_PRODUCT_ASSETS} from '@akeneo-pim-ee/data-quality-insights/src/domain';
+} from '@akeneo-pim-community/data-quality-insights';
+import {
+  ProductEditFormApp,
+  ProductModelEditFormApp,
+  DATA_QUALITY_INSIGHTS_EDIT_PRODUCT_ASSETS,
+} from '@akeneo-pim-ee/data-quality-insights';
+import {unsetProductAction} from '@akeneo-pim-community/data-quality-insights/src/infrastructure/reducer/ProductEditForm/productReducer';
+import productEditFormStore from '@akeneo-pim-ee/data-quality-insights/src/infrastructure/store/productEditFormStore';
 
 const UserContext = require('pim/user-context');
 const BaseView = require('pimui/js/view/base');
@@ -208,7 +213,7 @@ class DataQualityInsightsApp extends BaseView {
 
   remove() {
     ReactDOM.unmountComponentAtNode(this.el);
-
+    productEditFormStore.dispatch(unsetProductAction());
     return super.remove();
   }
 }

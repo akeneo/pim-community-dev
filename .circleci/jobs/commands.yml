@@ -1,0 +1,179 @@
+commands:
+    set_gcloud_config_dev:
+        description: "Authenticate on GCP services and set config and key to be used by other tools that need to authenticate."
+        steps:
+            - run:
+                  name: "Set Gcloud Config."
+                  shell: "/bin/bash -eo pipefail"
+                  command: |
+                      echo ${GCLOUD_SERVICE_KEY_DEV} | gcloud auth activate-service-account --key-file=-
+                      gcloud config set project ${GOOGLE_PROJECT_ID}
+                      gcloud config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+                      gcloud container clusters get-credentials ${GOOGLE_COMPUTE_ZONE} --project=${GOOGLE_PROJECT_ID} --zone=${GOOGLE_COMPUTE_ZONE}
+                      echo ${GCLOUD_SERVICE_KEY_DEV} > ${HOME}/gcloud-service-key.json
+                      echo 'export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"' >> $BASH_ENV
+                      export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"
+                      gcloud auth configure-docker --quiet
+
+    set_gcloud_config_preprod:
+        description: "Authenticate on GCP services and set config and key to be used by other tools that need to authenticate."
+        steps:
+            - run:
+                  name: "Set Gcloud Config."
+                  shell: "/bin/bash -eo pipefail"
+                  command: |
+                      echo ${GCLOUD_SERVICE_KEY_PREPROD} | gcloud auth activate-service-account --key-file=-
+                      gcloud config set project ${GOOGLE_PROJECT_ID}
+                      gcloud config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+                      gcloud container clusters get-credentials ${GOOGLE_COMPUTE_ZONE} --project=${GOOGLE_PROJECT_ID} --zone=${GOOGLE_COMPUTE_ZONE}
+                      echo ${GCLOUD_SERVICE_KEY_PREPROD} > ${HOME}/gcloud-service-key.json
+                      echo 'export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"' >> $BASH_ENV
+                      export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"
+                      gcloud auth configure-docker --quiet
+
+    set_gcloud_config_pim_saas_dev:
+        description: "Authenticate on GCP services and set config and key to be used by other tools that need to authenticate."
+        steps:
+            - run:
+                  name: "Set Gcloud Config."
+                  shell: "/bin/bash -eo pipefail"
+                  command: |
+                      echo ${GCLOUD_SERVICE_KEY_PIM_SAAS_DEV} | gcloud auth activate-service-account --key-file=-
+                      gcloud config set auth/impersonate_service_account main-service-account@${GOOGLE_PROJECT_ID}.iam.gserviceaccount.com
+                      gcloud config set project ${GOOGLE_PROJECT_ID}
+                      gcloud config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+                      gcloud container clusters get-credentials ${CLUSTER_NAME} --project=${GOOGLE_PROJECT_ID} --region=${GOOGLE_CLUSTER_REGION}
+                      echo ${GCLOUD_SERVICE_KEY_PIM_SAAS_DEV} > ${HOME}/gcloud-service-key.json
+                      echo 'export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"' >> $BASH_ENV
+                      export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"
+                      gcloud auth configure-docker ${GOOGLE_CLUSTER_REGION}-docker.pkg.dev --quiet
+
+    restore_persisted_env_vars:
+        description: "Restore env vars that have been persisted by the previous job."
+        steps:
+            - run:
+                  name: Restore persisted env vars
+                  command: |
+                      if [[ -f persisted_env_vars ]]
+                      then
+                        echo "Persisted env vars:"
+                        cat persisted_env_vars
+                        cat persisted_env_vars >> $BASH_ENV
+                      else
+                        echo "WARN: There is no persisted_env_vars file"
+                      fi
+
+    modify_cluster:
+        description: "Modify cluster version if needed"
+        steps:
+            - run:
+                  name: Modify cluster version
+                  command: |
+                      GOOGLE_COMPUTE_ZONE=${GOOGLE_COMPUTE_ZONE_NEXT}
+                      CLUSTER_NAME=${CLUSTER_NAME_NEXT}
+                      GOOGLE_CLUSTER_ZONE=${CLUSTER_NAME_NEXT}
+                      echo export GOOGLE_COMPUTE_ZONE=${GOOGLE_COMPUTE_ZONE} >> $BASH_ENV
+                      echo export CLUSTER_NAME=${CLUSTER_NAME} >> $BASH_ENV
+                      echo export GOOGLE_CLUSTER_ZONE=${GOOGLE_CLUSTER_ZONE} >> $BASH_ENV
+
+    install_yq_v3:
+        description: "Install yq (v3)"
+        steps:
+            - run:
+                  name: Install yq (v3)
+                  command: |
+                      wget https://github.com/mikefarah/yq/releases/download/3.4.1/yq_linux_amd64
+                      sudo mv yq_linux_amd64 /usr/local/bin/yq
+                      echo "2cc8897984d1ab43b6799aff5eca905d37552fdf  /usr/local/bin/yq" > /tmp/checksum
+                      sha1sum -c /tmp/checksum
+                      sudo chmod +x /usr/local/bin/yq
+
+    change_pim_onboarder_branch_steps:
+        description: "Change Onboarder dependency if same branch exists"
+        steps:
+            - when:
+                  condition:
+                      not:
+                          equal: [master, << pipeline.git.branch >>]
+                  steps:
+                      - run:
+                            name: Update composer.json if same branch exists in PIM Onboarder for EE
+                            command: |
+                                curl -H "Authorization: token ${GITHUB_TOKEN}" \
+                                    -H 'Accept: application/vnd.github.v3.raw' \
+                                    --output /dev/null --silent --head --fail \
+                                    -L https://api.github.com/repos/akeneo/pim-onboarder/contents/README.md?ref=${CIRCLE_BRANCH} && \
+                                    sed -i "s#akeneo/pim-onboarder\": \"^7.0.0#akeneo/pim-onboarder\": \"dev-${CIRCLE_BRANCH}#" composer.json || true
+
+    show_datadog_logs_links:
+      description: "Show datadog usefulls links for given PFID"
+      parameters:
+        pfid:
+          type: string
+        dd_domain:
+          default: "https://app.datadoghq.eu"
+          type: string
+        display_migration_link:
+          default: true
+          type: boolean
+      steps:
+        - run:
+            name: DATADOG deployment Livetail logs page
+            command: |
+              if [ "$USE_EDITION_FLAG" = true ] ; then TYPE=srnt ; fi
+              echo "Instance logs :"
+              echo "<<parameters.dd_domain>>/logs/livetail?query=kube_namespace%3A<<parameters.pfid>>"
+              <<# parameters.display_migration_link >>
+              echo ""
+              FROM_TS=$(date -d '1 hour ago' '+%s%3N')
+              TO_TS=$(date -d '3 hours' '+%s%3N')
+              echo "Migration timings :"
+              echo "<<parameters.dd_domain>>/logs?query=kube_namespace%3A<<parameters.pfid>>%20component%3Ahook-upgrader%20container_name%3Apim-upgrade%20took&from_ts=${FROM_TS}&to_ts=${TO_TS}&live=false"
+              <</ parameters.display_migration_link >>
+
+    get_datadog_migration_logs:
+      description: "Get datadog migration logs as json"
+      parameters:
+        pfid:
+          type: string
+        dd_domain:
+          default: "https://app.datadoghq.eu"
+          type: string
+        storage_file:
+          default: "/tmp/migration-logs.json"
+          type: string
+      steps:
+        - run:
+            name: DATADOG migration logs
+            command: |
+              [ "$USE_EDITION_FLAG" = true ] && TYPE=srnt
+              FROM_TS="$(date -d '1 hour ago' '+%Y-%m-%dT%H:%M:%S%z' | cut -c1-22):00"
+              TO_TS="$(date -d '3 hours' '+%Y-%m-%dT%H:%M:%S%z' | cut -c1-22):00"
+              LOGS=$(curl --location -H "Content-Type: application/json" -H "DD-API-KEY: ${DATADOG_API_KEY}" -H "DD-APPLICATION-KEY: ${DATADOG_APP_KEY}" --request POST "<<parameters.dd_domain>>/api/v2/logs/events/search" --data-raw '{"filter": {"query": "kube_namespace:'"<<parameters.pfid>>"' component:hook-upgrader container_name:pim-upgrade took","indexes": ["main"],"from": "'"${FROM_TS}"'","to": "'"${TO_TS}"'"},"sort": "timestamp","page": {"limit": 100}}')
+              echo ${LOGS} > <<parameters.storage_file>>
+              if [[ "${LOGS}" != "" ]]; then
+                echo ${LOGS} | jq -r .data[].attributes.message
+              fi
+
+    skip_job:
+        description: "Skip following steps when turned on"
+        parameters:
+          skip:
+            type: boolean
+            description: "boolean to skip following steps."
+        steps:
+          - run:
+              name: skip if asked
+              command:   |
+                  [ "<< parameters.skip >>" = "true" ] && circleci step halt || echo "Skipping parameter received:  << parameters.skip >>"
+
+    set_docker_gcp_mirror:
+        description: "Configure GCP Docker registry mirrors"
+        steps:
+          - run:
+              name: Set GCP Docker registry mirror
+              command:   |
+                # see https://cloud.google.com/container-registry/docs/pulling-cached-images#configure
+                [ ! -f /etc/docker/daemon.json ] && sudo touch /etc/docker/daemon.json
+                sudo yq w -jPi /etc/docker/daemon.json "registry-mirrors[+]" "https://mirror.gcr.io"
+                sudo service docker restart

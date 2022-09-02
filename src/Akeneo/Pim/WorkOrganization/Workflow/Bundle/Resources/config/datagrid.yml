@@ -49,6 +49,17 @@ services:
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-draft-grid, method: buildBefore }
 
+    pimee_workflow.datagrid.register_identifier_filters:
+        class: Akeneo\Pim\Enrichment\Bundle\Extension\RegisterIdentifierFilters
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+            - '@akeneo.pim.structure.query.get_attribute_translations'
+            - '@pim_user.context.user'
+            - '@oro_datagrid.datagrid.request_params'
+            - '@request_stack'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.published-product-grid, method: buildBefore }
+
     pim_enrich.event_listener.product_grid_before_listener:
         class: '%pim_datagrid.event_listener.configure_product_grid_listener.class%'
         arguments:
@@ -160,7 +171,7 @@ services:
             - '@pimee_workflow.normalizer.datagrid.published_product'
             - '@pim_datagrid.event_subscriber.filter_entity_with_values_subscriber'
         calls:
-            - [ setMassActionRepository, ['@pimee_workflow.repository.published_product_mass_action' ]]
+            - [ setMassActionRepository, ['@pim_catalog.repository.product_mass_action' ]]
         tags:
             - { name: oro_datagrid.datasource, type: pimee_datasource_published_product }
 
@@ -299,25 +310,20 @@ services:
         public: true
         arguments:
             - '@request_stack'
-            - '@pim_datagrid.extension.mass_action.dispatcher'
             - '@pimee_workflow.datagrid.oro_to_pim_grid_filter'
             - '@akeneo_batch.job.job_instance_repository'
             - '@security.token_storage'
             - '@akeneo_batch_queue.launcher.queue_job_launcher'
             - '@oro_datagrid.datagrid.manager'
             - '@oro_datagrid.mass_action.parameters_parser'
-
-    pimee_workflow.datagrid.product.event_listener.add_draft_status_filter:
-        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Configuration\Product\AddDraftStatusFilterToProductGridListener'
-        tags:
-            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-grid, method: buildBefore }
+            - '@pim_catalog.version_provider'
 
     pimee_workflow.datagrid.product.filter.draft_status:
         class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Filter\DraftStatusFilter
         arguments:
             - '@form.factory'
             - '@pim_filter.product_utility'
-            - '@pimee_workflow.query.select_product_ids_by_user_and_draft_status'
+            - '@pimee_workflow.query.select_product_uuids_by_user_and_draft_status'
             - '@pimee_workflow.query.select_product_model_ids_by_user_and_draft_status'
             - '@pim_user.context.user'
         tags:

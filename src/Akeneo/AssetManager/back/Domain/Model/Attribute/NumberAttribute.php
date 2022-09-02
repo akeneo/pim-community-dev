@@ -25,12 +25,6 @@ class NumberAttribute extends AbstractAttribute
 {
     public const ATTRIBUTE_TYPE = 'number';
 
-    private AttributeDecimalsAllowed $decimalsAllowed;
-
-    private AttributeLimit $minValue;
-
-    private AttributeLimit $maxValue;
-
     private function __construct(
         AttributeIdentifier $identifier,
         AssetFamilyIdentifier $assetFamilyIdentifier,
@@ -41,9 +35,9 @@ class NumberAttribute extends AbstractAttribute
         AttributeIsReadOnly $isReadOnly,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
-        AttributeDecimalsAllowed $decimalsAllowed,
-        AttributeLimit $minValue,
-        AttributeLimit $maxValue
+        private AttributeDecimalsAllowed $decimalsAllowed,
+        private AttributeLimit $minValue,
+        private AttributeLimit $maxValue
     ) {
         parent::__construct(
             $identifier,
@@ -58,9 +52,6 @@ class NumberAttribute extends AbstractAttribute
         );
 
         $this->checkMinIsLessThanMax($minValue, $maxValue);
-        $this->decimalsAllowed = $decimalsAllowed;
-        $this->minValue = $minValue;
-        $this->maxValue = $maxValue;
     }
 
     public static function create(

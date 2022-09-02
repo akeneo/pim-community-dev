@@ -16,7 +16,7 @@ table-attribute-unit-back:
 
 .PHONY: table-attribute-acceptance-back
 table-attribute-acceptance-back: var/tests/behat/table-attribute
-	$(PHP_RUN) vendor/bin/behat --config src/Akeneo/Pim/TableAttribute/tests/back/behat.yml --format pim --out var/tests/behat/table-attribute --format progress --out std --colors $(O)
+	$(PHP_RUN) vendor/bin/behat --config src/Akeneo/Pim/TableAttribute/tests/back/behat.yml --suite=acceptance --format pim --out var/tests/behat/table-attribute --format progress --out std --colors $(O)
 
 .PHONY: table-attribute-integration-back
 table-attribute-integration-back:
@@ -28,10 +28,12 @@ table-attribute-end-to-end-back:
 
 .PHONY: table-attribute-lint-back
 table-attribute-lint-back:
-	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php src/Akeneo/Pim/TableAttribute/back
-	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php src/Akeneo/Pim/TableAttribute/tests/back/Acceptance
-	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php src/Akeneo/Pim/TableAttribute/tests/back/EndToEnd
-	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php src/Akeneo/Pim/TableAttribute/tests/back/Integration
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php \
+		src/Akeneo/Pim/TableAttribute/back \
+		src/Akeneo/Pim/TableAttribute/tests/back/Acceptance/Context \
+		src/Akeneo/Pim/TableAttribute/tests/back/Acceptance/InMemory \
+		src/Akeneo/Pim/TableAttribute/tests/back/EndToEnd \
+		src/Akeneo/Pim/TableAttribute/tests/back/Integration
 
 .PHONY: table-attribute-unit-front
 table-attribute-unit-front:
@@ -44,3 +46,7 @@ table-attribute-lint-front:
 .PHONY: table-attribute-prettier-check-front
 table-attribute-prettier-check-front:
 	$(YARN_RUN) run --cwd=src/Akeneo/Pim/TableAttribute/front prettier-check
+
+.PHONY: table-attribute-prettier-fix-front
+table-attribute-prettier-fix-front:
+	$(YARN_RUN) run --cwd=src/Akeneo/Pim/TableAttribute/front prettier

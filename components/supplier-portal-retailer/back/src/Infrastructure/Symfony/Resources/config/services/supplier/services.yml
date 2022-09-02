@@ -1,0 +1,200 @@
+services:
+    # Repositories
+    Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\Sql\DatabaseRepository
+        arguments:
+            - '@database_connection'
+
+    # Command/Handlers
+    Akeneo\SupplierPortal\Retailer\Application\Supplier\CreateSupplierHandler:
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\SupplierExists'
+            - '@event_dispatcher'
+            - '@monolog.logger.supplier_portal'
+
+    Akeneo\SupplierPortal\Retailer\Application\Supplier\UpdateSupplierHandler:
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository'
+            - '@validator'
+            - '@monolog.logger.supplier_portal'
+            - '@event_dispatcher'
+
+    Akeneo\SupplierPortal\Retailer\Application\Supplier\DeleteSupplierHandler:
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierWithContributors'
+            - '@event_dispatcher'
+            - '@monolog.logger.supplier_portal'
+
+    # Queries
+    Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierList:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\Sql\DatabaseGetSupplierList
+        arguments:
+            - '@database_connection'
+
+    Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierWithContributors:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\Sql\DatabaseGetSupplierWithContributors
+        arguments:
+            - '@database_connection'
+
+    Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierCount:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\Sql\DatabaseGetSupplierCount
+        arguments:
+            - '@database_connection'
+
+    Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\SupplierExists:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\Sql\DatabaseSupplierExists
+        arguments:
+            - '@database_connection'
+
+    Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetAllSuppliersWithContributors:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\Sql\DatabaseGetAllSuppliersWithContributors
+        arguments:
+            - '@database_connection'
+
+    Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetIdentifierFromCode:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\Sql\DatabaseGetIdentifierFromCode
+        arguments:
+            - '@database_connection'
+
+    Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierCodeFromSupplierFileIdentifier:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\Sql\DatabaseGetSupplierCodeFromSupplierFileIdentifier
+        arguments:
+            - '@database_connection'
+
+    Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\Sql\DatabaseSupplierContributorsBelongingToAnotherSupplier
+        arguments:
+            - '@database_connection'
+
+    Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\Sql\DatabaseGetSupplierFromContributorEmail
+        arguments:
+            - '@database_connection'
+
+    Akeneo\SupplierPortal\Retailer\Domain\Supplier\GetAllSupplierCodes:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\Sql\DatabaseGetAllSupplierCodes
+        arguments:
+            - '@database_connection'
+
+    # Controllers
+    Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Controller\SupplierList:
+        public: true
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierList'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierCount'
+
+    Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Controller\SupplierCreate:
+        public: true
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Application\Supplier\CreateSupplierHandler'
+
+    Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Controller\SupplierDelete:
+        public: true
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Application\Supplier\DeleteSupplierHandler'
+
+    Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Controller\GetSupplier:
+        public: true
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierWithContributors'
+
+    Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Controller\ExportSupplier:
+        public: true
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetAllSuppliersWithContributors'
+            - '@Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Encoder\SuppliersEncoder'
+
+    Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Controller\SupplierUpdate:
+        public: true
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Application\Supplier\UpdateSupplierHandler'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier'
+
+    Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Controller\GetSupplierContributorsBelongingToAnotherSupplier:
+        public: true
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier'
+            - '@monolog.logger.supplier_portal'
+
+    Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Controller\DownloadImportSupplierTemplate:
+        public: true
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Encoder\SuppliersEncoder'
+
+    # Encoders
+    Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Encoder\SuppliersEncoder:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Encoder\XlsxSuppliersEncoder
+        arguments:
+            - '@monolog.logger.supplier_portal'
+
+    # Import
+    supplier_portal.job.xlsx_supplier_import:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'supplier_portal_xlsx_supplier_import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -   - '@pim_connector.step.charset_validator'
+                - '@supplier_portal.step.xlsx_supplier.import'
+        tags:
+            - { name: akeneo_batch.job, connector: 'Akeneo Supplier Portal XLSX Connector', type: '%pim_connector.job.import_type%', feature: 'supplier_portal' }
+
+    supplier_portal.step.xlsx_supplier.import:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Import\ImportSupplierTasklet'
+
+    Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Import\ImportSupplierTasklet:
+        arguments:
+            - '@supplier_portal.connector.supplier.reader.file.xlsx'
+            - '@validator'
+            - '@Akeneo\SupplierPortal\Retailer\Application\Supplier\CreateSupplierHandler'
+            - '@Akeneo\SupplierPortal\Retailer\Application\Supplier\UpdateSupplierHandler'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\SupplierExists'
+            - '@akeneo_batch.job_repository'
+            - '@event_dispatcher'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetIdentifierFromCode'
+            - '@monolog.logger.supplier_portal'
+
+    supplier_portal.connector.supplier.reader.file.xlsx:
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Import\FlatToStandard'
+
+    supplier_portal.job.job_parameters.default_values_provider.xlsx_supplier_import:
+        class: '%pim_connector.job.job_parameters.default_values_provider.simple_xlsx_import.class%'
+        arguments:
+            - [ 'supplier_portal_xlsx_supplier_import' ]
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    supplier_portal.job.job_parameters.constraint_collection_provider.xlsx_supplier_import:
+        class: '%pim_connector.job.job_parameters.constraint_collection_provider.simple_xlsx_import.class%'
+        arguments:
+            - [ 'supplier_portal_xlsx_supplier_import' ]
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Import\FlatToStandard:
+        arguments:
+            - '@pim_connector.array_convertor.checker.fields_requirement'
+
+    supplier_portal.supplier.job_instance.form_provider:
+        class: Akeneo\Platform\Bundle\ImportExportBundle\Provider\Form\JobInstanceFormProvider
+        arguments:
+            -   supplier_portal_xlsx_supplier_import: pim-job-instance-xlsx-base-import
+        tags:
+            - { name: pim_enrich.provider.form }
+
+    # Validators
+    Akeneo\SupplierPortal\Retailer\Application\Supplier\Validation\UniqueContributorEmailValidator:
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier'
+        tags:
+            - { name: validator.constraint_validator }

@@ -175,7 +175,7 @@ pimee_catalog_rule:
           subtitle: Select your family
         set_attribute:
           title: SET Attribute value
-          helper: To set values to your attribute, please start by selecting your target attribute and then, the value you want to set
+          helper: To set values to your attribute, please start by selecting your target attribute and then, the value you want to set. The former values will be replaced in all your product selection.
           target_subtitle: Select your target
           value_subtitle: Define your value
           attribute_label: Attribute

@@ -38,10 +38,19 @@ datagrid:
                     data_name: createdAt
             default:
                 formatted_changes: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+
     product-grid:
         filters:
             columns:
                 draft_status:
                     type: draft_status
+                    ftype: choice
                     label: Draft Status
                     data_name: draft_status
+                    options:
+                        field_options:
+                            choices:
+                                "Waiting for approval": 2
+                                "In Progress": 1
+                                "Working copy": 0
+                    feature_flag: proposal

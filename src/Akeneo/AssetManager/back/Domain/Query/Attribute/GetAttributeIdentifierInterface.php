@@ -23,8 +23,6 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 interface GetAttributeIdentifierInterface
 {
     /**
-     * @return AttributeIdentifier
-     *
      * @throws \LogicException if the attribute identifier is not found
      */
     public function withAssetFamilyAndCode(

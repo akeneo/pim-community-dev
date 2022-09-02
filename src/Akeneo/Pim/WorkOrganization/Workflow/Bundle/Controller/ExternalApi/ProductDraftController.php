@@ -11,12 +11,14 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ExternalApi;
 
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ExternalApi\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Applier\DraftApplierInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -59,7 +61,8 @@ class ProductDraftController
         DraftApplierInterface $productDraftApplier,
         NormalizerInterface $normalizer,
         TokenStorageInterface $tokenStorage,
-        AuthorizationCheckerInterface $authorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker,
+        private SecurityFacadeInterface $security,
     ) {
         $this->productRepository = $productRepository;
         $this->productDraftRepository = $productDraftRepository;
@@ -81,6 +84,8 @@ class ProductDraftController
      */
     public function getAction($code)
     {
+        $this->denyAccessUnlessAclIsGranted();
+
         $product = $this->productRepository->findOneByIdentifier($code);
 
         if (null === $product) {
@@ -117,5 +122,12 @@ class ProductDraftController
         $normalizedProductDraft = $this->normalizer->normalize($product, 'external_api');
 
         return new JsonResponse($normalizedProductDraft);
+    }
+
+    private function denyAccessUnlessAclIsGranted(): void
+    {
+        if (!$this->security->isGranted('pim_api_product_list')) {
+            throw new AccessDeniedHttpException('Access forbidden. You are not allowed to list products.');
+        }
     }
 }

@@ -1,12 +1,11 @@
 import $ from 'jquery';
 import * as ReactDOM from 'react-dom';
-import {Provider} from 'react-redux';
+import {Provider, useDispatch} from 'react-redux';
 import * as React from 'react';
 import {Store} from 'redux';
 import translate from 'akeneoassetmanager/tools/translator';
 import createStore from 'akeneoassetmanager/infrastructure/store';
-import assetFamilyReducer from 'akeneoassetmanager/application/reducer/asset-family/edit';
-import assetFamilyFetcher, {AssetFamilyResult} from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
+import {createAssetFamilyReducer} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import permissionFetcher from 'akeneoassetmanager/infrastructure/fetcher/permission';
 import {
   assetFamilyEditionReceived,
@@ -22,26 +21,27 @@ import {
 } from 'akeneoassetmanager/domain/event/user';
 import {updateActivatedLocales} from 'akeneoassetmanager/application/action/locale';
 import {updateChannels} from 'akeneoassetmanager/application/action/channel';
-import {PermissionCollection} from 'akeneoassetmanager/domain/model/asset-family/permission';
 import {permissionEditionReceived} from 'akeneoassetmanager/domain/event/asset-family/permission';
 import {LocalePermission} from 'akeneoassetmanager/domain/model/permission/locale';
 import {Filter} from 'akeneoassetmanager/application/reducer/grid';
 import {gridStateStoragePath} from 'akeneoassetmanager/infrastructure/middleware/grid';
-import {denormalizeAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {ThemeProvider} from 'styled-components';
 import {attributeListUpdated} from 'akeneoassetmanager/domain/event/attribute/list';
 import {getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {pimTheme, Key} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {getValueConfig} from 'akeneoassetmanager/application/configuration/value';
 import {ConfigProvider} from 'akeneoassetmanager/application/hooks/useConfig';
 import {AssetFamilyEdit} from 'akeneoassetmanager/application/component/asset-family/edit';
+import {getConfig} from 'pimui/js/config-registry';
+import {AttributeConfig, getReducer} from 'akeneoassetmanager/application/configuration/attribute';
+import {useAssetFamilyFetcher} from 'akeneoassetmanager/infrastructure/fetcher/useAssetFamilyFetcher';
+import {ReactNode, useEffect, useState} from 'react';
+import {FullScreenError} from '@akeneo-pim-community/shared';
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
 const userContext = require('pim/user-context');
 const fetcherRegistry = require('pim/fetcher-registry');
 const router = require('pim/router');
-const Routing = require('routing');
 const datagridState = require('pim/datagrid/state');
 const {notify} = require('oro/messenger');
 
@@ -51,81 +51,120 @@ const shortcutDispatcher = (store: any) => (event: KeyboardEvent) => {
   }
 };
 
+type AssetFamilyLoaderProps = {
+  assetFamilyIdentifier: string;
+
+  children: ReactNode;
+};
+
+type LoadingError = {
+  statusCode: number;
+  statusText: string;
+};
+
+const AssetFamilyLoader = ({assetFamilyIdentifier, children}: AssetFamilyLoaderProps) => {
+  const assetFamilyFetcher = useAssetFamilyFetcher();
+  const dispatch = useDispatch();
+  const [assetFamilyIsFetched, setAssetFamilyIsFetched] = useState(false);
+  const [error, setError] = useState<LoadingError | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const assetFamilyResult = await assetFamilyFetcher.fetch(assetFamilyIdentifier);
+        const permissions = await permissionFetcher.fetch(assetFamilyResult.assetFamily.identifier);
+        dispatch(assetFamilyEditionReceived(assetFamilyResult.assetFamily));
+        dispatch(assetFamilyAssetCountUpdated(assetFamilyResult.assetCount));
+        dispatch(attributeListUpdated(assetFamilyResult.attributes));
+        dispatch(assetFamilyPermissionChanged(assetFamilyResult.permission));
+        dispatch(permissionEditionReceived(permissions));
+
+        setAssetFamilyIsFetched(true);
+      } catch (error) {
+        setError({
+          statusCode: error.response.status,
+          statusText: error.response.statusText,
+        });
+      }
+    })();
+  }, [assetFamilyFetcher]);
+
+  if (error !== null) {
+    return (
+      <FullScreenError
+        title={translate('error.exception', {status_code: error.statusCode.toString()})}
+        code={error.statusCode}
+        message={error.statusText}
+      />
+    );
+  }
+
+  return <>{assetFamilyIsFetched && children}</>;
+};
+
 class AssetFamilyEditController extends BaseController {
   private store: Store<any>;
 
   renderRoute(route: any) {
-    const promise = $.Deferred();
+    const attributeConfig = getConfig('akeneoassetmanager/application/configuration/attribute') as AttributeConfig;
+    const reducer = getReducer(attributeConfig);
 
     mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-asset-family'});
     $(window).on('beforeunload', this.beforeUnload);
+    this.store = createStore(true, {router, datagridState, translate, notify, userContext})(
+      createAssetFamilyReducer(reducer)
+    );
 
-    assetFamilyFetcher
-      .fetch(denormalizeAssetFamilyIdentifier(route.params.identifier))
-      .then(async (assetFamilyResult: AssetFamilyResult) => {
-        this.store = createStore(true, {router, datagridState, translate, notify, userContext})(assetFamilyReducer);
+    this.store.dispatch(updateChannels(fetcherRegistry.getFetcher('channel')) as any);
+    this.store.dispatch(updateActivatedLocales(fetcherRegistry.getFetcher('locale')) as any);
+    this.store.dispatch(defaultCatalogLocaleChanged(userContext.get('catalogLocale')));
+    this.store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
+    this.store.dispatch(catalogChannelChanged(userContext.get('catalogScope')) as any);
+    this.store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
 
-        permissionFetcher.fetch(assetFamilyResult.assetFamily.identifier).then((permissions: PermissionCollection) => {
-          this.store.dispatch(permissionEditionReceived(permissions));
-        });
+    document.addEventListener('keydown', shortcutDispatcher(this.store));
 
-        // Not idea, maybe we should discuss about it
-        await this.store.dispatch(updateChannels(fetcherRegistry.getFetcher('channel')) as any);
-        this.store.dispatch(updateActivatedLocales() as any);
-        this.store.dispatch(assetFamilyEditionReceived(assetFamilyResult.assetFamily));
-        this.store.dispatch(assetFamilyAssetCountUpdated(assetFamilyResult.assetCount));
-        this.store.dispatch(defaultCatalogLocaleChanged(userContext.get('catalogLocale')));
-        this.store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
-        this.store.dispatch(catalogChannelChanged(userContext.get('catalogScope')) as any);
-        this.store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
-        this.store.dispatch(attributeListUpdated(assetFamilyResult.attributes) as any);
-        this.store.dispatch(assetFamilyPermissionChanged(assetFamilyResult.permission));
-
-        document.addEventListener('keydown', shortcutDispatcher(this.store));
-
-        fetcherRegistry
-          .getFetcher('locale-permission')
-          .fetchAll()
-          .then((localePermissions: LocalePermission[]) => {
-            this.store.dispatch(localePermissionsChanged(localePermissions));
-          });
-
-        ReactDOM.render(
-          <Provider store={this.store}>
-            <DependenciesProvider>
-              <ConfigProvider config={{value: getValueConfig()}}>
-                <ThemeProvider theme={pimTheme}>
-                  <AssetFamilyEdit
-                    initialTab={route.params.tab}
-                    onTabChange={(tabCode: string) => {
-                      const route = router.match(window.location.hash);
-                      if (undefined !== route.params.tab) {
-                        history.replaceState(
-                          null,
-                          '',
-                          '#' + Routing.generate(route.name, {...route.params, tab: tabCode})
-                        );
-                      }
-                    }}
-                  />
-                </ThemeProvider>
-              </ConfigProvider>
-            </DependenciesProvider>
-          </Provider>,
-          this.el
-        );
-
-        promise.resolve();
-      })
-      .catch((error: any) => {
-        if (error.request) {
-          promise.reject(error.request);
-        }
-
-        throw error;
+    fetcherRegistry
+      .getFetcher('locale-permission')
+      .fetchAll()
+      .then((localePermissions: LocalePermission[]) => {
+        this.store.dispatch(localePermissionsChanged(localePermissions));
       });
 
-    return promise.promise();
+    ReactDOM.render(
+      <Provider store={this.store}>
+        <DependenciesProvider>
+          <ThemeProvider theme={pimTheme}>
+            <ConfigProvider
+              config={{
+                value: getConfig('akeneoassetmanager/application/configuration/value') ?? {},
+                sidebar: getConfig('akeneoassetmanager/application/configuration/sidebar') ?? {},
+                attribute: getConfig('akeneoassetmanager/application/configuration/attribute') ?? {},
+              }}
+            >
+              <AssetFamilyLoader assetFamilyIdentifier={route.params.identifier}>
+                <AssetFamilyEdit
+                  initialTab={route.params.tab}
+                  onTabChange={(tabCode: string) => {
+                    const route = router.match(window.location.hash);
+                    if (undefined !== route.params.tab) {
+                      history.replaceState(
+                        null,
+                        '',
+                        '#' + router.generate(route.name, {...route.params, tab: tabCode})
+                      );
+                    }
+                  }}
+                />
+              </AssetFamilyLoader>
+            </ConfigProvider>
+          </ThemeProvider>
+        </DependenciesProvider>
+      </Provider>,
+      this.el
+    );
+
+    return $.Deferred().resolve();
   }
 
   getFilters = (assetFamilyIdentifier: string): Filter[] => {

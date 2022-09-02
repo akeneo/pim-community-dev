@@ -1,0 +1,54 @@
+services:
+  akeneo.tailored_import.handler.get_grouped_targets:
+    class: Akeneo\Platform\TailoredImport\Application\GetGroupedTargets\GetGroupedTargetsHandler
+    arguments:
+      - '@akeneo.tailored_import.query.get_grouped_targets'
+
+  akeneo.tailored_import.handler.upload_structure_file:
+    class: Akeneo\Platform\TailoredImport\Application\UploadStructureFile\UploadStructureFileHandler
+    arguments:
+      - '@akeneo.tailored_import.query.filesystem.store_file'
+
+  akeneo.tailored_import.handler.read_columns:
+    class: Akeneo\Platform\TailoredImport\Application\ReadColumns\ReadColumnsHandler
+    arguments:
+      - '@akeneo.tailored_import.spout.remote_file_reader.factory'
+      - '@akeneo.tailored_import.ramsey.uuid_generator'
+
+  akeneo.tailored_import.handler.search_attributes:
+    class: Akeneo\Platform\TailoredImport\Application\SearchAttributes\SearchAttributesHandler
+    arguments:
+      - '@akeneo.tailored_import.query.attribute.find_attribute_translations'
+
+  akeneo.tailored_import.handler.execute_data_mapping:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingHandler
+    arguments:
+      - '@Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\OperationApplier'
+      - '@akeneo.tailored_import.user_intent_registry'
+      - '@akeneo.tailored_import.query.attribute.get_identifier_attribute_code'
+
+  akeneo.tailored_import.handler.get_file_template_information_handler:
+    class: Akeneo\Platform\TailoredImport\Application\GetFileTemplateInformation\GetFileTemplateInformationHandler
+    arguments:
+      - '@akeneo.tailored_import.spout.remote_file_reader.factory'
+
+  akeneo.tailored_import.handler.sample_data.get_sample_data_handler:
+    class: Akeneo\Platform\TailoredImport\Application\SampleData\GetSampleData\GetSampleDataHandler
+    arguments:
+      - '@akeneo.tailored_import.spout.remote_file_reader.factory'
+
+  akeneo.tailored_import.handler.sample_data.get_refreshed_sample_data_handler:
+    class: Akeneo\Platform\TailoredImport\Application\SampleData\GetRefreshedSampleData\GetRefreshedSampleDataHandler
+    arguments:
+      - '@akeneo.tailored_import.spout.remote_file_reader.factory'
+
+  akeneo.tailored_import.handler.sample_data.generate_preview_data_handler:
+    class: Akeneo\Platform\TailoredImport\Application\SampleData\GeneratePreviewData\GeneratePreviewDataHandler
+    arguments:
+      - '@Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\OperationApplier'
+      - '@Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\OperationCollectionHydrator'
+
+  akeneo.tailored_import.user_intent_registry:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentRegistry
+    arguments:
+      - !tagged_iterator akeneo.tailored_import.user_intent_factory

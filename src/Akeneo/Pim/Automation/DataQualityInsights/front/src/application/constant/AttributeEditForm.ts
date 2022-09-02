@@ -8,4 +8,4 @@ export const ATTRIBUTE_CREATE_FORM_LABELS_TAB = 'pim-attribute-create-form-label
 
 export const ATTRIBUTE_EDIT_FORM_OPTIONS_TAB = 'pim-attribute-edit-form-choices';
 
-export const ATTRIBUTE_EDIT_FORM_UPDATED = 'data-quality:attribute-edit-form:updated';
+export const ATTRIBUTE_EDIT_FORM_SPELLCHECK_IGNORED = 'data-quality:attribute-edit-form-spellcheck:ignored';

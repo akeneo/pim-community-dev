@@ -20,36 +20,17 @@ class FileData implements ValueDataInterface
     private const EXTENSION = 'extension';
     private const UPDATED_AT = 'updatedAt';
 
-    private string $key;
-
-    private string $originalFilename;
-
-    private ?int $size = null;
-
-    private ?string $mimeType = null;
-
-    private ?string $extension = null;
-
-    private \DateTimeInterface $updatedAt;
-
     // TODO: make the optional args mandatory
     private function __construct(
-        string $key,
-        string $originalFilename,
-        \DateTimeInterface $updatedAt,
-        ?int $size = 0,
-        ?string $mimeType = '',
-        ?string $extension = ''
+        private string $key,
+        private string $originalFilename,
+        private \DateTimeInterface $updatedAt,
+        private ?int $size = 0,
+        private ?string $mimeType = '',
+        private ?string $extension = ''
     ) {
         Assert::stringNotEmpty($key, 'File data key cannot be empty');
         Assert::stringNotEmpty($originalFilename, 'Original filename data cannot be empty');
-
-        $this->key = $key;
-        $this->originalFilename = $originalFilename;
-        $this->size = $size;
-        $this->mimeType = $mimeType;
-        $this->extension = $extension;
-        $this->updatedAt = $updatedAt;
     }
 
     public function equals(ValueDataInterface $valueData): bool

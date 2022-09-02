@@ -16,6 +16,8 @@ final class Version_6_0_20210118091114_dqi_add_uniqueness_constraint_on_dictiona
 
     public function test_it_add_uniqueness_constraint_on_dictionary()
     {
+        $this->markTestSkipped('This test cannot be performed on master and version 7.x because it conflicts with the migration Version_7_0_20220603081946_add_columns_in_dqi_dictionary_table');
+
         $resetDictionaryTable = <<<SQL
 DROP TABLE pimee_data_quality_insights_text_checker_dictionary;
 

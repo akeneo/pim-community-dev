@@ -16,6 +16,7 @@ namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyHasAssetsInterface;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver\Result;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
@@ -26,11 +27,8 @@ use Doctrine\DBAL\Types\Types;
  */
 class SqlAssetFamilyHasAssets implements AssetFamilyHasAssetsInterface
 {
-    private Connection $sqlConnection;
-
-    public function __construct(Connection $sqlConnection)
+    public function __construct(private Connection $sqlConnection)
     {
-        $this->sqlConnection = $sqlConnection;
     }
 
     public function hasAssets(AssetFamilyIdentifier $identifier): bool
@@ -40,7 +38,7 @@ class SqlAssetFamilyHasAssets implements AssetFamilyHasAssetsInterface
         return $this->doesAssetFamilyHaveAssets($statement);
     }
 
-    private function executeQuery(AssetFamilyIdentifier $assetFamilyIdentifier): Statement
+    private function executeQuery(AssetFamilyIdentifier $assetFamilyIdentifier): Result
     {
         $query = <<<SQL
         SELECT EXISTS (
@@ -55,7 +53,7 @@ SQL;
         ]);
     }
 
-    private function doesAssetFamilyHaveAssets(Statement $statement): bool
+    private function doesAssetFamilyHaveAssets(Result $statement): bool
     {
         $platform = $this->sqlConnection->getDatabasePlatform();
         $result = $statement->fetchAssociative();

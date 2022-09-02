@@ -4,7 +4,7 @@ namespace Specification\Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ColumnDefinition;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\RecordColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
@@ -100,7 +100,7 @@ class TableConfigurationSpec extends ObjectBehavior
             ->shouldBe(null);
     }
 
-    function it_must_have_a_select_or_record_column_as_first_column()
+    function it_must_have_a_select_or_reference_entity_column_as_first_column()
     {
         $this->beConstructedThrough('fromColumnDefinitions', [[
             NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity', 'is_required_for_completeness' => true]),
@@ -111,10 +111,10 @@ class TableConfigurationSpec extends ObjectBehavior
             ->duringInstantiation();
     }
 
-    function it_can_be_created_with_record_column_as_first_column()
+    function it_can_be_created_with_reference_entity_column_as_first_column()
     {
         $this->beConstructedThrough('fromColumnDefinitions', [[
-            RecordColumn::fromNormalized(['id' => ColumnIdGenerator::record(), 'code' => 'record', 'reference_entity_identifier' => 'entity', 'is_required_for_completeness' => true]),
+            ReferenceEntityColumn::fromNormalized(['id' => ColumnIdGenerator::record(), 'code' => 'record', 'reference_entity_identifier' => 'entity', 'is_required_for_completeness' => true]),
             SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
         ]]);
 
@@ -141,5 +141,15 @@ class TableConfigurationSpec extends ObjectBehavior
         $this->getColumnFromStringId(ColumnIdGenerator::ingredient())->shouldReturn($ingredientColumn);
         $this->getColumnFromStringId(ColumnIdGenerator::quantity())->shouldReturn($quantityColumn);
         $this->getColumnFromStringId(ColumnIdGenerator::generateAsString('unknown'))->shouldReturn(null);
+    }
+
+    function it_returns_required_for_completeness_columns()
+    {
+        $ingredientColumn = SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]);
+        $quantityColumn = NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity', 'is_required_for_completeness' => true]);
+        $descriptionColumn = TextColumn::fromNormalized(['id' => ColumnIdGenerator::description(), 'code' => 'description', 'is_required_for_completeness' => false]);
+        $this->beConstructedThrough('fromColumnDefinitions', [[$ingredientColumn, $quantityColumn, $descriptionColumn]]);
+
+        $this->requiredColumns()->shouldReturn([ColumnIdGenerator::ingredient() => $ingredientColumn, ColumnIdGenerator::quantity()=> $quantityColumn]);
     }
 }

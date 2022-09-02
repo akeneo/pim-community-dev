@@ -4,14 +4,14 @@ services:
         arguments:
             - 'reference_data_options'
         tags:
-            - { name: pim_catalog.attribute_type, alias: akeneo_reference_entity_collection, entity: '%pim_catalog.entity.product.class%' }
+            - { name: pim_catalog.attribute_type, alias: akeneo_reference_entity_collection, entity: '%pim_catalog.entity.product.class%', feature: 'reference_entity' }
 
     akeneo_referenceentity.attribute_type.reference_entity:
         class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityType
         arguments:
             - 'reference_data_options'
         tags:
-            - { name: pim_catalog.attribute_type, alias: akeneo_reference_entity, entity: '%pim_catalog.entity.product.class%' }
+            - { name: pim_catalog.attribute_type, alias: akeneo_reference_entity, entity: '%pim_catalog.entity.product.class%', feature: 'reference_entity' }
 
     akeneo_referenceentity.enrich.provider.reference_entity_collection_provider:
         class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Provider\ReferenceEntityCollectionProvider

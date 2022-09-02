@@ -19,7 +19,7 @@ extensions:
         targetZone: buttons
         position: 85
         config:
-            idKeyName: productId
+            idKeyName: productUuid
             routes:
                 ready: pimee_workflow_product_draft_ready
 
@@ -28,6 +28,7 @@ extensions:
         parent: pim-product-edit-form-attributes
         targetZone: self
         position: 110
+        feature: product_rules
 
     pim-product-edit-form-history-published:
         module: pimee/product-edit-form/tab/history/published
@@ -41,12 +42,14 @@ extensions:
         aclResourceId: pimee_revert_product_version_revert
         targetZone: self
         position: 100
+        feature: restore_product
 
     pim-product-edit-form-publish:
         module: pimee/product-edit-form/publish
         parent: pim-product-edit-form-secondary-actions
         targetZone: secondary-actions
         position: 30
+        feature: published_product
 
     pim-product-edit-form-convert-to-simple-product:
         module: pimee/product-edit-form/convert-to-simple-product
@@ -65,6 +68,7 @@ extensions:
         position: 90
         config:
             form: pim-product-duplicate-modal
+        feature: duplicate_product
 
     pim-product-edit-form-meta-published:
         module: pimee/product-edit-form/meta/published
@@ -116,6 +120,7 @@ extensions:
         config:
             datagridName: product-draft-grid
             tabCode: pim-product-or-product-model-edit-form-proposals
+        feature: proposal
 
     pim-product-edit-form-categories:
         module: pimee/product-edit-form/categories

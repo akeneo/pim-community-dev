@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer;
 
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer\ProposalChangesNormalizer;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
@@ -10,6 +10,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class EntityWithValuesProposalNormalizerSpec extends ObjectBehavior
@@ -62,19 +63,19 @@ class EntityWithValuesProposalNormalizerSpec extends ObjectBehavior
         $productProposal->getCreatedAt()->willReturn($created);
         $productProposal->getAuthorLabel()->willReturn('Mary Smith');
         $productProposal->getAuthor()->willReturn('mary');
-        $product->getId()->willReturn(69);
+        $product->getUuid()->willReturn(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'));
         $product->getLabel('en_US')->willReturn('Banana');
 
         $datagridNormalizer->normalize($created, 'datagrid', $context)->willReturn('2017-01-01');
         $changesNormalizer->normalize($productProposal, $context)->willReturn($changes);
 
-        $this->normalize($productProposal, 'datagrid', $context)->shouldReturn(
+        $this->normalize($productProposal, 'datagrid', $context)->shouldBeLike(
             [
                 'proposal_id' => 42,
                 'createdAt' => '2017-01-01',
                 'author_label' => 'Mary Smith',
                 'author_code' => 'mary',
-                'document_id' => 69,
+                'document_id' => '54162e35-ff81-48f1-96d5-5febd3f00fd5',
                 'document_label' => 'Banana',
                 'formatted_changes' => $changes,
                 'document_type' => 'product_draft',

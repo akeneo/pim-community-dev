@@ -27,8 +27,8 @@ class GetAttributeGroupsAccessesWithHighestLevelIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->query = self::$container->get(GetAttributeGroupsAccessesWithHighestLevel::class);
-        $this->groupRepository = self::$container->get('pim_user.repository.group');
+        $this->query = self::getContainer()->get(GetAttributeGroupsAccessesWithHighestLevel::class);
+        $this->groupRepository = self::getContainer()->get('pim_user.repository.group');
     }
 
     public function testItFetchesAttributeGroupsWithHighestAccessLevel(): void

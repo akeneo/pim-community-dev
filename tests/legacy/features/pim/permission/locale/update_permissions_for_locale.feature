@@ -1,4 +1,4 @@
-@javascript
+@javascript @permission-feature-enabled
 Feature: Update permissions for a locale
   In order to be able to allow locale for some specific user group
   As an administrator

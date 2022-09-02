@@ -8,6 +8,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\TableConfigurationFactory;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\MeasurementColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\Value\Table;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -57,10 +58,12 @@ class TableProductValueRenderer implements ProductValueRenderer
                 if (null === $cell) {
                     $line .= '<td></td>';
                 } else {
-                    $normalizedCell = $cell->normalize();
-                    if ($tableConfiguration->getColumn($columnId)->dataType()->asString() === BooleanColumn::DATATYPE) {
-                        $normalizedCell = $this->translator->trans($normalizedCell ? 'Yes' : 'No');
-                    }
+                    $stringDataType = $tableConfiguration->getColumn($columnId)->dataType()->asString();
+                    $normalizedCell = match ($stringDataType) {
+                        BooleanColumn::DATATYPE => $this->translator->trans($cell->normalize() ? 'Yes' : 'No'),
+                        MeasurementColumn::DATATYPE => $this->formatMeasurementValue($cell->normalize()),
+                        default => $cell->normalize(),
+                    };
                     /** @phpstan-ignore-next-line */
                     $line .= sprintf('<td>%s</td>', \twig_escape_filter($environment, $normalizedCell));
                 }
@@ -74,5 +77,10 @@ class TableProductValueRenderer implements ProductValueRenderer
     public function supportsAttributeType(string $attributeType): bool
     {
         return $attributeType === AttributeTypes::TABLE;
+    }
+
+    private function formatMeasurementValue(mixed $normalizedCell): string
+    {
+        return \sprintf('%s %s', $normalizedCell['amount'] ?? '', $normalizedCell['unit'] ?? '');
     }
 }

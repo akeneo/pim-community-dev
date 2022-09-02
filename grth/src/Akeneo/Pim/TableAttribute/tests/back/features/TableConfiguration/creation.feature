@@ -68,9 +68,15 @@ Feature: Create a table attribute
     When I create a table attribute with a configuration '{"code": "quantity"}'
     Then There is a violation with message: The "data_type" column must be filled
 
+  @only-ge
   Scenario: Cannot create a table configuration having unknown type
     When I create a table attribute with a configuration '{"data_type": "unknown", "code": "quantity"}'
-    Then There is a violation with message: The column data type is unknown. Please choose one of the following: number, text, select, boolean
+    Then There is a violation with message: The column data type is unknown. Please choose one of the following: text, number, boolean, select, measurement
+
+  @only-ee @reference-entity-feature-enabled
+  Scenario: Cannot create a table configuration having unknown type
+    When I create a table attribute with a configuration '{"data_type": "unknown", "code": "quantity"}'
+    Then There is a violation with message: The column data type is unknown. Please choose one of the following: text, number, boolean, select, measurement, reference_entity
 
   Scenario: Cannot create a table configuration having invalid type
     When I create a table attribute with a configuration '{"data_type": 1, "code": "quantity"}'
@@ -112,9 +118,15 @@ Feature: Create a table attribute
     When I create a text attribute with a table configuration
     Then There is a violation with message: The type pim_catalog_text does not allow table_configuration
 
+  @only-ge
   Scenario: Cannot create a table attribute when the first column is not select
     When I create a table attribute with text first column
-    Then There is a violation with message: The first column type should always be "select", current type: "text"
+    Then There is a violation with message: The first column type should always be "select", the current type is "text".
+
+  @only-ee @reference-entity-feature-enabled
+  Scenario: Cannot create a table attribute when the first column is not select
+    When I create a table attribute with text first column
+    Then There is a violation with message: The first column type can be either "select" or "reference_entity", the current type is "text".
 
   Scenario: Cannot create a table configuration having invalid decimals allowed value type
     When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "decimals_allowed": "error"}}'
@@ -192,3 +204,89 @@ Feature: Create a table attribute
   Scenario: Cannot create a table configuration with a null "is required for completeness" value
     When I create a table attribute with a configuration '{"data_type": "select", "code": "ingredient", "is_required_for_completeness": null}'
     Then There is a violation with message: The "is_required_for_completeness" option requires a value
+
+  @only-ge
+  Scenario: Cannot create a table configuration with a reference entity column when the feature is not activated
+    When I create a table attribute with a configuration '{"data_type": "reference_entity", "code": "record", "is_required_for_completeness": true, "reference_entity_identifier": "brands"}'
+    Then There is a violation with message: The column data type is unknown. Please choose one of the following: text, number, boolean, select, measurement
+
+  @only-ee @reference-entity-feature-enabled
+  Scenario: Can create a table configuration with a record column
+    Given the brand reference entity
+    When I create a table attribute with a configuration '{"data_type": "reference_entity", "code": "record", "is_required_for_completeness": true, "reference_entity_identifier": "brand"}'
+    Then There is no violation
+
+  @only-ee @reference-entity-feature-enabled
+  Scenario: Cannot create a table configuration with a null "reference_entity_identifier" in a reference entity column
+    When I create a table attribute with a configuration '{"data_type": "reference_entity", "code": "record", "is_required_for_completeness": true, "reference_entity_identifier": null}'
+    Then There is a violation with message: The "reference_entity_identifier" option requires a value
+
+  @only-ee @reference-entity-feature-enabled
+  Scenario: Cannot create a table configuration with an invalid "reference_entity_identifier" type in a reference entity column
+    When I create a table attribute with a configuration '{"data_type": "reference_entity", "code": "record", "is_required_for_completeness": true, "reference_entity_identifier": 153}'
+    Then There is a violation with message: The required value is a string
+
+  @only-ee @reference-entity-feature-enabled
+  Scenario: Cannot create a table configuration without "reference_entity_identifier" in a reference entity column
+    When I create a table attribute with a configuration '{"data_type": "reference_entity", "code": "record", "is_required_for_completeness": true}'
+    Then There is a violation with message: The reference entity identifier must be filled
+
+  @only-ee @reference-entity-feature-enabled
+  Scenario: Cannot create a table configuration with "reference_entity_identifier" in a text column
+    Given the brand reference entity
+    When I create a table attribute with a configuration '{"data_type": "text", "code": "text", "reference_entity_identifier": "brand"}'
+    Then There is a violation with message: Reference entity identifier cannot be set for a "text" column type
+
+  @only-ee @reference-entity-feature-enabled
+  Scenario: Cannot create a table configuration with "reference_entity_identifier" in a text column
+    When I create a table attribute with a configuration '{"data_type": "reference_entity", "code": "test", "reference_entity_identifier": "unknown"}'
+    Then There is a violation with message: Make sure the "unknown" reference entity exists before you add it to the table
+
+  @only-ge
+  Scenario: Cannot create a table attribute with reference entity as the first column type
+    When I create a table attribute with reference entity first column
+    Then There is a violation with message: The column data type is unknown. Please choose one of the following: text, number, boolean, select, measurement
+
+  @only-ee @reference-entity-feature-enabled
+  Scenario: Can create a table attribute with reference entity as the first column type
+    Given the brands reference entity
+    When I create a table attribute with reference entity first column
+    Then There is no violation
+
+  @mine
+  Scenario: Can create a table configuration with a measurement column
+    Given the duration measurement family with the second,minute units
+    When I create a table attribute with a configuration '{"data_type": "measurement", "code": "manufacturing_time", "is_required_for_completeness": false, "measurement_family_code": "duration", "measurement_default_unit_code": "second"}'
+    Then There is no violation
+
+  Scenario: Cannot add use measurement family and measurement default unit on a text column
+    Given the duration measurement family with the second,minute units
+    When I create a table attribute with a configuration '{"data_type": "text", "code": "manufacturing_time", "is_required_for_completeness": false, "measurement_family_code": "duration", "measurement_default_unit_code": "second"}'
+    Then There is a violation with message: Measurement family code cannot be set for a "text" column type
+    And There is a violation with message: Measurement default unit code cannot be set for a "text" column type
+
+  Scenario: Cannot add a measurement column without measurement family and measurement default unit
+    Given the duration measurement family with the second,minute units
+    When I create a table attribute with a configuration '{"data_type": "measurement", "code": "manufacturing_time", "is_required_for_completeness": false}'
+    Then There is a violation with message: The measurement family code must be filled
+    And There is a violation with message: The measurement default unit code must be filled
+
+  Scenario: Cannot add a measurement column with non valid measurement family
+    Given the duration measurement family with the second,minute units
+    When I create a table attribute with a configuration '{"data_type": "measurement", "code": "manufacturing_time", "is_required_for_completeness": false, "measurement_family_code": true, "measurement_default_unit_code": "second"}'
+    Then There is a violation with message: The required value is a string
+
+  Scenario: Cannot add a measurement column with an unknown measurement family
+    Given the duration measurement family with the second,minute units
+    When I create a table attribute with a configuration '{"data_type": "measurement", "code": "manufacturing_time", "is_required_for_completeness": false, "measurement_family_code": "unknown", "measurement_default_unit_code": "second"}'
+    Then There is a violation with message: Make sure the "unknown" measurement family exists before you add it to the table
+
+  Scenario: Cannot add a measurement column with non valid measurement default unit
+    Given the duration measurement family with the second,minute units
+    When I create a table attribute with a configuration '{"data_type": "measurement", "code": "manufacturing_time", "is_required_for_completeness": false, "measurement_family_code": "duration", "measurement_default_unit_code": true}'
+    Then There is a violation with message: The required value is a string
+
+  Scenario: Cannot add a measurement column with an unknown measurement family
+    Given the duration measurement family with the second,minute units
+    When I create a table attribute with a configuration '{"data_type": "measurement", "code": "manufacturing_time", "is_required_for_completeness": false, "measurement_family_code": "duration", "measurement_default_unit_code": "unknown"}'
+    Then There is a violation with message: Make sure the "unknown" unit exists in the "duration" measurement family before you add it to the table

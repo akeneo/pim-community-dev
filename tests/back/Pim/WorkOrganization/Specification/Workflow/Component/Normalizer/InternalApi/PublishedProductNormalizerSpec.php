@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi;
 
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
@@ -109,7 +109,6 @@ final class PublishedProductNormalizerSpec extends ObjectBehavior
         NormalizerInterface $completenessCollectionNormalizer
     ) {
         $product = new Product();
-        $product->setId(62);
 
         $publishedProduct = new PublishedProduct();
         $publishedProduct->setId(42);
@@ -239,7 +238,7 @@ final class PublishedProductNormalizerSpec extends ObjectBehavior
                     'is_owner' => false,
                     'working_copy' => [],
                     'draft_status' => null,
-                    'original_product_id' => 62,
+                    'original_product_uuid' => $product->getUuid()->toString(),
                 ]
             ]
         );

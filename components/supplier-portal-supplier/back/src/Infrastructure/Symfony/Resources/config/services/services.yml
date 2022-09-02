@@ -1,0 +1,4 @@
+services:
+    Akeneo\SupplierPortal\Supplier\Infrastructure\Mailer\SendSwiftmailerEmail:
+        arguments:
+            - '@mailer'

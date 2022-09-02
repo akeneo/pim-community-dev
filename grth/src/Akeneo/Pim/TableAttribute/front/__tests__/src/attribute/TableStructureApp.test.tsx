@@ -2,13 +2,7 @@ import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {act, screen} from '@testing-library/react';
 import {TableStructureApp} from '../../../src';
-import {
-  columnDefinitionPropertiesMapping,
-  defaultDataTypesMapping,
-  getComplexTableAttribute,
-  getComplexTableConfiguration,
-  getSimpleTableConfiguration,
-} from '../../factories';
+import {getComplexTableAttribute, getComplexTableConfiguration, getSimpleTableConfiguration} from '../../factories';
 import {fireEvent} from '@testing-library/dom';
 import {dragAndDrop} from '../../shared/dragAndDrop';
 
@@ -28,8 +22,6 @@ describe('TableStructureApp', () => {
         initialTableConfiguration={getSimpleTableConfiguration()}
         savedColumnCodes={[]}
         attribute={getComplexTableAttribute()}
-        dataTypesMapping={defaultDataTypesMapping}
-        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
     await waitPageToBeLoaded();
@@ -52,8 +44,6 @@ describe('TableStructureApp', () => {
         initialTableConfiguration={getComplexTableConfiguration()}
         savedColumnCodes={[]}
         attribute={getComplexTableAttribute()}
-        dataTypesMapping={defaultDataTypesMapping}
-        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
     await waitPageToBeLoaded();
@@ -83,8 +73,6 @@ describe('TableStructureApp', () => {
         initialTableConfiguration={getSimpleTableConfiguration()}
         savedColumnCodes={['ingredient']}
         attribute={getComplexTableAttribute()}
-        dataTypesMapping={defaultDataTypesMapping}
-        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
     await waitPageToBeLoaded();
@@ -112,8 +100,6 @@ describe('TableStructureApp', () => {
         initialTableConfiguration={getComplexTableConfiguration()}
         savedColumnCodes={[]}
         attribute={getComplexTableAttribute()}
-        dataTypesMapping={defaultDataTypesMapping}
-        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
     await waitPageToBeLoaded();
@@ -127,6 +113,7 @@ describe('TableStructureApp', () => {
       getComplexTableConfiguration()[3],
       getComplexTableConfiguration()[1],
       getComplexTableConfiguration()[4],
+      getComplexTableConfiguration()[5],
     ]);
   });
 
@@ -138,8 +125,6 @@ describe('TableStructureApp', () => {
         initialTableConfiguration={[]}
         savedColumnCodes={[]}
         attribute={getComplexTableAttribute()}
-        dataTypesMapping={defaultDataTypesMapping}
-        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
     expect(await screen.findByText('pim_table_attribute.form.attribute.empty_title')).toBeInTheDocument();
@@ -153,8 +138,6 @@ describe('TableStructureApp', () => {
         initialTableConfiguration={getComplexTableConfiguration()}
         savedColumnCodes={[]}
         attribute={getComplexTableAttribute()}
-        dataTypesMapping={defaultDataTypesMapping}
-        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
     await waitPageToBeLoaded();
@@ -193,8 +176,6 @@ describe('TableStructureApp', () => {
         initialTableConfiguration={getSimpleTableConfiguration()}
         savedColumnCodes={['ingredient']}
         attribute={getComplexTableAttribute()}
-        dataTypesMapping={defaultDataTypesMapping}
-        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
     await waitPageToBeLoaded();
@@ -211,8 +192,6 @@ describe('TableStructureApp', () => {
         initialTableConfiguration={getComplexTableConfiguration()}
         savedColumnCodes={[]}
         attribute={getComplexTableAttribute()}
-        dataTypesMapping={defaultDataTypesMapping}
-        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
     await waitPageToBeLoaded();
@@ -237,6 +216,7 @@ describe('TableStructureApp', () => {
       getComplexTableConfiguration()[2],
       {...getComplexTableConfiguration()[3], validations: {max_length: 50}},
       getComplexTableConfiguration()[4],
+      getComplexTableConfiguration()[5],
     ]);
   });
 
@@ -248,8 +228,6 @@ describe('TableStructureApp', () => {
         initialTableConfiguration={getSimpleTableConfiguration()}
         savedColumnCodes={[]}
         attribute={getComplexTableAttribute()}
-        dataTypesMapping={defaultDataTypesMapping}
-        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
     await waitPageToBeLoaded();

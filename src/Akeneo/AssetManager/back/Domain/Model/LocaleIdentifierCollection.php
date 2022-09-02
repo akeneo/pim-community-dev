@@ -21,16 +21,12 @@ use Webmozart\Assert\Assert;
  */
 class LocaleIdentifierCollection implements \IteratorAggregate
 {
-    /** @var LocaleIdentifier[] */
-    private array $localeIdentifiers;
-
     /**
      * @param LocaleIdentifier[] $localeIdentifiers
      */
-    public function __construct(array $localeIdentifiers)
+    public function __construct(private array $localeIdentifiers)
     {
         Assert::allIsInstanceOf($localeIdentifiers, LocaleIdentifier::class);
-        $this->localeIdentifiers = $localeIdentifiers;
     }
 
     /**

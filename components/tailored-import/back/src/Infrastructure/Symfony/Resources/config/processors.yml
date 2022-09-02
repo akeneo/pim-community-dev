@@ -1,0 +1,8 @@
+services:
+  akeneo.tailored_import.processor.product:
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Connector\Processor\ProductProcessor
+    arguments:
+      - '@akeneo.tailored_import.handler.execute_data_mapping'
+      - '@akeneo.pim.structure.query.get_attributes'
+      - '@akeneo.tailored_import.hydrator.data_mapping_collection'
+      - '@security.token_storage'

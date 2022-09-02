@@ -40,9 +40,19 @@ pim_table_configuration:
       no_validations_allowed: 'Keine Validierungen für eine "{{ columnType }}" Spalte verwenden, aktueller Spaltentyp: "{{ given }}"'
       invalid_validation_key: 'Die "{{ given }}" Validierungen funktionieren nicht in einer "{{ columnType }}" Spalte, erlaubt: "{{ expected }}"'
       too_many_table_attributes: Sie haben die maximale Anzahl an Tabellenattributen innerhalb Ihrer PIM erreicht ({{ limit }})
+      measurement_family_should_exist: Stellen Sie sicher, dass die "{{ measurement_family_code }}" Messfamilie existiert, bevor Sie sie zur Tabelle hinzufügen
+      measurement_unit_should_exist: Stellen Sie sicher, dass die "{{ measurement_unit_code }}" Einheit in der "{{ measurement_family_code }}" Messfamilie vorhanden ist, bevor Sie sie zur Tabelle hinzufügen
+      measurement_family_code_must_be_filled: Der Mess-Familiencode muss ausgefüllt werden
+      measurement_default_unit_code_must_be_filled: Der Code der Standardmesseinheit muss ausgefüllt werden
+      measurement_family_code_cannot_be_set: Der Code der Messfamilie kann nicht für einen "{{ data_type }}"-Spaltentyp festgelegt werden
+      measurement_default_unit_code_cannot_be_set: Der Code der Standardmesseinheit kann nicht für einen "{{ data_type }}"-Spaltentyp festgelegt werden
+      measurement_family_cannot_be_updated: Der measurement_family_code kann nicht aktualisiert werden
+      measurement_family_should_not_be_linked: 'Diese Messfamilie wird in einem Produkt-Attribut verwendet, daher kann sie nicht entfernt werden.'
+      measurement_family_unit_should_not_be_linked: 'Diese Messfamilie wird in einem Produkt-Attribut verwendet. Sie können nur die übersetzten Labels und das Symbol einer Einheit bearbeiten.'
     product_value:
       non_existing_columns: '[0,1]Die Spalte "{{ non_existing_columns }}" existiert nicht|]1,Inf[Die "{{ non_existing_columns }}" Spalten existieren nicht'
       unexpected_data_type: 'Die Spalte "{{ columnCode }}" erwartet eine {{ expected }}, {{ given }} gegeben'
+      unexpected_data_type_for_measurement: 'Die Spalte "{{ columnCode }}" erwartet einen Code für die Zeichenkette und einen numerischen Betrag, {{ given }} angegeben'
       first_column_required: 'Die Spalte "{{ columnCode }}" ist obligatorisch'
       unknown_option: 'Stellen Sie sicher, dass Sie nur existierende Optionscodes verwenden, den aktuellen Wert: "{{ optionCode }}"'
       integer_required: 'Dieser Wert sollte eine Ganzzahl sein: {{ invalid_value }}'
@@ -52,6 +62,7 @@ pim_table_configuration:
       max_length_validation: Dieser Wert sollte {{ limit }} oder weniger Zeichen enthalten.
       too_many_rows: Sie haben die maximale Anzahl von Zeilen in Ihrer Tabelle erreicht ({{ limit }}).
       record_should_exist: 'Der "{{ recordCode }}" Datensatz in der "{{ referenceEntityIdentifier }}" Referenz-Entität existiert nicht'
+      measurement_unit_should_exist: 'Die "{{ measurement_unit_code }}"-Einheit in der "{{ measurement_family_code }}"-Messfamilie existiert nicht'
     product_value_collection:
       too_many_cells: Sie haben die maximale Anzahl an Tabellenzellen in Ihrem Produkt erreicht ({{ count }} Zellen, nur {{ limit }} erlaubt).
     reference_entity:

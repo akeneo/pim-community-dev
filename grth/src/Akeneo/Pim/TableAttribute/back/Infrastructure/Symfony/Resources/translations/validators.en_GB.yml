@@ -40,9 +40,19 @@ pim_table_configuration:
       no_validations_allowed: 'Do not use Validations on a "{{ columnType }}" column, current column type: "{{ given }}"'
       invalid_validation_key: 'The "{{ given }}" Validations does not work on a "{{ columnType }}" column, allowed: "{{ expected }}"'
       too_many_table_attributes: You have reached the maximum number of table attributes within your PIM ({{ limit }})
+      measurement_family_should_exist: Make sure the "{{ measurement_family_code }}" measurement family exists before you add it to the table
+      measurement_unit_should_exist: Make sure the "{{ measurement_unit_code }}" unit exists in the "{{ measurement_family_code }}" measurement family before you add it to the table
+      measurement_family_code_must_be_filled: The measurement family code must be filled
+      measurement_default_unit_code_must_be_filled: The measurement default unit code must be filled
+      measurement_family_code_cannot_be_set: Measurement family code cannot be set for a "{{ data_type }}" column type
+      measurement_default_unit_code_cannot_be_set: Measurement default unit code cannot be set for a "{{ data_type }}" column type
+      measurement_family_cannot_be_updated: The measurement_family_code cannot be updated
+      measurement_family_should_not_be_linked: 'This measurement family is used in a product attribute, therefore it cannot be removed.'
+      measurement_family_unit_should_not_be_linked: 'This measurement family unit is used in a product attribute. You can only edit the translated labels and symbol of a unit.'
     product_value:
       non_existing_columns: '[0,1]The "{{ non_existing_columns }}" column does not exist|]1,Inf[The "{{ non_existing_columns }}" columns do not exist'
       unexpected_data_type: 'The "{{ columnCode }}" column expects a {{ expected }}, {{ given }} given'
+      unexpected_data_type_for_measurement: 'The "{{ columnCode }}" column expects an string unit code and a numeric amount, {{ given }} given'
       first_column_required: 'The "{{ columnCode }}" column is mandatory'
       unknown_option: 'Make sure you only use existing option codes, current value: "{{ optionCode }}"'
       integer_required: 'This value should be an integer: {{ invalid_value }}'
@@ -52,6 +62,7 @@ pim_table_configuration:
       max_length_validation: This value should contain {{ limit }} characters or less.
       too_many_rows: You have reached the maximum number of rows in your table ({{ limit }}).
       record_should_exist: 'The "{{ recordCode }}" record in the "{{ referenceEntityIdentifier }}" reference entity does not exist'
+      measurement_unit_should_exist: 'The "{{ measurement_unit_code }}" unit in the "{{ measurement_family_code }}" measurement family does not exist'
     product_value_collection:
       too_many_cells: You have reached the maximum number of table cells in your product ({{ count }} cells, only {{ limit }} allowed).
     reference_entity:

@@ -23,16 +23,10 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
  */
 class AssetFamilyQuery
 {
-    private ?int $size = null;
-
-    private ?AssetFamilyIdentifier $searchAfterIdentifier = null;
-
     private function __construct(
-        int $size,
-        ?AssetFamilyIdentifier $searchAfterIdentifier
+        private ?int $size,
+        private ?AssetFamilyIdentifier $searchAfterIdentifier
     ) {
-        $this->size = $size;
-        $this->searchAfterIdentifier = $searchAfterIdentifier;
     }
 
     public static function createPaginatedQuery(

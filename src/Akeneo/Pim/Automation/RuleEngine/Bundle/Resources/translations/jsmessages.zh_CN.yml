@@ -175,7 +175,7 @@ pimee_catalog_rule:
           subtitle: 选择品类
         set_attribute:
           title: 设置属性值
-          helper: 要为您的属性设置值，请先选择目标属性，然后选择要设置的值
+          helper: 要为属性设置值，请先选择目标属性，然后选择要设置的值。所有产品选择中之前的值都将被替换。
           target_subtitle: 选择目标
           value_subtitle: 定义值
           attribute_label: 属性

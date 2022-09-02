@@ -29,7 +29,7 @@ NS_LIST=${NS}
 FORCE_DELETE=true
 if [[ -z "${NS_LIST}" ]]; then
     # Namespaces are environments names, we remove only srnt-pimci* & srnt-pimup* & grth-pimci* & grth-pimup* & tria-pimci* environments
-    NS_LIST=$(kubectl get ns | grep Active | egrep "${TYPE}-pim(ci|up)" | awk '{print $1}')
+    NS_LIST=$(kubectl get ns | grep Active | egrep "${TYPE}-pim(ci|up)|${TYPE}-ge2ee-last" | awk '{print $1}')
     FORCE_DELETE=false
 fi
 
@@ -100,8 +100,21 @@ for NAMESPACE in ${NS_LIST}; do
             echo "  NS younger than 1 hour"
         fi
     fi
+    # Theses environments are cloned serenity / growth edition env with an upgrade from PR code and should be kept at least 30 days
+    if [[ ${INSTANCE_NAME} == pimci-long-duplic* ]] ; then
+        DEPLOY_TIME=$(helm3 list -n ${NAMESPACE} | grep ${NAMESPACE} | awk -F\\t '{print $4}' | awk '{print $1" "$2}')
+        DAY_DIFF=$(( ($(date +%s) - $(date -d "${DEPLOY_TIME}" +%s)) / (60*60*24) ))
+        echo "  Day diff :              ${DAY_DIFF}"
+        if [[ -z "${DEPLOY_TIME}" ]] || [[ ${DAY_DIFF} -ge 30 ]]; then
+            DELETE_INSTANCE=true
+            INSTANCE_NAME_PREFIX=pimci-long-duplic
+        else
+            echo "  NS younger than 30 days"
+        fi
+    fi
+
     # Theses environments are test deploy serenity / growth edition (pimci) and aged of 1 hour
-    if [[ ${INSTANCE_NAME} == pimci* ]] && ! ([[ ${INSTANCE_NAME} == pimci-pr* ]]) ; then
+    if [[ ${INSTANCE_NAME} == pimci* ]] && ! ([[ ${INSTANCE_NAME} == pimci-pr* ]]) && ! ([[ ${INSTANCE_NAME} == pimci-*duplic* ]]) ; then
         if [[ ${NS_AGE} == *h* ]] || [[ ${NS_AGE} == *d* ]] ; then
             DELETE_INSTANCE=true
             INSTANCE_NAME_PREFIX=pimci
@@ -115,6 +128,7 @@ for NAMESPACE in ${NS_LIST}; do
             echo "  NS younger than 1 hour"
         fi
     fi
+
     # Theses environments are deploy PR serenity / growth edition (pimci-pr) and aged of 1 day after the last deployment
     if [[ ${INSTANCE_NAME} == pimci-pr* ]] ; then
         DEPLOY_TIME=$(helm3 list -n ${NAMESPACE} | grep ${NAMESPACE} | awk -F\\t '{print $4}' | awk '{print $1" "$2}')
@@ -123,6 +137,17 @@ for NAMESPACE in ${NS_LIST}; do
         if [[ -z "${DEPLOY_TIME}" ]] || [[ ${DAY_DIFF} -ge 1 ]]; then
             DELETE_INSTANCE=true
             INSTANCE_NAME_PREFIX=pimci-pr
+        fi
+    fi
+
+        # Theses environments are related to ge2srnt project  and must not live more than 2 day
+    if [[ ${INSTANCE_NAME} == ge2ee-last* ]] ; then
+        DEPLOY_TIME=$(helm3 list -n ${NAMESPACE} | grep ${NAMESPACE} | awk -F\\t '{print $4}' | awk '{print $1" "$2}')
+        DAY_DIFF=$(( ($(date +%s) - $(date -d "${DEPLOY_TIME}" +%s)) / (60*60*24) ))
+        echo "  Day diff :              ${DAY_DIFF}"
+        if [[ -z "${DEPLOY_TIME}" ]] || [[ ${DAY_DIFF} -ge 2 ]]; then
+            DELETE_INSTANCE=true
+            INSTANCE_NAME_PREFIX=ge2ee-last
         fi
     fi
 

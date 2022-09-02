@@ -15,10 +15,12 @@ namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateAttributeSpelling;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductIdsWithUpdatedFamilyAttributesListQuery;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -47,23 +49,24 @@ final class GetProductIdsWithUpdatedFamilyAttributesListQueryIntegration extends
         $this->givenAFamilyWithAttributesUpdatedSince('updated_family_2', $now);
         $this->givenAFamilyWithAttributesNotUpdatedSince('not_updated_family', $now);
 
-        $expectedProductIds = [];
-        $expectedProductIds[] = $this->givenProductWithoutAttributeSpellcheckEvaluatedSince('updated_family_1', $now);
-        $expectedProductIds[] = $this->givenProductWithoutAttributeSpellcheckEvaluatedSince('updated_family_1', $now);
-        $expectedProductIds[] = $this->givenProductWithoutAttributeSpellcheckEvaluatedSince('updated_family_1', $now);
-        $expectedProductIds[] = $this->givenProductWithoutAttributeSpellcheckEvaluatedSince('updated_family_2', $now);
+        $expectedProductUuids = [];
+        $expectedProductUuids[] = $this->givenProductWithoutAttributeSpellcheckEvaluatedSince('updated_family_1', $now);
+        $expectedProductUuids[] = $this->givenProductWithoutAttributeSpellcheckEvaluatedSince('updated_family_1', $now);
+        $expectedProductUuids[] = $this->givenProductWithoutAttributeSpellcheckEvaluatedSince('updated_family_1', $now);
+        $expectedProductUuids[] = $this->givenProductWithoutAttributeSpellcheckEvaluatedSince('updated_family_2', $now);
         $this->givenProductWithAttributeSpellcheckEvaluatedSince('updated_family_1', $now);
         $this->givenProductWithPendingAttributeSpellcheckEvaluation('updated_family_2', $now);
         $this->givenProductWithoutAttributeSpellcheckEvaluatedSince('not_updated_family', $now);
 
-        $productIds = $this->get(GetProductIdsWithUpdatedFamilyAttributesListQuery::class)->updatedSince($now, 2);
-        $productIds = iterator_to_array($productIds);
+        $productUuids = $this->get(GetProductIdsWithUpdatedFamilyAttributesListQuery::class)->updatedSince($now, 2);
+        $productUuids = iterator_to_array($productUuids);
+        $productUuids = array_map(fn(ProductUuidCollection $collection) => $collection->toArray(), $productUuids);
 
-        $this->assertCount(2, $productIds);
-        $this->assertCount(2, $productIds[0]);
-        $this->assertCount(2, $productIds[1]);
+        $this->assertCount(2, $productUuids);
+        $this->assertCount(2, $productUuids[0]);
+        $this->assertCount(2, $productUuids[1]);
 
-        $this->assertEqualsCanonicalizing($expectedProductIds, array_merge(...$productIds));
+        $this->assertEqualsCanonicalizing($expectedProductUuids, array_merge(...$productUuids));
     }
 
     private function givenAFamilyWithAttributesUpdatedSince(string $code, \DateTimeImmutable $updatedSince): void
@@ -78,24 +81,24 @@ final class GetProductIdsWithUpdatedFamilyAttributesListQueryIntegration extends
         $this->updateFamilyAttributes($family, ['sku', 'name'], $updatedSince->modify('-1 second'));
     }
 
-    private function givenProductWithoutAttributeSpellcheckEvaluatedSince(string $familyCode, \DateTimeImmutable $updatedSince): ProductId
+    private function givenProductWithoutAttributeSpellcheckEvaluatedSince(string $familyCode, \DateTimeImmutable $updatedSince): ProductUuid
     {
-        $productId = $this->createProduct($familyCode);
-        $this->createProductAttributeSpellingEvaluation($productId, $updatedSince->modify('-1 second'));
+        $productUuid = $this->createProduct($familyCode);
+        $this->createProductAttributeSpellingEvaluation($productUuid, $updatedSince->modify('-1 second'));
 
-        return $productId;
+        return $productUuid;
     }
 
     private function givenProductWithAttributeSpellcheckEvaluatedSince(string $familyCode, \DateTimeImmutable $updatedSince): void
     {
-        $productId = $this->createProduct($familyCode);
-        $this->createProductAttributeSpellingEvaluation($productId, $updatedSince->modify('+1 second'));
+        $productUuid = $this->createProduct($familyCode);
+        $this->createProductAttributeSpellingEvaluation($productUuid, $updatedSince->modify('+1 second'));
     }
 
     private function givenProductWithPendingAttributeSpellcheckEvaluation(string $familyCode, \DateTimeImmutable $updatedSince): void
     {
-        $productId = $this->createProduct($familyCode);
-        $this->createProductAttributeSpellingEvaluation($productId, $updatedSince->modify('-2 second'), true);
+        $productUuid = $this->createProduct($familyCode);
+        $this->createProductAttributeSpellingEvaluation($productUuid, $updatedSince->modify('-2 second'), true);
     }
 
     private function createAttribute(string $code): void
@@ -130,16 +133,16 @@ final class GetProductIdsWithUpdatedFamilyAttributesListQueryIntegration extends
         $this->updateFamilyVersionDate($family->getId(), $updatedAt, $lastVersionId);
     }
 
-    private function createProduct(string $family): ProductId
+    private function createProduct(string $family): ProductUuid
     {
         $product = $this->get('akeneo_integration_tests.catalog.product.builder')
-            ->withIdentifier(strval(Uuid::uuid4()))
+            ->withIdentifier(Uuid::uuid4()->toString())
             ->withFamily($family)
             ->build();
 
         $this->get('pim_catalog.saver.product')->save($product);
 
-        return new ProductId((int) $product->getId());
+        return $this->get(ProductUuidFactory::class)->create((string)$product->getUuid());
     }
 
     private function getLastFamilyVersionId(int $familyId): int
@@ -172,16 +175,16 @@ SQL;
         ]);
     }
 
-    private function createProductAttributeSpellingEvaluation(ProductId $productId, \DateTimeImmutable $evaluatedAt, bool $pending = false): void
+    private function createProductAttributeSpellingEvaluation(ProductUuid $productUuid, \DateTimeImmutable $evaluatedAt, bool $pending = false): void
     {
         $spellingEvaluation = new Write\CriterionEvaluation(
             new CriterionCode(EvaluateAttributeSpelling::CRITERION_CODE),
-            $productId,
+            $productUuid,
             CriterionEvaluationStatus::pending()
         );
         $otherEvaluation = new Write\CriterionEvaluation(
             new CriterionCode('spelling'),
-            $productId,
+            $productUuid,
             CriterionEvaluationStatus::pending()
         );
 
@@ -197,21 +200,21 @@ SQL;
             $repository->update($evaluations);
         }
 
-        $this->updateProductEvaluationsAt($productId, EvaluateAttributeSpelling::CRITERION_CODE, $evaluatedAt);
-        $this->updateProductEvaluationsAt($productId, 'spelling', $evaluatedAt->modify('+1 hour'));
+        $this->updateProductEvaluationsAt($productUuid, EvaluateAttributeSpelling::CRITERION_CODE, $evaluatedAt);
+        $this->updateProductEvaluationsAt($productUuid, 'spelling', $evaluatedAt->modify('+1 hour'));
     }
 
-    private function updateProductEvaluationsAt(ProductId $productId, string $criterionCode, \DateTimeImmutable $evaluatedAt): void
+    private function updateProductEvaluationsAt(ProductUuid $productUuid, string $criterionCode, \DateTimeImmutable $evaluatedAt): void
     {
         $query = <<<SQL
-UPDATE pim_data_quality_insights_product_criteria_evaluation
-SET evaluated_at = :evaluated_at
-WHERE product_id = :product_id AND criterion_code = :criterionCode;
+UPDATE pim_data_quality_insights_product_criteria_evaluation e, pim_catalog_product p
+SET e.evaluated_at = :evaluated_at
+WHERE p.uuid = :product_uuid AND e.product_uuid = p.uuid AND criterion_code = :criterionCode;
 SQL;
 
         $this->get('database_connection')->executeQuery($query, [
             'evaluated_at' => $evaluatedAt->format(Clock::TIME_FORMAT),
-            'product_id' => $productId,
+            'product_uuid' => $productUuid->toBytes(),
             'criterionCode' => $criterionCode,
         ]);
     }

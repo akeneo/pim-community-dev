@@ -4,10 +4,13 @@ config:
             controllers:
                 akeneo_reference_entities_reference_entity_index:
                     module: pim/controller/reference-entity/list
+                    feature: reference_entity
                 akeneo_reference_entities_reference_entity_edit:
                     module: pim/controller/reference-entity/edit
+                    feature: reference_entity
                 akeneo_reference_entities_record_edit:
                     module: pim/controller/record/edit
+                    feature: reference_entity
 
         akeneoreferenceentity/application/configuration/value:
             image:

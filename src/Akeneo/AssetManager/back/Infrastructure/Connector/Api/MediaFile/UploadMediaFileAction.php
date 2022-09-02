@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Connector\Api\MediaFile;
 
-use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
+use Akeneo\AssetManager\Domain\Filesystem\Storage;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
+use Akeneo\Tool\Component\FileStorage\Exception\FileAlreadyExistsException;
+use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\Exception\InvalidFile;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -26,22 +28,15 @@ use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
- * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
 class UploadMediaFileAction
 {
-    private FileStorerInterface $fileStorer;
-    private RouterInterface $router;
-    private SecurityFacade $securityFacade;
-
     public function __construct(
-        FileStorerInterface $fileStorer,
-        RouterInterface $router,
-        SecurityFacade $securityFacade
+        private FileStorerInterface $fileStorer,
+        private RouterInterface $router,
+        private SecurityFacadeInterface $securityFacade,
     ) {
-        $this->fileStorer = $fileStorer;
-        $this->router = $router;
-        $this->securityFacade = $securityFacade;
     }
 
     public function __invoke(Request $request): Response
@@ -63,7 +58,7 @@ class UploadMediaFileAction
 
         try {
             $fileInfo = $this->fileStorer->store($file, Storage::FILE_STORAGE_ALIAS, true);
-        } catch (InvalidFile $exception) {
+        } catch (InvalidFile|FileTransferException|FileAlreadyExistsException $exception) {
             throw new UnprocessableEntityHttpException($exception->getMessage(), $exception);
         }
 
@@ -78,7 +73,7 @@ class UploadMediaFileAction
             'Location' => $downloadMediaFileUrl
         ];
 
-        return Response::create('', Response::HTTP_CREATED, $headers);
+        return new Response('', Response::HTTP_CREATED, $headers);
     }
 
     private function denyAccessUnlessAclIsGranted(): void

@@ -1,4 +1,4 @@
-@javascript
+@javascript @proposal-feature-enabled
 Feature: Proposal tab should be visible
   In order view the proposals of a product
   As an administrator or a user

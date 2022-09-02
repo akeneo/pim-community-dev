@@ -10,7 +10,7 @@ class SecurityFacadeStub extends SecurityFacade
 {
     private array $permissions = [];
 
-    public function isGranted($acl, $object = null)
+    public function isGranted($acl, $object = null): bool
     {
         return $this->permissions[$acl];
     }

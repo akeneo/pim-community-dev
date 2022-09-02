@@ -14,11 +14,8 @@ use Akeneo\Tool\Component\Console\CommandLauncher;
  */
 class IndexByAssetFamilyInBackground implements IndexByAssetFamilyInBackgroundInterface
 {
-    private CommandLauncher $commandLauncher;
-
-    public function __construct(CommandLauncher $commandLauncher)
+    public function __construct(private CommandLauncher $commandLauncher)
     {
-        $this->commandLauncher = $commandLauncher;
     }
 
     public function execute(AssetFamilyIdentifier $assetFamilyIdentifier): void

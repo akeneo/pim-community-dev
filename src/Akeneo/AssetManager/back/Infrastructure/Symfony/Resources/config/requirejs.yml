@@ -4,10 +4,13 @@ config:
             controllers:
                 akeneo_asset_manager_asset_family_index:
                     module: pim/controller/asset-family/list
+                    feature: asset_manager
                 akeneo_asset_manager_asset_family_edit:
                     module: pim/controller/asset-family/edit
+                    feature: asset_manager
                 akeneo_asset_manager_asset_edit:
                     module: pim/controller/asset/edit
+                    feature: asset_manager
 
         akeneoassetmanager/application/configuration/value:
             media_file:
@@ -86,16 +89,12 @@ config:
         pim/controller/asset-family/edit: akeneoassetmanager/infrastructure/controller/asset-family/edit.tsx
         pim/controller/asset/edit: akeneoassetmanager/infrastructure/controller/asset/edit.tsx
 
-        # TODO RAC-546
-        pim/attribute-edit-form/properties/asset-family: akeneoassetmanager/infrastructure/attribute/asset-single-link-field.ts
-        pim/asset-single-link-field: akeneoassetmanager/infrastructure/product/asset-single-link-field.tsx
-
+        pim/attribute-edit-form/properties/asset-family: akeneoassetmanager/infrastructure/attribute/asset-family-field.ts
         pim/export/asset-family-field: akeneoassetmanager/infrastructure/export/asset-family-field.ts
 
         oro/datafilter/asset-family-collection-filter: akeneoassetmanager/infrastructure/product-grid/filter/attribute/asset-family-collection
         oro/datagrid/asset-multiple-link-cell: akeneoassetmanager/infrastructure/product-grid/cell/attribute/asset-multiple-link-cell
 
-        pimee/filter/attribute/asset-family-collection: pimenterpriseui/js/filter/attribute/asset-family-collection
         pimee/filter/attribute/assets-collection: pimenterpriseui/js/filter/attribute/assets-collection
 
         # Needed by onboarder for hooking into the asset code creation

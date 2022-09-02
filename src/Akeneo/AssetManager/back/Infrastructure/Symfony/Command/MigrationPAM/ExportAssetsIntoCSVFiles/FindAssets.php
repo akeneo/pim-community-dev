@@ -11,11 +11,8 @@ use Doctrine\DBAL\Driver\Connection;
  */
 class FindAssets
 {
-    private Connection $connection;
-
-    public function __construct(Connection $connection)
+    public function __construct(private Connection $connection)
     {
-        $this->connection = $connection;
     }
 
     public function fetch(): \Iterator

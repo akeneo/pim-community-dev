@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record;
 
 use Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent;
+use Akeneo\ReferenceEntity\Domain\Event\RecordsDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\RecordUpdatedEvent;
-use Akeneo\ReferenceEntity\Domain\Event\ReferenceEntityRecordsDeletedEvent;
+use Akeneo\ReferenceEntity\Domain\Exception\RecordAlreadyExistsError;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
@@ -40,17 +41,10 @@ use PHPUnit\Framework\Assert;
 
 class SqlRecordRepositoryTest extends SqlIntegrationTestCase
 {
-    /** @var EventDispatcherMock */
-    private $eventDispatcherMock;
-
-    /** @var RecordRepositoryInterface */
-    private $repository;
-
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
-
-    /** @var array */
-    private $fixturesDesigner;
+    private EventDispatcherMock $eventDispatcherMock;
+    private RecordRepositoryInterface $repository;
+    private ReferenceEntityRepositoryInterface $referenceEntityRepository;
+    private array $fixturesDesigner;
 
     public function setUp(): void
     {
@@ -144,7 +138,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             ])
         );
 
-        $this->expectException(DBALException::class);
+        $this->expectException(RecordAlreadyExistsError::class);
         $this->repository->create($record);
         $this->eventDispatcherMock->assertNoEventDispatched();
     }
@@ -284,7 +278,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         );
         $this->repository->create($record);
 
-        $this->expectException(DBALException::class);
+        $this->expectException(RecordAlreadyExistsError::class);
         $this->repository->create($record);
     }
 
@@ -556,6 +550,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         Assert::assertEquals(3, $this->repository->count());
 
         $this->repository->deleteByReferenceEntityAndCodes($referenceEntityIdentifier, $recordCodesToDelete);
+        $this->eventDispatcherMock->assertEventDispatched(RecordsDeletedEvent::class);
         $this->eventDispatcherMock->assertEventDispatched(RecordDeletedEvent::class);
         Assert::assertEquals(1, $this->repository->count());
     }
@@ -578,6 +573,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
 
         $this->repository->deleteByReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
 
+        $this->eventDispatcherMock->assertEventDispatched(RecordsDeletedEvent::class);
         $this->eventDispatcherMock->assertEventDispatched(RecordDeletedEvent::class);
         $this->expectException(RecordNotFoundException::class);
         $this->repository->getByReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);

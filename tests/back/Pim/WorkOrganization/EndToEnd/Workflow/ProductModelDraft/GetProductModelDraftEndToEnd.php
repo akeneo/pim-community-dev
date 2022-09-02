@@ -5,6 +5,7 @@ namespace AkeneoTestEnterprise\Pim\WorkOrganization\EndToEnd\Workflow\ProductMod
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class GetProductModelDraftEndToEnd extends ApiTestCase
@@ -145,12 +146,24 @@ JSON;
         $this->assertSame($response->getContent(), $expectedResponseContent);
     }
 
+    public function testAccessDeniedWhenGetProductModelDraftWithoutTheAcl()
+    {
+        $this->createProductModelDraft('mary', 'jack');
+        $this->removeAclFromRole('action:pim_api_product_list', 'ROLE_USER');
+
+        $client = $this->createAuthenticatedClient([], [], null, null, 'Mary', 'Mary');
+        $client->request('GET', 'api/rest/v1/product-models/jack/draft');
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function getConfiguration()
     {
-        return $this->catalog->useFunctionalCatalog('catalog_modeling');
+        return $this->catalog->useFunctionalCatalog('catalog_modeling', ['permission', 'proposal']);
     }
 
     private function createProductModelDraft(string $userName, string $identifier): EntityWithValuesDraftInterface

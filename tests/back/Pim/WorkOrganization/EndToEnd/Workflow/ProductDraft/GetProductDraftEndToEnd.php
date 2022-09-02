@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -163,12 +164,25 @@ JSON;
         $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
         $this->assertSame($response->getContent(), $expectedResponseContent);
     }
+
+    public function testAccessDeniedWhenGetProductDraftWithoutTheAcl()
+    {
+        $this->createDefaultProductDraft('mary', 'product_with_draft');
+        $this->removeAclFromRole('action:pim_api_product_list', 'ROLE_USER');
+
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+        $client->request('GET', 'api/rest/v1/products/product_with_draft/draft');
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function getConfiguration()
     {
-        return $this->catalog->useTechnicalCatalog();
+        return $this->catalog->useTechnicalCatalog(['permission', 'proposal']);
     }
 
     /**

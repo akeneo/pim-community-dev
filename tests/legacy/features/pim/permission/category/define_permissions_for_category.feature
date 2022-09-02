@@ -1,4 +1,4 @@
-@javascript
+@javascript @permission-feature-enabled
 Feature: Define permissions for a category
   In order to be able to prevent some users from viewing some products
   As an administrator

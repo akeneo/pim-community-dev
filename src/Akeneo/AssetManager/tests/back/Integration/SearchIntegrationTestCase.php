@@ -42,7 +42,7 @@ abstract class SearchIntegrationTestCase extends KernelTestCase
 
     protected function get(string $service)
     {
-        return self::$container->get($service);
+        return self::getContainer()->get($service);
     }
 
     protected function flushAssetsToIndexCache(): void

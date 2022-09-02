@@ -19,9 +19,7 @@ interface FindValueKeysToIndexForAllChannelsAndLocalesInterface
      *   'mobile' => [ ... ]
      * ]
      *
-     * @param AssetFamilyIdentifier $assetFamilyIdentifier
      *
-     * @return array
      */
     public function find(AssetFamilyIdentifier $assetFamilyIdentifier): array;
 }

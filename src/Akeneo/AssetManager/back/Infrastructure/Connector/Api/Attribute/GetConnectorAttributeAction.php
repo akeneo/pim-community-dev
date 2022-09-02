@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -13,11 +14,11 @@ namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute;
  * file that was distributed with this source code.
  */
 
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\Connector\ConnectorAttribute;
 use Akeneo\AssetManager\Domain\Query\Attribute\Connector\FindConnectorAttributeByIdentifierAndCodeInterface;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -25,19 +26,11 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class GetConnectorAttributeAction
 {
-    private FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttributeQuery;
-    private AssetFamilyExistsInterface $assetFamilyExists;
-
-    private SecurityFacade $securityFacade;
-
     public function __construct(
-        FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttributeQuery,
-        AssetFamilyExistsInterface $assetFamilyExists,
-        SecurityFacade $securityFacade
+        private FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttributeQuery,
+        private AssetFamilyExistsInterface $assetFamilyExists,
+        private SecurityFacadeInterface $securityFacade,
     ) {
-        $this->assetFamilyExists = $assetFamilyExists;
-        $this->findConnectorAttributeQuery = $findConnectorAttributeQuery;
-        $this->securityFacade = $securityFacade;
     }
 
     /**
@@ -63,7 +56,7 @@ class GetConnectorAttributeAction
 
         $attribute = $this->findConnectorAttributeQuery->find($assetFamilyIdentifier, $attributeCode);
 
-        if (null === $attribute) {
+        if (!$attribute instanceof ConnectorAttribute) {
             throw new NotFoundHttpException(sprintf('Attribute "%s" does not exist for the asset family "%s".', $code, $assetFamilyIdentifier));
         }
 

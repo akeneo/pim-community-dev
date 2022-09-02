@@ -16,24 +16,25 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\Normalizer\Indexing;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductModelProjectionInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductProjectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\MeasurementColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\Value\Table;
+use Akeneo\Pim\TableAttribute\Infrastructure\AntiCorruptionLayer\AclMeasureConverter;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
 use Webmozart\Assert\Assert;
 
 class GetTableValuesProjection implements GetAdditionalPropertiesForProductProjectionInterface, GetAdditionalPropertiesForProductModelProjectionInterface
 {
-    private TableConfigurationRepository $tableConfigurationRepository;
-
-    public function __construct(TableConfigurationRepository $tableConfigurationRepository)
-    {
-        $this->tableConfigurationRepository = $tableConfigurationRepository;
+    public function __construct(
+        private TableConfigurationRepository $tableConfigurationRepository,
+        private AclMeasureConverter $measureConverter
+    ) {
     }
 
     /**
      * {@inheritDoc}
      */
-    public function fromProductIdentifiers(array $productIdentifiers, array $context = []): array
+    public function fromProductUuids(array $productUuids, array $context = []): array
     {
         Assert::keyExists($context, 'value_collections');
 
@@ -51,14 +52,14 @@ class GetTableValuesProjection implements GetAdditionalPropertiesForProductProje
     }
 
     /**
-     * @param array<string, ReadValueCollection> $valueCollectionIndexedByIdentifier
+     * @param array<string, ReadValueCollection> $valueCollectionIndexedByUuid
      * @return array<string, array<mixed>>
      *
      * Create table value projection from value collections.
      *
      * The resulted projections are:
      *  {
-     *      "id1": {
+     *      "uuid1": {
      *          "table_values": {
      *              "nutrition": [
      *                  {
@@ -73,7 +74,7 @@ class GetTableValuesProjection implements GetAdditionalPropertiesForProductProje
      *              ]
      *          }
      *      }
-     *      "id2": {
+     *      "uuid2": {
      *          "table_values": {
      *              "packaging": [
      *                  {
@@ -88,21 +89,21 @@ class GetTableValuesProjection implements GetAdditionalPropertiesForProductProje
      *      }
      *  }
      */
-    private function fromMultipleValueCollection(array $valueCollectionIndexedByIdentifier): array
+    private function fromMultipleValueCollection(array $valueCollectionIndexedByUuid): array
     {
-        if ([] === $valueCollectionIndexedByIdentifier) {
+        if ([] === $valueCollectionIndexedByUuid) {
             return [];
         }
 
         $results = [];
-        foreach ($valueCollectionIndexedByIdentifier as $identifier => $valueCollection) {
+        foreach ($valueCollectionIndexedByUuid as $uuid => $valueCollection) {
             foreach ($valueCollection as $value) {
                 if (!$value instanceof TableValue) {
                     continue;
                 }
                 $attributeCode = $value->getAttributeCode();
-                $results[$identifier]['table_values'][$attributeCode] = array_merge(
-                    $results[$identifier]['table_values'][$attributeCode] ?? [],
+                $results[$uuid]['table_values'][$attributeCode] = array_merge(
+                    $results[$uuid]['table_values'][$attributeCode] ?? [],
                     $this->convertValueToArrayProjection($value)
                 );
             }
@@ -126,10 +127,18 @@ class GetTableValuesProjection implements GetAdditionalPropertiesForProductProje
         foreach ($table->normalize() as $row) {
             foreach ($row as $columnId => $cellValue) {
                 $column = $tableConfiguration->getColumnFromStringId($columnId);
+                $value = $column instanceof MeasurementColumn
+                    ? $this->measureConverter->convertAmountInStandardUnit(
+                        $column->measurementFamilyCode(),
+                        (string) $cellValue['amount'],
+                        $cellValue['unit']
+                    )
+                    : $cellValue
+                ;
                 $normalizedCell = [
                     'row' => $row[$stringFirstColumnId],
                     'column' => $column->code()->asString(),
-                    \sprintf('value-%s', $column->dataType()->asString()) => $cellValue,
+                    \sprintf('value-%s', $column->dataType()->asString()) => $value,
                     'is_column_complete' => $filledCellsCountByColumn[$columnId] === $rowCount,
                 ];
                 if (null !== $tableValue->getLocaleCode()) {

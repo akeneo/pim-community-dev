@@ -58,22 +58,21 @@ class ProductController
     /**
      * Return all drafts of the given product excluding the current user's one.
      *
-     * @param string $productId
-     *
-     * @throws NotFoundHttpException
+     * @param string $productUuid
      *
      * @return JsonResponse
+     * @throws NotFoundHttpException
      */
-    public function indexAction($productId)
+    public function indexAction($productUuid)
     {
-        $product = $this->productRepository->find($productId);
+        $product = $this->productRepository->find($productUuid);
 
         if (null === $product) {
-            throw new NotFoundHttpException(sprintf('Product with id %s not found', $productId));
+            throw new NotFoundHttpException(sprintf('Product with uuid %s not found', $productUuid));
         }
 
         if ($this->objectFilter->filterObject($product, 'pim.internal_api.product.view')) {
-            throw new NotFoundHttpException(sprintf('Product with id %s not found', $productId));
+            throw new NotFoundHttpException(sprintf('Product with uuid %s not found', $productUuid));
         }
 
         return new JsonResponse($this->normalizer->normalize(

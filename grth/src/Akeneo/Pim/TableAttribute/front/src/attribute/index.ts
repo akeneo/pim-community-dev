@@ -3,6 +3,7 @@ export * from './ColumnDefinitionProperties';
 export * from './CreateAttributeCodeLabelTemplate';
 export * from './DeleteColumnModal';
 export * from './DeleteOptionModal';
+export * from './ImportOptionsButton';
 export * from './LocaleLabel';
 export * from './LocaleSwitcher';
 export * from './ManageOptionsModal';

@@ -39,10 +39,10 @@ class InMemoryReferenceEntityRepository implements ReferenceEntityRepositoryInte
 
     public function create(ReferenceEntity $referenceEntity): void
     {
-        if (isset($this->referenceEntities[(string) $referenceEntity->getIdentifier()])) {
+        if (isset($this->referenceEntities[\strtolower((string) $referenceEntity->getIdentifier())])) {
             throw new \RuntimeException('Reference entity already exists');
         }
-        $this->referenceEntities[(string) $referenceEntity->getIdentifier()] = $referenceEntity;
+        $this->referenceEntities[\strtolower((string) $referenceEntity->getIdentifier())] = $referenceEntity;
 
         $this->eventDispatcher->dispatch(
             new ReferenceEntityCreatedEvent($referenceEntity->getIdentifier()),
@@ -52,10 +52,10 @@ class InMemoryReferenceEntityRepository implements ReferenceEntityRepositoryInte
 
     public function update(ReferenceEntity $referenceEntity): void
     {
-        if (!isset($this->referenceEntities[(string) $referenceEntity->getIdentifier()])) {
+        if (!isset($this->referenceEntities[\strtolower((string) $referenceEntity->getIdentifier())])) {
             throw new \RuntimeException('Expected to save one reference entity, but none was saved');
         }
-        $this->referenceEntities[(string) $referenceEntity->getIdentifier()] = $referenceEntity;
+        $this->referenceEntities[\strtolower((string) $referenceEntity->getIdentifier())] = $referenceEntity;
     }
 
     /**
@@ -63,7 +63,7 @@ class InMemoryReferenceEntityRepository implements ReferenceEntityRepositoryInte
      */
     public function getByIdentifier(ReferenceEntityIdentifier $identifier): ReferenceEntity
     {
-        $referenceEntity = $this->referenceEntities[(string) $identifier] ?? null;
+        $referenceEntity = $this->referenceEntities[\strtolower((string) $identifier)] ?? null;
         if (null === $referenceEntity) {
             throw ReferenceEntityNotFoundException::withIdentifier($identifier);
         }
@@ -76,12 +76,12 @@ class InMemoryReferenceEntityRepository implements ReferenceEntityRepositoryInte
      */
     public function deleteByIdentifier(ReferenceEntityIdentifier $identifier): void
     {
-        $referenceEntity = $this->referenceEntities[(string) $identifier] ?? null;
+        $referenceEntity = $this->referenceEntities[\strtolower((string) $identifier)] ?? null;
         if (null === $referenceEntity) {
             throw ReferenceEntityNotFoundException::withIdentifier($identifier);
         }
 
-        unset($this->referenceEntities[(string) $identifier]);
+        unset($this->referenceEntities[\strtolower((string) $identifier)]);
     }
 
     public function count(): int
@@ -91,7 +91,7 @@ class InMemoryReferenceEntityRepository implements ReferenceEntityRepositoryInte
 
     public function hasReferenceEntity(ReferenceEntityIdentifier $identifier): bool
     {
-        return isset($this->referenceEntities[(string) $identifier]);
+        return isset($this->referenceEntities[\strtolower((string) $identifier)]);
     }
 
     public function all(): \Iterator

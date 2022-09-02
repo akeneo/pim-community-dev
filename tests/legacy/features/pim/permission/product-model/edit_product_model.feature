@@ -1,4 +1,4 @@
-@javascript
+@javascript @read-only-product_attribute-feature-enabled
 Feature: Edit a product product model
   In order to modify the catalog
   As a product manager

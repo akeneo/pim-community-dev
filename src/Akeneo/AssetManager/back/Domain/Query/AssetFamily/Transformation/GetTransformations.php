@@ -20,9 +20,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
 interface GetTransformations
 {
     /**
-     * @param AssetFamilyIdentifier $assetFamilyIdentifier
      *
-     * @return TransformationCollection
      *
      * @throws AssetFamilyNotFoundException
      */

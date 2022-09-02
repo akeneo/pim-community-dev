@@ -11,7 +11,12 @@ define([
   'pim/form/common/attributes/copy',
   'pim/fetcher-registry',
   'pim/user-context',
-], function(_, __, Backbone, Copy, FetcherRegistry, UserContext) {
+  'pim/feature-flags',
+], function(_, __, Backbone, Copy, FetcherRegistry, UserContext, FeatureFlags) {
+  if (!FeatureFlags.isEnabled('proposal')) {
+    return Copy;
+  }
+
   /**
    * Internal function that returns an union of current sources without drafts and the given drafts
    *
@@ -90,18 +95,23 @@ define([
      */
     render: function() {
       if (this.copying && !this.otherDraftsPromise) {
-        const fetcherId =
+        const fetcherName =
           this.options && this.options.config && this.options.config.fetcher
             ? this.options.config.fetcher
             : 'product_draft';
-        this.otherDraftsPromise = FetcherRegistry.getFetcher(fetcherId)
-          .fetchAllById(this.getFormData().meta.id)
-          .then(
-            function(drafts) {
-              this.otherDrafts = drafts;
-              this.sources = mergeSourcesAndDrafts(this.sources, drafts);
-            }.bind(this)
-          );
+
+        const fetcher = FetcherRegistry.getFetcher(fetcherName);
+        const promise =
+          fetcherName === 'product_draft'
+            ? fetcher.fetchAllByUuid(this.getFormData().meta.id)
+            : fetcher.fetchAllById(this.getFormData().meta.id);
+
+        this.otherDraftsPromise = promise.then(
+          function(drafts) {
+            this.otherDrafts = drafts;
+            this.sources = mergeSourcesAndDrafts(this.sources, drafts);
+          }.bind(this)
+        );
       }
 
       if (this.copying) {

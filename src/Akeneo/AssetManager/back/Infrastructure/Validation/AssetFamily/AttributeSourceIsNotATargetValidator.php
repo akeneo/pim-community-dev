@@ -62,9 +62,7 @@ class AttributeSourceIsNotATargetValidator extends ConstraintValidator
     }
 
     /**
-     * @param Source $source
      * @param Target[] $targets
-     * @return bool
      */
     private function thereIsATargetEqualToTheSource(Source $source, array $targets): bool
     {
@@ -88,7 +86,7 @@ class AttributeSourceIsNotATargetValidator extends ConstraintValidator
                     'Expected argument to be of class "%s" or "%s", "%s" given',
                     CreateAssetFamilyCommand::class,
                     EditAssetFamilyCommand::class,
-                    get_class($command)
+                    $command::class
                 )
             );
         }

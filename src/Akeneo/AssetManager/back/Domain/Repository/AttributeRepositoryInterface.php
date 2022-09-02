@@ -40,8 +40,6 @@ interface AttributeRepositoryInterface
     public function getByCodeAndAssetFamilyIdentifier(AttributeCode $code, AssetFamilyIdentifier $assetFamilyIdentifier): AbstractAttribute;
 
     /**
-     * @param AssetFamilyIdentifier $assetFamilyIdentifier
-     *
      * @return AbstractAttribute[]
      */
     public function findByAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): array;

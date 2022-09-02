@@ -40,9 +40,19 @@ pim_table_configuration:
       no_validations_allowed: '"{{ columnType }}" 列で検証を使用しないでください。現在の列タイプは "{{ given }}" です'
       invalid_validation_key: '"{{ given }}" 検証は "{{ columnType }}" 列では機能しません。許可されているのは "{{ expected }}" です'
       too_many_table_attributes: PIM内のテーブル属性の最大数 ({{ limit }}) に達しました。
+      measurement_family_should_exist: テーブルに追加する前に、"{{ measurement_family_code }}" 測定ファミリーが存在することを確認してください
+      measurement_unit_should_exist: テーブルに追加する前に、"{{ measurement_family_code }}" 測定ファミリーに "{{ measurement_unit_code }}" ユニットが存在することを確認してください
+      measurement_family_code_must_be_filled: 測定ファミリーコードを入力する必要があります
+      measurement_default_unit_code_must_be_filled: 測定の既定コー​​ドを入力する必要があります
+      measurement_family_code_cannot_be_set: 測定ファミリーコードは "{{ data_type }}" 列タイプに設定できません
+      measurement_default_unit_code_cannot_be_set: 測定の既定ユニットコー​​ドは "{{ data_type }}" 列タイプに設定できません
+      measurement_family_cannot_be_updated: measurement_family_codeは更新できません
+      measurement_family_should_not_be_linked: 'この測定ファミリーは商品属性で使用されているため、削除できません。'
+      measurement_family_unit_should_not_be_linked: 'この測定ファミリーユニットは商品属性で使用されています。翻訳されたラベルとユニットのシンボルのみを編集できます。'
     product_value:
       non_existing_columns: '[0,1]"{{ non_existing_columns }}" 列は存在しません|]1,Inf[The "{{ non_existing_columns }}" 列は存在しません'
       unexpected_data_type: '"{{ columnCode }}" 列には{{ expected }}が必要です。{{ given }}ではありません'
+      unexpected_data_type_for_measurement: '"{{ columnCode }}" 列には文字列ユニットコード、数値、与えられた{{ given }}が必要です。'
       first_column_required: '"{{ columnCode }}" 列は必須です'
       unknown_option: '既存のオプションコー​​ドのみを使用してください。現在の値は "{{ optionCode }}" です'
       integer_required: 'この値は整数である必要があります。{{ invalid_value }}は無効です'
@@ -52,6 +62,7 @@ pim_table_configuration:
       max_length_validation: 値が長すぎます。{{ limit }} 以下の文字数で設定してください。
       too_many_rows: テーブルの最大行数 (10) に達しました
       record_should_exist: '"{{ referenceEntityIdentifier }}" 参照エンティティ内の "{{ recordCode }}" レコードが存在しません'
+      measurement_unit_should_exist: '"{{ measurement_family_code }}" 測定ファミリーの "{{ measurement_unit_code }}" ユニットが存在しません'
     product_value_collection:
       too_many_cells: 製品のテーブルセルの最大数に達しました ({{ count }}セル。最大数は{{ limit }}個)
     reference_entity:

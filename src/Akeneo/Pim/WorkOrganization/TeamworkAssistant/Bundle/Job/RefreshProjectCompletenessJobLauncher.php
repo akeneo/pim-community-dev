@@ -68,7 +68,7 @@ class RefreshProjectCompletenessJobLauncher
         }
 
         $configuration = [
-            'product_identifier' => $product->getId(),
+            'product_identifier' => $product->getUuid()->toString(),
             'channel_identifier' => $channel,
             'locale_identifier'  => $locale,
         ];

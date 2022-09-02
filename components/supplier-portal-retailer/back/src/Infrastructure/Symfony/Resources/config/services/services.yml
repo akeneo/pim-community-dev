@@ -1,0 +1,6 @@
+services:
+    akeneo.supplier_portal.feature:
+        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
+        arguments:
+            - '%env(bool:FLAG_SUPPLIER_PORTAL_ENABLED)%'
+        public: true

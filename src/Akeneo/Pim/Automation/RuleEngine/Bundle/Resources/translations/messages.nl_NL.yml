@@ -86,6 +86,7 @@ job_execution:
     read_rules: Regels lezen
     selected_entities: geselecteerde producten / productmodellen
     skipped_invalid: overgeslagen producten / productmodellen (ongeldig)
+    skipped_no_diff: overgeslagen producten / productmodellen (geen verschillen)
     updated_entities: bijgewerkte producten / productmodellen
     executed_rules: succesvol uitgevoerde regels
     errored_rules: overgeslagen regels (ongeldig)

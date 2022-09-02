@@ -9,6 +9,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\AttributeOptionWordI
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\AttributeWordIgnoredEvent;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeOptionCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeOptionSpellcheckRepository;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
@@ -21,15 +22,17 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 final class InitializeEvaluationSubscriberSpec extends ObjectBehavior
 {
     public function let(
-        EvaluateUpdatedAttributes $evaluateUpdatedAttributes,
-        EvaluateUpdatedAttributeOptions $evaluateUpdatedAttributeOptions,
-        FeatureFlag $dataQualityInsightsFeature
+        EvaluateUpdatedAttributes           $evaluateUpdatedAttributes,
+        EvaluateUpdatedAttributeOptions     $evaluateUpdatedAttributeOptions,
+        FeatureFlag                         $dataQualityInsightsFeature,
+        AttributeOptionSpellcheckRepository $attributeOptionSpellcheckRepository,
     )
     {
         $this->beConstructedWith(
             $evaluateUpdatedAttributes,
             $evaluateUpdatedAttributeOptions,
-            $dataQualityInsightsFeature
+            $dataQualityInsightsFeature,
+            $attributeOptionSpellcheckRepository
         );
     }
 
@@ -42,12 +45,13 @@ final class InitializeEvaluationSubscriberSpec extends ObjectBehavior
     {
         $this::getSubscribedEvents()->shouldHaveKey(AttributeWordIgnoredEvent::class);
         $this::getSubscribedEvents()->shouldHaveKey(StorageEvents::POST_SAVE);
+        $this::getSubscribedEvents()->shouldHaveKey(StorageEvents::POST_REMOVE);
     }
 
     public function it_evaluates_attribute_on_ignored_event(
         $evaluateUpdatedAttributes,
         AttributeWordIgnoredEvent $event
-    ):void
+    ): void
     {
         $attributeCode = new AttributeCode('attr_code');
 
@@ -58,10 +62,9 @@ final class InitializeEvaluationSubscriberSpec extends ObjectBehavior
     }
 
     public function it_evaluates_attribute_option_on_ignored_option_event(
-        $evaluateUpdatedAttributes,
         $evaluateUpdatedAttributeOptions,
         AttributeOptionWordIgnoredEvent $event
-    ):void
+    ): void
     {
         $attributeCode = new AttributeCode('attr_code');
         $attributeOptionCode = new AttributeOptionCode($attributeCode, 'attr_code');
@@ -72,19 +75,28 @@ final class InitializeEvaluationSubscriberSpec extends ObjectBehavior
         $this->onIgnoredOptionWord($event);
     }
 
-    public function it_does_nothing_when_the_entity_is_not_an_attribute(
+    public function it_does_nothing_when_the_entity_is_not_an_attribute_post_save(
         $evaluateUpdatedAttributes
-    ):void
+    ): void
     {
         $evaluateUpdatedAttributes->evaluate(Argument::any())->shouldNotBeCalled();
 
         $this->onPostSave(new GenericEvent(new \stdClass()));
     }
 
+    public function it_does_nothing_when_the_entity_is_not_an_attribute_option_post_remove(
+        $attributeOptionSpellcheckRepository
+    ): void
+    {
+        $attributeOptionSpellcheckRepository->deleteUnknownAttributeOption(Argument::any())->shouldNotBeCalled();
+
+        $this->onPostRemove(new GenericEvent(new \stdClass()));
+    }
+
     public function it_does_nothing_on_non_unitary_post_save(
         $evaluateUpdatedAttributes,
         AttributeInterface $attribute
-    ):void
+    ): void
     {
         $evaluateUpdatedAttributes->evaluate(Argument::any())->shouldNotBeCalled();
 
@@ -92,12 +104,22 @@ final class InitializeEvaluationSubscriberSpec extends ObjectBehavior
         $this->onPostSave(new GenericEvent($attribute->getWrappedObject(), []));
     }
 
-    public function it_does_nothing_when_data_quality_insights_feature_is_not_active(
+    public function it_does_nothing_on_non_unitary_post_remove(
+        $attributeOptionSpellcheckRepository,
+        AttributeOptionInterface $attributeOption
+    ): void
+    {
+        $attributeOptionSpellcheckRepository->deleteUnknownAttributeOption(Argument::any())->shouldNotBeCalled();
+
+        $this->onPostRemove(new GenericEvent($attributeOption->getWrappedObject(), ['unitary' => false]));
+        $this->onPostRemove(new GenericEvent($attributeOption->getWrappedObject(), []));
+    }
+
+    public function it_does_nothing_when_data_quality_insights_feature_is_not_active_post_save(
         $evaluateUpdatedAttributes,
         $dataQualityInsightsFeature,
-        GenericEvent $event,
         AttributeInterface $attribute
-    ):void
+    ): void
     {
         $dataQualityInsightsFeature->isEnabled()->willReturn(false);
         $evaluateUpdatedAttributes->evaluate(Argument::any())->shouldNotBeCalled();
@@ -105,11 +127,23 @@ final class InitializeEvaluationSubscriberSpec extends ObjectBehavior
         $this->onPostSave(new GenericEvent($attribute->getWrappedObject(), ['unitary' => true]));
     }
 
+    public function it_does_nothing_when_data_quality_insights_feature_is_not_active_post_remove(
+        $attributeOptionSpellcheckRepository,
+        $dataQualityInsightsFeature,
+        AttributeInterface $attribute
+    ): void
+    {
+        $dataQualityInsightsFeature->isEnabled()->willReturn(false);
+        $attributeOptionSpellcheckRepository->deleteUnknownAttributeOption(Argument::any())->shouldNotBeCalled();
+
+        $this->onPostRemove(new GenericEvent($attribute->getWrappedObject(), ['unitary' => true]));
+    }
+
     public function it_evaluates_on_unitary_attribute_post_save(
         $evaluateUpdatedAttributes,
         $dataQualityInsightsFeature,
         AttributeInterface $attribute
-    ):void
+    ): void
     {
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
         $attribute->getCode()->willReturn('attr_code');
@@ -119,12 +153,11 @@ final class InitializeEvaluationSubscriberSpec extends ObjectBehavior
     }
 
     public function it_evaluates_on_unitary_attribute_option_post_save(
-        $evaluateUpdatedAttributes,
         $evaluateUpdatedAttributeOptions,
         $dataQualityInsightsFeature,
         AttributeInterface $attribute,
         AttributeOptionInterface $attributeOption
-    ):void
+    ): void
     {
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
         $attribute->getCode()->willReturn('attr_code');
@@ -133,5 +166,21 @@ final class InitializeEvaluationSubscriberSpec extends ObjectBehavior
         $evaluateUpdatedAttributeOptions->evaluate(new AttributeOptionCode(new AttributeCode('attr_code'), 'option_code'))->shouldBeCalled();
 
         $this->onPostSave(new GenericEvent($attributeOption->getWrappedObject(), ['unitary' => true]));
+    }
+
+    public function it_deletes_unknown_attribute_option_on_unitary_attribute_option_post_remove(
+        $attributeOptionSpellcheckRepository,
+        $dataQualityInsightsFeature,
+        AttributeInterface $attribute,
+        AttributeOptionInterface $attributeOption
+    ): void
+    {
+        $dataQualityInsightsFeature->isEnabled()->willReturn(true);
+        $attribute->getCode()->willReturn('attr_code');
+        $attributeOption->getAttribute()->willReturn($attribute);
+        $attributeOption->getCode()->willReturn('option_code');
+        $attributeOptionSpellcheckRepository->deleteUnknownAttributeOption($attributeOption)->shouldBeCalled();
+
+        $this->onPostRemove(new GenericEvent($attributeOption->getWrappedObject(), ['unitary' => true]));
     }
 }

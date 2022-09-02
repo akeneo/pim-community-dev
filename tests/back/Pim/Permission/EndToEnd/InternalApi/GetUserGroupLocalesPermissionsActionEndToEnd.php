@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\InternalApi;
 
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface;

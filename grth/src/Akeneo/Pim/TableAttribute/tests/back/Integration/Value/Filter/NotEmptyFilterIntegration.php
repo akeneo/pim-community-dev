@@ -13,7 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\TableAttribute\Integration\Value\Filter;
 
+use Akeneo\Channel\API\Query\Channel;
+use Akeneo\Channel\API\Query\LabelCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Test\Pim\TableAttribute\Helper\FeatureHelper;
 
 final class NotEmptyFilterIntegration extends AbstractFilterIntegration
 {
@@ -154,6 +157,126 @@ final class NotEmptyFilterIntegration extends AbstractFilterIntegration
             'localizable_scopable_nutrition',
             ['column' => 'nutrition_score', 'row' => 'EGG', 'locale' => 'en_US', 'scope' => 'mobile'],
             ['product']
+        );
+    }
+
+    /** @test */
+    public function it_filters_on_non_empty_operator_on_reference_entity_column(): void
+    {
+        FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
+
+        $this->get('akeneo_referenceentity.infrastructure.persistence.query.channel.find_channels')
+            ->setChannels([
+                new Channel('ecommerce', ['en_US'], LabelCollection::fromArray(['en_US' => 'Ecommerce', 'de_DE' => 'Ecommerce', 'fr_FR' => 'Ecommerce']), ['USD'])
+            ]);
+
+        $this->createNutritionAttributeWithReferenceEntityColumn();
+        $this->createProductWithValues('empty_product', [], 'family_with_table');
+        $this->createProductWithValues('product_with_empty_column', [
+            'nutrition_with_ref_entity' => [[
+                'locale' => null,
+                'scope' => null,
+                'data' => [
+                    [
+                        'ingredient' => 'sugar',
+                    ],
+                    [
+                        'ingredient' => 'egg',
+                    ],
+                ],
+            ]],
+        ]);
+        $this->createProductWithValues('product_with_non_empty_column', [
+            'nutrition_with_ref_entity' => [[
+                'locale' => null,
+                'scope' => null,
+                'data' => [
+                    [
+                        'ingredient' => 'sugar',
+                        'brand_column' => 'Akeneo',
+                    ],
+                ],
+            ]],
+        ]);
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+
+        // Filter on column
+        $this->assertFilter(
+            'nutrition_with_ref_entity',
+            ['column' => 'brand_column'],
+            ['product_with_non_empty_column']
+        );
+
+        // Filter on column + row
+        $this->assertFilter(
+            'nutrition_with_ref_entity',
+            ['column' => 'brand_column', 'row' => 'sugar'],
+            ['product_with_non_empty_column']
+        );
+        $this->assertFilter(
+            'nutrition_with_ref_entity',
+            ['column' => 'brand_column', 'row' => 'egg'],
+            []
+        );
+    }
+
+    /** @test */
+    public function it_filters_on_not_empty_operator_on_measurement_column(): void
+    {
+        $this->createNutritionAttributeWithMeasurementColumn();
+        $this->createProductWithValues('empty_product', [], 'family_with_table');
+        $this->createProductWithValues('product_with_empty_column', [
+            'nutrition_with_measurement' => [
+                [
+                    'locale' => null,
+                    'scope' => null,
+                    'data' => [
+                        [
+                            'ingredient' => 'sugar',
+                        ],
+                        [
+                            'ingredient' => 'egg',
+                        ],
+                    ],
+                ]
+            ],
+        ]);
+        $this->createProductWithValues('product_with_non_empty_column', [
+            'nutrition_with_measurement' => [
+                [
+                    'locale' => null,
+                    'scope' => null,
+                    'data' => [
+                        [
+                            'ingredient' => 'sugar',
+                            'energy_per_100g' => ['unit' => 'KILOCALORIE', 'amount' => '10.5'],
+                        ],
+                        [
+                            'ingredient' => 'egg',
+                        ],
+                    ],
+                ]
+            ],
+        ]);
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+
+        // Filter on column
+        $this->assertFilter(
+            'nutrition_with_measurement',
+            ['column' => 'energy_per_100g'],
+            ['product_with_non_empty_column']
+        );
+
+        // Filter on column + row
+        $this->assertFilter(
+            'nutrition_with_measurement',
+            ['column' => 'energy_per_100g', 'row' => 'sugar'],
+            ['product_with_non_empty_column'],
+        );
+        $this->assertFilter(
+            'nutrition_with_measurement',
+            ['column' => 'energy_per_100g', 'row' => 'egg'],
+            [],
         );
     }
 }

@@ -30,7 +30,6 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
-use Doctrine\Common\Util\ClassUtils;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -53,7 +52,7 @@ class TextAttributeFactory implements AttributeFactoryInterface
                 sprintf(
                     'Expected command of type "%s", "%s" given',
                     CreateTextAttributeCommand::class,
-                    ClassUtils::getClass($command)
+                    get_class($command),
                 )
             );
         }

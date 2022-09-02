@@ -1,0 +1,59 @@
+pimee_tailored_import_get_grouped_targets_action:
+    path: /rest/tailored-import/targets
+    defaults: { _controller: akeneo.tailored_import.controller.get_grouped_targets_action }
+    methods: [GET]
+
+pimee_tailored_import_upload_structure_file_action:
+    path: /rest/tailored-import/upload-structure-file
+    defaults: { _controller: akeneo.tailored_import.controller.upload_structure_file_action }
+    methods: [POST]
+
+pimee_tailored_import_read_columns_action:
+    path: /rest/tailored-import/read-columns
+    defaults: { _controller: akeneo.tailored_import.controller.read_columns_action }
+    methods: [POST]
+
+pimee_tailored_import_search_attributes_action:
+    path: /rest/tailored-import/search-attributes
+    defaults: { _controller: akeneo.tailored_import.controller.search_attributes_action }
+    methods: [POST]
+
+pimee_tailored_import_get_file_template_information_action:
+    path: /rest/tailored-import/file-template
+    defaults: { _controller: akeneo.tailored_import.controller.get_file_template_information_action }
+    methods: [GET]
+
+pimee_tailored_import_get_sample_data_action:
+    path: /rest/tailored-import/sample-data
+    defaults: { _controller: akeneo.tailored_import.controller.get_sample_data_action }
+    methods: [GET]
+
+pimee_tailored_import_get_refreshed_sample_data_action:
+    path: /rest/tailored-import/refresh-sample-data
+    defaults: { _controller: akeneo.tailored_import.controller.get_refreshed_sample_data_action }
+    methods: [GET]
+
+pimee_tailored_import_generate_preview_data_action:
+    path: /rest/tailored-import/generate-preview-data
+    defaults: { _controller: akeneo.tailored_import.controller.generate_preview_data_action }
+    methods: [POST]
+
+pimee_tailored_import_get_attribute_options_action:
+    path: /rest/tailored-import/attribute-options/{attribute_code}
+    defaults: { _controller: akeneo.tailored_import.controller.get_attribute_options_action }
+    methods: [POST]
+
+pimee_tailored_import_get_families_action:
+    path: /rest/tailored-import/families
+    defaults: { _controller: akeneo.tailored_import.controller.get_families_action }
+    methods: [POST]
+
+pimee_tailored_import_validate_replacement_operation_action:
+    path: /rest/tailored-import/validate-replacement-operation
+    defaults: { _controller: akeneo.tailored_import.controller.validate_replacement_operation_action }
+    methods: [POST]
+
+pimee_tailored_import_get_category_trees_action:
+    path: /rest/tailored-import/get-category-trees
+    defaults: { _controller: akeneo.tailored_import.controller.get_category_trees_action }
+    methods: [POST]

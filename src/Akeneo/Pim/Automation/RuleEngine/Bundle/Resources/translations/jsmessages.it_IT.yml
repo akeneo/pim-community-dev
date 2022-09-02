@@ -175,7 +175,7 @@ pimee_catalog_rule:
           subtitle: Seleziona la tua famiglia
         set_attribute:
           title: IMPOSTA valore attributo
-          helper: Per impostare i valori per il tuo attributo, inizia selezionando l'attributo di destinazione e poi seleziona il valore che vuoi impostare
+          helper: Per impostare i valori del tuo attributo, inizia selezionando l'attributo di destinazione, e poi prosegui selezionando il valore che desideri impostare. I valori precedenti verranno sostituiti in tutta la selezione di prodotto.
           target_subtitle: Seleziona la tua destinazione
           value_subtitle: Definisci il tuo valore
           attribute_label: Attributo

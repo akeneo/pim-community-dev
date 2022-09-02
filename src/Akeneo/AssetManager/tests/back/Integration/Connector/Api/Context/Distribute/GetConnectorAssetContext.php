@@ -17,6 +17,7 @@ use Akeneo\AssetManager\Common\Fake\Connector\InMemoryFindConnectorAssetByAssetF
 use Akeneo\AssetManager\Common\Fake\InMemoryMediaFileRepository;
 use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
+use Akeneo\AssetManager\Domain\Filesystem\Storage;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
@@ -41,8 +42,7 @@ use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\Asset\Connector\ConnectorAsset;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFilesystemProviderStub;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use Behat\Behat\Context\Context;
@@ -68,7 +68,7 @@ class GetConnectorAssetContext implements Context
 
     private InMemoryMediaFileRepository $mediaFileRepository;
 
-    private InMemoryFilesystemProviderStub $filesystemProvider;
+    private FilesystemProvider $filesystemProvider;
 
     private ?Response $mediaFileDownloadResponse = null;
 
@@ -86,7 +86,7 @@ class GetConnectorAssetContext implements Context
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         AttributeRepositoryInterface $attributeRepository,
         InMemoryMediaFileRepository $mediaFileRepository,
-        InMemoryFilesystemProviderStub $filesystemProvider,
+        FilesystemProvider $filesystemProvider,
         SecurityFacadeStub $securityFacade
     ) {
         $this->clientFactory = $clientFactory;
@@ -222,7 +222,7 @@ class GetConnectorAssetContext implements Context
     public function theAssetFamilyWithSomeAssets(string $assetFamilyIdentifier): void
     {
         $assetFamilyIdentifier = strtolower($assetFamilyIdentifier);
-        for ($i = 0; $i < 10 ; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $asset = new ConnectorAsset(
                 AssetCode::fromString('asset_code_' . $i),
                 [],
@@ -268,8 +268,8 @@ class GetConnectorAssetContext implements Context
      */
     public function someAssetFamiliesWithSomeAssets(): void
     {
-        for ($i = 0; $i < 10 ; $i++) {
-            for ($j = 0; $j < 10 ; $j++) {
+        for ($i = 0; $i < 10; $i++) {
+            for ($j = 0; $j < 10; $j++) {
                 $asset = new ConnectorAsset(
                     AssetCode::fromString(sprintf('asset_code_%s_%s', $i, $j)),
                     [],
@@ -320,7 +320,7 @@ class GetConnectorAssetContext implements Context
         ob_start();
         $this->mediaFileDownloadResponse = $this->webClientHelper->requestFromFile(
             $client,
-            self::REQUEST_CONTRACT_DIR ."successful_kartell_asset_media_file_download.json"
+            self::REQUEST_CONTRACT_DIR . "successful_kartell_asset_media_file_download.json"
         );
 
         $this->downloadedMediaFile = ob_get_clean();
@@ -334,7 +334,7 @@ class GetConnectorAssetContext implements Context
         $this->webClientHelper->assertStreamedResponseFromFile(
             $this->mediaFileDownloadResponse,
             $this->downloadedMediaFile,
-            self::REQUEST_CONTRACT_DIR ."successful_kartell_asset_media_file_download.json"
+            self::REQUEST_CONTRACT_DIR . "successful_kartell_asset_media_file_download.json"
         );
     }
 
@@ -347,7 +347,7 @@ class GetConnectorAssetContext implements Context
 
         $this->imageNotFoundResponse = $this->webClientHelper->requestFromFile(
             $client,
-            self::REQUEST_CONTRACT_DIR ."not_found_image_download.json"
+            self::REQUEST_CONTRACT_DIR . "not_found_image_download.json"
         );
     }
 
@@ -358,7 +358,7 @@ class GetConnectorAssetContext implements Context
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->imageNotFoundResponse,
-            self::REQUEST_CONTRACT_DIR ."not_found_image_download.json"
+            self::REQUEST_CONTRACT_DIR . "not_found_image_download.json"
         );
     }
 
@@ -374,7 +374,7 @@ class GetConnectorAssetContext implements Context
         ob_start();
         $this->mediaFileDownloadResponse = $this->webClientHelper->requestFromFile(
             $client,
-            self::REQUEST_CONTRACT_DIR ."forbidden_kartell_asset_media_file_download.json"
+            self::REQUEST_CONTRACT_DIR . "forbidden_kartell_asset_media_file_download.json"
         );
 
         $this->downloadedMediaFile = ob_get_clean();
@@ -387,7 +387,7 @@ class GetConnectorAssetContext implements Context
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->mediaFileDownloadResponse,
-            self::REQUEST_CONTRACT_DIR ."forbidden_kartell_asset_media_file_download.json"
+            self::REQUEST_CONTRACT_DIR . "forbidden_kartell_asset_media_file_download.json"
         );
     }
 

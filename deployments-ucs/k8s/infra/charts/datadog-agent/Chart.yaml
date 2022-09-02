@@ -1,0 +1,13 @@
+apiVersion: v2
+name: datadog-agent
+description: datadog-agent
+icon: https://raw.githubusercontent.com/akeneo/pim-community-dev/master/public/favicon.ico
+version: 1.0.0
+appVersion: 2.37.4
+dependencies:
+  - name: kube-state-metrics
+    version: 4.16.0
+    repository: https://prometheus-community.github.io/helm-charts
+  - name: datadog
+    version: 2.37.4
+    repository: https://helm.datadoghq.com

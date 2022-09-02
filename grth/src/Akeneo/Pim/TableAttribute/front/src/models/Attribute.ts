@@ -40,4 +40,10 @@ export type Attribute = {
   table_configuration?: TableConfiguration;
 };
 
+export type AttributeWithOptions = {
+  code: AttributeCode;
+  label: string;
+  options_count: number;
+};
+
 export type TableAttribute = Attribute & {table_configuration: TableConfiguration};

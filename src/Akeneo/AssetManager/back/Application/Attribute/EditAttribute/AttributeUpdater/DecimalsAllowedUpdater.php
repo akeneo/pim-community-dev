@@ -18,7 +18,6 @@ use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditD
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeDecimalsAllowed;
 use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
-use Doctrine\Common\Util\ClassUtils;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -38,7 +37,7 @@ class DecimalsAllowedUpdater implements AttributeUpdaterInterface
                 sprintf(
                     'Expected command of type "%s", "%s" given',
                     EditDecimalsAllowedCommand::class,
-                    ClassUtils::getClass($command)
+                    get_class($command),
                 )
             );
         }

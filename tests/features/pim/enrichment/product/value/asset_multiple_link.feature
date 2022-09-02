@@ -6,7 +6,7 @@ Feature: Validate asset multiple link attribute of a product
   Background:
     Given an authenticated user
 
-  @acceptance-back
+  @acceptance-back @asset-manager-feature-enabled
   Scenario:  Cannot add assets into an asset collection if it reaches the limit of assets per collection
     Given an asset family
     And there are more than 50 assets in this asset family

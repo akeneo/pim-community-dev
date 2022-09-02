@@ -68,6 +68,11 @@ class TextareaValueStringifierSpec extends ObjectBehavior
         $attribute->setType(AttributeTypes::TEXTAREA);
         $attribute->setWysiwygEnabled(true);
         $attributeRepository->findOneByIdentifier('target')->willReturn($attribute);
+
+        $sourceAttribute = new Attribute();
+        $sourceAttribute->setWysiwygEnabled(false);
+        $value->getAttributeCode()->willReturn('source');
+        $attributeRepository->findOneByIdentifier('source')->willReturn($sourceAttribute);
         $value->__toString()->willReturn("<p>Hello<br></p><p><strong>This &quot;is&quot; a test</strong></p>");
 
         $this->stringify($value, ['target_attribute_code' => 'target'])
@@ -82,6 +87,11 @@ class TextareaValueStringifierSpec extends ObjectBehavior
         $attribute->setType(AttributeTypes::TEXTAREA);
         $attribute->setWysiwygEnabled(false);
         $attributeRepository->findOneByIdentifier('target')->willReturn($attribute);
+
+        $sourceAttribute = new Attribute();
+        $sourceAttribute->setWysiwygEnabled(false);
+        $value->getAttributeCode()->willReturn('source');
+        $attributeRepository->findOneByIdentifier('source')->willReturn($sourceAttribute);
         $value->__toString()->willReturn("<p>Hello<br></p><p><strong>This &quot;is&quot; a test</strong></p>");
 
         $this->stringify($value, ['target_attribute_code' => 'target'])
@@ -96,6 +106,11 @@ class TextareaValueStringifierSpec extends ObjectBehavior
         $attribute->setType(AttributeTypes::TEXT);
         $attribute->setWysiwygEnabled(false);
         $attributeRepository->findOneByIdentifier('target')->willReturn($attribute);
+
+        $sourceAttribute = new Attribute();
+        $sourceAttribute->setWysiwygEnabled(false);
+        $value->getAttributeCode()->willReturn('source');
+        $attributeRepository->findOneByIdentifier('source')->willReturn($sourceAttribute);
         $value->__toString()->willReturn("Hello\nThis \"is\" a test");
 
         $this->stringify($value, ['target_attribute_code' => 'target'])->shouldBe('Hello This "is" a test');
@@ -109,6 +124,11 @@ class TextareaValueStringifierSpec extends ObjectBehavior
         $attribute->setType(AttributeTypes::TEXTAREA);
         $attribute->setWysiwygEnabled(true);
         $attributeRepository->findOneByIdentifier('target')->willReturn($attribute);
+
+        $sourceAttribute = new Attribute();
+        $sourceAttribute->setWysiwygEnabled(false);
+        $value->getAttributeCode()->willReturn('source');
+        $attributeRepository->findOneByIdentifier('source')->willReturn($sourceAttribute);
         $value->__toString()->willReturn("Hello\nThis \"is\" a test");
 
         $this->stringify($value, ['target_attribute_code' => 'target'])->shouldBe("Hello<br/>This \"is\" a test");
@@ -122,8 +142,31 @@ class TextareaValueStringifierSpec extends ObjectBehavior
         $attribute->setType(AttributeTypes::TEXTAREA);
         $attribute->setWysiwygEnabled(false);
         $attributeRepository->findOneByIdentifier('target')->willReturn($attribute);
+
+        $sourceAttribute = new Attribute();
+        $sourceAttribute->setWysiwygEnabled(false);
+        $value->getAttributeCode()->willReturn('source');
+        $attributeRepository->findOneByIdentifier('source')->willReturn($sourceAttribute);
         $value->__toString()->willReturn("Hello\nThis \"is\" a test");
 
         $this->stringify($value, ['target_attribute_code' => 'target'])->shouldBe("Hello\nThis \"is\" a test");
+    }
+
+    function it_stringifies_a_simple_textarea_value_when_target_is_rich_textarea_and_source_is_rich_text_area(
+        AttributeRepositoryInterface $attributeRepository,
+        ValueInterface $value
+    ) {
+        $attribute = new Attribute();
+        $attribute->setType(AttributeTypes::TEXTAREA);
+        $attribute->setWysiwygEnabled(true);
+        $attributeRepository->findOneByIdentifier('target')->willReturn($attribute);
+
+        $sourceAttribute = new Attribute();
+        $sourceAttribute->setWysiwygEnabled(true);
+        $value->getAttributeCode()->willReturn('source');
+        $attributeRepository->findOneByIdentifier('source')->willReturn($sourceAttribute);
+        $value->__toString()->willReturn("<p>Hello</p>\n<p>This \"is\" a test</p>");
+
+        $this->stringify($value, ['target_attribute_code' => 'target'])->shouldBe("<p>Hello</p>\n<p>This \"is\" a test</p>");
     }
 }

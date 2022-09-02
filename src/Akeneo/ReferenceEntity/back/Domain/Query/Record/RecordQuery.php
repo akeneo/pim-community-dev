@@ -253,4 +253,9 @@ class RecordQuery
     {
         return $this->localeIdentifiersValuesFilter;
     }
+
+    public function getFiltersByField(string $field = null): array
+    {
+        return array_filter($this->filters, static fn ($filter) => $filter['field'] === $field);
+    }
 }

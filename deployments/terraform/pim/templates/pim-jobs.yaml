@@ -1,7 +1,7 @@
 {{ $tplCtx := . -}}
 {{ range $jobName, $jobOptions := .Values.pim.jobs -}}
 {{ if $jobOptions.enabled -}}
-apiVersion: batch/v1beta1
+apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: {{ $jobName }}

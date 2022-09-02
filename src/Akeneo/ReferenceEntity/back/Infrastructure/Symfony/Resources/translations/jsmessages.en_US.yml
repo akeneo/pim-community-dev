@@ -355,11 +355,6 @@ batch_jobs:
     label: Reference entity record import in XLSX
     import.label: Record import
 
-pim_datagrid:
-  cells:
-    type:
-      reference_entity_mass_delete_records: Execute records mass delete
-
 job_execution:
   summary:
     records: Records
@@ -369,7 +364,7 @@ pim_notification:
     reference_entity_mass_delete_records: Mass delete records
 
 akeneo_job_process_tracker:
-  type:
+  type_filter:
     reference_entity_mass_delete_records: Mass delete records
 
 pim_analytics:

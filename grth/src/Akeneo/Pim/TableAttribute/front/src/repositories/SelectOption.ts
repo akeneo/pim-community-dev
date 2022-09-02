@@ -1,5 +1,5 @@
 import {Router} from '@akeneo-pim-community/shared';
-import {TableAttribute, AttributeCode, ColumnCode, SelectOption, SelectColumnDefinition} from '../models';
+import {AttributeCode, castSelectColumnDefinition, ColumnCode, SelectOption, TableAttribute} from '../models';
 import {SelectOptionFetcher} from '../fetchers';
 
 const selectOptionsCalls: {[key: string]: Promise<SelectOption[] | undefined>} = {};
@@ -42,7 +42,7 @@ const saveSelectOptions = async (
 
   const table_configuration = attribute.table_configuration;
   const i = table_configuration.findIndex(column => column.code === columnCode);
-  table_configuration[i] = {...(table_configuration[i] as SelectColumnDefinition), options};
+  table_configuration[i] = {...castSelectColumnDefinition(table_configuration[i]), options};
   const body = {table_configuration};
 
   return fetch(url, {

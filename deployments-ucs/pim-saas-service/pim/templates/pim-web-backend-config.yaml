@@ -1,0 +1,12 @@
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: pim-web-backendconfig
+spec:
+  healthCheck:
+    checkIntervalSec: 15
+    port: 80
+    type: HTTP
+    requestPath: /server-status
+  connectionDraining:
+    drainingTimeoutSec: 60

@@ -43,12 +43,14 @@ services:
         arguments:
             - '@pimee_security.manager.category_access'
             - '@oro_security.security_facade'
+            - '@feature_flags'
 
     pimee_security.form.subscriber.locale_permissions:
         class: '%pimee_security.form.subscriber.locale_permissions.class%'
         arguments:
             - '@pimee_security.manager.locale_access'
             - '@oro_security.security_facade'
+            - '@feature_flags'
 
     pimee_security.form.subscriber.job_profile_permissions:
         class: '%pimee_security.form.subscriber.job_profile_permissions.class%'
@@ -56,6 +58,7 @@ services:
             - '@pimee_security.manager.job_profile_access'
             - '@oro_security.security_facade'
             - '@pim_user.repository.group'
+            - '@feature_flags'
 
     # Provider
     pimee_security.form.provider.form.product:
@@ -73,7 +76,7 @@ services:
             - { name: pim_enrich.provider.form, priority: 90 }
 
     pim_enrich.form.type.category:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Form\Type\CategoryType'
+        class: 'Akeneo\Category\Infrastructure\Symfony\Form\Type\CategoryType'
         arguments:
             - '%pim_catalog.entity.category.class%'
             - '%pim_catalog.entity.category_translation.class%'
@@ -90,7 +93,7 @@ services:
             - [addEventSubscriber, ['@pimee_security.form.subscriber.locale_permissions']]
 
     Akeneo\Pim\Permission\Bundle\Form\CategoryFormViewNormalizerWithPermissions:
-        decorates: Akeneo\Pim\Enrichment\Bundle\Form\CategoryFormViewNormalizer
-        decoration_inner_name: 'Akeneo\Pim\Enrichment\Bundle\Form\CategoryFormViewNormalizer.CE'
+        decorates: Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizer
+        decoration_inner_name: 'Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizer.CE'
         arguments:
-            - '@Akeneo\Pim\Enrichment\Bundle\Form\CategoryFormViewNormalizer.CE'
+            - '@Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizer.CE'

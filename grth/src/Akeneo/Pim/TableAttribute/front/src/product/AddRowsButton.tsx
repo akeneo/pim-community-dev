@@ -17,7 +17,7 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({checkedOptionCodes, toggle
   const firstColumnDataType = attribute?.table_configuration[0]?.data_type;
   return (
     <>
-      {firstColumnDataType === 'record' ? (
+      {firstColumnDataType === 'reference_entity' ? (
         <RecordAddRowsButton checkedOptionCodes={checkedOptionCodes} toggleChange={toggleChange} />
       ) : (
         <SelectAddRowsButton checkedOptionCodes={checkedOptionCodes} toggleChange={toggleChange} />

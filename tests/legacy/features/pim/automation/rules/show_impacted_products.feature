@@ -1,4 +1,4 @@
-@javascript
+@javascript @product-rules-feature-enabled
 Feature: Browse products selected in rules datagrid
   In order to precisely configure my rules
   As a regular user

@@ -52,25 +52,25 @@ final class GetWorkflowStatusFromProductIdentifiers implements PublicApi\GetWork
         END as workflow_status
     FROM (
         SELECT
-            product_categories.id as product_id,
+            product_categories.uuid as product_uuid,
             product_categories.product_identifier,
             COALESCE(SUM(category_access.edit_items), 0) as count_editable_categories,
             COALESCE(SUM(category_access.own_items), 0) as count_ownable_categories,
             COALESCE(SUM(category_access.view_items), 0) as count_viewable_categories,
             COUNT(product_categories.category_id) as number_categories
         FROM (
-            SELECT p.id, p.identifier as product_identifier, cp.category_id
+            SELECT p.uuid, p.identifier as product_identifier, cp.category_id
                 FROM pim_catalog_product p
-                LEFT JOIN pim_catalog_category_product cp ON cp.product_id = p.id
+                LEFT JOIN pim_catalog_category_product cp ON cp.product_uuid = p.uuid
                 WHERE p.identifier IN (:productIdentifiers)
             UNION
-            SELECT p.id, p.identifier as product_identifier, cp.category_id
+            SELECT p.uuid, p.identifier as product_identifier, cp.category_id
                 FROM pim_catalog_product p
                 JOIN pim_catalog_product_model pm ON pm.id = p.product_model_id
                 JOIN pim_catalog_category_product_model cp ON cp.product_model_id = pm.id
                 WHERE p.identifier IN (:productIdentifiers)
             UNION
-            SELECT p.id, p.identifier as product_identifier, cp.category_id
+            SELECT p.uuid, p.identifier as product_identifier, cp.category_id
                 FROM pim_catalog_product p
                 JOIN pim_catalog_product_model pm1 ON pm1.id = p.product_model_id
                 JOIN pim_catalog_product_model pm2 on pm2.id = pm1.parent_id
@@ -83,13 +83,13 @@ final class GetWorkflowStatusFromProductIdentifiers implements PublicApi\GetWork
                 JOIN oro_access_group ag ON pca.user_group_id = ag.id
                 JOIN oro_user_access_group uag ON uag.group_id = ag.id AND uag.user_id = :userId
             ) as category_access ON category_access.category_id = product_categories.category_id
-        GROUP BY product_categories.product_identifier, product_categories.id
+        GROUP BY product_categories.product_identifier, product_categories.uuid
     ) as category_access_count
     LEFT JOIN (
-        SELECT product_draft.status, product_draft.product_id
+        SELECT product_draft.status, product_draft.product_uuid
         FROM pimee_workflow_product_draft product_draft
         JOIN oro_user user ON user.username = product_draft.author AND user.id = :userId
-    ) as draft ON category_access_count.product_id = draft.product_id
+    ) as draft ON category_access_count.product_uuid = draft.product_uuid
     HAVING workflow_status IS NOT NULL;
 SQL;
 

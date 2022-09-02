@@ -66,7 +66,7 @@ pim:
       schedule: "0 4 * * *"
       resources:
         requests:
-          cpu: "20m"
+          cpu: "10m"
           memory: "80Mi"
     project-recalculate:
       enabled: true
@@ -82,11 +82,19 @@ pim:
       schedule: "0 2 * * *"
       resources:
         requests:
-          cpu: "10m"
+          cpu: "1m"
           memory: "80Mi"
     reference-entity-refresh-records:
       enabled: true
       pimCommand: "akeneo:reference-entity:refresh-records"
+      schedule: "0 23 * * *"
+      resources:
+        requests:
+          cpu: "200m"
+          memory: "128Mi"
+    asset-manager-refresh-asset:
+      enabled: true
+      pimCommand: "akeneo:asset-manager:refresh-assets --all"
       schedule: "0 23 * * *"
       resources:
         requests:
@@ -122,7 +130,7 @@ pim:
       schedule: "*/30 * * * *"
       resources:
         requests:
-          cpu: "200m"
+          cpu: "20m"
           memory: "200Mi"
     purge-events-api-logs:
       enabled: true
@@ -133,16 +141,8 @@ pim:
           memory: "128Mi"
         requests:
           cpu: "100m"
-          memory: "128Mi"
-    migrate-job-messages-from-old-queue:
-      enabled: true
-      pimCommand: "akeneo:batch:migrate-job-messages-from-old-queue --no-interaction"
-      schedule: "*/15 * * * *"
-      resources:
-        requests:
-          cpu: "10m"
           memory: "10Mi"
-    migrate-records-index-mapping:
+    reference-entity-migrate-records-index-mapping:
       enabled: true
       pimCommand: "akeneo:reference-entity:migrate-records-index-mapping --no-interaction"
       schedule: "*/30 * * * *"
@@ -150,11 +150,43 @@ pim:
         requests:
           cpu: "10m"
           memory: "10Mi"
-    migrate-job-execution-warning-count:
+    clean-case-sensitive-attribute-option-spellcheck:
       enabled: true
-      pimCommand: "akeneo:batch:migrate-job-execution-warning-count --no-interaction"
-      schedule: "*/30 * * * *"
+      pimCommand: "pimee:data-quality-insights:clean-case-sensitive-attribute-option-spellcheck --no-interaction"
+      schedule: "15 2 * * *"
       resources:
         requests:
           cpu: "10m"
           memory: "10Mi"
+    clean-completeness-evaluation-results:
+      enabled: true
+      pimCommand: "pim:data-quality-insights:clean-completeness-evaluation-results --no-interaction"
+      schedule: "30 0 * * *"
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "256Mi"
+    zdd-migration-migrate:
+      enabled: true
+      pimCommand: "pim:zdd-migration:migrate --no-interaction"
+      schedule: "45 * * * *"
+      resources:
+        requests:
+          cpu: "350m"
+          memory: "350Mi"
+    job-automation-push-scheduled-jobs-to-queue:
+      enabled: true
+      pimCommand: 'pim:job-automation:push-scheduled-jobs-to-queue'
+      schedule: "*/10 * * * *"
+      resources:
+        requests:
+          cpu: "10m"
+          memory: "10Mi"
+    supplier-portal-clean-supplier-product-files:
+      enabled: true
+      pimCommand: 'akeneo:supplier-portal:clean-supplier-product-files'
+      schedule: "0 5 * * *"
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "100Mi"

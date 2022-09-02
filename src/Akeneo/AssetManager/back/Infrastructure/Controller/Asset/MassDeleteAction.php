@@ -19,7 +19,7 @@ use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\Can
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,21 +35,12 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class MassDeleteAction
 {
-    private MassDeleteAssetsHandler $massDeleteAssetsHandler;
-    private SecurityFacade $securityFacade;
-    private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler;
-    private TokenStorageInterface $tokenStorage;
-
     public function __construct(
-        MassDeleteAssetsHandler $massDeleteAssetsHandler,
-        SecurityFacade $securityFacade,
-        CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
-        TokenStorageInterface $tokenStorage
+        private MassDeleteAssetsHandler $massDeleteAssetsHandler,
+        private SecurityFacadeInterface $securityFacade,
+        private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
+        private TokenStorageInterface $tokenStorage,
     ) {
-        $this->massDeleteAssetsHandler = $massDeleteAssetsHandler;
-        $this->securityFacade = $securityFacade;
-        $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
-        $this->tokenStorage = $tokenStorage;
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier): Response

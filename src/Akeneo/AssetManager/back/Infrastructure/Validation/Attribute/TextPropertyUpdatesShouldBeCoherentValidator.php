@@ -24,11 +24,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class TextPropertyUpdatesShouldBeCoherentValidator extends ConstraintValidator
 {
-    private AttributeRepositoryInterface $attributeRepository;
-
-    public function __construct(AttributeRepositoryInterface $attributeRepository)
+    public function __construct(private AttributeRepositoryInterface $attributeRepository)
     {
-        $this->attributeRepository = $attributeRepository;
     }
 
     public function validate($editAttributeCommand, Constraint $constraint)
@@ -81,7 +78,7 @@ class TextPropertyUpdatesShouldBeCoherentValidator extends ConstraintValidator
             throw new \InvalidArgumentException(sprintf(
                 'Expected argument to be of class "%s", "%s" given',
                 EditAttributeCommand::class,
-                get_class($editAttributeCommand)
+                $editAttributeCommand::class
             ));
         }
     }

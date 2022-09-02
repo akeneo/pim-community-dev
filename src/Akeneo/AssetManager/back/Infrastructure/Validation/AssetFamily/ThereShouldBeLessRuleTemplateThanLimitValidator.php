@@ -25,11 +25,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ThereShouldBeLessRuleTemplateThanLimitValidator extends ConstraintValidator
 {
-    private int $ruleTemplateByAssetFamilyLimit;
-
-    public function __construct(int $ruleTemplateByAssetFamilyLimit)
+    public function __construct(private int $ruleTemplateByAssetFamilyLimit)
     {
-        $this->ruleTemplateByAssetFamilyLimit = $ruleTemplateByAssetFamilyLimit;
     }
 
     public function validate($command, Constraint $constraint): void
@@ -60,7 +57,7 @@ class ThereShouldBeLessRuleTemplateThanLimitValidator extends ConstraintValidato
                     'Expected argument to be of class "%s" or "%s", "%s" given',
                     CreateAssetFamilyCommand::class,
                     EditAssetFamilyCommand::class,
-                    get_class($command)
+                    $command::class
                 )
             );
         }
@@ -72,7 +69,7 @@ class ThereShouldBeLessRuleTemplateThanLimitValidator extends ConstraintValidato
             return;
         }
 
-        $total = count($command->productLinkRules);
+        $total = is_countable($command->productLinkRules) ? count($command->productLinkRules) : 0;
 
         if ($total > $this->ruleTemplateByAssetFamilyLimit) {
             $this->context->buildViolation(ThereShouldBeLessRuleTemplateThanLimit::ERROR_MESSAGE)

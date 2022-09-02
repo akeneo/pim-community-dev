@@ -27,6 +27,13 @@ final class ReferenceEntityCollectionValueFactorySpec extends ObjectBehavior
         $this->supportedAttributeType()->shouldReturn(ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION);
     }
 
+    public function it_keeps_only_unique_value()
+    {
+        $attribute = $this->getAttribute(false, false);
+        $value = $this->createWithoutCheckingData($attribute, null, null, ['blue', 'green', 'green']);
+        $value->shouldBeLike(ReferenceEntityCollectionValue::value('an_attribute', [RecordCode::fromString('blue'), RecordCode::fromString('green')]));
+    }
+
     public function it_creates_a_localizable_and_scopable_value()
     {
         $attribute = $this->getAttribute(true, true);
@@ -52,6 +59,13 @@ final class ReferenceEntityCollectionValueFactorySpec extends ObjectBehavior
     {
         $attribute = $this->getAttribute(false, false);
         $value = $this->createWithoutCheckingData($attribute, null, null, ['blue', 'green']);
+        $value->shouldBeLike(ReferenceEntityCollectionValue::value('an_attribute', [RecordCode::fromString('blue'), RecordCode::fromString('green')]));
+    }
+
+    public function it_creates_a_non_localizable_and_non_scopable_value_with_disordered_codes()
+    {
+        $attribute = $this->getAttribute(false, false);
+        $value = $this->createWithoutCheckingData($attribute, null, null, ['0' => 'blue', '2' => 'green']);
         $value->shouldBeLike(ReferenceEntityCollectionValue::value('an_attribute', [RecordCode::fromString('blue'), RecordCode::fromString('green')]));
     }
 

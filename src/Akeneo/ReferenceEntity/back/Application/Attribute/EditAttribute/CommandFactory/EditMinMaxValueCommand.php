@@ -11,17 +11,11 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFact
  */
 class EditMinMaxValueCommand extends AbstractEditAttributeCommand
 {
-    /** @var string|null */
-    public $minValue;
-
-    /** @var string|null */
-    public $maxValue;
-
-    public function __construct(string $identifier, ?string $minValue, ?string $maxValue)
-    {
+    public function __construct(
+        string $identifier,
+        public ?string $minValue,
+        public ?string $maxValue
+    ) {
         parent::__construct($identifier);
-
-        $this->minValue = $minValue;
-        $this->maxValue = $maxValue;
     }
 }

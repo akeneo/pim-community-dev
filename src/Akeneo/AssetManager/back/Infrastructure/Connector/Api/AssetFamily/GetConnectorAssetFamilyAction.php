@@ -3,9 +3,10 @@
 namespace Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\FindConnectorAssetFamilyByAssetFamilyIdentifierInterface;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily\Hal\AddHalDownloadLinkToAssetFamilyImage;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -13,20 +14,11 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class GetConnectorAssetFamilyAction
 {
-    private FindConnectorAssetFamilyByAssetFamilyIdentifierInterface $findConnectorAssetFamily;
-
-    private AddHalDownloadLinkToAssetFamilyImage $addHalLinksToAssetFamilyImage;
-
-    private SecurityFacade $securityFacade;
-
     public function __construct(
-        FindConnectorAssetFamilyByAssetFamilyIdentifierInterface $findConnectorAssetFamily,
-        AddHalDownloadLinkToAssetFamilyImage $addHalLinksToImageValues,
-        SecurityFacade $securityFacade
+        private FindConnectorAssetFamilyByAssetFamilyIdentifierInterface $findConnectorAssetFamily,
+        private AddHalDownloadLinkToAssetFamilyImage $addHalLinksToAssetFamilyImage,
+        private SecurityFacadeInterface $securityFacade,
     ) {
-        $this->findConnectorAssetFamily = $findConnectorAssetFamily;
-        $this->addHalLinksToAssetFamilyImage = $addHalLinksToImageValues;
-        $this->securityFacade = $securityFacade;
     }
 
     /**
@@ -45,7 +37,7 @@ class GetConnectorAssetFamilyAction
 
         $assetFamily = $this->findConnectorAssetFamily->find($code);
 
-        if (null === $assetFamily) {
+        if (!$assetFamily instanceof ConnectorAssetFamily) {
             throw new NotFoundHttpException(sprintf('Asset family "%s" does not exist.', $code));
         }
 

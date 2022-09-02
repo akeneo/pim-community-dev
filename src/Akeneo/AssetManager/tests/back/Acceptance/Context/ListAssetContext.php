@@ -140,7 +140,7 @@ final class ListAssetContext implements Context
         $expectedAssetCodes = explode(',', $expectedAssetCodes);
         $resultCodes = array_map(
             fn (AssetItem $assetItem): string => $assetItem->code,
-            $this->result->items
+            $this->result->assetItems
         );
 
         array_map(function (string $expectedAssetCode) use ($resultCodes) {
@@ -156,7 +156,7 @@ final class ListAssetContext implements Context
     public function thereShouldBeNoResult(int $expectedTotalOfAssets)
     {
         Assert::assertEquals(0, $this->result->matchesCount);
-        Assert::assertEmpty($this->result->items);
+        Assert::assertEmpty($this->result->assetItems);
         Assert::assertEquals($expectedTotalOfAssets, $this->result->totalCount);
     }
 

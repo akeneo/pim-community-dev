@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ExternalApi;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
@@ -33,6 +33,7 @@ use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Akeneo\Tool\Component\Api\Pagination\ParameterValidatorInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Elasticsearch\Common\Exceptions\ServerErrorResponseException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -280,12 +281,14 @@ class PublishedProductController
                 $paginationParameters,
                 $count
             );
-        } catch (ServerErrorResponseException $e) {
+        } catch (BadRequest400Exception $e) {
             $message = json_decode($e->getMessage(), true);
+
             if (null !== $message && isset($message['error']['root_cause'][0]['type'])
-                && 'query_phase_execution_exception' === $message['error']['root_cause'][0]['type']) {
+                && 'illegal_argument_exception' === $message['error']['root_cause'][0]['type']
+                && 0 === strpos($message['error']['root_cause'][0]['reason'], 'Result window is too large, from + size must be less than or equal to:')) {
                 throw new DocumentedHttpException(
-                    Documentation::URL_DOCUMENTATION . 'pagination.html#search-after-type',
+                    Documentation::URL_DOCUMENTATION . 'pagination.html#the-search-after-method',
                     'You have reached the maximum number of pages you can retrieve with the "page" pagination type. Please use the search after pagination type instead',
                     $e
                 );
@@ -318,7 +321,7 @@ class PublishedProductController
             $pqbOptions['search_after_unique_key'] = $this->getPublishedProductId->fromIdentifier(
                 $queryParameters['search_after']
             ) ?? '';
-            $pqbOptions['search_after'] = [\strtolower($queryParameters['search_after'])];
+            $pqbOptions['search_after'] = [\mb_strtolower($queryParameters['search_after'])];
         }
         $pqb = $this->searchAfterPqbFactory->create($pqbOptions);
 

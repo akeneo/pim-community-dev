@@ -2,12 +2,13 @@
 
 namespace Specification\Akeneo\Pim\Permission\Component\Updater\Setter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
@@ -17,6 +18,7 @@ use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Permission\Component\Updater\Setter\GrantedCategoryFieldSetter;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -65,7 +67,7 @@ class GrantedCategoryFieldSetterSpec extends ObjectBehavior
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
         $product->getCategoryCodes()->willReturn([]);
-        $product->getId()->willReturn('111');
+        $product->getUuid()->willReturn(Uuid::uuid4());
         $categoryAccessRepository->areAllCategoryCodesGranted($user, Attributes::VIEW_ITEMS, [])->willReturn(true);
 
         $product->getCategoriesForVariation()->willReturn([$categoryA, $categoryB]);
@@ -114,10 +116,11 @@ class GrantedCategoryFieldSetterSpec extends ObjectBehavior
             ->willReturn(false);
 
         $entityManager->getRepository(Argument::any())->willReturn($productRepository);
-        $productRepository->find(1)->willReturn($fullProduct);
+        $uuid = Uuid::uuid4();
+        $productRepository->find($uuid)->willReturn($fullProduct);
         $fullProduct->getCategoryCodes()->willReturn(['categoryA', 'categoryB', 'categoryC']);
 
-        $product->getId()->willReturn(1);
+        $product->getUuid()->willReturn($uuid);
         $categories = new ArrayCollection();
         $product->getCategoriesForVariation()->willReturn($categories);
         $product->getCategories()->willReturn($categories);
@@ -152,9 +155,10 @@ class GrantedCategoryFieldSetterSpec extends ObjectBehavior
         $fullProduct->getCategoryCodes()->willReturn(['categoryA', 'categoryB', 'categoryC']);
 
         $entityManager->getRepository(Argument::any())->willReturn($productRepository);
-        $productRepository->find(1)->willReturn($fullProduct);
+        $uuid = Uuid::uuid4();
+        $productRepository->find($uuid)->willReturn($fullProduct);
 
-        $product->getId()->willReturn(1);
+        $product->getUuid()->willReturn($uuid);
         $categories = new ArrayCollection();
         $categories->add($categoryA->getWrappedObject());
         $categories->add($categoryB->getWrappedObject());
@@ -201,9 +205,10 @@ class GrantedCategoryFieldSetterSpec extends ObjectBehavior
         $fullProduct->getCategoryCodes()->willReturn([]);
 
         $entityManager->getRepository(Argument::any())->willReturn($productRepository);
-        $productRepository->find(1)->willReturn($fullProduct);
+        $uuid = Uuid::uuid4();
+        $productRepository->find($uuid)->willReturn($fullProduct);
 
-        $product->getId()->willReturn(1);
+        $product->getUuid()->willReturn($uuid);
         $categories = new ArrayCollection();
         $categories->add($categoryA->getWrappedObject());
         $categories->add($categoryB->getWrappedObject());

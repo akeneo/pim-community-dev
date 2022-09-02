@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateAttributeOptionSpelling;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Structure\AttributeOptionSpellcheck;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductIdsByAttributeOptionCodeQueryInterface;
@@ -21,29 +22,22 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\Get
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetAttributeOptionSpellcheckQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeOptionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 
 final class GetProductIdsWithOutdatedAttributeOptionSpellcheckQuery implements GetProductIdsWithOutdatedAttributeOptionSpellcheckQueryInterface
 {
-    /** @var GetProductIdsByAttributeOptionCodeQueryInterface */
-    private $getProductIdsByAttributeOptionCodesQuery;
-
-    /** @var GetAttributeOptionSpellcheckQueryInterface */
-    private $getAttributeOptionSpellcheckQuery;
-
-    /** @var FilterProductIdsWithCriterionNotEvaluatedSinceQueryInterface */
-    private $filterProductIdsWithCriterionNotEvaluatedSinceQuery;
-
     public function __construct(
-        GetProductIdsByAttributeOptionCodeQueryInterface $getProductIdsByAttributeOptionCodesQuery,
-        GetAttributeOptionSpellcheckQueryInterface $getAttributeOptionSpellcheckQuery,
-        FilterProductIdsWithCriterionNotEvaluatedSinceQueryInterface $filterProductIdsWithCriterionNotEvaluatedSinceQuery
+        private GetProductIdsByAttributeOptionCodeQueryInterface $getProductIdsByAttributeOptionCodesQuery,
+        private GetAttributeOptionSpellcheckQueryInterface $getAttributeOptionSpellcheckQuery,
+        private FilterProductIdsWithCriterionNotEvaluatedSinceQueryInterface $filterProductIdsWithCriterionNotEvaluatedSinceQuery,
+        private ProductEntityIdFactoryInterface $idFactory
     ) {
-        $this->getProductIdsByAttributeOptionCodesQuery = $getProductIdsByAttributeOptionCodesQuery;
-        $this->getAttributeOptionSpellcheckQuery = $getAttributeOptionSpellcheckQuery;
-        $this->filterProductIdsWithCriterionNotEvaluatedSinceQuery = $filterProductIdsWithCriterionNotEvaluatedSinceQuery;
     }
 
-    public function evaluatedSince(\DateTimeImmutable $evaluatedSince, int $bulkSize): \Iterator
+    /**
+     * @return \Generator<int, ProductEntityIdCollection>
+     */
+    public function evaluatedSince(\DateTimeImmutable $evaluatedSince, int $bulkSize): \Generator
     {
         $productIdsBulk = [];
         /** @var AttributeOptionSpellcheck $attributeOptionSpellcheck */
@@ -58,7 +52,7 @@ final class GetProductIdsWithOutdatedAttributeOptionSpellcheckQuery implements G
                 $productIdsBulk = array_merge($productIdsBulk, array_slice($productIds, 0, $nbProductIdsToPick));
 
                 if (count($productIdsBulk) >= $bulkSize) {
-                    yield $productIdsBulk;
+                    yield $this->idFactory->createCollection(array_map(fn ($productId) => (string) $productId, $productIdsBulk));
 
                     $productIdsBulk = $nbProductIdsToPick < $bulkSize ? array_slice($productIds, $nbProductIdsToPick) : [];
                 }
@@ -66,7 +60,7 @@ final class GetProductIdsWithOutdatedAttributeOptionSpellcheckQuery implements G
         }
 
         if (!empty($productIdsBulk)) {
-            yield $productIdsBulk;
+            yield $this->idFactory->createCollection(array_map(fn ($productId) => (string) $productId, $productIdsBulk));
         }
     }
 
@@ -77,22 +71,23 @@ final class GetProductIdsWithOutdatedAttributeOptionSpellcheckQuery implements G
     ): \Iterator {
         $productIdsBulk = [];
         foreach ($this->getProductIdsByAttributeOptionCodesQuery->execute($attributeOptionCode, $bulkSize) as $productIds) {
-            $productIds = $this->filterProductIdsWithCriterionNotEvaluatedSinceQuery->execute(
+            $filteredProductIds = $this->filterProductIdsWithCriterionNotEvaluatedSinceQuery->execute(
                 $productIds,
                 $evaluatedSince,
                 new CriterionCode(EvaluateAttributeOptionSpelling::CRITERION_CODE)
-            );
-            if (empty($productIds)) {
+            )->toArray();
+
+            if (empty($filteredProductIds)) {
                 continue;
             }
 
             $nbProductIdsToPick = max(0, $bulkSize - count($productIdsBulk));
-            $productIdsBulk = array_merge($productIdsBulk, array_slice($productIds, 0, $nbProductIdsToPick));
+            $productIdsBulk = array_merge($productIdsBulk, array_slice($filteredProductIds, 0, $nbProductIdsToPick));
 
             if (count($productIdsBulk) >= $bulkSize) {
                 yield $productIdsBulk;
 
-                $productIdsBulk = $nbProductIdsToPick < $bulkSize ? array_slice($productIds, $nbProductIdsToPick) : [];
+                $productIdsBulk = $nbProductIdsToPick < $bulkSize ? array_slice($filteredProductIds, $nbProductIdsToPick) : [];
             }
         }
 

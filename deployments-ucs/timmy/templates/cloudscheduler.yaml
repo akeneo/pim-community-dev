@@ -1,0 +1,26 @@
+apiVersion: cloudscheduler.cnrm.cloud.google.com/v1beta1
+kind: CloudSchedulerJob
+metadata:
+  labels:
+    {{- include "timmy.labels" . | nindent 4 }}
+  name: {{ include "timmy.fullname" . }}
+  namespace: {{ .Release.Namespace | quote }}
+  annotations:
+    cnrm.cloud.google.com/project-id: {{ .Values.common.gcpProjectID }}
+spec:
+  description:  "The scheduler for Timmy to request the Portal"
+  schedule: {{ .Values.cloudScheduler.schedule | quote }}
+  location: {{ .Values.common.region }}
+  timeZone: {{ .Values.common.timeZone }}
+  httpTarget:
+    uri: "https://{{ .Values.common.region }}-{{ .Values.common.gcpProjectID }}.cloudfunctions.net/{{ .Values.cloudScheduler.cloudFunctionName }}"
+    headers:
+      Content-Type: "application/json"
+    httpMethod: "POST"
+    oidcToken:
+      audience: "https://{{ .Values.common.region }}-{{ .Values.common.gcpProjectID }}.cloudfunctions.net/{{ include "timmy.cloudFunctionName" . }}"
+      serviceAccountRef:
+        external: {{ .Values.cloudFunction.serviceAccountEmail }}
+    body: {{ "{}" | b64enc }}
+
+

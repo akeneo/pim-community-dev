@@ -21,11 +21,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class EditTargetValueValidator extends ConstraintValidator
 {
-    private CheckIfTransformationTarget $checkIfTransformationTarget;
-
-    public function __construct(CheckIfTransformationTarget $checkIfTransformationTarget)
+    public function __construct(private CheckIfTransformationTarget $checkIfTransformationTarget)
     {
-        $this->checkIfTransformationTarget = $checkIfTransformationTarget;
     }
 
     public function validate($command, Constraint $constraint)
@@ -45,7 +42,7 @@ class EditTargetValueValidator extends ConstraintValidator
                 sprintf(
                     'Expected argument to be of class "%s", "%s" given',
                     AbstractEditValueCommand::class,
-                    get_class($command)
+                    $command::class
                 )
             );
         }

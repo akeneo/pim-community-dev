@@ -10,4 +10,4 @@ extensions:
         module: pim/product-edit-form/attribute-filter-all-improvable-attributes
         parent: pim-product-model-edit-form-attribute-filter
         position: 140
-        feature: data_quality_insights
+        feature: data_quality_insights_all_criteria

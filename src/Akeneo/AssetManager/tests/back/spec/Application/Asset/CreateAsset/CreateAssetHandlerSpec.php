@@ -34,23 +34,23 @@ use Webmozart\Assert\Assert;
 
 class CreateAssetHandlerSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         AssetRepositoryInterface $assetRepository,
         FindAssetFamilyAttributeAsLabelInterface $findAttributeAsLabel
-    ) {
+    ): void {
         $this->beConstructedWith($assetRepository, $findAttributeAsLabel);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(CreateAssetHandler::class);
     }
 
-    function it_creates_and_save_a_new_asset(
+    public function it_creates_and_save_a_new_asset(
         AssetRepositoryInterface $assetRepository,
         CreateAssetCommand $createAssetCommand,
         FindAssetFamilyAttributeAsLabelInterface $findAttributeAsLabel
-    ) {
+    ): void {
         $createAssetCommand->code = 'intel';
         $createAssetCommand->assetFamilyIdentifier = 'brand';
         $createAssetCommand->labels = [
@@ -109,11 +109,11 @@ class CreateAssetHandlerSpec extends ObjectBehavior
         $this->__invoke($createAssetCommand);
     }
 
-    function it_creates_and_save_a_new_asset_and_ignores_empty_labels(
+    public function it_creates_and_save_a_new_asset_and_ignores_empty_labels(
         AssetRepositoryInterface $assetRepository,
         CreateAssetCommand $createAssetCommand,
         FindAssetFamilyAttributeAsLabelInterface $findAttributeAsLabel
-    ) {
+    ): void {
         $createAssetCommand->code = 'intel';
         $createAssetCommand->assetFamilyIdentifier = 'brand';
         $createAssetCommand->labels = [
@@ -147,6 +147,69 @@ class CreateAssetHandlerSpec extends ObjectBehavior
                 $assetFamilyIdentifier,
                 AssetCode::fromString('intel'),
                 ValueCollection::fromValues([]),
+                $asset->getCreatedAt(),
+                $asset->getUpdatedAt(),
+            );
+
+            Assert::eq($expectedAsset, $asset);
+            return true;
+        }))->shouldBeCalled();
+
+        $this->__invoke($createAssetCommand);
+    }
+
+    public function it_creates_and_save_a_new_asset_with_0_as_code_and_label(
+        AssetRepositoryInterface $assetRepository,
+        CreateAssetCommand $createAssetCommand,
+        FindAssetFamilyAttributeAsLabelInterface $findAttributeAsLabel
+    ): void {
+        $createAssetCommand->code = '0';
+        $createAssetCommand->assetFamilyIdentifier = 'brand';
+        $createAssetCommand->labels = [
+            'en_US' => '0',
+            'fr_FR' => 'zéro',
+        ];
+
+        $assetIdentifier = AssetIdentifier::fromString('brand_0_a1677570-a278-444b-ab46-baa1db199392');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($createAssetCommand->assetFamilyIdentifier);
+        $labelAttributeReference = AttributeAsLabelReference::createFromNormalized('label_brand_fingerprint');
+
+        $findAttributeAsLabel
+            ->find(Argument::type(AssetFamilyIdentifier::class))
+            ->willReturn($labelAttributeReference);
+
+        $assetRepository->nextIdentifier(
+            Argument::type(AssetFamilyIdentifier::class),
+            Argument::type(AssetCode::class)
+        )->willReturn($assetIdentifier);
+
+        $assetRepository->create(Argument::that(function ($asset) use (
+            $assetIdentifier,
+            $assetFamilyIdentifier,
+            $labelAttributeReference
+        ) {
+            Assert::count($asset->getRecordedEvents(), 1);
+            Assert::isInstanceOf(current($asset->getRecordedEvents()), AssetCreatedEvent::class);
+            $asset->clearRecordedEvents();
+
+            $expectedAsset = Asset::fromState(
+                $assetIdentifier,
+                $assetFamilyIdentifier,
+                AssetCode::fromString('0'),
+                ValueCollection::fromValues([
+                    Value::create(
+                        $labelAttributeReference->getIdentifier(),
+                        ChannelReference::noReference(),
+                        LocaleReference::createFromNormalized('en_US'),
+                        TextData::createFromNormalize('0')
+                    ),
+                    Value::create(
+                        $labelAttributeReference->getIdentifier(),
+                        ChannelReference::noReference(),
+                        LocaleReference::createFromNormalized('fr_FR'),
+                        TextData::createFromNormalize('zéro')
+                    ),
+                ]),
                 $asset->getCreatedAt(),
                 $asset->getUpdatedAt(),
             );

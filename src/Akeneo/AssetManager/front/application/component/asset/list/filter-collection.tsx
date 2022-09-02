@@ -1,13 +1,14 @@
 import React from 'react';
 import {Context} from 'akeneoassetmanager/domain/model/context';
-import {FilterView, FilterViewCollection, getDataFilterViews} from 'akeneoassetmanager/application/configuration/value';
+import {FilterView, FilterViewCollection} from 'akeneoassetmanager/application/configuration/value';
 import {Filter} from 'akeneoassetmanager/application/reducer/grid';
 import {getAttributeFilterKey} from 'akeneoassetmanager/tools/filter';
 import {NormalizedOptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
 import {NormalizedOptionCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option-collection';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import {AssetAttributeFetcher} from 'akeneoassetmanager/application/component/library/library';
+import {useFilterViewsGenerator} from 'akeneoassetmanager/application/hooks/useFilterViewsGenerator';
+import {useAttributeFetcher} from 'akeneoassetmanager/infrastructure/fetcher/useAttributeFetcher';
 
 export type FilterableAttribute = NormalizedOptionAttribute | NormalizedOptionCollectionAttribute;
 
@@ -17,18 +18,17 @@ export const sortFilterViewsByAttributeOrder = (filterViewCollection: FilterView
   );
 };
 
-export const useFilterViews = (
-  assetFamilyIdentifier: AssetFamilyIdentifier | null,
-  dataProvider: {assetAttributeFetcher: AssetAttributeFetcher}
-): FilterViewCollection | null => {
+export const useFilterViews = (assetFamilyIdentifier: AssetFamilyIdentifier | null): FilterViewCollection | null => {
+  const attributeFetcher = useAttributeFetcher();
   const [filterViews, setFilterViews] = React.useState<FilterViewCollection | null>(null);
+  const filterViewsGenerator = useFilterViewsGenerator();
 
   React.useEffect(() => {
     if (null === assetFamilyIdentifier) {
       return;
     }
-    dataProvider.assetAttributeFetcher.fetchAll(assetFamilyIdentifier).then((attributes: NormalizedAttribute[]) => {
-      setFilterViews(sortFilterViewsByAttributeOrder(getDataFilterViews(attributes)));
+    attributeFetcher.fetchAllNormalized(assetFamilyIdentifier).then((attributes: NormalizedAttribute[]) => {
+      setFilterViews(sortFilterViewsByAttributeOrder(filterViewsGenerator(attributes)));
     });
   }, [assetFamilyIdentifier]);
 

@@ -47,6 +47,7 @@ class AddPermissionFilterPass implements CompilerPassInterface
                                         ],
                                     ],
                                 ],
+                                'feature_flag' => 'permission'
                             ],
                         ],
                     ],

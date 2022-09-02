@@ -53,6 +53,10 @@ services:
             - '@akeneo_rule_engine.repository.rule_definition'
             - '@pimee_catalog_rule.builder.product'
 
+    Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\FeatureFlagContext:
+        arguments:
+            - '@feature_flags'
+
     Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\EventSubscriberContext:
         tags:
             - { name: kernel.event_subscriber }
@@ -72,7 +76,7 @@ services:
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
 
-    akeneo_measurement.public_api.get_unit_translations:
+    akeneo_measurement.service_api.get_unit_translations:
         class: AkeneoTest\Acceptance\MeasurementFamily\InMemoryGetUnitTranslations
 
     # In EE GrantedCategoryFieldSetter is used in place of CategoryFieldSetter.

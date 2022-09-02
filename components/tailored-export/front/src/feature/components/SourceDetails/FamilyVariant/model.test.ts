@@ -26,10 +26,10 @@ test('it validates that something is a family variant source', () => {
   ).toEqual(true);
 
   expect(
-    // @ts-expect-error invalid operations
     isFamilyVariantSource({
       ...source,
       operations: {
+        // @ts-expect-error invalid operations
         foo: 'bar',
       },
     })

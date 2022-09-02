@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Application\Asset\CreateAsset;
 
+use Akeneo\AssetManager\Domain\Exception\AssetAlreadyExistsError;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
@@ -44,6 +45,9 @@ class CreateAssetHandler
         $this->findAttributeAsLabel = $findAttributeAsLabel;
     }
 
+    /**
+     * @throws AssetAlreadyExistsError
+     */
     public function __invoke(CreateAssetCommand $createAssetCommand): void
     {
         $code = AssetCode::fromString($createAssetCommand->code);
@@ -75,7 +79,7 @@ class CreateAssetHandler
 
         $labelValues = [];
         foreach ($createAssetCommand->labels as $locale => $label) {
-            if (empty($label)) {
+            if ('' === $label) {
                 continue;
             }
 

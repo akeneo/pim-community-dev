@@ -144,6 +144,10 @@ class TableValuesProcessorSpec extends ObjectBehavior
                 'ingredient' => 'salt',
                 'quantity' => '50',
                 'allergenic' => false,
+                'length' => [
+                    'unit' => 'CENTIMETER',
+                    'amount' => '50',
+                ],
             ],
         ];
 
@@ -156,6 +160,10 @@ class TableValuesProcessorSpec extends ObjectBehavior
                 'ingredient' => 'salt',
                 'quantity' => '50',
                 'allergenic' => false,
+                'length' => [
+                    'unit' => 'CENTIMETER',
+                    'amount' => '50',
+                ],
             ])
         ));
     }

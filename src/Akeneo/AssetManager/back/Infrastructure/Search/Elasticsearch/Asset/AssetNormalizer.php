@@ -33,30 +33,18 @@ class AssetNormalizer implements AssetNormalizerInterface
     private const VALUES_FIELD = 'values';
     private const ES_TERM_MAX_LENGTH = 32766;
 
-    private FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales;
-
-    private SqlFindSearchableAssets $findSearchableAssets;
-
-    private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType;
-
-    private FindActivatedLocalesInterface $findActivatedLocales;
-
     public function __construct(
-        FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
-        SqlFindSearchableAssets $findSearchableAssets,
-        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
-        FindActivatedLocalesInterface $findActivatedLocales
+        private FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
+        private SqlFindSearchableAssets $findSearchableAssets,
+        private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
+        private FindActivatedLocalesInterface $findActivatedLocales,
     ) {
-        $this->findValueKeysToIndexForAllChannelsAndLocales = $findValueKeysToIndexForAllChannelsAndLocales;
-        $this->findSearchableAssets = $findSearchableAssets;
-        $this->findValueKeysByAttributeType = $findValueKeysByAttributeType;
-        $this->findActivatedLocales = $findActivatedLocales;
     }
 
     public function normalizeAsset(AssetIdentifier $assetIdentifier): array
     {
         $searchableAssetItem = $this->findSearchableAssets->byAssetIdentifier($assetIdentifier);
-        if (null === $searchableAssetItem) {
+        if (!$searchableAssetItem instanceof SearchableAssetItem) {
             throw AssetNotFoundException::withIdentifier($assetIdentifier);
         }
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($searchableAssetItem->assetFamilyIdentifier);

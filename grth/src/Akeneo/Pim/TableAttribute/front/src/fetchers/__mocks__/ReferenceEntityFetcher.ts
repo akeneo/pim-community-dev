@@ -10,6 +10,7 @@ const fetchAll = async (): Promise<ReferenceEntity[]> => {
     {identifier: 'brand', labels: {en_US: 'Brand', fr_FR: 'Marque'}, image},
     {identifier: 'city', labels: {en_US: 'City'}, image},
     {identifier: 'color', labels: {}, image} as ReferenceEntity,
+    {identifier: 'empty_reference_entity', labels: {}, image},
   ]);
 };
 

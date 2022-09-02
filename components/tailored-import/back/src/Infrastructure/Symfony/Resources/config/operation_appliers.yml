@@ -1,0 +1,56 @@
+services:
+  Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\OperationApplier:
+    arguments:
+      - !tagged_iterator akeneo.tailored_import.operation_applier
+
+  Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\CleanHTMLTagsOperationApplier:
+    tags:
+      - { name: akeneo.tailored_import.operation_applier }
+
+  Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\ConvertToNumberOperationApplier:
+    tags:
+      - { name: akeneo.tailored_import.operation_applier }
+
+  Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\ConvertToMeasurementOperationApplier:
+    tags:
+      - { name: akeneo.tailored_import.operation_applier }
+
+  Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\ConvertToPriceOperationApplier:
+    tags:
+      - { name: akeneo.tailored_import.operation_applier }
+
+  Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\BooleanReplacementOperationApplier:
+    tags:
+      - { name: akeneo.tailored_import.operation_applier }
+
+  Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\EnabledReplacementOperationApplier:
+    tags:
+      - { name: akeneo.tailored_import.operation_applier }
+
+  Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\SplitOperationApplier:
+    tags:
+      - { name: akeneo.tailored_import.operation_applier }
+
+  Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\ConvertToDateOperationApplier:
+    tags:
+      - { name: akeneo.tailored_import.operation_applier }
+
+  Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\SimpleSelectReplacementOperationApplier:
+    tags:
+      - { name: akeneo.tailored_import.operation_applier }
+
+  Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\MultiSelectReplacementOperationApplier:
+    tags:
+      - { name: akeneo.tailored_import.operation_applier }
+
+  Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\CategoriesReplacementOperationApplier:
+    tags:
+      - { name: akeneo.tailored_import.operation_applier }
+
+  Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\FamilyReplacementOperationApplier:
+    tags:
+      - { name: akeneo.tailored_import.operation_applier }
+
+  Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\ChangeCaseOperationApplier:
+    tags:
+      - { name: akeneo.tailored_import.operation_applier }

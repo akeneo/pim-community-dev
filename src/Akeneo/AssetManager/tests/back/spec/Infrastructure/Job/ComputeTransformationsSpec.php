@@ -60,8 +60,8 @@ class ComputeTransformationsSpec extends ObjectBehavior
             $validator,
             $countAssets,
             $jobRepository,
-            3,
-            $eventAggregator
+            $eventAggregator,
+            3
         );
         $executionContext = new ExecutionContext();
         $executionContext->put(JobInterface::WORKING_DIRECTORY_PARAMETER, '/jobexecution/working/directory');

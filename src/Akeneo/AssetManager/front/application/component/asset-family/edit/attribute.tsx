@@ -1,5 +1,5 @@
 import React, {memo, useRef} from 'react';
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import {Key, Button, SectionTitle, useAutoFocus} from 'akeneo-design-system';
 import {
   useTranslate,
@@ -20,20 +20,20 @@ import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edi
 import {CreateState} from 'akeneoassetmanager/application/reducer/attribute/create';
 import CreateAttributeModal from 'akeneoassetmanager/application/component/attribute/create';
 import ManageOptionsView from 'akeneoassetmanager/application/component/attribute/edit/option';
-import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {attributeEditionStartByIdentifier} from 'akeneoassetmanager/application/action/attribute/edit';
 import AttributeEditForm from 'akeneoassetmanager/application/component/attribute/edit';
 import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
-import denormalizeAttribute from 'akeneoassetmanager/application/denormalizer/attribute/attribute';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
-import {getAttributeIcon} from 'akeneoassetmanager/application/configuration/attribute';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
 import {EditOptionState} from 'akeneoassetmanager/application/reducer/attribute/type/option';
 import {canEditAssetFamily, canEditLocale} from 'akeneoassetmanager/application/reducer/right';
 import {catalogLocaleChanged} from 'akeneoassetmanager/domain/event/user';
 import {ContextSwitchers} from 'akeneoassetmanager/application/component/app/layout';
 import {UserNavigation} from 'akeneoassetmanager/application/component/app/user-navigation';
+import {useAttributeIcon} from 'akeneoassetmanager/application/hooks/attribute/useAttributeIcon';
+import {useAttributeDenormalizer} from 'akeneoassetmanager/application/hooks/attribute/useAttributeDenormalizer';
+import {useAttributeFetcher} from 'akeneoassetmanager/infrastructure/fetcher/useAttributeFetcher';
 
 interface StateProps {
   context: {
@@ -60,7 +60,6 @@ interface StateProps {
 interface DispatchProps {
   events: {
     onAttributeCreationStart: () => void;
-    onAttributeEdit: (attributeIdentifier: AttributeIdentifier) => void;
     onLocaleChanged: (localeCode: LocaleCode) => void;
   };
 }
@@ -141,7 +140,6 @@ const AttributePlaceholders = () => {
 
 interface AttributeViewProps {
   normalizedAttribute: NormalizedAttribute;
-  onAttributeEdit: (attributeIdentifier: AttributeIdentifier) => void;
   locale: string;
   rights: {
     locale: {
@@ -153,13 +151,16 @@ interface AttributeViewProps {
   };
 }
 
-const AttributeView = memo(({normalizedAttribute, onAttributeEdit, locale, rights}: AttributeViewProps) => {
+const AttributeView = memo(({normalizedAttribute, locale, rights}: AttributeViewProps) => {
   const translate = useTranslate();
   const {isGranted} = useSecurity();
+  const dispatch = useDispatch();
+  const attributeFetcher = useAttributeFetcher();
+  const attributeDenormalizer = useAttributeDenormalizer();
 
   const canEditAttribute = isGranted('akeneo_assetmanager_attribute_edit') && rights.assetFamily.edit;
-  const attribute = denormalizeAttribute(normalizedAttribute);
-  const icon = getAttributeIcon(attribute.getType());
+  const attribute = attributeDenormalizer(normalizedAttribute);
+  const icon = useAttributeIcon(attribute.getType());
 
   return (
     <div
@@ -193,17 +194,31 @@ const AttributeView = memo(({normalizedAttribute, onAttributeEdit, locale, right
         {canEditAttribute ? (
           <button
             className="AknIconButton AknIconButton--edit"
-            onClick={() => onAttributeEdit(attribute.getIdentifier())}
+            onClick={() =>
+              dispatch(
+                attributeEditionStartByIdentifier(attributeFetcher, attributeDenormalizer, attribute.getIdentifier())
+              )
+            }
             onKeyPress={(event: React.KeyboardEvent<HTMLButtonElement>) => {
-              if (Key.Space === event.key) onAttributeEdit(attribute.getIdentifier());
+              if (Key.Space === event.key)
+                dispatch(
+                  attributeEditionStartByIdentifier(attributeFetcher, attributeDenormalizer, attribute.getIdentifier())
+                );
             }}
           />
         ) : (
           <button
             className="AknIconButton AknIconButton--view"
-            onClick={() => onAttributeEdit(attribute.getIdentifier())}
+            onClick={() =>
+              dispatch(
+                attributeEditionStartByIdentifier(attributeFetcher, attributeDenormalizer, attribute.getIdentifier())
+              )
+            }
             onKeyPress={(event: React.KeyboardEvent<HTMLButtonElement>) => {
-              if (Key.Space === event.key) onAttributeEdit(attribute.getIdentifier());
+              if (Key.Space === event.key)
+                dispatch(
+                  attributeEditionStartByIdentifier(attributeFetcher, attributeDenormalizer, attribute.getIdentifier())
+                );
             }}
           />
         )}
@@ -275,12 +290,7 @@ const AttributesView = ({
                         key={attribute.identifier}
                         errorMessage={translate('pim_asset_manager.asset_family.attribute.error.render_list')}
                       >
-                        <AttributeView
-                          normalizedAttribute={attribute}
-                          onAttributeEdit={events.onAttributeEdit}
-                          locale={context.locale}
-                          rights={rights}
-                        />
+                        <AttributeView normalizedAttribute={attribute} locale={context.locale} rights={rights} />
                       </ErrorBoundary>
                     ))}
                   </>
@@ -344,9 +354,6 @@ export default connect(
       events: {
         onAttributeCreationStart: () => {
           dispatch(attributeCreationStart());
-        },
-        onAttributeEdit: (attributeIdentifier: AttributeIdentifier) => {
-          dispatch(attributeEditionStartByIdentifier(attributeIdentifier));
         },
         onLocaleChanged: (localeCode: LocaleCode) => {
           dispatch(catalogLocaleChanged(localeCode));

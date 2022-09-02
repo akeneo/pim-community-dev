@@ -15,3 +15,12 @@ oneup_flysystem:
         data_quality_insights_shared_adapter:
             local:
                 location: '%kernel.project_dir%/var/file_storage/data_quality_insights_shared'
+        tailored_import_storage_adapter:
+            local:
+                location: '%kernel.project_dir%/var/file_storage/tailored_import'
+        supplier_portal_storage_adapter:
+            local:
+                location: '%kernel.project_dir%/var/file_storage/supplier_portal'
+        local_storage_adapter:
+            local:
+                location: '/'

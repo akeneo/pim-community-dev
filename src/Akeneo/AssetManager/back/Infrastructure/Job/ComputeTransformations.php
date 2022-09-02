@@ -48,47 +48,23 @@ class ComputeTransformations implements TaskletInterface, TrackableTaskletInterf
     ];
 
     private ?StepExecution $stepExecution = null;
-    private FindAssetIdentifiersByAssetFamilyInterface $findIdentifiersByAssetFamily;
-    private GetTransformations $getTransformations;
-    private AssetRepositoryInterface $assetRepository;
-    private GetOutdatedVariationSource $getOutdatedVariationSource;
-    private TransformationExecutor $transformationExecutor;
-    private EditAssetHandler $editAssetHandler;
-    private ValidatorInterface $validator;
-    private CountAssetsInterface $countAssets;
-    private JobRepositoryInterface $jobRepository;
-    private int $batchSize;
-    /** TODO pullup master: remove nullable for $eventAggregator */
-    private ?EventAggregatorInterface $eventAggregator;
 
     /** @var TransformationCollection[] */
     private array $cachedTransformationsPerAssetFamily = [];
 
     public function __construct(
-        FindAssetIdentifiersByAssetFamilyInterface $findIdentifiersByAssetFamily,
-        GetTransformations $getTransformations,
-        AssetRepositoryInterface $assetRepository,
-        GetOutdatedVariationSource $getOutdatedVariationSource,
-        TransformationExecutor $transformationExecutor,
-        EditAssetHandler $editAssetHandler,
-        ValidatorInterface $validator,
-        CountAssetsInterface $countAssets,
-        JobRepositoryInterface $jobRepository,
-        int $batchSize,
-        /** TODO pullup master: remove nullable for $eventAggregator */
-        EventAggregatorInterface $eventAggregator = null
+        private FindAssetIdentifiersByAssetFamilyInterface $findIdentifiersByAssetFamily,
+        private GetTransformations $getTransformations,
+        private AssetRepositoryInterface $assetRepository,
+        private GetOutdatedVariationSource $getOutdatedVariationSource,
+        private TransformationExecutor $transformationExecutor,
+        private EditAssetHandler $editAssetHandler,
+        private ValidatorInterface $validator,
+        private CountAssetsInterface $countAssets,
+        private JobRepositoryInterface $jobRepository,
+        private EventAggregatorInterface $eventAggregator,
+        private int $batchSize,
     ) {
-        $this->findIdentifiersByAssetFamily = $findIdentifiersByAssetFamily;
-        $this->getTransformations = $getTransformations;
-        $this->assetRepository = $assetRepository;
-        $this->getOutdatedVariationSource = $getOutdatedVariationSource;
-        $this->transformationExecutor = $transformationExecutor;
-        $this->editAssetHandler = $editAssetHandler;
-        $this->validator = $validator;
-        $this->countAssets = $countAssets;
-        $this->jobRepository = $jobRepository;
-        $this->batchSize = $batchSize;
-        $this->eventAggregator = $eventAggregator;
     }
 
     public function setStepExecution(StepExecution $stepExecution)
@@ -125,10 +101,7 @@ class ComputeTransformations implements TaskletInterface, TrackableTaskletInterf
         $this->stepExecution->setTotalItems($totalItems);
         $this->doExecute($assetIdentifiers);
 
-        /** TODO pullup master: remove this condition as eventAggregator won't be null */
-        if (null !== $this->eventAggregator) {
-            $this->eventAggregator->flushEvents();
-        }
+        $this->eventAggregator->flushEvents();
     }
 
     /**

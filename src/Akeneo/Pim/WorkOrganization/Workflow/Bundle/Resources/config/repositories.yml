@@ -5,7 +5,6 @@ parameters:
     pimee_workflow.repository.published_association.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Repository\PublishedAssociationRepository
     pimee_workflow.repository.delegating_product.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Repository\DelegatingProductRepository
 
-
 services:
     pimee_workflow.object_manager.product_draft:
         alias: doctrine.orm.entity_manager
@@ -59,16 +58,6 @@ services:
         arguments: ['%pimee_workflow.model.product_model_draft.class%']
         tags:
             - { name: 'pim_repository' }
-
-    pimee_workflow.repository.published_product_mass_action:
-        class: '%pim_catalog.repository.product_mass_action.class%'
-        arguments:
-            - '@pim_catalog.object_manager.product'
-            - '%pimee_workflow.entity.published_product.class%'
-            - '@pimee_workflow.repository.published_product'
-            - '@security.token_storage'
-            - '%pimee_security.entity.product_category_access.class%'
-            - '%pim_catalog.entity.product.class%'
 
     pimee_workflow.repository.delegating_product:
         class: '%pimee_workflow.repository.delegating_product.class%'

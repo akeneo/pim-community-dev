@@ -11,14 +11,13 @@ import {
   ChannelCode,
 } from '@akeneo-pim-community/shared';
 import {Updater} from 'akeneoassetmanager/application/component/library/MassEdit/model/updater';
-import {getFieldView} from 'akeneoassetmanager/application/configuration/value';
-import {useConfig} from 'akeneoassetmanager/application/hooks/useConfig';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import {getLocaleFromChannel, getLocalesFromChannel} from 'akeneoassetmanager/application/reducer/structure';
 import {LocaleDropdown} from 'akeneoassetmanager/application/component/app/LocaleDropdown';
 import {ChannelDropdown} from 'akeneoassetmanager/application/component/app/ChannelDropdown';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
+import {useInputViewGenerator} from 'akeneoassetmanager/application/hooks/useInputViewGenerator';
 
 /** @TODO RAC-331 use body style bold */
 const AttributeName = styled.label`
@@ -57,11 +56,13 @@ type UpdaterRowProps = {
 
 const UpdaterRow = ({updater, uiLocale, readOnly = false, errors, onChange, onRemove, channels}: UpdaterRowProps) => {
   const translate = useTranslate();
-  const config = useConfig('value');
-  const InputView = getFieldView(config)(updater);
+  const inputViewGenerator = useInputViewGenerator();
+  const InputView = inputViewGenerator(updater);
+
   const handleDataChange = (editionValue: EditionValue) => {
     onChange({...updater, data: editionValue.data});
   };
+
   const handleActionChange = (action: typeof updater.action) => {
     onChange({...updater, action});
   };

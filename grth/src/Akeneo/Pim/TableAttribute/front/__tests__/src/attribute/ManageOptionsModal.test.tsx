@@ -8,6 +8,7 @@ import {ingredientsSelectOptions} from '../../../src/fetchers/__mocks__/SelectOp
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
 jest.mock('../../../src/fetchers/LocaleFetcher');
 jest.mock('../../../src/attribute/LocaleSwitcher');
+jest.mock('../../../src/attribute/ImportOptionsButton');
 
 const findInputs = async (rowIndex: number | string) => {
   const row = await screen.findByTestId(`row-${rowIndex}`);
@@ -102,6 +103,8 @@ describe('ManageOptionsModal', () => {
     expect(screen.getByText('pim_table_attribute.validations.column_code_must_be_filled')).toBeInTheDocument();
     fireEvent.change(getCodeInput('new'), {target: {value: 'pepper'}});
     expect(screen.getByText('pim_table_attribute.validations.duplicated_select_code')).toBeInTheDocument();
+    fireEvent.change(getCodeInput('new'), {target: {value: 'SALT'}});
+    expect(screen.getAllByText('pim_table_attribute.validations.duplicated_select_code')).toHaveLength(2);
   });
 
   it('should autofill the code', async () => {
@@ -281,7 +284,7 @@ describe('ManageOptionsModal', () => {
     fireEvent.click(screen.getByText('pim_common.delete'));
 
     expect(await findCodeInput(19)).toBeInTheDocument();
-  }, 10000);
+  }, 20000);
 
   it('should prevent the user from adding a new option when reaching the limit', async () => {
     renderWithProviders(
@@ -387,5 +390,62 @@ describe('ManageOptionsModal', () => {
     fireEvent.keyDown(await findCodeInput(0), {key: 'Escape', code: 'Escape'});
 
     expect(handleClose).toBeCalled();
+  });
+
+  it('should import new options from existing attribute', async () => {
+    renderWithProviders(
+      <ManageOptionsModal
+        attribute={getComplexTableAttribute()}
+        onChange={jest.fn()}
+        columnDefinition={getSelectColumnDefinition()}
+        onClose={jest.fn()}
+      />
+    );
+    expect(await findCodeInput(0)).toHaveValue('salt');
+    fireEvent.click(screen.getByText('Fake import button'));
+
+    expect(await findCodeInput(4)).toHaveValue('fakeOption1');
+    expect(await findCodeInput(5)).toHaveValue('fakeOption2');
+    expect(await findLabelInput(4)).toHaveValue('Fake Option 1 Label English');
+    expect(await findLabelInput(5)).toHaveValue('');
+  });
+
+  it('should import update options from existing attribute', async () => {
+    renderWithProviders(
+      <ManageOptionsModal
+        attribute={getComplexTableAttribute()}
+        onChange={jest.fn()}
+        columnDefinition={{
+          ...getSelectColumnDefinition(),
+          code: 'new_column',
+          options: [
+            {
+              code: 'fakeOption1',
+              labels: {
+                fr_FR: 'Fake Option 1 Label French',
+              },
+            },
+            {
+              code: 'fakeOption2',
+              labels: {
+                en_US: 'Fake Option 2 Label English',
+              },
+            },
+          ],
+        }}
+        onClose={jest.fn()}
+      />
+    );
+
+    expect(await findCodeInput(0)).toHaveValue('fakeOption1');
+    expect(await findCodeInput(1)).toHaveValue('fakeOption2');
+    expect(await findLabelInput(0)).toHaveValue('');
+    expect(await findLabelInput(1)).toHaveValue('Fake Option 2 Label English');
+
+    fireEvent.click(screen.getByText('Fake import button'));
+    expect(await findCodeInput(0)).toHaveValue('fakeOption1');
+    expect(await findCodeInput(1)).toHaveValue('fakeOption2');
+    expect(await findLabelInput(0)).toHaveValue('Fake Option 1 Label English');
+    expect(await findLabelInput(1)).toHaveValue('');
   });
 });

@@ -13,6 +13,7 @@ namespace Akeneo\Pim\Permission\Bundle\Form\EventListener;
 
 use Akeneo\Pim\Permission\Bundle\Form\Type\JobProfilePermissionsType;
 use Akeneo\Pim\Permission\Bundle\Manager\JobProfileAccessManager;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -27,28 +28,12 @@ use Symfony\Component\Form\FormEvents;
  */
 class JobProfilePermissionsSubscriber implements EventSubscriberInterface
 {
-    /** @var JobProfileAccessManager */
-    protected $accessManager;
-
-    /** @var SecurityFacade */
-    protected $securityFacade;
-
-    /** @var GroupRepository */
-    protected $userGroupRepository;
-
-    /**
-     * @param JobProfileAccessManager $accessManager
-     * @param SecurityFacade          $securityFacade
-     * @param GroupRepository         $userGroupRepository
-     */
     public function __construct(
-        JobProfileAccessManager $accessManager,
-        SecurityFacade $securityFacade,
-        GroupRepository $userGroupRepository
+        private JobProfileAccessManager $accessManager,
+        private SecurityFacade $securityFacade,
+        private GroupRepository $userGroupRepository,
+        private FeatureFlags $featureFlags
     ) {
-        $this->accessManager = $accessManager;
-        $this->securityFacade = $securityFacade;
-        $this->userGroupRepository = $userGroupRepository;
     }
 
     /**
@@ -137,6 +122,6 @@ class JobProfilePermissionsSubscriber implements EventSubscriberInterface
     {
         $resource = sprintf('pimee_importexport_%s_profile_edit_permissions', $jobInstance->getType());
 
-        return $this->securityFacade->isGranted($resource);
+        return $this->securityFacade->isGranted($resource) && $this->featureFlags->isEnabled('permission');
     }
 }

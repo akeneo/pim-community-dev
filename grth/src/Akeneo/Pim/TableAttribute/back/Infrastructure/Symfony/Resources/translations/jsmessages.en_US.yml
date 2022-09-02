@@ -145,7 +145,8 @@ pim_table_attribute:
             column_code: Column code
             properties_helper: You must define the table structure and at least 2 columns before you can save your table attribute
             table_structure_helper_text: A table attribute must contain at least 2 columns. The first one is always a “select” column type. Once you’ve created the first column, you must add options. To do so, click on “manage options” and add up to {{ limit }} options! Then, you’ll be able to use each of these options as rows in your product tables.
-            table_structure_helper_link: This article may help you to learn more about table attributes.
+            table_structure_helper_text_with_reference_entity: A table attribute must contain at least 2 columns. Once you've created the first one, using either “Select“ or “Reference Entities“ column types, define and manage rows based on options or records.
+            table_structure_helper_link: Check out our help center for more information.
             limit_option_reached: You reached the limit of {{ limit }} options.
             template_label: Select the standard of your "{{ templateLabel }}" table
             delete_column_helper: When you delete this column, all of its values are removed from all the products using the "{{ attributeLabel }}" table attribute.
@@ -155,11 +156,17 @@ pim_table_attribute:
             no_options: No options found
             please_try_again: Please try again
             first_column_type_helper: The first column of a Table is always a Select column type.
+            first_column_type_helper_with_reference_entity: The first column of a Table is either a "Select" or "Reference Entity" column type.
             discard_changes: You will lose changes to the select options if you leave the page.
             completeness: Completeness
             required_for_completeness: Required for completeness
             completeness_helper_text: "To discover how completeness works for a table attribute,"
             completeness_helper_link: check out our help center.
+            reference_entity: Reference entity
+            import_from_existing_attribute: Import from existing attribute
+            option_count: "{0,1}{{ count }} option|]1, Inf[{{ count }} options"
+            measurement_family: Measurement family
+            measurement_default_unit: Measurement default unit
 
         product:
             items_per_page: Items per page
@@ -168,10 +175,13 @@ pim_table_attribute:
             no_search_result: "Sorry, there are no lines for your search!"
             no_rows_title: "Your {{ attributeLabel }} table is empty."
             no_rows_subtitle: Add rows to define new properties
-            no_rows_subtitle_on_readonly: To be able to edit this attribute, go to the attribute setting page or contact your PIM administrator.
+            no_rows_subtitle_no_permission: To be able to edit this attribute, go to the attribute setting page or contact your PIM administrator.
             no_results: There are no results
             no_options: There are no options
+            no_records: There are no records
             no_add_options_unallowed: Contact your PIM administrator to manage the "{{ attributeLabel }}" options
+            edit_records_unallowed: Contact your PIM administrator to manage the "{{ referenceEntityLabel }}" reference entity
+            manage_records: Manage records
             actions:
                 delete_row: Delete this row
                 clear_row: Clear this row
@@ -186,6 +196,8 @@ pim_table_attribute:
             number: Number
             boolean: Yes/No
             select: Select
+            reference_entity: Reference entity
+            measurement: Measurement
     validations:
         column_code_must_be_filled: The code must be filled
         not_available_code: This column code is not available

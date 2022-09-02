@@ -1,4 +1,4 @@
-@javascript
+@javascript @permission-feature-enabled
 Feature: Define permissions for a job profile
   In order to be able to restrict access to job profiles
   As an administrator
@@ -17,7 +17,7 @@ Feature: Define permissions for a job profile
     When I save the job profile
     Then I should not see the text "There are unsaved changes."
     Then I should be on the "csv_clothing_product_export" export job page
-    And I should not see the "Export now" button
+    And The button "Export now" should be disabled
     And I am on the exports page
     And I should not see export profiles csv_clothing_product_export
 
@@ -29,4 +29,4 @@ Feature: Define permissions for a job profile
     When I save the job profile
     Then I should not see the text "There are unsaved changes."
     And I should be on the "csv_clothing_product_export" export job page
-    And I should not see the "Edit" button
+    And The button "Edit" should be disabled

@@ -221,6 +221,7 @@ pimee_enrich.mass_edit.product:
       label_count: "{1}公開 <span class=\"AknFullPage-title--highlight\"> 1 製品</span> |]1、Inf [ 公開 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 製品</span>"
       description: この商品は公開予定です
       warning: 選択した {{ itemsCount }} 商品を公開予定です
+      already_published_product: "商品、{{ productId }}を公開中にエラーが発生しました。別のプロセスがこの商品を公開しています。"
     unpublish:
       label: 非公開にする
       label_count: "{1}未公開 <span class=\"AknFullPage-title--highlight\"> 1 製品</span> |]1、Inf [ 未公開 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 製品</span>"

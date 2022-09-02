@@ -120,7 +120,7 @@ class AllowedExtensionsValidator extends ConstraintValidator
 
     private function hasExtensionSeparator(string $allowedExtension): bool
     {
-        return strpos($allowedExtension, AttributeAllowedExtensions::EXTENSION_SEPARATOR) === 0;
+        return str_starts_with($allowedExtension, AttributeAllowedExtensions::EXTENSION_SEPARATOR);
     }
 
     private function containsForbiddenCharacters(string $allowedExtension): bool

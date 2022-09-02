@@ -19,7 +19,7 @@ use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AbstractCreateAttr
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory\CreateAttributeCommandFactoryRegistryInterface;
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateAttributeHandler;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributeNextOrderInterface;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,40 +35,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CreateAction
 {
-    private CreateAttributeHandler $createAttributeHandler;
-
-    private FindAttributeNextOrderInterface $attributeNextOrder;
-
-    private SecurityFacade $securityFacade;
-
-    private NormalizerInterface $normalizer;
-
-    private ValidatorInterface $validator;
-
-    private CreateAttributeCommandFactoryRegistryInterface $attributeCommandFactoryRegistry;
-
-    private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler;
-
-    private TokenStorageInterface $tokenStorage;
-
     public function __construct(
-        CreateAttributeHandler $createAttributeHandler,
-        FindAttributeNextOrderInterface $attributeNextOrder,
-        CreateAttributeCommandFactoryRegistryInterface $attributeCommandFactoryRegistry,
-        CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
-        TokenStorageInterface $tokenStorage,
-        NormalizerInterface $normalizer,
-        ValidatorInterface $validator,
-        SecurityFacade $securityFacade
+        private CreateAttributeHandler $createAttributeHandler,
+        private FindAttributeNextOrderInterface $attributeNextOrder,
+        private CreateAttributeCommandFactoryRegistryInterface $attributeCommandFactoryRegistry,
+        private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
+        private TokenStorageInterface $tokenStorage,
+        private NormalizerInterface $normalizer,
+        private ValidatorInterface $validator,
+        private SecurityFacadeInterface $securityFacade,
     ) {
-        $this->createAttributeHandler = $createAttributeHandler;
-        $this->attributeNextOrder = $attributeNextOrder;
-        $this->normalizer = $normalizer;
-        $this->validator = $validator;
-        $this->securityFacade = $securityFacade;
-        $this->attributeCommandFactoryRegistry = $attributeCommandFactoryRegistry;
-        $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
-        $this->tokenStorage = $tokenStorage;
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier): Response

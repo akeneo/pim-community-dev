@@ -12,6 +12,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\Pim\Structure\Component\Model\Family;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Pim\Behat\Context\PimContext;
 
 class EnterpriseAssetManagerContext extends PimContext
@@ -92,5 +93,16 @@ class EnterpriseAssetManagerContext extends PimContext
 
         $this->getService('pim_catalog.saver.product')
             ->save($product);
+    }
+
+    /**
+     * @Given an asset manager job import in CSV
+     */
+    public function anAssetManagerJobImportInCSV(): void
+    {
+        $jobInstance = new JobInstance('Akeneo CSV Connector', 'import', 'asset_manager_csv_asset_import');
+        $jobInstance->setCode('test_csv');
+        $jobInstance->setLabel('Asset Manager CSV import');
+        $this->getService('akeneo_batch.saver.job_instance')->save($jobInstance);
     }
 }

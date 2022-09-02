@@ -23,6 +23,11 @@ class LocaleIdentifierSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->during('fromCode', ['']);
     }
 
+    public function it_can_be_created_when_string_is_0()
+    {
+        $this->shouldNotThrow(\InvalidArgumentException::class)->during('fromCode',['0']);
+    }
+
     public function it_can_normalize_itself()
     {
         $this->normalize()->shouldReturn('en_US');

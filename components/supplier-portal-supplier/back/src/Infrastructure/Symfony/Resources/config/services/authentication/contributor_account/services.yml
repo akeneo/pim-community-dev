@@ -1,0 +1,148 @@
+services:
+    #Repositories
+    Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository:
+        class: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Repository\Sql\DatabaseRepository
+        arguments:
+            - '@database_connection'
+
+    # Queries
+    Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Read\GetContributorAccountByAccessToken:
+        class: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Query\Sql\DatabaseGetContributorAccountByAccessToken
+        arguments:
+            - '@database_connection'
+
+    Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Query\Sql\DatabaseGetContributorAccountByEmail:
+        arguments:
+            - '@database_connection'
+
+    #Event subscribers
+    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Subscriber\CreateContributorAccountOnContributorAdded:
+        arguments:
+            - '@Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\CreateContributorAccountHandler'
+        tags:
+            - 'kernel.event_subscriber'
+
+    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Subscriber\SendWelcomeEmailOnContributorAccountCreated:
+        arguments:
+            - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendWelcomeEmail'
+            - '@monolog.logger.supplier_portal'
+        tags:
+            - 'kernel.event_subscriber'
+
+    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Subscriber\SendGoodbyeEmailOnContributorAccountDeleted:
+        arguments:
+            - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendGoodbyeEmail'
+            - '@monolog.logger.supplier_portal'
+        tags:
+            - 'kernel.event_subscriber'
+
+    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Subscriber\SendResetPasswordEmailOnPasswordReset:
+        arguments:
+            - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendResetPasswordEmail'
+            - '@monolog.logger.supplier_portal'
+        tags:
+            - 'kernel.event_subscriber'
+
+    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Subscriber\DeleteContributorAccountOnContributorDeleted:
+        arguments:
+            - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\DeleteContributorAccountHandler'
+        tags:
+            - 'kernel.event_subscriber'
+    # Validators
+    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Validation\PasswordValidator:
+        tags:
+            - { name: validator.constraint_validator }
+
+    # Controllers
+    Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\SetUpPassword:
+        public: true
+        arguments:
+            - '@Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\UpdatePasswordHandler'
+
+    Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\GetContributorAccount:
+        public: true
+        arguments:
+            - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Read\GetContributorAccountByAccessToken'
+
+    Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\RequestNewInvitation:
+        public: true
+        arguments:
+            - '@Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\RequestNewInvitationHandler'
+
+    Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\ResetPassword:
+        public: true
+        arguments:
+            - '@Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\ResetPasswordHandler'
+
+    Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\Security:
+        public: true
+
+    Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\CheckAuthentication:
+        public: true
+
+    #Command handlers
+    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\CreateContributorAccountHandler:
+        arguments:
+            - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
+            - '@event_dispatcher'
+
+    Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\DeleteContributorAccountHandler:
+        arguments:
+            - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
+            - '@event_dispatcher'
+            - '@monolog.logger.supplier_portal'
+
+    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\UpdatePasswordHandler:
+        arguments:
+            - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
+            - '@validator'
+            - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\HashPassword'
+            - '@logger'
+
+    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\RequestNewInvitationHandler:
+        arguments:
+            - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
+            - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendWelcomeEmail'
+
+    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\ResetPasswordHandler:
+        arguments:
+            - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
+            - '@event_dispatcher'
+
+    # Email sending services
+    Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendWelcomeEmail:
+        class: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\SendTwigWelcomeEmail
+        arguments:
+            - '@Akeneo\SupplierPortal\Supplier\Infrastructure\Mailer\SendSwiftmailerEmail'
+            - '@twig'
+            - '%env(AKENEO_PIM_URL)%'
+            - '%kernel.project_dir%/public/bundles/akeneosupplierportalsupplier'
+
+    Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendGoodbyeEmail:
+        class: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\SendTwigGoodbyeEmail
+        arguments:
+            - '@Akeneo\SupplierPortal\Supplier\Infrastructure\Mailer\SendSwiftmailerEmail'
+            - '@twig'
+            - '%kernel.project_dir%/public/bundles/akeneosupplierportalsupplier'
+
+    Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendResetPasswordEmail:
+        class: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\SendTwigResetPasswordEmail
+        arguments:
+            - '@Akeneo\SupplierPortal\Supplier\Infrastructure\Mailer\SendSwiftmailerEmail'
+            - '@twig'
+            - '%env(AKENEO_PIM_URL)%'
+            - '%kernel.project_dir%/public/bundles/akeneosupplierportalsupplier'
+
+    #Authentication
+    Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccountProvider:
+        arguments:
+            - '@Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Query\Sql\DatabaseGetContributorAccountByEmail'
+
+    Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\HashPassword:
+        class: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Security\HashSymfonyPassword
+        arguments:
+            - '@security.user_password_hasher'
+
+    Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Security\LogoutEventSubscriber:
+        tags:
+            - 'kernel.event_subscriber'

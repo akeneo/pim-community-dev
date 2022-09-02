@@ -2,8 +2,7 @@ import React from 'react';
 import {FilterSelectorList} from '../datagrid';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {AttributeContext, LocaleCodeContext} from '../contexts';
-import {PendingBackendTableFilterValue, PendingTableFilterValue, TableAttribute} from '../models';
-import {useFetchOptions} from '../product';
+import {PendingBackendTableFilterValue, TableAttribute} from '../models';
 import {useUserContext} from '@akeneo-pim-community/shared';
 
 type TableAttributeConditionLineProps = {
@@ -12,44 +11,42 @@ type TableAttributeConditionLineProps = {
   onChange: (value: PendingBackendTableFilterValue) => void;
 };
 
-const TableAttributeConditionLineInput: React.FC<TableAttributeConditionLineProps> = props => {
-  return (
-    <DependenciesProvider>
-      <InnerTableAttributeConditionLine {...props} />
-    </DependenciesProvider>
-  );
-};
+const TableAttributeConditionLineInput: React.FC<TableAttributeConditionLineProps> = props => (
+  <DependenciesProvider>
+    <InnerTableAttributeConditionLine {...props} />
+  </DependenciesProvider>
+);
 
 const InnerTableAttributeConditionLine: React.FC<TableAttributeConditionLineProps> = ({attribute, value, onChange}) => {
   const [attributeState, setAttributeState] = React.useState<TableAttribute | undefined>(attribute);
   const userContext = useUserContext();
   const catalogLocale = userContext.get('catalogLocale');
-  const {getOptionsFromColumnCode} = useFetchOptions(attribute, setAttributeState);
 
-  if (!attributeState || !getOptionsFromColumnCode(attributeState.table_configuration[0].code)) {
-    return <></>;
-  }
-
-  const initialFilter = {
-    ...value,
-    column: attributeState.table_configuration.find(column => column.code === value.column),
-    row: getOptionsFromColumnCode(attributeState.table_configuration[0].code)?.find(
-      option => option.code === value.row
-    ),
-  };
-
-  const handleChange = (value: PendingTableFilterValue) => {
+  const handleChange = (value: PendingBackendTableFilterValue) => {
+    /**
+     * For backend:
+     * - if the value is null or undefined, it means the condition is applied on any row
+     * For FilterSelectorList:
+     * - if the value is undefined, we see the placeholder and the user have to select one
+     * - if the value is null, it means the user have selected "any row"
+     * For ReactHookForm:
+     * - null values are prohibited.
+     * So, we switch the empty value from FilterSelectorList;
+     * - if user selects "any row", we send "undefined" to RHF instead of null (which is not allowed by ReactHookForm).
+     * - if user removes the condition on column, we send "null" to RHF to have error message to force user to fill it.
+     */
+    const row = value.row === null ? undefined : value.row || null;
     onChange({
       ...value,
-      column: value.column?.code,
-      row: value.row?.code,
+      column: value.column,
+      row,
     });
   };
 
   return (
     <LocaleCodeContext.Provider value={{localeCode: catalogLocale}}>
       <AttributeContext.Provider value={{attribute: attributeState, setAttribute: setAttributeState}}>
-        <FilterSelectorList initialFilter={initialFilter} inline onChange={handleChange} />
+        <FilterSelectorList initialFilter={{...value, row: value.row || null}} inline onChange={handleChange} />
       </AttributeContext.Provider>
     </LocaleCodeContext.Provider>
   );

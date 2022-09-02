@@ -2,8 +2,8 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\Repository;
 
-use Akeneo\Channel\Component\Model\Channel;
-use Akeneo\Channel\Component\Model\Locale;
+use Akeneo\Channel\Infrastructure\Component\Model\Channel;
+use Akeneo\Channel\Infrastructure\Component\Model\Locale;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\Repository\PreProcessingRepository;
@@ -14,6 +14,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 
 class PreProcessingRepositorySpec extends ObjectBehavior
 {
@@ -40,14 +41,15 @@ class PreProcessingRepositorySpec extends ObjectBehavior
         ProjectInterface $project,
         ProductInterface $product
     ) {
+        $productUuid = Uuid::fromString('f7901bb1-3bfb-4f00-83a5-72fe8edf8da3');
         $project->getId()->willReturn(13);
-        $product->getId()->willReturn(37);
+        $product->getUuid()->willReturn($productUuid);
 
         $entityManager->getConnection()->willReturn($connection);
 
         $connection->insert('pimee_teamwork_assistant_project_product', [
             'project_id' => 13,
-            'product_id' => 37,
+            'product_uuid' => $productUuid->getBytes(),
         ])->shouldBeCalled();
 
         $this->addProduct($project, $product);
@@ -75,14 +77,14 @@ class PreProcessingRepositorySpec extends ObjectBehavior
         Channel $channel,
         Locale $locale
     ) {
-        $productId = '11111111';
+        $productUuid = Uuid::fromString('f7901bb1-3bfb-4f00-83a5-72fe8edf8da3');
         $productUpdated = new \Datetime('2019-08-01 10:00:00');
         $familyUpdated = new \Datetime('2019-08-26 13:46:35');
         $projectChannelId = 'ecommerce';
         $projectLocaleId = 'en_US';
         $calculatedAt = '2019-08-01 10:00:10';
 
-        $product->getId()->willReturn($productId);
+        $product->getUuid()->willReturn($productUuid);
         $product->getFamily()->willReturn($family);
         $product->getUpdated()->willReturn($productUpdated);
 
@@ -97,7 +99,7 @@ class PreProcessingRepositorySpec extends ObjectBehavior
 
         $connection
             ->fetchColumn(Argument::type('string'), [
-                'product_id' => $productId,
+                'product_uuid' => $productUuid->getBytes(),
                 'channel_id' => $projectChannelId,
                 'locale_id'  => $projectLocaleId,
             ])
@@ -117,13 +119,13 @@ class PreProcessingRepositorySpec extends ObjectBehavior
         Channel $channel,
         Locale $locale
     ) {
-        $productId = '11111111';
+        $productUuid = Uuid::fromString('f7901bb1-3bfb-4f00-83a5-72fe8edf8da3');
         $productUpdated = new \Datetime('2019-08-01 11:00:00');
         $projectChannelId = 'ecommerce';
         $projectLocaleId = 'en_US';
         $calculatedAt = '2019-08-01 10:00:00';
 
-        $product->getId()->willReturn($productId);
+        $product->getUuid()->willReturn($productUuid);
         $product->getFamily()->willReturn(null);
         $product->getUpdated()->willReturn($productUpdated);
 
@@ -137,7 +139,7 @@ class PreProcessingRepositorySpec extends ObjectBehavior
 
         $connection
             ->fetchColumn(Argument::type('string'), [
-                'product_id' => $productId,
+                'product_uuid' => $productUuid->getBytes(),
                 'channel_id' => $projectChannelId,
                 'locale_id'  => $projectLocaleId,
             ])
@@ -156,13 +158,13 @@ class PreProcessingRepositorySpec extends ObjectBehavior
         Channel $channel,
         Locale $locale
     ) {
-        $productId = '11111111';
+        $productUuid = Uuid::fromString('f7901bb1-3bfb-4f00-83a5-72fe8edf8da3');
         $productUpdated = new \Datetime('2019-08-01 11:00:00');
         $projectChannelId = 'ecommerce';
         $projectLocaleId = 'en_US';
         $calculatedAt = null;
 
-        $product->getId()->willReturn($productId);
+        $product->getUuid()->willReturn($productUuid);
         $product->getFamily()->willReturn(null);
         $product->getUpdated()->willReturn($productUpdated);
 
@@ -176,7 +178,7 @@ class PreProcessingRepositorySpec extends ObjectBehavior
 
         $connection
             ->fetchColumn(Argument::type('string'), [
-                'product_id' => $productId,
+                'product_uuid' => $productUuid->getBytes(),
                 'channel_id' => $projectChannelId,
                 'locale_id'  => $projectLocaleId,
             ])

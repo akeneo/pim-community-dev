@@ -13,24 +13,9 @@ const eeConfig = {
   moduleNameMapper: moduleNameMapperConfig,
   coveragePathIgnorePatterns: [
     ...baseConfig.coveragePathIgnorePatterns,
-    'akeneoassetmanager/tools',
     'pimui/lib',
     'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher',
-    'akeneoassetmanager/infrastructure/fetcher',
-    'akeneoassetmanager/application/component/app/select2',
     'akeneodataqualityinsights/react',
-    'akeneoassetmanager/application/component/asset/list/completeness-filter',
-    'akeneoassetmanager/application/component/asset/list/search-bar/search-field', // cannot trigger re-render
-    'akeneoassetmanager/application/component/asset/list/search-bar', // cannot test hooks + asynchronous fetching
-    'akeneoassetmanager/application/component/app',
-    'akeneoassetmanager/application/hydrator/attribute.ts',
-    'akeneoassetmanager/infrastructure/uploader',
-    'akeneoassetmanager/domain/event',
-    'akeneoassetmanager/application/event',
-    'akeneoassetmanager/application/asset-upload/saver',
-    'akeneoassetmanager/application/action/asset/router',
-    'akeneoassetmanager/application/action/asset',
-    'akeneoassetmanager/application/component/asset-family/edit/header',
     'akeneoreferenceentity/tools',
 
     //TODO RAC-591 add jest tests for the Permission tab in Asset manager & Ref entities
@@ -53,7 +38,12 @@ const eeConfig = {
     'src/Akeneo/AssetManager/front/application/asset-upload/saver',
     'src/Akeneo/AssetManager/front/application/action/asset/router',
     'src/Akeneo/AssetManager/front/application/action/asset',
-    'src/Akeneo/AssetManager/front/application/component/asset-family/edit/header',
+    'src/Akeneo/AssetManager/front/application/action/attribute',
+    'src/Akeneo/AssetManager/front/application/component/asset-family/edit/attribute',
+    'src/Akeneo/AssetManager/front/application/component/attribute',
+    'src/Akeneo/AssetManager/front/application/component/attribute/create.tsx',
+    'src/Akeneo/AssetManager/front/application/component/attribute/edit.tsx',
+    'src/Akeneo/AssetManager/front/application/component/asset/list/filter/option',
     'src/Akeneo/ReferenceEntity/front/tools',
     'src/Akeneo/ReferenceEntity/front/infrastructure',
     'src/Akeneo/ReferenceEntity/front/infrastructure/tools',
@@ -62,7 +52,6 @@ const eeConfig = {
     'src/Akeneo/AssetManager/tests',
   ],
   coverageThreshold: {
-    ...baseConfig.coverageThreshold,
     'src/Akeneo/AssetManager/': {
       statements: 100,
       functions: 100,

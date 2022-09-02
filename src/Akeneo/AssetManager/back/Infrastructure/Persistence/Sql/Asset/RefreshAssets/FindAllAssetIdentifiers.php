@@ -14,22 +14,48 @@ use Doctrine\DBAL\Connection;
  */
 class FindAllAssetIdentifiers implements SelectAssetIdentifiersInterface
 {
-    private Connection $sqlConnection;
-
-    public function __construct(Connection $sqlConnection)
-    {
-        $this->sqlConnection = $sqlConnection;
+    public function __construct(
+        private Connection $sqlConnection,
+        private int $batchSize
+    ) {
     }
 
     public function fetch(): \Iterator
     {
-        $query = <<<SQL
-SELECT identifier FROM akeneo_asset_manager_asset;
-SQL;
-        $statement = $this->sqlConnection->executeQuery($query);
+        $searchAfterIdentifier = null;
 
-        while (false !== $result = $statement->fetchOne()) {
-            yield AssetIdentifier::fromString($result);
+        $query = <<<SQL
+           SELECT identifier
+           FROM akeneo_asset_manager_asset
+           %s
+           ORDER BY identifier
+           LIMIT :search_after_limit;
+SQL;
+
+        while (true) {
+            $sql = $searchAfterIdentifier === null ?
+                sprintf($query, '') :
+                sprintf($query, 'WHERE identifier > :search_after_identifier');
+
+            $statement = $this->sqlConnection->executeQuery(
+                $sql,
+                [
+                    'search_after_identifier' => $searchAfterIdentifier,
+                    'search_after_limit' => $this->batchSize
+                ],
+                [
+                    'search_after_limit' => \PDO::PARAM_INT
+                ]
+            );
+
+            if ($statement->rowCount() === 0) {
+                return;
+            }
+
+            while (false !== $result = $statement->fetchOne()) {
+                yield AssetIdentifier::fromString($result);
+                $searchAfterIdentifier = $result;
+            }
         }
     }
 }

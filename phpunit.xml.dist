@@ -46,7 +46,11 @@
         </testsuite>
 
         <testsuite name="TailoredExport_Integration_Test">
-            <directory>components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle/tests/Integration</directory>
+            <directory>components/tailored-export/back/tests/Integration</directory>
+        </testsuite>
+
+        <testsuite name="Akeneo_Connectivity_Connection_Integration">
+            <directory suffix="Integration.php">src/Akeneo/Connectivity/Connection/back/tests/Integration</directory>
         </testsuite>
 
         <testsuite name="End_to_End">
@@ -57,6 +61,24 @@
         </testsuite>
         <testsuite name="PIM_Performance_Test">
             <directory suffix="Performance.php">tests/back</directory>
+        </testsuite>
+
+        <testsuite name="Table_Attribute_Integration_EE">
+            <directory suffix="Integration.php">grth/src/Akeneo/Pim/TableAttribute/tests/back/Integration</directory>
+            <directory suffix="Integration.php">grth/src/Akeneo/Pim/TableAttribute/tests/back/Enterprise/Integration</directory>
+        </testsuite>
+
+        <testsuite name="Table_Attribute_End_To_End_EE">
+            <directory suffix="EndToEnd.php">grth/src/Akeneo/Pim/TableAttribute/tests/back/EndToEnd</directory>
+            <directory suffix="EndToEnd.php">grth/src/Akeneo/Pim/TableAttribute/tests/back/Enterprise/EndToEnd</directory>
+        </testsuite>
+
+        <testsuite name="FreeTrial_Integration_EE">
+            <directory suffix="Integration.php">tria/src/Akeneo/FreeTrial/tests/back/Integration</directory>
+        </testsuite>
+
+        <testsuite name="Enrichment_Product_EE">
+            <directory suffix="Integration.php">vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Enrichment/Product/back/Test/Integration</directory>
         </testsuite>
     </testsuites>
 </phpunit>

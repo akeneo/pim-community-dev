@@ -19,9 +19,6 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 
-/**
- * @TODO: should we have select options in the flat export? Spec this class if yes.
- */
 final class Attribute implements ArrayConverterInterface
 {
     private ArrayConverterInterface $decorated;

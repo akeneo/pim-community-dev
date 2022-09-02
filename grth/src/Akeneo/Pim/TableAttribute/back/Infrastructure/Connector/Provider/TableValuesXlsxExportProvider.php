@@ -13,16 +13,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Infrastructure\Connector\Provider;
 
-use Akeneo\Channel\Component\Validator\Constraint\ActivatedLocale;
+use Akeneo\Channel\Infrastructure\Component\Validator\Constraint\ActivatedLocale;
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
-use Akeneo\Tool\Component\StorageUtils\Validator\Constraints\WritableDirectory;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
@@ -38,15 +37,8 @@ final class TableValuesXlsxExportProvider implements ConstraintCollectionProvide
         return new Collection(
             [
                 'fields' => [
-                    'filePath'     => [
-                        new NotBlank(['groups' => ['Execution', 'FileConfiguration']]),
-                        new WritableDirectory(['groups' => ['Execution', 'FileConfiguration']]),
-                        new Regex([
-                            'pattern' => '/.\.xlsx$/',
-                            'message' => 'The extension file must be ".xlsx"'
-                        ])
-                    ],
-                    'withHeader'   => new Type(
+                    'storage' => new Storage(['xlsx']),
+                    'withHeader' => new Type(
                         [
                             'type'   => 'bool',
                             'groups' => ['Default', 'FileConfiguration'],
@@ -113,7 +105,10 @@ final class TableValuesXlsxExportProvider implements ConstraintCollectionProvide
     public function getDefaultValues(): array
     {
         return [
-            'filePath' => sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'export_%job_label%_%datetime%.xlsx',
+            'storage' => [
+                'type' => 'none',
+                'file_path' => sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'export_%job_label%_%datetime%.xlsx',
+            ],
             'withHeader' => true,
             'linesPerFile' => 10000,
             'user_to_notify' => null,

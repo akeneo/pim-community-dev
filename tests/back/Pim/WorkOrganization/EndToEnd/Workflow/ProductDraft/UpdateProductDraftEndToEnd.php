@@ -13,6 +13,7 @@ class UpdateProductDraftEndToEnd extends AbstractProductTestCase
     public function setUp(): void
     {
         parent::setUp();
+        $this->get('feature_flags')->enable('proposal');
 
         $product = $this->createProduct('product_draft_for_redactor', [
             'categories' => ['categoryA'],

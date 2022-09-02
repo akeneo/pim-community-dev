@@ -18,7 +18,7 @@ use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\Can
 use Akeneo\AssetManager\Application\AssetFamilyPermission\SetPermissions\SetAssetFamilyPermissionsCommand;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\SetPermissions\SetAssetFamilyPermissionsHandler;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\SetPermissions\SetUserGroupPermissionCommand;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,32 +34,14 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class SetAction
 {
-    private SetAssetFamilyPermissionsHandler $setAssetFamilyPermissionsHandler;
-
-    private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler;
-
-    private TokenStorageInterface $tokenStorage;
-
-    private SecurityFacade $securityFacade;
-
-    private ValidatorInterface $validator;
-
-    private Serializer $serializer;
-
     public function __construct(
-        SetAssetFamilyPermissionsHandler $setAssetFamilyPermissionsHandler,
-        CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
-        TokenStorageInterface $tokenStorage,
-        SecurityFacade $securityFacade,
-        ValidatorInterface $validator,
-        Serializer $serializer
+        private SetAssetFamilyPermissionsHandler $setAssetFamilyPermissionsHandler,
+        private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
+        private TokenStorageInterface $tokenStorage,
+        private SecurityFacadeInterface $securityFacade,
+        private ValidatorInterface $validator,
+        private Serializer $serializer,
     ) {
-        $this->setAssetFamilyPermissionsHandler = $setAssetFamilyPermissionsHandler;
-        $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
-        $this->tokenStorage = $tokenStorage;
-        $this->securityFacade = $securityFacade;
-        $this->validator = $validator;
-        $this->serializer = $serializer;
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier)

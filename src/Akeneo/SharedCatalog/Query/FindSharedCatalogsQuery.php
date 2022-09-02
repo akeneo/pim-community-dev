@@ -9,18 +9,10 @@ use Doctrine\DBAL\Types\Types;
 
 class FindSharedCatalogsQuery implements FindSharedCatalogsQueryInterface
 {
-    /** @var Connection */
-    private $connection;
-
-    /** @var string */
-    private $sharedCatalogJobName;
-
     public function __construct(
-        Connection $connection,
-        string $sharedCatalogJobName
+        private Connection $connection,
+        private string $sharedCatalogJobName
     ) {
-        $this->connection = $connection;
-        $this->sharedCatalogJobName = $sharedCatalogJobName;
     }
 
     /**
@@ -51,9 +43,8 @@ SQL;
         );
 
         $results = $statement->fetchAllAssociative();
-        $hydratedResults = $this->hydrate($results);
 
-        return $hydratedResults;
+        return $this->hydrate($results);
     }
 
     private function hydrate(array $rows): array

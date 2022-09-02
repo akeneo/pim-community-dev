@@ -9,7 +9,7 @@ describe('ColumnDefinitionSelector', () => {
   it('should display current column', () => {
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
-        <ColumnDefinitionSelector value={getComplexTableAttribute().table_configuration[0]} onChange={jest.fn()} />
+        <ColumnDefinitionSelector value={'ingredient'} onChange={jest.fn()} />
       </TestAttributeContextProvider>
     );
 
@@ -20,7 +20,7 @@ describe('ColumnDefinitionSelector', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
-        <ColumnDefinitionSelector value={getComplexTableAttribute().table_configuration[0]} onChange={handleChange} />
+        <ColumnDefinitionSelector value={'ingredient'} onChange={handleChange} />
       </TestAttributeContextProvider>
     );
 
@@ -33,6 +33,6 @@ describe('ColumnDefinitionSelector', () => {
     expect(screen.getByText('For 1 part')).toBeInTheDocument();
     expect(screen.getByText('Nutrition score')).toBeInTheDocument();
     fireEvent.click(screen.getByText('Quantity'));
-    expect(handleChange).toBeCalledWith(getComplexTableAttribute().table_configuration[1]);
+    expect(handleChange).toBeCalledWith('quantity');
   });
 });

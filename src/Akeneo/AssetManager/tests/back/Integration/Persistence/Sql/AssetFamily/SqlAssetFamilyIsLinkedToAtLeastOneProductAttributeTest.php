@@ -21,6 +21,7 @@ use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyIsLinkedToAtLeastOne
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetCollectionType;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\InMemoryFeatureFlags;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -33,6 +34,10 @@ class SqlAssetFamilyIsLinkedToAtLeastOneProductAttributeTest extends SqlIntegrat
     public function setUp(): void
     {
         parent::setUp();
+
+        /** @var InMemoryFeatureFlags $featureFlags */
+        $featureFlags = $this->get('feature_flags');
+        $featureFlags->enable('asset_manager');
 
         $this->query = $this->get('akeneo_assetmanager.infrastructure.persistence.query.asset_family_is_linked_to_at_least_one_product_attribute');
         $this->resetDB();

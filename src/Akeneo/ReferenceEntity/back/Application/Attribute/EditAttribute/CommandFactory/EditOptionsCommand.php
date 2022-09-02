@@ -10,13 +10,10 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFact
  */
 class EditOptionsCommand extends AbstractEditAttributeCommand
 {
-    /** @var array */
-    public $options;
-
-    public function __construct(string $identifier, array $options)
-    {
+    public function __construct(
+        string $identifier,
+        public array $options
+    ) {
         parent::__construct($identifier);
-
-        $this->options = $options;
     }
 }

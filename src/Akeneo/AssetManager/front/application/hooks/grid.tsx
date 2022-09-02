@@ -7,15 +7,11 @@ import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import ListAsset from 'akeneoassetmanager/domain/model/asset/list-asset';
 import {Query, SearchResult, emptySearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
+import {useAssetFetcher} from 'akeneoassetmanager/infrastructure/fetcher/useAssetFetcher';
+import {AssetFetcher} from 'akeneoassetmanager/domain/fetcher/asset';
 
 const MAX_RESULT = 500;
 const FIRST_PAGE_SIZE = 50;
-
-type AssetDataProvider = {
-  assetFetcher: {
-    search: (query: Query) => Promise<SearchResult<ListAsset>>;
-  };
-};
 
 export const createQuery = (
   assetFamilyIdentifier: AssetFamilyIdentifier,
@@ -75,7 +71,6 @@ export const useFetchResult = (
   ) => Query
 ) => (
   isOpen: boolean,
-  dataProvider: AssetDataProvider,
   assetFamilyIdentifier: AssetFamilyIdentifier | null,
   filters: Filter[],
   searchValue: string,
@@ -83,6 +78,7 @@ export const useFetchResult = (
   context: Context,
   setSearchResult: (result: SearchResult<ListAsset>) => void
 ) => {
+  const assetFetcher = useAssetFetcher();
   const executeQuery = () => {
     if (!isOpen || null === assetFamilyIdentifier) {
       setSearchResult(emptySearchResult());
@@ -102,12 +98,12 @@ export const useFetchResult = (
 
     totalRequestCount++;
     const currentRequestCount = totalRequestCount;
-    dataProvider.assetFetcher.search(query).then((searchResult: SearchResult<ListAsset>) => {
+    assetFetcher.search(query).then((searchResult: SearchResult<ListAsset>) => {
       if (currentRequestCount !== totalRequestCount) return;
 
       setSearchResult(searchResult);
       if (searchResult.matchesCount > FIRST_PAGE_SIZE) {
-        fetchMoreResult(dataProvider)(query, setSearchResult);
+        fetchMoreResult(assetFetcher)(query, setSearchResult);
       }
     });
   };
@@ -117,13 +113,13 @@ export const useFetchResult = (
   return () => executeQuery();
 };
 
-const fetchMoreResult = (dataProvider: AssetDataProvider) => (
+const fetchMoreResult = (assetFetcher: AssetFetcher) => (
   query: Query,
   setSearchResult: (result: SearchResult<ListAsset>) => void
 ) => {
   const currentRequestCount = totalRequestCount;
 
-  dataProvider.assetFetcher.search({...query, size: MAX_RESULT}).then((searchResult: SearchResult<ListAsset>) => {
+  assetFetcher.search({...query, size: MAX_RESULT}).then((searchResult: SearchResult<ListAsset>) => {
     if (currentRequestCount === totalRequestCount) {
       setSearchResult(searchResult);
     }

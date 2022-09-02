@@ -6572,11 +6572,6 @@ dragula@3.7.2:
     contra "1.9.4"
     crossvent "1.5.4"
 
-dropzone@4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/dropzone/-/dropzone-4.0.1.tgz#9e6e3430a85bd5ee8f430f058abd0c877b25fbec"
-  integrity sha1-nm40MKhb1e6PQw8Fir0Mh3sl++w=
-
 duplexer@^0.1.1:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/duplexer/-/duplexer-0.1.2.tgz#3abe43aef3835f8ae077d136ddce0f276b0400e6"

@@ -21,13 +21,9 @@ use Webmozart\Assert\Assert;
  */
 class Item
 {
-    private string $value;
-
-    private function __construct(string $value)
+    private function __construct(private string $value)
     {
         Assert::stringNotEmpty($value, 'Item value of action should not be empty');
-
-        $this->value = $value;
     }
 
     public static function createFromNormalized(string $value): self

@@ -40,9 +40,19 @@ pim_table_configuration:
       no_validations_allowed: '''{{ columnType }}'' 열에서 유효성 검사를 사용하지 마십시오. 현재 열 유형: ''{{ given }}'''
       invalid_validation_key: '''{{ given }}'' 유효성 검사는 ''{{ columnType }}'' 열에서 작동하지 않습니다. 허용된 검사: ''{{ expected }}'''
       too_many_table_attributes: PIM 내의 테이블 특성이 최대 수에 도달했습니다({{ limit }}개)
+      measurement_family_should_exist: '''{{ measurement_family_code }}'' 측정 패밀리를 테이블에 추가하기 전에 해당 패밀리가 있는지 확인하십시오'
+      measurement_unit_should_exist: '''{{ measurement_unit_code }}'' 단위를 테이블에 추가하기 전에 ''{{ measurement_family_code }} 측정 패밀리에 해당 단위가 있는지 확인하십시오'
+      measurement_family_code_must_be_filled: 측정 패밀리 코드를 입력해야 합니다
+      measurement_default_unit_code_must_be_filled: 측정 기본 단위 코드를 입력해야 합니다
+      measurement_family_code_cannot_be_set: '''{{ data_type }}'' 열 유형에 대한 측정 패밀리 코드를 설정할 수 없습니다'
+      measurement_default_unit_code_cannot_be_set: '''{{ data_type }}'' 열 유형에 대한 측정 기본 단위 코드를 설정할 수 없습니다'
+      measurement_family_cannot_be_updated: measurement_family_code를 업데이트할 수 없습니다
+      measurement_family_should_not_be_linked: '이 측정 패밀리는 제품 특성에 사용되므로 제거할 수 없습니다.'
+      measurement_family_unit_should_not_be_linked: '이 측정 패밀리 단위는 제품 특성에 사용됩니다. 단위의 번역된 레이블 및 기호만 편집할 수 있습니다.'
     product_value:
       non_existing_columns: '[0,1]''{{ non_existing_columns }}'' 열이 없습니다|]1,Inf[''{{ non_existing_columns }}'' 열이 없습니다'
       unexpected_data_type: '''{{ columnCode }}'' 열에 {{ expected }}이(가) 필요합니다. 입력된 것은 {{ given }}입니다'
+      unexpected_data_type_for_measurement: '''{{ columnCode }}'' 열에는 문자열 단위 코드 및 수량이 필요합니다. 입력된 것은 {{ given }}입니다'
       first_column_required: '''{{ columnCode }}'' 열은 필수입니다'
       unknown_option: '기존 옵션 코드만 사용하십시오. 현재 값: ''{{ optionCode }}'''
       integer_required: '이 값은 정수여야 합니다. {{ invalid_value }}'
@@ -52,6 +62,7 @@ pim_table_configuration:
       max_length_validation: 이 값은 {{ limit }}자 이하여야 합니다.
       too_many_rows: 테이블의 열이 최대 수에 도달했습니다({{ limit }}개)
       record_should_exist: '''{{ recordCode }}'' 레코드가 ''{{ referenceEntityIdentifier }}'' 참조 엔터티에 없습니다'
+      measurement_unit_should_exist: '''{{ measurement_family_code }} 측정 패밀리에 ''{{ measurement_unit_code }}'' 단위가 없습니다'
     product_value_collection:
       too_many_cells: 제품의 테이블 셀이 최대 수에 도달했습니다({{ count }}개 셀, 최대 {{ limit }}개만 허용).
     reference_entity:

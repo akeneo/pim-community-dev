@@ -14,6 +14,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\MeasurementColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
@@ -37,6 +38,12 @@ class TableValuesSpec extends ObjectBehavior
             SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
             NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
             BooleanColumn::fromNormalized(['id' => ColumnIdGenerator::isAllergenic(), 'code' => 'allergenic']),
+            MeasurementColumn::fromNormalized([
+                'id' => ColumnIdGenerator::length(),
+                'code' => 'length',
+                'measurement_family_code' => 'length',
+                'measurement_default_unit_code' => 'METER',
+            ]),
         ]));
 
         $this->beConstructedWith($fieldsRequirementChecker, $getAttributes, $tableConfigurationRepository, 'product');
@@ -56,6 +63,7 @@ class TableValuesSpec extends ObjectBehavior
             'ingredient' => 'salt',
             'quantity' => '50',
             'allergenic' => '0',
+            'length' => '10 CENTIMETER',
         ];
 
         $getAttributes->forCode('nutrition')->willReturn($this->getTableAttribute('nutrition', false, false));
@@ -69,6 +77,10 @@ class TableValuesSpec extends ObjectBehavior
                 'ingredient' => 'salt',
                 'quantity' => '50',
                 'allergenic' => false,
+                'length' => [
+                    'unit' => 'CENTIMETER',
+                    'amount' => '10',
+                ]
             ],
         ]);
     }

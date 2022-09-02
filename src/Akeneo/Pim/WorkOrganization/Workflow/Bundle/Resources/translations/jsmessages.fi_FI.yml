@@ -219,6 +219,7 @@ pimee_enrich.mass_edit.product:
       label_count: "{1}Julkaise <span class=\"AknFullPage-title--highlight\">1 tuote</span>|]1, Inf[Julkaise <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span>"
       description: Tuotteet julkaistaan
       warning: '{{ itemsCount }} valittua tuotetta julkaistaan.'
+      already_published_product: "Tuotteen {{ productId }} julkaisemisessa tapahtui virhe; Toinen julkaisee tuotteen."
     unpublish:
       label: Peruuta julkaisu
       label_count: "{1}Poista julkaisu <span class=\"AknFullPage-title--highlight\">1 tuotteelta</span>|]1, Inf[Poista julkaisu <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteelta</span>"

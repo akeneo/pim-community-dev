@@ -90,11 +90,15 @@ class FilteredEntitySaver implements SaverInterface, BulkSaverInterface
      */
     private function getFullEntity($filteredEntity)
     {
-        if (null === $filteredEntity->getId()) {
+        if ($filteredEntity->isNew()) {
             return $this->mergeDataOnEntity->merge($filteredEntity);
         }
 
-        $fullEntity = $this->entityRepository->find($filteredEntity->getId());
+        if (method_exists($filteredEntity, 'getUuid')) {
+            $fullEntity = $this->entityRepository->find($filteredEntity->getUuid());
+        } else {
+            $fullEntity = $this->entityRepository->find($filteredEntity->getId());
+        }
 
         return $this->mergeDataOnEntity->merge($filteredEntity, $fullEntity);
     }

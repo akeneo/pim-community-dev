@@ -42,9 +42,9 @@ class ProductRepository implements ProductRepositoryInterface
      */
     public function findByProject(ProjectInterface $project)
     {
-        $productFilers = $project->getProductFilters();
+        $productFilters = $project->getProductFilters();
 
-        if (null === $productFilers) {
+        if (null === $productFilters) {
             throw new \LogicException(sprintf('The project "%s" does not have product filters', $project->getLabel()));
         }
 
@@ -53,13 +53,17 @@ class ProductRepository implements ProductRepositoryInterface
             'default_scope'  => $project->getChannel()->getCode(),
         ]);
 
-        foreach ($productFilers as $productFiler) {
-            if ('categories' === $productFiler['field']
-                && 'IN OR UNCLASSIFIED' === $productFiler['operator']
+        foreach ($productFilters as $productFilter) {
+            if ('categories' === $productFilter['field']
+                && 'IN OR UNCLASSIFIED' === $productFilter['operator']
             ) {
                 continue;
             }
-            $productQueryBuilder->addFilter($productFiler['field'], $productFiler['operator'], $productFiler['value']);
+            if ('completeness' === $productFilter['field']) {
+                $productFilter = $this->convertCompletenessFilter($productFilter);
+            }
+
+            $productQueryBuilder->addFilter($productFilter['field'], $productFilter['operator'], $productFilter['value']);
         }
 
         $owner = $project->getOwner();
@@ -70,5 +74,25 @@ class ProductRepository implements ProductRepositoryInterface
         $productQueryBuilder->addFilter('family', 'NOT EMPTY', null);
 
         return $productQueryBuilder->execute();
+    }
+
+    /**
+     * For the completeness filter, the operators come from the "products and product-models" search.
+     *  (See service pim_catalog.query.elasticsearch.filter.product_and_product_model.completeness)
+     * They must be converted to operators supported by the "products only" query builder. (i.e. products and variants, without models)
+     *  (See service pim_catalog.query.elasticsearch.filter.product.completeness)
+     * As the filters come from a product-grid view, only the operators "AT LEAST INCOMPLETE" and "AT LEAST COMPLETE" are concerned.
+     */
+    private function convertCompletenessFilter(array $filter): array
+    {
+        if ('AT LEAST INCOMPLETE' === $filter['operator']) {
+            $filter['operator'] = '<';
+            $filter['value'] = 100;
+        } elseif ('AT LEAST COMPLETE' === $filter['operator']) {
+            $filter['operator'] = '=';
+            $filter['value'] = 100;
+        }
+
+        return $filter;
     }
 }

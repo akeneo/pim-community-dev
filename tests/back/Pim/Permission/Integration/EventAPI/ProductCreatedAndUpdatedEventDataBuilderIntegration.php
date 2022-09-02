@@ -14,6 +14,8 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\PermissionFixturesLoader;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @author    Thomas Galvaing <thomas.galvaing@akeneo.com>
@@ -42,11 +44,14 @@ class ProductCreatedAndUpdatedEventDataBuilderIntegration extends TestCase
     {
         $this->permissionFixturesloader->loadProductModelsFixturesForCategoryPermissions();
 
+        $productNotViewableUpdatedUuid = Uuid::uuid4();
         $productNotViewableUpdatedEvent = new ProductUpdated(Author::fromNameAndType('julia', 'ui'), [
             'identifier' => 'colored_sized_sweat_no_view',
+            'uuid' => $productNotViewableUpdatedUuid,
         ]);
         $productViewableUpdatedEvent = new ProductUpdated(Author::fromNameAndType('julia', 'ui'), [
             'identifier' => 'colored_sized_shoes_view',
+            'uuid' => $this->getProductUuid('colored_sized_shoes_view'),
         ]);
 
         /* Necessary as `\Akeneo\Pim\Permission\Bundle\Persistence\ORM\EntityWithValue\ProductQueryBuilderFactory`
@@ -59,7 +64,7 @@ class ProductCreatedAndUpdatedEventDataBuilderIntegration extends TestCase
         );
 
         $error = $collection->getEventData($productNotViewableUpdatedEvent);
-        Assert::assertEquals(new ProductNotFoundException('colored_sized_sweat_no_view'), $error);
+        Assert::assertEquals(new ProductNotFoundException($productNotViewableUpdatedUuid), $error);
 
         $data = $collection->getEventData($productViewableUpdatedEvent);
         Assert::assertEquals('colored_sized_shoes_view', $data['resource']['identifier']);
@@ -68,5 +73,14 @@ class ProductCreatedAndUpdatedEventDataBuilderIntegration extends TestCase
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
+    }
+
+    private function getProductUuid(string $productIdentifier): UuidInterface
+    {
+        $result = $this
+            ->get('database_connection')
+            ->fetchOne('SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier=:identifier', ['identifier' => $productIdentifier]);
+
+        return Uuid::fromString($result);
     }
 }

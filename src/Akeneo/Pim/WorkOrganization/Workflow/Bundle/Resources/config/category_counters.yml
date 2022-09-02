@@ -3,7 +3,6 @@ services:
         class: 'Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\Query\GrantedCategoryProductsCounter'
         arguments:
             - '@pimee_workflow.doctrine.query.published_product_query_builder_factory'
-            - '@pim_catalog.repository.category'
             - '@pimee_security.repository.category_access'
             - '@security.authorization_checker'
             - '@security.token_storage'

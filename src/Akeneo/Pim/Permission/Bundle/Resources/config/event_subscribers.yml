@@ -44,6 +44,7 @@ services:
             - '@pim_user.repository.group'
             - '@pimee_security.manager.attribute_group_access'
             - '@pimee_security.manager.job_profile_access'
+            - '@feature_flags'
         tags:
             - { name: kernel.event_subscriber }
 

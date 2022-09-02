@@ -175,7 +175,7 @@ pimee_catalog_rule:
           subtitle: Familie wählen
         set_attribute:
           title: SETZE Attributwert
-          helper: Um Werte auf Ihr Attribut zu setzen, wählen Sie bitte zuerst Ihr Zielattribut und dann den Wert, den Sie setzen möchten
+          helper: Um Werte auf Ihr Attribut zu setzen, wählen Sie bitte zuerst Ihr Zielattribut und dann den Wert, den Sie setzen möchten. Die alten Werte werden bei der Produktauswahl ersetzt.
           target_subtitle: Ziel wählen
           value_subtitle: Wert definieren
           attribute_label: Attribut

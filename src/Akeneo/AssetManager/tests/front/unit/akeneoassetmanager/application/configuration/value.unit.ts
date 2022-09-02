@@ -1,42 +1,54 @@
 import {
   getFieldView,
-  hasFilterView,
-  getFilterView,
   getFilterViews,
-  getValueConfig,
+  getFilterView,
+  ValueConfig,
 } from 'akeneoassetmanager/application/configuration/value';
-import {denormalize as denormalizeTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
+import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
+import {NormalizedTextAttribute, ValidationRuleOption} from 'akeneoassetmanager/domain/model/attribute/type/text';
+import {view as TextEditView} from 'akeneoassetmanager/application/component/asset/edit/enrich/data/text';
+import {fakeConfig} from '../../utils/FakeConfigProvider';
 
-jest.mock('require-context', name => {});
+const textAttribute: NormalizedTextAttribute = {
+  code: 'attribute_code',
+  type: 'text',
+  asset_family_identifier: 'packshot',
+  labels: {},
+  value_per_locale: false,
+  value_per_channel: false,
+  identifier: 'attribute_identifier',
+  order: 2,
+  is_required: false,
+  is_read_only: false,
+  max_length: 1,
+  is_textarea: false,
+  is_rich_text_editor: false,
+  validation_rule: ValidationRuleOption.None,
+  regular_expression: null,
+};
+
+const editionValue: EditionValue = {
+  data: 'data to render',
+  channel: 'ecommerce',
+  locale: 'en_US',
+  attribute: textAttribute,
+};
 
 describe('akeneo > asset family > application > configuration --- value', () => {
   test('I can get a value view', () => {
-    const getValueView = getFieldView({
-      text: {
-        view: {
-          view: value => {
-            expect(value.data).toEqual('data to render');
-
-            return true;
-          },
-        },
-      },
-    });
-
-    const value = {data: 'data to render', attribute: {type: 'text'}};
-    expect(getValueView(value)(value)).toBe(true);
-    expect.assertions(2);
+    expect(getFieldView(fakeConfig.value, editionValue)).toBe(TextEditView);
   });
+
   test('I get an error if the configuration does not have an proper text view', () => {
-    const getValueView = getFieldView({
+    const valueConfig: ValueConfig = {
       text: {
+        // @ts-expect-error invalid value configuration
         view: {},
       },
-    });
+    };
 
-    const value = {data: 'data to render', attribute: {type: 'text'}};
     expect(() => {
-      getValueView(value);
+      getFieldView(valueConfig, editionValue);
     }).toThrowError(`The module you are exposing to provide a view for a data of type "text" needs to
 export a "view" property. Here is an example of a valid view es6 module for the "text" type:
 
@@ -48,13 +60,13 @@ export const view = (value: TextValue, onChange: (value: Value) => void) => {
   });
 
   test('I get an error if the configuration does not have valid configurations', () => {
-    const getValueView = getFieldView({
+    const valueConfig: ValueConfig = {
+      // @ts-expect-error invalid value configuration
       text: {},
-    });
+    };
 
-    const value = {data: 'data to render', attribute: {type: 'text'}};
     expect(() => {
-      getValueView(value);
+      getFieldView(valueConfig, editionValue);
     }).toThrowError(`Cannot get the data field view generator for type "text". The configuration should look like this:
 config:
     config:
@@ -65,55 +77,9 @@ config:
 Actual conf: ${JSON.stringify({text: {}})}`);
   });
 
-  test('I can get a filter value view', () => {
-    const getDataFilterView = getFilterView({
-      text: {
-        filter: {
-          filter: (attribute, filter, onFilterUpdated) => {
-            expect(attribute.getCode()).toEqual('description');
-
-            return true;
-          },
-        },
-      },
-    });
-
-    const attribute = denormalizeTextAttribute({
-      identifier: 'description_1234',
-      asset_family_identifier: 'designer',
-      code: 'description',
-      labels: {en_US: 'Description'},
-      type: 'text',
-      order: 0,
-      value_per_locale: true,
-      value_per_channel: false,
-      is_required: true,
-      is_read_only: true,
-      max_length: 0,
-      is_textarea: false,
-      is_rich_text_editor: false,
-      validation_rule: 'email',
-      regular_expression: null,
-    });
-
-    expect(getDataFilterView('text')(attribute)).toBe(true);
-    expect.assertions(2);
-  });
-
   test('I can get a filter value list of views', () => {
-    const getDataFilterViews = getFilterViews({
-      option: {
-        filter: {
-          filter: (attribute, filter, onFilterUpdated) => {
-            expect(attribute.getCode()).toEqual('color');
-
-            return true;
-          },
-        },
-      },
-    });
-
     const attributes = [
+      textAttribute,
       {
         type: 'option',
         identifier: 'color_packshot_fingerprint',
@@ -125,36 +91,16 @@ Actual conf: ${JSON.stringify({text: {}})}`);
         value_per_locale: false,
         value_per_channel: false,
         options: [],
+        is_read_only: false,
       },
     ];
 
-    expect(getDataFilterViews(attributes)[0].attribute.code).toEqual('color');
+    expect(getFilterViews(fakeConfig.value, attributes)[0].attribute.code).toEqual('color');
   });
 
-  test('I get an error if the configuration does not have an proper text filter view', () => {
-    const getDataFilterView = getFilterView({
-      text: {
-        filter: {},
-      },
-    });
-
+  test('I get an error if the filter view configuration does not exist', () => {
     expect(() => {
-      getDataFilterView('text');
-    }).toThrowError(`The module you are exposing to provide a view for a data of type "text" needs to
-export a "filter" property. Here is an example of a valid view es6 module for the "text" type:
-
-export const filter = (value: NormalizedTextValue) => {
-  return <span>{{value.getData()}}</span>;
-};`);
-  });
-
-  test('I get an error if the configuration does not have valid configurations', () => {
-    const getDataFilterView = getFilterView({
-      text: {},
-    });
-
-    expect(() => {
-      getDataFilterView('text');
+      getFilterView(fakeConfig.value, 'text');
     }).toThrowError(`Cannot get the data filter view generator for type "text". The configuration should look like this:
 config:
     config:
@@ -162,27 +108,23 @@ config:
             text:
                 filter: '@my_data_filter_view'
 
-Actual conf: ${JSON.stringify({text: {}})}`);
+Actual conf: ${JSON.stringify({text: {view: {}}, option: {view: {}, filter: {filter: {compare: null}}}})}`);
   });
 
-  test('I can know if a value has a filter view', () => {
-    expect(
-      hasFilterView({
-        text: {
-          filter: {
-            filter: value => {},
-          },
-        },
-      })('text')
-    ).toBe(true);
-    expect(
-      hasFilterView({
-        text: {
-          filter: {
-            filter: value => {},
-          },
-        },
-      })('image')
-    ).toBe(false);
+  test('I get an error if the filter view configuration is invalid', () => {
+    const valueConfig: ValueConfig = {
+      option: {
+        // @ts-expect-error invalid value configuration
+        filter: {},
+      },
+    };
+
+    expect(() => {
+      getFilterView(valueConfig, 'option');
+    }).toThrowError(`The module you are exposing to provide a view for a data of type \"option\" needs to
+export a \"filter\" property. Here is an example of a valid view es6 module for the \"option\" type:
+export const filter = (value: NormalizedOptionValue) => {
+  return <span>{{value.getData()}}</span>;
+};`);
   });
 });

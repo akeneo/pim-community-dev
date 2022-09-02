@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Infrastructure\Controller\Asset;
 
 use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
 use Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\EditAssetCommandFactory;
+use Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\Exception\NamingConventionException;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
@@ -22,7 +23,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -36,40 +37,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ExecuteNamingConventionAction
 {
-    private EditAssetHandler $editAssetHandler;
-
-    private TokenStorageInterface $tokenStorage;
-
-    private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler;
-
-    private SecurityFacade $securityFacade;
-
-    private EditAssetCommandFactory $editAssetCommandFactory;
-
-    private ValidatorInterface $validator;
-
-    private NormalizerInterface $violationNormalizer;
-
-    private AssetRepositoryInterface $assetRepository;
-
     public function __construct(
-        AssetRepositoryInterface $assetRepository,
-        EditAssetHandler $editAssetHandler,
-        EditAssetCommandFactory $editAssetCommandFactory,
-        CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
-        ValidatorInterface $validator,
-        NormalizerInterface $violationNormalizer,
-        TokenStorageInterface $tokenStorage,
-        SecurityFacade $securityFacade
+        private AssetRepositoryInterface $assetRepository,
+        private EditAssetHandler $editAssetHandler,
+        private EditAssetCommandFactory $editAssetCommandFactory,
+        private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
+        private ValidatorInterface $validator,
+        private NormalizerInterface $violationNormalizer,
+        private TokenStorageInterface $tokenStorage,
+        private SecurityFacadeInterface $securityFacade,
     ) {
-        $this->editAssetHandler = $editAssetHandler;
-        $this->tokenStorage = $tokenStorage;
-        $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
-        $this->editAssetCommandFactory = $editAssetCommandFactory;
-        $this->validator = $validator;
-        $this->securityFacade = $securityFacade;
-        $this->violationNormalizer = $violationNormalizer;
-        $this->assetRepository = $assetRepository;
     }
 
     public function __invoke(string $assetFamilyIdentifier, string $assetCode): JsonResponse
@@ -83,18 +60,24 @@ class ExecuteNamingConventionAction
                 AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
                 AssetCode::fromString($assetCode)
             );
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 
         $normalizedAsset = $asset->normalize();
-        $editAssetCommand = $this->editAssetCommandFactory->create(
-            [
-                'asset_family_identifier' => $assetFamilyIdentifier,
-                'code' => $assetCode,
-                'values' => $normalizedAsset['values'],
-            ]
-        );
+
+        try {
+            $editAssetCommand = $this->editAssetCommandFactory->create(
+                [
+                    'asset_family_identifier' => $assetFamilyIdentifier,
+                    'code' => $assetCode,
+                    'values' => $normalizedAsset['values'],
+                ]
+            );
+        } catch (NamingConventionException) {
+            return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
+        }
+
         $violations = $this->validator->validate($editAssetCommand);
         if ($violations->count() > 0) {
             return new JsonResponse($this->violationNormalizer->normalize($violations), Response::HTTP_BAD_REQUEST);
@@ -102,7 +85,7 @@ class ExecuteNamingConventionAction
 
         try {
             ($this->editAssetHandler)($editAssetCommand);
-        } catch (AssetFamilyNotFoundException|AssetNotFoundException $e) {
+        } catch (AssetFamilyNotFoundException | AssetNotFoundException) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 

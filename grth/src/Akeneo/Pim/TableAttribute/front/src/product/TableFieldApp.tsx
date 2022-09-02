@@ -4,15 +4,13 @@ import {AkeneoThemedProps, Checkbox, getColor, Locale, Search} from 'akeneo-desi
 import {TableInputValue} from './TableInputValue';
 import {ColumnCode, TableAttribute, TableRow, TableValue} from '../models';
 import {CopyContext, TemplateContext, Violations} from '../legacy/table-field';
-import {ChannelCode, LocaleCode, useTranslate} from '@akeneo-pim-community/shared';
+import {ChannelCode, LocaleCode, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {AddRowsButton} from './AddRowsButton';
 import {ProductFieldElement, useRenderElements} from './useRenderElements';
 import {UNIQUE_ID_KEY, useUniqueIds} from './useUniqueIds';
 import {useToggleRow} from './useToggleRow';
-import {SelectOptionRepository} from '../repositories';
-import {CellMatchersMapping} from './CellMatchers';
-import {CellInputsMapping} from './CellInputs';
-import {AttributeContext} from '../contexts';
+import {ReferenceEntityRecordRepository, SelectOptionRepository} from '../repositories';
+import {AttributeContext, LocaleCodeContext} from '../contexts';
 
 const TableInputContainer = styled.div<{isCompareTranslate: boolean} & AkeneoThemedProps>`
   ${({isCompareTranslate}) =>
@@ -70,8 +68,6 @@ type TableFieldAppProps = TemplateContext & {
   copyContext?: CopyContext;
   onCopyCheckboxChange: any;
   copyCheckboxChecked?: boolean;
-  cellInputsMapping: CellInputsMapping;
-  cellMatchersMapping: CellMatchersMapping;
   isDisplayedForCurrentLocale?: boolean;
 };
 
@@ -99,11 +95,11 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
   onCopyCheckboxChange,
   copyCheckboxChecked = false,
   violations = [],
-  cellInputsMapping,
-  cellMatchersMapping,
   isDisplayedForCurrentLocale = true,
 }) => {
   const translate = useTranslate();
+  const userContext = useUserContext();
+  const catalogLocale = userContext.get('catalogLocale');
   const {addUniqueIds, removeUniqueIds} = useUniqueIds();
   const [tableValue, setTableValue] = React.useState<TableValueWithId>(addUniqueIds(value?.data || []));
   const [searchText, setSearchText] = React.useState<string>('');
@@ -139,6 +135,13 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
 
   React.useEffect(() => {
     SelectOptionRepository.clearCache();
+  }, []);
+
+  React.useEffect(() => {
+    // clear cache on unmount
+    return () => {
+      ReferenceEntityRecordRepository.clearCache();
+    };
   }, []);
 
   const renderElements = useRenderElements(attributeState.code, elements);
@@ -212,16 +215,16 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
         </TableFieldHeader>
         <div className='AknFieldContainer-inputContainer field-input'>
           {isDisplayedForCurrentLocale && (
-            <TableInputValue
-              valueData={tableValue}
-              onChange={handleChange}
-              searchText={copyContext ? '' : searchText}
-              readOnly={!isEditable}
-              violatedCells={violatedCellsById}
-              isCopying={!!copyContext}
-              cellInputsMapping={cellInputsMapping}
-              cellMatchersMapping={cellMatchersMapping}
-            />
+            <LocaleCodeContext.Provider value={{localeCode: catalogLocale}}>
+              <TableInputValue
+                valueData={tableValue}
+                onChange={handleChange}
+                searchText={copyContext ? '' : searchText}
+                visibility={isEditable ? 'CAN_EDIT' : 'CANNOT_EDIT'}
+                violatedCells={violatedCellsById}
+                isCopying={!!copyContext}
+              />
+            </LocaleCodeContext.Provider>
           )}
           {renderElements('field-input')}
         </div>
@@ -240,13 +243,13 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
                   {getLocaleScopeInfo(copyContext.locale, copyContext.scope)}
                 </TableFieldHeader>
                 <div className='AknFieldContainer-inputContainer field-input'>
-                  <TableInputValue
-                    valueData={addUniqueIds(copyContext.data || [])}
-                    readOnly={true}
-                    isCopying={!!copyContext}
-                    cellInputsMapping={cellInputsMapping}
-                    cellMatchersMapping={cellMatchersMapping}
-                  />
+                  <LocaleCodeContext.Provider value={{localeCode: copyContext?.locale ?? catalogLocale}}>
+                    <TableInputValue
+                      valueData={addUniqueIds(copyContext.data || [])}
+                      visibility={'READ_ONLY'}
+                      isCopying={!!copyContext}
+                    />
+                  </LocaleCodeContext.Provider>
                 </div>
               </div>
             </div>

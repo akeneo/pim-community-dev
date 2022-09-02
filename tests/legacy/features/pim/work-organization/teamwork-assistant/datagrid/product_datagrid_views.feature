@@ -1,4 +1,4 @@
-@javascript
+@javascript @teamwork-assistant-feature-enabled
 Feature: Products datagrid views
   In order to easily manage different views in the product datagrid
   As a contributor

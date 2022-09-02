@@ -16,7 +16,6 @@ import {
   notifyAssetFamilySaveFailed,
 } from 'akeneoassetmanager/application/action/asset-family/notify';
 import assetFamilySaver from 'akeneoassetmanager/infrastructure/saver/asset-family';
-import assetFamilyFetcher, {AssetFamilyResult} from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {assetFamilyPermissionChanged} from 'akeneoassetmanager/domain/event/user';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
@@ -24,8 +23,12 @@ import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/ident
 import {TransformationCollection} from 'akeneoassetmanager/domain/model/asset-family/transformation';
 import NamingConvention from 'akeneoassetmanager/domain/model/asset-family/naming-convention';
 import ProductLinkRuleCollection from 'akeneoassetmanager/domain/model/asset-family/product-link-rule-collection';
+import {AssetFamilyFetcher, AssetFamilyResult} from 'akeneoassetmanager/domain/fetcher/asset-family';
 
-export const saveAssetFamily = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
+export const saveAssetFamily = (assetFamilyFetcher: AssetFamilyFetcher) => async (
+  dispatch: any,
+  getState: () => EditState
+): Promise<void> => {
   const assetFamily = getState().form.data;
 
   dispatch(assetFamilyEditionSubmission());
@@ -50,10 +53,11 @@ export const saveAssetFamily = () => async (dispatch: any, getState: () => EditS
   dispatch(assetFamilyEditionSucceeded());
   dispatch(notifyAssetFamilyWellSaved());
 
-  dispatch(refreshAssetFamily(assetFamily.identifier));
+  dispatch(refreshAssetFamily(assetFamilyFetcher, assetFamily.identifier));
 };
 
 export const refreshAssetFamily = (
+  assetFamilyFetcher: AssetFamilyFetcher,
   assetFamilyIdentifier: AssetFamilyIdentifier,
   refreshDataForm: boolean = false
 ) => async (dispatch: any): Promise<void> => {

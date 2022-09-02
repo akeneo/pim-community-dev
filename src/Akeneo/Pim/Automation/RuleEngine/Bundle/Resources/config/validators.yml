@@ -55,7 +55,7 @@ services:
     pimee_catalog_rule.validator.value_condition:
         class: '%pimee_catalog_rule.validator.value_condition.class%'
         arguments:
-            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_catalog.query.product_identifier_query_builder_factory'
         tags:
             - { name: validator.constraint_validator, alias: pimee_value_condition_validator }
 

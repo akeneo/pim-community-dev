@@ -1,4 +1,4 @@
-@javascript
+@javascript @published-product-feature-enabled
 Feature: Quick export products according to the product grid context
   In order to quick export a set of products
   As a product manager

@@ -1,7 +1,9 @@
-import {DataType, TableAttribute} from '../../src';
+import {TableAttribute} from '../../src';
 import {getComplexTableConfiguration} from './TableConfiguration';
 
-const getComplexTableAttribute: (firstColumnType?: DataType) => TableAttribute = (firstColumnType = 'select') => {
+const getComplexTableAttribute: (firstColumnType?: 'select' | 'reference_entity') => TableAttribute = (
+  firstColumnType = 'select'
+) => {
   return {
     code: 'nutrition',
     labels: {
@@ -44,7 +46,7 @@ const getComplexTableAttribute: (firstColumnType?: DataType) => TableAttribute =
   };
 };
 
-const getTableAttributeWithoutColumn : () => TableAttribute = () => {
+const getTableAttributeWithoutColumn: () => TableAttribute = () => {
   return {
     code: 'nutrition',
     labels: {

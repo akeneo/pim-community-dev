@@ -21,13 +21,12 @@ use Webmozart\Assert\Assert;
  */
 class ConnectorTransformationCollection
 {
-    /** @var ConnectorTransformation[] */
-    private array $connectorTransformations = [];
-
-    public function __construct(array $connectorTransformations)
+    /**
+     * @param ConnectorTransformation[] $connectorTransformations
+     */
+    public function __construct(private array $connectorTransformations)
     {
         Assert::allIsInstanceOf($connectorTransformations, ConnectorTransformation::class);
-        $this->connectorTransformations = $connectorTransformations;
     }
 
     public function normalize(): array

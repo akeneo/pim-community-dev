@@ -28,16 +28,10 @@ use Doctrine\DBAL\Types\Types;
  */
 class SqlFindMediaFileAttributeCodes implements FindMediaFileAttributeCodesInterface
 {
-    private Connection $sqlConnection;
-
     private AbstractPlatform $platform;
 
-    /**
-     * @param Connection $sqlConnection
-     */
-    public function __construct(Connection $sqlConnection)
+    public function __construct(private Connection $sqlConnection)
     {
-        $this->sqlConnection = $sqlConnection;
         $this->platform = $sqlConnection->getDatabasePlatform();
     }
 
@@ -69,6 +63,6 @@ SQL;
                 $this->platform
             );
             return AttributeCode::fromString($stringAttributeCode);
-        }, $result ?? []);
+        }, $result);
     }
 }

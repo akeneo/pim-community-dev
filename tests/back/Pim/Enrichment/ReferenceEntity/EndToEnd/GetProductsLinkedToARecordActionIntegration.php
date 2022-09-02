@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Pim\Enrichment\ReferenceEntity\EndToEnd;
 
+use Akeneo\Channel\API\Query\Channel;
+use Akeneo\Channel\API\Query\LabelCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
@@ -29,6 +31,8 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\Test\Integration\TestCase;
+use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -50,6 +54,17 @@ final class GetProductsLinkedToARecordActionIntegration extends TestCase
 
     /** @var AttributeInterface */
     private $attributeLink;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->get('feature_flags')->enable('reference_entity');
+        $this->get('akeneo_referenceentity.infrastructure.persistence.query.channel.find_channels')
+            ->setChannels([
+                new Channel('ecommerce', ['en_US'], LabelCollection::fromArray(['en_US' => 'Ecommerce', 'de_DE' => 'Ecommerce', 'fr_FR' => 'Ecommerce']), ['USD'])
+            ]);
+    }
 
     /**
      * @test
@@ -74,6 +89,7 @@ final class GetProductsLinkedToARecordActionIntegration extends TestCase
             self::RECORD,
             self::ATTRIBUTE_LINK
         );
+
         $this->assertSameResponses($requestContract, $response->getContent());
     }
 
@@ -86,6 +102,22 @@ final class GetProductsLinkedToARecordActionIntegration extends TestCase
                 sprintf('Impossible to load "%s" file, the file is not be present or is malformed', $expectedResponse)
             );
         }
+
+        /* It's impossible to predict the uuid, generated at product creation. So, we drop them in expected and
+         * actual responses.
+         */
+        foreach ($expectedContent['items'] as $i => $item) {
+            if ($item['document_type'] === 'product') {
+                unset($expectedContent['items'][$i]['id']);
+            }
+        }
+        foreach ($actualContent['items'] as $i => $item) {
+            if ($item['document_type'] === 'product') {
+                Assert::assertTrue(Uuid::isValid($item['id']));
+                unset($actualContent['items'][$i]['id']);
+            }
+        }
+
         self::assertEquals(
             $expectedContent,
             $actualContent,

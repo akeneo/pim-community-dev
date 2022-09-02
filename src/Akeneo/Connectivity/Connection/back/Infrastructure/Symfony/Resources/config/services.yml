@@ -1,17 +1,25 @@
 services:
-    akeneo_enterprise_connectivity.connection.webhook.cache_clearer:
-        class: AkeneoEnterprise\Connectivity\Connection\Infrastructure\Webhook\CacheClearer
-        decorates: akeneo_connectivity.connection.webhook.cache_clearer
-        decoration_inner_name: akeneo_connectivity.connection.webhook.community_cache_clearer
+    AkeneoEnterprise\Connectivity\Connection\Infrastructure\Webhook\CacheClearer:
+        decorates: Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\CacheClearer
+        decoration_inner_name: Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\CacheClearer.inner
         arguments:
-            - '@akeneo_connectivity.connection.webhook.community_cache_clearer'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\CacheClearer.inner'
             - '@pimee_security.query.get_all_viewable_locales_for_user'
             - '@pimee_security.query.get_viewable_attribute_codes_for_user'
 
-    akeneo_enterprise_connectivity.connection.marketplace.web_marketplace_aliases:
+    AkeneoEnterprise\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceAliases:
         class: AkeneoEnterprise\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceAliases
-        decorates: akeneo_connectivity.connection.marketplace.web_marketplace_aliases
-        decoration_inner_name: akeneo_connectivity.connection.marketplace.web_marketplace_aliases.inner
+        decorates: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceAliases
+        decoration_inner_name: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceAliases.inner
         arguments:
-            - '@akeneo_connectivity.connection.marketplace.web_marketplace_aliases.inner'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceAliases.inner'
             - '@pim_catalog.version_provider'
+
+    AkeneoEnterprise\Connectivity\Connection\Infrastructure\Apps\Subscriber\AddAllPermissionToAppUserGroup:
+        arguments:
+            - '@feature_flags'
+            - '@Akeneo\Pim\Permission\Bundle\Saver\UserGroupAttributeGroupPermissionsSaver'
+            - '@Akeneo\Pim\Permission\Bundle\Saver\UserGroupLocalePermissionsSaver'
+            - '@Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver'
+        tags:
+            - { name: kernel.event_subscriber }

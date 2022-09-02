@@ -1,0 +1,132 @@
+services:
+    Akeneo\Platform\TailoredExport\Domain\Query\FindProductLabelsInterface:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\Enrichment\FindProductLabels
+        arguments:
+            - '@akeneo.pim.enrichment.product.query.get_product_labels'
+
+    Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\Enrichment\FindProductModelLabels
+        arguments:
+            - '@akeneo.pim.enrichment.product.query.get_product_model_labels'
+
+    Akeneo\Platform\TailoredExport\Domain\Query\FindQualityScoresInterface:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\Enrichment\FindQualityScores
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation\GetProductScoresQuery'
+
+    Akeneo\Platform\TailoredExport\Domain\Query\FindAttributeOptionLabelsInterface:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\Structure\FindAttributeOptionLabels
+        arguments:
+            - '@akeneo.pim.structure.query.lru_cached_get_existing_attribute_options_with_values'
+
+    Akeneo\Platform\TailoredExport\Domain\Query\FindGroupLabelsInterface:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\Structure\FindGroupLabels
+        arguments:
+            - '@akeneo.pim.structure.query.get_group_translations'
+
+    Akeneo\Platform\TailoredExport\Domain\Query\FindUnitLabelInterface:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\Measurement\FindUnitLabel
+        arguments:
+            - '@akeneo_measurement.service_api.get_unit_translations'
+
+    Akeneo\Platform\TailoredExport\Domain\Query\FindUnitSymbolInterface:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\Measurement\FindUnitSymbol
+        arguments:
+            - '@akeneo_measurement.service_api.get_unit'
+
+    Akeneo\Platform\TailoredExport\Domain\Query\MeasurementConverterInterface:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\Measurement\MeasurementConverter
+        arguments:
+            - '@akeneo_measure.measure_converter'
+
+    akeneo.tailored_export.query.find_product_system_sources:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\InMemoryFindSystemSources
+        arguments:
+            -
+                - 'categories'
+                - 'enabled'
+                - 'family'
+                - 'parent'
+                - 'groups'
+                - 'family_variant'
+                - 'quality_score'
+            - '@translator'
+
+    akeneo.tailored_export.query.find_product_model_system_sources:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\InMemoryFindSystemSources
+        arguments:
+            -
+                - 'categories'
+                - 'family'
+                - 'parent'
+                - 'groups'
+                - 'family_variant'
+                - 'code'
+            - '@translator'
+
+    akeneo.tailored_export.query.find_product_viewable_attributes:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\Structure\FindViewableAttributes
+        arguments:
+            - '@akeneo.pim.structure.query.find_flatten_attributes'
+            - '@pimee_security.query.get_viewable_attribute_codes_for_user'
+            - '@security.token_storage'
+            -
+                - 'akeneo_reference_entity_collection'
+                - 'akeneo_reference_entity'
+                - 'pim_catalog_asset_collection'
+                - 'pim_catalog_boolean'
+                - 'pim_catalog_date'
+                - 'pim_catalog_file'
+                - 'pim_catalog_identifier'
+                - 'pim_catalog_image'
+                - 'pim_catalog_metric'
+                - 'pim_catalog_multiselect'
+                - 'pim_catalog_number'
+                - 'pim_catalog_price_collection'
+                - 'pim_catalog_simpleselect'
+                - 'pim_catalog_table'
+                - 'pim_catalog_text'
+                - 'pim_catalog_textarea'
+
+    akeneo.tailored_export.query.find_product_model_viewable_attributes:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\Structure\FindViewableAttributes
+        arguments:
+            - '@akeneo.pim.structure.query.find_flatten_attributes'
+            - '@pimee_security.query.get_viewable_attribute_codes_for_user'
+            - '@security.token_storage'
+            -
+                - 'akeneo_reference_entity_collection'
+                - 'akeneo_reference_entity'
+                - 'pim_catalog_asset_collection'
+                - 'pim_catalog_boolean'
+                - 'pim_catalog_date'
+                - 'pim_catalog_file'
+                - 'pim_catalog_image'
+                - 'pim_catalog_metric'
+                - 'pim_catalog_multiselect'
+                - 'pim_catalog_number'
+                - 'pim_catalog_price_collection'
+                - 'pim_catalog_simpleselect'
+                - 'pim_catalog_table'
+                - 'pim_catalog_text'
+                - 'pim_catalog_textarea'
+
+    Akeneo\Platform\TailoredExport\Domain\Query\FindCategoryLabelsInterface:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\Enrichment\FindCategoryLabels
+        arguments:
+            - '@akeneo.pim.structure.query.get_category_translations'
+
+    Akeneo\Platform\TailoredExport\Domain\Query\FindFamilyLabelInterface:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\Structure\FindFamilyLabel
+        arguments:
+            - '@akeneo.pim.structure.query.get_family_translations'
+
+    Akeneo\Platform\TailoredExport\Domain\Query\FindFamilyVariantLabelInterface:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\Structure\FindFamilyVariantLabel
+        arguments:
+            - '@akeneo.pim.structure.query.get_family_variant_translations'
+
+    Akeneo\Platform\TailoredExport\Domain\Query\FindCurrencyLabelsInterface:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\Structure\FindCurrencyLabels
+        arguments:
+            - '@pim_catalog.localization.translator.currency'

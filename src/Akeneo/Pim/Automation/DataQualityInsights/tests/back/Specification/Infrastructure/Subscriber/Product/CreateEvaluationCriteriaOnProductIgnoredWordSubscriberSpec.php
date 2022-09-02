@@ -13,13 +13,15 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\ProductWordIgnoredEvent;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use PhpSpec\ObjectBehavior;
 use Psr\Log\LoggerInterface;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class CreateEvaluationCriteriaOnProductIgnoredWordSubscriberSpec extends ObjectBehavior
@@ -27,12 +29,14 @@ class CreateEvaluationCriteriaOnProductIgnoredWordSubscriberSpec extends ObjectB
     public function let(
         FeatureFlag $dataQualityInsightsFeature,
         CreateCriteriaEvaluations $createProductsCriteriaEvaluations,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        ProductEntityIdFactoryInterface $idFactory
     ) {
         $this->beConstructedWith(
             $dataQualityInsightsFeature,
             $createProductsCriteriaEvaluations,
-            $logger
+            $logger,
+            $idFactory
         );
     }
 
@@ -49,12 +53,16 @@ class CreateEvaluationCriteriaOnProductIgnoredWordSubscriberSpec extends ObjectB
     public function it_schedule_evaluation_when_a_word_is_ignored(
         $dataQualityInsightsFeature,
         $createProductsCriteriaEvaluations,
-        ProductInterface $product
+        $idFactory
     ) {
-        $product->getId()->willReturn(12345);
-        $dataQualityInsightsFeature->isEnabled()->willReturn(true);
-        $createProductsCriteriaEvaluations->createAll([new ProductId(12345)])->shouldBeCalled();
+        $productUuid = ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed'));
+        $productIdCollection = ProductUuidCollection::fromString('df470d52-7723-4890-85a0-e79be625e2ed');
 
-        $this->onIgnoredWord(new ProductWordIgnoredEvent(new ProductId(12345)));
+        $dataQualityInsightsFeature->isEnabled()->willReturn(true);
+        $createProductsCriteriaEvaluations->createAll($productIdCollection)->shouldBeCalled();
+
+        $idFactory->createCollection(['df470d52-7723-4890-85a0-e79be625e2ed'])->willReturn($productIdCollection);
+
+        $this->onIgnoredWord(new ProductWordIgnoredEvent($productUuid));
     }
 }

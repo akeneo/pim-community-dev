@@ -16,6 +16,7 @@ const FetcherRegistry = require('pim/fetcher-registry');
 const translate = require('oro/translator');
 const routing = require('routing');
 const securityContext = require('pim/security-context');
+const featureFlags = require('pim/feature-flags');
 
 const H3 = styled.h3`
   color: ${getColor('grey', 140)};
@@ -157,9 +158,12 @@ const CategoryPermissionFormProvider: PermissionFormProvider<CategoryPermissionS
   renderForm: (
     onPermissionsChange,
     initialState: CategoryPermissionState | undefined = defaultState,
-    readOnly: boolean = false
+    readOnly: boolean = false,
+    onlyDisplayViewPermissions = false
   ) => {
     const [state, dispatch] = useReducer(CategoryPermissionReducer, initialState);
+    const canEditPermission =
+      securityContext.isGranted('pimee_enrich_category_edit_permissions') && featureFlags.isEnabled('permission');
 
     useEffect(() => {
       readOnly !== true && onPermissionsChange(state);
@@ -170,58 +174,64 @@ const CategoryPermissionFormProvider: PermissionFormProvider<CategoryPermissionS
         <SectionTitle>
           <H3>{translate('pim_permissions.widget.entity.category.label')}</H3>
         </SectionTitle>
-        {securityContext.isGranted('pimee_enrich_category_edit_permissions') ? (
-          <Helper level="info">{translate('pim_permissions.widget.entity.category.help')}</Helper>
-        ) : (
-          <Helper level="warning">
-            {translate('pim_permissions.widget.entity.not_granted_warning', {
-              permission: translate('pimee_enrich.acl.category.edit_permissions'),
-            })}
-          </Helper>
+        {!onlyDisplayViewPermissions && (
+          <>
+            {canEditPermission ? (
+              <Helper level="info">{translate('pim_permissions.widget.entity.category.help')}</Helper>
+            ) : (
+              <Helper level="warning">
+                {translate('pim_permissions.widget.entity.not_granted_warning', {
+                  permission: translate('pimee_enrich.acl.category.edit_permissions'),
+                })}
+              </Helper>
+            )}
+
+            <Label>{translate('pim_permissions.widget.level.own')}</Label>
+            <PermissionFormWidget
+              selection={state.own.identifiers}
+              onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_OWN, identifier: code})}
+              onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_OWN, identifier: code})}
+              disabled={state.own.all}
+              readOnly={!canEditPermission || readOnly}
+              allByDefaultIsSelected={state.own.all}
+              onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_OWN})}
+              onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_OWN})}
+              onClear={() => dispatch({type: PermissionFormReducer.Actions.CLEAR_OWN})}
+              ajax={{
+                ajaxUrl: categoriesAjaxUrl,
+                processAjaxResponse: processCategories,
+                fetchByIdentifiers: fetchCategoriesByIdentifiers,
+                buildQueryParams: buildQueryParams,
+              }}
+            />
+            <Label>{translate('pim_permissions.widget.level.edit')}</Label>
+            <PermissionFormWidget
+              selection={state.edit.identifiers}
+              onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_EDIT, identifier: code})}
+              onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_EDIT, identifier: code})}
+              disabled={state.edit.all}
+              readOnly={!canEditPermission || readOnly}
+              allByDefaultIsSelected={state.edit.all}
+              onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_EDIT})}
+              onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_EDIT})}
+              onClear={() => dispatch({type: PermissionFormReducer.Actions.CLEAR_EDIT})}
+              ajax={{
+                ajaxUrl: categoriesAjaxUrl,
+                processAjaxResponse: processCategories,
+                fetchByIdentifiers: fetchCategoriesByIdentifiers,
+                buildQueryParams: buildQueryParams,
+              }}
+            />
+          </>
         )}
-        <Label>{translate('pim_permissions.widget.level.own')}</Label>
-        <PermissionFormWidget
-          selection={state.own.identifiers}
-          onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_OWN, identifier: code})}
-          onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_OWN, identifier: code})}
-          disabled={state.own.all}
-          readOnly={!securityContext.isGranted('pimee_enrich_category_edit_permissions') || readOnly}
-          allByDefaultIsSelected={state.own.all}
-          onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_OWN})}
-          onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_OWN})}
-          onClear={() => dispatch({type: PermissionFormReducer.Actions.CLEAR_OWN})}
-          ajax={{
-            ajaxUrl: categoriesAjaxUrl,
-            processAjaxResponse: processCategories,
-            fetchByIdentifiers: fetchCategoriesByIdentifiers,
-            buildQueryParams: buildQueryParams,
-          }}
-        />
-        <Label>{translate('pim_permissions.widget.level.edit')}</Label>
-        <PermissionFormWidget
-          selection={state.edit.identifiers}
-          onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_EDIT, identifier: code})}
-          onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_EDIT, identifier: code})}
-          disabled={state.edit.all}
-          readOnly={!securityContext.isGranted('pimee_enrich_category_edit_permissions') || readOnly}
-          allByDefaultIsSelected={state.edit.all}
-          onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_EDIT})}
-          onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_EDIT})}
-          onClear={() => dispatch({type: PermissionFormReducer.Actions.CLEAR_EDIT})}
-          ajax={{
-            ajaxUrl: categoriesAjaxUrl,
-            processAjaxResponse: processCategories,
-            fetchByIdentifiers: fetchCategoriesByIdentifiers,
-            buildQueryParams: buildQueryParams,
-          }}
-        />
+
         <Label>{translate('pim_permissions.widget.level.view')}</Label>
         <PermissionFormWidget
           selection={state.view.identifiers}
           onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_VIEW, identifier: code})}
           onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_VIEW, identifier: code})}
           disabled={state.view.all}
-          readOnly={!securityContext.isGranted('pimee_enrich_category_edit_permissions') || readOnly}
+          readOnly={!canEditPermission || readOnly}
           allByDefaultIsSelected={state.view.all}
           onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_VIEW})}
           onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_VIEW})}
@@ -236,7 +246,7 @@ const CategoryPermissionFormProvider: PermissionFormProvider<CategoryPermissionS
       </>
     );
   },
-  renderSummary: (state: CategoryPermissionState) => {
+  renderSummary: (state: CategoryPermissionState, onlyDisplayViewPermissions = false) => {
     const [summaries, setSummaries] = useState<SummaryLabels>({
       own: '',
       edit: '',
@@ -255,12 +265,16 @@ const CategoryPermissionFormProvider: PermissionFormProvider<CategoryPermissionS
 
     return (
       <PermissionSectionSummary label={'pim_permissions.widget.entity.category.label'}>
-        <LevelSummaryField levelLabel={'pim_permissions.widget.level.own'} icon={<KeyIcon size={20} />}>
-          {summaries.own}
-        </LevelSummaryField>
-        <LevelSummaryField levelLabel={'pim_permissions.widget.level.edit'} icon={<EditIcon size={20} />}>
-          {summaries.edit}
-        </LevelSummaryField>
+        {!onlyDisplayViewPermissions && (
+          <>
+            <LevelSummaryField levelLabel={'pim_permissions.widget.level.own'} icon={<KeyIcon size={20} />}>
+              {summaries.own}
+            </LevelSummaryField>
+            <LevelSummaryField levelLabel={'pim_permissions.widget.level.edit'} icon={<EditIcon size={20} />}>
+              {summaries.edit}
+            </LevelSummaryField>
+          </>
+        )}
         <LevelSummaryField levelLabel={'pim_permissions.widget.level.view'} icon={<ViewIcon size={20} />}>
           {summaries.view}
         </LevelSummaryField>
@@ -268,7 +282,10 @@ const CategoryPermissionFormProvider: PermissionFormProvider<CategoryPermissionS
     );
   },
   save: async (userGroup: string, state: CategoryPermissionState) => {
-    if (!securityContext.isGranted('pimee_enrich_category_edit_permissions')) {
+    const canEditPermission =
+      securityContext.isGranted('pimee_enrich_category_edit_permissions') && featureFlags.isEnabled('permission');
+
+    if (!canEditPermission) {
       return Promise.resolve();
     }
 

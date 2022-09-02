@@ -37,27 +37,14 @@ use Doctrine\DBAL\Types\Types;
  */
 class SqlFindAssetFamilyDetails implements FindAssetFamilyDetailsInterface
 {
-    private Connection $sqlConnection;
-    private FindAttributesDetailsInterface $findAttributesDetails;
-    private FindActivatedLocalesInterface $findActivatedLocales;
-    private ConnectorTransformationCollectionHydrator $transformationCollectionHydrator;
-    private ConnectorProductLinkRulesHydrator $productLinkRulesHydrator;
-    private CountAssetsInterface $assetsCount;
-
     public function __construct(
-        Connection $sqlConnection,
-        FindAttributesDetailsInterface $findAttributesDetails,
-        FindActivatedLocalesInterface $findActivatedLocales,
-        ConnectorTransformationCollectionHydrator $transformationCollectionHydrator,
-        ConnectorProductLinkRulesHydrator $productLinkRulesHydrator,
-        CountAssetsInterface $assetsCount
+        private Connection $sqlConnection,
+        private FindAttributesDetailsInterface $findAttributesDetails,
+        private FindActivatedLocalesInterface $findActivatedLocales,
+        private ConnectorTransformationCollectionHydrator $transformationCollectionHydrator,
+        private ConnectorProductLinkRulesHydrator $productLinkRulesHydrator,
+        private CountAssetsInterface $assetsCount,
     ) {
-        $this->sqlConnection = $sqlConnection;
-        $this->findAttributesDetails = $findAttributesDetails;
-        $this->findActivatedLocales = $findActivatedLocales;
-        $this->transformationCollectionHydrator = $transformationCollectionHydrator;
-        $this->productLinkRulesHydrator = $productLinkRulesHydrator;
-        $this->assetsCount = $assetsCount;
     }
 
     /**
@@ -115,12 +102,10 @@ SQL;
         $result = $statement->fetchAssociative();
         $statement->free();
 
-        return $result ? $result : [];
+        return $result ?: [];
     }
 
     /**
-     * @return AssetFamilyDetails
-     *
      * @throws \Doctrine\DBAL\DBALException
      */
     private function hydrateAssetFamilyDetails(

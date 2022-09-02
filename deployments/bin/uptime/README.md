@@ -83,7 +83,7 @@ make buildPush
 ```
 
 ## Gcloud authentication
-First generate your gcloud authentification json file
+First generate your gcloud authentication json file
 ```bash
 gcloud auth application-default login
 ```
@@ -95,13 +95,13 @@ The php extension bcmath is mandatory and you'll have to install it first
 
 ```bash
 composer install
-GOOGLE_APPLICATION_CREDENTIALS=~/.config/gcloud/application_default_credentials.json ./deployment <command>
+GOOGLE_APPLICATION_CREDENTIALS=~/.config/gcloud/application_default_credentials.json ./deployment deployment-uptime-<get|clear>
 ```
 
 ### Docker
 ```bash
-docker-compose run --rm composer composer install
-GOOGLE_APPLICATION_CREDENTIALS=~/.config/gcloud/application_default_credentials.json docker-compose run --rm php ./deployment <command>
+make install
+GOOGLE_APPLICATION_CREDENTIALS=~/.config/gcloud/application_default_credentials.json make deployment-uptime-<get|clear>
 ```
 
 # Environment

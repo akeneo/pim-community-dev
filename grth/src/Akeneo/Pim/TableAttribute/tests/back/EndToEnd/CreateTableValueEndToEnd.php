@@ -32,7 +32,9 @@ class CreateTableValueEndToEnd extends ApiTestCase
             'identifier' => 'id1',
             'values' => [
                 'nutrition' => [
-                    ['locale' => null, 'scope' => null, 'data' => [['ingredients' => 'bar']]],
+                    ['locale' => null, 'scope' => null, 'data' => [
+                        ['ingredients' => 'bar', 'manufacturing_time' => ['amount' => 2, 'unit' => 'minute']],
+                    ]],
                 ],
             ],
         ];
@@ -45,7 +47,7 @@ class CreateTableValueEndToEnd extends ApiTestCase
         Assert::assertNotNull($productFromDb);
         $value = $productFromDb->getValue('nutrition');
         Assert::assertInstanceOf(TableValue::class, $value);
-        $expectedData = [['foo' => 'bar']];
+        $expectedData = [['ingredients' => 'bar',  'manufacturing_time' => ['amount' => 2, 'unit' => 'minute']]];
         Assert::assertEqualsCanonicalizing($expectedData, $value->getData()->normalize());
     }
 
@@ -70,7 +72,7 @@ class CreateTableValueEndToEnd extends ApiTestCase
         Assert::assertNotNull($productFromDb);
         $value = $productFromDb->getValue('nutrition');
         Assert::assertInstanceOf(TableValue::class, $value);
-        $expectedData = [['foo' => 'BAR']];
+        $expectedData = [['foo' => 'bar']];
         Assert::assertEqualsCanonicalizing($expectedData, $value->getData()->normalize());
     }
 
@@ -112,10 +114,11 @@ class CreateTableValueEndToEnd extends ApiTestCase
         $client->request('POST', 'api/rest/v1/products', [], [], [], json_encode($data));
         $response = $client->getResponse();
         Assert::assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-        Assert::assertStringContainsString(
-            'Property "nutrition" expects an array with valid data, The cell value must be a text string, a number or a boolean..',
-            \json_decode($response->getContent(), true)['message']
-        );
+        $decodedContent = \json_decode($response->getContent(), true);
+        Assert::assertStringContainsString('Validation failed.', $decodedContent['message']);
+        Assert::assertIsArray($decodedContent['errors']);
+        Assert::assertCount(1, $decodedContent['errors']);
+        Assert::assertSame("The \"ingredients\" column expects a string, array given", $decodedContent['errors'][0]['message']);
     }
 
     public function testItRemovesDuplicateRowsUsingFirstColumncode(): void
@@ -157,6 +160,73 @@ class CreateTableValueEndToEnd extends ApiTestCase
         );
     }
 
+    public function testItInvalidatesOnInvalidMeasurementValue(): void
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data = [
+            'identifier' => 'id1',
+            'values' => [
+                'nutrition' => [
+                    ['locale' => null, 'scope' => null, 'data' => [
+                        ['ingredients' => 'bar', 'manufacturing_time' => ['amount' => "michel", 'unit' => 'minute']],
+                    ]],
+                ],
+            ],
+        ];
+
+        $client->request('POST', 'api/rest/v1/products', [], [], [], json_encode($data));
+        $response = $client->getResponse();
+        Assert::assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $decodedContent = \json_decode($response->getContent(), true);
+        Assert::assertStringContainsString('Validation failed.', $decodedContent['message']);
+        Assert::assertIsArray($decodedContent['errors']);
+        Assert::assertCount(1, $decodedContent['errors']);
+        Assert::assertSame('The "manufacturing_time" column expects an string unit code and a numeric amount, {"amount":"michel","unit":"minute"} given', $decodedContent['errors'][0]['message']);
+
+        $client = $this->createAuthenticatedClient();
+        $data = [
+            'identifier' => 'id1',
+            'values' => [
+                'nutrition' => [
+                    ['locale' => null, 'scope' => null, 'data' => [
+                        ['ingredients' => 'bar', 'manufacturing_time' => '12'],
+                    ]],
+                ],
+            ],
+        ];
+
+        $client->request('POST', 'api/rest/v1/products', [], [], [], json_encode($data));
+        $response = $client->getResponse();
+        Assert::assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $decodedContent = \json_decode($response->getContent(), true);
+        Assert::assertStringContainsString('Validation failed.', $decodedContent['message']);
+        Assert::assertIsArray($decodedContent['errors']);
+        Assert::assertCount(1, $decodedContent['errors']);
+        Assert::assertSame('The "manufacturing_time" column expects an string unit code and a numeric amount, "12" given', $decodedContent['errors'][0]['message']);
+
+        $client = $this->createAuthenticatedClient();
+        $data = [
+            'identifier' => 'id1',
+            'values' => [
+                'nutrition' => [
+                    ['locale' => null, 'scope' => null, 'data' => [
+                        ['ingredients' => 'bar', 'manufacturing_time' => ['amount' => 12, 'unit' => 'UNKNOWN']],
+                    ]],
+                ],
+            ],
+        ];
+
+        $client->request('POST', 'api/rest/v1/products', [], [], [], json_encode($data));
+        $response = $client->getResponse();
+        Assert::assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $decodedContent = \json_decode($response->getContent(), true);
+        Assert::assertStringContainsString('Validation failed.', $decodedContent['message']);
+        Assert::assertIsArray($decodedContent['errors']);
+        Assert::assertCount(1, $decodedContent['errors']);
+        Assert::assertSame('The "UNKNOWN" unit in the "duration" measurement family does not exist', $decodedContent['errors'][0]['message']);
+    }
+
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
@@ -180,6 +250,12 @@ class CreateTableValueEndToEnd extends ApiTestCase
                     ],
                 ],
                 ['code' => 'quantity', 'data_type' => 'text', 'labels' => ['en_US' => 'Quantity']],
+                [
+                    'code' => 'manufacturing_time',
+                    'data_type' => 'measurement',
+                    'measurement_family_code' => 'duration',
+                    'measurement_default_unit_code' => 'day',
+                ],
             ]
         ]);
         $violations = $this->get('validator')->validate($attribute);

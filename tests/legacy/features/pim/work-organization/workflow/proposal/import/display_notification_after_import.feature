@@ -1,4 +1,4 @@
-@javascript
+@javascript @proposal-feature-enabled
 Feature: Display notification after import
   In order to summarize proposals
   As a product manager
@@ -22,7 +22,7 @@ Feature: Display notification after import
       my-jacket2;My jacket2
       """
     And the following job "csv_clothing_product_proposal_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
 
   Scenario: Successfully display a notification for owner
     Given I am logged in as "Mary"

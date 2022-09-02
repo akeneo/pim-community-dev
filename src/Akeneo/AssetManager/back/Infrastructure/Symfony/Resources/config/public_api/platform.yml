@@ -8,3 +8,8 @@ services:
     class: 'Akeneo\AssetManager\Infrastructure\PublicApi\Platform\SqlGetAssetMainMediaData'
     arguments:
       - '@database_connection'
+
+  akeneo_assetmanager.infrastructure.persistence.query.platform.get_asset_attribute_with_media_info_public_api:
+    class: 'Akeneo\AssetManager\Infrastructure\PublicApi\Platform\SqlGetAssetAttributesWithMediaInfo'
+    arguments:
+      - '@database_connection'

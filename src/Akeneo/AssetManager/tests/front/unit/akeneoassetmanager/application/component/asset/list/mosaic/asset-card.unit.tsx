@@ -67,6 +67,8 @@ describe('Test Asset create modal component', () => {
         context={{locale: 'en_US', channel: 'ecommerce'}}
         isSelected={isSelected}
         onSelectionChange={() => {}}
+        shouldGeneratePreview={true}
+        handlePreviewGenerated={jest.fn()}
       />
     );
 

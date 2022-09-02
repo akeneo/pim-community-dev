@@ -1,4 +1,4 @@
-@javascript
+@javascript @teamwork-assistant-feature-enabled
 Feature: Create enrichment project
   In order to easily enrich a product collection
   As a project creator

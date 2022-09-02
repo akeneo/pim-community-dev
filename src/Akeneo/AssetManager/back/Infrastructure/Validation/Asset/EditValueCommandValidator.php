@@ -27,20 +27,11 @@ use Symfony\Component\Validator\Validation;
  */
 class EditValueCommandValidator extends ConstraintValidator
 {
-    private ChannelExistsInterface $channelExists;
-
-    private FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels;
-
-    private FindActivatedLocalesByIdentifiersInterface $findActivatedLocalesByIdentifiers;
-
     public function __construct(
-        ChannelExistsInterface $channelExists,
-        FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels,
-        FindActivatedLocalesByIdentifiersInterface $findActivatedLocalesByIdentifiers
+        private ChannelExistsInterface $channelExists,
+        private FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels,
+        private FindActivatedLocalesByIdentifiersInterface $findActivatedLocalesByIdentifiers,
     ) {
-        $this->channelExists = $channelExists;
-        $this->findActivatedLocalesPerChannels = $findActivatedLocalesPerChannels;
-        $this->findActivatedLocalesByIdentifiers = $findActivatedLocalesByIdentifiers;
     }
 
     public function validate($command, Constraint $constraint)
@@ -74,7 +65,7 @@ class EditValueCommandValidator extends ConstraintValidator
                 sprintf(
                     'Expected argument to be of class "%s", "%s" given',
                     EditValueCommand::class,
-                    get_class($command)
+                    $command::class
                 )
             );
         }

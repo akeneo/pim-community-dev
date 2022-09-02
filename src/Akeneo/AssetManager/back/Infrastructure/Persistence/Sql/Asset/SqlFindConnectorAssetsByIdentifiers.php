@@ -43,6 +43,10 @@ class SqlFindConnectorAssetsByIdentifiers implements FindConnectorAssetsByIdenti
      */
     public function find(array $identifiers, AssetQuery $assetQuery): array
     {
+        if (empty($identifiers)) {
+            return [];
+        }
+
         $sql = <<<SQL
             SELECT
             /*+ SET_VAR( range_optimizer_max_mem_size = 50000000) */

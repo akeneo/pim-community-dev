@@ -29,21 +29,10 @@ class DefaultImageProvider implements DefaultImageProviderInterface
         PreviewGeneratorRegistry::THUMBNAIL_SMALL_TYPE  => 'am_binary_image_thumbnail',
         PreviewGeneratorRegistry::PREVIEW_TYPE          => 'am_binary_image_preview'
     ];
-
-    protected FilterManager $filterManager;
-    protected CacheManager $cacheManager;
     protected ?array $defaultImages = null;
 
-    /**
-     * @param FilterManager $filterManager
-     * @param CacheManager  $cacheManager
-     * @param array         $defaultImages
-     */
-    public function __construct(FilterManager $filterManager, CacheManager $cacheManager, array $defaultImages)
+    public function __construct(protected FilterManager $filterManager, protected CacheManager $cacheManager, array $defaultImages)
     {
-        $this->filterManager = $filterManager;
-        $this->cacheManager = $cacheManager;
-
         $resolver = new OptionsResolver();
         $this->configureDefaultImagesOptions($resolver);
         foreach ($defaultImages as $fileType => $defaultImage) {
@@ -56,7 +45,7 @@ class DefaultImageProvider implements DefaultImageProviderInterface
      */
     public function getImageUrl(string $fileKey, string $filter): string
     {
-        $filter = isset(self::SUPPORTED_TYPES[$filter]) ? self::SUPPORTED_TYPES[$filter] : $filter;
+        $filter = self::SUPPORTED_TYPES[$filter] ?? $filter;
 
         if (!$this->cacheManager->isStored($fileKey, $filter)) {
             $binary = $this->getImageBinary($fileKey);
@@ -70,9 +59,7 @@ class DefaultImageProvider implements DefaultImageProviderInterface
     }
 
     /**
-     * Return a Binary instance that embed the image corresponding to the specified file type
-     *
-     * @throws \InvalidArgumentException
+     * {@inheritdoc}
      */
     public function getImageBinary(string $fileType): Binary
     {

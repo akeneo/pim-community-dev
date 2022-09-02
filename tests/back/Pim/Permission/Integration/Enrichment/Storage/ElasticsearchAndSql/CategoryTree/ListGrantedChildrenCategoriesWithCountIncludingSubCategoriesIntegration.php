@@ -140,4 +140,3 @@ class ListGrantedChildrenCategoriesWithCountIncludingSubCategoriesIntegration ex
         return $this->catalog->useMinimalCatalog();
     }
 }
-

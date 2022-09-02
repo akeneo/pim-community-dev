@@ -326,7 +326,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->assertResponse(
             $this->client->getResponse(),
             Response::HTTP_BAD_REQUEST,
-            '[{"messageTemplate":"pim_asset_manager.asset.validation.code.should_be_unique","parameters":{"%code%":"starck"},"message":"An asset already exists with code \u0022starck\u0022","propertyPath":"code","invalidValue":{"assetFamilyIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}}}]'
+            '[{"messageTemplate":"pim_asset_manager.asset.validation.code.should_be_unique","parameters":{"%code%":"starck"},"message":"An asset already exists with code \u0022starck\u0022","propertyPath":"code"}]'
         );
     }
 

@@ -21,13 +21,9 @@ use Webmozart\Assert\Assert;
  */
 class Type
 {
-    private string $value;
-
-    private function __construct(string $value)
+    private function __construct(private string $value)
     {
         Assert::stringNotEmpty($value, 'Type value of action should not be empty');
-
-        $this->value = $value;
     }
 
     public static function createFromNormalized(string $value): self

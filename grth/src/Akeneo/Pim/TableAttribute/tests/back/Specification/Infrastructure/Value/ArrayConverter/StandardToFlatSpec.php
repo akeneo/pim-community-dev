@@ -66,4 +66,37 @@ class StandardToFlatSpec extends ObjectBehavior
             ]
         );
     }
+
+    function it_converts_null_data_to_empty_string(AttributeColumnsResolver $columnsResolver)
+    {
+        $data = [
+            [
+                'locale' => 'en_US',
+                'scope' => null,
+                'data' => [
+                    ['ingredient' => 'salt', 'allergenic' => false],
+                    ['ingredient' => 'egg', 'quantity' => 10, 'allergenic' => true],
+                ],
+            ],
+            [
+                'locale' => 'fr_FR',
+                'scope' => null,
+                'data' => null,
+            ],
+        ];
+
+        $columnsResolver->resolveFlatAttributeName('nutrition', 'en_US', null)
+            ->shouldBeCalled()
+            ->willReturn('nutrition-en_US');
+        $columnsResolver->resolveFlatAttributeName('nutrition', 'fr_FR', null)
+            ->shouldBeCalled()
+            ->willReturn('nutrition-fr_FR');
+
+        $this->convert('nutrition', $data)->shouldReturn(
+            [
+                'nutrition-en_US' => '[{"ingredient":"salt","allergenic":false},{"ingredient":"egg","quantity":10,"allergenic":true}]',
+                'nutrition-fr_FR' => '',
+            ]
+        );
+    }
 }

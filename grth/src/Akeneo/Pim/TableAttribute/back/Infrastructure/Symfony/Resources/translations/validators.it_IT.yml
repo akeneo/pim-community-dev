@@ -40,9 +40,19 @@ pim_table_configuration:
       no_validations_allowed: 'Non utilizzare Validazioni su colonne di tipo "{{ columnType }}". Tipo di colonna attuale: "{{ given }}"'
       invalid_validation_key: 'La validazione "{{ given }}" non è compatibile con le colonne "{{ columnType }}". Consentite: "{{ expected }}"'
       too_many_table_attributes: Hai raggiunto il numero massimo di attributi tabella per il PIM ({{ limit }})
+      measurement_family_should_exist: Assicurati che la famiglia di unità di misura "{{ measurement_family_code }}" esista prima di aggiungerla alla tabella
+      measurement_unit_should_exist: Assicurati che l'unità "{{ measurement_unit_code }}" esista nella famiglia di unità di misura "{{ measurement_family_code }}" prima di aggiungerla alla tabella
+      measurement_family_code_must_be_filled: Il codice della famiglia di unità di misura deve essere compilato
+      measurement_default_unit_code_must_be_filled: Il codice dell'unità di misura predefinita deve essere compilato
+      measurement_family_code_cannot_be_set: Il codice della famiglia di unità di misura non può essere impostato per un tipo di colonna "{{ data_type }}"
+      measurement_default_unit_code_cannot_be_set: Il codice dell'unità di misura predefinita non può essere impostato per un tipo di colonna "{{ data_type }}"
+      measurement_family_cannot_be_updated: Il measurement_family_code non può essere aggiornato
+      measurement_family_should_not_be_linked: 'Questa famiglia di unità di misura è utilizzata in un attributo di prodotto, pertanto non può essere rimossa.'
+      measurement_family_unit_should_not_be_linked: 'Questa unità della famiglia di unità di misura è utilizzata in un attributo di prodotto. Puoi modificare solo le etichette tradotte e il simbolo di un''unità.'
     product_value:
       non_existing_columns: '[0,1]La colonna "{{ non_existing_columns }}" non esiste]1,Inf[Le colonne "{{ non_existing_columns }}" non esistono'
       unexpected_data_type: 'Per la colonna "{{ columnCode }}" è atteso un {{ expected }}. È stato immesso {{ given }}'
+      unexpected_data_type_for_measurement: 'La colonna "{{ columnCode }}" prevede un codice di unità stringa e un importo numerico {{ given }} dato'
       first_column_required: 'La colonna "{{ columnCode }}" è obbligatoria'
       unknown_option: 'Utilizza solamente codici opzione esistenti. Valore attuale: "{{ optionCode }}"'
       integer_required: 'Questo valore dovrebbe essere un intero: {{ invalid_value }}'
@@ -52,6 +62,7 @@ pim_table_configuration:
       max_length_validation: Questo valore dovrebbe contenere al massimo {{ limit }} caratteri.
       too_many_rows: Hai raggiunto il numero massimo di righe per la tabella ({{ limit }}).
       record_should_exist: 'Il record "{{ recordCode }}" nell''entità di riferimento "{{ referenceEntityIdentifier }}" non esiste'
+      measurement_unit_should_exist: 'L''unità "{{ measurement_unit_code }}" nella famiglia di unità di misura "{{ measurement_family_code }}" non esiste'
     product_value_collection:
       too_many_cells: Hai raggiunto il numero massimo di celle nella tabella del prodotto ({{ count }} celle; ammesse solamente {{ limit }})
     reference_entity:

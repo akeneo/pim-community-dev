@@ -13,16 +13,17 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Controller\AssetFamily;
 
-use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
 use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAllAssetFamilyAssetsCommand;
 use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAllAssetFamilyAssetsHandler;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
@@ -31,28 +32,20 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class ExecuteProductLinkRulesAction
 {
-    private LinkAllAssetFamilyAssetsHandler $linkAllAssetFamilyAssetsHandler;
-
-    private TokenStorageInterface $tokenStorage;
-
-    private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler;
-
-    private SecurityFacade $securityFacade;
-
     public function __construct(
-        LinkAllAssetFamilyAssetsHandler $linkAllAssetFamilyAssetsHandler,
-        TokenStorageInterface $tokenStorage,
-        CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
-        SecurityFacade $securityFacade
+        private LinkAllAssetFamilyAssetsHandler $linkAllAssetFamilyAssetsHandler,
+        private TokenStorageInterface $tokenStorage,
+        private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
+        private SecurityFacadeInterface $securityFacade,
     ) {
-        $this->linkAllAssetFamilyAssetsHandler = $linkAllAssetFamilyAssetsHandler;
-        $this->tokenStorage = $tokenStorage;
-        $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
-        $this->securityFacade = $securityFacade;
     }
 
-    public function __invoke(string $identifier): JsonResponse
+    public function __invoke(Request $request, string $identifier): JsonResponse
     {
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
+
         if (!$this->isUserAllowedToEdit($identifier)) {
             throw new AccessDeniedHttpException();
         }
@@ -60,7 +53,7 @@ class ExecuteProductLinkRulesAction
         $command = new LinkAllAssetFamilyAssetsCommand($identifier);
         try {
             ($this->linkAllAssetFamilyAssetsHandler)($command);
-        } catch (AssetFamilyNotFoundException $e) {
+        } catch (AssetFamilyNotFoundException) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 

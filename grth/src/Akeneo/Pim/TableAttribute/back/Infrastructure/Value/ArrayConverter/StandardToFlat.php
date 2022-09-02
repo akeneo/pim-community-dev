@@ -30,8 +30,7 @@ final class StandardToFlat extends AbstractValueConverter
                 $value['locale'],
                 $value['scope']
             );
-
-            $convertedItem[$flatName] = \json_encode($value['data'] ?? null);
+            $convertedItem[$flatName] = isset($value['data']) ? \json_encode($value['data']) : '';
         }
 
         return $convertedItem;

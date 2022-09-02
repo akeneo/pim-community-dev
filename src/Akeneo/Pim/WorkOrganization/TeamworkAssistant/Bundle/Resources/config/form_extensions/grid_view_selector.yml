@@ -1,4 +1,6 @@
 extensions:
+    # as TWA selector config is merged with CE view selector, it cannot be deactivated with "feature" parameters
+    # therefore, TWA feature flag is handled directly in view-selector.js
     pim-grid-view-selector:
         module: pim/grid/view-selector/selector
         config:
@@ -18,6 +20,7 @@ extensions:
         parent: pim-grid-view-selector-secondary-actions
         targetZone: secondary-actions
         position: 115
+        feature: teamwork_assistant
 
     pimee-grid-view-selector-edit-project:
         module: teamwork-assistant/grid/view-selector/edit-project

@@ -15,3 +15,12 @@ oneup_flysystem:
         asset_storage:
             adapter: asset_storage_adapter
             mount: assetStorage
+        tailored_import_storage:
+            adapter: tailored_import_storage_adapter
+            mount: tailoredImport
+        local_storage:
+            adapter: local_storage_adapter
+            mount: localFilesystem
+        supplier_portal:
+            adapter: supplier_portal_storage_adapter
+            mount: supplierPortal

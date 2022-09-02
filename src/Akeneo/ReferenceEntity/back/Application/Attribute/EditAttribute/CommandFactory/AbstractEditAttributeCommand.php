@@ -11,11 +11,7 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFact
  */
 class AbstractEditAttributeCommand
 {
-    /** @var string */
-    public $identifier;
-
-    public function __construct(string $identifier)
+    public function __construct(public string $identifier)
     {
-        $this->identifier = $identifier;
     }
 }

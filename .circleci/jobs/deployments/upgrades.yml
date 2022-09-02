@@ -1,0 +1,217 @@
+envVarsDeployDev: &envVarsDeployDev
+dockerJenkinsCloudDeployer: &dockerJenkinsCloudDeployer
+
+jobs:
+    # Description :
+    #    Upgrade environment with the new release created in the previous jobs
+    #    Use the prod preocess (jenkinsfile) to upgrade the environment
+    test_upgrade_from_last_release:
+        parameters:
+            PRODUCT_TYPE:
+                type: string
+                default: "srnt"
+            CLUSTER_NEXT:
+                type: boolean
+                default: false
+            INSTANCE_NAME:
+                type: string
+                default: ""
+            REMOVE_ENV:
+                type: boolean
+                default: true
+        environment:
+            <<: *envVarsDeployDev
+        <<: *dockerJenkinsCloudDeployer
+        resource_class: small
+        steps:
+            - attach_workspace:
+                  at: ~/
+            - add_ssh_keys
+            - when:
+                  condition:
+                      equal: [true, << parameters.CLUSTER_NEXT >> ]
+                  steps:
+                      - modify_cluster
+            - set_gcloud_config_dev
+            - restore_persisted_env_vars
+            - run:
+                  name: Prepare the environment
+                  command: |
+                      ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                      echo '' > /root/.ssh/config #clean github exclusions automatically added by circleci
+                      REPO_TO_ADD=github.com KEY_TO_ADD=/root/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 bash deployments/bin/add-deploy-key.sh
+                      REPO_TO_ADD=cloud-customers-dev KEY_TO_ADD=/root/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 bash deployments/bin/add-deploy-key.sh
+                      REPO_TO_ADD=jenkins-k8s-utils KEY_TO_ADD=/root/.ssh/id_rsa_2c6118646e36aa7476fd5e6b735923c6 bash deployments/bin/add-deploy-key.sh
+                      REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
+            - show_datadog_logs_links:
+                pfid: ${TYPE}-${INSTANCE_NAME}
+            - run:
+                  name: Jenkins Upgrade
+                  command: |
+                      NS=${TYPE}-${INSTANCE_NAME} PHASE=upgrade bash deployments/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
+                      OPERATIONS_TOOLS_BRANCH=master make -C deployments/ upgrade-instance
+            - get_datadog_migration_logs:
+                pfid: ${TYPE}-${INSTANCE_NAME}
+            - store_artifacts:
+                path: /tmp/migration-logs.json
+                destination: migration-logs.json
+            - run:
+                  name: Production tests on upgraded env
+                  command: make -C deployments/ test-prod
+            - run:
+                  name: Check that upgrader pod ran
+                  command: kubectl get pods --namespace=${TYPE}-${INSTANCE_NAME} | grep pim-upgrader
+            - run:
+                  name: Check PIM version installed
+                  command: |
+                      VERSION_INSTALLED=$(helm3 get values ${TYPE}-${INSTANCE_NAME} -n ${TYPE}-${INSTANCE_NAME} | yq r - 'image.pim.tag')
+                      if [[ "${VERSION_INSTALLED}" == "${IMAGE_TAG}" ]]; then
+                        echo "PIM successfully upgraded to ${IMAGE_TAG}"
+                      else
+                        echo "PIM not upgraded to the correct version"
+                        echo "PIM version wanted: ${IMAGE_TAG}"
+                        echo "PIM version installed: ${VERSION_INSTALLED}"
+                        exit 1
+                      fi
+            - run:
+                  name: Display Deployment Errors
+                  command: cat deployment.log
+                  when: on_fail
+            - run:
+                  name: Check if upgrader failed
+                  command: kubectl logs -l "job-name=pim-upgrader" --namespace=${TYPE}-${INSTANCE_NAME}
+                  when: on_fail
+            - run:
+                  name: Prepare infrastructure artifacts
+                  command: make -C deployments/ prepare-infrastructure-artifacts
+                  when: on_fail
+            - store_artifacts:
+                  path: ~/artifacts/infra
+            - store_artifacts:
+                  path: deployment.log
+                  destination: test_upgrade_from_last_release_deployment.log
+            - when:
+                  condition:
+                      equal: [true, << parameters.REMOVE_ENV >> ]
+                  steps:
+                      - run:
+                            name: Remove env on kubernetes
+                            command: |
+                                ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                                export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                                UNCOMMIT_INSTANCE_STATUS_CODE=0
+                                for i in 1 2 3; do make -C deployments/ uncommit-instance && UNCOMMIT_INSTANCE_STATUS_CODE=0 && break || UNCOMMIT_INSTANCE_STATUS_CODE=1; done
+                                exit ${UNCOMMIT_INSTANCE_STATUS_CODE}
+                            when: always
+            - when:
+                  condition:
+                      equal: [false, << parameters.REMOVE_ENV >> ]
+                  steps:
+                      - run:
+                            name: Remove env on kubernetes
+                            command: |
+                                ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                                export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                                UNCOMMIT_INSTANCE_STATUS_CODE=0
+                                for i in 1 2 3; do make -C deployments/ uncommit-instance && UNCOMMIT_INSTANCE_STATUS_CODE=0 && break || UNCOMMIT_INSTANCE_STATUS_CODE=1; done
+                                exit ${UNCOMMIT_INSTANCE_STATUS_CODE}
+                            when: on_fail
+
+    # Description :
+    #    Upgrade customer previously cloned with the latest release available
+    #    Use the prod preocess (jenkinsfile) to upgrade the environment
+    test_upgrade_from_customer_db:
+        parameters:
+            PRODUCT_TYPE:
+                type: string
+                default: "srnt"
+            SOURCE_PFID:
+                type: string
+                default: ""
+        environment:
+            <<: *envVarsDeployDev
+        <<: *dockerJenkinsCloudDeployer
+        resource_class: small
+        steps:
+            - attach_workspace:
+                  at: ~/
+            - add_ssh_keys
+            - set_gcloud_config_dev
+            - restore_persisted_env_vars
+            - run:
+                  name: Define value for next steps
+                  command: |
+                      RELEASE_TO_DEPLOY=$(gcloud container images list-tags eu.gcr.io/akeneo-cloud/pim-enterprise-dev --filter="tags~^v[0-9]{14}$" --sort-by="~tags" --limit=1 --format="value(tags)")
+                      if [[ "${TYPE}" == "grth" ]]; then
+                          RELEASE_TO_DEPLOY=$(gcloud container images list-tags eu.gcr.io/akeneo-cloud/pim-enterprise-dev --filter="tags~^growth-v[0-9]{14}$" --sort-by="~tags" --limit=1 --format="value(tags)")
+                      fi
+
+                      IMAGE_TAG=${RELEASE_TO_DEPLOY}
+                      echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
+
+                      echo "Release to deploy: ${IMAGE_TAG}"
+            - run:
+                  name: Prepare the environment
+                  command: |
+                      ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                      echo '' > /root/.ssh/config #clean github exclusions automatically added by circleci
+                      REPO_TO_ADD=github.com KEY_TO_ADD=/root/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 bash deployments/bin/add-deploy-key.sh
+                      REPO_TO_ADD=cloud-customers-dev KEY_TO_ADD=/root/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 bash deployments/bin/add-deploy-key.sh
+                      REPO_TO_ADD=jenkins-k8s-utils KEY_TO_ADD=/root/.ssh/id_rsa_2c6118646e36aa7476fd5e6b735923c6 bash deployments/bin/add-deploy-key.sh
+                      REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
+            - show_datadog_logs_links:
+                pfid: ${TYPE}-${INSTANCE_NAME}
+            - run:
+                  name: Jenkins Upgrade
+                  command: |
+                      NS=${TYPE}-${INSTANCE_NAME} PHASE=upgrade bash deployments/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
+                      OPERATIONS_TOOLS_BRANCH=master make -C deployments/ upgrade-instance
+            - get_datadog_migration_logs:
+                pfid: ${TYPE}-${INSTANCE_NAME}
+            - store_artifacts:
+                path: /tmp/migration-logs.json
+                destination: migration-logs.json
+            - run:
+                  name: Production tests on upgraded env
+                  command: make -C deployments/ test-prod
+            - run:
+                  name: Check that upgrader pod ran
+                  command: kubectl get pods --namespace=${TYPE}-${INSTANCE_NAME} | grep pim-upgrader
+            - run:
+                  name: Check PIM version installed
+                  command: |
+                      VERSION_INSTALLED=$(helm3 get values ${TYPE}-${INSTANCE_NAME} -n ${TYPE}-${INSTANCE_NAME} | yq r - 'image.pim.tag')
+                      if [[ "${VERSION_INSTALLED}" == "${IMAGE_TAG}" ]]; then
+                        echo "PIM successfully upgraded to ${IMAGE_TAG}"
+                      else
+                        echo "PIM not upgraded to the correct version"
+                        echo "PIM version wanted: ${IMAGE_TAG}"
+                        echo "PIM version installed: ${VERSION_INSTALLED}"
+                        exit 1
+                      fi
+            - run:
+                  name: Display Deployment Errors
+                  command: cat deployment.log
+                  when: on_fail
+            - run:
+                  name: Check if upgrader failed
+                  command: kubectl logs -l "job-name=pim-upgrader" --namespace=${TYPE}-${INSTANCE_NAME}
+                  when: on_fail
+            - run:
+                  name: Prepare infrastructure artifacts
+                  command: make -C deployments/ prepare-infrastructure-artifacts
+                  when: on_fail
+            - store_artifacts:
+                  path: ~/artifacts/infra
+            - store_artifacts:
+                  path: deployment.log
+                  destination: test_upgrade_from_srnt_customer_db.log
+            - run:
+                  name: Remove env on kubernetes
+                  command: |
+                      ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                      UNCOMMIT_INSTANCE_STATUS_CODE=0
+                      for i in 1 2 3; do make -C deployments/ uncommit-instance && UNCOMMIT_INSTANCE_STATUS_CODE=0 && break || UNCOMMIT_INSTANCE_STATUS_CODE=1; done
+                      exit ${UNCOMMIT_INSTANCE_STATUS_CODE}
+                  when: on_fail

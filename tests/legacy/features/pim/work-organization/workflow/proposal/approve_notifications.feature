@@ -1,4 +1,4 @@
-@javascript
+@javascript @proposal-feature-enabled
 Feature: Approve notifications
   In order to easily quickly now if my proposals have been reviewed
   As a proposal redactor

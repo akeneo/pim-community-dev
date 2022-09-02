@@ -175,7 +175,7 @@ pimee_catalog_rule:
           subtitle: Wybierz rodzinę
         set_attribute:
           title: USTAW wartość Atrybutu
-          helper: Aby ustawić wartości atrybutu, zacznij od wybrania atrybutu docelowego, a następnie wybierz wartości do ustawienia.
+          helper: Aby ustawić wartości atrybutu, zacznij od wybrania atrybutu docelowego, a następnie wybierz wartości do ustawienia. Poprzednie wartości zostaną zastąpione we wszystkich zaznaczonych produktach.
           target_subtitle: Wybierz cel
           value_subtitle: Zdefiniuj wartość
           attribute_label: Atrybut

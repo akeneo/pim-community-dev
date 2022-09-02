@@ -7,11 +7,9 @@ import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
 import {UploadModal} from 'akeneoassetmanager/application/asset-upload/component/modal';
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
-import {AssetFamilyFetcher} from 'akeneoassetmanager/domain/fetcher/asset-family';
 import {useTranslate} from '@akeneo-pim-community/shared';
 
 type DataProvider = {
-  assetFamilyFetcher: AssetFamilyFetcher;
   channelFetcher: ChannelFetcher;
 };
 
@@ -28,7 +26,7 @@ const MassUploader = React.memo(
     dataProvider: DataProvider;
   }) => {
     const [isOpen, open, close] = useBooleanState();
-    const {assetFamily, rights} = useAssetFamily(dataProvider, assetFamilyIdentifier);
+    const {assetFamily, rights} = useAssetFamily(assetFamilyIdentifier);
     const channels = useChannels(dataProvider.channelFetcher);
     const locales = getLocales(channels, context.channel);
     const translate = useTranslate();

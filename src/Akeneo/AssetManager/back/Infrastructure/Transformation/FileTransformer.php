@@ -23,11 +23,8 @@ use Symfony\Component\HttpFoundation\File\File;
 
 class FileTransformer
 {
-    private OperationApplierRegistry $operationApplierRegistry;
-
-    public function __construct(OperationApplierRegistry $operationApplierRegistry)
+    public function __construct(private OperationApplierRegistry $operationApplierRegistry)
     {
-        $this->operationApplierRegistry = $operationApplierRegistry;
     }
 
     public function transform(File $sourceFile, Transformation $transformation): File

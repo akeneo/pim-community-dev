@@ -14,8 +14,8 @@
     "less": "node $npm_package_config_styles",
     "update-extensions": "node $npm_package_config_source/frontend/build/update-extensions.js",
     "generate-asset-manager-models": "node $npm_package_config_source/frontend/build/json-schema-to-typescript.js vendor/akeneo/pim-enterprise-dev/src/Akeneo/AssetManager/definitions/ public/bundles/akeneoassetmanager/infrastructure/model/",
-    "generate-models": "yarn generate-asset-manager-models && yarn --cwd=node_modules/@akeneo-pim-community/communication-channel generate-models",
-    "packages:build": "yarn --cwd=$npm_package_config_source packages:build && yarn --cwd=vendor/akeneo/pim-enterprise-dev enterprise-packages:build"
+    "generate-models": "yarn generate-asset-manager-models && yarn workspace @akeneo-pim-community/communication-channel generate-models",
+    "packages:build": "yarn workspace pim-community-dev packages:build && yarn workspace pim-enterprise-dev enterprise-packages:build"
   },
   "workspaces": [
     "vendor/akeneo/pim-community-dev",
@@ -27,19 +27,28 @@
     "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Enrichment/Bundle/Resources/workspaces/enrichment",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Structure/Bundle/Resources/workspaces/settings-ui",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front",
+    "vendor/akeneo/pim-community-dev/src/Oro/Bundle/ConfigBundle/front",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/front",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/activity",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/legacy-bridge",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/system",
+    "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/product",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Job/front/process-tracker",
     "vendor/akeneo/pim-community-dev/src/Akeneo/UserManagement/Bundle/Resources/workspaces/user-ui",
+    "vendor/akeneo/pim-community-dev/src/Akeneo/Category/front",
+    "vendor/akeneo/pim-community-dev/components/catalogs/front",
+    "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/ImportExportBundle/front",
     "vendor/akeneo/pim-enterprise-dev",
+    "vendor/akeneo/pim-enterprise-dev/components/supplier-portal-retailer/front",
     "vendor/akeneo/pim-enterprise-dev/components/tailored-export/front",
+    "vendor/akeneo/pim-enterprise-dev/components/tailored-import/front",
+    "vendor/akeneo/pim-enterprise-dev/components/job-automation/front",
     "vendor/akeneo/pim-enterprise-dev/grth/src/Akeneo/Pim/TableAttribute/front",
     "vendor/akeneo/pim-enterprise-dev/src/Akeneo/Pim/Automation/DataQualityInsights/front",
     "vendor/akeneo/pim-enterprise-dev/src/Akeneo/Pim/Automation/RuleEngine/front",
     "vendor/akeneo/pim-enterprise-dev/src/Akeneo/Pim/Structure/Bundle/Resources/workspaces/settings-ui",
-    "vendor/akeneo/pim-enterprise-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/activity"
+    "vendor/akeneo/pim-enterprise-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/activity",
+    "vendor/akeneo/pim-enterprise-dev/tria/front-packages/free-trial"
   ],
   "resolutions": {
     "akeneo-design-system": "link:vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system"

@@ -10,8 +10,6 @@ interface AssetIndexerInterface
 {
     /**
      * Indexes one asset
-     *
-     * @param AssetIdentifier $assetIdentifier
      */
     public function index(AssetIdentifier $assetIdentifier);
 

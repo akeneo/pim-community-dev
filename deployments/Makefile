@@ -6,6 +6,7 @@ SHELL := /bin/bash
 IMAGE_TAG ?= master
 CI ?= 0
 PIM_CONTEXT ?=0
+USE_EDITION_FLAG ?= false
 
 INSTANCE_NAME_PREFIX ?= pimci
 INSTANCE_NAME ?=  $(INSTANCE_NAME_PREFIX)-$(IMAGE_TAG_SHORTED)
@@ -14,20 +15,31 @@ DEPLOYMENT_DIR ?= $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 PIM_SRC_PATH ?= $(realpath $(DEPLOYMENT_DIR)/..)
 TYPE_LONG ?= serenity
 ENV_NAME ?= dev
-EDITION_VERSION_FILE ?= EnterpriseVersion.php
 
 BUCKET ?= serenity-edition-dev
+
 ifeq ($(TYPE),grth)
 	TYPE_LONG := growth_edition
 	PIM_SRC_PATH := $(realpath $(DEPLOYMENT_DIR)/../$(TYPE))
-	EDITION_VERSION_FILE := GrowthEditionVersion.php
 	BUCKET := growth-edition-dev
 endif
 ifeq ($(TYPE),tria)
 	TYPE_LONG := pim_trial
 	PIM_SRC_PATH := $(realpath $(DEPLOYMENT_DIR)/../$(TYPE))
-	EDITION_VERSION_FILE := FreeTrialVersion.php
 	BUCKET := trial-edition-dev
+endif
+
+# Active EditionFlag mode (All editions runs a srnt images and a ENV vars is set on pods for Symfony to know wich Feature Flag to enable)
+# USE_EDITION_FLAG is compute by Terraform to set pfid=srnt-${instance-name} for all edition
+# USE_EDITION_FLAG is compute by Terraform to set editionFlag.enabled=true in tf-helm-pim-values.tpl
+# editionFlag.enabled=true in values.yml is compute by HELM to add PIM_EDITION:<editionflag> in env-configmap.yaml
+
+ifeq ($(USE_EDITION_FLAG),true)
+	TYPE := srnt
+	PIM_SRC_PATH := $(realpath $(DEPLOYMENT_DIR)/..)
+	BUCKET := serenity-edition-dev
+
+#We don't hardcode TYPE_LONG to keep proper edition specific PRODUCT_REFERENCE_TYPE & PRODUCT_REFERENCE_CODE
 endif
 
 PRODUCT_REFERENCE_TYPE ?= $(TYPE_LONG)_instance
@@ -65,11 +77,14 @@ USE_ONBOARDER_CATALOG ?= false
 UPGRADE_STEP_2 ?= false
 BUCKET_PIM_SRC_DIR ?= gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(BUCKET)/$(IMAGE_TAG)
 MAIN_TF_TEMPLATE ?= $(PRODUCT_REFERENCE_TYPE)
+# If not set retrieve latest release of cloud-saas for storage-backup terraform module ( Default=Latest)
+STORAGE_BACKUP_VERSION ?= $$(curl -s -H "Authorization: token ${GITHUB_TOKEN}" https://api.github.com/repos/akeneo/cloud-saas/releases/latest | jq -r '.name')
 
 ifeq ($(CI),true)
 	TF_INPUT_FALSE ?= -input=false
 	TF_AUTO_APPROVE ?= -auto-approve
 endif
+
 TF_INPUT_FALSE ?=
 TF_AUTOAPPROVE ?=
 
@@ -149,11 +164,6 @@ render-helm-templates:
 	cd $(INSTANCE_DIR) ;\
 	mkdir -p helm-render ;\
 	helm3 template .terraform/modules/pim/pim -f tf-helm-pim-values.yaml -f values.yaml -n $(PFID) --output-dir helm-render || true
-ifeq ($(INSTANCE_NAME_PREFIX),pimup32)
-	cd $(DEPLOYMENTS_INSTANCES_DIR)/3.2 ;\
-	mkdir -p helm-render ;\
-	helm3 template .terraform/modules/pim/pim -f tf-helm-pim-values.yaml -f values.yaml -n $(PFID) --output-dir helm-render || true
-endif
 
 .PHONY: delete
 delete:
@@ -161,18 +171,6 @@ delete:
 		cd $(INSTANCE_DIR) ;\
 		echo "Destroying $(INSTANCE_DIR) ..." ;\
 		ENV_NAME=$(ENV_NAME) TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) TF_INPUT_FALSE=$(TF_INPUT_FALSE) TF_AUTO_APPROVE=$(TF_AUTO_APPROVE) bash $(DEPLOYMENT_DIR)/bin/delete_instance.sh ;\
-	elif [ -f "$(DEPLOYMENTS_INSTANCES_DIR)/3.2/main.tf" ]; then \
-		cd $(DEPLOYMENTS_INSTANCES_DIR)/3.2 ;\
-		echo "Destroying $(DEPLOYMENTS_INSTANCES_DIR)/3.2 ..." ;\
-		ENV_NAME=$(ENV_NAME) TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) TF_INPUT_FALSE=$(TF_INPUT_FALSE) TF_AUTO_APPROVE=$(TF_AUTO_APPROVE) bash $(DEPLOYMENT_DIR)/bin/delete_instance.sh ;\
-	fi
-
-.PHONY: delete_clone_flexibility
-delete_clone_flexibility:
-	if [ -f "$(INSTANCE_DIR)/main.tf.json" ]; then \
-		cd $(INSTANCE_DIR) ;\
-		echo "Destroying $(INSTANCE_DIR) ..." ;\
-		TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) TF_INPUT_FALSE=$(TF_INPUT_FALSE) TF_AUTO_APPROVE=$(TF_AUTO_APPROVE) bash $(DEPLOYMENT_DIR)/bin/delete_clone_flexibility.sh ;\
 	fi
 
 .PHONY: create-ci-release-files
@@ -189,49 +187,26 @@ create-ci-values: $(INSTANCE_DIR)
 	@echo "=========================================================="
 	if [ ! -f $(INSTANCE_DIR)/values.yaml ]; then cp $(DEPLOYMENT_DIR)/config/ci-values.yaml $(INSTANCE_DIR)/values.yaml; fi
 ifeq ($(INSTANCE_NAME_PREFIX),pimup)
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradePim.enabled true
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradeES.enabled true
 ifeq ($(TYPE),srnt)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
 endif
 ifeq ($(TYPE),grth)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
 endif
+endif
+ifeq ($(INSTANCE_NAME_PREFIX),pimci-pr)
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
 endif
 ifeq ($(INSTANCE_NAME_PREFIX),pimci-pr-ge)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
 endif
-
-ifeq ($(INSTANCE_NAME_PREFIX),pimup32)
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.intermediateUpgrades[+] "v20200211172331"
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.intermediateUpgrades[+] "v20200401020139"
-endif
-ifeq ($(INSTANCE_NAME),pimci-helpdesk)
+# Tricks to use OR like statement in ifeq -> https://stackoverflow.com/questions/7656425/makefile-ifeq-logical-or
+ifneq (,$(filter $(INSTANCE_NAME_PREFIX),pimci-helpdesk pimci-helpdesk-ge))
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradePim.enabled true
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradeES.enabled false
 endif
-ifeq ($(INSTANCE_NAME),pimci-helpdesk-ge)
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradePim.enabled true
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradeES.enabled false
-endif
-
-ifeq ($(INSTANCE_NAME_PREFIX),pimci-pr)
-	sed 's/^\(FLAG_.*_ENABLED\).*/  \1: "1"/g' .env | (grep "FLAG_.*_ENABLED" | grep -v "ONBOARDER" | grep -v "FREE_TRIAL" || true) >> $(DEPLOYMENT_DIR)/terraform/pim/templates/env-configmap.yaml
-ifeq ($(TYPE),srnt)
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
-endif
-ifeq ($(TYPE),grth)
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
-endif
-ifeq ($(TYPE),tria)
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
-endif
-endif
-
-ifeq ($(INSTANCE_NAME_PREFIX),beta)
+ifneq (,$(filter $(INSTANCE_NAME_PREFIX),beta pimup))
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradePim.enabled true
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradeES.enabled true
@@ -244,7 +219,6 @@ endif
 ifeq (${USE_ONBOARDER_CATALOG},true)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog "vendor/akeneo/pim-onboarder/src/Bundle/Resources/fixtures/onboarder"
 endif
-
 ifeq ($(TYPE),tria)
 	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.akeneo_connect_saml_entity_id "https://connect-sandbox.ip.akeneo.com/auth/realms/trial"
 	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.akeneo_connect_saml_signin_url "https://connect-sandbox.ip.akeneo.com/auth/realms/trial/protocol/saml"
@@ -256,6 +230,16 @@ ifeq ($(TYPE),tria)
 	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.hotjar_id "2672696"
 	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.heap_id "2875170433"
 endif
+
+ifeq ($(USE_EDITION_FLAG),true)
+ifeq ($(INSTANCE_NAME_PREFIX),pimci)
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
+endif
+ifneq (,$(filter $(INSTANCE_NAME_PREFIX),pimup pimci-pr pimci-pr-ge pimci-pr-ft))
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
+endif
+endif
+
 	@echo "cat $(DEPLOYMENT_DIR)/terraform/pim/values.yaml"
 	cat $(DEPLOYMENT_DIR)/terraform/pim/values.yaml
 	@echo "cat $(INSTANCE_DIR)/values.yaml"
@@ -293,13 +277,7 @@ endif
 
 .PHONY: create-pim-main-tf
 create-pim-main-tf: $(INSTANCE_DIR)
-ifeq ($(ACTIVATE_MONITORING),true)
-	jq -s '.[0] * .[1]' $(DEPLOYMENT_DIR)/config/$(MAIN_TF_TEMPLATE).tpl.tf.json  $(DEPLOYMENT_DIR)/config/$(MAIN_TF_TEMPLATE)_monitoring.tpl.tf.json  > $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp
-else
 	cat $(DEPLOYMENT_DIR)/config/$(MAIN_TF_TEMPLATE).tpl.tf.json > $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp
-	@echo "-- WARNING: MONITORING is not activated on this PR. If your PR impact monitoring, please activate it."
-	@echo "To activate it show 'deactivate_monitoring' and 'ACTIVATE_MONITORING' on '.CircleCi/config.yml'"
-endif
 
 	CLUSTER_DNS_NAME=$(CLUSTER_DNS_NAME) \
 	GOOGLE_CLUSTER_ZONE=$(GOOGLE_CLUSTER_ZONE) \
@@ -330,62 +308,60 @@ endif
 	AKENEO_CONNECT_SAML_SP_CLIENT_ID=${AKENEO_CONNECT_SAML_SP_CLIENT_ID} \
 	AKENEO_CONNECT_SAML_SP_CERTIFICATE_BASE64=${AKENEO_CONNECT_SAML_SP_CERTIFICATE_BASE64} \
 	AKENEO_CONNECT_SAML_SP_PRIVATE_KEY_BASE64=${AKENEO_CONNECT_SAML_SP_PRIVATE_KEY_BASE64} \
+	STORAGE_BACKUP_VERSION=${STORAGE_BACKUP_VERSION} \
 	envsubst < $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp > $(INSTANCE_DIR)/main.tf.json ;\
 	rm -rf $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp
+ifeq ($(USE_EDITION_FLAG),true)
+	yq w -j -P -i  ${INSTANCE_DIR}/main.tf.json  'module.pim.use_edition_flag' true
+endif
 
 .PHONY: change-terraform-source-version
 change-terraform-source-version: #Doc: change terraform pim and monitoring source to deploy infra with a custom git version
 	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(BUCKET)/$(IMAGE_TAG)//deployments/terraform"
-ifeq ($(ACTIVATE_MONITORING),true)
-	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(BUCKET)/$(IMAGE_TAG)//deployments/terraform/monitoring"
-endif
 	@echo "Terraform pim and monitoring source updated"
 
 $(CLOUD_CUSTOMERS_DEV_DIR):
 	mkdir -p $(CLOUD_CUSTOMERS_DEV_DIR)
-	git clone git@github.com:akeneo/cloud-customers-dev.git $(CLOUD_CUSTOMERS_DEV_DIR)
+	git clone --depth 1 -b master --single-branch git@github.com:akeneo/cloud-customers-dev.git $(CLOUD_CUSTOMERS_DEV_DIR)
 
 .PHONY: pull-cloud-customer-dev
 pull-cloud-customer-dev: $(CLOUD_CUSTOMERS_DEV_DIR)
-	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --ff-only
+	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --rebase
 
 .PHONY: commit-instance
 commit-instance: pull-cloud-customer-dev
-	cp -r $(INSTANCE_DIR) $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)
+	# INSTANCE_CLOUD_CUSTOMERS_DEV_DIR may not exist yet, need to use readlink
+	cp -r $(INSTANCE_DIR) $(shell readlink -m $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)/..)
 	git config --global user.email "pim_ci@akeneo.com"
 	git config --global user.name "pim_ci_instance_creation"
-	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git add $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)
-	(cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --no-commit && git commit -m "Created instance $(PFID)" && git push) || \
+	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git add $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR) && git commit -m "Created instance $(PFID)"
+	(cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --rebase  && git push) || \
 	bash $(DEPLOYMENT_DIR)/bin/pull_push_loop.sh $(CLOUD_CUSTOMERS_DEV_DIR)
 
 .PHONY: uncommit-instance
 uncommit-instance: pull-cloud-customer-dev
 	# Check if files were previously commited
-ifeq ("$(wildcard $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)/main.tf.json)","")
+ifeq (,$(wildcard ${INSTANCE_CLOUD_CUSTOMERS_DEV_DIR}/main.tf.json))
+	@echo "$(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)/main.tf.json doesn't exist and need to be created"
 	make create-ci-release-files
 	cp -r $(INSTANCE_DIR) $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)
 else
 ifeq ($(TYPE),srnt)
 	PIM_VERSION=$(shell yq r "$(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)/main.tf.json" 'module.pim.pim_version'); \
 	yq w -j -P -i $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/$${PIM_VERSION}//deployments/terraform"
-ifeq ($(ACTIVATE_MONITORING),true)
-	PIM_VERSION=$(shell yq r "$(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)/main.tf.json" 'module.pim.pim_version'); \
-	yq w -j -P -i $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/$${PIM_VERSION}//deployments/terraform/monitoring"
-endif
 endif
 	cp -r $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR) $(INSTANCE_DIR)
 endif
 	make delete
-	rm -rf $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)
 	git config --global user.email "pim_ci@akeneo.com"
 	git config --global user.name "pim_ci_instance_deletion"
-	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git add $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)
-	(cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --no-commit && git commit -m "Deleted instance $(PFID)" && git push) || \
+	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git rm -rf $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR) && git commit -m "Deleted instance $(PFID)"
+	(cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --rebase && git push) || \
 	bash $(DEPLOYMENT_DIR)/bin/pull_push_loop.sh $(CLOUD_CUSTOMERS_DEV_DIR)
 
 .PHONY: upgrade-instance
 upgrade-instance:
-	git clone git@operation-tools:akeneo/operation-tools.git $(OPERATIONS_TOOLS_DIR)
+	git clone --depth 1 git@operation-tools:akeneo/operation-tools.git $(OPERATIONS_TOOLS_DIR)
 	cd $(OPERATIONS_TOOLS_DIR) && git checkout $(OPERATIONS_TOOLS_BRANCH)
 	cp $(OPERATIONS_TOOLS_DIR)/jenkins.yaml /usr/share/jenkins/ref/casc/jenkins.yaml
 	mkdir -p /workspace && cp ${HOME}/gcloud-service-key.json /workspace/pim_ci.json
@@ -397,7 +373,7 @@ upgrade-instance:
 	JENKINSFILE_PATH=$(OPERATIONS_TOOLS_DIR)/saas-instances-upgrade.Jenkinsfile \
 	/app/bin/jenkinsfile-runner-launcher -ns -u \
 	-a "batchMode=false" \
-	-a "skipShutdown=false" \
+	-a "skipShutdown=true" \
 	-a "autoApply=true" \
 	-a "release=$(IMAGE_TAG)" \
 	-a "productTypePrefixFilter=$(TYPE)" \
@@ -414,7 +390,7 @@ test-prod:
 			if [ $${TIME_TO_SLEEP} -gt $(MAX_DNS_TEST_TIMEOUT) ]; then echo 'DNS resolution issue on "$(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS)"';exit 1; fi; \
 		echo 'Waiting for DNS "$(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS)" to be ready'; sleep $${TIME_TO_SLEEP} ; \
 	done
-	helm3 test ${PFID} -n ${PFID} --debug --logs
+	helm3 test ${PFID} -n ${PFID} --debug
 
 .PHONY: release
 release:
@@ -447,15 +423,12 @@ ifeq ($(NS),)
 	@echo "ERR : You must choose a namespace to delete"
 	exit 1
 endif
-	mkdir -p /tmp/cloud-customers-dev
-	DEPLOYMENTS_INSTANCES_DIR=/tmp/cloud-customers-dev/saas/projects/${GOOGLE_PROJECT_ID}/${GOOGLE_CLUSTER_NAME}/releases \
-	CLOUD_CUSTOMERS_DEV_DIR=/tmp/cloud-customers-dev NS=$(NS) ENV_NAME=$(ENV_NAME) TYPE=$(TYPE) \
-	bash $(DEPLOYMENT_DIR)/bin/remove_instances.sh
+	NS=$(NS) ENV_NAME=$(ENV_NAME) TYPE=$(shell echo "$(NS)" | cut -d "-" -f1) bash $(DEPLOYMENT_DIR)/bin/remove_instances.sh
 
 .PHONY: delete_expired_uptime_check
 delete_expired_uptime_check:
 	cd $(DEPLOYMENT_DIR)/bin/uptime && docker-compose run --rm composer composer install
-	cd $(DEPLOYMENT_DIR)/bin/uptime && LOG_LEVEL=info docker-compose run --rm php make deployment-uptime-clear
+	cd $(DEPLOYMENT_DIR)/bin/uptime && CLOUDSDK_PYTHON=python2 LOG_LEVEL=info docker-compose run --rm php make deployment-uptime-clear
 
 .PHONY: remove_unused_resources
 remove_unused_resources: remove_unused_gcloud_dns remove_unused_gcloud_pubsub remove_unused_gcloud_bucket remove_unused_disk remove_unused_mailgun_credentials remove_unused_iam remove_unused_gcloud_logging_metrics
@@ -530,18 +503,19 @@ clone_saas_instance:
 	TYPE=$(TYPE) INSTANCE_NAME=${INSTANCE_NAME} IMAGE_TAG=$(IMAGE_TAG) INSTANCE_NAME_PREFIX=pimci-duplic make create-ci-release-files
 	SOURCE_PFID=$(SOURCE_PFID) TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) DESTINATION_PATH=$(INSTANCE_DIR) BUCKET=$(BUCKET) bash $(DEPLOYMENT_DIR)/bin/clone_saas_instance.sh
 
-.PHONY: clone_flexibility
-clone_flexibility:
-	INSTANCE_NAME=${INSTANCE_NAME}  IMAGE_TAG=$(PED_TAG) INSTANCE_NAME_PREFIX=pimflex  make create-ci-release-files && \
-	docker run -v $(PIM_ROOT_DIR):/root/project -ti -e ENV_NAME=dev -e GCLOUD_SERVICE_KEY -e SOURCE_PFID=$(SOURCE_PFID) -e PED_TAG -e INSTANCE_NAME=$(INSTANCE_NAME) eu.gcr.io/akeneo-cloud/cloud-deployer:2.8 /root/project/deployments/bin/clone_flexibility.sh
+.PHONY: migrate_flexibility
+migrate_flexibility:
+	TYPE=$(TYPE) INSTANCE_NAME=${INSTANCE_NAME} IMAGE_TAG=$(IMAGE_TAG) INSTANCE_NAME_PREFIX=pimci-duplic make create-ci-release-files
+	ENV_NAME=dev SOURCE_PFID=$(SOURCE_PFID) SOURCE_PROJECT_ID=$(SOURCE_PROJECT_ID) PED_TAG=$(IMAGE_TAG) INSTANCE_NAME=$(INSTANCE_NAME) BUCKET=$(BUCKET) bash $(DEPLOYMENT_DIR)/bin/migrate_flexibility.sh
 
-.PHONY: test_upgrade_from_flexibility_clone
-test_upgrade_from_flexibility_clone:
-	FLEXIBILITY_CUSTOMER_LIST=$(FLEXIBILITY_CUSTOMER_LIST) bash $(DEPLOYMENT_DIR)/bin/clone_flexibility.sh
+.PHONY: migrate_flexibility_to_serenity
+migrate_flexibility_to_serenity:
+	TYPE=$(TYPE) INSTANCE_NAME=${INSTANCE_NAME} IMAGE_TAG=$(IMAGE_TAG) INSTANCE_NAME_PREFIX=pimci-duplic make create-ci-release-files
+	ENV_NAME=dev SOURCE_PFID=$(SOURCE_PFID) SOURCE_PROJECT_ID=$(SOURCE_PROJECT_ID) PED_TAG=$(IMAGE_TAG) INSTANCE_NAME=$(INSTANCE_NAME) BUCKET=$(BUCKET) bash $(DEPLOYMENT_DIR)/bin/migrate_flexibility_to_serenity.sh
 
 .PHONY: php-image-prod
 php-image-prod: #Doc: build docker image for pim-enterprise-dev with the prod tag
-	sed -i "s/VERSION = '.*';/VERSION = '${RELEASE_NAME}';/g" $(PIM_SRC_PATH)/src/Akeneo/Platform/$(EDITION_VERSION_FILE)
+	echo "${RELEASE_NAME}" > "$(PIM_SRC_PATH)/version.txt"
 	DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --pull --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG} --target prod --build-arg COMPOSER_AUTH='${COMPOSER_AUTH}' -f $(PIM_SRC_PATH)/Dockerfile ${PIM_ROOT_DIR}
 
 .PHONY: push-php-image-prod

@@ -2,8 +2,8 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Calculator;
 
-use Akeneo\Channel\Component\Model\Channel;
-use Akeneo\Channel\Component\Model\Locale;
+use Akeneo\Channel\Infrastructure\Component\Model\Channel;
+use Akeneo\Channel\Infrastructure\Component\Model\Locale;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
@@ -13,6 +13,7 @@ use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Calculator\ProjectIt
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\AttributeGroupCompleteness;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\FamilyRequirementRepositoryInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class AttributeGroupCompletenessCalculatorSpec extends ObjectBehavior
 {
@@ -20,7 +21,7 @@ class AttributeGroupCompletenessCalculatorSpec extends ObjectBehavior
         FamilyRequirementRepositoryInterface $familyRequirementRepository,
         CompletenessCalculator $completenessCalculator
     ) {
-        $completenessCalculator->fromProductIdentifier('foo')->willReturn(
+        $completenessCalculator->fromProductUuid(Argument::any())->willReturn(
             new ProductCompletenessWithMissingAttributeCodesCollection(
                 42,
                 [

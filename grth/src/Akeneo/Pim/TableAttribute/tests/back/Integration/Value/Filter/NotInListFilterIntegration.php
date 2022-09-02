@@ -13,7 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\TableAttribute\Integration\Value\Filter;
 
+use Akeneo\Channel\API\Query\Channel;
+use Akeneo\Channel\API\Query\LabelCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Test\Pim\TableAttribute\Helper\FeatureHelper;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 final class NotInListFilterIntegration extends AbstractFilterIntegration
@@ -234,6 +237,64 @@ final class NotInListFilterIntegration extends AbstractFilterIntegration
             'localizable_scopable_nutrition',
             ['column' => 'ingredient', 'locale' => 'fr_FR', 'scope' => 'mobile', 'value' => ['flour']],
             []
+        );
+    }
+
+    /** @test */
+    public function it_filters_on_not_in_list_operator_on_reference_entity_column(): void
+    {
+        FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
+
+        $this->get('akeneo_referenceentity.infrastructure.persistence.query.channel.find_channels')
+            ->setChannels([
+                new Channel('ecommerce', ['en_US'], LabelCollection::fromArray(['en_US' => 'Ecommerce', 'de_DE' => 'Ecommerce', 'fr_FR' => 'Ecommerce']), ['USD'])
+            ]);
+
+        $this->createNutritionAttributeWithReferenceEntityColumn();
+        $this->createProductWithValues('empty_product', [], 'family_with_table');
+        $this->createProductWithValues('product_with_reference_entity', [
+            'nutrition_with_ref_entity' => [[
+                'locale' => null,
+                'scope' => null,
+                'data' => [
+                    [
+                        'ingredient' => 'sugar',
+                        'brand_column' => 'Akeneo',
+                    ],
+                    [
+                        'ingredient' => 'egg',
+                        'brand_column' => 'Other',
+                    ],
+                    [
+                        'ingredient' => 'flour',
+                    ],
+                ],
+            ]],
+        ]);
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+
+        // Filter on column
+        $this->assertFilter(
+            'nutrition_with_ref_entity',
+            ['column' => 'brand_column', 'value' => ['Akeneo']],
+            []
+        );
+        $this->assertFilter(
+            'nutrition_with_ref_entity',
+            ['column' => 'brand_column', 'value' => ['Other2']],
+            ['product_with_reference_entity']
+        );
+
+        // Filter on column + row
+        $this->assertFilter(
+            'nutrition_with_ref_entity',
+            ['column' => 'brand_column', 'row' => 'sugar', 'value' => ['Akeneo']],
+            []
+        );
+        $this->assertFilter(
+            'nutrition_with_ref_entity',
+            ['column' => 'brand_column', 'row' => 'egg', 'value' => ['Akeneo']],
+            ['product_with_reference_entity']
         );
     }
 }

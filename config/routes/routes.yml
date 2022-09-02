@@ -8,6 +8,9 @@ akeneo_pim_enrichment:
 akeneo_connectivity_connection:
     resource: "@AkeneoConnectivityConnectionBundle/Resources/config/routing.yml"
 
+akeneo_catalogs:
+    resource: "@AkeneoCatalogsBundle/Resources/config/routing.yml"
+
 akeneo_measure:
     resource: "@AkeneoMeasureBundle/Resources/config/routing.yml"
 
@@ -52,6 +55,9 @@ pim_volume_monitoring:
 pim_data_quality_insights:
     resource: "@AkeneoDataQualityInsightsBundle/Resources/config/routing.yml"
 
+akeneo_category:
+    resource: "@AkeneoCategoryBundle/Resources/config/routing.yml"
+
 # Oro platform
 
 oro_default:
@@ -88,27 +94,50 @@ hslavich_saml_sp:
 # PIM
 pimee_teamwork_assistant:
     resource: "@AkeneoPimTeamworkAssistantBundle/Resources/config/routing/routing.yml"
+    defaults:
+        _feature: teamwork_assistant
 
-pimee_workflow:
-    resource: "@AkeneoPimWorkflowBundle/Resources/config/routing.yml"
+pimee_proposal_and_draft:
+    resource: "@AkeneoPimWorkflowBundle/Resources/config/routing_proposal_and_draft.yml"
+    defaults:
+        _feature: proposal
+
+pimee_published_product:
+    resource: "@AkeneoPimWorkflowBundle/Resources/config/routing_published_product.yml"
+    defaults:
+        _feature: published_product
 
 pim_versioning:
     resource: "@AkeneoPimProductRevertBundle/Resources/config/routing.yml"
+    defaults:
+        _feature: restore_product
 
 pim_catalog_rule:
     resource: "@AkeneoPimRuleEngineBundle/Resources/config/routing.yml"
+    defaults:
+        _feature: product_rules
 
 pim_tailored_export:
     resource: "@AkeneoTailoredExportBundle/Resources/config/routing.yml"
+
+pim_tailored_import:
+    resource: "@AkeneoTailoredImportBundle/Resources/config/routing.yml"
+
+pim_job_automation:
+    resource: "@AkeneoJobAutomationBundle/Resources/config/routing.yml"
 
 pim_tailored_export_reference_entity:
     resource: "@AkeneoTailoredExportBundle/Resources/config/reference_entity/routing.yml"
 
 pimee_reference_entity:
     resource: "@AkeneoReferenceEntityBundle/Resources/config/routing.yml"
+    defaults:
+        _feature: 'reference_entity'
 
 pimee_asset_manager:
     resource: "@AkeneoAssetManagerBundle/Resources/config/routing.yml"
+    defaults:
+        _feature: 'asset_manager'
 
 pim_security:
     resource: "@AkeneoPimPermissionBundle/Resources/config/routing.yml"
@@ -129,3 +158,17 @@ akeneo_channel:
     resource: "@AkeneoChannelBundle/Resources/config/routing.yml"
     prefix:   /
 
+supplier_portal_retailer:
+    resource: "@AkeneoSupplierPortalRetailerBundle/Resources/config/routing.yml"
+    prefix: /retailer-portal
+
+akeneo_supplier_portal:
+    resource: "@AkeneoSupplierPortalSupplierBundle/Resources/config/routing.yml"
+    prefix: /supplier-portal
+
+# Free Trial
+free_trial:
+    prefix: /free-trial
+    resource: "@AkeneoFreeTrialBundle/Resources/config/routing.yml"
+    defaults:
+        _feature: 'free_trial'

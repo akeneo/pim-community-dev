@@ -1,8 +1,24 @@
 import React, {MutableRefObject} from 'react';
 import {SelectOptionWithId} from './ManageOptionsModal';
-import {Helper, IconButton, Table, TextInput, CloseIcon, Key} from 'akeneo-design-system';
-import styled from 'styled-components';
+import {AkeneoThemedProps, CloseIcon, Helper, IconButton, Key, Table, TextInput, getColor} from 'akeneo-design-system';
+import styled, {css} from 'styled-components';
 import {LocaleCode, useTranslate} from '@akeneo-pim-community/shared';
+
+const ManageOptionsRowContainer = styled(Table.Row)<{isSticky: boolean} & AkeneoThemedProps>`
+  ${({isSticky}) =>
+    isSticky
+      ? css`
+          position: sticky;
+          bottom: -1px;
+          background-color: ${getColor('white')};
+          z-index: 1;
+
+          & > td {
+            border-bottom: 1px solid ${getColor('white')};
+          }
+        `
+      : ''}
+`;
 
 const ManageOptionCell = styled(Table.Cell)`
   vertical-align: top;
@@ -26,6 +42,7 @@ type ManageOptionsRowProps = {
   forceAutocomplete?: boolean;
   onCodeEnter?: () => void;
   onLabelEnter?: () => void;
+  isSticky?: boolean;
 };
 
 const ManageOptionsRow: React.FC<ManageOptionsRowProps> = ({
@@ -42,6 +59,7 @@ const ManageOptionsRow: React.FC<ManageOptionsRowProps> = ({
   forceAutocomplete = false,
   onCodeEnter,
   onLabelEnter,
+  isSticky = false,
   ...rest
 }) => {
   const translate = useTranslate();
@@ -67,7 +85,7 @@ const ManageOptionsRow: React.FC<ManageOptionsRowProps> = ({
   };
 
   return (
-    <Table.Row isSelected={isSelected} onClick={onSelect} {...rest}>
+    <ManageOptionsRowContainer isSelected={isSelected} onClick={onSelect} isSticky={isSticky} {...rest}>
       <ManageOptionCell>
         <CellFieldContainer>
           <TextInput
@@ -121,7 +139,7 @@ const ManageOptionsRow: React.FC<ManageOptionsRowProps> = ({
           />
         )}
       </Table.ActionCell>
-    </Table.Row>
+    </ManageOptionsRowContainer>
   );
 };
 

@@ -1,5 +1,4 @@
 import hydrator from 'akeneoassetmanager/application/hydrator/product';
-import {denormalizeProduct} from 'akeneoassetmanager/domain/model/product/product';
 
 describe('akeneo > asset family > application > hydrator --- product', () => {
   test('I can hydrate a new product', () => {
@@ -16,20 +15,18 @@ describe('akeneo > asset family > application > hydrator --- product', () => {
         },
         {locale: 'en_US'}
       )
-    ).toEqual(
-      denormalizeProduct({
-        id: '123456',
-        identifier: 'nice_product',
-        type: 'product',
-        labels: {en_US: 'My nice product'},
-        image: null,
-        completeness: {
-          completeChildren: 0,
-          totalChildren: 0,
-          ratio: 60,
-        },
-      })
-    );
+    ).toEqual({
+      id: '123456',
+      identifier: 'nice_product',
+      type: 'product',
+      labels: {en_US: 'My nice product'},
+      image: null,
+      completeness: {
+        completeChildren: 0,
+        totalChildren: 0,
+        ratio: 60,
+      },
+    });
     expect(
       hydrator(
         {
@@ -43,20 +40,18 @@ describe('akeneo > asset family > application > hydrator --- product', () => {
         },
         {locale: 'en_US'}
       )
-    ).toEqual(
-      denormalizeProduct({
-        id: '123456',
-        identifier: 'nice_product',
-        type: 'product_model',
-        labels: {en_US: 'My nice product'},
-        image: null,
-        completeness: {
-          completeChildren: 2,
-          totalChildren: 4,
-          ratio: 0,
-        },
-      })
-    );
+    ).toEqual({
+      id: '123456',
+      identifier: 'nice_product',
+      type: 'product_model',
+      labels: {en_US: 'My nice product'},
+      image: null,
+      completeness: {
+        completeChildren: 2,
+        totalChildren: 4,
+        ratio: 0,
+      },
+    });
     expect(
       hydrator(
         {
@@ -68,20 +63,18 @@ describe('akeneo > asset family > application > hydrator --- product', () => {
         },
         {locale: 'en_US'}
       )
-    ).toEqual(
-      denormalizeProduct({
-        id: '123456',
-        identifier: 'nice_product',
-        type: 'product_model',
-        labels: {en_US: 'My nice product'},
-        image: null,
-        completeness: {
-          completeChildren: 0,
-          totalChildren: 0,
-          ratio: 0,
-        },
-      })
-    );
+    ).toEqual({
+      id: '123456',
+      identifier: 'nice_product',
+      type: 'product_model',
+      labels: {en_US: 'My nice product'},
+      image: null,
+      completeness: {
+        completeChildren: 0,
+        totalChildren: 0,
+        ratio: 0,
+      },
+    });
   });
 
   test('It throw an error if I pass a malformed product', () => {

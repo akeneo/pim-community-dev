@@ -131,6 +131,10 @@ pim_table_attribute:
       completeness_helper_text: "Selvittääksesi, miten valmiusaste toimii taulukkoattribuutin osalta,"
       completeness_helper_link: tutustu ohjeisiimme.
       reference_entity: Viitetieto
+      import_from_existing_attribute: Tuo olemassa olevalta attribuutilta
+      option_count: "{0,1}{{ count }} vaihtoehto|]1, Inf[{{ count }} vaihtoehtoa"
+      measurement_family: Mittaperhe
+      measurement_default_unit: Oletusyksikkö
     product:
       no_rows_title: "Sinun {{ attributeLabel }} taulukko on tyhjä."
       no_rows_subtitle: Lisää rivejä tietojen tallentamiseksi
@@ -151,6 +155,7 @@ pim_table_attribute:
       boolean: Kyllä/ei
       select: Valintalista
       reference_entity: Viitetieto
+      measurement: Mitta
   validations:
     column_code_must_be_filled: Koodi on annettava
     column_data_type_must_be_filled: Tietotyyppi on annettava
@@ -184,3 +189,8 @@ pim_enrich:
       property:
         type:
           pim_catalog_table: Taulukko
+batch_jobs:
+  default_steps.clean: Ei-olemassaolevien taulukon vaihtoehtojen arvojen poistaminen
+akeneo_job_process_tracker:
+  type_filter:
+    clean_table_values_following_deleted_options: Poista muut kuin olemassa olevat taulukon vaihtoehdot tuotteilta ja tuotemalleilta

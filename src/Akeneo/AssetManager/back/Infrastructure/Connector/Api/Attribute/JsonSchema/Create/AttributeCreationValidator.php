@@ -7,13 +7,10 @@ use Webmozart\Assert\Assert;
 
 final class AttributeCreationValidator
 {
-    /** @var AttributeValidatorInterface[] */
-    private iterable $attributeValidator;
-
-    public function __construct(iterable $attributeValidators)
+    /** @param $attributeValidators AttributeValidatorInterface[] */
+    public function __construct(private iterable $attributeValidators)
     {
         Assert::allIsInstanceOf($attributeValidators, AttributeValidatorInterface::class);
-        $this->attributeValidator = $attributeValidators;
     }
 
     /**
@@ -29,7 +26,7 @@ final class AttributeCreationValidator
             throw new UnprocessableEntityHttpException(sprintf('Attribute type "%s" should be a string.', $normalizedAttribute['type']));
         }
 
-        foreach ($this->attributeValidator as $attributeValidator) {
+        foreach ($this->attributeValidators as $attributeValidator) {
             if (in_array($normalizedAttribute['type'], $attributeValidator->forAttributeTypes())) {
                 return $attributeValidator->validate($normalizedAttribute);
             }

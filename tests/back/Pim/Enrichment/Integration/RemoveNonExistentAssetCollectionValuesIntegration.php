@@ -18,6 +18,9 @@ use Akeneo\AssetManager\Application\Asset\DeleteAsset\DeleteAssetCommand;
 use Akeneo\AssetManager\Application\Asset\DeleteAssets\DeleteAssetsCommand;
 use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand;
 use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetCollectionType;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetAssetValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
@@ -75,6 +78,7 @@ final class RemoveNonExistentAssetCollectionValuesIntegration extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->createAdminUser();
         $this->loadFixtures();
 
         $jobInstance = $this->get('pim_enrich.repository.job_instance')
@@ -96,6 +100,7 @@ final class RemoveNonExistentAssetCollectionValuesIntegration extends TestCase
 
     private function loadFixtures(): void
     {
+        $this->get('feature_flags')->enable('asset_manager');
         // create a packshot asset family
         ($this->get('akeneo_assetmanager.application.asset_family.create_asset_family_handler'))(
             new CreateAssetFamilyCommand('packshot', ['en_US' => 'Packshot'])
@@ -143,35 +148,33 @@ final class RemoveNonExistentAssetCollectionValuesIntegration extends TestCase
         $this->get('pim_catalog.saver.family')->save($family);
 
         // create products with asset values
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $this->createProduct(
             'test1',
             [
-                'family' => 'test',
-                'values' => [
-                    'packshot_attr' => [['scope' => null, 'locale' => null, 'data' => ['packshot1', 'packshot2']]],
-                ],
+                new SetFamily('test'),
+                new SetAssetValue('packshot_attr', null, null, ['packshot1', 'packshot2'])
             ]
         );
 
         $this->createProduct(
             'test2',
             [
-                'family' => 'test',
-                'values' => [
-                    'packshot_attr' => [['scope' => null, 'locale' => null, 'data' => ['packshot2']]],
-                ],
+                new SetFamily('test'),
+                new SetAssetValue('packshot_attr', null, null, ['packshot2'])
             ]
         );
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 
-    private function createProduct(string $identifier, array $data): void
+    private function createProduct(string $identifier, array $userIntents): void
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-        $violations =  $this->get('pim_catalog.validator.product')->validate($product);
-        ASsert::assertCount(0, $violations, \sprintf('The product ios not valid: %s', $violations));
-        $this->get('pim_catalog.saver.product')->save($product);
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: $identifier,
+            userIntents: $userIntents
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
     }
 
     private function assertAssetCollectionValues(string $identifier, array $values): void
@@ -194,7 +197,7 @@ final class RemoveNonExistentAssetCollectionValuesIntegration extends TestCase
     {
         $res = $this->get('database_connection')->executeQuery(<<<SQL
 SELECT completeness.missing_count, completeness.required_count FROM pim_catalog_completeness completeness
-INNER JOIN pim_catalog_product product ON product.id = completeness.product_id
+INNER JOIN pim_catalog_product product ON product.uuid = completeness.product_uuid
 INNER JOIN pim_catalog_locale locale ON completeness.locale_id = locale.id
 INNER JOIN pim_catalog_channel channel ON completeness.channel_id = channel.id
 WHERE product.identifier = :identifier
@@ -208,5 +211,23 @@ SQL,
         $actualRatio = (int)floor(100 * ($res['required_count'] - $res['missing_count']) / $res['required_count']);
 
         Assert::assertSame($expectedRatio, $actualRatio);
+    }
+
+    private function clearDoctrineUoW(): void
+    {
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
+    }
+
+    private function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        Assert::assertNotNull($id);
+        Assert::assertNotFalse($id);
+
+        return \intval($id);
     }
 }

@@ -4,9 +4,12 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Doctrine\DBAL\Connection;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 final class InitializeCriteriaEvaluation
 {
@@ -44,16 +47,16 @@ final class InitializeCriteriaEvaluation
         $steps = ceil($nb['nb']/intval(self::BATCH_OF_PRODUCTS));
 
         for ($i = 0; $i<$steps; $i++) {
-            $stmt = $this->db->executeQuery('select id from pim_catalog_product where product_model_id is null LIMIT ' . $i*intval(self::BATCH_OF_PRODUCTS) . ',' . intval(self::BATCH_OF_PRODUCTS));
-            $ids = array_map(function ($id) {
-                return intval($id);
+            $stmt = $this->db->executeQuery('select BIN_TO_UUID(uuid) AS uuid from pim_catalog_product where product_model_id is null LIMIT ' . $i*intval(self::BATCH_OF_PRODUCTS) . ',' . intval(self::BATCH_OF_PRODUCTS));
+            $uuids = array_map(function ($uuid) {
+                return Uuid::fromString($uuid);
             }, $stmt->fetchFirstColumn());
 
-            $productIds = array_map(function ($id) {
-                return new ProductId($id);
-            }, $ids);
+            $productUuids = array_map(function (UuidInterface $uuid) {
+                return ProductUuid::fromUuid($uuid);
+            }, $uuids);
 
-            $this->createProductsCriteriaEvaluations->createAll($productIds);
+            $this->createProductsCriteriaEvaluations->createAll(ProductUuidCollection::fromProductUuids($productUuids));
         }
     }
 }

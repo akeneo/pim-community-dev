@@ -18,7 +18,7 @@ use Akeneo\AssetManager\Application\AssetFamily\DeleteAssetFamily\DeleteAssetFam
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,32 +36,14 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class DeleteAction
 {
-    private SecurityFacade $securityFacade;
-
-    private NormalizerInterface $normalizer;
-
-    private ValidatorInterface $validator;
-
-    private DeleteAssetFamilyHandler $deleteAssetFamilyHandler;
-
-    private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler;
-
-    private TokenStorageInterface $tokenStorage;
-
     public function __construct(
-        SecurityFacade $securityFacade,
-        CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
-        TokenStorageInterface $tokenStorage,
-        NormalizerInterface $normalizer,
-        ValidatorInterface $validator,
-        DeleteAssetFamilyHandler $deleteAssetFamilyHandler
+        private SecurityFacadeInterface $securityFacade,
+        private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
+        private TokenStorageInterface $tokenStorage,
+        private NormalizerInterface $normalizer,
+        private ValidatorInterface $validator,
+        private DeleteAssetFamilyHandler $deleteAssetFamilyHandler,
     ) {
-        $this->securityFacade = $securityFacade;
-        $this->normalizer = $normalizer;
-        $this->validator = $validator;
-        $this->deleteAssetFamilyHandler = $deleteAssetFamilyHandler;
-        $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
-        $this->tokenStorage = $tokenStorage;
     }
 
     public function __invoke(Request $request, string $identifier): Response
@@ -85,7 +67,7 @@ class DeleteAction
 
         try {
             ($this->deleteAssetFamilyHandler)($command);
-        } catch (AssetFamilyNotFoundException $e) {
+        } catch (AssetFamilyNotFoundException) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 

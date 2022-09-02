@@ -221,6 +221,7 @@ pimee_enrich.mass_edit.product:
       label_count: "{1}发布 <span class=\"AknFullPage-title--highlight\">1 个产品</span>|]1, Inf[发布 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 个产品</span>"
       description: 将发布产品
       warning: 将发布选中的 {{ itemsCount }} 个产品。
+      already_published_product: "发布产品 {{ productId }} 时出错；另一个进程正在发布此产品。"
     unpublish:
       label: 取消发布
       label_count: "{1}取消发布 <span class=\"AknFullPage-title--highlight\">1 个产品</span>|]1, Inf[取消发布 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 个产品</span>"

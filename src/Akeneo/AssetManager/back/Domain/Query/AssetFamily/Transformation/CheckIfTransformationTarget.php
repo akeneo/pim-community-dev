@@ -23,11 +23,8 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 
 class CheckIfTransformationTarget
 {
-    private AssetFamilyRepositoryInterface $assetFamilyRepository;
-
-    public function __construct(AssetFamilyRepositoryInterface $assetFamilyRepository)
+    public function __construct(private AssetFamilyRepositoryInterface $assetFamilyRepository)
     {
-        $this->assetFamilyRepository = $assetFamilyRepository;
     }
 
     public function forAttribute(
@@ -47,7 +44,6 @@ class CheckIfTransformationTarget
             ->getTransformationCollection();
 
         foreach ($transformations as $transformation) {
-            /** @var $transformation Transformation */
             $target = $transformation->getTarget();
 
             if ($target->getAttributeCode()->equals($attribute->getCode()) &&

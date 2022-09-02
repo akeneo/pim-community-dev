@@ -34,7 +34,7 @@ class ConvertToJPGPostProcessor implements PostProcessorInterface
 
         try {
             $image->readImageBlob($binary->getContent());
-        } catch (\ImagickException $e) {
+        } catch (\ImagickException) {
             return $binary;
         }
 

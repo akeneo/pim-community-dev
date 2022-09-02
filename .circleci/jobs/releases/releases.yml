@@ -1,0 +1,38 @@
+envVarsDeployDev: &envVarsDeployDev
+executor-machine: &executor-machine
+
+jobs:
+    release:
+        parameters:
+            PRODUCT_TYPE:
+                type: string
+                default: "srnt"
+        environment:
+            <<: *envVarsDeployDev
+        machine:
+            image: *executor-machine
+        resource_class: medium
+        steps:
+            - attach_workspace:
+                  at: ~/
+            - set_gcloud_config_dev
+            - restore_persisted_env_vars
+            - run:
+                  name: Rename release if not on master
+                  command: |
+                      if [ "${CIRCLE_BRANCH}" != "master" ]; then
+                          echo export RELEASE_NAME="RC-${RELEASE_NAME}" >> $BASH_ENV
+                      fi
+            - run:
+                  name: Push Terraform modules to GCS
+                  command: |
+                      BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/${TYPE_LONG}-edition-dev/${IMAGE_TAG} gs://akecld-terraform-modules/${TYPE_LONG}-edition-dev/${RELEASE_NAME}
+                      BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/${TYPE_LONG}-edition-dev/${IMAGE_TAG} gs://akecld-terraform-modules/${TYPE_LONG}-edition/${RELEASE_NAME}
+            - run:
+                  name: Tag the Docker image with the definitive tag
+                  command: |
+                      OLD_IMAGE_TAG=${IMAGE_TAG} NEW_IMAGE_TAG=${RELEASE_NAME} make -C deployments/ release
+            - run:
+                  name: Show the definitive tag
+                  command: |
+                      echo "RELEASE_NAME=${RELEASE_NAME}"

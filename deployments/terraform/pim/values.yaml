@@ -1,3 +1,6 @@
+editionFlag:
+  enabled: false
+
 nameOverride: ""
 global:
   extraLabels:
@@ -64,7 +67,7 @@ common:
 mailer:
   login: null # Generated with terraform template
   password: null # Generated with terraform template
-  base_mailer_url: "smtp://smtp.mailgun.org:2525"
+  base_mailer_url: null # Generated with terraform template
 
 image:
   pim:
@@ -95,7 +98,7 @@ pim:
   daemons:
     job-consumer-process:
       enabled: true
-      pimCommand: "messenger:consume --quiet ui_job import_export_job data_maintenance_job --limit=1 --time-limit=3600"
+      pimCommand: "messenger:consume -vv ui_job import_export_job data_maintenance_job --limit=1 --time-limit=3600"
       replicas: 2
       trapped: true
       resources:
@@ -155,7 +158,7 @@ pim:
           memory: "30Mi"
   elasticsearch:
     settings:
-      totalFieldsLimit: 10000
+      totalFieldsLimit: 50000
       maxChunkSizeCharacters: 100000000
   dqi:
     settings:
@@ -231,7 +234,7 @@ pim:
       schedule: "0 4 * * *"
       resources:
         requests:
-          cpu: "20m"
+          cpu: "10m"
           memory: "80Mi"
     project-recalculate:
       enabled: true
@@ -247,11 +250,19 @@ pim:
       schedule: "0 2 * * *"
       resources:
         requests:
-          cpu: "10m"
+          cpu: "1m"
           memory: "80Mi"
     reference-entity-refresh-records:
       enabled: true
       pimCommand: "akeneo:reference-entity:refresh-records"
+      schedule: "0 23 * * *"
+      resources:
+        requests:
+          cpu: "200m"
+          memory: "128Mi"
+    asset-manager-refresh-asset:
+      enabled: true
+      pimCommand: "akeneo:asset-manager:refresh-assets --all"
       schedule: "0 23 * * *"
       resources:
         requests:
@@ -287,7 +298,7 @@ pim:
       schedule: "*/30 * * * *"
       resources:
         requests:
-          cpu: "200m"
+          cpu: "20m"
           memory: "200Mi"
     purge-events-api-logs:
       enabled: true
@@ -298,26 +309,10 @@ pim:
           memory: "128Mi"
         requests:
           cpu: "100m"
-          memory: "128Mi"
-    migrate-job-messages-from-old-queue:
-      enabled: true
-      pimCommand: "akeneo:batch:migrate-job-messages-from-old-queue --no-interaction"
-      schedule: "*/15 * * * *"
-      resources:
-        requests:
-          cpu: "10m"
           memory: "10Mi"
-    migrate-records-index-mapping:
+    reference-entity-migrate-records-index-mapping:
       enabled: true
       pimCommand: "akeneo:reference-entity:migrate-records-index-mapping --no-interaction"
-      schedule: "*/30 * * * *"
-      resources:
-        requests:
-          cpu: "10m"
-          memory: "10Mi"
-    migrate-job-execution-warning-count:
-      enabled: true
-      pimCommand: "akeneo:batch:migrate-job-execution-warning-count --no-interaction"
       schedule: "*/30 * * * *"
       resources:
         requests:
@@ -331,6 +326,49 @@ pim:
         requests:
           cpu: "10m"
           memory: "10Mi"
+    clean-case-sensitive-attribute-option-spellcheck:
+      enabled: true
+      pimCommand: "pimee:data-quality-insights:clean-case-sensitive-attribute-option-spellcheck --no-interaction"
+      schedule: "15 2 * * *"
+      resources:
+        requests:
+          cpu: "10m"
+          memory: "10Mi"
+    clean-completeness-evaluation-results:
+      enabled: true
+      pimCommand: "pim:data-quality-insights:clean-completeness-evaluation-results --no-interaction"
+      schedule: "30 0 * * *"
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "256Mi"
+    zdd-migration-migrate:
+      enabled: true
+      pimCommand: "pim:zdd-migration:migrate --no-interaction"
+      schedule: "45 * * * *"
+      resources:
+        requests:
+          cpu: "350m"
+          memory: "350Mi"
+    job-automation-push-scheduled-jobs-to-queue:
+      enabled: true
+      pimCommand: 'pim:job-automation:push-scheduled-jobs-to-queue'
+      schedule: "*/10 * * * *"
+      resources:
+        requests:
+          cpu: "10m"
+          memory: "10Mi"
+    supplier-portal-clean-supplier-product-files:
+      enabled: true
+      pimCommand: 'akeneo:supplier-portal:clean-supplier-product-files'
+      schedule: "0 5 * * *"
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "100Mi"
+  supplier_portal:
+    settings:
+      enabled: false
 
 # Onboarder
 onboarder:
@@ -362,19 +400,13 @@ onboarder:
 free_trial:
   enabled: false
 
-# Connectors
-connectors:
-  bigcommerce:
-    enabled: false
-    challengePapoActivation: true
-
 mysql:
   image:
     mysql:
       repository: mysql
       tag: "8.0.26"
   common:
-    class: ssd-retain
+    class: ssd-retain-csi
   mysql:
     dataDiskPath: "/var/lib/mysql/"
     serviceName: pim-mysql
@@ -383,14 +415,16 @@ mysql:
     rootPassword: null # Generate me with `pwgen -sB 22`
     defaultDatabase: akeneo_pim
     dataDiskSize: 100Gi
+    innodbBufferPoolSize: 2048M
+    innodbPoolInstances: 8
     stateful:
       enabled: false
     resources:
       limits:
-        memory: 3072Mi
+        memory: 3584Mi
       requests:
-        memory: 3072Mi
-        cpu: "200m"
+        memory: 3584Mi
+        cpu: "100m"
     readinessProbe:
       initialDelaySeconds: 30
       periodSeconds: 30
@@ -405,18 +439,23 @@ mysql:
       failureThreshold: 5
 
 memcached:
-  image: memcached:1.6.12
+  image:
+    tag: 1.6.12
+    pullPolicy: IfNotPresent
   fullnameOverride: memcached
   replicaCount: 1
   resources:
     limits:
-      memory: "96Mi"
+      memory: "32Mi"
     requests:
-      cpu: "5m"
-      memory: "20Mi"
-  memcached:
-    maxItemMemory: 64
-  pdbMinAvailable: 0
+      cpu: "1m"
+      memory: "16Mi"
+  extraEnvVars:
+    - name: MEMCACHED_MAX_ITEM_SIZE
+      value: "64"
+  pdb:
+    create: true
+    minAvailable: 0
 
 elasticsearch:
   appVersion: 7.16.2
@@ -431,11 +470,11 @@ elasticsearch:
     env:
       # See chart config map: https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/configmap.yaml
       # And elasticsearch documentation: https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-gateway.html
-      MINIMUM_MASTER_NODES: null
-      EXPECTED_MASTER_NODES: null
-      RECOVER_AFTER_MASTER_NODES: null
-      EXPECTED_DATA_NODES: null
-      RECOVER_AFTER_DATA_NODES: null
+      MINIMUM_MASTER_NODES: 2
+      EXPECTED_MASTER_NODES: 2
+      RECOVER_AFTER_MASTER_NODES: 2
+      EXPECTED_DATA_NODES: 1
+      RECOVER_AFTER_DATA_NODES: 1
       cluster.initial_master_nodes: "elasticsearch-master-0"
       discovery.seed_hosts: "elasticsearch-discovery"
     plugins:
@@ -447,19 +486,19 @@ elasticsearch:
       limits:
         memory: "1024Mi"
       requests:
-        cpu: "25m"
+        cpu: "20m"
         memory: "1024Mi"
   master:
     replicas: 2
     persistence:
       size: 1Gi
-      storageClass: ssd-retain
+      storageClass: ssd-retain-csi
     heapSize: "384m"
     resources:
       limits:
         memory: "768Mi"
       requests:
-        cpu: "25m"
+        cpu: "15m"
         memory: "768Mi"
     updateStrategy:
       type: RollingUpdate
@@ -467,13 +506,13 @@ elasticsearch:
     replicas: 2
     persistence:
       size: 10Gi
-      storageClass: ssd-retain
-    heapSize: "1G"
+      storageClass: ssd-retain-csi
+    heapSize: "1024m"
     resources:
       limits:
         memory: "1740Mi"
       requests:
-        cpu: "50m"
+        cpu: "40m"
         memory: "1536Mi"
     updateStrategy:
       type: RollingUpdate

@@ -5,8 +5,8 @@ namespace Specification\Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\
 use Akeneo\UserManagement\Component\Model\Group;
 use PhpSpec\ObjectBehavior;
 use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\Project;

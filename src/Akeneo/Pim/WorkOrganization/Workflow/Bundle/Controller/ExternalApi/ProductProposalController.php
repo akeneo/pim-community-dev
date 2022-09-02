@@ -17,9 +17,11 @@ use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\EntityWithValuesDraftMan
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
@@ -59,7 +61,8 @@ class ProductProposalController
         EntityWithValuesDraftRepositoryInterface $productDraftRepository,
         EntityWithValuesDraftManager $productDraftManager,
         TokenStorageInterface $tokenStorage,
-        AuthorizationCheckerInterface $authorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker,
+        private SecurityFacadeInterface $security,
     ) {
         $this->productRepository = $productRepository;
         $this->productDraftRepository = $productDraftRepository;
@@ -84,6 +87,8 @@ class ProductProposalController
      */
     public function createAction(Request $request, string $code): Response
     {
+        $this->denyAccessUnlessAclIsGranted();
+
         $this->ensureRequestBodyIsValid($request);
 
         $product = $this->productRepository->findOneByIdentifier($code);
@@ -138,6 +143,13 @@ class ProductProposalController
 
         if (null === $decodedContent) {
             throw new BadRequestHttpException('Invalid json message received.');
+        }
+    }
+
+    private function denyAccessUnlessAclIsGranted(): void
+    {
+        if (!$this->security->isGranted('pim_api_product_edit')) {
+            throw new AccessDeniedHttpException('Access forbidden. You are not allowed to create or update products.');
         }
     }
 }

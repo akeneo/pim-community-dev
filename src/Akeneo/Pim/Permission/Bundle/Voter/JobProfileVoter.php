@@ -28,12 +28,6 @@ use Webmozart\Assert\Assert;
  */
 class JobProfileVoter extends Voter implements VoterInterface
 {
-    /** TODO: Do not pull-up it into master (https://github.com/akeneo/pim-enterprise-dev/pull/14184) */
-    private const JOB_NAME_WITHOUT_EXECUTION_PERMISSION = [
-        'asset_manager_execute_naming_convention',
-        'asset_manager_link_assets_to_products'
-    ];
-
     /** @var JobProfileAccessManager */
     protected $accessManager;
 
@@ -100,16 +94,11 @@ class JobProfileVoter extends Voter implements VoterInterface
     }
 
     /**
-     * @param JobInstance $subject
      * {@inheritdoc}
      */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
         $grantedGroups = $this->extractGroups($attribute, $subject);
-        /** TODO: Do not pull-up it into master (https://github.com/akeneo/pim-enterprise-dev/pull/14184) */
-        if ($attribute === Attributes::EXECUTE && in_array($subject->getJobName(), self::JOB_NAME_WITHOUT_EXECUTION_PERMISSION)) {
-            return true;
-        }
 
         $user = $token->getUser();
         Assert::implementsInterface($user, UserInterface::class);

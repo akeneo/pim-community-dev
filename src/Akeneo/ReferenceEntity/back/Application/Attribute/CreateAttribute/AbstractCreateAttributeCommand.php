@@ -20,37 +20,13 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute;
  */
 abstract class AbstractCreateAttributeCommand
 {
-    /** @var string */
-    public $referenceEntityIdentifier;
-
-    /** @var string */
-    public $code;
-
-    /** @var array */
-    public $labels;
-
-    /** @var bool */
-    public $isRequired;
-
-    /** @var bool */
-    public $valuePerChannel;
-
-    /** @var bool */
-    public $valuePerLocale;
-
     public function __construct(
-        string $referenceEntityIdentifier,
-        string $code,
-        array $labels,
-        bool $isRequired,
-        bool $valuePerChannel,
-        bool $valuePerLocale
+        public string $referenceEntityIdentifier,
+        public string $code,
+        public array $labels,
+        public bool $isRequired,
+        public bool $valuePerChannel,
+        public bool $valuePerLocale
     ) {
-        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
-        $this->code = $code;
-        $this->labels = $labels;
-        $this->isRequired = $isRequired;
-        $this->valuePerChannel = $valuePerChannel;
-        $this->valuePerLocale = $valuePerLocale;
     }
 }

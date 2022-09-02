@@ -23,7 +23,7 @@ class AddQuantifiedAssociationOnProductWithPermissionsEndToEnd extends ApiTestCa
 
     protected function getConfiguration()
     {
-        return $this->catalog->useTechnicalCatalog();
+        return $this->catalog->useTechnicalCatalog(featureFlags: ['permission']);
     }
 
     public function testAssociateProductWithGrantedProduct()
@@ -81,6 +81,8 @@ JSON;
 
     public function testCannotAssociateProductWithNotGrantedProduct()
     {
+        $this->loader->loadProductsForQuantifiedAssociationPermissions();
+
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
         $data = <<<JSON
 {

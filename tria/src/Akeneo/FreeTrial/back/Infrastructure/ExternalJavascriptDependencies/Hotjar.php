@@ -13,24 +13,26 @@ declare(strict_types=1);
 
 namespace Akeneo\FreeTrial\Infrastructure\ExternalJavascriptDependencies;
 
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Platform\Bundle\UIBundle\EventListener\ScriptNonceGenerator;
 use Akeneo\Platform\Bundle\UIBundle\Provider\ContentSecurityPolicy\ContentSecurityPolicyProviderInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\ExternalDependencyProviderInterface;
 
 final class Hotjar implements ExternalDependencyProviderInterface, ContentSecurityPolicyProviderInterface
 {
-    private ScriptNonceGenerator $nonceGenerator;
-
-    private string $HotjarId;
-
-    public function __construct(ScriptNonceGenerator $nonceGenerator, string $HotjarId)
-    {
-        $this->nonceGenerator = $nonceGenerator;
-        $this->HotjarId = $HotjarId;
+    public function __construct(
+        private ScriptNonceGenerator $nonceGenerator,
+        private string $HotjarId,
+        private FeatureFlags $featureFlags
+    ) {
     }
 
     public function getScript(): string
     {
+        if (!$this->featureFlags->isEnabled('free_trial')) {
+            return '';
+        }
+
         $javascript = <<<JS
 <script type="text/javascript" nonce="%s">
     (function(h,o,t,j,a,r){
@@ -54,6 +56,10 @@ JS;
      */
     public function getContentSecurityPolicy(): array
     {
+        if (!$this->featureFlags->isEnabled('free_trial')) {
+            return [];
+        }
+
         return [
             'script-src'  => [
                 "http://*.hotjar.com",

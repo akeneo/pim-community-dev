@@ -8,17 +8,16 @@ imports:
     - { resource: ../../../vendor/akeneo/pim-community-dev/tests/back/Pim/Enrichment/Acceptance/Resources/config/behat/services.yml }
     - { resource: ../../../vendor/akeneo/pim-community-dev/tests/back/Acceptance/Resources/config/behat/services.yml }
     - { resource: ../../../vendor/akeneo/pim-community-dev/tests/back/Acceptance/Resources/config/pim/messenger.yml }
+    - { resource: ../../../vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Enrichment/Product/back/Test/Acceptance/Resources/config/services.yml }
+    - { resource: ../../../vendor/akeneo/pim-community-dev/src/Akeneo/Channel/back/tests/Acceptance/Resources/config/services.yml }
+    - { resource: ../../../vendor/akeneo/pim-community-dev/tests/back/Category/Acceptance/Resources/config/services.yml }
     - { resource: ../../../tests/back/Acceptance/Resources/config/pim/queries.yml }
     - { resource: ../../../tests/back/Acceptance/Resources/config/pim/repositories.yml }
     - { resource: ../../../tests/back/Platform/Acceptance/Resources/config/services.yml }
     - { resource: ../../../tests/back/Acceptance/Resources/config/behat/services.yml }
     # Akeneo/Connectivity/Connection
-    - { resource: ../../../vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back/tests/Acceptance/Resources/config/queries.yml }
-    - { resource: ../../../vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back/tests/Acceptance/Resources/config/repositories.yml }
-    - { resource: ../../../vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back/tests/Acceptance/Resources/config/services.yml }
     - { resource: ../../../vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back/tests/CatalogBuilder/Resources/config/loaders.yml }
     - { resource: ../../../vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/tests/Resources/config/services.yml }
-    - { resource: ../../../vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back/tests/Acceptance/Resources/config/queries.yml }
     # AkeneoJobBundle
     - { resource: ../../../vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Job/back/tests/Acceptance/Resources/config/services.yml }
     # Reference Entity
@@ -39,13 +38,21 @@ imports:
     - { resource: ../../../tests/back/AssetManager/Acceptance/Resources/config/pim/queries.yml }
     # Rule Engine
     - { resource: ../../../src/Akeneo/Pim/Automation/RuleEngine/tests/back/Acceptance/Resources/config/services.yml }
-    # Tailored Exports
-    - { resource: ../../../components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle/tests/Acceptance/Resources/config/services.yml }
+    # Tailored Export
+    - { resource: ../../../components/tailored-export/back/tests/Acceptance/Resources/config/services.yml }
+    # Tailored Import
+    - { resource: ../../../components/tailored-import/back/tests/Acceptance/Resources/config/services.yml }
 
     - { resource: ../../../vendor/akeneo/pim-community-dev/config/services/test/test_services.yml }
     # Table Attribute
     - { resource: ../../../grth/src/Akeneo/Pim/TableAttribute/tests/back/Acceptance/Resources/config/services.yml }
+    - { resource: ../../../grth/src/Akeneo/Pim/TableAttribute/tests/back/Acceptance/Resources/config/services_ee.yml }
 
+    # FeatureFlag
+    - { resource: ../../../vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/FeatureFlagBundle/Resources/config/test_fake_services.yml }
+
+    # Job Automation
+    - { resource: ../../../components/job-automation/back/tests/Acceptance/Resources/config/services.yml }
 
 services:
     akeneo_integration_tests.doctrine.connection.connection_closer:
@@ -66,18 +73,6 @@ services:
         arguments:
             - '@akeneo_integration_tests.event_dispatcher.inner'
 
-    Akeneo\Connectivity\Connection\Tests\Acceptance\Context\ConnectionContext:
-        public: true
-        arguments:
-            - '@akeneo_connectivity.connection.persistence.repository.connection'
-            - '@akeneo_connectivity.connection.application.handler.fetch_connections'
-            - '@akeneo_connectivity.connection.application.handler.find_a_connection'
-            - '@akeneo_connectivity.connection.application.handler.create_connection'
-            - '@akeneo_connectivity.connection.application.handler.delete_connection'
-            - '@akeneo_connectivity.connection.application.handler.update_connection'
-            - '@akeneo_connectivity.connection.application.handler.regenerate_connection_secret'
-            - '@akeneo_connectivity.connection.application.handler.regenerate_connection_password'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repository\InMemoryUserPermissionsRepository'
     akeneo_integration_tests.catalogs_enterprise:
         class: 'AkeneoEnterprise\Test\IntegrationTestsBundle\Configuration\Catalog'
         decorates: 'akeneo_integration_tests.catalogs'

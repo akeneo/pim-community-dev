@@ -1,3 +1,4 @@
+@proposal-feature-enabled
 Feature: Import product model proposals
   In order generate product model proposals
   As a redactor

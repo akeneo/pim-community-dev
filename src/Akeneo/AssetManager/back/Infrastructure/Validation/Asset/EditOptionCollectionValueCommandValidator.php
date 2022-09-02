@@ -51,7 +51,7 @@ class EditOptionCollectionValueCommandValidator extends ConstraintValidator
                 sprintf(
                     'Expected argument to be of class "%s", "%s" given',
                     EditOptionCollectionValueCommand::class,
-                    get_class($command)
+                    $command::class
                 )
             );
         }
@@ -67,20 +67,14 @@ class EditOptionCollectionValueCommandValidator extends ConstraintValidator
         }
     }
 
-    /**
-     * @var EditOptionCollectionValueCommand|AppendOptionCollectionValueCommand $command
-     */
-    private function validateCommand($command): void
+    private function validateCommand(EditOptionCollectionValueCommand|AppendOptionCollectionValueCommand $command): void
     {
         if ($this->validType($command)) {
             $this->checkOptionExists($command);
         }
     }
 
-    /**
-     * @var EditOptionCollectionValueCommand|AppendOptionCollectionValueCommand $command
-     */
-    private function validType($command): bool
+    private function validType(EditOptionCollectionValueCommand|AppendOptionCollectionValueCommand $command): bool
     {
         $validator = Validation::createValidator();
         $violations = $validator->validate($command->optionCodes, new All(
@@ -110,10 +104,7 @@ class EditOptionCollectionValueCommandValidator extends ConstraintValidator
         return true;
     }
 
-    /**
-     * @var EditOptionCollectionValueCommand|AppendOptionCollectionValueCommand $command
-     */
-    private function checkOptionExists($command): void
+    private function checkOptionExists(EditOptionCollectionValueCommand|AppendOptionCollectionValueCommand $command): void
     {
         $existingOptionCodes = array_map(fn (AttributeOption $attributeOption) => (string) $attributeOption->getCode(), $command->attribute->getAttributeOptions());
 

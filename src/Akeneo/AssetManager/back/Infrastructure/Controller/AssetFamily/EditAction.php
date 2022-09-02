@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -20,7 +21,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,40 +41,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EditAction
 {
-    private EditAssetFamilyHandler $editAssetFamilyHandler;
-
-    private Serializer $serializer;
-
-    private ValidatorInterface $validator;
-
-    private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler;
-
-    private TokenStorageInterface $tokenStorage;
-
-    private AttributeRepositoryInterface $attributeRepository;
-
-    private AssetFamilyRepositoryInterface $assetFamilyRepository;
-
-    private SecurityFacade $securityFacade;
-
     public function __construct(
-        EditAssetFamilyHandler $editAssetFamilyHandler,
-        CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
-        TokenStorageInterface $tokenStorage,
-        Serializer $serializer,
-        ValidatorInterface $validator,
-        AttributeRepositoryInterface $attributeRepository,
-        AssetFamilyRepositoryInterface $assetFamilyRepository,
-        SecurityFacade $securityFacade
+        private EditAssetFamilyHandler $editAssetFamilyHandler,
+        private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
+        private TokenStorageInterface $tokenStorage,
+        private Serializer $serializer,
+        private ValidatorInterface $validator,
+        private AttributeRepositoryInterface $attributeRepository,
+        private AssetFamilyRepositoryInterface $assetFamilyRepository,
+        private SecurityFacadeInterface $securityFacade,
     ) {
-        $this->editAssetFamilyHandler = $editAssetFamilyHandler;
-        $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
-        $this->tokenStorage = $tokenStorage;
-        $this->serializer = $serializer;
-        $this->validator = $validator;
-        $this->attributeRepository = $attributeRepository;
-        $this->assetFamilyRepository = $assetFamilyRepository;
-        $this->securityFacade = $securityFacade;
     }
 
     public function __invoke(Request $request): Response
@@ -103,16 +80,13 @@ class EditAction
 
         $transformations = $this->isUserAllowedToManageTransformation()
             ? $parameters['transformations']
-            : null
-            ;
+            : null;
         $namingConvention = $this->isUserAllowedToManageProductLinkRule()
             ? json_decode($parameters['namingConvention'], true)
-            : null
-            ;
+            : null;
         $productLinkRules = $this->isUserAllowedToManageProductLinkRule()
             ? json_decode($parameters['productLinkRules'], true)
-            : null
-            ;
+            : null;
 
         $command = new EditAssetFamilyCommand(
             $parameters['identifier'],
@@ -183,7 +157,7 @@ class EditAction
             );
 
             $attributeAsMainMediaCode = (string) $attribute->getCode();
-        } catch (AttributeNotFoundException $e) {
+        } catch (AttributeNotFoundException) {
             $attributeAsMainMediaCode = null;
         }
 

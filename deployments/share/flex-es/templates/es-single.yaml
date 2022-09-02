@@ -41,7 +41,7 @@ spec:
         {{ $key }}: {{ $value | quote }}
         {{- end }}
     spec:
-      {{- if .Values.common.busybox.increaseMaxMapCount }}
+      {{- if or .Values.common.busybox.increaseMaxMapCount .Values.cluster.plugins .Values.keystore }}
       initContainers:
       - name: init-sysctl
         image: "{{ .Values.image.init.repository }}:{{ .Values.image.init.tag }}"
@@ -49,6 +49,35 @@ spec:
         command: ["sysctl", "-w", "vm.max_map_count=262144"]
         securityContext:
           privileged: true
+{{ if .Values.keystore }}
+      - name: keystore
+        image: "{{ .Values.image.es.repository }}:{{ .Values.image.es.tag }}"
+        command:
+        - sh
+        - -c
+        - |
+          #!/usr/bin/env bash
+          set -euo pipefail
+          elasticsearch-keystore create
+          for i in /tmp/keystoreSecrets/*/*; do
+            key=$(basename $i)
+            echo "Adding file $i to keystore key $key"
+            elasticsearch-keystore add-file "$key" "$i"
+          done
+          # Add the bootstrap password since otherwise the Elasticsearch entrypoint tries to do this on startup
+          #[ ! -z "$ELASTIC_PASSWORD" ] && echo $ELASTIC_PASSWORD | elasticsearch-keystore add -x bootstrap.password
+          cp -a /usr/share/elasticsearch/config/elasticsearch.keystore /tmp/keystore/
+        volumeMounts:
+          - name: keystore
+            mountPath: /tmp/keystore
+          {{- range .Values.keystore }}
+          - name: keystore-{{ .secretName }}
+            mountPath: /tmp/keystoreSecrets/{{ .secretName }}
+          {{- end }}
+{{ end }}
+{{- if .Values.cluster.plugins }}
+{{ include "plugin-installer" . | indent 6 }}
+{{- end }}
       {{- end }}
       containers:
       - name: es-single
@@ -70,11 +99,11 @@ spec:
         - name: PATH_DATA
           value: "{{ .Values.common.dataDir }}"
         - name: PATH_LOGS
-          value: "/data/var/log/elasticsearch/"
+          value: "{{ .Values.common.dataDir }}/../logs"
         - name: path.data
           value: "{{ .Values.common.dataDir }}"
         - name: path.logs
-          value: "/data/var/log/elasticsearch/"
+          value: "{{ .Values.common.dataDir }}/../logs"
         - name: node.name
           valueFrom:
             fieldRef:
@@ -110,8 +139,46 @@ spec:
           failureThreshold: 6
         volumeMounts:
         - name: data
-          mountPath: "/data"
+          mountPath: {{ .Values.common.dataDir }}
+        - name: config
+          mountPath: /usr/share/elasticsearch/config/elasticsearch.yml
+          subPath: elasticsearch.yml
+{{- if .Values.cluster.plugins }}
+        - name: plugindir
+          mountPath: /usr/share/elasticsearch/plugins/
+{{- end }}
+{{ if .Values.keystore }}
+        - name: keystore
+          mountPath: /usr/share/elasticsearch/config/elasticsearch.keystore
+          subPath: elasticsearch.keystore
+{{ end }}
+{{- if .Values.cluster.keystoreSecret }}
+        - name: keystore
+          mountPath: "/usr/share/elasticsearch/config/elasticsearch.keystore"
+          subPath: elasticsearch.keystore
+          readOnly: true
+{{- end }}
       volumes:
         - name: data
           persistentVolumeClaim:
             claimName: pvc-{{ .Release.Name }}-es-single
+        - name: config
+          configMap:
+            name: {{ template "elasticsearch.fullName" . }}
+{{- if .Values.cluster.plugins }}
+        - name: plugindir
+          emptyDir: {}
+{{- end }}
+{{ if .Values.keystore }}
+        - name: keystore
+          emptyDir: {}
+          {{- range .Values.keystore }}
+        - name: keystore-{{ .secretName }}
+          secret: {{ toYaml . | nindent 12 }}
+          {{- end }}
+{{ end }}
+{{- if .Values.cluster.keystoreSecret }}
+        - name: keystore
+          secret:
+            secretName: {{ .Values.cluster.keystoreSecret }}
+{{- end }}

@@ -1,11 +1,7 @@
-import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
-import {MediaPreviewType} from 'akeneoassetmanager/domain/model/asset/media-preview';
-import {getMediaData} from 'akeneoassetmanager/domain/model/asset/data';
-
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {AssetCollectionCell} from './AssetCollectionCell';
 const StringCell = require('oro/datagrid/string-cell');
-const Template = require('pim/template/datagrid/cell/image-cell');
-const _ = require('underscore');
-const routing = require('routing');
 
 class AssetMultipleLinkCell extends StringCell {
   render() {
@@ -15,15 +11,15 @@ class AssetMultipleLinkCell extends StringCell {
       return this;
     }
 
-    const src = getMediaPreviewUrl(routing, {
-      type: MediaPreviewType.Thumbnail,
-      attributeIdentifier: assetMulti.attribute,
-      data: getMediaData(assetMulti.data),
-    });
-
-    this.$el.empty().html(_.template(Template)({label: '', src}));
+    ReactDOM.render(<AssetCollectionCell attributeIdentifier={assetMulti.attribute} data={assetMulti.data} />, this.el);
 
     return this;
+  }
+
+  remove() {
+    ReactDOM.unmountComponentAtNode(this.el);
+
+    return super.remove();
   }
 }
 

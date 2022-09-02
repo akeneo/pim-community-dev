@@ -175,7 +175,7 @@ pimee_catalog_rule:
                     subtitle: Select your family
                 set_attribute:
                     title: SET Attribute value
-                    helper: To set values to your attribute, please start by selecting your target attribute and then, the value you want to set
+                    helper: To set values to your attribute, please start by selecting your target attribute and then, the value you want to set. The former values will be replaced in all your product selection.
                     target_subtitle: Select your target
                     value_subtitle: Define your value
                     attribute_label: Attribute
@@ -183,6 +183,7 @@ pimee_catalog_rule:
                     select_reference_entity: Select your reference entities
                     select_asset: Select your assets
                     select_measurement_unit: Select your unit
+                    table_attribute_helper: The former values of this attribute will be replaced in all your product selection
                 set_quantified_associations:
                     title: SET Quantified associations
                     helper: To set quantified associations, please select your association type(s) and then, the products, product models or groups you want to associate to your product selection.
@@ -424,8 +425,6 @@ flash:
         enabled: The rule has been enabled
         disabled: The rule has been disabled
 
-pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Rules settings
-
 batch_jobs:
     add_attribute_value:
         execute_rules.label: Rules execution
@@ -472,13 +471,7 @@ pim_title:
     pimee_catalog_rule_edit: Edit rule
     pimee_catalog_rule_new: Rules
 
-pim_import_export:
-    widget:
-        last_operations:
-            job_type:
-                execute_rules: Rules execution
-
 akeneo_job_process_tracker:
-    type:
+    type_filter:
         mass_edit_rule: Mass edit rule
         execute_rules: Rules execution

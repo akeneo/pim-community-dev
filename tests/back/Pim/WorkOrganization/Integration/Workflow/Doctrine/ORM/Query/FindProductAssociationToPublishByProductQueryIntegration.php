@@ -8,8 +8,14 @@ use Akeneo\Test\Integration\TestCase;
 
 class FindProductAssociationToPublishByProductQueryIntegration extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->get('feature_flags')->enable('published_product');
+    }
 
     use PublishedProductBuilder;
+
 
     /**
      * @test

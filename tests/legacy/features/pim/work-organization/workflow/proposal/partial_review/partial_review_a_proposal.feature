@@ -1,4 +1,4 @@
-@javascript
+@javascript @proposal-feature-enabled @permission-feature-enabled
 Feature: Partial review a proposal
   In order to easily review changes in a proposal
   As a product owner

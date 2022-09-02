@@ -1,0 +1,72 @@
+workflows:
+    # Description :
+    #    Check deployment and upgrade on kubernetes cluster with a version N+1
+    #    Currently the dev and prod use kubernetes cluster version N
+    #    Check with this workflow that the deployment compatible with kubernetes cluster version N+1
+    nightly_next_cluster:
+        when:
+            and:
+                - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+                - equal: [ "nightly_next_cluster", << pipeline.schedule.name >> ]
+        jobs:
+            - checkout
+            - test_helm_generated_k8s_files:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Test helm generated k8s files"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt"]
+                          CLUSTER_NEXT: [true]
+                  requires:
+                      - checkout
+            - build_srnt_prod:
+                  requires:
+                      - "[srnt] Test helm generated k8s files"
+            - test_cronjobs_existence:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt"]
+                  requires:
+                      - build_srnt_prod
+            - test_deploy:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Test deploy"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt"]
+                          CLUSTER_NEXT: [true]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
+            - test_deploy_last_release:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Test deploy last release"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt"]
+                          CLUSTER_NEXT: [true]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
+            - test_upgrade_from_last_release:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Test upgrade from last release"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt"]
+                          CLUSTER_NEXT: [true]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Test deploy last release"
+
+    # Description :
+    #    Check static kubernetes files with latest versions of kubernetes
+    weekly_static_helm_config:
+        when:
+            and:
+                - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+                - equal: [ "weekly_static_helm_config", << pipeline.schedule.name >> ]
+        jobs:
+            - checkout
+            - test_helm_generated_k8s_files:
+                  name: "[<< matrix.PRODUCT_TYPE >>][<< matrix.CLUSTER_VERSION >>] Test helm generated k8s files"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt"]
+                          CLUSTER_VERSION: ["1.21.0", "1.22.0", "1.23.0", "1.24.0"]
+                  requires:
+                      - checkout

@@ -61,6 +61,6 @@ SQL;
                 $row['code'],
                 $platform
             )
-        ), $result ?? []);
+        ), $result);
     }
 }

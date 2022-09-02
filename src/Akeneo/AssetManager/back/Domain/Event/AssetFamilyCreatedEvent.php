@@ -23,11 +23,8 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class AssetFamilyCreatedEvent extends Event
 {
-    private AssetFamilyIdentifier $assetFamilyIdentifier;
-
-    public function __construct(AssetFamilyIdentifier $assetFamilyIdentifier)
+    public function __construct(private AssetFamilyIdentifier $assetFamilyIdentifier)
     {
-        $this->assetFamilyIdentifier = $assetFamilyIdentifier;
     }
 
     public function getAssetFamilyIdentifier(): AssetFamilyIdentifier

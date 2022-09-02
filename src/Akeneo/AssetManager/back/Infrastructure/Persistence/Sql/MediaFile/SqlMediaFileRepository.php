@@ -24,11 +24,8 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
  */
 class SqlMediaFileRepository implements MediaFileRepositoryInterface
 {
-    private ApiResourceRepositoryInterface $fileRepository;
-
-    public function __construct(ApiResourceRepositoryInterface $fileRepository)
+    public function __construct(private ApiResourceRepositoryInterface $fileRepository)
     {
-        $this->fileRepository = $fileRepository;
     }
 
     public function getByIdentifier(string $identifier): FileInfo

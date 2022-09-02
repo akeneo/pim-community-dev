@@ -22,11 +22,10 @@ use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AbstractCreateA
 class AttributeFactoryRegistry implements AttributeFactoryRegistryInterface
 {
     /** @var AttributeFactoryInterface[] */
-    private array $factories;
+    private array $factories = [];
 
     public function __construct()
     {
-        $this->factories = [];
     }
 
     public function register(AttributeFactoryInterface $factory): void

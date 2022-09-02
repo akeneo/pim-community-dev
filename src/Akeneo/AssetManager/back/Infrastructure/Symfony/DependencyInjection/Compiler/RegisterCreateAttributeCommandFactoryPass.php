@@ -25,7 +25,7 @@ class RegisterCreateAttributeCommandFactoryPass implements CompilerPassInterface
 {
     private const ATTRIBUTE_FACTORY_REGISTRY = 'akeneo_assetmanager.application.registry.create_attribute_command_factory_registry';
     private const ATTRIBUTE_FACTORY_TAG = 'akeneo_assetmanager.create_attribute_command_factory';
-    const DEFAULT_PRIORITY = 50;
+    public const DEFAULT_PRIORITY = 50;
 
     /**
      * {@inheritdoc}
@@ -47,7 +47,7 @@ class RegisterCreateAttributeCommandFactoryPass implements CompilerPassInterface
         $sortedUpdatersByPriority = [];
         foreach ($attributeFactories as $serviceId => $tags) {
             foreach ($tags as $tag) {
-                $priority = isset($tag['priority']) ? $tag['priority'] : static::DEFAULT_PRIORITY;
+                $priority = $tag['priority'] ?? static::DEFAULT_PRIORITY;
                 $sortedUpdatersByPriority[$priority][] = new Reference($serviceId);
             }
         }

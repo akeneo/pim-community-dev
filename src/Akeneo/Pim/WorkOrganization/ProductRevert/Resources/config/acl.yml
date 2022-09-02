@@ -2,3 +2,4 @@ pimee_revert_product_version_revert:
     type: action
     label: pimee_versioning.acl.product_version.revert
     group_name: pim_enrich.acl_group.product
+    feature: restore_product

@@ -1,20 +1,26 @@
 import {Attribute} from 'akeneoassetmanager/platform/model/structure/attribute';
 import {isString, isLabels} from 'akeneoassetmanager/domain/model/utils';
-import {postJSON} from 'akeneoassetmanager/tools/fetch';
+import {handleResponse} from 'akeneoassetmanager/infrastructure/tools/handleResponse';
 const routing = require('routing');
 
 const ASSET_COLLECTION_ATTRIBUTE_LIMIT = 100;
 
 export const fetchAssetAttributes = async (): Promise<Attribute[]> => {
-  const attributes = await postJSON(
+  const attributes = await fetch(
     routing.generate('pim_enrich_attribute_rest_index', {
       types: ['pim_catalog_asset_collection'],
       options: {limit: ASSET_COLLECTION_ATTRIBUTE_LIMIT},
     }),
-    {}
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+    }
   );
 
-  return denormalizeAssetAttributeCollection(attributes);
+  return denormalizeAssetAttributeCollection(await handleResponse(attributes));
 };
 
 const denormalizeAssetAttributeCollection = (attributes: any): Attribute[] => {

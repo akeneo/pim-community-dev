@@ -1,6 +1,8 @@
 akeneo_assetmanager.acl_group.asset_manager:
     order: 128
+    feature: asset_manager
 
 pim_api.acl_group.asset:
     order: 20
     permission_group: api
+    feature: asset_manager

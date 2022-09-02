@@ -1,0 +1,3 @@
+Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity\DeleteReferenceEntityCommand:
+  constraints:
+    - Akeneo\Pim\TableAttribute\Infrastructure\Validation\ReferenceEntity\ReferenceEntityShouldNotBeLinkedToATableColumn: ~

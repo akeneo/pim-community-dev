@@ -5,9 +5,8 @@ const UserContext = require('pim/user-context');
 const Heap = {
   init: async () => {
     const heapAgent = await getHeapAgent();
-
     if (null === heapAgent) {
-      throw new Error('Heap is not initialized');
+      return;
     }
 
     heapAgent.identify(UserContext.get('username'));

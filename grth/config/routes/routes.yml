@@ -11,6 +11,9 @@ akeneo_pim_enrichment:
 akeneo_connectivity_connection:
     resource: "@AkeneoConnectivityConnectionBundle/Resources/config/routing.yml"
 
+akeneo_catalogs:
+    resource: "@AkeneoCatalogsBundle/Resources/config/routing.yml"
+
 akeneo_measure:
     resource: "@AkeneoMeasureBundle/Resources/config/routing.yml"
 
@@ -55,6 +58,9 @@ pim_volume_monitoring:
 pim_data_quality_insights:
     resource: "@AkeneoDataQualityInsightsBundle/Resources/config/routing.yml"
 
+akeneo_category:
+    resource: "@AkeneoCategoryBundle/Resources/config/routing.yml"
+
 # Oro platform
 
 oro_default:
@@ -88,6 +94,12 @@ pimee_table_attribute:
 
 pim_tailored_export:
     resource: "@AkeneoTailoredExportBundle/Resources/config/routing.yml"
+
+pim_tailored_import:
+    resource: "@AkeneoTailoredImportBundle/Resources/config/routing.yml"
+
+pim_job_automation:
+    resource: "@AkeneoJobAutomationBundle/Resources/config/routing.yml"
 
 hslavich_saml_sp:
     resource: "@HslavichOneloginSamlBundle/Resources/config/routing.yml"

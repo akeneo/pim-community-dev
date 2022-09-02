@@ -1,0 +1,21 @@
+services:
+  akeneo.job_automation.controllers.storage_connection_check_action:
+    class: Akeneo\Platform\JobAutomation\Infrastructure\Controller\GetStorageConnectionCheckAction
+    public: true
+    arguments:
+      - '@akeneo.job_automation.handler.storage_connection_check'
+      - '@validator'
+      - '@serializer'
+      - '@Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Hydrator\StorageHydrator'
+
+  akeneo.job_automation.controllers.get_user_groups_action:
+    class: Akeneo\Platform\JobAutomation\Infrastructure\Controller\GetUserGroupsAction
+    public: true
+    arguments:
+      - '@Akeneo\UserManagement\ServiceApi\UserGroup\ListUserGroupInterface'
+
+  akeneo.job_automation.controllers.get_users_action:
+    class: Akeneo\Platform\JobAutomation\Infrastructure\Controller\GetUsersAction
+    public: true
+    arguments:
+      - '@akeneo.job_automation.infrastructure.public_api.list_users_handler'

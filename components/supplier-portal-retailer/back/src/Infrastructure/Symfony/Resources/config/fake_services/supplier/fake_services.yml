@@ -1,0 +1,30 @@
+services:
+    # Repositories
+    Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository
+
+    # Queries
+    Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierList:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierList
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository'
+
+    Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\SupplierExists:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemorySupplierExists
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository'
+
+    Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierWithContributors:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierWithContributors
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository'
+
+    Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetAllSuppliersWithContributors:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemoryGetAllSuppliersWithContributors
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository'
+
+    Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemorySupplierContributorsBelongingToAnotherSupplier
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository'

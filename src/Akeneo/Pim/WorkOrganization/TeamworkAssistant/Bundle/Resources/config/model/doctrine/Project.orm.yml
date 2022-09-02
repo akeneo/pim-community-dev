@@ -41,13 +41,13 @@ Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\Project:
                     nullable: false
                     referencedColumnName: id
         channel:
-            targetEntity: Akeneo\Channel\Component\Model\ChannelInterface
+            targetEntity: Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface
             joinColumns:
                 channel_id:
                     nullable: false
                     referencedColumnName: id
         locale:
-            targetEntity: Akeneo\Channel\Component\Model\LocaleInterface
+            targetEntity: Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface
             joinColumns:
                 locale_id:
                     nullable: false

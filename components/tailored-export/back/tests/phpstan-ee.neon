@@ -1,0 +1,8 @@
+parameters:
+  level: 5
+  paths:
+    - %rootDir%/../../../components/tailored-export/back
+  excludePaths:
+    - %rootDir%/../../../components/tailored-export/back/tests/Specification
+  checkMissingIterableValueType: false
+  treatPhpDocTypesAsCertain: false

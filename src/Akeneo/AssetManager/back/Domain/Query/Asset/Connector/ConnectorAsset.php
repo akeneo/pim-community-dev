@@ -23,24 +23,12 @@ use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
  */
 class ConnectorAsset
 {
-    private AssetCode $code;
-
-    private array $normalizedValues;
-
-    private \DateTimeImmutable $createdAt;
-
-    private \DateTimeImmutable $updatedAt;
-
     public function __construct(
-        AssetCode $code,
-        array $normalizedValues,
-        \DateTimeImmutable $createdAt,
-        \DateTimeImmutable $updatedAt
+        private AssetCode $code,
+        private array $normalizedValues,
+        private \DateTimeImmutable $createdAt,
+        private \DateTimeImmutable $updatedAt,
     ) {
-        $this->code = $code;
-        $this->normalizedValues = $normalizedValues;
-        $this->createdAt = $createdAt;
-        $this->updatedAt = $updatedAt;
     }
 
     public function normalize(): array

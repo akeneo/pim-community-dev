@@ -1032,6 +1032,94 @@ class GetConnectorAssetsContext implements Context
     }
 
     /**
+     * @Given /^the Kartell and Ikea assets for the Brand asset family$/
+     */
+    public function theKartellandIkeaAssetsForTheBrandAssetFamily(): void
+    {
+        $rawAssetCode = 'Kartell';
+        $assetCode = AssetCode::fromString($rawAssetCode);
+        $assetIdentifier = AssetIdentifier::fromString(sprintf('%s_fingerprint', $rawAssetCode));
+
+        Asset::create(
+            $assetIdentifier,
+            AssetFamilyIdentifier::fromString('brand'),
+            $assetCode,
+            ValueCollection::fromValues([
+                Value::create(
+                    AttributeIdentifier::fromString('label_brand_fingerprint'),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('test')
+                ),
+            ])
+        );
+
+        $connectorAsset = new ConnectorAsset(
+            $assetCode,
+            [],
+            new \DateTimeImmutable('@0'),
+            new \DateTimeImmutable('@3600'),
+        );
+
+        $this->connectorAssetsByAssetIdentifier[(string) $assetIdentifier] = $connectorAsset;
+        $this->findConnectorAssets->save($assetIdentifier, $connectorAsset);
+
+        $rawAssetCode = 'Ikea';
+        $assetCode = AssetCode::fromString($rawAssetCode);
+        $assetIdentifier = AssetIdentifier::fromString(sprintf('%s_fingerprint', $rawAssetCode));
+
+        Asset::create(
+            $assetIdentifier,
+            AssetFamilyIdentifier::fromString('brand'),
+            $assetCode,
+            ValueCollection::fromValues([
+                Value::create(
+                    AttributeIdentifier::fromString('label_brand_fingerprint'),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('test')
+                ),
+            ])
+        );
+
+        $connectorAsset = new ConnectorAsset(
+            $assetCode,
+            [],
+            new \DateTimeImmutable('@0'),
+            new \DateTimeImmutable('@3600'),
+        );
+
+        $this->connectorAssetsByAssetIdentifier[(string) $assetIdentifier] = $connectorAsset;
+        $this->findConnectorAssets->save($assetIdentifier, $connectorAsset);
+
+        $this->loadBrandAssetFamily();
+    }
+
+    /**
+     * @When /^the connector requests all assets of the Brand asset family that match code Kartell$/
+     */
+    public function theConnectorRequestsAllAssetsOfTheBrandAssetFamilyThatMatchCodeKartell()
+    {
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->assetPages[1] = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'successful_brand_assets_for_kartell_code.json'
+        );
+    }
+
+    /**
+     * @Then /^the PIM returns the assets of the Brand asset family that match code Kartell$/
+     */
+    public function thePIMReturnsTheAssetsOfTheBrandAssetFamilyThatMatchCodeKartell()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->assetPages[1],
+            self::REQUEST_CONTRACT_DIR . 'successful_brand_assets_for_kartell_code.json'
+        );
+    }
+
+    /**
      * @When /^the connector requests assets that were updated since a date that does not have the right format$/
      */
     public function theConnectorRequestsAssetsThatWereUpdatedSinceADateThatDoesNotHaveTheRightFormat()

@@ -1,4 +1,4 @@
-@javascript
+@javascript @permission-feature-enabled
 Feature: Enforce no permissions for a category
   In order to be able to prevent some users from viewing some products
   As an administrator
@@ -11,20 +11,6 @@ Feature: Enforce no permissions for a category
       | grantedOne | winter_collection |            |      |
       | grantedTwo | winter_collection |            |      |
       | notGranted | summer_collection | white      | L    |
-
-  @skip-nav
-  Scenario: Redirect users from the product page to the dashboard when they can't see products in any tree
-    Given I am logged in as "Mary"
-    And I edit the "2014_collection" category
-    And I open the category tab "Permissions"
-    When I fill in the category permission with:
-      | Allowed to view products | Manager |
-      | Allowed to edit products | Manager |
-      | Allowed to own products  | Manager |
-    And I submit the category changes
-    Then I am on the products grid
-    And I should be on the homepage
-    And I should see the text "You don't have access to products in any tree, please contact your administrator"
 
   Scenario: Display only granted products in products grid, I see all products
     Given I am logged in as "Mary"

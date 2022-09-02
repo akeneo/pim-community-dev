@@ -284,6 +284,14 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
       ? [this.props.value]
       : [];
 
+    // See PIM-10429: The records displayed from "select2" are fetched from the backend that sort them alphabetically
+    valueList.sort((firstCode: RecordCode, secondCode: RecordCode) =>
+      firstCode
+        .stringValue()
+        .toLowerCase()
+        .localeCompare(secondCode.stringValue().toLowerCase())
+    );
+
     return (
       <div className="record-selector-container">
         <input

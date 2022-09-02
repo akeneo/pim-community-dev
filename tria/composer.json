@@ -14,7 +14,10 @@
             "": "src/"
         },
         "psr-4": {
-            "Akeneo\\FreeTrial\\": ["src/Akeneo/FreeTrial/back", "vendor/akeneo/pim-community-dev/src/Akeneo/FreeTrial/back"]
+            "Akeneo\\FreeTrial\\": ["src/Akeneo/FreeTrial/back", "vendor/akeneo/pim-community-dev/src/Akeneo/FreeTrial/back"],
+            "Akeneo\\Platform\\TailoredExport\\": "components/tailored-export/back/src/",
+            "Akeneo\\Platform\\TailoredImport\\": "components/tailored-import/back/src/",
+            "Akeneo\\Platform\\JobAutomation\\": "components/job-automation/back/src/"
         },
         "exclude-from-classmap": [
             "vendor/akeneo/pim-community-dev/src/Kernel.php"
@@ -37,7 +40,14 @@
             "Akeneo\\Platform\\Job\\Test\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Job/back/tests",
             "Pim\\Upgrade\\Schema\\Tests\\": "vendor/akeneo/pim-community-dev/upgrades/test_schema/",
             "Akeneo\\Platform\\CommunicationChannel\\Test\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests",
-            "Akeneo\\Test\\FreeTrial\\": "src/Akeneo/FreeTrial/tests/back"
+            "Akeneo\\Test\\Pim\\Enrichment\\Product\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Enrichment/Product/back/Test",
+            "Akeneo\\Test\\Pim\\Enrichment\\Category\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Enrichment/Category/back/Test",
+            "Akeneo\\Test\\Pim\\Structure\\Family\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Structure/Family/back/Test",
+            "Akeneo\\Test\\Channel\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Channel/back/tests",
+            "Akeneo\\Test\\FreeTrial\\": "src/Akeneo/FreeTrial/tests/back",
+            "Akeneo\\Platform\\TailoredExport\\Test\\": "components/tailored-export/back/tests",
+            "Akeneo\\Platform\\TailoredImport\\Test\\": "components/tailored-import/back/tests",
+            "Akeneo\\Platform\\JobAutomation\\Test\\": "components/job-automation/back/tests"
         }
     },
     "require": {
@@ -46,15 +56,17 @@
         "akeneo/pim-community-dev": "dev-master",
         "hslavich/oneloginsaml-bundle": "2.0.*",
         "justinrainbow/json-schema": "^5.2",
-        "grpc/grpc": "1.30.0",
+        "grpc/grpc": "^1.42.0",
         "akeneo/api-php-client": "^6.0",
         "php-http/guzzle6-adapter": "^2.0",
         "http-interop/http-factory-guzzle": "^1.0",
-        "league/flysystem-google-cloud-storage": "^2.0"
+        "league/flysystem-google-cloud-storage": "^2.0",
+        "league/flysystem-sftp": "^3.0"
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "^0.7.0",
         "blackfire/php-sdk": "^1.25",
+        "friendsofphp/php-cs-fixer": "^3.0,<3.9.1",
         "jfcherng/php-diff": "^6.10",
         "league/flysystem-aws-s3-v3": "^2.0",
         "league/flysystem-memory": "^2.0",
@@ -62,10 +74,11 @@
         "mcustiel/phiremock": "2.1.1",
         "phpspec/phpspec": "^7.1.0",
         "phpspec/prophecy": "^1.14.0",
-        "phpstan/phpstan": "^0.12.99",
-        "phpstan/phpstan-symfony": "^0.12.44",
-        "phpstan/phpstan-webmozart-assert": "^0.12.16",
+        "phpstan/phpstan": "^1.6.0",
+        "phpstan/phpstan-symfony": "^1.1.0",
+        "phpstan/phpstan-webmozart-assert": "^1.1.0",
         "phpunit/phpunit": "^9.5",
+        "rector/rector": "^0.13.10",
         "sebastian/exporter": "^4.0.0",
         "symfony/debug-bundle": "^5.4.0",
         "symfony/web-profiler-bundle": "^5.4.0"
@@ -78,6 +91,9 @@
     },
     "minimum-stability": "stable",
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "symfony/flex": true
+        }
     }
 }

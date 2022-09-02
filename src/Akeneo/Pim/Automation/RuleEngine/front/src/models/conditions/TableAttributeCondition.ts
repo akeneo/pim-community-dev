@@ -4,15 +4,14 @@ import {ConditionFactory} from './Condition';
 import {ConditionModuleGuesser} from './ConditionModuleGuesser';
 import {AttributeType} from '../Attribute';
 import {getAttributeByIdentifier} from '../../repositories/AttributeRepository';
-import {TableAttribute} from '@akeneo-pim-ge/table_attribute';
 
 type TableAttributeCondition = {
   field: string;
-  operator: Operator;
+  operator?: Operator;
   value: {
     value?: any;
     row?: string;
-    column: string;
+    column?: string;
   };
   locale?: string;
   scope?: string;
@@ -29,10 +28,7 @@ const createTableAttributeCondition: ConditionFactory = async (
 
   return {
     field: fieldCode,
-    operator: Operator.IS_EMPTY,
-    value: {
-      column: (attribute as TableAttribute).table_configuration[0].code,
-    },
+    value: {},
   } as TableAttributeCondition;
 };
 
@@ -45,10 +41,6 @@ const getTableAttributeConditionModule: ConditionModuleGuesser = async (
   }
 
   if (typeof json.value !== 'object') {
-    return null;
-  }
-
-  if (typeof json.value.column !== 'string') {
     return null;
   }
 

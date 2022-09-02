@@ -1,0 +1,45 @@
+parameters:
+    akeneo.tailored_import.connector.name: Akeneo Tailored Import
+    akeneo.tailored_import.connector.xlsx_product.code: 'xlsx_tailored_product_import'
+
+services:
+    _defaults:
+        public: true
+
+    akeneo.tailored_import.provider.form.job_instance:
+        class: 'Akeneo\Platform\Bundle\ImportExportBundle\Provider\Form\JobInstanceFormProvider'
+        arguments:
+            -
+                xlsx_tailored_product_import: pim-job-instance-xlsx-tailored-product-import
+        tags:
+            - { name: pim_enrich.provider.form }
+
+    akeneo.tailored_import.infrastructure.public_api.find_category_trees:
+        alias: akeneo.enrichment.public_api.find_category_trees
+
+    akeneo.tailored_import.infrastructure.public_api.get_category_children_codes_per_tree:
+        alias: akeneo.enrichment.public_api.get_category_children_codes_per_tree
+
+    akeneo.tailored_import.infrastructure.public_api.find_families_with_labels:
+        alias: 'Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamiliesWithLabels'
+
+    akeneo.tailored_import.infrastructure.public_api.count_family_codes:
+        alias: 'Akeneo\Pim\Structure\Family\ServiceAPI\Query\CountFamilyCodes'
+
+    akeneo.tailored_import.voter.job_profile:
+        decorates: pimee_security.voter.job_profile
+        decoration_priority: 10 # Arbitrary value to be able to add decorator before and after
+        decoration_on_invalid: ignore
+        class: 'Akeneo\Platform\TailoredImport\Infrastructure\Voter\JobProfileVoter'
+        arguments:
+            - '@akeneo.tailored_import.voter.job_profile.inner'
+            - '@akeneo.tailored_import.voter.can_edit_tailored_import'
+            -
+                - '%akeneo.tailored_import.connector.xlsx_product.code%'
+
+    akeneo.tailored_import.voter.can_edit_tailored_import:
+        class: 'Akeneo\Platform\TailoredImport\Infrastructure\Voter\CanEditTailoredImport'
+        arguments:
+            - '@Akeneo\Channel\Infrastructure\Query\Sql\SqlFindAllViewableLocalesForUser' # this service is in CE and overridden in EE
+            - '@pimee_security.query.get_viewable_attribute_codes_for_user' # this service is in CE and overridden in EE
+            - '@akeneo.pim.structure.query.get_attributes'

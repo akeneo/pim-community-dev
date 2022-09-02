@@ -68,3 +68,13 @@ services:
         class: Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Query\SqlCountSelectOptions
         arguments:
             - '@database_connection'
+
+    Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\IsReferenceEntityLinkedToATableColumn:
+        class: Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Query\SqlIsReferenceEntityLinkedToATableColumn
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\IsMeasurementFamilyLinkedToATableColumn:
+        class: Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Query\SqlIsMeasurementFamilyLinkedToATableColumn
+        arguments:
+            - '@database_connection'

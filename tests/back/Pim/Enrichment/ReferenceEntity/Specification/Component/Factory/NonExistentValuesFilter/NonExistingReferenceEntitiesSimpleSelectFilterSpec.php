@@ -152,6 +152,17 @@ final class NonExistingReferenceEntitiesSimpleSelectFilterSpec extends ObjectBeh
                             'properties' => [
                                 'reference_data_name' => 'bRaNd'
                             ]
+                        ],
+                        [
+                            'identifier' => 'product_C',
+                            'values' => [
+                                'ecommerce' => [
+                                    'en_US' => 'HP'
+                                ],
+                            ],
+                            'properties' => [
+                                'reference_data_name' => 'brand'
+                            ]
                         ]
                     ]
                 ],
@@ -171,12 +182,12 @@ final class NonExistingReferenceEntitiesSimpleSelectFilterSpec extends ObjectBeh
         );
 
         $recordCodesIndexedByReferenceEntityIdentifiers = [
-            'brand' => ['apple', 'Dell']
+            'brand' => ['apple', 'Dell', 'HP']
         ];
 
         $findAllExistentRecordsForReferenceEntityIdentifiers->forReferenceEntityIdentifiersAndRecordCodes($recordCodesIndexedByReferenceEntityIdentifiers)->willReturn(
             [
-                'brand' => ['apple']
+                'brand' => ['apple', 'hp']
             ]
         );
 
@@ -207,8 +218,19 @@ final class NonExistingReferenceEntitiesSimpleSelectFilterSpec extends ObjectBeh
                             'properties' => [
                                 'reference_data_name' => 'bRaNd'
                             ]
+                        ],
+                        [
+                            'identifier' => 'product_C',
+                            'values' => [
+                                'ecommerce' => [
+                                    'en_US' => 'HP'
+                                ],
+                            ],
+                            'properties' => [
+                                'reference_data_name' => 'brand'
+                            ]
                         ]
-                    ]
+                    ],
                 ],
             ]
         );

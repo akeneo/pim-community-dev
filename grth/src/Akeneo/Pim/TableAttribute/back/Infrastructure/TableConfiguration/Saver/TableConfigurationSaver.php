@@ -15,6 +15,8 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Saver;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ColumnDefinition;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Event\CompletenessHasBeenUpdated;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\TableConfigurationFactory;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
@@ -72,7 +74,7 @@ class TableConfigurationSaver implements SaverInterface
                     continue;
                 }
 
-                Assert::isArray($rawColumnDefinition['options'] ?? []);
+                Assert::isArray($rawColumnDefinition['options']);
                 $selectOptionCollection = $this->optionCollectionRepository->getByColumn(
                     $attribute->getCode(),
                     ColumnCode::fromString($rawColumnDefinition['code'])
@@ -81,7 +83,7 @@ class TableConfigurationSaver implements SaverInterface
                     $selectOptionCollection
                 );
                 $columnCode = ColumnCode::fromString($rawColumnDefinition['code']);
-                $writeSelectOptionCollection->update($attribute->getCode(), $columnCode, $rawColumnDefinition['options'] ?? []);
+                $writeSelectOptionCollection->update($attribute->getCode(), $columnCode, $rawColumnDefinition['options']);
                 $this->optionCollectionRepository->save(
                     $attribute->getCode(),
                     $columnCode,
@@ -94,10 +96,41 @@ class TableConfigurationSaver implements SaverInterface
         }
     }
 
+    private function hasCompletenessBeenUpdated(AttributeInterface $newAttribute, TableConfiguration $formerTableConfiguration): bool
+    {
+        $newTableConfiguration = $newAttribute->getRawTableConfiguration();
+        $newlyRequired = [];
+        foreach ($newTableConfiguration as $rawColumnDefinition) {
+            if (
+                isset($rawColumnDefinition['is_required_for_completeness'])
+                && isset($rawColumnDefinition['code'])
+                && isset($rawColumnDefinition['data_type'])
+                && $rawColumnDefinition['is_required_for_completeness']
+            ) {
+                $newlyRequired[] = \implode('-', [$rawColumnDefinition['code'], $rawColumnDefinition['data_type']]);
+            }
+        }
+        \sort($newlyRequired);
+
+        $formerRequiredColumns = $formerTableConfiguration->requiredColumns();
+        $formerlyRequired = \array_map(
+            fn (ColumnDefinition $column): string =>\implode('-', [$column->code()->asString(), $column->dataType()->asString()]),
+            $formerRequiredColumns
+        );
+        \sort($formerlyRequired);
+
+        return \json_encode($newlyRequired) !== \json_encode($formerlyRequired);
+    }
+
     private function createOrUpdateTableConfiguration(AttributeInterface $attribute): TableConfiguration
     {
         try {
             $tableConfiguration = $this->tableConfigurationRepository->getByAttributeCode($attribute->getCode());
+
+            $hasCompletenessBeenUpdated = $this->hasCompletenessBeenUpdated($attribute, $tableConfiguration);
+            if ($hasCompletenessBeenUpdated) {
+                $this->eventDispatcher->dispatch(new CompletenessHasBeenUpdated($attribute->getCode()));
+            }
 
             return $this->tableConfigurationUpdater->update(
                 $tableConfiguration,

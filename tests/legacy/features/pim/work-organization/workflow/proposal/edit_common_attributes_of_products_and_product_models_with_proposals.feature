@@ -1,4 +1,4 @@
-@javascript
+@javascript @proposal-feature-enabled
 Feature: Apply permissions for an attribute group when mass edit common attributes
   In order to be able to only edit the product data I have access
   As a product manager

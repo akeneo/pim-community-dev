@@ -28,6 +28,14 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class TestCase extends IntegrationTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->get('feature_flags')->enable('data_quality_insights');
+        $this->get('feature_flags')->enable('data_quality_insights_all_criteria');
+    }
+
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();

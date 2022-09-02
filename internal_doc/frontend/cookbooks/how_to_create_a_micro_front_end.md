@@ -11,7 +11,7 @@ First step is to register the new package as a workspace of the PIM, we do this 
 
 To do this, you need to modify the following `package.json` depending on where your micro-frontend is located:
 
-- In the Enterprise Edition:
+- In the Community Edition:
   - std-build/package.json
   - package.json
 
@@ -23,14 +23,13 @@ To do this, you need to modify the following `package.json` depending on where y
   - package.json
   - grth/package.json
 
-- In the Community Edition:
+- In the Enterprise Edition:
   - std-build/package.json
   - package.json
   - tria/package.json
   - grth/package.json
-  - vendor/akeneo/pim-community-dev/package.json
-  - vendor/akeneo/pim-community-dev/std-build/package.json
-
+ 
+ 
 In those files you need to add your package path into the workspaces:
 ```diff
   "workspaces" : {
@@ -57,7 +56,7 @@ Then you need to run the following command in your project:
 
 The script will create all the things you need to develop a micro-frontend in the PIM.
 
-To test it you can launch the following command in `$MICRO_FRONTEND_PATH` directory: `yarn app:start` or `docker-compose run --rm -p 3000:3000 node yarn --cwd=$MICRO_FRONTEND_PATH/$MICRO_FRONTEND_NAME app:start`.
+To test it you can launch the following command in `$MICRO_FRONTEND_PATH` directory: `yarn app:start` or `docker-compose run --rm -p 3000:3000 node yarn workspace $MICRO_FRONTEND_NAME app:start`.
 
 ## Replace the package name
 Unfortunately it's not possible to create a scoped package with create-react-app (for example: @pim-community/measurement).
@@ -88,6 +87,11 @@ Now that the CI launches the tests, you need to add your new micro-frontend to t
 First you need to add your package into the `Create hash for front packages` step.
 ```sh
     find $RELATIVE_PATH_TO_PROJECT_CONTAINING_MICRO_FRONTEND/$PROJECT_NAME -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/$PROJECT_NAME.hash
+```
+
+edit this line too, adding the hash file for your micro-frontend:
+```sh
+    echo "$(date +%F) << parameters.path_to_front_packages >>" | tee -a ~/akeneo-design-system.hash ~/measurement.hash ~/shared.hash ~/catalog-volume-monitoring.hash ~/process-tracker.hash ~/$PROJECT_NAME.hash
 ```
 
 Then add restore cache step just after the other restore_cache micro-frontend:

@@ -16,8 +16,8 @@ use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeIdentifierInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\AttributeOptionValidator;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,52 +31,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CreateOrUpdateAttributeOptionAction
 {
-    private Router $router;
-
-    private AttributeOptionValidator $jsonSchemaValidator;
-
-    private ValidatorInterface $businessRulesValidator;
-
-    private AssetFamilyExistsInterface $assetFamilyExists;
-
-    private AttributeExistsInterface $attributeExists;
-
-    private AttributeSupportsOptions $attributeSupportsOptions;
-
-    private GetAttributeIdentifierInterface $getAttributeIdentifier;
-
-    private AttributeRepositoryInterface $attributeRepository;
-
-    private EditAttributeOptionHandler $editAttributeOptionHandler;
-
-    private AppendAttributeOptionHandler $appendAttributeOptionHandler;
-
-    private SecurityFacade $securityFacade;
-
     public function __construct(
-        Router $router,
-        AttributeOptionValidator $jsonSchemaValidator,
-        ValidatorInterface $businessRulesValidator,
-        AssetFamilyExistsInterface $assetFamilyExists,
-        AttributeExistsInterface $attributeExists,
-        AttributeSupportsOptions $attributeSupportsOptions,
-        GetAttributeIdentifierInterface $getAttributeIdentifier,
-        AttributeRepositoryInterface $attributeRepository,
-        EditAttributeOptionHandler $editAttributeOptionHandler,
-        AppendAttributeOptionHandler $appendAttributeOptionHandler,
-        SecurityFacade $securityFacade
+        private Router $router,
+        private AttributeOptionValidator $jsonSchemaValidator,
+        private ValidatorInterface $businessRulesValidator,
+        private AssetFamilyExistsInterface $assetFamilyExists,
+        private AttributeExistsInterface $attributeExists,
+        private AttributeSupportsOptions $attributeSupportsOptions,
+        private GetAttributeIdentifierInterface $getAttributeIdentifier,
+        private AttributeRepositoryInterface $attributeRepository,
+        private EditAttributeOptionHandler $editAttributeOptionHandler,
+        private AppendAttributeOptionHandler $appendAttributeOptionHandler,
+        private SecurityFacadeInterface $securityFacade,
     ) {
-        $this->router = $router;
-        $this->jsonSchemaValidator = $jsonSchemaValidator;
-        $this->businessRulesValidator = $businessRulesValidator;
-        $this->assetFamilyExists = $assetFamilyExists;
-        $this->attributeExists = $attributeExists;
-        $this->attributeSupportsOptions = $attributeSupportsOptions;
-        $this->getAttributeIdentifier = $getAttributeIdentifier;
-        $this->attributeRepository = $attributeRepository;
-        $this->editAttributeOptionHandler = $editAttributeOptionHandler;
-        $this->appendAttributeOptionHandler = $appendAttributeOptionHandler;
-        $this->securityFacade = $securityFacade;
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier, string $attributeCode, string $optionCode): Response

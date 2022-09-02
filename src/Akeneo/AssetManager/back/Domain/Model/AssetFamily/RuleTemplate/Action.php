@@ -32,23 +32,13 @@ class Action
     private const ITEM_PATTERN = '{{code}}';
     public const ALLOWED_MODES = [self::ADD_MODE, self::REPLACE_MODE];
 
-    private Field $field;
-
-    private Type $type;
-
-    private ItemCollection $items;
-
-    private ChannelReference $channel;
-
-    private LocaleReference $locale;
-
-    private function __construct(Field $field, Type $type, ItemCollection $items, ChannelReference $channel, LocaleReference $locale)
-    {
-        $this->field   = $field;
-        $this->type    = $type;
-        $this->items   = $items;
-        $this->channel = $channel;
-        $this->locale  = $locale;
+    private function __construct(
+        private Field $field,
+        private Type $type,
+        private ItemCollection $items,
+        private ChannelReference $channel,
+        private LocaleReference $locale,
+    ) {
     }
 
     public static function createFromNormalized(array $action): self

@@ -1,4 +1,4 @@
-import {ColumnDefinitionWithId, DataTypesMapping, SelectColumnDefinition} from '../../src';
+import {ColumnDefinitionWithId, SelectColumnDefinition} from '../../src';
 
 export const getSelectColumnDefinitionWithId: () => ColumnDefinitionWithId = () => {
   return {...getSelectColumnDefinition(), id: 'uniqueidingredient'};
@@ -34,11 +34,4 @@ export const getNumberColumnDefinitionWithId: () => ColumnDefinitionWithId = () 
     id: 'uniqueidquantity',
     is_required_for_completeness: true,
   } as ColumnDefinitionWithId;
-};
-
-export const defaultDataTypesMapping: DataTypesMapping = {
-  select: {useable_as_first_column: true},
-  boolean: {useable_as_first_column: false},
-  number: {useable_as_first_column: false},
-  text: {useable_as_first_column: false},
 };

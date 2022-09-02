@@ -1,0 +1,97 @@
+supplier_portal:
+  menu_block_title: サプライヤーポータル
+  supplier:
+    breadcrumb:
+      root: サプライヤーポータル
+      suppliers: サプライヤー
+    supplier_create:
+      modal:
+        title: サプライヤー
+        code:
+          label: コード
+        label:
+          label: ラベル
+      create_button:
+        label: 最初のサプライヤーを作成
+      notification:
+        title: サプライヤーが作成されました。
+        content: サプライヤー管理セクションで編集できるようになりました。
+      error:
+        unknown_error: サプライヤーを作成中にエラーが発生しました。
+        supplier_already_exists: 'コード「{{ supplierCode }}」のサプライヤーは既に存在します。'
+    supplier_list:
+      menu_item: サプライヤー
+      title: "]-Inf, 1]{{ count }}件のサプライヤー|]1, Inf[{{ count }}件のサプライヤー"
+      no_supplier: まだサプライヤーがありません。
+      search_by_supplier: サプライヤーで検索
+      no_search_result: この検索に一致するサプライヤーはいません。
+      notification:
+        error:
+          title: サプライヤーリストを表示できません。
+          content: ご不便をおかけして申し訳ございません。しばらくしてからもう一度お試しください。
+      dropdown:
+        export_suppliers: サプライヤーをエクスポート
+        download_template: テンプレートをダウンロード
+        import_suppliers: サプライヤーをインポート
+      columns:
+        supplier: サプライヤー
+        number_of_contributors: コントリビューター数
+        actions: アクション
+    supplier_delete:
+      sucess_message: サプライヤーが正常に削除されました
+      modal:
+        title: サプライヤー
+        confirmation_question: このサプライヤーを削除してもよろしいですか？
+        warning: このサプライヤーを削除すると、保存されていない充実は失われます。
+        unknown_error: サプライヤーを削除中にエラーが発生しました。
+    supplier_edit:
+      tabs:
+        configuration: 構成
+        contributors: コントリビューター
+        product_files: 商品ファイル
+      configuration_form:
+        code: コード
+        label: サプライヤーラベル (必須)
+      contributors_form:
+        info: 'Akeneoサプライヤーポータルにアクセスできるようにコントリビューターを追加します。スペース、カンマ、セミコロン、または改行の区切り文字を使ってアドレスリストに入力できます。'
+        invalid_emails_warning: 一部のメールは無効で追加されません。
+        emails_belonging_to_other_suppliers_warning: コントリビューターは1つのサプライヤーのみに属することができます。このサプライヤーを保存すると、警告として表示されているすべてのメールが削除されます。
+        add_contributors: コントリビューターを追加
+        add_button: 追加
+        search_by_email_address: メールアドレスで検索
+        columns:
+          email: メールアドレス
+        no_contributor: まだコントリビューターがいません。
+        result_counter: '{0} 結果がありません|{1} {{ count }}件の結果|]1,Inf] {{ count }}件の結果'
+        notification:
+          email_error:
+            title: このコントリビューターを追加できませんでした。
+            content: "メールアドレス{{ emailAddress }}が無効です: {{ message }}"
+          contributor_email_already_exists:
+            title: このコントリビューターを追加できませんでした。
+            content: メールアドレス{{ emailAddress }}はすでに別のサプライヤーに使用されており、同じコントリビューターを持つ複数のサプライヤーは今のところサポートされていません。ご不便をおかけして申し訳ありません。
+      loading_error: サプライヤーを読み込み中にエラーが発生しました。
+      success_message: サプライヤーが正常に更新されました。
+      update_error: サプライヤーを更新中にエラーが発生しました。
+      delete_label: このサプライヤーを削除
+  product_file_dropping:
+    breadcrumb:
+      root: サプライヤーポータル
+      product_files: 商品ファイル
+    supplier_files:
+      menu_item: 商品ファイル
+      title: "]-Inf, 1]{{ count }}件の商品ファイル|]1, Inf[{{ count }}件の商品ファイル"
+      no_files: 商品ファイルがまだありません。
+      columns:
+        upload_date: アップロード日
+        contributor: コントリビューター
+        supplier: サプライヤー
+        status: ステータス
+      notification:
+        error_loading_supplier_files:
+          title: 商品ファイルを表示できません。
+          content: ご不便をおかけして申し訳ございません。しばらくしてからもう一度お試しください。
+pim_title:
+  supplier_portal_retailer_supplier_list: サプライヤー
+  supplier_portal_retailer_supplier_edit: サプライヤーを編集
+batch_jobs.supplier_portal_xlsx_supplier_import.label: サプライヤーポータルのサプライヤーをXLSX形式でインポート

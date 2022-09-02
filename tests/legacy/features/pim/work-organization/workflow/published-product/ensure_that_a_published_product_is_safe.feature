@@ -1,4 +1,4 @@
-@javascript
+@javascript @published-product-feature-enabled
 Feature: Ensure that a published product is safe
   In order to keep published product consistent
   As a product manager

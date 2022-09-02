@@ -15,7 +15,7 @@ namespace Akeneo\AssetManager\Infrastructure\Controller\AssetFamily;
 
 use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand;
 use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyHandler;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,24 +32,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CreateAction
 {
-    private CreateAssetFamilyHandler $createAssetFamilyHandler;
-
-    private NormalizerInterface $normalizer;
-
-    private ValidatorInterface $validator;
-
-    private SecurityFacade $securityFacade;
-
     public function __construct(
-        CreateAssetFamilyHandler $createAssetFamilyHandler,
-        NormalizerInterface $normalizer,
-        ValidatorInterface $validator,
-        SecurityFacade $securityFacade
+        private CreateAssetFamilyHandler $createAssetFamilyHandler,
+        private NormalizerInterface $normalizer,
+        private ValidatorInterface $validator,
+        private SecurityFacadeInterface $securityFacade,
     ) {
-        $this->createAssetFamilyHandler = $createAssetFamilyHandler;
-        $this->normalizer                  = $normalizer;
-        $this->validator                   = $validator;
-        $this->securityFacade              = $securityFacade;
     }
 
     public function __invoke(Request $request): Response

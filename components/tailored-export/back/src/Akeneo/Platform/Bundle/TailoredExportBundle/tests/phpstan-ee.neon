@@ -1,8 +1,0 @@
-parameters:
-  level: 5
-  paths:
-    - %rootDir%/../../../components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle
-  excludes_analyse:
-    - %rootDir%/../../../components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle/tests/Specification
-  checkMissingIterableValueType: false
-  treatPhpDocTypesAsCertain: false

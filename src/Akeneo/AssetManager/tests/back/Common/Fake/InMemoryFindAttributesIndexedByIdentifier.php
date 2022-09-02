@@ -32,7 +32,7 @@ class InMemoryFindAttributesIndexedByIdentifier implements FindAttributesIndexed
     }
 
     /**
-     * @return AttributeDetails[]
+     * {@inheritDoc}
      */
     public function find(AssetFamilyIdentifier $assetFamilyIdentifier): array
     {

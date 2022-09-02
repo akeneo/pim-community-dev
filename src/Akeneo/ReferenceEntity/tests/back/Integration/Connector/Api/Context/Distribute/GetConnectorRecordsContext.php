@@ -230,7 +230,9 @@ class GetConnectorRecordsContext implements Context
                             'data' => $mainImage->getKey()
                         ]
                     ]
-                ]
+                ],
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
             );
 
             $this->findConnectorRecords->save($recordIdentifier, $connectorRecord);
@@ -398,7 +400,9 @@ class GetConnectorRecordsContext implements Context
                             'data' => $mainImage->getKey()
                         ]
                     ]
-                ]
+                ],
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
             );
 
             $this->findConnectorRecords->save($recordIdentifier, $connectorRecord);
@@ -523,7 +527,9 @@ class GetConnectorRecordsContext implements Context
                             'data' => 'Italie'
                         ]
                     ]
-                ]
+                ],
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
             );
 
             $this->connectorRecordsByRecordIdentifier[(string) $recordIdentifier] = $connectorRecord;
@@ -671,7 +677,9 @@ class GetConnectorRecordsContext implements Context
                             'data'    => 'Not required attribute ecommerce fr_FR'
                         ]
                     ]
-                ]
+                ],
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
             );
 
             $this->findConnectorRecords->save($recordIdentifier, $connectorRecord);
@@ -752,7 +760,9 @@ class GetConnectorRecordsContext implements Context
                             'data'    => 'Not required attribute ecommerce fr_FR'
                         ]
                     ]
-                ]
+                ],
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
             );
 
             $this->findConnectorRecords->save($recordIdentifier, $connectorRecord);
@@ -847,7 +857,9 @@ class GetConnectorRecordsContext implements Context
                             'data'    => 'Not required attribute ecommerce fr_FR'
                         ]
                     ]
-                ]
+                ],
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
             );
 
             $this->findConnectorRecords->save($recordIdentifier, $connectorRecord);
@@ -984,7 +996,9 @@ class GetConnectorRecordsContext implements Context
 
             $connectorRecord = new ConnectorRecord(
                 $recordCode,
-                []
+                [],
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
             );
 
             $this->connectorRecordsByRecordIdentifier[(string) $recordIdentifier] = $connectorRecord;
@@ -1028,7 +1042,9 @@ class GetConnectorRecordsContext implements Context
 
             $connectorRecord = new ConnectorRecord(
                 $recordCode,
-                []
+                [],
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
             );
 
             $this->connectorRecordsByRecordIdentifier[(string) $recordIdentifier] = $connectorRecord;
@@ -1081,6 +1097,94 @@ class GetConnectorRecordsContext implements Context
         $this->webClientHelper->assertJsonFromFile(
             $this->updatedSinceWrongFormatResponse,
             self::REQUEST_CONTRACT_DIR . 'updated_entity_brand_records_for_wrong_format.json'
+        );
+    }
+
+    /**
+     * @Given /^the Kartell and Ikea records for the Brand reference entity$/
+     */
+    public function theKartellAndIkeaRecordsForTheBrandReferenceEntity()
+    {
+        $rawRecordCode = 'Kartell';
+        $recordCode = RecordCode::fromString($rawRecordCode);
+        $recordIdentifier = RecordIdentifier::fromString(sprintf('%s_fingerprint', $rawRecordCode));
+
+        Record::create(
+            $recordIdentifier,
+            ReferenceEntityIdentifier::fromString('brand'),
+            $recordCode,
+            ValueCollection::fromValues([
+                Value::create(
+                    AttributeIdentifier::fromString('label_brand_fingerprint'),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('test')
+                ),
+            ])
+        );
+
+        $connectorRecord = new ConnectorRecord(
+            $recordCode,
+            [],
+            new \DateTimeImmutable('@0'),
+            new \DateTimeImmutable('@3600'),
+        );
+
+        $this->connectorRecordsByRecordIdentifier[(string) $recordIdentifier] = $connectorRecord;
+        $this->findConnectorRecords->save($recordIdentifier, $connectorRecord);
+
+        $rawRecordCode = 'Ikea';
+        $recordCode = RecordCode::fromString($rawRecordCode);
+        $recordIdentifier = RecordIdentifier::fromString(sprintf('%s_fingerprint', $rawRecordCode));
+
+        Record::create(
+            $recordIdentifier,
+            ReferenceEntityIdentifier::fromString('brand'),
+            $recordCode,
+            ValueCollection::fromValues([
+                Value::create(
+                    AttributeIdentifier::fromString('label_brand_fingerprint'),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('test')
+                ),
+            ])
+        );
+
+        $connectorRecord = new ConnectorRecord(
+            $recordCode,
+            [],
+            new \DateTimeImmutable('@0'),
+            new \DateTimeImmutable('@3600'),
+        );
+
+        $this->connectorRecordsByRecordIdentifier[(string) $recordIdentifier] = $connectorRecord;
+        $this->findConnectorRecords->save($recordIdentifier, $connectorRecord);
+
+        $this->loadBrandReferenceEntity();
+    }
+
+    /**
+     * @When /^the connector requests all records of the Brand reference entity that match code Kartell$/
+     */
+    public function theConnectorRequestsAllRecordsOfTheBrandReferenceEntityThatMatchCodeKartell()
+    {
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->recordPages[1] = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'successful_brand_records_for_kartell_code.json'
+        );
+    }
+
+    /**
+     * @Then /^the PIM returns the records of the Brand reference entity that match code Kartell$/
+     */
+    public function thePIMReturnsTheRecordsOfTheBrandReferenceEntityThatMatchCodeKartell()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->recordPages[1],
+            self::REQUEST_CONTRACT_DIR . 'successful_brand_records_for_kartell_code.json'
         );
     }
 }

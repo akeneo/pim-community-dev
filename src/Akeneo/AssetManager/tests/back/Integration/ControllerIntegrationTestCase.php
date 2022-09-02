@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration;
 
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\InMemoryFeatureFlags;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -34,6 +35,10 @@ abstract class ControllerIntegrationTestCase extends WebTestCase
         static::ensureKernelShutdown();
         $this->client = static::createClient(['environment' => 'test_fake', 'debug' => false]);
         $this->client->disableReboot();
+
+        /** @var InMemoryFeatureFlags $featureFlags */
+        $featureFlags = $this->get('feature_flags');
+        $featureFlags->enable('asset_manager');
     }
 
     protected function get(string $service)

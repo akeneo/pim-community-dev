@@ -6,9 +6,11 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Event\SelectOptionWasDeleted;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Event\CompletenessHasBeenUpdated;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\TableConfigurationFactory;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\MeasurementColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\RecordColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
@@ -27,6 +29,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class TableConfigurationSaverSpec extends ObjectBehavior
 {
@@ -41,7 +44,8 @@ class TableConfigurationSaverSpec extends ObjectBehavior
             SelectColumn::DATATYPE => SelectColumn::class,
             BooleanColumn::DATATYPE => BooleanColumn::class,
             NumberColumn::DATATYPE => NumberColumn::class,
-            RecordColumn::DATATYPE => RecordColumn::class,
+            ReferenceEntityColumn::DATATYPE => ReferenceEntityColumn::class,
+            MeasurementColumn::DATATYPE => MeasurementColumn::class,
         ]);
 
         $this->beConstructedWith(
@@ -99,11 +103,14 @@ class TableConfigurationSaverSpec extends ObjectBehavior
             ->willReturn(ColumnId::fromString(ColumnIdGenerator::ingredient()));
         $tableConfigurationRepository->getNextIdentifier(ColumnCode::fromString('quantity'))
             ->willReturn(ColumnId::fromString(ColumnIdGenerator::quantity()));
+        $tableConfigurationRepository->getNextIdentifier(ColumnCode::fromString('time'))
+            ->willReturn(ColumnId::fromString(ColumnIdGenerator::duration()));
 
         $attribute->getType()->willReturn(AttributeTypes::TABLE);
         $attribute->getRawTableConfiguration()->willReturn([
             ['data_type' => 'select', 'code' => 'ingredients', 'labels' => []],
             ['data_type' => 'text', 'code' => 'quantity', 'labels' => []],
+            ['data_type' => 'measurement', 'code' => 'time', 'labels' => [], 'measurement_family_code' => 'duration', 'measurement_default_unit_code' => 'second'],
         ]);
         $attribute->getCode()->willReturn('nutrition');
 
@@ -114,7 +121,8 @@ class TableConfigurationSaverSpec extends ObjectBehavior
     function it_saves_an_existing_table_configuration_using_the_updater(
         TableConfigurationRepository $tableConfigurationRepository,
         TableConfigurationUpdater $tableConfigurationUpdater,
-        AttributeInterface $attribute
+        EventDispatcherInterface $eventDispatcher,
+        AttributeInterface $attribute,
     ) {
         $existingTableConfiguration = TableConfiguration::fromColumnDefinitions([
             SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
@@ -123,10 +131,17 @@ class TableConfigurationSaverSpec extends ObjectBehavior
         $updatedTableConfiguration = TableConfiguration::fromColumnDefinitions([
             SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
             TextColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'description']),
+            MeasurementColumn::fromNormalized([
+                'id' => ColumnIdGenerator::duration(),
+                'code' => 'time',
+                'measurement_family_code' => 'duration',
+                'measurement_default_unit_code' => 'second',
+            ]),
         ]);
         $rawTableConfiguration = [
             ['data_type' => 'select', 'code' => 'ingredients', 'labels' => []],
             ['data_type' => 'text', 'code' => 'quantity', 'labels' => []],
+            ['data_type' => 'measurement', 'code' => 'time', 'labels' => [], 'measurement_family_code' => 'duration', 'measurement_default_unit_code' => 'second'],
         ];
 
         $attribute->getType()->willReturn(AttributeTypes::TABLE);
@@ -138,6 +153,7 @@ class TableConfigurationSaverSpec extends ObjectBehavior
             ->willReturn($updatedTableConfiguration);
 
         $tableConfigurationRepository->save('nutrition', $updatedTableConfiguration)->shouldBeCalled();
+        $eventDispatcher->dispatch(new CompletenessHasBeenUpdated('nutrition'))->shouldBeCalled();
         $this->save($attribute);
     }
 
@@ -189,6 +205,63 @@ class TableConfigurationSaverSpec extends ObjectBehavior
         $optionCollectionRepository->save('nutrition', ColumnCode::fromString('a_number'), Argument::any())->shouldNotBeCalled();
         $optionCollectionRepository->save('nutrition', ColumnCode::fromString('is_allergenic'), Argument::any())->shouldNotBeCalled();
 
+        $this->save($attribute);
+    }
+
+    function it_does_not_dispatch_event_when_completeness_was_not_updated(
+        TableConfigurationRepository $tableConfigurationRepository,
+        TableConfigurationUpdater $tableConfigurationUpdater,
+        EventDispatcherInterface $eventDispatcher,
+        AttributeInterface $attribute,
+    ) {
+        $existingTableConfiguration = TableConfiguration::fromColumnDefinitions([
+            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
+            BooleanColumn::fromNormalized(['id' => ColumnIdGenerator::isAllergenic(), 'code' => 'is_allergenic']),
+        ]);
+        $newTableConfiguration = TableConfiguration::fromColumnDefinitions([
+            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
+            TextColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'description']),
+            BooleanColumn::fromNormalized(['id' => ColumnIdGenerator::isAllergenic(), 'code' => 'is_allergenic']),
+        ]);
+
+        $attribute->getType()->willReturn(AttributeTypes::TABLE);
+        $attribute->getRawTableConfiguration()->willReturn($newTableConfiguration->normalize());
+        $attribute->getCode()->willReturn('nutrition');
+        $tableConfigurationRepository->getByAttributeCode('nutrition')
+            ->willReturn($existingTableConfiguration);
+        $tableConfigurationUpdater->update($existingTableConfiguration, $newTableConfiguration->normalize())
+            ->willReturn($newTableConfiguration);
+
+        $tableConfigurationRepository->save('nutrition', $newTableConfiguration)->shouldBeCalled();
+        $eventDispatcher->dispatch(new CompletenessHasBeenUpdated('nutrition'))->shouldNotBeCalled();
+        $this->save($attribute);
+    }
+
+    function it_dispatches_event_when_completeness_is_updated(
+        TableConfigurationRepository $tableConfigurationRepository,
+        TableConfigurationUpdater $tableConfigurationUpdater,
+        EventDispatcherInterface $eventDispatcher,
+        AttributeInterface $attribute,
+    ) {
+        $existingTableConfiguration = TableConfiguration::fromColumnDefinitions([
+            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
+            BooleanColumn::fromNormalized(['id' => ColumnIdGenerator::isAllergenic(), 'code' => 'is_allergenic']),
+        ]);
+        $newTableConfiguration = TableConfiguration::fromColumnDefinitions([
+            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
+            BooleanColumn::fromNormalized(['id' => ColumnIdGenerator::isAllergenic(), 'code' => 'is_allergenic', 'is_required_for_completeness' => true]),
+        ]);
+
+        $attribute->getType()->willReturn(AttributeTypes::TABLE);
+        $attribute->getRawTableConfiguration()->willReturn($newTableConfiguration->normalize());
+        $attribute->getCode()->willReturn('nutrition');
+        $tableConfigurationRepository->getByAttributeCode('nutrition')
+            ->willReturn($existingTableConfiguration);
+        $tableConfigurationUpdater->update($existingTableConfiguration, $newTableConfiguration->normalize())
+            ->willReturn($newTableConfiguration);
+
+        $tableConfigurationRepository->save('nutrition', $newTableConfiguration)->shouldBeCalled();
+        $eventDispatcher->dispatch(new CompletenessHasBeenUpdated('nutrition'))->shouldBeCalled();
         $this->save($attribute);
     }
 }

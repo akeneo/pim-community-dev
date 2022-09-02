@@ -18,16 +18,13 @@ use Webmozart\Assert\Assert;
 
 class SqlGetAssetMainMediaData implements GetAssetMainMediaDataInterface
 {
-    private Connection $connection;
-
-    public function __construct(Connection $connection)
+    public function __construct(private Connection $connection)
     {
-        $this->connection = $connection;
     }
 
     public function forAssetFamilyAndAssetCodes(string $assetFamilyIdentifier, array $assetCodes, ?string $channel, ?string $locale): array
     {
-        if (0 === count($assetCodes)) {
+        if (empty($assetCodes)) {
             return [];
         }
 
@@ -59,7 +56,7 @@ SQL;
                 $channel,
                 $locale
             );
-            if (0 === count($assetMainMediaDataValue)) {
+            if (empty($assetMainMediaDataValue)) {
                 continue;
             }
             $assetMainMediaData[$rawResult['code']] = $this->extractDataFromMainMediaValue($assetMainMediaDataValue[0]);

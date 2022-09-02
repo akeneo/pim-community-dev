@@ -43,6 +43,12 @@ abstract class AbstractAttributeApiTestCase extends ApiTestCase
                 "validations": {
                     "max_length": 100
                 }
+            },
+            {
+                "code": "manufacturing_time",
+                "data_type": "measurement",
+                "measurement_family_code": "duration",
+                "measurement_default_unit_code": "second"
             }
         ]
     }

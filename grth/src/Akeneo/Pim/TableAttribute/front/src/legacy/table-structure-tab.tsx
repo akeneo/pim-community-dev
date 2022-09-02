@@ -2,7 +2,7 @@
 import BaseView = require('pimui/js/view/base');
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {DataTypesMapping, TableStructureApp} from '../attribute';
+import {TableStructureApp} from '../attribute';
 import {
   AttributeType,
   getTranslatedTableConfigurationFromVariationTemplate,
@@ -13,7 +13,6 @@ import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {Locale} from '@akeneo-pim-community/settings-ui';
 import {LocaleCode} from '@akeneo-pim-community/shared';
 import {SelectOptionRepository} from '../repositories';
-import {ColumnDefinitionPropertiesMapping} from '../attribute/ColumDefinitionProperties';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const translate = require('oro/translator');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -128,14 +127,6 @@ class TableStructureTab extends (BaseView as {new (options: {config: TableStruct
     }
     const attribute: TableAttribute = this.getFormData();
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const columnDefinitionPropertiesMapping =
-      __moduleConfig.column_definition_properties as ColumnDefinitionPropertiesMapping;
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const dataTypes = __moduleConfig.data_types as DataTypesMapping;
-
     this.getTableConfiguration(initialTableConfiguration).then(tableConfiguration => {
       this.handleChange(tableConfiguration);
 
@@ -146,8 +137,6 @@ class TableStructureTab extends (BaseView as {new (options: {config: TableStruct
             initialTableConfiguration={tableConfiguration}
             onChange={this.handleChange.bind(this)}
             savedColumnCodes={this.savedColumnCodes || []}
-            columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
-            dataTypesMapping={dataTypes}
           />
         </DependenciesProvider>,
         this.el

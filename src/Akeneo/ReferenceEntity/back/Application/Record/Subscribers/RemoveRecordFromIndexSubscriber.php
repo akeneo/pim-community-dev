@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Application\Record\Subscribers;
 
-use Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent;
+use Akeneo\ReferenceEntity\Domain\Event\RecordsDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\ReferenceEntityRecordsDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordIndexerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -28,17 +28,19 @@ class RemoveRecordFromIndexSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            RecordDeletedEvent::class => 'whenRecordDeleted',
+            RecordsDeletedEvent::class => 'whenRecordsDeleted',
             ReferenceEntityRecordsDeletedEvent::class => 'whenAllRecordsDeleted',
         ];
     }
 
-    public function whenRecordDeleted(RecordDeletedEvent $recordDeletedEvent): void
+    public function whenRecordsDeleted(RecordsDeletedEvent $recordsDeletedEvent): void
     {
-        $this->recordIndexer->removeRecordByReferenceEntityIdentifierAndCode(
-            (string) $recordDeletedEvent->getReferenceEntityIdentifier(),
-            (string) $recordDeletedEvent->getRecordCode()
-        );
+        foreach ($recordsDeletedEvent->getRecordCodes() as $recordCode) {
+            $this->recordIndexer->removeRecordByReferenceEntityIdentifierAndCode(
+                (string) $recordsDeletedEvent->getReferenceEntityIdentifier(),
+                (string) $recordCode
+            );
+        }
     }
 
     public function whenAllRecordsDeleted(ReferenceEntityRecordsDeletedEvent $recordDeletedEvent): void

@@ -4,6 +4,7 @@ extensions:
         parent: pim-attribute-edit-form-form-tabs
         targetZone: container
         position: 125
+        feature: product_rules
         config:
             label: pimee_catalog_rule.form.attribute.tab.rules.title
 

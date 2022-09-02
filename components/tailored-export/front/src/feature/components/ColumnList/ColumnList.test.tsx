@@ -3,7 +3,7 @@ import {screen, fireEvent, within} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {ColumnList} from './ColumnList';
 import {ValidationErrorsContext} from '../../contexts';
-import {ColumnConfiguration, ColumnsState} from '../../models/ColumnConfiguration';
+import {ColumnConfiguration, ColumnsState} from '../../models';
 import {renderWithProviders} from 'feature/tests';
 
 // @skip: unstable test.
@@ -302,8 +302,11 @@ test('it moves to next line when user type enter', async () => {
 
   const handleColumnSelected = jest.fn();
   const handleSetColumnsState = jest.fn(
-    (dispatch: (columnsState: ColumnsState) => ColumnsState): void =>
-      void dispatch({columns: columnsConfiguration, selectedColumnUuid: columnsConfiguration[0].uuid})
+    (dispatch: ColumnsState | ((columnsState: ColumnsState) => ColumnsState)): void => {
+      if (typeof dispatch === 'function') {
+        void dispatch({columns: columnsConfiguration, selectedColumnUuid: columnsConfiguration[0].uuid});
+      }
+    }
   );
 
   await renderWithProviders(

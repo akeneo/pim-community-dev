@@ -24,8 +24,8 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily\JsonSchema\AssetFamilyValidator;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,44 +38,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CreateOrUpdateAssetFamilyAction
 {
-    private AssetFamilyExistsInterface $assetFamilyExists;
-
-    private ValidatorInterface $validator;
-
-    private CreateAssetFamilyHandler $createAssetFamilyHandler;
-
-    private EditAssetFamilyHandler $editAssetFamilyHandler;
-
-    private Router $router;
-
-    private AssetFamilyValidator $jsonSchemaValidator;
-
-    private FindFileDataByFileKeyInterface $findFileData;
-
-    private AssetFamilyRepositoryInterface $assetFamilyRepository;
-
-    private SecurityFacade $securityFacade;
-
     public function __construct(
-        AssetFamilyExistsInterface $assetFamilyExists,
-        ValidatorInterface $validator,
-        CreateAssetFamilyHandler $createAssetFamilyHandler,
-        EditAssetFamilyHandler $editAssetFamilyHandler,
-        Router $router,
-        AssetFamilyValidator $jsonSchemaValidator,
-        FindFileDataByFileKeyInterface $findFileData,
-        AssetFamilyRepositoryInterface $assetFamilyRepository,
-        SecurityFacade $securityFacade
+        private AssetFamilyExistsInterface $assetFamilyExists,
+        private ValidatorInterface $validator,
+        private CreateAssetFamilyHandler $createAssetFamilyHandler,
+        private EditAssetFamilyHandler $editAssetFamilyHandler,
+        private Router $router,
+        private AssetFamilyValidator $jsonSchemaValidator,
+        private FindFileDataByFileKeyInterface $findFileData,
+        private AssetFamilyRepositoryInterface $assetFamilyRepository,
+        private SecurityFacadeInterface $securityFacade,
     ) {
-        $this->assetFamilyExists = $assetFamilyExists;
-        $this->validator = $validator;
-        $this->createAssetFamilyHandler = $createAssetFamilyHandler;
-        $this->editAssetFamilyHandler = $editAssetFamilyHandler;
-        $this->router = $router;
-        $this->jsonSchemaValidator = $jsonSchemaValidator;
-        $this->findFileData = $findFileData;
-        $this->assetFamilyRepository = $assetFamilyRepository;
-        $this->securityFacade = $securityFacade;
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier): Response
@@ -159,7 +132,7 @@ class CreateOrUpdateAssetFamilyAction
     {
         try {
             $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
-        } catch (AssetFamilyNotFoundException $e) {
+        } catch (AssetFamilyNotFoundException) {
             return true;
         }
 

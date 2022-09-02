@@ -21,11 +21,8 @@ class Prefix
 {
     public const EMPTY = null;
 
-    private ?string $prefix = null;
-
-    private function __construct(?string $prefix)
+    private function __construct(private ?string $prefix)
     {
-        $this->prefix = $prefix;
     }
 
     public static function fromString(?string $prefix): self

@@ -1,4 +1,4 @@
-@javascript
+@javascript @published-product-feature-enabled
 Feature: Filter published products by label or identifier field
   In order to ease the search of published products in the published products grid
   As a regular user

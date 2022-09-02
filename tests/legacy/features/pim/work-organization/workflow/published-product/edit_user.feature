@@ -1,3 +1,4 @@
+@javascript @published-product-feature-enabled
 Feature: Edit a user
   In order to manage the users and rights
   As an administrator
@@ -7,7 +8,6 @@ Feature: Edit a user
     Given the "apparel" catalog configuration
     And I am logged in as "Peter"
 
-  @javascript
   Scenario: Product grid filters preference applies on the published product grid
     When I edit the "Peter" user
     And I visit the "Additional" tab

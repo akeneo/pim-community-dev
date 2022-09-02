@@ -1,0 +1,21 @@
+workflows:
+    hourly_cleanup:
+        when:
+            and:
+                - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+                - equal: [ "hourly_cleanup", << pipeline.schedule.name >> ]
+        jobs:
+            - checkout
+            - delete_environments_hourly:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Delete environments"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                  requires:
+                      - checkout
+            - remove_unused_resources:
+                  requires:
+                      - checkout
+            - delete_expired_uptime_check:
+                  requires:
+                      - checkout

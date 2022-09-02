@@ -17,20 +17,27 @@ services:
             - { name: "kernel.event_subscriber" }
             - { name: "monolog.logger", channel: "console" }
 
-    Akeneo\Platform\Bundle\FrameworkBundle\BoundedContext\BoundedContextResolver:
+    Akeneo\Platform\Bundle\FrameworkBundle\Logging\BoundedContextResolver:
         arguments:
             - '@controller_resolver'
             - '%pimee.bounded_contexts%'
 
-    Akeneo\Platform\Bundle\FrameworkBundle\BoundedContext\BoundedContextLogProcessor:
+    Akeneo\Platform\Bundle\FrameworkBundle\Logging\ContextLogProcessor:
         arguments:
             - '@request_stack'
-            - '@Akeneo\Platform\Bundle\FrameworkBundle\BoundedContext\BoundedContextResolver'
+            - '@Akeneo\Platform\Bundle\FrameworkBundle\Logging\BoundedContextResolver'
         tags:
             - { name: monolog.processor }
 
     Akeneo\Platform\Bundle\FrameworkBundle\EventListener\AddContextHeaderResponseListener:
         arguments:
-            - '@Akeneo\Platform\Bundle\FrameworkBundle\BoundedContext\BoundedContextResolver'
+            - '@Akeneo\Platform\Bundle\FrameworkBundle\Logging\BoundedContextResolver'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\FindCurrentAppId'
         tags:
             - { name: kernel.event_listener, event: kernel.response, method: injectAkeneoContextHeader }
+
+    Akeneo\Platform\Bundle\FrameworkBundle\EventListener\CommandExecutionContextListener:
+        arguments:
+            - '@Akeneo\Platform\Bundle\FrameworkBundle\Logging\ContextLogProcessor'
+        tags:
+            - { name: kernel.event_listener, event: console.command }

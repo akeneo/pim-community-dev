@@ -1,0 +1,16 @@
+workflows:
+    on-demand-load-tests:
+        when:
+          and:
+            - equal: [ "load_tests", << pipeline.parameters.trigger >> ]
+            - not:
+                equal: [ "", << pipeline.parameters.instance >> ]
+        jobs:
+          - prepare_load_tests:
+              name: "Prepare load tests"
+              PFID: << pipeline.parameters.instance >>
+          - execute_load_tests:
+              name: "Execute load tests"
+              TEST: << pipeline.parameters.test >>
+              requires:
+                - "Prepare load tests"

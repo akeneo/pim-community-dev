@@ -8,9 +8,10 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@akeneo_assetmanager.step.csv_asset.export'
+                - '@akeneo.job_automation.connector.step.upload'
             - true
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%', feature: 'asset_manager'}
 
     akeneo_assetmanager.job.xlsx_asset_export:
         class: '%pim_connector.job.simple_job.class%'
@@ -20,9 +21,10 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@akeneo_assetmanager.step.xlsx_asset.export'
+                - '@akeneo.job_automation.connector.step.upload'
             - true
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%', feature: 'asset_manager' }
 
     akeneo_assetmanager.job.csv_asset_import:
         class: '%pim_connector.job.simple_job.class%'
@@ -31,10 +33,11 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
+                - '@akeneo.job_automation.connector.step.download'
                 - '@pim_connector.step.charset_validator'
                 - '@akeneo_assetmanager.step.csv_asset.import'
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%', feature: 'asset_manager' }
 
     akeneo_assetmanager.job.xlsx_asset_import:
         class: '%pim_connector.job.simple_job.class%'
@@ -43,10 +46,11 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
+                - '@akeneo.job_automation.connector.step.download'
                 - '@pim_connector.step.charset_validator'
                 - '@akeneo_assetmanager.step.xlsx_asset.import'
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%', feature: 'asset_manager' }
 
     # STEPS
     akeneo_assetmanager.step.csv_asset.export:
@@ -185,7 +189,7 @@ services:
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
-            - '@akeneoassetmanager.infrastructure.persistence.cache.query.find_activated_locales_per_channels'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_per_channels'
             - '@pim_connector.writer.file.media_exporter_path_generator'
             - '@akeneo_file_storage.repository.file_info'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
@@ -197,7 +201,7 @@ services:
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
-            - '@akeneoassetmanager.infrastructure.persistence.cache.query.find_activated_locales_per_channels'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_per_channels'
             - '@pim_connector.writer.file.media_exporter_path_generator'
             - '@akeneo_file_storage.repository.file_info'
             - '@akeneo_file_storage.file_storage.filesystem_provider'

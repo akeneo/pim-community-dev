@@ -18,8 +18,7 @@ class CachedAuthorizationCheckerSpec extends ObjectBehavior
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $tokenStorage,
         NormalizerInterface $normalizer
-    ): void
-    {
+    ): void {
         $this->beConstructedWith($authorizationChecker, $tokenStorage, $normalizer);
     }
 
@@ -29,9 +28,9 @@ class CachedAuthorizationCheckerSpec extends ObjectBehavior
     }
 
     function it_caches_previous_results_for_object_resources(
-        $authorizationChecker,
-        $tokenStorage,
-        $normalizer,
+        AuthorizationCheckerInterface $authorizationChecker,
+        TokenStorageInterface $tokenStorage,
+        NormalizerInterface $normalizer,
         TokenInterface $token,
         UserInterface $user
     ): void {

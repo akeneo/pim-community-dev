@@ -19,6 +19,8 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Fixture\EntityBuilder;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 class SqlGetRawValuesIntegration extends TestCase
 {
@@ -27,7 +29,7 @@ class SqlGetRawValuesIntegration extends TestCase
 
     private int $rootProductModelId;
     private int $subProductModelId;
-    private int $variantProductId;
+    private UuidInterface $variantProductUuid;
 
     /** @test */
     public function it_returns_the_raw_values_of_product_models(): void
@@ -47,7 +49,7 @@ class SqlGetRawValuesIntegration extends TestCase
     }
 
     /** @test */
-    public function it_returns_the_raw_values_of_a_variant_product(): void
+    public function it_returns_the_nothing_if_product_does_not_exist(): void
     {
         self::assertEqualsCanonicalizing(
             [
@@ -55,9 +57,10 @@ class SqlGetRawValuesIntegration extends TestCase
                 'first_yes_no' => ['<all_channels>' => ['<all_locales>' => false]],
                 'second_yes_no' => ['<all_channels>' => ['<all_locales>' => false]],
             ],
-            $this->sqlGetRawValues->forProductId($this->variantProductId)
+            $this->sqlGetRawValues->forProductUuid($this->variantProductUuid)
         );
-        self::assertNull($this->sqlGetRawValues->forProductId(0));
+
+        self::assertNull($this->sqlGetRawValues->forProductUuid(Uuid::uuid4()));
     }
 
     /** @test */
@@ -81,7 +84,7 @@ class SqlGetRawValuesIntegration extends TestCase
                 'first_yes_no' => ['<all_channels>' => ['<all_locales>' => true]],
                 'second_yes_no' => ['<all_channels>' => ['<all_locales>' => true]],
             ],
-            $this->sqlGetRawValues->forProductId($product->getId())
+            $this->sqlGetRawValues->forProductUuid($product->getUuid())
         );
     }
 
@@ -117,7 +120,7 @@ class SqlGetRawValuesIntegration extends TestCase
             $subProductModel,
             ['values' => ['sku' => [['data' => 'variant_product', 'locale' => null, 'scope' => null]]]]
         );
-        $this->variantProductId = $variant->getId();
+        $this->variantProductUuid = $variant->getUuid();
     }
 
     private function createAttributes(array $attributeCodes): void

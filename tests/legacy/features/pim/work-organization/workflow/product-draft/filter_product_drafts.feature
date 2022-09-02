@@ -1,4 +1,4 @@
-@javascript
+@javascript @proposal-feature-enabled
 Feature: Filter product drafts
   In order to easily find product drafts for the product
   As a product manager

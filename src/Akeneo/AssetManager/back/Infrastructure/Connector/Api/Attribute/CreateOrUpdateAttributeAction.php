@@ -17,8 +17,8 @@ use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeIdentifierInterface;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\AttributeCreationValidator;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AttributeEditionValidator;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,64 +32,22 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CreateOrUpdateAttributeAction
 {
-    private CreateAttributeCommandFactoryRegistry $createAttributeCommandFactoryRegistry;
-
-    private FindAttributeNextOrderInterface $attributeNextOrder;
-
-    private AttributeExistsInterface $attributeExists;
-
-    private CreateAttributeHandler $createAttributeHandler;
-
-    private GetAttributeIdentifierInterface $getAttributeIdentifier;
-
-    private EditAttributeCommandFactory $editAttributeCommandFactory;
-
-    private EditAttributeHandler $editAttributeHandler;
-
-    private Router $router;
-
-    private AssetFamilyExistsInterface $assetFamilyExists;
-
-    private ValidatorInterface $validator;
-
-    private AttributeCreationValidator $jsonSchemaCreateValidator;
-
-    private AttributeEditionValidator $jsonSchemaEditValidator;
-
-    private ValidateAttributePropertiesImmutability $validateAttributePropertiesImmutability;
-
-    private SecurityFacade $securityFacade;
-
     public function __construct(
-        CreateAttributeCommandFactoryRegistry $createAttributeCommandFactoryRegistry,
-        FindAttributeNextOrderInterface $attributeNextOrder,
-        AttributeExistsInterface $attributeExists,
-        CreateAttributeHandler $createAttributeHandler,
-        Router $router,
-        GetAttributeIdentifierInterface $getAttributeIdentifier,
-        EditAttributeCommandFactory $editAttributeCommandFactory,
-        EditAttributeHandler $editAttributeHandler,
-        AssetFamilyExistsInterface $assetFamilyExists,
-        ValidatorInterface $validator,
-        AttributeCreationValidator $jsonSchemaCreateValidator,
-        AttributeEditionValidator $jsonSchemaEditValidator,
-        ValidateAttributePropertiesImmutability $validateAttributePropertiesImmutability,
-        SecurityFacade $securityFacade
+        private CreateAttributeCommandFactoryRegistry $createAttributeCommandFactoryRegistry,
+        private FindAttributeNextOrderInterface $attributeNextOrder,
+        private AttributeExistsInterface $attributeExists,
+        private CreateAttributeHandler $createAttributeHandler,
+        private Router $router,
+        private GetAttributeIdentifierInterface $getAttributeIdentifier,
+        private EditAttributeCommandFactory $editAttributeCommandFactory,
+        private EditAttributeHandler $editAttributeHandler,
+        private AssetFamilyExistsInterface $assetFamilyExists,
+        private ValidatorInterface $validator,
+        private AttributeCreationValidator $jsonSchemaCreateValidator,
+        private AttributeEditionValidator $jsonSchemaEditValidator,
+        private ValidateAttributePropertiesImmutability $validateAttributePropertiesImmutability,
+        private SecurityFacadeInterface $securityFacade,
     ) {
-        $this->createAttributeCommandFactoryRegistry = $createAttributeCommandFactoryRegistry;
-        $this->attributeNextOrder = $attributeNextOrder;
-        $this->attributeExists = $attributeExists;
-        $this->createAttributeHandler = $createAttributeHandler;
-        $this->router = $router;
-        $this->getAttributeIdentifier = $getAttributeIdentifier;
-        $this->editAttributeCommandFactory = $editAttributeCommandFactory;
-        $this->editAttributeHandler = $editAttributeHandler;
-        $this->assetFamilyExists = $assetFamilyExists;
-        $this->validator = $validator;
-        $this->jsonSchemaCreateValidator = $jsonSchemaCreateValidator;
-        $this->jsonSchemaEditValidator = $jsonSchemaEditValidator;
-        $this->validateAttributePropertiesImmutability = $validateAttributePropertiesImmutability;
-        $this->securityFacade = $securityFacade;
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier, string $attributeCode): Response

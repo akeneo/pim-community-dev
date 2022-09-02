@@ -1,10 +1,10 @@
 import {NormalizedAttribute, Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {ValidationError} from '@akeneo-pim-community/shared';
 
-export class InvalidArgument extends Error {}
+class InvalidArgument extends Error {}
 
-export type Denormalizer = (normalizedAttribute: NormalizedAttribute) => Attribute;
-export type View = React.SFC<{
+type Denormalizer = (normalizedAttribute: NormalizedAttribute) => Attribute;
+type View = React.FC<{
   attribute: Attribute;
   onAdditionalPropertyUpdated: (property: string, value: any) => void;
   onSubmit: () => void;
@@ -16,7 +16,7 @@ export type View = React.SFC<{
     };
   };
 }>;
-export type Reducer = (
+type Reducer = (
   normalizedAttribute: NormalizedAttribute,
   propertyCode: string,
   propertyValue: any
@@ -37,13 +37,13 @@ type AttributeConfig = {
   };
 };
 
-export type AttributeType = {
+type AttributeType = {
   identifier: string;
   label: string;
   icon: string;
 };
 
-export const getTypes = (config: AttributeConfig) => (): AttributeType[] => {
+const getTypes = (config: AttributeConfig): AttributeType[] => {
   return Object.keys(config).map((identifier: string) => {
     return {
       identifier,
@@ -53,13 +53,11 @@ export const getTypes = (config: AttributeConfig) => (): AttributeType[] => {
   });
 };
 
-export const getIcon = (config: AttributeConfig) => (attributeType: string): string => {
+const getIcon = (config: AttributeConfig, attributeType: string): string => {
   return config[attributeType].icon;
 };
 
-export const getDenormalizer = (config: AttributeConfig) => (
-  normalizedAttribute: NormalizedAttribute
-): Denormalizer => {
+const getDenormalizer = (config: AttributeConfig, normalizedAttribute: NormalizedAttribute): Denormalizer => {
   const typeConfiguration = config[normalizedAttribute.type];
 
   if (undefined === typeConfiguration || undefined === typeConfiguration.denormalize) {
@@ -97,7 +95,7 @@ ${moduleExample}`
   return typeConfiguration.denormalize.denormalize;
 };
 
-export const getReducer = (config: AttributeConfig) => (normalizedAttribute: NormalizedAttribute): Reducer => {
+const getReducer = (config: AttributeConfig) => (normalizedAttribute: NormalizedAttribute): Reducer => {
   const typeConfiguration = config[normalizedAttribute.type];
 
   if (undefined === typeConfiguration || undefined === typeConfiguration.reducer) {
@@ -146,7 +144,7 @@ ${moduleExample}`
   return typeConfiguration.reducer.reducer;
 };
 
-export const getView = (config: AttributeConfig) => (attribute: Attribute): View => {
+const getView = (config: AttributeConfig, attribute: Attribute): View => {
   const typeConfiguration = config[attribute.getType()];
 
   if (undefined === typeConfiguration || undefined === typeConfiguration.view) {
@@ -231,15 +229,8 @@ ${moduleExample}`
   return typeConfiguration.view.view;
 };
 
-/**
- * Expanation about the __moduleConfig variable:
- * It is automatically added by a webpack loader that you can check here:
- * https://github.com/akeneo/pim-community-dev/blob/master/webpack/config-loader.js
- * This loader looks at the requirejs.yml file and find every configuration related to this module. It transform it
- * into a javascript object and add it automatically to the file on the fly.
- */
-export const getAttributeTypes = getTypes(__moduleConfig as AttributeConfig);
-export const getAttributeIcon = getIcon(__moduleConfig as AttributeConfig);
-export const getAttributeView = getView(__moduleConfig as AttributeConfig);
-export const getAttributeDenormalizer = getDenormalizer(__moduleConfig as AttributeConfig);
-export const getAttributeReducer = getReducer(__moduleConfig as AttributeConfig);
+/* istanbul ignore next */
+export const getAttributeDenormalizer = (normalizedAttribute: NormalizedAttribute) =>
+  getDenormalizer(__moduleConfig as AttributeConfig, normalizedAttribute);
+
+export {getDenormalizer, getIcon, getReducer, getTypes, getView, View, Reducer, Denormalizer, AttributeConfig};

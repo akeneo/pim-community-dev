@@ -4,7 +4,7 @@ import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {AttributeCode, TableAttribute, TableValue} from '../models';
-import {CellInputsMapping, CellMatchersMapping, TableFieldApp} from '../product';
+import {TableFieldApp} from '../product';
 import {ChannelCode, LocaleCode} from '@akeneo-pim-community/shared';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const Field = require('pim/field');
@@ -115,13 +115,6 @@ class TableField extends (Field as {new (config: any): any}) {
       this.selected = checked;
     };
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const cellInputsMapping = __moduleConfig.cell_inputs as CellInputsMapping;
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const cellMatchersMapping = __moduleConfig.cell_matchers as CellMatchersMapping;
-
     ReactDOM.render(
       <DependenciesProvider>
         <ThemeProvider theme={pimTheme}>
@@ -133,8 +126,6 @@ class TableField extends (Field as {new (config: any): any}) {
             violations={this.violations}
             onCopyCheckboxChange={handleCopyCheckboxChange}
             copyCheckboxChecked={this.selected}
-            cellInputsMapping={cellInputsMapping}
-            cellMatchersMapping={cellMatchersMapping}
             isDisplayedForCurrentLocale={
               // If there is the input_placeholder element, it means the field is locale specific and should not be displayed
               !this.elements['field-input'] || !this.elements['field-input']['input_placeholder']

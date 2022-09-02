@@ -1,0 +1,86 @@
+envVarsDeployDev: &envVarsDeployDev
+executor-machine: &executor-machine
+
+jobs:
+    # Description :
+    #    Job to list to current releases used in prod
+    list_production_version:
+        parameters:
+            PRODUCT_TYPE:
+                type: string
+                default: "srnt"
+        docker:
+            - image: cimg/base:2021.12
+        resource_class: small
+        steps:
+            - run:
+                  name: Versions in production
+                  command: |
+                      CURRENT_TIME=$(date +%s)
+                      LAST_HOUR_TIME=$(( CURRENT_TIME - 60*60 ))
+                      curl --location -s -g -H "Content-Type: application/json" -H "DD-API-KEY: ${DATADOG_API_KEY}" -H "DD-APPLICATION-KEY: ${DATADOG_APP_KEY}" --request GET "https://api.datadoghq.eu/api/v1/query?from=${LAST_HOUR_TIME}&to=${CURRENT_TIME}&query=top(sum:kubernetes.containers.running{project:akecld-saas-prod,short_image:pim-enterprise-dev,app:pim,component:pim-web,type:<<parameters.PRODUCT_TYPE>>}by{image_tag},%20100,%20%27max%27,%20%27desc%27)" | jq -r .series[].tag_set[0] | cut -c11- | sort
+
+    # Description :
+    #    Get files from 2 releases in order to check the changes between those 2 releases in another job
+    #    By defaut (with CHECK_AGAINST=top), the 2 releases checked are the last release available and the release the most used in prod
+    #    With CHECK_AGAINST=old, the 2 releases checked are the last release available and the oldest release used in prod
+    #    The goal of getting this files will be to check in `zdd_compliancy_checker` job what are the infra and database diff to determine if the upgrade can be proceding in ZDD or not
+    zdd_compliancy_diff:
+        parameters:
+            PRODUCT_TYPE:
+                type: string
+                default: "srnt"
+            CHECK_AGAINST:
+                type: string
+                default: "top"
+        environment:
+            <<: *envVarsDeployDev
+        machine:
+            image: *executor-machine
+        resource_class: medium
+        steps:
+            - checkout
+            - set_gcloud_config_dev
+            - run:
+                  name: Run the tool zdd_compliancy_checker
+                  command: |
+                      OPTIONS=""
+                      if [ "<< parameters.CHECK_AGAINST >>" == "oldest" ]; then
+                          OPTIONS="-o"
+                      fi
+                      VERSIONS_FILE=/tmp/zdd_versions.env
+                      touch ${VERSIONS_FILE}
+                      VERSIONS_FILE=${VERSIONS_FILE} TYPE=<<parameters.PRODUCT_TYPE>> bash deployments/bin/zdd_compliancy_checker.sh ${OPTIONS}
+            - store_artifacts:
+                  path: /tmp/zdd_versions.env
+                  destination: versions
+            - persist_to_workspace:
+                  root: ~/
+                  paths:
+                      - zdd_compliancy_checker
+
+    # Description :
+    #    Check infra and db changes between 2 releases to determine if it is possible to apply zdd or not
+    #    The 2 releases will be determined in the `zdd_compliancy_checker` in order to have either diff between
+    #         - the last release available and the most used release in prod
+    #         - the last release available and the oldest release used in prod
+    #    Using the `zdd_compliancy_checker` job to apply files diff
+    zdd_compliancy_checker:
+        parameters:
+            PRODUCT_TYPE:
+                type: string
+                default: "srnt"
+            CONTEXT:
+                type: string
+                default: "diff_infra"
+        machine:
+            image: *executor-machine
+        resource_class: medium
+        steps:
+            - attach_workspace:
+                  at: ~/
+            - checkout
+            - run:
+                  name: Run the tool zdd_compliancy_checker
+                  command:
+                      TYPE=<<parameters.PRODUCT_TYPE>> ZCC_CONTEXT=diff_<<parameters.CONTEXT>> bash deployments/bin/zdd_compliancy_checker.sh

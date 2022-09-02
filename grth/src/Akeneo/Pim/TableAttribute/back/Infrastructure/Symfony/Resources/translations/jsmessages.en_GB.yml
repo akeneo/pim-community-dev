@@ -162,6 +162,10 @@ pim_table_attribute:
       completeness_helper_text: "To discover how completeness works for a table attribute,"
       completeness_helper_link: check out our help center.
       reference_entity: Reference entity
+      import_from_existing_attribute: Import from existing attribute
+      option_count: "{0,1}{{ count }} option|]1, Inf[{{ count }} options"
+      measurement_family: Measurement family
+      measurement_default_unit: Measurement default unit
     product:
       items_per_page: Items per page
       current_items: "{{ minItem }}-{{ maxItem }} of {{ itemCount }}"
@@ -191,6 +195,7 @@ pim_table_attribute:
       boolean: Yes/No
       select: Select
       reference_entity: Reference entity
+      measurement: Measurement
   validations:
     column_code_must_be_filled: The code must be filled
     not_available_code: This column code is not available

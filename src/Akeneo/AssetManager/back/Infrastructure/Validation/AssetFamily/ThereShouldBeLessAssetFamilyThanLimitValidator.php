@@ -25,16 +25,10 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ThereShouldBeLessAssetFamilyThanLimitValidator extends ConstraintValidator
 {
-    private AssetFamilyRepositoryInterface $assetFamilyRepository;
-
-    private int $assetFamilyLimit;
-
     public function __construct(
-        AssetFamilyRepositoryInterface $assetFamilyRepository,
-        int $assetFamilyLimit
+        private AssetFamilyRepositoryInterface $assetFamilyRepository,
+        private int $assetFamilyLimit
     ) {
-        $this->assetFamilyRepository = $assetFamilyRepository;
-        $this->assetFamilyLimit = $assetFamilyLimit;
     }
 
     public function validate($command, Constraint $constraint): void
@@ -54,7 +48,7 @@ class ThereShouldBeLessAssetFamilyThanLimitValidator extends ConstraintValidator
                 sprintf(
                     'Expected argument to be of class "%s", "%s" given',
                     CreateAssetFamilyCommand::class,
-                    get_class($command)
+                    $command::class
                 )
             );
         }

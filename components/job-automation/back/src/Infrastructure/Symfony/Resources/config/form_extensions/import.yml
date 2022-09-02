@@ -1,0 +1,108 @@
+extensions:
+  pim-job-instance-xlsx-product-import-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-xlsx-product-import-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation
+
+  pim-job-instance-xlsx-tailored-product-import-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-xlsx-tailored-product-import-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation
+
+  pim-job-instance-csv-asset-import-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-csv-asset-import-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation
+  
+  pim-job-instance-xlsx-asset-import-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-xlsx-asset-import-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation
+
+  pim-job-instance-csv-reference-entity-record-import-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-csv-reference-entity-record-import-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation
+
+  pim-job-instance-xlsx-reference-entity-record-import-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-xlsx-reference-entity-record-import-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation
+
+  pim-job-instance-csv-base-import-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-csv-base-import-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation
+
+  pim-job-instance-csv-product-import-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-csv-product-import-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation
+
+  pim-job-instance-csv-product-model-import-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-csv-product-model-import-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation
+
+  pim-job-instance-xlsx-base-import-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-xlsx-base-import-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation
+
+  pim-job-instance-xlsx-product-model-import-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-xlsx-product-model-import-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation
+
+  pim-job-instance-yml-base-import-edit-properties-automation:
+    module: akeneojobautomation/js/job/job-automation-form
+    parent: pim-job-instance-yml-base-import-edit-properties
+    position: 130
+    targetZone: additional-properties
+    config:
+      tabCode: pim-job-instance-properties
+    feature: job_automation

@@ -1,4 +1,4 @@
-@javascript
+@javascript @proposal-feature-enabled @permission-feature-enabled
 Feature: Delete only possible values
   In order to ease the cleaning of proposals
   As a product manager
@@ -19,6 +19,7 @@ Feature: Delete only possible values
       | sku  | family  | categories | name-en_US               | weather_conditions |
       | sp-1 | hoodies | tops       | South Park Hoodie - Timm | dry                |
     And I logout
+    And I wait 10 seconds
 
   Scenario: I can partially remove a product draft if I have no edit access on all values
     Given Mary started to propose the following change to "sp-1":

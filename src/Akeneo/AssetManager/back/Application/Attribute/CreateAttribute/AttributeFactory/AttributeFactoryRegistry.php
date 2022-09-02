@@ -21,12 +21,8 @@ use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AbstractCreateAttr
  */
 class AttributeFactoryRegistry implements AttributeFactoryRegistryInterface
 {
-    private array $factories;
-
-    public function __construct()
-    {
-        $this->factories = [];
-    }
+    /** @var AttributeFactoryInterface[] */
+    private array $factories = [];
 
     public function register(AttributeFactoryInterface $factory): void
     {

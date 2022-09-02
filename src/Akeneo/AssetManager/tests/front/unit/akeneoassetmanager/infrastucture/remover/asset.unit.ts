@@ -1,20 +1,25 @@
 'use strict';
 
 import remover from 'akeneoassetmanager/infrastructure/remover/asset';
-import * as fetch from 'akeneoassetmanager/tools/fetch';
 import {createQuery} from 'akeneoassetmanager/application/hooks/grid';
 
-jest.mock('routing', () => ({
-  generate: (url: string) => url,
-}));
-
 describe('akeneoassetmanager/infrastructure/remover/asset', () => {
-  it('It deletes a asset', async () => {
-    jest.spyOn(fetch, 'deleteJSON').mockImplementation(() => Promise.resolve());
+  it('It deletes an asset', async () => {
+    global.fetch = jest.fn().mockImplementationOnce(() =>
+      Promise.resolve({
+        json: () => Promise.resolve({}),
+        status: 200,
+      })
+    );
 
     await remover.remove('designer', 'starck');
 
-    expect(fetch.deleteJSON).toHaveBeenCalledWith('akeneo_asset_manager_asset_delete_rest');
+    expect(global.fetch).toHaveBeenCalledWith('/rest/asset_manager/designer/asset/starck', {
+      method: 'DELETE',
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+    });
   });
 
   it('It mass deletes asset from query', async () => {
@@ -40,7 +45,7 @@ describe('akeneoassetmanager/infrastructure/remover/asset', () => {
 
     await remover.removeFromQuery('designer', query);
 
-    expect(global.fetch).toHaveBeenCalledWith('akeneo_asset_manager_asset_mass_delete_rest', {
+    expect(global.fetch).toHaveBeenCalledWith('/rest/asset_manager/designer/assets', {
       body: JSON.stringify(query),
       method: 'DELETE',
       headers: {

@@ -6,22 +6,15 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 use Akeneo\SharedCatalog\Model\SharedCatalog;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FindProductIdentifiersQuery implements FindProductIdentifiersQueryInterface
 {
-    /** @var GetProductIdFromProductIdentifierQueryInterface */
-    private $getProductIdFromProductIdentifierQuery;
-
-    /** @var ProductQueryBuilderFactoryInterface */
-    private $productQueryBuilderFactory;
-
     public function __construct(
-        GetProductIdFromProductIdentifierQueryInterface $getProductIdFromProductIdentifierQuery,
-        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
+        private GetProductUuidFromProductIdentifierQueryInterface $getProductUuidFromProductIdentifierQuery,
+        private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
     ) {
-        $this->getProductIdFromProductIdentifierQuery = $getProductIdFromProductIdentifierQuery;
-        $this->productQueryBuilderFactory = $productQueryBuilderFactory;
     }
 
     public function find(SharedCatalog $sharedCatalog, array $options = []): array
@@ -37,9 +30,9 @@ class FindProductIdentifiersQuery implements FindProductIdentifiersQueryInterfac
         $searchAfterProductIdentifier = $options['search_after'];
 
         if (null !== $searchAfterProductIdentifier) {
-            $searchAfterProductId = $this->getProductIdFromProductIdentifierQuery->execute($searchAfterProductIdentifier);
+            $searchAfterProductUUid = $this->getProductUuidFromProductIdentifierQuery->execute($searchAfterProductIdentifier);
 
-            if (null === $searchAfterProductId) {
+            if (!$searchAfterProductUUid instanceof UuidInterface) {
                 throw new \InvalidArgumentException(sprintf(
                     'Product with identifier "%s" not found',
                     $searchAfterProductIdentifier
@@ -48,7 +41,7 @@ class FindProductIdentifiersQuery implements FindProductIdentifiersQueryInterfac
 
             $pqbOptions['search_after'] = [
                 strtolower($searchAfterProductIdentifier),
-                'product_'.$searchAfterProductId,
+                'product_'.$searchAfterProductUUid->toString(),
             ];
         }
 
@@ -57,9 +50,7 @@ class FindProductIdentifiersQuery implements FindProductIdentifiersQueryInterfac
 
         $results = $pqb->execute();
 
-        return array_map(function (IdentifierResult $result) {
-            return $result->getIdentifier();
-        }, iterator_to_array($results));
+        return array_map(static fn (IdentifierResult $result) => $result->getIdentifier(), iterator_to_array($results));
     }
 
     private function resolveOptions(array $options = []): array

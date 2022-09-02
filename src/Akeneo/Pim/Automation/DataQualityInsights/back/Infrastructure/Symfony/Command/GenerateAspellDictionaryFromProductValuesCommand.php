@@ -17,9 +17,9 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Filter\LocaleCodeByLanguage
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\LocaleCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetAllActivatedLocalesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LanguageCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionary;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionaryGenerator;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\ProductValueInDatabaseDictionarySource;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Spellcheck\AspellDictionary;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Spellcheck\AspellDictionaryGenerator;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Spellcheck\ProductValueInDatabaseDictionarySource;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

@@ -18,6 +18,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobLaunch
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\Evaluation;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -27,23 +28,23 @@ class PimEnterpriseLaunchEvaluationsCommand extends Command
     protected static $defaultName = 'pim:data-quality-insights:evaluations';
     protected static $defaultDescription = 'Launch the evaluations of products and structure';
 
-    private FeatureFlag $featureFlag;
-    private RunUniqueProcessJob $runUniqueProcessJob;
-
     public function __construct(
-        RunUniqueProcessJob $runUniqueProcessJob,
-        FeatureFlag $featureFlag
+        private RunUniqueProcessJob $runUniqueProcessJob,
+        private FeatureFlag $featureFlag,
+        private Connection $connection,
     ) {
         parent::__construct();
-
-        $this->featureFlag = $featureFlag;
-        $this->runUniqueProcessJob = $runUniqueProcessJob;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (! $this->featureFlag->isEnabled()) {
             $output->writeln('<info>Data Quality Insights feature is disabled</info>');
+            return Command::SUCCESS;
+        }
+
+        if ($this->hasStartedMigration()) {
+            $output->writeln('<info>There is a migration in progress, skip</info>');
             return Command::SUCCESS;
         }
 
@@ -70,5 +71,23 @@ class PimEnterpriseLaunchEvaluationsCommand extends Command
         return [
             Evaluation::EVALUATED_SINCE_PARAMETER => $lastEvaluationDate->format(Evaluation::EVALUATED_SINCE_DATE_FORMAT)
         ];
+    }
+
+    private function hasStartedMigration(): bool
+    {
+        $sql = <<<SQL
+            SELECT EXISTS (
+                SELECT 1
+                FROM pim_one_time_task
+                WHERE code=:code
+                AND status=:status
+                LIMIT 1
+            ) AS missing
+        SQL;
+
+        return (bool) $this->connection->fetchOne($sql, [
+            ':code' => 'pim:product:migrate-to-uuid',
+            ':status' => 'started',
+        ]);
     }
 }

@@ -15,11 +15,8 @@ use Akeneo\AssetManager\Domain\Query\Asset\FindAssetLabelsByCodesInterface;
  */
 class FindAssetLabelTranslation implements FindAssetLabelTranslationInterface
 {
-    private FindAssetLabelsByCodesInterface $sqlFindAssetLabelsByCodes;
-
-    public function __construct(FindAssetLabelsByCodesInterface $sqlFindAssetLabelsByCodes)
+    public function __construct(private FindAssetLabelsByCodesInterface $sqlFindAssetLabelsByCodes)
     {
-        $this->sqlFindAssetLabelsByCodes = $sqlFindAssetLabelsByCodes;
     }
 
     public function byFamilyCodeAndAssetCodes(string $familyCode, array $assetCodes, $locale): array

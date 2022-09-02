@@ -2,7 +2,7 @@
 
 namespace Akeneo\Test\Pim\TableAttribute\Integration\Value\Export;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Test\Integration\Configuration;
@@ -26,11 +26,11 @@ final class ExportProductTableValuesIntegration extends TestCase
         $csv = $this->jobLauncher->launchExport(static::CSV_EXPORT_JOB_CODE, null, []);
 
         $expected = <<<CSV
-product;attribute;ingredient;allergen;quantity;additional_info;nutrition_score
-111111;nutrition-fr_FR-mobile;sugar;0;50;"this is a text";B
-111111;nutrition-fr_FR-mobile;egg;1;23;;C
-111111;nutrition-en_US-ecommerce;sugar;1;66;"this is a second text";B
-111111;nutrition-en_US-ecommerce;egg;1;20;;C
+product;attribute;ingredient;allergen;quantity;additional_info;nutrition_score;weight
+111111;nutrition-fr_FR-mobile;sugar;0;50;"this is a text";B;"100 KILOGRAM"
+111111;nutrition-fr_FR-mobile;egg;1;23;;C;
+111111;nutrition-en_US-ecommerce;sugar;1;66;"this is a second text";B;
+111111;nutrition-en_US-ecommerce;egg;1;20;;C;
 
 CSV;
         Assert::assertSame($expected, $csv);
@@ -58,11 +58,11 @@ CSV;
         }
 
         $expected = [
-            ['product', 'attribute', 'ingredient', 'allergen', 'quantity', 'additional_info', 'nutrition_score'],
-            ['111111', 'nutrition-fr_FR-mobile', 'sugar', '0', '50', 'this is a text', 'B'],
-            ['111111', 'nutrition-fr_FR-mobile', 'egg', '1', '23', '', 'C'],
-            ['111111', 'nutrition-en_US-ecommerce', 'sugar', '1', '66', 'this is a second text', 'B'],
-            ['111111', 'nutrition-en_US-ecommerce', 'egg', '1', '20', '', 'C'],
+            ['product', 'attribute', 'ingredient', 'allergen', 'quantity', 'additional_info', 'nutrition_score', 'weight'],
+            ['111111', 'nutrition-fr_FR-mobile', 'sugar', '0', '50', 'this is a text', 'B', '100 KILOGRAM'],
+            ['111111', 'nutrition-fr_FR-mobile', 'egg', '1', '23', '', 'C', ''],
+            ['111111', 'nutrition-en_US-ecommerce', 'sugar', '1', '66', 'this is a second text', 'B', ''],
+            ['111111', 'nutrition-en_US-ecommerce', 'egg', '1', '20', '', 'C', ''],
         ];
 
         Assert::assertSame($expected, \array_values($actualRows));
@@ -94,7 +94,7 @@ CSV;
                 'job_name' => static::CSV_EXPORT_JOB_CODE,
                 'status' => 0,
                 'type' => 'export',
-                'raw_parameters' => 'a:7:{s:8:"filePath";s:38:"/tmp/export_%job_label%_%datetime%.csv";s:9:"delimiter";s:1:";";s:9:"enclosure";s:1:""";s:10:"withHeader";b:1;s:14:"user_to_notify";N;s:21:"is_user_authenticated";b:0;s:7:"filters";a:1:{s:20:"table_attribute_code";s:9:"nutrition";}}',
+                'raw_parameters' => 'a:7:{s:7:"storage";a:2:{s:4:"type";s:5:"local";s:9:"file_path";s:38:"/tmp/export_%job_label%_%datetime%.csv";}s:9:"delimiter";s:1:";";s:9:"enclosure";s:1:""";s:10:"withHeader";b:1;s:14:"user_to_notify";N;s:21:"is_user_authenticated";b:0;s:7:"filters";a:1:{s:20:"table_attribute_code";s:9:"nutrition";}}',
             ]
         );
         $this->get(SqlCreateJobInstance::class)->createJobInstance(
@@ -104,7 +104,7 @@ CSV;
                 'job_name' => static::XLSX_EXPORT_JOB_CODE,
                 'status' => 0,
                 'type' => 'export',
-                'raw_parameters' => 'a:6:{s:8:"filePath";s:39:"/tmp/export_%job_label%_%datetime%.xlsx";s:10:"withHeader";b:1;s:12:"linesPerFile";i:10000;s:14:"user_to_notify";N;s:21:"is_user_authenticated";b:0;s:7:"filters";a:1:{s:20:"table_attribute_code";s:9:"nutrition";}}',
+                'raw_parameters' => 'a:6:{s:7:"storage";a:2:{s:4:"type";s:5:"local";s:9:"file_path";s:39:"/tmp/export_%job_label%_%datetime%.xlsx";}s:10:"withHeader";b:1;s:12:"linesPerFile";i:10000;s:14:"user_to_notify";N;s:21:"is_user_authenticated";b:0;s:7:"filters";a:1:{s:20:"table_attribute_code";s:9:"nutrition";}}',
             ]
         );
 
@@ -143,6 +143,12 @@ CSV;
                         ['code' => 'E'],
                     ],
                 ],
+                [
+                    'data_type' => 'measurement',
+                    'code' => 'weight',
+                    'measurement_family_code' => 'Weight',
+                    'measurement_default_unit_code' => 'KILOGRAM'
+                ],
             ]
         );
 
@@ -158,6 +164,10 @@ CSV;
                             'allergen' => false,
                             'additional_info' => 'this is a text',
                             'nutrition_score' => 'B',
+                            'weight' => [
+                                'unit' => 'KILOGRAM',
+                                'amount' => 100,
+                            ],
                         ],
                         [
                             'ingredient' => 'egg',

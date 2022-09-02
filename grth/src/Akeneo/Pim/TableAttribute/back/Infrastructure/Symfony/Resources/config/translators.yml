@@ -23,6 +23,18 @@ services:
         tags:
             - { name: pim_table_attribute.translator.value_translator}
 
+    Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Values\TableRecordTranslator:
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Domain\Value\Query\GetRecordLabel'
+        tags:
+            - { name: pim_table_attribute.translator.value_translator }
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Values\TableMeasurementTranslator:
+        arguments:
+            - '@akeneo_measurement.service_api.get_unit_translations'
+        tags:
+            - { name: pim_table_attribute.translator.value_translator }
+
     Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableValuesTranslator:
         arguments:
             - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Values\TableValueTranslatorRegistry'

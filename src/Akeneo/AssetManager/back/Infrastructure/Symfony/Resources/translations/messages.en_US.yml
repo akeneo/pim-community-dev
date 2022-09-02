@@ -32,14 +32,6 @@ akeneo_assetmanager:
        asset_manager_mass_edit:
            error: 'The mass edit failed on asset(s) "{{ assets }}" with error: "{{ error }}"'
 
-pim_import_export:
-    widget:
-        last_operations:
-            job_type:
-                asset_manager_compute_transformations: "Compute asset transformations"
-                asset_manager_link_assets_to_products: "Link assets to products"
-                asset_manager_execute_naming_convention: "Execute Asset Family naming convention"
-
 pim_analytics:
     info_type:
         api_connection: Number of API connections
@@ -63,14 +55,6 @@ pim_analytics:
 #        average_percentage_scopable_and_localizable_attributes: Average percentage of localizable and scopable attributes per asset family
 pim_catalog_asset_collection: Asset collection
 
-pim_datagrid:
-    cells:
-        type:
-            asset_manager_execute_naming_convention: Execute Asset Family naming convention
-            asset_manager_link_assets_to_products: Link assets to products
-            asset_manager_compute_transformations: Compute asset transformations
-            asset_manager_mass_delete_assets: Mass delete assets
-            asset_manager_mass_edit_assets: Mass edit assets
 batch_jobs:
     default_steps:
         execute_naming_convention: Execute Asset Family naming convention

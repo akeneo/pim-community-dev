@@ -221,6 +221,7 @@ pimee_enrich.mass_edit.product:
       label_count: "{1}<span class=\"AknFullPage-title--highlight\">1 product</span> publiceren|]1, Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span> publiceren"
       description: De producten worden gepubliceerd
       warning: De {{ itemsCount }} geselecteerde producten worden gepubliceerd.
+      already_published_product: "Er is een fout opgetreden bij het publiceren van product {{ productId }} ; het product wordt gepubliceerd in een ander proces."
     unpublish:
       label: Depubliceer
       label_count: "{1}Publicatie ongedaan maken van <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf [Publicatie ongedaan maken van <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span>"

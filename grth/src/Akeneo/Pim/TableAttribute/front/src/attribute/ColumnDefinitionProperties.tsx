@@ -1,10 +1,10 @@
 import React from 'react';
-import {Checkbox, Field, Helper, SectionTitle, TextInput, Link} from 'akeneo-design-system';
+import {Checkbox, Field, Helper, Link, SectionTitle, TextInput} from 'akeneo-design-system';
 import {getLabel, Locale, LocaleCode, useTranslate} from '@akeneo-pim-community/shared';
 import {ColumnCode, ColumnDefinition, TableAttribute} from '../models';
 import {ColumnDefinitionWithId} from './TableStructureApp';
 import {FieldsList} from '../shared';
-import {ColumnDefinitionPropertiesMapping} from './ColumDefinitionProperties';
+import {ColumnDefinitions} from './ColumDefinitionProperties';
 
 type ColumnDefinitionPropertiesProps = {
   attribute: TableAttribute;
@@ -14,7 +14,6 @@ type ColumnDefinitionPropertiesProps = {
   onChange: (column: ColumnDefinitionWithId) => void;
   savedColumnIds: string[];
   isDuplicateColumnCode: (code: ColumnCode) => boolean;
-  columnDefinitionPropertiesMapping: ColumnDefinitionPropertiesMapping;
 };
 
 const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
@@ -25,7 +24,6 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
   onChange,
   savedColumnIds,
   isDuplicateColumnCode,
-  columnDefinitionPropertiesMapping,
 }) => {
   const translate = useTranslate();
 
@@ -48,7 +46,7 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
   };
 
   const specificProperties = () => {
-    const TypeSpecificProperties = columnDefinitionPropertiesMapping[selectedColumn.data_type]?.default;
+    const TypeSpecificProperties = ColumnDefinitions[selectedColumn.data_type];
     return (
       TypeSpecificProperties && (
         <TypeSpecificProperties selectedColumn={selectedColumn} attribute={attribute} handleChange={handleChange} />
@@ -68,9 +66,10 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
       })
     );
   }
-  const isFirstColumn = attribute.table_configuration &&
-      attribute.table_configuration[0] &&
-      attribute.table_configuration[0].code === selectedColumn.code;
+  const isFirstColumn =
+    attribute.table_configuration &&
+    attribute.table_configuration[0] &&
+    attribute.table_configuration[0].code === selectedColumn.code;
 
   return (
     <div>

@@ -16,16 +16,10 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
  */
 class RuleEngineRunner implements CompiledRuleRunnerInterface
 {
-    private DenormalizerInterface $ruleDenormalizer;
-
-    private RunnerInterface $ruleRunner;
-
     public function __construct(
-        DenormalizerInterface $ruleDenormalizer,
-        RunnerInterface $ruleRunner
+        private DenormalizerInterface $ruleDenormalizer,
+        private RunnerInterface $ruleRunner
     ) {
-        $this->ruleDenormalizer = $ruleDenormalizer;
-        $this->ruleRunner = $ruleRunner;
     }
 
     public function run(CompiledRule $compiledRule): void

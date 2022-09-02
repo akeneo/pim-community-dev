@@ -1,4 +1,4 @@
-@javascript
+@javascript @product-rules-feature-enabled
 Feature: Execute rules from the user interface
   In order to run the rules
   As a product manager

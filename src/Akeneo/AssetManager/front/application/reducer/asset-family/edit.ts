@@ -7,11 +7,13 @@ import createAttribute, {
 import structure, {StructureState} from 'akeneoassetmanager/application/reducer/structure';
 import permission, {PermissionState} from 'akeneoassetmanager/application/reducer/asset-family/edit/permission';
 import attributes, {ListState} from 'akeneoassetmanager/application/reducer/attribute/list';
-import attribute, {EditState as EditAttributeState} from 'akeneoassetmanager/application/reducer/attribute/edit';
+import {editReducer, EditState as EditAttributeState} from 'akeneoassetmanager/application/reducer/attribute/edit';
 import {
   editOptionsReducer as options,
   EditOptionState,
 } from 'akeneoassetmanager/application/reducer/attribute/type/option';
+import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {Reducer} from 'akeneoassetmanager/application/configuration/attribute';
 
 export interface EditState {
   user: UserState;
@@ -26,14 +28,16 @@ export interface EditState {
   permission: PermissionState;
 }
 
-export default {
+const createAssetFamilyReducer = (getAttributeReducer: (normalizedAttribute: NormalizedAttribute) => Reducer) => ({
   user,
   right,
   createAttribute,
   attributes,
-  attribute,
+  attribute: editReducer(getAttributeReducer),
   structure,
   permission,
   options,
   form,
-};
+});
+
+export {createAssetFamilyReducer};

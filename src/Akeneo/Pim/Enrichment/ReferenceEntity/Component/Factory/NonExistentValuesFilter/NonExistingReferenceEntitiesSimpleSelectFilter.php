@@ -62,7 +62,7 @@ final class NonExistingReferenceEntitiesSimpleSelectFilter implements NonExisten
                         if (!is_array($value)) {
                             if (
                                 isset($recordCodes[$referenceEntityIdentifier])
-                                && in_array($value, $recordCodes[$referenceEntityIdentifier])
+                                && in_array(\strtolower($value), array_map('strtolower', $recordCodes[$referenceEntityIdentifier]))
                             ) {
                                 $singleLinkValues[$channel][$locale] = $value;
                             } else {

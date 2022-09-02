@@ -7,9 +7,9 @@ import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/
 import ListAsset, {createEmptyAsset, getAssetByCode} from 'akeneoassetmanager/domain/model/asset/list-asset';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {useTranslate} from '@akeneo-pim-community/shared';
+import {useAssetFetcher} from 'akeneoassetmanager/infrastructure/fetcher/useAssetFetcher';
 
 type BasketProps = {
-  dataProvider: any;
   selection: AssetCode[];
   assetFamilyIdentifier: AssetFamilyIdentifier;
   context: Context;
@@ -53,30 +53,27 @@ const IllustrationContainer = styled.div`
 
 const useLoadAssetCollection = (
   selection: AssetCode[],
-  dataProvider: any,
   assetFamilyIdentifier: AssetFamilyIdentifier,
   context: Context
 ) => {
   const [assetCollection, setAssetCollection] = useState<ListAsset[]>([]);
-
+  const assetFetcher = useAssetFetcher();
   useEffect(() => {
     if (0 === selection.length) {
       setAssetCollection([]);
       return;
     }
 
-    dataProvider.assetFetcher
-      .fetchByCode(assetFamilyIdentifier, selection, context)
-      .then((receivedAssets: ListAsset[]) => {
-        setAssetCollection(receivedAssets);
-      });
+    assetFetcher.fetchByCodes(assetFamilyIdentifier, selection, context).then((receivedAssets: ListAsset[]) => {
+      setAssetCollection(receivedAssets);
+    });
   }, [selection]);
 
   return {assetCollection, setAssetCollection};
 };
 
-const Basket = ({dataProvider, assetFamilyIdentifier, selection, context, onRemove, onRemoveAll}: BasketProps) => {
-  const {assetCollection} = useLoadAssetCollection(selection, dataProvider, assetFamilyIdentifier, context);
+const Basket = ({assetFamilyIdentifier, selection, context, onRemove, onRemoveAll}: BasketProps) => {
+  const {assetCollection} = useLoadAssetCollection(selection, assetFamilyIdentifier, context);
   const translate = useTranslate();
 
   if (0 === selection.length) {

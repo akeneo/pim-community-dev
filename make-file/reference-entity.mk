@@ -62,11 +62,17 @@ reference-entity-coupling-back: #Doc: launch PHP coupling detector for reference
 reference-entity-lint-back: #Doc: launch PHP linter for reference-entity
 	$(PHP_RUN) vendor/bin/phpstan analyse --configuration src/Akeneo/ReferenceEntity/tests/back/phpstan.neon.dist
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=src/Akeneo/ReferenceEntity/tests/back/.php_cs.php src/Akeneo/ReferenceEntity/back
+	${PHP_RUN} vendor/bin/rector process --dry-run --config=src/Akeneo/ReferenceEntity/tests/back/rector.php
+
+.PHONY: reference-entity-lint-fix-back
+reference-entity-lint-fix-back: #Doc: launch PHP lint fixer for reference-entity
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --config=src/Akeneo/ReferenceEntity/tests/back/.php_cs.php src/Akeneo/ReferenceEntity/back
+	${PHP_RUN} vendor/bin/rector process --config=src/Akeneo/ReferenceEntity/tests/back/rector.php
 
 .PHONY: reference-entity-unit-back
 reference-entity-unit-back: var/tests/phpspec #Doc: launch PHPSec for reference-entity
 ifeq ($(CI),true)
-	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run -c src/Akeneo/ReferenceEntity/tests/back/phpspec.yml.dist --format=junit > var/tests/phpspec/reference-entity.xml
+	$(PHP_RUN) vendor/bin/phpspec run -c src/Akeneo/ReferenceEntity/tests/back/phpspec.yml.dist --format=junit > var/tests/phpspec/reference-entity-unit-back.xml $(O)
 else
 	$(PHP_RUN) vendor/bin/phpspec run -c src/Akeneo/ReferenceEntity/tests/back/phpspec.yml.dist $(O)
 endif

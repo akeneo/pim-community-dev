@@ -20,18 +20,18 @@ class DatabaseBatchValidatorCommand extends Command
 {
     protected static $defaultName = 'pimee:database:batch-validate';
 
-    private array $baseContext=[];
-    private array $batchValidators=[] ;
+    private array $baseContext = [];
+    private array $batchValidators = [];
     private LoggerInterface $logger;
     private EntityContextProvider $contextProvider;
 
     public function __construct(iterable $batchValidators, LoggerInterface $logger, EntityContextProvider $contextProvider)
     {
         parent::__construct();
-        $this->batchValidators =  iterator_to_array($batchValidators);
+        $this->batchValidators = iterator_to_array($batchValidators);
         $this->logger = $logger;
         $this->contextProvider = $contextProvider;
-        $baseContext['cmd_class']=get_class($this);
+        $baseContext['cmd_class'] = get_class($this);
     }
 
     public function remaining(\IteratorAggregate $generator)
@@ -48,8 +48,10 @@ class DatabaseBatchValidatorCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $executionStatus = self::SUCCESS;
+
         $this->logger->notice("Starting database validation", $this->baseContext);
-        $constraintViolationLists =[];
+        $constraintViolationLists = [];
 
         /** @var BatchEntityValidator $batchValidator */
         foreach ($this->batchValidators as $batchValidator) {
@@ -57,22 +59,24 @@ class DatabaseBatchValidatorCommand extends Command
         }
         foreach ($constraintViolationLists as $batchValidator => $constraintViolationLists) {
             $this->logger->notice("Inspecting source: {$batchValidator}");
-            /** @var ConstraintViolationList $constraintViolationList  */
+            /** @var ConstraintViolationList $constraintViolationList */
             foreach ($constraintViolationLists as $constraintViolationList) {
                 /** @var ConstraintViolation $constraintViolation */
                 foreach ($constraintViolationList as $constraintViolation) {
+                    $executionStatus = self::FAILURE;
                     $rootEntity = $constraintViolation->getRoot();
-                    $context=array_merge($this->baseContext, $this->contextProvider->mapEntity2LogContext($rootEntity));
-                    $context['validator']=$batchValidator;
-                    $context['contraint']=get_class($constraintViolation->getConstraint());
-                    $context['message_template']=$constraintViolation->getMessageTemplate();
-                    $context['message_parameters']=$constraintViolation->getParameters();
-                    $context['property_path']=$constraintViolation->getPropertyPath();
+                    $context = array_merge($this->baseContext, $this->contextProvider->mapEntity2LogContext($rootEntity));
+                    $context['validator'] = $batchValidator;
+                    $context['contraint'] = get_class($constraintViolation->getConstraint());
+                    $context['message_template'] = $constraintViolation->getMessageTemplate();
+                    $context['message_parameters'] = $constraintViolation->getParameters();
+                    $context['property_path'] = $constraintViolation->getPropertyPath();
 
                     $this->logger->error($constraintViolation->getMessage(), $context);
                 }
             }
         }
         $this->logger->notice("Ending database validation", $this->baseContext);
+        return $executionStatus;
     }
 }

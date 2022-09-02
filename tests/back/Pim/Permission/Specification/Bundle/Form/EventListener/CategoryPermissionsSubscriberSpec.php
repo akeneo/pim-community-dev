@@ -2,10 +2,11 @@
 
 namespace Specification\Akeneo\Pim\Permission\Bundle\Form\EventListener;
 
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\UserManagement\Component\Model\Group;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Pim\Permission\Bundle\Form\Type\CategoryPermissionsType;
 use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
 use Prophecy\Argument;
@@ -25,7 +26,8 @@ class CategoryPermissionsSubscriberSpec extends ObjectBehavior
         Form $viewForm,
         Form $editForm,
         Form $ownForm,
-        Form $applyForm
+        Form $applyForm,
+        FeatureFlags $featureFlags
     ) {
         $securityFacade->isGranted(Argument::any())->willReturn(true);
 
@@ -42,7 +44,8 @@ class CategoryPermissionsSubscriberSpec extends ObjectBehavior
         $category->isRoot()->willReturn(true);
         $category->getId()->willReturn(1);
 
-        $this->beConstructedWith($accessManager, $securityFacade);
+        $featureFlags->isEnabled('permission')->willReturn(true);
+        $this->beConstructedWith($accessManager, $securityFacade, $featureFlags);
     }
 
     function it_is_an_event_subscriber()

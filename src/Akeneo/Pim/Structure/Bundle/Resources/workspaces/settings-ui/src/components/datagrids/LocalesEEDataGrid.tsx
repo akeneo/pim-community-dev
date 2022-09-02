@@ -33,7 +33,7 @@ const LocalesEEDataGrid: FC<Props> = ({locales, followLocale, getDictionaryTotal
     debouncedSearch(searchValue);
   };
 
-  const localeColumnWidth = FeatureFlags.isEnabled('data_quality_insights') ? '380px' : undefined;
+  const localeColumnWidth = FeatureFlags.isEnabled('data_quality_insights_all_criteria') ? '380px' : undefined;
 
   return (
     <>
@@ -53,10 +53,10 @@ const LocalesEEDataGrid: FC<Props> = ({locales, followLocale, getDictionaryTotal
           subtitle={translate('pim_datagrid.no_results_subtitle')}
         />
       ) : (
-        <LocalesTable isDqiFeatureActive={FeatureFlags.isEnabled('data_quality_insights')}>
+        <LocalesTable isDqiFeatureActive={FeatureFlags.isEnabled('data_quality_insights_all_criteria')}>
           <Table
             className={'grid'}
-            isSelectable={FeatureFlags.isEnabled('data_quality_insights')}
+            isSelectable={FeatureFlags.isEnabled('data_quality_insights_all_criteria')}
             displayCheckbox={!!selectionState}
           >
             <Table.Header>
@@ -64,7 +64,7 @@ const LocalesEEDataGrid: FC<Props> = ({locales, followLocale, getDictionaryTotal
               <Table.HeaderCell width={localeColumnWidth}>
                 {translate('pim_enrich.entity.locale.grid.columns.code')}
               </Table.HeaderCell>
-              {FeatureFlags.isEnabled('data_quality_insights') && (
+              {FeatureFlags.isEnabled('data_quality_insights_all_criteria') && (
                 <Table.HeaderCell>
                   {translate('pimee_enrich.entity.locale.grid.columns.dictionary_words_count.title')}
                 </Table.HeaderCell>
@@ -85,7 +85,7 @@ const LocalesEEDataGrid: FC<Props> = ({locales, followLocale, getDictionaryTotal
                     <Table.Cell rowTitle width={localeColumnWidth}>
                       {locale.code}
                     </Table.Cell>
-                    {FeatureFlags.isEnabled('data_quality_insights') && (
+                    {FeatureFlags.isEnabled('data_quality_insights_all_criteria') && (
                       <Table.Cell>
                         {totalWords === undefined ? (
                           <Badge level={'tertiary'}>

@@ -1,0 +1,41 @@
+apiVersion: cloudfunctions.cnrm.cloud.google.com/v1beta1
+kind: CloudFunctionsFunction
+metadata:
+  name: {{ .Values.pim.cloudFunction.name }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-options: Replace=true
+spec:
+  availableMemoryMb: {{ .Values.pim.cloudFunction.memory }}
+  description: "transform command into pub/sub message"
+  entryPoint: "publishCommand"
+  runtime: "nodejs16"
+  httpsTrigger:
+    securityLevel: SECURE_ALWAYS
+  ingressSettings: ALLOW_ALL
+  projectRef:
+    external: "projects/{{ .Values.common.gcpProjectID }}"
+  sourceArchiveUrl: "gs://{{ .Values.pim.cloudFunction.bucket}}/{{ .Values.pim.cloudFunction.sourceCodeZip }}"
+  region: "{{ .Values.common.region }}"
+  environmentVariables:
+    projectId: "{{ .Values.common.gcpProjectID }}"
+    tenantContext: "tenant_contexts"
+  serviceAccountRef:
+    external: "{{ .Values.pim.cloudFunction.serviceAccountEmail }}"
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicy
+metadata:
+  name: {{ .Values.pim.cloudFunction.name }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-options: "Replace=true"
+spec:
+  resourceRef:
+    apiVersion: cloudfunctions.cnrm.cloud.google.com/v1beta1
+    kind: CloudFunctionsFunction
+    name: {{ .Values.pim.cloudFunction.name }}
+  bindings:
+    - role: "roles/cloudfunctions.invoker"
+      members:
+        - "serviceAccount:{{ .Values.pim.cloudFunction.serviceAccountEmail }}"

@@ -34,7 +34,7 @@ SOURCE_GOOGLE_PROJECT_ID=${SOURCE_GOOGLE_PROJECT_ID:-"akecld-saas-prod"}
 DESTINATION_GOOGLE_PROJECT_ID="akecld-saas-dev"
 TARGET_DNS_FQDN="${INSTANCE_NAME}.dev.cloud.akeneo.com."
 PIMUSER="adminakeneo"
-PIMPASSWORD="Q7sKB5xP2ttc5KnqFPOF1BrOkTRSulmEj528BpJzbDcLbYSHU1"
+PIMPASSWORD=$(pwgen -s 32 1)
 
 echo "- Get mysql and ES disk informations about prod source instance"
 SELF_LINK_MYSQL=$(gcloud --project=${SOURCE_GOOGLE_PROJECT_ID} compute snapshots list --filter="labels.backup-ns=${SOURCE_PFID} AND labels.pvc_name=data-mysql-server-0" --limit=1 --sort-by="~creationTimestamp" --uri)
@@ -60,17 +60,13 @@ yq w -i ${DESTINATION_PATH}/values.yaml pim.hook.upgradeES.enabled false
 yq w -i ${DESTINATION_PATH}/values.yaml mysql.mysql.resetPassword true
 yq w -i ${DESTINATION_PATH}/values.yaml mysql.mysql.userPassword test
 yq w -i ${DESTINATION_PATH}/values.yaml mysql.mysql.rootPassword test
-yq w -i ${DESTINATION_PATH}/values.yaml pim.defaultAdminUser.email "${PIMUSER}"
+yq w -i ${DESTINATION_PATH}/values.yaml pim.defaultAdminUser.email "fake-a9r3-${PIMUSER}@akeneo.com"
 yq w -i ${DESTINATION_PATH}/values.yaml pim.defaultAdminUser.login "${PIMUSER}"
 yq w -i ${DESTINATION_PATH}/values.yaml pim.defaultAdminUser.password "${PIMPASSWORD}"
-yq w -i ${DESTINATION_PATH}/values.yaml mysql.common.persistentDisks[0] "${PFID}-mysql"
 #To run local duplication, UnComment & add prod "mailgun_api_key"
 #yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.mailgun_api_key' "key-coincoin"
 yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.papo_project_code' "${TARGET_PAPO_PROJECT_CODE}"
 yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.dns_external' "${TARGET_DNS_FQDN}"
-if [[ ${ACTIVATE_MONITORING} != "false" ]]; then
-      yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/${BUCKET}/${SOURCE_PED_TAG}//deployments/terraform/monitoring"
-fi
 yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/${BUCKET}/${SOURCE_PED_TAG}//deployments/terraform"
 yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.pim_version' "${SOURCE_PED_TAG}"
 # remove the old mysql_disk & mysql_source_snapshot if exit
@@ -97,14 +93,18 @@ cd ${PED_DIR}; TF_INPUT_FALSE="-input=false" TF_AUTO_APPROVE="-auto-approve" INS
 echo "- Create disk ES disk (delete before if existing)"
 ES_PVC_MASTER_0=data-elasticsearch-master-0
 ES_PVC_MASTER_1=data-elasticsearch-master-1
-ES_PD_NAME_MASTER_0=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" --arg ES_PVC_MASTER_0 "$ES_PVC_MASTER_0" ' [.items[] | select(.spec.claimRef.namespace == $PFID) | select(.spec.claimRef.name == $ES_PVC_MASTER_0) | .spec.gcePersistentDisk.pdName] | .[]')
-ES_PD_NAME_MASTER_1=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" --arg ES_PVC_MASTER_1 "$ES_PVC_MASTER_1" ' [.items[] | select(.spec.claimRef.namespace == $PFID) | select(.spec.claimRef.name == $ES_PVC_MASTER_1) | .spec.gcePersistentDisk.pdName] | .[]')
+ES_PD_NAME_MASTER_0_PATH=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" --arg ES_PVC_MASTER_0 "$ES_PVC_MASTER_0" ' [.items[] | select(.spec.claimRef.namespace == $PFID) | select(.spec.claimRef.name == $ES_PVC_MASTER_0) | .spec.csi.volumeHandle] | .[]')
+ES_PD_NAME_MASTER_1_PATH=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" --arg ES_PVC_MASTER_1 "$ES_PVC_MASTER_1" ' [.items[] | select(.spec.claimRef.namespace == $PFID) | select(.spec.claimRef.name == $ES_PVC_MASTER_1) | .spec.csi.volumeHandle] | .[]')
+ES_PD_NAME_MASTER_0="${ES_PD_NAME_MASTER_0_PATH##*/}"
+ES_PD_NAME_MASTER_1="${ES_PD_NAME_MASTER_1_PATH##*/}"
 ES_PV_NAME_MASTER_0=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" --arg ES_PVC_MASTER_0 "$ES_PVC_MASTER_0" ' [.items[] | select(.spec.claimRef.namespace == $PFID) | select(.spec.claimRef.name == $ES_PVC_MASTER_0) | .metadata.name] | .[]')
 ES_PV_NAME_MASTER_1=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" --arg ES_PVC_MASTER_1 "$ES_PVC_MASTER_1" ' [.items[] | select(.spec.claimRef.namespace == $PFID) | select(.spec.claimRef.name == $ES_PVC_MASTER_1) | .metadata.name] | .[]')
 ES_PVC_DATA_0=data-elasticsearch-data-0
 ES_PVC_DATA_1=data-elasticsearch-data-1
-ES_PD_NAME_DATA_0=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" --arg ES_PVC_DATA_0 "$ES_PVC_DATA_0" ' [.items[] | select(.spec.claimRef.namespace == $PFID) | select(.spec.claimRef.name == $ES_PVC_DATA_0) | .spec.gcePersistentDisk.pdName] | .[]')
-ES_PD_NAME_DATA_1=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" --arg ES_PVC_DATA_1 "$ES_PVC_DATA_1" ' [.items[] | select(.spec.claimRef.namespace == $PFID) | select(.spec.claimRef.name == $ES_PVC_DATA_1) | .spec.gcePersistentDisk.pdName] | .[]')
+ES_PD_NAME_DATA_0_PATH=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" --arg ES_PVC_DATA_0 "$ES_PVC_DATA_0" ' [.items[] | select(.spec.claimRef.namespace == $PFID) | select(.spec.claimRef.name == $ES_PVC_DATA_0) | .spec.csi.volumeHandle] | .[]')
+ES_PD_NAME_DATA_1_PATH=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" --arg ES_PVC_DATA_1 "$ES_PVC_DATA_1" ' [.items[] | select(.spec.claimRef.namespace == $PFID) | select(.spec.claimRef.name == $ES_PVC_DATA_1) | .spec.csi.volumeHandle] | .[]')
+ES_PD_NAME_DATA_0="${ES_PD_NAME_DATA_0_PATH##*/}"
+ES_PD_NAME_DATA_1="${ES_PD_NAME_DATA_1_PATH##*/}"
 ES_PV_NAME_DATA_0=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" --arg ES_PVC_DATA_0 "$ES_PVC_DATA_0" ' [.items[] | select(.spec.claimRef.namespace == $PFID) | select(.spec.claimRef.name == $ES_PVC_DATA_0) | .metadata.name] | .[]')
 ES_PV_NAME_DATA_1=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" --arg ES_PVC_DATA_1 "$ES_PVC_DATA_1" ' [.items[] | select(.spec.claimRef.namespace == $PFID) | select(.spec.claimRef.name == $ES_PVC_DATA_1) | .metadata.name] | .[]')
 
@@ -159,6 +159,28 @@ kubectl scale -n ${PFID} deploy/elasticsearch-client --replicas=1 --timeout=0s |
 kubectl scale -n ${PFID} statefulsets elasticsearch-data --replicas=2 --timeout=0s || true
 kubectl scale -n ${PFID} statefulsets elasticsearch-master --replicas=2 --timeout=0s || true
 
+echo "- Wait ES"
+# Wait ES
+POD_ES_CLIENT=$(kubectl get pods --namespace=${PFID} -l component=client | awk '/client/ {print $1}')
+ES_CLIENT_URL="http://elasticsearch-client:9200"
+MAX_COUNTER=120
+COUNTER=1
+SLEEP_TIME=5
+
+echo "Checking Elasticsearch connectivity..."
+while ! (kubectl exec -n ${PFID} ${POD_ES_CLIENT} -- /bin/bash -c "curl --fail ${ES_CLIENT_URL}/_cluster/health?wait_for_status=yellow\&timeout=1s\&pretty"); do
+    kubectl exec -n ${PFID} ${POD_ES_CLIENT} -- /bin/bash -c "curl ${ES_CLIENT_URL}/_cluster/health?pretty" || true
+    COUNTER=$((${COUNTER} + 1))
+    if [ ${COUNTER} -gt ${MAX_COUNTER} ]; then
+        TIME_WAITED=$(( COUNTER*SLEEP_TIME ))
+        echo "We have been waiting for Elasticsearch for too long: ${TIME_WAITED} seconds; failing." >&2
+        exit 1
+    fi;
+    sleep ${SLEEP_TIME}
+done
+TIME_WAITED=$(( COUNTER*SLEEP_TIME ))
+echo "We have been waiting for Elasticsearch ${TIME_WAITED} seconds!"
+
 echo "- Anonymize"
 PODSQL=$(kubectl get pods --namespace=${PFID} -l component=mysql | awk '/mysql/ {print $1}')
 PODPIMWEB=$(kubectl get pods --no-headers --namespace=${PFID} -l component=pim-web | awk 'NR==1{print $1}')
@@ -176,7 +198,9 @@ kubectl exec -it -n ${PFID} ${PODSQL} -- /bin/bash -c 'mysql -u root -p$(cat /my
 
 
 echo "- Ensure that DQI evaluations will start"
-kubectl exec -it -n ${PFID} ${PODSQL} -- /bin/bash -c 'mysql -u root -p$(cat /mysql_temp/root_password.txt) -D akeneo_pim -e "UPDATE akeneo_batch_job_execution SET exit_code=\"COMPLETED\" WHERE exit_code=\"UNKNOWN\" AND job_instance_id=(select id from akeneo_batch_job_instance WHERE code=\"data_quality_insights_evaluations\");"'
+kubectl exec -it -n ${PFID} ${PODSQL} -- /bin/bash -c 'mysql -u root -p$(cat /mysql_temp/root_password.txt) -D akeneo_pim -e "UPDATE akeneo_batch_job_execution SET exit_code=\"FAILED\", status=6 WHERE exit_code=\"UNKNOWN\" AND job_instance_id=(select id from akeneo_batch_job_instance WHERE code=\"data_quality_insights_evaluations\");"'
 
 echo "- Upgrade config files"
 yq d -i ${DESTINATION_PATH}/values.yaml pim.hook
+yq d -i ${DESTINATION_PATH}/values.yaml mysql.mysql.resetPassword
+

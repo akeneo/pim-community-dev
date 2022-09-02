@@ -14,11 +14,8 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
  */
 class CountAssets implements CountAssetsInterface
 {
-    private Client $assetClient;
-
-    public function __construct(Client $assetClient)
+    public function __construct(private Client $assetClient)
     {
-        $this->assetClient = $assetClient;
     }
 
     public function all(): int

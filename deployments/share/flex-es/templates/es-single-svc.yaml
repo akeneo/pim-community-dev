@@ -27,4 +27,3 @@ spec:
     port: {{ .Values.common.service.httpPort }}
     targetPort: 9200
     protocol: TCP
-

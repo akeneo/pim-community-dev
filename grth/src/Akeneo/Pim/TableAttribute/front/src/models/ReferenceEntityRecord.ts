@@ -1,13 +1,18 @@
-import {LabelCollection} from '@akeneo-pim-community/shared';
+import {ChannelCode, LabelCollection, LocaleCode} from '@akeneo-pim-community/shared';
 import {ReferenceEntityIdentifierOrCode} from './ReferenceEntity';
 
-type RecordIdentifier = string;
-type RecordCode = string;
+type RecordIdentifier = string; //"alessi";
+export type RecordCode = string; // "brand_alessi_dc1c552a-108c-4e1d-9d72-7f17368bdb5a";
 
+export type RecordCompleteness = {complete: number; required: number};
+
+/**
+ * When you fetch several records, you will get "completeness" field
+ * When you fetch unique records, you will get "created_at", "updated_at" and "permission" fields
+ */
 export type ReferenceEntityRecord = {
-  code: RecordCode; //"alessi"
-  completeness: {complete: number; required: number};
-  identifier: RecordIdentifier; // "brand_alessi_dc1c552a-108c-4e1d-9d72-7f17368bdb5a"
+  code: RecordCode;
+  identifier: RecordIdentifier;
   image: {
     extension: string;
     filePath: string;
@@ -17,4 +22,16 @@ export type ReferenceEntityRecord = {
   } | null;
   labels: LabelCollection;
   reference_entity_identifier: ReferenceEntityIdentifierOrCode;
+  values: {
+    [key: string]: {
+      attribute: string;
+      channel: ChannelCode | null;
+      data: any;
+      locale: LocaleCode | null;
+    };
+  };
+  completeness?: RecordCompleteness;
+  created_at?: string;
+  updated_at?: string;
+  permission?: {[key: string]: boolean};
 };

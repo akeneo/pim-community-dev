@@ -43,6 +43,7 @@ services:
         class: Akeneo\Pim\TableAttribute\Infrastructure\Normalizer\Indexing\GetTableValuesProjection
         arguments:
             - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'
+            - '@Akeneo\Pim\TableAttribute\Infrastructure\AntiCorruptionLayer\AclMeasureConverter'
         tags:
             - { name: 'akeneo.pim.enrichment.product.query.indexing_additional_properties' }
             - { name: 'akeneo.pim.enrichment.product_model.query.indexing_additional_properties' }

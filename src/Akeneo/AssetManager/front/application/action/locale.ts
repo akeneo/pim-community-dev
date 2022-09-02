@@ -1,13 +1,12 @@
 import {localesReceived} from 'akeneoassetmanager/domain/event/locale';
 import Locale from 'akeneoassetmanager/domain/model/locale';
 
-const fetcherRegistry = require('pim/fetcher-registry');
-
-export const updateActivatedLocales = () => async (dispatch: any): Promise<void> => {
-  fetcherRegistry
-    .getFetcher('locale')
-    .fetchActivated({filter_locales: false})
-    .then((locales: Locale[]) => {
-      dispatch(localesReceived(locales));
-    });
+const updateActivatedLocales = (localeFetcher: {
+  fetchActivated: (options: {filter_locales: boolean}) => Promise<Locale[]>;
+}) => async (dispatch: any): Promise<void> => {
+  localeFetcher.fetchActivated({filter_locales: false}).then((locales: Locale[]) => {
+    dispatch(localesReceived(locales));
+  });
 };
+
+export {updateActivatedLocales};

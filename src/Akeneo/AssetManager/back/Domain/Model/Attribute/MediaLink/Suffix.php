@@ -21,11 +21,8 @@ class Suffix
 {
     public const EMPTY = null;
 
-    private ?string $suffix = null;
-
-    private function __construct(?string $suffix)
+    private function __construct(private ?string $suffix)
     {
-        $this->suffix = $suffix;
     }
 
     public static function fromString(?string $suffix): self

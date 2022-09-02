@@ -3,9 +3,13 @@ import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/fro
 import {DatagridTableFilter} from '../../../src';
 import {act, fireEvent, screen} from '@testing-library/react';
 import {mockScroll} from '../../shared/mockScroll';
+import {getComplexTableAttribute} from '../../factories';
+import {TestAttributeContextProvider} from '../../shared/TestAttributeContextProvider';
 
 jest.mock('../../../src/fetchers/AttributeFetcher');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
+jest.mock('../../../src/fetchers/RecordFetcher');
+jest.mock('../../../src/fetchers/MeasurementFamilyFetcher');
 const scroll = mockScroll();
 
 const openDropdown = async () => {
@@ -40,7 +44,7 @@ const selectOperator = (operator: string) => {
 };
 
 describe('DatagridTableFilter', () => {
-  it('should display a filter', async () => {
+  it('should display component filtering nothing', async () => {
     renderWithProviders(
       <DatagridTableFilter
         onChange={jest.fn()}
@@ -79,7 +83,7 @@ describe('DatagridTableFilter', () => {
     await openDropdown();
 
     expect(screen.getByTitle('Quantity')).toBeInTheDocument();
-    expect(await screen.findByTitle('Salt')).toBeInTheDocument();
+    expect(await screen.findByTitle('salt')).toBeInTheDocument();
     expect(screen.getByTitle('pim_common.operators.>=')).toBeInTheDocument();
     expect(screen.getByTitle('10000')).toBeInTheDocument();
   });
@@ -166,7 +170,7 @@ describe('DatagridTableFilter', () => {
     fireEvent.change(screen.getByRole('spinbutton'), {target: {value: '4000'}});
     fireEvent.click(screen.getByText('pim_common.update'));
 
-    expect(screen.getByTitle('Pepper Quantity pim_common.operators.> 4000')).toBeInTheDocument();
+    expect(await screen.findByTitle('Pepper Quantity pim_common.operators.> 4000')).toBeInTheDocument();
     expect(handleChange).toBeCalledWith({
       column: 'quantity',
       operator: '>',
@@ -303,5 +307,67 @@ describe('DatagridTableFilter', () => {
       operator: 'IN',
       value: ['salt', 'pepper'],
     });
+  });
+
+  it('should render records values for first column', async () => {
+    const handleChange = jest.fn();
+    renderWithProviders(
+      <TestAttributeContextProvider attribute={getComplexTableAttribute('reference_entity')}>
+        <DatagridTableFilter
+          showLabel={true}
+          canDisable={true}
+          onDisable={jest.fn()}
+          attributeCode={'city'}
+          onChange={handleChange}
+          initialDataFilter={{}}
+        />
+      </TestAttributeContextProvider>
+    );
+
+    await openDropdown();
+    await selectRow('pim_table_attribute.datagrid.any_row');
+    selectColumn('City');
+    selectOperator('IN');
+    act(() => {
+      fireEvent.click(screen.getAllByTitle('pim_common.open')[3]);
+    });
+    expect(await screen.findByText('Vannes')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Vannes'));
+    act(() => scroll());
+    expect(await screen.findByText('Coueron')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Coueron'));
+    fireEvent.click(screen.getByText('pim_common.update'));
+
+    expect(
+      await screen.findByTitle('pim_table_attribute.datagrid.any City pim_common.operators.IN Vannes, Coueron')
+    ).toBeInTheDocument();
+    expect(handleChange).toBeCalledWith({
+      column: 'city',
+      operator: 'IN',
+      value: ['vannes00bcf56a_2aa9_47c5_ac90_a973460b18a3', 'coueron00893335_2e73_41e3_ac34_763fb6a35107'],
+    });
+  });
+
+  it('should render criteria with record', async () => {
+    const handleChange = jest.fn();
+    renderWithProviders(
+      <TestAttributeContextProvider attribute={getComplexTableAttribute('reference_entity')}>
+        <DatagridTableFilter
+          showLabel={true}
+          canDisable={true}
+          onDisable={jest.fn()}
+          attributeCode={'city'}
+          onChange={handleChange}
+          initialDataFilter={{
+            row: 'nantes00e3cffd_f60e_4a51_925b_d2952bd947e1',
+            column: 'city',
+            operator: 'IN',
+            value: ['vannes00bcf56a_2aa9_47c5_ac90_a973460b18a3', 'coueron00893335_2e73_41e3_ac34_763fb6a35107'],
+          }}
+        />
+      </TestAttributeContextProvider>
+    );
+
+    expect(await screen.findByTitle('Nantes City pim_common.operators.IN Vannes, Coueron')).toBeInTheDocument();
   });
 });

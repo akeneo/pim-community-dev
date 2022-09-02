@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
-use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
 use Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IsValidAttribute;
 use Akeneo\Pim\Automation\RuleEngine\Component\Validator\IsValidAttributeValidator;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;

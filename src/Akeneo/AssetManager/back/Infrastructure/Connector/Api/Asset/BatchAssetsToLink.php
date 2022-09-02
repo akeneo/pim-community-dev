@@ -32,13 +32,10 @@ use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkMultipleAssetsCommand;
  */
 class BatchAssetsToLink
 {
-    private LinkAssetsHandler $linkAssetsHandler;
-
     public LinkMultipleAssetsCommand $linkMultipleAssetsCommand;
 
-    public function __construct(LinkAssetsHandler $linkAssetsHandler)
+    public function __construct(private LinkAssetsHandler $linkAssetsHandler)
     {
-        $this->linkAssetsHandler = $linkAssetsHandler;
         $this->linkMultipleAssetsCommand = new LinkMultipleAssetsCommand();
     }
 

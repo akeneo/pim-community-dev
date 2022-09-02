@@ -1,5 +1,5 @@
 import React from 'react';
-import {PageContent} from '@akeneo-pim-community/shared';
+import {PageContent, useFeatureFlags} from '@akeneo-pim-community/shared';
 import {Header} from '@akeneo-pim-community/activity/src/components/Header';
 import {CompletenessWidget} from '@akeneo-pim-community/activity/src/components/Widgets/CompletenessWidget';
 import {LastOperationsWidget} from '@akeneo-pim-community/activity/src/components/Widgets/LastOperationsWidget';
@@ -13,14 +13,16 @@ const StyledPageContent = styled(PageContent)`
 `;
 
 const DashboardIndex = () => {
+  const {isEnabled} = useFeatureFlags();
+
   return (
     <>
       <Header />
       <StyledPageContent>
-        <TeamworkAssistantWidget />
+        {isEnabled('teamwork_assistant') && <TeamworkAssistantWidget />}
         <CompletenessWidget />
         <LastOperationsWidget />
-        <WorkflowWidget />
+        {isEnabled('proposal') && <WorkflowWidget />}
         <PimVersion />
       </StyledPageContent>
     </>

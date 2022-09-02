@@ -1,0 +1,24 @@
+includes:
+    - phpstan-ee.neon
+
+parameters:
+  excludePaths:
+    - %rootDir%/../../../components/tailored-export/back/src/Application/Common/Selection/ReferenceEntity
+    - %rootDir%/../../../components/tailored-export/back/Application/Common/Selection/ReferenceEntityCollection
+    - %rootDir%/../../../components/tailored-export/back/src/Application/MapValues/SelectionApplier/ReferenceEntity
+    - %rootDir%/../../../components/tailored-export/back/src/Application/MapValues/SelectionApplier/ReferenceEntityCollection
+    - %rootDir%/../../../components/tailored-export/back/src/Infrastructure/Controller/GetRecordsAction.php
+    - %rootDir%/../../../components/tailored-export/back/src/Infrastructure/Query/AssetManager
+    - %rootDir%/../../../components/tailored-export/back/src/Infrastructure/Query/ReferenceEntity
+    - %rootDir%/../../../components/tailored-export/back/src/Infrastructure/Validation/IsValidAssetAttributeValidator
+    - %rootDir%/../../../components/tailored-export/back/src/Infrastructure/Validation/Source/AssetCollection/AssetCollectionSelectionValidator.php
+    - %rootDir%/../../../components/tailored-export/back/src/Infrastructure/Validation/Source/ReferenceEntity
+    - %rootDir%/../../../components/tailored-export/back/src/Infrastructure/Validation/Source/ReferenceEntityCollection
+    - %rootDir%/../../../components/tailored-export/back/tests/Acceptance/Hydrator/Value/Attribute/AssetCollectionValueHydratorTest.php
+    - %rootDir%/../../../components/tailored-export/back/tests/Acceptance/Hydrator/Value/Attribute/ReferenceEntityCollectionValueHydratorTest.php
+    - %rootDir%/../../../components/tailored-export/back/tests/Acceptance/Hydrator/Value/Attribute/ReferenceEntityValueHydratorTest.php
+    - %rootDir%/../../../components/tailored-export/back/tests/Integration/Infrastructure/Validation/Source/AssetCollection/AssetCollectionSelectionValidatorTest.php
+    - %rootDir%/../../../components/tailored-export/back/tests/Specification/Application/Common/Selection/ReferenceEntity
+    - %rootDir%/../../../components/tailored-export/back/tests/Specification/Application/Common/Selection/ReferenceEntityCollection
+    - %rootDir%/../../../components/tailored-export/back/tests/Specification/Application/MapValues/SelectionApplier/ReferenceEntity
+    - %rootDir%/../../../components/tailored-export/back/tests/Specification/Application/MapValues/SelectionApplier/ReferenceEntityCollection

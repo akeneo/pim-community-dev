@@ -48,24 +48,12 @@ class ImagePreviewAction
      */
     private const ROOT_FLAG = '__root__';
 
-    private AttributeRepositoryInterface $attributeRepository;
-
-    private PreviewGeneratorInterface $previewGenerator;
-
-    private DefaultImageProviderInterface $defaultImageProvider;
-
-    private LoaderInterface $imageLoader;
-
     public function __construct(
-        AttributeRepositoryInterface $attributeRepository,
-        PreviewGeneratorInterface $previewGenerator,
-        DefaultImageProviderInterface $defaultImageProvider,
-        LoaderInterface $imageLoader
+        private AttributeRepositoryInterface $attributeRepository,
+        private PreviewGeneratorInterface $previewGenerator,
+        private DefaultImageProviderInterface $defaultImageProvider,
+        private LoaderInterface $imageLoader,
     ) {
-        $this->attributeRepository = $attributeRepository;
-        $this->previewGenerator = $previewGenerator;
-        $this->defaultImageProvider = $defaultImageProvider;
-        $this->imageLoader = $imageLoader;
     }
 
     public function __invoke(
@@ -87,9 +75,9 @@ class ImagePreviewAction
                 $this->previewGenerator->remove($data, $attribute, $type);
             }
             $imagePreview = $this->previewGenerator->generate($data, $attribute, $type);
-        } catch (AttributeNotFoundException $e) {
+        } catch (AttributeNotFoundException) {
             $imagePreview = $this->defaultImageProvider->getImageUrl(OtherGenerator::DEFAULT_OTHER, $type);
-        } catch (CouldNotGeneratePreviewException $e) {
+        } catch (CouldNotGeneratePreviewException) {
             return new JsonResponse(null, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 

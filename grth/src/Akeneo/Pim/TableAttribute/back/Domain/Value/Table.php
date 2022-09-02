@@ -48,7 +48,7 @@ final class Table implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @param array<int,array> $data
+     * @param array<int, array<string, mixed>> $data
      */
     public static function fromNormalized(array $data): self
     {
@@ -63,7 +63,7 @@ final class Table implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @return array<array>
+     * @return array<array<string, mixed>>
      */
     public function normalize(): array
     {

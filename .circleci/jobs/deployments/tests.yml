@@ -1,0 +1,70 @@
+envVarsDeployDev: &envVarsDeployDev
+dockerCloudDeployerCurrent: &dockerCloudDeployerCurrent
+dockerCloudDeployerNext: &dockerCloudDeployerNext
+executor-machine: &executor-machine
+
+jobs:
+    # Description :
+    #    Lint on helm files
+    test_helm_generated_k8s_files:
+        parameters:
+            PRODUCT_TYPE:
+                type: string
+                default: "srnt"
+            CLUSTER_VERSION:
+                type: string
+                default: ""
+            CLUSTER_NEXT:
+                type: boolean
+                default: false
+        environment:
+            <<: *envVarsDeployDev
+        <<: *dockerCloudDeployerCurrent
+        resource_class: small
+        steps:
+            - attach_workspace:
+                  at: ~/
+            - when:
+                  condition:
+                      equal: [true, << parameters.CLUSTER_NEXT >> ]
+                  steps:
+                      - modify_cluster
+            - set_gcloud_config_dev
+            - run:
+                  name: Define value for next steps
+                  command: |
+                      TYPE="<<parameters.PRODUCT_TYPE>>"
+                      K8S_CLUSTER_VERSION=<< parameters.CLUSTER_VERSION >>
+
+                      echo export TYPE=${TYPE} >> $BASH_ENV
+                      echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
+                      echo export K8S_CLUSTER_VERSION=${K8S_CLUSTER_VERSION} >> $BASH_ENV
+                      echo "K8s version tested (empty=current): ${K8S_CLUSTER_VERSION}"
+            - run:
+                  name: Test <<parameters.PRODUCT_TYPE>> without Onboarder bundle Helm generated yaml files
+                  command: make -C deployments/ test_helm_generated_k8s_files
+            - run:
+                  name: Test <<parameters.PRODUCT_TYPE>> with Onboarder bundle Helm generated yaml files
+                  command: WITH_ONBOARDER=1 make -C deployments/ test_helm_generated_k8s_files
+
+    # Description :
+    #    Check that cronjob defined are available in bin/console
+    test_cronjobs_existence:
+        parameters:
+            PRODUCT_TYPE:
+                type: string
+                default: "srnt"
+        environment:
+            <<: *envVarsDeployDev
+        machine:
+            image: *executor-machine
+        resource_class: medium
+        steps:
+            - attach_workspace:
+                  at: ~/
+            - set_gcloud_config_dev
+            - restore_persisted_env_vars
+            - install_yq_v3
+            - run:
+                  name: Test Cronjob jobs exists
+                  command: make -C deployments/ test-helm-cronjob

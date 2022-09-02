@@ -1,4 +1,4 @@
-@javascript
+@javascript @published-product-feature-enabled
 Feature: Publish a product
   In order to freeze the product data I would use to export
   As a product manager

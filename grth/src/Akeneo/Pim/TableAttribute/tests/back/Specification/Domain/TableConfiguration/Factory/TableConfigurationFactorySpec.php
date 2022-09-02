@@ -15,8 +15,9 @@ namespace Specification\Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Fact
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\TableConfigurationFactory;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\MeasurementColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\RecordColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
@@ -34,7 +35,8 @@ class TableConfigurationFactorySpec extends ObjectBehavior
             'number' => NumberColumn::class,
             'boolean' => BooleanColumn::class,
             'select' => SelectColumn::class,
-            'record' => RecordColumn::class,
+            'reference_entity' => ReferenceEntityColumn::class,
+            'measurement' => MeasurementColumn::class,
         ]);
     }
 
@@ -67,11 +69,20 @@ class TableConfigurationFactorySpec extends ObjectBehavior
             ],
             [
                 'id' => ColumnIdGenerator::record(),
-                'data_type' => 'record',
+                'data_type' => 'reference_entity',
                 'code' => 'record',
                 'labels' => [],
                 'is_required_for_completeness' => true,
-                'reference_entity_identifier' => 'entity'
+                'reference_entity_identifier' => 'entity',
+            ],
+            [
+                'id' => ColumnIdGenerator::duration(),
+                'data_type' => 'measurement',
+                'code' => 'duration',
+                'labels' => [],
+                'is_required_for_completeness' => true,
+                'measurement_family_code' => 'family',
+                'measurement_default_unit_code' => 'unit',
             ],
         ]);
         $tableConfiguration->shouldHaveType(TableConfiguration::class);
@@ -94,9 +105,14 @@ class TableConfigurationFactorySpec extends ObjectBehavior
         $isAllergenicColumn->code()->shouldBeLike(ColumnCode::fromString('is_allergenic'));
         $isAllergenicColumn->isRequiredForCompleteness()->asBoolean()->shouldBe(true);
 
-        $recordColumn = $tableConfiguration->getColumn(ColumnId::fromString(ColumnIdGenerator::record()));
-        $recordColumn->shouldHaveType(RecordColumn::class);
-        $recordColumn->referenceEntityIdentifier()->asString()->shouldReturn('entity');
+        $referenceEntityColumn = $tableConfiguration->getColumn(ColumnId::fromString(ColumnIdGenerator::record()));
+        $referenceEntityColumn->shouldHaveType(ReferenceEntityColumn::class);
+        $referenceEntityColumn->referenceEntityIdentifier()->asString()->shouldReturn('entity');
+
+        $measurementColumn = $tableConfiguration->getColumn(ColumnId::fromString(ColumnIdGenerator::duration()));
+        $measurementColumn->shouldHaveType(MeasurementColumn::class);
+        $measurementColumn->measurementFamilyCode()->asString()->shouldReturn('family');
+        $measurementColumn->measurementDefaultUnitCode()->asString()->shouldReturn('unit');
     }
 
     function it_always_set_the_first_column_as_required_for_completeness()

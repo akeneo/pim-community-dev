@@ -32,21 +32,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class GetOutdatedVariationSource implements GetOutdatedVariationSourceInterface
 {
-    private AttributeRepositoryInterface $attributeRepository;
-
-    private ValidatorInterface $validator;
-
-    public function __construct(AttributeRepositoryInterface $attributeRepository, ValidatorInterface $validator)
-    {
-        $this->attributeRepository = $attributeRepository;
-        $this->validator = $validator;
+    public function __construct(
+        private AttributeRepositoryInterface $attributeRepository,
+        private ValidatorInterface $validator
+    ) {
     }
 
     /**
-     * @param Asset $asset
-     * @param Transformation $transformation
-     *
-     * @return FileData|null
      *
      * @throws NonApplicableTransformationException
      */
@@ -61,7 +53,7 @@ class GetOutdatedVariationSource implements GetOutdatedVariationSourceInterface
         }
 
         $sourceValue = $this->getValueForReference($transformation->getSource(), $asset);
-        if (null === $sourceValue) {
+        if (!$sourceValue instanceof Value) {
             $message = sprintf(
                 'The source file for attribute "%s" is missing',
                 $transformation->getSource()->getAttributeCode()
@@ -69,12 +61,20 @@ class GetOutdatedVariationSource implements GetOutdatedVariationSourceInterface
             throw new NonApplicableTransformationException($message);
         }
 
+        $sourceData = $sourceValue->getData();
+        if (!$sourceData instanceof FileData) {
+            throw new NonApplicableTransformationException(sprintf(
+                'The source attribute "%s" is not a file',
+                $transformation->getSource()->getAttributeCode()
+            ));
+        }
+
         $targetValue = $this->getValueForReference($transformation->getTarget(), $asset);
-        if (null === $targetValue
+        if (!$targetValue instanceof Value
             || $targetValue->getData()->getUpdatedAt() < $sourceValue->getData()->getUpdatedAt()
             || $targetValue->getData()->getUpdatedAt() < $transformation->getUpdatedAt()
         ) {
-            return $sourceValue->getData();
+            return $sourceData;
         }
 
         return null;

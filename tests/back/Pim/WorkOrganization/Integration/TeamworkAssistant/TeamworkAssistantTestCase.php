@@ -51,7 +51,9 @@ class TeamworkAssistantTestCase extends TestCase
                 'catalog' .
                 DIRECTORY_SEPARATOR .
                 'teamwork_assistant'
-            ]
+            ],
+            [],
+            ['permission']
         );
     }
 

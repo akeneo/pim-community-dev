@@ -175,7 +175,6 @@ pimee_catalog_rule:
           subtitle: Selecteer uw familie
         set_attribute:
           title: Attribuutwaarde INSTELLEN
-          helper: Om waarden in te stellen op uw attribuut, moet u beginnen met het selecteren van uw doelattribuut en daarna de gewenste waarde instellen
           target_subtitle: Selecteer uw doel
           value_subtitle: Definiëer uw waarde
           attribute_label: Attribuut

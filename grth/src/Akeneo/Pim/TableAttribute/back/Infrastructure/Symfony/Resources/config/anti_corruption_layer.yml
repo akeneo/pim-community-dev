@@ -1,0 +1,28 @@
+services:
+    Akeneo\Pim\TableAttribute\Infrastructure\AntiCorruptionLayer\Feature:
+        arguments:
+            - '@feature_flags'
+
+    Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\ReferenceEntityExists:
+        class: Akeneo\Pim\TableAttribute\Infrastructure\AntiCorruptionLayer\ACLReferenceEntityExists
+        arguments:
+            - '@?akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
+
+    Akeneo\Pim\TableAttribute\Domain\Value\Query\GetRecordLabel:
+        class: Akeneo\Pim\TableAttribute\Infrastructure\AntiCorruptionLayer\ACLGetRecordLabel
+        arguments:
+            - '@?akeneo_referenceentity.infrastructure.persistence.query.find_record_labels_by_codes'
+
+    Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\MeasurementFamilyExists:
+        class: Akeneo\Pim\TableAttribute\Infrastructure\AntiCorruptionLayer\ACLMeasurementFamilyExists
+        arguments:
+            - '@?akeneo_measure.persistence.measurement_family_repository'
+
+    Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\MeasurementUnitExists:
+        class: Akeneo\Pim\TableAttribute\Infrastructure\AntiCorruptionLayer\ACLMeasurementUnitExists
+        arguments:
+            - '@?akeneo_measurement.service_api.get_unit'
+
+    Akeneo\Pim\TableAttribute\Infrastructure\AntiCorruptionLayer\AclMeasureConverter:
+        arguments:
+            - '@?akeneo_measure.measure_converter'

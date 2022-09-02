@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Component\Connector;
 
-use Akeneo\Channel\Component\Query\PublicApi\Permission\GetAllViewableLocalesForUserInterface;
+use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\Permission\GetAllViewableLocalesForUserInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompleteness;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
@@ -37,7 +37,7 @@ class GetProductsWithCompletenessesWithPermissions implements GetProductsWithCom
 
         return $productWithCompletenesses->buildWithCompletenesses(
             new ProductCompletenessCollection(
-                $productWithCompletenesses->id(),
+                $productWithCompletenesses->uuid(),
                 array_filter(
                     (array) $productWithCompletenesses->completenesses()->getIterator(),
                     fn (ProductCompleteness $completeness): bool => in_array($completeness->localeCode(), $viewableLocales)

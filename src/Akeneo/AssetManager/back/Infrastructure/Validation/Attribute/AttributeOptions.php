@@ -12,8 +12,8 @@ use Symfony\Component\Validator\Constraint;
  */
 class AttributeOptions extends Constraint
 {
-    const MESSAGE_TOO_MANY_OPTIONS = 'pim_asset_manager.attribute.validation.options.too_many';
-    const MESSAGE_OPTION_DUPLICATED = 'pim_asset_manager.attribute.validation.options.duplicated';
+    public const MESSAGE_TOO_MANY_OPTIONS = 'pim_asset_manager.attribute.validation.options.too_many';
+    public const MESSAGE_OPTION_DUPLICATED = 'pim_asset_manager.attribute.validation.options.duplicated';
 
     public function getTargets()
     {

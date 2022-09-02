@@ -75,10 +75,10 @@ services:
             - '@pim_enrich.normalizer.violation'
             - '@pim_enrich.doctrine.counter.category_product'
             - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\CountTreesChildren'
-            - { related_entity: product, form_type: 'Akeneo\Pim\Enrichment\Bundle\Form\Type\CategoryType', acl: pim_enrich_product, route: pim_enrich }
+            - { related_entity: product, form_type: 'Akeneo\Category\Infrastructure\Symfony\Form\Type\CategoryType', acl: pim_enrich_product, route: pim_enrich }
             - '@pimee_security.repository.category_access'
             - '@security.token_storage'
-            - '@Akeneo\Pim\Enrichment\Bundle\Form\CategoryFormViewNormalizer'
+            - '@Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizer'
         calls:
             - [ setContainer, [ '@service_container' ] ]
 
@@ -120,7 +120,7 @@ services:
             - '@form.factory'
             - '@twig'
             - '@translator'
-            - '@akeneo.pim.automation.data_quality_insights.feature'
+            - '@akeneo.pim.automation.data_quality_insights.all_criteria.feature'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator'
 
     pim_enrich.controller.rest.job_instance:
@@ -129,7 +129,7 @@ services:
         arguments:
             - '@akeneo_batch.job.job_instance_repository'
             - '@akeneo_batch.job.job_registry'
-            - '@pim_standard_format_serializer'
+            - '@pimee_security.normalizer.standard.job_instance'
             - '@akeneo_batch.updater.job_instance'
             - '@akeneo_batch.saver.job_instance'
             - '@akeneo_batch.remover.job_instance'
@@ -147,6 +147,7 @@ services:
             - '@pim_catalog.filter.chained'
             - '@oneup_flysystem.jobs_storage_filesystem'
             - '@oro_security.security_facade'
+            - '@Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Security\CredentialsEncrypterRegistry'
 
     Akeneo\Pim\Permission\Bundle\Controller\InternalApi\GetCategoriesForPermissionsAction:
         public: true

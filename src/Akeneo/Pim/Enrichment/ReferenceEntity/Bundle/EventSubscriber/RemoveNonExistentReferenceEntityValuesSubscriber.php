@@ -15,7 +15,6 @@ namespace Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\EventSubscriber;
 
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityType;
-use Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\RecordsDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
@@ -45,14 +44,8 @@ class RemoveNonExistentReferenceEntityValuesSubscriber implements EventSubscribe
     public static function getSubscribedEvents(): array
     {
         return [
-            RecordDeletedEvent::class => 'onRecordDeleted',
             RecordsDeletedEvent::class => 'onBulkRecordsDeleted',
         ];
-    }
-
-    public function onRecordDeleted(RecordDeletedEvent $event): void
-    {
-        $this->launchJob($event->getReferenceEntityIdentifier()->normalize(), [$event->getRecordCode()]);
     }
 
     public function onBulkRecordsDeleted(RecordsDeletedEvent $event): void

@@ -27,6 +27,20 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 {{- end -}}
 
+{{- define "pim.extraLabelsAsDatadogTags" -}}
+{{-   $tagsArray := list -}}
+{{-   range $key, $value := .Values.global.extraLabels -}}
+{{-     $tagsArray = append $tagsArray (printf "%s:%s" $key $value) -}}
+{{-   end -}}
+{{-   range $key, $value := .Values.common.extraLabels -}}
+{{-     $tagsArray = append $tagsArray (printf "%s:%s" $key $value) -}}
+{{-   end -}}
+{{-   range $key, $value := .Values.pim.extraLabels -}}
+{{-     $tagsArray = append $tagsArray (printf "%s:%s" $key $value) -}}
+{{-   end -}}
+{{-   toJson $tagsArray -}}
+{{- end -}}
+
 {{/*
 Define the name of the PIM Enterprise dev Docker image
 */}}

@@ -141,11 +141,11 @@ final class EvaluateAttributeOptionSpelling implements EvaluateCriterionInterfac
             $attributeCode = strval($productValueByChannelAndLocale->getAttribute()->getCode());
             $optionCode = $productValueByChannelAndLocale->getValueByChannelAndLocale($channelCode, $localeCode);
 
-            if ($optionCode === null || $optionCode === '') {
+            if (empty($optionCode) || is_array($optionCode)) {
                 continue;
             }
 
-            if (! isset($this->optionsSpellchecksByAttribute[$attributeCode][$optionCode])) {
+            if (!isset($this->optionsSpellchecksByAttribute[$attributeCode][$optionCode])) {
                 continue;
             }
 
@@ -175,7 +175,7 @@ final class EvaluateAttributeOptionSpelling implements EvaluateCriterionInterfac
             $attributeTotalRate = 0;
             $optionNumber = 0;
             foreach ($optionCodes as $optionCode) {
-                if (! isset($this->optionsSpellchecksByAttribute[$attributeCode][$optionCode])) {
+                if (!isset($this->optionsSpellchecksByAttribute[$attributeCode][$optionCode])) {
                     continue;
                 }
                 $spellCheck = $this->optionsSpellchecksByAttribute[$attributeCode][$optionCode];

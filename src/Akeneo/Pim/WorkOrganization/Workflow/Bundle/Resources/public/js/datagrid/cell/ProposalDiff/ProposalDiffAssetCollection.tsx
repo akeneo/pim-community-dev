@@ -1,5 +1,4 @@
 import React from 'react';
-import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import {getMediaPreviewUrl, getImageDownloadUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import EditionAsset, {
   getEditionAssetMainMediaThumbnail,
@@ -19,6 +18,9 @@ import {isDataEmpty} from 'akeneoassetmanager/domain/model/asset/data';
 import {isMediaFileData} from 'akeneoassetmanager/domain/model/asset/data/media-file';
 import {getMediaLinkUrl} from 'akeneoassetmanager/domain/model/asset/data/media-link';
 import {useRouter} from '@akeneo-pim-community/shared';
+import {useAssetFetcher} from 'akeneoassetmanager/infrastructure/fetcher/useAssetFetcher';
+import {ConfigProvider} from 'akeneoassetmanager/application/hooks/useConfig';
+import {getConfig} from 'pimui/js/config-registry';
 
 type AssetFamilyIdentifier = string;
 
@@ -31,7 +33,22 @@ type ProposalDiffAssetCollectionProps = {
   };
 };
 
+const ProposalDiffAssetCollectionWrapper = ({...props}: ProposalDiffAssetCollectionProps) => {
+  return (
+    <ConfigProvider
+      config={{
+        value: getConfig('akeneoassetmanager/application/configuration/value') ?? {},
+        sidebar: getConfig('akeneoassetmanager/application/configuration/sidebar') ?? {},
+        attribute: getConfig('akeneoassetmanager/application/configuration/attribute') ?? {},
+      }}
+    >
+      <ProposalDiffAssetCollection {...props} />
+    </ConfigProvider>
+  );
+};
+
 const ProposalDiffAssetCollection: React.FC<ProposalDiffAssetCollectionProps> = ({accessor, change, ...rest}) => {
+  const assetFetcher = useAssetFetcher();
   const [assets, setAssets] = React.useState<(EditionAsset | undefined)[]>(new Array((change[accessor] || []).length));
   const router = useRouter();
 
@@ -96,4 +113,4 @@ const ProposalDiffAssetCollection: React.FC<ProposalDiffAssetCollectionProps> = 
   );
 };
 
-export default ProposalDiffAssetCollection;
+export default ProposalDiffAssetCollectionWrapper;

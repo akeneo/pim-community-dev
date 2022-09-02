@@ -23,17 +23,14 @@ use Doctrine\DBAL\Connection;
  */
 class SqlAssetFamilyExists implements AssetFamilyExistsInterface
 {
-    private Connection $sqlConnection;
-
-    public function __construct(Connection $sqlConnection)
+    public function __construct(private Connection $sqlConnection)
     {
-        $this->sqlConnection = $sqlConnection;
     }
 
     public function withIdentifier(AssetFamilyIdentifier $assetFamilyIdentifier, bool $caseSensitive = true): bool
     {
         $actualIdentifier = $this->executeQuery($assetFamilyIdentifier);
-        if (null === $actualIdentifier) {
+        if (!$actualIdentifier instanceof AssetFamilyIdentifier) {
             return false;
         }
 

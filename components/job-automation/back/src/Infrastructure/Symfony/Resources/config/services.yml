@@ -1,0 +1,55 @@
+services:
+    Akeneo\Platform\JobAutomation\Infrastructure\Security\Encrypter:
+        arguments:
+            - '%env(APP_SECRET)%'
+
+    Akeneo\Platform\JobAutomation\Infrastructure\Security\SftpCredentialsEncrypter:
+        arguments:
+            - '@Akeneo\Platform\JobAutomation\Infrastructure\Security\Encrypter'
+        tags:
+            - { name: pim_import_export.credentials_encrypter }
+
+    akeneo.job_automation.feature:
+        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
+        arguments:
+            - '%env(bool:FLAG_JOB_AUTOMATION_ENABLED)%'
+
+    akeneo.job_automation.constraint_collection_provider.product_xlsx_export:
+        class: Akeneo\Platform\JobAutomation\Infrastructure\Connector\DefaultConstraintProvider
+        decorates: pim_connector.job.job_parameters.constraint_collection_provider.product_xlsx_export
+        arguments:
+            - "@akeneo.job_automation.constraint_collection_provider.product_xlsx_export.inner"
+
+    akeneo.job_automation.constraint_collection_provider.product_xlsx_import:
+        class: Akeneo\Platform\JobAutomation\Infrastructure\Connector\DefaultConstraintProvider
+        decorates: pim_connector.job.job_parameters.constraint_collection_provider.product_xlsx_import
+        arguments:
+            - "@akeneo.job_automation.constraint_collection_provider.product_xlsx_import.inner"
+
+    akeneo.job_automation.constraint_collection_provider.tailored_product_xlsx_export:
+        class: Akeneo\Platform\JobAutomation\Infrastructure\Connector\DefaultConstraintProvider
+        decorates: akeneo.tailored_export.job.job_parameters.xlsx_constraint_collection_provider
+        arguments:
+            - "@akeneo.job_automation.constraint_collection_provider.tailored_product_xlsx_export.inner"
+
+    akeneo.job_automation.constraint_collection_provider.tailored_product_xlsx_import:
+        class: Akeneo\Platform\JobAutomation\Infrastructure\Connector\DefaultConstraintProvider
+        decorates: akeneo.tailored_import.job.job_parameters.xlsx_constraint_collection_provider
+        arguments:
+            - "@akeneo.job_automation.constraint_collection_provider.tailored_product_xlsx_import.inner"
+
+    Akeneo\Platform\JobAutomation\Domain\CronExpressionFactory: ~
+
+    Akeneo\Platform\JobAutomation\Domain\FilterDueJobInstances:
+        arguments:
+            - '@Akeneo\Platform\JobAutomation\Domain\CronExpressionFactory'
+
+    Akeneo\Platform\JobAutomation\Domain\ClockInterface:
+        class: Akeneo\Platform\JobAutomation\Infrastructure\Clock\SystemClock
+
+    Akeneo\Platform\JobAutomation\Infrastructure\Email\MailNotifier:
+        arguments:
+            - '@pim_notification.email.email_notifier'
+
+    akeneo.job_automation.infrastructure.public_api.list_users_handler:
+        alias: Akeneo\UserManagement\ServiceApi\User\ListUsersHandlerInterface

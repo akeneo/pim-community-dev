@@ -1,4 +1,4 @@
-@javascript
+@javascript @permission-feature-enabled
 Feature: Enforce no permissions for a category
   In order to be able to prevent some users from viewing some product models
   As an administrator

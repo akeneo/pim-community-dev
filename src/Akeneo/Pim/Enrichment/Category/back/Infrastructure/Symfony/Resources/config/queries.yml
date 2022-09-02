@@ -1,0 +1,10 @@
+services:
+    Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories:
+        class: AkeneoEnterprise\Pim\Enrichment\Category\Infrastructure\Query\SqlGetOwnedCategories
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Enrichment\Category\API\Query\GetViewableCategories:
+        class: AkeneoEnterprise\Pim\Enrichment\Category\Infrastructure\Query\SqlGetViewableCategories
+        arguments:
+            - '@database_connection'

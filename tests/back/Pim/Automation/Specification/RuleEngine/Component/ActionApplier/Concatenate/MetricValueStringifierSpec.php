@@ -17,7 +17,7 @@ use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\MetricV
 use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\ValueStringifierInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValue;
-use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnitTranslations;
+use Akeneo\Tool\Bundle\MeasureBundle\ServiceApi\GetUnitTranslations;
 use PhpSpec\ObjectBehavior;
 
 class MetricValueStringifierSpec extends ObjectBehavior

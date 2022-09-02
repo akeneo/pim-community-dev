@@ -21,6 +21,7 @@ config:
                 pim_catalog_asset_collection: '@akeneopimruleengine/pages/EditRules/components/actions/attribute/AssetCollectionValue'
                 akeneo_reference_entity_collection: '@akeneopimruleengine/pages/EditRules/components/actions/attribute/MultiReferenceEntityValue'
                 akeneo_reference_entity: '@akeneopimruleengine/pages/EditRules/components/actions/attribute/SimpleReferenceEntityValue'
+                pim_catalog_table: '@akeneopimruleengine/pages/EditRules/components/actions/attribute/TableValue'
 
     paths:
         pimee/attribute-edit-form/rules/rules-grid: akeneopimruleengine/controllers/rules-grid

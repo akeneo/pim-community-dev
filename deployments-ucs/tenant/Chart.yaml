@@ -1,0 +1,16 @@
+apiVersion: v2
+name: pim
+description: Akeneo PIM - Enterprise Cloud Edition
+icon: https://raw.githubusercontent.com/akeneo/pim-community-dev/master/public/favicon.ico
+version: 0.0.0
+appVersion: 0.0.0
+dependencies:
+  - name: mysql
+    version: "2.1.0"
+    repository: gs://akeneo-charts/
+  - name: elasticsearch
+    version: "1.32.44"
+    repository: gs://akeneo-charts/
+  - name: memcached
+    version: "6.1.4"
+    repository: https://charts.bitnami.com/bitnami

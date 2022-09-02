@@ -100,7 +100,7 @@ final class BinaryPdfGeneratorTest extends PreviewGeneratorIntegrationTestCase
      */
     public function it_gets_a_default_preview_for_a_document_with_unsupported_mime_type()
     {
-        $data = $this->generateImage(10, 1);
+        $data = $this->generateJpegImage(10, 1);
 
         $previewImage = $this->binaryPdfGenerator->generate(
             $data,

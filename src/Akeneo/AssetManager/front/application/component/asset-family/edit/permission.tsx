@@ -1,5 +1,5 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import {Button, Link, SectionTitle, UserGroupsIllustration} from 'akeneo-design-system';
 import {
   NoDataSection,
@@ -26,6 +26,7 @@ import {
 import {savePermission} from 'akeneoassetmanager/application/action/asset-family/permission';
 import {canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
 import {UserNavigation} from 'akeneoassetmanager/application/component/app/user-navigation';
+import {useAssetFamilyFetcher} from 'akeneoassetmanager/infrastructure/fetcher/useAssetFamilyFetcher';
 
 interface StateProps {
   assetFamily: AssetFamily;
@@ -42,7 +43,6 @@ interface StateProps {
 interface DispatchProps {
   events: {
     onPermissionUpdated: (updatedConfiguration: PermissionCollection) => void;
-    onSavePermissionEditForm: () => void;
   };
 }
 
@@ -50,6 +50,8 @@ const Permission = ({assetFamily, context, canEditFamily, permission, events}: S
   const translate = useTranslate();
   const router = useRouter();
   const {isGranted} = useSecurity();
+  const dispatch = useDispatch();
+  const assetFamilyFetcher = useAssetFamilyFetcher();
   const assetFamilyLabel = getAssetFamilyLabel(assetFamily, context.locale);
   const canEditPermission = canEditFamily && isGranted('akeneo_assetmanager_asset_family_manage_permission');
   const canEditUserGroup = isGranted('pim_user_group_index') && isGranted('pim_user_group_create');
@@ -65,7 +67,7 @@ const Permission = ({assetFamily, context, canEditFamily, permission, events}: S
         </PageHeader.UserActions>
         <PageHeader.Actions>
           {canEditPermission && !permission.data.isEmpty() && (
-            <Button onClick={events.onSavePermissionEditForm}>
+            <Button onClick={() => dispatch(savePermission(assetFamilyFetcher))}>
               {translate('pim_asset_manager.asset_family.button.save_permission')}
             </Button>
           )}
@@ -126,9 +128,6 @@ export default connect(
       events: {
         onPermissionUpdated: (permission: PermissionCollection) => {
           dispatch(permissionEditionUpdated(permission));
-        },
-        onSavePermissionEditForm: () => {
-          dispatch(savePermission());
         },
       },
     };

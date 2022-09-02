@@ -8,21 +8,14 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class JobInstancePublisherSubscriber implements EventSubscriber
 {
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-
-    /** @var string */
-    private $sharedCatalogJobName;
-
     public function __construct(
-        TokenStorageInterface $tokenStorage,
-        string $sharedCatalogJobName
+        private TokenStorageInterface $tokenStorage,
+        private string $sharedCatalogJobName
     ) {
-        $this->tokenStorage = $tokenStorage;
-        $this->sharedCatalogJobName = $sharedCatalogJobName;
     }
 
     public function getSubscribedEvents(): array
@@ -52,7 +45,7 @@ class JobInstancePublisherSubscriber implements EventSubscriber
     private function getPublisherEmail(): ?string
     {
         $token = $this->tokenStorage->getToken();
-        if (null === $token) {
+        if (!$token instanceof TokenInterface) {
             return null;
         }
 

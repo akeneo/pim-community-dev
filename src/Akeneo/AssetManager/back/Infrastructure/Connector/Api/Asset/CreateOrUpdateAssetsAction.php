@@ -21,6 +21,7 @@ use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetComm
 use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
 use Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\Connector\EditAssetCommandFactory as NamingConventionEditAssetCommandFactory;
 use Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\Exception\NamingConventionException;
+use Akeneo\AssetManager\Domain\Exception\AssetAlreadyExistsError;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Asset\AssetExistsInterface;
@@ -29,9 +30,10 @@ use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\AssetListV
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\AssetValidator;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
 use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\EventAggregatorInterface;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Normalizer\Exception\ViolationNormalizer;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,7 +41,6 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
-use Symfony\Component\Routing\Router;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -48,72 +49,24 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CreateOrUpdateAssetsAction
 {
-    private AssetFamilyExistsInterface $assetFamilyExists;
-
-    private AssetExistsInterface $assetExists;
-
-    private \Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\Connector\EditAssetCommandFactory $editAssetCommandFactory;
-
-    private EditAssetHandler $editAssetHandler;
-
-    private CreateAssetHandler $createAssetHandler;
-
-    private Router $router;
-
-    private ValidatorInterface $assetDataValidator;
-
-    private ViolationNormalizer $violationNormalizer;
-
-    private AssetValidator $assetStructureValidator;
-
-    private AssetListValidator $assetListValidator;
-
-    private BatchAssetsToLink $batchAssetsToLink;
-
-    private NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory;
-
-    private \Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\EventAggregatorInterface $indexAssetEventAggregator;
-
-    private ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator;
-
-    private int $maximumAssetsPerRequest;
-
-    private SecurityFacade $securityFacade;
-
     public function __construct(
-        AssetFamilyExistsInterface $assetFamilyExists,
-        AssetExistsInterface $assetExists,
-        EditAssetCommandFactory $editAssetCommandFactory,
-        EditAssetHandler $editAssetHandler,
-        CreateAssetHandler $createAssetHandler,
-        Router $router,
-        ValidatorInterface $assetDataValidator,
-        ViolationNormalizer $violationNormalizer,
-        AssetValidator $assetStructureValidator,
-        AssetListValidator $assetListValidator,
-        BatchAssetsToLink $batchAssetsToLink,
-        NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory,
-        EventAggregatorInterface $indexAssetEventAggregator,
-        int $maximumAssetsPerRequest,
-        ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator,
-        SecurityFacade $securityFacade
+        private AssetFamilyExistsInterface $assetFamilyExists,
+        private AssetExistsInterface $assetExists,
+        private EditAssetCommandFactory $editAssetCommandFactory,
+        private EditAssetHandler $editAssetHandler,
+        private CreateAssetHandler $createAssetHandler,
+        private ValidatorInterface $assetDataValidator,
+        private ViolationNormalizer $violationNormalizer,
+        private AssetValidator $assetStructureValidator,
+        private AssetListValidator $assetListValidator,
+        private BatchAssetsToLink $batchAssetsToLink,
+        private NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory,
+        private EventAggregatorInterface $indexAssetEventAggregator,
+        private int $maximumAssetsPerRequest,
+        private ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator,
+        private SecurityFacadeInterface $securityFacade,
+        private LoggerInterface $logger,
     ) {
-        $this->assetFamilyExists = $assetFamilyExists;
-        $this->assetExists = $assetExists;
-        $this->editAssetCommandFactory = $editAssetCommandFactory;
-        $this->editAssetHandler = $editAssetHandler;
-        $this->createAssetHandler = $createAssetHandler;
-        $this->router = $router;
-        $this->assetDataValidator = $assetDataValidator;
-        $this->violationNormalizer = $violationNormalizer;
-        $this->assetStructureValidator = $assetStructureValidator;
-        $this->assetListValidator = $assetListValidator;
-        $this->batchAssetsToLink = $batchAssetsToLink;
-        $this->namingConventionEditAssetCommandFactory = $namingConventionEditAssetCommandFactory;
-        $this->maximumAssetsPerRequest = $maximumAssetsPerRequest;
-        $this->indexAssetEventAggregator = $indexAssetEventAggregator;
-        $this->computeTransformationEventAggregator = $computeTransformationEventAggregator;
-        $this->securityFacade = $securityFacade;
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier): Response
@@ -149,24 +102,31 @@ class CreateOrUpdateAssetsAction
         }
 
         $responsesData = [];
-        foreach ($normalizedAssets as $normalizedAsset) {
-            try {
-                $responseData = $this->createOrUpdateAsset($assetFamilyIdentifier, $normalizedAsset);
-            } catch (\InvalidArgumentException $exception) {
-                $responseData = [
-                    'code'        => $normalizedAsset['code'],
-                    'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                    'message'     => $exception->getMessage()
-                ];
-            } catch (ViolationHttpException $exception) {
-                $responseData = [
-                    'code'        => $normalizedAsset['code'],
-                    'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY
-                ];
-                $responseData += $this->violationNormalizer->normalize($exception);
-            }
+        try {
+            foreach ($normalizedAssets as $normalizedAsset) {
+                try {
+                    $responseData = $this->createOrUpdateAsset($assetFamilyIdentifier, $normalizedAsset);
+                } catch (\InvalidArgumentException $exception) {
+                    $responseData = [
+                        'code' => $normalizedAsset['code'],
+                        'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                        'message' => $exception->getMessage()
+                    ];
+                } catch (ViolationHttpException $exception) {
+                    $responseData = [
+                        'code' => $normalizedAsset['code'],
+                        'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY
+                    ];
+                    $responseData += $this->violationNormalizer->normalize($exception);
+                }
 
-            $responsesData[] = $responseData;
+                $responsesData[] = $responseData;
+            }
+        } catch (\Throwable $e) {
+            $this->indexAssetEventAggregator->flushEvents();
+            $this->computeTransformationEventAggregator->flushEvents();
+
+            throw $e;
         }
 
         $this->indexAssetEventAggregator->flushEvents();
@@ -200,10 +160,10 @@ class CreateOrUpdateAssetsAction
         }
 
         $assetCode = AssetCode::fromString($normalizedAsset['code']);
-        $shouldBeCreated = !$this->assetExists->withAssetFamilyAndCode($assetFamilyIdentifier, $assetCode);
         $createAssetCommand = null;
+        $responseStatusCode = Response::HTTP_NO_CONTENT;
 
-        if ($shouldBeCreated) {
+        if (!$this->assetExists->withAssetFamilyAndCode($assetFamilyIdentifier, $assetCode)) {
             $createAssetCommand = new CreateAssetCommand(
                 $assetFamilyIdentifier->normalize(),
                 $normalizedAsset['code'],
@@ -223,27 +183,33 @@ class CreateOrUpdateAssetsAction
             throw new ViolationHttpException($violations, 'The asset has data that does not comply with the business rules.');
         }
 
-        if ($shouldBeCreated) {
+        if ($createAssetCommand !== null) {
             $namingConventionEditCommand = $this->createValidatedNamingConventionCommandIfNeeded(
                 $assetFamilyIdentifier,
                 $normalizedAsset
             );
 
-            ($this->createAssetHandler)($createAssetCommand);
-            if (null !== $namingConventionEditCommand) {
-                $editAssetCommand->editAssetValueCommands = array_merge($editAssetCommand->editAssetValueCommands, $namingConventionEditCommand->editAssetValueCommands);
+            try {
+                ($this->createAssetHandler)($createAssetCommand);
+                if (null !== $namingConventionEditCommand) {
+                    $editAssetCommand->editAssetValueCommands = array_merge($editAssetCommand->editAssetValueCommands, $namingConventionEditCommand->editAssetValueCommands);
+                }
+
+                $this->batchAssetsToLink->add($createAssetCommand->assetFamilyIdentifier, $createAssetCommand->code);
+                $responseStatusCode = Response::HTTP_CREATED;
+            } catch (AssetAlreadyExistsError) {
+                $this->logger->notice('Concurrent call have been detected', [
+                    'asset_family_identifier' => $assetFamilyIdentifier,
+                    'asset_code' => $assetCode
+                ]);
             }
-
-            ($this->editAssetHandler)($editAssetCommand);
-
-            $this->batchAssetsToLink->add($createAssetCommand->assetFamilyIdentifier, $createAssetCommand->code);
-        } else {
-            ($this->editAssetHandler)($editAssetCommand);
         }
+
+        ($this->editAssetHandler)($editAssetCommand);
 
         return [
             'code' => (string) $assetCode,
-            'status_code' => $shouldBeCreated ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT,
+            'status_code' => $responseStatusCode,
         ];
     }
 

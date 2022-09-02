@@ -17,6 +17,7 @@ use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetComm
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaFileValueCommand;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EmptyValueCommand;
 use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
+use Akeneo\AssetManager\Domain\Filesystem\Storage;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
@@ -43,7 +44,6 @@ use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
-use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Akeneo\AssetManager\Infrastructure\Transformation\FileDownloader;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
@@ -56,6 +56,9 @@ use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * @author Pierre Allard <pierre.allard@akeneo.com>
+ *
+ * TODO: check why these tests hang out when not rn in separate processes
+ * @runTestsInSeparateProcesses
  */
 class ComputeTransformationsTest extends SqlIntegrationTestCase
 {
@@ -174,7 +177,7 @@ class ComputeTransformationsTest extends SqlIntegrationTestCase
         $asset = $this->getAsset('starck');
 
         // empty the source value
-        $sourceAttribute = self::$container
+        $sourceAttribute = self::getContainer()
             ->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')
             ->getByCodeAndAssetFamilyIdentifier(
                 AttributeCode::fromString('main_image'),
@@ -288,7 +291,6 @@ class ComputeTransformationsTest extends SqlIntegrationTestCase
             ->withAttributes(['main_image', 'target_image'])
             ->load();
 
-        /** @var MediaFileAttribute $mainImageAttribute */
         $this->mainImageAttribute = $fixtures['attributes']['main_image'];
         $this->mainImageAttribute->setAllowedExtensions(AttributeAllowedExtensions::fromList([]));
         $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')->update($this->mainImageAttribute);

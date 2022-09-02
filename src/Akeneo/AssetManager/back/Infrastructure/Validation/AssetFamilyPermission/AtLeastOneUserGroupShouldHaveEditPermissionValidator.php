@@ -37,7 +37,7 @@ class AtLeastOneUserGroupShouldHaveEditPermissionValidator extends ConstraintVal
                 sprintf(
                     'Expected argument to be of class "%s", "%s" given',
                     SetAssetFamilyPermissionsCommand::class,
-                    get_class($command)
+                    $command::class
                 )
             );
         }

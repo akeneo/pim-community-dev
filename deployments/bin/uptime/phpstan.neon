@@ -1,0 +1,6 @@
+parameters:
+	level: 6
+	checkGenericClassInNonGenericObjectType: false
+	paths:
+		- src
+		- deployment

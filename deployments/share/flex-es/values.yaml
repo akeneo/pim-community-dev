@@ -10,14 +10,19 @@ image:
 
 global:
   # Be careful when setting global values
-  extraLabels:
+  # extraLabels:
     # key: "value"
 
     # Add extra labels to monitoring metadata
-    extraLabels:
+    # extraLabels:
       # key: "value"
 cluster:
   name: "pim-es"
+  # keystoreSecret: eskeystore
+  config: {}
+  plugins: []
+    # - ingest-attachment
+    # - mapper-size
 common:
   command: null
   service:
@@ -28,7 +33,7 @@ common:
 
   env:
     # ES_PLUGINS_INSTALL: "repository-gcs"
-    cluster.name: "es-cluster"
+    cluster.name: "pim-es"
     node.max_local_storage_nodes: "1"
     network.host: "_site_"
     bootstrap.memory_lock: "false"
@@ -41,14 +46,14 @@ common:
     # class: "gce-ssd"
 
   # Mount path of data
-  dataDir: "/data/var/lib/elasticsearch"
+  dataDir: "/usr/share/elasticsearch/data"
 
   # If enabled, an init-container will increase vm.max_map_count
   busybox:
     increaseMaxMapCount: false
 
   # Add extra labels to metadata
-  extraLabels:
+  # extraLabels:
     # key: "value"
 
 
@@ -69,11 +74,20 @@ single:
     cluster.routing.allocation.disk.threshold_enabled: "false"
     discovery.type: single-node
 
-  
+
   # Add extra labels to metadata
-  extraLabels:
+  # extraLabels:
     # key: "value"
   persistentDisk:
     size: "10G"
     name: null
 
+keystore:
+  - secretName: pim-secrets
+    items:
+    - key: srntPimStorageKey
+      path: gcs.client.default.credentials_file
+snapshots:
+  retention: 15
+  repository: pim_gcs_repository
+  folder: elasticsearch-snapshots

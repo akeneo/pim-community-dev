@@ -13,6 +13,11 @@ TF_PATH_PIM_MODULE=${PWD}/.terraform/modules/pim/deployments/terraform
 GOOGLE_PROJECT_ID=$(yq r -P ${PWD}/main.tf.json module.pim.google_project_id)
 GOOGLE_PROJECT_ZONE=$(yq r -P ${PWD}/main.tf.json module.pim.google_project_zone)
 
+if (echo "${UPGRADE_DIR}" | grep -q 'pim-monitoring'); then
+  echo "Upgrade.sh is run from pim-monitoring module. Nothing to do!"
+  exit 0
+fi
+
 echo "Start Upgrade ${STEP}"
 if (declare -p INSTANCE_NAME &>/dev/null); then
   PFID="${PRODUCT_TYPE}-${INSTANCE_NAME}"

@@ -1,4 +1,4 @@
-import {ATTRIBUTE_EDIT_FORM_UPDATED} from '@akeneo-pim-ee/data-quality-insights/src/application/constant';
+import {ATTRIBUTE_EDIT_FORM_SPELLCHECK_IGNORED} from '@akeneo-pim-ee/data-quality-insights/src/application/constant';
 
 const BaseView = require('pimui/js/view/base');
 const __ = require('oro/translator');
@@ -10,7 +10,7 @@ class QualitySummaryHeader extends BaseView {
   };
 
   public configure() {
-    window.addEventListener(ATTRIBUTE_EDIT_FORM_UPDATED, this.attributeEditFormUpdatedHandler);
+    window.addEventListener(ATTRIBUTE_EDIT_FORM_SPELLCHECK_IGNORED, this.attributeEditFormUpdatedHandler);
 
     return super.configure();
   }
@@ -52,7 +52,7 @@ class QualitySummaryHeader extends BaseView {
 
   public remove() {
     super.remove();
-    window.removeEventListener(ATTRIBUTE_EDIT_FORM_UPDATED, this.attributeEditFormUpdatedHandler);
+    window.removeEventListener(ATTRIBUTE_EDIT_FORM_SPELLCHECK_IGNORED, this.attributeEditFormUpdatedHandler);
 
     return this;
   }

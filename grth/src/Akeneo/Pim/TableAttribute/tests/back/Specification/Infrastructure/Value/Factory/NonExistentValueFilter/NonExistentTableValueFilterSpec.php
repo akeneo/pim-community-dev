@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonE
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
@@ -13,20 +14,26 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\Factory\NonExistentValueFilter\NonExistentTableValueFilter;
+use Akeneo\Pim\TableAttribute\Infrastructure\Value\Query\GetExistingRecordCodes;
 use Akeneo\Test\Pim\TableAttribute\Helper\ColumnIdGenerator;
 use PhpSpec\ObjectBehavior;
 
 class NonExistentTableValueFilterSpec extends ObjectBehavior
 {
+    const COLUMNID_RECORDBRAND = 'brand_d39d3c48-46e6-4744-8196-56e08563fd46';
+
     function let(
         TableConfigurationRepository $tableConfigurationRepository,
-        SelectOptionCollectionRepository $selectOptionCollectionRepository
+        SelectOptionCollectionRepository $selectOptionCollectionRepository,
+        GetExistingRecordCodes $getExistingRecordCodes
     ) {
         $tableConfigurationRepository->getByAttributeCode('food_composition')->willReturn(
             TableConfiguration::fromColumnDefinitions([
                 SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
                 NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
                 SelectColumn::fromNormalized(['id' => ColumnIdGenerator::supplier(), 'code' => 'supplier']),
+                ReferenceEntityColumn::fromNormalized(['id' => ColumnIdGenerator::record(), 'code' => 'origin', 'reference_entity_identifier' => 'record']),
+                ReferenceEntityColumn::fromNormalized(['id' => self::COLUMNID_RECORDBRAND, 'code' => 'brand', 'reference_entity_identifier' => 'brand']),
             ])
         );
 
@@ -40,7 +47,175 @@ class NonExistentTableValueFilterSpec extends ObjectBehavior
                 ['code' => 'AKENEO'],
             ]));
 
-        $this->beConstructedWith($tableConfigurationRepository, $selectOptionCollectionRepository);
+        $this->beConstructedWith($tableConfigurationRepository, $selectOptionCollectionRepository, $getExistingRecordCodes);
+    }
+
+    function it_filters_non_existent_reference_entity_records(GetExistingRecordCodes $getExistingRecordCodes)
+    {
+        $ongoingFilteredRawValues = OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType(
+            [
+                AttributeTypes::TABLE => [
+                    'food_composition' => [
+                        [
+                            'identifier' => 'product_B',
+                            'values' => [
+                                '<all_channels>' => [
+                                    '<all_locales>' => [
+                                        [
+                                            ColumnIdGenerator::ingredient() => 'sugar',
+                                            ColumnIdGenerator::quantity() => 5,
+                                            ColumnIdGenerator::record() => 'france',
+                                            self::COLUMNID_RECORDBRAND => 'mars'
+                                        ],
+                                        [
+                                            ColumnIdGenerator::ingredient() => 'salt',
+                                            ColumnIdGenerator::quantity() => 10,
+                                            ColumnIdGenerator::record() => 'unknownRecord',
+                                            self::COLUMNID_RECORDBRAND => 'france'
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            ]
+        );
+
+        $getExistingRecordCodes->fromReferenceEntityIdentifierAndRecordCodes(
+            [
+                'record' => ['france', 'unknownRecord'],
+                'brand' => ['mars', 'france'],
+            ]
+        )->shouldBeCalledOnce()->willReturn(
+            ['record' => ['FRAnce'], 'brand' => ['MArs']]
+        );
+
+        /** @var OnGoingFilteredRawValues $filteredCollection */
+        $filteredCollection = $this->filter($ongoingFilteredRawValues);
+        $filteredCollection->filteredRawValuesCollectionIndexedByType()->shouldBeLike(
+            [
+                AttributeTypes::TABLE => [
+                    'food_composition' => [
+                        [
+                            'identifier' => 'product_B',
+                            'values' => [
+                                '<all_channels>' => [
+                                    '<all_locales>' => [
+                                        [
+                                            ColumnIdGenerator::ingredient() => 'SUgar',
+                                            ColumnIdGenerator::quantity() => 5,
+                                            ColumnIdGenerator::record() => 'FRAnce',
+                                            self::COLUMNID_RECORDBRAND => 'MArs',
+                                        ],
+                                        [
+                                            ColumnIdGenerator::ingredient() => 'salt',
+                                            ColumnIdGenerator::quantity() => 10,
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ]
+        );
+    }
+
+    function it_filters_rows_with_unknown_first_column_record_value(
+        TableConfigurationRepository $tableConfigurationRepository,
+        GetExistingRecordCodes $getExistingRecordCodes
+    ) {
+        $tableConfigurationRepository->getByAttributeCode('food_composition')->willReturn(
+            TableConfiguration::fromColumnDefinitions([
+                ReferenceEntityColumn::fromNormalized(['id' => ColumnIdGenerator::record(), 'code' => 'origin', 'reference_entity_identifier' => 'record', 'is_required_for_completeness' => true]),
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+                NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
+                ])
+        );
+
+        $ongoingFilteredRawValues = OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType(
+            [
+                AttributeTypes::TABLE => [
+                    'food_composition' => [
+                        [
+                            'identifier' => 'product_A',
+                            'values' => [
+                                '<all_channels>' => [
+                                    '<all_locales>' => [
+                                        [
+                                            ColumnIdGenerator::record() => 'france',
+                                            ColumnIdGenerator::ingredient() => 'sugar',
+                                            ColumnIdGenerator::quantity() => 5
+                                        ],
+                                        [
+                                            ColumnIdGenerator::record() => 'unknownRecord',
+                                            ColumnIdGenerator::ingredient() => 'salt',
+                                            ColumnIdGenerator::quantity() => 10
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        [
+                            'identifier' => 'product_B',
+                            'values' => [
+                                '<all_channels>' => [
+                                    '<all_locales>' => [
+                                        [
+                                            ColumnIdGenerator::record() => 'otherUnknownRecord',
+                                            ColumnIdGenerator::ingredient() => 'sugar',
+                                            ColumnIdGenerator::quantity() => 5
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            ]
+        );
+
+        $getExistingRecordCodes->fromReferenceEntityIdentifierAndRecordCodes(['record' => ['france', 'unknownRecord']])->shouldBeCalledOnce()->willReturn(
+            ['record' => ['FRAnce']]
+        );
+
+        $getExistingRecordCodes->fromReferenceEntityIdentifierAndRecordCodes(['record' => ['otherUnknownRecord']])->shouldBeCalledOnce()->willReturn(
+            ['record' => []]
+        );
+
+        /** @var OnGoingFilteredRawValues $filteredCollection */
+        $filteredCollection = $this->filter($ongoingFilteredRawValues);
+        $filteredCollection->filteredRawValuesCollectionIndexedByType()->shouldBeLike(
+            [
+                AttributeTypes::TABLE => [
+                    'food_composition' => [
+                        [
+                            'identifier' => 'product_A',
+                            'values' => [
+                                '<all_channels>' => [
+                                    '<all_locales>' => [
+                                        [
+                                            ColumnIdGenerator::record() => 'FRAnce',
+                                            ColumnIdGenerator::ingredient() => 'SUgar',
+                                            ColumnIdGenerator::quantity() => 5
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        [
+                            'identifier' => 'product_B',
+                            'values' => [
+                                '<all_channels>' => [
+                                    '<all_locales>' => [],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ]
+        );
     }
 
     function it_is_initializable()

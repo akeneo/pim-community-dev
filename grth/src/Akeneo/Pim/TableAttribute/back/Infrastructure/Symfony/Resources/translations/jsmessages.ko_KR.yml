@@ -162,6 +162,10 @@ pim_table_attribute:
       completeness_helper_text: "완성도가 테이블 특성에서 작동하는 방식을 알아보려면,"
       completeness_helper_link: 도움말을 확인하십시오.
       reference_entity: 참조 엔터티
+      import_from_existing_attribute: 기존 특성에서 가져오기
+      option_count: "{0,1}{{ count }}개 옵션|]1, Inf[{{ count }}개 옵션"
+      measurement_family: 측정 패밀리
+      measurement_default_unit: 측정 기본 단위
     product:
       items_per_page: 페이지당 항목 수
       current_items: "{{ minItem }}~{{ maxItem }}/{{ itemCount }}"
@@ -191,6 +195,7 @@ pim_table_attribute:
       boolean: 예/아니요
       select: 선택
       reference_entity: 참조 엔터티
+      measurement: 측정
   validations:
     column_code_must_be_filled: 코드를 입력해야 합니다
     not_available_code: 이 열 코드는 사용할 수 없습니다
@@ -251,3 +256,7 @@ batch_jobs:
   xlsx_product_table_values_import.label: XLSX로 제품 테이블 값 가져오기
   csv_product_model_table_values_import.label: CSV로 제품 모델 테이블 값 가져오기
   xlsx_product_model_table_values_import.label: XLSX로 제품 모델 테이블 값 가져오기
+  default_steps.clean: 기존에 없는 테이블 옵션 값 제거
+akeneo_job_process_tracker:
+  type_filter:
+    clean_table_values_following_deleted_options: 기존에 없는 테이블 옵션 값을 제품 및 제품 모델에서 제거

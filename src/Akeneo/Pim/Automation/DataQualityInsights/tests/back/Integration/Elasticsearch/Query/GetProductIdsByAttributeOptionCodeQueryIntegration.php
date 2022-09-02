@@ -15,6 +15,7 @@ namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Elasticsear
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeOptionCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 
 final class GetProductIdsByAttributeOptionCodeQueryIntegration extends AbstractGetProductIdsByAttributeOptionCodeQueryIntegration
 {
@@ -22,7 +23,8 @@ final class GetProductIdsByAttributeOptionCodeQueryIntegration extends AbstractG
     {
         $this->givenALocalizableMultiSelectAttributeWithOptions();
 
-        $expectedProductIds[] = $this->createProduct([
+        $expectedProductUuids = [];
+        $expectedProductUuids[] = $this->createProduct([
             'a_localizable_multi_select' => [
                 [
                     'scope' => null,
@@ -31,7 +33,7 @@ final class GetProductIdsByAttributeOptionCodeQueryIntegration extends AbstractG
                 ],
             ],
         ]);
-        $expectedProductIds[] = $this->createProduct([
+        $expectedProductUuids[] = $this->createProduct([
             'a_localizable_multi_select' => [
                 [
                     'scope' => null,
@@ -63,20 +65,21 @@ final class GetProductIdsByAttributeOptionCodeQueryIntegration extends AbstractG
                 ],
             ],
         ]);
-        $expectedProductIds[] = $this->createProductVariant('a_product_model');
+        $expectedProductUuids[] = $this->createProductVariant('a_product_model');
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         $attributeOptionCode = new AttributeOptionCode(new AttributeCode('a_localizable_multi_select'), 'optionA');
-        $productIds = iterator_to_array(
-            $this->get('akeneo.pim.automation.data_quality_insights.query.get_product_ids_by_attribute_option_code')
+        $productUuids = iterator_to_array(
+            $this->get('akeneo.pim.automation.data_quality_insights.query.get_product_uuids_by_attribute_option_code')
             ->execute($attributeOptionCode, 2)
         );
 
-        $this->assertCount(2, $productIds);
-        $this->assertCount(2, $productIds[0]);
-        $this->assertCount(1, $productIds[1]);
+        $this->assertCount(2, $productUuids);
+        $this->assertCount(2, $productUuids[0]);
+        $this->assertCount(1, $productUuids[1]);
 
-        $productIds = array_merge(...$productIds);
-        $this->assertEqualsCanonicalizing($expectedProductIds, $productIds);
+        $productUuids = array_map(fn (ProductUuidCollection $collection) => $collection->toArray(), $productUuids);
+
+        $this->assertEqualsCanonicalizing($expectedProductUuids, array_merge(...$productUuids));
     }
 }

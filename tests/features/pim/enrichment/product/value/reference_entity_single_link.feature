@@ -1,3 +1,4 @@
+@reference-entity-feature-enabled
 Feature: Validate asset multiple link attribute of a product
   In order to keep my data consistent
   As a regular user

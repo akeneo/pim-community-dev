@@ -43,7 +43,8 @@ class ConfigureAttributeGridListener
             'smart' => [
                 'label'         => 'pimee_catalog_rule.attribute.grid.is_smart.label',
                 'frontend_type' => 'boolean-status',
-                'data_name'     => 'is_smart'
+                'data_name'     => 'is_smart',
+                'feature_flag'  => 'product_rules'
             ]
         ];
 
@@ -58,7 +59,8 @@ class ConfigureAttributeGridListener
         $filter = [
             'smart' => [
                 'type'      => 'attribute_is_smart',
-                'data_name' => 'is_smart'
+                'data_name' => 'is_smart',
+                'feature_flag' => 'product_rules'
             ]
         ];
 

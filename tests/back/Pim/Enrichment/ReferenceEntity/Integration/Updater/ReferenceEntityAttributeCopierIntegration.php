@@ -13,7 +13,13 @@ declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Pim\Enrichment\ReferenceEntity\Integration\Updater;
 
+use Akeneo\Channel\API\Query\Channel;
+use Akeneo\Channel\API\Query\LabelCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceEntityValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityType;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Value\ReferenceEntityCollectionValue;
@@ -31,7 +37,7 @@ class ReferenceEntityAttributeCopierIntegration extends TestCase
      */
     public function it_copies_a_reference_entity_single_link_value()
     {
-        $singleAttribute = $this->createAttribute([
+        $this->createAttribute([
             'code' => 'designer',
             'group' => 'other',
             'scopable' => false,
@@ -40,17 +46,12 @@ class ReferenceEntityAttributeCopierIntegration extends TestCase
             'reference_data_name' => 'designers',
         ]);
 
-        $product = $this->createProduct([
-            'values' => [
-                'designer' => [
-                    [
-                        'locale' => 'en_US',
-                        'scope' => null,
-                        'data' => 'dyson',
-                    ],
-                ]
-            ]
-        ]);
+        $product = $this->createProduct(
+            'some_sku',
+            [
+                new SetSimpleReferenceEntityValue('designer', null, 'en_US', 'dyson'),
+           ]
+        );
         Assert::assertnull($product->getValue('designer', 'fr_FR'));
 
         $this->get('pim_catalog.updater.property_copier')->copyData(
@@ -72,7 +73,7 @@ class ReferenceEntityAttributeCopierIntegration extends TestCase
      */
     public function it_copies_a_reference_entity_collection_value()
     {
-        $collectionAttribute = $this->createAttribute(
+        $this->createAttribute(
             [
                 'code' => 'designers',
                 'group' => 'other',
@@ -84,21 +85,10 @@ class ReferenceEntityAttributeCopierIntegration extends TestCase
         );
 
         $product = $this->createProduct(
+            'some_sku',
             [
-                'values' => [
-                    'designers' => [
-                        [
-                            'locale' => 'en_US',
-                            'scope' => null,
-                            'data' => ['dyson', 'starck'],
-                        ],
-                        [
-                            'locale' => 'fr_FR',
-                            'scope' => null,
-                            'data' => ['newson'],
-                        ],
-                    ]
-                ]
+                new SetMultiReferenceEntityValue('designers', null, 'en_US', ['dyson', 'starck']),
+                new SetMultiReferenceEntityValue('designers', null, 'fr_FR', ['newson'])
             ]
         );
         Assert::assertSame('newson', $product->getValue('designers', 'fr_FR')->__toString());
@@ -124,7 +114,9 @@ class ReferenceEntityAttributeCopierIntegration extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->createAdminUser();
         $this->loadFixtures();
+        $this->get('feature_flags')->enable('reference_entity');
     }
 
     /**
@@ -137,7 +129,13 @@ class ReferenceEntityAttributeCopierIntegration extends TestCase
 
     private function loadFixtures(): void
     {
+        $this->get('akeneo_referenceentity.infrastructure.persistence.query.channel.find_channels')
+            ->setChannels([
+                new Channel('ecommerce', ['en_US'], LabelCollection::fromArray(['en_US' => 'Ecommerce', 'de_DE' => 'Ecommerce', 'fr_FR' => 'Ecommerce']), ['USD'])
+            ]);
+
         // Enable the fr_FR locale
+        // TODO: Remove this part when Channel Service API is used everywhere in Reference Entity queries
         $channel = $this->get('pim_catalog.repository.channel')->findOneByIdentifier('ecommerce');
         $frFr = $this->get('pim_catalog.repository.locale')->findOneByIdentifier('fr_FR');
         $channel->addLocale($frFr);
@@ -163,14 +161,38 @@ class ReferenceEntityAttributeCopierIntegration extends TestCase
         return $attribute;
     }
 
-    private function createProduct(array $data): ProductInterface
+    /**
+     * @param string $identifier
+     * @param array<UserIntent> $userIntents
+     * @return ProductInterface
+     */
+    private function createProduct(string $identifier, array $userIntents): ProductInterface
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct('some_sku');
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-        $violations = $this->get('pim_catalog.validator.product')->validate($product);
-        Assert::assertCount(0, $violations, sprintf('validation failed: %s', $violations));
-        $this->get('pim_catalog.saver.product')->save($product);
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: $identifier,
+            userIntents: $userIntents
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
 
-        return $product;
+        return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
+    }
+
+    private function clearDoctrineUoW(): void
+    {
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
+    }
+
+    private function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        Assert::assertNotNull($id);
+
+        return \intval($id);
     }
 }

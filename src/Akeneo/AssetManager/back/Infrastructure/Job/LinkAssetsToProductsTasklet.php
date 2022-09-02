@@ -32,25 +32,15 @@ use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
  */
 class LinkAssetsToProductsTasklet implements TaskletInterface, TrackableTaskletInterface
 {
-    private RuleTemplateExecutor $ruleTemplateExecutor;
-    private FindAssetCodesByAssetFamilyInterface $findAssetCodesByAssetFamily;
     private ?StepExecution $stepExecution = null;
-    private CountAssetsInterface $countAssets;
-    private JobRepositoryInterface $jobRepository;
-    private int $batchSize;
 
     public function __construct(
-        RuleTemplateExecutor $ruleExecutor,
-        FindAssetCodesByAssetFamilyInterface $findAssetCodesByAssetFamily,
-        CountAssetsInterface $countAssets,
-        JobRepositoryInterface $jobRepository,
-        int $batchSize
+        private RuleTemplateExecutor $ruleTemplateExecutor,
+        private FindAssetCodesByAssetFamilyInterface $findAssetCodesByAssetFamily,
+        private CountAssetsInterface $countAssets,
+        private JobRepositoryInterface $jobRepository,
+        private int $batchSize,
     ) {
-        $this->ruleTemplateExecutor = $ruleExecutor;
-        $this->findAssetCodesByAssetFamily = $findAssetCodesByAssetFamily;
-        $this->countAssets = $countAssets;
-        $this->jobRepository = $jobRepository;
-        $this->batchSize = $batchSize;
     }
 
     public function setStepExecution(StepExecution $stepExecution): void

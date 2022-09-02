@@ -1,4 +1,4 @@
-@javascript
+@javascript @permission-feature-enabled
 Feature: Filter products per permissions
   In order to enrich my catalog
   As a manager

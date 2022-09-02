@@ -40,7 +40,7 @@ akeneo_data_quality_insights:
       aria_label: "Oikeinkirjoituksen ehdotukset: {{ mistake }}"
   dqi_dashboard:
     key_indicators:
-      attributes_to_work_on: '{1}Sinulla on <button>1 attribuutti</button> työstettäväksi. |]1, 200[Sinulla on <button>{{ count }} attribuuttia</button> työstettäväksi. |[200, Inf[Sinulla on <button>enemmän kuin {{ count }} attribuuttia</button> työstettäväksi.'
+      attributes: '{1}1 attribuutti|]1, 200[{{ count }} attribuuttia|[200, Inf[yli {{ count }} attribuuttia'
       list:
         has_image:
           no_data: Medialiite- ja kuva-attribuuttisi näyttäisivät olevan tyhjillään. Sinun tulisi lisätä tuotekuvia korostaaksesi tuotteidesi laatua.

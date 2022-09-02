@@ -1,12 +1,12 @@
 import {ValidationError} from '@akeneo-pim-community/shared';
-import handleError from 'akeneoassetmanager/infrastructure/tools/error-handler';
 import AssetFamilyIdentifier, {
   assetFamilyIdentifierStringValue,
 } from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {PermissionCollection} from 'akeneoassetmanager/domain/model/asset-family/permission';
-import {postJSON} from 'akeneoassetmanager/tools/fetch';
+import {handleResponse} from 'akeneoassetmanager/infrastructure/tools/handleResponse';
 
-const routing = require('routing');
+const generateAssetPermissionEditUrl = (assetFamilyIdentifier: AssetFamilyIdentifier) =>
+  `/rest/asset_manager/${assetFamilyIdentifier}/permissions`;
 
 export interface PermissionSaver {
   save: (
@@ -24,13 +24,22 @@ export class PermissionSaverImplementation implements PermissionSaver {
     assetFamilyIdentifier: AssetFamilyIdentifier,
     permissions: PermissionCollection
   ): Promise<ValidationError[] | null> {
-    return await postJSON(
-      routing.generate('akeneo_asset_manager_asset_family_permission_set_rest', {
-        assetFamilyIdentifier: assetFamilyIdentifierStringValue(assetFamilyIdentifier),
-      }),
-      permissions.normalize()
-    ).catch(handleError);
+    const response = await fetch(
+      generateAssetPermissionEditUrl(assetFamilyIdentifierStringValue(assetFamilyIdentifier)),
+      {
+        method: 'POST',
+        cache: 'no-cache',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+        body: JSON.stringify(permissions.normalize()),
+      }
+    );
+
+    return await handleResponse(response);
   }
 }
 
-export default new PermissionSaverImplementation();
+const permissionSaver = new PermissionSaverImplementation();
+export default permissionSaver;

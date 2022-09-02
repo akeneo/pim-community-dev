@@ -8,7 +8,6 @@ import LocaleReference, {
 } from 'akeneoassetmanager/domain/model/locale-reference';
 import ChannelReference, {channelReferenceAreEqual} from 'akeneoassetmanager/domain/model/channel-reference';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
-import {getDataFieldView} from 'akeneoassetmanager/application/configuration/value';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
 import {getLabelInCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import EditionAsset from 'akeneoassetmanager/domain/model/asset/edition-asset';
@@ -16,6 +15,7 @@ import {getValuesForChannelAndLocale, isValueEmpty} from 'akeneoassetmanager/dom
 import {hasFieldAsTarget} from 'akeneoassetmanager/domain/model/asset-family/transformation';
 import {attributeIdentifierStringValue} from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {isTextAreaAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
+import {useInputViewGenerator} from 'akeneoassetmanager/application/hooks/useInputViewGenerator';
 
 const ValueCollectionContainer = styled.div`
   display: flex;
@@ -46,6 +46,7 @@ const ValueCollection = ({
   canEditAsset,
 }: ValueCollectionProps) => {
   const translate = useTranslate();
+  const inputViewGenerator = useInputViewGenerator();
   const visibleValues = getValuesForChannelAndLocale(asset.values, channel, locale).sort(
     (firstValue: EditionValue, secondValue: EditionValue) => firstValue.attribute.order - secondValue.attribute.order
   );
@@ -53,7 +54,7 @@ const ValueCollection = ({
   return (
     <ValueCollectionContainer>
       {visibleValues.map((value: EditionValue) => {
-        const DataView = getDataFieldView(value);
+        const InputView = inputViewGenerator(value);
         const attributeLabel = getLabelInCollection(
           value.attribute.labels,
           localeReferenceStringValue(locale),
@@ -90,7 +91,7 @@ const ValueCollection = ({
               locale={value.locale}
               fullWidth={isTextAreaAttribute(value.attribute)}
             >
-              <DataView
+              <InputView
                 value={value}
                 onChange={onValueChange}
                 onSubmit={onFieldSubmit}

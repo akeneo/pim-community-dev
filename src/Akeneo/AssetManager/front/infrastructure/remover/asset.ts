@@ -3,12 +3,14 @@ import AssetCode, {assetCodeStringValue} from 'akeneoassetmanager/domain/model/a
 import AssetFamilyIdentifier, {
   denormalizeAssetFamilyIdentifier,
 } from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import {deleteJSON} from 'akeneoassetmanager/tools/fetch';
 import {ValidationError} from '@akeneo-pim-community/shared';
-import errorHandler from 'akeneoassetmanager/infrastructure/tools/error-handler';
 import {Query} from 'akeneoassetmanager/domain/fetcher/fetcher';
+import {handleResponse} from 'akeneoassetmanager/infrastructure/tools/handleResponse';
 
-const routing = require('routing');
+const generateRemoveUrl = (assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode) =>
+  `/rest/asset_manager/${assetFamilyIdentifier}/asset/${assetCode}`;
+const generateRemoveFromQueryUrl = (assetFamilyIdentifier: AssetFamilyIdentifier) =>
+  `/rest/asset_manager/${assetFamilyIdentifier}/assets`;
 
 export class AssetRemoverImplementation implements AssetRemover<AssetFamilyIdentifier, AssetCode> {
   constructor() {
@@ -16,18 +18,21 @@ export class AssetRemoverImplementation implements AssetRemover<AssetFamilyIdent
   }
 
   async remove(assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode): Promise<ValidationError[] | null> {
-    return await deleteJSON(
-      routing.generate('akeneo_asset_manager_asset_delete_rest', {
-        assetCode: assetCodeStringValue(assetCode),
-        assetFamilyIdentifier: denormalizeAssetFamilyIdentifier(assetFamilyIdentifier),
-      })
-    ).catch(errorHandler);
+    const response = await fetch(
+      generateRemoveUrl(denormalizeAssetFamilyIdentifier(assetFamilyIdentifier), assetCodeStringValue(assetCode)),
+      {
+        method: 'DELETE',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+      }
+    );
+
+    return await handleResponse(response);
   }
 
   async removeFromQuery(assetFamilyIdentifier: AssetFamilyIdentifier, query: Query): Promise<Response> {
-    const url = routing.generate('akeneo_asset_manager_asset_mass_delete_rest', {
-      assetFamilyIdentifier: denormalizeAssetFamilyIdentifier(assetFamilyIdentifier),
-    });
+    const url = generateRemoveFromQueryUrl(denormalizeAssetFamilyIdentifier(assetFamilyIdentifier));
 
     return await fetch(url, {
       method: 'DELETE',

@@ -45,23 +45,25 @@ const MultiSelectFilterValue: TableFilterValueRenderer = ({value, onChange, colu
   );
 };
 
-const useValueRenderer: FilteredValueRenderer = () => {
+const useValueRenderer: FilteredValueRenderer = (value, columnCode) => {
   const {attribute, setAttribute} = useAttributeContext();
-  const userContext = useUserContext();
-
   const {getOptionsFromColumnCode} = useFetchOptions(attribute, setAttribute);
+  const userContext = useUserContext();
+  const column = attribute?.table_configuration.find(({code}) => code === columnCode);
 
-  return (value, columnCode) => {
-    const options = getOptionsFromColumnCode(columnCode) || [];
-    const catalogLocale = userContext.get('catalogLocale');
+  if (!columnCode || column?.data_type !== 'select') {
+    return null;
+  }
 
-    return ((value as string[] | undefined) || [])
-      .map((subValue: SelectOptionCode) => {
-        const option = options.find(option => option.code === subValue);
-        return getLabel(option?.labels || {}, catalogLocale, option?.code || subValue);
-      })
-      .join(', ');
-  };
+  const options = getOptionsFromColumnCode(columnCode) || [];
+  const catalogLocale = userContext.get('catalogLocale');
+
+  return ((value as string[] | undefined) || [])
+    .map((subValue: SelectOptionCode) => {
+      const option = options.find(option => option.code === subValue);
+      return getLabel(option?.labels || {}, catalogLocale, option?.code || subValue);
+    })
+    .join(', ');
 };
 
 export {useValueRenderer};

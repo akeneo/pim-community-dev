@@ -14,6 +14,7 @@ import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 
 const Field = require('pim/field');
 const UserContext = require('pim/user-context');
+const Router = require('pim/router');
 
 /**
  * Asset family collection field for attribute form
@@ -58,6 +59,7 @@ class AssetCollectionField extends (Field as {new (config: any): any}) {
     const container = document.createElement('div');
     ReactDOM.render(
       <AssetSelector
+        router={Router}
         assetFamilyIdentifier={denormalizeAssetFamilyIdentifier(templateContext.attribute.reference_data_name)}
         value={templateContext.value.data.map((assetCode: string) => denormalizeAssetCode(assetCode))}
         locale={denormalizeLocaleReference(UserContext.get('catalogLocale'))}

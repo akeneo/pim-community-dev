@@ -26,11 +26,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class AssetFamilyShouldHaveNoAssetValidator extends ConstraintValidator
 {
-    private AssetFamilyHasAssetsInterface $assetFamilyHasAssets;
-
-    public function __construct(AssetFamilyHasAssetsInterface $assetFamilyHasAssets)
+    public function __construct(private AssetFamilyHasAssetsInterface $assetFamilyHasAssets)
     {
-        $this->assetFamilyHasAssets = $assetFamilyHasAssets;
     }
 
     public function validate($command, Constraint $constraint): void
@@ -50,7 +47,7 @@ class AssetFamilyShouldHaveNoAssetValidator extends ConstraintValidator
                 sprintf(
                     'Expected argument to be of class "%s", "%s" given',
                     DeleteAssetFamilyCommand::class,
-                    get_class($command)
+                    $command::class
                 )
             );
         }

@@ -1,5 +1,13 @@
 ## Rename this file in phpspec.yml to customize the phpspec configuration
 suites:
+    ## Channel context
+    Channel:
+        namespace: AkeneoEnterprise\Channel
+        psr4_prefix: AkeneoEnterprise\Channel
+        spec_path: src/Akeneo/Channel/back/tests
+        src_path: src/Akeneo/Channel/back
+        spec_prefix: Specification
+
     ## Platform BC
     Platform:
         namespace: Akeneo\Platform
@@ -47,8 +55,24 @@ suites:
     TailoredExport:
         namespace: Akeneo\Platform\TailoredExport
         psr4_prefix: Akeneo\Platform\TailoredExport
-        spec_path: components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle/tests
-        src_path: components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle/src
+        spec_path: components/tailored-export/back/tests
+        src_path: components/tailored-export/back/src
+        spec_prefix: Specification
+
+    ## Tailored import context
+    TailoredImport:
+        namespace: Akeneo\Platform\TailoredImport
+        psr4_prefix: Akeneo\Platform\TailoredImport
+        spec_path: components/tailored-import/back/tests
+        src_path: components/tailored-import/back/src
+        spec_prefix: Specification
+
+    ## Job automation context
+    JobAutomation:
+        namespace: Akeneo\Platform\JobAutomation
+        psr4_prefix: Akeneo\Platform\JobAutomation
+        spec_path: components/job-automation/back/tests
+        src_path: components/job-automation/back/src
         spec_prefix: Specification
 
     ## Pim extension

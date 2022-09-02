@@ -42,18 +42,9 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\ValueHydratorInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 
 class FixturesLoader
 {
-    private AssetFamilyRepositoryInterface $assetFamilyRepository;
-
-    private AttributeRepositoryInterface $attributeRepository;
-
-    private AssetRepositoryInterface $assetRepository;
-
-    private ValueHydratorInterface $valueHydrator;
-
     private ?string $loadedAssetFamily = null;
 
     /** @var string[] */
@@ -71,15 +62,11 @@ class FixturesLoader
     private ?array $loadedValues = null;
 
     public function __construct(
-        AssetFamilyRepositoryInterface $assetFamilyRepository,
-        AttributeRepositoryInterface $attributeRepository,
-        AssetRepositoryInterface $assetRepository,
-        ValueHydratorInterface $valueHydrator
+        private AssetFamilyRepositoryInterface $assetFamilyRepository,
+        private AttributeRepositoryInterface $attributeRepository,
+        private AssetRepositoryInterface $assetRepository,
+        private ValueHydratorInterface $valueHydrator,
     ) {
-        $this->assetFamilyRepository = $assetFamilyRepository;
-        $this->attributeRepository = $attributeRepository;
-        $this->assetRepository = $assetRepository;
-        $this->valueHydrator = $valueHydrator;
     }
 
     public function assetFamily(string $identifier): self
@@ -295,7 +282,7 @@ class FixturesLoader
                         'product_selections' => [
                             [
                                 'field'    => '{{category_field}}',
-                                'operator' => Operators::EQUALS,
+                                'operator' => '=',
                                 'value'    => '{{category}}',
                             ],
                         ],
@@ -355,8 +342,6 @@ class FixturesLoader
     }
 
     /**
-     * @param AssetFamilyIdentifier $assetFamilyIdentifier
-     *
      * @return AbstractAttribute[]
      */
     private function loadAttributes(AssetFamilyIdentifier $assetFamilyIdentifier): array

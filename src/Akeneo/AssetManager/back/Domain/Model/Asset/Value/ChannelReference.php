@@ -19,11 +19,8 @@ use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
  */
 class ChannelReference
 {
-    private ?ChannelIdentifier $identifier = null;
-
-    private function __construct(?ChannelIdentifier $identifier)
+    private function __construct(private ?ChannelIdentifier $identifier)
     {
-        $this->identifier = $identifier;
     }
 
     public static function fromChannelIdentifier(ChannelIdentifier $identifier): self
@@ -64,7 +61,7 @@ class ChannelReference
 
     public function normalize(): ?string
     {
-        if (null === $this->identifier) {
+        if (!$this->identifier instanceof ChannelIdentifier) {
             return null;
         }
 
@@ -73,6 +70,6 @@ class ChannelReference
 
     public function isEmpty(): bool
     {
-        return null === $this->identifier;
+        return !$this->identifier instanceof ChannelIdentifier;
     }
 }

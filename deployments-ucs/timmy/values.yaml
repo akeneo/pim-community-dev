@@ -1,0 +1,44 @@
+nameOverride: ""
+fullnameOverride: "timmy"
+
+common:
+  gcpProjectID: "akecld-prd-pim-saas-dev"
+  workloadIdentityKSA: "timmy-deployment-sa"
+  workloadIdentityGSA: "timmy-deployment"
+  region: "europe-west1"
+  timeZone: "Europe/Paris"
+
+cloudFunction:
+  description: "Request the portal to get tenant information"
+  runtime: "nodejs16"
+  availableMemoryMb: 128
+  serviceAccountEmail: "timmy-portal-function@akecld-prd-pim-saas-dev.iam.gserviceaccount.com"
+  entryPoint: "requestPortal"
+  environmentVariables:
+    PORTAL_HOSTNAME: "partners-preprod.ip.akeneo.com"
+    PORTAL_LOGIN_HOSTNAME: "connect-preprod.ip.akeneo.com"
+    TENANT_EDITION_FLAGS: "serenity_instance"
+    TENANT_CONTINENT: "europe"
+    TENANT_ENVIRONMENT: "sandbox"
+    SECRET_NAME: 'PORTAL_TIMMY'
+
+cloudScheduler:
+  schedule: "*/2 * * * *"
+
+# The bucket used for the CloudFunction
+bucket:
+  deletionPolicy: "Delete"
+  location: "EU"
+  storageClass: "STANDARD"
+  uniformBucketLevelAccess: "false"
+  versioningEnabled: "True"
+
+image:
+  cloudsdk:
+    repository: gcr.io/google.com/cloudsdktool/cloud-sdk
+    pullPolicy: IfNotPresent
+    tag: 392.0.0-alpine
+  curljqzip:
+    repository: vgelot/alpine-curl-jq-zip
+    pullPolicy: IfNotPresent
+    tag: curl-7.83.1

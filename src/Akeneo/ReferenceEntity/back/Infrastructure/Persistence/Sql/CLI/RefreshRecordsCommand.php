@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\CLI;
 
+use Akeneo\ReferenceEntity\Domain\Query\Record\CountRecordsInterface;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords\FindAllRecordIdentifiers;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords\RefreshRecord;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Types\Type;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -33,7 +32,7 @@ class RefreshRecordsCommand extends Command
         private LoggerInterface $logger,
         private FindAllRecordIdentifiers $findAllRecordIdentifiers,
         private RefreshRecord $refreshRecord,
-        private Connection $sqlConnection
+        private CountRecordsInterface $countRecords,
     ) {
         parent::__construct(self::REFRESH_RECORDS_COMMAND_NAME);
     }
@@ -50,7 +49,7 @@ class RefreshRecordsCommand extends Command
     {
         $verbose = $input->getOption('verbose') ?: false;
 
-        $totalRecords = $this->getTotalRecords();
+        $totalRecords = $this->countRecords->all();
         $progressBar = new ProgressBar($output, $totalRecords);
         if ($verbose) {
             $progressBar->start();
@@ -61,11 +60,16 @@ class RefreshRecordsCommand extends Command
         $recordIdentifiers = $this->findAllRecordIdentifiers->fetch();
         $i = 0;
         foreach ($recordIdentifiers as $recordIdentifier) {
-            $this->refreshRecord->refresh($recordIdentifier);
-            if ($i % self::BULK_SIZE === 0 && $verbose) {
-                $progressBar->advance(self::BULK_SIZE);
+            try {
+                $this->refreshRecord->refresh($recordIdentifier);
+            } catch (RecordNotFoundException) {
+                continue;
+            } finally {
+                $i++;
+                if ($i % self::BULK_SIZE === 0 && $verbose) {
+                    $progressBar->advance(self::BULK_SIZE);
+                }
             }
-            $i++;
         }
         if ($verbose) {
             $progressBar->finish();
@@ -77,16 +81,5 @@ class RefreshRecordsCommand extends Command
         );
 
         return 0;
-    }
-
-    private function getTotalRecords(): int
-    {
-        $stmt = $this->sqlConnection->executeQuery('SELECT COUNT(*) FROM akeneo_reference_entity_record;');
-        $result = $stmt->fetch(\PDO::FETCH_COLUMN);
-        if (false === $result) {
-            throw new \RuntimeException('An exception occurred while connecting the database');
-        }
-
-        return Type::getType('integer')->convertToPHPValue($result, $this->sqlConnection->getDatabasePlatform());
     }
 }

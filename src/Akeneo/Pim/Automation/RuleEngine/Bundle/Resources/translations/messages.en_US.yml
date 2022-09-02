@@ -90,12 +90,8 @@ job_execution:
         read_rules: read rules
         selected_entities: selected products / product models
         skipped_invalid: skipped products / product models (invalid)
+        skipped_no_diff: skipped products / product models (no differences)
         updated_entities: updated products / product models
         executed_rules: successfully executed rules
         errored_rules: skipped rules (invalid)
 
-pim_datagrid:
-    cells:
-        type:
-            mass_edit_rule: Rules Settings
-            execute_rules: Rules execution

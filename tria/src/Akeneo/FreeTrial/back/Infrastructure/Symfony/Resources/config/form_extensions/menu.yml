@@ -1,5 +1,4 @@
 extensions:
-
   #main menu items
   pim-free-trial-menu-entities:
     module: pim/menu/tab

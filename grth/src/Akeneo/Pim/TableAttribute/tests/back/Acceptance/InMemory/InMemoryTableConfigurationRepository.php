@@ -66,6 +66,8 @@ class InMemoryTableConfigurationRepository implements TableConfigurationReposito
                     'validations' => $row['validations'] ?? [],
                     'is_required_for_completeness' => $row['is_required_for_completeness'] ?? false,
                     'reference_entity_identifier' => $row['reference_entity_identifier'] ?? null,
+                    'measurement_family_code' => $row['measurement_family_code'] ?? null,
+                    'measurement_default_unit_code' => $row['measurement_default_unit_code'] ?? null,
                 ],
                 $attribute->getRawTableConfiguration()
             )

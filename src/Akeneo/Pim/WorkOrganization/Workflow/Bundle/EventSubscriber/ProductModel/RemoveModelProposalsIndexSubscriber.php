@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductModel;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\DescendantProductIdsQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\DescendantProductModelIdsQueryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\DescendantProductUuidsQueryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Indexer\ProductModelProposalIndexer;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Indexer\ProductProposalIndexer;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\SelectModelProposalIdsFromProductModelIdsQueryInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\SelectProposalIdsFromProductIdsQueryInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\SelectProposalIdsFromProductUuidsQueryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -29,24 +29,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class RemoveModelProposalsIndexSubscriber implements EventSubscriberInterface
 {
-    /** @var SelectProposalIdsFromProductIdsQueryInterface  */
-    private $selectModelProposalIdsFromProductModelIdsQuery;
-
-    /** @var SelectProposalIdsFromProductIdsQueryInterface */
-    private $selectProposalIdsFromProductIdsQuery;
-
-    /** @var DescendantProductIdsQueryInterface */
-    private $descendantProductIdsQuery;
-
-    /** @var DescendantProductModelIdsQueryInterface */
-    private $descendantProductModelIdsQuery;
-
-    /** @var ProductModelProposalIndexer */
-    private $productModelProposalIndexer;
-
-    /** @var ProductProposalIndexer */
-    private $productProposalIndexer;
-
     /** @var int[] */
     private $proposalModelIdsToDelete = [];
 
@@ -54,19 +36,13 @@ class RemoveModelProposalsIndexSubscriber implements EventSubscriberInterface
     private $proposalIdsToDelete = [];
 
     public function __construct(
-        SelectModelProposalIdsFromProductModelIdsQueryInterface $selectModelProposalIdsFromProductModelIdsQuery,
-        SelectProposalIdsFromProductIdsQueryInterface $selectProposalIdsFromProductIdsQuery,
-        DescendantProductIdsQueryInterface $descendantProductIdsQuery,
-        DescendantProductModelIdsQueryInterface $descendantProductModelIdsQuery,
-        ProductModelProposalIndexer $productModelProposalIndexer,
-        ProductProposalIndexer $productProposalIndexer
+        private SelectModelProposalIdsFromProductModelIdsQueryInterface $selectModelProposalIdsFromProductModelIdsQuery,
+        private SelectProposalIdsFromProductUuidsQueryInterface $selectProposalIdsFromProductIdsQuery,
+        private DescendantProductUuidsQueryInterface $descendantProductUuidsQuery,
+        private DescendantProductModelIdsQueryInterface $descendantProductModelIdsQuery,
+        private ProductModelProposalIndexer $productModelProposalIndexer,
+        private ProductProposalIndexer $productProposalIndexer
     ) {
-        $this->selectModelProposalIdsFromProductModelIdsQuery = $selectModelProposalIdsFromProductModelIdsQuery;
-        $this->selectProposalIdsFromProductIdsQuery = $selectProposalIdsFromProductIdsQuery;
-        $this->descendantProductIdsQuery = $descendantProductIdsQuery;
-        $this->descendantProductModelIdsQuery = $descendantProductModelIdsQuery;
-        $this->productModelProposalIndexer = $productModelProposalIndexer;
-        $this->productProposalIndexer = $productProposalIndexer;
     }
 
     public static function getSubscribedEvents()
@@ -90,10 +66,10 @@ class RemoveModelProposalsIndexSubscriber implements EventSubscriberInterface
         $productModelIds = $this->descendantProductModelIdsQuery->fetchFromParentProductModelId($productModelId);
         $productModelIds[] = $productModelId;
 
-        $productIds = $this->descendantProductIdsQuery->fetchFromProductModelIds($productModelIds);
+        $productUuids = $this->descendantProductUuidsQuery->fetchFromProductModelIds($productModelIds);
 
         $this->proposalModelIdsToDelete = $this->selectModelProposalIdsFromProductModelIdsQuery->fetch($productModelIds);
-        $this->proposalIdsToDelete = $this->selectProposalIdsFromProductIdsQuery->fetch($productIds);
+        $this->proposalIdsToDelete = $this->selectProposalIdsFromProductIdsQuery->fetch($productUuids);
     }
 
     /**

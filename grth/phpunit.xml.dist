@@ -30,6 +30,7 @@
         <testsuite name="PIM_Integration_Test">
             <directory suffix="Integration.php">src</directory>
             <directory suffix="Integration.php">tests/back</directory>
+            <exclude>src/Akeneo/Pim/TableAttribute/tests/back/Enterprise</exclude>
         </testsuite>
 
         <testsuite name="PIM_Migration_Test">
@@ -39,6 +40,7 @@
         <testsuite name="End_to_End">
             <directory suffix="EndToEnd.php">tests/back</directory>
             <directory suffix="EndToEnd.php">src</directory>
+            <exclude>src/Akeneo/Pim/TableAttribute/tests/back/Enterprise</exclude>
         </testsuite>
 
         <testsuite name="Table_Attribute_Integration">
@@ -49,11 +51,11 @@
         </testsuite>
 
         <testsuite name="TailoredExport_Integration_Test">
-            <directory>components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle/tests/Integration</directory>
-            <exclude>components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle/tests/Integration/Infrastructure/Controller/GetRecordsControllerIntegrationTest.php</exclude>
-            <exclude>components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle/tests/Integration/Infrastructure/Query/FindViewableAttributesIntegrationTest.php</exclude>
-            <exclude>components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle/tests/Integration/Infrastructure/Validation/Source/AssetCollection/AssetCollectionSelectionValidatorTest.php</exclude>
-            <exclude>components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle/tests/Integration/Infrastructure/Validation/Source/AssetCollection/AssetCollectionSourceValidatorTest.php</exclude>
+            <directory>components/tailored-export/back/tests/Integration</directory>
+            <exclude>components/tailored-export/back/tests/Integration/Infrastructure/Controller/GetRecordsControllerIntegrationTest.php</exclude>
+            <exclude>components/tailored-export/back/tests/Integration/Infrastructure/Query/FindViewableAttributesIntegrationTest.php</exclude>
+            <exclude>components/tailored-export/back/tests/Integration/Infrastructure/Validation/Source/AssetCollection/AssetCollectionSelectionValidatorTest.php</exclude>
+            <exclude>components/tailored-export/back/tests/Integration/Infrastructure/Validation/Source/AssetCollection/AssetCollectionSourceValidatorTest.php</exclude>
         </testsuite>
     </testsuites>
 </phpunit>

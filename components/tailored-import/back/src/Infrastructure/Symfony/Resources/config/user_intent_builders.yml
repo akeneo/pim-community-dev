@@ -1,0 +1,95 @@
+services:
+  akeneo.tailored_import.user_intent_factory.clear_price:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\ClearPriceUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory, priority: 101 }
+
+  akeneo.tailored_import.user_intent_factory.clear_categories:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\ClearCategoriesUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory, priority: 101 }
+
+  akeneo.tailored_import.user_intent_factory.clear_family:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\ClearFamilyUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory, priority: 101 }
+
+  akeneo.tailored_import.user_intent_factory.clear_attribute:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\ClearAttributeUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory, priority: 100 }
+
+  akeneo.tailored_import.user_intent_factory.asset:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\AssetCollectionUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory }
+
+  akeneo.tailored_import.user_intent_factory.boolean:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\BooleanUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory }
+
+  akeneo.tailored_import.user_intent_factory.categories:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\CategoriesUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory }
+
+  akeneo.tailored_import.user_intent_factory.date:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\DateUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory }
+
+  akeneo.tailored_import.user_intent_factory.enabled:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\EnabledUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory }
+
+  akeneo.tailored_import.user_intent_factory.family:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\FamilyUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory }
+
+  akeneo.tailored_import.user_intent_factory.measurement:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\MeasurementUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory }
+
+  akeneo.tailored_import.user_intent_factory.multi_reference_entity:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\MultiReferenceEntityUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory }
+
+  akeneo.tailored_import.user_intent_factory.multiselect:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\MultiSelectUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory }
+
+  akeneo.tailored_import.user_intent_factory.number:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\NumberUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory }
+
+  akeneo.tailored_import.user_intent_factory.price:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\PriceUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory }
+
+  akeneo.tailored_import.user_intent_factory.simple_reference_entity:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\SimpleReferenceEntityUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory }
+
+  akeneo.tailored_import.user_intent_factory.simpleselect:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\SimpleSelectUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory }
+
+  akeneo.tailored_import.user_intent_factory.text:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\TextUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory }
+
+  akeneo.tailored_import.user_intent_factory.textarea:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\TextareaUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory }

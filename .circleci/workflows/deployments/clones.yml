@@ -1,0 +1,316 @@
+client-to-clone-srnt: &client-to-clone-srnt
+client-to-clone-grth: &client-to-clone-grth
+clients-to-clone-flex: &clients-to-clone-flex
+
+workflows:
+    # Description :
+    #    Check upgrade for the customer from their release to the latest release
+    clone_and_upgrade_customers:
+        when:
+            and:
+                - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+                - equal: [ "clone_and_upgrade_customers", << pipeline.schedule.name >> ]
+        jobs:
+            - checkout
+            - build_env_vars:
+                  name: "[<< matrix.PRODUCT_TYPE >>] build_env_vars"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["grth", "srnt"]
+                  requires:
+                      - checkout
+            - test_clone_from_customer_db:
+                  name: "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["grth"]
+                          SOURCE_PFID: *client-to-clone-grth
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] build_env_vars"
+            - test_upgrade_from_customer_db:
+                  name: "[<< matrix.PRODUCT_TYPE >>] test_upgrade_from-<< matrix.SOURCE_PFID >>"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["grth"]
+                          SOURCE_PFID: *client-to-clone-grth
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
+            - test_clone_from_customer_db:
+                  name: "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt"]
+                          SOURCE_PFID: *client-to-clone-srnt
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] build_env_vars"
+            - test_upgrade_from_customer_db:
+                  name: "[<< matrix.PRODUCT_TYPE >>] test_upgrade_from-<< matrix.SOURCE_PFID >>"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt"]
+                          SOURCE_PFID: *client-to-clone-srnt
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
+            - ui_sanity_checks:
+                  name: ui_sanity_checks-<< matrix.SOURCE_PFID >>
+                  matrix:
+                      parameters:
+                          SOURCE_PFID: *client-to-clone-srnt
+                  requires:
+                      - "[srnt] test_upgrade_from-<< matrix.SOURCE_PFID >>"
+
+    # Description :
+    #    Check upgrade from FLEX instance to SRNT
+    clone_and_upgrade_flex_customers:
+        when:
+            or:
+              - equal: [ "clone_and_upgrade_flex_customers", << pipeline.parameters.trigger >> ]
+              - and:
+                  - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+                  - equal: [ "clone_and_upgrade_flex_customers", << pipeline.schedule.name >> ]
+
+        jobs:
+            - checkout
+            - build_env_vars:
+                  name: "[<< matrix.PRODUCT_TYPE >>] build_env_vars"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt"]
+                  requires:
+                      - checkout
+            - build_srnt_prod:
+                name: "[srnt] Build"
+                requires:
+                  - "[srnt] build_env_vars"
+            - test_migrate_from_flex_customer_db:
+                  name: "[<< matrix.PRODUCT_TYPE >>] test_migrate_from-<< matrix.SOURCE_PFID_SOURCE_PROJECT_ID >>"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["flex"]
+                          SOURCE_PFID_SOURCE_PROJECT_ID: ["<< pipeline.parameters.client-to-clone-flex >>"]
+                  requires:
+                      - "[srnt] Build"
+            - validate_data_integrity:
+                  name: "[<< matrix.PRODUCT_TYPE >>] validate_data_integrity_from-<< matrix.SOURCE_PFID_SOURCE_PROJECT_ID >>"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["flex"]
+                          SOURCE_PFID_SOURCE_PROJECT_ID: ["<< pipeline.parameters.client-to-clone-flex >>"]
+                  requires:
+                    - "[<< matrix.PRODUCT_TYPE >>] test_migrate_from-<< matrix.SOURCE_PFID_SOURCE_PROJECT_ID >>"
+            - validate_db_schema:
+                name: "[<< matrix.PRODUCT_TYPE >>] validate_db_schema_from-<< matrix.SOURCE_PFID_SOURCE_PROJECT_ID >>"
+                matrix:
+                  parameters:
+                    PRODUCT_TYPE: ["flex"]
+                    SOURCE_PFID_SOURCE_PROJECT_ID: ["<< pipeline.parameters.client-to-clone-flex >>"]
+                requires:
+                  - "[<< matrix.PRODUCT_TYPE >>] test_migrate_from-<< matrix.SOURCE_PFID_SOURCE_PROJECT_ID >>"
+            - validate_indexing_diff:
+                name: "[<< matrix.PRODUCT_TYPE >>] validate_indexing_diff-<< matrix.SOURCE_PFID_SOURCE_PROJECT_ID >>"
+                matrix:
+                  parameters:
+                    PRODUCT_TYPE: ["flex"]
+                    SOURCE_PFID_SOURCE_PROJECT_ID: ["<< pipeline.parameters.client-to-clone-flex >>"]
+                requires:
+                  - "[<< matrix.PRODUCT_TYPE >>] test_migrate_from-<< matrix.SOURCE_PFID_SOURCE_PROJECT_ID >>"
+            - ui_sanity_checks:
+                name: "[flex] sanity_checks_from-<< matrix.SOURCE_PFID >>"
+                matrix:
+                  parameters:
+                    SOURCE_PFID: ["<< pipeline.parameters.client-to-clone-flex >>"]
+                requires:
+                  - "[flex] test_migrate_from-<< matrix.SOURCE_PFID >>"
+            - test_upgrade_from_customer_db:
+                name: "[flex] test_upgrade_from-<< matrix.SOURCE_PFID >>"
+                matrix:
+                  parameters:
+                      PRODUCT_TYPE: ["srnt"]
+                      SOURCE_PFID: ["<< pipeline.parameters.client-to-clone-flex >>"]
+                requires:
+                  - "[flex] sanity_checks_from-<< matrix.SOURCE_PFID >>"
+
+    # Description :
+    #    Check doctrine migration from FLEX N-1 to FLEX N
+    clone_and_test_migrate_flex_customers:
+        when:
+            and:
+                - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+                - equal: [ "clone_and_test_migrate_flex_customers", << pipeline.schedule.name >> ]
+        jobs:
+            - checkout
+            - build_env_vars:
+                  name: "[<< matrix.PRODUCT_TYPE >>] build_env_vars"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt"]
+                  requires:
+                      - checkout
+            - test_migrate_flex:
+                  name: "[<< matrix.PRODUCT_TYPE >>] test_migrate-<< matrix.SOURCE_PFID_SOURCE_PROJECT_ID >>"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["flex"]
+                          SOURCE_PFID_SOURCE_PROJECT_ID: *clients-to-clone-flex
+                  requires:
+                      - build_env_vars
+
+    # Resume :
+    #    on_demand_check_update_against_client workfow clones (on demand) existing clients and updates them with your code/migrations
+    #    This workflow allows you to check your migrations/jobs timings and have a feedback/monitoring/observability with datadog
+    #
+    # Description :
+    #    Cloned instances are accessibles from web with url : https://<namespace>.dev.cloud.akeneo.com with login "adminakeneo"
+    #    and password can be found in "Jenkins upgrade" job's log in "[<grth|srnt>] Upgrade <client>" workflow, then it can be found
+    #    by seeking "adminakeneo" in full logs
+    #
+    # Default clients and theirs specifities :
+    #   - most products :
+    #     - srnt-madeira
+    #   - most product values :
+    #      - srnt-pim-pce
+    #   - most product models :
+    #     - srnt-cto-pim
+    #   - most product variants :
+    #     - srnt-iteshop (iteshop is 2nd in variants count (cto-pim first) but has been selected to check against more clients)
+    on_demand_check_update_against_client:
+        when:
+            not:
+                equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+        jobs:
+            - check?:
+                  type: approval
+                  filters:
+                      branches:
+                          ignore:
+                              - "master"
+            - checkout:
+                  requires:
+                      - check?
+            - build_srnt_prod:
+                  name: "[srnt] Build"
+                  requires:
+                      - "checkout"
+            - build_grth:
+                  name: "[grth] Build"
+                  requires:
+                      - "checkout"
+            - clone_and_upgrade?:
+                name: "[grth] Clone and upgrade << matrix.CLIENT >> ?"
+                type: approval
+                filters:
+                    branches:
+                        ignore:
+                            - "master"
+                matrix:
+                    parameters:
+                        CLIENT: *client-to-clone-grth
+                        PRODUCT_TYPE: ["grth"]
+            - test_clone_from_customer_db:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Clone << matrix.SOURCE_PFID >>"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["grth"]
+                          SOURCE_PFID: *client-to-clone-grth
+                          LONG_TTL_INSTANCE: [true]
+                  requires:
+                      - "[grth] Build"
+                      - "[grth] Clone and upgrade << matrix.SOURCE_PFID >> ?"
+            - test_upgrade_from_last_release:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Upgrade << matrix.INSTANCE_NAME >>"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["grth"]
+                          INSTANCE_NAME: *client-to-clone-grth
+                          REMOVE_ENV: [false]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Clone << matrix.INSTANCE_NAME >>"
+            - delete_pr_environment?:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Delete environment << matrix.INSTANCE_NAME >> ?"
+                  type: approval
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["grth"]
+                          INSTANCE_NAME: *client-to-clone-grth
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Upgrade << matrix.INSTANCE_NAME >>"
+            - delete_pr_environment:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Delete environment << matrix.INSTANCE_NAME >>"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["grth"]
+                          INSTANCE_NAME: *client-to-clone-grth
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Delete environment << matrix.INSTANCE_NAME >> ?"
+            - clone_and_upgrade?:
+                name: "[srnt] Clone and upgrade << matrix.CLIENT >> ?"
+                type: approval
+                filters:
+                    branches:
+                        ignore:
+                            - "master"
+                matrix:
+                    parameters:
+                        CLIENT: *client-to-clone-srnt
+                        PRODUCT_TYPE: ["srnt"]
+            - test_clone_from_customer_db:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Clone << matrix.SOURCE_PFID >>"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt"]
+                          SOURCE_PFID: *client-to-clone-srnt
+                          LONG_TTL_INSTANCE: [true]
+                  requires:
+                      - "[srnt] Build"
+                      - "[srnt] Clone and upgrade << matrix.SOURCE_PFID >> ?"
+            - test_upgrade_from_last_release:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Upgrade << matrix.INSTANCE_NAME >>"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt"]
+                          INSTANCE_NAME: *client-to-clone-srnt
+                          REMOVE_ENV: [false]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Clone << matrix.INSTANCE_NAME >>"
+            - delete_pr_environment?:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Delete environment << matrix.INSTANCE_NAME >> ?"
+                  type: approval
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt"]
+                          INSTANCE_NAME: *client-to-clone-srnt
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Upgrade << matrix.INSTANCE_NAME >>"
+            - delete_pr_environment:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Delete environment << matrix.INSTANCE_NAME >>"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt"]
+                          INSTANCE_NAME: *client-to-clone-srnt
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Delete environment << matrix.INSTANCE_NAME >> ?"
+
+    # Description :
+    #    On demand check doctrine migration from FLEX N-1 to FLEX N
+    #    To be able to trigger this workfow, you will need to comment the "when" part
+    #       You can also changed the client list by changing the variable `client-to-clone-flex` in the `.circleci/workflows/aliases.yml` file
+    #       You will need the GCP project id and the instance name that you want to check
+    on_demand_clone_and_test_migrate_flex_customers:
+        when:
+            and:
+                - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+                - equal: [ "on_demand_clone_and_test_migrate_flex_customers", << pipeline.schedule.name >> ]
+        jobs:
+            - checkout
+            - build_srnt_prod:
+                  name: "[srnt] Build"
+                  requires:
+                      - checkout
+            - test_migrate_flex:
+                  name: "[<< matrix.PRODUCT_TYPE >>] test_migrate-<< matrix.SOURCE_PFID_SOURCE_PROJECT_ID >>"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["flex"]
+                          SOURCE_PFID_SOURCE_PROJECT_ID: *clients-to-clone-flex
+                  requires:
+                      - "[srnt] Build"

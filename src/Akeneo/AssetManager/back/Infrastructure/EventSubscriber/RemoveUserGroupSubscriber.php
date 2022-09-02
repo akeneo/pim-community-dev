@@ -27,12 +27,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class RemoveUserGroupSubscriber implements EventSubscriberInterface
 {
-    private SqlFindAssetFamilyWhereUserGroupIsLastToHaveEditRight $findAssetFamilyWhereUserGroupIsLastToHaveEditRight;
-
-    public function __construct(
-        SqlFindAssetFamilyWhereUserGroupIsLastToHaveEditRight $findAssetFamilyWhereUserGroupIsLastToHaveEditRight
-    ) {
-        $this->findAssetFamilyWhereUserGroupIsLastToHaveEditRight = $findAssetFamilyWhereUserGroupIsLastToHaveEditRight;
+    public function __construct(private SqlFindAssetFamilyWhereUserGroupIsLastToHaveEditRight $findAssetFamilyWhereUserGroupIsLastToHaveEditRight)
+    {
     }
 
     public static function getSubscribedEvents(): array
@@ -51,7 +47,7 @@ class RemoveUserGroupSubscriber implements EventSubscriberInterface
 
         $assetFamilyIdentifiers = $this->findAssetFamilyWhereUserGroupIsLastToHaveEditRight->find($userGroup->getId());
 
-        if (count($assetFamilyIdentifiers) > 0) {
+        if (!empty($assetFamilyIdentifiers)) {
             throw new ResourceDeletionDeniedException(
                 sprintf(
                     'You cannot delete this group, it is the only user group with "edit" permission on asset family "%s".',

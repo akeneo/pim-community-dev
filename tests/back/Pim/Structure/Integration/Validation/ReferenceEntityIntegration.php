@@ -186,6 +186,7 @@ class ReferenceEntityIntegration extends AbstractAttributeTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->get('feature_flags')->enable('reference_entity');
         $handler = $this->get('akeneo_referenceentity.application.reference_entity.create_reference_entity_handler');
         $handler(new CreateReferenceEntityCommand('brand', []));
     }

@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
 import {AddingValueIllustration, Button, Dropdown, Placeholder, TableInput} from 'akeneo-design-system';
 import {ColumnCode, SelectOption, SelectOptionCode, TableAttribute} from '../../models';
-import {getLabel, useSecurity, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {getLabel, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {LoadingPlaceholderContainer} from '../../shared';
 import {useFetchOptions} from '../useFetchOptions';
 import {CellInput} from './index';
 import {useManageOptions} from '../useManageOptions';
+import {useLocaleCode} from '../../contexts';
 
 const BATCH_SIZE = 20;
 
@@ -41,8 +42,8 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
   ...rest
 }) => {
   const translate = useTranslate();
-  const userContext = useUserContext();
   const security = useSecurity();
+  const localeCode = useLocaleCode();
 
   const [searchValue, setSearchValue] = React.useState<string>('');
   const [numberOfDisplayedItems, setNumberOfDisplayedItems] = useState<number>(BATCH_SIZE);
@@ -60,7 +61,7 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
   }
   let label = '';
   if (value && option) {
-    label = getLabel(option.labels, userContext.get('catalogLocale'), option.code);
+    label = getLabel(option.labels, localeCode, option.code);
   } else if (value) {
     label = `[${value}]`;
   }
@@ -84,7 +85,7 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
       if (searchValue === '') {
         return true;
       }
-      return (item.labels[userContext.get('catalogLocale')] || item.code).includes(searchValue);
+      return (item.labels[localeCode] || item.code).includes(searchValue);
     })
     .slice(0, numberOfDisplayedItems);
 
@@ -105,7 +106,7 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
       >
         {!hasEditPermission &&
           translate('pim_table_attribute.form.product.no_add_options_unallowed', {
-            attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
+            attributeLabel: getLabel(attribute.labels, localeCode, attribute.code),
           })}
       </Placeholder>
     );
@@ -159,7 +160,7 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
         {itemsToDisplay.map(option => {
           return (
             <Dropdown.Item key={option.code} onClick={() => onChange(option.code)}>
-              {getLabel(option.labels, userContext.get('catalogLocale'), option.code)}
+              {getLabel(option.labels, localeCode, option.code)}
             </Dropdown.Item>
           );
         })}

@@ -50,7 +50,7 @@ class AttributeAssetTypeIsRequiredValidator extends ConstraintValidator
             throw new \InvalidArgumentException(sprintf(
                 'Expected argument to be of class "%s", "%s" given',
                 AbstractCreateAttributeCommand::class,
-                get_class($command)
+                $command::class
             ));
         }
     }

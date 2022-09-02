@@ -26,13 +26,9 @@ class RightLevel
 
     public const LEVELS = [self::VIEW, self::EDIT];
 
-    private string $rightLevel;
-
-    private function __construct(string $rightLevel)
+    private function __construct(private string $rightLevel)
     {
         Assert::oneOf($rightLevel, self::LEVELS);
-
-        $this->rightLevel = $rightLevel;
     }
 
     public static function fromString(string $rightLevel): self

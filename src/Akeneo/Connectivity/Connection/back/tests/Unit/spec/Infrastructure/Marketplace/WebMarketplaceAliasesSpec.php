@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace spec\AkeneoEnterprise\Connectivity\Connection\Infrastructure\Marketplace;
 
-use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceAliasesInterface;
-use Akeneo\Platform\VersionProviderInterface;
+use Akeneo\Connectivity\Connection\Application\Marketplace\WebMarketplaceAliasesInterface;
+use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use AkeneoEnterprise\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceAliases;
 use PhpSpec\ObjectBehavior;
 

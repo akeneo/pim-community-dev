@@ -5,9 +5,10 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\Sp
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DictionaryWord;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\Dictionary\IgnoreWord;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\ProductModelWordIgnoredEvent;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -27,7 +28,7 @@ class IgnoreWordForProductModelSpec extends ObjectBehavior
     ) {
         $word = new DictionaryWord('anyword');
         $locale = new LocaleCode('en_US');
-        $productId = new ProductId(1234);
+        $productId = new ProductModelId(1234);
 
         $ignoreWord->execute($word, $locale)->shouldBeCalled();
         $eventDispatcher->dispatch(Argument::type(ProductModelWordIgnoredEvent::class))->shouldBeCalled(true);

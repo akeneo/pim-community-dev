@@ -5,8 +5,11 @@ pimee_permissions_entities_get_categories:
 
 pimee_permissions_entities_set_categories:
   path: /rest/permissions/category
-  defaults: { _controller: Akeneo\Pim\Permission\Bundle\Controller\InternalApi\PostCategoriesPermissionsAction }
+  defaults:
+    _feature: permission
+    _controller: Akeneo\Pim\Permission\Bundle\Controller\InternalApi\PostCategoriesPermissionsAction
   methods: [ POST ]
+
 
 pimee_permissions_entities_get_user_group_categories:
   path: /rest/permissions/user-group/{userGroupName}/category
@@ -30,10 +33,14 @@ pimee_permissions_entities_get_user_group_locales:
 
 pimee_permissions_entities_set_locales:
   path: /rest/permissions/locale
-  defaults: { _controller: Akeneo\Pim\Permission\Bundle\Controller\InternalApi\SaveLocalesPermissionsAction }
+  defaults:
+    _feature: permission
+    _controller: Akeneo\Pim\Permission\Bundle\Controller\InternalApi\SaveLocalesPermissionsAction
   methods: [ POST ]
 
 pimee_permissions_entities_set_attribute_groups:
   path: /rest/permissions/attribute-group
-  defaults: { _controller: Akeneo\Pim\Permission\Bundle\Controller\InternalApi\SaveAttributeGroupsPermissionsAction }
+  defaults:
+    _controller: Akeneo\Pim\Permission\Bundle\Controller\InternalApi\SaveAttributeGroupsPermissionsAction
+    _feature: permission
   methods: [ POST ]

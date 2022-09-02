@@ -28,6 +28,6 @@ interface FindRequiredValueKeyCollectionForChannelAndLocalesInterface
     public function find(
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         ChannelIdentifier $channelIdentifier,
-        LocaleIdentifierCollection $localeIdentifierCollectionCollection
+        LocaleIdentifierCollection $localeIdentifierCollection
     ): ValueKeyCollection;
 }

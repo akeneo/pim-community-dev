@@ -49,9 +49,9 @@ class GetAssociatedProductCodesByProductIntegration extends TestCase
         }
 
         $query = $this->get('pim_catalog.query.get_associated_product_codes_by_product');
-        $this->assertSame(['productView'], $query->getCodes($mainProduct->getId(), $productAssociations['X_SELL']));
-        $this->assertSame(['productWithoutCategory'], $query->getCodes($mainProduct->getId(), $productAssociations['PACK']));
-        $this->assertSame([], $query->getCodes($mainProduct->getId(), $productAssociations['UPSELL']));
+        $this->assertSame(['productView'], $query->getCodes($mainProduct->getUuid(), $productAssociations['X_SELL']));
+        $this->assertSame(['productWithoutCategory'], $query->getCodes($mainProduct->getUuid(), $productAssociations['PACK']));
+        $this->assertSame([], $query->getCodes($mainProduct->getUuid(), $productAssociations['UPSELL']));
     }
 
     /**
@@ -59,7 +59,7 @@ class GetAssociatedProductCodesByProductIntegration extends TestCase
      */
     protected function getConfiguration()
     {
-        return $this->catalog->useTechnicalCatalog();
+        return $this->catalog->useTechnicalCatalog(featureFlags: ['permission']);
     }
 
     /**

@@ -11,7 +11,7 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Manager;
 
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\LocaleAccess;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\LocaleAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;

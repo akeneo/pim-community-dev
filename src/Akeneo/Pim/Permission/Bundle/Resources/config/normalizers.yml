@@ -2,7 +2,6 @@ parameters:
     pimee_versioning.normalizer.category.class:        Akeneo\Pim\Permission\Bundle\Normalizer\Flat\CategoryNormalizer
     pimee_versioning.normalizer.attribute_group.class: Akeneo\Pim\Permission\Bundle\Normalizer\Flat\AttributeGroupNormalizer
     pimee_versioning.normalizer.locale.class:          Akeneo\Pim\Permission\Bundle\Normalizer\Flat\LocaleNormalizer
-    pimee_security.normalizer.job_instance.class:      Akeneo\Pim\Permission\Component\Normalizer\Standard\JobInstanceNormalizer
     pimee_security.normalizer.attribute_group.class:   Akeneo\Pim\Permission\Component\Normalizer\Standard\AttributeGroupNormalizer
     pimee_security.normalizer.authorization.product.class: Akeneo\Pim\Permission\Component\Normalizer\Authorization\ProductNormalizer
     pimee_security.normalizer.authorization.product_model.class: Akeneo\Pim\Permission\Component\Normalizer\Authorization\ProductModelNormalizer
@@ -40,8 +39,8 @@ services:
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 100 }
 
-    pimee_security.normalizer.job_instance:
-        class: '%pimee_security.normalizer.job_instance.class%'
+    pimee_security.normalizer.standard.job_instance:
+        class: 'Akeneo\Pim\Permission\Component\Normalizer\Standard\JobInstanceNormalizer'
         arguments:
             - '@pim_catalog.normalizer.standard.job_instance'
             - '@pimee_security.manager.job_profile_access'
@@ -81,12 +80,3 @@ services:
         class: Akeneo\Pim\Permission\Component\Normalizer\Authorization\ProductDraftNormalizer
         tags:
             - { name: pimee_authorization_serializer.normalizer, priority: 110 }
-
-    pim_catalog.normalizer.standard.attribute:
-        class: 'Akeneo\Pim\Structure\Component\Normalizer\Standard\AttributeNormalizer'
-        arguments:
-            - '@pim_catalog.normalizer.standard.translation'
-            - '@pim_catalog.normalizer.standard.datetime'
-            - ['auto_option_sorting', 'is_read_only', 'default_value']
-        tags:
-            - { name: pim_standard_format_serializer.normalizer, priority: 90 }

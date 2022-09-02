@@ -16,7 +16,7 @@ namespace Specification\Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\TableConfigurationFactory;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\RecordColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
@@ -36,7 +36,7 @@ class TableConfigurationUpdaterSpec extends ObjectBehavior
             SelectColumn::DATATYPE => SelectColumn::class,
             BooleanColumn::DATATYPE => BooleanColumn::class,
             NumberColumn::DATATYPE => NumberColumn::class,
-            RecordColumn::DATATYPE => RecordColumn::class,
+            ReferenceEntityColumn::DATATYPE => ReferenceEntityColumn::class,
         ]);
 
         $this->beConstructedWith($tableConfigurationRepository, $tableConfigurationFactory);

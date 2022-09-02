@@ -23,6 +23,8 @@ use Akeneo\UserManagement\Component\Model\UserInterface as AkeneoUserInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\MassActionRepositoryInterface;
+use Ramsey\Uuid\Doctrine\UuidBinaryType;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Webmozart\Assert\Assert;
 
@@ -103,10 +105,10 @@ class EntityWithValuesDraftRepository extends EntityRepository implements Entity
     /**
      * {@inheritdoc}
      */
-    public function applyDatagridContext(QueryBuilder $qb, ?string $entityWithValuesId): EntityWithValuesDraftRepositoryInterface
+    public function applyDatagridContext(QueryBuilder $qb, ?string $entityWithValuesUuid): EntityWithValuesDraftRepositoryInterface
     {
-        $qb->innerJoin('p.entityWithValues', 'entityWithValues', 'WITH', 'entityWithValues.id = :entityWithValues');
-        $qb->setParameter('entityWithValues', $entityWithValuesId);
+        $qb->innerJoin('p.entityWithValues', 'entityWithValues', 'WITH', 'entityWithValues.uuid = :entityWithValues');
+        $qb->setParameter('entityWithValues', Uuid::fromString($entityWithValuesUuid)->getBytes(), UuidBinaryType::NAME);
 
         return $this;
     }

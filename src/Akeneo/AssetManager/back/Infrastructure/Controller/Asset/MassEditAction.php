@@ -19,7 +19,7 @@ use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\Can
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,30 +38,15 @@ class MassEditAction
 {
     private const MASS_ACTION_TYPE = 'edit';
 
-    private SecurityFacade $securityFacade;
-    private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler;
-    private MassEditAssetsHandler $massEditAssetsHandler;
-    private TokenStorageInterface $tokenStorage;
-    private ValidatorInterface $validator;
-    private NormalizerInterface $normalizer;
-    private MassEditAssetsCommandFactory $massEditAssetsCommandFactory;
-
     public function __construct(
-        MassEditAssetsCommandFactory $massEditAssetsCommandFactory,
-        MassEditAssetsHandler $massEditAssetsHandler,
-        SecurityFacade $securityFacade,
-        CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
-        TokenStorageInterface $tokenStorage,
-        ValidatorInterface $validator,
-        NormalizerInterface $normalizer
+        private MassEditAssetsCommandFactory $massEditAssetsCommandFactory,
+        private MassEditAssetsHandler $massEditAssetsHandler,
+        private SecurityFacadeInterface $securityFacade,
+        private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
+        private TokenStorageInterface $tokenStorage,
+        private ValidatorInterface $validator,
+        private NormalizerInterface $normalizer,
     ) {
-        $this->securityFacade = $securityFacade;
-        $this->massEditAssetsHandler = $massEditAssetsHandler;
-        $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
-        $this->tokenStorage = $tokenStorage;
-        $this->validator = $validator;
-        $this->normalizer = $normalizer;
-        $this->massEditAssetsCommandFactory = $massEditAssetsCommandFactory;
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier): Response

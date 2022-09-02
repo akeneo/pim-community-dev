@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\AssetManager\Application\AssetFamily\Transformation;
+namespace spec\Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationFactory;

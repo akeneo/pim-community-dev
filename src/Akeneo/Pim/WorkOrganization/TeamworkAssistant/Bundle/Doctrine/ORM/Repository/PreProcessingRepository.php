@@ -11,8 +11,8 @@
 
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\Repository;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\PreProcessingRepositoryInterface;
@@ -46,13 +46,13 @@ class PreProcessingRepository implements PreProcessingRepositoryInterface
         $query = <<<SQL
 SELECT MIN(`attribute_group_completeness`.`calculated_at`)
 FROM `pimee_teamwork_assistant_completeness_per_attribute_group` AS `attribute_group_completeness`
-WHERE `attribute_group_completeness`.`product_id` = :product_id
+WHERE `attribute_group_completeness`.`product_uuid` = :product_uuid
 AND `attribute_group_completeness`.`channel_id` = :channel_id
 AND `attribute_group_completeness`.`locale_id` = :locale_id
 SQL;
 
         $calculatedAt = $connection->fetchColumn($query, [
-            'product_id' => $product->getId(),
+            'product_uuid' => $product->getUuid()->getBytes(),
             'channel_id' => $project->getChannel()->getId(),
             'locale_id'  => $project->getLocale()->getId(),
         ]);
@@ -78,11 +78,11 @@ SQL;
         $query = <<<SQL
 SELECT count(project_id)
 FROM pimee_teamwork_assistant_project_product AS project_product
-WHERE product_id = :product_id
+WHERE product_uuid = :product_uuid
 SQL;
 
         $connection = $this->entityManager->getConnection();
-        $projects = $connection->fetchColumn($query, ['product_id' => $product->getId()]);
+        $projects = $connection->fetchColumn($query, ['product_uuid' => $product->getUuid()->getBytes()]);
 
         return 0 < $projects;
     }
@@ -98,14 +98,14 @@ SQL;
     ) {
         $connection = $this->entityManager->getConnection();
 
-        $productId = $product->getId();
+        $productUuid = $product->getUuid()->getBytes();
         $channelId = $channel->getId();
         $localeId = $locale->getId();
 
         $connection->delete(
             'pimee_teamwork_assistant_completeness_per_attribute_group',
             [
-                'product_id' => $productId,
+                'product_uuid' => $productUuid,
                 'channel_id' => $channelId,
                 'locale_id'  => $localeId,
             ]
@@ -115,7 +115,7 @@ SQL;
             $connection->insert(
                 'pimee_teamwork_assistant_completeness_per_attribute_group',
                 [
-                    'product_id'                                 => $productId,
+                    'product_uuid'                               => $productUuid,
                     'channel_id'                                 => $channelId,
                     'locale_id'                                  => $localeId,
                     'attribute_group_id'                         => $attributeGroup->getAttributeGroupId(),
@@ -136,7 +136,7 @@ SQL;
 
         $connection->insert('pimee_teamwork_assistant_project_product', [
             'project_id' => $project->getId(),
-            'product_id' => $product->getId(),
+            'product_uuid' => $product->getUuid()->getBytes(),
         ]);
     }
 
@@ -164,10 +164,10 @@ SQL;
 DELETE completeness
 FROM pimee_teamwork_assistant_completeness_per_attribute_group AS completeness
 INNER JOIN pimee_teamwork_assistant_project_product AS project_product1
-    ON project_product1.product_id = completeness.product_id
+    ON project_product1.product_uuid = completeness.product_uuid
 LEFT OUTER JOIN pimee_teamwork_assistant_project_product AS project_product2
-    ON project_product2.product_id = completeness.product_id AND project_product2.project_id <> :project_id
-WHERE project_product1.project_id = :project_id AND project_product2.product_id IS NULL
+    ON project_product2.product_uuid = completeness.product_uuid AND project_product2.project_id <> :project_id
+WHERE project_product1.project_id = :project_id AND project_product2.product_uuid IS NULL
 SQL;
 
         $connection->executeUpdate($query, ['project_id' => $projectId]);

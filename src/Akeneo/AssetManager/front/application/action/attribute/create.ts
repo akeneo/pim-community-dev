@@ -15,8 +15,13 @@ import {
   MinimalNormalizedAttribute,
 } from 'akeneoassetmanager/domain/model/attribute/minimal';
 import {attributeEditionStartByCode} from 'akeneoassetmanager/application/action/attribute/edit';
+import {Attribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {AttributeFetcher} from 'akeneoassetmanager/domain/fetcher/attribute';
 
-export const createAttribute = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
+export const createAttribute = (
+  attributeFetcher: AttributeFetcher,
+  denormalizeAttribute: (normalizedAttribute: NormalizedAttribute) => Attribute
+) => async (dispatch: any, getState: () => EditState): Promise<void> => {
   const assetFamily = getState().form.data;
   const formData = getState().createAttribute.data;
   const normalizedAttribute = {
@@ -41,8 +46,8 @@ export const createAttribute = () => async (dispatch: any, getState: () => EditS
 
   dispatch(attributeCreationSucceeded());
   dispatch(notifyAttributeWellCreated());
-  await dispatch(updateAttributeList());
-  dispatch(attributeEditionStartByCode(attribute.code));
+  await dispatch(updateAttributeList(attributeFetcher));
+  dispatch(attributeEditionStartByCode(attributeFetcher, denormalizeAttribute, attribute.code));
 
   return;
 };

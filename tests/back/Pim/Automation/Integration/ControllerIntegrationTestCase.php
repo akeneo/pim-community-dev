@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Pim\Automation\Integration;
 
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -42,6 +43,7 @@ abstract class ControllerIntegrationTestCase extends WebTestCase
     {
         $this->client = static::createClient(['environment' => 'test', 'debug' => false]);
         $this->client->disableReboot();
+        $this->activateFeatureFlag();
 
         $this->catalog = $this->get('akeneo_integration_tests.catalogs');
         if (null !== $this->getConfiguration()) {
@@ -58,7 +60,7 @@ abstract class ControllerIntegrationTestCase extends WebTestCase
 
     protected function get(string $service)
     {
-        return self::$container->get($service);
+        return static::getContainer()->get($service);
     }
 
     /**
@@ -90,5 +92,13 @@ abstract class ControllerIntegrationTestCase extends WebTestCase
 
         $aclManager->flush();
         $aclManager->clearCache();
+    }
+
+    private function activateFeatureFlag(): void
+    {
+        /** @var FilePersistedFeatureFlags $featureFlags */
+        $featureFlags = $this->get('feature_flags');
+        $featureFlags->deleteFile();
+        $featureFlags->enable('product_rules');
     }
 }

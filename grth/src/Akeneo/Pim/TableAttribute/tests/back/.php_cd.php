@@ -33,6 +33,8 @@ $rules = [
             'Symfony\Component\Form\Extension\Core\Type\FormType',
             'Symfony\Component\Form\FormBuilderInterface',
             'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface',
+            'Symfony\Component\Messenger\MessageBusInterface',
+            'Symfony\Component\Messenger\Stamp\HandledStamp',
             'Twig\Environment',
 
             // doctrine
@@ -45,12 +47,14 @@ $rules = [
             'Doctrine\ORM\Events',
 
             // pim dependencies
+            'Akeneo\Pim\Enrichment\Product\API',
             'Akeneo\Pim\Structure\Component',
             'Akeneo\Tool\Component\StorageUtils\Cache',
             'Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface',
             'Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface',
             'Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface',
             'Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface',
+            'Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException',
             'Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException',
             'Akeneo\Tool\Component\StorageUtils\StorageEvents',
             'Akeneo\Tool\Component\Connector\Exception',
@@ -65,8 +69,8 @@ $rules = [
             'Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface',
             'Akeneo\Tool\Component\Connector\Step\TaskletInterface',
             'Akeneo\Tool\Component\Localization\LanguageTranslator',
-            'Akeneo\Channel\Component\Query\PublicApi',
-            'Akeneo\Channel\Component\Validator\Constraint\ActivatedLocale',
+            'Akeneo\Channel\Infrastructure\Component\Query\PublicApi',
+            'Akeneo\Channel\Infrastructure\Component\Validator\Constraint\ActivatedLocale',
             'Akeneo\Platform\Bundle\InstallerBundle\Event',
             'Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldProviderInterface',
             'Akeneo\Platform\Bundle\UIBundle\Provider\Filter\FilterProviderInterface',
@@ -104,6 +108,8 @@ $rules = [
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductProjectionInterface',
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductModelProjectionInterface',
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder',
+            'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer',
+            'Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses',
             'Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType',
             'Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface',
             'Oro\Bundle\FilterBundle\Filter\AbstractFilter',
@@ -115,6 +121,30 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface',
             'Akeneo\Tool\Component\Localization\LabelTranslatorInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeValue\FlatAttributeValueTranslatorInterface',
+            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags',
+            'Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage',
+
+            // Reference Entity
+            'Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier',
+            'Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface',
+            'Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent',
+            'Akeneo\ReferenceEntity\Domain\Event\RecordsDeletedEvent',
+            'Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode',
+            'Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordLabelsByCodesInterface',
+
+            // Measurements
+            'Akeneo\Tool\Bundle\MeasureBundle\ServiceApi',
+            'Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException',
+            'Akeneo\Tool\Bundle\MeasureBundle\Exception\UnitNotFoundException',
+            'Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily',
+            'Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode',
+            'Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface',
+            'Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter',
+            'Akeneo\Tool\Bundle\MeasureBundle\Application\DeleteMeasurementFamily\DeleteMeasurementFamilyCommand',
+            'Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyCommand',
+
+            //Enrichment computing
+            'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator',
         ]
     )->in('Akeneo\Pim\TableAttribute\Infrastructure'),
 ];

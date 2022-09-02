@@ -29,9 +29,6 @@ class SqlSelectOptionCollectionRepository implements SelectOptionCollectionRepos
         $this->connection = $connection;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function save(
         string $attributeCode,
         ColumnCode $columnCode,
@@ -39,78 +36,11 @@ class SqlSelectOptionCollectionRepository implements SelectOptionCollectionRepos
     ): void {
         if ($this->connection->isTransactionActive()) {
             $this->doSave($attributeCode, $columnCode, $selectOptionCollection);
+
             return;
         }
 
         $this->connection->transactional(fn () => $this->doSave($attributeCode, $columnCode, $selectOptionCollection));
-    }
-
-    private function doSave(
-        string $attributeCode,
-        ColumnCode $columnCode,
-        WriteSelectOptionCollection $selectOptionCollection
-    ): void {
-        $newOptionCodes = $selectOptionCollection->getOptionCodes();
-        if ($newOptionCodes === []) {
-            $this->connection->executeQuery(
-                <<<SQL
-                DELETE table_column_option.* FROM pim_catalog_table_column_select_option table_column_option
-                    INNER JOIN pim_catalog_table_column table_column ON table_column.id = table_column_option.column_id
-                    INNER JOIN pim_catalog_attribute attribute ON attribute.id = table_column.attribute_id
-                WHERE table_column.code = :column_code AND attribute.code = :attributeCode
-                SQL,
-                ['attributeCode' => $attributeCode, 'column_code' => $columnCode->asString()]
-            );
-        } else {
-            $newAttributeAndOptionCodes = array_map(
-                fn (SelectOptionCode $optionCode): string => sprintf(
-                    '%s-%s-%s',
-                    $attributeCode,
-                    $columnCode->asString(),
-                    $optionCode->asString()
-                ),
-                $newOptionCodes
-            );
-            $this->connection->executeQuery(
-                <<<SQL
-                DELETE table_column_option.* FROM pim_catalog_table_column_select_option table_column_option
-                    INNER JOIN pim_catalog_table_column table_column ON table_column.id = table_column_option.column_id
-                    INNER JOIN pim_catalog_attribute attribute ON attribute.id = table_column.attribute_id
-                WHERE table_column.code = :column_code
-                    AND attribute.code = :attributeCode
-                    AND CONCAT(attribute.code, '-', table_column.code, '-', table_column_option.code) NOT IN (:newAttributeAndOptionCodes)
-                SQL,
-                [
-                    'attributeCode' => $attributeCode,
-                    'column_code' => $columnCode->asString(),
-                    'newAttributeAndOptionCodes' => $newAttributeAndOptionCodes,
-                ],
-                [
-                    'newAttributeAndOptionCodes' => Connection::PARAM_STR_ARRAY,
-                ]
-            );
-        }
-
-        foreach ($selectOptionCollection->normalize() as $selectOption) {
-            $this->connection->executeQuery(
-                <<<SQL
-                INSERT INTO pim_catalog_table_column_select_option (column_id, code, labels)
-                SELECT * FROM (
-                    SELECT table_column.id, :code AS code, :labels AS labels
-                    FROM pim_catalog_table_column table_column
-                        INNER JOIN pim_catalog_attribute attribute ON attribute.id = table_column.attribute_id
-                    WHERE table_column.code = :column_code AND attribute.code = :attribute_code
-                ) AS newvalues
-                ON DUPLICATE KEY UPDATE labels = :labels
-                SQL,
-                [
-                    'attribute_code' => $attributeCode,
-                    'column_code' => $columnCode->asString(),
-                    'code' => $selectOption['code'],
-                    'labels' => \json_encode($selectOption['labels']),
-                ]
-            );
-        }
     }
 
     public function getByColumn(string $attributeCode, ColumnCode $columnCode): SelectOptionCollection
@@ -142,29 +72,88 @@ SQL;
         ColumnCode $columnCode,
         SelectOptionCollection $selectOptionCollection
     ): void {
-        if ([] === $selectOptionCollection->getOptionCodes()) {
+        $this->persistOptions(
+            $this->getColumnId($attributeCode, $columnCode),
+            $selectOptionCollection->normalize()
+        );
+    }
+
+    private function doSave(
+        string $attributeCode,
+        ColumnCode $columnCode,
+        WriteSelectOptionCollection $selectOptionCollection
+    ): void {
+        $newOptionCodes = \array_map(
+            fn (SelectOptionCode $optionCode): string => $optionCode->asString(),
+            $selectOptionCollection->getOptionCodes()
+        );
+        $columnId = $this->getColumnId($attributeCode, $columnCode);
+        if ($newOptionCodes === []) {
+            $this->connection->executeQuery(
+                <<<SQL
+                DELETE table_column_option.* 
+                FROM pim_catalog_table_column_select_option table_column_option                
+                WHERE column_id = :column_id
+                SQL,
+                ['column_id' => $columnId]
+            );
+
             return;
         }
 
-        foreach ($selectOptionCollection->normalize() as $selectOption) {
-            $this->connection->executeQuery(
-                <<<SQL
-                INSERT INTO pim_catalog_table_column_select_option (column_id, code, labels)
-                SELECT * FROM (
-                    SELECT table_column.id, :code AS code, :labels AS labels
-                    FROM pim_catalog_table_column table_column
-                        INNER JOIN pim_catalog_attribute attribute ON attribute.id = table_column.attribute_id
-                    WHERE table_column.code = :column_code AND attribute.code = :attribute_code
-                ) AS newvalues
-                ON DUPLICATE KEY UPDATE labels = :labels
-                SQL,
-                [
-                    'attribute_code' => $attributeCode,
-                    'column_code' => $columnCode->asString(),
-                    'code' => $selectOption['code'],
-                    'labels' => \json_encode($selectOption['labels']),
-                ]
-            );
+        $this->connection->executeQuery(
+            <<<SQL
+            DELETE table_column_option.*
+            FROM pim_catalog_table_column_select_option table_column_option                    
+            WHERE column_id = :column_id 
+            AND code NOT IN (:new_option_codes);                    
+            SQL,
+            [
+                'column_id' => $columnId,
+                'new_option_codes' => $newOptionCodes,
+            ],
+            [
+                'new_option_codes' => Connection::PARAM_STR_ARRAY,
+            ]
+        );
+
+        $this->persistOptions($columnId, $selectOptionCollection->normalize());
+    }
+
+    private function persistOptions(string $columnId, array $options): void
+    {
+        $placeholders = \implode(',', \array_fill(0, \count($options), '(?, ?, ?)'));
+        $statement = $this->connection->prepare(
+            <<<SQL
+            INSERT INTO pim_catalog_table_column_select_option (column_id, code, labels)
+            VALUES {$placeholders}
+            ON DUPLICATE KEY UPDATE labels = VALUES(labels);
+            SQL
+        );
+
+        $placeholderIndex = 0;
+        foreach ($options as $normalizedSelectOption) {
+            $statement->bindValue(++$placeholderIndex, $columnId);
+            $statement->bindValue(++$placeholderIndex, $normalizedSelectOption['code']);
+            $statement->bindValue(++$placeholderIndex, \json_encode($normalizedSelectOption['labels']));
         }
+
+        $statement->executeQuery();
+    }
+
+    private function getColumnId(string $attributeCode, ColumnCode $columnCode): string
+    {
+        return $this->connection->executeQuery(
+            <<<SQL
+            SELECT table_column.id
+                FROM pim_catalog_table_column table_column
+                INNER JOIN pim_catalog_attribute attribute ON attribute.id = table_column.attribute_id
+                WHERE table_column.code = :column_code AND attribute.code = :attribute_code
+            SQL,
+            [
+                'attribute_code' => $attributeCode,
+                'column_code' => $columnCode->asString(),
+            ],
+        )->fetchOne();
     }
 }

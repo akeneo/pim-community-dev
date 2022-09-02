@@ -15,19 +15,22 @@ import {
   TextInput,
   useBooleanState,
   uuid,
+  AkeneoThemedProps,
 } from 'akeneo-design-system';
-import {getLabel, Locale, LocaleCode, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {SelectColumnDefinition, SelectOption, TableAttribute} from '../models';
+import {getLabel, LocaleCode, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {AttributeOption, SelectColumnDefinition, SelectOption, TableAttribute} from '../models';
 import {TwoColumnsLayout} from './TwoColumnsLayout';
 import {FieldsList} from '../shared';
 import styled from 'styled-components';
 import {ManageOptionsRow} from './ManageOptionsRow';
 import {LocaleSwitcher} from './LocaleSwitcher';
 import {DeleteOptionModal} from './DeleteOptionModal';
-import {LocaleRepository, SelectOptionRepository} from '../repositories';
+import {SelectOptionRepository} from '../repositories';
+import {ImportOptionsButton} from './ImportOptionsButton';
+import {useActivatedLocales} from './useActivatedLocales';
 
-const TableContainer = styled.div`
-  height: calc(100vh - 270px);
+const TableContainer = styled.div<{withSticky: boolean} & AkeneoThemedProps>`
+  height: calc(100vh - ${({withSticky}) => (withSticky ? 270 : 340)}px);
   overflow: auto;
 `;
 
@@ -39,19 +42,6 @@ const ScrollableFieldList = styled(FieldsList)`
 const OptionsTwoColumnsLayout = styled(TwoColumnsLayout)`
   width: 1200px;
   height: calc(100vh - 150px);
-`;
-
-const ManageOptionsBody = styled(Table.Body)`
-  & > tr:last-child {
-    position: sticky;
-    bottom: -1px;
-    background-color: ${getColor('white')};
-    z-index: 1;
-
-    & > td {
-      border-bottom: 1px solid ${getColor('white')};
-    }
-  }
 `;
 
 const ManageOptionsSectionTitle = styled(SectionTitle.Title)`
@@ -92,10 +82,11 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
   const userContext = useUserContext();
   const router = useRouter();
   const translate = useTranslate();
+  const activatedLocales = useActivatedLocales();
 
   const [page, setPage] = React.useState<number>(1);
   const [violations, setViolations] = React.useState<{[optionId: string]: string[]}>({});
-  const [activatedLocales, setActivatedLocales] = React.useState<Locale[]>();
+
   const [options, setOptions] = React.useState<SelectOptionWithId[]>();
   const [selectedOptionIndex, setSelectedOptionIndex] = React.useState<number | undefined>(undefined);
   const [currentLocaleCode, setCurrentLocaleCode] = React.useState<LocaleCode>(userContext.get('catalogLocale'));
@@ -172,43 +163,26 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
     }
   }, [options?.length]);
 
-  React.useEffect(() => {
-    LocaleRepository.findActivated(router).then((activeLocales: Locale[]) => setActivatedLocales(activeLocales));
-  }, [router]);
-
   const setOptionsAndValidate = (newOptions: SelectOptionWithId[]) => {
     setOptions([...newOptions]);
 
-    const duplicates: {[code: string]: boolean} = {};
-    const codes: {[code: string]: boolean} = {};
-    newOptions
-      .map(option => option.code)
-      .forEach(optionCode => {
-        if (optionCode in codes) {
-          duplicates[optionCode] = true;
-        } else {
-          codes[optionCode] = true;
-        }
-      });
+    const duplicates = newOptions
+      .map(({code}) => code.toLowerCase())
+      .filter((code, i, codes) => codes.indexOf(code.toLowerCase()) !== i);
 
-    const newViolations: {[optionId: string]: string[]} = {};
-    newOptions
-      .filter(option => option.isNew)
-      .forEach(option => {
-        const violationsForOption = [];
-        if (option.code === '') {
-          violationsForOption.push(translate('pim_table_attribute.validations.column_code_must_be_filled'));
-        }
-        if (option.code !== '' && !/^[a-zA-Z0-9_]+$/.exec(option.code)) {
-          violationsForOption.push(translate('pim_table_attribute.validations.invalid_column_code'));
-        }
-        if (option.code !== '' && duplicates[option.code]) {
-          violationsForOption.push(translate('pim_table_attribute.validations.duplicated_select_code'));
-        }
-        if (violationsForOption.length > 0) {
-          newViolations[option.id] = violationsForOption;
-        }
-      });
+    const newViolations = newOptions
+      .filter(({isNew}) => isNew)
+      .reduce((previousValue, {code, id}) => {
+        let error = null;
+        if (code === '') error = translate('pim_table_attribute.validations.column_code_must_be_filled');
+        if (code !== '' && !/^[a-zA-Z0-9_]+$/.exec(code))
+          error = translate('pim_table_attribute.validations.invalid_column_code');
+        if (code !== '' && duplicates.includes(code.toLowerCase()))
+          error = translate('pim_table_attribute.validations.duplicated_select_code');
+
+        return error ? {...previousValue, [id]: [error]} : previousValue;
+      }, {});
+
     setViolations(newViolations);
   };
 
@@ -337,6 +311,30 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
     </>
   );
 
+  const handleImportOptions = (attributeOptions: AttributeOption[]) => {
+    if (options) {
+      const newOptions = [...options];
+      const newFilteredOptionIds: {[optionId: string]: boolean} = {};
+      attributeOptions.forEach(attributeOption => {
+        const existingOptionIndex = (options || []).findIndex(({code}) => code === attributeOption.code);
+        if (existingOptionIndex >= 0) {
+          newOptions[existingOptionIndex].labels = attributeOption.labels;
+        } else if (newOptions.length < limit) {
+          const id = uuid();
+          newOptions.push({
+            ...attributeOption,
+            id,
+            isNew: true,
+          });
+          newFilteredOptionIds[id] = true;
+        }
+      });
+
+      setOptionsAndValidate(newOptions);
+      setFilteredOptionsIds({...filteredOptionsIds, ...newFilteredOptionIds});
+    }
+  };
+
   return (
     <>
       <Modal closeTitle={translate('pim_common.close')} onClose={handleCloseManageOptions}>
@@ -378,7 +376,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
                     followPage={setPage}
                   />
                 )}
-                <TableContainer ref={tableContainerRef}>
+                <TableContainer withSticky={options && options.length < limit} ref={tableContainerRef}>
                   <Table>
                     <Table.Header>
                       <Table.HeaderCell>{translate('pim_common.label')}</Table.HeaderCell>
@@ -387,7 +385,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
                       </Table.HeaderCell>
                       <Table.HeaderCell />
                     </Table.Header>
-                    <ManageOptionsBody>
+                    <Table.Body>
                       {filteredOptions.slice((page - 1) * OPTIONS_PER_PAGE, page * OPTIONS_PER_PAGE).map(option => (
                         <ManageOptionsRow
                           codeInputRef={isLastOption(option) ? lastCodeInputRef : undefined}
@@ -407,6 +405,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
                       ))}
                       {options && options.length < limit && (
                         <ManageOptionsRow
+                          isSticky={true}
                           codeInputRef={newCodeInputRef}
                           labelInputRef={newLabelInputRef}
                           isSelected={selectedOptionIndex === -1}
@@ -419,7 +418,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
                           forceAutocomplete={true}
                         />
                       )}
-                    </ManageOptionsBody>
+                    </Table.Body>
                   </Table>
                   {filteredOptions.length === 0 && searchValue !== '' && (
                     <Placeholder
@@ -440,6 +439,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
             )}
           </div>
           <Modal.TopRightButtons>
+            <ImportOptionsButton onClick={handleImportOptions} />
             <Button level='primary' onClick={handleConfirm} disabled={!canSave}>
               {confirmLabel ? confirmLabel : translate('pim_common.confirm')}
             </Button>

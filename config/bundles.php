@@ -39,7 +39,8 @@ return [
     // PIM bundles
     Oro\Bundle\PimFilterBundle\PimFilterBundle::class => ['all' => true],
     Akeneo\UserManagement\Bundle\PimUserBundle::class => ['all' => true],
-    Akeneo\Channel\Bundle\AkeneoChannelBundle::class => ['all' => true],
+    Akeneo\Channel\Infrastructure\Symfony\AkeneoChannelBundle::class => ['all' => true],
+    AkeneoEnterprise\Channel\Infrastructure\Symfony\AkeneoEnterpriseChannelBundle::class => ['all' => true],
     Akeneo\Pim\Enrichment\Bundle\AkeneoPimEnrichmentBundle::class => ['all' => true],
     Akeneo\Pim\Structure\Bundle\AkeneoPimStructureBundle::class => ['all' => true],
     Akeneo\Tool\Bundle\ClassificationBundle\AkeneoClassificationBundle::class => ['all' => true],
@@ -58,9 +59,18 @@ return [
     Akeneo\Platform\Bundle\FeatureFlagBundle\AkeneoFeatureFlagBundle::class => ['all' => true],
     Akeneo\Platform\CommunicationChannel\Infrastructure\Framework\Symfony\AkeneoCommunicationChannelBundle::class => ['all' => true],
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\AkeneoDataQualityInsightsBundle::class => ['all' => true],
-    Akeneo\FreeTrial\Infrastructure\Symfony\AkeneoCommunityFreeTrialBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\FrameworkBundle\PimFrameworkBundle::class => ['all' => true],
     Akeneo\Platform\Job\Infrastructure\Symfony\AkeneoJobBundle::class => ['all' => true],
+    Akeneo\Pim\Enrichment\Product\Infrastructure\Symfony\AkeneoPimEnrichmentProductBundle::class => ['all' => true],
+    Akeneo\Pim\Enrichment\Category\Infrastructure\Symfony\AkeneoPimEnrichmentCategoryBundle::class => ['all' => true],
+    Akeneo\Pim\Structure\Family\Infrastructure\Symfony\AkeneoPimStructureFamilyBundle::class => ['all' => true],
+    Akeneo\Catalogs\Infrastructure\Symfony\AkeneoCatalogsBundle::class => ['all' => true],
+    Akeneo\Platform\Bundle\PimVersionBundle\PimVersionBundle::class => ['all' => true],
+    Akeneo\Category\Infrastructure\Symfony\AkeneoCategoryBundle::class => ['all' => true],
+
+    // PIM Free Trial bundle
+    Akeneo\FreeTrial\Infrastructure\Symfony\AkeneoCommunityFreeTrialBundle::class => ['all' => true],
+    Akeneo\FreeTrial\Infrastructure\Symfony\AkeneoFreeTrialBundle::class =>  ['all' => true],
 
     // PIM Growth bundle
     Akeneo\Pim\TableAttribute\Infrastructure\Symfony\AkeneoPimTableAttributeBundle::class => ['all' => true],
@@ -84,15 +94,21 @@ return [
     Akeneo\Platform\Bundle\MonitoringBundle\AkeneoMonitoringBundle::class => ['all' => true],
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\AkeneoPimEnterpriseDataQualityInsightsBundle::class => ['all' => true],
     Akeneo\Pim\Enrichment\Product\Bundle\AkeneoPimEnterpriseProductEnrichmentBundle::class => ['all' => true],
+    AkeneoEnterprise\Pim\Enrichment\Category\Infrastructure\Symfony\AkeneoPimEnterpriseEnrichmentCategoryBundle::class => ['all' => true],
+    AkeneoEnterprise\Category\Infrastructure\Symfony\AkeneoEnterpriseCategoryBundle::class => ['all' => true],
     Akeneo\Pim\Structure\Bundle\AkeneoPimEnterpriseStructureBundle::class => ['all' => true],
     Akeneo\SharedCatalog\AkeneoSharedCatalogBundle::class => ['all' => true],
     AkeneoEnterprise\Connectivity\Connection\Infrastructure\Symfony\AkeneoEnterpriseConnectivityConnectionBundle::class => ['all' => true],
     Akeneo\Platform\TailoredExport\Infrastructure\Symfony\AkeneoTailoredExportBundle::class => ['all' => true],
+    Akeneo\Platform\TailoredImport\Infrastructure\Symfony\AkeneoTailoredImportBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\FrameworkBundle\PimEnterpriseFrameworkBundle::class => ['all' => true],
     Akeneo\Tool\Bundle\EnterpriseBatchQueueBundle\AkeneoEnterpriseBatchQueueBundle::class => ['all' => true],
+    Akeneo\SupplierPortal\Retailer\Infrastructure\Symfony\AkeneoSupplierPortalRetailerBundle::class => ['all' => true],
+    Akeneo\SupplierPortal\Supplier\Infrastructure\Symfony\AkeneoSupplierPortalSupplierBundle::class => ['all' => true],
+    Akeneo\Tool\Bundle\DatabaseMetadataBundle\AkeneoDatabaseMetadataBundle::class => ['all' => true],
+    Akeneo\Platform\JobAutomation\Infrastructure\Symfony\AkeneoJobAutomationBundle::class => ['all' => true],
 
     // Dev related bundles
-    Akeneo\Tool\Bundle\DatabaseMetadataBundle\AkeneoDatabaseMetadataBundle::class => ['dev' => true, 'test' => true],
     Symfony\Bundle\DebugBundle\DebugBundle::class => ['dev' => true, 'test' => true, 'behat' => true],
     Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true, 'behat' => true],
     Akeneo\Onboarder\Bundle\PimOnboarderBundle::class => ['all' => true],

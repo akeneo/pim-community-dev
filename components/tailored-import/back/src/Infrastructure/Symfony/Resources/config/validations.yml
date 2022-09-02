@@ -1,0 +1,115 @@
+parameters:
+  akeneo.tailored_import.validation.attribute_target_constraints:
+    pim_catalog_boolean: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Boolean\Boolean'
+    pim_catalog_date: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Date\Date'
+    pim_catalog_identifier: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Identifier\Identifier'
+    pim_catalog_metric: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Measurement\Measurement'
+    pim_catalog_multiselect: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\MultiSelect\MultiSelect'
+    pim_catalog_number: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Number\Number'
+    pim_catalog_price_collection: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Price\Price'
+    pim_catalog_simpleselect: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\SimpleSelect\SimpleSelect'
+    pim_catalog_text: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Text\Text'
+    pim_catalog_textarea: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Text\Text'
+
+  akeneo.tailored_import.validation.property_target_constraints:
+    categories: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Property\Categories\Categories'
+    family: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Property\Family\Family'
+    enabled: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Property\Enabled\Enabled'
+
+  akeneo.tailored_import.validation.operation_constraints:
+    clean_html_tags: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\CleanHTMLTagsOperation'
+    split: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\SplitOperation'
+    simple_select_replacement: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\ReplacementOperation'
+    multi_select_replacement: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\ReplacementOperation'
+    categories_replacement: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\ReplacementOperation'
+    family_replacement: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\ReplacementOperation'
+    boolean_replacement: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\BooleanReplacementOperation'
+    enabled_replacement: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\BooleanReplacementOperation'
+    change_case: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\ChangeCaseOperation'
+
+services:
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\IsValidAttributeValidator:
+    arguments:
+      - '@akeneo.pim.structure.query.get_attributes'
+      - '@pim_channel.query.cache.channel_exists_with_locale'
+    tags:
+      - { name: validator.constraint_validator }
+
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMappingsValidator:
+    arguments:
+      - '@akeneo.pim.structure.query.get_attributes'
+      - '%akeneo.tailored_import.validation.attribute_target_constraints%'
+      - '%akeneo.tailored_import.validation.property_target_constraints%'
+    tags:
+      - { name: validator.constraint_validator }
+
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\FileKeyValidator:
+    arguments:
+      - '@akeneo_file_storage.file_storage.filesystem_provider'
+    tags:
+      - { name: validator.constraint_validator }
+
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\IsValidFileTemplateInformationQueryValidator:
+    arguments:
+      - '@akeneo_file_storage.file_storage.filesystem_provider'
+      - '@akeneo.tailored_import.spout.remote_file_reader.factory'
+    tags:
+      - { name: validator.constraint_validator }
+
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\SearchAttributesQueryValidator:
+    tags:
+      - { name: validator.constraint_validator }
+
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\SearchAttributeOptionsQueryValidator:
+    tags:
+      - { name: validator.constraint_validator }
+
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\SampleData\SampleDataQueryValidator:
+    tags:
+      - { name: validator.constraint_validator }
+
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\SampleData\RefreshSampleDataQueryValidator:
+    tags:
+      - { name: validator.constraint_validator }
+
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\OperationsValidator:
+    arguments:
+      - '%akeneo.tailored_import.validation.operation_constraints%'
+    tags:
+      - { name: validator.constraint_validator }
+
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\SplitOperationValidator:
+    arguments:
+      - [ ',', ';', '|' ]
+    tags:
+      - { name: validator.constraint_validator }
+
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\SourceConfiguration\DecimalSeparatorValidator:
+    arguments:
+      - [',', '.', '٫‎']
+    tags:
+      - { name: validator.constraint_validator }
+
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\SampleData\GeneratePreviewDataValidator:
+    arguments:
+      - '%akeneo.tailored_import.validation.operation_constraints%'
+    tags:
+      - { name: validator.constraint_validator }
+
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Measurement\UnitValidator:
+    arguments:
+      - '@akeneo_measurement.service_api.find_unit'
+    tags:
+      - { name: validator.constraint_validator }
+
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Price\CurrencyValidator:
+    arguments:
+      - '@pim_catalog.query.find_activated_currencies'
+    tags:
+      - { name: validator.constraint_validator }
+
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\ReadColumnsValidator:
+    arguments:
+      - '@akeneo.tailored_import.spout.remote_file_reader.factory'
+    tags:
+      - { name: validator.constraint_validator }

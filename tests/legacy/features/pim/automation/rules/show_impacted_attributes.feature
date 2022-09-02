@@ -1,4 +1,4 @@
-@javascript
+@javascript @product-rules-feature-enabled
 Feature: On a product edit/show display impacted attributes
   In order to know which attributes are affected or not
   As a regular user

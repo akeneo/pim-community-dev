@@ -61,7 +61,7 @@ rule-engine-coupling-back: #Doc: launch PHP coupling detector for rule-engine
 .PHONY: rule-engine-unit-back
 rule-engine-unit-back: var/tests/phpspec #Doc: launch PHPSec unit tests for rule-engine
 ifeq ($(CI),true)
-	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run --config tests/back/Pim/Automation/Specification/RuleEngine/phpspec.yml.dist --format=junit > var/tests/phpspec/rule-engine.xml
+	$(DOCKER_COMPOSE) run -T --rm php php vendor/bin/phpspec run --config tests/back/Pim/Automation/Specification/RuleEngine/phpspec.yml.dist --format=junit > var/tests/phpspec/rule-engine.xml
 else
 	$(PHP_RUN) vendor/bin/phpspec run --config tests/back/Pim/Automation/Specification/RuleEngine/phpspec.yml.dist $(O)
 endif

@@ -24,7 +24,6 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordItem\ValueHydratorInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\ValuesDecoder;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 
@@ -34,30 +33,28 @@ use Doctrine\DBAL\Types\Types;
  */
 class RecordItemHydrator implements RecordItemHydratorInterface
 {
-    private AbstractPlatform $platform;
-
     public function __construct(
-        Connection $connection,
+        private Connection $connection,
         private FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocales,
         private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
         private ValueHydratorInterface $valueHydrator
     ) {
-        $this->platform = $connection->getDatabasePlatform();
     }
 
     public function hydrate(array $row, RecordQuery $query, $context = []): RecordItem
     {
-        $identifier = Type::getType(Types::STRING)->convertToPHPValue($row['identifier'], $this->platform);
-        $referenceEntityIdentifier = Type::getType(Types::STRING)->convertToPHPValue($row['reference_entity_identifier'], $this->platform);
-        $code = Type::getType(Types::STRING)->convertToPHPValue($row['code'], $this->platform);
+        $platform = $this->connection->getDatabasePlatform();
+        $identifier = Type::getType(Types::STRING)->convertToPHPValue($row['identifier'], $platform);
+        $referenceEntityIdentifier = Type::getType(Types::STRING)->convertToPHPValue($row['reference_entity_identifier'], $platform);
+        $code = Type::getType(Types::STRING)->convertToPHPValue($row['code'], $platform);
 
         $indexedAttributes = $this->findAttributesIndexedByIdentifier->find(ReferenceEntityIdentifier::fromString($referenceEntityIdentifier));
         $valueCollection = ValuesDecoder::decode($row['value_collection']);
         $valueCollection = $this->hydrateValues($valueCollection, $indexedAttributes, $context);
 
-        $attributeAsLabel = Type::getType(Types::STRING)->convertToPHPValue($row['attribute_as_label'], $this->platform);
+        $attributeAsLabel = Type::getType(Types::STRING)->convertToPHPValue($row['attribute_as_label'], $platform);
         $labels = $this->getLabels($valueCollection, $attributeAsLabel);
-        $attributeAsImage = Type::getType(Types::STRING)->convertToPHPValue($row['attribute_as_image'], $this->platform);
+        $attributeAsImage = Type::getType(Types::STRING)->convertToPHPValue($row['attribute_as_image'], $platform);
         $image = $this->getImage($valueCollection, $attributeAsImage);
 
         $recordItem = new RecordItem();
@@ -95,14 +92,11 @@ class RecordItemHydrator implements RecordItemHydratorInterface
         $channelIdentifier = ChannelIdentifier::fromCode($query->getChannel());
         $localeIdentifiers = LocaleIdentifierCollection::fromNormalized([$query->getLocale()]);
 
-        /** @var ValueKeyCollection $result */
-        $result = $this->findRequiredValueKeyCollectionForChannelAndLocales->find(
+        return $this->findRequiredValueKeyCollectionForChannelAndLocales->find(
             $referenceEntityIdentifier,
             $channelIdentifier,
             $localeIdentifiers
         );
-
-        return $result;
     }
 
     private function getLabels(array $valueCollection, string $attributeAsLabel): array
@@ -122,15 +116,13 @@ class RecordItemHydrator implements RecordItemHydratorInterface
 
     private function getImage(array $valueCollection, string $attributeAsImage): ?array
     {
-        $emptyImage = null;
-
         $value = current(array_filter(
             $valueCollection,
             static fn (array $value) => $value['attribute'] === $attributeAsImage
         ));
 
         if (false === $value) {
-            return $emptyImage;
+            return null;
         }
 
         return $value['data'];

@@ -11,70 +11,29 @@
 
 namespace Akeneo\Pim\Permission\Component\Updater\Setter;
 
-use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AbstractFieldSetter;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\Query\ItemCategoryAccessQuery;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
-use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Check if product associated is at least "viewable" to be associated to a product
 
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-class GrantedAssociationFieldSetter extends AbstractFieldSetter implements FieldSetterInterface
+class GrantedAssociationFieldSetter implements FieldSetterInterface
 {
-    /** @var FieldSetterInterface */
-    private $associationFieldSetter;
-
-    /** @var AuthorizationCheckerInterface */
-    private $authorizationChecker;
-
-    /** @var CursorableRepositoryInterface */
-    private $productRepository;
-
-    /** @var CursorableRepositoryInterface */
-    private $productModelRepository;
-
-    /** @var null|ItemCategoryAccessQuery */
-    private $productCategoryAccessQuery;
-
-    /** @var null|ItemCategoryAccessQuery */
-    private $productModelCategoryAccessQuery;
-
-    /** @var null|TokenStorageInterface */
-    private $tokenStorage;
-
-    /**
-     * @param FieldSetterInterface               $associationFieldSetter
-     * @param AuthorizationCheckerInterface      $authorizationChecker
-     * @param CursorableRepositoryInterface      $productRepository
-     * @param array                              $supportedFields
-     * @param CursorableRepositoryInterface      $productModelRepository
-     * @param ItemCategoryAccessQuery            $productCategoryAccessQuery
-     * @param ItemCategoryAccessQuery            $productModelCategoryAccessQuery
-     * @param TokenStorageInterface              $tokenStorage
-     */
     public function __construct(
-        FieldSetterInterface $associationFieldSetter,
-        AuthorizationCheckerInterface $authorizationChecker,
-        CursorableRepositoryInterface $productRepository,
-        array $supportedFields,
-        CursorableRepositoryInterface $productModelRepository,
-        ItemCategoryAccessQuery $productCategoryAccessQuery,
-        ItemCategoryAccessQuery $productModelCategoryAccessQuery,
-        TokenStorageInterface $tokenStorage
+        private FieldSetterInterface $associationFieldSetter,
+        private ProductRepositoryInterface $productRepository,
+        private array $supportedFields,
+        private ProductModelRepositoryInterface $productModelRepository,
+        private ItemCategoryAccessQuery $productCategoryAccessQuery,
+        private ItemCategoryAccessQuery $productModelCategoryAccessQuery,
+        private TokenStorageInterface $tokenStorage
     ) {
-        $this->associationFieldSetter = $associationFieldSetter;
-        $this->authorizationChecker = $authorizationChecker;
-        $this->productRepository = $productRepository;
-        $this->supportedFields = $supportedFields;
-        $this->productModelRepository = $productModelRepository;
-        $this->productCategoryAccessQuery = $productCategoryAccessQuery;
-        $this->productModelCategoryAccessQuery = $productModelCategoryAccessQuery;
-        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -89,6 +48,10 @@ class GrantedAssociationFieldSetter extends AbstractFieldSetter implements Field
                 $this->checkAssociatedProducts($associations['products']);
             }
 
+            if (isset($associations['product_uuids']) && is_array($associations['product_uuids'])) {
+                $this->checkAssociatedProductUuids($associations['product_uuids']);
+            }
+
             if (isset($associations['product_models']) && is_array($associations['product_models'])) {
                 $this->checkAssociatedProductModels($associations['product_models']);
             }
@@ -96,17 +59,49 @@ class GrantedAssociationFieldSetter extends AbstractFieldSetter implements Field
     }
 
     /**
-     * @param array $associatedProductIdentifiers
+     * {@inheritdoc}
      */
-    private function checkAssociatedProducts(array $associatedProductIdentifiers)
+    public function supportsField($field): bool
     {
-        $associatedProducts = $this->productRepository->getItemsFromIdentifiers($associatedProductIdentifiers);
+        return in_array($field, $this->supportedFields, true);
+    }
+
+    private function checkAssociatedProductUuids(array $associatedProductUuids): void
+    {
+        $associatedProducts = $this->productRepository->findBy(['uuid' => $associatedProductUuids]);
 
         $user = $this->tokenStorage->getToken()->getUser();
-        $grantedProductIds = $this->productCategoryAccessQuery->getGrantedItemIds($associatedProducts, $user);
+        $grantedProductUuids = \array_flip(
+            $this->productCategoryAccessQuery->getGrantedProductUuids($associatedProducts, $user)
+        );
 
         foreach ($associatedProducts as $associatedProduct) {
-            if (!isset($grantedProductIds[$associatedProduct->getId()])) {
+            if (!isset($grantedProductUuids[$associatedProduct->getUuid()->toString()])) {
+                throw InvalidPropertyException::validEntityCodeExpected(
+                    'associations',
+                    'product uuid',
+                    'The product does not exist',
+                    static::class,
+                    $associatedProduct->getUuid()->toString()
+                );
+            }
+        }
+    }
+
+    /**
+     * @param array $associatedProductIdentifiers
+     */
+    private function checkAssociatedProducts(array $associatedProductIdentifiers): void
+    {
+        $associatedProducts = $this->productRepository->findBy(['identifier' => $associatedProductIdentifiers]);
+
+        $user = $this->tokenStorage->getToken()->getUser();
+        $grantedProductUuids = \array_flip(
+            $this->productCategoryAccessQuery->getGrantedProductUuids($associatedProducts, $user)
+        );
+
+        foreach ($associatedProducts as $associatedProduct) {
+            if (!isset($grantedProductUuids[$associatedProduct->getUuid()->toString()])) {
                 throw InvalidPropertyException::validEntityCodeExpected(
                     'associations',
                     'product identifier',
@@ -121,7 +116,7 @@ class GrantedAssociationFieldSetter extends AbstractFieldSetter implements Field
     /**
      * @param array $associatedProductModels
      */
-    private function checkAssociatedProductModels(array $associatedProductModels)
+    private function checkAssociatedProductModels(array $associatedProductModels): void
     {
         $associatedProductModels = $this->productModelRepository->getItemsFromIdentifiers($associatedProductModels);
 

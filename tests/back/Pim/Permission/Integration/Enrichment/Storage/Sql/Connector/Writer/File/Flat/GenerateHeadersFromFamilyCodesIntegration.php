@@ -35,7 +35,6 @@ class GenerateHeadersFromFamilyCodesIntegration extends AbstractSecurityTestCase
                 false,
                 true,
                 ['USD', 'EUR'],
-                ['USD', 'EUR', 'CNY']
             ),
             new FlatFileHeader('a_ref_data_multi_select'),
             new FlatFileHeader('a_ref_data_simple_select'),
@@ -54,7 +53,6 @@ class GenerateHeadersFromFamilyCodesIntegration extends AbstractSecurityTestCase
                 false,
                 true,
                 ['USD', 'EUR'],
-                ['USD', 'EUR']
             ),
             new FlatFileHeader('a_localized_and_scopable_text_area', true, 'ecommerce', true, ['en_US', 'de_DE']),
         ];
@@ -89,7 +87,6 @@ class GenerateHeadersFromFamilyCodesIntegration extends AbstractSecurityTestCase
                 false,
                 true,
                 ['USD', 'EUR'],
-                ['USD', 'EUR', 'CNY']
             ),
             new FlatFileHeader('a_ref_data_multi_select'),
             new FlatFileHeader('a_ref_data_simple_select'),
@@ -108,7 +105,6 @@ class GenerateHeadersFromFamilyCodesIntegration extends AbstractSecurityTestCase
                 false,
                 true,
                 ['USD', 'EUR'],
-                ['USD', 'EUR']
             ),
             new FlatFileHeader('a_localized_and_scopable_text_area', true, 'ecommerce', true, ['en_US', 'de_DE']),
         ];
@@ -142,7 +138,6 @@ class GenerateHeadersFromFamilyCodesIntegration extends AbstractSecurityTestCase
                 false,
                 true,
                 ['USD', 'EUR'],
-                ['USD', 'EUR', 'CNY']
             ),
             new FlatFileHeader('a_ref_data_multi_select'),
             new FlatFileHeader('a_ref_data_simple_select'),
@@ -161,7 +156,6 @@ class GenerateHeadersFromFamilyCodesIntegration extends AbstractSecurityTestCase
                 false,
                 true,
                 ['USD', 'EUR'],
-                ['USD', 'EUR']
             ),
             new FlatFileHeader('a_localized_and_scopable_text_area', true, 'ecommerce', true, ['en_US']),
         ];
@@ -195,7 +189,6 @@ class GenerateHeadersFromFamilyCodesIntegration extends AbstractSecurityTestCase
                 false,
                 true,
                 ['USD', 'EUR'],
-                ['USD', 'EUR', 'CNY']
             ),
             new FlatFileHeader('a_ref_data_multi_select'),
             new FlatFileHeader('a_ref_data_simple_select'),
@@ -214,7 +207,6 @@ class GenerateHeadersFromFamilyCodesIntegration extends AbstractSecurityTestCase
                 false,
                 true,
                 ['USD', 'EUR'],
-                ['USD', 'EUR']
             ),
             new FlatFileHeader('a_localized_and_scopable_text_area', true, 'ecommerce', true, ['en_US']),
         ];

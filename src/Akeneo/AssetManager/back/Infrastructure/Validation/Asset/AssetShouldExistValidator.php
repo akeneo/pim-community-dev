@@ -19,11 +19,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class AssetShouldExistValidator extends ConstraintValidator
 {
-    private AssetExistsInterface $assetExists;
-
-    public function __construct(AssetExistsInterface $assetExists)
+    public function __construct(private AssetExistsInterface $assetExists)
     {
-        $this->assetExists = $assetExists;
     }
 
     public function validate($command, Constraint $constraint)
@@ -52,7 +49,7 @@ class AssetShouldExistValidator extends ConstraintValidator
             throw new \InvalidArgumentException(sprintf(
                 'Expected argument to be of class "%s", "%s" given',
                 DeleteAssetCommand::class,
-                get_class($command)
+                $command::class
             ));
         }
     }

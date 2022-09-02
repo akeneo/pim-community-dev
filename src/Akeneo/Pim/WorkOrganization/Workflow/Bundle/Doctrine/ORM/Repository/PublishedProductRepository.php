@@ -31,15 +31,15 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
      */
     public function findOneByOriginalProduct(ProductInterface $originalProduct)
     {
-        return $this->findOneBy(['originalProduct' => $originalProduct->getId()]);
+        return $this->findOneBy(['originalProduct' => $originalProduct]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findOneByOriginalProductId($originalProductId)
+    public function findOneByOriginalProductUuid($originalProductUuid)
     {
-        return $this->findOneBy(['originalProduct' => $originalProductId]);
+        return $this->findOneBy(['originalProduct' => $originalProductUuid]);
     }
 
     /**
@@ -55,15 +55,15 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
      */
     public function findByOriginalProducts(array $originalProducts)
     {
-        $originalIds = [];
+        $originalUuidsAsBytes = [];
         foreach ($originalProducts as $product) {
-            $originalIds[] = $product->getId();
+            $originalUuidsAsBytes[] = $product->getUuid()->getBytes();
         }
 
         $qb = $this->createQueryBuilder('pp');
         $qb
-            ->where($qb->expr()->in('pp.originalProduct', ':originalIds'))
-            ->setParameter(':originalIds', $originalIds);
+            ->where($qb->expr()->in('pp.originalProduct', ':originalUuids'))
+            ->setParameter(':originalUuids', $originalUuidsAsBytes);
 
         return $qb->getQuery()->getResult();
     }
@@ -160,5 +160,39 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
         $qb->select(sprintf("COUNT(%s.id)", $rootAlias));
 
         return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    public function hasAttributeInFamily($productId, $attributeCode)
+    {
+        $queryBuilder = $this->createQueryBuilder('p')
+            ->leftJoin('p.family', 'f')
+            ->leftJoin('f.attributes', 'a')
+            ->where('p.id = :id')
+            ->andWhere('a.code = :code')
+            ->setParameters([
+                'id'   => $productId,
+                'code' => $attributeCode,
+            ])
+            ->setMaxResults(1);
+
+        return count($queryBuilder->getQuery()->getArrayResult()) > 0;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function searchAfter(?ProductInterface $publishedProduct, int $limit): array
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->orderBy('p.id', 'ASC')
+            ->setMaxResults($limit);
+        ;
+
+        if (null !== $publishedProduct) {
+            $qb->where('p.id > :productId')
+                ->setParameter(':productId', $publishedProduct->getId());
+        }
+
+        return $qb->getQuery()->execute();
     }
 }

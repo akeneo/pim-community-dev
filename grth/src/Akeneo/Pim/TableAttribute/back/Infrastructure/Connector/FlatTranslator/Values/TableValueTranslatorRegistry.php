@@ -39,19 +39,15 @@ class TableValueTranslatorRegistry
         string $attributeCode,
         string $columnCode,
         string $localeCode,
-        mixed $value
-    ): mixed {
+        string $value
+    ): string {
         $tableConfiguration = $this->tableConfigurationRepository->getByAttributeCode($attributeCode);
         $column = $tableConfiguration->getColumnByCode(ColumnCode::fromString($columnCode));
         if (null === $column) {
             return $value;
         }
-
         $valueTranslator = $this->tableValueTranslators[$column->dataType()->asString()] ?? null;
 
-        return null !== $valueTranslator
-            ? $valueTranslator->translate($attributeCode, $column, $localeCode, $value) ?? $value
-            : $value
-            ;
+        return $valueTranslator?->translate($attributeCode, $column, $localeCode, $value) ?? $value;
     }
 }

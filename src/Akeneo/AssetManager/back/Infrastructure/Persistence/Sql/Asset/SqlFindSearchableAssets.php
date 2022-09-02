@@ -18,11 +18,8 @@ use Doctrine\DBAL\Types\Types;
  */
 class SqlFindSearchableAssets implements FindSearchableAssetsInterface
 {
-    private Connection $connection;
-
-    public function __construct(Connection $connection)
+    public function __construct(private Connection $connection)
     {
-        $this->connection = $connection;
     }
 
     public function byAssetIdentifier(AssetIdentifier $assetIdentifier): ?SearchableAssetItem

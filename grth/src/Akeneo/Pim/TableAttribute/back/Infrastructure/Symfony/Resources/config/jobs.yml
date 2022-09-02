@@ -8,6 +8,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_table_attribute.step.csv_option_export'
+                - '@akeneo.job_automation.connector.step.upload'
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%' }
@@ -20,6 +21,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_table_attribute.step.xlsx_option_export'
+                - '@akeneo.job_automation.connector.step.upload'
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
@@ -32,6 +34,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_table_attribute.step.csv_product_table_values_export'
+                - '@akeneo.job_automation.connector.step.upload'
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%' }
@@ -44,6 +47,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_table_attribute.step.xlsx_product_table_values_export'
+                - '@akeneo.job_automation.connector.step.upload'
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
@@ -56,6 +60,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_table_attribute.step.csv_product_model_table_values_export'
+                - '@akeneo.job_automation.connector.step.upload'
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%' }
@@ -68,6 +73,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_table_attribute.step.xlsx_product_model_table_values_export'
+                - '@akeneo.job_automation.connector.step.upload'
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
@@ -79,6 +85,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
+                - '@akeneo.job_automation.connector.step.download'
                 - '@pim_connector.step.charset_validator'
                 - '@pim_table_attribute.step.csv_option_import'
             - true
@@ -92,6 +99,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
+                - '@akeneo.job_automation.connector.step.download'
                 - '@pim_connector.step.charset_validator'
                 - '@pim_table_attribute.step.xlsx_option_import'
             - true
@@ -105,6 +113,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
+                - '@akeneo.job_automation.connector.step.download'
                 - '@pim_connector.step.charset_validator'
                 - '@pim_table_attribute.step.csv_product_table_values_import'
             - true
@@ -118,6 +127,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
+                - '@akeneo.job_automation.connector.step.download'
                 - '@pim_connector.step.charset_validator'
                 - '@pim_table_attribute.step.xlsx_product_table_values_import'
             - true
@@ -131,6 +141,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
+                - '@akeneo.job_automation.connector.step.download'
                 - '@pim_connector.step.charset_validator'
                 - '@pim_table_attribute.step.csv_product_model_table_values_import'
             - true
@@ -144,6 +155,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
+                - '@akeneo.job_automation.connector.step.download'
                 - '@pim_connector.step.charset_validator'
                 - '@pim_table_attribute.step.xlsx_product_model_table_values_import'
             - true
@@ -164,6 +176,21 @@ services:
                 connector: 'internal'
                 type: 'clean_table_values_following_deleted_options'
             -   name: akeneo_batch.job.not_visible
+
+    pim_table_attribute.job.compute_completeness_following_table_update:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'compute_completeness_following_table_update'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_table_attribute.step.compute_completeness_following_table_update'
+        public: false
+        tags:
+            - name: akeneo_batch.job
+              connector: 'internal'
+              type: 'compute_completeness_following_table_update'
+            - name: akeneo_batch.job.not_visible
 
     # Steps
     pim_table_attribute.step.csv_option_export:
@@ -318,6 +345,14 @@ services:
             - '@akeneo_batch.job_repository'
             - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\Tasklet\CleanTableValuesWithDeletedOptionsTasklet'
 
+    pim_table_attribute.step.compute_completeness_following_table_update:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'compute_completeness_following_table_update'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\Tasklet\ComputeCompletenessOfTableAttributeProductsTasklet'
+
     # readers
     Akeneo\Pim\TableAttribute\Infrastructure\Connector\Reader\Database\SelectOptionDetailsReader:
         arguments:
@@ -339,7 +374,7 @@ services:
     pim_table_attribute.reader.database.product.table_values:
         class: Akeneo\Pim\TableAttribute\Infrastructure\Connector\Reader\Database\TableValuesReader
         arguments:
-            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_catalog.query.product_query_builder_factory_for_reading_purpose'
 
     pim_table_attribute.reader.database.product_model.table_values:
         class: Akeneo\Pim\TableAttribute\Infrastructure\Connector\Reader\Database\TableValuesReader
@@ -483,6 +518,8 @@ services:
     Akeneo\Pim\TableAttribute\Infrastructure\Connector\Writer\File\TableValuesColumnSorter:
         arguments:
             - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'
+            - '@translator'
+            - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableColumnTranslator'
 
     Akeneo\Pim\TableAttribute\Infrastructure\Connector\Writer\Database\SelectOption:
         arguments:
@@ -583,6 +620,11 @@ services:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
+    Akeneo\Pim\TableAttribute\Infrastructure\Connector\Provider\ComputeCompletenessOfTableAttributeProducts:
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
     # Tasklets
     Akeneo\Pim\TableAttribute\Infrastructure\Connector\Tasklet\CleanTableValuesWithDeletedOptionsTasklet:
         arguments:
@@ -592,3 +634,10 @@ services:
             - '@pim_catalog.saver.product'
             - '@pim_catalog.saver.product_model'
             - '%pim_job_product_batch_size%'
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Connector\Tasklet\ComputeCompletenessOfTableAttributeProductsTasklet:
+        arguments:
+            - '@pim_catalog.completeness.product.compute_and_persist'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors'
+            - '@pim_enrich.product.query_message_bus'

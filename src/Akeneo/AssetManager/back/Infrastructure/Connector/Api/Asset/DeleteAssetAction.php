@@ -18,7 +18,7 @@ use Akeneo\AssetManager\Application\Asset\DeleteAsset\DeleteAssetHandler;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -30,15 +30,10 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
  */
 class DeleteAssetAction
 {
-    private DeleteAssetHandler $deleteAssetHandler;
-    private SecurityFacade $securityFacade;
-
     public function __construct(
-        DeleteAssetHandler $deleteAssetHandler,
-        SecurityFacade $securityFacade
+        private DeleteAssetHandler $deleteAssetHandler,
+        private SecurityFacadeInterface $securityFacade,
     ) {
-        $this->deleteAssetHandler = $deleteAssetHandler;
-        $this->securityFacade = $securityFacade;
     }
 
     public function __invoke(string $assetFamilyIdentifier, string $code): Response
@@ -56,7 +51,7 @@ class DeleteAssetAction
 
         try {
             ($this->deleteAssetHandler)($command);
-        } catch (AssetNotFoundException $exception) {
+        } catch (AssetNotFoundException) {
             return new JsonResponse([
                 'code'    => Response::HTTP_NOT_FOUND,
                 'message' => sprintf('Resource `%s` does not exist.', $assetCode->normalize()),

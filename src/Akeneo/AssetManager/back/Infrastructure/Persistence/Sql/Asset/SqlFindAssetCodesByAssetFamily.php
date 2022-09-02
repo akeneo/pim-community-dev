@@ -22,11 +22,8 @@ use Doctrine\DBAL\Types\Types;
 
 class SqlFindAssetCodesByAssetFamily implements FindAssetCodesByAssetFamilyInterface
 {
-    private Connection $connection;
-
-    public function __construct(Connection $connection)
+    public function __construct(private Connection $connection)
     {
-        $this->connection = $connection;
     }
 
     public function find(AssetFamilyIdentifier $assetFamilyIdentifier): \Iterator

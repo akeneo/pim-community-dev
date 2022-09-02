@@ -124,7 +124,7 @@ final class MassActionContext implements Context
         foreach (explode(',', $productIdentifiers) as $productIdentifier) {
             $product = $this->productRepository->findOneByIdentifier(trim($productIdentifier));
             if (null !== $product) {
-                $productIds[] = sprintf('product_%d', $product->getId());
+                $productIds[] = sprintf('product_%s', $product->getUuid()->toString());
                 continue;
             }
 

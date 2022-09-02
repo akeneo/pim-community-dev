@@ -17,6 +17,9 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
 use Webmozart\Assert\Assert;
 
+/**
+ * @implements \IteratorAggregate<int, Transformation>
+ */
 class TransformationCollection implements \IteratorAggregate
 {
     /** @var Transformation[] */
@@ -77,6 +80,9 @@ class TransformationCollection implements \IteratorAggregate
         $this->transformations[] = $transformation;
     }
 
+    /**
+     * @return Transformation[]|\ArrayIterator<int, Transformation>
+     */
     public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->transformations);
@@ -88,7 +94,7 @@ class TransformationCollection implements \IteratorAggregate
             $findInNewCollection = $transformationCollection->getByTarget(
                 $currentTransformation->getTarget()
             );
-            if (null === $findInNewCollection) {
+            if (!$findInNewCollection instanceof Transformation) {
                 $this->removeTransformation($index);
                 continue;
             }

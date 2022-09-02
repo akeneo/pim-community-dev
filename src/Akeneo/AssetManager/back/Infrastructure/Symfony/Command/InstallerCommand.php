@@ -35,22 +35,12 @@ class InstallerCommand extends Command implements EventSubscriberInterface
 
     protected static $defaultName = self::RESET_FIXTURES_COMMAND_NAME;
 
-    private FixturesInstaller $fixturesInstaller;
-
-    private AssetsInstaller $assetInstaller;
-
-    private bool $shouldLoadAssetsFixtures;
-
     public function __construct(
-        FixturesInstaller $fixturesInstaller,
-        AssetsInstaller $assetInstaller,
-        bool $shouldLoadAssetsFixtures
+        private FixturesInstaller $fixturesInstaller,
+        private AssetsInstaller $assetInstaller,
+        private bool $shouldLoadAssetsFixtures
     ) {
         parent::__construct(self::RESET_FIXTURES_COMMAND_NAME);
-
-        $this->fixturesInstaller = $fixturesInstaller;
-        $this->assetInstaller = $assetInstaller;
-        $this->shouldLoadAssetsFixtures = $shouldLoadAssetsFixtures;
     }
 
     /**
@@ -85,10 +75,7 @@ class InstallerCommand extends Command implements EventSubscriberInterface
     {
         if (
             $this->shouldLoadAssetsFixtures ||
-            substr(
-                $event->getArgument('catalog'),
-                -strlen(self::ICECAT_DEMO_DEV)
-            ) === self::ICECAT_DEMO_DEV
+            str_ends_with($event->getArgument('catalog'), self::ICECAT_DEMO_DEV)
         ) {
             $this->fixturesInstaller->loadCatalog();
         }

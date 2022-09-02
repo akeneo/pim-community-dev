@@ -1,0 +1,23 @@
+global:
+  googleProject: null # From parent
+  publicDomain: null # From parent
+external-dns:
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "100m"
+    limits:
+      memory: "128Mi"
+      cpu: "200m"
+  provider: google
+  google:
+    project: null
+  nodeSelector:
+    iam.gke.io/gke-metadata-server-enabled: "true"
+  serviceAccount:
+    name: external-dns
+    annotations:
+      iam.gke.io/gcp-service-account: "external-dns@{{ .Values.global.googleProject }}.iam.gserviceaccount.com"
+  sources:
+  - gateway-httproute
+  domainFilters: null # From parent

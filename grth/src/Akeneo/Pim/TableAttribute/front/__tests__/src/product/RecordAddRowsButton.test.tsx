@@ -1,6 +1,6 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
-import {RecordAddRowsButton} from '../../../src';
+import {RecordAddRowsButton, ReferenceEntityColumnDefinition} from '../../../src';
 import {act, fireEvent, screen} from '@testing-library/react';
 import {getComplexTableAttribute} from '../../factories';
 import {TestAttributeContextProvider} from '../../shared/TestAttributeContextProvider';
@@ -10,7 +10,7 @@ import {mockScroll} from '../../shared/mockScroll';
 jest.mock('../../../src/fetchers/RecordFetcher');
 const scroll = mockScroll();
 
-const tableAttributeRecord = getComplexTableAttribute('record');
+const tableAttributeReferenceEntity = getComplexTableAttribute('reference_entity');
 
 const openDropdown = async () => {
   const button = screen.getByText('pim_table_attribute.product_edit_form.add_rows');
@@ -24,21 +24,21 @@ describe('RecordAddRowsButton', () => {
   it('should render the component', async () => {
     const toggleChange = jest.fn();
     renderWithProviders(
-      <TestAttributeContextProvider attribute={tableAttributeRecord}>
-        <RecordAddRowsButton checkedOptionCodes={[]} toggleChange={toggleChange} />
+      <TestAttributeContextProvider attribute={tableAttributeReferenceEntity}>
+        <RecordAddRowsButton checkedOptionCodes={[]} toggleChange={toggleChange} itemsPerPage={3} />
       </TestAttributeContextProvider>
     );
 
     await openDropdown();
 
     userEvent.click(screen.getByTestId('checkbox-0'));
-    expect(toggleChange).toBeCalledWith('lanion00893335_2e73_41e3_ac34_763fb6a35107');
+    expect(toggleChange).toBeCalledWith('lannion00893335_2e73_41e3_ac34_763fb6a35107');
   });
 
   it('should not retrieve on scroll when result length is smaller than itemsPerPage', async () => {
     const toggleChange = jest.fn();
     renderWithProviders(
-      <TestAttributeContextProvider attribute={tableAttributeRecord}>
+      <TestAttributeContextProvider attribute={tableAttributeReferenceEntity}>
         <RecordAddRowsButton checkedOptionCodes={[]} toggleChange={toggleChange} itemsPerPage={3} />
       </TestAttributeContextProvider>
     );
@@ -57,7 +57,7 @@ describe('RecordAddRowsButton', () => {
   it('should narrow select result to search input', async () => {
     const toggleChange = jest.fn();
     renderWithProviders(
-      <TestAttributeContextProvider attribute={tableAttributeRecord}>
+      <TestAttributeContextProvider attribute={tableAttributeReferenceEntity}>
         <RecordAddRowsButton checkedOptionCodes={[]} toggleChange={toggleChange} />
       </TestAttributeContextProvider>
     );
@@ -71,10 +71,13 @@ describe('RecordAddRowsButton', () => {
   });
 
   it('should show no options', async () => {
-    const toggleChange = jest.fn();
+    const tableAttributeRecordWithoutRecord = getComplexTableAttribute('reference_entity');
+    (
+      tableAttributeRecordWithoutRecord.table_configuration[0] as ReferenceEntityColumnDefinition
+    ).reference_entity_identifier = 'empty_reference_entity';
     renderWithProviders(
-      <TestAttributeContextProvider attribute={tableAttributeRecord}>
-        <RecordAddRowsButton checkedOptionCodes={[]} toggleChange={toggleChange} itemsPerPage={0} />
+      <TestAttributeContextProvider attribute={tableAttributeRecordWithoutRecord}>
+        <RecordAddRowsButton checkedOptionCodes={[]} toggleChange={jest.fn()} itemsPerPage={3} />
       </TestAttributeContextProvider>
     );
 
@@ -89,8 +92,8 @@ describe('RecordAddRowsButton', () => {
   it('should show no result', async () => {
     const toggleChange = jest.fn();
     renderWithProviders(
-      <TestAttributeContextProvider attribute={tableAttributeRecord}>
-        <RecordAddRowsButton checkedOptionCodes={[]} toggleChange={toggleChange} itemsPerPage={0} />
+      <TestAttributeContextProvider attribute={tableAttributeReferenceEntity}>
+        <RecordAddRowsButton checkedOptionCodes={[]} toggleChange={toggleChange} itemsPerPage={3} />
       </TestAttributeContextProvider>
     );
 
@@ -104,12 +107,11 @@ describe('RecordAddRowsButton', () => {
   });
 
   it('should disable options when maxRowCount is reached', async () => {
-    const toggleChange = jest.fn();
     renderWithProviders(
-      <TestAttributeContextProvider attribute={tableAttributeRecord}>
+      <TestAttributeContextProvider attribute={tableAttributeReferenceEntity}>
         <RecordAddRowsButton
-          checkedOptionCodes={['lanion00893335_2e73_41e3_ac34_763fb6a35107']}
-          toggleChange={toggleChange}
+          checkedOptionCodes={['lannion00893335_2e73_41e3_ac34_763fb6a35107']}
+          toggleChange={jest.fn()}
           maxRowCount={1}
         />
       </TestAttributeContextProvider>
@@ -117,10 +119,10 @@ describe('RecordAddRowsButton', () => {
 
     await openDropdown();
 
-    const [lanionCheckbox, vannesCheckbox] = screen.getAllByRole('checkbox');
+    const [lannionCheckbox, vannesCheckbox] = screen.getAllByRole('checkbox');
 
-    expect(lanionCheckbox).toBeChecked();
-    expect(lanionCheckbox).toBeEnabled();
+    expect(lannionCheckbox).toBeChecked();
+    expect(lannionCheckbox).toBeEnabled();
     expect(vannesCheckbox).not.toBeChecked();
     expect(vannesCheckbox).toHaveAttribute('readOnly');
   });

@@ -57,6 +57,7 @@ class CellDataTypesShouldMatchValidator extends ConstraintValidator
                 $data = $cell->normalize();
                 switch ($column->dataType()->asString()) {
                     case 'text':
+                    case 'reference_entity':
                     case 'select':
                         if (!is_string($data)) {
                             $this->addViolation('string', $data, $rowIndex, $stringColumnCode);
@@ -70,6 +71,22 @@ class CellDataTypesShouldMatchValidator extends ConstraintValidator
                     case 'boolean':
                         if (!is_bool($data)) {
                             $this->addViolation('boolean', $data, $rowIndex, $stringColumnCode);
+                        }
+                        break;
+                    case 'measurement':
+                        $unitCode = $data['unit'] ?? null;
+                        $amount = $data['amount'] ?? null;
+                        if (!\is_array($data) || !\is_string($unitCode) || !\is_numeric($amount)) {
+                            $this->context
+                                ->buildViolation(
+                                    'pim_table_configuration.validation.product_value.unexpected_data_type_for_measurement',
+                                    [
+                                        '{{ given }}' => \json_encode($data),
+                                        '{{ columnCode }}' => $stringColumnCode,
+                                    ]
+                                )
+                                ->atPath(sprintf('[%d].%s', $rowIndex, $stringColumnCode))
+                                ->addViolation();
                         }
                         break;
                     default:

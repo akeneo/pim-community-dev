@@ -1,0 +1,7 @@
+spec:
+  destination:
+    googleProject: akecld-prd-pim-saas-sandbox
+    publicDomain: pim-saas-sandbox.dev.cloud.akeneo.com
+    privateDomain: pim-saas-sandbox.dev.local
+  source:
+    targetRevision: null #To be overrided

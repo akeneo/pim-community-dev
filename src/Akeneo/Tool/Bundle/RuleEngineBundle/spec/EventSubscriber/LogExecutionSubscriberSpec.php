@@ -11,6 +11,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class LogExecutionSubscriberSpec extends ObjectBehavior
@@ -71,10 +72,10 @@ class LogExecutionSubscriberSpec extends ObjectBehavior
         $event->getReasons()->willReturn($reasons);
 
         $definition->getCode()->willReturn('rule_code');
-        $subject->getId()->willReturn(42);
+        $subject->getUuid()->willReturn(Uuid::fromString('359a2a04-5fa4-4f15-9c08-09b819327c8f'));
 
         $logger->warning(
-            'Rule "rule_code", event "pim_rule_engine.rule.skip": subject "42" has been skipped due to "My name should be shorter".'
+            'Rule "rule_code", event "pim_rule_engine.rule.skip": subject "359a2a04-5fa4-4f15-9c08-09b819327c8f" has been skipped due to "My name should be shorter".'
         )->shouldBeCalled();
 
         $this->skip($event);

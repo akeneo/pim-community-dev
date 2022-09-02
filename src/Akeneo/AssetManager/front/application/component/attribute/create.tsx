@@ -1,5 +1,5 @@
 import React, {useRef} from 'react';
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import styled from 'styled-components';
 import {AssetsIllustration, Checkbox, Button, useAutoFocus, Modal, Field, SelectInput} from 'akeneo-design-system';
 import {getErrorsForPath, Section, TextField, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
@@ -14,7 +14,9 @@ import {
   attributeCreationValuePerChannelUpdated,
 } from 'akeneoassetmanager/domain/event/attribute/create';
 import {createAttribute} from 'akeneoassetmanager/application/action/attribute/create';
-import {getAttributeTypes} from 'akeneoassetmanager/application/configuration/attribute';
+import {useAttributeTypes} from 'akeneoassetmanager/application/hooks/attribute/useAttributeTypes';
+import {useAttributeDenormalizer} from 'akeneoassetmanager/application/hooks/attribute/useAttributeDenormalizer';
+import {useAttributeFetcher} from 'akeneoassetmanager/infrastructure/fetcher/useAttributeFetcher';
 
 const AttributeTypeIcon = styled.img`
   width: 25px;
@@ -47,7 +49,6 @@ interface DispatchProps {
     onValuePerLocaleUpdated: (valuePerLocale: boolean) => void;
     onValuePerChannelUpdated: (valuePerChannel: boolean) => void;
     onCancel: () => void;
-    onSubmit: () => void;
   };
 }
 
@@ -55,9 +56,11 @@ interface CreateProps extends StateProps, DispatchProps {}
 
 const Create = ({data, errors, context, events}: CreateProps) => {
   const translate = useTranslate();
+  const dispatch = useDispatch();
+  const attributeDenormalizer = useAttributeDenormalizer();
+  const attributeFetcher = useAttributeFetcher();
   const labelInputRef = useRef<HTMLInputElement>(null);
-  const attributeTypes = getAttributeTypes();
-
+  const attributeTypes = useAttributeTypes();
   const handleLabelChange = (value: string) => events.onLabelUpdated(value, context.locale);
 
   useAutoFocus(labelInputRef);
@@ -75,14 +78,14 @@ const Create = ({data, errors, context, events}: CreateProps) => {
           value={data.labels[context.locale] ?? ''}
           onChange={handleLabelChange}
           errors={getErrorsForPath(errors, 'labels')}
-          onSubmit={events.onSubmit}
+          onSubmit={() => dispatch(createAttribute(attributeFetcher, attributeDenormalizer))}
         />
         <TextField
           label={translate('pim_asset_manager.attribute.create.input.code')}
           value={data.code}
           onChange={events.onCodeUpdated}
           errors={getErrorsForPath(errors, 'code')}
-          onSubmit={events.onSubmit}
+          onSubmit={() => dispatch(createAttribute(attributeFetcher, attributeDenormalizer))}
         />
         <Field label={translate('pim_asset_manager.attribute.create.input.type')}>
           <SelectInput
@@ -115,7 +118,9 @@ const Create = ({data, errors, context, events}: CreateProps) => {
         </div>
       </Section>
       <Modal.BottomButtons>
-        <Button onClick={events.onSubmit}>{translate('pim_common.save')}</Button>
+        <Button onClick={() => dispatch(createAttribute(attributeFetcher, attributeDenormalizer))}>
+          {translate('pim_common.save')}
+        </Button>
       </Modal.BottomButtons>
     </Modal>
   );
@@ -151,9 +156,6 @@ export default connect(
         },
         onCancel: () => {
           dispatch(attributeCreationCancel());
-        },
-        onSubmit: () => {
-          dispatch(createAttribute());
         },
       },
     } as DispatchProps;

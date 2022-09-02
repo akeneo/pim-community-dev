@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Query\Structure;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetProductModelFamilyAttributeCodesQuery;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
@@ -50,7 +50,7 @@ class GetProductModelFamilyAttributeCodesQueryIntegration extends DataQualityIns
 
         $attributeCodes = $this
             ->get(GetProductModelFamilyAttributeCodesQuery::class)
-            ->execute(new ProductId($rootPm->getId()));
+            ->execute($this->get(ProductModelIdFactory::class)->create((string)$rootPm->getId()));
 
         $expectedRootLevelAttributes = [
             new AttributeCode('a_date'),
@@ -71,7 +71,7 @@ class GetProductModelFamilyAttributeCodesQueryIntegration extends DataQualityIns
 
         $attributeCodes = $this
             ->get(GetProductModelFamilyAttributeCodesQuery::class)
-            ->execute(new ProductId($subPm->getId()));
+            ->execute($this->get(ProductModelIdFactory::class)->create((string)$subPm->getId()));
 
         $expectedSubLevelAttributes = [
             new AttributeCode('a_date'),

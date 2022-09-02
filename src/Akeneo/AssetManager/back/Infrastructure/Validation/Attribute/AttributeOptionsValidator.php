@@ -19,11 +19,8 @@ use Symfony\Component\Validator\Validation;
  */
 class AttributeOptionsValidator extends ConstraintValidator
 {
-    private int $optionsLimit;
-
-    public function __construct(int $optionsLimit)
+    public function __construct(private int $optionsLimit)
     {
-        $this->optionsLimit = $optionsLimit;
     }
 
     public function validate($attributeOptions, Constraint $constraint)
@@ -114,7 +111,7 @@ class AttributeOptionsValidator extends ConstraintValidator
         foreach ($frequencies as $optionCode => $frequency) {
             if ($frequency > 1) {
                 $this->context->buildViolation(AttributeOptions::MESSAGE_OPTION_DUPLICATED)
-                    ->setParameter('%option_code%', $optionCode)
+                    ->setParameter('%option_code%', (string) $optionCode)
                     ->atPath((string)array_search($optionCode, array_reverse($optionCodes, true)))
                     ->addViolation();
             }

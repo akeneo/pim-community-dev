@@ -23,7 +23,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
  */
 class MediaLinkVimeoGenerator extends AbstractPreviewGenerator
 {
-    private const VIMEO_PREVIEW_URL = 'https://vimeo.com/api/v2/video/%s.json';
+    private const VIMEO_PREVIEW_URL = 'https://vimeo.com/api/oembed.json?url=https://vimeo.com/%s';
     public const DEFAULT_IMAGE = 'pim_asset_manager.default_image.image'; // Should change depending on the preview type
     public const SUPPORTED_TYPES = [
         PreviewGeneratorRegistry::THUMBNAIL_TYPE       => 'am_url_image_thumbnail',
@@ -55,7 +55,7 @@ class MediaLinkVimeoGenerator extends AbstractPreviewGenerator
 
         if ($raw) {
             $json = json_decode($raw, true);
-            $url = $json[0]['thumbnail_large'];
+            $url = $json['thumbnail_url'];
         }
 
         return $url;

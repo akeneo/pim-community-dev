@@ -44,7 +44,6 @@ class GenerateHeadersFromAttributeCodesIntegration extends AbstractSecurityTestC
                 false,
                 true,
                 ['USD', 'EUR'],
-                ['USD', 'EUR']
             ),
             new FlatFileHeader(
                 'a_regexp',
@@ -56,7 +55,6 @@ class GenerateHeadersFromAttributeCodesIntegration extends AbstractSecurityTestC
                 false,
                 false,
                 ['USD', 'EUR'],
-                ['USD', 'EUR', 'CNY'],
                 true,
                 ['en_US']
             ),
@@ -70,7 +68,6 @@ class GenerateHeadersFromAttributeCodesIntegration extends AbstractSecurityTestC
                 false,
                 false,
                 ['USD', 'EUR'],
-                ['USD', 'EUR', 'CNY']
             ),
         ];
 
@@ -113,7 +110,6 @@ class GenerateHeadersFromAttributeCodesIntegration extends AbstractSecurityTestC
                 false,
                 true,
                 ['USD', 'EUR'],
-                ['USD', 'EUR']
             ),
             new FlatFileHeader(
                 'a_regexp',
@@ -125,7 +121,6 @@ class GenerateHeadersFromAttributeCodesIntegration extends AbstractSecurityTestC
                 false,
                 false,
                 ['USD', 'EUR'],
-                ['USD', 'EUR', 'CNY'],
                 true,
                 ['en_US']
             ),
@@ -139,7 +134,6 @@ class GenerateHeadersFromAttributeCodesIntegration extends AbstractSecurityTestC
                 false,
                 false,
                 ['USD', 'EUR'],
-                ['USD', 'EUR', 'CNY']
             ),
         ];
 
@@ -182,7 +176,6 @@ class GenerateHeadersFromAttributeCodesIntegration extends AbstractSecurityTestC
                 false,
                 true,
                 ['USD', 'EUR'],
-                ['USD', 'EUR']
             ),
             new FlatFileHeader(
                 'a_regexp',
@@ -194,7 +187,6 @@ class GenerateHeadersFromAttributeCodesIntegration extends AbstractSecurityTestC
                 false,
                 false,
                 ['USD', 'EUR'],
-                ['USD', 'EUR', 'CNY'],
                 true,
                 ['en_US']
             ),
@@ -239,7 +231,6 @@ class GenerateHeadersFromAttributeCodesIntegration extends AbstractSecurityTestC
                 false,
                 true,
                 ['USD', 'EUR'],
-                ['USD', 'EUR']
             ),
             new FlatFileHeader(
                 'a_regexp',
@@ -251,7 +242,6 @@ class GenerateHeadersFromAttributeCodesIntegration extends AbstractSecurityTestC
                 false,
                 false,
                 ['USD', 'EUR'],
-                ['USD', 'EUR', 'CNY'],
                 true,
                 ['en_US']
             ),

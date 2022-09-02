@@ -18,7 +18,6 @@ import ListAsset, {
 } from 'akeneoassetmanager/domain/model/asset/list-asset';
 import MosaicResult from 'akeneoassetmanager/application/component/asset/list/mosaic';
 import {useFetchResult} from 'akeneoassetmanager/application/hooks/grid';
-import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 
 type AssetFamilyIdentifier = string;
 type AssetPickerProps = {
@@ -29,19 +28,8 @@ type AssetPickerProps = {
   productAttribute: ProductAttribute;
   onAssetPick: (assetCodes: AssetCode[]) => void;
   dataProvider: {
-    assetFetcher: {
-      fetchByCode: (
-        assetFamilyIdentifier: AssetFamilyIdentifier,
-        assetCodeCollection: AssetCode[],
-        context: Context
-      ) => Promise<ListAsset[]>;
-      search: (query: Query) => Promise<SearchResult<ListAsset>>;
-    };
     channelFetcher: {
       fetchAll: () => Promise<Channel[]>;
-    };
-    assetAttributeFetcher: {
-      fetchAll: (assetFamilyIdentifier: string) => Promise<NormalizedAttribute[]>;
     };
   };
 };
@@ -165,7 +153,6 @@ const AssetPicker = ({
 
   useFetchResult(createQuery)(
     isOpen,
-    dataProvider,
     assetFamilyIdentifier,
     filterCollection,
     searchValue,
@@ -173,7 +160,7 @@ const AssetPicker = ({
     context,
     setSearchResult
   );
-  const filterViews = useFilterViews(assetFamilyIdentifier, dataProvider);
+  const filterViews = useFilterViews(assetFamilyIdentifier);
   const canAddAsset = canAddAssetToCollection(addAssetsToCollection(excludedAssetCollection, selection.collection));
 
   return (
@@ -232,7 +219,6 @@ const AssetPicker = ({
               />
             </Grid>
             <Basket
-              dataProvider={dataProvider}
               selection={selection.collection}
               assetFamilyIdentifier={assetFamilyIdentifier}
               context={context}

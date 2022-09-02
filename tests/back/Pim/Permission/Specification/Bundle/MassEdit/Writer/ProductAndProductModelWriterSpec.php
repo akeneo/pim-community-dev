@@ -66,11 +66,11 @@ class ProductAndProductModelWriterSpec extends ObjectBehavior
 
         $items = [$product1, $productModel1, $product2, $productModel2];
 
-        $product1->getId()->willReturn('45');
-        $product2->getId()->willReturn(null);
-        $productModel1->getId()->willReturn('12');
+        $product1->isNew()->willReturn(false);
+        $product2->isNew()->willReturn(true);
+        $productModel1->isNew()->willReturn(false);
         $productModel1->getCode()->willReturn('product_model_1');
-        $productModel2->getId()->willReturn(null);
+        $productModel2->isNew()->willReturn(true);
         $productModel2->getCode()->willReturn('product_model_2');
 
         $stepExecution->incrementSummaryInfo('proposal')->shouldBeCalledTimes(0);
@@ -104,13 +104,13 @@ class ProductAndProductModelWriterSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('realTimeVersioning')->willReturn(true);
 
-        $product1->getId()->willReturn('45');
-        $product2->getId()->willReturn(null);
-        $product3->getId()->willReturn('42');
-        $product4->getId()->willReturn(null);
-        $productModel1->getId()->willReturn('1');
+        $product1->isNew()->willReturn(false);
+        $product2->isNew()->willReturn(true);
+        $product3->isNew()->willReturn(false);
+        $product4->isNew()->willReturn(true);
+        $productModel1->isNew()->willReturn(false);
         $productModel1->getCode()->willReturn('product_model_1');
-        $productModel2->getId()->willReturn(null);
+        $productModel2->isNew()->willReturn(true);
         $productModel2->getCode()->willReturn('product_model_2');
 
         $authorizationChecker->isGranted('OWN_RESOURCE', Argument::any())->willReturn(false);

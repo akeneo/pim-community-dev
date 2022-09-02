@@ -28,33 +28,16 @@ import {LegacyValue} from 'akeneopimenrichmentassetmanager/enrich/domain/model/p
 import {isValidErrorCollection, denormalizeErrorCollection} from 'akeneoassetmanager/platform/model/validation-error';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {pimTheme} from 'akeneo-design-system';
-import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 import {fetchChannels} from 'akeneoassetmanager/infrastructure/fetcher/channel';
-import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
-import attributeFetcher from 'akeneoassetmanager/infrastructure/fetcher/attribute';
-import {Query} from 'akeneoassetmanager/domain/fetcher/fetcher';
-import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
-import {Context} from 'akeneoassetmanager/domain/model/context';
+import {ConfigProvider} from 'akeneoassetmanager/application/hooks/useConfig';
+import {getConfig} from 'pimui/js/config-registry';
 
 const fetcherRegistry = require('pim/fetcher-registry');
 const Form = require('pim/form');
 const UserContext = require('pim/user-context');
 
 const dataProvider = {
-  assetFamilyFetcher,
   channelFetcher: {fetchAll: fetchChannels(fetcherRegistry.getFetcher('channel'))},
-  assetFetcher: {
-    fetchByCode: (assetFamilyIdentifier: AssetFamilyIdentifier, assetCodeCollection: AssetCode[], context: Context) => {
-      return assetFetcher.fetchByCodes(assetFamilyIdentifier, assetCodeCollection, context);
-    },
-    search: (query: Query) => {
-      return assetFetcher.search(query);
-    },
-  },
-  assetAttributeFetcher: {
-    fetchAll: attributeFetcher.fetchAllNormalized,
-  },
 };
 
 const updateValueMiddleware = (formView: AssetTabForm) => {
@@ -137,7 +120,15 @@ class AssetTabForm extends (Form as {new (config: any): any}) {
       <Provider store={this.store}>
         <DependenciesProvider>
           <ThemeProvider theme={pimTheme}>
-            <List dataProvider={dataProvider} />
+            <ConfigProvider
+              config={{
+                value: getConfig('akeneoassetmanager/application/configuration/value') ?? {},
+                sidebar: getConfig('akeneoassetmanager/application/configuration/sidebar') ?? {},
+                attribute: getConfig('akeneoassetmanager/application/configuration/attribute') ?? {},
+              }}
+            >
+              <List dataProvider={dataProvider} />
+            </ConfigProvider>
           </ThemeProvider>
         </DependenciesProvider>
       </Provider>,

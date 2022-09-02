@@ -29,3 +29,17 @@ services:
     arguments:
       - '@akeneo.pim.enrichment.product.query.count_product_models_with_removed_attribute_decorated'
 
+  Akeneo\Pim\TableAttribute\Infrastructure\Value\Query\GetExistingRecordCodes:
+    class: Akeneo\Pim\TableAttribute\Infrastructure\Value\Query\SqlGetExistingRecordCodes
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\GetColumnsLinkedToAReferenceEntity:
+    class: Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Query\SqlGetColumnsLinkedToAReferenceEntity
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Pim\TableAttribute\Domain\Value\Query\GetRecordLabel:
+    class: Akeneo\Pim\TableAttribute\Infrastructure\AntiCorruptionLayer\ACLGetRecordLabel
+    arguments:
+      - '@?akeneo_referenceentity.infrastructure.persistence.query.find_record_labels_by_codes'

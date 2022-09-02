@@ -42,6 +42,12 @@ final class UpdateAttributeEndToEnd extends AbstractAttributeApiTestCase
                 "code": "quantity",
                 "data_type": "text",
                 "is_required_for_completeness": true
+            },
+            {
+                "code": "manufacturing_time",
+                "data_type": "measurement",
+                "measurement_family_code": "duration",
+                "measurement_default_unit_code": "minute"
             }
         ]
     }
@@ -63,6 +69,8 @@ JSON;
             "de_DE" => "Zutat",
         ], $decoded['table_configuration'][0]['labels']);
         self::assertTrue($decoded['table_configuration'][1]['is_required_for_completeness']);
+
+        self::assertSame('minute', $decoded['table_configuration'][2]['measurement_default_unit_code']);
     }
 
     public function testItUpdatesATableConfigurationWhenChangingAColumnDatatype(): void

@@ -73,6 +73,7 @@ module.exports = async function(cucumber) {
     const attributeRequestContract = getRequestContract('Record/Product/Attribute/ok.json');
 
     await listenRequest(this.page, attributeRequestContract);
+
     return await loadEditRecord.apply(this, ['Record/Edit/details_ok.json']);
   });
 
@@ -84,6 +85,7 @@ module.exports = async function(cucumber) {
     const attributeRequestContract = getRequestContract('Record/Product/Attribute/empty.json');
 
     await listenRequest(this.page, attributeRequestContract);
+
     return await loadEditRecord.apply(this, ['Record/Edit/details_ok.json']);
   });
 
@@ -95,6 +97,7 @@ module.exports = async function(cucumber) {
     const attributeRequestContract = getRequestContract('Record/Product/Attribute/ok.json');
 
     await listenRequest(this.page, attributeRequestContract);
+
     return await loadEditRecord.apply(this, ['Record/Edit/details_ok.json']);
   });
 

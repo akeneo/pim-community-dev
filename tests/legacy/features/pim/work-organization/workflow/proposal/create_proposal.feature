@@ -1,9 +1,9 @@
+@javascript @proposal-feature-enabled @permission-feature-enabled
 Feature: Create a proposal
   In order create proposals
   As a redactor
   I need to be able to create proposals
 
-  @javascript
   Scenario: Create a new proposals and be notified
     Given the "clothing" catalog configuration
     And the following product:
@@ -20,7 +20,7 @@ Feature: Create a proposal
       my-jacket;Jacket;Description
       """
     And the following job "csv_clothing_product_proposal_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     And I am logged in as "Mary"
     When I am on the "csv_clothing_product_proposal_import" import job page
     And I launch the import job

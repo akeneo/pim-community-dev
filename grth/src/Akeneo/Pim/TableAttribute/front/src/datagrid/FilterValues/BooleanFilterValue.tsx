@@ -2,6 +2,7 @@ import React from 'react';
 import {FilteredValueRenderer, TableFilterValueRenderer} from './index';
 import {SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
+import {useAttributeContext} from '../../contexts';
 
 const BooleanFilterValue: TableFilterValueRenderer = ({value, onChange}) => {
   const translate = useTranslate();
@@ -29,12 +30,15 @@ const BooleanFilterValue: TableFilterValueRenderer = ({value, onChange}) => {
   );
 };
 
-const useValueRenderer: FilteredValueRenderer = () => {
+const useValueRenderer: FilteredValueRenderer = (value, columnCode) => {
   const translate = useTranslate();
+  const {attribute} = useAttributeContext();
+  const column = attribute?.table_configuration.find(({code}) => code === columnCode);
+  if (column?.data_type !== 'boolean') {
+    return null;
+  }
 
-  return value => {
-    return typeof value === 'undefined' ? '' : translate(`pim_common.${value ? 'yes' : 'no'}`);
-  };
+  return typeof value === 'undefined' ? '' : translate(`pim_common.${value ? 'yes' : 'no'}`);
 };
 
 export {useValueRenderer};

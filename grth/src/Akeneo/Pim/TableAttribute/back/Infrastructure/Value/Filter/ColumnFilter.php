@@ -8,7 +8,12 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ColumnDefinition;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\MeasurementColumn;
+use Akeneo\Pim\TableAttribute\Domain\Value\Measurement\MeasurementException;
+use Akeneo\Pim\TableAttribute\Infrastructure\AntiCorruptionLayer\AclMeasureConverter;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -16,14 +21,11 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
  */
 class ColumnFilter implements ColumnTypeFilter
 {
-    private string $supportedColumnType;
-    /** @var string[]  */
-    private array $supportedOperators;
-
-    public function __construct(string $supportedColumnType, array $supportedOperators)
-    {
-        $this->supportedColumnType = $supportedColumnType;
-        $this->supportedOperators = $supportedOperators;
+    public function __construct(
+        private string $supportedColumnType,
+        private array $supportedOperators,
+        private ?AclMeasureConverter $measureConverter = null
+    ) {
     }
 
     public function supportedColumnType(): string
@@ -48,6 +50,14 @@ class ColumnFilter implements ColumnTypeFilter
         $value
     ): void {
         $attributePath = \sprintf('table_values.%s', $attributeCode);
+
+        if ($column instanceof MeasurementColumn && !\in_array(
+            $operator,
+            [Operators::IS_EMPTY, Operators::IS_NOT_EMPTY],
+            true
+        )) {
+            $value = $this->convertMeasurementValue($attributeCode, $column, $value);
+        }
 
         switch ($operator) {
             case Operators::IS_NOT_EMPTY:
@@ -395,6 +405,66 @@ class ColumnFilter implements ColumnTypeFilter
             if (!is_string($aValue)) {
                 throw InvalidPropertyTypeException::arrayOfStringsExpected($attributeCode, static::class, $value);
             }
+        }
+    }
+
+    private function convertMeasurementValue(string $attributeCode, MeasurementColumn $column, $value): string
+    {
+        Assert::notNull($this->measureConverter);
+        if (!\is_array($value)) {
+            throw InvalidPropertyTypeException::arrayExpected($attributeCode, static::class, $value);
+        }
+        if (!\array_key_exists('amount', $value)) {
+            throw InvalidPropertyTypeException::arrayKeyExpected(
+                $attributeCode,
+                'amount',
+                static::class,
+                $value
+            );
+        }
+
+        if (!\array_key_exists('unit', $value)) {
+            throw InvalidPropertyTypeException::arrayKeyExpected(
+                $attributeCode,
+                'unit',
+                static::class,
+                $value
+            );
+        }
+
+        if (!\is_numeric($value['amount'])) {
+            throw InvalidPropertyTypeException::validArrayStructureExpected(
+                $attributeCode,
+                sprintf('key "amount" has to be a numeric, "%s" given', \json_encode($value['amount'])),
+                static::class,
+                $value
+            );
+        }
+
+        if (!\is_string($value['unit'])) {
+            throw InvalidPropertyTypeException::validArrayStructureExpected(
+                $attributeCode,
+                sprintf('key "unit" has to be a string, "%s" given', gettype($value['unit'])),
+                static::class,
+                $value
+            );
+        }
+
+        $measurementFamilyCode = $column->measurementFamilyCode();
+        try {
+            return $this->measureConverter->convertAmountInStandardUnit(
+                $measurementFamilyCode,
+                (string) $value['amount'],
+                $value['unit']
+            );
+        } catch (MeasurementException $e) {
+            throw InvalidPropertyException::validEntityCodeExpected(
+                $attributeCode,
+                $e->errorField(),
+                $e->getMessage(),
+                static::class,
+                $e->errorValue()
+            );
         }
     }
 }

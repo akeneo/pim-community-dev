@@ -91,7 +91,7 @@ SQL;
         $result = $statement->fetchAssociative();
         $statement->free();
 
-        return $result ? $result : [];
+        return $result ?: [];
     }
 
     /**

@@ -48,7 +48,6 @@ class ProductPublisherSpec extends ObjectBehavior
         $product->getAssociations()->willReturn([]);
         $product->getValues()->willReturn([]);
         $product->getFamily()->willReturn(null);
-        $product->getId()->willReturn(1);
         $product->isEnabled()->willReturn(true);
         $product->setEnabled(Argument::any())->willReturn($product);
 
@@ -159,12 +158,13 @@ class ProductPublisherSpec extends ObjectBehavior
         $this->publish($product)->shouldReturn($publishedProduct);
     }
 
-    public function it_throws_an_exception_when_publishing_a_product_already_published_by_concurrent_process(
+    public function it_throw_an_exception_when_publishing_a_product_already_published_by_concurrent_process(
         ProductInterface $product,
         PublishedProductInterface $publishedProduct,
         PublishedProductRepositoryInterface $publishedProductRepository,
         TranslatorInterface $translator
-    ) {
+    )
+    {
         $product->getIdentifier()->willReturn('sku-01');
         $publishedProductRepository->findOneByOriginalProduct($product)->willReturn($publishedProduct);
 

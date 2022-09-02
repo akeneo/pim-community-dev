@@ -1,14 +1,9 @@
-import Product, {
-  NormalizedProduct,
-  denormalizeProduct,
-  PRODUCT_TYPE,
-} from 'akeneoassetmanager/domain/model/product/product';
+import {Completeness, Product, PRODUCT_TYPE} from 'akeneoassetmanager/domain/model/product/product';
 import {validateKeys} from 'akeneoassetmanager/application/hydrator/hydrator';
 import LocaleReference, {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
-import {NormalizedCompleteness} from 'akeneoassetmanager/domain/model/product/completeness';
 import {accessProperty} from 'akeneoassetmanager/tools/property';
 
-const getProductCompleteness = (normalizedProduct: any): NormalizedCompleteness => {
+const getProductCompleteness = (normalizedProduct: any): Completeness => {
   const completenessRatio = accessProperty(normalizedProduct, `completeness`, undefined);
 
   return {
@@ -18,7 +13,7 @@ const getProductCompleteness = (normalizedProduct: any): NormalizedCompleteness 
   };
 };
 
-const getProductModelCompleteness = (normalizedProduct: any): NormalizedCompleteness => {
+const getProductModelCompleteness = (normalizedProduct: any): Completeness => {
   const completeChildren = accessProperty(normalizedProduct, `variant_product_completenesses.completeChildren`, 0);
   const totalChildren = accessProperty(normalizedProduct, 'variant_product_completenesses.totalChildren', 0);
 
@@ -29,7 +24,7 @@ const getProductModelCompleteness = (normalizedProduct: any): NormalizedComplete
   };
 };
 
-export const hydrator = (denormalize: (denormalizeProduct: NormalizedProduct) => Product) => (
+export const hydrator = (
   normalizedProduct: any,
   context: {
     locale: LocaleReference;
@@ -43,16 +38,14 @@ export const hydrator = (denormalize: (denormalizeProduct: NormalizedProduct) =>
       ? getProductCompleteness(normalizedProduct)
       : getProductModelCompleteness(normalizedProduct);
 
-  return denormalize({
+  return {
     id: String(normalizedProduct.id),
     identifier: normalizedProduct.identifier,
     type: normalizedProduct.document_type,
     labels: {[localeReferenceStringValue(context.locale)]: normalizedProduct.label},
     image: normalizedProduct.image,
     completeness,
-  });
+  };
 };
 
-const hydrateProduct = hydrator(denormalizeProduct);
-
-export default hydrateProduct;
+export default hydrator;

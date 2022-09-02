@@ -22,13 +22,15 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Structure\SpellCheckResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductIdsWithOutdatedAttributeSpellcheckQuery;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeSpellcheckRepository;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\TestCase;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 final class GetProductIdsWithOutdatedAttributeSpellcheckQueryIntegration extends TestCase
 {
@@ -48,12 +50,13 @@ final class GetProductIdsWithOutdatedAttributeSpellcheckQueryIntegration extends
 
         $expectedProductsIds = $this->givenProductsWithOutdatedAttributeSpellcheckEvaluation($spellcheckEvaluatedSince);
 
-        $productsIds = $this->get(GetProductIdsWithOutdatedAttributeSpellcheckQuery::class)
+        $productsUuids = $this->get(GetProductIdsWithOutdatedAttributeSpellcheckQuery::class)
             ->evaluatedSince($spellcheckEvaluatedSince, 2);
-        $productsIds = iterator_to_array($productsIds);
+        $productsUuids = iterator_to_array($productsUuids);
+        $productsUuids = array_map(fn (ProductUuidCollection $collection) => $collection->toArray(), $productsUuids);
 
-        $this->assertCount(2, $productsIds);
-        $this->assertEqualsCanonicalizing($expectedProductsIds, array_merge(...$productsIds));
+        $this->assertCount(2, $productsUuids);
+        $this->assertEqualsCanonicalizing($expectedProductsIds, array_merge(...$productsUuids));
     }
 
     private function givenAttributesWithRecentSpellcheck(\DateTimeImmutable $evaluatedSince): void
@@ -76,26 +79,26 @@ final class GetProductIdsWithOutdatedAttributeSpellcheckQueryIntegration extends
     {
         $this->createFamily('a_family', ['recent_spellcheck', 'too_old_spellcheck']);
         $this->createFamily('another_family', ['recent_spellcheck']);
-        $productsIds = [];
+        $productsUuids = [];
 
-        $productId = $this->createProduct('a_family');
-        $productsIds[] = new ProductId($productId);
-        $this->createProductEvaluations($productId, $productsEvaluatedAt);
+        $productUuid = $this->createProduct('a_family');
+        $productsUuids[] = ProductUuid::fromUuid($productUuid);
+        $this->createProductEvaluations($productUuid, $productsEvaluatedAt);
 
-        $productId = $this->createProduct('a_family');
-        $productsIds[] = new ProductId($productId);
-        $this->createProductEvaluations($productId, $productsEvaluatedAt->modify('-1 minute'));
+        $productUuid = $this->createProduct('a_family');
+        $productsUuids[] = ProductUuid::fromUuid($productUuid);
+        $this->createProductEvaluations($productUuid, $productsEvaluatedAt->modify('-1 minute'));
 
-        $productId = $this->createProduct('another_family');
-        $productsIds[] = new ProductId($productId);
-        $this->createProductEvaluations($productId, $productsEvaluatedAt);
+        $productUuid = $this->createProduct('another_family');
+        $productsUuids[] = ProductUuid::fromUuid($productUuid);
+        $this->createProductEvaluations($productUuid, $productsEvaluatedAt);
 
         // Product without any evaluations
-        $productId = $this->createProduct('a_family');
-        $this->deleteProductEvaluations($productId);
-        $productsIds[] = new ProductId($productId);
+        $productUuid = $this->createProduct('a_family');
+        $this->deleteProductEvaluations($productUuid);
+        $productsUuids[] = ProductUuid::fromUuid($productUuid);
 
-        return $productsIds;
+        return $productsUuids;
     }
 
     private function givenOneProductWithUpToDateAttributeSpellcheckEvaluation(\DateTimeImmutable $productsEvaluatedAt): void
@@ -110,7 +113,7 @@ final class GetProductIdsWithOutdatedAttributeSpellcheckQueryIntegration extends
         $this->createProductEvaluations($productId, $productsEvaluatedAt, true);
     }
 
-    private function createProduct(string $family): int
+    private function createProduct(string $family): UuidInterface
     {
         $product = $this->get('akeneo_integration_tests.catalog.product.builder')
             ->withIdentifier(strval(Uuid::uuid4()))
@@ -119,7 +122,7 @@ final class GetProductIdsWithOutdatedAttributeSpellcheckQueryIntegration extends
 
         $this->get('pim_catalog.saver.product')->save($product);
 
-        return $product->getId();
+        return $product->getUuid();
     }
 
     private function createAttribute(string $code): void
@@ -155,16 +158,16 @@ final class GetProductIdsWithOutdatedAttributeSpellcheckQueryIntegration extends
         ));
     }
 
-    private function createProductEvaluations(int $productId, \DateTimeImmutable $evaluatedAt, bool $pending = false): void
+    private function createProductEvaluations(UuidInterface $productUuid, \DateTimeImmutable $evaluatedAt, bool $pending = false): void
     {
         $spellingEvaluation = new Write\CriterionEvaluation(
             new CriterionCode(EvaluateAttributeSpelling::CRITERION_CODE),
-            new ProductId($productId),
+            ProductUuid::fromUuid($productUuid),
             CriterionEvaluationStatus::pending()
         );
         $otherEvaluation = new Write\CriterionEvaluation(
             new CriterionCode('spelling'),
-            new ProductId($productId),
+            ProductUuid::fromUuid($productUuid),
             CriterionEvaluationStatus::pending()
         );
 
@@ -180,34 +183,34 @@ final class GetProductIdsWithOutdatedAttributeSpellcheckQueryIntegration extends
             $repository->update($evaluations);
         }
 
-        $this->updateProductEvaluationsAt($productId, EvaluateAttributeSpelling::CRITERION_CODE, $evaluatedAt);
-        $this->updateProductEvaluationsAt($productId, 'spelling', $evaluatedAt->modify('-1 hour'));
+        $this->updateProductEvaluationsAt($productUuid, EvaluateAttributeSpelling::CRITERION_CODE, $evaluatedAt);
+        $this->updateProductEvaluationsAt($productUuid, 'spelling', $evaluatedAt->modify('-1 hour'));
     }
 
-    private function updateProductEvaluationsAt(int $productId, string $criterionCode, \DateTimeImmutable $evaluatedAt): void
+    private function updateProductEvaluationsAt(UuidInterface $productUuid, string $criterionCode, \DateTimeImmutable $evaluatedAt): void
     {
         $query = <<<SQL
-UPDATE pim_data_quality_insights_product_criteria_evaluation
-SET evaluated_at = :evaluated_at
-WHERE product_id = :product_id AND criterion_code = :criterionCode;
+UPDATE pim_data_quality_insights_product_criteria_evaluation e, pim_catalog_product p
+SET e.evaluated_at = :evaluated_at
+WHERE p.uuid = :product_uuid AND p.uuid = e.product_uuid AND e.criterion_code = :criterionCode;
 SQL;
 
         $this->get('database_connection')->executeQuery($query, [
             'evaluated_at' => $evaluatedAt->format(Clock::TIME_FORMAT),
-            'product_id' => $productId,
+            'product_uuid' => $productUuid->getBytes(),
             'criterionCode' => $criterionCode,
+        ], [
+            'product_uuid' => \PDO::PARAM_STR,
         ]);
     }
 
-    private function deleteProductEvaluations(int $productId): void
+    private function deleteProductEvaluations(UuidInterface $productUuid): void
     {
         $query = <<<SQL
 DELETE FROM pim_data_quality_insights_product_criteria_evaluation
-WHERE product_id = :productId
+WHERE product_uuid = :productUuid
 SQL;
 
-        $this->get('database_connection')->executeQuery($query, [
-            'productId' => $productId,
-        ]);
+        $this->get('database_connection')->executeQuery($query, ['productUuid' => $productUuid->getBytes()]);
     }
 }

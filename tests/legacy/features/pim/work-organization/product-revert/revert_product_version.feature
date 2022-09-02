@@ -1,4 +1,4 @@
-@javascript
+@javascript @restore-product-feature-enabled
 Feature: Revert a product to a previous version
   In order to manage versioning products
   As a product manager

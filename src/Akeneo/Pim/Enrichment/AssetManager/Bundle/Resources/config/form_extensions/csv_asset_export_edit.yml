@@ -55,6 +55,7 @@ extensions:
             title: pim_common.permissions
             entity: job_instance
             tabCode: pim-job-instance-permission
+        feature: permission
 
     pim-job-instance-csv-asset-export-edit-global:
         module: pim/job/common/edit/properties
@@ -97,16 +98,15 @@ extensions:
             label: pim_common.label
             readOnly: false
 
-    pim-job-instance-csv-asset-export-edit-properties-file-path:
-        module: pim/job/common/edit/field/file-path
-        parent: pim-job-instance-csv-asset-export-edit-global
+    pim-job-instance-csv-asset-export-edit-properties-storage:
+        module: pimimportexport/js/job/common/edit/storage-form
+        parent: pim-job-instance-csv-asset-export-edit-properties
         position: 120
-        targetZone: properties
+        targetZone: additional-properties
         config:
-            fieldCode: configuration.filePath
-            readOnly: false
-            label: pim_import_export.form.job_instance.tab.properties.file_path.title
-            tooltip: pim_import_export.form.job_instance.tab.properties.file_path.help
+            tabCode: pim-job-instance-properties
+            jobType: export
+            fileExtension: csv
 
     pim-job-instance-csv-asset-export-edit-properties-delimiter:
         module: pim/job/common/edit/field/text
@@ -139,7 +139,6 @@ extensions:
             required: true
             fieldName: configuration.asset_family_identifier
             label: akeneo_assetmanager.export.assets.filter.asset_family
-            choiceRoute: akeneo_asset_manager_asset_family_index_rest
 
     pim-job-instance-csv-asset-export-edit-properties-with-header:
         module: pim/job/common/edit/field/switch
@@ -162,6 +161,17 @@ extensions:
             readOnly: false
             label: pim_import_export.form.job_instance.tab.properties.with_prefix_suffix.title
             tooltip: pim_import_export.form.job_instance.tab.properties.with_prefix_suffix.help
+
+    pim-job-instance-csv-asset-export-edit-properties-with-media:
+        module: pim/job/common/edit/field/switch
+        parent: pim-job-instance-csv-asset-export-edit-global
+        position: 170
+        targetZone: properties
+        config:
+            fieldCode: configuration.with_media
+            readOnly: false
+            label: pim_import_export.form.job_instance.tab.properties.with_media.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.with_media.help
 
     pim-job-instance-csv-asset-export-edit-label:
         module: pim/job/common/edit/label

@@ -31,23 +31,21 @@ use Psr\Http\Message\UriInterface;
  */
 final class RejectInvalidRedirectionStreamLoader implements LoaderInterface
 {
-    private UrlChecker $urlChecker;
-
-    public function __construct(UrlChecker $urlChecker)
+    public function __construct(private UrlChecker $urlChecker)
     {
-        $this->urlChecker = $urlChecker;
     }
 
     public function find($path)
     {
         $client = new Client([
+            'timeout' => 2,
             'headers' => ['User-Agent' => null],
             'allow_redirects' => [
                 'max' => 10,
-                'strict'          => true,
-                'referer'         => true,
-                'protocols'       => $this->urlChecker->getAllowedProtocols(),
-                'on_redirect'     => array($this, 'checkRedirectIsValid'),
+                'strict' => true,
+                'referer' => true,
+                'protocols' => $this->urlChecker->getAllowedProtocols(),
+                'on_redirect' => fn (RequestInterface $request, ResponseInterface $response, UriInterface $uri): bool => $this->checkRedirectIsValid($request, $response, $uri),
                 'track_redirects' => true,
             ],
         ]);

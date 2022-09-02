@@ -169,4 +169,84 @@ final class GreaterOrEqualThanFilterIntegration extends AbstractFilterIntegratio
             []
         );
     }
+
+    /** @test */
+    public function it_filters_greater_than_or_equal_values_for_a_measurement_column(): void
+    {
+        $this->createNutritionAttributeWithMeasurementColumn();
+        $this->createProductWithValues('empty_product', [], 'family_with_table');
+        $this->createProductWithValues('product_with_every_cell_filled', [
+            'nutrition_with_measurement' => [
+                [
+                    'locale' => null,
+                    'scope' => null,
+                    'data' => [
+                        [
+                            'ingredient' => 'sugar',
+                            'energy_per_100g' => ['unit' => 'KILOCALORIE', 'amount' => '2.77'],
+                        ],
+                        [
+                            'ingredient' => 'egg',
+                            'energy_per_100g' => ['unit' => 'CALORIE', 'amount' => 5000],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+        $this->createProductWithValues('product_with_every_an_empty_measurement_cell', [
+            'nutrition_with_measurement' => [
+                [
+                    'locale' => null,
+                    'scope' => null,
+                    'data' => [
+                        [
+                            'ingredient' => 'sugar',
+                        ],
+                        [
+                            'ingredient' => 'egg',
+                            'energy_per_100g' => ['unit' => 'CALORIE', 'amount' => '2770'],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+
+        $this->assertFilter(
+            'nutrition_with_measurement',
+            ['column' => 'energy_per_100g', 'value' => ['unit' => 'CALORIE', 'amount' => 2000]],
+            ['product_with_every_cell_filled', 'product_with_every_an_empty_measurement_cell']
+        );
+        $this->assertFilter(
+            'nutrition_with_measurement',
+            ['column' => 'energy_per_100g', 'value' => ['unit' => 'KILOCALORIE', 'amount' => '2.77']],
+            ['product_with_every_cell_filled', 'product_with_every_an_empty_measurement_cell']
+        );
+        $this->assertFilter(
+            'nutrition_with_measurement',
+            ['column' => 'energy_per_100g', 'value' => ['unit' => 'JOULE', 'amount' => 50]],
+            ['product_with_every_cell_filled', 'product_with_every_an_empty_measurement_cell']
+        );
+        $this->assertFilter(
+            'nutrition_with_measurement',
+            ['column' => 'energy_per_100g', 'value' => ['unit' => 'KILOCALORIE', 'amount' => 3]],
+            ['product_with_every_cell_filled']
+        );
+        $this->assertFilter(
+            'nutrition_with_measurement',
+            ['column' => 'energy_per_100g', 'value' => ['unit' => 'KILOCALORIE', 'amount' => 6]],
+            []
+        );
+        $this->assertFilter(
+            'nutrition_with_measurement',
+            ['column' => 'energy_per_100g', 'value' => ['unit' => 'KILOCALORIE', 'amount' => 5], 'row' => 'egg'],
+            ['product_with_every_cell_filled']
+        );
+        $this->assertFilter(
+            'nutrition_with_measurement',
+            ['column' => 'energy_per_100g', 'value' => ['unit' => 'KILOCALORIE', 'amount' => 5], 'row' => 'sugar'],
+            []
+        );
+    }
 }

@@ -16,6 +16,7 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\Value\Factory\NonExistentValu
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonExistentValuesFilter;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
@@ -23,6 +24,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOption;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
+use Akeneo\Pim\TableAttribute\Infrastructure\Value\Query\GetExistingRecordCodes;
 
 /**
  * Filters table values:
@@ -35,13 +37,16 @@ class NonExistentTableValueFilter implements NonExistentValuesFilter
 {
     private TableConfigurationRepository $tableConfigurationRepository;
     private SelectOptionCollectionRepository $selectOptionCollectionRepository;
+    private GetExistingRecordCodes $getExistingRecordCodes;
 
     public function __construct(
         TableConfigurationRepository $tableConfigurationRepository,
-        SelectOptionCollectionRepository $selectOptionCollectionRepository
+        SelectOptionCollectionRepository $selectOptionCollectionRepository,
+        GetExistingRecordCodes $getExistingRecordCodes
     ) {
         $this->tableConfigurationRepository = $tableConfigurationRepository;
         $this->selectOptionCollectionRepository = $selectOptionCollectionRepository;
+        $this->getExistingRecordCodes = $getExistingRecordCodes;
     }
 
     public function filter(OnGoingFilteredRawValues $onGoingFilteredRawValues): OnGoingFilteredRawValues
@@ -85,6 +90,7 @@ class NonExistentTableValueFilter implements NonExistentValuesFilter
             foreach ($rawValuesPerLocale as $localeCode => $rawTableValue) {
                 $filteredRawTableValue = $this->filterNonExistingColumnIds($rawTableValue, $existingColumnIds);
                 $filteredRawTableValue = $this->filterNonExistingOption($filteredRawTableValue, $attributeCode, $tableConfiguration);
+                $filteredRawTableValue = $this->filterNonExistingRecords($filteredRawTableValue, $tableConfiguration);
 
                 $filteredRawValues[$channelCode][$localeCode] = $filteredRawTableValue;
             }
@@ -136,6 +142,62 @@ class NonExistentTableValueFilter implements NonExistentValuesFilter
                     unset($rawTableValue[$rowIndex][$columnId]);
                 } else {
                     $rawTableValue[$rowIndex][$columnId] = $option->code()->asString();
+                }
+            }
+
+            if (!array_key_exists($firstColumnId, $rawTableValue[$rowIndex])) {
+                unset($rawTableValue[$rowIndex]);
+            }
+        }
+
+        return array_values($rawTableValue);
+    }
+
+    private function filterNonExistingRecords(
+        array $rawTableValue,
+        TableConfiguration $tableConfiguration
+    ): array {
+        $firstColumnId = $tableConfiguration->getFirstColumnId()->asString();
+
+        $referenceEntityColumnObject = [];
+        foreach ($tableConfiguration->getReferenceEntityColumns() as $referenceEntityColumn) {
+            /** @var ReferenceEntityColumn $referenceEntityColumn */
+            $referenceEntityColumnObject[\strtolower($referenceEntityColumn->id()->asString())] = $referenceEntityColumn;
+        }
+
+        $recordCodes = [];
+        foreach ($rawTableValue as $row) {
+            foreach ($row as $columnId => $value) {
+                $foundReferenceEntityColumn = $referenceEntityColumnObject[\strtolower($columnId)] ?? null;
+                if (null === $foundReferenceEntityColumn) {
+                    continue;
+                }
+                $recordCodes[$foundReferenceEntityColumn->referenceEntityIdentifier()->asString()][] = $value;
+            }
+        }
+
+        $existingRecordCodes = [];
+        if (!empty($recordCodes)) {
+            $existingRecordCodes = $this->getExistingRecordCodes->fromReferenceEntityIdentifierAndRecordCodes($recordCodes);
+        }
+
+        foreach ($rawTableValue as $rowIndex => $row) {
+            foreach ($row as $columnId => $value) {
+                $foundReferenceEntityColumn = $referenceEntityColumnObject[\strtolower($columnId)] ?? null;
+                if (null === $foundReferenceEntityColumn) {
+                    continue;
+                }
+
+                $filteredRecordCodes = $existingRecordCodes[\strtolower($foundReferenceEntityColumn->referenceEntityIdentifier()->asString())] ?? [];
+                $valueIndex = array_search(
+                    strtolower($value),
+                    array_map('strtolower', $filteredRecordCodes)
+                );
+
+                if (is_integer($valueIndex) && $valueIndex >= 0) {
+                    $rawTableValue[$rowIndex][$columnId] = $filteredRecordCodes[$valueIndex];
+                } else {
+                    unset($rawTableValue[$rowIndex][$columnId]);
                 }
             }
 

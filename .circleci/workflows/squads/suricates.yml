@@ -1,0 +1,68 @@
+workflows:
+  version: 2
+
+  suricates_pull_request:
+    when:
+      not:
+        equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+    jobs:
+      - ready_to_build?:
+          type: approval
+          filters:
+            branches:
+              only:
+                - /SURI-.*/
+                - /OB2-.*/
+                - /OBS-.*/
+                - /SP-.*/
+      - checkout:
+          requires:
+            - ready_to_build?
+      - build_srnt_dev:
+          requires:
+            - checkout
+      - test_front_supplier_portal:
+          requires:
+            - build_srnt_dev
+      - test_back_supplier_portal:
+          requires:
+            - build_srnt_dev
+      - test_database:
+          requires:
+            - build_srnt_dev
+      - test_helm_generated_k8s_files:
+          requires:
+            - checkout
+      - deploy_pr_environment?:
+            name: "Deploy Supplier Portal PR environment?"
+            type: approval
+            filters:
+              branches:
+                only:
+                  - /SURI-.*/
+                  - /OB2-.*/
+                  - /OBS-.*/
+                  - /SP-.*/
+      - build_srnt_prod:
+            name: "Build srnt Prod for deploy PR"
+            requires:
+              - test_helm_generated_k8s_files
+              - "Deploy Supplier Portal PR environment?"
+      - deploy_pr_environment:
+            name: "Deploy Supplier Portal PR environment"
+            requires:
+                - "Build srnt Prod for deploy PR"
+      - delete_pr_environment?:
+            name: "Delete Supplier Portal PR environment?"
+            type: approval
+            requires:
+                - "Deploy Supplier Portal PR environment"
+      - delete_pr_environment:
+            name: "Delete Supplier Portal PR environment"
+            requires:
+            - "Delete Supplier Portal PR environment?"
+      - pull_request_success:
+          requires:
+            - test_front_supplier_portal
+            - test_back_supplier_portal
+            - test_database

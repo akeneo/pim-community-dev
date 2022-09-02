@@ -33,3 +33,9 @@ services:
         arguments:
             $bucket: '@Google\Cloud\Storage\Bucket'
             $prefix: 'catalog_storage'
+
+    akeneo_flysystem_adapter.googlecloudstorage.tailored_import_storage_adapter:
+        class: 'League\Flysystem\GoogleCloudStorage\GoogleCloudStorageAdapter'
+        arguments:
+            $bucket: '@Google\Cloud\Storage\Bucket'
+            $prefix: 'tailored_import'

@@ -8,13 +8,31 @@ default:
                 - Akeneo\Test\Pim\TableAttribute\Acceptance\Context\UpdateAttributeContext
                 - Akeneo\Test\Pim\TableAttribute\Acceptance\Context\ConstraintViolationsContext
                 - Akeneo\Test\Pim\TableAttribute\Acceptance\Context\ProductValidation
+                - Akeneo\Test\Pim\TableAttribute\Acceptance\Context\MeasurementContext
                 - test.channel.context
                 - test.locale.context
                 - test.user.context
                 - test.attribute.context
                 - test.catalog.product_validation.context
             filters:
-                tags: '@acceptance-back'
+                tags: '@acceptance-back&&~@only-ee'
+        acceptance_ee:
+            paths:
+                - '%paths.base%/features'
+            contexts:
+                - Akeneo\Test\Pim\TableAttribute\Acceptance\Context\CreateAttributeContext
+                - Akeneo\Test\Pim\TableAttribute\Acceptance\Context\UpdateAttributeContext
+                - Akeneo\Test\Pim\TableAttribute\Acceptance\Context\ConstraintViolationsContext
+                - Akeneo\Test\Pim\TableAttribute\Acceptance\Context\ProductValidation
+                - Akeneo\Test\Pim\TableAttribute\Acceptance\Context\MeasurementContext
+                - Akeneo\Test\Pim\TableAttribute\Acceptance\Context\ReferenceEntityContext
+                - test.channel.context
+                - test.locale.context
+                - test.user.context
+                - test.attribute.context
+                - test.catalog.product_validation.context
+            filters:
+                tags: '@acceptance-back&&~@only-ge'
     extensions:
         Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
         FriendsOfBehat\SymfonyExtension:

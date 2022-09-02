@@ -26,10 +26,10 @@ test('it validates that something is a groups source', () => {
   ).toEqual(true);
 
   expect(
-    // @ts-expect-error invalid operations
     isGroupsSource({
       ...source,
       operations: {
+        // @ts-expect-error invalid operations
         foo: 'bar',
       },
     })

@@ -21,7 +21,7 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.query.analytics.count_reference_entities'
             - '%reference_entity_limit%'
         tags:
-            - { name: pim_volume_monitoring.persistence.count_query }
+            - { name: pim_volume_monitoring.persistence.count_query, feature: 'reference_entity' }
 
     pimee.reference_entity.catalog_volume_monitoring.average_max_number_of_records_per_reference_entity:
         class: Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\CatalogVolumeMonitoring\AverageMaxNumberOfRecordsPerReferenceEntity
@@ -29,7 +29,7 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_number_of_records_per_reference_entity'
             - '%reference_entity_record_limit_per_reference_entity%'
         tags:
-            - { name: pim_volume_monitoring.persistence.average_max_query }
+            - { name: pim_volume_monitoring.persistence.average_max_query, feature: 'reference_entity' }
 
     pimee.reference_entity.catalog_volume_monitoring.average_max_number_of_attributes_per_reference_entity:
         class: Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\CatalogVolumeMonitoring\AverageMaxNumberOfAttributesPerReferenceEntity
@@ -37,7 +37,7 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_number_of_attributes_per_reference_entity'
             - '%reference_entity_maximum_attribute%'
         tags:
-            - { name: pim_volume_monitoring.persistence.average_max_query }
+            - { name: pim_volume_monitoring.persistence.average_max_query, feature: 'reference_entity' }
 
     akeneo.reference_entity.infrastructure.public_api.analytics.aggregated_average_max_number_of_values_per_record:
         class: Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\AggregatedAverageMaxNumberOfValuesPerRecord

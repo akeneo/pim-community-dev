@@ -21,13 +21,9 @@ use Webmozart\Assert\Assert;
  */
 class NumberData implements ValueDataInterface
 {
-    private string $number;
-
-    private function __construct(string $number)
+    private function __construct(private string $number)
     {
         Assert::stringNotEmpty($number, 'Number data should be a non empty string');
-
-        $this->number = $number;
     }
 
     /**

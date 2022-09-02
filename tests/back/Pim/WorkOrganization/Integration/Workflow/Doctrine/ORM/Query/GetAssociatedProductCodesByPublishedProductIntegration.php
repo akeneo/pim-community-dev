@@ -20,6 +20,11 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
  */
 class GetAssociatedProductCodesByPublishedProductIntegration extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+    }
+
     public function testQueryToGetAssociatedProductCodes(): void
     {
         $this->createPublishedProduct('productView', ['categories' => ['categoryA']]);
@@ -52,7 +57,7 @@ class GetAssociatedProductCodesByPublishedProductIntegration extends TestCase
      */
     protected function getConfiguration()
     {
-        return $this->catalog->useTechnicalCatalog();
+        return $this->catalog->useTechnicalCatalog(featureFlags: ['published_product', 'permission']);
     }
 
     /**

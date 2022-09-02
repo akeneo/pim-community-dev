@@ -21,11 +21,11 @@ use Webmozart\Assert\Assert;
  */
 class ItemCollection
 {
-    private array $items;
-
-    private function __construct(array $items)
+    /**
+     * @param Item[] $items
+     */
+    private function __construct(private array $items)
     {
-        $this->items = $items;
     }
 
     public static function createFromNormalized(array $normalizedItems): self
@@ -42,7 +42,6 @@ class ItemCollection
     public function normalize(): array
     {
         $normalizedItems = [];
-        /** @var Item $item */
         foreach ($this->items as $item) {
             $normalizedItems[] = $item->stringValue();
         }

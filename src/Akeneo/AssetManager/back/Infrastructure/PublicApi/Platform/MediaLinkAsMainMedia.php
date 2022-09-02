@@ -15,14 +15,9 @@ namespace Akeneo\AssetManager\Infrastructure\PublicApi\Platform;
 
 class MediaLinkAsMainMedia extends AttributeAsMainMedia
 {
-    private string $prefix;
-    private string $suffix;
-
-    public function __construct(bool $isScopable, bool $isLocalizable, string $prefix, string $suffix)
+    public function __construct(bool $isScopable, bool $isLocalizable, private string $prefix, private string $suffix)
     {
         parent::__construct($isScopable, $isLocalizable);
-        $this->prefix = $prefix;
-        $this->suffix = $suffix;
     }
 
     public function getPrefix(): string

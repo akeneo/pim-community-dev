@@ -19,11 +19,9 @@ use Webmozart\Assert\Assert;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class AssetFamilyIdentifier
+class AssetFamilyIdentifier implements \Stringable
 {
-    private string $identifier;
-
-    private function __construct(string $identifier)
+    private function __construct(private string $identifier)
     {
         Assert::stringNotEmpty($identifier, 'Asset family identifier cannot be empty');
         Assert::maxLength(
@@ -39,8 +37,6 @@ class AssetFamilyIdentifier
             '/^[a-zA-Z0-9_]+$/',
             'Asset family identifier may contain only letters, numbers and underscores. %s given',
         );
-
-        $this->identifier = $identifier;
     }
 
     public static function fromString(string $identifier): self

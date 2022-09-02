@@ -18,6 +18,7 @@ services:
             - '@pimee_workflow.remover.published_product'
             - '@pimee_workflow.remover.published_product'
             - '@pimee_workflow.repository.published_product_without_permission'
+            - '@feature_flags'
 
     pimee_workflow.manager.product_draft:
         class: '%pimee_workflow.manager.entity_with_values_draft.class%'

@@ -1,0 +1,340 @@
+orbs:
+    slack: circleci/slack@3.4.2
+    cypress: cypress-io/cypress@1
+
+executors:
+  cypress-with-chrome:
+    docker:
+      - image: 'cypress/browsers:node14.16.0-chrome90-ff88'
+    resource_class: large
+
+slack-fail-post-step: &slack-fail-post-step
+slack-post-step: &slack-post-step
+
+workflows:
+    nightly_srnt_release:
+        when:
+            and:
+                - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+                - equal: [ "nightly_srnt_release", << pipeline.schedule.name >> ]
+        jobs:
+            - checkout
+            - build_srnt_prod:
+                  <<: *slack-fail-post-step
+                  requires:
+                      - checkout
+            - build_srnt_dev:
+                  <<: *slack-fail-post-step
+                  requires:
+                      - checkout
+            - test_cronjobs_existence:
+                  <<: *slack-fail-post-step
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt"]
+                  requires:
+                      - build_srnt_prod
+            - test_deploy:
+                  <<: *slack-fail-post-step
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt"]
+                  requires:
+                      - test_cronjobs_existence
+            - test_deploy_last_release:
+                  <<: *slack-fail-post-step
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt"]
+                  requires:
+                      - test_cronjobs_existence
+            - test_upgrade_from_last_release:
+                  <<: *slack-fail-post-step
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt"]
+                  requires:
+                      - test_deploy_last_release
+            - test_front_code_style:
+                  <<: *slack-fail-post-step
+                  requires:
+                      - build_srnt_dev
+            - test_back_static_and_acceptance:
+                  <<: *slack-fail-post-step
+                  requires:
+                      - build_srnt_dev
+            - test_front_static_acceptance_and_integration:
+                  <<: *slack-fail-post-step
+                  requires:
+                      - build_srnt_dev
+            - test_back_phpunit:
+                  <<: *slack-fail-post-step
+                  requires:
+                      - build_srnt_dev
+            - test_back_integration_bounded_contexts:
+                  <<: *slack-fail-post-step
+                  requires:
+                      - build_srnt_dev
+            - test_back_performance:
+                  <<: *slack-fail-post-step
+                  requires:
+                      - build_srnt_dev
+            - test_onboarder_bundle:
+                  <<: *slack-fail-post-step
+                  requires:
+                      - build_srnt_dev
+            - test_front_supplier_portal:
+                  <<: *slack-fail-post-step
+                  requires:
+                      - build_srnt_dev
+            - test_back_supplier_portal:
+                  <<: *slack-fail-post-step
+                  requires:
+                      - build_srnt_dev
+            - test_back_behat_legacy:
+                  <<: *slack-fail-post-step
+                  requires:
+                      - build_srnt_dev
+            - test_back_data_migrations:
+                  <<: *slack-fail-post-step
+                  requires:
+                      - build_srnt_dev
+            - test_catalogs:
+                  <<: *slack-fail-post-step
+                  requires:
+                      - build_srnt_dev
+                  context:
+                      - octopus-slack
+            - release:
+                  <<: *slack-post-step
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt"]
+                  requires:
+                      - test_back_static_and_acceptance
+                      - test_front_static_acceptance_and_integration
+                      - test_back_phpunit
+                      - test_back_integration_bounded_contexts
+                      - test_onboarder_bundle
+                      - test_front_supplier_portal
+                      - test_back_supplier_portal
+                      - test_back_performance
+                      - test_back_behat_legacy
+                      - test_back_data_migrations
+                      - test_deploy
+                      - test_upgrade_from_last_release
+                      - test_catalogs
+
+    nightly_grth_release:
+        when:
+            and:
+                - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+                - equal: [ "nightly_grth_release", << pipeline.schedule.name >> ]
+        jobs:
+            - checkout
+            - build_grth:
+                  <<: *slack-fail-post-step
+                  requires:
+                      - checkout
+            - test_cronjobs_existence:
+                  <<: *slack-fail-post-step
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["grth"]
+                  requires:
+                      - build_grth
+            - test_deploy:
+                  <<: *slack-fail-post-step
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["grth"]
+                  requires:
+                      - test_cronjobs_existence
+            - test_deploy_last_release:
+                  <<: *slack-fail-post-step
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["grth"]
+                  requires:
+                      - test_cronjobs_existence
+            - test_upgrade_from_last_release:
+                  <<: *slack-fail-post-step
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["grth"]
+                  requires:
+                      - test_deploy_last_release
+            - release:
+                  <<: *slack-post-step
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["grth"]
+                  requires:
+                      - test_deploy
+                      - test_upgrade_from_last_release
+
+    nightly_tria_release:
+        when:
+            and:
+                - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+                - equal: [ "nightly_tria_release", << pipeline.schedule.name >> ]
+        jobs:
+            - checkout
+            - build_tria:
+                  <<: *slack-fail-post-step
+                  requires:
+                      - checkout
+            - test_cronjobs_existence:
+                  <<: *slack-fail-post-step
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["tria"]
+                  requires:
+                      - build_tria
+            - test_deploy:
+                  <<: *slack-fail-post-step
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["tria"]
+                  requires:
+                      - test_cronjobs_existence
+            - release:
+                  <<: *slack-post-step
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["tria"]
+                  requires:
+                      - test_deploy
+
+    on_demand_release:
+        when:
+            not:
+                equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+        jobs:
+            - ready_to_build?:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Release ?"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                  type: approval
+                  filters:
+                      branches:
+                          only:
+                              - master
+            - checkout:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Checkout"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Release ?"
+            - build_srnt_dev:
+                  name: "[srnt] Build dev"
+                  requires:
+                      - "[srnt] Checkout"
+            - build_srnt_prod:
+                  name: "[srnt] Build prod"
+                  requires:
+                      - "[srnt] Checkout"
+            - build_grth:
+                  name: "[grth] Build prod"
+                  requires:
+                      - "[grth] Checkout"
+            - build_tria:
+                  name: "[tria] Build prod"
+                  requires:
+                      - "[tria] Checkout"
+            - test_front_code_style:
+                  requires:
+                      - "[srnt] Build dev"
+            - test_back_static_and_acceptance:
+                  requires:
+                      - "[srnt] Build dev"
+            - test_front_static_acceptance_and_integration:
+                  requires:
+                      - "[srnt] Build dev"
+            - test_back_phpunit:
+                  requires:
+                      - "[srnt] Build dev"
+            - test_back_integration_bounded_contexts:
+                  requires:
+                      - "[srnt] Build dev"
+            - test_back_performance:
+                  requires:
+                      - "[srnt] Build dev"
+            - test_onboarder_bundle:
+                  requires:
+                      - "[srnt] Build dev"
+            - test_front_supplier_portal:
+                  requires:
+                      - "[srnt] Build dev"
+            - test_back_supplier_portal:
+                  requires:
+                      - "[srnt] Build dev"
+            - test_back_behat_legacy:
+                  requires:
+                      - "[srnt] Build dev"
+            - test_back_data_migrations:
+                  requires:
+                      - "[srnt] Build dev"
+            - test_cronjobs_existence:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Build prod"
+            - test_deploy:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Test deploy"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
+            - test_deploy_last_release:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Test deploy last release"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
+            - test_upgrade_from_last_release:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Test upgrade from last release"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Test deploy last release"
+            - release:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Release"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Test deploy"
+                      - "[<< matrix.PRODUCT_TYPE >>] Test upgrade from last release"
+                      - test_back_static_and_acceptance
+                      - test_front_static_acceptance_and_integration
+                      - test_back_phpunit
+                      - test_back_integration_bounded_contexts
+                      - test_onboarder_bundle
+                      - test_back_supplier_portal
+                      - test_front_supplier_portal
+                      - test_back_performance
+                      - test_back_behat_legacy
+                      - test_back_data_migrations
+            - release:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Release"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["grth"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Test deploy"
+                      - "[<< matrix.PRODUCT_TYPE >>] Test upgrade from last release"
+            - release:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Release"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["tria"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Test deploy"

@@ -28,6 +28,7 @@ class AkeneoPimTableAttributeExtension extends Extension
     public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('anti_corruption_layer.yml');
         $loader->load('array_converters.yml');
         $loader->load('attribute_types.yml');
         $loader->load('controllers.yml');
@@ -46,6 +47,7 @@ class AkeneoPimTableAttributeExtension extends Extension
         $loader->load('value_filters.yml');
 
         $this->configureEnterpriseProductEnrichment($container);
+        $this->configureReferenceEntityBundle($container);
     }
 
     private function configureEnterpriseProductEnrichment(ContainerBuilder $container): void
@@ -60,5 +62,21 @@ class AkeneoPimTableAttributeExtension extends Extension
             new FileLocator(__DIR__ . '/../Resources/config/enterprise_product_enrichment')
         );
         $loader->load('jobs.yml');
+    }
+
+    private function configureReferenceEntityBundle(ContainerBuilder $container): void
+    {
+        $bundles = $container->getParameter('kernel.bundles');
+        if (!isset($bundles['AkeneoReferenceEntityBundle'])) {
+            return;
+        }
+
+        $allowedColumnDatatypes = $container->getParameter('pim_catalog_table_allowed_column_datatypes');
+        $allowedColumnDatatypes[] = 'reference_entity';
+        $container->setParameter('pim_catalog_table_allowed_column_datatypes', $allowedColumnDatatypes);
+
+        $allowedFirstColumnDataTypes = $container->getParameter('pim_catalog_table_allowed_first_column_datatypes');
+        $allowedFirstColumnDataTypes[] = 'reference_entity';
+        $container->setParameter('pim_catalog_table_allowed_first_column_datatypes', $allowedFirstColumnDataTypes);
     }
 }

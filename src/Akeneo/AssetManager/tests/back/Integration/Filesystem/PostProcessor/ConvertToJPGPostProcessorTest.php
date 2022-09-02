@@ -28,7 +28,7 @@ class ConvertToJPGPostProcessorTest extends KernelTestCase
     /** @test */
     public function it_convert_a_png_image_to_jpg_image()
     {
-        $binary = new Binary(file_get_contents(static::FILENAME), 'image/png', 'png');
+        $binary = new Binary(file_get_contents(self::FILENAME), 'image/png', 'png');
 
         $jpgBinary = $this->getConvertToJPGPostProcessor()->process($binary, ['quality' => 70]);
         $this->assertEquals('image/jpeg', $jpgBinary->getMimeType());
@@ -39,7 +39,7 @@ class ConvertToJPGPostProcessorTest extends KernelTestCase
     /** @test */
     public function it_optimizes_when_format_is_already_jpg()
     {
-        $binary = new Binary(file_get_contents(static::FILENAME), 'image/png', 'png');
+        $binary = new Binary(file_get_contents(self::FILENAME), 'image/png', 'png');
         $jpgBinary = $this->getConvertToJPGPostProcessor()->process($binary, ['quality' => 100]);
         $newJpgBinary = $this->getConvertToJPGPostProcessor()->process($jpgBinary, ['quality' => 50]);
 
@@ -55,6 +55,6 @@ class ConvertToJPGPostProcessorTest extends KernelTestCase
 
     private function getConvertToJPGPostProcessor(): ConvertToJPGPostProcessor
     {
-        return self::$container->get(ConvertToJPGPostProcessor::class);
+        return self::getContainer()->get(ConvertToJPGPostProcessor::class);
     }
 }

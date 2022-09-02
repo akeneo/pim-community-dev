@@ -40,9 +40,8 @@ class ProductPublisher implements PublisherInterface
         protected VersionManager $versionManager,
         protected NormalizerInterface $normalizer,
         protected ObjectUpdaterInterface $productUpdater,
-        // PULL-UP: remove nullable
-        protected ?PublishedProductRepositoryInterface $publishedProductRepository = null,
-        private ?TranslatorInterface $translator = null
+        protected PublishedProductRepositoryInterface $publishedProductRepository,
+        private TranslatorInterface $translator
     ) {
     }
 
@@ -65,10 +64,7 @@ class ProductPublisher implements PublisherInterface
         $familyCode = null !== $object->getFamily() ? $object->getFamily()->getCode() : null;
 
         //PIM-10285: this prevents from trying to publish a product already published by a concurrent process
-        // PULL-UP: remove "null !== $this->publishedProductRepository && null !== $this->translator" case
-        if (null !== $this->publishedProductRepository
-            && null !== $this->translator
-            && null !== $this->publishedProductRepository->findOneByOriginalProduct($object)) {
+        if (null !== $this->publishedProductRepository->findOneByOriginalProduct($object)) {
             throw new \LogicException(
                 $this->translator->trans(
                     'pimee_enrich.mass_edit.product.operation.publish.already_published_product',

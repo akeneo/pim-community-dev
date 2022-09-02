@@ -358,7 +358,7 @@ class CompletenessPerAttributeGroupIntegration extends TeamworkAssistantTestCase
         $productIdentifier,
         array $expectedAttributeGroupCompleteness
     ) {
-        $productId = $this->get('pim_catalog.repository.product')->findOneByIdentifier($productIdentifier)->getId();
+        $productUuid = $this->get('pim_catalog.repository.product')->findOneByIdentifier($productIdentifier)->getUuid();
 
         foreach ($expectedAttributeGroupCompleteness as $group => $expectedCompleteness) {
             $attributeGroupId = $this->get('pim_catalog.repository.attribute_group')
@@ -372,16 +372,16 @@ FROM `pimee_teamwork_assistant_project` AS `p`
 INNER JOIN `pimee_teamwork_assistant_project_product` AS `pp`
 	ON `pp`.`project_id` = `p`.`id`
 INNER JOIN `pimee_teamwork_assistant_completeness_per_attribute_group` AS `cag`
-	ON `pp`.`product_id` = `cag`.`product_id` AND `p`.`channel_id` = `cag`.`channel_id` AND `p`.`locale_id` = `cag`.`locale_id`
+	ON `pp`.`product_uuid` = `cag`.`product_uuid` AND `p`.`channel_id` = `cag`.`channel_id` AND `p`.`locale_id` = `cag`.`locale_id`
 WHERE `p`.`id` = :project_id
 AND `cag`.`attribute_group_id` = :attribute_group_id
-AND `cag`.`product_id` = :product_id
+AND `cag`.`product_uuid` = :product_uuid
 SQL
                 ,
                 [
                     'attribute_group_id' => $attributeGroupId,
                     'project_id'         => $project->getId(),
-                    'product_id'         => $productId,
+                    'product_uuid'         => $productUuid->getBytes(),
                 ]
             );
 
@@ -413,7 +413,7 @@ FROM `pimee_teamwork_assistant_project` AS `p`
 INNER JOIN `pimee_teamwork_assistant_project_product` AS `pp`
 	ON `pp`.`project_id` = `p`.`id`
 INNER JOIN `pimee_teamwork_assistant_completeness_per_attribute_group` AS `cag`
-	ON `pp`.`product_id` = `cag`.`product_id` AND `p`.`channel_id` = `cag`.`channel_id` AND `p`.`locale_id` = `cag`.`locale_id`
+	ON `pp`.`product_uuid` = `cag`.`product_uuid` AND `p`.`channel_id` = `cag`.`channel_id` AND `p`.`locale_id` = `cag`.`locale_id`
 WHERE `p`.`id` = :project_id
 SQL
             ,
@@ -448,7 +448,7 @@ FROM `pimee_teamwork_assistant_project` AS `p`
 INNER JOIN `pimee_teamwork_assistant_project_product` AS `pp`
 	ON `pp`.`project_id` = `p`.`id`
 INNER JOIN `pimee_teamwork_assistant_completeness_per_attribute_group` AS `cag`
-	ON `pp`.`product_id` = `cag`.`product_id` AND `p`.`channel_id` = `cag`.`channel_id` AND `p`.`locale_id` = `cag`.`locale_id`
+	ON `pp`.`product_uuid` = `cag`.`product_uuid` AND `p`.`channel_id` = `cag`.`channel_id` AND `p`.`locale_id` = `cag`.`locale_id`
 WHERE `p`.`id` = :project_id
 AND calculated_at > :calculated_at
 SQL

@@ -17,6 +17,9 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Structure\AttributeOptionSpellcheck;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Structure\SpellcheckResultByLocaleCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\AttributeOptionSpellcheckRepositoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeOptionCode;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Doctrine\DBAL\Connection;
 
 class AttributeOptionSpellcheckRepository implements AttributeOptionSpellcheckRepositoryInterface
@@ -32,7 +35,7 @@ class AttributeOptionSpellcheckRepository implements AttributeOptionSpellcheckRe
     public function save(AttributeOptionSpellcheck $attributeOptionSpellcheck): void
     {
         $query = <<<SQL
-INSERT INTO pimee_dqi_attribute_option_spellcheck (attribute_code, attribute_option_code, evaluated_at, to_improve, result) 
+INSERT INTO pimee_dqi_attribute_option_spellcheck (attribute_code, attribute_option_code, evaluated_at, to_improve, result)
 VALUES (:attributeCode, :attributeOptionCode, :evaluatedAt, :toImprove, :result)
 ON DUPLICATE KEY UPDATE evaluated_at = :evaluatedAt, to_improve = :toImprove, result = :result;
 SQL;
@@ -62,6 +65,23 @@ LEFT JOIN pim_catalog_attribute AS attribute ON attribute.id = attribute_option.
 WHERE attribute_option.id IS NULL OR attribute.id IS NULL
 SQL;
         $this->dbConnection->executeQuery($query);
+    }
+
+    public function deleteUnknownAttributeOption(AttributeOptionInterface $attributeOption): void
+    {
+        $query = <<<SQL
+DELETE spellcheck
+FROM pimee_dqi_attribute_option_spellcheck AS spellcheck
+LEFT JOIN pim_catalog_attribute_option AS attribute_option ON attribute_option.code = spellcheck.attribute_option_code
+LEFT JOIN pim_catalog_attribute AS attribute ON attribute.id = attribute_option.attribute_id
+WHERE spellcheck.attribute_code = :attributeCode
+AND spellcheck.attribute_option_code = :attributeOptionCode
+AND attribute_option.id IS NULL OR attribute.id IS NULL
+SQL;
+        $this->dbConnection->executeQuery($query, [
+            'attributeCode' => $attributeOption->getAttribute()->getCode(),
+            'attributeOptionCode' => $attributeOption->getCode()
+        ]);
     }
 
     private function formatSpellcheckResult(SpellcheckResultByLocaleCollection $result): string

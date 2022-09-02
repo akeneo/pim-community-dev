@@ -1,5 +1,4 @@
 import React from 'react';
-import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {
   AttributeContextProvider,
   AttributeOptionsContextProvider,
@@ -7,9 +6,8 @@ import {
 } from 'akeneopimstructure/js/attribute-option/contexts';
 import AttributeOptions from 'akeneopimstructure/js/attribute-option/components/AttributeOptions';
 import OverridePimStyle from 'akeneopimstructure/js/attribute-option/components/OverridePimStyles';
-import {ThemeProvider} from 'styled-components';
-import {pimTheme} from 'akeneo-design-system';
 import {fetchSpellcheckEvaluation} from '@akeneo-pim-ee/data-quality-insights';
+import {useFeatureFlags} from '@akeneo-pim-community/shared';
 
 interface IndexProps {
   attributeId: number;
@@ -18,23 +16,22 @@ interface IndexProps {
 }
 
 const AttributeOptionsApp = ({attributeId, attributeCode, autoSortOptions}: IndexProps) => {
+  const featureFlags = useFeatureFlags();
+  const attributeOptionsQualityFetcher = featureFlags.isEnabled('data_quality_insights_all_criteria')
+    ? async () => {
+        return await fetchSpellcheckEvaluation(attributeCode);
+      }
+    : undefined;
+
   return (
-    <DependenciesProvider>
-      <ThemeProvider theme={pimTheme}>
-        <AttributeContextProvider attributeId={attributeId} autoSortOptions={autoSortOptions}>
-          <LocalesContextProvider>
-            <AttributeOptionsContextProvider
-              attributeOptionsQualityFetcher={async () => {
-                return await fetchSpellcheckEvaluation(attributeCode);
-              }}
-            >
-              <OverridePimStyle />
-              <AttributeOptions />
-            </AttributeOptionsContextProvider>
-          </LocalesContextProvider>
-        </AttributeContextProvider>
-      </ThemeProvider>
-    </DependenciesProvider>
+    <AttributeContextProvider attributeId={attributeId} autoSortOptions={autoSortOptions}>
+      <LocalesContextProvider>
+        <AttributeOptionsContextProvider attributeOptionsQualityFetcher={attributeOptionsQualityFetcher}>
+          <OverridePimStyle />
+          <AttributeOptions />
+        </AttributeOptionsContextProvider>
+      </LocalesContextProvider>
+    </AttributeContextProvider>
   );
 };
 

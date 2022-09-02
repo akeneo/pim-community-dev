@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -72,10 +73,10 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
 
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
-        $product->getId()->willReturn(10);
         $product->isAttributeEditable($attribute)->willReturn(true);
-        $product->getId()->willReturn(42);
-        $productRepository->hasAttributeInFamily(42, 'categories')->willReturn(true);
+        $product->getUuid()->willReturn(Uuid::fromString('57700274-9b48-4857-b17d-a7da106cd150'));
+        $productRepository->hasAttributeInFamily(Uuid::fromString('57700274-9b48-4857-b17d-a7da106cd150'), 'categories')
+            ->willReturn(true);
 
         $productUpdater->update($product, ['values' => $values])->shouldBeCalled();
 
@@ -120,11 +121,10 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
 
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
-        $product->getId()->willReturn(10);
 
         $product->isAttributeEditable($attribute)->willReturn(true);
-        $product->getId()->willReturn(42);
-        $productRepository->hasAttributeInFamily(42, 'categories')->willReturn(true);
+        $product->getUuid()->willReturn(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'));
+        $productRepository->hasAttributeInFamily(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'), 'categories')->willReturn(true);
         $productUpdater->update($product, ['values' => $values])->shouldBeCalled();
 
         $this->process($product);

@@ -17,6 +17,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\MeasurementColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
@@ -103,6 +104,22 @@ final class TableValues implements ArrayConverterInterface
                     $rowValues[$columnCode] = true;
                 } elseif (\trim((string) $value) === '0') {
                     $rowValues[$columnCode] = false;
+                }
+            } elseif ($column instanceof MeasurementColumn) {
+                $valueDoesMatch = \preg_match('/^(?P<amount>([^ ]+))[ ]+(?P<unit>[^ ]*)$/', \trim($value), $matches);
+
+                if (1 !== $valueDoesMatch) {
+                    throw new DataArrayConversionException(\sprintf('Invalid value format for the measurement column: "%s"', $value));
+                }
+
+                $amount = $matches['amount'] ?? null;
+                $unit = $matches['unit'] ?? null;
+
+                if (null !== $unit && \is_numeric($amount)) {
+                    $rowValues[$columnCode] = [
+                        'amount' => (string) $amount,
+                        'unit' => (string) $unit,
+                    ];
                 }
             } elseif (null === $column) {
                 $unknownColumns[] = $columnCode;

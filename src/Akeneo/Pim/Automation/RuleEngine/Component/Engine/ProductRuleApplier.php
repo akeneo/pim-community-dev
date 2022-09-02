@@ -14,6 +14,7 @@ namespace Akeneo\Pim\Automation\RuleEngine\Component\Engine;
 use Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier\ProductsSaver;
 use Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier\ProductsUpdater;
 use Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier\ProductsValidator;
+use Akeneo\Pim\Automation\RuleEngine\Component\Event\SubjectsWereSkippedWithNoUpdate;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Engine\ApplierInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\SavedSubjectsEvent;
@@ -89,9 +90,21 @@ class ProductRuleApplier implements ApplierInterface
     {
         $updatedProducts = $this->productsUpdater->update($rule, $products);
         $validProducts = $this->productsValidator->validate($rule, $updatedProducts);
-        $this->eventDispatcher->dispatch(new SavedSubjectsEvent($rule, $validProducts), RuleEvents::PRE_SAVE_SUBJECTS);
-        $this->productsSaver->save($rule, $validProducts);
-        $this->eventDispatcher->dispatch(new SavedSubjectsEvent($rule, $validProducts), RuleEvents::POST_SAVE_SUBJECTS);
+        $productsToUpdate = [];
+        $skippedProducts = [];
+        foreach ($validProducts as $product) {
+            if ($product->isDirty()) {
+                $productsToUpdate[] = $product;
+            } else {
+                $skippedProducts[] = $product;
+            }
+        }
+        if (\count($skippedProducts) > 0) {
+            $this->eventDispatcher->dispatch(new SubjectsWereSkippedWithNoUpdate($skippedProducts));
+        }
+        $this->eventDispatcher->dispatch(new SavedSubjectsEvent($rule, $productsToUpdate), RuleEvents::PRE_SAVE_SUBJECTS);
+        $this->productsSaver->save($rule, $productsToUpdate);
+        $this->eventDispatcher->dispatch(new SavedSubjectsEvent($rule, $productsToUpdate), RuleEvents::POST_SAVE_SUBJECTS);
         $this->clearCache();
     }
 }

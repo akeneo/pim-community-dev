@@ -2,6 +2,7 @@ import React from 'react';
 import {NumberInput} from 'akeneo-design-system';
 import {FilteredValueRenderer, TableFilterValueRenderer} from './index';
 import {useTranslate} from '@akeneo-pim-community/shared';
+import {useAttributeContext} from '../../contexts';
 
 const NumberFilterValue: TableFilterValueRenderer = ({value, onChange}) => {
   const translate = useTranslate();
@@ -15,10 +16,14 @@ const NumberFilterValue: TableFilterValueRenderer = ({value, onChange}) => {
   );
 };
 
-const useValueRenderer: FilteredValueRenderer = () => {
-  return value => {
-    return `${value}`;
-  };
+const useValueRenderer: FilteredValueRenderer = (value, columnCode) => {
+  const {attribute} = useAttributeContext();
+  const column = attribute?.table_configuration.find(({code}) => code === columnCode);
+  if (column?.data_type !== 'number') {
+    return null;
+  }
+
+  return `${value}`;
 };
 
 export {useValueRenderer};

@@ -9,3 +9,4 @@ extensions:
             title: pim_common.permissions
             tabCode: pim-attribute-group-permission
             entity: attribute_group
+        feature: permission

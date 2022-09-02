@@ -6,3 +6,7 @@ oneup_flysystem:
             memory: ~
         archivist_adapter:
             memory: ~
+        tailored_import_storage_adapter:
+            memory: ~
+        local_storage_adapter:
+            memory: ~

@@ -34,17 +34,14 @@ class MediaType
         self::OTHER
     ];
 
-    private string $mediaType;
-
-    private function __construct(string $mediaType)
+    private function __construct(private string $mediaType)
     {
         Assert::true(in_array($mediaType, self::MEDIA_TYPES));
-        $this->mediaType = $mediaType;
     }
 
     public static function fromString(string $mediaType): self
     {
-        Assert::notEmpty($mediaType, 'The media type cannot be an empty string');
+        Assert::stringNotEmpty($mediaType, 'The media type cannot be an empty string');
         Assert::oneOf($mediaType, self::MEDIA_TYPES, sprintf('Expected media types are "%s", "%s" given', implode(', ', self::MEDIA_TYPES), $mediaType));
 
         return new self($mediaType);

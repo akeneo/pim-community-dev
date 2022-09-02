@@ -15,11 +15,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class RefreshAssetsSubscriber implements EventSubscriberInterface
 {
-    private CommandLauncher $commandLauncher;
-
-    public function __construct(CommandLauncher $commandLauncher)
+    public function __construct(private CommandLauncher $commandLauncher)
     {
-        $this->commandLauncher = $commandLauncher;
     }
 
     /**

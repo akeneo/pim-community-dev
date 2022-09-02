@@ -20,11 +20,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class InitFreeTrialDbSchemaSubscriber implements EventSubscriberInterface
 {
-    private Connection $dbalConnection;
-
-    public function __construct(Connection $dbalConnection)
+    public function __construct(private Connection $dbalConnection)
     {
-        $this->dbalConnection = $dbalConnection;
     }
 
     public static function getSubscribedEvents()
@@ -37,7 +34,7 @@ class InitFreeTrialDbSchemaSubscriber implements EventSubscriberInterface
     public function initDbSchema(InstallerEvent $event): void
     {
         $query = <<<'SQL'
-CREATE TABLE akeneo_free_trial_invited_user (
+CREATE TABLE IF NOT EXISTS akeneo_free_trial_invited_user (
     email VARCHAR(255) NOT NULL PRIMARY KEY,
     status VARCHAR(15) NOT NULL,
     created_at DATETIME NOT NULL

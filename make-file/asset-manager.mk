@@ -63,6 +63,13 @@ asset-manager-lint-back: #Doc: launch PHP linter for the asset-manager
 	$(PHP_RUN) vendor/bin/phpstan analyse --configuration src/Akeneo/AssetManager/tests/back/phpstan.neon.dist
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php src/Akeneo/AssetManager/back
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php src/Akeneo/Pim/Enrichment/AssetManager/
+	${PHP_RUN} vendor/bin/rector process --dry-run --config=src/Akeneo/AssetManager/tests/back/rector.php
+
+.PHONY: asset-manager-lint-fix-back
+asset-manager-lint-fix-back: #Doc: launch PHP lint fixer for the asset-manager
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --config=.php_cs.php src/Akeneo/AssetManager/back
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --config=.php_cs.php src/Akeneo/Pim/Enrichment/AssetManager/
+	${PHP_RUN} vendor/bin/rector process --config=src/Akeneo/AssetManager/tests/back/rector.php
 
 .PHONY: asset-manager-static-back
 asset-manager-static-back: #Doc: launch PHP static analyzer for the asset manager
@@ -72,7 +79,7 @@ asset-manager-static-back: #Doc: launch PHP static analyzer for the asset manage
 .PHONY: asset-manager-unit-back
 asset-manager-unit-back: var/tests/phpspec #Doc: launch PHP unit test for the asset-manager
 ifeq ($(CI),true)
-	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run -c src/Akeneo/AssetManager/tests/back/phpspec.yml.dist --format=junit > var/tests/phpspec/asset-manager.xml
+	$(DOCKER_COMPOSE) run -T --rm php php vendor/bin/phpspec run -c src/Akeneo/AssetManager/tests/back/phpspec.yml.dist --format=junit > var/tests/phpspec/asset-manager.xml
 else
 	$(PHP_RUN) vendor/bin/phpspec run -c src/Akeneo/AssetManager/tests/back/phpspec.yml.dist $(O)
 endif

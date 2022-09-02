@@ -16,7 +16,8 @@ namespace Akeneo\FreeTrial\Infrastructure\Install\Installer;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductScores;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\MarkCriteriaToEvaluateInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsToEvaluateQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEntityIdsToEvaluateQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\BulkUpdateProductQualityScoresInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\UpdateProductsIndex;
 
 final class ProductEvaluationInstaller implements FixtureInstaller
@@ -31,21 +32,21 @@ final class ProductEvaluationInstaller implements FixtureInstaller
 
     private ConsolidateProductScores $consolidateProductScores;
 
-    private UpdateProductsIndex $updateProductsIndex;
+    private BulkUpdateProductQualityScoresInterface $bulkUpdateProductQualityScores;
 
-    private GetProductIdsToEvaluateQueryInterface $getProductIdsToEvaluateQuery;
+    private GetEntityIdsToEvaluateQueryInterface $getProductIdsToEvaluateQuery;
 
     public function __construct(
         MarkCriteriaToEvaluateInterface $markProductCriteriaToEvaluate,
         EvaluatePendingCriteria $evaluatePendingProductCriteria,
         ConsolidateProductScores $consolidateProductScores,
-        UpdateProductsIndex $updateProductsIndex,
-        GetProductIdsToEvaluateQueryInterface $getProductIdsToEvaluateQuery
+        BulkUpdateProductQualityScoresInterface $bulkUpdateProductQualityScores,
+        GetEntityIdsToEvaluateQueryInterface $getProductIdsToEvaluateQuery
     ) {
         $this->markProductCriteriaToEvaluate = $markProductCriteriaToEvaluate;
         $this->evaluatePendingProductCriteria = $evaluatePendingProductCriteria;
         $this->consolidateProductScores = $consolidateProductScores;
-        $this->updateProductsIndex = $updateProductsIndex;
+        $this->bulkUpdateProductQualityScores = $bulkUpdateProductQualityScores;
         $this->getProductIdsToEvaluateQuery = $getProductIdsToEvaluateQuery;
     }
 
@@ -56,7 +57,7 @@ final class ProductEvaluationInstaller implements FixtureInstaller
         foreach ($this->getProductIdsToEvaluateQuery->execute(self::LIMIT, self::BATCH_SIZE) as $productIds) {
             $this->evaluatePendingProductCriteria->evaluateAllCriteria($productIds);
             $this->consolidateProductScores->consolidate($productIds);
-            $this->updateProductsIndex->execute($productIds);
+            ($this->bulkUpdateProductQualityScores)($productIds);
         }
     }
 }

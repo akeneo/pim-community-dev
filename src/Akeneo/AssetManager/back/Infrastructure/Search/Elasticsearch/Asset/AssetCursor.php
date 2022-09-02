@@ -14,22 +14,15 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
  */
 class AssetCursor implements CursorInterface
 {
-    private AssetQueryBuilderInterface $queryBuilder;
-    private Client $assetClient;
-    private AssetQuery $assetQuery;
-
     private int $count;
     private ?array $items = null;
     private ?string $searchAfterCode = null;
 
     public function __construct(
-        AssetQueryBuilderInterface $queryBuilder,
-        Client $assetClient,
-        AssetQuery $assetQuery
+        private AssetQueryBuilderInterface $queryBuilder,
+        private Client $assetClient,
+        private AssetQuery $assetQuery
     ) {
-        $this->queryBuilder = $queryBuilder;
-        $this->assetClient = $assetClient;
-        $this->assetQuery = $assetQuery;
     }
 
     /**
@@ -113,8 +106,8 @@ class AssetCursor implements CursorInterface
 
         $this->count = $matches['hits']['total']['value'];
 
-        if (isset($matches['hits']['hits']) && count($matches['hits']['hits']) > 0) {
-            $hitsCount = count($matches['hits']['hits']);
+        if (isset($matches['hits']['hits']) && (is_countable($matches['hits']['hits']) ? count($matches['hits']['hits']) : 0) > 0) {
+            $hitsCount = is_countable($matches['hits']['hits']) ? count($matches['hits']['hits']) : 0;
             $lastHit = $matches['hits']['hits'][$hitsCount - 1];
             $this->searchAfterCode = $lastHit['sort'][0];
         }

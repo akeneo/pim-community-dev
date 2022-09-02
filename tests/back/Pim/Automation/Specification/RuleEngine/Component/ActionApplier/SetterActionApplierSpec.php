@@ -271,6 +271,7 @@ class SetterActionApplierSpec extends ObjectBehavior
         $action->getOptions()->willReturn([]);
 
         $entity->getParent()->willReturn($parent);
+        $entity->getIdentifier()->willReturn('identifier');
         $parent->getCategoryCodes()->willReturn(['socks', 'clothing']);
 
         $propertySetter->setData(Argument::cetera())->shouldNotBeCalled();

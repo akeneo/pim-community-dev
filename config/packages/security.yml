@@ -12,6 +12,8 @@ security:
             id: pim_user.provider.user_api
         saml_pim_user:
             id: akeneo_authentication.sso.user.provider
+        akeneo_supplier_portal_contributor_account_user:
+            id: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccountProvider
 
     encoders:
         Akeneo\UserManagement\Component\Model\User: sha512
@@ -52,6 +54,25 @@ security:
         openid_public_key:
             pattern:                        ^/connect/apps/v1/openid/public-key
             security:                       false
+
+        app_scopes_update:
+            pattern: ^/connect/apps/v1/scopes/update
+            fos_oauth: true
+            stateless: true
+            access_denied_handler: pim_api.security.access_denied_handler
+            provider: pim_user_api
+
+        akeneo_supplier_portal_authentication:
+            pattern: ^/supplier-portal/authentication
+            anonymous: true
+
+        akeneo_supplier_portal_secured_area:
+            pattern: ^/supplier-portal
+            provider: akeneo_supplier_portal_contributor_account_user
+            json_login:
+                check_path: supplier_portal_contributor_login
+            logout:
+                path: supplier_portal_contributor_logout
 
         api_index:
             pattern:                        ^/api/rest/v1$
@@ -111,7 +132,11 @@ security:
         - { path: ^/saml-idp/resume, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/saml/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/saml/metadata, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/supplier-portal/authentication, roles: PUBLIC_ACCESS }
         - { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED }
+
+    password_hashers:
+        Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccount: 'auto'
 
 acl:
     connection: default

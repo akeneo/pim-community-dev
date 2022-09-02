@@ -1,4 +1,4 @@
-@javascript
+@javascript @permission-feature-enabled
 Feature: Add attribute to a family
   In order to validate exported attributes
   As an administrator

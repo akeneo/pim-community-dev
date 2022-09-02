@@ -1,0 +1,61 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: push-cloud-function
+  labels:
+    component: "push-cloud-function"
+    app.kubernetes.io/component: "push-cloud-function"
+spec:
+  template:
+    metadata:
+      labels:
+        component: "push-cloud-function"
+        app.kubernetes.io/component: "push-cloud-function"
+      annotations:
+        argocd.argoproj.io/sync-wave: "-1"
+    spec:
+      restartPolicy: OnFailure
+      serviceAccountName: {{ .Values.common.workloadIdentityKSA | quote }}
+      nodeSelector:
+        iam.gke.io/gke-metadata-server-enabled: "true"
+      initContainers:
+        - name: workload-identity-initcontainer
+          image: "{{ .Values.image.cloudsdk.repository }}:{{ .Values.image.cloudsdk.tag }}"
+          command:
+          - '/bin/bash'
+          - '-c'
+          - |
+            curl -sS -H 'Metadata-Flavor: Google' 'http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token' --retry 30 --retry-connrefused --retry-max-time 60 --connect-timeout 3 --fail --retry-all-errors > /dev/null && exit 0 || echo 'Retry limit exceeded. Failed to wait for metadata server to be available. Check if the gke-metadata-server Pod in the kube-system namespace is healthy.' >&2; exit 1
+      containers:
+        - name:  push-cloud-function
+          image: {{ .Values.image.curljqzip.repository }}:{{ .Values.image.curljqzip.tag }}
+          imagePullPolicy: {{ .Values.image.curljqzip.pullPolicy | quote }}
+          command: ["sh", "/scripts-dir/pim-job-push-function-bucket.sh"]
+          env:
+            - name: BUCKET_NAME
+              value: {{ .Values.pim.cloudFunction.bucket }}
+            - name: MOUNT_PATH
+              value: "/publisher-pim-job"
+            - name: SOURCE_CODE_ZIP
+              value: {{ .Values.pim.cloudFunction.sourceCodeZip }}
+          volumeMounts:
+            - name: pim-scripts-configmap
+              mountPath: /scripts-dir
+            - name: cloud-function-sources-configmap
+              mountPath: /publisher-pim-job/package.json
+              subPath: package.json
+            - name: cloud-function-sources-configmap
+              mountPath: /publisher-pim-job/index.js
+              subPath: index.js
+      volumes:
+        - name: pim-scripts-configmap
+          configMap:
+            name: pim-scripts-configmap
+        - name: cloud-function-sources-configmap
+          configMap:
+            name: cloud-function-sources-configmap
+            items:
+            - key: package.json
+              path: package.json
+            - key: index.js
+              path: index.js

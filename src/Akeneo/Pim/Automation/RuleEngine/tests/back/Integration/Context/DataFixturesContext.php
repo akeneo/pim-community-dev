@@ -15,7 +15,7 @@ namespace Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context;
 
 use AcmeEnterprise\Bundle\AppBundle\Entity\Color;
 use AcmeEnterprise\Bundle\AppBundle\Entity\Fabric;
-use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
+use Akeneo\Category\Infrastructure\Component\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductCsvImport;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
@@ -33,6 +33,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use Doctrine\DBAL\Connection;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Messenger\Transport\TransportInterface;
 use Symfony\Component\Yaml\Yaml;
@@ -92,7 +93,7 @@ final class DataFixturesContext implements Context
         $this->getContainer()->get('doctrine')->getConnection()->update(
             'pim_catalog_product',
             ['created' => $createdAt],
-            ['id' => $product->getId()]
+            ['uuid' => $product->getUuid()->getBytes()]
         );
 
         $this->container->get('doctrine.orm.entity_manager')->refresh($product);

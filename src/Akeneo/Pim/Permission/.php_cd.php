@@ -19,6 +19,8 @@ $rules = [
         'Oro\Bundle\SecurityBundle\SecurityFacade',
         'Akeneo\Pim\Permission\Component',
         'Webmozart\Assert\Assert',
+        'Ramsey\Uuid\Uuid',
+        'Ramsey\Uuid\UuidInterface',
         // it implements a CE query differently for permissions
         'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query',
         'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\ChildCategory',
@@ -39,9 +41,9 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Category\Form\CategoryFormViewNormalizerInterface',
 
         // TIP-1000: Permissions should not be linked to Locale
-        'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
-        'Akeneo\Channel\Component\Model\LocaleInterface',
-        'Akeneo\Channel\Component\Model\Locale',
+        'Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\Locale',
 
         // TIP-963: Define the Products public API
         'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators',
@@ -53,10 +55,9 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
-        'Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface',
         'Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface',
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
-        'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
+        'Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface',
 
         // TODO: we put everything related to permissions at the same place
         'Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface',
@@ -68,11 +69,12 @@ $rules = [
         'Akeneo\Pim\WorkOrganization\Workflow\Component\Exception\PublishedProductConsistencyException',
 
         // TIP-1002: Permissions should not be linked to Channel
-        'Akeneo\Channel\Component\Model\ChannelInterface',
-        'Akeneo\Channel\Component\Query\PublicApi',
+        'Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface',
+        'Akeneo\Channel\Infrastructure\Component\Query\PublicApi',
+        'Akeneo\Channel\API\Query\FindAllViewableLocalesForUser',
+        'Akeneo\Channel\API\Query\Locale',
 
         //TODO: Link by id instead of reference
-        'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface',
@@ -81,7 +83,6 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociationInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection',
-        'Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
         'Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface',
         'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
@@ -117,6 +118,7 @@ $rules = [
         'Liip\ImagineBundle\Imagine\Data\DataManager',
         'Liip\ImagineBundle\Imagine\Filter\FilterManager',
         'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Helper\FilterProductValuesHelper',
+        'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface',
 
         // TIP-939: Remove filter system for permissions
         'Akeneo\Pim\Enrichment\Bundle\Filter\AbstractFilter',
@@ -150,17 +152,11 @@ $rules = [
         // TIP-1009: Remove TranslatedLabelsProviderInterface from Platform
         'Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface',
 
-        // TIP-1023: Drop CatalogContext
-        'Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext',
-
         // TIP-995: Move RegisterSerializerPass to Tool
         'Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterSerializerPass',
 
         // TIP-1024: Drop UserContext
         'Akeneo\UserManagement\Bundle\Context\UserContext',
-
-        //TODO: just because we override ProductController
-        'Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder',
 
         // PIM-9393: Avoid user to remove all permissions to edit a job instance
         'Akeneo\Platform\Bundle\ImportExportBundle\Exception\JobInstanceCannotBeUpdatedException',
@@ -173,6 +169,19 @@ $rules = [
         'Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator',
         'Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode',
 
+        'Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProducts',
+        'Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProductModels',
+
+        // category bounded context
+        'Akeneo\Category\Infrastructure\Component\Model\Category',
+        'Akeneo\Category\Infrastructure\Component\Model\CategoryInterface',
+        'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\RootCategory',
+        'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\ChildCategory',
+        'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\Repository\ItemCategoryRepositoryInterface',
+        'Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizer'
     ])->in('Akeneo\Pim\Permission\Bundle'),
     $builder->only([
         'Symfony\Component',
@@ -180,12 +189,16 @@ $rules = [
         'Doctrine\Common',
         'Doctrine\Persistence',
         'Akeneo\Tool',
+        'Ramsey\Uuid\UuidInterface',
 
         // Required to add quality scores into external API normalized products.
-        'Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection',
+        'Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList',
+        'Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModel',
+        'Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScoresInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductModelsWithQualityScoresInterface',
 
         // Required to add completenesses into external API.
         'Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithCompletenessesInterface',
@@ -204,11 +217,11 @@ $rules = [
         'Akeneo\Pim\Permission\Bundle\Manager\JobProfileAccessManager',
 
         // TIP-1000: Permissions should not be linked to Locale
-        'Akeneo\Channel\Component\Model\LocaleInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface',
 
         // TIP-1002: Permissions should not be linked to Channel
-        'Akeneo\Channel\Component\Model\ChannelInterface',
-        'Akeneo\Channel\Component\Query\PublicApi',
+        'Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface',
+        'Akeneo\Channel\Infrastructure\Component\Query\PublicApi',
 
         //TODO: Link by id instead of reference
         'Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface',
@@ -247,9 +260,14 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculatorInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessProductMasks',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\QuantifiedAssociations',
+        'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Factory\Read\WriteValueCollectionFactory',
         'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface',
+
+        // category bounded context
+        'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface'
     ])->in('Akeneo\Pim\Permission\Component'),
 ];
 

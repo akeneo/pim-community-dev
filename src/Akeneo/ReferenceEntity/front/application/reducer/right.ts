@@ -1,6 +1,6 @@
 import {LocalePermission} from 'akeneoreferenceentity/domain/model/permission/locale';
 import {ReferenceEntityPermission} from 'akeneoreferenceentity/domain/model/permission/reference-entity';
-import {NormalizedIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import Identifier, {NormalizedIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 
 export interface RightState {
   locale: LocalePermission[];
@@ -48,7 +48,10 @@ export const canEditReferenceEntity = (
   referenceEntityPermission: ReferenceEntityPermission,
   referenceEntityIdentifier: NormalizedIdentifier
 ) => {
-  if (referenceEntityPermission.referenceEntityIdentifier !== referenceEntityIdentifier) {
+  const permissionIdentifier = Identifier.create(referenceEntityPermission.referenceEntityIdentifier);
+  const identifier = Identifier.create(referenceEntityIdentifier);
+
+  if (!permissionIdentifier.equals(identifier)) {
     return false;
   }
 

@@ -2,14 +2,6 @@ parameters:
     env(ALLOWED_NETWORK_ASSETS_WHITELIST): ''
 
 services:
-    akeneo_assetmanager.infrastructure.validation.asset.asset_code_should_be_unique:
-        class: Akeneo\AssetManager\Infrastructure\Validation\Asset\AssetCodeShouldBeUniqueValidator
-        arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_exists'
-            - '%pim_job_product_batch_size%'
-        tags:
-            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset.asset_is_unique' }
-
     akeneo_assetmanager.infrastructure.validation.asset_family.asset_family_identifier_should_be_unique:
         class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\AssetFamilyIdentifierShouldBeUniqueValidator
         arguments:
@@ -174,23 +166,23 @@ services:
     akeneo_assetmanager.infrastructure.validation.asset.edit_value_command:
         class: Akeneo\AssetManager\Infrastructure\Validation\Asset\EditValueCommandValidator
         arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.cache.query.channel_exists'
-            - '@akeneoassetmanager.infrastructure.persistence.cache.query.find_activated_locales_per_channels'
-            - '@akeneoassetmanager.infrastructure.persistence.cache.query.find_activated_locales_by_identifiers'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.channel_exists'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_per_channels'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.infrastructure.validation.asset.edit_value_command' }
 
     akeneo_assetmanager.infrastructure.validation.asset_family.label_collection:
         class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\LabelCollectionValidator
         arguments:
-            - '@akeneoassetmanager.infrastructure.persistence.cache.query.find_activated_locales_by_identifiers'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.infrastructure.validation.asset_family.label_collection' }
 
     akeneo_assetmanager.infrastructure.validation.asset.filter_assets_by_completeness:
         class: Akeneo\AssetManager\Infrastructure\Validation\Asset\FilterAssetsByCompletenessValidator
         arguments:
-            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_activated_locales_per_channels'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_per_channels'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.infrastructure.validation.asset.filter_assets_by_completeness' }
 
@@ -261,8 +253,8 @@ services:
     akeneo_assetmanager.validator.asset_family.product_link_rules.channel_and_locale_validator:
         class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\ChannelAndLocaleValidator
         arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.cache.query.channel_exists'
-            - '@akeneoassetmanager.infrastructure.persistence.cache.query.find_activated_locales_by_identifiers'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.channel_exists'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers'
 
     akeneo_assetmanager.validator.asset_family.product_link_rules.extrapolated_attribute_validator:
         class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\ExtrapolatedAttributeValidator
@@ -282,7 +274,7 @@ services:
     akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.get_asset_collection_type_adapter:
         class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\GetAssetCollectionTypeAdapter
         arguments:
-            - '@pim_catalog.repository.attribute'
+            - '@akeneo.pim.structure.query.sql_get_attributes'
 
     Akeneo\AssetManager\Infrastructure\Validation\Asset\EditTargetValueValidator:
         arguments:

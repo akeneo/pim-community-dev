@@ -35,12 +35,11 @@ class RecordNormalizer implements RecordNormalizerInterface
     private const VALUES_FIELD = 'values';
     private const ES_TERM_MAX_LENGTH = 32766;
 
-    // TODO pull-up master remove nullable
     public function __construct(
         private FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
         private SqlFindSearchableRecords $findSearchableRecords,
         private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
-        private ?FindActivatedLocalesInterface $findActivatedLocales = null,
+        private FindActivatedLocalesInterface $findActivatedLocales,
     ) {
     }
 
@@ -89,20 +88,12 @@ class RecordNormalizer implements RecordNormalizerInterface
     private function createCodeLabelMatrix(SearchableRecordItem $searchableRecordItem): array
     {
         $matrix = [];
-        // TODO pull-up master remove condition
-        if (null !== $this->findActivatedLocales) {
-            $activatedLocales = $this->findActivatedLocales->findAll();
 
-            foreach ($activatedLocales as $localeCode) {
-                $label = array_key_exists($localeCode, $searchableRecordItem->labels) ? $searchableRecordItem->labels[$localeCode] : '';
-                $matrix[$localeCode] = trim(sprintf('%s %s', $searchableRecordItem->code, $label));
-            }
+        $activatedLocales = $this->findActivatedLocales->findAll();
 
-            return $matrix;
-        }
-
-        foreach ($searchableRecordItem->labels as $localeCode => $label) {
-            $matrix[$localeCode] = sprintf('%s %s', $searchableRecordItem->code, $label);
+        foreach ($activatedLocales as $localeCode) {
+            $label = array_key_exists($localeCode, $searchableRecordItem->labels) ? $searchableRecordItem->labels[$localeCode] : '';
+            $matrix[$localeCode] = trim(sprintf('%s %s', $searchableRecordItem->code, $label));
         }
 
         return $matrix;

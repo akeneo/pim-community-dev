@@ -3,16 +3,17 @@
 import saver from 'akeneoassetmanager/infrastructure/saver/asset-family';
 import {createAssetFamilyFromNormalized} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {createEmptyFile} from 'akeneoassetmanager/domain/model/file';
-import * as fetch from 'akeneoassetmanager/tools/fetch';
 
-jest.mock('routing', () => ({
-  generate: (url: string) => url,
-}));
+jest.mock('pim/security-context', () => {}, {virtual: true});
 
 describe('akeneoassetmanager/infrastructure/saver/asset-family', () => {
   it('It saves an asset family', async () => {
-    // @ts-ignore
-    fetch.postJSON = jest.fn().mockImplementationOnce(() => Promise.resolve());
+    global.fetch = jest.fn().mockImplementationOnce(() =>
+      Promise.resolve({
+        json: () => Promise.resolve(),
+        status: 200,
+      })
+    );
 
     const savedSofa = createAssetFamilyFromNormalized({
       code: 'sofa',
@@ -26,24 +27,30 @@ describe('akeneoassetmanager/infrastructure/saver/asset-family', () => {
     const response = await saver.save(savedSofa);
 
     expect(response).toEqual(undefined);
-    expect(fetch.postJSON).toHaveBeenCalledWith('akeneo_asset_manager_asset_family_edit_rest', {
-      assetCount: undefined,
-      attributeAsLabel: 'label',
-      attributeAsMainMedia: 'main_image',
-      attributes: undefined,
-      code: 'sofa',
-      identifier: 'sofa',
-      image: null,
-      labels: {en_US: 'Sofa', fr_FR: 'Canapé'},
-      namingConvention: undefined,
-      productLinkRules: undefined,
-      transformations: undefined,
+    expect(global.fetch).toHaveBeenCalledWith('/rest/asset_manager/sofa', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+      body: JSON.stringify({
+        identifier: 'sofa',
+        code: 'sofa',
+        labels: {en_US: 'Sofa', fr_FR: 'Canapé'},
+        image: null,
+        attributeAsMainMedia: 'main_image',
+        attributeAsLabel: 'label',
+      }),
     });
   });
 
   it('It creates an asset family', async () => {
-    // @ts-ignore
-    fetch.postJSON = jest.fn().mockImplementationOnce(() => Promise.resolve());
+    global.fetch = jest.fn().mockImplementationOnce(() =>
+      Promise.resolve({
+        json: () => Promise.resolve(),
+        status: 200,
+      })
+    );
 
     const sofaCreated = createAssetFamilyFromNormalized({
       code: 'sofa',
@@ -57,18 +64,20 @@ describe('akeneoassetmanager/infrastructure/saver/asset-family', () => {
     const response = await saver.create(sofaCreated);
 
     expect(response).toEqual(undefined);
-    expect(fetch.postJSON).toHaveBeenCalledWith('akeneo_asset_manager_asset_family_create_rest', {
-      assetCount: undefined,
-      attributeAsLabel: 'label',
-      attributeAsMainMedia: 'main_image',
-      attributes: undefined,
-      code: 'sofa',
-      identifier: 'sofa',
-      image: null,
-      labels: {en_US: 'Sofa', fr_FR: 'Canapé'},
-      namingConvention: undefined,
-      productLinkRules: undefined,
-      transformations: undefined,
+    expect(global.fetch).toHaveBeenCalledWith('/rest/asset_manager', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+      body: JSON.stringify({
+        identifier: 'sofa',
+        code: 'sofa',
+        labels: {en_US: 'Sofa', fr_FR: 'Canapé'},
+        image: null,
+        attributeAsMainMedia: 'main_image',
+        attributeAsLabel: 'label',
+      }),
     });
   });
 
@@ -100,8 +109,12 @@ describe('akeneoassetmanager/infrastructure/saver/asset-family', () => {
       },
     ];
 
-    // @ts-ignore
-    fetch.postJSON = jest.fn().mockImplementationOnce(() => Promise.resolve(errors));
+    global.fetch = jest.fn().mockImplementationOnce(() =>
+      Promise.resolve({
+        json: () => Promise.resolve(errors),
+        status: 200,
+      })
+    );
 
     const sofaCreated = createAssetFamilyFromNormalized({
       identifier: 'invalid/identifier',

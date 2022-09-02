@@ -25,21 +25,12 @@ class AssetQueryBuilder implements AssetQueryBuilderInterface
 {
     private const ATTRIBUTE_FILTER_FIELD = 'values.';
 
-    private FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocale;
-    private GetValueKeyForAttributeChannelAndLocaleInterface $getValueKeyForAttributeChannelAndLocale;
-    private AttributeRepositoryInterface $attributeRepository;
-    private FindIdentifiersByAssetFamilyAndCodesInterface $findIdentifiersByAssetFamilyAndCodes;
-
     public function __construct(
-        FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocale,
-        GetValueKeyForAttributeChannelAndLocaleInterface $getValueKeyForAttributeChannelAndLocale,
-        AttributeRepositoryInterface $attributeRepository,
-        FindIdentifiersByAssetFamilyAndCodesInterface $findIdentifiersByAssetFamilyAndCodes
+        private FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocale,
+        private GetValueKeyForAttributeChannelAndLocaleInterface $getValueKeyForAttributeChannelAndLocale,
+        private AttributeRepositoryInterface $attributeRepository,
+        private FindIdentifiersByAssetFamilyAndCodesInterface $findIdentifiersByAssetFamilyAndCodes,
     ) {
-        $this->findRequiredValueKeyCollectionForChannelAndLocale = $findRequiredValueKeyCollectionForChannelAndLocale;
-        $this->getValueKeyForAttributeChannelAndLocale = $getValueKeyForAttributeChannelAndLocale;
-        $this->attributeRepository = $attributeRepository;
-        $this->findIdentifiersByAssetFamilyAndCodes = $findIdentifiersByAssetFamilyAndCodes;
     }
 
     public function buildFromQuery(AssetQuery $assetQuery, $source): array
@@ -85,7 +76,7 @@ class AssetQueryBuilder implements AssetQueryBuilderInterface
             $query['sort'] = ['code' => 'asc'];
         }
 
-        if (null !== $fullTextFilter && !empty($fullTextFilter['value'])) {
+        if (null !== $fullTextFilter && '' !== $fullTextFilter['value']) {
             $terms = $this->getTerms($fullTextFilter);
             $query['query']['constant_score']['filter']['bool']['filter'][] = [
                 'query_string' => [
@@ -99,7 +90,7 @@ class AssetQueryBuilder implements AssetQueryBuilderInterface
             ];
         }
 
-        if (null !== $codeLabelFilter && !empty($codeLabelFilter['value'])) {
+        if (null !== $codeLabelFilter && '' !== $codeLabelFilter['value']) {
             $terms = $this->getTerms($codeLabelFilter);
             $query['query']['constant_score']['filter']['bool']['filter'][] = [
                 'query_string' => [
@@ -112,7 +103,7 @@ class AssetQueryBuilder implements AssetQueryBuilderInterface
         if (null !== $codeFilter && !empty($codeFilter['value']) && 'NOT IN' === $codeFilter['operator']) {
             $query['query']['constant_score']['filter']['bool']['must_not'][] = [
                 'terms' => [
-                    'code' => $codeFilter['value'],
+                    'code' => array_values($codeFilter['value']),
                 ],
             ];
         }
@@ -120,7 +111,7 @@ class AssetQueryBuilder implements AssetQueryBuilderInterface
         if (null !== $codeFilter && !empty($codeFilter['value']) && 'IN' === $codeFilter['operator']) {
             $query['query']['constant_score']['filter']['bool']['must'][] = [
                 'terms' => [
-                    'code' => $codeFilter['value'],
+                    'code' => array_values($codeFilter['value']),
                 ],
             ];
         }
@@ -235,8 +226,8 @@ class AssetQueryBuilder implements AssetQueryBuilderInterface
 
     private function getCompleteFilterQuery(AssetQuery $assetQuery, $assetFamilyCode, $completeFilter, $query)
     {
-        $channel = isset($completeFilter['context']['channel']) ? $completeFilter['context']['channel'] : $assetQuery->getChannel();
-        $locales = isset($completeFilter['context']['locales']) ? $completeFilter['context']['locales'] : [$assetQuery->getLocale()];
+        $channel = $completeFilter['context']['channel'] ?? $assetQuery->getChannel();
+        $locales = $completeFilter['context']['locales'] ?? [$assetQuery->getLocale()];
 
         $requiredValueKeys = $this->getRequiredValueKeys(
             $assetFamilyCode,

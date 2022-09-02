@@ -1,13 +1,21 @@
 import Saver from 'akeneoassetmanager/domain/saver/attribute';
-import {postJSON} from 'akeneoassetmanager/tools/fetch';
 import {ValidationError} from '@akeneo-pim-community/shared';
 import MinimalAttribute from 'akeneoassetmanager/domain/model/attribute/minimal';
-import handleError from 'akeneoassetmanager/infrastructure/tools/error-handler';
 import {Attribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
-import {assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import {attributeIdentifierStringValue} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import AssetFamilyIdentifier, {
+  assetFamilyIdentifierStringValue,
+} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import AttributeIdentifier, {
+  attributeIdentifierStringValue,
+} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import {handleResponse} from 'akeneoassetmanager/infrastructure/tools/handleResponse';
 
-const routing = require('routing');
+const generateAssetAttributeEditUrl = (
+  assetFamilyIdentifier: AssetFamilyIdentifier,
+  attributeIdentifier: AttributeIdentifier
+) => `/rest/asset_manager/${assetFamilyIdentifier}/attribute/${attributeIdentifier}`;
+const generateAssetAttributeCreateUrl = (assetFamilyIdentifier: AssetFamilyIdentifier) =>
+  `/rest/asset_manager/${assetFamilyIdentifier}/attribute`;
 
 export interface AttributeSaver extends Saver<MinimalAttribute, Attribute> {}
 
@@ -23,25 +31,44 @@ export class AttributeSaverImplementation implements AttributeSaver {
       asset_family_identifier: normalizedAttribute.asset_family_identifier,
     };
 
-    return await postJSON(
-      routing.generate('akeneo_asset_manager_attribute_edit_rest', {
-        assetFamilyIdentifier: assetFamilyIdentifierStringValue(attribute.getAssetFamilyIdentifier()),
-        attributeIdentifier: attributeIdentifierStringValue(attribute.getIdentifier()),
-      }),
-      attribute.normalize()
-    ).catch(handleError);
+    const response = await fetch(
+      generateAssetAttributeEditUrl(
+        assetFamilyIdentifierStringValue(attribute.getAssetFamilyIdentifier()),
+        attributeIdentifierStringValue(attribute.getIdentifier())
+      ),
+      {
+        method: 'POST',
+        cache: 'no-cache',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+        body: JSON.stringify(attribute.normalize()),
+      }
+    );
+
+    return await handleResponse(response);
   }
 
   async create(attribute: MinimalAttribute): Promise<ValidationError[] | null> {
     const normalizedAttribute = attribute.normalize() as NormalizedAttribute;
 
-    return await postJSON(
-      routing.generate('akeneo_asset_manager_attribute_create_rest', {
-        assetFamilyIdentifier: assetFamilyIdentifierStringValue(attribute.getAssetFamilyIdentifier()),
-      }),
-      normalizedAttribute
-    ).catch(handleError);
+    const response = await fetch(
+      generateAssetAttributeCreateUrl(assetFamilyIdentifierStringValue(attribute.getAssetFamilyIdentifier())),
+      {
+        method: 'POST',
+        cache: 'no-cache',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+        body: JSON.stringify(normalizedAttribute),
+      }
+    );
+
+    return await handleResponse(response);
   }
 }
 
-export default new AttributeSaverImplementation();
+const attributeSaver = new AttributeSaverImplementation();
+export default attributeSaver;

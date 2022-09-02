@@ -13,6 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
 
+use Akeneo\Channel\API\Query\Channel;
+use Akeneo\Channel\API\Query\FindChannels;
+use Akeneo\Channel\API\Query\FindLocales;
+use Akeneo\Channel\API\Query\Locale;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysByAttributeTypeInterface;
 use Doctrine\DBAL\Connection;
@@ -29,7 +33,9 @@ class SqlFindValueKeysByAttributeType implements FindValueKeysByAttributeTypeInt
     private array $cachedResult = [];
 
     public function __construct(
-        private Connection $sqlConnection
+        private Connection $sqlConnection,
+        private FindLocales $findLocales,
+        private FindChannels $findChannels,
     ) {
     }
 
@@ -48,39 +54,45 @@ class SqlFindValueKeysByAttributeType implements FindValueKeysByAttributeTypeInt
 
     private function fetch(ReferenceEntityIdentifier $referenceEntityIdentifier, array $attributeTypes): array
     {
+        $attributes = $this->findAttributesByFamilyIdentifierAndTypes($referenceEntityIdentifier, $attributeTypes);
+        $locales = $this->findLocales->findAllActivated();
+        $channels = $this->findChannels->findAll();
+
+        $valueKeys = [];
+
+        foreach ($attributes as $attribute) {
+            if ('1' === $attribute['value_per_channel']
+                && '1' === $attribute['value_per_locale']
+            ) {
+                $valueKeys[] = $this->generateScopableAndLocalizableValueKeys($attribute['identifier'], $channels);
+            } elseif (
+                '1' === $attribute['value_per_channel']
+                && '0' === $attribute['value_per_locale']
+            ) {
+                $valueKeys[] = $this->generateScopableValueKeys($attribute['identifier'], $channels);
+            } elseif (
+                '0' === $attribute['value_per_channel']
+                && '1' === $attribute['value_per_locale']
+            ) {
+                $valueKeys[] = $this->generateLocalizableValueKeys($attribute['identifier'], $locales);
+            } else {
+                $valueKeys[] = [$attribute['identifier']];
+            }
+        }
+
+        return array_merge(...$valueKeys);
+    }
+
+    private function findAttributesByFamilyIdentifierAndTypes(ReferenceEntityIdentifier $referenceEntityIdentifier, array $attributeTypes): array
+    {
         $query = <<<SQL
             SELECT
-                CONCAT(
-                    mask.identifier,
-                    IF(mask.value_per_channel, CONCAT('_', mask.channel_code), ''),
-                    IF(mask.value_per_locale, CONCAT('_', mask.locale_code), '')
-                 ) as `key`
-            FROM (
-                SELECT
-                    a.identifier,
-                    a.value_per_channel,
-                    a.value_per_locale,
-                    COALESCE(c.code, locale_channel.channel_code) as channel_code,
-                    COALESCE(l.code, locale_channel.locale_code) as locale_code
-                FROM
-                    akeneo_reference_entity_attribute as a
-                    LEFT JOIN pim_catalog_channel c ON value_per_channel = 1 AND value_per_locale = 0
-                    LEFT JOIN pim_catalog_locale l ON value_per_channel = 0 AND value_per_locale = 1 AND is_activated = 1
-                    LEFT JOIN (
-                        SELECT
-                            c.code as channel_code,
-                            l.code as locale_code
-                        FROM
-                            pim_catalog_channel c
-                            JOIN pim_catalog_channel_locale cl ON cl.channel_id = c.id
-                            JOIN pim_catalog_locale l ON l.id = locale_id
-                        WHERE
-                            l.is_activated = 1
-                    ) as locale_channel ON value_per_channel = 1 AND value_per_locale = 1
-                WHERE
-                    a.reference_entity_identifier = :reference_entity_identifier
-                    AND a.attribute_type IN (:types)
-                ) as mask;
+                attribute.identifier,
+                attribute.value_per_channel,
+                attribute.value_per_locale
+            FROM akeneo_reference_entity_attribute as attribute
+            WHERE attribute.reference_entity_identifier = :reference_entity_identifier
+            AND attribute.attribute_type IN (:types)
 SQL;
 
         $statement = $this->sqlConnection->executeQuery(
@@ -94,7 +106,45 @@ SQL;
             ]
         );
 
-        return $statement->fetchFirstColumn();
+        return $statement->fetchAllAssociative();
+    }
+
+    /**
+     * @param $channels Channel[];
+     */
+    private function generateScopableAndLocalizableValueKeys(string $attributeIdentifier, array $channels): array
+    {
+        $valueKeys = [];
+
+        foreach ($channels as $channel) {
+            foreach ($channel->getLocaleCodes() as $localeCode) {
+                $valueKeys[] = sprintf('%s_%s_%s', $attributeIdentifier, $channel->getCode(), $localeCode);
+            }
+        }
+
+        return $valueKeys;
+    }
+
+    /**
+     * @param $channels Channel[];
+     */
+    private function generateScopableValueKeys(string $attributeIdentifier, array $channels): array
+    {
+        return array_map(
+            static fn (Channel $channel) => sprintf('%s_%s', $attributeIdentifier, $channel->getCode()),
+            $channels
+        );
+    }
+
+    /**
+     * @param $locales Locale[];
+     */
+    private function generateLocalizableValueKeys(string $attributeIdentifier, array $locales): array
+    {
+        return array_map(
+            static fn (Locale $locale) => sprintf('%s_%s', $attributeIdentifier, $locale->getCode()),
+            $locales
+        );
     }
 
     private function getCacheKey(ReferenceEntityIdentifier $referenceEntityIdentifier, array $attributeTypes): string

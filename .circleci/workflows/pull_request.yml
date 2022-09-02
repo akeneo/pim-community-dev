@@ -1,0 +1,166 @@
+workflows:
+    pull_request:
+        when:
+            not:
+                equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+        jobs:
+            - ready_to_build?:
+                  type: approval
+                  filters:
+                      branches:
+                          ignore:
+                              - "master"
+            - checkout:
+                  requires:
+                      - ready_to_build?
+            - test_helm_generated_k8s_files:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Test helm generated k8s files"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                  requires:
+                      - checkout
+            - build_srnt_prod:
+                  name: "[srnt] Build"
+                  requires:
+                      - "[srnt] Test helm generated k8s files"
+            - build_grth:
+                  name: "[grth] Build"
+                  requires:
+                      - "[grth] Test helm generated k8s files"
+            - build_tria:
+                  name: "[tria] Build"
+                  requires:
+                      - "[tria] Test helm generated k8s files"
+            - test_cronjobs_existence:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Build"
+            - test_deploy:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Test deploy"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
+            - create_release_candidate?:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Create release candidate?"
+                  type: approval
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Test deploy"
+            - release:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Create release candidate"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Create release candidate?"
+            - test_deploy_last_release:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Test deploy last release"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
+            - test_upgrade_from_last_release:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Test upgrade from last release"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Test deploy last release"
+            - deploy_pr_environment?:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Deploy PR environment?"
+                  type: approval
+                  filters:
+                      branches:
+                          ignore:
+                              - "master"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+            - deploy_pr_environment:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Deploy PR environment"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Deploy PR environment?"
+                      - "[<< matrix.PRODUCT_TYPE >>] Build"
+            - delete_pr_environment?:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Delete PR environment?"
+                  type: approval
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Deploy PR environment"
+            - delete_pr_environment:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Delete PR environment"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Delete PR environment?"
+            - build_srnt_dev:
+                  requires:
+                      - checkout
+            - test_back_integration_bounded_contexts:
+                  requires:
+                      - build_srnt_dev
+            - test_back_static_and_acceptance:
+                  requires:
+                      - build_srnt_dev
+            - test_back_phpunit:
+                  requires:
+                      - build_srnt_dev
+            - test_back_data_migrations:
+                  requires:
+                      - build_srnt_dev
+            - test_front_static_acceptance_and_integration:
+                  requires:
+                      - build_srnt_dev
+            - test_front_end_to_end:
+                  requires:
+                      - build_srnt_dev
+            - test_front_code_style:
+                  requires:
+                      - build_srnt_dev
+            - test_back_behat_legacy:
+                  requires:
+                      - test_back_static_and_acceptance
+                      - test_front_static_acceptance_and_integration
+                      - test_front_code_style
+                      - test_back_phpunit
+                      - test_back_integration_bounded_contexts
+            - test_database:
+                  requires:
+                      - build_srnt_dev
+            - test_onboarder_bundle:
+                  requires:
+                      - build_srnt_dev
+            - test_grth:
+                  requires:
+                      - build_srnt_dev
+            - test_tria:
+                  requires:
+                      - build_srnt_dev
+            - test_catalogs:
+                  requires:
+                      - build_srnt_dev
+                  context:
+                      - octopus-slack
+            - pull_request_success:
+                  requires:
+                      - test_back_behat_legacy
+                      - test_onboarder_bundle
+                      - test_database
+                      - test_back_data_migrations
+                      - test_grth
+                      - test_tria

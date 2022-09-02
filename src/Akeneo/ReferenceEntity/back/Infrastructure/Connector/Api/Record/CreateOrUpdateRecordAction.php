@@ -18,6 +18,7 @@ use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordHandler;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\Connector\EditRecordCommandFactory;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\EditRecordHandler;
+use Akeneo\ReferenceEntity\Domain\Exception\RecordAlreadyExistsError;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordExistsInterface;
@@ -26,6 +27,7 @@ use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\JsonSchemaErrorsFormatte
 use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordValidator;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,7 +54,8 @@ class CreateOrUpdateRecordAction
         private Router $router,
         private RecordValidator $recordStructureValidator,
         private ValidatorInterface $recordDataValidator,
-        private SecurityFacade $securityFacade
+        private SecurityFacade $securityFacade,
+        private LoggerInterface $logger
     ) {
     }
 
@@ -88,8 +91,15 @@ class CreateOrUpdateRecordAction
         $responseStatusCode = Response::HTTP_NO_CONTENT;
 
         if (null !== $createRecordCommand) {
-            $responseStatusCode = Response::HTTP_CREATED;
-            ($this->createRecordHandler)($createRecordCommand);
+            try {
+                ($this->createRecordHandler)($createRecordCommand);
+                $responseStatusCode = Response::HTTP_CREATED;
+            } catch (RecordAlreadyExistsError) {
+                $this->logger->notice('Concurrent record creation call have been detected', [
+                    'reference_entity_identifier' => $referenceEntityIdentifier,
+                    'record_code' => $recordCode
+                ]);
+            }
         }
 
         ($this->editRecordHandler)($editRecordCommand);

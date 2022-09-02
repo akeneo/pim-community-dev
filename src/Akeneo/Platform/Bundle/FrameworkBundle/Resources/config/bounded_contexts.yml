@@ -2,12 +2,17 @@ parameters:
     pimee.bounded_contexts:
         'Akeneo\AssetManager': 'Asset Manager'
 
+        'Akeneo\Catalogs': 'Catalogs'
+
+        'Akeneo\Category': 'Category'
+
         'Akeneo\Channel': 'Channel'
 
         'Akeneo\Connectivity': 'Connectivity'
 
         'Akeneo\FreeTrial': 'FreeTrial'
 
+        'Akeneo\SupplierPortal': 'Supplier Portal'
         'Akeneo\Onboarder': 'Onboarder'
 
         'Akeneo\Pim\Automation\DataQualityInsights': 'Data Quality Insights'
@@ -24,10 +29,13 @@ parameters:
         'Akeneo\Pim\WorkOrganization\Workflow': 'Workflow'
         'Akeneo\Pim\WorkOrganization\ProductRevert': 'Workflow'
 
-        'Akeneo\Platform\Bundle\ImportExportBundle': 'Enrichment'
+        'Akeneo\Platform\Bundle\DashboardBundle': 'Dashboard'
+        'Akeneo\Platform\Bundle\ImportExportBundle': 'Import Export'
         'Akeneo\Platform\Bundle\UIBundle': 'Enrichment'
         'Akeneo\Platform\CommunicationChannel': 'CommunicationChannel'
+        'Akeneo\Platform\Job': 'Job'
         'Akeneo\Platform\TailoredExport': 'Tailored Export'
+        'Akeneo\Platform\TailoredImport': 'Tailored Import'
         'Akeneo\Platform': 'Platform'
 
         'Akeneo\ReferenceEntity': 'Reference Entity'

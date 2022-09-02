@@ -25,20 +25,11 @@ class ProductSelectionsValidator
     private const FIELD_FIELD = 'field';
     private const FIELDS_WITH_NO_CHANNEL_NOR_LOCALES = ['enable', 'family', 'categories'];
 
-    private RuleEngineValidatorACLInterface $ruleEngineValidatorACL;
-
-    private ExtrapolatedAttributeValidator $extrapolatedAttributeValidator;
-
-    private ChannelAndLocaleValidator $channelAndLocaleValidator;
-
     public function __construct(
-        RuleEngineValidatorACLInterface $ruleEngineValidatorACL,
-        ExtrapolatedAttributeValidator $extrapolatedAttributeValidator,
-        ChannelAndLocaleValidator $channelAndLocaleValidator
+        private RuleEngineValidatorACLInterface $ruleEngineValidatorACL,
+        private ExtrapolatedAttributeValidator $extrapolatedAttributeValidator,
+        private ChannelAndLocaleValidator $channelAndLocaleValidator,
     ) {
-        $this->ruleEngineValidatorACL = $ruleEngineValidatorACL;
-        $this->extrapolatedAttributeValidator = $extrapolatedAttributeValidator;
-        $this->channelAndLocaleValidator = $channelAndLocaleValidator;
     }
 
     public function validate(array $productSelections, string $assetFamilyIdentifier): ConstraintViolationListInterface

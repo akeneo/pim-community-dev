@@ -8,15 +8,17 @@ services:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAttributeOptionSpellcheckQuery'
 
-    akeneo.pim.automation.data_quality_insights.query.get_product_ids_by_attribute_option_code:
-        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetProductIdsByAttributeOptionCodeQuery
+    akeneo.pim.automation.data_quality_insights.query.get_product_uuids_by_attribute_option_code:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetProductUuidsByAttributeOptionCodeQuery
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory'
 
     akeneo.pim.automation.data_quality_insights.query.get_product_model_ids_by_attribute_option_code:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetProductModelIdsByAttributeOptionCodeQuery
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetFamiliesByCategoryCodesQuery:
         arguments:

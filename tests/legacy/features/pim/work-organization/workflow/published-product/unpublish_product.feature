@@ -1,4 +1,4 @@
-@javascript
+@published-product-feature-enabled @javascript
 Feature: Unpublish a product
   In order to unfroze the product data
   As a product manager

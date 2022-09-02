@@ -5,7 +5,7 @@ namespace Specification\Akeneo\Pim\Permission\Bundle\UpdateGuesser;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Pim\Permission\Component\Model\CategoryAccessInterface;
 
 class CategoryAccessUpdateGuesserSpec extends ObjectBehavior

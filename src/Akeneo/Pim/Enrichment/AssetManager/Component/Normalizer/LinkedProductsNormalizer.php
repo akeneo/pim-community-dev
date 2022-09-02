@@ -23,8 +23,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormaliz
  */
 class LinkedProductsNormalizer
 {
-    /** @var ImageNormalizer */
-    private $imageNormalizer;
+    private ImageNormalizer $imageNormalizer;
 
     public function __construct(ImageNormalizer $imageNormalizer)
     {

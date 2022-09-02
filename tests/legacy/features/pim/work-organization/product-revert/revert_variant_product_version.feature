@@ -1,3 +1,4 @@
+@restore-product-feature-enabled
 Feature: Revert a variant product to a previous version
   In order to manage versioning for variant products
   As a product manager

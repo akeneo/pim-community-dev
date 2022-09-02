@@ -19,12 +19,8 @@ use Symfony\Component\Routing\Router;
 
 class AddHalDownloadLinkToAssetFamilyImage
 {
-    private Router $router;
-
-    public function __construct(
-        Router $router
-    ) {
-        $this->router = $router;
+    public function __construct(private Router $router)
+    {
     }
 
     public function __invoke(array $normalizedAssetFamily): array

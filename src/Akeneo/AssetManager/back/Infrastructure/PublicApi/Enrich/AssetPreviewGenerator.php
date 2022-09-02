@@ -16,6 +16,7 @@ namespace Akeneo\AssetManager\Infrastructure\PublicApi\Enrich;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
@@ -29,24 +30,12 @@ use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetItem\
  */
 class AssetPreviewGenerator
 {
-    private AssetRepositoryInterface $assetRepository;
-
-    private AssetFamilyRepositoryInterface $assetFamilyRepository;
-
-    private AttributeRepositoryInterface $attributeRepository;
-
-    private ImagePreviewUrlGenerator $imagePreviewUrlGenerator;
-
     public function __construct(
-        AssetRepositoryInterface $assetRepository,
-        AssetFamilyRepositoryInterface $assetFamilyRepository,
-        AttributeRepositoryInterface $attributeRepository,
-        ImagePreviewUrlGenerator $imagePreviewUrlGenerator
+        private AssetRepositoryInterface $assetRepository,
+        private AssetFamilyRepositoryInterface $assetFamilyRepository,
+        private AttributeRepositoryInterface $attributeRepository,
+        private ImagePreviewUrlGenerator $imagePreviewUrlGenerator,
     ) {
-        $this->assetRepository = $assetRepository;
-        $this->assetFamilyRepository = $assetFamilyRepository;
-        $this->attributeRepository = $attributeRepository;
-        $this->imagePreviewUrlGenerator = $imagePreviewUrlGenerator;
     }
 
     public function getImageUrl(
@@ -79,7 +68,7 @@ class AssetPreviewGenerator
 
         $value = $asset->findValue($valueKey);
 
-        if (null === $value) {
+        if (!$value instanceof Value) {
             $rawData = '';
         } else {
             $data = $value->getData()->normalize();

@@ -26,17 +26,15 @@ class IdentifiersForQueryResult
     private const IDENTIFIERS = 'identifiers';
     private const MATCHES_COUNT = 'matches_count';
 
-    /** @var string[] */
-    public array $identifiers;
-    public int $matchesCount;
-    public ?array $lastSortValue;
-
-    public function __construct(array $identifiers, int $matchesCount, ?array $lastSortValue = null)
-    {
+    /**
+     * @param string[] $identifiers
+     */
+    public function __construct(
+        public array $identifiers,
+        public int $matchesCount,
+        public ?array $lastSortValue = null
+    ) {
         Assert::allString($identifiers);
-        $this->identifiers = $identifiers;
-        $this->matchesCount = $matchesCount;
-        $this->lastSortValue = $lastSortValue;
     }
 
     public function normalize(): array

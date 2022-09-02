@@ -15,10 +15,11 @@ namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Elasticsear
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeOptionCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 
 final class GetProductModelIdsByAttributeOptionCodeQueryIntegration extends AbstractGetProductIdsByAttributeOptionCodeQueryIntegration
 {
-    public function test_it_returns_the_products_that_have_a_given_attribute_option()
+    public function test_it_returns_the_product_models_that_have_a_given_attribute_option()
     {
         $this->givenALocalizableMultiSelectAttributeWithOptions();
 
@@ -86,7 +87,8 @@ final class GetProductModelIdsByAttributeOptionCodeQueryIntegration extends Abst
         $this->assertCount(2, $productModelIds[0]);
         $this->assertCount(1, $productModelIds[1]);
 
-        $productModelIds = array_merge(...$productModelIds);
-        $this->assertEqualsCanonicalizing($expectedProductModelIds, $productModelIds);
+        $productModelIds = array_map(fn (ProductModelIdCollection $collection) => $collection->toArray(), $productModelIds);
+
+        $this->assertEqualsCanonicalizing($expectedProductModelIds, array_merge(...$productModelIds));
     }
 }

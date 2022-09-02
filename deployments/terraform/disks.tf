@@ -7,15 +7,19 @@ resource "google_compute_disk" "mysql-disk" {
   description = var.mysql_disk_description
 
   labels = {
-    pfid        = local.pfid
-    pim_version = lower(var.pim_version)
-    app         = "mysql"
-    type        = local.type
+    pfid                   = local.pfid
+    pim_version            = lower(var.pim_version)
+    app                    = "mysql"
+    type                   = local.type
     product_reference_code = var.product_reference_code
     product_reference_type = var.product_reference_type
+    goog-gke-volume        = ""
   }
 
   lifecycle {
     prevent_destroy = true
+    ignore_changes = [
+      labels["goog-gke-volume"]
+    ]
   }
 }

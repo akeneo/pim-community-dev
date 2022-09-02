@@ -29,11 +29,8 @@ use Symfony\Component\Validator\Validation;
 
 class RawSourceExistValidator extends ConstraintValidator
 {
-    private AttributeRepositoryInterface $attributeRepository;
-
-    public function __construct(AttributeRepositoryInterface $attributeRepository)
+    public function __construct(private AttributeRepositoryInterface $attributeRepository)
     {
-        $this->attributeRepository = $attributeRepository;
     }
 
     public function validate($rawSource, Constraint $constraint)
@@ -54,7 +51,7 @@ class RawSourceExistValidator extends ConstraintValidator
                 AttributeCode::fromString($rawSource['attribute']),
                 $constraint->getAssetFamilyIdentifier()
             );
-        } catch (AttributeNotFoundException $e) {
+        } catch (AttributeNotFoundException) {
             $this->context->buildViolation(
                 RawSourceExist::ATTRIBUTE_NOT_FOUND_ERROR,
                 ['%attribute_code%' => $rawSource['attribute']]

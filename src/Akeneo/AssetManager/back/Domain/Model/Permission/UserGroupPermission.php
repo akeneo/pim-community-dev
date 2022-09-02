@@ -22,16 +22,10 @@ class UserGroupPermission
     private const USER_GROUP_IDENTIFIER = 'user_group_identifier';
     private const RIGHT_LEVEL = 'right_level';
 
-    private UserGroupIdentifier $userGroupIdentifier;
-
-    private RightLevel $rightLevel;
-
     private function __construct(
-        UserGroupIdentifier $userGroupIdentifier,
-        RightLevel $rightLevel
+        private UserGroupIdentifier $userGroupIdentifier,
+        private RightLevel $rightLevel
     ) {
-        $this->userGroupIdentifier = $userGroupIdentifier;
-        $this->rightLevel = $rightLevel;
     }
 
     public static function create(

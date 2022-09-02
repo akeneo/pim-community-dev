@@ -16,11 +16,9 @@ use Akeneo\Tool\Component\StorageUtils\Cache\LRUCache;
 class LRUCachedFindAttributesIndexedByIdentifier implements FindAttributesIndexedByIdentifierInterface
 {
     private LRUCache $cache;
-    private SqlFindAttributesIndexedByIdentifier $findAttributesIndexedByIdentifier;
 
-    public function __construct(SqlFindAttributesIndexedByIdentifier $findAttributesIndexedByIdentifier)
+    public function __construct(private SqlFindAttributesIndexedByIdentifier $findAttributesIndexedByIdentifier)
     {
-        $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
         $this->cache = new LRUCache(100);
     }
 

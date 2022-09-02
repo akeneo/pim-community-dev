@@ -175,7 +175,7 @@ pimee_catalog_rule:
           subtitle: ファミリーを選択してください
         set_attribute:
           title: 属性値の設定
-          helper: 属性に値を設定するには、ターゲット属性を選択してから設定する値を選択してください
+          helper: 属性に値を設定するには、最初にターゲット属性を選択してから、設定したい値を選択します。前の値はすべての商品選択で置き換えられます。
           target_subtitle: ターゲットを選択してください
           value_subtitle: 値を定義してください
           attribute_label: 属性

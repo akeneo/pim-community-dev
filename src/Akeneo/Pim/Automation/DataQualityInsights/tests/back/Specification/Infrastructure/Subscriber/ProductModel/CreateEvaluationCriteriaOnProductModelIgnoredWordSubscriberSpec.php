@@ -13,34 +13,42 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\ProductModel;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\ProductModelWordIgnoredEvent;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetDescendantVariantProductIdsQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetDescendantVariantProductUuidsQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\DescendantProductModelIdsQueryInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use PhpSpec\ObjectBehavior;
 use Psr\Log\LoggerInterface;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class CreateEvaluationCriteriaOnProductModelIgnoredWordSubscriberSpec extends ObjectBehavior
 {
     public function let(
-        FeatureFlag $dataQualityInsightsFeature,
-        CreateCriteriaEvaluations $createCriteriaEvaluations,
-        LoggerInterface $logger,
-        GetDescendantVariantProductIdsQueryInterface $getDescendantVariantProductIdsQuery,
-        DescendantProductModelIdsQueryInterface $getDescendantProductModelIdsQuery,
-        CreateCriteriaEvaluations $createProductsCriteriaEvaluations
-    ) {
+        FeatureFlag                                  $dataQualityInsightsFeature,
+        CreateCriteriaEvaluations                    $createCriteriaEvaluations,
+        LoggerInterface                              $logger,
+        GetDescendantVariantProductUuidsQueryInterface $getDescendantVariantProductUuidsQuery,
+        DescendantProductModelIdsQueryInterface      $getDescendantProductModelIdsQuery,
+        CreateCriteriaEvaluations                    $createProductsCriteriaEvaluations,
+        ProductEntityIdFactoryInterface              $productModelIdFactory,
+        ProductEntityIdFactoryInterface              $productIdFactory
+    )
+    {
         $this->beConstructedWith(
             $dataQualityInsightsFeature,
             $createCriteriaEvaluations,
             $logger,
-            $getDescendantVariantProductIdsQuery,
+            $getDescendantVariantProductUuidsQuery,
             $getDescendantProductModelIdsQuery,
-            $createProductsCriteriaEvaluations
+            $createProductsCriteriaEvaluations,
+            $productModelIdFactory,
+            $productIdFactory
         );
     }
 
@@ -55,26 +63,47 @@ class CreateEvaluationCriteriaOnProductModelIgnoredWordSubscriberSpec extends Ob
     }
 
     public function it_creates_criteria_on_ignored_word_suggestion(
-        ProductModelInterface $productModel,
         $dataQualityInsightsFeature,
         $createCriteriaEvaluations,
-        $getDescendantVariantProductIdsQuery,
+        $getDescendantVariantProductUuidsQuery,
         $getDescendantProductModelIdsQuery,
-        $createProductsCriteriaEvaluations
-    ) {
-        $productModel->getId()->willReturn(12345);
-        $dataQualityInsightsFeature->isEnabled()->willReturn(true);
-        $createCriteriaEvaluations->createAll([new ProductId(12345)])->shouldBeCalled();
+        $createProductsCriteriaEvaluations,
+        $productModelIdFactory,
+        $productIdFactory
+    )
+    {
+        $productModelId = ProductModelId::fromString('12345');
+        $productModelIdCollection = ProductModelIdCollection::fromStrings(['12345']);
+        $productModelIdFactory->createCollection(['12345'])->willReturn($productModelIdCollection);
 
-        $productModelId = new ProductId(12345);
+        $subProductModelIdA = ProductModelId::fromString('1111');
+        $subProductModelIdB = ProductModelId::fromString('2222');
+        $productModelIdFactory->create('1111')->willReturn($subProductModelIdA);
+        $productModelIdFactory->create('2222')->willReturn($subProductModelIdB);
+
+        $subProductModelIdCollectionA = ProductModelIdCollection::fromStrings(['1111']);
+        $subProductModelIdCollectionB = ProductModelIdCollection::fromStrings(['2222']);
+        $productModelIdFactory->createCollection(['1111'])->willReturn($subProductModelIdCollectionA);
+        $productModelIdFactory->createCollection(['2222'])->willReturn($subProductModelIdCollectionB);
+
+        $uuid3333 = Uuid::uuid4()->toString();
+        $uuid4444 = Uuid::uuid4()->toString();
+        $productVariantIdCollection = ProductUuidCollection::fromStrings([$uuid3333, $uuid4444]);
+        $productIdFactory->createCollection([$uuid3333, $uuid4444])->willReturn($productVariantIdCollection);
+
+        $dataQualityInsightsFeature->isEnabled()->willReturn(true);
+        $createCriteriaEvaluations->createAll($productModelIdCollection)->shouldBeCalled();
 
         $getDescendantProductModelIdsQuery->fetchFromParentProductModelId($productModelId->toInt())->willReturn([1111, 2222]);
-        $createCriteriaEvaluations->createAll([new ProductId(1111)])->shouldBeCalled();
-        $createCriteriaEvaluations->createAll([new ProductId(2222)])->shouldBeCalled();
+        $createCriteriaEvaluations->createAll($subProductModelIdCollectionA)->shouldBeCalled();
+        $createCriteriaEvaluations->createAll($subProductModelIdCollectionB)->shouldBeCalled();
 
-        $getDescendantVariantProductIdsQuery->fromProductModelIds([$productModelId->toInt()])->willReturn(['3333', '4444']);
-        $createProductsCriteriaEvaluations->createAll([new ProductId(3333)])->shouldBeCalled();
-        $createProductsCriteriaEvaluations->createAll([new ProductId(4444)])->shouldBeCalled();
+        $productModelVariantIds = [$uuid3333, $uuid4444];
+        $getDescendantVariantProductUuidsQuery
+            ->fromProductModelIds($productModelIdCollection)
+            ->willReturn($productModelVariantIds);
+
+        $createProductsCriteriaEvaluations->createAll($productVariantIdCollection);
 
         $this->onIgnoredWord(new ProductModelWordIgnoredEvent($productModelId));
     }

@@ -22,11 +22,8 @@ use Webmozart\Assert\Assert;
  */
 class Pattern
 {
-    private string $pattern;
-
-    private function __construct(string $pattern)
+    private function __construct(private string $pattern)
     {
-        $this->pattern = $pattern;
     }
 
     public static function create(string $pattern): self

@@ -41,7 +41,7 @@ class SearchConnectorAsset
     public function __invoke(AssetQuery $query): ConnectorAssetResult
     {
         $result = $this->findIdentifiersForQuery->find($query);
-        $assets = empty($result) ? [] : $this->findConnectorAssetsByIdentifiers->find($result->identifiers, $query);
+        $assets = $this->findConnectorAssetsByIdentifiers->find($result->identifiers, $query);
 
         return ConnectorAssetResult::createFromSearchAfterQuery($assets, $result->lastSortValue);
     }

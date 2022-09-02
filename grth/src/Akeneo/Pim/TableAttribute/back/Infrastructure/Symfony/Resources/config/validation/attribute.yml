@@ -12,11 +12,16 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
           minMessage: pim_table_configuration.validation.table_configuration.must_contain_at_least_two_columns
           maxMessage: pim_table_configuration.validation.table_configuration.max_columns_reached
       - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsColumnCodeUnique: ~
-      - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\FirstColumnShouldHaveSelectDataType: ~
+      - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\FirstColumnShouldHaveValidDataType: ~
       - All:
           - Type: array
           - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\ValidationShouldMatchColumnType: ~
           - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\OptionsShouldOnlyBeSetOnSelectColumns: ~
+          - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\ReferenceEntityIdentifierShouldOnlyBeSetOnReferenceEntityColumns: ~
+          - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\ImmutableReferenceEntityIdentifier: ~
+          - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\Measurement\MeasurementFamilyCannotBeUpdated: ~
+          - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\Measurement\MeasurementInfoShouldOnlyBeSetOnMeasurementColumns: ~
+          - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\Measurement\MeasurementUnitShouldExist: ~
           - Collection:
               fields:
                 code:
@@ -37,9 +42,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                       - Type:
                           type: string
                           message: pim_table_configuration.validation.table_configuration.column_type_must_be_a_string
-                      - Choice:
-                          choices: [ "text", "number", "boolean", "select" ]
-                          message: pim_table_configuration.validation.table_configuration.unknown_data_type
+                      - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\ColumnDatatype: ~
                 labels:
                   - Optional:
                       - Type:
@@ -93,6 +96,29 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                           message: The required value is a boolean
                       - NotNull:
                           message: The "is_required_for_completeness" option requires a value
+                reference_entity_identifier:
+                  - Optional:
+                      - Type:
+                          type: string
+                          message: The required value is a string
+                      - NotNull:
+                          message: The "reference_entity_identifier" option requires a value
+                      - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\ReferenceEntityIdentifierShouldExist: ~
+                measurement_family_code:
+                  - Optional:
+                      - Type:
+                          type: string
+                          message: The required value is a string
+                      - NotNull:
+                          message: The "measurement_family_code" option requires a value
+                      - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\Measurement\MeasurementFamilyShouldExist: ~
+                measurement_default_unit_code:
+                  - Optional:
+                      - Type:
+                          type: string
+                          message: The required value is a string
+                      - NotNull:
+                          message: The "measurement_default_unit_code" option requires a value
                 options:
                   - Optional:
                       - Type:

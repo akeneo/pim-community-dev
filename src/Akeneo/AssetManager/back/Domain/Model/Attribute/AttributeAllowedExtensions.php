@@ -26,10 +26,10 @@ class AttributeAllowedExtensions
     public const MAX_EXTENSION_LENGTH = 20;
     public const EXTENSION_SEPARATOR = '.';
 
-    /** @var string[] */
-    private array $allowedExtensions;
-
-    private function __construct(array $allowedExtensions)
+    /**
+     * @param string[] $allowedExtensions
+     */
+    private function __construct(private array $allowedExtensions)
     {
         Assert::allStringNotEmpty($allowedExtensions, 'Expected allowed extension to be a string');
         array_walk($allowedExtensions, function ($allowedExtension) {
@@ -37,15 +37,8 @@ class AttributeAllowedExtensions
             Assert::maxLength($allowedExtension, self::MAX_EXTENSION_LENGTH, sprintf('Extensions cannot be longer than %d characters', self::MAX_EXTENSION_LENGTH));
             Assert::regex($allowedExtension, '/^[a-z0-9]+$/', 'Expected extensions to contain only lowercase letters and numbers');
         });
-
-        $this->allowedExtensions = $allowedExtensions;
     }
 
-    /**
-     * @param array $allowedExtensions
-     *
-     * @return AttributeAllowedExtensions
-     */
     public static function fromList(array $allowedExtensions) : self
     {
         return new self($allowedExtensions);

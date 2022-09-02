@@ -4,12 +4,14 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\InitializeCriteriaEvaluation;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Result;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 
 class InitializeCriteriaEvaluationSpec extends ObjectBehavior
 {
@@ -65,10 +67,13 @@ class InitializeCriteriaEvaluationSpec extends ObjectBehavior
 
         $db->executeQuery(Argument::any())->willReturn($productIdsResult);
 
-        $ids = range(1, 100);
+        $ids = [];
+        for ($i = 0; $i < 100; $i++) {
+            $ids[] = Uuid::uuid4()->toString();
+        }
         $productIdsResult->fetchFirstColumn()->willReturn($ids);
 
-        $createProductsCriteriaEvaluations->createAll(Argument::type('array'))->shouldBeCalled();
+        $createProductsCriteriaEvaluations->createAll(Argument::type(ProductUuidCollection::class))->shouldBeCalled();
 
         $this->initialize();
     }

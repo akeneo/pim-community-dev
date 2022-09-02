@@ -86,6 +86,7 @@ job_execution:
     read_rules: lese Regeln
     selected_entities: ausgewählte Produkte / Produktmodelle
     skipped_invalid: übersprungene Produkte / Produktmodelle (ungültig)
+    skipped_no_diff: Produkte / Produktmodell übersprungen (keine Unterschiede)
     updated_entities: aktualisierte Produkte / Produktmodelle
     executed_rules: erfolgreich ausgeführte Regeln
     errored_rules: übersprungene Regeln (ungültig)

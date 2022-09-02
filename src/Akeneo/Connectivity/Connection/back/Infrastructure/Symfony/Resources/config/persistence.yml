@@ -1,0 +1,4 @@
+services:
+    AkeneoEnterprise\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAllAppsUserGroupLabelQuery:
+        arguments:
+            - '@database_connection'

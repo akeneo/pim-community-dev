@@ -17,11 +17,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class GetAction
 {
-    private FindAssetFamilyPermissionsDetailsInterface $findAssetFamilyPermissionsDetails;
-
-    public function __construct(FindAssetFamilyPermissionsDetailsInterface $findAssetFamilyPermissionsDetails)
+    public function __construct(private FindAssetFamilyPermissionsDetailsInterface $findAssetFamilyPermissionsDetails)
     {
-        $this->findAssetFamilyPermissionsDetails = $findAssetFamilyPermissionsDetails;
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier): JsonResponse

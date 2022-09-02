@@ -40,9 +40,19 @@ pim_table_configuration:
       no_validations_allowed: 'No utilice Validaciones en la columna «{{ columnType }}», tipo de columna actual: «{{ given }}»'
       invalid_validation_key: 'Las validaciones «{{ given }}» no funcionan en una columna «{{ columnType }}», permitidas: «{{ expected }}»'
       too_many_table_attributes: Ha alcanzado el número máximo de atributos de la tabla dentro de su PIM ({{ limit }})
+      measurement_family_should_exist: Asegúrese de que la familia de medición «{{ measurement_family_code }}» existe antes de añadirla a la tabla
+      measurement_unit_should_exist: Asegúrese de que la unidad «{{ measurement_unit_code }}» existe en la familia de medición «{{ measurement_family_code }}» antes de añadirla a la tabla
+      measurement_family_code_must_be_filled: Debe rellenar el código de familia de medición
+      measurement_default_unit_code_must_be_filled: Se debe rellenar el código de la unidad de medida por defecto
+      measurement_family_code_cannot_be_set: No se puede establecer el código de la familia de medición para un tipo de columna «{{ data_type }}»
+      measurement_default_unit_code_cannot_be_set: No se puede establecer el código de la unidad por defecto para un tipo de columna «{{ data_type }}»
+      measurement_family_cannot_be_updated: No se puede actualizar el código de la familia de medición
+      measurement_family_should_not_be_linked: 'Esta familia de medición se utiliza en un atributo de producto, por lo que no se puede eliminar.'
+      measurement_family_unit_should_not_be_linked: 'Esta unidad de familia de medición se utiliza en un atributo de producto. Solo puede editar las etiquetas traducidas y el símbolo de una unidad.'
     product_value:
       non_existing_columns: '[0,1]La columna «{{ non_existing_columns }}no existe|]1,Inf[Las columnas «{{ non_existing_columns }}» no existen'
       unexpected_data_type: 'La columna «{{ columnCode }}» espera un {{ expected }}, {{ given }} dado'
+      unexpected_data_type_for_measurement: 'La columna «{{ columnCode }}» espera un código de unidad de cadena y una cantidad numérica, {{ given }} dada'
       first_column_required: 'La columna «{{ columnCode }}» es obligatoria'
       unknown_option: 'Asegúrese de que solo utiliza los códigos de opciones existentes, el valor actual: «{{ optionCode }}»'
       integer_required: 'Este valor debe ser un entero: {{ invalid_value }}'
@@ -52,6 +62,7 @@ pim_table_configuration:
       max_length_validation: Este valor debe contener {{ limit }} caracteres o menos.
       too_many_rows: Ha alcanzado el número máximo de registros en su tabla ({{ limit }}).
       record_should_exist: 'El registro «{{ recordCode }}» en la entidad de referencia «{{ referenceEntityIdentifier }}» no existe'
+      measurement_unit_should_exist: 'La unidad «{{ measurement_unit_code }}» en la familia de medición «{{ measurement_family_code }}» no existe'
     product_value_collection:
       too_many_cells: Ha alcanzado el número máximo de celdas de la tabla en su producto ({{ count }} celdas, solo se permiten {{ limit }}).
     reference_entity:

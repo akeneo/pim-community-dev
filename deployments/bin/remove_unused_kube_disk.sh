@@ -16,7 +16,7 @@ for RELEASED_PV in $RELEASED_PV_LIST; do
     echo "--------------------------------------"
     echo "PV : ${RELEASED_PV}"
     
-    PD_DATA=$(kubectl get pv --field-selector metadata.name=${RELEASED_PV} -o=jsonpath='["{..spec.claimRef.namespace}","{..spec.gcePersistentDisk.pdName}","{..metadata.creationTimestamp}"]')
+    PD_DATA=$(kubectl get pv --field-selector metadata.name=${RELEASED_PV} -o=jsonpath='["{..spec.claimRef.namespace}","{..spec.csi.volumeHandle}","{..metadata.creationTimestamp}"]')
     NAMESPACE=$(echo $PD_DATA | jq -r '.[0]')
     echo "  Namespace :     ${NAMESPACE}"
 
@@ -29,7 +29,7 @@ for RELEASED_PV in $RELEASED_PV_LIST; do
             continue
         fi
 
-        PD_NAME=$(echo $PD_DATA | jq -r '.[1]')
+        PD_NAME=$(echo $PD_DATA | jq -r '.[1]' | basename)
         echo "  PD :            ${PD_NAME}"
         
         PD_CREATION_TIME=$(echo $PD_DATA | jq -r '.[2]')

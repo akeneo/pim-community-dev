@@ -36,6 +36,7 @@ final class FindPublishedProductIdIntegration extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->get('feature_flags')->enable('published_product');
         $this->getPublishedProductId = $this->get('pimee_workflow.query.find_published_product_id');
         $productBuilder = $this->get('pim_catalog.builder.product');
         $productFoo = $productBuilder->createProduct('foo');

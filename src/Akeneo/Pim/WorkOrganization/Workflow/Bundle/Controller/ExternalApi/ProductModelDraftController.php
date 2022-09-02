@@ -18,8 +18,10 @@ use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Applier\DraftApplierInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -51,7 +53,8 @@ class ProductModelDraftController
         DraftApplierInterface $draftApplier,
         NormalizerInterface $normalizer,
         TokenStorageInterface $tokenStorage,
-        AuthorizationCheckerInterface $authorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker,
+        private SecurityFacadeInterface $security,
     ) {
         $this->productModelRepository = $productModelRepository;
         $this->productModelDraftRepository = $productModelDraftRepository;
@@ -69,6 +72,8 @@ class ProductModelDraftController
      */
     public function getAction(string $code): JsonResponse
     {
+        $this->denyAccessUnlessAclIsGranted();
+
         $productModel = $this->productModelRepository->findOneByIdentifier($code);
         if (null === $productModel) {
             throw new NotFoundHttpException(sprintf('Product model "%s" does not exist.', $code));
@@ -112,6 +117,13 @@ class ProductModelDraftController
                 'You only have view permission on the product model "%s", you cannot create or retrieve a draft from this product model.',
                 $code
             ));
+        }
+    }
+
+    private function denyAccessUnlessAclIsGranted(): void
+    {
+        if (!$this->security->isGranted('pim_api_product_list')) {
+            throw new AccessDeniedHttpException('Access forbidden. You are not allowed to list products.');
         }
     }
 }

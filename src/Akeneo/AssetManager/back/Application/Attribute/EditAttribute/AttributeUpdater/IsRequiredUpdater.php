@@ -8,7 +8,6 @@ use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\Abstr
 use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\EditIsRequiredCommand;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
-use Doctrine\Common\Util\ClassUtils;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -28,7 +27,7 @@ class IsRequiredUpdater implements AttributeUpdaterInterface
                 sprintf(
                     'Expected command of type "%s", "%s" given',
                     EditIsRequiredCommand::class,
-                    ClassUtils::getClass($command)
+                    get_class($command),
                 )
             );
         }

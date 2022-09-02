@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\GetKeyIndicatorsInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\KeyIndicator\GetKeyIndicatorsInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\AttributesWithPerfectSpelling;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\KeyIndicator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\KeyIndicator\ComputeStructureKeyIndicator;
@@ -22,30 +22,45 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\KeyIndicatorCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use PhpSpec\ObjectBehavior;
 
 final class PimEnterpriseGetKeyIndicatorsSpec extends ObjectBehavior
 {
-    public function let(GetKeyIndicatorsInterface $getProductsKeyIndicators, ComputeStructureKeyIndicator $computeAttributesPerfectSpelling)
-    {
-        $this->beConstructedWith($getProductsKeyIndicators, $computeAttributesPerfectSpelling);
+    public function let(
+        GetKeyIndicatorsInterface $getProductsKeyIndicators,
+        ComputeStructureKeyIndicator $computeAttributesPerfectSpelling,
+        FeatureFlag $allCriteriaFeature
+    ) {
+        $allCriteriaFeature->isEnabled()->willReturn(true);
+        $this->beConstructedWith($getProductsKeyIndicators, $computeAttributesPerfectSpelling, $allCriteriaFeature);
     }
 
-    public function it_gives_key_indicators_for_all_products($getProductsKeyIndicators, $computeAttributesPerfectSpelling)
+    public function it_gives_key_indicators_for_all_products_and_product_models($getProductsKeyIndicators, $computeAttributesPerfectSpelling)
     {
         $channel = new ChannelCode('ecommerce');
         $locale = new LocaleCode('en_US');
 
         $productKeyIndicators = [
             'good_enrichment' => [
-                'ratioGood' => 20,
-                'totalGood' => 15,
-                'totalToImprove' => 60,
+                'products' => [
+                    'totalGood' => 15,
+                    'totalToImprove' => 60,
+                ],
+                'product_models' => [
+                    'totalGood' => 10,
+                    'totalToImprove' => 14,
+                ]
             ],
             'has_image' => [
-                'ratioGood' => 49,
-                'totalGood' => 25,
-                'totalToImprove' => 26,
+                'products' => [
+                    'totalGood' => 25,
+                    'totalToImprove' => 26,
+                ],
+                'product_models' => [
+                    'totalGood' => 8,
+                    'totalToImprove' => 12,
+                ]
             ]
         ];
 
@@ -57,7 +72,6 @@ final class PimEnterpriseGetKeyIndicatorsSpec extends ObjectBehavior
 
         $expectedKeyIndicators = $productKeyIndicators;
         $expectedKeyIndicators[AttributesWithPerfectSpelling::CODE] = [
-            'ratioGood' => 26,
             'totalGood' => 12,
             'totalToImprove' => 34,
             'extraData' => [],
@@ -74,14 +88,24 @@ final class PimEnterpriseGetKeyIndicatorsSpec extends ObjectBehavior
 
         $productKeyIndicators = [
             'good_enrichment' => [
-                'ratioGood' => 20,
-                'totalGood' => 15,
-                'totalToImprove' => 60,
+                'products' => [
+                    'totalGood' => 15,
+                    'totalToImprove' => 60,
+                ],
+                'product_models' => [
+                    'totalGood' => 10,
+                    'totalToImprove' => 14,
+                ]
             ],
             'has_image' => [
-                'ratioGood' => 49,
-                'totalGood' => 25,
-                'totalToImprove' => 26,
+                'products' => [
+                    'totalGood' => 25,
+                    'totalToImprove' => 26,
+                ],
+                'product_models' => [
+                    'totalGood' => 8,
+                    'totalToImprove' => 12,
+                ]
             ]
         ];
 
@@ -93,7 +117,6 @@ final class PimEnterpriseGetKeyIndicatorsSpec extends ObjectBehavior
 
         $expectedKeyIndicators = $productKeyIndicators;
         $expectedKeyIndicators[AttributesWithPerfectSpelling::CODE] = [
-            'ratioGood' => 0,
             'totalGood' => 0,
             'totalToImprove' => 42,
             'extraData' => [],
@@ -110,14 +133,24 @@ final class PimEnterpriseGetKeyIndicatorsSpec extends ObjectBehavior
 
         $productKeyIndicators = [
             'good_enrichment' => [
-                'ratioGood' => 20,
-                'totalGood' => 15,
-                'totalToImprove' => 60,
+                'products' => [
+                    'totalGood' => 15,
+                    'totalToImprove' => 60,
+                ],
+                'product_models' => [
+                    'totalGood' => 10,
+                    'totalToImprove' => 14,
+                ]
             ],
             'has_image' => [
-                'ratioGood' => 49,
-                'totalGood' => 25,
-                'totalToImprove' => 26,
+                'products' => [
+                    'totalGood' => 25,
+                    'totalToImprove' => 26,
+                ],
+                'product_models' => [
+                    'totalGood' => 8,
+                    'totalToImprove' => 12,
+                ]
             ]
         ];
 
@@ -129,7 +162,6 @@ final class PimEnterpriseGetKeyIndicatorsSpec extends ObjectBehavior
 
         $expectedKeyIndicators = $productKeyIndicators;
         $expectedKeyIndicators[AttributesWithPerfectSpelling::CODE] = [
-            'ratioGood' => 100,
             'totalGood' => 23,
             'totalToImprove' => 0,
             'extraData' => [],
@@ -138,7 +170,7 @@ final class PimEnterpriseGetKeyIndicatorsSpec extends ObjectBehavior
         $this->byCategory($channel, $locale, $category)->shouldBeLike($expectedKeyIndicators);
     }
 
-    public function it_ignores_empty_key_indicators($getProductsKeyIndicators, $computeAttributesPerfectSpelling)
+    public function it_does_not_ignore_empty_key_indicators($getProductsKeyIndicators, $computeAttributesPerfectSpelling)
     {
         $channel = new ChannelCode('ecommerce');
         $locale = new LocaleCode('en_US');
@@ -146,14 +178,32 @@ final class PimEnterpriseGetKeyIndicatorsSpec extends ObjectBehavior
 
         $productKeyIndicators = [
             'good_enrichment' => [
-                'ratioGood' => 20,
-                'totalGood' => 15,
-                'totalToImprove' => 60,
+                'products' => [
+                    'totalGood' => 15,
+                    'totalToImprove' => 60,
+                ],
+                'product_models' => [
+                    'totalGood' => 10,
+                    'totalToImprove' => 14,
+                ]
             ],
             'has_image' => [
-                'ratioGood' => 49,
-                'totalGood' => 25,
-                'totalToImprove' => 26,
+                'products' => [
+                    'totalGood' => 25,
+                    'totalToImprove' => 26,
+                ],
+                'product_models' => [
+                    'totalGood' => 8,
+                    'totalToImprove' => 12,
+                ]
+            ],
+        ];
+
+        $attributes_key_indicators = [
+            'attributes_perfect_spelling' => [
+                'totalGood' => 0,
+                'totalToImprove' => 0,
+                'extraData' => []
             ]
         ];
 
@@ -163,6 +213,8 @@ final class PimEnterpriseGetKeyIndicatorsSpec extends ObjectBehavior
             new KeyIndicator(new KeyIndicatorCode(AttributesWithPerfectSpelling::CODE), 0, 0)
         );
 
-        $this->byCategory($channel, $locale, $category)->shouldBeLike($productKeyIndicators);
+        $expectedResult = array_merge($productKeyIndicators, $attributes_key_indicators);
+
+        $this->byCategory($channel, $locale, $category)->shouldBeLike($expectedResult);
     }
 }

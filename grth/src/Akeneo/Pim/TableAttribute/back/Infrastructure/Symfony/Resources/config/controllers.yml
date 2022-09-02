@@ -5,3 +5,14 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\TableConfigurationFactory'
             - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository'
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Controller\InternalApi\GetSelectAttributesWithOptionsCountController:
+        public: true
+        arguments:
+            - '@akeneo.pim.structure.query.get_options_count_and_translation_by_attribute'
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Controller\InternalApi\GetAttributeOptionsController:
+        public: true
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+            - '@akeneo.pim.structure.query.get_attribute_options'

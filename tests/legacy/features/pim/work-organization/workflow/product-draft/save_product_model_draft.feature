@@ -1,3 +1,4 @@
+@proposal-feature-enabled
 Feature: Save a product model draft
   In order to update the product model even if I'm not owner
   As a redactor

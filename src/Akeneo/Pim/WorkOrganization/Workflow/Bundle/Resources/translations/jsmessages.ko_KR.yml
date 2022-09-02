@@ -221,6 +221,7 @@ pimee_enrich.mass_edit.product:
       label_count: "{1}<span class=\"AknFullPage-title--highlight\">1개 제품</span> 게시|]1, Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span>게시"
       description: 제품이 게시됩니다.
       warning: 선택된 {{ itemsCount }}개 제품이 게시됩니다.
+      already_published_product: "{{ productId }} 제품을 게시하는 동안 오류가 발생했습니다. 다른 프로세스에서 이 제품을 게시하고 있습니다."
     unpublish:
       label: 게시 취소
       label_count: "{1}<span class=\"AknFullPage-title--highlight\">1개 제품</span> 게시 취소|]1, Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span>게시 취소"

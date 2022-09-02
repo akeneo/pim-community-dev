@@ -29,7 +29,7 @@ class Clear extends Command
         parent::__construct();
     }
 
-    private function getUptimeCheckName($projectId, $uptimeCheckId) {
+    private function getUptimeCheckName(string $projectId, string $uptimeCheckId) : string {
         return "projects/" . $projectId . "/uptimeCheckConfigs/" . $uptimeCheckId;
     }
 
@@ -42,7 +42,6 @@ class Clear extends Command
         $projectName = $metrics->projectName($projectId);
         
         $uptimeCheckClient = new UptimeCheckServiceClient(['projectId' => $projectId]);
-        $uptimeCheckClient->projectName($projectId);
         
         try {
             $filter = 'metric.type="monitoring.googleapis.com/uptime_check/check_passed" resource.type="uptime_url" metric.label."check_id"=monitoring.regex.full_match("pim(ci|up)-.*")';
@@ -110,13 +109,13 @@ class Clear extends Command
         return Command::SUCCESS;
     }
 
-    private function getTimestamp($minutesAgo = 0) {
+    private function getTimestamp(int $minutesAgo = 0) : Timestamp {
         $time = new Timestamp();
         $time->setSeconds(time() - (60 * $minutesAgo));
         return $time;
     }
 
-    private function getTimeInterval(Timestamp $start, Timestamp $end) {
+    private function getTimeInterval(Timestamp $start, Timestamp $end) : TimeInterval {
         $interval = new TimeInterval();
         $interval->setStartTime($start);
         $interval->setEndTime($end);

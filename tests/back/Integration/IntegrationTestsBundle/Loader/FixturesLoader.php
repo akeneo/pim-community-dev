@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoEnterprise\Test\IntegrationTestsBundle\Loader;
 
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Loader\FixturesLoaderInterface;
 
@@ -16,25 +17,25 @@ use Akeneo\Test\IntegrationTestsBundle\Loader\FixturesLoaderInterface;
  */
 class FixturesLoader implements FixturesLoaderInterface
 {
-    /** @var FixturesLoaderInterface */
-    protected $baseFixturesLoader;
-
-    /** @var PermissionCleaner */
-    protected $permissionCleaner;
-
-    /**
-     * @param FixturesLoaderInterface $baseFixturesLoader
-     * @param PermissionCleaner       $permissionCleaner
-     */
-    public function __construct(FixturesLoaderInterface $baseFixturesLoader, PermissionCleaner $permissionCleaner)
+    public function __construct(
+        private FixturesLoaderInterface $baseFixturesLoader,
+        private PermissionCleaner $permissionCleaner,
+        private FeatureFlags $featureFlags
+    )
     {
-        $this->baseFixturesLoader = $baseFixturesLoader;
-        $this->permissionCleaner = $permissionCleaner;
     }
 
     public function load(Configuration $configuration): void
     {
         $this->baseFixturesLoader->load($configuration);
-        $this->permissionCleaner->cleanPermission();
+
+        if ($this->featureFlags->isEnabled('permission')) {
+            $this->permissionCleaner->cleanPermission();
+        }
+    }
+
+    public function purge(): void
+    {
+        $this->baseFixturesLoader->purge();
     }
 }

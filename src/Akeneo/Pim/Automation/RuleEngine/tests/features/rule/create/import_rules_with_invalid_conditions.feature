@@ -204,7 +204,7 @@ Feature: Import rules
                   value: invalid
     """
     Then an exception with message "conditions[0]: Property \"handmade\" expects a boolean as data, \"string\" given." has been thrown
-    And an exception with message "actions[0]: The handmade attribute requires a boolean value (true or false) as data, a string was detected." has been thrown
+    And an exception with message "actions[0]: Property \"handmade\" expects a boolean as data, \"string\" given." has been thrown
     And the rule list does not contain the "canon_beautiful_description" rule
 
   @integration-back
@@ -451,7 +451,7 @@ Feature: Import rules
     Then an exception with message "conditions[0].value[1]: This value should not be null." has been thrown
     And the rule list does not contain the "rule_with_null_category" rule
 
-  @integration-back
+  @integration-back @reference-entity-feature-enabled
   Scenario: Skip rules with integer values for IN
     Given the designers reference entity
     And the following attributes:

@@ -8,20 +8,17 @@ namespace Akeneo\AssetManager\Domain\Model\Attribute;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class AttributeRegularExpression
+class AttributeRegularExpression implements \Stringable
 {
     public const EMPTY = null;
 
-    private ?string $regularExpression = null;
-
-    private function __construct(?string $regularExpression)
+    private function __construct(private ?string $regularExpression)
     {
         if (null !== $regularExpression && false === @preg_match($regularExpression, '')) {
             throw new \InvalidArgumentException(
                 sprintf('Expect a valid regular expression, "%s" given', $regularExpression)
             );
         }
-        $this->regularExpression = $regularExpression;
     }
 
     public static function fromString(string $regularExpression): self

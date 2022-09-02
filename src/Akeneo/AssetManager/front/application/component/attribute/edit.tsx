@@ -1,5 +1,5 @@
 import React, {useRef} from 'react';
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import styled, {FlattenSimpleInterpolation} from 'styled-components';
 import {DeleteIcon, Key, Checkbox, Button, SectionTitle, useAutoFocus, useBooleanState} from 'akeneo-design-system';
 import {
@@ -22,13 +22,14 @@ import {
 import {saveAttribute} from 'akeneoassetmanager/application/action/attribute/edit';
 import {TextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
 import {deleteAttribute} from 'akeneoassetmanager/application/action/attribute/delete';
-import AttributeIdentifier, {attributeidentifiersAreEqual} from 'akeneoassetmanager/domain/model/attribute/identifier';
-import denormalizeAttribute from 'akeneoassetmanager/application/denormalizer/attribute/attribute';
-import {Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
-import {getAttributeView} from 'akeneoassetmanager/application/configuration/attribute';
+import {attributeidentifiersAreEqual} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import {Attribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
+import {useAttributeView} from 'akeneoassetmanager/application/hooks/attribute/useAttributeView';
+import {useAttributeDenormalizer} from 'akeneoassetmanager/application/hooks/attribute/useAttributeDenormalizer';
+import {useAttributeFetcher} from 'akeneoassetmanager/infrastructure/fetcher/useAttributeFetcher';
 
 const DeleteButton = styled.span`
   flex: 1;
@@ -68,7 +69,7 @@ interface StateProps extends OwnProps {
   assetFamily: AssetFamily;
   isSaving: boolean;
   isActive: boolean;
-  attribute: Attribute;
+  normalizedAttribute: NormalizedAttribute;
   errors: ValidationError[];
 }
 
@@ -78,7 +79,6 @@ interface DispatchProps {
     onIsRequiredUpdated: (isRequired: boolean) => void;
     onIsReadOnlyUpdated: (isReadOnly: boolean) => void;
     onAdditionalPropertyUpdated: (property: string, value: any) => void;
-    onAttributeDelete: (attributeIdentifier: AttributeIdentifier) => void;
     onCancel: () => void;
     onSubmit: () => void;
   };
@@ -89,14 +89,12 @@ interface EditProps extends StateProps, DispatchProps {}
 const AdditionalProperty = ({
   attribute,
   onAdditionalPropertyUpdated,
-  onSubmit,
   errors,
   locale,
   rights,
 }: {
   attribute: Attribute;
   onAdditionalPropertyUpdated: (property: string, value: any) => void;
-  onSubmit: () => void;
   errors: ValidationError[];
   locale: string;
   rights: {
@@ -108,13 +106,16 @@ const AdditionalProperty = ({
     };
   };
 }): JSX.Element => {
-  const AttributeView = getAttributeView(attribute);
+  const AttributeView = useAttributeView(attribute);
+  const dispatch = useDispatch();
+  const attributeFetcher = useAttributeFetcher();
+  const attributeDenormalizer = useAttributeDenormalizer();
 
   return (
     <AttributeView
       attribute={attribute as TextAttribute}
       onAdditionalPropertyUpdated={onAdditionalPropertyUpdated}
-      onSubmit={onSubmit}
+      onSubmit={() => dispatch(saveAttribute(attributeFetcher, attributeDenormalizer))}
       errors={errors}
       locale={locale}
       rights={rights}
@@ -122,11 +123,16 @@ const AdditionalProperty = ({
   );
 };
 
-const Edit = ({isActive, isSaving, rights, assetFamily, attribute, context, events, errors}: EditProps) => {
+const Edit = ({isActive, isSaving, rights, assetFamily, normalizedAttribute, context, events, errors}: EditProps) => {
   const translate = useTranslate();
   const {isGranted} = useSecurity();
   const labelInputRef = useRef<HTMLInputElement>(null);
   const [isDeleteModalOpen, openDeleteModal, closeDeleteModal] = useBooleanState();
+  const attributeDenormalizer = useAttributeDenormalizer();
+  const attributeFetcher = useAttributeFetcher();
+  const attribute = attributeDenormalizer(normalizedAttribute);
+  const dispatch = useDispatch();
+
   const label = attribute.getLabel(context.locale);
   const canEditAttribute = isGranted('akeneo_assetmanager_attribute_edit') && rights.assetFamily.edit;
   const canDeleteAttribute = canEditAttribute && isGranted('akeneo_assetmanager_attribute_delete');
@@ -134,7 +140,7 @@ const Edit = ({isActive, isSaving, rights, assetFamily, attribute, context, even
 
   const handleLabelChange = (value: string) => events.onLabelUpdated(value, context.locale);
 
-  // This will be simplyfied in the near future
+  // This will be simplified in the near future
   const displayDeleteButton =
     canDeleteAttribute &&
     !attributeidentifiersAreEqual(assetFamily.attributeAsLabel, attribute.getIdentifier()) &&
@@ -189,7 +195,6 @@ const Edit = ({isActive, isSaving, rights, assetFamily, attribute, context, even
             <AdditionalProperty
               attribute={attribute}
               onAdditionalPropertyUpdated={events.onAdditionalPropertyUpdated}
-              onSubmit={events.onSubmit}
               errors={errors}
               locale={context.locale}
               rights={{
@@ -224,7 +229,9 @@ const Edit = ({isActive, isSaving, rights, assetFamily, attribute, context, even
               {translate('pim_asset_manager.attribute.edit.cancel')}
             </Button>
             {canEditAttribute && (
-              <Button onClick={events.onSubmit}>{translate('pim_asset_manager.attribute.edit.save')}</Button>
+              <Button onClick={() => dispatch(saveAttribute(attributeFetcher, attributeDenormalizer))}>
+                {translate('pim_asset_manager.attribute.edit.save')}
+              </Button>
             )}
           </ButtonContainer>
         </footer>
@@ -232,7 +239,7 @@ const Edit = ({isActive, isSaving, rights, assetFamily, attribute, context, even
       {isDeleteModalOpen && (
         <DeleteModal
           title={translate('pim_asset_manager.attribute.delete.title')}
-          onConfirm={() => events.onAttributeDelete(attribute.getIdentifier())}
+          onConfirm={() => dispatch(deleteAttribute(attributeFetcher, attribute.getIdentifier()))}
           onCancel={closeDeleteModal}
         >
           {translate('pim_asset_manager.attribute.delete.message', {attributeLabel: label})}
@@ -247,7 +254,7 @@ export default connect(
     return {
       ...ownProps,
       isActive: state.attribute.isActive,
-      attribute: denormalizeAttribute(state.attribute.data),
+      normalizedAttribute: state.attribute.data,
       errors: state.attribute.errors,
       assetFamily: state.form.data,
       isSaving: state.attribute.isSaving,
@@ -273,12 +280,6 @@ export default connect(
         },
         onCancel: () => {
           dispatch(attributeEditionCancel());
-        },
-        onSubmit: () => {
-          dispatch(saveAttribute());
-        },
-        onAttributeDelete: (attributeIdentifier: AttributeIdentifier) => {
-          dispatch(deleteAttribute(attributeIdentifier));
         },
       },
     } as DispatchProps;

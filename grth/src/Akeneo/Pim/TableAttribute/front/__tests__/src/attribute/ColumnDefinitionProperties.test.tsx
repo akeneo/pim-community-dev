@@ -3,7 +3,6 @@ import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/fro
 import {ColumnDefinitionProperties} from '../../../src';
 import {fireEvent, screen} from '@testing-library/react';
 import {
-  columnDefinitionPropertiesMapping,
   getComplexTableAttribute,
   getTableAttributeWithoutColumn,
   getEnUsLocale,
@@ -24,7 +23,6 @@ describe('ColumnDefinitionProperties', () => {
         isDuplicateColumnCode={() => false}
         savedColumnIds={[]}
         attribute={getComplexTableAttribute()}
-        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
 
@@ -41,16 +39,15 @@ describe('ColumnDefinitionProperties', () => {
 
   it('should render the component even if the attribute is not yet updated', () => {
     renderWithProviders(
-        <ColumnDefinitionProperties
-            selectedColumn={getSelectColumnDefinitionWithId()}
-            onChange={jest.fn()}
-            activeLocales={[getEnUsLocale()]}
-            catalogLocaleCode={'en_US'}
-            isDuplicateColumnCode={() => false}
-            savedColumnIds={[]}
-            attribute={getTableAttributeWithoutColumn()}
-            columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
-        />
+      <ColumnDefinitionProperties
+        selectedColumn={getSelectColumnDefinitionWithId()}
+        onChange={jest.fn()}
+        activeLocales={[getEnUsLocale()]}
+        catalogLocaleCode={'en_US'}
+        isDuplicateColumnCode={() => false}
+        savedColumnIds={[]}
+        attribute={getTableAttributeWithoutColumn()}
+      />
     );
 
     expect(screen.getByText(/pim_table_attribute.form.attribute.column_code/)).toBeInTheDocument();
@@ -69,7 +66,6 @@ describe('ColumnDefinitionProperties', () => {
         isDuplicateColumnCode={() => false}
         savedColumnIds={[]}
         attribute={getComplexTableAttribute()}
-        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
 
@@ -108,7 +104,6 @@ describe('ColumnDefinitionProperties', () => {
         isDuplicateColumnCode={() => false}
         savedColumnIds={[]}
         attribute={getComplexTableAttribute()}
-        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
 
@@ -125,7 +120,6 @@ describe('ColumnDefinitionProperties', () => {
         isDuplicateColumnCode={() => false}
         savedColumnIds={[]}
         attribute={getComplexTableAttribute()}
-        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
 
@@ -142,7 +136,6 @@ describe('ColumnDefinitionProperties', () => {
         isDuplicateColumnCode={() => true}
         savedColumnIds={[]}
         attribute={getComplexTableAttribute()}
-        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
 
@@ -159,7 +152,6 @@ describe('ColumnDefinitionProperties', () => {
         isDuplicateColumnCode={() => true}
         savedColumnIds={[]}
         attribute={getComplexTableAttribute()}
-        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
 

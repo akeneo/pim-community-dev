@@ -25,9 +25,9 @@ use Akeneo\AssetManager\Domain\Query\Limit;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\Hal\AddHalDownloadLinkToAssetImages;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\SearchFiltersValidator;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,40 +43,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class GetConnectorAssetsAction
 {
-    private AssetFamilyExistsInterface $assetFamilyExists;
-
     private Limit $limit;
 
-    private SearchConnectorAsset $searchConnectorAsset;
-
-    private PaginatorInterface $halPaginator;
-
-    private AddHalDownloadLinkToAssetImages $addHalLinksToImageValues;
-
-    private ValidatorInterface $validator;
-
-    private SearchFiltersValidator $searchFiltersValidator;
-
-    private SecurityFacade $securityFacade;
-
     public function __construct(
-        AssetFamilyExistsInterface $assetFamilyExists,
-        SearchConnectorAsset $searchConnectorAsset,
-        PaginatorInterface $halPaginator,
-        AddHalDownloadLinkToAssetImages $addHalLinksToImageValues,
+        private AssetFamilyExistsInterface $assetFamilyExists,
+        private SearchConnectorAsset $searchConnectorAsset,
+        private PaginatorInterface $halPaginator,
+        private AddHalDownloadLinkToAssetImages $addHalLinksToImageValues,
         int $limit,
-        ValidatorInterface $validator,
-        SearchFiltersValidator $searchFiltersValidator,
-        SecurityFacade $securityFacade
+        private ValidatorInterface $validator,
+        private SearchFiltersValidator $searchFiltersValidator,
+        private SecurityFacadeInterface $securityFacade,
     ) {
-        $this->assetFamilyExists = $assetFamilyExists;
-        $this->searchConnectorAsset = $searchConnectorAsset;
         $this->limit = new Limit($limit);
-        $this->halPaginator = $halPaginator;
-        $this->addHalLinksToImageValues = $addHalLinksToImageValues;
-        $this->validator = $validator;
-        $this->searchFiltersValidator = $searchFiltersValidator;
-        $this->securityFacade = $securityFacade;
     }
 
     /**
@@ -208,6 +187,16 @@ class GetConnectorAssetsAction
             foreach ($rawFilters['updated'] as $rawFilter) {
                 $formattedFilters[] = [
                     'field' => 'updated',
+                    'operator' => $rawFilter['operator'],
+                    'value' => $rawFilter['value']
+                ];
+            }
+        }
+
+        if (isset($rawFilters['code'])) {
+            foreach ($rawFilters['code'] as $rawFilter) {
+                $formattedFilters[] = [
+                    'field' => 'code',
                     'operator' => $rawFilter['operator'],
                     'value' => $rawFilter['value']
                 ];

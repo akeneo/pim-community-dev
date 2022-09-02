@@ -1,4 +1,4 @@
-@javascript
+@published-product-feature-enabled @javascript
 Feature: Show localized attributes in published products form
   In order have localized UI
   As a regular user

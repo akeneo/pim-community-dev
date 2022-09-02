@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Common\Fake;
 
 use Akeneo\AssetManager\Domain\Event\DomainEvent;
+use Akeneo\AssetManager\Domain\Exception\AssetAlreadyExistsError;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
@@ -43,7 +44,7 @@ class InMemoryAssetRepository implements AssetRepositoryInterface
     public function create(Asset $asset): void
     {
         if (isset($this->assets[$asset->getIdentifier()->__toString()])) {
-            throw new \RuntimeException('Asset already exists');
+            throw AssetAlreadyExistsError::fromAsset($asset);
         }
 
         try {
@@ -56,7 +57,7 @@ class InMemoryAssetRepository implements AssetRepositoryInterface
             $this->dispatchAssetEvents($asset);
         }
 
-        throw new \RuntimeException('Asset already exists');
+        throw AssetAlreadyExistsError::fromAsset($asset);
     }
 
     public function update(Asset $asset): void

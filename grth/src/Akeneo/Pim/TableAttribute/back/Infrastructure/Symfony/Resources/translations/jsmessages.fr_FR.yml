@@ -162,6 +162,10 @@ pim_table_attribute:
       completeness_helper_text: "Pour découvrir comment fonctionne la complétude d'un attribut tableau,"
       completeness_helper_link: consultez notre centre d'aide.
       reference_entity: Entité référentielle
+      import_from_existing_attribute: Importer depuis un attribut existant
+      option_count: "{0,1}{{ count }} option|]1, Inf[{{ count }} options"
+      measurement_family: Famille de mesure
+      measurement_default_unit: Unité de mesure par défaut
     product:
       items_per_page: Éléments par page
       current_items: "{{ minItem }}-{{ maxItem }} sur {{ itemCount }}"
@@ -191,6 +195,7 @@ pim_table_attribute:
       boolean: Oui/Non
       select: Colonne à choix unique
       reference_entity: Entité référentielle
+      measurement: Mesure
   validations:
     column_code_must_be_filled: Le code doit être rempli
     not_available_code: Ce code de colonne n'est pas disponible
@@ -251,3 +256,7 @@ batch_jobs:
   xlsx_product_table_values_import.label: Import des valeurs des tableaux de produits en XLSX
   csv_product_model_table_values_import.label: Import des valeurs des tableaux de modèles de produits en CSV
   xlsx_product_model_table_values_import.label: Import des valeurs des tableaux de modèles de produits en XLSX
+  default_steps.clean: Suppression des valeurs d'option de table non existantes
+akeneo_job_process_tracker:
+  type_filter:
+    clean_table_values_following_deleted_options: Supprimez les options de table inexistante des produits et modèles de produits

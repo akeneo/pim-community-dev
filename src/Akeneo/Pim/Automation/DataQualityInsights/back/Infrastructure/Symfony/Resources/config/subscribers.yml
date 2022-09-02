@@ -5,24 +5,12 @@ services:
         tags:
             - { name: 'kernel.event_subscriber' }
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\EventSubscriber\InstallAssetsSubscriber:
-        arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\EventSubscriber\FileSystemAssetsInstaller'
-        tags:
-            - { name: kernel.event_subscriber }
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\EventSubscriber\FileSystemAssetsInstaller:
-        class: Akeneo\Platform\Bundle\InstallerBundle\Event\Subscriber\AssetsInstaller
-        arguments:
-            - '@filesystem'
-            - '%pim_ee_dev_src_folder_location%/src/Akeneo/Pim/Automation/DataQualityInsights/front/src'
-            - '%kernel.project_dir%/public/bundles/akeneodataqualityinsights-react'
-
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product\CreateEvaluationCriteriaOnProductIgnoredWordSubscriber:
         arguments:
             $dataQualityInsightsFeature: '@akeneo.pim.automation.data_quality_insights.feature'
             $createProductsCriteriaEvaluations: '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
             $logger: '@logger'
+            $idFactory: '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -38,17 +26,20 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.feature'
             - '@akeneo.pim.automation.data_quality_insights.create_product_models_criteria_evaluations'
             - '@logger'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetDescendantVariantProductIds'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetDescendantVariantProductUuids'
             - '@pim_catalog.query.descendant_product_model_ids'
             - '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory'
         tags:
             - { name: kernel.event_subscriber }
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Attribute\InitializeEvaluationSubscriber:
         arguments:
-            $evaluateUpdatedAttributes: '@Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateUpdatedAttributes'
-            $evaluateUpdatedAttributeOptions: '@Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateUpdatedAttributeOptions'
-            $dataQualityInsightsFeature: '@akeneo.pim.automation.data_quality_insights.feature'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateUpdatedAttributes'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateUpdatedAttributeOptions'
+            - '@akeneo.pim.automation.data_quality_insights.feature'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeOptionSpellcheckRepository'
         tags:
             - { name: kernel.event_subscriber }
 

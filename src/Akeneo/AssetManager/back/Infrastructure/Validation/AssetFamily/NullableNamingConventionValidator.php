@@ -45,7 +45,7 @@ class NullableNamingConventionValidator extends ConstraintValidator
         if ($command instanceof EditAssetFamilyCommand && isset($command->attributeAsMainMedia)) {
             try {
                 $commandAttributeAsMainMedia = AttributeCode::fromString($command->attributeAsMainMedia);
-            } catch (\InvalidArgumentException $e) {
+            } catch (\InvalidArgumentException) {
                 // do nothing, this error is handled elsewhere.
             }
         }
@@ -82,7 +82,7 @@ class NullableNamingConventionValidator extends ConstraintValidator
                     'Expected argument to be of class "%s" or "%s", "%s" given',
                     CreateAssetFamilyCommand::class,
                     EditAssetFamilyCommand::class,
-                    get_class($command)
+                    $command::class
                 )
             );
         }

@@ -1,6 +1,4 @@
 import BaseView = require('pimui/js/view/base');
-import React from 'react';
-import ReactDOM from 'react-dom';
 import {ATTRIBUTE_OPTIONS_AUTO_SORT} from 'akeneopimstructure/js/attribute-option';
 import AttributeOptionsApp from './AttributeOptionsApp';
 
@@ -37,21 +35,18 @@ class Choices extends BaseView {
       return;
     }
 
-    ReactDOM.render(
-      <AttributeOptionsApp
-        attributeId={this.getFormData().meta.id}
-        attributeCode={this.getFormData().code}
-        autoSortOptions={this.getFormData().auto_option_sorting}
-      />,
+    const formData = this.getFormData();
+
+    this.renderReact(
+      AttributeOptionsApp,
+      {
+        attributeId: formData.meta.id,
+        attributeCode: formData.code,
+        autoSortOptions: formData.auto_option_sorting,
+      },
       this.el
     );
     return this;
-  }
-
-  remove() {
-    ReactDOM.unmountComponentAtNode(this.el);
-
-    return super.remove();
   }
 
   private isActive() {

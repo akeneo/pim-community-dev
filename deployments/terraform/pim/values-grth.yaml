@@ -59,7 +59,7 @@ pim:
       schedule: "0 4 * * *"
       resources:
         requests:
-          cpu: "20m"
+          cpu: "10m"
           memory: "80Mi"
     data-quality-insights-periodic-tasks:
       enabled: true
@@ -83,7 +83,7 @@ pim:
       schedule: "*/30 * * * *"
       resources:
         requests:
-          cpu: "200m"
+          cpu: "20m"
           memory: "200Mi"
     purge-events-api-logs:
       enabled: true
@@ -94,19 +94,27 @@ pim:
           memory: "128Mi"
         requests:
           cpu: "100m"
-          memory: "128Mi"
-    migrate-job-messages-from-old-queue:
+          memory: "10Mi"
+    clean-completeness-evaluation-results:
       enabled: true
-      pimCommand: "akeneo:batch:migrate-job-messages-from-old-queue --no-interaction"
-      schedule: "*/15 * * * *"
+      pimCommand: "pim:data-quality-insights:clean-completeness-evaluation-results --no-interaction"
+      schedule: "30 0 * * *"
       resources:
         requests:
-          cpu: "10m"
-          memory: "10Mi"
-    migrate-job-execution-warning-count:
+          cpu: "100m"
+          memory: "256Mi"
+    zdd-migration-migrate:
       enabled: true
-      pimCommand: "akeneo:batch:migrate-job-execution-warning-count --no-interaction"
-      schedule: "*/30 * * * *"
+      pimCommand: "pim:zdd-migration:migrate --no-interaction"
+      schedule: "45 * * * *"
+      resources:
+        requests:
+          cpu: "350m"
+          memory: "350Mi"
+    job-automation-push-scheduled-jobs-to-queue:
+      enabled: true
+      pimCommand: 'pim:job-automation:push-scheduled-jobs-to-queue'
+      schedule: "*/10 * * * *"
       resources:
         requests:
           cpu: "10m"

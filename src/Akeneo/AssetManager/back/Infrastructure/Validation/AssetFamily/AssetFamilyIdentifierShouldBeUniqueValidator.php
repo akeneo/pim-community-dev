@@ -28,11 +28,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class AssetFamilyIdentifierShouldBeUniqueValidator extends ConstraintValidator
 {
-    private AssetFamilyExistsInterface $assetFamilyExists;
-
-    public function __construct(AssetFamilyExistsInterface $assetExists)
+    public function __construct(private AssetFamilyExistsInterface $assetFamilyExists)
     {
-        $this->assetFamilyExists = $assetExists;
     }
 
     public function validate($command, Constraint $constraint): void
@@ -51,7 +48,7 @@ class AssetFamilyIdentifierShouldBeUniqueValidator extends ConstraintValidator
             throw new \InvalidArgumentException(sprintf(
                 'Expected argument to be of class "%s", "%s" given',
                 CreateAssetFamilyCommand::class,
-                get_class($command)
+                $command::class
             ));
         }
     }

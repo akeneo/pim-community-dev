@@ -1,10 +1,19 @@
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import {AssetFamilyResult} from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 import {AssetFamilyListItem} from 'akeneoassetmanager/domain/model/asset-family/list';
-import {Query, SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
+import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {AssetFamilyPermission} from 'akeneoassetmanager/domain/model/permission/asset-family';
 
-export interface AssetFamilyFetcher {
+type AssetFamilyResult = {
+  assetFamily: AssetFamily;
+  assetCount: number;
+  attributes: Attribute[];
+  permission: AssetFamilyPermission;
+};
+
+type AssetFamilyFetcher = {
   fetch: (identifier: AssetFamilyIdentifier) => Promise<AssetFamilyResult>;
   fetchAll: () => Promise<AssetFamilyListItem[]>;
-  search: (query: Query) => Promise<SearchResult<AssetFamilyListItem>>;
-}
+};
+
+export {AssetFamilyFetcher, AssetFamilyResult};

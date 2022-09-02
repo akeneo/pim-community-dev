@@ -145,13 +145,21 @@ jobs:
         alias: remove_completeness_for_channel_and_locale
         label: 'Remove completeness for channel and locale'
         type: remove_completeness_for_channel_and_locale
+
+    clean_table_values_following_deleted_options:
+        connector: internal
+        alias: clean_table_values_following_deleted_options
+        label: Remove the non existing table option values from product and product models
+        type: clean_table_values_following_deleted_options
+
     attributes_import:
         connector: 'Akeneo XLSX Connector'
         alias: xlsx_attribute_import
         label: 'Attribute Import (XLSX)'
         type: import
         configuration:
-            filePath: null
+            storage:
+                type: none
             withHeader: true
             uploadAllowed: true
             invalid_items_file_format: xlsx
@@ -163,7 +171,8 @@ jobs:
         label: 'Family Import (XLSX)'
         type: import
         configuration:
-            filePath: null
+            storage:
+                type: none
             withHeader: true
             uploadAllowed: true
             invalid_items_file_format: xlsx
@@ -175,7 +184,8 @@ jobs:
         label: 'Attribute Option Import (XLSX)'
         type: import
         configuration:
-            filePath: null
+            storage:
+                type: none
             withHeader: true
             uploadAllowed: true
             invalid_items_file_format: xlsx
@@ -187,7 +197,8 @@ jobs:
         label: 'Products Import (XLSX)'
         type: import
         configuration:
-            filePath: null
+            storage:
+                type: none
             withHeader: true
             uploadAllowed: true
             invalid_items_file_format: xlsx
@@ -208,7 +219,8 @@ jobs:
         label: 'Category Import (XLSX)'
         type: import
         configuration:
-            filePath: null
+            storage:
+                type: none
             withHeader: true
             uploadAllowed: true
             invalid_items_file_format: xlsx
@@ -220,7 +232,8 @@ jobs:
         label: 'Attribute Group Import (XLSX)'
         type: import
         configuration:
-            filePath: null
+            storage:
+                type: none
             withHeader: true
             uploadAllowed: true
             invalid_items_file_format: xlsx
@@ -232,7 +245,8 @@ jobs:
         label: 'Family Variant Import (XLSX)'
         type: import
         configuration:
-            filePath: null
+            storage:
+                type: none
             withHeader: true
             uploadAllowed: true
             invalid_items_file_format: xlsx
@@ -244,7 +258,8 @@ jobs:
         label: 'Product Model Import (XLSX)'
         type: import
         configuration:
-            filePath: null
+            storage:
+                type: none
             withHeader: true
             uploadAllowed: true
             invalid_items_file_format: xlsx
@@ -263,7 +278,9 @@ jobs:
         label: 'Cat02 - Attribute Export (XLSX)'
         type: export
         configuration:
-            filePath: /tmp/export_%job_label%_%datetime%.xlsx
+            storage:
+                type: none
+                file_path: /tmp/export_%job_label%_%datetime%.xlsx
             withHeader: true
             linesPerFile: 10000
             user_to_notify: null
@@ -274,7 +291,9 @@ jobs:
         label: 'Cat03-Attribute Option Export (XLSX)'
         type: export
         configuration:
-            filePath: /tmp/export_%job_label%_%datetime%.xlsx
+            storage:
+                type: none
+                file_path: /tmp/export_%job_label%_%datetime%.xlsx
             withHeader: true
             linesPerFile: 10000
             user_to_notify: null
@@ -285,7 +304,9 @@ jobs:
         label: 'Cat01-Category Export (XLSX)'
         type: export
         configuration:
-            filePath: /tmp/export_%job_label%_%datetime%.xlsx
+            storage:
+                type: none
+                file_path: /tmp/export_%job_label%_%datetime%.xlsx
             withHeader: true
             linesPerFile: 10000
             user_to_notify: null
@@ -296,7 +317,9 @@ jobs:
         label: 'Cat04-Family Export (XLSX)'
         type: export
         configuration:
-            filePath: /tmp/export_%job_label%_%datetime%.xlsx
+            storage:
+                type: none
+                file_path: /tmp/export_%job_label%_%datetime%.xlsx
             withHeader: true
             linesPerFile: 10000
             user_to_notify: null
@@ -307,7 +330,9 @@ jobs:
         label: 'Cat05-Product Export (XLSX)'
         type: export
         configuration:
-            filePath: /tmp/export_%job_label%_%datetime%.xlsx
+            storage:
+                type: none
+                file_path: /tmp/export_%job_label%_%datetime%.xlsx
             withHeader: true
             linesPerFile: 10000
             user_to_notify: null
@@ -348,7 +373,9 @@ jobs:
         label: 'Furniture products for Amazon (weekly)'
         type: export
         configuration:
-            filePath: /tmp/export_%job_label%_%datetime%.xlsx
+            storage:
+                type: none
+                file_path: /tmp/export_%job_label%_%datetime%.xlsx
             withHeader: true
             linesPerFile: 10000
             user_to_notify: null
@@ -435,7 +462,9 @@ jobs:
         label: 'Fashion products for Tmall (daily)'
         type: export
         configuration:
-            filePath: /tmp/export_%job_label%_%datetime%.xlsx
+            storage:
+                type: none
+                file_path: /tmp/export_%job_label%_%datetime%.xlsx
             withHeader: true
             linesPerFile: 10000
             user_to_notify: null
@@ -508,7 +537,9 @@ jobs:
         label: 'Food products for Supermarkets (weekly)'
         type: export
         configuration:
-            filePath: /tmp/export_%job_label%_%datetime%.xlsx
+            storage:
+                type: none
+                file_path: /tmp/export_%job_label%_%datetime%.xlsx
             withHeader: true
             linesPerFile: 10000
             user_to_notify: null
@@ -577,7 +608,9 @@ jobs:
         label: 'Pharma products for Amazon (monthly)'
         type: export
         configuration:
-            filePath: /tmp/export_%job_label%_%datetime%.xlsx
+            storage:
+                type: none
+                file_path: /tmp/export_%job_label%_%datetime%.xlsx
             withHeader: true
             linesPerFile: 10000
             user_to_notify: null
@@ -644,7 +677,9 @@ jobs:
         label: 'Electronic products for Sales app'
         type: export
         configuration:
-            filePath: /tmp/export_%job_label%_%datetime%.xlsx
+            storage:
+                type: none
+                file_path: /tmp/export_%job_label%_%datetime%.xlsx
             withHeader: true
             linesPerFile: 10000
             user_to_notify: null
@@ -718,7 +753,9 @@ jobs:
         label: 'Printers for Amazon (weekly)'
         type: export
         configuration:
-            filePath: /tmp/export_%job_label%_%datetime%.xlsx
+            storage:
+                type: none
+                file_path: /tmp/export_%job_label%_%datetime%.xlsx
             withHeader: true
             linesPerFile: 10000
             user_to_notify: null
@@ -778,3 +815,9 @@ jobs:
                         - color_scanning
                         - connector_type_2
                         - printer_connectivity
+
+    versioning_refresh:
+        connector: internal
+        alias:     versioning_refresh
+        label:     Refresh versioning for any updated entities
+        type:      scheduled_job

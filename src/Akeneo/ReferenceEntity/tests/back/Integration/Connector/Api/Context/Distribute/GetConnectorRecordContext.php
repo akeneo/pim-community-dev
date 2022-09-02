@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Distribute;
 
 use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorRecordByReferenceEntityAndCode;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFilesystemProviderStub;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryMediaFileRepository;
 use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
@@ -39,6 +38,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use Behat\Behat\Context\Context;
@@ -74,7 +74,7 @@ class GetConnectorRecordContext implements Context
     /** @var InMemoryMediaFileRepository */
     private $mediaFileRepository;
 
-    /** @var InMemoryFilesystemProviderStub */
+    /** @var FilesystemProvider */
     private $filesystemProvider;
 
     /** @var null|StreamedResponse */
@@ -95,7 +95,7 @@ class GetConnectorRecordContext implements Context
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
         AttributeRepositoryInterface $attributeRepository,
         InMemoryMediaFileRepository $mediaFileRepository,
-        InMemoryFilesystemProviderStub $filesystemProvider,
+        FilesystemProvider $filesystemProvider,
         SecurityFacadeStub $securityFacade
     ) {
         $this->clientFactory = $clientFactory;
@@ -151,9 +151,11 @@ class GetConnectorRecordContext implements Context
                         'channel' => null,
                         'locale' => null,
                         'data' => '2/4/3/7/24378761474c58aeee26016ee881b3b15069de52_kartell_cover.jpg'
-                    ]
+                    ],
                 ]
-            ]
+            ],
+            \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
+            \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
         );
         $this->findConnectorRecord->save(
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
@@ -229,7 +231,9 @@ class GetConnectorRecordContext implements Context
         for ($i = 0; $i < 10 ; $i++) {
             $record = new ConnectorRecord(
                 RecordCode::fromString('record_code_' . $i),
-                []
+                [],
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
             );
             $this->findConnectorRecord->save(
                 ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
@@ -273,7 +277,9 @@ class GetConnectorRecordContext implements Context
             for ($j = 0; $j < 10 ; $j++) {
                 $record = new ConnectorRecord(
                     RecordCode::fromString(sprintf('record_code_%s_%s', $i, $j)),
-                    []
+                    [],
+                    \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
+                    \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
                 );
                 $this->findConnectorRecord->save(
                     ReferenceEntityIdentifier::fromString(sprintf('reference_entity_%s', $i)),

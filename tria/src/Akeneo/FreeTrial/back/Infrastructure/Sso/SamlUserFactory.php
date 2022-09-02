@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\FreeTrial\Infrastructure\Sso;
 
 use Akeneo\Platform\Bundle\AuthenticationBundle\Sso\User\UnknownUserException;
-use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -28,41 +28,20 @@ use Webmozart\Assert\Assert;
 
 final class SamlUserFactory implements SamlUserFactoryInterface
 {
-    private SamlUserFactoryInterface $baseUserFactory;
-
-    private FeatureFlag $freeTrialFeature;
-
-    private SimpleFactoryInterface $userFactory;
-
-    private SaverInterface $userSaver;
-
-    private ObjectUpdaterInterface $userUpdater;
-
-    private ValidatorInterface $userValidator;
-
-    private LoggerInterface $logger;
-
     public function __construct(
-        SamlUserFactoryInterface $baseUserFactory,
-        FeatureFlag $freeTrialFeature,
-        SimpleFactoryInterface $userFactory,
-        SaverInterface $userSaver,
-        ObjectUpdaterInterface $userUpdater,
-        ValidatorInterface $userValidator,
-        LoggerInterface $logger
+        private SamlUserFactoryInterface $baseUserFactory,
+        private FeatureFlags $featureFlags,
+        private SimpleFactoryInterface $userFactory,
+        private SaverInterface $userSaver,
+        private ObjectUpdaterInterface $userUpdater,
+        private ValidatorInterface $userValidator,
+        private LoggerInterface $logger
     ) {
-        $this->baseUserFactory = $baseUserFactory;
-        $this->freeTrialFeature = $freeTrialFeature;
-        $this->userFactory = $userFactory;
-        $this->userSaver = $userSaver;
-        $this->userUpdater = $userUpdater;
-        $this->userValidator = $userValidator;
-        $this->logger = $logger;
     }
 
     public function createUser(SamlTokenInterface $token)
     {
-        if (!$this->freeTrialFeature->isEnabled()) {
+        if (!$this->featureFlags->isEnabled('free_trial')) {
             return $this->baseUserFactory->createUser($token);
         }
 

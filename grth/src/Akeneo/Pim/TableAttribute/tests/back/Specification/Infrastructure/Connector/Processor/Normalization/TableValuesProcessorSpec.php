@@ -41,6 +41,10 @@ class TableValuesProcessorSpec extends ObjectBehavior
                 ColumnIdGenerator::ingredient() => 'salt',
                 ColumnIdGenerator::quantity() => 10,
                 ColumnIdGenerator::isAllergenic() => true,
+                ColumnIdGenerator::length() => [
+                    'amount' => '200',
+                    'unit' => 'CENTIMETER',
+                ],
             ])
         );
 
@@ -51,6 +55,7 @@ class TableValuesProcessorSpec extends ObjectBehavior
                 'ingredient' => 'salt',
                 'quantity' => '10',
                 'is_allergenic' => '1',
+                'length' => '200 CENTIMETER',
             ]
         );
     }

@@ -48,8 +48,11 @@ final class MissingRequiredAttributesCalculator implements MissingRequiredAttrib
     public function fromEntityWithFamily(
         EntityWithFamilyInterface $entityWithFamily
     ): ProductCompletenessWithMissingAttributeCodesCollection {
+        $entityId = \method_exists($entityWithFamily, 'getUuid')
+            ?  $entityWithFamily->getUuid()->toString()
+            : (string) $entityWithFamily->getId();
         if (null === $entityWithFamily->getFamily()) {
-            return new ProductCompletenessWithMissingAttributeCodesCollection($entityWithFamily->getId(), []);
+            return new ProductCompletenessWithMissingAttributeCodesCollection($entityId, []);
         }
         $familyCode = $entityWithFamily->getFamily()->getCode();
         $requiredAttributesMasks = $this->getRequiredAttributesMasks->fromFamilyCodes([$familyCode]);
@@ -62,8 +65,7 @@ final class MissingRequiredAttributesCalculator implements MissingRequiredAttrib
         );
 
         $productMask = $this->getCompletenessProductMasks->fromValueCollection(
-            $entityWithFamily->getId(),
-            $entityWithFamily->getIdentifier(),
+            $entityId,
             $familyCode,
             $valuesWithFullPermissions
         );
@@ -78,7 +80,7 @@ final class MissingRequiredAttributesCalculator implements MissingRequiredAttrib
     private function getRawValues(EntityWithFamilyInterface $entityWithFamily): array
     {
         if ($entityWithFamily instanceof ProductInterface) {
-            $rawValues = $this->getRawValues->forProductId($entityWithFamily->getId());
+            $rawValues = $this->getRawValues->forProductUuid($entityWithFamily->getUuid());
             if (null === $rawValues) {
                 throw new \InvalidArgumentException(
                     sprintf("The raw values of the '%s' product are not found.", $entityWithFamily->getIdentifier())

@@ -17,11 +17,12 @@ class SaveAttributeGroupsPermissionsActionEndToEnd extends WebTestCase
     {
         parent::setUp();
 
-        $this->connection = self::$container->get('database_connection');
+        $this->connection = self::getContainer()->get('database_connection');
     }
 
     public function testItSavesAttributeGroupsPermissions(): void
     {
+        $this->get('feature_flags')->enable('permission');
         $this->authenticateAsAdmin();
         $this->createAttributeGroups(['marketing', 'technical']);
 
@@ -71,6 +72,38 @@ class SaveAttributeGroupsPermissionsActionEndToEnd extends WebTestCase
             'edit' => false,
             'view' => true,
         ], $otherPermissions);
+    }
+
+    public function testItDoesNotSavesAttributeGroupsPermissionsWhenFeatureDisabled(): void
+    {
+        $this->get('feature_flags')->disable('permission');
+        $this->authenticateAsAdmin();
+        $this->createAttributeGroups(['marketing', 'technical']);
+
+        $this->client->request(
+            'POST',
+            '/rest/permissions/attribute-group',
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ],
+            \json_encode([
+                'user_group' => 'Redactor',
+                'permissions' => [
+                    'edit' => [
+                        'all' => false,
+                        'identifiers' => ['marketing', 'technical'],
+                    ],
+                    'view' => [
+                        'all' => true,
+                        'identifiers' => [],
+                    ],
+                ],
+            ])
+        );
+
+        Assert::assertEquals(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
     }
 
     private function createAttributeGroups(array $codes): void

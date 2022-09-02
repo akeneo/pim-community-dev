@@ -14,23 +14,25 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateAttributeSpelling;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsWithOutdatedAttributeSpellcheckQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Doctrine\DBAL\Connection;
 
 final class GetProductModelIdsWithOutdatedAttributeSpellcheckQuery implements GetProductIdsWithOutdatedAttributeSpellcheckQueryInterface
 {
-    /** @var Connection */
-    private $dbConnection;
-
-    public function __construct(Connection $dbConnection)
-    {
-        $this->dbConnection = $dbConnection;
+    public function __construct(
+        private Connection                      $dbConnection,
+        private ProductEntityIdFactoryInterface $idFactory
+    ) {
     }
 
-    public function evaluatedSince(\DateTimeImmutable $updatedSince, int $bulkSize): \Iterator
+    /**
+     * @return \Generator<int, ProductEntityIdCollection>
+     */
+    public function evaluatedSince(\DateTimeImmutable $updatedSince, int $bulkSize): \Generator
     {
         $query = <<<SQL
 SELECT DISTINCT product_model.id
@@ -64,16 +66,16 @@ SQL;
 
         $productModelIds = [];
         while ($productModelId = $stmt->fetchColumn()) {
-            $productModelIds[] = new ProductId(intval($productModelId));
+            $productModelIds[] = $productModelId;
 
             if (count($productModelIds) >= $bulkSize) {
-                yield $productModelIds;
+                yield $this->idFactory->createCollection($productModelIds);
                 $productModelIds = [];
             }
         }
 
         if (!empty($productModelIds)) {
-            yield $productModelIds;
+            yield $this->idFactory->createCollection($productModelIds);
         }
     }
 }

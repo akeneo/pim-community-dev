@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules;
 
 use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetCollectionType;
-use Akeneo\Pim\Structure\Component\Model\AbstractAttribute;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -14,24 +14,22 @@ use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
  */
 class GetAssetCollectionTypeAdapter implements GetAssetCollectionTypeAdapterInterface
 {
-    private AttributeRepositoryInterface $attributeRepository;
-
-    public function __construct(AttributeRepositoryInterface $attributeRepository)
-    {
-        $this->attributeRepository = $attributeRepository;
+    public function __construct(
+        private GetAttributes $getAttributes,
+    ) {
     }
 
     public function fetch(string $productAttributeCode): string
     {
-        /** @var AbstractAttribute $attribute */
-        $attribute = $this->attributeRepository->findOneByIdentifier($productAttributeCode);
+        $attribute = $this->getAttributes->forCode($productAttributeCode);
+
         $this->checkAttributeExists($productAttributeCode, $attribute);
         $this->checkAttributeType($attribute);
 
-        return $attribute->getReferenceDataName();
+        return $attribute->properties()['reference_data_name'];
     }
 
-    private function checkAttributeExists(string $productAttributeCode, ?AbstractAttribute $attribute): void
+    private function checkAttributeExists(string $productAttributeCode, ?Attribute $attribute): void
     {
         if (null === $attribute) {
             $message = sprintf('Expected attribute "%s" to exist, none found', $productAttributeCode);
@@ -39,14 +37,14 @@ class GetAssetCollectionTypeAdapter implements GetAssetCollectionTypeAdapterInte
         }
     }
 
-    private function checkAttributeType(AbstractAttribute $attribute): void
+    private function checkAttributeType(Attribute $attribute): void
     {
-        if ($attribute->getType() !== AssetCollectionType::ASSET_COLLECTION) {
+        if ($attribute->type() !== AssetCollectionType::ASSET_COLLECTION) {
             $message = sprintf(
                 'Expected attribute "%s" to be of type "%s", "%s" given',
-                $attribute->getCode(),
+                $attribute->code(),
                 AssetCollectionType::ASSET_COLLECTION,
-                $attribute->getType()
+                $attribute->type()
             );
             throw new ProductAttributeCannotContainAssetsException($message);
         }

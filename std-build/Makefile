@@ -2,9 +2,9 @@
 # This file is a template Makefile. Some targets are presented here as examples.
 # Feel free to customize it to your needs!
 #
-CMD_ON_PROJECT = docker-compose run -u www-data -e COMPOSER_AUTH --rm php
+CMD_ON_PROJECT = docker-compose run -e COMPOSER_AUTH --rm php
 PHP_RUN = $(CMD_ON_PROJECT) php
-YARN_RUN = docker-compose run -u node --rm -e YARN_REGISTRY -e PUPPETEER_SKIP_CHROMIUM_DOWNLOAD node yarn
+YARN_RUN = docker-compose run --rm -e YARN_REGISTRY -e PUPPETEER_SKIP_CHROMIUM_DOWNLOAD node yarn
 
 ifdef NO_DOCKER
   CMD_ON_PROJECT =
@@ -58,11 +58,11 @@ cache:
 	$(CMD_ON_PROJECT) rm -rf var/cache && $(PHP_RUN) -d memory_limit=256M bin/console cache:warmup
 
 composer.lock: composer.json
-	$(PHP_RUN) -d memory_limit=4G /usr/local/bin/composer update --no-interaction
+	$(PHP_RUN) /usr/local/bin/composer update --no-interaction
 
 .PHONY: vendor
 vendor: composer.lock
-	$(PHP_RUN) -d memory_limit=4G /usr/local/bin/composer install --no-interaction
+	$(PHP_RUN) /usr/local/bin/composer install --no-interaction
 
 .PHONY: dependencies
 dependencies: vendor node_modules

@@ -162,6 +162,10 @@ pim_table_attribute:
       completeness_helper_text: "要探索完成度如何用于表属性，"
       completeness_helper_link: 请查看我们的“帮助中心”。
       reference_entity: 参考实体
+      import_from_existing_attribute: 从现有属性导入
+      option_count: "{0,1}{{ count }} 个选项|]1, Inf[{{ count }} 个选项"
+      measurement_family: 测量单位群
+      measurement_default_unit: 测量默认​​​​​单位
     product:
       items_per_page: 每页项目数
       current_items: "{{ minItem }}-{{ maxItem }}/{{ itemCount }}"
@@ -191,6 +195,7 @@ pim_table_attribute:
       boolean: 是/否
       select: 选择
       reference_entity: 参考实体
+      measurement: 测量
   validations:
     column_code_must_be_filled: 必须填写代码
     not_available_code: 此列代码不可用
@@ -251,3 +256,7 @@ batch_jobs:
   xlsx_product_table_values_import.label: 以 XLSX 格式导入产品表值
   csv_product_model_table_values_import.label: 以 CSV 格式导入产品模型表值
   xlsx_product_model_table_values_import.label: 以 XLSX 格式导入产品模型表值
+  default_steps.clean: 移除不存在的表选项值
+akeneo_job_process_tracker:
+  type_filter:
+    clean_table_values_following_deleted_options: 从产品和产品模型中移除不存在的表选项值

@@ -37,7 +37,8 @@ output "storage_bucket_location" {
 }
 
 output "tf-helm-pim-values" {
-  value = data.template_file.helm_pim_config.rendered
+  value     = local_file.helm_pim_config.content
+  sensitive = true
 }
 
 output "type" {
@@ -45,5 +46,10 @@ output "type" {
 }
 
 output "monitoring_authentication_token" {
-  value = local.monitoring_authentication_token
+  value     = local.monitoring_authentication_token
+  sensitive = true
+}
+
+output "use_edition_flag" {
+  value = var.use_edition_flag
 }

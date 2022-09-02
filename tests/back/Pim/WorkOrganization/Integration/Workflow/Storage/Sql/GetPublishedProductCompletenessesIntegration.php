@@ -21,6 +21,12 @@ use PHPUnit\Framework\ExpectationFailedException;
 
 class GetPublishedProductCompletenessesIntegration extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->get('feature_flags')->enable('published_product');
+    }
+
     public function test_that_it_returns_completenesseses_given_a_published_product_id()
     {
         $this->createPublishedProduct(

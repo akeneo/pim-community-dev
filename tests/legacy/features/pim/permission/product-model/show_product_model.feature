@@ -1,4 +1,4 @@
-@javascript
+@javascript @permission-feature-enabled
 Feature: Show a product product model
   In order to consult the catalog
   As a product manager

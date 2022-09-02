@@ -23,6 +23,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Structure\SpellCheckResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeOptionSpellcheckRepository;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\AttributeGrid\TestCase;
 use Doctrine\DBAL\Connection;
@@ -92,6 +93,25 @@ class AttributeOptionSpellcheckRepositoryIntegration extends TestCase
         $this->assertNotEmpty($this->getAttributeOptionSpellcheck('color', 'blue'));
     }
 
+    public function test_it_deletes_spellchecks_of_unknown_attribute_option()
+    {
+        $this->givenASimpleSelectAttribute('color');
+        $this->givenAnAttributeOption('color', 'red');
+        $attributeOptionColorBlue = $this->givenAnAttributeOption('color', 'blue');
+
+        $this->createAttributeOptionSpellcheck('color', 'red');
+        $this->createAttributeOptionSpellcheck('color', 'blue');
+        $this->createAttributeOptionSpellcheck('color', 'green');
+
+        $this->assertCountAttributeOptionSpellchecks(3);
+
+        $this->repository->deleteUnknownAttributeOption($attributeOptionColorBlue);
+        $this->assertCountAttributeOptionSpellchecks(2);
+
+        $this->assertNotEmpty($this->getAttributeOptionSpellcheck('color', 'red'));
+        $this->assertNotEmpty($this->getAttributeOptionSpellcheck('color', 'blue'));
+    }
+
     private function getAttributeOptionSpellcheck(string $attributeCode, string $optionCode): array
     {
         $query = <<<SQL
@@ -150,7 +170,7 @@ SQL;
         $this->get('pim_catalog.saver.attribute')->save($attribute);
     }
 
-    private function givenAnAttributeOption(string $attributeCode, string $optionCode): void
+    private function givenAnAttributeOption(string $attributeCode, string $optionCode): AttributeOptionInterface
     {
         $attributeOption = $this->get('pim_catalog.factory.attribute_option')->create();
         $this->get('pim_catalog.updater.attribute_option')->update($attributeOption, [
@@ -158,5 +178,7 @@ SQL;
             'attribute' => $attributeCode,
         ]);
         $this->get('pim_catalog.saver.attribute_option')->save($attributeOption);
+
+        return $attributeOption;
     }
 }

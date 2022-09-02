@@ -20,3 +20,14 @@ oneup_flysystem:
             awss3v3:
                 client: 'Aws\S3\S3Client'
                 bucket: 'dataqualityinsights'
+        tailored_import_storage_adapter:
+            awss3v3:
+                client: 'Aws\S3\S3Client'
+                bucket: 'tailoredimport'
+        supplier_portal_storage_adapter:
+            awss3v3:
+                client: 'Aws\S3\S3Client'
+                bucket: 'supplierportal'
+        local_storage_adapter:
+            local:
+                location: '/'

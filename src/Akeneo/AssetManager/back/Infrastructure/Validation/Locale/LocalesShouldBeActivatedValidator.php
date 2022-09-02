@@ -25,11 +25,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class LocalesShouldBeActivatedValidator extends ConstraintValidator
 {
-    private FindActivatedLocalesByIdentifiersInterface $findActivatedLocales;
-
-    public function __construct(FindActivatedLocalesByIdentifiersInterface $findActivatedLocales)
+    public function __construct(private FindActivatedLocalesByIdentifiersInterface $findActivatedLocales)
     {
-        $this->findActivatedLocales = $findActivatedLocales;
     }
 
     /**
@@ -78,7 +75,7 @@ class LocalesShouldBeActivatedValidator extends ConstraintValidator
             throw new \InvalidArgumentException(sprintf(
                 'Expected argument to be of class "%s", "%s" given',
                 LocaleIdentifierCollection::class,
-                get_class($channelReference)
+                $channelReference::class
             ));
         }
     }

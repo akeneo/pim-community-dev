@@ -15,33 +15,6 @@ config:
                     create: pim-attribute-form-table
                     edit: pim-attribute-form-table
 
-        pim/table-attribute/attribute/tab:
-            column_definition_properties:
-                select: '@akeneopimtableattribute/attribute/ColumDefinitionProperties/SelectProperties'
-                number: '@akeneopimtableattribute/attribute/ColumDefinitionProperties/NumberProperties'
-                text: '@akeneopimtableattribute/attribute/ColumDefinitionProperties/TextProperties'
-            data_types:
-                select:
-                    useable_as_first_column: true
-                text:
-                    useable_as_first_column: false
-                number:
-                    useable_as_first_column: false
-                boolean:
-                    useable_as_first_column: false
-
-        pim/table-attribute/product/table-field:
-            cell_inputs:
-                select: '@akeneopimtableattribute/product/CellInputs/SelectInput'
-                number: '@akeneopimtableattribute/product/CellInputs/NumberInput'
-                text: '@akeneopimtableattribute/product/CellInputs/TextInput'
-                boolean: '@akeneopimtableattribute/product/CellInputs/BooleanInput'
-            cell_matchers:
-                select: '@akeneopimtableattribute/product/CellMatchers/SelectMatcher'
-                number: '@akeneopimtableattribute/product/CellMatchers/NumberMatcher'
-                text: '@akeneopimtableattribute/product/CellMatchers/TextMatcher'
-                boolean: '@akeneopimtableattribute/product/CellMatchers/BooleanMatcher'
-
         pim/form/common/attributes/create-button:
             attribute_icons:
                 pim_catalog_table: TableIcon
@@ -53,17 +26,3 @@ config:
         akeneopimworkflow/js/datagrid/cell/proposal-cell:
             proposal_diffs:
                 pim_catalog_table: '@akeneopimtableattribute/proposals/ProposalDiffTable.tsx'
-
-        pimee/attribute-edit-form/rules/edit-rules:
-            views:
-                pim_catalog_table: '@akeneopimruleengine/pages/EditRules/components/actions/attribute/TableValue'
-            cell_inputs:
-                select: '@akeneopimtableattribute/product/CellInputs/SelectInput'
-                number: '@akeneopimtableattribute/product/CellInputs/NumberInput'
-                text: '@akeneopimtableattribute/product/CellInputs/TextInput'
-                boolean: '@akeneopimtableattribute/product/CellInputs/BooleanInput'
-            cell_matchers:
-                select: '@akeneopimtableattribute/product/CellMatchers/SelectMatcher'
-                number: '@akeneopimtableattribute/product/CellMatchers/NumberMatcher'
-                text: '@akeneopimtableattribute/product/CellMatchers/TextMatcher'
-                boolean: '@akeneopimtableattribute/product/CellMatchers/BooleanMatcher'

@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Behat\Context;
 
-use Behat\Mink\Exception\ExpectationException;
 use Context\Spin\SpinCapableTrait;
+use Context\Spin\TimeoutException;
 use Context\ViewSelectorContext as BaseViewSelectorContext;
 
 /**
@@ -47,33 +47,35 @@ class ViewSelectorContext extends BaseViewSelectorContext
     }
 
     /**
-     * @Then /^I should( not)? see the "([^"]*)" project$/
+     * @Then /^I should see the "([^"]*)" project$/
      *
-     * @param string $not
      * @param string $projectName
      *
-     * @throws ExpectationException
+     * @throws TimeoutException
      */
-    public function iShouldSeeTheProject($not, $projectName)
+    public function iShouldSeeTheProject($projectName)
     {
-        $values = $this->getCurrentPage()->getViewSelector()->getAvailableValues();
-        $found = false;
+        $this->spin(function () use ($projectName) {
+            $isProjectDisplayed = $this->isProjectDisplayed($projectName);
 
-        foreach ($values as $value) {
-            if (strpos($value, $projectName) !== false) {
-                $found = true;
-            }
-        }
+            return true === $isProjectDisplayed ? true : null;
+        }, sprintf('Project "%s" should be displayed.', $projectName));
+    }
 
-        if ($not && $found) {
-            throw new \UnexpectedValueException(
-                sprintf('Project "%s" should not be displayed.', $projectName)
-            );
-        } elseif (!$not && !$found) {
-            throw new \UnexpectedValueException(
-                sprintf('Project "%s" should be displayed.', $projectName)
-            );
-        }
+    /**
+     * @Then /^I should not see the "([^"]*)" project$/
+     *
+     * @param string $projectName
+     *
+     * @throws TimeoutException
+     */
+    public function iShouldNotSeeTheProject($projectName)
+    {
+        $this->spin(function () use ($projectName) {
+            $isProjectDisplayed = $this->isProjectDisplayed($projectName);
+
+            return false === $isProjectDisplayed ? true : null;
+        }, sprintf('Project "%s" should not be displayed.', $projectName));
     }
 
     /**
@@ -85,6 +87,27 @@ class ViewSelectorContext extends BaseViewSelectorContext
     {
         $this->getCurrentPage()->switchViewType($viewType);
     }
+
+    /**
+     * @Given /^I should see the "([^"]*)" view type$/
+     *
+     * @param string $viewType
+     */
+    public function iShouldSeeTheViewType($viewType)
+    {
+        $this->getCurrentPage()->existViewType($viewType);
+    }
+
+    /**
+     * @Given /^I should not see the "([^"]*)" view type$/
+     *
+     * @param string $viewType
+     */
+    public function iShouldNotSeeTheViewType($viewType)
+    {
+        $this->getCurrentPage()->notExistViewType($viewType);
+    }
+
 
     /**
      * @Then /^view selector type switcher should be on "([^"]*)"$/
@@ -101,5 +124,18 @@ class ViewSelectorContext extends BaseViewSelectorContext
                 sprintf('View selector type switcher should be on "%s", but is on "%s".', $expectedType, $currentType)
             );
         }
+    }
+
+    private function isProjectDisplayed(string $projectName): bool
+    {
+        $values = $this->getCurrentPage()->getViewSelector()->getAvailableValues();
+
+        foreach ($values as $value) {
+            if (strpos($value, $projectName) !== false) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

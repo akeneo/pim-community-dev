@@ -21,10 +21,7 @@ import {useStoredState} from 'akeneoassetmanager/application/hooks/state';
 import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
 import {useChannels} from 'akeneoassetmanager/application/hooks/channel';
 import {Column} from 'akeneoassetmanager/application/component/app/column';
-import AssetFetcher from 'akeneoassetmanager/domain/fetcher/asset';
 import {ChannelFetcher} from 'akeneoassetmanager/application/hooks/channel';
-import {AssetFamilyFetcher} from 'akeneoassetmanager/domain/fetcher/asset-family';
-import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {clearImageLoadingQueue} from 'akeneoassetmanager/tools/image-loader';
 import {getAttributeAsMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {isMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
@@ -63,15 +60,8 @@ const Grid = styled.div`
   overflow-y: auto;
 `;
 
-export type AssetAttributeFetcher = {
-  fetchAll: (assetFamilyIdentifier: AssetFamilyIdentifier) => Promise<NormalizedAttribute[]>;
-};
-
 export type LibraryDataProvider = {
-  assetFetcher: AssetFetcher;
   channelFetcher: ChannelFetcher;
-  assetFamilyFetcher: AssetFamilyFetcher;
-  assetAttributeFetcher: AssetAttributeFetcher;
 };
 
 type CreateButtonProps = {
@@ -152,7 +142,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
 
   const channels = useChannels(dataProvider.channelFetcher);
   const locales = getLocales(channels, context.channel);
-  const {assetFamily: currentAssetFamily, rights} = useAssetFamily(dataProvider, currentAssetFamilyIdentifier);
+  const {assetFamily: currentAssetFamily, rights} = useAssetFamily(currentAssetFamilyIdentifier);
   const currentAssetFamilyLabel =
     null === currentAssetFamily
       ? ''
@@ -190,7 +180,6 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
 
   const updateResults = useFetchResult(createQuery)(
     true,
-    dataProvider,
     currentAssetFamilyIdentifier,
     filterCollection,
     searchValue,
@@ -201,7 +190,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
       setIsInitialized(true);
     }
   );
-  const filterViews = useFilterViews(currentAssetFamilyIdentifier, dataProvider);
+  const filterViews = useFilterViews(currentAssetFamilyIdentifier);
   const {redirectToAsset, redirectToAssetFamily} = useRoutes();
 
   const hasMediaLinkAsMainMedia =
@@ -229,7 +218,6 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
         <AssetFamilySelector
           assetFamilyIdentifier={currentAssetFamilyIdentifier}
           locale={context.locale}
-          dataProvider={dataProvider}
           onChange={handleAssetFamilyChange}
         />
         <FilterCollection

@@ -40,9 +40,19 @@ pim_table_configuration:
       no_validations_allowed: '不要在"{{ columnType }}"列上使用验证, 当前列类型："{{ given }}"'
       invalid_validation_key: '"{{ given }}"验证不适用于"{{ columnType }}"列，允许："{{ expected }}"'
       too_many_table_attributes: 已达到 PIM 中表属性的最大值 ({{ limit }})
+      measurement_family_should_exist: 将“{{ measurement_family_code }}”测量单位群添加到表中之前确保其存在
+      measurement_unit_should_exist: 将“{{ measurement_unit_code }}”单位添加到表中之前，确保其在“{{ measurement_family_code }}”测量单位群中存在
+      measurement_family_code_must_be_filled: 必须填写测量单位群代码
+      measurement_default_unit_code_must_be_filled: 必须填写测量默认​​​​​单位代码
+      measurement_family_code_cannot_be_set: 不能为列类型“{{ data_type }}”设置测量单位群代码
+      measurement_default_unit_code_cannot_be_set: 不能为列类型“{{ data_type }}”设置测量默认​​​​​单位代码
+      measurement_family_cannot_be_updated: 无法更新 measurement_family_code
+      measurement_family_should_not_be_linked: '该测量单位群已用于产品属性，因此无法将其移除。'
+      measurement_family_unit_should_not_be_linked: '此测量单位群单位已用于产品属性。您只能编辑单位的翻译标签和符号。'
     product_value:
       non_existing_columns: '[0,1]列"{{ non_existing_columns }}"不存在|]1,Inf[列"{{ non_existing_columns }}"不存在'
       unexpected_data_type: '列"{{ columnCode }}"需要 {{ expected }}，但给出 {{ given }}'
+      unexpected_data_type_for_measurement: '列“{{ columnCode }}”需要字符串单位代码和数量，而给出的为 {{ given }} '
       first_column_required: '必需"{{ columnCode }}"列'
       unknown_option: '请确保只使用现有的选项代码，当前值：“{{ optionCode }}”'
       integer_required: '此值应该是一个整数：{{ invalid_value }}'
@@ -52,6 +62,7 @@ pim_table_configuration:
       max_length_validation: 此值应包含 {{ limit }} 个字符或更少。
       too_many_rows: 已达到表中行数的最大值 ({{ limit }})
       record_should_exist: '参考实体“{{ referenceEntityIdentifier }}”中的记录“{{ recordCode }}”不存在'
+      measurement_unit_should_exist: '测量单位群“{{ measure_family_code }}”中不存在单位“{{ measure_unit_code }}”'
     product_value_collection:
       too_many_cells: 已达到产品中表格单元格的最大数量 ({{ count }} 个单元格，只允许 {{ limit }} 个单元格)。
     reference_entity:

@@ -13,8 +13,8 @@ pimee_security_locales_permissions_rest:
         _format: json
 
 pim_pdf_generator_download_product_pdf:
-    path: /enrich/product/{id}/download-pdf
+    path: /enrich/product/{uuid}/download-pdf
     defaults: { _controller: pimee_security.controller.product:downloadPdfAction }
     requirements:
-        id: '[0-9a-f]+'
+        uuid: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
     methods: [GET]

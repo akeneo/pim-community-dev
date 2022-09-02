@@ -14,7 +14,7 @@ describe('followAttributeOptionSpellingCriterion', () => {
   test('it does not redirects when family is not defined', () => {
     const criterionRate = aRate(85, 'B');
     const criterion = aCriterion('consistency_attribute_option_spelling', 'done', criterionRate, ['an_attribute']);
-    const product = aProduct(1234);
+    const product = aProduct('df470d52-7723-4890-85a0-e79be625e2ed');
     followAttributeOptionSpellingCriterion(criterion, null, product, 'en_US');
 
     expect(redirectToAttributeGridFilteredByFamilyAndQualityAndSelectAttributeTypes).not.toHaveBeenCalled();
@@ -23,7 +23,7 @@ describe('followAttributeOptionSpellingCriterion', () => {
   test('it does not redirects when evaluation has succeed', () => {
     const criterionRate = aRate(100, 'A');
     const criterion = aCriterion('consistency_attribute_option_spelling', 'done', criterionRate, ['an_attribute']);
-    const product = aProduct(1234);
+    const product = aProduct('df470d52-7723-4890-85a0-e79be625e2ed');
     const family = aFamily('a_family', 4321);
 
     followAttributeOptionSpellingCriterion(criterion, family, product, 'en_US');
@@ -34,14 +34,14 @@ describe('followAttributeOptionSpellingCriterion', () => {
   test('it initializes back link data with product information before redirecting to the attribute options list', () => {
     const criterionRate = aRate(85, 'B');
     const criterion = aCriterion('consistency_attribute_option_spelling', 'done', criterionRate, ['an_attribute']);
-    const product = aProduct(1234);
+    const product = aProduct('df470d52-7723-4890-85a0-e79be625e2ed');
     const family = aFamily('a_family', 4321);
 
     followAttributeOptionSpellingCriterion(criterion, family, product, 'en_US');
 
     const backLink = JSON.parse(window.sessionStorage.getItem(BACK_LINK_SESSION_STORAGE_KEY) as string);
     expect(backLink.route).toBe('pim_enrich_product_edit');
-    expect(backLink.routeParams.id).toBe(1234);
+    expect(backLink.routeParams.uuid).toBe('df470d52-7723-4890-85a0-e79be625e2ed');
 
     expect(redirectToAttributeGridFilteredByFamilyAndQualityAndSelectAttributeTypes).toHaveBeenCalledWith(
       'a_family',
