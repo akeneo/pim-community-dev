@@ -124,7 +124,7 @@ trait EntityWithQuantifiedAssociationTrait
      * @inheritDoc
      */
     public function hydrateQuantifiedAssociations(
-        IdMapping $mappedProductIds,
+        UuidMapping $mappedProductIds,
         IdMapping $mappedProductModelIds,
         array $associationTypeCodes
     ): void {

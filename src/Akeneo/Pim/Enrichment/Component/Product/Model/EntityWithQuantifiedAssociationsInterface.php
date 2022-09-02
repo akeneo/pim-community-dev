@@ -58,12 +58,12 @@ interface EntityWithQuantifiedAssociationsInterface
     /**
      * Hydrates quantified associations from raw quantified associations
      *
-     * @param IdMapping $mappedProductIds
+     * @param UuidMapping $mappedProductIds
      * @param IdMapping $mappedProductModelIds
      * @param array $associationTypeCodes
      */
     public function hydrateQuantifiedAssociations(
-        IdMapping $mappedProductIds,
+        UuidMapping $mappedProductIds,
         IdMapping $mappedProductModelIds,
         array $associationTypeCodes
     ): void;

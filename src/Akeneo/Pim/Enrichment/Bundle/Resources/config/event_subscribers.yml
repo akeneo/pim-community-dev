@@ -57,7 +57,7 @@ services:
     pim_catalog.event_subscriber.load_product_quantified_associations:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithQuantifiedAssociations\LoadEntitySubscriber'
         arguments:
-            - '@akeneo.pim.enrichment.product.query.quantified_association.get_id_mapping_from_product_ids_query'
+            - '@akeneo.pim.enrichment.product.query.quantified_association.get_uuid_mapping_from_product_identifiers_query'
             - '@akeneo.pim.enrichment.product.query.quantified_association.get_id_mapping_from_product_model_ids_query'
             - '@akeneo.pim.enrichment.product.query.find_quantified_association_codes'
         tags:

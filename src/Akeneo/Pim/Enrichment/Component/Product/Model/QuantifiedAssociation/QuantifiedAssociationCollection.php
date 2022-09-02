@@ -66,7 +66,7 @@ class QuantifiedAssociationCollection
 
     public static function createWithAssociationsAndMapping(
         array $rawQuantifiedAssociations,
-        IdMapping $mappedProductIds,
+        UuidMapping $mappedProductIds,
         IdMapping $mappedProductModelIds,
         array $associationTypeCodes
     ): self {
@@ -91,14 +91,13 @@ class QuantifiedAssociationCollection
                 }
                 Assert::keyExists($productAssociation, 'quantity');
 
-                if (isset($productAssociation['id']) && $mappedProductIds->hasIdentifier($productAssociation['id'])) {
+                if (isset($productAssociation['id']) && $mappedProductIds->hasIdentifierFromId($productAssociation['id'])) {
                     $quantifiedLink = QuantifiedLink::fromIdentifier(
-                        $mappedProductIds->getIdentifier($productAssociation['id']),
+                        $mappedProductIds->getIdentifierFromId($productAssociation['id']),
                         $productAssociation['quantity']
                     );
                     $mappedQuantifiedAssociations[$associationType][self::PRODUCTS_QUANTIFIED_LINKS_KEY][] = $quantifiedLink;
-                } elseif (isset($productAssociation['uuid'])) {
-                    // TODO Should we check that the product with this uuid exists?
+                } elseif (isset($productAssociation['uuid']) && $mappedProductIds->hasUuidFromUuid($productAssociation['uuid'])) {
                     $quantifiedLink = QuantifiedLink::fromUuid(
                         $productAssociation['uuid'],
                         $productAssociation['quantity']

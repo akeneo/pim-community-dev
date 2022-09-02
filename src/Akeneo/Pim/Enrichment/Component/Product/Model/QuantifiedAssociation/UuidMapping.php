@@ -7,7 +7,13 @@ use Ramsey\Uuid\UuidInterface;
 use Webmozart\Assert\Assert;
 
 /**
- * Maps uuid to identifiers and vice versa
+ * This class do the map of every way to identify a product.
+ * A product can be identified by
+ * - its uuid (always present)
+ * - its id (always present for now)
+ * - its identifier (the value through the identifier attribute, not mandatory, can be null).
+ *
+ * Each method allow developer to retry a product identifier (uuid, id or identifier) from another product identifier.
  *
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -26,6 +32,9 @@ final class UuidMapping
     /** @var array<string, int> */
     private array $uuidsToIds = [];
 
+    /** @var array<int, string> */
+    private array $idsToIdentifiers = [];
+
     private function __construct(array $mapping)
     {
         foreach ($mapping as $line) {
@@ -40,6 +49,7 @@ final class UuidMapping
 
             $this->uuidsToIdentifiers[$line['uuid']] = $line['identifier'];
             $this->uuidsToIds[$line['uuid']] = $line['id'];
+            $this->idsToIdentifiers[$line['id']] = $line['identifier'];
 
             if (null !== $line['identifier']) {
                 $this->identifiersToUuids[$line['identifier']] = Uuid::fromString($line['uuid']);
@@ -85,5 +95,20 @@ final class UuidMapping
     public function getIdFromUuid(string $uuid): ?int
     {
         return $this->uuidsToIds[$uuid] ?? null;
+    }
+
+    public function hasIdentifierFromId(int $id): bool
+    {
+        return isset($this->idsToIdentifiers[$id]);
+    }
+
+    public function getIdentifierFromId(int $id): ?string
+    {
+        return $this->idsToIdentifiers[$id] ?? null;
+    }
+
+    public function hasUuidFromUuid(string $uuid): bool
+    {
+        return array_key_exists($uuid, $this->uuidsToIds);
     }
 }
