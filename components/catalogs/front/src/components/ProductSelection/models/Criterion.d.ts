@@ -8,6 +8,7 @@ import {CategoryCriterionState} from '../criteria/CategoryCriterion';
 import {AttributeTextCriterionState} from '../criteria/AttributeTextCriterion';
 import {AttributeSimpleSelectCriterionState} from '../criteria/AttributeSimpleSelectCriterion';
 import {AttributeNumberCriterionState} from '../criteria/AttributeNumberCriterion';
+import {AttributeMetricCriterionState} from '../criteria/AttributeMetricCriterion';
 import {AttributeBooleanCriterionState} from '../criteria/AttributeBooleanCriterion';
 
 export type CriterionModule<State> = {
@@ -41,12 +42,14 @@ export type AnyCriterionState =
     | AttributeTextCriterionState
     | AttributeSimpleSelectCriterionState
     | AttributeNumberCriterionState
+    | AttributeMetricCriterionState
     | AttributeBooleanCriterionState;
 
 export type AnyAttributeCriterion =
     | Criterion<AttributeTextCriterionState>
     | Criterion<AttributeSimpleSelectCriterionState>
     | Criterion<AttributeNumberCriterionState>
+    | Criterion<AttributeMetricCriterionState>
     | Criterion<AttributeBooleanCriterionState>;
 
 export type AnyCriterion =

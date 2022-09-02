@@ -1,6 +1,6 @@
 import {FunctionComponent} from 'react';
 import {ValidationError, FeatureFlags} from '@akeneo-pim-community/shared';
-import {LocalStorage, SftpStorage, Storage, StorageType, remoteStorageIsEnabled, localStorageIsEnabled} from '../model';
+import {LocalStorage, SftpStorage, Storage, StorageType, localStorageIsEnabled} from '../model';
 import {LocalStorageConfigurator} from './LocalStorageConfigurator';
 import {SftpStorageConfigurator} from './SftpStorageConfigurator';
 
@@ -10,24 +10,20 @@ type StorageConfiguratorProps = {
   validationErrors: ValidationError[];
 };
 
-//TODO: Use a more accurate type
 type StorageConfiguratorCollection = {
   [storageType: string]: FunctionComponent<StorageConfiguratorProps> | null;
 };
 
 const STORAGE_CONFIGURATORS: StorageConfiguratorCollection = {
   none: null,
+  sftp: SftpStorageConfigurator,
 };
 
-const getEnabledStorageConfigurators = (featureFlags: FeatureFlags, jobCode: string): StorageConfiguratorCollection => {
+const getEnabledStorageConfigurators = (featureFlags: FeatureFlags): StorageConfiguratorCollection => {
   const enabledStorageConfigurators = {...STORAGE_CONFIGURATORS};
 
   if (localStorageIsEnabled(featureFlags)) {
     enabledStorageConfigurators['local'] = LocalStorageConfigurator;
-  }
-
-  if (remoteStorageIsEnabled(jobCode)) {
-    enabledStorageConfigurators['sftp'] = SftpStorageConfigurator;
   }
 
   return enabledStorageConfigurators;
@@ -35,16 +31,15 @@ const getEnabledStorageConfigurators = (featureFlags: FeatureFlags, jobCode: str
 
 const getStorageConfigurator = (
   storageType: StorageType,
-  featureFlags: FeatureFlags,
-  jobCode: string
+  featureFlags: FeatureFlags
 ): FunctionComponent<StorageConfiguratorProps> | null => {
-  const enabledStorageConfigurators = getEnabledStorageConfigurators(featureFlags, jobCode);
+  const enabledStorageConfigurators = getEnabledStorageConfigurators(featureFlags);
+
   return enabledStorageConfigurators[storageType] ?? null;
 };
 
-const isLocalStorage = (storage: Storage): storage is LocalStorage => {
-  return 'local' === storage.type && 'file_path' in storage;
-};
+const isLocalStorage = (storage: Storage): storage is LocalStorage =>
+  'local' === storage.type && 'file_path' in storage;
 
 const isSftpStorage = (storage: Storage): storage is SftpStorage => {
   return (
