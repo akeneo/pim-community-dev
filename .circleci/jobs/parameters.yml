@@ -2,3 +2,6 @@ parameters:
   run-database-migration-tests:
     type: boolean
     default: false
+  notify-octopus:
+    type: boolean
+    default: true

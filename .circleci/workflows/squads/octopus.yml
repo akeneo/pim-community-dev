@@ -169,6 +169,7 @@ workflows:
                       - checkout_ee
             - test_catalogs_ee:
                   name: test_ee
+                  notify_octopus: false
                   requires:
                     - build_ee
             - pull_request_success:
