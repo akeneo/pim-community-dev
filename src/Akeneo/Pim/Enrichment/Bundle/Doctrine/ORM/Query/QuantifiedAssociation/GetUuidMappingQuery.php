@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\QuantifiedAssociation;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\UuidMapping;
-use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetUuidMappingFromProductIdentifiersQueryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetUuidMappingQueryInterface;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\UuidInterface;
 
@@ -13,7 +13,7 @@ use Ramsey\Uuid\UuidInterface;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetUuidMappingFromProductIdentifiersQuery implements GetUuidMappingFromProductIdentifiersQueryInterface
+class GetUuidMappingQuery implements GetUuidMappingQueryInterface
 {
     public function __construct(private Connection $connection)
     {

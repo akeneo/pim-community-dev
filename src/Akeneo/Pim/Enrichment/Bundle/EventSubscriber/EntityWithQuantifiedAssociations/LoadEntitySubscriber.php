@@ -5,7 +5,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithQuantifiedAssoc
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithQuantifiedAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindQuantifiedAssociationTypeCodesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetIdMappingFromProductModelIdsQueryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetUuidMappingFromProductIdentifiersQueryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetUuidMappingQueryInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
@@ -21,8 +21,7 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
 final class LoadEntitySubscriber implements EventSubscriber
 {
     public function __construct(
-        // TODO Rename this class
-        private GetUuidMappingFromProductIdentifiersQueryInterface $getUuidMappingFromProductIdentifiersQuery,
+        private GetUuidMappingQueryInterface $getUuidMappingFromProductIdentifiersQuery,
         private GetIdMappingFromProductModelIdsQueryInterface $getIdMappingFromProductModelIds,
         private FindQuantifiedAssociationTypeCodesInterface $findQuantifiedAssociationTypeCodes
     ) {

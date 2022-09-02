@@ -7,7 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithQuantifiedAssociatio
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\IdMapping;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\UuidMapping;
 use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetIdMappingFromProductModelCodesQueryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetUuidMappingFromProductIdentifiersQueryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetUuidMappingQueryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -16,7 +16,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class ComputeEntitySubscriberSpec extends ObjectBehavior
 {
     function let(
-        GetUuidMappingFromProductIdentifiersQueryInterface $getUuidMappingFromProductIdentifiers,
+        GetUuidMappingQueryInterface                    $getUuidMappingFromProductIdentifiers,
         GetIdMappingFromProductModelCodesQueryInterface $getIdMappingFromProductModelCodes
     ) {
         $this->beConstructedWith(
@@ -38,10 +38,10 @@ class ComputeEntitySubscriberSpec extends ObjectBehavior
     }
 
     function it_computes_quantified_associations(
-        GetUuidMappingFromProductIdentifiersQueryInterface $getUuidMappingFromProductIdentifiers,
+        GetUuidMappingQueryInterface                    $getUuidMappingFromProductIdentifiers,
         GetIdMappingFromProductModelCodesQueryInterface $getIdMappingFromProductModelCodes,
-        GenericEvent $event,
-        EntityWithQuantifiedAssociationsInterface $entityWithQuantifiedAssociations
+        GenericEvent                                    $event,
+        EntityWithQuantifiedAssociationsInterface       $entityWithQuantifiedAssociations
     ) {
         $event->getSubject()->willReturn($entityWithQuantifiedAssociations);
         $productModelCodes = ['product_1'];
@@ -64,9 +64,9 @@ class ComputeEntitySubscriberSpec extends ObjectBehavior
     }
 
     function it_ignores_non_entities_with_quantified_associations(
-        GetUuidMappingFromProductIdentifiersQueryInterface $getUuidMappingFromProductIdentifiersQuery,
-        GenericEvent $event,
-        \stdClass $randomEntity
+        GetUuidMappingQueryInterface $getUuidMappingFromProductIdentifiersQuery,
+        GenericEvent                 $event,
+        \stdClass                    $randomEntity
     ) {
         $event->getSubject()->willReturn($randomEntity);
         $getUuidMappingFromProductIdentifiersQuery->execute(Argument::cetera())->shouldNotBeCalled();

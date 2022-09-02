@@ -4,7 +4,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithQuantifiedAssoc
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithQuantifiedAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetIdMappingFromProductModelCodesQueryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetUuidMappingFromProductIdentifiersQueryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetUuidMappingQueryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -20,7 +20,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 final class ComputeEntitySubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        protected GetUuidMappingFromProductIdentifiersQueryInterface $getUuidMappingFromProductIdentifiers,
+        protected GetUuidMappingQueryInterface                    $getUuidMappingFromProductIdentifiers,
         protected GetIdMappingFromProductModelCodesQueryInterface $getIdMappingFromProductModelCodes
     ) {
     }
