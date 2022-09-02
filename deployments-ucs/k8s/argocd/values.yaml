@@ -45,6 +45,16 @@ configs:
     clusterResourceWhitelist:
     - group: '*'
       kind: '*'
+  - name: pim-saas-service
+    namespace: argocd
+    sourceRepos:
+    - '*'
+    destinations:
+    - namespace: '*'
+      server: '*'
+    clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
 
   additionalApplications:
   - name: infra-apps
@@ -68,7 +78,7 @@ configs:
           value: $ARGOCD_APP_SOURCE_TARGET_REVISION
       valueFiles:
        - values.yaml # To be changed by values-project.yaml
-  
+
 
 server:
   extraArgs:

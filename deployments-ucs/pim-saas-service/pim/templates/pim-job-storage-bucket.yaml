@@ -1,0 +1,42 @@
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  annotations:
+    cnrm.cloud.google.com/force-destroy: "true"
+    cnrm.cloud.google.com/project-id: {{ .Values.common.gcpProjectID }}
+    argocd.argoproj.io/sync-wave: "-5"
+  labels:
+    ucs-cron-job: {{ .Values.pim.cloudFunction.bucket }}
+  name: {{ .Values.pim.cloudFunction.bucket }}
+spec:
+  location: {{ .Values.common.location }}
+  storageClass: STANDARD
+  uniformBucketLevelAccess: false
+---
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucketAccessControl
+metadata:
+  labels:
+    ucs-cron-job: {{ .Values.pim.cloudFunction.bucket }}
+  name: {{ .Values.pim.cloudFunction.bucket }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "-5"
+    cnrm.cloud.google.com/project-id: {{ .Values.common.gcpProjectID }}
+spec:
+  bucketRef:
+    name: {{ .Values.pim.cloudFunction.bucket }}
+  entity: serviceAccount-{{ .Values.common.workloadIdentityGSA }}@{{ .Values.common.gcpProjectID }}.iam.gserviceaccount.com
+  role: roles/storage.objectAdmin
+---
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageDefaultObjectAccessControl
+metadata:
+  name: {{ .Values.pim.cloudFunction.bucket }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "-5"
+    cnrm.cloud.google.com/project-id: {{ .Values.common.gcpProjectID }}
+spec:
+  bucketRef:
+    name: {{ .Values.pim.cloudFunction.bucket }}
+  entity: allAuthenticatedUsers
+  role: READER

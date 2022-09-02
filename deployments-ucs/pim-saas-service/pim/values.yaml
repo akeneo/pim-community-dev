@@ -310,6 +310,6 @@ pim:
     name: null # Generated
     memory: 512
     bucket: null # Generated
-    sourceCodeZip: null # Generated
+    sourceCodeZip: publisher-pim-job.zip
     timeZone: "Europe/Paris"
     serviceAccountEmail: pim-job-function@akecld-prd-pim-saas-dev.iam.gserviceaccount.com

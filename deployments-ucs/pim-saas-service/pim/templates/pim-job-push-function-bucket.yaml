@@ -30,25 +30,27 @@ spec:
         - name:  push-cloud-function
           image: {{ .Values.image.curljqzip.repository }}:{{ .Values.image.curljqzip.tag }}
           imagePullPolicy: {{ .Values.image.curljqzip.pullPolicy | quote }}
-          command: ["sh", "/scripts-dir/cloud-function-scripts.sh"]
+          command: ["sh", "/scripts-dir/pim-job-push-function-bucket.sh"]
           env:
             - name: BUCKET_NAME
               value: {{ .Values.pim.cloudFunction.bucket }}
+            - name: MOUNT_PATH
+              value: "/publisher-pim-job"
             - name: SOURCE_CODE_ZIP
               value: {{ .Values.pim.cloudFunction.sourceCodeZip }}
           volumeMounts:
-            - name: cloud-function-scripts-configmap
+            - name: pim-scripts-configmap
               mountPath: /scripts-dir
             - name: cloud-function-sources-configmap
-              mountPath: /ucs-function-cron-transformer/package.json
+              mountPath: /publisher-pim-job/package.json
               subPath: package.json
             - name: cloud-function-sources-configmap
-              mountPath: /ucs-function-cron-transformer/index.js
+              mountPath: /publisher-pim-job/index.js
               subPath: index.js
       volumes:
-        - name: cloud-function-scripts-configmap
+        - name: pim-scripts-configmap
           configMap:
-            name: cloud-function-scripts-configmap
+            name: pim-scripts-configmap
         - name: cloud-function-sources-configmap
           configMap:
             name: cloud-function-sources-configmap

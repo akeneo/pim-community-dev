@@ -560,7 +560,6 @@ jobs:
 
               CLOUD_FUNCTION_NAME="srnt-job-schudeler-${CIRCLE_BRANCH_LOWER}"
               CLOUD_FUNCTION_BUCKET="srnt-job-schudeler-${CIRCLE_BRANCH_LOWER}"
-              CLOUD_FUNCTION_SOURCE_CODE_ZIP="ucs-function-cron-transformer.zip"
 
               echo export CIRCLE_BRANCH_LOWER=${CIRCLE_BRANCH_LOWER} >> $BASH_ENV
               echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
@@ -583,7 +582,6 @@ jobs:
               echo export SUBSCRIPTION_JOB_SCHEDULER=${SUBSCRIPTION_JOB_SCHEDULER} >> $BASH_ENV
               echo export CLOUD_FUNCTION_NAME=${CLOUD_FUNCTION_NAME} >> $BASH_ENV
               echo export CLOUD_FUNCTION_BUCKET=${CLOUD_FUNCTION_BUCKET} >> $BASH_ENV
-              echo export CLOUD_FUNCTION_SOURCE_CODE_ZIP=${CLOUD_FUNCTION_SOURCE_CODE_ZIP} >> $BASH_ENV
         - run:
             name: Create branch deployement # Better use other repository
             command: |
@@ -599,64 +597,40 @@ jobs:
               mv /tmp/ee-branch/deployments-ucs/pim-saas-service /tmp/ee-deployment/deployments-ucs/pim-saas-service
 
               ## values.yaml
-              yq m -x -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml /tmp/ee-branch/deployments-ucs/config/ci-values.yaml
+              yq m -x -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim/values.yaml /tmp/ee-branch/deployments-ucs/config/ci-values.yaml
 
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml global.extraLabels.instanceName "${INSTANCE_NAME}"
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml common.gcpProjectID "${GOOGLE_CLOUD_PROJECT}"
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml common.googleZone "${GOOGLE_ZONE}"
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml common.location "${LOCATION}"
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml common.pimMasterDomain "${PIM_MASTER_DOMAIN}"
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml common.dnsCloudDomain "${GOOGLE_DOMAIN}"
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml common.region "${GOOGLE_CLUSTER_REGION}"
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml common.workloadIdentityKSA "${WORKLOAD_IDENTITY_KSA}"
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml common.workloadIdentityGSA "${WORKLOAD_IDENTITY_GSA}"
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml image.pim.tag "${IMAGE_TAG}"
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.pubsub.topic_business_event "${TOPIC_BUSINESS_EVENT}"
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.pubsub.topic_job_queue_ui "${TOPIC_JOB_QUEUE_UI}"
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.pubsub.topic_job_queue_import_export "${TOPIC_JOB_QUEUE_IMPORT_EXPORT}"
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.pubsub.topic_job_queue_data_maintenance "${TOPIC_JOB_QUEUE_DATA_MAINTENANCE}"
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.pubsub.topic_job_scheduler "${TOPIC_JOB_SCHEDULER}"
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.pubsub.subscription_webhook "${SUBSCRIPTION_WEBHOOK}"
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.pubsub.subscription_job_queue_ui "${SUBSCRIPTION_JOB_QUEUE_UI}"
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.pubsub.subscription_job_queue_import_export "${SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT}"
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.pubsub.subscription_job_queue_data_maintenance "${SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE}"
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.pubsub.subscription_job_scheduler "${SUBSCRIPTION_JOB_SCHEDULER}"
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.cloudFunction.name "${CLOUD_FUNCTION_NAME}"
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.cloudFunction.bucket "${CLOUD_FUNCTION_BUCKET}"
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.cloudFunction.sourceCodeZip "${CLOUD_FUNCTION_SOURCE_CODE_ZIP}"
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.jobsPrefix "${CIRCLE_BRANCH_LOWER}-pim-job"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim/values.yaml global.extraLabels.instanceName "${INSTANCE_NAME}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim/values.yaml common.gcpProjectID "${GOOGLE_CLOUD_PROJECT}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim/values.yaml common.googleZone "${GOOGLE_ZONE}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim/values.yaml common.location "${LOCATION}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim/values.yaml common.pimMasterDomain "${PIM_MASTER_DOMAIN}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim/values.yaml common.dnsCloudDomain "${GOOGLE_DOMAIN}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim/values.yaml common.region "${GOOGLE_CLUSTER_REGION}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim/values.yaml common.workloadIdentityKSA "${WORKLOAD_IDENTITY_KSA}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim/values.yaml common.workloadIdentityGSA "${WORKLOAD_IDENTITY_GSA}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim/values.yaml image.pim.tag "${IMAGE_TAG}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim/values.yaml pim.pubsub.topic_business_event "${TOPIC_BUSINESS_EVENT}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim/values.yaml pim.pubsub.topic_job_queue_ui "${TOPIC_JOB_QUEUE_UI}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim/values.yaml pim.pubsub.topic_job_queue_import_export "${TOPIC_JOB_QUEUE_IMPORT_EXPORT}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim/values.yaml pim.pubsub.topic_job_queue_data_maintenance "${TOPIC_JOB_QUEUE_DATA_MAINTENANCE}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim/values.yaml pim.pubsub.topic_job_scheduler "${TOPIC_JOB_SCHEDULER}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim/values.yaml pim.pubsub.subscription_webhook "${SUBSCRIPTION_WEBHOOK}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim/values.yaml pim.pubsub.subscription_job_queue_ui "${SUBSCRIPTION_JOB_QUEUE_UI}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim/values.yaml pim.pubsub.subscription_job_queue_import_export "${SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim/values.yaml pim.pubsub.subscription_job_queue_data_maintenance "${SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim/values.yaml pim.pubsub.subscription_job_scheduler "${SUBSCRIPTION_JOB_SCHEDULER}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim/values.yaml pim.cloudFunction.name "${CLOUD_FUNCTION_NAME}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim/values.yaml pim.cloudFunction.bucket "${CLOUD_FUNCTION_BUCKET}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim/values.yaml pim.jobsPrefix "${CIRCLE_BRANCH_LOWER}-pim-job"
 
               ## Charts
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/Chart.yaml appVersion ${IMAGE_TAG}
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/Chart.yaml appVersion ${IMAGE_TAG}
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-web/Chart.yaml appVersion ${IMAGE_TAG}
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-job/Chart.yaml appVersion ${IMAGE_TAG}
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim/Chart.yaml appVersion ${IMAGE_TAG}
 
               ## ArgoCD
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-web-application.yaml spec.source.targetRevision ${CIRCLE_BRANCH}-deployment
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-web-application.yaml spec.destination.namespace ${CIRCLE_BRANCH_LOWER}-pim-web
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-web-application.yaml metadata.name ${CIRCLE_BRANCH_LOWER}-pim-web
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-web-application.yaml metadata.labels.name ${CIRCLE_BRANCH_LOWER}-pim-web
-
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-api-application.yaml spec.source.targetRevision ${CIRCLE_BRANCH}-deployment
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-api-application.yaml spec.destination.namespace ${CIRCLE_BRANCH_LOWER}-pim-api
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-api-application.yaml metadata.name ${CIRCLE_BRANCH_LOWER}-pim-api
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-api-application.yaml metadata.labels.name ${CIRCLE_BRANCH_LOWER}-pim-api
-
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-daemon-application.yaml spec.source.targetRevision ${CIRCLE_BRANCH}-deployment
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-daemon-application.yaml spec.destination.namespace ${CIRCLE_BRANCH_LOWER}-pim-daemon
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-daemon-application.yaml metadata.name ${CIRCLE_BRANCH_LOWER}-pim-daemon
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-daemon-application.yaml metadata.labels.name ${CIRCLE_BRANCH_LOWER}-pim-daemon
-
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-job-application.yaml spec.source.targetRevision ${CIRCLE_BRANCH}-deployment
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-job-application.yaml spec.destination.namespace ${CIRCLE_BRANCH_LOWER}-pim-job
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-job-application.yaml metadata.name ${CIRCLE_BRANCH_LOWER}-pim-job
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-job-application.yaml metadata.labels.name ${CIRCLE_BRANCH_LOWER}-pim-job
-
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd/pim-applications.yaml spec.source.targetRevision ${CIRCLE_BRANCH}-deployment
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd/pim-applications.yaml spec.destination.namespace ${CIRCLE_BRANCH_LOWER}-pim-argocd
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd/pim-applications.yaml metadata.name ${CIRCLE_BRANCH_LOWER}-pim-argocd
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd/pim-applications.yaml metadata.labels.name ${CIRCLE_BRANCH_LOWER}-pim-argocd
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-application.yaml spec.source.targetRevision ${CIRCLE_BRANCH}-deployment
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-application.yaml spec.destination.namespace pim-${CIRCLE_BRANCH_LOWER}
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-application.yaml metadata.name pim-${CIRCLE_BRANCH_LOWER}
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-application.yaml metadata.labels.name pim-${CIRCLE_BRANCH_LOWER}
 
               git add deployments-ucs/pim-saas-service
               git commit -m "Update release version"
@@ -664,7 +638,7 @@ jobs:
         - run:
             name: Deploy PIM
             command: |
-              kubectl apply -f /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd/pim-applications.yaml -n argocd
+              kubectl apply -f /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-application.yaml -n argocd
 
               # Better to store the password in CircleCI or other mecanisme
               ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
@@ -675,8 +649,8 @@ jobs:
               # Force synchro
               # TODO fix this error
               # FATA[0002] rpc error: code = FailedPrecondition desc = another operation is already in progress
-              argocd app get ${CIRCLE_BRANCH_LOWER}-pim-argocd --hard-refresh --grpc-web
-              argocd app sync ${CIRCLE_BRANCH_LOWER}-pim-argocd --grpc-web || (argocd app terminate-op ${CIRCLE_BRANCH_LOWER}-pim-argocd --grpc-web && argocd app wait --operation ${CIRCLE_BRANCH_LOWER}-pim-argocd --grpc-web && argocd app sync ${CIRCLE_BRANCH_LOWER}-pim-argocd --grpc-web)
+              argocd app get pim-${CIRCLE_BRANCH_LOWER} --hard-refresh --grpc-web
+              argocd app sync pim-${CIRCLE_BRANCH_LOWER} --grpc-web || (argocd app terminate-op pim-${CIRCLE_BRANCH_LOWER} --grpc-web && argocd app wait --operation pim-${CIRCLE_BRANCH_LOWER} --grpc-web && argocd app sync pim-${CIRCLE_BRANCH_LOWER} --grpc-web)
               echo "argocd app sync successfull"
 
               echo "============================"
@@ -728,8 +702,7 @@ jobs:
                       echo export WORKLOAD_IDENTITY_KSA=${WORKLOAD_IDENTITY_KSA} >> $BASH_ENV
                       echo export WORKLOAD_IDENTITY_GSA=${WORKLOAD_IDENTITY_GSA} >> $BASH_ENV
                       echo export GOOGLE_ZONE=${GOOGLE_ZONE} >> $BASH_ENV
-                      echo export PIM_WEB_NS=${CIRCLE_BRANCH_LOWER}-pim-web >> $BASH_ENV
-                      echo export PIM_API_NS=${CIRCLE_BRANCH_LOWER}-pim-api >> $BASH_ENV
+                      echo export PIM_NS=pim-${CIRCLE_BRANCH_LOWER} >> $BASH_ENV
 
                       echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
                       echo "Instance name: ${INSTANCE_NAME}"
@@ -787,46 +760,46 @@ jobs:
               - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
         - set_gcloud_config_pim_saas_dev
         - restore_persisted_env_vars
-        - run:
-            name: Add ingresses (pim-web and pim-api)
-            command: |
-              ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-              export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
-              git config --global user.email "pim_ci@akeneo.com"
-              git config --global user.name "pim_ci_deployment"
-
-              cd /tmp
-              git clone -b ${CIRCLE_BRANCH}-deployment git@github.com:akeneo/pim-enterprise-dev.git ee-deployment
-              cd ee-deployment
-
-              cp /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-web/templates/pim-web-ingress.yaml /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-web/templates/${INSTANCE_NAME}-pim-web-ingress.yaml
-              cp /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/templates/pim-api-ingress.yaml /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/templates/${INSTANCE_NAME}-pim-api-ingress.yaml
-
-              ## {INSTANCE_NAME}-pim-web-ingress.yaml
-              sed -i "s#{{ required \"\.Values\.common\.pimMasterDomain\" \.Values\.common\.pimMasterDomain | quote }}#${INSTANCE_NAME}\.${GOOGLE_DOMAIN}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-web/templates/${INSTANCE_NAME}-pim-web-ingress.yaml
-              sed -i "s#pim-external-{{ \.Values\.global\.extraLabels\.instanceName }}#pim-external-${INSTANCE_NAME}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-web/templates/${INSTANCE_NAME}-pim-web-ingress.yaml
-              ## {INSTANCE_NAME}-pim-api-ingress.yaml
-              sed -i "s#{{ required \"\.Values\.common\.pimMasterDomain\" \.Values\.common\.pimMasterDomain | quote }}#${INSTANCE_NAME}\.${GOOGLE_DOMAIN}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/templates/${INSTANCE_NAME}-pim-api-ingress.yaml
-              sed -i "s#pim-api-external-{{ \.Values\.global\.extraLabels\.instanceName }}#pim-api-external-${INSTANCE_NAME}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/templates/${INSTANCE_NAME}-pim-api-ingress.yaml
-              git add deployments-ucs/pim-saas-service
-              git commit -m "Add ingresses for ${INSTANCE_NAME}"
-
-              COMMIT_INGRESS_STATUS_CODE=0
-              for i in 1 2 3; do (git pull --no-edit && git push) && COMMIT_INGRESS_STATUS_CODE=0 && break || COMMIT_INGRESS_STATUS_CODE=1; done
-              if [[ "${COMMIT_INGRESS_STATUS_CODE}" = 1 ]] ; then exit ${COMMIT_INGRESS_STATUS_CODE} ; fi
-
-              CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
-              # Better to store the password in CircleCI or other mecanisme
-              ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
-
-              # Login to argocd
-              argocd login --insecure argocd.${GOOGLE_DOMAIN} --username admin --password ${ARGOCD_PASSWORD}
-
-              # Force synchro
-              argocd app get ${CIRCLE_BRANCH_LOWER}-pim-argocd --hard-refresh
-              # argocd app sync ${CIRCLE_BRANCH_LOWER}-pim-argocd --async
-              argocd app get ${CIRCLE_BRANCH_LOWER}-pim-web --hard-refresh
-              argocd app get ${CIRCLE_BRANCH_LOWER}-pim-api --hard-refresh
+        # - run:
+        #     name: Add ingresses (pim-web and pim-api)
+        #     command: |
+        #       ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+        #       export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+        #       git config --global user.email "pim_ci@akeneo.com"
+        #       git config --global user.name "pim_ci_deployment"
+        #
+        #       cd /tmp
+        #       git clone -b ${CIRCLE_BRANCH}-deployment git@github.com:akeneo/pim-enterprise-dev.git ee-deployment
+        #       cd ee-deployment
+        #
+        #       # cp /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-web/templates/pim-web-ingress.yaml /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-web/templates/${INSTANCE_NAME}-pim-web-ingress.yaml
+        #       # cp /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/templates/pim-api-ingress.yaml /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/templates/${INSTANCE_NAME}-pim-api-ingress.yaml
+        #
+        #       # ## {INSTANCE_NAME}-pim-web-ingress.yaml
+        #       # sed -i "s#{{ required \"\.Values\.common\.pimMasterDomain\" \.Values\.common\.pimMasterDomain | quote }}#${INSTANCE_NAME}\.${GOOGLE_DOMAIN}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-web/templates/${INSTANCE_NAME}-pim-web-ingress.yaml
+        #       # sed -i "s#pim-external-{{ \.Values\.global\.extraLabels\.instanceName }}#pim-external-${INSTANCE_NAME}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-web/templates/${INSTANCE_NAME}-pim-web-ingress.yaml
+        #       # ## {INSTANCE_NAME}-pim-api-ingress.yaml
+        #       # sed -i "s#{{ required \"\.Values\.common\.pimMasterDomain\" \.Values\.common\.pimMasterDomain | quote }}#${INSTANCE_NAME}\.${GOOGLE_DOMAIN}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/templates/${INSTANCE_NAME}-pim-api-ingress.yaml
+        #       # sed -i "s#pim-api-external-{{ \.Values\.global\.extraLabels\.instanceName }}#pim-api-external-${INSTANCE_NAME}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/templates/${INSTANCE_NAME}-pim-api-ingress.yaml
+        #       # git add deployments-ucs/pim-saas-service
+        #       # git commit -m "Add ingresses for ${INSTANCE_NAME}"
+        #
+        #       # COMMIT_INGRESS_STATUS_CODE=0
+        #       # for i in 1 2 3; do (git pull --no-edit && git push) && COMMIT_INGRESS_STATUS_CODE=0 && break || COMMIT_INGRESS_STATUS_CODE=1; done
+        #       # if [[ "${COMMIT_INGRESS_STATUS_CODE}" = 1 ]] ; then exit ${COMMIT_INGRESS_STATUS_CODE} ; fi
+        #
+        #       CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
+        #       # Better to store the password in CircleCI or other mecanisme
+        #       ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+        #
+        #       # Login to argocd
+        #       argocd login --insecure argocd.${GOOGLE_DOMAIN} --username admin --password ${ARGOCD_PASSWORD}
+        #
+        #       # Force synchro
+        #       argocd app get ${CIRCLE_BRANCH_LOWER}-pim-argocd --hard-refresh
+        #       # argocd app sync ${CIRCLE_BRANCH_LOWER}-pim-argocd --async
+        #       argocd app get ${CIRCLE_BRANCH_LOWER}-pim-web --hard-refresh
+        #       argocd app get ${CIRCLE_BRANCH_LOWER}-pim-api --hard-refresh
         - run:
             name: Test PIM connexion on kubernetes
             command: |

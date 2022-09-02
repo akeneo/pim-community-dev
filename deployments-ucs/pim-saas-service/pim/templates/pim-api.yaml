@@ -49,7 +49,7 @@ spec:
         - name: init-fpm
           image:  {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-          command: ["bash", "/scripts-dir/copy-web-entrypoint-files-to-httpd-mouting-point.sh"]
+          command: ["bash", "/scripts-dir/copy-api-entrypoint-files-to-httpd-mouting-point.sh"]
           volumeMounts:
             - name: pim-scripts-configmap
               mountPath: /scripts-dir

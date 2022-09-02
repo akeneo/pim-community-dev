@@ -101,9 +101,9 @@ mailer:
 
 pim:
   web:
-    namespace: ${PIM_WEB_NS}
+    namespace: ${PIM_NS}
   api:
-    namespace: ${PIM_API_NS}
+    namespace: ${PIM_NS}
   firestore:
     collection: ${FIRESTORE_COLLECTION}
     documentId: ${PFID}
