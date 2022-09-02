@@ -20,6 +20,7 @@ final class SearchAttributesQuery implements SearchAttributesQueryInterface
         'pim_catalog_simpleselect',
         'pim_catalog_multiselect',
         'pim_catalog_number',
+        'pim_catalog_metric',
     ];
 
     public function __construct(
@@ -28,7 +29,7 @@ final class SearchAttributesQuery implements SearchAttributesQueryInterface
     }
 
     /**
-     * @return array<array{code: string, label: string, type: string, scopable: bool, localizable: bool}>
+     * @return array<array{code: string, label: string, type: string, scopable: bool, localizable: bool, measurement_family?: string, default_measurement_unit?: string}>
      */
     public function execute(?string $search = null, int $page = 1, int $limit = 20): array
     {
@@ -42,13 +43,22 @@ final class SearchAttributesQuery implements SearchAttributesQueryInterface
         );
 
         return \array_map(
-            static fn (AttributeInterface $attribute) => [
-                'code' => $attribute->getCode(),
-                'label' => $attribute->getLabel(),
-                'type' => $attribute->getType(),
-                'scopable' => $attribute->isScopable(),
-                'localizable' => $attribute->isLocalizable(),
-            ],
+            static function (AttributeInterface $attribute): array {
+                $normalizedAttribute = [
+                    'code' => $attribute->getCode(),
+                    'label' => $attribute->getLabel(),
+                    'type' => $attribute->getType(),
+                    'scopable' => $attribute->isScopable(),
+                    'localizable' => $attribute->isLocalizable(),
+                ];
+
+                if ('pim_catalog_metric' === $attribute->getType()) {
+                    $normalizedAttribute['measurement_family'] = $attribute->getMetricFamily();
+                    $normalizedAttribute['default_measurement_unit'] = $attribute->getDefaultMetricUnit();
+                }
+
+                return $normalizedAttribute;
+            },
             $attributes
         );
     }

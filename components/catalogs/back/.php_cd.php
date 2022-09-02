@@ -63,6 +63,9 @@ $rules = [
             'Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface',
             'Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface',
             'Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface',
+            'Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface',
+            'Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode',
+            'Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException',
 
             // @todo remove
             'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
