@@ -139,7 +139,7 @@ class PublishToJobQueueIntegration extends TestCase
             [],
             false,
             null,
-            'ziggy@akeneo.com'
+            ['ziggy@akeneo.com']
         );
 
         $jobExecutionMessage = $this->getJobExecutionMessage();
@@ -175,7 +175,7 @@ class PublishToJobQueueIntegration extends TestCase
             [],
             false,
             null,
-            'email'
+            ['email']
         );
     }
 
