@@ -1,5 +1,12 @@
 # 5.0.x
 
+# 5.0.112 (2022-09-01)
+
+## Bug fixes
+
+- PIM-10591: Fix download log should not be possible when job is running
+- PIM-10608 [Backport PIM-10584]: Fix measurement values for volume flow conversion 
+
 # 5.0.111 (2022-08-25)
 
 ## Bug fixes
