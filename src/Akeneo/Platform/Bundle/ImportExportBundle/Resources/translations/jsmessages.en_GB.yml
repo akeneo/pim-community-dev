@@ -98,7 +98,7 @@ pim_import_export:
             help: One character used to set the field enclosure
           with_header:
             title: With header
-            help: Whether or not to print the column name
+            help: Defines if the first row of the file contains the column labels
           with_media:
             title: Export files and images
             help: Whether or not to export product files and images
