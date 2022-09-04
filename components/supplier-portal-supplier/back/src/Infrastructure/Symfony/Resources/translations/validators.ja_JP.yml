@@ -7,8 +7,3 @@ supplier_portal:
         must_contain_an_uppercase_letter: パスワードには少なくとも1つの大文字を含める必要があります。
         must_contain_a_lowercase_letter: パスワードには少なくとも1つの小文字を含める必要があります。
         must_contain_a_digit: パスワードには数字が1つ以上必要です。
-    product_file_dropping:
-      validation:
-        max_uploaded_filename_length: ファイル名は255文字以下にする必要があります。
-        max_uploaded_file_size: ファイルサイズは50 MB以下にする必要があります。
-        must_be_an_xlsx_file: 有効なxlsxファイルをアップロードしてください。

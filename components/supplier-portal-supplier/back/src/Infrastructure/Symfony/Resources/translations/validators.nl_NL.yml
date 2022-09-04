@@ -7,8 +7,3 @@ supplier_portal:
         must_contain_an_uppercase_letter: Het wachtwoord moet minimaal één hoofdletter bevatten.
         must_contain_a_lowercase_letter: Het wachtwoord moet minimaal één kleine letter bevatten.
         must_contain_a_digit: Het wachtwoord moet minimaal één cijfer bevatten.
-    product_file_dropping:
-      validation:
-        max_uploaded_filename_length: De bestandsnaam mag niet langer zijn dan 255 tekens.
-        max_uploaded_file_size: Het bestand mag niet groter zijn dan 50 MB
-        must_be_an_xlsx_file: Upload een geldig xlsl-bestand.
