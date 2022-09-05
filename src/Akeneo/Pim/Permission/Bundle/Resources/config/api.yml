@@ -218,13 +218,11 @@ services:
             - '@pim_api.checker.duplicate_value'
             - '@oro_security.security_facade'
             - '@validator'
-            - '@database_connection'
             - '@pim_catalog.updater.product'
             - '@pim_catalog.builder.product'
             - '@pim_catalog.saver.product'
             - '@pimee_security.filter.granted_product_attribute_filter'
             - '@pim_catalog.repository.product'
-            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetProductUuids'
             - '@pim_catalog.repository.attribute'
 
     Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\UpdateProductByUuidController:
