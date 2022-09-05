@@ -11,18 +11,26 @@
 
 namespace Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\Validation;
 
+use Akeneo\Platform\Component\Authentication\Sso\Configuration\Application\CreateOrUpdateConfiguration;
 use phpseclib\File\X509;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-/**
- * Validates that a X509 certificate is well formatted and has not expired.
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * @author Yohan Blain <yohan.blain@akeneo.com>
+ * (c) 2022 Akeneo SAS (https://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+/**
+ * Validates that X509 certificates are well formatted and are not expired.
  */
 final class IsCertificateValidValidator extends ConstraintValidator
 {
-    private $x509;
+    private X509 $x509;
 
     public function __construct()
     {
@@ -32,26 +40,59 @@ final class IsCertificateValidValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($certificate, Constraint $constraint)
+    public function validate($command, Constraint $constraint): void
     {
-        if (null === $certificate || '' === $certificate) {
+
+        // validate IDP certificate only when going from disabled to enabled to allow disabling the SSO even when certificate is outdated
+        /** @var CreateOrUpdateConfiguration $command */
+        $this->checkCertificate(
+            $constraint->identityProviderCertificate,
+            $command->identityProviderCertificate,
+            $constraint,
+            $command->isEnabled
+        );
+
+        $this->checkCertificate(
+            $constraint->serviceProviderCertificate,
+            $command->serviceProviderCertificate,
+            $constraint,
+            true
+        );
+    }
+
+    /**
+     * @param $certificate string
+     * @param $doValidateDate boolean
+     * @return void
+     */
+    private function checkCertificate(
+        string     $propertyPath,
+        string     $certificate,
+        Constraint $constraint,
+        bool       $doValidateDate
+    ) : void
+    {
+
+        if (empty($certificate)) {
             return;
         }
 
         if (!$this->x509->loadX509($certificate)) {
             $this->context
                 ->buildViolation($constraint->invalidMessage)
-                ->addViolation()
-            ;
+                //->atPath($propertyPath)
+                ->addViolation();
 
             return;
         }
 
+        if (!$doValidateDate) return;
+
         if (!$this->x509->validateDate()) {
             $this->context
                 ->buildViolation($constraint->expiredMessage)
-                ->addViolation()
-            ;
+                //->atPath($propertyPath)
+                ->addViolation();
         }
     }
 }
