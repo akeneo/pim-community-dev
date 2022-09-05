@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetAllSupplierFilesCount;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetAllProductFilesCount;
 use Doctrine\DBAL\Connection;
 
-final class DatabaseGetAllSupplierFilesCount implements GetAllSupplierFilesCount
+final class DatabaseGetAllProductFilesCount implements GetAllProductFilesCount
 {
     public function __construct(private Connection $connection)
     {

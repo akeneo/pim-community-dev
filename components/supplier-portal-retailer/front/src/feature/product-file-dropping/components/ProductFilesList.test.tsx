@@ -1,11 +1,11 @@
 import React from 'react';
 import {act, screen} from '@testing-library/react';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
-import {SupplierFilesList} from './SupplierFilesList';
-import {SupplierFileRow} from '../hooks';
+import {ProductFilesList} from './ProductFilesList';
+import {ProductFileRow} from '../hooks';
 import userEvent from '@testing-library/user-event';
 
-const supplierfilesList: SupplierFileRow[] = [
+const productFilesList: ProductFileRow[] = [
     {
         supplier: 'mega supplier',
         identifier: 'file1',
@@ -38,11 +38,11 @@ const supplierfilesList: SupplierFileRow[] = [
     },
 ];
 
-test('it renders a list of supplier files', () => {
+test('it renders a list of product files', () => {
     renderWithProviders(
-        <SupplierFilesList
-            supplierFiles={supplierfilesList}
-            totalSupplierFiles={5}
+        <ProductFilesList
+            productFiles={productFilesList}
+            totalProductFiles={5}
             currentPage={1}
             onChangePage={() => {}}
         />
@@ -51,8 +51,8 @@ test('it renders a list of supplier files', () => {
     expect(screen.queryAllByText('07/25/2022, 08:00 AM').length).toBe(5);
 });
 
-test('it renders a paginated list of supplier files', async () => {
-    const supplierfilesList: SupplierFileRow[] = [...Array(25)].map((_, index) => ({
+test('it renders a paginated list of product files', async () => {
+    const productFilesList: ProductFileRow[] = [...Array(25)].map((_, index) => ({
         supplier: 'mega supplier',
         identifier: `file${index}`,
         contributor: 'contributor@example.com',
@@ -61,9 +61,9 @@ test('it renders a paginated list of supplier files', async () => {
 
     const changePageCallback = jest.fn();
     renderWithProviders(
-        <SupplierFilesList
-            supplierFiles={supplierfilesList}
-            totalSupplierFiles={30}
+        <ProductFilesList
+            productFiles={productFilesList}
+            totalProductFiles={30}
             currentPage={1}
             onChangePage={changePageCallback}
         />
@@ -80,16 +80,16 @@ test('it renders a paginated list of supplier files', async () => {
 
 test('it displays an empty placeholder when there is no files', () => {
     renderWithProviders(
-        <SupplierFilesList supplierFiles={[]} totalSupplierFiles={0} currentPage={1} onChangePage={() => {}} />
+        <ProductFilesList productFiles={[]} totalProductFiles={0} currentPage={1} onChangePage={() => {}} />
     );
     expect(screen.getByText('supplier_portal.product_file_dropping.supplier_files.no_files')).toBeInTheDocument();
 });
 
-test('it renders a list of supplier files with supplier column', () => {
+test('it renders a list of product files with supplier column', () => {
     renderWithProviders(
-        <SupplierFilesList
-            supplierFiles={supplierfilesList}
-            totalSupplierFiles={1}
+        <ProductFilesList
+            productFiles={productFilesList}
+            totalProductFiles={1}
             currentPage={1}
             onChangePage={() => {}}
         />
@@ -99,11 +99,11 @@ test('it renders a list of supplier files with supplier column', () => {
     ).toBeInTheDocument();
 });
 
-test('it renders a list of supplier files without supplier column', () => {
+test('it renders a list of product files without supplier column', () => {
     renderWithProviders(
-        <SupplierFilesList
-            supplierFiles={supplierfilesList}
-            totalSupplierFiles={1}
+        <ProductFilesList
+            productFiles={productFilesList}
+            totalProductFiles={1}
             currentPage={1}
             onChangePage={() => {}}
             displaySupplierColumn={false}

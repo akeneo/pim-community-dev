@@ -8,7 +8,7 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\Product
 
 interface ListProductFiles
 {
-    public const NUMBER_OF_SUPPLIER_FILES_PER_PAGE = 25;
+    public const NUMBER_OF_PRODUCT_FILES_PER_PAGE = 25;
 
     /**
      * @return ProductFile[]

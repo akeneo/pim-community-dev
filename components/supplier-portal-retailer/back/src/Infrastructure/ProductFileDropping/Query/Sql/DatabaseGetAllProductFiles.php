@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetAllSupplierFiles;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetAllProductFiles;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFile;
 use Doctrine\DBAL\Connection;
 
-final class DatabaseGetAllSupplierFiles implements GetAllSupplierFiles
+final class DatabaseGetAllProductFiles implements GetAllProductFiles
 {
     public function __construct(private Connection $connection)
     {
@@ -36,8 +36,8 @@ final class DatabaseGetAllSupplierFiles implements GetAllSupplierFiles
         ), $this->connection->executeQuery(
             $sql,
             [
-                'offset' => GetAllSupplierFiles::NUMBER_OF_SUPPLIER_FILES_PER_PAGE * ($page - 1),
-                'limit' => GetAllSupplierFiles::NUMBER_OF_SUPPLIER_FILES_PER_PAGE,
+                'offset' => GetAllProductFiles::NUMBER_OF_PRODUCT_FILES_PER_PAGE * ($page - 1),
+                'limit' => GetAllProductFiles::NUMBER_OF_PRODUCT_FILES_PER_PAGE,
             ],
             [
                 'offset' => \PDO::PARAM_INT,

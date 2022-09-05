@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\InMemory;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\SupplierFile;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\SupplierFileRepository;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail;
 
-final class InMemoryRepository implements SupplierFileRepository
+final class InMemoryRepository implements ProductFileRepository
 {
-    private array $supplierFiles = [];
+    private array $productFiles = [];
 
-    public function save(SupplierFile $supplierFile): void
+    public function save(ProductFile $productFile): void
     {
-        $this->supplierFiles[$supplierFile->identifier()] = $supplierFile;
+        $this->productFiles[$productFile->identifier()] = $productFile;
     }
 
-    public function findByContributor(ContributorEmail $uploadedByContributor): ?SupplierFile
+    public function findByContributor(ContributorEmail $uploadedByContributor): ?ProductFile
     {
-        foreach ($this->supplierFiles as $supplierFile) {
-            if ((string) $uploadedByContributor === $supplierFile->contributorEmail()) {
-                return $supplierFile;
+        foreach ($this->productFiles as $productFile) {
+            if ((string) $uploadedByContributor === $productFile->contributorEmail()) {
+                return $productFile;
             }
         }
 

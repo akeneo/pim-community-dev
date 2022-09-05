@@ -37,8 +37,8 @@ final class DatabaseListProductFiles implements ListProductFiles
             $sql,
             [
                 'supplierIdentifier' => $supplierIdentifier,
-                'offset' => ListProductFiles::NUMBER_OF_SUPPLIER_FILES_PER_PAGE * ($page - 1),
-                'limit' => ListProductFiles::NUMBER_OF_SUPPLIER_FILES_PER_PAGE,
+                'offset' => ListProductFiles::NUMBER_OF_PRODUCT_FILES_PER_PAGE * ($page - 1),
+                'limit' => ListProductFiles::NUMBER_OF_PRODUCT_FILES_PER_PAGE,
             ],
             [
                 'supplierIdentifier' => \PDO::PARAM_STR,

@@ -32,7 +32,7 @@ final class DownloadProductFileHandler
             // FlySystem can throw exceptions that do not extend \Exception but \Throwable, which is one level higher
             $productFileStream = ($this->downloadStoredProductFile)($productFilePathAndFileName->path);
         } catch (\Throwable $e) {
-            $this->logger->error('Supplier file could not be downloaded', [
+            $this->logger->error('Product file could not be downloaded', [
                 'data' => [
                     'fileIdentifier' => $query->productFileIdentifier,
                     'filename' => $productFilePathAndFileName->originalFilename,

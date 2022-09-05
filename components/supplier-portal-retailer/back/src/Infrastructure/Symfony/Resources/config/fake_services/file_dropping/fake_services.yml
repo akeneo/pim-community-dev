@@ -1,4 +1,4 @@
 services:
     # Repositories
-    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\SupplierFileRepository:
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository:
         class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\InMemory\InMemoryRepository

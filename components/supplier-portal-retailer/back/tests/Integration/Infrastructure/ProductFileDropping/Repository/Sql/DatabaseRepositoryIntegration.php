@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\ProductFileDropping\Repository\Sql;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\SupplierFile;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\SupplierFileRepository;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
@@ -13,29 +13,29 @@ use Doctrine\DBAL\Connection;
 final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
 {
     /** @test */
-    public function itSavesASupplierFile(): void
+    public function itSavesAProductFile(): void
     {
         $this->createSupplier();
-        $repository = $this->get(SupplierFileRepository::class);
-        $supplierFile = SupplierFile::create(
+        $repository = $this->get(ProductFileRepository::class);
+        $productFile = ProductFile::create(
             'b8b13d0b-496b-4a7c-a574-0d522ba90752',
             'product-file.xlsx',
             '1/2/3/4/product-file.xlsx',
             'contributor@example.com',
             new Supplier('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7', 'los_pollos_hermanos', 'Los Pollos Hermanos'),
         );
-        $repository->save($supplierFile);
+        $repository->save($productFile);
 
-        $savedSupplierFile = $this->findSupplierFile('product-file.xlsx');
+        $savedProductFile = $this->findProductFile('product-file.xlsx');
 
-        $this->assertSame($supplierFile->originalFilename(), $savedSupplierFile['original_filename']);
-        $this->assertSame($supplierFile->path(), $savedSupplierFile['path']);
-        $this->assertSame($supplierFile->contributorEmail(), $savedSupplierFile['uploaded_by_contributor']);
-        $this->assertSame($supplierFile->supplierIdentifier(), $savedSupplierFile['uploaded_by_supplier']);
-        $this->assertFalse((bool) $savedSupplierFile['downloaded']);
+        $this->assertSame($productFile->originalFilename(), $savedProductFile['original_filename']);
+        $this->assertSame($productFile->path(), $savedProductFile['path']);
+        $this->assertSame($productFile->contributorEmail(), $savedProductFile['uploaded_by_contributor']);
+        $this->assertSame($productFile->supplierIdentifier(), $savedProductFile['uploaded_by_supplier']);
+        $this->assertFalse((bool) $savedProductFile['downloaded']);
     }
 
-    private function findSupplierFile(string $originalFilename): ?array
+    private function findProductFile(string $originalFilename): ?array
     {
         $sql = <<<SQL
             SELECT *
@@ -43,11 +43,11 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
             WHERE original_filename = :original_filename
         SQL;
 
-        $supplierFile = $this->get(Connection::class)
+        $productFile = $this->get(Connection::class)
             ->executeQuery($sql, ['original_filename' => $originalFilename])
             ->fetchAssociative();
 
-        return $supplierFile ?: null;
+        return $productFile ?: null;
     }
 
     private function createSupplier(): void

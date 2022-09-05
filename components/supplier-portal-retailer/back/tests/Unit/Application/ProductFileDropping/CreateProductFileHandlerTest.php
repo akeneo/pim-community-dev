@@ -9,14 +9,14 @@ use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CreateProduct
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\InvalidProductFile;
 use Akeneo\SupplierPortal\Retailer\Application\Supplier\Exception\ContributorDoesNotExist;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\StoreProductsFile;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Event\SupplierFileAdded;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\SupplierFile;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Event\ProductFileAdded;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Filename;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code;
-use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\InMemory\InMemoryRepository as SupplierFileInMemoryRepository;
+use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\InMemory\InMemoryRepository as ProductFileInMemoryRepository;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\StubEventDispatcher;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierFromContributorEmail;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository as SupplierInMemoryRepository;
@@ -62,18 +62,18 @@ final class CreateProductFileHandlerTest extends TestCase
         $supplierRepository = new SupplierInMemoryRepository();
         $supplierRepository->save($supplier);
 
-        $supplierFileRepository = new SupplierFileInMemoryRepository();
+        $productFileRepository = new ProductFileInMemoryRepository();
         $getSupplierFromContributorEmail = new InMemoryGetSupplierFromContributorEmail($supplierRepository);
         $storeProductFileSpy = $this->createMock(StoreProductsFile::class);
         $eventDispatcherStub = new StubEventDispatcher();
 
-        $uploadedSupplierFile = $this->createMock(UploadedFile::class);
-        $createSupplierFile = new CreateProductFile(
-            $uploadedSupplierFile,
+        $uploadedProductFile = $this->createMock(UploadedFile::class);
+        $createProductFile = new CreateProductFile(
+            $uploadedProductFile,
             'contributor@example.com',
         );
-        $uploadedSupplierFile->expects($this->once())->method('getPathname')->willReturn('/tmp/products.xlsx');
-        $uploadedSupplierFile->expects($this->exactly(4))->method('getClientOriginalName')->willReturn('products.xlsx');
+        $uploadedProductFile->expects($this->once())->method('getPathname')->willReturn('/tmp/products.xlsx');
+        $uploadedProductFile->expects($this->exactly(4))->method('getClientOriginalName')->willReturn('products.xlsx');
 
         $storeProductFileSpy
             ->expects($this->once())
@@ -99,21 +99,21 @@ final class CreateProductFileHandlerTest extends TestCase
 
         $sut = new CreateProductFileHandler(
             $getSupplierFromContributorEmail,
-            $supplierFileRepository,
+            $productFileRepository,
             $storeProductFileSpy,
             $validatorSpy,
             $eventDispatcherStub,
             $logger,
         );
-        ($sut)($createSupplierFile);
+        ($sut)($createProductFile);
 
-        $file = $supplierFileRepository->findByContributor(ContributorEmail::fromString('contributor@example.com'));
+        $file = $productFileRepository->findByContributor(ContributorEmail::fromString('contributor@example.com'));
 
-        static::assertInstanceOf(SupplierFile::class, $file);
+        static::assertInstanceOf(ProductFile::class, $file);
 
         $dispatchedEvents = $eventDispatcherStub->getDispatchedEvents();
         $this->assertCount(1, $dispatchedEvents);
-        $this->assertInstanceOf(SupplierFileAdded::class, $dispatchedEvents[0]);
+        $this->assertInstanceOf(ProductFileAdded::class, $dispatchedEvents[0]);
 
         static::assertTrue($logger->hasInfo([
             'message' => 'Product file "products.xlsx" created.',
@@ -132,7 +132,7 @@ final class CreateProductFileHandlerTest extends TestCase
     }
 
     /** @test */
-    public function itThrowsAnExceptionIfTheSupplierFileIsNotValid(): void
+    public function itThrowsAnExceptionIfTheProductFileIsNotValid(): void
     {
         $violationsSpy = $this->createMock(ConstraintViolationList::class);
         $violationsSpy->expects($this->once())->method('count')->willReturn(1);
@@ -143,17 +143,17 @@ final class CreateProductFileHandlerTest extends TestCase
             ->method('validate')
             ->willReturn($violationsSpy);
 
-        $uploadedSupplierFile = $this->createMock(UploadedFile::class);
+        $uploadedProductFile = $this->createMock(UploadedFile::class);
 
         $supplierRepository = new SupplierInMemoryRepository();
         $getSupplierFromContributorEmail = new InMemoryGetSupplierFromContributorEmail($supplierRepository);
-        $supplierFileRepository = new SupplierFileInMemoryRepository();
+        $productFileRepository = new ProductFileInMemoryRepository();
         $storeProductFileSpy = $this->createMock(StoreProductsFile::class);
         $eventDispatcherStub = new StubEventDispatcher();
 
         $sut = new CreateProductFileHandler(
             $getSupplierFromContributorEmail,
-            $supplierFileRepository,
+            $productFileRepository,
             $storeProductFileSpy,
             $validatorSpy,
             $eventDispatcherStub,
@@ -163,7 +163,7 @@ final class CreateProductFileHandlerTest extends TestCase
         static::expectException(InvalidProductFile::class);
         ($sut)(
             new CreateProductFile(
-                $uploadedSupplierFile,
+                $uploadedProductFile,
                 'contributor@example.com',
             )
         );
@@ -181,17 +181,17 @@ final class CreateProductFileHandlerTest extends TestCase
             ->method('validate')
             ->willReturn($violationsSpy);
 
-        $uploadedSupplierFile = $this->createMock(UploadedFile::class);
+        $uploadedProductFile = $this->createMock(UploadedFile::class);
 
         $supplierRepository = new SupplierInMemoryRepository();
         $getSupplierFromContributorEmail = new InMemoryGetSupplierFromContributorEmail($supplierRepository);
-        $supplierFileRepository = new SupplierFileInMemoryRepository();
+        $productFileRepository = new ProductFileInMemoryRepository();
         $storeProductFileSpy = $this->createMock(StoreProductsFile::class);
         $eventDispatcherStub = new StubEventDispatcher();
 
         $sut = new CreateProductFileHandler(
             $getSupplierFromContributorEmail,
-            $supplierFileRepository,
+            $productFileRepository,
             $storeProductFileSpy,
             $validatorSpy,
             $eventDispatcherStub,
@@ -201,7 +201,7 @@ final class CreateProductFileHandlerTest extends TestCase
         static::expectException(ContributorDoesNotExist::class);
         ($sut)(
             new CreateProductFile(
-                $uploadedSupplierFile,
+                $uploadedProductFile,
                 'contributor@example.com',
             )
         );

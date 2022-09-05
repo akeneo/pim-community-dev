@@ -58,8 +58,8 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierCodeFromSupplierFileIdentifier:
-        class: Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\Sql\DatabaseGetSupplierCodeFromSupplierFileIdentifier
+    Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierCodeFromProductFileIdentifier:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\Sql\DatabaseGetSupplierCodeFromProductFileIdentifier
         arguments:
             - '@database_connection'
 

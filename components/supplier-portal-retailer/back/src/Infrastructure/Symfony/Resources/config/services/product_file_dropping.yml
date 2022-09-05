@@ -7,17 +7,17 @@ services:
             - '@event_dispatcher'
             - '@security.token_storage'
 
-    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\AllSupplierFilesList:
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\AllProductFilesList:
         public: true
         arguments:
-            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetAllSupplierFiles'
-            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetAllSupplierFilesCount'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetAllProductFiles'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetAllProductFilesCount'
 
-    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\SupplierFilesList:
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\ProductFilesList:
         public: true
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFiles'
-            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetSupplierFilesCount'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilesCount'
 
     # GCS Bucket services
     Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\StoreProductsFile:
@@ -54,7 +54,7 @@ services:
     Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CreateProductFileHandler:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail'
-            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\SupplierFileRepository'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\StoreProductsFile'
             - '@validator'
             - '@event_dispatcher'
@@ -106,23 +106,23 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetAllSupplierFilesCount:
-        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetAllSupplierFilesCount
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetAllProductFilesCount:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetAllProductFilesCount
         arguments:
             - '@database_connection'
 
-    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetSupplierFilesCount:
-        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetSupplierFilesCount
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilesCount:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetProductFilesCount
         arguments:
             - '@database_connection'
 
-    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetAllSupplierFiles:
-        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetAllSupplierFiles
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetAllProductFiles:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetAllProductFiles
         arguments:
             - '@database_connection'
 
     # Event subscribers
-    Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Subscriber\NotifyUsersOnSupplierFileAdded:
+    Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Subscriber\NotifyUsersOnProductFileAdded:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Notifier'
         tags:
@@ -136,7 +136,7 @@ services:
 
     Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\SuccessMetrics\Subscriber\LogOnProductFileDownloaded:
         arguments:
-            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierCodeFromSupplierFileIdentifier'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierCodeFromProductFileIdentifier'
             - '@monolog.logger.supplier_portal'
         tags:
             - { name: kernel.event_subscriber }
@@ -194,7 +194,7 @@ services:
             - { name: console.command }
 
     # Repositories
-    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\SupplierFileRepository:
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository:
         public: true
         class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\Sql\DatabaseRepository
         arguments:

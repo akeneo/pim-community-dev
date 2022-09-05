@@ -1,16 +1,16 @@
 import {useCallback, useEffect, useState} from 'react';
 import {NotificationLevel, useNotify, useRoute, useTranslate} from '@akeneo-pim-community/shared';
-import {SupplierFileRow} from '../models/SupplierFileRow';
+import {ProductFileRow} from '../models/ProductFileRow';
 
-const useSupplierFiles = (page: number): [SupplierFileRow[], number] => {
-    const [totalNumberOfSupplierFiles, setTotalNumberOfSupplierFiles] = useState<number>(page);
-    const [supplierFiles, setSupplierFiles] = useState<SupplierFileRow[]>([]);
-    const getSupplierFilesRoute = useRoute('supplier_portal_retailer_product_files_list');
+const useProductFiles = (page: number): [ProductFileRow[], number] => {
+    const [totalNumberOfProductFiles, setTotalNumberOfProductFiles] = useState<number>(page);
+    const [productFiles, setProductFiles] = useState<ProductFileRow[]>([]);
+    const getProductFilesRoute = useRoute('supplier_portal_retailer_product_files_list');
     const notify = useNotify();
     const translate = useTranslate();
 
-    const loadSupplierFiles = useCallback(async () => {
-        const response = await fetch(`${getSupplierFilesRoute}?page=${page}`, {
+    const loadProductFiles = useCallback(async () => {
+        const response = await fetch(`${getProductFilesRoute}?page=${page}`, {
             method: 'GET',
         });
         if (!response.ok) {
@@ -26,7 +26,7 @@ const useSupplierFiles = (page: number): [SupplierFileRow[], number] => {
             return;
         }
         const responseBody = await response.json();
-        const supplierFiles: SupplierFileRow[] = responseBody.supplier_files.map((item: any) => {
+        const productFiles: ProductFileRow[] = responseBody.product_files.map((item: any) => {
             return {
                 identifier: item.identifier,
                 uploadedAt: item.uploadedAt,
@@ -34,17 +34,17 @@ const useSupplierFiles = (page: number): [SupplierFileRow[], number] => {
                 supplier: item.uploadedBySupplier,
             };
         });
-        setSupplierFiles(supplierFiles);
-        setTotalNumberOfSupplierFiles(responseBody.total);
-    }, [getSupplierFilesRoute, page]); // eslint-disable-line react-hooks/exhaustive-deps
+        setProductFiles(productFiles);
+        setTotalNumberOfProductFiles(responseBody.total);
+    }, [getProductFilesRoute, page]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         (async () => {
-            await loadSupplierFiles();
+            await loadProductFiles();
         })();
-    }, [loadSupplierFiles]);
+    }, [loadProductFiles]);
 
-    return [supplierFiles, totalNumberOfSupplierFiles];
+    return [productFiles, totalNumberOfProductFiles];
 };
 
-export {useSupplierFiles};
+export {useProductFiles};

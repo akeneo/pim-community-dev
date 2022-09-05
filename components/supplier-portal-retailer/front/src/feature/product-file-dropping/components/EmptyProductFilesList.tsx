@@ -12,7 +12,7 @@ const Container = styled.div`
     margin-top: 0;
 `;
 
-const EmptySupplierFilesList = () => {
+const EmptyProductFilesList = () => {
     const translate = useTranslate();
 
     return (
@@ -27,4 +27,4 @@ const NoFilesText = styled.div`
     margin-bottom: 30px;
 `;
 
-export {EmptySupplierFilesList};
+export {EmptyProductFilesList};

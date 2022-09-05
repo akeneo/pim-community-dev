@@ -1,1 +1,1 @@
-export * from './EmptySupplierFilesList';
+export * from './EmptyProductFilesList';

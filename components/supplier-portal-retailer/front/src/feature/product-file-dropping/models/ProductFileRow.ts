@@ -1,4 +1,4 @@
-export type SupplierFileRow = {
+export type ProductFileRow = {
     identifier: string;
     uploadedAt: string;
     contributor: string;

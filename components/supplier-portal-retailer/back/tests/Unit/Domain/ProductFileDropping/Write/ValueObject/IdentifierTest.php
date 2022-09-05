@@ -14,7 +14,7 @@ final class IdentifierTest extends TestCase
     {
         static::expectExceptionObject(
             new \InvalidArgumentException(
-                sprintf('The supplier file identifier must be a UUID, "%s" given', 'foo'),
+                sprintf('The product file identifier must be a UUID, "%s" given', 'foo'),
             ),
         );
 
@@ -22,7 +22,7 @@ final class IdentifierTest extends TestCase
     }
 
     /** @test */
-    public function itCreatesASupplierFileIdentifierIfItsValid(): void
+    public function itCreatesAProductFileIdentifierIfItsValid(): void
     {
         $uuid = Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f02');
 

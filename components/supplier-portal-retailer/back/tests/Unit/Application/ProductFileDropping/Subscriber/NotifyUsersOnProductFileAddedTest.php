@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Application\ProductFileDropping\Subscriber;
 
-use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Subscriber\NotifyUsersOnSupplierFileAdded;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Subscriber\NotifyUsersOnProductFileAdded;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Notifier;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Event\SupplierFileAdded;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\SupplierFile;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Event\ProductFileAdded;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use PHPUnit\Framework\TestCase;
 
-final class NotifyUsersOnSupplierFileAddedTest extends TestCase
+final class NotifyUsersOnProductFileAddedTest extends TestCase
 {
     /** @test */
-    public function itSubscribesToTheSupplierFileAddedEvent(): void
+    public function itSubscribesToTheProductFileAddedEvent(): void
     {
         static::assertSame(
-            [SupplierFileAdded::class => 'notifyUsers'],
-            NotifyUsersOnSupplierFileAdded::getSubscribedEvents(),
+            [ProductFileAdded::class => 'notifyUsers'],
+            NotifyUsersOnProductFileAdded::getSubscribedEvents(),
         );
     }
 
@@ -26,15 +26,15 @@ final class NotifyUsersOnSupplierFileAddedTest extends TestCase
     public function itNotifiesAllTheUsersWhenASupplierDropsAFile(): void
     {
         $notifier = $this->createMock(Notifier::class);
-        $sut = new NotifyUsersOnSupplierFileAdded($notifier);
+        $sut = new NotifyUsersOnProductFileAdded($notifier);
 
         $notifier
             ->expects($this->once())
-            ->method('notifyUsersForSupplierFileAdding')
+            ->method('notifyUsersForProductFileAdding')
             ->with('contributor@example.com', 'Supplier label')
         ;
 
-        $sut->notifyUsers(new SupplierFileAdded(SupplierFile::create(
+        $sut->notifyUsers(new ProductFileAdded(ProductFile::create(
             'e12d4c68-8d25-4f6a-a989-1364b1bb4cbd',
             'file.xlsx',
             'path/to/file.xlsx',

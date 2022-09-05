@@ -2,14 +2,14 @@ import React from 'react';
 import {DownloadIcon, getColor, IconButton, Pagination, Table} from 'akeneo-design-system';
 import {useDateFormatter, useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
-import {EmptySupplierFilesList} from './EmptySupplierFilesList';
-import {SupplierFileRow} from '../models/SupplierFileRow';
+import {EmptyProductFilesList} from './EmptyProductFilesList';
+import {ProductFileRow} from '../models/ProductFileRow';
 
-export const SUPPLIER_FILES_PER_PAGE = 25;
+export const PRODUCT_FILES_PER_PAGE = 25;
 
 type Props = {
-    supplierFiles: SupplierFileRow[];
-    totalSupplierFiles: number;
+    productFiles: ProductFileRow[];
+    totalProductFiles: number;
     currentPage: number;
     onChangePage: (pageNumber: number) => void;
     displaySupplierColumn?: boolean;
@@ -28,9 +28,9 @@ const StyledIconButton = styled(IconButton)`
     }
 `;
 
-const SupplierFilesList = ({
-    supplierFiles,
-    totalSupplierFiles,
+const ProductFilesList = ({
+    productFiles,
+    totalProductFiles,
     currentPage,
     onChangePage,
     displaySupplierColumn = true,
@@ -41,14 +41,14 @@ const SupplierFilesList = ({
 
     return (
         <>
-            {0 === supplierFiles.length && <EmptySupplierFilesList />}
-            {0 < supplierFiles.length && (
+            {0 === productFiles.length && <EmptyProductFilesList />}
+            {0 < productFiles.length && (
                 <>
                     <Pagination
                         followPage={onChangePage}
                         currentPage={currentPage}
-                        totalItems={totalSupplierFiles}
-                        itemsPerPage={SUPPLIER_FILES_PER_PAGE}
+                        totalItems={totalProductFiles}
+                        itemsPerPage={PRODUCT_FILES_PER_PAGE}
                     />
 
                     <Table>
@@ -67,8 +67,8 @@ const SupplierFilesList = ({
                             <Table.HeaderCell></Table.HeaderCell>
                         </Table.Header>
                         <Table.Body>
-                            {supplierFiles.map((supplierFile: SupplierFileRow) => {
-                                const uploadedDate = dateFormatter(supplierFile.uploadedAt, {
+                            {productFiles.map((productFile: ProductFileRow) => {
+                                const uploadedDate = dateFormatter(productFile.uploadedAt, {
                                     day: '2-digit',
                                     hour: '2-digit',
                                     minute: '2-digit',
@@ -76,12 +76,12 @@ const SupplierFilesList = ({
                                     year: 'numeric',
                                 });
                                 return (
-                                    <Table.Row key={supplierFile.identifier} onClick={() => {}}>
+                                    <Table.Row key={productFile.identifier} onClick={() => {}}>
                                         <Table.Cell>{uploadedDate}</Table.Cell>
-                                        <Table.Cell>{supplierFile.contributor}</Table.Cell>
+                                        <Table.Cell>{productFile.contributor}</Table.Cell>
                                         {displaySupplierColumn && (
                                             <Table.Cell>
-                                                {supplierFile.hasOwnProperty('supplier') && supplierFile.supplier}
+                                                {productFile.hasOwnProperty('supplier') && productFile.supplier}
                                             </Table.Cell>
                                         )}
                                         <DownloadCell>
@@ -93,7 +93,7 @@ const SupplierFilesList = ({
                                                 )}
                                                 ghost={'borderless'}
                                                 href={router.generate('supplier_portal_retailer_download_file', {
-                                                    identifier: supplierFile.identifier,
+                                                    identifier: productFile.identifier,
                                                 })}
                                             />
                                         </DownloadCell>
@@ -112,4 +112,4 @@ const DownloadCell = styled(Table.ActionCell)`
     width: 50px;
 `;
 
-export {SupplierFilesList};
+export {ProductFilesList};
