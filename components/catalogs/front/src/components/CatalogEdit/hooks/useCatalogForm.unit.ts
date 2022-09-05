@@ -208,7 +208,7 @@ test('it returns dirty at true after dispatching a change', () => {
     expect(isDirty).toBeTruthy();
 });
 
-test('it forwards the action to dispatch when it\'s a non-altering event', () => {
+test("it forwards the action to dispatch when it's a non-altering event", () => {
     mocked(useCatalog).mockImplementation(() => ({
         isLoading: false,
         isError: false,
