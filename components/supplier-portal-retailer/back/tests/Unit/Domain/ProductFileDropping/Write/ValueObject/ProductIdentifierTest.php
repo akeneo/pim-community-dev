@@ -7,7 +7,7 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Domain\ProductFileDropping\Wr
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\SupplierIdentifier;
 use PHPUnit\Framework\TestCase;
 
-final class SupplierIdentifierTest extends TestCase
+final class ProductIdentifierTest extends TestCase
 {
     /** @test */
     public function itThrowsAnErrorIfItIsNotAValidUuid(): void
@@ -22,7 +22,7 @@ final class SupplierIdentifierTest extends TestCase
     }
 
     /** @test */
-    public function itCreatesASupplierIdentifierIfItsValid(): void
+    public function itCreatesAProductIdentifierIfItsValid(): void
     {
         $uuid = SupplierIdentifier::fromString('44ce8069-8da1-4986-872f-311737f46f02');
 

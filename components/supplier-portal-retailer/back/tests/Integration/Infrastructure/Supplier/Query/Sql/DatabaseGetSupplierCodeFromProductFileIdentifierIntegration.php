@@ -7,13 +7,13 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\Supplie
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierCodeFromProductFileIdentifier;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 
-final class DatabaseGetSupplierCodeFromSupplierFileIdentifierIntegration extends SqlIntegrationTestCase
+final class DatabaseGetSupplierCodeFromProductFileIdentifierIntegration extends SqlIntegrationTestCase
 {
     /** @test */
-    public function itGetsSupplierCodeFromSupplierFileIdentifier(): void
+    public function itGetsSupplierCodeFromProductFileIdentifier(): void
     {
         $this->createSupplier();
-        $this->createSupplierFile('ede6024b-bdce-47d0-ba0c-7132f217992f');
+        $this->createProductFile('ede6024b-bdce-47d0-ba0c-7132f217992f');
 
         $supplierCode = ($this->get(GetSupplierCodeFromProductFileIdentifier::class))('ede6024b-bdce-47d0-ba0c-7132f217992f');
 
@@ -21,10 +21,10 @@ final class DatabaseGetSupplierCodeFromSupplierFileIdentifierIntegration extends
     }
 
     /** @test */
-    public function itReturnsNullIfThereIsNoFileForTheGivenSupplierFileIdentifier(): void
+    public function itReturnsNullIfThereIsNoFileForTheGivenProductFileIdentifier(): void
     {
         $this->createSupplier();
-        $this->createSupplierFile('3f91df5e-986d-43de-99b0-113bfdae7a77');
+        $this->createProductFile('3f91df5e-986d-43de-99b0-113bfdae7a77');
 
         $supplierCode = ($this->get(GetSupplierCodeFromProductFileIdentifier::class))('606abe11-353f-470c-aa1c-7f9e793b29a0');
 
@@ -48,7 +48,7 @@ final class DatabaseGetSupplierCodeFromSupplierFileIdentifierIntegration extends
         );
     }
 
-    private function createSupplierFile(string $identifier): void
+    private function createProductFile(string $identifier): void
     {
         $sql = <<<SQL
             INSERT INTO `akeneo_supplier_portal_supplier_file` (

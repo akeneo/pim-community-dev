@@ -15,11 +15,11 @@ final class LogOnProductFileDownloadedTest extends TestCase
     /** @test */
     public function itLogsWhenAProductFileHasBeenDownloadedByARetailer(): void
     {
-        $getSupplierCodeFromSupplierFileIdentifier = $this->createMock(
+        $getSupplierCodeFromProductFileIdentifier = $this->createMock(
             GetSupplierCodeFromProductFileIdentifier::class,
         );
 
-        $getSupplierCodeFromSupplierFileIdentifier
+        $getSupplierCodeFromProductFileIdentifier
             ->expects($this->once())
             ->method('__invoke')
             ->with('e77c4413-a6d5-49e6-a102-8042cf5bd439')
@@ -27,7 +27,7 @@ final class LogOnProductFileDownloadedTest extends TestCase
         ;
 
         $logger = new TestLogger();
-        $sut = new LogOnProductFileDownloaded($getSupplierCodeFromSupplierFileIdentifier, $logger);
+        $sut = new LogOnProductFileDownloaded($getSupplierCodeFromProductFileIdentifier, $logger);
 
         $sut->logOnProductFileDownloaded(
             new ProductFileDownloaded(

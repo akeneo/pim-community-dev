@@ -11,10 +11,10 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\Produc
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use PHPUnit\Framework\TestCase;
 
-final class NotifyUsersOnSupplierFileAddedTest extends TestCase
+final class NotifyUsersOnProductFileAddedTest extends TestCase
 {
     /** @test */
-    public function itSubscribesToTheSupplierFileAddedEvent(): void
+    public function itSubscribesToTheProductFileAddedEvent(): void
     {
         static::assertSame(
             [ProductFileAdded::class => 'notifyUsers'],
@@ -30,7 +30,7 @@ final class NotifyUsersOnSupplierFileAddedTest extends TestCase
 
         $notifier
             ->expects($this->once())
-            ->method('notifyUsersForSupplierFileAdding')
+            ->method('notifyUsersForProductFileAdding')
             ->with('contributor@example.com', 'Supplier label')
         ;
 
