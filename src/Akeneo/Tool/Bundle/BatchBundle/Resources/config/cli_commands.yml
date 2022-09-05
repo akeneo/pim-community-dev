@@ -3,11 +3,8 @@ services:
         arguments:
             - '@monolog.logger.batch'
             - '@akeneo_batch.job_repository'
-            - '@doctrine'
             - '@validator'
             - '@akeneo_batch.mail_notifier'
-            - '@akeneo_batch.job_parameters_factory'
-            - '@akeneo_batch.job.job_parameters_validator'
             - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandler'
             - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler'
         tags:
