@@ -1,7 +1,7 @@
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicy
 metadata:
-  name: {{ include "timmy.cloudFunctionName" . }}
+  name: {{ include "timmy.fullname" . }}-cloudscheduler-invoker
   namespace: {{ .Release.Namespace | quote }}
   annotations:
     argocd.argoproj.io/sync-wave: "1"
@@ -10,8 +10,8 @@ spec:
   resourceRef:
     apiVersion: cloudfunctions.cnrm.cloud.google.com/v1beta1
     kind: CloudFunctionsFunction
-    name: {{ include "timmy.cloudFunctionName" . }}
+    name: {{ include "timmy.fullname" . }}-{{ .Values.cloudScheduler.functionName }}
   bindings:
     - role: "roles/cloudfunctions.invoker"
       members:
-        - "serviceAccount:{{ .Values.cloudFunction.serviceAccountEmail }}"
+        - "serviceAccount:{{ include "timmy.deploymentGSAEmail" . }}"

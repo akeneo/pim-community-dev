@@ -8,7 +8,7 @@ if (!process.env.MAILER_API_KEY) {
 }
 
 const INSTANCE_NAME = process.env.INSTANCE_NAME || 'test';
-const FUNCTION_URL = process.env.FUNCTION_URL || 'http://localhost:8080';
+const FUNCTION_URL = process.env.FUNCTION_URL || 'http://localhost:8082';
 
 describe('Test to create a new tenant', () => {
   it('createTenant: should create the new tenant', async() => {

@@ -11,5 +11,5 @@ spec:
   resourceRef:
     apiVersion: iam.cnrm.cloud.google.com/v1beta1
     kind: IAMServiceAccount
-    external: projects/{{ .Values.common.gcpProjectID }}/serviceAccounts/{{ .Values.common.workloadIdentityGSA }}@{{ .Values.common.gcpProjectID }}.iam.gserviceaccount.com
+    external: projects/{{ .Values.common.gcpProjectID }}/serviceAccounts/{{ include "timmy.deploymentGSAEmail" . }}
 

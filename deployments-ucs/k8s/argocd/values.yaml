@@ -55,6 +55,16 @@ configs:
     clusterResourceWhitelist:
     - group: '*'
       kind: '*'
+  - name: timmy
+    namespace: argocd
+    sourceRepos:
+    - '*'
+    destinations:
+    - namespace: '*'
+      server: '*'
+    clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
 
   additionalApplications:
   - name: infra-apps
@@ -78,7 +88,27 @@ configs:
           value: $ARGOCD_APP_SOURCE_TARGET_REVISION
       valueFiles:
        - values.yaml # To be changed by values-project.yaml
-
+  - name: timmy
+    namespace: argocd
+    additionalAnnotations:
+      argocd.argoproj.io/sync-wave: "0"
+    finalizers:
+      - resources-finalizer.argocd.argoproj.io
+    syncPolicy:
+      automated: {}
+    project: timmy
+    source:
+      repoURL: https://github.com/akeneo/pim-enterprise-dev.git
+      path: deployments-ucs/timmy
+      targetRevision: master
+    destination:
+      server: "https://kubernetes.default.svc"
+    helm:
+      parameters:
+        - name: spec.source.targetRevision
+          value: $ARGOCD_APP_SOURCE_TARGET_REVISION
+      valueFiles:
+        - values.yaml # To be changed by values-project.yaml
 
 server:
   extraArgs:
