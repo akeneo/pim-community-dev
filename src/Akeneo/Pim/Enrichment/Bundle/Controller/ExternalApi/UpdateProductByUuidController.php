@@ -8,6 +8,8 @@ use Akeneo\Pim\Enrichment\Bundle\Event\ProductValidationErrorEvent;
 use Akeneo\Pim\Enrichment\Bundle\Event\TechnicalErrorEvent;
 use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Event\ProductDomainErrorEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException as ProductInvalidArgumentException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\TwoWayAssociationWithTheSameProductException;
@@ -17,7 +19,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\QuantifiedAssociations;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ExternalApi\PayloadFormat;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetProductUuids;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Checker\DuplicateValueChecker;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
 use Akeneo\Tool\Component\Api\Exception\DocumentedHttpException;
@@ -35,10 +36,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Validator\ConstraintViolation;
-use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
 
@@ -46,26 +47,28 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CreateProductByUuidController
+class UpdateProductByUuidController
 {
     public function __construct(
+        private ProductRepositoryInterface $productRepository,
         private UrlGeneratorInterface $router,
+        private FilterInterface $emptyValuesFilter,
         private EventDispatcherInterface $eventDispatcher,
         private DuplicateValueChecker $duplicateValueChecker,
         private SecurityFacade $security,
         private ValidatorInterface $validator,
-        private Connection $connection,
         private ObjectUpdaterInterface $updater,
         private ProductBuilderInterface $productBuilder,
         private SaverInterface $saver,
         private AttributeFilterInterface $productAttributeFilter,
-        private ProductRepositoryInterface $productRepository,
+        private Connection $connection,
+        private ValidatorInterface $productValidator,
         private GetProductUuids $getProductUuids,
-        private AttributeRepositoryInterface $attributeRepository,
+        private RemoveParentInterface $removeParent,
     ) {
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request, string $uuid): Response
     {
         if (!$this->security->isGranted('pim_api_product_edit')) {
             throw new AccessDeniedHttpException('Access forbidden. You are not allowed to create or update products.');
@@ -85,39 +88,57 @@ class CreateProductByUuidController
             );
         }
 
-        if (isset($data['uuid']) && $this->productExists($data['uuid'])) {
-            $this->throwViolationException(
-                sprintf('The %s uuid is already used for another product.', $data['uuid']),
-                'uuid'
-            );
-        }
-
         try {
             $this->duplicateValueChecker->check($data);
-        } catch (InvalidPropertyTypeException $e) {
-            $this->eventDispatcher->dispatch(new TechnicalErrorEvent($e));
-            $this->throwDocumentedHttpException($e->getMessage(), $e);
+        } catch (InvalidPropertyTypeException $exception) {
+            $this->eventDispatcher->dispatch(new TechnicalErrorEvent($exception));
+            $this->throwDocumentedHttpException($exception->getMessage(), $exception);
         }
 
-        if (isset($data['parent'])) {
-            $identifierCode = $this->attributeRepository->getIdentifierCode();
-            $product = $this->productBuilder->createProduct(identifier: $data['values'][$identifierCode][0]['data'] ?? null, uuid: $data['uuid'] ?? null);
-        } else {
-            $product = $this->productBuilder->createProduct(identifier: null, uuid: $data['uuid'] ?? null);
+        $product = $this->productRepository->find($uuid);
+
+        $isUpdate = true;
+        if (null === $product) {
+            $isUpdate = false;
+            $product = $this->productBuilder->createProduct(uuid: $uuid);
+        }
+
+        $this->validateUuidConsistency($uuid, $data);
+        $data['uuid'] = $uuid;
+
+        if ($isUpdate) {
+            $data = $this->filterEmptyValues($product, $data);
         }
 
         $data = $this->replaceUuidsByIdentifiers($data);
+
         $this->updateProduct($product, $data);
         $this->validateProduct($product);
         $this->saver->save($product);
 
-        return $this->getResponse($product->getUuid());
+        return $this->getResponse($product->getUuid(), $isUpdate ? Response::HTTP_NO_CONTENT : Response::HTTP_CREATED);
+    }
+
+    private function getDecodedContent($content): array
+    {
+        // TODO: CPM-718
+        $decodedContent = json_decode($content, true);
+
+        if (null === $decodedContent) {
+            throw new BadRequestHttpException('Invalid json message received');
+        }
+
+        return $decodedContent;
     }
 
     private function updateProduct(ProductInterface $product, array $data): void
     {
         try {
-            if (isset($data['parent'])) {
+            if ($this->needUpdateFromVariantToSimple($product, $data)) {
+                $this->removeParent->from($product);
+            }
+
+            if (isset($data['parent']) || $product->isVariant()) {
                 $data = $this->productAttributeFilter->filter($data);
             }
 
@@ -135,7 +156,7 @@ class CreateProductByUuidController
             }
 
             throw new DocumentedHttpException(
-                Documentation::URL . 'post_products',
+                Documentation::URL . 'patch_products__code_',
                 sprintf('%s Check the expected format on the API documentation.', $message),
                 $exception
             );
@@ -160,23 +181,39 @@ class CreateProductByUuidController
         }
     }
 
-    private function getDecodedContent($content): array
+    private function filterEmptyValues(ProductInterface $product, array $data): array
     {
-        $decodedContent = json_decode($content, true);
-
-        if (null === $decodedContent) {
-            throw new BadRequestHttpException('Invalid json message received');
+        if (!isset($data['values'])) {
+            return $data;
         }
 
-        return $decodedContent;
+        try {
+            $dataFiltered = $this->emptyValuesFilter->filter($product, ['values' => $data['values']]);
+
+            if (!empty($dataFiltered)) {
+                $data = array_replace($data, $dataFiltered);
+            } else {
+                $data['values'] = [];
+            }
+        } catch (PropertyException $exception) {
+            if ($exception instanceof DomainErrorInterface) {
+                $this->eventDispatcher->dispatch(new ProductDomainErrorEvent($exception, $product));
+            } else {
+                $this->eventDispatcher->dispatch(new TechnicalErrorEvent($exception));
+            }
+
+            $this->throwDocumentedHttpException($exception->getMessage(), $exception);
+        }
+
+        return $data;
     }
 
-    private function getResponse(UuidInterface $uuid): Response
+    private function getResponse(UuidInterface $uuid, int $status): Response
     {
-        $response = new Response(null, Response::HTTP_CREATED);
+        $response = new Response(null, $status);
         $route = $this->router->generate(
             'pim_api_product_uuid_get',
-            ['uuid' => $uuid->toString()],
+            ['uuid' => $uuid],
             UrlGeneratorInterface::ABSOLUTE_URL
         );
         $response->headers->set('Location', $route);
@@ -184,16 +221,88 @@ class CreateProductByUuidController
         return $response;
     }
 
-    private function productExists(string $uuid): bool
+    private function validateUuidConsistency(string $uuid, array $data): void
     {
-        return null !== $this->productRepository->find($uuid);
+        if (isset($data['uuid']) && $uuid !== $data['uuid']) {
+            throw new UnprocessableEntityHttpException(
+                sprintf(
+                    'The uuid "%s" provided in the request body must match the uuid "%s" provided in the url.',
+                    $data['uuid'],
+                    $uuid
+                )
+            );
+        }
     }
 
-    /**
-     * @param string[] $uuidAsStrings
-     * @param string $association 'associations'|'quantified_associations'
-     * @return array<string, string>
-     */
+    private function throwDocumentedHttpException(string $message, \Exception $previousException = null)
+    {
+        throw new DocumentedHttpException(
+            Documentation::URL . 'patch_products__code_',
+            sprintf('%s Check the expected format on the API documentation.', $message),
+            $previousException
+        );
+    }
+
+    private function replaceUuidsByIdentifiers(array $data): array
+    {
+        if (isset($data['associations'])) {
+            foreach ($data['associations'] as $associationCode => $associations) {
+                if (isset($associations['products'])) {
+                    $data['associations'][$associationCode]['products'] = \array_values($this->getProductIdentifierFromUuids($associations['products'], 'associations'));
+                }
+            }
+        }
+
+        if (isset($data['quantified_associations'])) {
+            foreach ($data['quantified_associations'] as $associationCode => $associations) {
+                if (isset($associations['products'])) {
+                    $map = $this->getProductIdentifierFromUuids(
+                        \array_map(fn (array $association): string => $association['uuid'], $associations['products']),
+                        'quantified_associations'
+                    );
+                    $data['quantified_associations'][$associationCode]['products'] = \array_map(function ($association) use ($map) {
+                        return ['quantity' => $association['quantity'], 'identifier' => $map[$association['uuid']]];
+                    }, $associations['products']);
+                }
+            }
+        }
+
+        return $data;
+    }
+
+    private function validateProduct(ProductInterface $product): void
+    {
+        $violations = $this->productValidator->validate($product, null, ['Default', 'api']);
+        if (0 !== $violations->count()) {
+            foreach ($violations as $offset => $violation) {
+                Assert::isInstanceOf($violation, ConstraintViolation::class);
+                /** @var ConstraintViolation $violation */
+                if (QuantifiedAssociations::PRODUCTS_DO_NOT_EXIST_ERROR === $violation->getCode()) {
+                    $parameters = $violation->getParameters();
+                    $uuid = $this->getProductUuids->fromIdentifier($parameters['{{ values }}']);
+                    $parameters = ['{{values }}' => $uuid->toString()];
+                    $message = sprintf('The following products don\'t exist: %s. Please make sure the products haven\'t been deleted in the meantime.', $uuid->toString());
+
+                    $violations->set($offset, new ConstraintViolation(
+                        $message,
+                        $violation->getMessageTemplate(),
+                        $parameters,
+                        $violation->getRoot(),
+                        $violation->getPropertyPath(),
+                        $violation->getInvalidValue(),
+                        $violation->getPlural(),
+                        $violation->getCode(),
+                        $violation->getConstraint(),
+                        $violation->getCause()
+                    ));
+                }
+            }
+            $this->eventDispatcher->dispatch(new ProductValidationErrorEvent($violations, $product));
+
+            throw new ViolationHttpException($violations);
+        }
+    }
+
     private function getProductIdentifierFromUuids(array $uuidAsStrings, string $association): array
     {
         foreach ($uuidAsStrings as $uuid) {
@@ -229,103 +338,15 @@ class CreateProductByUuidController
         return $result;
     }
 
-    private function throwDocumentedHttpException(string $message, \Exception $previousException = null)
-    {
-        // TODO: CPM-711
-        throw new DocumentedHttpException(
-            Documentation::URL . 'post_products',
-            sprintf('%s Check the expected format on the API documentation.', $message),
-            $previousException
-        );
-    }
-
-    private function throwViolationException(string $message, string $propertyPath): void
-    {
-        $list = new ConstraintViolationList([
-            new ConstraintViolation($message, $message, [], null, $propertyPath, null),
-        ]);
-
-        throw new ViolationHttpException($list);
-    }
-
     /**
-     * This method is temporary until AssociationFieldSetter manages UUIDS
-     * @TODO CPM-697
-     * @param array $data
-     * @return array
-     * Expected data output format :
-     * {   "associations": {
-     *         "XSELL": {
-     *             "groups": ["group1", "group2"],
-     *             "products": ["AKN_TS1", "AKN_TSH2"],
-     *             "product_models": ["MODEL_AKN_TS1", "MODEL_AKN_TSH2"]
-     *         }
-     *     },
-     *     "quantified_associations": {
-     *         "QUANTIFIED": {
-     *             "products": [{"identifier": "AKN_TS1", quantity: 1}, {"identifier": "AKN_TSH2", "quantity": 2}],
-     *             "product_models": ["MODEL_AKN_TS1", "MODEL_AKN_TSH2"]
-     *         }
-     *     }
-     * }
+     * It is a conversion from variant product to simple product if
+     * - the product already exists
+     * - it is a variant product
+     * - and 'parent' is explicitly null
      */
-    private function replaceUuidsByIdentifiers(array $data): array
+    protected function needUpdateFromVariantToSimple(ProductInterface $product, array $data): bool
     {
-        if (isset($data['associations'])) {
-            foreach ($data['associations'] as $associationCode => $associations) {
-                if (isset($associations['products'])) {
-                    $data['associations'][$associationCode]['products'] = \array_values($this->getProductIdentifierFromUuids($associations['products'], 'associations'));
-                }
-            }
-        }
-
-        if (isset($data['quantified_associations'])) {
-            foreach ($data['quantified_associations'] as $associationCode => $associations) {
-                if (isset($associations['products'])) {
-                    $map = $this->getProductIdentifierFromUuids(
-                        \array_map(fn (array $association): string => $association['uuid'], $associations['products']),
-                        'quantified_associations'
-                    );
-                    $data['quantified_associations'][$associationCode]['products'] = \array_map(function ($association) use ($map) {
-                        return ['quantity' => $association['quantity'], 'identifier' => $map[$association['uuid']]];
-                    }, $associations['products']);
-                }
-            }
-        }
-
-        return $data;
-    }
-
-    private function validateProduct(ProductInterface $product): void
-    {
-        $violations = $this->validator->validate($product, null, ['Default', 'api']);
-        if (0 !== $violations->count()) {
-            foreach ($violations as $offset => $violation) {
-                Assert::isInstanceOf($violation, ConstraintViolation::class);
-                /** @var ConstraintViolation $violation */
-                if (QuantifiedAssociations::PRODUCTS_DO_NOT_EXIST_ERROR === $violation->getCode()) {
-                    $parameters = $violation->getParameters();
-                    $uuid = $this->getProductUuids->fromIdentifier($parameters['{{ values }}']);
-                    $parameters = ['{{ values }}' => $uuid->toString()];
-                    $message = sprintf('The following products don\'t exist: %s. Please make sure the products haven\'t been deleted in the meantime.', $uuid->toString());
-
-                    $violations->set($offset, new ConstraintViolation(
-                        $message,
-                        $violation->getMessageTemplate(),
-                        $parameters,
-                        $violation->getRoot(),
-                        $violation->getPropertyPath(),
-                        $violation->getInvalidValue(),
-                        $violation->getPlural(),
-                        $violation->getCode(),
-                        $violation->getConstraint(),
-                        $violation->getCause()
-                    ));
-                }
-            }
-            $this->eventDispatcher->dispatch(new ProductValidationErrorEvent($violations, $product));
-
-            throw new ViolationHttpException($violations);
-        }
+        return null !== $product->getCreated() && $product->isVariant() &&
+            array_key_exists('parent', $data) && null === $data['parent'];
     }
 }
