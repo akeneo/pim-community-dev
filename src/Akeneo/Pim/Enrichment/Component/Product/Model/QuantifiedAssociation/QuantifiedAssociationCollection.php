@@ -193,12 +193,20 @@ class QuantifiedAssociationCollection
 
     public function merge(QuantifiedAssociationCollection $quantifiedAssociations): self
     {
-        $currentQuantifiedAssociationsNormalized = $this->normalizeWithIndexedIdentifiers();
-        $quantifiedAssociationsToMergeNormalized = $quantifiedAssociations->normalizeWithIndexedIdentifiers();
+        $currentQuantifiedAssociationsNormalizedByIdentifiers = $this->normalizeWithIndexedIdentifiers();
+        $quantifiedAssociationsToMergeNormalizedByIdentifiers = $quantifiedAssociations->normalizeWithIndexedIdentifiers();
+        $currentQuantifiedAssociationsNormalizedByUuids = $this->normalizeWithIndexedUuids();
+        $quantifiedAssociationsToMergeNormalizedByUuids = $quantifiedAssociations->normalizeWithIndexedUuids();
 
-        $mergedQuantifiedAssociationsNormalized = array_replace_recursive(
-            $currentQuantifiedAssociationsNormalized,
-            $quantifiedAssociationsToMergeNormalized
+        $mergedQuantifiedAssociationsNormalized = array_merge_recursive(
+            array_replace_recursive(
+                $currentQuantifiedAssociationsNormalizedByIdentifiers,
+                $quantifiedAssociationsToMergeNormalizedByIdentifiers
+            ),
+            array_replace_recursive(
+                $currentQuantifiedAssociationsNormalizedByUuids,
+                $quantifiedAssociationsToMergeNormalizedByUuids
+            )
         );
 
         return self::createFromNormalized($mergedQuantifiedAssociationsNormalized);
@@ -308,12 +316,17 @@ class QuantifiedAssociationCollection
     public function filterProductUuids(array $productUuidsToKeep)
     {
         $filteredQuantifiedAssociations = [];
+        $productUuidsToKeepAsStr = array_map(
+            fn (UuidInterface $uuid): string => $uuid->toString(),
+            $productUuidsToKeep
+        );
         foreach ($this->quantifiedAssociations as $associationTypeCode => $quantifiedAssociation) {
             $filteredQuantifiedAssociations[$associationTypeCode]['product_models'] = $quantifiedAssociation['product_models'];
             $filteredQuantifiedAssociations[$associationTypeCode]['products'] = array_filter(
                 $quantifiedAssociation['products'],
-                function (QuantifiedLink $quantifiedLink) use ($productUuidsToKeep) {
-                    return null === $quantifiedLink->uuid() || in_array($quantifiedLink->uuid(), $productUuidsToKeep);
+                function (QuantifiedLink $quantifiedLink) use ($productUuidsToKeepAsStr) {
+                    return null === $quantifiedLink->uuid() ||
+                        in_array($quantifiedLink->uuid()->toString(), $productUuidsToKeepAsStr);
                 }
             );
         }
@@ -376,9 +389,30 @@ class QuantifiedAssociationCollection
             foreach ($associationsNormalized as $quantifiedLinksType => $quantifiedLinksNormalized) {
                 $result[$associationType][$quantifiedLinksType] = [];
                 foreach ($quantifiedLinksNormalized as $quantifiedLinkNormalized) {
-                    $identifier = $quantifiedLinkNormalized['identifier'];
+                    if (array_key_exists('identifier', $quantifiedLinkNormalized)) {
+                        $result[$associationType][$quantifiedLinksType][$quantifiedLinkNormalized['identifier']] =
+                            $quantifiedLinkNormalized;
+                    }
+                }
+            }
+        }
 
-                    $result[$associationType][$quantifiedLinksType][$identifier] = $quantifiedLinkNormalized;
+        return $result;
+    }
+
+    private function normalizeWithIndexedUuids()
+    {
+        $quantifiedAssociationsNormalized = $this->normalize();
+
+        $result = [];
+        foreach ($quantifiedAssociationsNormalized as $associationType => $associationsNormalized) {
+            foreach ($associationsNormalized as $quantifiedLinksType => $quantifiedLinksNormalized) {
+                $result[$associationType][$quantifiedLinksType] = [];
+                foreach ($quantifiedLinksNormalized as $quantifiedLinkNormalized) {
+                    if (array_key_exists('uuid', $quantifiedLinkNormalized)) {
+                        $result[$associationType][$quantifiedLinksType][$quantifiedLinkNormalized['uuid']] =
+                            $quantifiedLinkNormalized;
+                    }
                 }
             }
         }
