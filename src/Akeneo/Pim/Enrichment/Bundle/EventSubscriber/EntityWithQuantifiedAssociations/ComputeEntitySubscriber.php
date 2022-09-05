@@ -20,7 +20,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 final class ComputeEntitySubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        protected GetUuidMappingQueryInterface                    $getUuidMappingFromProductIdentifiers,
+        protected GetUuidMappingQueryInterface $getUuidMappingQuery,
         protected GetIdMappingFromProductModelCodesQueryInterface $getIdMappingFromProductModelCodes
     ) {
     }
@@ -49,7 +49,7 @@ final class ComputeEntitySubscriber implements EventSubscriberInterface
         $productUuids = $subject->getQuantifiedAssociationsProductUuids();
         $productModelCodes = $subject->getQuantifiedAssociationsProductModelCodes();
 
-        $uuidMappedProductIdentifiers = $this->getUuidMappingFromProductIdentifiers->execute($productIdentifiers, $productUuids);
+        $uuidMappedProductIdentifiers = $this->getUuidMappingQuery->fromProductIdentifiers($productIdentifiers, $productUuids);
         $mappedProductModelCodes = $this->getIdMappingFromProductModelCodes->execute($productModelCodes);
 
         $subject->updateRawQuantifiedAssociations(

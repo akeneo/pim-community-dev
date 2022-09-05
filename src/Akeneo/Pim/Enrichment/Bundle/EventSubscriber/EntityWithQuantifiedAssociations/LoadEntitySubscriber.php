@@ -54,7 +54,7 @@ final class LoadEntitySubscriber implements EventSubscriber
         $productUuids = $entity->getQuantifiedAssociationsProductUuids();
         $productModelIds = $entity->getQuantifiedAssociationsProductModelIds();
 
-        $mappedProductIds = $this->getUuidMappingQuery->execute($productIds, $productUuids);
+        $mappedProductIds = $this->getUuidMappingQuery->fromProductIds($productIds, $productUuids);
         $mappedProductModelIds = $this->getIdMappingFromProductModelIds->execute($productModelIds);
         $quantifiedAssociationTypeCodes = $this->findQuantifiedAssociationTypeCodes->execute();
 

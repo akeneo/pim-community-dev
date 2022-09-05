@@ -57,7 +57,7 @@ class ComputeEntitySubscriberSpec extends ObjectBehavior
             ->updateRawQuantifiedAssociations($productUuidMapping, $productModelIdMapping)
             ->shouldBeCalledOnce();
 
-        $getUuidMappingFromProductIdentifiers->execute($productIdentifiers, $productUuids)->willReturn($productUuidMapping);
+        $getUuidMappingFromProductIdentifiers->fromProductIdentifiers($productIdentifiers, $productUuids)->willReturn($productUuidMapping);
         $getIdMappingFromProductModelCodes->execute($productModelCodes)->willReturn($productModelIdMapping);
 
         $this->computeRawQuantifiedAssociations($event);
@@ -69,7 +69,7 @@ class ComputeEntitySubscriberSpec extends ObjectBehavior
         \stdClass                    $randomEntity
     ) {
         $event->getSubject()->willReturn($randomEntity);
-        $getUuidMappingFromProductIdentifiersQuery->execute(Argument::cetera())->shouldNotBeCalled();
+        $getUuidMappingFromProductIdentifiersQuery->fromProductIdentifiers(Argument::cetera())->shouldNotBeCalled();
 
         $this->computeRawQuantifiedAssociations($event);
     }

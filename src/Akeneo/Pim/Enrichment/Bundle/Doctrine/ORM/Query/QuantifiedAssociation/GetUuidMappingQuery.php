@@ -19,7 +19,7 @@ class GetUuidMappingQuery implements GetUuidMappingQueryInterface
     {
     }
 
-    public function execute(array $productIdentifiers, array $productUuids): UuidMapping
+    public function fromProductIdentifiers(array $productIdentifiers, array $productUuids): UuidMapping
     {
         if (empty($productIdentifiers) && empty($productUuids)) {
             return UuidMapping::createFromMapping([]);
@@ -37,6 +37,29 @@ class GetUuidMappingQuery implements GetUuidMappingQueryInterface
             $query,
             ['product_identifiers' => $productIdentifiers, 'product_uuids' => $productUuidsAsBytes],
             ['product_identifiers' => Connection::PARAM_STR_ARRAY, 'product_uuids' => Connection::PARAM_STR_ARRAY]
+        )->fetchAllAssociative();
+
+        return UuidMapping::createFromMapping($mapping);
+    }
+
+    public function fromProductIds(array $productIds, array $productUuids): UuidMapping
+    {
+        if (empty($productIds) && empty($productUuids)) {
+            return UuidMapping::createFromMapping([]);
+        }
+
+        $query = <<<SQL
+            SELECT BIN_TO_UUID(uuid) as uuid, id, identifier
+            FROM pim_catalog_product
+            WHERE id IN (:product_ids) OR uuid IN (:product_uuids)
+        SQL;
+
+        $productUuidsAsBytes = \array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
+
+        $mapping = $this->connection->executeQuery(
+            $query,
+            ['product_ids' => $productIds, 'product_uuids' => $productUuidsAsBytes],
+            ['product_ids' => Connection::PARAM_STR_ARRAY, 'product_uuids' => Connection::PARAM_STR_ARRAY]
         )->fetchAllAssociative();
 
         return UuidMapping::createFromMapping($mapping);

@@ -65,7 +65,7 @@ class LoadEntitySubscriberSpec extends ObjectBehavior
         )->shouldBeCalled();
 
         $findQuantifiedAssociationTypeCodes->execute()->willReturn($existingAssociationTypeCodes);
-        $getUuidMappingQuery->execute($productIds, $productUuids)->willReturn($productUuidMapping);
+        $getUuidMappingQuery->fromProductIds($productIds, $productUuids)->willReturn($productUuidMapping);
         $getIdMappingFromProductModelIds->execute($productModelIds)->willReturn($productModelIdMapping);
 
         $this->postLoad($event);
@@ -77,7 +77,7 @@ class LoadEntitySubscriberSpec extends ObjectBehavior
         \stdClass $randomEntity
     ) {
         $event->getObject()->willReturn($randomEntity);
-        $getUuidMappingQuery->execute(Argument::cetera())->shouldNotBeCalled();
+        $getUuidMappingQuery->fromProductIdentifiers(Argument::cetera())->shouldNotBeCalled();
 
         $this->postLoad($event);
     }
