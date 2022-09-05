@@ -259,7 +259,7 @@ test('it calls onChange when the operator changes', async () => {
     });
 });
 
-test('it resets the value when the operator changes from multi to singe value', async () => {
+test('it resets the value when the operator changes from multi to single value', async () => {
     const onChange = jest.fn();
 
     render(
