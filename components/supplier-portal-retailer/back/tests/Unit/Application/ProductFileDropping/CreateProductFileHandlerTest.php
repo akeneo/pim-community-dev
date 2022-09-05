@@ -9,8 +9,8 @@ use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CreateProduct
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\InvalidProductFile;
 use Akeneo\SupplierPortal\Retailer\Application\Supplier\Exception\ContributorDoesNotExist;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\StoreProductsFile;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Event\SupplierFileAdded;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\SupplierFile;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Event\ProductFileAdded;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Filename;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
@@ -109,11 +109,11 @@ final class CreateProductFileHandlerTest extends TestCase
 
         $file = $supplierFileRepository->findByContributor(ContributorEmail::fromString('contributor@example.com'));
 
-        static::assertInstanceOf(SupplierFile::class, $file);
+        static::assertInstanceOf(ProductFile::class, $file);
 
         $dispatchedEvents = $eventDispatcherStub->getDispatchedEvents();
         $this->assertCount(1, $dispatchedEvents);
-        $this->assertInstanceOf(SupplierFileAdded::class, $dispatchedEvents[0]);
+        $this->assertInstanceOf(ProductFileAdded::class, $dispatchedEvents[0]);
 
         static::assertTrue($logger->hasInfo([
             'message' => 'Product file "products.xlsx" created.',

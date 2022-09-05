@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\Supplier\Query\Sql;
 
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierCodeFromSupplierFileIdentifier;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierCodeFromProductFileIdentifier;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 
 final class DatabaseGetSupplierCodeFromSupplierFileIdentifierIntegration extends SqlIntegrationTestCase
@@ -15,7 +15,7 @@ final class DatabaseGetSupplierCodeFromSupplierFileIdentifierIntegration extends
         $this->createSupplier();
         $this->createSupplierFile('ede6024b-bdce-47d0-ba0c-7132f217992f');
 
-        $supplierCode = ($this->get(GetSupplierCodeFromSupplierFileIdentifier::class))('ede6024b-bdce-47d0-ba0c-7132f217992f');
+        $supplierCode = ($this->get(GetSupplierCodeFromProductFileIdentifier::class))('ede6024b-bdce-47d0-ba0c-7132f217992f');
 
         static::assertSame('supplier_code', $supplierCode);
     }
@@ -26,7 +26,7 @@ final class DatabaseGetSupplierCodeFromSupplierFileIdentifierIntegration extends
         $this->createSupplier();
         $this->createSupplierFile('3f91df5e-986d-43de-99b0-113bfdae7a77');
 
-        $supplierCode = ($this->get(GetSupplierCodeFromSupplierFileIdentifier::class))('606abe11-353f-470c-aa1c-7f9e793b29a0');
+        $supplierCode = ($this->get(GetSupplierCodeFromProductFileIdentifier::class))('606abe11-353f-470c-aa1c-7f9e793b29a0');
 
         static::assertNull($supplierCode);
     }

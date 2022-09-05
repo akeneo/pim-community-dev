@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Domain\ProductFileDropping\Write\Model;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Event\SupplierFileAdded;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\SupplierFile;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Event\ProductFileAdded;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use PHPUnit\Framework\TestCase;
@@ -16,7 +16,7 @@ final class SupplierFileTest extends TestCase
     public function itCreatesASupplierFileAndStoresASupplierFileAddedEvent(): void
     {
         $supplierFileIdentifier = Identifier::fromString('d06c58da-4cd7-469d-a3fc-37209a05e9e2');
-        $supplierFile = SupplierFile::create(
+        $supplierFile = ProductFile::create(
             (string) $supplierFileIdentifier,
             'supplier-file.xlsx',
             '2/f/a/4/2fa4afe5465afe5655/supplier-file.xlsx',
@@ -37,6 +37,6 @@ final class SupplierFileTest extends TestCase
 
         $supplierFileEvents = $supplierFile->events();
         $this->assertCount(1, $supplierFileEvents);
-        $this->assertInstanceOf(SupplierFileAdded::class, $supplierFileEvents[0]);
+        $this->assertInstanceOf(ProductFileAdded::class, $supplierFileEvents[0]);
     }
 }

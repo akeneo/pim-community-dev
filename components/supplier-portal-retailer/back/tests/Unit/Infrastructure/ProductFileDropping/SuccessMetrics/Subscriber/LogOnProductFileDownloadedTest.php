@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Infrastructure\ProductFileDropping\SuccessMetrics\Subscriber;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Event\ProductFileDownloaded;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierCodeFromSupplierFileIdentifier;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierCodeFromProductFileIdentifier;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\SuccessMetrics\Subscriber\LogOnProductFileDownloaded;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\Test\TestLogger;
@@ -16,7 +16,7 @@ final class LogOnProductFileDownloadedTest extends TestCase
     public function itLogsWhenAProductFileHasBeenDownloadedByARetailer(): void
     {
         $getSupplierCodeFromSupplierFileIdentifier = $this->createMock(
-            GetSupplierCodeFromSupplierFileIdentifier::class,
+            GetSupplierCodeFromProductFileIdentifier::class,
         );
 
         $getSupplierCodeFromSupplierFileIdentifier

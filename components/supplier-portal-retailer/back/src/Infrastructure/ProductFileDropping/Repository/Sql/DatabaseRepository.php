@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\Sql;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\SupplierFile;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\SupplierFileRepository;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
 use Doctrine\DBAL\Connection;
 
-final class DatabaseRepository implements SupplierFileRepository
+final class DatabaseRepository implements ProductFileRepository
 {
     public function __construct(private Connection $connection)
     {
     }
 
-    public function save(SupplierFile $supplierFile): void
+    public function save(ProductFile $productFile): void
     {
         $sql = <<<SQL
             REPLACE INTO `akeneo_supplier_portal_supplier_file` (
@@ -31,12 +31,12 @@ final class DatabaseRepository implements SupplierFileRepository
         $this->connection->executeStatement(
             $sql,
             [
-                'identifier' => $supplierFile->identifier(),
-                'original_filename' => $supplierFile->originalFilename(),
-                'path' => $supplierFile->path(),
-                'uploaded_by_contributor' => $supplierFile->contributorEmail(),
-                'uploaded_by_supplier' => $supplierFile->supplierIdentifier(),
-                'uploaded_at' => $supplierFile->uploadedAt(),
+                'identifier' => $productFile->identifier(),
+                'original_filename' => $productFile->originalFilename(),
+                'path' => $productFile->path(),
+                'uploaded_by_contributor' => $productFile->contributorEmail(),
+                'uploaded_by_supplier' => $productFile->supplierIdentifier(),
+                'uploaded_at' => $productFile->uploadedAt(),
             ],
         );
     }

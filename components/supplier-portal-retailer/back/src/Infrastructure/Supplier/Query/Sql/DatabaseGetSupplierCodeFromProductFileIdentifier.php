@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\Sql;
 
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierCodeFromSupplierFileIdentifier;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierCodeFromProductFileIdentifier;
 use Doctrine\DBAL\Connection;
 
-final class DatabaseGetSupplierCodeFromSupplierFileIdentifier implements GetSupplierCodeFromSupplierFileIdentifier
+final class DatabaseGetSupplierCodeFromProductFileIdentifier implements GetSupplierCodeFromProductFileIdentifier
 {
     public function __construct(private Connection $connection)
     {
     }
 
-    public function __invoke(string $supplierFileIdentifier): ?string
+    public function __invoke(string $productFileIdentifier): ?string
     {
         $code = $this->connection->executeQuery(
             <<<SQL
@@ -21,11 +21,11 @@ final class DatabaseGetSupplierCodeFromSupplierFileIdentifier implements GetSupp
                 FROM `akeneo_supplier_portal_supplier` supplier
                 INNER JOIN akeneo_supplier_portal_supplier_file supplier_file 
                     ON supplier_file.uploaded_by_supplier = supplier.identifier 
-                WHERE supplier_file.identifier = :supplierFileIdentifier
+                WHERE supplier_file.identifier = :productFileIdentifier
             SQL
             ,
             [
-                'supplierFileIdentifier' => $supplierFileIdentifier,
+                'productFileIdentifier' => $productFileIdentifier,
             ],
         )->fetchOne();
 

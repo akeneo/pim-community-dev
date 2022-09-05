@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Event\SupplierFileAdded;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Event\ProductFileAdded;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Filename;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Path;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 
-final class SupplierFile
+final class ProductFile
 {
     private Identifier $identifier;
     private Filename $originalFilename;
@@ -47,7 +47,7 @@ final class SupplierFile
         string $contributorEmail,
         Supplier $uploadedBySupplier,
     ): self {
-        $supplierFile = new self(
+        $productFile = new self(
             $identifier,
             $originalFilename,
             $path,
@@ -56,9 +56,9 @@ final class SupplierFile
             new \DateTimeImmutable(),
         );
 
-        $supplierFile->events[] = new SupplierFileAdded($supplierFile);
+        $productFile->events[] = new ProductFileAdded($productFile);
 
-        return $supplierFile;
+        return $productFile;
     }
 
     public function identifier(): string

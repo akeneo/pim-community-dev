@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\ProductFileDropping\Query\Sql;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetSupplierFilesCount;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilesCount;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
@@ -14,7 +14,7 @@ final class DatabaseGetSupplierFilesCountIntegration extends SqlIntegrationTestC
     /** @test */
     public function itReturns0IfThereIsNoFile(): void
     {
-        static::assertSame(0, $this->get(GetSupplierFilesCount::class)('44ce8069-8da1-4986-872f-311737f46f00'));
+        static::assertSame(0, $this->get(GetProductFilesCount::class)('44ce8069-8da1-4986-872f-311737f46f00'));
     }
 
     /** @test */
@@ -30,7 +30,7 @@ final class DatabaseGetSupplierFilesCountIntegration extends SqlIntegrationTestC
             $this->createSupplierFile('a20576cd-840f-4124-9900-14d581491387');
         }
 
-        static::assertSame(15, $this->get(GetSupplierFilesCount::class)('44ce8069-8da1-4986-872f-311737f46f00'));
+        static::assertSame(15, $this->get(GetProductFilesCount::class)('44ce8069-8da1-4986-872f-311737f46f00'));
     }
 
     private function createSupplier(string $identifier, string $code, string $label): void

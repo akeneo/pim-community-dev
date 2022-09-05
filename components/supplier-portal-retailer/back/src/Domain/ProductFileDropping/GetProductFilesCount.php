@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping;
 
-interface GetAllSupplierFilesCount
+interface GetProductFilesCount
 {
-    public function __invoke(): int;
+    public function __invoke(string $supplierIdentifier): int;
 }

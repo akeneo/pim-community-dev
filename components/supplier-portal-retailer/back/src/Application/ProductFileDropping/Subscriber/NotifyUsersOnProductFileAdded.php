@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Subscriber;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Notifier;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Event\SupplierFileAdded;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Event\ProductFileAdded;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-final class NotifyUsersOnSupplierFileAdded implements EventSubscriberInterface
+final class NotifyUsersOnProductFileAdded implements EventSubscriberInterface
 {
     public function __construct(
         private Notifier $notifier,
@@ -18,13 +18,13 @@ final class NotifyUsersOnSupplierFileAdded implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            SupplierFileAdded::class => 'notifyUsers',
+            ProductFileAdded::class => 'notifyUsers',
         ];
     }
 
-    public function notifyUsers(SupplierFileAdded $event): void
+    public function notifyUsers(ProductFileAdded $event): void
     {
-        $this->notifier->notifyUsersForSupplierFileAdding(
+        $this->notifier->notifyUsersForProductFileAdding(
             $event->contributorEmail(),
             $event->supplierLabel(),
         );

@@ -15,7 +15,7 @@ final class PIMNotifier implements Notifier
     {
     }
 
-    public function notifyUsersForSupplierFileAdding(string $contributorEmail, string $supplierLabel): void
+    public function notifyUsersForProductFileAdding(string $contributorEmail, string $supplierLabel): void
     {
         $notification = new Notification();
         $notification

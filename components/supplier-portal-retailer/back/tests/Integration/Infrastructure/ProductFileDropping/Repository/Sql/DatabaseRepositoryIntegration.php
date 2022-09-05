@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\ProductFileDropping\Repository\Sql;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\SupplierFile;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\SupplierFileRepository;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
@@ -16,8 +16,8 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
     public function itSavesASupplierFile(): void
     {
         $this->createSupplier();
-        $repository = $this->get(SupplierFileRepository::class);
-        $supplierFile = SupplierFile::create(
+        $repository = $this->get(ProductFileRepository::class);
+        $supplierFile = ProductFile::create(
             'b8b13d0b-496b-4a7c-a574-0d522ba90752',
             'product-file.xlsx',
             '1/2/3/4/product-file.xlsx',
