@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import { MultiSelectInput} from 'akeneo-design-system';
-import {ProductValueFiltersValues} from '../models/FilterValuesValues';
+import {MultiSelectInput} from 'akeneo-design-system';
+import {ProductValueFiltersValues} from '../models/ProductValueFiltersValues';
 import {useChannelsByCodes} from '../../ProductSelection/hooks/useChannelsByCodes';
 import {useInfiniteChannels} from '../../ProductSelection/hooks/useInfiniteChannels';
 import {useUniqueEntitiesByCode} from '../../ProductSelection/hooks/useUniqueEntitiesByCode';
@@ -10,9 +10,10 @@ import {Channel} from '../models/Channel';
 type Props = {
     productValueFilters: ProductValueFiltersValues;
     onChange: (values: ProductValueFiltersValues) => void;
+    isInvalid: boolean;
 };
 
-export const FilterChannel: FC<Props> = ({productValueFilters, onChange}) => {
+export const FilterChannel: FC<Props> = ({productValueFilters, onChange, isInvalid}) => {
     const translate = useTranslate();
 
     const {data: selected} = useChannelsByCodes(productValueFilters?.channel);
@@ -29,7 +30,7 @@ export const FilterChannel: FC<Props> = ({productValueFilters, onChange}) => {
                 placeholder={translate('akeneo_catalogs.filter_values.criteria.channel.placeholder')}
                 onChange={v => onChange({...productValueFilters, channel: v})}
                 onNextPage={fetchNextPage}
-                // invalid={isInvalid}
+                invalid={isInvalid}
                 data-testid='value'
             >
                 {channels?.map(option => (

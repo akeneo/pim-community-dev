@@ -11,6 +11,7 @@ import {CatalogFormActions} from '../reducers/CatalogFormReducer';
 import {mapProductSelectionCriteriaErrors} from '../utils/mapProductSelectionCriteriaErrors';
 import {getTabsValidationStatus} from '../utils/getTabsValidationStatus';
 import {ProductValueFilters} from '../../ProductValueFilters';
+import {mapProductValueFiltersErrors} from '../utils/mapProductValueFiltersErrors';
 
 type Props = {
     values: CatalogFormValues;
@@ -62,11 +63,11 @@ const Edit: FC<PropsWithChildren<Props>> = ({values, errors}) => {
                     errors={mapProductSelectionCriteriaErrors(errors, Object.keys(values.product_selection_criteria))}
                 />
             )}
-            {isCurrent(Tabs.FILTER_VALUES) && (
+            {isCurrent(Tabs.PRODUCT_VALUE_FILTERS) && (
                 <ProductValueFilters
                     productValueFilters={values.product_value_filters}
                     onChange={handleFilterValuesChange}
-                    errors={errors}
+                    errors={mapProductValueFiltersErrors(errors)}
                 />
             )}
         </>

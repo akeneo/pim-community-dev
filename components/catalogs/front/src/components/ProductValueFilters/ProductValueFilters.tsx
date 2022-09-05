@@ -1,15 +1,15 @@
 import React, {FC} from 'react';
-import {ProductValueFiltersValues} from './models/FilterValuesValues';
+import {ProductValueFiltersValues} from './models/ProductValueFiltersValues';
 import {FilterChannel} from './components/FilterChannel';
-import {CatalogFormErrors} from '../CatalogEdit/models/CatalogFormErrors';
 import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {getColor, getFontSize} from 'akeneo-design-system';
+import {getColor, getFontSize, Helper} from 'akeneo-design-system';
+import {ProductValueFiltersErrors} from './models/ProductValueFiltersErrors';
 
 type Props = {
     productValueFilters: ProductValueFiltersValues;
     onChange: (values: ProductValueFiltersValues) => void;
-    errors: CatalogFormErrors;
+    errors: ProductValueFiltersErrors;
 };
 
 const FilterContainer = styled.div`
@@ -23,14 +23,22 @@ const Label = styled.div`
 `;
 
 export const ProductValueFilters: FC<Props> = ({productValueFilters, onChange, errors}) => {
-    //isInvalid={errors}
     const translate = useTranslate();
 
     return (
         <>
             <FilterContainer>
                 <Label>{translate('akeneo_catalogs.filter_values.criteria.channel.label')}</Label>
-                <FilterChannel productValueFilters={productValueFilters} onChange={onChange} />
+                <FilterChannel
+                    productValueFilters={productValueFilters}
+                    onChange={onChange}
+                    isInvalid={!!errors.channel}
+                />
+                {!!errors.channel && (
+                    <Helper inline level='error'>
+                        {translate(errors.channel)}
+                    </Helper>
+                )}
             </FilterContainer>
         </>
     );
