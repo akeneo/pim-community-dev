@@ -17,6 +17,18 @@ module "iam" {
   cloudbuild_admins = local.admins
 }
 
+module "firestore-eur" {
+  source      = "../modules/firestore"
+  project_id  = "akecld-prd-pim-fire-eur-dev"
+  location_id = "europe-west"
+}
+
+module "firestore-us" {
+  source      = "../modules/firestore"
+  project_id  = "akecld-prd-pim-fire-us-dev"
+  location_id = "us-central"
+}
+
 module "registry" {
   source         = "../modules/registry"
   project_id     = local.project_id
