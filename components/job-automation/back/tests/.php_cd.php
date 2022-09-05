@@ -37,11 +37,12 @@ $rules = [
             'Doctrine\DBAL\Connection',
             'Symfony\Component',
             'Psr\Log\LoggerInterface',
+            'Symfony\Contracts\Translation\TranslatorInterface',
 
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
             'Akeneo\Platform\Bundle\ImportExportBundle\Domain',
             'Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure',
-            'Akeneo\Platform\Bundle\NotificationBundle\Email\MailNotifierInterface',
+            'Akeneo\Platform\Bundle\NotificationBundle',
             'Akeneo\Platform\JobAutomation\Domain',
             'Akeneo\Platform\JobAutomation\Application',
             'Akeneo\Tool\Bundle\BatchBundle\Validator\Constraints\Automation',
