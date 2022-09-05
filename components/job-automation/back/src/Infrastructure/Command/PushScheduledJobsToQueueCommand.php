@@ -42,7 +42,6 @@ final class PushScheduledJobsToQueueCommand extends Command
         private EventDispatcherInterface $eventDispatcher,
         private FindUsersToNotifyQueryInterface $findUsersToNotifyQuery,
         private LoggerInterface $logger,
-        private NotifyUsersInvalidJobInstanceHandler $pimNotifNotifyUsersHandler,
     ) {
         parent::__construct();
     }
@@ -89,7 +88,6 @@ final class PushScheduledJobsToQueueCommand extends Command
                 $this->eventDispatcher->dispatch(
                     CouldNotLaunchAutomatedJobEvent::dueToInternalError($dueJobInstance, $usersToNotify),
                 );
-                $this->pimNotifNotifyUsersHandler->handle($command);
 
                 $this->logger->error('Cannot launch automated job', [
                     'error_message' => $exception->getMessage(),

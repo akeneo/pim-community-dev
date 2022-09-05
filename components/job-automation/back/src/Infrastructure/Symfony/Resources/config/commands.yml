@@ -10,6 +10,5 @@ services:
       - '@event_dispatcher'
       - '@akeneo.job_automation.query.find_users_to_notify'
       - '@logger'
-      - '@akeneo.job_automation.handler.notify_users_by_pim_notification_invalid_job_instance'
     tags:
       - { name: console.command }
