@@ -47,7 +47,7 @@ final class DownloadProductFile
         ));
 
         $headers['Content-Disposition'] = sprintf(
-            'attachment; filename="%s.xlsx"',
+            'attachment; filename="%s"',
             $productFileNameAndResourceFile->originalFilename,
         );
 
