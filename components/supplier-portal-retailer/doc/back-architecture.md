@@ -143,4 +143,16 @@ The `Query` folder gathers everything related to queries.
 The `Repository` folder gathers everything related to data storage like repositories.
 The `Controller` folder gathers everything related to user end point. It could be from a supplier's, retailer's, developers or system's point of view.
 
+## Service API
 
+In order to limit the coupling between the retailer and the supplier apps, we defined a [Customer/Supplier](https://contextmapper.org/docs/customer-supplier/)
+relationship between the retailer app and the supplier app. Apps are communicating through a Service API.
+This Service API is taking place in the Infrastructure layer.
+
+For example, for the product file dropping feature, the retailer app is exposing a Service API for each supplier app use cases:
+* Uploading a product file
+* Getting a list of product files
+* Downloading a product file
+
+This way, the retailer app is the owner of the feature, the domain objects are not leaking. Also, in the supplier app,
+there is no direct call to the MySQL table storing the product files.
