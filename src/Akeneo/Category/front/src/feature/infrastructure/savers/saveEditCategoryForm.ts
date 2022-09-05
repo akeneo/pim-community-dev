@@ -56,7 +56,7 @@ const saveEditCategoryForm = async (
 
   payload = set(['attributes', 'attribute_codes'], Object.keys(payload.attributes), payload);
 
-  const response = await fetch(router.generate('pim_category_rest_update', {id: category.id}), {
+  const response = await fetch(router.generate('pim_enriched_category_rest_update', {id: category.id}), {
     method: 'POST',
     headers: [
       ['Content-type', 'application/json'],

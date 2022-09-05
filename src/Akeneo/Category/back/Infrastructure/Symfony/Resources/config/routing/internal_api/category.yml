@@ -1,4 +1,4 @@
-pim_category_rest_update:
+pim_enriched_category_rest_update:
   path: /rest/{id}
   requirements: {'id': '\d+'}
   defaults:
@@ -6,7 +6,7 @@ pim_category_rest_update:
     _feature: enriched_category
   methods: [POST]
 
-pim_category_rest_get:
+pim_enriched_category_rest_get:
   path: /rest/{id}
   requirements: {'id': '\d+'}
   defaults:

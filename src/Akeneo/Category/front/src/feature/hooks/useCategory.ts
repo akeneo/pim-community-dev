@@ -25,7 +25,7 @@ export interface UseCategoryResponseKO extends UseCategoryResponseCommon {
 export type UseCategoryResponse = UseCategoryResponsePending | UseCategoryResponseOK | UseCategoryResponseKO;
 
 const useCategory = (categoryId: number): UseCategoryResponse => {
-  const url = useRoute('pim_category_rest_get', {
+  const url = useRoute('pim_enriched_category_rest_get', {
     id: categoryId.toString(),
   });
 
