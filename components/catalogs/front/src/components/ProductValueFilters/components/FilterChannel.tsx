@@ -2,10 +2,10 @@ import React, {FC} from 'react';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {MultiSelectInput} from 'akeneo-design-system';
 import {ProductValueFiltersValues} from '../models/ProductValueFiltersValues';
-import {useChannelsByCodes} from '../../ProductSelection/hooks/useChannelsByCodes';
-import {useInfiniteChannels} from '../../ProductSelection/hooks/useInfiniteChannels';
-import {useUniqueEntitiesByCode} from '../../ProductSelection/hooks/useUniqueEntitiesByCode';
-import {Channel} from '../models/Channel';
+import {useChannelsByCodes} from '../../../hooks/useChannelsByCodes';
+import {Channel} from '../../../models/Channel';
+import {useInfiniteChannels} from '../../../hooks/useInfiniteChannels';
+import {useUniqueEntitiesByCode} from '../../../hooks/useUniqueEntitiesByCode';
 
 type Props = {
     productValueFilters: ProductValueFiltersValues;
