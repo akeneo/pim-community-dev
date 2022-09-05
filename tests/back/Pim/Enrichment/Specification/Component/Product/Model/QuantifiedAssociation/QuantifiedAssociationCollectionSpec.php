@@ -33,7 +33,7 @@ class QuantifiedAssociationCollectionSpec extends ObjectBehavior
                         ],
                     ]
                 ],
-                $this->anIdMapping(),
+                $this->aUuidMapping(),
                 $this->anIdMapping(),
                 ['PACK']
             ]
@@ -64,7 +64,7 @@ class QuantifiedAssociationCollectionSpec extends ObjectBehavior
             'createWithAssociationsAndMapping',
             [
                 $expectedRawQuantifiedAssociations,
-                $this->anIdMapping(),
+                $this->aUuidMapping(),
                 $this->anIdMapping(),
                 ['PACK']
             ]
@@ -114,7 +114,7 @@ class QuantifiedAssociationCollectionSpec extends ObjectBehavior
             'createWithAssociationsAndMapping',
             [
                 $rawQuantifiedAssociations,
-                $this->anIncompleteIdMapping(),
+                $this->anIncompleteUuidMapping(),
                 $this->anIncompleteIdMapping(),
                 ['PACK']
             ]
@@ -154,7 +154,7 @@ class QuantifiedAssociationCollectionSpec extends ObjectBehavior
             'createWithAssociationsAndMapping',
             [
                 $expectedRawQuantifiedAssociations,
-                $idMapping,
+                $this->aUuidMapping(),
                 $idMapping,
                 ['PACK', 'PRODUCT_SET']
             ]
@@ -191,7 +191,7 @@ class QuantifiedAssociationCollectionSpec extends ObjectBehavior
             'createWithAssociationsAndMapping',
             [
                 $expectedRawQuantifiedAssociations,
-                $idMapping,
+                $this->aUuidMapping(),
                 $idMapping,
                 ['PACK', 'PRODUCT_SET']
             ]
@@ -214,7 +214,7 @@ class QuantifiedAssociationCollectionSpec extends ObjectBehavior
                 'createWithAssociationsAndMapping',
                 [
                     $expectedRawQuantifiedAssociations,
-                    $this->anIdMapping(),
+                    $this->aUuidMapping(),
                     $this->anIdMapping(),
                     ['PACK']
                 ]
@@ -236,7 +236,7 @@ class QuantifiedAssociationCollectionSpec extends ObjectBehavior
                 'createWithAssociationsAndMapping',
                 [
                     $expectedRawQuantifiedAssociations,
-                    $this->anIdMapping(),
+                    $this->aUuidMapping(),
                     $this->anIdMapping(),
                     ['PACK']
                 ]
@@ -258,7 +258,7 @@ class QuantifiedAssociationCollectionSpec extends ObjectBehavior
                 'createWithAssociationsAndMapping',
                 [
                     $expectedRawQuantifiedAssociations,
-                    $this->anIdMapping(),
+                    $this->aUuidMapping(),
                     $this->anIdMapping(),
                     ['PACK']
                 ]
@@ -279,7 +279,7 @@ class QuantifiedAssociationCollectionSpec extends ObjectBehavior
                 'createWithAssociationsAndMapping',
                 [
                     $expectedRawQuantifiedAssociations,
-                    $this->anIdMapping(),
+                    $this->aUuidMapping(),
                     $this->anIdMapping(),
                     ['PACK']
                 ]
@@ -301,7 +301,7 @@ class QuantifiedAssociationCollectionSpec extends ObjectBehavior
                 'createWithAssociationsAndMapping',
                 [
                     $expectedRawQuantifiedAssociations,
-                    $this->anIdMapping(),
+                    $this->aUuidMapping(),
                     $this->anIdMapping(),
                     ['PACK']
                 ]
@@ -323,7 +323,7 @@ class QuantifiedAssociationCollectionSpec extends ObjectBehavior
                 'createWithAssociationsAndMapping',
                 [
                     $expectedRawQuantifiedAssociations,
-                    $this->anIdMapping(),
+                    $this->aUuidMapping(),
                     $this->anIdMapping(),
                     ['PACK']
                 ]

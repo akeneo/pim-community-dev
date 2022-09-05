@@ -21,7 +21,7 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
 final class LoadEntitySubscriber implements EventSubscriber
 {
     public function __construct(
-        private GetUuidMappingQueryInterface $getUuidMappingFromProductIdentifiersQuery,
+        private GetUuidMappingQueryInterface $getUuidMappingQuery,
         private GetIdMappingFromProductModelIdsQueryInterface $getIdMappingFromProductModelIds,
         private FindQuantifiedAssociationTypeCodesInterface $findQuantifiedAssociationTypeCodes
     ) {
@@ -54,7 +54,7 @@ final class LoadEntitySubscriber implements EventSubscriber
         $productUuids = $entity->getQuantifiedAssociationsProductUuids();
         $productModelIds = $entity->getQuantifiedAssociationsProductModelIds();
 
-        $mappedProductIds = $this->getUuidMappingFromProductIdentifiersQuery->execute($productIds, $productUuids);
+        $mappedProductIds = $this->getUuidMappingQuery->execute($productIds, $productUuids);
         $mappedProductModelIds = $this->getIdMappingFromProductModelIds->execute($productModelIds);
         $quantifiedAssociationTypeCodes = $this->findQuantifiedAssociationTypeCodes->execute();
 
