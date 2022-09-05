@@ -37,6 +37,7 @@ $rules = [
         [
             'Doctrine\DBAL\Connection',
             'Symfony\Component',
+            'Psr\Log\LoggerInterface',
 
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
             'Akeneo\Platform\Bundle\ImportExportBundle\Domain',
@@ -56,6 +57,7 @@ $rules = [
 
             'League\Flysystem\Filesystem',
             'League\Flysystem\PhpseclibV2',
+            'Twig\Environment',
         ],
     )->in('Akeneo\Platform\JobAutomation\Infrastructure'),
 ];

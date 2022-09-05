@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\JobAutomation\Infrastructure\Query;
 
-use Akeneo\Platform\JobAutomation\Application\UpdateScheduledJobInstanceLastExecution\UpdateJobInstanceAutomationLastExecutionDateInterface;
+use Akeneo\Platform\JobAutomation\Domain\Query\UpdateAutomationLastExecutionDateQueryInterface;
 use Doctrine\DBAL\Connection;
 
-final class UpdateJobInstanceAutomationLastExecutionDateQuery implements UpdateJobInstanceAutomationLastExecutionDateInterface
+final class UpdateAutomationLastExecutionDateQuery implements UpdateAutomationLastExecutionDateQueryInterface
 {
     public function __construct(
         private Connection $connection,

@@ -14,17 +14,20 @@ declare(strict_types=1);
 namespace Akeneo\Platform\JobAutomation\Infrastructure\Command;
 
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
-use Akeneo\Platform\JobAutomation\Application\GetDueJobInstances\GetDueJobInstancesHandler;
-use Akeneo\Platform\JobAutomation\Application\NotifyUsers\NotifyUsersInvalidJobInstanceCommand;
-use Akeneo\Platform\JobAutomation\Application\NotifyUsers\NotifyUsersInvalidJobInstanceHandler;
 use Akeneo\Platform\JobAutomation\Application\UpdateScheduledJobInstanceLastExecution\UpdateScheduledJobInstanceLastExecutionHandler;
+use Akeneo\Platform\JobAutomation\Domain\Event\CouldNotLaunchAutomatedJobEvent;
+use Akeneo\Platform\JobAutomation\Domain\FilterDueJobInstances;
+use Akeneo\Platform\JobAutomation\Domain\Query\FindScheduledJobInstancesQueryInterface;
+use Akeneo\Platform\JobAutomation\Domain\Query\FindUsersToNotifyQueryInterface;
 use Akeneo\Platform\JobAutomation\Infrastructure\EventSubscriber\RefreshScheduledJobInstanceAfterJobPublished;
 use Akeneo\Tool\Component\BatchQueue\Exception\InvalidJobException;
 use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueue;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Validator\ConstraintViolationInterface;
 
 final class PushScheduledJobsToQueueCommand extends Command
 {
@@ -32,11 +35,13 @@ final class PushScheduledJobsToQueueCommand extends Command
 
     public function __construct(
         private FeatureFlag $jobAutomationFeatureFlag,
-        private GetDueJobInstancesHandler $getDueJobInstancesHandler,
+        private FindScheduledJobInstancesQueryInterface $findScheduledJobInstancesQuery,
+        private FilterDueJobInstances $filterDueJobInstances,
         private UpdateScheduledJobInstanceLastExecutionHandler $updateScheduledJobInstanceLastExecutionHandler,
         private PublishJobToQueue $publishJobToQueue,
         private EventDispatcherInterface $eventDispatcher,
-        private NotifyUsersInvalidJobInstanceHandler $emailNotifyUsersHandler,
+        private FindUsersToNotifyQueryInterface $findUsersToNotifyQuery,
+        private LoggerInterface $logger,
     ) {
         parent::__construct();
     }
@@ -49,32 +54,43 @@ final class PushScheduledJobsToQueueCommand extends Command
 
         $this->eventDispatcher->addSubscriber(new RefreshScheduledJobInstanceAfterJobPublished($this->updateScheduledJobInstanceLastExecutionHandler));
 
-        $dueJobInstances = $this->getDueJobInstancesHandler->handle();
+        $scheduledJobInstances = $this->findScheduledJobInstancesQuery->all();
+        $dueJobInstances = $this->filterDueJobInstances->fromScheduledJobInstances($scheduledJobInstances);
 
         foreach ($dueJobInstances as $dueJobInstance) {
-            try {
-                if (!$dueJobInstance->isScheduled) {
-                    continue;
-                }
+            $usersToNotify = $this->findUsersToNotifyQuery->byUserIdsAndUserGroupsIds(
+                $dueJobInstance->notifiedUsers,
+                $dueJobInstance->notifiedUserGroups,
+            );
 
+            try {
                 $this->publishJobToQueue->publish(
                     jobInstanceCode: $dueJobInstance->code,
                     config: [
                         'is_user_authenticated' => true,
                     ],
                     username: $dueJobInstance->runningUsername,
+                    emails: $usersToNotify->getUniqueEmails(),
                 );
-            } catch (InvalidJobException|\Exception $exception) {
-                $command = new NotifyUsersInvalidJobInstanceCommand(
-                    $exception->getMessage(),
-                    $dueJobInstance,
-                    $dueJobInstance->notifiedUserGroups,
-                    $dueJobInstance->notifiedUsers,
+            } catch (InvalidJobException $exception) {
+                $errorMessages = array_map(
+                    static fn (ConstraintViolationInterface $constraintViolation) => $constraintViolation->getMessage(),
+                    iterator_to_array($exception->getViolations()),
                 );
 
-                $this->emailNotifyUsersHandler->handle($command);
+                // TODO move $usersToNotify to $dueJobInstance
+                $this->eventDispatcher->dispatch(
+                    CouldNotLaunchAutomatedJobEvent::dueToInvalidJobInstance($dueJobInstance, $errorMessages, $usersToNotify),
+                );
+            } catch (\Exception $exception) {
+                // TODO move $usersToNotify to $dueJobInstance
+                $this->eventDispatcher->dispatch(
+                    CouldNotLaunchAutomatedJobEvent::dueToInternalError($dueJobInstance, $usersToNotify),
+                );
 
-                continue;
+                $this->logger->error('Cannot launch automated job', [
+                    'error_message' => $exception->getMessage(),
+                ]);
             }
         }
 

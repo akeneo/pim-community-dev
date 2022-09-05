@@ -16,7 +16,7 @@ namespace Akeneo\Platform\JobAutomation\Domain;
 use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
 use Webmozart\Assert\Assert;
 
-final class FilterDueJobInstances
+class FilterDueJobInstances
 {
     public function __construct(
         private CronExpressionFactory $cronExpressionFactory,

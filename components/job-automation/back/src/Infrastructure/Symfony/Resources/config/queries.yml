@@ -9,13 +9,19 @@ services:
     arguments:
       - '@akeneo.job_automation.infrastructure.public_api.list_users_handler'
 
-  akeneo.job_automation.query.get_scheduled_job_instances:
-    class: Akeneo\Platform\JobAutomation\Infrastructure\Query\GetScheduledJobInstancesQuery
+  akeneo.job_automation.query.find_scheduled_job_instances:
+    class: Akeneo\Platform\JobAutomation\Infrastructure\Query\FindScheduledJobInstancesQuery
     arguments:
       - '@database_connection'
       - '@Akeneo\Platform\Bundle\ImportExportBundle\Domain\ResolveScheduledJobRunningUsername'
 
-  akeneo.job_automation.query.update_job_instance_automation_last_execution_date:
-    class: Akeneo\Platform\JobAutomation\Infrastructure\Query\UpdateJobInstanceAutomationLastExecutionDateQuery
+  akeneo.job_automation.query.update_automation_last_execution_date:
+    class: Akeneo\Platform\JobAutomation\Infrastructure\Query\UpdateAutomationLastExecutionDateQuery
     arguments:
       - '@database_connection'
+
+  akeneo.job_automation.query.find_users_to_notify:
+    class: Akeneo\Platform\JobAutomation\Infrastructure\Query\FindUsersToNotifyQuery
+    arguments:
+      - '@akeneo.job_automation.query.find_users_by_id'
+      - '@akeneo.job_automation.query.find_users_by_usergroup_id'

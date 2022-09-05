@@ -4,21 +4,8 @@ services:
     arguments:
       - !tagged pim_import_export.storage_client_provider
 
-  akeneo.job_automation.handler.get_due_job_instances:
-    class: Akeneo\Platform\JobAutomation\Application\GetDueJobInstances\GetDueJobInstancesHandler
-    arguments:
-      - '@akeneo.job_automation.query.get_scheduled_job_instances'
-      - '@Akeneo\Platform\JobAutomation\Domain\FilterDueJobInstances'
-
   akeneo.job_automation.handler.update_scheduled_job_instance:
     class: Akeneo\Platform\JobAutomation\Application\UpdateScheduledJobInstanceLastExecution\UpdateScheduledJobInstanceLastExecutionHandler
     arguments:
       - '@Akeneo\Platform\JobAutomation\Domain\ClockInterface'
-      - '@akeneo.job_automation.query.update_job_instance_automation_last_execution_date'
-
-  akeneo.job_automation.handler.notify_users_by_email_invalid_job_instance:
-    class: Akeneo\Platform\JobAutomation\Application\NotifyUsers\NotifyUsersInvalidJobInstanceHandler
-    arguments:
-      - '@akeneo.job_automation.query.find_users_by_id'
-      - '@akeneo.job_automation.query.find_users_by_usergroup_id'
-      - '@Akeneo\Platform\JobAutomation\Infrastructure\Email\MailNotifier'
+      - '@akeneo.job_automation.query.update_automation_last_execution_date'

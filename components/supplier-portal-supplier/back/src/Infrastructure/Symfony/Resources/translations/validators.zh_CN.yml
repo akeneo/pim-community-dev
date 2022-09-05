@@ -7,8 +7,3 @@ supplier_portal:
         must_contain_an_uppercase_letter: 密码必须至少包含 1 个大写字母。
         must_contain_a_lowercase_letter: 密码必须至少包含 1 个小写字母。
         must_contain_a_digit: 密码应至少包含 1 个数字。
-    product_file_dropping:
-      validation:
-        max_uploaded_filename_length: 文件名不应超过 255 个字符。
-        max_uploaded_file_size: 文件大小不应超过 50 MB。
-        must_be_an_xlsx_file: 请上传有效的 XLSX 文件。

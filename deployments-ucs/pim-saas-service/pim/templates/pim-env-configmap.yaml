@@ -10,7 +10,7 @@ metadata:
 data:
   AKENEO_PIM_URL: {{ printf "https://%s" .Values.common.pimMasterDomain  | quote }}
   GOOGLE_CLOUD_PROJECT: {{ .Values.common.gcpProjectID | quote }}
-  FIRESTORE_PROJECT_ID: {{ .Values.common.gcpProjectID | quote }}
+  FIRESTORE_PROJECT_ID: {{ .Values.common.gcpFireStoreProjectID | quote }}
   GOOGLE_LOCATION: {{ .Values.common.googleZone | quote }}
   K8S_CLUSTER_NAME: {{ .Values.common.googleZone | quote }}
   LC_ALL: C.UTF-8

@@ -10,6 +10,12 @@ locals {
   private_zone    = "pim-saas-sandbox.dev.local"
 }
 
+module "firestore-eur" {
+  source      = "../modules/firestore"
+  project_id  = "akecld-prd-pim-fire-eur-sand"
+  location_id = "europe-west"
+}
+
 module "iam" {
   source            = "../modules/iam"
   project_id        = local.project_id

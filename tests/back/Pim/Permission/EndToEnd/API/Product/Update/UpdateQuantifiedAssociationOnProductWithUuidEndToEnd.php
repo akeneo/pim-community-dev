@@ -1,0 +1,219 @@
+<?php
+
+namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\Product\Update;
+
+use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use AkeneoTest\Pim\Enrichment\EndToEnd\Product\EntityWithQuantifiedAssociations\QuantifiedAssociationsTestCaseTrait;
+use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\PermissionFixturesLoader;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\HttpFoundation\Response;
+
+class UpdateQuantifiedAssociationOnProductWithUuidEndToEnd extends ApiTestCase
+{
+    use QuantifiedAssociationsTestCaseTrait;
+
+    /** @var PermissionFixturesLoader */
+    private $loader;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->createQuantifiedAssociationType('PRODUCTSET');
+        $this->loader = $this->get('akeneo_integration_tests.loader.permissions');
+        $this->loader->loadProductsForQuantifiedAssociationPermissions();
+    }
+
+    protected function getConfiguration()
+    {
+        return $this->catalog->useTechnicalCatalog(featureFlags: ['permission']);
+    }
+
+    public function testAssociateProductWithGrantedProduct()
+    {
+        $productWithoutCategoryUuid = $this->getProductUuidFromIdentifier('product_without_category')->toString();
+        $productViewableByEverybodyUuid = $this->getProductUuidFromIdentifier('product_viewable_by_everybody')->toString();
+        $productNotViewableByRedactorUuid = $this->getProductUuidFromIdentifier('product_not_viewable_by_redactor')->toString();
+
+        $data = <<<JSON
+{
+    "values": {
+        "sku": [{"locale": null, "scope": null, "data": "product_viewable_by_everybody_1"}]
+    },
+    "quantified_associations": {
+        "PRODUCTSET": {
+            "products": [
+                {"uuid": "{$productWithoutCategoryUuid}", "quantity": 3},
+                {"uuid": "{$productViewableByEverybodyUuid}", "quantity": 4},
+                {"uuid": "{$productNotViewableByRedactorUuid}", "quantity": 5}
+            ]
+        }
+    }
+}
+JSON;
+
+        $client = $this->createAuthenticatedClient([], [], null, null, 'julia', 'julia');
+        $uuid = $this->getProductUuidFromIdentifier('product_viewable_by_everybody_1')->toString();
+        $client->request('PATCH', "api/rest/v1/products-uuid/{$uuid}", [], [], [], $data);
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        $this->assertEmpty($response->getContent());
+    }
+
+    public function testAssociateProductWithGrantedProductModel()
+    {
+        $data = <<<JSON
+{
+    "values": {
+        "sku": [{"locale": null, "scope": null, "data": "product_viewable_by_everybody_1"}]
+    },
+    "quantified_associations": {
+        "PRODUCTSET": {
+            "product_models": [
+                {"identifier": "product_model_without_category", "quantity": 3},
+                {"identifier": "product_model_viewable_by_everybody", "quantity": 4},
+                {"identifier": "product_model_not_viewable_by_redactor", "quantity": 5}
+            ]
+        }
+    }
+}
+JSON;
+
+        $client = $this->createAuthenticatedClient([], [], null, null, 'julia', 'julia');
+        $uuid = $this->getProductUuidFromIdentifier('product_viewable_by_everybody_1')->toString();
+        $client->request('PATCH', "api/rest/v1/products-uuid/{$uuid}", [], [], [], $data);
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        $this->assertEmpty($response->getContent());
+    }
+
+    public function testOnlyGrantedProductAndProductModelAreUpdated()
+    {
+        $productWithoutCategoryUuid = $this->getProductUuidFromIdentifier('product_without_category')->toString();
+        $productViewableByEverybodyUuid = $this->getProductUuidFromIdentifier('product_viewable_by_everybody_1')->toString();
+
+        $data = <<<JSON
+{
+    "values": {
+        "sku": [{"locale": null, "scope": null, "data": "product_owned_by_redactor_and_associated_with_product_and_product_model"}]
+    },
+    "quantified_associations": {
+        "PRODUCTSET": {
+            "products": [
+                {"uuid": "{$productViewableByEverybodyUuid}", "quantity": 2},
+                {"uuid": "{$productWithoutCategoryUuid}", "quantity": 3}
+            ],
+            "product_models": [
+                {"identifier": "product_model_viewable_by_everybody_1", "quantity": 1},
+                {"identifier": "product_model_without_category", "quantity": 4}
+            ]
+        }
+    }
+}
+JSON;
+
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+        $uuid = $this->getProductUuidFromIdentifier('product_owned_by_redactor_and_associated_with_product_and_product_model')->toString();
+        $client->request('PATCH', "api/rest/v1/products-uuid/{$uuid}", [], [], [], $data);
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        $this->assertEmpty($response->getContent());
+
+        $expectedQuantifiedAssociations = [
+            'PRODUCTSET' => [
+                'products' => [
+                    ['identifier' => 'product_not_viewable_by_redactor', 'quantity' => 1],
+                    ['identifier' => 'product_viewable_by_everybody_1', 'quantity' => 2],
+                    ['identifier' => 'product_without_category', 'quantity' => 3],
+                ],
+                'product_models' => [
+                    ['identifier' => 'product_model_not_viewable_by_redactor', 'quantity' => 4],
+                    ['identifier' => 'product_model_viewable_by_everybody_1', 'quantity' => 1],
+                    ['identifier' => 'product_model_without_category', 'quantity' => 4],
+                ],
+            ],
+        ];
+
+        $this->assertSameQuantifiedAssociation($expectedQuantifiedAssociations, 'product_owned_by_redactor_and_associated_with_product_and_product_model');
+    }
+
+    public function testCannotAssociateProductWithNotGrantedProduct()
+    {
+        $productNotViewableByRedactorUuid = $this->getProductUuidFromIdentifier('product_not_viewable_by_redactor')->toString();
+        $data = <<<JSON
+{
+    "values": {
+        "sku": [{"locale": null, "scope": null, "data": "product_viewable_by_everybody_1"}]
+    },
+    "quantified_associations": {
+        "PRODUCTSET": {
+            "products": [
+                {"uuid": "{$productNotViewableByRedactorUuid}", "quantity": 5}
+            ]
+        }
+    }
+}
+JSON;
+
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+        $uuid = $this->getProductUuidFromIdentifier('product_viewable_by_everybody_1')->toString();
+        $client->request('PATCH', "api/rest/v1/products-uuid/{$uuid}", [], [], [], $data);
+        $expectedContent = <<<JSON
+{"code":422,"message":"Validation failed.","errors":[{"property":"quantifiedAssociations.PRODUCTSET.products","message":"The following products don't exist: {$productNotViewableByRedactorUuid}. Please make sure the products haven't been deleted in the meantime."}]}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertSame($expectedContent, $response->getContent());
+    }
+
+    public function testAddProductModelNotGrantedInAssociation()
+    {
+        $data = <<<JSON
+{
+    "values": {
+        "sku": [{"locale": null, "scope": null, "data": "product_viewable_by_everybody_1"}]
+    },
+    "quantified_associations": {
+        "PRODUCTSET": {
+            "product_models": [
+                {"identifier": "product_model_not_viewable_by_redactor", "quantity": 5}
+            ]
+        }
+    }
+}
+JSON;
+
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+        $uuid = $this->getProductUuidFromIdentifier('product_viewable_by_everybody_1')->toString();
+        $client->request('PATCH', "api/rest/v1/products-uuid/{$uuid}", [], [], [], $data);
+
+        $expectedContent = <<<JSON
+{"code":422,"message":"Validation failed.","errors":[{"property":"quantifiedAssociations.PRODUCTSET.product_models","message":"The following product models don't exist: product_model_not_viewable_by_redactor. Please make sure the product models haven't been deleted in the meantime."}]}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertSame($expectedContent, $response->getContent());
+    }
+
+    protected function assertSameQuantifiedAssociation(array $expectedQuantifiedAssociations, string $identifier)
+    {
+        $product = $this->get('pim_catalog.repository.product_without_permission')->findOneByIdentifier($identifier);
+
+        $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
+        $actualQuantifiedAssociations = $standardizedProduct['quantified_associations'];
+
+        $this->assertSame($expectedQuantifiedAssociations, $actualQuantifiedAssociations);
+    }
+
+    protected function getProductUuidFromIdentifier(string $productIdentifier): UuidInterface
+    {
+        return Uuid::fromString($this->get('database_connection')->fetchOne(
+            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?', [$productIdentifier]
+        ));
+    }
+}

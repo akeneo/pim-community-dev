@@ -3,14 +3,11 @@
 namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\VariantProduct;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
-use Akeneo\UserManagement\Component\Model\UserInterface;
-use PHPUnit\Framework\Assert;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\PermissionFixturesLoader;
+use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class UpsertVariantProductWithPermissionEndToEnd extends ApiTestCase
 {
@@ -318,10 +315,9 @@ JSON;
      * On product values inherited the parents, we only validate attribute and locale visibility.
      * We ignore any modification of the data on product values of the parents.
      */
-    public function testUpdateByyModifyingProductValueOnViewableAttribute()
+    public function testUpdateByModifyingProductValueOnViewableAttribute()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
-
 
         $data = '{"values": {"root_product_model_view_attribute": [{"locale": "fr_FR", "scope":null, "data":false}]}}';
         $this->assertUpdated('variant_product', $data);

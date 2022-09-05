@@ -11,14 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\JobAutomation\Application\GetDueJobInstances;
+namespace Akeneo\Platform\TailoredImport\ServiceApi;
 
-use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
-
-interface GetScheduledJobInstancesInterface
+class CreateTailoredImportResult
 {
-    /**
-     * @return ScheduledJobInstance[]
-     */
-    public function all(): array;
+    public function __construct(
+        public string $jobInstanceEditUrl,
+    ) {
+    }
 }

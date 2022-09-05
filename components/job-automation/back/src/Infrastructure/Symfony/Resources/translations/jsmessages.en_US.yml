@@ -6,6 +6,7 @@ akeneo.job_automation:
       label: 'Permission user groups'
       disabled_helper: You do not have permission to list user groups.
     enable: Enable scheduling
+    cannot_view_all_jobs: "You cannot view automated jobs in the Process tracker, as you do not have the following permission for your role: “View all jobs in process tracker”. Please contact your PIM administrator."
     frequency:
       helper: Frequency is displayed in UTC 24-hour format.
       hourly_helper: Frequencies executed multiple times a day start at midnight (UTC).

@@ -7,8 +7,3 @@ supplier_portal:
         must_contain_an_uppercase_letter: 암호에는 대문자가 1개 이상 포함되어야 합니다.
         must_contain_a_lowercase_letter: 암호에는 소문자가 1개 이상 포함되어야 합니다.
         must_contain_a_digit: 암호에는 숫자가 1개 이상 포함되어야 합니다.
-    product_file_dropping:
-      validation:
-        max_uploaded_filename_length: 파일 이름은 255자를 초과할 수 없습니다.
-        max_uploaded_file_size: 파일 크기는 50M를 초과할 수 없습니다.
-        must_be_an_xlsx_file: 유효한 XLSX 파일을 업로드하십시오.
