@@ -2,9 +2,10 @@ jest.unmock('./useChannelsByCodes');
 
 import {renderHook} from '@testing-library/react-hooks';
 
+import {ReactQueryWrapper} from '../../tests/ReactQueryWrapper';
+
 import fetchMock from 'jest-fetch-mock';
 import {useChannelsByCodes} from './useChannelsByCodes';
-import {ReactQueryWrapper} from '../../../../tests/ReactQueryWrapper';
 
 test('it fetches the channels', async () => {
     fetchMock.mockResponseOnce(
