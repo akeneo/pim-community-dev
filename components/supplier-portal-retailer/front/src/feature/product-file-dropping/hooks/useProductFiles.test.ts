@@ -1,34 +1,34 @@
 import {mockedDependencies, NotificationLevel, renderHookWithProviders} from '@akeneo-pim-community/shared';
-import {useSupplierFiles} from './useSupplierFiles';
+import {useProductFiles} from './useProductFiles';
 
 const backendResponse = {
-    supplier_files: [
+    product_files: [
         {
             identifier: 'cd2c0741-0b27-4484-a927-b5e53c8f715c',
             path: '/path/to/file.xlsx',
             uploadedAt: '2022-07-22 16:50:45',
             uploadedByContributor: 'a@a.a',
+            uploadedBySupplier: 'test',
         },
         {
             identifier: 'bbe78bfb-10e8-4cd8-ad9c-22056824e9bd',
             path: '/path/to/file2.xlsx',
             uploadedAt: '2022-06-15 10:08:11',
             uploadedByContributor: 'a@a.a',
+            uploadedBySupplier: 'test',
         },
     ],
     total: 2,
     items_per_page: 25,
 };
 
-test('it loads the supplier files', async () => {
+test('it loads the product files', async () => {
     global.fetch = jest.fn().mockImplementation(async () => ({
         ok: true,
         json: async () => backendResponse,
     }));
 
-    const {result, waitForNextUpdate} = renderHookWithProviders(() =>
-        useSupplierFiles('bbe78bfb-10e8-4cd8-ad9c-22056824e9bd', 1)
-    );
+    const {result, waitForNextUpdate} = renderHookWithProviders(() => useProductFiles(1));
 
     expect(result.current[0]).toEqual([]);
 
@@ -39,11 +39,13 @@ test('it loads the supplier files', async () => {
             identifier: 'cd2c0741-0b27-4484-a927-b5e53c8f715c',
             uploadedAt: '2022-07-22 16:50:45',
             contributor: 'a@a.a',
+            supplier: 'test',
         },
         {
             identifier: 'bbe78bfb-10e8-4cd8-ad9c-22056824e9bd',
             uploadedAt: '2022-06-15 10:08:11',
             contributor: 'a@a.a',
+            supplier: 'test',
         },
     ]);
     expect(result.current[1]).toBe(backendResponse.total);
@@ -55,7 +57,7 @@ test('it renders an error notification if the loading of the suppliers failed', 
     }));
     const notify = jest.spyOn(mockedDependencies, 'notify');
 
-    await renderHookWithProviders(() => useSupplierFiles('bbe78bfb-10e8-4cd8-ad9c-22056824e9bd', 1));
+    await renderHookWithProviders(() => useProductFiles(1));
 
     expect(notify).toHaveBeenNthCalledWith(
         1,

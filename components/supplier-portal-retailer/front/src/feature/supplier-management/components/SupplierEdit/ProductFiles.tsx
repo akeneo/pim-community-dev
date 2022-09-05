@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
-import {SupplierFilesList} from '../../../product-file-dropping/components/SupplierFilesList';
-import {useSupplierFiles} from '../../hooks';
+import {ProductFilesList} from '../../../product-file-dropping/components/ProductFilesList';
+import {useProductFiles} from '../../hooks';
 
 type Props = {
     supplierIdentifier: string;
@@ -9,17 +9,17 @@ type Props = {
 
 const ProductFiles = ({supplierIdentifier}: Props) => {
     const [page, setPage] = useState<number>(1);
-    const [supplierFiles, totalSupplierFiles] = useSupplierFiles(supplierIdentifier, page);
+    const [productFiles, totalProductFiles] = useProductFiles(supplierIdentifier, page);
 
     useEffect(() => {
-        0 < totalSupplierFiles && setPage(1);
-    }, [totalSupplierFiles]);
+        0 < totalProductFiles && setPage(1);
+    }, [totalProductFiles]);
 
     return (
         <Container>
-            <SupplierFilesList
-                supplierFiles={supplierFiles}
-                totalSupplierFiles={totalSupplierFiles}
+            <ProductFilesList
+                productFiles={productFiles}
+                totalProductFiles={totalProductFiles}
                 currentPage={page}
                 onChangePage={setPage}
                 displaySupplierColumn={false}

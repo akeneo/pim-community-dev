@@ -2,17 +2,17 @@ import React, {useEffect, useState} from 'react';
 import {Breadcrumb} from 'akeneo-design-system';
 import {PageContent, PageHeader, PimView, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
-import {useSupplierFiles} from './hooks';
-import {SupplierFilesList} from './components/SupplierFilesList';
+import {useProductFiles} from './hooks';
+import {ProductFilesList} from './components/ProductFilesList';
 
-const ListSupplierFiles = () => {
+const ListProductFiles = () => {
     const translate = useTranslate();
     const [page, setPage] = useState<number>(1);
-    const [supplierFiles, totalSupplierFiles] = useSupplierFiles(page);
+    const [productFiles, totalProductFiles] = useProductFiles(page);
 
     useEffect(() => {
-        0 < totalSupplierFiles && setPage(1);
-    }, [totalSupplierFiles]);
+        0 < totalProductFiles && setPage(1);
+    }, [totalProductFiles]);
 
     return (
         <>
@@ -36,15 +36,15 @@ const ListSupplierFiles = () => {
                 <PageHeader.Title>
                     {translate(
                         'supplier_portal.product_file_dropping.supplier_files.title',
-                        {count: totalSupplierFiles},
-                        totalSupplierFiles
+                        {count: totalProductFiles},
+                        totalProductFiles
                     )}
                 </PageHeader.Title>
             </PageHeader>
             <StyledPageContent>
-                <SupplierFilesList
-                    supplierFiles={supplierFiles}
-                    totalSupplierFiles={totalSupplierFiles}
+                <ProductFilesList
+                    productFiles={productFiles}
+                    totalProductFiles={totalProductFiles}
                     currentPage={page}
                     onChangePage={setPage}
                 />
@@ -58,4 +58,4 @@ const StyledPageContent = styled(PageContent)`
     flex-direction: column;
 `;
 
-export {ListSupplierFiles};
+export {ListProductFiles};
