@@ -35,7 +35,7 @@ final class ImportUserGroupIntegration extends TestCase
             'job_name' => static::CSV_IMPORT_JOB_CODE,
             'status' => 0,
             'type' => 'import',
-            'raw_parameters' => 'a:9:{s:7:"storage";a:2:{s:4:"type";s:5:"local";s:9:"file_path";s:19:"/tmp/user_group.csv";}s:9:"delimiter";s:1:";";s:9:"enclosure";s:1:""";s:6:"escape";s:1:"\";s:10:"withHeader";b:1;s:13:"uploadAllowed";b:1;s:25:"invalid_items_file_format";s:3:"csv";s:15:"users_to_notify";a:0:{};s:21:"is_user_authenticated";b:0;}',
+            'raw_parameters' => 'a:9:{s:7:"storage";a:2:{s:4:"type";s:5:"local";s:9:"file_path";s:19:"/tmp/user_group.csv";}s:9:"delimiter";s:1:";";s:9:"enclosure";s:1:""";s:6:"escape";s:1:"\";s:10:"withHeader";b:1;s:13:"uploadAllowed";b:1;s:25:"invalid_items_file_format";s:3:"csv";s:15:"users_to_notify";a:0:{}s:21:"is_user_authenticated";b:0;}',
         ]);
         $this->get(SqlCreateJobInstance::class)->createJobInstance([
             'code' => static::XLSX_IMPORT_JOB_CODE,
@@ -43,7 +43,7 @@ final class ImportUserGroupIntegration extends TestCase
             'job_name' => static::XLSX_IMPORT_JOB_CODE,
             'status' => 0,
             'type' => 'import',
-            'raw_parameters' => 'a:6:{s:7:"storage";a:2:{s:4:"type";s:5:"local";s:9:"file_path";s:20:"/tmp/user_group.xlsx";}s:10:"withHeader";b:1;s:13:"uploadAllowed";b:1;s:25:"invalid_items_file_format";s:4:"xlsx";s:15:"users_to_notify";a:0:{};s:21:"is_user_authenticated";b:0;}',
+            'raw_parameters' => 'a:6:{s:7:"storage";a:2:{s:4:"type";s:5:"local";s:9:"file_path";s:20:"/tmp/user_group.xlsx";}s:10:"withHeader";b:1;s:13:"uploadAllowed";b:1;s:25:"invalid_items_file_format";s:4:"xlsx";s:15:"users_to_notify";a:0:{}s:21:"is_user_authenticated";b:0;}',
         ]);
     }
 
