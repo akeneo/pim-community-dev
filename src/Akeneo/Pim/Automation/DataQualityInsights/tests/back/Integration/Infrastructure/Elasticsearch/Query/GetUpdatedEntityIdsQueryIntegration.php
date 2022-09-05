@@ -141,7 +141,7 @@ SQL;
             'product_uuid' => $product->getUuid()->getBytes(),
         ]);
 
-        $this->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductIdentifier($product->getIdentifier());
+        $this->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductUuids([$product->getUuid()]);
     }
 
     private function updateProductModelAt(string $productModelCode, \DateTimeImmutable $updatedAt)

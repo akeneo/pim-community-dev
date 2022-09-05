@@ -9,12 +9,21 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\NotificationBundle\Email;
 
+use Akeneo\UserManagement\Component\Model\UserInterface;
+
 interface MailNotifierInterface
 {
     /**
+     * @param UserInterface[] $users
      * For legacy constraint, we did not type the parameters.
      */
     public function notify(array $users, $subject, $txtBody, $htmlBody = null, array $options = []);
 
-    public function notifyByEmail(string $email, string $subject, string $txtBody, $htmlBody = null, array $options = []);
+    public function notifyByEmail(
+        string $recipient,
+        string $subject,
+        string $txtBody,
+        $htmlBody = null,
+        array $options = []
+    );
 }

@@ -1,0 +1,3 @@
+parameters:
+    pim_catalog.model.category.interface: Akeneo\Category\Infrastructure\Component\Model\CategoryInterface
+    pim_catalog.model.category_translation.interface: Akeneo\Category\Infrastructure\Component\Model\CategoryTranslationInterface

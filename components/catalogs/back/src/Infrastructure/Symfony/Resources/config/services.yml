@@ -75,3 +75,55 @@ services:
     Akeneo\Catalogs\Infrastructure\Persistence\GetFamiliesByCodeQuery:
         arguments:
             - '@pim_enrich.repository.family.search'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\SearchAttributesQuery:
+        arguments:
+            - '@pim_enrich.repository.attribute.search'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\SearchAttributeOptionsQuery:
+        arguments:
+            - '@pim_enrich.repository.attribute_option.search'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\GetAttributeOptionsByCodeQuery:
+        arguments:
+            - '@pim_enrich.repository.attribute_option.search'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\FindOneAttributeByCodeQuery:
+        arguments:
+            $repository: '@pim_catalog.repository.attribute'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\GetChannelLocalesQuery:
+        arguments:
+            - '@pim_catalog.repository.channel'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\GetChannelQuery:
+        arguments:
+            - '@pim_catalog.repository.channel'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\GetChannelsQuery:
+        arguments:
+            - '@pim_catalog.repository.channel'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\GetLocalesQuery:
+        arguments:
+            - '@pim_catalog.repository.locale'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\GetCategoriesByCodeQuery:
+        arguments:
+            - '@pim_catalog.repository.category'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\GetCategoryTreeRootsQuery:
+        arguments:
+            - '@akeneo.enrichment.public_api.find_category_trees'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\GetCategoryChildrenQuery:
+        arguments:
+            - '@pim_catalog.repository.category'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\GetProductsQuery:
+        arguments:
+            $getConnectorProducts: '@akeneo.pim.enrichment.product.connector.get_product_from_uuids'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\GetMeasurementsFamilyQuery:
+        arguments:
+            - '@akeneo_measure.persistence.measurement_family_repository'

@@ -13,6 +13,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use PhpSpec\ObjectBehavior;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 class GetProductsWithQualityScoresSpec extends ObjectBehavior
 {
@@ -28,8 +29,16 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
     ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(false);
 
-        $connectorProduct = $this->buildConnectorProduct('identifier_5', null);
-        $productWithQualityScore = $this->buildConnectorProduct('identifier_5', new QualityScoreCollection([]));
+        $connectorProduct = $this->buildConnectorProduct(
+            'identifier_5',
+            null,
+            Uuid::fromString('4eaa6e58-b066-4eb2-9730-6b7d5cfecce9')
+        );
+        $productWithQualityScore = $this->buildConnectorProduct(
+            'identifier_5',
+            new QualityScoreCollection([]),
+            Uuid::fromString('4eaa6e58-b066-4eb2-9730-6b7d5cfecce9')
+        );
 
         $this->fromConnectorProduct($connectorProduct)->shouldBeLike($productWithQualityScore);
 
@@ -46,12 +55,20 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
     ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
 
-        $connectorProduct = $this->buildConnectorProduct('identifier_5', null);
+        $connectorProduct = $this->buildConnectorProduct(
+            'identifier_5',
+            null,
+            Uuid::fromString('4eaa6e58-b066-4eb2-9730-6b7d5cfecce9')
+        );
 
         $qualityScores = new QualityScoreCollection(['ecommerce' => ['en_US' => new QualityScore('E', 15)]]);
-        $getProductScoresQuery->byProductIdentifier('identifier_5')->willReturn($qualityScores);
+        $getProductScoresQuery->byProductUuid(Uuid::fromString('4eaa6e58-b066-4eb2-9730-6b7d5cfecce9'))->willReturn($qualityScores);
 
-        $productWithQualityScore = $this->buildConnectorProduct('identifier_5', $qualityScores);
+        $productWithQualityScore = $this->buildConnectorProduct(
+            'identifier_5',
+            $qualityScores,
+            Uuid::fromString('4eaa6e58-b066-4eb2-9730-6b7d5cfecce9')
+        );
 
         $this->fromConnectorProduct($connectorProduct)->shouldBeLike($productWithQualityScore);
     }
@@ -62,14 +79,26 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
     ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
 
-        $connectorProduct1 = $this->buildConnectorProduct('pdt_5', null);
-        $connectorProduct2 = $this->buildConnectorProduct('pdt_6', null);
+        $connectorProduct1 = $this->buildConnectorProduct(
+            'pdt_5',
+            null,
+            Uuid::fromString('4eaa6e58-b066-4eb2-9730-6b7d5cfecce9')
+        );
+        $connectorProduct2 = $this->buildConnectorProduct(
+            'pdt_6',
+            null,
+            Uuid::fromString('ae6a8f09-de38-449c-ac13-dfa2544e4559')
+        );
 
         $qualityScores1 = new QualityScoreCollection(['ecommerce' => ['en_US' => new QualityScore('E', 15)]]);
         $qualityScores2 = new QualityScoreCollection(['print' => ['en_US' => new QualityScore('A', 99)]]);
-        $getProductScoresQuery->byProductIdentifiers(['pdt_5','pdt_6'])->willReturn([
-            'pdt_5' => $qualityScores1,
-            'pdt_6' => $qualityScores2,
+
+        $getProductScoresQuery->byProductUuids([
+            Uuid::fromString('4eaa6e58-b066-4eb2-9730-6b7d5cfecce9'),
+            Uuid::fromString('ae6a8f09-de38-449c-ac13-dfa2544e4559'),
+        ])->willReturn([
+            '4eaa6e58-b066-4eb2-9730-6b7d5cfecce9' => $qualityScores1,
+            'ae6a8f09-de38-449c-ac13-dfa2544e4559' => $qualityScores2,
         ]);
 
         $this->fromConnectorProductList(
@@ -78,8 +107,8 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
             []
         )->shouldBeLike(
             new ConnectorProductList(2, [
-                $this->buildConnectorProduct('pdt_5', $qualityScores1),
-                $this->buildConnectorProduct('pdt_6', $qualityScores2),
+                $this->buildConnectorProduct('pdt_5', $qualityScores1, Uuid::fromString('4eaa6e58-b066-4eb2-9730-6b7d5cfecce9')),
+                $this->buildConnectorProduct('pdt_6', $qualityScores2, Uuid::fromString('ae6a8f09-de38-449c-ac13-dfa2544e4559')),
             ])
         );
     }
@@ -90,8 +119,16 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
     ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
 
-        $connectorProduct1 = $this->buildConnectorProduct('pdt_5', null);
-        $connectorProduct2 = $this->buildConnectorProduct('pdt_6', null);
+        $connectorProduct1 = $this->buildConnectorProduct(
+            'pdt_5',
+            null,
+            Uuid::fromString('4eaa6e58-b066-4eb2-9730-6b7d5cfecce9')
+        );
+        $connectorProduct2 = $this->buildConnectorProduct(
+            'pdt_6',
+            null,
+            Uuid::fromString('ae6a8f09-de38-449c-ac13-dfa2544e4559')
+        );
 
         $qualityScores1 = new QualityScoreCollection([
             'ecommerce' => ['en_US' => new QualityScore('E', 15), 'fr_FR' => new QualityScore('D', 62)],
@@ -99,9 +136,12 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
         ]);
         $qualityScores2 = new QualityScoreCollection(['print' => ['en_US' => new QualityScore('A', 99)]]);
 
-        $getProductScoresQuery->byProductIdentifiers(['pdt_5','pdt_6'])->willReturn([
-            'pdt_5' => $qualityScores1,
-            'pdt_6' => $qualityScores2,
+        $getProductScoresQuery->byProductUuids([
+            Uuid::fromString('4eaa6e58-b066-4eb2-9730-6b7d5cfecce9'),
+            Uuid::fromString('ae6a8f09-de38-449c-ac13-dfa2544e4559'),
+        ])->willReturn([
+            '4eaa6e58-b066-4eb2-9730-6b7d5cfecce9' => $qualityScores1,
+            'ae6a8f09-de38-449c-ac13-dfa2544e4559' => $qualityScores2,
         ]);
 
         $this->fromConnectorProductList(
@@ -112,8 +152,8 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
             new ConnectorProductList(2, [
                 $this->buildConnectorProduct('pdt_5', new QualityScoreCollection([
                     'ecommerce' => ['en_US' => new QualityScore('E', 15), 'fr_FR' => new QualityScore('D', 62)]
-                ])),
-                $this->buildConnectorProduct('pdt_6', new QualityScoreCollection([])),
+                ]), Uuid::fromString('4eaa6e58-b066-4eb2-9730-6b7d5cfecce9')),
+                $this->buildConnectorProduct('pdt_6', new QualityScoreCollection([]), Uuid::fromString('ae6a8f09-de38-449c-ac13-dfa2544e4559')),
             ])
         );
     }
@@ -124,8 +164,16 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
     ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
 
-        $connectorProduct1 = $this->buildConnectorProduct('pdt_5', null);
-        $connectorProduct2 = $this->buildConnectorProduct('pdt_6', null);
+        $connectorProduct1 = $this->buildConnectorProduct(
+            'pdt_5',
+            null,
+            Uuid::fromString('4eaa6e58-b066-4eb2-9730-6b7d5cfecce9')
+        );
+        $connectorProduct2 = $this->buildConnectorProduct(
+            'pdt_6',
+            null,
+            Uuid::fromString('ae6a8f09-de38-449c-ac13-dfa2544e4559')
+        );
 
         $qualityScores1 = new QualityScoreCollection([
             'ecommerce' => [
@@ -137,9 +185,12 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
         ]);
         $qualityScores2 = new QualityScoreCollection(['print' => ['en_US' => new QualityScore('A', 99)]]);
 
-        $getProductScoresQuery->byProductIdentifiers(['pdt_5','pdt_6'])->willReturn([
-            'pdt_5' => $qualityScores1,
-            'pdt_6' => $qualityScores2,
+        $getProductScoresQuery->byProductUuids([
+            Uuid::fromString('4eaa6e58-b066-4eb2-9730-6b7d5cfecce9'),
+            Uuid::fromString('ae6a8f09-de38-449c-ac13-dfa2544e4559'),
+        ])->willReturn([
+            '4eaa6e58-b066-4eb2-9730-6b7d5cfecce9' => $qualityScores1,
+            'ae6a8f09-de38-449c-ac13-dfa2544e4559' => $qualityScores2,
         ]);
 
         $this->fromConnectorProductList(
@@ -154,8 +205,8 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
                         'fr_FR' => new QualityScore('D', 62),
                     ],
                     'print' => ['en_US' => new QualityScore('D', 37)],
-                ])),
-                $this->buildConnectorProduct('pdt_6', $qualityScores2),
+                ]), Uuid::fromString('4eaa6e58-b066-4eb2-9730-6b7d5cfecce9')),
+                $this->buildConnectorProduct('pdt_6', $qualityScores2, Uuid::fromString('ae6a8f09-de38-449c-ac13-dfa2544e4559')),
             ])
         );
     }
@@ -166,8 +217,16 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
     ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
 
-        $connectorProduct1 = $this->buildConnectorProduct('pdt_5', null);
-        $connectorProduct2 = $this->buildConnectorProduct('pdt_6', null);
+        $connectorProduct1 = $this->buildConnectorProduct(
+            'pdt_5',
+            null,
+            Uuid::fromString('4eaa6e58-b066-4eb2-9730-6b7d5cfecce9')
+        );
+        $connectorProduct2 = $this->buildConnectorProduct(
+            'pdt_6',
+            null,
+            Uuid::fromString('ae6a8f09-de38-449c-ac13-dfa2544e4559')
+        );
 
         $qualityScores1 = new QualityScoreCollection([
             'ecommerce' => [
@@ -182,9 +241,12 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
         ]);
         $qualityScores2 = new QualityScoreCollection(['print' => ['en_US' => new QualityScore('A', 99)]]);
 
-        $getProductScoresQuery->byProductIdentifiers(['pdt_5','pdt_6'])->willReturn([
-            'pdt_5' => $qualityScores1,
-            'pdt_6' => $qualityScores2,
+        $getProductScoresQuery->byProductUuids([
+            Uuid::fromString('4eaa6e58-b066-4eb2-9730-6b7d5cfecce9'),
+            Uuid::fromString('ae6a8f09-de38-449c-ac13-dfa2544e4559'),
+        ])->willReturn([
+            '4eaa6e58-b066-4eb2-9730-6b7d5cfecce9' => $qualityScores1,
+            'ae6a8f09-de38-449c-ac13-dfa2544e4559' => $qualityScores2,
         ]);
 
         $this->fromConnectorProductList(
@@ -197,16 +259,19 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
                     'ecommerce' => [
                         'en_US' => new QualityScore('E', 15),
                     ],
-                ])),
-                $this->buildConnectorProduct('pdt_6', new QualityScoreCollection([])),
+                ]), Uuid::fromString('4eaa6e58-b066-4eb2-9730-6b7d5cfecce9')),
+                $this->buildConnectorProduct('pdt_6', new QualityScoreCollection([]), Uuid::fromString('ae6a8f09-de38-449c-ac13-dfa2544e4559')),
             ])
         );
     }
 
-    private function buildConnectorProduct($identifier, $qualityScore): ConnectorProduct
-    {
+    private function buildConnectorProduct(
+        string $identifier,
+        $qualityScore,
+        $uuid = null
+    ): ConnectorProduct {
         return new ConnectorProduct(
-            Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
+            $uuid ?? Uuid::uuid4(),
             $identifier,
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),

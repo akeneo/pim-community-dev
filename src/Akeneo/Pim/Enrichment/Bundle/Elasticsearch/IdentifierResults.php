@@ -20,15 +20,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 class IdentifierResults
 {
     /** @var IdentifierResult[] */
-    private $identifierResults = [];
+    private array $identifierResults = [];
 
-    /**
-     * @param string $identifier
-     * @param string $type
-     */
-    public function add(string $identifier, string $type)
+    public function add(string $identifier, string $type, string $id): void
     {
-        $this->identifierResults[] = new IdentifierResult($identifier, $type);
+        $this->identifierResults[] = new IdentifierResult($identifier, $type, $id);
     }
 
     /**

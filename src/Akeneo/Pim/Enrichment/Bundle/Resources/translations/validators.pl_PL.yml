@@ -19,6 +19,7 @@ This value should not be a decimal.: Ta wartość ta nie powinna być liczbą dz
 "The {{ attribute_code }} attribute can not have the same value more than once. The {{ value }} value is already set on another product.": Atrybut {{ attribute_code }} nie może mieć tej samej wartości więcej niż jeden raz. Wartość {{ value }} jest już ustawiona dla innego produktu.
 The same identifier is already set on another product: Taki sam identyfikator jest przypisany innemu produktowi
 regex.comma_or_semicolon_or_surrounding_space.message: To pole nie powinno zawierać żadnych przecinków ani średników, ani przestrzeni wiodących
+regex.line_break.message: To pole nie powinno zawierać żadnych podziałów wiersza.
 file.extensions.message: 'Rozszerzenie pliku jest niedozwolone (dozwolone rozszerzenia to: %extensions%).'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": Ten typ wartości oczekuje zastosowania {{ decimal_separator }} do oddzielenia miejsc dziesiętnych.
 "This type of value expects the use of dot (.) to separate decimals.": Ten typ wartości oczekuje zastosowania kropki (.) do oddzielania wartości dziesiętnych.
@@ -65,8 +66,6 @@ pim_catalog:
     variant_product_invalid_family: 'Rodzina wariantu produktu musi być taka sama, jak jego elementu nadrzędnego'
     php_int_max_reached: 'Maksymalna liczba musi być mniejsza niż %php_int_max%.'
     not_null_family: Rodzina nie może mieć wartości "null" ponieważ produkt z identyfikatorem "%sku%" jest produktem z wariantami.
-    variant_product_has_parent: 'Wariant produktu "%variant_product%" musi mieć element nadrzędny'
-    invalid_variant_product_parent: 'Wariant produktu "%variant_product%" nie może mieć modelu produktu "%product_model%" jako elementu nadrzędnego (ten model produktu może mieć tylko inne modele produktów jako elementy podrzędne)'
     modified_variant_axis_value: 'Wariant osi "%variant_axis%" nie może zostać zmodyfikowany, "%provided_value%" ustalona'
     family_variant_attributes_unique: Atrybuty muszą być unikatowe, "%attributes%" są używane wielokrotnie w wariancie zestawu atrybutów
     family_variant_axes_unique: Osie wariantu muszą być unikatowe, "%attributes%" są używane wielokrotnie w wariancie zestawu atrybutów

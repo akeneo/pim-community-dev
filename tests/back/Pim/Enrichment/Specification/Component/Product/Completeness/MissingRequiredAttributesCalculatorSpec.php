@@ -66,7 +66,7 @@ class MissingRequiredAttributesCalculatorSpec extends ObjectBehavior
         );
 
         $productCompletenessMask = new CompletenessProductMask(
-            '114c9108-444d-408a-ab43-195068166d2c', 'my_bag', 'accessories', [
+            '114c9108-444d-408a-ab43-195068166d2c', 'accessories', [
                 'name-ecommerce-en_US',
                 'name-ecommerce-fr_FR',
                 'desc-<all_channels>-<all_locales>',
@@ -74,7 +74,7 @@ class MissingRequiredAttributesCalculatorSpec extends ObjectBehavior
                 'size-ecommerce-en_US',
             ]
         );
-        $getCompletenessProductMasks->fromValueCollection('114c9108-444d-408a-ab43-195068166d2c', 'my_bag', 'accessories', $values)->willReturn(
+        $getCompletenessProductMasks->fromValueCollection('114c9108-444d-408a-ab43-195068166d2c', 'accessories', $values)->willReturn(
             $productCompletenessMask
         );
 
@@ -121,7 +121,7 @@ class MissingRequiredAttributesCalculatorSpec extends ObjectBehavior
         );
 
         $productCompletenessMask = new CompletenessProductMask(
-            42, 'my_bag', 'accessories', [
+            42, 'accessories', [
                 'name-ecommerce-en_US',
                 'name-ecommerce-fr_FR',
                 'desc-<all_channels>-<all_locales>',
@@ -129,7 +129,7 @@ class MissingRequiredAttributesCalculatorSpec extends ObjectBehavior
                 'size-ecommerce-en_US',
             ]
         );
-        $getCompletenessProductMasks->fromValueCollection(42, 'my_bag', 'accessories', $values)->willReturn(
+        $getCompletenessProductMasks->fromValueCollection(42, 'accessories', $values)->willReturn(
             $productCompletenessMask
         );
 

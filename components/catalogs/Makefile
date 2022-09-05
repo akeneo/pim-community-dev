@@ -4,7 +4,7 @@ CATALOGS_YARN = $(YARN_RUN)
 
 ifeq ($(CI),true)
 	BEHAT_ARGS += --no-snippets --no-interaction
-	PHPINSIGHTS_ARGS += --summary
+	RECTOR_ARGS += --no-progress-bar
 endif
 ifneq ($(CI),true)
 	PSALM_ARGS += --show-info=true
@@ -30,6 +30,7 @@ catalogs-tests:
 	$(MAKE) catalogs-acceptance-back
 	$(MAKE) catalogs-lint-front
 	$(MAKE) catalogs-unit-front
+	$(MAKE) catalogs-integration-front
 
 .PHONY: catalogs-cs-fix
 catalogs-cs-fix: catalogs-lint-front_fix catalogs-lint-back_fix
@@ -42,6 +43,8 @@ ifneq ($(CI),true)
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
 	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 -u www-data --rm php bin/console cache:warmup
 endif
+	$(PHP_RUN) vendor/bin/rector process $(RECTOR_ARGS) --dry-run \
+		--config=$(CATALOGS_PATH)/back/rector.php
 	$(PHP_RUN) vendor/bin/php-cs-fixer fix --diff --dry-run \
 		--config=$(CATALOGS_PATH)/back/.php_cs.php
 	$(PHP_RUN) vendor/bin/phpstan analyse \
@@ -49,9 +52,6 @@ endif
 		--level=8 \
 		$(CATALOGS_PATH)/back/src
 	$(PHP_RUN) vendor/bin/psalm $(PSALM_ARGS) -c $(CATALOGS_PATH)/back/psalm.xml
-	$(PHP_RUN) vendor/bin/phpinsights analyse $(PHPINSIGHTS_ARGS) --no-interaction \
-		--config-path=$(CATALOGS_PATH)/back/phpinsights.php \
-		$(CATALOGS_PATH)/back/src/
 	$(PHP_RUN) bin/console lint:container
 
 .PHONY: catalogs-coupling-back
@@ -73,7 +73,7 @@ catalogs-integration-back:
 	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit \
 		--configuration $(CATALOGS_PATH)/back/ \
 		--bootstrap $(CATALOGS_BOOTSTRAP_PATH) \
-		--testsuite Catalogs_Integration
+		--testsuite Catalogs_Integration ${O}
 
 .PHONY: catalogs-acceptance-back
 catalogs-acceptance-back:
@@ -123,7 +123,11 @@ catalogs-lint-front: yarn-policies
 
 .PHONY: catalogs-unit-front
 catalogs-unit-front: yarn-policies
-	$(CATALOGS_YARN) workspace @akeneo-pim-community/catalogs jest --ci --coverage
+	$(CATALOGS_YARN) workspace @akeneo-pim-community/catalogs jest:unit --ci --coverage
+
+.PHONY: catalogs-integration-front
+catalogs-integration-front: yarn-policies
+	$(CATALOGS_YARN) workspace @akeneo-pim-community/catalogs jest:integration --ci --runInBand
 
 # UTILS
 
@@ -134,6 +138,7 @@ catalogs-lint-front_fix: yarn-policies
 
 .PHONY: catalogs-lint-back_fix
 catalogs-lint-back_fix:
+	$(PHP_RUN) vendor/bin/rector process --config=$(CATALOGS_PATH)/back/rector.php
 	$(PHP_RUN) vendor/bin/php-cs-fixer fix --config=$(CATALOGS_PATH)/back/.php_cs.php
 
 # BINARIES

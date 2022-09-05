@@ -15,11 +15,16 @@ use Doctrine\DBAL\Connection;
  */
 class SearchJobUser implements SearchJobUserInterface
 {
+    private const USER_TYPE = 'user';
+
     public function __construct(
         private Connection $connection,
     ) {
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function search(SearchJobUserQuery $query): array
     {
         $sql = $this->createSqlQuery($query);
@@ -34,8 +39,10 @@ class SearchJobUser implements SearchJobUserInterface
         $sql = <<<SQL
             SELECT DISTINCT job_execution.user
             FROM akeneo_batch_job_execution job_execution
+            INNER JOIN oro_user ON job_execution.user = oro_user.username
             WHERE job_execution.is_visible = 1
             AND job_execution.user IS NOT NULL
+            AND oro_user.user_type = :user_type
             %s
             ORDER BY job_execution.user
         SQL;
@@ -53,7 +60,10 @@ class SearchJobUser implements SearchJobUserInterface
     {
         return $this->connection->executeQuery(
             $sql,
-            ['username' => sprintf('%%%s%%', $query->search)],
+            [
+                'username' => sprintf('%%%s%%', $query->search),
+                'user_type' => self::USER_TYPE,
+            ],
         )->fetchFirstColumn();
     }
 }

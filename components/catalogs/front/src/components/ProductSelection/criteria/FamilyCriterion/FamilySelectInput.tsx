@@ -3,20 +3,22 @@ import {MultiSelectInput} from 'akeneo-design-system';
 import {FamilyCriterionState} from './types';
 import {useInfiniteFamilies} from '../../hooks/useInfiniteFamilies';
 import {useFamiliesByCodes} from '../../hooks/useFamiliesByCodes';
-import {useUniqueFamilies} from '../../hooks/useUniqueFamilies';
 import {useTranslate} from '@akeneo-pim-community/shared';
+import {Family} from '../../models/Family';
+import {useUniqueEntitiesByCode} from '../../hooks/useUniqueEntitiesByCode';
 
 type Props = {
     state: FamilyCriterionState;
     onChange: (state: FamilyCriterionState) => void;
+    isInvalid: boolean;
 };
 
-const FamilySelectInput: FC<Props> = ({state, onChange}) => {
+const FamilySelectInput: FC<Props> = ({state, onChange, isInvalid}) => {
     const translate = useTranslate();
     const [search, setSearch] = useState<string>();
     const {data: selection} = useFamiliesByCodes(state.value);
     const {data: results, fetchNextPage} = useInfiniteFamilies({search: search});
-    const families = useUniqueFamilies(selection, results);
+    const families = useUniqueEntitiesByCode<Family>(selection, results);
 
     return (
         <MultiSelectInput
@@ -28,6 +30,8 @@ const FamilySelectInput: FC<Props> = ({state, onChange}) => {
             onChange={v => onChange({...state, value: v})}
             onNextPage={fetchNextPage}
             onSearchChange={setSearch}
+            invalid={isInvalid}
+            data-testid='value'
         >
             {families.map(family => (
                 <MultiSelectInput.Option key={family.code} title={family.label} value={family.code}>

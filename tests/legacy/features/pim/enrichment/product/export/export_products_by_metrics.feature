@@ -21,7 +21,7 @@ Feature: Export products according to metric attribute filter
 
   Scenario: Export products by their metric values
     Given the following job "csv_footwear_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv |
+      | storage | {"type": "local", "file_path": "%tmp%/product_export/product_export.csv"} |
     When I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
     And I add available attributes Width

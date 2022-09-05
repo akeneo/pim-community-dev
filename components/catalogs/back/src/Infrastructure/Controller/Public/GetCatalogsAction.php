@@ -48,7 +48,7 @@ final class GetCatalogsAction
 
         try {
             $catalogs = $this->queryBus->execute(new GetCatalogsByOwnerUsernameQuery($ownerUsername, $page, $limit));
-        } catch (ValidationFailedException $e) {
+        } catch (ValidationFailedException) {
             throw new BadRequestHttpException();
         }
 

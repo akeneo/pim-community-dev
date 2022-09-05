@@ -4,9 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Persistence;
 
+use Akeneo\Catalogs\Application\Persistence\GetProductUuidFromIdentifierQueryInterface;
 use Doctrine\DBAL\Connection;
 
-class GetProductUuidFromIdentifierQuery
+/**
+ * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+final class GetProductUuidFromIdentifierQuery implements GetProductUuidFromIdentifierQueryInterface
 {
     public function __construct(
         private Connection $connection,
@@ -21,14 +26,15 @@ class GetProductUuidFromIdentifierQuery
             WHERE identifier = :identifier
         SQL;
 
-        $uuid = (string) $this->connection->fetchOne($sql, [
+        /** @var mixed|false $uuid */
+        $uuid = $this->connection->fetchOne($sql, [
             'identifier' => $identifier,
         ]);
 
-        if (!$uuid) {
+        if (false === $uuid) {
             throw new \InvalidArgumentException('Unknown identifier');
         }
 
-        return $uuid;
+        return (string) $uuid;
     }
 }

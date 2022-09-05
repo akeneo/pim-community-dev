@@ -53,6 +53,8 @@ akeneo_connectivity.connection:
         title_without_apps: '{0} Il n''y a aucun connecteur compatible avec votre version du PIM.|{1} Il y a {{ count }} connecteur compatible avec votre version du PIM. |[2,Inf] Il y a {{ count }} connecteurs compatibles avec votre version du PIM.'
         description: Ceci n'est qu'une vue d'ensemble. Pour plus de détails, jetez un coup d'œil à l'App Store Akeneo.
         link: Allez sur l'App Store Akeneo
+      search:
+        total: '{0} Aucun résultat|{1} 1 résultat|[2,Inf] {{ total }} résultats'
       card:
         developed_by: 'Développé par {{ author }}'
         read_more: en savoir plus
@@ -175,6 +177,9 @@ akeneo_connectivity.connection:
               1: Pour suivre les erreurs sur cette app,
               2: activer la surveillance
               3: dans les paramètres.
+        catalogs:
+          edit:
+            not_found: Catalogue introuvable
         flash:
           load_permissions_error.title: 'Les permissions enregistrées sur {{ entity }} n''ont pas pu être affichées.'
           load_permissions_error.description: Veuillez réessayer plus tard.

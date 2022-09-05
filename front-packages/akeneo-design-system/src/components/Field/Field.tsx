@@ -14,7 +14,6 @@ const LabelContainer = styled.div`
   align-items: center;
   line-height: 16px;
   margin-bottom: 8px;
-  max-width: 460px;
   gap: 5px;
 `;
 

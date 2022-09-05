@@ -26,7 +26,7 @@ final class OrderingKeySolverIntegration extends KernelTestCase
     protected function setUp(): void
     {
         $this->testKernel = static::bootKernel(['debug' => false]);
-        $this->orderingKeySolver = self::$container->get(OrderingKeySolver::class);
+        $this->orderingKeySolver = self::getContainer()->get(OrderingKeySolver::class);
     }
 
     public function test_it_returns_null_for_an_unknown_message(): void

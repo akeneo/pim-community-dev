@@ -1,5 +1,37 @@
 # 6.0.x
 
+# 6.0.42 (2022-09-02)
+
+# 6.0.41 (2022-08-29)
+
+- MW-370: Shift marketplace API service to new one
+
+# 6.0.40 (2022-08-25)
+
+## Bug fixes
+
+- PIM-10590: Fix capitalizing every first letter of attribute label in Data Quality Insights tab
+
+# 6.0.39 (2022-08-23)
+
+- OCT-107: Lock lcobucci/jwt version to ~4.1.5
+
+# 6.0.38 (2022-08-17)
+
+# 6.0.37 (2022-07-27)
+
+## Bug fixes
+
+- OCT-76: Fixed redundant authentication prompt during App activation
+
+# 6.0.36 (2022-07-21)
+
+## Bug fixes
+
+- PIM-10494: Fix memory issue when trying to delete a job profile with many warnings
+
+# 6.0.35 (2022-07-12)
+
 # 6.0.34 (2022-07-05)
 
 ## Bug fixes

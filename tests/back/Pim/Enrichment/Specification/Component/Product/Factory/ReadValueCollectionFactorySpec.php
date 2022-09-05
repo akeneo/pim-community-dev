@@ -17,6 +17,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 
 class ReadValueCollectionFactorySpec extends ObjectBehavior
@@ -77,7 +78,7 @@ class ReadValueCollectionFactorySpec extends ObjectBehavior
 
         $getAttributeByCodes->forCodes(['sku', 'description'])->willReturn(['sku' => $sku, 'description' => $description]);
 
-        $chainedObsoleteValueFilter->filterAll(['not_used_identifier' => $rawValues])->willReturn(['not_used_identifier' => $rawValues]);
+        $chainedObsoleteValueFilter->filterAll(Argument::any())->will(fn ($arg) => $arg[0]);
 
         $actualValues = $this->createFromStorageFormat($rawValues);
 

@@ -13,16 +13,12 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
-use Doctrine\Common\Collections\Collection;
 
 /**
  * @group ce
  */
 class ListProductWithCompletenessEndToEnd extends AbstractProductTestCase
 {
-    /** @var Collection */
-    private $products;
-
     /**
      * {@inheritdoc}
      */
@@ -70,8 +66,6 @@ class ListProductWithCompletenessEndToEnd extends AbstractProductTestCase
         ]);
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-
-        $this->products = $this->get('pim_catalog.repository.product')->findAll();
     }
 
     public function testPaginationWithCompletenessFilter()

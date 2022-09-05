@@ -6,12 +6,14 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Ramsey\Uuid\Uuid;
 
 class IdentifierResultsSpec extends ObjectBehavior
 {
     function it_adds_a_result_identifier()
     {
-        $this->add('foo', ProductInterface::class);
+        $uuidAsString = 'product_' .Uuid::uuid4()->toString();
+        $this->add('foo', ProductInterface::class, $uuidAsString);
 
         $all = $this->all();
         $all->shouldHaveCount(1);
@@ -19,6 +21,7 @@ class IdentifierResultsSpec extends ObjectBehavior
         $all[0]->shouldBeAnInstanceOf(IdentifierResult::class);
         $all[0]->getIdentifier()->shouldReturn('foo');
         $all[0]->getType()->shouldReturn(ProductInterface::class);
+        $all[0]->getId()->shouldReturn($uuidAsString);
     }
 
     function it_checks_if_empty()
@@ -28,7 +31,8 @@ class IdentifierResultsSpec extends ObjectBehavior
 
     function it_checks_if_not_empty()
     {
-        $this->add('foo', ProductInterface::class);
+        $uuidAsString = 'product_' .Uuid::uuid4()->toString();
+        $this->add('foo', ProductInterface::class, $uuidAsString);
         $this->isEmpty()->shouldReturn(false);
     }
 
@@ -39,9 +43,9 @@ class IdentifierResultsSpec extends ObjectBehavior
 
     function it_returns_all_elements()
     {
-        $this->add('foo', ProductInterface::class);
-        $this->add('bar', ProductInterface::class);
-        $this->add('baz', ProductInterface::class);
+        $this->add('foo', ProductInterface::class, 'product_' . Uuid::uuid4()->toString());
+        $this->add('bar', ProductInterface::class, 'product_' . Uuid::uuid4()->toString());
+        $this->add('baz', ProductInterface::class, 'product_' . Uuid::uuid4()->toString());
 
         $all = $this->all();
         $all->shouldHaveCount(3);
@@ -53,20 +57,20 @@ class IdentifierResultsSpec extends ObjectBehavior
 
     function it_returns_product_identifiers()
     {
-        $this->add('foo', ProductInterface::class);
-        $this->add('bar', ProductModelInterface::class);
-        $this->add('baz', ProductModelInterface::class);
-        $this->add('qux', ProductInterface::class);
+        $this->add('foo', ProductInterface::class, 'product_' . Uuid::uuid4()->toString());
+        $this->add('bar', ProductModelInterface::class, 'product_model_bar');
+        $this->add('baz', ProductModelInterface::class, 'product_model_baz');
+        $this->add('qux', ProductInterface::class, 'product_' . Uuid::uuid4()->toString());
 
         $this->getProductIdentifiers()->shouldReturn(['foo', 'qux']);
     }
 
     function it_returns_product_model_identifiers()
     {
-        $this->add('foo', ProductInterface::class);
-        $this->add('bar', ProductModelInterface::class);
-        $this->add('baz', ProductModelInterface::class);
-        $this->add('qux', ProductInterface::class);
+        $this->add('foo', ProductInterface::class, 'product_' . Uuid::uuid4()->toString());
+        $this->add('bar', ProductModelInterface::class, 'product_model_bar');
+        $this->add('baz', ProductModelInterface::class, 'product_model_bar');
+        $this->add('qux', ProductInterface::class, 'product_' . Uuid::uuid4()->toString());
 
         $this->getProductModelIdentifiers()->shouldReturn(['bar', 'baz']);
     }

@@ -19,7 +19,7 @@ class UpdateCatalogActionTest extends IntegrationTestCase
 {
     private ?Connection $connection;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -126,7 +126,7 @@ class UpdateCatalogActionTest extends IntegrationTestCase
         );
 
         $response = $client->getResponse();
-        $payload = \json_decode($response->getContent(), true);
+        $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(422, $response->getStatusCode());
         Assert::assertArrayHasKey('message', $payload);
@@ -160,6 +160,6 @@ class UpdateCatalogActionTest extends IntegrationTestCase
             'id' => Uuid::fromString($id)->getBytes(),
         ])->fetchOne();
 
-        $this->assertEquals($expected, \json_decode($row, true));
+        $this->assertEquals($expected, \json_decode($row, true, 512, JSON_THROW_ON_ERROR));
     }
 }

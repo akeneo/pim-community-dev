@@ -77,7 +77,6 @@ Akeneo\Tool\Component\Batch\Model\StepExecution:
             mappedBy: stepExecution
             cascade:
                 - persist
-                - remove
             orphanRemoval: true
             fetch: EXTRA_LAZY
             orderBy:

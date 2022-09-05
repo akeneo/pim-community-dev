@@ -151,6 +151,26 @@ pim_import_export:
             title: Locale du fichier
             help: Définit la langue dans laquelle les libellés vont être affichés.
       file_path: Chemin du fichier
+      storage_form:
+        title: Espace disque
+        connection:
+          label: Type
+          local: Local
+          sftp: SFTP
+          none: Aucun stockage configuré
+        file_path.label: Chemin du fichier
+        host.label: Hôte
+        port.label: Port
+        username.label: Identifiant
+        password.label: Mot de passe
+      validation:
+        storage:
+          unavailable_type: 'Ce stockage n''est pas disponible, seuls les types suivants sont disponibles: {{ available_types }}.'
+        file_path:
+          unsupported_extension: Extension de fichier non prise en charge
+      connection_checker:
+        label: Tester les paramètres de connexion
+        exception: La connexion ne peut pas être établie, veuillez vérifier vos paramètres.
   widget:
     last_operations:
       empty: Il n'y a aucune opération à afficher pour le moment.

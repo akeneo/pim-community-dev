@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Specification\Akeneo\UserManagement\Bundle\Validator\Constraints;
@@ -31,6 +32,7 @@ class CreateUserValidatorSpec extends ObjectBehavior
     function it_does_not_add_violation_if_created_user_is_valid(CreateUser $constraint, UserInterface $user)
     {
         $user->getId()->willReturn(null);
+        $user->isJobUser()->willReturn(false);
         $user->getUserIdentifier()->willReturn('foobar');
         $this->validate($user, $constraint)->shouldReturn(null);
     }
@@ -42,6 +44,7 @@ class CreateUserValidatorSpec extends ObjectBehavior
         CreateUser $constraint
     ) {
         $user->getId()->willReturn(null);
+        $user->isJobUser()->willReturn(false);
         $user->getUserIdentifier()->willReturn('foo bar');
 
         $context->buildViolation('The username should not contain space character.')

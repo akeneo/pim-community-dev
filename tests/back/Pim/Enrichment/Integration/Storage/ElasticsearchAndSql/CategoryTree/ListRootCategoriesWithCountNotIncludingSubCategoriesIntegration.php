@@ -96,4 +96,3 @@ class ListRootCategoriesWithCountNotIncludingSubCategoriesIntegration extends Te
         return $this->catalog->useMinimalCatalog();
     }
 }
-

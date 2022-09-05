@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTableValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\ValidateDataTrait;
@@ -27,6 +28,11 @@ class TableValueUserIntentFactory implements ValueUserIntentFactory
     public function create(string $attributeType, string $attributeCode, mixed $data): ValueUserIntent
     {
         $this->validateValueStructure($attributeCode, $data);
+
+        if (null === $data['data']) {
+            return new ClearValue($attributeCode, $data['scope'], $data['locale']);
+        }
+
         if (!\is_array($data['data'])) {
             throw InvalidPropertyTypeException::arrayExpected($attributeCode, static::class, $data['data']);
         }

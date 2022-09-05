@@ -16,7 +16,7 @@ Feature: Execute a job
       SKU-001;"my comment"
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
@@ -31,7 +31,7 @@ Feature: Execute a job
       SKU-001;"my comment"
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
@@ -46,7 +46,7 @@ Feature: Execute a job
       SKU-001;"my comment"
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
@@ -61,7 +61,7 @@ Feature: Execute a job
       SKU-001;"my name"
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
@@ -76,7 +76,7 @@ Feature: Execute a job
       SKU-001;"my description"
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
@@ -93,7 +93,7 @@ Feature: Execute a job
       SKU-002;rangers;black rangers
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
@@ -110,7 +110,7 @@ Feature: Execute a job
       SKU-002;50
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
@@ -127,7 +127,7 @@ Feature: Execute a job
       SKU-002;rangers;black rangers
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
@@ -148,7 +148,7 @@ Feature: Execute a job
       SKU-001;test value
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
@@ -162,7 +162,7 @@ Feature: Execute a job
       SKU-001;"my name"
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
@@ -176,7 +176,7 @@ Feature: Execute a job
       SKU-001;"data 1";"data 2"
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
@@ -191,7 +191,7 @@ Feature: Execute a job
       SKU-001;"my name"
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish

@@ -13,8 +13,8 @@ use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\Operation;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\Unit;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\UnitCode;
-use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnit;
-use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\Unit as PublicUnit;
+use Akeneo\Tool\Bundle\MeasureBundle\ServiceApi\GetUnit;
+use Akeneo\Tool\Bundle\MeasureBundle\ServiceApi\Unit as PublicUnit;
 use PhpSpec\ObjectBehavior;
 
 class InMemoryGetUnitSpec extends ObjectBehavior

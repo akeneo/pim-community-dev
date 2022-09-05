@@ -7,7 +7,7 @@ Feature: Export family variants in XLSX
   Scenario: Successfully export catalog family variants
     Given a "catalog_modeling" catalog configuration
     And the following job "xlsx_catalog_modeling_family_variant_export" configuration:
-      | filePath | %tmp%/family_variant.xlsx |
+      | storage | {"type": "local", "file_path": "%tmp%/family_variant.xlsx"} |
     And I am logged in as "Julia"
     And I am on the "xlsx_catalog_modeling_family_variant_export" export job page
     When I launch the export job

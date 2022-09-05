@@ -1,4 +1,4 @@
-import {FC, useContext, useEffect} from 'react';
+import React, {FC, useContext, useEffect} from 'react';
 import {renderHook} from '@testing-library/react-hooks';
 import {act} from 'react-test-renderer';
 import {DraggedNode, TreeNode} from 'feature/models';

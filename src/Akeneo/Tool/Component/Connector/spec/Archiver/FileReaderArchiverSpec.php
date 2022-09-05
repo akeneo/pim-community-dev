@@ -52,14 +52,15 @@ class FileReaderArchiverSpec extends ObjectBehavior
         $step->getReader()->willReturn($reader);
 
         $jobExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('filePath')->willReturn($pathname);
+        $jobParameters->has('storage')->willReturn(true);
+        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => $pathname]);
 
         $filesystem->writeStream(
             'type' . DIRECTORY_SEPARATOR .
-            'my_job_name' . DIRECTORY_SEPARATOR .
-            '12' . DIRECTORY_SEPARATOR .
-            'input' . DIRECTORY_SEPARATOR .
-            $filename,
+                'my_job_name' . DIRECTORY_SEPARATOR .
+                '12' . DIRECTORY_SEPARATOR .
+                'input' . DIRECTORY_SEPARATOR .
+                $filename,
             Argument::any()
         )->shouldBeCalled();
 

@@ -65,8 +65,6 @@ pim_catalog:
     variant_product_invalid_family: 'Die Variantenproduktfamilie muss mit der übergeordneten Produktfamilie übereinstimmen'
     php_int_max_reached: 'Die maximale Zahl muss kleiner als %php_int_max% sein.'
     not_null_family: Die Familie kann nicht "null" sein, da Ihr Produkt mit dem Bezeichner %sku% ein Variantenprodukt ist.
-    variant_product_has_parent: 'Das Variantenprodukt "%variant_product%" muss ein übergeordnetes Produkt haben'
-    invalid_variant_product_parent: 'Die Produktvariante "%variant_product%" kann nicht dem Produktmodell "%product_model%" untergeordnet werden (dem Produktmodell können nur andere Produktmodelle untergeordnet werden)'
     modified_variant_axis_value: 'Variantenachse "%variant_axis%" kann nicht verändert werden, "%provided_value%" wird angegeben'
     family_variant_attributes_unique: Attribute müssen eindeutig sein, "%attributes%" werden mehrfach in Variantenattribut-Sets verwendet
     family_variant_axes_unique: Variantenachsen müssen eindeutig sein, "%attributes%" werden mehrfach in Variantenattribut-Sets verwendet

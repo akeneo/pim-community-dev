@@ -28,7 +28,7 @@ class GetJobExecutionTrackingIntegration extends TestCase
     {
         parent::setUp();
 
-        self::$container->set('pim_import_export.clock', new FrozenClock());
+        self::getContainer()->set('pim_import_export.clock', new FrozenClock());
 
         $this->sqlConnection = $this->get('database_connection');
         $this->getJobExecutionTracking = $this->get('pim_import_export.query.get_job_execution_tracking');
@@ -227,7 +227,7 @@ SQL;
         $expectedJobExecutionTracking = new JobExecutionTracking();
         $expectedJobExecutionTracking->status = 'STARTING';
         $expectedJobExecutionTracking->currentStep = 0;
-        $expectedJobExecutionTracking->totalSteps = 3;
+        $expectedJobExecutionTracking->totalSteps = 4;
 
         $expectedJobExecutionTracking->steps = [
             $this->getValidationStepExecutionTracking(),
@@ -243,7 +243,7 @@ SQL;
         $expectedJobExecutionTracking = new JobExecutionTracking();
         $expectedJobExecutionTracking->status = 'IN_PROGRESS';
         $expectedJobExecutionTracking->currentStep = 2;
-        $expectedJobExecutionTracking->totalSteps = 3;
+        $expectedJobExecutionTracking->totalSteps = 4;
 
         $expectedStepExecutionTracking1 = $this->getValidationStepExecutionTracking();
         $expectedStepExecutionTracking1->status = 'COMPLETED';
@@ -272,7 +272,7 @@ SQL;
         $expectedJobExecutionTracking = new JobExecutionTracking();
         $expectedJobExecutionTracking->status = 'COMPLETED';
         $expectedJobExecutionTracking->currentStep = 3;
-        $expectedJobExecutionTracking->totalSteps = 3;
+        $expectedJobExecutionTracking->totalSteps = 4;
 
         $expectedStepExecutionTracking1 = $this->getValidationStepExecutionTracking();
         $expectedStepExecutionTracking1->status = 'COMPLETED';
@@ -302,7 +302,7 @@ SQL;
         $expectedJobExecutionTracking = new JobExecutionTracking();
         $expectedJobExecutionTracking->status = 'FAILED';
         $expectedJobExecutionTracking->currentStep = 2;
-        $expectedJobExecutionTracking->totalSteps = 3;
+        $expectedJobExecutionTracking->totalSteps = 4;
 
         $expectedStepExecutionTracking1 = $this->getValidationStepExecutionTracking();
         $expectedStepExecutionTracking1->status = 'COMPLETED';

@@ -62,7 +62,7 @@ const MediaFileLabel = styled.div`
 `;
 
 const MediaFilePlaceholder = styled(MediaFileLabel)`
-  color: ${getColor('grey', 100)};
+  color: ${getColor('grey', 120)};
 `;
 
 const ReadOnlyIcon = styled(LockIcon)`
@@ -205,13 +205,14 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
       try {
         const uploadedFile = await uploader(file, setProgress);
         uploadSucceeded();
-        onChange?.(uploadedFile);
-      } catch (error) {
-        uploadFailed();
-        console.error(error);
-      } finally {
         setProgress(0);
         stopUploading();
+        onChange?.(uploadedFile);
+      } catch (error) {
+        setProgress(0);
+        stopUploading();
+        uploadFailed();
+        console.error(error);
       }
     };
 

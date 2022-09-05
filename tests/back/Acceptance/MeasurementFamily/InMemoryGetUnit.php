@@ -6,8 +6,8 @@ namespace Akeneo\Test\Acceptance\MeasurementFamily;
 
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
-use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnit;
-use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\Unit;
+use Akeneo\Tool\Bundle\MeasureBundle\ServiceApi\GetUnit;
+use Akeneo\Tool\Bundle\MeasureBundle\ServiceApi\Unit;
 
 final class InMemoryGetUnit implements GetUnit
 {

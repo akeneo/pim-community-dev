@@ -35,7 +35,7 @@ class ViolationNormalizer implements NormalizerInterface, CacheableSupportsMetho
     /**
      * {@inheritdoc}
      */
-    public function normalize($exception, $format = null, array $context = [])
+    public function normalize($exception, $format = null, array $context = []): array
     {
         $errors = $this->normalizeViolations($exception->getViolations());
 

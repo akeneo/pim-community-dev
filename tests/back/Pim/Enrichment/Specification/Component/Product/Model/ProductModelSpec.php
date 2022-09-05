@@ -2,8 +2,8 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Model;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Model\Category;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
@@ -22,7 +22,7 @@ use Akeneo\Pim\Structure\Component\Model\AssociationType;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
-use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;

@@ -105,13 +105,13 @@ pim_import_export:
             help: One character used to set the field enclosure
           with_header:
             title: With header
-            help: Whether or not to print the column name
+            help: Defines if the first row of the file contains the column labels
           with_media:
             title: Export media
             help: Whether or not to export media
           lines_per_file:
-            title: Number of lines per file
-            help: Define the limit number of lines per file
+            title: Number of rows per file
+            help: Define the limit number of rows per file
           upload_allowed:
             title: Allow file upload
             help: Whether or not to allow uploading the file directly
@@ -151,6 +151,8 @@ pim_import_export:
             title: File locale
             help: Define the locale in which labels are displayed.
       file_path: File path
+      storage_form:
+        file_path.label: File path
   widget:
     last_operations:
       empty: There is no operation to display for now.

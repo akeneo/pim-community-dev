@@ -5,7 +5,10 @@ import {HashRouter as Router, Route, Switch} from 'react-router-dom';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {QueryClient, QueryClientProvider} from 'react-query';
-import {MicroFrontendDependenciesProvider} from '@akeneo-pim-community/shared';
+import {
+    MicroFrontendDependenciesProvider,
+    DangerousMicrofrontendAutomaticAuthenticator,
+} from '@akeneo-pim-community/shared';
 import {FakePIM} from './FakePIM';
 import {FakeCatalogEditContainer} from './FakeCatalogEditContainer';
 import {FakeCatalogListContainer} from './FakeCatalogListContainer';
@@ -31,7 +34,16 @@ const routes = {
     },
 };
 
-const client = new QueryClient();
+DangerousMicrofrontendAutomaticAuthenticator.enable('admin', 'admin');
+
+const client = new QueryClient({
+    defaultOptions: {
+        queries: {
+            staleTime: 10 * 1000, // 10s
+            cacheTime: 5 * 60 * 1000, // 5m
+        },
+    },
+});
 
 ReactDOM.render(
     <React.StrictMode>

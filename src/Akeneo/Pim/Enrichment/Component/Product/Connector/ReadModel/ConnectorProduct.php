@@ -241,6 +241,10 @@ final class ConnectorProduct
     {
         $values = $this->values->map(function (ValueInterface $value) use ($optionLabels) {
             if ($value instanceof OptionValue) {
+                $optionCodes = \array_keys($optionLabels[$value->getAttributeCode()] ?? []);
+                $index = \array_search(\strtolower($value->getData()), \array_map('strtolower', $optionCodes));
+                $optionCodeWithRightCase = false !== $index ? $optionCodes[$index] : $value->getData();
+
                 return new OptionValueWithLinkedData(
                     $value->getAttributeCode(),
                     $value->getData(),
@@ -248,17 +252,21 @@ final class ConnectorProduct
                     $value->getLocaleCode(),
                     [
                         'attribute' => $value->getAttributeCode(),
-                        'code' => $value->getData(),
-                        'labels' => $optionLabels[$value->getAttributeCode()][$value->getData()] ?? []
+                        'code' => (string)$optionCodeWithRightCase,
+                        'labels' => $optionLabels[$value->getAttributeCode()][$optionCodeWithRightCase] ?? []
                     ],
                 );
             } elseif ($value instanceof OptionsValue) {
                 $linkedData = [];
+                $optionCodes = \array_keys($optionLabels[$value->getAttributeCode()] ?? []);
                 foreach ($value->getData() as $optionCode) {
+                    $index = \array_search(\strtolower($optionCode), \array_map('strtolower', $optionCodes));
+                    $optionCodeWithRightCase = false !== $index ? $optionCodes[$index] : $optionCode;
+
                     $linkedData[$optionCode] = [
                         'attribute' => $value->getAttributeCode(),
-                        'code' => $optionCode,
-                        'labels' => $optionLabels[$value->getAttributeCode()][$optionCode] ?? [],
+                        'code' => (string)$optionCodeWithRightCase,
+                        'labels' => $optionLabels[$value->getAttributeCode()][$optionCodeWithRightCase] ?? [],
                     ];
                 }
 

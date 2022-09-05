@@ -15,10 +15,9 @@ use PhpSpec\ObjectBehavior;
 
 class LocalStorageHydratorSpec extends ObjectBehavior
 {
-    public function let(VersionProviderInterface $versionProvider)
+    public function let()
     {
-        $versionProvider->isSaaSVersion()->willReturn(false);
-        $this->beConstructedWith($versionProvider);
+        $this->beConstructedWith();
     }
 
     public function it_supports_only_local_storage()
@@ -31,12 +30,5 @@ class LocalStorageHydratorSpec extends ObjectBehavior
     public function it_hydrates_a_local_storage()
     {
         $this->hydrate(['type' => 'local', 'file_path' => 'a_file_path'])->shouldBeLike(new LocalStorage('a_file_path'));
-    }
-
-    public function it_throws_an_exception_on_saas_environment(VersionProviderInterface $versionProvider)
-    {
-        $versionProvider->isSaaSVersion()->willReturn(true);
-
-        $this->shouldThrow(\InvalidArgumentException::class)->during('hydrate', [['type' => 'local', 'file_path' => 'a_file_path']]);
     }
 }

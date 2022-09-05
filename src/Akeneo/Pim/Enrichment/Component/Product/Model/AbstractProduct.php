@@ -2,18 +2,19 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\EntityWithQuantifiedAssociationTrait;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
-use Akeneo\Tool\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Abstract product
@@ -69,9 +70,10 @@ abstract class AbstractProduct implements ProductInterface
 
     protected bool $dirty = false;
 
-    public function __construct()
+    public function __construct(?string $uuid = null)
     {
-        $this->uuid = Uuid::uuid4();
+        Assert::nullOrUuid($uuid);
+        $this->uuid = $uuid ? Uuid::fromString($uuid) : Uuid::uuid4();
         $this->values = new WriteValueCollection();
         $this->categories = new ArrayCollection();
         $this->completenesses = new ArrayCollection();
@@ -320,7 +322,9 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getLabel($locale = null, $scope = null)
     {
+        // TODO CPM: Return the uuid as a fallback when the identifier is null
         $identifier = (string) $this->getIdentifier();
+        $uuid = $this->uuid->toString();
 
         if (null === $this->family) {
             return $identifier;

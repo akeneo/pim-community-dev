@@ -7,7 +7,7 @@ namespace Akeneo\Catalogs\Infrastructure\Controller\Internal;
 use Akeneo\Catalogs\Application\Persistence\FindOneCatalogByIdQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\UpdateCatalogProductSelectionCriteriaQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\UpsertCatalogQueryInterface;
-use Akeneo\Catalogs\Infrastructure\Validation\UpdateCatalogPayloadIsValid;
+use Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdatePayload;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,7 +52,7 @@ final class UpdateCatalogAction
         $payload = \json_decode((string) $request->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         $violations = $this->validator->validate($payload, [
-            new UpdateCatalogPayloadIsValid(),
+            new CatalogUpdatePayload(),
         ]);
 
         if ($violations->count() > 0) {

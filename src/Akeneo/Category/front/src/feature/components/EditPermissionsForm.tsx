@@ -1,8 +1,14 @@
 import React from 'react';
 import {EditCategoryForm} from '../hooks';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import styled from 'styled-components';
 import {BooleanInput, Field, Helper, MultiSelectInput} from 'akeneo-design-system';
+import styled from 'styled-components';
+
+type Props = {
+  formData: EditCategoryForm | null;
+  onChangePermissions: (type: string, values: string[]) => void;
+  onChangeApplyPermissionsOnChildren: (value: boolean) => void;
+};
 
 const FormContainer = styled.div`
   margin-top: 20px;
@@ -11,12 +17,6 @@ const FormContainer = styled.div`
     margin: 0 10px 20px 0;
   }
 `;
-
-type Props = {
-  formData: EditCategoryForm | null;
-  onChangePermissions: (type: string, values: string[]) => void;
-  onChangeApplyPermissionsOnChildren: (value: boolean) => void;
-};
 
 const PermissionField = styled(Field)`
   max-width: 400px;

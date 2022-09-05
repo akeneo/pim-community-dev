@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi;
 use Akeneo\Pim\Enrichment\Bundle\Event\ProductValidationErrorEvent;
 use Akeneo\Pim\Enrichment\Bundle\Event\TechnicalErrorEvent;
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnSave\ApiAggregatorForProductPostSaveEventSubscriber;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids;
 use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
@@ -51,6 +52,7 @@ use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Elasticsearch\Common\Exceptions\ServerErrorResponseException;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Psr\Log\LoggerInterface;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -74,175 +76,44 @@ use Webmozart\Assert\Assert;
  */
 class ProductController
 {
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $channelRepository;
-
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $productRepository;
-
-    /** @var PaginatorInterface */
-    protected $offsetPaginator;
-
-    /** @var PaginatorInterface */
-    protected $searchAfterPaginator;
-
-    /** @var  ValidatorInterface */
-    protected $productValidator;
-
-    /** @var ProductBuilderInterface */
-    protected $productBuilder;
-
-    /** @var ObjectUpdaterInterface */
-    protected $updater;
-
-    /** @var RemoverInterface */
-    protected $remover;
-
-    /** @var SaverInterface */
-    protected $saver;
-
-    /** @var UrlGeneratorInterface */
-    protected $router;
-
-    /** @var FilterInterface */
-    protected $emptyValuesFilter;
-
-    /** @var StreamResourceResponse */
-    protected $partialUpdateStreamResource;
-
-    /** @var array */
-    protected $apiConfiguration;
-
-    /** @var ProductQueryBuilderFactoryInterface */
-    protected $fromSizePqbFactory;
-
-    /** @var ProductBuilderInterface */
-    protected $variantProductBuilder;
-
-    /** @var AddParent */
-    protected $addParent;
-
-    /** @var AttributeFilterInterface */
-    protected $productAttributeFilter;
-
-    /** @var ListProductsQueryValidator */
-    private $listProductsQueryValidator;
-
-    /** @var ListProductsQueryHandler */
-    private $listProductsQueryHandler;
-
-    /** @var ConnectorProductNormalizer */
-    private $connectorProductNormalizer;
-
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-
-    /** @var GetConnectorProducts */
-    private $getConnectorProducts;
-
-    /** @var GetConnectorProducts */
-    private $getConnectorProductsWithOptions;
-
-    /** @var ApiAggregatorForProductPostSaveEventSubscriber */
-    private $apiAggregatorForProductPostSave;
-
-    /** @var WarmupQueryCache */
-    private $warmupQueryCache;
-
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
-
-    /** @var DuplicateValueChecker */
-    protected $duplicateValueChecker;
-
-    /** @var LoggerInterface */
-    private $logger;
-
-    private GetProductsWithQualityScoresInterface $getProductsWithQualityScores;
-
-    private RemoveParentInterface $removeParent;
-
-    private GetProductsWithCompletenessesInterface $getProductsWithCompletenesses;
-
-    private SecurityFacade $security;
-
     public function __construct(
-        NormalizerInterface $normalizer,
-        IdentifiableObjectRepositoryInterface $channelRepository,
-        AttributeRepositoryInterface $attributeRepository,
-        IdentifiableObjectRepositoryInterface $productRepository,
-        PaginatorInterface $offsetPaginator,
-        PaginatorInterface $searchAfterPaginator,
-        ValidatorInterface $productValidator,
-        ProductBuilderInterface $productBuilder,
-        RemoverInterface $remover,
-        ObjectUpdaterInterface $updater,
-        SaverInterface $saver,
-        UrlGeneratorInterface $router,
-        FilterInterface $emptyValuesFilter,
-        StreamResourceResponse $partialUpdateStreamResource,
-        ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
-        ProductBuilderInterface $variantProductBuilder,
-        AttributeFilterInterface $productAttributeFilter,
-        AddParent $addParent,
-        ListProductsQueryValidator $listProductsQueryValidator,
-        array $apiConfiguration,
-        ListProductsQueryHandler $listProductsQueryHandler,
-        ConnectorProductNormalizer $connectorProductNormalizer,
-        TokenStorageInterface $tokenStorage,
-        GetConnectorProducts $getConnectorProducts,
-        GetConnectorProducts $getConnectorProductsWithOptions,
-        ApiAggregatorForProductPostSaveEventSubscriber $apiAggregatorForProductPostSave,
-        WarmupQueryCache $warmupQueryCache,
-        EventDispatcherInterface $eventDispatcher,
-        DuplicateValueChecker $duplicateValueChecker,
-        LoggerInterface $logger,
-        GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
-        RemoveParentInterface $removeParent,
-        GetProductsWithCompletenessesInterface $getProductsWithCompletenesses,
-        SecurityFacade $security,
-        private ValidatorInterface $validator
+        protected NormalizerInterface $normalizer,
+        protected IdentifiableObjectRepositoryInterface $channelRepository,
+        protected AttributeRepositoryInterface $attributeRepository,
+        protected IdentifiableObjectRepositoryInterface $productRepository,
+        protected PaginatorInterface $offsetPaginator,
+        protected PaginatorInterface $searchAfterPaginator,
+        protected ValidatorInterface $productValidator,
+        protected ProductBuilderInterface $productBuilder,
+        protected RemoverInterface $remover,
+        protected ObjectUpdaterInterface $updater,
+        protected SaverInterface $saver,
+        protected UrlGeneratorInterface $router,
+        protected FilterInterface $emptyValuesFilter,
+        protected StreamResourceResponse $partialUpdateStreamResource,
+        protected ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
+        protected ProductBuilderInterface $variantProductBuilder,
+        protected AttributeFilterInterface $productAttributeFilter,
+        private AddParent $addParent,
+        private ListProductsQueryValidator $listProductsQueryValidator,
+        private array $apiConfiguration,
+        private ListProductsQueryHandler $listProductsQueryHandler,
+        private ConnectorProductNormalizer $connectorProductNormalizer,
+        private TokenStorageInterface $tokenStorage,
+        private GetConnectorProducts $getConnectorProducts,
+        private GetConnectorProducts $getConnectorProductsWithOptions,
+        private ApiAggregatorForProductPostSaveEventSubscriber $apiAggregatorForProductPostSave,
+        private WarmupQueryCache $warmupQueryCache,
+        private EventDispatcherInterface $eventDispatcher,
+        protected DuplicateValueChecker $duplicateValueChecker,
+        private LoggerInterface $logger,
+        private GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
+        private RemoveParentInterface $removeParent,
+        private GetProductsWithCompletenessesInterface $getProductsWithCompletenesses,
+        private SecurityFacade $security,
+        private ValidatorInterface $validator,
+        private SqlFindProductUuids $findProductUuids
     ) {
-        $this->normalizer = $normalizer;
-        $this->channelRepository = $channelRepository;
-        $this->attributeRepository = $attributeRepository;
-        $this->productRepository = $productRepository;
-        $this->offsetPaginator = $offsetPaginator;
-        $this->searchAfterPaginator = $searchAfterPaginator;
-        $this->productValidator = $productValidator;
-        $this->productBuilder = $productBuilder;
-        $this->remover = $remover;
-        $this->updater = $updater;
-        $this->saver = $saver;
-        $this->router = $router;
-        $this->emptyValuesFilter = $emptyValuesFilter;
-        $this->partialUpdateStreamResource = $partialUpdateStreamResource;
-        $this->fromSizePqbFactory = $fromSizePqbFactory;
-        $this->variantProductBuilder = $variantProductBuilder;
-        $this->apiConfiguration = $apiConfiguration;
-        $this->productAttributeFilter = $productAttributeFilter;
-        $this->addParent = $addParent;
-        $this->listProductsQueryValidator = $listProductsQueryValidator;
-        $this->listProductsQueryHandler = $listProductsQueryHandler;
-        $this->connectorProductNormalizer = $connectorProductNormalizer;
-        $this->tokenStorage = $tokenStorage;
-        $this->getConnectorProducts = $getConnectorProducts;
-        $this->getConnectorProductsWithOptions = $getConnectorProductsWithOptions;
-        $this->apiAggregatorForProductPostSave = $apiAggregatorForProductPostSave;
-        $this->warmupQueryCache = $warmupQueryCache;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->duplicateValueChecker = $duplicateValueChecker;
-        $this->logger = $logger;
-        $this->getProductsWithQualityScores = $getProductsWithQualityScores;
-        $this->removeParent = $removeParent;
-        $this->getProductsWithCompletenesses = $getProductsWithCompletenesses;
-        $this->security = $security;
     }
 
     /**
@@ -301,7 +172,7 @@ class ProductController
                 && 0 === strpos($message['error']['root_cause'][0]['reason'], 'Result window is too large, from + size must be less than or equal to:')
             ) {
                 throw new DocumentedHttpException(
-                    Documentation::URL_DOCUMENTATION . 'pagination.html#search-after-type',
+                    Documentation::URL_DOCUMENTATION . 'pagination.html#the-search-after-method',
                     'You have reached the maximum number of pages you can retrieve with the "page" pagination type. Please use the search after pagination type instead',
                     $e
                 );
@@ -313,11 +184,6 @@ class ProductController
         return new JsonResponse($this->normalizeProductsList($products, $query));
     }
 
-    /**
-     * @param Request $request
-     * @param string $code
-     * @return JsonResponse
-     */
     public function getAction(Request $request, string $code): JsonResponse
     {
         $this->denyAccessUnlessAclIsGranted('pim_api_product_list');
@@ -330,7 +196,13 @@ class ProductController
             $user = $this->tokenStorage->getToken()->getUser();
             Assert::isInstanceOf($user, UserInterface::class);
 
-            $product = $connectorProductsQuery->fromProductIdentifier($code, $user->getId());
+            $uuidsFromIdentifiers = $this->findProductUuids->fromIdentifiers([$code]);
+            if (!array_key_exists($code, $uuidsFromIdentifiers)) {
+                throw new ObjectNotFoundException();
+            }
+
+            $productUuid = Uuid::fromString($uuidsFromIdentifiers[$code]);
+            $product = $connectorProductsQuery->fromProductUuid($productUuid, $user->getId());
             $this->eventDispatcher->dispatch(new ReadProductsEvent(1));
 
             if ($request->query->getAlpha('with_quality_scores', 'false') === 'true') {
@@ -339,7 +211,7 @@ class ProductController
             if ($request->query->getAlpha('with_completenesses', 'false') === 'true') {
                 $product = $this->getProductsWithCompletenesses->fromConnectorProduct($product);
             }
-        } catch (ObjectNotFoundException $e) {
+        } catch (ObjectNotFoundException) {
             throw new NotFoundHttpException(sprintf('Product "%s" does not exist or you do not have permission to access it.', $code));
         }
 
@@ -349,13 +221,9 @@ class ProductController
     }
 
     /**
-     * @param string $code
-     *
-     * @return Response
      * @throws NotFoundHttpException
-     *
      */
-    public function deleteAction($code): Response
+    public function deleteAction(string $code): Response
     {
         $this->denyAccessUnlessAclIsGranted('pim_api_product_remove');
 
@@ -407,7 +275,6 @@ class ProductController
         }
 
         $data = $this->populateIdentifierProductValue($data);
-        $data = $this->orderData($data);
 
         if (isset($data['parent'])) {
             $product = $this->variantProductBuilder->createProduct($data['identifier']);
@@ -495,16 +362,13 @@ class ProductController
             $isCreation = true;
         }
 
-        $data = $this->orderData($data);
-
         $this->updateProduct($product, $data, 'patch_products__code_');
         $this->validateProduct($product);
         $this->saver->save($product);
 
         $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
-        $response = $this->getResponse($product, $status);
 
-        return $response;
+        return $this->getResponse($product, $status);
     }
 
     /**
@@ -523,7 +387,8 @@ class ProductController
         $this->warmupQueryCache->fromRequest($request);
         $resource = $request->getContent(true);
         $this->apiAggregatorForProductPostSave->activate();
-        $response = $this->partialUpdateStreamResource->streamResponse($resource, [], function () {
+
+        return $this->partialUpdateStreamResource->streamResponse($resource, [], function () {
             try {
                 $this->apiAggregatorForProductPostSave->dispatchAllEvents();
             } catch (\Throwable $exception) {
@@ -533,8 +398,6 @@ class ProductController
             }
             $this->apiAggregatorForProductPostSave->deactivate();
         });
-
-        return $response;
     }
 
     /**
@@ -764,34 +627,6 @@ class ProductController
                 )
             );
         }
-    }
-
-    /**
-     * This method order the data by setting the parent field first. It comes from the ParentFieldSetter that sets the
-     * family from the parent if the product family is null. By doing this the validator does not fail if the family
-     * field has been set to null from the API. So to prevent this we order the parent before the family field. this way
-     * the field family will be updated to null if the data sent from the API for the family field is null.
-     *
-     * Example:
-     *
-     * {
-     *     "identifier": "test",
-     *     "family": null,
-     *     "parent": "amor"
-     * }
-     *
-     * This example does not work because the parent setter will set the family with the parent family.
-     *
-     * @param array $data
-     * @return array
-     */
-    private function orderData(array $data): array
-    {
-        if (!isset($data['parent'])) {
-            return $data;
-        }
-
-        return ['parent' => $data['parent']] + $data;
     }
 
     /**

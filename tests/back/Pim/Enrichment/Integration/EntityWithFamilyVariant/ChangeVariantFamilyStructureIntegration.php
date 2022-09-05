@@ -125,6 +125,7 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
 
     public function testMoveAttributeUpRemovesValuesOnTwoLevels()
     {
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: 'running-shoes-m-antique-white',

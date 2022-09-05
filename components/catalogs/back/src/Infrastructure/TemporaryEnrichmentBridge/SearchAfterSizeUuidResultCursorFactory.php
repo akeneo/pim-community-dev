@@ -22,12 +22,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class SearchAfterSizeUuidResultCursorFactory implements CursorFactoryInterface
 {
-    /** @var Client */
-    private $esClient;
-
-    public function __construct(Client $esClient)
+    public function __construct(private Client $esClient)
     {
-        $this->esClient = $esClient;
     }
 
     /**
@@ -35,14 +31,14 @@ class SearchAfterSizeUuidResultCursorFactory implements CursorFactoryInterface
      * @param mixed $queryBuilder
      * @param array<array-key, mixed> $options
      */
-    public function createCursor($queryBuilder, array $options = [])
+    public function createCursor($queryBuilder, array $options = []): IdentifierResultCursor
     {
         /** @var array{_source: array<string>, sort?: array<string>, size: int} $queryBuilder */
 
         $options = $this->resolveOptions($options);
         $sort = ['_id' => 'asc'];
 
-        $queryBuilder['_source'] = \array_merge($queryBuilder['_source'], ['document_type']);
+        $queryBuilder['_source'] = \array_merge($queryBuilder['_source'], ['document_type', 'id']);
         $queryBuilder['sort'] = isset($queryBuilder['sort']) ? \array_merge($queryBuilder['sort'], $sort) : $sort;
         $queryBuilder['size'] = $options['limit'];
         if (0 !== \count($options['search_after'])) {
@@ -54,7 +50,7 @@ class SearchAfterSizeUuidResultCursorFactory implements CursorFactoryInterface
 
         $identifiers = [];
         foreach ($response['hits']['hits'] as $hit) {
-            $identifiers[] = new IdentifierResult($hit['_source']['identifier'], $hit['_source']['document_type']);
+            $identifiers[] = new IdentifierResult($hit['_source']['identifier'], $hit['_source']['document_type'], $hit['_source']['id']);
         }
 
         return new IdentifierResultCursor($identifiers, $totalCount, new ElasticsearchResult($response));

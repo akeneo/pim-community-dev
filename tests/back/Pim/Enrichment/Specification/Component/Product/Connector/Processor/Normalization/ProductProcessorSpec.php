@@ -22,6 +22,7 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductProcessorSpec extends ObjectBehavior
@@ -73,7 +74,11 @@ class ProductProcessorSpec extends ObjectBehavior
         $attribute->isLocaleSpecific()->willReturn(false);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('filePath')->willReturn('/my/path/product.csv');
+        $jobParameters->has('storage')->willReturn(true);
+        $jobParameters->get('storage')->willReturn([
+            'type' => 'local',
+            'file_path' => '/my/path/product.csv',
+        ]);
         $jobParameters->get('filters')->willReturn(
             [
                 'structure' => ['scope' => 'mobile', 'locales' => ['en_US', 'fr_FR']]
@@ -144,7 +149,11 @@ class ProductProcessorSpec extends ObjectBehavior
         $attribute->isLocaleSpecific()->willReturn(false);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('filePath')->willReturn('/my/path/product.csv');
+        $jobParameters->has('storage')->willReturn(true);
+        $jobParameters->get('storage')->willReturn([
+            'type' => 'local',
+            'file_path' => '/my/path/product.csv',
+        ]);
         $jobParameters->get('filters')->willReturn(
             [
                 'structure' => ['scope' => 'mobile', 'locales' => ['en_US', 'fr_FR']]
@@ -201,7 +210,8 @@ class ProductProcessorSpec extends ObjectBehavior
         JobParameters $jobParameters,
         AttributeInterface $attribute
     ) {
-        $product->getIdentifier()->willReturn('a_product');
+        $uuid = Uuid::uuid4();
+        $product->getUuid()->willReturn($uuid);
         $attributeRepository->findMediaAttributeCodes()->willReturn(['picture']);
         $attributeRepository->findOneByIdentifier(Argument::any())->willReturn($attribute);
         $attribute->isLocaleSpecific()->willReturn(false);
@@ -263,7 +273,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $getNormalizedProductQualityScores->__invoke('a_product','mobile', ['en_US', 'fr_FR'])
+        $getNormalizedProductQualityScores->__invoke($uuid,'mobile', ['en_US', 'fr_FR'])
             ->willReturn($normalizedProductWithQualityScores['quality_scores']);
 
         $this->process($product)->shouldBeLike($normalizedProductWithQualityScores);

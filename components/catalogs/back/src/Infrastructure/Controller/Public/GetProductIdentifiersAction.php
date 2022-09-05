@@ -101,7 +101,7 @@ class GetProductIdentifiersAction
                     $limit,
                 )
             );
-        } catch (ValidationFailedException $e) {
+        } catch (ValidationFailedException) {
             throw new BadRequestHttpException();
         }
     }
@@ -138,7 +138,7 @@ class GetProductIdentifiersAction
         if (false !== $lastIdentifier && \count($identifiers) >= $limit) {
             try {
                 $lastUuid = $this->getProductUuidFromIdentifierQuery->execute($lastIdentifier);
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 return $result;
             }
 

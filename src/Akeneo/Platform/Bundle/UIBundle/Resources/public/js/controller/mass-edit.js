@@ -6,10 +6,9 @@ define([
   'oro/translator',
   'pim/controller/front',
   'pim/form-builder',
-  'pim/page-title',
   'routing',
   'pim/analytics',
-], function ($, _, __, BaseController, FormBuilder, PageTitle, Routing, analytics) {
+], function ($, _, __, BaseController, FormBuilder, Routing, analytics) {
   const ACTION_PRODUCT_GRID = 'product-edit';
 
   return BaseController.extend({

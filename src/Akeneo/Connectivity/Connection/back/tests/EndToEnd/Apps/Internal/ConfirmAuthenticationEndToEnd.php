@@ -117,6 +117,7 @@ class ConfirmAuthenticationEndToEnd extends WebTestCase
             'firstname_'.$appPublicId,
             [$group->getName()],
             ['ROLE_USER'],
+            $appPublicId,
         );
 
         $client = $this->clientProvider->findOrCreateClient(

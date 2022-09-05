@@ -2,7 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Export;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
@@ -51,6 +51,7 @@ abstract class AbstractExportTestCase extends TestCase
      */
     protected function createProduct(string $identifier, array $userIntents = []) : ProductInterface
     {
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: $identifier,
@@ -75,6 +76,7 @@ abstract class AbstractExportTestCase extends TestCase
 
         return \intval($id);
     }
+
     /**
      * @param array  $data
      *

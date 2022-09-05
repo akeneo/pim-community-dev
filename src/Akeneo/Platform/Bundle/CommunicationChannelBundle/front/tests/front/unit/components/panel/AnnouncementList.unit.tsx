@@ -28,27 +28,6 @@ afterEach(() => {
   container = null;
 });
 
-test('it check if it has new announcements when the component is mounted', async () => {
-  const campaign = formatCampaign(expectedPimAnalyticsData.pim_edition, expectedPimAnalyticsData.pim_version);
-  const handleHasNewAnnouncements = jest.fn();
-  useHasNewAnnouncements.mockReturnValue(handleHasNewAnnouncements);
-
-  useInfiniteScroll.mockReturnValue([
-    {
-      items: [],
-      isFetching: false,
-      hasError: false,
-    },
-    jest.fn(),
-  ]);
-
-  await act(async () =>
-    renderDOMWithProviders(<AnnouncementList campaign={campaign} panelIsOpened={true} />, container as HTMLElement)
-  );
-
-  expect(handleHasNewAnnouncements).toBeCalledTimes(1);
-});
-
 test('it shows the announcements when we open the panel', async () => {
   const campaign = formatCampaign(expectedPimAnalyticsData.pim_edition, expectedPimAnalyticsData.pim_version);
   const handleFetchingResults = jest.fn();
@@ -193,5 +172,5 @@ test('it updates the new announcements when closing the panel', async () => {
   );
 
   expect(handleAddViewedAnnouncements).toBeCalledWith([expectedAnnouncements[0]]);
-  expect(handleHasNewAnnouncements).toBeCalledTimes(2);
+  expect(handleHasNewAnnouncements).toBeCalledTimes(1);
 });

@@ -15,12 +15,12 @@ use Ramsey\Uuid\UuidInterface;
  */
 final class ElasticsearchProductProjection implements ElasticsearchProjection
 {
-    private const INDEX_PREFIX_ID   = 'product_';
+    public const INDEX_PREFIX_ID   = 'product_';
     private const INDEX_DATE_FORMAT = 'c';
 
     public function __construct(
         private UuidInterface $uuid,
-        private string $identifier,
+        private ?string $identifier,
         private \DateTimeImmutable $createdDate,
         private \DateTimeImmutable $updatedDate,
         private \DateTimeImmutable $entityUpdatedDate,

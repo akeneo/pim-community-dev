@@ -36,6 +36,7 @@ lint-back:
 	$(MAKE) job-lint-back
 	$(MAKE) enrichment-product-lint-back
 	$(MAKE) channel-lint-back
+	$(MAKE) category-lint-back
 	# Cache was created with debug enabled, removing it allows a faster one to be created for upcoming tests
 	$(DOCKER_COMPOSE) run --rm php rm -rf var/cache/dev
 
@@ -66,11 +67,7 @@ acceptance-back:
 	$(MAKE) import-export-acceptance-back
 	$(MAKE) job-acceptance-back
 	$(MAKE) channel-acceptance-back
-ifeq ($(CI),true)
-	.circleci/run_phpunit.sh . .circleci/find_phpunit.php Akeneo_Measurement_Acceptance
-else
-	APP_ENV=test $(PHP_RUN) ./vendor/bin/phpunit -c . --testsuite Akeneo_Measurement_Acceptance
-endif
+	$(MAKE) measurement-acceptance-back
 
 .PHONY: acceptance-front
 acceptance-front:

@@ -66,7 +66,6 @@ class ValueNormalizer implements NormalizerInterface, NormalizerAwareInterface, 
             $data = new ArrayCollection($data);
         }
 
-
         $type = $attribute->getType();
         $backendType = $attribute->getBackendType();
 

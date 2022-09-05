@@ -19,7 +19,7 @@ Feature: Export products according to file media attribute
 
   Scenario: Successfully export products according to file value start
     Given the following job "ecommerce_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv |
+      | storage | {"type": "local", "file_path": "%tmp%/product_export/product_export.csv"} |
     And I am on the "ecommerce_product_export" export job edit page
     And I visit the "Content" tab
     When I add available attributes Attachment

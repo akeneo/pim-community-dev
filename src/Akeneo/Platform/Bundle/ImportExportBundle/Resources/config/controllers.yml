@@ -34,7 +34,7 @@ services:
             - '@validator'
             - '@akeneo_batch.job.job_parameters_validator'
             - '@akeneo_batch.job_parameters_factory'
-            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@pim_connector.launcher.authenticated_job_launcher'
             - '@security.token_storage'
             - '@router'
             - '@pim_enrich.provider.form.chained'
@@ -45,7 +45,7 @@ services:
             - '@pim_catalog.filter.chained'
             - '@oneup_flysystem.jobs_storage_filesystem'
             - '@oro_security.security_facade'
-            - '@Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\RemoteStorageFeatureFlag'
+            - '@Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Security\CredentialsEncrypterRegistry'
 
     pim_enrich.controller.rest.job_execution:
         public: true

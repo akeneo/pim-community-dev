@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductProjectionInterface;
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductProjection;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
@@ -27,45 +26,32 @@ class ProductIndexer implements ProductIndexerInterface
     private const PRODUCT_IDENTIFIER_PREFIX = 'product_';
     private const BATCH_SIZE = 500;
 
-    private Client $productAndProductModelClient;
-    private GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection;
-
-    public function __construct(Client $productAndProductModelClient, GetElasticsearchProductProjectionInterface $getElasticsearchProductProjectionQuery)
-    {
-        $this->productAndProductModelClient = $productAndProductModelClient;
-        $this->getElasticsearchProductProjection = $getElasticsearchProductProjectionQuery;
+    public function __construct(
+        private Client $productAndProductModelClient,
+        private GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection
+    ) {
     }
 
     /**
-     * Indexes a product in the product and product model index from its identifier.
-     *
-     * {@inheritdoc}
-     */
-    public function indexFromProductIdentifier(string $productIdentifier, array $options = []): void
-    {
-        $this->indexFromProductIdentifiers([$productIdentifier], $options);
-    }
-
-    /**
-     * Indexes a list of products in the product and product model index from their identifiers.
+     * Indexes a list of products in the product_and_product_model index from their uuids.
      *
      * If the index_refresh is provided, it uses the refresh strategy defined.
      * Otherwise the waitFor strategy is by default.
      *
      * {@inheritdoc}
      */
-    public function indexFromProductIdentifiers(array $productIdentifiers, array $options = []): void
+    public function indexFromProductUuids(array $productUuids, array $options = []): void
     {
-        if (empty($productIdentifiers)) {
+        if (empty($productUuids)) {
             return;
         }
 
         $indexRefresh = $options['index_refresh'] ?? Refresh::disable();
 
-        $chunks = array_chunk($productIdentifiers, self::BATCH_SIZE);
-        foreach ($chunks as $productIdentifiersChunk) {
-            $elasticsearchProductProjections = $this->getElasticsearchProductProjection->fromProductIdentifiers(
-                $productIdentifiersChunk
+        $chunks = array_chunk($productUuids, self::BATCH_SIZE);
+        foreach ($chunks as $productUuidsChunk) {
+            $elasticsearchProductProjections = $this->getElasticsearchProductProjection->fromProductUuids(
+                $productUuidsChunk
             );
 
             $this->productAndProductModelClient->bulkIndexes($elasticsearchProductProjections, 'id', $indexRefresh);

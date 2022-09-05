@@ -7,7 +7,7 @@ Feature: Export profiles
   Background:
     Given a "footwear" catalog configuration
     And the following job "xlsx_footwear_association_type_export" configuration:
-      | filePath     | %tmp%/xlsx_footwear_association_type_export/xlsx_footwear_association_type_export.xlsx |
+      | storage | {"type": "local", "file_path": "%tmp%/xlsx_footwear_association_type_export/xlsx_footwear_association_type_export.xlsx"} |
       | linesPerFile | 3                                                                                      |
     And I am logged in as "Peter"
 

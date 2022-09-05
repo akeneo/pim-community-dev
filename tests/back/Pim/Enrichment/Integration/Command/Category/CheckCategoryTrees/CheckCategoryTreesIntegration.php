@@ -79,7 +79,7 @@ class CheckCategoryTreesIntegration extends TestCase
         $kernel = self::bootKernel();
         $application = new Application($kernel);
 
-        $command = $application->find('pim:categories:check-order');
+        $command = $application->find('akeneo:categories:check-order');
 
         $commandTester = new CommandTester($command);
         $commandTester->execute([

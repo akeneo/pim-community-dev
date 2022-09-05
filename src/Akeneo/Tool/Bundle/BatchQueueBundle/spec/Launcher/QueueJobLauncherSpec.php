@@ -62,6 +62,7 @@ class QueueJobLauncherSpec extends ObjectBehavior
         $eventDispatcher
     ) {
         $jobInstance->getJobName()->willReturn('job_instance_name');
+        $jobInstance->getType()->willReturn('export');
         $jobInstance->getRawParameters()->willReturn(['foo' => 'bar']);
         $user->getUsername()->willReturn('julia');
         $jobExecution->getId()->willReturn(1);
@@ -101,6 +102,7 @@ class QueueJobLauncherSpec extends ObjectBehavior
         $eventDispatcher
     ) {
         $jobInstance->getJobName()->willReturn('job_instance_name');
+        $jobInstance->getType()->willReturn('export');
         $jobInstance->getRawParameters()->willReturn(['foo' => 'bar']);
         $user->getUsername()->willReturn('julia');
         $jobExecution->getId()->willReturn(1);
@@ -113,7 +115,7 @@ class QueueJobLauncherSpec extends ObjectBehavior
         $jobParametersFactory->create($job, ['foo' => 'bar', 'baz' => 'foz'])->willReturn($jobParameters);
         $jobParametersValidator->validate($job, $jobParameters, ['Default', 'Execution'])->willReturn($constraintViolationList);
         $jobRepository->createJobExecution($job, $jobInstance, $jobParameters)->willReturn($jobExecution);
-        $jobExecutionMessageFactory->buildFromJobInstance($jobInstance, 1, ['env' => 'test', 'email' => 'julia@akeneo.com'])->willReturn(
+        $jobExecutionMessageFactory->buildFromJobInstance($jobInstance, 1, ['env' => 'test', 'email' => ['julia@akeneo.com']])->willReturn(
             DataMaintenanceJobExecutionMessage::createJobExecutionMessage(1, ['env' => 'test'])
         );
         $jobExecution->setUser('julia')->shouldBeCalled();
@@ -140,6 +142,7 @@ class QueueJobLauncherSpec extends ObjectBehavior
         $eventDispatcher
     ) {
         $jobInstance->getJobName()->willReturn('job_instance_name');
+        $jobInstance->getType()->willReturn('export');
         $jobInstance->getCode()->willReturn('job_instance_code');
         $jobInstance->getRawParameters()->willReturn(['foo' => 'bar']);
         $user->getUsername()->willReturn('julia');
