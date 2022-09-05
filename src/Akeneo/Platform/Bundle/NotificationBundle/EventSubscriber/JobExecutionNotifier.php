@@ -64,12 +64,12 @@ class JobExecutionNotifier implements EventSubscriberInterface
             return [];
         }
 
-        if($jobParameters->has('users_to_notify')) {
+        if ($jobParameters->has('users_to_notify')) {
             return $jobParameters->get('users_to_notify');
         }
 
         //TODO RAB-1046: remove this condition
-        if($jobParameters->has('user_to_notify')) {
+        if ($jobParameters->has('user_to_notify')) {
             return [$jobParameters->get('user_to_notify')];
         }
 
