@@ -24,7 +24,7 @@ if (isset($_ENV['APP_TENANT_ID']) && '' !== $_ENV['APP_TENANT_ID']) {
 
     $contextFetcher = new FirestoreContextFetcher(
         logger: new Logger('bootstrap', [$handler]),
-        googleProjectId: $_ENV['GOOGLE_CLOUD_PROJECT']
+        googleProjectId: $_ENV['FIRESTORE_PROJECT_ID']
     );
     $dotenv->populate(
         values: $contextFetcher->getTenantContext($_ENV['APP_TENANT_ID']),

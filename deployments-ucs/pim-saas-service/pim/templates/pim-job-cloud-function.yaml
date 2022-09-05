@@ -19,6 +19,7 @@ spec:
   region: "{{ .Values.common.region }}"
   environmentVariables:
     projectId: "{{ .Values.common.gcpProjectID }}"
+    fireStoreProjectId: "{{ .Values.common.gcpFireStoreProjectID }}"
     tenantContext: "tenant_contexts"
   serviceAccountRef:
     external: "{{ .Values.pim.cloudFunction.serviceAccountEmail }}"

@@ -538,7 +538,7 @@ jobs:
 
               INSTANCE_NAME_PREFIX=ucs
               INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
-
+              GOOGLE_CLOUD_FIRESTORE_PROJECT=${GOOGLE_FIRESTORE_PROJECT_ID}
               GOOGLE_CLOUD_PROJECT=${GOOGLE_PROJECT_ID}
               GOOGLE_ZONE=${GOOGLE_COMPUTE_ZONE}
               LOCATION=EU
@@ -564,6 +564,7 @@ jobs:
               echo export CIRCLE_BRANCH_LOWER=${CIRCLE_BRANCH_LOWER} >> $BASH_ENV
               echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
               echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+              echo export GOOGLE_CLOUD_FIRESTORE_PROJECT=${GOOGLE_CLOUD_FIRESTORE_PROJECT} >> $BASH_ENV
               echo export GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT} >> $BASH_ENV
               echo export GOOGLE_ZONE=${GOOGLE_ZONE} >> $BASH_ENV
               echo export LOCATION=${LOCATION} >> $BASH_ENV
@@ -600,6 +601,7 @@ jobs:
               yq m -x -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim/values.yaml /tmp/ee-branch/deployments-ucs/config/ci-values.yaml
 
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim/values.yaml global.extraLabels.instanceName "${INSTANCE_NAME}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim/values.yaml common.gcpFireStoreProjectID "${GOOGLE_CLOUD_FIRESTORE_PROJECT}"
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim/values.yaml common.gcpProjectID "${GOOGLE_CLOUD_PROJECT}"
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim/values.yaml common.googleZone "${GOOGLE_ZONE}"
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim/values.yaml common.location "${LOCATION}"

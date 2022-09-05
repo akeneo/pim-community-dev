@@ -23,6 +23,7 @@ backup:
 
 common:
   extraLabels: {}
+  gcpFireStoreProjectID: null # Generated
   gcpProjectID: null # Generated
   googleZone: null # Generated
   location: null # Generated example EU, US
