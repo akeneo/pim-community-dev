@@ -106,11 +106,4 @@ class ClassifyCategoryOnProductWithUuidAndPermissionsEndToEnd extends AbstractPr
 
         $this->assertSameProducts($expectedProduct, $identifier);
     }
-
-    private function getProductUuidFromIdentifier(string $productIdentifier): UuidInterface
-    {
-        return Uuid::fromString($this->get('database_connection')->fetchOne(
-            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?', [$productIdentifier]
-        ));
-    }
 }

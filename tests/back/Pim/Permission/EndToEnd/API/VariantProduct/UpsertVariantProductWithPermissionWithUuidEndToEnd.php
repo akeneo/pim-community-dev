@@ -7,9 +7,11 @@ use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\PermissionFixturesLoader;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\Response;
 
-class UpsertVariantProductWithPermissionEndToEnd extends ApiTestCase
+class UpsertVariantProductWithPermissionWithUuidEndToEnd extends ApiTestCase
 {
     /** @var PermissionFixturesLoader */
     private $loader;
@@ -27,12 +29,13 @@ class UpsertVariantProductWithPermissionEndToEnd extends ApiTestCase
     public function testUpdateVariantProductValuesByMergingNonViewableAssociations()
     {
         $this->loader->loadProductsForAssociationPermissions();
-
+        $productOwnUuid = $this->getProductUuidFromIdentifier('product_own')->toString();
         $data = <<<JSON
             {
+                "values": {},
                 "associations": {
                     "X_SELL": {
-                        "products": ["product_own"]
+                        "products": ["{$productOwnUuid}"]
                     }
                 }
             }
@@ -190,7 +193,7 @@ JSON;
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
 
-        $data = '{"categories": ["view_category", "own_category", "edit_category"]}';
+        $data = '{"values": {}, "categories": ["view_category", "own_category", "edit_category"]}';
 
         $sql = <<<SQL
             SELECT c.code
@@ -228,18 +231,19 @@ SQL;
     public function testUpdateVariantProductAssociationWithNotViewableProduct()
     {
         $this->loader->loadProductsForAssociationPermissions();
-
+        $productNoView = $this->getProductUuidFromIdentifier('product_no_view')->toString();
         $data = <<<JSON
             {
+                "values": {},
                 "associations": {
                     "X_SELL": {
-                        "products": ["product_no_view"]
+                        "products": ["{$productNoView}"]
                     }
                 }
             }
 JSON;
 
-        $message = 'Property "associations" expects a valid product identifier. The product does not exist, "product_no_view" given. Check the expected format on the API documentation.';
+        $message = "Property \"associations\" expects a valid product uuid. The product does not exist, \"{$productNoView}\" given. Check the expected format on the API documentation.";
         $this->assertUnprocessableEntity('variant_product', $data, $message);
     }
 
@@ -249,6 +253,7 @@ JSON;
 
         $data = <<<JSON
             {
+                "values": {},
                 "associations": {
                     "X_SELL": {
                         "product_models": ["product_model_no_view"]
@@ -269,8 +274,8 @@ JSON;
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
 
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
-
-        $client->request('PATCH', 'api/rest/v1/products/' . 'colored_sized_sweat_no_view', [], [], [], '{"categories": ["own_category"]}');
+        $uuid = $this->getProductUuidFromIdentifier('colored_sized_sweat_no_view')->toString();
+        $client->request('PATCH', 'api/rest/v1/products-uuid/' . $uuid, [], [], [], '{"values": {}, "categories": ["own_category"]}');
         $response = $client->getResponse();
 
         $expectedContent = sprintf('{"code":%d,"message":"Product \"colored_sized_sweat_no_view\" does not exist or you do not have permission to access it."}', Response::HTTP_NOT_FOUND);
@@ -284,11 +289,13 @@ JSON;
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
 
         $message = 'Product "%s" cannot be updated. You only have a view right on this product.';
-        $data = '{"categories": ["own_category"]}';
-
+        $data = '{
+            "values": {},
+            "categories": ["own_category"]}
+        ';
         $this->assertUnauthorized('colored_sized_shoes_view', $data, sprintf($message, 'colored_sized_shoes_view'));
         $this->assertUnauthorized('colored_sized_tshirt_view', $data, sprintf($message, 'colored_sized_tshirt_view'));
-        $this->assertUpdated('colored_sized_tshirt_view', '{}');
+        $this->assertUpdated('colored_sized_tshirt_view', '{"values": {}}');
     }
 
     /**
@@ -318,7 +325,6 @@ JSON;
     public function testUpdateByModifyingProductValueOnViewableAttribute()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
-
         $data = '{"values": {"root_product_model_view_attribute": [{"locale": "fr_FR", "scope":null, "data":false}]}}';
         $this->assertUpdated('variant_product', $data);
 
@@ -337,7 +343,6 @@ JSON;
     public function testUpdateByModifyingProductValueOnNotViewableLocale()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
-
         $message = 'Attribute "%s" expects an existing and activated locale, "de_DE" given. Check the expected format on the API documentation.';
 
         $data = '{"values": {"root_product_model_edit_attribute": [{"locale": "de_DE", "scope":null, "data":false}]}}';
@@ -351,13 +356,12 @@ JSON;
     }
 
     /**
-     * On product values inherited the parents, we only validate attribute and locale visibility.
+     * On product values inherited from the parents, we only validate attribute and locale visibility.
      * We ignore any modification of the data on product values of the parents.
      */
     public function testUpdateByModifyingProductValueOnViewableLocale()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
-
         $message = 'You only have a view permission on the locale "fr_FR".';
 
         $data = '{"values": {"root_product_model_edit_attribute": [{"locale": "fr_FR", "scope":null, "data":false}]}}';
@@ -373,10 +377,9 @@ JSON;
     public function testUpdateEditVariantProductWithNotViewableCategory()
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
-
         $message = 'You cannot update the field "categories". You should at least own this product to do it.';
 
-        $data = '{"categories": ["edit_category", "category_without_right"]}';
+        $data = '{"values": {}, "categories": ["edit_category", "category_without_right"]}';
         $this->assertUnauthorized('colored_sized_sweat_edit', $data, $message);
         $this->assertUnauthorized('colored_sized_shoes_edit', $data, $message);
     }
@@ -385,7 +388,7 @@ JSON;
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
 
-        $data = '{"categories": ["own_category", "view_category"]}';
+        $data = '{"values": {}, "categories": ["own_category", "view_category"]}';
         $this->assertUpdated('colored_sized_sweat_own', $data);
         $this->assertUpdated('colored_sized_shoes_own', $data);
         $this->assertUpdated('colored_sized_trousers', $data);
@@ -396,7 +399,7 @@ JSON;
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
 
         $message = 'You should at least keep your product in one category on which you have an own permission.';
-        $data = '{"categories": ["edit_category"]}';
+        $data = '{"values": {}, "categories": ["edit_category"]}';
         $this->assertUnauthorized('colored_sized_trousers', $data, $message);
     }
 
@@ -408,10 +411,10 @@ JSON;
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
 
-        $data = '{"categories": ["own_category"]}';
+        $data = '{"values": {}, "categories": ["own_category"]}';
         $this->assertUpdated('colored_sized_trousers', $data);
 
-        $data = '{"categories": ["view_category"]}';
+        $data = '{"values": {}, "categories": ["view_category"]}';
         $this->assertUpdated('colored_sized_sweat_own', $data);
         $this->assertUpdated('colored_sized_shoes_own', $data);
     }
@@ -422,7 +425,7 @@ JSON;
 
         $message = "To be able to convert this variant product you need to have the 'Own' permission on its categories.";
 
-        $data = '{"parent": null}';
+        $data = '{"parent": null, "values": {}}';
         $this->assertUnauthorized('colored_sized_sweat_edit', $data, $message);
         $this->assertUnauthorized('colored_sized_shoes_edit', $data, $message);
     }
@@ -436,8 +439,8 @@ JSON;
     private function assertUpdated(string $identifier, string $data, string $sql = null, array $expectedProductNormalized = null): void
     {
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
-
-        $client->request('PATCH', 'api/rest/v1/products/' . $identifier, [], [], [], $data);
+        $uuid = $this->getProductUuidFromIdentifier($identifier)->toString();
+        $client->request('PATCH', 'api/rest/v1/products-uuid/' . $uuid, [], [], [], $data);
         Assert::assertSame(Response::HTTP_NO_CONTENT, $client->getResponse()->getStatusCode());
         if (null !== $sql) {
             Assert::assertEquals($expectedProductNormalized, $this->getDatabaseData($sql));
@@ -452,8 +455,8 @@ JSON;
     private function assertUnauthorized(string $identifier, string $data, string $message)
     {
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
-
-        $client->request('PATCH', 'api/rest/v1/products/' . $identifier, [], [], [], $data);
+        $uuid = $this->getProductUuidFromIdentifier($identifier)->toString();
+        $client->request('PATCH', 'api/rest/v1/products-uuid/' . $uuid, [], [], [], $data);
         $response = $client->getResponse();
 
         $expected = sprintf('{"code":%d,"message":"%s"}', Response::HTTP_FORBIDDEN, addcslashes($message, '"\\'));
@@ -470,8 +473,8 @@ JSON;
     private function assertUnprocessableEntity(string $identifier, string $data, string $message)
     {
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
-
-        $client->request('PATCH', 'api/rest/v1/products/' . $identifier, [], [], [], $data);
+        $uuid = $this->getProductUuidFromIdentifier($identifier)->toString();
+        $client->request('PATCH', 'api/rest/v1/products-uuid/' . $uuid, [], [], [], $data);
         $response = $client->getResponse();
 
         $error = <<<JSON
@@ -529,5 +532,12 @@ JSON;
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog(featureFlags: ['permission']);
+    }
+
+    private function getProductUuidFromIdentifier(string $productIdentifier): UuidInterface
+    {
+        return Uuid::fromString($this->get('database_connection')->fetchOne(
+            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?', [$productIdentifier]
+        ));
     }
 }
