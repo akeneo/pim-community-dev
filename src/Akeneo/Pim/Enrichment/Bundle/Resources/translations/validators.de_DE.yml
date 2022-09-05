@@ -19,6 +19,7 @@ This value should not be a decimal.: Dieser Wert darf keine Dezimalzahl sein.
 "The {{ attribute_code }} attribute can not have the same value more than once. The {{ value }} value is already set on another product.": Das {{ attribute_code }} -Attribut kann nicht mehr als einmal denselben Wert haben. Der {{ value }} Wert ist bereits für ein anderes Produkt festgelegt.
 The same identifier is already set on another product: Diese Kennung ist bereits für ein anderes Produkt in Verwendung
 regex.comma_or_semicolon_or_surrounding_space.message: Dieses Feld sollte kein Komma oder Semikolon oder führendes/nachträgliches Leerzeichen enthalten
+regex.line_break.message: Dieses Feld sollte keine Zeilenumbrüche enthalten
 file.extensions.message: 'Die Dateierweiterung ist nicht zulässig (Erlaubte Dateierweiterungen: %extensions%).'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": Dieser Wertetyp erwartet die Benutzung von {{ decimal_separator }} als Dezimaltrennzeichen.
 "This type of value expects the use of dot (.) to separate decimals.": Dieser Wertetyp erwartet die Verwendung eines Punktes (.) als Dezimaltrennzeichen.
@@ -65,6 +66,8 @@ pim_catalog:
     variant_product_invalid_family: 'Die Variantenproduktfamilie muss mit der übergeordneten Produktfamilie übereinstimmen'
     php_int_max_reached: 'Die maximale Zahl muss kleiner als %php_int_max% sein.'
     not_null_family: Die Familie kann nicht "null" sein, da Ihr Produkt mit dem Bezeichner %sku% ein Variantenprodukt ist.
+    variant_product_has_parent: 'Das Variantenprodukt muss ein Elternprodukt haben'
+    invalid_variant_product_parent: 'Die Produktvariante kann nicht dem Produktmodell "%product_model%" untergeordnet werden (dem Produktmodell können nur andere Produktmodelle untergeordnet werden).'
     modified_variant_axis_value: 'Variantenachse "%variant_axis%" kann nicht verändert werden, "%provided_value%" wird angegeben'
     family_variant_attributes_unique: Attribute müssen eindeutig sein, "%attributes%" werden mehrfach in Variantenattribut-Sets verwendet
     family_variant_axes_unique: Variantenachsen müssen eindeutig sein, "%attributes%" werden mehrfach in Variantenattribut-Sets verwendet
