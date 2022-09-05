@@ -47,6 +47,7 @@ class WebMarketplaceApi implements WebMarketplaceApiInterface
                 'offset' => $offset,
                 'limit' => $limit,
             ],
+            'auth' => ['akeneo', 'ookoT6ei'],
         ]);
 
         return \json_decode($response->getBody()->getContents(), true);
@@ -69,6 +70,7 @@ class WebMarketplaceApi implements WebMarketplaceApiInterface
                 'offset' => $offset,
                 'limit' => $limit,
             ],
+            'auth' => ['akeneo', 'ookoT6ei'],
         ]);
 
         return \json_decode($response->getBody()->getContents(), true);
