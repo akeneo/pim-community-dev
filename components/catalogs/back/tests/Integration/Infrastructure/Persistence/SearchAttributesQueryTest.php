@@ -34,6 +34,13 @@ class SearchAttributesQueryTest extends IntegrationTestCase
 
         $this->assertEquals([
             [
+                'code' => 'sku',
+                'label' => '[sku]',
+                'type' => 'pim_catalog_identifier',
+                'scopable' => false,
+                'localizable' => false,
+            ],
+            [
                 'code' => 'name',
                 'label' => '[name]',
                 'type' => 'pim_catalog_text',
