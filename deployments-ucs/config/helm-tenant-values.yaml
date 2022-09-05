@@ -83,6 +83,7 @@ memcached:
       memory: ${MEMCACHED_REQUESTS_MEMORY}
 
 common:
+  gcpFireStoreProjectID: ${FIRESTORE_PROJECT_ID}
   gcpProjectID: ${GOOGLE_PROJECT_ID}
   googleZone: ${GOOGLE_CLUSTER_ZONE}
   pimMasterDomain: ${FQDN}
