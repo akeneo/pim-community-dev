@@ -21,7 +21,7 @@ final class SendNotificationWhenJobInstanceCannotBeLaunched implements EventSubs
 {
     public function __construct(
         private NotifierInterface $pimNotifier,
-        private TranslatorInterface $translator
+        private TranslatorInterface $translator,
     ) {
     }
 
@@ -41,7 +41,6 @@ final class SendNotificationWhenJobInstanceCannotBeLaunched implements EventSubs
     private function createNotification(ScheduledJobInstance $jobInstance, array $errorMessage): NotificationInterface
     {
         $notification = new Notification();
-
 
         $notification
             ->setType('error')
