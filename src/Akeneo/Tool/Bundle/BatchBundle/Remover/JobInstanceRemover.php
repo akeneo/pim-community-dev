@@ -35,7 +35,7 @@ class JobInstanceRemover implements RemoverInterface, BulkRemoverInterface
         $this->eventDispatcher->dispatch(new RemoveEvent($object, $jobInstanceId, $options), StorageEvents::PRE_REMOVE);
 
         $this->jobInstanceRepository->remove($object->getCode());
-        $this->deleteRunningUser($object);
+        $this->deleteRunningUser->execute($object->getCode());
 
         $this->eventDispatcher->dispatch(new RemoveEvent($object, $jobInstanceId, $options), StorageEvents::POST_REMOVE);
     }
@@ -74,15 +74,6 @@ class JobInstanceRemover implements RemoverInterface, BulkRemoverInterface
             new RemoveEvent($objects, array_keys($removedObjects)),
             StorageEvents::POST_REMOVE_ALL
         );
-    }
-
-    private function deleteRunningUser(JobInstance $jobInstance): void
-    {
-        if (!$jobInstance->isScheduled()) {
-            return;
-        }
-
-        $this->deleteRunningUser->execute($jobInstance->getCode());
     }
 
     private function validateObject(mixed $object): void

@@ -73,20 +73,6 @@ class JobInstanceRemoverSpec extends ObjectBehavior
         $this->remove($jobInstance);
     }
 
-    function it_does_not_remove_the_running_user_when_job_is_not_scheduled(
-        JobInstance $jobInstance,
-        DeleteRunningUser $deleteRunningUser,
-    ): void
-    {
-        $jobInstance->getId()->willReturn(1);
-        $jobInstance->isScheduled()->willReturn(false);
-        $jobInstanceCode = 'my_job';
-        $jobInstance->getCode()->willReturn($jobInstanceCode);
-        $deleteRunningUser->execute($jobInstanceCode)->shouldNotBeCalled();
-
-        $this->remove($jobInstance);
-    }
-
     function it_throws_exception_when_remove_anything_else_than_a_job_instance(): void
     {
         $anythingElse = new \stdClass();
