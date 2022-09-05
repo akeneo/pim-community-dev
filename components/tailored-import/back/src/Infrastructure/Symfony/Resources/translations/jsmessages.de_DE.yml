@@ -1,0 +1,108 @@
+akeneo.tailored_import:
+  data_mapping:
+    operations:
+      split:
+        pipe: Pipe (|)
+      simple_select_replacement:
+        option_labels: Optionsbezeichnungen
+      multi_select_replacement:
+        option_labels: Optionsbezeichnungen
+      categories_replacement:
+        title: Kategorien ersetzen
+        modal:
+          title: Kategorien verwalten
+          table:
+            header:
+              replacement: Kategoriebezeichnungen
+              source_values: Quellkategorien
+      family_replacement:
+        modal:
+          title: Produktfamilien verwalten
+      no_result: Keine Operation verfügbar
+      no_source: Wählen Sie zuerst eine Quelle aus, dann haben Sie Zugriff auf Operationen
+      no_available:
+        text: Keine weiteren Operationen verfügbar.
+        link: Klicken Sie hier, um unser Hilfe-Center zu besuchen.
+      remove: Sind Sie sicher, dass Sie diesen Vorgang entfernen möchten?
+      replacement:
+        to_placeholder: Definieren Sie die Quellwerte in Ihrer Datei.
+        modal:
+          options: Optionen verwalten
+          subtitle: Ersetzen
+          no_result:
+            title: Leider gibt es keinen Wert in diesem Attribut.
+          empty_result:
+            title: Für Ihre Suche wurden leider keine passenden Treffer gefunden.
+            text: Wiederholen Sie Ihre Suche mit anderen Suchkriterien.
+          filters:
+            mapped:
+              label: Anzeige
+              unmapped: Alle Werte ohne Ersatz
+              mapped: Alle Werte mit Ersatz
+              all: Alle Werte
+          table:
+            header:
+              source_values: Quellwerte
+      boolean_replacement:
+        title: Boolescher Ersatz
+        field:
+          yes_value: Ja-Wert
+          no_value: Kein Wert
+      enabled_replacement:
+        field:
+          enabled_value: Aktivierter Wert
+          disabled_value: Deaktivierter Wert
+    sources:
+      title: Quelle(n)
+      add:
+        label: Quelle hinzufügen
+        helper: "]-Inf, 1]Für diese Art von Attributen kannst du nur eine Quelle hinzufügen.|]1, Inf[Für diese Art von Attributen kannst du nur {{ limit }} Quellen hinzufügen."
+    target:
+      title: Ziel
+      locale_specific: Dieses Attribut ist gebietsschemaspezifisch
+      action_if_not_empty:
+        title: Zuweisen
+        add: Zu existierenden Werten hinzufügen
+        set: Vorhandene Werte ersetzen
+      parameters:
+        decimal_separator:
+          title: Dezimaltrennzeichen
+          comma: Komma (,)
+          dot: Punkt (.)
+          arabic_comma: Arabisches Dezimaltrennzeichen (,)
+        date_format: Datumsformat
+        measurement_unit:
+          title: Einheit
+        price_currency:
+          title: Währung
+          placeholder: Währung auswählen
+  form:
+    job_instance:
+      tab:
+        import-structure:
+          title: Struktur importieren
+      edit:
+        title: Überprüfen Sie Ihre Berechtigungen mit Ihrem PIM-Administrator.
+      launch:
+        title: Um zu importieren, überprüfen Sie Ihre Berechtigungen mit Ihrem PIM-Administrator.
+  validation:
+    required: Dieser Wert ist erforderlich.
+    max_length_reached: Dieser Wert ist zu lang. Er sollte {{ limit }} oder weniger Zeichen enthalten.
+    missing_query_params: "Folgende Parameter fehlen in der Abfrage: {{ missing_params }}"
+    source_values_should_be_unique: Einige dieser Quellwerte werden bereits in einem anderen Ersatz verwendet, bitte entfernen Sie sie.
+    columns:
+      at_least_one_required: Ihre Kopfzeile muss mindestens {{ limit }} Spalten enthalten.
+      label:
+        max_length_reached: Die Spaltenbezeichnung ist zu lang. Sie sollte {{ limit }} oder weniger Zeichen enthalten.
+    data_mappings:
+      target_should_unique: Das Ziel "{{ code }}" kann nicht mehrfach ausgewählt werden.
+      sources:
+        should_be_unique: Diese Quelle existiert bereits, bitte geben Sie eine neue ein.
+    channel:
+      should_exist: Der Kanal {{ channel_code }} wurde gelöscht. Bitte wählen Sie einen anderen Kanal.
+    file_key:
+      does_not_exist: Die Datei {{ file_key }} wurde nicht gefunden.
+    uploaded_file:
+      max_size: Die Datei ist zu groß. Die maximale Größe beträgt {{ limit }}{{ suffix }}.
+      not_allowed_mime_type: Es werden nur XLSX-Dateien unterstützt.
+      not_allowed_extension: Es werden nur XLSX-Dateien unterstützt.
