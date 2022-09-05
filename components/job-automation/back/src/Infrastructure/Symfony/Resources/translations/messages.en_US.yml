@@ -1,0 +1,3 @@
+akeneo.job_automation:
+  notification:
+    invalid_job_instance: 'The scheduled job "{{ label }}" is invalid and didnt launch properly due to the following errors: {{ error }}'

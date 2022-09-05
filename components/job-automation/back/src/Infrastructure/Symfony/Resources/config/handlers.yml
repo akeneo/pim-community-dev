@@ -9,3 +9,10 @@ services:
     arguments:
       - '@Akeneo\Platform\JobAutomation\Domain\ClockInterface'
       - '@akeneo.job_automation.query.update_automation_last_execution_date'
+
+  akeneo.job_automation.handler.notify_users_by_pim_notification_invalid_job_instance:
+    class: Akeneo\Platform\JobAutomation\Application\NotifyUsers\NotifyUsersInvalidJobInstanceHandler
+    arguments:
+      - '@akeneo.job_automation.query.find_users_by_id'
+      - '@akeneo.job_automation.query.find_users_by_usergroup_id'
+      - '@Akeneo\Platform\JobAutomation\Infrastructure\Notification\PimNotificationNotifier'

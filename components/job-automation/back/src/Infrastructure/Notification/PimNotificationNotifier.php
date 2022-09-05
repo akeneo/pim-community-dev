@@ -21,14 +21,27 @@ class PimNotificationNotifier implements UserNotifierInterface
         ScheduledJobInstance $jobInstance,
         string $errorMessage,
     ): void {
-        $notification = $this->createNotification();
+        $notification = $this->createNotification($jobInstance, $errorMessage);
         $usernames = array_map(static fn (UserToNotify $user) => $user->getUsername(), $usersToNotify);
 
         $this->pimNotifier->notify($notification, $usernames);
     }
 
-    private function createNotification(): NotificationInterface
+    private function createNotification(ScheduledJobInstance $jobInstance, string $errorMessage): NotificationInterface
     {
-        return new Notification();
+        $notification = new Notification();
+
+        $notification
+            ->setType('error')
+            ->setMessage('akeneo.job_automation.notification.invalid_job_instance')
+            ->setMessageParams([
+                '{{ label }}' => $jobInstance->code,
+                '{{ error }}' => $errorMessage
+            ])
+            ->setRoute(sprintf('pim_importexport_%s_profile_show', $jobInstance->type))
+            ->setRouteParams(['code' => $jobInstance->code])
+            ->setContext(['actionType' => $jobInstance->type]);
+
+        return $notification;
     }
 }
