@@ -39,4 +39,90 @@ final class ProductFileTest extends TestCase
         $this->assertCount(1, $productFileEvents);
         $this->assertInstanceOf(ProductFileAdded::class, $productFileEvents[0]);
     }
+
+    /** @test */
+    public function itAddsRetailerComments(): void
+    {
+        $productFileIdentifier = Identifier::fromString('d06c58da-4cd7-469d-a3fc-37209a05e9e2');
+        $productFile = ProductFile::create(
+            (string) $productFileIdentifier,
+            'supplier-file.xlsx',
+            '2/f/a/4/2fa4afe5465afe5655/supplier-file.xlsx',
+            'jimmy@punchline.com',
+            new Supplier(
+                '44ce8069-8da1-4986-872f-311737f46f02',
+                'jimmy_punchline',
+                'Jimmy Punchline',
+            ),
+        );
+
+        $firstCommentCreatedAt = new \DateTimeImmutable();
+        $productFile->addNewRetailerComment(
+            'Your product file is garbage!',
+            'julia@roberts.com',
+            $firstCommentCreatedAt,
+        );
+        $secondCommentCreatedAt = (new \DateTimeImmutable())
+            ->add(\DateInterval::createFromDateString('+1 second'))
+        ;
+        $productFile->addNewRetailerComment(
+            'I\'m kidding, it\'s awesome!',
+            'julia@roberts.com',
+            $secondCommentCreatedAt,
+        );
+
+        static::assertCount(2, $productFile->newRetailerComments());
+        static::assertSame('Your product file is garbage!', $productFile->newRetailerComments()[0]->content());
+        static::assertSame('julia@roberts.com', $productFile->newRetailerComments()[0]->authorEmail());
+        static::assertSame($firstCommentCreatedAt, $productFile->newRetailerComments()[0]->createdAt());
+        static::assertSame('I\'m kidding, it\'s awesome!', $productFile->newRetailerComments()[1]->content());
+        static::assertSame('julia@roberts.com', $productFile->newRetailerComments()[1]->authorEmail());
+        static::assertSame($secondCommentCreatedAt, $productFile->newRetailerComments()[1]->createdAt());
+    }
+
+    /** @test */
+    public function itAddsSupplierComments(): void
+    {
+        $productFileIdentifier = Identifier::fromString('d06c58da-4cd7-469d-a3fc-37209a05e9e2');
+        $productFile = ProductFile::create(
+            (string) $productFileIdentifier,
+            'supplier-file.xlsx',
+            '2/f/a/4/2fa4afe5465afe5655/supplier-file.xlsx',
+            'jimmy@punchline.com',
+            new Supplier(
+                '44ce8069-8da1-4986-872f-311737f46f02',
+                'jimmy_punchline',
+                'Jimmy Punchline',
+            ),
+        );
+
+        $firstCommentCreatedAt = new \DateTimeImmutable();
+        $productFile->addNewSupplierComment(
+            'Here are the products I\'ve got for you.',
+            'jimmy@punchline.com',
+            $firstCommentCreatedAt,
+        );
+        $secondCommentCreatedAt = (new \DateTimeImmutable())
+            ->add(\DateInterval::createFromDateString('+1 second'))
+        ;
+        $productFile->addNewSupplierComment(
+            'I\'m gonna submit an other product file to you.',
+            'jimmy@punchline.com',
+            $secondCommentCreatedAt,
+        );
+
+        static::assertCount(2, $productFile->newSupplierComments());
+        static::assertSame(
+            'Here are the products I\'ve got for you.',
+            $productFile->newSupplierComments()[0]->content(),
+        );
+        static::assertSame('jimmy@punchline.com', $productFile->newSupplierComments()[0]->authorEmail());
+        static::assertSame($firstCommentCreatedAt, $productFile->newSupplierComments()[0]->createdAt());
+        static::assertSame(
+            'I\'m gonna submit an other product file to you.',
+            $productFile->newSupplierComments()[1]->content(),
+        );
+        static::assertSame('jimmy@punchline.com', $productFile->newSupplierComments()[1]->authorEmail());
+        static::assertSame($secondCommentCreatedAt, $productFile->newSupplierComments()[1]->createdAt());
+    }
 }

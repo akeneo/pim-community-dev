@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Event\ProductFileAdded;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Comment;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Filename;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
@@ -21,6 +22,8 @@ final class ProductFile
     private \DateTimeInterface $uploadedAt;
     private bool $downloaded;
     private array $events = [];
+    private array $newRetailerComments = [];
+    private array $newSupplierComments = [];
 
     private function __construct(
         string $identifier,
@@ -108,5 +111,31 @@ final class ProductFile
         $this->events = [];
 
         return $events;
+    }
+
+    public function addNewRetailerComment(string $content, string $authorEmail, \DateTimeImmutable $createdAt): void
+    {
+        $this->newRetailerComments[] = Comment::create($content, $authorEmail, $createdAt);
+    }
+
+    public function addNewSupplierComment(string $content, string $authorEmail, \DateTimeImmutable $createdAt): void
+    {
+        $this->newSupplierComments[] = Comment::create($content, $authorEmail, $createdAt);
+    }
+
+    /**
+     * @return Comment[]
+     */
+    public function newRetailerComments(): array
+    {
+        return $this->newRetailerComments;
+    }
+
+    /**
+     * @return Comment[]
+     */
+    public function newSupplierComments(): array
+    {
+        return $this->newSupplierComments;
     }
 }
