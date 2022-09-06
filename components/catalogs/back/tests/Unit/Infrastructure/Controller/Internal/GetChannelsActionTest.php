@@ -8,7 +8,6 @@ use Akeneo\Catalogs\Application\Persistence\GetChannelsByCodeQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\GetChannelsQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Controller\Internal\GetChannelsAction;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -21,6 +20,7 @@ class GetChannelsActionTest extends TestCase
 {
     private ?GetChannelsAction $getChannelsAction;
     private ?GetChannelsQueryInterface $getChannelsQuery;
+    private ?GetChannelsByCodeQueryInterface $getChannelsByCodeQuery;
 
     protected function setUp(): void
     {
