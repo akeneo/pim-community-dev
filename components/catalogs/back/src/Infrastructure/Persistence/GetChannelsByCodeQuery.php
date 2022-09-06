@@ -4,28 +4,30 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Persistence;
 
-use Akeneo\Catalogs\Application\Persistence\GetChannelsQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\GetChannelsByCodeQueryInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
 
 /**
+ * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GetChannelsQuery implements GetChannelsQueryInterface
+final class GetChannelsByCodeQuery implements GetChannelsByCodeQueryInterface
 {
-    public function __construct(private ChannelRepositoryInterface $channelRepository)
-    {
+    public function __construct(
+        private ChannelRepositoryInterface $channelRepository,
+    ) {
     }
 
     /**
      * @inheritDoc
      */
-    public function execute(int $page = 1, int $limit = 20): array
+    public function execute(array $codes, int $page = 1, int $limit = 20): array
     {
         /** @var array<ChannelInterface> $channels */
         $channels = $this->channelRepository->findBy(
-            [],
+            ['code' => $codes],
             [],
             $limit,
             ($page - 1) * $limit
