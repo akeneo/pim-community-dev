@@ -104,6 +104,10 @@ services:
         arguments:
             - '@pim_catalog.repository.channel'
 
+    Akeneo\Catalogs\Infrastructure\Persistence\GetChannelsByCodeQuery:
+        arguments:
+            - '@pim_catalog.repository.channel'
+
     Akeneo\Catalogs\Infrastructure\Persistence\GetLocalesQuery:
         arguments:
             - '@pim_catalog.repository.locale'

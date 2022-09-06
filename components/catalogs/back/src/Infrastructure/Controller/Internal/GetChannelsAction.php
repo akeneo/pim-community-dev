@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Controller\Internal;
 
+use Akeneo\Catalogs\Application\Persistence\GetChannelsByCodeQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\GetChannelsQueryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -17,8 +18,10 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  */
 class GetChannelsAction
 {
-    public function __construct(private GetChannelsQueryInterface $getChannelsQuery)
-    {
+    public function __construct(
+        private GetChannelsQueryInterface $getChannelsQuery,
+        private GetChannelsByCodeQueryInterface $getChannelsByCodeQuery,
+    ) {
     }
 
     public function __invoke(Request $request): Response
@@ -29,16 +32,27 @@ class GetChannelsAction
 
         $page = (int) $request->query->get('page', 1);
         $limit = (int) $request->query->get('limit', 20);
-        $concatCodes = $request->query->get('codes', '');
-        if (!\is_string($concatCodes)) {
-            throw new BadRequestHttpException('Codes must be a string concatenated with comma.');
+        $concatCodes = $request->query->get('codes', null);
+        if (null !== $concatCodes && !\is_string($concatCodes)) {
+            throw new BadRequestHttpException('Codes must be a string concatenated with comma or null.');
         }
         if ($page < 1 || $limit < 1) {
             throw new BadRequestHttpException('Page and limit must be positive.');
         }
-        $codes = \strlen($concatCodes) !== 0 ? \explode(',', $concatCodes) : [];
-        $channels = $this->getChannelsQuery->execute($codes, $page, $limit);
+
+        $channels = $this->getChannels($concatCodes, $page, $limit);
 
         return new JsonResponse($channels);
+    }
+
+    private function getChannels(?string $concatCodes, int $page, int $limit): array
+    {
+        if (null === $concatCodes) {
+            return $this->getChannelsQuery->execute($page, $limit);
+        }
+
+        $codes = \strlen($concatCodes) !== 0 ? \explode(',', $concatCodes) : [];
+
+        return $this->getChannelsByCodeQuery->execute($codes, $page, $limit);
     }
 }
