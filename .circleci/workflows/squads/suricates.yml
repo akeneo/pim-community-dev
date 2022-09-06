@@ -66,3 +66,14 @@ workflows:
             - test_front_supplier_portal
             - test_back_supplier_portal
             - test_database
+
+  suricates-docs:
+      when:
+          not:
+              equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+      jobs:
+          - pull_request_success:
+              filters:
+                  branches:
+                      only:
+                          - /doc-SP.*/
