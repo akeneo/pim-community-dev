@@ -30,6 +30,7 @@ $rules = [
 
             // External dependencies coupling
             'Ramsey\Uuid\Uuid',
+            'Webmozart\Assert\Assert',
         ],
     )->in('Akeneo\SupplierPortal\Retailer\Domain'),
 
@@ -92,6 +93,7 @@ $rules = [
             'Box\Spout\Writer\Common\Creator\WriterFactory',
             'Box\Spout\Writer\Exception\WriterNotOpenedException',
             'Doctrine\DBAL\Connection',
+            'Doctrine\DBAL\Types\Types',
             'League\Flysystem',
             'Psr\Log\LoggerInterface',
             'Symfony',
