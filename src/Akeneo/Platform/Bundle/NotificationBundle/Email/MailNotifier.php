@@ -23,34 +23,24 @@ class MailNotifier implements MailNotifierInterface
     ) {
     }
 
-    /**
-     * { @inheritDoc }
-     */
-    public function notify(array $users, $subject, $txtBody, $htmlBody = null, array $options = []): void
-    {
-        foreach ($users as $user) {
-            $this->send($user->getEmail(), $subject, $txtBody, $htmlBody);
-        }
-    }
-
-    public function notifyByEmail(
-        string $recipient,
+    public function notify(
+        array $recipients,
         string $subject,
         string $txtBody,
         $htmlBody = null,
         array $options = []
     ): void {
-        $this->send($recipient, $subject, $txtBody, $htmlBody);
+        $this->send($recipients, $subject, $txtBody, $htmlBody);
     }
 
-    private function send($recipient, $subject, $txtBody, $htmlBody): void
+    private function send($recipients, $subject, $txtBody, $htmlBody): void
     {
         /** @var Swift_Mime_SimpleMessage $message */
         $message = $this->mailer->createMessage();
         $sender = (string)SenderAddress::fromMailerUrl($this->mailerUrl);
         $message->setSubject($subject)
             ->setFrom($sender)
-            ->setTo($recipient)
+            ->setBcc($recipients)
             ->setCharset('UTF-8')
             ->setContentType('text/html')
             ->setBody($txtBody, 'text/plain')
@@ -63,7 +53,7 @@ class MailNotifier implements MailNotifierInterface
                 sprintf('Mail error from %s', $sender),
                 [
                     'Subject' => $message->getSubject(),
-                    'Recipients' => $message->getTo(),
+                    'Recipients' => $message->getBcc(),
                 ]
             );
         } else {
@@ -71,7 +61,7 @@ class MailNotifier implements MailNotifierInterface
                 sprintf('Mail sent from %s', $sender),
                 [
                     'Subject' => $message->getSubject(),
-                    'Recipients' => $message->getTo(),
+                    'Recipients' => $message->getBcc(),
                 ]
             );
         }
