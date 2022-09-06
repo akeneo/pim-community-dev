@@ -36,11 +36,7 @@ test('it sets a product value filter on the channel', async () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <ReactQueryWrapper>
-                <FilterChannel
-                    productValueFilters={productValueFilters}
-                    onChange={onChange}
-                    isInvalid={false}
-                />
+                <FilterChannel productValueFilters={productValueFilters} onChange={onChange} isInvalid={false} />
             </ReactQueryWrapper>
         </ThemeProvider>
     );
@@ -65,11 +61,7 @@ test('it adds a product value filter on the channel', async () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <ReactQueryWrapper>
-                <FilterChannel
-                    productValueFilters={productValueFilters}
-                    onChange={onChange}
-                    isInvalid={false}
-                />
+                <FilterChannel productValueFilters={productValueFilters} onChange={onChange} isInvalid={false} />
             </ReactQueryWrapper>
         </ThemeProvider>
     );
@@ -99,11 +91,7 @@ test('it removes a product value filter on the channel', async () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <ReactQueryWrapper>
-                <FilterChannel
-                    productValueFilters={productValueFilters}
-                    onChange={onChange}
-                    isInvalid={false}
-                />
+                <FilterChannel productValueFilters={productValueFilters} onChange={onChange} isInvalid={false} />
             </ReactQueryWrapper>
         </ThemeProvider>
     );
