@@ -228,6 +228,9 @@ jobs:
         steps:
             -   attach_workspace:
                     at: ~/
+            -   add_ssh_keys:
+                    fingerprints:
+                        - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
             -   run:
                     name: Create missing directories
                     command: mkdir -p ~/.composer
