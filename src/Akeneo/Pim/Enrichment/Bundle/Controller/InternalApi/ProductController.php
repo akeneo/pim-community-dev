@@ -15,6 +15,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ConvertToSimpleProduct;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -236,9 +237,9 @@ class ProductController
 
         try {
             $userId = $this->userContext->getUser()?->getId();
-            $command = UpsertProductCommand::createFromCollection(
+            $command = UpsertProductCommand::createWithIdentifier(
                 $userId,
-                $productIdentifier,
+                ProductIdentifier::fromIdentifier($productIdentifier),
                 [new ConvertToSimpleProduct()]
             );
             $this->commandMessageBus->dispatch($command);

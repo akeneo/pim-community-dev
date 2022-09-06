@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuidsQuery;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Product\Domain\PQB\ProductUuidCursor;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Pim\Enrichment\Product\Integration\EnrichmentProductTestCase;
@@ -40,10 +41,10 @@ final class GetProductUuidsHandlerIntegration extends EnrichmentProductTestCase
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
 
         $this->commandMessageBus->dispatch(
-            UpsertProductCommand::createFromCollection($this->getUserId('admin'), 'test1', [])
+            UpsertProductCommand::createWithIdentifier($this->getUserId('admin'), ProductIdentifier::fromIdentifier('test1'), [])
         );
         $this->commandMessageBus->dispatch(
-            UpsertProductCommand::createFromCollection($this->getUserId('admin'), 'test2', [
+            UpsertProductCommand::createWithIdentifier($this->getUserId('admin'), ProductIdentifier::fromIdentifier('test2'), [
                 new SetTextValue('a_text', null, null, 'foo')
             ])
         );
@@ -94,10 +95,10 @@ final class GetProductUuidsHandlerIntegration extends EnrichmentProductTestCase
     /** @test */
     public function it_returns_a_results_with_search_after(): void
     {
-        $this->commandMessageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('admin'), 'test3', []));
-        $this->commandMessageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('admin'), 'test4', []));
-        $this->commandMessageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('admin'), 'test5', []));
-        $this->commandMessageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('admin'), 'test6', []));
+        $this->commandMessageBus->dispatch(UpsertProductCommand::createWithIdentifier($this->getUserId('admin'), ProductIdentifier::fromIdentifier('test3'), []));
+        $this->commandMessageBus->dispatch(UpsertProductCommand::createWithIdentifier($this->getUserId('admin'), ProductIdentifier::fromIdentifier('test4'), []));
+        $this->commandMessageBus->dispatch(UpsertProductCommand::createWithIdentifier($this->getUserId('admin'), ProductIdentifier::fromIdentifier('test5'), []));
+        $this->commandMessageBus->dispatch(UpsertProductCommand::createWithIdentifier($this->getUserId('admin'), ProductIdentifier::fromIdentifier('test6'), []));
         $this->refreshIndex();
 
         $dateInThePast = (new \DateTime('now'))->modify("- 30 minutes")->format('Y-m-d H:i:s');
