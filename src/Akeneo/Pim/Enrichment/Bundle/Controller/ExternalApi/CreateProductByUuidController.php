@@ -198,7 +198,7 @@ class CreateProductByUuidController
      * But the standard format expects associations like:
      * {
      *     "XSELL": {
-     *         "products_uuid": ["525365d0-8462-43e3-92dd-b02db13ba468", "2f68b3ff-6862-43c5-b4a8-78d0ed90cb75"],
+     *         "product_uuids": ["525365d0-8462-43e3-92dd-b02db13ba468", "2f68b3ff-6862-43c5-b4a8-78d0ed90cb75"],
      *     }
      * }
      *

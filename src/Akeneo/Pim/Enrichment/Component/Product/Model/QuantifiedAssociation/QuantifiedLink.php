@@ -35,8 +35,8 @@ class QuantifiedLink
 
     public static function fromUuid(string $uuid, int $quantity)
     {
-        Assert::true(
-            Uuid::isValid($uuid),
+        Assert::uuid(
+            $uuid,
             sprintf('The associated product "%s" is not a valid uuid', $uuid)
         );
 
