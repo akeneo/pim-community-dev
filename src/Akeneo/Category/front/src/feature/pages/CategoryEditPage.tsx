@@ -69,12 +69,13 @@ const CategoryEditPage: FC = () => {
 
   const {
     category,
-    categoryLoadingStatus,
-    formData,
+    categoryFetchingStatus,
+    applyPermissionsOnChildren,
     onChangeCategoryLabel,
     onChangePermissions,
+    onChangeAttribute,
     onChangeApplyPermissionsOnChildren,
-    thereAreUnsavedChanges,
+    isModified: thereAreUnsavedChanges,
     saveCategory,
     historyVersion,
   } = useEditCategoryForm(parseInt(categoryId));
@@ -97,10 +98,13 @@ const CategoryEditPage: FC = () => {
     closeDeleteCategoryModal();
   };
 
-  const onBuildHistoryView = useCallback(async (view: View) => {
-    view.setData({categoryId});
-    return view;
-  }, [categoryId])
+  const onBuildHistoryView = useCallback(
+    async (view: View) => {
+      view.setData({categoryId});
+      return view;
+    },
+    [categoryId]
+  );
 
   useEffect(() => {
     if (!category) {
@@ -111,9 +115,18 @@ const CategoryEditPage: FC = () => {
     }
 
     const catalogLocale = userContext.get('catalogLocale');
-    const rootCategory = category.root ? category.root : category;
+    // TODO: https://akeneo.atlassian.net/browse/GRF-237
+    // const rootCategory = category.root ? category.root : category;
+    const rootCategory: Category = {
+      id: 1,
+      code: 'master',
+      labels: {
+        en_US: 'Master catalog',
+      },
+      root: null,
+    };
 
-    setCategoryLabel(getLabel(category.labels, catalogLocale, category.code));
+    setCategoryLabel(getLabel(category.properties.labels, catalogLocale, category.properties.code));
     setTreeLabel(getLabel(rootCategory.labels, catalogLocale, rootCategory.code));
     setTree(rootCategory);
     sessionStorage.setItem(
@@ -122,7 +135,7 @@ const CategoryEditPage: FC = () => {
     );
   }, [category, userContext]);
 
-  if (categoryLoadingStatus === 'error') {
+  if (categoryFetchingStatus === 'error') {
     return (
       <FullScreenError
         title={translate('error.exception', {status_code: '404'})}
@@ -134,7 +147,7 @@ const CategoryEditPage: FC = () => {
 
   return (
     <>
-      <PageHeader showPlaceholder={categoryLoadingStatus === 'idle' || categoryLoadingStatus === 'fetching'}>
+      <PageHeader showPlaceholder={categoryFetchingStatus === 'idle' || categoryFetchingStatus === 'fetching'}>
         <PageHeader.Breadcrumb>
           <Breadcrumb>
             <Breadcrumb.Step onClick={followSettingsIndex}>{translate('pim_menu.tab.settings')}</Breadcrumb.Step>
@@ -176,10 +189,13 @@ const CategoryEditPage: FC = () => {
                       onClick={() => {
                         countProductsBeforeDeleteCategory((nbProducts: number) => {
                           const identifier = parseInt(categoryId);
-                          if (category && isCategoryDeletionPossible(category.labels[uiLocale], nbProducts)) {
+                          if (
+                            category &&
+                            isCategoryDeletionPossible(category.properties.labels[uiLocale], nbProducts)
+                          ) {
                             setCategoryToDelete({
                               identifier,
-                              label: category.labels[uiLocale],
+                              label: category.properties.labels[uiLocale],
                               onDelete: followCategoryTree,
                             });
                             openDeleteCategoryModal();
@@ -223,8 +239,8 @@ const CategoryEditPage: FC = () => {
           >
             {translate('Attributes')}
           </TabBar.Tab>
-          {formData &&
-            formData.permissions &&
+          {category &&
+            category.permissions &&
             permissionsAreEnabled &&
             isGranted('pimee_enrich_category_edit_permissions') && (
               <TabBar.Tab
@@ -251,9 +267,11 @@ const CategoryEditPage: FC = () => {
         </TabBar>
 
         {isCurrent(propertyTabName) && category && (
-          <EditPropertiesForm category={category} formData={formData} onChangeLabel={onChangeCategoryLabel} />
+          <EditPropertiesForm category={category} onChangeLabel={onChangeCategoryLabel} />
         )}
-        {isCurrent(attributeTabName) && <EditAttributesForm />}
+        {isCurrent(attributeTabName) && category && (
+          <EditAttributesForm attributes={category.attributes} onAttributeValueChange={onChangeAttribute} />
+        )}
         {isCurrent(historyTabName) && (
           <HistoryPimView
             viewName="pim-category-edit-form-history"
@@ -261,9 +279,10 @@ const CategoryEditPage: FC = () => {
             version={historyVersion}
           />
         )}
-        {isCurrent(permissionTabName) && permissionsAreEnabled && (
+        {isCurrent(permissionTabName) && category && permissionsAreEnabled && (
           <EditPermissionsForm
-            formData={formData}
+            category={category}
+            applyPermissionsOnChildren={applyPermissionsOnChildren}
             onChangePermissions={onChangePermissions}
             onChangeApplyPermissionsOnChildren={onChangeApplyPermissionsOnChildren}
           />
