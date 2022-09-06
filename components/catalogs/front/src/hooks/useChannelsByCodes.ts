@@ -14,7 +14,7 @@ export const useChannelsByCodes = (codes: string[] | undefined): Result => {
         if (undefined === codes || codes.length === 0) {
             return [];
         }
-        const _codes = codes?.join(',');
+        const _codes = codes.join(',');
 
         const response = await fetch(`/rest/catalogs/channels?codes=${_codes}`, {
             headers: {
