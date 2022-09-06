@@ -4,23 +4,21 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Application\Applier;
 
-use Akeneo\Category\Api\Command\UserIntents\SetTextArea;
+use Akeneo\Category\Api\Command\UserIntents\SetImage;
+use Akeneo\Category\Api\Command\UserIntents\SetText;
 use Akeneo\Category\Api\Command\UserIntents\UserIntent;
 use Akeneo\Category\Domain\Model\Category;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
 
 /**
- * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SetTextAreaApplier implements UserIntentApplier
+class SetImageApplier implements UserIntentApplier
 {
-    /**
-     * @param SetTextArea $userIntent
-     */
     public function apply(UserIntent $userIntent, Category $category): void
     {
-        if (!$userIntent instanceof SetTextArea) {
+        if (!$userIntent instanceof SetText) {
             throw new \InvalidArgumentException('Unexpected class');
         }
 
@@ -37,6 +35,6 @@ class SetTextAreaApplier implements UserIntentApplier
 
     public function getSupportedUserIntents(): array
     {
-        return [SetTextArea::class];
+        return [SetImage::class];
     }
 }

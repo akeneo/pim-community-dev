@@ -24,15 +24,15 @@ class SetRichTextApplier implements UserIntentApplier
             throw new \InvalidArgumentException('Unexpected class');
         }
 
-        $valueCollection = $category->getAttributes() ?? ValueCollection::fromArray([]);
-        $valueCollection->setValue(
+        $attributes = $category->getAttributes() ?? ValueCollection::fromArray([]);
+        $attributes->setValue(
             $userIntent->attributeUuid(),
             $userIntent->attributeCode(),
             $userIntent->localeCode(),
             $userIntent->value(),
         );
 
-        $category->setAttributes($valueCollection);
+        $category->setAttributes($attributes);
     }
 
     /**
