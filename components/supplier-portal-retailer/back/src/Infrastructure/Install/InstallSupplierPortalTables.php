@@ -25,6 +25,11 @@ final class InstallSupplierPortalTables implements EventSubscriberInterface
         $this->addSupplierContributorTable();
         $this->addContributorAccountTable();
         $this->addProductFileTable();
+        $this->addProductFileRetailerCommentsTable();
+        $this->addProductFileSupplierCommentsTable();
+        $this->addProductFileCommentsReadByRetailerTable();
+        $this->addProductFileCommentsReadBySupplierTable();
+        $this->addProductFileImportedByJobExecutionTable();
     }
 
     private function addSupplierTable(): void
@@ -100,6 +105,105 @@ final class InstallSupplierPortalTables implements EventSubscriberInterface
                 REFERENCES `akeneo_supplier_portal_supplier` (identifier)
                 ON DELETE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+        SQL;
+
+        $this->connection->executeStatement($sql);
+    }
+
+    private function addProductFileRetailerCommentsTable(): void
+    {
+        $sql = <<<SQL
+            CREATE TABLE IF NOT EXISTS `akeneo_supplier_portal_product_file_retailer_comments` (
+                `id` bigint UNSIGNED AUTO_INCREMENT NOT NULL,
+                `author_email` varchar(255) NOT NULL,
+                `product_file_identifier` char(36) NOT NULL,
+                `content` varchar(255) NOT NULL,
+                `created_at` datetime NOT NULL,
+                PRIMARY KEY (`id`),
+                CONSTRAINT `product_file_retailer_comments_product_file_identifier_fk`
+                    FOREIGN KEY (`product_file_identifier`)
+                    REFERENCES `akeneo_supplier_portal_supplier_product_file` (identifier)
+                    ON DELETE CASCADE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+        SQL;
+
+        $this->connection->executeStatement($sql);
+    }
+
+    private function addProductFileSupplierCommentsTable(): void
+    {
+        $sql = <<<SQL
+            CREATE TABLE IF NOT EXISTS `akeneo_supplier_portal_product_file_supplier_comments` (
+                `id` bigint UNSIGNED AUTO_INCREMENT NOT NULL,
+                `author_email` varchar(255) NOT NULL,
+                `product_file_identifier` char(36) NOT NULL,
+                `content` varchar(255) NOT NULL,
+                `created_at` datetime NOT NULL,
+                PRIMARY KEY (`id`),
+                CONSTRAINT `product_file_supplier_comments_product_file_identifier_fk`
+                    FOREIGN KEY (`product_file_identifier`)
+                    REFERENCES `akeneo_supplier_portal_supplier_product_file` (identifier)
+                    ON DELETE CASCADE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+        SQL;
+
+        $this->connection->executeStatement($sql);
+    }
+
+    private function addProductFileCommentsReadByRetailerTable(): void
+    {
+        $sql = <<<SQL
+            CREATE TABLE IF NOT EXISTS `akeneo_supplier_portal_product_file_comments_read_by_retailer` (
+                `id` bigint UNSIGNED AUTO_INCREMENT NOT NULL,
+                `product_file_identifier` char(36) NOT NULL,
+                `last_read_at` datetime NOT NULL,
+                PRIMARY KEY (`id`),
+                CONSTRAINT `UC_comments_read_by_retailer_product_file_identifier` UNIQUE (`product_file_identifier`),
+                CONSTRAINT `comments_read_by_retailer_product_file_identifier_fk`
+                    FOREIGN KEY (`product_file_identifier`)
+                    REFERENCES `akeneo_supplier_portal_supplier_product_file` (identifier)
+                    ON DELETE CASCADE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+        SQL;
+
+        $this->connection->executeStatement($sql);
+    }
+
+    private function addProductFileCommentsReadBySupplierTable(): void
+    {
+        $sql = <<<SQL
+            CREATE TABLE IF NOT EXISTS `akeneo_supplier_portal_product_file_comments_read_by_supplier` (
+                `id` bigint UNSIGNED AUTO_INCREMENT NOT NULL,
+                `product_file_identifier` char(36) NOT NULL,
+                `last_read_at` datetime NOT NULL,
+                PRIMARY KEY (`id`),
+                CONSTRAINT `UC_comments_read_by_supplier_product_file_identifier` UNIQUE (`product_file_identifier`),
+                CONSTRAINT `comments_read_by_supplier_product_file_identifier_fk`
+                    FOREIGN KEY (`product_file_identifier`)
+                    REFERENCES `akeneo_supplier_portal_supplier_product_file` (identifier)
+                    ON DELETE CASCADE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+        SQL;
+
+        $this->connection->executeStatement($sql);
+    }
+
+    private function addProductFileImportedByJobExecutionTable(): void
+    {
+        $sql = <<<SQL
+            CREATE TABLE IF NOT EXISTS `akeneo_supplier_portal_product_file_imported_by_job_execution` (
+                `id` bigint UNSIGNED AUTO_INCREMENT NOT NULL,
+                `product_file_identifier` char(36) NOT NULL,
+                `job_execution_id` int NOT NULL,
+                `job_execution_result` varchar(100) NULL,
+                `finished_at` datetime NOT NULL,
+                PRIMARY KEY (`id`),
+                CONSTRAINT `UC_product_file_imported_by_job_execution_job_execution_id` UNIQUE (`job_execution_id`),
+                CONSTRAINT `file_imported_by_job_execution_product_file_identifier_fk`
+                    FOREIGN KEY (`product_file_identifier`)
+                    REFERENCES `akeneo_supplier_portal_supplier_product_file` (identifier)
+                    ON DELETE CASCADE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
         SQL;
 
         $this->connection->executeStatement($sql);

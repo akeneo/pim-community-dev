@@ -43,6 +43,11 @@ akeneo_rule_engine_rule_definition_translation | BASE TABLE
 akeneo_rule_engine_rule_relation | BASE TABLE
 akeneo_structure_version_last_update | BASE TABLE
 akeneo_supplier_portal_contributor_account | BASE TABLE
+akeneo_supplier_portal_product_file_comments_read_by_retailer | BASE TABLE
+akeneo_supplier_portal_product_file_comments_read_by_supplier | BASE TABLE
+akeneo_supplier_portal_product_file_imported_by_job_execution | BASE TABLE
+akeneo_supplier_portal_product_file_retailer_comments | BASE TABLE
+akeneo_supplier_portal_product_file_supplier_comments | BASE TABLE
 akeneo_supplier_portal_supplier | BASE TABLE
 akeneo_supplier_portal_supplier_contributor | BASE TABLE
 akeneo_supplier_portal_supplier_product_file | BASE TABLE
@@ -416,6 +421,27 @@ akeneo_supplier_portal_contributor_account | access_token | YES | varchar(255) |
 akeneo_supplier_portal_contributor_account | access_token_created_at | YES | datetime |
 akeneo_supplier_portal_contributor_account | created_at | NO | datetime |
 akeneo_supplier_portal_contributor_account | last_logged_at | YES | datetime |
+akeneo_supplier_portal_product_file_comments_read_by_retailer | id | NO | bigint unsigned | PRI
+akeneo_supplier_portal_product_file_comments_read_by_retailer | product_file_identifier | NO | char(36) | UNI
+akeneo_supplier_portal_product_file_comments_read_by_retailer | last_read_at | NO | datetime |
+akeneo_supplier_portal_product_file_comments_read_by_supplier | id | NO | bigint unsigned | PRI
+akeneo_supplier_portal_product_file_comments_read_by_supplier | product_file_identifier | NO | char(36) | UNI
+akeneo_supplier_portal_product_file_comments_read_by_supplier | last_read_at | NO | datetime |
+akeneo_supplier_portal_product_file_imported_by_job_execution | id | NO | bigint unsigned | PRI
+akeneo_supplier_portal_product_file_imported_by_job_execution | product_file_identifier | NO | char(36) | MUL
+akeneo_supplier_portal_product_file_imported_by_job_execution | job_execution_id | NO | int | UNI
+akeneo_supplier_portal_product_file_imported_by_job_execution | job_execution_result | YES | varchar(100) |
+akeneo_supplier_portal_product_file_imported_by_job_execution | finished_at | NO | datetime |
+akeneo_supplier_portal_product_file_retailer_comments | id | NO | bigint unsigned | PRI
+akeneo_supplier_portal_product_file_retailer_comments | author_email | NO | varchar(255) |
+akeneo_supplier_portal_product_file_retailer_comments | product_file_identifier | NO | char(36) | MUL
+akeneo_supplier_portal_product_file_retailer_comments | content | NO | varchar(255) |
+akeneo_supplier_portal_product_file_retailer_comments | created_at | NO | datetime |
+akeneo_supplier_portal_product_file_supplier_comments | id | NO | bigint unsigned | PRI
+akeneo_supplier_portal_product_file_supplier_comments | author_email | NO | varchar(255) |
+akeneo_supplier_portal_product_file_supplier_comments | product_file_identifier | NO | char(36) | MUL
+akeneo_supplier_portal_product_file_supplier_comments | content | NO | varchar(255) |
+akeneo_supplier_portal_product_file_supplier_comments | created_at | NO | datetime |
 akeneo_supplier_portal_supplier | identifier | NO | char(36) | PRI
 akeneo_supplier_portal_supplier | code | NO | varchar(200) | UNI
 akeneo_supplier_portal_supplier | label | NO | varchar(200) |
@@ -1063,6 +1089,17 @@ INDEX | akeneo_rule_engine_rule_relation | resource_name_resource_id_idx | resou
 INDEX | akeneo_structure_version_last_update | PRIMARY | resource_name
 INDEX | akeneo_supplier_portal_contributor_account | PRIMARY | id
 INDEX | akeneo_supplier_portal_contributor_account | UC_contributor_account_email | email
+INDEX | akeneo_supplier_portal_product_file_comments_read_by_retailer | PRIMARY | id
+INDEX | akeneo_supplier_portal_product_file_comments_read_by_retailer | UC_comments_read_by_retailer_product_file_identifier | product_file_identifier
+INDEX | akeneo_supplier_portal_product_file_comments_read_by_supplier | PRIMARY | id
+INDEX | akeneo_supplier_portal_product_file_comments_read_by_supplier | UC_comments_read_by_supplier_product_file_identifier | product_file_identifier
+INDEX | akeneo_supplier_portal_product_file_imported_by_job_execution | file_imported_by_job_execution_product_file_identifier_fk | product_file_identifier
+INDEX | akeneo_supplier_portal_product_file_imported_by_job_execution | PRIMARY | id
+INDEX | akeneo_supplier_portal_product_file_imported_by_job_execution | UC_product_file_imported_by_job_execution_job_execution_id | job_execution_id
+INDEX | akeneo_supplier_portal_product_file_retailer_comments | PRIMARY | id
+INDEX | akeneo_supplier_portal_product_file_retailer_comments | product_file_retailer_comments_product_file_identifier_fk | product_file_identifier
+INDEX | akeneo_supplier_portal_product_file_supplier_comments | PRIMARY | id
+INDEX | akeneo_supplier_portal_product_file_supplier_comments | product_file_supplier_comments_product_file_identifier_fk | product_file_identifier
 INDEX | akeneo_supplier_portal_supplier | PRIMARY | identifier
 INDEX | akeneo_supplier_portal_supplier | UC_supplier_code | code
 INDEX | akeneo_supplier_portal_supplier_contributor | PRIMARY | id
@@ -1442,6 +1479,11 @@ FOREIGN CONSTRAINT | permissions_reference_entity_identifier_foreign_key | akene
 FOREIGN CONSTRAINT | user_group_foreign_key | akeneo_reference_entity_reference_entity_permissions.user_group_identifier | oro_access_group.id
 FOREIGN CONSTRAINT | FK_C0477CAA7E366551 | akeneo_rule_engine_rule_definition_translation.foreign_key | akeneo_rule_engine_rule_definition.id
 FOREIGN CONSTRAINT | FK_F7D0C461744E0351 | akeneo_rule_engine_rule_relation.rule_id | akeneo_rule_engine_rule_definition.id
+FOREIGN CONSTRAINT | comments_read_by_retailer_product_file_identifier_fk | akeneo_supplier_portal_product_file_comments_read_by_retailer.product_file_identifier | akeneo_supplier_portal_supplier_product_file.identifier
+FOREIGN CONSTRAINT | comments_read_by_supplier_product_file_identifier_fk | akeneo_supplier_portal_product_file_comments_read_by_supplier.product_file_identifier | akeneo_supplier_portal_supplier_product_file.identifier
+FOREIGN CONSTRAINT | file_imported_by_job_execution_product_file_identifier_fk | akeneo_supplier_portal_product_file_imported_by_job_execution.product_file_identifier | akeneo_supplier_portal_supplier_product_file.identifier
+FOREIGN CONSTRAINT | product_file_retailer_comments_product_file_identifier_fk | akeneo_supplier_portal_product_file_retailer_comments.product_file_identifier | akeneo_supplier_portal_supplier_product_file.identifier
+FOREIGN CONSTRAINT | product_file_supplier_comments_product_file_identifier_fk | akeneo_supplier_portal_product_file_supplier_comments.product_file_identifier | akeneo_supplier_portal_supplier_product_file.identifier
 FOREIGN CONSTRAINT | supplier_identifier_foreign_key | akeneo_supplier_portal_supplier_contributor.supplier_identifier | akeneo_supplier_portal_supplier.identifier
 FOREIGN CONSTRAINT | uploaded_by_supplier_foreign_key | akeneo_supplier_portal_supplier_product_file.uploaded_by_supplier | akeneo_supplier_portal_supplier.identifier
 FOREIGN CONSTRAINT | FK_DAF6DF5524DB0683 | oro_config_value.config_id | oro_config.id
@@ -1615,6 +1657,9 @@ UNIQUE CONSTRAINT | attribute_reference_entity_order_index | akeneo_reference_en
 UNIQUE CONSTRAINT | akeneoreference_entity_identifier_record_ux | akeneo_reference_entity_record | code, reference_entity_identifier
 UNIQUE CONSTRAINT | locale_foreign_key_idx | akeneo_rule_engine_rule_definition_translation | foreign_key, locale
 UNIQUE CONSTRAINT | UC_contributor_account_email | akeneo_supplier_portal_contributor_account | email
+UNIQUE CONSTRAINT | UC_comments_read_by_retailer_product_file_identifier | akeneo_supplier_portal_product_file_comments_read_by_retailer | product_file_identifier
+UNIQUE CONSTRAINT | UC_comments_read_by_supplier_product_file_identifier | akeneo_supplier_portal_product_file_comments_read_by_supplier | product_file_identifier
+UNIQUE CONSTRAINT | UC_product_file_imported_by_job_execution_job_execution_id | akeneo_supplier_portal_product_file_imported_by_job_execution | job_execution_id
 UNIQUE CONSTRAINT | UC_supplier_code | akeneo_supplier_portal_supplier | code
 UNIQUE CONSTRAINT | UC_supplier_contributor_email | akeneo_supplier_portal_supplier_contributor | email
 UNIQUE CONSTRAINT | UNIQ_FEF9EDB75E237E06 | oro_access_group | name
