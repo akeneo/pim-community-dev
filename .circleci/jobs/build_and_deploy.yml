@@ -269,6 +269,7 @@ jobs:
             -   run:
                     name: Install back dependencies
                     command: |
+                        ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
                         export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                         make vendor
             -   persist_to_workspace:
