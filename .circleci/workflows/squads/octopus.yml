@@ -173,6 +173,10 @@ workflows:
                   name: ee_install_back_dependencies
                   requires:
                       - ee_checkout
+            - install_ee_front_dependencies:
+                  name: ee_install_front_dependencies
+                  requires:
+                      - ee_checkout
             - ee_test_back_catalogs:
                   name: ee_test_back
                   notify: false
