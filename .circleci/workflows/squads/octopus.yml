@@ -167,6 +167,7 @@ workflows:
             -   build_dev:
                     name: ee_build
                     is_ee_built: true
+                    path_to_front_packages: vendor/akeneo/pim-community-dev/front-packages
                     requires:
                         - ee_checkout
             -   install_ee_back_dependencies:
