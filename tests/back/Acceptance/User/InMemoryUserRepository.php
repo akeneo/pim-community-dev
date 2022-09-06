@@ -19,8 +19,8 @@ use Ramsey\Uuid\Uuid;
  */
 class InMemoryUserRepository implements IdentifiableObjectRepositoryInterface, SaverInterface, UserRepositoryInterface
 {
-    /** @var UserInterface[] */
-    private $users;
+    /** @var ArrayCollection<UserInterface> */
+    private ArrayCollection $users;
 
     public function __construct()
     {
@@ -36,7 +36,7 @@ class InMemoryUserRepository implements IdentifiableObjectRepositoryInterface, S
             $user->setId(Uuid::uuid4()->toString());
         }
 
-        $this->users->set($user->getUsername(), $user);
+        $this->users->set($user->getUserIdentifier(), $user);
     }
 
     /**
@@ -80,7 +80,7 @@ class InMemoryUserRepository implements IdentifiableObjectRepositoryInterface, S
      */
     public function findAll()
     {
-        throw new NotImplementedException(__METHOD__);
+        return $this->users->toArray();
     }
 
     /**
@@ -111,13 +111,18 @@ class InMemoryUserRepository implements IdentifiableObjectRepositoryInterface, S
      */
     public function findOneBy(array $criteria)
     {
-        $username = $criteria['username'] ?? null;
-        if (null === $username || count($criteria) > 1) {
-            throw new \InvalidArgumentException('This method only supports finding by "username"');
+        if (\count($criteria) > 1) {
+            throw new \InvalidArgumentException('This method does not support multiple criteria');
         }
 
+        $function = match (key($criteria)) {
+            'id' => fn (UserInterface $user): bool => $user->getId() === current($criteria),
+            'username' => fn (UserInterface $user): bool => $user->getUserIdentifier() === current($criteria),
+            default => throw new \InvalidArgumentException('This method only supports finding by "username" or "id"'),
+        };
+
         foreach ($this->users as $user) {
-            if (null !== $username && $username === $user->getUsername()) {
+            if ($function($user)) {
                 return $user;
             }
         }

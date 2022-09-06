@@ -43,3 +43,39 @@ pim_api_product_uuid_delete:
     methods: [DELETE]
     requirements:
         uuid: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
+
+pim_api_product_uuid_list:
+    path: /products-uuid
+    defaults:
+        _controller: Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ListProductsByUuidController
+        _format: json
+        _list_in_root_endpoint: false
+    methods: [GET]
+
+pim_api_product_uuid_get:
+    path: /products-uuid/{uuid}
+    defaults:
+        _controller: Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\GetProductByUuidController
+        _format: json
+        _list_in_root_endpoint: false
+    methods: [GET]
+    requirements:
+        uuid: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
+
+pim_api_product_uuid_create:
+    path: /products-uuid
+    defaults:
+        _controller: Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\CreateProductByUuidController
+        _format: json
+        _list_in_root_endpoint: false
+    methods: [POST]
+
+pim_api_product_uuid_partial_update:
+    path: /products-uuid/{uuid}
+    defaults:
+        _controller: Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\UpdateProductByUuidController
+        _format: json
+        _list_in_root_endpoint: false
+    methods: [PATCH]
+    requirements:
+        uuid: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'

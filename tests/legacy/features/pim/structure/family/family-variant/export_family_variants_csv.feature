@@ -8,7 +8,7 @@ Feature: Export family variants in CSV
   Scenario: Successfully export catalog family variants
     Given a "catalog_modeling" catalog configuration
     And the following job "csv_catalog_modeling_family_variant_export" configuration:
-      | filePath | %tmp%/family_variant.csv |
+      | storage | {"type": "local", "file_path": "%tmp%/family_variant.csv"} |
     And I am logged in as "Julia"
     And I am on the "csv_catalog_modeling_family_variant_export" export job page
     When I launch the export job

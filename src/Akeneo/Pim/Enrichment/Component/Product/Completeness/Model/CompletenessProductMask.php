@@ -18,7 +18,6 @@ class CompletenessProductMask
     // TODO - TIP-1212: familyCode should not be nullable
     public function __construct(
         private string $id,
-        private string $identifier,
         private ?string $familyCode,
         private array $mask
     ) {
@@ -37,11 +36,6 @@ class CompletenessProductMask
     public function id(): string
     {
         return $this->id;
-    }
-
-    public function identifier(): string
-    {
-        return $this->identifier;
     }
 
     // TODO: TIP-1212: remove null on accepted argument for the mask (a product could be currently without a family)

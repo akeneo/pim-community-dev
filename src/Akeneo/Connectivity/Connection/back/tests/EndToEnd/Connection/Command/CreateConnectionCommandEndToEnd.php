@@ -51,7 +51,19 @@ class CreateConnectionCommandEndToEnd extends CommandTestCase
         ]);
 
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString('akeneo_connectivity.connection.connection.constraint.code.too_short', $output);
+        $this->assertStringContainsString('Connection code is too short. It should have 3 characters or more.', $output);
+    }
+
+    public function test_it_fails_to_create_a_connection_with_a_wrong_user_group(): void
+    {
+        $commandTester = new CommandTester($this->command);
+        $commandTester->execute([
+            'code' => 'magento',
+            '--user-group' => 'wrong_user_group',
+        ]);
+
+        $output = $commandTester->getDisplay();
+        $this->assertStringContainsString('The user group was not found. Make sure the specified user group exists.', $output);
     }
 
     protected function getConfiguration(): Configuration

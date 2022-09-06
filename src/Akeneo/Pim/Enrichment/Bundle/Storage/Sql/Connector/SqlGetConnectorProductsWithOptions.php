@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
 use Doctrine\DBAL\Connection;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -18,18 +19,10 @@ use Doctrine\DBAL\Connection;
  */
 class SqlGetConnectorProductsWithOptions implements Query\GetConnectorProducts
 {
-    /** @var Query\GetConnectorProducts */
-    private $getConnectorProducts;
-
-    /** @var Connection */
-    private $connection;
-
     public function __construct(
-        Query\GetConnectorProducts $getConnectorProducts,
-        Connection $connection
+        private Query\GetConnectorProducts $getConnectorProducts,
+        private Connection $connection
     ) {
-        $this->getConnectorProducts = $getConnectorProducts;
-        $this->connection = $connection;
     }
 
     /**
@@ -48,9 +41,12 @@ class SqlGetConnectorProductsWithOptions implements Query\GetConnectorProducts
         return new ConnectorProductList($connectorProductList->totalNumberOfProducts(), $productsWithOptions);
     }
 
-    public function fromProductIdentifier(string $productIdentifier, int $userId): ConnectorProduct
+    /**
+     * {@inheritdoc}
+     */
+    public function fromProductUuid(UuidInterface $productUuid, int $userId): ConnectorProduct
     {
-        $connectorProduct = $this->getConnectorProducts = $this->getConnectorProducts->fromProductIdentifier($productIdentifier, $userId);
+        $connectorProduct = $this->getConnectorProducts->fromProductUuid($productUuid, $userId);
 
         return $this->getConnectorProductsWithLabels([$connectorProduct])[0];
     }
@@ -58,14 +54,20 @@ class SqlGetConnectorProductsWithOptions implements Query\GetConnectorProducts
     /**
      * {@inheritdoc}
      */
-    public function fromProductIdentifiers(
-        array $productIdentifiers,
+    public function fromProductUuids(
+        array $productUuids,
         int $userId,
         ?array $attributesToFilterOn,
         ?string $channelToFilterOn,
         ?array $localesToFilterOn
     ): ConnectorProductList {
-        $connectorProductList = $this->getConnectorProducts->fromProductIdentifiers($productIdentifiers, $userId, $attributesToFilterOn, $channelToFilterOn, $localesToFilterOn);
+        $connectorProductList = $this->getConnectorProducts->fromProductUuids(
+            $productUuids,
+            $userId,
+            $attributesToFilterOn,
+            $channelToFilterOn,
+            $localesToFilterOn
+        );
         $productsWithOptions = $this->getConnectorProductsWithLabels($connectorProductList->connectorProducts());
 
         return new ConnectorProductList($connectorProductList->totalNumberOfProducts(), $productsWithOptions);
@@ -155,7 +157,6 @@ class SqlGetConnectorProductsWithOptions implements Query\GetConnectorProducts
             sprintf($query, implode(',', $queryStringParams)),
             $queryParams
         )->fetchAssociative();
-
 
         return isset($row['result']) ? json_decode($row['result'], true) : [];
     }

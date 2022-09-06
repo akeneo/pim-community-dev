@@ -21,13 +21,13 @@ services:
 
     ### Catalog
     pim_catalog.repository.group:
-        class: '\Akeneo\Test\Acceptance\Catalog\InMemoryGroupRepository'
+        class: 'Akeneo\Test\Acceptance\Catalog\InMemoryGroupRepository'
 
     pim_catalog.repository.category:
         class: 'Akeneo\Test\Acceptance\Category\InMemoryCategoryRepository'
 
     pim_catalog.repository.group_type:
-        class: '\Akeneo\Test\Acceptance\Catalog\InMemoryGroupTypeRepository'
+        class: 'Akeneo\Test\Acceptance\Catalog\InMemoryGroupTypeRepository'
 
     pim_catalog.repository.product:
         class: 'Akeneo\Test\Acceptance\Product\InMemoryProductRepository'
@@ -41,7 +41,7 @@ services:
     akeneo_measure.persistence.measurement_family_repository:
         class: 'Akeneo\Test\Acceptance\MeasurementFamily\InMemoryMeasurementFamilyRepository'
 
-    akeneo_measurement.public_api.get_unit:
+    akeneo_measurement.service_api.get_unit:
         class: 'Akeneo\Test\Acceptance\MeasurementFamily\InMemoryGetUnit'
         arguments:
             - '@akeneo_measure.persistence.measurement_family_repository'

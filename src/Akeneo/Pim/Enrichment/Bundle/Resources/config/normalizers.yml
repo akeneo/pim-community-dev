@@ -20,12 +20,10 @@ services:
             - '@pim_catalog.normalizer.standard.datetime'
             - '@pim_catalog.repository.attribute'
 
-    pim_api.normalizer.connector_products_with_uuid:
-        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductWithUuidNormalizer'
+    Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductWithUuidNormalizer:
         arguments:
             - '@pim_api.normalizer.values'
             - '@pim_catalog.normalizer.standard.datetime'
-            - '@pim_catalog.repository.attribute'
 
     pim_api.normalizer.connector_product_models:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductModelNormalizer'
@@ -47,21 +45,6 @@ services:
             - '@router'
         tags:
             - { name: pim_external_api_serializer.normalizer, priority: 90 }
-
-    pim_api.normalizer.category:
-        class: 'Akeneo\Pim\Enrichment\Component\Category\Normalizer\ExternalApi\CategoryNormalizer'
-        arguments:
-            - '@pim_catalog.normalizer.standard.category'
-            - '@Akeneo\Pim\Enrichment\Component\Category\Manager\PositionResolver'
-        tags:
-            - { name: pim_external_api_serializer.normalizer, priority: 90 }
-
-    pim_enrich.normalizer.category:
-        class: 'Akeneo\Pim\Enrichment\Component\Category\Normalizer\InternalApi\CategoryNormalizer'
-        arguments:
-            - '@pim_standard_format_serializer'
-        tags:
-            - { name: pim_internal_api_serializer.normalizer }
 
     pim_enrich.normalizer.group:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\GroupNormalizer'
@@ -115,7 +98,7 @@ services:
         arguments:
             - '@pim_catalog.normalizer.standard.product.metric'
             - '@pim_catalog.localization.localizer.metric'
-            - '@akeneo_measurement.public_api.get_unit_translations'
+            - '@akeneo_measurement.service_api.get_unit_translations'
         tags:
             - { name: pim_axis_value_label_normalizer }
 

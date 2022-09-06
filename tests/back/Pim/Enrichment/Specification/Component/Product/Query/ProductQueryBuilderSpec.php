@@ -72,6 +72,7 @@ class ProductQueryBuilderSpec extends ObjectBehavior
 
         $searchQb->getQuery(Argument::any())->shouldBeCalledOnce()->willReturn([]);
         $searchQb->hasSort('identifier')->willReturn(false);
+        $searchQb->hasSort('id')->willReturn(false);
         $sorterRegistry->getFieldSorter('identifier')->willReturn($sorter);
         $sorter->setQueryBuilder(Argument::any())->shouldBeCalled();
         $sorter->addFieldSorter('identifier', Argument::cetera())->willReturn($sorter);
@@ -265,6 +266,7 @@ class ProductQueryBuilderSpec extends ObjectBehavior
 
         $searchQb->getQuery(Argument::any())->shouldBeCalledOnce()->willReturn([]);
         $searchQb->hasSort('identifier')->willReturn(true);
+        $searchQb->hasSort('id')->willReturn(false);
 
         $this->execute()->shouldReturn($cursor);
     }

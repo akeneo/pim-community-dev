@@ -12,6 +12,7 @@ class ClassifyProductIntegration extends TestCase
 {
     public function testClassify()
     {
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: 'tee',

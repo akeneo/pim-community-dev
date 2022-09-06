@@ -21,7 +21,7 @@ Feature: Export products with only selected attributes
 
   Scenario: Export products by selecting multiple attribute in a specific order
     Given the following job "csv_footwear_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv |
+      | storage | {"type": "local", "file_path": "%tmp%/product_export/product_export.csv"} |
     When I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
     And I filter by "completeness" with operator "No condition on completeness" and value ""

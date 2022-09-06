@@ -2,12 +2,12 @@
 
 namespace Akeneo\UserManagement\Bundle\EventListener;
 
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
-use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
-use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;

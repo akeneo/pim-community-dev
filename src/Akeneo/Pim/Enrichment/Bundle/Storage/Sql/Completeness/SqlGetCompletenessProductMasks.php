@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Doctrine\DBAL\Connection;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Webmozart\Assert\Assert;
 
@@ -48,7 +49,7 @@ final class SqlGetCompletenessProductMasks implements GetCompletenessProductMask
     /**
      * {@inheritdoc}
      */
-    public function fromProductIdentifiers(array $productIdentifiers): array
+    public function fromProductUuids(array $productUuids): array
     {
         // TODO - TIP-1212: Replace the first LEFT JOIN (to pim_catalog_family) by an INNER JOIN
         // PIM-9783: the initial query didn't use the CTE, we filtered directly the product in the main SELECT. There
@@ -57,7 +58,7 @@ final class SqlGetCompletenessProductMasks implements GetCompletenessProductMask
         $sql = <<<SQL
 WITH
 filtered_product AS (
-    SELECT uuid FROM pim_catalog_product WHERE identifier IN (:productIdentifiers)
+    SELECT uuid FROM pim_catalog_product WHERE uuid IN (:productUuids)
 )
 SELECT
     BIN_TO_UUID(product.uuid) AS uuid,
@@ -75,19 +76,20 @@ FROM filtered_product
     LEFT JOIN pim_catalog_product_model pm2 ON pm1.parent_id = pm2.id
 SQL;
 
+        $productUuidsAsBytes = \array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
+
         $rows = array_map(
             function (array $row): array {
                 return [
                     'id' => $row['uuid'],
-                    'identifier' => $row['identifier'],
                     'familyCode' => $row['familyCode'],
                     'cleanedRawValues' => json_decode($row['rawValues'], true),
                 ];
             },
             $this->connection->executeQuery(
                 $sql,
-                ['productIdentifiers' => $productIdentifiers],
-                ['productIdentifiers' => Connection::PARAM_STR_ARRAY]
+                ['productUuids' => $productUuidsAsBytes],
+                ['productUuids' => Connection::PARAM_STR_ARRAY]
             )->fetchAllAssociative()
         );
 
@@ -99,14 +101,12 @@ SQL;
      */
     public function fromValueCollection(
         $id,
-        string $identifier,
         string $familyCode,
         WriteValueCollection $values
     ): CompletenessProductMask {
         Assert::true(\is_int($id) || \is_string($id));
         $row = [
             'id' => $id,
-            'identifier' => $identifier,
             'familyCode' => $familyCode,
             'cleanedRawValues' => $this->valuesNormalizer->normalize($values, 'storage'),
         ];
@@ -129,7 +129,6 @@ SQL;
         foreach ($rows as $row) {
             $result[] = new CompletenessProductMask(
                 (string) $row['id'],
-                $row['identifier'],
                 $row['familyCode'],
                 $this->getMask($row['cleanedRawValues'], $attributes)
             );

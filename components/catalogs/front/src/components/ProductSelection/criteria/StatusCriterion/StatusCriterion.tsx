@@ -1,15 +1,18 @@
 import React, {FC} from 'react';
-import {CloseIcon, Helper, IconButton, List, SelectInput} from 'akeneo-design-system';
+import {CloseIcon, IconButton, List, SelectInput} from 'akeneo-design-system';
 import {Operator} from '../../models/Operator';
 import {CriterionModule} from '../../models/Criterion';
 import {StatusCriterionOperator, StatusCriterionState} from './types';
 import styled from 'styled-components';
 import {useOperatorTranslator} from '../../hooks/useOperatorTranslator';
 import {useTranslate} from '@akeneo-pim-community/shared';
+import {ErrorHelpers} from '../../components/ErrorHelpers';
 
 const Fields = styled.div`
     display: flex;
     gap: 20px;
+    flex-wrap: wrap;
+    flex-grow: 1;
 `;
 
 const Field = styled.div`
@@ -20,9 +23,10 @@ const Field = styled.div`
 const StatusCriterion: FC<CriterionModule<StatusCriterionState>> = ({state, onChange, onRemove, errors}) => {
     const translateOperator = useOperatorTranslator();
     const translate = useTranslate();
+    const hasError = Object.values(errors).filter(n => n).length > 0;
 
     return (
-        <List.Row>
+        <List.Row isMultiline>
             <List.TitleCell width={150}>
                 {translate('akeneo_catalogs.product_selection.criteria.status.label')}
             </List.TitleCell>
@@ -35,7 +39,7 @@ const StatusCriterion: FC<CriterionModule<StatusCriterionState>> = ({state, onCh
                             value={state.operator}
                             onChange={v => onChange({...state, operator: v as StatusCriterionOperator})}
                             clearable={false}
-                            invalid={errors.operator !== null}
+                            invalid={!!errors.operator}
                             data-testid='operator'
                         >
                             <SelectInput.Option value={Operator.EQUALS}>
@@ -45,11 +49,6 @@ const StatusCriterion: FC<CriterionModule<StatusCriterionState>> = ({state, onCh
                                 {translateOperator(Operator.NOT_EQUAL)}
                             </SelectInput.Option>
                         </SelectInput>
-                        {errors.operator !== null && (
-                            <Helper inline level='error'>
-                                {errors.operator}
-                            </Helper>
-                        )}
                     </Field>
                     <Field>
                         <SelectInput
@@ -58,7 +57,7 @@ const StatusCriterion: FC<CriterionModule<StatusCriterionState>> = ({state, onCh
                             value={state.value.toString()}
                             onChange={v => onChange({...state, value: v === 'true'})}
                             clearable={false}
-                            invalid={errors.value !== null}
+                            invalid={!!errors.value}
                             data-testid='value'
                         >
                             <SelectInput.Option value='true'>
@@ -68,17 +67,23 @@ const StatusCriterion: FC<CriterionModule<StatusCriterionState>> = ({state, onCh
                                 {translate('akeneo_catalogs.product_selection.criteria.status.disabled')}
                             </SelectInput.Option>
                         </SelectInput>
-                        {errors.value !== null && (
-                            <Helper inline level='error'>
-                                {errors.value}
-                            </Helper>
-                        )}
                     </Field>
                 </Fields>
             </List.Cell>
             <List.RemoveCell>
-                <IconButton ghost='borderless' level='tertiary' icon={<CloseIcon />} title='' onClick={onRemove} />
+                <IconButton
+                    ghost='borderless'
+                    level='tertiary'
+                    icon={<CloseIcon />}
+                    title='remove'
+                    onClick={onRemove}
+                />
             </List.RemoveCell>
+            {hasError && (
+                <List.RowHelpers>
+                    <ErrorHelpers errors={errors} />
+                </List.RowHelpers>
+            )}
         </List.Row>
     );
 };

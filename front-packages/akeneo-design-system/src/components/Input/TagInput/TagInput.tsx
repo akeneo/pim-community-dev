@@ -6,6 +6,7 @@ import {arrayUnique, Key, Override} from '../../../shared';
 import {InputProps} from '../common';
 
 const RemoveTagIcon = styled(CloseIcon)<AkeneoThemedProps>`
+  min-width: 12px;
   width: 12px;
   height: 12px;
   color: ${getColor('grey', 120)};

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\Product;
 
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetAncestorProductModelCodes;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
@@ -13,6 +14,8 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 final class GetAncestorProductModelCodesIntegration extends TestCase
 {
@@ -20,8 +23,11 @@ final class GetAncestorProductModelCodesIntegration extends TestCase
     {
         Assert::assertSame(
             [],
-            $this->get('akeneo.pim.enrichment.product.query.get_ancestor_product_model_codes')
-                ->fromProductIdentifiers(['simple_product', 'another_product'])
+            $this->getAncestorProductModelCodes()
+                ->fromProductUuids([
+                    $this->getProductUuidFromIdentifier('simple_product'),
+                    $this->getProductUuidFromIdentifier('another_product')
+                ])
         );
     }
 
@@ -29,8 +35,13 @@ final class GetAncestorProductModelCodesIntegration extends TestCase
     {
         Assert::assertEqualsCanonicalizing(
             ['root_A1', 'subpm_A1_optionA', 'root_A2'],
-            $this->get('akeneo.pim.enrichment.product.query.get_ancestor_product_model_codes')
-                 ->fromProductIdentifiers(['simple_product', 'variant_A1_A_no', 'variant_A1_A_yes', 'variant_A2_B_no'])
+            $this->getAncestorProductModelCodes()
+                 ->fromProductUuids([
+                     $this->getProductUuidFromIdentifier('simple_product'),
+                     $this->getProductUuidFromIdentifier('variant_A1_A_no'),
+                     $this->getProductUuidFromIdentifier('variant_A1_A_yes'),
+                     $this->getProductUuidFromIdentifier('variant_A2_B_no')
+                 ])
         );
     }
 
@@ -102,6 +113,7 @@ final class GetAncestorProductModelCodesIntegration extends TestCase
      */
     private function createProduct(string $identifier, array $userIntents): void
     {
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: $identifier,
@@ -122,5 +134,17 @@ final class GetAncestorProductModelCodesIntegration extends TestCase
         }
 
         return \intval($id);
+    }
+
+    private function getAncestorProductModelCodes(): GetAncestorProductModelCodes
+    {
+        return $this->get('akeneo.pim.enrichment.product.query.get_ancestor_product_model_codes');
+    }
+
+    private function getProductUuidFromIdentifier(string $productIdentifier): UuidInterface
+    {
+        return Uuid::fromString($this->get('database_connection')->fetchOne(
+            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?', [$productIdentifier]
+        ));
     }
 }

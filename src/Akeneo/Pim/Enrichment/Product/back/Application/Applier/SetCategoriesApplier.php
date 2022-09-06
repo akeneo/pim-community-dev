@@ -7,8 +7,6 @@ namespace Akeneo\Pim\Enrichment\Product\Application\Applier;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
-use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
-use Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableCategoryCodes;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Webmozart\Assert\Assert;
 
@@ -18,10 +16,8 @@ use Webmozart\Assert\Assert;
  */
 class SetCategoriesApplier implements UserIntentApplier
 {
-    public function __construct(
-        private ObjectUpdaterInterface $productUpdater,
-        private GetNonViewableCategoryCodes $getNonViewableCategories
-    ) {
+    public function __construct(private ObjectUpdaterInterface $productUpdater)
+    {
     }
 
     /**
@@ -30,13 +26,10 @@ class SetCategoriesApplier implements UserIntentApplier
     public function apply(UserIntent $setCategories, ProductInterface $product, int $userId): void
     {
         Assert::isInstanceOf($setCategories, SetCategories::class);
-        $productIdentifier = ProductIdentifier::fromString($product->getIdentifier());
 
-        $nonViewableCategories = $this->getNonViewableCategories->fromProductIdentifiers([$productIdentifier], $userId);
-        $nonViewableCategoriesForProduct = $nonViewableCategories[$productIdentifier->asString()] ?? [];
-
+        // we only send categories viewed by user but they are later merged with non viewabled ones
         $this->productUpdater->update($product, [
-            'categories' => \array_merge($setCategories->categoryCodes(), $nonViewableCategoriesForProduct),
+            'categories' => $setCategories->categoryCodes(),
         ]);
     }
 

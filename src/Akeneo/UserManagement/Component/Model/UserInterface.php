@@ -2,9 +2,9 @@
 
 namespace Akeneo\UserManagement\Component\Model;
 
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
-use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\UserManagement\Component\EntityUploadedImageInterface;
 use Doctrine\Common\Collections\Collection;
@@ -554,6 +554,12 @@ interface UserInterface extends BaseUserInterface, \Serializable, EntityUploaded
     public function isApiUser(): bool;
 
     public function defineAsApiUser(): void;
+
+    public function isJobUser(): bool;
+
+    public function defineAsJobUser(): void;
+
+    public function getType(): string;
 
     public function duplicate(): UserInterface;
 

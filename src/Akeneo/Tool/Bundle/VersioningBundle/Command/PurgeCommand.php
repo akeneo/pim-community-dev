@@ -2,7 +2,8 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\Command;
 
-use Akeneo\Tool\Bundle\VersioningBundle\Purger\VersionPurgerInterface;
+use Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler;
+use Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandler;
 use InvalidArgumentException;
 use Monolog\Handler\StreamHandler;
 use Psr\Log\LoggerInterface;
@@ -13,7 +14,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Purge version of entities
@@ -25,28 +25,18 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class PurgeCommand extends Command
 {
     protected static $defaultName = 'pim:versioning:purge';
+    protected static $defaultDescription = 'Purge versions of entities, except first and last versions.';
+
+    private const JOB_CODE = 'versioning_purge';
 
     const DEFAULT_MORE_THAN_DAYS = 90;
 
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var VersionPurgerInterface */
-    private $versionPurger;
-
-    /** @var EventSubscriberInterface */
-    private $eventSubscriber;
-
     public function __construct(
-        LoggerInterface $logger,
-        VersionPurgerInterface $versionPurger,
-        EventSubscriberInterface $eventSubscriber
+        private LoggerInterface $logger,
+        private ExecuteJobExecutionHandler $jobExecutionRunner,
+        private CreateJobExecutionHandler $jobExecutionFactory,
     ) {
         parent::__construct();
-
-        $this->logger = $logger;
-        $this->versionPurger = $versionPurger;
-        $this->eventSubscriber = $eventSubscriber;
     }
 
     /**
@@ -55,7 +45,6 @@ class PurgeCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Purge versions of entities, except first and last versions.')
             ->addArgument(
                 'entity',
                 InputArgument::OPTIONAL,
@@ -152,40 +141,31 @@ class PurgeCommand extends Command
         }
 
         $isForced = $input->getOption('force');
-        $moreThanDays = null !== $input->getOption('more-than-days') ? (int) $input->getOption('more-than-days') : null;
-        $lessThanDays = null !== $input->getOption('less-than-days') ? (int) $input->getOption('less-than-days') : null;
+        $moreThanDays = null !== $input->getOption('more-than-days') ? (int)$input->getOption('more-than-days') : null;
+        $lessThanDays = null !== $input->getOption('less-than-days') ? (int)$input->getOption('less-than-days') : null;
 
         if (null === $moreThanDays && null === $lessThanDays) {
             $moreThanDays = self::DEFAULT_MORE_THAN_DAYS;
         }
 
-        $purgeOptions = [];
-        $purgeOptions['batch_size'] = (int) $input->getOption('batch-size');
-
         $resourceName = $input->hasArgument('entity') ? $input->getArgument('entity') : null;
-        $resourceNameLabel = '';
-        if (null !== $resourceName) {
-            $purgeOptions['resource_name'] = $resourceName;
-            $resourceNameLabel = sprintf('of %s ', $resourceName);
-        }
-
-        $purgeOptions['days_number'] = null !== $lessThanDays ? $lessThanDays : $moreThanDays;
-        $purgeOptions['date_operator'] = null !== $lessThanDays ? '>' : '<';
+        $resourceNameLabel = null !== $resourceName ? sprintf('of %s ', $resourceName) : '';
         $operatorLabel = null !== $lessThanDays ? 'younger' : 'older';
+        $daysNumber = null !== $lessThanDays ? $lessThanDays : $moreThanDays;
 
         $output->writeln(
             sprintf(
                 '<info>You are about to process versions %s%s than %d days.</info>',
                 $resourceNameLabel,
                 $operatorLabel,
-                $purgeOptions['days_number']
+                $daysNumber,
             )
         );
 
         if (!$isForced) {
             $helper = $this->getHelper('question');
             $question = new ConfirmationQuestion(
-                'This operation may take some time to complete. Are you sure you want to purge? [Y/n] ',
+                'This operation may take some time to complete. Are you sure you want to purge? [y/N] ',
                 false,
                 '/^y/i'
             );
@@ -197,7 +177,15 @@ class PurgeCommand extends Command
             }
         }
 
-        $this->versionPurger->purge($purgeOptions, $output);
+        $batchConfig = [
+            'entity' => $resourceName,
+            'batch-size' => (int)$input->getOption('batch-size'),
+            'more-than-days' => $moreThanDays,
+            'less-than-days' => $lessThanDays,
+        ];
+
+        $jobExecution = $this->jobExecutionFactory->createFromBatchCode(self::JOB_CODE, $batchConfig, null);
+        $this->jobExecutionRunner->executeFromJobExecutionId($jobExecution->getId());
 
         return Command::SUCCESS;
     }

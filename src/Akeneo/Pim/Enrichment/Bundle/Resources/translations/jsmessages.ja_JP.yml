@@ -49,6 +49,7 @@ pim_enrich.entity.product:
     download_pdf:
       label: PDF
     copy:
+      button_label: 比較
       label: 比較/翻訳
       select: 選択
       all_visible: すべて表示

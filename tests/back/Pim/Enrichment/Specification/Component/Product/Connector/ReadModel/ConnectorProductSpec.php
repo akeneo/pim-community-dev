@@ -8,6 +8,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletene
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueWithLinkedData;
+use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValueWithLinkedData;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use PhpSpec\ObjectBehavior;
 use Ramsey\Uuid\Uuid;
@@ -69,7 +73,11 @@ class ConnectorProductSpec extends ObjectBehavior
             new ReadValueCollection([
                 ScalarValue::value('attribute_code_1', 'data'),
                 ScalarValue::localizableValue('attribute_code_2', 'data', 'en_US'),
-                ScalarValue::localizableValue('attribute_code_2', 'data', 'fr_FR')
+                ScalarValue::localizableValue('attribute_code_2', 'data', 'fr_FR'),
+                OptionValue::value('simple_select', 'Option_1'),
+                OptionsValue::value('multi_select', ['Option1', 'OPTION2']),
+                OptionValue::value('other_simple_select','42'),
+                OptionsValue::value('other_multi_select', ['30']),
             ]),
             null,
             null
@@ -307,5 +315,121 @@ class ConnectorProductSpec extends ObjectBehavior
         $connectorProduct = $this->buildWithCompletenesses($completenessCollection);
 
         $connectorProduct->completenesses()->shouldReturn($completenessCollection);
+    }
+
+    function it_returns_the_option_labels()
+    {
+        $connectorProductWithLinkedData = $this->buildLinkedData([
+            'simple_select' => [
+                'option_1' => [
+                    'en_US' => 'Code 1',
+                    'fr_FR' => 'Option 1',
+                ],
+            ],
+            'multi_select' => [
+                'option1' => [
+                    'en_US' => 'OPTION NUMBER ONE',
+                    'fr_FR' => null,
+                ],
+                'Option2' => [
+                    'en_US' => null,
+                    'fr_FR' => null,
+                ]
+            ],
+            'other_simple_select' => [
+                '42' => [
+                    'en_US' => '42',
+                    'fr_FR' => '42',
+                ]
+            ],
+            'other_multi_select' => [
+                '42' => [
+                    'en_US' => '42',
+                    'fr_FR' => '42',
+                ],
+                '30' => [
+                    'en_US' => '30',
+                    'fr_FR' => '30',
+                ]
+            ]
+        ]);
+        $connectorProductWithLinkedData->shouldBeAnInstanceOf(ConnectorProduct::class);
+        /** @var ReadValueCollection $values */
+        $connectorProductWithLinkedData->values()->toArray()->shouldBeLike(
+            [
+                ScalarValue::value('attribute_code_1', 'data'),
+                ScalarValue::localizableValue('attribute_code_2', 'data', 'en_US'),
+                ScalarValue::localizableValue('attribute_code_2', 'data', 'fr_FR'),
+                new OptionValueWithLinkedData(
+                    'simple_select',
+                    'Option_1',
+                    null,
+                    null,
+                    [
+                        'attribute' => 'simple_select',
+                        'code' => 'option_1',
+                        'labels' => [
+                            'en_US' => 'Code 1',
+                            'fr_FR' => 'Option 1',
+                        ]
+                    ]
+                ),
+                new OptionsValueWithLinkedData(
+                    'multi_select',
+                    ['Option1', 'OPTION2'],
+                    null,
+                    null,
+                    [
+                        'Option1' => [
+                            'attribute' => 'multi_select',
+                            'code' => 'option1',
+                            'labels' => [
+                                'en_US' => 'OPTION NUMBER ONE',
+                                'fr_FR' => null,
+                            ],
+                        ],
+                        'OPTION2' => [
+                            'attribute' => 'multi_select',
+                            'code' => 'Option2',
+                            'labels' => [
+                                'en_US' => null,
+                                'fr_FR' => null,
+                            ]
+                        ]
+                    ]
+                ),
+                new OptionValueWithLinkedData(
+                    'other_simple_select',
+                    '42',
+                    null,
+                    null,
+                    [
+                        'attribute' => 'other_simple_select',
+                        'code' => '42',
+                        'labels' => [
+                            'en_US' => '42',
+                            'fr_FR' => '42',
+                            ]
+
+                    ]
+                ),
+                new OptionsValueWithLinkedData(
+                    'other_multi_select',
+                    ['30'],
+                    null,
+                    null,
+                    [
+                        '30' => [
+                            'attribute' => 'other_multi_select',
+                            'code' => '30',
+                            'labels' => [
+                                'en_US' => '30',
+                                'fr_FR' => '30',
+                            ],
+                        ]
+                    ]
+                )
+            ]
+        );
     }
 }

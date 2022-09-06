@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Test\Acceptance\Category;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
+use Akeneo\Category\Infrastructure\Component\Model\Category;
 use Akeneo\Test\Acceptance\Category\InMemoryCategoryRepository;
-use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
 

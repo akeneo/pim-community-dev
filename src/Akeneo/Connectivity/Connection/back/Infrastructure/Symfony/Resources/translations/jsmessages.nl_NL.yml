@@ -53,6 +53,8 @@ akeneo_connectivity.connection:
         title_without_apps: '{0} Er zijn geen connectoren compatibel met uw PIM versie.|{1} Er is {{ count }} connector compatibel met uw PIM-versie.## |[2,Inf] Er zijn {{ count }} connectoren compatibel met uw PIM-versie.'
         description: Dit is slechts een overzicht. Neem voor meer details een kijkje in de Akeneo App Store.
         link: Ga naar de Akeneo App Store
+      search:
+        total: '{0} Geen resultaten|{1} 1 resultaat|[2,Inf] {{ total }} resultaten'
       card:
         developed_by: 'Ontwikkeld door {{ author }}'
         read_more: meer lezen

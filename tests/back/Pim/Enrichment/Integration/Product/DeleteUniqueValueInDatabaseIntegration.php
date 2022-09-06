@@ -47,7 +47,7 @@ class DeleteUniqueValueInDatabaseIntegration extends TestCase
      */
     protected function getConfiguration(): Configuration
     {
-        return $this->catalog->useMinimalCatalog('minimal');
+        return $this->catalog->useMinimalCatalog();
     }
 
     private function createAttributeWithUniqueConstraint(string $string): int
@@ -69,6 +69,7 @@ class DeleteUniqueValueInDatabaseIntegration extends TestCase
      */
     private function createProductWithUniqueValue(array $userIntents): void
     {
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: 'foo',

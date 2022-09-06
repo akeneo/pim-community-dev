@@ -4,8 +4,6 @@ services:
       - !tagged pim_import_export.hydrator.storage
 
   Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Hydrator\LocalStorageHydrator:
-    arguments:
-      - '@pim_catalog.version_provider'
     tags:
       - { name: pim_import_export.hydrator.storage }
 

@@ -50,7 +50,7 @@ class ValidateStorageTest extends AbstractValidationTest
     {
         return [
             'invalid storage type' => [
-                'akeneo.job_automation.validation.storage.unavailable_type',
+                'pim_import_export.form.job_instance.validation.storage.unavailable_type',
                 '[type]',
                 [
                     'type' => 'invalid',

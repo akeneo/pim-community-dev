@@ -62,8 +62,8 @@ services:
             - '@pim_enrich.connector.use_cases.handler.list_products'
             - '@pim_api.normalizer.connector_products'
             - '@security.token_storage'
-            - '@akeneo.pim.enrichment.product.connector.get_product_from_identifiers'
-            - '@akeneo.pim.enrichment.product.connector.get_product_from_identifiers_with_options'
+            - '@akeneo.pim.enrichment.product.connector.get_product_from_uuids'
+            - '@akeneo.pim.enrichment.product.connector.get_product_from_uuids_with_options'
             - '@pim_catalog.event_subscriber.product.on_save.api_aggregator_event_subscriber'
             - '@pim_api.warmup_query_cache.dummy'
             - '@event_dispatcher'
@@ -74,6 +74,67 @@ services:
             - '@akeneo.pim.enrichment.use_cases.get_products_with_completenesses'
             - '@oro_security.security_facade'
             - '@validator'
+            - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids'
+
+    Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\GetProductByUuidController:
+        public: true
+        arguments:
+            - '@Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductWithUuidNormalizer'
+            - '@security.token_storage'
+            - '@akeneo.pim.enrichment.product.connector.get_product_from_uuids'
+            - '@akeneo.pim.enrichment.product.connector.get_product_from_uuids_with_options'
+            - '@event_dispatcher'
+            - '@akeneo.pim.enrichment.use_cases.get_products_with_quality_scores'
+            - '@akeneo.pim.enrichment.use_cases.get_products_with_completenesses'
+            - '@oro_security.security_facade'
+
+    Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ListProductsByUuidController:
+        public: true
+        arguments:
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.pagination.search_after_hal_paginator'
+            - '@pim_enrich.connector.use_cases.validator.list_products'
+            - '%pim_api.configuration%'
+            - '@Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsByUuidQueryHandler'
+            - '@Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductWithUuidNormalizer'
+            - '@security.token_storage'
+            - '@oro_security.security_facade'
+
+    Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\CreateProductByUuidController:
+        public: true
+        arguments:
+            - '@router'
+            - '@event_dispatcher'
+            - '@pim_api.checker.duplicate_value'
+            - '@oro_security.security_facade'
+            - '@validator'
+            - '@database_connection'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.saver.product'
+            - '@pim_api.filter.product_attribute_filter'
+            - '@pim_catalog.repository.product'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetProductUuids'
+            - '@pim_catalog.repository.attribute'
+
+    Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\UpdateProductByUuidController:
+        public: true
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@router'
+            - '@pim_catalog.comparator.filter.product'
+            - '@event_dispatcher'
+            - '@pim_api.checker.duplicate_value'
+            - '@oro_security.security_facade'
+            - '@validator'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.saver.product'
+            - '@pim_api.filter.product_attribute_filter'
+            - '@database_connection'
+            - '@pim_catalog.validator.product'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetProductUuids'
+            - '@pim_catalog.entity_with_family_variant.remove_parent_from_product'
 
     Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\DeleteProductByUuidController:
         public: true
@@ -114,31 +175,6 @@ services:
             - '@Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelHandler'
             - '@validator'
             - '@akeneo.pim.enrichment.use_cases.get_product_models_with_quality_scores'
-
-    pim_api.controller.category:
-        public: true
-        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\CategoryController'
-        arguments:
-            - '@pim_api.repository.category'
-            - '@pim_external_api_serializer'
-            - '@pim_catalog.factory.category'
-            - '@pim_catalog.updater.category'
-            - '@validator'
-            - '@pim_catalog.saver.category'
-            - '@router'
-            - '@pim_api.pagination.offset_hal_paginator'
-            - '@pim_api.pagination.parameter_validator'
-            - '@pim_api.stream.category_partial_update_stream'
-            - '%pim_api.configuration%'
-
-    pim_enrich.controller.rest.category:
-        public: true
-        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\CategoryController'
-        arguments:
-            - '@pim_catalog.repository.category'
-            - '@pim_enrich.twig.category_extension'
-            - '@pim_internal_api_serializer'
-            - '@pim_catalog.filter.chained'
 
     pim_enrich.controller.rest.product_category:
         public: true
@@ -325,8 +361,8 @@ services:
             - '@pim_enrich.normalizer.violation'
             - '@pim_enrich.doctrine.counter.category_product'
             - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\CountTreesChildren'
-            - '@Akeneo\Pim\Enrichment\Bundle\Form\CategoryFormViewNormalizer'
-            - { related_entity: product, form_type: 'Akeneo\Pim\Enrichment\Bundle\Form\Type\CategoryType', acl: pim_enrich_product, route: pim_enrich }
+            - '@Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizer'
+            - { related_entity: product, form_type: 'Akeneo\Category\Infrastructure\Symfony\Form\Type\CategoryType', acl: pim_enrich_product, route: pim_enrich }
         calls:
             - [ setContainer, [ '@service_container' ] ]
 

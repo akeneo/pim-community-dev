@@ -7,7 +7,7 @@ Feature: Export products according to a date
   Scenario: Export only the products updated by the UI since the last export
     Given a "footwear" catalog configuration
     And the following job "csv_footwear_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv                                                                                                                  |
+      | storage | {"type": "local", "file_path": "%tmp%/product_export/product_export.csv"} |
       | filters  | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "updated", "operator": "SINCE LAST JOB", "value": "csv_footwear_product_export"}]} |
     And the following products:
       | sku      | family   | categories        | price          | size | color | name-en_US |

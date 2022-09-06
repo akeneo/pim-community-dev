@@ -1,0 +1,32 @@
+services:
+  Akeneo\UserManagement\ServiceApi\UserGroup\ListUserGroupInterface:
+    public: true
+    class: Akeneo\UserManagement\Application\Handler\ListUserGroupHandler
+    arguments:
+      $findUserGroups: '@Akeneo\UserManagement\Infrastructure\Storage\SqlFindUserGroups'
+
+  Akeneo\UserManagement\ServiceApi\User\ListUsersHandlerInterface:
+    class: Akeneo\UserManagement\Application\Handler\ListUsersHandler
+    arguments:
+      - '@Akeneo\UserManagement\Infrastructure\Storage\SqlFindUsers'
+
+  Akeneo\UserManagement\ServiceApi\UserRole\ListUserRoleInterface:
+    public: true
+    class: Akeneo\UserManagement\Application\Handler\ListUserRoleHandler
+    arguments:
+      $findAllUserRoles: '@Akeneo\UserManagement\Infrastructure\Storage\SqlFindAllUserRoles'
+
+  Akeneo\UserManagement\ServiceApi\User\UpsertUserHandlerInterface:
+    class: Akeneo\UserManagement\Application\Handler\UpsertUserHandler
+    arguments:
+      - '@pim_user.repository.user'
+      - '@pim_user.updater.user'
+      - '@pim_user.factory.user'
+      - '@pim_user.saver.user'
+      - '@validator'
+
+  Akeneo\UserManagement\ServiceApi\User\DeleteUserHandlerInterface:
+    class: Akeneo\UserManagement\Application\Handler\DeleteUserHandler
+    arguments:
+      - '@pim_user.repository.user'
+      - '@pim_user.manager'

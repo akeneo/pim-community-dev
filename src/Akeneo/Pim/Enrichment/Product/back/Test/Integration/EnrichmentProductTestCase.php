@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedEntity;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -49,6 +50,7 @@ abstract class EnrichmentProductTestCase extends TestCase
         $this->createCategory(['code' => 'print']);
         $this->createCategory(['code' => 'suppliers']);
         $this->createCategory(['code' => 'sales']);
+        $this->createCategory(['code' => 'not_viewable_category']);
 
         if (FeatureHelper::isPermissionFeatureAvailable()) {
             $this->get('Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver')->save('All', [
@@ -67,9 +69,9 @@ abstract class EnrichmentProductTestCase extends TestCase
                 'view' => ['all' => false, 'identifiers' => ['print', 'sales']],
             ]);
             $this->get('Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver')->save('IT Support', [
-                'own' => ['all' => false, 'identifiers' => ['print', 'suppliers', 'sales']],
-                'edit' => ['all' => false, 'identifiers' => ['print', 'suppliers', 'sales']],
-                'view' => ['all' => false, 'identifiers' => ['print', 'suppliers', 'sales']],
+                'own' => ['all' => false, 'identifiers' => ['print', 'suppliers', 'sales', 'not_viewable_category']],
+                'edit' => ['all' => false, 'identifiers' => ['print', 'suppliers', 'sales', 'not_viewable_category']],
+                'view' => ['all' => false, 'identifiers' => ['print', 'suppliers', 'sales', 'not_viewable_category']],
             ]);
         }
 
@@ -94,13 +96,15 @@ abstract class EnrichmentProductTestCase extends TestCase
 
     protected function createProduct(string $identifier, array $userIntents): void
     {
-        $command = UpsertProductCommand::createFromCollection(
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('peter');
+        $command = UpsertProductCommand::createWithIdentifier(
             userId: $this->getUserId('peter'),
-            productIdentifier: $identifier,
+            productIdentifier: ProductIdentifier::fromIdentifier($identifier),
             userIntents: $userIntents
         );
         $this->commandMessageBus->dispatch($command);
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->get('akeneo.pim.storage_utils.cache.cached_queries_clearer')->clear();
         $this->clearDoctrineUoW();
     }
 

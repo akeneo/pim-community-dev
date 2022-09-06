@@ -7,7 +7,7 @@ Feature: Display last operations widget
   Background:
     Given a "footwear" catalog configuration
     And the following job "csv_footwear_category_export" configuration:
-      | filePath | %tmp%/category_export/category_export.csv |
+      | storage | {"type": "local", "file_path": "%tmp%/category_export/category_export.csv"} |
     And I am logged in as "Mary"
 
   Scenario: Display last operations widget

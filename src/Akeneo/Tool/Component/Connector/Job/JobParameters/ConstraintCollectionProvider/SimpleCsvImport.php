@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider;
 
-use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\FileExtension;
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Symfony\Component\Validator\Constraints\Choice;
@@ -39,15 +39,7 @@ class SimpleCsvImport implements ConstraintCollectionProviderInterface
         return new Collection(
             [
                 'fields' => [
-                    'filePath' => [
-                        new NotBlank(['groups' => ['Execution', 'UploadExecution']]),
-                        new FileExtension(
-                            [
-                                'allowedExtensions' => ['csv', 'zip'],
-                                'groups'            => ['Execution', 'UploadExecution']
-                            ]
-                        )
-                    ],
+                    'storage'   => new Storage(['csv', 'zip']),
                     'delimiter' => [
                         new NotBlank(),
                         new Choice(

@@ -37,7 +37,16 @@ const UserProvider: FC = ({children}) => {
 };
 
 const DefaultProviders: FC = ({children}) => {
-    const client = new QueryClient();
+    const client = new QueryClient({
+        defaultOptions: {
+            queries: {
+                // by default, react query uses a back-off delay gradually applied to each retry attempt.
+                // Overriding the delay to 10ms allows us to test its failing behavior without slowing down
+                // the tests.
+                retryDelay: 10,
+            },
+        },
+    });
 
     return (
         <QueryClientProvider client={client}>

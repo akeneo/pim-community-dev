@@ -19,6 +19,7 @@ This value should not be a decimal.: 이 값은 소수가 아니어야 합니다
 "The {{ attribute_code }} attribute can not have the same value more than once. The {{ value }} value is already set on another product.": '{{ attribute_code }} 특성은 같은 값을 두 번 이상 가질 수 없습니다. {{ value }} 값은 이미 다른 제품에 설정되어 있습니다.'
 The same identifier is already set on another product: 동일한 식별자가 이미 다른 제품에 설정되어 있습니다.
 regex.comma_or_semicolon_or_surrounding_space.message: 이 필드에는 쉼표 또는 세미콜론이나 선행/후행 공백이 포함되지 않아야 합니다.
+regex.line_break.message: 이 필드에는 줄 바꿈을 사용할 수 없습니다
 file.extensions.message: '이 파일 확장명은 허용되지 않습니다.(허용되는 확장명: %extensions%).'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": 이 유형의 값은 소수를 구분하기 위해 {{ decimal_separator }}을(를) 사용해야 합니다.
 "This type of value expects the use of dot (.) to separate decimals.": 이 유형의 값은 소수를 구분하기 위해 점(.)을 사용해야 합니다.
@@ -65,8 +66,6 @@ pim_catalog:
     variant_product_invalid_family: '변형 제품 패밀리는 상위와 같아야 합니다.'
     php_int_max_reached: '최대 수는 %php_int_max% 미만이어야 합니다.'
     not_null_family: 식별자가 %sku%인 제품은 변형 제품이기 때문에 패밀리가 'null'일 수 없습니다.
-    variant_product_has_parent: '변형 제품 ''%variant_product%''에는 상위가 있어야 합니다.'
-    invalid_variant_product_parent: '변형 제품 ''%variant_product%''은(는) 제품 모델 ''%product_model%''을(를) 상위 모델로 가질 수 없습니다.(이 제품 모델은 다른 제품 모델만 하위 모델로 가질 수 있습니다.)'
     modified_variant_axis_value: '변형 축 ''%variant_axis%''은(는) 수정할 수 없으며, ''%provided_value%''이(가) 지정되었습니다.'
     family_variant_attributes_unique: 특성은 고유해야 합니다. '%attributes%'은(는) 변형 특성 세트에서 여러 번 사용되었습니다.
     family_variant_axes_unique: 변형 축은 고유해야 합니다. '%attributes%'은(는) 변형 특성 세트에서 여러 번 사용되었습니다.

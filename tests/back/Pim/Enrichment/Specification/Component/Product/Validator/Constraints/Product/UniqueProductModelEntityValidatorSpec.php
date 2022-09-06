@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindId;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductModelEntity;

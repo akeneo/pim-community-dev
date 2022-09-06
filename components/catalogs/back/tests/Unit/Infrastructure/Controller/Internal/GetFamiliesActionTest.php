@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Unit\Infrastructure\Controller\Internal;
 
+use Akeneo\Catalogs\Application\Persistence\GetFamiliesByCodeQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\SearchFamilyQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Controller\Internal\GetFamiliesAction;
-use Akeneo\Catalogs\Infrastructure\Persistence\GetFamiliesByCodeQuery;
-use Akeneo\Catalogs\Infrastructure\Persistence\SearchFamilyQuery;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,13 +15,13 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class GetFamiliesActionTest extends TestCase
 {
     private ?GetFamiliesAction $getFamiliesAction;
-    private ?SearchFamilyQuery $searchFamilyQuery;
-    private ?GetFamiliesByCodeQuery $getFamiliesByCodeQuery;
+    private ?SearchFamilyQueryInterface $searchFamilyQuery;
+    private ?GetFamiliesByCodeQueryInterface $getFamiliesByCodeQuery;
 
     protected function setUp(): void
     {
-        $this->searchFamilyQuery = $this->createMock(SearchFamilyQuery::class);
-        $this->getFamiliesByCodeQuery = $this->createMock(GetFamiliesByCodeQuery::class);
+        $this->searchFamilyQuery = $this->createMock(SearchFamilyQueryInterface::class);
+        $this->getFamiliesByCodeQuery = $this->createMock(GetFamiliesByCodeQueryInterface::class);
         $this->getFamiliesAction = new GetFamiliesAction(
             $this->searchFamilyQuery,
             $this->getFamiliesByCodeQuery,
@@ -112,12 +112,12 @@ class GetFamiliesActionTest extends TestCase
                     'limit' => 0,
                 ],
             ],
-            'search must a string' => [
+            'search must be a string' => [
                 [
                     'search' => 42,
                 ],
             ],
-            'codes must a string' => [
+            'codes must be a string' => [
                 [
                     'codes' => 42,
                 ],

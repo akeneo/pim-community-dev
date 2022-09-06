@@ -2,6 +2,7 @@
 
 namespace Akeneo\UserManagement\Component\Normalizer;
 
+use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface;
@@ -77,6 +78,7 @@ class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
             'email_notifications'       => $user->isEmailNotifications(),
             'timezone'                  => $user->getTimezone(),
             'groups'                    => $user->getGroupNames(),
+            'visible_group_ids'         => $this->getVisibleGroupIds($user),
             'roles'                     => $this->getRoleNames($user),
             'product_grid_filters'      => $user->getProductGridFilters(),
             'profile'                   => $user->getProfile(),
@@ -162,5 +164,13 @@ class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
         }
 
         return 'pim-user-show';
+    }
+
+    /** @return int[] */
+    private function getVisibleGroupIds(UserInterface $user): array
+    {
+        $visibleGroups = array_filter($user->getGroups()->toArray(), static fn (Group $group) => $group->getName() !== 'All');
+
+        return array_map(static fn (Group $group) => $group->getId(), $visibleGroups);
     }
 }

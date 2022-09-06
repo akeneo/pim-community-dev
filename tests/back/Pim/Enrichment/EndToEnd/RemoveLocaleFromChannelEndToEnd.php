@@ -121,7 +121,7 @@ class RemoveLocaleFromChannelEndToEnd extends InternalApiTestCase
 
     private function getRouter(): RouterInterface
     {
-        return self::$container->get('router');
+        return self::getContainer()->get('router');
     }
 
     private function waitForJobExecutionToEnd()

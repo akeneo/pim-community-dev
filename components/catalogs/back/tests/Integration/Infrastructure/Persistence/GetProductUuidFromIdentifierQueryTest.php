@@ -17,7 +17,7 @@ class GetProductUuidFromIdentifierQueryTest extends IntegrationTestCase
 {
     private ?GetProductUuidFromIdentifierQuery $query;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -29,10 +29,13 @@ class GetProductUuidFromIdentifierQueryTest extends IntegrationTestCase
     public function testItGetsProductUuidFromIdentifier(): void
     {
         $user = $this->createUser('shopifi');
-        $product = $this->createProduct('green', [], $user->getId());
+
+        $this->logAs($user->getUserIdentifier());
+
+        $product = $this->createProduct('tshirt-green', [], $user->getId());
         $expected = $product->getUuid();
 
-        $result = $this->query->execute('green');
+        $result = $this->query->execute('tshirt-green');
 
         $this->assertEquals($expected, $result);
     }

@@ -6,7 +6,6 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\ListPro
 
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
-use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -243,7 +242,7 @@ class ErrorListProductEndToEnd extends AbstractProductTestCase
     "message":"${message}",
     "_links":{
         "documentation":{
-            "href": "http:\/\/api.akeneo.com\/documentation\/pagination.html#search-after-type"
+            "href": "http:\/\/api.akeneo.com\/documentation\/pagination.html#the-search-after-method"
         }
     }
 }

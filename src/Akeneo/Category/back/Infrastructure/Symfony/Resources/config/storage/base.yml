@@ -1,0 +1,18 @@
+parameters:
+    pim.category.api.user_intent.set_code.class: Akeneo\Category\Api\Command\UserIntents\SetCode
+
+services:
+    Akeneo\Category\Application\Storage\Save\Saver\CategoryBaseSaver:
+        arguments:
+            - '@Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryBase'
+            - [
+                pim.category.api.user_intent.set_code.class,
+            ]
+        tags:
+            - { name: 'pim.category.save.category_saver' }
+
+    Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryBase:
+        class: 'Akeneo\Category\Infrastructure\Storage\Save\Query\UpsertCategoryBaseSql'
+        arguments:
+            - '@database_connection'
+            - '@Akeneo\Category\Domain\Query\GetCategoryInterface'

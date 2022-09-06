@@ -347,8 +347,8 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
             $actualViolation,
             sprintf('Expected to have a violation with message "%s" at path "%s"', $expectedErrorMessage, $expectedPropertyPath)
         );
-        self::assertEquals($expectedErrorMessage, $violation->getMessage());
-        self::assertEquals($expectedPropertyPath, $violation->getPropertyPath());
+        self::assertEquals($expectedErrorMessage, $actualViolation->getMessage());
+        self::assertEquals($expectedPropertyPath, $actualViolation->getPropertyPath());
     }
 
     /**
@@ -516,8 +516,8 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
             $actualViolation,
             sprintf('Expected to have a violation with message "%s" at path "%s"', $expectedErrorMessage, $expectedPropertyPath)
         );
-        self::assertEquals($expectedErrorMessage, $violation->getMessage());
-        self::assertEquals($expectedPropertyPath, $violation->getPropertyPath());
+        self::assertEquals($expectedErrorMessage, $actualViolation->getMessage());
+        self::assertEquals($expectedPropertyPath, $actualViolation->getPropertyPath());
     }
 
     /**

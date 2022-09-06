@@ -22,7 +22,9 @@ final class UpdateConnectedAppScopesQuery implements UpdateConnectedAppScopesQue
     {
         $updateQuery = <<<SQL
         UPDATE akeneo_connectivity_connected_app
-        SET scopes = :scopes
+        SET
+            scopes = :scopes,
+            updated = NOW()
         WHERE id = :id
         SQL;
 

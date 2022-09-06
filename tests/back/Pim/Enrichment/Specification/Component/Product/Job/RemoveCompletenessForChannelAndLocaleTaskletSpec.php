@@ -23,6 +23,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 
 class RemoveCompletenessForChannelAndLocaleTaskletSpec extends ObjectBehavior
 {
@@ -88,6 +89,7 @@ class RemoveCompletenessForChannelAndLocaleTaskletSpec extends ObjectBehavior
         ProductQueryBuilderInterface $pqb,
         CursorInterface $productsCursor,
     ) {
+        $uuid = Uuid::uuid4();
         $jobParameters->get('channel_code')->willReturn('unknown');
         $jobParameters->get('locales_identifier')->willReturn(['de_DE', 'it_IT']);
         $jobParameters->get('username')->willReturn('willypapa');
@@ -105,7 +107,7 @@ class RemoveCompletenessForChannelAndLocaleTaskletSpec extends ObjectBehavior
 
         $productsCursor->rewind()->shouldBeCalled();
         $productsCursor->current()->willReturn(
-            new IdentifierResult('jean', ProductInterface::class),
+            new IdentifierResult('jean', ProductInterface::class, 'product_' . $uuid->toString()),
         );
         $productsCursor->next()->shouldBeCalled();
         $productsCursor->valid()->willReturn(true, false);
@@ -128,6 +130,10 @@ class RemoveCompletenessForChannelAndLocaleTaskletSpec extends ObjectBehavior
         ProductQueryBuilderInterface $pqb,
         CursorInterface $productsCursor
     ): void {
+        $jeanUuid = Uuid::uuid4();
+        $shoeUuid = Uuid::uuid4();
+        $hatUuid = Uuid::uuid4();
+
         $jeanProduct = (new Product())->setIdentifier('jean');
         $shoeProduct = (new Product())->setIdentifier('shoe');
         $hatProduct = (new Product())->setIdentifier('hat');
@@ -147,9 +153,9 @@ class RemoveCompletenessForChannelAndLocaleTaskletSpec extends ObjectBehavior
 
         $productsCursor->rewind()->shouldBeCalled();
         $productsCursor->current()->willReturn(
-            new IdentifierResult('jean', ProductInterface::class),
-            new IdentifierResult('shoe', ProductInterface::class),
-            new IdentifierResult('hat', ProductInterface::class)
+            new IdentifierResult('jean', ProductInterface::class, 'product_' . $jeanUuid->toString()),
+            new IdentifierResult('shoe', ProductInterface::class, 'product_' . $shoeUuid->toString()),
+            new IdentifierResult('hat', ProductInterface::class, 'product_' . $hatUuid->toString())
         );
         $productsCursor->next()->shouldBeCalled();
         $productsCursor->valid()->willReturn(true, true, true, false);

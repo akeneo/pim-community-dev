@@ -21,8 +21,11 @@
             "Akeneo\\FreeTrial\\": "src/Akeneo/FreeTrial/back",
             "Akeneo\\Pim\\Enrichment\\Product\\": "src/Akeneo/Pim/Enrichment/Product/back",
             "Akeneo\\Pim\\Enrichment\\Category\\": "src/Akeneo/Pim/Enrichment/Category/back",
+            "Akeneo\\Pim\\Structure\\Family\\": "src/Akeneo/Pim/Structure/Family/back",
             "Akeneo\\Channel\\": "src/Akeneo/Channel/back",
-            "Akeneo\\Catalogs\\": "components/catalogs/back/src"
+            "Akeneo\\Catalogs\\": "components/catalogs/back/src",
+            "Akeneo\\Category\\": "src/Akeneo/Category/back",
+            "Akeneo\\UserManagement\\": "src/Akeneo/UserManagement/back"
         }
     },
     "autoload-dev": {
@@ -43,8 +46,11 @@
             "Akeneo\\Test\\Pim\\Automation\\DataQualityInsights\\": "src/Akeneo/Pim/Automation/DataQualityInsights/tests/back",
             "Akeneo\\Test\\Pim\\Enrichment\\Product\\": "src/Akeneo/Pim/Enrichment/Product/back/Test",
             "Akeneo\\Test\\Pim\\Enrichment\\Category\\": "src/Akeneo/Pim/Enrichment/Category/back/Test",
+            "Akeneo\\Test\\Pim\\Structure\\Family\\": "src/Akeneo/Pim/Structure/Family/back/Test",
             "Akeneo\\Test\\Channel\\": "src/Akeneo/Channel/back/tests",
-            "Akeneo\\Catalogs\\Test\\": "components/catalogs/back/tests"
+            "Akeneo\\Catalogs\\Test\\": "components/catalogs/back/tests",
+            "Akeneo\\Test\\Category\\": "src/Akeneo/Category/back/tests",
+            "Akeneo\\Test\\UserManagement\\": "src/Akeneo/UserManagement/back/tests"
         }
     },
     "require": {
@@ -90,7 +96,7 @@
         "imagine/imagine": "1.2.4",
         "justinrainbow/json-schema": "^5.2",
         "khaled.alshamaa/ar-php": "^6.2",
-        "lcobucci/jwt": "^4.1",
+        "lcobucci/jwt": "~4.1.5",
         "league/flysystem": "^2.0",
         "league/flysystem-memory": "^2.0",
         "liip/imagine-bundle": "2.6.1",
@@ -151,24 +157,25 @@
         "friends-of-behat/mink-extension": "^2.5.0",
         "friends-of-behat/symfony-extension": "^2.2.1",
         "friends-of-phpspec/phpspec-code-coverage": "^6.1.0",
-        "friendsofphp/php-cs-fixer": "^3.0",
+        "friendsofphp/php-cs-fixer": "^3.0,<3.9.1",
         "instaclick/php-webdriver": "1.4.7",
         "league/flysystem-aws-s3-v3": "^2.0",
         "liuggio/fastest": "1.8.*",
         "mcustiel/phiremock": "2.1.1",
+        "nunomaduro/phpinsights": "^2.0",
         "phpspec/phpspec": "^7.1.0",
         "phpspec/prophecy": "^1.14.0",
-        "phpstan/phpstan": "^1.7.14",
+        "phpstan/phpstan": "^1.8",
         "phpstan/phpstan-symfony": "^1.2.5",
         "phpstan/phpstan-webmozart-assert": "^1.2.0",
         "phpunit/phpunit": "^9.5",
         "psr/simple-cache": "^2.0",
+        "rector/rector": "^0.13.10",
         "sebastian/exporter": "^4.0.0",
         "sensiolabs/behat-page-object-extension": "^2.3.3",
         "squizlabs/php_codesniffer": "3.*",
         "symfony/debug-bundle": "^5.4.0",
         "symfony/web-profiler-bundle": "^5.4.0",
-        "nunomaduro/phpinsights": "^2.0",
         "vimeo/psalm": "^4.10"
     },
     "conflict": {

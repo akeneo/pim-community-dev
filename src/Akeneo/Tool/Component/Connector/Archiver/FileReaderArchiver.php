@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Step\ItemStep;
-use Akeneo\Tool\Component\Connector\Reader\File\Csv\Reader;
+use Akeneo\Tool\Component\Connector\Reader\File\FileReaderInterface;
 use League\Flysystem\FilesystemOperator;
 
 /**
@@ -40,7 +40,8 @@ class FileReaderArchiver extends AbstractFilesystemArchiver
 
             if ($this->isReaderUsable($reader)) {
                 $jobParameters = $jobExecution->getJobParameters();
-                $filePath = $jobParameters->get('filePath');
+                $filePath = $jobParameters->get('storage')['file_path'];
+
                 $archivePath = strtr(
                     $this->getRelativeArchivePath($jobExecution),
                     [
@@ -92,6 +93,6 @@ class FileReaderArchiver extends AbstractFilesystemArchiver
      */
     protected function isReaderUsable(ItemReaderInterface $reader): bool
     {
-        return $reader instanceof Reader;
+        return $reader instanceof FileReaderInterface;
     }
 }

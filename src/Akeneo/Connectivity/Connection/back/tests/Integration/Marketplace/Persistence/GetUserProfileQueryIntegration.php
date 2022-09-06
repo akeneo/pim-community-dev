@@ -35,7 +35,7 @@ class GetUserProfileQueryIntegration extends TestCase
         parent::setUp();
 
         $this->getUserProfileQuery = $this->get(GetUserProfileQuery::class);
-        $this->dbalConnection = self::$container->get('database_connection');
+        $this->dbalConnection = self::getContainer()->get('database_connection');
     }
 
     protected function getConfiguration(): Configuration

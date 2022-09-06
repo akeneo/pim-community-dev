@@ -13,7 +13,7 @@ Feature: Export families in XLSX
       | code     | label-en_US | requirements-tablet | requirements-mobile |
       | tractors |             | sku                 | sku                 |
     And the following job "xlsx_footwear_family_export" configuration:
-      | filePath | %tmp%/family_export/family.xlsx |
+      | storage | {"type": "local", "file_path": "%tmp%/family_export/family.xlsx"} |
     And I am on the "xlsx_footwear_family_export" export job page
     When I launch the export job
     And I wait for the "xlsx_footwear_family_export" job to finish

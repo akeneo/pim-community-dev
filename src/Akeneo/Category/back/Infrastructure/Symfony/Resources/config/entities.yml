@@ -1,0 +1,3 @@
+parameters:
+    pim_catalog.entity.category.class: Akeneo\Category\Infrastructure\Component\Model\Category
+    pim_catalog.entity.category_translation.class: Akeneo\Category\Infrastructure\Component\Model\CategoryTranslation

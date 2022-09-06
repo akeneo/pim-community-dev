@@ -13,34 +13,51 @@ use Twig\Environment;
  * Notify Job execution result by mail
  *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
- * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
+ * @copyright 2013 Akeneo SAS (https://www.akeneo.com)
+ * @license   https://opensource.org/licenses/MIT MIT
  */
 class MailNotifier implements Notifier
 {
-    protected ?string $recipientEmail = null;
+    private array $recipientEmails = [];
 
     public function __construct(
-        protected LoggerInterface       $logger,
-        protected TokenStorageInterface $tokenStorage,
-        protected Environment           $twig,
-        protected MailNotification      $mailer
+        private LoggerInterface $logger,
+        private TokenStorageInterface $tokenStorage,
+        private Environment $twig,
+        private MailNotification $mailer,
     ) {
     }
 
-    public function setRecipientEmail(string $recipientEmail): self
+    public function notify(JobExecution $jobExecution): void
     {
-        $this->recipientEmail = $recipientEmail;
+        $emailsToNotify = $this->getEmailsToNotify();
 
-        return $this;
+        foreach ($emailsToNotify as $email) {
+            $this->sendMail($jobExecution, $email);
+        }
     }
 
-    public function notify(JobExecution $jobExecution)
+    public function setRecipients(array $recipients): void
     {
-        if (null === $email = $this->getEmail()) {
-            return;
+        $this->recipientEmails = $recipients;
+    }
+
+    private function getEmailsToNotify(): array
+    {
+        $emailsToNotify = $this->recipientEmails;
+
+        if (0 === count($emailsToNotify)) {
+            $authenticatedUserEmail = $this->tokenStorage->getToken()?->getUser()?->getEmail();
+            if (null !== $authenticatedUserEmail) {
+                $emailsToNotify[] = $authenticatedUserEmail;
+            }
         }
 
+        return array_unique($emailsToNotify);
+    }
+
+    private function sendMail(JobExecution $jobExecution, string $email): void
+    {
         $parameters = [
             'jobExecution' => $jobExecution,
             'email' => $email
@@ -55,29 +72,6 @@ class MailNotifier implements Notifier
                 MailNotifier::class . ' - Unable to send email : ' . $exception->getMessage(),
                 ['Exception' => $exception]
             );
-            return;
         }
-    }
-
-    /**
-     * Get the current authenticated user
-     *
-     * @return null|string
-     */
-    private function getEmail(): ?string
-    {
-        if ($this->recipientEmail) {
-            return $this->recipientEmail;
-        }
-
-        if (null === $token = $this->tokenStorage->getToken()) {
-            return null;
-        }
-
-        if (!is_object($user = $token->getUser())) {
-            return null;
-        }
-
-        return $user->getEmail();
     }
 }

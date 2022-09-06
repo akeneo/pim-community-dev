@@ -45,13 +45,13 @@ class JobInstancesConfigurator
         foreach ($jobInstances as $jobInstance) {
             $configuration = $jobInstance->getRawParameters();
 
-            $configuration['filePath'] = sprintf('%s%s', $installerDataPath, $configuration['filePath']);
-            if (!is_readable($configuration['filePath'])) {
+            $configuration['storage']['file_path'] = sprintf('%s%s', $installerDataPath, $configuration['storage']['file_path']);
+            if (!is_readable($configuration['storage']['file_path'])) {
                 throw new \Exception(
                     sprintf(
                         'The job "%s" can\'t be processed because the file "%s" is not readable',
                         $jobInstance->getCode(),
-                        $configuration['filePath']
+                        $configuration['storage']['file_path']
                     )
                 );
             }
@@ -80,19 +80,19 @@ class JobInstancesConfigurator
         foreach ($jobInstances as $jobInstance) {
             $configuration = $jobInstance->getRawParameters();
 
-            if (!isset($replacePaths[$configuration['filePath']])) {
-                throw new \Exception(sprintf('No replacement path for "%s"', $configuration['filePath']));
+            if (!isset($replacePaths[$configuration['storage']['file_path']])) {
+                throw new \Exception(sprintf('No replacement path for "%s"', $configuration['storage']['file_path']));
             }
-            foreach ($replacePaths[$configuration['filePath']] as $replacePath) {
+            foreach ($replacePaths[$configuration['storage']['file_path']] as $replacePath) {
                 $configuredJobInstance = clone $jobInstance;
                 $configuredJobInstance->setCode($configuredJobInstance->getCode().''.$counter++);
-                $configuration['filePath'] = $replacePath;
-                if (!is_readable($configuration['filePath'])) {
+                $configuration['storage']['file_path'] = $replacePath;
+                if (!is_readable($configuration['storage']['file_path'])) {
                     throw new \Exception(
                         sprintf(
                             'The job "%s" can\'t be processed because the file "%s" is not readable',
                             $configuredJobInstance->getCode(),
-                            $configuration['filePath']
+                            $configuration['storage']['file_path']
                         )
                     );
                 }

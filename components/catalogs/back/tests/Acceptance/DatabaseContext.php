@@ -25,7 +25,7 @@ class DatabaseContext implements Context
     /**
      * @BeforeScenario @database
      */
-    public function loadFixtures()
+    public function loadFixtures(): void
     {
         $catalog = $this->container->get('akeneo_integration_tests.catalogs');
         $configuration = $catalog->useMinimalCatalog();

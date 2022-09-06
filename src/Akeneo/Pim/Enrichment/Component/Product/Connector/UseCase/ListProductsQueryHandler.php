@@ -54,8 +54,6 @@ final class ListProductsQueryHandler
 
     private GetProductsWithCompletenessesInterface $getProductsWithCompletenesses;
 
-    private FindId $getProductId;
-
     public function __construct(
         IdentifiableObjectRepositoryInterface $channelRepository,
         ApplyProductSearchQueryParametersToPQB $applyProductSearchQueryParametersToPQB,
@@ -66,7 +64,6 @@ final class ListProductsQueryHandler
         EventDispatcherInterface $eventDispatcher,
         GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
         GetProductsWithCompletenessesInterface $getProductsWithCompletenesses,
-        FindId $getProductId
     ) {
         $this->channelRepository = $channelRepository;
         $this->applyProductSearchQueryParametersToPQB = $applyProductSearchQueryParametersToPQB;
@@ -77,7 +74,6 @@ final class ListProductsQueryHandler
         $this->eventDispatcher = $eventDispatcher;
         $this->getProductsWithQualityScores = $getProductsWithQualityScores;
         $this->getProductsWithCompletenesses = $getProductsWithCompletenesses;
-        $this->getProductId = $getProductId;
     }
 
     /**

@@ -6,6 +6,7 @@ namespace Pim\Behat\Context;
 
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Gherkin\Node\TableNode;
 use Context\Spin\SpinCapableTrait;
@@ -49,7 +50,10 @@ final class ImportExportFileContext extends PimContext implements SnippetAccepti
     public function entitiesAreImportedViaTheJobWithOptions(string $entities, string $jobName, TableNode $jobOptions)
     {
         $newJobOptions = new TableNode(
-            array_merge($jobOptions->getTable(), [['filePath', self::$placeholderValues['%file to import%']]])
+            array_merge(
+                $jobOptions->getTable(),
+                [['storage', json_encode(['type' => 'local', 'file_path' => self::$placeholderValues['%file to import%']])]]
+            )
         );
 
         $this->launchJob($jobName, $newJobOptions);
@@ -68,11 +72,12 @@ final class ImportExportFileContext extends PimContext implements SnippetAccepti
      */
     public function thereShouldBeProductSkippedBecauseThereIsNoDifference(string $number)
     {
-        $productsSkipped = array_map(function ($stepExecution) {
-            return $stepExecution->getSummaryInfo('product_skipped_no_diff');
-        }, $this->jobExecution->getStepExecutions()->toArray());
+        $importStep = current(array_filter(
+            $this->jobExecution->getStepExecutions()->toArray(),
+            static fn (StepExecution $stepExecution) => 'import' === $stepExecution->getStepName(),
+        ));
 
-        Assert::assertEquals($productsSkipped[1], $number);
+        Assert::assertEquals($number, $importStep->getSummaryInfo('product_skipped_no_diff'));
     }
 
     /**

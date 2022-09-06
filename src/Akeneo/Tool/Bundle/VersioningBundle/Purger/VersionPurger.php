@@ -5,8 +5,7 @@ namespace Akeneo\Tool\Bundle\VersioningBundle\Purger;
 use Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlDeleteVersionsByIdsQuery;
 use Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlGetAllResourceNamesQuery;
 use Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlGetPurgeableVersionListQuery;
-use Symfony\Component\Console\Helper\ProgressBar;
-use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -20,31 +19,20 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class VersionPurger implements VersionPurgerInterface
 {
     /** @var VersionPurgerAdvisorInterface[] */
-    protected $versionPurgerAdvisors = [];
-
-    /** @var SqlDeleteVersionsByIdsQuery */
-    private $deleteVersionsByIdsQuery;
-
-    /** @var SqlGetAllResourceNamesQuery */
-    private $getAllResourceNamesQuery;
-
-    /** @var SqlGetPurgeableVersionListQuery */
-    private $getPurgeableVersionListQuery;
+    protected array $versionPurgerAdvisors = [];
 
     public function __construct(
-        SqlDeleteVersionsByIdsQuery $deleteVersionsByIdsQuery,
-        SqlGetAllResourceNamesQuery $getAllResourceNamesQuery,
-        SqlGetPurgeableVersionListQuery $getPurgeableVersionListQuery
+        private SqlDeleteVersionsByIdsQuery $deleteVersionsByIdsQuery,
+        private SqlGetAllResourceNamesQuery $getAllResourceNamesQuery,
+        private SqlGetPurgeableVersionListQuery $getPurgeableVersionListQuery,
+        private Logger $logger,
     ) {
-        $this->deleteVersionsByIdsQuery = $deleteVersionsByIdsQuery;
-        $this->getAllResourceNamesQuery = $getAllResourceNamesQuery;
-        $this->getPurgeableVersionListQuery = $getPurgeableVersionListQuery;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function purge(array $options, OutputInterface $output)
+    public function purge(array $options)
     {
         $optionResolver = new OptionsResolver();
         $this->configureOptions($optionResolver);
@@ -54,9 +42,22 @@ class VersionPurger implements VersionPurgerInterface
         $resourceNamesToPurgeCount = 1;
 
         foreach ($resourceNamesToPurge as $resourceName) {
-            $output->writeln(sprintf('Start purging versions of %s (%d/%d)', $resourceName, $resourceNamesToPurgeCount, count($resourceNamesToPurge)));
-            $purgedVersions = $this->purgeVersionsByResourceName($resourceName, $options, $output);
-            $output->writeln($purgedVersions > 0 ? sprintf('Successfully deleted %d versions.', $purgedVersions) : 'There are no versions to purge.');
+            $this->logger->info(
+                sprintf(
+                    'Start purging versions of %s (%d/%d)',
+                    $resourceName,
+                    $resourceNamesToPurgeCount,
+                    count($resourceNamesToPurge)
+                ),
+                ['options' => $options]
+            );
+            $purgedVersions = $this->purgeVersionsByResourceName($resourceName, $options);
+            $this->logger->info(
+                $purgedVersions > 0 ? sprintf(
+                    'Successfully deleted %d versions.',
+                    $purgedVersions
+                ) : 'There are no versions to purge.'
+            );
             $resourceNamesToPurgeCount++;
         }
     }
@@ -69,17 +70,16 @@ class VersionPurger implements VersionPurgerInterface
         $this->versionPurgerAdvisors[] = $versionPurgerAdvisor;
     }
 
-    private function purgeVersionsByResourceName($resourceName, array $options, OutputInterface $output): int
+    private function purgeVersionsByResourceName($resourceName, array $options): int
     {
-        $versionsToPurgeCount = $this->countVersionsToPurge($resourceName, $options);
+        $versionsToPurgeCount = $this->countVersionsToPurge($resourceName);
+        $this->logger->info(sprintf('Versions count = %d', $versionsToPurgeCount));
 
         if (0 === $versionsToPurgeCount) {
             return 0;
         }
 
         $versionsToPurge = $this->getVersionsToPurge($resourceName, $options);
-        $progressBar = new ProgressBar($output, $versionsToPurgeCount);
-        $progressBar->start();
         $purgedVersionsCount = 0;
 
         foreach ($versionsToPurge as $purgeableVersionList) {
@@ -89,12 +89,7 @@ class VersionPurger implements VersionPurgerInterface
                 $this->deleteVersionsByIdsQuery->execute($purgeableVersionList->getVersionIds());
                 $purgedVersionsCount += count($purgeableVersionList);
             }
-
-            $progressBar->advance($options['batch_size']);
         }
-
-        $progressBar->finish();
-        $progressBar->clear();
 
         return $purgedVersionsCount;
     }
@@ -148,7 +143,7 @@ class VersionPurger implements VersionPurgerInterface
         return $this->getAllResourceNamesQuery->execute();
     }
 
-    private function countVersionsToPurge($resourceName, array $options): int
+    private function countVersionsToPurge($resourceName): int
     {
         return $this->getPurgeableVersionListQuery->countByResource($resourceName);
     }
@@ -156,7 +151,15 @@ class VersionPurger implements VersionPurgerInterface
     private function getVersionsToPurge($resourceName, array $options): iterable
     {
         return '>' === $options['date_operator']
-            ? $this->getPurgeableVersionListQuery->youngerThan($resourceName, $options['limit_date'], $options['batch_size'])
-            : $this->getPurgeableVersionListQuery->olderThan($resourceName, $options['limit_date'], $options['batch_size']);
+            ? $this->getPurgeableVersionListQuery->youngerThan(
+                $resourceName,
+                $options['limit_date'],
+                $options['batch_size']
+            )
+            : $this->getPurgeableVersionListQuery->olderThan(
+                $resourceName,
+                $options['limit_date'],
+                $options['batch_size']
+            );
     }
 }

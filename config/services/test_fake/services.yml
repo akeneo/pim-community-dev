@@ -18,6 +18,12 @@ imports:
     - { resource: ../../../src/Akeneo/Platform/Bundle/FeatureFlagBundle/Resources/config/test_fake_services.yml }
     # Enrichment
     - { resource: ../../../src/Akeneo/Pim/Enrichment/Product/back/Test/Acceptance/Resources/config/services.yml }
+    # Category
+    - { resource: ../../../tests/back/Category/Acceptance/Resources/config/services.yml }
+    # Channel
+    - { resource: ../../../src/Akeneo/Channel/back/tests/Acceptance/Resources/config/services.yml }
+    # Notification
+    - { resource: ../../../tests/back/Platform/Acceptance/NotificationBundle/Resources/config/services.yml }
 
 services:
     akeneo_integration_tests.doctrine.connection.connection_closer:

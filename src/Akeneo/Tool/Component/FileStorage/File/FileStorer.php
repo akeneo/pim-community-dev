@@ -2,12 +2,14 @@
 
 namespace Akeneo\Tool\Component\FileStorage\File;
 
+use Akeneo\Tool\Component\FileStorage\Exception\FileAlreadyExistsException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\Exception\InvalidFile;
 use Akeneo\Tool\Component\FileStorage\FileInfoFactoryInterface;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\DuplicateObjectException;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\UnableToWriteFile;
@@ -20,23 +22,16 @@ use Symfony\Component\Filesystem\Filesystem;
  * and save it to the database.
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @copyright 2015 Akeneo SAS (https://www.akeneo.com)
+ * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class FileStorer implements FileStorerInterface
 {
-    protected FilesystemProvider $filesystemProvider;
-    protected SaverInterface $saver;
-    protected FileInfoFactoryInterface $factory;
-
     public function __construct(
-        FilesystemProvider $filesystemProvider,
-        SaverInterface $saver,
-        FileInfoFactoryInterface $factory
+        private FilesystemProvider $filesystemProvider,
+        private SaverInterface $saver,
+        private FileInfoFactoryInterface $factory
     ) {
-        $this->filesystemProvider = $filesystemProvider;
-        $this->saver = $saver;
-        $this->factory = $factory;
     }
 
     /**
@@ -80,7 +75,11 @@ class FileStorer implements FileStorerInterface
             throw new FileTransferException($error, $e->getCode(), $e);
         }
 
-        $this->saver->save($file);
+        try {
+            $this->saver->save($file);
+        } catch (DuplicateObjectException $e) {
+            throw new FileAlreadyExistsException($e->getMessage());
+        }
 
         if (true === $deleteRawFile) {
             $this->deleteRawFile($localFile);
@@ -94,7 +93,7 @@ class FileStorer implements FileStorerInterface
      *
      * @throws FileRemovalException
      */
-    protected function deleteRawFile(\SplFileInfo $file): void
+    private function deleteRawFile(\SplFileInfo $file): void
     {
         $filesystem = new Filesystem();
 

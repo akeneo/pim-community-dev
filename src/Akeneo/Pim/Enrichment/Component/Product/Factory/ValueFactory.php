@@ -35,7 +35,7 @@ class ValueFactory
 
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
-        if (null === $data || [] === $data || '' === $data || [''] === $data || [null] === $data) {
+        if (null === $data || [] === $data || '' === $data) {
             throw new InvalidArgumentException(get_class($this), sprintf('Data should not be empty, %s found', json_encode($data)));
         }
 

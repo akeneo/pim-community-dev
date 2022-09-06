@@ -1,0 +1,6 @@
+services:
+    Akeneo\Category\Infrastructure\EventSubscriber\InitCategoryDbSchemaSubscriber:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'kernel.event_subscriber' }

@@ -6,7 +6,7 @@ namespace Akeneo\Tool\Bundle\MeasureBundle\tests\Integration\PublicApi;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\SqlGetUnitTranslations;
+use Akeneo\Tool\Bundle\MeasureBundle\ServiceApi\SqlGetUnitTranslations;
 
 final class SqlGetUnitTranslationsIntegration extends TestCase
 {
@@ -40,6 +40,6 @@ final class SqlGetUnitTranslationsIntegration extends TestCase
 
     private function getQuery(): SqlGetUnitTranslations
     {
-        return $this->get('akeneo_measurement.public_api.get_unit_translations');
+        return $this->get('akeneo_measurement.service_api.get_unit_translations');
     }
 }

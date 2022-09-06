@@ -15,6 +15,8 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class CreateUserValidator extends ConstraintValidator
 {
+    private const JOB_USERNAME_PREFIX = 'job_automated_';
+
     /**
      * @param UserInterface         $user
      * @param Constraint|CreateUser $constraint
@@ -35,8 +37,15 @@ class CreateUserValidator extends ConstraintValidator
 
     private function validateUsername(UserInterface $user, CreateUser $constraint)
     {
-        if (preg_match('/\s/', $user->getUserIdentifier()) !== 0) {
+        $username = $user->getUserIdentifier();
+        if (preg_match('/\s/', $username) !== 0) {
             $this->context->buildViolation($constraint->errorSpaceInUsername)
+                ->atPath('username')
+                ->addViolation();
+        }
+
+        if (!$user->isJobUser() && str_starts_with($username, self::JOB_USERNAME_PREFIX)) {
+            $this->context->buildViolation(CreateUser::RESERVED_PREFIX_USERNAME, ['{{ prefix }}' => self::JOB_USERNAME_PREFIX])
                 ->atPath('username')
                 ->addViolation();
         }

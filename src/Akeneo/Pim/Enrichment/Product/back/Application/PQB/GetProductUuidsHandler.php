@@ -44,7 +44,10 @@ final class GetProductUuidsHandler
             null,
             null
         );
-        $this->productUuidQueryFetcher->initialize($this->pqb->buildQuery($getProductUuidsQuery->userId()));
+        $this->productUuidQueryFetcher->initialize($this->pqb->buildQuery(
+            $getProductUuidsQuery->userId(),
+            $getProductUuidsQuery->searchAfterUuid()
+        ));
 
         return ProductUuidCursor::createFromFetcher($this->productUuidQueryFetcher);
     }

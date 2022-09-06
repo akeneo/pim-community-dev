@@ -50,4 +50,10 @@ class SetSimpleReferenceEntityValueSpec extends ObjectBehavior
         $this->beConstructedWith('attribute_name', null, null, '');
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
+
+    function it_can_be_instantiated_with_0_as_record_code()
+    {
+        $this->beConstructedWith('attribute_name',null, null, '0');
+        $this->shouldNotThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
 }

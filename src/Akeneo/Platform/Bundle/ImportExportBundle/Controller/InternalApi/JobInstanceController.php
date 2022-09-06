@@ -5,9 +5,10 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Controller\InternalApi;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\ManualUploadStorage;
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\NoneStorage;
 use Akeneo\Platform\Bundle\ImportExportBundle\Event\JobInstanceEvents;
 use Akeneo\Platform\Bundle\ImportExportBundle\Exception\JobInstanceCannotBeUpdatedException;
-use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\RemoteStorageFeatureFlag;
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Security\CredentialsEncrypterRegistry;
 use Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceFactory;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
@@ -26,6 +27,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -70,7 +72,7 @@ class JobInstanceController
         private CollectionFilterInterface $inputFilter,
         private FilesystemOperator $filesystem,
         private SecurityFacade $securityFacade,
-        private RemoteStorageFeatureFlag $remoteStorageFeatureFlag,
+        private CredentialsEncrypterRegistry $credentialsEncrypterRegistry,
     ) {
     }
 
@@ -188,7 +190,10 @@ class JobInstanceController
             throw new AccessDeniedHttpException();
         }
 
-        return new JsonResponse($this->normalizeJobInstance($jobInstance));
+        $normalizedJobInstance = $this->normalizeJobInstance($jobInstance);
+        $normalizedJobInstance = $this->credentialsEncrypterRegistry->decryptCredentials($normalizedJobInstance);
+
+        return new JsonResponse($normalizedJobInstance);
     }
 
     /**
@@ -211,6 +216,22 @@ class JobInstanceController
 
         $data = json_decode($request->getContent(), true);
 
+        $filteredData = $this->inputFilter->filterCollection(
+            $data,
+            'pim.internal_api.job_instance.edit',
+            ['preserve_keys' => true]
+        );
+
+        $this->updater->update($jobInstance, $filteredData);
+
+        $errors = $this->getValidationErrors($jobInstance);
+        if (0 < count($errors)) {
+            return new JsonResponse($errors, 400);
+        }
+
+        $encryptedData = $this->credentialsEncrypterRegistry->encryptCredentials($data);
+        $this->updater->update($jobInstance, $encryptedData);
+
         try {
             $this->eventDispatcher->dispatch(
                 new GenericEvent($jobInstance, ['data' => $data]),
@@ -220,18 +241,6 @@ class JobInstanceController
             return new JsonResponse(['message' => $e->getMessage()], 400);
         }
 
-        $filteredData = $this->inputFilter->filterCollection(
-            $data,
-            'pim.internal_api.job_instance.edit',
-            ['preserve_keys' => true]
-        );
-        $this->updater->update($jobInstance, $filteredData);
-
-        $errors = $this->getValidationErrors($jobInstance);
-        if (count($errors) > 0) {
-            return new JsonResponse($errors, 400);
-        }
-
         $this->saver->save($jobInstance);
 
         $this->eventDispatcher->dispatch(
@@ -239,7 +248,10 @@ class JobInstanceController
             JobInstanceEvents::POST_SAVE
         );
 
-        return new JsonResponse($this->normalizeJobInstance($jobInstance));
+        $normalizedJobInstance = $this->normalizeJobInstance($jobInstance);
+        $normalizedJobInstance = $this->credentialsEncrypterRegistry->decryptCredentials($normalizedJobInstance);
+
+        return new JsonResponse($normalizedJobInstance);
     }
 
     protected function deleteAction(string $code): Response
@@ -305,22 +317,18 @@ class JobInstanceController
             }
 
             $rawParameters = $jobInstance->getRawParameters();
-            $rawParameters['filePath'] = $jobFileLocation->url();
-            if ($this->remoteStorageFeatureFlag->isEnabled($jobInstance->getJobName())) {
-                $rawParameters['storage'] = [
-                    'type' => ManualUploadStorage::TYPE,
-                    'file_path' => $jobFileLocation->path(),
-                ];
-            }
+            $filePath = $jobFileLocation->path();
+            $rawParameters['storage'] = [
+                'type' => ManualUploadStorage::TYPE,
+                'file_path' => $filePath,
+            ];
 
             $jobInstance->setRawParameters($rawParameters);
         }
 
-        /* TODO remove it when we will migrate to storage unification */
-        if ($this->remoteStorageFeatureFlag->isEnabled($jobInstance->getJobName())) {
-            $rawParameters = $jobInstance->getRawParameters();
-            $rawParameters['filePath'] = '/tmp/fake_path.xlsx';
-            $jobInstance->setRawParameters($rawParameters);
+        $rawParameters = $jobInstance->getRawParameters();
+        if (NoneStorage::TYPE === $rawParameters['storage']['type'] && JobInstance::TYPE_IMPORT === $jobInstance->getType()) {
+            throw new BadRequestException();
         }
 
         $validationGroups = null !== $file ? ['Default', 'Execution', 'UploadExecution'] : ['Default', 'Execution'];
@@ -546,7 +554,10 @@ class JobInstanceController
             JobInstanceEvents::POST_SAVE
         );
 
-        return new JsonResponse($this->normalizeJobInstance($jobInstance));
+        $normalizedJobInstance = $this->normalizeJobInstance($jobInstance);
+        $normalizedJobInstance = $this->credentialsEncrypterRegistry->decryptCredentials($normalizedJobInstance);
+
+        return new JsonResponse($normalizedJobInstance);
     }
 
     /**
