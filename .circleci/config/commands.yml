@@ -1,0 +1,46 @@
+commands:
+    fix_files_permissions:
+        steps:
+            -   run:
+                    name: Create missing directories
+                    command: mkdir -p ~/.composer ~/.cache/yarn ~/.cache/Cypress
+            -   run:
+                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                    command: sudo chown -R 1000:1000 ../project ~/.composer ~/.cache/yarn ~/.cache/Cypress
+
+    load_docker_image_php:
+        steps:
+            -   run:
+                    name: Load php docker image
+                    command: |
+                        [ ! -d "~/project/php-pim-image.tar" ] && docker load -i php-pim-image.tar
+                        [ ! -d "~/project/php-pim-image.tar" ] || docker-compose pull php
+
+    load_docker_image_node:
+        steps:
+            -   run:
+                    name: Load node docker image
+                    command: docker-compose pull node
+
+    start_test_containers:
+        steps:
+            -   run:
+                    name: Pull docker images
+                    command: docker-compose pull mysql elasticsearch object-storage pubsub-emulator
+            -   run:
+                    name: Start containers
+                    command: |
+                        APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
+                        docker/wait_docker_up.sh
+            -   run:
+                    name: Install database
+                    command: APP_ENV=test O="--withoutFixtures" make database
+
+    restore_frontend_dependency_cache:
+        steps:
+            -   run:
+                    name: Creating hash of JS dependencies
+                    command: cat yarn.lock > ~/front-dependency.hash && date +%F >> ~/front-dependency.hash
+            -   restore_cache:
+                    name: Restore JS dependencies from the cache
+                    key: frontend-dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/front-dependency.hash" }}

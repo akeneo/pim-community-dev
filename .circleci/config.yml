@@ -27,7 +27,7 @@ jobs:
             - path-filtering/set-parameters:
                   base-revision: master
                   mapping: |
-                    upgrades/.* run-database-migration-tests true
+                    upgrades/.* run-database-tests true
                   output-path: /tmp/pipeline-parameters.json
             - run:
                   name: Debug parameters
