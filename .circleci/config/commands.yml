@@ -13,8 +13,8 @@ commands:
             -   run:
                     name: Load php docker image
                     command: |
-                        [ -f ~/project/php-pim-image.tar ] && docker load -i php-pim-image.tar
-                        [ ! -f ~/project/php-pim-image.tar ] && docker-compose pull php
+                        [ ! -f ~/project/php-pim-image.tar ] || docker load -i php-pim-image.tar
+                        [ -f ~/project/php-pim-image.tar ] || docker-compose pull php
 
     load_docker_image_node:
         steps:
