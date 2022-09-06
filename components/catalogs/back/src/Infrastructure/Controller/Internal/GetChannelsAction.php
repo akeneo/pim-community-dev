@@ -46,8 +46,6 @@ class GetChannelsAction
     }
 
     /**
-     * @param string|null $concatCodes
-     *
      * @return array<array-key, array{code: string, label: string}>
      */
     private function getChannels(?string $concatCodes, int $page, int $limit): array
