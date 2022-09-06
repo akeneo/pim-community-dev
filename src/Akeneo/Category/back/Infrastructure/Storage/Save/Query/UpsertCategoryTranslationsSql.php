@@ -50,7 +50,7 @@ class UpsertCategoryTranslationsSql implements UpsertCategoryTranslations
         }
 
         if (empty($queries)) {
-            // no label translation has been modified
+            // previous label translation and new one are identical
             return;
         }
 
