@@ -34,14 +34,14 @@ class CellsFormatter
                 return $cell ? 'TRUE' : 'FALSE';
             case is_string($cell):
                 if (is_numeric($cell)) {
-                    return rtrim((string) number_format((float) $cell, decimals: MeasureConverter::SCALE, thousands_separator: ''), '0');
+                    return rtrim(rtrim(number_format((float) $cell, decimals: MeasureConverter::SCALE, thousands_separator: ''), '0'), '.');
                 }
 
                 return $cell;
             case is_int($cell):
                 return (string) $cell;
             case is_float($cell):
-                return rtrim((string) number_format($cell, decimals: MeasureConverter::SCALE, thousands_separator: ''), '0');
+                return rtrim(rtrim(number_format($cell, decimals: MeasureConverter::SCALE, thousands_separator: ''), '0'), '.');
             case is_null($cell):
                 /* TODO validate the error message that we want expose to the user */
                 throw new \RuntimeException('');
