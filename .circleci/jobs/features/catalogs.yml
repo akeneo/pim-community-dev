@@ -134,11 +134,11 @@ jobs:
                     name: Define environment variables
                     command: echo export PIM_CONTEXT=catalogs >> $BASH_ENV
             -   run:
-                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
-                    command: sudo chown -R 1000:1000 ../project
-            -   run:
                     name: Load php docker image
                     command: docker load -i php-pim-image.tar
+            -   run:
+                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                    command: sudo chown -R 1000:1000 ../project
             -   run:
                     name: Pull docker images
                     command: docker-compose pull mysql elasticsearch object-storage pubsub-emulator
