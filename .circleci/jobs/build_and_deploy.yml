@@ -261,9 +261,6 @@ jobs:
                     keys:
                         - backend-dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/back-dependency.hash" }}
             -   run:
-                    name: Pull docker image for php
-                    command: docker-compose pull php
-            -   run:
                     name: Install back dependencies
                     command: make vendor
             -   persist_to_workspace:
