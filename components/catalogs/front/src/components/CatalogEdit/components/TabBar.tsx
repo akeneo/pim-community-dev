@@ -37,7 +37,7 @@ const TabBar: FC<PropsWithChildren<Props>> = ({isCurrent, switchTo, invalid}) =>
                     isActive={isCurrent(Tabs.PRODUCT_VALUE_FILTERS)}
                     onClick={() => switchTo(Tabs.PRODUCT_VALUE_FILTERS)}
                 >
-                    {translate('akeneo_catalogs.catalog_edit.tabs.filter_values')}
+                    {translate('akeneo_catalogs.catalog_edit.tabs.product_value_filters')}
                     {invalid[Tabs.PRODUCT_VALUE_FILTERS] && <Pill level='danger' />}
                 </StyledTabBar.Tab>
             </StyledTabBar>

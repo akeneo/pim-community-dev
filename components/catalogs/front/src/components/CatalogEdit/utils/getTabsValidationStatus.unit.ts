@@ -42,7 +42,7 @@ const tests: {errors: CatalogFormErrors; result: {[key in Tabs]: boolean}}[] = [
     {
         errors: [
             {
-                propertyPath: '[filter_values][0][value]',
+                propertyPath: '[product_value_filters][0][value]',
                 message: 'Invalid.',
             },
         ],

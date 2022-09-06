@@ -11,14 +11,14 @@ akeneo_catalogs:
             settings: Catalog settings
             product_selection: Product selection
             more: More
-            filter_values: Filter the values
+            product_value_filters: Filter the values
     settings:
         fields:
             enabled: Enabled
         inputs:
             yes: Yes
             no: No
-    filter_values:
+    product_value_filters:
         action:
             open: Open
             remove: Remove
