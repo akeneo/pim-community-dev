@@ -33,11 +33,12 @@ const useCategory = (categoryId: number): UseCategoryResponse => {
 
   console.log(category);
 
-  const normalizedCategory = useMemo(() => (category ? normalizeCategory(category) : null), [category]);
+  // const normalizedCategory = useMemo(() => (category ? normalizeCategory(category) : null), [category]);
 
   switch (status) {
     case 'fetched':
-      return {load, status, category: normalizedCategory!};
+      // return {load, status, category: normalizedCategory!};
+      return {load, status, category: category!};
     case 'error':
       return {load, status, error: error!};
   }

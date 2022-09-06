@@ -4,6 +4,7 @@ namespace Akeneo\Category\Infrastructure\Component\Normalizer\Standard;
 
 use Akeneo\Category\Domain\Model\Attribute\Attribute;
 use Akeneo\Category\Domain\Model\Category;
+use Akeneo\Category\Domain\ValueObject\ValueCollection;
 use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer;
@@ -44,34 +45,46 @@ class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethod
         ];
     }
 
+    /**
+     * @return array<string, array{
+     *     identifier: string,
+     *     labels: array<string, string>,
+     *     type: string,
+     *     order: int,
+     *     data: array<string, mixed>|null
+     * }>
+     */
     public function normalizeWithAttributes(Category $category): array
     {
         $attributes = [];
 
         $templateAttributes = $category->getTemplate()->getAttributeCollection()->getAttributes();
         foreach ($templateAttributes as $attribute) {
-            $code = (string) $attribute->getCode();
+            $code = (string)$attribute->getCode();
             $attributes[$code]['identifier'] = $attribute->getIdentifier();
-            $attributes[$code]['code'] = $code;
-            $attributes[$code]['order'] = (int) $attribute->getOrder();
-            $attributes[$code]['type'] = (string) $attribute->getType();
             $attributes[$code]['labels'] = $attribute->getLabelCollection()->normalize();
+            $attributes[$code]['type'] = (string)$attribute->getType();
+            $attributes[$code]['order'] = (int)$attribute->getOrder();
 
             $attributeValues = $category->getAttributes();
             if ($attributeValues) {
-                if ($attribute->isLocalizable()) {
-                    foreach ($attributes[$code]['labels'] as $localeCode => $label) {
-                        $attributes[$code]['data'] = $attributeValues->getAttributeTextData(
-                            (string) $attribute->getCode(),
-                            (string) $attribute->getUuid(),
-                            $localeCode
-                        )['data'];
+                foreach ($category->getAttributes() as $attributeValue) {
+                    if ($code === $attributeValue['attribute_code']) {
+                        $localeCode = $attributeValue['locale'];
+
+                        if ($attribute->isLocalizable() && $localeCode) {
+                            $attributes[$code]['data'][$localeCode] = $attributeValues->getAttributeTextData(
+                                (string)$attribute->getCode(),
+                                (string)$attribute->getUuid(),
+                                $localeCode
+                            )['data'];
+                        } else {
+                            $attributes[$code]['data'] = $attributeValues->getAttributeData(
+                                (string)$attribute->getCode(),
+                                (string)$attribute->getUuid()
+                            )['data'];
+                        }
                     }
-                } else {
-                    $attributes[$code]['data'] = $attributeValues->getAttributeData(
-                        (string) $attribute->getCode(),
-                        (string) $attribute->getUuid()
-                    )['data'];
                 }
             } else {
                 $attributes[$code]['data'] = null;
