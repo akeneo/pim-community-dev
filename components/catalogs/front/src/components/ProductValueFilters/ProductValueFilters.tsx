@@ -33,7 +33,7 @@ export const ProductValueFilters: FC<Props> = ({productValueFilters, onChange, e
     return (
         <>
             <FilterContainer>
-                <Label>{translate('akeneo_catalogs.filter_values.criteria.channel.label')}</Label>
+                <Label>{translate('akeneo_catalogs.product_value_filters.criteria.channel.label')}</Label>
                 <FilterChannel
                     productValueFilters={productValueFilters}
                     onChange={onChange}
