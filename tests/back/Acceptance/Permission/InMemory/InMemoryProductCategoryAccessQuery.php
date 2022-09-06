@@ -11,4 +11,9 @@ class InMemoryProductCategoryAccessQuery implements ProductCategoryAccessQueryIn
     {
         return $productIdentifiers;
     }
+
+    public function getGrantedProductUuids(array $productUuids, UserInterface $user): array
+    {
+        return $productUuids;
+    }
 }

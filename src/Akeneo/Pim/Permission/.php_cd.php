@@ -189,7 +189,7 @@ $rules = [
         'Doctrine\Common',
         'Doctrine\Persistence',
         'Akeneo\Tool',
-        'Ramsey\Uuid\UuidInterface',
+        'Ramsey\Uuid',
 
         // Required to add quality scores into external API normalized products.
         'Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model',

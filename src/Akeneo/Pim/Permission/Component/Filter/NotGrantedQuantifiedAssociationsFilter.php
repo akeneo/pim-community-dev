@@ -55,7 +55,13 @@ class NotGrantedQuantifiedAssociationsFilter implements NotGrantedDataFilterInte
         $user = $this->tokenStorage->getToken()->getUser();
         $quantifiedAssociations = $entityWithAssociations->getQuantifiedAssociations();
         $quantifiedAssociationsProductIdentifiers = $quantifiedAssociations->getQuantifiedAssociationsProductIdentifiers();
+        $quantifiedAssociationsProductUuids = $quantifiedAssociations->getQuantifiedAssociationsProductUuids();
         $quantifiedAssociationsProductModelCodes = $quantifiedAssociations->getQuantifiedAssociationsProductModelCodes();
+
+        $grantedProductUuids = $this->productCategoryAccessQuery->getGrantedProductUuids(
+            $quantifiedAssociationsProductUuids,
+            $user
+        );
 
         $grantedProductIdentifiers = $this->productCategoryAccessQuery->getGrantedProductIdentifiers(
             $quantifiedAssociationsProductIdentifiers,
@@ -67,7 +73,11 @@ class NotGrantedQuantifiedAssociationsFilter implements NotGrantedDataFilterInte
             $user
         );
 
-        $entityWithAssociations->filterQuantifiedAssociations($grantedProductIdentifiers, $grantedProductModelCodes);
+        $entityWithAssociations->filterQuantifiedAssociations(
+            $grantedProductIdentifiers,
+            $grantedProductUuids,
+            $grantedProductModelCodes
+        );
 
         return $entityWithAssociations;
     }
