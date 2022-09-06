@@ -30,9 +30,8 @@ const AutomationFilter = ({automationFilterValue, onAutomationFilterChange}: Aut
                     </Dropdown.Header>
                     <Dropdown.ItemCollection>
                         {automationFilterValues.map((value) =>
-                            <Dropdown.Item>
+                            <Dropdown.Item key={value}>
                                 <Checkbox
-                                    key={value}
                                     checked={value === automationFilterValue}
                                     onChange={() => onAutomationFilterChange(value)}
                                 />

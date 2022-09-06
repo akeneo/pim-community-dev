@@ -12,6 +12,7 @@ type JobExecutionSearchBarProps = {
   onStatusFilterChange: (status: JobStatus[]) => void;
   onTypeFilterChange: (types: string[]) => void;
   onUserFilterChange: (users: string[]) => void;
+  onAutomationFilterChange: (uatomation: string) => void;
   onSearchChange: (search: string) => void;
 };
 
@@ -20,6 +21,7 @@ const JobExecutionSearchBar = ({
   onStatusFilterChange,
   onTypeFilterChange,
   onUserFilterChange,
+  onAutomationFilterChange,
   onSearchChange,
 }: JobExecutionSearchBarProps) => {
   const translate = useTranslate();
@@ -44,7 +46,7 @@ const JobExecutionSearchBar = ({
       searchValue={userSearch}
       onSearchChange={setUserSearch}
     >
-      {canViewAllJobs && <AutomationFilter automationFilterValue={jobExecutionFilter.automation} onAutomationFilterChange={() => {console.log('pouet')}} /> }
+      {canViewAllJobs && <AutomationFilter automationFilterValue={jobExecutionFilter.automation} onAutomationFilterChange={onAutomationFilterChange} /> }
       <TypeFilter typeFilterValue={jobExecutionFilter.type} onTypeFilterChange={onTypeFilterChange} />
       <StatusFilter statusFilterValue={jobExecutionFilter.status} onStatusFilterChange={onStatusFilterChange} />
       <UserFilter userFilterValue={jobExecutionFilter.user} onUserFilterChange={onUserFilterChange} />
