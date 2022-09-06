@@ -115,7 +115,7 @@ jobs:
                                 name: Database schema reference
                                 command: PIM_CONTEXT=test APP_ENV=test make test-database-structure
             -   when:
-                    condition: << pipeline.parameters.notify-octopus >>
+                    condition: << parameters.notify-octopus >>
                     steps:
                         -   slack-app/notify:
                                 channel: 'monitoring-octopus'
