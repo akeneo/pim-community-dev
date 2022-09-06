@@ -74,11 +74,56 @@ jobs:
             -   store_test_results:
                     path: var/tests/phpunit
 
+    ee_test_front_catalogs:
+        parameters:
+            notify:
+                type: boolean
+                default: false
+        machine:
+            image: *executor-machine
+            docker_layer_caching: true
+        steps:
+            -   attach_workspace:
+                    at: ~/
+            -   run:
+                    name: Define environment variables
+                    command: echo export PIM_CONTEXT=catalogs >> $BASH_ENV
+            -   run:
+                    name: Create missing directories
+                    command: mkdir -p  ~/.cache/yarn ~/.cache/Cypress
+            -   run:
+                    name: Creating hash of JS dependencies
+                    command: cat yarn.lock > ~/front-dependency.hash && date +%F >> ~/front-dependency.hash
+            -   restore_cache:
+                    name: Restore JS dependencies from the cache
+                    key: frontend-dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/front-dependency.hash" }}
+            -   run:
+                    name: Change owner on directories (docker needs uid 1000, circleci can be another uid)
+                    command: sudo chown -R 1000:1000 ../project ~/.cache/yarn ~/.cache/Cypress
+            -   run:
+                    name: Cleanup & re-install CE node_modules
+                    command: |
+                        rm -r vendor/akeneo/pim-community-dev/node_modules
+                        cd ~/project/vendor/akeneo/pim-community-dev && make node_modules
+            -   run:
+                    name: Pull docker image for node
+                    command: docker-compose pull node
+            -   run:
+                    name: Integration front
+                    command: make catalogs-integration-front
+            -   when:
+                    condition: << parameters.notify >>
+                    steps:
+                        -   slack-app/notify:
+                                channel: 'monitoring-octopus'
+                                event: fail
+                                template: basic_fail_1
+
     ee_test_back_catalogs:
         parameters:
             notify:
                 type: boolean
-                default: true
+                default: false
         machine:
             image: *executor-machine
             docker_layer_caching: true
