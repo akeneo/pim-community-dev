@@ -3,7 +3,7 @@ import {ProductValueFiltersValues} from './models/ProductValueFiltersValues';
 import {FilterChannel} from './components/FilterChannel';
 import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {getColor, getFontSize, Helper} from 'akeneo-design-system';
+import {getColor, getFontFamily, getFontSize, Helper} from 'akeneo-design-system';
 import {ProductValueFiltersErrors} from './models/ProductValueFiltersErrors';
 
 type Props = {
@@ -21,6 +21,11 @@ const Label = styled.div`
     color: ${getColor('grey', 120)};
     line-height: 16px;
 `;
+const WarningMessage = styled.span`
+    font-style: italic;
+    font-size: ${getFontSize('small')};
+    font-family: ${getFontFamily('default')};
+`;
 
 export const ProductValueFilters: FC<Props> = ({productValueFilters, onChange, errors}) => {
     const translate = useTranslate();
@@ -36,7 +41,7 @@ export const ProductValueFilters: FC<Props> = ({productValueFilters, onChange, e
                 />
                 {!!errors.channel && (
                     <Helper inline level='error'>
-                        {translate(errors.channel)}
+                        <WarningMessage>{translate(errors.channel)}</WarningMessage>
                     </Helper>
                 )}
             </FilterContainer>
