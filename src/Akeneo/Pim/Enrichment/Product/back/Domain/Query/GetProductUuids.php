@@ -19,4 +19,17 @@ interface GetProductUuids
      * @return array<string, UuidInterface>
      */
     public function fromIdentifiers(array $identifiers): array;
+
+    /**
+     * checks that a given uuid is assigned to an existing product
+     */
+    public function fromUuid(UuidInterface $uuid): ?UuidInterface;
+
+    /**
+     * checks which uuids are assigned to existing products
+     * @param UuidInterface[] $uuids
+     *
+     * @return array<string, UuidInterface>
+     */
+    public function fromUuids(array $uuids): array;
 }

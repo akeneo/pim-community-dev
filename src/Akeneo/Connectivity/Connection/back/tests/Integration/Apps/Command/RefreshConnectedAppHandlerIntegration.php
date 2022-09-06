@@ -12,6 +12,7 @@ use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -20,6 +21,7 @@ use PHPUnit\Framework\Assert;
  */
 class RefreshConnectedAppHandlerIntegration extends TestCase
 {
+    private Connection $connection;
     private ConnectedAppLoader $connectedAppLoader;
     private RefreshConnectedAppHandler $refreshConnectedAppHandler;
     private FindOneConnectedAppByIdQuery $findOneConnectedAppByIdQuery;
@@ -50,7 +52,7 @@ class RefreshConnectedAppHandlerIntegration extends TestCase
         $this->webMarketplaceApi->setApps([
             [
                 'id' => '2677e764-f852-4956-bf9b-1a1ec1b0d145',
-                'name' => 'MAGENTO',
+                'name' => 'MAGENTO 2',
                 'logo' => 'http://example.com/LOGO.png',
                 'author' => 'AKENEO',
                 'partner' => 'AKENEO',
@@ -74,16 +76,26 @@ class RefreshConnectedAppHandlerIntegration extends TestCase
             'partner' => null,
         ]);
 
+        $this->assertEquals(
+            'magento',
+            $this->findConnectedAppUserFirstname('2677e764-f852-4956-bf9b-1a1ec1b0d145')
+        );
+
         $this->refreshConnectedApp('2677e764-f852-4956-bf9b-1a1ec1b0d145');
 
         $this->assertConnectedAppHasValues('2677e764-f852-4956-bf9b-1a1ec1b0d145', [
-            'name' => 'MAGENTO',
+            'name' => 'MAGENTO 2',
             'logo' => 'http://example.com/LOGO.png',
             'author' => 'AKENEO',
             'categories' => ['ECOMMERCE'],
             'certified' => true,
             'partner' => 'AKENEO',
         ]);
+
+        $this->assertEquals(
+            'MAGENTO 2',
+            $this->findConnectedAppUserFirstname('2677e764-f852-4956-bf9b-1a1ec1b0d145')
+        );
     }
 
     private function refreshConnectedApp($id): void
@@ -91,12 +103,27 @@ class RefreshConnectedAppHandlerIntegration extends TestCase
         $this->refreshConnectedAppHandler->handle(new RefreshConnectedAppCommand($id));
     }
 
-    private function assertConnectedAppHasValues($id, array $expected): void
+    private function assertConnectedAppHasValues(string $id, array $expected): void
     {
         $connectedApp = $this->findOneConnectedAppByIdQuery->execute($id);
         $normalizedConnectedApp = $connectedApp->normalize();
         $actual = \array_combine(\array_keys($expected), \array_intersect_key($normalizedConnectedApp, $expected));
 
         Assert::assertSame($expected, $actual);
+    }
+
+    private function findConnectedAppUserFirstname(string $id): string
+    {
+        $query = <<<SQL
+SELECT oro_user.first_name
+FROM akeneo_connectivity_connected_app
+JOIN akeneo_connectivity_connection ON akeneo_connectivity_connection.code = akeneo_connectivity_connected_app.connection_code
+JOIN oro_user ON oro_user.id = akeneo_connectivity_connection.user_id
+WHERE akeneo_connectivity_connected_app.id = :id
+SQL;
+
+        return $this->connection->fetchOne($query, [
+            'id' => $id,
+        ]);
     }
 }
