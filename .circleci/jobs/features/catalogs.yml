@@ -50,7 +50,7 @@ jobs:
                     command: make catalogs-unit-back catalogs-mutation-unit-back
             -   run:
                     name: Pull docker images
-                    command: docker-compose pull php fpm mysql elasticsearch object-storage pubsub-emulator
+                    command: docker-compose pull fpm mysql elasticsearch object-storage pubsub-emulator
             -   run:
                     name: Start containers
                     command: |
@@ -133,6 +133,9 @@ jobs:
             -   run:
                     name: Define environment variables
                     command: echo export PIM_CONTEXT=catalogs >> $BASH_ENV
+            -   run:
+                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                    command: sudo chown -R 1000:1000 ../project
             -   run:
                     name: Load php docker image
                     command: docker load -i php-pim-image.tar
