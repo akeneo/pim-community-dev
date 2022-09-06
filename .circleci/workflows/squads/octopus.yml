@@ -176,7 +176,7 @@ workflows:
                       - ee_checkout
             - ee_test_back_catalogs:
                   name: ee_test_back
-                  notify_octopus: false
+                  notify: false
                   requires:
                     - ee_install_back_dependencies
             # PR Requirements

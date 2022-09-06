@@ -76,6 +76,7 @@ workflows:
                   name: test_catalogs_ee
                   requires:
                       - build_dev
+                  notify: true
                   context:
                       - octopus-slack
             - ready_to_build_only_ce?:

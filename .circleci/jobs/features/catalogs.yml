@@ -76,7 +76,7 @@ jobs:
 
     ee_test_back_catalogs:
         parameters:
-            notify-octopus:
+            notify:
                 type: boolean
                 default: true
         machine:
@@ -115,7 +115,7 @@ jobs:
                                 name: Database schema reference
                                 command: PIM_CONTEXT=test APP_ENV=test make test-database-structure
             -   when:
-                    condition: << parameters.notify-octopus >>
+                    condition: << parameters.notify >>
                     steps:
                         -   slack-app/notify:
                                 channel: 'monitoring-octopus'
