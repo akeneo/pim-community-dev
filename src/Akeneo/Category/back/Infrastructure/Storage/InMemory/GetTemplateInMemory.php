@@ -28,13 +28,12 @@ class GetTemplateInMemory implements GetTemplate
 {
     public function byUuid(string $templateId): ?Template
     {
-        $templateUuid = TemplateUuid::fromString('02274dac-e99a-4e1d-8f9b-794d4c3ba330');
+        $templateUuid = TemplateUuid::fromString($templateId);
 
         $template = new Template(
             $templateUuid,
             new TemplateCode('default_template'),
             LabelCollection::fromArray(['en_US' => 'Default template']),
-            new CategoryId(1),
             AttributeCollection::fromArray([
                 AttributeRichText::create(
                     AttributeUuid::fromString('840fcd1a-f66b-4f0c-9bbd-596629732950'),

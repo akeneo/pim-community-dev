@@ -53,7 +53,7 @@ const Field960 = styled(Field)`
   max-width: 960px;
 `;
 
-export const EditAttributesForm = ({onAttributeValueChange}: Props) => {
+export const EditAttributesForm = ({attributes, onAttributeValueChange}: Props) => {
   const [locale, setLocale] = useState('en_US');
   const translate = useTranslate();
 
@@ -81,6 +81,8 @@ export const EditAttributesForm = ({onAttributeValueChange}: Props) => {
     },
     [locale, onAttributeValueChange]
   );
+
+  console.log(attributes);
 
   return (
     <FormContainer>

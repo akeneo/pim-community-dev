@@ -10,6 +10,7 @@ use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
+use Akeneo\Category\Infrastructure\Storage\InMemory\GetTemplateInMemory;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -18,7 +19,7 @@ use Doctrine\DBAL\Connection;
  */
 class GetCategorySql implements GetCategoryInterface
 {
-    public function __construct(private Connection $connection)
+    public function __construct(private Connection $connection, private GetTemplateInMemory $getTemplateInMemory)
     {
     }
 
@@ -73,7 +74,7 @@ class GetCategorySql implements GetCategoryInterface
             return null;
         }
 
-        return new Category(
+        $category = new Category(
             new CategoryId((int)$result['id']),
             new Code($result['code']),
             $result['translations'] ?
@@ -90,5 +91,9 @@ class GetCategorySql implements GetCategoryInterface
                 ValueCollection::fromArray(json_decode($result['value_collection'], true)) : null,
             null
         );
+
+        $category->setTemplate($this->getTemplateInMemory->byUuid('02274dac-e99a-4e1d-8f9b-794d4c3ba330'));
+
+        return $category;
     }
 }

@@ -23,6 +23,7 @@ class Category
         private ?CategoryId $parentId = null,
         private ?ValueCollection $attributes = null,
         private ?PermissionCollection $permissions = null,
+        private ?Template $template = null
     ) {
     }
 
@@ -64,6 +65,16 @@ class Category
     public function setAttributes(ValueCollection $attributes): void
     {
         $this->attributes = $attributes;
+    }
+
+    public function getTemplate(): Template
+    {
+        return $this->template;
+    }
+
+    public function setTemplate(Template $template): void
+    {
+        $this->template = $template;
     }
 
     /**

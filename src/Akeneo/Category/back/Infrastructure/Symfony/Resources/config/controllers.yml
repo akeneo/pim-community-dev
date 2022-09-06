@@ -43,6 +43,7 @@ services:
         arguments:
             - '@oro_security.security_facade'
             - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
+            - '@pim_catalog.normalizer.standard.category'
 
     Akeneo\Category\Infrastructure\Controller\InternalApi\GetTemplateController:
         arguments:

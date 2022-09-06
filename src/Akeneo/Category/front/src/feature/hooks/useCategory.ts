@@ -31,6 +31,8 @@ const useCategory = (categoryId: number): UseCategoryResponse => {
 
   const [category, load, status, error] = useFetch<any>(url);
 
+  console.log(category);
+
   const normalizedCategory = useMemo(() => (category ? normalizeCategory(category) : null), [category]);
 
   switch (status) {

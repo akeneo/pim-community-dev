@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Normalizer\Standard\CategoryNormalizer;
 use Akeneo\Category\ServiceApi\CategoryQueryInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,7 +21,8 @@ class GetCategoryController
 {
     public function __construct(
         private SecurityFacade $securityFacade,
-        private GetCategoryInterface $getCategory
+        private GetCategoryInterface $getCategory,
+        private CategoryNormalizer $categoryNormalizer
     ) {
     }
 
@@ -34,6 +36,6 @@ class GetCategoryController
 
         $category = $this->getCategory->byId($id);
 
-        return new JsonResponse($category->normalize(), Response::HTTP_OK);
+        return new JsonResponse($this->categoryNormalizer->normalizeWithAttributes($category), Response::HTTP_OK);
     }
 }

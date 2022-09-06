@@ -2,6 +2,8 @@
 
 namespace Akeneo\Category\Infrastructure\Component\Normalizer\Standard;
 
+use Akeneo\Category\Domain\Model\Attribute\Attribute;
+use Akeneo\Category\Domain\Model\Category;
 use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer;
@@ -40,6 +42,43 @@ class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethod
             'updated' => $this->dateTimeNormalizer->normalize($category->getUpdated(), $format),
             'labels' => $this->translationNormalizer->normalize($category, 'standard', $context),
         ];
+    }
+
+    public function normalizeWithAttributes(Category $category): array
+    {
+        $attributes = [];
+
+        $templateAttributes = $category->getTemplate()->getAttributeCollection()->getAttributes();
+        foreach ($templateAttributes as $attribute) {
+            $code = (string) $attribute->getCode();
+            $attributes[$code]['identifier'] = $attribute->getIdentifier();
+            $attributes[$code]['code'] = $code;
+            $attributes[$code]['order'] = (int) $attribute->getOrder();
+            $attributes[$code]['type'] = (string) $attribute->getType();
+            $attributes[$code]['labels'] = $attribute->getLabelCollection()->normalize();
+
+            $attributeValues = $category->getAttributes();
+            if ($attributeValues) {
+                if ($attribute->isLocalizable()) {
+                    foreach ($attributes[$code]['labels'] as $localeCode => $label) {
+                        $attributes[$code]['data'] = $attributeValues->getAttributeTextData(
+                            (string) $attribute->getCode(),
+                            (string) $attribute->getUuid(),
+                            $localeCode
+                        )['data'];
+                    }
+                } else {
+                    $attributes[$code]['data'] = $attributeValues->getAttributeData(
+                        (string) $attribute->getCode(),
+                        (string) $attribute->getUuid()
+                    )['data'];
+                }
+            } else {
+                $attributes[$code]['data'] = null;
+            }
+        }
+
+        return $attributes;
     }
 
     /**
