@@ -12,6 +12,8 @@ namespace Akeneo\Catalogs\Application\Persistence;
 interface GetChannelsByCodeQueryInterface
 {
     /**
+     * @param array<string> $codes
+     *
      * @return array<array-key, array{code: string, label: string}>
      */
     public function execute(array $codes, int $page = 1, int $limit = 20): array;

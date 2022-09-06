@@ -23,7 +23,7 @@ final class FilterContainsValidChannelValidator extends ConstraintValidator
     ) {
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof FilterContainsValidChannel) {
             throw new UnexpectedTypeException($constraint, FilterContainsValidChannel::class);
