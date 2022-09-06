@@ -103,7 +103,7 @@ jobs:
             -   run:
                     name: Cleanup & re-install CE node_modules
                     command: |
-                        rm -r vendor/akeneo/pim-community-dev/node_modules
+                        rm -rf vendor/akeneo/pim-community-dev/node_modules
                         cd ~/project/vendor/akeneo/pim-community-dev && make node_modules
             -   run:
                     name: Pull docker image for node
