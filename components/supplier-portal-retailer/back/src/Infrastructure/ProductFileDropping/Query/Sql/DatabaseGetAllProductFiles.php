@@ -19,9 +19,9 @@ final class DatabaseGetAllProductFiles implements GetAllProductFiles
         $page = max($page, 1);
 
         $sql = <<<SQL
-            SELECT supplier_file.identifier, original_filename, uploaded_by_contributor, supplier.label AS supplier, uploaded_at
-            FROM akeneo_supplier_portal_supplier_file supplier_file
-            INNER JOIN akeneo_supplier_portal_supplier supplier on supplier_file.uploaded_by_supplier = supplier.identifier
+            SELECT product_file.identifier, original_filename, uploaded_by_contributor, supplier.label AS supplier, uploaded_at
+            FROM akeneo_supplier_portal_supplier_product_file product_file
+            INNER JOIN akeneo_supplier_portal_supplier supplier on product_file.uploaded_by_supplier = supplier.identifier
             ORDER BY uploaded_at DESC 
             LIMIT :limit
             OFFSET :offset

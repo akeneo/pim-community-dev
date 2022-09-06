@@ -18,9 +18,9 @@ final class DatabaseGetProductFilePathAndFileNameForSupplier implements GetProdu
     {
         $sql = <<<SQL
             SELECT path, original_filename
-            FROM akeneo_supplier_portal_supplier_file supplier_file
-            WHERE supplier_file.identifier = :productFileIdentifier
-            AND supplier_file.uploaded_by_supplier = :supplierIdentifier
+            FROM akeneo_supplier_portal_supplier_product_file product_file
+            WHERE product_file.identifier = :productFileIdentifier
+            AND product_file.uploaded_by_supplier = :supplierIdentifier
         SQL;
 
         $productFile = $this->connection->executeQuery(

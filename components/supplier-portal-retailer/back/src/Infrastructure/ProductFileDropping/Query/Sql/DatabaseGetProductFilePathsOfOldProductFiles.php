@@ -18,7 +18,7 @@ final class DatabaseGetProductFilePathsOfOldProductFiles implements GetProductFi
     {
         $sql = <<<SQL
             SELECT path
-            FROM `akeneo_supplier_portal_supplier_file`
+            FROM `akeneo_supplier_portal_supplier_product_file`
             WHERE uploaded_at < :retentionLimit
         SQL;
 

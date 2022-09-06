@@ -97,7 +97,7 @@ final class DatabaseGetAllProductFilesIntegration extends SqlIntegrationTestCase
     private function createProductFile(string $filename, \DateTimeImmutable $uploadedAt): void
     {
         $sql = <<<SQL
-            INSERT INTO `akeneo_supplier_portal_supplier_file` (identifier, original_filename, path, uploaded_by_contributor, uploaded_by_supplier, uploaded_at)
+            INSERT INTO `akeneo_supplier_portal_supplier_product_file` (identifier, original_filename, path, uploaded_by_contributor, uploaded_by_supplier, uploaded_at)
             VALUES (:identifier, :original_filename, :path, :contributorEmail, :supplierIdentifier, :uploadedAt)
         SQL;
 

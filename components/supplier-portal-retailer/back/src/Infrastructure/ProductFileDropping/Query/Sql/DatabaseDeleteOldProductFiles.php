@@ -16,7 +16,7 @@ final class DatabaseDeleteOldProductFiles implements DeleteOldProductFiles
     public function __invoke(): void
     {
         $sql = <<<SQL
-            DELETE FROM akeneo_supplier_portal_supplier_file
+            DELETE FROM akeneo_supplier_portal_supplier_product_file
             WHERE uploaded_at < :retentionLimit
         SQL;
 

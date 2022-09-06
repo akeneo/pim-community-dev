@@ -48,7 +48,7 @@ final class DatabaseGetProductFilePathsOfOldProductFilesIntegration extends SqlI
 
         for ($i = 0; 4 > $i; $i++) {
             $sql = <<<SQL
-                INSERT INTO akeneo_supplier_portal_supplier_file (
+                INSERT INTO akeneo_supplier_portal_supplier_product_file (
                     identifier,
                     original_filename,
                     path,
@@ -86,7 +86,7 @@ final class DatabaseGetProductFilePathsOfOldProductFilesIntegration extends SqlI
 
         for ($i = 0; 2 > $i; $i++) {
             $sql = <<<SQL
-                INSERT INTO akeneo_supplier_portal_supplier_file (
+                INSERT INTO akeneo_supplier_portal_supplier_product_file (
                     identifier,
                     original_filename,
                     path,

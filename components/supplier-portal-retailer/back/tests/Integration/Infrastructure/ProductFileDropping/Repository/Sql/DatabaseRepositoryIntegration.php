@@ -39,7 +39,7 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
     {
         $sql = <<<SQL
             SELECT *
-            FROM `akeneo_supplier_portal_supplier_file`
+            FROM `akeneo_supplier_portal_supplier_product_file`
             WHERE original_filename = :original_filename
         SQL;
 

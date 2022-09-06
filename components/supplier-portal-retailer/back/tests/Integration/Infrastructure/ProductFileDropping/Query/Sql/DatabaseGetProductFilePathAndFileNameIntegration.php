@@ -61,7 +61,7 @@ final class DatabaseGetProductFilePathAndFileNameIntegration extends SqlIntegrat
         string $filename,
     ): void {
         $sql = <<<SQL
-            INSERT INTO `akeneo_supplier_portal_supplier_file` (
+            INSERT INTO `akeneo_supplier_portal_supplier_product_file` (
                 identifier,
                 original_filename,
                 path,

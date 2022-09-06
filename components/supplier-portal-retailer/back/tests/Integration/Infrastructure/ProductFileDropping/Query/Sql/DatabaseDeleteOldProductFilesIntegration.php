@@ -42,7 +42,7 @@ final class DatabaseDeleteOldProductFilesIntegration extends SqlIntegrationTestC
 
         for ($i = 0; 3 > $i; $i++) {
             $sql = <<<SQL
-                INSERT INTO akeneo_supplier_portal_supplier_file (
+                INSERT INTO akeneo_supplier_portal_supplier_product_file (
                     identifier,
                     original_filename,
                     path,
@@ -78,7 +78,7 @@ final class DatabaseDeleteOldProductFilesIntegration extends SqlIntegrationTestC
     {
         $sql = <<<SQL
             SELECT original_filename
-            FROM `akeneo_supplier_portal_supplier_file`
+            FROM `akeneo_supplier_portal_supplier_product_file`
         SQL;
 
         return $this->get(Connection::class)
