@@ -31,8 +31,21 @@ final class TransferFile
             throw new \RuntimeException('File is not readable.');
         }
 
+        $this->writeOnDestinationFilesystem($destinationFilesystem, $destinationFilePath, $stream);
+    }
+
+    /**
+     * @param resource $stream
+     */
+    private function writeOnDestinationFilesystem(StorageClientInterface $destinationFilesystem, string $destinationFilePath, $stream): void
+    {
         $temporaryDestinationFilePath = $this->getTemporaryDestinationFilePath($destinationFilePath);
         $destinationFilesystem->writeStream($temporaryDestinationFilePath, $stream);
+
+        if ($destinationFilesystem->fileExists($destinationFilePath)) {
+            $destinationFilesystem->delete($destinationFilePath);
+        }
+
         $destinationFilesystem->move($temporaryDestinationFilePath, $destinationFilePath);
     }
 
