@@ -42,7 +42,7 @@ class SelectProposalIdsFromProductUuidsQuery implements SelectProposalIdsFromPro
     AND status = :status
 SQL;
 
-        $productUuidsAsBytes = \array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
+        $productUuidsAsBytes = \array_map(static fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
 
         return $this->connection->executeQuery(
             $sql,

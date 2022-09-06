@@ -8,7 +8,7 @@ use Ramsey\Uuid\UuidInterface;
 interface ProductCategoryAccessQueryInterface
 {
     /**
-     * The query is a union of products belonging to categories where the given user has access
+     * The query is a union of products belonging to categories where the given user has read access
      * and products without category.
      *
      * @param string[] $productIdentifiers
