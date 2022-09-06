@@ -21,14 +21,18 @@ trait EntityWithQuantifiedAssociationTrait
     /**
      * @inheritDoc
      */
-    public function filterQuantifiedAssociations(array $productIdentifiersToKeep, array $productModelCodesToKeep): void
-    {
+    public function filterQuantifiedAssociations(
+        array $productIdentifiersToKeep,
+        array $productUuidsToKeep,
+        array $productModelCodesToKeep
+    ): void {
         if (null === $this->quantifiedAssociationCollection) {
             return;
         }
 
         $this->quantifiedAssociationCollection = $this->quantifiedAssociationCollection
             ->filterProductIdentifiers($productIdentifiersToKeep)
+            ->filterProductUuids($productUuidsToKeep)
             ->filterProductModelCodes($productModelCodesToKeep);
     }
 
@@ -120,7 +124,7 @@ trait EntityWithQuantifiedAssociationTrait
      * @inheritDoc
      */
     public function hydrateQuantifiedAssociations(
-        IdMapping $mappedProductIds,
+        UuidMapping $mappedProductIds,
         IdMapping $mappedProductModelIds,
         array $associationTypeCodes
     ): void {
@@ -147,6 +151,18 @@ trait EntityWithQuantifiedAssociationTrait
     /**
      * @inheritDoc
      */
+    public function getQuantifiedAssociationsProductUuids(): array
+    {
+        if (null === $this->quantifiedAssociationCollection) {
+            return [];
+        }
+
+        return $this->quantifiedAssociationCollection->getQuantifiedAssociationsProductUuids();
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getQuantifiedAssociationsProductModelCodes(): array
     {
         if (null === $this->quantifiedAssociationCollection) {
@@ -160,7 +176,6 @@ trait EntityWithQuantifiedAssociationTrait
      * @inheritDoc
      */
     public function updateRawQuantifiedAssociations(
-        IdMapping $mappedProductIdentifiers,
         UuidMapping $uuidMappedProductIdentifiers,
         IdMapping $mappedProductModelIdentifiers
     ): void {
@@ -169,7 +184,6 @@ trait EntityWithQuantifiedAssociationTrait
         }
 
         $normalized = $this->quantifiedAssociationCollection->normalizeWithMapping(
-            $mappedProductIdentifiers,
             $uuidMappedProductIdentifiers,
             $mappedProductModelIdentifiers
         );
