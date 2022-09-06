@@ -85,11 +85,9 @@ services:
         decoration_inner_name: pim_catalog.updater.association_field_without_permission
         arguments:
             - '@pim_catalog.updater.association_field_without_permission'
-            - '@pim_catalog.repository.product_without_permission'
             - ['associations']
-            - '@pim_catalog.repository.product_model_without_permission'
-            - '@pimee_security.query.product_category_access'
-            - '@pimee_security.query.product_model_category_access'
+            - '@pimee_security.query.product_category_access_with_ids'
+            - '@pimee_security.query.product_model_category_access_with_ids'
             - '@security.token_storage'
         tags:
             - { name: 'pim_catalog.updater.setter' }

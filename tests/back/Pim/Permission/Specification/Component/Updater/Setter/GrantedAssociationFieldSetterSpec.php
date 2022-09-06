@@ -10,25 +10,25 @@ use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AssociationFieldSette
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\Query\ItemCategoryAccessQuery;
 use Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException;
+use Akeneo\Pim\Permission\Component\Query\ProductCategoryAccessQueryInterface;
+use Akeneo\Pim\Permission\Component\Query\ProductModelCategoryAccessQueryInterface;
 use Akeneo\Pim\Permission\Component\Updater\Setter\GrantedAssociationFieldSetter;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use PhpParser\Node\Arg;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class GrantedAssociationFieldSetterSpec extends ObjectBehavior
 {
     function let(
         FieldSetterInterface $associationFieldSetter,
-        ProductRepositoryInterface $productRepository,
-        ProductModelRepositoryInterface $productModelRepository,
-        ItemCategoryAccessQuery $productCategoryAccessQuery,
-        ItemCategoryAccessQuery $productModelCategoryAccessQuery,
+        ProductCategoryAccessQueryInterface $productCategoryAccessQuery,
+        ProductModelCategoryAccessQueryInterface $productModelCategoryAccessQuery,
         TokenStorageInterface $tokenStorage,
         TokenInterface $token,
     ) {
@@ -37,9 +37,7 @@ class GrantedAssociationFieldSetterSpec extends ObjectBehavior
 
         $this->beConstructedWith(
             $associationFieldSetter,
-            $productRepository,
             ['associations'],
-            $productModelRepository,
             $productCategoryAccessQuery,
             $productModelCategoryAccessQuery,
             $tokenStorage
@@ -57,16 +55,13 @@ class GrantedAssociationFieldSetterSpec extends ObjectBehavior
     }
 
     function it_sets_associations(
-        ProductRepositoryInterface $productRepository,
-        ItemCategoryAccessQuery $productCategoryAccessQuery,
-        ProductInterface $product,
+        ProductCategoryAccessQueryInterface $productCategoryAccessQuery,
+        ProductInterface $product
     ) {
         $data = ['X_SELL' => ['products' => ['associationA']]];
 
-        $productRepository->findBy(['identifier' => ['associationA']])->willReturn([$product]);
-        $product->getUuid()->willReturn(Uuid::fromString('aab1fcbf-bacb-430c-8a90-b9d34db2d676'));
-        $productCategoryAccessQuery->getGrantedProductUuids([$product], Argument::type(UserInterface::class))
-            ->willReturn(['aab1fcbf-bacb-430c-8a90-b9d34db2d676']);
+        $productCategoryAccessQuery->getGrantedProductIdentifiers(['associationA'], Argument::type(UserInterface::class))
+            ->willReturn(['associationA']);
 
         $this->shouldNotThrow(
             new ResourceAccessDeniedException(
@@ -77,27 +72,15 @@ class GrantedAssociationFieldSetterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_an_associated_product_identifier_is_not_viewable(
-        ProductRepositoryInterface $productRepository,
         AssociationFieldSetter $associationFieldSetter,
-        ItemCategoryAccessQuery $productCategoryAccessQuery,
+        ProductCategoryAccessQueryInterface $productCategoryAccessQuery,
         ProductInterface $product,
-        ProductInterface $associatedProductA,
-        ProductInterface $associatedProductB,
     ) {
-        $uuidA = Uuid::fromString('aab1fcbf-bacb-430c-8a90-b9d34db2d676');
-        $uuidB = Uuid::fromString('88d2457a-f7fb-495d-9e55-32a41159093a');
-        $associatedProductA->getUuid()->willReturn($uuidA);
-        $associatedProductB->getUuid()->willReturn($uuidB);
-        $associatedProductB->getIdentifier()->willReturn('associationB');
-
         $identifierData = ['X_SELL' => ['products' => ['associationA', 'associationB']]];
-
-        $productRepository->findBy(['identifier' => ['associationA', 'associationB']])->willReturn([$associatedProductA, $associatedProductB]);
-
         $associationFieldSetter->setFieldData($product, 'associations', $identifierData, [])->shouldBeCalled();
-
-        $productCategoryAccessQuery->getGrantedProductUuids([$associatedProductA, $associatedProductB], Argument::type(UserInterface::class))
-            ->willReturn([$uuidA->toString()]);
+        $productCategoryAccessQuery
+            ->getGrantedProductIdentifiers(['associationA', 'associationB'], Argument::any())
+            ->willReturn(['associationA']);
 
         $this->shouldThrow(
             InvalidPropertyException::validEntityCodeExpected(
@@ -111,27 +94,18 @@ class GrantedAssociationFieldSetterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_an_associated_product_uuid_is_not_viewable(
-        ProductRepositoryInterface $productRepository,
         AssociationFieldSetter $associationFieldSetter,
-        ItemCategoryAccessQuery $productCategoryAccessQuery,
+        ProductCategoryAccessQueryInterface $productCategoryAccessQuery,
         ProductInterface $product,
-        ProductInterface $associatedProductA,
-        ProductInterface $associatedProductB,
     ) {
         $uuidA = Uuid::fromString('aab1fcbf-bacb-430c-8a90-b9d34db2d676');
         $uuidB = Uuid::fromString('88d2457a-f7fb-495d-9e55-32a41159093a');
-        $associatedProductA->getUuid()->willReturn($uuidA);
-        $associatedProductB->getUuid()->willReturn($uuidB);
 
         $uuidData = ['X_SELL' => ['product_uuids' => [$uuidA->toString(), $uuidB->toString()]]];
-
-        $productRepository->findBy(['uuid' => [$uuidA->toString(), $uuidB->toString()]])
-            ->willReturn([$associatedProductA, $associatedProductB]);
-
         $associationFieldSetter->setFieldData($product, 'associations', $uuidData, [])->shouldBeCalled();
-
-        $productCategoryAccessQuery->getGrantedProductUuids([$associatedProductA, $associatedProductB], Argument::type(UserInterface::class))
-            ->willReturn([$uuidA->toString()]);
+        $productCategoryAccessQuery
+            ->getGrantedProductUuids([$uuidA, $uuidB], Argument::any())
+            ->willReturn([$uuidA]);
 
         $this->shouldThrow(
             InvalidPropertyException::validEntityCodeExpected(
@@ -145,23 +119,17 @@ class GrantedAssociationFieldSetterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_an_association_is_not_granted_on_a_product_model(
-        ProductModelRepositoryInterface $productModelRepository,
         AssociationFieldSetter $associationFieldSetter,
-        ItemCategoryAccessQuery $productModelCategoryAccessQuery,
+        ProductModelCategoryAccessQueryInterface $productModelCategoryAccessQuery,
         ProductInterface $product,
-        ProductModelInterface $associatedProductModelA,
-        ProductModelInterface $associatedProductModelB,
     ) {
         $data = ['X_SELL' => ['product_models' => ['associationA', 'associationB']]];
 
-        $productModelRepository->getItemsFromIdentifiers(['associationA', 'associationB'])
-            ->willReturn([$associatedProductModelA, $associatedProductModelB]);
         $associationFieldSetter->setFieldData($product, 'associations', $data, [])->shouldBeCalled();
 
-        $associatedProductModelA->getId()->willReturn(1);
-        $associatedProductModelB->getId()->willReturn(2);
-        $associatedProductModelB->getCode()->willReturn('associationB');
-        $productModelCategoryAccessQuery->getGrantedItemIds([$associatedProductModelA, $associatedProductModelB], Argument::type(UserInterface::class))->willReturn([1 => 1]);
+        $productModelCategoryAccessQuery
+            ->getGrantedProductModelCodes(['associationA', 'associationB'], Argument::any())
+            ->willReturn(['associationA']);
 
         $this->shouldThrow(
             InvalidPropertyException::validEntityCodeExpected(

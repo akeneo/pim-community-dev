@@ -35,6 +35,7 @@ backup:
 
 common:
   extraLabels: {}
+  gcpFireStoreProjectID: null
   gcpProjectID: null
   googleZone: null
   pimMasterDomain: null

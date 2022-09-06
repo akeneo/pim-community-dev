@@ -1,0 +1,98 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{global.extraLabels.instanceName}}
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    instanceName: {{global.extraLabels.instanceName}}
+    pfid: {{{global.extraLabels.pfid}}}
+    instance_dns_record: {{{global.extraLabels.instance_dns_record}}}
+    instance_dns_zone: {{{global.extraLabels.instance_dns_zone}}}
+    papo_project_code: {{{global.extraLabels.papo_project_code}}}
+    papo_project_code_truncated: {{{global.extraLabels.papo_project_code_truncated}}}
+    papo_project_code_hashed: {{{global.extraLabels.papo_project_code_hashed}}}
+spec:
+  project: default
+  source:
+    repoUrl: 'https://github.com/akeneo/pim-enterprise-dev.git'
+    path: deployments-ucs/tenant
+    targetRevision: master
+    helm:
+      parameters:
+        - name: global.extraLabels.type
+          value: {{{global.extraLabels.type}}}
+        - name: global.extraLabels.instanceName
+          value: {{{global.extraLabels.instanceName}}}
+        - name: global.extraLabels.pfid
+          value: {{{global.extraLabels.pfid}}}
+        - name: global.extraLabels.instance_dns_record
+          value: {{{global.extraLabels.instance_dns_record}}}
+        - name: global.extraLabels.instance_dns_zone
+          value: {{{global.extraLabels.instance_dns_zone}}}
+        - name: global.extraLabels.papo_project_code
+          value: {{{global.extraLabels.papo_project_code}}}
+        - name: global.extraLabels.papo_project_code_truncated
+          value: {{{global.extraLabels.papo_project_code_truncated}}}
+        - name: global.extraLabels.papo_project_code_hashed
+          value: {{{global.extraLabels.papo_project_code_hashed}}}
+        - name: mailer.login
+          value: {{{mailer.login}}}
+        - name: mailer.password
+          value: {{{mailer.password}}}
+        - name: mailer.base_mailer_url
+          value: {{{mailer.base_mailer_url}}}
+        - name: mailer.domain
+          value: {{{mailer.domain}}}
+        - name: mailer.api_key
+          value: {{{mailer.api_key}}}
+        - name: backup.enabled
+          value: "{{{backup.enabled}}}"
+        - name: common.gcpProjectID
+          value: {{{common.gcpProjectID}}}
+        - name: common.googleZone
+          value: {{{common.googleZone}}}
+        - name: common.pimMasterDomain
+          value: {{{common.pimMasterDomain}}}
+        - name: common.dnsCloudDomain
+          value: {{{common.dnsCloudDomain}}}
+        - name: common.workloadIdentityKSA
+          value: {{{common.workloadIdentityKSA}}}
+        - name: common.workloadIdentityGSA
+          value: {{{common.workloadIdentityGSA}}}
+        - name: image.pim.repository
+          value: {{{image.pim.repository}}}
+        - name: image.pim.tag
+          value: {{{image.pim.tag}}}
+        - name: pim.defaultAdminUser.login
+          value: {{{pim.defaultAdminUser.login}}}
+        - name: pim.defaultAdminUser.firstName
+          value: {{{pim.defaultAdminUser.firstName}}}
+        - name: pim.defaultAdminUser.lastName
+          value: {{{pim.defaultAdminUser.lastName}}}
+        - name: pim.defaultAdminUser.email
+          value: {{{pim.defaultAdminUser.email}}}
+        - name: pim.defaultAdminUser.password
+          value: {{{pim.defaultAdminUser.password}}}
+        - name: pim.defaultAdminUser.uiLocale
+          value: {{{pim.defaultAdminUser.uiLocale}}}
+        - name: pim.monitoring.authenticationToken
+          value: {{{pim.monitoring.authenticationToken}}}
+        - name: pim.secret
+          value: {{{pim.secret}}}
+        - name: pim.storage.bucketName
+          value: {{{pim.storage.bucketName}}}
+        - name: mysql.common.persistentDisks.0
+          value: {{{mysql.common.persistentDisks.0}}}
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: {{{global.extraLabels.instanceName}}}
+  syncPolicy:
+    automated:
+      prune: true
+    syncOptions:
+      - Validate=true
+      - CreateNamespace=true
+      - PrunePropagationPolicy=foreground
+      - PruneLast=true

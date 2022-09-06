@@ -20,8 +20,8 @@ steps:
         yq -i 'del(.server.ingress.hosts)' k8s/argocd/values.yaml
         GOOGLE_DOMAIN="argocd.${_GOOGLE_DOMAIN}" yq -i e '.server.ingress.hosts |= . + [env(GOOGLE_DOMAIN)] ' k8s/argocd/values.yaml
         # Set target revision to current branch
-        yq -i '.configs.additionalApplications[0].source.targetRevision = env(BRANCH_NAME)' k8s/argocd/values.yaml
-        VALUES="values-${PROJECT_ID}" yq -i '.configs.additionalApplications[0].helm.valueFiles[0] = env(VALUES)' k8s/argocd/values.yaml
+        yq -i '.server.additionalApplications[0].source.targetRevision = env(BRANCH_NAME)' k8s/argocd/values.yaml
+        VALUES="values-${PROJECT_ID}" yq -i '.server.additionalApplications[0].helm.valueFiles[0] = env(VALUES)' k8s/argocd/values.yaml
         VALUES="values-${PROJECT_ID}" yq -i '.spec.source.helm.valueFiles[0] = env(VALUES)' k8s/infra/infra-apps.yaml
 
         ## Datadog

@@ -4,6 +4,12 @@ resource "google_project_iam_custom_role" "cloudconfig_role" {
   title       = "Cloud Config GKE Role"
   description = "Role for executing Cloud Config in GKE"
   permissions = [
+    "cloudbuild.builds.approve",
+    "cloudbuild.builds.create",
+    "cloudbuild.builds.get",
+    "cloudbuild.builds.list",
+    "cloudbuild.builds.update",
+
     "cloudfunctions.functions.call",
     "cloudfunctions.functions.create",
     "cloudfunctions.functions.delete",

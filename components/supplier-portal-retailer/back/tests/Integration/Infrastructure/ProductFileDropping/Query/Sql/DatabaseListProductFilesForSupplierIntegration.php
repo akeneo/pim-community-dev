@@ -61,7 +61,7 @@ final class DatabaseListProductFilesForSupplierIntegration extends SqlIntegratio
     {
         $this->get(Connection::class)->executeStatement(
             <<<SQL
-            INSERT INTO akeneo_supplier_portal_supplier_file (
+            INSERT INTO akeneo_supplier_portal_supplier_product_file (
                 identifier, 
                 original_filename, 
                 path, 
@@ -94,7 +94,7 @@ final class DatabaseListProductFilesForSupplierIntegration extends SqlIntegratio
 
         for ($i = 0; 30 > $i; $i++) {
             $sql = <<<SQL
-                INSERT INTO akeneo_supplier_portal_supplier_file (
+                INSERT INTO akeneo_supplier_portal_supplier_product_file (
                     identifier, 
                     original_filename, 
                     path, 

@@ -29,6 +29,51 @@ module "firestore-us" {
   location_id = "us-central"
 }
 
+module "secrets" {
+  source = "../modules/secrets"
+  project_id = local.project_id
+  secrets = [
+    {
+      name = "ARGOCD_USERNAME"
+      members = [
+        "serviceAccount:${module.iam.portal_function_sa_email}"
+      ]
+
+      labels = {
+        usage = "argocd"
+      }
+    },
+    {
+      name = "ARGOCD_PASSWORD"
+      members = [
+        "serviceAccount:${module.iam.portal_function_sa_email}"
+      ],
+
+      labels = {
+        usage = "argocd"
+      }
+    },
+    {
+      name = "MAILER_API_KEY"
+      members = [
+        "serviceAccount:${module.iam.portal_function_sa_email}"
+      ]
+      labels = {
+        usage = "timmy-tenant-provisioning"
+      }
+    },
+    {
+      name = "TIMMY_PORTAL"
+      members = [
+        "serviceAccount:${module.iam.portal_function_sa_email}"
+      ]
+      labels = {
+        usage = "timmy-portal-auth"
+      }
+    }
+  ]
+}
+
 module "registry" {
   source         = "../modules/registry"
   project_id     = local.project_id

@@ -24,7 +24,7 @@ final class InstallSupplierPortalTables implements EventSubscriberInterface
         $this->addSupplierTable();
         $this->addSupplierContributorTable();
         $this->addContributorAccountTable();
-        $this->addSupplierFileTable();
+        $this->addProductFileTable();
     }
 
     private function addSupplierTable(): void
@@ -83,10 +83,10 @@ final class InstallSupplierPortalTables implements EventSubscriberInterface
         $this->connection->executeStatement($sql);
     }
 
-    private function addSupplierFileTable(): void
+    private function addProductFileTable(): void
     {
         $sql = <<<SQL
-            CREATE TABLE IF NOT EXISTS `akeneo_supplier_portal_supplier_file` (
+            CREATE TABLE IF NOT EXISTS `akeneo_supplier_portal_supplier_product_file` (
                 `identifier` char(36) NOT NULL,
                 `original_filename` varchar(255) NOT NULL,
                 `path` text NOT NULL,     

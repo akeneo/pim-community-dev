@@ -7,8 +7,8 @@ namespace Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\InvalidProductFile;
 use Akeneo\SupplierPortal\Retailer\Application\Supplier\Exception\ContributorDoesNotExist;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\StoreProductsFile;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\SupplierFile;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\SupplierFileRepository;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Filename;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail;
@@ -22,11 +22,11 @@ final class CreateProductFileHandler
 {
     public function __construct(
         private GetSupplierFromContributorEmail $getSupplierFromContributorEmail,
-        private SupplierFileRepository $supplierFileRepository,
-        private StoreProductsFile $storeProductsFile,
-        private ValidatorInterface $validator,
-        private EventDispatcherInterface $eventDispatcher,
-        private LoggerInterface $logger,
+        private ProductFileRepository           $productFileRepository,
+        private StoreProductsFile               $storeProductsFile,
+        private ValidatorInterface              $validator,
+        private EventDispatcherInterface        $eventDispatcher,
+        private LoggerInterface                 $logger,
     ) {
     }
 
@@ -50,7 +50,7 @@ final class CreateProductFileHandler
         );
 
         $productFileIdentifier = Identifier::fromString(Uuid::uuid4()->toString());
-        $supplierFile = SupplierFile::create(
+        $productFile = ProductFile::create(
             (string) $productFileIdentifier,
             $createProductFile->uploadedFile->getClientOriginalName(),
             $storedProductFilePath,
@@ -58,9 +58,9 @@ final class CreateProductFileHandler
             $supplier,
         );
 
-        $this->supplierFileRepository->save($supplierFile);
+        $this->productFileRepository->save($productFile);
 
-        foreach ($supplierFile->events() as $event) {
+        foreach ($productFile->events() as $event) {
             $this->eventDispatcher->dispatch($event);
         }
 

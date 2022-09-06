@@ -18,11 +18,11 @@ final class DatabaseGetProductFilePathsOfOldProductFiles implements GetProductFi
     {
         $sql = <<<SQL
             SELECT path
-            FROM `akeneo_supplier_portal_supplier_file`
+            FROM `akeneo_supplier_portal_supplier_product_file`
             WHERE uploaded_at < :retentionLimit
         SQL;
 
-        return array_map(fn (array $supplierFile) => $supplierFile['path'], $this->connection->executeQuery(
+        return array_map(fn (array $productFile) => $productFile['path'], $this->connection->executeQuery(
             $sql,
             [
                 'retentionLimit' => (new \DateTimeImmutable())->add(

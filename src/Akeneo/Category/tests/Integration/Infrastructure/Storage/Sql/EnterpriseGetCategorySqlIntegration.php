@@ -77,17 +77,17 @@ class EnterpriseGetCategorySqlIntegration extends TestCase
 
     private function assertPermissions(Category $category)
     {
-        $this->assertContains($this->userGroup1->getId(), $category->getPermissionCollection()->getViewUserGroups());
-        $this->assertContains($this->userGroup1->getId(), $category->getPermissionCollection()->getEditUserGroups());
-        $this->assertContains($this->userGroup1->getId(), $category->getPermissionCollection()->getOwnUserGroups());
+        $this->assertContains($this->userGroup1->getId(), $category->getPermissions()->getViewUserGroups());
+        $this->assertContains($this->userGroup1->getId(), $category->getPermissions()->getEditUserGroups());
+        $this->assertContains($this->userGroup1->getId(), $category->getPermissions()->getOwnUserGroups());
 
-        $this->assertContains($this->userGroup2->getId(), $category->getPermissionCollection()->getViewUserGroups());
-        $this->assertContains($this->userGroup2->getId(), $category->getPermissionCollection()->getEditUserGroups());
-        $this->assertNotContains($this->userGroup2->getId(), $category->getPermissionCollection()->getOwnUserGroups());
+        $this->assertContains($this->userGroup2->getId(), $category->getPermissions()->getViewUserGroups());
+        $this->assertContains($this->userGroup2->getId(), $category->getPermissions()->getEditUserGroups());
+        $this->assertNotContains($this->userGroup2->getId(), $category->getPermissions()->getOwnUserGroups());
 
-        $this->assertContains($this->userGroup3->getId(), $category->getPermissionCollection()->getViewUserGroups());
-        $this->assertNotContains($this->userGroup3->getId(), $category->getPermissionCollection()->getEditUserGroups());
-        $this->assertNotContains($this->userGroup3->getId(), $category->getPermissionCollection()->getOwnUserGroups());
+        $this->assertContains($this->userGroup3->getId(), $category->getPermissions()->getViewUserGroups());
+        $this->assertNotContains($this->userGroup3->getId(), $category->getPermissions()->getEditUserGroups());
+        $this->assertNotContains($this->userGroup3->getId(), $category->getPermissions()->getOwnUserGroups());
     }
 
     private function createUserGroup(string $name): Group

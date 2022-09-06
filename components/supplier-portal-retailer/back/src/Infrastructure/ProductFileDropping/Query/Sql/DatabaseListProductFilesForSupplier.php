@@ -17,8 +17,8 @@ final class DatabaseListProductFilesForSupplier implements ListProductFilesForSu
     public function __invoke(string $supplierIdentifier): array
     {
         $sql = <<<SQL
-            SELECT supplier_file.identifier, original_filename, uploaded_by_contributor, uploaded_at
-            FROM akeneo_supplier_portal_supplier_file supplier_file
+            SELECT product_file.identifier, original_filename, uploaded_by_contributor, uploaded_at
+            FROM akeneo_supplier_portal_supplier_product_file product_file
             where uploaded_by_supplier = :supplierIdentifier
             ORDER BY uploaded_at DESC 
             LIMIT :limit

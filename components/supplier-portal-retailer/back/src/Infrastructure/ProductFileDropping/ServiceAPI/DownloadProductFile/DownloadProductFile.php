@@ -21,13 +21,13 @@ final class DownloadProductFile
     public function __invoke(DownloadProductFileQuery $downloadProductFileQuery): ProductFile
     {
         try {
-            $supplierFileNameAndResourceFile = ($this->downloadProductFileHandler)(
+            $productFileNameAndResourceFile = ($this->downloadProductFileHandler)(
                 new DownloadProductFileForSupplier($downloadProductFileQuery->productFileIdentifier, $downloadProductFileQuery->contributorEmail),
             );
         } catch (ProductFileDoesNotExist | ProductFileIsNotDownloadable | SupplierDoesNotExist) {
             throw new ProductFileNotFound();
         }
 
-        return ProductFile::fromReadModel($supplierFileNameAndResourceFile);
+        return ProductFile::fromReadModel($productFileNameAndResourceFile);
     }
 }

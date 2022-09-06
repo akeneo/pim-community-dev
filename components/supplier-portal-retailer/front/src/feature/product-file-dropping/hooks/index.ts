@@ -1,1 +1,1 @@
-export * from './useSupplierFiles';
+export * from './useProductFiles';

@@ -34,6 +34,7 @@ configs:
       name: pim-enterprise-dev
       url: https://github.com/akeneo/pim-enterprise-dev
 
+server:
   additionalProjects:
   - name: infra
     namespace: argocd
@@ -46,6 +47,16 @@ configs:
     - group: '*'
       kind: '*'
   - name: pim-saas-service
+    namespace: argocd
+    sourceRepos:
+    - '*'
+    destinations:
+    - namespace: '*'
+      server: '*'
+    clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  - name: timmy
     namespace: argocd
     sourceRepos:
     - '*'
@@ -78,9 +89,43 @@ configs:
           value: $ARGOCD_APP_SOURCE_TARGET_REVISION
       valueFiles:
        - values.yaml # To be changed by values-project.yaml
+  - name: pim-saas-service
+    namespace: argocd
+    additionalAnnotations:
+      argocd.argoproj.io/sync-wave: "1"
+    finalizers:
+    - resources-finalizer.argocd.argoproj.io
+    syncPolicy:
+      automated: {}
+    project: pim-saas-service
+    source:
+      repoURL: https://github.com/akeneo/pim-enterprise-dev.git
+      path: deployments-ucs/pim-saas-service/pim
+      targetRevision: master
+    destination:
+      server: "https://kubernetes.default.svc"
+  - name: timmy
+    namespace: argocd
+    additionalAnnotations:
+      argocd.argoproj.io/sync-wave: "1"
+    finalizers:
+      - resources-finalizer.argocd.argoproj.io
+    syncPolicy:
+      automated: {}
+    project: timmy
+    source:
+      repoURL: https://github.com/akeneo/pim-enterprise-dev.git
+      path: deployments-ucs/timmy
+      targetRevision: master
+    destination:
+      server: "https://kubernetes.default.svc"
+    helm:
+      parameters:
+        - name: spec.source.targetRevision
+          value: $ARGOCD_APP_SOURCE_TARGET_REVISION
+      valueFiles:
+        - values.yaml # To be changed by values-project.yaml
 
-
-server:
   extraArgs:
     - --insecure
   ingress:

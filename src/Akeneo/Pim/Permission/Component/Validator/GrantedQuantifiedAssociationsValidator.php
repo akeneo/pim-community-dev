@@ -8,6 +8,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\Quantifi
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\QuantifiedAssociations;
 use Akeneo\Pim\Permission\Component\Query\ProductCategoryAccessQueryInterface;
 use Akeneo\Pim\Permission\Component\Query\ProductModelCategoryAccessQueryInterface;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraint;
@@ -16,29 +18,11 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class GrantedQuantifiedAssociationsValidator extends ConstraintValidator
 {
-    /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
-
-    /**
-     * @var ProductCategoryAccessQueryInterface
-     */
-    private $productCategoryAccessQuery;
-
-    /**
-     * @var ProductModelCategoryAccessQueryInterface
-     */
-    private $productModelCategoryAccessQuery;
-
     public function __construct(
-        ProductCategoryAccessQueryInterface $productCategoryAccessQuery,
-        ProductModelCategoryAccessQueryInterface $productModelCategoryAccessQuery,
-        TokenStorageInterface $tokenStorage
+        private ProductCategoryAccessQueryInterface $productCategoryAccessQuery,
+        private ProductModelCategoryAccessQueryInterface $productModelCategoryAccessQuery,
+        private TokenStorageInterface $tokenStorage,
     ) {
-        $this->productCategoryAccessQuery = $productCategoryAccessQuery;
-        $this->productModelCategoryAccessQuery = $productModelCategoryAccessQuery;
-        $this->tokenStorage = $tokenStorage;
     }
 
     public function validate($value, Constraint $constraint)
@@ -81,18 +65,29 @@ class GrantedQuantifiedAssociationsValidator extends ConstraintValidator
         string $propertyPath
     ) {
         $productIdentifiers = array_column($productQuantifiedLinks, 'identifier');
+        $productUuids = array_map(
+            fn (string $uuid): UuidInterface => Uuid::fromString($uuid),
+            array_column($productQuantifiedLinks, 'uuid')
+        );
+
         $grantedProductIdentifiers = $this->productCategoryAccessQuery->getGrantedProductIdentifiers(
             $productIdentifiers,
             $user
         );
+        $grantedProductUuids = $this->productCategoryAccessQuery->getGrantedProductUuids(
+            $productUuids,
+            $user
+        );
 
         $nonGrantedProductIdentifiers = array_diff($productIdentifiers, $grantedProductIdentifiers);
+        $nonGrantedProductUuids = array_diff($productUuids, $grantedProductUuids);
+        $nonGrantedProducts = array_merge($nonGrantedProductIdentifiers, $nonGrantedProductUuids);
 
-        if (count($nonGrantedProductIdentifiers) > 0) {
+        if (count($nonGrantedProducts) > 0) {
             $this->context->buildViolation(
                 GrantedQuantifiedAssociations::PRODUCTS_DO_NOT_EXIST_MESSAGE,
                 [
-                    '{{ values }}' => implode(', ', $nonGrantedProductIdentifiers),
+                    '{{ values }}' => implode(', ', $nonGrantedProducts),
                 ]
             )
                 ->atPath($propertyPath)

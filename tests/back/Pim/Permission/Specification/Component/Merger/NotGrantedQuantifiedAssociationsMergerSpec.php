@@ -12,6 +12,7 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Permission\Component\NotGrantedDataMergerInterface;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
@@ -59,6 +60,11 @@ class NotGrantedQuantifiedAssociationsMergerSpec extends ObjectBehavior
             $user
         )->willReturn(['product_c']);
 
+        $productCategoryAccessQuery->getGrantedProductUuids(
+            [Uuid::fromString('92e85ee7-40c1-4164-abae-fca396165ed1')],
+            $user
+        )->willReturn([]);
+
         $productModelCategoryAccessQuery->getGrantedProductModelCodes(
             ['product_model_a', 'product_model_b'],
             $user
@@ -70,6 +76,7 @@ class NotGrantedQuantifiedAssociationsMergerSpec extends ObjectBehavior
                     'products' => [
                         ['identifier' => 'product_b', 'quantity' => 1],
                         ['identifier' => 'product_c', 'quantity' => 2],
+                        ['uuid' => '92e85ee7-40c1-4164-abae-fca396165ed1', 'quantity' => 69],
                     ],
                     'product_models' => [
                         ['identifier' => 'product_model_a', 'quantity' => 3],
@@ -81,18 +88,18 @@ class NotGrantedQuantifiedAssociationsMergerSpec extends ObjectBehavior
 
         $filteredEntityWithQuantifiedAssociations->getQuantifiedAssociations()->willReturn(
             QuantifiedAssociationCollection::createFromNormalized([
-                'PRODUCTSET' => [
-                    'products' => [
-                        ['identifier' => 'product_c', 'quantity' => 12],
-                        ['identifier' => 'product_d', 'quantity' => 15],
+                    'PRODUCTSET' => [
+                        'products' => [
+                            ['identifier' => 'product_c', 'quantity' => 12],
+                            ['identifier' => 'product_d', 'quantity' => 15],
+                        ],
+                        'product_models' => [
+                            ['identifier' => 'product_model_a', 'quantity' => 13],
+                            ['identifier' => 'product_model_b', 'quantity' => 14],
+                        ],
                     ],
-                    'product_models' => [
-                        ['identifier' => 'product_model_a', 'quantity' => 13],
-                        ['identifier' => 'product_model_b', 'quantity' => 14],
-                    ],
-                ],
-            ]
-        ));
+                ]
+            ));
 
         $fieldSetter->setFieldData($fullEntityWithQuantifiedAssociations, 'quantified_associations', [
             'PRODUCTSET' => [
@@ -100,6 +107,7 @@ class NotGrantedQuantifiedAssociationsMergerSpec extends ObjectBehavior
                     ['identifier' => 'product_b', 'quantity' => 1],
                     ['identifier' => 'product_c', 'quantity' => 12],
                     ['identifier' => 'product_d', 'quantity' => 15],
+                    ['uuid' => '92e85ee7-40c1-4164-abae-fca396165ed1', 'quantity' => 69],
                 ],
                 'product_models' => [
                     ['identifier' => 'product_model_a', 'quantity' => 13],
@@ -126,6 +134,11 @@ class NotGrantedQuantifiedAssociationsMergerSpec extends ObjectBehavior
             $user
         )->willReturn(['product_b', 'product_c']);
 
+        $productCategoryAccessQuery->getGrantedProductUuids(
+            [],
+            $user
+        )->willReturn([]);
+
         $productModelCategoryAccessQuery->getGrantedProductModelCodes(
             ['product_model_a', 'product_model_b'],
             $user
@@ -133,18 +146,18 @@ class NotGrantedQuantifiedAssociationsMergerSpec extends ObjectBehavior
 
         $fullEntityWithQuantifiedAssociations->getQuantifiedAssociations()->willReturn(
             QuantifiedAssociationCollection::createFromNormalized([
-                'PRODUCTSET' => [
-                    'products' => [
-                        ['identifier' => 'product_b', 'quantity' => 1],
-                        ['identifier' => 'product_c', 'quantity' => 2],
+                    'PRODUCTSET' => [
+                        'products' => [
+                            ['identifier' => 'product_b', 'quantity' => 1],
+                            ['identifier' => 'product_c', 'quantity' => 2],
+                        ],
+                        'product_models' => [
+                            ['identifier' => 'product_model_a', 'quantity' => 3],
+                            ['identifier' => 'product_model_b', 'quantity' => 4],
+                        ],
                     ],
-                    'product_models' => [
-                        ['identifier' => 'product_model_a', 'quantity' => 3],
-                        ['identifier' => 'product_model_b', 'quantity' => 4],
-                    ],
-                ],
-            ]
-        ));
+                ]
+            ));
 
         $filteredEntityWithQuantifiedAssociations->getQuantifiedAssociations()->willReturn(
             QuantifiedAssociationCollection::createFromNormalized([
@@ -192,6 +205,11 @@ class NotGrantedQuantifiedAssociationsMergerSpec extends ObjectBehavior
             ['product_a', 'product_b'],
             $user
         )->willReturn(['product_a', 'product_b']);
+
+        $productCategoryAccessQuery->getGrantedProductUuids(
+            [],
+            $user
+        )->willReturn([]);
 
         $productModelCategoryAccessQuery->getGrantedProductModelCodes(
             ['product_model_a', 'product_model_b'],
@@ -256,6 +274,11 @@ class NotGrantedQuantifiedAssociationsMergerSpec extends ObjectBehavior
             ['product_a', 'product_b'],
             $user
         )->willReturn(['product_a', 'product_b']);
+
+        $productCategoryAccessQuery->getGrantedProductUuids(
+            [],
+            $user
+        )->willReturn([]);
 
         $productModelCategoryAccessQuery->getGrantedProductModelCodes(
             ['product_model_a', 'product_model_b'],

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Infrastructure\ProductFileDropping\SuccessMetrics\Subscriber;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Event\ProductFileDownloaded;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierCodeFromSupplierFileIdentifier;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierCodeFromProductFileIdentifier;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\SuccessMetrics\Subscriber\LogOnProductFileDownloaded;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\Test\TestLogger;
@@ -15,11 +15,11 @@ final class LogOnProductFileDownloadedTest extends TestCase
     /** @test */
     public function itLogsWhenAProductFileHasBeenDownloadedByARetailer(): void
     {
-        $getSupplierCodeFromSupplierFileIdentifier = $this->createMock(
-            GetSupplierCodeFromSupplierFileIdentifier::class,
+        $getSupplierCodeFromProductFileIdentifier = $this->createMock(
+            GetSupplierCodeFromProductFileIdentifier::class,
         );
 
-        $getSupplierCodeFromSupplierFileIdentifier
+        $getSupplierCodeFromProductFileIdentifier
             ->expects($this->once())
             ->method('__invoke')
             ->with('e77c4413-a6d5-49e6-a102-8042cf5bd439')
@@ -27,7 +27,7 @@ final class LogOnProductFileDownloadedTest extends TestCase
         ;
 
         $logger = new TestLogger();
-        $sut = new LogOnProductFileDownloaded($getSupplierCodeFromSupplierFileIdentifier, $logger);
+        $sut = new LogOnProductFileDownloaded($getSupplierCodeFromProductFileIdentifier, $logger);
 
         $sut->logOnProductFileDownloaded(
             new ProductFileDownloaded(
