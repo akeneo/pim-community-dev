@@ -34,10 +34,11 @@ class CategoryTestCase extends TestCase
     ): Category {
         $categoryId = (null === $id ? null : new CategoryId($id));
         $parentId = (null === $parentId ? null : new CategoryId($parentId));
+        $code = new Code($code);
 
         $categoryModelToCreate = new Category(
             id: $categoryId,
-            code: new Code($code),
+            code: $code,
             labelCollection: LabelCollection::fromArray($labels),
             parentId: $parentId,
         );
@@ -74,6 +75,25 @@ class CategoryTestCase extends TestCase
             LabelCollection::fromArray($categoryTranslations),
             $createdParentId,
         );
+    }
+
+    /**
+     * Insert dummy category.
+     */
+    protected function insertBaseCategory(Code $code): Category
+    {
+        $category = new Category(
+            id: null,
+            code: $code,
+        );
+        $this->get(UpsertCategoryBase::class)->execute($category);
+
+        /** @var Category $createdCategory */
+        $createdCategory = $this
+            ->get(GetCategoryInterface::class)
+            ->byCode((string) $category->getCode());
+
+        return $createdCategory;
     }
 
     protected function getConfiguration()

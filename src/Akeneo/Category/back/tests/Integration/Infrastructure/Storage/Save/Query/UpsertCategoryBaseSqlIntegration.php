@@ -10,16 +10,16 @@ declare(strict_types=1);
 namespace Akeneo\Test\Category\Integration\Infrastructure\Storage\Save\Query;
 
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryBase;
+use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\Model\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
+use Akeneo\Category\Domain\ValueObject\ValueCollection;
 use Akeneo\Category\Infrastructure\Storage\Save\Query\UpsertCategoryBaseSql;
-use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
 
-class UpsertCategoryBaseSqlIntegration extends TestCase
+class UpsertCategoryBaseSqlIntegration extends CategoryTestCase
 {
     public function testInsertNewCategoryInDatabase(): void
     {
@@ -29,60 +29,51 @@ class UpsertCategoryBaseSqlIntegration extends TestCase
 
         $categoryCode = 'myCategory';
         $category = new Category(
-            null,
-            new Code($categoryCode),
-            LabelCollection::fromArray([]),
-            null
+            id: null,
+            code: new Code($categoryCode),
+            valueCollection: ValueCollection::fromArray([]),
         );
-
         $upsertCategoryBaseQuery->execute($category);
-        $getCategory = $this->get(GetCategoryInterface::class);
-        /** @var Category $result */
-        $result = $getCategory->byCode((string)$category->getCode());
 
-        $this->assertNotNull($result);
-        $this->assertSame((string)$category->getCode(), (string)$result->getCode());
+        /** @var Category $categoryInserted */
+        $categoryInserted = $this
+            ->get(GetCategoryInterface::class)
+            ->byCode((string)$category->getCode());
+
+        $this->assertNotNull($categoryInserted);
+        $this->assertSame((string)$category->getCode(), (string)$categoryInserted->getCode());
+        $this->assertNotNull($category->getValueCollection());
     }
 
     public function testUpdateExistingCategoryInDatabase(): void
     {
-        /** @var UpsertCategoryBaseSql $upsertCategoryBaseQuery */
-        $upsertCategoryBaseQuery = $this->get(UpsertCategoryBase::class);
-        $this->assertEquals(UpsertCategoryBaseSql::class, $upsertCategoryBaseQuery::class);
+        $categoryCode = new Code('myCategory');
+        $categoryInserted = $this->insertBaseCategory($categoryCode);
 
-        $categoryCode = 'myCategory';
-        $category = new Category(
-            null,
-            new Code($categoryCode),
-            LabelCollection::fromArray([]),
-            null
+        // Update Category
+        $categoryToUpdate = new Category(
+            id: $categoryInserted->getId(),
+            code: $categoryInserted->getCode(),
+            parentId: new CategoryId($categoryInserted->getId()->getValue()),
+            valueCollection: ValueCollection::fromArray([])
         );
 
-        $upsertCategoryBaseQuery->execute($category);
-        $getCategory = $this->get(GetCategoryInterface::class);
-        /** @var Category $createdCategory */
-        $createdCategory = $getCategory->byCode((string)$category->getCode());
-        $this->assertNotNull($createdCategory);
+        /** @var UpsertCategoryBaseSql $upsertCategoryBaseSql */
+        $upsertCategoryBaseSql = $this->get(UpsertCategoryBase::class);
+        $this->assertEquals(UpsertCategoryBaseSql::class, $upsertCategoryBaseSql::class);
 
-        $updatedCategory = new Category(
-            null,
-            new Code('updatedCode'),
-            LabelCollection::fromArray([]),
-            new CategoryId($createdCategory->getId()->getValue())
-        );
+        // Update Category previously inserted
+        $upsertCategoryBaseSql->execute($categoryToUpdate);
 
-        $upsertCategoryBaseQuery->execute($updatedCategory);
-        $getCategory = $this->get(GetCategoryInterface::class);
-        /** @var Category $editedCategoryData */
-        $editedCategoryData = $getCategory->byCode((string)$updatedCategory->getCode());
+        /** @var Category $updatedCategory */
+        $updatedCategory = $this
+            ->get(GetCategoryInterface::class)
+            ->byCode((string)$categoryCode);
 
-        $this->assertNotNull($editedCategoryData);
-        $this->assertSame((string)$updatedCategory->getCode(), (string)$editedCategoryData->getCode());
-        $this->assertSame($updatedCategory->getParentId()?->getValue(), (int)$editedCategoryData->getParentId()->getValue());
-    }
-
-    protected function getConfiguration(): Configuration
-    {
-        return $this->catalog->useMinimalCatalog();
+        $this->assertNotNull($updatedCategory);
+        $this->assertSame((string)$categoryInserted->getCode(), (string)$updatedCategory->getCode());
+        $this->assertNotSame($updatedCategory, $categoryInserted);
+        $this->assertNotNull($updatedCategory->getValueCollection());
+        $this->assertNotNull($updatedCategory->getParentId());
     }
 }
