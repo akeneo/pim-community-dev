@@ -7,6 +7,7 @@ namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repo
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Types;
 
 final class DatabaseRepository implements ProductFileRepository
 {
@@ -39,5 +40,53 @@ final class DatabaseRepository implements ProductFileRepository
                 'uploaded_at' => $productFile->uploadedAt(),
             ],
         );
+
+        foreach ($productFile->newRetailerComments() as $retailerComment) {
+            $sql = <<<SQL
+                INSERT INTO `akeneo_supplier_portal_product_file_retailer_comments` (
+                    author_email,
+                    product_file_identifier,
+                    content,
+                    created_at
+                ) VALUES (:authorEmail, :productFileIdentifier, :content, :createdAt);
+            SQL;
+
+            $this->connection->executeQuery(
+                $sql,
+                [
+                    'authorEmail' => $retailerComment->authorEmail(),
+                    'productFileIdentifier' => $productFile->identifier(),
+                    'content' => $retailerComment->content(),
+                    'createdAt' => $retailerComment->createdAt(),
+                ],
+                [
+                    'createdAt' => Types::DATETIME_IMMUTABLE,
+                ],
+            );
+        }
+
+        foreach ($productFile->newSupplierComments() as $supplierComment) {
+            $sql = <<<SQL
+                INSERT INTO `akeneo_supplier_portal_product_file_supplier_comments` (
+                    author_email,
+                    product_file_identifier,
+                    content,
+                    created_at
+                ) VALUES (:authorEmail, :productFileIdentifier, :content, :createdAt);
+            SQL;
+
+            $this->connection->executeQuery(
+                $sql,
+                [
+                    'authorEmail' => $supplierComment->authorEmail(),
+                    'productFileIdentifier' => $productFile->identifier(),
+                    'content' => $supplierComment->content(),
+                    'createdAt' => $supplierComment->createdAt(),
+                ],
+                [
+                    'createdAt' => Types::DATETIME_IMMUTABLE,
+                ],
+            );
+        }
     }
 }
