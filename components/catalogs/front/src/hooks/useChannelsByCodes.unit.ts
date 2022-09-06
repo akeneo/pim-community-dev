@@ -52,22 +52,30 @@ test('it fetches the channels', async () => {
     });
 });
 
-test('it returns an empty array when no code provided', async () => {
-    const {result, waitForNextUpdate} = renderHook(() => useChannelsByCodes([]), {wrapper: ReactQueryWrapper});
+const codesTests: [string, string[] | undefined][] = [
+    ['undefined', undefined],
+    ['empty array', []],
+];
 
-    expect(result.current).toMatchObject({
-        isLoading: true,
-        isError: false,
-        data: undefined,
-        error: null,
-    });
+test.each(codesTests)(
+    'it returns an empty array when "%s" as codes is provided',
+    async (key: string, codes: string[] | undefined) => {
+        const {result, waitForNextUpdate} = renderHook(() => useChannelsByCodes(codes), {wrapper: ReactQueryWrapper});
 
-    await waitForNextUpdate();
+        expect(result.current).toMatchObject({
+            isLoading: true,
+            isError: false,
+            data: undefined,
+            error: null,
+        });
 
-    expect(result.current).toMatchObject({
-        isLoading: false,
-        isError: false,
-        data: [],
-        error: null,
-    });
-});
+        await waitForNextUpdate();
+
+        expect(result.current).toMatchObject({
+            isLoading: false,
+            isError: false,
+            data: [],
+            error: null,
+        });
+    }
+);
