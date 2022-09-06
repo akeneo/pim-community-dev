@@ -56,7 +56,7 @@ final class IsCertificateValidValidator extends ConstraintValidator
             $constraint->serviceProviderCertificate,
             $command->serviceProviderCertificate,
             $constraint,
-            true
+            $command->isEnabled
         );
     }
 
@@ -70,28 +70,29 @@ final class IsCertificateValidValidator extends ConstraintValidator
         string     $certificate,
         Constraint $constraint,
         bool       $doValidateDate
-    ) : void
-    {
-
+    ) : void {
         if (empty($certificate)) {
             return;
         }
 
-        if (!$this->x509->loadX509($certificate)) {
+        $result = $this->x509->loadX509($certificate);
+        if (false === $result) {
             $this->context
                 ->buildViolation($constraint->invalidMessage)
-                //->atPath($propertyPath)
+                ->atPath($propertyPath)
                 ->addViolation();
 
             return;
         }
 
-        if (!$doValidateDate) return;
+        if (!$doValidateDate) {
+            return;
+        }
 
         if (!$this->x509->validateDate()) {
             $this->context
                 ->buildViolation($constraint->expiredMessage)
-                //->atPath($propertyPath)
+                ->atPath($propertyPath)
                 ->addViolation();
         }
     }
