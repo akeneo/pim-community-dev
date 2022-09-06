@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
+use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\ServiceApi\CategoryQueryInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,7 +20,7 @@ class GetCategoryController
 {
     public function __construct(
         private SecurityFacade $securityFacade,
-        private CategoryQueryInterface $categoryQuery
+        private GetCategoryInterface $getCategory
     ) {
     }
 
@@ -31,8 +32,8 @@ class GetCategoryController
             throw new AccessDeniedException();
         }
 
-        $category = $this->categoryQuery->byId($id);
+        $category = $this->getCategory->byId($id);
 
-        return new JsonResponse($category, Response::HTTP_OK);
+        return new JsonResponse($category->normalize(), Response::HTTP_OK);
     }
 }

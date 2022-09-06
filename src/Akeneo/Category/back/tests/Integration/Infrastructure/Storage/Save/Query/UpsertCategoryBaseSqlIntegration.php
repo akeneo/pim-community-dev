@@ -15,7 +15,6 @@ use Akeneo\Category\Domain\Model\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
-use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
 use Akeneo\Category\Infrastructure\Storage\Save\Query\UpsertCategoryBaseSql;
 
@@ -31,7 +30,7 @@ class UpsertCategoryBaseSqlIntegration extends CategoryTestCase
         $category = new Category(
             id: null,
             code: new Code($categoryCode),
-            valueCollection: ValueCollection::fromArray([]),
+            attributes: ValueCollection::fromArray([]),
         );
         $upsertCategoryBaseQuery->execute($category);
 
@@ -42,7 +41,7 @@ class UpsertCategoryBaseSqlIntegration extends CategoryTestCase
 
         $this->assertNotNull($categoryInserted);
         $this->assertSame((string)$category->getCode(), (string)$categoryInserted->getCode());
-        $this->assertNotNull($category->getValueCollection());
+        $this->assertNotNull($category->getAttributes());
     }
 
     public function testUpdateExistingCategoryInDatabase(): void
@@ -55,7 +54,7 @@ class UpsertCategoryBaseSqlIntegration extends CategoryTestCase
             id: $categoryInserted->getId(),
             code: $categoryInserted->getCode(),
             parentId: new CategoryId($categoryInserted->getId()->getValue()),
-            valueCollection: ValueCollection::fromArray([])
+            attributes: ValueCollection::fromArray([])
         );
 
         /** @var UpsertCategoryBaseSql $upsertCategoryBaseSql */
@@ -73,7 +72,7 @@ class UpsertCategoryBaseSqlIntegration extends CategoryTestCase
         $this->assertNotNull($updatedCategory);
         $this->assertSame((string)$categoryInserted->getCode(), (string)$updatedCategory->getCode());
         $this->assertNotSame($updatedCategory, $categoryInserted);
-        $this->assertNotNull($updatedCategory->getValueCollection());
+        $this->assertNotNull($updatedCategory->getAttributes());
         $this->assertNotNull($updatedCategory->getParentId());
     }
 }

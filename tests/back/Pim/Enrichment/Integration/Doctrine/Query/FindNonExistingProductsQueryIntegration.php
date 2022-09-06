@@ -2,21 +2,20 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Doctrine\Query;
 
-use Akeneo\Pim\Enrichment\Component\Product\Query\FindNonExistingProductIdentifiersQueryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FindNonExistingProductsQueryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Test\Integration\TestCase;
 
-class FindNonExistingProductIdentifiersQueryIntegration extends TestCase
+class FindNonExistingProductsQueryIntegration extends TestCase
 {
-    /** @var FindNonExistingProductIdentifiersQueryInterface */
-    private $findNonExistingProductIdentifiersQuery;
+    private FindNonExistingProductsQueryInterface $findNonExistingProductsQuery;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->createAdminUser();
-        $this->findNonExistingProductIdentifiersQuery = $this->get(
-            'akeneo.pim.enrichment.product.query.find_non_existing_product_identifiers_query'
+        $this->findNonExistingProductsQuery = $this->get(
+            'akeneo.pim.enrichment.product.query.find_non_existing_products_query'
         );
     }
 
@@ -30,7 +29,7 @@ class FindNonExistingProductIdentifiersQueryIntegration extends TestCase
      */
     public function it_return_nothing_when_nothing_passed()
     {
-        self::assertEquals([], $this->findNonExistingProductIdentifiersQuery->execute([]));
+        self::assertEquals([], $this->findNonExistingProductsQuery->byProductIdentifiers([]));
     }
 
     /**
@@ -51,7 +50,7 @@ class FindNonExistingProductIdentifiersQueryIntegration extends TestCase
             'product_does_not_exists',
         ];
 
-        $actualNonExistingProductIdentifiers = $this->findNonExistingProductIdentifiersQuery->execute(
+        $actualNonExistingProductIdentifiers = $this->findNonExistingProductsQuery->byProductIdentifiers(
             $lookupProductIdentifiers
         );
         $expectedNonExistingProductIdentifiers = [

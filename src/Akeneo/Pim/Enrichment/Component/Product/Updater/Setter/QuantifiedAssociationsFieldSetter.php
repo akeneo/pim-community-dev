@@ -18,7 +18,7 @@ class QuantifiedAssociationsFieldSetter extends AbstractFieldSetter
      *     "PACK": {
      *         "products": [
      *              {"identifier": "AKN_TS1", "quantity": 2},
-     *              {"identifier": "AKN_TSH2", "quantity": 3},
+     *              {"uuid": "40a48bff-e241-4aa2-9c06-685da710bd74", "quantity": 3},
      *         ],
      *         "product_models": [
      *              {"identifier": "MODEL_AKN_TS1", "quantity": 2},

@@ -333,7 +333,10 @@ JSON;
             ],
             'quantified_associations' => [
                 'QUANTIFIEDASSOCIATION' => [
-                    'products' => [['identifier' => 'simple', 'quantity' => 12]],
+                    'products' => [[
+                        'uuid' => $this->getProductUuidFromIdentifier('simple')->toString(),
+                        'quantity' => 12,
+                    ]],
                     'product_models' => [],
                 ]
             ],

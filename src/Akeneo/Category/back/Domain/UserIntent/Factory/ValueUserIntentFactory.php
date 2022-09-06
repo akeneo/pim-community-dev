@@ -12,15 +12,15 @@ use Akeneo\Category\Domain\Query\GetAttribute;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeType;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
-use Akeneo\Category\Infrastructure\Converter\InternalAPI\InternalAPIToStd;
+use Akeneo\Category\Infrastructure\Converter\InternalApi\InternalApiToStd;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  *
- * @phpstan-import-type AttributeCodeApi from InternalAPIToStd
- * @phpstan-import-type AttributeValueApi from InternalAPIToStd
+ * @phpstan-import-type AttributeCodeApi from InternalApiToStd
+ * @phpstan-import-type AttributeValueApi from InternalApiToStd
  */
 final class ValueUserIntentFactory implements UserIntentFactory
 {

@@ -51,7 +51,7 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
             ;
         SQL;
 
-        $values = $categoryModel->getValueCollection();
+        $values = $categoryModel->getAttributes();
         if (null !== $values) {
             $values = json_encode($values->normalize());
         }
@@ -117,7 +117,7 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
                 ;
             SQL;
 
-        $values = $categoryModel->getValueCollection();
+        $values = $categoryModel->getAttributes();
         if (null !== $values) {
             $values = json_encode($values->normalize());
         }
