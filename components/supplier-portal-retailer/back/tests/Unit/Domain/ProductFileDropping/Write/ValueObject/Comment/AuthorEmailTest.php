@@ -22,9 +22,9 @@ final class AuthorEmailTest extends TestCase
     /** @test */
     public function itCreatesACommentAuthorEmailIfItIsValid(): void
     {
-        $authorEmail = AuthorEmail::fromString('gus@los-pollos-hermanos.io');
+        $authorEmail = AuthorEmail::fromString('jimmy@punchline.com');
 
         static::assertInstanceOf(AuthorEmail::class, $authorEmail);
-        static::assertSame('gus@los-pollos-hermanos.io', (string) $authorEmail);
+        static::assertSame('jimmy@punchline.com', (string) $authorEmail);
     }
 }
