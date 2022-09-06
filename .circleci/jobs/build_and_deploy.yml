@@ -55,7 +55,7 @@ commands:
               echo "2cc8897984d1ab43b6799aff5eca905d37552fdf  /usr/local/bin/yq" > /tmp/checksum
               sha1sum -c /tmp/checksum
               sudo chmod +x /usr/local/bin/yq
-              
+
     set_docker_gcp_mirror:
         description: "Configure GCP Docker registry mirrors"
         steps:
@@ -222,6 +222,56 @@ jobs:
                         - project/node_modules
                         - project/front-packages/akeneo-design-system/lib
                         - project/front-packages/shared/lib
+
+    install_ee_back_dependencies:
+        machine:
+            image: *executor-machine
+        steps:
+            -   attach_workspace:
+                    at: ~/
+            -   run:
+                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                    command: sudo chown -R 1000:1000 ../project
+            -   run:
+                    name: Change permissions on project dir
+                    command: sudo chmod -R 777 ../project
+            -   run:
+                    name: Creating hash key for PHP Docker image
+                    command: |
+                        find Dockerfile docker/ -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/php-docker-image.hash
+                        date +%F >> ~/php-docker-image.hash
+            -   restore_cache:
+                    name: Restore PHP docker image cache
+                    key: php-docker-image-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/php-docker-image.hash" }}
+            -   run:
+                    name: Build the latest EE Docker images
+                    command: |
+                        ls php-pim-image.tar && docker load -i php-pim-image.tar
+                        ls php-pim-image.tar || make php-image-dev
+                        ls php-pim-image.tar || docker save -o php-pim-image.tar akeneo/pim-dev/php:8.0
+            -   save_cache:
+                    name: Save PHP docker image cache
+                    key: php-docker-image-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/php-docker-image.hash" }}
+                    paths:
+                        - php-pim-image.tar
+            -   run:
+                    name: Creating cache key for back dependencies
+                    command: cat composer.json > ~/back-dependency.hash && date +%F >> ~/back-dependency.hash
+            -   restore_cache:
+                    name: Restore cache - back dependencies
+                    keys:
+                        - backend-dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/back-dependency.hash" }}
+            -   run:
+                    name: Pull docker image for php
+                    command: docker-compose pull php
+            -   run:
+                    name: Install back dependencies
+                    command: make vendor
+            -   persist_to_workspace:
+                    root: ~/
+                    paths:
+                        - project/vendor
+                        - project/php-pim-image.tar
 
     build_dev:
         parameters:

@@ -72,7 +72,8 @@ workflows:
                       - test_back_static_and_acceptance
                       - test_front_static_acceptance_and_integration
                       - test_back_phpunit
-            - test_catalogs_ee:
+            - ee_test_back_catalogs:
+                  name: test_catalogs_ee
                   requires:
                       - build_dev
                   context:

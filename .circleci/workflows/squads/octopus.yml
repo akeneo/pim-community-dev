@@ -133,49 +133,57 @@ workflows:
                     branches:
                       only:
                         - /^(CXP|OCT)-.*/
+            # CE
             - checkout_ce:
-                  name: checkout_ce
+                  name: ce_checkout
                   requires:
                     - start_catalogs?
             - install_ce_front_dependencies:
-                  name: install_front_dependencies
+                  name: ce_install_front_dependencies
                   requires:
-                      - checkout_ce
+                      - ce_checkout
             - install_ce_back_dependencies:
-                  name: install_back_dependencies
+                  name: ce_install_back_dependencies
                   requires:
-                      - checkout_ce
-            - test_front_catalogs:
-                  name: test_cat_front
+                      - ce_checkout
+            - ce_test_front_catalogs:
+                  name: ce_test_front
                   requires:
-                      - install_front_dependencies
-            - test_back_catalogs:
-                  name: test_cat_back
+                      - ce_install_front_dependencies
+            - ce_test_back_catalogs:
+                  name: ce_test_back
                   requires:
-                      - install_back_dependencies
+                      - ce_install_back_dependencies
             - build_dev:
-                  name: build_ce
+                  name: ce_build
                   is_ee_built: false
                   requires:
-                      - checkout_ce
+                      - ce_checkout
+            # EE
             - checkout_ee:
+                name: ee_checkout
                 requires:
                   - start_catalogs?
             - build_dev:
-                  name: build_ee
+                  name: ee_build
                   is_ee_built: true
                   path_to_front_packages: vendor/akeneo/pim-community-dev/front-packages
                   requires:
-                      - checkout_ee
-            - test_catalogs_ee:
-                  name: test_ee
+                      - ee_checkout
+            - install_ee_back_dependencies:
+                  name: ee_install_back_dependencies
+                  requires:
+                      - ee_checkout
+            - ee_test_back_catalogs:
+                  name: ee_test_back
                   notify_octopus: false
                   requires:
-                    - build_ee
+                    - ee_install_back_dependencies
+            # PR Requirements
             - pull_request_success:
                   requires:
-                      - test_cat_front
-                      - test_cat_back
+                      - ce_test_front
+                      - ce_test_back
 
     octopus_weekly_code_quality:
         when:
