@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Unit\Infrastructure\Controller\Internal;
 
+use Akeneo\Catalogs\Application\Persistence\GetChannelsByCodeQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\GetChannelsQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Controller\Internal\GetChannelsAction;
 use PHPUnit\Framework\TestCase;
@@ -24,7 +25,8 @@ class GetChannelsActionTest extends TestCase
     protected function setUp(): void
     {
         $this->getChannelsQuery = $this->createMock(GetChannelsQueryInterface::class);
-        $this->getChannelsAction = new GetChannelsAction($this->getChannelsQuery);
+        $this->getChannelsByCodeQuery = $this->createMock(GetChannelsByCodeQueryInterface::class);
+        $this->getChannelsAction = new GetChannelsAction($this->getChannelsQuery, $this->getChannelsByCodeQuery);
     }
 
     public function testItRedirectsWhenRequestIsNotAXmlHttpRequest(): void
@@ -36,7 +38,7 @@ class GetChannelsActionTest extends TestCase
     {
         $this->getChannelsQuery
             ->method('execute')
-            ->with([], 1, 20)
+            ->with(1, 20)
             ->willReturn(['channelA', 'channelB', 'channelC']);
 
         $response = ($this->getChannelsAction)(

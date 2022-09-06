@@ -60,7 +60,7 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
                 ],
             ],
             'product_value_filters' => [
-                'channel' => ['print', 'ecommerce'],
+                'channel' => ['ecommerce'],
             ],
         ], new CatalogUpdatePayload());
 
