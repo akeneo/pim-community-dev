@@ -29,7 +29,7 @@ final class FilterContainsValidChannelValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, FilterContainsValidChannel::class);
         }
 
-        if (!is_string($value) || '' === $value) {
+        if (!\is_string($value) || '' === $value) {
             return;
         }
 
