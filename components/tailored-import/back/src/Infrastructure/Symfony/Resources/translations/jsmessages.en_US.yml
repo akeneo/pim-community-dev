@@ -51,7 +51,7 @@ akeneo.tailored_import:
       common:
         collapse: Collapse
       clean_html:
-        title: Clean HTML tags
+        title: Clean HTML
       change_case:
         title: Change case
         select: Select your case
