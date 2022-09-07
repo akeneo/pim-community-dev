@@ -10,6 +10,17 @@ services:
             - '%pim_api.configuration%'
             - 'pim_api.controller.product:partialUpdateAction'
             - 'identifier'
+            - 'code'
+
+    pim_api.stream.product_uuid_partial_update_stream:
+        class: '%pim_api.stream.stream_resource_response.class%'
+        arguments:
+            - '@http_kernel'
+            - '@pim_catalog.validator.unique_value_set'
+            - '%pim_api.configuration%'
+            - 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\UpdateProductByUuidController'
+            - 'uuid'
+            - 'uuid'
 
     pim_api.stream.product_model_partial_update_stream:
         class: '%pim_api.stream.stream_resource_response.class%'
@@ -18,6 +29,7 @@ services:
             - '@pim_catalog.validator.unique_value_set'
             - '%pim_api.configuration%'
             - 'pim_api.controller.product_model:partialUpdateAction'
+            - 'code'
             - 'code'
 
     pim_api.stream.family_partial_update_stream:
@@ -28,6 +40,7 @@ services:
             - '%pim_api.configuration%'
             - 'pim_api.controller.family:partialUpdateAction'
             - 'code'
+            - 'code'
 
     pim_api.stream.family_variant_partial_update_stream:
         class: '%pim_api.stream.stream_resource_response.class%'
@@ -36,6 +49,7 @@ services:
             - '@pim_catalog.validator.unique_value_set'
             - '%pim_api.configuration%'
             - 'pim_api.controller.family_variant:partialUpdateAction'
+            - 'code'
             - 'code'
 
     pim_api.stream.category_partial_update_stream:
@@ -46,6 +60,7 @@ services:
             - '%pim_api.configuration%'
             - 'pim_api.controller.category:partialUpdateAction'
             - 'code'
+            - 'code'
 
     pim_api.stream.attribute_partial_update_stream:
         class: '%pim_api.stream.stream_resource_response.class%'
@@ -54,6 +69,7 @@ services:
             - '@pim_catalog.validator.unique_value_set'
             - '%pim_api.configuration%'
             - 'pim_api.controller.attribute:partialUpdateAction'
+            - 'code'
             - 'code'
 
     pim_api.stream.attribute_group_partial_update_stream:
@@ -64,6 +80,7 @@ services:
             - '%pim_api.configuration%'
             - 'pim_api.controller.attribute_group:partialUpdateAction'
             - 'code'
+            - 'code'
 
     pim_api.stream.association_type_partial_update_stream:
         class: '%pim_api.stream.stream_resource_response.class%'
@@ -72,6 +89,7 @@ services:
             - '@pim_catalog.validator.unique_value_set'
             - '%pim_api.configuration%'
             - 'pim_api.controller.association_type:partialUpdateAction'
+            - 'code'
             - 'code'
 
     pim_api.stream.channel_partial_update_stream:
@@ -82,6 +100,7 @@ services:
             - '%pim_api.configuration%'
             - 'pim_api.controller.channel:partialUpdateAction'
             - 'code'
+            - 'code'
 
     pim_api.stream.attribute_option_partial_update_stream:
         class: '%pim_api.stream.stream_resource_response.class%'
@@ -90,4 +109,5 @@ services:
             - '@pim_catalog.validator.unique_value_set'
             - '%pim_api.configuration%'
             - 'pim_api.controller.attribute_option:partialUpdateAction'
+            - 'code'
             - 'code'
