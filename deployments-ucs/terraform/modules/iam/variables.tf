@@ -63,3 +63,9 @@ variable "custom_metrics_k8s_sa" {
   type        = string
   default     = "custom-metrics-stackdriver-adapter"
 }
+
+variable "ci_service_account" {
+  description = "Service account used by CI (access to secrets)"
+  type        = string
+  default     = "main-service-account"
+}

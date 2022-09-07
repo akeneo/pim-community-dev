@@ -2,8 +2,8 @@ variable "project_id" {}
 
 variable "secrets" {
   type = list(object({
-    name = string,
+    name    = string,
     members = list(string),
-    labels = map(string),
+    labels  = map(string),
   }))
 }

@@ -4,13 +4,10 @@ resource "google_service_account" "external_dns" {
   display_name = "External DNS service account"
 }
 
-resource "google_project_iam_binding" "external_dns_binding" {
+resource "google_project_iam_member" "external_dns_binding" {
   project = var.project_id
   role    = "roles/dns.admin"
-
-  members = [
-    "serviceAccount:${google_service_account.external_dns.email}",
-  ]
+  member  = "serviceAccount:${google_service_account.external_dns.email}"
 }
 
 resource "google_project_iam_member" "external_dns_workload_identity" {

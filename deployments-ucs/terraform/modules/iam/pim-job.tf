@@ -5,10 +5,10 @@ resource "google_service_account" "pim_job_sa" {
 }
 
 resource "google_project_iam_member" "pim_sa_firestore" {
-  project      =    var.project_id
-  role         =    "roles/firebaserules.system"
-  member      =    "serviceAccount:pim-job-function@${var.project_id}.iam.gserviceaccount.com" 
-  
+  project = var.project_id
+  role    = "roles/firebaserules.system"
+  member  = "serviceAccount:pim-job-function@${var.project_id}.iam.gserviceaccount.com"
+
 }
 
 
@@ -27,4 +27,3 @@ resource "google_service_account" "pim_job_depl_sa" {
   account_id   = "pim-job-deployment"
   display_name = "PIM deployment SA"
 }
-

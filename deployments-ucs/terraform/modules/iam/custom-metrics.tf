@@ -4,13 +4,10 @@ resource "google_service_account" "custom_metrics" {
   display_name = "custom-metrics service account"
 }
 
-resource "google_project_iam_binding" "custom_metrics_binding" {
+resource "google_project_iam_member" "custom_metrics_binding" {
   project = var.project_id
   role    = "roles/monitoring.viewer"
-
-  members = [
-    "serviceAccount:${google_service_account.custom_metrics.email}",
-  ]
+  member  = "serviceAccount:${google_service_account.custom_metrics.email}"
 }
 
 resource "google_project_iam_member" "custom_metrics_workload_identity" {

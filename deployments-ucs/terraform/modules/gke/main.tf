@@ -67,7 +67,7 @@ resource "google_container_cluster" "gke" {
       enabled = var.enable_config_connector
     }
   }
-  
+
   timeouts {
     create = "30m"
     update = "40m"

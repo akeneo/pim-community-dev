@@ -93,13 +93,10 @@ resource "google_project_iam_binding" "cloudconfig_binding" {
   ]
 }
 
-resource "google_project_iam_binding" "cloudconfig_metrics_binding" {
+resource "google_project_iam_member" "cloudconfig_metrics_binding" {
   project = var.project_id
   role    = "roles/monitoring.metricWriter"
-
-  members = [
-    "serviceAccount:${google_service_account.cloudconfig.email}",
-  ]
+  member  = "serviceAccount:${google_service_account.cloudconfig.email}"
 }
 
 resource "google_project_iam_member" "cloudconfig_workload_identity" {

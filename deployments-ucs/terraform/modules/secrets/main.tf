@@ -1,8 +1,8 @@
 locals {
-  secrets = {for s in var.secrets:  s.name => s}
+  secrets = { for s in var.secrets : s.name => s }
 }
 resource "google_secret_manager_secret" "this" {
-  for_each = local.secrets
+  for_each  = local.secrets
   project   = var.project_id
   secret_id = each.value.name
 
@@ -14,7 +14,7 @@ resource "google_secret_manager_secret" "this" {
 }
 
 resource "google_secret_manager_secret_iam_binding" "secret_accessor" {
-  for_each = local.secrets
+  for_each  = local.secrets
   project   = var.project_id
   secret_id = google_secret_manager_secret.this[each.value.name].secret_id
   role      = "roles/secretmanager.secretAccessor"
@@ -22,7 +22,7 @@ resource "google_secret_manager_secret_iam_binding" "secret_accessor" {
 }
 
 resource "google_secret_manager_secret_iam_binding" "secret_version_manager" {
-  for_each = local.secrets
+  for_each  = local.secrets
   project   = var.project_id
   secret_id = google_secret_manager_secret.this[each.value.name].secret_id
   role      = "roles/secretmanager.secretVersionManager"

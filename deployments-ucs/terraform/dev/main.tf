@@ -30,7 +30,7 @@ module "firestore-us" {
 }
 
 module "secrets" {
-  source = "../modules/secrets"
+  source     = "../modules/secrets"
   project_id = local.project_id
   secrets = [
     {

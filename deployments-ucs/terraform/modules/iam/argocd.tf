@@ -21,7 +21,7 @@ resource "google_service_account" "argocd" {
 
 resource "google_project_iam_binding" "argocd_binding" {
   project = var.project_id
-  role = google_project_iam_custom_role.argocd_role.name
+  role    = google_project_iam_custom_role.argocd_role.name
 
   members = [
     "serviceAccount:${google_service_account.argocd.email}"
@@ -30,8 +30,8 @@ resource "google_project_iam_binding" "argocd_binding" {
 
 resource "google_project_iam_member" "argocd_workload_identity" {
   project = var.project_id
-  role = "roles/iam.workloadIdentityUser"
-  member = "serviceAccount:${var.project_id}.svc.id.goog[argocd/argocd-repo-server]"
+  role    = "roles/iam.workloadIdentityUser"
+  member  = "serviceAccount:${var.project_id}.svc.id.goog[argocd/argocd-repo-server]"
 }
 
 resource "google_secret_manager_secret" "argocd_token" {
@@ -51,9 +51,7 @@ resource "google_secret_manager_secret_iam_binding" "argocd_token_ci" {
   project   = var.project_id
   secret_id = google_secret_manager_secret.argocd_token.secret_id
   role      = "roles/secretmanager.secretAccessor"
-  members   = [
-    "serviceAccount:main-service-account@${var.project_id}.iam.gserviceaccount.com",
-  ]
+  members   = [local.ci_sa]
 }
 
 resource "google_secret_manager_secret_iam_binding" "argocd_token_admins" {

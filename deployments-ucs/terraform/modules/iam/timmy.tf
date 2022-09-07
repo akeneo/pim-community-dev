@@ -35,34 +35,20 @@ resource "google_project_iam_member" "timmy_depl_workload_identity" {
   member  = "serviceAccount:${var.project_id}.svc.id.goog[${var.timmy_k8s_ns}/${var.timmy_k8s_sa}]"
 }
 
-resource "google_project_iam_binding" "timmy_depl_log_writer" {
+resource "google_project_iam_member" "timmy_depl_log_writer" {
   project = var.project_id
   role    = "roles/logging.logWriter"
-  members = [
-    "serviceAccount:${google_service_account.timmy_depl_sa.email}"
-  ]
+  member  = "serviceAccount:${google_service_account.timmy_depl_sa.email}"
 }
 
-resource "google_project_iam_binding" "timmy_depl_source_reader" {
+resource "google_project_iam_member" "timmy_depl_source_reader" {
   project = var.project_id
   role    = "roles/source.reader"
-  members = [
-    "serviceAccount:${google_service_account.timmy_depl_sa.email}"
-  ]
+  member  = "serviceAccount:${google_service_account.timmy_depl_sa.email}"
 }
 
-resource "google_project_iam_binding" "timmy_depl_cloudfunction_developer" {
+resource "google_project_iam_member" "timmy_depl_cloudfunction_developer" {
   project = var.project_id
-  role = "roles/cloudfunctions.developer"
-  members = [
-    "serviceAccount:${google_service_account.timmy_depl_sa.email}"
-  ]
-}
-
-resource "google_project_iam_binding" "timmy_depl_sa" {
-  project = var.project_id
-  role = "roles/iam.serviceAccountUser"
-  members = [
-    "serviceAccount:${google_service_account.timmy_depl_sa.email}"
-  ]
+  role    = "roles/cloudfunctions.developer"
+  member  = "serviceAccount:${google_service_account.timmy_depl_sa.email}"
 }

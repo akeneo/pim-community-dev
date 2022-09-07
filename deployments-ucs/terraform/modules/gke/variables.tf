@@ -124,6 +124,6 @@ variable "min_master_version" {
 }
 
 variable "master_ipv4_cidr_block" {
-  type = string
+  type        = string
   description = "Master subnet, to be removed"
 }

@@ -15,9 +15,7 @@ resource "google_secret_manager_secret_iam_binding" "datadog_api_key_ci" {
   project   = var.project_id
   secret_id = google_secret_manager_secret.datadog_api_key.secret_id
   role      = "roles/secretmanager.secretAccessor"
-  members   = [
-    "serviceAccount:main-service-account@${var.project_id}.iam.gserviceaccount.com",
-  ]
+  members   = [local.ci_sa]
 }
 
 resource "google_secret_manager_secret_iam_binding" "datadog_api_key_admins" {
