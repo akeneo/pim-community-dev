@@ -3,7 +3,13 @@ import {Field, FileInfo, MediaFileInput, SectionTitle, TextAreaInput, TextInput,
 import {Locale, LocaleSelector, useTranslate} from '@akeneo-pim-community/shared';
 import {useTemplate} from '../hooks';
 import styled from 'styled-components';
-import {Attribute} from "../models";
+import {
+  Attribute,
+  buildCompositeKey,
+  CategoryAttributes,
+  CategoryAttributeValueWrapper,
+  Template,
+} from '../models';
 
 import {
   CategoryAttributeDefinition,
@@ -11,7 +17,6 @@ import {
   CategoryImageAttributeValueData,
   EnrichCategory,
 } from '../models';
-import {attributeDefinitions} from '../models/TemplateMocking';
 
 const locales: Locale[] = [
   {
@@ -29,9 +34,9 @@ const locales: Locale[] = [
 ];
 
 interface Props {
-  attributes: EnrichCategory['attributes'];
+  attributeValues: EnrichCategory['attributes'];
   onAttributeValueChange: (
-    attribute: CategoryAttributeDefinition,
+    attribute: Attribute,
     locale: string | null,
     attributeValue: CategoryAttributeValueData
   ) => void;
@@ -54,19 +59,19 @@ const Field960 = styled(Field)`
   max-width: 960px;
 `;
 
-export const EditAttributesForm = ({onAttributeValueChange}: Props) => {
+export const EditAttributesForm = ({attributeValues, onAttributeValueChange}: Props) => {
   const [locale, setLocale] = useState('en_US');
   const translate = useTranslate();
 
   const handleTextChange = useCallback(
-    (attribute: CategoryAttributeDefinition) => (value: string) => {
+    (attribute: Attribute) => (value: string) => {
       onAttributeValueChange(attribute, locale, value);
     },
     [locale, onAttributeValueChange]
   );
 
   const handleImageChange = useCallback(
-    (attribute: CategoryAttributeDefinition) => (value: FileInfo | null) => {
+    (attribute: Attribute) => (value: FileInfo | null) => {
       // TODO handle value===null
       if (!value || !value.size || !value.mimeType || !value.extension) {
         return;
@@ -81,6 +86,15 @@ export const EditAttributesForm = ({onAttributeValueChange}: Props) => {
       onAttributeValueChange(attribute, locale, data);
     },
     [locale, onAttributeValueChange]
+  );
+
+  const getAttributeValues = useCallback(
+    (attribute: Attribute): any => {
+      const compositeKey = buildCompositeKey(attribute, locale);
+
+      return attributeValues[compositeKey] && attributeValues[compositeKey].data ? attributeValues[compositeKey].data : null;
+    },
+    [attributeValues, locale]
   );
 
   const {data: template, isLoading, isError, error} = useTemplate('02274dac-e99a-4e1d-8f9b-794d4c3ba330');
@@ -107,23 +121,25 @@ export const EditAttributesForm = ({onAttributeValueChange}: Props) => {
       </SectionTitle>
 
       {template?.attributes.map((attribute: Attribute) => {
+        const value = getAttributeValues(attribute);
+
         switch (attribute.type) {
           case 'text':
             return (
               <Field key={attribute.uuid} label={attribute.labels[locale]} locale={locale}>
-                <TextInput name={attribute.code} value="" onChange={handleTextChange(attributeDefinitions[attribute.code])} />
+                <TextInput name={attribute.code} value={typeof value === 'string' ? value : ''} onChange={handleTextChange(attribute)} />
               </Field>
             );
           case 'richtext':
             return (
               <Field960 key={attribute.uuid} label={attribute.labels[locale]} locale={locale}>
-                <TextAreaInput isRichText name={attribute.code} value="" onChange={handleTextChange(attributeDefinitions[attribute.code])} />
+                <TextAreaInput isRichText name={attribute.code} value={typeof value === 'string' ? value : ''} onChange={handleTextChange(attribute)} />
               </Field960>
             );
           case 'textarea':
             return (
               <Field key={attribute.uuid} label={attribute.labels[locale]} locale={locale}>
-                <TextAreaInput name={attribute.code} value="" onChange={handleTextChange(attributeDefinitions[attribute.code])} />
+                <TextAreaInput name={attribute.code} value={typeof value === 'string' ? value : ''} onChange={handleTextChange(attribute)} />
               </Field>
             );
           case 'image':
@@ -131,7 +147,7 @@ export const EditAttributesForm = ({onAttributeValueChange}: Props) => {
               <Field key={attribute.uuid} label={attribute.labels[locale]}>
                 <MediaFileInput
                   value={null}
-                  onChange={handleImageChange(attributeDefinitions[attribute.code])}
+                  onChange={handleImageChange(attribute)}
                   placeholder="Drag and drop to upload or click here"
                   uploadingLabel="Uploading..."
                   uploadErrorLabel="An error occurred during upload"

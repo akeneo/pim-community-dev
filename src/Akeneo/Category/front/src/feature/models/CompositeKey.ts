@@ -1,5 +1,5 @@
 import {LocaleCode} from '@akeneo-pim-community/shared';
-import {CategoryAttributeDefinition} from './Attribute';
+import {Attribute, CategoryAttributeDefinition} from './Attribute';
 
 // a composite key points on some attribute value in a category data structure
 // it is of the form "<attribute code>|<attribute UUID>" with eventual suffix "|<locale>" if the attribute is localizable
@@ -11,7 +11,7 @@ export type CompositeKeyWithoutLocale = string;
 const COMPOSITE_KEY_SEPARATOR = '|';
 
 export function buildCompositeKey(
-  attribute: CategoryAttributeDefinition,
+  attribute: Attribute | CategoryAttributeDefinition,
   localeCode: LocaleCode | null = null
 ): CompositeKey {
   const {code, uuid} = attribute;

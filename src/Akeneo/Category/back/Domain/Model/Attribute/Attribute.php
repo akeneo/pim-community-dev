@@ -44,7 +44,7 @@ abstract class Attribute
     public function normalize(): array
     {
         return [
-            'identifier' => (string) $this->uuid,
+            'uuid' => (string) $this->uuid,
             'code' => (string) $this->code,
             'type' => (string) $this->type,
             'order' => $this->order->intValue(),
