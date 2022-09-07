@@ -9,11 +9,8 @@ type Result = {
     error: ResultError;
 };
 
-export const useChannelsByCodes = (codes: string[] | undefined): Result => {
+export const useChannelsByCodes = (codes: string[]): Result => {
     return useQuery<Channel[], ResultError, Channel[]>(['channels', codes?.sort().join('')], async () => {
-        if (undefined === codes || codes.length === 0) {
-            return [];
-        }
         const _codes = codes.join(',');
 
         const response = await fetch(`/rest/catalogs/channels?codes=${_codes}`, {

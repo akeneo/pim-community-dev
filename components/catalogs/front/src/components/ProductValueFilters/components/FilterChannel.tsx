@@ -16,7 +16,7 @@ type Props = {
 export const FilterChannel: FC<Props> = ({productValueFilters, onChange, isInvalid}) => {
     const translate = useTranslate();
 
-    const {data: selected} = useChannelsByCodes(productValueFilters?.channels);
+    const {data: selected} = useChannelsByCodes(productValueFilters?.channels ?? []);
     const {data: results, fetchNextPage} = useInfiniteChannels();
     const channels = useUniqueEntitiesByCode<Channel>(selected, results);
 

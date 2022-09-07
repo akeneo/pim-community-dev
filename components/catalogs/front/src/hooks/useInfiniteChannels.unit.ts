@@ -1,7 +1,6 @@
 jest.unmock('./useInfiniteChannels');
 
 import {ReactQueryWrapper} from '../../tests/ReactQueryWrapper';
-
 import {act, renderHook} from '@testing-library/react-hooks';
 import {useInfiniteChannels} from './useInfiniteChannels';
 import fetchMock from 'jest-fetch-mock';
