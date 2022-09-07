@@ -60,7 +60,7 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
                 ],
             ],
             'product_value_filters' => [
-                'channel' => ['ecommerce'],
+                'channels' => ['ecommerce'],
             ],
         ], new CatalogUpdatePayload());
 
@@ -131,11 +131,11 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
     {
         return [
             'channel is not a valid array' => [
-                'filters' => ['channel' => 'ecommerce'],
+                'filters' => ['channels' => 'ecommerce'],
                 'expectedMessage' => 'This value should be of type array.',
             ],
             'channel does not exist' => [
-                'filters' => ['channel' => ['removed_channel']],
+                'filters' => ['channels' => ['removed_channel']],
                 'expectedMessage' => 'The channel "removed_channel" has been deactivated. Please check your channel settings or remove this filter.',
             ],
         ];

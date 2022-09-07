@@ -38,11 +38,11 @@ class UpdateCatalogProductValueFiltersQueryTest extends IntegrationTestCase
         $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'shopifi');
 
         $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
-            'channel' => ['ecommerce', 'mobile'],
+            'channels' => ['ecommerce', 'mobile'],
         ]);
 
         $this->assertCatalogHasProductValueFilters('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
-            'channel' => ['ecommerce', 'mobile'],
+            'channels' => ['ecommerce', 'mobile'],
         ]);
     }
 

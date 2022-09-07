@@ -38,13 +38,13 @@ class GetCatalogProductValueFiltersQueryTest extends IntegrationTestCase
         $this->createCatalog($id, 'Store US', 'owner');
         $this->setCatalogProductValueFilters(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            ['channel' => ['ecommerce', 'print']]
+            ['channels' => ['ecommerce', 'print']]
         );
 
         $result = $this->query->execute($id);
 
         $expectedFilters = [
-            'channel' => ['ecommerce', 'print']
+            'channels' => ['ecommerce', 'print']
         ];
 
         Assert::assertEquals($expectedFilters, $result);

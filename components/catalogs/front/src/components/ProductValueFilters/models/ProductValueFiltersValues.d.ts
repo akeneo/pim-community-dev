@@ -1,3 +1,3 @@
 export type ProductValueFiltersValues = {
-    channel?: string[];
+    channels?: string[];
 };

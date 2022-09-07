@@ -16,19 +16,19 @@ type Props = {
 export const FilterChannel: FC<Props> = ({productValueFilters, onChange, isInvalid}) => {
     const translate = useTranslate();
 
-    const {data: selected} = useChannelsByCodes(productValueFilters?.channel);
+    const {data: selected} = useChannelsByCodes(productValueFilters?.channels);
     const {data: results, fetchNextPage} = useInfiniteChannels();
     const channels = useUniqueEntitiesByCode<Channel>(selected, results);
 
     return (
         <>
             <MultiSelectInput
-                value={productValueFilters?.channel ?? []}
+                value={productValueFilters?.channels ?? []}
                 emptyResultLabel={translate('akeneo_catalogs.product_value_filters.criteria.channel.no_matches')}
                 openLabel={translate('akeneo_catalogs.product_value_filters.action.open')}
                 removeLabel={translate('akeneo_catalogs.product_value_filters.action.remove')}
                 placeholder={translate('akeneo_catalogs.product_value_filters.criteria.channel.placeholder')}
-                onChange={v => onChange({...productValueFilters, channel: v})}
+                onChange={v => onChange({...productValueFilters, channels: v})}
                 onNextPage={fetchNextPage}
                 invalid={isInvalid}
                 data-testid='product-value-filter-by-channel'

@@ -37,11 +37,11 @@ export const ProductValueFilters: FC<Props> = ({productValueFilters, onChange, e
                 <FilterChannel
                     productValueFilters={productValueFilters}
                     onChange={onChange}
-                    isInvalid={!!errors.channel}
+                    isInvalid={!!errors.channels}
                 />
-                {!!errors.channel && (
+                {!!errors.channels && (
                     <Helper inline level='error'>
-                        <WarningMessage>{translate(errors.channel)}</WarningMessage>
+                        <WarningMessage>{translate(errors.channels)}</WarningMessage>
                     </Helper>
                 )}
             </FilterContainer>
