@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Category\Application\Applier;
 
 use Akeneo\Category\Api\Command\UserIntents\SetImage;
-use Akeneo\Category\Api\Command\UserIntents\SetText;
 use Akeneo\Category\Api\Command\UserIntents\UserIntent;
 use Akeneo\Category\Domain\Model\Category;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
@@ -18,8 +17,8 @@ class SetImageApplier implements UserIntentApplier
 {
     public function apply(UserIntent $userIntent, Category $category): void
     {
-        if (!$userIntent instanceof SetText) {
-            throw new \InvalidArgumentException('Unexpected class');
+        if (!$userIntent instanceof SetImage) {
+            throw new \InvalidArgumentException(sprintf('Unexpected class: %s', get_class($userIntent)));
         }
 
         $attributes = $category->getAttributes() ?? ValueCollection::fromArray([]);

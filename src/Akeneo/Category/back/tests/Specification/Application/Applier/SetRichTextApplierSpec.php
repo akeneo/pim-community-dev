@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Category\Application\Applier;
 
 use Akeneo\Category\Api\Command\UserIntents\SetRichText;
+use Akeneo\Category\Api\Command\UserIntents\SetText;
 use Akeneo\Category\Application\Applier\SetRichTextApplier;
 use Akeneo\Category\Domain\Model\Category;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
@@ -77,5 +78,18 @@ class SetRichTextApplierSpec extends ObjectBehavior
             $expectedCategory->getAttributes(),
             $category->getAttributes()
         );
+    }
+
+    function it_throws_exception_on_wrong_user_intent_applied(
+        SetText $userIntent,
+        Category $category
+    ): void
+    {
+        $this
+            ->shouldThrow(\InvalidArgumentException::class)
+            ->duringApply(
+                $userIntent,
+                $category
+            );
     }
 }

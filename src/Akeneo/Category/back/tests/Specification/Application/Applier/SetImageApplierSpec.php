@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Category\Application\Applier;
 
+use Akeneo\Category\Api\Command\UserIntents\SetImage;
 use Akeneo\Category\Api\Command\UserIntents\SetText;
 use Akeneo\Category\Application\Applier\SetImageApplier;
 use Akeneo\Category\Application\Applier\UserIntentApplier;
@@ -50,7 +51,7 @@ class SetImageApplierSpec extends ObjectBehavior
             attributes: $attributes
         );
 
-        $userIntent = new SetText(
+        $userIntent = new SetImage(
             'uuid',
             'attribute_code',
             'locale_code',
@@ -79,5 +80,18 @@ class SetImageApplierSpec extends ObjectBehavior
             $expectedCategory->getAttributes(),
             $category->getAttributes()
         );
+    }
+
+    function it_throws_exception_on_wrong_user_intent_applied(
+        SetText $userIntent,
+        Category $category
+    ): void
+    {
+        $this
+            ->shouldThrow(\InvalidArgumentException::class)
+            ->duringApply(
+                    $userIntent,
+                    $category
+            );
     }
 }
