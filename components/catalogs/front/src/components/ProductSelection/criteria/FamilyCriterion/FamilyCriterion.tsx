@@ -7,7 +7,7 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import {FamilyCriterionState} from './types';
 import {FamilyOperatorInput} from './FamilyOperatorInput';
 import {FamilySelectInput} from './FamilySelectInput';
-import {ErrorHelpers} from '../ErrorHelpers';
+import {ErrorHelpers} from '../../components/ErrorHelpers';
 
 const Fields = styled.div`
     display: flex;

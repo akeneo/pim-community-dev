@@ -2,8 +2,6 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\Purger;
 
-use Symfony\Component\Console\Output\OutputInterface;
-
 /**
  * Purge versions according to registered advisors
  *
@@ -16,12 +14,10 @@ interface VersionPurgerInterface
     /**
      * Purge the versions
      */
-    public function purge(array $options, OutputInterface $output);
+    public function purge(array $options);
 
     /**
      * Registers an advisor into the purger
-     *
-     * @param VersionPurgerAdvisorInterface $versionPurgerAdvisor
      */
     public function addVersionPurgerAdvisor(VersionPurgerAdvisorInterface $versionPurgerAdvisor);
 }

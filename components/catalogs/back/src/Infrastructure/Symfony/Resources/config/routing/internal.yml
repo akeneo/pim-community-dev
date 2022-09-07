@@ -22,6 +22,20 @@ akeneo_catalogs_internal_get_families:
     controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetFamiliesAction
     methods: [ GET ]
 
+akeneo_catalogs_internal_get_attribute_options:
+    path: '/rest/catalogs/attributes/{code}/options'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetAttributeOptionsAction
+    methods: [ GET ]
+
+akeneo_catalogs_internal_get_attribute:
+    path: '/rest/catalogs/attributes/{code}'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetAttributeAction
+    methods: [ GET ]
+
+akeneo_catalogs_internal_get_attributes:
+    path: '/rest/catalogs/attributes'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetAttributesAction
+
 akeneo_catalogs_internal_get_channel_locales:
     path: '/rest/catalogs/channels/{code}/locales'
     controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetChannelLocalesAction
@@ -35,4 +49,24 @@ akeneo_catalogs_internal_get_channel:
 akeneo_catalogs_internal_get_channels:
     path: '/rest/catalogs/channels'
     controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetChannelsAction
+    methods: [ GET ]
+
+akeneo_catalogs_internal_get_locales:
+    path: '/rest/catalogs/locales'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetLocalesAction
+    methods: [ GET ]
+
+akeneo_catalogs_internal_get_category_children:
+    path: '/rest/catalogs/categories/{categoryCode}/children'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetCategoryChildrenAction
+    methods: [ GET ]
+
+akeneo_catalogs_internal_get_categories:
+    path: '/rest/catalogs/categories'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetCategoriesAction
+    methods: [ GET ]
+
+akeneo_catalogs_internal_get_measurements_family_units:
+    path: '/rest/catalogs/measurement-families/{code}/units'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetMeasurementsFamilyUnitsAction
     methods: [ GET ]

@@ -7,28 +7,32 @@ namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ElasticsearchProjection;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductProjectionInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductProjectionInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductProjection;
-use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ReadValueCollectionFactory;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
+use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Webmozart\Assert\Assert;
 
 /**
- * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 final class GetElasticsearchProductProjection implements GetElasticsearchProductProjectionInterface
 {
     private const INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX = 'indexing_product_and_product_model';
 
+    /**
+     * @param GetAdditionalPropertiesForProductProjectionInterface[] $additionalDataProviders
+     */
     public function __construct(
         private Connection $connection,
         private NormalizerInterface $valuesNormalizer,
         private ReadValueCollectionFactory $readValueCollectionFactory,
+        private LoggerInterface $logger,
         private iterable $additionalDataProviders = []
     ) {
         Assert::allIsInstanceOf(
@@ -60,7 +64,7 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
         );
 
         if (\count($notFetchedUuids) > 0) {
-            throw new ObjectNotFoundException(\sprintf('Product uuids "%s" were not found.', \implode(',', $notFetchedUuids)));
+            $this->logger->warning(\sprintf('Trying to get ES product projection from product uuids "%s" which does not exist', \implode(',', $notFetchedUuids)));
         }
 
         $rows = $this->createValueCollectionInBatchFromRows($rows);
@@ -291,7 +295,7 @@ WITH
         LEFT JOIN variant_product_attributes ON variant_product_attributes.family_variant_id = product.family_variant_id
 SQL;
 
-        $productUuidsAsBytes = \array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
+        $productUuidsAsBytes = \array_map(static fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
 
         return $this
             ->connection

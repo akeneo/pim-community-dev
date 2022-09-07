@@ -6,7 +6,6 @@ namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence;
 
 use Akeneo\Catalogs\Infrastructure\Persistence\GetChannelsQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
-use Doctrine\DBAL\Connection;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -16,16 +15,16 @@ use Doctrine\DBAL\Connection;
  */
 class GetChannelsQueryTest extends IntegrationTestCase
 {
+    public ?object $connection;
     private ?GetChannelsQuery $query;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
 
         $this->query = self::getContainer()->get(GetChannelsQuery::class);
-        $this->connection = self::getContainer()->get(Connection::class);
     }
 
     public function testItGetsPaginatedChannels(): void

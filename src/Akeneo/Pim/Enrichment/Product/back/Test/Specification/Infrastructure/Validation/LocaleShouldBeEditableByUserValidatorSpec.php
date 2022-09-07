@@ -33,7 +33,7 @@ class LocaleShouldBeEditableByUserValidatorSpec extends ObjectBehavior
 
     function it_throws_an_exception_with_a_wrong_constraint()
     {
-        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'foo');
+        $command = UpsertProductCommand::createFromCollection(userId: 1, productIdentifier: 'foo', userIntents: []);
 
         $this->shouldThrow(\InvalidArgumentException::class)->during('validate', [$command, new Type([])]);
     }
@@ -50,10 +50,10 @@ class LocaleShouldBeEditableByUserValidatorSpec extends ObjectBehavior
     ) {
         $valueUserIntent = new SetTextValue('a_text', null, 'en_US', 'new value');
 
-        $context->getRoot()->willReturn(new UpsertProductCommand(
+        $context->getRoot()->willReturn(UpsertProductCommand::createFromCollection(
             userId: 1,
             productIdentifier: 'foo',
-            valueUserIntents: [$valueUserIntent]
+            userIntents: [$valueUserIntent]
         ));
         $isLocaleEditable->forUserId('en_US', 1)->willReturn(true);
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
@@ -69,10 +69,10 @@ class LocaleShouldBeEditableByUserValidatorSpec extends ObjectBehavior
         $constraint = new LocaleShouldBeEditableByUser();
         $valueUserIntent = new SetTextValue('a_text', null, 'de_DE', 'new value');
 
-        $context->getRoot()->willReturn(new UpsertProductCommand(
+        $context->getRoot()->willReturn(UpsertProductCommand::createFromCollection(
             userId: 1,
             productIdentifier: 'foo',
-            valueUserIntents: [$valueUserIntent]
+            userIntents: [$valueUserIntent]
         ));
         $isLocaleEditable->forUserId('de_DE', 1)->willReturn(false);
         $context->buildViolation($constraint->message, ['{{ locale_code }}' => 'de_DE'])
@@ -90,10 +90,10 @@ class LocaleShouldBeEditableByUserValidatorSpec extends ObjectBehavior
     ) {
         $valueUserIntent = new SetTextValue('a_text', null, null, 'new value');
 
-        $context->getRoot()->willReturn(new UpsertProductCommand(
+        $context->getRoot()->willReturn(UpsertProductCommand::createFromCollection(
             userId: 1,
             productIdentifier: 'foo',
-            valueUserIntents: [$valueUserIntent]
+            userIntents: [$valueUserIntent]
         ));
         $isLocaleEditable->forUserId(Argument::any())->shouldNotBeCalled();
         $context->buildViolation(Argument::any())->shouldNotBeCalled();

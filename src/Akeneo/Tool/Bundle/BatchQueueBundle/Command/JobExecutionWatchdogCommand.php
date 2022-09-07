@@ -20,8 +20,8 @@ use Symfony\Component\Process\Process;
  - the daemon is tenant agnostic whereas watchdog process is dedicated for a tenant
  - if the job die for unexpected reason, the job status is updated by the watchdog, which is possible as it can access to the database (tenant specific)
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
- * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @license   https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 final class JobExecutionWatchdogCommand extends Command
 {
@@ -56,7 +56,7 @@ final class JobExecutionWatchdogCommand extends Command
             ->addOption(
                 'email',
                 null,
-                InputOption::VALUE_REQUIRED,
+                InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
                 'The email to notify at the end of the job execution'
             )
             ->addOption(
@@ -126,10 +126,18 @@ final class JobExecutionWatchdogCommand extends Command
         ];
 
         foreach ($watchdogOptions as $optionName => $optionValue) {
-            if (true === $optionValue) {
-                $processArguments[] = sprintf('--%s', $optionName);
-            } elseif (false !== $optionValue && null !== $optionValue) {
-                $processArguments[] = sprintf('--%s=%s', $optionName, $optionValue);
+            switch (true) {
+                case true === $optionValue:
+                    $processArguments[] = sprintf('--%s', $optionName);
+                    break;
+                case is_scalar($optionValue) && $optionValue:
+                    $processArguments[] = sprintf('--%s=%s', $optionName, $optionValue);
+                    break;
+                case is_array($optionValue):
+                    foreach ($optionValue as $subOptionValue) {
+                        $processArguments[] = sprintf('--%s=%s', $optionName, $subOptionValue);
+                    }
+                    break;
             }
         }
 

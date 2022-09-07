@@ -49,6 +49,7 @@ pim_enrich.entity.product:
     download_pdf:
       label: PDF
     copy:
+      button_label: Vergleichen
       label: Vergleichen / Übersetzen
       select: Auswählen
       all_visible: Alle sichtbaren

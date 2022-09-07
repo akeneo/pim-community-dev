@@ -15,3 +15,13 @@ services:
 
     Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProductModels:
         class: Akeneo\Pim\Enrichment\Product\Infrastructure\Query\GetViewableProductModels
+
+    Akeneo\Pim\Enrichment\Product\Infrastructure\Query\SqlGetProductUuids:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Enrichment\Product\Domain\Query\GetProductUuids:
+        class: Akeneo\Pim\Enrichment\Product\Infrastructure\Query\Cache\LRUCacheGetProductUuids
+        arguments:
+            - '@Akeneo\Pim\Enrichment\Product\Infrastructure\Query\SqlGetProductUuids'
+        tags: [ 'akeneo.pim.cached_query' ]

@@ -24,7 +24,7 @@ class SetPriceCollectionValueApplierSpec extends ObjectBehavior
         $this->shouldImplement(UserIntentApplier::class);
     }
 
-    function it_applies_set_price_value_user_intent(ObjectUpdaterInterface $updater): void
+    function it_applies_set_price_collection_value_user_intent(ObjectUpdaterInterface $updater): void
     {
         $product = new Product();
         $setPriceValueIntent = new SetPriceCollectionValue(
@@ -32,8 +32,8 @@ class SetPriceCollectionValueApplierSpec extends ObjectBehavior
             'ecommerce',
             'en_US',
             [
-                new PriceValue(42, "EUR"),
-                new PriceValue("45", "USD"),
+                new PriceValue(42, 'EUR'),
+                new PriceValue('45', 'USD'),
             ]
         );
 

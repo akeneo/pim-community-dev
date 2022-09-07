@@ -15,7 +15,7 @@ use Ramsey\Uuid\Uuid;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetProductIdentifiersQuery implements GetProductIdentifiersQueryInterface
+final class GetProductIdentifiersQuery implements GetProductIdentifiersQueryInterface
 {
     public function __construct(
         private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
@@ -51,7 +51,8 @@ class GetProductIdentifiersQuery implements GetProductIdentifiersQueryInterface
         $results = $pqb->execute();
 
         return \array_map(
-            static fn (IdentifierResult $result) => $result->getIdentifier(),
+            fn (IdentifierResult $result) => $result->getIdentifier() ?:
+                $this->getUuidFromIdentifierResult($result->getId()),
             \iterator_to_array($results)
         );
     }
@@ -126,6 +127,21 @@ class GetProductIdentifiersQuery implements GetProductIdentifiersQueryInterface
 
             $filters[] = $filter;
         }
+
         return $filters;
+    }
+
+    private function getUuidFromIdentifierResult(string $esId): string
+    {
+        $matches = [];
+        if (!\preg_match(
+            '/^product_(?P<uuid>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$/',
+            $esId,
+            $matches
+        )) {
+            throw new \InvalidArgumentException(\sprintf('Invalid Elasticsearch identifier %s', $esId));
+        }
+
+        return $matches['uuid'];
     }
 }

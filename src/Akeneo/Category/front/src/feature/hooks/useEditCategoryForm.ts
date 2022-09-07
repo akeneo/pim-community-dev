@@ -1,170 +1,136 @@
 import {useCallback, useContext, useEffect, useState} from 'react';
-import {saveEditCategoryForm} from '../infrastructure';
+import {set, cloneDeep} from 'lodash/fp';
 import {NotificationLevel, useNotify, useRouter, useTranslate} from '@akeneo-pim-community/shared';
-import {EditCategoryForm, useCategory} from './useCategory';
-import {EditCategoryContext} from '../components';
-import {computeNewEditPermissions, computeNewOwnPermissions, computeNewViewPermissions} from '../helpers';
-import {Category} from '../models';
 
-// @todo Add unit tests
+import {saveEditCategoryForm} from '../infrastructure';
+import {useCategory} from './useCategory';
+import {EditCategoryContext} from '../components';
+import {
+  buildCompositeKey,
+  CategoryAttributeDefinition,
+  CategoryAttributeValueData,
+  CategoryPermissions,
+  EnrichCategory,
+} from '../models';
+import {alterPermissionsConsistently, categoriesAreEqual} from '../helpers';
+
 const useEditCategoryForm = (categoryId: number) => {
   const router = useRouter();
   const notify = useNotify();
   const translate = useTranslate();
-  const [categoryData, loadCategory, categoryLoadingStatus] = useCategory(categoryId);
-  const [category, setCategory] = useState<Category | null>(null);
-  const [originalFormData, setOriginalFormData] = useState<EditCategoryForm | null>(null);
-  const [editedFormData, setEditedFormData] = useState<EditCategoryForm | null>(null);
-  const [thereAreUnsavedChanges, setThereAreUnsavedChanges] = useState<boolean>(false);
+
+  const useCategoryResult = useCategory(categoryId);
+  const {status: categoryFetchingStatus, load: loadCategory} = useCategoryResult;
+
+  let fetchedCategory: EnrichCategory | null = null;
+  if (useCategoryResult.status === 'fetched') {
+    fetchedCategory = useCategoryResult.category;
+  }
+
+  const [category, setCategory] = useState<EnrichCategory | null>(null);
+  const [categoryEdited, setCategoryEdited] = useState<EnrichCategory | null>(null);
+
+  const [applyPermissionsOnChildren, setApplyPermissionsOnChildren] = useState(true);
+
+  const [historyVersion, setHistoryVersion] = useState<number>(0);
   const {setCanLeavePage} = useContext(EditCategoryContext);
 
-  const haveLabelsBeenChanged = useCallback((): boolean => {
-    if (originalFormData === null || editedFormData === null) {
-      return false;
-    }
+  const isModified =
+    useCategoryResult.status === 'fetched' &&
+    !!category &&
+    !!categoryEdited &&
+    !categoriesAreEqual(category, categoryEdited);
 
-    for (const [locale, changedLabel] of Object.entries(editedFormData.label)) {
-      if (!originalFormData.label.hasOwnProperty(locale) && changedLabel.value === '') {
-        return false;
-      }
-      if (
-        !originalFormData.label.hasOwnProperty(locale) ||
-        originalFormData.label[locale].value !== changedLabel.value
-      ) {
-        return true;
-      }
-    }
+  const initializeEditionState = useCallback(function (c: EnrichCategory) {
+    setCategory(c);
+    setCategoryEdited(cloneDeep(c));
+  }, []);
 
-    return false;
-  }, [originalFormData, editedFormData]);
-
-  const havePermissionsBeenChanged = useCallback((): boolean => {
-    if (
-      originalFormData === null ||
-      editedFormData === null ||
-      !originalFormData.permissions ||
-      !editedFormData.permissions
-    ) {
-      return false;
-    }
-
-    return (
-      JSON.stringify(originalFormData.permissions.view.value) !==
-        JSON.stringify(editedFormData.permissions.view.value) ||
-      JSON.stringify(originalFormData.permissions.edit.value) !==
-        JSON.stringify(editedFormData.permissions.edit.value) ||
-      JSON.stringify(originalFormData.permissions.own.value) !== JSON.stringify(editedFormData.permissions.own.value)
-    );
-  }, [originalFormData, editedFormData]);
-
-  const onChangeCategoryLabel = (locale: string, label: string) => {
-    if (editedFormData === null || !editedFormData.label.hasOwnProperty(locale)) {
-      return;
-    }
-
-    const editedLabel = {...editedFormData.label[locale], value: label};
-    setEditedFormData({...editedFormData, label: {...editedFormData.label, [locale]: editedLabel}});
-  };
-
-  const onChangePermissions = (type: string, values: any) => {
-    if (editedFormData === null || !editedFormData.permissions) {
-      return;
-    }
-
-    switch (type) {
-      case 'view':
-        const newViewPermissions = computeNewViewPermissions(editedFormData, values);
-        setEditedFormData(newViewPermissions);
-        break;
-      case 'edit':
-        const newEditPermissions = computeNewEditPermissions(editedFormData, values);
-        setEditedFormData(newEditPermissions);
-        break;
-      case 'own':
-        const newOwnPermissions = computeNewOwnPermissions(editedFormData, values);
-        setEditedFormData(newOwnPermissions);
-        break;
-    }
-  };
-
-  const onChangeApplyPermissionsOnChildren = (value: any) => {
-    if (editedFormData === null || !editedFormData.permissions) {
-      return;
-    }
-
-    const editedApplyOnChildren = {...editedFormData.permissions.apply_on_children, value: value === true ? '1' : '0'};
-    setEditedFormData({
-      ...editedFormData,
-      permissions: {...editedFormData.permissions, apply_on_children: editedApplyOnChildren},
-    });
-  };
-
-  const saveCategory = useCallback(async () => {
-    if (categoryData === null || editedFormData === null) {
-      return;
-    }
-
-    const response = await saveEditCategoryForm(router, categoryData.category.id, editedFormData);
-
-    if (response.success) {
-      notify(NotificationLevel.SUCCESS, translate('pim_enrich.entity.category.content.edit.success'));
-      setOriginalFormData(response.form);
-      setCategory(response.category);
-    } else {
-      notify(NotificationLevel.ERROR, translate('pim_enrich.entity.category.content.edit.fail'));
-      const refreshedToken = {...editedFormData._token, value: response.form._token.value};
-      setEditedFormData({...editedFormData, _token: refreshedToken});
-    }
-  }, [categoryData, editedFormData]);
-
+  // fetching the category
   useEffect(() => {
     loadCategory();
-  }, [categoryId]);
+  }, [categoryId, loadCategory]);
+
+  // initializing category edition state
+  useEffect(() => {
+    fetchedCategory && initializeEditionState(fetchedCategory);
+  }, [fetchedCategory, initializeEditionState]);
 
   useEffect(() => {
-    if (categoryData === null) {
+    setCanLeavePage(!isModified);
+  }, [setCanLeavePage, isModified]);
+
+  const saveCategory = useCallback(async () => {
+    if (categoryEdited === null) {
       return;
     }
 
-    setOriginalFormData(categoryData.form);
-    setCategory(categoryData.category);
-  }, [categoryData]);
+    const response = await saveEditCategoryForm(router, categoryEdited, {applyPermissionsOnChildren});
 
-  useEffect(() => {
-    if (originalFormData === null) {
-      return;
-    }
-
-    // Because the value of "apply_on_children" is always returned as "1" by the backend, it should only be defined at the first load
-    if (originalFormData.permissions && editedFormData !== null && editedFormData.permissions) {
-      setEditedFormData({
-        ...originalFormData,
-        permissions: {...originalFormData.permissions, apply_on_children: editedFormData.permissions.apply_on_children},
-      });
+    if (response.success) {
+      initializeEditionState(response.category);
+      setHistoryVersion((prevVersion: number) => prevVersion + 1);
+      notify(NotificationLevel.SUCCESS, translate('pim_enrich.entity.category.content.edit.success'));
     } else {
-      setEditedFormData({...originalFormData});
+      notify(NotificationLevel.ERROR, translate('pim_enrich.entity.category.content.edit.fail'));
+      // const refreshedToken = {...editedFormData._token, value: response.form._token.value};
+      // setEditedFormData({...editedFormData, _token: refreshedToken});
     }
-  }, [originalFormData]);
+  }, [router, categoryEdited, applyPermissionsOnChildren, initializeEditionState, translate, notify]);
 
-  useEffect(() => {
-    if (editedFormData !== null) {
-      setThereAreUnsavedChanges(haveLabelsBeenChanged() || havePermissionsBeenChanged());
+  const onChangeCategoryLabel = useCallback(
+    (localeCode: string, label: string) => {
+      if (categoryEdited === null) {
+        return;
+      }
+
+      setCategoryEdited(set(['properties', 'labels', localeCode], label, categoryEdited));
+    },
+    [categoryEdited]
+  );
+
+  const onChangePermissions = (type: keyof CategoryPermissions, values: number[]) => {
+    if (categoryEdited === null) {
+      return;
     }
-  }, [editedFormData]);
 
-  useEffect(() => {
-    setCanLeavePage(!thereAreUnsavedChanges);
-  }, [thereAreUnsavedChanges]);
+    const consistentPermissions = alterPermissionsConsistently(categoryEdited.permissions, {type, values});
+
+    setCategoryEdited(set(['permissions'], consistentPermissions, categoryEdited));
+  };
+
+  const onChangeAttribute = (
+    attribute: CategoryAttributeDefinition,
+    localeCode: string | null,
+    attributeValue: CategoryAttributeValueData
+  ) => {
+    if (categoryEdited === null) {
+      return;
+    }
+
+    const compositeKey = buildCompositeKey(attribute, localeCode);
+    const compositeKeyWithoutLocale = buildCompositeKey(attribute);
+
+    const value = {
+      data: attributeValue,
+      locale: localeCode,
+      attribute_code: compositeKeyWithoutLocale,
+    };
+
+    setCategoryEdited(set(['attributes', compositeKey], value, categoryEdited));
+  };
 
   return {
-    categoryLoadingStatus,
-    category,
-    formData: editedFormData,
+    categoryFetchingStatus,
+    category: categoryEdited,
+    applyPermissionsOnChildren,
     onChangeCategoryLabel,
     onChangePermissions,
-    onChangeApplyPermissionsOnChildren,
-    thereAreUnsavedChanges,
+    onChangeAttribute,
+    onChangeApplyPermissionsOnChildren: setApplyPermissionsOnChildren,
+    isModified,
     saveCategory,
+    historyVersion,
   };
 };
 

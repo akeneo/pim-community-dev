@@ -12,7 +12,7 @@ export type CatalogForm = {
     errors: CatalogFormErrors;
 };
 type Dispatch = (action: CatalogFormAction) => void;
-type Save = () => Promise<void>;
+type Save = () => Promise<boolean>;
 type IsDirty = boolean;
 type Result = [CatalogForm | undefined, Save, IsDirty];
 
@@ -46,6 +46,8 @@ export const useCatalogForm = (id: string): Result => {
         } else {
             setErrors(errors);
         }
+
+        return success;
     };
 
     const isDirtyMiddleware: (dispatch: Dispatch) => Dispatch = useCallback(

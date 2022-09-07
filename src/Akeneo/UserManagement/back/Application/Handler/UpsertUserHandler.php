@@ -60,7 +60,7 @@ final class UpsertUserHandler implements UpsertUserHandlerInterface
                 'first_name' => $upsertUserCommand->firstName,
                 'last_name' => $upsertUserCommand->lastName,
                 'email' => $upsertUserCommand->email,
-                'groups' => $upsertUserCommand->groupCodes,
+                'group_ids' => $upsertUserCommand->groupIds,
                 'roles' => $upsertUserCommand->roleCodes,
             ];
 

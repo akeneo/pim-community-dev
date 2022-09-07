@@ -54,7 +54,7 @@ class PimUserExtension extends Extension
         $loader->load('commands.yml');
         $loader->load('processors.yml');
 
-        $loader->load('service_api/queries.yml');
+        $loader->load('service_api/handler.yml');
 
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);

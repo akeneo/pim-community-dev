@@ -39,14 +39,13 @@ test('it says if a storage is a sftp storage', () => {
 });
 
 test('it returns storage configurator', () => {
-  expect(getStorageConfigurator('none', featureFlags, 'xlsx_product_export')).toBe(null);
+  expect(getStorageConfigurator('none', featureFlags)).toBe(null);
 
-  expect(getStorageConfigurator('local', featureFlags, 'xlsx_product_export')).toBe(null);
+  expect(getStorageConfigurator('local', featureFlags)).toBe(null);
   enableFeatureFlag('job_automation_local_storage');
-  expect(getStorageConfigurator('local', featureFlags, 'xlsx_product_export')).toBe(LocalStorageConfigurator);
+  expect(getStorageConfigurator('local', featureFlags)).toBe(LocalStorageConfigurator);
 
-  expect(getStorageConfigurator('sftp', featureFlags, 'xlsx_attribute_export')).toBe(null);
-  expect(getStorageConfigurator('sftp', featureFlags, 'xlsx_product_export')).toBe(SftpStorageConfigurator);
+  expect(getStorageConfigurator('sftp', featureFlags)).toBe(SftpStorageConfigurator);
 
   // @ts-expect-error - there is no storage configurator for type 'unknown'
   expect(getStorageConfigurator('unknown', featureFlags)).toBe(null);

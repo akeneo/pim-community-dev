@@ -14,13 +14,13 @@ use PHPUnit\Framework\Assert;
 
 class SetLabelApplierSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(SetLabelApplier::class);
         $this->shouldImplement(UserIntentApplier::class);
     }
 
-    function it_applies_set_label_user_intent(): void
+    public function it_applies_set_label_user_intent(): void
     {
         $category = new Category(new CategoryId(1), new Code('my_category'), LabelCollection::fromArray([]), null);
 
@@ -29,12 +29,12 @@ class SetLabelApplierSpec extends ObjectBehavior
         $setLabelNewEN = new SetLabel('en_US', 'The new label');
 
         $this->apply($setLabelEN, $category);
-        Assert::assertEquals('The label', $category->getLabelCollection()->getLabel('en_US'));
+        Assert::assertEquals('The label', $category->getLabels()->getTranslation('en_US'));
 
         $this->apply($setLabelFR, $category);
-        Assert::assertEquals('The label', $category->getLabelCollection()->getLabel('en_US'));
+        Assert::assertEquals('The label', $category->getLabels()->getTranslation('en_US'));
 
         $this->apply($setLabelNewEN, $category);
-        Assert::assertEquals('The new label', $category->getLabelCollection()->getLabel('en_US'));
+        Assert::assertEquals('The new label', $category->getLabels()->getTranslation('en_US'));
     }
 }

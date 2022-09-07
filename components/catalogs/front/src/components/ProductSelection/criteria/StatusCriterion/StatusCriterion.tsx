@@ -6,7 +6,7 @@ import {StatusCriterionOperator, StatusCriterionState} from './types';
 import styled from 'styled-components';
 import {useOperatorTranslator} from '../../hooks/useOperatorTranslator';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {ErrorHelpers} from '../ErrorHelpers';
+import {ErrorHelpers} from '../../components/ErrorHelpers';
 
 const Fields = styled.div`
     display: flex;

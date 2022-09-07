@@ -136,3 +136,6 @@ services:
             - '@akeneo_batch.job.job_registry'
             - '@akeneo_batch.job_parameters_factory'
             - '@akeneo_batch.job.job_parameters_validator'
+
+    Akeneo\Tool\Component\Batch\Clock\ClockInterface:
+        class: Akeneo\Tool\Component\Batch\Clock\SystemClock

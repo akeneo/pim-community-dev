@@ -2,12 +2,14 @@ external_api_category:
     resource: '@AkeneoCategoryBundle/Resources/config/routing/external_api/category.yml'
     prefix: /api/rest/v1
 
-internal_api_category_legacy:
-    resource: '@AkeneoCategoryBundle/Resources/config/routing/internal_api/category_legacy.yml'
-    prefix: /enrich/category
-
+# Old category
 internal_api_category:
     resource: '@AkeneoCategoryBundle/Resources/config/routing/internal_api/category.yml'
+    prefix: /enrich/category
+
+# New category
+internal_api_enriched_category:
+    resource: '@AkeneoCategoryBundle/Resources/config/routing/internal_api/enriched_category.yml'
     prefix: /category
 
 internal_api_category_template:

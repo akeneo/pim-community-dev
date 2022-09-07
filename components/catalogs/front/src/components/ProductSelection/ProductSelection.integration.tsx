@@ -7,13 +7,16 @@ import {Operator} from './models/Operator';
 import {generateRandomId} from './utils/generateRandomId';
 import {mocked} from 'ts-jest/utils';
 import {StatusCriterionState} from './criteria/StatusCriterion';
+import {QueryClient, QueryClientProvider} from 'react-query';
 
 jest.mock('./utils/generateRandomId');
 
 test('it display an empty message if there is no criteria', () => {
     render(
         <ThemeProvider theme={pimTheme}>
-            <ProductSelection criteria={{}} onChange={jest.fn()} errors={{}} />
+            <QueryClientProvider client={new QueryClient()}>
+                <ProductSelection criteria={{}} onChange={jest.fn()} errors={{}} />
+            </QueryClientProvider>
         </ThemeProvider>
     );
 
@@ -36,7 +39,9 @@ test('it renders a list of criteria', async () => {
 
     render(
         <ThemeProvider theme={pimTheme}>
-            <ProductSelection criteria={criteria} onChange={jest.fn()} errors={{}} />
+            <QueryClientProvider client={new QueryClient()}>
+                <ProductSelection criteria={criteria} onChange={jest.fn()} errors={{}} />
+            </QueryClientProvider>
         </ThemeProvider>
     );
 
@@ -50,7 +55,9 @@ test('it updates the state when a criterion is added', async () => {
 
     render(
         <ThemeProvider theme={pimTheme}>
-            <ProductSelection criteria={{}} onChange={onChange} errors={{}} />
+            <QueryClientProvider client={new QueryClient()}>
+                <ProductSelection criteria={{}} onChange={onChange} errors={{}} />
+            </QueryClientProvider>
         </ThemeProvider>
     );
 
@@ -79,7 +86,9 @@ test('it updates the state when a criterion changes', async () => {
 
     render(
         <ThemeProvider theme={pimTheme}>
-            <ProductSelection criteria={criteria} onChange={onChange} errors={{}} />
+            <QueryClientProvider client={new QueryClient()}>
+                <ProductSelection criteria={criteria} onChange={onChange} errors={{}} />
+            </QueryClientProvider>
         </ThemeProvider>
     );
 
@@ -109,7 +118,9 @@ test('it updates the state when a criterion is removed', async () => {
 
     render(
         <ThemeProvider theme={pimTheme}>
-            <ProductSelection criteria={criteria} onChange={onChange} errors={{}} />
+            <QueryClientProvider client={new QueryClient()}>
+                <ProductSelection criteria={criteria} onChange={onChange} errors={{}} />
+            </QueryClientProvider>
         </ThemeProvider>
     );
 

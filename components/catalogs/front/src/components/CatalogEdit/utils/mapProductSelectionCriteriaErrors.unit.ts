@@ -10,8 +10,16 @@ test('it maps API errors to ProductSelection errors indexed by key', () => {
             propertyPath: '[product_selection_criteria][0][value]',
             message: 'Invalid.',
         },
+        {
+            propertyPath: '[product_selection_criteria][3][operator]',
+            message: 'Operator invalid.',
+        },
+        {
+            propertyPath: '[product_selection_criteria][2][value][unit]',
+            message: 'Unit invalid.',
+        },
     ];
-    const keys = ['a', 'b'];
+    const keys = ['a', 'b', 'c', 'd'];
     expect(mapProductSelectionCriteriaErrors(errors, keys)).toEqual({
         a: {
             field: undefined,
@@ -23,6 +31,20 @@ test('it maps API errors to ProductSelection errors indexed by key', () => {
         b: {
             field: undefined,
             operator: undefined,
+            value: undefined,
+            scope: undefined,
+            locale: undefined,
+        },
+        c: {
+            field: undefined,
+            operator: undefined,
+            value: 'Unit invalid.',
+            scope: undefined,
+            locale: undefined,
+        },
+        d: {
+            field: undefined,
+            operator: 'Operator invalid.',
             value: undefined,
             scope: undefined,
             locale: undefined,

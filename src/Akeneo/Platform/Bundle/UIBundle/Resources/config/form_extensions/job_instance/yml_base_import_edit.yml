@@ -45,16 +45,6 @@ extensions:
             tabTitle: pim_common.properties
             tabCode: pim-job-instance-properties
 
-    pim-job-instance-yml-base-import-edit-global:
-        module: pim/job/common/edit/properties
-        parent: pim-job-instance-yml-base-import-edit-tabs
-        aclResourceId: pim_importexport_export_profile_property_edit
-        targetZone: container
-        position: 120
-        config:
-            tabTitle: pim_enrich.export.product.global_settings.title
-            tabCode: pim-job-instance-global
-
     pim-job-instance-yml-base-import-edit-history:
         module: pim/common/tab/history
         parent: pim-job-instance-yml-base-import-edit-tabs
@@ -90,7 +80,7 @@ extensions:
         module: pimimportexport/js/job/common/edit/storage-form
         parent: pim-job-instance-yml-base-import-edit-properties
         position: 120
-        targetZone: properties
+        targetZone: additional-properties
         config:
             tabCode: pim-job-instance-properties
             jobType: import
@@ -98,7 +88,7 @@ extensions:
 
     pim-job-instance-yml-base-import-edit-properties-file-upload:
         module: pim/job/common/edit/field/allow-file-upload
-        parent: pim-job-instance-yml-base-import-edit-global
+        parent: pim-job-instance-yml-base-import-edit-properties
         position: 130
         targetZone: properties
         config:

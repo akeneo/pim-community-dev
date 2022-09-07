@@ -32,10 +32,10 @@ class GetProductUuidFromIdentifierQueryTest extends IntegrationTestCase
 
         $this->logAs($user->getUserIdentifier());
 
-        $product = $this->createProduct('green', [], $user->getId());
+        $product = $this->createProduct('tshirt-green', [], $user->getId());
         $expected = $product->getUuid();
 
-        $result = $this->query->execute('green');
+        $result = $this->query->execute('tshirt-green');
 
         $this->assertEquals($expected, $result);
     }

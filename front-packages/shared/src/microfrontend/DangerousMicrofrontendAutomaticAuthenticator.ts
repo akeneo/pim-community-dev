@@ -3,7 +3,7 @@ let authentication_in_progress = false;
 export const DangerousMicrofrontendAutomaticAuthenticator = {
   enable: (username = 'admin', password = 'admin') => {
     window.addEventListener('unhandledrejection', (e: PromiseRejectionEvent): void => {
-      if (e.reason.toString() !== 'Error: You are not logged in the PIM') {
+      if (e.reason?.toString() !== 'Error: You are not logged in the PIM') {
         return;
       }
 

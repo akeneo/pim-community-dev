@@ -367,4 +367,9 @@ class FamilyVariant implements FamilyVariantInterface
 
         return $events;
     }
+
+    public function addEvent(string $eventName): void
+    {
+        $this->events[] = $eventName;
+    }
 }

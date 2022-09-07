@@ -41,7 +41,7 @@ services:
     akeneo_measure.persistence.measurement_family_repository:
         class: 'Akeneo\Test\Acceptance\MeasurementFamily\InMemoryMeasurementFamilyRepository'
 
-    akeneo_measurement.public_api.get_unit:
+    akeneo_measurement.service_api.get_unit:
         class: 'Akeneo\Test\Acceptance\MeasurementFamily\InMemoryGetUnit'
         arguments:
             - '@akeneo_measure.persistence.measurement_family_repository'

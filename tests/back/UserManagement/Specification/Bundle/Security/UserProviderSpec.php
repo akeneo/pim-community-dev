@@ -7,6 +7,7 @@ use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\User\InMemoryUser;
 use Symfony\Component\Security\Core\User\User;
 
 class UserProviderSpec extends ObjectBehavior
@@ -19,6 +20,7 @@ class UserProviderSpec extends ObjectBehavior
     function it_loads_a_user_by_its_username(UserRepositoryInterface $userRepository, UserInterface $julia)
     {
         $julia->isApiUser()->willReturn(false);
+        $julia->isJobUser()->willReturn(false);
         $julia->isEnabled()->willReturn(true);
         $userRepository->findOneByIdentifier('julia')->willReturn($julia);
         $this->loadUserByUsername('julia')->shouldReturn($julia);
@@ -33,6 +35,7 @@ class UserProviderSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_user_is_disabled(UserRepositoryInterface $userRepository, UserInterface $disabledGuy)
     {
+        $disabledGuy->isJobUser()->willReturn(false);
         $disabledGuy->isApiUser()->willReturn(false);
         $disabledGuy->isEnabled()->willReturn(false);
         $userRepository->findOneByIdentifier('disabled-guy')->willReturn($disabledGuy);
@@ -40,17 +43,27 @@ class UserProviderSpec extends ObjectBehavior
             ->during('loadUserByUsername', ['disabled-guy']);
     }
 
+    function it_throws_an_exception_if_user_is_job_user(UserRepositoryInterface $userRepository, UserInterface $jobUser)
+    {
+        $jobUser->isJobUser()->willReturn(true);
+        $jobUser->isApiUser()->willReturn(false);
+        $userRepository->findOneByIdentifier('job-user')->willReturn($jobUser);
+        $this->shouldThrow(UsernameNotFoundException::class)
+            ->during('loadUserByUsername', ['job-user']);
+    }
+
     function it_refreshes_a_user($userRepository, UserInterface $julia)
     {
         $userRepository->find(42)->willReturn($julia);
         $julia->getId()->willReturn(42);
         $julia->isApiUser()->shouldBeCalled();
+        $julia->isJobUser()->willReturn(false);
         $this->refreshUser($julia)->shouldReturn($julia);
     }
 
     function it_throw_an_exception_if_user_class_is_not_supported()
     {
-        $julia = new User('julia', 'jambon');
+        $julia = new InMemoryUser('julia', 'jambon');
         $this->shouldThrow(UnsupportedUserException::class)->during('refreshUser', [$julia]);
     }
 

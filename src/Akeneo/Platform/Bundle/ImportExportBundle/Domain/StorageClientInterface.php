@@ -28,5 +28,7 @@ interface StorageClientInterface
      */
     public function getFileSize(string $filePath): int;
 
+    public function move(string $sourceFilePath, string $destinationFilePath): void;
+
     public function connectionIsValid(): bool;
 }

@@ -52,10 +52,10 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
         $this->clearDoctrineUoW();
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
 
-        $command = new UpsertProductCommand(
+        $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('peter'),
             productIdentifier: 'variant_product',
-            parentUserIntent: new ChangeParent('root')
+            userIntents: [new ChangeParent('root')]
         );
         $this->commandMessageBus->dispatch($command);
         $this->clearDoctrineUoW();
@@ -64,10 +64,10 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
         Assert::assertNotNull($product);
         Assert::assertEqualsCanonicalizing('root', $product->getParent()->getCode());
 
-        $command = new UpsertProductCommand(
+        $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('peter'),
             productIdentifier: 'variant_product',
-            parentUserIntent: new ChangeParent('root2')
+            userIntents: [new ChangeParent('root2')]
         );
         $this->commandMessageBus->dispatch($command);
         $this->clearDoctrineUoW();
@@ -76,10 +76,10 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
         Assert::assertNotNull($product);
         Assert::assertEqualsCanonicalizing('root2', $product->getParent()->getCode());
 
-        $command = new UpsertProductCommand(
+        $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('peter'),
             productIdentifier: 'variant_product',
-            parentUserIntent: new ConvertToSimpleProduct()
+            userIntents: [new ConvertToSimpleProduct()]
         );
         $this->commandMessageBus->dispatch($command);
         $this->clearDoctrineUoW();
@@ -126,20 +126,20 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
         $this->clearDoctrineUoW();
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
 
-        $command = new UpsertProductCommand(
+        $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('peter'),
             productIdentifier: 'variant_product',
-            parentUserIntent: new ChangeParent('root2')
+            userIntents: [new ChangeParent('root2')]
         );
 
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('New parent "root2" of variant product "variant_product" must have the same family variant "color_variant_accessories" than the previous parent');
         $this->commandMessageBus->dispatch($command);
 
-        $command = new UpsertProductCommand(
+        $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('peter'),
             productIdentifier: 'variant_product',
-            parentUserIntent: new ConvertToSimpleProduct()
+            userIntents: [new ConvertToSimpleProduct()]
         );
         $this->commandMessageBus->dispatch($command);
         $this->clearDoctrineUoW();
@@ -148,10 +148,10 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
         Assert::assertNotNull($product);
         Assert::assertEqualsCanonicalizing(null, $product->getParent());
 
-        $command = new UpsertProductCommand(
+        $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('peter'),
             productIdentifier: 'variant_product',
-            parentUserIntent: new ChangeParent('root2')
+            userIntents: [new ChangeParent('root2')]
         );
         $this->commandMessageBus->dispatch($command);
         $this->clearDoctrineUoW();
@@ -164,10 +164,10 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
     /** @test */
     public function it_throws_an_exception_with_unknown_parent_code(): void
     {
-        $command = new UpsertProductCommand(
+        $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('peter'),
             productIdentifier: 'variant_product',
-            parentUserIntent: new ChangeParent('unknown')
+            userIntents: [new ChangeParent('unknown')]
         );
 
         $this->expectException(ViolationsException::class);

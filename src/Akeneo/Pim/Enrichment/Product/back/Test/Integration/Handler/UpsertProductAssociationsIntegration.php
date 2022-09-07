@@ -41,13 +41,13 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
         $this->productRepository = $this->get('pim_catalog.repository.product');
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('peter');
 
-        $command = new UpsertProductCommand(userId: $this->getUserId('peter'), productIdentifier: 'identifier');
+        $command = UpsertProductCommand::createFromCollection(userId: $this->getUserId('peter'), productIdentifier: 'identifier', userIntents: []);
         $this->commandMessageBus->dispatch($command);
         $product = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertNotNull($product);
         Assert::assertEmpty($product->getAssociations());
 
-        $command = new UpsertProductCommand(userId: $this->getUserId('peter'), productIdentifier: 'associated_product_identifier');
+        $command = UpsertProductCommand::createFromCollection(userId: $this->getUserId('peter'), productIdentifier: 'associated_product_identifier', userIntents: []);
         $this->commandMessageBus->dispatch($command);
         $associatedProduct = $this->productRepository->findOneByIdentifier('associated_product_identifier');
         Assert::assertNotNull($associatedProduct);
@@ -123,7 +123,7 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
         Assert::assertSame(['associated_product_identifier'], $this->getAssociatedProductIdentifiers($updatedProduct));
         $this->clearDoctrineUoW();
 
-        $command = new UpsertProductCommand(userId: $this->getUserId('peter'), productIdentifier: 'other_associated_product_identifier');
+        $command = UpsertProductCommand::createFromCollection(userId: $this->getUserId('peter'), productIdentifier: 'other_associated_product_identifier', userIntents: []);
         $this->commandMessageBus->dispatch($command);
         $associatedProduct = $this->productRepository->findOneByIdentifier('other_associated_product_identifier');
         Assert::assertNotNull($associatedProduct);

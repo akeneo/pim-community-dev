@@ -48,10 +48,7 @@ class CharsetValidator implements StepExecutionAwareInterface
     public function validate()
     {
         $jobParameters = $this->stepExecution->getJobParameters();
-        // TODO RAB-907: Remove this condition
-        $filePath = $jobParameters->has('storage') && isset($jobParameters->get('storage')['file_path'])
-            ? $jobParameters->get('storage')['file_path']
-            : $jobParameters->get('filePath');
+        $filePath = $jobParameters->get('storage')['file_path'];
 
         $file = new \SplFileInfo($filePath);
         if (!in_array($file->getExtension(), $this->whiteListExtension)) {

@@ -22,8 +22,7 @@ class ListUserGroupHandler implements ListUserGroupInterface
     }
 
     /**
-     * @return UserGroup[]
-     */
+     * @return UserGroup[]     */
     public function fromQuery(UserGroupQuery $query): array
     {
         // @todo implement optional arguments in $query to allow research and pagination

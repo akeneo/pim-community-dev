@@ -17,16 +17,16 @@ use Akeneo\Category\Domain\ValueObject\ValueCollection;
 class Category
 {
     public function __construct(
-        private CategoryId $id,
+        private ?CategoryId $id,
         private Code $code,
-        private LabelCollection $labelCollection,
+        private ?LabelCollection $labels = null,
         private ?CategoryId $parentId = null,
-        private ?ValueCollection $valueCollection = null,
-        private ?PermissionCollection $permissionCollection = null,
+        private ?ValueCollection $attributes = null,
+        private ?PermissionCollection $permissions = null,
     ) {
     }
 
-    public function getId(): CategoryId
+    public function getId(): ?CategoryId
     {
         return $this->id;
     }
@@ -36,9 +36,9 @@ class Category
         return $this->code;
     }
 
-    public function getLabelCollection(): LabelCollection
+    public function getLabels(): ?LabelCollection
     {
-        return $this->labelCollection;
+        return $this->labels;
     }
 
     public function getParentId(): ?CategoryId
@@ -46,40 +46,49 @@ class Category
         return $this->parentId;
     }
 
-    public function getValueCollection(): ?ValueCollection
+    public function getAttributes(): ?ValueCollection
     {
-        return $this->valueCollection;
+        return $this->attributes;
     }
 
-    public function getPermissionCollection(): ?PermissionCollection
+    public function getPermissions(): ?PermissionCollection
     {
-        return $this->permissionCollection;
+        return $this->permissions;
     }
 
     public function setLabel(string $localeCode, string $label): void
     {
-        $this->labelCollection->setLabel($localeCode, $label);
+        $this->labels->setTranslation($localeCode, $label);
+    }
+
+    public function setAttributes(ValueCollection $attributes): void
+    {
+        $this->attributes = $attributes;
     }
 
     /**
      * @return array{
-     *     id: int,
-     *     code: string,
+     *     id: int|null,
      *     parent: int|null,
-     *     labels: array<string, string>,
-     *     values: array<string, array<string, mixed>>,
+     *     properties: array{
+     *       code: string,
+     *       labels: array<string, string>|null
+     *     },
+     *     attributes: array<string, array<string, mixed>> | null,
      *     permissions: array<string, array<int>>|null
      * }
      */
     public function normalize(): array
     {
         return [
-            'id' => $this->getId()->getId(),
-            'code' => (string) $this->getCode(),
-            'labels' => $this->getLabelCollection()->normalize(),
-            'parent' => $this->getParentId()?->getId(),
-            'values' => $this->getValueCollection()->normalize(),
-            'permissions' => $this->getPermissionCollection()->normalize(),
+            'id' => $this->getId()?->getValue(),
+            'parent' => $this->getParentId()?->getValue(),
+            'properties' => [
+                'code' => (string) $this->getCode(),
+                'labels' => $this->getLabels()?->normalize(),
+            ],
+            'attributes' => $this->getAttributes()?->normalize(),
+            'permissions' => $this->getPermissions()?->normalize(),
         ];
     }
 }

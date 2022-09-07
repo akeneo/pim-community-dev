@@ -6,6 +6,7 @@ namespace Akeneo\Catalogs\Application\Handler;
 
 use Akeneo\Catalogs\Application\Persistence\UpdateCatalogProductSelectionCriteriaQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\UpsertCatalogQueryInterface;
+use Akeneo\Catalogs\Domain\Operator;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 
 /**
@@ -34,7 +35,7 @@ final class CreateCatalogHandler
             [
                 [
                     'field' => 'enabled',
-                    'operator' => '=',
+                    'operator' => Operator::EQUALS,
                     'value' => true,
                 ],
             ],

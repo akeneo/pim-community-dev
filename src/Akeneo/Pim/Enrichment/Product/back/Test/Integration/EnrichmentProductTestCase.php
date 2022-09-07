@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedEntity;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -18,7 +19,6 @@ use Akeneo\Test\Pim\Enrichment\Product\Helper\FeatureHelper;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 abstract class EnrichmentProductTestCase extends TestCase
 {
@@ -97,13 +97,14 @@ abstract class EnrichmentProductTestCase extends TestCase
     protected function createProduct(string $identifier, array $userIntents): void
     {
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('peter');
-        $command = UpsertProductCommand::createFromCollection(
+        $command = UpsertProductCommand::createWithIdentifier(
             userId: $this->getUserId('peter'),
-            productIdentifier: $identifier,
+            productIdentifier: ProductIdentifier::fromIdentifier($identifier),
             userIntents: $userIntents
         );
         $this->commandMessageBus->dispatch($command);
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->get('akeneo.pim.storage_utils.cache.cached_queries_clearer')->clear();
         $this->clearDoctrineUoW();
     }
 

@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-10607: Only request /announcements when the panel is open
 - PIM-10515: Fix 'add associations' button visibility for quantified associations & category permissions
 - PIM-10487: Fix import of very tiny measurement values (e.g. 0.000075 GRAM)
 - PIM-10215: Fixed last operation widget job type translation key
@@ -70,8 +71,13 @@
 - PIM-10574: Fix link to product page in quantified association row
 - PIM-10548: Fix yaml reader does not display an error message when imported file does not contain the root level
 - PIM-10571: Fix infinite scroll of attribute group selector in family edit form
+- PIM-10584: Fix conversion for Volume Flow measurement units
 - PIM-10581: Fix attribute option code in linked data returned as an integer instead of a string
 - PIM-10529: Fix links on product grid
+- PIM-10598: Fix "Cleaning removed attribute values" job failing if attribute is deleted during mass deletion of products
+- PIM-10595: Fix not being able to add record with code "0" on a product
+- PIM-10588: Add potentially missing `remove_completeness_for_channel_and_locale` job instance
+- PIM-10606: Fix computeFamilyVariantStructureChange on attribute removal
 
 ## Improvements
 

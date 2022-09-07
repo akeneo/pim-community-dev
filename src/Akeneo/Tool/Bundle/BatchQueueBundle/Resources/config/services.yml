@@ -34,7 +34,6 @@ services:
     akeneo_batch_queue.queue.publish_job_to_queue:
         class: Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueue
         arguments:
-            - '%akeneo_batch.entity.job_instance.class%'
             - '%kernel.environment%'
             - '@akeneo_batch.job_repository'
             - '@validator'

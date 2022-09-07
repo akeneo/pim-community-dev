@@ -3,11 +3,11 @@ import {ValidationError, FeatureFlags} from '@akeneo-pim-community/shared';
 import {
   LocalStorage,
   SftpStorage,
-  AmazonS3Storage,
   Storage,
   StorageType,
-  remoteStorageIsEnabled,
   localStorageIsEnabled,
+  AmazonS3Storage,
+  remoteStorageIsEnabled,
   AzureBlobStorage
 } from '../model';
 import {LocalStorageConfigurator} from './LocalStorageConfigurator';
@@ -28,9 +28,10 @@ type StorageConfiguratorCollection = {
 
 const STORAGE_CONFIGURATORS: StorageConfiguratorCollection = {
   none: null,
+  sftp: SftpStorageConfigurator,
 };
 
-const getEnabledStorageConfigurators = (featureFlags: FeatureFlags, jobCode: string): StorageConfiguratorCollection => {
+const getEnabledStorageConfigurators = (featureFlags: FeatureFlags): StorageConfiguratorCollection => {
   const enabledStorageConfigurators = {...STORAGE_CONFIGURATORS};
 
   if (localStorageIsEnabled(featureFlags)) {
@@ -48,16 +49,15 @@ const getEnabledStorageConfigurators = (featureFlags: FeatureFlags, jobCode: str
 
 const getStorageConfigurator = (
   storageType: StorageType,
-  featureFlags: FeatureFlags,
-  jobCode: string
+  featureFlags: FeatureFlags
 ): FunctionComponent<StorageConfiguratorProps> | null => {
-  const enabledStorageConfigurators = getEnabledStorageConfigurators(featureFlags, jobCode);
+  const enabledStorageConfigurators = getEnabledStorageConfigurators(featureFlags);
+
   return enabledStorageConfigurators[storageType] ?? null;
 };
 
-const isLocalStorage = (storage: Storage): storage is LocalStorage => {
-  return 'local' === storage.type && 'file_path' in storage;
-};
+const isLocalStorage = (storage: Storage): storage is LocalStorage =>
+  'local' === storage.type && 'file_path' in storage;
 
 const isSftpStorage = (storage: Storage): storage is SftpStorage => {
   return (

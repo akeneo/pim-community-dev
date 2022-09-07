@@ -3,8 +3,8 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Query\FindNonExistingProductIdentifiersQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindNonExistingProductModelCodesQueryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FindNonExistingProductsQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\QuantifiedAssociations as QuantifiedAssociationsConstraint;
 use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
@@ -26,23 +26,11 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
     const MIN_QUANTITY = 1;
     const MAX_QUANTITY = 2147483647;
 
-    /** @var AssociationTypeRepositoryInterface */
-    private $associationTypeRepository;
-
-    /** @var FindNonExistingProductIdentifiersQueryInterface */
-    private $findNonExistingProductIdentifiersQuery;
-
-    /** @var FindNonExistingProductModelCodesQueryInterface */
-    private $findNonExistingProductModelCodesQuery;
-
     public function __construct(
-        AssociationTypeRepositoryInterface $associationTypeRepository,
-        FindNonExistingProductIdentifiersQueryInterface $findNonExistingProductIdentifiersQuery,
-        FindNonExistingProductModelCodesQueryInterface $findNonExistingProductModelCodesQuery
+        private AssociationTypeRepositoryInterface $associationTypeRepository,
+        private FindNonExistingProductsQueryInterface $findNonExistingProductsQuery,
+        private FindNonExistingProductModelCodesQueryInterface $findNonExistingProductModelCodesQuery
     ) {
-        $this->associationTypeRepository = $associationTypeRepository;
-        $this->findNonExistingProductIdentifiersQuery = $findNonExistingProductIdentifiersQuery;
-        $this->findNonExistingProductModelCodesQuery = $findNonExistingProductModelCodesQuery;
     }
 
     public function validate($value, Constraint $constraint)
@@ -133,24 +121,35 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
 
     private function validateProductsExist(array $quantifiedLinks, string $propertyPath): void
     {
-        $productIdentifiers = array_map(
-            function ($quantifiedLink) {
-                return $quantifiedLink['identifier'];
-            },
-            $quantifiedLinks
-        );
+        $productIdentifiers = [];
+        $productUuids = [];
+        foreach ($quantifiedLinks as $quantifiedLink) {
+            if (isset($quantifiedLink['identifier'])) {
+                $productIdentifiers[] = $quantifiedLink['identifier'];
+            } else {
+                $productUuids[] = $quantifiedLink['uuid'];
+            }
+        }
 
-        $nonExistingProductIdentifiers = $this->findNonExistingProductIdentifiersQuery->execute(
+        $nonExistingProductIdentifiers = $this->findNonExistingProductsQuery->byProductIdentifiers(
             $productIdentifiers
         );
-        if (count($nonExistingProductIdentifiers) > 0) {
+
+        $nonExistingProductUuids = $this->findNonExistingProductsQuery->byProductUuids(
+            $productUuids
+        );
+
+        $nonExistingProducts = array_merge($nonExistingProductIdentifiers, $nonExistingProductUuids);
+
+        if (count($nonExistingProducts) > 0) {
             $this->context->buildViolation(
                 QuantifiedAssociationsConstraint::PRODUCTS_DO_NOT_EXIST_MESSAGE,
                 [
-                    '{{ values }}' => implode(', ', $nonExistingProductIdentifiers),
+                    '{{ values }}' => implode(', ', $nonExistingProducts),
                 ]
             )
                 ->atPath($propertyPath)
+                ->setCode(QuantifiedAssociations::PRODUCTS_DO_NOT_EXIST_ERROR)
                 ->addViolation();
         }
     }
@@ -173,6 +172,7 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
                 ]
             )
                 ->atPath($propertyPath)
+                ->setCode(QuantifiedAssociations::PRODUCT_MODELS_DO_NOT_EXIST_ERROR)
                 ->addViolation();
         }
     }

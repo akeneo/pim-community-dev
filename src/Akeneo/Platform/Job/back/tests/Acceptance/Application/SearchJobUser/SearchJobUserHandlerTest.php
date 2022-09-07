@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Job\Test\Acceptance\Application\SearchJobUser;
 
 use Akeneo\Platform\Job\Application\SearchJobUser\SearchJobUserHandler;
+use Akeneo\Platform\Job\Application\SearchJobUser\SearchJobUserInterface;
 use Akeneo\Platform\Job\Application\SearchJobUser\SearchJobUserQuery;
 use Akeneo\Platform\Job\Test\Acceptance\AcceptanceTestCase;
 use Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemorySearchJobUser;
@@ -16,8 +17,8 @@ class SearchJobUserHandlerTest extends AcceptanceTestCase
 
     protected function setUp(): void
     {
-        $this->searchJobUser = $this->get('Akeneo\Platform\Job\Application\SearchJobUser\SearchJobUserInterface');
-        $this->handler = $this->get('Akeneo\Platform\Job\Application\SearchJobUser\SearchJobUserHandler');
+        $this->searchJobUser = $this->get(SearchJobUserInterface::class);
+        $this->handler = $this->get(SearchJobUserHandler::class);
         static::bootKernel(['debug' => false]);
     }
 
