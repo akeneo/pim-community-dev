@@ -27,10 +27,22 @@ class UpsertCategoryBaseSqlIntegration extends CategoryTestCase
         $this->assertEquals(UpsertCategoryBaseSql::class, $upsertCategoryBaseQuery::class);
 
         $categoryCode = 'myCategory';
+        $baseCompositeKey = 'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d';
+        $expectedCompositeKey = $baseCompositeKey . ValueCollection::SEPARATOR . 'en_US';
+
+        $expectedData = [
+            'attribute_codes' => [$baseCompositeKey],
+            $expectedCompositeKey => [
+                'data' => 'Meta shoes',
+                'locale' => 'en_US',
+                'attribute_code' => 'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d'
+            ]
+        ];
+
         $category = new Category(
             id: null,
             code: new Code($categoryCode),
-            attributes: ValueCollection::fromArray([]),
+            attributes: ValueCollection::fromArray($expectedData),
         );
         $upsertCategoryBaseQuery->execute($category);
 
@@ -42,6 +54,14 @@ class UpsertCategoryBaseSqlIntegration extends CategoryTestCase
         $this->assertNotNull($categoryInserted);
         $this->assertSame((string)$category->getCode(), (string)$categoryInserted->getCode());
         $this->assertNotNull($category->getAttributes());
+        $this->assertNotNull($categoryInserted->getAttributes());
+        $this->assertArrayHasKey('attribute_codes', $categoryInserted->getAttributes()->normalize());
+        $this->assertEquals(
+            $expectedData['attribute_codes'],
+            $categoryInserted->getAttributes()->normalize()['attribute_codes']
+        );
+        $this->assertArrayHasKey($expectedCompositeKey, $categoryInserted->getAttributes()->normalize());
+        $this->assertEquals($expectedData[$expectedCompositeKey], $categoryInserted->getAttributes()->normalize()[$expectedCompositeKey]);
     }
 
     public function testUpdateExistingCategoryInDatabase(): void
@@ -49,12 +69,25 @@ class UpsertCategoryBaseSqlIntegration extends CategoryTestCase
         $categoryCode = new Code('myCategory');
         $categoryInserted = $this->insertBaseCategory($categoryCode);
 
+        $baseCompositeKey = 'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d';
+        $expectedCompositeKey = $baseCompositeKey . ValueCollection::SEPARATOR . 'en_US';
+
+        $expectedData = [
+            'attribute_codes' => [$baseCompositeKey],
+            $expectedCompositeKey => [
+                'data' => 'Meta shoes',
+                'locale' => 'en_US',
+                'attribute_code' => 'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d'
+            ]
+        ];
+        $expectedParentId = new CategoryId($categoryInserted->getId()->getValue());
+
         // Update Category
         $categoryToUpdate = new Category(
             id: $categoryInserted->getId(),
             code: $categoryInserted->getCode(),
-            parentId: new CategoryId($categoryInserted->getId()->getValue()),
-            attributes: ValueCollection::fromArray([])
+            parentId: $expectedParentId,
+            attributes: ValueCollection::fromArray($expectedData)
         );
 
         /** @var UpsertCategoryBaseSql $upsertCategoryBaseSql */
@@ -72,7 +105,17 @@ class UpsertCategoryBaseSqlIntegration extends CategoryTestCase
         $this->assertNotNull($updatedCategory);
         $this->assertSame((string)$categoryInserted->getCode(), (string)$updatedCategory->getCode());
         $this->assertNotSame($updatedCategory, $categoryInserted);
+
         $this->assertNotNull($updatedCategory->getAttributes());
+        $this->assertArrayHasKey('attribute_codes', $updatedCategory->getAttributes()->normalize());
+        $this->assertEquals(
+            $expectedData['attribute_codes'],
+            $updatedCategory->getAttributes()->normalize()['attribute_codes']
+        );
+        $this->assertArrayHasKey($expectedCompositeKey, $updatedCategory->getAttributes()->normalize());
+        $this->assertEquals($expectedData[$expectedCompositeKey], $updatedCategory->getAttributes()->normalize()[$expectedCompositeKey]);
+
         $this->assertNotNull($updatedCategory->getParentId());
+        $this->assertEquals($expectedParentId->getValue(), $updatedCategory->getParentId()->getValue());
     }
 }
