@@ -53,6 +53,27 @@ class GetChannelsActionTest extends TestCase
         self::assertSame(['channelA', 'channelB', 'channelC'], \json_decode($response->getContent(), null, 512, JSON_THROW_ON_ERROR));
     }
 
+    public function testItCallsTheGetChannelsByCodeQueryWithDefaultValues(): void
+    {
+        $this->getChannelsByCodeQuery
+            ->method('execute')
+            ->with([], 1, 20)
+            ->willReturn([]);
+
+        $response = ($this->getChannelsAction)(
+            new Request(
+                query: [
+                    'codes' => '',
+                ],
+                server: [
+                    'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                ],
+            )
+        );
+
+        self::assertSame([], \json_decode($response->getContent(), null, 512, JSON_THROW_ON_ERROR));
+    }
+
     /**
      * @dataProvider queryWillThrowDataProvider
      */
