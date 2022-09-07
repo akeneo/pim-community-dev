@@ -1,8 +1,10 @@
 import React, {createContext, FC, useEffect} from 'react';
+import {QueryClient, QueryClientProvider} from 'react-query';
 import {fromPairs} from 'lodash/fp';
 import {Locale, useFeatureFlags, useFetch, useRoute} from '@akeneo-pim-community/shared';
 
 type SetCanLeavePage = (canLeavePage: boolean) => void;
+
 
 type Locales = {
   [code: string]: Locale;
@@ -25,6 +27,7 @@ type Props = {
 };
 
 const EditCategoryProvider: FC<Props> = ({children, setCanLeavePage}) => {
+  const queryClient = new QueryClient();
   const featureFlags = useFeatureFlags();
 
   const localesURL = useRoute('pim_enrich_locale_rest_index', {activated: 'true'});
@@ -44,9 +47,11 @@ const EditCategoryProvider: FC<Props> = ({children, setCanLeavePage}) => {
   }, [featureFlags, fetchLocales]);
 
   return (
-    <EditCategoryContext.Provider value={{setCanLeavePage, locales, localesFetchFailed}}>
-      {children}
-    </EditCategoryContext.Provider>
+    <QueryClientProvider client={queryClient}>
+      <EditCategoryContext.Provider value={{setCanLeavePage, locales, localesFetchFailed}}>
+        {children}
+      </EditCategoryContext.Provider>
+    </QueryClientProvider>
   );
 };
 

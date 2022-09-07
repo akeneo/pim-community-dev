@@ -1,8 +1,9 @@
 import React, {useCallback, useState} from 'react';
-import styled from 'styled-components';
-
-import {Field, FileInfo, MediaFileInput, SectionTitle, TextAreaInput, TextInput} from 'akeneo-design-system';
+import {Field, FileInfo, MediaFileInput, SectionTitle, TextAreaInput, TextInput, Helper} from 'akeneo-design-system';
 import {Locale, LocaleSelector, useTranslate} from '@akeneo-pim-community/shared';
+import {useTemplate} from '../hooks';
+import styled from 'styled-components';
+import {Attribute} from "../models";
 
 import {
   CategoryAttributeDefinition,
@@ -82,6 +83,21 @@ export const EditAttributesForm = ({onAttributeValueChange}: Props) => {
     [locale, onAttributeValueChange]
   );
 
+  const {data: template, isLoading, isError, error} = useTemplate('02274dac-e99a-4e1d-8f9b-794d4c3ba330');
+
+  if (isLoading) {
+    return null; //TODO
+  }
+
+  if (isError) {
+    console.log(error); //TODO
+    return (
+      <Helper level="error">
+        {error?.message}
+      </Helper>
+    );
+  }
+
   return (
     <FormContainer>
       <SectionTitle>
@@ -89,39 +105,46 @@ export const EditAttributesForm = ({onAttributeValueChange}: Props) => {
         <SectionTitle.Spacer />
         <LocaleSelector value={locale} values={locales} onChange={setLocale} />
       </SectionTitle>
-      <Field960 label="Description" locale={locale}>
-        <TextAreaInput
-          isRichText
-          name="description"
-          value=""
-          onChange={handleTextChange(attributeDefinitions['description'])}
-        />
-      </Field960>
-      <Field label="Banner Image">
-        <MediaFileInput
-          value={null}
-          onChange={handleImageChange(attributeDefinitions['banner'])}
-          placeholder="Drag and drop to upload or click here"
-          uploadingLabel="Uploading..."
-          uploadErrorLabel="An error occurred during upload"
-          clearTitle="Clear"
-          thumbnailUrl={null}
-          uploader={dumbUploader}
-        />
-      </Field>
-      <Field label="SEO Meta Title" locale={locale}>
-        <TextInput name="seo_meta_title" value="" onChange={handleTextChange(attributeDefinitions['seo_meta_title'])} />
-      </Field>
-      <Field label="SEO Meta Description" locale={locale}>
-        <TextAreaInput
-          name="seo_meta_description"
-          value=""
-          onChange={handleTextChange(attributeDefinitions['seo_meta_description'])}
-        />
-      </Field>
-      <Field label="SEO Keywords" locale={locale}>
-        <TextAreaInput name="seo_keywords" value="" onChange={handleTextChange(attributeDefinitions['seo_keywords'])} />
-      </Field>
+
+      {template?.attributes.map((attribute: Attribute) => {
+        switch (attribute.type) {
+          case 'text':
+            return (
+              <Field label={attribute.labels[locale]} locale={locale}>
+                <TextInput name={attribute.code} value="" onChange={handleTextChange(attributeDefinitions[attribute.code])} />
+              </Field>
+            );
+          case 'richtext':
+            return (
+              <Field960 label={attribute.labels[locale]} locale={locale}>
+                <TextAreaInput isRichText name={attribute.code} value="" onChange={handleTextChange(attributeDefinitions[attribute.code])} />
+              </Field960>
+            );
+          case 'textarea':
+            return (
+              <Field label={attribute.labels[locale]} locale={locale}>
+                <TextAreaInput name={attribute.code} value="" onChange={handleTextChange(attributeDefinitions[attribute.code])} />
+              </Field>
+            );
+          case 'image':
+            return (
+              <Field label={attribute.labels[locale]}>
+                <MediaFileInput
+                  value={null}
+                  onChange={handleImageChange(attributeDefinitions[attribute.code])}
+                  placeholder="Drag and drop to upload or click here"
+                  uploadingLabel="Uploading..."
+                  uploadErrorLabel="An error occurred during upload"
+                  clearTitle="Clear"
+                  thumbnailUrl={null}
+                  uploader={dumbUploader}
+                />
+              </Field>
+            );
+        }
+
+        return null;
+      })}
     </FormContainer>
   );
 };
