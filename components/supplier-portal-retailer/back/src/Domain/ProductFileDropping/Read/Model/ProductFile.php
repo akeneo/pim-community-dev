@@ -12,17 +12,21 @@ final class ProductFile
         public ?string $uploadedByContributor,
         public string $uploadedBySupplier,
         public ?string $uploadedAt,
+        public array $comments = [],
     ) {
     }
 
     public function toArray(): array
     {
-        return [
+        $normalizedProductFile = [
             'identifier' => $this->identifier,
             'originalFilename' => $this->originalFilename,
             'uploadedByContributor' => $this->uploadedByContributor,
             'uploadedBySupplier' => $this->uploadedBySupplier,
             'uploadedAt' => $this->uploadedAt, // @todo Move the formatting to the Controller in supplier app (format('c'))
+            'comments' => $this->comments,
         ];
+
+        return $normalizedProductFile;
     }
 }
