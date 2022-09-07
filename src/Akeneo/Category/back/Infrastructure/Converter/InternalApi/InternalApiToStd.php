@@ -32,7 +32,6 @@ class InternalApiToStd implements ConverterInterface
 {
     public function __construct(
         private FieldsRequirementChecker $fieldsChecker,
-        private AttributeRequirementChecker $attributeChecker
     ) {
     }
 
@@ -49,7 +48,7 @@ class InternalApiToStd implements ConverterInterface
         // Validate the internal Api data and structure
         $this->checkArrayStructure($data);
         $this->checkProperties($data['properties']);
-        $this->checkAttributes($data['attributes']);
+        AttributeRequirementChecker::checkAttributes($data['attributes']);
 
         // Normalize
         $convertedData = [];
@@ -90,24 +89,5 @@ class InternalApiToStd implements ConverterInterface
     {
         $this->fieldsChecker->checkFieldsExist($properties, ['code', 'labels']);
         $this->fieldsChecker->checkFieldsNotEmpty($properties, ['code']);
-    }
-
-    /**
-     * @param array<string, AttributeCodeApi|AttributeValueApi> $attributes
-     *
-     * @throws ArrayConversionException
-     */
-    private function checkAttributes(array $attributes): void
-    {
-        $this->attributeChecker->checkKeyExist($attributes, 'attribute_codes');
-
-        /** @var $attributeValues array<string, AttributeValueApi}> */
-        $attributeValues = array_filter($attributes, function ($attributeKey) {
-            return $attributeKey !== 'attribute_codes';
-        }, ARRAY_FILTER_USE_KEY);
-
-        $this->attributeChecker->checkAttributeValueKeysExist($attributeValues, $attributes['attribute_codes']);
-
-        $this->attributeChecker->checkAttributeValueArrayStructure($attributeValues);
     }
 }

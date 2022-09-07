@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Category\Domain\ValueObject;
 
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
+use Akeneo\Category\Infrastructure\Exception\StructureArrayConversionException;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -13,7 +14,7 @@ use PhpSpec\ObjectBehavior;
  */
 class ValueCollectionSpec extends ObjectBehavior
 {
-    public function it_set_value_on_empty_value_collection(): void
+    public function it_create_value_on_empty_value_collection_when_set_value(): void
     {
         $this->beConstructedThrough('fromArray', [[]]);
         $this->shouldHaveType(ValueCollection::class);
@@ -38,7 +39,7 @@ class ValueCollectionSpec extends ObjectBehavior
         )->shouldBeLike($expectedData);
     }
 
-    public function it_add_value_on_existing_values(): void
+    public function it_add_value_when_set_value(): void
     {
         $initValueCollection = [
             'attribute_codes' => [
@@ -80,7 +81,7 @@ class ValueCollectionSpec extends ObjectBehavior
         )->shouldBeLike($expectedValues);
     }
 
-    public function it_could_not_have_duplicate_attribute_codes(): void
+    public function it_could_not_have_duplicate_attribute_codes_when_set_value(): void
     {
         $duplicateUuid = '840fcd1a-f66b-4f0c-9bbd-596629732950';
         $duplicateCode = 'description';
@@ -90,7 +91,7 @@ class ValueCollectionSpec extends ObjectBehavior
                 $duplicateCode . ValueCollection::SEPARATOR . $duplicateUuid,
             ],
             $duplicateCode . ValueCollection::SEPARATOR . $duplicateUuid . ValueCollection::SEPARATOR . 'en_US' => [
-                'data' => 'Description',
+                'data' => 'My description',
                 'locale' => 'en_US',
                 'attribute_code' => $duplicateCode . ValueCollection::SEPARATOR . $duplicateUuid
             ],
@@ -104,11 +105,11 @@ class ValueCollectionSpec extends ObjectBehavior
             attributeUuid: $duplicateUuid,
             attributeCode: $duplicateCode,
             localeCode: 'en_US',
-            value: 'Description'
+            value: 'My description'
         )->shouldBeLike($expectedValues);
     }
 
-    public function it_update_values_on_duplicate_composite_key(): void
+    public function it_update_values_on_duplicate_composite_key_when_set_value(): void
     {
         $uuid = '840fcd1a-f66b-4f0c-9bbd-596629732950';
         $code = 'description';
@@ -148,5 +149,70 @@ class ValueCollectionSpec extends ObjectBehavior
             localeCode: $locale,
             value: $newValue
         )->shouldBeLike($expectedValues);
+    }
+
+    public function it_create_composite_key_with_locale_when_set_value(): void
+    {
+        $expectedCompositeKey = 'seo_meta_description'
+            . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950';
+
+        $expectedLocaleCompositeKey = $expectedCompositeKey
+            . ValueCollection::SEPARATOR . 'en_US';
+
+        $expectedValueCollection = ValueCollection::fromArray([
+            'attribute_codes' => [$expectedCompositeKey],
+            $expectedLocaleCompositeKey => [
+                'data' => 'My meta SEO Description Value',
+                'locale' => 'en_US',
+                'attribute_code' => $expectedCompositeKey
+            ],
+        ]);
+        $this->beConstructedThrough('fromArray', [[]]);
+        $this->shouldHaveType(ValueCollection::class);
+
+        $this->setValue(
+            attributeUuid: '840fcd1a-f66b-4f0c-9bbd-596629732950',
+            attributeCode: 'seo_meta_description',
+            localeCode: 'en_US',
+            value: 'My meta SEO Description Value'
+        )->shouldBeLike($expectedValueCollection);
+    }
+
+    public function it_create_composite_key_with_no_locale_when_set_value(): void
+    {
+        $expectedCompositeKey = 'seo_meta_description'
+            . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950';
+
+        $expectedValueCollection = ValueCollection::fromArray([
+            'attribute_codes' => [$expectedCompositeKey],
+            $expectedCompositeKey => [
+                'data' => 'My meta SEO Description Value',
+                'locale' => null,
+                'attribute_code' => $expectedCompositeKey
+            ],
+        ]);
+        $this->beConstructedThrough('fromArray', [[]]);
+        $this->shouldHaveType(ValueCollection::class);
+
+        $this->setValue(
+            attributeUuid: '840fcd1a-f66b-4f0c-9bbd-596629732950',
+            attributeCode: 'seo_meta_description',
+            localeCode: null,
+            value: 'My meta SEO Description Value'
+        )->shouldBeLike($expectedValueCollection);
+    }
+
+    public function it_throw_structure_array_conversion_exception_when_create_value_with_wrong_format(): void
+    {
+        $this->beConstructedThrough('fromArray', [[
+            'attribute_codes' => [],
+            'seo_meta_description' . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950' => [
+                'data' => 'My meta SEO Description Value',
+                'locale' => null,
+                'attribute_code' => 'seo_meta_description' . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950'
+            ],
+        ]]);
+        $this->shouldHaveType(ValueCollection::class);
+        $this->shouldThrow(StructureArrayConversionException::class)->duringInstantiation();
     }
 }

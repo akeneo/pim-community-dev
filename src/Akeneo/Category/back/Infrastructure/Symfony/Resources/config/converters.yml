@@ -3,7 +3,6 @@ services:
     class: Akeneo\Category\Infrastructure\Converter\InternalApi\InternalApiToStd
     arguments:
       - '@Akeneo\Category\Application\Converter\FieldsRequirementChecker'
-      - '@Akeneo\Category\Application\Converter\AttributeRequirementChecker'
 
   Akeneo\Category\Application\Converter\StandardFormatToUserIntentsInterface:
     class: Akeneo\Category\Application\Converter\StandardFormatToUserIntents
