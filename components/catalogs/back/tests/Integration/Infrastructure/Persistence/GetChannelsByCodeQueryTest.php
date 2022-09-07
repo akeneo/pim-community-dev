@@ -28,7 +28,7 @@ class GetChannelsByCodeQueryTest extends IntegrationTestCase
         $this->query = self::getContainer()->get(GetChannelsByCodeQuery::class);
     }
 
-    public function testItSearchesPaginatedChannels(): void
+    public function testItGetsPaginatedChannelsByCode(): void
     {
         //Already existing as part of minimal catalog: ecommerce with en_US
         $this->createChannel('tablet', ['en_US']);

@@ -21,7 +21,6 @@ use Ramsey\Uuid\Uuid;
 class GetCatalogProductValueFiltersQueryTest extends IntegrationTestCase
 {
     private ?GetCatalogProductValueFiltersQueryInterface $query;
-    private ?Connection $connection;
 
     protected function setUp(): void
     {
@@ -30,7 +29,6 @@ class GetCatalogProductValueFiltersQueryTest extends IntegrationTestCase
         $this->purgeDataAndLoadMinimalCatalog();
 
         $this->query = self::getContainer()->get(GetCatalogProductValueFiltersQuery::class);
-        $this->connection = self::getContainer()->get('database_connection');
     }
 
     public function testItGetsProductValueFilters(): void
