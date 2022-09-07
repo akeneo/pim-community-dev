@@ -4,6 +4,9 @@ Akeneo\Platform\Component\Authentication\Sso\Configuration\Application\CreateOrU
             message: Service Provider certificate and private key must match.
             certificatePropertyName: serviceProviderCertificate
             privateKeyPropertyName: serviceProviderPrivateKey
+        - Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\Validation\IsCertificateValid:
+            identityProviderCertificate: identityProviderCertificate
+            serviceProviderCertificate: serviceProviderCertificate
     properties:
         code:
             - NotBlank: ~
@@ -23,12 +26,10 @@ Akeneo\Platform\Component\Authentication\Sso\Configuration\Application\CreateOrU
             - Url: ~
         identityProviderCertificate:
             - NotBlank: ~
-            - Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\Validation\IsCertificateValid: ~
         serviceProviderEntityId:
             - NotBlank: ~
             - Url: ~
         serviceProviderCertificate:
             - NotBlank: ~
-            - Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\Validation\IsCertificateValid: ~
         serviceProviderPrivateKey:
             - NotBlank: ~
