@@ -12,7 +12,7 @@ type JobExecutionSearchBarProps = {
   onStatusFilterChange: (status: JobStatus[]) => void;
   onTypeFilterChange: (types: string[]) => void;
   onUserFilterChange: (users: string[]) => void;
-  onAutomationFilterChange: (uatomation: string) => void;
+  onAutomationFilterChange: (uatomation: null|boolean) => void;
   onSearchChange: (search: string) => void;
 };
 

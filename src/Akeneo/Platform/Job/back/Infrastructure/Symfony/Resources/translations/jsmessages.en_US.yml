@@ -55,6 +55,11 @@ akeneo_job_process_tracker:
     stopping: Stopping
     unknown: Unknown
     in_progress: In progress
+  automation_filter:
+    all: all
+    "true": yes
+    "false": no
+    label: automation
   max_page_without_filter_helper:
     In order to show you the most relevant results, please refine your search.
   tracking:

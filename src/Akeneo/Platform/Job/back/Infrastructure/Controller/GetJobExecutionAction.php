@@ -62,6 +62,8 @@ final class GetJobExecutionAction
         $searchJobExecutionQuery->sortDirection = $sort['direction'] ?? 'DESC';
 
         $searchJobExecutionQuery->user = $this->getUserFilter($request);
+        
+        $searchJobExecutionQuery->automation = (bool) $request->get('automation');
         $searchJobExecutionQuery->type = $request->get('type', []);
         $searchJobExecutionQuery->status = $request->get('status', []);
         $searchJobExecutionQuery->search = $request->get('search', '');

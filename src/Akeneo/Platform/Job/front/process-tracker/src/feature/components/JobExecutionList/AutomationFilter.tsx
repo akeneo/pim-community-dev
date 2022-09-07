@@ -4,11 +4,20 @@ import {Checkbox, Dropdown, SwitcherButton, useBooleanState} from 'akeneo-design
 import {JobStatus} from "../../models";
 
 type AutomationFilterProps = {
-    automationFilterValue: string;
-    onAutomationFilterChange: (automationFilterValue: string) => void;
+    automationFilterValue: null|boolean;
+    onAutomationFilterChange: (automationFilterValue: null|boolean) => void;
 };
 
-const automationFilterValues: Array<string> = ['all', 'yes', 'no'];
+type AutomationFilterValue = {
+    name: string,
+    value: null|boolean
+}
+
+const automationFilterValues: Array<AutomationFilterValue> = [
+    {name : "all", value: null},
+    {name : "yes", value: true},
+    {name : "no", value: false},
+];
 
 const AutomationFilter = ({automationFilterValue, onAutomationFilterChange}: AutomationFilterProps) => {
     const translate = useTranslate();
@@ -29,13 +38,13 @@ const AutomationFilter = ({automationFilterValue, onAutomationFilterChange}: Aut
                         <Dropdown.Title>{translate('akeneo_job_process_tracker.status_filter.label')}</Dropdown.Title>
                     </Dropdown.Header>
                     <Dropdown.ItemCollection>
-                        {automationFilterValues.map((value) =>
-                            <Dropdown.Item key={value}>
+                        {automationFilterValues.map((item: AutomationFilterValue) =>
+                            <Dropdown.Item key={item.name}>
                                 <Checkbox
-                                    checked={value === automationFilterValue}
-                                    onChange={() => onAutomationFilterChange(value)}
+                                    checked={item.value === automationFilterValue}
+                                    onChange={() => onAutomationFilterChange(item.value)}
                                 />
-                                {translate(`akeneo_job_process_tracker.automation_filter.${value}`)}
+                                {translate(`akeneo_job_process_tracker.automation_filter.${item.name}`)}
                             </Dropdown.Item>
                         )}
                     </Dropdown.ItemCollection>
