@@ -48,4 +48,38 @@ class GetLocalesActionTest extends IntegrationTestCase
         ];
         Assert::assertEquals($expectedLocales, $locales);
     }
+
+    public function testItGetsLocalesByCode(): void
+    {
+        // Locales are only activated when used in a channel
+        $this->createChannel('mobile', ['fr_FR', 'en_US']);
+
+        $client = $this->getAuthenticatedInternalApiClient();
+
+        $client->request(
+            'GET',
+            '/rest/catalogs/locales?codes=en_US,fr_FR',
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ],
+        );
+
+        $response = $client->getResponse();
+        Assert::assertEquals(200, $response->getStatusCode());
+        $locales = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+        $expectedLocales = [
+            [
+                'code' => 'en_US',
+                'label' => 'English (United States)',
+            ],
+            [
+                'code' => 'fr_FR',
+                'label' => 'French (France)',
+            ],
+        ];
+        Assert::assertEquals($expectedLocales, $locales);
+    }
 }

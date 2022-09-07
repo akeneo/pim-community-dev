@@ -112,6 +112,10 @@ services:
         arguments:
             - '@pim_catalog.repository.locale'
 
+    Akeneo\Catalogs\Infrastructure\Persistence\GetLocalesByCodeQuery:
+        arguments:
+            - '@pim_catalog.repository.locale'
+
     Akeneo\Catalogs\Infrastructure\Persistence\GetCategoriesByCodeQuery:
         arguments:
             - '@pim_catalog.repository.category'
