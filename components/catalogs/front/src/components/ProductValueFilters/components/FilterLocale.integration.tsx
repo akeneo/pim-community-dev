@@ -20,8 +20,12 @@ const DE = {code: 'de_DE', label: 'German'};
 beforeEach(() => {
     mockFetchResponses([
         {
-            url: '/rest/catalogs/locales',
+            url: '/rest/catalogs/locales?page=1&limit=20',
             json: [EN, FR, DE],
+        },
+        {
+            url: '/rest/catalogs/locales?codes=de_DE',
+            json: [DE],
         },
     ]);
 });
@@ -40,66 +44,66 @@ test('it sets a product value filter on the locale', async () => {
 
     openDropdown('product-value-filter-by-locale');
 
-    expect(await screen.findByText('E-commerce')).toBeInTheDocument();
-    expect(await screen.findByText('Print')).toBeInTheDocument();
+    expect(await screen.findByText('English')).toBeInTheDocument();
+    expect(await screen.findByText('French')).toBeInTheDocument();
 
-    fireEvent.click(await screen.findByText('E-commerce'));
+    fireEvent.click(await screen.findByText('English'));
 
-    expect(onChange).toHaveBeenCalledWith({channel: ['ecommerce']});
+    expect(onChange).toHaveBeenCalledWith({locales: ['en_US']});
 });
-//
-// test('it adds a product value filter on the channel', async () => {
-//     const onChange = jest.fn();
-//     const productValueFilters = {
-//         channel: ['print'],
-//         locale: ['en_US', 'fr_FR'],
-//     };
-//
-//     render(
-//         <ThemeProvider theme={pimTheme}>
-//             <ReactQueryWrapper>
-//                 <FilterChannel productValueFilters={productValueFilters} onChange={onChange} isInvalid={false} />
-//             </ReactQueryWrapper>
-//         </ThemeProvider>
-//     );
-//
-//     expect(await screen.findByText('Print')).toBeInTheDocument();
-//     expect(screen.queryByText('E-commerce')).not.toBeInTheDocument();
-//
-//     openDropdown('product-value-filter-by-locale');
-//
-//     expect(await screen.findByText('E-commerce')).toBeInTheDocument();
-//
-//     fireEvent.click(await screen.findByText('E-commerce'));
-//
-//     expect(onChange).toHaveBeenCalledWith({
-//         channel: ['print', 'ecommerce'],
-//         locale: ['en_US', 'fr_FR'],
-//     });
-// });
-//
-// test('it removes a product value filter on the channel', async () => {
-//     const onChange = jest.fn();
-//     const productValueFilters = {
-//         channel: ['print'],
-//         locale: ['en_US', 'fr_FR'],
-//     };
-//
-//     render(
-//         <ThemeProvider theme={pimTheme}>
-//             <ReactQueryWrapper>
-//                 <FilterChannel productValueFilters={productValueFilters} onChange={onChange} isInvalid={false} />
-//             </ReactQueryWrapper>
-//         </ThemeProvider>
-//     );
-//
-//     expect(await screen.findByText('Print')).toBeInTheDocument();
-//     expect(screen.queryByText('E-commerce')).not.toBeInTheDocument();
-//
-//     fireEvent.click(screen.getByTitle('akeneo_catalogs.product_value_filters.action.remove'));
-//
-//     expect(onChange).toHaveBeenCalledWith({
-//         channel: [],
-//         locale: ['en_US', 'fr_FR'],
-//     });
-// });
+
+test('it adds a product value filter on the locale', async () => {
+    const onChange = jest.fn();
+    const productValueFilters = {
+        channels: ['print', 'ecommerce'],
+        locales: ['de_DE'],
+    };
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <ReactQueryWrapper>
+                <FilterLocale productValueFilters={productValueFilters} onChange={onChange} isInvalid={false} />
+            </ReactQueryWrapper>
+        </ThemeProvider>
+    );
+
+    expect(await screen.findByText('German')).toBeInTheDocument();
+    expect(screen.queryByText('English')).not.toBeInTheDocument();
+
+    openDropdown('product-value-filter-by-locale');
+
+    expect(await screen.findByText('English')).toBeInTheDocument();
+
+    fireEvent.click(await screen.findByText('English'));
+
+    expect(onChange).toHaveBeenCalledWith({
+        channels: ['print', 'ecommerce'],
+        locales: ['de_DE', 'en_US'],
+    });
+});
+
+test('it removes a product value filter on the locale', async () => {
+    const onChange = jest.fn();
+    const productValueFilters = {
+        channels: ['print'],
+        locales: ['en_US'],
+    };
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <ReactQueryWrapper>
+                <FilterLocale productValueFilters={productValueFilters} onChange={onChange} isInvalid={false} />
+            </ReactQueryWrapper>
+        </ThemeProvider>
+    );
+
+    expect(await screen.findByText('English')).toBeInTheDocument();
+    expect(screen.queryByText('French')).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByTitle('akeneo_catalogs.product_value_filters.action.remove'));
+
+    expect(onChange).toHaveBeenCalledWith({
+        channels: ['print'],
+        locales: [],
+    });
+});
