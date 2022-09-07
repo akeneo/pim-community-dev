@@ -68,7 +68,7 @@ test('it returns the form values when catalog is loaded', () => {
                         value: true,
                     },
                 },
-                product_value_filters: {channel: ['ecommerce', 'print']},
+                product_value_filters: {channels: ['ecommerce', 'print']},
             },
         },
         expect.any(Function),
@@ -120,7 +120,7 @@ test('it calls the API when save is called', async () => {
                     value: true,
                 },
             ],
-            product_value_filters: {channel: ['ecommerce', 'print']},
+            product_value_filters: {channels: ['ecommerce', 'print']},
         },
     });
 });
