@@ -30,7 +30,12 @@ const AutomationFilter = ({automationFilterValue, onAutomationFilterChange}: Aut
     return (
         <Dropdown>
             <SwitcherButton label={translate('akeneo_job_process_tracker.automation_filter.label')} onClick={openDropdown}>
-                {automationFilterValue}
+                {automationFilterValues.map((item: AutomationFilterValue) => {
+                    if (item.value === automationFilterValue) {
+                        return translate(`akeneo_job_process_tracker.automation_filter.${item.name}`)
+                    }
+                    return;
+                })}
             </SwitcherButton>
             {isDropdownOpen && (
                 <Dropdown.Overlay onClose={closeDropdown}>
