@@ -126,8 +126,8 @@ JSON;
             'PRODUCTSET' => [
                 'products' => [
                     ['identifier' => 'product_not_viewable_by_redactor', 'quantity' => 1],
-                    ['identifier' => 'product_viewable_by_everybody_1', 'quantity' => 2],
-                    ['identifier' => 'product_without_category', 'quantity' => 3],
+                    ['uuid' => $productViewableByEverybodyUuid, 'quantity' => 2],
+                    ['uuid' => $productWithoutCategoryUuid, 'quantity' => 3],
                 ],
                 'product_models' => [
                     ['identifier' => 'product_model_not_viewable_by_redactor', 'quantity' => 4],
