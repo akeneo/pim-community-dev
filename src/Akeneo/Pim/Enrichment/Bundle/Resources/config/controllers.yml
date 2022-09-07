@@ -129,9 +129,7 @@ services:
             - '@pim_catalog.builder.product'
             - '@pim_catalog.saver.product'
             - '@pim_api.filter.product_attribute_filter'
-            - '@database_connection'
             - '@pim_catalog.validator.product'
-            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetProductUuids'
             - '@pim_catalog.entity_with_family_variant.remove_parent_from_product'
 
     Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\DeleteProductByUuidController:
