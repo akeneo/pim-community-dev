@@ -3,5 +3,5 @@ import {findFirstError} from './findFirstError';
 import {ProductValueFiltersErrors} from '../../ProductValueFilters';
 
 export const mapProductValueFiltersErrors = (errors: CatalogFormErrors): ProductValueFiltersErrors => ({
-    channels: findFirstError(errors, '[product_value_filters][channel]'),
+    channels: findFirstError(errors, '[product_value_filters][channels]'),
 });
