@@ -39,9 +39,9 @@ class FamilyCriterionContainsValidFamiliesValidator extends ConstraintValidator
             return;
         }
 
-        $limit = 20;
-        foreach (\array_chunk($familyCodes, $limit) as $chunk) {
-            if (\count($this->getFamiliesByCodeQuery->execute($chunk, 1, $limit)) !== \count($chunk)) {
+        $paginatedFamilyCodes = \array_chunk($familyCodes, 20);
+        foreach ($paginatedFamilyCodes as $familyCodePage) {
+            if ($this->containsUnknownFamily($familyCodePage)) {
                 $this->context
                     ->buildViolation('akeneo_catalogs.validation.product_selection.criteria.family.unknown')
                     ->atPath('[value]')
@@ -50,5 +50,12 @@ class FamilyCriterionContainsValidFamiliesValidator extends ConstraintValidator
                 break;
             }
         }
+    }
+
+    private function containsUnknownFamily(array $codes): bool
+    {
+        $codesCount = \count($codes);
+        $existingCodes = $this->getFamiliesByCodeQuery->execute($codes, 1, $codesCount);
+        return \count($existingCodes) !== $codesCount;
     }
 }
