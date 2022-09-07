@@ -52,6 +52,9 @@ class FamilyCriterionContainsValidFamiliesValidator extends ConstraintValidator
         }
     }
 
+    /**
+     * @param array<string> $codes
+     */
     private function containsUnknownFamily(array $codes): bool
     {
         $codesCount = \count($codes);

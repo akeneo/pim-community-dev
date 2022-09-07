@@ -41,28 +41,28 @@ class FamilyCriterionTest extends AbstractSystemCriterionTest
     {
         return [
             'field with EMPTY operator' => [
-                'criterion' =>                     [
+                'criterion' => [
                     'field' => 'family',
                     'operator' => 'EMPTY',
                     'value' => [],
                 ],
             ],
             'field with NOT EMPTY operator' => [
-                'criterion' =>                     [
+                'criterion' => [
                     'field' => 'family',
                     'operator' => 'NOT EMPTY',
                     'value' => [],
                 ],
             ],
             'field with IN operator' => [
-                'criterion' =>                     [
+                'criterion' => [
                     'field' => 'family',
                     'operator' => 'IN',
                     'value' => ['familyA', 'familyB'],
                 ],
             ],
             'field with NOT IN operator' => [
-                'criterion' =>                     [
+                'criterion' => [
                     'field' => 'family',
                     'operator' => 'NOT IN',
                     'value' => ['familyA', 'familyB'],

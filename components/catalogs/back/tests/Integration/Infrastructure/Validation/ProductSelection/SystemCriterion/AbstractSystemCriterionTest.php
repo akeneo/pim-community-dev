@@ -105,12 +105,10 @@ abstract class AbstractSystemCriterionTest extends IntegrationTestCase
         $this->getCategoriesByCodeQuery = $this->createMock(GetCategoriesByCodeQueryInterface::class);
         $this->getCategoriesByCodeQuery
             ->method('execute')
-            ->willReturnCallback(function (array $codes): array {
-                return \array_filter(
-                    $this->categories,
-                    static fn(array $category) => \in_array($category['code'], $codes, true)
-                );
-            });
+            ->willReturnCallback(fn (array $codes): array => \array_filter(
+                $this->categories,
+                static fn (array $category) => \in_array($category['code'], $codes, true)
+            ));
         self::getContainer()->set(GetCategoriesByCodeQuery::class, $this->getCategoriesByCodeQuery);
     }
 }
