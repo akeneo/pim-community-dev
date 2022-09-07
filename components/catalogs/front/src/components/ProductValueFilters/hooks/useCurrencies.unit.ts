@@ -7,9 +7,7 @@ import fetchMock from 'jest-fetch-mock';
 import {ReactQueryWrapper} from '../../../../tests/ReactQueryWrapper';
 
 test('it fetches the API response', async () => {
-    fetchMock.mockResponseOnce(
-        JSON.stringify(['USD', 'EUR'])
-    );
+    fetchMock.mockResponseOnce(JSON.stringify(['USD', 'EUR']));
 
     const {result, waitForNextUpdate} = renderHook(() => useCurrencies(), {wrapper: ReactQueryWrapper});
 
