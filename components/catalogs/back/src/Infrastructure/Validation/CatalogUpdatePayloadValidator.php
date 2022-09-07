@@ -104,7 +104,7 @@ final class CatalogUpdatePayloadValidator extends ConstraintValidator
                     ],
                     'product_value_filters' => [
                         new Assert\Collection([
-                            'channel' => new Assert\Optional([
+                            'channels' => new Assert\Optional([
                                 new Assert\Type('array'),
                                 new Assert\All([
                                     'constraints' => [

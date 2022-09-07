@@ -54,8 +54,8 @@ test('it sets a product value filter on the channel', async () => {
 test('it adds a product value filter on the channel', async () => {
     const onChange = jest.fn();
     const productValueFilters = {
-        channel: ['print'],
-        locale: ['en_US', 'fr_FR'],
+        channels: ['print'],
+        locales: ['en_US', 'fr_FR'],
     };
 
     render(
@@ -76,16 +76,16 @@ test('it adds a product value filter on the channel', async () => {
     fireEvent.click(await screen.findByText('E-commerce'));
 
     expect(onChange).toHaveBeenCalledWith({
-        channel: ['print', 'ecommerce'],
-        locale: ['en_US', 'fr_FR'],
+        channels: ['print', 'ecommerce'],
+        locales: ['en_US', 'fr_FR'],
     });
 });
 
 test('it removes a product value filter on the channel', async () => {
     const onChange = jest.fn();
     const productValueFilters = {
-        channel: ['print'],
-        locale: ['en_US', 'fr_FR'],
+        channels: ['print'],
+        locales: ['en_US', 'fr_FR'],
     };
 
     render(
@@ -102,7 +102,7 @@ test('it removes a product value filter on the channel', async () => {
     fireEvent.click(screen.getByTitle('akeneo_catalogs.product_value_filters.action.remove'));
 
     expect(onChange).toHaveBeenCalledWith({
-        channel: [],
-        locale: ['en_US', 'fr_FR'],
+        channels: [],
+        locales: ['en_US', 'fr_FR'],
     });
 });

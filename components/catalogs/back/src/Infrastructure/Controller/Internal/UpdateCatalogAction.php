@@ -49,7 +49,7 @@ final class UpdateCatalogAction
          * @var array{
          *      enabled: bool,
          *      product_selection_criteria: array<int, array{field: string, operator: string, value?: mixed}>,
-         *      product_value_filters: array{channel?: array<string>}
+         *      product_value_filters: array{channels?: array<string>}
          * } $payload
          */
         $payload = \json_decode((string) $request->getContent(), true, 512, JSON_THROW_ON_ERROR);
