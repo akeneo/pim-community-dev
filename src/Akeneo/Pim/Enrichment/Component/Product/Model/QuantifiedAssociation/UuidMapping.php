@@ -7,13 +7,14 @@ use Ramsey\Uuid\UuidInterface;
 use Webmozart\Assert\Assert;
 
 /**
- * This class do the map of every way to identify a product.
+ * This class does the mapping of every way to identify a product.
  * A product can be identified by
  * - its uuid (always present)
  * - its id (always present for now)
  * - its identifier (the value through the identifier attribute, not mandatory, can be null).
  *
- * Each method allow developer to retry a product identifier (uuid, id or identifier) from another product identifier.
+ * Each method allows the developer to retrieve a product identifier (uuid, id or identifier) from another product
+ * identifier.
  *
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -45,7 +46,7 @@ final class UuidMapping
             Assert::nullOrStringNotEmpty($line['identifier']);
             Assert::numeric($line['id']);
             Assert::notNull($line['id']);
-            Assert::true(Uuid::isValid($line['uuid']), sprintf('Invalid uuid "%s"', $line['uuid']));
+            Assert::uuid($line['uuid'], sprintf('Invalid uuid "%s"', $line['uuid']));
 
             $this->uuidsToIdentifiers[$line['uuid']] = $line['identifier'];
             $this->uuidsToIds[$line['uuid']] = $line['id'];

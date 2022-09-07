@@ -31,7 +31,7 @@ class GetUuidMappingQuery implements GetUuidMappingQueryInterface
             WHERE identifier IN (:product_identifiers) OR uuid IN (:product_uuids)
         SQL;
 
-        $productUuidsAsBytes = \array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
+        $productUuidsAsBytes = \array_map(static fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
 
         $mapping = $this->connection->executeQuery(
             $query,
@@ -54,7 +54,7 @@ class GetUuidMappingQuery implements GetUuidMappingQueryInterface
             WHERE id IN (:product_ids) OR uuid IN (:product_uuids)
         SQL;
 
-        $productUuidsAsBytes = \array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
+        $productUuidsAsBytes = \array_map(static fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
 
         $mapping = $this->connection->executeQuery(
             $query,
