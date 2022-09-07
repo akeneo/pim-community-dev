@@ -23,6 +23,6 @@ class IsCurrencyActivatedQuery implements IsCurrencyActivatedQueryInterface
     {
         $activatedCurrenciesCodes = $this->currencyRepository->getActivatedCurrencyCodes();
 
-        return in_array($code, $activatedCurrenciesCodes);
+        return \in_array($code, $activatedCurrenciesCodes);
     }
 }
