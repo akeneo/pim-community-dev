@@ -13,7 +13,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @covers \Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdatePayload
- * @covers \Akeneo\Catalogs\Infrastructure\Validation\ProductValueFilters\FilterContainsValidChannel
  */
 class CatalogUpdatePayloadTest extends IntegrationTestCase
 {
