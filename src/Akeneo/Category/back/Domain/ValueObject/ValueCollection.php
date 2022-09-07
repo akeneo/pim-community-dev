@@ -44,7 +44,11 @@ final class ValueCollection implements \IteratorAggregate, \Countable
      */
     public function setValue(string $attributeUuid, string $attributeCode, ?string $localeCode, string $value): ValueCollection
     {
+        $identifier = $attributeCode.self::SEPARATOR.$attributeUuid;
         $key = $attributeCode.self::SEPARATOR.$attributeUuid.self::SEPARATOR.$localeCode;
+
+        $this->values['attribute_codes'][] = $identifier;
+        $this->values['attribute_codes'] = array_unique($this->values['attribute_codes']);
 
         $this->values[$key] = [
             'data' => $value,
