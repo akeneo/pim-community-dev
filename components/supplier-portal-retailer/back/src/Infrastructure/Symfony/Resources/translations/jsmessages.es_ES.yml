@@ -53,7 +53,7 @@ supplier_portal:
         code: Código
         label: Etiqueta de proveedor (requerido)
       contributors_form:
-        info: 'Añada colaboradores para darles acceso al Portal de proveedores de Akeneo. Puede rellenar una lista de direcciones con separadores: espacio, coma, punto y coma y salto de línea.'
+        info: 'Añada colaboradores para darles acceso al Supplier Portal de Akeneo. Puede rellenar una lista de direcciones con separadores: espacio, coma, punto y coma y salto de línea.'
         invalid_emails_warning: Algunos correos electrónicos no son válidos y no se añadirán.
         emails_belonging_to_other_suppliers_warning: Un colaborador solo puede pertenecer a un proveedor. Cuando guarde este proveedor, se eliminarán todos los correos electrónicos que aparezcan como advertencias.
         add_contributors: Añadir colaboradores

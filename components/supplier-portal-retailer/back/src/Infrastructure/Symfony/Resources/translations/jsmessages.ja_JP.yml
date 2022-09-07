@@ -53,7 +53,7 @@ supplier_portal:
         code: コード
         label: サプライヤーラベル (必須)
       contributors_form:
-        info: 'Akeneoサプライヤーポータルにアクセスできるようにコントリビューターを追加します。スペース、カンマ、セミコロン、または改行の区切り文字を使ってアドレスリストに入力できます。'
+        info: 'Akeneo Supplier Portalにアクセスできるようにコントリビューターを追加します。スペース、カンマ、セミコロン、または改行の区切り文字でアドレスリストに入力できます。'
         invalid_emails_warning: 一部のメールは無効で追加されません。
         emails_belonging_to_other_suppliers_warning: コントリビューターは1つのサプライヤーのみに属することができます。このサプライヤーを保存すると、警告として表示されているすべてのメールが削除されます。
         add_contributors: コントリビューターを追加
