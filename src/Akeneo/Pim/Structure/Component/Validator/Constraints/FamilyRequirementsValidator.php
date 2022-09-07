@@ -50,31 +50,7 @@ class FamilyRequirementsValidator extends ConstraintValidator
         }
 
         if ($family instanceof FamilyInterface) {
-            $this->validateMissingChannels($family, $constraint);
             $this->validateRequiredAttributes($family, $constraint);
-        }
-    }
-
-    /**
-     * Validates that there is no missing channel for the family.
-     *
-     * @param FamilyInterface    $family
-     * @param FamilyRequirements $constraint
-     */
-    protected function validateMissingChannels(FamilyInterface $family, FamilyRequirements $constraint)
-    {
-        $missingChannelCodes = $this->getMissingChannelCodes($family);
-        if (0 < count($missingChannelCodes)) {
-            $identifierCode = $this->attributeRepository->getIdentifierCode();
-            $this->context->buildViolation(
-                $constraint->messageChannel,
-                [
-                    '%family%'    => $family->getCode(),
-                    '%id%'        => $identifierCode,
-                    '%channels%'  => implode(', ', $missingChannelCodes)
-
-                ]
-            )->atPath($constraint->propertyPath)->addViolation();
         }
     }
 
@@ -99,27 +75,5 @@ class FamilyRequirementsValidator extends ConstraintValidator
                     ->addViolation();
             }
         }
-    }
-
-    /**
-     * @param FamilyInterface $family
-     *
-     * @return string[]
-     */
-    protected function getMissingChannelCodes(FamilyInterface $family)
-    {
-        $requirements = $family->getAttributeRequirements();
-        $identifierCode = $this->attributeRepository->getIdentifierCode();
-        $currentChannelCodes = [];
-        foreach ($requirements as $requirement) {
-            if ($requirement->getAttributeCode() === $identifierCode) {
-                $currentChannelCodes[] = $requirement->getChannelCode();
-            }
-        }
-
-        $expectedChannelCodes = $this->channelRepository->getChannelCodes();
-        $missingChannelCodes = array_diff($expectedChannelCodes, $currentChannelCodes);
-
-        return $missingChannelCodes;
     }
 }
