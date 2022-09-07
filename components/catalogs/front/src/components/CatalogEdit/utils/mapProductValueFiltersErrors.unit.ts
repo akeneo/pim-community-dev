@@ -16,7 +16,7 @@ test('it returns errors matching the property path of product value filters', ()
         },
     ];
 
-    expect(mapProductValueFiltersErrors(errors)).toEqual({channel: 'This is an error'});
+    expect(mapProductValueFiltersErrors(errors)).toEqual({channels: 'This is an error'});
 });
 
 test('it returns undefined if there is not matches', () => {
@@ -27,5 +27,5 @@ test('it returns undefined if there is not matches', () => {
         },
     ];
 
-    expect(mapProductValueFiltersErrors(errors)).toEqual({channel: undefined});
+    expect(mapProductValueFiltersErrors(errors)).toEqual({channels: undefined});
 });
