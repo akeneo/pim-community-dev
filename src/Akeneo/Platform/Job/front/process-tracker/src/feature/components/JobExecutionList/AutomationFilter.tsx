@@ -35,7 +35,7 @@ const AutomationFilter = ({automationFilterValue, onAutomationFilterChange}: Aut
             {isDropdownOpen && (
                 <Dropdown.Overlay onClose={closeDropdown}>
                     <Dropdown.Header>
-                        <Dropdown.Title>{translate('akeneo_job_process_tracker.status_filter.label')}</Dropdown.Title>
+                        <Dropdown.Title>{translate('akeneo_job_process_tracker.automation_filter.label')}</Dropdown.Title>
                     </Dropdown.Header>
                     <Dropdown.ItemCollection>
                         {automationFilterValues.map((item: AutomationFilterValue) =>

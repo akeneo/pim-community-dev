@@ -112,8 +112,8 @@ SQL;
         $search = $query->search;
         $code = $query->code;
 
-        if(null !== $automation && '' !== $automation) {
-            $sqlWhereParts[] = ($automation) ? 'job_execution.user LIKE "job_automated%"' : 'job_execution.user NOT LIKE "job_automated%"';
+        if (null !== $automation) {
+            $sqlWhereParts[] = $automation ? 'job_execution.user LIKE "job_automated%"' : 'job_execution.user NOT LIKE "job_automated%"';
         }
         
         if (!empty($type)) {

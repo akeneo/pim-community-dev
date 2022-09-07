@@ -56,10 +56,10 @@ akeneo_job_process_tracker:
     unknown: Unknown
     in_progress: In progress
   automation_filter:
-    all: all
-    "true": yes
-    "false": no
-    label: automation
+    all: All
+    yes: Yes
+    no: No
+    label: Automation
   max_page_without_filter_helper:
     In order to show you the most relevant results, please refine your search.
   tracking:

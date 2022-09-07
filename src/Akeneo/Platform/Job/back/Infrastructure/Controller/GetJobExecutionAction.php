@@ -63,7 +63,7 @@ final class GetJobExecutionAction
 
         $searchJobExecutionQuery->user = $this->getUserFilter($request);
         
-        $searchJobExecutionQuery->automation = (bool) $request->get('automation');
+        $searchJobExecutionQuery->automation = null !== $request->get('automation') ? (bool) $request->get('automation') : null;
         $searchJobExecutionQuery->type = $request->get('type', []);
         $searchJobExecutionQuery->status = $request->get('status', []);
         $searchJobExecutionQuery->search = $request->get('search', '');
