@@ -42,11 +42,7 @@ services:
 
     Akeneo\Tool\Bundle\VersioningBundle\Job\PurgeVersioning:
         arguments:
-            - '@akeneo.enrichment.lock.factory'
             - '@pim_versioning.purger.version'
-            - '@akeneo_batch.manager.job_execution'
-            - '@pim_enrich.repository.job_execution'
-            - '@logger'
 
     pim_versioning.job.versioning_purge:
         class: '%pim_connector.job.simple_job.class%'
@@ -55,6 +51,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
+                - '@Akeneo\Tool\Component\Connector\Step\CheckJobUniqueStep'
                 - '@pim_versioning.step.versioning_purge'
             - false
             - false

@@ -82,7 +82,6 @@ services:
         arguments:
             - '@akeneo_batch_queue.manager.job_execution_manager'
             - '@logger'
-            - '@akeneo.enrichment.lock.factory'
             - '%kernel.project_dir%'
         tags:
             - { name: console.command }

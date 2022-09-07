@@ -39,7 +39,6 @@ final class ScheduledJobWatchdogCommand extends Command
     public function __construct(
         private JobExecutionManager $executionManager,
         private LoggerInterface $logger,
-        protected LockFactory $lockFactory,
         private string $projectDir,
     ) {
         parent::__construct();
@@ -87,9 +86,6 @@ final class ScheduledJobWatchdogCommand extends Command
             // update status if the job execution failed due to an uncatchable error as a fatal error
             if ($this->executionManager->getExitStatus((int)$scheduledJobCode)?->isRunning()) {
                 $this->executionManager->markAsFailed($scheduledJobCode);
-                $lockIdentifier = LockedTasklet::getLockIdentifier($scheduledJobCode);
-                $lock = $this->lockFactory->createLock($lockIdentifier);
-                $lock->release();
             }
         }
 

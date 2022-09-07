@@ -2,12 +2,9 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\Job;
 
-use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutionRepository;
-use Akeneo\Tool\Bundle\BatchBundle\Manager\JobExecutionManager;
 use Akeneo\Tool\Bundle\VersioningBundle\Purger\VersionPurgerInterface;
-use Akeneo\Tool\Component\Connector\Step\LockedTasklet;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\Lock\LockFactory;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
 /**
  * Purge version of entities
@@ -16,38 +13,23 @@ use Symfony\Component\Lock\LockFactory;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class PurgeVersioning extends LockedTasklet
+final class PurgeVersioning implements TaskletInterface
 {
     protected const JOB_CODE = 'versioning_purge';
-    protected const LOCK_TTL_IN_SECONDS = 30;
+
+    protected StepExecution $stepExecution;
 
     public function __construct(
-        protected LockFactory $lockFactory,
         private VersionPurgerInterface $versionPurger,
-        private JobExecutionManager $executionManager,
-        private JobExecutionRepository $jobExecutionRepository,
-        private LoggerInterface $logger,
     ) {
-        parent::__construct($this->lockFactory, self::JOB_CODE);
     }
 
-    protected function lockedAbort(): void
+    public function setStepExecution(StepExecution $stepExecution): void
     {
-        $jobExecution = $this->stepExecution->getJobExecution();
-
-        $this->logger->error(
-            'Cannot launch scheduled job because another execution is still running.',
-            [
-                'job_code' => self::JOB_CODE,
-                'job_execution_id' => $jobExecution->getId(),
-            ]
-        );
-
-        $jobExecution = $this->jobExecutionRepository->find($this->stepExecution->getJobExecution()->getId());
-        $this->executionManager->markAsFailed($jobExecution);
+        $this->stepExecution = $stepExecution;
     }
 
-    protected function doExecute(): void
+    public function execute(): void
     {
         $purgeOptions['batch_size'] = (int)$this->stepExecution->getJobParameters()->get('batch-size');
 
