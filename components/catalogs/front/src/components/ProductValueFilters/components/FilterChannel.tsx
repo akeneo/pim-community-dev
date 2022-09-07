@@ -24,10 +24,10 @@ export const FilterChannel: FC<Props> = ({productValueFilters, onChange, isInval
         <>
             <MultiSelectInput
                 value={productValueFilters?.channels ?? []}
-                emptyResultLabel={translate('akeneo_catalogs.product_value_filters.criteria.channel.no_matches')}
+                emptyResultLabel={translate('akeneo_catalogs.product_value_filters.filters.channel.no_matches')}
                 openLabel={translate('akeneo_catalogs.product_value_filters.action.open')}
                 removeLabel={translate('akeneo_catalogs.product_value_filters.action.remove')}
-                placeholder={translate('akeneo_catalogs.product_value_filters.criteria.channel.placeholder')}
+                placeholder={translate('akeneo_catalogs.product_value_filters.filters.channel.placeholder')}
                 onChange={v => onChange({...productValueFilters, channels: v})}
                 onNextPage={fetchNextPage}
                 invalid={isInvalid}
