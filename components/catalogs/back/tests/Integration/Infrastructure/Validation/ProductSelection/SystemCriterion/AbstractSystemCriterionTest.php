@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Validation\ProductSelection\SystemCriterion;
 
+use Akeneo\Catalogs\Application\Persistence\GetCategoriesByCodeQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\GetChannelLocalesQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\GetChannelQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\GetFamiliesByCodeQueryInterface;
+use Akeneo\Catalogs\Infrastructure\Persistence\GetCategoriesByCodeQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\GetChannelLocalesQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\GetChannelQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\GetFamiliesByCodeQuery;
@@ -21,10 +23,12 @@ abstract class AbstractSystemCriterionTest extends IntegrationTestCase
     protected ?GetChannelQueryInterface $getChannelQuery = null;
     protected ?GetChannelLocalesQueryInterface $getChannelLocalesQuery = null;
     protected ?GetFamiliesByCodeQueryInterface $getFamiliesByCodeQuery = null;
+    protected ?GetCategoriesByCodeQueryInterface $getCategoriesByCodeQuery = null;
 
     private array $channels = [];
     private array $channelLocales = [];
     private array $families = [];
+    private array $categories = [];
 
     protected function setUp(): void
     {
@@ -33,11 +37,17 @@ abstract class AbstractSystemCriterionTest extends IntegrationTestCase
         $this->setupChannels();
         $this->setupChannelLocales();
         $this->setupFamilies();
+        $this->setupCategories();
     }
 
-    protected function createFamily(array $familyData): void
+    protected function createFamily(array $data): void
     {
-        $this->families[$familyData['code']] = $familyData;
+        $this->families[$data['code']] = $data;
+    }
+
+    protected function createCategory(array $data = []): void
+    {
+        $this->categories[$data['code']] = $data;
     }
 
     private function setupChannels(): void
@@ -86,5 +96,21 @@ abstract class AbstractSystemCriterionTest extends IntegrationTestCase
                 return \array_slice($filteredFamilies, ($page - 1) * $limit, $limit);
             });
         self::getContainer()->set(GetFamiliesByCodeQuery::class, $this->getFamiliesByCodeQuery);
+    }
+
+    private function setupCategories(): void
+    {
+        $this->categories = [];
+
+        $this->getCategoriesByCodeQuery = $this->createMock(GetCategoriesByCodeQueryInterface::class);
+        $this->getCategoriesByCodeQuery
+            ->method('execute')
+            ->willReturnCallback(function (array $codes): array {
+                return \array_filter(
+                    $this->categories,
+                    static fn(array $category) => \in_array($category['code'], $codes, true)
+                );
+            });
+        self::getContainer()->set(GetCategoriesByCodeQuery::class, $this->getCategoriesByCodeQuery);
     }
 }
