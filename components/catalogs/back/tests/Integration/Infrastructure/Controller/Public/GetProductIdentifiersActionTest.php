@@ -97,7 +97,7 @@ class GetProductIdentifiersActionTest extends IntegrationTestCase
 
         $response = $this->client->getResponse();
 
-        Assert::assertEquals(400, $response->getStatusCode());
+        Assert::assertEquals(422, $response->getStatusCode());
     }
 
     public function testItReturnsForbiddenWhenMissingPermissions(): void

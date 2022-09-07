@@ -16,7 +16,7 @@ class GetProductUuidsQueryValidationTest extends IntegrationTestCase
 {
     private ?ValidatorInterface $validator;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -59,6 +59,14 @@ class GetProductUuidsQueryValidationTest extends IntegrationTestCase
             'limit is more than 1000' => [
                 'query' => new GetProductUuidsQuery('db1079b6-f397-4a6a-bae4-8658e64ad47c', null, 1001),
                 'error' => 'This value should be between 1 and 1000.',
+            ],
+            'updatedBefore format is not ISO 8601' => [
+                'query' => new GetProductUuidsQuery('db1079b6-f397-4a6a-bae4-8658e64ad47c', null, 100, '2022-09-06'),
+                'error' => 'ISO 8601 format is required.',
+            ],
+            'updatedAfter format is not ISO 8601' => [
+                'query' => new GetProductUuidsQuery('db1079b6-f397-4a6a-bae4-8658e64ad47c', null, 100, null, '2022-09-06'),
+                'error' => 'ISO 8601 format is required.',
             ],
         ];
     }

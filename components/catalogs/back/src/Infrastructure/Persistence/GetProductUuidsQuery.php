@@ -6,6 +6,7 @@ namespace Akeneo\Catalogs\Infrastructure\Persistence;
 
 use Akeneo\Catalogs\Application\Persistence\GetProductUuidsQueryInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 use Doctrine\DBAL\Connection;
@@ -29,10 +30,18 @@ final class GetProductUuidsQuery implements GetProductUuidsQueryInterface
      *
      * @return array<string>
      */
-    public function execute(string $catalogId, ?string $searchAfter = null, int $limit = 100): array
-    {
+    public function execute(
+        string $catalogId,
+        ?string $searchAfter = null,
+        int $limit = 100,
+        ?string $updatedBefore = null,
+        ?string $updatedAfter = null,
+    ): array {
         $pqbOptions = [
-            'filters' => $this->getFilters($catalogId),
+            'filters' => \array_merge(
+                $this->getUpdatedFilters($updatedBefore, $updatedAfter),
+                $this->getFilters($catalogId)
+            ),
             'limit' => $limit,
         ];
 
@@ -101,6 +110,57 @@ final class GetProductUuidsQuery implements GetProductUuidsQueryInterface
         }
 
         return $criteria;
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    private function getUpdatedFilters(?string $updatedBefore, ?string $updatedAfter): array
+    {
+        $operator = null;
+        $value = null;
+
+        $updatedBeforeDateTime = \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, (string) $updatedBefore);
+        $updatedAfterDateTime = \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, (string) $updatedAfter);
+
+        if (false !== $updatedBeforeDateTime) {
+            $updatedBeforeDateTime = $updatedBeforeDateTime->setTimezone(new \DateTimeZone('UTC'));
+        }
+        if (false !== $updatedAfterDateTime) {
+            $updatedAfterDateTime = $updatedAfterDateTime->setTimezone(new \DateTimeZone('UTC'));
+        }
+
+        if (null !== $updatedBefore && null !== $updatedAfter) {
+            if (false !== $updatedBeforeDateTime && false !== $updatedAfterDateTime) {
+                $operator = Operators::BETWEEN;
+                $value = [
+                    $updatedAfterDateTime->format('Y-m-d H:i:s'),
+                    $updatedBeforeDateTime->format('Y-m-d H:i:s'),
+                ];
+            }
+        } elseif (null !== $updatedBefore) {
+            if (false !== $updatedBeforeDateTime) {
+                $operator = Operators::LOWER_THAN;
+                $value = $updatedBeforeDateTime->format('Y-m-d H:i:s');
+            }
+        } elseif (null !== $updatedAfter) {
+            if (false !== $updatedAfterDateTime) {
+                $operator = Operators::GREATER_THAN;
+                $value = $updatedAfterDateTime->format('Y-m-d H:i:s');
+            }
+        }
+
+        if (null === $operator || null === $value) {
+            return [];
+        }
+
+        return [
+            [
+                'field' => 'updated',
+                'operator' => $operator,
+                'value' => $value,
+            ],
+        ];
     }
 
     /**

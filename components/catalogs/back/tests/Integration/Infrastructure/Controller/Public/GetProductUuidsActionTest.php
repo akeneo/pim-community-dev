@@ -15,9 +15,9 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
  */
 class GetProductUuidsActionTest extends IntegrationTestCase
 {
-    private ?KernelBrowser $client;
+    private ?KernelBrowser $client = null;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -26,9 +26,8 @@ class GetProductUuidsActionTest extends IntegrationTestCase
 
     public function testItGetsPaginatedProductUuidsByCatalogId(): void
     {
-        $this->client = $this->getAuthenticatedClient(['read_catalogs', 'read_products']);
-        $userId = $this->getAuthenticatedUser()->getId();
-        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', $userId);
+        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
+        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'shopifi');
         $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
         $this->createProduct('blue');
         $this->createProduct('green');
@@ -46,7 +45,7 @@ class GetProductUuidsActionTest extends IntegrationTestCase
         );
 
         $response = $this->client->getResponse();
-        $payload = \json_decode($response->getContent(), true);
+        $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(200, $response->getStatusCode());
         Assert::assertCount(2, $payload['_embedded']['items']);
@@ -57,9 +56,8 @@ class GetProductUuidsActionTest extends IntegrationTestCase
 
     public function testItReturnsAnEmptyListWhenTheCatalogIsDisabled(): void
     {
-        $this->client = $this->getAuthenticatedClient(['read_catalogs', 'read_products']);
-        $userId = $this->getAuthenticatedUser()->getId();
-        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', $userId);
+        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
+        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'shopifi');
         $this->createProduct('blue');
 
         $this->client->request(
@@ -73,7 +71,7 @@ class GetProductUuidsActionTest extends IntegrationTestCase
         );
 
         $response = $this->client->getResponse();
-        $payload = \json_decode($response->getContent(), true);
+        $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(200, $response->getStatusCode());
         Assert::assertCount(0, $payload['_embedded']['items']);
@@ -81,9 +79,8 @@ class GetProductUuidsActionTest extends IntegrationTestCase
 
     public function testItReturnsBadRequestWhenPaginationIsInvalid(): void
     {
-        $this->client = $this->getAuthenticatedClient(['read_catalogs', 'read_products']);
-        $userId = $this->getAuthenticatedUser()->getId();
-        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', $userId);
+        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
+        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'shopifi');
         $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
         $this->client->request(
@@ -100,12 +97,12 @@ class GetProductUuidsActionTest extends IntegrationTestCase
 
         $response = $this->client->getResponse();
 
-        Assert::assertEquals(400, $response->getStatusCode());
+        Assert::assertEquals(422, $response->getStatusCode());
     }
 
     public function testItReturnsForbiddenWhenMissingPermissions(): void
     {
-        $this->client = $this->getAuthenticatedClient([]);
+        $this->client = $this->getAuthenticatedPublicApiClient([]);
 
         $this->client->request(
             'GET',
@@ -124,7 +121,7 @@ class GetProductUuidsActionTest extends IntegrationTestCase
 
     public function testItReturnsNotFoundWhenCalalogDoesNotExist(): void
     {
-        $this->client = $this->getAuthenticatedClient(['read_catalogs', 'read_products']);
+        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
 
         $this->client->request(
             'GET',

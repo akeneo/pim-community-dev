@@ -13,5 +13,11 @@ interface GetProductUuidsQueryInterface
     /**
      * @return array<string>
      */
-    public function execute(string $catalogId, ?string $searchAfter = null, int $limit = 100): array;
+    public function execute(
+        string $catalogId,
+        ?string $searchAfter = null,
+        int $limit = 100,
+        ?string $updatedBefore = null,
+        ?string $updatedAfter = null,
+    ): array;
 }
