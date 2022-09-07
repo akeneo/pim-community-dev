@@ -77,12 +77,18 @@ const tests: {state: CatalogFormValues; action: CatalogFormAction; result: Catal
         },
         action: {
             type: CatalogFormActions.SET_PRODUCT_VALUE_FILTERS,
-            value: {channels: ['print', 'ecommerce']},
+            value: {
+                channels: ['print', 'ecommerce'],
+                currencies: ['USD', 'EUR'],
+            },
         },
         result: {
             enabled: false,
             product_selection_criteria: {},
-            product_value_filters: {channels: ['print', 'ecommerce']},
+            product_value_filters: {
+                channels: ['print', 'ecommerce'],
+                currencies: ['USD', 'EUR'],
+            },
         },
     },
 ];

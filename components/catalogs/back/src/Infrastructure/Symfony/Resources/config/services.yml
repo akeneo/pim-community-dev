@@ -135,3 +135,7 @@ services:
     Akeneo\Catalogs\Infrastructure\Persistence\IsCurrencyActivatedQuery:
         arguments:
             - '@pim_catalog.repository.currency'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\GetCurrenciesQuery:
+        arguments:
+            - '@pim_catalog.repository.currency'

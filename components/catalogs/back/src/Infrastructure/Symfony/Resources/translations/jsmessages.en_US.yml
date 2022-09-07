@@ -27,6 +27,10 @@ akeneo_catalogs:
                 label: Channel
                 no_matches: No matches found
                 placeholder: Select your channel
+            currency:
+                label: Currency
+                no_matches: No matches found
+                placeholder: Select your Currency
     product_selection:
         empty: Add selection criteria to create your product selection
         more_information: Check out our Help center for more information.
