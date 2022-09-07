@@ -131,6 +131,6 @@ test('it can add a product value filter on the channel', async () => {
 
     expect(dispatch).toHaveBeenCalledWith({
         type: CatalogFormActions.SET_PRODUCT_VALUE_FILTERS,
-        value: {channel: ['ecommerce']},
+        value: {channels: ['ecommerce']},
     });
 });

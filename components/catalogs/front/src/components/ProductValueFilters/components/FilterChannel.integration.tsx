@@ -48,7 +48,7 @@ test('it sets a product value filter on the channel', async () => {
 
     fireEvent.click(await screen.findByText('E-commerce'));
 
-    expect(onChange).toHaveBeenCalledWith({channel: ['ecommerce']});
+    expect(onChange).toHaveBeenCalledWith({channels: ['ecommerce']});
 });
 
 test('it adds a product value filter on the channel', async () => {
