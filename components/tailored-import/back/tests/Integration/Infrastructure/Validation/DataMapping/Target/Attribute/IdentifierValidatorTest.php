@@ -172,7 +172,7 @@ final class IdentifierValidatorTest extends AbstractValidationTest
                     'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
                     'operations' => [
                         [
-                            'type' => 'clean_html_tags'
+                            'type' => 'clean_html'
                         ],
                     ],
                     'sample_data' => ['sample_1', 'sample_2', 'sample_3'],
@@ -194,7 +194,7 @@ final class IdentifierValidatorTest extends AbstractValidationTest
                         'source_configuration' => null
                     ],
                     'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529', '71480f22-f811-4261-b0fe-d93ad11666a9'],
-                    'operations' => ['clean_html_tags'],
+                    'operations' => ['clean_html'],
                     'sample_data' => ['sample_1', 'sample_2', 'sample_3'],
                 ]
             ],

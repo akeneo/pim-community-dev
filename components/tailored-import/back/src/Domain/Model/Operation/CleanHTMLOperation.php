@@ -15,13 +15,22 @@ namespace Akeneo\Platform\TailoredImport\Domain\Model\Operation;
 
 use Webmozart\Assert\Assert;
 
-final class CleanHTMLTagsOperation implements OperationInterface
+final class CleanHTMLOperation implements OperationInterface
 {
-    public const TYPE = 'clean_html_tags';
+    public const TYPE = 'clean_html';
 
-    public function __construct(private string $uuid)
-    {
+    public const MODE_REMOVE_HTML_TAGS = 'remove';
+    public const MODE_DECODE_HTML_CHARACTERS = 'decode';
+
+    public function __construct(
+        private string $uuid,
+        private array $modes,
+    ) {
         Assert::uuid($uuid);
+        Assert::notEmpty($modes);
+        foreach ($modes as $mode) {
+            Assert::oneOf($mode, [self::MODE_REMOVE_HTML_TAGS, self::MODE_DECODE_HTML_CHARACTERS]);
+        }
     }
 
     public function getUuid(): string
@@ -29,10 +38,16 @@ final class CleanHTMLTagsOperation implements OperationInterface
         return $this->uuid;
     }
 
+    public function getModes(): array
+    {
+        return $this->modes;
+    }
+
     public function normalize(): array
     {
         return [
             'uuid' => $this->uuid,
+            'modes' => $this->modes,
             'type' => self::TYPE,
         ];
     }

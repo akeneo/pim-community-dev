@@ -204,7 +204,7 @@ final class FamilyValidatorTest extends AbstractValidationTest
                     'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
                     'operations' => [
                         [
-                            'type' => 'clean_html_tags' // <== Here is the error
+                            'type' => 'clean_html' // <== Here is the error
                         ],
                     ],
                     'sample_data' => ['a_family', 'another_family'],

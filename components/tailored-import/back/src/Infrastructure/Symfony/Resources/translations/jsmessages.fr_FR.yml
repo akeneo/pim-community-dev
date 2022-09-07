@@ -49,7 +49,7 @@ akeneo.tailored_import:
       add: Ajouter une opération
       common:
         collapse: Réduire
-      clean_html_tags:
+      clean_html:
         title: Supprimer les balises HTML
       change_case:
         title: Modifier la casse d'un texte

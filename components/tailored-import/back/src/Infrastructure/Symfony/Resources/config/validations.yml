@@ -17,7 +17,7 @@ parameters:
     enabled: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Property\Enabled\Enabled'
 
   akeneo.tailored_import.validation.operation_constraints:
-    clean_html_tags: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\CleanHTMLTagsOperation'
+    clean_html: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\CleanHTMLOperation'
     split: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\SplitOperation'
     simple_select_replacement: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\ReplacementOperation'
     multi_select_replacement: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\ReplacementOperation'

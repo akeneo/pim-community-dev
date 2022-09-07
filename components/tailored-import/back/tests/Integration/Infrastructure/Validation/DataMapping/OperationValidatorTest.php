@@ -51,12 +51,13 @@ class OperationValidatorTest extends AbstractValidationTest
     {
         return [
             'a supported operation' => [
-                ['clean_html_tags'],
+                ['clean_html'],
                 [],
                 [
                     [
                         'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',
-                        'type' => 'clean_html_tags'
+                        'modes' => ['remove'],
+                        'type' => 'clean_html'
                     ],
                 ],
             ],
@@ -75,7 +76,7 @@ class OperationValidatorTest extends AbstractValidationTest
                 ],
             ],
             'an empty operation' => [
-                ['clean_html_tags'],
+                ['clean_html'],
                 [],
                 [],
             ],
@@ -92,7 +93,7 @@ class OperationValidatorTest extends AbstractValidationTest
                 [],
                 [
                     [
-                        'type' => 'clean_html_tags'
+                        'type' => 'clean_html'
                     ],
                 ]
             ],

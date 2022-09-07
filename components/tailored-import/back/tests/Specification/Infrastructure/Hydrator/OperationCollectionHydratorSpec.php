@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredImport\Infrastructure\Hydrator;
 
-use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLTagsOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
@@ -24,7 +24,7 @@ class OperationCollectionHydratorSpec extends ObjectBehavior
     public function it_hydrates_an_operation_collection(): void
     {
         $expected = OperationCollection::create([
-            new CleanHTMLTagsOperation('00000000-0000-0000-0000-000000000000'),
+            new CleanHTMLOperation('00000000-0000-0000-0000-000000000000', [CleanHTMLOperation::MODE_REMOVE_HTML_TAGS]),
         ]);
 
         $this->hydrate(
@@ -35,7 +35,8 @@ class OperationCollectionHydratorSpec extends ObjectBehavior
             [
                 [
                     'uuid' => '00000000-0000-0000-0000-000000000000',
-                    'type' => CleanHTMLTagsOperation::TYPE,
+                    'modes' => ['remove'],
+                    'type' => CleanHTMLOperation::TYPE,
                     'value' => true,
                 ],
             ],

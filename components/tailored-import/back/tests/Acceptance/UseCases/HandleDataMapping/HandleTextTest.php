@@ -17,7 +17,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingResult;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ChangeCaseOperation;
-use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLTagsOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\RemoveWhitespaceOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
@@ -92,11 +92,12 @@ final class HandleTextTest extends HandleDataMappingTestCase
                     [],
                 ),
             ],
-            'it handles text attribute targets with Clean HTML Tags operation' => [
+            'it handles text attribute targets with Clean HTML operation' => [
                 'row' => [
                     '25621f5a-504f-4893-8f0c-9f1b0076e53e' => 'this-is-a-sku',
-                    '2d9e967a-5efa-4a31-a254-99f7c50a145c' => 'i want&nbsp;this <h1>cleaned</h1>',
-                    '2d9e967a-4efa-4a31-a254-99f7c50a145c' => 'but not <h2>this</h2>',
+                    '2d9e967a-5efa-4a31-a254-99f7c50a145c' => 'i want <p>the tags </p>removed<br/>',
+                    '2d9e967a-4efa-4a31-a254-99f7c50a145c' => 'i want&nbsp;the characters &quot;decoded&quot;',
+                    '2d9e967a-3efa-4a31-a254-99f7c50a145c' => 'i want&nbsp;this <h1>&quot;fully&quot; cleaned</h1>',
                 ],
                 'data_mappings' => [
                     DataMapping::create(
@@ -112,7 +113,10 @@ final class HandleTextTest extends HandleDataMappingTestCase
                         ),
                         ['2d9e967a-5efa-4a31-a254-99f7c50a145c'],
                         OperationCollection::create([
-                            new CleanHTMLTagsOperation('00000000-0000-0000-0000-000000000000'),
+                            new CleanHTMLOperation(
+                                '00000000-0000-0000-0000-000000000000',
+                                    [CleanHTMLOperation::MODE_REMOVE_HTML_TAGS]
+                            ),
                         ]),
                         [],
                     ),
@@ -128,7 +132,35 @@ final class HandleTextTest extends HandleDataMappingTestCase
                             null,
                         ),
                         ['2d9e967a-4efa-4a31-a254-99f7c50a145c'],
-                        OperationCollection::create([]),
+                        OperationCollection::create([
+                            new CleanHTMLOperation(
+                                '00000000-0000-0000-0000-000000000000',
+                                [CleanHTMLOperation::MODE_DECODE_HTML_CHARACTERS]
+                            ),
+                        ]),
+                        [],
+                    ),
+                    DataMapping::create(
+                        'b244c45c-d5ec-4993-8cff-7ccd04e82fed',
+                        AttributeTarget::create(
+                            'short_description',
+                            'pim_catalog_text',
+                            null,
+                            null,
+                            'set',
+                            'skip',
+                            null,
+                        ),
+                        ['2d9e967a-3efa-4a31-a254-99f7c50a145c'],
+                        OperationCollection::create([
+                            new CleanHTMLOperation(
+                                '00000000-0000-0000-0000-000000000000',
+                                [
+                                    CleanHTMLOperation::MODE_REMOVE_HTML_TAGS,
+                                    CleanHTMLOperation::MODE_DECODE_HTML_CHARACTERS
+                                ]
+                            ),
+                        ]),
                         [],
                     ),
                 ],
@@ -137,8 +169,9 @@ final class HandleTextTest extends HandleDataMappingTestCase
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
                         userIntents: [
-                            new SetTextValue('name', null, null, 'i want this cleaned'),
-                            new SetTextValue('description', 'ecommerce', 'fr_FR', 'but not <h2>this</h2>'),
+                            new SetTextValue('name', null, null, 'i want the tags removed'),
+                            new SetTextValue('description', 'ecommerce', 'fr_FR', 'i want the characters "decoded"'),
+                            new SetTextValue('short_description', null, null, 'i want this "fully" cleaned'),
                         ],
                     ),
                     [],
@@ -310,7 +343,10 @@ final class HandleTextTest extends HandleDataMappingTestCase
                         ),
                         ['2d9e967a-5efa-4a31-a254-99f7c50a145c'],
                         OperationCollection::create([
-                            new CleanHTMLTagsOperation('00000000-0000-0000-0000-000000000000'),
+                            new CleanHTMLOperation(
+                                '00000000-0000-0000-0000-000000000000',
+                                [CleanHTMLOperation::MODE_DECODE_HTML_CHARACTERS]
+                            ),
                             new RemoveWhitespaceOperation('00000000-0000-0000-0000-000000000000', ['trim']),
                             new ChangeCaseOperation('00000000-0000-0000-0000-000000000000', 'capitalize'),
                         ]),
