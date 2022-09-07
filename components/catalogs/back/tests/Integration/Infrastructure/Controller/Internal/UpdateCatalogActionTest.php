@@ -56,7 +56,7 @@ class UpdateCatalogActionTest extends IntegrationTestCase
                     ],
                 ],
                 'product_value_filters' => [
-                    'channel' => ['ecommerce'],
+                    'channels' => ['ecommerce'],
                 ],
             ]),
         );
@@ -74,7 +74,7 @@ class UpdateCatalogActionTest extends IntegrationTestCase
             ],
         ]);
         $this->assertCatalogHasProductValueFilters('ed30425c-d9cf-468b-8bc7-fa346f41dd07', [
-            'channel' => ['ecommerce'],
+            'channels' => ['ecommerce'],
         ]);
     }
 
@@ -100,7 +100,7 @@ class UpdateCatalogActionTest extends IntegrationTestCase
                     ],
                 ],
                 'product_value_filters' => [
-                    'channel' => ['ecommerce'],
+                    'channels' => ['ecommerce'],
                 ],
             ]),
         );
