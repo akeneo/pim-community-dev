@@ -13,7 +13,7 @@ final class Version_7_0_20220906092636_supplier_portal_add_supplier_portal_produ
 {
     use ExecuteMigrationTrait;
 
-    private const MIGRATION_LABEL = '_7_0_20220906092635_supplier_portal_add_supplier_portal_product_file_supplier_comments_table';
+    private const MIGRATION_LABEL = '_7_0_20220906092636_supplier_portal_add_supplier_portal_product_file_supplier_comments_table';
     private const TABLE_NAME = 'akeneo_supplier_portal_product_file_supplier_comments';
 
     private Connection $connection;
