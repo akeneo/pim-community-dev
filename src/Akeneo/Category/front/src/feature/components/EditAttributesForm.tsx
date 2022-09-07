@@ -110,25 +110,25 @@ export const EditAttributesForm = ({onAttributeValueChange}: Props) => {
         switch (attribute.type) {
           case 'text':
             return (
-              <Field label={attribute.labels[locale]} locale={locale}>
+              <Field key={attribute.uuid} label={attribute.labels[locale]} locale={locale}>
                 <TextInput name={attribute.code} value="" onChange={handleTextChange(attributeDefinitions[attribute.code])} />
               </Field>
             );
           case 'richtext':
             return (
-              <Field960 label={attribute.labels[locale]} locale={locale}>
+              <Field960 key={attribute.uuid} label={attribute.labels[locale]} locale={locale}>
                 <TextAreaInput isRichText name={attribute.code} value="" onChange={handleTextChange(attributeDefinitions[attribute.code])} />
               </Field960>
             );
           case 'textarea':
             return (
-              <Field label={attribute.labels[locale]} locale={locale}>
+              <Field key={attribute.uuid} label={attribute.labels[locale]} locale={locale}>
                 <TextAreaInput name={attribute.code} value="" onChange={handleTextChange(attributeDefinitions[attribute.code])} />
               </Field>
             );
           case 'image':
             return (
-              <Field label={attribute.labels[locale]}>
+              <Field key={attribute.uuid} label={attribute.labels[locale]}>
                 <MediaFileInput
                   value={null}
                   onChange={handleImageChange(attributeDefinitions[attribute.code])}
