@@ -132,7 +132,7 @@ FROM pim_catalog_product p
 WHERE p.uuid IN (:product_uuids) AND NOT EXISTS (SELECT 1 FROM product_category cp WHERE cp.product_uuid = p.uuid)
 SQL;
 
-        $productUuidsAsBytes = \array_map(fn (string $uuid): string => Uuid::fromString($uuid)->getBytes(), $productUuids);
+        $productUuidsAsBytes = \array_map(static fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
 
         $stmt = $this->entityManager->getConnection()->executeQuery(
             $query,
@@ -148,7 +148,7 @@ SQL;
 
         return array_map(
             fn (string $uuid): UuidInterface => Uuid::fromString($uuid),
-            array_column($stmt->fetchAllAssociative(), 'uuid')
+            $stmt->fetchFirstColumn()
         );
     }
 }

@@ -7,6 +7,8 @@ namespace AkeneoTestEnterprise\Pim\Permission\Integration\Query;
 use Akeneo\Pim\Permission\Component\Query\ProductCategoryAccessQueryInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 class ProductCategoryAccessQueryIntegration extends TestCase
 {
@@ -78,6 +80,66 @@ class ProductCategoryAccessQueryIntegration extends TestCase
         $this->assertEqualsCanonicalizing($productIdentifiersExpected, $productIdentifiers);
     }
 
+    public function test_it_returns_not_categorized_products_and_filter_not_granted_products_by_uuids()
+    {
+        $unknownUuid = Uuid::uuid4();
+        $user = $this->get('pim_user.repository.user')->findOneByIdentifier('mary');
+        $productUuids = $this->getQuery()->getGrantedProductUuids(
+            array_merge(
+                array_map(
+                    fn (string $identifier): UuidInterface => $this->getProductUuidFromIdentifier($identifier),
+                    [
+                        'product_without_category',
+                        'product_viewable_by_everybody',
+                        'product_not_viewable_by_redactor',
+                        'product_with_product_model_not_viewable_by_redactor',
+                        'product_with_product_model_viewable_by_redactor',
+                    ]
+                ),
+                [$unknownUuid]
+            ),
+            $user
+        );
+
+        $productUuidsExpected = array_map(
+            fn (string $identifier): UuidInterface => $this->getProductUuidFromIdentifier($identifier),
+            [
+                'product_viewable_by_everybody',
+                'product_without_category',
+                'product_with_product_model_viewable_by_redactor'
+            ]
+        );
+
+        $this->assertEqualsCanonicalizing($productUuidsExpected, $productUuids);
+
+        $user = $this->get('pim_user.repository.user')->findOneByIdentifier('julia');
+        $productUuids = $this->getQuery()->getGrantedProductUuids(
+            array_merge(
+                array_map(
+                    fn (string $identifier): UuidInterface => $this->getProductUuidFromIdentifier($identifier),
+                    [
+                        'product_without_category',
+                        'product_viewable_by_everybody',
+                        'product_not_viewable_by_redactor',
+                    ]
+                ),
+                [$unknownUuid]
+            ),
+            $user
+        );
+
+        $productIdentifiersExpected = array_map(
+            fn (string $identifier): UuidInterface => $this->getProductUuidFromIdentifier($identifier),
+            [
+                'product_viewable_by_everybody',
+                'product_not_viewable_by_redactor',
+                'product_without_category',
+            ]
+        );
+
+        $this->assertEqualsCanonicalizing($productIdentifiersExpected, $productUuids);
+    }
+
     private function createProduct(string $identifier, array $data = []): void
     {
         $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
@@ -107,5 +169,12 @@ class ProductCategoryAccessQueryIntegration extends TestCase
     protected function getQuery(): ProductCategoryAccessQueryInterface
     {
         return $this->get('pimee_security.query.product_category_access_with_ids');
+    }
+
+    private function getProductUuidFromIdentifier(string $productIdentifier): UuidInterface
+    {
+        return Uuid::fromString($this->get('database_connection')->fetchOne(
+            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?', [$productIdentifier]
+        ));
     }
 }
