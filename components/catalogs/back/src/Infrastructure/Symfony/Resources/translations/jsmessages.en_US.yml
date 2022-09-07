@@ -22,7 +22,7 @@ akeneo_catalogs:
         action:
             open: Open
             remove: Remove
-        criteria:
+        filters:
             channel:
                 label: Channel
                 no_matches: No matches found
