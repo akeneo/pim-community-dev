@@ -22,7 +22,7 @@ const CompletenessLocaleInput: FC<Props> = ({state, onChange, isInvalid}) => {
             onChange={v => onChange({...state, locale: v})}
             clearable={false}
             invalid={isInvalid}
-            placeholder={translate('akeneo_catalogs.product_selection.locale.label')}
+            placeholder={translate('akeneo_catalogs.product_selection.filters.locale.label')}
             data-testid='locale'
         >
             {locales?.map(locale => (

@@ -47,15 +47,15 @@ export const ProductValueFilters: FC<Props> = ({productValueFilters, onChange, e
                 )}
             </FilterContainer>
             <FilterContainer>
-                <Label>{translate('akeneo_catalogs.product_value_filters.locale.label')}</Label>
+                <Label>{translate('akeneo_catalogs.product_value_filters.filters.locale.label')}</Label>
                 <FilterLocale
                     productValueFilters={productValueFilters}
                     onChange={onChange}
-                    isInvalid={!!errors.locale}
+                    isInvalid={!!errors.locales}
                 />
-                {!!errors.locale && (
+                {!!errors.locales && (
                     <Helper inline level='error'>
-                        <WarningMessage>{translate(errors.locale)}</WarningMessage>
+                        <WarningMessage>{translate(errors.locales)}</WarningMessage>
                     </Helper>
                 )}
             </FilterContainer>

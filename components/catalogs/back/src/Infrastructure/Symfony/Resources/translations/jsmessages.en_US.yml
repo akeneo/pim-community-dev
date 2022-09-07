@@ -27,10 +27,10 @@ akeneo_catalogs:
                 label: Channel
                 no_matches: No matches found
                 placeholder: Select your channel
-        locale:
-            label: Locale
-            no_matches: No matches found
-            placeholder: Select your locale
+            locale:
+                label: Locale
+                no_matches: No matches found
+                placeholder: Select your locale
     product_selection:
         empty: Add selection criteria to create your product selection
         more_information: Check out our Help center for more information.
