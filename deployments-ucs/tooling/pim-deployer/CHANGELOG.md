@@ -1,3 +1,12 @@
+# 1.1.0
+## Update sdk-cloud version
+## Add gke-gcloud-auth-plugin
+
+| Tools                   | Previous Version | New Version          |
+|-------------------------|------------------|----------------------|
+| sdk-cloud               | 392.0.0          | 400.0.0              |
+| gke-gcloud-auth-plugin  | N/A              | 0.2.0                |
+
 # 1.0.0
 ## Initial release
 

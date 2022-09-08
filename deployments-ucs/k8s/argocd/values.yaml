@@ -173,7 +173,7 @@ repoServer:
       iam.gke.io/gcp-service-account: ucs-argocd-account@akecld-prd-pim-saas-dev.iam.gserviceaccount.com
   initContainers:
     - name: install-helm-plugins
-      image: alpine/helm:3.6.3
+      image: alpine/helm:3.8.2
       volumeMounts:
         - mountPath: /helm
           name: helm
