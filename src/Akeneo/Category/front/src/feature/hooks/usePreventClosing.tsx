@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-/* istanbul ignore next */
 export const usePreventClosing = (isDirty: () => boolean, message: string) => {
   const handleUnload = React.useCallback(
     (event: BeforeUnloadEvent) => {
