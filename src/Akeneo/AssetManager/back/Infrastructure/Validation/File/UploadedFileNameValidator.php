@@ -20,7 +20,7 @@ class UploadedFileNameValidator extends ConstraintValidator
             throw new UnexpectedValueException($constraint, UploadedFile::class);
         }
 
-        if (str_contains($uploadedFile->getClientOriginalName() ,'­')) {
+        if (str_contains($uploadedFile->getClientOriginalName(), '­')) {
             $this->context->buildViolation(UploadedFileName::ERROR_MESSAGE)
                 ->setParameter('%file_path%', $uploadedFile->getClientOriginalName())
                 ->addViolation();
