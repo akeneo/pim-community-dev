@@ -8,13 +8,13 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\Produc
 
 final class ProductFileAdded
 {
-    public function __construct(private ProductFile $productFile)
+    public function __construct(private ProductFile $productFile, private string $supplierLabel)
     {
     }
 
     public function supplierLabel(): string
     {
-        return $this->productFile->supplierLabel();
+        return $this->supplierLabel;
     }
 
     public function contributorEmail(): string

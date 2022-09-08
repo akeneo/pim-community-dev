@@ -34,12 +34,21 @@ final class NotifyUsersOnProductFileAddedTest extends TestCase
             ->with('contributor@example.com', 'Supplier label')
         ;
 
-        $sut->notifyUsers(new ProductFileAdded(ProductFile::create(
-            'e12d4c68-8d25-4f6a-a989-1364b1bb4cbd',
-            'file.xlsx',
-            'path/to/file.xlsx',
-            'contributor@example.com',
-            new Supplier('7f25bf84-9853-4b40-9930-1c34ec7594e6', 'supplier_code', 'Supplier label'),
-        )));
+        $sut->notifyUsers(
+            new ProductFileAdded(
+                ProductFile::create(
+                    'e12d4c68-8d25-4f6a-a989-1364b1bb4cbd',
+                    'file.xlsx',
+                    'path/to/file.xlsx',
+                    'contributor@example.com',
+                    new Supplier(
+                        '7f25bf84-9853-4b40-9930-1c34ec7594e6',
+                        'supplier_code',
+                        'Supplier label',
+                    ),
+                ),
+                'Supplier label',
+            ),
+        );
     }
 }
