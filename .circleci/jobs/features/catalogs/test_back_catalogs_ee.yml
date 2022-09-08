@@ -20,6 +20,12 @@ jobs:
                     name: Acceptance back
                     command: PIM_CONTEXT=catalogs APP_ENV=test make catalogs-acceptance-back
             -   when:
+                    condition: << pipeline.parameters.run-database-tests >>
+                    steps:
+                        -   run:
+                                name: Database schema reference
+                                command: PIM_CONTEXT=test APP_ENV=test make test-database-structure
+            -   when:
                     condition: << parameters.notify >>
                     steps:
                         -   slack-app/notify:
