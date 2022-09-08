@@ -66,6 +66,8 @@ pim_catalog:
     variant_product_invalid_family: 'La variante de la familia del productos debe ser la misma que la de su padre'
     php_int_max_reached: 'El número máximo debe ser inferior a %php_int_max%.'
     not_null_family: La familia no puede ser «null» porque su producto con el identificador %sku% es un producto variante.
+    variant_product_has_parent: 'El producto variante debe tener un principal'
+    invalid_variant_product_parent: 'El producto variante no puede tener el modelo de producto "%product_model%" como padre, (este modelo de producto solo puede tener otro modelo de producto como niño)'
     modified_variant_axis_value: 'Dado "%provided_value%", el eje variante "%variant_axis%" no puede ser modificado'
     family_variant_attributes_unique: Los atributos deben ser únicos, "%attributes%" son usados gran cantidad de veces en la configuración de atributos variantes
     family_variant_axes_unique: Los ejes variantes debe ser únicos, "%attributes%" son usados bastante seguido en la configuración de los atributos variantes
