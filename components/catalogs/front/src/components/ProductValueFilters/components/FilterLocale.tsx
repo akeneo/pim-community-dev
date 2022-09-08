@@ -16,7 +16,7 @@ type Props = {
 export const FilterLocale: FC<Props> = ({productValueFilters, onChange, isInvalid}) => {
     const translate = useTranslate();
 
-    const {data: selected} = useLocalesByCodes(productValueFilters?.locales);
+    const {data: selected} = useLocalesByCodes(productValueFilters?.locales ?? []);
     const {data: results, fetchNextPage} = useInfiniteLocales();
     const locales = useUniqueEntitiesByCode<Locale>(selected, results);
 

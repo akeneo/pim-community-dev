@@ -21,7 +21,7 @@ test('it fetches the locales', async () => {
         ])
     );
 
-    const {result, waitForNextUpdate} = renderHook(() => useLocalesByCodes(['en_US', 'fr_FR']), {
+    const {result, waitForNextUpdate} = renderHook(() => useLocalesByCodes(['en_US', 'fr_FR', 'de_DE']), {
         wrapper: ReactQueryWrapper,
     });
 
@@ -34,7 +34,7 @@ test('it fetches the locales', async () => {
 
     await waitForNextUpdate();
 
-    expect(fetchMock).toHaveBeenCalledWith('/rest/catalogs/locales?codes=en_US,fr_FR', expect.any(Object));
+    expect(fetchMock).toHaveBeenCalledWith('/rest/catalogs/locales?codes=en_US,fr_FR,de_DE', expect.any(Object));
     expect(result.current).toMatchObject({
         isLoading: false,
         isError: false,
@@ -47,35 +47,11 @@ test('it fetches the locales', async () => {
                 code: 'fr_FR',
                 label: 'French (France)',
             },
+            {
+                code: 'de_DE',
+                label: '[de_DE]',
+            },
         ],
         error: null,
     });
 });
-
-const codesTests: [string, string[] | undefined][] = [
-    ['undefined', undefined],
-    ['empty array', []],
-];
-
-test.each(codesTests)(
-    'it returns an empty array when "%s" as codes is provided',
-    async (key: string, codes: string[] | undefined) => {
-        const {result, waitForNextUpdate} = renderHook(() => useLocalesByCodes(codes), {wrapper: ReactQueryWrapper});
-
-        expect(result.current).toMatchObject({
-            isLoading: true,
-            isError: false,
-            data: undefined,
-            error: null,
-        });
-
-        await waitForNextUpdate();
-
-        expect(result.current).toMatchObject({
-            isLoading: false,
-            isError: false,
-            data: [],
-            error: null,
-        });
-    }
-);

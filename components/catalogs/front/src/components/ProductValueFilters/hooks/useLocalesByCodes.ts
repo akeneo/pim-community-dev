@@ -9,11 +9,8 @@ type Result = {
     error: ResultError;
 };
 
-export const useLocalesByCodes = (codes: string[] | undefined): Result => {
-    return useQuery<Locale[], ResultError, Locale[]>(['locales', codes?.sort().join('')], async () => {
-        if (undefined === codes || codes.length === 0) {
-            return [];
-        }
+export const useLocalesByCodes = (codes: string[]): Result => {
+    return useQuery<Locale[], ResultError, Locale[]>(['locales', [...codes].sort().join('')], async () => {
         const concatCodes = codes.join(',');
 
         const response = await fetch(`/rest/catalogs/locales?codes=${concatCodes}`, {
@@ -22,6 +19,12 @@ export const useLocalesByCodes = (codes: string[] | undefined): Result => {
             },
         });
 
-        return await response.json();
+        const locales: Locale[] = await response.json();
+
+        const localeCodes = locales.map(locale => locale.code);
+
+        const desactivatedLocaleCodes = codes.filter(code => localeCodes.indexOf(code) === -1);
+
+        return [...locales, ...desactivatedLocaleCodes.map(code => ({code: code, label: `[${code}]`}))];
     });
 };
