@@ -4,3 +4,13 @@ pimee_api_product_draft_get:
     methods: [GET]
     requirements:
         code: .+
+
+pimee_api_product_draft_get_with_uuid:
+    path: /products-uuid/{uuid}/draft
+    defaults:
+        _controller: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ExternalApi\GetProductDraftWithUuidController
+        _format: json
+        _list_in_root_endpoint: false
+    methods: [GET]
+    requirements:
+        uuid: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'

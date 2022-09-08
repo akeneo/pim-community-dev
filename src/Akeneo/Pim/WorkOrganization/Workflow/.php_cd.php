@@ -235,6 +235,12 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnInfoExtractor',
         'Akeneo\Pim\Enrichment\Component\Product\Query\AbstractEntityWithValuesQueryBuilder',
         'Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection',
+        'Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts',
+
+        // External API normalization
+        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductWithUuidNormalizer',
+        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ValuesNormalizer',
 
         // TIP-980: Workflow should not be linked to User
         // TIP-982: Rework User/Draft link
