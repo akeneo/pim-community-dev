@@ -27,8 +27,8 @@ class PurgeVersioningWatchdogIntegration extends TestCase
         $output = $this->runWatchdog();
         $result = $output->fetch();
 
-        Assert::assertStringContainsString('Launching job execution "versioning_purge"', $result);
-        Assert::assertMatchesRegularExpression('/Job execution "versioning_purge" is finished in \d seconds/', $result);
+        Assert::assertMatchesRegularExpression('/Launching job execution "\d+"/', $result);
+        Assert::assertMatchesRegularExpression('/Job execution "\d+" is finished in \d seconds/', $result);
     }
 
     /**
@@ -57,8 +57,8 @@ class PurgeVersioningWatchdogIntegration extends TestCase
         $application->setAutoExit(false);
 
         $defaultArrayInput = [
-            'command' => 'akeneo:batch:scheduled',
-            'batch_code' => 'versioning_purge',
+            'command' => 'akeneo:batch:watchdog',
+            '--job_code' => 'versioning_purge',
             '-vvv',
         ];
 
