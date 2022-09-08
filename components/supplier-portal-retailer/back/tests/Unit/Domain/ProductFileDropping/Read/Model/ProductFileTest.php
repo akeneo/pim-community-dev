@@ -79,7 +79,7 @@ final class ProductFileTest extends TestCase
                         'content' => 'Here are the products I\'ve got for you.',
                         'created_at' => '2022-09-07 08:59:38',
                     ],
-                ]
+                ],
             ],
             $sut->toArray(),
         );
