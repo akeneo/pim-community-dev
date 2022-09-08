@@ -37,11 +37,6 @@ interface Props {
   ) => void;
 }
 
-const dumbUploader = async (file: File, onProgress: (ratio: number) => void) => ({
-  filePath: 'foo',
-  originalFilename: 'bar',
-});
-
 const FormContainer = styled.div`
   margin-top: 20px;
 
