@@ -1,0 +1,42 @@
+akeneo.job_automation:
+  title: 'automatisation'
+  scheduling:
+    title: 'Planification'
+    running_user_groups:
+      label: 'Gestion des autorisations par groupes d''utilisateurs'
+      disabled_helper: Vous n'avez pas l'autorisation de lister les groupes d'utilisateurs.
+    enable: Activer la planification
+    cannot_view_all_jobs: "Vous ne pouvez pas afficher les tâches automatisées dans le traqueur de processus car vous ne disposez pas de l'autorisation suivante pour votre rôle : « Voir toutes les tâches dans le traqueur de processus ». Veuillez contacter votre administrateur PIM."
+    frequency:
+      helper: La fréquence d'exécution est affichée à l'échelle UTC, au format 24 heures.
+      hourly_helper: Les fréquences exécutées plusieurs fois par jour démarrent à minuit (échelle UTC).
+      title: Fréquence d'exécution
+      daily: Chaque jour
+      weekly: Chaque semaine
+      weekday: Un jour de la semaine
+      every_4_hours: Toutes les 4 heures
+      every_8_hours: Toutes les 8 heures
+      every_12_hours: Toutes les 12 heures
+      hours: Heures
+      minutes: Minutes
+      monday: Lundi
+      tuesday: Mardi
+      wednesday: Mercredi
+      thursday: Jeudi
+      friday: Vendredi
+      saturday: Samedi
+      sunday: Dimanche
+  notification:
+    title: Notification
+    user_groups:
+      label: Groupes d'utilisateurs
+      disabled_helper: Vous n'avez pas l'autorisation de lister les groupes d'utilisateurs.
+    users:
+      label: Utilisateurs
+      disabled_helper: Vous n'avez pas l'autorisation de lister les utilisateurs.
+  validation:
+    invalid_frequency_option: L'option de la fréquence d'exécution sélectionnée est invalide
+    invalid_week_day: Le jour de la semaine sélectionné est invalide
+    invalid_hourly_frequency: La fréquence d'exécution sélectionnée est invalide
+    invalid_hours: L'heure sélectionnée est invalide
+    invalid_minutes: Les minutes sélectionnées sont invalides

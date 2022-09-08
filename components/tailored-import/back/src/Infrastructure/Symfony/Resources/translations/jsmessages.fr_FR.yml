@@ -51,6 +51,12 @@ akeneo.tailored_import:
         collapse: Réduire
       clean_html_tags:
         title: Supprimer les balises HTML
+      change_case:
+        title: Modifier la casse d'un texte
+        select: Sélectionnez la modification de casse
+        uppercase: Majuscules
+        lowercase: Minuscules
+        capitalize: Première lettre uniquement en majuscule
       split:
         title: Scinder
         separator: 'Sélectionnez un séparateur :'
@@ -59,14 +65,21 @@ akeneo.tailored_import:
         pipe: Barre verticale (|)
       simple_select_replacement:
         title: Remplacement des listes à choix unique
+        option_labels: Options du PIM
       multi_select_replacement:
         title: Remplacement des listes à choix multiple
+        option_labels: Options du PIM
       categories_replacement:
         title: Remplacement des catégories
         modal:
           title: Gérer les catégories
+          table:
+            header:
+              replacement: Catégories du PIM
+              source_values: Catégories de votre fichier source
       family_replacement:
         title: Remplacement des familles
+        option_labels: Familles du PIM
         modal:
           title: Gérer les familles
       no_result: Aucune opération n'est disponible.
@@ -130,6 +143,9 @@ akeneo.tailored_import:
         date_format: Format de la date
         measurement_unit:
           title: Unité
+        price_currency:
+          title: Devise
+          placeholder: Sélectionnez une devise
       invalid:
         attribute: L'attribut utilisé en tant que destination a été supprimé et recréé avec un autre type d'attribut. Veuillez supprimer ce mapping et l'ajouter à nouveau.
         property: Cette propriété n'est pas valide, veuillez supprimer ce mapping et l'ajouter à nouveau.

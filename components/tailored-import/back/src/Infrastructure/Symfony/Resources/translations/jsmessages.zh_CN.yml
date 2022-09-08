@@ -51,6 +51,12 @@ akeneo.tailored_import:
         collapse: 折叠
       clean_html_tags:
         title: 清理 HTML 标签
+      change_case:
+        title: 更改大小写
+        select: 选择大小写
+        uppercase: 大写
+        lowercase: 小写
+        capitalize: 首字母转换为大写
       split:
         title: 分割
         separator: 选择分隔符
@@ -59,14 +65,21 @@ akeneo.tailored_import:
         pipe: 管道 (|)
       simple_select_replacement:
         title: 单选替换
+        option_labels: 选项标签
       multi_select_replacement:
         title: 多选替换
+        option_labels: 选项标签
       categories_replacement:
         title: 类别替换
         modal:
           title: 管理类别
+          table:
+            header:
+              replacement: 类别标签
+              source_values: 源类别
       family_replacement:
         title: 品类替换
+        option_labels: 品类标签
         modal:
           title: 管理品类
       no_result: 无可用操作
@@ -130,6 +143,9 @@ akeneo.tailored_import:
         date_format: 日期格式
         measurement_unit:
           title: 单位
+        price_currency:
+          title: 货币
+          placeholder: 选择货币
       invalid:
         attribute: 该属性已被删除并采用另一种类型重新创建，请移除此数据映射并重新添加。
         property: 此属性无效，请移除此数据映射并再次添加。
@@ -202,3 +218,8 @@ akeneo.tailored_import:
     operations:
       incompatible_operation_type: 操作类型 {{ operation_type }} 与您的目标类型不兼容。
       missing_required_operations: "缺少所需操作：{{ missing_required_operations }}"
+pim_information:
+  import:
+    title: 探索定制导入映射
+    text: "这一新的导入配置文件允许您通过数据映射自定义产品导入结构。让您能够轻松地从文件中选择源，将它们映射到您 PIM 中的属性， 并执行操作以转换数据。"
+    link.text: 点击此处了解详情。

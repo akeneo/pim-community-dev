@@ -1,0 +1,42 @@
+akeneo.job_automation:
+  title: '自动化'
+  scheduling:
+    title: '计划'
+    running_user_groups:
+      label: '权限用户组'
+      disabled_helper: 您没有列出用户组的权限。
+    enable: 启用计划
+    cannot_view_all_jobs: "您不能在进程跟踪器中查看自动作业， 因为您的角色没有以下权限：“查看进程跟踪器中的所有作业”。请联系您的 PIM 管理员。"
+    frequency:
+      helper: 以 24 小时格式显示频率
+      hourly_helper: 从一天中午夜 (UTC) 开始执行的频率。
+      title: 频率
+      daily: 每天
+      weekly: 每周
+      weekday: 工作日
+      every_4_hours: 每 4 小时
+      every_8_hours: 每 8 小时
+      every_12_hours: 每 12 小时
+      hours: 小时
+      minutes: 分钟
+      monday: 周一
+      tuesday: 周二
+      wednesday: 周三
+      thursday: 周四
+      friday: 周五
+      saturday: 周六
+      sunday: 周日
+  notification:
+    title: 通知
+    user_groups:
+      label: 用户组
+      disabled_helper: 您没有列出用户组的权限。
+    users:
+      label: 用户
+      disabled_helper: 您没有列出用户的权限。
+  validation:
+    invalid_frequency_option: 频率选项无效
+    invalid_week_day: 工作日无效
+    invalid_hourly_frequency: 小时频率无效
+    invalid_hours: 小时无效
+    invalid_minutes: 分钟无效

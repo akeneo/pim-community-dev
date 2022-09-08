@@ -51,6 +51,12 @@ akeneo.tailored_import:
         collapse: Comprimi
       clean_html_tags:
         title: Pulisci tag HTML
+      change_case:
+        title: Inverti maiuscolo/minuscolo
+        select: Seleziona maiuscolo/minuscolo
+        uppercase: Maiuscolo
+        lowercase: Minuscolo
+        capitalize: Iniziale maiuscola
       split:
         title: Dividi
         separator: Seleziona il separatore
@@ -59,14 +65,21 @@ akeneo.tailored_import:
         pipe: Barra verticale (|)
       simple_select_replacement:
         title: Sostituzione selezione semplice
+        option_labels: Etichette opzioni
       multi_select_replacement:
         title: Sostituzione selezione multipla
+        option_labels: Etichette opzioni
       categories_replacement:
         title: Sostituzione categorie
         modal:
           title: Gestisci Categorie
+          table:
+            header:
+              replacement: Etichette categorie
+              source_values: Categorie origine
       family_replacement:
         title: Sostituzione famiglie
+        option_labels: Etichette famiglia
         modal:
           title: Gestisci famiglie
       no_result: Nessuna operazione disponibile
@@ -130,6 +143,9 @@ akeneo.tailored_import:
         date_format: Formato data
         measurement_unit:
           title: Unità
+        price_currency:
+          title: Valuta
+          placeholder: Seleziona una valuta
       invalid:
         attribute: Questo attributo è stato eliminato e ricreato con un altro tipo; elimina questa mappatura e aggiungila nuovamente.
         property: Questa proprietà non è valida; elimina questa mappatura e aggiungila nuovamente.

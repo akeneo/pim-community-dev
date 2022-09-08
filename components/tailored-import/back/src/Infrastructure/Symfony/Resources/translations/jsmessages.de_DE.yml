@@ -1,11 +1,19 @@
 akeneo.tailored_import:
+  file_structure:
+    placeholder:
+      helper: Klicken Sie auf „Importstruktur initialisieren“ um mit dem Bau zu beginnen.
   data_mapping:
     operations:
+      identifier: Keine Operation für Identifikator-Attribut verfügbar
+      change_case:
+        select: Wählen Sie Groß-/Kleinschreibung
       split:
         pipe: Pipe (|)
       simple_select_replacement:
+        title: Einfachauswahl-Ersetzung
         option_labels: Optionsbezeichnungen
       multi_select_replacement:
+        title: Mehrfachauswahl-Ersetzung
         option_labels: Optionsbezeichnungen
       categories_replacement:
         title: Kategorien ersetzen
@@ -16,6 +24,8 @@ akeneo.tailored_import:
               replacement: Kategoriebezeichnungen
               source_values: Quellkategorien
       family_replacement:
+        title: Familien-Ersetzung
+        option_labels: Familienbezeichnungen
         modal:
           title: Produktfamilien verwalten
       no_result: Keine Operation verfügbar
@@ -43,27 +53,33 @@ akeneo.tailored_import:
           table:
             header:
               source_values: Quellwerte
+          validation_error: Einige Ersatzwerte sind ungültig, bitte lesen Sie die Fehlermeldungen unter jedem Feld.
       boolean_replacement:
         title: Boolescher Ersatz
         field:
           yes_value: Ja-Wert
           no_value: Kein Wert
       enabled_replacement:
+        title: Ersetzung aktiviert
         field:
           enabled_value: Aktivierter Wert
           disabled_value: Deaktivierter Wert
     sources:
       title: Quelle(n)
       add:
+        title: Auswahlliste „Quellen” öffnen
         label: Quelle hinzufügen
         helper: "]-Inf, 1]Für diese Art von Attributen kannst du nur eine Quelle hinzufügen.|]1, Inf[Für diese Art von Attributen kannst du nur {{ limit }} Quellen hinzufügen."
     target:
       title: Ziel
+      identifier: Keine Einstellungen für das Identifikator-Attribut vorhanden, das als Ziel verwendet wird.
+      enabled: Keine Einstellungen für die aktivierte Eigenschaft vorhanden, die als Ziel verwendet wird.
       locale_specific: Dieses Attribut ist gebietsschemaspezifisch
       action_if_not_empty:
         title: Zuweisen
         add: Zu existierenden Werten hinzufügen
         set: Vorhandene Werte ersetzen
+      clear_if_empty: Löschen, wenn leer in der Datei
       parameters:
         decimal_separator:
           title: Dezimaltrennzeichen
@@ -76,6 +92,9 @@ akeneo.tailored_import:
         price_currency:
           title: Währung
           placeholder: Währung auswählen
+      invalid:
+        attribute: Dieses Attribut wurde gelöscht und mit einem anderen Typ erstellt, bitte entfernen Sie dieses Mapping und fügen Sie sie erneut hinzu.
+        property: Diese Eigenschaft ist ungültig. Bitte entfernen Sie dieses Mapping und fügen Sie es erneut hinzu.
   form:
     job_instance:
       tab:
@@ -91,18 +110,62 @@ akeneo.tailored_import:
     missing_query_params: "Folgende Parameter fehlen in der Abfrage: {{ missing_params }}"
     source_values_should_be_unique: Einige dieser Quellwerte werden bereits in einem anderen Ersatz verwendet, bitte entfernen Sie sie.
     columns:
+      max_count_reached: Ihr Datenblatt darf nicht mehr als {{ limit }} Spalten enthalten.
       at_least_one_required: Ihre Kopfzeile muss mindestens {{ limit }} Spalten enthalten.
+      uuid:
+        should_be_unique: Diese Spalten-UUID existiert bereits, bitte geben Sie eine neue ein.
+      index:
+        should_be_unique: Dieser Spalten-Index existiert bereits, bitte geben Sie einen neuen ein.
       label:
+        should_not_be_blank: Bitte geben Sie eine Spaltenbezeichnung an.
         max_length_reached: Die Spaltenbezeichnung ist zu lang. Sie sollte {{ limit }} oder weniger Zeichen enthalten.
     data_mappings:
       target_should_unique: Das Ziel "{{ code }}" kann nicht mehrfach ausgewählt werden.
+      max_count_reached: Sie haben das Limit von {{ limit }} Mappigns erreicht, Sie können kein Mapping mehr zu Ihrem Import hinzufügen.
+      no_identifier_target_found: Es gibt kein Mapping-Ziel für einen Identifikator, bitte fügen Sie eins hinzu.
+      too_many_identifier_target_found: Es gibt mehr als ein Mapping auf einen Identifikator, bitte entfernen Sie eines.
+      uuid:
+        should_be_unique: Diese Mapping-UUID existiert bereits, bitte geben Sie eine neue ein.
       sources:
+        at_least_one_required: Sie müssen mindestens eine Quelle zu Ihrem Mapping hinzufügen.
+        max_count_reached: Sie haben das Limit von {{ limit }} Quellen erreicht, Sie können keine Quellen mehr zu Ihrem Mapping hinzufügen.
         should_be_unique: Diese Quelle existiert bereits, bitte geben Sie eine neue ein.
+        should_exist: Eine der Quellen existiert nicht mehr, bitte löschen Sie alle Quellen dieses Mappings und versuchen Sie es erneut
+    target:
+      attribute_should_exist: Das Attribut {{ attribute_code }} existiert nicht. Bitte erstellen Sie es oder wählen Sie ein anderes Ziel.
+      property_should_exist: Die Eigenschaft {{ property_code }} existiert nicht. Bitte erstellen Sie es oder wählen Sie ein anderes Ziel.
+      source_configuration:
+        unit_should_exist: Die Einheit {{ unit_code }} existiert nicht für die Messfamilie {{ measurement_family }}. Bitte wählen Sie eine gültige Einheit.
+    locale:
+      should_be_active: Das Gebietsschema {{ locale_code }} wurde deaktiviert. Reaktivieren Sie es oder wählen Sie ein anderes Gebietsschema.
+      should_be_bound_to_channel: Die Gebietsschema {{ locale_code }} wurde für den Kanal {{ channel_code }}deaktiviert. Reaktivieren Sie ihn oder wählen Sie ein anderes Gebietsschema.
     channel:
       should_exist: Der Kanal {{ channel_code }} wurde gelöscht. Bitte wählen Sie einen anderen Kanal.
+    attribute:
+      locale_should_not_be_blank: Das Attribut {{ attribute_code }} hat jetzt einen Wert pro Gebietsschema. Bitte erstellen Sie es oder wählen Sie ein anderes Ziel.
+      channel_should_not_be_blank: Das Attribut {{ attribute_code }} hat jetzt einen Wert pro Kanal. Bitte erstellen Sie es oder wählen Sie ein anderes Ziel.
+      locale_should_be_blank: Das Attribut {{ attribute_code }} hat keinen Wert pro Gebietsschema. Bitte löschen Sie es und erstellen Sie es anschließend neu oder wählen Sie ein anderes Ziel.
+      channel_should_be_blank: Das Attribut {{ attribute_code }} hat keinen Wert pro Kanal mehr. Bitte löschen Sie es und erstellen Sie es anschließend neu oder wählen Sie ein anderes Ziel.
+      invalid_specific_locale: Das Attribut {{ attribute_code }} ist gebietsschemaspezifisch. Bitte wählen Sie ein anderes Gebietsschema.
     file_key:
       does_not_exist: Die Datei {{ file_key }} wurde nicht gefunden.
     uploaded_file:
       max_size: Die Datei ist zu groß. Die maximale Größe beträgt {{ limit }}{{ suffix }}.
       not_allowed_mime_type: Es werden nur XLSX-Dateien unterstützt.
       not_allowed_extension: Es werden nur XLSX-Dateien unterstützt.
+    file_structure:
+      first_product_row_should_be_after_header_row: Die erste Produktzeile sollte nach der Kopfzeile liegen.
+      unique_identifier_column_should_be_after_first_column_message: Eindeutige Identifikatorspalte sollte mindestens die erste Spalte sein.
+      header_row_should_not_contain_empty_cell: Kopfzeilen sollten keine leeren Zellen enthalten.
+    file_preview:
+      empty_sheet:
+        title: Dieses Datenblatt ist leer.
+        description: Bitte wählen Sie ein anderes Datenblatt mit mindestens einer Zeile.
+    operations:
+      incompatible_operation_type: Der Operationstyp {{ operation_type }} ist mit Ihrem Zieltyp nicht kompatibel.
+      missing_required_operations: "Erforderliche Operation(en) fehlen: {{ missing_required_operations }}"
+pim_information:
+  import:
+    title: Entdecken Sie Mapping mit maßgeschneidertem Import
+    text: "Mit diesem neuen Importprofil können Sie Ihre Produktimportstruktur durch Datenmapping anpassen. So können Sie einfach Quellen aus Ihrer Datei auswählen, sie den Attributen in Ihrer PIM zuordnen, und Operationen auszuführen, um Ihre Daten zu transformieren."
+    link.text: Klicken Sie hier, um mehr zu erfahren.
