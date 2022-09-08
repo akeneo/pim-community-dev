@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Controller\Public;
 
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -13,10 +14,10 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @covers \Akeneo\Catalogs\Infrastructure\Controller\Public\GetProductUuidsAction
- * @covers \Akeneo\Catalogs\Application\Handler\GetProductUuidsHandler
+ * @covers \Akeneo\Catalogs\Infrastructure\Controller\Public\GetProductsAction
+ * @covers \Akeneo\Catalogs\Application\Handler\GetProductsHandler
  */
-class GetProductUuidsActionTest extends IntegrationTestCase
+class GetProductsActionTest extends IntegrationTestCase
 {
     private ?KernelBrowser $client = null;
 
@@ -32,12 +33,12 @@ class GetProductUuidsActionTest extends IntegrationTestCase
         $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
         $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'shopifi');
         $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
-        $this->createProduct('blue');
-        $this->createProduct('green');
+        $this->createProduct('blue', [new SetEnabled(true)]);
+        $this->createProduct('green', [new SetEnabled(true)]);
 
         $this->client->request(
             'GET',
-            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/product-uuids',
+            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products',
             [
                 'limit' => 2,
             ],
@@ -52,8 +53,9 @@ class GetProductUuidsActionTest extends IntegrationTestCase
 
         Assert::assertEquals(200, $response->getStatusCode());
         Assert::assertCount(2, $payload['_embedded']['items']);
-        foreach ($payload['_embedded']['items'] as $uuid) {
-            Assert::assertTrue(Uuid::isValid($uuid), 'Not a valid UUID');
+        foreach ($payload['_embedded']['items'] as $product) {
+            Assert::assertTrue(Uuid::isValid($product['uuid']), 'Not a valid UUID');
+            Assert::assertTrue($product['enabled']);
         }
     }
 
@@ -65,7 +67,7 @@ class GetProductUuidsActionTest extends IntegrationTestCase
 
         $this->client->request(
             'GET',
-            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/product-uuids',
+            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products',
             [],
             [],
             [
@@ -88,7 +90,7 @@ class GetProductUuidsActionTest extends IntegrationTestCase
 
         $this->client->request(
             'GET',
-            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/product-uuids',
+            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products',
             [
                 'limit' => -1,
             ],
@@ -109,7 +111,7 @@ class GetProductUuidsActionTest extends IntegrationTestCase
 
         $this->client->request(
             'GET',
-            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/product-uuids',
+            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products',
             [],
             [],
             [
@@ -128,7 +130,7 @@ class GetProductUuidsActionTest extends IntegrationTestCase
 
         $this->client->request(
             'GET',
-            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/product-uuids',
+            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products',
             [],
             [],
             [
