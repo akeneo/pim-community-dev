@@ -11,7 +11,7 @@ class ConnectionWebhookSpec extends ObjectBehavior
 {
     public function let(): void
     {
-        $this->beConstructedWith('magento', true, 'secret_magento', 'any-url.com');
+        $this->beConstructedWith('magento', true, 'secret_magento', 'any-url.com', true);
     }
 
     public function it_is_a_connection_webhook(): void
@@ -56,14 +56,27 @@ class ConnectionWebhookSpec extends ObjectBehavior
         $this->enabled()->shouldReturn(true);
     }
 
-    public function it_provides_a_normalized_format(): void
+    public function it_provides_the_uuid_use_status(): void
+    {
+        $this->beConstructedWith('magento', true, 'secret_magento', 'any-url.com', true);
+        $this->usesUuid()->shouldReturn(true);
+    }
+
+    public function it_could_have_no_uuid_use_status(): void
     {
         $this->beConstructedWith('magento', true, 'secret_magento', 'any-url.com');
+        $this->usesUuid()->shouldReturn(false);
+    }
+
+    public function it_provides_a_normalized_format(): void
+    {
+        $this->beConstructedWith('magento', true, 'secret_magento', 'any-url.com', true);
         $this->normalize()->shouldReturn([
             'connectionCode' => 'magento',
             'enabled' => true,
             'secret' => 'secret_magento',
             'url' => 'any-url.com',
+            'usesUuid' => true,
         ]);
     }
 
@@ -75,6 +88,7 @@ class ConnectionWebhookSpec extends ObjectBehavior
             'enabled' => false,
             'secret' => null,
             'url' => null,
+            'usesUuid' => false,
         ]);
     }
 }

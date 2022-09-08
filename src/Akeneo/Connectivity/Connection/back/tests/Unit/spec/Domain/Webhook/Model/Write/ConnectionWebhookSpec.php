@@ -46,4 +46,16 @@ class ConnectionWebhookSpec extends ObjectBehavior
         $this->beConstructedWith('magento', false);
         $this->url()->shouldReturn(null);
     }
+
+    public function it_provides_the_uuid_use_status(): void
+    {
+        $this->beConstructedWith('magento', true, 'any-url.com', true);
+        $this->usesUuid()->shouldReturn(true);
+    }
+
+    public function it_could_have_no_uuid_use_status(): void
+    {
+        $this->beConstructedWith('magento', true, 'any-url.com');
+        $this->usesUuid()->shouldReturn(false);
+    }
 }

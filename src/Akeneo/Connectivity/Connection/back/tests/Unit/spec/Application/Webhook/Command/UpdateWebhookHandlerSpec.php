@@ -49,11 +49,13 @@ class UpdateWebhookHandlerSpec extends ObjectBehavior
         $code = 'magento';
         $url = 'http://valid-url.com';
         $enabled = true;
+        $useUuid = true;
         $secret = 'secret';
-        $command = new UpdateWebhookCommand($code, $enabled, $url);
-        $isAValidWriteModel = function (ConnectionWebhook $webhook) use ($code, $enabled, $url) {
+        $command = new UpdateWebhookCommand($code, $enabled, $url, $useUuid);
+        $isAValidWriteModel = function (ConnectionWebhook $webhook) use ($code, $enabled, $url, $useUuid) {
             return $webhook->code() === $code &&
                 $webhook->enabled() === $enabled &&
+                $webhook->usesUuid() === $useUuid &&
                 $webhook->url() instanceof Url &&
                 (string) $webhook->url() === $url;
         };
@@ -85,11 +87,13 @@ class UpdateWebhookHandlerSpec extends ObjectBehavior
         $code = 'magento';
         $url = 'http://valid-url.com';
         $enabled = true;
+        $useUuid = true;
         $secret = 'secret';
-        $command = new UpdateWebhookCommand($code, $enabled, $url);
-        $isAValidWriteModel = function (ConnectionWebhook $webhook) use ($code, $enabled, $url) {
+        $command = new UpdateWebhookCommand($code, $enabled, $url, $useUuid);
+        $isAValidWriteModel = function (ConnectionWebhook $webhook) use ($code, $enabled, $url, $useUuid) {
             return $webhook->code() === $code &&
                 $webhook->enabled() === $enabled &&
+                $webhook->usesUuid() === $useUuid &&
                 $webhook->url() instanceof Url &&
                 (string) $webhook->url() === $url;
         };
@@ -115,11 +119,13 @@ class UpdateWebhookHandlerSpec extends ObjectBehavior
     ): void {
         $code = 'magento';
         $enabled = true;
+        $useUuid = true;
         $url = null;
-        $command = new UpdateWebhookCommand($code, $enabled, $url);
-        $isAValidWriteModel = function (ConnectionWebhook $webhook) use ($code, $enabled, $url) {
+        $command = new UpdateWebhookCommand($code, $enabled, $url, $useUuid);
+        $isAValidWriteModel = function (ConnectionWebhook $webhook) use ($code, $enabled, $url, $useUuid) {
             return $webhook->code() === $code &&
                 $webhook->enabled() === $enabled &&
+                $webhook->usesUuid() === $useUuid &&
                 $webhook->url() === null;
         };
 

@@ -23,7 +23,7 @@ class UpdateConnectionWebhookQuery implements UpdateConnectionWebhookQueryInterf
     {
         $query = <<<SQL
         UPDATE akeneo_connectivity_connection
-        SET webhook_url = :url, webhook_enabled = :enabled
+        SET webhook_url = :url, webhook_enabled = :enabled, webhook_uses_uuid = :uses_uuid
         WHERE code = :code
         SQL;
 
@@ -33,9 +33,11 @@ class UpdateConnectionWebhookQuery implements UpdateConnectionWebhookQueryInterf
                 'url' => $connectionWebhook->url(),
                 'enabled' => $connectionWebhook->enabled(),
                 'code' => $connectionWebhook->code(),
+                'uses_uuid' => $connectionWebhook->usesUuid(),
             ],
             [
                 'enabled' => Types::BOOLEAN,
+                'uses_uuid' => Types::BOOLEAN,
             ]
         );
     }

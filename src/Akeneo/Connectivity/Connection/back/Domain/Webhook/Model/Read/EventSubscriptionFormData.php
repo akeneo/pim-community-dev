@@ -30,7 +30,8 @@ class EventSubscriptionFormData
      *      connectionCode: string,
      *      enabled: boolean,
      *      secret: ?string,
-     *      url: ?string
+     *      url: ?string,
+     *      usesUuid: boolean,
      *  },
      *  active_event_subscriptions_limit: array{
      *      limit: int,

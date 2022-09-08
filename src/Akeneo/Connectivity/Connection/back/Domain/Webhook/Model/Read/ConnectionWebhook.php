@@ -11,24 +11,13 @@ namespace Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read;
  */
 class ConnectionWebhook
 {
-    private string $connectionCode;
-
-    private ?string $secret;
-
-    private ?string $url;
-
-    private bool $enabled;
-
     public function __construct(
-        string $connectionCode,
-        bool $enabled,
-        ?string $secret = null,
-        ?string $url = null
+        private string $connectionCode,
+        private bool $enabled,
+        private ?string $secret = null,
+        private ?string $url = null,
+        private bool $usesUuid = false,
     ) {
-        $this->enabled = $enabled;
-        $this->connectionCode = $connectionCode;
-        $this->secret = $secret;
-        $this->url = $url;
     }
 
     public function connectionCode(): string
@@ -51,12 +40,18 @@ class ConnectionWebhook
         return $this->enabled;
     }
 
+    public function usesUuid(): bool
+    {
+        return $this->usesUuid;
+    }
+
     /**
      * @return array{
      *  connectionCode: string,
      *  enabled: boolean,
      *  secret: ?string,
      *  url: ?string,
+     *  usesUuid: boolean,
      * }
      */
     public function normalize(): array
@@ -66,6 +61,7 @@ class ConnectionWebhook
             'enabled' => $this->enabled(),
             'secret' => $this->secret(),
             'url' => $this->url(),
+            'usesUuid' => $this->usesUuid(),
         ];
     }
 }

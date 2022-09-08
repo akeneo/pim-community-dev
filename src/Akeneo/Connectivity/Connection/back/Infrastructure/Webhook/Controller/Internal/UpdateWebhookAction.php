@@ -34,7 +34,8 @@ final class UpdateWebhookAction
                 new UpdateWebhookCommand(
                     $request->get('code', ''),
                     $request->get('enabled'),
-                    $request->get('url')
+                    $request->get('url'),
+                    $request->get('uses_uuid', false),
                 )
             );
         } catch (ConnectionWebhookNotFoundException $webhookNotFoundException) {

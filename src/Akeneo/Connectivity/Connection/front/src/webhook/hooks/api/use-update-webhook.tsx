@@ -9,12 +9,13 @@ export type RequestData = {
     connectionCode: string;
     enabled: boolean;
     url: string | null;
+    usesUuid: boolean;
 };
 
 type ResultError = {
     message: string;
     errors: Array<{
-        field: 'connectionCode' | 'url' | 'enabled';
+        field: 'connectionCode' | 'url' | 'enabled' | 'usesUuid';
         message: string;
     }>;
 };
@@ -23,6 +24,7 @@ type ResultOk = {
     url: string | null;
     secret: string | null;
     enabled: boolean;
+    usesUuid: boolean;
 };
 
 export const useUpdateWebhook = (code: string) => {
@@ -38,6 +40,7 @@ export const useUpdateWebhook = (code: string) => {
                 code: data.connectionCode,
                 enabled: data.enabled,
                 url: data.url,
+                uses_uuid: data.usesUuid,
             }),
         });
         if (isErr(result)) {
