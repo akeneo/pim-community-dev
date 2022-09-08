@@ -13,21 +13,42 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  *
+ * @phpstan-import-type InternalApi from InternalApiToStd
  * @phpstan-import-type PropertyApi from InternalApiToStd
  * @phpstan-import-type AttributeCodeApi from InternalApiToStd
  * @phpstan-import-type AttributeValueApi from InternalApiToStd
  */
-class InternalApiRequirementChecker implements Requirement
+class InternalApiRequirementChecker implements RequirementChecker
 {
+    /**
+     * @param FieldsRequirementChecker $fieldsChecker
+     * @param AttributeRequirementChecker $attributeChecker
+     */
+    public function __construct(
+        private RequirementChecker $fieldsChecker,
+        private RequirementChecker $attributeChecker,
+    ) {
+    }
+
+    /**
+     * @param InternalApi $data
+     *
+     * @throws ArrayConversionException
+     */
+    public function check(array $data): void
+    {
+        $this->checkArrayStructure($data);
+        $this->fieldsChecker->check($data['properties']);
+        $this->attributeChecker->check($data['attributes']);
+    }
+
     /**
      * @param array{
      *     properties: PropertyApi,
      *     attributes: array<string, AttributeCodeApi|AttributeValueApi>
      * } $data
-     *
-     * @throws ArrayConversionException
      */
-    public function check(array $data): void
+    public function checkArrayStructure(array $data): void
     {
         $expectedKeys = ['properties', 'attributes'];
         try {

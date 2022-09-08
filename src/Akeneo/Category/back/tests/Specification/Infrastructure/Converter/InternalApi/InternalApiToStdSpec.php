@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Category\Infrastructure\Converter\InternalApi;
 
-use Akeneo\Category\Application\Converter\Checker\AttributeRequirementChecker;
-use Akeneo\Category\Application\Converter\Checker\FieldsRequirementChecker;
 use Akeneo\Category\Application\Converter\Checker\InternalApiRequirementChecker;
+use Akeneo\Category\Application\Converter\ConverterInterface;
+use Akeneo\Category\Infrastructure\Converter\InternalApi\InternalApiToStd;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -15,16 +15,18 @@ use PhpSpec\ObjectBehavior;
  */
 class InternalApiToStdSpec extends ObjectBehavior
 {
-    public function let(
-        FieldsRequirementChecker $fieldsRequirementChecker,
-        AttributeRequirementChecker $attributeChecker,
-        InternalApiRequirementChecker $checker
-    ): void
+    public function let(InternalApiRequirementChecker $checker): void
     {
-        $this->beConstructedWith($fieldsRequirementChecker, $attributeChecker, $checker);
+        $this->beConstructedWith($checker);
     }
 
-    public function it_converts()
+    function it_is_initializable(): void
+    {
+        $this->shouldHaveType(InternalApiToStd::class);
+        $this->shouldImplement(ConverterInterface::class);
+    }
+
+    public function it_converts($checker)
     {
         $data = [
             'properties' => [
@@ -62,6 +64,7 @@ class InternalApiToStdSpec extends ObjectBehavior
                 ]
             ]
         ];
+        $checker->check($data)->shouldBeCalled();
         $this->convert($data)->shouldReturn($expected);
     }
 }

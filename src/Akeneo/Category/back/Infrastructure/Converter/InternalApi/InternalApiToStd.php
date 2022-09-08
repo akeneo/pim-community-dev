@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Converter\InternalApi;
 
-use Akeneo\Category\Application\Converter\Checker\AttributeRequirementChecker;
-use Akeneo\Category\Application\Converter\Checker\FieldsRequirementChecker;
 use Akeneo\Category\Application\Converter\Checker\InternalApiRequirementChecker;
 use Akeneo\Category\Application\Converter\ConverterInterface;
 use Akeneo\Category\Infrastructure\Exception\ArrayConversionException;
@@ -30,19 +28,14 @@ use Akeneo\Category\Infrastructure\Exception\ArrayConversionException;
 class InternalApiToStd implements ConverterInterface
 {
     public function __construct(
-        private FieldsRequirementChecker $fieldsChecker,
-        private AttributeRequirementChecker $attributeChecker,
         private InternalApiRequirementChecker $checker
     ) {
     }
 
     /**
-     * @param array{
-     *     properties: PropertyApi,
-     *     attributes: array<string, AttributeCodeApi|AttributeValueApi>
-     * } $data
+     * @param InternalApi $data
      *
-     * @retrun array|StandardInternalApi
+     * @retrun StandardInternalApi
      *
      * @throws ArrayConversionException
      */
@@ -50,8 +43,6 @@ class InternalApiToStd implements ConverterInterface
     {
         // Validate the internal Api data and structure
         $this->checker->check($data);
-        $this->fieldsChecker->check($data['properties']);
-        $this->attributeChecker->check($data['attributes']);
 
         // Normalize
         $convertedData = [];

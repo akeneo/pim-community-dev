@@ -15,7 +15,7 @@ use Akeneo\Category\Infrastructure\Exception\StructureArrayConversionException;
  *
  * @phpstan-import-type PropertyApi from InternalApiToStd
  */
-class FieldsRequirementChecker implements Requirement
+class FieldsRequirementChecker implements RequirementChecker
 {
     /**
      * @param PropertyApi $data

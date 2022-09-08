@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Category\Application\Converter\Checker;
 
 use Akeneo\Category\Application\Converter\Checker\FieldsRequirementChecker;
-use Akeneo\Category\Application\Converter\Checker\Requirement;
+use Akeneo\Category\Application\Converter\Checker\RequirementChecker;
 use Akeneo\Category\Infrastructure\Exception\ContentArrayConversionException;
 use Akeneo\Category\Infrastructure\Exception\StructureArrayConversionException;
 use PhpSpec\ObjectBehavior;
@@ -15,7 +15,7 @@ class FieldsRequirementCheckerSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType(FieldsRequirementChecker::class);
-        $this->shouldImplement(Requirement::class);
+        $this->shouldImplement(RequirementChecker::class);
     }
 
     public function it_does_not_raise_exception_when_all_required_fields_are_present(): void

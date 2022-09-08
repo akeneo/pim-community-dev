@@ -16,7 +16,7 @@ use Webmozart\Assert\Assert;
  * @phpstan-import-type AttributeValueApi from InternalApiToStd
  * @phpstan-import-type AttributeCodeApi from InternalApiToStd
  */
-class AttributeRequirementChecker implements Requirement
+class AttributeRequirementChecker implements RequirementChecker
 {
     /**
      * @param array<string, AttributeCodeApi|AttributeValueApi> $data
