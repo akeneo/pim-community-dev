@@ -23,10 +23,6 @@ const AutomationFilter = ({automationFilterValue, onAutomationFilterChange}: Aut
     const translate = useTranslate();
     const [isDropdownOpen, openDropdown, closeDropdown] = useBooleanState();
 
-    const handleStatusToggle = (status: string) => () => {
-        onAutomationFilterChange(automationFilterValue);
-    };
-
     return (
         <Dropdown>
             <SwitcherButton label={translate('akeneo_job_process_tracker.automation_filter.label')} onClick={openDropdown}>

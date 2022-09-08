@@ -20,6 +20,7 @@ test('it can select all automation', () => {
 
     renderWithProviders(<AutomationFilter automationFilterValue={true} onAutomationFilterChange={handleChange} />);
 
+    userEvent.click(screen.getByText('akeneo_job_process_tracker.automation_filter.yes'));
     userEvent.click(screen.getByText('akeneo_job_process_tracker.automation_filter.all'));
 
     expect(handleChange).toHaveBeenCalledWith(null);
@@ -31,6 +32,7 @@ test('it can select yes in automation filter', () => {
 
     renderWithProviders(<AutomationFilter automationFilterValue={null} onAutomationFilterChange={handleChange} />);
 
+    userEvent.click(screen.getByText('akeneo_job_process_tracker.automation_filter.all'));
     userEvent.click(screen.getByText('akeneo_job_process_tracker.automation_filter.yes'));
 
     expect(handleChange).toHaveBeenCalledWith(true);
@@ -42,6 +44,7 @@ test('it can select no in automation filter', () => {
 
     renderWithProviders(<AutomationFilter automationFilterValue={null} onAutomationFilterChange={handleChange} />);
 
+    userEvent.click(screen.getByText('akeneo_job_process_tracker.automation_filter.all'));
     userEvent.click(screen.getByText('akeneo_job_process_tracker.automation_filter.no'));
 
     expect(handleChange).toHaveBeenCalledWith(false);
