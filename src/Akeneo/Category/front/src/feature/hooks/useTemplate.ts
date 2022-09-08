@@ -1,5 +1,4 @@
 import {useQuery} from 'react-query';
-// import {useUserContext} from '@akeneo-pim-community/shared'; //TODO
 import {Template} from '../models';
 import {useRoute} from "@akeneo-pim-community/shared";
 
@@ -11,8 +10,7 @@ type Result = {
   error: ResultError;
 };
 
-// TODO later: remove hardcoded template uuid
-export const useTemplate = (templateUuid: string = '02274dac-e99a-4e1d-8f9b-794d4c3ba330'): Result => {
+export const useTemplate = (templateUuid: string): Result => {
   const url = useRoute('pim_category_template_rest_get', {
     templateUuid: templateUuid,
   });
@@ -24,11 +22,7 @@ export const useTemplate = (templateUuid: string = '02274dac-e99a-4e1d-8f9b-794d
         return {};
       }
 
-      const response = await fetch(url, {
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest',
-        },
-      });
+      const response = await fetch(url);
 
       return await response.json();
     }

@@ -83,20 +83,25 @@ export const EditAttributesForm = ({onAttributeValueChange}: Props) => {
     [locale, onAttributeValueChange]
   );
 
-  const {data: template, isLoading, isError, error} = useTemplate('02274dac-e99a-4e1d-8f9b-794d4c3ba330');
+  // TODO change hardcoded value to use the template uuid
+  const {data: template, isLoading, isError} = useTemplate('02274dac-e99a-4e1d-8f9b-794d4c3ba330');
 
   if (isLoading) {
-    return null; //TODO
+    return null; //TODO display loading info ?
   }
 
   if (isError) {
-    console.log(error); //TODO
     return (
       <Helper level="error">
-        {error?.message}
+        {translate('akeneo.category.edition_form.template.fetching_failed')}
       </Helper>
     );
   }
+
+  let attributesByOrder: Attribute[] = [];
+  template?.attributes.forEach((attribute: Attribute) => {
+    attributesByOrder[attribute.order] = attribute;
+  });
 
   return (
     <FormContainer>
@@ -106,32 +111,35 @@ export const EditAttributesForm = ({onAttributeValueChange}: Props) => {
         <LocaleSelector value={locale} values={locales} onChange={setLocale} />
       </SectionTitle>
 
-      {template?.attributes.map((attribute: Attribute) => {
+      {attributesByOrder.map((attribute: Attribute) => {
+        let attributeCode = attribute.code;
+        let attributeUuid = attribute.uuid;
+        let attributeLabel = attribute.labels[locale] ?? "["+attributeCode+"]";
         switch (attribute.type) {
           case 'text':
             return (
-              <Field key={attribute.uuid} label={attribute.labels[locale]} locale={locale}>
-                <TextInput name={attribute.code} value="" onChange={handleTextChange(attributeDefinitions[attribute.code])} />
+              <Field key={attributeUuid} label={attributeLabel} locale={locale}>
+                <TextInput name={attributeCode} value="" onChange={handleTextChange(attributeDefinitions[attributeCode])} />
               </Field>
             );
           case 'richtext':
             return (
-              <Field960 key={attribute.uuid} label={attribute.labels[locale]} locale={locale}>
-                <TextAreaInput isRichText name={attribute.code} value="" onChange={handleTextChange(attributeDefinitions[attribute.code])} />
+              <Field960 key={attributeUuid} label={attributeLabel} locale={locale}>
+                <TextAreaInput isRichText name={attributeCode} value="" onChange={handleTextChange(attributeDefinitions[attributeCode])} />
               </Field960>
             );
           case 'textarea':
             return (
-              <Field key={attribute.uuid} label={attribute.labels[locale]} locale={locale}>
-                <TextAreaInput name={attribute.code} value="" onChange={handleTextChange(attributeDefinitions[attribute.code])} />
+              <Field key={attributeUuid} label={attributeLabel} locale={locale}>
+                <TextAreaInput name={attributeCode} value="" onChange={handleTextChange(attributeDefinitions[attributeCode])} />
               </Field>
             );
           case 'image':
             return (
-              <Field key={attribute.uuid} label={attribute.labels[locale]}>
+              <Field key={attributeUuid} label={attributeLabel}>
                 <MediaFileInput
                   value={null}
-                  onChange={handleImageChange(attributeDefinitions[attribute.code])}
+                  onChange={handleImageChange(attributeDefinitions[attributeCode])}
                   placeholder="Drag and drop to upload or click here"
                   uploadingLabel="Uploading..."
                   uploadErrorLabel="An error occurred during upload"
