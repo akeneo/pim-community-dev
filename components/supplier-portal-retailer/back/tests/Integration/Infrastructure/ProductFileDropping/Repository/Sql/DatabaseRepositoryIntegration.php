@@ -47,15 +47,13 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
             'jimmy@punchline.com',
             new Supplier('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7', 'jimmy_punchline', 'Jimmy Punchline'),
         );
-        $firstCommentCreatedAt = new \DateTimeImmutable();
+        $firstCommentCreatedAt = new \DateTimeImmutable('2022-09-08 17:02:52');
         $productFile->addNewRetailerComment(
             'Your product file is garbage!',
             'julia@roberts.com',
             $firstCommentCreatedAt,
         );
-        $secondCommentCreatedAt = (new \DateTimeImmutable())
-            ->add(\DateInterval::createFromDateString('+1 second'))
-        ;
+        $secondCommentCreatedAt = new \DateTimeImmutable('2022-09-08 17:02:53');
         $productFile->addNewRetailerComment(
             'I\'m kidding, it\'s awesome!',
             'julia@roberts.com',
@@ -69,10 +67,10 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
         static::assertCount(2, $comments);
         static::assertSame('Your product file is garbage!', $comments[0]['content']);
         static::assertSame('julia@roberts.com', $comments[0]['author_email']);
-        static::assertNotNull($comments[0]['created_at']);
+        static::assertSame('2022-09-08 17:02:52', $comments[0]['created_at']);
         static::assertSame('I\'m kidding, it\'s awesome!', $comments[1]['content']);
         static::assertSame('julia@roberts.com', $comments[1]['author_email']);
-        static::assertNotNull($comments[1]['created_at']);
+        static::assertSame('2022-09-08 17:02:53', $comments[1]['created_at']);
     }
 
     /** @test */
@@ -87,15 +85,13 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
             'jimmy@punchline.com',
             new Supplier('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7', 'jimmy_punchline', 'Jimmy Punchline'),
         );
-        $firstCommentCreatedAt = new \DateTimeImmutable();
+        $firstCommentCreatedAt = new \DateTimeImmutable('2022-09-08 17:02:52');
         $productFile->addNewSupplierComment(
             'Here are the products I\'ve got for you.',
             'jimmy@punchline.com',
             $firstCommentCreatedAt,
         );
-        $secondCommentCreatedAt = (new \DateTimeImmutable())
-            ->add(\DateInterval::createFromDateString('+1 second'))
-        ;
+        $secondCommentCreatedAt = new \DateTimeImmutable('2022-09-08 17:02:53');
         $productFile->addNewSupplierComment(
             'I\'m gonna submit an other product file to you.',
             'jimmy@punchline.com',
@@ -109,10 +105,10 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
         static::assertCount(2, $comments);
         static::assertSame('Here are the products I\'ve got for you.', $comments[0]['content']);
         static::assertSame('jimmy@punchline.com', $comments[0]['author_email']);
-        static::assertNotNull($comments[0]['created_at']);
+        static::assertSame('2022-09-08 17:02:52', $comments[0]['created_at']);
         static::assertSame('I\'m gonna submit an other product file to you.', $comments[1]['content']);
         static::assertSame('jimmy@punchline.com', $comments[1]['author_email']);
-        static::assertNotNull($comments[1]['created_at']);
+        static::assertSame('2022-09-08 17:02:53', $comments[1]['created_at']);
     }
 
     private function findProductFile(string $originalFilename): ?array
