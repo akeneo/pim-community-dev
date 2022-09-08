@@ -115,7 +115,7 @@ SQL;
         if (null !== $automation) {
             $sqlWhereParts[] = $automation ? 'job_execution.user LIKE "job_automated%"' : 'job_execution.user NOT LIKE "job_automated%"';
         }
-        
+
         if (!empty($type)) {
             $sqlWhereParts[] = 'job_instance.type IN (:type)';
         }
