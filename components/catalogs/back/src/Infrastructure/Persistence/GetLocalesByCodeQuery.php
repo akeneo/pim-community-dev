@@ -28,6 +28,7 @@ final class GetLocalesByCodeQuery implements GetLocalesByCodeQueryInterface
         /** @var array<LocaleInterface> $activatedLocales */
         $activatedLocales = $this->localeRepository->findBy(
             [
+                'code' => $codes,
                 'activated' => true,
             ],
             [],
