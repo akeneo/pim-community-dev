@@ -7,13 +7,12 @@ import {
   StorageType,
   localStorageIsEnabled,
   AmazonS3Storage,
-  remoteStorageIsEnabled,
-  AzureBlobStorage
+  AzureBlobStorage,
 } from '../model';
 import {LocalStorageConfigurator} from './LocalStorageConfigurator';
 import {SftpStorageConfigurator} from './SftpStorageConfigurator';
 import {AmazonS3StorageConfigurator} from './AmazonS3StorageConfigurator';
-import {AzureBlobStorageConfigurator} from "./AzureBlobStorageConfigurator";
+import {AzureBlobStorageConfigurator} from './AzureBlobStorageConfigurator';
 
 type StorageConfiguratorProps = {
   storage: Storage;
@@ -38,11 +37,9 @@ const getEnabledStorageConfigurators = (featureFlags: FeatureFlags): StorageConf
     enabledStorageConfigurators['local'] = LocalStorageConfigurator;
   }
 
-  if (remoteStorageIsEnabled(jobCode)) {
-    enabledStorageConfigurators['sftp'] = SftpStorageConfigurator;
-    enabledStorageConfigurators['amazon_s3'] = AmazonS3StorageConfigurator;
-    enabledStorageConfigurators['azure_blob'] = AzureBlobStorageConfigurator;
-  }
+  enabledStorageConfigurators['sftp'] = SftpStorageConfigurator;
+  enabledStorageConfigurators['amazon_s3'] = AmazonS3StorageConfigurator;
+  enabledStorageConfigurators['azure_blob'] = AzureBlobStorageConfigurator;
 
   return enabledStorageConfigurators;
 };
@@ -86,7 +83,6 @@ const isAzureBlobStorage = (storage: Storage): storage is AzureBlobStorage => {
     'azure_blob' === storage.type &&
     'file_path' in storage &&
     'connection_string' in storage &&
-    'key' in storage &&
     'container_name' in storage
   );
 };
@@ -97,30 +93,38 @@ const isStorageFulfilled = (storage: Storage): boolean => {
   }
 
   if (isSftpStorage(storage)) {
-    return '' !== storage.file_path &&
+    return (
+      '' !== storage.file_path &&
       '' !== storage.host &&
       !isNaN(storage.port) &&
       '' !== storage.username &&
-      '' !== storage.password;
+      '' !== storage.password
+    );
   }
 
   if (isAmazonS3Storage(storage)) {
-    return '' !== storage.file_path &&
+    return (
+      '' !== storage.file_path &&
       '' !== storage.region &&
       '' !== storage.bucket_name &&
       '' !== storage.key &&
-      '' !== storage.secret;
+      '' !== storage.secret
+    );
   }
 
   if (isAzureBlobStorage(storage)) {
-    return '' !== storage.file_path &&
-      '' !== storage.connection_string &&
-      '' !== storage.key &&
-      '' !== storage.container_name;
+    return '' !== storage.file_path && '' !== storage.connection_string && '' !== storage.container_name;
   }
 
   return false;
-}
+};
 
 export type {StorageConfiguratorProps};
-export {isLocalStorage, isSftpStorage, isAmazonS3Storage, isAzureBlobStorage, isStorageFulfilled, getStorageConfigurator};
+export {
+  isLocalStorage,
+  isSftpStorage,
+  isAmazonS3Storage,
+  isAzureBlobStorage,
+  isStorageFulfilled,
+  getStorageConfigurator,
+};

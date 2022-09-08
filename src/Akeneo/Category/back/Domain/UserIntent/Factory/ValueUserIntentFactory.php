@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Domain\UserIntent\Factory;
 
+use Akeneo\Category\Api\Command\UserIntents\SetImage;
 use Akeneo\Category\Api\Command\UserIntents\SetRichText;
 use Akeneo\Category\Api\Command\UserIntents\SetText;
 use Akeneo\Category\Api\Command\UserIntents\SetTextArea;
@@ -106,6 +107,7 @@ final class ValueUserIntentFactory implements UserIntentFactory
             AttributeType::TEXTAREA => new SetTextArea($uuid, $code, $value['locale'], $value['data']),
             AttributeType::RICH_TEXT => new SetRichText($uuid, $code, $value['locale'], $value['data']),
             AttributeType::TEXT => new SetText($uuid, $code, $value['locale'], $value['data']),
+            AttributeType::IMAGE => new SetImage($uuid, $code, $value['locale'], $value['data']),
             default => throw new \InvalidArgumentException('Not implemented')
         };
     }

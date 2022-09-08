@@ -53,11 +53,8 @@ const getEnabledStorageTypes = (featureFlags: FeatureFlags): string[] => {
     enabledStorageTypes.push('local');
   }
 
-  if (remoteStorageIsEnabled(jobCode)) {
-    enabledStorageTypes.push('sftp');
-    enabledStorageTypes.push('amazon_s3');
-    enabledStorageTypes.push('azure_blob');
-  }
+  enabledStorageTypes.push('amazon_s3');
+  enabledStorageTypes.push('azure_blob');
 
   return enabledStorageTypes;
 };

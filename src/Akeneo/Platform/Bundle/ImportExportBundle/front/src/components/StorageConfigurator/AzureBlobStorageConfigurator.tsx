@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Field, Helper, NumberInput, Button, CheckIcon, getColor} from 'akeneo-design-system';
+import {Helper, Button, CheckIcon, getColor} from 'akeneo-design-system';
 import {TextField, useTranslate, filterErrors} from '@akeneo-pim-community/shared';
 import {StorageConfiguratorProps, isAzureBlobStorage} from './model';
 import {useCheckStorageConnection} from '../../hooks/useCheckStorageConnection';

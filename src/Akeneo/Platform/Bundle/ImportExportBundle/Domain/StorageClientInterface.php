@@ -30,5 +30,7 @@ interface StorageClientInterface
 
     public function move(string $sourceFilePath, string $destinationFilePath): void;
 
+    public function delete(string $filePath): void;
+
     public function connectionIsValid(): bool;
 }

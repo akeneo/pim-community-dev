@@ -53,4 +53,9 @@ final class FileSystemStorageClient implements StorageClientInterface
     {
         $this->filesystemOperator->move($sourceFilePath, $destinationFilePath);
     }
+
+    public function delete(string $filePath): void
+    {
+        $this->filesystemOperator->delete($filePath);
+    }
 }
