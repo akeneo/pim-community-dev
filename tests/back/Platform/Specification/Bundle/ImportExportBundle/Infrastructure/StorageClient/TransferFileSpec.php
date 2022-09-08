@@ -28,6 +28,7 @@ class TransferFileSpec extends ObjectBehavior
 
         $expectedTmpDestinationFilePath = '.tmp-my_export_on_server.xlsx';
         $destinationFilesystem->writeStream($expectedTmpDestinationFilePath, $sourceStream)->shouldBeCalled();
+        $destinationFilesystem->fileExists($destinationFilePath)->shouldBeCalled()->willReturn(false);
         $destinationFilesystem->move($expectedTmpDestinationFilePath, $destinationFilePath)->shouldBeCalled();
 
         $this->transfer($sourceFilesystem, $destinationFilesystem, $sourceFilePath, $destinationFilePath);
@@ -47,6 +48,8 @@ class TransferFileSpec extends ObjectBehavior
 
         $expectedTmpDestinationFilePath = 'exports/test/.tmp-my_export_on_server.xlsx';
         $destinationFilesystem->writeStream($expectedTmpDestinationFilePath, $sourceStream)->shouldBeCalled();
+        $destinationFilesystem->fileExists($destinationFilePath)->shouldBeCalled()->willReturn(true);
+        $destinationFilesystem->delete($destinationFilePath)->shouldBeCalled();
         $destinationFilesystem->move($expectedTmpDestinationFilePath, $destinationFilePath)->shouldBeCalled();
 
         $this->transfer($sourceFilesystem, $destinationFilesystem, $sourceFilePath, $destinationFilePath);
