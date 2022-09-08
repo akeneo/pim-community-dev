@@ -1,4 +1,20 @@
 steps:
+  - id: "Stop current build if ongoing build is ongoing"
+    name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+    - -c
+    - |
+        # Set project configuration
+        gcloud config set project ${PROJECT_ID}
+        on_going_build=($(gcloud builds list --ongoing --format='value(id)' | xargs))
+        # on_going_build=($(gcloud builds list --ongoing --format='value(id)' --filter="substitutions.TRIGGER_NAME=$TRIGGER_NAME" | xargs))
+        for (( i=0; i<${#on_going_build[@]}; i++ )); do
+          if [ "$i" -gt "0" ]; then # skip current build
+            echo "Cancelling current build, because there is at least another build ongoing (${on_going_build[i]})"
+            exit 1
+          fi
+        done
   - id: Install prerequisite for the PIM
     name: "europe-west1-docker.pkg.dev/akecld-prd-pim-saas-sandbox/pim-deployer/pim-deployer:1.1.0"
     dir: "deployments-ucs"
