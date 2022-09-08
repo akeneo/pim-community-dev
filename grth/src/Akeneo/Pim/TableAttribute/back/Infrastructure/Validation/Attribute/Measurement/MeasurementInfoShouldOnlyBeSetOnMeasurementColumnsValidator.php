@@ -27,7 +27,7 @@ final class MeasurementInfoShouldOnlyBeSetOnMeasurementColumnsValidator extends 
             return;
         }
 
-        $columnType = $columnData['data_type'] ?? null;
+        $columnType = $columnData['data_type'];
 
         if (MeasurementColumn::DATATYPE === $columnType) {
             if (!isset($columnData['measurement_family_code'])) {
