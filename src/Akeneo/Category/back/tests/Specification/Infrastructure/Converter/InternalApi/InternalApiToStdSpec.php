@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Category\Infrastructure\Converter\InternalApi;
 
-use Akeneo\Category\Application\Converter\AttributeRequirementChecker;
-use Akeneo\Category\Application\Converter\FieldsRequirementChecker;
+use Akeneo\Category\Application\Converter\Checker\AttributeRequirementChecker;
+use Akeneo\Category\Application\Converter\Checker\FieldsRequirementChecker;
+use Akeneo\Category\Application\Converter\Checker\InternalApiRequirementChecker;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -16,10 +17,11 @@ class InternalApiToStdSpec extends ObjectBehavior
 {
     public function let(
         FieldsRequirementChecker $fieldsRequirementChecker,
-        AttributeRequirementChecker $attributeChecker
+        AttributeRequirementChecker $attributeChecker,
+        InternalApiRequirementChecker $checker
     ): void
     {
-        $this->beConstructedWith($fieldsRequirementChecker, $attributeChecker);
+        $this->beConstructedWith($fieldsRequirementChecker, $attributeChecker, $checker);
     }
 
     public function it_converts()

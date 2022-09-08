@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Converter\InternalApi;
 
-use Akeneo\Category\Application\Converter\AttributeRequirementChecker;
+use Akeneo\Category\Application\Converter\Checker\AttributeRequirementChecker;
+use Akeneo\Category\Application\Converter\Checker\FieldsRequirementChecker;
+use Akeneo\Category\Application\Converter\Checker\InternalApiRequirementChecker;
 use Akeneo\Category\Application\Converter\ConverterInterface;
-use Akeneo\Category\Application\Converter\FieldsRequirementChecker;
 use Akeneo\Category\Infrastructure\Exception\ArrayConversionException;
-use Akeneo\Category\Infrastructure\Exception\StructureArrayConversionException;
-use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -32,6 +31,8 @@ class InternalApiToStd implements ConverterInterface
 {
     public function __construct(
         private FieldsRequirementChecker $fieldsChecker,
+        private AttributeRequirementChecker $attributeChecker,
+        private InternalApiRequirementChecker $checker
     ) {
     }
 
@@ -42,13 +43,15 @@ class InternalApiToStd implements ConverterInterface
      * } $data
      *
      * @retrun array|StandardInternalApi
+     *
+     * @throws ArrayConversionException
      */
     public function convert(array $data): array
     {
         // Validate the internal Api data and structure
-        $this->checkArrayStructure($data);
-        $this->checkProperties($data['properties']);
-        AttributeRequirementChecker::checkAttributes($data['attributes']);
+        $this->checker->check($data);
+        $this->fieldsChecker->check($data['properties']);
+        $this->attributeChecker->check($data['attributes']);
 
         // Normalize
         $convertedData = [];
@@ -57,37 +60,5 @@ class InternalApiToStd implements ConverterInterface
         $convertedData['values'] = $data['attributes'];
 
         return $convertedData;
-    }
-
-    /**
-     * @param array{
-     *     properties: PropertyApi,
-     *     attributes: array<string, AttributeCodeApi|AttributeValueApi>
-     * } $data
-     *
-     * @throws ArrayConversionException
-     */
-    private function checkArrayStructure(array $data): void
-    {
-        $expectedKeys = ['properties', 'attributes'];
-        try {
-            Assert::keyExists($data, 'properties');
-            Assert::keyExists($data, 'attributes');
-        } catch (\InvalidArgumentException $exception) {
-            throw new StructureArrayConversionException(
-                vsprintf('Fields ["%s", "%s"] is expected', $expectedKeys)
-            );
-        }
-    }
-
-    /**
-     * @param array{code: string, labels: array<string, string>} $properties
-     *
-     * @throws ArrayConversionException
-     */
-    private function checkProperties(array $properties): void
-    {
-        $this->fieldsChecker->checkFieldsExist($properties, ['code', 'labels']);
-        $this->fieldsChecker->checkFieldsNotEmpty($properties, ['code']);
     }
 }

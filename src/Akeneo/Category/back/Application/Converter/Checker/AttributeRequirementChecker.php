@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\Application\Converter;
+namespace Akeneo\Category\Application\Converter\Checker;
 
 use Akeneo\Category\Infrastructure\Converter\InternalApi\InternalApiToStd;
 use Akeneo\Category\Infrastructure\Exception\ArrayConversionException;

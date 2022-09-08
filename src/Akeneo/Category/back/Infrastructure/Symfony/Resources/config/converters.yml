@@ -2,13 +2,17 @@ services:
   Akeneo\Category\Application\Converter\ConverterInterface:
     class: Akeneo\Category\Infrastructure\Converter\InternalApi\InternalApiToStd
     arguments:
-      - '@Akeneo\Category\Application\Converter\FieldsRequirementChecker'
+      - '@Akeneo\Category\Application\Converter\Checker\FieldsRequirementChecker'
+      - '@Akeneo\Category\Application\Converter\Checker\AttributeRequirementChecker'
+      - '@Akeneo\Category\Application\Converter\Checker\InternalApiRequirementChecker'
 
   Akeneo\Category\Application\Converter\StandardFormatToUserIntentsInterface:
     class: Akeneo\Category\Application\Converter\StandardFormatToUserIntents
     arguments:
       - '@Akeneo\Category\Domain\UserIntent\UserIntentFactoryRegistry'
 
-  Akeneo\Category\Application\Converter\FieldsRequirementChecker: ~
+  Akeneo\Category\Application\Converter\Checker\FieldsRequirementChecker: ~
 
-  Akeneo\Category\Application\Converter\AttributeRequirementChecker: ~
+  Akeneo\Category\Application\Converter\Checker\AttributeRequirementChecker: ~
+
+  Akeneo\Category\Application\Converter\Checker\InternalApiRequirementChecker: ~

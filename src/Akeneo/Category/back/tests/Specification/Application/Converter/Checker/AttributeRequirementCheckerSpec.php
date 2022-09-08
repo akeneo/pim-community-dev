@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Category\Application\Converter;
+namespace Specification\Akeneo\Category\Application\Converter\Checker;
 
-use Akeneo\Category\Application\Converter\AttributeRequirementChecker;
+use Akeneo\Category\Application\Converter\Checker\AttributeRequirementChecker;
+use Akeneo\Category\Application\Converter\Checker\Requirement;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
 use Akeneo\Category\Infrastructure\Exception\StructureArrayConversionException;
 use PhpSpec\ObjectBehavior;
@@ -18,6 +19,7 @@ class AttributeRequirementCheckerSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType(AttributeRequirementChecker::class);
+        $this->shouldImplement(Requirement::class);
     }
 
     public function it_should_throw_an_exception_when_attribute_keys_is_missing(): void

@@ -2,7 +2,7 @@
 
 namespace Akeneo\Category\Domain\ValueObject;
 
-use Akeneo\Category\Application\Converter\AttributeRequirementChecker;
+use Akeneo\Category\Application\Converter\Checker\AttributeRequirementChecker;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
