@@ -16,6 +16,7 @@ spec:
     uri: "https://{{ .Values.common.region }}-{{ .Values.common.gcpProjectID }}.cloudfunctions.net/{{ .Values.cloudScheduler.functionName }}"
     headers:
       Content-Type: "application/json"
+      User-Agent: "Google-Cloud-Scheduler"
     httpMethod: "POST"
     oidcToken:
       audience: "https://{{ .Values.common.region }}-{{ .Values.common.gcpProjectID }}.cloudfunctions.net/{{ .Values.cloudScheduler.functionName }}"

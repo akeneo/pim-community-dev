@@ -15,6 +15,7 @@ spec:
   httpTarget:
     headers:
       Content-Type: application/json
+      User-Agent: "Google-Cloud-Scheduler"
     httpMethod: "POST"
     uri: "https://{{ $tplCtx.Values.common.region }}-{{ $tplCtx.Values.common.gcpProjectID }}.cloudfunctions.net/{{ $tplCtx.Values.pim.cloudFunction.name }}"
     oidcToken:
