@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Category\Domain\UserIntent\Factory;
 
+use Akeneo\Category\Api\Command\UserIntents\SetImage;
 use Akeneo\Category\Api\Command\UserIntents\SetRichText;
 use Akeneo\Category\Api\Command\UserIntents\SetText;
 use Akeneo\Category\Api\Command\UserIntents\SetTextArea;
+use Akeneo\Category\Domain\Model\Attribute\AttributeImage;
 use Akeneo\Category\Domain\Model\Attribute\AttributeRichText;
 use Akeneo\Category\Domain\Model\Attribute\AttributeText;
 use Akeneo\Category\Domain\Model\Attribute\AttributeTextArea;
@@ -66,11 +68,16 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
                 'data' => 'red',
                 'locale' => 'en_US',
                 'attribute_code' => 'color' . ValueCollection::SEPARATOR . '38439aaf-66a2-4b24-854e-29d7a467c7af'
+            ],
+            'banner' . ValueCollection::SEPARATOR . 'e0326684-0dff-44be-8283-9262deb9e4bc' . ValueCollection::SEPARATOR . 'en_US' => [
+                'data' => '3/7/7/e/377e7c2bad87efd2e71eb725006a9067918d5791_banner.jpg',
+                'locale' => 'en_US',
+                'attribute_code' => 'banner' . ValueCollection::SEPARATOR . 'e0326684-0dff-44be-8283-9262deb9e4bc'
             ]
         ];
 
         $templateUuid = TemplateUuid::fromString('02274dac-e99a-4e1d-8f9b-794d4c3ba330');
-        $valueCollection = AttributeCollection::fromArray([
+        $attributes = AttributeCollection::fromArray([
             AttributeTextArea::create(
                 AttributeUuid::fromString('69e251b3-b876-48b5-9c09-92f54bfb528d'),
                 new AttributeCode('seo_meta_description'),
@@ -95,11 +102,19 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
                 LabelCollection::fromArray(['en_US' => 'red']),
                 $templateUuid
             ),
+            AttributeImage::create(
+                AttributeUuid::fromString('e0326684-0dff-44be-8283-9262deb9e4bc'),
+                new AttributeCode('banner'),
+                AttributeOrder::fromInteger(3),
+                AttributeIsLocalizable::fromBoolean(true),
+                LabelCollection::fromArray(['en_US' => '3/7/7/e/377e7c2bad87efd2e71eb725006a9067918d5791_banner.jpg']),
+                $templateUuid
+            ),
         ]);
 
         $getAttribute->byIdentifiers($data['attribute_codes'])
             ->shouldBeCalledOnce()
-            ->willReturn($valueCollection);
+            ->willReturn($attributes);
 
         $this->create(
             'values',
@@ -122,7 +137,13 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
                 'color',
                 'en_US',
                 'red'
-            )
+            ),
+            new SetImage(
+                'e0326684-0dff-44be-8283-9262deb9e4bc',
+                'banner',
+                'en_US',
+                '3/7/7/e/377e7c2bad87efd2e71eb725006a9067918d5791_banner.jpg'
+            ),
         ]);
     }
 

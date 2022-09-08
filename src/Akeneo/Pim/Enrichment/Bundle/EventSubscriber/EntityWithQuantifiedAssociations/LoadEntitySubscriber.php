@@ -4,8 +4,8 @@ namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithQuantifiedAssoc
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithQuantifiedAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindQuantifiedAssociationTypeCodesInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetIdMappingFromProductIdsQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetIdMappingFromProductModelIdsQueryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetUuidMappingQueryInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
@@ -20,23 +20,11 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
  */
 final class LoadEntitySubscriber implements EventSubscriber
 {
-    /** @var GetIdMappingFromProductIdsQueryInterface */
-    private $getIdMappingFromProductIds;
-
-    /** @var GetIdMappingFromProductModelIdsQueryInterface */
-    private $getIdMappingFromProductModelIds;
-
-    /** @var FindQuantifiedAssociationTypeCodesInterface */
-    private $findQuantifiedAssociationTypeCodes;
-
     public function __construct(
-        GetIdMappingFromProductIdsQueryInterface $getIdMappingFromProductIds,
-        GetIdMappingFromProductModelIdsQueryInterface $getIdMappingFromProductModelIds,
-        FindQuantifiedAssociationTypeCodesInterface $findQuantifiedAssociationTypeCodes
+        private GetUuidMappingQueryInterface $getUuidMappingQuery,
+        private GetIdMappingFromProductModelIdsQueryInterface $getIdMappingFromProductModelIds,
+        private FindQuantifiedAssociationTypeCodesInterface $findQuantifiedAssociationTypeCodes
     ) {
-        $this->getIdMappingFromProductIds = $getIdMappingFromProductIds;
-        $this->getIdMappingFromProductModelIds = $getIdMappingFromProductModelIds;
-        $this->findQuantifiedAssociationTypeCodes = $findQuantifiedAssociationTypeCodes;
     }
 
     /**
@@ -63,9 +51,10 @@ final class LoadEntitySubscriber implements EventSubscriber
         }
 
         $productIds = $entity->getQuantifiedAssociationsProductIds();
+        $productUuids = $entity->getQuantifiedAssociationsProductUuids();
         $productModelIds = $entity->getQuantifiedAssociationsProductModelIds();
 
-        $mappedProductIds = $this->getIdMappingFromProductIds->execute($productIds);
+        $mappedProductIds = $this->getUuidMappingQuery->fromProductIds($productIds, $productUuids);
         $mappedProductModelIds = $this->getIdMappingFromProductModelIds->execute($productModelIds);
         $quantifiedAssociationTypeCodes = $this->findQuantifiedAssociationTypeCodes->execute();
 

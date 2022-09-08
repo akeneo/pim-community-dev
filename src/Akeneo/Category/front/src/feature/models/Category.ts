@@ -1,5 +1,6 @@
-import {LabelCollection} from '@akeneo-pim-community/shared';
+import {LabelCollection, LocaleCode} from '@akeneo-pim-community/shared';
 import {TreeNode} from './Tree';
+import {CompositeKeyWithoutLocale} from './CompositeKey';
 
 export type Category = {
   id: number;
@@ -8,7 +9,15 @@ export type Category = {
   root: Category | null;
 };
 
-export type EditableCategoryProperties = {
+export type EnrichCategory = {
+  id: number;
+  properties: CategoryProperties;
+  attributes: CategoryAttributes;
+  permissions: CategoryPermissions;
+};
+
+export type CategoryProperties = {
+  code: string;
   labels: LabelCollection;
 };
 
@@ -16,8 +25,28 @@ export type CategoryPermissions = {
   view: number[];
   edit: number[];
   own: number[];
-  apply_on_children: '0' | '1';
 };
+
+export interface CategoryAttributes {
+  [key: string]: CategoryAttributeValueWrapper;
+}
+
+export interface CategoryAttributeValueWrapper {
+  data: CategoryAttributeValueData;
+  locale: LocaleCode | null;
+  attribute_code: CompositeKeyWithoutLocale;
+}
+
+type CategoryTextAttributeValueData = string;
+export interface CategoryImageAttributeValueData {
+  size: number;
+  file_path: string;
+  mime_type: string;
+  extension: string;
+  original_filename: string;
+}
+
+export type CategoryAttributeValueData = CategoryTextAttributeValueData | CategoryImageAttributeValueData;
 
 export type BackendCategoryTree = {
   attr: {

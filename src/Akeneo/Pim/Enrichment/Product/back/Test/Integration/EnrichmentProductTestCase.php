@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedEntity;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -96,9 +97,9 @@ abstract class EnrichmentProductTestCase extends TestCase
     protected function createProduct(string $identifier, array $userIntents): void
     {
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('peter');
-        $command = UpsertProductCommand::createFromCollection(
+        $command = UpsertProductCommand::createWithIdentifier(
             userId: $this->getUserId('peter'),
-            productIdentifier: $identifier,
+            productIdentifier: ProductIdentifier::fromIdentifier($identifier),
             userIntents: $userIntents
         );
         $this->commandMessageBus->dispatch($command);

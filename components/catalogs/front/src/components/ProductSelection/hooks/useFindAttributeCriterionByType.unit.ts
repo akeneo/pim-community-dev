@@ -3,6 +3,7 @@ jest.unmock('./useFindAttributeCriterionByType');
 import {renderHook} from '@testing-library/react-hooks';
 import {useFindAttributeCriterionByType} from './useFindAttributeCriterionByType';
 import {AnyAttributeCriterion} from '../models/Criterion';
+import AttributeIdentifierCriterion from '../criteria/AttributeIdentifierCriterion';
 import AttributeTextCriterion from '../criteria/AttributeTextCriterion';
 import AttributeTextareaCriterion from '../criteria/AttributeTextareaCriterion';
 import AttributeSimpleSelectCriterion from '../criteria/AttributeSimpleSelectCriterion';
@@ -12,6 +13,7 @@ import AttributeBooleanCriterion from '../criteria/AttributeBooleanCriterion';
 import AttributeMeasurementCriterion from '../criteria/AttributeMeasurementCriterion';
 
 const critera: [string, AnyAttributeCriterion][] = [
+    ['pim_catalog_identifier', AttributeIdentifierCriterion],
     ['pim_catalog_text', AttributeTextCriterion],
     ['pim_catalog_textarea', AttributeTextareaCriterion],
     ['pim_catalog_simpleselect', AttributeSimpleSelectCriterion],
