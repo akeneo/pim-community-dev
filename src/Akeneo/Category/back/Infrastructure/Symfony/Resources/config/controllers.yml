@@ -48,3 +48,11 @@ services:
         arguments:
             - '@oro_security.security_facade'
             - '@Akeneo\Category\Application\Query\GetTemplate'
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\UploadController:
+        public: true
+        arguments:
+            - '@validator'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+            - '@akeneo_file_storage.repository.file_info'
+            - '@category_serializer'

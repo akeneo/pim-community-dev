@@ -2,7 +2,7 @@ import React, {useCallback, useState} from 'react';
 import styled from 'styled-components';
 
 import {Field, FileInfo, MediaFileInput, SectionTitle, TextAreaInput, TextInput} from 'akeneo-design-system';
-import {Locale, LocaleSelector, useTranslate} from '@akeneo-pim-community/shared';
+import {Locale, LocaleSelector, useTranslate, useUploader} from '@akeneo-pim-community/shared';
 
 import {
   CategoryAttributeDefinition,
@@ -11,6 +11,7 @@ import {
   EnrichCategory,
 } from '../models';
 import {attributeDefinitions} from '../models/TemplateMocking';
+import {usePreventClosing} from '../hooks/usePreventClosing';
 
 const locales: Locale[] = [
   {
@@ -56,6 +57,8 @@ const Field960 = styled(Field)`
 export const EditAttributesForm = ({onAttributeValueChange}: Props) => {
   const [locale, setLocale] = useState('en_US');
   const translate = useTranslate();
+  const [uploader, isUploading] = useUploader('pim_enriched_category_rest_file_upload');
+  usePreventClosing(() => isUploading, translate('pim_enrich.confirmation.discard_changes', {entity: 'category'}));
 
   const handleTextChange = useCallback(
     (attribute: CategoryAttributeDefinition) => (value: string) => {
@@ -103,10 +106,10 @@ export const EditAttributesForm = ({onAttributeValueChange}: Props) => {
           onChange={handleImageChange(attributeDefinitions['banner'])}
           placeholder="Drag and drop to upload or click here"
           uploadingLabel="Uploading..."
-          uploadErrorLabel="An error occurred during upload"
+          uploadErrorLabel="An error occurred when uploading the file."
           clearTitle="Clear"
           thumbnailUrl={null}
-          uploader={dumbUploader}
+          uploader={uploader}
         />
       </Field>
       <Field label="SEO Meta Title" locale={locale}>
