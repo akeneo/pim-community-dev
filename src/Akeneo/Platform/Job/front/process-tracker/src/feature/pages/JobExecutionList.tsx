@@ -45,7 +45,7 @@ const JobExecutionList = () => {
     setJobExecutionFilter(jobExecutionFilter => ({...jobExecutionFilter, page: 1, user}));
   };
 
-  const handleAutomationFilterChange = (automation: null|boolean) => {
+  const handleAutomationFilterChange = (automation: null | boolean) => {
     setJobExecutionFilter(jobExecutionFilter => ({...jobExecutionFilter, page: 1, automation}));
   };
 

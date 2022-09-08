@@ -11,7 +11,7 @@ type JobExecutionFilter = {
   page: number;
   size: number;
   sort: JobExecutionFilterSort;
-  automation: null|boolean;
+  automation: null | boolean;
   type: string[];
   status: JobStatus[];
   user: string[];

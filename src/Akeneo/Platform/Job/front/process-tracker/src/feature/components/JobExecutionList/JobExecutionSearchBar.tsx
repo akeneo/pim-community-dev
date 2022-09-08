@@ -5,14 +5,14 @@ import {TypeFilter} from './TypeFilter';
 import {StatusFilter} from './StatusFilter';
 import {UserFilter} from './UserFilter';
 import {JobExecutionFilter, JobStatus} from '../../models';
-import {AutomationFilter} from "./AutomationFilter";
+import {AutomationFilter} from './AutomationFilter';
 
 type JobExecutionSearchBarProps = {
   jobExecutionFilter: JobExecutionFilter;
   onStatusFilterChange: (status: JobStatus[]) => void;
   onTypeFilterChange: (types: string[]) => void;
   onUserFilterChange: (users: string[]) => void;
-  onAutomationFilterChange: (uatomation: null|boolean) => void;
+  onAutomationFilterChange: (uatomation: null | boolean) => void;
   onSearchChange: (search: string) => void;
 };
 
@@ -46,7 +46,12 @@ const JobExecutionSearchBar = ({
       searchValue={userSearch}
       onSearchChange={setUserSearch}
     >
-      {canViewAllJobs && <AutomationFilter automationFilterValue={jobExecutionFilter.automation} onAutomationFilterChange={onAutomationFilterChange} /> }
+      {canViewAllJobs && (
+        <AutomationFilter
+          automationFilterValue={jobExecutionFilter.automation}
+          onAutomationFilterChange={onAutomationFilterChange}
+        />
+      )}
       <TypeFilter typeFilterValue={jobExecutionFilter.type} onTypeFilterChange={onTypeFilterChange} />
       <StatusFilter statusFilterValue={jobExecutionFilter.status} onStatusFilterChange={onStatusFilterChange} />
       <UserFilter userFilterValue={jobExecutionFilter.user} onUserFilterChange={onUserFilterChange} />

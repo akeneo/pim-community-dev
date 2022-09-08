@@ -90,7 +90,7 @@ const rows: JobExecutionRow[] = [
     job_name: 'Scheduled job',
     status: 'COMPLETED',
     is_stoppable: false,
-  }
+  },
 ];
 
 let mockUseManyRows = false;
@@ -208,9 +208,7 @@ test('it can filter on the job automation', () => {
   renderWithProviders(<JobExecutionList />);
 
   userEvent.click(screen.getByLabelText('akeneo_job_process_tracker.automation_filter.label:'));
-  userEvent.click(
-      within(screen.getByRole('listbox')).getByText('akeneo_job_process_tracker.automation_filter.yes')
-  );
+  userEvent.click(within(screen.getByRole('listbox')).getByText('akeneo_job_process_tracker.automation_filter.yes'));
 
   expect(screen.getByText('Scheduled job')).toBeInTheDocument();
 });
