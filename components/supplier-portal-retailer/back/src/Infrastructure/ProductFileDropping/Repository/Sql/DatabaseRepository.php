@@ -17,6 +17,8 @@ final class DatabaseRepository implements ProductFileRepository
 
     public function save(ProductFile $productFile): void
     {
+        $this->connection->beginTransaction();
+
         $sql = <<<SQL
             REPLACE INTO `akeneo_supplier_portal_supplier_product_file` (
                 identifier,
@@ -51,7 +53,7 @@ final class DatabaseRepository implements ProductFileRepository
                 ) VALUES (:authorEmail, :productFileIdentifier, :content, :createdAt);
             SQL;
 
-            $this->connection->executeQuery(
+            $this->connection->executeStatement(
                 $sql,
                 [
                     'authorEmail' => $retailerComment->authorEmail(),
@@ -75,7 +77,7 @@ final class DatabaseRepository implements ProductFileRepository
                 ) VALUES (:authorEmail, :productFileIdentifier, :content, :createdAt);
             SQL;
 
-            $this->connection->executeQuery(
+            $this->connection->executeStatement(
                 $sql,
                 [
                     'authorEmail' => $supplierComment->authorEmail(),
@@ -88,5 +90,7 @@ final class DatabaseRepository implements ProductFileRepository
                 ],
             );
         }
+
+        $this->connection->commit();
     }
 }
