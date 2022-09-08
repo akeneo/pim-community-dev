@@ -31,7 +31,7 @@ class SearchJobExecutionQuery
     public string $sortColumn = 'started_at';
     public string $sortDirection = 'DESC';
     public array $user = [];
-    public ?bool $automation;
+    public ?bool $automation = null;
     public array $type = [];
     public array $status = [];
     public array $code = [];
