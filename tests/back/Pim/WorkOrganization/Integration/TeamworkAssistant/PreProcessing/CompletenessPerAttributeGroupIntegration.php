@@ -165,7 +165,7 @@ class CompletenessPerAttributeGroupIntegration extends TeamworkAssistantTestCase
 
     /**
      * Check that we get the value of product properties on the right channel, locale and we are able to get the
-     * value for every attributes
+     * value for every attribute
      *
      * For that test all values should be empty, the "other" attribute group completeness should be "to do"
      *
@@ -175,7 +175,7 @@ class CompletenessPerAttributeGroupIntegration extends TeamworkAssistantTestCase
      *     - Channel: ecommerce
      *     - Locale: en_US
      */
-    public function testProjectCalculationWhenTheProductPropertiesAreEmpties()
+    public function testProjectCalculationWhenTheProductPropertiesAreEmpty()
     {
         $productIdentifier = 'empty-technical-product';
         $project = $this->createProject('test-empty-property', 'Julia', 'en_US', 'ecommerce', [[
@@ -332,14 +332,10 @@ class CompletenessPerAttributeGroupIntegration extends TeamworkAssistantTestCase
 
     /**
      * Check that the attribute group completeness is well calculated for a product that belong to a project.
-     *
-     * @param ProjectInterface $project
-     * @param string           $productIdentifier
-     * @param array            $expectedAttributeGroupCompleteness
      */
     private function checkAttributeGroupCompleteness(
         ProjectInterface $project,
-        $productIdentifier,
+        string $productIdentifier,
         array $expectedAttributeGroupCompleteness
     ) {
         $this->checkAttributeGroupCompletenessData($project, $productIdentifier, $expectedAttributeGroupCompleteness);
@@ -348,14 +344,10 @@ class CompletenessPerAttributeGroupIntegration extends TeamworkAssistantTestCase
 
     /**
      * Check that the attribute group completeness for product/project locale/project channel is well calculated
-     *
-     * @param ProjectInterface $project
-     * @param string           $productIdentifier
-     * @param array            $expectedAttributeGroupCompleteness
      */
     private function checkAttributeGroupCompletenessData(
         ProjectInterface $project,
-        $productIdentifier,
+        string $productIdentifier,
         array $expectedAttributeGroupCompleteness
     ) {
         $productUuid = $this->get('pim_catalog.repository.product')->findOneByIdentifier($productIdentifier)->getUuid();

@@ -51,7 +51,7 @@ class RemoveNonExistentReferenceEntityValuesIntegration extends TestCase
         }
 
         $this->assertReferenceEntityValues('sunglasses', '');
-        $this->assertCompleteness('sunglasses', 33);
+        $this->assertCompleteness('sunglasses', 0);
     }
 
     /** @test */
@@ -71,7 +71,7 @@ class RemoveNonExistentReferenceEntityValuesIntegration extends TestCase
         }
 
         $this->assertReferenceEntityValues('sunglasses', '');
-        $this->assertCompleteness('sunglasses', 33);
+        $this->assertCompleteness('sunglasses', 0);
     }
 
     protected function setUp(): void

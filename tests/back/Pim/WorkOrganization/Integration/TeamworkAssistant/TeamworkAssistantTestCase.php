@@ -121,7 +121,6 @@ class TeamworkAssistantTestCase extends TestCase
         $this->isCompleteJobExecution($numberOfExecutedJob);
     }
 
-
     /**
      * @param ProjectInterface $project
      */
