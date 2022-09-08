@@ -7,7 +7,7 @@ nameOverride: argocd
 global:
   image:
     repository: quay.io/argoproj/argocd
-    tag: "v2.3.3"
+    tag: "v2.4.11"
     imagePullPolicy: IfNotPresent
 
 ## Argo Configs
@@ -35,107 +35,10 @@ configs:
       url: https://github.com/akeneo/pim-enterprise-dev
 
 server:
-  additionalProjects:
-  - name: infra
-    namespace: argocd
-    sourceRepos:
-    - '*'
-    destinations:
-    - namespace: '*'
-      server: '*'
-    clusterResourceWhitelist:
-    - group: '*'
-      kind: '*'
-  - name: pim-saas-service
-    namespace: argocd
-    sourceRepos:
-    - '*'
-    destinations:
-    - namespace: '*'
-      server: '*'
-    clusterResourceWhitelist:
-    - group: '*'
-      kind: '*'
-  - name: timmy
-    namespace: argocd
-    sourceRepos:
-    - '*'
-    destinations:
-    - namespace: '*'
-      server: '*'
-    clusterResourceWhitelist:
-    - group: '*'
-      kind: '*'
-
-  additionalApplications:
-  - name: infra-apps
-    namespace: argocd
-    additionalAnnotations:
-      argocd.argoproj.io/sync-wave: "-1"
-    finalizers:
-    - resources-finalizer.argocd.argoproj.io
-    syncPolicy:
-      automated: {}
-    project: infra
-    source:
-      repoURL: https://github.com/akeneo/pim-enterprise-dev.git
-      path: deployments-ucs/k8s/infra/apps
-      targetRevision: master
-    destination:
-      server: "https://kubernetes.default.svc"
-    helm:
-      parameters:
-        - name: spec.source.targetRevision
-          value: $ARGOCD_APP_SOURCE_TARGET_REVISION
-      valueFiles:
-       - values.yaml # To be changed by values-project.yaml
-  - name: pim-saas-service
-    namespace: argocd
-    additionalAnnotations:
-      argocd.argoproj.io/sync-wave: "1"
-    finalizers:
-    - resources-finalizer.argocd.argoproj.io
-    syncPolicy:
-      automated: {}
-    project: pim-saas-service
-    source:
-      repoURL: https://github.com/akeneo/pim-enterprise-dev.git
-      path: deployments-ucs/pim-saas-service/pim
-      targetRevision: master
-    destination:
-      server: "https://kubernetes.default.svc"
-  - name: timmy
-    namespace: argocd
-    additionalAnnotations:
-      argocd.argoproj.io/sync-wave: "1"
-    finalizers:
-      - resources-finalizer.argocd.argoproj.io
-    syncPolicy:
-      automated: {}
-    project: timmy
-    source:
-      repoURL: https://github.com/akeneo/pim-enterprise-dev.git
-      path: deployments-ucs/timmy
-      targetRevision: master
-    destination:
-      server: "https://kubernetes.default.svc"
-    helm:
-      parameters:
-        - name: spec.source.targetRevision
-          value: $ARGOCD_APP_SOURCE_TARGET_REVISION
-      valueFiles:
-        - values.yaml # To be changed by values-project.yaml
-
   extraArgs:
     - --insecure
   ingress:
     enabled: true
-    annotations:
-      traefik.ingress.kubernetes.io/router.tls: "true"
-      traefik.ingress.kubernetes.io/router.tls.options: default
-      traefik.ingress.kubernetes.io/router.entrypoints: websecure
-      traefik.ingress.kubernetes.io/router.priority: "15"
-      kubernetes.io/ingress.class: traefik
     labels:
       component: "argocd-ingress" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
       app.kubernetes.io/component: "argocd-ingress"
@@ -170,7 +73,7 @@ repoServer:
   serviceAccount:
     create: true
     annotations:
-      iam.gke.io/gcp-service-account: ucs-argocd-account@akecld-prd-pim-saas-dev.iam.gserviceaccount.com
+      iam.gke.io/gcp-service-account: null
   initContainers:
     - name: install-helm-plugins
       image: alpine/helm:3.8.2

@@ -16,13 +16,19 @@ steps:
         yq -i '.configs.credentialTemplates.https-creds.username = "argocd"' k8s/argocd/values.yaml
         ARGOCD_TOKEN="$${ARGOCD_TOKEN}" yq -i '.configs.credentialTemplates.https-creds.password = env(ARGOCD_TOKEN)' k8s/argocd/values.yaml
         yq -i 'del(.server.ingress.tls)' k8s/argocd/values.yaml
-        HOST="*.${_GOOGLE_DOMAIN}" yq -i e '.server.ingress.tls[0].hosts |= . + [env(HOST)] ' k8s/argocd/values.yaml
+        HOST="\"*.${_GOOGLE_DOMAIN}\"" yq -i e '.server.ingress.tls[0].hosts |= . + [env(HOST)] ' k8s/argocd/values.yaml
         yq -i 'del(.server.ingress.hosts)' k8s/argocd/values.yaml
         GOOGLE_DOMAIN="argocd.${_GOOGLE_DOMAIN}" yq -i e '.server.ingress.hosts |= . + [env(GOOGLE_DOMAIN)] ' k8s/argocd/values.yaml
+        # Set the correct service account for argocd repoServer
+        GSA_ARGOCD="argocd@${PROJECT_ID}" yq -i '.repoServer.serviceAccount.annotations."iam.gke.io/gcp-service-account" = env(GSA_ARGOCD)' k8s/argocd/values.yaml
+
         # Set target revision to current branch
-        yq -i '.server.additionalApplications[0].source.targetRevision = env(BRANCH_NAME)' k8s/argocd/values.yaml
-        VALUES="values-${PROJECT_ID}" yq -i '.server.additionalApplications[0].helm.valueFiles[0] = env(VALUES)' k8s/argocd/values.yaml
-        VALUES="values-${PROJECT_ID}" yq -i '.spec.source.helm.valueFiles[0] = env(VALUES)' k8s/infra/infra-apps.yaml
+        BRANCH_NAME="${BRANCH_NAME}" yq -i '.applications[0].source.targetRevision = env(BRANCH_NAME)' k8s/argocd-apps/values.yaml
+        BRANCH_NAME="${BRANCH_NAME}" yq -i '.applications[1].source.targetRevision = env(BRANCH_NAME)' k8s/argocd-apps/values.yaml
+        BRANCH_NAME="${BRANCH_NAME}" yq -i '.applications[2].source.targetRevision = env(BRANCH_NAME)' k8s/argocd-apps/values.yaml
+        VALUES="values-${PROJECT_ID}" yq -i '.applications[0].helm.valueFiles[0] = env(VALUES)' k8s/argocd-apps/values.yaml
+        VALUES="values-${PROJECT_ID}" yq -i '.applications[0].helm.valueFiles[1] = env(VALUES)' k8s/argocd-apps/values.yaml
+        VALUES="values-${PROJECT_ID}" yq -i '.applications[0].helm.valueFiles[2] = env(VALUES)' k8s/argocd-apps/values.yaml
 
         ## Datadog
         kubectl create secret generic datadog-api-secret --from-literal api-key="$$DATADOG_API_KEY"
@@ -33,12 +39,12 @@ steps:
 
         # Install prerequisite
         ## ArgoCD
-        helm upgrade --version 4.8.2 --debug --atomic --cleanup-on-fail --history-max 5 -i --wait --create-namespace -n argocd argocd argo/argo-cd -f k8s/argocd/values.yaml
+        helm upgrade --version 5.4.2 --debug --atomic --cleanup-on-fail --history-max 5 -i --wait --create-namespace -n argocd argocd argo/argo-cd -f k8s/argocd/values.yaml
         kubectl apply -f k8s/argocd/templates/argocd-cm.yaml
+        helm upgrade --version 0.0.1 --debug --atomic --cleanup-on-fail --history-max 5 -i --wait --create-namespace -n argocd argocd-apps argo/argocd-apps -f k8s/argocd-apps/values.yaml
 
     secretEnv: ['ARGOCD_TOKEN', 'DATADOG_API_KEY']
-options:
-  logging: CLOUD_LOGGING_ONLY
+logsBucket: 'gs://$PROJECT_ID-cloudbuild-logs'
 availableSecrets:
   secretManager:
   - versionName: projects/${PROJECT_ID}/secrets/ARGOCD_TOKEN/versions/latest
