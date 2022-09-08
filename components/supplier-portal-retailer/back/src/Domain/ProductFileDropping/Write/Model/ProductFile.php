@@ -18,7 +18,7 @@ final class ProductFile
     private Filename $originalFilename;
     private Path $path;
     private ?ContributorEmail $contributorEmail;
-    private Supplier $uploadedBySupplier;
+    private string $uploadedBySupplier;
     private \DateTimeInterface $uploadedAt;
     private bool $downloaded;
     private array $events = [];
@@ -30,7 +30,7 @@ final class ProductFile
         string $originalFilename,
         string $path,
         ?string $contributorEmail,
-        Supplier $uploadedBySupplier,
+        string $uploadedBySupplier,
         ?\DateTimeInterface $uploadedAt,
         bool $downloaded = false,
     ) {
@@ -55,13 +55,33 @@ final class ProductFile
             $originalFilename,
             $path,
             $contributorEmail,
-            $uploadedBySupplier,
+            $uploadedBySupplier->identifier,
             new \DateTimeImmutable(),
         );
 
-        $productFile->events[] = new ProductFileAdded($productFile);
+        $productFile->events[] = new ProductFileAdded($productFile, $uploadedBySupplier->label);
 
         return $productFile;
+    }
+
+    public static function hydrate(
+        string $identifier,
+        string $originalFilename,
+        string $path,
+        string $contributorEmail,
+        string $uploadedBySupplier,
+        string $uploadedAt,
+        bool $downloaded,
+    ): self {
+        return new self(
+            $identifier,
+            $originalFilename,
+            $path,
+            $contributorEmail,
+            $uploadedBySupplier,
+            new \DateTimeImmutable($uploadedAt),
+            $downloaded,
+        );
     }
 
     public function identifier(): string
@@ -84,14 +104,9 @@ final class ProductFile
         return null === $this->contributorEmail ? null : (string) $this->contributorEmail;
     }
 
-    public function supplierLabel(): string
+    public function uploadedBySupplier(): string
     {
-        return $this->uploadedBySupplier->label;
-    }
-
-    public function supplierIdentifier(): string
-    {
-        return $this->uploadedBySupplier->identifier;
+        return $this->uploadedBySupplier;
     }
 
     public function uploadedAt(): string

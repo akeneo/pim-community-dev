@@ -38,7 +38,7 @@ final class DatabaseRepository implements ProductFileRepository
                 'original_filename' => $productFile->originalFilename(),
                 'path' => $productFile->path(),
                 'uploaded_by_contributor' => $productFile->contributorEmail(),
-                'uploaded_by_supplier' => $productFile->supplierIdentifier(),
+                'uploaded_by_supplier' => $productFile->uploadedBySupplier(),
                 'uploaded_at' => $productFile->uploadedAt(),
             ],
         );
