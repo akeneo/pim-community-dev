@@ -67,6 +67,7 @@
 - PIM-10579: Fix Reference entity and asset normalizers and factory to handle disordered indexed arrays
 - PIM-10605: Fix unsafe usage of empty() on strings in AM & RE
 - PIM-10578: Fix the search on system filters in the rule engine UI
+- PIM-10616: Fix asset import not handling properly duplicated code
 - PIM-10592: Fix DQI score showing "In Progress" - data_quality_insights_evaluations returns an error
 - PIM-10619: Avoiding checks on expiration dates of certificates when disabling SSO
 - PIM-10621: Fix API returning an empty list instead of an empty object for published products

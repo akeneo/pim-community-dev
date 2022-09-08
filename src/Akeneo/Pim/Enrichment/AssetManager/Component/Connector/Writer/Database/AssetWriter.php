@@ -20,6 +20,7 @@ use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
 use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAssetCommand;
 use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAssetsHandler;
 use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkMultipleAssetsCommand;
+use Akeneo\AssetManager\Domain\Exception\AssetAlreadyExistsError;
 use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\EventAggregatorInterface;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
@@ -68,14 +69,12 @@ final class AssetWriter implements ItemWriterInterface, StepExecutionAwareInterf
 
             $isCreateAssetCommand = null !== $createAndEditAssetCommand->createAssetCommand;
 
-            if ($this->stepExecution) {
-                $this->stepExecution->incrementSummaryInfo(
-                    $isCreateAssetCommand ? 'create' : 'process'
-                );
-            }
-
             if ($isCreateAssetCommand) {
-                ($this->createAssetHandler)($createAndEditAssetCommand->createAssetCommand);
+                try {
+                    ($this->createAssetHandler)($createAndEditAssetCommand->createAssetCommand);
+                } catch (AssetAlreadyExistsError) {
+                    $isCreateAssetCommand = false;
+                }
             }
 
             ($this->editAssetHandler)($createAndEditAssetCommand->editAssetCommand);
@@ -86,6 +85,10 @@ final class AssetWriter implements ItemWriterInterface, StepExecutionAwareInterf
                 $linkAssetCommand->assetFamilyIdentifier = $createAndEditAssetCommand->createAssetCommand->assetFamilyIdentifier;
                 $linkAssetCommands[] = $linkAssetCommand;
             }
+
+            $this->stepExecution?->incrementSummaryInfo(
+                $isCreateAssetCommand ? 'create' : 'process'
+            );
 
             if (self::LINK_ASSETS_BATCH_SIZE === count($linkAssetCommands)) {
                 $this->linkAssets($linkAssetCommands);
