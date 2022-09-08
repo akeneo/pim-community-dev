@@ -4,23 +4,20 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Application\Applier;
 
-use Akeneo\Category\Api\Command\UserIntents\SetRichText;
+use Akeneo\Category\Api\Command\UserIntents\SetImage;
 use Akeneo\Category\Api\Command\UserIntents\UserIntent;
 use Akeneo\Category\Domain\Model\Category;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
 
 /**
- * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SetRichTextApplier implements UserIntentApplier
+class SetImageApplier implements UserIntentApplier
 {
-    /**
-     * @param SetRichText $userIntent
-     */
     public function apply(UserIntent $userIntent, Category $category): void
     {
-        if (!$userIntent instanceof SetRichText) {
+        if (!$userIntent instanceof SetImage) {
             throw new \InvalidArgumentException(sprintf('Unexpected class: %s', get_class($userIntent)));
         }
 
@@ -35,11 +32,8 @@ class SetRichTextApplier implements UserIntentApplier
         $category->setAttributes($attributes);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getSupportedUserIntents(): array
     {
-        return [SetRichText::class];
+        return [SetImage::class];
     }
 }
