@@ -6,6 +6,7 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\Product
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
@@ -31,7 +32,7 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
         $this->assertSame($productFile->originalFilename(), $savedProductFile['original_filename']);
         $this->assertSame($productFile->path(), $savedProductFile['path']);
         $this->assertSame($productFile->contributorEmail(), $savedProductFile['uploaded_by_contributor']);
-        $this->assertSame($productFile->supplierIdentifier(), $savedProductFile['uploaded_by_supplier']);
+        $this->assertSame($productFile->uploadedBySupplier(), $savedProductFile['uploaded_by_supplier']);
         $this->assertFalse((bool) $savedProductFile['downloaded']);
     }
 
@@ -109,6 +110,50 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
         static::assertSame('I\'m gonna submit an other product file to you.', $comments[1]['content']);
         static::assertSame('jimmy@punchline.com', $comments[1]['author_email']);
         static::assertSame('2022-09-08 17:02:53', $comments[1]['created_at']);
+    }
+
+    /** @test */
+    public function itFindsAProductFileFromItsIdentifier(): void
+    {
+        $this->createSupplier();
+        $this->createProductFile('8d388bdc-8243-4e88-9c7c-6be0d7afb9df');
+
+        $repository = $this->get(ProductFileRepository::class);
+        /** @var ProductFile $productFile */
+        $productFile = $repository->find(Identifier::fromString('8d388bdc-8243-4e88-9c7c-6be0d7afb9df'));
+
+        static::assertSame('file.xlsx', $productFile->originalFilename());
+        static::assertSame('path/to/file/file.xlsx', $productFile->path());
+        static::assertSame('jimmy@punchline.com', $productFile->contributorEmail());
+        static::assertSame('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7', $productFile->uploadedBySupplier());
+        static::assertSame('2022-09-07 08:54:38', $productFile->uploadedAt());
+        static::assertFalse($productFile->downloaded());
+    }
+
+    private function createProductFile(string $productFileIdentifier): void
+    {
+        $sql = <<<SQL
+            INSERT INTO `akeneo_supplier_portal_supplier_product_file` (
+                identifier,
+                original_filename,
+                path,
+                uploaded_by_contributor,
+                uploaded_by_supplier,
+                uploaded_at
+            ) VALUES (:identifier, :originalFilename, :path, :contributorEmail, :supplierIdentifier, :uploadedAt)
+        SQL;
+
+        $this->get(Connection::class)->executeStatement(
+            $sql,
+            [
+                'identifier' => $productFileIdentifier,
+                'originalFilename' => 'file.xlsx',
+                'path' => 'path/to/file/file.xlsx',
+                'contributorEmail' => 'jimmy@punchline.com',
+                'supplierIdentifier' => 'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7',
+                'uploadedAt' => '2022-09-07 08:54:38',
+            ],
+        );
     }
 
     private function findProductFile(string $originalFilename): ?array

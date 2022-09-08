@@ -6,6 +6,7 @@ namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repo
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 
@@ -92,5 +93,37 @@ final class DatabaseRepository implements ProductFileRepository
         }
 
         $this->connection->commit();
+    }
+
+    public function find(Identifier $identifier): ?ProductFile
+    {
+        $sql = <<<SQL
+            SELECT
+                identifier,
+                original_filename,
+                path,
+                uploaded_by_contributor,
+                uploaded_by_supplier,
+                uploaded_at,
+                downloaded
+            FROM `akeneo_supplier_portal_supplier_product_file`
+            WHERE identifier = :identifier
+        SQL;
+
+        $productFile = $this->connection->executeQuery($sql, ['identifier' => (string) $identifier])->fetchAssociative();
+
+        if (false === $productFile) {
+            return null;
+        }
+
+        return ProductFile::hydrate(
+            $productFile['identifier'],
+            $productFile['original_filename'],
+            $productFile['path'],
+            $productFile['uploaded_by_contributor'],
+            $productFile['uploaded_by_supplier'],
+            $productFile['uploaded_at'],
+            (bool) $productFile['downloaded'],
+        );
     }
 }
