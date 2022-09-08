@@ -7,6 +7,7 @@ namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repo
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
 
 final class InMemoryRepository implements ProductFileRepository
 {
@@ -26,5 +27,10 @@ final class InMemoryRepository implements ProductFileRepository
         }
 
         return null;
+    }
+
+    public function find(Identifier $identifier): ?ProductFile
+    {
+        return $this->productFiles[(string) $identifier] ?? null;
     }
 }
