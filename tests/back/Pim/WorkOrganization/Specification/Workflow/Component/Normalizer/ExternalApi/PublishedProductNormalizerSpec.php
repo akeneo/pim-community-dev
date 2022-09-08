@@ -47,10 +47,10 @@ class PublishedProductNormalizerSpec extends ObjectBehavior
 
         $associationNormalizer->normalize($publishedProduct, 'external_api', [])->shouldBeCalledOnce()->willReturn([]);
 
-        $this->normalize($publishedProduct, 'external_api')->shouldReturn([
+        $this->normalize($publishedProduct, 'external_api')->shouldBeLike([
             'identifier' => 'foo',
             'categories' => ['bar'],
-            'associations' => []
+            'associations' => (object) []
         ]);
     }
 
@@ -69,11 +69,11 @@ class PublishedProductNormalizerSpec extends ObjectBehavior
             ->shouldBeCalledOnce()
             ->willReturn([]);
 
-        $this->normalize($publishedProduct, 'external_api', ['with_quality_scores' => true])->shouldReturn([
+        $this->normalize($publishedProduct, 'external_api', ['with_quality_scores' => true])->shouldBeLike([
             'identifier' => 'foo',
             'categories' => ['bar'],
             'quality_scores' => [],
-            'associations' => []
+            'associations' => (object) []
         ]);
     }
 

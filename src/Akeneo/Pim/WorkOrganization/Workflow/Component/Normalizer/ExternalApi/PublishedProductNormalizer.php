@@ -56,6 +56,14 @@ class PublishedProductNormalizer implements NormalizerInterface, CacheableSuppor
             $context
         );
 
+        if ([] === $normalizedPublishedProduct['associations']) {
+            $normalizedPublishedProduct['associations'] = (object) [];
+        }
+
+        if (isset($normalizedPublishedProduct['quantified_associations'])) {
+            $normalizedPublishedProduct['quantified_associations'] = (object) [];
+        }
+
         return $normalizedPublishedProduct;
     }
 
