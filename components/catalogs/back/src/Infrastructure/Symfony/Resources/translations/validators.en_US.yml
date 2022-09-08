@@ -28,3 +28,5 @@ akeneo_catalogs:
         product_value_filters:
             channel:
                 unknown: 'The channel "{{ channel_name }}" has been deactivated. Please check your channel settings or remove this filter.'
+            locale:
+                unknown: 'The locale "{{ locale_name }}" has been deactivated. Please check your locale settings or remove this filter.'

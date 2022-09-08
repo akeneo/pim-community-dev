@@ -60,6 +60,7 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
             ],
             'product_value_filters' => [
                 'channels' => ['ecommerce'],
+                'locales' => ['en_US'],
             ],
         ], new CatalogUpdatePayload());
 
@@ -136,6 +137,14 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
             'channel does not exist' => [
                 'filters' => ['channels' => ['removed_channel']],
                 'expectedMessage' => 'The channel "removed_channel" has been deactivated. Please check your channel settings or remove this filter.',
+            ],
+            'locale is not a valid array' => [
+                'filters' => ['locales' => 'en_US'],
+                'expectedMessage' => 'This value should be of type array.',
+            ],
+            'locale is not activated' => [
+                'filters' => ['locales' => ['removed_locale']],
+                'expectedMessage' => 'The locale "removed_locale" has been deactivated. Please check your locale settings or remove this filter.',
             ],
         ];
     }
