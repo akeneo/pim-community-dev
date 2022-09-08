@@ -17,7 +17,7 @@ interface GetProductUuidsQueryInterface
         string $catalogId,
         ?string $searchAfter = null,
         int $limit = 100,
-        ?string $updatedBefore = null,
         ?string $updatedAfter = null,
+        ?string $updatedBefore = null,
     ): array;
 }

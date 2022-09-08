@@ -27,8 +27,8 @@ final class GetProductUuidsHandler
             $query->getCatalogId(),
             $query->getSearchAfter(),
             $query->getLimit(),
-            $query->getUpdatedBefore(),
             $query->getUpdatedAfter(),
+            $query->getUpdatedBefore(),
         );
     }
 }

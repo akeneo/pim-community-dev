@@ -23,9 +23,9 @@ class GetProductUuidsQuery implements QueryInterface
         #[Assert\Range(min: 1, max: 1000)]
         private int $limit = 100,
         #[Assert\DateTime(\DateTimeInterface::ATOM, 'ISO 8601 format is required.')]
-        private ?string $updatedBefore = null,
-        #[Assert\DateTime(\DateTimeInterface::ATOM, 'ISO 8601 format is required.')]
         private ?string $updatedAfter = null,
+        #[Assert\DateTime(\DateTimeInterface::ATOM, 'ISO 8601 format is required.')]
+        private ?string $updatedBefore = null,
     ) {
     }
 
@@ -44,13 +44,13 @@ class GetProductUuidsQuery implements QueryInterface
         return $this->limit;
     }
 
-    public function getUpdatedBefore(): ?string
-    {
-        return $this->updatedBefore;
-    }
-
     public function getUpdatedAfter(): ?string
     {
         return $this->updatedAfter;
+    }
+
+    public function getUpdatedBefore(): ?string
+    {
+        return $this->updatedBefore;
     }
 }

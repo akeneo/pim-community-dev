@@ -34,12 +34,12 @@ final class GetProductUuidsQuery implements GetProductUuidsQueryInterface
         string $catalogId,
         ?string $searchAfter = null,
         int $limit = 100,
-        ?string $updatedBefore = null,
         ?string $updatedAfter = null,
+        ?string $updatedBefore = null,
     ): array {
         $pqbOptions = [
             'filters' => \array_merge(
-                $this->getUpdatedFilters($updatedBefore, $updatedAfter),
+                $this->getUpdatedFilters($updatedAfter, $updatedBefore),
                 $this->getFilters($catalogId)
             ),
             'limit' => $limit,
@@ -115,40 +115,9 @@ final class GetProductUuidsQuery implements GetProductUuidsQueryInterface
     /**
      * @return array<mixed>
      */
-    private function getUpdatedFilters(?string $updatedBefore, ?string $updatedAfter): array
+    private function getUpdatedFilters(?string $updatedAfter, ?string $updatedBefore): array
     {
-        $operator = null;
-        $value = null;
-
-        $updatedBeforeDateTime = \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, (string) $updatedBefore);
-        $updatedAfterDateTime = \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, (string) $updatedAfter);
-
-        if (false !== $updatedBeforeDateTime) {
-            $updatedBeforeDateTime = $updatedBeforeDateTime->setTimezone(new \DateTimeZone('UTC'));
-        }
-        if (false !== $updatedAfterDateTime) {
-            $updatedAfterDateTime = $updatedAfterDateTime->setTimezone(new \DateTimeZone('UTC'));
-        }
-
-        if (null !== $updatedBefore && null !== $updatedAfter) {
-            if (false !== $updatedBeforeDateTime && false !== $updatedAfterDateTime) {
-                $operator = Operators::BETWEEN;
-                $value = [
-                    $updatedAfterDateTime->format('Y-m-d H:i:s'),
-                    $updatedBeforeDateTime->format('Y-m-d H:i:s'),
-                ];
-            }
-        } elseif (null !== $updatedBefore) {
-            if (false !== $updatedBeforeDateTime) {
-                $operator = Operators::LOWER_THAN;
-                $value = $updatedBeforeDateTime->format('Y-m-d H:i:s');
-            }
-        } elseif (null !== $updatedAfter) {
-            if (false !== $updatedAfterDateTime) {
-                $operator = Operators::GREATER_THAN;
-                $value = $updatedAfterDateTime->format('Y-m-d H:i:s');
-            }
-        }
+        [$operator, $value] = $this->parseUpdatedParameters($updatedAfter, $updatedBefore);
 
         if (null === $operator || null === $value) {
             return [];
@@ -161,6 +130,50 @@ final class GetProductUuidsQuery implements GetProductUuidsQueryInterface
                 'value' => $value,
             ],
         ];
+    }
+
+    /**
+     * @return array{string|null, string|array<string>|null}
+     */
+    private function parseUpdatedParameters(?string $updatedAfter, ?string $updatedBefore): array
+    {
+        $updatedAfterDateTime = \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, (string) $updatedAfter);
+        $updatedBeforeDateTime = \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, (string) $updatedBefore);
+
+        if (false !== $updatedAfterDateTime) {
+            $updatedAfterDateTime = $updatedAfterDateTime->setTimezone(new \DateTimeZone('UTC'));
+        }
+        if (false !== $updatedBeforeDateTime) {
+            $updatedBeforeDateTime = $updatedBeforeDateTime->setTimezone(new \DateTimeZone('UTC'));
+        }
+
+        if (null !== $updatedAfter && null !== $updatedBefore) {
+            if (false !== $updatedAfterDateTime && false !== $updatedBeforeDateTime) {
+                return [
+                    Operators::BETWEEN,
+                    [
+                        $updatedAfterDateTime->format('Y-m-d H:i:s'),
+                        $updatedBeforeDateTime->format('Y-m-d H:i:s'),
+                    ]
+                ];
+            }
+        } elseif (null !== $updatedAfter) {
+            if (false !== $updatedAfterDateTime) {
+                return [
+                    Operators::GREATER_THAN,
+                    $updatedAfterDateTime->format('Y-m-d H:i:s')
+                ];
+            }
+        } elseif (null !== $updatedBefore) {
+            if (false !== $updatedBeforeDateTime) {
+                return [
+                    Operators::LOWER_THAN,
+                    $updatedBeforeDateTime->format('Y-m-d H:i:s')
+                ];
+            }
+        }
+
+        return [null, null];
     }
 
     /**

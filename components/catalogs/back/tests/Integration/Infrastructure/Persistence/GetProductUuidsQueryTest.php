@@ -147,7 +147,7 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
         ], $result);
     }
 
-    public function testItGetsMatchingProductsUuidsUsingUpdatedBefore(): void
+    public function testItGetsMatchingProductsUuidsUsingUpdatedAfter(): void
     {
         $this->createUser('owner');
         $this->logAs('owner');
@@ -173,11 +173,11 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
         $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', null, 100, '2022-09-01T17:35:00+02:00');
 
         $this->assertEquals([
-            $uuids['tshirt-blue'],
+            $uuids['tshirt-green'],
         ], $result);
     }
 
-    public function testItGetsMatchingProductsUuidsUsingUpdatedAfter(): void
+    public function testItGetsMatchingProductsUuidsUsingUpdatedBefore(): void
     {
         $this->createUser('owner');
         $this->logAs('owner');
@@ -203,7 +203,7 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
         $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', null, 100, null, '2022-09-01T17:35:00+02:00');
 
         $this->assertEquals([
-            $uuids['tshirt-green'],
+            $uuids['tshirt-blue'],
         ], $result);
     }
 
@@ -230,7 +230,7 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
 
         $uuids = $this->getProductIdentifierToUuidMapping();
 
-        $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', null, 100, '2022-09-01T17:45:00+02:00', '2022-09-01T17:35:00+02:00');
+        $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', null, 100, '2022-09-01T17:35:00+02:00', '2022-09-01T17:45:00+02:00');
 
         $this->assertEquals([
             $uuids['tshirt-green'],
