@@ -21,18 +21,18 @@ class SetTextAreaApplier implements UserIntentApplier
     public function apply(UserIntent $userIntent, Category $category): void
     {
         if (!$userIntent instanceof SetTextArea) {
-            throw new \InvalidArgumentException('Unexpected class');
+            throw new \InvalidArgumentException(sprintf('Unexpected class: %s', get_class($userIntent)));
         }
 
-        $valueCollection = $category->getValueCollection() ?? ValueCollection::fromArray([]);
-        $valueCollection->setValue(
+        $attributes = $category->getAttributes() ?? ValueCollection::fromArray([]);
+        $attributes->setValue(
             $userIntent->attributeUuid(),
             $userIntent->attributeCode(),
             $userIntent->localeCode(),
             $userIntent->value(),
         );
 
-        $category->setValueCollection($valueCollection);
+        $category->setAttributes($attributes);
     }
 
     public function getSupportedUserIntents(): array

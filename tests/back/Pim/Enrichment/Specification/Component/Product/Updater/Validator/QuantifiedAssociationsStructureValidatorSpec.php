@@ -148,7 +148,7 @@ class QuantifiedAssociationsStructureValidatorSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyTypeException::validArrayStructureExpected(
                 $field,
-                'a quantified association should contain the key "identifier"',
+                'a quantified association should contain one of these keys: "identifier" or "uuid"',
                 QuantifiedAssociationsStructureValidator::class,
                 $data
             )

@@ -33,22 +33,22 @@ final class LabelCollection implements \IteratorAggregate
     /**
      * @return LocalizedLabels
      */
-    public function getLabels(): array
+    public function getTranslations(): array
     {
         return $this->translatedLabels;
     }
 
-    public function getLabel(string $localeCode): ?string
+    public function getTranslation(string $localeCode): ?string
     {
         return $this->translatedLabels[$localeCode] ?? null;
     }
 
-    public function setLabel(string $localeCode, string $label): void
+    public function setTranslation(string $localeCode, string $label): void
     {
         $this->translatedLabels[$localeCode] = $label;
     }
 
-    public function hasLabel(string $localeCode): bool
+    public function hasTranslation(string $localeCode): bool
     {
         return array_key_exists($localeCode, $this->translatedLabels);
     }

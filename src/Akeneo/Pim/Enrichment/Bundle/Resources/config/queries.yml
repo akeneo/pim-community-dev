@@ -356,8 +356,8 @@ services:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '%pim_job_product_batch_size%'
 
-    akeneo.pim.enrichment.product.query.find_non_existing_product_identifiers_query:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\FindNonExistingProductIdentifiersQuery'
+    akeneo.pim.enrichment.product.query.find_non_existing_products_query:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\FindNonExistingProductsQuery'
         arguments:
             - '@database_connection'
 
@@ -382,13 +382,8 @@ services:
             - '@database_connection'
         tags: ['akeneo.pim.cached_query']
 
-    akeneo.pim.enrichment.product.query.quantified_association.get_id_mapping_from_product_identifiers_query:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\QuantifiedAssociation\GetIdMappingFromProductIdentifiersQuery'
-        arguments:
-            - '@database_connection'
-
-    akeneo.pim.enrichment.product.query.quantified_association.get_uuid_mapping_from_product_identifiers_query:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\QuantifiedAssociation\GetUuidMappingFromProductIdentifiersQuery'
+    akeneo.pim.enrichment.product.query.quantified_association.get_uuid_mapping_query:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\QuantifiedAssociation\GetUuidMappingQuery'
         arguments:
             - '@database_connection'
 

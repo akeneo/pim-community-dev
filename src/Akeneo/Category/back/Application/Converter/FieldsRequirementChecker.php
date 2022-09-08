@@ -14,7 +14,7 @@ use Akeneo\Category\Infrastructure\Exception\StructureArrayConversionException;
 class FieldsRequirementChecker
 {
     /**
-     * Check if all required fields are present.
+     * Checks whether all required fields are present.
      *
      * @param array<string> $item
      * @param array<string, mixed> $fields
