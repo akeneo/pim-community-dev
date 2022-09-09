@@ -1,0 +1,33 @@
+{{- range $cloudFunction := .Values.cloudFunctions }}
+{{- with $ -}}
+apiVersion: cloudfunctions.cnrm.cloud.google.com/v1beta1
+kind: CloudFunctionsFunction
+metadata:
+  name: {{ include "timmy.fullname" . }}-{{ $cloudFunction.name }}
+  namespace: {{ .Release.Namespace | quote }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-options: Replace=true
+spec:
+  projectRef:
+    external: "projects/{{ .Values.common.gcpProjectID }}"
+  description: {{ $cloudFunction.description }}
+  availableMemoryMb: {{ $cloudFunction.availableMemoryMb }}
+  region: {{ .Values.common.region }}
+  runtime: {{ .Values.common.cloudFunctions.runtime }}
+  sourceRepository:
+    url: https://source.developers.google.com/projects/{{ .Values.common.gcpProjectID }}/repos/{{ $cloudFunction.sourceRepository.name }}/moveable-aliases/{{ $cloudFunction.sourceRepository.branch }}/paths/{{ $cloudFunction.sourceRepository.dir }}
+  entryPoint: {{ $cloudFunction.entryPoint }}
+  serviceAccountRef:
+    external: {{ .Values.common.cloudFunctions.saEmail }}
+  environmentVariables:
+    {{ if $cloudFunction.environmentVariables }}
+    {{- toYaml $cloudFunction.environmentVariables | nindent 4 }}
+    {{ end }}
+    GCP_PROJECT_ID: {{ .Values.common.gcpProjectID }}
+  httpsTrigger:
+    securityLevel: SECURE_ALWAYS
+  ingressSettings: ALLOW_ALL
+---
+{{- end }}
+{{- end }}

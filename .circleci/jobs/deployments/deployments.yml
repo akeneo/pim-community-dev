@@ -591,6 +591,7 @@ jobs:
               cd /tmp
               git clone -b ${CIRCLE_BRANCH} --depth 1 git@github.com:akeneo/pim-enterprise-dev.git ee-branch
               git clone -b ${CIRCLE_BRANCH}-deployment git@github.com:akeneo/pim-enterprise-dev.git ee-deployment && cd ee-deployment || { git clone -b BH-1161-deployment git@github.com:akeneo/pim-enterprise-dev.git ee-deployment && cd ee-deployment && git checkout -b ${CIRCLE_BRANCH}-deployment; }
+              mkdir -p /tmp/ee-deployment/deployments-ucs/pim-saas-service
               rm -rf /tmp/ee-deployment/deployments-ucs/pim-saas-service
               mv /tmp/ee-branch/deployments-ucs/pim-saas-service /tmp/ee-deployment/deployments-ucs/pim-saas-service
 

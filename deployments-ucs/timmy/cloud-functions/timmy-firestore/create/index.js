@@ -25,7 +25,7 @@ var  bodyjson=req.body;
   
    data = JSON.stringify(
      { "values":
-      {
+     JSON.stringify({
        "AKENEO_PIM_URL": "https://" + instance_name +"."+ domain,
        "APP_DATABASE_HOST": "pim-mysql." + pfid + ".svc.cluster.local",
        "APP_INDEX_HOSTS": "elasticsearch-client." + pfid + ".svc.cluster.local",
@@ -37,7 +37,7 @@ var  bodyjson=req.body;
        "APP_DATABASE_PASSWORD": mysql_password ,
        "PFID":  pfid ,
        "SRNT_GOOGLE_BUCKET_NAME":  pfid 
-     }
+     })
    }
    );
    const docRef = firestore.collection(process.env.tenantContext).doc(instance_name).set(JSON.parse(data));

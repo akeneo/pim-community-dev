@@ -7,8 +7,8 @@ import (
     "cloud.google.com/go/firestore"
 )
 
-func createClientFirestore(ctx context.Context, projectID string) *firestore.Client {
-    client, err := firestore.NewClient(ctx, projectID)
+func createClientFirestore(ctx context.Context, firestoreProjectID string) *firestore.Client {
+    client, err := firestore.NewClient(ctx, firestoreProjectID)
     if err != nil {
             log.Fatalf("Failed to create client: %v", err)
     }
@@ -42,10 +42,10 @@ func readDocument(ctx context.Context, client *firestore.Client, collection stri
 
 func main() {
     ctx := context.Background()
-    projectID := "akecld-prd-pim-saas-dev"
+    firestoreProjectID := "akecld-prd-pim-fire-eur-dev"
 
     // Firestore
-    clientFirestore := createClientFirestore(ctx, projectID)
+    clientFirestore := createClientFirestore(ctx, firestoreProjectID)
     collection := "tenant_contexts"
     pfid := os.Args[1]
     deleteDocument(ctx, clientFirestore, collection, pfid)

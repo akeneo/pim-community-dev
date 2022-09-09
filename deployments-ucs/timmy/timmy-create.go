@@ -7,8 +7,8 @@ import (
     "cloud.google.com/go/firestore"
 )
 
-func createClientFirestore(ctx context.Context, projectID string) *firestore.Client {
-    client, err := firestore.NewClient(ctx, projectID)
+func createClientFirestore(ctx context.Context, firestoreProjectID string) *firestore.Client {
+    client, err := firestore.NewClient(ctx, firestoreProjectID)
     if err != nil {
             log.Fatalf("Failed to create client: %v", err)
     }
@@ -42,10 +42,10 @@ func readDocument(ctx context.Context, client *firestore.Client, collection stri
 
 func main() {
     ctx := context.Background()
-    projectID := "akecld-prd-pim-saas-dev"
+    firestoreProjectID := "akecld-prd-pim-fire-eur-dev"
 
     // Firestore
-    clientFirestore := createClientFirestore(ctx, projectID)
+    clientFirestore := createClientFirestore(ctx, firestoreProjectID)
     collection := "tenant_contexts"
     pfid := os.Args[1]
     instance_name := os.Args[2]
@@ -53,13 +53,13 @@ func main() {
     email_password := os.Args[4]
     data := map[string]interface{}{
         "values": `{
-            "AKENEO_PIM_URL": "https://` + instance_name + `.dev.akeneo.ch",
+            "AKENEO_PIM_URL": "https://` + instance_name + `.cloud.akeneo.com",
             "APP_DATABASE_HOST": "pim-mysql.` + pfid + `.svc.cluster.local",
             "APP_INDEX_HOSTS": "elasticsearch-client.` + pfid + `.svc.cluster.local",
             "APP_TENANT_ID": "` + pfid + `",
             "MAILER_PASSWORD": "` + email_password + `",
-            "MAILER_URL": "smtp://smtp.mailgun.org:2525?encryption=tls&auth_mode=login&username=` + instance_name + `-akecld-prd-pim-saas-dev@mg.dev.akeneo.ch&password=` + email_password + `&sender_address=no-reply-` + pfid + `.dev.akeneo.ch",
-            "MAILER_USER": "` + instance_name + `-akecld-bh-sandbox@mg.dev.akeneo.ch",
+            "MAILER_URL": "smtp://smtp.mailgun.org:2525?encryption=tls&auth_mode=login&username=` + instance_name + `-akecld-prd-pim-saas-dev@mg.cloud.akeneo.com&password=` + email_password + `&sender_address=no-reply-` + pfid + `.cloud.akeneo.com",
+            "MAILER_USER": "` + instance_name + `-akecld-bh-sandbox@mg.cloud.akeneo.com",
             "MEMCACHED_SVC": "memcached.` + pfid + `.svc.cluster.local",
             "APP_DATABASE_PASSWORD": "` + mysql_password + `",
             "PFID": "` + pfid + `",

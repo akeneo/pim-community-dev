@@ -7,7 +7,6 @@ variable "firestore_project_id" {
   description = "firestore project id"
   type        = string
 }
-
 variable "secrets_admins" {
   description = "Secrets version managers"
   type        = list(string)

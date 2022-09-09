@@ -1,0 +1,87 @@
+# TODO PH-203 : set values to null and template it with CircleCI
+nameOverride: ""
+fullnameOverride: "timmy"
+
+common:
+  gcpProjectID: "akecld-prd-pim-saas-dev"
+  workloadIdentityKSA: "timmy-deployment-sa"
+  workloadIdentityGSA: "timmy-deployment"
+  region: "europe-west1"
+  timeZone: "Europe/Paris"
+
+  cloudFunctions:
+    runtime: "nodejs16"
+    saEmail: timmy-cloud-function@akecld-prd-pim-saas-dev.iam.gserviceaccount.com
+cloudFunctions:
+  - name: "request-portal"
+    description: "Request the portal to get tenant information"
+    availableMemoryMb: 128
+    entryPoint: "requestPortal"
+    environmentVariables:
+      FUNCTION_URL_TIMMY_CREATE_TENANT: https://europe-west1-akecld-prd-pim-saas-dev.cloudfunctions.net/timmy-create-tenant
+      FUNCTION_URL_TIMMY_DELETE_TENANT: https://europe-west1-akecld-prd-pim-saas-dev.cloudfunctions.net/timmy-delete-tenant
+      MAILER_BASE_URL: "smtp://smtp.mailgun.org:2525"
+      MAILER_DOMAIN: "mg.cloud.akeneo.com"
+      PORTAL_HOSTNAME: "partners-preprod.ip.akeneo.com"
+      PORTAL_LOGIN_HOSTNAME: "connect-preprod.ip.akeneo.com"
+      TENANT_EDITION_FLAGS: "serenity_instance"
+      TENANT_CONTINENT: "europe"
+      TENANT_ENVIRONMENT: "sandbox"
+      SECRET_PORTAL: "PORTAL_TIMMY"
+      SECRET_MAILER_API_KEY: "MAILER_API_KEY"
+    sourceRepository:
+      name: "github_akeneo_pim-saas-k8s-artifacts"
+      branch: "master"
+      dir: "cloud-functions/timmy/portal"
+  - name: "create-tenant"
+    description: "Create UCS tenant through ArgoCD server"
+    availableMemoryMb: 128
+    entryPoint: "createTenant"
+    environmentVariables:
+      ARGOCD_URL: "https://argocd.pim-saas-dev.dev.cloud.akeneo.com/"
+      GOOGLE_ZONE: "europe-west1-b"
+      GOOGLE_MANAGED_ZONE_DNS: "dev.akeneo.ch"
+    sourceRepository:
+      name: "github_akeneo_pim-saas-k8s-artifacts"
+      branch: "master"
+      dir: "cloud-functions/timmy/tenants/create"
+  - name: "delete-tenant"
+    description: "Delete UCS tenant through ArgoCD server"
+    availableMemoryMb: 128
+    entryPoint: "deleteTenant"
+    environmentVariables:
+      ARGOCD_URL: "https://argocd.pim-saas-dev.dev.cloud.akeneo.com/"
+    sourceRepository:
+      name: "github_akeneo_pim-saas-k8s-artifacts"
+      branch: "master"
+      dir: "cloud-functions/timmy/tenants/delete"
+  - name: "create-fire-document"
+    description: "Create Firestore document in the tenantcontext DB"
+    availableMemoryMb: 128
+    entryPoint: "createDocument"
+    environmentVariables:
+      fireStoreProjectId: "akecld-prd-pim-fire-eur-dev"
+      projectId: "akecld-prd-pim-saas-dev"
+      tenantContext: "tenant_contexts"
+      domain:  "pim-saas-dev.dev.cloud.akeneo.com"
+      mailerBaseUrl: "smtp://smtp.mailgun.org:2525"
+    sourceRepository:
+      name: "github_akeneo_pim-saas-k8s-artifacts"
+      branch: "master"
+      dir: "cloud-functions/timmy/timmy-firestore/create"
+  - name: "delete-fire-document"
+    description: "Delete Firestore document in the tenantcontext DB"
+    availableMemoryMb: 128
+    entryPoint: "deleteDocument"
+    environmentVariables:
+      fireStoreProjectId: "akecld-prd-pim-fire-eur-dev"
+      projectId: "akecld-prd-pim-saas-dev"
+      tenantContext: "tenant_contexts"
+    sourceRepository:
+      name: "github_akeneo_pim-saas-k8s-artifacts"
+      branch: "master"
+      dir: "cloud-functions/timmy/timmy-firestore/delete"
+
+cloudScheduler:
+  schedule: "*/2 * * * *"
+  functionName: "request-portal"
