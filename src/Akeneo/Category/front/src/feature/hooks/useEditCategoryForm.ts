@@ -5,13 +5,7 @@ import {NotificationLevel, useNotify, useRouter, useTranslate} from '@akeneo-pim
 import {saveEditCategoryForm} from '../infrastructure';
 import {useCategory} from './useCategory';
 import {EditCategoryContext} from '../components';
-import {
-  buildCompositeKey,
-  Attribute,
-  CategoryAttributeValueData,
-  CategoryPermissions,
-  EnrichCategory,
-} from '../models';
+import {buildCompositeKey, Attribute, CategoryAttributeValueData, CategoryPermissions, EnrichCategory} from '../models';
 import {alterPermissionsConsistently, categoriesAreEqual} from '../helpers';
 
 const useEditCategoryForm = (categoryId: number) => {

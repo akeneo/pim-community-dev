@@ -1,7 +1,7 @@
 import React from 'react';
-import {Attribute, CategoryAttributeValueData, CategoryImageAttributeValueData} from "../models";
-import {Field, FileInfo, MediaFileInput, SectionTitle, TextAreaInput, TextInput, Helper} from 'akeneo-design-system';
-import styled from "styled-components";
+import {Attribute} from '../models';
+import {Field, FileInfo, MediaFileInput, TextAreaInput, TextInput} from 'akeneo-design-system';
+import styled from 'styled-components';
 
 type TextAttributeInputValue = string;
 
@@ -9,20 +9,21 @@ type ImageAttributeInputValue = FileInfo | null;
 
 export type AttributeInputValue = TextAttributeInputValue | ImageAttributeInputValue;
 
-export const isImageAttributeInputValue = (value : AttributeInputValue) : value is ImageAttributeInputValue =>
+export const isImageAttributeInputValue = (value: AttributeInputValue): value is ImageAttributeInputValue =>
   value !== null && value.hasOwnProperty('originalFilename') && value.hasOwnProperty('filePath');
 
-export const getLabelFromAttribute = (attr: Attribute, locale: string): string => attr.labels[locale] ?? "["+attr.code+"]";
+export const getLabelFromAttribute = (attr: Attribute, locale: string): string =>
+  attr.labels[locale] ?? '[' + attr.code + ']';
 
 interface AttributeFieldBuilder<ValueType extends AttributeInputValue> {
   buildAttributeField(attr: Attribute): React.FC<AttributeProps<ValueType>>;
 }
 
 declare type AttributeProps<ValueType> = {
-  locale: string
-  value: ValueType
-  onChange: (value: ValueType) => void
-}
+  locale: string;
+  value: ValueType;
+  onChange: (value: ValueType) => void;
+};
 
 class TextFieldAttributeBuilder implements AttributeFieldBuilder<AttributeInputValue> {
   buildAttributeField(attr: Attribute): React.FC<AttributeProps<AttributeInputValue>> {
@@ -32,9 +33,9 @@ class TextFieldAttributeBuilder implements AttributeFieldBuilder<AttributeInputV
       }
 
       return (
-       <Field label={getLabelFromAttribute(attr, locale)} locale={locale}>
-         <TextInput name={attr.code} value={value} onChange={onChange} />
-       </Field>
+        <Field label={getLabelFromAttribute(attr, locale)} locale={locale}>
+          <TextInput name={attr.code} value={value} onChange={onChange} />
+        </Field>
       );
     };
   }
@@ -106,19 +107,19 @@ class ImageFieldAttributeBuilder implements AttributeFieldBuilder<AttributeInput
   }
 }
 
-const attributeFieldBuilders: {[attributeType: string]:AttributeFieldBuilder<AttributeInputValue>} = {
-  'text': new TextFieldAttributeBuilder(),
-  'richtext': new RichTextFieldAttributeBuilder(),
-  'textarea': new TextAreaFieldAttributeBuilder(),
-  'image': new ImageFieldAttributeBuilder(),
-}
+const attributeFieldBuilders: {[attributeType: string]: AttributeFieldBuilder<AttributeInputValue>} = {
+  text: new TextFieldAttributeBuilder(),
+  richtext: new RichTextFieldAttributeBuilder(),
+  textarea: new TextAreaFieldAttributeBuilder(),
+  image: new ImageFieldAttributeBuilder(),
+};
 
-const attributeFieldFactory = (attr: Attribute): React.FC<AttributeProps<AttributeInputValue>>|null => {
+const attributeFieldFactory = (attr: Attribute): React.FC<AttributeProps<AttributeInputValue>> | null => {
   const builder = attributeFieldBuilders[attr.type];
   if (!builder) {
     return null;
   }
   return builder.buildAttributeField(attr);
-}
+};
 
 export {attributeFieldFactory};

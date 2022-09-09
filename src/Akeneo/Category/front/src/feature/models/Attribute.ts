@@ -7,7 +7,6 @@ export type CategoryAttributeCode = string;
 export const CATEGORY_ATTRIBUTE_TYPE_TEXT = 'text';
 export const CATEGORY_ATTRIBUTE_TYPE_IMAGE = 'image';
 
-
 export type Attribute = {
   uuid: string;
   code: string;

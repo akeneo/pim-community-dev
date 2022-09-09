@@ -1,5 +1,5 @@
 import {LabelCollection} from '@akeneo-pim-community/shared';
-import {Attribute} from "./Attribute";
+import {Attribute} from './Attribute';
 
 export type Template = {
   identifier: string;

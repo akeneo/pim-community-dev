@@ -1,16 +1,11 @@
 import React, {useCallback, useState} from 'react';
-import {Field, FileInfo, MediaFileInput, SectionTitle, TextAreaInput, TextInput, Helper} from 'akeneo-design-system';
+import {SectionTitle, Helper} from 'akeneo-design-system';
 import {Locale, LocaleSelector, useTranslate} from '@akeneo-pim-community/shared';
 import {useTemplate} from '../hooks';
 import styled from 'styled-components';
 
-import {
-  Attribute,
-  CategoryAttributeValueData,
-  CategoryImageAttributeValueData,
-  EnrichCategory,
-} from '../models';
-import {attributeFieldFactory, AttributeInputValue, isImageAttributeInputValue} from "./templateAttributesFactory";
+import {Attribute, CategoryAttributeValueData, CategoryImageAttributeValueData, EnrichCategory} from '../models';
+import {attributeFieldFactory, AttributeInputValue, isImageAttributeInputValue} from './templateAttributesFactory';
 
 const locales: Locale[] = [
   {
@@ -88,11 +83,7 @@ export const EditAttributesForm = ({onAttributeValueChange}: Props) => {
   }
 
   if (isError) {
-    return (
-      <Helper level="error">
-        {translate('akeneo.category.edition_form.template.fetching_failed')}
-      </Helper>
-    );
+    return <Helper level="error">{translate('akeneo.category.edition_form.template.fetching_failed')}</Helper>;
   }
 
   let attributesByOrder: Attribute[] = [];
@@ -107,22 +98,21 @@ export const EditAttributesForm = ({onAttributeValueChange}: Props) => {
         <SectionTitle.Spacer />
         <LocaleSelector value={locale} values={locales} onChange={setLocale} />
       </SectionTitle>
-      {
-        attributesByOrder.map((attribute: Attribute) => {
-          const AttrComp = attributeFieldFactory(attribute);
-          if (AttrComp === null) {
-            return <Helper level="error">Could not find builder for {attribute.type} </Helper>;
-          }
-          const handleChange = (attribute.type === 'image') ? handleImageChange(attribute) : handleTextChange(attribute);
-          // TODO use real value
-          const value = (attribute.type !== 'image') ?
-            "toto_" + attribute.code
-            : {filePath: '/path/to/file/toto.png', originalFilename: "toto.png"};
+      {attributesByOrder.map((attribute: Attribute) => {
+        const AttrComp = attributeFieldFactory(attribute);
+        if (AttrComp === null) {
+          return <Helper level="error">Could not find builder for {attribute.type} </Helper>;
+        }
+        const handleChange = attribute.type === 'image' ? handleImageChange(attribute) : handleTextChange(attribute);
+        // TODO use real value
+        const value =
+          attribute.type !== 'image'
+            ? 'toto_' + attribute.code
+            : {filePath: '/path/to/file/toto.png', originalFilename: 'toto.png'};
 
-          // TODO value field to fill with real value
-          return <AttrComp locale={locale} value={value} onChange={handleChange} key={attribute.uuid}></AttrComp>;
-        })
-      }
+        // TODO value field to fill with real value
+        return <AttrComp locale={locale} value={value} onChange={handleChange} key={attribute.uuid}></AttrComp>;
+      })}
     </FormContainer>
   );
 };
