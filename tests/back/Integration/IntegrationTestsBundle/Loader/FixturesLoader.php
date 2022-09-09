@@ -400,10 +400,12 @@ class FixturesLoader implements FixturesLoaderInterface
         try {
             $this->dbConnection->exec(file_get_contents($filepath));
         } catch (\Doctrine\DBAL\Exception $e) {
-            // The database is not empty, an integrity constraint violation was thrown on an unique key.
-            // When using the experimental test database, it's because the test was not started from an empty
-            // database as it should have. It happens when the previous test exited early.
-            // We assume it will happen only once, so we truncate all tables and insert again.
+            // There can be previous data left in database due to the execution of the previous test.
+            //   - When the previous test autocommit its transaction
+            //   - When the previous test do not use a transaction
+            //   - When the previous test inserted data in another subprocess (like a job).
+            // In that case, an integrity constraint violation is thrown on an unique key.
+            // The solution is to delete all data in the database and retry.
             if ('23000' === $e->getPrevious()?->getCode()) {
                 $this->experimentalTransactionHelper->abortTransactions();
                 $this->databaseSchemaHandler->reset();
