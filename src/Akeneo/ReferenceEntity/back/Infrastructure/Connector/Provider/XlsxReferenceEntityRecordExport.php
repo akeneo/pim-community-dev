@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2020 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2020 Akeneo SAS (https://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -18,6 +18,7 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
+use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -28,7 +29,7 @@ class XlsxReferenceEntityRecordExport implements ConstraintCollectionProviderInt
     /**
      * {@inheritdoc}
      */
-    public function getDefaultValues()
+    public function getDefaultValues(): array
     {
         return [
             'storage' => [
@@ -38,7 +39,7 @@ class XlsxReferenceEntityRecordExport implements ConstraintCollectionProviderInt
             'linesPerFile' => 10000,
             'withHeader' => true,
             'with_media' => true,
-            'user_to_notify' => null,
+            'users_to_notify' => [],
             'is_user_authenticated' => false,
         ];
     }
@@ -46,7 +47,7 @@ class XlsxReferenceEntityRecordExport implements ConstraintCollectionProviderInt
     /**
      * {@inheritdoc}
      */
-    public function getConstraintCollection()
+    public function getConstraintCollection(): Collection
     {
         return new Collection(
             [
@@ -68,7 +69,10 @@ class XlsxReferenceEntityRecordExport implements ConstraintCollectionProviderInt
                         ]
                     ),
                     'with_media' => new Type('bool'),
-                    'user_to_notify' => new Type('string'),
+                    'users_to_notify' => [
+                        new Type('array'),
+                        new All([new Type('string')]),
+                    ],
                     'is_user_authenticated' => new Type('bool'),
                     'reference_entity_identifier' => [
                         new Type('string'),
@@ -82,7 +86,7 @@ class XlsxReferenceEntityRecordExport implements ConstraintCollectionProviderInt
     /**
      * {@inheritdoc}
      */
-    public function supports(JobInterface $job)
+    public function supports(JobInterface $job): bool
     {
         return 'xlsx_reference_entity_record_export' === $job->getName();
     }

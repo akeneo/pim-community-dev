@@ -39,7 +39,7 @@ class MassReview implements DefaultValuesProviderInterface
             'productModelDraftIds' => null,
             'comment'            => null,
             'realTimeVersioning' => true,
-            'user_to_notify'     => null,
+            'users_to_notify'     => [],
             'is_user_authenticated'  => null,
         ];
     }

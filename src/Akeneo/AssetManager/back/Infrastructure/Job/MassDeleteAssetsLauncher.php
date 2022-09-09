@@ -38,7 +38,7 @@ class MassDeleteAssetsLauncher implements MassDeleteAssetsLauncherInterface
         $config = [
             'asset_family_identifier' => (string) $assetFamilyIdentifier,
             'query' => $assetQuery->normalize(),
-            'user_to_notify' => $username
+            'users_to_notify' => [$username]
         ];
 
         $this->publishJobToQueue->publish('asset_manager_mass_delete_assets', $config, false, $username);

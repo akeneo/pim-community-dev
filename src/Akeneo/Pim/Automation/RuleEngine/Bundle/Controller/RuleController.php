@@ -113,7 +113,7 @@ class RuleController
 
         $configuration = [
             'ruleIds' => $filters['values'],
-            'user_to_notify' => $user->getUsername(),
+            'users_to_notify' => [$user->getUsername()],
         ];
 
         $this->jobLauncher->launch($jobInstance, $user, $configuration);
@@ -151,7 +151,7 @@ class RuleController
 
         $configuration = [
             'rule_codes' => $ruleCode,
-            'user_to_notify' => $user->getUsername(),
+            'users_to_notify' => [$user->getUsername()],
         ];
 
         $this->jobLauncher->launch($jobInstance, $user, $configuration);

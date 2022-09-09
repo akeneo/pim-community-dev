@@ -18,6 +18,7 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
+use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
@@ -68,7 +69,10 @@ final class TableValuesCsvExportProvider implements ConstraintCollectionProvider
                             'groups' => ['Default', 'FileConfiguration'],
                         ]
                     ),
-                    'user_to_notify' => new Type('string'),
+                    'users_to_notify' => [
+                        new Type('array'),
+                        new All([new Type('string')]),
+                    ],
                     'is_user_authenticated' => new Type('bool'),
                     'filters' => new Collection(
                         [
@@ -127,7 +131,7 @@ final class TableValuesCsvExportProvider implements ConstraintCollectionProvider
             'delimiter' => ';',
             'enclosure' => '"',
             'withHeader' => true,
-            'user_to_notify' => null,
+            'users_to_notify' => [],
             'is_user_authenticated' => false,
             'filters' => [
                 'table_attribute_code' => null,

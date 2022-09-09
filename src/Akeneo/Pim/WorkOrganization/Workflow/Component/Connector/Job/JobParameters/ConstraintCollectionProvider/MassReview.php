@@ -16,6 +16,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Job\JobParame
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsString;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
+use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Type;
 
@@ -44,7 +45,10 @@ class MassReview implements ConstraintCollectionProviderInterface
                     'productModelDraftIds'  => new Type('array'),
                     'comment'               => new IsString(),
                     'realTimeVersioning'    => new Type('bool'),
-                    'user_to_notify'        => new Type('string'),
+                    'users_to_notify' => [
+                        new Type('array'),
+                        new All([new Type('string')]),
+                    ],
                     'is_user_authenticated' => new Type('bool'),
                 ]
             ]

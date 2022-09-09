@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2019 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2019 Akeneo SAS (https://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Constraints\Type;
 
 class ComputeTransformations implements ConstraintCollectionProviderInterface, DefaultValuesProviderInterface
 {
-    public function getConstraintCollection()
+    public function getConstraintCollection(): Collection
     {
         return new Collection(
             [
@@ -41,12 +41,12 @@ class ComputeTransformations implements ConstraintCollectionProviderInterface, D
         );
     }
 
-    public function supports(JobInterface $job)
+    public function supports(JobInterface $job): bool
     {
         return 'asset_manager_compute_transformations' === $job->getName();
     }
 
-    public function getDefaultValues()
+    public function getDefaultValues(): array
     {
         return [
             'asset_identifiers' => [],

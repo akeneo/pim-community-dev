@@ -42,7 +42,7 @@ class DefaultValues implements DefaultValuesProviderInterface
         return [
             'filters' => null,
             'actions' => null,
-            'user_to_notify' => null,
+            'users_to_notify' => [],
             'is_user_authenticated' => false
         ];
     }

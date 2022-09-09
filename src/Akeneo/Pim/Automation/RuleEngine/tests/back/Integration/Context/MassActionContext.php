@@ -106,7 +106,7 @@ final class MassActionContext implements Context
                     'operator' => 'IN',
                 ],
             ],
-            'user_to_notify' => 'admin',
+            'users_to_notify' => ['admin'],
             'realTimeVersioning' => true,
             'is_user_authenticated' => true,
         ];

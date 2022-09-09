@@ -14,6 +14,7 @@ namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Job\RefreshPro
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
+use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
@@ -42,7 +43,10 @@ class RefreshProjectCompletenessJobParameter implements
                 'product_identifier' => new NotBlank(),
                 'locale_identifier'  => new NotBlank(),
                 'channel_identifier' => new NotBlank(),
-                'user_to_notify'     => new Type('string'),
+                'users_to_notify' => [
+                    new Type('array'),
+                    new All([new Type('string')]),
+                ],
                 'is_user_authenticated' => new Type('bool'),
             ],
         ]);
@@ -54,7 +58,7 @@ class RefreshProjectCompletenessJobParameter implements
     public function getDefaultValues()
     {
         return [
-            'user_to_notify' => null,
+            'users_to_notify' => [],
             'is_user_authenticated' => false
         ];
     }

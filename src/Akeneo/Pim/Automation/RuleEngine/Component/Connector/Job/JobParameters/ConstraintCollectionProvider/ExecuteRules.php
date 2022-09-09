@@ -44,7 +44,10 @@ class ExecuteRules implements ConstraintCollectionProviderInterface
                         new Type('array'),
                         new All([new Type('string')]),
                     ],
-                    'user_to_notify' => new Type('string'),
+                    'users_to_notify' => [
+                        new Type('array'),
+                        new All([new Type('string')]),
+                    ],
                     'stop_on_error' => new Type('bool'),
                     'dry_run' => new Type('bool'),
                 ]

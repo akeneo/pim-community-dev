@@ -44,13 +44,11 @@ final class SendEmailWhenJobInstanceCannotBeLaunched implements EventSubscriberI
         $txtBody = $this->twig->render('@AkeneoJobAutomation/Mail/invalid_job_instance.txt.twig', $parameters);
         $htmlBody = $this->twig->render('@AkeneoJobAutomation/Mail/invalid_job_instance.html.twig', $parameters);
 
-        foreach ($emails as $email) {
-            $this->mailNotifier->notifyByEmail(
-                $email,
-                'Could not launch scheduled job instance',
-                $txtBody,
-                $htmlBody,
-            );
-        }
+        $this->mailNotifier->notify(
+            $emails,
+            'Could not launch scheduled job instance',
+            $txtBody,
+            $htmlBody,
+        );
     }
 }

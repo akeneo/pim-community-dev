@@ -43,7 +43,7 @@ class MassEditAssetsLauncher implements MassEditAssetsLauncherInterface
         $config = [
             'asset_family_identifier' => (string) $assetFamilyIdentifier,
             'query' => $assetQuery->normalize(),
-            'user_to_notify' => $username,
+            'users_to_notify' => [$username],
             'updaters' => $normalizedUpdaters
         ];
 

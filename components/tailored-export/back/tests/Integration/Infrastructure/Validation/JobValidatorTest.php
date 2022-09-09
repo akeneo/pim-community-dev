@@ -67,7 +67,7 @@ class JobValidatorTest extends AbstractValidationTest
             ],
             'withHeader' => true,
             'linesPerFile' => 10000,
-            'user_to_notify' => null,
+            'users_to_notify' => [],
             'is_user_authenticated' => false,
             'with_media' => true,
             'columns' => [
@@ -149,7 +149,7 @@ class JobValidatorTest extends AbstractValidationTest
             ],
             'withHeader' => true,
             'linesPerFile' => 10000,
-            'user_to_notify' => null,
+            'users_to_notify' => [],
             'is_user_authenticated' => false,
             'with_media' => true,
             'columns' => [

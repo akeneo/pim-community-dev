@@ -41,7 +41,7 @@ class ImpactedProductCount implements DefaultValuesProviderInterface
     {
         return [
             'ruleIds' => null,
-            'user_to_notify' => null,
+            'users_to_notify' => [],
             'is_user_authenticated' => false
         ];
     }

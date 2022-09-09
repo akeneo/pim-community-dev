@@ -60,7 +60,7 @@ class ExecuteMassActionHandlerSpec extends ObjectBehavior
 
         $jobLauncher->launch($executeRulesJob, $johndoe, [
             'rule_codes' => ['first_rule', 'second_rule'],
-            'user_to_notify' => 'johndoe',
+            'users_to_notify' => ['johndoe'],
         ])->shouldBeCalled()->willReturn(new JobExecution());
 
         $this->handle($datagrid, $massAction)->shouldReturnAnInstanceOf(MassActionResponseInterface::class);

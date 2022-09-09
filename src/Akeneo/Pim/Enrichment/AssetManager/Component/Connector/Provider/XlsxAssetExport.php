@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2020 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2020 Akeneo SAS (https://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,6 +17,7 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
+use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -27,7 +28,7 @@ class XlsxAssetExport implements ConstraintCollectionProviderInterface, DefaultV
     /**
      * {@inheritdoc}
      */
-    public function getDefaultValues()
+    public function getDefaultValues(): array
     {
         return [
             'storage' => [
@@ -37,7 +38,7 @@ class XlsxAssetExport implements ConstraintCollectionProviderInterface, DefaultV
             'linesPerFile' => 10000,
             'withHeader' => true,
             'with_media' => true,
-            'user_to_notify' => null,
+            'users_to_notify' => [],
             'is_user_authenticated' => false,
             'with_prefix_suffix' => false,
         ];
@@ -46,7 +47,7 @@ class XlsxAssetExport implements ConstraintCollectionProviderInterface, DefaultV
     /**
      * {@inheritdoc}
      */
-    public function getConstraintCollection()
+    public function getConstraintCollection(): Collection
     {
         return new Collection(
             [
@@ -69,7 +70,10 @@ class XlsxAssetExport implements ConstraintCollectionProviderInterface, DefaultV
                     ),
                     'with_media' => new Type('bool'),
                     'with_prefix_suffix' => new Type('bool'),
-                    'user_to_notify' => new Type('string'),
+                    'users_to_notify' => [
+                        new Type('array'),
+                        new All([new Type('string')]),
+                    ],
                     'is_user_authenticated' => new Type('bool'),
                     'asset_family_identifier' => [
                         new Type('string'),
@@ -83,7 +87,7 @@ class XlsxAssetExport implements ConstraintCollectionProviderInterface, DefaultV
     /**
      * {@inheritdoc}
      */
-    public function supports(JobInterface $job)
+    public function supports(JobInterface $job): bool
     {
         return 'asset_manager_xlsx_asset_export' === $job->getName();
     }

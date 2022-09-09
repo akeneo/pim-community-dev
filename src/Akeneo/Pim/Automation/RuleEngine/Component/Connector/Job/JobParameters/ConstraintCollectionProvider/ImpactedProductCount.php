@@ -13,6 +13,7 @@ namespace Akeneo\Pim\Automation\RuleEngine\Component\Connector\Job\JobParameters
 
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
+use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Type;
@@ -46,7 +47,10 @@ class ImpactedProductCount implements ConstraintCollectionProviderInterface
             [
                 'fields' => [
                     'ruleIds' => new NotNull(),
-                    'user_to_notify' => new Type('string'),
+                    'users_to_notify' => [
+                        new Type('array'),
+                        new All([new Type('string')]),
+                    ],
                     'is_user_authenticated' => new Type('bool'),
                 ]
             ]

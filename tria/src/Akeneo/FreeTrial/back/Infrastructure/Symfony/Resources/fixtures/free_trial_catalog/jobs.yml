@@ -163,7 +163,7 @@ jobs:
             withHeader: true
             uploadAllowed: true
             invalid_items_file_format: xlsx
-            user_to_notify: null
+            users_to_notify: []
             is_user_authenticated: false
     family_import:
         connector: 'Akeneo XLSX Connector'
@@ -176,7 +176,7 @@ jobs:
             withHeader: true
             uploadAllowed: true
             invalid_items_file_format: xlsx
-            user_to_notify: null
+            users_to_notify: []
             is_user_authenticated: false
     options_import:
         connector: 'Akeneo XLSX Connector'
@@ -189,7 +189,7 @@ jobs:
             withHeader: true
             uploadAllowed: true
             invalid_items_file_format: xlsx
-            user_to_notify: null
+            users_to_notify: []
             is_user_authenticated: false
     products_import:
         connector: 'Akeneo XLSX Connector'
@@ -202,7 +202,7 @@ jobs:
             withHeader: true
             uploadAllowed: true
             invalid_items_file_format: xlsx
-            user_to_notify: null
+            users_to_notify: []
             is_user_authenticated: false
             decimalSeparator: .
             dateFormat: yyyy-MM-dd
@@ -224,7 +224,7 @@ jobs:
             withHeader: true
             uploadAllowed: true
             invalid_items_file_format: xlsx
-            user_to_notify: null
+            users_to_notify: []
             is_user_authenticated: false
     group:
         connector: 'Akeneo XLSX Connector'
@@ -237,7 +237,7 @@ jobs:
             withHeader: true
             uploadAllowed: true
             invalid_items_file_format: xlsx
-            user_to_notify: null
+            users_to_notify: []
             is_user_authenticated: false
     variant:
         connector: 'Akeneo XLSX Connector'
@@ -250,7 +250,7 @@ jobs:
             withHeader: true
             uploadAllowed: true
             invalid_items_file_format: xlsx
-            user_to_notify: null
+            users_to_notify: []
             is_user_authenticated: false
     model:
         connector: 'Akeneo XLSX Connector'
@@ -263,7 +263,7 @@ jobs:
             withHeader: true
             uploadAllowed: true
             invalid_items_file_format: xlsx
-            user_to_notify: null
+            users_to_notify: []
             is_user_authenticated: false
             decimalSeparator: .
             dateFormat: yyyy-MM-dd
@@ -283,7 +283,7 @@ jobs:
                 file_path: /tmp/export_%job_label%_%datetime%.xlsx
             withHeader: true
             linesPerFile: 10000
-            user_to_notify: null
+            users_to_notify: []
             is_user_authenticated: false
     optionex:
         connector: 'Akeneo XLSX Connector'
@@ -296,7 +296,7 @@ jobs:
                 file_path: /tmp/export_%job_label%_%datetime%.xlsx
             withHeader: true
             linesPerFile: 10000
-            user_to_notify: null
+            users_to_notify: []
             is_user_authenticated: false
     categories:
         connector: 'Akeneo XLSX Connector'
@@ -309,7 +309,7 @@ jobs:
                 file_path: /tmp/export_%job_label%_%datetime%.xlsx
             withHeader: true
             linesPerFile: 10000
-            user_to_notify: null
+            users_to_notify: []
             is_user_authenticated: false
     family:
         connector: 'Akeneo XLSX Connector'
@@ -322,7 +322,7 @@ jobs:
                 file_path: /tmp/export_%job_label%_%datetime%.xlsx
             withHeader: true
             linesPerFile: 10000
-            user_to_notify: null
+            users_to_notify: []
             is_user_authenticated: false
     product:
         connector: 'Akeneo XLSX Connector'
@@ -335,7 +335,7 @@ jobs:
                 file_path: /tmp/export_%job_label%_%datetime%.xlsx
             withHeader: true
             linesPerFile: 10000
-            user_to_notify: null
+            users_to_notify: []
             is_user_authenticated: false
             decimalSeparator: .
             dateFormat: yyyy-MM-dd
@@ -378,7 +378,7 @@ jobs:
                 file_path: /tmp/export_%job_label%_%datetime%.xlsx
             withHeader: true
             linesPerFile: 10000
-            user_to_notify: null
+            users_to_notify: []
             is_user_authenticated: false
             decimalSeparator: .
             dateFormat: yyyy-MM-dd
@@ -467,7 +467,7 @@ jobs:
                 file_path: /tmp/export_%job_label%_%datetime%.xlsx
             withHeader: true
             linesPerFile: 10000
-            user_to_notify: null
+            users_to_notify: []
             is_user_authenticated: false
             decimalSeparator: .
             dateFormat: yyyy-MM-dd
@@ -542,7 +542,7 @@ jobs:
                 file_path: /tmp/export_%job_label%_%datetime%.xlsx
             withHeader: true
             linesPerFile: 10000
-            user_to_notify: null
+            users_to_notify: []
             is_user_authenticated: false
             decimalSeparator: .
             dateFormat: yyyy-MM-dd
@@ -613,7 +613,7 @@ jobs:
                 file_path: /tmp/export_%job_label%_%datetime%.xlsx
             withHeader: true
             linesPerFile: 10000
-            user_to_notify: null
+            users_to_notify: []
             is_user_authenticated: false
             decimalSeparator: .
             dateFormat: yyyy-MM-dd
@@ -682,7 +682,7 @@ jobs:
                 file_path: /tmp/export_%job_label%_%datetime%.xlsx
             withHeader: true
             linesPerFile: 10000
-            user_to_notify: null
+            users_to_notify: []
             is_user_authenticated: false
             decimalSeparator: .
             dateFormat: yyyy-MM-dd
@@ -758,7 +758,7 @@ jobs:
                 file_path: /tmp/export_%job_label%_%datetime%.xlsx
             withHeader: true
             linesPerFile: 10000
-            user_to_notify: null
+            users_to_notify: []
             is_user_authenticated: false
             decimalSeparator: .
             dateFormat: yyyy-MM-dd

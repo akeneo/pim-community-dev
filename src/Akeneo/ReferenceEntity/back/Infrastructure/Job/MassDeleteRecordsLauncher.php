@@ -40,7 +40,7 @@ class MassDeleteRecordsLauncher implements MassDeleteRecordsLauncherInterface
         $config = [
             'reference_entity_identifier' => (string) $referenceEntityIdentifier,
             'query' => $recordQuery->normalize(),
-            'user_to_notify' => $username
+            'users_to_notify' => [$username]
         ];
 
         $this->publishJobToQueue->publish('reference_entity_mass_delete_records', $config, false, $username);

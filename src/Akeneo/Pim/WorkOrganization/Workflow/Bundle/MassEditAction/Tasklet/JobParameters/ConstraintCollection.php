@@ -13,6 +13,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\MassEditAction\Tasklet\Job
 
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
+use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Type;
@@ -47,7 +48,10 @@ class ConstraintCollection implements ConstraintCollectionProviderInterface
                 'fields' => [
                     'filters' => new NotNull(),
                     'actions' => [],
-                    'user_to_notify' => new Type('string'),
+                    'users_to_notify' => [
+                        new Type('array'),
+                        new All([new Type('string')]),
+                    ],
                     'is_user_authenticated' => new Type('bool'),
                 ]
             ]

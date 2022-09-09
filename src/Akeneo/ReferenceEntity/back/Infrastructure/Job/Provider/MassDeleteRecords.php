@@ -17,6 +17,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
+use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Type;
@@ -39,7 +40,10 @@ class MassDeleteRecords implements ConstraintCollectionProviderInterface, Defaul
                         }
                     }),
                     'reference_entity_identifier' => new Type(['type' => 'string']),
-                    'user_to_notify' => new Type(['type' => 'string'])
+                    'users_to_notify' => [
+                        new Type('array'),
+                        new All([new Type('string')]),
+                    ],
                 ],
                 'allowMissingFields' => false,
             ]

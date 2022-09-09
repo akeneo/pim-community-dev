@@ -75,7 +75,7 @@ class RunCommand extends Command
 
         $config = [
             'rule_codes' => $ruleCodes,
-            'user_to_notify' => $username,
+            'users_to_notify' => [$username],
             'stop_on_error' => $stopOnError,
             'dry_run' => $dryRun
         ];

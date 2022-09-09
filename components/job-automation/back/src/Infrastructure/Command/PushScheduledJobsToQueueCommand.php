@@ -68,6 +68,7 @@ final class PushScheduledJobsToQueueCommand extends Command
                     jobInstanceCode: $dueJobInstance->code,
                     config: [
                         'is_user_authenticated' => true,
+                        'users_to_notify' => $usersToNotify->getUsernames(),
                     ],
                     username: $dueJobInstance->runningUsername,
                     emails: $usersToNotify->getUniqueEmails(),
