@@ -2,11 +2,13 @@
   "name": "create-tenant",
   "version": "0.0.1",
   "dependencies": {
+    "@google-cloud/firestore": "^6.2.0",
     "@google-cloud/functions-framework": "^3.1.2",
     "@google-cloud/logging-winston": "^5.1.2",
     "@google-cloud/secret-manager": "^4.1.1",
     "axios": "^0.27.2",
     "deepmerge-json": "^1.5.0",
+    "dotenv": "^16.0.2",
     "gaxios": "^4.3.3",
     "js-yaml": "^4.1.0",
     "jsonschema": "^1.4.1",
@@ -16,6 +18,6 @@
     "winston": "^3.8.1"
   },
   "scripts": {
-    "start": "NODE_ENV=development functions-framework --port 8083 --target=deleteTenant"
+    "start": "functions-framework --port 8083 --target=deleteTenant"
   }
 }

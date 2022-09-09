@@ -1,12 +1,12 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: {{global.extraLabels.instanceName}}
+  name: {{{global.extraLabels.instanceName}}}
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
-    instanceName: {{global.extraLabels.instanceName}}
+    instanceName: {{{global.extraLabels.instanceName}}}
     pfid: {{{global.extraLabels.pfid}}}
     instance_dns_record: {{{global.extraLabels.instance_dns_record}}}
     instance_dns_zone: {{{global.extraLabels.instance_dns_zone}}}
@@ -16,9 +16,9 @@ metadata:
 spec:
   project: default
   source:
-    repoUrl: 'https://github.com/akeneo/pim-saas-k8s-artifacts.git'
-    path: tenant
-    targetRevision: master
+    repoUrl: {{{source.repoUrl}}}
+    path: {{{source.path}}}
+    targetRevision: {{{source.targetRevision}}}
     helm:
       parameters:
         - name: global.extraLabels.type
@@ -92,8 +92,8 @@ spec:
         - name: mysql.common.persistentDisks.0
           value: {{{mysql.common.persistentDisks.0}}}
   destination:
-    server: 'https://kubernetes.default.svc'
-    namespace: {{{global.extraLabels.instanceName}}}
+    server: {{{destination.server}}}
+    namespace: {{{destination.namespace}}}
   syncPolicy:
     automated:
       prune: true

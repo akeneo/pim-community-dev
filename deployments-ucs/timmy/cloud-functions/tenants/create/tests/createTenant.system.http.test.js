@@ -18,26 +18,14 @@ describe('Test to create a new tenant', () => {
       method: 'POST',
       data: {
         instanceName: instanceName,
-        mailer: {
-          login: "test@mg.cloud.akeneo.com",
-          password: Math.random().toString(36).slice(-8),
-          base_mailer_url: "smtp://smtp.mailgun.org:2525",
-          domain: "mg.cloud.akeneo.com",
-          api_key: process.env.MAILER_API_KEY
-        },
         pim: {
           defaultAdminUser: {
             login: 'pim-admin',
             firstName: 'John',
             lastName: 'Doe',
             email: `pim-admin-${instanceName}@akeneo.fr`,
-            password: Math.random().toString(36).slice(-8),
             uiLocale: 'en_US'
           },
-          monitoring: {
-            authenticationToken: Math.random().toString(36).slice(-8)
-          },
-          secret: Math.random().toString(36).slice(-8)
         }
       }
     });
