@@ -4,7 +4,13 @@ import {CriterionErrors} from './CriterionErrors';
 import {StatusCriterionState} from '../criteria/StatusCriterion';
 import {FamilyCriterionState} from '../criteria/FamilyCriterion';
 import {CompletenessCriterionState} from '../criteria/CompletenessCriterion';
+import {CategoryCriterionState} from '../criteria/CategoryCriterion';
 import {AttributeTextCriterionState} from '../criteria/AttributeTextCriterion';
+import {AttributeSimpleSelectCriterionState} from '../criteria/AttributeSimpleSelectCriterion';
+import {AttributeNumberCriterionState} from '../criteria/AttributeNumberCriterion';
+import {AttributeMetricCriterionState} from '../criteria/AttributeMetricCriterion';
+import {AttributeBooleanCriterionState} from '../criteria/AttributeBooleanCriterion';
+import {AttributeIdentifierCriterionState} from '../criteria/AttributeIdentifierCriterion';
 
 export type CriterionModule<State> = {
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
@@ -33,12 +39,25 @@ export type AnyCriterionState =
     | StatusCriterionState
     | FamilyCriterionState
     | CompletenessCriterionState
-    | AttributeTextCriterionState;
+    | CategoryCriterionState
+    | AttributeIdentifierCriterionState
+    | AttributeTextCriterionState
+    | AttributeSimpleSelectCriterionState
+    | AttributeNumberCriterionState
+    | AttributeMetricCriterionState
+    | AttributeBooleanCriterionState;
 
-export type AnyAttributeCriterion = Criterion<AttributeTextCriterionState>;
+export type AnyAttributeCriterion =
+    | Criterion<AttributeIdentifierCriterionState>
+    | Criterion<AttributeTextCriterionState>
+    | Criterion<AttributeSimpleSelectCriterionState>
+    | Criterion<AttributeNumberCriterionState>
+    | Criterion<AttributeMetricCriterionState>
+    | Criterion<AttributeBooleanCriterionState>;
 
 export type AnyCriterion =
     | Criterion<StatusCriterionState>
     | Criterion<FamilyCriterionState>
     | Criterion<CompletenessCriterionState>
+    | Criterion<CategoryCriterionState>
     | AnyAttributeCriterion;

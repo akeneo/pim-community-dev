@@ -178,16 +178,10 @@ abstract class AbstractItemMediaWriter implements
     public function getPath(array $placeholders = []): string
     {
         $parameters = $this->stepExecution->getJobParameters();
-        // TODO RAB-907: Remove this condition
-        if ($parameters->has('storage') && isset($parameters->get('storage')[$this->jobParamFilePath])) {
-            $storage = $parameters->get('storage');
-            $filePath = LocalStorage::TYPE === $storage['type']
-                ? $storage[$this->jobParamFilePath]
-                : sprintf('%s%s%s', sys_get_temp_dir(), DIRECTORY_SEPARATOR, $storage[$this->jobParamFilePath]);
-        } else {
-            $paramFilePath = 'file_path' === $this->jobParamFilePath ? 'filePath' : $this->jobParamFilePath;
-            $filePath = $parameters->get($paramFilePath);
-        }
+        $storage = $parameters->get('storage');
+        $filePath = LocalStorage::TYPE === $storage['type']
+            ? $storage[$this->jobParamFilePath]
+            : sprintf('%s%s%s', sys_get_temp_dir(), DIRECTORY_SEPARATOR, $storage[$this->jobParamFilePath]);
 
         if (false !== \strpos($filePath, '%')) {
             $datetime = $this->stepExecution->getStartTime()->format($this->datetimeFormat);

@@ -73,7 +73,6 @@ abstract class AbstractProduct implements ProductInterface
     public function __construct(?string $uuid = null)
     {
         Assert::nullOrUuid($uuid);
-        // TODO: CPM-713
         $this->uuid = $uuid ? Uuid::fromString($uuid) : Uuid::uuid4();
         $this->values = new WriteValueCollection();
         $this->categories = new ArrayCollection();
@@ -847,8 +846,11 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function filterQuantifiedAssociations(array $productIdentifiersToKeep, array $productModelCodesToKeep): void
-    {
+    public function filterQuantifiedAssociations(
+        array $productIdentifiersToKeep,
+        array $productUuidsToKeep,
+        array $productModelCodesToKeep
+    ): void {
         if (null === $this->quantifiedAssociationCollection) {
             return;
         }
@@ -856,6 +858,7 @@ abstract class AbstractProduct implements ProductInterface
         $initialCollection = $this->getQuantifiedAssociations();
         $this->quantifiedAssociationCollection = $this->quantifiedAssociationCollection
             ->filterProductIdentifiers($productIdentifiersToKeep)
+            ->filterProductUuids($productUuidsToKeep)
             ->filterProductModelCodes($productModelCodesToKeep);
         if (!$this->quantifiedAssociationCollection->equals($initialCollection)) {
             $this->dirty = true;

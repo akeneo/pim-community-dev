@@ -34,11 +34,62 @@ class SearchAttributesQueryTest extends IntegrationTestCase
 
         $this->assertEquals([
             [
+                'code' => 'sku',
+                'label' => '[sku]',
+                'type' => 'pim_catalog_identifier',
+                'scopable' => false,
+                'localizable' => false,
+            ],
+            [
                 'code' => 'name',
                 'label' => '[name]',
                 'type' => 'pim_catalog_text',
                 'scopable' => false,
                 'localizable' => false,
+            ],
+            [
+                'code' => 'description',
+                'label' => '[description]',
+                'type' => 'pim_catalog_textarea',
+                'scopable' => false,
+                'localizable' => false,
+            ],
+            [
+                'code' => 'materials',
+                'label' => '[materials]',
+                'type' => 'pim_catalog_multiselect',
+                'scopable' => false,
+                'localizable' => false,
+            ],
+            [
+                'code' => 'clothing_size',
+                'label' => '[clothing_size]',
+                'type' => 'pim_catalog_simpleselect',
+                'scopable' => false,
+                'localizable' => false,
+            ],
+            [
+                'code' => 'number_battery_cells',
+                'label' => '[number_battery_cells]',
+                'type' => 'pim_catalog_number',
+                'scopable' => false,
+                'localizable' => false,
+            ],
+            [
+                'code' => 'certified',
+                'label' => '[certified]',
+                'type' => 'pim_catalog_boolean',
+                'scopable' => false,
+                'localizable' => false,
+            ],
+            [
+                'code' => 'weight',
+                'label' => '[weight]',
+                'type' => 'pim_catalog_metric',
+                'scopable' => false,
+                'localizable' => false,
+                'measurement_family' => 'Weight',
+                'default_measurement_unit' => 'KILOGRAM',
             ],
         ], $result);
     }
@@ -80,11 +131,11 @@ class SearchAttributesQueryTest extends IntegrationTestCase
             'type' => 'pim_catalog_textarea',
         ]);
         $this->createAttribute([
-            'code' => 'tags',
+            'code' => 'materials',
             'type' => 'pim_catalog_multiselect',
         ]);
         $this->createAttribute([
-            'code' => 'size',
+            'code' => 'clothing_size',
             'type' => 'pim_catalog_simpleselect',
         ]);
         $this->createAttribute([
@@ -92,7 +143,7 @@ class SearchAttributesQueryTest extends IntegrationTestCase
             'type' => 'pim_catalog_price_collection',
         ]);
         $this->createAttribute([
-            'code' => 'parts',
+            'code' => 'number_battery_cells',
             'type' => 'pim_catalog_number',
         ]);
         $this->createAttribute([
@@ -114,6 +165,8 @@ class SearchAttributesQueryTest extends IntegrationTestCase
         $this->createAttribute([
             'code' => 'weight',
             'type' => 'pim_catalog_metric',
+            'metric_family' => 'Weight',
+            'default_metric_unit' => 'KILOGRAM',
         ]);
     }
 }

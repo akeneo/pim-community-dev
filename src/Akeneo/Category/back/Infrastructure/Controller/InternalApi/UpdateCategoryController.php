@@ -11,7 +11,8 @@ use Akeneo\Category\Application\Converter\ConverterInterface;
 use Akeneo\Category\Application\Converter\StandardFormatToUserIntentsInterface;
 use Akeneo\Category\Application\Filter\CategoryEditACLFilter;
 use Akeneo\Category\Application\Filter\CategoryEditUserIntentFilter;
-use Akeneo\Category\Application\Query\FindCategoryByIdentifier;
+use Akeneo\Category\Domain\Query\GetCategoryInterface;
+use Akeneo\Category\Infrastructure\Converter\InternalAPI\InternalAPIToStd;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,6 +23,8 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @phpstan-import-type StandardInternalApi from InternalAPIToStd
  */
 class UpdateCategoryController
 {
@@ -32,7 +35,7 @@ class UpdateCategoryController
         private CategoryEditACLFilter $ACLFilter,
         private StandardFormatToUserIntentsInterface $standardFormatToUserIntents,
         private CategoryEditUserIntentFilter $categoryUserIntentFilter,
-        private FindCategoryByIdentifier $findCategoryByIdentifier,
+        private GetCategoryInterface $getCategory,
     ) {
     }
 
@@ -42,11 +45,14 @@ class UpdateCategoryController
             throw new AccessDeniedException();
         }
 
-        $category = ($this->findCategoryByIdentifier)($id);
+        $category = $this->getCategory->byId($id);
         if ($category === null) {
             throw new NotFoundHttpException('Category not found');
         }
+
+        // Transform request to a user intent list
         $data = $request->toArray();
+        /** @var  StandardInternalApi $formattedData */
         $formattedData = $this->internalApiToStandardConverter->convert($data);
         $filteredData = $this->ACLFilter->filterCollection($formattedData, 'category', []);
         $userIntents = $this->standardFormatToUserIntents->convert($filteredData);
@@ -60,14 +66,37 @@ class UpdateCategoryController
             $this->categoryCommandBus->dispatch($command);
         } catch (ViolationsException $e) {
             //Todo: Handle violations exceptions when all stubbed services have been replaced by real ones
-            return new JsonResponse(['error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+            // The data structure to be returned to the UI must allow to display the violation messages
+            // next to the violating attribute
+            // (so at minimum : a mapping from the attribute code to a i18n key for the error message)
+            return new JsonResponse(
+                [
+                    'success' => false,
+                    'errors' => [
+                        'attributes' => [
+                            [
+                                'path'=> ['attribute','somecode'],
+                                'locale'=> 'fr_FR', // optional
+                                'message'=> [
+                                    'key' => 'i18n key for some constraint violation message, maybe with some {{a}} arguments',
+                                    'args' => [
+                                        "a" => 123
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
         }
-        $category = ($this->findCategoryByIdentifier)($id);
+        $category = $this->getCategory->byId($id);
         if ($category === null) {
             throw new NotFoundHttpException('Category not found');
         }
+
         $normalizedCategory = $category->normalize();
 
-        return new JsonResponse($normalizedCategory, Response::HTTP_OK);
+        return new JsonResponse(['success' => true, 'category' => $normalizedCategory], Response::HTTP_OK);
     }
 }

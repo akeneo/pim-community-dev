@@ -65,7 +65,7 @@ class Template
             'identifier' => (string) $this->uuid,
             'code' => (string) $this->code,
             'labels' => $this->labelCollection->normalize(),
-            'category_tree_identifier' => $this->categoryTreeId?->getId(),
+            'category_tree_identifier' => $this->categoryTreeId?->getValue(),
             'attributes' => $this->attributeCollection->normalize(),
         ];
     }

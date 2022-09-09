@@ -22,7 +22,7 @@ akeneo_catalogs:
         more_information: Check out our Help center for more information.
         add_criteria:
             label: add selection criteria
-            search: search criterion
+            search: Search criterion
             no_results: no matches found
             section_system: system
             section_attributes: attributes
@@ -36,6 +36,7 @@ akeneo_catalogs:
             label: Channel
             empty: No channel found
         criteria:
+            unknown: This attribute has been deleted.
             status:
                 label: Status
                 enabled: Enabled
@@ -46,6 +47,19 @@ akeneo_catalogs:
                 placeholder: Select your families
             completeness:
                 label: Completeness
+            attribute_option:
+                no_matches: No matches found
+                placeholder: Select your options
+            category:
+                label: Category
+                remove: Remove category
+                category_tree: Category tree
+            measurement:
+                search: Select your unit
+                no_results: No matches found
+            boolean:
+                yes: Yes
+                no: No
         operators:
             "STARTS WITH": starts with
             "ENDS WITH": ends with

@@ -22,7 +22,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->query = $this->get('Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface');
+        $this->query = $this->get(SearchJobExecutionInterface::class);
         $this->jobExecutionIds = [];
         $this->stepExecutionIds = [];
         $this->cachedExpectedJobExecutionRows = [];

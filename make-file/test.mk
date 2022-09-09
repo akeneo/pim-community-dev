@@ -67,11 +67,7 @@ acceptance-back:
 	$(MAKE) import-export-acceptance-back
 	$(MAKE) job-acceptance-back
 	$(MAKE) channel-acceptance-back
-ifeq ($(CI),true)
-	.circleci/run_phpunit.sh . .circleci/find_phpunit.php Akeneo_Measurement_Acceptance
-else
-	APP_ENV=test $(PHP_RUN) ./vendor/bin/phpunit -c . --testsuite Akeneo_Measurement_Acceptance
-endif
+	$(MAKE) measurement-acceptance-back
 
 .PHONY: acceptance-front
 acceptance-front:

@@ -63,6 +63,9 @@ $rules = [
             'Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface',
             'Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface',
             'Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface',
+            'Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface',
+            'Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode',
+            'Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException',
 
             // @todo remove
             'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
@@ -75,6 +78,16 @@ $rules = [
             'Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface',
             'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
             'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
+            'Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductWithUuidNormalizer',
+
+            // @todo replace with the ones from category service API when available
+            'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface',
+            'Akeneo\Category\Infrastructure\Component\Model\CategoryInterface',
+            'Akeneo\Category\Infrastructure\Component\Model\CategoryTranslationInterface',
+            'Doctrine\Common\Collections\Collection',
+            'Akeneo\Category\Api\FindCategoryTrees',
+            'Akeneo\Category\Api\CategoryTree',
         ]
     )->in('Akeneo\Catalogs\Infrastructure'),
 

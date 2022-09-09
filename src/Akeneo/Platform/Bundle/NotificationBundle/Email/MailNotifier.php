@@ -4,6 +4,8 @@ namespace Akeneo\Platform\Bundle\NotificationBundle\Email;
 
 use Akeneo\Tool\Component\Email\SenderAddress;
 use Swift_Mailer;
+use Swift_Mime_SimpleMessage;
+use Symfony\Bridge\Monolog\Logger;
 
 /**
  * Notify by email
@@ -14,40 +16,54 @@ use Swift_Mailer;
  */
 class MailNotifier implements MailNotifierInterface
 {
-    protected object $message;
-
     public function __construct(
         protected Swift_Mailer $mailer,
-        protected string       $mailerUrl
+        protected string $mailerUrl,
+        private Logger $logger,
     ) {
     }
 
-    /**
-     * { @inheritDoc }
-     */
-    public function notify(array $users, $subject, $txtBody, $htmlBody = null, array $options = [])
-    {
-        foreach ($users as $user) {
-            $this->send($user->getEmail(), $subject, $txtBody, $htmlBody);
-        }
+    public function notify(
+        array $recipients,
+        string $subject,
+        string $txtBody,
+        $htmlBody = null,
+        array $options = []
+    ): void {
+        $this->send($recipients, $subject, $txtBody, $htmlBody);
     }
 
-    public function notifyByEmail(string $email, string $subject, string $txtBody, $htmlBody = null, array $options = []) : void
+    private function send($recipients, $subject, $txtBody, $htmlBody): void
     {
-        $this->send($email, $subject, $txtBody, $htmlBody);
-    }
-
-    private function send($email, $subject, $txtBody, $htmlBody) : void
-    {
+        /** @var Swift_Mime_SimpleMessage $message */
         $message = $this->mailer->createMessage();
+        $sender = (string)SenderAddress::fromMailerUrl($this->mailerUrl);
         $message->setSubject($subject)
-            ->setFrom((string)SenderAddress::fromMailerUrl($this->mailerUrl))
-            ->setTo($email)
+            ->setFrom($sender)
+            ->setBcc($recipients)
             ->setCharset('UTF-8')
             ->setContentType('text/html')
             ->setBody($txtBody, 'text/plain')
             ->addPart($htmlBody, 'text/html');
 
-        $this->mailer->send($message);
+        $sentCount = $this->mailer->send($message);
+
+        if (0 === $sentCount) {
+            $this->logger->error(
+                sprintf('Mail error from %s', $sender),
+                [
+                    'Subject' => $message->getSubject(),
+                    'Recipients' => $message->getBcc(),
+                ]
+            );
+        } else {
+            $this->logger->info(
+                sprintf('Mail sent from %s', $sender),
+                [
+                    'Subject' => $message->getSubject(),
+                    'Recipients' => $message->getBcc(),
+                ]
+            );
+        }
     }
 }

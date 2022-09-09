@@ -6,6 +6,7 @@ import {useFindAttributeCriterionByType} from './useFindAttributeCriterionByType
 import StatusCriterion from '../criteria/StatusCriterion';
 import FamilyCriterion from '../criteria/FamilyCriterion';
 import CompletenessCriterion from '../criteria/CompletenessCriterion';
+import CategoryCriterion from '../criteria/CategoryCriterion';
 
 type Return = (field: string) => Promise<AnyCriterion>;
 
@@ -22,6 +23,8 @@ export const useFindCriterionByField = (): Return => {
                     return Promise.resolve(FamilyCriterion);
                 case 'completeness':
                     return Promise.resolve(CompletenessCriterion);
+                case 'categories':
+                    return Promise.resolve(CategoryCriterion);
             }
 
             try {
@@ -38,7 +41,6 @@ export const useFindCriterionByField = (): Return => {
                     },
                     {
                         retry: false,
-                        staleTime: 60,
                     }
                 );
 

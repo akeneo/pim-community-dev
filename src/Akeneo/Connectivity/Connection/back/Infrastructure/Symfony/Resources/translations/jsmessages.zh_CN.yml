@@ -54,6 +54,7 @@ akeneo_connectivity.connection:
         description: 这只是概览，还有更多内容，请探索 Akeneo App Store。
         link: 前往 Akeneo App Store
       search:
+        placeholder: 按名称搜索
         total: '{0} 无结果|{1} 1 个结果|[2,Inf] {{ total }} 个结果'
       card:
         developed_by: '开发者：{{ author }}'
@@ -179,6 +180,10 @@ akeneo_connectivity.connection:
               3: 激活监测。
         catalogs:
           edit:
+            flash:
+              success: 目录设置已成功更新。
+              error: 无法保存目录。请解决显示的错误，然后再次保存。
+              unknown_error: 保存目录时出错。
             not_found: 找不到目录
         flash:
           load_permissions_error.title: '无法加载 {{ entity }} 上保存的权限。'
@@ -318,6 +323,8 @@ akeneo_connectivity.connection:
       type:
         required: 连接类型是必填的。
         too_long: 连接类型太长。连接类型最多只能有30个字符。
+      user_group:
+        must_exist: 找不到用户组。请确保指定的用户组存在。
   flow_type:
     data_source: 数据源 | 数据源
     data_destination: 数据目标 | 数据目标

@@ -141,7 +141,7 @@ SQL;
                         'withHeader' => true,
                         'uploadAllowed' => true,
                         'invalid_items_file_format' => 'csv',
-                        'user_to_notify' => null,
+                        'users_to_notify' => [],
                         'is_user_authenticated' => false,
                         'decimalSeparator' => '.',
                         'dateFormat' => 'yyyy-MM-dd',
@@ -161,7 +161,7 @@ SQL;
                 'warning' => false,
                 'status'  => 'COMPLETED',
                 'currentStep' => 3,
-                'totalSteps' => 3,
+                'totalSteps' => 4,
                 'steps' => [
                     [
                         'jobName' => 'csv_product_import',

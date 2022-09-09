@@ -1,5 +1,11 @@
 # 6.0.x
 
+# 6.0.42 (2022-09-02)
+
+# 6.0.41 (2022-08-29)
+
+- MW-370: Shift marketplace API service to new one
+
 # 6.0.40 (2022-08-25)
 
 ## Bug fixes

@@ -23,7 +23,6 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 class ProductSpec extends ObjectBehavior
@@ -1401,7 +1400,7 @@ class ProductSpec extends ObjectBehavior
         );
         $this->cleanup();
 
-        $this->filterQuantifiedAssociations(['my_product'], ['model_tshirt_2']);
+        $this->filterQuantifiedAssociations(['my_product'], [], ['model_tshirt_2']);
         $this->isDirty()->shouldBe(true);
     }
 
@@ -1434,6 +1433,7 @@ class ProductSpec extends ObjectBehavior
 
         $this->filterQuantifiedAssociations(
             ['my_product', 'my_other_product'],
+            [],
             ['model_tshirt_1', 'model_tshirt_2']
         );
         $this->isDirty()->shouldBe(false);

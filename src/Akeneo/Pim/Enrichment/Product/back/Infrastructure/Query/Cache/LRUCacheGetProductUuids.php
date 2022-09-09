@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Enrichment\Product\Infrastructure\Query\Cache;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetProductUuids;
 use Akeneo\Tool\Component\StorageUtils\Cache\CachedQueryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\LRUCache;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -15,33 +16,55 @@ use Ramsey\Uuid\UuidInterface;
  */
 class LRUCacheGetProductUuids implements GetProductUuids, CachedQueryInterface
 {
-    private LRUCache $cache;
+    private LRUCache $cacheByIdentifiers;
+    private LRUCache $cacheByUuids;
 
     public function __construct(private GetProductUuids $getProductUuids)
     {
-        $this->cache = new LRUCache(1000);
+        $this->cacheByIdentifiers = new LRUCache(1000);
+        $this->cacheByUuids = new LRUCache(1000);
     }
 
     public function fromIdentifier(string $identifier): ?UuidInterface
     {
-        $fetchNonFoundProductUuid = function (string $identifier): ?UuidInterface {
-            return $this->getProductUuids->fromIdentifier($identifier);
-        };
-
-        return $this->cache->getForKey($identifier, $fetchNonFoundProductUuid);
+        return $this->cacheByIdentifiers->getForKey(
+            $identifier,
+            fn (string $identifier): ?UuidInterface => $this->getProductUuids->fromIdentifier($identifier)
+        );
     }
 
     public function fromIdentifiers(array $identifiers): array
     {
-        $fetchNonFoundIdentifiers = function (array $identifiersNotFound): array {
-            return $this->getProductUuids->fromIdentifiers($identifiersNotFound);
-        };
+        return $this->cacheByIdentifiers->getForKeys(
+            $identifiers,
+            fn (array $identifiersNotFound): array => $this->getProductUuids->fromIdentifiers($identifiersNotFound)
+        );
+    }
 
-        return $this->cache->getForKeys($identifiers, $fetchNonFoundIdentifiers);
+    public function fromUuid(UuidInterface $uuid): ?UuidInterface
+    {
+        return $this->cacheByUuids->getForKey(
+            $uuid->toString(),
+            fn (string $notCachedUuid): ?UuidInterface => $this->getProductUuids->fromUuid(Uuid::fromString($notCachedUuid))
+        );
+    }
+
+    public function fromUuids(array $uuids): array
+    {
+        return $this->cacheByUuids->getForKeys(
+            \array_map(static fn (UuidInterface $uuid): string => $uuid->toString(), $uuids),
+            fn (array $notCachedUuids): array => $this->getProductUuids->fromUuids(
+                \array_map(
+                    static fn (string $notCacheUuid): UuidInterface => Uuid::fromString($notCacheUuid),
+                    $notCachedUuids
+                )
+            )
+        );
     }
 
     public function clearCache(): void
     {
-        $this->cache = new LRUCache(1000);
+        $this->cacheByIdentifiers = new LRUCache(1000);
+        $this->cacheByUuids = new LRUCache(1000);
     }
 }

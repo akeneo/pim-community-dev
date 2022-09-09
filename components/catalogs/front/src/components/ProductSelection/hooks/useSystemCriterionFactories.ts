@@ -4,6 +4,7 @@ import {CriterionFactory} from '../models/CriterionFactory';
 import StatusCriterion from '../criteria/StatusCriterion';
 import FamilyCriterion from '../criteria/FamilyCriterion';
 import CompletenessCriterion from '../criteria/CompletenessCriterion';
+import CategoryCriterion from '../criteria/CategoryCriterion';
 
 export const useSystemCriterionFactories = (): CriterionFactory[] => {
     const translate = useTranslate();
@@ -24,6 +25,11 @@ export const useSystemCriterionFactories = (): CriterionFactory[] => {
                 id: 'completeness',
                 label: translate('akeneo_catalogs.product_selection.criteria.completeness.label'),
                 factory: CompletenessCriterion.factory,
+            },
+            {
+                id: 'categories',
+                label: translate('akeneo_catalogs.product_selection.criteria.category.label'),
+                factory: CategoryCriterion.factory,
             },
         ],
         [translate]

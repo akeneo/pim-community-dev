@@ -1,0 +1,20 @@
+services:
+    akeneo_measurement.service_api.get_unit_translations:
+        class: 'Akeneo\Tool\Bundle\MeasureBundle\ServiceApi\SqlGetUnitTranslations'
+        arguments:
+            - '@database_connection'
+
+    akeneo_measurement.service_api.get_unit:
+        class: 'Akeneo\Tool\Bundle\MeasureBundle\ServiceApi\SqlGetUnit'
+        arguments:
+            - '@database_connection'
+
+    akeneo_measurement.service_api.find_unit:
+      class: 'Akeneo\Tool\Bundle\MeasureBundle\ServiceApi\SqlFindUnit'
+      arguments:
+        - '@database_connection'
+
+    akeneo_measurement.service_api.find_measurement_families:
+        class: 'Akeneo\Tool\Bundle\MeasureBundle\ServiceApi\FindMeasurementFamilies'
+        arguments:
+            - '@akeneo_measure.persistence.measurement_family_repository'

@@ -10,6 +10,7 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\User;
+use Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface;
 use Akeneo\UserManagement\Component\Updater\UserUpdater;
 use Doctrine\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
@@ -23,7 +24,7 @@ class UserUpdaterSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $localeRepository,
         IdentifiableObjectRepositoryInterface $channelRepository,
         IdentifiableObjectRepositoryInterface $roleRepository,
-        IdentifiableObjectRepositoryInterface $groupRepository,
+        GroupRepositoryInterface $groupRepository,
         ObjectRepository $gridViewRepository,
         FileInfoRepositoryInterface $fileInfoRepository,
         FileStorerInterface $fileStorer

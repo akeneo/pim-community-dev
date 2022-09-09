@@ -28,7 +28,7 @@ class AkeneoMeasureExtension extends Extension
         $loader->load('api.yml');
         $loader->load('internal_api.yml');
         $loader->load('limits.yml');
-        $loader->load('public_api.yml');
+        $loader->load('service_api.yml');
         $loader->load('services.yml');
     }
 }

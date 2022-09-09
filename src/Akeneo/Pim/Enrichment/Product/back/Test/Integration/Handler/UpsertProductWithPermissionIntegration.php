@@ -19,11 +19,14 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\R
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\ReplaceAssociatedQuantifiedProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use Akeneo\Test\Pim\Enrichment\Product\Helper\FeatureHelper;
 use Akeneo\Test\Pim\Enrichment\Product\Integration\EnrichmentProductTestCase;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 
 final class UpsertProductWithPermissionIntegration extends EnrichmentProductTestCase
 {
@@ -141,18 +144,25 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
     }
 
     /** @test */
-    public function it_throws_an_exception_when_creating_a_product_without_owned_category(): void
+    public function it_creates_a_product_without_owned_category(): void
     {
-        $this->expectException(ViolationsException::class);
-        $this->expectExceptionMessage("You should at least keep your product in one category on which you have an own permission");
-
+        $uuid = Uuid::uuid4();
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('betty');
-        $command = UpsertProductCommand::createFromCollection(
+        $command = UpsertProductCommand::createWithUuid(
             userId: $this->getUserId('betty'),
-            productIdentifier: 'identifier',
-            userIntents: [new SetCategories(['sales'])]
+            productUuid: ProductUuid::fromUuid($uuid),
+            userIntents: [
+                new SetIdentifierValue('sku', 'my_new_product'),
+                new SetCategories(['sales'])
+            ]
         );
         $this->commandMessageBus->dispatch($command);
+
+        $this->clearDoctrineUoW();
+
+        $product = $this->productRepository->find($uuid);
+        Assert::assertNotNull($product);
+        Assert::assertEqualsCanonicalizing(['sales'], $product->getCategoryCodes());
     }
 
     /** @test */

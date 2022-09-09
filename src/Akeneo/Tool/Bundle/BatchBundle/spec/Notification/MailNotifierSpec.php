@@ -14,21 +14,20 @@ use Twig\Environment;
 class MailNotifierSpec extends ObjectBehavior
 {
     function let(
-        LoggerInterface       $logger,
+        LoggerInterface $logger,
         TokenStorageInterface $tokenStorage,
-        Environment           $twig,
+        Environment $twig,
         MailNotifierInterface $mailer
-    )
-    {
+    ): void {
         $twig->render(Argument::type('string'), Argument::type('array'))->willReturn('');
         $this->beConstructedWith($logger, $tokenStorage, $twig, $mailer, 'null://localhost?encryption=tls&auth_mode=login&username=foo&password=bar&sender_address=no-reply@example.com');
-        $this->setRecipientEmail('destEmail');
+        $this->setRecipients(['test@akeneo.com']);
     }
 
-    function it_notifies(JobExecution $jobExecution, $mailer)
+    public function it_notifies(JobExecution $jobExecution, $mailer): void
     {
-        $mailer->notifyByEmail(
-            'destEmail',
+        $mailer->notify(
+            ['test@akeneo.com'],
             'Job has been executed',
             Argument::any(),
             Argument::any()
@@ -37,9 +36,9 @@ class MailNotifierSpec extends ObjectBehavior
         $this->notify($jobExecution);
     }
 
-    function it_should_log_error_if_notification_failed(JobExecution $jobExecution, $mailer, $logger)
+    public function it_should_log_error_if_notification_failed(JobExecution $jobExecution, $mailer, $logger): void
     {
-        $mailer->notifyByEmail(
+        $mailer->notify(
             Argument::any(),
             Argument::any(),
             Argument::any(),

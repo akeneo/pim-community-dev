@@ -97,4 +97,9 @@ class InMemoryGroupRepository implements GroupRepositoryInterface, SaverInterfac
     {
         throw new NotImplementedException();
     }
+
+    public function findOneById(int $id): ?GroupInterface
+    {
+        throw new NotImplementedException();
+    }
 }

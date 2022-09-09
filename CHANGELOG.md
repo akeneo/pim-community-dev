@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-10607: Only request /announcements when the panel is open
 - PIM-10515: Fix 'add associations' button visibility for quantified associations & category permissions
 - PIM-10487: Fix import of very tiny measurement values (e.g. 0.000075 GRAM)
 - PIM-10215: Fixed last operation widget job type translation key
@@ -73,8 +74,11 @@
 - PIM-10584: Fix conversion for Volume Flow measurement units
 - PIM-10581: Fix attribute option code in linked data returned as an integer instead of a string
 - PIM-10529: Fix links on product grid
+- PIM-10598: Fix "Cleaning removed attribute values" job failing if attribute is deleted during mass deletion of products
 - PIM-10595: Fix not being able to add record with code "0" on a product
 - PIM-10588: Add potentially missing `remove_completeness_for_channel_and_locale` job instance
+- PIM-10620: Fix export product options values with label to be case insensitive with codes
+- PIM-10606: Fix computeFamilyVariantStructureChange on attribute removal
 - PIM-10568: Fix error when running Version_7_0_20220629142647_dqi_update_pk_on_product_score during On-Premise/Flex to Serenity migration
 
 ## Improvements

@@ -17,7 +17,7 @@ final class SetLabelApplier implements UserIntentApplier
     public function apply(UserIntent $userIntent, Category $category): void
     {
         if (!$userIntent instanceof SetLabel) {
-            throw new \InvalidArgumentException('Not expected class');
+            throw new \InvalidArgumentException(sprintf('Unexpected class: %s', get_class($userIntent)));
         }
 
         $category->setLabel($userIntent->localeCode(), $userIntent->label());

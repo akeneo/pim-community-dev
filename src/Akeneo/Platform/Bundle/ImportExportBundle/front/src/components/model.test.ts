@@ -1,12 +1,5 @@
 import {FeatureFlags} from '@akeneo-pim-community/shared';
-import {
-  isValidStorageType,
-  getDefaultStorage,
-  isExport,
-  getDefaultFilePath,
-  localStorageIsEnabled,
-  remoteStorageIsEnabled,
-} from './model';
+import {isValidStorageType, getDefaultStorage, isExport, getDefaultFilePath, localStorageIsEnabled} from './model';
 
 const featureFlagCollection = {
   job_automation_local_storage: false,
@@ -23,15 +16,14 @@ beforeEach(() => {
 });
 
 test('it says if a storage type is valid', () => {
-  expect(isValidStorageType('local', featureFlags, 'xlsx_product_export')).toBe(false);
+  expect(isValidStorageType('local', featureFlags)).toBe(false);
 
   enableFeatureFlag('job_automation_local_storage');
 
-  expect(isValidStorageType('none', featureFlags, 'xlsx_product_export')).toBe(true);
-  expect(isValidStorageType('local', featureFlags, 'xlsx_product_export')).toBe(true);
-  expect(isValidStorageType('sftp', featureFlags, 'xlsx_product_export')).toBe(true);
-  expect(isValidStorageType('sftp', featureFlags, 'xlsx_attribute_export')).toBe(false);
-  expect(isValidStorageType('invalid', featureFlags, 'xlsx_product_export')).toBe(false);
+  expect(isValidStorageType('none', featureFlags)).toBe(true);
+  expect(isValidStorageType('local', featureFlags)).toBe(true);
+  expect(isValidStorageType('sftp', featureFlags)).toBe(true);
+  expect(isValidStorageType('invalid', featureFlags)).toBe(false);
 });
 
 test('it returns the default local storage', () => {
@@ -74,7 +66,4 @@ test('it check if local storage is enabled', () => {
   expect(localStorageIsEnabled(featureFlags)).toBe(false);
   enableFeatureFlag('job_automation_local_storage');
   expect(localStorageIsEnabled(featureFlags)).toBe(true);
-
-  expect(remoteStorageIsEnabled('xlsx_product_import')).toBe(true);
-  expect(remoteStorageIsEnabled('csv_attribute_import')).toBe(false);
 });

@@ -10,9 +10,11 @@ namespace Akeneo\Category\Api\Command\UserIntents;
  */
 interface ValueUserIntent extends UserIntent
 {
+    public function attributeUuid(): string;
+
     public function attributeCode(): string;
 
     public function localeCode(): ?string;
 
-    public function channelCode(): ?string;
+    public function value(): string;
 }
