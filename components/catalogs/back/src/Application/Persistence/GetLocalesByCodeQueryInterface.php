@@ -15,5 +15,5 @@ interface GetLocalesByCodeQueryInterface
      *
      * @return array<array-key, array{code: string, label: string}>
      */
-    public function execute(array $codes, int $page = 1, int $limit = 20): array;
+    public function execute(array $codes): array;
 }

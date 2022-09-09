@@ -5,7 +5,7 @@ import {ProductValueFiltersValues} from '../models/ProductValueFiltersValues';
 import {useUniqueEntitiesByCode} from '../../../hooks/useUniqueEntitiesByCode';
 import {useLocalesByCodes} from '../hooks/useLocalesByCodes';
 import {Locale} from '../models/Locale';
-import {useInfiniteLocales} from '../hooks/useInfiniteLocales';
+import {useLocales} from '../../../hooks/useLocales';
 
 type Props = {
     productValueFilters: ProductValueFiltersValues;
@@ -17,7 +17,7 @@ export const FilterLocale: FC<Props> = ({productValueFilters, onChange, isInvali
     const translate = useTranslate();
 
     const {data: selected} = useLocalesByCodes(productValueFilters?.locales ?? []);
-    const {data: results, fetchNextPage} = useInfiniteLocales();
+    const {data: results} = useLocales();
     const locales = useUniqueEntitiesByCode<Locale>(selected, results);
 
     return (
@@ -29,7 +29,6 @@ export const FilterLocale: FC<Props> = ({productValueFilters, onChange, isInvali
                 removeLabel={translate('akeneo_catalogs.product_value_filters.action.remove')}
                 placeholder={translate('akeneo_catalogs.product_value_filters.filters.locale.placeholder')}
                 onChange={v => onChange({...productValueFilters, locales: v})}
-                onNextPage={fetchNextPage}
                 invalid={isInvalid}
                 data-testid='product-value-filter-by-locale'
             >

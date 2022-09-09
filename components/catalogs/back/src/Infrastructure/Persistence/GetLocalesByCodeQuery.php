@@ -21,20 +21,15 @@ final class GetLocalesByCodeQuery implements GetLocalesByCodeQueryInterface
     /**
      * @inheritDoc
      */
-    public function execute(array $codes, int $page = 1, int $limit = 20): array
+    public function execute(array $codes): array
     {
         $locales = [];
 
         /** @var array<LocaleInterface> $activatedLocales */
-        $activatedLocales = $this->localeRepository->findBy(
-            [
-                'code' => $codes,
-                'activated' => true,
-            ],
-            [],
-            $limit,
-            ($page - 1) * $limit
-        );
+        $activatedLocales = $this->localeRepository->findBy([
+            'code' => $codes,
+            'activated' => true,
+        ]);
 
         foreach ($activatedLocales as $locale) {
             if (\in_array($locale->getCode(), $codes, true)) {

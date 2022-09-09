@@ -34,11 +34,11 @@ class GetLocalesActionTest extends TestCase
         self::assertInstanceOf(RedirectResponse::class, ($this->getLocalesAction)(new Request()));
     }
 
-    public function testItCallsTheGetLocalesQueryWithDefaultValues(): void
+    public function testItCallsTheGetLocalesQuery(): void
     {
         $this->getLocalesQuery
             ->method('execute')
-            ->with(1, 20)
+            ->with()
             ->willReturn(['en_EN', 'fr_FR', 'de_DE']);
 
         $response = ($this->getLocalesAction)(
@@ -57,7 +57,7 @@ class GetLocalesActionTest extends TestCase
     {
         $this->getLocalesByCodeQuery
             ->method('execute')
-            ->with([], 1, 20)
+            ->with([])
             ->willReturn([]);
 
         $response = ($this->getLocalesAction)(
@@ -74,16 +74,13 @@ class GetLocalesActionTest extends TestCase
         self::assertSame([], \json_decode($response->getContent(), null, 512, JSON_THROW_ON_ERROR));
     }
 
-    /**
-     * @dataProvider queryWillThrowDataProvider
-     */
-    public function testItAnswersABadRequestIfTheQueryIsInvalid(array $queryPayload): void
+    public function testItAnswersABadRequestIfTheQueryIsInvalid(): void
     {
         $this->expectException(BadRequestHttpException::class);
 
         ($this->getLocalesAction)(
             new Request(
-                query: $queryPayload,
+                query: ['codes' => ['en_US', 'fr_FR']],
                 server: [
                     'HTTP_X-Requested-With' => 'XMLHttpRequest',
                 ],
@@ -91,64 +88,17 @@ class GetLocalesActionTest extends TestCase
         );
     }
 
-    public function queryWillThrowDataProvider(): array
-    {
-        return [
-            'page must be a numeric' => [
-                [
-                    'page' => 'foo',
-                ],
-            ],
-            'limit must be a numeric' => [
-                [
-                    'limit' => 'foo',
-                ],
-            ],
-            'page must be positive' => [
-                [
-                    'page' => 0,
-                ],
-            ],
-            'limit must be positive' => [
-                [
-                    'limit' => 0,
-                ],
-            ],
-            'codes is not a string' => [
-                [
-                    'codes' => ['en_US', 'fr_FR'],
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider queryWillNotThrowDataProvider
-     */
-    public function testItAnswersIfTheQueryIsValid(array $query): void
+    public function testItAnswersIfTheQueryIsValid(): void
     {
         $this->expectNotToPerformAssertions();
 
         ($this->getLocalesAction)(
             new Request(
-                query: $query,
+                query: ['codes' =>'en_US,fr_FR'],
                 server: [
                     'HTTP_X-Requested-With' => 'XMLHttpRequest',
                 ],
             )
         );
-    }
-
-    public function queryWillNotThrowDataProvider(): array
-    {
-        return [
-            'limit and page are positive' => [
-                [
-                    'page' => 1,
-                    'limit' => 1,
-                    'codes' =>'en_US,fr_FR',
-                ],
-            ],
-        ];
     }
 }

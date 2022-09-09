@@ -20,7 +20,7 @@ const DE = {code: 'de_DE', label: 'German'};
 beforeEach(() => {
     mockFetchResponses([
         {
-            url: '/rest/catalogs/locales?page=1&limit=20',
+            url: '/rest/catalogs/locales',
             json: [EN, FR, DE],
         },
         {

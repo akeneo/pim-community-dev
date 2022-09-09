@@ -6,6 +6,7 @@ namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence;
 
 use Akeneo\Catalogs\Infrastructure\Persistence\GetLocalesByCodeQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
+use PHPUnit\Framework\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -27,32 +28,40 @@ class GetLocalesByCodeQueryTest extends IntegrationTestCase
         $this->query = self::getContainer()->get(GetLocalesByCodeQuery::class);
     }
 
-    public function testItGetsPaginatedLocalesByCode(): void
+    public function testItGetsLocalesByCode(): void
     {
+        $client = $this->getAuthenticatedInternalApiClient();
+
         // Locales are only activated when used in a channel
         $this->createChannel('mobile', ['en_US', 'fr_FR']);
 
-        $page1 = $this->query->execute(['en_US', 'fr_FR'], 1, 1);
-        $page2 = $this->query->execute(['en_US', 'fr_FR'], 2, 1);
-        $page3 = $this->query->execute(['en_US', 'fr_FR'], 3, 1);
+        $client->request(
+            'GET',
+            '/rest/catalogs/locales',
+            [
+                'codes' => 'en_US,fr_FR'
+            ],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ],
+        );
 
-        $expectedPage1 = [
+        $response = $client->getResponse();
+        Assert::assertEquals(200, $response->getStatusCode());
+        $locales = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+        $expectedLocales = [
             [
                 'code' => 'en_US',
-                'label' => 'English (United States)',
+                'label'=> 'English (United States)',
             ],
-        ];
-        $expectedPage2 = [
             [
                 'code' => 'fr_FR',
-                'label' => 'French (France)',
+                'label'=> 'French (France)',
             ],
         ];
-        $expectedPage3 = [];
-
-        self::assertEquals($expectedPage1, $page1);
-        self::assertEquals($expectedPage2, $page2);
-        self::assertEquals($expectedPage3, $page3);
+        Assert::assertEquals($expectedLocales, $locales);
     }
 
     public function testItGetsNoLocales(): void

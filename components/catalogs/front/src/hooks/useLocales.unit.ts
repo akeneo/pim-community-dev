@@ -3,7 +3,7 @@ jest.unmock('./useLocales');
 import {renderHook} from '@testing-library/react-hooks';
 import {useLocales} from './useLocales';
 import fetchMock from 'jest-fetch-mock';
-import {ReactQueryWrapper} from '../../../../tests/ReactQueryWrapper';
+import {ReactQueryWrapper} from '../../tests/ReactQueryWrapper';
 
 test('it fetches the API response', async () => {
     fetchMock.mockResponseOnce(
