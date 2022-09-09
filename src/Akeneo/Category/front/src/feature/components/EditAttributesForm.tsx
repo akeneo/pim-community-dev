@@ -1,22 +1,11 @@
 import React, {useCallback, useState} from 'react';
 import styled from 'styled-components';
-
-import {Field, FileInfo, MediaFileInput, SectionTitle, TextAreaInput, TextInput} from 'akeneo-design-system';
 import {Locale, LocaleSelector, useTranslate, useUploader} from '@akeneo-pim-community/shared';
 import {Field, FileInfo, MediaFileInput, SectionTitle, TextAreaInput, TextInput, Helper} from 'akeneo-design-system';
-import {Locale, LocaleSelector, useTranslate} from '@akeneo-pim-community/shared';
 import {useTemplate} from '../hooks';
-import styled from 'styled-components';
 import {
   Attribute,
   buildCompositeKey,
-  CategoryAttributes,
-  CategoryAttributeValueWrapper,
-  Template,
-} from '../models';
-
-import {
-  CategoryAttributeDefinition,
   CategoryAttributeValueData,
   CategoryImageAttributeValueData,
   EnrichCategory,
@@ -150,7 +139,7 @@ export const EditAttributesForm = ({attributeValues, onAttributeValueChange}: Pr
               <Field key={attribute.uuid} label={attribute.labels[locale]}>
                 <MediaFileInput
                   value={null}
-                  onChange={handleImageChange(attributeDefinitions['banner'])}
+                  onChange={handleImageChange(attribute)}
                   placeholder="Drag and drop to upload or click here"
                   uploadingLabel="Uploading..."
                   uploadErrorLabel="An error occurred when uploading the file."
