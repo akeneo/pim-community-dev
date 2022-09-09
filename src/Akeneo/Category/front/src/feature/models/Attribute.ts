@@ -1,3 +1,5 @@
+import {LabelCollection} from '@akeneo-pim-community/shared';
+
 export type CategoryAttributeUUID = string;
 export type CategoryAttributeCode = string;
 
@@ -11,3 +13,13 @@ export interface CategoryAttributeDefinition {
   code: CategoryAttributeCode;
   type: CategoryAttributeType;
 }
+
+export type Attribute = {
+  uuid: string;
+  code: string;
+  type: string;
+  order: number;
+  is_localizable: boolean;
+  labels: LabelCollection;
+  template_identifier: string;
+};

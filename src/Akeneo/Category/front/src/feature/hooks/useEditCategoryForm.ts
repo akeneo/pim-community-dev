@@ -6,8 +6,8 @@ import {saveEditCategoryForm} from '../infrastructure';
 import {useCategory} from './useCategory';
 import {EditCategoryContext} from '../components';
 import {
+  Attribute,
   buildCompositeKey,
-  CategoryAttributeDefinition,
   CategoryAttributeValueData,
   CategoryPermissions,
   EnrichCategory,
@@ -100,7 +100,7 @@ const useEditCategoryForm = (categoryId: number) => {
   };
 
   const onChangeAttribute = (
-    attribute: CategoryAttributeDefinition,
+    attribute: Attribute,
     localeCode: string | null,
     attributeValue: CategoryAttributeValueData
   ) => {

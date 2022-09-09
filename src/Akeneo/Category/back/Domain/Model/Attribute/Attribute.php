@@ -26,7 +26,7 @@ abstract class Attribute
         protected AttributeOrder $order,
         protected AttributeIsLocalizable $isLocalizable,
         protected LabelCollection $labelCollection,
-        protected TemplateUuid $templateId,
+        protected TemplateUuid $templateUuid,
     ) {
     }
 
@@ -44,13 +44,13 @@ abstract class Attribute
     public function normalize(): array
     {
         return [
-            'identifier' => (string) $this->uuid,
+            'uuid' => (string) $this->uuid,
             'code' => (string) $this->code,
             'type' => (string) $this->type,
             'order' => $this->order->intValue(),
             'is_localizable' => $this->isLocalizable->normalize(),
             'labels' => $this->labelCollection->normalize(),
-            'template_identifier' => (string) $this->templateId,
+            'template_identifier' => (string) $this->templateUuid,
         ];
     }
 
@@ -84,9 +84,9 @@ abstract class Attribute
         return $this->labelCollection;
     }
 
-    public function getTemplateId(): TemplateUuid
+    public function getTemplateUuid(): TemplateUuid
     {
-        return $this->templateId;
+        return $this->templateUuid;
     }
 
     /**
