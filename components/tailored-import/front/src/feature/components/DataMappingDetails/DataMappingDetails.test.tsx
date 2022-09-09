@@ -273,14 +273,15 @@ test('it can add an operation', async () => {
   );
 
   userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.operations.add'));
-  userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.operations.clean_html_tags.title'));
+  userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.operations.clean_html.title'));
 
   expect(handleDataMappingChange).toHaveBeenCalledWith({
     ...attributeDataMapping,
     operations: [
       {
         uuid: mockUuid,
-        type: 'clean_html_tags',
+        modes: ['remove', 'decode'],
+        type: 'clean_html',
       },
     ],
   });

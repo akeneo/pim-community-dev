@@ -4,15 +4,15 @@ import {
   CategoriesReplacementOperation,
   CHANGE_CASE_OPERATION_TYPE,
   ChangeCaseOperation,
-  CLEAN_HTML_TAGS_OPERATION_TYPE,
-  CleanHTMLTagsOperation,
+  CLEAN_HTML_OPERATION_TYPE,
+  CleanHTMLOperation,
   EnabledReplacementOperation,
   FAMILY_REPLACEMENT_OPERATION_TYPE,
   FamilyReplacementOperation,
   getDefaultBooleanReplacementOperation,
   getDefaultCategoriesReplacementOperation,
   getDefaultChangeCaseOperation,
-  getDefaultCleanHTMLTagsOperation,
+  getDefaultCleanHTMLOperation,
   getDefaultEnabledReplacementOperation,
   getDefaultFamilyReplacementOperation,
   getDefaultMultiSelectReplacementOperation,
@@ -33,7 +33,7 @@ import {Attribute} from './Attribute';
 type Operation =
   | BooleanReplacementOperation
   | CategoriesReplacementOperation
-  | CleanHTMLTagsOperation
+  | CleanHTMLOperation
   | EnabledReplacementOperation
   | MultiSelectReplacementOperation
   | SimpleSelectReplacementOperation
@@ -63,8 +63,8 @@ const getPropertyRequiredOperations = (propertyCode: string): Operation[] => {
 
 const getDefaultOperation = (operationType: OperationType): Operation => {
   switch (operationType) {
-    case CLEAN_HTML_TAGS_OPERATION_TYPE:
-      return getDefaultCleanHTMLTagsOperation();
+    case CLEAN_HTML_OPERATION_TYPE:
+      return getDefaultCleanHTMLOperation();
     case SPLIT_OPERATION_TYPE:
       return getDefaultSplitOperation();
     case SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE:

@@ -15,8 +15,8 @@ import {DataMapping, getDefaultOperation, Operation, OperationType} from '../../
 import {
   BOOLEAN_REPLACEMENT_OPERATION_TYPE,
   CATEGORIES_REPLACEMENT_OPERATION_TYPE,
+  CLEAN_HTML_OPERATION_TYPE,
   CHANGE_CASE_OPERATION_TYPE,
-  CLEAN_HTML_TAGS_OPERATION_TYPE,
   ENABLED_REPLACEMENT_OPERATION_TYPE,
   FAMILY_REPLACEMENT_OPERATION_TYPE,
   MULTI_SELECT_REPLACEMENT_OPERATION_TYPE,
@@ -25,8 +25,8 @@ import {
   SPLIT_OPERATION_TYPE,
   BooleanReplacementOperationBlock,
   CategoriesReplacementOperationBlock,
+  CleanHTMLOperationBlock,
   ChangeCaseOperationBlock,
-  CleanHTMLTagsOperationBlock,
   EnabledReplacementOperationBlock,
   FamilyReplacementOperationBlock,
   MultiSelectReplacementOperationBlock,
@@ -55,7 +55,7 @@ const operationBlocks: {
 } = {
   [BOOLEAN_REPLACEMENT_OPERATION_TYPE]: BooleanReplacementOperationBlock,
   [CATEGORIES_REPLACEMENT_OPERATION_TYPE]: CategoriesReplacementOperationBlock,
-  [CLEAN_HTML_TAGS_OPERATION_TYPE]: CleanHTMLTagsOperationBlock,
+  [CLEAN_HTML_OPERATION_TYPE]: CleanHTMLOperationBlock,
   [ENABLED_REPLACEMENT_OPERATION_TYPE]: EnabledReplacementOperationBlock,
   [MULTI_SELECT_REPLACEMENT_OPERATION_TYPE]: MultiSelectReplacementOperationBlock,
   [SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE]: SimpleSelectReplacementOperationBlock,

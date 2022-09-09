@@ -6,7 +6,7 @@ import {InvalidAttributeTargetError} from '../error';
 import {AttributeTargetParameters, Operations, Sources} from '../../../../components';
 import {
   CHANGE_CASE_OPERATION_TYPE,
-  CLEAN_HTML_TAGS_OPERATION_TYPE,
+  CLEAN_HTML_OPERATION_TYPE,
   REMOVE_WHITESPACE_OPERATION_TYPE,
 } from '../../Operation';
 import {ClearIfEmpty} from '../../common';
@@ -47,7 +47,7 @@ const TextConfigurator = ({
       <Operations
         dataMapping={dataMapping}
         compatibleOperations={[
-          CLEAN_HTML_TAGS_OPERATION_TYPE,
+          CLEAN_HTML_OPERATION_TYPE,
           CHANGE_CASE_OPERATION_TYPE,
           REMOVE_WHITESPACE_OPERATION_TYPE,
         ]}

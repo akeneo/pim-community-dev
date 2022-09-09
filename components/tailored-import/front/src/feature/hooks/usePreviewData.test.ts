@@ -16,7 +16,7 @@ const dataMapping: AttributeDataMapping = {
     source_configuration: null,
   },
   sources: ['a9a2db9d-d150-4297-8265-d2e52394979f'],
-  operations: [{uuid: 'uuid', type: 'clean_html_tags'}],
+  operations: [{uuid: 'uuid', modes: ['remove'], type: 'clean_html'}],
   sample_data: ['<b>product_1</b>', 'product_2', null],
 };
 
