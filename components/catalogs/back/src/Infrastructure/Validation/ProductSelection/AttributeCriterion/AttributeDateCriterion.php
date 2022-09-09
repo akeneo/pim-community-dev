@@ -78,7 +78,10 @@ final class AttributeDateCriterion extends Compound
                     ],
                     'constraints' => [
                         new Assert\Type('array'),
-                        new Assert\Count(2),
+                        new Assert\Count(
+                            exactly: 2,
+                            exactMessage: 'akeneo_catalogs.validation.product_selection.criteria.date.between_is_empty',
+                        ),
                         new Assert\All([
                             new Assert\Type('string'),
                             new Assert\Date(),
