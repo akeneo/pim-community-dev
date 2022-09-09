@@ -73,8 +73,13 @@ akeneo.tailored_import:
         title: Reemplazo de categorías
         modal:
           title: Administrar categorías
+          table:
+            header:
+              replacement: Etiquetas de categoría
+              source_values: Categorías de fuentes
       family_replacement:
         title: Reemplazo de familias
+        option_labels: Etiquetas familiares
         modal:
           title: Gestionar familias
       no_result: No hay operación disponible
@@ -138,6 +143,9 @@ akeneo.tailored_import:
         date_format: Formato de fecha
         measurement_unit:
           title: Unidad
+        price_currency:
+          title: Moneda
+          placeholder: Seleccione una moneda
       invalid:
         attribute: Este atributo ha sido eliminado y recreado con otro tipo, elimine esta asignación de datos y añádala de nuevo.
         property: Esta propiedad no es válida, elimine esta asignación de datos y añádala de nuevo.
@@ -210,3 +218,8 @@ akeneo.tailored_import:
     operations:
       incompatible_operation_type: El tipo de operación {{ operation_type }} es incompatible con su tipo de destino.
       missing_required_operations: "Falta(n) operación(es) obligatoria(s): {{ missing_required_operations }}"
+pim_information:
+  import:
+    title: Descubra las asignaciones con la Importación a medida
+    text: "Este nuevo perfil de importación le permite personalizar su estructura de importación de productos mediante la asignación de datos. Le permite seleccionar fácilmente las fuentes de su archivo, asignarlas a los atributos de su PIM y realizar operaciones para transformar sus datos."
+    link.text: Pulse aquí para leer más.

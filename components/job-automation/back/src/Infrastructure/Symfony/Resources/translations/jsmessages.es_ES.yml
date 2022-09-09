@@ -1,0 +1,42 @@
+akeneo.job_automation:
+  title: 'automatización'
+  scheduling:
+    title: 'Programación'
+    running_user_groups:
+      label: 'Permisos de grupos de usuarios'
+      disabled_helper: No tiene permiso para listar grupos de usuarios.
+    enable: Habilitar programación
+    cannot_view_all_jobs: "No puede ver los trabajos automatizados en el Rastreador de procesos, ya que no tiene el siguiente permiso para su rol: «Ver todos los trabajos en el rastreador de procesos». Póngase en contacto con su administrador de PIM."
+    frequency:
+      helper: La frecuencia se muestra en formato UTC de 24 horas.
+      hourly_helper: Las frecuencias ejecutadas varias veces al día comienzan a medianoche (UTC).
+      title: Frecuencia
+      daily: Cada día
+      weekly: Cada semana
+      weekday: Día de la semana
+      every_4_hours: Cada 4 horas
+      every_8_hours: Cada 8 horas
+      every_12_hours: Cada 12 horas
+      hours: Horas
+      minutes: Minutos
+      monday: Lunes
+      tuesday: Martes
+      wednesday: Miércoles
+      thursday: Jueves
+      friday: Viernes
+      saturday: Sábado
+      sunday: Domingo
+  notification:
+    title: Notificación
+    user_groups:
+      label: Grupos de usuarios
+      disabled_helper: No tiene permiso para listar grupos de usuarios.
+    users:
+      label: Usuarios
+      disabled_helper: No tiene permiso para listar usuarios.
+  validation:
+    invalid_frequency_option: Opción de frecuencia no válida
+    invalid_week_day: Día de la semana no válido
+    invalid_hourly_frequency: Frecuencia horaria no válida
+    invalid_hours: Horas no válidas
+    invalid_minutes: Minutos no válidos
