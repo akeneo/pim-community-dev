@@ -12,6 +12,7 @@ use Symfony\Component\Process\Process;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
+ * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
@@ -105,19 +106,27 @@ final class JobMessageHandler implements MessageSubscriberInterface
     ): array {
         if ($jobMessage instanceof JobExecutionMessageInterface) {
             $arguments = [
-                sprintf('--job_execution_id=%d', $jobMessage->getJobExecutionId())
+                sprintf('--job_execution_id=%d', $jobMessage->getJobExecutionId()),
             ];
         } else {
             $arguments = [
-                sprintf('--job_code=%s', $jobMessage->getJobCode())
+                sprintf('--job_code=%s', $jobMessage->getJobCode()),
             ];
         }
 
         foreach ($jobMessage->getOptions() as $optionName => $optionValue) {
-            if (true === $optionValue) {
-                $arguments[] = sprintf('--%s', $optionName);
-            } elseif (false !== $optionValue && null !== $optionValue) {
-                $arguments[] = sprintf('--%s=%s', $optionName, $optionValue);
+            switch (true) {
+                case true === $optionValue:
+                    $arguments[] = sprintf('--%s', $optionName);
+                    break;
+                case is_scalar($optionValue) && $optionValue:
+                    $arguments[] = sprintf('--%s=%s', $optionName, $optionValue);
+                    break;
+                case is_array($optionValue):
+                    foreach ($optionValue as $subOptionValue) {
+                        $arguments[] = sprintf('--%s=%s', $optionName, $subOptionValue);
+                    }
+                    break;
             }
         }
 
