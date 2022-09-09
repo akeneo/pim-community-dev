@@ -2,3 +2,8 @@ supplier_portal:
   supplier:
     contributor:
       email_already_exists: Cet e-mail est déjà utilisé pour un autre fournisseur et avoir un même contributeur pour plusieurs fournisseurs n'est pas encore supporté. Désolé pour le désagrément.
+    product_file_dropping:
+      validation:
+        max_uploaded_filename_length: Le nom du fichier ne doit pas dépasser 255 caractères.
+        max_uploaded_file_size: La taille du fichier ne doit pas dépasser 50 MB.
+        must_be_an_xlsx_file: Veuillez importer un fichier XLSX valide.

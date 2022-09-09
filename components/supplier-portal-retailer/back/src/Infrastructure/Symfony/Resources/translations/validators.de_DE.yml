@@ -1,0 +1,9 @@
+supplier_portal:
+  supplier:
+    contributor:
+      email_already_exists: Diese E-Mail-Adresse wird bereits für einen anderen Lieferanten verwendet und wir unterstützen mehrere Lieferanten mit dem gleichen Beitragenden noch nicht. Entschuldigen Sie die Unannehmlichkeiten.
+    product_file_dropping:
+      validation:
+        max_uploaded_filename_length: Der Dateiname darf nicht länger sein als 255 Zeichen.
+        max_uploaded_file_size: Die Dateigröße darf nicht größer sein als 50 MB.
+        must_be_an_xlsx_file: Bitte laden Sie eine gültige .xlsx-Datei hoch.
