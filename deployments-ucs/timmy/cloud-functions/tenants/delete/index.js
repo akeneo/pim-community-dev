@@ -86,7 +86,7 @@ async function getArgoCdToken(url, username, password) {
       });
 
     const token = await resp.data.token;
-    if (typeof (token) === undefined || token === null) {
+    if (!token) {
       return Promise.reject(new Error('Retrieved token from ArgoCD server is undefined'));
     }
 
@@ -190,10 +190,10 @@ async function getGoogleSecret(gcpProjectId, secretName, secretVersion = 'latest
     });
 
     const data = version.payload.data;
-    if (data === 'undefined' || data === null) {
+    if (!data) {
       return Promise.reject(Error(`Failed to retrieved ${secretVersion} ${secretName} secret version from Google Secret Manager. The value is undefined or null`));
     }
-    return version.payload.data.toString('utf-8');
+    return data.toString('utf-8');
 
   } catch (err) {
     return Promise.reject(new Error(`Failed to retrieve ${secretVersion} ${secretName} secret version from Google Secret Manager`))

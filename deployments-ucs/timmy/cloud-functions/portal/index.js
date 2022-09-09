@@ -29,10 +29,11 @@ const TENANT_STATUS = {
 /**
  * Initialize the logger
  * @param gcpProjectId the GCP project ID
+ * @param logLevel level of severity for logs
  */
-function initializeLogger(gcpProjectId) {
+function initializeLogger(gcpProjectId, logLevel) {
   logger = createLogger({
-    level: 'info',
+    level: logLevel,
     defaultMeta: {
       function: 'ucs-request-portal',
       gcpProjectId: gcpProjectId,
@@ -65,8 +66,8 @@ function initializeLogger(gcpProjectId) {
  * @returns {string} The value of the environment variable
  */
 function loadEnvironmentVariable(name) {
-  if (typeof process.env[name] === "undefined" || process.env[name] === null) {
-    throw new Error('The environment variable ${name} is missing or undefined');
+  if (!process.env[name]) {
+    throw new Error(`The environment variable ${name} is missing or undefined`);
   }
   return process.env[name];
 }
@@ -86,13 +87,15 @@ async function getGoogleSecret(gcpProjectId, secretName, secretVersion = 'latest
     });
 
     const data = version.payload.data;
-    if (data === 'undefined' || data === null) {
+    if (!data) {
+      logger.error(`Failed to retrieved ${secretVersion} ${secretName} secret version from Google Secret Manager. The value is undefined or null`);
       return Promise.reject(new Error(`Failed to retrieved ${secretVersion} ${secretName} secret version from Google Secret Manager. The value is undefined or null`));
     }
-    return version.payload.data.toString('utf-8');
+    return data.toString('utf-8');
 
   } catch (err) {
-    return Promise.reject(new Error(`Failed to retrieve ${secretVersion} ${secretName} secret version from Google Secret Manager`))
+    logger.error(`Failed to retrieve ${secretVersion} ${secretName} secret version from Google Secret Manager. ${err}`);
+    return Promise.reject(new Error(`Failed to retrieve ${secretVersion} ${secretName} secret version from Google Secret Manager. ${err}`))
   }
 }
 
@@ -122,7 +125,7 @@ async function getToken(url, credentials) {
       }
     });
   const token = await resp['data']['access_token'];
-  if (token === undefined || token === null) {
+  if (!token) {
     return Promise.reject(new Error('Failed to token from the portal. It is undefined or null'));
   }
 
@@ -174,6 +177,7 @@ exports.requestPortal = (req, res) => {
     process.env.GCP_PROJECT_ID = 'akecld-prd-pim-saas-dev';
     process.env.FUNCTION_URL_TIMMY_DELETE_TENANT = ''
     process.env.FUNCTION_URL_TIMMY_CREATE_TENANT = ''
+    process.env.LOG_LEVEL = 'info';
     process.env.MAILER_BASE_URL = 'smtp://smtp.mailgun.org:2525';
     process.env.MAILER_DOMAIN = 'mg.cloud.akeneo.com'
     process.env.PORTAL_HOSTNAME = wiremockHostname;
@@ -184,9 +188,11 @@ exports.requestPortal = (req, res) => {
     process.env.SECRET_PORTAL = 'TIMMY_PORTAL';
     process.env.SECRET_MAILER_API_KEY = 'MAILER_API_KEY';
   }
-  const FUNCTION_URL_TIMMY_CREATE_TENANT = 'http://localhost:8082';
-  const FUNCTION_URL_TIMMY_DELETE_TENANT = 'http://localhost:8083';
+
+  const FUNCTION_URL_TIMMY_CREATE_TENANT = loadEnvironmentVariable('FUNCTION_URL_TIMMY_CREATE_TENANT');
+  const FUNCTION_URL_TIMMY_DELETE_TENANT = loadEnvironmentVariable('FUNCTION_URL_TIMMY_DELETE_TENANT');
   const GCP_PROJECT_ID = loadEnvironmentVariable('GCP_PROJECT_ID');
+  const LOG_LEVEL = loadEnvironmentVariable('LOG_LEVEL');
   const MAILER_BASE_URL = loadEnvironmentVariable('MAILER_BASE_URL');
   const MAILER_DOMAIN = loadEnvironmentVariable('MAILER_DOMAIN');
   const PORTAL_HOSTNAME = loadEnvironmentVariable('PORTAL_HOSTNAME');
@@ -197,7 +203,7 @@ exports.requestPortal = (req, res) => {
   const TENANT_CONTINENT = loadEnvironmentVariable('TENANT_CONTINENT');
   const TENANT_ENVIRONMENT = loadEnvironmentVariable('TENANT_ENVIRONMENT');
 
-  initializeLogger(GCP_PROJECT_ID);
+  initializeLogger(GCP_PROJECT_ID, LOG_LEVEL);
   logger.info('Recovery of the tenants from the portal');
 
   const getTenants = async (status) => {
@@ -218,105 +224,77 @@ exports.requestPortal = (req, res) => {
       getGoogleSecret(GCP_PROJECT_ID, SECRET_MAILER_API_KEY)
         .then((mailerApiKey) => {
           for (const tenant of tenants) {
-            try {
-              const subject = tenant['subject'];
-              const cloudInstance = subject['cloud_instance'];
-              const instanceName = subject['instance_fqdn']['prefix'];
-              const administrator = cloudInstance['administrator'];
+            const subject = tenant['subject'];
+            const cloudInstance = subject['cloud_instance'];
+            const instanceName = subject['instance_fqdn']['prefix'];
+            const administrator = cloudInstance['administrator'];
 
-              const headers = {
-                headers: {
-                  'Content-Type': 'application/json'
-                }
+            const headers = {
+              headers: {
+                'Content-Type': 'application/json'
               }
-
-              // When deployed on GCP ask for a token to call the other cloudfunction
-              if (process.env.NODE_ENV !== 'development') {
-                logger.debug(`Ask to Google a token to call the cloudfunction ${FUNCTION_URL_TIMMY_CREATE_TENANT} for the creation of the tenant ${instanceName}`);
-                const auth = new GoogleAuth({scopes: GOOGLE_AUTH_SCOPES});
-                headers['headers']['Authorization'] = `Bearer ${auth.getAccessToken()}`
-              }
-
-              const payload = {
-                instanceName: instanceName,
-                mailer: {
-                  login: `${instanceName}@${MAILER_DOMAIN}`,
+            }
+            const payload = {
+              instanceName: instanceName,
+              mailer: {
+                login: `${instanceName}@${MAILER_DOMAIN}`,
+                // TODO PH-206: this value must be generated by Timmy and stored in Firestore
+                password: Math.random().toString(36).slice(-8),
+                base_mailer_url: MAILER_BASE_URL,
+                domain: MAILER_DOMAIN,
+                api_key: mailerApiKey,
+              },
+              pim: {
+                defaultAdminUser: {
+                  login: administrator['email'],
+                  firstName: administrator['first_name'],
+                  lastName: administrator['last_name'],
+                  email: administrator['email'],
                   // TODO PH-206: this value must be generated by Timmy and stored in Firestore
                   password: Math.random().toString(36).slice(-8),
-                  base_mailer_url: MAILER_BASE_URL,
-                  domain: MAILER_DOMAIN,
-                  api_key: mailerApiKey,
+                  uiLocale: cloudInstance['locale']
                 },
-                pim: {
-                  defaultAdminUser: {
-                    login: administrator['email'],
-                    firstName: administrator['first_name'],
-                    lastName: administrator['last_name'],
-                    email: administrator['email'],
-                    // TODO PH-206: this value must be generated by Timmy and stored in Firestore
-                    password: Math.random().toString(36).slice(-8),
-                    uiLocale: cloudInstance['locale']
-                  },
-                  monitoring: {
-                    // TODO PH-206: this value must be generated by Timmy and stored in Firestore
-                    authenticationToken: Math.random().toString(36).slice(-8)
-                  },
+                monitoring: {
                   // TODO PH-206: this value must be generated by Timmy and stored in Firestore
-                  secret: Math.random().toString(36).slice(-8)
-                }
+                  authenticationToken: Math.random().toString(36).slice(-8)
+                },
+                // TODO PH-206: this value must be generated by Timmy and stored in Firestore
+                secret: Math.random().toString(36).slice(-8)
               }
-              logger.debug(`Prepare following payload to ${FUNCTION_URL_TIMMY_CREATE_TENANT} cloudfunction to create the tenant ${instanceName}: ${JSON.stringify(payload)}`);
-
-              logger.info(`Call the cloudfunction ${FUNCTION_URL_TIMMY_CREATE_TENANT} to create the tenant ${instanceName}`);
-              axios.post(FUNCTION_URL_TIMMY_CREATE_TENANT, JSON.stringify(payload), headers);
-              logger.info(`Called the cloudfunction ${FUNCTION_URL_TIMMY_CREATE_TENANT} to create the tenant  ${instanceName}`);
-            } catch (error) {
-              logger.error(`Failed to call the cloudfunction ${FUNCTION_URL_TIMMY_CREATE_TENANT} to create the tenant ${tenants['subject']['instance_fqdn']['prefix']}`);
-              // TODO: notify the portal the creation failed
             }
+            // When deployed on GCP ask for a token to call the other cloudfunction
+            logger.debug(`Ask to Google a token to call the cloudfunction ${FUNCTION_URL_TIMMY_CREATE_TENANT} for the creation of the tenant ${instanceName}`);
+            const auth = new GoogleAuth({scopes: GOOGLE_AUTH_SCOPES});
+            auth.getAccessToken()
+              .then((token) => {
+                // TODO : authentication with token is not working. During the workshop we hardcoded one token to go ahead
+                headers['headers']['Authorization'] = `Bearer ${token}`;
+              })
+              .then(() => {
+                logger.info(`Prepare following payload to ${FUNCTION_URL_TIMMY_CREATE_TENANT} cloudfunction to create the tenant ${instanceName}: ${JSON.stringify(payload)}`);
+                logger.info(`Using Headers: ${JSON.stringify(headers)}`);
+                logger.info(`Call the cloudfunction ${FUNCTION_URL_TIMMY_CREATE_TENANT} to create the tenant ${instanceName}`);
+                axios.post(FUNCTION_URL_TIMMY_CREATE_TENANT, JSON.stringify(payload), headers)
+                  .then(() => {
+                    logger.info(`Called the cloudfunction ${FUNCTION_URL_TIMMY_CREATE_TENANT} to create the tenant  ${instanceName}`)
+                  })
+                  .catch((error) => {
+                    logger.error(`Error while calling create tenant: ${error}`);
+                  });
+              })
+              .catch((error) => {
+                logger.error(`Error while getting the access token: ${error}`);
+              });
           }
-        })
-        .catch((error) => {
-          logger.error(error);
         });
     })
+
+    .then(() => {
+      logger.info('Dispatched tenant actions to provisioning cloudfunctions');
+      res.status(200).send('Dispatched tenant actions to provisioning cloudfunctions');
+    })
     .catch((error) => {
-      logger.fatal(`Failed to get tenants to create from the portal: ${error}`);
+      logger.error(`Failed to get tenants to create from the portal: ${error}`);
       res.status(500).send('Failed to call the cloudfunction to create the tenant');
     })
-
-  getTenants(TENANT_STATUS.PENDING_DELETION)
-    .then((tenants) => {
-      for (const tenant of tenants) {
-        try {
-          const instanceName = tenant['subject']['instance_fqdn']['prefix'];
-          const headers = {
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          };
-
-          // When deployed on GCP ask for a token to call the other cloudfunction
-          if (process.env.NODE_ENV !== 'development') {
-            logger.debug(`Ask to Google a token to call the cloudfunction ${FUNCTION_URL_TIMMY_CREATE_TENANT} for the deletion of the tenant ${instanceName}`);
-            const auth = new GoogleAuth({scopes: GOOGLE_AUTH_SCOPES});
-            headers['headers']['Authorization'] = `Bearer ${auth.getAccessToken()}`
-          }
-
-          logger.info(`Call of the cloudfunction ${FUNCTION_URL_TIMMY_DELETE_TENANT} for the deletion of the tenant ${instanceName}`);
-          axios.delete(new URL(`/${instanceName}`, FUNCTION_URL_TIMMY_DELETE_TENANT).toString(), headers);
-          logger.info(`Called of the cloudfunction ${FUNCTION_URL_TIMMY_DELETE_TENANT} for the deletion of the tenant ${instanceName}`);
-        } catch (error) {
-          logger.error(`Failed to call the cloudfunction ${FUNCTION_URL_TIMMY_DELETE_TENANT} to create the tenant ${tenants['subject']['instance_fqdn']['prefix']}`);
-          // TODO: notify the portal the creation failed
-        }
-      }
-    })
-    .catch((error) => {
-      logger.fatal(`Failed to get tenants to delete from the portal: ${error}`);
-      res.status(500).send('Failed to call the cloudfunction to delete the tenant');
-    })
-
-  logger.info('Dispatched tenant actions to provisioning cloudfunctions');
-  res.status(200).send('Dispatched tenant actions to provisioning cloudfunctions');
 }

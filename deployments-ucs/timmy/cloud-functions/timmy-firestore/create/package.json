@@ -1,0 +1,15 @@
+{
+  "name": "firestore-create-document",
+  "version": "0.0.1",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+"dependencies": {
+    "@google-cloud/firestore": "^4.0.0",
+
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {}
+}

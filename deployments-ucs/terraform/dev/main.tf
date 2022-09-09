@@ -32,9 +32,9 @@ module "firestore-us" {
 module "secrets" {
   source     = "../modules/secrets"
   project_id = local.project_id
-  secrets = [
+  secrets    = [
     {
-      name = "ARGOCD_USERNAME"
+      name    = "ARGOCD_USERNAME"
       members = [
         "serviceAccount:${module.iam.portal_function_sa_email}"
       ]
@@ -44,7 +44,7 @@ module "secrets" {
       }
     },
     {
-      name = "ARGOCD_PASSWORD"
+      name    = "ARGOCD_PASSWORD"
       members = [
         "serviceAccount:${module.iam.portal_function_sa_email}"
       ],
@@ -54,7 +54,7 @@ module "secrets" {
       }
     },
     {
-      name = "MAILER_API_KEY"
+      name    = "MAILER_API_KEY"
       members = [
         "serviceAccount:${module.iam.portal_function_sa_email}"
       ]
@@ -63,7 +63,7 @@ module "secrets" {
       }
     },
     {
-      name = "TIMMY_PORTAL"
+      name    = "TIMMY_PORTAL"
       members = [
         "serviceAccount:${module.iam.portal_function_sa_email}"
       ]

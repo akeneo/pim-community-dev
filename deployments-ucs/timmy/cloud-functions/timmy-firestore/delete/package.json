@@ -1,0 +1,12 @@
+{
+  "name": "firestore-delete-document",
+  "version": "0.0.1",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+"dependencies": {
+    "@google-cloud/firestore": "^4.0.0"
+  },
+  "devDependencies": {}
+}
