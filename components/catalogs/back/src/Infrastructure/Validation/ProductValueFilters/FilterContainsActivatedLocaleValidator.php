@@ -36,7 +36,7 @@ final class FilterContainsActivatedLocaleValidator extends ConstraintValidator
         /** @var array<LocaleInterface> $locales< */
         $locales = $this->getLocalesByCodeQuery->execute([$value]);
 
-        if (!\count($locales)) {
+        if ([] === $locales) {
             $this->context
                 ->buildViolation(
                     'akeneo_catalogs.validation.product_value_filters.locale.unknown',
