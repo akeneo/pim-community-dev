@@ -2,3 +2,8 @@ supplier_portal:
   supplier:
     contributor:
       email_already_exists: 该电子邮件已经用于另一个供应商，我们不支持多个具有相同贡献者的供应商。很抱歉给您带来不便。
+    product_file_dropping:
+      validation:
+        max_uploaded_filename_length: 文件名不应超过 255 个字符。
+        max_uploaded_file_size: 文件大小不应超过 50 MB。
+        must_be_an_xlsx_file: 请上传有效的 XLSX 文件。
