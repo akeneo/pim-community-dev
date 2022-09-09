@@ -1,0 +1,42 @@
+akeneo.job_automation:
+  title: 'automatisering'
+  scheduling:
+    title: 'Planning'
+    running_user_groups:
+      label: 'Machtiging voor gebruikersgroepen'
+      disabled_helper: U bent niet gemachtigd om gebruikersgroepen te vermelden.
+    enable: Planning inschakelen
+    cannot_view_all_jobs: "U kunt geen geautomatiseerde taken in de procestracker bekijken omdat u niet de volgende machtiging heeft voor uw rol: \"Alle taken in procestracker bekijken\". Neem contact op met uw PIM-beheerder."
+    frequency:
+      helper: De frequentie wordt weergegeven in 24-uurs UTC-indeling.
+      hourly_helper: Frequenties met meerdere uitvoeringen per dag beginnen om middernacht (UTC).
+      title: Frequentie
+      daily: Elke dag
+      weekly: Elke week
+      weekday: Weekdag
+      every_4_hours: Elke 4 uur
+      every_8_hours: Elke 8 uur
+      every_12_hours: Elke 12 uur
+      hours: Uur
+      minutes: Minuten
+      monday: maandag
+      tuesday: dinsdag
+      wednesday: woensdag
+      thursday: donderdag
+      friday: vrijdag
+      saturday: zaterdag
+      sunday: zondag
+  notification:
+    title: Melding
+    user_groups:
+      label: Gebruikersgroepen
+      disabled_helper: U bent niet gemachtigd om gebruikersgroepen te vermelden.
+    users:
+      label: Gebruikers
+      disabled_helper: U bent niet gemachtigd om gebruikers te vermelden.
+  validation:
+    invalid_frequency_option: Ongeldige optie voor frequentie
+    invalid_week_day: Ongeldige weekdag
+    invalid_hourly_frequency: Ongeldige uurlijkse frequentie
+    invalid_hours: Ongeldige uren
+    invalid_minutes: Ongeldige minuten
