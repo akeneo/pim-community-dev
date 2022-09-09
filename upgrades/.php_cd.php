@@ -53,7 +53,6 @@ $rules = [
             'Symfony\Component\Console\Command\Command',
             'Symfony\Component\Console\Input\ArrayInput',
             'Symfony\Component\Console\Output\BufferedOutput',
-            'Symfony\Component\Console\Output\NullOutput',
             'Symfony\Component\DependencyInjection\ParameterBag\ParameterBag',
             'Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity',
             'Webmozart\Assert\Assert',

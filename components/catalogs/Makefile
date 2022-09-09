@@ -59,6 +59,9 @@ catalogs-coupling-back:
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect \
 		--config-file=$(CATALOGS_PATH)/back/.php_cd.php \
 		$(CATALOGS_PATH)/back/src
+	$(PHP_RUN) vendor/bin/php-coupling-detector list-unused-requirements \
+		--config-file=$(CATALOGS_PATH)/back/.php_cd.php \
+		$(CATALOGS_PATH)/back/src
 
 .PHONY: catalogs-unit-back
 catalogs-unit-back:

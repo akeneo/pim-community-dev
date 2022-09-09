@@ -8,6 +8,7 @@ find-legacy-translations:
 .PHONY: coupling-back
 coupling-back: structure-coupling-back user-management-coupling-back channel-coupling-back enrichment-coupling-back connectivity-connection-coupling-back communication-channel-coupling-back import-export-coupling-back job-coupling-back data-quality-insights-coupling-back enrichment-product-coupling-back
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=upgrades/.php_cd.php upgrades/schema
+	$(PHP_RUN) vendor/bin/php-coupling-detector list-unused-requirements --config-file=upgrades/.php_cd.php upgrades/schema
 
 ### Static tests
 static-back: check-pullup check-sf-services enrichment-product-static-back

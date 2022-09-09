@@ -59,6 +59,7 @@ user-management-unit-back: #Doc: launch PHPSpec for user-management bounded cont
 .PHONY: user-management-coupling-back
 user-management-coupling-back:
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/UserManagement/.php_cd.php src/Akeneo/UserManagement
+	$(PHP_RUN) vendor/bin/php-coupling-detector list-unused-requirements --config-file=src/Akeneo/UserManagement/.php_cd.php src/Akeneo/UserManagement
 
 .PHONY: user-management-integration-back
 user-management-integration-back: #Doc: launch PHPUnit integration tests for user-management bounded context

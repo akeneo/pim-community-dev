@@ -10,6 +10,7 @@ category-lint-fix-back: #Doc: launch PHPStan for category bounded context
 .PHONY: category-coupling-back
 category-coupling-back: #Doc: launch coupling detector for category bounded context
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Category/back/tests/.php_cd.php src/Akeneo/Category/back
+	$(PHP_RUN) vendor/bin/php-coupling-detector list-unused-requirements --config-file=src/Akeneo/Category/back/tests/.php_cd.php src/Akeneo/Category/back
 
 .PHONY: category-unit-back
 category-unit-back: #Doc: launch PHPSpec for category bounded context
