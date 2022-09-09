@@ -23,7 +23,7 @@ export const useLocalesByCodes = (codes: string[]): Result => {
 
         const localeCodes = locales.map(locale => locale.code);
 
-        const desactivatedLocaleCodes = codes.filter(code => localeCodes.indexOf(code) === -1);
+        const desactivatedLocaleCodes = codes.filter(code => !localeCodes.includes(code));
 
         return [...locales, ...desactivatedLocaleCodes.map(code => ({code: code, label: `[${code}]`}))];
     });
