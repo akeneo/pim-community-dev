@@ -2,7 +2,6 @@ import {cloneDeep, identity, isEqual, sortBy} from 'lodash/fp';
 
 import {LabelCollection} from '@akeneo-pim-community/shared';
 import {CategoryAttributes, CategoryPermissions, CategoryProperties, EnrichCategory} from '../models/Category';
-import {defaultAttributeValues} from '../models/TemplateMocking';
 
 function labelsAreEqual(l1: LabelCollection, l2: LabelCollection): boolean {
   // maybe too strict of simplistic, to adjust
@@ -49,7 +48,7 @@ export function normalizeCategory(category: EnrichCategory): EnrichCategory {
   }
   if (category.attributes === null) {
     // TODO use fetched template to populate default values here
-    normalized.attributes = defaultAttributeValues;
+    normalized.attributes = {};
   }
   if (category.properties.labels === null) {
     normalized.properties.labels = {};

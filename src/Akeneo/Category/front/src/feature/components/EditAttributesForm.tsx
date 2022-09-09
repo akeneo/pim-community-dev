@@ -3,15 +3,14 @@ import {Field, FileInfo, MediaFileInput, SectionTitle, TextAreaInput, TextInput,
 import {Locale, LocaleSelector, useTranslate} from '@akeneo-pim-community/shared';
 import {useTemplate} from '../hooks';
 import styled from 'styled-components';
-import {Attribute} from "../models";
 
 import {
-  CategoryAttributeDefinition,
+  Attribute,
   CategoryAttributeValueData,
   CategoryImageAttributeValueData,
   EnrichCategory,
 } from '../models';
-import {attributeDefinitions} from '../models/TemplateMocking';
+import {attributeFieldFactory, AttributeInputValue, isImageAttributeInputValue} from "./templateAttributesFactory";
 
 const locales: Locale[] = [
   {
@@ -31,16 +30,11 @@ const locales: Locale[] = [
 interface Props {
   attributes: EnrichCategory['attributes'];
   onAttributeValueChange: (
-    attribute: CategoryAttributeDefinition,
+    attribute: Attribute,
     locale: string | null,
     attributeValue: CategoryAttributeValueData
   ) => void;
 }
-
-const dumbUploader = async (file: File, onProgress: (ratio: number) => void) => ({
-  filePath: 'foo',
-  originalFilename: 'bar',
-});
 
 const FormContainer = styled.div`
   margin-top: 20px;
@@ -50,23 +44,26 @@ const FormContainer = styled.div`
   }
 `;
 
-const Field960 = styled(Field)`
-  max-width: 960px;
-`;
-
 export const EditAttributesForm = ({onAttributeValueChange}: Props) => {
   const [locale, setLocale] = useState('en_US');
   const translate = useTranslate();
 
   const handleTextChange = useCallback(
-    (attribute: CategoryAttributeDefinition) => (value: string) => {
+    (attribute: Attribute) => (value: AttributeInputValue) => {
+      if (isImageAttributeInputValue(value)) {
+        return;
+      }
       onAttributeValueChange(attribute, locale, value);
     },
     [locale, onAttributeValueChange]
   );
 
   const handleImageChange = useCallback(
-    (attribute: CategoryAttributeDefinition) => (value: FileInfo | null) => {
+    (attribute: Attribute) => (value: AttributeInputValue) => {
+      if (!isImageAttributeInputValue(value)) {
+        return;
+      }
+
       // TODO handle value===null
       if (!value || !value.size || !value.mimeType || !value.extension) {
         return;
@@ -110,49 +107,22 @@ export const EditAttributesForm = ({onAttributeValueChange}: Props) => {
         <SectionTitle.Spacer />
         <LocaleSelector value={locale} values={locales} onChange={setLocale} />
       </SectionTitle>
+      {
+        attributesByOrder.map((attribute: Attribute) => {
+          const AttrComp = attributeFieldFactory(attribute);
+          if (AttrComp === null) {
+            return <Helper level="error">Could not find builder for {attribute.type} </Helper>;
+          }
+          const handleChange = (attribute.type === 'image') ? handleImageChange(attribute) : handleTextChange(attribute);
+          // TODO use real value
+          const value = (attribute.type !== 'image') ?
+            "toto_" + attribute.code
+            : {filePath: '/path/to/file/toto.png', originalFilename: "toto.png"};
 
-      {attributesByOrder.map((attribute: Attribute) => {
-        let attributeCode = attribute.code;
-        let attributeUuid = attribute.uuid;
-        let attributeLabel = attribute.labels[locale] ?? "["+attributeCode+"]";
-        switch (attribute.type) {
-          case 'text':
-            return (
-              <Field key={attributeUuid} label={attributeLabel} locale={locale}>
-                <TextInput name={attributeCode} value="" onChange={handleTextChange(attributeDefinitions[attributeCode])} />
-              </Field>
-            );
-          case 'richtext':
-            return (
-              <Field960 key={attributeUuid} label={attributeLabel} locale={locale}>
-                <TextAreaInput isRichText name={attributeCode} value="" onChange={handleTextChange(attributeDefinitions[attributeCode])} />
-              </Field960>
-            );
-          case 'textarea':
-            return (
-              <Field key={attributeUuid} label={attributeLabel} locale={locale}>
-                <TextAreaInput name={attributeCode} value="" onChange={handleTextChange(attributeDefinitions[attributeCode])} />
-              </Field>
-            );
-          case 'image':
-            return (
-              <Field key={attributeUuid} label={attributeLabel}>
-                <MediaFileInput
-                  value={null}
-                  onChange={handleImageChange(attributeDefinitions[attributeCode])}
-                  placeholder="Drag and drop to upload or click here"
-                  uploadingLabel="Uploading..."
-                  uploadErrorLabel="An error occurred during upload"
-                  clearTitle="Clear"
-                  thumbnailUrl={null}
-                  uploader={dumbUploader}
-                />
-              </Field>
-            );
-        }
-
-        return null;
-      })}
+          // TODO value field to fill with real value
+          return <AttrComp locale={locale} value={value} onChange={handleChange} key={attribute.uuid}></AttrComp>;
+        })
+      }
     </FormContainer>
   );
 };
