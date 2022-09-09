@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Category\Application\Applier;
 
-use Akeneo\Category\Api\Command\UserIntents\SetRichText;
+use Akeneo\Category\Api\Command\UserIntents\SetImage;
 use Akeneo\Category\Api\Command\UserIntents\SetText;
-use Akeneo\Category\Application\Applier\SetRichTextApplier;
+use Akeneo\Category\Application\Applier\SetImageApplier;
+use Akeneo\Category\Application\Applier\UserIntentApplier;
 use Akeneo\Category\Domain\Model\Category;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
@@ -16,26 +17,25 @@ use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
 
 /**
- * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SetRichTextApplierSpec extends ObjectBehavior
+class SetImageApplierSpec extends ObjectBehavior
 {
     function it_is_initializable(): void
     {
-        $this->shouldHaveType(SetRichTextApplier::class);
+        $this->shouldHaveType(SetImageApplier::class);
+        $this->shouldImplement(UserIntentApplier::class);
     }
 
-    function it_updates_category_value_collection(): void
+    function it_applies_set_image_user_intent(): void
     {
-        $identifier = 'attribute_code' . ValueCollection::SEPARATOR . 'uuid';
         $valueKey = 'attribute_code'
             . ValueCollection::SEPARATOR . 'uuid' .
             ValueCollection::SEPARATOR . 'locale_code';
 
         $attributes = ValueCollection::fromArray(
             [
-                'attribute_codes' => [$identifier],
                 $valueKey => [
                     'data' => 'value',
                     'locale' => 'locale_code',
@@ -51,7 +51,7 @@ class SetRichTextApplierSpec extends ObjectBehavior
             attributes: $attributes
         );
 
-        $userIntent = new SetRichText(
+        $userIntent = new SetImage(
             'uuid',
             'attribute_code',
             'locale_code',
@@ -60,7 +60,6 @@ class SetRichTextApplierSpec extends ObjectBehavior
 
         $expectedAttributes = ValueCollection::fromArray(
             [
-                'attribute_codes' => [$identifier],
                 $valueKey => [
                     'data' => 'updated_value',
                     'locale' => 'locale_code',
@@ -69,10 +68,16 @@ class SetRichTextApplierSpec extends ObjectBehavior
             ]
         );
 
-        $this->apply($userIntent, $category);
+        $expectedCategory = new Category(
+            id: new CategoryId(1),
+            code: new Code('code'),
+            labels: LabelCollection::fromArray([]),
+            attributes: $expectedAttributes
+        );
 
+        $this->apply($userIntent, $category);
         Assert::assertEquals(
-            $expectedAttributes,
+            $expectedCategory->getAttributes(),
             $category->getAttributes()
         );
     }
@@ -85,8 +90,8 @@ class SetRichTextApplierSpec extends ObjectBehavior
         $this
             ->shouldThrow(\InvalidArgumentException::class)
             ->duringApply(
-                $userIntent,
-                $category
+                    $userIntent,
+                    $category
             );
     }
 }

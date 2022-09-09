@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Category\Application\Applier;
 
+use Akeneo\Category\Api\Command\UserIntents\SetImage;
 use Akeneo\Category\Api\Command\UserIntents\SetText;
 use Akeneo\Category\Application\Applier\SetTextApplier;
 use Akeneo\Category\Application\Applier\SetTextAreaApplier;
@@ -76,5 +77,18 @@ class SetTextApplierSpec extends ObjectBehavior
             $expectedAttributes,
             $category->getAttributes()
         );
+    }
+
+    function it_throws_exception_on_wrong_user_intent_applied(
+        SetImage $userIntent,
+        Category $category
+    ): void
+    {
+        $this
+            ->shouldThrow(\InvalidArgumentException::class)
+            ->duringApply(
+                $userIntent,
+                $category
+            );
     }
 }
