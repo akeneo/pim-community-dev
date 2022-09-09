@@ -5,7 +5,8 @@ import {useTemplate} from '../hooks';
 import styled from 'styled-components';
 
 import {Attribute, CategoryAttributeValueData, CategoryImageAttributeValueData, EnrichCategory} from '../models';
-import {attributeFieldFactory, AttributeInputValue, isImageAttributeInputValue} from './templateAttributesFactory';
+import {attributeFieldFactory, isImageAttributeInputValue} from './attributes/templateAttributesFactory';
+import {AttributeInputValue} from './attributes/types';
 
 const locales: Locale[] = [
   {
