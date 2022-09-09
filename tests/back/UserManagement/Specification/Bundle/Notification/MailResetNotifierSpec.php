@@ -36,8 +36,8 @@ class MailResetNotifierSpec extends ObjectBehavior
         $this->notify($user);
 
         // Then
-        $mailer->notifyByEmail(
-            'email',
+        $mailer->notify(
+            ['email'],
             'Reset password',
             'textBody',
             'htmlBody'
@@ -50,7 +50,7 @@ class MailResetNotifierSpec extends ObjectBehavior
         $this->given($user, $twig);
 
         // When
-        $mailer->notifyByEmail(
+        $mailer->notify(
             Argument::any(),
             Argument::any(),
             Argument::any(),

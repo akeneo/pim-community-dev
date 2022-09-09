@@ -141,7 +141,7 @@ SQL;
                         'withHeader' => true,
                         'uploadAllowed' => true,
                         'invalid_items_file_format' => 'csv',
-                        'user_to_notify' => null,
+                        'users_to_notify' => [],
                         'is_user_authenticated' => false,
                         'decimalSeparator' => '.',
                         'dateFormat' => 'yyyy-MM-dd',
