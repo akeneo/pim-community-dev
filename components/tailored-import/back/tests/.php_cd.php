@@ -33,13 +33,11 @@ $rules = [
             'Akeneo\Platform\TailoredImport\Domain',
             // TODO: Write more specific rules later
             'Akeneo\Pim\Enrichment\Product\API',
-            'Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter'
         ],
     )->in('Akeneo\Platform\TailoredImport\Application'),
 
     $builder->only(
         [
-            'Box\Spout\Common',
             'Box\Spout\Reader',
             'Symfony\Component',
             'Symfony\Contracts',
@@ -50,7 +48,6 @@ $rules = [
 
             'Akeneo\Channel\API',
             'Akeneo\Channel\Infrastructure\Component\Query\PublicApi',
-            'Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi',
             'Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand',
             'Akeneo\Pim\Enrichment\Product\API\Event',
             'Akeneo\Pim\Structure\Component\Query\PublicApi',

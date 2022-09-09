@@ -21,7 +21,6 @@ $builder = new RuleBuilder();
 $rules = [
     $builder->only(
         [
-            'Webmozart\Assert\Assert',
             'Akeneo\Platform\JobAutomation\Domain',
             'Akeneo\Platform\Bundle\ImportExportBundle\Domain'
         ],

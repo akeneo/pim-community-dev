@@ -7,6 +7,7 @@ include make-file/test.mk
 .PHONY: data-quality-insights-coupling-back
 data-quality-insights-coupling-back: #Doc: launch coupling detector for quality-insights
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/Automation/DataQualityInsights/tests/back/.php_cd.php src/Akeneo/Pim/Automation/DataQualityInsights
+	$(PHP_RUN) vendor/bin/php-coupling-detector list-unused-requirements --config-file=src/Akeneo/Pim/Automation/DataQualityInsights/tests/back/.php_cd.php src/Akeneo/Pim/Automation/DataQualityInsights
 
 .PHONY: data-quality-insights-phpstan
 data-quality-insights-phpstan: var/cache/dev #Doc: launch PHPStan for quality-insights

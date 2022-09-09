@@ -12,6 +12,7 @@ lint-fix-back: #Doc: launch PHPStan for tailored export
 .PHONY: coupling-back
 coupling-back: #Doc: launch coupling detector for tailored export
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=components/tailored-export/back/tests/.php_cd.php components/tailored-export/back/src
+	$(PHP_RUN) vendor/bin/php-coupling-detector list-unused-requirements --config-file=components/tailored-export/back/tests/.php_cd.php components/tailored-export/back/src
 
 .PHONY: unit-back
 unit-back: #Doc: launch PHPSpec for tailored export

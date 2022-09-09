@@ -27,7 +27,6 @@ $rules = [
     )->in('Akeneo\Platform\TailoredExport\Application'),
     $builder->only(
         [
-            'Webmozart\Assert\Assert',
             'Ramsey\Uuid\UuidInterface',
         ],
     )->in('Akeneo\Platform\TailoredExport\Domain'),

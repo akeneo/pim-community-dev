@@ -60,8 +60,6 @@ $rules = [
             'Akeneo\Tool\Component\Connector\Exception',
             'Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface',
             'Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker',
-            'Akeneo\Tool\Component\Connector\Processor\Denormalization\AbstractProcessor',
-            'Akeneo\Tool\Component\StorageUtils\Validator\Constraints\WritableDirectory',
             'Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface',
             'Akeneo\Tool\Component\Batch',
             'Akeneo\Tool\Component\Connector\Writer\File\ColumnSorterInterface',
@@ -83,7 +81,6 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue',
             'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorInterface',
-            'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\AbstractProductValueNormalizer',
             'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer',
             'Akeneo\Pim\Enrichment\Component\Product\Completeness\MaskItemGenerator\MaskItemGeneratorForAttributeType',
             'Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesserInterface',
@@ -95,7 +92,6 @@ $rules = [
             'Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductValueRenderer\ProductValueRenderer',
             'Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonExistentValuesFilter',
             'Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues',
-            'Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory',
             'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators',
             'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface',
@@ -110,7 +106,6 @@ $rules = [
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder',
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer',
             'Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses',
-            'Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType',
             'Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface',
             'Oro\Bundle\FilterBundle\Filter\AbstractFilter',
             'Oro\Bundle\FilterBundle\Filter\FilterUtility',
@@ -127,7 +122,6 @@ $rules = [
             // Reference Entity
             'Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier',
             'Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface',
-            'Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent',
             'Akeneo\ReferenceEntity\Domain\Event\RecordsDeletedEvent',
             'Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode',
             'Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordLabelsByCodesInterface',
@@ -142,9 +136,6 @@ $rules = [
             'Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter',
             'Akeneo\Tool\Bundle\MeasureBundle\Application\DeleteMeasurementFamily\DeleteMeasurementFamilyCommand',
             'Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyCommand',
-
-            //Enrichment computing
-            'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator',
         ]
     )->in('Akeneo\Pim\TableAttribute\Infrastructure'),
 ];

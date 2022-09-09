@@ -20,6 +20,7 @@ coupling-back: #Doc: launch all coupling detector tests
 	PIM_CONTEXT=job-automation $(MAKE) coupling-back
 	PIM_CONTEXT=channel $(MAKE) channel-coupling-back
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=upgrades/.php_cd.php upgrades/schema
+	$(PHP_RUN) vendor/bin/php-coupling-detector list-unused-requirements --config-file=upgrades/.php_cd.php upgrades/schema
 
 ### Static tests
 static-back: check-pullup check-sf-services #Doc: launch PHP static analyzer & check Sf services
