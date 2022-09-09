@@ -544,8 +544,6 @@ jobs:
               LOCATION=EU
               PIM_MASTER_DOMAIN="${INSTANCE_NAME}.${GOOGLE_DOMAIN}"
               WORKLOAD_IDENTITY_KSA="${CIRCLE_BRANCH_LOWER}-ksa-workload-identity"
-              # Waiting the new SA
-              WORKLOAD_IDENTITY_GSA=main-service-account
 
               TOPIC_BUSINESS_EVENT="srnt-business-event-${CIRCLE_BRANCH_LOWER}"
               TOPIC_JOB_QUEUE_UI="srnt-job-queue-ui-${CIRCLE_BRANCH_LOWER}"
@@ -570,7 +568,6 @@ jobs:
               echo export LOCATION=${LOCATION} >> $BASH_ENV
               echo export PIM_MASTER_DOMAIN=${PIM_MASTER_DOMAIN} >> $BASH_ENV
               echo export WORKLOAD_IDENTITY_KSA=${WORKLOAD_IDENTITY_KSA} >> $BASH_ENV
-              echo export WORKLOAD_IDENTITY_GSA=${WORKLOAD_IDENTITY_GSA} >> $BASH_ENV
               echo export TOPIC_BUSINESS_EVENT=${TOPIC_BUSINESS_EVENT} >> $BASH_ENV
               echo export TOPIC_JOB_QUEUE_UI=${TOPIC_JOB_QUEUE_UI} >> $BASH_ENV
               echo export TOPIC_JOB_QUEUE_IMPORT_EXPORT=${TOPIC_JOB_QUEUE_IMPORT_EXPORT} >> $BASH_ENV
@@ -609,7 +606,6 @@ jobs:
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml common.dnsCloudDomain "${GOOGLE_DOMAIN}"
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml common.region "${GOOGLE_CLUSTER_REGION}"
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml common.workloadIdentityKSA "${WORKLOAD_IDENTITY_KSA}"
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml common.workloadIdentityGSA "${WORKLOAD_IDENTITY_GSA}"
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml image.pim.tag "${IMAGE_TAG}"
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.pubsub.topic_business_event "${TOPIC_BUSINESS_EVENT}"
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.pubsub.topic_job_queue_ui "${TOPIC_JOB_QUEUE_UI}"
@@ -695,14 +691,11 @@ jobs:
                       CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
 
                       WORKLOAD_IDENTITY_KSA="${INSTANCE_NAME}-ksa-workload-identity"
-                      # Waiting the new SA
-                      WORKLOAD_IDENTITY_GSA=main-service-account
                       GOOGLE_ZONE=${GOOGLE_COMPUTE_ZONE}
 
                       echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
                       echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
                       echo export WORKLOAD_IDENTITY_KSA=${WORKLOAD_IDENTITY_KSA} >> $BASH_ENV
-                      echo export WORKLOAD_IDENTITY_GSA=${WORKLOAD_IDENTITY_GSA} >> $BASH_ENV
                       echo export GOOGLE_ZONE=${GOOGLE_ZONE} >> $BASH_ENV
                       echo export PIM_NS=pim-${CIRCLE_BRANCH_LOWER} >> $BASH_ENV
 
@@ -716,7 +709,6 @@ jobs:
                   name: Change value file
                   command: |
                       yq w -i deployments-ucs/tenant/values.yaml common.workloadIdentityKSA "${WORKLOAD_IDENTITY_KSA}"
-                      yq w -i deployments-ucs/tenant/values.yaml common.workloadIdentityGSA "${WORKLOAD_IDENTITY_GSA}"
             - run:
                   name: Deploy PIM on kubernetes
                   command: |

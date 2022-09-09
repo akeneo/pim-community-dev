@@ -1,8 +1,8 @@
-resource "google_project_iam_custom_role" "cloudconfig_role" {
+resource "google_project_iam_custom_role" "pim_role" {
   project     = var.project_id
-  role_id     = "cloudconfig.role"
-  title       = "Cloud Config GKE Role"
-  description = "Role for executing Cloud Config in GKE"
+  role_id     = "pim.role"
+  title       = "PIM Role"
+  description = "Role for using PIM" # Set the same roles as configconnector, should be refine later
   permissions = [
     "cloudbuild.builds.approve",
     "cloudbuild.builds.create",
@@ -56,6 +56,7 @@ resource "google_project_iam_custom_role" "cloudconfig_role" {
     "pubsub.subscriptions.create",
     "pubsub.subscriptions.delete",
     "pubsub.subscriptions.get",
+    "pubsub.subscriptions.consume",
     "pubsub.topics.attachSubscription",
     "pubsub.topics.create",
     "pubsub.topics.delete",
@@ -78,29 +79,45 @@ resource "google_project_iam_custom_role" "cloudconfig_role" {
   ]
 }
 
-resource "google_service_account" "cloudconfig" {
+resource "google_service_account" "pim_sa" {
   project      = var.project_id
-  account_id   = "ucs-cloudconfig-account"
-  display_name = "Cloud Config service account"
+  account_id   = "pim-saas-service"
+  display_name = "PIM service account"
 }
 
-resource "google_project_iam_binding" "cloudconfig_binding" {
+resource "google_project_iam_binding" "pim_sa_binding" {
   project = var.project_id
-  role    = google_project_iam_custom_role.cloudconfig_role.name
+  role    = google_project_iam_custom_role.pim_role.name
 
   members = [
-    "serviceAccount:${google_service_account.cloudconfig.email}",
+    "serviceAccount:${google_service_account.pim_sa.email}"
   ]
 }
 
-resource "google_project_iam_member" "cloudconfig_metrics_binding" {
-  project = var.project_id
-  role    = "roles/monitoring.metricWriter"
-  member  = "serviceAccount:${google_service_account.cloudconfig.email}"
+resource "google_project_iam_member" "pim_sa_firestore" {
+  project = var.firestore_project_id
+  role    = "roles/firebaserules.system"
+  member  = "serviceAccount:${google_service_account.pim_sa.email}"
 }
 
-resource "google_project_iam_member" "cloudconfig_workload_identity" {
-  project = var.project_id
-  role    = "roles/iam.workloadIdentityUser"
-  member  = "serviceAccount:${var.project_id}.svc.id.goog[cnrm-system/cnrm-controller-manager]"
+
+resource "google_service_account" "pim_cloud_function_sa" {
+  project      = var.project_id
+  account_id   = "pim-cloud-function"
+  display_name = "PIM cloud function service account"
+}
+
+resource "google_project_iam_member" "pim_cloud_function_sa_firestore" {
+  project = var.firestore_project_id
+  role    = "roles/firebaserules.system"
+  member  = "serviceAccount:${google_service_account.pim_cloud_function_sa.email}"
+}
+
+resource "google_service_account_iam_binding" "pim_cloud_function_sa_usage" {
+  service_account_id = google_service_account.pim_cloud_function_sa.name
+  role               = "roles/iam.serviceAccountUser"
+
+  members = [
+    "serviceAccount:${google_service_account.configconnector.email}",
+  ]
 }

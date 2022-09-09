@@ -15,7 +15,7 @@ spec:
       releaseName: configconnector-config
       parameters:
         - name: configconnector.gsa
-          value: "ucs-cloudconfig-account@{{ .Values.spec.destination.googleProject }}.iam.gserviceaccount.com"
+          value: "config-connector@{{ .Values.spec.destination.googleProject }}.iam.gserviceaccount.com"
   destination:
     server: {{ .Values.spec.destination.server }}
     namespace: default

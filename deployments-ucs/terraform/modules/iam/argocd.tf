@@ -15,7 +15,7 @@ resource "google_project_iam_custom_role" "argocd_role" {
 
 resource "google_service_account" "argocd" {
   project      = var.project_id
-  account_id   = "ucs-argocd-account"
+  account_id   = "argocd"
   display_name = "ArgoCD service account"
 }
 
@@ -51,7 +51,10 @@ resource "google_secret_manager_secret_iam_binding" "argocd_token_ci" {
   project   = var.project_id
   secret_id = google_secret_manager_secret.argocd_token.secret_id
   role      = "roles/secretmanager.secretAccessor"
-  members   = [local.ci_sa]
+  members   = [
+    local.ci_sa,
+    "serviceAccount:${google_service_account.cluster_bootstrap.email}"
+  ]
 }
 
 resource "google_secret_manager_secret_iam_binding" "argocd_token_admins" {

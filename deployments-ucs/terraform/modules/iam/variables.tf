@@ -3,6 +3,11 @@ variable "project_id" {
   type        = string
 }
 
+variable "firestore_project_id" {
+  description = "firestore project id"
+  type        = string
+}
+
 variable "secrets_admins" {
   description = "Secrets version managers"
   type        = list(string)
@@ -26,7 +31,6 @@ variable "timmy_k8s_sa" {
   type        = string
   default     = "timmy-deployment-sa"
 }
-
 
 variable "pim_k8s_ns" {
   description = "PIM deployment K8S namespace"

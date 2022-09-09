@@ -41,7 +41,7 @@ common:
   pimMasterDomain: null
   dnsCloudDomain: null
   workloadIdentityKSA: null
-  workloadIdentityGSA: null
+  workloadIdentityGSA: pim-saas-service
   phpConfFPM:
   - name: "PHP_CONF_MAX_EXECUTION_TIME"
     value: "60"

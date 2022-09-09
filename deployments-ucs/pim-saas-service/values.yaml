@@ -31,7 +31,7 @@ common:
   dnsCloudDomain: null # Generated
   region: null # Generated
   workloadIdentityKSA: null # Generated
-  workloadIdentityGSA: null # Generated
+  workloadIdentityGSA: pim-saas-service
   phpConfFPM:
   - name: "PHP_CONF_MAX_EXECUTION_TIME"
     value: "60"
@@ -313,4 +313,4 @@ pim:
     bucket: null # Generated
     sourceCodeZip: publisher-pim-job.zip
     timeZone: "Europe/Paris"
-    serviceAccountEmail: pim-job-function@akecld-prd-pim-saas-dev.iam.gserviceaccount.com
+    serviceAccountEmail: pim-cloud-function@akecld-prd-pim-saas-dev.iam.gserviceaccount.com
