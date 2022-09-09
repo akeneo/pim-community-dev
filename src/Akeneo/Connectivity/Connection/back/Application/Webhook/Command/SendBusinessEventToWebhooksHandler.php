@@ -80,6 +80,7 @@ class SendBusinessEventToWebhooksHandler
                             'user' => $user,
                             'pim_source' => $this->pimSource,
                             'connection_code' => $webhook->connectionCode(),
+                            'use_uuid' => $webhook->usesUuid(),
                         ]
                     );
 

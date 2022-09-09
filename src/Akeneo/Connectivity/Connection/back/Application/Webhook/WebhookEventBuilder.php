@@ -49,10 +49,11 @@ class WebhookEventBuilder
 
         /** @var UserInterface $user */
         $user = $context['user'];
+        $useUuid = $context['use_uuid'] ?? false;
 
         $eventDataCollection = $eventDataBuilder->build(
             $pimEventBulk,
-            new Context($user->getUsername(), $user->getId())
+            new Context($user->getUsername(), $user->getId(), $useUuid)
         );
 
         return $this->buildWebhookEvents(
@@ -70,10 +71,11 @@ class WebhookEventBuilder
     private function resolveOptions(array $options): array
     {
         $resolver = new OptionsResolver();
-        $resolver->setRequired(['user', 'pim_source', 'connection_code']);
+        $resolver->setRequired(['user', 'pim_source', 'connection_code', 'use_uuid']);
         $resolver->setAllowedTypes('user', UserInterface::class);
         $resolver->setAllowedTypes('pim_source', 'string');
         $resolver->setAllowedTypes('connection_code', 'string');
+        $resolver->setAllowedTypes('use_uuid', 'bool');
 
         return $resolver->resolve($options);
     }

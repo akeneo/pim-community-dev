@@ -78,7 +78,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             $this->createEvent($author, ['data'])
         ]);
         $command = new SendBusinessEventToWebhooksCommand($pimEventBulk);
-        $webhook = new ActiveWebhook('ecommerce', 42, 'a_secret', 'http://localhost/');
+        $webhook = new ActiveWebhook('ecommerce', 42, 'a_secret', 'http://localhost/', true);
 
         $selectActiveWebhooksQuery->execute()->willReturn([$webhook]);
 
@@ -90,6 +90,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                     'user' => $magentoUser,
                     'pim_source' => 'staging.akeneo.com',
                     'connection_code' => $webhook->connectionCode(),
+                    'use_uuid' => $webhook->usesUuid(),
                 ]
             )
             ->willReturn(
@@ -167,8 +168,8 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             $this->createEvent($erpAuthor, ['data'])
         ]);
         $command = new SendBusinessEventToWebhooksCommand($pimEventBulk);
-        $erpWebhook = new ActiveWebhook('erp_source', 42, 'a_secret', 'http://localhost/');
-        $magentoWebhook = new ActiveWebhook('ecommerce_destination', 12, 'a_secret', 'http://localhost/');
+        $erpWebhook = new ActiveWebhook('erp_source', 42, 'a_secret', 'http://localhost/', true);
+        $magentoWebhook = new ActiveWebhook('ecommerce_destination', 12, 'a_secret', 'http://localhost/', false);
 
         $selectActiveWebhooksQuery->execute()->willReturn([$erpWebhook, $magentoWebhook]);
         $webhookUserAuthenticator->authenticate(12)->willReturn($magentoUser);
@@ -181,6 +182,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                     'pim_source' => 'staging.akeneo.com',
                     'user' => $magentoUser,
                     'connection_code' => $magentoWebhook->connectionCode(),
+                    'use_uuid' => $magentoWebhook->usesUuid(),
                 ]
             )
             ->willReturn(
@@ -252,7 +254,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             $this->createEvent($author, ['data'])
         ]);
         $command = new SendBusinessEventToWebhooksCommand($pimEventBulk);
-        $webhook = new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/');
+        $webhook = new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/', false);
 
         $selectActiveWebhooksQuery->execute()->willReturn([$webhook]);
         $webhookUserAuthenticator->authenticate(0)->willReturn($user);
@@ -263,6 +265,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                     'pim_source' => 'staging.akeneo.com',
                     'user' => $user,
                     'connection_code' => $webhook->connectionCode(),
+                    'use_uuid' => $webhook->usesUuid(),
                 ]
             )
             ->willThrow(\Exception::class);
@@ -295,7 +298,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $user->setUsername('erp_0000');
         $user->defineAsApiUser();
 
-        $webhook = new ActiveWebhook('erp', $user->getId(), 'a_secret', 'http://localhost/');
+        $webhook = new ActiveWebhook('erp', $user->getId(), 'a_secret', 'http://localhost/', true);
         $selectActiveWebhooksQuery->execute()
             ->willReturn([$webhook]);
 

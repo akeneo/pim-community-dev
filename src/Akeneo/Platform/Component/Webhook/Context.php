@@ -10,13 +10,11 @@ namespace Akeneo\Platform\Component\Webhook;
  */
 final class Context
 {
-    private string $username;
-    private int $userId;
-
-    public function __construct(string $username, int $userId)
-    {
-        $this->username = $username;
-        $this->userId = $userId;
+    public function __construct(
+        private string $username,
+        private int $userId,
+        private bool $useUuid,
+    ) {
     }
 
     public function getUsername(): string
@@ -27,5 +25,10 @@ final class Context
     public function getUserId(): int
     {
         return $this->userId;
+    }
+
+    public function useUuid(): bool
+    {
+        return $this->useUuid;
     }
 }
