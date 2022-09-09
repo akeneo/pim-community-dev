@@ -52,7 +52,7 @@ class GetLocalesActionTest extends IntegrationTestCase
     public function testItGetsLocalesByCode(): void
     {
         // Locales are only activated when used in a channel
-        $this->createChannel('mobile', ['fr_FR', 'en_US']);
+        $this->createChannel('mobile', ['fr_FR', 'en_US', 'de_DE']);
 
         $client = $this->getAuthenticatedInternalApiClient();
 
