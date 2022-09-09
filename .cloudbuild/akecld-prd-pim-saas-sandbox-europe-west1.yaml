@@ -36,7 +36,7 @@ steps:
         yq -i 'del(.server.ingress.hosts)' k8s/argocd/values.yaml
         GOOGLE_DOMAIN="argocd.${_GOOGLE_DOMAIN}" yq -i e '.server.ingress.hosts |= . + [env(GOOGLE_DOMAIN)] ' k8s/argocd/values.yaml
         # Set the correct service account for argocd repoServer
-        GSA_ARGOCD="argocd@${PROJECT_ID}" yq -i '.repoServer.serviceAccount.annotations."iam.gke.io/gcp-service-account" = env(GSA_ARGOCD)' k8s/argocd/values.yaml
+        GSA_ARGOCD="argocd@${PROJECT_ID}.iam.gserviceaccount.com" yq -i '.repoServer.serviceAccount.annotations."iam.gke.io/gcp-service-account" = env(GSA_ARGOCD)' k8s/argocd/values.yaml
 
         # Set target revision to current branch
         BRANCH_NAME="${BRANCH_NAME}" yq -i '.applications[0].source.targetRevision = env(BRANCH_NAME)' k8s/argocd-apps/values.yaml

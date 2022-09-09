@@ -22,7 +22,7 @@ configs:
   ## Creates a secret for each key/value specified below to create repository credentials
   credentialTemplates:
     https-creds:
-      url: https://github.com/akeneo/pim-enterprise-dev.git
+      url: https://github.com/akeneo/pim-saas-k8s-artifacts.git
       password: null
       username: null
 
@@ -31,8 +31,8 @@ configs:
   ## Note: the last example in the list would use a repository credential template, configured under "configs.repositoryCredentials".
   repositories:
     private-repo:
-      name: pim-enterprise-dev
-      url: https://github.com/akeneo/pim-enterprise-dev
+      name: pim-saas-k8s-artifacts
+      url: https://github.com/akeneo/pim-saas-k8s-artifacts
 
 server:
   extraArgs:

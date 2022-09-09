@@ -10,8 +10,8 @@ applications:
     - resources-finalizer.argocd.argoproj.io
     project: infra
     source:
-      repoURL: https://github.com/akeneo/pim-enterprise-dev.git
-      path: deployments-ucs/k8s/infra/apps
+      repoURL: https://github.com/akeneo/pim-saas-k8s-artifacts.git
+      path: k8s/infra/apps
       targetRevision: master
     destination:
       server: "https://kubernetes.default.svc"
@@ -33,8 +33,8 @@ applications:
     - resources-finalizer.argocd.argoproj.io
     project: pim-saas-service
     source:
-      repoURL: https://github.com/akeneo/pim-enterprise-dev.git
-      path: deployments-ucs/pim-saas-service
+      repoURL: https://github.com/akeneo/pim-saas-k8s-artifacts.git
+      path: pim-saas-service
       targetRevision: master
     destination:
       server: "https://kubernetes.default.svc"
@@ -65,8 +65,8 @@ applications:
     - resources-finalizer.argocd.argoproj.io
     project: timmy
     source:
-      repoURL: https://github.com/akeneo/pim-enterprise-dev.git
-      path: deployments-ucs/timmy
+      repoURL: https://github.com/akeneo/pim-saas-k8s-artifacts.git
+      path: timmy
       targetRevision: master
     destination:
       server: "https://kubernetes.default.svc"

@@ -44,6 +44,9 @@ resource "google_project_iam_custom_role" "cloud_build_role" {
   permissions = [
     "logging.buckets.write",
     "logging.logEntries.create",
+
+    "cloudbuild.builds.get",
+    "cloudbuild.builds.list",
   ]
 }
 
