@@ -326,7 +326,7 @@ $(CLOUD_CUSTOMERS_DEV_DIR):
 
 .PHONY: pull-cloud-customer-dev
 pull-cloud-customer-dev: $(CLOUD_CUSTOMERS_DEV_DIR)
-	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --rebase
+	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git status -uall -s  && git pull --rebase
 
 .PHONY: commit-instance
 commit-instance: pull-cloud-customer-dev
@@ -335,29 +335,26 @@ commit-instance: pull-cloud-customer-dev
 	git config --global user.email "pim_ci@akeneo.com"
 	git config --global user.name "pim_ci_instance_creation"
 	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git add $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR) && git commit -m "Created instance $(PFID)"
-	(cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --rebase  && git push) || \
+	(cd $(CLOUD_CUSTOMERS_DEV_DIR) && git status -uall -s && git pull --rebase  && git push) || \
 	bash $(DEPLOYMENT_DIR)/bin/pull_push_loop.sh $(CLOUD_CUSTOMERS_DEV_DIR)
 
 .PHONY: uncommit-instance
 uncommit-instance: pull-cloud-customer-dev
 	# Check if files were previously commited
 ifeq (,$(wildcard ${INSTANCE_CLOUD_CUSTOMERS_DEV_DIR}/main.tf.json))
-	@echo "$(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)/main.tf.json doesn't exist and need to be created"
+	@echo "WARN: $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)/main.tf.json doesn't exist and need to be created"
 	make create-ci-release-files
-	cp -r $(INSTANCE_DIR) $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)
+	make delete
 else
-ifeq ($(TYPE),srnt)
-	PIM_VERSION=$(shell yq r "$(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)/main.tf.json" 'module.pim.pim_version'); \
-	yq w -j -P -i $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/$${PIM_VERSION}//deployments/terraform"
-endif
+	@echo "INFO: $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)/main.tf.json already exist -> Copying files to INSTANCE_DIR"
 	cp -r $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR) $(INSTANCE_DIR)
-endif
 	make delete
 	git config --global user.email "pim_ci@akeneo.com"
 	git config --global user.name "pim_ci_instance_deletion"
 	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git rm -rf $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR) && git commit -m "Deleted instance $(PFID)"
-	(cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --rebase && git push) || \
+	(cd $(CLOUD_CUSTOMERS_DEV_DIR) && git status -uall -s && git pull --rebase && git push) || \
 	bash $(DEPLOYMENT_DIR)/bin/pull_push_loop.sh $(CLOUD_CUSTOMERS_DEV_DIR)
+endif
 
 .PHONY: upgrade-instance
 upgrade-instance:
