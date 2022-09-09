@@ -53,6 +53,5 @@ services:
         public: true
         arguments:
             - '@validator'
-            - '@akeneo_file_storage.file_storage.file.file_storer'
-            - '@akeneo_file_storage.repository.file_info'
             - '@category_serializer'
+            - '@Akeneo\Category\Application\Handler\FileHandler'

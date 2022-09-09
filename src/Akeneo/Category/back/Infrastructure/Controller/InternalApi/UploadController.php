@@ -2,11 +2,7 @@
 
 namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
-use Akeneo\Category\Domain\Filesystem\Storage;
-use Akeneo\Tool\Component\FileStorage\File\FileStorer;
-use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
-use Akeneo\Tool\Component\FileStorage\PathGeneratorInterface;
-use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
+use Akeneo\Category\Application\Handler\FileHandler;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -24,9 +20,8 @@ class UploadController
 {
     public function __construct(
         private ValidatorInterface $validator,
-        private FileStorer $fileStorer,
-        private FileInfoRepositoryInterface $fileInfoRepository,
-        private NormalizerInterface $normalizer
+        private NormalizerInterface $normalizer,
+        private FileHandler $fileHandler,
     ) {
     }
 
@@ -51,28 +46,11 @@ class UploadController
             return new JsonResponse($this->normalizer->normalize($violations), 400);
         }
 
-        $file = $this->storeFile($uploadedFile);
+        $file = $this->fileHandler->storeFile($uploadedFile);
 
         return new JsonResponse([
             'originalFilename' => $uploadedFile->getClientOriginalName(),
             'filePath' => $file->getKey()
         ]);
-    }
-
-    protected function storeFile(UploadedFile $uploadedFile): FileInfoInterface
-    {
-        $hash = sha1_file($uploadedFile->getPathname());
-        $originalFilename = $uploadedFile->getClientOriginalName();
-        $file = $this->fileInfoRepository->findOneBy([
-            'hash' => $hash,
-            'originalFilename' => $originalFilename,
-            'storage' => Storage::CATEGORY_STORAGE_ALIAS
-        ]);
-
-        if (null === $file) {
-            $file = $this->fileStorer->store($uploadedFile, Storage::CATEGORY_STORAGE_ALIAS);
-        }
-
-        return $file;
     }
 }
