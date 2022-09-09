@@ -27,3 +27,12 @@ supplier_portal_retailer_comment_product_file:
         _controller: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\CommentProductFile
         _feature: supplier_portal_critical_path_collaborate
     methods: POST
+
+supplier_portal_retailer_get_product_file:
+    path: /{productFileIdentifier}
+    defaults:
+        _controller: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\GetProductFile
+        _feature: supplier_portal_critical_path_collaborate
+    requirements:
+        productFileIdentifier: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
+    methods: GET
