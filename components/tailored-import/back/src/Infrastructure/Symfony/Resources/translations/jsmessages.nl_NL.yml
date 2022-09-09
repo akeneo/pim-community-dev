@@ -51,6 +51,12 @@ akeneo.tailored_import:
         collapse: Samenvouwen
       clean_html_tags:
         title: HTML-tags wissen
+      change_case:
+        title: Hoofd- en kleine letters wisselen
+        select: Selecteer hoofd- of kleine letters
+        uppercase: Hoofdletters
+        lowercase: Kleine letters
+        capitalize: Eerste letter hoofdletter
       split:
         title: Splitsen
         separator: Selecteer het scheidingsteken
@@ -59,14 +65,21 @@ akeneo.tailored_import:
         pipe: Sluisteken (|)
       simple_select_replacement:
         title: Enkelvoudige selectie vervanging
+        option_labels: Optielabels
       multi_select_replacement:
         title: Meervoudige selectie vervanging
+        option_labels: Optielabels
       categories_replacement:
         title: Vervanging van categorieën
         modal:
           title: Categorieën beheren
+          table:
+            header:
+              replacement: Categorielabels
+              source_values: Broncategorieën
       family_replacement:
         title: Vervanging van families
+        option_labels: Familielabels
         modal:
           title: Families beheren
       no_result: Geen bewerking beschikbaar
@@ -130,6 +143,9 @@ akeneo.tailored_import:
         date_format: Datumnotatie
         measurement_unit:
           title: Eenheid
+        price_currency:
+          title: Valuta
+          placeholder: Selecteer een valuta
       invalid:
         attribute: Dit attribuut is verwijderd en opnieuw aangemaakt met een ander type. Verwijder deze gegevenstoewijzing en voeg het opnieuw toe.
         property: Deze eigenschap is ongeldig. Verwijder deze gegevenstoewijzing en voeg de eigenschap opnieuw toe.
@@ -205,3 +221,5 @@ akeneo.tailored_import:
 pim_information:
   import:
     title: Ontdek hoe u kunt toewijzen met op maat gemaakte import
+    text: "Met dit nieuwe importprofiel kunt u de structuur van uw productimport aanpassen via het toewijzen van gegevens. U kunt gemakkelijk bronnen uit uw bestand selecteren om ze te koppelen aan de attributen in uw PIM. Ook kunt u bewerkingen uitvoeren om de gegevens te transformeren."
+    link.text: Klik hier voor meer informatie.
