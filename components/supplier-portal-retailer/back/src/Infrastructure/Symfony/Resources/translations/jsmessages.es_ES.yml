@@ -87,11 +87,21 @@ supplier_portal:
         contributor: Colaborador
         supplier: Proveedor
         status: Estado
+        download: Descargar icono
       notification:
         error_loading_supplier_files:
           title: No podemos mostrar los archivos del producto.
           content: Lamentamos este inconveniente, inténtelo de nuevo en unos momentos.
+    pim_notification:
+      button_label: Ver las fichas de los productos
 pim_title:
   supplier_portal_retailer_supplier_list: Proveedores
   supplier_portal_retailer_supplier_edit: Editar un proveedor
+  supplier_portal_retailer_product_files_list: Archivos de productos
 batch_jobs.supplier_portal_xlsx_supplier_import.label: Importación de Proveedores de Portal de proveedores en XLSX
+pim_notification:
+  supplier_portal:
+    new_product_file:
+      button_label: Ver las fichas de los productos
+  types:
+    new_product_file: Nueva ficha de producto

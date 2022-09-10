@@ -2,3 +2,8 @@ supplier_portal:
   supplier:
     contributor:
       email_already_exists: Dit e-mailadres wordt al gebruikt voor een andere leverancier en we ondersteunen nog niet dat meerdere leveranciers dezelfde bijdrager hebben. Excuses voor het ongemak.
+    product_file_dropping:
+      validation:
+        max_uploaded_filename_length: De bestandsnaam mag niet langer zijn dan 255 tekens.
+        max_uploaded_file_size: Het bestand mag niet groter zijn dan 50 MB.
+        must_be_an_xlsx_file: Upload een geldig xlsl-bestand.
