@@ -1,0 +1,4 @@
+supplier_portal:
+  product_file_dropping:
+    pim_notification:
+      content: "<strong>{{ contributorEmail }}</strong> van <strong>{{ supplierLabel }}</strong> heeft u zojuist een productbestand gestuurd via het Supplier Portal."

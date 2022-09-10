@@ -87,11 +87,21 @@ supplier_portal:
         contributor: Bijdrager
         supplier: Leverancier
         status: Status
+        download: Downloadpictogram
       notification:
         error_loading_supplier_files:
           title: We kunnen de productbestanden niet weergeven.
           content: Excuses voor dit ongemak. Probeer het over enkele ogenblikken opnieuw.
+    pim_notification:
+      button_label: Productbestanden bekijken
 pim_title:
   supplier_portal_retailer_supplier_list: Leveranciers
   supplier_portal_retailer_supplier_edit: Een leverancier bewerken
+  supplier_portal_retailer_product_files_list: Productbestanden
 batch_jobs.supplier_portal_xlsx_supplier_import.label: Import van leveranciers uit Supplier Portal in XLSX
+pim_notification:
+  supplier_portal:
+    new_product_file:
+      button_label: Productbestanden bekijken
+  types:
+    new_product_file: Nieuw productbestand
