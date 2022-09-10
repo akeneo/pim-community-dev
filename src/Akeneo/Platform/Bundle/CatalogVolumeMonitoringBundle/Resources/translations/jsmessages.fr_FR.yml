@@ -38,6 +38,7 @@ pim_catalog_volume:
       product: Produit
       catalog: Catalogue
       product_structure: Structure du produit
+      variant_modeling: Modélisation des variantes
       reference_entities: Entités référentielles
       assets: Ressources
   mean: 'Moyenne :'
