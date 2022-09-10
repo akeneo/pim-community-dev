@@ -1,0 +1,39 @@
+akeneo.job_automation:
+  title: 'automazione'
+  scheduling:
+    title: 'Pianificazione'
+    running_user_groups:
+      disabled_helper: Non sei autorizzato a consultare elenchi di gruppi di utenti.
+    enable: Abilita la pianificazione
+    frequency:
+      helper: La frequenza è visualizzata nel formato UTC 24 ore
+      title: Frequenza
+      daily: Ogni giorno
+      weekly: Ogni settimana
+      weekday: Giorno della settimana
+      every_4_hours: Ogni 4 ore
+      every_8_hours: Ogni 8 ore
+      every_12_hours: Ogni 12 ore
+      hours: Ore
+      minutes: Minuti
+      monday: Lunedì
+      tuesday: Martedì
+      wednesday: Mercoledì
+      thursday: Giovedì
+      friday: Venerdì
+      saturday: Sabato
+      sunday: Domenica
+  notification:
+    title: Notifica
+    user_groups:
+      label: Gruppi di utenti
+      disabled_helper: Non sei autorizzato a consultare elenchi di gruppi di utenti.
+    users:
+      label: Utenti
+      disabled_helper: Non sei autorizzato a consultare elenchi di utenti.
+  validation:
+    invalid_frequency_option: Opzione di frequenza non valida
+    invalid_week_day: Giorno della settimana non valido
+    invalid_hourly_frequency: Frequenza oraria non valida
+    invalid_hours: Ora non valida
+    invalid_minutes: Minuti non validi
