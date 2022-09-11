@@ -51,6 +51,12 @@ akeneo.tailored_import:
         collapse: 折りたたむ
       clean_html_tags:
         title: HTMLタグを消去
+      change_case:
+        title: 大小文字を切り替え
+        select: 大小文字を選択
+        uppercase: 大文字
+        lowercase: 小文字
+        capitalize: 最初の文字を大文字にする
       split:
         title: 分割
         separator: 区切り文字を選択
@@ -59,14 +65,21 @@ akeneo.tailored_import:
         pipe: パイプ (|)
       simple_select_replacement:
         title: シンプルな選択の置換
+        option_labels: オプションのラベル
       multi_select_replacement:
         title: 複数の選択の置換
+        option_labels: オプションのラベル
       categories_replacement:
         title: カテゴリの置換
         modal:
           title: カテゴリを管理
+          table:
+            header:
+              replacement: カテゴリラベル
+              source_values: ソースカテゴリ
       family_replacement:
         title: ファミリーの置換
+        option_labels: ファミリーラベル
         modal:
           title: ファミリーの管理
       no_result: 利用できる操作はありません
@@ -130,6 +143,9 @@ akeneo.tailored_import:
         date_format: 日付フォーマット
         measurement_unit:
           title: 単位
+        price_currency:
+          title: 通貨
+          placeholder: 通貨を選択
       invalid:
         attribute: この属性は削除され、別のタイプで再作成されました。このデータマッピングを削除して、もう一度追加してください。
         property: このプロパティは無効です。このデータマッピング削除して、もう一度追加してください。
@@ -202,3 +218,8 @@ akeneo.tailored_import:
     operations:
       incompatible_operation_type: 操作タイプ {{ operation_type }} にターゲットタイプとの互換性がありません。
       missing_required_operations: "必須操作がありません: {{ missing_required_operations }}"
+pim_information:
+  import:
+    title: カスタムインポートでマッピングを見つける
+    text: "この新しいインポートプロファイルを使用すると、データマッピングにより商品のインポート構造をカスタマイズできます。ファイルからソースを簡単に選択してPIMの属性にマップすることができ、データを変換するために操作を行うことができます。"
+    link.text: 詳しくはこちらをクリックしてください。

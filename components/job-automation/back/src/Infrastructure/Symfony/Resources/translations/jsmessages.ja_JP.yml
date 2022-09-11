@@ -1,0 +1,42 @@
+akeneo.job_automation:
+  title: '自動化'
+  scheduling:
+    title: 'スケジュール'
+    running_user_groups:
+      label: '権限ユーザーグループ'
+      disabled_helper: ユーザーグループを一覧表示する権限がありません。
+    enable: スケジュールを有効化
+    cannot_view_all_jobs: "ご使用のロールに \"プロセストラッカーですべてのジョブを表示\" 権限がないため、プロセストラッカーで自動化されたジョブを表示できません。PIM管理者に連絡してください。"
+    frequency:
+      helper: 頻度はUTC24時間フォーマットで表示されます。
+      hourly_helper: 数回実行される頻度は、午前0時 (UTC) に開始します。
+      title: 頻度
+      daily: 毎日
+      weekly: 毎週
+      weekday: 平日
+      every_4_hours: 4時間ごと
+      every_8_hours: 8時間ごと
+      every_12_hours: 12時間ごと
+      hours: 時間
+      minutes: 分
+      monday: 月曜日
+      tuesday: 火曜日
+      wednesday: 水曜日
+      thursday: 木曜日
+      friday: 金曜日
+      saturday: 土曜日
+      sunday: 日曜日
+  notification:
+    title: 通知
+    user_groups:
+      label: ユーザーグループ
+      disabled_helper: グループを一覧表示する権限がありません。
+    users:
+      label: ユーザー
+      disabled_helper: ユーザーを一覧表示する権限がありません。
+  validation:
+    invalid_frequency_option: 無効な頻度オプション
+    invalid_week_day: 無効な平日
+    invalid_hourly_frequency: 無効な時間の頻度
+    invalid_hours: 無効な時間
+    invalid_minutes: 無効な分
