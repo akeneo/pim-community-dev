@@ -54,6 +54,7 @@ akeneo_connectivity.connection:
         description: これは概要です。詳細については Akeneo App Store をご覧ください。
         link: Akeneo App Store に移動
       search:
+        placeholder: 名前で検索
         total: '{0} 結果がありません|{1} 1 件の結果|[2,Inf] {{ total }} 件の結果'
       card:
         developed_by: '開発者: {{ author }}'
@@ -179,6 +180,10 @@ akeneo_connectivity.connection:
               3: 設定
         catalogs:
           edit:
+            flash:
+              success: カタログ設定が正常に更新されました。
+              error: カタログを保存できませんでした。表示されたエラーを解決してから、もう一度保存してください。
+              unknown_error: カタログを保存中にエラーが発生しました。
             not_found: カタログが見つかりません
         flash:
           load_permissions_error.title: '{{ entity }} の保存済みの権限を読み込めませんでした。'
@@ -318,6 +323,8 @@ akeneo_connectivity.connection:
       type:
         required: 接続タイプは必須項目です。
         too_long: 接続タイプが長すぎます。30文字以下にする必要があります。
+      user_group:
+        must_exist: ユーザーグループが見つかりませんでした。指定したユーザーグループが存在することを確認してください。
   flow_type:
     data_source: データソース | データソース
     data_destination: データの行先 | データの行先

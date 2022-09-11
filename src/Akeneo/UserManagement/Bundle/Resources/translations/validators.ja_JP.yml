@@ -3,3 +3,4 @@ pim_user:
   password_match: "パスワード入力は一致させてください"
   role:
     invalid_role_format: '権限は "ROLE_" で始まり、アンダースコア、ダッシュ、大文字の英字、数字のみを使用できます。'
+  reserved_prefix_username: "ユーザー名接頭辞 '{{ prefix }}' は予約されています"
