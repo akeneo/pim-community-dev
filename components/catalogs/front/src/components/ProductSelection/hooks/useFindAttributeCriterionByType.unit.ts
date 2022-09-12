@@ -11,6 +11,7 @@ import AttributeMultiSelectCriterion from '../criteria/AttributeMultiSelectCrite
 import AttributeNumberCriterion from '../criteria/AttributeNumberCriterion';
 import AttributeBooleanCriterion from '../criteria/AttributeBooleanCriterion';
 import AttributeMeasurementCriterion from '../criteria/AttributeMeasurementCriterion';
+import AttributeDateCriterion from '../criteria/AttributeDateCriterion';
 
 const critera: [string, AnyAttributeCriterion][] = [
     ['pim_catalog_identifier', AttributeIdentifierCriterion],
@@ -21,6 +22,7 @@ const critera: [string, AnyAttributeCriterion][] = [
     ['pim_catalog_number', AttributeNumberCriterion],
     ['pim_catalog_boolean', AttributeBooleanCriterion],
     ['pim_catalog_metric', AttributeMeasurementCriterion],
+    ['pim_catalog_date', AttributeDateCriterion],
 ];
 
 test.each(critera)('it returns a criterion when searching for "%s"', (field, criterion) => {
