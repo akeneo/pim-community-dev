@@ -61,10 +61,10 @@ final class DatabaseGetProductFileWithComments implements GetProductFileWithComm
             $productFileWithComments['uploaded_by_supplier'],
             $productFileWithComments['uploaded_at'],
             $productFileWithComments['retailer_comments']
-                ? array_filter(\json_decode($productFileWithComments['retailer_comments'], true))
+                ? \array_filter(\json_decode($productFileWithComments['retailer_comments'], true))
                 : [],
             $productFileWithComments['supplier_comments']
-                ? array_filter(\json_decode($productFileWithComments['supplier_comments'], true))
+                ? \array_filter(\json_decode($productFileWithComments['supplier_comments'], true))
                 : [],
         );
     }

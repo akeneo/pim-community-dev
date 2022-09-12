@@ -33,17 +33,32 @@ final class DatabaseCountProductFileCommentsIntegration extends SqlIntegrationTe
     }
 
     /** @test */
-    public function itCountsTheNumberOfCommentsForAProductFile(): void
+    public function itCountsTheNumberOfCommentsForAProductFileWhenThereIsOnlyRetailerComments(): void
     {
         $this->createSupplier();
         $this->createProductFile('594bb1e2-72a8-4bac-8651-e4a5384f3cdf');
-        $this->createComment();
+        $this->createRetailerComment();
 
         $numberOfProductFileComments = $this->get(CountProductFileComments::class)(
             '594bb1e2-72a8-4bac-8651-e4a5384f3cdf'
         );
 
         static::assertSame(1, $numberOfProductFileComments);
+    }
+
+    /** @test */
+    public function itCountsTheNumberOfCommentsForAProductFileWhenThereIsRetailerAndSupplierComments(): void
+    {
+        $this->createSupplier();
+        $this->createProductFile('594bb1e2-72a8-4bac-8651-e4a5384f3cdf');
+        $this->createRetailerComment();
+        $this->createSupplierComment();
+
+        $numberOfProductFileComments = $this->get(CountProductFileComments::class)(
+            '594bb1e2-72a8-4bac-8651-e4a5384f3cdf'
+        );
+
+        static::assertSame(2, $numberOfProductFileComments);
     }
 
     private function createProductFile(string $productFileIdentifier): void
@@ -89,7 +104,7 @@ final class DatabaseCountProductFileCommentsIntegration extends SqlIntegrationTe
         );
     }
 
-    private function createComment(): void
+    private function createRetailerComment(): void
     {
         $sql = <<<SQL
             INSERT INTO `akeneo_supplier_portal_product_file_retailer_comments` (
@@ -108,6 +123,29 @@ final class DatabaseCountProductFileCommentsIntegration extends SqlIntegrationTe
                 'productFileIdentifier' => '594bb1e2-72a8-4bac-8651-e4a5384f3cdf',
                 'content' => 'Your product file is awesome!',
                 'createdAt' => '2022-09-09 08:41:43',
+            ],
+        );
+    }
+
+    private function createSupplierComment(): void
+    {
+        $sql = <<<SQL
+            INSERT INTO `akeneo_supplier_portal_product_file_supplier_comments` (
+                author_email,
+                product_file_identifier,
+                content,
+                created_at
+            )
+            VALUES (:authorEmail, :productFileIdentifier, :content, :createdAt)
+        SQL;
+
+        $this->get(Connection::class)->executeStatement(
+            $sql,
+            [
+                'authorEmail' => 'jimmy.punchline@los_pollos_hermanos.com',
+                'productFileIdentifier' => '594bb1e2-72a8-4bac-8651-e4a5384f3cdf',
+                'content' => 'Here are the products I\'ve got for you.',
+                'createdAt' => '2022-09-09 08:43:43',
             ],
         );
     }

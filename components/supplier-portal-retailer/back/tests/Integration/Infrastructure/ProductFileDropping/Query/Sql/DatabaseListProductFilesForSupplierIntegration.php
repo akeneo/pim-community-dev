@@ -120,7 +120,7 @@ final class DatabaseListProductFilesForSupplierIntegration extends SqlIntegratio
                     'contributorEmail' => $i % 2 ? 'contributor1@example.com' : 'contributor2@example.com',
                     'supplierIdentifier' => 'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7',
                     'uploadedAt' => (new \DateTimeImmutable())->add(
-                        \DateInterval::createFromDateString(sprintf('%d seconds', 30 - $i)),
+                        \DateInterval::createFromDateString(sprintf('%d minutes', 30 - $i)),
                     )->format('Y-m-d H:i:s'),
                 ],
             );
