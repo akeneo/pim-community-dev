@@ -122,33 +122,21 @@ class GetLocalesActionTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider queryWillNotThrowDataProvider
-     */
-    public function testItAnswersIfTheQueryIsValid(array $query): void
+    public function testItAnswersWhenLimitAndPageArePositive(): void
     {
         $this->expectNotToPerformAssertions();
 
         ($this->getLocalesAction)(
             new Request(
-                query: $query,
+                query: [
+                    'page' => 1,
+                    'limit' => 1,
+                    'codes' =>'en_US,fr_FR',
+                ],
                 server: [
                     'HTTP_X-Requested-With' => 'XMLHttpRequest',
                 ],
             )
         );
-    }
-
-    public function queryWillNotThrowDataProvider(): array
-    {
-        return [
-            'limit and page are positive' => [
-                [
-                    'page' => 1,
-                    'limit' => 1,
-                    'codes' =>'en_US,fr_FR',
-                ],
-            ],
-        ];
     }
 }
