@@ -37,7 +37,7 @@ abstract class TestCase extends KernelTestCase
      */
     protected function setUp(): void
     {
-        $this->testKernel = static::bootKernel(['debug' => false]);
+        $this->testKernel = static::bootKernel(['debug' => (bool)($_SERVER['APP_DEBUG'] ?? false)]);
 
         /** @var FilePersistedFeatureFlags $featureFlags*/
         $featureFlags = $this->get('feature_flags');
