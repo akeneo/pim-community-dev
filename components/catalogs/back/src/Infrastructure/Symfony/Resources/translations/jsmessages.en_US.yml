@@ -11,12 +11,22 @@ akeneo_catalogs:
             settings: Catalog settings
             product_selection: Product selection
             more: More
+            product_value_filters: Filter the values
     settings:
         fields:
             enabled: Enabled
         inputs:
             yes: Yes
             no: No
+    product_value_filters:
+        action:
+            open: Open
+            remove: Remove
+        filters:
+            channel:
+                label: Channel
+                no_matches: No matches found
+                placeholder: Select your channel
     product_selection:
         empty: Add selection criteria to create your product selection
         more_information: Check out our Help center for more information.

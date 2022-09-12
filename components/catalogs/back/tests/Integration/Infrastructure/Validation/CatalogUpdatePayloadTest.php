@@ -62,6 +62,9 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
                     'value' => [],
                 ],
             ],
+            'product_value_filters' => [
+                'channels' => ['ecommerce'],
+            ],
         ], new CatalogUpdatePayload());
 
         $this->assertEmpty($violations);
@@ -85,6 +88,7 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
                     'value' => true,
                 ],
             ],
+            'product_value_filters' => [],
         ], new CatalogUpdatePayload());
 
         $this->assertViolationsListContains($violations, 'Invalid array structure.');
@@ -104,9 +108,40 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
         $violations = $this->validator->validate([
             'enabled' => false,
             'product_selection_criteria' => [$criterion],
+            'product_value_filters' => [],
         ], new CatalogUpdatePayload());
 
         $this->assertViolationsListContains($violations, $expectedMessage);
+    }
+
+    /**
+     * @dataProvider invalidProductValueFiltersProvider
+     */
+    public function testItReturnsViolationsWhenProductValueFiltersAreInvalid(
+        array $filters,
+        string $expectedMessage
+    ): void {
+        $violations = $this->validator->validate([
+            'enabled' => false,
+            'product_selection_criteria' => [],
+            'product_value_filters' => $filters,
+        ], new CatalogUpdatePayload());
+
+        $this->assertViolationsListContains($violations, $expectedMessage);
+    }
+
+    public function invalidProductValueFiltersProvider(): array
+    {
+        return [
+            'channel is not a valid array' => [
+                'filters' => ['channels' => 'ecommerce'],
+                'expectedMessage' => 'This value should be of type array.',
+            ],
+            'channel does not exist' => [
+                'filters' => ['channels' => ['removed_channel']],
+                'expectedMessage' => 'The channel "removed_channel" has been deactivated. Please check your channel settings or remove this filter.',
+            ],
+        ];
     }
 
     public function invalidFieldDataProvider(): array

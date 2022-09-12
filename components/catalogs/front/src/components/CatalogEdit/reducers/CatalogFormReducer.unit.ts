@@ -9,23 +9,27 @@ const tests: {state: CatalogFormValues; action: CatalogFormAction; result: Catal
         state: {
             enabled: false,
             product_selection_criteria: {},
+            product_value_filters: {},
         },
         action: {
             type: CatalogFormActions.INITIALIZE,
             state: {
                 enabled: true,
                 product_selection_criteria: {},
+                product_value_filters: {},
             },
         },
         result: {
             enabled: true,
             product_selection_criteria: {},
+            product_value_filters: {},
         },
     },
     {
         state: {
             enabled: false,
             product_selection_criteria: {},
+            product_value_filters: {},
         },
         action: {
             type: CatalogFormActions.SET_ENABLED,
@@ -34,12 +38,14 @@ const tests: {state: CatalogFormValues; action: CatalogFormAction; result: Catal
         result: {
             enabled: true,
             product_selection_criteria: {},
+            product_value_filters: {},
         },
     },
     {
         state: {
             enabled: false,
             product_selection_criteria: {},
+            product_value_filters: {},
         },
         action: {
             type: CatalogFormActions.SET_PRODUCT_SELECTION_CRITERIA,
@@ -60,6 +66,23 @@ const tests: {state: CatalogFormValues; action: CatalogFormAction; result: Catal
                     value: true,
                 },
             },
+            product_value_filters: {},
+        },
+    },
+    {
+        state: {
+            enabled: false,
+            product_selection_criteria: {},
+            product_value_filters: {},
+        },
+        action: {
+            type: CatalogFormActions.SET_PRODUCT_VALUE_FILTERS,
+            value: {channels: ['print', 'ecommerce']},
+        },
+        result: {
+            enabled: false,
+            product_selection_criteria: {},
+            product_value_filters: {channels: ['print', 'ecommerce']},
         },
     },
 ];

@@ -6,6 +6,7 @@ namespace Akeneo\Catalogs\Infrastructure\Controller\Internal;
 
 use Akeneo\Catalogs\Application\Persistence\FindOneCatalogByIdQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\UpdateCatalogProductSelectionCriteriaQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\UpdateCatalogProductValueFiltersQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\UpsertCatalogQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdatePayload;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,6 +28,7 @@ final class UpdateCatalogAction
         private FindOneCatalogByIdQueryInterface $findOneCatalogByIdQuery,
         private UpsertCatalogQueryInterface $upsertCatalogQuery,
         private UpdateCatalogProductSelectionCriteriaQueryInterface $updateCatalogProductSelectionCriteriaQuery,
+        private UpdateCatalogProductValueFiltersQueryInterface $updateCatalogProductValueFiltersQuery,
         private NormalizerInterface $normalizer,
     ) {
     }
@@ -47,6 +49,7 @@ final class UpdateCatalogAction
          * @var array{
          *      enabled: bool,
          *      product_selection_criteria: array<int, array{field: string, operator: string, value?: mixed}>,
+         *      product_value_filters: array{channels?: array<string>}
          * } $payload
          */
         $payload = \json_decode((string) $request->getContent(), true, 512, JSON_THROW_ON_ERROR);
@@ -75,6 +78,10 @@ final class UpdateCatalogAction
         $this->updateCatalogProductSelectionCriteriaQuery->execute(
             $catalogId,
             $payload['product_selection_criteria'],
+        );
+        $this->updateCatalogProductValueFiltersQuery->execute(
+            $catalogId,
+            $payload['product_value_filters'],
         );
 
         return new JsonResponse(null, 204);
