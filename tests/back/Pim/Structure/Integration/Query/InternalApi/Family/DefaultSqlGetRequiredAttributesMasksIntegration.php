@@ -62,7 +62,7 @@ final class DefaultSqlGetRequiredAttributesMasksIntegration extends AbstractGetR
             ],
             [
                 'code' => 'familyC',
-                'attribute_codes' => [],
+                'attribute_codes' => ['sku'],
             ],
             [
                 'code' => 'familyD',
