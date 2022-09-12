@@ -19,6 +19,12 @@ export const useChannelsByCodes = (codes: string[]): Result => {
             },
         });
 
-        return await response.json();
+        const channels: Channel[] = await response.json();
+
+        const channelCodes = channels.map(channel => channel.code);
+
+        const removedChannelCodes = codes.filter(code => !channelCodes.includes(code));
+
+        return [...channels, ...removedChannelCodes.map(code => ({code: code, label: `[${code}]`}))];
     });
 };
