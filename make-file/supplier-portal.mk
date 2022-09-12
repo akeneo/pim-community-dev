@@ -50,15 +50,15 @@ fix-frontcs-supplier: #Doc: Run front fix code style for the supplier part of Su
 fix-frontcs: fix-frontcs-retailer fix-frontcs-supplier #Doc: Fix front CS for Supplier Portal
 
 .PHONY: coupling-retailer
-coupling-retailer: #Doc: Run coupling detector for the retailer part of Supplier Portal
+coupling-retailer: coupling-list-unused-requirements-retailer #Doc: Run coupling detector for the retailer part of Supplier Portal
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=components/supplier-portal-retailer/back/tests/.php_cd.php components/supplier-portal-retailer/back
 
 .PHONY: coupling-supplier
-coupling-supplier: #Doc: Run coupling detector for the supplier part of Supplier Portal
+coupling-supplier: coupling-list-unused-requirements-supplier #Doc: Run coupling detector for the supplier part of Supplier Portal
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=components/supplier-portal-supplier/back/tests/.php_cd.php components/supplier-portal-supplier/back
 
 .PHONY: coupling
-coupling: coupling-retailer coupling-supplier #Doc: Run coupling detector for Supplier Portal
+coupling: coupling-retailer coupling-supplier coupling-list-unused-requirements #Doc: Run coupling detector for Supplier Portal
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=upgrades/.php_cd.php upgrades/schema
 
 .PHONY: coupling-list-unused-requirements-retailer

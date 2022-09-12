@@ -12,6 +12,7 @@ lint-fix-back: #Doc: launch PHP CS fixer for job automation
 .PHONY: coupling-back
 coupling-back: #Doc: launch coupling detector for job automation
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=components/job-automation/back/tests/.php_cd.php components/job-automation/back/src
+	$(PHP_RUN) vendor/bin/php-coupling-detector list-unused-requirements --config-file=components/job-automation/back/tests/.php_cd.php components/job-automation/back/src
 
 .PHONY: unit-back
 unit-back: #Doc: launch PHPSpec for job automation

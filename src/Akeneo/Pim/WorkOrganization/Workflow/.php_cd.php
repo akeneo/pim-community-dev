@@ -66,7 +66,6 @@ $rules = [
         'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
 
         // TIP-963: Define the Products public API
-        'Akeneo\Pim\Enrichment\Component\Product\Repository\ExternalApi\ProductRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Validator\ElasticsearchFilterValidator',
@@ -131,7 +130,6 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductCodesByProduct',
         'Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorRegistry',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer',
         'Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory',

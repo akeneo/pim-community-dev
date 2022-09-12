@@ -6,3 +6,4 @@ communication-channel-lint-back: #Doc: launch PHPStan for communication-channel
 
 communication-channel-coupling-back: #Doc: launch coupling detector for communication-channel
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests/.php_cd.php vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back
+	$(PHP_RUN) vendor/bin/php-coupling-detector list-unused-requirements --config-file=vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests/.php_cd.php vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back

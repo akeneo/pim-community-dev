@@ -17,8 +17,6 @@ $rules = [
             'Doctrine\Migrations',
             // Expected dependencies for ES:
             'Elasticsearch\Client',
-            'Elasticsearch\ClientBuilder',
-            'Elasticsearch\Namespaces\IndicesNamespace',
             'Akeneo\Tool\Bundle\ElasticsearchBundle\Client',
             // Required for accessing DBAL & ES services:
             'Symfony\Component\DependencyInjection\ContainerAwareInterface',
@@ -26,22 +24,12 @@ $rules = [
 
             // Dangerous dependencies, migrations shouldn't rely on services
             'Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid',
-            'Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\Query\InitDataQualityInsightsSchema',
-            'Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidStep',
-            'Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory',
             'Akeneo\Platform\VersionProvider',
             'Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\UpdateIndexMappingWrapper',
             'Akeneo\Tool\Component\Batch\Job\BatchStatus',
             'Akeneo\Tool\Component\Batch\Job\ExitStatus',
-            'Doctrine\Common\Collections\ArrayCollection',
             'Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager',
-            'Oro\Bundle\SecurityBundle\Model\AclPermission',
-            'Oro\Bundle\SecurityBundle\Model\AclPrivilege',
-            'Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity',
             'Psr\Container\ContainerInterface',
-            'Symfony\Bundle\FrameworkBundle\Console\Application',
-            'Symfony\Component\Console\Output\NullOutput',
-            'Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity',
             'Webmozart\Assert\Assert',
             'Psr\Log\LoggerInterface',
         ]

@@ -37,8 +37,6 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetConnectorProductModels',
         'Akeneo\Pim\WorkOrganization\Workflow\Component\Query\PublicApi\GetWorkflowStatusFromProductModelCodes',
         'Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface',
-        'Akeneo\Pim\Enrichment\Bundle\Form\CategoryFormViewNormalizer',
-        'Akeneo\Pim\Enrichment\Component\Category\Form\CategoryFormViewNormalizerInterface',
 
         // TIP-1000: Permissions should not be linked to Locale
         'Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface',
@@ -65,7 +63,6 @@ $rules = [
         'Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobInstanceRepository',
 
         // TIP-996: Permission should not be linked to Workflow
-        'Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface',
         'Akeneo\Pim\WorkOrganization\Workflow\Component\Exception\PublishedProductConsistencyException',
 
         // TIP-1002: Permissions should not be linked to Channel
@@ -80,7 +77,6 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociationInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
@@ -261,7 +257,6 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessProductMasks',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\QuantifiedAssociations',
-        'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
         'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface',
 

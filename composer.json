@@ -159,6 +159,7 @@
     "scripts": {
         "before-commit-re": [
             "php vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/ReferenceEntity/tests/back/.php_cd.php src/Akeneo/ReferenceEntity/back",
+            "php vendor/bin/php-coupling-detector list-unused-requirements --config-file=src/Akeneo/ReferenceEntity/tests/back/.php_cd.php src/Akeneo/ReferenceEntity/back",
             "php vendor/bin/phpstan analyse --configuration src/Akeneo/ReferenceEntity/tests/back/phpstan.neon.dist --ansi",
             "php vendor/bin/behat --config src/Akeneo/ReferenceEntity/tests/back/behat.yml.dist --no-interaction --colors",
             "php vendor/bin/phpunit -c src/Akeneo/ReferenceEntity/tests/back  --colors='always'",
@@ -167,6 +168,7 @@
         ],
         "before-commit-am": [
             "php vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/AssetManager/tests/back/.php_cd.php src/Akeneo/AssetManager/back",
+            "php vendor/bin/php-coupling-detector list-unused-requirements --config-file=src/Akeneo/AssetManager/tests/back/.php_cd.php src/Akeneo/AssetManager/back",
             "php vendor/bin/phpstan analyse --configuration src/Akeneo/AssetManager/tests/back/phpstan.neon.dist --ansi",
             "php vendor/bin/behat --config src/Akeneo/AssetManager/tests/back/behat.yml.dist --no-interaction --colors",
             "php vendor/bin/phpunit -c src/Akeneo/AssetManager/tests/back --colors='always'",

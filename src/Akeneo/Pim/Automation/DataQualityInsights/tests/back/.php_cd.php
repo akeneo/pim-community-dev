@@ -73,7 +73,6 @@ $rules = [
 
             //Datagrid filters, columns, sorting and ES indexation needs
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\AbstractFieldFilter',
-            'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface',
             'Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException',
             'Akeneo\Tool\Bundle\ElasticsearchBundle\Client',
             'Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration',
@@ -116,7 +115,6 @@ $rules = [
             'Symfony\Component\Validator\Constraints',
             'Symfony\Component\Form\FormFactoryInterface',
             'Symfony\Contracts\Translation',
-            'PhpSpellcheck\Spellchecker\Aspell',
             'PhpSpellcheck\MisspellingInterface',
             'PhpSpellcheck\Spellchecker\SpellcheckerInterface',
             'League\Flysystem',

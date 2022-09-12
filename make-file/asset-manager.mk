@@ -57,6 +57,7 @@ include make-file/test.mk
 .PHONY: asset-manager-coupling-back
 asset-manager-coupling-back: #Doc: launch coupling detector for asset manager files
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/AssetManager/tests/back/.php_cd.php src/Akeneo/AssetManager/back
+	$(PHP_RUN) vendor/bin/php-coupling-detector list-unused-requirements --config-file=src/Akeneo/AssetManager/tests/back/.php_cd.php src/Akeneo/AssetManager/back
 
 .PHONY: asset-manager-lint-back
 asset-manager-lint-back: #Doc: launch PHP linter for the asset-manager

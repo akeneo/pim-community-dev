@@ -10,6 +10,7 @@ channel-lint-fix-back: #Doc: launch PHPStan for channel bounded context
 .PHONY: channel-coupling-back
 channel-coupling-back: #Doc: launch coupling detector for channel bounded context
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Channel/back/tests/.php_cd.php src/Akeneo/Channel/back
+	$(PHP_RUN) vendor/bin/php-coupling-detector list-unused-requirements --config-file=src/Akeneo/Channel/back/tests/.php_cd.php src/Akeneo/Channel/back
 
 .PHONY: channel-unit-back
 channel-unit-back: #Doc: launch PHPSpec for channel bounded context

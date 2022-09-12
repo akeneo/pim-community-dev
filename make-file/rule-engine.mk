@@ -57,6 +57,7 @@ include make-file/test.mk
 .PHONY: rule-engine-coupling-back
 rule-engine-coupling-back: #Doc: launch PHP coupling detector for rule-engine
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/Automation/RuleEngine/.php_cd.php src/Akeneo/Pim/Automation/RuleEngine
+	$(PHP_RUN) vendor/bin/php-coupling-detector list-unused-requirements --config-file=src/Akeneo/Pim/Automation/RuleEngine/.php_cd.php src/Akeneo/Pim/Automation/RuleEngine
 
 .PHONY: rule-engine-unit-back
 rule-engine-unit-back: var/tests/phpspec #Doc: launch PHPSec unit tests for rule-engine
