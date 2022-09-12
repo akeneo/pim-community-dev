@@ -18,7 +18,7 @@ class ConnectionWebhook
         private string $code,
         private bool $enabled,
         ?string $url = null,
-        private bool $usesUuid = false,
+        private bool $isUsingUuid = false,
     ) {
         $this->url = $url ? new Url($url) : null;
     }
@@ -38,8 +38,8 @@ class ConnectionWebhook
         return $this->url;
     }
 
-    public function usesUuid(): bool
+    public function isUsingUuid(): bool
     {
-        return $this->usesUuid;
+        return $this->isUsingUuid;
     }
 }

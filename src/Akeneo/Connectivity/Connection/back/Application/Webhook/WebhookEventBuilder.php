@@ -22,19 +22,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class WebhookEventBuilder
 {
-    /** @var iterable<EventDataBuilderInterface> */
-    private iterable $eventDataBuilders;
-    private ApiEventBuildErrorLoggerInterface $apiEventBuildErrorLogger;
-
     /**
      * @param iterable<EventDataBuilderInterface> $eventDataBuilders
      */
     public function __construct(
-        iterable $eventDataBuilders,
-        ApiEventBuildErrorLoggerInterface $apiEventBuildErrorLogger
+        private iterable $eventDataBuilders,
+        private ApiEventBuildErrorLoggerInterface $apiEventBuildErrorLogger
     ) {
-        $this->eventDataBuilders = $eventDataBuilders;
-        $this->apiEventBuildErrorLogger = $apiEventBuildErrorLogger;
     }
 
     /**
@@ -49,11 +43,11 @@ class WebhookEventBuilder
 
         /** @var UserInterface $user */
         $user = $context['user'];
-        $useUuid = $context['use_uuid'] ?? false;
+        $isUsingUuid = $context['is_using_uuid'] ?? false;
 
         $eventDataCollection = $eventDataBuilder->build(
             $pimEventBulk,
-            new Context($user->getUsername(), $user->getId(), $useUuid)
+            new Context($user->getUsername(), $user->getId(), $isUsingUuid)
         );
 
         return $this->buildWebhookEvents(
@@ -71,11 +65,11 @@ class WebhookEventBuilder
     private function resolveOptions(array $options): array
     {
         $resolver = new OptionsResolver();
-        $resolver->setRequired(['user', 'pim_source', 'connection_code', 'use_uuid']);
+        $resolver->setRequired(['user', 'pim_source', 'connection_code', 'is_using_uuid']);
         $resolver->setAllowedTypes('user', UserInterface::class);
         $resolver->setAllowedTypes('pim_source', 'string');
         $resolver->setAllowedTypes('connection_code', 'string');
-        $resolver->setAllowedTypes('use_uuid', 'bool');
+        $resolver->setAllowedTypes('is_using_uuid', 'bool');
 
         return $resolver->resolve($options);
     }

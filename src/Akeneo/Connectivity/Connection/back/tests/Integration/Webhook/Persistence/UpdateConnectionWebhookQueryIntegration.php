@@ -59,10 +59,10 @@ class UpdateConnectionWebhookQueryIntegration extends TestCase
         string $code,
         bool $enabled,
         ?string $url = null,
-        bool $usesUuid = false,
+        bool $isUsingUuid = false,
     ): void {
         $selectQuery = <<<SQL
-        SELECT webhook_enabled, webhook_url, webhook_uses_uuid
+        SELECT webhook_enabled, webhook_url, webhook_is_using_uuid
         FROM akeneo_connectivity_connection
         WHERE code = :code
         SQL;
@@ -70,6 +70,6 @@ class UpdateConnectionWebhookQueryIntegration extends TestCase
 
         Assert::assertEquals($enabled, (bool) $webhook['webhook_enabled']);
         Assert::assertEquals($url, $webhook['webhook_url']);
-        Assert::assertEquals($usesUuid, (bool) $webhook['webhook_uses_uuid']);
+        Assert::assertEquals($isUsingUuid, (bool) $webhook['webhook_is_using_uuid']);
     }
 }

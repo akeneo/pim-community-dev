@@ -12,9 +12,9 @@ class WebhookLoader
     {
     }
 
-    public function initWebhook(string $code, bool $usesUuid = false): void
+    public function initWebhook(string $code, bool $isUsingUuid = false): void
     {
-        $this->updateConnection($code, true, 'http://test.com', 'secret', $usesUuid);
+        $this->updateConnection($code, true, 'http://test.com', 'secret', $isUsingUuid);
     }
 
     public function updateConnection(
@@ -22,7 +22,7 @@ class WebhookLoader
         bool $enabled = false,
         ?string $url = null,
         ?string $secret = null,
-        bool $usesUuid = false,
+        bool $isUsingUuid = false,
     ): int {
         if ($enabled && (null === $url || '' === $url)) {
             throw new \InvalidArgumentException('An enabled webhook required an url.');
@@ -30,7 +30,7 @@ class WebhookLoader
 
         $query = <<<SQL
         UPDATE akeneo_connectivity_connection
-        SET webhook_url = :url, webhook_enabled = :enabled, webhook_secret = :secret, webhook_uses_uuid = :usesUuid
+        SET webhook_url = :url, webhook_enabled = :enabled, webhook_secret = :secret, webhook_is_using_uuid = :isUsingUuid
         WHERE code = :code
         SQL;
 
@@ -41,11 +41,11 @@ class WebhookLoader
                 'enabled' => $enabled,
                 'code' => $code,
                 'secret' => $secret,
-                'usesUuid' => $usesUuid,
+                'isUsingUuid' => $isUsingUuid,
             ],
             [
                 'enabled' => Types::BOOLEAN,
-                'usesUuid' => Types::BOOLEAN,
+                'isUsingUuid' => Types::BOOLEAN,
             ]
         );
     }

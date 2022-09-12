@@ -68,7 +68,7 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
                 continue;
             }
 
-            $normalizer = $context->useUuid()
+            $normalizer = $context->isUsingUuid()
                 ? $this->connectorProductWithUuidNormalizer
                 : $this->connectorProductNormalizer;
 

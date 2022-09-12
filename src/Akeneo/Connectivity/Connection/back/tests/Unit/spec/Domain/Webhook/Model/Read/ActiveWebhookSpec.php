@@ -49,7 +49,7 @@ class ActiveWebhookSpec extends ObjectBehavior
 
     public function it_returns_uuid_usage_status(): void
     {
-        $this->usesUuid()
+        $this->isUsingUuid()
             ->shouldReturn(true);
     }
 }

@@ -32,7 +32,7 @@ class DbalSelectActiveWebhooksQuery implements SelectActiveWebhooksQueryInterfac
         connection.webhook_url,
         connection.webhook_secret,
         connection.user_id,
-        connection.webhook_uses_uuid,
+        connection.webhook_is_using_uuid,
         access_group.name as group_name
         FROM akeneo_connectivity_connection as connection
         LEFT JOIN oro_user_access_group as user_access_group ON user_access_group.user_id = connection.user_id
@@ -68,7 +68,7 @@ class DbalSelectActiveWebhooksQuery implements SelectActiveWebhooksQueryInterfac
                 (int) $row['user_id'],
                 $row['webhook_secret'],
                 $row['webhook_url'],
-                (bool) $row['webhook_uses_uuid'],
+                (bool) $row['webhook_is_using_uuid'],
             );
         }
 

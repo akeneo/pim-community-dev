@@ -49,13 +49,13 @@ class UpdateWebhookHandlerSpec extends ObjectBehavior
         $code = 'magento';
         $url = 'http://valid-url.com';
         $enabled = true;
-        $useUuid = true;
+        $isUsingUuid = true;
         $secret = 'secret';
-        $command = new UpdateWebhookCommand($code, $enabled, $url, $useUuid);
-        $isAValidWriteModel = function (ConnectionWebhook $webhook) use ($code, $enabled, $url, $useUuid) {
+        $command = new UpdateWebhookCommand($code, $enabled, $url, $isUsingUuid);
+        $isAValidWriteModel = function (ConnectionWebhook $webhook) use ($code, $enabled, $url, $isUsingUuid) {
             return $webhook->code() === $code &&
                 $webhook->enabled() === $enabled &&
-                $webhook->usesUuid() === $useUuid &&
+                $webhook->isUsingUuid() === $isUsingUuid &&
                 $webhook->url() instanceof Url &&
                 (string) $webhook->url() === $url;
         };
@@ -87,13 +87,13 @@ class UpdateWebhookHandlerSpec extends ObjectBehavior
         $code = 'magento';
         $url = 'http://valid-url.com';
         $enabled = true;
-        $useUuid = true;
+        $isUsingUuid = true;
         $secret = 'secret';
-        $command = new UpdateWebhookCommand($code, $enabled, $url, $useUuid);
-        $isAValidWriteModel = function (ConnectionWebhook $webhook) use ($code, $enabled, $url, $useUuid) {
+        $command = new UpdateWebhookCommand($code, $enabled, $url, $isUsingUuid);
+        $isAValidWriteModel = function (ConnectionWebhook $webhook) use ($code, $enabled, $url, $isUsingUuid) {
             return $webhook->code() === $code &&
                 $webhook->enabled() === $enabled &&
-                $webhook->usesUuid() === $useUuid &&
+                $webhook->isUsingUuid() === $isUsingUuid &&
                 $webhook->url() instanceof Url &&
                 (string) $webhook->url() === $url;
         };
@@ -119,13 +119,13 @@ class UpdateWebhookHandlerSpec extends ObjectBehavior
     ): void {
         $code = 'magento';
         $enabled = true;
-        $useUuid = true;
+        $isUsingUuid = true;
         $url = null;
-        $command = new UpdateWebhookCommand($code, $enabled, $url, $useUuid);
-        $isAValidWriteModel = function (ConnectionWebhook $webhook) use ($code, $enabled, $url, $useUuid) {
+        $command = new UpdateWebhookCommand($code, $enabled, $url, $isUsingUuid);
+        $isAValidWriteModel = function (ConnectionWebhook $webhook) use ($code, $enabled, $url, $isUsingUuid) {
             return $webhook->code() === $code &&
                 $webhook->enabled() === $enabled &&
-                $webhook->usesUuid() === $useUuid &&
+                $webhook->isUsingUuid() === $isUsingUuid &&
                 $webhook->url() === null;
         };
 

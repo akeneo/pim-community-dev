@@ -16,7 +16,7 @@ class ActiveWebhook
         private int $userId,
         private string $secret,
         private string $url,
-        private bool $usesUuid,
+        private bool $isUsingUuid,
     ) {
     }
 
@@ -40,8 +40,8 @@ class ActiveWebhook
         return $this->url;
     }
 
-    public function usesUuid(): bool
+    public function isUsingUuid(): bool
     {
-        return $this->usesUuid;
+        return $this->isUsingUuid;
     }
 }

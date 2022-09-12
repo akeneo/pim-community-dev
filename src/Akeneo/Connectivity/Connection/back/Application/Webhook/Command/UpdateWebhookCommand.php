@@ -14,7 +14,7 @@ class UpdateWebhookCommand
         private string $code,
         private bool $enabled,
         private ?string $url = null,
-        private bool $usesUuid = false,
+        private bool $isUsingUuid = false,
     ) {
     }
 
@@ -33,8 +33,8 @@ class UpdateWebhookCommand
         return $this->url;
     }
 
-    public function usesUuid(): bool
+    public function isUsingUuid(): bool
     {
-        return $this->usesUuid;
+        return $this->isUsingUuid;
     }
 }

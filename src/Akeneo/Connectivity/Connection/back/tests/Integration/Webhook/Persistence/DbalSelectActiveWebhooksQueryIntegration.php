@@ -72,11 +72,11 @@ class DbalSelectActiveWebhooksQueryIntegration extends TestCase
         Assert::assertEquals('binder', $binder->connectionCode());
         Assert::assertEquals('secret_binder', $binder->secret());
         Assert::assertEquals('http://localhost/webhook_binder', $binder->url());
-        Assert::assertFalse($binder->usesUuid());
+        Assert::assertFalse($binder->isUsingUuid());
         Assert::assertEquals('erp', $erp->connectionCode());
         Assert::assertEquals('secret_erp', $erp->secret());
         Assert::assertEquals('http://localhost/webhook_erp', $erp->url());
-        Assert::assertTrue($erp->usesUuid());
+        Assert::assertTrue($erp->isUsingUuid());
     }
 
     public function test_it_does_not_find_anything_if_no_connection_webhook_is_configured(): void
@@ -110,7 +110,7 @@ SQL;
         string $secret,
         ?string $url,
         bool $enabled,
-        bool $usesUuid,
+        bool $isUsingUuid,
     ): void {
         $this->dbalConnection->update(
             'akeneo_connectivity_connection',
@@ -118,7 +118,7 @@ SQL;
                 'webhook_url' => $url,
                 'webhook_secret' => $secret,
                 'webhook_enabled' => (int)$enabled,
-                'webhook_uses_uuid' => (int)$usesUuid,
+                'webhook_is_using_uuid' => (int)$isUsingUuid,
             ],
             ['code' => $connection->code()]
         );

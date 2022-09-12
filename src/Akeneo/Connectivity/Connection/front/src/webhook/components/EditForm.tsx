@@ -86,12 +86,12 @@ export const EditForm: FC<Props> = ({webhook, activeEventSubscriptionsLimit}: Pr
                 />
             </FormGroup>
             <FormGroup
-                label='akeneo_connectivity.connection.webhook.form.uses_uuid'
+                label='akeneo_connectivity.connection.webhook.form.is_using_uuid'
             >
                 <ToggleButton
                     name='usesUuid'
                     ref={register}
-                    defaultChecked={webhook.usesUuid}
+                    defaultChecked={webhook.isUsingUuid}
                 />
             </FormGroup>
 

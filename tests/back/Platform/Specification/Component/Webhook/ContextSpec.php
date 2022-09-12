@@ -35,6 +35,6 @@ class ContextSpec extends ObjectBehavior
 
     public function it_returns_a_uuid_usage_status(): void
     {
-        $this->useUuid()->shouldReturn(true);
+        $this->isUsingUuid()->shouldReturn(true);
     }
 }

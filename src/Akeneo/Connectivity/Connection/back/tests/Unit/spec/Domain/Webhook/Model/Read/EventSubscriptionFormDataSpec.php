@@ -32,7 +32,7 @@ class EventSubscriptionFormDataSpec extends ObjectBehavior
                 'enabled' => true,
                 'secret' => null,
                 'url' => null,
-                'usesUuid' => false,
+                'isUsingUuid' => false,
             ],
             'active_event_subscriptions_limit' => [
                 'limit' => 3,

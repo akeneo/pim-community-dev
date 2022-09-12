@@ -90,7 +90,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                     'user' => $magentoUser,
                     'pim_source' => 'staging.akeneo.com',
                     'connection_code' => $webhook->connectionCode(),
-                    'use_uuid' => $webhook->usesUuid(),
+                    'is_using_uuid' => $webhook->isUsingUuid(),
                 ]
             )
             ->willReturn(
@@ -182,7 +182,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                     'pim_source' => 'staging.akeneo.com',
                     'user' => $magentoUser,
                     'connection_code' => $magentoWebhook->connectionCode(),
-                    'use_uuid' => $magentoWebhook->usesUuid(),
+                    'is_using_uuid' => $magentoWebhook->isUsingUuid(),
                 ]
             )
             ->willReturn(
@@ -265,7 +265,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                     'pim_source' => 'staging.akeneo.com',
                     'user' => $user,
                     'connection_code' => $webhook->connectionCode(),
-                    'use_uuid' => $webhook->usesUuid(),
+                    'is_using_uuid' => $webhook->isUsingUuid(),
                 ]
             )
             ->willThrow(\Exception::class);

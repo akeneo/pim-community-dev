@@ -37,7 +37,7 @@ class DbalGetAConnectionWebhookQueryIntegration extends TestCase
         Assert::assertInstanceOf(ConnectionWebhook::class, $webhook);
         Assert::assertEquals('magento', $webhook->connectionCode());
         Assert::assertTrue($webhook->enabled());
-        Assert::assertTrue($webhook->usesUuid());
+        Assert::assertTrue($webhook->isUsingUuid());
         Assert::assertEquals('secret', $webhook->secret());
         Assert::assertEquals('http://test.com', $webhook->url());
     }
@@ -52,7 +52,7 @@ class DbalGetAConnectionWebhookQueryIntegration extends TestCase
         Assert::assertInstanceOf(ConnectionWebhook::class, $webhook);
         Assert::assertEquals('erp', $webhook->connectionCode());
         Assert::assertFalse($webhook->enabled());
-        Assert::assertFalse($webhook->usesUuid());
+        Assert::assertFalse($webhook->isUsingUuid());
         Assert::assertNull($webhook->secret());
         Assert::assertNull($webhook->url());
     }

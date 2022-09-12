@@ -33,7 +33,7 @@ class UpdateWebhookHandler
             $connectionCode,
             $command->enabled(),
             $command->url(),
-            $command->usesUuid()
+            $command->isUsingUuid()
         );
 
         $violations = $this->validator->validate($webhook);

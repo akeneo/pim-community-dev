@@ -6,7 +6,7 @@ import {useRoute} from '../../../shared/router';
 export type EventSubscription = {
     connectionCode: string;
     enabled: boolean;
-    usesUuid: boolean;
+    isUsingUuid: boolean;
     secret: string | null;
     url: string | null;
 };

@@ -23,7 +23,7 @@ export type FormInput = {
     url: string | null;
     enabled: boolean;
     secret: string | null;
-    usesUuid: boolean;
+    isUsingUuid: boolean;
 };
 
 export const EditConnectionWebhook: FC = () => {
@@ -107,7 +107,7 @@ const SaveButton: FC<SaveButtonProps> = ({webhook, onSaveSuccess}) => {
     const {formState, getValues, triggerValidation, handleSubmit, setError} = useFormContext<FormInput>();
     const updateWebhook = useUpdateWebhook(webhook.connectionCode);
     const handleSave = async () => {
-        const {enabled, url, usesUuid} = getValues();
+        const {enabled, url, isUsingUuid} = getValues();
 
         const isValid = await triggerValidation();
         if (isValid) {
@@ -115,7 +115,7 @@ const SaveButton: FC<SaveButtonProps> = ({webhook, onSaveSuccess}) => {
                 connectionCode: webhook.connectionCode,
                 enabled,
                 url: '' === url ? null : url,
-                usesUuid,
+                isUsingUuid,
             });
             if (isErr(result)) {
                 result.error.errors.forEach(error => {

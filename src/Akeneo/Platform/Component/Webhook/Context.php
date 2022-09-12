@@ -13,7 +13,7 @@ final class Context
     public function __construct(
         private string $username,
         private int $userId,
-        private bool $useUuid,
+        private bool $isUsingUuid = false,
     ) {
     }
 
@@ -27,8 +27,8 @@ final class Context
         return $this->userId;
     }
 
-    public function useUuid(): bool
+    public function isUsingUuid(): bool
     {
-        return $this->useUuid;
+        return $this->isUsingUuid;
     }
 }

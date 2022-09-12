@@ -25,7 +25,7 @@ class DbalGetAConnectionWebhookQuery implements GetAConnectionWebhookQueryInterf
     public function execute(string $code): ?ConnectionWebhook
     {
         $query = <<<SQL
-            SELECT code, webhook_secret, webhook_url, webhook_enabled, webhook_uses_uuid
+            SELECT code, webhook_secret, webhook_url, webhook_enabled, webhook_is_using_uuid
             FROM akeneo_connectivity_connection
             WHERE code = :code
         SQL;
@@ -40,7 +40,7 @@ class DbalGetAConnectionWebhookQuery implements GetAConnectionWebhookQueryInterf
             (bool) $connectionWebhook['webhook_enabled'],
             $connectionWebhook['webhook_secret'],
             $connectionWebhook['webhook_url'],
-            (bool) $connectionWebhook['webhook_uses_uuid'],
+            (bool) $connectionWebhook['webhook_is_using_uuid'],
         );
     }
 }

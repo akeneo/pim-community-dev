@@ -3,5 +3,5 @@ export type Webhook = {
     url: string | null;
     secret: string | null;
     enabled: boolean;
-    usesUuid: boolean;
+    isUsingUuid: boolean;
 };

@@ -67,7 +67,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
                 'pim_source' => 'staging.akeneo.com',
                 'user' => $user,
                 'connection_code' => 'ecommerce',
-                'use_uuid' => true,
+                'is_using_uuid' => true,
             ]
         )->shouldBeLike(
             [
@@ -111,7 +111,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
                 'pim_source' => 'staging.akeneo.com',
                 'user' => $user,
                 'connection_code' => 'ecommerce',
-                'use_uuid' => false,
+                'is_using_uuid' => false,
             ]
         )->shouldBeLike(
             []
@@ -151,7 +151,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
                 'pim_source' => 'staging.akeneo.com',
                 'user' => $user,
                 'connection_code' => 'ecommerce',
-                'use_uuid' => false,
+                'is_using_uuid' => false,
             ]
         );
     }
@@ -177,7 +177,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
                     'pim_source' => 'staging.akeneo.com',
                     'user' => $user,
                     'connection_code' => 'ecommerce',
-                    'use_uuid' => true,
+                    'is_using_uuid' => true,
                 ],
             ]
         );
@@ -196,7 +196,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
             [
                 'user' => $user,
                 'connection_code' => 'ecommerce',
-                'use_uuid' => true,
+                'is_using_uuid' => true,
             ]
         ]);
     }
@@ -213,7 +213,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
                 'user' => $user,
                 'pim_source' => null,
                 'connection_code' => 'ecommerce',
-                'use_uuid' => true,
+                'is_using_uuid' => true,
             ],
         ]);
     }
@@ -231,7 +231,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
             [
                 'pim_source' => 'staging.akeneo.com',
                 'connection_code' => 'ecommerce',
-                'use_uuid' => true,
+                'is_using_uuid' => true,
             ],
         ]);
     }
@@ -248,7 +248,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
                 'user' => null,
                 'pim_source' => 'staging.akeneo.com',
                 'connection_code' => 'ecommerce',
-                'use_uuid' => true,
+                'is_using_uuid' => true,
             ],
         ]);
     }
@@ -264,7 +264,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
             [
                 'user' => $user,
                 'pim_source' => 'staging.akeneo.com',
-                'use_uuid' => true,
+                'is_using_uuid' => true,
             ],
         ]);
     }
@@ -281,12 +281,12 @@ class WebhookEventBuilderSpec extends ObjectBehavior
                 'user' => $user,
                 'pim_source' => 'staging.akeneo.com',
                 'connection_code' => null,
-                'use_uuid' => true,
+                'is_using_uuid' => true,
             ],
         ]);
     }
 
-    public function it_throws_an_exception_if_there_is_no_use_uuid_in_context(UserInterface $user): void
+    public function it_throws_an_exception_if_there_is_no_is_using_uuid_in_context(UserInterface $user): void
     {
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
         $pimEvent = $this->createEvent($author, ['data'], 1599814161, 'a20832d1-a1e6-4f39-99ea-a1dd859faddb');

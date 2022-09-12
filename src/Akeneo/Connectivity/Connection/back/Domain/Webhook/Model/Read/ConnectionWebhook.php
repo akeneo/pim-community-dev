@@ -16,7 +16,7 @@ class ConnectionWebhook
         private bool $enabled,
         private ?string $secret = null,
         private ?string $url = null,
-        private bool $usesUuid = false,
+        private bool $isUsingUuid = false,
     ) {
     }
 
@@ -40,9 +40,9 @@ class ConnectionWebhook
         return $this->enabled;
     }
 
-    public function usesUuid(): bool
+    public function isUsingUuid(): bool
     {
-        return $this->usesUuid;
+        return $this->isUsingUuid;
     }
 
     /**
@@ -51,7 +51,7 @@ class ConnectionWebhook
      *  enabled: boolean,
      *  secret: ?string,
      *  url: ?string,
-     *  usesUuid: boolean,
+     *  isUsingUuid: boolean,
      * }
      */
     public function normalize(): array
@@ -61,7 +61,7 @@ class ConnectionWebhook
             'enabled' => $this->enabled(),
             'secret' => $this->secret(),
             'url' => $this->url(),
-            'usesUuid' => $this->usesUuid(),
+            'isUsingUuid' => $this->isUsingUuid(),
         ];
     }
 }

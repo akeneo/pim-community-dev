@@ -44,7 +44,7 @@ class UpdateEventSubscriptionEndToEnd extends WebTestCase
         $data = [
             'code' => $connection->code(),
             'enabled' => true,
-            'uses_uuid' => true,
+            'is_using_uuid' => true,
             'url' => 'http://example.test',
         ];
 
