@@ -125,6 +125,7 @@ abstract class EnrichmentProductTestCase extends TestCase
     {
         $data = array_merge(['code' => $code], $data);
 
+        $data['attributes'] = \array_merge(['sku'], $data['attributes']);
         $family = $this->get('akeneo_integration_tests.base.family.builder')->build($data);
 
         $violations = $this->get('validator')->validate($family);
