@@ -20,6 +20,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionValue;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Test\IntegrationTestsBundle\Helper\ExperimentalTransactionHelper;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
@@ -57,6 +58,8 @@ abstract class IntegrationTestCase extends WebTestCase
         );
 
         self::getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
+
+        self::getContainer()->get(ExperimentalTransactionHelper::class)->beginTransactions();
     }
 
     protected static function purgeData(): void
@@ -78,10 +81,14 @@ abstract class IntegrationTestCase extends WebTestCase
      */
     protected function tearDown(): void
     {
+        self::getContainer()->get(ExperimentalTransactionHelper::class)->closeTransactions();
+
         $connectionCloser = self::getContainer()->get('akeneo_integration_tests.doctrine.connection.connection_closer');
         $connectionCloser->closeConnections();
 
         $this->ensureKernelShutdown();
+
+        parent::tearDown();
     }
 
     protected function logAs(string $username): TokenInterface

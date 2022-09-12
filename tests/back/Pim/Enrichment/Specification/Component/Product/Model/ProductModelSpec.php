@@ -13,6 +13,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\IdMapping;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\UuidMapping;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValue;
@@ -31,6 +32,9 @@ use PhpSpec\ObjectBehavior;
 
 class ProductModelSpec extends ObjectBehavior
 {
+    private const UUID1 = '2ad984c7-8aa0-4ecf-95ce-e670fb8b7593';
+    private const UUID2 = '17c9248c-566d-49c5-b5a6-1b63dd07a9c3';
+
     function it_is_a_product_model()
     {
         $this->shouldHaveType(ProductModel::class);
@@ -332,6 +336,7 @@ class ProductModelSpec extends ObjectBehavior
     function it_hydrates_quantified_associations()
     {
         $idMapping = $this->idMapping();
+        $uuidMapping = $this->uuidMapping();
         $this->rawQuantifiedAssociations = [
             'PACK' => [
                 'products'       => [
@@ -344,7 +349,7 @@ class ProductModelSpec extends ObjectBehavior
                 ],
             ]
         ];
-        $this->hydrateQuantifiedAssociations($idMapping, $idMapping, ['PACK']);
+        $this->hydrateQuantifiedAssociations($uuidMapping, $idMapping, ['PACK']);
         $this->normalizeQuantifiedAssociations()->shouldReturn([
             'PACK' => [
                 'products'       => [
@@ -362,6 +367,7 @@ class ProductModelSpec extends ObjectBehavior
     function it_saves_a_quantified_associations()
     {
         $idMapping = $this->idMapping();
+        $uuidMapping = $this->uuidMapping();
         $this->rawQuantifiedAssociations = [
             'PACK' => [
                 'products'       => [
@@ -374,7 +380,7 @@ class ProductModelSpec extends ObjectBehavior
                 ],
             ]
         ];
-        $this->hydrateQuantifiedAssociations($idMapping, $idMapping, ['PACK']);
+        $this->hydrateQuantifiedAssociations($uuidMapping, $idMapping, ['PACK']);
         $this->normalizeQuantifiedAssociations()->shouldReturn([
             'PACK' => [
                 'products'       => [
@@ -389,9 +395,10 @@ class ProductModelSpec extends ObjectBehavior
         ]);
     }
 
-    function it_filter_quantified_associations_during_hydration()
+    function it_filters_quantified_associations_during_hydration()
     {
         $idMapping = $this->idMapping();
+        $uuidMapping = $this->uuidMapping();
         $this->rawQuantifiedAssociations = [
             'PACK' => [
                 'products'       => [
@@ -415,7 +422,7 @@ class ProductModelSpec extends ObjectBehavior
             ],
         ];
 
-        $this->hydrateQuantifiedAssociations($idMapping, $idMapping, ['PACK']);
+        $this->hydrateQuantifiedAssociations($uuidMapping, $idMapping, ['PACK']);
         $this->normalizeQuantifiedAssociations()->shouldReturn([
             'PACK' => [
                 'products'       => [
@@ -922,7 +929,7 @@ class ProductModelSpec extends ObjectBehavior
         );
         $this->cleanup();
 
-        $this->filterQuantifiedAssociations(['my_product'], ['model_tshirt_2']);
+        $this->filterQuantifiedAssociations(['my_product'], [], ['model_tshirt_2']);
         $this->isDirty()->shouldBe(true);
     }
 
@@ -955,6 +962,7 @@ class ProductModelSpec extends ObjectBehavior
 
         $this->filterQuantifiedAssociations(
             ['my_product', 'my_other_product'],
+            [],
             ['model_tshirt_1', 'model_tshirt_2']
         );
         $this->isDirty()->shouldBe(false);
@@ -1354,5 +1362,13 @@ class ProductModelSpec extends ObjectBehavior
     private function idMapping(): IdMapping
     {
         return IdMapping::createFromMapping([1 => 'entity_1', 2 => 'entity_2']);
+    }
+
+    private function uuidMapping(): UuidMapping
+    {
+        return UuidMapping::createFromMapping([
+            ['uuid' => self::UUID1, 'id' => 1, 'identifier' => 'entity_1'],
+            ['uuid' => self::UUID2, 'id' => 2, 'identifier' => 'entity_2'],
+        ]);
     }
 }

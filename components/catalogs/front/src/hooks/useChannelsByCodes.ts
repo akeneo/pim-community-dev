@@ -10,7 +10,7 @@ type Result = {
 };
 
 export const useChannelsByCodes = (codes: string[]): Result => {
-    return useQuery<Channel[], ResultError, Channel[]>(['channels', codes.sort().join('')], async () => {
+    return useQuery<Channel[], ResultError, Channel[]>(['channels', [...codes].sort().join('')], async () => {
         const _codes = codes.join(',');
 
         const response = await fetch(`/rest/catalogs/channels?codes=${_codes}`, {
@@ -19,6 +19,12 @@ export const useChannelsByCodes = (codes: string[]): Result => {
             },
         });
 
-        return await response.json();
+        const channels: Channel[] = await response.json();
+
+        const channelCodes = channels.map(channel => channel.code);
+
+        const removedChannelCodes = codes.filter(code => !channelCodes.includes(code));
+
+        return [...channels, ...removedChannelCodes.map(code => ({code: code, label: `[${code}]`}))];
     });
 };

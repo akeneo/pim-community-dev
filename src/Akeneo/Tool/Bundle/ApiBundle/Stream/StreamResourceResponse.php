@@ -27,44 +27,18 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class StreamResourceResponse
+final class StreamResourceResponse
 {
-    const CONTENT_TYPE = 'application/vnd.akeneo.collection+json';
+    public const CONTENT_TYPE = 'application/vnd.akeneo.collection+json';
 
-    /** @var HttpKernelInterface */
-    protected $httpKernel;
-
-    /** @var UniqueValuesSet */
-    protected $uniqueValuesSet;
-
-    /** @var string */
-    protected $controllerName;
-
-    /** @var string */
-    protected $identifierKey;
-
-    /** @var array */
-    protected $configuration;
-
-    /**
-     * @param HttpKernelInterface $httpKernel
-     * @param UniqueValuesSet     $uniqueValuesSet
-     * @param array               $configuration
-     * @param string              $controllerName
-     * @param string              $identifierKey
-     */
     public function __construct(
-        HttpKernelInterface $httpKernel,
-        UniqueValuesSet $uniqueValuesSet,
-        array $configuration,
-        $controllerName,
-        $identifierKey
+        private HttpKernelInterface $httpKernel,
+        private UniqueValuesSet $uniqueValuesSet,
+        private array $configuration,
+        private string $controllerName,
+        private string $identifierKey,
+        private string $uriParamName,
     ) {
-        $this->httpKernel = $httpKernel;
-        $this->uniqueValuesSet = $uniqueValuesSet;
-        $this->configuration = $configuration;
-        $this->controllerName = $controllerName;
-        $this->identifierKey = $identifierKey;
     }
 
     /**
@@ -108,14 +82,14 @@ class StreamResourceResponse
                         $this->identifierKey => $data[$this->identifierKey],
                     ];
 
-                    $uriParameters['code']  = $data[$this->identifierKey];
+                    $uriParameters[$this->uriParamName]  = $data[$this->identifierKey];
                     $subResponse = $this->forward($uriParameters, $line);
 
                     if ('' !== $subResponse->getContent()) {
                         $subResponse = json_decode($subResponse->getContent(), true);
-                        if (isset($subResponse['code'])) {
-                            $response['status_code'] = $subResponse['code'];
-                            unset($subResponse['code']);
+                        if (isset($subResponse[$this->uriParamName])) {
+                            $response['status_code'] = $subResponse[$this->uriParamName];
+                            unset($subResponse[$this->uriParamName]);
                         }
 
                         $response = array_merge($response, $subResponse);

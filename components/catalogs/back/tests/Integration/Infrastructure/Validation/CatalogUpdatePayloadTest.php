@@ -23,6 +23,8 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
         parent::setUp();
 
         $this->validator = self::getContainer()->get(ValidatorInterface::class);
+
+        $this->purgeDataAndLoadMinimalCatalog();
     }
 
     public function testItValidates(): void
@@ -61,6 +63,7 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
             'product_value_filters' => [
                 'channels' => ['ecommerce'],
                 'locales' => ['en_US'],
+                'currencies' => ['EUR', 'USD'],
             ],
         ], new CatalogUpdatePayload());
 
@@ -145,6 +148,14 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
             'locale is not activated' => [
                 'filters' => ['locales' => ['removed_locale']],
                 'expectedMessage' => 'The locale "removed_locale" has been deactivated. Please check your locale settings or remove this filter.',
+            ],
+            'currency is not a valid array' => [
+                'filters' => ['currencies' => 'USD'],
+                'expectedMessage' => 'This value should be of type array.',
+            ],
+            'currency is not activated' => [
+                'filters' => ['currencies' => ['AUD']],
+                'expectedMessage' => 'The currency "AUD" has been deactivated. Please check your currencies settings or remove this filter.',
             ],
         ];
     }

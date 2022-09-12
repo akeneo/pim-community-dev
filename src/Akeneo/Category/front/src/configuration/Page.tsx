@@ -28,12 +28,8 @@ const Field = styled.div`
 `;
 
 const Page: FC = () => {
-  const {
-    configuration,
-    setDefaultCommunitySettings,
-    setDefaultEnterpriseSettings,
-    updateConfiguration,
-  } = useConfiguration();
+  const {configuration, setDefaultCommunitySettings, setDefaultEnterpriseSettings, updateConfiguration} =
+    useConfiguration();
 
   const changeFeature = useCallback(
     (feature: string, value: boolean) => {

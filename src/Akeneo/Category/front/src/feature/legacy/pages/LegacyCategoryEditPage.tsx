@@ -96,10 +96,13 @@ const LegacyCategoryEditPage: FC = () => {
     closeDeleteCategoryModal();
   };
 
-  const onBuildHistoryView = useCallback(async (view: View) => {
-    view.setData({categoryId});
-    return view;
-  }, [categoryId])
+  const onBuildHistoryView = useCallback(
+    async (view: View) => {
+      view.setData({categoryId});
+      return view;
+    },
+    [categoryId]
+  );
 
   useEffect(() => {
     if (!category) {

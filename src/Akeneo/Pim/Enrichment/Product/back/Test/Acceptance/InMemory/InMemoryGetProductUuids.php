@@ -38,4 +38,21 @@ class InMemoryGetProductUuids implements GetProductUuids
 
         return $result;
     }
+
+    public function fromUuid(UuidInterface $uuid): ?UuidInterface
+    {
+        return null === $this->productRepository->find($uuid) ? null : $uuid;
+    }
+
+    public function fromUuids(array $uuids): array
+    {
+        $existingUuids = [];
+        foreach ($uuids as $uuid) {
+            if (null !== $this->productRepository->find($uuid)) {
+                $existingUuids[$uuid->toString()] = $uuid;
+            }
+        }
+
+        return $existingUuids;
+    }
 }

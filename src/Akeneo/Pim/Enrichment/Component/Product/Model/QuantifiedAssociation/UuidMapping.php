@@ -7,7 +7,14 @@ use Ramsey\Uuid\UuidInterface;
 use Webmozart\Assert\Assert;
 
 /**
- * Maps uuid to identifiers and vice versa
+ * This class does the mapping of every way to identify a product.
+ * A product can be identified by
+ * - its uuid (always present)
+ * - its id (always present for now)
+ * - its identifier (the value through the identifier attribute, not mandatory, can be null).
+ *
+ * Each method allows the developer to retrieve a product identifier (uuid, id or identifier) from another product
+ * identifier.
  *
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -15,21 +22,41 @@ use Webmozart\Assert\Assert;
 final class UuidMapping
 {
     /** @var array<string, string> */
-    private array $uuidsToIdentifiers;
+    private array $uuidsToIdentifiers = [];
 
     /** @var array<string, string> */
-    private array $identifiersToUuids;
+    private array $identifiersToUuids = [];
+
+    /** @var array<string, int> */
+    private array $identifiersToIds = [];
+
+    /** @var array<string, int> */
+    private array $uuidsToIds = [];
+
+    /** @var array<int, string> */
+    private array $idsToIdentifiers = [];
 
     private function __construct(array $mapping)
     {
-        foreach ($mapping as $uuid => $identifier) {
-            Assert::string($uuid);
-            Assert::true(Uuid::isValid($uuid), sprintf('Invalid uuid "%s"', $uuid));
-            Assert::stringNotEmpty($identifier);
-        }
+        foreach ($mapping as $line) {
+            Assert::keyExists($line, 'uuid');
+            Assert::keyExists($line, 'identifier');
+            Assert::keyExists($line, 'id');
+            Assert::stringNotEmpty($line['uuid']);
+            Assert::nullOrStringNotEmpty($line['identifier']);
+            Assert::numeric($line['id']);
+            Assert::notNull($line['id']);
+            Assert::uuid($line['uuid'], sprintf('Invalid uuid "%s"', $line['uuid']));
 
-        $this->uuidsToIdentifiers = $mapping;
-        $this->identifiersToUuids = array_map(fn (string $uuidAsStr): UuidInterface => Uuid::fromString($uuidAsStr), array_flip($mapping));
+            $this->uuidsToIdentifiers[$line['uuid']] = $line['identifier'];
+            $this->uuidsToIds[$line['uuid']] = $line['id'];
+            $this->idsToIdentifiers[$line['id']] = $line['identifier'];
+
+            if (null !== $line['identifier']) {
+                $this->identifiersToUuids[$line['identifier']] = Uuid::fromString($line['uuid']);
+                $this->identifiersToIds[$line['identifier']] = $line['id'];
+            }
+        }
     }
 
     public static function createFromMapping(array $mapping): self
@@ -37,7 +64,7 @@ final class UuidMapping
         return new self($mapping);
     }
 
-    public function getUuid(string $identifier): UuidInterface
+    public function getUuidFromIdentifier(string $identifier): UuidInterface
     {
         Assert::keyExists($this->identifiersToUuids, $identifier);
 
@@ -59,5 +86,30 @@ final class UuidMapping
     public function hasIdentifier(UuidInterface $uuid): bool
     {
         return isset($this->uuidsToIdentifiers[$uuid->toString()]);
+    }
+
+    public function getIdFromIdentifier(string $identifier): ?int
+    {
+        return $this->identifiersToIds[$identifier] ?? null;
+    }
+
+    public function getIdFromUuid(string $uuid): ?int
+    {
+        return $this->uuidsToIds[$uuid] ?? null;
+    }
+
+    public function hasIdentifierFromId(int $id): bool
+    {
+        return isset($this->idsToIdentifiers[$id]);
+    }
+
+    public function getIdentifierFromId(int $id): ?string
+    {
+        return $this->idsToIdentifiers[$id] ?? null;
+    }
+
+    public function hasUuidFromUuid(string $uuid): bool
+    {
+        return array_key_exists($uuid, $this->uuidsToIds);
     }
 }

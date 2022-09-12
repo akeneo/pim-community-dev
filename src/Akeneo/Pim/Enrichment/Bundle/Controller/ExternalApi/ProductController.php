@@ -275,7 +275,6 @@ class ProductController
         }
 
         $data = $this->populateIdentifierProductValue($data);
-        $data = $this->orderData($data);
 
         if (isset($data['parent'])) {
             $product = $this->variantProductBuilder->createProduct($data['identifier']);
@@ -362,8 +361,6 @@ class ProductController
             }
             $isCreation = true;
         }
-
-        $data = $this->orderData($data);
 
         $this->updateProduct($product, $data, 'patch_products__code_');
         $this->validateProduct($product);
@@ -630,34 +627,6 @@ class ProductController
                 )
             );
         }
-    }
-
-    /**
-     * This method order the data by setting the parent field first. It comes from the ParentFieldSetter that sets the
-     * family from the parent if the product family is null. By doing this the validator does not fail if the family
-     * field has been set to null from the API. So to prevent this we order the parent before the family field. this way
-     * the field family will be updated to null if the data sent from the API for the family field is null.
-     *
-     * Example:
-     *
-     * {
-     *     "identifier": "test",
-     *     "family": null,
-     *     "parent": "amor"
-     * }
-     *
-     * This example does not work because the parent setter will set the family with the parent family.
-     *
-     * @param array $data
-     * @return array
-     */
-    private function orderData(array $data): array
-    {
-        if (!isset($data['parent'])) {
-            return $data;
-        }
-
-        return ['parent' => $data['parent']] + $data;
     }
 
     /**

@@ -45,7 +45,8 @@ class GetAttributesActionTest extends IntegrationTestCase
         Assert::assertEquals(200, $response->getStatusCode());
 
         $attributes = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
-        Assert::assertCount(2, $attributes);
+        // 3 attributes because the catalog has a SKU attribute by default
+        Assert::assertCount(3, $attributes);
         Assert::assertArrayHasKey('code', $attributes[0]);
         Assert::assertArrayHasKey('label', $attributes[0]);
         Assert::assertArrayHasKey('type', $attributes[0]);

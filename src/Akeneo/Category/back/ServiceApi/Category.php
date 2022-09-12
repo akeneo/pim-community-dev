@@ -15,7 +15,7 @@ class Category
      * @param string $code
      * @param array<string, string>|null $labels
      * @param int|null $parent
-     * @param array<string, array<string, mixed>>|null $values
+     * @param array<string, array<string, mixed>>|null $attributes
      * @param array<string, array<int>>|null $permissions
      */
     public function __construct(
@@ -23,7 +23,7 @@ class Category
         private string $code,
         private ?array $labels = null,
         private ?int $parent = null,
-        private ?array $values = null,
+        private ?array $attributes = null,
         private ?array $permissions = null,
     ) {
     }
@@ -50,9 +50,9 @@ class Category
     }
 
     /** @return array<string, array<string, mixed>>|null */
-    public function getValues(): ?array
+    public function getAttributes(): ?array
     {
-        return $this->values;
+        return $this->attributes;
     }
 
     /** @return array<string, array<int>>|null */

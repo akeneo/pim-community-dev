@@ -1,22 +1,46 @@
+import {useMemo} from 'react';
 import {FetchStatus, useFetch, useRoute} from '@akeneo-pim-community/shared';
-import {Category} from '../models';
-import type {EditCategoryForm} from '../models/Category';
+import {EnrichCategory} from '../models';
+import type {EditCategoryForm} from '../models';
+import {normalizeCategory} from '../helpers';
 
-type EditCategoryData = {
-  category: Category;
-  form: EditCategoryForm;
-};
+interface UseCategoryResponseCommon {
+  load: () => Promise<void>;
+  status: FetchStatus;
+}
+export interface UseCategoryResponseOK extends UseCategoryResponseCommon {
+  category: EnrichCategory;
+  status: 'fetched';
+}
 
-const useCategory = (
-  categoryId: number
-): [data: EditCategoryData | null, fetch: () => Promise<void>, status: FetchStatus, error: string | null] => {
-  const url = useRoute('pim_enrich_categorytree_edit', {
+export interface UseCategoryResponsePending extends UseCategoryResponseCommon {
+  status: 'idle' | 'fetching';
+}
+
+export interface UseCategoryResponseKO extends UseCategoryResponseCommon {
+  status: 'error';
+  error: string;
+}
+
+export type UseCategoryResponse = UseCategoryResponsePending | UseCategoryResponseOK | UseCategoryResponseKO;
+
+const useCategory = (categoryId: number): UseCategoryResponse => {
+  const url = useRoute('pim_enriched_category_rest_get', {
     id: categoryId.toString(),
   });
 
-  const [categoryData, load, status, error] = useFetch<EditCategoryData>(url);
+  const [category, load, status, error] = useFetch<any>(url);
 
-  return [categoryData, load, status, error];
+  const normalizedCategory = useMemo(() => (category ? normalizeCategory(category) : null), [category]);
+
+  switch (status) {
+    case 'fetched':
+      return {load, status, category: normalizedCategory!};
+    case 'error':
+      return {load, status, error: error!};
+  }
+
+  return {load, status};
 };
 
 export {useCategory};

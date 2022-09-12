@@ -44,14 +44,14 @@ class GetCategorySqlIntegration extends TestCase
     {
         $category = $this->get(GetCategoryInterface::class)->byCode($this->category->getCode());
         $this->assertInstanceOf(Category::class, $category);
-        $this->assertSame('Chaussettes', $category->getLabelCollection()->getLabel('fr_FR'));
-        $this->assertSame('Socks', $category->getLabelCollection()->getLabel('en_US'));
+        $this->assertSame('Chaussettes', $category->getLabels()->getTranslation('fr_FR'));
+        $this->assertSame('Socks', $category->getLabels()->getTranslation('en_US'));
         $this->assertSame(
             [
                 "data" => "Les chaussures dont vous avez besoin !",
                 "locale" => "fr_FR",
             ],
-            $category->getValueCollection()->getAttributeTextData(
+            $category->getAttributes()->getAttributeTextData(
                 'title',
                 '87939c45-1d85-4134-9579-d594fff65030',
                 'fr_FR'
@@ -68,7 +68,7 @@ class GetCategorySqlIntegration extends TestCase
                 ],
                 "locale" => null,
             ],
-            $category->getValueCollection()->getAttributeData(
+            $category->getAttributes()->getAttributeData(
                 'photo',
                 '8587cda6-58c8-47fa-9278-033e1d8c735c'
             )
@@ -86,14 +86,14 @@ class GetCategorySqlIntegration extends TestCase
         $category = $this->get(GetCategoryInterface::class)->byCode($this->category->getCode());
         $this->assertInstanceOf(Category::class, $category);
         $this->assertSame('socks', (string)$category->getCode());
-        $this->assertSame('Chaussettes', $category->getLabelCollection()->getLabel('fr_FR'));
-        $this->assertSame('Socks', $category->getLabelCollection()->getLabel('en_US'));
+        $this->assertSame('Chaussettes', $category->getLabels()->getTranslation('fr_FR'));
+        $this->assertSame('Socks', $category->getLabels()->getTranslation('en_US'));
         $this->assertSame(
             [
                 "data" => "Les chaussures dont vous avez besoin !",
                 "locale" => "fr_FR",
             ],
-            $category->getValueCollection()->getAttributeTextData(
+            $category->getAttributes()->getAttributeTextData(
                 'title',
                 '87939c45-1d85-4134-9579-d594fff65030',
                 'fr_FR'
@@ -110,7 +110,7 @@ class GetCategorySqlIntegration extends TestCase
                 ],
                 "locale" => null,
             ],
-            $category->getValueCollection()->getAttributeData(
+            $category->getAttributes()->getAttributeData(
                 'photo',
                 '8587cda6-58c8-47fa-9278-033e1d8c735c'
             )
@@ -130,11 +130,11 @@ class GetCategorySqlIntegration extends TestCase
 
         $tiesCategory = $this->get(GetCategoryInterface::class)->byCode($ties->getCode());
         $this->assertInstanceOf(Category::class, $tiesCategory);
-        $this->assertNull($tiesCategory->getLabelCollection());
+        $this->assertNull($tiesCategory->getLabels());
 
         $hatsCategory = $this->get(GetCategoryInterface::class)->byCode($hats->getCode());
         $this->assertInstanceOf(Category::class, $hatsCategory);
-        $this->assertNull($hatsCategory->getLabelCollection());
+        $this->assertNull($hatsCategory->getLabels());
     }
 
     private function updateCategoryWithValues(string $code): void

@@ -33,7 +33,7 @@ class QuantifiedAssociationCollectionSpec extends ObjectBehavior
                         ],
                     ]
                 ],
-                $this->anIdMapping(),
+                $this->aUuidMapping(),
                 $this->anIdMapping(),
                 ['PACK']
             ]
@@ -64,14 +64,13 @@ class QuantifiedAssociationCollectionSpec extends ObjectBehavior
             'createWithAssociationsAndMapping',
             [
                 $expectedRawQuantifiedAssociations,
-                $this->anIdMapping(),
+                $this->aUuidMapping(),
                 $this->anIdMapping(),
                 ['PACK']
             ]
         );
 
         $this->normalizeWithMapping(
-            $this->anIdMapping(),
             $this->aUuidMapping(),
             $this->anIdMapping(),
         )->shouldReturn($expectedRawQuantifiedAssociations);
@@ -115,49 +114,16 @@ class QuantifiedAssociationCollectionSpec extends ObjectBehavior
             'createWithAssociationsAndMapping',
             [
                 $rawQuantifiedAssociations,
-                $this->anIncompleteIdMapping(),
+                $this->anIncompleteUuidMapping(),
                 $this->anIncompleteIdMapping(),
                 ['PACK']
             ]
         );
 
         $this->normalizeWithMapping(
-            $this->anIncompleteIdMapping(),
             $this->aUuidMapping(),
             $this->anIncompleteIdMapping()
         )->shouldReturn($expectedNormalizedAssociations);
-    }
-
-    public function it_does_not_set_any_uuid_if_one_is_missing()
-    {
-        $expectedRawQuantifiedAssociations = [
-            'PACK' => [
-                'products'       => [
-                    ['id' => 1, 'quantity' => 1],
-                    ['id' => 2, 'quantity' => 2],
-                ],
-                'product_models' => [
-                    ['id' => 1, 'quantity' => 1],
-                    ['id' => 2, 'quantity' => 2],
-                ],
-            ]
-        ];
-
-        $this->beConstructedThrough(
-            'createWithAssociationsAndMapping',
-            [
-                $expectedRawQuantifiedAssociations,
-                $this->anIdMapping(),
-                $this->anIdMapping(),
-                ['PACK']
-            ]
-        );
-
-        $this->normalizeWithMapping(
-            $this->anIdMapping(),
-            $this->anIncompleteUuidMapping(),
-            $this->anIdMapping(),
-        )->shouldReturn($expectedRawQuantifiedAssociations);
     }
 
     public function it_returns_the_list_of_product_identifiers()
@@ -188,7 +154,7 @@ class QuantifiedAssociationCollectionSpec extends ObjectBehavior
             'createWithAssociationsAndMapping',
             [
                 $expectedRawQuantifiedAssociations,
-                $idMapping,
+                $this->aUuidMapping(),
                 $idMapping,
                 ['PACK', 'PRODUCT_SET']
             ]
@@ -225,7 +191,7 @@ class QuantifiedAssociationCollectionSpec extends ObjectBehavior
             'createWithAssociationsAndMapping',
             [
                 $expectedRawQuantifiedAssociations,
-                $idMapping,
+                $this->aUuidMapping(),
                 $idMapping,
                 ['PACK', 'PRODUCT_SET']
             ]
@@ -248,7 +214,7 @@ class QuantifiedAssociationCollectionSpec extends ObjectBehavior
                 'createWithAssociationsAndMapping',
                 [
                     $expectedRawQuantifiedAssociations,
-                    $this->anIdMapping(),
+                    $this->aUuidMapping(),
                     $this->anIdMapping(),
                     ['PACK']
                 ]
@@ -270,7 +236,7 @@ class QuantifiedAssociationCollectionSpec extends ObjectBehavior
                 'createWithAssociationsAndMapping',
                 [
                     $expectedRawQuantifiedAssociations,
-                    $this->anIdMapping(),
+                    $this->aUuidMapping(),
                     $this->anIdMapping(),
                     ['PACK']
                 ]
@@ -292,7 +258,7 @@ class QuantifiedAssociationCollectionSpec extends ObjectBehavior
                 'createWithAssociationsAndMapping',
                 [
                     $expectedRawQuantifiedAssociations,
-                    $this->anIdMapping(),
+                    $this->aUuidMapping(),
                     $this->anIdMapping(),
                     ['PACK']
                 ]
@@ -313,7 +279,7 @@ class QuantifiedAssociationCollectionSpec extends ObjectBehavior
                 'createWithAssociationsAndMapping',
                 [
                     $expectedRawQuantifiedAssociations,
-                    $this->anIdMapping(),
+                    $this->aUuidMapping(),
                     $this->anIdMapping(),
                     ['PACK']
                 ]
@@ -335,7 +301,7 @@ class QuantifiedAssociationCollectionSpec extends ObjectBehavior
                 'createWithAssociationsAndMapping',
                 [
                     $expectedRawQuantifiedAssociations,
-                    $this->anIdMapping(),
+                    $this->aUuidMapping(),
                     $this->anIdMapping(),
                     ['PACK']
                 ]
@@ -357,7 +323,7 @@ class QuantifiedAssociationCollectionSpec extends ObjectBehavior
                 'createWithAssociationsAndMapping',
                 [
                     $expectedRawQuantifiedAssociations,
-                    $this->anIdMapping(),
+                    $this->aUuidMapping(),
                     $this->anIdMapping(),
                     ['PACK']
                 ]
@@ -689,15 +655,15 @@ class QuantifiedAssociationCollectionSpec extends ObjectBehavior
     private function aUuidMapping(): UuidMapping
     {
         return UuidMapping::createFromMapping([
-            '3f090f5e-3f54-4f34-879c-87779297d130' => 'entity_1',
-            '52254bba-a2c8-40bb-abe1-195e3970bd93' => 'entity_2'
+            ['uuid' => '3f090f5e-3f54-4f34-879c-87779297d130', 'identifier' => 'entity_1', 'id' => 1],
+            ['uuid' => '52254bba-a2c8-40bb-abe1-195e3970bd93', 'identifier' => 'entity_2', 'id' => 2],
         ]);
     }
 
     private function anIncompleteUuidMapping(): UuidMapping
     {
         return UuidMapping::createFromMapping([
-            '3f090f5e-3f54-4f34-879c-87779297d130' => 'entity_1',
+            ['uuid' => '3f090f5e-3f54-4f34-879c-87779297d130', 'identifier' => 'entity_1', 'id' => 1],
         ]);
     }
 
