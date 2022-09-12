@@ -12,7 +12,7 @@ locals {
   function_service_account_email = "timmy-cloud-function@${local.project_id}.iam.gserviceaccount.com"
   project_id                     = "akecld-prd-pim-saas-dev"
   tenant_contexts                = "tenant_contexts"
-
+  region_prefix                  = "eur-w-2a"
 }
 
 module "bucket" {
@@ -28,7 +28,7 @@ module "bucket" {
 module "timmy_request_portal" {
   source                = "../modules/cloudfunction"
   project_id            = local.project_id
-  name                  = "timmy-request-portal2"
+  name                  = "${local.region_prefix}-timmy-request-portal"
   description           = "Request the portal to tenants to create/delete/update"
   available_memory      = "256Mi"
   bucket_name           = module.bucket.bucket_name
@@ -75,7 +75,7 @@ module "timmy_request_portal" {
 module "timmy_create_tenant" {
   source                = "../modules/cloudfunction"
   project_id            = local.project_id
-  name                  = "timmy-create-tenant2"
+  name                  = "${local.region_prefix}-timmy-create-tenant"
   description           = "Create a new UCS tenant"
   available_memory      = "128Mi"
   bucket_name           = module.bucket.bucket_name
@@ -110,7 +110,7 @@ module "timmy_create_tenant" {
 module "timmy_delete_tenant" {
   source                = "../modules/cloudfunction"
   project_id            = local.project_id
-  name                  = "timmy-delete-tenant2"
+  name                  = "${local.region_prefix}-timmy-delete-tenant"
   description           = "Delete an UCS tenant"
   available_memory      = "128Mi"
   bucket_name           = module.bucket.bucket_name
@@ -141,7 +141,7 @@ module "timmy_delete_tenant" {
 module "timmy_create_fire_document" {
   source                = "../modules/cloudfunction"
   project_id            = local.project_id
-  name                  = "timmy-create-fire-document2"
+  name                  = "${local.region_prefix}-timmy-create-doc"
   description           = "Create Firestore document in the tenantcontext DB"
   available_memory      = "128Mi"
   bucket_name           = module.bucket.bucket_name
@@ -163,7 +163,7 @@ module "timmy_create_fire_document" {
 module "timmy_delete_fire_document" {
   source                = "../modules/cloudfunction"
   project_id            = local.project_id
-  name                  = "timmy-delete-fire-document2"
+  name                  = "${local.region_prefix}-timmy-delete-doc"
   description           = "Delete Firestore document in the tenantcontext DB"
   available_memory      = "128Mi"
   bucket_name           = module.bucket.bucket_name
@@ -184,7 +184,7 @@ module "timmy_cloudscheduler" {
   source                     = "../modules/cloudscheduler"
   project_id                 = local.project_id
   region                     = local.function_location
-  name                       = "timmy-request-portal"
+  name                       = "${local.region_prefix}-timmy-request-portal"
   description                = "Trigger timmy-request-portal cloudfunction every 2 minutes"
   http_method                = "POST"
   http_target_uri            = module.timmy_request_portal.uri
