@@ -1,30 +1,28 @@
 import React from 'react';
 import {Attribute} from '../../models';
-import {AttributeFieldBuilder, AttributeInputValue, AttributeProps, ImageAttributeInputValue} from './types';
-import {TextFieldAttributeBuilder} from './textFieldAttributeBuilder';
-import {RichTextFieldAttributeBuilder} from './richTextFieldAttributeBuilder';
-import {TextAreaFieldAttributeBuilder} from './textAreaFieldAttributeBuilder';
-import {ImageFieldAttributeBuilder} from './imageFieldAttributeBuilder';
+import {buildImageFieldAttribute} from './buildImageFieldAttribute';
+import {buildRichTextFieldAttribute} from './buildRichTextFieldAttribute';
+import {buildTextAreaFieldAttribute} from './buildTextAreaFieldAttribute';
+import { buildTextFieldAttribute } from './buildTextFieldAttribute';
+import {AttributeFieldBuilder, AttributeInputValue, AttributeFieldProps, ImageAttributeInputValue} from './types';
 
-export const isImageAttributeInputValue = (value: AttributeInputValue): value is ImageAttributeInputValue =>
-  value !== null && value.hasOwnProperty('originalFilename') && value.hasOwnProperty('filePath');
 
-export const getLabelFromAttribute = (attr: Attribute, locale: string): string =>
-  attr.labels[locale] ?? '[' + attr.code + ']';
+export const getLabelFromAttribute = (attribute: Attribute, locale: string): string =>
+  attribute.labels[locale] ?? '[' + attribute.code + ']';
 
 const attributeFieldBuilders: {[attributeType: string]: AttributeFieldBuilder<AttributeInputValue>} = {
-  text: new TextFieldAttributeBuilder(),
-  richtext: new RichTextFieldAttributeBuilder(),
-  textarea: new TextAreaFieldAttributeBuilder(),
-  image: new ImageFieldAttributeBuilder(),
+  text: buildTextFieldAttribute,
+  richtext: buildRichTextFieldAttribute,
+  textarea: buildTextAreaFieldAttribute,
+  image: buildImageFieldAttribute,
 };
 
-const attributeFieldFactory = (attr: Attribute): React.FC<AttributeProps<AttributeInputValue>> | null => {
-  const builder = attributeFieldBuilders[attr.type];
+const attributeFieldFactory = (attribute: Attribute): React.FC<AttributeFieldProps<AttributeInputValue>> | null => {
+  const builder = attributeFieldBuilders[attribute.type];
   if (!builder) {
     return null;
   }
-  return builder.buildAttributeField(attr);
+  return builder(attribute);
 };
 
 export {attributeFieldFactory};

@@ -8,7 +8,7 @@ export const CATEGORY_ATTRIBUTE_TYPE_TEXT = 'text';
 export const CATEGORY_ATTRIBUTE_TYPE_IMAGE = 'image';
 
 export type Attribute = {
-  uuid: string;
+  identifier: string;
   code: string;
   type: string;
   order: number;

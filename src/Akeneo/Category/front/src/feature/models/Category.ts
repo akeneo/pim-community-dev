@@ -40,14 +40,19 @@ export interface CategoryAttributeValueWrapper {
 type CategoryTextAttributeValueData = string;
 
 export interface CategoryImageAttributeValueData {
-  size: number;
+  size?: number;
   file_path: string;
-  mime_type: string;
-  extension: string;
+  mime_type?: string;
+  extension?: string;
   original_filename: string;
 }
 
 export type CategoryAttributeValueData = CategoryTextAttributeValueData | CategoryImageAttributeValueData;
+
+export const isCategoryImageAttributeValueData = (
+  data: CategoryAttributeValueData
+): data is CategoryImageAttributeValueData =>
+  data !== null && data.hasOwnProperty('original_filename') && data.hasOwnProperty('file_path');
 
 export type BackendCategoryTree = {
   attr: {

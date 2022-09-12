@@ -1,12 +1,22 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useState, useMemo} from 'react';
 import {SectionTitle, Helper} from 'akeneo-design-system';
 import {Locale, LocaleSelector, useTranslate} from '@akeneo-pim-community/shared';
 import {useTemplate} from '../hooks';
 import styled from 'styled-components';
 
-import {Attribute, CategoryAttributeValueData, CategoryImageAttributeValueData, EnrichCategory} from '../models';
-import {attributeFieldFactory, isImageAttributeInputValue} from './attributes/templateAttributesFactory';
-import {AttributeInputValue} from './attributes/types';
+import {
+  Attribute,
+  buildCompositeKey,
+  CategoryAttributeValueData,
+  EnrichCategory,
+  isCategoryImageAttributeValueData,
+} from '../models';
+import {attributeFieldFactory} from './attributes/templateAttributesFactory';
+import {AttributeInputValue, buildDefaultAttributeInputValue, isImageAttributeInputValue} from './attributes/types';
+import {
+  convertCategoryImageAttributeValueDataToFileInfo,
+  convertFileInfoToCategoryImageAttributeValueData,
+} from 'feature/helpers';
 
 const locales: Locale[] = [
   {
@@ -24,7 +34,7 @@ const locales: Locale[] = [
 ];
 
 interface Props {
-  attributes: EnrichCategory['attributes'];
+  attributeValues: EnrichCategory['attributes'];
   onAttributeValueChange: (
     attribute: Attribute,
     locale: string | null,
@@ -40,7 +50,7 @@ const FormContainer = styled.div`
   }
 `;
 
-export const EditAttributesForm = ({onAttributeValueChange}: Props) => {
+export const EditAttributesForm = ({attributeValues, onAttributeValueChange}: Props) => {
   const [locale, setLocale] = useState('en_US');
   const translate = useTranslate();
 
@@ -64,20 +74,23 @@ export const EditAttributesForm = ({onAttributeValueChange}: Props) => {
       if (!value || !value.size || !value.mimeType || !value.extension) {
         return;
       }
-      const data: CategoryImageAttributeValueData = {
-        size: value.size,
-        file_path: value.filePath,
-        mime_type: value.mimeType,
-        extension: value.extension,
-        original_filename: value.originalFilename,
-      };
-      onAttributeValueChange(attribute, locale, data);
+
+      onAttributeValueChange(attribute, locale, convertFileInfoToCategoryImageAttributeValueData(value));
     },
     [locale, onAttributeValueChange]
   );
 
   // TODO change hardcoded value to use the template uuid
   const {data: template, isLoading, isError} = useTemplate('02274dac-e99a-4e1d-8f9b-794d4c3ba330');
+
+  const handlers = useMemo(() => {
+    const handlersMap: {[attributeUUID: string]: (value: AttributeInputValue) => void} = {};
+    template?.attributes.forEach((attribute: Attribute) => {
+      handlersMap[attribute.code] =
+        attribute.type === 'image' ? handleImageChange(attribute) : handleTextChange(attribute);
+    });
+    return handlersMap;
+  }, [template, handleImageChange, handleTextChange]);
 
   if (isLoading) {
     return null; //TODO display loading info ?
@@ -92,6 +105,41 @@ export const EditAttributesForm = ({onAttributeValueChange}: Props) => {
     attributesByOrder[attribute.order] = attribute;
   });
 
+  const attributeFields = attributesByOrder.map((attribute: Attribute) => {
+    const AttributeField = attributeFieldFactory(attribute);
+    if (AttributeField === null) {
+      return <Helper level="error">Could not find builder for {attribute.type} </Helper>;
+    }
+
+    const effectiveLocaleCode = attribute.is_localizable ? locale : null;
+    const compositeKey = buildCompositeKey(attribute, effectiveLocaleCode);
+
+    let value = attributeValues[compositeKey];
+
+    let dataForInput;
+    if (value) {
+      let {data: dataFromModel} = value;
+
+      if (isCategoryImageAttributeValueData(dataFromModel)) {
+        dataForInput = convertCategoryImageAttributeValueDataToFileInfo(dataFromModel);
+      } else {
+        dataForInput = dataFromModel;
+      }
+    } else {
+      dataForInput = buildDefaultAttributeInputValue(attribute.type);
+    }
+
+    return (
+      <AttributeField
+        attribute={attribute}
+        locale={locale}
+        value={dataForInput}
+        onChange={handlers[attribute.code]}
+        key={attribute.identifier}
+      ></AttributeField>
+    );
+  });
+
   return (
     <FormContainer>
       <SectionTitle>
@@ -99,21 +147,7 @@ export const EditAttributesForm = ({onAttributeValueChange}: Props) => {
         <SectionTitle.Spacer />
         <LocaleSelector value={locale} values={locales} onChange={setLocale} />
       </SectionTitle>
-      {attributesByOrder.map((attribute: Attribute) => {
-        const AttrComp = attributeFieldFactory(attribute);
-        if (AttrComp === null) {
-          return <Helper level="error">Could not find builder for {attribute.type} </Helper>;
-        }
-        const handleChange = attribute.type === 'image' ? handleImageChange(attribute) : handleTextChange(attribute);
-        // TODO use real value
-        const value =
-          attribute.type !== 'image'
-            ? 'toto_' + attribute.code
-            : {filePath: '/path/to/file/toto.png', originalFilename: 'toto.png'};
-
-        // TODO value field to fill with real value
-        return <AttrComp locale={locale} value={value} onChange={handleChange} key={attribute.uuid}></AttrComp>;
-      })}
+      {attributeFields}
     </FormContainer>
   );
 };

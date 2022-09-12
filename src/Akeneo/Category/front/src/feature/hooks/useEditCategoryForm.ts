@@ -93,11 +93,12 @@ const useEditCategoryForm = (categoryId: number) => {
     setCategoryEdited(set(['permissions'], consistentPermissions, categoryEdited));
   };
 
-  const onChangeAttribute = (
+  const onChangeAttribute = useCallback((
     attribute: Attribute,
     localeCode: string | null,
     attributeValue: CategoryAttributeValueData
   ) => {
+    
     if (categoryEdited === null) {
       return;
     }
@@ -111,8 +112,13 @@ const useEditCategoryForm = (categoryId: number) => {
       attribute_code: compositeKeyWithoutLocale,
     };
 
-    setCategoryEdited(set(['attributes', compositeKey], value, categoryEdited));
-  };
+    const newCategoryEdited = set(['attributes', compositeKey], value, categoryEdited);
+    if (categoriesAreEqual(categoryEdited, newCategoryEdited)) {
+      return;
+    }
+    
+    setCategoryEdited(newCategoryEdited);
+  }, [categoryEdited]);
 
   return {
     categoryFetchingStatus,
