@@ -63,7 +63,7 @@ paths:
         - "application/json"
       parameters:
         - in: body
-          name: user
+          name: catalog
           schema:
             type: object
             required:
@@ -167,7 +167,7 @@ paths:
           type: string
           required: true
         - in: body
-          name: user
+          name: catalog
           schema:
             type: object
             required:
@@ -320,9 +320,10 @@ paths:
           name: id
           type: string
           required: true
-        - in: formData
+        - in: body
           name: schema
-          type: file
+          schema:
+            type: object
       responses:
         "200":
           description: "OK"
