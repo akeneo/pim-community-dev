@@ -14,12 +14,12 @@ const CLEAN_HTML_OPERATION_TYPE = 'clean_html';
 
 const availableHtmlModes = ['remove', 'decode'];
 
-type HtmlMode = typeof availableHtmlModes;
+type HtmlMode = typeof availableHtmlModes[number];
 
 type CleanHTMLOperation = {
   uuid: string;
   type: typeof CLEAN_HTML_OPERATION_TYPE;
-  modes: HtmlMode;
+  modes: HtmlMode[];
 };
 
 const getDefaultCleanHTMLOperation = (): CleanHTMLOperation => ({
@@ -47,7 +47,7 @@ const CleanHTMLOperationBlock = ({
     throw new Error('CleanHTMLOperationBlock can only be used with CleanHTMLOperation');
   }
 
-  const handleChange = (checked: boolean, selectedMode: string) => {
+  const handleChange = (checked: boolean, selectedMode: HtmlMode) => {
     if (!checked && 1 === operation.modes.length) return;
 
     let updatedModes = [...operation.modes];
@@ -98,7 +98,7 @@ const CleanHTMLOperationBlock = ({
           </>
         }
       >
-        {availableHtmlModes.map((mode: string) => (
+        {availableHtmlModes.map((mode: HtmlMode) => (
           <SpacedCheckbox
             key={mode}
             checked={operation.modes.includes(mode)}

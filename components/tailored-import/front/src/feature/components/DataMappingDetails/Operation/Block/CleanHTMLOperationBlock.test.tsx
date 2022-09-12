@@ -4,7 +4,6 @@ import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {CleanHTMLOperationBlock, getDefaultCleanHTMLOperation} from './CleanHTMLOperationBlock';
 import {OperationPreviewData} from 'feature/models';
-import {ChangeCaseOperationBlock} from './ChangeCaseOperationBlock';
 
 const operationPreviewData: OperationPreviewData = {
   [expect.any(String)]: [
