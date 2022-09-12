@@ -121,6 +121,12 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithComments:
+        public: true
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetProductFileWithComments
+        arguments:
+            - '@database_connection'
+
     # Event subscribers
     Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Subscriber\NotifyUsersOnProductFileAdded:
         arguments:

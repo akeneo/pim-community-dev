@@ -12,6 +12,8 @@ final class ProductFile
         public ?string $uploadedByContributor,
         public string $uploadedBySupplier,
         public ?string $uploadedAt,
+        public array $retailerComments = [],
+        public array $supplierComments = [],
     ) {
     }
 
@@ -23,6 +25,8 @@ final class ProductFile
             'uploadedByContributor' => $this->uploadedByContributor,
             'uploadedBySupplier' => $this->uploadedBySupplier,
             'uploadedAt' => $this->uploadedAt, // @todo Move the formatting to the Controller in supplier app (format('c'))
+            'retailerComments' => $this->retailerComments,
+            'supplierComments' => $this->supplierComments,
         ];
     }
 }
