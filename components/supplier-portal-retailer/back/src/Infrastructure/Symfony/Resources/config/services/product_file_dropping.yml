@@ -73,6 +73,7 @@ services:
     Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CommentProductFileHandler:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'
+            - '@validator'
 
     # Query/Handlers
     Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProductFileHandler:
