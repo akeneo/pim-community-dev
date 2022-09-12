@@ -36,8 +36,6 @@ $rules = [
         // TODO: dependencies related to the front end, remove twig screens
         'Twig',
         'Akeneo\Pim\Enrichment\Product\API',
-        // TODO: CPM-714
-        'Akeneo\Pim\Enrichment\Product\Domain\Query\GetProductUuids',
 
         // Event API
         'Akeneo\Platform\Component\EventQueue',
@@ -53,8 +51,6 @@ $rules = [
 
         // TIP-1005: Clean UI form types
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\ObjectIdentifierType',
-        'Akeneo\Platform\Bundle\UIBundle\Form\Type\TranslatableFieldType',
-        'Akeneo\Platform\Bundle\UIBundle\Form\Subscriber\DisableFieldSubscriber',
 
         // TODO: EASY PICK! it should be registered in the structure bundle
         'Akeneo\Pim\Structure\Bundle\DependencyInjection\Compiler\RegisterAttributeTypePass',
@@ -130,13 +126,10 @@ $rules = [
         'Akeneo\Category\Api', // legit
         'Akeneo\Category\Infrastructure\Component\Model\CategoryInterface',
         'Akeneo\Category\Infrastructure\Component\Model\Category',
-        'Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\RootCategory',//todo
         'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',
         'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface',
         'Akeneo\Category\Infrastructure\Component\Classification\Repository\ItemCategoryRepositoryInterface',
-        'Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface',
         'Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizerInterface',
-        'Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\RootCategory',//todo
     ])->in('Akeneo\Pim\Enrichment\Bundle'),
     $builder->only([
         'Symfony\Component',
@@ -265,12 +258,9 @@ $rules = [
         'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
 
         'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
-        'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids',
 
         // Category Bounded Context
-        'Akeneo\Category\Api', // legit
         'Akeneo\Category\Infrastructure\Component\Model\CategoryInterface',
-        'Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\RootCategory',//todo
         'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',
         'Akeneo\Category\Infrastructure\Component\Classification\Repository\ItemCategoryRepositoryInterface',
         'Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface',

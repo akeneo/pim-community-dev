@@ -18,9 +18,7 @@ $rules = [
         ],
     )->in('Akeneo\Platform\Job\Application'),
     $builder->only(
-        [
-            'Webmozart\Assert\Assert',
-        ],
+        [],
     )->in('Akeneo\Platform\Job\Domain'),
     $builder->only(
         [
