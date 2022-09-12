@@ -37,10 +37,9 @@ SQL;
         $this->get('database_connection')->executeQuery($insertProducts);
 
         $insertScores = <<<SQL
-INSERT INTO pim_data_quality_insights_product_score (product_id, evaluated_at, scores) VALUES 
-    (1, '2021-05-31', '{}'),
-    (1, '2021-05-22', '{}'),
-    (2, '2021-05-31', '{}')
+INSERT INTO pim_data_quality_insights_product_score (product_uuid, evaluated_at, scores) VALUES
+    (UUID_TO_BIN('99c8c1aa-fb62-400c-acbd-d686a25989f4'), '2021-05-31', '{}'),
+    (UUID_TO_BIN('4ef70193-3d39-4122-8229-a42fa5b036b6'), '2021-05-31', '{}')
 SQL;
 
         $this->get('database_connection')->executeQuery($insertScores);
