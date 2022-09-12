@@ -28,6 +28,9 @@ jobs:
                     condition: << pipeline.parameters.run-database-tests >>
                     steps:
                         -   run:
+                                name: Lint migrations
+                                command: make migration-lint-back
+                        -   run:
                                 name: Migrations tests
                                 command: make migration-back
             -   store_test_results:
