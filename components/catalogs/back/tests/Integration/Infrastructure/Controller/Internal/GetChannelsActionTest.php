@@ -43,7 +43,7 @@ class GetChannelsActionTest extends IntegrationTestCase
         $expectedChannels = [
             [
                 'code' => 'ecommerce',
-                'label'=> '[ecommerce]',
+                'label' => '[ecommerce]',
             ],
         ];
         Assert::assertEquals($expectedChannels, $channels);
@@ -72,11 +72,11 @@ class GetChannelsActionTest extends IntegrationTestCase
         $expectedChannels = [
             [
                 'code' => 'ecommerce',
-                'label'=> '[ecommerce]',
+                'label' => '[ecommerce]',
             ],
             [
                 'code' => 'print',
-                'label'=> '[print]',
+                'label' => '[print]',
             ],
         ];
         Assert::assertEquals($expectedChannels, $channels);

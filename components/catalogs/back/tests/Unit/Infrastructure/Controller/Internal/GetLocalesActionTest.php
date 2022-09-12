@@ -94,7 +94,7 @@ class GetLocalesActionTest extends TestCase
 
         ($this->getLocalesAction)(
             new Request(
-                query: ['codes' =>'en_US,fr_FR'],
+                query: ['codes' => 'en_US,fr_FR'],
                 server: [
                     'HTTP_X-Requested-With' => 'XMLHttpRequest',
                 ],

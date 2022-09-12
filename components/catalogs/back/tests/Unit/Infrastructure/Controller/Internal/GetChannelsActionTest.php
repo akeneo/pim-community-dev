@@ -147,7 +147,7 @@ class GetChannelsActionTest extends TestCase
                 [
                     'page' => 1,
                     'limit' => 1,
-                    'codes' =>'ecommerce,print',
+                    'codes' => 'ecommerce,print',
                 ],
             ],
         ];

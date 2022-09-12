@@ -54,11 +54,11 @@ class GetLocalesByCodeQueryTest extends IntegrationTestCase
         $expectedLocales = [
             [
                 'code' => 'en_US',
-                'label'=> 'English (United States)',
+                'label' => 'English (United States)',
             ],
             [
                 'code' => 'fr_FR',
-                'label'=> 'French (France)',
+                'label' => 'French (France)',
             ],
         ];
         Assert::assertEquals($expectedLocales, $locales);
