@@ -22,6 +22,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 
 class FamilyUpdaterSpec extends ObjectBehavior
@@ -227,6 +228,19 @@ class FamilyUpdaterSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('description')->willReturn($descAttribute);
 
         $family->updateAttributes([$skuAttribute, $nameAttribute])->shouldBeCalled();
+
+        $this->update($family, $values, []);
+    }
+
+    function it_does_not_remove_identifier_requirements_when_no_requirements_are_provided(
+        FamilyInterface $family
+    ) {
+        $values = [
+            'code' => 'mycode',
+        ];
+
+        $family->setCode('mycode')->shouldBeCalled();
+        $family->setAttributeRequirements(Argument::any())->shouldNotBeCalled();
 
         $this->update($family, $values, []);
     }

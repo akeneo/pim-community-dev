@@ -2,7 +2,6 @@
 
 namespace Akeneo\Pim\Structure\Component\Validator\Constraints;
 
-use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
@@ -22,22 +21,9 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class FamilyRequirementsValidator extends ConstraintValidator
 {
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
-    /** @var ChannelRepositoryInterface */
-    protected $channelRepository;
-
-    /**
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param ChannelRepositoryInterface   $channelRepository
-     */
     public function __construct(
-        AttributeRepositoryInterface $attributeRepository,
-        ChannelRepositoryInterface $channelRepository
+        protected AttributeRepositoryInterface $attributeRepository,
     ) {
-        $this->attributeRepository = $attributeRepository;
-        $this->channelRepository = $channelRepository;
     }
 
     /**

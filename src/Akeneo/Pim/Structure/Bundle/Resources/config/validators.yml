@@ -3,7 +3,6 @@ services:
         class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyRequirementsValidator'
         arguments:
             - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.repository.channel'
         tags:
             - { name: validator.constraint_validator, alias: pim_family_requirements_validator }
 
