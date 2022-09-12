@@ -1,0 +1,42 @@
+akeneo.job_automation:
+  title: 'automatyzacja'
+  scheduling:
+    title: 'Harmonogram'
+    running_user_groups:
+      label: 'Uprawnienie grup użytkowników'
+      disabled_helper: Nie masz uprawnień do przeglądania grup użytkowników.
+    enable: Włącz harmonogram
+    cannot_view_all_jobs: "Nie możesz wyświetlić zautomatyzowanych zadań w module Tracker procesu, ponieważ nie masz następującego uprawnienia w ramach Twojej roli: „Zobacz wysztkie zadania w trackerze procesów”. Skontaktuj się z administratorem PIM."
+    frequency:
+      helper: Częstotliwość jest wyświetlana w formacie 24-godzinnym UTC.
+      hourly_helper: Częstotliwości występujące kilka razy dziennie zaczynają się o północy (UTC).
+      title: Częstotliwość
+      daily: Codziennie
+      weekly: Co tydzień
+      weekday: Dzień roboczy
+      every_4_hours: Co 4 godziny
+      every_8_hours: Co 8 godzin
+      every_12_hours: Co 12 godzin
+      hours: Godziny
+      minutes: Minuty
+      monday: Poniedziałek
+      tuesday: Wtorek
+      wednesday: Środa
+      thursday: Czwartek
+      friday: Piątek
+      saturday: Sobota
+      sunday: Niedziela
+  notification:
+    title: Powiadomienie
+    user_groups:
+      label: Grupy użytkowników
+      disabled_helper: Nie masz uprawnień do przeglądania grup użytkowników.
+    users:
+      label: Użytkownicy
+      disabled_helper: Nie masz uprawnień do tworzenia list użytkowników.
+  validation:
+    invalid_frequency_option: Nieprawidłowa opcja częstotliwości
+    invalid_week_day: Nieprawidłowy dzień tygodnia
+    invalid_hourly_frequency: Nieprawidłowa częstotliwość godzinowa
+    invalid_hours: Nieprawidłowe godziny
+    invalid_minutes: Nieprawidłowe minuty

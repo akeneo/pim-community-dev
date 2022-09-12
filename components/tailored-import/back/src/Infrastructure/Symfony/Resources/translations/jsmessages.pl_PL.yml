@@ -51,6 +51,12 @@ akeneo.tailored_import:
         collapse: Zwiń
       clean_html_tags:
         title: Wyczyść znaczniki HTML
+      change_case:
+        title: Zmień wielkość liter
+        select: Wybierz wielkość liter
+        uppercase: Wielkie litery
+        lowercase: Małe litery
+        capitalize: Pierwsza litera wielka
       split:
         title: Podziel
         separator: Wybierz separator
@@ -59,14 +65,21 @@ akeneo.tailored_import:
         pipe: Linia (|)
       simple_select_replacement:
         title: Zastąpienie pojedynczego wyboru
+        option_labels: Etykiety opcji
       multi_select_replacement:
         title: Zastąpienie wielokrotnego wyboru
+        option_labels: Etykiety opcji
       categories_replacement:
         title: Zastąpienie katagorii
         modal:
           title: Zarządzaj kategoriami
+          table:
+            header:
+              replacement: Etykiety kategorii
+              source_values: Kategorie źródeł
       family_replacement:
         title: Zastąpienie rodzin
+        option_labels: Etykiety rodziny
         modal:
           title: Zarządzaj rodzinami
       no_result: Brak dostępnej operacji
@@ -130,6 +143,9 @@ akeneo.tailored_import:
         date_format: Format daty
         measurement_unit:
           title: Jednostka
+        price_currency:
+          title: Waluta
+          placeholder: Wybierz walutę
       invalid:
         attribute: Ten atrybut został usunięty i odtworzony za pomocą innego typu. Usuń to mapowanie danych i dodaj je ponownie.
         property: Ta właściwość jest nieprawidłowa. Usuń to mapowanie danych i dodaj je ponownie.
@@ -202,3 +218,8 @@ akeneo.tailored_import:
     operations:
       incompatible_operation_type: Typ operacji {{ operation_type }} jest niekompatybilny z Twoim typem celu.
       missing_required_operations: "Brakuje wymaganych operacji: {{ missing_required_operations }}"
+pim_information:
+  import:
+    title: Odkryj mapowanie z dopasowanym importem
+    text: "Ten nowy profil importu umożliwa dostosowanie struktury importu produktu poprzez mapowanie danych. Pozwala na łatwy wybór źródeł z pliku, zmapowanie ich na atrybuty w PIM i wykonanie odpowiednich operacji w celu przekształcenia danych."
+    link.text: Kliknij tutaj, aby dowiedzieć się więcej.
