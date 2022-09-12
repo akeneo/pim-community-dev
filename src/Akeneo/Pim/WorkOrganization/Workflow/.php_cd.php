@@ -49,6 +49,7 @@ $rules = [
         'Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException',
         'Akeneo\Pim\Permission\Component\NotGrantedDataMergerInterface',
         'Akeneo\Pim\Permission\Component\Authorization\DenyNotGrantedCategorizedEntity',
+        'Akeneo\Pim\Permission\Component\Authorization\FetchUserRightsOnProductInterface',
         'Akeneo\Pim\Permission\Component\Factory\FilteredEntityFactory',
         'Akeneo\Pim\Permission\Component\Query\GetAccessGroupIdsForLocaleCode',
 
@@ -140,6 +141,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchBufferedPimEventSubscriberInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelCommand',
         'Akeneo\Pim\Enrichment\Component\Product\Query\FindId',
+        'Akeneo\Pim\Enrichment\Component\Product\Query\FindProduct',
 
         // TIP-1004: WidgetInterface located in Platform is used in multiple contexts
         'Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface',

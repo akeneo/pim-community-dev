@@ -116,3 +116,13 @@ services:
     Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Query\FindProductAssociationToPublishByProductQuery:
         arguments:
             - '@database_connection'
+
+    Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\FindProductWithAppliedDraft:
+        decorates: 'Akeneo\Pim\Enrichment\Component\Product\Query\FindProduct'
+        decoration_inner_name: 'akeneo.pim.enrichment.query.find_product_without_draft'
+        arguments:
+            - '@akeneo.pim.enrichment.query.find_product_without_draft'
+            - '@security.token_storage'
+            - '@akeneo.pim.permission.product.query.fetch_user_rights_on_product'
+            - '@pimee_workflow.repository.product_draft'
+            - '@pimee_workflow.applier.draft'

@@ -228,7 +228,7 @@ services:
     Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\UpdateProductByUuidController:
         public: true
         arguments:
-            - '@pim_catalog.repository.product'
+            - '@Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\FindProductWithAppliedDraft'
             - '@router'
             - '@pim_catalog.comparator.filter.product'
             - '@event_dispatcher'
@@ -237,7 +237,7 @@ services:
             - '@validator'
             - '@pim_catalog.updater.product'
             - '@pim_catalog.builder.product'
-            - '@pim_catalog.saver.product'
+            - '@pimee_workflow.saver.product_delegating'
             - '@pimee_security.filter.granted_product_attribute_filter'
             - '@pim_catalog.validator.product'
             - '@pim_catalog.entity_with_family_variant.remove_parent_from_product'
