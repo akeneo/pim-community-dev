@@ -73,7 +73,7 @@ final class GetRequiredAttributesMasksQueryIntegration extends CompletenessTestC
             ],
             [
                 'code' => 'familyC',
-                'attribute_codes' => [],
+                'attribute_codes' => ['sku'],
             ]
         ]);
 

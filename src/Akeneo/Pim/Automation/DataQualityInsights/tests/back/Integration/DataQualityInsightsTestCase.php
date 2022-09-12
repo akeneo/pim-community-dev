@@ -150,6 +150,7 @@ class DataQualityInsightsTestCase extends TestCase
     protected function createFamily(string $code, array $data = []): FamilyInterface
     {
         $data = array_merge(['code' => $code], $data);
+        $data['attributes'] = array_merge(['sku'], $data['attributes']);
 
         $family = $this->get('akeneo_integration_tests.base.family.builder')->build($data);
 
