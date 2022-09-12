@@ -192,7 +192,7 @@ endif
 
 .PHONY: test-database-structure
 test-database-structure: #Doc: test database structure
-	$(DOCKER_COMPOSE) run -e APP_DEBUG=1 --rm php bash -c 'bin/console pimee:database:inspect -f --env=test && bin/console pimee:database:diff --env=test'
+	$(DOCKER_COMPOSE) run -e APP_DEBUG=1 --rm php bash -c 'bin/console pimee:database:inspect -f --db-name=akeneo_pim_test --env=test && bin/console pimee:database:diff --env=test'
 
 .PHONY: end-to-end-front
 end-to-end-front:
