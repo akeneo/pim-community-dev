@@ -21,7 +21,7 @@ test('it fetches the channels', async () => {
         ])
     );
 
-    const {result, waitForNextUpdate} = renderHook(() => useChannelsByCodes(['print', 'ecommerce']), {
+    const {result, waitForNextUpdate} = renderHook(() => useChannelsByCodes(['print', 'ecommerce', 'mobile']), {
         wrapper: ReactQueryWrapper,
     });
 
@@ -34,7 +34,7 @@ test('it fetches the channels', async () => {
 
     await waitForNextUpdate();
 
-    expect(fetchMock).toHaveBeenCalledWith('/rest/catalogs/channels?codes=print,ecommerce', expect.any(Object));
+    expect(fetchMock).toHaveBeenCalledWith('/rest/catalogs/channels?codes=print,ecommerce,mobile', expect.any(Object));
     expect(result.current).toMatchObject({
         isLoading: false,
         isError: false,
@@ -46,6 +46,10 @@ test('it fetches the channels', async () => {
             {
                 code: 'ecommerce',
                 label: 'Ecommerce',
+            },
+            {
+                code: 'mobile',
+                label: '[mobile]',
             },
         ],
         error: null,
