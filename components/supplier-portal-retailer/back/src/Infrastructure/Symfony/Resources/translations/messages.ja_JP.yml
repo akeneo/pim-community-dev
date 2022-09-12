@@ -1,0 +1,4 @@
+supplier_portal:
+  product_file_dropping:
+    pim_notification:
+      content: "サプライヤーポータルを通じて、<strong>{{ supplierLabel }}</strong>の<strong>{{ contributorEmail }}</strong>により商品ファイルが送信されました。"

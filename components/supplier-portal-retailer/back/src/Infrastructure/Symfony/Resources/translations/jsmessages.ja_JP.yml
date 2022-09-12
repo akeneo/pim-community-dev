@@ -87,11 +87,21 @@ supplier_portal:
         contributor: コントリビューター
         supplier: サプライヤー
         status: ステータス
+        download: ダウンロードアイコン
       notification:
         error_loading_supplier_files:
           title: 商品ファイルを表示できません。
           content: ご不便をおかけして申し訳ございません。しばらくしてからもう一度お試しください。
+    pim_notification:
+      button_label: 商品ファイルを表示
 pim_title:
   supplier_portal_retailer_supplier_list: サプライヤー
   supplier_portal_retailer_supplier_edit: サプライヤーを編集
+  supplier_portal_retailer_product_files_list: 商品ファイル
 batch_jobs.supplier_portal_xlsx_supplier_import.label: サプライヤーポータルのサプライヤーをXLSX形式でインポート
+pim_notification:
+  supplier_portal:
+    new_product_file:
+      button_label: 商品ファイルを表示
+  types:
+    new_product_file: 新規商品ファイル
