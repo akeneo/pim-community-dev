@@ -34,7 +34,7 @@ test('it fetches the channels', async () => {
 
     await waitForNextUpdate();
 
-    expect(fetchMock).toHaveBeenCalledWith('/rest/catalogs/channels?codes=ecommerce,print', expect.any(Object));
+    expect(fetchMock).toHaveBeenCalledWith('/rest/catalogs/channels?codes=print,ecommerce', expect.any(Object));
     expect(result.current).toMatchObject({
         isLoading: false,
         isError: false,
