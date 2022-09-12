@@ -244,7 +244,7 @@ paths:
                 code: 404,
                 message: "Catalog \"{id}\" does not exist or you can't access it."
               }
-  /api/rest/v1/catalogs/{id}/product-mapping:
+  /api/rest/v1/catalogs/{id}/mapping-schemas/product:
     get:
       summary: "Get the schema of the product mapping"
       tags: [ product mapping ]
@@ -620,4 +620,3 @@ paths:
                 code: 404,
                 message: "Catalog \"{id}\" does not exist or you can't access it."
               }
-
