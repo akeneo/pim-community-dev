@@ -117,8 +117,8 @@ SQL;
             [
                 'webhook_url' => $url,
                 'webhook_secret' => $secret,
-                'webhook_enabled' => (int)$enabled,
-                'webhook_is_using_uuid' => (int)$isUsingUuid,
+                'webhook_enabled' => (int) $enabled,
+                'webhook_is_using_uuid' => (int) $isUsingUuid,
             ],
             ['code' => $connection->code()]
         );

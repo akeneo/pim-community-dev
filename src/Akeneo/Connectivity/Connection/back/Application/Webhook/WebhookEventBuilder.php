@@ -43,11 +43,10 @@ class WebhookEventBuilder
 
         /** @var UserInterface $user */
         $user = $context['user'];
-        $isUsingUuid = $context['is_using_uuid'] ?? false;
 
         $eventDataCollection = $eventDataBuilder->build(
             $pimEventBulk,
-            new Context($user->getUsername(), $user->getId(), $isUsingUuid)
+            new Context($user->getUsername(), $user->getId(), $context['is_using_uuid'])
         );
 
         return $this->buildWebhookEvents(
