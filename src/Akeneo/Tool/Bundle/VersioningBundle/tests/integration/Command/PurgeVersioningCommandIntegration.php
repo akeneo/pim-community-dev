@@ -43,7 +43,7 @@ class PurgeVersioningCommandIntegration extends TestCase
     public function it_does_not_launch_purge_if_lock_exists(): void
     {
         /** @var LockFactory $lockFactory */
-        $lockFactory = $this->get('akeneo.enrichment.lock.factory');
+        $lockFactory = $this->get('pim_framework.lock.factory');
         $lockIdentifier = 'scheduled-job-versioning_purge';
         $lock = $lockFactory->createLock($lockIdentifier, 300);
         $lock->acquire();
