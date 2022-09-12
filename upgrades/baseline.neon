@@ -1,0 +1,296 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Cannot instantiate class Akeneo\\\\Pim\\\\Automation\\\\DataQualityInsights\\\\Domain\\\\ValueObject\\\\ProductUuid via private constructor Akeneo\\\\Pim\\\\Automation\\\\DataQualityInsights\\\\Domain\\\\ValueObject\\\\ProductUuid\\:\\:__construct\\(\\)\\.$#"
+			count: 1
+			path: schema/Version_5_0_20200226102033_data_quality_insights_init_variant_products_evaluations.php
+
+		-
+			message: "#^Method Pim\\\\Upgrade\\\\Schema\\\\Version_5_0_20200226102033_data_quality_insights_init_variant_products_evaluations\\:\\:getVariantProductIdToEvaluateByBatch\\(\\) is unused\\.$#"
+			count: 1
+			path: schema/Version_5_0_20200226102033_data_quality_insights_init_variant_products_evaluations.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_5_0_20200226102033_data_quality_insights_init_variant_products_evaluations.php
+
+		-
+			message: "#^Parameter \\#1 \\$uuid of class Akeneo\\\\Pim\\\\Automation\\\\DataQualityInsights\\\\Domain\\\\ValueObject\\\\ProductUuid constructor expects Ramsey\\\\Uuid\\\\UuidInterface, int given\\.$#"
+			count: 1
+			path: schema/Version_5_0_20200226102033_data_quality_insights_init_variant_products_evaluations.php
+
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 1
+			path: schema/Version_5_0_20200226102033_data_quality_insights_init_variant_products_evaluations.php
+
+		-
+			message: "#^Cannot instantiate class Akeneo\\\\Pim\\\\Automation\\\\DataQualityInsights\\\\Domain\\\\ValueObject\\\\ProductUuid via private constructor Akeneo\\\\Pim\\\\Automation\\\\DataQualityInsights\\\\Domain\\\\ValueObject\\\\ProductUuid\\:\\:__construct\\(\\)\\.$#"
+			count: 1
+			path: schema/Version_5_0_20200813135750_data_quality_insights_init_variant_products_evaluations.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_5_0_20200813135750_data_quality_insights_init_variant_products_evaluations.php
+
+		-
+			message: "#^Parameter \\#1 \\$uuid of class Akeneo\\\\Pim\\\\Automation\\\\DataQualityInsights\\\\Domain\\\\ValueObject\\\\ProductUuid constructor expects Ramsey\\\\Uuid\\\\UuidInterface, int given\\.$#"
+			count: 1
+			path: schema/Version_5_0_20200813135750_data_quality_insights_init_variant_products_evaluations.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20210106090000_dqi_alter_dictionary_table.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20210118091114_dqi_add_uniqueness_constraint_on_dictionary.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20210125085432_add_mass_delete_asset_job.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20210191103602_dqi_init_default_dictionary_words.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20210217085432_add_mass_edit_asset_job.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20210223165045_clean_asset_indexes_and_reindex_assets.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20210311100748_update_rule_execution_job_status.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20210402085432_add_mass_delete_records_job.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20210723085835_permission_to_view_clean_attribute_job_logs.php
+
+		-
+			message: "#^Call to method isSaaSVersion\\(\\) on an unknown class Akeneo\\\\Platform\\\\VersionProvider\\.$#"
+			count: 1
+			path: schema/Version_6_0_20210804115038_reindex_records.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20210804115038_reindex_records.php
+
+		-
+			message: "#^PHPDoc tag @var for variable \\$versionProvider contains unknown class Akeneo\\\\Platform\\\\VersionProvider\\.$#"
+			count: 1
+			path: schema/Version_6_0_20210804115038_reindex_records.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20210818141014_add_source_concatenation.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20210914161025_add_index_on_rule_definition_code.php
+
+		-
+			message: "#^Left side of && is always true\\.$#"
+			count: 1
+			path: schema/Version_6_0_20211026142400_add_asset_manager_web_api_acl.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20211026142400_add_asset_manager_web_api_acl.php
+
+		-
+			message: "#^Left side of && is always true\\.$#"
+			count: 1
+			path: schema/Version_6_0_20211026142500_add_ref_entity_web_api_acl.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20211026142500_add_ref_entity_web_api_acl.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20211108135619_create_clean_table_values_following_deleted_options_job.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20211213082340_update_rule_relation_resource_id_column_type.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20220121120000_permission_to_view_mass_edit_and_mass_delete_job_logs.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20220221151255_data_quality_insights_purge_attribute_quality.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20220222071200_onboarder_serenity_add_supplier_table.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20220518155257_drop_deprecated_table__pimee_data_quality_insights_dictionary_depr.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220221151255_data_quality_insights_purge_attribute_quality.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220317150000_onboarder_serenity_add_supplier_contributor_table.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220323110749_remove_multi_select_reference_data_asset_attributes.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220329115300_onboarder_serenity_add_date_columns_to_supplier_table.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220330152000_onboarder_serenity_add_created_at_column_to_contributor_table.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220330160000_dqi_modify_word_column_collation.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220421150300_onboarder_serenity_add_supplier_import_job.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220519124640_onboarder_serenity_add_contributor_account_table.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220603081946_add_columns_in_dqi_dictionary_table.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220630090000_permission_to_view_mass_edit_and_mass_delete_job_logs.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220630114305_freetrial_add_invited_user_table.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220630141948_update_rule_execution_job_status.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220704154900_supplier_portal_rename_tables.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220706111600_supplier_portal_add_supplier_import_job.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220708095751_supplier_portal_add_supplier_file_table.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220719160000_supplier_portal_fix_supplier_file_contributor_column.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220719160000_supplier_portal_fix_supplier_file_filename_and_path.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220720121428_update_published_quick_export_job_instance_parameter_path.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220729152738_update_shared_catalog_job_instance_parameter_path.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220801173900_refresh_versioning_permissions.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220823150400_add_supplier_portal_supplier_product_files_clean_job.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220829142500_rename_akeneo_supplier_portal_supplier_file_table.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220906092635_supplier_portal_add_supplier_portal_product_file_retailer_comments_table.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220906092636_supplier_portal_add_supplier_portal_product_file_supplier_comments_table.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220906105943_supplier_portal_add_supplier_portal_product_file_comments_read_by_retailer_table.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220906110740_supplier_portal_add_supplier_portal_product_file_comments_read_by_supplier_table.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220906111652_supplier_portal_add_supplier_portal_product_file_imported_by_job_execution_table.php
