@@ -298,7 +298,7 @@ akeneo_connectivity_connection | auditable | NO | tinyint(1) |
 akeneo_connectivity_connection | webhook_url | YES | varchar(255) |
 akeneo_connectivity_connection | webhook_secret | YES | varchar(255) |
 akeneo_connectivity_connection | webhook_enabled | NO | tinyint(1) |
-akeneo_connectivity_connection | webhook_uses_uuid | NO | tinyint(1) |
+akeneo_connectivity_connection | webhook_is_using_uuid | NO | tinyint(1) |
 akeneo_connectivity_connection | type | NO | varchar(30) |
 akeneo_connectivity_connection_audit_error | connection_code | NO | varchar(100) | PRI
 akeneo_connectivity_connection_audit_error | error_datetime | NO | datetime | PRI
