@@ -50,7 +50,10 @@ class UploadController
 
         return new JsonResponse([
             'originalFilename' => $uploadedFile->getClientOriginalName(),
-            'filePath' => $file->getKey()
+            'filePath' => $file->getKey(),
+            'size' => $file->getSize(),
+            'mimeType' => $file->getMimeType(),
+            'extension' => $file->getExtension(),
         ]);
     }
 }

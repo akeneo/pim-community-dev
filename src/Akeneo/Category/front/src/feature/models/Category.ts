@@ -39,10 +39,10 @@ export interface CategoryAttributeValueWrapper {
 
 type CategoryTextAttributeValueData = string;
 export interface CategoryImageAttributeValueData {
-  size: number;
+  size?: number;
   file_path: string;
-  mime_type: string;
-  extension: string;
+  mime_type?: string;
+  extension?: string;
   original_filename: string;
 }
 

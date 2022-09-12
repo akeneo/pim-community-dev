@@ -1,7 +1,15 @@
 import React, {useCallback, useState} from 'react';
 import styled from 'styled-components';
 import {Locale, LocaleSelector, useTranslate, useUploader} from '@akeneo-pim-community/shared';
-import {Field, FileInfo, MediaFileInput, SectionTitle, TextAreaInput, TextInput, Helper} from 'akeneo-design-system';
+import {
+  Field,
+  FileInfo,
+  MediaFileInput,
+  SectionTitle,
+  TextAreaInput,
+  TextInput,
+  Helper,
+} from 'akeneo-design-system';
 import {useTemplate} from '../hooks';
 import {
   Attribute,
@@ -10,7 +18,6 @@ import {
   CategoryImageAttributeValueData,
   EnrichCategory,
 } from '../models';
-import {attributeDefinitions} from '../models/TemplateMocking';
 import {usePreventClosing} from '../hooks/usePreventClosing';
 
 const locales: Locale[] = [
@@ -64,10 +71,10 @@ export const EditAttributesForm = ({attributeValues, onAttributeValueChange}: Pr
 
   const handleImageChange = useCallback(
     (attribute: Attribute) => (value: FileInfo | null) => {
-      // TODO handle value===null
-      if (!value || !value.size || !value.mimeType || !value.extension) {
+      if (value === null) {
         return;
       }
+
       const data: CategoryImageAttributeValueData = {
         size: value.size,
         file_path: value.filePath,
@@ -135,10 +142,12 @@ export const EditAttributesForm = ({attributeValues, onAttributeValueChange}: Pr
               </Field>
             );
           case 'image':
+            console.log(value);
+
             return (
               <Field key={attribute.uuid} label={attribute.labels[locale]}>
                 <MediaFileInput
-                  value={null}
+                  value={value !== null && typeof value === 'object' ? value : null}
                   onChange={handleImageChange(attribute)}
                   placeholder="Drag and drop to upload or click here"
                   uploadingLabel="Uploading..."
