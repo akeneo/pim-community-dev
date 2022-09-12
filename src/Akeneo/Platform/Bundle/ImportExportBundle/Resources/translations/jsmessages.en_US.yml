@@ -162,12 +162,18 @@ pim_import_export:
                     label: Type
                     local: Local
                     sftp: SFTP
+                    amazon_s3: Amazon S3
+                    azure_blob: Azure Blob
+                    google_cloud: Google Cloud
                     none: No storage configured
                 file_path.label: File path
                 host.label: Host
                 port.label: Port
                 username.label: Login
                 password.label: Password
+                project_id.label: Project ID
+                service_account.label: Service account
+                bucket.label: Bucket
             validation:
                 storage:
                     unavailable_type: This storage is not available, only {{ available_types }} are available.

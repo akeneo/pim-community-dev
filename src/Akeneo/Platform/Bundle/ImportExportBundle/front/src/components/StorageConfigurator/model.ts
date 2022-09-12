@@ -8,11 +8,13 @@ import {
   localStorageIsEnabled,
   AmazonS3Storage,
   AzureBlobStorage,
+  GoogleCloudStorage,
 } from '../model';
 import {LocalStorageConfigurator} from './LocalStorageConfigurator';
 import {SftpStorageConfigurator} from './SftpStorageConfigurator';
 import {AmazonS3StorageConfigurator} from './AmazonS3StorageConfigurator';
 import {AzureBlobStorageConfigurator} from './AzureBlobStorageConfigurator';
+import {GoogleCloudStorageConfigurator} from './GoogleCloudStorageConfigurator';
 
 type StorageConfiguratorProps = {
   storage: Storage;
@@ -40,6 +42,7 @@ const getEnabledStorageConfigurators = (featureFlags: FeatureFlags): StorageConf
   enabledStorageConfigurators['sftp'] = SftpStorageConfigurator;
   enabledStorageConfigurators['amazon_s3'] = AmazonS3StorageConfigurator;
   enabledStorageConfigurators['azure_blob'] = AzureBlobStorageConfigurator;
+  enabledStorageConfigurators['google_cloud'] = GoogleCloudStorageConfigurator;
 
   return enabledStorageConfigurators;
 };
@@ -87,6 +90,16 @@ const isAzureBlobStorage = (storage: Storage): storage is AzureBlobStorage => {
   );
 };
 
+const isGoogleCloudStorage = (storage: Storage): storage is GoogleCloudStorage => {
+  return (
+    'google_cloud' === storage.type &&
+    'file_path' in storage &&
+    'project_id' in storage &&
+    'service_account' in storage &&
+    'bucket' in storage
+  );
+};
+
 const isStorageFulfilled = (storage: Storage): boolean => {
   if (isLocalStorage(storage)) {
     return '' !== storage.file_path;
@@ -116,6 +129,12 @@ const isStorageFulfilled = (storage: Storage): boolean => {
     return '' !== storage.file_path && '' !== storage.connection_string && '' !== storage.container_name;
   }
 
+  if (isGoogleCloudStorage(storage)) {
+    return (
+      '' !== storage.file_path && '' !== storage.project_id && '' !== storage.service_account && '' !== storage.bucket
+    );
+  }
+
   return false;
 };
 
@@ -125,6 +144,7 @@ export {
   isSftpStorage,
   isAmazonS3Storage,
   isAzureBlobStorage,
+  isGoogleCloudStorage,
   isStorageFulfilled,
   getStorageConfigurator,
 };
