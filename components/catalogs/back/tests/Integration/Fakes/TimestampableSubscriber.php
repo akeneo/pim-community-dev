@@ -15,9 +15,17 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
  */
 final class TimestampableSubscriber implements EventSubscriber
 {
+    private Clock $clock;
+
     public function __construct(
-        private Clock $clock
+        ?Clock $clock = null,
     ) {
+        $this->clock = $clock ?? new Clock();
+    }
+
+    public function setClock(Clock $clock): void
+    {
+        $this->clock = $clock;
     }
 
     public function getSubscribedEvents()

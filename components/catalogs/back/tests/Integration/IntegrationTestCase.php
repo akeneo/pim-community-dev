@@ -48,14 +48,13 @@ abstract class IntegrationTestCase extends WebTestCase
         static::bootKernel(['environment' => 'test', 'debug' => false]);
 
         $this->clock = new Clock();
-        self::getContainer()->set(
-            'pim_catalog.event_subscriber.timestampable',
-            new TimestampableSubscriber($this->clock)
-        );
-        self::getContainer()->set(
-            'pim_versioning.event_subscriber.timestampable',
-            new TimestampableSubscriber($this->clock)
-        );
+
+        self::getContainer()
+            ->get('pim_catalog.event_subscriber.timestampable')
+            ->setClock($this->clock);
+        self::getContainer()
+            ->get('pim_versioning.event_subscriber.timestampable')
+            ->setClock($this->clock);
 
         self::getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
 
