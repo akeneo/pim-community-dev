@@ -32,3 +32,5 @@ akeneo_catalogs:
                 unknown: 'The channel "{{ channel_name }}" has been deactivated. Please check your channel settings or remove this filter.'
             currencies:
                 unknown: 'The currency "{{ currency_name }}" has been deactivated. Please check your currencies settings or remove this filter.'
+            locale:
+                unknown: 'The locale "{{ locale_name }}" has been deactivated. Please check your locale settings or remove this filter.'

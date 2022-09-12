@@ -19,6 +19,7 @@ use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\SystemCriterion\C
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\SystemCriterion\EnabledCriterion;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\SystemCriterion\FamilyCriterion;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductValueFilters\FilterContainsActivatedCurrency;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductValueFilters\FilterContainsActivatedLocale;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductValueFilters\FilterContainsValidChannel;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -113,6 +114,15 @@ final class CatalogUpdatePayloadValidator extends ConstraintValidator
                                     'constraints' => [
                                         new Assert\Type('string'),
                                         new FilterContainsValidChannel(),
+                                    ],
+                                ]),
+                            ]),
+                            'locales' => new Assert\Optional([
+                                new Assert\Type('array'),
+                                new Assert\All([
+                                    'constraints' => [
+                                        new Assert\Type('string'),
+                                        new FilterContainsActivatedLocale(),
                                     ],
                                 ]),
                             ]),

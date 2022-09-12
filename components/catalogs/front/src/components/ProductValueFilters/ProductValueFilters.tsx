@@ -6,6 +6,7 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import {getColor, getFontFamily, getFontSize, Helper} from 'akeneo-design-system';
 import {ProductValueFiltersErrors} from './models/ProductValueFiltersErrors';
 import {FilterCurrencies} from './components/FilterCurrencies';
+import {FilterLocale} from './components/FilterLocale';
 
 type Props = {
     productValueFilters: ProductValueFiltersValues;
@@ -44,6 +45,20 @@ export const ProductValueFilters: FC<Props> = ({productValueFilters, onChange, e
                 {!!errors.channels && (
                     <Helper inline level='error'>
                         <WarningMessage>{translate(errors.channels)}</WarningMessage>
+                    </Helper>
+                )}
+            </FilterContainer>
+
+            <FilterContainer>
+                <Label>{translate('akeneo_catalogs.product_value_filters.filters.locale.label')}</Label>
+                <FilterLocale
+                    productValueFilters={productValueFilters}
+                    onChange={onChange}
+                    isInvalid={!!errors.locales}
+                />
+                {!!errors.locales && (
+                    <Helper inline level='error'>
+                        <WarningMessage>{translate(errors.locales)}</WarningMessage>
                     </Helper>
                 )}
             </FilterContainer>
