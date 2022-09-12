@@ -43,8 +43,6 @@ services:
     Akeneo\Tool\Bundle\VersioningBundle\Job\PurgeVersioning:
         arguments:
             - '@pim_versioning.purger.version'
-            - '@pim_versioning.event_subscriber.purge_progress_bar_advancer'
-        public: false
 
     pim_versioning.job.versioning_purge:
         class: '%pim_connector.job.simple_job.class%'
@@ -53,6 +51,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
+                - '@Akeneo\Tool\Component\Connector\Step\CheckJobUniqueStep'
                 - '@pim_versioning.step.versioning_purge'
             - false
             - false
