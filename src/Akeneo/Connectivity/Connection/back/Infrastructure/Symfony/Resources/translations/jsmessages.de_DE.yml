@@ -54,6 +54,7 @@ akeneo_connectivity.connection:
         description: Dies ist nur eine Übersicht. Für weitere Details werfen Sie einen Blick auf den Akeneo App Store.
         link: Gehe zum Akeneo App Store
       search:
+        placeholder: Nach Name suchen
         total: '{0} keine Ergebnisse|{1} 1 Ergebnis|[2,Inf] {{ total }} Ergebnisse'
       card:
         developed_by: 'Entwickelt von {{ author }}'
@@ -179,6 +180,10 @@ akeneo_connectivity.connection:
               3: in den Einstellungen.
         catalogs:
           edit:
+            flash:
+              success: Katalogeinstellungen erfolgreich aktualisiert.
+              error: Der Katalog konnte nicht gespeichert werden. Bitte beheben Sie die angezeigten Fehler und speichern Sie erneut.
+              unknown_error: Beim Speichern des Katalogs ist ein Fehler aufgetreten.
             not_found: Katalog nicht gefunden
         flash:
           load_permissions_error.title: 'Berechtigungen auf {{ entity }} konnten nicht geladen werden.'
@@ -318,6 +323,8 @@ akeneo_connectivity.connection:
       type:
         required: Verbindungstyp ist erforderlich.
         too_long: Verbindungstyp ist zu lang. Er sollte maximal 30 Zeichen lang sein.
+      user_group:
+        must_exist: Die Benutzergruppe wurde nicht gefunden. Stellen Sie sicher, dass die angegebene Benutzergruppe existiert.
   flow_type:
     data_source: Datenquelle | Datenquellen
     data_destination: Datenziel | Datenziele

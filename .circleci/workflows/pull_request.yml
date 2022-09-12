@@ -72,9 +72,10 @@ workflows:
                       - test_back_static_and_acceptance
                       - test_front_static_acceptance_and_integration
                       - test_back_phpunit
-            - test_catalogs_ee:
+            - test_back_catalogs_ee:
                   requires:
                       - build_dev
+                  notify: true
                   context:
                       - octopus-slack
             - ready_to_build_only_ce?:
@@ -125,3 +126,4 @@ workflows:
                       - test_onboarder_bundle
                       - test_database
                       - test_back_behat_legacy_ce
+                      - test_back_catalogs_ee

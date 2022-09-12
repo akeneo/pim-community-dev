@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryGetProductUui
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 class InMemoryGetProductUuidsSpec extends ObjectBehavior
 {
@@ -18,9 +19,16 @@ class InMemoryGetProductUuidsSpec extends ObjectBehavior
     {
         $fooProduct = new Product(self::FOO_UUID);
         $productRepository->findOneByIdentifier('foo')->willReturn($fooProduct);
+        $productRepository->find(Argument::that(
+            fn ($arg): bool => $arg instanceof UuidInterface && self::FOO_UUID === $arg->toString()
+        ))->willReturn($fooProduct);
         $bazProduct = new Product(self::BAZ_UUID);
         $productRepository->findOneByIdentifier('baz')->willReturn($bazProduct);
+        $productRepository->find(Argument::that(
+            fn ($arg): bool => $arg instanceof UuidInterface && self::BAZ_UUID === $arg->toString()
+        ))->willReturn($bazProduct);
         $productRepository->findOneByIdentifier(Argument::type('string'))->willReturn(null);
+        $productRepository->find(Argument::any())->willReturn(null);
 
         $this->beConstructedWith($productRepository);
     }
@@ -45,6 +53,29 @@ class InMemoryGetProductUuidsSpec extends ObjectBehavior
         $this->fromIdentifiers(['foo', 'bar', 'baz'])->shouldBeLike([
             'foo' => Uuid::fromString(self::FOO_UUID),
             'baz' => Uuid::fromString(self::BAZ_UUID),
+        ]);
+    }
+
+    function it_retrieves_an_existing_uuid()
+    {
+        $this->fromUuid(Uuid::fromString(self::FOO_UUID))->shouldBeLike(Uuid::fromString(self::FOO_UUID));
+    }
+
+    function it_returns_null_if_the_uuid_does_not_exist()
+    {
+        $this->fromUuid(Uuid::uuid4())->shouldBe(null);
+    }
+
+    function it_retrieves_existing_product_uuids()
+    {
+        $this->fromUuids([
+            Uuid::uuid4(),
+            Uuid::fromString(self::BAZ_UUID),
+            Uuid::uuid4(),
+            Uuid::fromString(self::FOO_UUID),
+        ])->shouldBeLike([
+            self::BAZ_UUID => Uuid::fromString(self::BAZ_UUID),
+            self::FOO_UUID => Uuid::fromString(self::FOO_UUID),
         ]);
     }
 }

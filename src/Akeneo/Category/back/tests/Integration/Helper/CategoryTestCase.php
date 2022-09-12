@@ -38,7 +38,7 @@ class CategoryTestCase extends TestCase
         $categoryModelToCreate = new Category(
             id: $categoryId,
             code: new Code($code),
-            labelCollection: LabelCollection::fromArray($labels),
+            labels: LabelCollection::fromArray($labels),
             parentId: $parentId,
         );
 
@@ -55,12 +55,12 @@ class CategoryTestCase extends TestCase
         $categoryModelWithId = new Category(
             new CategoryId($categoryBase->getId()->getValue()),
             new Code((string) $categoryBase->getCode()),
-            $categoryModelToCreate->getLabelCollection(),
+            $categoryModelToCreate->getLabels(),
             $parentId,
         );
         $this->get(UpsertCategoryTranslations::class)->execute($categoryModelWithId);
 
-        $categoryTranslations = $this->get(GetCategoryInterface::class)->byCode((string) $categoryModelToCreate->getCode())->getLabelCollection()->getLabels();
+        $categoryTranslations = $this->get(GetCategoryInterface::class)->byCode((string) $categoryModelToCreate->getCode())->getLabels()->getTranslations();
 
         $createdParentId =
             $categoryBase->getParentId()?->getValue() > 0

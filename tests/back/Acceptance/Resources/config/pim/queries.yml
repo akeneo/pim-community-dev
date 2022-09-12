@@ -27,8 +27,8 @@ services:
         class: Akeneo\Test\Acceptance\Attribute\InMemoryIsAttributeEditable
 
     ### Catalog
-    akeneo.pim.enrichment.product.query.find_non_existing_product_identifiers_query:
-        class: 'Akeneo\Test\Acceptance\Product\InMemoryFindNonExistingProductIdentifiersQuery'
+    akeneo.pim.enrichment.product.query.find_non_existing_products_query:
+        class: 'Akeneo\Test\Acceptance\Product\InMemoryFindNonExistingProductsQuery'
         arguments:
             - '@pim_catalog.repository.product'
 

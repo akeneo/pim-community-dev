@@ -30,7 +30,7 @@ class MailResetNotifier
         try {
             $txtBody = $this->twig->render('@PimUser/Mail/reset.txt.twig', $parameters);
             $htmlBody = $this->twig->render('@PimUser/Mail/reset.html.twig', $parameters);
-            $this->mailer->notifyByEmail($user->getEmail(), 'Reset password', $txtBody, $htmlBody);
+            $this->mailer->notify([$user->getEmail()], 'Reset password', $txtBody, $htmlBody);
         } catch (Throwable $exception) {
             $this->logger->error(
                 MailResetNotifier::class . ' - Unable to send email : ' . $exception->getMessage(),

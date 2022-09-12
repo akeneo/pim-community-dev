@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Category\Application\Applier;
 
+use Akeneo\Category\Api\Command\UserIntents\SetText;
 use Akeneo\Category\Api\Command\UserIntents\SetTextArea;
 use Akeneo\Category\Application\Applier\SetTextAreaApplier;
 use Akeneo\Category\Domain\Model\Category;
@@ -31,7 +32,7 @@ class SetTextAreaApplierSpec extends ObjectBehavior
             . ValueCollection::SEPARATOR . 'uuid' .
             ValueCollection::SEPARATOR . 'locale_code';
 
-        $valueCollection = ValueCollection::fromArray(
+        $attributes = ValueCollection::fromArray(
             [
                 $valueKey => [
                     'data' => 'value',
@@ -44,8 +45,8 @@ class SetTextAreaApplierSpec extends ObjectBehavior
         $category = new Category(
             id: new CategoryId(1),
             code: new Code('code'),
-            labelCollection: LabelCollection::fromArray([]),
-            valueCollection: $valueCollection
+            labels: LabelCollection::fromArray([]),
+            attributes: $attributes
         );
 
         $userIntent = new SetTextArea(
@@ -55,7 +56,7 @@ class SetTextAreaApplierSpec extends ObjectBehavior
             'updated_value'
         );
 
-        $expectedValueCollection = ValueCollection::fromArray(
+        $expectedAttributes = ValueCollection::fromArray(
             [
                 $valueKey => [
                     'data' => 'updated_value',
@@ -68,15 +69,28 @@ class SetTextAreaApplierSpec extends ObjectBehavior
         $expectedCategory = new Category(
             id: new CategoryId(1),
             code: new Code('code'),
-            labelCollection: LabelCollection::fromArray([]),
-            valueCollection: $expectedValueCollection
+            labels: LabelCollection::fromArray([]),
+            attributes: $expectedAttributes
         );
 
         $this->apply($userIntent, $category);
         Assert::assertEquals(
-            $expectedCategory->getValueCollection(),
-            $category->getValueCollection()
+            $expectedCategory->getAttributes(),
+            $category->getAttributes()
         );
+    }
+
+    function it_throws_exception_on_wrong_user_intent_applied(
+        SetText $userIntent,
+        Category $category
+    ): void
+    {
+        $this
+            ->shouldThrow(\InvalidArgumentException::class)
+            ->duringApply(
+                $userIntent,
+                $category
+            );
     }
 
 }

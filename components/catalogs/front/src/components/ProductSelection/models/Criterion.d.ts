@@ -10,6 +10,7 @@ import {AttributeSimpleSelectCriterionState} from '../criteria/AttributeSimpleSe
 import {AttributeNumberCriterionState} from '../criteria/AttributeNumberCriterion';
 import {AttributeMetricCriterionState} from '../criteria/AttributeMetricCriterion';
 import {AttributeBooleanCriterionState} from '../criteria/AttributeBooleanCriterion';
+import {AttributeIdentifierCriterionState} from '../criteria/AttributeIdentifierCriterion';
 
 export type CriterionModule<State> = {
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
@@ -39,6 +40,7 @@ export type AnyCriterionState =
     | FamilyCriterionState
     | CompletenessCriterionState
     | CategoryCriterionState
+    | AttributeIdentifierCriterionState
     | AttributeTextCriterionState
     | AttributeSimpleSelectCriterionState
     | AttributeNumberCriterionState
@@ -46,6 +48,7 @@ export type AnyCriterionState =
     | AttributeBooleanCriterionState;
 
 export type AnyAttributeCriterion =
+    | Criterion<AttributeIdentifierCriterionState>
     | Criterion<AttributeTextCriterionState>
     | Criterion<AttributeSimpleSelectCriterionState>
     | Criterion<AttributeNumberCriterionState>

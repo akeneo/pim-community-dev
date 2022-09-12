@@ -22,7 +22,7 @@ use Webmozart\Assert\Assert;
 
 /**
  * A user, updating a product, cannot remove the own permission. This validator ensures that at least one
- * category is owner on the product (or the product becomes uncategorized).
+ * owned category is left (or that the product becomes uncategorized).
  *
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -53,35 +53,50 @@ final class ShouldStayOwnerOfTheProductValidator extends ConstraintValidator
         if ($command->productIdentifierOrUuid() instanceof ProductIdentifier) {
             $uuid = $this->getProductUuids->fromIdentifier($command->productIdentifierOrUuid()->identifier());
         } elseif ($command->productIdentifierOrUuid() instanceof ProductUuid) {
-            $uuid = $command->productIdentifierOrUuid()->uuid();
+            $uuid = $this->getProductUuids->fromUuid($command->productIdentifierOrUuid()->uuid());
         }
 
         if (null === $uuid) {
-            // TODO CPM-716: do an early return when in creation mode
+            // product creation mode
+            return;
+        }
+
+        $formerProductCategoryCodes = ($this->getCategoryCodes->fromProductUuids([$uuid])[$uuid->toString()] ?? []);
+        $formerOwnedCategoryCodes = $formerProductCategoryCodes
+            ? ($this->getOwnedCategories->forUserId($formerProductCategoryCodes, $command->userId()))
+            : [];
+        if ([] !== $formerProductCategoryCodes && [] === $formerOwnedCategoryCodes) {
+            // the user does not own the product, another validator should raise a violation
             return;
         }
 
         if ($categoryUserIntent instanceof SetCategories) {
-            $nonViewableCategoryCodes = $this->getNonViewableCategoryCodes->fromProductUuids([
-                $uuid
-            ], $command->userId())[$uuid->toString()] ?? [];
-            $newCategoryCodes = \array_merge($categoryUserIntent->categoryCodes(), $nonViewableCategoryCodes);
+            $newCategoryCodes = $categoryUserIntent->categoryCodes();
         } elseif ($categoryUserIntent instanceof RemoveCategories) {
-            $productCategoryCodes = $this->getCategoryCodes->fromProductUuids([$uuid])[$uuid->toString()] ?? [];
-            $newCategoryCodes = \array_values(\array_diff($productCategoryCodes, $categoryUserIntent->categoryCodes()));
+            $newCategoryCodes = \array_values(\array_diff($formerProductCategoryCodes, $categoryUserIntent->categoryCodes()));
         } else {
             throw new \LogicException('Not implemented');
         }
 
-        if ([] === $newCategoryCodes) {
-            // A product without category is always granted (from a category permission point of view).
+        if (\count(\array_intersect($formerOwnedCategoryCodes, $newCategoryCodes)) > 0) {
+            // there's still an owned category
             return;
         }
 
-        if ([] === $this->getOwnedCategories->forUserId($newCategoryCodes, $command->userId())) {
-            $this->context->buildViolation($constraint->message)
-                ->setCode((string) ViolationCode::PERMISSION)
-                ->addViolation();
+        if ([] === $newCategoryCodes &&
+            [] === ($this->getNonViewableCategoryCodes->fromProductUuids([$uuid], $command->userId())[$uuid->toString()] ?? [])
+        ) {
+            // the product is unclassified
+            return;
         }
+
+        if ([] !== $newCategoryCodes && \count($this->getOwnedCategories->forUserId($newCategoryCodes, $command->userId())) > 0) {
+            // the user removed all previously owned categories but added a new one they also own
+            return;
+        }
+
+        $this->context->buildViolation($constraint->message)
+            ->setCode((string) ViolationCode::PERMISSION)
+            ->addViolation();
     }
 }

@@ -152,6 +152,9 @@ $rules = [
             'Akeneo\Platform\Component\EventQueue\BulkEvent',
             'Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface',
 
+            'Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface',
+            'Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface',
+
             'Psr\Log\LoggerInterface',
             'Psr\Http\Message\ResponseInterface',
 
@@ -190,7 +193,12 @@ $rules = [
 
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
 
+            'Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface',
+            'Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface',
+
             'Akeneo\UserManagement\Component\Model\RoleInterface',
+            'Akeneo\UserManagement\Component\Model\UserInterface',
+            'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
 
             'Symfony\Component\EventDispatcher\EventDispatcherInterface',
         ]

@@ -80,6 +80,7 @@ const tests: {state: CatalogFormValues; action: CatalogFormAction; result: Catal
             value: {
                 channels: ['print', 'ecommerce'],
                 locales: ['en_US', 'fr_FR'],
+                currencies: ['USD', 'EUR'],
             },
         },
         result: {
@@ -88,6 +89,7 @@ const tests: {state: CatalogFormValues; action: CatalogFormAction; result: Catal
             product_value_filters: {
                 channels: ['print', 'ecommerce'],
                 locales: ['en_US', 'fr_FR'],
+                currencies: ['USD', 'EUR'],
             },
         },
     },
