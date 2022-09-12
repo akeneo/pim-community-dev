@@ -8,7 +8,6 @@ use Akeneo\Connectivity\Connection\Application\Marketplace\AppUrlGenerator;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\IsConnectionsNumberLimitReachedQueryInterface;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,7 +26,6 @@ final class GetAppActivateUrlAction
 {
     public function __construct(
         private GetAppQueryInterface $getAppQuery,
-        private ClientProviderInterface $clientProvider,
         private AppUrlGenerator $appUrlGenerator,
         private SecurityFacade $security,
         private FeatureFlag $marketplaceActivateFeatureFlag,
@@ -57,8 +55,6 @@ final class GetAppActivateUrlAction
         $this->denyAccessUnlessGrantedToManage($app);
 
         $app = $app->withPimUrlSource($this->appUrlGenerator->getAppQueryParameters());
-
-        $this->clientProvider->findOrCreateClient($app);
 
         return new JsonResponse([
             'url' => $app->getActivateUrl(),
