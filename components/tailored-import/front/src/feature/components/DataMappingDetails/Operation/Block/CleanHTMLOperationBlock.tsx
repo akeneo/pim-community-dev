@@ -12,10 +12,14 @@ const SpacedCheckbox = styled(Checkbox)`
 
 const CLEAN_HTML_OPERATION_TYPE = 'clean_html';
 
+const availableHtmlModes = ['remove', 'decode'];
+
+type HtmlMode = typeof availableHtmlModes;
+
 type CleanHTMLOperation = {
   uuid: string;
   type: typeof CLEAN_HTML_OPERATION_TYPE;
-  modes: string[];
+  modes: HtmlMode;
 };
 
 const getDefaultCleanHTMLOperation = (): CleanHTMLOperation => ({
@@ -23,8 +27,6 @@ const getDefaultCleanHTMLOperation = (): CleanHTMLOperation => ({
   type: CLEAN_HTML_OPERATION_TYPE,
   modes: ['remove', 'decode'],
 });
-
-const availableModes = ['remove', 'decode'];
 
 const isCleanHTMLOperation = (operation: Operation): operation is CleanHTMLOperation =>
   operation.type === CLEAN_HTML_OPERATION_TYPE;
@@ -96,7 +98,7 @@ const CleanHTMLOperationBlock = ({
           </>
         }
       >
-        {availableModes.map((mode: string) => (
+        {availableHtmlModes.map((mode: string) => (
           <SpacedCheckbox
             key={mode}
             checked={operation.modes.includes(mode)}
