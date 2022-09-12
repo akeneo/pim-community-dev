@@ -44,7 +44,7 @@ final class CleanHTMLOperationApplier implements OperationApplierInterface
                         str_replace('&nbsp;', ' ', $value->getValue()),
                     ),
                 ),
-                default => throw new \RuntimeException('Unsupported clean HTML mode'),
+                default => throw new \RuntimeException(sprintf('Unsupported clean HTML mode "%s"', $mode)),
             };
         }
 
