@@ -19,3 +19,4 @@ Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CommentProductFil
       - Length:
           max: 255
           maxMessage: supplier_portal.supplier.product_file_dropping.validation.comment.max_length_content
+      - Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Validation\CountComments: ~
