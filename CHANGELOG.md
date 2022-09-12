@@ -71,6 +71,7 @@
 - PIM-10592: Fix DQI score showing "In Progress" - data_quality_insights_evaluations returns an error
 - PIM-10619: Avoiding checks on expiration dates of certificates when disabling SSO
 - PIM-10621: Fix API returning an empty list instead of an empty object for published products
+- PIM-10613: Fix no purge done on the DQI when deleting option for multi-select and simple-select attributes
 
 ## Improvements
 

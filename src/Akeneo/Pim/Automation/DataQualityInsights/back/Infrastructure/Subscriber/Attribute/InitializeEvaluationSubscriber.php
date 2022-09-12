@@ -20,6 +20,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\AttributeWordIgnored
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\AttributeOptionSpellcheckRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeOptionCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeSpellcheckRepository;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
@@ -33,6 +34,7 @@ class InitializeEvaluationSubscriber implements EventSubscriberInterface
         private EvaluateUpdatedAttributes                    $evaluateUpdatedAttributes,
         private EvaluateUpdatedAttributeOptions              $evaluateUpdatedAttributeOptions,
         private FeatureFlag                                  $dataQualityInsightsFeature,
+        private AttributeSpellcheckRepository                $attributeSpellcheckRepository,
         private AttributeOptionSpellcheckRepositoryInterface $attributeOptionSpellcheckRepository
     ) {
     }
@@ -86,7 +88,10 @@ class InitializeEvaluationSubscriber implements EventSubscriberInterface
     public function onPostRemove(GenericEvent $event)
     {
         $subject = $event->getSubject();
-        if (!$subject instanceof AttributeOptionInterface) {
+        $isAboutAttribute = $subject instanceof AttributeInterface;
+        $isAboutAttributeOption = $subject instanceof AttributeOptionInterface;
+
+        if (!($isAboutAttribute || $isAboutAttributeOption)) {
             return;
         }
 
@@ -98,10 +103,19 @@ class InitializeEvaluationSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($subject instanceof AttributeOptionInterface) {
-            $this->handleAttributeOptionPostRemove($subject);
-            return;
+        $attributeOptionCode = null;
+        if ($isAboutAttributeOption) {
+            $attributeCode = $subject->getAttribute()->getCode();
+            $attributeOptionCode = $subject->getCode();
+        } else {
+            // by first early return test : $subject is a AttributeInterface
+            // an attribute has been removed, all spellcheck related to its options must be removed
+            $attributeCode = $subject->getCode();
+
+            $this->attributeSpellcheckRepository->delete($attributeCode);
         }
+
+        $this->handleAttributeOptionPostRemove($attributeCode, $attributeOptionCode);
     }
 
     private function handleAttributePostSave(AttributeInterface $attribute): void
@@ -118,8 +132,8 @@ class InitializeEvaluationSubscriber implements EventSubscriberInterface
         $this->evaluateUpdatedAttributeOptions->evaluate($attributeOptionCode);
     }
 
-    private function handleAttributeOptionPostRemove(AttributeOptionInterface $attributeOption): void
+    private function handleAttributeOptionPostRemove(string $attributeCode, string $attributeOptionCode = null): void
     {
-        $this->attributeOptionSpellcheckRepository->deleteUnknownAttributeOption($attributeOption);
+        $this->attributeOptionSpellcheckRepository->deleteUnknownAttributeOption($attributeCode, $attributeOptionCode);
     }
 }

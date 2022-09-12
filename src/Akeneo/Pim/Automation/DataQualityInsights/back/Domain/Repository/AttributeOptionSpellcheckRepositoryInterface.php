@@ -22,5 +22,5 @@ interface AttributeOptionSpellcheckRepositoryInterface
 
     public function deleteUnknownAttributeOptions(): void;
 
-    public function deleteUnknownAttributeOption(AttributeOptionInterface $attributeOption): void;
+    public function deleteUnknownAttributeOption(string $attributeCode, string $attributeOptionCode = null): void;
 }

@@ -67,21 +67,35 @@ SQL;
         $this->dbConnection->executeQuery($query);
     }
 
-    public function deleteUnknownAttributeOption(AttributeOptionInterface $attributeOption): void
+    /**
+     * Manages to clean DQI spellcheck table rows related to some attribute option(s)
+     * @param string $attributeCode the code of the attribute whose option spellcheck rows are to be deleted
+     * @param string|null $attributeOptionCode the code of the option to delete, if null then all rows will be deleted
+     * @throws \Doctrine\DBAL\Exception
+     */
+    public function deleteUnknownAttributeOption(string $attributeCode, ?string $attributeOptionCode = null): void
     {
-        $query = <<<SQL
+        $queryParts = [
+            <<<SQL
 DELETE spellcheck
 FROM pimee_dqi_attribute_option_spellcheck AS spellcheck
 LEFT JOIN pim_catalog_attribute_option AS attribute_option ON attribute_option.code = spellcheck.attribute_option_code
 LEFT JOIN pim_catalog_attribute AS attribute ON attribute.id = attribute_option.attribute_id
 WHERE spellcheck.attribute_code = :attributeCode
-AND spellcheck.attribute_option_code = :attributeOptionCode
-AND attribute_option.id IS NULL OR attribute.id IS NULL
-SQL;
-        $this->dbConnection->executeQuery($query, [
-            'attributeCode' => $attributeOption->getAttribute()->getCode(),
-            'attributeOptionCode' => $attributeOption->getCode()
-        ]);
+SQL
+        ];
+        $queryParameters = ['attributeCode' => $attributeCode];
+
+        if ($attributeOptionCode != null) {
+            $queryParts[] = 'AND spellcheck.attribute_option_code = :attributeOptionCode';
+            $queryParameters['attributeOptionCode'] = $attributeOptionCode;
+        }
+
+        $queryParts[] = 'AND attribute_option.id IS NULL OR attribute.id IS NULL';
+
+        $query = join("\n", $queryParts);
+
+        $this->dbConnection->executeQuery($query, $queryParameters);
     }
 
     private function formatSpellcheckResult(SpellcheckResultByLocaleCollection $result): string

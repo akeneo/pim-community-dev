@@ -10,6 +10,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\AttributeWordIgnored
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeOptionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeOptionSpellcheckRepository;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeSpellcheckRepository;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
@@ -25,6 +26,7 @@ final class InitializeEvaluationSubscriberSpec extends ObjectBehavior
         EvaluateUpdatedAttributes           $evaluateUpdatedAttributes,
         EvaluateUpdatedAttributeOptions     $evaluateUpdatedAttributeOptions,
         FeatureFlag                         $dataQualityInsightsFeature,
+        AttributeSpellcheckRepository       $attributeSpellcheckRepository,
         AttributeOptionSpellcheckRepository $attributeOptionSpellcheckRepository,
     )
     {
@@ -32,6 +34,7 @@ final class InitializeEvaluationSubscriberSpec extends ObjectBehavior
             $evaluateUpdatedAttributes,
             $evaluateUpdatedAttributeOptions,
             $dataQualityInsightsFeature,
+            $attributeSpellcheckRepository,
             $attributeOptionSpellcheckRepository
         );
     }
@@ -179,7 +182,7 @@ final class InitializeEvaluationSubscriberSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('attr_code');
         $attributeOption->getAttribute()->willReturn($attribute);
         $attributeOption->getCode()->willReturn('option_code');
-        $attributeOptionSpellcheckRepository->deleteUnknownAttributeOption($attributeOption)->shouldBeCalled();
+        $attributeOptionSpellcheckRepository->deleteUnknownAttributeOption('attr_code', 'option_code')->shouldBeCalled();
 
         $this->onPostRemove(new GenericEvent($attributeOption->getWrappedObject(), ['unitary' => true]));
     }
