@@ -40,9 +40,7 @@ final class CleanHTMLOperationApplier implements OperationApplierInterface
             $value = match ($mode) {
                 CleanHTMLOperation::MODE_REMOVE_HTML_TAGS => new StringValue(strip_tags($value->getValue())),
                 CleanHTMLOperation::MODE_DECODE_HTML_CHARACTERS => new StringValue(
-                    htmlspecialchars_decode(
-                        str_replace('&nbsp;', ' ', $value->getValue()),
-                    ),
+                    html_entity_decode(htmlspecialchars_decode($value->getValue())),
                 ),
                 default => throw new \RuntimeException(sprintf('Unsupported clean HTML mode "%s"', $mode)),
             };
