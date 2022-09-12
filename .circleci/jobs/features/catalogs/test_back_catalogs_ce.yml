@@ -32,6 +32,6 @@ jobs:
                                 command: make migration-lint-back
                         -   run:
                                 name: Migrations tests
-                                command: make migration-back
+                                command: CI=false make migration-back
             -   store_test_results:
                     path: var/tests/phpunit
