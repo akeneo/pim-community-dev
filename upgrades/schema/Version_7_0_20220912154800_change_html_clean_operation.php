@@ -63,7 +63,7 @@ final class Version_7_0_20220912154800_change_html_clean_operation extends Abstr
         SQL;
 
         foreach ($jobs as $job) {
-            $this->connection->executeQuery($sql, $job)->execute();
+            $this->addSql($sql, $job);
         }
     }
 }
