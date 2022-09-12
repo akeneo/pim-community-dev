@@ -23,27 +23,26 @@ final class DatabaseGetProductFileWithComments implements GetProductFileWithComm
                 uploaded_by_contributor,
                 uploaded_by_supplier,
                 uploaded_at,
-                IF(rc.content IS NOT NULL, JSON_ARRAYAGG(
-                    JSON_OBJECT(
+                JSON_ARRAYAGG(
+                    CASE WHEN rc.content IS NOT NULL THEN JSON_OBJECT(
                         'content', rc.content,
                         'author_email', rc.author_email,
-                        'created_at', DATE_FORMAT(rc.created_at, '%Y-%m-%d %H:%i:%s')
-                    )
-                ), null) AS retailer_comments,
-                IF(sc.content IS NOT NULL, JSON_ARRAYAGG(
-                    JSON_OBJECT(
+                        'created_at', rc.created_at
+                    ) END
+                ) AS retailer_comments,
+                JSON_ARRAYAGG(
+                    CASE WHEN sc.content IS NOT NULL THEN JSON_OBJECT(
                         'content', sc.content,
                         'author_email', sc.author_email,
-                        'created_at', DATE_FORMAT(sc.created_at, '%Y-%m-%d %H:%i:%s')
-                    )
-                ), null) AS supplier_comments
+                        'created_at', sc.created_at
+                    ) END
+                ) AS supplier_comments
             FROM akeneo_supplier_portal_supplier_product_file
                 LEFT JOIN akeneo_supplier_portal_product_file_retailer_comments rc
                     ON identifier = rc.product_file_identifier
                 LEFT JOIN akeneo_supplier_portal_product_file_supplier_comments sc
                     ON identifier = sc.product_file_identifier
-            WHERE identifier = :productFileIdentifier
-            GROUP BY rc.content, sc.content;
+            WHERE identifier = :productFileIdentifier;
         SQL;
 
         $productFileWithComments = $this->connection->executeQuery(
@@ -51,18 +50,9 @@ final class DatabaseGetProductFileWithComments implements GetProductFileWithComm
             ['productFileIdentifier' => $productFileIdentifier],
         )->fetchAssociative();
 
-        if (false === $productFileWithComments) {
+        if (null === $productFileWithComments['identifier']) {
             return null;
         }
-
-        $comments = [
-            'retailer' => $productFileWithComments['retailer_comments']
-                ? \json_decode($productFileWithComments['retailer_comments'], true)
-                : [],
-            'supplier' => $productFileWithComments['supplier_comments']
-                ? \json_decode($productFileWithComments['supplier_comments'], true)
-                : [],
-        ];
 
         return new ProductFile(
             $productFileWithComments['identifier'],
@@ -70,7 +60,12 @@ final class DatabaseGetProductFileWithComments implements GetProductFileWithComm
             $productFileWithComments['uploaded_by_contributor'],
             $productFileWithComments['uploaded_by_supplier'],
             $productFileWithComments['uploaded_at'],
-            $comments,
+            $productFileWithComments['retailer_comments']
+                ? array_filter(\json_decode($productFileWithComments['retailer_comments'], true))
+                : [],
+            $productFileWithComments['supplier_comments']
+                ? array_filter(\json_decode($productFileWithComments['supplier_comments'], true))
+                : [],
         );
     }
 }

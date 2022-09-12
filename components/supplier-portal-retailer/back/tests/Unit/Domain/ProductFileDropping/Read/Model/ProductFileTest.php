@@ -27,7 +27,8 @@ final class ProductFileTest extends TestCase
                 'uploadedByContributor' => 'contributor@example.com',
                 'uploadedBySupplier' => '44ce8069-8da1-4986-872f-311737f46f02',
                 'uploadedAt' => '2022-07-12 14:55:46',
-                'comments' => [],
+                'retailerComments' => [],
+                'supplierComments' => [],
             ],
             $sut->toArray(),
         );
@@ -43,19 +44,17 @@ final class ProductFileTest extends TestCase
             '44ce8069-8da1-4986-872f-311737f46f02',
             '2022-07-12 14:55:46',
             [
-                'retailer' => [
-                    [
-                        'author_email' => 'julia@roberts.com',
-                        'content' => 'Your product file is awesome!',
-                        'created_at' => '2022-09-07 07:59:38',
-                    ],
+                [
+                    'author_email' => 'julia@roberts.com',
+                    'content' => 'Your product file is awesome!',
+                    'created_at' => '2022-09-07 07:59:38',
                 ],
-                'supplier' => [
-                    [
-                        'author_email' => 'jimmy@punchline.com',
-                        'content' => 'Here are the products I\'ve got for you.',
-                        'created_at' => '2022-09-07 08:59:38',
-                    ],
+            ],
+            [
+                [
+                    'author_email' => 'jimmy@punchline.com',
+                    'content' => 'Here are the products I\'ve got for you.',
+                    'created_at' => '2022-09-07 08:59:38',
                 ],
             ],
         );
@@ -67,20 +66,18 @@ final class ProductFileTest extends TestCase
                 'uploadedByContributor' => 'contributor@example.com',
                 'uploadedBySupplier' => '44ce8069-8da1-4986-872f-311737f46f02',
                 'uploadedAt' => '2022-07-12 14:55:46',
-                'comments' => [
-                    'retailer' => [
-                        [
-                            'author_email' => 'julia@roberts.com',
-                            'content' => 'Your product file is awesome!',
-                            'created_at' => '2022-09-07 07:59:38',
-                        ],
+                'retailerComments' => [
+                    [
+                        'author_email' => 'julia@roberts.com',
+                        'content' => 'Your product file is awesome!',
+                        'created_at' => '2022-09-07 07:59:38',
                     ],
-                    'supplier' => [
-                        [
-                            'author_email' => 'jimmy@punchline.com',
-                            'content' => 'Here are the products I\'ve got for you.',
-                            'created_at' => '2022-09-07 08:59:38',
-                        ],
+                ],
+                'supplierComments' => [
+                    [
+                        'author_email' => 'jimmy@punchline.com',
+                        'content' => 'Here are the products I\'ve got for you.',
+                        'created_at' => '2022-09-07 08:59:38',
                     ],
                 ],
             ],

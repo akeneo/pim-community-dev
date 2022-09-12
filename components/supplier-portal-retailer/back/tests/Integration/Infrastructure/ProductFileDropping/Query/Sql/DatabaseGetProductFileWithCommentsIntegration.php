@@ -30,10 +30,8 @@ final class DatabaseGetProductFileWithCommentsIntegration extends SqlIntegration
             'uploadedByContributor' => 'jimmy@punchline.com',
             'uploadedBySupplier' => 'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7',
             'uploadedAt' => '2022-09-07 08:54:38',
-            'comments' => [
-                'retailer' => [],
-                'supplier' => [],
-            ],
+            'retailerComments' => [],
+            'supplierComments' => [],
         ], $productFile->toArray());
     }
 
@@ -62,22 +60,19 @@ final class DatabaseGetProductFileWithCommentsIntegration extends SqlIntegration
         static::assertSame('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7', $productFile->uploadedBySupplier);
         static::assertSame('2022-09-07 08:54:38', $productFile->uploadedAt);
         static::assertEquals([
-            'retailer' => [
-                [
-                    'content' => 'Your product file is awesome!',
-                    'author_email' => 'julia@roberts.com',
-                    'created_at' => '2022-09-07 00:00:00',
-                ],
+            [
+                'content' => 'Your product file is awesome!',
+                'author_email' => 'julia@roberts.com',
+                'created_at' => '2022-09-07 00:00:00.000000',
             ],
-            'supplier' => [
-                [
-                    'content' => 'Here are the products I\'ve got for you.',
-                    'author_email' => 'jimmy@punchline.com',
-                    'created_at' => '2022-09-07 00:00:01',
-                ],
+        ], $productFile->retailerComments);
+        static::assertEquals([
+            [
+                'content' => 'Here are the products I\'ve got for you.',
+                'author_email' => 'jimmy@punchline.com',
+                'created_at' => '2022-09-07 00:00:01.000000',
             ],
-
-        ], $productFile->comments);
+        ], $productFile->supplierComments);
     }
 
     private function createSupplier(): void
