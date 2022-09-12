@@ -8,3 +8,4 @@ export * from './SimpleSelectReplacementOperationBlock';
 export * from './FamilyReplacementOperationBlock';
 export * from './SplitOperationBlock';
 export * from './ChangeCaseOperationBlock';
+export * from './RemoveWhitespaceOperationBlock';

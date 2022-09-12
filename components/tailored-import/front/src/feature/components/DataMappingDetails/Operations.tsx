@@ -15,25 +15,28 @@ import {DataMapping, getDefaultOperation, Operation, OperationType} from '../../
 import {
   BOOLEAN_REPLACEMENT_OPERATION_TYPE,
   CATEGORIES_REPLACEMENT_OPERATION_TYPE,
+  CHANGE_CASE_OPERATION_TYPE,
   CLEAN_HTML_TAGS_OPERATION_TYPE,
   ENABLED_REPLACEMENT_OPERATION_TYPE,
   FAMILY_REPLACEMENT_OPERATION_TYPE,
   MULTI_SELECT_REPLACEMENT_OPERATION_TYPE,
+  REMOVE_WHITESPACE_OPERATION_TYPE,
   SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE,
   SPLIT_OPERATION_TYPE,
   BooleanReplacementOperationBlock,
   CategoriesReplacementOperationBlock,
+  ChangeCaseOperationBlock,
   CleanHTMLTagsOperationBlock,
   EnabledReplacementOperationBlock,
   FamilyReplacementOperationBlock,
   MultiSelectReplacementOperationBlock,
   OperationBlockProps,
   OperationSampleData,
+  RemoveWhitespaceOperationBlock,
   SimpleSelectReplacementOperationBlock,
   SplitOperationBlock,
 } from './Operation';
 import {usePreviewData} from '../../hooks';
-import {CHANGE_CASE_OPERATION_TYPE, ChangeCaseOperationBlock} from './Operation/Block/ChangeCaseOperationBlock';
 
 const OperationsContainer = styled.div`
   display: flex;
@@ -59,6 +62,7 @@ const operationBlocks: {
   [SPLIT_OPERATION_TYPE]: SplitOperationBlock,
   [FAMILY_REPLACEMENT_OPERATION_TYPE]: FamilyReplacementOperationBlock,
   [CHANGE_CASE_OPERATION_TYPE]: ChangeCaseOperationBlock,
+  [REMOVE_WHITESPACE_OPERATION_TYPE]: RemoveWhitespaceOperationBlock,
 };
 
 type OperationsProps = {

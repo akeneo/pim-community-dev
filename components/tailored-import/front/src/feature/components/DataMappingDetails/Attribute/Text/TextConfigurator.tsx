@@ -2,10 +2,14 @@ import React from 'react';
 import {filterErrors} from '@akeneo-pim-community/shared';
 import {isTextTarget} from './model';
 import {AttributeDataMappingConfiguratorProps, AttributeTarget} from '../../../../models';
-import {InvalidAttributeTargetError} from '../error/InvalidAttributeTargetError';
+import {InvalidAttributeTargetError} from '../error';
 import {AttributeTargetParameters, Operations, Sources} from '../../../../components';
-import {CHANGE_CASE_OPERATION_TYPE, CLEAN_HTML_TAGS_OPERATION_TYPE} from '../../Operation';
-import {ClearIfEmpty} from '../../common/ClearIfEmpty';
+import {
+  CHANGE_CASE_OPERATION_TYPE,
+  CLEAN_HTML_TAGS_OPERATION_TYPE,
+  REMOVE_WHITESPACE_OPERATION_TYPE,
+} from '../../Operation';
+import {ClearIfEmpty} from '../../common';
 
 const TextConfigurator = ({
   dataMapping,
@@ -42,7 +46,11 @@ const TextConfigurator = ({
       />
       <Operations
         dataMapping={dataMapping}
-        compatibleOperations={[CLEAN_HTML_TAGS_OPERATION_TYPE, CHANGE_CASE_OPERATION_TYPE]}
+        compatibleOperations={[
+          CLEAN_HTML_TAGS_OPERATION_TYPE,
+          CHANGE_CASE_OPERATION_TYPE,
+          REMOVE_WHITESPACE_OPERATION_TYPE,
+        ]}
         onOperationsChange={onOperationsChange}
         onRefreshSampleData={onRefreshSampleData}
         validationErrors={filterErrors(validationErrors, '[operations]')}

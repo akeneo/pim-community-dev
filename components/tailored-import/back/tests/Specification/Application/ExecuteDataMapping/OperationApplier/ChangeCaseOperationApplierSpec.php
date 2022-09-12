@@ -11,7 +11,6 @@ namespace Specification\Akeneo\Platform\TailoredImport\Application\ExecuteDataMa
 
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\UnexpectedValueException;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\ChangeCaseOperationApplier;
-use Akeneo\Platform\TailoredImport\Domain\Exception\Operation\UnknownCaseModeException;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ChangeCaseOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLTagsOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\NumberValue;

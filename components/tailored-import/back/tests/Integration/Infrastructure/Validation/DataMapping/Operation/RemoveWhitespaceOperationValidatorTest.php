@@ -9,18 +9,18 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Test\Integration\Infrastructure\Validation\DataMapping\Operation;
 
-use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\ChangeCaseOperation;
+use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\RemoveWhitespaceOperation;
 use Akeneo\Platform\TailoredImport\Test\Integration\Infrastructure\Validation\AbstractValidationTest;
 use Akeneo\Test\Integration\Configuration;
 
-final class ChangeCaseOperationValidatorTest extends AbstractValidationTest
+final class RemoveWhitespaceOperationValidatorTest extends AbstractValidationTest
 {
     /**
      * @dataProvider validOperation
      */
     public function test_it_does_not_build_violations_when_operation_is_valid(array $value): void
     {
-        $violations = $this->getValidator()->validate($value, new ChangeCaseOperation());
+        $violations = $this->getValidator()->validate($value, new RemoveWhitespaceOperation());
 
         $this->assertNoViolation($violations);
     }
@@ -33,7 +33,7 @@ final class ChangeCaseOperationValidatorTest extends AbstractValidationTest
         string $expectedErrorPath,
         array $value
     ): void {
-        $violations = $this->getValidator()->validate($value, new ChangeCaseOperation());
+        $violations = $this->getValidator()->validate($value, new RemoveWhitespaceOperation());
 
         $this->assertHasValidationError($expectedErrorMessage, $expectedErrorPath, $violations);
     }
@@ -41,11 +41,11 @@ final class ChangeCaseOperationValidatorTest extends AbstractValidationTest
     public function validOperation(): array
     {
         return [
-            'a valid change case operation' => [
+            'a valid remove whitespace operation' => [
                 [
                     'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',
-                    'type' => 'change_case',
-                    'mode' => 'uppercase',
+                    'type' => 'remove_whitespace',
+                    'modes' => ['consecutive', 'trim'],
                 ],
             ],
         ];
@@ -54,31 +54,31 @@ final class ChangeCaseOperationValidatorTest extends AbstractValidationTest
     public function invalidOperation(): array
     {
         return [
-            'a change case with wrong uuid' => [
+            'a remove whitespace operation with wrong uuid' => [
                 'This is not a valid UUID.',
                 '[uuid]',
                 [
                     'uuid' => 'invalid',
-                    'type' => 'change_case',
-                    'mode' => 'uppercase',
+                    'type' => 'remove_whitespace',
+                    'modes' => ['trim'],
                 ],
             ],
-            'a change case with wrong type' => [
-                'This value should be equal to "change_case".',
+            'a remove whitespace with wrong type' => [
+                'This value should be equal to "remove_whitespace".',
                 '[type]',
                 [
                     'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',
                     'type' => 'invalid_operation',
-                    'mode' => 'uppercase',
+                    'modes' => ['trim'],
                 ],
             ],
-            'a change case with wrong mode' => [
-                'The value you selected is not a valid choice.',
-                '[mode]',
+            'a remove whitespace with wrong modes' => [
+                'One or more of the given values is invalid.',
+                '[modes]',
                 [
                     'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',
-                    'type' => 'change_case',
-                    'mode' => 'invalid',
+                    'type' => 'remove_whitespace',
+                    'modes' => ['invalid'],
                 ],
             ],
         ];

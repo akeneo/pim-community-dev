@@ -26,6 +26,7 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Operation\EnabledReplacementOper
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\FamilyReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\MultiSelectReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\RemoveWhitespaceOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SimpleSelectReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SplitOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
@@ -71,6 +72,7 @@ class OperationCollectionHydrator implements OperationCollectionHydratorInterfac
                 CategoriesReplacementOperation::TYPE => new CategoriesReplacementOperation($normalizedOperation['uuid'], $normalizedOperation['mapping']),
                 FamilyReplacementOperation::TYPE => new FamilyReplacementOperation($normalizedOperation['uuid'], $normalizedOperation['mapping']),
                 ChangeCaseOperation::TYPE => new ChangeCaseOperation($normalizedOperation['uuid'], $normalizedOperation['mode']),
+                RemoveWhitespaceOperation::TYPE => new RemoveWhitespaceOperation($normalizedOperation['uuid'], $normalizedOperation['modes']),
                 default => throw new \InvalidArgumentException(sprintf('Unsupported "%s" Operation type', $normalizedOperation['type'])),
             },
             $normalizedOperations,

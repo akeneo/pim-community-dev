@@ -15,6 +15,7 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\T
 
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ChangeCaseOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLTagsOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\RemoveWhitespaceOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\DataMappingUuid;
@@ -53,6 +54,7 @@ final class TextValidator extends ConstraintValidator
                 'operations' => new Operations([
                     CleanHTMLTagsOperation::TYPE,
                     ChangeCaseOperation::TYPE,
+                    RemoveWhitespaceOperation::TYPE,
                 ]),
                 'sample_data' => new SampleData(),
             ],

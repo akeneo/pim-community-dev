@@ -28,6 +28,11 @@ test('it can get the default operation for each type', () => {
     type: 'change_case',
     mode: 'uppercase',
   });
+  expect(getDefaultOperation('remove_whitespace')).toEqual({
+    uuid: expect.any(String),
+    type: 'remove_whitespace',
+    modes: ['trim'],
+  });
   // @ts-expect-error invalid type
   expect(() => getDefaultOperation('unknown')).toThrowError('Invalid operation type: "unknown"');
 });

@@ -58,6 +58,10 @@ akeneo.tailored_import:
         uppercase: Uppercase
         lowercase: Lowercase
         capitalize: First letter uppercase
+      remove_whitespace:
+        title: Remove whitespaces
+        consecutive: Clean consecutive whitespaces
+        trim: Remove whitespaces at the beginning and the end
       split:
         title: Split
         separator: Select the separator
@@ -73,11 +77,11 @@ akeneo.tailored_import:
       categories_replacement:
         title: Categories replacement
         modal:
-            title: Manage categories
-            table:
-              header:
-                replacement: Category labels
-                source_values: Source categories
+          title: Manage categories
+          table:
+            header:
+              replacement: Category labels
+              source_values: Source categories
       family_replacement:
         title: Families replacement
         option_labels: Family labels
@@ -92,23 +96,23 @@ akeneo.tailored_import:
       replacement:
         to_placeholder: Define the source values in your file.
         modal:
-            options: Manage options
-            subtitle: Replacement
-            no_result:
-              title: Sorry, there is no value in this attribute.
-            empty_result:
-              title: Sorry, there is no result for your search.
-              text: Try again with new search criteria.
-            filters:
-              mapped:
-                label: Display
-                unmapped: All values without replacement
-                mapped: All values with replacement
-                all: All values
-            table:
-              header:
-                source_values: Source values
-            validation_error: Some replacement values are invalid, please refer to the error messages below each field.
+          options: Manage options
+          subtitle: Replacement
+          no_result:
+            title: Sorry, there is no value in this attribute.
+          empty_result:
+            title: Sorry, there is no result for your search.
+            text: Try again with new search criteria.
+          filters:
+            mapped:
+              label: Display
+              unmapped: All values without replacement
+              mapped: All values with replacement
+              all: All values
+          table:
+            header:
+              source_values: Source values
+          validation_error: Some replacement values are invalid, please refer to the error messages below each field.
       boolean_replacement:
         title: Boolean replacement
         field:

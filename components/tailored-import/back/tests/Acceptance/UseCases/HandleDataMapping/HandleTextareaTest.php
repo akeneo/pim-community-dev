@@ -15,11 +15,13 @@ namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\HandleDataMapp
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingResult;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ChangeCaseOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLTagsOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\RemoveWhitespaceOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use PHPUnit\Framework\Assert;
 
@@ -81,9 +83,9 @@ final class HandleTextareaTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    UpsertProductCommand::createFromCollection(
+                    UpsertProductCommand::createWithIdentifier(
                         userId: 1,
-                        productIdentifier: 'this-is-a-sku',
+                        productIdentifier: ProductIdentifier::fromIdentifier('this-is-a-sku'),
                         userIntents: [
                             new SetTextareaValue('textarea_attribute', null, null, 'this is a textarea attribute'),
                             new SetTextareaValue('description', 'ecommerce', 'fr_FR', 'this is a description'),
@@ -133,9 +135,9 @@ final class HandleTextareaTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    UpsertProductCommand::createFromCollection(
+                    UpsertProductCommand::createWithIdentifier(
                         userId: 1,
-                        productIdentifier: 'this-is-a-sku',
+                        productIdentifier: ProductIdentifier::fromIdentifier('this-is-a-sku'),
                         userIntents: [
                             new SetTextareaValue('name', null, null, 'i want this cleaned'),
                             new SetTextareaValue('description', 'ecommerce', 'fr_FR', 'but not <h2>this</h2>'),
@@ -205,13 +207,86 @@ final class HandleTextareaTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    UpsertProductCommand::createFromCollection(
+                    UpsertProductCommand::createWithIdentifier(
                         userId: 1,
-                        productIdentifier: 'this-is-a-sku',
+                        productIdentifier: ProductIdentifier::fromIdentifier('this-is-a-sku'),
                         userIntents: [
                             new SetTextareaValue('name', null, null, 'I NEED TO BE UPPERCASED'),
                             new SetTextareaValue('description', 'ecommerce', 'fr_FR', 'i m feeling too big'),
                             new SetTextareaValue('fouras', 'print', 'fr_FR', 'Cette flûte n a qu un trou'),
+                        ],
+                    ),
+                    [],
+                ),
+            ],
+            'it handles text attribute targets with Remove Whitespace operation' => [
+                'row' => [
+                    '25621f5a-504f-4893-8f0c-9f1b0076e53e' => 'this-is-a-sku',
+                    '2d9e967a-5efa-4a31-a254-99f7c50a145c' => ' A text with  whitespace  ',
+                    '2d9e967a-4efa-4a31-a254-99f7c50a145c' => ' A text with  whitespace  ',
+                    '2d9e967a-3efa-4a31-a254-99f7c50a145c' => ' A text with  whitespace  ',
+                ],
+                'data_mappings' => [
+                    DataMapping::create(
+                        'b244c45c-d5ec-4993-8cff-7ccd04e82feb',
+                        AttributeTarget::create(
+                            'name1',
+                            'pim_catalog_textarea',
+                            null,
+                            null,
+                            'set',
+                            'skip',
+                            null,
+                        ),
+                        ['2d9e967a-5efa-4a31-a254-99f7c50a145c'],
+                        OperationCollection::create([
+                            new RemoveWhitespaceOperation('00000000-0000-0000-0000-000000000000', ['consecutive']),
+                        ]),
+                        [],
+                    ),
+                    DataMapping::create(
+                        'b244c45c-d5ec-4993-8cff-7ccd04e82fec',
+                        AttributeTarget::create(
+                            'name2',
+                            'pim_catalog_textarea',
+                            null,
+                            null,
+                            'set',
+                            'skip',
+                            null,
+                        ),
+                        ['2d9e967a-4efa-4a31-a254-99f7c50a145c'],
+                        OperationCollection::create([
+                            new RemoveWhitespaceOperation('00000000-0000-0000-0000-000000000000', ['trim']),
+                        ]),
+                        [],
+                    ),
+                    DataMapping::create(
+                        'b244c45c-d5ec-4993-8cff-7ccd04e82fed',
+                        AttributeTarget::create(
+                            'name3',
+                            'pim_catalog_textarea',
+                            null,
+                            null,
+                            'set',
+                            'skip',
+                            null,
+                        ),
+                        ['2d9e967a-3efa-4a31-a254-99f7c50a145c'],
+                        OperationCollection::create([
+                            new RemoveWhitespaceOperation('00000000-0000-0000-0000-000000000000', ['consecutive', 'trim']),
+                        ]),
+                        [],
+                    ),
+                ],
+                'expected' => new ExecuteDataMappingResult(
+                    UpsertProductCommand::createWithIdentifier(
+                        userId: 1,
+                        productIdentifier: ProductIdentifier::fromIdentifier('this-is-a-sku'),
+                        userIntents: [
+                            new SetTextareaValue('name1', null, null, ' A text with whitespace '),
+                            new SetTextareaValue('name2', null, null, 'A text with  whitespace'),
+                            new SetTextareaValue('name3', null, null, 'A text with whitespace'),
                         ],
                     ),
                     [],
@@ -259,9 +334,9 @@ final class HandleTextareaTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    UpsertProductCommand::createFromCollection(
+                    UpsertProductCommand::createWithIdentifier(
                         userId: 1,
-                        productIdentifier: 'this-is-a-sku',
+                        productIdentifier: ProductIdentifier::fromIdentifier('this-is-a-sku'),
                         userIntents: [
                             new SetTextareaValue('name', null, null, 'I want this cleaned and capitalized'),
                             new SetTextareaValue('description', 'ecommerce', 'fr_FR', 'but not <h2>this</h2>'),

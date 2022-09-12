@@ -11,15 +11,18 @@ import {
   FamilyReplacementOperation,
   getDefaultBooleanReplacementOperation,
   getDefaultCategoriesReplacementOperation,
+  getDefaultChangeCaseOperation,
   getDefaultCleanHTMLTagsOperation,
   getDefaultEnabledReplacementOperation,
   getDefaultFamilyReplacementOperation,
   getDefaultMultiSelectReplacementOperation,
+  getDefaultRemoveWhitespaceOperation,
   getDefaultSimpleSelectReplacementOperation,
   getDefaultSplitOperation,
-  getDefaultChangeCaseOperation,
   MULTI_SELECT_REPLACEMENT_OPERATION_TYPE,
   MultiSelectReplacementOperation,
+  REMOVE_WHITESPACE_OPERATION_TYPE,
+  RemoveWhitespaceOperation,
   SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE,
   SimpleSelectReplacementOperation,
   SPLIT_OPERATION_TYPE,
@@ -36,7 +39,8 @@ type Operation =
   | SimpleSelectReplacementOperation
   | FamilyReplacementOperation
   | SplitOperation
-  | ChangeCaseOperation;
+  | ChangeCaseOperation
+  | RemoveWhitespaceOperation;
 type OperationType = Operation['type'];
 
 const getAttributeRequiredOperations = (attribute: Attribute): Operation[] => {
@@ -73,6 +77,8 @@ const getDefaultOperation = (operationType: OperationType): Operation => {
       return getDefaultFamilyReplacementOperation();
     case CHANGE_CASE_OPERATION_TYPE:
       return getDefaultChangeCaseOperation();
+    case REMOVE_WHITESPACE_OPERATION_TYPE:
+      return getDefaultRemoveWhitespaceOperation();
     default:
       throw new Error(`Invalid operation type: "${operationType}"`);
   }
