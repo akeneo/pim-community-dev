@@ -64,6 +64,7 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
             ],
             'product_value_filters' => [
                 'channels' => ['ecommerce'],
+                'currencies' => ['EUR', 'USD'],
             ],
         ], new CatalogUpdatePayload());
 
@@ -140,6 +141,14 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
             'channel does not exist' => [
                 'filters' => ['channels' => ['removed_channel']],
                 'expectedMessage' => 'The channel "removed_channel" has been deactivated. Please check your channel settings or remove this filter.',
+            ],
+            'currency is not a valid array' => [
+                'filters' => ['currencies' => 'USD'],
+                'expectedMessage' => 'This value should be of type array.',
+            ],
+            'currency is not activated' => [
+                'filters' => ['currencies' => ['AUD']],
+                'expectedMessage' => 'The currency "AUD" has been deactivated. Please check your currencies settings or remove this filter.',
             ],
         ];
     }

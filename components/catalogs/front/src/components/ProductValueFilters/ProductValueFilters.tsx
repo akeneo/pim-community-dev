@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {getColor, getFontFamily, getFontSize, Helper} from 'akeneo-design-system';
 import {ProductValueFiltersErrors} from './models/ProductValueFiltersErrors';
+import {FilterCurrencies} from './components/FilterCurrencies';
 
 type Props = {
     productValueFilters: ProductValueFiltersValues;
@@ -20,6 +21,7 @@ const Label = styled.div`
     font-size: ${getFontSize('default')};
     color: ${getColor('grey', 120)};
     line-height: 16px;
+    margin-bottom: 5px;
 `;
 const WarningMessage = styled.span`
     font-style: italic;
@@ -42,6 +44,20 @@ export const ProductValueFilters: FC<Props> = ({productValueFilters, onChange, e
                 {!!errors.channels && (
                     <Helper inline level='error'>
                         <WarningMessage>{translate(errors.channels)}</WarningMessage>
+                    </Helper>
+                )}
+            </FilterContainer>
+
+            <FilterContainer>
+                <Label>{translate('akeneo_catalogs.product_value_filters.filters.currency.label')}</Label>
+                <FilterCurrencies
+                    productValueFilters={productValueFilters}
+                    onChange={onChange}
+                    isInvalid={!!errors.currencies}
+                />
+                {!!errors.currencies && (
+                    <Helper inline level='error'>
+                        <WarningMessage>{translate(errors.currencies)}</WarningMessage>
                     </Helper>
                 )}
             </FilterContainer>

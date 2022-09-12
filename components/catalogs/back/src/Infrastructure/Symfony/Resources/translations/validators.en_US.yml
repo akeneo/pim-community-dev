@@ -30,3 +30,5 @@ akeneo_catalogs:
         product_value_filters:
             channel:
                 unknown: 'The channel "{{ channel_name }}" has been deactivated. Please check your channel settings or remove this filter.'
+            currencies:
+                unknown: 'The currency "{{ currency_name }}" has been deactivated. Please check your currencies settings or remove this filter.'
