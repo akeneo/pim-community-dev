@@ -42,7 +42,7 @@ class UserIntentFactoryRegistry
     public function fromStandardFormatField(string $fieldName, mixed $data): array
     {
         $factory = $this->userIntentFactoriesWithFieldName[$fieldName] ?? null;
-        if (null === $factory && \in_array($fieldName, $this->ignoredFieldNames)) {
+        if (\in_array($fieldName, $this->ignoredFieldNames)) {
             return [];
         }
         if (null === $factory) {

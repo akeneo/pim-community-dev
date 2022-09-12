@@ -164,6 +164,8 @@ class ProductUpdater implements ObjectUpdaterInterface
             );
         }
 
+        $data = $this->reorderParentProperty($data);
+
         foreach ($data as $code => $value) {
             if (!is_string($code)) {
                 throw new BadRequestHttpException('Invalid json message received');
@@ -307,5 +309,33 @@ class ProductUpdater implements ObjectUpdaterInterface
     protected function updateProductFields(ProductInterface $product, string $field, $value): void
     {
         $this->propertySetter->setData($product, $field, $value);
+    }
+
+    /**
+     * This method order the data by setting the parent field first. It comes from the ParentFieldSetter that sets the
+     * family from the parent if the product family is null. By doing this the validator does not fail if the family
+     * field has been set to null from the API. So to prevent this we order the parent before the family field. this way
+     * the field family will be updated to null if the data sent from the API for the family field is null.
+     *
+     * Example:
+     *
+     * {
+     *     "identifier": "test",
+     *     "family": null,
+     *     "parent": "amor"
+     * }
+     *
+     * This example does not work because the parent setter will set the family with the parent family.
+     *
+     * @param array $data
+     * @return array
+     */
+    private function reorderParentProperty(array $data): array
+    {
+        if (!isset($data['parent'])) {
+            return $data;
+        }
+
+        return ['parent' => $data['parent']] + $data;
     }
 }

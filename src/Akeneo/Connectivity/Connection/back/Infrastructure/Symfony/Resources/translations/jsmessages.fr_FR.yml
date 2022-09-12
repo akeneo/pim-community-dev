@@ -54,6 +54,7 @@ akeneo_connectivity.connection:
         description: Ceci n'est qu'une vue d'ensemble. Pour plus de détails, jetez un coup d'œil à l'App Store Akeneo.
         link: Allez sur l'App Store Akeneo
       search:
+        placeholder: Chercher par nom
         total: '{0} Aucun résultat|{1} 1 résultat|[2,Inf] {{ total }} résultats'
       card:
         developed_by: 'Développé par {{ author }}'
@@ -179,6 +180,10 @@ akeneo_connectivity.connection:
               3: dans les paramètres.
         catalogs:
           edit:
+            flash:
+              success: Paramètres mis à jour avec succès.
+              error: Le catalogue n'a pas pu être enregistré. Veuillez résoudre les erreurs affichées, puis enregistrez à nouveau.
+              unknown_error: Une erreur s'est produite lors de la sauvegarde du catalogue.
             not_found: Catalogue introuvable
         flash:
           load_permissions_error.title: 'Les permissions enregistrées sur {{ entity }} n''ont pas pu être affichées.'
@@ -318,6 +323,8 @@ akeneo_connectivity.connection:
       type:
         required: Le type de connexion est requis.
         too_long: La valeur saisie pour le type de connexion est trop longue. Elle ne peut pas dépasser 30 caractères.
+      user_group:
+        must_exist: Le groupe d'utilisateurs n'a pas été trouvé. Assurez-vous que le groupe d'utilisateurs spécifié existe.
   flow_type:
     data_source: Source de données | Sources de données
     data_destination: Destination de données | Destinations de données

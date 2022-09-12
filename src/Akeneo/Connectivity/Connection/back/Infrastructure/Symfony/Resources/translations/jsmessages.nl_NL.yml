@@ -54,6 +54,7 @@ akeneo_connectivity.connection:
         description: Dit is slechts een overzicht. Neem voor meer details een kijkje in de Akeneo App Store.
         link: Ga naar de Akeneo App Store
       search:
+        placeholder: Zoeken op naam
         total: '{0} Geen resultaten|{1} 1 resultaat|[2,Inf] {{ total }} resultaten'
       card:
         developed_by: 'Ontwikkeld door {{ author }}'
@@ -179,6 +180,10 @@ akeneo_connectivity.connection:
               3: in de instellingen.
         catalogs:
           edit:
+            flash:
+              success: De catalogusinstellingen zijn bijgewerkt.
+              error: De catalogus kon niet worden opgeslagen. Los de weergegeven fouten op en sla daarna opnieuw op.
+              unknown_error: Er is een fout opgetreden tijdens het opslaan van de catalogus.
             not_found: Catalogus niet gevonden
         flash:
           load_permissions_error.title: 'De opgeslagen machtigingen op {{ entity }} kunnen niet worden geladen.'
@@ -318,6 +323,8 @@ akeneo_connectivity.connection:
       type:
         required: Verbindingstype is vereist.
         too_long: Verbindingstype is te lang. Het moet 30 tekens of minder bevatten.
+      user_group:
+        must_exist: De gebruikersgroep is niet gevonden. Controleer of de opgegeven gebruikersgroep bestaat.
   flow_type:
     data_source: Gegevensbron | Gegevensbronnen
     data_destination: Gegevensdoel | Gegevensdoelen

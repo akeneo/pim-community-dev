@@ -8,32 +8,32 @@ use PhpSpec\ObjectBehavior;
 
 class SimpleYamlImportSpec extends ObjectBehavior
 {
-    function let()
+    public function let(): void
     {
         $this->beConstructedWith(['my_supported_job_name']);
     }
 
-    function it_is_a_provider()
+    public function it_is_a_provider(): void
     {
         $this->shouldImplement(DefaultValuesProviderInterface::class);
     }
 
-    function it_provides_default_values()
+    public function it_provides_default_values(): void
     {
         $this->getDefaultValues()->shouldReturn(
             [
                 'storage' => [
                     'type' => 'none',
                 ],
-                'uploadAllowed'             => true,
+                'uploadAllowed' => true,
                 'invalid_items_file_format' => 'yaml',
-                'user_to_notify'            => null,
-                'is_user_authenticated'     => false,
+                'users_to_notify' => [],
+                'is_user_authenticated' => false,
             ]
         );
     }
 
-    function it_supports_a_job(JobInterface $job)
+    public function it_supports_a_job(JobInterface $job): void
     {
         $job->getName()->willReturn('my_supported_job_name');
         $this->supports($job)->shouldReturn(true);

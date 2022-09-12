@@ -7,6 +7,18 @@ services:
         tags:
             - { name: 'pim.category.user_intent_applier' }
 
+    Akeneo\Category\Application\Applier\SetTextApplier:
+        tags:
+            - { name: 'pim.category.user_intent_applier' }
+
     Akeneo\Category\Application\Applier\SetTextAreaApplier:
+            tags:
+                - { name: 'pim.category.user_intent_applier' }
+
+    Akeneo\Category\Application\Applier\SetRichTextApplier:
+            tags:
+                - { name: 'pim.category.user_intent_applier' }
+
+    Akeneo\Category\Application\Applier\SetImageApplier:
         tags:
             - { name: 'pim.category.user_intent_applier' }

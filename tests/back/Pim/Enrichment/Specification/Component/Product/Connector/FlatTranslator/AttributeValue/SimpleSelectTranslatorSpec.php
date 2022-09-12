@@ -61,6 +61,26 @@ class SimpleSelectTranslatorSpec extends ObjectBehavior
         )->shouldReturn([$redTranslation, $yellowTranslation, $optionWithoutTranslation]);
     }
 
+    function it_is_case_insensitive_to_find_option_labels(
+        GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues
+    ) {
+        $locale = 'fr_FR';
+        $getExistingAttributeOptionsWithValues
+            ->fromAttributeCodeAndOptionCodes([
+                $this->optionKey('color', 'red'),
+                $this->optionKey('color', 'yellow'),
+                $this->optionKey('color', 'purple')
+            ])
+            ->willReturn([
+                $this->optionKey('color', 'red')    => [$locale => 'rouge'],
+                $this->optionKey('color', 'yellow') => [$locale => 'jaune'],
+                $this->optionKey('color', 'purple') => [$locale => 'purple']
+            ]);
+
+        $this->translate('color', [], ['ReD', 'YeLLoW', 'PURPle', ''], $locale)
+            ->shouldReturn(['rouge', 'jaune', 'purple', '']);
+    }
+
     function it_translates_simple_select_value_with_numeric_label(
         GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues
     ) {

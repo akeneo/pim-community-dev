@@ -54,6 +54,7 @@ akeneo_connectivity.connection:
         description: Questa è solo una panoramica. Per maggiori dettagli, ti invitiamo a dare un'occhiata all'App Store di Akeneo.
         link: Vai all'App Store di Akeneo
       search:
+        placeholder: Ricerca per nome
         total: '{0} Nessun risultato|{1} 1 risultato|[2,Inf] {{ total }} risultati'
       card:
         developed_by: 'Sviluppata da {{ author }}'
@@ -179,6 +180,10 @@ akeneo_connectivity.connection:
               3: nelle impostazioni.
         catalogs:
           edit:
+            flash:
+              success: Impostazioni catalogo aggiornate corretamente.
+              error: Non è stato possibile salvare il catalogo. Risolvi gli errori visualizzati e salva nuovamente.
+              unknown_error: Si è verificato un errore durante il salvataggio del catalogo.
             not_found: Catalogo non trovato
         flash:
           load_permissions_error.title: 'I permessi salvati su {{ entity }} non possono essere caricati.'
@@ -318,6 +323,8 @@ akeneo_connectivity.connection:
       type:
         required: Il tipo di connessione è obbligatorio.
         too_long: Il tipo di connessione è troppo lungo. Dovrebbe essere al massimo 30 caratteri.
+      user_group:
+        must_exist: Il gruppo di utenti specificato non è stato trovato. Controlla che esista.
   flow_type:
     data_source: Sorgente dati | Sorgente dati
     data_destination: Destinazione dati | Destinazione dati

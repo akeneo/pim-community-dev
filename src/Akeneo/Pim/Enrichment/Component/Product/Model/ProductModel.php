@@ -624,8 +624,11 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function filterQuantifiedAssociations(array $productIdentifiersToKeep, array $productModelCodesToKeep): void
-    {
+    public function filterQuantifiedAssociations(
+        array $productIdentifiersToKeep,
+        array $productUuidsToKeep,
+        array $productModelCodesToKeep
+    ): void {
         if (null === $this->quantifiedAssociationCollection) {
             return;
         }
@@ -633,6 +636,7 @@ class ProductModel implements ProductModelInterface
         $initialCollection = $this->getQuantifiedAssociations();
         $this->quantifiedAssociationCollection = $this->quantifiedAssociationCollection
             ->filterProductIdentifiers($productIdentifiersToKeep)
+            ->filterProductUuids($productUuidsToKeep)
             ->filterProductModelCodes($productModelCodesToKeep);
         if (!$this->quantifiedAssociationCollection->equals($initialCollection)) {
             $this->dirty = true;

@@ -1,12 +1,13 @@
-import React from 'react';
-import {EditCategoryForm} from '../hooks';
+import React, {useCallback, useState} from 'react';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {BooleanInput, Field, Helper, MultiSelectInput} from 'akeneo-design-system';
 import styled from 'styled-components';
+import {CategoryPermissions, EnrichCategory} from '../models';
 
 type Props = {
-  formData: EditCategoryForm | null;
-  onChangePermissions: (type: string, values: string[]) => void;
+  category: EnrichCategory;
+  applyPermissionsOnChildren: boolean;
+  onChangePermissions: (type: keyof CategoryPermissions, values: number[]) => void;
   onChangeApplyPermissionsOnChildren: (value: boolean) => void;
 };
 
@@ -22,62 +23,105 @@ const PermissionField = styled(Field)`
   max-width: 400px;
 `;
 
-const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermissionsOnChildren}: Props) => {
-  const translate = useTranslate();
+const asString = (n: number): string => n.toString();
+const asNumber = (s: string): number => parseInt(s, 10);
+const asStringArr = (a: number[]): string[] => a.map(asString);
+const asNumberArr = (a: string[]): number[] => a.map(asNumber);
 
-  if (formData === null || !formData.permissions) {
+const EditPermissionsForm = ({
+  category,
+  applyPermissionsOnChildren,
+  onChangePermissions,
+  onChangeApplyPermissionsOnChildren,
+}: Props) => {
+  const translate = useTranslate();
+  const [userGroupList] = useState([
+    {
+      id: 1,
+      label: 'IT support',
+    },
+    {
+      id: 2,
+      label: 'Manager',
+    },
+    {
+      id: 3,
+      label: 'Furniture manager',
+    },
+    {
+      id: 7,
+      label: 'All',
+    },
+  ]);
+
+  const handleChangePermissions = useCallback(
+    (type: keyof CategoryPermissions) => (value: string[]) => onChangePermissions(type, asNumberArr(value)),
+    [onChangePermissions]
+  );
+
+  const makeGroupOptions = useCallback(
+    (type: string) =>
+      userGroupList.map(({id, label}) => (
+        <MultiSelectInput.Option value={id.toString()} key={`${type}-${id}`}>
+          {label}
+        </MultiSelectInput.Option>
+      )),
+    [userGroupList]
+  );
+
+  if (!category.permissions) {
     return <></>;
   }
+
+  const groupOptions: {[permissionType: string]: JSX.Element[]} = {
+    view: makeGroupOptions('view'),
+    edit: makeGroupOptions('edit'),
+    own: makeGroupOptions('own'),
+  };
+
+  const valuesAstring = {
+    view: asStringArr(category.permissions.view),
+    edit: asStringArr(category.permissions.edit),
+    own: asStringArr(category.permissions.own),
+  };
 
   return (
     <FormContainer>
       <PermissionField label={translate('category.permissions.view.label')}>
         <MultiSelectInput
           readOnly={false}
-          value={formData.permissions.view.value}
-          name={formData.permissions.view.fullName}
+          value={valuesAstring['view']}
+          name="view-permission"
           emptyResultLabel={translate('pim_common.no_result')}
           openLabel={translate('pim_common.open')}
           removeLabel={translate('pim_common.remove')}
-          onChange={changedValues => onChangePermissions('view', changedValues)}
+          onChange={handleChangePermissions('view')}
         >
-          {Object.entries(formData.permissions.view.choices).map(([key, choice]) => (
-            <MultiSelectInput.Option value={choice.value} key={`view-${key}`}>
-              {choice.label}
-            </MultiSelectInput.Option>
-          ))}
+          {groupOptions['view']}
         </MultiSelectInput>
       </PermissionField>
       <PermissionField label={translate('category.permissions.edit.label')}>
         <MultiSelectInput
-          value={formData.permissions.edit.value}
-          name={formData.permissions.edit.fullName}
+          value={valuesAstring['edit']}
+          name="edit-permission"
           emptyResultLabel={translate('pim_common.no_result')}
           openLabel={translate('pim_common.open')}
           removeLabel={translate('pim_common.remove')}
-          onChange={changedValues => onChangePermissions('edit', changedValues)}
+          onChange={handleChangePermissions('edit')}
         >
-          {Object.entries(formData.permissions.edit.choices).map(([key, choice]) => (
-            <MultiSelectInput.Option value={choice.value} key={`edit-${key}`}>
-              {choice.label}
-            </MultiSelectInput.Option>
-          ))}
+          {groupOptions['edit']}
         </MultiSelectInput>
       </PermissionField>
       <PermissionField label={translate('category.permissions.own.label')}>
         <MultiSelectInput
-          value={formData.permissions.own.value}
-          name={formData.permissions.own.fullName}
+          value={valuesAstring['own']}
+          name="own-permission"
           emptyResultLabel={translate('pim_common.no_result')}
           openLabel={translate('pim_common.open')}
           removeLabel={translate('pim_common.remove')}
-          onChange={changedValues => onChangePermissions('own', changedValues)}
+          onChange={handleChangePermissions('own')}
         >
-          {Object.entries(formData.permissions.own.choices).map(([key, choice]) => (
-            <MultiSelectInput.Option value={choice.value} key={`own-${key}`}>
-              {choice.label}
-            </MultiSelectInput.Option>
-          ))}
+          {groupOptions['own']}
         </MultiSelectInput>
         <Helper level="info">{translate('category.permissions.own.help')}</Helper>
       </PermissionField>
@@ -85,10 +129,10 @@ const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermis
         <BooleanInput
           clearable={false}
           readOnly={false}
-          value={formData.permissions.apply_on_children.value === '1'}
+          value={applyPermissionsOnChildren}
           noLabel={translate('pim_common.no')}
           yesLabel={translate('pim_common.yes')}
-          onChange={changedValue => onChangeApplyPermissionsOnChildren(changedValue)}
+          onChange={onChangeApplyPermissionsOnChildren}
         />
         <Helper level="info">{translate('category.permissions.apply_on_children.help')}</Helper>
       </Field>

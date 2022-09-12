@@ -76,7 +76,7 @@ FROM filtered_product
     LEFT JOIN pim_catalog_product_model pm2 ON pm1.parent_id = pm2.id
 SQL;
 
-        $productUuidsAsBytes = \array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
+        $productUuidsAsBytes = \array_map(static fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
 
         $rows = array_map(
             function (array $row): array {

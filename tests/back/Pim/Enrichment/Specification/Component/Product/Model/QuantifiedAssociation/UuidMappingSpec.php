@@ -16,7 +16,11 @@ class UuidMappingSpec extends ObjectBehavior
 {
     public function let()
     {
-        $this->beConstructedThrough('createFromMapping', [['3f090f5e-3f54-4f34-879c-87779297d130' => 'product_identifier']]);
+        $this->beConstructedThrough('createFromMapping', [[[
+            'uuid' => '3f090f5e-3f54-4f34-879c-87779297d130',
+            'identifier' => 'product_identifier',
+            'id' => 42,
+        ]]]);
     }
 
     function it_is_initializable()
@@ -30,10 +34,14 @@ class UuidMappingSpec extends ObjectBehavior
         $uuid = Uuid::fromString($uuidAsStr);
         $identifier = 'product_identifier';
 
-        $this->beConstructedThrough('createFromMapping', [[$uuidAsStr => $identifier]]);
+        $this->beConstructedThrough('createFromMapping', [[[
+            'uuid' => $uuidAsStr,
+            'identifier' => $identifier,
+            'id' => 42
+        ]]]);
 
         $this->getIdentifier(Uuid::fromString($uuid))->shouldReturn($identifier);
-        $this->getUuid($identifier)->equals($uuid)->shouldBe(true);
+        $this->getUuidFromIdentifier($identifier)->equals($uuid)->shouldBe(true);
         $this->hasUuid($identifier)->shouldReturn(true);
         $this->hasIdentifier($uuid)->shouldReturn(true);
         $this->hasUuid('nice')->shouldReturn(false);
@@ -44,13 +52,21 @@ class UuidMappingSpec extends ObjectBehavior
     {
         $invalidUuid = 'wrong_uuid';
         $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('createFromMapping', [[$invalidUuid => 'product_identifier']]);
+            ->during('createFromMapping', [[[
+                'uuid' => $invalidUuid,
+                'identifier' => 'product_identifier',
+                'id' => 42
+            ]]]);
     }
 
     public function it_throws_if_the_identifier_is_not_an_non_empty_string()
     {
         $invalidIdentifier = '';
         $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('createFromMapping', [['3f090f5e-3f54-4f34-879c-87779297d130' => $invalidIdentifier]]);
+            ->during('createFromMapping', [[[
+                'uuid' => '3f090f5e-3f54-4f34-879c-87779297d130',
+                'identifier' => $invalidIdentifier,
+                'id' => 42
+            ]]]);
     }
 }

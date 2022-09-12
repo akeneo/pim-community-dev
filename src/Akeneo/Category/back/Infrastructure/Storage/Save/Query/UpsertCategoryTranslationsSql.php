@@ -35,7 +35,7 @@ class UpsertCategoryTranslationsSql implements UpsertCategoryTranslations
         $params = ['category_id' => $categoryId];
         $types = ['category_id' => \PDO::PARAM_INT];
         $loopIndex = 0;
-        foreach ($categoryModel->getLabelCollection() as $localeCode => $label) {
+        foreach ($categoryModel->getLabels() as $localeCode => $label) {
             if (!$this->isIdenticalLabel($categoryModel, $localeCode, $label)) {
                 $queries .= $this->buildUpsertQuery($loopIndex);
 
@@ -47,6 +47,11 @@ class UpsertCategoryTranslationsSql implements UpsertCategoryTranslations
 
                 ++$loopIndex;
             }
+        }
+
+        if (empty($queries)) {
+            // previous label translation and new one are identical
+            return;
         }
 
         $this->connection->executeQuery(
@@ -68,7 +73,7 @@ SQL;
 
     private function isIdenticalLabel(Category $category, string $localeCode, string $label): bool
     {
-        $existingLabels = $this->getCategory->byCode((string) $category->getCode())?->getLabelCollection()?->getLabels();
+        $existingLabels = $this->getCategory->byCode((string) $category->getCode())?->getLabels()?->getTranslations();
 
         if ($existingLabels === null || !array_key_exists($localeCode, $existingLabels)) {
             return false;

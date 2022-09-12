@@ -1,10 +1,10 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useRef, useEffect} from 'react';
 import {useIsMounted, useViewBuilder, View} from '@akeneo-pim-community/shared';
 
 type Props = {
   viewName: string;
   className?: string;
-  onBuild?: (view: View) => Promise<View|null>;
+  onBuild?: (view: View) => Promise<View | null>;
   version: number;
 };
 
@@ -27,7 +27,7 @@ const HistoryPimView = ({viewName, className, onBuild, version = 0}: Props) => {
         }
         return view;
       })
-      .then((view: View|null) => {
+      .then((view: View | null) => {
         if (view !== null) {
           viewRef.current = view;
           view.setElement(el.current).render();
@@ -38,7 +38,8 @@ const HistoryPimView = ({viewName, className, onBuild, version = 0}: Props) => {
   useEffect(
     () => () => {
       viewRef.current?.remove();
-    },[]
+    },
+    []
   );
 
   return (
