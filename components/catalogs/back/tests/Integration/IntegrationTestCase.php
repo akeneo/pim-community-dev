@@ -48,6 +48,20 @@ abstract class IntegrationTestCase extends WebTestCase
         static::bootKernel(['environment' => 'test', 'debug' => false]);
 
         $this->clock = new Clock();
+
+        try {
+            $this->overrideServices();
+        } catch (\Symfony\Component\DependencyInjection\Exception\InvalidArgumentException $e) {
+            static::bootKernel(['environment' => 'test', 'debug' => false]);
+            $this->overrideServices();
+        }
+
+        self::getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
+        self::getContainer()->get(ExperimentalTransactionHelper::class)->beginTransactions();
+    }
+
+    private function overrideServices(): void
+    {
         self::getContainer()->set(
             'pim_catalog.event_subscriber.timestampable',
             new TimestampableSubscriber($this->clock)
@@ -56,10 +70,6 @@ abstract class IntegrationTestCase extends WebTestCase
             'pim_versioning.event_subscriber.timestampable',
             new TimestampableSubscriber($this->clock)
         );
-
-        self::getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
-
-        self::getContainer()->get(ExperimentalTransactionHelper::class)->beginTransactions();
     }
 
     protected static function purgeData(): void
