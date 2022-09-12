@@ -2,3 +2,8 @@ supplier_portal:
   supplier:
     contributor:
       email_already_exists: このメールアドレスはすでに別のサプライヤーに使用されており、同じコントリビューターを持つ複数のサプライヤーは今のところサポートされていません。ご不便をおかけして申し訳ありません。
+    product_file_dropping:
+      validation:
+        max_uploaded_filename_length: ファイル名は255文字以下にする必要があります。
+        max_uploaded_file_size: ファイルサイズは50 MB以下にする必要があります。
+        must_be_an_xlsx_file: 有効なXLSXファイルをアップロードしてください。
