@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import styled from 'styled-components';
-import {Locale, LocaleSelector, useTranslate, useUploader} from '@akeneo-pim-community/shared';
+import {Locale, LocaleSelector, useRouter, useTranslate, useUploader} from '@akeneo-pim-community/shared';
 import {
   Field,
   FileInfo,
@@ -19,6 +19,8 @@ import {
   EnrichCategory,
 } from '../models';
 import {usePreventClosing} from '../hooks/usePreventClosing';
+import {getMediaPreviewUrl} from '../tools/media-url-generator';
+import {MediaPreviewType} from '../models/MediaPreview';
 
 const locales: Locale[] = [
   {
@@ -59,6 +61,7 @@ const Field960 = styled(Field)`
 export const EditAttributesForm = ({attributeValues, onAttributeValueChange}: Props) => {
   const [locale, setLocale] = useState('en_US');
   const translate = useTranslate();
+  const router = useRouter();
   const [uploader, isUploading] = useUploader('pim_enriched_category_rest_file_upload');
   usePreventClosing(() => isUploading, translate('pim_enrich.confirmation.discard_changes', {entity: 'category'}));
 
@@ -142,18 +145,23 @@ export const EditAttributesForm = ({attributeValues, onAttributeValueChange}: Pr
               </Field>
             );
           case 'image':
-            console.log(value);
+            const previewUrl = getMediaPreviewUrl(router, {
+              type: MediaPreviewType.Thumbnail,
+              attributeIdentifier: attribute.code + '|' + attribute.uuid,
+              data: value && value.file_path ? value.file_path : '',
+            });
+
 
             return (
               <Field key={attribute.uuid} label={attribute.labels[locale]}>
                 <MediaFileInput
-                  value={value !== null && typeof value === 'object' ? value : null}
+                  value={typeof value === 'object' ? value : null}
                   onChange={handleImageChange(attribute)}
                   placeholder="Drag and drop to upload or click here"
                   uploadingLabel="Uploading..."
                   uploadErrorLabel="An error occurred when uploading the file."
                   clearTitle="Clear"
-                  thumbnailUrl={null}
+                  thumbnailUrl={previewUrl}
                   uploader={uploader}
                 />
               </Field>

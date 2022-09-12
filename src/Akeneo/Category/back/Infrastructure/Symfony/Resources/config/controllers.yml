@@ -55,3 +55,9 @@ services:
             - '@validator'
             - '@category_serializer'
             - '@Akeneo\Category\Application\Handler\FileHandler'
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\ImagePreviewController:
+        arguments:
+            - '@Akeneo\Category\Domain\Query\GetAttribute'
+            - '@pim_category.infrastructure.registry.preview_generator'
+            - '@Akeneo\Category\Infrastructure\FileSystem\Loader\ImageLoader'
