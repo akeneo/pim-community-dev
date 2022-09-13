@@ -18,7 +18,7 @@ final class DatabaseGetProductFileWithCommentsIntegration extends SqlIntegration
     }
 
     /** @test */
-    public function itDoesNotGetAnyCommentIfThereIsNo(): void
+    public function itDoesNotGetAnyCommentIfThereIsNone(): void
     {
         $this->createSupplier();
         $this->createProductFile('5d001a43-a42d-4083-8673-b64bb4ecd26f');

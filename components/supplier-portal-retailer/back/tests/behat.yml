@@ -5,6 +5,7 @@ acceptance:
         - '%paths.base%/features'
       contexts:
         - Akeneo\SupplierPortal\Retailer\Test\Acceptance\Context\SupplierContext
+        - Akeneo\SupplierPortal\Retailer\Test\Acceptance\Context\ProductFileDroppingContext
 
   extensions:
     Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~

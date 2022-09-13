@@ -161,6 +161,15 @@ $rules = [
             'Akeneo\SupplierPortal\Retailer\Domain',
             'Akeneo\SupplierPortal\Retailer\Application\Supplier',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier',
+            'Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CommentProductFile',
+            'Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CommentProductFileHandler',
+            'Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\InvalidComment',
+            'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\InMemory\InMemoryRepository',
+
+            // Supplier Portal Supplier coupling
+
+            // PIM coupling
+
             // External dependencies coupling
             'Behat',
             'PHPUnit\Framework',

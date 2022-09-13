@@ -12,6 +12,8 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\InMemory\InMemoryRepository as ProductFileInMemoryRepository;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class CommentProductFileHandlerTest extends TestCase
 {
@@ -30,14 +32,15 @@ final class CommentProductFileHandlerTest extends TestCase
                 'Los Pollos Hermanos',
             ),
         ));
-        $sut = new CommentProductFileHandler($productFileRepository);
-
-        ($sut)(new CommentProductFile(
+        $command = new CommentProductFile(
             '6ffc16ae-3e0d-4a10-a8c3-7e33e2a4c287',
             'julia@roberts.com',
             'Your product file is awesome!',
             new \DateTimeImmutable(),
-        ));
+        );
+        $sut = new CommentProductFileHandler($productFileRepository, $this->getValidatorSpyWithNoError($command));
+
+        ($sut)($command);
 
         $productFile = $productFileRepository->find(
             Identifier::fromString(
@@ -52,18 +55,30 @@ final class CommentProductFileHandlerTest extends TestCase
     }
 
     /** @test */
-    public function itThrowsAnExceptionIfWeTryToCommandAProductFileThatDoesNotExist(): void
+    public function itThrowsAnExceptionIfWeTryToCommentAProductFileThatDoesNotExist(): void
     {
         static::expectExceptionObject(new ProductFileDoesNotExist());
 
         $productFileRepository = new ProductFileInMemoryRepository();
-        $sut = new CommentProductFileHandler($productFileRepository);
-
-        ($sut)(new CommentProductFile(
+        $command = new CommentProductFile(
             '6ffc16ae-3e0d-4a10-a8c3-7e33e2a4c287',
             'julia@roberts.com',
             'Your product file is awesome!',
             new \DateTimeImmutable(),
-        ));
+        );
+        $sut = new CommentProductFileHandler($productFileRepository, $this->getValidatorSpyWithNoError($command));
+
+        ($sut)($command);
+    }
+
+    private function getValidatorSpyWithNoError(CommentProductFile $command): ValidatorInterface
+    {
+        $violationsSpy = $this->createMock(ConstraintViolationList::class);
+        $violationsSpy->expects($this->once())->method('count')->willReturn(0);
+
+        $validatorSpy = $this->createMock(ValidatorInterface::class);
+        $validatorSpy->expects($this->once())->method('validate')->with($command)->willReturn($violationsSpy);
+
+        return $validatorSpy;
     }
 }
