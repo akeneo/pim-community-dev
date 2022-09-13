@@ -124,6 +124,9 @@ workflows:
                       - test_deploy
                       - test_upgrade_from_last_release
                       - test_catalogs
+            - release_ucs:
+                  requires:
+                      - release-srnt
 
     nightly_grth_release:
         when:
@@ -323,6 +326,9 @@ workflows:
                       - test_back_performance
                       - test_back_behat_legacy
                       - test_back_data_migrations
+            - release_ucs:
+                  requires:
+                      - "[srnt] Release"
             - release:
                   name: "[<< matrix.PRODUCT_TYPE >>] Release"
                   matrix:

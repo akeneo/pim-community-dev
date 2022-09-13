@@ -39,12 +39,8 @@ steps:
         GSA_ARGOCD="argocd@${PROJECT_ID}.iam.gserviceaccount.com" yq -i '.repoServer.serviceAccount.annotations."iam.gke.io/gcp-service-account" = env(GSA_ARGOCD)' k8s/argocd/values.yaml
 
         # Set target revision to current branch
-        BRANCH_NAME="${BRANCH_NAME}" yq -i '.applications[0].source.targetRevision = env(BRANCH_NAME)' k8s/argocd-apps/values.yaml
-        BRANCH_NAME="${BRANCH_NAME}" yq -i '.applications[1].source.targetRevision = env(BRANCH_NAME)' k8s/argocd-apps/values.yaml
-        BRANCH_NAME="${BRANCH_NAME}" yq -i '.applications[2].source.targetRevision = env(BRANCH_NAME)' k8s/argocd-apps/values.yaml
-        VALUES="values-${PROJECT_ID}" yq -i '.applications[0].helm.valueFiles[0] = env(VALUES)' k8s/argocd-apps/values.yaml
-        VALUES="values-${PROJECT_ID}" yq -i '.applications[0].helm.valueFiles[1] = env(VALUES)' k8s/argocd-apps/values.yaml
-        VALUES="values-${PROJECT_ID}" yq -i '.applications[0].helm.valueFiles[2] = env(VALUES)' k8s/argocd-apps/values.yaml
+        BRANCH_NAME="${BRANCH_NAME}" yq -i '.applications[].source.targetRevision = env(BRANCH_NAME)' k8s/argocd-apps/values.yaml
+        VALUES="values-${_CLUSTER_NAME}.yaml" yq -i '.applications[].helm.valueFiles[1] = env(VALUES)' k8s/argocd-apps/values.yaml
 
         ## Datadog
         kubectl create secret generic datadog-api-secret --from-literal api-key="$$DATADOG_API_KEY"

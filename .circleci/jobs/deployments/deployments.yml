@@ -556,8 +556,8 @@ jobs:
               SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE="srnt-job-queue-data-maintenance-${CIRCLE_BRANCH_LOWER}"
               SUBSCRIPTION_JOB_SCHEDULER="srnt-job-schudeler-${CIRCLE_BRANCH_LOWER}"
 
-              CLOUD_FUNCTION_NAME="srnt-job-schudeler-${CIRCLE_BRANCH_LOWER}"
-              CLOUD_FUNCTION_BUCKET="srnt-job-schudeler-${CIRCLE_BRANCH_LOWER}"
+              CLOUD_FUNCTION_NAME="srnt-job-publisher-${CIRCLE_BRANCH_LOWER}"
+              CLOUD_FUNCTION_BUCKET="srnt-job-publisher-${CIRCLE_BRANCH_LOWER}"
 
               echo export CIRCLE_BRANCH_LOWER=${CIRCLE_BRANCH_LOWER} >> $BASH_ENV
               echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
@@ -594,32 +594,32 @@ jobs:
               rm -rf /tmp/pim-saas-k8s-artifacts/pim-saas-service
               mv /tmp/pim-enterprise-dev/deployments-ucs/pim-saas-service /tmp/pim-saas-k8s-artifacts/pim-saas-service
 
-              ## values.yaml
-              yq m -x -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values.yaml /tmp/pim-enterprise-dev/deployments-ucs/config/ci-values.yaml
+              ## Create the values.yaml (values.yaml overide by values-ci.yaml)
+              cp /tmp/pim-enterprise-dev/deployments-ucs/config/ci-values.yaml /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml
 
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values.yaml global.extraLabels.instanceName "${INSTANCE_NAME}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values.yaml common.gcpFireStoreProjectID "${GOOGLE_CLOUD_FIRESTORE_PROJECT}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values.yaml common.gcpProjectID "${GOOGLE_CLOUD_PROJECT}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values.yaml common.googleZone "${GOOGLE_ZONE}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values.yaml common.location "${LOCATION}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values.yaml common.pimMasterDomain "${PIM_MASTER_DOMAIN}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values.yaml common.dnsCloudDomain "${GOOGLE_DOMAIN}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values.yaml common.region "${GOOGLE_CLUSTER_REGION}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values.yaml common.workloadIdentityKSA "${WORKLOAD_IDENTITY_KSA}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values.yaml image.pim.tag "${IMAGE_TAG}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values.yaml pim.pubsub.topic_business_event "${TOPIC_BUSINESS_EVENT}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values.yaml pim.pubsub.topic_job_queue_ui "${TOPIC_JOB_QUEUE_UI}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values.yaml pim.pubsub.topic_job_queue_import_export "${TOPIC_JOB_QUEUE_IMPORT_EXPORT}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values.yaml pim.pubsub.topic_job_queue_data_maintenance "${TOPIC_JOB_QUEUE_DATA_MAINTENANCE}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values.yaml pim.pubsub.topic_job_scheduler "${TOPIC_JOB_SCHEDULER}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values.yaml pim.pubsub.subscription_webhook "${SUBSCRIPTION_WEBHOOK}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values.yaml pim.pubsub.subscription_job_queue_ui "${SUBSCRIPTION_JOB_QUEUE_UI}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values.yaml pim.pubsub.subscription_job_queue_import_export "${SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values.yaml pim.pubsub.subscription_job_queue_data_maintenance "${SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values.yaml pim.pubsub.subscription_job_scheduler "${SUBSCRIPTION_JOB_SCHEDULER}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values.yaml pim.cloudFunction.name "${CLOUD_FUNCTION_NAME}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values.yaml pim.cloudFunction.bucket "${CLOUD_FUNCTION_BUCKET}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values.yaml pim.jobsPrefix "${CIRCLE_BRANCH_LOWER}-pim-job"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml global.extraLabels.instanceName "${INSTANCE_NAME}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml common.gcpFireStoreProjectID "${GOOGLE_CLOUD_FIRESTORE_PROJECT}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml common.gcpProjectID "${GOOGLE_CLOUD_PROJECT}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml common.googleZone "${GOOGLE_ZONE}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml common.location "${LOCATION}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml common.pimMasterDomain "${PIM_MASTER_DOMAIN}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml common.dnsCloudDomain "${GOOGLE_DOMAIN}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml common.region "${GOOGLE_CLUSTER_REGION}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml common.workloadIdentityKSA "${WORKLOAD_IDENTITY_KSA}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml image.pim.tag "${IMAGE_TAG}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.pubsub.topic_business_event "${TOPIC_BUSINESS_EVENT}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.pubsub.topic_job_queue_ui "${TOPIC_JOB_QUEUE_UI}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.pubsub.topic_job_queue_import_export "${TOPIC_JOB_QUEUE_IMPORT_EXPORT}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.pubsub.topic_job_queue_data_maintenance "${TOPIC_JOB_QUEUE_DATA_MAINTENANCE}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.pubsub.topic_job_scheduler "${TOPIC_JOB_SCHEDULER}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.pubsub.subscription_webhook "${SUBSCRIPTION_WEBHOOK}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.pubsub.subscription_job_queue_ui "${SUBSCRIPTION_JOB_QUEUE_UI}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.pubsub.subscription_job_queue_import_export "${SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.pubsub.subscription_job_queue_data_maintenance "${SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.pubsub.subscription_job_scheduler "${SUBSCRIPTION_JOB_SCHEDULER}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.cloudFunction.name "${CLOUD_FUNCTION_NAME}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.cloudFunction.bucket "${CLOUD_FUNCTION_BUCKET}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.jobsPrefix "${CIRCLE_BRANCH_LOWER}-pim-job"
 
               ## Charts
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/Chart.yaml appVersion ${IMAGE_TAG}
@@ -629,6 +629,7 @@ jobs:
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/argocd-app/pim-application.yaml spec.destination.namespace pim-${CIRCLE_BRANCH_LOWER}
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/argocd-app/pim-application.yaml metadata.name pim-${CIRCLE_BRANCH_LOWER}
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/argocd-app/pim-application.yaml metadata.labels.name pim-${CIRCLE_BRANCH_LOWER}
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/argocd-app/pim-application.yaml spec.source.helm.valueFiles[+] values-ci.yaml
 
               git add pim-saas-service
               git commit -m "Update release version"

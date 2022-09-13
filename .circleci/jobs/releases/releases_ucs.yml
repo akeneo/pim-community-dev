@@ -1,0 +1,56 @@
+envVarsDeployPIMSaaSDev: &envVarsDeployPIMSaaSDev
+executor-machine: &executor-machine
+
+jobs:
+    release_ucs:
+        environment:
+            <<: *envVarsDeployPIMSaaSDev
+        machine:
+            image: *executor-machine
+        resource_class: medium
+        steps:
+            - attach_workspace:
+                  at: ~/
+            - add_ssh_keys:
+                  fingerprints:
+                      - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+            - restore_persisted_env_vars
+            - install_yq_v3
+            - run:
+                  name: Pull image from prod registry
+                  command: |
+                      echo ${GCLOUD_SERVICE_KEY_DEV} | gcloud auth activate-service-account --key-file=-
+                      gcloud config set project akecld-saas-dev
+                      gcloud config set compute/zone europe-west3-a
+                      gcloud container clusters get-credentials europe-west3-a --project=akecld-saas-dev --zone=europe-west3-a
+                      echo ${GCLOUD_SERVICE_KEY_DEV} > ${HOME}/gcloud-service-key.json
+                      echo 'export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"' >> $BASH_ENV
+                      export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"
+                      gcloud auth configure-docker --quiet
+
+                      docker pull eu.gcr.io/akeneo-cloud/pim-enterprise-dev:${RELEASE_NAME}
+            - set_gcloud_config_pim_saas_dev
+            - run:
+                  name: Tag and push prod image to UCS dev registry
+                  command: |
+                      docker image tag eu.gcr.io/akeneo-cloud/pim-enterprise-dev:${RELEASE_NAME} ${GOOGLE_CLUSTER_REGION}-docker.pkg.dev/${GOOGLE_PROJECT_ID}/pim-enterprise-dev/pim-enterprise-dev:${RELEASE_NAME}
+                      docker push ${GOOGLE_CLUSTER_REGION}-docker.pkg.dev/${GOOGLE_PROJECT_ID}/pim-enterprise-dev/pim-enterprise-dev:${RELEASE_NAME}
+            - run:
+                name: Update the pim-saas-k8s-artifacts with the new values
+                command: |
+                  ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                  export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                  git config --global user.email "pim_ci@akeneo.com"
+                  git config --global user.name "pim_ci_deployment"
+
+                  git clone git@github.com:akeneo/pim-saas-k8s-artifacts.git /tmp/pim-saas-k8s-artifacts
+                  bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-dev-europe-west1.sh
+                  bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-sandbox-europe-west1.sh
+
+                  # Copy the default values.yaml file
+                  cp deployments-ucs/pim-saas-service/values.yaml /tmp/pim-saas-k8s-artifacts/pim-saas-service/values.yaml
+                  cd /tmp/pim-saas-k8s-artifacts
+                  git add pim-saas-service
+                  git commit -m "Update release version"
+                  # Should the master branch be protected?
+                  git push
