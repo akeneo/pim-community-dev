@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\BatchQueueBundle\Command;
 
+use Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -15,10 +15,11 @@ use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 
 /**
- * The watchdog process is launched by the daemon consuming messages to run jobs. This watchdog process  launches itself a child process to run a single Akeneo job.
- The daemon does not run directly the jobs:
- - the daemon is tenant agnostic whereas watchdog process is dedicated for a tenant
- - if the job die for unexpected reason, the job status is updated by the watchdog, which is possible as it can access to the database (tenant specific)
+ * The watchdog process is launched by the daemon consuming messages to run jobs. This watchdog process  launches
+ * itself a child process to run a single Akeneo job. The daemon does not run directly the jobs:
+ * - the daemon is tenant agnostic whereas watchdog process is dedicated for a tenant
+ * - if the job die for unexpected reason, the job status is updated by the watchdog, which is possible as it can
+ * access to the database (tenant specific)
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
@@ -37,7 +38,8 @@ final class JobExecutionWatchdogCommand extends Command
     public function __construct(
         private JobExecutionManager $executionManager,
         private LoggerInterface $logger,
-        private string $projectDir
+        private string $projectDir,
+        private CreateJobExecutionHandler $createJobExecutionHandler,
     ) {
         parent::__construct();
     }
@@ -46,7 +48,18 @@ final class JobExecutionWatchdogCommand extends Command
     {
         $this
             ->setHidden(true)
-            ->addArgument('job_execution_id', InputArgument::REQUIRED, 'Job execution ID')
+            ->addOption(
+                'job_execution_id',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Job execution ID to launch'
+            )
+            ->addOption(
+                'job_code',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Job code to launch when no execution id provided'
+            )
             ->addOption(
                 'username',
                 null,
@@ -69,10 +82,20 @@ final class JobExecutionWatchdogCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $pathFinder = new PhpExecutableFinder();
+        $jobExecutionId = $input->getOption('job_execution_id') ? (int)$input->getOption('job_execution_id') : null;
+        $jobCode = $input->getOption('job_code') ? (string)$input->getOption('job_code') : null;
+
+        if (null === $jobExecutionId && null === $jobCode) {
+            throw new \InvalidArgumentException('You must specify job_execution_id or job_code');
+        }
+        if (null === $jobExecutionId) {
+            $jobExecution = $this->createJobExecutionHandler->createFromBatchCode($jobCode, [], null);
+            $jobExecutionId = $jobExecution->getId();
+        }
+
         $console = sprintf('%s/bin/console', $this->projectDir);
+        $pathFinder = new PhpExecutableFinder();
         $startTime = time();
-        $jobExecutionId = (int)$input->getArgument('job_execution_id');
         try {
             $processArguments = $this->buildBatchCommand(
                 $console,
@@ -120,12 +143,15 @@ final class JobExecutionWatchdogCommand extends Command
             $phpPath,
             $console,
             'akeneo:batch:job',
-            'dummy_batch_code',
+            'dummy_code',
             $jobExecutionId,
             '--quiet',
         ];
 
         foreach ($watchdogOptions as $optionName => $optionValue) {
+            if ('job_execution_id' === $optionName || 'job_code' === $optionName) {
+                continue;
+            }
             switch (true) {
                 case true === $optionValue:
                     $processArguments[] = sprintf('--%s', $optionName);

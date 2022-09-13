@@ -18,6 +18,14 @@ $rules['single_quote'] = [
     'strings_containing_single_quote_chars' => true,
 ];
 
+$rules['cast_spaces'] = [
+    'space' => 'single',
+];
+
+$rules['binary_operator_spaces'] = [
+    'default' => 'single_space',
+];
+
 $config
     ->setRiskyAllowed(true)
     ->setRules($rules)

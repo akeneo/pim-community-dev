@@ -11,3 +11,13 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pim_connector.validator.item.charset_validator'
+
+    Akeneo\Tool\Component\Connector\Step\CheckJobUniqueStep:
+        arguments:
+            - 'check_job_unique'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_framework.lock.factory'
+            - '@logger'
+            - '@akeneo_batch.manager.job_execution'
+            - '@pim_enrich.repository.job_execution'

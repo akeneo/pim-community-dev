@@ -11,6 +11,9 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @covers \Akeneo\Catalogs\Infrastructure\Controller\Public\GetProductIdentifiersAction
+ * @covers \Akeneo\Catalogs\Application\Handler\GetProductIdentifiersHandler
  */
 class GetProductIdentifiersActionTest extends IntegrationTestCase
 {
@@ -97,7 +100,7 @@ class GetProductIdentifiersActionTest extends IntegrationTestCase
 
         $response = $this->client->getResponse();
 
-        Assert::assertEquals(400, $response->getStatusCode());
+        Assert::assertEquals(422, $response->getStatusCode());
     }
 
     public function testItReturnsForbiddenWhenMissingPermissions(): void

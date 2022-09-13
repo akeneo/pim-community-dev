@@ -147,6 +147,96 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
         ], $result);
     }
 
+    public function testItGetsMatchingProductsUuidsUsingUpdatedAfter(): void
+    {
+        $this->createUser('owner');
+        $this->logAs('owner');
+
+        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'owner');
+        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        $this->setCatalogProductSelection('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
+            [
+                'field' => 'enabled',
+                'operator' => Operator::EQUALS,
+                'value' => true,
+            ],
+        ]);
+
+        $this->clock->set(new \DateTimeImmutable('2022-09-01T15:30:00+00:00'));
+        $this->createProduct('tshirt-blue', [new SetEnabled(true)]);
+
+        $this->clock->set(new \DateTimeImmutable('2022-09-01T15:40:00+00:00'));
+        $this->createProduct('tshirt-green', [new SetEnabled(true)]);
+
+        $uuids = $this->getProductIdentifierToUuidMapping();
+
+        $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', null, 100, '2022-09-01T17:35:00+02:00');
+
+        $this->assertEquals([
+            $uuids['tshirt-green'],
+        ], $result);
+    }
+
+    public function testItGetsMatchingProductsUuidsUsingUpdatedBefore(): void
+    {
+        $this->createUser('owner');
+        $this->logAs('owner');
+
+        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'owner');
+        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        $this->setCatalogProductSelection('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
+            [
+                'field' => 'enabled',
+                'operator' => Operator::EQUALS,
+                'value' => true,
+            ],
+        ]);
+
+        $this->clock->set(new \DateTimeImmutable('2022-09-01T15:30:00+00:00'));
+        $this->createProduct('tshirt-blue', [new SetEnabled(true)]);
+
+        $this->clock->set(new \DateTimeImmutable('2022-09-01T15:40:00+00:00'));
+        $this->createProduct('tshirt-green', [new SetEnabled(true)]);
+
+        $uuids = $this->getProductIdentifierToUuidMapping();
+
+        $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', null, 100, null, '2022-09-01T17:35:00+02:00');
+
+        $this->assertEquals([
+            $uuids['tshirt-blue'],
+        ], $result);
+    }
+
+    public function testItGetsMatchingProductsUuidsUsingUpdatedBeforeAndUpdatedAfter(): void
+    {
+        $this->createUser('owner');
+        $this->logAs('owner');
+
+        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'owner');
+        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        $this->setCatalogProductSelection('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
+            [
+                'field' => 'enabled',
+                'operator' => Operator::EQUALS,
+                'value' => true,
+            ],
+        ]);
+
+        $this->clock->set(new \DateTimeImmutable('2022-09-01T15:30:00+00:00'));
+        $this->createProduct('tshirt-blue', [new SetEnabled(true)]);
+
+        $this->clock->set(new \DateTimeImmutable('2022-09-01T15:40:00+00:00'));
+        $this->createProduct('tshirt-green', [new SetEnabled(true)]);
+
+        $uuids = $this->getProductIdentifierToUuidMapping();
+
+        $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', null, 100, '2022-09-01T17:35:00+02:00', '2022-09-01T17:45:00+02:00');
+
+        $this->assertEquals([
+            $uuids['tshirt-green'],
+        ], $result);
+    }
+
     /**
      * @return array<string, string>
      */

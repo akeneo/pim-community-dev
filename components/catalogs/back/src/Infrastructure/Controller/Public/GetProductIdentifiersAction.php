@@ -12,6 +12,7 @@ use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
 use Akeneo\Catalogs\ServiceAPI\Query\GetProductIdentifiersQuery;
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
+use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -101,14 +102,15 @@ class GetProductIdentifiersAction
                     $limit,
                 )
             );
-        } catch (ValidationFailedException) {
-            throw new BadRequestHttpException();
+        } catch (ValidationFailedException $e) {
+            throw new ViolationHttpException($e->getViolations());
         }
     }
 
     /**
      * @param array<string> $identifiers
-     * @return array<array-key, mixed>
+     *
+     * @return array{_links: array{self: array{href: string}, first: array{href: string}, next?: array{href: string}}, _embedded: array{items: string[]}}
      */
     private function paginate(Catalog $catalog, array $identifiers, ?string $searchAfter, int $limit): array
     {
