@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\HandleDataMapping;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingResult;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
@@ -81,7 +80,7 @@ final class HandleSimpleSelectTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    UpsertProductCommand::createFromCollection(
+                    $this->createUpsertProductCommand(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
                         userIntents: [
@@ -121,7 +120,7 @@ final class HandleSimpleSelectTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    UpsertProductCommand::createFromCollection(
+                    $this->createUpsertProductCommand(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
                         userIntents: [

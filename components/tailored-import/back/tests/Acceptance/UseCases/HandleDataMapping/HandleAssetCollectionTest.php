@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\HandleDataMapping;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddAssetValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetAssetValue;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingResult;
@@ -81,7 +80,7 @@ final class HandleAssetCollectionTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    UpsertProductCommand::createFromCollection(
+                    $this->createUpsertProductCommand(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
                         userIntents: [
@@ -116,7 +115,7 @@ final class HandleAssetCollectionTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    UpsertProductCommand::createFromCollection(
+                    $this->createUpsertProductCommand(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
                         userIntents: [
@@ -151,7 +150,7 @@ final class HandleAssetCollectionTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    UpsertProductCommand::createFromCollection(
+                    $this->createUpsertProductCommand(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
                         userIntents: [
@@ -187,7 +186,7 @@ final class HandleAssetCollectionTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    UpsertProductCommand::createFromCollection(
+                    $this->createUpsertProductCommand(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
                         userIntents: [
@@ -223,7 +222,7 @@ final class HandleAssetCollectionTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    UpsertProductCommand::createFromCollection(
+                    $this->createUpsertProductCommand(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
                         userIntents: [],

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\OperationApplier;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentRegistry;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
@@ -74,10 +75,10 @@ class ExecuteDataMappingHandler
         }
 
         return new ExecuteDataMappingResult(
-            UpsertProductCommand::createFromCollection(
-                $executeDataMappingQuery->getUserId(),
-                $productIdentifier->getValue() ?? '',
-                $userIntents,
+            UpsertProductCommand::createWithIdentifier(
+                userId: $executeDataMappingQuery->getUserId(),
+                productIdentifier: ProductIdentifier::fromIdentifier($productIdentifier->getValue() ?? ''),
+                userIntents: $userIntents,
             ),
             $invalidValues,
         );

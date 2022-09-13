@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\HandleDataMapping;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingResult;
@@ -63,7 +62,7 @@ final class HandleCategoriesTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    UpsertProductCommand::createFromCollection(
+                    $this->createUpsertProductCommand(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
                         userIntents: [new SetCategories(['shoes'])],
@@ -91,7 +90,7 @@ final class HandleCategoriesTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    UpsertProductCommand::createFromCollection(
+                    $this->createUpsertProductCommand(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
                         userIntents: [new AddCategories(['shoes'])],
@@ -119,7 +118,7 @@ final class HandleCategoriesTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    UpsertProductCommand::createFromCollection(
+                    $this->createUpsertProductCommand(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
                         userIntents: [new SetCategories(['shoes', 'clothing'])],
@@ -148,7 +147,7 @@ final class HandleCategoriesTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    UpsertProductCommand::createFromCollection(
+                    $this->createUpsertProductCommand(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
                         userIntents: [new SetCategories(['shoes', 'clothing'])],
@@ -178,7 +177,7 @@ final class HandleCategoriesTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    UpsertProductCommand::createFromCollection(
+                    $this->createUpsertProductCommand(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
                         userIntents: [new SetCategories(['shoes', 'women', 'clothing', 'men'])],
@@ -205,7 +204,7 @@ final class HandleCategoriesTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    UpsertProductCommand::createFromCollection(
+                    $this->createUpsertProductCommand(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
                         userIntents: [new SetCategories([])],
@@ -237,7 +236,7 @@ final class HandleCategoriesTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    UpsertProductCommand::createFromCollection(
+                    $this->createUpsertProductCommand(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
                         userIntents: [new SetCategories(['adidas'])],
@@ -275,7 +274,7 @@ final class HandleCategoriesTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    UpsertProductCommand::createFromCollection(
+                    $this->createUpsertProductCommand(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
                         userIntents: [new SetCategories(['adidas', 'puma'])],
@@ -315,7 +314,7 @@ final class HandleCategoriesTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    UpsertProductCommand::createFromCollection(
+                    $this->createUpsertProductCommand(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
                         userIntents: [new SetCategories([

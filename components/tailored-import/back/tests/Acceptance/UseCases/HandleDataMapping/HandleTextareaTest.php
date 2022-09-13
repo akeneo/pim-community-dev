@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\HandleDataMapping;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
-use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingResult;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ChangeCaseOperation;
@@ -83,9 +81,9 @@ final class HandleTextareaTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    UpsertProductCommand::createWithIdentifier(
+                    $this->createUpsertProductCommand(
                         userId: 1,
-                        productIdentifier: ProductIdentifier::fromIdentifier('this-is-a-sku'),
+                        productIdentifier: 'this-is-a-sku',
                         userIntents: [
                             new SetTextareaValue('textarea_attribute', null, null, 'this is a textarea attribute'),
                             new SetTextareaValue('description', 'ecommerce', 'fr_FR', 'this is a description'),
@@ -135,9 +133,9 @@ final class HandleTextareaTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    UpsertProductCommand::createWithIdentifier(
+                    $this->createUpsertProductCommand(
                         userId: 1,
-                        productIdentifier: ProductIdentifier::fromIdentifier('this-is-a-sku'),
+                        productIdentifier: 'this-is-a-sku',
                         userIntents: [
                             new SetTextareaValue('name', null, null, 'i want this cleaned'),
                             new SetTextareaValue('description', 'ecommerce', 'fr_FR', 'but not <h2>this</h2>'),
@@ -207,9 +205,9 @@ final class HandleTextareaTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    UpsertProductCommand::createWithIdentifier(
+                    $this->createUpsertProductCommand(
                         userId: 1,
-                        productIdentifier: ProductIdentifier::fromIdentifier('this-is-a-sku'),
+                        productIdentifier: 'this-is-a-sku',
                         userIntents: [
                             new SetTextareaValue('name', null, null, 'I NEED TO BE UPPERCASED'),
                             new SetTextareaValue('description', 'ecommerce', 'fr_FR', 'i m feeling too big'),
@@ -280,9 +278,9 @@ final class HandleTextareaTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    UpsertProductCommand::createWithIdentifier(
+                    $this->createUpsertProductCommand(
                         userId: 1,
-                        productIdentifier: ProductIdentifier::fromIdentifier('this-is-a-sku'),
+                        productIdentifier: 'this-is-a-sku',
                         userIntents: [
                             new SetTextareaValue('name1', null, null, ' A text with whitespace '),
                             new SetTextareaValue('name2', null, null, 'A text with  whitespace'),
@@ -334,9 +332,9 @@ final class HandleTextareaTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    UpsertProductCommand::createWithIdentifier(
+                    $this->createUpsertProductCommand(
                         userId: 1,
-                        productIdentifier: ProductIdentifier::fromIdentifier('this-is-a-sku'),
+                        productIdentifier: 'this-is-a-sku',
                         userIntents: [
                             new SetTextareaValue('name', null, null, 'I want this cleaned and capitalized'),
                             new SetTextareaValue('description', 'ecommerce', 'fr_FR', 'but not <h2>this</h2>'),

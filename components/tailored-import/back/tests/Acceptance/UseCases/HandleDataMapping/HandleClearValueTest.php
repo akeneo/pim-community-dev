@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\HandleDataMapping;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingResult;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
@@ -64,7 +62,7 @@ final class HandleClearTest extends HandleDataMappingTestCase
                     )
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    UpsertProductCommand::createFromCollection(
+                    $this->createUpsertProductCommand(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
                         userIntents: [

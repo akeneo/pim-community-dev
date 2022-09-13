@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\HandleDataMapping;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingHandler;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingQuery;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
@@ -78,6 +80,15 @@ abstract class HandleDataMappingTestCase extends KernelTestCase
                 $this->createIdentifierDataMapping($uuid),
                 ...$dataMappings,
             ]),
+        );
+    }
+
+    protected function createUpsertProductCommand(int $userId, string $productIdentifier, array $userIntents): UpsertProductCommand
+    {
+        return UpsertProductCommand::createWithIdentifier(
+            userId: $userId,
+            productIdentifier: ProductIdentifier::fromIdentifier($productIdentifier),
+            userIntents: $userIntents,
         );
     }
 }

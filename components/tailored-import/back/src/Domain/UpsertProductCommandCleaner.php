@@ -17,6 +17,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\CategoryUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\FamilyUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
 
 class UpsertProductCommandCleaner
 {
@@ -34,9 +35,9 @@ class UpsertProductCommandCleaner
         $familyUserIntent = self::processFamilyUserIntent($violationPropertyPaths, $upsertProductCommand->familyUserIntent());
         $enabledUserIntent = self::processEnabledUserIntent($violationPropertyPaths, $upsertProductCommand->enabledUserIntent());
 
-        return UpsertProductCommand::createFromCollection(
+        return UpsertProductCommand::createWithIdentifier(
             userId: $upsertProductCommand->userId(),
-            productIdentifier: $upsertProductCommand->productIdentifierOrUuid()->identifier(),
+            productIdentifier: ProductIdentifier::fromIdentifier($upsertProductCommand->productIdentifierOrUuid()->identifier()),
             userIntents: \array_merge([
                 $familyUserIntent,
                 $categoryUserIntent,

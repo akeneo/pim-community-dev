@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\HandleDataMapping;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
-use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingResult;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ChangeCaseOperation;
@@ -83,9 +81,9 @@ final class HandleTextTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    UpsertProductCommand::createWithIdentifier(
+                    $this->createUpsertProductCommand(
                         userId: 1,
-                        productIdentifier: ProductIdentifier::fromIdentifier('this-is-a-sku'),
+                        productIdentifier: 'this-is-a-sku',
                         userIntents: [
                             new SetTextValue('name', null, null, 'this is a name'),
                             new SetTextValue('description', 'ecommerce', 'fr_FR', 'this is a description'),
@@ -135,9 +133,9 @@ final class HandleTextTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    UpsertProductCommand::createWithIdentifier(
+                    $this->createUpsertProductCommand(
                         userId: 1,
-                        productIdentifier: ProductIdentifier::fromIdentifier('this-is-a-sku'),
+                        productIdentifier: 'this-is-a-sku',
                         userIntents: [
                             new SetTextValue('name', null, null, 'i want this cleaned'),
                             new SetTextValue('description', 'ecommerce', 'fr_FR', 'but not <h2>this</h2>'),
@@ -207,9 +205,9 @@ final class HandleTextTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    UpsertProductCommand::createWithIdentifier(
+                    $this->createUpsertProductCommand(
                         userId: 1,
-                        productIdentifier: ProductIdentifier::fromIdentifier('this-is-a-sku'),
+                        productIdentifier: 'this-is-a-sku',
                         userIntents: [
                             new SetTextValue('name', null, null, 'I NEED TO BE UPPERCASED'),
                             new SetTextValue('description', 'ecommerce', 'fr_FR', 'i m feeling too big'),
@@ -280,9 +278,9 @@ final class HandleTextTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    UpsertProductCommand::createWithIdentifier(
+                    $this->createUpsertProductCommand(
                         userId: 1,
-                        productIdentifier: ProductIdentifier::fromIdentifier('this-is-a-sku'),
+                        productIdentifier: 'this-is-a-sku',
                         userIntents: [
                             new SetTextValue('name1', null, null, ' A text with whitespace '),
                             new SetTextValue('name2', null, null, 'A text with  whitespace'),
@@ -335,9 +333,9 @@ final class HandleTextTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    UpsertProductCommand::createWithIdentifier(
+                    $this->createUpsertProductCommand(
                         userId: 1,
-                        productIdentifier: ProductIdentifier::fromIdentifier('this-is-a-sku'),
+                        productIdentifier: 'this-is-a-sku',
                         userIntents: [
                             new SetTextValue('name', null, null, 'I want this trimmed, cleaned and capitalized'),
                             new SetTextValue('description', 'ecommerce', 'fr_FR', 'but not <h2>this</h2>'),
