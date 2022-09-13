@@ -87,11 +87,21 @@ supplier_portal:
         contributor: Współtwórca
         supplier: Dostawca
         status: Status
+        download: Ikona pobierania
       notification:
         error_loading_supplier_files:
           title: Nie można wyświetlić plików produktowych.
           content: Przepraszamy za utrudnienia, spróbuj ponownie za chwilę.
+    pim_notification:
+      button_label: Zobacz pliki produktowe
 pim_title:
   supplier_portal_retailer_supplier_list: Dostawcy
   supplier_portal_retailer_supplier_edit: Edytuj dostawcę
+  supplier_portal_retailer_product_files_list: Pliki produktowe
 batch_jobs.supplier_portal_xlsx_supplier_import.label: Import dostawców do Portalu dostawcy w formacie XLSX
+pim_notification:
+  supplier_portal:
+    new_product_file:
+      button_label: Zobacz pliki produktowe
+  types:
+    new_product_file: Nowy plik produktowy
