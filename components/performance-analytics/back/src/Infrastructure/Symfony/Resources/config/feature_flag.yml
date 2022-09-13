@@ -1,0 +1,5 @@
+services:
+    akeneo.performance_analytics.feature:
+        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
+        arguments:
+          - '%env(default::FLAG_PERFORMANCE_ANALYTICS_ENABLED)%'

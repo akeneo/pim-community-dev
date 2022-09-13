@@ -148,6 +148,9 @@ pimee_data_quality_insights:
 pimee_enrichment:
     resource: "@AkeneoPimEnterpriseProductEnrichmentBundle/Resources/config/routing.yml"
 
+pimee_performance_analytics:
+    resource: "@AkeneoPerformanceAnalyticsBundle/Resources/config/routing.yml"
+
 # SSO
 akeneo_authentication:
     resource: "@AkeneoPimEnterpriseAuthenticationBundle/Resources/config/routing.yml"

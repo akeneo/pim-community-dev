@@ -34,7 +34,8 @@
             "Akeneo\\Catalogs\\": "vendor/akeneo/pim-community-dev/components/catalogs/back/src",
             "Akeneo\\Category\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Category/back",
             "AkeneoEnterprise\\Category\\": "src/Akeneo/Category/back",
-            "Akeneo\\FreeTrial\\": "tria/src/Akeneo/FreeTrial/back"
+            "Akeneo\\FreeTrial\\": "tria/src/Akeneo/FreeTrial/back",
+            "Akeneo\\PerformanceAnalytics\\": "components/performance-analytics/back/src"
         },
         "exclude-from-classmap": [
             "vendor/akeneo/pim-community-dev/src/Kernel.php"

@@ -1,0 +1,8 @@
+config:
+    config:
+        pim/controller-registry:
+            controllers:
+                pimee_performance_analytics_dashboard:
+                    module: pimee/performance-analytics/dashboard
+    paths:
+        pimee/performance-analytics/dashboard: akeneoperformanceanalytics/js/dashboard
