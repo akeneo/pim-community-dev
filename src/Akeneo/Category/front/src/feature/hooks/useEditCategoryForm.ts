@@ -93,32 +93,30 @@ const useEditCategoryForm = (categoryId: number) => {
     setCategoryEdited(set(['permissions'], consistentPermissions, categoryEdited));
   };
 
-  const onChangeAttribute = useCallback((
-    attribute: Attribute,
-    localeCode: string | null,
-    attributeValue: CategoryAttributeValueData
-  ) => {
-    
-    if (categoryEdited === null) {
-      return;
-    }
+  const onChangeAttribute = useCallback(
+    (attribute: Attribute, localeCode: string | null, attributeValue: CategoryAttributeValueData) => {
+      if (categoryEdited === null) {
+        return;
+      }
 
-    const compositeKey = buildCompositeKey(attribute, localeCode);
-    const compositeKeyWithoutLocale = buildCompositeKey(attribute);
+      const compositeKey = buildCompositeKey(attribute, localeCode);
+      const compositeKeyWithoutLocale = buildCompositeKey(attribute);
 
-    const value = {
-      data: attributeValue,
-      locale: localeCode,
-      attribute_code: compositeKeyWithoutLocale,
-    };
+      const value = {
+        data: attributeValue,
+        locale: localeCode,
+        attribute_code: compositeKeyWithoutLocale,
+      };
 
-    const newCategoryEdited = set(['attributes', compositeKey], value, categoryEdited);
-    if (categoriesAreEqual(categoryEdited, newCategoryEdited)) {
-      return;
-    }
-    
-    setCategoryEdited(newCategoryEdited);
-  }, [categoryEdited]);
+      const newCategoryEdited = set(['attributes', compositeKey], value, categoryEdited);
+      if (categoriesAreEqual(categoryEdited, newCategoryEdited)) {
+        return;
+      }
+
+      setCategoryEdited(newCategoryEdited);
+    },
+    [categoryEdited]
+  );
 
   return {
     categoryFetchingStatus,

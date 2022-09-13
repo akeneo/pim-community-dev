@@ -3,7 +3,7 @@ import {Field, TextAreaInput} from 'akeneo-design-system';
 import {AttributeFieldBuilder, AttributeInputValue, AttributeFieldProps} from './types';
 import {getLabelFromAttribute} from './templateAttributesFactory';
 import styled from 'styled-components';
-import { memoize } from 'lodash/fp';
+import {memoize} from 'lodash/fp';
 
 const Field960 = styled(Field)`
   max-width: 960px;
@@ -15,7 +15,6 @@ const unMemoizedBuildRichTextFieldAttribute: AttributeFieldBuilder<AttributeInpu
     value,
     onChange,
   }: AttributeFieldProps<AttributeInputValue>) => {
-
     if (typeof value !== 'string') {
       return null;
     }

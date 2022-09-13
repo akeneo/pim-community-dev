@@ -1,4 +1,4 @@
 akeneo.category:
     edition_form:
         template:
-            fetching_failed: TODO BETTER ERROR MESSAGE An error occured while fetching template
+            fetching_failed: An error occured while fetching template

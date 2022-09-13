@@ -8,7 +8,9 @@ export type ImageAttributeInputValue = FileInfo | null;
 
 export type AttributeInputValue = TextAttributeInputValue | ImageAttributeInputValue;
 
-export type AttributeFieldBuilder<ValueType extends AttributeInputValue> = (attribute: Attribute) =>  React.FC<AttributeFieldProps<ValueType>>;
+export type AttributeFieldBuilder<ValueType extends AttributeInputValue> = (
+  attribute: Attribute
+) => React.FC<AttributeFieldProps<ValueType>>;
 
 export type AttributeFieldProps<ValueType> = {
   locale: string;
@@ -19,12 +21,12 @@ export type AttributeFieldProps<ValueType> = {
 export const isImageAttributeInputValue = (value: AttributeInputValue): value is ImageAttributeInputValue =>
   value !== null && value.hasOwnProperty('originalFilename') && value.hasOwnProperty('filePath');
 
-  export const buildDefaultAttributeInputValue = (attributeType: string): AttributeInputValue => {
-    if (attributeType === CATEGORY_ATTRIBUTE_TYPE_IMAGE) {
-      return {
-        filePath: '',
-        originalFilename: '',
-      };
-    }
-    return '';
-  };
+export const buildDefaultAttributeInputValue = (attributeType: string): AttributeInputValue => {
+  if (attributeType === CATEGORY_ATTRIBUTE_TYPE_IMAGE) {
+    return {
+      filePath: '',
+      originalFilename: '',
+    };
+  }
+  return '';
+};

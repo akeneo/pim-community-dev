@@ -3,9 +3,8 @@ import {Attribute} from '../../models';
 import {buildImageFieldAttribute} from './buildImageFieldAttribute';
 import {buildRichTextFieldAttribute} from './buildRichTextFieldAttribute';
 import {buildTextAreaFieldAttribute} from './buildTextAreaFieldAttribute';
-import { buildTextFieldAttribute } from './buildTextFieldAttribute';
+import {buildTextFieldAttribute} from './buildTextFieldAttribute';
 import {AttributeFieldBuilder, AttributeInputValue, AttributeFieldProps} from './types';
-
 
 export const getLabelFromAttribute = (attribute: Attribute, locale: string): string =>
   attribute.labels[locale] ?? '[' + attribute.code + ']';

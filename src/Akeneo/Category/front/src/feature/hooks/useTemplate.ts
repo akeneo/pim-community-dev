@@ -1,9 +1,9 @@
 import {useQuery} from 'react-query';
 import {Template} from '../models';
 import {useRoute} from '@akeneo-pim-community/shared';
-import { useCallback } from 'react';
+import {useCallback} from 'react';
 
-const TEMPLATE_FETCH_STALE_TIME = 60*60*1000;
+const TEMPLATE_FETCH_STALE_TIME = 60 * 60 * 1000;
 
 type ResultError = Error | null;
 type Result = {
@@ -32,5 +32,5 @@ export const useTemplate = (templateUuid: string): Result => {
     return await response.json();
   }, [templateUuid, url]);
 
-  return useQuery<Template, ResultError, Template>(['template'], fetchTemplate, { staleTime: TEMPLATE_FETCH_STALE_TIME});
+  return useQuery<Template, ResultError, Template>(['template'], fetchTemplate, {staleTime: TEMPLATE_FETCH_STALE_TIME});
 };

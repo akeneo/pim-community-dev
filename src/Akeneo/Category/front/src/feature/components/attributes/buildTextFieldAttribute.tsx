@@ -2,7 +2,7 @@ import React from 'react';
 import {Field, TextInput} from 'akeneo-design-system';
 import {AttributeFieldBuilder, AttributeInputValue, AttributeFieldProps} from './types';
 import {getLabelFromAttribute} from './templateAttributesFactory';
-import { memoize } from 'lodash/fp';
+import {memoize} from 'lodash/fp';
 
 const unMemoizedBuildTextFieldAttribute: AttributeFieldBuilder<AttributeInputValue> = attribute => {
   const Component: React.FC<AttributeFieldProps<AttributeInputValue>> = ({
@@ -25,4 +25,4 @@ const unMemoizedBuildTextFieldAttribute: AttributeFieldBuilder<AttributeInputVal
   return Component;
 };
 
-export const buildTextFieldAttribute=memoize(unMemoizedBuildTextFieldAttribute);
+export const buildTextFieldAttribute = memoize(unMemoizedBuildTextFieldAttribute);

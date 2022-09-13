@@ -94,7 +94,7 @@ export const EditAttributesForm = ({attributeValues, onAttributeValueChange}: Pr
   }, [template, handleImageChange, handleTextChange]);
 
   if (isLoading) {
-    return null; //TODO display loading info ?
+    return <h1>TEXT FOR LOADING OR LOADER : TO SEE WITH PO</h1>;
   }
 
   if (isError) {
