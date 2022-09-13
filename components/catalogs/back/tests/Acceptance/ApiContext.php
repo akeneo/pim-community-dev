@@ -4,13 +4,21 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Acceptance;
 
+use Akeneo\Catalogs\Application\Persistence\UpdateCatalogProductSelectionCriteriaQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\UpsertCatalogQueryInterface;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Behat\Behat\Context\Context;
+use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,6 +38,8 @@ class ApiContext implements Context
         KernelInterface $kernel,
         private AuthenticationContext $authentication,
         private QueryBus $queryBus,
+        private UpsertCatalogQueryInterface $upsertCatalogQuery,
+        private UpdateCatalogProductSelectionCriteriaQueryInterface $updateCatalogProductSelectionCriteriaQuery,
     ) {
         $this->container = $kernel->getContainer()->get('test.service_container');
     }
@@ -43,6 +53,7 @@ class ApiContext implements Context
             'read_catalogs',
             'write_catalogs',
             'delete_catalogs',
+            'read_products',
         ]);
 
         /** @var UserInterface $user */
@@ -84,6 +95,70 @@ class ApiContext implements Context
             'Store UK',
             $user->getUserIdentifier(),
         ));
+    }
+
+    /**
+     * @Given the catalog is enabled
+     */
+    public function theCatalogIsEnabled(): void
+    {
+        /** @var UserInterface $user */
+        $user = $this->container->get('security.token_storage')->getToken()->getUser();
+
+        $this->upsertCatalogQuery->execute(
+            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            'Store US',
+            $user->getUserIdentifier(),
+            true,
+        );
+    }
+
+    /**
+     * @Given the catalog has product selection criteria
+     */
+    public function theCatalogHasProductSelectionCriteria(): void
+    {
+        $productSelectionCriteria = [
+            [
+                'field' => 'enabled',
+                'operator' => '=',
+                'value' => true,
+            ],
+        ];
+
+        $this->updateCatalogProductSelectionCriteriaQuery->execute(
+            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            $productSelectionCriteria,
+        );
+    }
+
+    /**
+     * @Given the following products exist:
+     */
+    public function theFollowingProductsExist(TableNode $table): void
+    {
+        $bus = $this->container->get('pim_enrich.product.message_bus');
+
+        /** @var UserInterface $user */
+        $user = $this->container->get('security.token_storage')->getToken()->getUser();
+
+        $hash = $table->getHash();
+
+        foreach ($hash as $row) {
+            $command = UpsertProductCommand::createWithUuid(
+                $user->getId(),
+                ProductUuid::fromUuid(Uuid::fromString($row['uuid'])),
+                [
+                    new SetIdentifierValue('sku', $row['identifier']),
+                    new SetEnabled((bool) $row['enabled']),
+                ]
+            );
+
+            $bus->dispatch($command);
+        }
+
+
+        $this->container->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 
     /**
@@ -282,5 +357,129 @@ class ApiContext implements Context
 
         Assert::assertNotNull($catalog);
         Assert::assertEquals('Store US [NEW]', $catalog->getName());
+    }
+
+    /**
+     * @When the external application retrieves the product identifiers using the API
+     */
+    public function theExternalApplicationRetrievesTheProductIdentifiersUsingTheApi(): void
+    {
+        $this->client ??= $this->authentication->createAuthenticatedClient([
+            'read_catalogs',
+            'write_catalogs',
+            'delete_catalogs',
+            'read_products',
+        ]);
+
+        $this->client->request(
+            method: 'GET',
+            uri: '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/product-identifiers',
+        );
+
+        $this->response = $this->client->getResponse();
+
+        Assert::assertEquals(200, $this->response->getStatusCode());
+    }
+
+    /**
+     * @Then the response should contain the following product identifiers:
+     */
+    public function theResponseShouldContainTheFilteredProductIdentifiers(TableNode $table): void
+    {
+        $payload = \json_decode($this->response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+        $hash = $table->getHash();
+
+        Assert::assertCount(\count($hash), $payload['_embedded']['items']);
+
+        foreach ($hash as $row) {
+            Assert::assertContains($row['identifier'], $payload['_embedded']['items']);
+        }
+    }
+
+    /**
+     * @When the external application retrieves the product uuids using the API
+     */
+    public function theExternalApplicationRetrievesTheProductUuidsUsingTheApi(): void
+    {
+        $this->client ??= $this->authentication->createAuthenticatedClient([
+            'read_catalogs',
+            'write_catalogs',
+            'delete_catalogs',
+            'read_products',
+        ]);
+
+        $this->client->request(
+            method: 'GET',
+            uri: '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/product-uuids',
+        );
+
+        $this->response = $this->client->getResponse();
+
+        Assert::assertEquals(200, $this->response->getStatusCode());
+    }
+
+    /**
+     * @Then the response should contain the following product uuids:
+     */
+    public function theResponseShouldContainTheFilteredProductUuids(TableNode $table): void
+    {
+        $payload = \json_decode($this->response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+        $hash = $table->getHash();
+
+        Assert::assertCount(\count($hash), $payload['_embedded']['items']);
+
+        foreach ($hash as $row) {
+            Assert::assertContains($row['uuid'], $payload['_embedded']['items']);
+        }
+    }
+
+    /**
+     * @When the external application retrieves the products using the API
+     */
+    public function theExternalApplicationRetrievesTheProductsUsingTheApi(): void
+    {
+        $this->client ??= $this->authentication->createAuthenticatedClient([
+            'read_catalogs',
+            'write_catalogs',
+            'delete_catalogs',
+            'read_products',
+        ]);
+
+        $this->client->request(
+            method: 'GET',
+            uri: '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products',
+        );
+
+        $this->response = $this->client->getResponse();
+
+        Assert::assertEquals(200, $this->response->getStatusCode());
+    }
+
+    /**
+     * @Then the response should contain the following products:
+     */
+    public function theResponseShouldContainTheFilteredProducts(TableNode $table): void
+    {
+        $payload = \json_decode($this->response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+        $hash = $table->getHash();
+
+        Assert::assertCount(\count($hash), $payload['_embedded']['items']);
+
+        foreach ($hash as $row) {
+            $matchingProduct = null;
+            foreach ($payload['_embedded']['items'] as $product) {
+                if ($product['uuid'] === $row['uuid']) {
+                    $matchingProduct = $product;
+                    break;
+                }
+            }
+
+            Assert::assertNotNull($matchingProduct, 'the product is missing');
+
+            Assert::assertEquals($row['identifier'], $matchingProduct['values']['sku'][0]['data']);
+        }
     }
 }
