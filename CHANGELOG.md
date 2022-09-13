@@ -79,6 +79,7 @@
 - PIM-10588: Add potentially missing `remove_completeness_for_channel_and_locale` job instance
 - PIM-10620: Fix export product options values with label to be case insensitive with codes
 - PIM-10606: Fix computeFamilyVariantStructureChange on attribute removal
+- PIM-10624: Fix very slow query when counting variants for mass delete
 - PIM-10568: Fix error when running Version_7_0_20220629142647_dqi_update_pk_on_product_score during On-Premise/Flex to Serenity migration
 
 ## Improvements

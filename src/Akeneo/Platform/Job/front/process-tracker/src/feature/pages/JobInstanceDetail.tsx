@@ -16,6 +16,7 @@ const JobInstanceDetail = ({code, type}: JobInstanceDetailProps) => {
     () => ({
       page: 1,
       sort: {column: 'started_at', direction: 'DESC'},
+      automation: null,
       status: [],
       size: 25,
       search: '',

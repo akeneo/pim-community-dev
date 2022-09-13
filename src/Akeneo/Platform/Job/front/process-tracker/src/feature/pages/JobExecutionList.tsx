@@ -45,6 +45,10 @@ const JobExecutionList = () => {
     setJobExecutionFilter(jobExecutionFilter => ({...jobExecutionFilter, page: 1, user}));
   };
 
+  const handleAutomationFilterChange = (automation: null | boolean) => {
+    setJobExecutionFilter(jobExecutionFilter => ({...jobExecutionFilter, page: 1, automation}));
+  };
+
   const handleSearchChange = useCallback(
     (search: string) => {
       setJobExecutionFilter(jobExecutionFilter => ({...jobExecutionFilter, page: 1, search}));
@@ -83,6 +87,7 @@ const JobExecutionList = () => {
               onStatusFilterChange={handleStatusFilterChange}
               onTypeFilterChange={handleTypeFilterChange}
               onUserFilterChange={handleUserFilterChange}
+              onAutomationFilterChange={handleAutomationFilterChange}
               onSearchChange={handleSearchChange}
             />
             {0 < matchesCount && (

@@ -105,6 +105,6 @@ class SaveAsymmetricKeysQueryIntegration extends TestCase
 
     private function resetPimConfiguration(): void
     {
-        $this->connection->executeQuery('TRUNCATE pim_configuration');
+        $this->connection->executeQuery('DELETE FROM pim_configuration');
     }
 }

@@ -42,10 +42,12 @@ SQL;
                 "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030" . ValueCollection::SEPARATOR . "en_US" => [
                     "data" => "All the shoes you need!",
                     "locale" => "en_US",
+                    "attribute_code" => "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030",
                 ],
                 "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030" . ValueCollection::SEPARATOR . "fr_FR" => [
                     "data" => "Les chaussures dont vous avez besoin !",
                     "locale" => "fr_FR",
+                    "attribute_code" => "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030",
                 ],
                 "photo" . ValueCollection::SEPARATOR . "8587cda6-58c8-47fa-9278-033e1d8c735c" => [
                     "data" => [
@@ -56,6 +58,7 @@ SQL;
                         "original_filename" => "shoes.jpg"
                     ],
                     "locale" => null,
+                    "attribute_code" => "photo" . ValueCollection::SEPARATOR . "8587cda6-58c8-47fa-9278-033e1d8c735c",
                 ]
             ], JSON_THROW_ON_ERROR),
             'code' => $this->category->getCode()

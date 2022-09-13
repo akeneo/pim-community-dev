@@ -6,6 +6,7 @@ namespace Akeneo\Catalogs\Infrastructure\Validation;
 
 use Akeneo\Catalogs\Application\Persistence\FindOneAttributeByCodeQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterion\AttributeBooleanCriterion;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterion\AttributeDateCriterion;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterion\AttributeIdentifierCriterion;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterion\AttributeMeasurementCriterion;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterion\AttributeMultiSelectCriterion;
@@ -134,6 +135,7 @@ final class CatalogUpdatePayloadValidator extends ConstraintValidator
             'pim_catalog_number' => new AttributeNumberCriterion(),
             'pim_catalog_metric' => new AttributeMeasurementCriterion(),
             'pim_catalog_boolean' => new AttributeBooleanCriterion(),
+            'pim_catalog_date' => new AttributeDateCriterion(),
             default => null,
         };
     }

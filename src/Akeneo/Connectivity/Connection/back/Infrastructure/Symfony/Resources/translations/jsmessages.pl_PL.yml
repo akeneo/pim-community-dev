@@ -54,6 +54,7 @@ akeneo_connectivity.connection:
         description: To tylko podgląd. Aby uzyskać więcej szczegółów, zajrzyj do sklepu z aplikacjami Akeneo.
         link: Przejdź do sklepu z aplikacjami Akeneo
       search:
+        placeholder: Szukaj według nazwy
         total: '{0} Brak wyników|{1} 1 wynik|[2,Inf] {{ total }} wyników'
       card:
         developed_by: 'Autor: {{ author }}'
@@ -179,6 +180,10 @@ akeneo_connectivity.connection:
               3: w ustawieniach.
         catalogs:
           edit:
+            flash:
+              success: Pomyślnie zaktualizowano ustawienia katalogu.
+              error: Nie można zapisać katalogu. Proszę wyeliminować wyświetlone błędy i spróbować ponownie.
+              unknown_error: Podczas zapisywania katalogu wystąpił błąd.
             not_found: Nie znaleziono katalogu
         flash:
           load_permissions_error.title: 'Nie można załadować zapisanych uprawnień dotyczących obiektu {{ entity }}.'
@@ -318,6 +323,8 @@ akeneo_connectivity.connection:
       type:
         required: Typ połączenia jest wymagany.
         too_long: Typ połączenia jest zbyt długi. Powinien mieć 30 lub mniej znaków.
+      user_group:
+        must_exist: Nie znaleziono grupy użytkowników. Upewnij się, czy podana grupa użytkowników istnieje.
   flow_type:
     data_source: Źródło danych | Źródła danych
     data_destination: Przeznaczenie danych | Przeznaczenia danych

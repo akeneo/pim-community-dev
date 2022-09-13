@@ -476,6 +476,213 @@ class GetProductsQueryTest extends IntegrationTestCase
         ], $result);
     }
 
+    public function testItReturnsProductsUsingUpdatedAfter(): void
+    {
+        $this->createUser('owner');
+        $this->logAs('owner');
+
+        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'owner');
+        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        $this->setCatalogProductSelection('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
+            [
+                'field' => 'enabled',
+                'operator' => Operator::EQUALS,
+                'value' => true,
+            ],
+        ]);
+
+        $this->clock->set(new \DateTimeImmutable('2022-09-01T15:30:00+00:00'));
+        $this->createProduct('tshirt-blue', [new SetEnabled(true)]);
+
+        $this->clock->set(new \DateTimeImmutable('2022-09-01T15:40:00+00:00'));
+        $this->createProduct('tshirt-green', [new SetEnabled(true)]);
+
+        $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', null, 100, '2022-09-01T17:35:00+02:00');
+
+        $this->assertEquals([
+            [
+                'uuid' => $this->findProductUuid('tshirt-green'),
+                'enabled' => true,
+                'family' => null,
+                'categories' => [],
+                'groups' => [],
+                'parent' => null,
+                'values' => [
+                    'sku' => [
+                        [
+                            'locale' => null,
+                            'scope' => null,
+                            'data' => 'tshirt-green',
+                        ],
+                    ],
+                ],
+                'associations' => [
+                    'PACK' => [
+                        'groups' => [],
+                        'products' => [],
+                        'product_models' => [],
+                    ],
+                    'UPSELL' => [
+                        'groups' => [],
+                        'products' => [],
+                        'product_models' => [],
+                    ],
+                    'X_SELL' => [
+                        'groups' => [],
+                        'products' => [],
+                        'product_models' => [],
+                    ],
+                    'SUBSTITUTION' => [
+                        'groups' => [],
+                        'products' => [],
+                        'product_models' => [],
+                    ],
+                ],
+                'quantified_associations' => (object) [],
+                'created' => '2022-09-01T15:40:00+00:00',
+                'updated' => '2022-09-01T15:40:00+00:00',
+            ],
+        ], $result);
+    }
+
+    public function testItReturnsProductsUsingUpdatedBefore(): void
+    {
+        $this->createUser('owner');
+        $this->logAs('owner');
+
+        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'owner');
+        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        $this->setCatalogProductSelection('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
+            [
+                'field' => 'enabled',
+                'operator' => Operator::EQUALS,
+                'value' => true,
+            ],
+        ]);
+
+        $this->clock->set(new \DateTimeImmutable('2022-09-01T15:30:00+00:00'));
+        $this->createProduct('tshirt-blue', [new SetEnabled(true)]);
+
+        $this->clock->set(new \DateTimeImmutable('2022-09-01T15:40:00+00:00'));
+        $this->createProduct('tshirt-green', [new SetEnabled(true)]);
+
+        $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', null, 100, null, '2022-09-01T17:35:00+02:00');
+
+        $this->assertEquals([
+            [
+                'uuid' => $this->findProductUuid('tshirt-blue'),
+                'enabled' => true,
+                'family' => null,
+                'categories' => [],
+                'groups' => [],
+                'parent' => null,
+                'values' => [
+                    'sku' => [
+                        [
+                            'locale' => null,
+                            'scope' => null,
+                            'data' => 'tshirt-blue',
+                        ],
+                    ],
+                ],
+                'associations' => [
+                    'PACK' => [
+                        'groups' => [],
+                        'products' => [],
+                        'product_models' => [],
+                    ],
+                    'UPSELL' => [
+                        'groups' => [],
+                        'products' => [],
+                        'product_models' => [],
+                    ],
+                    'X_SELL' => [
+                        'groups' => [],
+                        'products' => [],
+                        'product_models' => [],
+                    ],
+                    'SUBSTITUTION' => [
+                        'groups' => [],
+                        'products' => [],
+                        'product_models' => [],
+                    ],
+                ],
+                'quantified_associations' => (object) [],
+                'created' => '2022-09-01T15:30:00+00:00',
+                'updated' => '2022-09-01T15:30:00+00:00',
+            ],
+        ], $result);
+    }
+
+    public function testItReturnsProductsUsingUpdatedBeforeAndUpdatedAfter(): void
+    {
+        $this->createUser('owner');
+        $this->logAs('owner');
+
+        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'owner');
+        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        $this->setCatalogProductSelection('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
+            [
+                'field' => 'enabled',
+                'operator' => Operator::EQUALS,
+                'value' => true,
+            ],
+        ]);
+
+        $this->clock->set(new \DateTimeImmutable('2022-09-01T15:30:00+00:00'));
+        $this->createProduct('tshirt-blue', [new SetEnabled(true)]);
+
+        $this->clock->set(new \DateTimeImmutable('2022-09-01T15:40:00+00:00'));
+        $this->createProduct('tshirt-green', [new SetEnabled(true)]);
+
+        $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', null, 100, '2022-09-01T17:35:00+02:00', '2022-09-01T17:45:00+02:00');
+
+        $this->assertEquals([
+            [
+                'uuid' => $this->findProductUuid('tshirt-green'),
+                'enabled' => true,
+                'family' => null,
+                'categories' => [],
+                'groups' => [],
+                'parent' => null,
+                'values' => [
+                    'sku' => [
+                        [
+                            'locale' => null,
+                            'scope' => null,
+                            'data' => 'tshirt-green',
+                        ],
+                    ],
+                ],
+                'associations' => [
+                    'PACK' => [
+                        'groups' => [],
+                        'products' => [],
+                        'product_models' => [],
+                    ],
+                    'UPSELL' => [
+                        'groups' => [],
+                        'products' => [],
+                        'product_models' => [],
+                    ],
+                    'X_SELL' => [
+                        'groups' => [],
+                        'products' => [],
+                        'product_models' => [],
+                    ],
+                    'SUBSTITUTION' => [
+                        'groups' => [],
+                        'products' => [],
+                        'product_models' => [],
+                    ],
+                ],
+                'quantified_associations' => (object) [],
+                'created' => '2022-09-01T15:40:00+00:00',
+                'updated' => '2022-09-01T15:40:00+00:00',
+            ],
+        ], $result);
+    }
+
     private function findProductUuid(string $identifier): string
     {
         return self::getContainer()->get(GetProductUuidFromIdentifierQueryInterface::class)->execute($identifier);

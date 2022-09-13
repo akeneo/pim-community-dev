@@ -17,9 +17,11 @@ use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetConnectedAppScopes
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\AuthorizeAction;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGeneratorInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
+use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -50,6 +52,7 @@ class AuthorizeActionSpec extends ObjectBehavior
         GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery,
         ScopeListComparatorInterface $scopeListComparator,
         UpdateConnectedAppScopesWithAuthorizationHandler $updateConnectedAppScopesWithAuthorizationHandler,
+        ClientProviderInterface $clientProvider,
     ): void {
         $this->beConstructedWith(
             $requestAppAuthorizationHandler,
@@ -65,6 +68,7 @@ class AuthorizeActionSpec extends ObjectBehavior
             $getConnectedAppScopesQuery,
             $scopeListComparator,
             $updateConnectedAppScopesWithAuthorizationHandler,
+            $clientProvider,
         );
     }
 
@@ -183,6 +187,7 @@ class AuthorizeActionSpec extends ObjectBehavior
         GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery,
         ScopeListComparatorInterface $scopeListComparator,
         GetAppConfirmationQueryInterface $getAppConfirmationQuery,
+        ClientProviderInterface $clientProvider,
     ): void {
         $clientId = 'valid_client_id';
 
@@ -193,6 +198,7 @@ class AuthorizeActionSpec extends ObjectBehavior
             $request,
             $getAppQuery,
             $security,
+            $clientProvider,
         );
 
         $requestedScopes = ['write_products'];
@@ -241,6 +247,7 @@ class AuthorizeActionSpec extends ObjectBehavior
         GetAppConfirmationQueryInterface $getAppConfirmationQuery,
         ConnectedPimUserProvider $connectedPimUserProvider,
         RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator,
+        ClientProviderInterface $clientProvider,
     ): void {
         $clientId = 'valid_client_id';
 
@@ -251,6 +258,7 @@ class AuthorizeActionSpec extends ObjectBehavior
             $request,
             $getAppQuery,
             $security,
+            $clientProvider,
         );
 
         $requestedScopes = ['read_products'];
@@ -310,6 +318,7 @@ class AuthorizeActionSpec extends ObjectBehavior
         ConnectedPimUserProvider $connectedPimUserProvider,
         RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator,
         UpdateConnectedAppScopesWithAuthorizationHandler $updateConnectedAppScopesWithAuthorizationHandler,
+        ClientProviderInterface $clientProvider,
     ): void {
         $marketplaceActivateFeatureFlag->isEnabled()->willReturn(true);
         $security->isGranted('akeneo_connectivity_connection_open_apps')->willReturn(true);
@@ -331,6 +340,8 @@ class AuthorizeActionSpec extends ObjectBehavior
             'categories' => ['master'],
         ]);
         $getAppQuery->execute($clientId)->willReturn($app);
+
+        $clientProvider->findOrCreateClient($app)->willReturn(new Client());
 
         $appConfirmation = AppConfirmation::create(
             $clientId,
@@ -390,6 +401,7 @@ class AuthorizeActionSpec extends ObjectBehavior
         AppAuthorizationSessionInterface $appAuthorizationSession,
         GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery,
         ScopeListComparatorInterface $scopeListComparator,
+        ClientProviderInterface $clientProvider,
     ): void {
         $marketplaceActivateFeatureFlag->isEnabled()->willReturn(true);
         $security->isGranted('akeneo_connectivity_connection_open_apps')->willReturn(true);
@@ -407,6 +419,8 @@ class AuthorizeActionSpec extends ObjectBehavior
             'categories' => ['master'],
         ]);
         $getAppQuery->execute($clientId)->willReturn($app);
+
+        $clientProvider->findOrCreateClient($app)->willReturn(new Client());
 
         $getAppConfirmationQuery->execute($clientId)->willReturn(null);
 
@@ -447,6 +461,7 @@ class AuthorizeActionSpec extends ObjectBehavior
         Request $request,
         GetAppQueryInterface $getAppQuery,
         SecurityFacade $security,
+        ClientProviderInterface $clientProvider,
     ) {
         $marketplaceActivateFeatureFlag->isEnabled()->willReturn(true);
 
@@ -465,6 +480,8 @@ class AuthorizeActionSpec extends ObjectBehavior
         ]);
 
         $getAppQuery->execute($clientId)->willReturn($app);
+
+        $clientProvider->findOrCreateClient($app)->willReturn(new Client());
 
         $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(true);
     }

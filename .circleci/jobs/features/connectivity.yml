@@ -96,7 +96,7 @@ jobs:
                     command: APP_ENV=test O="--withoutFixtures" make database
             -   run:
                     name: Integration back
-                    command: CI=false make connectivity-connection-integration-back
+                    command: CI=false EXPERIMENTAL_TEST_DATABASE=1 make connectivity-connection-integration-back
             -   store_test_results:
                     path: var/tests/phpunit
 
