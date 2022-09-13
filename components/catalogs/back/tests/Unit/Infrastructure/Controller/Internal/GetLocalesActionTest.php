@@ -131,7 +131,7 @@ class GetLocalesActionTest extends TestCase
                 query: [
                     'page' => 1,
                     'limit' => 1,
-                    'codes' =>'en_US,fr_FR',
+                    'codes' => 'en_US,fr_FR',
                 ],
                 server: [
                     'HTTP_X-Requested-With' => 'XMLHttpRequest',
