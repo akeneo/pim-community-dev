@@ -3,6 +3,7 @@ akeneo.job_automation:
   scheduling:
     title: 'Pianificazione'
     running_user_groups:
+      label: 'Autorizzazione gruppi di utenti'
       disabled_helper: Non sei autorizzato a consultare elenchi di gruppi di utenti.
     enable: Abilita la pianificazione
     frequency:
