@@ -3,24 +3,25 @@ import styled from 'styled-components';
 import {Locale, LocaleSelector, useRouter, useTranslate, useUploader} from '@akeneo-pim-community/shared';
 import {
   Field,
-  FileInfo,
   MediaFileInput,
   SectionTitle,
   TextAreaInput,
   TextInput,
-  Helper,
+  Helper, useBooleanState, IconButton, DownloadIcon, useInModal, FullscreenIcon,
 } from 'akeneo-design-system';
 import {useTemplate} from '../hooks';
 import {
   Attribute,
+  File,
   buildCompositeKey,
   CategoryAttributeValueData,
   CategoryImageAttributeValueData,
   EnrichCategory,
 } from '../models';
 import {usePreventClosing} from '../hooks/usePreventClosing';
-import {getMediaPreviewUrl} from '../tools/media-url-generator';
+import {getImageDownloadUrl, getMediaPreviewUrl} from '../tools/media-url-generator';
 import {MediaPreviewType} from '../models/MediaPreview';
+import {FullscreenPreview} from './file/preview/fullscreen-preview';
 
 const locales: Locale[] = [
   {
@@ -62,6 +63,8 @@ export const EditAttributesForm = ({attributeValues, onAttributeValueChange}: Pr
   const [locale, setLocale] = useState('en_US');
   const translate = useTranslate();
   const router = useRouter();
+  const [isFullscreenModalOpen, openFullscreenModal, closeFullscreenModal] = useBooleanState();
+  const inModal = useInModal();
   const [uploader, isUploading] = useUploader('pim_enriched_category_rest_file_upload');
   usePreventClosing(() => isUploading, translate('pim_enrich.confirmation.discard_changes', {entity: 'category'}));
 
@@ -73,7 +76,7 @@ export const EditAttributesForm = ({attributeValues, onAttributeValueChange}: Pr
   );
 
   const handleImageChange = useCallback(
-    (attribute: Attribute) => (value: FileInfo | null) => {
+    (attribute: Attribute) => (value: File) => {
       if (value === null) {
         return;
       }
@@ -145,17 +148,29 @@ export const EditAttributesForm = ({attributeValues, onAttributeValueChange}: Pr
               </Field>
             );
           case 'image':
+            let fileInfo = null;
+            if (value && typeof value === 'object') {
+              fileInfo = {
+                size: value.size,
+                filePath: value.file_path,
+                mimeType: value.mime_type,
+                extension: value.extension,
+                originalFilename: value.original_filename,
+              }
+            }
+
+            const downloadFilename = fileInfo?.originalFilename;
+            const downloadUrl = fileInfo ? getImageDownloadUrl(router, fileInfo) : '';
             const previewUrl = getMediaPreviewUrl(router, {
               type: MediaPreviewType.Thumbnail,
               attributeIdentifier: attribute.code + '|' + attribute.uuid,
-              data: value && value.file_path ? value.file_path : '',
+              data: fileInfo?.filePath
             });
-
 
             return (
               <Field key={attribute.uuid} label={attribute.labels[locale]}>
                 <MediaFileInput
-                  value={typeof value === 'object' ? value : null}
+                  value={fileInfo}
                   onChange={handleImageChange(attribute)}
                   placeholder="Drag and drop to upload or click here"
                   uploadingLabel="Uploading..."
@@ -163,7 +178,30 @@ export const EditAttributesForm = ({attributeValues, onAttributeValueChange}: Pr
                   clearTitle="Clear"
                   thumbnailUrl={previewUrl}
                   uploader={uploader}
-                />
+                >
+                  <IconButton
+                    href={downloadUrl}
+                    target="_blank"
+                    download={downloadFilename}
+                    icon={<DownloadIcon />}
+                    title="Download"
+                  />
+                  {!inModal && (
+                    <IconButton
+                      onClick={openFullscreenModal}
+                      icon={<FullscreenIcon />}
+                      title="Fullscreen"
+                    />
+                  )}
+                </MediaFileInput>
+                {isFullscreenModalOpen && !inModal && fileInfo && (
+                  <FullscreenPreview
+                    onClose={closeFullscreenModal}
+                    attribute={value}
+                    data={fileInfo}
+                    label={attribute.labels[locale]}
+                  />
+                )}
               </Field>
             );
         }

@@ -38,6 +38,7 @@ export interface CategoryAttributeValueWrapper {
 }
 
 type CategoryTextAttributeValueData = string;
+
 export interface CategoryImageAttributeValueData {
   size?: number;
   file_path: string;
