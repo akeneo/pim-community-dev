@@ -1,0 +1,42 @@
+akeneo.job_automation:
+  title: '자동화'
+  scheduling:
+    title: '일정 예약'
+    running_user_groups:
+      label: '사용자 그룹 권한'
+      disabled_helper: 사용자 그룹 목록을 볼 수 있는 권한이 없습니다.
+    enable: 일정 예약 활성화
+    cannot_view_all_jobs: "귀하의 역할에는 \"프로세스 트래커 내 모든 작업 보기\" 권한이 없기 때문에 프로세스 트래커에 있는 자동화된 작업을 볼 수 없습니다. PIM 관리자에게 문의하십시오."
+    frequency:
+      helper: 빈도는 UTC 24시간 형식으로 표시됩니다.
+      hourly_helper: 하루에 여러 번 실행되는 빈도는 자정(UTC)에 시작됩니다.
+      title: 빈도
+      daily: 매일
+      weekly: 매주
+      weekday: 평일
+      every_4_hours: 4시간마다
+      every_8_hours: 8시간마다
+      every_12_hours: 12시간마다
+      hours: 시간
+      minutes: 분
+      monday: 월요일
+      tuesday: 화요일
+      wednesday: 수요일
+      thursday: 목요일
+      friday: 금요일
+      saturday: 토요일
+      sunday: 일요일
+  notification:
+    title: 알림
+    user_groups:
+      label: 사용자 그룹
+      disabled_helper: 사용자 그룹 목록을 볼 수 있는 권한이 없습니다.
+    users:
+      label: 사용자
+      disabled_helper: 사용자 목록을 볼 수 있는 권한이 없습니다.
+  validation:
+    invalid_frequency_option: 유효하지 않은 빈도 옵션
+    invalid_week_day: 유효하지 않은 평일
+    invalid_hourly_frequency: 유효하지 않은 시간당 빈도
+    invalid_hours: 유효하지 않은 시간
+    invalid_minutes: 유효하지 않은 분
