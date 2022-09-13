@@ -53,7 +53,7 @@ class FamilyRequirementsValidatorSpec extends ObjectBehavior
         $this->validate($family, $minimumRequirements);
     }
 
-    function it_does_not_validate_families_with_missing_identifier_requirements(
+    function it_validates_families_without_identifier_requirements(
         $attributeRepository,
         $channelRepository,
         $context,
@@ -75,10 +75,7 @@ class FamilyRequirementsValidatorSpec extends ObjectBehavior
 
         $family->getCode()->willReturn('familyCode');
         $context->buildViolation(Argument::any(), Argument::any())
-            ->willReturn($violation)
-            ->shouldBeCalled();
-        $violation->atPath(Argument::any())->willReturn($violation);
-        $violation->addViolation(Argument::any())->shouldBeCalled();
+            ->shouldNotBeCalled();
 
         $this->validate($family, $minimumRequirements);
     }
