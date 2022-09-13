@@ -10,6 +10,8 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 final class CountCommentsValidator extends ConstraintValidator
 {
+    private const MAX_COMMENTS_PER_PRODUCT_FILE = 50;
+
     public function __construct(private CountProductFileComments $countProductFileComments)
     {
     }
@@ -18,7 +20,11 @@ final class CountCommentsValidator extends ConstraintValidator
     {
         $commentProductFile = $this->context->getObject();
 
-        if (50 <= ($this->countProductFileComments)($commentProductFile->productFileIdentifier)) {
+        if (
+            self::MAX_COMMENTS_PER_PRODUCT_FILE <= ($this->countProductFileComments)(
+                $commentProductFile->productFileIdentifier
+            )
+        ) {
             $this->context->buildViolation($constraint->message)->addViolation();
         }
     }
