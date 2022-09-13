@@ -15,7 +15,6 @@ $rules = [
     $builder->only(
         [
             'Akeneo\Catalogs\Domain',
-            'Akeneo\Catalogs\ServiceAPI\Model',
         ]
     )->in('Akeneo\Catalogs\Domain'),
 

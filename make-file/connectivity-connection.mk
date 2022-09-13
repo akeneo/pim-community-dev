@@ -59,6 +59,7 @@ _PERMISSION_FORM_YARN_RUN = $(YARN_RUN) run --cwd=src/Akeneo/Connectivity/Connec
 
 connectivity-connection-coupling-back:
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Connectivity/Connection/back/tests/.php_cd.php src/Akeneo/Connectivity/Connection/back
+	$(PHP_RUN) vendor/bin/php-coupling-detector list-unused-requirements --config-file=src/Akeneo/Connectivity/Connection/back/tests/.php_cd.php src/Akeneo/Connectivity/Connection/back
 
 connectivity-connection-lint-back:
 ifneq ($(CI),true)

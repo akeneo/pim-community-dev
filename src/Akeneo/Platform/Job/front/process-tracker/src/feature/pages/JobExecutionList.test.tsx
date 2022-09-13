@@ -15,6 +15,7 @@ const rows: JobExecutionRow[] = [
       steps: [],
     },
     has_error: true,
+    automation: null,
     type: 'export',
     username: 'admin',
     warning_count: 4,
@@ -31,6 +32,7 @@ const rows: JobExecutionRow[] = [
       steps: [],
     },
     has_error: true,
+    automation: null,
     type: 'import',
     username: 'admin',
     warning_count: 8,
@@ -47,6 +49,7 @@ const rows: JobExecutionRow[] = [
       steps: [],
     },
     has_error: true,
+    automation: null,
     type: 'import',
     username: 'admin',
     warning_count: 8,
@@ -63,11 +66,29 @@ const rows: JobExecutionRow[] = [
       steps: [],
     },
     has_error: true,
+    automation: null,
     type: 'mass-edit',
     username: 'peter',
     warning_count: 5,
     job_name: 'Mass edit',
     status: 'ABANDONED',
+    is_stoppable: false,
+  },
+  {
+    job_execution_id: 5,
+    started_at: '2020-01-01T00:00:00+00:00',
+    tracking: {
+      total_step: 2,
+      current_step: 1,
+      steps: [],
+    },
+    has_error: true,
+    automation: true,
+    type: 'import',
+    username: 'job_automated_peter',
+    warning_count: 5,
+    job_name: 'Scheduled job',
+    status: 'COMPLETED',
     is_stoppable: false,
   },
 ];
@@ -84,6 +105,7 @@ for (let i = 1; i <= 51; i++) {
       steps: [],
     },
     has_error: true,
+    automation: null,
     type: 'export',
     username: 'admin',
     warning_count: 4,
@@ -98,14 +120,15 @@ jest.mock('@akeneo-pim-community/shared/lib/components/PimView', () => ({
 }));
 
 jest.mock('../hooks/useJobExecutionTable', () => ({
-  useJobExecutionTable: ({page, size, sort, type, user, status}: JobExecutionFilter) => {
+  useJobExecutionTable: ({page, size, sort, automation, type, user, status}: JobExecutionFilter) => {
     const rowsToFilter = mockUseManyRows ? mockManyRows : rows;
 
     const filteredRows = rowsToFilter.filter(
       row =>
         (0 === type.length || type.includes(row.type)) &&
         (0 === status.length || status.includes(row.status)) &&
-        (0 === user.length || user.includes(row.username ?? ''))
+        (0 === user.length || user.includes(row.username ?? '')) &&
+        (null === automation || automation === row.automation)
     );
 
     const paginatedRows = filteredRows
@@ -142,6 +165,7 @@ jest.mock('../models/JobExecutionFilter', () => ({
     size: mockedSize,
     sort: {column: 'job_name', direction: 'ASC'},
     status: [],
+    automation: null,
     type: [],
     user: [],
     code: [],
@@ -178,6 +202,15 @@ test('it can filter on the job status', () => {
 
   expect(screen.getByText('Export job')).toBeInTheDocument();
   expect(screen.queryByText('Import job')).not.toBeInTheDocument();
+});
+
+test('it can filter on the job automation', () => {
+  renderWithProviders(<JobExecutionList />);
+
+  userEvent.click(screen.getByLabelText('akeneo_job_process_tracker.automation_filter.label:'));
+  userEvent.click(within(screen.getByRole('listbox')).getByText('akeneo_job_process_tracker.automation_filter.yes'));
+
+  expect(screen.getByText('Scheduled job')).toBeInTheDocument();
 });
 
 test('it can filter on the job type', () => {

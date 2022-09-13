@@ -142,7 +142,6 @@ $rules = [
             'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
             'Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface',
 
-            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
             'Akeneo\Platform\Bundle\FrameworkBundle\Service\PimUrl',
             'Akeneo\Platform\Component\EventQueue\BulkEventInterface',
             'Akeneo\Platform\Component\EventQueue\EventInterface',
@@ -174,7 +173,6 @@ $rules = [
 
             'Akeneo\Connectivity\Connection\Domain\ClockInterface',
 
-            'Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\User',
             'Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials',
             'Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection',
             'Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType',
@@ -190,8 +188,6 @@ $rules = [
 
             'Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface',
             'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry',
-
-            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
 
             'Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface',
             'Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface',
@@ -261,7 +257,7 @@ $rules = [
             'Symfony\Component\Validator\ConstraintValidator',
             'Symfony\Component\Validator\Exception\UnexpectedTypeException',
         ]
-    )->in('Akeneo\Connectiettings/Command/CreateConnectionHandler.php vity\Connection\Application\Settings'),
+    )->in('Akeneo\Connectivity\Connection\Application\Settings'),
 
     $builder->only(
         [

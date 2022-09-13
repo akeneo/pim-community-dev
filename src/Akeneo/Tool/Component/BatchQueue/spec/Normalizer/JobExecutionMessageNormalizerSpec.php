@@ -60,7 +60,7 @@ class JobExecutionMessageNormalizerSpec extends ObjectBehavior
         $normalized['options']->shouldBe(['option1' => 'value1']);
     }
 
-    function it_normalizes_a_full_job_messenger()
+    function it_normalizes_a_full_job_message()
     {
         $jobMessenger = ImportJobExecutionMessage::createJobExecutionMessageFromNormalized([
             'id' => '215ee791-1c40-4c60-82fb-cb017d6bcb90',

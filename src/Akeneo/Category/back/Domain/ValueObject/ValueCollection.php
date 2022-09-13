@@ -2,6 +2,8 @@
 
 namespace Akeneo\Category\Domain\ValueObject;
 
+use Akeneo\Category\Application\Converter\Checker\AttributeRequirementChecker;
+
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -14,6 +16,7 @@ final class ValueCollection implements \IteratorAggregate, \Countable
     // @phpstan-ignore-next-line
     private function __construct(private ?array $values)
     {
+        AttributeRequirementChecker::checkAttributes($values);
     }
 
     // @phpstan-ignore-next-line
@@ -42,11 +45,25 @@ final class ValueCollection implements \IteratorAggregate, \Countable
     /**
      * Set a value in value collection. If value already exist, update it.
      */
-    public function setValue(string $attributeUuid, string $attributeCode, ?string $localeCode, string $value): ValueCollection
-    {
-        $key = $attributeCode.self::SEPARATOR.$attributeUuid.self::SEPARATOR.$localeCode;
+    public function setValue(
+        string $attributeUuid,
+        string $attributeCode,
+        ?string $localeCode,
+        string $value,
+    ): ValueCollection {
+        $compositeKey = $attributeCode.self::SEPARATOR.$attributeUuid;
 
-        $this->values[$key] = [
+        $localCompositeKey = sprintf(
+            '%s%s%s',
+            $attributeCode,
+            self::SEPARATOR.$attributeUuid,
+            isset($localeCode) ? self::SEPARATOR.$localeCode : '',
+        );
+
+        $this->values['attribute_codes'][] = $compositeKey;
+        $this->values['attribute_codes'] = array_unique($this->values['attribute_codes']);
+
+        $this->values[$localCompositeKey] = [
             'data' => $value,
             'locale' => $localeCode,
             'attribute_code' => $attributeCode.self::SEPARATOR.$attributeUuid,

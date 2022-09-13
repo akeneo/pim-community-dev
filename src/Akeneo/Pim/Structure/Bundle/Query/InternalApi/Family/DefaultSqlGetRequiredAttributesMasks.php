@@ -66,6 +66,13 @@ WHERE
     AND family.code IN (:familyCodes)
     AND attribute.attribute_type IN (:attributeTypes)
 GROUP BY family.code, channel_code, locale_code
+UNION
+SELECT family.code as family_code, channel_code, locale_code, JSON_ARRAY() AS mask
+FROM pim_catalog_family family
+    LEFT JOIN pim_catalog_attribute_requirement pcar ON family.id = pcar.family_id
+    CROSS JOIN channel_locale
+WHERE pcar.id IS NULL
+    AND family.code IN (:familyCodes)
 SQL;
 
         $rows = $this->connection->executeQuery(

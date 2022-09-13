@@ -28,7 +28,7 @@ also handle messages from multiple queues, the first queue will be treated in pr
 ```text
                                                   Queue system
 User                                             (GooglePubSub
-bash command        Symfony Messenger          / Doctrine / ...)    JobExecutionMessageHandler     Job Process
+bash command        Symfony Messenger          / Doctrine / ...)    JobMessageHandler     Job Process
 |                         |                           |                      |                          |
 | Consume 1 message       |                           |                      |                          |
 | ----------------------> |                           |                      |                          |
