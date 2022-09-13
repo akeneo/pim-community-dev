@@ -1,6 +1,5 @@
 import React from 'react';
 import {fireEvent, render, screen, within} from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {ReactQueryWrapper} from '../../../../../tests/ReactQueryWrapper';
