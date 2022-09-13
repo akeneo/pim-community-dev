@@ -46,6 +46,7 @@ final class SendNotificationWhenJobInstanceCannotBeLaunched implements EventSubs
             ->setType('error')
             ->setMessage('akeneo.job_automation.notification.invalid_job_instance')
             ->setMessageParams([
+                '{{ type }}' => $jobInstance->type,
                 '{{ label }}' => $jobInstance->code,
                 '{{ error }}' => implode(' ', array_map(fn (String $error) => $this->translator->trans($error), $errorMessage)),
             ])
