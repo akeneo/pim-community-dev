@@ -12,7 +12,7 @@ locals {
   function_service_account_email = "timmy-cloud-function@${local.project_id}.iam.gserviceaccount.com"
   project_id                     = "akecld-prd-pim-saas-dev"
   tenant_contexts                = "tenant_contexts"
-  region_prefix                  = "eur-w-2a"
+  region_prefix                  = "eur-w-1a"
 }
 
 module "bucket" {
