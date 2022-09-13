@@ -2,28 +2,12 @@ import React, {FC, useEffect, useState} from 'react';
 import {CloseIcon, IconButton, List} from 'akeneo-design-system';
 import {Operator} from '../../models/Operator';
 import {CriterionModule} from '../../models/Criterion';
-import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {FamilyCriterionState} from './types';
 import {FamilyOperatorInput} from './FamilyOperatorInput';
 import {FamilySelectInput} from './FamilySelectInput';
 import {ErrorHelpers} from '../../components/ErrorHelpers';
-
-const Fields = styled.div`
-    display: flex;
-    gap: 20px;
-`;
-
-const Field = styled.div`
-    flex-basis: 200px;
-    flex-shrink: 0;
-    flex-wrap: wrap;
-    flex-grow: 1;
-`;
-
-const LargeField = styled.div`
-    flex-basis: auto;
-`;
+import {CriterionField, CriterionFields} from '../../components/CriterionFields';
 
 const FamilyCriterion: FC<CriterionModule<FamilyCriterionState>> = ({state, errors, onChange, onRemove}) => {
     const translate = useTranslate();
@@ -40,16 +24,16 @@ const FamilyCriterion: FC<CriterionModule<FamilyCriterionState>> = ({state, erro
                 {translate('akeneo_catalogs.product_selection.criteria.family.label')}
             </List.TitleCell>
             <List.Cell width='auto'>
-                <Fields>
-                    <Field>
+                <CriterionFields>
+                    <CriterionField>
                         <FamilyOperatorInput state={state} onChange={onChange} isInvalid={!!errors.operator} />
-                    </Field>
+                    </CriterionField>
                     {showFamilies && (
-                        <LargeField>
+                        <CriterionField width={300}>
                             <FamilySelectInput state={state} onChange={onChange} isInvalid={!!errors.value} />
-                        </LargeField>
+                        </CriterionField>
                     )}
-                </Fields>
+                </CriterionFields>
             </List.Cell>
             <List.RemoveCell>
                 <IconButton ghost='borderless' level='tertiary' icon={<CloseIcon />} title='' onClick={onRemove} />

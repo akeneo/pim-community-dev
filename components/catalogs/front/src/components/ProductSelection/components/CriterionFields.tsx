@@ -8,6 +8,6 @@ export const CriterionFields = styled.div`
 `;
 
 export const CriterionField = styled.div<{width?: number}>`
-    flex-basis: ${({width = 200}) => `${width}px`};
+    flex-basis: ${({width = 160}) => `${width}px`};
     flex-shrink: 0;
 `;
