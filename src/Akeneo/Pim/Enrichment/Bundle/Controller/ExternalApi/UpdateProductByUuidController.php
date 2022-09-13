@@ -15,7 +15,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException a
 use Akeneo\Pim\Enrichment\Component\Product\Exception\TwoWayAssociationWithTheSameProductException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FindProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ExternalApi\PayloadFormat;
 use Akeneo\Tool\Bundle\ApiBundle\Checker\DuplicateValueChecker;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
@@ -44,7 +44,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class UpdateProductByUuidController
 {
     public function __construct(
-        private ProductRepositoryInterface $productRepository,
+        private FindProduct $findProduct,
         private UrlGeneratorInterface $router,
         private FilterInterface $emptyValuesFilter,
         private EventDispatcherInterface $eventDispatcher,
@@ -87,7 +87,7 @@ class UpdateProductByUuidController
             $this->throwDocumentedHttpException($exception->getMessage(), $exception);
         }
 
-        $product = $this->productRepository->find($uuid);
+        $product = $this->findProduct->withUuid($uuid);
 
         $isUpdate = true;
         if (null === $product) {

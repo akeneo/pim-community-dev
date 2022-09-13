@@ -66,8 +66,8 @@ final class ImportFamilyIntegration extends TestCase
 
         $content = <<<CSV
         code;attributes;attribute_as_label;requirements-mobile;requirements-tablet;label-en_US
-        heels;sku,name,manufacturer,heel_color;sku;manufacturer;manufacturer,heel_color;Heels
-        tractors;sku,name,manufacturer;name;manufacturer;;Tractor
+        heels;sku,name,manufacturer,heel_color;sku;manufacturer,sku;manufacturer,heel_color;Heels
+        tractors;sku,name,manufacturer;name;sku,manufacturer;;Tractor
         CSV;
         $this->jobLauncher->launchImport(static::CSV_IMPORT_JOB_CODE, $content);
 
@@ -76,7 +76,7 @@ final class ImportFamilyIntegration extends TestCase
         self::assertSame('[heels]', $heelsFamily->getLabel());
         self::assertSame('[sku]', $heelsFamily->getAttributeAsLabel()->getLabel());
         self::assertSame('manufacturer,sku', $this->getRequirementAttributeCodes($heelsFamily, 'mobile'));
-        self::assertSame('heel_color,manufacturer,sku', $this->getRequirementAttributeCodes($heelsFamily, 'tablet'));
+        self::assertSame('heel_color,manufacturer', $this->getRequirementAttributeCodes($heelsFamily, 'tablet'));
 
         $tractorsFamily = $this->getFamily('tractors');
         self::assertNotNull($tractorsFamily);
@@ -130,14 +130,14 @@ final class ImportFamilyIntegration extends TestCase
         self::assertNotNull($heelsFamily);
         self::assertSame('[heels]', $heelsFamily->getLabel());
         self::assertSame('[sku]', $heelsFamily->getAttributeAsLabel()->getLabel());
-        self::assertSame('manufacturer,sku', $this->getRequirementAttributeCodes($heelsFamily, 'mobile'));
-        self::assertSame('heel_color,manufacturer,sku', $this->getRequirementAttributeCodes($heelsFamily, 'tablet'));
+        self::assertSame('manufacturer', $this->getRequirementAttributeCodes($heelsFamily, 'mobile'));
+        self::assertSame('heel_color,manufacturer', $this->getRequirementAttributeCodes($heelsFamily, 'tablet'));
 
         $tractorsFamily = $this->getFamily('tractors');
         self::assertNotNull($tractorsFamily);
         self::assertSame('[tractors]', $tractorsFamily->getLabel());
         self::assertSame('[name]', $tractorsFamily->getAttributeAsLabel()->getLabel());
-        self::assertSame('manufacturer,sku', $this->getRequirementAttributeCodes($tractorsFamily, 'mobile'));
+        self::assertSame('manufacturer', $this->getRequirementAttributeCodes($tractorsFamily, 'mobile'));
         self::assertSame('sku', $this->getRequirementAttributeCodes($tractorsFamily, 'tablet'));
     }
 
@@ -188,7 +188,7 @@ final class ImportFamilyIntegration extends TestCase
 
         $heelsFamily = $this->getFamily('heels');
         self::assertNotNull($heelsFamily);
-        self::assertSame('manufacturer,name,sku', $this->getRequirementAttributeCodes($heelsFamily, 'mobile'));
+        self::assertSame('manufacturer,name', $this->getRequirementAttributeCodes($heelsFamily, 'mobile'));
 
         $this->get('akeneo.pim.structure.query.get_required_attributes_masks')->clearCache();
         $productCompletenessCollection = $this->getProductCompletenesses->fromProductUuid(
@@ -196,9 +196,9 @@ final class ImportFamilyIntegration extends TestCase
         );
         $productCompleteness = $productCompletenessCollection->getCompletenessForChannelAndLocale('mobile', 'en_US');
         self::assertNotNull($productCompleteness);
-        self::assertSame(3, $productCompleteness->requiredCount());
+        self::assertSame(2, $productCompleteness->requiredCount());
         self::assertSame(1, $productCompleteness->missingCount());
-        self::assertSame(66, $productCompleteness->ratio());
+        self::assertSame(50, $productCompleteness->ratio());
     }
 
     private function getFamily(string $familycode): ?FamilyInterface

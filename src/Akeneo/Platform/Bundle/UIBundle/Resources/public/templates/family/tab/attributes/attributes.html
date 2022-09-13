@@ -40,7 +40,7 @@
                         <i
                             class="AknAcl-icon
                                 <%- isRequired ? 'AknSelectButton AknSelectButton--selected required' : 'AknSelectButton non-required' %>
-                                <%- isAttributeEditable(channel.code, attribute.code, attribute.type) ? '' : 'AknAcl-disabled' %>"
+                                <%- isAttributeEditable() ? '' : 'AknAcl-disabled' %>"
                             data-attribute="<%- attribute.code %>"
                             data-type="<%- attribute.type %>"
                             data-channel="<%- channel.code %>"
