@@ -1,0 +1,7 @@
+config:
+    config:
+        pim/controller-registry:
+            controllers:
+                akeneo_identifier_generator_settings_index:
+                    module: akeneoidentifiergenerator/js/controller/identifier-generator
+#                    aclResourceId: akeneo_identifier_generator_manage_settings

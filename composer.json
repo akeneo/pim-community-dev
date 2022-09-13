@@ -25,7 +25,8 @@
             "Akeneo\\Channel\\": "src/Akeneo/Channel/back",
             "Akeneo\\Catalogs\\": "components/catalogs/back/src",
             "Akeneo\\Category\\": "src/Akeneo/Category/back",
-            "Akeneo\\UserManagement\\": "src/Akeneo/UserManagement/back"
+            "Akeneo\\UserManagement\\": "src/Akeneo/UserManagement/back",
+            "Akeneo\\Structure\\IdentifierGenerator\\": "components/identifier-generator/back/src"
         }
     },
     "autoload-dev": {
