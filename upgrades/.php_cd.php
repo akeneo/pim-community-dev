@@ -23,7 +23,6 @@ $rules = [
             'Symfony\Component\DependencyInjection\ContainerInterface',
 
             // Dangerous dependencies, migrations shouldn't rely on services
-            'Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid',
             'Akeneo\Platform\VersionProvider',
             'Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\UpdateIndexMappingWrapper',
             'Akeneo\Tool\Component\Batch\Job\BatchStatus',
