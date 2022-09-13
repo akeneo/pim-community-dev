@@ -31,7 +31,7 @@ Cypress.Commands.add('login', (username, password) => {
   cy.visit('/user/login');
   cy.get('input[name="_username"]').type(username);
   cy.get('input[name="_password"]').type(password);
-  cy.findByRole('button').click();
+  cy.findByRole('button', {name: "Login"}).click();
 });
 
 Cypress.Commands.add('goToProductsGrid', () => {
