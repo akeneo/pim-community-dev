@@ -11,7 +11,6 @@ export type AttributeInputValue = TextAttributeInputValue | ImageAttributeInputV
 export type AttributeFieldBuilder<ValueType extends AttributeInputValue> = (attribute: Attribute) =>  React.FC<AttributeFieldProps<ValueType>>;
 
 export type AttributeFieldProps<ValueType> = {
-  attribute: Attribute;
   locale: string;
   value: ValueType;
   onChange: (value: ValueType) => void;

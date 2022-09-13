@@ -1,9 +1,10 @@
 import React, {useCallback, useState, useMemo} from 'react';
-import {SectionTitle, Helper} from 'akeneo-design-system';
-import {Locale, LocaleSelector, useTranslate} from '@akeneo-pim-community/shared';
-import {useTemplate} from '../hooks';
 import styled from 'styled-components';
 
+import {SectionTitle, Helper} from 'akeneo-design-system';
+import {Locale, LocaleSelector, useTranslate} from '@akeneo-pim-community/shared';
+
+import {useTemplate} from '../hooks';
 import {
   Attribute,
   buildCompositeKey,
@@ -16,7 +17,7 @@ import {AttributeInputValue, buildDefaultAttributeInputValue, isImageAttributeIn
 import {
   convertCategoryImageAttributeValueDataToFileInfo,
   convertFileInfoToCategoryImageAttributeValueData,
-} from 'feature/helpers';
+} from '../helpers';
 
 const locales: Locale[] = [
   {
@@ -131,7 +132,6 @@ export const EditAttributesForm = ({attributeValues, onAttributeValueChange}: Pr
 
     return (
       <AttributeField
-        attribute={attribute}
         locale={locale}
         value={dataForInput}
         onChange={handlers[attribute.code]}

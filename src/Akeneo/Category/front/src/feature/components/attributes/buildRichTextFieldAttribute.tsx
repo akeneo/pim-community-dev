@@ -20,9 +20,13 @@ const unMemoizedBuildRichTextFieldAttribute: AttributeFieldBuilder<AttributeInpu
       return null;
     }
 
+    // TextAreaInput prop "key" = locale :
+    // because the RichTextEditor in the DSM is not able of considering a changed value
+    // it loops internally on its state for the value and ignores external modifications of the value
+    // we have to force react to rebuild it when changing the value (when locale is changed for instance)
     return (
       <Field960 label={getLabelFromAttribute(attribute, locale)} locale={locale}>
-        <TextAreaInput isRichText name={attribute.code} value={value} onChange={onChange} />
+        <TextAreaInput key={locale} isRichText name={attribute.code} value={value} onChange={onChange} />
       </Field960>
     );
   };
