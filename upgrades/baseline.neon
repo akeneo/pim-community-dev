@@ -254,3 +254,4 @@ parameters:
 			message: "#^Migration must be covered by an integration test$#"
 			count: 1
 			path: schema/Version_7_0_20220906111652_supplier_portal_add_supplier_portal_product_file_imported_by_job_execution_table.php
+

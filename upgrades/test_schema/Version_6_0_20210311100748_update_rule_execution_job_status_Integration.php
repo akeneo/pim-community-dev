@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Pim\Upgrade\test_schema;
+namespace Pim\Upgrade\Schema\Tests;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\AttributeGrid\TestCase;

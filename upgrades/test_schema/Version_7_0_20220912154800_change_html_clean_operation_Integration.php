@@ -7,7 +7,7 @@ declare(strict_types=1);
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Pim\Upgrade\test_schema;
+namespace Pim\Upgrade\Schema\Tests;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -28,6 +28,7 @@ final class Version_7_0_20220912154800_change_html_clean_operation_Integration e
         $this->connection = $this->get('database_connection');
     }
 
+    /** @test */
     public function it_change_clean_html_tags_operation_in_to_clean_html_operation(): void
     {
         $this->writeJobInstance();
