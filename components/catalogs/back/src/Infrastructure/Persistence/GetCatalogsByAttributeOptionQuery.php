@@ -32,7 +32,7 @@ final class GetCatalogsByAttributeOptionQuery implements GetCatalogsByAttributeO
                      field VARCHAR(40)  PATH '$.field',
                      value json PATH '$.value')
                 ) AS criterion
-            WHERE criterion.field = 'color' AND JSON_CONTAINS(criterion.value, json_quote("blue"), '$')
+            WHERE criterion.field = :attributeCode AND JSON_CONTAINS(criterion.value, json_quote(:attributeOptionCode), '$')
             AND catalog.is_enabled
         SQL;
 
