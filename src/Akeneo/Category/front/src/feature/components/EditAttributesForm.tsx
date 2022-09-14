@@ -81,15 +81,6 @@ export const EditAttributesForm = ({attributeValues, onAttributeValueChange}: Pr
     [locale, onAttributeValueChange]
   );
 
-  const getAttributeValues = useCallback(
-    (attribute: Attribute): any => {
-      const compositeKey = buildCompositeKey(attribute, locale);
-
-      return attributeValues[compositeKey] && attributeValues[compositeKey].data ? attributeValues[compositeKey].data : null;
-    },
-    [attributeValues, locale]
-  );
-
   // TODO change hardcoded value to use the template uuid
   const {data: template, isLoading, isError} = useTemplate('02274dac-e99a-4e1d-8f9b-794d4c3ba330');
 
