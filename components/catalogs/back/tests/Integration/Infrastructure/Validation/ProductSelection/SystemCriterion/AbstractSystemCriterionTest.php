@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Validation\ProductSelection\SystemCriterion;
 
 use Akeneo\Catalogs\Application\Persistence\GetCategoriesByCodeQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\GetChannelLocalesQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\GetChannelQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\GetFamiliesByCodeQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Locale\GetChannelLocalesQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Persistence\GetCategoriesByCodeQuery;
-use Akeneo\Catalogs\Infrastructure\Persistence\GetChannelLocalesQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\GetChannelQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\GetFamiliesByCodeQuery;
+use Akeneo\Catalogs\Infrastructure\Persistence\Locale\GetChannelLocalesQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 
 /**

@@ -92,7 +92,7 @@ services:
         arguments:
             $repository: '@pim_catalog.repository.attribute'
 
-    Akeneo\Catalogs\Infrastructure\Persistence\GetChannelLocalesQuery:
+    Akeneo\Catalogs\Infrastructure\Persistence\Locale\GetChannelLocalesQuery:
         arguments:
             - '@pim_catalog.repository.channel'
 
