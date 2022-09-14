@@ -101,12 +101,8 @@ export const EditAttributesForm = ({attributeValues, onAttributeValueChange}: Pr
     return <Helper level="error">{translate('akeneo.category.edition_form.template.fetching_failed')}</Helper>;
   }
 
-  let attributesByOrder: Attribute[] = [];
-  template?.attributes.forEach((attribute: Attribute) => {
-    attributesByOrder[attribute.order] = attribute;
-  });
 
-  const attributeFields = attributesByOrder.map((attribute: Attribute) => {
+  const attributeFields = template?.attributes.map((attribute: Attribute) => {
     const AttributeField = attributeFieldFactory(attribute);
     if (AttributeField === null) {
       return <Helper level="error">Could not find builder for {attribute.type} </Helper>;
