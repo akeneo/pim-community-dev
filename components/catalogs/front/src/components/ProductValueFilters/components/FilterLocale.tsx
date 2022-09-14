@@ -4,8 +4,8 @@ import {MultiSelectInput} from 'akeneo-design-system';
 import {ProductValueFiltersValues} from '../models/ProductValueFiltersValues';
 import {useUniqueEntitiesByCode} from '../../../hooks/useUniqueEntitiesByCode';
 import {useLocalesByCodes} from '../hooks/useLocalesByCodes';
-import {Locale} from '../models/Locale';
 import {useLocales} from '../../../hooks/useLocales';
+import {Locale} from '../../../models/Locale';
 
 type Props = {
     productValueFilters: ProductValueFiltersValues;
