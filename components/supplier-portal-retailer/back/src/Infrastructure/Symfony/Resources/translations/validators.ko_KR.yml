@@ -2,3 +2,8 @@ supplier_portal:
   supplier:
     contributor:
       email_already_exists: 이 이메일은 다른 제공업체에서 사용 중입니다. 여러 제공업체가 동일한 기여자를 가지는 것은 아직 지원되지 않습니다. 불편을 드려 죄송합니다.
+    product_file_dropping:
+      validation:
+        max_uploaded_filename_length: 파일 이름은 255자를 초과할 수 없습니다.
+        max_uploaded_file_size: 파일 크기는 50MB를 초과할 수 없습니다.
+        must_be_an_xlsx_file: 유효한 XLSX 파일을 업로드하십시오.
