@@ -9,8 +9,6 @@ declare(strict_types=1);
 
 namespace Pim\Upgrade\Schema;
 
-use Akeneo\Tool\Component\Batch\Job\JobParameters;
-use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
 use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
