@@ -116,7 +116,7 @@ services:
         arguments:
             - '@pim_catalog.repository.locale'
 
-    Akeneo\Catalogs\Infrastructure\Persistence\GetCategoriesByCodeQuery:
+    Akeneo\Catalogs\Infrastructure\Persistence\Category\GetCategoriesByCodeQuery:
         arguments:
             - '@pim_catalog.repository.category'
 

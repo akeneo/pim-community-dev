@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Infrastructure\Persistence;
+namespace Akeneo\Catalogs\Infrastructure\Persistence\Category;
 
-use Akeneo\Catalogs\Application\Persistence\GetCategoriesByCodeQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Category\GetCategoriesByCodeQueryInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryTranslationInterface;
