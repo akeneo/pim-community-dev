@@ -49,7 +49,7 @@ class UploadActionTest extends ControllerIntegrationTestCase
     public function it_doesnt_upload_an_asset_with_an_invalid_filename(): void
     {
         $file = new UploadedFile(
-            __DIR__ . '/../../../../../../back/Infrastructure/Symfony/Resources/fixtures/files/invalid­file.jpg',
+            __DIR__ . '/../../../../Common/TestFixtures/invalid­file.jpg',
             'invalid­file.jpg',
             null,
             null,
