@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Validation\ProductSelection;
 
-use Akeneo\Catalogs\Application\Persistence\GetChannelQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Channel\GetChannelQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Locale\GetChannelLocalesQueryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;

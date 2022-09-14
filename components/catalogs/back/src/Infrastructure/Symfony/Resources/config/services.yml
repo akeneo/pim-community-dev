@@ -96,7 +96,7 @@ services:
         arguments:
             - '@pim_catalog.repository.channel'
 
-    Akeneo\Catalogs\Infrastructure\Persistence\GetChannelQuery:
+    Akeneo\Catalogs\Infrastructure\Persistence\Channel\GetChannelQuery:
         arguments:
             - '@pim_catalog.repository.channel'
 

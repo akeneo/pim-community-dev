@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Validation\ProductSelection\AttributeCriterion;
 
+use Akeneo\Catalogs\Application\Persistence\Channel\GetChannelQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\FindOneAttributeByCodeQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\GetAttributeOptionsByCodeQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\GetChannelQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Locale\GetChannelLocalesQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Locale\GetLocalesQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Measurement\GetMeasurementsFamilyQueryInterface;
+use Akeneo\Catalogs\Infrastructure\Persistence\Channel\GetChannelQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\FindOneAttributeByCodeQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\GetAttributeOptionsByCodeQuery;
-use Akeneo\Catalogs\Infrastructure\Persistence\GetChannelQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\Locale\GetChannelLocalesQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\Locale\GetLocalesQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\Measurement\GetMeasurementsFamilyQuery;
