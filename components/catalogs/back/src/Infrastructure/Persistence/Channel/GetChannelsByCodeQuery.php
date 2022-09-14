@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Infrastructure\Persistence;
+namespace Akeneo\Catalogs\Infrastructure\Persistence\Channel;
 
-use Akeneo\Catalogs\Application\Persistence\GetChannelsByCodeQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Channel\GetChannelsByCodeQueryInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
 

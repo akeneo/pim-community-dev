@@ -100,11 +100,11 @@ services:
         arguments:
             - '@pim_catalog.repository.channel'
 
-    Akeneo\Catalogs\Infrastructure\Persistence\GetChannelsQuery:
+    Akeneo\Catalogs\Infrastructure\Persistence\Channel\GetChannelsQuery:
         arguments:
             - '@pim_catalog.repository.channel'
 
-    Akeneo\Catalogs\Infrastructure\Persistence\GetChannelsByCodeQuery:
+    Akeneo\Catalogs\Infrastructure\Persistence\Channel\GetChannelsByCodeQuery:
         arguments:
             - '@pim_catalog.repository.channel'
 

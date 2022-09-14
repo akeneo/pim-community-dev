@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Unit\Infrastructure\Controller\Internal;
 
-use Akeneo\Catalogs\Application\Persistence\GetChannelsByCodeQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\GetChannelsQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Channel\GetChannelsByCodeQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Channel\GetChannelsQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Controller\Internal\GetChannelsAction;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
