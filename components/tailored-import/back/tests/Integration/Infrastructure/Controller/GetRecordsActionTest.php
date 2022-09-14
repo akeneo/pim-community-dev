@@ -31,28 +31,53 @@ final class GetRecordsActionTest extends ControllerIntegrationTestCase
 
     public function test_it_returns_available_records(): void
     {
-        $response = $this->assertCallSuccess('brand', 'ecommerce', 'fr_Fr');
+        $response = $this->makeCall('brand', 'ecommerce', 'fr_Fr');
         Assert::assertSame($response->getStatusCode(), Response::HTTP_OK);
     }
 
-    private function assertCallSuccess(string $referenceEntityCode, string $channel, string $locale): Response
+    public function test_it_returns_a_400_response_if_reference_entity_code_is_not_given(): void
     {
+        $response = $this->makeCall(null, 'ecommerce', 'fr_Fr');
+        Assert::assertSame($response->getStatusCode(), Response::HTTP_BAD_REQUEST);
+    }
+
+    public function test_it_returns_a_400_response_if_channel_is_not_given(): void
+    {
+        $response = $this->makeCall('brand', null, 'fr_Fr');
+        Assert::assertSame($response->getStatusCode(), Response::HTTP_BAD_REQUEST);
+    }
+
+    public function test_it_returns_a_400_response_if_locale_is_not_given(): void
+    {
+        $response = $this->makeCall('brand', 'ecommerce', null);
+        Assert::assertSame($response->getStatusCode(), Response::HTTP_BAD_REQUEST);
+    }
+
+    private function makeCall(?string $referenceEntityCode, ?string $channel, ?string $locale): Response
+    {
+        $params = [];
+
+        if (null !== $referenceEntityCode) {
+            $params['reference_entity_code'] = $referenceEntityCode;
+        }
+
+        if (null !== $channel) {
+            $params['channel'] = $channel;
+        }
+
+        if (null !== $locale) {
+            $params['locale'] = $locale;
+        }
+
         $this->webClientHelper->callApiRoute(
             $this->client,
             self::ROUTE,
             [],
             'GET',
-            [
-                'reference_entity_code' => $referenceEntityCode,
-                'channel' => $channel,
-                'locale' => $locale
-            ]
+            $params
         );
 
-        $response = $this->client->getResponse();
-        Assert::assertSame($response->getStatusCode(), Response::HTTP_OK);
-
-        return $response;
+        return $this->client->getResponse();
     }
 
     protected function getConfiguration(): Configuration

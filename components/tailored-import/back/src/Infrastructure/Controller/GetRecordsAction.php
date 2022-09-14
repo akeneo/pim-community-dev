@@ -38,17 +38,17 @@ final class GetRecordsAction
 
         $referenceEntityCode = $request->get('reference_entity_code');
         if (null === $referenceEntityCode) {
-            return new JsonResponse('Missing reference entity code', Response::HTTP_BAD_REQUEST);
+            throw new BadRequestHttpException('Missing reference entity code');
         }
 
         $channel = $request->get('channel');
         if (null === $channel) {
-            return new JsonResponse('Missing channel', Response::HTTP_BAD_REQUEST);
+            throw new BadRequestHttpException('Missing channel');
         }
 
         $locale = $request->get('locale');
         if (null === $locale) {
-            return new JsonResponse('Missing locale', Response::HTTP_BAD_REQUEST);
+            throw new BadRequestHttpException('Missing locale');
         }
 
         $searchRecordsParameters = new SearchRecordsParameters();
