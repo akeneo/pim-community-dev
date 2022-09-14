@@ -20,6 +20,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Enrichment\SqlFindRecordsUsedAsProductVariantAxis;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityType;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
@@ -235,9 +236,9 @@ class SqlFindRecordsUsedAsProductVariantAxisTest extends SqlIntegrationTestCase
      */
     private function createProductVariant(string $identifier, array $userIntents): void
     {
-        $command = UpsertProductCommand::createFromCollection(
+        $command = UpsertProductCommand::createWithIdentifier(
             userId: $this->getUserId('admin'),
-            productIdentifier: $identifier,
+            productIdentifier: ProductIdentifier::fromIdentifier($identifier),
             userIntents: $userIntents
         );
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
