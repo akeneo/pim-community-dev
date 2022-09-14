@@ -6,7 +6,7 @@ import {
     getColor,
     getFontSize,
     GroupsIllustration,
-    Search
+    Search,
 } from 'akeneo-design-system';
 import {AttributeMeasurementCriterionState} from './types';
 import {useTranslate} from '@akeneo-pim-community/shared';
@@ -53,14 +53,14 @@ const ValueInput = styled.input`
     }
 `;
 
-const MeasurementInput = styled.input<{invalid:boolean, isOpen: boolean} & AkeneoThemedProps>`
+const MeasurementInput = styled.input<{invalid: boolean; isOpen: boolean} & AkeneoThemedProps>`
     width: 100%;
     height: 40px;
-    border: 1px solid ${({invalid}) => invalid ? getColor('red', 100) : getColor('grey', 80)};
+    border: 1px solid ${({invalid}) => (invalid ? getColor('red', 100) : getColor('grey', 80))};
     border-left: 0;
     border-radius: 0 2px 2px 0;
     box-sizing: border-box;
-    background: ${({isOpen}) =>  isOpen ? getColor('grey', 20) : getColor('white')};
+    background: ${({isOpen}) => (isOpen ? getColor('grey', 20) : getColor('white'))};
     color: ${getColor('grey', 100)};
     font-size: ${getFontSize('default')};
     line-height: 40px;
