@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\Constraints\Type;
 
 /**
@@ -42,10 +43,11 @@ class SimpleYamlImport implements ConstraintCollectionProviderInterface
                         new IsTrue(['groups' => 'UploadExecution']),
                     ],
                     'invalid_items_file_format' => new NotBlank(),
-                    'users_to_notify' => [
+                    'user_to_notify' => new Optional(new Type('string')),
+                    'users_to_notify' => new Optional([
                         new Type('array'),
                         new All(new Type('string')),
-                    ],
+                    ]),
                     'is_user_authenticated' => new Type('bool'),
                 ]
             ]

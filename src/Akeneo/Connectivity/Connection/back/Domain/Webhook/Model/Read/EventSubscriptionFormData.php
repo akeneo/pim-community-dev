@@ -10,18 +10,11 @@ namespace Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read;
  */
 class EventSubscriptionFormData
 {
-    private ConnectionWebhook $eventSubscription;
-    private int $activeEventSubscriptionsLimit;
-    private int $activeEventSubscriptionsCount;
-
     public function __construct(
-        ConnectionWebhook $eventSubscription,
-        int $activeEventSubscriptionsLimit,
-        int $activeEventSubscriptionsCount
+        private ConnectionWebhook $eventSubscription,
+        private int $activeEventSubscriptionsLimit,
+        private int $activeEventSubscriptionsCount
     ) {
-        $this->eventSubscription = $eventSubscription;
-        $this->activeEventSubscriptionsLimit = $activeEventSubscriptionsLimit;
-        $this->activeEventSubscriptionsCount = $activeEventSubscriptionsCount;
     }
 
     /**
@@ -30,7 +23,8 @@ class EventSubscriptionFormData
      *      connectionCode: string,
      *      enabled: boolean,
      *      secret: ?string,
-     *      url: ?string
+     *      url: ?string,
+     *      isUsingUuid: boolean,
      *  },
      *  active_event_subscriptions_limit: array{
      *      limit: int,

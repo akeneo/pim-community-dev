@@ -16,12 +16,14 @@ use PHPUnit\Framework\Assert;
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @covers \Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\UpdateConnectionWebhookQuery
  */
 class UpdateConnectionWebhookQueryIntegration extends TestCase
 {
-    private ConnectionLoader $connectionLoader;
-    private Connection $connection;
-    private UpdateConnectionWebhookQuery $query;
+    private ?ConnectionLoader $connectionLoader;
+    private ?Connection $connection;
+    private ?UpdateConnectionWebhookQuery $query;
 
     protected function getConfiguration(): Configuration
     {
@@ -42,16 +44,25 @@ class UpdateConnectionWebhookQueryIntegration extends TestCase
         $magento = $this->connectionLoader->createConnection('magento', 'Magento Connector', FlowType::DATA_DESTINATION, false);
         $this->assertWebhookIsInDatabase($magento->code(), false);
 
-        $numberOfUpdatedRows = $this->query->execute(new ConnectionWebhook($magento->code(), true, 'http://any-url.com'));
+        $numberOfUpdatedRows = $this->query->execute(new ConnectionWebhook(
+            $magento->code(),
+            true,
+            'http://any-url.com',
+            true
+        ));
 
         Assert::assertEquals(1, $numberOfUpdatedRows);
-        $this->assertWebhookIsInDatabase($magento->code(), true, 'http://any-url.com');
+        $this->assertWebhookIsInDatabase($magento->code(), true, 'http://any-url.com', true);
     }
 
-    private function assertWebhookIsInDatabase(string $code, bool $enabled, ?string $url = null): void
-    {
+    private function assertWebhookIsInDatabase(
+        string $code,
+        bool $enabled,
+        ?string $url = null,
+        bool $isUsingUuid = false,
+    ): void {
         $selectQuery = <<<SQL
-        SELECT webhook_enabled, webhook_url
+        SELECT webhook_enabled, webhook_url, webhook_is_using_uuid
         FROM akeneo_connectivity_connection
         WHERE code = :code
         SQL;
@@ -59,5 +70,6 @@ class UpdateConnectionWebhookQueryIntegration extends TestCase
 
         Assert::assertEquals($enabled, (bool) $webhook['webhook_enabled']);
         Assert::assertEquals($url, $webhook['webhook_url']);
+        Assert::assertEquals($isUsingUuid, (bool) $webhook['webhook_is_using_uuid']);
     }
 }

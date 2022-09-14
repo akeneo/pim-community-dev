@@ -28,18 +28,19 @@ class DbalSelectActiveWebhooksQuery implements SelectActiveWebhooksQueryInterfac
     public function execute(): array
     {
         $sql = <<<SQL
-SELECT connection.code,
-connection.webhook_url,
-connection.webhook_secret,
-connection.user_id,
-access_group.name as group_name
-FROM akeneo_connectivity_connection as connection
-LEFT JOIN oro_user_access_group as user_access_group ON user_access_group.user_id = connection.user_id
-LEFT JOIN oro_user_access_role as user_access_role ON user_access_role.user_id = connection.user_id
-LEFT JOIN oro_access_group access_group ON user_access_group.group_id = access_group.id
-WHERE connection.webhook_url IS NOT NULL AND connection.webhook_enabled = 1
-ORDER BY code
-SQL;
+        SELECT connection.code,
+        connection.webhook_url,
+        connection.webhook_secret,
+        connection.user_id,
+        connection.webhook_is_using_uuid,
+        access_group.name as group_name
+        FROM akeneo_connectivity_connection as connection
+        LEFT JOIN oro_user_access_group as user_access_group ON user_access_group.user_id = connection.user_id
+        LEFT JOIN oro_user_access_role as user_access_role ON user_access_role.user_id = connection.user_id
+        LEFT JOIN oro_access_group access_group ON user_access_group.group_id = access_group.id
+        WHERE connection.webhook_url IS NOT NULL AND connection.webhook_enabled = 1
+        ORDER BY code
+        SQL;
         $result = $this->dbalConnection->executeQuery($sql)->fetchAllAssociative();
 
         /*
@@ -66,7 +67,8 @@ SQL;
                 $row['code'],
                 (int) $row['user_id'],
                 $row['webhook_secret'],
-                $row['webhook_url']
+                $row['webhook_url'],
+                (bool) $row['webhook_is_using_uuid'],
             );
         }
 

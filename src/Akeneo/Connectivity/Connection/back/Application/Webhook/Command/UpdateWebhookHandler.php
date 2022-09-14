@@ -29,7 +29,12 @@ class UpdateWebhookHandler
     {
         $connectionCode = $command->code();
 
-        $webhook = new ConnectionWebhook($connectionCode, $command->enabled(), $command->url());
+        $webhook = new ConnectionWebhook(
+            $connectionCode,
+            $command->enabled(),
+            $command->url(),
+            $command->isUsingUuid()
+        );
 
         $violations = $this->validator->validate($webhook);
         if (0 !== $violations->count()) {
