@@ -3,3 +3,4 @@ pim_user:
   password_match: "Los campos de contraseña deben coincidir."
   role:
     invalid_role_format: 'La función debe empezar por «ROLE_» y debe contener solo guiones bajos, guiones y caracteres alfanuméricos en mayúsculas.'
+  reserved_prefix_username: "El prefijo de nombre de usuario «{{ prefix }}» está reservado"

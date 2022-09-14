@@ -59,6 +59,9 @@ catalogs-coupling-back:
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect \
 		--config-file=$(CATALOGS_PATH)/back/.php_cd.php \
 		$(CATALOGS_PATH)/back/src
+	$(PHP_RUN) vendor/bin/php-coupling-detector list-unused-requirements \
+		--config-file=$(CATALOGS_PATH)/back/.php_cd.php \
+		$(CATALOGS_PATH)/back/src
 
 .PHONY: catalogs-unit-back
 catalogs-unit-back:
@@ -66,6 +69,7 @@ catalogs-unit-back:
 		--configuration $(CATALOGS_PATH)/back/ \
 		--bootstrap $(CATALOGS_BOOTSTRAP_PATH) \
 		--testsuite Catalogs_Unit \
+		--order-by random \
 		--log-junit var/tests/phpunit/phpunit_catalogs_unit.xml
 
 .PHONY: catalogs-integration-back
@@ -73,7 +77,9 @@ catalogs-integration-back:
 	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit \
 		--configuration $(CATALOGS_PATH)/back/ \
 		--bootstrap $(CATALOGS_BOOTSTRAP_PATH) \
-		--testsuite Catalogs_Integration ${O}
+		--testsuite Catalogs_Integration \
+		--order-by random \
+		--log-junit var/tests/phpunit/phpunit_catalogs_integration.xml
 
 .PHONY: catalogs-acceptance-back
 catalogs-acceptance-back:

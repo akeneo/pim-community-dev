@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Category\Application\Applier;
 
+use Akeneo\Category\Api\Command\UserIntents\SetImage;
 use Akeneo\Category\Api\Command\UserIntents\SetText;
 use Akeneo\Category\Application\Applier\SetTextApplier;
 use Akeneo\Category\Application\Applier\SetTextAreaApplier;
@@ -30,12 +31,14 @@ class SetTextApplierSpec extends ObjectBehavior
 
     function it_applies_set_text_user_intent(): void
     {
+        $identifier = 'attribute_code' . ValueCollection::SEPARATOR . 'uuid';
         $valueKey = 'attribute_code'
             . ValueCollection::SEPARATOR . 'uuid' .
             ValueCollection::SEPARATOR . 'locale_code';
 
         $attributes = ValueCollection::fromArray(
             [
+                'attribute_codes' => [$identifier],
                 $valueKey => [
                     'data' => 'value',
                     'locale' => 'locale_code',
@@ -60,6 +63,7 @@ class SetTextApplierSpec extends ObjectBehavior
 
         $expectedAttributes = ValueCollection::fromArray(
             [
+                'attribute_codes' => [$identifier],
                 $valueKey => [
                     'data' => 'updated_value',
                     'locale' => 'locale_code',
@@ -68,17 +72,23 @@ class SetTextApplierSpec extends ObjectBehavior
             ]
         );
 
-        $expectedCategory = new Category(
-            id: new CategoryId(1),
-            code: new Code('code'),
-            labels: LabelCollection::fromArray([]),
-            attributes: $expectedAttributes
-        );
-
         $this->apply($userIntent, $category);
         Assert::assertEquals(
-            $expectedCategory->getAttributes(),
+            $expectedAttributes,
             $category->getAttributes()
         );
+    }
+
+    function it_throws_exception_on_wrong_user_intent_applied(
+        SetImage $userIntent,
+        Category $category
+    ): void
+    {
+        $this
+            ->shouldThrow(\InvalidArgumentException::class)
+            ->duringApply(
+                $userIntent,
+                $category
+            );
     }
 }

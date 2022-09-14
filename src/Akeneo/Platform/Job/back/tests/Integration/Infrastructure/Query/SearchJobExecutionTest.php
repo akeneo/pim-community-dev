@@ -31,7 +31,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_paginated_job_executions(): void
+    public function itReturnsPaginatedJobExecutions(): void
     {
         $this->loadFixtures();
 
@@ -50,8 +50,8 @@ class SearchJobExecutionTest extends IntegrationTestCase
         $query->page = 2;
 
         $expectedJobExecutions = [
+            $this->getExpectedJobExecutionRow($this->jobExecutionIds[5]),
             $this->getExpectedJobExecutionRow($this->jobExecutionIds[4]),
-            $this->getExpectedJobExecutionRow($this->jobExecutionIds[2]),
         ];
 
         $this->assertEquals($expectedJobExecutions, $this->query->search($query));
@@ -60,7 +60,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_filtered_job_executions(): void
+    public function itReturnsFilteredJobExecutions(): void
     {
         $this->loadFixtures();
 
@@ -78,7 +78,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_filtered_job_executions_on_status(): void
+    public function itReturnsFilteredJobExecutionsOnStatus(): void
     {
         $this->loadFixtures();
 
@@ -97,7 +97,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_filtered_job_executions_on_search(): void
+    public function itReturnsFilteredJobExecutionsOnSearch(): void
     {
         $this->loadFixtures();
 
@@ -117,7 +117,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_filtered_job_executions_on_user(): void
+    public function itReturnsFilteredJobExecutionsOnUser(): void
     {
         $this->loadFixtures();
 
@@ -135,19 +135,19 @@ class SearchJobExecutionTest extends IntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_job_execution_count_related_to_query()
+    public function itReturnsJobExecutionCountRelatedToQuery()
     {
         $this->loadFixtures();
 
         $query = new SearchJobExecutionQuery();
 
-        $this->assertEquals(5, $this->query->count($query));
+        $this->assertEquals(6, $this->query->count($query));
     }
 
     /**
      * @test
      */
-    public function it_does_not_count_not_visible_job_executions()
+    public function itDoesNotCountNotVisibleJobExecutions()
     {
         $aVisibleJobInstanceId = $this->fixturesJobHelper->createJobInstance([
             'code' => 'a_product_import',
@@ -185,7 +185,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_job_execution_count_filtered_by_type()
+    public function itReturnsJobExecutionCountFilteredByType()
     {
         $this->loadFixtures();
 
@@ -198,7 +198,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_filtered_job_executions_on_code(): void
+    public function itReturnsFilteredJobExecutionsOnCode(): void
     {
         $this->loadFixtures();
 
@@ -216,7 +216,24 @@ class SearchJobExecutionTest extends IntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_ordered_by_job_name_job_executions()
+    public function itReturnsFilteredJobExecutionsOnAutomation(): void
+    {
+        $this->loadFixtures();
+
+        $query = new SearchJobExecutionQuery();
+        $query->automation = true;
+
+        $expectedJobExecutions = [
+            $this->getExpectedJobExecutionRow($this->jobExecutionIds[5]),
+        ];
+
+        $this->assertEquals($expectedJobExecutions, $this->query->search($query));
+    }
+
+    /**
+     * @test
+     */
+    public function itReturnsOrderedByJobNameJobExecutions()
     {
         $this->loadFixtures();
 
@@ -236,7 +253,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_ordered_by_type_job_executions()
+    public function itReturnsOrderedByTypeJobExecutions()
     {
         $this->loadFixtures();
 
@@ -256,7 +273,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_ordered_by_started_at_job_executions()
+    public function itReturnsOrderedByStartedAtJobExecutions()
     {
         $this->loadFixtures();
 
@@ -276,7 +293,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_ordered_by_username_job_executions()
+    public function itReturnsOrderedByUsernameJobExecutions()
     {
         $this->loadFixtures();
 
@@ -295,7 +312,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_ordered_by_status_job_executions()
+    public function itReturnsOrderedByStatusJobExecutions()
     {
         $this->loadFixtures();
 
@@ -306,7 +323,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
 
         $expectedJobExecutions = [
             $this->getExpectedJobExecutionRow($this->jobExecutionIds[0]),
-            $this->getExpectedJobExecutionRow($this->jobExecutionIds[2]),
+            $this->getExpectedJobExecutionRow($this->jobExecutionIds[5]),
         ];
 
         $this->assertEquals($expectedJobExecutions, $this->query->search($query));
@@ -315,7 +332,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
     /**
      * @test
      */
-    public function it_does_not_return_not_visible_job_executions()
+    public function itDoesNotReturnNotVisibleJobExecutions()
     {
         $aNonVisibleJobInstanceId = $this->fixturesJobHelper->createJobInstance([
             'code' => 'prepare_evaluation',
@@ -339,7 +356,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_job_execution_count_filtered_by_search()
+    public function itReturnsJobExecutionCountFilteredBySearch()
     {
         $this->loadFixtures();
 
@@ -352,7 +369,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_job_execution_count_filtered_by_job_instance_code()
+    public function itReturnsJobExecutionCountFilteredByJobInstanceCode()
     {
         $this->loadFixtures();
 
@@ -474,6 +491,21 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 'processedItems' => 300,
             ],
         ]);
+
+        $aScheduledJobInstanceId = $this->fixturesJobHelper->createJobInstance([
+            'code' => 'a_scheduled_import',
+            'job_name' => 'a_scheduled_import',
+            'label' => 'A scheduled import',
+            'type' => 'import',
+        ]);
+
+        $this->jobExecutionIds[] = $this->fixturesJobHelper->createJobExecution([
+            'job_instance_id' => $aScheduledJobInstanceId,
+            'start_time' => '2020-01-01T01:00:00+01:00',
+            'user' => 'job_automated_user',
+            'status' => Status::COMPLETED,
+            'is_stoppable' => false,
+        ]);
     }
 
     private function getExpectedJobExecutionRow(int $jobExecutionId): JobExecutionRow
@@ -571,7 +603,17 @@ class SearchJobExecutionTest extends IntegrationTestCase
                     Status::fromLabel('FAILED'),
                     true,
                     new JobExecutionTracking(0, 3, []),
-                )
+                ),
+                $this->jobExecutionIds[5] => new JobExecutionRow(
+                    $this->jobExecutionIds[5],
+                    'A scheduled import',
+                    'import',
+                    new \DateTimeImmutable('2020-01-01T00:00:00+00:00'),
+                    'job_automated_user',
+                    Status::fromLabel('COMPLETED'),
+                    false,
+                    new JobExecutionTracking(0, 3, [])
+                ),
             ];
         }
 

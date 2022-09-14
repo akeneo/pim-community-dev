@@ -32,9 +32,7 @@ class MailNotifier implements Notifier
     {
         $emailsToNotify = $this->getEmailsToNotify();
 
-        foreach ($emailsToNotify as $email) {
-            $this->sendMail($jobExecution, $email);
-        }
+        $this->sendMail($jobExecution, $emailsToNotify);
     }
 
     public function setRecipients(array $recipients): void
@@ -56,17 +54,16 @@ class MailNotifier implements Notifier
         return array_unique($emailsToNotify);
     }
 
-    private function sendMail(JobExecution $jobExecution, string $email): void
+    private function sendMail(JobExecution $jobExecution, array $emails): void
     {
         $parameters = [
             'jobExecution' => $jobExecution,
-            'email' => $email
         ];
 
         try {
             $txtBody = $this->twig->render('@AkeneoBatch/Email/notification.txt.twig', $parameters);
             $htmlBody = $this->twig->render('@AkeneoBatch/Email/notification.html.twig', $parameters);
-            $this->mailer->notifyByEmail($email, 'Job has been executed', $txtBody, $htmlBody);
+            $this->mailer->notify($emails, 'Job has been executed', $txtBody, $htmlBody);
         } catch (Throwable $exception) {
             $this->logger->error(
                 MailNotifier::class . ' - Unable to send email : ' . $exception->getMessage(),

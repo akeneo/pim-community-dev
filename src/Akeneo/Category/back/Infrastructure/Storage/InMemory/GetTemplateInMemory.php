@@ -44,20 +44,20 @@ class GetTemplateInMemory implements GetTemplate
                     LabelCollection::fromArray(['en_US' => 'Description']),
                     $templateUuid
                 ),
-                AttributeImage::create(
-                    AttributeUuid::fromString('8dda490c-0fd1-4485-bdc5-342929783d9a'),
-                    new AttributeCode('banner_image'),
-                    AttributeOrder::fromInteger(2),
-                    AttributeIsLocalizable::fromBoolean(false),
-                    LabelCollection::fromArray(['fr_FR' => 'Banner image']),
-                    $templateUuid
-                ),
                 AttributeText::create(
                     AttributeUuid::fromString('4873080d-32a3-42a7-ae5c-1be518e40f3d'),
                     new AttributeCode('seo_meta_title'),
                     AttributeOrder::fromInteger(3),
                     AttributeIsLocalizable::fromBoolean(true),
                     LabelCollection::fromArray(['en_US' => 'SEO Meta Title']),
+                    $templateUuid
+                ),
+                AttributeImage::create(
+                    AttributeUuid::fromString('8dda490c-0fd1-4485-bdc5-342929783d9a'),
+                    new AttributeCode('banner_image'),
+                    AttributeOrder::fromInteger(2),
+                    AttributeIsLocalizable::fromBoolean(false),
+                    LabelCollection::fromArray(['fr_FR' => 'Banner image']),
                     $templateUuid
                 ),
                 AttributeTextArea::create(

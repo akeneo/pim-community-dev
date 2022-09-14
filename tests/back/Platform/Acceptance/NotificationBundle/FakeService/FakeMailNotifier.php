@@ -16,16 +16,11 @@ class FakeMailNotifier implements MailNotifierInterface
 {
     private array $emailSent = [];
 
-    public function notify(array $users, $subject, $txtBody, $htmlBody = null, array $options = []): void
+    public function notify(array $recipients, string $subject, string $txtBody, $htmlBody = null, array $options = []): void
     {
-        foreach ($users as $user) {
-            $this->emailSent[$user->getEmail()][] = $subject;
+        foreach ($recipients as $recipient) {
+            $this->emailSent[$recipient][] = $subject;
         }
-    }
-
-    public function notifyByEmail(string $recipient, string $subject, string $txtBody, $htmlBody = null, array $options = []): void
-    {
-        $this->emailSent[$recipient][] = $subject;
     }
 
     public function assertEmailHaveBeenSent(string $addressMail, string $subject): void

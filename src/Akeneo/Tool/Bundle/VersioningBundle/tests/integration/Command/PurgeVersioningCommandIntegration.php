@@ -13,6 +13,7 @@ use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Lock\LockFactory;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -34,6 +35,35 @@ class PurgeVersioningCommandIntegration extends TestCase
         $expectedDeletedVersionsCount = 18;
 
         $this->assertPurgeResult($result, $expectedOriginalVersionsCount, $expectedDeletedVersionsCount, 0);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_launch_purge_if_lock_exists(): void
+    {
+        /** @var LockFactory $lockFactory */
+        $lockFactory = $this->get('pim_framework.lock.factory');
+        $lockIdentifier = 'scheduled-job-versioning_purge';
+        $lock = $lockFactory->createLock($lockIdentifier, 300);
+        $lock->acquire();
+
+        $expectedOriginalVersionsCount = 25;
+        $this->initializeVersions($expectedOriginalVersionsCount);
+
+        $output = $this->runPurgeCommand();
+        $result = $output->fetch();
+
+        $lock->release();
+
+        Assert::assertStringContainsString(
+            '[app] Cannot launch scheduled job because another execution is still running.',
+            $result
+        );
+        Assert::assertStringNotContainsString(
+            'Start purging versions',
+            $result
+        );
     }
 
     /**

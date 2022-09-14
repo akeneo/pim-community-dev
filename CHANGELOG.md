@@ -77,7 +77,9 @@
 - PIM-10598: Fix "Cleaning removed attribute values" job failing if attribute is deleted during mass deletion of products
 - PIM-10595: Fix not being able to add record with code "0" on a product
 - PIM-10588: Add potentially missing `remove_completeness_for_channel_and_locale` job instance
+- PIM-10620: Fix export product options values with label to be case insensitive with codes
 - PIM-10606: Fix computeFamilyVariantStructureChange on attribute removal
+- PIM-10624: Fix very slow query when counting variants for mass delete
 
 ## Improvements
 

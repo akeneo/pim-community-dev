@@ -13,12 +13,20 @@ use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PurgeVersioning implements TaskletInterface
+final class PurgeVersioning implements TaskletInterface
 {
-    private StepExecution $stepExecution;
+    protected const JOB_CODE = 'versioning_purge';
 
-    public function __construct(private VersionPurgerInterface $versionPurger)
+    protected StepExecution $stepExecution;
+
+    public function __construct(
+        private VersionPurgerInterface $versionPurger,
+    ) {
+    }
+
+    public function setStepExecution(StepExecution $stepExecution): void
     {
+        $this->stepExecution = $stepExecution;
     }
 
     public function execute(): void
@@ -37,10 +45,5 @@ class PurgeVersioning implements TaskletInterface
         $purgeOptions['resource_name'] = $this->stepExecution->getJobParameters()->get('entity');
 
         $this->versionPurger->purge($purgeOptions);
-    }
-
-    public function setStepExecution(StepExecution $stepExecution): void
-    {
-        $this->stepExecution = $stepExecution;
     }
 }
