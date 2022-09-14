@@ -71,7 +71,6 @@
     ],
     "coveragePathIgnorePatterns": [
       "<rootDir>/src/index.tsx",
-      "<rootDir>/src/FakePIM.tsx",
       "<rootDir>/src/feature/tests"
     ],
     "coverageThreshold": {

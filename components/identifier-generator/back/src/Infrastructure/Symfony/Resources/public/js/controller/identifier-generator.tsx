@@ -27,7 +27,7 @@ class IdentifierGeneratorController extends ReactController {
 
   renderRoute() {
     mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-settings'});
-    mediator.trigger('pim_menu:highlight:item', {extension: 'pim-menu-measurements-settings'});
+    mediator.trigger('pim_menu:highlight:item', {extension: 'pim-menu-identifier-generator-settings'});
 
     return super.renderRoute();
   }
@@ -37,7 +37,7 @@ class IdentifierGeneratorController extends ReactController {
   }
 
   canLeave() {
-    return true; // !measurementsDependencies.unsavedChanges.hasUnsavedChanges || confirm(__('pim_ui.flash.unsaved_changes'));
+    return true;
   }
 }
 
