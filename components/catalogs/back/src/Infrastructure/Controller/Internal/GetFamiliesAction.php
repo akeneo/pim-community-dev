@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Controller\Internal;
 
-use Akeneo\Catalogs\Application\Persistence\GetFamiliesByCodeQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Family\GetFamiliesByCodeQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\SearchFamilyQueryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;

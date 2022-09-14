@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Unit\Infrastructure\Controller\Internal;
 
-use Akeneo\Catalogs\Application\Persistence\GetFamiliesByCodeQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Family\GetFamiliesByCodeQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\SearchFamilyQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Controller\Internal\GetFamiliesAction;
 use PHPUnit\Framework\TestCase;
