@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Infrastructure\Persistence;
+namespace Akeneo\Catalogs\Infrastructure\Persistence\Family;
 
-use Akeneo\Catalogs\Application\Persistence\SearchFamilyQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Family\SearchFamilyQueryInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 
