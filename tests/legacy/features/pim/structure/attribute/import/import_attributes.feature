@@ -76,7 +76,7 @@ Feature: Import attributes
     And I launch the import job
     And I wait for the "csv_footwear_attribute_import" job to finish
     Then I should see the text "read lines 1"
-    Then I should see the text "processed 1"
+    Then I should see the text "updated 1"
     And there should be the following attributes:
       | type                     | code         | label-en_US     | label-de_DE      | label-fr_FR    | group     | unique | useable_as_grid_filter | localizable | scopable | localizable | scopable | available_locales | sort_order |
       | pim_catalog_simpleselect | manufacturer | My awesome code | Meine große Code | Mon super code | marketing | 0      | 1                      | 0           | 0        | 0           | 0        | en_US,fr_FR       | 3          |
