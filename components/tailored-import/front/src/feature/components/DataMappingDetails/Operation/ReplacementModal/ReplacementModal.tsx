@@ -267,7 +267,7 @@ const ReplacementModal = ({
                           <Field>
                             <TagInput
                               invalid={0 < valueErrors.length}
-                              separators={[',', ';']}
+                              separators={[]}
                               placeholder={translate(
                                 'akeneo.tailored_import.data_mapping.operations.replacement.to_placeholder'
                               )}

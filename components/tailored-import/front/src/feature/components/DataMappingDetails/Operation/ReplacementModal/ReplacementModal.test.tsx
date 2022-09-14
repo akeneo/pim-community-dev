@@ -55,7 +55,7 @@ test('it can update a replacement mapping', async () => {
     'akeneo.tailored_import.data_mapping.operations.replacement.to_placeholder'
   );
 
-  userEvent.type(blackInput, 'Noir;');
+  userEvent.type(blackInput, 'Noir{enter}');
   await act(async () => {
     userEvent.click(screen.getByText('pim_common.confirm'));
   });

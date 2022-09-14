@@ -57,7 +57,7 @@ const BooleanReplacementOperationBlock = ({
       <Section>
         <Field label={translate('akeneo.tailored_import.data_mapping.operations.boolean_replacement.field.yes_value')}>
           <TagInput
-            separators={[',', ';']}
+            separators={[]}
             value={operation.mapping.true}
             onChange={yesValues => handleMappingChange('true', yesValues)}
             invalid={0 < trueErrors.length}
@@ -71,7 +71,7 @@ const BooleanReplacementOperationBlock = ({
         </Field>
         <Field label={translate('akeneo.tailored_import.data_mapping.operations.boolean_replacement.field.no_value')}>
           <TagInput
-            separators={[',', ';']}
+            separators={[]}
             value={operation.mapping.false}
             onChange={noValues => handleMappingChange('false', noValues)}
             invalid={0 < falseErrors.length}

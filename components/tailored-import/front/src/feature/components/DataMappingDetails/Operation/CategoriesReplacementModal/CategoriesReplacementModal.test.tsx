@@ -69,7 +69,7 @@ test('it can update a replacement mapping', async () => {
     'akeneo.tailored_import.data_mapping.operations.replacement.to_placeholder'
   );
 
-  userEvent.type(shoesInput, 'CHAUSSURE;');
+  userEvent.type(shoesInput, 'CHAUSSURE{enter}');
   await act(async () => {
     userEvent.click(screen.getByText('pim_common.confirm'));
   });
@@ -131,7 +131,7 @@ test('it can change mapping on another category tree', async () => {
     'akeneo.tailored_import.data_mapping.operations.replacement.to_placeholder'
   );
 
-  userEvent.type(tshirtInput, 'MAILLOT DE CORPS;');
+  userEvent.type(tshirtInput, 'MAILLOT DE CORPS{enter}');
   await act(async () => {
     userEvent.click(screen.getByText('pim_common.confirm'));
   });

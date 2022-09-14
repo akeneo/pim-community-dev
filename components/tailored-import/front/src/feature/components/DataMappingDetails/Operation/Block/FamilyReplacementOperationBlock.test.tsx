@@ -141,7 +141,7 @@ test('it opens a replacement modal and handles change', async () => {
     'akeneo.tailored_import.data_mapping.operations.replacement.to_placeholder'
   );
 
-  userEvent.type(fooBarMapping, 'foo;bar;');
+  userEvent.type(fooBarMapping, 'foo{enter}bar{enter}');
 
   await act(async () => {
     userEvent.click(screen.getByText('pim_common.confirm'));

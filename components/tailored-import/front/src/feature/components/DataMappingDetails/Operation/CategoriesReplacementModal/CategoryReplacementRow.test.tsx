@@ -92,7 +92,7 @@ test('it can update a replacement mapping', async () => {
     'akeneo.tailored_import.data_mapping.operations.replacement.to_placeholder'
   );
 
-  userEvent.type(shoesInput, 'Chaussure;');
+  userEvent.type(shoesInput, 'Chaussure{enter}');
 
   expect(handleMappingChange).toHaveBeenCalledWith({
     shoes: ['Chaussure'],

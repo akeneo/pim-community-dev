@@ -59,7 +59,7 @@ const EnabledReplacementOperationBlock = ({
           label={translate('akeneo.tailored_import.data_mapping.operations.enabled_replacement.field.enabled_value')}
         >
           <TagInput
-            separators={[',', ';']}
+            separators={[]}
             value={operation.mapping.true}
             onChange={enabledValues => handleMappingChange('true', enabledValues)}
             invalid={0 < trueErrors.length}
@@ -75,7 +75,7 @@ const EnabledReplacementOperationBlock = ({
           label={translate('akeneo.tailored_import.data_mapping.operations.enabled_replacement.field.disabled_value')}
         >
           <TagInput
-            separators={[',', ';']}
+            separators={[]}
             value={operation.mapping.false}
             onChange={disabledValues => handleMappingChange('false', disabledValues)}
             invalid={0 < falseErrors.length}
