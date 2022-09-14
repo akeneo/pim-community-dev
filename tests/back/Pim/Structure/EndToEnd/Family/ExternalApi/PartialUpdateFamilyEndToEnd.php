@@ -398,9 +398,7 @@ JSON;
             'attribute_as_label'     => 'sku',
             'attribute_as_image'     => null,
             'attribute_requirements' => [
-                'ecommerce'          => [ 'sku' ],
-                'ecommerce_china'    => [ 'sku' ],
-                'tablet'             => [ 'sku' ],
+                'ecommerce_china'    => ['sku'],
             ],
             'labels'                 => [
                 'en_US' => 'A family A1'

@@ -53,6 +53,10 @@ akeneo_job_process_tracker:
     stopping: In fase di interruzione
     unknown: Sconosciuto
     in_progress: In corso
+  automation_filter:
+    all: Tutto
+    yes: Yes
+    no: No
   max_page_without_filter_helper: Per consentirci di mostrarti i risultati più rilevanti, perfeziona la tua ricerca.
   tracking:
     completed: "Tempo speso: {{ duration }}"
