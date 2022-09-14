@@ -7,6 +7,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 use Akeneo\Channel\API\Query\IsLocaleEditable;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleShouldBeEditableByUser;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleShouldBeEditableByUserValidator;
@@ -33,7 +34,7 @@ class LocaleShouldBeEditableByUserValidatorSpec extends ObjectBehavior
 
     function it_throws_an_exception_with_a_wrong_constraint()
     {
-        $command = UpsertProductCommand::createFromCollection(userId: 1, productIdentifier: 'foo', userIntents: []);
+        $command = UpsertProductCommand::createWithIdentifier(userId: 1, productIdentifier: ProductIdentifier::fromIdentifier('foo'), userIntents: []);
 
         $this->shouldThrow(\InvalidArgumentException::class)->during('validate', [$command, new Type([])]);
     }
@@ -50,9 +51,9 @@ class LocaleShouldBeEditableByUserValidatorSpec extends ObjectBehavior
     ) {
         $valueUserIntent = new SetTextValue('a_text', null, 'en_US', 'new value');
 
-        $context->getRoot()->willReturn(UpsertProductCommand::createFromCollection(
+        $context->getRoot()->willReturn(UpsertProductCommand::createWithIdentifier(
             userId: 1,
-            productIdentifier: 'foo',
+            productIdentifier: ProductIdentifier::fromIdentifier('foo'),
             userIntents: [$valueUserIntent]
         ));
         $isLocaleEditable->forUserId('en_US', 1)->willReturn(true);
@@ -69,9 +70,9 @@ class LocaleShouldBeEditableByUserValidatorSpec extends ObjectBehavior
         $constraint = new LocaleShouldBeEditableByUser();
         $valueUserIntent = new SetTextValue('a_text', null, 'de_DE', 'new value');
 
-        $context->getRoot()->willReturn(UpsertProductCommand::createFromCollection(
+        $context->getRoot()->willReturn(UpsertProductCommand::createWithIdentifier(
             userId: 1,
-            productIdentifier: 'foo',
+            productIdentifier: ProductIdentifier::fromIdentifier('foo'),
             userIntents: [$valueUserIntent]
         ));
         $isLocaleEditable->forUserId('de_DE', 1)->willReturn(false);
@@ -90,9 +91,9 @@ class LocaleShouldBeEditableByUserValidatorSpec extends ObjectBehavior
     ) {
         $valueUserIntent = new SetTextValue('a_text', null, null, 'new value');
 
-        $context->getRoot()->willReturn(UpsertProductCommand::createFromCollection(
+        $context->getRoot()->willReturn(UpsertProductCommand::createWithIdentifier(
             userId: 1,
-            productIdentifier: 'foo',
+            productIdentifier: ProductIdentifier::fromIdentifier('foo'),
             userIntents: [$valueUserIntent]
         ));
         $isLocaleEditable->forUserId(Argument::any())->shouldNotBeCalled();
