@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Infrastructure\Validation\ProductSelection;
 
 use Akeneo\Catalogs\Application\Persistence\FindOneAttributeByCodeQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\GetMeasurementsFamilyQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Measurement\GetMeasurementsFamilyQueryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;

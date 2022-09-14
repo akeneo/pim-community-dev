@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Unit\Infrastructure\Controller\Internal;
 
-use Akeneo\Catalogs\Application\Persistence\GetMeasurementsFamilyQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Measurement\GetMeasurementsFamilyQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Controller\Internal\GetMeasurementsFamilyUnitsAction;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;

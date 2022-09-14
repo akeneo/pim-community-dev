@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Infrastructure\Persistence;
+namespace Akeneo\Catalogs\Infrastructure\Persistence\Measurement;
 
-use Akeneo\Catalogs\Application\Persistence\GetMeasurementsFamilyQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Measurement\GetMeasurementsFamilyQueryInterface;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
 use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface;
