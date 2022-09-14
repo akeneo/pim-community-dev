@@ -27,3 +27,8 @@ services:
             - '@Akeneo\UserManagement\ServiceApi\User\UpsertUserHandlerInterface'
             - '@Akeneo\UserManagement\ServiceApi\UserRole\ListUserRoleInterface'
             - '@Akeneo\Platform\Bundle\ImportExportBundle\Domain\ResolveScheduledJobRunningUsername'
+
+    Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\UserManagement\DeleteRunningUser:
+        arguments:
+            - '@Akeneo\UserManagement\ServiceApi\User\DeleteUserHandlerInterface'
+            - '@Akeneo\Platform\Bundle\ImportExportBundle\Domain\ResolveScheduledJobRunningUsername'

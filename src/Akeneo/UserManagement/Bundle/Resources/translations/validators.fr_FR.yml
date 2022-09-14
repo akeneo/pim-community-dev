@@ -3,3 +3,4 @@ pim_user:
   password_match: "Les mots de passe doivent correspondre."
   role:
     invalid_role_format: 'Le rôle doit commencer par "ROLE_" et ne doit contenir que des tirets bas et des caractères alphanumériques en majuscules.'
+  reserved_prefix_username: "Le préfixe de nom d'utilisateur '{{ prefix }}' est réservé"

@@ -105,11 +105,16 @@ SQL;
     private function buildSqlWherePart(SearchJobExecutionQuery $query): string
     {
         $sqlWhereParts = [];
+        $automation = $query->automation;
         $type = $query->type;
         $status = $query->status;
         $user = $query->user;
         $search = $query->search;
         $code = $query->code;
+
+        if (null !== $automation) {
+            $sqlWhereParts[] = $automation ? 'job_execution.user LIKE "job_automated%"' : 'job_execution.user NOT LIKE "job_automated%"';
+        }
 
         if (!empty($type)) {
             $sqlWhereParts[] = 'job_instance.type IN (:type)';

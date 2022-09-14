@@ -52,11 +52,16 @@ class GetProductsQuery implements GetProductsQueryInterface
     /**
      * {@inheritDoc}
      */
-    public function execute(string $catalogId, ?string $searchAfter = null, int $limit = 100): array
-    {
+    public function execute(
+        string $catalogId,
+        ?string $searchAfter = null,
+        int $limit = 100,
+        ?string $updatedAfter = null,
+        ?string $updatedBefore = null,
+    ): array {
         $filters = $this->findProductValueFilters($catalogId);
 
-        $uuids = $this->getProductUuidsQuery->execute($catalogId, $searchAfter, $limit);
+        $uuids = $this->getProductUuidsQuery->execute($catalogId, $searchAfter, $limit, $updatedAfter, $updatedBefore);
 
         $connectorProducts = $this->getConnectorProducts->fromProductUuids(
             \array_map(static fn (string $uuid): UuidInterface => Uuid::fromString($uuid), $uuids),

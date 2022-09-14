@@ -8,6 +8,7 @@ import AttributeMultiSelectCriterion from '../criteria/AttributeMultiSelectCrite
 import AttributeNumberCriterion from '../criteria/AttributeNumberCriterion';
 import AttributeMeasurementCriterion from '../criteria/AttributeMeasurementCriterion';
 import AttributeBooleanCriterion from '../criteria/AttributeBooleanCriterion';
+import AttributeDateCriterion from '../criteria/AttributeDateCriterion';
 
 type Return = (type: string) => AnyAttributeCriterion;
 
@@ -30,6 +31,8 @@ export const useFindAttributeCriterionByType = (): Return => {
                 return AttributeMeasurementCriterion;
             case 'pim_catalog_boolean':
                 return AttributeBooleanCriterion;
+            case 'pim_catalog_date':
+                return AttributeDateCriterion;
         }
 
         throw Error('Unknown attribute type');

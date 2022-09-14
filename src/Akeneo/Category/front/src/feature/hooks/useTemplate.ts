@@ -1,7 +1,9 @@
 import {useQuery} from 'react-query';
-// import {useUserContext} from '@akeneo-pim-community/shared'; //TODO
 import {Template} from '../models';
-import {useRoute} from "@akeneo-pim-community/shared";
+import {useRoute} from '@akeneo-pim-community/shared';
+import {useCallback} from 'react';
+
+const TEMPLATE_FETCH_STALE_TIME = 60 * 60 * 1000;
 
 type ResultError = Error | null;
 type Result = {
@@ -11,26 +13,24 @@ type Result = {
   error: ResultError;
 };
 
-// TODO later: remove hardcoded template uuid
-export const useTemplate = (templateUuid: string = '02274dac-e99a-4e1d-8f9b-794d4c3ba330'): Result => {
+export const useTemplate = (templateUuid: string): Result => {
   const url = useRoute('pim_category_template_rest_get', {
     templateUuid: templateUuid,
   });
-  return useQuery<Template, ResultError, Template>(
-    [],
-    async () => {
 
-      if (templateUuid.length === 0) {
-        return {};
-      }
-
-      const response = await fetch(url, {
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest',
-        },
-      });
-
-      return await response.json();
+  const fetchTemplate = useCallback(async () => {
+    if (templateUuid.length === 0) {
+      return {};
     }
-  );
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error();
+    }
+
+    return await response.json();
+  }, [templateUuid, url]);
+
+  return useQuery<Template, ResultError, Template>(['template'], fetchTemplate, {staleTime: TEMPLATE_FETCH_STALE_TIME});
 };

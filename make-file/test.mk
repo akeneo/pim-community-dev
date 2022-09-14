@@ -8,6 +8,7 @@ find-legacy-translations:
 .PHONY: coupling-back
 coupling-back: structure-coupling-back user-management-coupling-back channel-coupling-back enrichment-coupling-back connectivity-connection-coupling-back communication-channel-coupling-back import-export-coupling-back job-coupling-back data-quality-insights-coupling-back enrichment-product-coupling-back
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=upgrades/.php_cd.php upgrades/schema
+	$(PHP_RUN) vendor/bin/php-coupling-detector list-unused-requirements --config-file=upgrades/.php_cd.php upgrades/schema
 
 ### Static tests
 static-back: check-pullup check-sf-services enrichment-product-static-back
@@ -28,6 +29,7 @@ lint-back:
 	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 --rm php bin/console cache:warmup
 	$(DOCKER_COMPOSE) run --rm php php -d memory_limit=1G vendor/bin/phpstan analyse src/Akeneo/Pim --level 2
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
+	$(MAKE) migration-lint-back
 	$(MAKE) connectivity-connection-lint-back
 	$(MAKE) communication-channel-lint-back
 	$(MAKE) data-quality-insights-lint-back
@@ -39,6 +41,10 @@ lint-back:
 	$(MAKE) category-lint-back
 	# Cache was created with debug enabled, removing it allows a faster one to be created for upcoming tests
 	$(DOCKER_COMPOSE) run --rm php rm -rf var/cache/dev
+
+.PHONY: migration-lint-back
+migration-lint-back:
+	$(DOCKER_COMPOSE) run --rm php php vendor/bin/phpstan analyse -c upgrades/phpstan.neon
 
 .PHONY: lint-front
 lint-front:
@@ -124,8 +130,3 @@ ifeq ($(CI),true)
 else
 	${PHP_RUN} vendor/bin/behat -p legacy -s all ${O}
 endif
-
-.PHONY: test-database-structure
-test-database-structure: #Doc: test database structure
-	$(DOCKER_COMPOSE) run -e APP_DEBUG=1 --rm php bash -c 'bin/console pimee:database:inspect -f --env=test && bin/console pimee:database:diff --env=test'
-

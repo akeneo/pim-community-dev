@@ -45,6 +45,7 @@ services:
             - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
 
     Akeneo\Category\Infrastructure\Controller\InternalApi\GetTemplateController:
+        public: true
         arguments:
             - '@oro_security.security_facade'
             - '@Akeneo\Category\Application\Query\GetTemplate'

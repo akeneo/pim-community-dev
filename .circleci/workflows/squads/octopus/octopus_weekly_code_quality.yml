@@ -1,0 +1,17 @@
+workflows:
+    octopus_weekly_code_quality:
+        when:
+            and:
+                -   equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+                -   equal: [ "weekly_octopus_code_quality", << pipeline.schedule.name >> ]
+        jobs:
+            - checkout_ce
+            -   build_dev:
+                    is_ee_built: false
+                    requires:
+                        - checkout_ce
+            -   test_octopus_code_quality:
+                    context:
+                        - octopus-slack
+                    requires:
+                        - build_dev

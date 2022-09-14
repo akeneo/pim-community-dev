@@ -28,12 +28,14 @@ class SetTextAreaApplierSpec extends ObjectBehavior
 
     function it_updates_category_value_collection(): void
     {
+        $identifier = 'attribute_code' . ValueCollection::SEPARATOR . 'uuid';
         $valueKey = 'attribute_code'
             . ValueCollection::SEPARATOR . 'uuid' .
             ValueCollection::SEPARATOR . 'locale_code';
 
         $attributes = ValueCollection::fromArray(
             [
+                'attribute_codes' => [$identifier],
                 $valueKey => [
                     'data' => 'value',
                     'locale' => 'locale_code',
@@ -58,6 +60,7 @@ class SetTextAreaApplierSpec extends ObjectBehavior
 
         $expectedAttributes = ValueCollection::fromArray(
             [
+                'attribute_codes' => [$identifier],
                 $valueKey => [
                     'data' => 'updated_value',
                     'locale' => 'locale_code',
@@ -66,16 +69,9 @@ class SetTextAreaApplierSpec extends ObjectBehavior
             ]
         );
 
-        $expectedCategory = new Category(
-            id: new CategoryId(1),
-            code: new Code('code'),
-            labels: LabelCollection::fromArray([]),
-            attributes: $expectedAttributes
-        );
-
         $this->apply($userIntent, $category);
         Assert::assertEquals(
-            $expectedCategory->getAttributes(),
+            $expectedAttributes,
             $category->getAttributes()
         );
     }

@@ -49,6 +49,11 @@ export interface CategoryImageAttributeValueData {
 
 export type CategoryAttributeValueData = CategoryTextAttributeValueData | CategoryImageAttributeValueData;
 
+export const isCategoryImageAttributeValueData = (
+  data: CategoryAttributeValueData
+): data is CategoryImageAttributeValueData =>
+  data !== null && data.hasOwnProperty('original_filename') && data.hasOwnProperty('file_path');
+
 export type BackendCategoryTree = {
   attr: {
     id: string; // format: node_([0-9]+)

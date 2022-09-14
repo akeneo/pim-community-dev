@@ -149,7 +149,7 @@
         "webmozart/assert": "1.9.1"
     },
     "require-dev": {
-        "akeneo/php-coupling-detector": "^0.7.0",
+        "akeneo/php-coupling-detector": "^0.8.1",
         "behat/mink-selenium2-driver": "^v1.5.0",
         "dvdoug/behat-code-coverage": "^5.2.1",
         "friends-of-behat/mink": "^v1.9.0",

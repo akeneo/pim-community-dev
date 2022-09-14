@@ -75,6 +75,7 @@ services:
             - '@akeneo_batch_queue.manager.job_execution_manager'
             - '@logger'
             - '%kernel.project_dir%'
+            - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler'
         tags:
             - { name: console.command }
 
@@ -99,7 +100,7 @@ services:
         tags:
             - { name: akeneo_batch_queue.messenger.normalizer, priority: 0 }
 
-    Akeneo\Tool\Bundle\BatchQueueBundle\MessageHandler\JobExecutionMessageHandler:
+    Akeneo\Tool\Bundle\BatchQueueBundle\MessageHandler\JobMessageHandler:
         arguments:
             - '@logger'
             - '%kernel.project_dir%'

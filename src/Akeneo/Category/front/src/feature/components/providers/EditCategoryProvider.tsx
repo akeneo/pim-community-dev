@@ -5,7 +5,6 @@ import {Locale, useFeatureFlags, useFetch, useRoute} from '@akeneo-pim-community
 
 type SetCanLeavePage = (canLeavePage: boolean) => void;
 
-
 type Locales = {
   [code: string]: Locale;
 };
