@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Validation\ProductValueFilters;
 
-use Akeneo\Catalogs\Application\Persistence\GetLocalesByCodeQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Locale\GetLocalesByCodeQueryInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;

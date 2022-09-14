@@ -108,11 +108,11 @@ services:
         arguments:
             - '@pim_catalog.repository.channel'
 
-    Akeneo\Catalogs\Infrastructure\Persistence\GetLocalesQuery:
+    Akeneo\Catalogs\Infrastructure\Persistence\Locale\GetLocalesQuery:
         arguments:
             - '@pim_catalog.repository.locale'
 
-    Akeneo\Catalogs\Infrastructure\Persistence\GetLocalesByCodeQuery:
+    Akeneo\Catalogs\Infrastructure\Persistence\Locale\GetLocalesByCodeQuery:
         arguments:
             - '@pim_catalog.repository.locale'
 

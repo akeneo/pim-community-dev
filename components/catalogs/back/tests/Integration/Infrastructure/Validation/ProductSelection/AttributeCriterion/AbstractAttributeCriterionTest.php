@@ -8,13 +8,13 @@ use Akeneo\Catalogs\Application\Persistence\FindOneAttributeByCodeQueryInterface
 use Akeneo\Catalogs\Application\Persistence\GetAttributeOptionsByCodeQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\GetChannelLocalesQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\GetChannelQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\GetLocalesQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Locale\GetLocalesQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Measurement\GetMeasurementsFamilyQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Persistence\FindOneAttributeByCodeQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\GetAttributeOptionsByCodeQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\GetChannelLocalesQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\GetChannelQuery;
-use Akeneo\Catalogs\Infrastructure\Persistence\GetLocalesQuery;
+use Akeneo\Catalogs\Infrastructure\Persistence\Locale\GetLocalesQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\Measurement\GetMeasurementsFamilyQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 

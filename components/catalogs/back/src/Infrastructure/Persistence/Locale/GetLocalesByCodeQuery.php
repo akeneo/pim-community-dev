@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Infrastructure\Persistence;
+namespace Akeneo\Catalogs\Infrastructure\Persistence\Locale;
 
-use Akeneo\Catalogs\Application\Persistence\GetLocalesByCodeQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Locale\GetLocalesByCodeQueryInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 
