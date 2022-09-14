@@ -18,7 +18,6 @@ import {
   convertCategoryImageAttributeValueDataToFileInfo,
   convertFileInfoToCategoryImageAttributeValueData,
 } from '../helpers';
-import {attributeDefinitions} from '../models/TemplateMocking';
 import {usePreventClosing} from '../hooks/usePreventClosing';
 
 const locales: Locale[] = [
