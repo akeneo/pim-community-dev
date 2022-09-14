@@ -23,10 +23,7 @@ export const isImageAttributeInputValue = (value: AttributeInputValue): value is
 
 export const buildDefaultAttributeInputValue = (attributeType: string): AttributeInputValue => {
   if (attributeType === CATEGORY_ATTRIBUTE_TYPE_IMAGE) {
-    return {
-      filePath: '',
-      originalFilename: '',
-    };
+    return null;
   }
   return '';
 };

@@ -16,14 +16,10 @@ const unMemoizedBuildImageFieldAttribute: AttributeFieldBuilder<AttributeInputVa
     const [uploader, isUploading] = useUploader('pim_enriched_category_rest_file_upload');
     usePreventClosing(() => isUploading, translate('pim_enrich.confirmation.discard_changes', {entity: 'category'}));
 
-    if (!isImageAttributeInputValue(value)) {
-      return null;
-    }
-
     return (
       <Field label={getLabelFromAttribute(attribute, locale)}>
         <MediaFileInput
-          value={value}
+          value={!isImageAttributeInputValue(value) ? null : value}
           onChange={onChange}
           placeholder={translate('pim_common.media_upload')}
           uploadingLabel={translate('pim_common.media_uploading')}
