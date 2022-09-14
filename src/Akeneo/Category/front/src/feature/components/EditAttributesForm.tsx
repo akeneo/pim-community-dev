@@ -1,9 +1,7 @@
 import React, {useCallback, useState, useMemo} from 'react';
 import styled from 'styled-components';
-
 import {SectionTitle, Helper} from 'akeneo-design-system';
-import {Locale, LocaleSelector, useTranslate, useUploader} from '@akeneo-pim-community/shared';
-
+import {Locale, LocaleSelector, useTranslate} from '@akeneo-pim-community/shared';
 import {useTemplate} from '../hooks';
 import {
   Attribute,
@@ -18,7 +16,6 @@ import {
   convertCategoryImageAttributeValueDataToFileInfo,
   convertFileInfoToCategoryImageAttributeValueData,
 } from '../helpers';
-import {usePreventClosing} from '../hooks/usePreventClosing';
 
 const locales: Locale[] = [
   {
@@ -55,8 +52,6 @@ const FormContainer = styled.div`
 export const EditAttributesForm = ({attributeValues, onAttributeValueChange}: Props) => {
   const [locale, setLocale] = useState('en_US');
   const translate = useTranslate();
-  const [uploader, isUploading] = useUploader('pim_enriched_category_rest_file_upload');
-  usePreventClosing(() => isUploading, translate('pim_enrich.confirmation.discard_changes', {entity: 'category'}));
 
   const handleTextChange = useCallback(
     (attribute: Attribute) => (value: AttributeInputValue) => {
