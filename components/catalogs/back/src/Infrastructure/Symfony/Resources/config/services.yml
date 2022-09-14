@@ -124,7 +124,7 @@ services:
         arguments:
             - '@akeneo.enrichment.public_api.find_category_trees'
 
-    Akeneo\Catalogs\Infrastructure\Persistence\GetCategoryChildrenQuery:
+    Akeneo\Catalogs\Infrastructure\Persistence\Category\GetCategoryChildrenQuery:
         arguments:
             - '@pim_catalog.repository.category'
 

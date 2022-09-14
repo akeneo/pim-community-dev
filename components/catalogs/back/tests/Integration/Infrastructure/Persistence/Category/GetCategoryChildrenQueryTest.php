@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence;
+namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence\Category;
 
-use Akeneo\Catalogs\Infrastructure\Persistence\GetCategoryChildrenQuery;
+use Akeneo\Catalogs\Infrastructure\Persistence\Category\GetCategoryChildrenQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @covers \Akeneo\Catalogs\Infrastructure\Persistence\GetCategoryChildrenQuery
+ * @covers \Akeneo\Catalogs\Infrastructure\Persistence\Category\GetCategoryChildrenQuery
  */
 class GetCategoryChildrenQueryTest extends IntegrationTestCase
 {
