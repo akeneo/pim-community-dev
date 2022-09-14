@@ -23,6 +23,7 @@ final class SearchAttributesQuery implements SearchAttributesQueryInterface
         'pim_catalog_number',
         'pim_catalog_metric',
         'pim_catalog_boolean',
+        'pim_catalog_date',
     ];
 
     public function __construct(

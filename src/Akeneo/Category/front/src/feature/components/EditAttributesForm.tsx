@@ -1,15 +1,23 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useState, useMemo} from 'react';
 import styled from 'styled-components';
+
+import {SectionTitle, Helper} from 'akeneo-design-system';
 import {Locale, LocaleSelector, useTranslate, useUploader} from '@akeneo-pim-community/shared';
-import {Field, FileInfo, MediaFileInput, SectionTitle, TextAreaInput, TextInput, Helper} from 'akeneo-design-system';
+
 import {useTemplate} from '../hooks';
 import {
   Attribute,
   buildCompositeKey,
   CategoryAttributeValueData,
-  CategoryImageAttributeValueData,
   EnrichCategory,
+  isCategoryImageAttributeValueData,
 } from '../models';
+import {attributeFieldFactory} from './attributes/templateAttributesFactory';
+import {AttributeInputValue, buildDefaultAttributeInputValue, isImageAttributeInputValue} from './attributes/types';
+import {
+  convertCategoryImageAttributeValueDataToFileInfo,
+  convertFileInfoToCategoryImageAttributeValueData,
+} from '../helpers';
 import {attributeDefinitions} from '../models/TemplateMocking';
 import {usePreventClosing} from '../hooks/usePreventClosing';
 
@@ -45,10 +53,6 @@ const FormContainer = styled.div`
   }
 `;
 
-const Field960 = styled(Field)`
-  max-width: 960px;
-`;
-
 export const EditAttributesForm = ({attributeValues, onAttributeValueChange}: Props) => {
   const [locale, setLocale] = useState('en_US');
   const translate = useTranslate();
@@ -56,53 +60,90 @@ export const EditAttributesForm = ({attributeValues, onAttributeValueChange}: Pr
   usePreventClosing(() => isUploading, translate('pim_enrich.confirmation.discard_changes', {entity: 'category'}));
 
   const handleTextChange = useCallback(
-    (attribute: Attribute) => (value: string) => {
+    (attribute: Attribute) => (value: AttributeInputValue) => {
+      if (isImageAttributeInputValue(value)) {
+        return;
+      }
       onAttributeValueChange(attribute, locale, value);
     },
     [locale, onAttributeValueChange]
   );
 
   const handleImageChange = useCallback(
-    (attribute: Attribute) => (value: FileInfo | null) => {
+    (attribute: Attribute) => (value: AttributeInputValue) => {
+      if (!isImageAttributeInputValue(value)) {
+        return;
+      }
+
       // TODO handle value===null
       if (!value || !value.size || !value.mimeType || !value.extension) {
         return;
       }
-      const data: CategoryImageAttributeValueData = {
-        size: value.size,
-        file_path: value.filePath,
-        mime_type: value.mimeType,
-        extension: value.extension,
-        original_filename: value.originalFilename,
-      };
-      onAttributeValueChange(attribute, locale, data);
+
+      onAttributeValueChange(attribute, locale, convertFileInfoToCategoryImageAttributeValueData(value));
     },
     [locale, onAttributeValueChange]
   );
 
-  const getAttributeValues = useCallback(
-    (attribute: Attribute): any => {
-      const compositeKey = buildCompositeKey(attribute, locale);
+  // TODO change hardcoded value to use the template uuid
+  const {data: template, isLoading, isError} = useTemplate('02274dac-e99a-4e1d-8f9b-794d4c3ba330');
 
-      return attributeValues[compositeKey] && attributeValues[compositeKey].data ? attributeValues[compositeKey].data : null;
-    },
-    [attributeValues, locale]
-  );
-
-  const {data: template, isLoading, isError, error} = useTemplate('02274dac-e99a-4e1d-8f9b-794d4c3ba330');
+  const handlers = useMemo(() => {
+    const handlersMap: {[attributeUUID: string]: (value: AttributeInputValue) => void} = {};
+    template?.attributes.forEach((attribute: Attribute) => {
+      handlersMap[attribute.code] =
+        attribute.type === 'image' ? handleImageChange(attribute) : handleTextChange(attribute);
+    });
+    return handlersMap;
+  }, [template, handleImageChange, handleTextChange]);
 
   if (isLoading) {
-    return null; //TODO
+    return <h1>LOADING ...</h1>;
   }
 
   if (isError) {
-    console.log(error); //TODO
-    return (
-      <Helper level="error">
-        {error?.message}
-      </Helper>
-    );
+    return <Helper level="error">{translate('akeneo.category.edition_form.template.fetching_failed')}</Helper>;
   }
+
+  let attributesByOrder: Attribute[] = [];
+  template?.attributes.forEach((attribute: Attribute) => {
+    attributesByOrder[attribute.order] = attribute;
+  });
+
+  const attributeFields = attributesByOrder.map((attribute: Attribute) => {
+    const AttributeField = attributeFieldFactory(attribute);
+
+    if (AttributeField === null) {
+      return <Helper level="error">Could not find builder for {attribute.type} </Helper>;
+    }
+
+    const effectiveLocaleCode = attribute.is_localizable ? locale : null;
+    const compositeKey = buildCompositeKey(attribute, effectiveLocaleCode);
+
+    let value = attributeValues[compositeKey];
+
+    let dataForInput;
+    if (value) {
+      let {data: dataFromModel} = value;
+
+      if (isCategoryImageAttributeValueData(dataFromModel)) {
+        dataForInput = convertCategoryImageAttributeValueDataToFileInfo(dataFromModel);
+      } else {
+        dataForInput = dataFromModel;
+      }
+    } else {
+      dataForInput = buildDefaultAttributeInputValue(attribute.type);
+    }
+
+    return (
+      <AttributeField
+        locale={locale}
+        value={dataForInput}
+        onChange={handlers[attribute.code]}
+        key={attribute.uuid}
+      ></AttributeField>
+    );
+  });
 
   return (
     <FormContainer>
@@ -111,48 +152,7 @@ export const EditAttributesForm = ({attributeValues, onAttributeValueChange}: Pr
         <SectionTitle.Spacer />
         <LocaleSelector value={locale} values={locales} onChange={setLocale} />
       </SectionTitle>
-
-      {template?.attributes.map((attribute: Attribute) => {
-        const value = getAttributeValues(attribute);
-
-        switch (attribute.type) {
-          case 'text':
-            return (
-              <Field key={attribute.uuid} label={attribute.labels[locale]} locale={locale}>
-                <TextInput name={attribute.code} value={typeof value === 'string' ? value : ''} onChange={handleTextChange(attribute)} />
-              </Field>
-            );
-          case 'richtext':
-            return (
-              <Field960 key={attribute.uuid} label={attribute.labels[locale]} locale={locale}>
-                <TextAreaInput isRichText name={attribute.code} value={typeof value === 'string' ? value : ''} onChange={handleTextChange(attribute)} />
-              </Field960>
-            );
-          case 'textarea':
-            return (
-              <Field key={attribute.uuid} label={attribute.labels[locale]} locale={locale}>
-                <TextAreaInput name={attribute.code} value={typeof value === 'string' ? value : ''} onChange={handleTextChange(attribute)} />
-              </Field>
-            );
-          case 'image':
-            return (
-              <Field key={attribute.uuid} label={attribute.labels[locale]}>
-                <MediaFileInput
-                  value={null}
-                  onChange={handleImageChange(attribute)}
-                  placeholder="Drag and drop to upload or click here"
-                  uploadingLabel="Uploading..."
-                  uploadErrorLabel="An error occurred when uploading the file."
-                  clearTitle="Clear"
-                  thumbnailUrl={null}
-                  uploader={uploader}
-                />
-              </Field>
-            );
-        }
-
-        return null;
-      })}
+      {attributeFields}
     </FormContainer>
   );
 };

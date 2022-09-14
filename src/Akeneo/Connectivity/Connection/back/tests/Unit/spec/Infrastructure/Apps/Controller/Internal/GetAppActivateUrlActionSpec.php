@@ -8,7 +8,6 @@ use Akeneo\Connectivity\Connection\Application\Marketplace\AppUrlGenerator;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\IsConnectionsNumberLimitReachedQueryInterface;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Platform\Bundle\FrameworkBundle\Service\PimUrl;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -23,14 +22,12 @@ class GetAppActivateUrlActionSpec extends ObjectBehavior
 {
     public function let(
         GetAppQueryInterface $getAppQuery,
-        ClientProviderInterface $clientProvider,
         SecurityFacade $security,
         FeatureFlag $marketplaceActivateFeatureFlag,
         IsConnectionsNumberLimitReachedQueryInterface $isConnectionsNumberLimitReachedQuery,
     ): void {
         $this->beConstructedWith(
             $getAppQuery,
-            $clientProvider,
             new AppUrlGenerator(new PimUrl('https://some_pim_url')),
             $security,
             $marketplaceActivateFeatureFlag,

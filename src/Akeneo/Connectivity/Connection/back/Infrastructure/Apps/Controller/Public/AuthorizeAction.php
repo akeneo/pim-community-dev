@@ -18,6 +18,7 @@ use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetAppConfirmationQue
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetConnectedAppScopesQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGeneratorInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
@@ -49,6 +50,7 @@ final class AuthorizeAction
         private GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery,
         private ScopeListComparatorInterface $scopeListComparator,
         private UpdateConnectedAppScopesWithAuthorizationHandler $updateConnectedAppScopesWithAuthorizationHandler,
+        private ClientProviderInterface $clientProvider,
     ) {
     }
 
@@ -69,6 +71,8 @@ final class AuthorizeAction
         }
 
         $this->denyAccessUnlessGrantedToManageOrOpen($app);
+
+        $this->clientProvider->findOrCreateClient($app);
 
         $command = new RequestAppAuthorizationCommand(
             $clientId,

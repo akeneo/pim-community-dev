@@ -4,7 +4,8 @@ use Akeneo\CouplingDetector\Configuration\Configuration;
 use Akeneo\CouplingDetector\Configuration\DefaultFinder;
 use Akeneo\CouplingDetector\RuleBuilder;
 
-$finder = new DefaultFinder();
+$finder = (new DefaultFinder())
+    ->exclude('Test');
 $builder = new RuleBuilder();
 
 $rules = [
@@ -29,8 +30,6 @@ $rules = [
         'Akeneo\Pim\Structure\Component\AttributeTypes',
         'Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException',
         'Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException',
-        'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
-        'Akeneo\Pim\Structure\Component\AttributeTypes',
         'Ramsey\Uuid\UuidInterface',
 
         // API
@@ -54,7 +53,6 @@ $rules = [
 
         // Public APIs
         'Akeneo\Pim\Structure\Component\AttributeTypes',
-        'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
 
         // TODO: remove when Upsert product does not use token interface
         'Akeneo\UserManagement\Component\Model\UserInterface',

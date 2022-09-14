@@ -18,8 +18,6 @@ $rules = [
         'Webmozart\Assert\Assert',
         // TODO: The feature uses the datagrid
         'Oro\Bundle\PimDataGridBundle',
-        //PIM-9806
-        'Doctrine\ORM\Mapping',
 
         // TIP-945: User Management should not depend on Channel and Enrichment
         'Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface',
@@ -85,7 +83,7 @@ $rules = [
         'Twig\Environment',
         'Throwable',
         'Psr\Log\LoggerInterface',
-        
+
         // These files moved from Tool to Category bounded context
         // Usermanagement BC should query BC via exposed Commands
         // Ticket created : GRF-180

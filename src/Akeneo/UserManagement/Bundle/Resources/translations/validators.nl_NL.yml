@@ -3,3 +3,4 @@ pim_user:
   password_match: "De wachtwoorden moeten overeen komen."
   role:
     invalid_role_format: 'De rol moet beginnen met "ROLE_" en mag alleen liggende streepjes, streepjes en alfanumerieke tekens in hoofdletters bevatten.'
+  reserved_prefix_username: "Het voorvoegsel van de gebruikersnaam '{{ prefix }}' is gereserveerd"

@@ -95,10 +95,11 @@ class FamilyNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
 
         $normalizedFamily['attributes'] = $this->normalizeAttributes($family, $fullAttributes, $context);
 
-        $normalizedFamily['attribute_requirements'] = $this->normalizeRequirements(
+        $normalizedRequirements = $this->normalizeRequirements(
             $normalizedFamily['attribute_requirements'],
             $fullAttributes
         );
+        $normalizedFamily['attribute_requirements'] = [] === $normalizedRequirements ? (object) []: $normalizedRequirements;
 
         $firstVersion = $this->versionManager->getOldestLogEntry($family);
         $lastVersion = $this->versionManager->getNewestLogEntry($family);

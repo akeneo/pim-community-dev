@@ -8,6 +8,7 @@ use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
+use Akeneo\Test\IntegrationTestsBundle\Helper\ExperimentalTransactionHelper;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -44,6 +45,8 @@ abstract class TestCase extends KernelTestCase
 
         $this->catalog = $this->get('akeneo_integration_tests.catalogs');
 
+        self::getContainer()->get(ExperimentalTransactionHelper::class)->beginTransactions();
+
         if (null !== $this->getConfiguration()) {
             foreach ($this->getConfiguration()->getFeatureFlagsBeforeInstall() as $featureFlag) {
                 $featureFlags->enable($featureFlag);
@@ -60,8 +63,6 @@ abstract class TestCase extends KernelTestCase
 
         // Some messages can be in the queue after a failing test. To prevent error we remove then before each tests.
         $this->get('akeneo_integration_tests.launcher.job_launcher')->flushJobQueue();
-
-
     }
 
     /**
@@ -99,6 +100,8 @@ abstract class TestCase extends KernelTestCase
      */
     protected function tearDown(): void
     {
+        self::getContainer()->get(ExperimentalTransactionHelper::class)->closeTransactions();
+
         $connectionCloser = $this->get('akeneo_integration_tests.doctrine.connection.connection_closer');
         $connectionCloser->closeConnections();
 

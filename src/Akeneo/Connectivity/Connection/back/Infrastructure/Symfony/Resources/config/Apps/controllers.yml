@@ -4,7 +4,6 @@ services:
         public: true
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAppQuery'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider'
             - '@Akeneo\Connectivity\Connection\Application\Marketplace\AppUrlGenerator'
             - '@oro_security.security_facade'
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
@@ -139,6 +138,7 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetConnectedAppScopesQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\ScopeListComparator'
             - '@Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateConnectedAppScopesWithAuthorizationHandler'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\RequestAccessTokenAction:
         public: true

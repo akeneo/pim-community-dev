@@ -1,0 +1,4 @@
+akeneo.category:
+    edition_form:
+        template:
+            fetching_failed: An error occured while fetching template
