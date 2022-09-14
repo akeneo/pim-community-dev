@@ -10,7 +10,6 @@ use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\Constraints\Type;
 
 /**
@@ -68,11 +67,10 @@ class SimpleCsvImport implements ConstraintCollectionProviderInterface
                         new IsTrue(['groups' => 'UploadExecution']),
                     ],
                     'invalid_items_file_format' => new NotBlank(),
-                    'user_to_notify' => new Optional(new Type('string')),
-                    'users_to_notify' => new Optional([
+                    'users_to_notify' => [
                         new Type('array'),
                         new All(new Type('string')),
-                    ]),
+                    ],
                     'is_user_authenticated' => new Type('bool'),
                 ]
             ]
