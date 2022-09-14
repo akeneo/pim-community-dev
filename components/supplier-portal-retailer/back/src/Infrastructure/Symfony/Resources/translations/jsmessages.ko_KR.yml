@@ -87,11 +87,21 @@ supplier_portal:
         contributor: 기여자
         supplier: 제공업체
         status: 상태
+        download: 다운로드 아이콘
       notification:
         error_loading_supplier_files:
           title: 제품 파일을 표시할 수 없습니다.
           content: 불편을 드려 죄송합니다. 잠시 후 다시 시도해주십시오.
+    pim_notification:
+      button_label: 제품 파일 보기
 pim_title:
   supplier_portal_retailer_supplier_list: 제공업체
   supplier_portal_retailer_supplier_edit: 제공업체 편집
+  supplier_portal_retailer_product_files_list: 제품 파일
 batch_jobs.supplier_portal_xlsx_supplier_import.label: XLSX로 Supplier Portal 제공업체 가져오기
+pim_notification:
+  supplier_portal:
+    new_product_file:
+      button_label: 제품 파일 보기
+  types:
+    new_product_file: 새 제품 파일
