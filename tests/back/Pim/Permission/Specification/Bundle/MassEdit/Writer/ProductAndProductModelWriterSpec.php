@@ -74,7 +74,7 @@ class ProductAndProductModelWriterSpec extends ObjectBehavior
         $productModel2->getCode()->willReturn('product_model_2');
 
         $stepExecution->incrementSummaryInfo('proposal')->shouldBeCalledTimes(0);
-        $stepExecution->incrementSummaryInfo('process')->shouldBeCalledTimes(4);
+        $stepExecution->incrementSummaryInfo('update')->shouldBeCalledTimes(4);
 
         $authorizationChecker->isGranted('OWN_RESOURCE', $product1)->willReturn(true);
         $authorizationChecker->isGranted('OWN_RESOURCE', $product2)->shouldNotBeCalled();
@@ -115,7 +115,7 @@ class ProductAndProductModelWriterSpec extends ObjectBehavior
 
         $authorizationChecker->isGranted('OWN_RESOURCE', Argument::any())->willReturn(false);
 
-        $stepExecution->incrementSummaryInfo('process')->shouldBeCalledTimes(4);
+        $stepExecution->incrementSummaryInfo('update')->shouldBeCalledTimes(4);
         $stepExecution->incrementSummaryInfo('proposal')->shouldBeCalledTimes(2);
 
         $this->write([$product1, $product2, $productModel2, $product3, $product4, $productModel1]);

@@ -43,6 +43,6 @@ class UpdateJobExecutionSummarySubscriber implements EventSubscriberInterface
 
     public function onProductWasUpdated(ProductWasUpdated $event): void
     {
-        $this->stepExecution->incrementSummaryInfo('process');
+        $this->stepExecution->incrementSummaryInfo('update');
     }
 }

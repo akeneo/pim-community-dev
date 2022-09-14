@@ -67,8 +67,8 @@ class SelectOptionSpec extends ObjectBehavior
             )
         )->shouldBeCalledOnce();
 
-        $stepExecution->incrementSummaryInfo('process', 2)->shouldBeCalledOnce();
-        $stepExecution->incrementSummaryInfo('process', 1)->shouldBeCalledTimes(2);
+        $stepExecution->incrementSummaryInfo('update', 2)->shouldBeCalledOnce();
+        $stepExecution->incrementSummaryInfo('update', 1)->shouldBeCalledTimes(2);
 
         $this->write($items);
     }
@@ -96,7 +96,7 @@ class SelectOptionSpec extends ObjectBehavior
             )
         )->shouldBeCalledOnce();
 
-        $stepExecution->incrementSummaryInfo('process', 1)->shouldBeCalledOnce();
+        $stepExecution->incrementSummaryInfo('update', 1)->shouldBeCalledOnce();
 
         $this->write($items);
     }

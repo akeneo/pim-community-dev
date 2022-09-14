@@ -52,7 +52,7 @@ final class SelectOption implements ItemWriterInterface, StepExecutionAwareInter
                     ColumnCode::fromString($columnCode),
                     SelectOptionCollection::fromNormalized($options)
                 );
-                $this->stepExecution->incrementSummaryInfo('process', \count($options));
+                $this->stepExecution->incrementSummaryInfo('update', \count($options));
             }
         }
     }

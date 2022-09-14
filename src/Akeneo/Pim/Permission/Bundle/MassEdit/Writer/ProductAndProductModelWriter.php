@@ -82,7 +82,7 @@ class ProductAndProductModelWriter extends BaseWriter
     protected function incrementCount(EntityWithFamilyInterface $entityWithFamily): void
     {
         if ($this->hasPermissions($entityWithFamily) || $entityWithFamily instanceof ProductModelInterface) {
-            $this->stepExecution->incrementSummaryInfo('process');
+            $this->stepExecution->incrementSummaryInfo('update');
         } elseif ($entityWithFamily) {
             $this->stepExecution->incrementSummaryInfo('proposal');
         }

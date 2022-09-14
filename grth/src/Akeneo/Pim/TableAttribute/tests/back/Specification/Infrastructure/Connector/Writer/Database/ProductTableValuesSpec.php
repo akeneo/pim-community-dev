@@ -142,9 +142,9 @@ class ProductTableValuesSpec extends ObjectBehavior
         ])->shouldBeCalledOnce();
 
         $validator->validate($entityWithValues1)->shouldBeCalledTimes(2)->willReturn(new ConstraintViolationList());
-        $stepExecution->incrementSummaryInfo('process', 2)->shouldBeCalledOnce();
+        $stepExecution->incrementSummaryInfo('update', 2)->shouldBeCalledOnce();
         $validator->validate($entityWithValues2)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
-        $stepExecution->incrementSummaryInfo('process', 1)->shouldBeCalledOnce();
+        $stepExecution->incrementSummaryInfo('update', 1)->shouldBeCalledOnce();
 
         $bulkSaver->saveAll([$entityWithValues1, $entityWithValues2])->shouldBeCalledOnce();
 
@@ -198,7 +198,7 @@ class ProductTableValuesSpec extends ObjectBehavior
         ])->shouldBeCalledOnce();
 
         $validator->validate($entityWithValues)->shouldBeCalledTimes(2)->willReturn(new ConstraintViolationList());
-        $stepExecution->incrementSummaryInfo('process', 2)->shouldBeCalledOnce();
+        $stepExecution->incrementSummaryInfo('update', 2)->shouldBeCalledOnce();
 
         $bulkSaver->saveAll([$entityWithValues])->shouldBeCalledOnce();
 
@@ -246,7 +246,7 @@ class ProductTableValuesSpec extends ObjectBehavior
             new ConstraintViolation('Error2', '', [], null, null, null),
         ]));
         $stepExecution->addWarning('Error1, Error2', [], Argument::any())->shouldBeCalledOnce();
-        $stepExecution->incrementSummaryInfo('process', Argument::cetera())->shouldNotBeCalled();
+        $stepExecution->incrementSummaryInfo('update', Argument::cetera())->shouldNotBeCalled();
         $stepExecution->incrementSummaryInfo('skip', Argument::cetera())->shouldBeCalledOnce();
         $entityWithValues->removeValue($newValue)->shouldBeCalledOnce();
         $entityWithValues->addValue($formerTableValue)->shouldBeCalledOnce();

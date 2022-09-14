@@ -65,7 +65,7 @@ final class ImportSupplierTasklet implements TaskletInterface
                     $this->stepExecution->incrementSummaryInfo('create');
                 } else {
                     $this->updateSupplier($supplierData);
-                    $this->stepExecution->incrementSummaryInfo('process');
+                    $this->stepExecution->incrementSummaryInfo('update');
                 }
             } catch (InvalidItemException $e) {
                 $this->logger->info(

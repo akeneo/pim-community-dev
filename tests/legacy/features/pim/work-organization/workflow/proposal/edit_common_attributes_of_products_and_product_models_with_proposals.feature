@@ -53,7 +53,7 @@ Feature: Apply permissions for an attribute group when mass edit common attribut
     And I go on the last executed job resume of "edit_common_attributes"
     Then I should see the text "Proposal created 1"
     And I should see the text "skipped products 2"
-    And I should see the text "processed 3"
+    And I should see the text "updated 3"
     When I logout
     And I am logged in as "Julia"
     And I edit the "product_viewable" product

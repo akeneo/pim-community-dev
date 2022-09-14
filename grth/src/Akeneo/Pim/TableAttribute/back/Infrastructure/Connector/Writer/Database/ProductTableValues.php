@@ -82,7 +82,7 @@ final class ProductTableValues implements ItemWriterInterface, StepExecutionAwar
             $updatedRowCount = $this->updateEntityAndReturnUpdatedRowCount($entity, $tableRows);
             if (0 < $updatedRowCount) {
                 $productsToSave[] = $entity;
-                $this->stepExecution->incrementSummaryInfo('process', $updatedRowCount);
+                $this->stepExecution->incrementSummaryInfo('update', $updatedRowCount);
             }
         }
 
