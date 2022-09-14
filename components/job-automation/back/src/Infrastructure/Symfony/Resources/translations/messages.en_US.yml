@@ -1,0 +1,3 @@
+akeneo.job_automation:
+  notification:
+    invalid_job_instance: 'The {{ type }} profile "{{ label }}" couldn’t start due to the following errors: {{ error }}'
