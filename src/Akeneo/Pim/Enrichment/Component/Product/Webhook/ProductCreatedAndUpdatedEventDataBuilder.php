@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductWithUuidNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\ProductNotFoundException;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
@@ -25,7 +26,8 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
 {
     public function __construct(
         private GetConnectorProducts $getConnectorProductsQuery,
-        private ConnectorProductNormalizer $connectorProductNormalizer
+        private ConnectorProductNormalizer $connectorProductNormalizer,
+        private ConnectorProductWithUuidNormalizer $connectorProductWithUuidNormalizer,
     ) {
     }
 
@@ -66,8 +68,12 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
                 continue;
             }
 
+            $normalizer = $context->isUsingUuid()
+                ? $this->connectorProductWithUuidNormalizer
+                : $this->connectorProductNormalizer;
+
             $data = [
-                'resource' => $this->connectorProductNormalizer->normalizeConnectorProduct($product),
+                'resource' => $normalizer->normalizeConnectorProduct($product),
             ];
             $collection->setEventData($event, $data);
         }

@@ -24,30 +24,15 @@ use Psr\Log\LoggerInterface;
  */
 class SendBusinessEventToWebhooksHandler
 {
-    private SelectActiveWebhooksQueryInterface $selectActiveWebhooksQuery;
-    private WebhookUserAuthenticator $webhookUserAuthenticator;
-    private WebhookClientInterface $client;
-    private WebhookEventBuilder $builder;
-    private LoggerInterface $logger;
-    private EventSubscriptionSkippedOwnEventLoggerInterface $eventSubscriptionSkippedOwnEventLogger;
-    private string $pimSource;
-
     public function __construct(
-        SelectActiveWebhooksQueryInterface $selectActiveWebhooksQuery,
-        WebhookUserAuthenticator $webhookUserAuthenticator,
-        WebhookClientInterface $client,
-        WebhookEventBuilder $builder,
-        LoggerInterface $logger,
-        EventSubscriptionSkippedOwnEventLoggerInterface $eventSubscriptionSkippedOwnEventLogger,
-        string $pimSource
+        private SelectActiveWebhooksQueryInterface $selectActiveWebhooksQuery,
+        private WebhookUserAuthenticator $webhookUserAuthenticator,
+        private WebhookClientInterface $client,
+        private WebhookEventBuilder $builder,
+        private LoggerInterface $logger,
+        private EventSubscriptionSkippedOwnEventLoggerInterface $eventSubscriptionSkippedOwnEventLogger,
+        private string $pimSource
     ) {
-        $this->selectActiveWebhooksQuery = $selectActiveWebhooksQuery;
-        $this->webhookUserAuthenticator = $webhookUserAuthenticator;
-        $this->client = $client;
-        $this->builder = $builder;
-        $this->logger = $logger;
-        $this->eventSubscriptionSkippedOwnEventLogger = $eventSubscriptionSkippedOwnEventLogger;
-        $this->pimSource = $pimSource;
     }
 
     public function handle(SendBusinessEventToWebhooksCommand $command): void
@@ -80,6 +65,7 @@ class SendBusinessEventToWebhooksHandler
                             'user' => $user,
                             'pim_source' => $this->pimSource,
                             'connection_code' => $webhook->connectionCode(),
+                            'is_using_uuid' => $webhook->isUsingUuid(),
                         ]
                     );
 
