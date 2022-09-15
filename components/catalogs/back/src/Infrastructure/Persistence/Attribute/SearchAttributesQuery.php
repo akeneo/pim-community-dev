@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Infrastructure\Persistence;
+namespace Akeneo\Catalogs\Infrastructure\Persistence\Attribute;
 
-use Akeneo\Catalogs\Application\Persistence\SearchAttributesQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Attribute\SearchAttributesQueryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 

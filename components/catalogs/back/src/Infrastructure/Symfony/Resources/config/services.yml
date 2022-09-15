@@ -76,7 +76,7 @@ services:
         arguments:
             - '@pim_enrich.repository.family.search'
 
-    Akeneo\Catalogs\Infrastructure\Persistence\SearchAttributesQuery:
+    Akeneo\Catalogs\Infrastructure\Persistence\Attribute\SearchAttributesQuery:
         arguments:
             - '@pim_enrich.repository.attribute.search'
 
