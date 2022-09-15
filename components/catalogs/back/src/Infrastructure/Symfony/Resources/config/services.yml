@@ -120,7 +120,7 @@ services:
         arguments:
             - '@pim_catalog.repository.category'
 
-    Akeneo\Catalogs\Infrastructure\Persistence\GetCategoryTreeRootsQuery:
+    Akeneo\Catalogs\Infrastructure\Persistence\Category\GetCategoryTreeRootsQuery:
         arguments:
             - '@akeneo.enrichment.public_api.find_category_trees'
 

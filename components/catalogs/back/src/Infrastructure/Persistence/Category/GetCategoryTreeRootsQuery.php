@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Infrastructure\Persistence;
+namespace Akeneo\Catalogs\Infrastructure\Persistence\Category;
 
-use Akeneo\Catalogs\Application\Persistence\GetCategoryTreeRootsQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Category\GetCategoryTreeRootsQueryInterface;
 use Akeneo\Category\Api\CategoryTree;
 use Akeneo\Category\Api\FindCategoryTrees;
 
