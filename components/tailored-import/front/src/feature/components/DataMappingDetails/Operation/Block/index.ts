@@ -9,3 +9,4 @@ export * from './FamilyReplacementOperationBlock';
 export * from './SplitOperationBlock';
 export * from './ChangeCaseOperationBlock';
 export * from './RemoveWhitespaceOperationBlock';
+export * from './ReferenceEntitySingleLinkReplacementOperation'

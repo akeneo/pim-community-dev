@@ -23,6 +23,7 @@ import {
   REMOVE_WHITESPACE_OPERATION_TYPE,
   SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE,
   SPLIT_OPERATION_TYPE,
+  REFERENCE_ENTITY_SINGLE_LINK_REPLACEMENT,
   BooleanReplacementOperationBlock,
   CategoriesReplacementOperationBlock,
   CleanHTMLOperationBlock,
@@ -35,6 +36,7 @@ import {
   RemoveWhitespaceOperationBlock,
   SimpleSelectReplacementOperationBlock,
   SplitOperationBlock,
+  ReferenceEntitySingleLinkReplacementOperationBlock
 } from './Operation';
 import {usePreviewData} from '../../hooks';
 
@@ -63,6 +65,7 @@ const operationBlocks: {
   [FAMILY_REPLACEMENT_OPERATION_TYPE]: FamilyReplacementOperationBlock,
   [CHANGE_CASE_OPERATION_TYPE]: ChangeCaseOperationBlock,
   [REMOVE_WHITESPACE_OPERATION_TYPE]: RemoveWhitespaceOperationBlock,
+  [REFERENCE_ENTITY_SINGLE_LINK_REPLACEMENT]: ReferenceEntitySingleLinkReplacementOperationBlock,
 };
 
 type OperationsProps = {

@@ -15,12 +15,14 @@ import {
   getDefaultCleanHTMLOperation,
   getDefaultEnabledReplacementOperation,
   getDefaultFamilyReplacementOperation,
-  getDefaultMultiSelectReplacementOperation,
+  getDefaultMultiSelectReplacementOperation, getDefaultReferenceEntitySingleLinkReplacementOperation,
   getDefaultRemoveWhitespaceOperation,
   getDefaultSimpleSelectReplacementOperation,
   getDefaultSplitOperation,
   MULTI_SELECT_REPLACEMENT_OPERATION_TYPE,
   MultiSelectReplacementOperation,
+  REFERENCE_ENTITY_SINGLE_LINK_REPLACEMENT,
+  ReferenceEntitySingleLinkReplacementOperation,
   REMOVE_WHITESPACE_OPERATION_TYPE,
   RemoveWhitespaceOperation,
   SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE,
@@ -40,7 +42,8 @@ type Operation =
   | FamilyReplacementOperation
   | SplitOperation
   | ChangeCaseOperation
-  | RemoveWhitespaceOperation;
+  | RemoveWhitespaceOperation
+  | ReferenceEntitySingleLinkReplacementOperation
 type OperationType = Operation['type'];
 
 const getAttributeRequiredOperations = (attribute: Attribute): Operation[] => {
@@ -79,6 +82,8 @@ const getDefaultOperation = (operationType: OperationType): Operation => {
       return getDefaultChangeCaseOperation();
     case REMOVE_WHITESPACE_OPERATION_TYPE:
       return getDefaultRemoveWhitespaceOperation();
+    case REFERENCE_ENTITY_SINGLE_LINK_REPLACEMENT:
+      return getDefaultReferenceEntitySingleLinkReplacementOperation();
     default:
       throw new Error(`Invalid operation type: "${operationType}"`);
   }
