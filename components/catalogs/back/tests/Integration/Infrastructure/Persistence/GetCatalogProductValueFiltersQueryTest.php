@@ -4,19 +4,16 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence;
 
-use Akeneo\Catalogs\Application\Persistence\GetCatalogProductValueFiltersQueryInterface;
-use Akeneo\Catalogs\Infrastructure\Persistence\GetCatalogProductValueFiltersQuery;
+use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogProductValueFiltersQueryInterface;
+use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\GetCatalogProductValueFiltersQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Types\Types;
 use PHPUnit\Framework\Assert;
-use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @covers \Akeneo\Catalogs\Infrastructure\Persistence\GetCatalogProductValueFiltersQuery
+ * @covers \Akeneo\Catalogs\Infrastructure\Persistence\Catalog\GetCatalogProductValueFiltersQuery
  */
 class GetCatalogProductValueFiltersQueryTest extends IntegrationTestCase
 {

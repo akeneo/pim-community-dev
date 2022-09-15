@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Application\Persistence;
+namespace Akeneo\Catalogs\Application\Persistence\Catalog;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
