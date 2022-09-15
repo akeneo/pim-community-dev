@@ -45,13 +45,27 @@ jobs:
                   git config --global user.name "pim_ci_deployment"
 
                   git clone git@github.com:akeneo/pim-saas-k8s-artifacts.git /tmp/pim-saas-k8s-artifacts
+
+                  # k8s
+                  rm -rf /tmp/pim-saas-k8s-artifacts/k8s
+                  cp -r deployments-ucs/k8s /tmp/pim-saas-k8s-artifacts/k8s
+
+                  # pim-saas-services
+                  rm -rf /tmp/pim-saas-k8s-artifacts/pim-saas-service
                   bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-dev-europe-west1.sh
                   bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-sandbox-europe-west1.sh
+                  cp -r deployments-ucs/pim-saas-service /tmp/pim-saas-k8s-artifacts/pim-saas-service
 
-                  # Copy the default values.yaml file
-                  cp deployments-ucs/pim-saas-service/values.yaml /tmp/pim-saas-k8s-artifacts/pim-saas-service/values.yaml
+                  # tenant
+                  rm -rf /tmp/pim-saas-k8s-artifacts/tenant
+                  cp -r deployments-ucs/tenant /tmp/pim-saas-k8s-artifacts/tenant
+
+                  # timmy
+                  rm -rf /tmp/pim-saas-k8s-artifacts/timmy
+                  cp -r deployments-ucs/pim-saas-service /tmp/pim-saas-k8s-artifacts/timmy
+
                   cd /tmp/pim-saas-k8s-artifacts
-                  git add pim-saas-service
+                  git add k8s pim-saas-service tenant timmy
                   git commit -m "Update release version"
                   # Should the master branch be protected?
                   git push
