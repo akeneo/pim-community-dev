@@ -118,7 +118,7 @@ services:
     Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\UpdateProductByUuidController:
         public: true
         arguments:
-            - '@pim_catalog.repository.product'
+            - '@Akeneo\Pim\Enrichment\Component\Product\Query\FindProduct'
             - '@router'
             - '@pim_catalog.comparator.filter.product'
             - '@event_dispatcher'

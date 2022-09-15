@@ -11,24 +11,13 @@ namespace Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read;
  */
 class ActiveWebhook
 {
-    private string $connectionCode;
-
-    private int $userId;
-
-    private string $secret;
-
-    private string $url;
-
     public function __construct(
-        string $connectionCode,
-        int $userId,
-        string $secret,
-        string $url
+        private string $connectionCode,
+        private int $userId,
+        private string $secret,
+        private string $url,
+        private bool $isUsingUuid,
     ) {
-        $this->connectionCode = $connectionCode;
-        $this->userId = $userId;
-        $this->secret = $secret;
-        $this->url = $url;
     }
 
     public function connectionCode(): string
@@ -49,5 +38,10 @@ class ActiveWebhook
     public function url(): string
     {
         return $this->url;
+    }
+
+    public function isUsingUuid(): bool
+    {
+        return $this->isUsingUuid;
     }
 }

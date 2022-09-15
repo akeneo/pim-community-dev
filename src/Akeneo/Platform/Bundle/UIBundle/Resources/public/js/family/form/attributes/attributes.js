@@ -200,14 +200,13 @@ define([
      */
     toggleAttribute(event) {
       const attributeCode = event.currentTarget.dataset.attribute;
-      const attributeType = event.currentTarget.dataset.type;
       const channelCode = event.currentTarget.dataset.channel;
 
       if (!SecurityContext.isGranted('pim_enrich_family_edit_attributes')) {
         return;
       }
 
-      if (!this.isAttributeEditable(channelCode, attributeCode, attributeType)) {
+      if (!this.isAttributeEditable()) {
         return;
       }
 
@@ -222,15 +221,10 @@ define([
 
     /**
      * Checks if attribute is editable
-     *
-     * @param {string} channelCode
-     * @param {string} attributeCode
-     * @param {string} attributeType
-     *
      * @returns {boolean}
      */
-    isAttributeEditable(channelCode, attributeCode, attributeType) {
-      return !this.readOnly && this.identifierAttributeType !== attributeType;
+    isAttributeEditable() {
+      return !this.readOnly;
     },
 
     /**

@@ -53,7 +53,7 @@ class ProductWriterSpec extends ObjectBehavior
         $productSaver->saveAll($items)->shouldBeCalled();
 
         $stepExecution->incrementSummaryInfo('create')->shouldBeCalled();
-        $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('update')->shouldBeCalled();
         $this->write($items);
     }
 
@@ -69,7 +69,7 @@ class ProductWriterSpec extends ObjectBehavior
         $product1->getCreated()->willReturn(new \DateTime('2017-01-01T01:03:34+01:00'));
         $product2->getCreated()->willReturn(null);
 
-        $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('update')->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('create')->shouldBeCalled();
 
         $this->write([$product1, $product2]);

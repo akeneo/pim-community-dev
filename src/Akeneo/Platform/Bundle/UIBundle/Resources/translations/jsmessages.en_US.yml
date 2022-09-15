@@ -209,6 +209,8 @@ pim_common:
     less_than: Less than
     loading: Loading...
     media_upload: Drag and drop to upload or click here
+    media_uploading: Uploading…
+    media_upload_error: An error occurred during upload
     more_actions: More actions
     more_than: More than
     next: Next

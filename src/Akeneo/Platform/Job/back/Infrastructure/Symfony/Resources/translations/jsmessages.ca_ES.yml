@@ -53,6 +53,10 @@ akeneo_job_process_tracker:
     stopping: Aturant
     unknown: Desconegut
     in_progress: En procés
+  automation_filter:
+    all: Tot
+    yes: Yes
+    no: No
   max_page_without_filter_helper: Per mostrar-vos els resultats més rellevants, milloreu la cerca.
   tracking:
     completed: "Temps emprat: {{ duration }}"

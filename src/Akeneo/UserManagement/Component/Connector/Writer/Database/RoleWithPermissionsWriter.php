@@ -51,7 +51,7 @@ final class RoleWithPermissionsWriter implements ItemWriterInterface, StepExecut
         }
         foreach ($rolesWithPermissions as $roleWithPermissions) {
             if ($roleWithPermissions->role()->getId()) {
-                $this->stepExecution->incrementSummaryInfo('process');
+                $this->stepExecution->incrementSummaryInfo('update');
             } else {
                 $this->stepExecution->incrementSummaryInfo('create');
             }

@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\BatchBundle\Remover;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\UserManagement\DeleteRunningUser;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
@@ -10,12 +11,14 @@ use Akeneo\Tool\Component\StorageUtils\Repository\RemovableObjectRepositoryInter
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 class JobInstanceRemover implements RemoverInterface, BulkRemoverInterface
 {
     public function __construct(
         private RemovableObjectRepositoryInterface $jobInstanceRepository,
         private EventDispatcherInterface $eventDispatcher,
+        private DeleteRunningUser $deleteRunningUser,
     ) {
     }
 
@@ -33,6 +36,7 @@ class JobInstanceRemover implements RemoverInterface, BulkRemoverInterface
         $this->eventDispatcher->dispatch(new RemoveEvent($object, $jobInstanceId, $options), StorageEvents::PRE_REMOVE);
 
         $this->jobInstanceRepository->remove($object->getCode());
+        $this->deleteRunningUser($object);
 
         $this->eventDispatcher->dispatch(new RemoveEvent($object, $jobInstanceId, $options), StorageEvents::POST_REMOVE);
     }
@@ -71,6 +75,14 @@ class JobInstanceRemover implements RemoverInterface, BulkRemoverInterface
             new RemoveEvent($objects, array_keys($removedObjects)),
             StorageEvents::POST_REMOVE_ALL
         );
+    }
+
+    private function deleteRunningUser(JobInstance $jobInstance)
+    {
+        try {
+            $this->deleteRunningUser->execute($jobInstance->getCode());
+        } catch (UserNotFoundException $e) {
+        }
     }
 
     private function validateObject(mixed $object): void

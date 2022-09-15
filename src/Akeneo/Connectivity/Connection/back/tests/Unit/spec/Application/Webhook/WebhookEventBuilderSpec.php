@@ -59,7 +59,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
         $notSupportedEventDataBuilder->supports($pimEventBulk)->willReturn(false);
         $supportedEventDataBuilder->supports($pimEventBulk)->willReturn(true);
 
-        $supportedEventDataBuilder->build($pimEventBulk, new Context('ecommerce_0000', 10))->willReturn($collection);
+        $supportedEventDataBuilder->build($pimEventBulk, new Context('ecommerce_0000', 10, true))->willReturn($collection);
 
         $this->build(
             $pimEventBulk,
@@ -67,6 +67,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
                 'pim_source' => 'staging.akeneo.com',
                 'user' => $user,
                 'connection_code' => 'ecommerce',
+                'is_using_uuid' => true,
             ]
         )->shouldBeLike(
             [
@@ -102,7 +103,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
         $notSupportedEventDataBuilder->supports($pimEventBulk)->willReturn(false);
         $supportedEventDataBuilder->supports($pimEventBulk)->willReturn(true);
 
-        $supportedEventDataBuilder->build($pimEventBulk, new Context('ecommerce_0000', 10))->willReturn($collection);
+        $supportedEventDataBuilder->build($pimEventBulk, new Context('ecommerce_0000', 10, false))->willReturn($collection);
 
         $this->build(
             $pimEventBulk,
@@ -110,6 +111,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
                 'pim_source' => 'staging.akeneo.com',
                 'user' => $user,
                 'connection_code' => 'ecommerce',
+                'is_using_uuid' => false,
             ]
         )->shouldBeLike(
             []
@@ -136,7 +138,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
         $notSupportedEventDataBuilder->supports($pimEventBulk)->willReturn(false);
         $supportedEventDataBuilder->supports($pimEventBulk)->willReturn(true);
 
-        $supportedEventDataBuilder->build($pimEventBulk, new Context('ecommerce_0000', 10))->willReturn($collection);
+        $supportedEventDataBuilder->build($pimEventBulk, new Context('ecommerce_0000', 10, false))->willReturn($collection);
 
         $apiEventBuildErrorLogger->logResourceNotFoundOrAccessDenied(
             'ecommerce',
@@ -149,6 +151,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
                 'pim_source' => 'staging.akeneo.com',
                 'user' => $user,
                 'connection_code' => 'ecommerce',
+                'is_using_uuid' => false,
             ]
         );
     }
@@ -174,6 +177,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
                     'pim_source' => 'staging.akeneo.com',
                     'user' => $user,
                     'connection_code' => 'ecommerce',
+                    'is_using_uuid' => true,
                 ],
             ]
         );
@@ -192,6 +196,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
             [
                 'user' => $user,
                 'connection_code' => 'ecommerce',
+                'is_using_uuid' => true,
             ]
         ]);
     }
@@ -208,6 +213,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
                 'user' => $user,
                 'pim_source' => null,
                 'connection_code' => 'ecommerce',
+                'is_using_uuid' => true,
             ],
         ]);
     }
@@ -225,6 +231,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
             [
                 'pim_source' => 'staging.akeneo.com',
                 'connection_code' => 'ecommerce',
+                'is_using_uuid' => true,
             ],
         ]);
     }
@@ -241,6 +248,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
                 'user' => null,
                 'pim_source' => 'staging.akeneo.com',
                 'connection_code' => 'ecommerce',
+                'is_using_uuid' => true,
             ],
         ]);
     }
@@ -256,6 +264,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
             [
                 'user' => $user,
                 'pim_source' => 'staging.akeneo.com',
+                'is_using_uuid' => true,
             ],
         ]);
     }
@@ -272,9 +281,27 @@ class WebhookEventBuilderSpec extends ObjectBehavior
                 'user' => $user,
                 'pim_source' => 'staging.akeneo.com',
                 'connection_code' => null,
+                'is_using_uuid' => true,
             ],
         ]);
     }
+
+    public function it_throws_an_exception_if_there_is_no_is_using_uuid_in_context(UserInterface $user): void
+    {
+        $author = Author::fromNameAndType('julia', Author::TYPE_UI);
+        $pimEvent = $this->createEvent($author, ['data'], 1599814161, 'a20832d1-a1e6-4f39-99ea-a1dd859faddb');
+        $pimEventBulk = new BulkEvent([$pimEvent]);
+
+        $this->shouldThrow(\InvalidArgumentException::class)->during('build', [
+            $pimEventBulk,
+            [
+                'user' => $user,
+                'pim_source' => 'staging.akeneo.com',
+                'connection_code' => 'ecommerce',
+            ],
+        ]);
+    }
+
 
     private function createEvent(Author $author, array $data, int $timestamp, string $uuid): EventInterface
     {
