@@ -16,6 +16,3 @@ workflows:
             - remove_unused_resources:
                   requires:
                       - checkout
-            - delete_expired_uptime_check:
-                  requires:
-                      - checkout

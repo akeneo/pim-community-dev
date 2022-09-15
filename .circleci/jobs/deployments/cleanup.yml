@@ -153,21 +153,6 @@ jobs:
 
                       TYPE=${TYPE} make -C deployments/ delete_environments_hourly
 
-    delete_expired_uptime_check:
-        environment:
-            <<: *envVarsDeployDev
-        machine:
-            image: *executor-machine
-        resource_class: medium
-        steps:
-            - attach_workspace:
-                  at: ~/
-            - set_gcloud_config_dev
-            - run:
-                  name: Delete expired uptime checks
-                  command:
-                      make -C deployments/ delete_expired_uptime_check
-
     remove_unused_resources:
         environment:
             <<: *envVarsDeployDev

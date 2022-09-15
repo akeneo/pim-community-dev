@@ -408,7 +408,7 @@ delete_pr_environments_hourly:
 	ENV_NAME=${ENV_NAME} bash $(DEPLOYMENT_DIR)/bin/remove_instances.sh
 
 .PHONY: hourly_cleanup
-hourly_cleanup: delete_environments_hourly delete_expired_uptime_check remove_unused_resources
+hourly_cleanup: delete_environments_hourly remove_unused_resources
 
 .PHONY: delete_environments_hourly
 delete_environments_hourly:
@@ -422,7 +422,7 @@ ifeq ($(NS),)
 endif
 	NS=$(NS) ENV_NAME=$(ENV_NAME) TYPE=$(shell echo "$(NS)" | cut -d "-" -f1) bash $(DEPLOYMENT_DIR)/bin/remove_instances.sh
 
-.PHONY: delete_expired_uptime_check
+# Deprecated
 delete_expired_uptime_check:
 	cd $(DEPLOYMENT_DIR)/bin/uptime && docker-compose run --rm composer composer install
 	cd $(DEPLOYMENT_DIR)/bin/uptime && CLOUDSDK_PYTHON=python2 LOG_LEVEL=info docker-compose run --rm php make deployment-uptime-clear
