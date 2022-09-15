@@ -48,7 +48,7 @@ class JobInstanceWriterSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('create')->shouldBeCalled();
 
         $jobInstance2->getId()->willReturn(42);
-        $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('update')->shouldBeCalled();
 
         $this->write([$jobInstance1, $jobInstance2]);
     }

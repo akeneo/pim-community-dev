@@ -45,7 +45,7 @@ class RoleWithPermissionsWriterSpec extends ObjectBehavior
         $role3->getId()->willReturn(null);
         $roleWithPermissions3 = RoleWithPermissions::createFromRoleAndPermissions($role3->getWrappedObject(), []);
 
-        $stepExecution->incrementSummaryInfo('process')->shouldBeCalledTimes(2);
+        $stepExecution->incrementSummaryInfo('update')->shouldBeCalledTimes(2);
         $stepExecution->incrementSummaryInfo('create')->shouldBeCalledOnce();
         $roleWithPermissionsSaver->saveAll(
             [$roleWithPermissions1, $roleWithPermissions2, $roleWithPermissions3]

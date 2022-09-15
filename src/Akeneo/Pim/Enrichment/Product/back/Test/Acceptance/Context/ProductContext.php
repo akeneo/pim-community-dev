@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
 use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Behat\Behat\Context\Context;
@@ -73,9 +74,9 @@ final class ProductContext implements Context
      */
     public function theUserUpsertsAProductWithTheIdentifier(string $username, string $identifier): void
     {
-        $command = UpsertProductCommand::createFromCollection(
+        $command = UpsertProductCommand::createWithIdentifier(
             userId: $this->getUserId($username),
-            productIdentifier: $identifier,
+            productIdentifier: ProductIdentifier::fromIdentifier($identifier),
             userIntents: $this->valueUserIntents,
         );
         $this->valueUserIntents = [];
@@ -87,7 +88,7 @@ final class ProductContext implements Context
      */
     public function anUnknownUserTriesToUpsertAProductWithTheIdentifier(string $identifier): void
     {
-        $command = UpsertProductCommand::createFromCollection(userId: -10, productIdentifier: $identifier, userIntents: []);
+        $command = UpsertProductCommand::createWithIdentifier(userId: -10, productIdentifier: ProductIdentifier::fromIdentifier($identifier), userIntents: []);
         $this->upsertProduct($command);
     }
 

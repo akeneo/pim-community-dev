@@ -133,7 +133,7 @@ Feature: Import media with products
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 4 products
-    And I should see the text "processed 3"
+    And I should see the text "updated 3"
     And I should see the text "skipped product (no differences) 1"
     And the product "bic-core-148" should have the following values:
       | userManual | bic-core-148.txt |

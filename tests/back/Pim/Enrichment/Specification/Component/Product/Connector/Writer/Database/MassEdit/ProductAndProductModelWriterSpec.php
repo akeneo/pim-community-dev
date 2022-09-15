@@ -73,7 +73,7 @@ class ProductAndProductModelWriterSpec extends ObjectBehavior
         $productModelSaver->saveAll($productModels)->shouldBeCalled();
 
         $stepExecution->incrementSummaryInfo('create')->shouldBeCalled();
-        $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('update')->shouldBeCalled();
 
         $this->write($items);
     }
@@ -101,7 +101,7 @@ class ProductAndProductModelWriterSpec extends ObjectBehavior
         $productModelSaver->saveAll(Argument::any())->shouldBeCalled();
 
         $stepExecution->incrementSummaryInfo('create')->shouldBeCalled();
-        $stepExecution->incrementSummaryInfo('process')->shouldBeCalledTimes(2);
+        $stepExecution->incrementSummaryInfo('update')->shouldBeCalledTimes(2);
 
         $this->write($items);
     }

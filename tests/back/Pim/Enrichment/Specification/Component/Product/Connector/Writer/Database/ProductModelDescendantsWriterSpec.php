@@ -31,7 +31,7 @@ class ProductModelDescendantsWriterSpec extends ObjectBehavior
         $descendantsSaver->save($productModel1)->shouldBeCalled();
         $descendantsSaver->save($productModel2)->shouldBeCalled();
 
-        $stepExecution->incrementSummaryInfo('process')->shouldBeCalledTimes(2);
+        $stepExecution->incrementSummaryInfo('update')->shouldBeCalledTimes(2);
 
         $this->write([$productModel1, $productModel2]);
     }

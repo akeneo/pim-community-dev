@@ -45,11 +45,16 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
     {
         $query = <<< SQL
             INSERT INTO pim_catalog_category
-                (parent_id, code, created, root, lvl, lft, rgt)
+                (parent_id, code, created, root, lvl, lft, rgt, value_collection)
             VALUES
-                (:parent_id, :code, NOW(), :root, :lvl, :lft, :rgt)
+                (:parent_id, :code, NOW(), :root, :lvl, :lft, :rgt, :value_collection)
             ;
         SQL;
+
+        $values = $categoryModel->getAttributes();
+        if (null !== $values) {
+            $values = json_encode($values->normalize());
+        }
 
         $this->connection->executeQuery(
             $query,
@@ -60,6 +65,7 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
                 'lvl' => 0,
                 'lft' => 1,
                 'rgt' => 2,
+                'value_collection' => $values,
             ],
             [
                 'parent_id' => \PDO::PARAM_INT,
@@ -68,6 +74,7 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
                 'lvl' => \PDO::PARAM_INT,
                 'lft' => \PDO::PARAM_INT,
                 'rgt' => \PDO::PARAM_INT,
+                'value_collection' => \PDO::PARAM_STR,
             ]
         );
 
@@ -104,20 +111,27 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
                     root = :root,
                     lvl = :lvl,
                     lft = :lft,
-                    rgt = :rgt
+                    rgt = :rgt,
+                    value_collection = :value_collection
                 WHERE code = :category_code
                 ;
             SQL;
+
+        $values = $categoryModel->getAttributes();
+        if (null !== $values) {
+            $values = json_encode($values->normalize());
+        }
 
         $this->connection->executeQuery(
             $query,
             [
                 'category_code' => (string) $categoryModel->getCode(),
                 'parent_id' => $categoryModel->getParentId()?->getValue(),
-                'root' => $categoryModel->getId()->getValue(),
+                'root' => $categoryModel->getId()?->getValue(),
                 'lvl' => 0,
                 'lft' => 1,
                 'rgt' => 2,
+                'value_collection' => $values
             ],
             [
                 'category_code' => \PDO::PARAM_STR,
@@ -126,6 +140,7 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
                 'lvl' => \PDO::PARAM_INT,
                 'lft' => \PDO::PARAM_INT,
                 'rgt' => \PDO::PARAM_INT,
+                'value_collection' => \PDO::PARAM_STR
             ]
         );
     }
