@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence;
+namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence\Catalog;
 
-use Akeneo\Catalogs\Infrastructure\Persistence\IsCatalogsNumberLimitReachedQuery;
+use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\IsCatalogsNumberLimitReachedQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\UpsertCatalogQuery;
-use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Ramsey\Uuid\Uuid;
 

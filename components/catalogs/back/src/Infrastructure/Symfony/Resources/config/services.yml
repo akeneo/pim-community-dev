@@ -64,7 +64,7 @@ services:
             - '@Akeneo\Catalogs\Infrastructure\TemporaryEnrichmentBridge\SearchAfterSizeUuidResultCursorFactory'
             - '@pim_catalog.elasticsearch.product_query_builder_search_after_resolver'
 
-    Akeneo\Catalogs\Infrastructure\Persistence\IsCatalogsNumberLimitReachedQuery:
+    Akeneo\Catalogs\Infrastructure\Persistence\Catalog\IsCatalogsNumberLimitReachedQuery:
         arguments:
             $limit: '%akeneo_catalog.max_number_of_catalogs_per_user%'
 
