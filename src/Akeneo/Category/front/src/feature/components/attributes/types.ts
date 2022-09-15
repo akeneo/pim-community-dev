@@ -6,7 +6,7 @@ export type TextAttributeInputValue = string;
 
 export type ImageAttributeInputValue = FileInfo | null;
 
-export type AttributeInputValue = TextAttributeInputValue | ImageAttributeInputValue;
+export type AttributeInputValue = TextAttributeInputValue | ImageAttributeInputValue | null;
 
 export type AttributeFieldBuilder<ValueType extends AttributeInputValue> = (
   attribute: Attribute

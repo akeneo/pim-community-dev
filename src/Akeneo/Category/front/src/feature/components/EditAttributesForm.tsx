@@ -64,13 +64,9 @@ export const EditAttributesForm = ({attributeValues, onAttributeValueChange}: Pr
   );
 
   const handleImageChange = useCallback(
-    (attribute: Attribute) => (value: AttributeInputValue) => {
+    (attribute: Attribute) => (value: AttributeInputValue | null) => {
       if (!isImageAttributeInputValue(value)) {
-        return;
-      }
-
-      // TODO handle value===null
-      if (!value || !value.size || !value.mimeType || !value.extension) {
+        onAttributeValueChange(attribute, locale, null);
         return;
       }
 
