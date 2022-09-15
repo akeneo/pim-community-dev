@@ -19,7 +19,7 @@ class AttributeOptionRemovalSubscriberTest extends IntegrationTestCase
 
     public function testItDisablesCatalogsWhenAttributeOptionIsRemoved(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
+        $client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
         $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'shopifi');
         $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
@@ -49,7 +49,7 @@ class AttributeOptionRemovalSubscriberTest extends IntegrationTestCase
             ],
         ]);
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/product-identifiers',
             [
@@ -61,7 +61,7 @@ class AttributeOptionRemovalSubscriberTest extends IntegrationTestCase
             ],
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
         $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(200, $response->getStatusCode());
@@ -69,7 +69,7 @@ class AttributeOptionRemovalSubscriberTest extends IntegrationTestCase
 
         $this->removeAttributeOption($blueAttributeOption);
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/product-identifiers',
             [
@@ -81,7 +81,7 @@ class AttributeOptionRemovalSubscriberTest extends IntegrationTestCase
             ],
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
         $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(200, $response->getStatusCode());

@@ -21,9 +21,6 @@ class AttributeOptionRemovalSubscriber implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param GenericEvent $event
-     */
     public function disableCatalogsIfAttributeOptionIsRemoved(GenericEvent $event): void
     {
         $attributeOption = $event->getSubject();
