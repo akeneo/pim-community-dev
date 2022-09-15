@@ -2,9 +2,9 @@ import React from 'react';
 import {filterErrors} from '@akeneo-pim-community/shared';
 import {isSimpleReferenceEntityTarget} from './model';
 import {AttributeDataMappingConfiguratorProps, AttributeTarget} from '../../../../models';
-import {InvalidAttributeTargetError} from '../error/InvalidAttributeTargetError';
+import {InvalidAttributeTargetError} from '../error';
 import {AttributeTargetParameters, Operations, Sources, ClearIfEmpty} from '../../../../components';
-import {REFERENCE_ENTITY_SINGLE_LINK_REPLACEMENT} from "../../Operation";
+import {SIMPLE_REFERENCE_ENTITY_REPLACEMENT} from "../../Operation";
 
 const SimpleReferenceEntityConfigurator = ({
   dataMapping,
@@ -43,7 +43,7 @@ const SimpleReferenceEntityConfigurator = ({
       />
       <Operations
         dataMapping={dataMapping}
-        compatibleOperations={[REFERENCE_ENTITY_SINGLE_LINK_REPLACEMENT]}
+        compatibleOperations={[SIMPLE_REFERENCE_ENTITY_REPLACEMENT]}
         onOperationsChange={onOperationsChange}
         onRefreshSampleData={onRefreshSampleData}
         validationErrors={filterErrors(validationErrors, '[operations]')}
