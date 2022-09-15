@@ -6,7 +6,8 @@
 TYPE=${TYPE:-srnt}
 RELEASE_BUCKET="serenity-edition"
 ZCC_CONTEXT=${ZCC_CONTEXT:-artifact}
-VERSIONS_FILE=${VERSIONS_FILE:-"./zdd_versions.env"}
+VERSIONS_FILE=${VERSIONS_FILE:-"./rolling_update_versions.env"}
+RELEASE_DIRECTORY="/tmp/releases"
 
 COLOR_RED=$(echo -en '\e[31m')
 COLOR_GREEN=$(echo -en '\e[32m')
@@ -18,6 +19,15 @@ CURRENT_TIME=$(date +%s)
 LAST_HOUR_TIME=$(( CURRENT_TIME - 60*60 ))
 SOURCE_RELEASE_TYPE="top"
 SOURCE_RELEASE=""
+
+OUTPUT="/dev/null"
+
+function needs_arg() {
+  if [ -z "$OPTARG" ]; then
+    echo "No arg for --$OPT option";
+    exit 2;
+  fi;
+}
 
 function getTopReleaseVersion() {
     echo $(curl --location -s -g -H "Content-Type: application/json" -H "DD-API-KEY: ${DATADOG_API_KEY}" -H "DD-APPLICATION-KEY: ${DATADOG_APP_KEY}" --request GET "https://api.datadoghq.eu/api/v1/query?from=${LAST_HOUR_TIME}&to=${CURRENT_TIME}&query=top(sum:kubernetes.containers.running{project:akecld-saas-prod,*,*,short_image:pim-enterprise-dev,app:pim,component:pim-web,*,type:${TYPE}}%20by%20{image_tag},%201,%20%27max%27,%20%27desc%27)" | jq -r .series[0].tag_set[0] | cut -c11-)
@@ -57,38 +67,40 @@ function downloadArtifacts() {
     echo "target_release=${TARGET_RELEASE}" >> ${VERSIONS_FILE}
 
     # Download the source release Docker image and Terraform modules
-    rm -rf ~/zdd_compliancy_checker/
-    mkdir -p ~/zdd_compliancy_checker/${SOURCE_RELEASE}/upgrades
-    mkdir -p ~/zdd_compliancy_checker/${SOURCE_RELEASE}/deployments
-    mkdir -p ~/zdd_compliancy_checker/${SOURCE_RELEASE}/dbschema
-    docker cp $(docker create --rm eu.gcr.io/akeneo-cloud/pim-enterprise-dev:${SOURCE_RELEASE}):/srv/pim/upgrades ~/zdd_compliancy_checker/${SOURCE_RELEASE}/upgrades
+    rm -rf ${RELEASE_DIRECTORY}/
+    mkdir -p ${RELEASE_DIRECTORY}/${SOURCE_RELEASE}/upgrades
+    mkdir -p ${RELEASE_DIRECTORY}/${SOURCE_RELEASE}/deployments
+    mkdir -p ${RELEASE_DIRECTORY}/${SOURCE_RELEASE}/dbschema
+    docker cp $(docker create --rm eu.gcr.io/akeneo-cloud/pim-enterprise-dev:${SOURCE_RELEASE}):/srv/pim/upgrades ${RELEASE_DIRECTORY}/${SOURCE_RELEASE}/upgrades
     if [[ ${TYPE} = "srnt" ]]; then
-        docker cp $(docker create --rm eu.gcr.io/akeneo-cloud/pim-enterprise-dev:${SOURCE_RELEASE}):/srv/pim/src/Akeneo/Tool/Bundle/DatabaseMetadataBundle/Resources/reference.pimdbschema.txt ~/zdd_compliancy_checker/${SOURCE_RELEASE}/dbschema/reference.pimdbschema.txt
+        docker cp $(docker create --rm eu.gcr.io/akeneo-cloud/pim-enterprise-dev:${SOURCE_RELEASE}):/srv/pim/src/Akeneo/Tool/Bundle/DatabaseMetadataBundle/Resources/reference.pimdbschema.txt ${RELEASE_DIRECTORY}/${SOURCE_RELEASE}/dbschema/reference.pimdbschema.txt
     fi
-    BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/${RELEASE_BUCKET}/${SOURCE_RELEASE}/deployments/ ~/zdd_compliancy_checker/${SOURCE_RELEASE}/deployments
-    rm -rf ~/zdd_compliancy_checker/${SOURCE_RELEASE}/deployments/deployments/bin
-    rm -rf ~/zdd_compliancy_checker/${SOURCE_RELEASE}/deployments/deployments/terraform/pim/templates/tests
-    rm -rf ~/zdd_compliancy_checker/${SOURCE_RELEASE}/deployments/deployments/Makefile
-    rm -rf ~/zdd_compliancy_checker/${SOURCE_RELEASE}/upgrades/upgrades/test_schema
+    BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/${RELEASE_BUCKET}/${SOURCE_RELEASE}/deployments/ ${RELEASE_DIRECTORY}/${SOURCE_RELEASE}/deployments
+    rm -rf ${RELEASE_DIRECTORY}/${SOURCE_RELEASE}/deployments/deployments/bin
+    rm -rf ${RELEASE_DIRECTORY}/${SOURCE_RELEASE}/deployments/deployments/terraform/pim/templates/tests
+    rm -rf ${RELEASE_DIRECTORY}/${SOURCE_RELEASE}/deployments/deployments/Makefile
+    rm -rf ${RELEASE_DIRECTORY}/${SOURCE_RELEASE}/upgrades/upgrades/test_schema
 
     # Download the target release Docker image and Terraform modules
-    mkdir -p ~/zdd_compliancy_checker/${TARGET_RELEASE}/upgrades
-    mkdir -p ~/zdd_compliancy_checker/${TARGET_RELEASE}/deployments
-    mkdir -p ~/zdd_compliancy_checker/${TARGET_RELEASE}/dbschema
-    docker cp $(docker create --rm eu.gcr.io/akeneo-cloud/pim-enterprise-dev:${TARGET_RELEASE}):/srv/pim/upgrades ~/zdd_compliancy_checker/${TARGET_RELEASE}/upgrades
+    mkdir -p ${RELEASE_DIRECTORY}/${TARGET_RELEASE}/upgrades
+    mkdir -p ${RELEASE_DIRECTORY}/${TARGET_RELEASE}/deployments
+    mkdir -p ${RELEASE_DIRECTORY}/${TARGET_RELEASE}/dbschema
+    docker cp $(docker create --rm eu.gcr.io/akeneo-cloud/pim-enterprise-dev:${TARGET_RELEASE}):/srv/pim/upgrades ${RELEASE_DIRECTORY}/${TARGET_RELEASE}/upgrades
     if [[ ${TYPE} = "srnt" ]]; then
-        docker cp $(docker create --rm eu.gcr.io/akeneo-cloud/pim-enterprise-dev:${TARGET_RELEASE}):/srv/pim/src/Akeneo/Tool/Bundle/DatabaseMetadataBundle/Resources/reference.pimdbschema.txt ~/zdd_compliancy_checker/${TARGET_RELEASE}/dbschema/reference.pimdbschema.txt
+        docker cp $(docker create --rm eu.gcr.io/akeneo-cloud/pim-enterprise-dev:${TARGET_RELEASE}):/srv/pim/src/Akeneo/Tool/Bundle/DatabaseMetadataBundle/Resources/reference.pimdbschema.txt ${RELEASE_DIRECTORY}/${TARGET_RELEASE}/dbschema/reference.pimdbschema.txt
     fi
-    BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/${RELEASE_BUCKET}/${TARGET_RELEASE}/deployments/ ~/zdd_compliancy_checker/${TARGET_RELEASE}/deployments
-    rm -rf ~/zdd_compliancy_checker/${TARGET_RELEASE}/deployments/deployments/bin
-    rm -rf ~/zdd_compliancy_checker/${TARGET_RELEASE}/deployments/deployments/terraform/pim/templates/tests
-    rm -rf ~/zdd_compliancy_checker/${TARGET_RELEASE}/deployments/deployments/Makefile
-    rm -rf ~/zdd_compliancy_checker/${TARGET_RELEASE}/upgrades/upgrades/test_schema
+    BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/${RELEASE_BUCKET}/${TARGET_RELEASE}/deployments/ ${RELEASE_DIRECTORY}/${TARGET_RELEASE}/deployments
+    rm -rf ${RELEASE_DIRECTORY}/${TARGET_RELEASE}/deployments/deployments/bin
+    rm -rf ${RELEASE_DIRECTORY}/${TARGET_RELEASE}/deployments/deployments/terraform/pim/templates/tests
+    rm -rf ${RELEASE_DIRECTORY}/${TARGET_RELEASE}/deployments/deployments/Makefile
+    rm -rf ${RELEASE_DIRECTORY}/${TARGET_RELEASE}/upgrades/upgrades/test_schema
 }
 
 function getDiff() {
   local SOURCE=$1
   local TARGET=$2
+  local DIFF_OUTPUT=$3
+
   local DIFF=$(diff -q -r "${SOURCE}" "${TARGET}")
 
   ESCAPED_TARGET_PATH=$(echo ${TARGET} | sed "s/\//\\\\\//g")
@@ -109,6 +121,10 @@ function getDiff() {
         echo "${COLOR_PURPLE}FILE : ${GIT_FILE_PATH}${COLOR_RESTORE}"
         echo "${COLOR_BLUE}https://github.com/akeneo/pim-enterprise-dev/blob/master${GIT_FILE_PATH}${COLOR_RESTORE}"
         echo "=================================================="
+
+        if [[ ! -z "${DIFF_OUTPUT}" ]]; then
+          echo "" > "${DIFF_OUTPUT}/$(basename ${GIT_FILE_PATH} .php)"
+        fi
 
         echo -en "$SDIFF"
       fi
@@ -136,6 +152,11 @@ function getDiff() {
         echo "${COLOR_BLUE}https://github.com/akeneo/pim-enterprise-dev/blob/master${GIT_FILE_PATH}${COLOR_RESTORE}"
       fi
       echo "=================================================="
+
+      if [[ ! -z "${DIFF_OUTPUT}" ]]; then
+        echo "" > "${DIFF_OUTPUT}/$(basename ${GIT_FILE_PATH} .php)"
+      fi
+
       continue
     fi
   done <<< "$DIFF"
@@ -143,11 +164,19 @@ function getDiff() {
 
 
 # Get the options
-while getopts ":o" option; do
-    case $option in
+while getopts "o-:" OPT; do
+    if [ "$OPT" = "-" ]; then   # long option: reformulate OPT and OPTARG
+        OPT="${OPTARG%%=*}"       # extract long option name
+        OPTARG="${OPTARG#$OPT}"   # extract long option argument (may be empty)
+        OPTARG="${OPTARG#=}"      # if long option argument, remove assigning `=`
+    fi
+    case $OPT in
         o) # display Help
             SOURCE_RELEASE_TYPE="oldest"
-            break
+            ;;
+        output)
+            needs_arg
+            OUTPUT="${OPTARG}"
             ;;
         \?) # Invalid option
             echo "Error: Invalid option"
@@ -165,7 +194,7 @@ case $ZCC_CONTEXT in
     "diff_infra")
         # Diff Docker images and Terraform modules
         echo -en "\n\n - Differences in infrastructure between the source release in production & the next release to deploy :\n\n"
-        DIRECTORIES=$(file ~/zdd_compliancy_checker/* | grep directory | cut -d':' -f1 | sort)
+        DIRECTORIES=$(file ${RELEASE_DIRECTORY}/* | grep directory | cut -d':' -f1 | sort)
         SOURCE=$(echo ${DIRECTORIES} | cut -d ' ' -f1)
         TARGET=$(echo ${DIRECTORIES} | cut -d ' ' -f2)
         getDiff "${SOURCE}/deployments" "${TARGET}/deployments"
@@ -173,13 +202,14 @@ case $ZCC_CONTEXT in
 
     "diff_db")
         echo -en "\n\n - Differences in dbschema between the source release in production & the next release to deploy :\n\n"
-        DIRECTORIES=$(file ~/zdd_compliancy_checker/* | grep directory | cut -d':' -f1 | sort)
+        DIRECTORIES=$(file ${RELEASE_DIRECTORY}/* | grep directory | cut -d':' -f1 | sort)
         SOURCE=$(echo ${DIRECTORIES} | cut -d ' ' -f1)
         TARGET=$(echo ${DIRECTORIES} | cut -d ' ' -f2)
+
         getDiff "${SOURCE}/dbschema" "${TARGET}/dbschema"
 
         echo -en "\n\n - Differences in upgrades between the source release in production & the next release to deploy :\n\n"
-        getDiff "${SOURCE}/upgrades" "${TARGET}/upgrades"
+        getDiff "${SOURCE}/upgrades" "${TARGET}/upgrades" "${OUTPUT}"
 
         exit $?
         ;;

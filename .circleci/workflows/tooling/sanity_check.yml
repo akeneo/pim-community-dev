@@ -80,7 +80,7 @@ workflows:
                       branches:
                           only:
                               - master
-            - zdd_compliancy_diff:
+            - rolling_update_compliancy_diff:
                   name: "[<< matrix.PRODUCT_TYPE >>][top] Get ZDD compliancy files"
                   matrix:
                       parameters:
@@ -88,7 +88,7 @@ workflows:
                           CHECK_AGAINST: ["top"]
                   requires:
                       - ready_to_build?
-            - zdd_compliancy_checker:
+            - rolling_update_compliancy_checker:
                   name: "[<< matrix.PRODUCT_TYPE >>][top][<< matrix.CONTEXT >>] Check ZDD compliancy"
                   matrix:
                       parameters:
@@ -111,7 +111,7 @@ workflows:
                           PRODUCT_TYPE: ["grth", "srnt"]
                   requires:
                       - "[<< matrix.PRODUCT_TYPE >>] Versions currently in production"
-            - zdd_compliancy_diff:
+            - rolling_update_compliancy_diff:
                   name: "[<< matrix.PRODUCT_TYPE >>][<< matrix.CHECK_AGAINST >>] Get ZDD compliancy files"
                   matrix:
                       parameters:
@@ -119,7 +119,7 @@ workflows:
                           CHECK_AGAINST: ["oldest"]
                   requires:
                       - "[<< matrix.PRODUCT_TYPE >>] Execute compliancy check on oldest version"
-            - zdd_compliancy_checker:
+            - rolling_update_compliancy_checker:
                   name: "[<< matrix.PRODUCT_TYPE >>][oldest][<< matrix.CONTEXT >>] Check ZDD compliancy"
                   matrix:
                       parameters:

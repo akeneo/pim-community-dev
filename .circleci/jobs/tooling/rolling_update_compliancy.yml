@@ -24,8 +24,8 @@ jobs:
     #    Get files from 2 releases in order to check the changes between those 2 releases in another job
     #    By defaut (with CHECK_AGAINST=top), the 2 releases checked are the last release available and the release the most used in prod
     #    With CHECK_AGAINST=old, the 2 releases checked are the last release available and the oldest release used in prod
-    #    The goal of getting this files will be to check in `zdd_compliancy_checker` job what are the infra and database diff to determine if the upgrade can be proceding in ZDD or not
-    zdd_compliancy_diff:
+    #    The goal of getting this files will be to check in `rolling_update_compliancy_checker` job what are the infra and database diff to determine if the upgrade can be proceding in ZDD or not
+    rolling_update_compliancy_diff:
         parameters:
             PRODUCT_TYPE:
                 type: string
@@ -42,30 +42,30 @@ jobs:
             - checkout
             - set_gcloud_config_dev
             - run:
-                  name: Run the tool zdd_compliancy_checker
+                  name: Run compliancy checker
                   command: |
                       OPTIONS=""
                       if [ "<< parameters.CHECK_AGAINST >>" == "oldest" ]; then
                           OPTIONS="-o"
                       fi
-                      VERSIONS_FILE=/tmp/zdd_versions.env
+                      VERSIONS_FILE=/tmp/rolling_update_versions.env
                       touch ${VERSIONS_FILE}
-                      VERSIONS_FILE=${VERSIONS_FILE} TYPE=<<parameters.PRODUCT_TYPE>> bash deployments/bin/zdd_compliancy_checker.sh ${OPTIONS}
+                      VERSIONS_FILE=${VERSIONS_FILE} TYPE=<<parameters.PRODUCT_TYPE>> bash deployments/bin/rolling_update_compliancy_checker.sh ${OPTIONS}
             - store_artifacts:
-                  path: /tmp/zdd_versions.env
+                  path: /tmp/rolling_update_versions.env
                   destination: versions
             - persist_to_workspace:
-                  root: ~/
+                  root: /tmp
                   paths:
-                      - zdd_compliancy_checker
+                      - releases
 
     # Description :
-    #    Check infra and db changes between 2 releases to determine if it is possible to apply zdd or not
-    #    The 2 releases will be determined in the `zdd_compliancy_checker` in order to have either diff between
+    #    Check infra and db changes between 2 releases to determine if it is possible to apply rolling update_ or not
+    #    The 2 releases will be determined in the `rolling_update_compliancy_checker` in order to have either diff between
     #         - the last release available and the most used release in prod
     #         - the last release available and the oldest release used in prod
-    #    Using the `zdd_compliancy_checker` job to apply files diff
-    zdd_compliancy_checker:
+    #    Using the `rolling_update_compliancy_checker` job to apply files diff
+    rolling_update_compliancy_checker:
         parameters:
             PRODUCT_TYPE:
                 type: string
@@ -78,9 +78,24 @@ jobs:
         resource_class: medium
         steps:
             - attach_workspace:
-                  at: ~/
+                  at: /tmp
             - checkout
             - run:
-                  name: Run the tool zdd_compliancy_checker
-                  command:
-                      TYPE=<<parameters.PRODUCT_TYPE>> ZCC_CONTEXT=diff_<<parameters.CONTEXT>> bash deployments/bin/zdd_compliancy_checker.sh
+                  name: Run compliancy checker
+                  command: |
+                      mkdir -p /tmp/tests
+                      TYPE=<<parameters.PRODUCT_TYPE>> ZCC_CONTEXT=diff_<<parameters.CONTEXT>> bash deployments/bin/rolling_update_compliancy_checker.sh --output=/tmp/tests
+            - when:
+                  condition:
+                      equal: [ "db", << parameters.CONTEXT >> ]
+                  steps:
+                      - run:
+                          name: Migration timing and memory check
+                          command: |
+                            echo "Check migrations timings"
+                            ls /tmp/tests | xargs -I{} ./deployments/bin/get_migration_data.sh -o timings -m "$(basename {} | tr '[:upper:]' '[:lower:]')"
+                            echo ""
+                            echo "=================================================="
+                            echo ""
+                            echo "Check migrations memory consumption"
+                            ls /tmp/tests | xargs -I{} ./deployments/bin/get_migration_data.sh -o memory -m "$(basename {} | tr '[:upper:]' '[:lower:]')"

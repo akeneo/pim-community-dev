@@ -167,6 +167,26 @@ commands:
               command:   |
                   [ "<< parameters.skip >>" = "true" ] && circleci step halt || echo "Skipping parameter received:  << parameters.skip >>"
 
+    validate_migration:
+        description: "Check migration timings and memory consumption"
+        parameters:
+          instance:
+            type: string
+            description: "PFID of your instance"
+          pim_root_folder:
+            default: "~/project"
+            type: string
+            description: "PFID of your instance"
+        steps:
+          - run:
+              name: Get timings of migrations from Datadog
+              command: |
+                bash << parameters.pim_root_folder >>/deployments/bin/get_migration_data.sh -i << parameters.instance >> -o timings || true
+          - run:
+              name: Get memory consumption of migrations from Datadog
+              command: |
+                bash << parameters.pim_root_folder >>/deployments/bin/get_migration_data.sh -i << parameters.instance >> -o memory || true
+
     set_docker_gcp_mirror:
         description: "Configure GCP Docker registry mirrors"
         steps:

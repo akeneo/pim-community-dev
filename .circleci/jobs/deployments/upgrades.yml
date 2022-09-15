@@ -50,11 +50,13 @@ jobs:
                   command: |
                       NS=${TYPE}-${INSTANCE_NAME} PHASE=upgrade bash deployments/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
                       OPERATIONS_TOOLS_BRANCH=master make -C deployments/ upgrade-instance
-            - get_datadog_migration_logs:
-                pfid: ${TYPE}-${INSTANCE_NAME}
             - store_artifacts:
                 path: /tmp/migration-logs.json
                 destination: migration-logs.json
+            - get_datadog_migration_logs:
+                pfid: ${TYPE}-${INSTANCE_NAME}
+            - validate_migration:
+                instance: ${TYPE}-${INSTANCE_NAME}
             - run:
                   name: Production tests on upgraded env
                   command: make -C deployments/ test-prod
@@ -166,11 +168,13 @@ jobs:
                   command: |
                       NS=${TYPE}-${INSTANCE_NAME} PHASE=upgrade bash deployments/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
                       OPERATIONS_TOOLS_BRANCH=master make -C deployments/ upgrade-instance
-            - get_datadog_migration_logs:
-                pfid: ${TYPE}-${INSTANCE_NAME}
             - store_artifacts:
                 path: /tmp/migration-logs.json
                 destination: migration-logs.json
+            - get_datadog_migration_logs:
+                pfid: ${TYPE}-${INSTANCE_NAME}
+            - validate_migration:
+                instance: ${TYPE}-${INSTANCE_NAME}
             - run:
                   name: Production tests on upgraded env
                   command: make -C deployments/ test-prod
