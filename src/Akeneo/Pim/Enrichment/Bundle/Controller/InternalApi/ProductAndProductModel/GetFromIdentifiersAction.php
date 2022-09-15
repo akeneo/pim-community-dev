@@ -26,33 +26,13 @@ class GetFromIdentifiersAction
 {
     const MAX_RESULTS = 100;
 
-    /** @var ProductQueryBuilderFactoryInterface */
-    private $productQueryBuilderFactory;
-
-    /** @var ProductQueryBuilderFactoryInterface */
-    private $productModelQueryBuilderFactory;
-
-    /** @var LinkedProductsNormalizer */
-    private $linkedProductsNormalizer;
-
-    /** @var FetchProductAndProductModelRows */
-    private $fetchProductAndProductModelRows;
-
-    /** @var ValidatorInterface */
-    private $validator;
-
     public function __construct(
-        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
-        ProductQueryBuilderFactoryInterface $productModelQueryBuilderFactory,
-        LinkedProductsNormalizer $linkedProductsNormalizer,
-        FetchProductAndProductModelRows $fetchProductAndProductModelRows,
-        ValidatorInterface $validator
+        private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
+        private ProductQueryBuilderFactoryInterface $productModelQueryBuilderFactory,
+        private LinkedProductsNormalizer $linkedProductsNormalizer,
+        private FetchProductAndProductModelRows $fetchProductAndProductModelRows,
+        private ValidatorInterface $validator
     ) {
-        $this->productQueryBuilderFactory = $productQueryBuilderFactory;
-        $this->productModelQueryBuilderFactory = $productModelQueryBuilderFactory;
-        $this->linkedProductsNormalizer = $linkedProductsNormalizer;
-        $this->fetchProductAndProductModelRows = $fetchProductAndProductModelRows;
-        $this->validator = $validator;
     }
 
     public function __invoke(
@@ -66,22 +46,19 @@ class GetFromIdentifiersAction
         $localeCode = $request->query->get('locale');
         $identifiers = json_decode($request->getContent(), true);
 
-        $productRows = $this->findLinkedEntityWithAssociations($identifiers['products'], ProductInterface::class, $localeCode, $channelCode);
-        $productModelRows = $this->findLinkedEntityWithAssociations($identifiers['product_models'], ProductModelInterface::class, $localeCode, $channelCode);
-
+        $productRows = $this->findLinkedProductWithAssociations($identifiers['products'], $localeCode, $channelCode);
+        $productModelRows = $this->findLinkedProductModelWithAssociations($identifiers['product_models'], $localeCode, $channelCode);
         $normalizedProducts = $this->linkedProductsNormalizer->normalize($productRows, $channelCode, $localeCode);
         $normalizedProductModels = $this->linkedProductsNormalizer->normalize($productModelRows, $channelCode, $localeCode);
 
-        return new JsonResponse(
-            [
+        return new JsonResponse([
             'items' => array_merge($normalizedProducts, $normalizedProductModels),
-            'total_count' => $productRows->totalCount() + $productModelRows->totalCount()]
-        );
+            'total_count' => $productRows->totalCount() + $productModelRows->totalCount()
+        ]);
     }
 
-    private function findLinkedEntityWithAssociations(
+    private function findLinkedProductWithAssociations(
         array $productIdentifiers,
-        string $type,
         string $localeCode,
         string $channelCode
     ): Rows {
@@ -92,8 +69,13 @@ class GetFromIdentifiersAction
                 'limit' => self::MAX_RESULTS
             ]
         );
-        $queryBuilder->addFilter(IdentifierFilter::IDENTIFIER_KEY, Operators::IN_LIST, $productIdentifiers);
-        $queryBuilder->addFilter('entity_type', Operators::EQUALS, $type);
+
+        $productIdentifiers = array_map(
+            static fn($productIdentifier) => sprintf('product_%s', $productIdentifier),
+            $productIdentifiers
+        );
+
+        $queryBuilder->addFilter('id', Operators::IN_LIST, $productIdentifiers);
         $queryBuilder->addSorter('updated', 'DESC');
 
         $getRowsQueryParameters = new FetchProductAndProductModelRowsParameters(
@@ -103,9 +85,36 @@ class GetFromIdentifiersAction
             $localeCode
         );
         $this->checkQuery($getRowsQueryParameters);
-        $rows = ($this->fetchProductAndProductModelRows)($getRowsQueryParameters);
 
-        return $rows;
+        return ($this->fetchProductAndProductModelRows)($getRowsQueryParameters);
+    }
+
+
+    private function findLinkedProductModelWithAssociations(
+        array $productModelIdentifiers,
+        string $localeCode,
+        string $channelCode
+    ): Rows {
+        $queryBuilder = $this->productModelQueryBuilderFactory->create(
+            [
+                'default_locale' => $localeCode,
+                'default_scope'  => $channelCode,
+                'limit' => self::MAX_RESULTS
+            ]
+        );
+        $queryBuilder->addFilter('identifier', Operators::IN_LIST, $productModelIdentifiers);
+        $queryBuilder->addFilter('entity_type', Operators::EQUALS, ProductModelInterface::class);
+        $queryBuilder->addSorter('updated', 'DESC');
+
+        $getRowsQueryParameters = new FetchProductAndProductModelRowsParameters(
+            $queryBuilder,
+            [],
+            $channelCode,
+            $localeCode
+        );
+        $this->checkQuery($getRowsQueryParameters);
+
+        return ($this->fetchProductAndProductModelRows)($getRowsQueryParameters);
     }
 
     private function checkQuery(FetchProductAndProductModelRowsParameters $getRowsQueryParameters): void
