@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Upgrade\test_schema;
+namespace Pim\Upgrade\Schema\Tests;
 
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
