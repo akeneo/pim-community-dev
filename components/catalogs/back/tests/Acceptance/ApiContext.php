@@ -10,13 +10,12 @@ use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
+use Akeneo\Connectivity\Connection\ServiceApi\Model\ConnectedAppWithValidToken;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
-use Akeneo\UserManagement\Component\Model\UserInterface;
 use Behat\Behat\Context\Context;
-use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -32,6 +31,7 @@ class ApiContext implements Context
 {
     private ContainerInterface $container;
     private ?Response $response = null;
+    private ?ConnectedAppWithValidToken $connectedApp = null;
     private ?KernelBrowser $client = null;
 
     public function __construct(
@@ -44,25 +44,34 @@ class ApiContext implements Context
         $this->container = $kernel->getContainer()->get('test.service_container');
     }
 
-    /**
-     * @Given an existing catalog
-     */
-    public function anExistingCatalog(): void
+    private function getConnectedApp(): ConnectedAppWithValidToken
     {
-        $this->client ??= $this->authentication->createAuthenticatedClient([
+        return $this->connectedApp ??= $this->authentication->createConnectedApp([
             'read_catalogs',
             'write_catalogs',
             'delete_catalogs',
             'read_products',
         ]);
+    }
 
-        /** @var UserInterface $user */
-        $user = $this->container->get('security.token_storage')->getToken()->getUser();
+    private function getConnectedAppClient(): KernelBrowser
+    {
+        return $this->client ??= $this->authentication->createAuthenticatedClient($this->getConnectedApp());
+    }
+
+    /**
+     * @Given an existing catalog
+     */
+    public function anExistingCatalog(): void
+    {
+        $connectedAppUserIdentifier = $this->getConnectedApp()->getUsername();
+        $this->authentication->logAs($connectedAppUserIdentifier);
+
         $commandBus = $this->container->get(CommandBus::class);
         $commandBus->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
-            $user->getUserIdentifier(),
+            $connectedAppUserIdentifier,
         ));
     }
 
@@ -71,29 +80,24 @@ class ApiContext implements Context
      */
     public function severalExistingCatalogs(): void
     {
-        $this->client ??= $this->authentication->createAuthenticatedClient([
-            'read_catalogs',
-            'write_catalogs',
-            'delete_catalogs',
-        ]);
+        $connectedAppUserIdentifier = $this->getConnectedApp()->getUsername();
+        $this->authentication->logAs($connectedAppUserIdentifier);
 
-        /** @var UserInterface $user */
-        $user = $this->container->get('security.token_storage')->getToken()->getUser();
         $commandBus = $this->container->get(CommandBus::class);
         $commandBus->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
-            $user->getUserIdentifier(),
+            $connectedAppUserIdentifier,
         ));
         $commandBus->execute(new CreateCatalogCommand(
             'ed30425c-d9cf-468b-8bc7-fa346f41dd07',
             'Store FR',
-            $user->getUserIdentifier(),
+            $connectedAppUserIdentifier,
         ));
         $commandBus->execute(new CreateCatalogCommand(
             '27c53e59-ee6a-4215-a8f1-2fccbb67ba0d',
             'Store UK',
-            $user->getUserIdentifier(),
+            $connectedAppUserIdentifier,
         ));
     }
 
@@ -102,22 +106,42 @@ class ApiContext implements Context
      */
     public function theCatalogIsEnabled(): void
     {
-        /** @var UserInterface $user */
-        $user = $this->container->get('security.token_storage')->getToken()->getUser();
+        $connectedAppUserIdentifier = $this->getConnectedApp()->getUsername();
+        $this->authentication->logAs($connectedAppUserIdentifier);
 
         $this->upsertCatalogQuery->execute(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
-            $user->getUserIdentifier(),
+            $connectedAppUserIdentifier,
             true,
         );
     }
 
     /**
-     * @Given the catalog has product selection criteria
+     * @Given a catalog sets up with a product selection
      */
-    public function theCatalogHasProductSelectionCriteria(): void
+    public function aCatalogSetsUpWithAProductSelection(): void
     {
+        $connectedAppUserIdentifier = $this->getConnectedApp()->getUsername();
+        $this->authentication->logAs($connectedAppUserIdentifier);
+
+        // create catalog
+        $commandBus = $this->container->get(CommandBus::class);
+        $commandBus->execute(new CreateCatalogCommand(
+            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            'Store US',
+            $connectedAppUserIdentifier,
+        ));
+
+        // enable catalog
+        $this->upsertCatalogQuery->execute(
+            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            'Store US',
+            $connectedAppUserIdentifier,
+            true,
+        );
+
+        // create product selection
         $productSelectionCriteria = [
             [
                 'field' => 'enabled',
@@ -130,33 +154,43 @@ class ApiContext implements Context
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             $productSelectionCriteria,
         );
-    }
 
-    /**
-     * @Given the following products exist:
-     */
-    public function theFollowingProductsExist(TableNode $table): void
-    {
+        // create products
+        $adminUser = $this->authentication->getAdminUser();
+        $this->authentication->logAs($adminUser->getUserIdentifier());
+
         $bus = $this->container->get('pim_enrich.product.message_bus');
 
-        /** @var UserInterface $user */
-        $user = $this->container->get('security.token_storage')->getToken()->getUser();
+        $products = [
+            [
+                'uuid' => '21a28f70-9cc8-4470-904f-aeda52764f73',
+                'identifier' => 't-shirt blue',
+                'enabled' => true,
+            ],
+            [
+                'uuid' => '62071b85-67af-44dd-8db1-9bc1dab393e7',
+                'identifier' => 't-shirt green',
+                'enabled' => false,
+            ],
+            [
+                'uuid' => 'a43209b0-cd39-4faf-ad1b-988859906030',
+                'identifier' => 't-shirt red',
+                'enabled' => true,
+            ],
+        ];
 
-        $hash = $table->getHash();
-
-        foreach ($hash as $row) {
+        foreach ($products as $product) {
             $command = UpsertProductCommand::createWithUuid(
-                $user->getId(),
-                ProductUuid::fromUuid(Uuid::fromString($row['uuid'])),
+                $adminUser->getId(),
+                ProductUuid::fromUuid(Uuid::fromString($product['uuid'])),
                 [
-                    new SetIdentifierValue('sku', $row['identifier']),
-                    new SetEnabled((bool) $row['enabled']),
+                    new SetIdentifierValue('sku', $product['identifier']),
+                    new SetEnabled((bool) $product['enabled']),
                 ]
             );
 
             $bus->dispatch($command);
         }
-
 
         $this->container->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
@@ -166,18 +200,14 @@ class ApiContext implements Context
      */
     public function theExternalApplicationRetrievesTheCatalogUsingTheApi(): void
     {
-        $this->client ??= $this->authentication->createAuthenticatedClient([
-            'read_catalogs',
-            'write_catalogs',
-            'delete_catalogs',
-        ]);
+        $this->authentication->logAs($this->getConnectedApp()->getUsername());
 
-        $this->client->request(
+        $this->getConnectedAppClient()->request(
             method: 'GET',
             uri: '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c',
         );
 
-        $this->response = $this->client->getResponse();
+        $this->response = $this->getConnectedAppClient()->getResponse();
 
         Assert::assertEquals(200, $this->response->getStatusCode());
     }
@@ -187,13 +217,9 @@ class ApiContext implements Context
      */
     public function theExternalApplicationRetrievesTheCatalogsUsingTheApi(): void
     {
-        $this->client ??= $this->authentication->createAuthenticatedClient([
-            'read_catalogs',
-            'write_catalogs',
-            'delete_catalogs',
-        ]);
+        $this->authentication->logAs($this->getConnectedApp()->getUsername());
 
-        $this->client->request(
+        $this->getConnectedAppClient()->request(
             method: 'GET',
             uri: '/api/rest/v1/catalogs',
             parameters: [
@@ -202,7 +228,7 @@ class ApiContext implements Context
             ],
         );
 
-        $this->response = $this->client->getResponse();
+        $this->response = $this->getConnectedAppClient()->getResponse();
 
         Assert::assertEquals(200, $this->response->getStatusCode());
     }
@@ -238,13 +264,9 @@ class ApiContext implements Context
      */
     public function theExternalApplicationCreatesACatalogUsingTheApi(): void
     {
-        $this->client ??= $this->authentication->createAuthenticatedClient([
-            'read_catalogs',
-            'write_catalogs',
-            'delete_catalogs',
-        ]);
+        $this->authentication->logAs($this->getConnectedApp()->getUsername());
 
-        $this->client->request(
+        $this->getConnectedAppClient()->request(
             method: 'POST',
             uri: '/api/rest/v1/catalogs',
             server: [
@@ -255,7 +277,7 @@ class ApiContext implements Context
             ]),
         );
 
-        $this->response = $this->client->getResponse();
+        $this->response = $this->getConnectedAppClient()->getResponse();
 
         Assert::assertEquals(201, $this->response->getStatusCode());
     }
@@ -287,18 +309,14 @@ class ApiContext implements Context
      */
     public function theExternalApplicationDeletesACatalogUsingTheApi(): void
     {
-        $this->client ??= $this->authentication->createAuthenticatedClient([
-            'read_catalogs',
-            'write_catalogs',
-            'delete_catalogs',
-        ]);
+        $this->authentication->logAs($this->getConnectedApp()->getUsername());
 
-        $this->client->request(
+        $this->getConnectedAppClient()->request(
             method: 'DELETE',
             uri: '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c',
         );
 
-        $this->response = $this->client->getResponse();
+        $this->response = $this->getConnectedAppClient()->getResponse();
 
         Assert::assertEquals(204, $this->response->getStatusCode());
     }
@@ -326,13 +344,9 @@ class ApiContext implements Context
      */
     public function theExternalApplicationUpdatesACatalogUsingTheApi(): void
     {
-        $this->client ??= $this->authentication->createAuthenticatedClient([
-            'read_catalogs',
-            'write_catalogs',
-            'delete_catalogs',
-        ]);
+        $this->authentication->logAs($this->getConnectedApp()->getUsername());
 
-        $this->client->request(
+        $this->getConnectedAppClient()->request(
             method: 'PATCH',
             uri: '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c',
             server: [
@@ -343,7 +357,7 @@ class ApiContext implements Context
             ]),
         );
 
-        $this->response = $this->client->getResponse();
+        $this->response = $this->getConnectedAppClient()->getResponse();
 
         Assert::assertEquals(200, $this->response->getStatusCode());
     }
@@ -364,37 +378,33 @@ class ApiContext implements Context
      */
     public function theExternalApplicationRetrievesTheProductIdentifiersUsingTheApi(): void
     {
-        $this->client ??= $this->authentication->createAuthenticatedClient([
-            'read_catalogs',
-            'write_catalogs',
-            'delete_catalogs',
-            'read_products',
-        ]);
+        $this->authentication->logAs($this->getConnectedApp()->getUsername());
 
-        $this->client->request(
+        $this->getConnectedAppClient()->request(
             method: 'GET',
             uri: '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/product-identifiers',
         );
 
-        $this->response = $this->client->getResponse();
+        $this->response = $this->getConnectedAppClient()->getResponse();
 
         Assert::assertEquals(200, $this->response->getStatusCode());
     }
 
     /**
-     * @Then the response should contain the following product identifiers:
+     * @Then the response should contain only the product identifiers from the selection
      */
-    public function theResponseShouldContainTheFilteredProductIdentifiers(TableNode $table): void
+    public function theResponseShouldContainOnlyTheProductIdentifiersFromTheSelection(): void
     {
         $payload = \json_decode($this->response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
-        $hash = $table->getHash();
+        Assert::assertCount(2, $payload['_embedded']['items']);
 
-        Assert::assertCount(\count($hash), $payload['_embedded']['items']);
+        $expectedUuids = [
+            't-shirt blue',
+            't-shirt red',
+        ];
 
-        foreach ($hash as $row) {
-            Assert::assertContains($row['identifier'], $payload['_embedded']['items']);
-        }
+        Assert::assertSame($expectedUuids, $payload['_embedded']['items']);
     }
 
     /**
@@ -402,37 +412,33 @@ class ApiContext implements Context
      */
     public function theExternalApplicationRetrievesTheProductUuidsUsingTheApi(): void
     {
-        $this->client ??= $this->authentication->createAuthenticatedClient([
-            'read_catalogs',
-            'write_catalogs',
-            'delete_catalogs',
-            'read_products',
-        ]);
+        $this->authentication->logAs($this->getConnectedApp()->getUsername());
 
-        $this->client->request(
+        $this->getConnectedAppClient()->request(
             method: 'GET',
             uri: '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/product-uuids',
         );
 
-        $this->response = $this->client->getResponse();
+        $this->response = $this->getConnectedAppClient()->getResponse();
 
         Assert::assertEquals(200, $this->response->getStatusCode());
     }
 
     /**
-     * @Then the response should contain the following product uuids:
+     * @Then the response should contain only the product uuids from the selection
      */
-    public function theResponseShouldContainTheFilteredProductUuids(TableNode $table): void
+    public function theResponseShouldContainOnlyTheProductUuidsFromTheSelection(): void
     {
         $payload = \json_decode($this->response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
-        $hash = $table->getHash();
+        Assert::assertCount(2, $payload['_embedded']['items']);
 
-        Assert::assertCount(\count($hash), $payload['_embedded']['items']);
+        $expectedUuids = [
+            '21a28f70-9cc8-4470-904f-aeda52764f73',
+            'a43209b0-cd39-4faf-ad1b-988859906030',
+        ];
 
-        foreach ($hash as $row) {
-            Assert::assertContains($row['uuid'], $payload['_embedded']['items']);
-        }
+        Assert::assertSame($expectedUuids, $payload['_embedded']['items']);
     }
 
     /**
@@ -440,46 +446,35 @@ class ApiContext implements Context
      */
     public function theExternalApplicationRetrievesTheProductsUsingTheApi(): void
     {
-        $this->client ??= $this->authentication->createAuthenticatedClient([
-            'read_catalogs',
-            'write_catalogs',
-            'delete_catalogs',
-            'read_products',
-        ]);
+        $this->authentication->logAs($this->getConnectedApp()->getUsername());
 
-        $this->client->request(
+        $this->getConnectedAppClient()->request(
             method: 'GET',
             uri: '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products',
         );
 
-        $this->response = $this->client->getResponse();
+        $this->response = $this->getConnectedAppClient()->getResponse();
 
         Assert::assertEquals(200, $this->response->getStatusCode());
     }
 
     /**
-     * @Then the response should contain the following products:
+     * @Then the response should contain only the products from the selection
      */
-    public function theResponseShouldContainTheFilteredProducts(TableNode $table): void
+    public function theResponseShouldContainOnlyTheProductsFromTheSelection(): void
     {
         $payload = \json_decode($this->response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
-        $hash = $table->getHash();
+        Assert::assertCount(2, $payload['_embedded']['items']);
 
-        Assert::assertCount(\count($hash), $payload['_embedded']['items']);
+        $expectedUuids = [
+            '21a28f70-9cc8-4470-904f-aeda52764f73',
+            'a43209b0-cd39-4faf-ad1b-988859906030',
+        ];
 
-        foreach ($hash as $row) {
-            $matchingProduct = null;
-            foreach ($payload['_embedded']['items'] as $product) {
-                if ($product['uuid'] === $row['uuid']) {
-                    $matchingProduct = $product;
-                    break;
-                }
-            }
-
-            Assert::assertNotNull($matchingProduct, 'the product is missing');
-
-            Assert::assertEquals($row['identifier'], $matchingProduct['values']['sku'][0]['data']);
+        foreach ($payload['_embedded']['items'] as $item) {
+            Assert::assertContains($item['uuid'], $expectedUuids);
+            Assert::assertTrue($item['enabled']);
         }
     }
 }
