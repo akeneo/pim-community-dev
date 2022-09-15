@@ -80,7 +80,7 @@ services:
         arguments:
             - '@pim_enrich.repository.attribute.search'
 
-    Akeneo\Catalogs\Infrastructure\Persistence\SearchAttributeOptionsQuery:
+    Akeneo\Catalogs\Infrastructure\Persistence\Attribute\SearchAttributeOptionsQuery:
         arguments:
             - '@pim_enrich.repository.attribute_option.search'
 
