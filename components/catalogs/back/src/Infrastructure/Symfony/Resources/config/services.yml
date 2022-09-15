@@ -84,7 +84,7 @@ services:
         arguments:
             - '@pim_enrich.repository.attribute_option.search'
 
-    Akeneo\Catalogs\Infrastructure\Persistence\GetAttributeOptionsByCodeQuery:
+    Akeneo\Catalogs\Infrastructure\Persistence\Attribute\GetAttributeOptionsByCodeQuery:
         arguments:
             - '@pim_enrich.repository.attribute_option.search'
 
