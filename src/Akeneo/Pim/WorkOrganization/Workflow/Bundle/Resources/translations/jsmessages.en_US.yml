@@ -191,6 +191,7 @@ pimee_enrich.entity.published_product:
         publish:
             success: Product successfully published
             fail: Failed to publish this product
+            fail_no_identifier: Cannot publish a product that has no identifier
         unpublish:
             success: Product successfully unpublished
             fail: Failed to unpublish this product

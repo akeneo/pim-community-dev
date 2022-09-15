@@ -108,15 +108,14 @@ define([
               );
           }.bind(this)
         )
-        .fail(function() {
-          messenger.notify(
-            'error',
-            __(
-              publish
-                ? 'pimee_enrich.entity.published_product.flash.publish.fail'
-                : 'pimee_enrich.entity.published_product.flash.unpublish.fail'
-            )
-          );
+        .fail(function(response) {
+          if (!publish) {
+            messenger.notify('error', __('pimee_enrich.entity.published_product.flash.unpublish.fail'));
+          } else if (response.responseJSON && response.responseJSON.message) {
+            messenger.notify('error', __(response.responseJSON.message));
+          } else {
+            messenger.notify('error', __('pimee_enrich.entity.published_product.flash.publish.fail'));
+          }
         })
         .always(function() {
           loadingMask.hide().$el.remove();

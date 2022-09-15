@@ -13,6 +13,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Exception\ProductHasNoIdentifierException;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\PublisherInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
@@ -55,6 +56,11 @@ class ProductPublisher implements PublisherInterface
                 sprintf('The object to be published is not a product, "%s" given', ClassUtils::getClass($object))
             );
         }
+
+        if (null === $object->getIdentifier()) {
+            throw new ProductHasNoIdentifierException();
+        }
+
         $options = array_merge(['with_associations' => true], $options);
         $standardProduct = $this->normalizer->normalize($object, 'standard');
         unset($standardProduct['associations']);

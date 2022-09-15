@@ -13,11 +13,10 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\Rest;
 
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\PublishedProductManager;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Exception\ProductHasNoIdentifierException;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -116,7 +115,11 @@ class PublishedProductController
             throw new AccessDeniedException();
         }
 
-        $this->manager->publish($product);
+        try {
+            $this->manager->publish($product);
+        } catch (ProductHasNoIdentifierException $e) {
+            return new JsonResponse(['message' => 'pimee_enrich.entity.published_product.flash.publish.fail_no_identifier'], 422);
+        }
 
         return new JsonResponse();
     }
