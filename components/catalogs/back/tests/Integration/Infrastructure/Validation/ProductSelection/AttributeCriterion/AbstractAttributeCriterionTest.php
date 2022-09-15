@@ -17,6 +17,7 @@ use Akeneo\Catalogs\Infrastructure\Persistence\GetChannelQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\GetLocalesQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\GetMeasurementsFamilyQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -130,12 +131,14 @@ abstract class AbstractAttributeCriterionTest extends IntegrationTestCase
         self::getContainer()->set(GetMeasurementsFamilyQuery::class, $this->getMeasurementsFamilyQuery);
     }
 
-    protected function createAttribute(array $data): void
+    protected function createAttribute(array $data): ?AttributeInterface
     {
         $this->attributeOptions[$data['code']] = $data['options'] ?? [];
         unset($data['options']);
 
         $this->attributes[$data['code']] = $data;
+
+        return null;
     }
 
     protected function createChannel(string $code, array $locales = [], array $currencies = ['USD']): void

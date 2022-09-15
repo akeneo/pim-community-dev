@@ -85,7 +85,7 @@ class AttributeOptionRemovalSubscriberTest extends IntegrationTestCase
         $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(200, $response->getStatusCode());
-        Assert::assertEquals(['tshirt-blue', 'tshirt-green'], $payload['_embedded']['items']);
+        Assert::assertEquals([], $payload['_embedded']['items']);
     }
 
     private function removeAttributeOption(AttributeOptionInterface $attributeOption): void

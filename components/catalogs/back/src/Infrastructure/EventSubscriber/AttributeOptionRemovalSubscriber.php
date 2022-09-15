@@ -3,6 +3,7 @@
 namespace Akeneo\Catalogs\Infrastructure\EventSubscriber;
 
 use Akeneo\Catalogs\Application\Persistence\GetCatalogsByAttributeOptionQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\UpsertCatalogQueryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -12,8 +13,10 @@ class AttributeOptionRemovalSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private GetCatalogsByAttributeOptionQueryInterface $getCatalogsByAttributeOptionQuery,
+        private UpsertCatalogQueryInterface $upsertCatalogQuery,
     ) {
     }
+
     public static function getSubscribedEvents(): array
     {
         return [
@@ -28,13 +31,15 @@ class AttributeOptionRemovalSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $catalogIds = $this->getCatalogsByAttributeOptionQuery->execute($attributeOption);
+        $catalogs = $this->getCatalogsByAttributeOptionQuery->execute($attributeOption);
 
-//        $this->upsertCatalogQuery->execute(
-//            $catalogId,
-//            $catalog->getName(),
-//            $catalog->getOwnerUsername(),
-//            $payload['enabled'],
-//        );
+        foreach ($catalogs as $catalog) {
+            $this->upsertCatalogQuery->execute(
+                $catalog->getId(),
+                $catalog->getName(),
+                $catalog->getOwnerUsername(),
+                false,
+            );
+        }
     }
 }

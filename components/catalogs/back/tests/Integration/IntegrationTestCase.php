@@ -290,7 +290,7 @@ abstract class IntegrationTestCase extends WebTestCase
      *     options?: array<string>,
      * } $data
      */
-    protected function createAttribute(array $data): AttributeInterface
+    protected function createAttribute(array $data): ?AttributeInterface
     {
         $data = \array_merge([
             'group' => 'other',

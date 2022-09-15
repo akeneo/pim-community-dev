@@ -26,6 +26,7 @@ $rules = [
             'Akeneo\Catalogs\ServiceAPI\Model',
             'Akeneo\Catalogs\ServiceAPI\Command',
             'Akeneo\Catalogs\ServiceAPI\Query',
+            'Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface',
         ]
     )->in('Akeneo\Catalogs\Application'),
 
@@ -87,6 +88,8 @@ $rules = [
             'Doctrine\Common\Collections\Collection',
             'Akeneo\Category\Api\FindCategoryTrees',
             'Akeneo\Category\Api\CategoryTree',
+
+            'Akeneo\Tool\Component\StorageUtils\StorageEvents',
         ]
     )->in('Akeneo\Catalogs\Infrastructure'),
 

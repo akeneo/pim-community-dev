@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Application\Persistence;
 
+use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 
 /**
@@ -12,7 +13,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 interface GetCatalogsByAttributeOptionQueryInterface
 {
     /**
-     * @return string[]
+     * @return array<Catalog>
      */
     public function execute(AttributeOptionInterface $attributeOption): array;
 }
