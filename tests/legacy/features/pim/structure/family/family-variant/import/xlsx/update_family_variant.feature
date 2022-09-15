@@ -28,7 +28,7 @@ Feature: Update variants of family through XLSX import
     And I launch the import job
     And I wait for the "xlsx_catalog_modeling_family_variant_import" job to finish
     Then I should see the text "read lines 3"
-    And I should see the text "processed 3"
+    And I should see the text "updated 3"
     And there should be the following family variants:
       | code                            | family   | label-en_US                        | variant-axes_1 | variant-axes_2 | variant-attributes_1                                      | variant-attributes_2 |
       | another_clothing_color_and_size | clothing | Clothing variant by color and size | color          | size           | color,name,image,variation_image,composition              | size,ean,sku,weight  |

@@ -53,6 +53,10 @@ akeneo_job_process_tracker:
     stopping: 중지 중
     unknown: 알 수 없음
     in_progress: 진행 중
+  automation_filter:
+    all: 모두
+    yes: Yes
+    no: No
   max_page_without_filter_helper: 가장 관련성이 높은 결과를 표시하려면 검색 범위를 좁히십시오.
   tracking:
     completed: "경과 시간: {{ duration }}"

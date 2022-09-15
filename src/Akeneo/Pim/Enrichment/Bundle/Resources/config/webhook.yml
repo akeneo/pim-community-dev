@@ -4,6 +4,7 @@ services:
         arguments:
             - '@akeneo.pim.enrichment.product.connector.get_product_from_uuids'
             - '@pim_api.normalizer.connector_products'
+            - '@Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductWithUuidNormalizer'
         tags:
             - { name: akeneo_connectivity.connection.webhook.event_data_builder }
 

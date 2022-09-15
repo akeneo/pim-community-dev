@@ -16,6 +16,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Event\ProductWasCreated;
 use Akeneo\Pim\Enrichment\Product\API\Event\ProductWasUpdated;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplier;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplierRegistry;
 use Akeneo\Pim\Enrichment\Product\Application\UpsertProductHandler;
@@ -72,7 +73,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         TokenInterface $token,
         UserInterface $user
     ) {
-        $command = UpsertProductCommand::createFromCollection(1, 'identifier1', userIntents: []);
+        $command = UpsertProductCommand::createWithIdentifier(1, ProductIdentifier::fromIdentifier('identifier1'), userIntents: []);
         $product = new Product();
         $product->setIdentifier('identifier1');
 
@@ -101,7 +102,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         TokenInterface $token,
         UserInterface $user
     ) {
-        $command = UpsertProductCommand::createFromCollection(1, 'identifier1', userIntents: []);
+        $command = UpsertProductCommand::createWithIdentifier(1, ProductIdentifier::fromIdentifier('identifier1'), userIntents: []);
         $product = new Product();
         $product->setIdentifier('identifier1');
         $product->setCreated(\DateTime::createFromFormat('Y-m-d H:i:s', '2022-02-12 10:05:24'));
@@ -132,7 +133,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         TokenInterface $token,
         UserInterface $user,
     ) {
-        $command = UpsertProductCommand::createFromCollection(1, 'identifier1', userIntents: []);
+        $command = UpsertProductCommand::createWithIdentifier(1, ProductIdentifier::fromIdentifier('identifier1'), userIntents: []);
         $product->getIdentifier()->willReturn('identifier1');
         $product->getCreated()->willReturn(\DateTime::createFromFormat('Y-m-d H:i:s', '2022-02-12 10:05:24'));
         $product->isDirty()->willReturn(false);
@@ -159,7 +160,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         TokenInterface $token,
         UserInterface $user,
     ) {
-        $command = UpsertProductCommand::createFromCollection(1, 'identifier1', userIntents: []);
+        $command = UpsertProductCommand::createWithIdentifier(1, ProductIdentifier::fromIdentifier('identifier1'), userIntents: []);
         $product = new Product();
         $product->setIdentifier('identifier1');
         $violations = new ConstraintViolationList([
@@ -184,7 +185,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         TokenInterface $token,
         UserInterface $user,
     ) {
-        $command = UpsertProductCommand::createFromCollection(1, 'identifier1', userIntents: []);
+        $command = UpsertProductCommand::createWithIdentifier(1, ProductIdentifier::fromIdentifier('identifier1'), userIntents: []);
         $product = new Product();
         $product->setIdentifier('identifier1');
         $violations = new ConstraintViolationList([
@@ -214,7 +215,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         UserInterface $user,
     ) {
         $setTextUserIntent = new SetTextValue('name', null, null, 'foo');
-        $command = UpsertProductCommand::createFromCollection(1, 'identifier1', userIntents: [$setTextUserIntent]);
+        $command = UpsertProductCommand::createWithIdentifier(1, ProductIdentifier::fromIdentifier('identifier1'), userIntents: [$setTextUserIntent]);
         $product = new Product();
         $product->setIdentifier('identifier1');
 
@@ -248,7 +249,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
     ) {
         $userIntent = new SetEnabled(true);
         $setTextUserIntent = new SetTextValue('name', null, null, 'Lorem Ipsum');
-        $command = UpsertProductCommand::createFromCollection(1, 'identifier1', userIntents: [$userIntent, $setTextUserIntent]);
+        $command = UpsertProductCommand::createWithIdentifier(1, ProductIdentifier::fromIdentifier('identifier1'), userIntents: [$userIntent, $setTextUserIntent]);
         $product = new Product();
         $product->setCreated(\DateTime::createFromFormat('Y-m-d H:i:s', '2022-02-12 10:05:24'));
         $product->setIdentifier('identifier1');
@@ -300,7 +301,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
                 return null;
             }
         };
-        $command = UpsertProductCommand::createFromCollection(userId: 1, productIdentifier: 'identifier', userIntents: [
+        $command = UpsertProductCommand::createWithIdentifier(userId: 1, productIdentifier: ProductIdentifier::fromIdentifier('identifier'), userIntents: [
             $unknownUserIntent
         ]);
 
@@ -329,7 +330,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         TokenInterface $token,
         UserInterface $user,
     ) {
-        $command = UpsertProductCommand::createFromCollection(userId: 1, productIdentifier: 'identifier', userIntents: []);
+        $command = UpsertProductCommand::createWithIdentifier(userId: 1, productIdentifier: ProductIdentifier::fromIdentifier('identifier'), userIntents: []);
 
         $product = new Product();
         $product->setIdentifier('identifier1');

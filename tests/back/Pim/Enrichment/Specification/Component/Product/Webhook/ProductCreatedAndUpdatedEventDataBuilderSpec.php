@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductWithUuidNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ValuesNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer;
@@ -45,7 +46,16 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         );
         $productValuesNormalizer->normalize(Argument::type(ReadValueCollection::class), 'standard')->willReturn([]);
 
-        $this->beConstructedWith($getConnectorProductsQuery, $connectorProductNormalizer);
+        $connectorProductWithUuidNormalizer = new ConnectorProductWithUuidNormalizer(
+            new ValuesNormalizer($productValuesNormalizer->getWrappedObject(), $router->getWrappedObject()),
+            new DateTimeNormalizer()
+        );
+
+        $this->beConstructedWith(
+            $getConnectorProductsQuery,
+            $connectorProductNormalizer,
+            $connectorProductWithUuidNormalizer
+        );
     }
 
     public function it_is_initializable()
@@ -90,7 +100,7 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
     public function it_builds_a_bulk_event_of_product_created_and_updated_event(
         GetConnectorProducts $getConnectorProductsQuery
     ): void {
-        $context = new Context('ecommerce_0000', 10);
+        $context = new Context('ecommerce_0000', 10, false);
 
         $blueJeanUuid = Uuid::uuid4();
         $blueJeanEvent = new ProductCreated(Author::fromNameAndType('julia', Author::TYPE_UI), [
@@ -153,7 +163,7 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
     public function it_builds_a_bulk_event_of_product_created_and_updated_event_if_a_product_as_been_removed(
         GetConnectorProducts $getConnectorProductsQuery
     ): void {
-        $context = new Context('ecommerce_0000', 10);
+        $context = new Context('ecommerce_0000', 10, false);
 
         $blueJeanUuid = Uuid::uuid4();
         $productList = new ConnectorProductList(1, [
@@ -192,6 +202,69 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
             ],
         ]);
         $expectedCollection->setEventDataError($redJeanEvent, new ProductNotFoundException($redJeanUuid));
+
+        $collection = $this->build($bulkEvent, $context)->getWrappedObject();
+
+        Assert::assertEquals($expectedCollection, $collection);
+    }
+
+    public function it_builds_a_bulk_event_of_product_created_and_updated_event_using_uuid_normalizer(
+        GetConnectorProducts $getConnectorProductsQuery
+    ): void {
+        $context = new Context('ecommerce_0000', 10, true);
+
+        $blueJeanUuid = Uuid::uuid4();
+        $blueJeanEvent = new ProductCreated(Author::fromNameAndType('julia', Author::TYPE_UI), [
+            'identifier' => 'blue_jean',
+            'uuid' => $blueJeanUuid,
+        ]);
+        $redJeanUuid = Uuid::uuid4();
+        $redJeanEvent = new ProductUpdated(Author::fromNameAndType('julia', Author::TYPE_UI), [
+            'identifier' => 'red_jean',
+            'uuid' => $redJeanUuid,
+        ]);
+        $bulkEvent = new BulkEvent([$blueJeanEvent, $redJeanEvent]);
+
+        $productList = new ConnectorProductList(2, [
+            $this->buildConnectorProduct($blueJeanUuid, 'blue_jean'),
+            $this->buildConnectorProduct($redJeanUuid, 'red_jean'),
+        ]);
+
+        $getConnectorProductsQuery
+            ->fromProductUuids([$blueJeanUuid, $redJeanUuid], 10, null, null, null)
+            ->willReturn($productList);
+
+        $expectedCollection = new EventDataCollection();
+        $expectedCollection->setEventData($blueJeanEvent, [
+            'resource' => [
+                'uuid' => $blueJeanUuid,
+                'enabled' => true,
+                'family' => null,
+                'categories' => [],
+                'groups' => [],
+                'parent' => null,
+                'values' => (object) [],
+                'created' => '2020-04-23T15:55:50+00:00',
+                'updated' => '2020-04-25T15:55:50+00:00',
+                'associations' => (object) [],
+                'quantified_associations' => (object) [],
+            ],
+        ]);
+        $expectedCollection->setEventData($redJeanEvent, [
+            'resource' => [
+                'uuid' => $redJeanUuid,
+                'enabled' => true,
+                'family' => null,
+                'categories' => [],
+                'groups' => [],
+                'parent' => null,
+                'values' => (object) [],
+                'created' => '2020-04-23T15:55:50+00:00',
+                'updated' => '2020-04-25T15:55:50+00:00',
+                'associations' => (object) [],
+                'quantified_associations' => (object) [],
+            ],
+        ]);
 
         $collection = $this->build($bulkEvent, $context)->getWrappedObject();
 

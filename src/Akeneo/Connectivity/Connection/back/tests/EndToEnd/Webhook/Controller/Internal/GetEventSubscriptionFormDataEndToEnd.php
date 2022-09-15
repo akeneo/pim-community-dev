@@ -58,6 +58,7 @@ class GetEventSubscriptionFormDataEndToEnd extends WebTestCase
                     'enabled' => true,
                     'secret' => 'secret',
                     'url' => 'http://test.com',
+                    'isUsingUuid' => false,
                 ],
                 'active_event_subscriptions_limit' => [
                     'limit' => 3,

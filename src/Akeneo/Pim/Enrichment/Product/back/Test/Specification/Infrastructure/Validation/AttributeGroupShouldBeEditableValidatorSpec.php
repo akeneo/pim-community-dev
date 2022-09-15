@@ -4,7 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
-use Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\AttributeGroupShouldBeEditable;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\AttributeGroupShouldBeEditableValidator;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\IsAttributeEditable;
@@ -52,7 +52,7 @@ class AttributeGroupShouldBeEditableValidatorSpec extends ObjectBehavior
     ): void {
         $isAttributeEditable->forCode('attributeCode', 1)->willReturn(false);
 
-        $executionContext->getRoot()->shouldBeCalledOnce()->willReturn(UpsertProductCommand::createFromCollection(1, 'identifier1', userIntents: []));
+        $executionContext->getRoot()->shouldBeCalledOnce()->willReturn(UpsertProductCommand::createWithIdentifier(1, ProductIdentifier::fromIdentifier('identifier1'), userIntents: []));
 
         $executionContext->buildViolation(
             'pim_enrich.product.validation.upsert.attribute_group_no_access_to_attributes',
@@ -76,7 +76,7 @@ class AttributeGroupShouldBeEditableValidatorSpec extends ObjectBehavior
     ): void {
         $isAttributeEditable->forCode('attributeCode', 1)->willReturn(true);
 
-        $executionContext->getRoot()->shouldBeCalledOnce()->willReturn(UpsertProductCommand::createFromCollection(1, 'identifier1', userIntents: []));
+        $executionContext->getRoot()->shouldBeCalledOnce()->willReturn(UpsertProductCommand::createWithIdentifier(1, ProductIdentifier::fromIdentifier('identifier1'), userIntents: []));
 
         $executionContext->buildViolation(Argument::any())->shouldNotBeCalled();
 

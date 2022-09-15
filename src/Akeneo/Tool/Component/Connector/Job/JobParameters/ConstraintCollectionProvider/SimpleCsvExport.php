@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\Constraints\Type;
 
 /**
@@ -67,10 +68,11 @@ class SimpleCsvExport implements ConstraintCollectionProviderInterface
                             'groups' => ['Default', 'FileConfiguration'],
                         ]
                     ),
-                    'users_to_notify' => [
+                    'user_to_notify' => new Optional(new Type('string')),
+                    'users_to_notify' => new Optional([
                         new Type('array'),
                         new All(new Type('string')),
-                    ],
+                    ]),
                     'is_user_authenticated' => new Type('bool'),
                 ],
             ]

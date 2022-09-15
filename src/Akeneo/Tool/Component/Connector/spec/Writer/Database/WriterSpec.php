@@ -41,7 +41,7 @@ class WriterSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('create')->shouldBeCalled();
 
         $object2->getId()->willReturn(42);
-        $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('update')->shouldBeCalled();
 
         $this->write([$object1, $object2]);
     }

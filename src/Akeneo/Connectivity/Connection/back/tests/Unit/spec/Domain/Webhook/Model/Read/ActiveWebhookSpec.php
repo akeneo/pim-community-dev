@@ -15,7 +15,7 @@ class ActiveWebhookSpec extends ObjectBehavior
 {
     public function let(): void
     {
-        $this->beConstructedWith('ecommerce', 0, 'a_secret', 'http://localhost/webhook');
+        $this->beConstructedWith('ecommerce', 0, 'a_secret', 'http://localhost/webhook', true);
     }
 
     public function it_is_initializable(): void
@@ -45,5 +45,11 @@ class ActiveWebhookSpec extends ObjectBehavior
     {
         $this->url()
             ->shouldReturn('http://localhost/webhook');
+    }
+
+    public function it_returns_uuid_usage_status(): void
+    {
+        $this->isUsingUuid()
+            ->shouldReturn(true);
     }
 }
