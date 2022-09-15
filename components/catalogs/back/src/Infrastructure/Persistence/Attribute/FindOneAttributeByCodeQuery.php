@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Infrastructure\Persistence;
+namespace Akeneo\Catalogs\Infrastructure\Persistence\Attribute;
 
-use Akeneo\Catalogs\Application\Persistence\FindOneAttributeByCodeQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Attribute\FindOneAttributeByCodeQueryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 
