@@ -326,7 +326,7 @@ final class HandleTextTest extends HandleDataMappingTestCase
             'it handles text attribute targets with several operations' => [
                 'row' => [
                     '25621f5a-504f-4893-8f0c-9f1b0076e53e' => 'this-is-a-sku',
-                    '2d9e967a-5efa-4a31-a254-99f7c50a145c' => ' i want&nbsp;this trimmed, <h1>cleaned and capitalized</h1>',
+                    '2d9e967a-5efa-4a31-a254-99f7c50a145c' => ' i want&nbsp;this trimmed, &quot;decoded&quot; and capitalized',
                     '2d9e967a-4efa-4a31-a254-99f7c50a145c' => 'but not <h2>this</h2>',
                 ],
                 'data_mappings' => [
@@ -373,7 +373,7 @@ final class HandleTextTest extends HandleDataMappingTestCase
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
                         userIntents: [
-                            new SetTextValue('name', null, null, 'I want this trimmed, cleaned and capitalized'),
+                            new SetTextValue('name', null, null, 'I want this trimmed, "decoded" and capitalized'),
                             new SetTextValue('description', 'ecommerce', 'fr_FR', 'but not <h2>this</h2>'),
                         ],
                     ),
