@@ -14,7 +14,7 @@ class SetImage implements ValueUserIntent
         private string $attributeUuid,
         private string $attributeCode,
         private ?string $localeCode,
-        private string $value,
+        private ?array $value,
     ) {
     }
 
@@ -33,7 +33,7 @@ class SetImage implements ValueUserIntent
         return $this->localeCode;
     }
 
-    public function value(): string
+    public function value(): ?array
     {
         return $this->value;
     }

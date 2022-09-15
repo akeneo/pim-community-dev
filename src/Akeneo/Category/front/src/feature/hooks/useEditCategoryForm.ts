@@ -104,7 +104,7 @@ const useEditCategoryForm = (categoryId: number) => {
 
       const value = {
         data: attributeValue,
-        locale: localeCode,
+        locale: attribute.is_localizable ? localeCode : null,
         attribute_code: compositeKeyWithoutLocale,
       };
 
