@@ -270,7 +270,7 @@ const CategoryEditPage: FC = () => {
           <EditPropertiesForm category={category} onChangeLabel={onChangeCategoryLabel} />
         )}
         {isCurrent(attributeTabName) && category && (
-          <EditAttributesForm attributes={category.attributes} onAttributeValueChange={onChangeAttribute} />
+          <EditAttributesForm attributeValues={category.attributes} onAttributeValueChange={onChangeAttribute} />
         )}
         {isCurrent(historyTabName) && (
           <HistoryPimView
