@@ -22,7 +22,7 @@ class WebhookRequestSpec extends ObjectBehavior
     {
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
         $this->beConstructedWith(
-            new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/webhook'),
+            new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/webhook', false),
             [
                 new WebhookEvent(
                     'product.created',

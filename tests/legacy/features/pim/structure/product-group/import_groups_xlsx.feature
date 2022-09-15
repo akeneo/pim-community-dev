@@ -28,7 +28,7 @@ Feature: Import Xlsx groups
     And I wait for the "xlsx_footwear_group_import" job to finish
     Then I should see the text "read lines 4"
     And I should see the text "created 2"
-    And I should see the text "processed 2"
+    And I should see the text "updated 2"
     Then there should be the following groups:
       | code          | label-en_US    | label-fr_FR | type    | axis       |
       | ORO_XSELL     | Oro X          |             | XSELL   |            |

@@ -96,9 +96,9 @@ class EventSubscriptionsLimitValidatorSpec extends ObjectBehavior
         ConstraintViolationBuilderInterface $constraintViolationBuilder
     ): void {
         $selectActiveWebhooksQuery->execute()->willReturn([
-            new ActiveWebhook('dam', 1, 'secret', 'http://localhost'),
-            new ActiveWebhook('ecommerce', 1, 'secret', 'http://localhost'),
-            new ActiveWebhook('translations', 1, 'secret', 'http://localhost'),
+            new ActiveWebhook('dam', 1, 'secret', 'http://localhost', false),
+            new ActiveWebhook('ecommerce', 1, 'secret', 'http://localhost', false),
+            new ActiveWebhook('translations', 1, 'secret', 'http://localhost', false),
         ]);
 
         $eventSubscription = new ConnectionWebhook('erp', true, 'http://localhost');
@@ -114,9 +114,9 @@ class EventSubscriptionsLimitValidatorSpec extends ObjectBehavior
     public function it_does_not_count_itself_in_the_limit_check($selectActiveWebhooksQuery, $context): void
     {
         $selectActiveWebhooksQuery->execute()->willReturn([
-            new ActiveWebhook('dam', 1, 'secret', 'http://localhost'),
-            new ActiveWebhook('ecommerce', 1, 'secret', 'http://localhost'),
-            new ActiveWebhook('erp', 1, 'secret', 'http://localhost'),
+            new ActiveWebhook('dam', 1, 'secret', 'http://localhost', false),
+            new ActiveWebhook('ecommerce', 1, 'secret', 'http://localhost', false),
+            new ActiveWebhook('erp', 1, 'secret', 'http://localhost', false),
         ]);
 
         $eventSubscription = new ConnectionWebhook('erp', true, 'http://localhost');

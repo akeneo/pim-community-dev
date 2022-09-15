@@ -33,7 +33,6 @@ final class CompletenessCriterion extends Compound
                             new Assert\IdenticalTo('completeness'),
                         ],
                         'operator' => [
-                            new Assert\Type('string'),
                             new Assert\Choice([
                                 Operator::EQUALS,
                                 Operator::NOT_EQUAL,

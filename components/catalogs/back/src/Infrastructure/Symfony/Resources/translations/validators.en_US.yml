@@ -15,6 +15,8 @@ akeneo_catalogs:
                 value:
                     not_empty: 'This value must be empty.'
                     empty: 'This value must not be empty.'
+                family:
+                    unknown: 'At least one selected family does not exist.'
                 completeness:
                     value: 'Completeness value must be between 0 and 100 percent.'
                 attribute_option:

@@ -19,7 +19,7 @@ class EventSubscriptionSendApiEventRequestLogSpec extends ObjectBehavior
 {
     public function let(): void
     {
-        $webhook = new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/webhook');
+        $webhook = new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/webhook', false);
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
         $events = [
             new WebhookEvent(
@@ -68,7 +68,7 @@ class EventSubscriptionSendApiEventRequestLogSpec extends ObjectBehavior
 
     public function it_returns_the_webhook_requests(): void
     {
-        $webhook = new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/webhook');
+        $webhook = new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/webhook', false);
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
         $events = [
             new WebhookEvent(

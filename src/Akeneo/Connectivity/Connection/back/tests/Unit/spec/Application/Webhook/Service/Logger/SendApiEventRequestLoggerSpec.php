@@ -30,7 +30,7 @@ class SendApiEventRequestLoggerSpec extends ObjectBehavior
 
     public function it_logs_send_api_event_request_with_response(LoggerInterface $logger): void
     {
-        $webhook = new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/webhook');
+        $webhook = new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/webhook', false);
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
         $events = [
             new WebhookEvent(
@@ -110,7 +110,7 @@ class SendApiEventRequestLoggerSpec extends ObjectBehavior
 
     public function it_logs_send_api_event_request_without_response(LoggerInterface $logger): void
     {
-        $webhook = new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/webhook');
+        $webhook = new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/webhook', false);
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
         $events = [
             new WebhookEvent(
@@ -188,7 +188,7 @@ class SendApiEventRequestLoggerSpec extends ObjectBehavior
 
     public function it_returns_the_log_without_propagation_times(LoggerInterface $logger)
     {
-        $webhook = new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/webhook');
+        $webhook = new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/webhook', false);
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
         $events = [
             new WebhookEvent(

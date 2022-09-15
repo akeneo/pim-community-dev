@@ -38,7 +38,7 @@ Feature: Apply a mass action on products only (and not product models)
     And I wait for the "update_product_value" job to finish
     When I go on the last executed job resume of "update_product_value"
     Then I should see the text "COMPLETED"
-    And I should see the text "processed 1"
+    And I should see the text "updated 1"
     And I should see the text "Skipped products 5"
     And I should see the text "family: The variant product family must be the same than its parent: tshirt-divided-navy-blue-xxs"
     And I should see the text "family: The variant product family must be the same than its parent: tshirt-divided-navy-blue-m"

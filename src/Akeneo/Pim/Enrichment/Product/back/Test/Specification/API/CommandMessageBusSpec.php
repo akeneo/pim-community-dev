@@ -7,6 +7,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Product\API;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\CommandMessageBus;
 use Akeneo\Pim\Enrichment\Product\API\UnknownCommandException;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
 use Akeneo\Test\Pim\Enrichment\Product\Helper\DummyHandler;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -30,7 +31,7 @@ class CommandMessageBusSpec extends ObjectBehavior
 
     function it_executes_the_correct_handler(DummyHandler $handler1, DummyHandler $handler2)
     {
-        $command = UpsertProductCommand::createFromCollection(userId: 1, productIdentifier: 'foo', userIntents: []);
+        $command = UpsertProductCommand::createWithIdentifier(userId: 1, productIdentifier: ProductIdentifier::fromIdentifier('foo'), userIntents: []);
         $handler1->__invoke(Argument::any())->shouldNotBeCalled();
         $handler2->__invoke($command)->shouldBeCalledOnce();
 
