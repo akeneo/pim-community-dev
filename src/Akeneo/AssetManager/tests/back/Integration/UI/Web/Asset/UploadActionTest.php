@@ -21,11 +21,6 @@ class UploadActionTest extends ControllerIntegrationTestCase
 {
     private const ASSET_UPLOAD_ROUTE = 'akeneo_asset_manager_file_upload';
 
-    public function setUp(): void
-    {
-        parent::setUp();
-    }
-
     /**
      * @test
      */

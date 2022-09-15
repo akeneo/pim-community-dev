@@ -332,7 +332,3 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_attribute_as_main_media'
         tags:
             - { name: 'validator.constraint_validator' }
-
-    Akeneo\AssetManager\Infrastructure\Validation\File\UploadedFileNameValidator:
-        tags:
-            - { name: 'validator.constraint_validator' }

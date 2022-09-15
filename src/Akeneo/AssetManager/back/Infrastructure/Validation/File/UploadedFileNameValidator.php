@@ -10,6 +10,8 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class UploadedFileNameValidator extends ConstraintValidator
 {
+    private const SOFT_HYPHEN = '­';
+
     public function validate($uploadedFile, Constraint $constraint)
     {
         if (!$constraint instanceof UploadedFileName) {
@@ -20,7 +22,7 @@ class UploadedFileNameValidator extends ConstraintValidator
             throw new UnexpectedValueException($constraint, UploadedFile::class);
         }
 
-        if (str_contains($uploadedFile->getClientOriginalName(), '­')) {
+        if (str_contains($uploadedFile->getClientOriginalName(), self::SOFT_HYPHEN)) {
             $this->context->buildViolation(UploadedFileName::ERROR_MESSAGE)
                 ->setParameter('%file_path%', $uploadedFile->getClientOriginalName())
                 ->addViolation();
