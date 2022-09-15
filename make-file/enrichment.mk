@@ -55,6 +55,7 @@
 .PHONY: enrichment-coupling-back
 enrichment-coupling-back:
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/Enrichment/.php_cd.php src/Akeneo/Pim/Enrichment
+	$(PHP_RUN) vendor/bin/php-coupling-detector list-unused-requirements --config-file=src/Akeneo/Pim/Enrichment/.php_cd.php src/Akeneo/Pim/Enrichment
 
 .PHONY: enrichment-lint-back
 enrichment-lint-back:

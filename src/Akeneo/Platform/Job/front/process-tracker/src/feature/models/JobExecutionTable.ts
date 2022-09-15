@@ -12,6 +12,7 @@ type JobExecutionRowTracking = {
 type JobExecutionRow = {
   job_execution_id: number;
   job_name: string;
+  automation: null | boolean;
   type: string;
   started_at: string | null;
   username: string | null;

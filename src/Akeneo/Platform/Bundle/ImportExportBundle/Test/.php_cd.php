@@ -15,15 +15,11 @@ $rules = [
         [
             // We should not need to be coupled with Application layer
             'Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\FileToTransfer',
-
-            'Webmozart\Assert\Assert',
         ],
     )->in('Akeneo\Platform\Bundle\ImportExportBundle\Domain'),
     $builder->only(
         [
             'Akeneo\Platform\Bundle\ImportExportBundle\Domain',
-
-            'Webmozart\Assert\Assert',
         ],
     )->in('Akeneo\Platform\Bundle\ImportExportBundle\Application'),
     $builder->only(
@@ -31,15 +27,12 @@ $rules = [
             'Akeneo\Platform\Bundle\ImportExportBundle\Application',
             'Akeneo\Platform\Bundle\ImportExportBundle\Domain',
 
-            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags',
-            'Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface',
             'Akeneo\UserManagement\ServiceApi',
             'Akeneo\Tool',
 
             'League\Flysystem',
             'Symfony\Component',
             'Symfony\Contracts',
-            'Webmozart\Assert\Assert',
         ],
     )->in('Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure'),
 ];

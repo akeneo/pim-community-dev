@@ -332,7 +332,7 @@ pim_enrich.export.product:
     title: Ustawienia ogólne
 pim_enrich.mass_edit.product:
   title: Działanie zbiorcze produktu
-  confirm: "{0}Zamierzasz zaktualizować niektóre produkty następującymi informacjami, poprzednie wartości zostaną zastąpione. Potwierdź zmiany.|{1}Masz zamiar zaktualizować produkt następującymi informacjami, poprzednie wartości zostaną zastąpione. Potwierdź zmiany.]1, Inf[Zamierzasz zaktualizować określoną liczbę produktów ({{ itemsCount }}) następującymi informacjami, poprzednie wartości zostaną zastąpione. Potwierdź zmiany."
+  confirm: "{0}Zamierzasz zaktualizować niektóre produkty następującymi informacjami, poprzednie wartości zostaną zastąpione. Potwierdź zmiany.|{1}Masz zamiar zaktualizować produkt następującymi informacjami, poprzednie wartości zostaną zastąpione. Potwierdź zmiany.|]1, Inf[Zamierzasz zaktualizować określoną liczbę produktów ({{ itemsCount }}) następującymi informacjami, poprzednie wartości zostaną zastąpione. Potwierdź zmiany."
   step:
     select:
       label: Wybierz produkty

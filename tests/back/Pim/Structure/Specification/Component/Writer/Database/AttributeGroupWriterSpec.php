@@ -54,7 +54,7 @@ class AttributeGroupWriterSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('create')->shouldBeCalled();
 
         $defaultGroup->getId()->willReturn(42);
-        $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('update')->shouldBeCalled();
 
         $this->write([$object1, $defaultGroup]);
     }

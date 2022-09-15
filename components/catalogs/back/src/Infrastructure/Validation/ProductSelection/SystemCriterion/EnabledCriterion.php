@@ -31,7 +31,6 @@ final class EnabledCriterion extends Compound
                         new Assert\IdenticalTo('enabled'),
                     ],
                     'operator' => [
-                        new Assert\Type('string'),
                         new Assert\Choice([
                             Operator::EQUALS,
                             Operator::NOT_EQUAL,

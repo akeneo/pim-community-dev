@@ -4,6 +4,7 @@ services:
         arguments:
             - '@akeneo_batch.job.job_instance_repository'
             - '@event_dispatcher'
+            - '@Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\UserManagement\DeleteRunningUser'
 
     akeneo_batch.delete_job_execution:
         class: 'Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\DeleteJobExecution'

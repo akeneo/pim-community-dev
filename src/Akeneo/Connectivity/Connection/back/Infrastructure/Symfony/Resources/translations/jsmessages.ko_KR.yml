@@ -54,6 +54,7 @@ akeneo_connectivity.connection:
         description: 이는 간단한 개요입니다. 자세한 정보는 Akeneo App Store에서 살펴보십시오.
         link: Akeneo App Store로 이동
       search:
+        placeholder: 이름으로 검색
         total: '{0} 결과 없음|{1} 1개 결과|[2,Inf] {{ total }}개 결과'
       card:
         developed_by: '개발자: {{ author }}'
@@ -179,6 +180,10 @@ akeneo_connectivity.connection:
               3: 모니터링을 활성화하십시오.
         catalogs:
           edit:
+            flash:
+              success: 카탈로그 설정이 업데이트되었습니다.
+              error: 카탈로그를 저장할 수 없습니다. 표시된 오류를 해결한 다음 다시 저장해주십시오.
+              unknown_error: 카탈로그를 저장하는 동안 오류가 발생했습니다.
             not_found: 카탈로그를 찾을 수 없습니다
         flash:
           load_permissions_error.title: '{{ entity }}에 저장된 권한을 로드할 수 없습니다.'
@@ -318,6 +323,8 @@ akeneo_connectivity.connection:
       type:
         required: 연결 유형이 필요합니다.
         too_long: 연결 유형이 너무 깁니다. 30자 이하여야 합니다.
+      user_group:
+        must_exist: 사용자 그룹을 찾을 수 없습니다. 지정한 사용자 그룹이 있는지 확인하십시오.
   flow_type:
     data_source: 데이터 소스 | 데이터 소스
     data_destination: 데이터 대상 | 데이터 대상

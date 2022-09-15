@@ -53,6 +53,10 @@ akeneo_job_process_tracker:
     stopping: Zatrzymywanie
     unknown: Nieznany
     in_progress: W toku
+  automation_filter:
+    all: Wszystkie
+    yes: Yes
+    no: No
   max_page_without_filter_helper: Aby wyświetlić najodpowiedniejsze wyniki, zawęź wyszukiwanie.
   tracking:
     completed: "Poświęcony czas: {{ duration }}"

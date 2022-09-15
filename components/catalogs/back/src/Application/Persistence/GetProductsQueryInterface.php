@@ -32,5 +32,11 @@ interface GetProductsQueryInterface
     /**
      * @return array<Product>
      */
-    public function execute(string $catalogId, ?string $searchAfter = null, int $limit = 100): array;
+    public function execute(
+        string $catalogId,
+        ?string $searchAfter = null,
+        int $limit = 100,
+        ?string $updatedAfter = null,
+        ?string $updatedBefore = null,
+    ): array;
 }

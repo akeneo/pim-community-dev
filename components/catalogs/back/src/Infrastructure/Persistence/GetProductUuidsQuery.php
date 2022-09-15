@@ -6,6 +6,7 @@ namespace Akeneo\Catalogs\Infrastructure\Persistence;
 
 use Akeneo\Catalogs\Application\Persistence\GetProductUuidsQueryInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 use Doctrine\DBAL\Connection;
@@ -29,10 +30,18 @@ final class GetProductUuidsQuery implements GetProductUuidsQueryInterface
      *
      * @return array<string>
      */
-    public function execute(string $catalogId, ?string $searchAfter = null, int $limit = 100): array
-    {
+    public function execute(
+        string $catalogId,
+        ?string $searchAfter = null,
+        int $limit = 100,
+        ?string $updatedAfter = null,
+        ?string $updatedBefore = null,
+    ): array {
         $pqbOptions = [
-            'filters' => $this->getFilters($catalogId),
+            'filters' => \array_merge(
+                $this->getUpdatedFilters($updatedAfter, $updatedBefore),
+                $this->getFilters($catalogId)
+            ),
             'limit' => $limit,
         ];
 
@@ -101,6 +110,70 @@ final class GetProductUuidsQuery implements GetProductUuidsQueryInterface
         }
 
         return $criteria;
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    private function getUpdatedFilters(?string $updatedAfter, ?string $updatedBefore): array
+    {
+        [$operator, $value] = $this->parseUpdatedParameters($updatedAfter, $updatedBefore);
+
+        if (null === $operator || null === $value) {
+            return [];
+        }
+
+        return [
+            [
+                'field' => 'updated',
+                'operator' => $operator,
+                'value' => $value,
+            ],
+        ];
+    }
+
+    /**
+     * @return array{string|null, string|array<string>|null}
+     */
+    private function parseUpdatedParameters(?string $updatedAfter, ?string $updatedBefore): array
+    {
+        $updatedAfterDateTime = \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, (string) $updatedAfter);
+        $updatedBeforeDateTime = \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, (string) $updatedBefore);
+
+        if (false !== $updatedAfterDateTime) {
+            $updatedAfterDateTime = $updatedAfterDateTime->setTimezone(new \DateTimeZone('UTC'));
+        }
+        if (false !== $updatedBeforeDateTime) {
+            $updatedBeforeDateTime = $updatedBeforeDateTime->setTimezone(new \DateTimeZone('UTC'));
+        }
+
+        if (null !== $updatedAfter && null !== $updatedBefore) {
+            if (false !== $updatedAfterDateTime && false !== $updatedBeforeDateTime) {
+                return [
+                    Operators::BETWEEN,
+                    [
+                        $updatedAfterDateTime->format('Y-m-d H:i:s'),
+                        $updatedBeforeDateTime->format('Y-m-d H:i:s'),
+                    ]
+                ];
+            }
+        } elseif (null !== $updatedAfter) {
+            if (false !== $updatedAfterDateTime) {
+                return [
+                    Operators::GREATER_THAN,
+                    $updatedAfterDateTime->format('Y-m-d H:i:s')
+                ];
+            }
+        } elseif (null !== $updatedBefore) {
+            if (false !== $updatedBeforeDateTime) {
+                return [
+                    Operators::LOWER_THAN,
+                    $updatedBeforeDateTime->format('Y-m-d H:i:s')
+                ];
+            }
+        }
+
+        return [null, null];
     }
 
     /**

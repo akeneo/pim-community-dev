@@ -434,3 +434,8 @@ services:
     Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\GetDirectChildrenCategoryCodes:
         arguments:
             - '@database_connection'
+
+    Akeneo\Pim\Enrichment\Component\Product\Query\FindProduct:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProduct'
+        arguments:
+            - '@pim_catalog.repository.product'

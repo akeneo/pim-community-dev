@@ -17,7 +17,7 @@ final class CreateConnectionTableQuery
      * The anonymization script for cloned PIM instances must be updated after any change on the structure.
      * See `pim-enterprise-dev/deployments/bin/clone_serenity.sh`.
      */
-    const QUERY = <<<'SQL'
+    public const QUERY = <<<'SQL'
     CREATE TABLE IF NOT EXISTS akeneo_connectivity_connection(
         client_id INT NOT NULL UNIQUE,
         user_id INT NOT NULL,
@@ -30,6 +30,7 @@ final class CreateConnectionTableQuery
         webhook_url VARCHAR(255) NULL,
         webhook_secret VARCHAR(255) NULL,
         webhook_enabled TINYINT(1) DEFAULT 0 NOT NULL,
+        webhook_is_using_uuid TINYINT(1) DEFAULT 0 NOT NULL,
         type VARCHAR(30) NOT NULL DEFAULT 'default',
         CONSTRAINT FK_CONNECTIVITY_CONNECTION_client_id FOREIGN KEY (client_id) REFERENCES pim_api_client (id),
         CONSTRAINT FK_CONNECTIVITY_CONNECTION_user_id FOREIGN KEY (user_id) REFERENCES oro_user (id)

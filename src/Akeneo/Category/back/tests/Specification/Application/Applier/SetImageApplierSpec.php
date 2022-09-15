@@ -30,16 +30,19 @@ class SetImageApplierSpec extends ObjectBehavior
 
     function it_applies_set_image_user_intent(): void
     {
-        $valueKey = 'attribute_code'
+
+        $compositeKey = 'attribute_code' . ValueCollection::SEPARATOR . 'uuid';
+        $localeCompositeKey = 'attribute_code'
             . ValueCollection::SEPARATOR . 'uuid' .
             ValueCollection::SEPARATOR . 'locale_code';
 
         $attributes = ValueCollection::fromArray(
             [
-                $valueKey => [
+                'attribute_codes' => [$compositeKey],
+                $localeCompositeKey => [
                     'data' => 'value',
                     'locale' => 'locale_code',
-                    'attribute_code' => 'attribute_code' . ValueCollection::SEPARATOR . 'uuid'
+                    'attribute_code' => $compositeKey
                 ]
             ]
         );
@@ -60,24 +63,19 @@ class SetImageApplierSpec extends ObjectBehavior
 
         $expectedAttributes = ValueCollection::fromArray(
             [
-                $valueKey => [
+                'attribute_codes' => [$compositeKey],
+                $localeCompositeKey => [
                     'data' => 'updated_value',
                     'locale' => 'locale_code',
-                    'attribute_code' => 'attribute_code' . ValueCollection::SEPARATOR . 'uuid'
+                    'attribute_code' => $compositeKey
                 ]
             ]
         );
 
-        $expectedCategory = new Category(
-            id: new CategoryId(1),
-            code: new Code('code'),
-            labels: LabelCollection::fromArray([]),
-            attributes: $expectedAttributes
-        );
-
         $this->apply($userIntent, $category);
+
         Assert::assertEquals(
-            $expectedCategory->getAttributes(),
+            $expectedAttributes,
             $category->getAttributes()
         );
     }
@@ -89,9 +87,6 @@ class SetImageApplierSpec extends ObjectBehavior
     {
         $this
             ->shouldThrow(\InvalidArgumentException::class)
-            ->duringApply(
-                    $userIntent,
-                    $category
-            );
+            ->duringApply($userIntent, $category);
     }
 }

@@ -10,6 +10,7 @@ import-export-lint-fix-back: #Doc: launch PHPStan for ImportExport bounded conte
 .PHONY: import-export-coupling-back
 import-export-coupling-back: #Doc: launch coupling detector for ImportExport bounded context
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Platform/Bundle/ImportExportBundle/Test/.php_cd.php src/Akeneo/Platform/Bundle/ImportExportBundle
+	$(PHP_RUN) vendor/bin/php-coupling-detector list-unused-requirements --config-file=src/Akeneo/Platform/Bundle/ImportExportBundle/Test/.php_cd.php src/Akeneo/Platform/Bundle/ImportExportBundle
 
 .PHONY: import-export-unit-back
 import-export-unit-back: #Doc: launch PHPSpec for ImportExport bounded context

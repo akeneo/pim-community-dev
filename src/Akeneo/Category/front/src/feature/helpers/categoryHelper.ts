@@ -1,8 +1,14 @@
 import {cloneDeep, identity, isEqual, sortBy} from 'lodash/fp';
-
+import {FileInfo} from 'akeneo-design-system';
 import {LabelCollection} from '@akeneo-pim-community/shared';
-import {CategoryAttributes, CategoryPermissions, CategoryProperties, EnrichCategory} from '../models/Category';
-import {defaultAttributeValues} from '../models/TemplateMocking';
+
+import {
+  CategoryAttributes,
+  CategoryImageAttributeValueData,
+  CategoryPermissions,
+  CategoryProperties,
+  EnrichCategory,
+} from '../models/Category';
 
 function labelsAreEqual(l1: LabelCollection, l2: LabelCollection): boolean {
   // maybe too strict of simplistic, to adjust
@@ -49,10 +55,32 @@ export function normalizeCategory(category: EnrichCategory): EnrichCategory {
   }
   if (category.attributes === null) {
     // TODO use fetched template to populate default values here
-    normalized.attributes = defaultAttributeValues;
+    normalized.attributes = {};
   }
   if (category.properties.labels === null) {
     normalized.properties.labels = {};
   }
   return normalized;
 }
+
+export const convertCategoryImageAttributeValueDataToFileInfo = (
+  valueData: CategoryImageAttributeValueData
+): FileInfo => {
+  return {
+    size: valueData.size,
+    filePath: valueData.file_path,
+    mimeType: valueData.mime_type,
+    extension: valueData.extension,
+    originalFilename: valueData.original_filename,
+  };
+};
+
+export const convertFileInfoToCategoryImageAttributeValueData = (value: FileInfo): CategoryImageAttributeValueData => {
+  return {
+    size: value.size,
+    file_path: value.filePath,
+    mime_type: value.mimeType,
+    extension: value.extension,
+    original_filename: value.originalFilename,
+  };
+};

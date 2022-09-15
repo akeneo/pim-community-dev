@@ -79,6 +79,8 @@
 - PIM-10588: Add potentially missing `remove_completeness_for_channel_and_locale` job instance
 - PIM-10620: Fix export product options values with label to be case insensitive with codes
 - PIM-10606: Fix computeFamilyVariantStructureChange on attribute removal
+- PIM-10624: Fix very slow query when counting variants for mass delete
+- PIM-10566: Fix wrong namespace for categories in resource_name column in pim_versioning_version table
 
 ## Improvements
 

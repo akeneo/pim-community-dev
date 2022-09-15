@@ -20,7 +20,7 @@ use Prophecy\Argument;
 
 class JobExecutionNotifierSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         NotificationFactoryRegistry $factoryRegistry,
         NotifierInterface $notifier,
         JobExecutionEvent $event,
@@ -30,7 +30,7 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         ArrayCollection $warnings,
         JobInstance $jobInstance,
         BatchStatus $status
-    ) {
+    ): void {
         $this->beConstructedWith($factoryRegistry, $notifier);
 
         $jobExecution->getJobParameters()->willReturn($jobParameters);
@@ -38,8 +38,10 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $jobExecution->getStatus()->willReturn($status);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
 
-        $jobParameters->has('user_to_notify')->willReturn(true);
-        $jobParameters->get('user_to_notify')->willReturn('julia');
+        $jobParameters->has('users_to_notify')->willReturn(true);
+        $jobParameters->get('users_to_notify')->willReturn(['julia']);
+        //TODO RAB-1046: Remove this line
+        $jobParameters->has('user_to_notify')->willReturn(false);
 
         $stepExecution->getWarnings()->willReturn($warnings);
         $jobExecution->getId()->willReturn(5);
@@ -48,12 +50,12 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $event->getJobExecution()->willReturn($jobExecution);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(JobExecutionNotifier::class);
     }
 
-    function it_gives_the_subscribed_events()
+    public function it_gives_the_subscribed_events(): void
     {
         $this->getSubscribedEvents()->shouldReturn(
             [
@@ -62,7 +64,7 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         );
     }
 
-    function it_does_not_notify_if_job_execution_parameters_has_no_job_parameters($event, $jobExecution, $notifier)
+    public function it_does_not_notify_if_job_execution_parameters_has_no_job_parameters($event, $jobExecution, $notifier): void
     {
         $jobExecution->getJobParameters()->willReturn(null);
 
@@ -71,21 +73,21 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $this->afterJobExecution($event);
     }
 
-    function it_does_not_notify_if_job_execution_parameters_has_no_user_to_notify(
+    public function it_does_not_notify_if_job_execution_parameters_has_no_users_to_notify(
         $event,
         $jobExecution,
         $notifier,
         JobParameters $jobParameters
-    ) {
+    ): void {
         $jobExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->has('user_to_notify')->willReturn(false);
+        $jobParameters->has('users_to_notify')->willReturn(false);
 
         $notifier->notify(Argument::cetera())->shouldNotBeCalled();
 
         $this->afterJobExecution($event);
     }
 
-    function it_notifies_a_user_of_the_completion_of_job_execution(
+    public function it_notifies_a_user_of_the_completion_of_job_execution(
         $event,
         $notifier,
         $factoryRegistry,
@@ -93,7 +95,7 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         NotificationInterface $notification,
         NotificationFactoryInterface $notificationFactory,
         ExitStatus $exitStatus
-    ) {
+    ): void {
         $factoryRegistry->get('export')->willReturn($notificationFactory);
         $notificationFactory->create($jobExecution)->willReturn($notification);
 
@@ -111,7 +113,7 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $this->afterJobExecution($event);
     }
 
-    function it_notifies_a_user_of_the_completion_of_a_mass_edit_job_execution(
+    public function it_notifies_a_user_of_the_completion_of_a_mass_edit_job_execution(
         $event,
         $notifier,
         $jobInstance,
@@ -120,7 +122,7 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         NotificationInterface $notification,
         NotificationFactoryInterface $notificationFactory,
         ExitStatus $exitStatus
-    ) {
+    ): void {
         $factoryRegistry->get('mass_edit')->willReturn($notificationFactory);
         $notificationFactory->create($jobExecution)->willReturn($notification);
 
@@ -142,7 +144,7 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $this->afterJobExecution($event);
     }
 
-    function it_notifies_a_user_of_the_completion_of_job_execution_which_has_encountered_a_warning(
+    public function it_notifies_a_user_of_the_completion_of_job_execution_which_has_encountered_a_warning(
         $event,
         $warnings,
         $notifier,
@@ -151,7 +153,7 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         NotificationInterface $notification,
         NotificationFactoryInterface $notificationFactory,
         ExitStatus $exitStatus
-    ) {
+    ): void {
         $factoryRegistry->get('export')->willReturn($notificationFactory);
         $notificationFactory->create($jobExecution)->willReturn($notification);
 
@@ -172,7 +174,7 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $this->afterJobExecution($event);
     }
 
-    function it_notifies_a_user_of_the_completion_of_job_execution_which_has_encountered_an_error(
+    public function it_notifies_a_user_of_the_completion_of_job_execution_which_has_encountered_an_error(
         $event,
         $status,
         $notifier,
@@ -181,7 +183,7 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         NotificationInterface $notification,
         NotificationFactoryInterface $notificationFactory,
         ExitStatus $exitStatus
-    ) {
+    ): void {
         $status->isUnsuccessful()->willReturn(true);
 
         $factoryRegistry->get('export')->willReturn($notificationFactory);
@@ -202,7 +204,7 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $this->afterJobExecution($event);
     }
 
-    function it_does_not_notify_a_user_of_the_completion_of_job_execution_which_has_been_stopped(
+    public function it_does_not_notify_a_user_of_the_completion_of_job_execution_which_has_been_stopped(
         $event,
         $status,
         $notifier,
@@ -211,7 +213,7 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         NotificationInterface $notification,
         NotificationFactoryInterface $notificationFactory,
         ExitStatus $exitStatus
-    ) {
+    ): void {
         $status->isUnsuccessful()->willReturn(false);
 
         $factoryRegistry->get('export')->willReturn($notificationFactory);
@@ -232,7 +234,7 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $this->afterJobExecution($event);
     }
 
-    function it_throws_an_exception_when_factory_is_not_found($event, $factoryRegistry, $jobExecution, ExitStatus $exitStatus)
+    public function it_throws_an_exception_when_factory_is_not_found($event, $factoryRegistry, $jobExecution, ExitStatus $exitStatus): void
     {
         $factoryRegistry->get('export')->willReturn(null);
 
@@ -241,5 +243,41 @@ class JobExecutionNotifierSpec extends ObjectBehavior
 
         $this->shouldThrow(new \LogicException('No notification factory found for the "export" job type'))
             ->during('afterJobExecution', [$event]);
+    }
+
+    /**
+     * TODO RAB-1046: Remove this test
+     */
+    public function it_falls_back_on_user_to_notify_when_users_to_notify_does_not_exist(
+        $event,
+        $notifier,
+        $factoryRegistry,
+        $jobExecution,
+        JobParameters $jobParameters,
+        NotificationInterface $notification,
+        NotificationFactoryInterface $notificationFactory,
+        ExitStatus $exitStatus
+    ): void {
+        $factoryRegistry->get('export')->willReturn($notificationFactory);
+        $notificationFactory->create($jobExecution)->willReturn($notification);
+
+        $notification->setMessage('pim_import_export.notification.export.success')->willReturn($notification);
+        $notification->setMessageParams(['%label%' => 'Product export'])->willReturn($notification);
+        $notification->setRoute('pim_importexport_export_execution_show')->willReturn($notification);
+        $notification->setRouteParams(['id' => 5])->willReturn($notification);
+        $notification->setContext(['actionType' => 'export'])->willReturn($notification);
+
+        $jobExecution->getExitStatus()->willReturn($exitStatus);
+        $exitStatus->getExitCode()->willReturn(ExitStatus::COMPLETED);
+
+
+        $jobParameters->has('users_to_notify')->willReturn(false);
+        $jobParameters->get('users_to_notify')->shouldNotBeCalled();
+        $jobParameters->has('user_to_notify')->willReturn(true);
+        $jobParameters->get('user_to_notify')->willReturn('julia');
+
+        $notifier->notify($notification, ['julia'])->shouldBeCalled();
+
+        $this->afterJobExecution($event);
     }
 }

@@ -4,3 +4,13 @@ services:
         public: true
         arguments:
             - '%env(string:AKENEO_PIM_URL)%'
+
+    pim_framework.lock.store:
+        class: Symfony\Component\Lock\Store\PdoStore
+        arguments:
+            - '@database_connection'
+
+    pim_framework.lock.factory:
+        class: Symfony\Component\Lock\LockFactory
+        arguments:
+            - '@pim_framework.lock.store'
