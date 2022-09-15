@@ -1,39 +1,39 @@
-import React, {useState, useEffect, useCallback, useRef} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
-  BrokenLinkIcon,
   AssociationTypesIllustration,
-  Placeholder,
-  Helper,
-  Table,
+  BrokenLinkIcon,
   Button,
+  Helper,
+  Placeholder,
   Search,
+  Table,
   useAutoFocus,
 } from 'akeneo-design-system';
 import {
-  ValidationError,
-  getErrorsForPath,
   formatParameters,
-  useTranslate,
-  useNotify,
+  getErrorsForPath,
   NotificationLevel,
+  useNotify,
   useSecurity,
+  useTranslate,
+  ValidationError,
 } from '@akeneo-pim-community/shared';
 import {
-  Row,
-  filterOnLabelOrIdentifier,
   addProductToRows,
-  getAssociationIdentifiers,
-  updateRowInCollection,
-  quantifiedAssociationToRowCollection,
-  rowCollectionToQuantifiedAssociation,
   addRowsToCollection,
-  removeRowFromCollection,
-  QuantifiedAssociation,
-  getProductsType,
-  newAndUpdatedQuantifiedAssociationsCount,
+  filterOnLabelOrIdentifier,
+  getAssociationIdentifiers,
+  getProductsType, getQuantifiedLinkIdentifier,
   hasUpdatedQuantifiedAssociations,
   isQuantifiedAssociationEmpty,
+  newAndUpdatedQuantifiedAssociationsCount,
   ProductsType,
+  QuantifiedAssociation,
+  quantifiedAssociationToRowCollection,
+  removeRowFromCollection,
+  Row,
+  rowCollectionToQuantifiedAssociation,
+  updateRowInCollection,
 } from '../models';
 import {QuantifiedAssociationRow} from '../components';
 import {useProducts} from '../hooks';
@@ -67,7 +67,7 @@ const QuantifiedAssociations = ({
   );
   const [searchValue, setSearchValue] = useState('');
   const products = useProducts(getAssociationIdentifiers(rowCollection));
-  const collectionWithProducts = addProductToRows(rowCollection, null === products ? [] : products);
+  const collectionWithProducts = addProductToRows(rowCollection, products);
   const newAndUpdatedCount = newAndUpdatedQuantifiedAssociationsCount(
     parentQuantifiedAssociations,
     rowCollectionToQuantifiedAssociation(rowCollection)
@@ -191,9 +191,11 @@ const QuantifiedAssociations = ({
                 row={row}
                 isUserOwner={isUserOwner}
                 isCompact={isCompact}
-                parentQuantifiedLink={parentQuantifiedAssociations[getProductsType(row.productType)].find(
-                  quantifiedAssociation => quantifiedAssociation.identifier === row.quantifiedLink.identifier
-                )}
+                parentQuantifiedLink={
+                  getProductsType(row.productType) === ProductsType.Products
+                    ? parentQuantifiedAssociations.products.find(quantifiedLink => getQuantifiedLinkIdentifier(quantifiedLink) === getQuantifiedLinkIdentifier(row.quantifiedLink))
+                    : parentQuantifiedAssociations.product_models.find(quantifiedLink => getQuantifiedLinkIdentifier(quantifiedLink) === getQuantifiedLinkIdentifier(row.quantifiedLink))
+                }
                 onRemove={handleRemove}
                 onChange={handleChange}
               />

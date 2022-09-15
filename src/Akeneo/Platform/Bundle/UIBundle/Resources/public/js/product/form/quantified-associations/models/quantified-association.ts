@@ -1,20 +1,41 @@
-import {Identifier, Row, ProductType, ProductsType, getProductsType} from '../models';
+import {Identifier, Row, ProductType, ProductsType} from '../models';
 import {ValidationError, filterErrors} from '@akeneo-pim-community/shared';
 
 const MAX_QUANTITY = 2147483647;
 
-type QuantifiedLink = {
+type ProductQuantifiedLink = {
+  uuid: Identifier;
+  quantity: number;
+}
+
+type ProductModelQuantifiedLink = {
   identifier: Identifier;
   quantity: number;
-};
+}
+
+/** To revalidated if we keep it */
+type QuantifiedLink = ProductQuantifiedLink | ProductModelQuantifiedLink;
 
 type QuantifiedAssociation = {
-  products: QuantifiedLink[];
-  product_models: QuantifiedLink[];
+  products: ProductQuantifiedLink[];
+  product_models: ProductModelQuantifiedLink[];
 };
+
+const getQuantifiedLinkIdentifier = (quantifiedLink: QuantifiedLink) => {
+  if (isProductQuantifiedLink(quantifiedLink)) {
+    return quantifiedLink.uuid;
+  }
+
+  return quantifiedLink.identifier;
+}
 
 const isQuantifiedAssociationEmpty = (quantifiedAssociation: QuantifiedAssociation): boolean =>
   0 === quantifiedAssociation.products.length && 0 === quantifiedAssociation.product_models.length;
+
+const isProductQuantifiedLink = (quantifiedLink: QuantifiedLink): quantifiedLink is ProductQuantifiedLink =>
+  'object' === typeof quantifiedLink &&
+  'uuid' in quantifiedLink &&
+  'quantity' in quantifiedLink;
 
 const quantifiedAssociationToRowCollection = (collection: QuantifiedAssociation, errors: ValidationError[]): Row[] => [
   ...collection.products.map((quantifiedLink, index) => ({
@@ -37,9 +58,13 @@ const rowCollectionToQuantifiedAssociation = (rows: Row[]): QuantifiedAssociatio
     product_models: [],
   };
 
-  rows.forEach(({quantifiedLink: {identifier, quantity}, productType}) =>
-    result[getProductsType(productType)].push({identifier, quantity})
-  );
+  rows.forEach(({quantifiedLink}) => {
+      if (isProductQuantifiedLink(quantifiedLink)) {
+        result.products.push({uuid: quantifiedLink.uuid, quantity: quantifiedLink.quantity})
+      } else {
+        result.product_models.push({identifier: quantifiedLink.identifier, quantity: quantifiedLink.quantity})
+      }
+  });
 
   return result;
 };
@@ -50,7 +75,7 @@ const newAndUpdatedQuantifiedAssociationsCount = (
 ): number => {
   const newAndUpdatedProductQuantifiedLinks = quantifiedAssociations.products.filter(quantifiedLink => {
     const parentQuantifiedLink = parentQuantifiedAssociations.products.find(
-      parentQuantifiedLink => quantifiedLink.identifier === parentQuantifiedLink.identifier
+      parentQuantifiedLink => quantifiedLink.uuid === parentQuantifiedLink.uuid
     );
 
     return undefined === parentQuantifiedLink || parentQuantifiedLink.quantity !== quantifiedLink.quantity;
@@ -73,7 +98,7 @@ const hasUpdatedQuantifiedAssociations = (
 ): boolean =>
   quantifiedAssociations.products.some(quantifiedLink => {
     const parentQuantifiedLink = parentQuantifiedAssociations.products.find(
-      parentQuantifiedLink => quantifiedLink.identifier === parentQuantifiedLink.identifier
+      parentQuantifiedLink => quantifiedLink.uuid === parentQuantifiedLink.uuid
     );
 
     return undefined !== parentQuantifiedLink && parentQuantifiedLink.quantity !== quantifiedLink.quantity;
@@ -88,7 +113,10 @@ const hasUpdatedQuantifiedAssociations = (
 
 export {
   QuantifiedLink,
+  ProductModelQuantifiedLink,
+  ProductQuantifiedLink,
   QuantifiedAssociation,
+  getQuantifiedLinkIdentifier,
   quantifiedAssociationToRowCollection,
   rowCollectionToQuantifiedAssociation,
   newAndUpdatedQuantifiedAssociationsCount,
