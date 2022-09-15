@@ -290,7 +290,7 @@ abstract class IntegrationTestCase extends WebTestCase
      *     options?: array<string>,
      * } $data
      */
-    protected function createAttribute(array $data): ?AttributeInterface
+    protected function createAttribute(array $data): void
     {
         $data = \array_merge([
             'group' => 'other',
@@ -306,50 +306,38 @@ abstract class IntegrationTestCase extends WebTestCase
         if ([] !== $options) {
             $this->createAttributeOptions($attribute, $options);
         }
-        self::getContainer()->get('pim_catalog.saver.attribute')->save($attribute);
-
-        return $attribute;
     }
 
     private function createAttributeOptions(AttributeInterface $attribute, array $codes): void
     {
-        $options = [];
-
-        foreach ($codes as $i => $code) {
-            $attributeOption = $this->createAttributeOption($code, $attribute, $i);
-            $options[] = $attributeOption;
-        }
-
-        self::getContainer()->get('pim_catalog.saver.attribute_option')->saveAll($options);
-    }
-
-    protected function createAttributeOption(string $code, AttributeInterface $attribute, int $index): AttributeOptionInterface
-    {
         $factory = self::getContainer()->get('pim_catalog.factory.attribute_option');
-
         $locales = \array_map(
             static fn ($locale) => $locale['code'],
             self::getContainer()->get(GetLocalesQueryInterface::class)->execute()
         );
 
-        /** @var AttributeOptionInterface $option */
-        $option = $factory->create();
-        $option->setCode(\strtolower(\trim(\preg_replace('/[^A-Za-z0-9-]+/', '_', $code))));
-        $option->setAttribute($attribute);
-        $option->setSortOrder($index);
+        $options = [];
 
-        foreach ($locales as $locale) {
-            $value = new AttributeOptionValue();
-            $value->setOption($option);
-            $value->setLocale($locale);
-            $value->setLabel($code);
+        foreach ($codes as $i => $code) {
+            /** @var AttributeOptionInterface $option */
+            $option = $factory->create();
+            $option->setCode(\strtolower(\trim(\preg_replace('/[^A-Za-z0-9-]+/', '_', $code))));
+            $option->setAttribute($attribute);
+            $option->setSortOrder($i);
 
-            $option->addOptionValue($value);
+            foreach ($locales as $locale) {
+                $value = new AttributeOptionValue();
+                $value->setOption($option);
+                $value->setLocale($locale);
+                $value->setLabel($code);
+
+                $option->addOptionValue($value);
+            }
+
+            $options[] = $option;
         }
 
-        self::getContainer()->get('pim_catalog.saver.attribute_option')->save($option);
-
-        return $option;
+        self::getContainer()->get('pim_catalog.saver.attribute_option')->saveAll($options);
     }
 
     protected function createChannel(string $code, array $locales = [], array $currencies = ['USD']): void

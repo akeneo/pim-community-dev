@@ -3,13 +3,13 @@
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence;
 
 use Akeneo\Catalogs\Domain\Operator;
-use Akeneo\Catalogs\Infrastructure\Persistence\GetCatalogsByAttributeOptionQuery;
+use Akeneo\Catalogs\Infrastructure\Persistence\GetEnabledCatalogsByAttributeCodeAndAttributeOptionCodeQuery;
 use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 
-class GetCatalogsByAttributeOptionQueryTest extends IntegrationTestCase
+class GetEnabledCatalogsByAttributeCodeAndAttributeOptionCodeQueryTest extends IntegrationTestCase
 {
-    private ?GetCatalogsByAttributeOptionQuery $query;
+    private ?GetEnabledCatalogsByAttributeCodeAndAttributeOptionCodeQuery $query;
 
     protected function setUp(): void
     {
@@ -17,7 +17,7 @@ class GetCatalogsByAttributeOptionQueryTest extends IntegrationTestCase
 
         $this->purgeDataAndLoadMinimalCatalog();
 
-        $this->query = self::getContainer()->get(GetCatalogsByAttributeOptionQuery::class);
+        $this->query = self::getContainer()->get(GetEnabledCatalogsByAttributeCodeAndAttributeOptionCodeQuery::class);
     }
 
     public function testItGetsCatalogsByAttributeOption(): void
@@ -35,15 +35,11 @@ class GetCatalogsByAttributeOptionQueryTest extends IntegrationTestCase
         $this->enableCatalog($idFR);
         $this->enableCatalog($idUK);
 
-        $colorAttribute = $this->createAttribute([
+        $this->createAttribute([
             'code' => 'color',
             'type' => 'pim_catalog_simpleselect',
-            'options' => [],
+            'options' => ['red', 'green', 'blue'],
         ]);
-
-        $redAttributeOption = $this->createAttributeOption('red', $colorAttribute, 0);
-        $greenAttributeOption = $this->createAttributeOption('green', $colorAttribute, 1);
-        $blueAttributeOption = $this->createAttributeOption('blue', $colorAttribute, 2);
 
         $this->setCatalogProductSelection($idUS, [
             [
@@ -65,20 +61,20 @@ class GetCatalogsByAttributeOptionQueryTest extends IntegrationTestCase
             ],
         ]);
 
-        $resultRed = $this->query->execute($redAttributeOption);
+        $resultRed = $this->query->execute('color', 'red');
         $expectedRed = [
             new Catalog($idUS, 'Store US', 'owner', true),
             new Catalog($idFR, 'Store FR', 'owner', true),
         ];
         $this->assertEquals($expectedRed, $resultRed);
 
-        $resultGreen = $this->query->execute($greenAttributeOption);
+        $resultGreen = $this->query->execute('color', 'green');
         $expectedGreen = [
             new Catalog($idUS, 'Store US', 'owner', true),
         ];
         $this->assertEquals($expectedGreen, $resultGreen);
 
-        $resultBlue = $this->query->execute($blueAttributeOption);
+        $resultBlue = $this->query->execute('color', 'blue');
         $expectedBlue = [];
         $this->assertEquals($expectedBlue, $resultBlue);
     }

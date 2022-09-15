@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Persistence;
 
-use Akeneo\Catalogs\Application\Persistence\GetCatalogsByAttributeOptionQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\GetEnabledCatalogsByAttributeCodeAndAttributeOptionCodeQueryInterface;
 use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
-use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Doctrine\DBAL\Connection;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GetCatalogsByAttributeOptionQuery implements GetCatalogsByAttributeOptionQueryInterface
+final class GetEnabledCatalogsByAttributeCodeAndAttributeOptionCodeQuery implements GetEnabledCatalogsByAttributeCodeAndAttributeOptionCodeQueryInterface
 {
     public function __construct(
         private Connection $connection,
@@ -24,7 +23,7 @@ final class GetCatalogsByAttributeOptionQuery implements GetCatalogsByAttributeO
      * {@inheritDoc}
      * @throws \Doctrine\DBAL\Driver\Exception
      */
-    public function execute(AttributeOptionInterface $attributeOption): array
+    public function execute(string $attributeCode, string $attributeOptionCode): array
     {
         $query = <<<SQL
             SELECT
@@ -47,8 +46,8 @@ final class GetCatalogsByAttributeOptionQuery implements GetCatalogsByAttributeO
 
         /** @var array<array{id: string, name: string, owner_username: string, is_enabled: string}> $rows */
         $rows = $this->connection->executeQuery($query, [
-            'attributeCode' => $attributeOption->getAttribute()->getCode(),
-            'attributeOptionCode' => $attributeOption->getCode(),
+            'attributeCode' => $attributeCode,
+            'attributeOptionCode' => $attributeOptionCode,
         ])->fetchAllAssociative();
 
         return \array_map(static fn ($row): Catalog => new Catalog(

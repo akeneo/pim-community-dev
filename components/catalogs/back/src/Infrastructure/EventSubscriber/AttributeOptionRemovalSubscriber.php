@@ -2,7 +2,7 @@
 
 namespace Akeneo\Catalogs\Infrastructure\EventSubscriber;
 
-use Akeneo\Catalogs\Application\Persistence\GetCatalogsByAttributeOptionQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\GetEnabledCatalogsByAttributeCodeAndAttributeOptionCodeQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\UpsertCatalogQueryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -12,7 +12,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class AttributeOptionRemovalSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private GetCatalogsByAttributeOptionQueryInterface $getCatalogsByAttributeOptionQuery,
+        private GetEnabledCatalogsByAttributeCodeAndAttributeOptionCodeQueryInterface $getEnabledCatalogsByAttributeCodeAndAttributeOptionCodeQuery,
         private UpsertCatalogQueryInterface $upsertCatalogQuery,
     ) {
     }
@@ -31,7 +31,10 @@ class AttributeOptionRemovalSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $catalogs = $this->getCatalogsByAttributeOptionQuery->execute($attributeOption);
+        $attributeCode = $attributeOption->getAttribute()->getCode();
+        $attributeOptionCode = $attributeOption->getCode();
+
+        $catalogs = $this->getEnabledCatalogsByAttributeCodeAndAttributeOptionCodeQuery->execute($attributeCode, $attributeOptionCode);
 
         foreach ($catalogs as $catalog) {
             $this->upsertCatalogQuery->execute(

@@ -5,11 +5,13 @@ namespace Akeneo\Catalogs\Test\Integration\Infrastructure\EventSubscriber;
 use Akeneo\Catalogs\Domain\Operator;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
-use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use PHPUnit\Framework\Assert;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
 class AttributeOptionRemovalSubscriberTest extends IntegrationTestCase
 {
+    private ?KernelBrowser $client = null;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -19,19 +21,22 @@ class AttributeOptionRemovalSubscriberTest extends IntegrationTestCase
 
     public function testItDisablesCatalogsWhenAttributeOptionIsRemoved(): void
     {
-        $client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
-        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'shopifi');
-        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
 
-        $colorAttribute = $this->createAttribute([
+        $idUS = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
+        $idFR = 'ed30425c-d9cf-468b-8bc7-fa346f41dd07';
+
+        $this->createCatalog($idUS, 'Store US', 'shopifi');
+        $this->createCatalog($idFR, 'Store FR', 'shopifi');
+
+        $this->enableCatalog($idUS);
+        $this->enableCatalog($idFR);
+
+        $this->createAttribute([
             'code' => 'color',
             'type' => 'pim_catalog_simpleselect',
-            'options' => [],
+            'options' => ['red', 'green', 'blue'],
         ]);
-
-        $redAttributeOption = $this->createAttributeOption('red', $colorAttribute, 0);
-        $greenAttributeOption = $this->createAttributeOption('green', $colorAttribute, 1);
-        $blueAttributeOption = $this->createAttributeOption('blue', $colorAttribute, 2);
 
         $this->createProduct('tshirt-blue', [
             new SetSimpleSelectValue('color', null, null, 'blue')
@@ -39,7 +44,8 @@ class AttributeOptionRemovalSubscriberTest extends IntegrationTestCase
         $this->createProduct('tshirt-green', [
             new SetSimpleSelectValue('color', null, null, 'green')
         ]);
-        $this->setCatalogProductSelection('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
+
+        $this->setCatalogProductSelection($idUS, [
             [
                 'field' => 'color',
                 'operator' => Operator::IN_LIST,
@@ -49,47 +55,47 @@ class AttributeOptionRemovalSubscriberTest extends IntegrationTestCase
             ],
         ]);
 
-        $client->request(
-            'GET',
-            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/product-identifiers',
+        $this->setCatalogProductSelection($idFR, [
             [
-                'limit' => 2,
+                'field' => 'color',
+                'operator' => Operator::IN_LIST,
+                'value' => ['blue', 'red'],
+                'scope' => null,
+                'locale' => null,
             ],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-            ],
-        );
+        ]);
 
-        $response = $client->getResponse();
-        $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        $this->assertResponseEquals($idUS, 200, ['tshirt-blue', 'tshirt-green']);
+        $this->assertResponseEquals($idFR, 200, ['tshirt-blue']);
 
-        Assert::assertEquals(200, $response->getStatusCode());
-        Assert::assertEquals(['tshirt-blue', 'tshirt-green'], $payload['_embedded']['items']);
+        $this->removeAttributeOption('color.blue');
 
-        $this->removeAttributeOption($blueAttributeOption);
-
-        $client->request(
-            'GET',
-            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/product-identifiers',
-            [
-                'limit' => 2,
-            ],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-            ],
-        );
-
-        $response = $client->getResponse();
-        $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
-
-        Assert::assertEquals(200, $response->getStatusCode());
-        Assert::assertEquals([], $payload['_embedded']['items']);
+        $this->assertResponseEquals($idUS, 200, []);
+        $this->assertResponseEquals($idFR, 200, []);
     }
 
-    private function removeAttributeOption(AttributeOptionInterface $attributeOption): void
+    private function assertResponseEquals(string $catalogId, int $statusCode, array $expectedPayload): void
     {
+        $this->client->request(
+            'GET',
+            \sprintf('/api/rest/v1/catalogs/%s/product-identifiers', $catalogId),
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+        );
+
+        $response = $this->client->getResponse();
+        $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+        Assert::assertEquals($statusCode, $response->getStatusCode());
+        Assert::assertEquals($expectedPayload, $payload['_embedded']['items']);
+    }
+
+    private function removeAttributeOption(string $code): void
+    {
+        $attributeOption = self::getContainer()->get('pim_catalog.repository.attribute_option')->findOneByIdentifier($code);
         self::getContainer()->get('pim_catalog.remover.attribute_option')->remove($attributeOption);
     }
 }

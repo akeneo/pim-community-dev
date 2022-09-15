@@ -131,14 +131,12 @@ abstract class AbstractAttributeCriterionTest extends IntegrationTestCase
         self::getContainer()->set(GetMeasurementsFamilyQuery::class, $this->getMeasurementsFamilyQuery);
     }
 
-    protected function createAttribute(array $data): ?AttributeInterface
+    protected function createAttribute(array $data): void
     {
         $this->attributeOptions[$data['code']] = $data['options'] ?? [];
         unset($data['options']);
 
         $this->attributes[$data['code']] = $data;
-
-        return null;
     }
 
     protected function createChannel(string $code, array $locales = [], array $currencies = ['USD']): void

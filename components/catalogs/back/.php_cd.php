@@ -26,7 +26,6 @@ $rules = [
             'Akeneo\Catalogs\ServiceAPI\Model',
             'Akeneo\Catalogs\ServiceAPI\Command',
             'Akeneo\Catalogs\ServiceAPI\Query',
-            'Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface',
         ]
     )->in('Akeneo\Catalogs\Application'),
 
