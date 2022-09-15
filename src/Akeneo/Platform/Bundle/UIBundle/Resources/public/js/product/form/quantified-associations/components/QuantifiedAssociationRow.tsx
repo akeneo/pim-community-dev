@@ -17,8 +17,8 @@ import {ProductType, Row, QuantifiedLink, MAX_QUANTITY} from '../models';
 import {useProductThumbnail} from '../hooks';
 
 const CellPlaceholder = styled.div`
-  height: 54px;
-  margin: 10px;
+  height: 40px;
+  width: 100%;
 `;
 
 type QuantifiedAssociationRowProps = {
