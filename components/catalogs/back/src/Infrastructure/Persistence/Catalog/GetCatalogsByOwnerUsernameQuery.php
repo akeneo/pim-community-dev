@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Infrastructure\Persistence;
+namespace Akeneo\Catalogs\Infrastructure\Persistence\Catalog;
 
-use Akeneo\Catalogs\Application\Persistence\GetCatalogsByOwnerUsernameQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogsByOwnerUsernameQueryInterface;
 use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
