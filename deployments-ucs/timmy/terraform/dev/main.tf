@@ -189,7 +189,7 @@ module "timmy_cloudscheduler" {
   http_method                = "POST"
   http_target_uri            = module.timmy_request_portal.uri
   attempt_deadline           = "30s"
-  oidc_service_account_email = local.cloudscheduler_service_account_email
+  oidc_service_account_email = local.function_service_account_email
   oidc_token_audience        = module.timmy_request_portal.uri
   schedule                   = "*/2 * * * *"
   time_zone                  = "Europe/Paris"
