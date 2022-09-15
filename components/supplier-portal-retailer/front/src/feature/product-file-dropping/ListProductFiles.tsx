@@ -3,7 +3,7 @@ import {Breadcrumb} from 'akeneo-design-system';
 import {PageContent, PageHeader, PimView, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {useProductFiles} from './hooks';
-import {ProductFilesList} from './components/ProductFilesList';
+import {ProductFilesList} from './components';
 
 const ListProductFiles = () => {
     const translate = useTranslate();
