@@ -37,6 +37,7 @@
     "vendor/akeneo/pim-community-dev/src/Akeneo/UserManagement/Bundle/Resources/workspaces/user-ui",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Category/front",
     "vendor/akeneo/pim-community-dev/components/catalogs/front",
+    "vendor/akeneo/pim-community-dev/components/identifier-generator/front",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/ImportExportBundle/front",
     "vendor/akeneo/pim-enterprise-dev",
     "vendor/akeneo/pim-enterprise-dev/components/supplier-portal-retailer/front",

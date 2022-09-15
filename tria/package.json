@@ -75,6 +75,7 @@
     "front-packages/free-trial",
     "vendor/akeneo/pim-community-dev",
     "vendor/akeneo/pim-community-dev/components/catalogs/front",
+    "vendor/akeneo/pim-community-dev/components/identifier-generator/front",
     "vendor/akeneo/pim-community-dev/front-packages/measurement",
     "vendor/akeneo/pim-community-dev/front-packages/shared",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Category/front",
