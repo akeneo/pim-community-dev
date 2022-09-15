@@ -16,7 +16,7 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Value\InvalidValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
-final class SimpleReferenceEntityReplacementOperationApplier
+final class ReferenceEntitySingleLinkReplacementOperationApplier
 {
     public function applyOperation(OperationInterface $operation, ValueInterface $value): ValueInterface
     {

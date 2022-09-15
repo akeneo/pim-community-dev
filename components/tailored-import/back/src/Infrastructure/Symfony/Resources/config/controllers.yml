@@ -69,12 +69,6 @@ services:
       - '@validator'
       - '@serializer'
 
-  akeneo.tailored_import.controller.get_records_actions:
-    class: Akeneo\Platform\TailoredImport\Infrastructure\Controller\GetRecordsAction
-    public: true
-    arguments:
-      - '@akeneo_referenceentity.infrastructure.persistence.query.platform.search_records'
-
   akeneo.tailored_import.controller.get_families_action:
     class: Akeneo\Platform\TailoredImport\Infrastructure\Controller\GetFamiliesAction
     public: true

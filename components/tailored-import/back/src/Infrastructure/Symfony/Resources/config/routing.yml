@@ -33,11 +33,6 @@ pimee_tailored_import_get_refreshed_sample_data_action:
     defaults: { _controller: akeneo.tailored_import.controller.get_refreshed_sample_data_action }
     methods: [GET]
 
-pimee_tailored_import_get_reference_entity_records_action:
-    path: /rest/tailored-import/reference-entity-records
-    defaults: { _controller: akeneo.tailored_import.controller.get_records_actions }
-    methods: [GET]
-
 pimee_tailored_import_generate_preview_data_action:
     path: /rest/tailored-import/generate-preview-data
     defaults: { _controller: akeneo.tailored_import.controller.generate_preview_data_action }
