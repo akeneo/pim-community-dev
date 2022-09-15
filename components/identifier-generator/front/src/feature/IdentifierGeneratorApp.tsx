@@ -8,7 +8,8 @@ const IdentifierGeneratorApp = () => {
   return (
     <div>
       <Helper level="error">
-        This feature is currently under development. Using it can lead to unexpected behaviors.
+        <p>Under Construction: The Akeneo Product Team is hard at work developing new features for you. This feature will launch soon, but is currently under development.</p>
+        <p>Please do not attempt to use this feature as it could lead to unexpected behaviors that impact your product data.</p>
       </Helper>
       <PageHeader>
         <PageHeader.Breadcrumb>
@@ -19,15 +20,12 @@ const IdentifierGeneratorApp = () => {
           <Breadcrumb.Step href="#">
             {translate('pim_title.akeneo_identifier_generator_index')}
           </Breadcrumb.Step>
-          <Breadcrumb.Step>
-            third
-          </Breadcrumb.Step>
         </Breadcrumb>
         </PageHeader.Breadcrumb>
         <PageHeader.UserActions>
           <PimView
             className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
-            viewName="pim-measurements-user-navigation"
+            viewName="pim-identifier-generator-user-navigation"
           />
         </PageHeader.UserActions>
         <PageHeader.Actions>

@@ -6,7 +6,6 @@ import {IdentifierGeneratorApp} from '@akeneo-pim-community/identifier-generator
 import {ThemeProvider} from 'styled-components';
 
 const mediator = require('oro/mediator');
-const __ = require('oro/translator');
 
 class IdentifierGeneratorController extends ReactController {
   private static container = document.createElement('div');
