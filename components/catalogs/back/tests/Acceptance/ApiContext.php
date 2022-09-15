@@ -61,8 +61,9 @@ class ApiContext implements Context
 
     /**
      * @Given an existing catalog
+     * @Given a disabled catalog
      */
-    public function anExistingCatalog(): void
+    public function aDisabledExistingCatalog(): void
     {
         $connectedAppUserIdentifier = $this->getConnectedApp()->getUsername();
         $this->authentication->logAs($connectedAppUserIdentifier);
@@ -102,25 +103,9 @@ class ApiContext implements Context
     }
 
     /**
-     * @Given the catalog is enabled
+     * @Given an enabled catalog sets up with a product selection criteria
      */
-    public function theCatalogIsEnabled(): void
-    {
-        $connectedAppUserIdentifier = $this->getConnectedApp()->getUsername();
-        $this->authentication->logAs($connectedAppUserIdentifier);
-
-        $this->upsertCatalogQuery->execute(
-            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            'Store US',
-            $connectedAppUserIdentifier,
-            true,
-        );
-    }
-
-    /**
-     * @Given a catalog sets up with a product selection
-     */
-    public function aCatalogSetsUpWithAProductSelection(): void
+    public function anEnabledCatalogSetsUpWithAProductSelectionCriteria(): void
     {
         $connectedAppUserIdentifier = $this->getConnectedApp()->getUsername();
         $this->authentication->logAs($connectedAppUserIdentifier);
@@ -374,9 +359,9 @@ class ApiContext implements Context
     }
 
     /**
-     * @When the external application retrieves the product identifiers using the API
+     * @When the external application retrieves the product's identifiers using the API
      */
-    public function theExternalApplicationRetrievesTheProductIdentifiersUsingTheApi(): void
+    public function theExternalApplicationRetrievesTheProductsIdentifiersUsingTheApi(): void
     {
         $this->authentication->logAs($this->getConnectedApp()->getUsername());
 
@@ -391,26 +376,27 @@ class ApiContext implements Context
     }
 
     /**
-     * @Then the response should contain only the product identifiers from the selection
+     * @Then the response should contain only the product's identifiers from the selection
      */
-    public function theResponseShouldContainOnlyTheProductIdentifiersFromTheSelection(): void
+    public function theResponseShouldContainOnlyTheProductsIdentifiersFromTheSelection(): void
     {
         $payload = \json_decode($this->response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertCount(2, $payload['_embedded']['items']);
 
-        $expectedUuids = [
+        // Comes from the step anEnabledCatalogSetsUpWithAProductSelectionCriteria
+        $expectedIdentifiers = [
             't-shirt blue',
             't-shirt red',
         ];
 
-        Assert::assertSame($expectedUuids, $payload['_embedded']['items']);
+        Assert::assertSame($expectedIdentifiers, $payload['_embedded']['items']);
     }
 
     /**
-     * @When the external application retrieves the product uuids using the API
+     * @When the external application retrieves the product's uuids using the API
      */
-    public function theExternalApplicationRetrievesTheProductUuidsUsingTheApi(): void
+    public function theExternalApplicationRetrievesTheProductsUuidsUsingTheApi(): void
     {
         $this->authentication->logAs($this->getConnectedApp()->getUsername());
 
@@ -425,14 +411,15 @@ class ApiContext implements Context
     }
 
     /**
-     * @Then the response should contain only the product uuids from the selection
+     * @Then the response should contain only the product's uuids from the selection
      */
-    public function theResponseShouldContainOnlyTheProductUuidsFromTheSelection(): void
+    public function theResponseShouldContainOnlyTheProductsUuidsFromTheSelection(): void
     {
         $payload = \json_decode($this->response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertCount(2, $payload['_embedded']['items']);
 
+        // Comes from the step anEnabledCatalogSetsUpWithAProductSelectionCriteria
         $expectedUuids = [
             '21a28f70-9cc8-4470-904f-aeda52764f73',
             'a43209b0-cd39-4faf-ad1b-988859906030',
@@ -467,6 +454,7 @@ class ApiContext implements Context
 
         Assert::assertCount(2, $payload['_embedded']['items']);
 
+        // Comes from the step anEnabledCatalogSetsUpWithAProductSelectionCriteria
         $expectedUuids = [
             '21a28f70-9cc8-4470-904f-aeda52764f73',
             'a43209b0-cd39-4faf-ad1b-988859906030',
@@ -476,5 +464,15 @@ class ApiContext implements Context
             Assert::assertContains($item['uuid'], $expectedUuids);
             Assert::assertTrue($item['enabled']);
         }
+    }
+
+    /**
+     * @Then the response should contain an empty list
+     */
+    public function theResponseShouldContainAnEmptyList(): void
+    {
+        $payload = \json_decode($this->response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+        Assert::assertEmpty($payload['_embedded']['items']);
     }
 }
