@@ -28,7 +28,7 @@ supplier_portal_retailer_comment_product_file:
         _feature: supplier_portal_critical_path_collaborate
     methods: POST
 
-supplier_portal_retailer_get_product_file:
+supplier_portal_retailer_product_files_comment:
     path: /{productFileIdentifier}
     defaults:
         _controller: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\GetProductFile
