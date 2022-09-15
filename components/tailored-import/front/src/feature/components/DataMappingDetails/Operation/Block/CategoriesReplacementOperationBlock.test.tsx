@@ -156,7 +156,7 @@ test('it throws an error if the operation is not a categories replacement operat
     renderWithProviders(
       <CategoriesReplacementOperationBlock
         targetCode="categories"
-        operation={{uuid: expect.any(String), type: 'clean_html_tags'}}
+        operation={{uuid: expect.any(String), modes: ['remove'], type: 'clean_html'}}
         onChange={jest.fn()}
         onRemove={jest.fn()}
         isLastOperation={false}

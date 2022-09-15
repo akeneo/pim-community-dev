@@ -119,7 +119,8 @@ test('it throws an error if the operation is not a enabled replacement operation
         targetCode="enabled"
         operation={{
           uuid: 'an-uuid',
-          type: 'clean_html_tags',
+          modes: ['remove'],
+          type: 'clean_html',
         }}
         onChange={jest.fn()}
         onRemove={jest.fn()}

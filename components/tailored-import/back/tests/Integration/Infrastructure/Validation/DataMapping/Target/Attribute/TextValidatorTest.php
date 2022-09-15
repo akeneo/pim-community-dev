@@ -106,7 +106,7 @@ final class TextValidatorTest extends AbstractValidationTest
                     'sample_data' => ['1', 'sample_2', 'sample_3'],
                 ]
             ],
-            'a valid text data mapping with clean html tags operation' => [
+            'a valid text data mapping with clean html operation' => [
                 [
                     'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
                     'target' => [
@@ -123,7 +123,8 @@ final class TextValidatorTest extends AbstractValidationTest
                     'operations' => [
                         [
                             'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',
-                            'type' => 'clean_html_tags'
+                            'modes' => ['remove'],
+                            'type' => 'clean_html'
                         ],
                     ],
                     'sample_data' => ['sample_1', 'sample_2', 'sample_3'],

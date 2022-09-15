@@ -14,10 +14,11 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\HandleDataMapping;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingResult;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ChangeCaseOperation;
-use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLTagsOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\RemoveWhitespaceOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
@@ -92,11 +93,12 @@ final class HandleTextareaTest extends HandleDataMappingTestCase
                     [],
                 ),
             ],
-            'it handles text area attribute targets with Clean HTML Tags operation' => [
+            'it handles textarea attribute targets with Clean HTML operation' => [
                 'row' => [
                     '25621f5a-504f-4893-8f0c-9f1b0076e53e' => 'this-is-a-sku',
-                    '2d9e967a-5efa-4a31-a254-99f7c50a145c' => 'i want&nbsp;this <h1>cleaned</h1>',
-                    '2d9e967a-4efa-4a31-a254-99f7c50a145c' => 'but not <h2>this</h2>',
+                    '2d9e967a-5efa-4a31-a254-99f7c50a145c' => 'i want <p>the tags </p>removed<br/>',
+                    '2d9e967a-4efa-4a31-a254-99f7c50a145c' => 'i want&nbsp;the characters &quot;decoded&quot;',
+                    '2d9e967a-3efa-4a31-a254-99f7c50a145c' => 'i want&nbsp;this <h1>&quot;fully&quot; cleaned</h1>',
                 ],
                 'data_mappings' => [
                     DataMapping::create(
@@ -112,7 +114,10 @@ final class HandleTextareaTest extends HandleDataMappingTestCase
                         ),
                         ['2d9e967a-5efa-4a31-a254-99f7c50a145c'],
                         OperationCollection::create([
-                            new CleanHTMLTagsOperation('00000000-0000-0000-0000-000000000000'),
+                            new CleanHTMLOperation(
+                                '00000000-0000-0000-0000-000000000000',
+                                [CleanHTMLOperation::MODE_REMOVE_HTML_TAGS]
+                            ),
                         ]),
                         [],
                     ),
@@ -128,7 +133,35 @@ final class HandleTextareaTest extends HandleDataMappingTestCase
                             null,
                         ),
                         ['2d9e967a-4efa-4a31-a254-99f7c50a145c'],
-                        OperationCollection::create([]),
+                        OperationCollection::create([
+                            new CleanHTMLOperation(
+                                '00000000-0000-0000-0000-000000000000',
+                                [CleanHTMLOperation::MODE_DECODE_HTML_CHARACTERS]
+                            ),
+                        ]),
+                        [],
+                    ),
+                    DataMapping::create(
+                        'b244c45c-d5ec-4993-8cff-7ccd04e82fed',
+                        AttributeTarget::create(
+                            'short_description',
+                            'pim_catalog_textarea',
+                            null,
+                            null,
+                            'set',
+                            'skip',
+                            null,
+                        ),
+                        ['2d9e967a-3efa-4a31-a254-99f7c50a145c'],
+                        OperationCollection::create([
+                            new CleanHTMLOperation(
+                                '00000000-0000-0000-0000-000000000000',
+                                [
+                                    CleanHTMLOperation::MODE_REMOVE_HTML_TAGS,
+                                    CleanHTMLOperation::MODE_DECODE_HTML_CHARACTERS
+                                ]
+                            ),
+                        ]),
                         [],
                     ),
                 ],
@@ -137,8 +170,9 @@ final class HandleTextareaTest extends HandleDataMappingTestCase
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
                         userIntents: [
-                            new SetTextareaValue('name', null, null, 'i want this cleaned'),
-                            new SetTextareaValue('description', 'ecommerce', 'fr_FR', 'but not <h2>this</h2>'),
+                            new SetTextareaValue('name', null, null, 'i want the tags removed'),
+                            new SetTextareaValue('description', 'ecommerce', 'fr_FR', 'i want the characters "decoded"'),
+                            new SetTextareaValue('short_description', null, null, 'i want this "fully" cleaned'),
                         ],
                     ),
                     [],
@@ -293,7 +327,7 @@ final class HandleTextareaTest extends HandleDataMappingTestCase
             'it handles text attribute targets with several operations' => [
                 'row' => [
                     '25621f5a-504f-4893-8f0c-9f1b0076e53e' => 'this-is-a-sku',
-                    '2d9e967a-5efa-4a31-a254-99f7c50a145c' => 'i want&nbsp;this <h1>cleaned and capitalized</h1>',
+                    '2d9e967a-5efa-4a31-a254-99f7c50a145c' => 'i want&nbsp;this &quot;decoded&quot; and capitalized',
                     '2d9e967a-4efa-4a31-a254-99f7c50a145c' => 'but not <h2>this</h2>',
                 ],
                 'data_mappings' => [
@@ -310,7 +344,10 @@ final class HandleTextareaTest extends HandleDataMappingTestCase
                         ),
                         ['2d9e967a-5efa-4a31-a254-99f7c50a145c'],
                         OperationCollection::create([
-                            new CleanHTMLTagsOperation('00000000-0000-0000-0000-000000000000'),
+                            new CleanHTMLOperation(
+                                '00000000-0000-0000-0000-000000000000',
+                                [CleanHTMLOperation::MODE_DECODE_HTML_CHARACTERS]
+                            ),
                             new ChangeCaseOperation('00000000-0000-0000-0000-000000000000', 'capitalize')
                         ]),
                         [],
@@ -336,7 +373,7 @@ final class HandleTextareaTest extends HandleDataMappingTestCase
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
                         userIntents: [
-                            new SetTextareaValue('name', null, null, 'I want this cleaned and capitalized'),
+                            new SetTextareaValue('name', null, null, 'I want this "decoded" and capitalized'),
                             new SetTextareaValue('description', 'ecommerce', 'fr_FR', 'but not <h2>this</h2>'),
                         ],
                     ),

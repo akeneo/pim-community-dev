@@ -50,8 +50,10 @@ akeneo.tailored_import:
       add: Add an operation
       common:
         collapse: Collapse
-      clean_html_tags:
-        title: Clean HTML tags
+      clean_html:
+        title: Clean HTML
+        remove: Remove HTML tags
+        decode: Decode HTML characters
       change_case:
         title: Change case
         select: Select your case

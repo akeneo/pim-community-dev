@@ -13,37 +13,46 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredImport\Domain\Model\Operation;
 
-use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLTagsOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationInterface;
 use PhpSpec\ObjectBehavior;
 
-class CleanHTMLTagsOperationSpec extends ObjectBehavior
+class CleanHTMLOperationSpec extends ObjectBehavior
 {
-    public function let()
+    public function let(): void
     {
-        $this->beConstructedWith('00000000-0000-0000-0000-000000000000');
+        $this->beConstructedWith(
+            '00000000-0000-0000-0000-000000000000',
+            [CleanHTMLOperation::MODE_REMOVE_HTML_TAGS]
+        );
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
-        $this->shouldHaveType(CleanHTMLTagsOperation::class);
+        $this->shouldHaveType(CleanHTMLOperation::class);
     }
 
-    public function it_implements_operation_interface()
+    public function it_implements_operation_interface(): void
     {
         $this->shouldBeAnInstanceOf(OperationInterface::class);
     }
 
-    public function it_returns_uuid()
+    public function it_returns_uuid(): void
     {
         $this->getUuid()->shouldReturn('00000000-0000-0000-0000-000000000000');
     }
 
-    public function it_normalize_operation()
+    public function it_returns_modes(): void
+    {
+        $this->getModes()->shouldReturn([CleanHTMLOperation::MODE_REMOVE_HTML_TAGS]);
+    }
+
+    public function it_normalize_operation(): void
     {
         $this->normalize()->shouldReturn([
             'uuid' => '00000000-0000-0000-0000-000000000000',
-            'type' => 'clean_html_tags',
+            'modes' => ['remove'],
+            'type' => 'clean_html',
         ]);
     }
 }

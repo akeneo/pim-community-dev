@@ -16,7 +16,7 @@ namespace Specification\Akeneo\Platform\TailoredImport\Infrastructure\Hydrator;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMappingCollection;
-use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLTagsOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\OperationCollectionHydrator;
@@ -88,11 +88,11 @@ class DataMappingCollectionHydratorSpec extends ObjectBehavior
 
         $emptyOperationCollection = OperationCollection::create([]);
         $operationCollection = OperationCollection::create([
-            new CleanHTMLTagsOperation('00000000-0000-0000-0000-000000000000'),
+            new CleanHTMLOperation('00000000-0000-0000-0000-000000000000', [CleanHTMLOperation::MODE_REMOVE_HTML_TAGS]),
         ]);
 
         $operationCollectionHydrator->hydrate($nameTarget->normalize(), [])->willReturn($emptyOperationCollection);
-        $operationCollectionHydrator->hydrate($descriptionTarget->normalize(), [['type' => CleanHTMLTagsOperation::TYPE]])->willReturn($operationCollection);
+        $operationCollectionHydrator->hydrate($descriptionTarget->normalize(), [['type' => CleanHTMLOperation::TYPE]])->willReturn($operationCollection);
 
         $this->hydrate(
             [
@@ -108,7 +108,7 @@ class DataMappingCollectionHydratorSpec extends ObjectBehavior
                     'target' => $descriptionTarget->normalize(),
                     'sources' => ['2d9e967a-4efa-4a31-a254-99f7c50a145c'],
                     'operations' => [
-                        ['type' => CleanHTMLTagsOperation::TYPE],
+                        ['type' => CleanHTMLOperation::TYPE],
                     ],
                     'sample_data' => [],
                 ],

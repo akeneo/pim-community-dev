@@ -14,18 +14,18 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier;
 
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\UnexpectedValueException;
-use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLTagsOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\InvalidValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
-final class CleanHTMLTagsOperationApplier implements OperationApplierInterface
+final class CleanHTMLOperationApplier implements OperationApplierInterface
 {
     public function applyOperation(OperationInterface $operation, ValueInterface $value): ValueInterface
     {
-        if (!$operation instanceof CleanHTMLTagsOperation) {
-            throw new UnexpectedValueException($operation, CleanHTMLTagsOperation::class, self::class);
+        if (!$operation instanceof CleanHTMLOperation) {
+            throw new UnexpectedValueException($operation, CleanHTMLOperation::class, self::class);
         }
 
         if ($value instanceof InvalidValue) {
@@ -36,15 +36,21 @@ final class CleanHTMLTagsOperationApplier implements OperationApplierInterface
             throw new UnexpectedValueException($value, StringValue::class, self::class);
         }
 
-        return new StringValue(strip_tags(
-            htmlspecialchars_decode(
-                str_replace('&nbsp;', ' ', $value->getValue()),
-            ),
-        ));
+        foreach ($operation->getModes() as $mode) {
+            $value = match ($mode) {
+                CleanHTMLOperation::MODE_REMOVE_HTML_TAGS => new StringValue(strip_tags($value->getValue())),
+                CleanHTMLOperation::MODE_DECODE_HTML_CHARACTERS => new StringValue(
+                    html_entity_decode(htmlspecialchars_decode(str_replace('&nbsp;', ' ', $value->getValue()))),
+                ),
+                default => throw new \RuntimeException(sprintf('Unsupported clean HTML mode "%s"', $mode)),
+            };
+        }
+
+        return $value;
     }
 
     public function supports(OperationInterface $operation): bool
     {
-        return $operation instanceof CleanHTMLTagsOperation;
+        return $operation instanceof CleanHTMLOperation;
     }
 }

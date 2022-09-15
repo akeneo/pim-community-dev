@@ -17,7 +17,7 @@ use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\NoMa
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\UnexpectedValueException;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\EnabledReplacementOperationApplier;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\EnabledReplacementOperation;
-use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLTagsOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\BooleanValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\InvalidValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\NumberValue;
@@ -65,7 +65,7 @@ class EnabledReplacementOperationApplierSpec extends ObjectBehavior
 
     public function it_throws_an_exception_when_operation_type_is_invalid(): void
     {
-        $operation = new CleanHTMLTagsOperation($this->uuid);
+        $operation = new CleanHTMLOperation($this->uuid, [CleanHTMLOperation::MODE_REMOVE_HTML_TAGS]);
         $value = new StringValue('0');
 
         $this->shouldThrow(new UnexpectedValueException($operation, EnabledReplacementOperation::class, EnabledReplacementOperationApplier::class))

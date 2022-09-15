@@ -13,18 +13,18 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Test\Integration\Infrastructure\Validation\DataMapping\Operation;
 
-use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\CleanHTMLTagsOperation;
+use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\CleanHTMLOperation;
 use Akeneo\Platform\TailoredImport\Test\Integration\Infrastructure\Validation\AbstractValidationTest;
 use Akeneo\Test\Integration\Configuration;
 
-final class CleanHTMLTagsOperationValidatorTest extends AbstractValidationTest
+final class CleanHTMLOperationValidatorTest extends AbstractValidationTest
 {
     /**
      * @dataProvider validOperation
      */
     public function test_it_does_not_build_violations_when_operation_is_valid(array $value): void
     {
-        $violations = $this->getValidator()->validate($value, new CleanHTMLTagsOperation());
+        $violations = $this->getValidator()->validate($value, new CleanHTMLOperation());
 
         $this->assertNoViolation($violations);
     }
@@ -37,7 +37,7 @@ final class CleanHTMLTagsOperationValidatorTest extends AbstractValidationTest
         string $expectedErrorPath,
         array $value
     ): void {
-        $violations = $this->getValidator()->validate($value, new CleanHTMLTagsOperation());
+        $violations = $this->getValidator()->validate($value, new CleanHTMLOperation());
 
         $this->assertHasValidationError($expectedErrorMessage, $expectedErrorPath, $violations);
     }
@@ -45,10 +45,11 @@ final class CleanHTMLTagsOperationValidatorTest extends AbstractValidationTest
     public function validOperation(): array
     {
         return [
-            'a valid clean html tag operation' => [
+            'a valid clean html operation' => [
                 [
                     'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',
-                    'type' => 'clean_html_tags',
+                    'modes' => ['remove'],
+                    'type' => 'clean_html',
                 ],
             ],
         ];
@@ -57,8 +58,8 @@ final class CleanHTMLTagsOperationValidatorTest extends AbstractValidationTest
     public function invalidOperation(): array
     {
         return [
-            'an invalid clean html tags' => [
-                'This value should be equal to "clean_html_tags".',
+            'an invalid clean html' => [
+                'This value should be equal to "clean_html".',
                 '[type]',
                 [
                     'type' => 'invalid_operation',

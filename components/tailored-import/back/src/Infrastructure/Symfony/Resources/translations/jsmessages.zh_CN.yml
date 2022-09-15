@@ -32,7 +32,7 @@ akeneo.tailored_import:
     add: 添加属性
     remove: 确定要移除此映射吗？
   data_mapping:
-    title: 设置 
+    title: 设置
     no_data_mapping_selected: 未选择映射。
     attribute_not_found: 此属性已被删除，不能再在映射中使用。
     property_not_valid: 此属性无效。
@@ -49,7 +49,7 @@ akeneo.tailored_import:
       add: 添加操作
       common:
         collapse: 折叠
-      clean_html_tags:
+      clean_html:
         title: 清理 HTML 标签
       change_case:
         title: 更改大小写

@@ -12,7 +12,7 @@ namespace Specification\Akeneo\Platform\TailoredImport\Application\ExecuteDataMa
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\UnexpectedValueException;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\ChangeCaseOperationApplier;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ChangeCaseOperation;
-use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLTagsOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\NumberValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use PhpSpec\ObjectBehavior;
@@ -62,7 +62,7 @@ final class ChangeCaseOperationApplierSpec extends ObjectBehavior
 
     public function it_throws_an_exception_when_operation_type_is_invalid(): void
     {
-        $operation = new CleanHTMLTagsOperation($this->uuid);
+        $operation = new CleanHTMLOperation($this->uuid, [CleanHTMLOperation::MODE_REMOVE_HTML_TAGS]);
         $value = new StringValue('0');
 
         $this->shouldThrow(new UnexpectedValueException(

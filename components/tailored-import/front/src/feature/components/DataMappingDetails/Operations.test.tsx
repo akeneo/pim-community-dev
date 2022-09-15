@@ -85,19 +85,19 @@ test('it displays compatible operation when present in data mapping', async () =
       dataMapping={{
         ...dataMapping,
         operations: [
-          {uuid: expect.any(String), type: 'clean_html_tags'},
+          {uuid: expect.any(String), modes: ['remove'], type: 'clean_html'},
           // @ts-expect-error unknown operation
           {type: 'unknown_operation'},
         ],
       }}
-      compatibleOperations={['clean_html_tags']}
+      compatibleOperations={['clean_html']}
       onOperationsChange={jest.fn()}
       onRefreshSampleData={jest.fn()}
       validationErrors={[]}
     />
   );
 
-  expect(screen.getByText('akeneo.tailored_import.data_mapping.operations.clean_html_tags.title')).toBeInTheDocument();
+  expect(screen.getByText('akeneo.tailored_import.data_mapping.operations.clean_html.title')).toBeInTheDocument();
   expect(
     screen.queryByText('akeneo.tailored_import.data_mapping.operations.unknown_operation')
   ).not.toBeInTheDocument();
@@ -110,7 +110,7 @@ test('it can add a compatible operation in data mapping', async () => {
   await renderWithProviders(
     <Operations
       dataMapping={dataMapping}
-      compatibleOperations={['clean_html_tags']}
+      compatibleOperations={['clean_html']}
       onOperationsChange={handleOperationsChange}
       onRefreshSampleData={jest.fn()}
       validationErrors={[]}
@@ -118,9 +118,11 @@ test('it can add a compatible operation in data mapping', async () => {
   );
 
   userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.operations.add'));
-  userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.operations.clean_html_tags.title'));
+  userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.operations.clean_html.title'));
 
-  expect(handleOperationsChange).toHaveBeenCalledWith([{uuid: expect.any(String), type: 'clean_html_tags'}]);
+  expect(handleOperationsChange).toHaveBeenCalledWith([
+    {uuid: expect.any(String), modes: ['remove', 'decode'], type: 'clean_html'},
+  ]);
 });
 
 test('it can remove an operation from data mapping', async () => {
@@ -130,9 +132,9 @@ test('it can remove an operation from data mapping', async () => {
     <Operations
       dataMapping={{
         ...dataMapping,
-        operations: [{uuid: expect.any(String), type: 'clean_html_tags'}],
+        operations: [{uuid: expect.any(String), modes: ['remove'], type: 'clean_html'}],
       }}
-      compatibleOperations={['clean_html_tags']}
+      compatibleOperations={['clean_html']}
       onOperationsChange={handleOperationsChange}
       onRefreshSampleData={jest.fn()}
       validationErrors={[]}
@@ -150,9 +152,9 @@ test('it tells when there are no more available operations and hides the add but
     <Operations
       dataMapping={{
         ...dataMapping,
-        operations: [{uuid: expect.any(String), type: 'clean_html_tags'}],
+        operations: [{uuid: expect.any(String), modes: ['remove'], type: 'clean_html'}],
       }}
-      compatibleOperations={['clean_html_tags']}
+      compatibleOperations={['clean_html']}
       onOperationsChange={jest.fn()}
       onRefreshSampleData={jest.fn()}
       validationErrors={[]}

@@ -166,7 +166,7 @@ final class CategoriesValidatorTest extends AbstractValidationTest
                     'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
                     'operations' => [
                         [
-                            'type' => 'clean_html_tags'
+                            'type' => 'clean_html'
                         ],
                     ],
                     'sample_data' => ['sample_1', 'sample_2', 'sample_3'],

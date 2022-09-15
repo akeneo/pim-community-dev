@@ -32,7 +32,7 @@ class GeneratePreviewDataTest extends AcceptanceTestCase
             'attribute_type' => 'pim_catalog_text',
             'source_configuration' => null,
         ];
-        $query->operations = [['uuid' => '00000000-0000-0000-0000-000000000000', 'type' => 'clean_html_tags']];
+        $query->operations = [['uuid' => '00000000-0000-0000-0000-000000000000', 'modes' => ['remove'], 'type' => 'clean_html']];
         $query->sampleData = ['<b>product1</b>', '<i>product2</i>', 'product3'];
 
         $expected = GeneratePreviewDataResult::create(['00000000-0000-0000-0000-000000000000' => [
@@ -113,7 +113,7 @@ class GeneratePreviewDataTest extends AcceptanceTestCase
             'attribute_type' => 'pim_catalog_text',
             'source_configuration' => null,
         ];
-        $query->operations = [['uuid' => '00000000-0000-0000-0000-000000000000', 'type' => 'clean_html_tags']];
+        $query->operations = [['uuid' => '00000000-0000-0000-0000-000000000000', 'modes' => ['remove'], 'type' => 'clean_html']];
         $query->sampleData = [];
 
         $expected = GeneratePreviewDataResult::create([]);
