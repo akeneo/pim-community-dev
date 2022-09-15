@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Controller\Internal;
 
-use Akeneo\Catalogs\Application\Persistence\FindOneCatalogByIdQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Catalog\FindOneCatalogByIdQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\GetCatalogProductSelectionCriteriaQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\GetCatalogProductValueFiltersQueryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

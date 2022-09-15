@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Infrastructure\Persistence;
+namespace Akeneo\Catalogs\Infrastructure\Persistence\Catalog;
 
-use Akeneo\Catalogs\Application\Persistence\FindOneCatalogByIdQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Catalog\FindOneCatalogByIdQueryInterface;
 use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Application\Handler;
 
-use Akeneo\Catalogs\Application\Persistence\FindOneCatalogByIdQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Catalog\FindOneCatalogByIdQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\UpsertCatalogQueryInterface;
 use Akeneo\Catalogs\ServiceAPI\Command\UpdateCatalogCommand;
 
