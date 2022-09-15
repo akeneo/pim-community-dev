@@ -8,6 +8,12 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
+/**
+ * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @covers \Akeneo\Catalogs\Infrastructure\EventSubscriber\AttributeOptionRemovalSubscriber
+ */
 class AttributeOptionRemovalSubscriberTest extends IntegrationTestCase
 {
     private ?KernelBrowser $client = null;
