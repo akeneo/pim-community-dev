@@ -91,6 +91,6 @@ repoServer:
       args:
         - apk --no-cache add curl;
           helm plugin install https://github.com/hayorov/helm-gcs.git;
-          helm repo add akeneo-charts gs://akeneo-charts;
+          helm repo add akeneo-charts gs://akeneo-pim-saas-charts-prod;
           helm repo update;
           chmod -R 777 $HELM_DATA_HOME;

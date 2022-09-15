@@ -16,7 +16,7 @@ steps:
           fi
         done
   - id: Install prerequisite for the PIM
-    name: "europe-west1-docker.pkg.dev/akecld-prd-pim-saas-dev/pim-deployer/pim-deployer:1.1.0"
+    name: "europe-west1-docker.pkg.dev/akecld-prd-pim-saas-shared/prod/pim-deployer:1.1.0"
     dir: "deployments-ucs"
     entrypoint: 'sh'
     args:

@@ -34,6 +34,7 @@ BUCKET ?= serenity-edition-dev
 IMAGE_TAG ?= latest
 
 GOOGLE_PROJECT_ID ?= akecld-prd-pim-saas-$(ENV_NAME)
+GOOGLE_PROJECT_ID_SHARED ?= akecld-prd-pim-saas-shared
 FIRESTORE_PROJECT_ID ?= akecld-prd-pim-fire-eur-$(ENV_NAME)
 GOOGLE_CLUSTER_REGION ?= europe-west1
 GOOGLE_COMPUTE_ZONE ?= europe-west1-b
@@ -130,11 +131,11 @@ help: #Doc: display this help
 .PHONY: pim-image-prod
 pim-image-prod: #Doc: build docker image for pim-enterprise-dev with the prod tag
 	echo "${RELEASE_NAME}" > "$(PIM_SRC_PATH)/version.txt"
-	DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --pull --tag $(GOOGLE_CLUSTER_REGION)-docker.pkg.dev/$(GOOGLE_PROJECT_ID)/pim-enterprise-dev/pim-enterprise-dev:${IMAGE_TAG} --target prod --build-arg COMPOSER_AUTH='${COMPOSER_AUTH}' -f $(PIM_SRC_PATH)/Dockerfile ${PIM_ROOT_DIR}
+	DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --pull --tag $(GOOGLE_CLUSTER_REGION)-docker.pkg.dev/$(GOOGLE_PROJECT_ID_SHARED)/dev/pim-enterprise-dev:${IMAGE_TAG} --target prod --build-arg COMPOSER_AUTH='${COMPOSER_AUTH}' -f $(PIM_SRC_PATH)/Dockerfile ${PIM_ROOT_DIR}
 
 .PHONY: push-pim-image-prod
 push-pim-image-prod: #Doc: push docker image to docker hub
-	docker push $(GOOGLE_CLUSTER_REGION)-docker.pkg.dev/$(GOOGLE_PROJECT_ID)/pim-enterprise-dev/pim-enterprise-dev --all-tags
+	docker push $(GOOGLE_CLUSTER_REGION)-docker.pkg.dev/$(GOOGLE_PROJECT_ID_SHARED)/dev/pim-enterprise-dev --all-tags
 
 ## Deploy tenants
 .PHONY: deploy_tenant
@@ -224,7 +225,7 @@ $(INSTANCE_DIR):
 deploy_tenant_helm:
 	#yq w -i $(DEPLOYMENT_DIR)/tenant/Chart.yaml version 0.0.0-$(IMAGE_TAG)
 	yq w -i $(DEPLOYMENT_DIR)/tenant/Chart.yaml appVersion $(IMAGE_TAG)
-	helm3 repo add akeneo-charts gs://akeneo-charts/ 2>&1 | grep -v "skipping loading invalid entry"; test $${PIPESTATUS[0]} -eq 0
+	helm3 repo add akeneo-charts gs://akeneo-pim-saas-charts-prod/ 2>&1 | grep -v "skipping loading invalid entry"; test $${PIPESTATUS[0]} -eq 0
 	helm3 repo update 2>&1 | grep -v "skipping loading invalid entry"; test $${PIPESTATUS[0]} -eq 0
 	helm3 dependencies update $(DEPLOYMENT_DIR)/tenant/ 2>&1 | grep -v "skipping loading invalid entry"; test $${PIPESTATUS[0]} -eq 0
 	helm3 upgrade --debug --atomic --cleanup-on-fail --history-max 5 --install --wait --timeout 10m --create-namespace --namespace $(PFID) $(PFID) $(DEPLOYMENT_DIR)/tenant/ -f $(INSTANCE_DIR)/helm-tenant-values.yaml -f $(INSTANCE_DIR)/values.yaml

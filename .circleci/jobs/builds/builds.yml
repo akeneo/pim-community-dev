@@ -737,7 +737,7 @@ jobs:
                       TYPE_LONG=serenity
                       PRODUCT_REFERENCE_TYPE="${TYPE_LONG}_instance"
                       PRODUCT_REFERENCE_CODE="${TYPE_LONG}_${ENV_NAME}"
-                      IMAGE_TAG=$(gcloud container images list-tags ${GOOGLE_CLUSTER_REGION}-docker.pkg.dev/${GOOGLE_PROJECT_ID}/pim-enterprise-dev/pim-enterprise-dev --filter="tags~^v[0-9]{14}$" --sort-by="~tags" --limit=1 --format="value(tags)")
+                      IMAGE_TAG=$(gcloud container images list-tags ${GOOGLE_CLUSTER_REGION}-docker.pkg.dev/${GOOGLE_PROJECT_ID_SHARED}/prod/pim-enterprise-dev --filter="tags~^v[0-9]{14}$" --sort-by="~tags" --limit=1 --format="value(tags)")
                       IMAGE_TAG_SHORTED=$(echo ${CIRCLE_SHA1} | cut -c -7)
                       RELEASE_NAME=${IMAGE_TAG}
                       IMAGE_TAG_DATE="${IMAGE_TAG:1}"

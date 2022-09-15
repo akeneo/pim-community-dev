@@ -7,10 +7,10 @@ appVersion: 0.0.0
 dependencies:
   - name: mysql
     version: "2.1.0"
-    repository: gs://akeneo-charts/
+    repository: gs://akeneo-pim-saas-charts-prod/
   - name: elasticsearch
     version: "1.32.44"
-    repository: gs://akeneo-charts/
+    repository: gs://akeneo-pim-saas-charts-prod/
   - name: memcached
     version: "6.1.4"
     repository: https://charts.bitnami.com/bitnami

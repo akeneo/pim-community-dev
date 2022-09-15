@@ -356,8 +356,8 @@ exports.createTenant = (req, res) => {
     },
     image: {
       pim: {        // TODO : temporary value to test need to be variabilized
-        repository: 'europe-west1-docker.pkg.dev/akecld-prd-pim-saas-dev/pim-enterprise-dev/pim-enterprise-dev',
-        tag: 'v20220822000000'
+        repository: 'europe-west1-docker.pkg.dev/akecld-prd-pim-saas-shared/prod/pim-enterprise-dev',
+        tag: 'v20220914013746'
       }
     },
     mysql: {

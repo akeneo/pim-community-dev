@@ -76,13 +76,6 @@ module "secrets" {
   ]
 }
 
-module "registry" {
-  source         = "../modules/registry"
-  project_id     = local.project_id
-  admin_members  = concat(["serviceAccount:${local.ci_sa}"], local.admins)
-  viewer_members = concat(local.viewers, ["serviceAccount:${module.iam.gke_sa_email}", "serviceAccount:${module.iam.cluster_bootstrap_sa_email}"])
-}
-
 module "gke" {
   source                 = "../modules/gke"
   project                = local.project_id

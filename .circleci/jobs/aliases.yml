@@ -23,7 +23,7 @@ envVarsDeployPIMSaaSDev: &envVarsDeployPIMSaaSDev
   GOOGLE_DOMAIN: "pim-saas-dev.dev.cloud.akeneo.com"
   GOOGLE_MANAGED_ZONE_DNS: "pim-saas-dev.dev.cloud.akeneo.com"
   GOOGLE_FIRESTORE_PROJECT_ID: "akecld-prd-pim-fire-eur-dev"
-  GOOGLE_PROJECT_ID_PROD: "akeneo-cloud"
+  GOOGLE_PROJECT_ID_SHARED: "akecld-prd-pim-saas-shared"
   GOOGLE_PROJECT_ID: "akecld-prd-pim-saas-dev"
   GOOGLE_CLUSTER_REGION: "europe-west1"
   GOOGLE_COMPUTE_ZONE: "europe-west1-b"
