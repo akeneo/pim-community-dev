@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ConvertToSimpleProduct;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Pim\Enrichment\Product\Integration\EnrichmentProductTestCase;
 use PHPUnit\Framework\Assert;
@@ -40,9 +41,9 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
             'categories' => ['print'],
         ]);
 
-        $command = UpsertProductCommand::createFromCollection(
+        $command = UpsertProductCommand::createWithIdentifier(
             $this->getUserId('peter'),
-            'variant_product',
+            ProductIdentifier::fromIdentifier('variant_product'),
             [
                 new SetCategories(['suppliers', 'print']),
                 new SetSimpleSelectValue('main_color', null, null, 'green'),
@@ -52,9 +53,9 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
         $this->clearDoctrineUoW();
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
 
-        $command = UpsertProductCommand::createFromCollection(
+        $command = UpsertProductCommand::createWithIdentifier(
             userId: $this->getUserId('peter'),
-            productIdentifier: 'variant_product',
+            productIdentifier: ProductIdentifier::fromIdentifier('variant_product'),
             userIntents: [new ChangeParent('root')]
         );
         $this->commandMessageBus->dispatch($command);
@@ -64,9 +65,9 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
         Assert::assertNotNull($product);
         Assert::assertEqualsCanonicalizing('root', $product->getParent()->getCode());
 
-        $command = UpsertProductCommand::createFromCollection(
+        $command = UpsertProductCommand::createWithIdentifier(
             userId: $this->getUserId('peter'),
-            productIdentifier: 'variant_product',
+            productIdentifier: ProductIdentifier::fromIdentifier('variant_product'),
             userIntents: [new ChangeParent('root2')]
         );
         $this->commandMessageBus->dispatch($command);
@@ -76,9 +77,9 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
         Assert::assertNotNull($product);
         Assert::assertEqualsCanonicalizing('root2', $product->getParent()->getCode());
 
-        $command = UpsertProductCommand::createFromCollection(
+        $command = UpsertProductCommand::createWithIdentifier(
             userId: $this->getUserId('peter'),
-            productIdentifier: 'variant_product',
+            productIdentifier: ProductIdentifier::fromIdentifier('variant_product'),
             userIntents: [new ConvertToSimpleProduct()]
         );
         $this->commandMessageBus->dispatch($command);
@@ -113,9 +114,9 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
             'categories' => ['print'],
         ]);
 
-        $command = UpsertProductCommand::createFromCollection(
+        $command = UpsertProductCommand::createWithIdentifier(
             $this->getUserId('peter'),
-            'variant_product',
+            ProductIdentifier::fromIdentifier('variant_product'),
             [
                 new ChangeParent('root'),
                 new SetCategories(['suppliers', 'print']),
@@ -126,9 +127,9 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
         $this->clearDoctrineUoW();
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
 
-        $command = UpsertProductCommand::createFromCollection(
+        $command = UpsertProductCommand::createWithIdentifier(
             userId: $this->getUserId('peter'),
-            productIdentifier: 'variant_product',
+            productIdentifier: ProductIdentifier::fromIdentifier('variant_product'),
             userIntents: [new ChangeParent('root2')]
         );
 
@@ -136,9 +137,9 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
         $this->expectExceptionMessage('New parent "root2" of variant product "variant_product" must have the same family variant "color_variant_accessories" than the previous parent');
         $this->commandMessageBus->dispatch($command);
 
-        $command = UpsertProductCommand::createFromCollection(
+        $command = UpsertProductCommand::createWithIdentifier(
             userId: $this->getUserId('peter'),
-            productIdentifier: 'variant_product',
+            productIdentifier: ProductIdentifier::fromIdentifier('variant_product'),
             userIntents: [new ConvertToSimpleProduct()]
         );
         $this->commandMessageBus->dispatch($command);
@@ -148,9 +149,9 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
         Assert::assertNotNull($product);
         Assert::assertEqualsCanonicalizing(null, $product->getParent());
 
-        $command = UpsertProductCommand::createFromCollection(
+        $command = UpsertProductCommand::createWithIdentifier(
             userId: $this->getUserId('peter'),
-            productIdentifier: 'variant_product',
+            productIdentifier: ProductIdentifier::fromIdentifier('variant_product'),
             userIntents: [new ChangeParent('root2')]
         );
         $this->commandMessageBus->dispatch($command);
@@ -164,9 +165,9 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
     /** @test */
     public function it_throws_an_exception_with_unknown_parent_code(): void
     {
-        $command = UpsertProductCommand::createFromCollection(
+        $command = UpsertProductCommand::createWithIdentifier(
             userId: $this->getUserId('peter'),
-            productIdentifier: 'variant_product',
+            productIdentifier: ProductIdentifier::fromIdentifier('variant_product'),
             userIntents: [new ChangeParent('unknown')]
         );
 

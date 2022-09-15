@@ -23,10 +23,10 @@ use PHPUnit\Framework\Assert;
  */
 class DbalSelectActiveWebhooksQueryIntegration extends TestCase
 {
-    private ConnectionLoader $connectionLoader;
-    private SelectActiveWebhooksQueryInterface $selectActiveWebhooksQuery;
-    private DbalConnection $dbalConnection;
-    private UpdateConnectionHandler $updateConnectionHandler;
+    private ?ConnectionLoader $connectionLoader;
+    private ?SelectActiveWebhooksQueryInterface $selectActiveWebhooksQuery;
+    private ?DbalConnection $dbalConnection;
+    private ?UpdateConnectionHandler $updateConnectionHandler;
 
     protected function setUp(): void
     {
@@ -58,10 +58,10 @@ class DbalSelectActiveWebhooksQueryIntegration extends TestCase
             )
         );
 
-        $this->updateConnection($magento, 'secret_magento', null, true);
-        $this->updateConnection($binder, 'secret_binder', 'http://localhost/webhook_binder', true);
-        $this->updateConnection($erp, 'secret_erp', 'http://localhost/webhook_erp', true);
-        $this->updateConnection($sap, 'secret_sap', 'http://localhost/webhook_sap', false);
+        $this->updateConnection($magento, 'secret_magento', null, true, false);
+        $this->updateConnection($binder, 'secret_binder', 'http://localhost/webhook_binder', true, false);
+        $this->updateConnection($erp, 'secret_erp', 'http://localhost/webhook_erp', true, true);
+        $this->updateConnection($sap, 'secret_sap', 'http://localhost/webhook_sap', false, false);
 
         $connections = $this->selectActiveWebhooksQuery->execute();
 
@@ -72,9 +72,11 @@ class DbalSelectActiveWebhooksQueryIntegration extends TestCase
         Assert::assertEquals('binder', $binder->connectionCode());
         Assert::assertEquals('secret_binder', $binder->secret());
         Assert::assertEquals('http://localhost/webhook_binder', $binder->url());
+        Assert::assertFalse($binder->isUsingUuid());
         Assert::assertEquals('erp', $erp->connectionCode());
         Assert::assertEquals('secret_erp', $erp->secret());
         Assert::assertEquals('http://localhost/webhook_erp', $erp->url());
+        Assert::assertTrue($erp->isUsingUuid());
     }
 
     public function test_it_does_not_find_anything_if_no_connection_webhook_is_configured(): void
@@ -82,7 +84,7 @@ class DbalSelectActiveWebhooksQueryIntegration extends TestCase
         $this->connectionLoader->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, false);
         $ecommerce = $this->connectionLoader->createConnection('ecommerce', 'eCommerce', FlowType::DATA_DESTINATION, false);
 
-        $this->updateConnection($ecommerce, 'secret', 'http://localhost/webhook', false);
+        $this->updateConnection($ecommerce, 'secret', 'http://localhost/webhook', false, true);
 
         $connections = $this->selectActiveWebhooksQuery->execute();
 
@@ -103,14 +105,20 @@ SQL;
         )->fetchOne();
     }
 
-    private function updateConnection(ConnectionWithCredentials $connection, string $secret, ?string $url, bool $enabled): void
-    {
+    private function updateConnection(
+        ConnectionWithCredentials $connection,
+        string $secret,
+        ?string $url,
+        bool $enabled,
+        bool $isUsingUuid,
+    ): void {
         $this->dbalConnection->update(
             'akeneo_connectivity_connection',
             [
                 'webhook_url' => $url,
                 'webhook_secret' => $secret,
-                'webhook_enabled' => (int)$enabled,
+                'webhook_enabled' => (int) $enabled,
+                'webhook_is_using_uuid' => (int) $isUsingUuid,
             ],
             ['code' => $connection->code()]
         );

@@ -89,7 +89,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
         $Request1pimEvent = $this->createEvent($author, ['data_1'], 1577836800, '7abae2fe-759a-4fce-aa43-f413980671b3');
         $request1 = new WebhookRequest(
-            new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/webhook1'),
+            new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/webhook1', false),
             [
                 new WebhookEvent(
                     'product.created',
@@ -105,7 +105,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
 
         $Request2pimEvent = $this->createEvent($author, ['data_2'], 1577836800, '7abae2fe-759a-4fce-aa43-f413980671b3');
         $request2 = new WebhookRequest(
-            new ActiveWebhook('erp', 1, 'a_secret', 'http://localhost/webhook2'),
+            new ActiveWebhook('erp', 1, 'a_secret', 'http://localhost/webhook2', false),
             [
                 new WebhookEvent(
                     'product.created',
@@ -222,7 +222,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
 
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
         $request1 = new WebhookRequest(
-            new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/webhook1'),
+            new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/webhook1', false),
             [
                 new WebhookEvent(
                     'product.created',
@@ -274,7 +274,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
 
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
         $request = new WebhookRequest(
-            new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/webhook'),
+            new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/webhook', false),
             [
                 new WebhookEvent(
                     'product.created',

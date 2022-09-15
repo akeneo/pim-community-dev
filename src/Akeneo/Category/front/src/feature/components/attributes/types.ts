@@ -1,6 +1,6 @@
 import React from 'react';
 import {FileInfo} from 'akeneo-design-system';
-import {Attribute, CATEGORY_ATTRIBUTE_TYPE_IMAGE} from '../../models';
+import {Attribute, CategoryAttributeType, CATEGORY_ATTRIBUTE_TYPE_IMAGE} from '../../models';
 
 export type TextAttributeInputValue = string;
 
@@ -21,12 +21,18 @@ export type AttributeFieldProps<ValueType> = {
 export const isImageAttributeInputValue = (value: AttributeInputValue): value is ImageAttributeInputValue =>
   value !== null && value.hasOwnProperty('originalFilename') && value.hasOwnProperty('filePath');
 
-export const buildDefaultAttributeInputValue = (attributeType: string): AttributeInputValue => {
-  if (attributeType === CATEGORY_ATTRIBUTE_TYPE_IMAGE) {
-    return {
-      filePath: '',
-      originalFilename: '',
-    };
+export const buildDefaultAttributeInputValue = (attributeType: CategoryAttributeType): AttributeInputValue => {
+  let value: AttributeInputValue = '';
+
+  switch (attributeType) {
+    case CATEGORY_ATTRIBUTE_TYPE_IMAGE: {
+      value = {
+        filePath: '',
+        originalFilename: '',
+      };
+      break;
+    }
   }
-  return '';
+
+  return value;
 };

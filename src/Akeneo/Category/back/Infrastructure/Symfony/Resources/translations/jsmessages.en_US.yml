@@ -1,4 +1,6 @@
 akeneo.category:
     edition_form:
+        error:
+            unhandled_attribute_type: Could not find attribute field builder for attribute type "{{type}}"
         template:
             fetching_failed: An error occured while fetching template
