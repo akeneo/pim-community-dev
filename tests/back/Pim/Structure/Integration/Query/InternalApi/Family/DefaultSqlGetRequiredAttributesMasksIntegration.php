@@ -64,14 +64,6 @@ final class DefaultSqlGetRequiredAttributesMasksIntegration extends AbstractGetR
                 'code' => 'familyC',
                 'attribute_codes' => ['sku'],
             ],
-            [
-                'code' => 'familyD',
-                'attribute_codes' => ['sku'],
-                'attribute_requirements' => [
-                    'ecommerce' => [],
-                    'tablet' => [],
-                ],
-            ],
         ]);
     }
 
@@ -121,11 +113,6 @@ final class DefaultSqlGetRequiredAttributesMasksIntegration extends AbstractGetR
         Assert::count($result['familyC']->masks(), 3);
         foreach ($result['familyC']->masks() as $maskPerChannelAndLocale) {
             $this->assertEqualsCanonicalizing(['sku-<all_channels>-<all_locales>'], $maskPerChannelAndLocale->mask());
-        }
-
-        Assert::count($result['familyD']->masks(), 3);
-        foreach ($result['familyD']->masks() as $maskPerChannelAndLocale) {
-            $this->assertEqualsCanonicalizing([], $maskPerChannelAndLocale->mask());
         }
     }
 }
