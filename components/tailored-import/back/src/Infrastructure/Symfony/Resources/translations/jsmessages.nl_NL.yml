@@ -49,7 +49,7 @@ akeneo.tailored_import:
       add: Bewerking toevoegen
       common:
         collapse: Samenvouwen
-      clean_html:
+      clean_html_tags:
         title: HTML-tags wissen
       change_case:
         title: Hoofd- en kleine letters wisselen

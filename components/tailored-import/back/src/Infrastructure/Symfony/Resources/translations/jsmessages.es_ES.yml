@@ -49,7 +49,7 @@ akeneo.tailored_import:
       add: Añadir una operación
       common:
         collapse: Contraer
-      clean_html:
+      clean_html_tags:
         title: Limpiar etiquetas HTML
       change_case:
         title: Cambiar mayúsculas/minúsculas

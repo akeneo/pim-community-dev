@@ -1,13 +1,67 @@
+batch_jobs.xlsx_tailored_product_import.label: Maßgeschneiderter Produktimport in XLSX
 akeneo.tailored_import:
+  global_settings:
+    error_action:
+      label: Fehlermanagement
+      skip_product: Produkt überspringen
+      skip_value: Wert überspringen
+      helper_message: Definieren Sie das Verhalten im Falle eines Fehlers.
   file_structure:
     placeholder:
+      title: Ihr Importprofil ist leer.
       helper: Klicken Sie auf „Importstruktur initialisieren“ um mit dem Bau zu beginnen.
+      link: Weitere Informationen finden Sie in unserem Hilfe-Center.
+      button: Importstruktur initialisieren
+    modal:
+      title: Definieren Sie Ihre Importstruktur
+      subtitle: Import-Profile
+      helper: Beginnen Sie mit der Definition der Struktur Ihrer Datei, um Ihren Import zu konfigurieren.
+      link: Weitere Informationen finden Sie in unserem Hilfe-Center.
+      upload:
+        placeholder: Ziehen Sie Ihre Datei hierher oder durchsuchen Sie Ihre Festplatte.
+        uploading: Wird hochgeladen...
+        error: Während des Hochladens der Datei ist ein Fehler aufgetreten. Bitte überprüfen Sie Ihre Datei und versuchen Sie es erneut.
+      sheet: Blatt
+      header_row: Kopfzeile
+      first_product_row: Erste Produktzeile
+      first_column: Erste Produktspalte
+      unique_identifier_column: Eindeutige ID Spalte
+  data_mapping_list:
+    title: Zuordnungsstruktur
+    no_sources: Keine Quellen
+    add: Attribute hinzufügen
+    remove: Sind Sie sicher, dass Sie diese Zuordnung löschen möchten?
   data_mapping:
+    title: Einstellungen
+    no_data_mapping_selected: Keine Zuordnung ausgewählt.
+    attribute_not_found: Dieses Attribut wurde gelöscht. Sie können es in einer Zuordnung nicht mehr verwenden.
+    property_not_valid: Diese Eigenschaft ist nicht gültig.
+    preview:
+      button: Vorschau
+      input_title: Eingabevorschau
+      output_title: Ausgabevorschau
+      placeholder: N/A
+      refresh: Aktualisieren
+      unable_to_generate_preview_data: Vorschau kann nicht erstellt werden
     operations:
+      title: Operation(en)
       identifier: Keine Operation für Identifikator-Attribut verfügbar
+      add: Eine Operation hinzufügen
+      common:
+        collapse: Zuklappen
+      clean_html_tags:
+        title: HTML Tags bereinigen
       change_case:
+        title: Groß- und Kleinschreibung
         select: Wählen Sie Groß-/Kleinschreibung
+        uppercase: Großbuchstaben
+        lowercase: Kleinbuchstaben
+        capitalize: Erster Großbuchstaben
       split:
+        title: Aufteilen
+        separator: Trennzeichen auswählen
+        comma: Komma (,)
+        semicolon: Semikolon (;)
         pipe: Pipe (|)
       simple_select_replacement:
         title: Einfachauswahl-Ersetzung
