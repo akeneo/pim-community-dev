@@ -6,7 +6,7 @@ namespace Akeneo\Catalogs\Test\Unit\Application\Handler;
 
 use Akeneo\Catalogs\Application\Handler\CreateCatalogHandler;
 use Akeneo\Catalogs\Application\Persistence\Catalog\UpdateCatalogProductSelectionCriteriaQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\UpsertCatalogQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Catalog\UpsertCatalogQueryInterface;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use PHPUnit\Framework\TestCase;
 

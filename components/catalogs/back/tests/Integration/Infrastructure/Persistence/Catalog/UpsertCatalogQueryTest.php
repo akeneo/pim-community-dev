@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence;
+namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence\Catalog;
 
-use Akeneo\Catalogs\Infrastructure\Persistence\UpsertCatalogQuery;
-use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
+use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\UpsertCatalogQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
@@ -14,7 +13,7 @@ use Ramsey\Uuid\Uuid;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @covers \Akeneo\Catalogs\Infrastructure\Persistence\UpsertCatalogQuery
+ * @covers \Akeneo\Catalogs\Infrastructure\Persistence\Catalog\UpsertCatalogQuery
  */
 class UpsertCatalogQueryTest extends IntegrationTestCase
 {
