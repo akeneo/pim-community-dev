@@ -20,7 +20,7 @@ jobs:
                   sha1sum -c /tmp/checksum
                   sudo chmod +x /usr/local/bin/yq
             - run:
-                  name: Merge all files
+                  name: Merge all  files
                   command: |
                       yq eval-all '. as $item ireduce ({}; . *+ $item )' .circleci/*/*.yml .circleci/*/*/*.yml .circleci/*/*/*/*.yml > .circleci/merged_config.yml
                       cat .circleci/merged_config.yml
