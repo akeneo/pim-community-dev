@@ -95,6 +95,13 @@ services:
             - '@pim_catalog.repository.product'
             - 'pimee_api_product_draft_get'
 
+    Akeneo\Pim\WorkOrganization\Workflow\Bundle\Router\ProxyProductUuidRouter:
+        arguments:
+            - '@router'
+            - '@pim_catalog.repository.product'
+            - '@pimee_workflow.repository.product_draft'
+            - '@security.token_storage'
+
     pimee_api.router.proxy_product_model:
         class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Router\ProxyRouter
         arguments:
