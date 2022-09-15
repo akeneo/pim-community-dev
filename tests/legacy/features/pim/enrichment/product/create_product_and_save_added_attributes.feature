@@ -13,7 +13,7 @@ Feature: Create product and save a new product value
       | tmp_price | Tmp Price   | pim_catalog_price_collection | marketing | 0                |
     And the following family:
       | code          | attributes                 |
-      | super_sandals | rate_sale,tmp_price,weight |
+      | super_sandals | sku,rate_sale,tmp_price,weight |
     And I am logged in as "Julia"
     And I am on the products grid
     And I create a product

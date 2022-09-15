@@ -137,7 +137,7 @@ final class ImportFamilyIntegration extends TestCase
         self::assertNotNull($tractorsFamily);
         self::assertSame('[tractors]', $tractorsFamily->getLabel());
         self::assertSame('[name]', $tractorsFamily->getAttributeAsLabel()->getLabel());
-        self::assertSame('manufacturer', $this->getRequirementAttributeCodes($tractorsFamily, 'mobile'));
+        self::assertSame('manufacturer,sku', $this->getRequirementAttributeCodes($tractorsFamily, 'mobile'));
         self::assertSame('sku', $this->getRequirementAttributeCodes($tractorsFamily, 'tablet'));
     }
 

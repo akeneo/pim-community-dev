@@ -68,6 +68,20 @@ class FamilyUpdater implements ObjectUpdaterInterface
             );
         }
 
+        // For imports, sku are automatically added to the attribute_requirements and data is directly sent to this update
+        // to keep this "automatic" behavior, we add sku on new families
+        if (null === $family->getCreated()) {
+            $channels = $this->channelRepository->findAll();
+            $identifierCode = $this->attributeRepository->getIdentifierCode();
+            /** @var ChannelInterface $channel */
+            foreach ($channels as $channel) {
+                $channelCode = $channel->getCode();
+                $data['attribute_requirements'][$channelCode] = \array_values(
+                    \array_unique(\array_merge([$identifierCode], $data['attribute_requirements'][$channelCode] ?? []))
+                );
+            }
+        }
+
         foreach ($data as $field => $value) {
             $this->validateDataType($field, $value);
             $this->setData($family, $field, $value);

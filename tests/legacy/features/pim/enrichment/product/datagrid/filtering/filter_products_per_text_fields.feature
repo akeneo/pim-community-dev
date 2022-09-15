@@ -20,7 +20,7 @@ Feature: Filter products by text field
       | text_is_not_empty     | pim_catalog_text | 1                      | 0           | 0        | other |
     And the following family:
       | code       | attributes |
-      | family_foo | text_contains,text_starts_with,text_does_not_contain,text_equals,text_empty,text_is_not_empty |
+      | family_foo | sku,text_contains,text_starts_with,text_does_not_contain,text_equals,text_empty,text_is_not_empty |
     And the following products:
       | sku                            | family     | text_contains-en_US-ecommerce |   text_starts_with   | text_does_not_contain | text_equals | text_empty | text_is_not_empty |
       | ok_with_all_filters            | family_foo | HP LA2206xc + WF722A          | HP LA2206xc + WF722A |    foo                |  bar        |            |   not_empty       |

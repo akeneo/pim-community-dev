@@ -178,7 +178,7 @@ abstract class AbstractExportTestCase extends TestCase
     protected function createFamily(array $data = []) : FamilyInterface
     {
         $family = $this->get('pim_catalog.factory.family')->create();
-        $data['attributes'] = \array_merge(['sku'], $data['attributes']);
+        $data['attributes'] = \array_unique(\array_merge(['sku'], $data['attributes']));
         $this->get('pim_catalog.updater.family')->update($family, $data);
         $constraintList = $this->get('validator')->validate($family);
         $this->assertEquals(0, $constraintList->count());
