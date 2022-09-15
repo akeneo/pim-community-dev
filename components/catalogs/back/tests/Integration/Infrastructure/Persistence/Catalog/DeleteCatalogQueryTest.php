@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence;
+namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence\Catalog;
 
-use Akeneo\Catalogs\Infrastructure\Persistence\DeleteCatalogQuery;
+use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\DeleteCatalogQuery;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
@@ -15,7 +15,7 @@ use Ramsey\Uuid\Uuid;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @covers \Akeneo\Catalogs\Infrastructure\Persistence\DeleteCatalogQuery
+ * @covers \Akeneo\Catalogs\Infrastructure\Persistence\Catalog\DeleteCatalogQuery
  */
 class DeleteCatalogQueryTest extends IntegrationTestCase
 {
