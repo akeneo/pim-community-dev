@@ -24,7 +24,7 @@ const MediaPreview = ({data, label, attribute}: MediaPreviewProps) => {
   const router = useRouter();
   const previewUrl = getMediaPreviewUrl(router, {
     type: MediaPreviewType.Thumbnail,
-    attributeIdentifier: attribute.code + '|' + attribute.uuid,
+    attributeCode: attribute.code,
     data: data && data.filePath ? data.filePath : ''
   });
 

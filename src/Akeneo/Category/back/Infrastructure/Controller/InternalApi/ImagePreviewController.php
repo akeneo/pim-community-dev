@@ -44,7 +44,7 @@ class ImagePreviewController
 
     public function __invoke(
         Request $request,
-        string $attributeIdentifier,
+        string $attributeCode,
         string $type
     ): Response {
         $data = $request->get('data');
@@ -57,7 +57,7 @@ class ImagePreviewController
 
         try {
             $attributeCollection = $this->getAttributeInMemory->byIdentifiers([]);
-            $attribute = $attributeCollection->getAttributeByIdentifier('banner_image|8dda490c-0fd1-4485-bdc5-342929783d9a');
+            $attribute = $attributeCollection->getAttributeByCode($attributeCode);
             if ($regenerate) {
                 $this->previewGenerator->remove($data, $attribute, $type);
             }

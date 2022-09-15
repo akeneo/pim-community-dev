@@ -14,7 +14,7 @@ export function buildCompositeKey(attribute: Attribute, localeCode: LocaleCode |
   const {code, uuid} = attribute;
   const components = [code, uuid];
 
-  if (localeCode) {
+  if (localeCode && attribute.is_localizable) {
     components.push(localeCode);
   }
 

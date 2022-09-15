@@ -6,12 +6,6 @@ export enum MediaPreviewType {
 
 export type MediaPreview = {
   type: MediaPreviewType;
-  attributeIdentifier: string;
+  attributeCode: string;
   data: string;
 };
-
-export const emptyMediaPreview = (): MediaPreview => ({
-  type: MediaPreviewType.Thumbnail,
-  attributeIdentifier: 'UNKNOWN',
-  data: '',
-});
