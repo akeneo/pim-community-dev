@@ -6,7 +6,7 @@ This page presents the main CI Workflows for Supplier Portal.
 
 The main workflows are:
 - `suricates_pull_request`: this workflow handles changes on Pull Requests branches
-- `suricates-docs`: use for documentation branches
+- `suricates-docs`: used for documentation branches
 
 ## `suricates_pull_request` Workflow
 
@@ -38,3 +38,8 @@ All production's deployment workflows and scheduled workflows are set in the PIM
 This workflow is triggered by commits on the branches matching `/doc-SP.*/` - it avoids running the tests for branches containing only documentation updates.
 It only runs the `workflow_success` job allowing to merge the PR.
 To use it instead of `pull_request`, name your branch with the prefix `doc-SP`.
+
+## Migration tests
+
+Don't forget to tag Supplier Portal migration tests with `@group migration-supplier-portal`. This way, they will be launched from the `suricates_pull_request` workflow (inside the `test_back_supplier_portal` step).
+If you don't put any tag, they will be only launched by the global `pull_request` and release workflows (it means it could break other squads builds after merging the PR).
