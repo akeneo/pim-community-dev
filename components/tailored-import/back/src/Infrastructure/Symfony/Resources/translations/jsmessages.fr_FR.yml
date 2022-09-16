@@ -49,8 +49,6 @@ akeneo.tailored_import:
       add: Ajouter une opération
       common:
         collapse: Réduire
-      clean_html_tags:
-        title: Supprimer les balises HTML
       change_case:
         title: Modifier la casse d'un texte
         select: Sélectionnez la modification de casse

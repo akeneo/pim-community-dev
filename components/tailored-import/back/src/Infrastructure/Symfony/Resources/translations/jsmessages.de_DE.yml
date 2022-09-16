@@ -49,8 +49,6 @@ akeneo.tailored_import:
       add: Eine Operation hinzufügen
       common:
         collapse: Zuklappen
-      clean_html_tags:
-        title: HTML Tags bereinigen
       change_case:
         title: Groß- und Kleinschreibung
         select: Wählen Sie Groß-/Kleinschreibung

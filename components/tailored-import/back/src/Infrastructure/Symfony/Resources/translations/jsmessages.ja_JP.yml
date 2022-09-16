@@ -49,8 +49,6 @@ akeneo.tailored_import:
       add: 操作を追加
       common:
         collapse: 折りたたむ
-      clean_html_tags:
-        title: HTMLタグを消去
       change_case:
         title: 大小文字を切り替え
         select: 大小文字を選択
