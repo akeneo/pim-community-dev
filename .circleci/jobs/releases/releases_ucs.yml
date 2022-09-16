@@ -33,7 +33,8 @@ jobs:
             - run:
                   name: Tag and push prod image to UCS dev and prod registry
                   command: |
-                      docker image tag eu.gcr.io/akeneo-cloud/pim-enterprise-dev:${RELEASE_NAME} ${GOOGLE_CLUSTER_REGION}-docker.pkg.dev/${GOOGLE_PROJECT_ID_SHARED}/dev/pim-enterprise-dev:${RELEASE_NAME} ${GOOGLE_CLUSTER_REGION}-docker.pkg.dev/${GOOGLE_PROJECT_ID_SHARED}/prod/pim-enterprise-dev:${RELEASE_NAME}
+                      docker image tag eu.gcr.io/akeneo-cloud/pim-enterprise-dev:${RELEASE_NAME} ${GOOGLE_CLUSTER_REGION}-docker.pkg.dev/${GOOGLE_PROJECT_ID_SHARED}/dev/pim-enterprise-dev:${RELEASE_NAME}
+                      docker image tag eu.gcr.io/akeneo-cloud/pim-enterprise-dev:${RELEASE_NAME} ${GOOGLE_CLUSTER_REGION}-docker.pkg.dev/${GOOGLE_PROJECT_ID_SHARED}/prod/pim-enterprise-dev:${RELEASE_NAME}
                       docker push ${GOOGLE_CLUSTER_REGION}-docker.pkg.dev/${GOOGLE_PROJECT_ID_SHARED}/dev/pim-enterprise-dev:${RELEASE_NAME}
                       docker push ${GOOGLE_CLUSTER_REGION}-docker.pkg.dev/${GOOGLE_PROJECT_ID_SHARED}/prod/pim-enterprise-dev:${RELEASE_NAME}
             - run:
