@@ -75,13 +75,13 @@ class TemplateSpec extends ObjectBehavior
     {
         $expectedTemplateUuid = '02274dac-e99a-4e1d-8f9b-794d4c3ba330';
         $expectedNormalizedTemplate = [
-            'identifier' => $expectedTemplateUuid,
+            'uuid' => $expectedTemplateUuid,
             'code' => 'template_code',
             'labels' => ['fr_FR' => 'template_libelle'],
             'category_tree_identifier' => 1,
             'attributes' => [
                 [
-                    'identifier' => '4873080d-32a3-42a7-ae5c-1be518e40f3d',
+                    'uuid' => '4873080d-32a3-42a7-ae5c-1be518e40f3d',
                     'code' => 'attribute_text_code',
                     'type' => 'text',
                     'order' => 1,
@@ -90,7 +90,7 @@ class TemplateSpec extends ObjectBehavior
                     'template_uuid' => $expectedTemplateUuid
                 ],
                 [
-                    'identifier' => '69e251b3-b876-48b5-9c09-92f54bfb528d',
+                    'uuid' => '69e251b3-b876-48b5-9c09-92f54bfb528d',
                     'code' => 'attribute_textarea_code',
                     'type' => 'textarea',
                     'order' => 2,
@@ -99,7 +99,7 @@ class TemplateSpec extends ObjectBehavior
                     'template_uuid' => $expectedTemplateUuid
                 ],
                 [
-                    'identifier' => '840fcd1a-f66b-4f0c-9bbd-596629732950',
+                    'uuid' => '840fcd1a-f66b-4f0c-9bbd-596629732950',
                     'code' => 'attribute_richtext_code',
                     'type' => 'richtext',
                     'order' => 3,
@@ -108,7 +108,7 @@ class TemplateSpec extends ObjectBehavior
                     'template_uuid' => $expectedTemplateUuid
                 ],
                 [
-                    'identifier' => '8dda490c-0fd1-4485-bdc5-342929783d9a',
+                    'uuid' => '8dda490c-0fd1-4485-bdc5-342929783d9a',
                     'code' => 'attribute_image_code',
                     'type' => 'image',
                     'order' => 4,

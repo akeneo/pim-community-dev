@@ -32,7 +32,7 @@ abstract class Attribute
 
     /**
      * @return array{
-     *     identifier: string,
+     *     uuid: string,
      *     code: string,
      *     type: string,
      *     order: int,
