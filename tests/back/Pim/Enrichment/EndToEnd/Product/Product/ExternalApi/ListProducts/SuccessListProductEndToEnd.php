@@ -962,6 +962,7 @@ JSON;
 
         foreach ($result['_embedded']['items'] as $index => $product) {
             if (isset($product['values']['a_text'])) {
+	    	// TODO CPM-737: Check using Uuid instead of the text attribute value
                 Assert::assertNotEquals('My product without identifier', $product['values']['a_text'][0]['data']);
             }
         }
