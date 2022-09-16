@@ -1,0 +1,8 @@
+services:
+    Akeneo\Pim\Structure\Bundle\Install\Subscriber\RemoveUserGroupAllFromAttributeGroupsSubscriber:
+        arguments:
+            - '@pimee_security.repository.attribute_group_access'
+            - '@pim_user.repository.group'
+            - '@feature_flags'
+        tags:
+            - { name: 'kernel.event_subscriber' }

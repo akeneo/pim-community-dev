@@ -8,6 +8,15 @@ suites:
         src_path: src/Akeneo/Channel/back
         spec_prefix: Specification
 
+
+    CategoryEnterprise:
+        namespace: AkeneoEnterprise\Pim\Enrichment\Category
+        psr4_prefix: AkeneoEnterprise\Pim\Enrichment\Category
+        spec_path: src/Akeneo/Pim/Enrichment/Category/back/Test/
+        src_path: src/Akeneo/Pim/Enrichment/Category/back/
+        spec_prefix: Specification
+
+
     ## Platform BC
     Platform:
         namespace: Akeneo\Platform

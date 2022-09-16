@@ -27,5 +27,6 @@ final class AkeneoPimEnterpriseEnrichmentCategoryExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('queries.yml');
+        $loader->load('install.yml');
     }
 }
