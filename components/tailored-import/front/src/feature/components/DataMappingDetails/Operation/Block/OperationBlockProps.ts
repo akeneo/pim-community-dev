@@ -2,6 +2,7 @@ import {ValidationError} from '@akeneo-pim-community/shared';
 import {Operation, OperationPreviewData, OperationType} from '../../../../models';
 
 type OperationBlockProps = {
+  targetReferenceDataName?: string;
   targetCode: string;
   operation: Operation;
   previewData: {

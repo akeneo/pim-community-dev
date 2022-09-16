@@ -4,8 +4,7 @@ import {Block, Button, CloseIcon, IconButton, useBooleanState, uuid} from "akene
 import {OperationBlockProps} from "./OperationBlockProps";
 import {DeleteModal, useTranslate} from "@akeneo-pim-community/shared";
 import {getDefaultReplacementValueFilter, ReplacementModal, ReplacementValueFilter} from "../ReplacementModal";
-import {OPTION_COLLECTION_PAGE_SIZE, useAttributeOptions} from "../../../../hooks";
-import {SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE} from "./SimpleSelectReplacementOperationBlock";
+import {OPTION_COLLECTION_PAGE_SIZE, useRecords} from "../../../../hooks";
 
 const SIMPLE_REFERENCE_ENTITY_REPLACEMENT = 'reference_entity_single_link_replacement';
 
@@ -29,7 +28,7 @@ const getDefaultSimpleReferenceEntityReplacementOperation = (): SimpleReferenceE
 });
 
 const SimpleReferenceEntityReplacementOperationBlock = ({
-    targetCode,
+    targetReferenceDataName,
     operation,
     previewData,
     isLastOperation,
@@ -43,18 +42,22 @@ const SimpleReferenceEntityReplacementOperationBlock = ({
         getDefaultReplacementValueFilter()
     );
 
-    const [attributeOptions, totalItems] = useAttributeOptions(
-        targetCode,
+    if (!isSimpleReferenceEntityReplacement(operation)) {
+        throw new Error('RemoveWhitespaceOperationBlock can only be used with RemoveWhitespaceOperation');
+    }
+
+    if (!targetReferenceDataName) {
+        throw new Error('Missing Reference Data name in attribute');
+    }
+
+    const [attributeOptions, totalItems] = useRecords(
+        targetReferenceDataName,
         replacementValueFilter.searchValue,
         replacementValueFilter.page,
         replacementValueFilter.codesToInclude,
         replacementValueFilter.codesToExclude,
         isReplacementModalOpen
     );
-
-    if (!isSimpleReferenceEntityReplacement(operation)) {
-        throw new Error('RemoveWhitespaceOperationBlock can only be used with RemoveWhitespaceOperation');
-    }
 
     const handleCancel = () => {
         closeReplacementModal();

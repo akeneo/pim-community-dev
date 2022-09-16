@@ -139,6 +139,7 @@ const Operations = ({
             return (
               <OperationBlock
                 key={operation.type}
+                targetReferenceDataName={dataMapping.target.reference_data_name}
                 targetCode={dataMapping.target.code}
                 operation={operation}
                 previewData={{
