@@ -38,7 +38,7 @@ abstract class Attribute
      *     order: int,
      *     is_localizable: bool,
      *     labels: array<string, string>,
-     *     template_identifier: string
+     *     template_uuid: string
      * }
      */
     public function normalize(): array
@@ -50,7 +50,7 @@ abstract class Attribute
             'order' => $this->order->intValue(),
             'is_localizable' => $this->isLocalizable->normalize(),
             'labels' => $this->labelCollection->normalize(),
-            'template_identifier' => (string) $this->templateUuid,
+            'template_uuid' => (string) $this->templateUuid,
         ];
     }
 

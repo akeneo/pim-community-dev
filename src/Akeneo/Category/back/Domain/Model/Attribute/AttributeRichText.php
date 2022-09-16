@@ -65,7 +65,7 @@ class AttributeRichText extends Attribute
      *     order: int,
      *     is_localizable: bool,
      *     labels: array<string, string>,
-     *     template_identifier: string
+     *     template_uuid: string
      * }
      */
     public function normalize(): array

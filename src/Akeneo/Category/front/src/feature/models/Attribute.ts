@@ -21,5 +21,5 @@ export type Attribute = {
   order: number;
   is_localizable: boolean;
   labels: LabelCollection;
-  template_identifier: string;
+  template_uuid: string;
 };

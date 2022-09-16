@@ -87,7 +87,7 @@ class TemplateSpec extends ObjectBehavior
                     'order' => 1,
                     'is_localizable' => true,
                     'labels' => ['fr_FR' => 'attribute_text_libelle'],
-                    'template_identifier' => $expectedTemplateUuid
+                    'template_uuid' => $expectedTemplateUuid
                 ],
                 [
                     'identifier' => '69e251b3-b876-48b5-9c09-92f54bfb528d',
@@ -96,7 +96,7 @@ class TemplateSpec extends ObjectBehavior
                     'order' => 2,
                     'is_localizable' => true,
                     'labels' => ['fr_FR' => 'attribute_textarea_libelle'],
-                    'template_identifier' => $expectedTemplateUuid
+                    'template_uuid' => $expectedTemplateUuid
                 ],
                 [
                     'identifier' => '840fcd1a-f66b-4f0c-9bbd-596629732950',
@@ -105,7 +105,7 @@ class TemplateSpec extends ObjectBehavior
                     'order' => 3,
                     'is_localizable' => true,
                     'labels' => ['fr_FR' => 'attribute_richtext_libelle'],
-                    'template_identifier' => $expectedTemplateUuid
+                    'template_uuid' => $expectedTemplateUuid
                 ],
                 [
                     'identifier' => '8dda490c-0fd1-4485-bdc5-342929783d9a',
@@ -114,7 +114,7 @@ class TemplateSpec extends ObjectBehavior
                     'order' => 4,
                     'is_localizable' => false,
                     'labels' => ['fr_FR' => 'attribute_image_libelle'],
-                    'template_identifier' => $expectedTemplateUuid
+                    'template_uuid' => $expectedTemplateUuid
                 ]
             ]
         ];
