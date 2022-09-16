@@ -49,8 +49,6 @@ akeneo.tailored_import:
       add: 添加操作
       common:
         collapse: 折叠
-      clean_html_tags:
-        title: 清理 HTML 标签
       change_case:
         title: 更改大小写
         select: 选择大小写

@@ -49,8 +49,6 @@ akeneo.tailored_import:
       add: 작업 추가
       common:
         collapse: 축소
-      clean_html_tags:
-        title: HTML 태그 지우기
       change_case:
         title: 대소문자 변경
         select: 대소문자 선택
