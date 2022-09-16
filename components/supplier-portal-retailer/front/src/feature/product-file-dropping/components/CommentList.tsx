@@ -6,13 +6,13 @@ import {Comment as CommentReadModel} from '../models/read/Comment';
 import {Comment} from './Comment';
 
 const StyledSectionTitle = styled(SectionTitle)`
-    margin-top: 43px;
+  margin-top: 43px;
 `;
 
 const FlexColumn = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30px;
 `;
 
 type Props = {
@@ -22,6 +22,10 @@ type Props = {
 const CommentList = ({comments}: Props) => {
     const translate = useTranslate();
 
+    if (0 === comments.length) {
+        return null;
+    }
+
     return (
         <>
             <StyledSectionTitle>
@@ -30,7 +34,10 @@ const CommentList = ({comments}: Props) => {
                 </SectionTitle.Title>
             </StyledSectionTitle>
             <FlexColumn>
-                {comments.map((comment: CommentReadModel, index) => (
+                {comments.sort(
+                    (a: CommentReadModel, b: CommentReadModel) =>
+                        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+                ).map((comment: CommentReadModel, index) => (
                     <Comment
                         key={index}
                         isRetailer={comment.isRetailer}

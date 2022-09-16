@@ -44,9 +44,6 @@ const Discussion = ({productFile, saveComment}: Props) => {
     };
     const isSubmitButtonDisabled = '' === comment;
 
-    if (null === productFile) {
-        return null;
-    }
     return (
         <>
             <StickyContainer>
