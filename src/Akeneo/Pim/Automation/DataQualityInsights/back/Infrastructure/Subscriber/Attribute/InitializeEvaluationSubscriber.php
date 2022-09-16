@@ -18,6 +18,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\Ev
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\AttributeOptionWordIgnoredEvent;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\AttributeWordIgnoredEvent;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\AttributeOptionSpellcheckRepositoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\AttributeSpellcheckRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeOptionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeSpellcheckRepository;
@@ -31,10 +32,10 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class InitializeEvaluationSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private EvaluateUpdatedAttributes                    $evaluateUpdatedAttributes,
-        private EvaluateUpdatedAttributeOptions              $evaluateUpdatedAttributeOptions,
-        private FeatureFlag                                  $dataQualityInsightsFeature,
-        private AttributeSpellcheckRepository                $attributeSpellcheckRepository,
+        private EvaluateUpdatedAttributes $evaluateUpdatedAttributes,
+        private EvaluateUpdatedAttributeOptions $evaluateUpdatedAttributeOptions,
+        private FeatureFlag $dataQualityInsightsFeature,
+        private AttributeSpellcheckRepositoryInterface $attributeSpellcheckRepository,
         private AttributeOptionSpellcheckRepositoryInterface $attributeOptionSpellcheckRepository
     ) {
     }
