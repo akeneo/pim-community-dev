@@ -21,7 +21,7 @@ final class DatabaseRepository implements ProductFileRepository
         $this->connection->beginTransaction();
 
         $sql = <<<SQL
-            REPLACE INTO `akeneo_supplier_portal_supplier_product_file` (
+            INSERT IGNORE INTO `akeneo_supplier_portal_supplier_product_file` (
                 identifier,
                 original_filename,
                 path,

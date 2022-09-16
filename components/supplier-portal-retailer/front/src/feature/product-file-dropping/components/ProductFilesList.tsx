@@ -4,6 +4,7 @@ import {useDateFormatter, useRouter, useTranslate} from '@akeneo-pim-community/s
 import styled from 'styled-components';
 import {EmptyProductFilesList} from './EmptyProductFilesList';
 import {ProductFileRow} from '../models/ProductFileRow';
+import {useHistory} from 'react-router';
 
 export const PRODUCT_FILES_PER_PAGE = 25;
 
@@ -36,8 +37,13 @@ const ProductFilesList = ({
     displaySupplierColumn = true,
 }: Props) => {
     const translate = useTranslate();
+    const history = useHistory();
     const dateFormatter = useDateFormatter();
     const router = useRouter();
+
+    const goToProductFile = (productFileIdentifier: string) => {
+        history.push(`/${productFileIdentifier}`);
+    };
 
     return (
         <>
@@ -76,7 +82,10 @@ const ProductFilesList = ({
                                     year: 'numeric',
                                 });
                                 return (
-                                    <Table.Row key={productFile.identifier} onClick={() => {}}>
+                                    <Table.Row
+                                        key={productFile.identifier}
+                                        onClick={() => goToProductFile(productFile.identifier)}
+                                    >
                                         <Table.Cell>{uploadedDate}</Table.Cell>
                                         <Table.Cell>{productFile.contributor}</Table.Cell>
                                         {displaySupplierColumn && (

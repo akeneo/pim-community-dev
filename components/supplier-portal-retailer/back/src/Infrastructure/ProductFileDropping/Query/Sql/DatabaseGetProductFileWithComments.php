@@ -17,31 +17,40 @@ final class DatabaseGetProductFileWithComments implements GetProductFileWithComm
     public function __invoke(string $productFileIdentifier): ?ProductFile
     {
         $sql = <<<SQL
+            WITH retailer_comments AS (
+                SELECT product_file_identifier, JSON_ARRAYAGG(
+                     CASE WHEN content IS NOT NULL THEN JSON_OBJECT(
+                     'content', content,
+                     'author_email', author_email,
+                     'created_at', created_at
+                     ) END
+                 ) AS retailer_comments
+                FROM akeneo_supplier_portal_product_file_retailer_comments
+                WHERE product_file_identifier = :productFileIdentifier
+            ), supplier_comments AS (
+                SELECT product_file_identifier, JSON_ARRAYAGG(
+                   CASE WHEN content IS NOT NULL THEN JSON_OBJECT(
+                           'content', content,
+                           'author_email', author_email,
+                           'created_at', created_at
+                       ) END
+               ) AS supplier_comments
+                FROM akeneo_supplier_portal_product_file_supplier_comments
+                WHERE product_file_identifier = :productFileIdentifier
+            )
             SELECT
                 identifier,
                 original_filename,
                 uploaded_by_contributor,
                 uploaded_by_supplier,
                 uploaded_at,
-                JSON_ARRAYAGG(
-                    CASE WHEN rc.content IS NOT NULL THEN JSON_OBJECT(
-                        'content', rc.content,
-                        'author_email', rc.author_email,
-                        'created_at', rc.created_at
-                    ) END
-                ) AS retailer_comments,
-                JSON_ARRAYAGG(
-                    CASE WHEN sc.content IS NOT NULL THEN JSON_OBJECT(
-                        'content', sc.content,
-                        'author_email', sc.author_email,
-                        'created_at', sc.created_at
-                    ) END
-                ) AS supplier_comments
+                rc.retailer_comments,
+                sc.supplier_comments
             FROM akeneo_supplier_portal_supplier_product_file
-                LEFT JOIN akeneo_supplier_portal_product_file_retailer_comments rc
-                    ON identifier = rc.product_file_identifier
-                LEFT JOIN akeneo_supplier_portal_product_file_supplier_comments sc
-                    ON identifier = sc.product_file_identifier
+            LEFT JOIN retailer_comments rc
+                ON identifier = rc.product_file_identifier
+            LEFT JOIN supplier_comments sc
+                ON identifier = sc.product_file_identifier
             WHERE identifier = :productFileIdentifier;
         SQL;
 
@@ -50,7 +59,7 @@ final class DatabaseGetProductFileWithComments implements GetProductFileWithComm
             ['productFileIdentifier' => $productFileIdentifier],
         )->fetchAssociative();
 
-        if (null === $productFileWithComments['identifier']) {
+        if (false === $productFileWithComments) {
             return null;
         }
 
@@ -61,10 +70,16 @@ final class DatabaseGetProductFileWithComments implements GetProductFileWithComm
             $productFileWithComments['uploaded_by_supplier'],
             $productFileWithComments['uploaded_at'],
             $productFileWithComments['retailer_comments']
-                ? \array_filter(\json_decode($productFileWithComments['retailer_comments'], true))
+                ? \array_filter(\json_decode(
+                    $productFileWithComments['retailer_comments'],
+                    true,
+                ))
                 : [],
             $productFileWithComments['supplier_comments']
-                ? \array_filter(\json_decode($productFileWithComments['supplier_comments'], true))
+                ? \array_filter(\json_decode(
+                    $productFileWithComments['supplier_comments'],
+                    true,
+                ))
                 : [],
         );
     }

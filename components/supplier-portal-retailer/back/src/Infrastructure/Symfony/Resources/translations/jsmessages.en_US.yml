@@ -93,6 +93,16 @@ supplier_portal:
                 error_loading_supplier_files:
                     title: We are not able to display the product files.
                     content: Sorry about this inconvenience, please try again in a few moments.
+            tabs:
+                discussion: Discussion
+            discussion:
+                import_file_button_label: Import file
+                info: Send comments when you need to exchange information with your suppliers.
+                comment_input_label: Send a new comment
+                discussion_title: Discussion
+                submit_button_label: Send
+                loading_error: An error occured while loading the product file.
+                comment_submit_error: An error occured while submitting the comment.
         pim_notification:
             button_label: See the product files
 
