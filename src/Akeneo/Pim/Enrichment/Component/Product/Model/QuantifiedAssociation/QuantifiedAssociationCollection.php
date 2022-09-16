@@ -90,20 +90,20 @@ class QuantifiedAssociationCollection
                     throw new \InvalidArgumentException('Expected one of the keys "id" or "uuid" to exist.');
                 }
                 Assert::keyExists($productAssociation, 'quantity');
+            }
 
-                if (isset($productAssociation['id']) && $mappedProductIds->hasIdentifierFromId($productAssociation['id'])) {
-                    $quantifiedLink = QuantifiedLink::fromIdentifier(
-                        $mappedProductIds->getIdentifierFromId($productAssociation['id']),
-                        $productAssociation['quantity']
-                    );
-                    $mappedQuantifiedAssociations[$associationType][self::PRODUCTS_QUANTIFIED_LINKS_KEY][] = $quantifiedLink;
-                } elseif (isset($productAssociation['uuid']) && $mappedProductIds->hasUuidFromUuid($productAssociation['uuid'])) {
-                    $quantifiedLink = QuantifiedLink::fromUuid(
-                        $productAssociation['uuid'],
-                        $productAssociation['quantity']
-                    );
-                    $mappedQuantifiedAssociations[$associationType][self::PRODUCTS_QUANTIFIED_LINKS_KEY][] = $quantifiedLink;
-                }
+            if (isset($productAssociation['uuid']) && $mappedProductIds->hasUuidFromUuid($productAssociation['uuid'])) {
+                $quantifiedLink = QuantifiedLink::fromUuid(
+                    $productAssociation['uuid'],
+                    $productAssociation['quantity']
+                );
+                $mappedQuantifiedAssociations[$associationType][self::PRODUCTS_QUANTIFIED_LINKS_KEY][] = $quantifiedLink;
+            } elseif (isset($productAssociation['id']) && $mappedProductIds->hasIdentifierFromId($productAssociation['id'])) {
+                $quantifiedLink = QuantifiedLink::fromIdentifier(
+                    $mappedProductIds->getIdentifierFromId($productAssociation['id']),
+                    $productAssociation['quantity']
+                );
+                $mappedQuantifiedAssociations[$associationType][self::PRODUCTS_QUANTIFIED_LINKS_KEY][] = $quantifiedLink;
             }
 
             foreach ($associations[self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY] ?? [] as $productModelAssociation) {
