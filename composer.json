@@ -81,6 +81,7 @@
             "Akeneo\\Test\\Pim\\Enrichment\\Category\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Enrichment/Category/back/Test",
             "Akeneo\\Test\\Pim\\Structure\\Family\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Structure/Family/back/Test",
             "AkeneoEnterprise\\Test\\Pim\\Enrichment\\Category\\": "src/Akeneo/Pim/Enrichment/Category/back/Test",
+            "Specification\\AkeneoEnterprise\\Pim\\Enrichment\\Category\\": "src/Akeneo/Pim/Enrichment/Category/back/Test/Specification",
             "Akeneo\\Test\\Category\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Category/back/tests",
             "AkeneoEnterprise\\Test\\Category\\": "src/Akeneo/Category/back/tests",
             "Akeneo\\SupplierPortal\\Retailer\\Test\\": "components/supplier-portal-retailer/back/tests",

@@ -1,0 +1,9 @@
+services:
+    AkeneoEnterprise\Pim\Enrichment\Category\Infrastructure\Install\Subscriber\RemoveUserGroupAllFromCategoriesSubscriber:
+        arguments:
+            - '@pimee_security.repository.category_access'
+            - '@pim_user.repository.group'
+            - '@doctrine.orm.default_entity_manager'
+            - '@feature_flags'
+        tags:
+            - { name: 'kernel.event_subscriber' }
