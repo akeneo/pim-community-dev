@@ -20,11 +20,13 @@ type ErrorAction = 'skip_value' | 'skip_product';
 const isValidErrorAction = (errorAction: string): errorAction is ErrorAction =>
   ['skip_value', 'skip_product'].includes(errorAction);
 
+type ImportStructure = {
+  columns: Column[];
+  data_mappings: DataMapping[];
+};
+
 type StructureConfiguration = {
-  import_structure: {
-    columns: Column[];
-    data_mappings: DataMapping[];
-  };
+  import_structure: ImportStructure;
   file_key: string | null;
   error_action: ErrorAction;
   file_structure: FileStructure;
@@ -45,7 +47,7 @@ const isDefaultFileStructure = (fileStructure: FileStructure): boolean =>
   fileStructure.sheet_name === null &&
   fileStructure.unique_identifier_column === 0;
 
-export type {StructureConfiguration, FileStructure, ErrorAction};
+export type {StructureConfiguration, FileStructure, ErrorAction, ImportStructure};
 export {
   MAX_COLUMN_COUNT,
   MAXIMUM_FIRST_PRODUCT_ROW,

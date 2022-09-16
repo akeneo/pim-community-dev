@@ -7,6 +7,7 @@ import {
   createDefaultDataMapping,
   addSourceToDataMapping,
   createAttributeDataMapping,
+  countMappedColumnsInDataMappings,
 } from './DataMapping';
 
 const attribute: Attribute = {
@@ -225,4 +226,60 @@ test('it updates a data mapping', () => {
   expect(updateDataMapping([], updatedDataMapping)).toEqual([]);
   expect(updateDataMapping(dataMappings, updatedDataMapping)).toEqual([dataMappings[0], updatedDataMapping]);
   expect(updateDataMapping(dataMappings, nonExistentDataMapping)).toEqual(dataMappings);
+});
+
+test('it counts mapped columns inside data mappings', () => {
+  const dataMappings: DataMapping[] = [
+    {
+      uuid: '8175126a-5deb-426c-a829-c9b7949dc1f7',
+      operations: [],
+      sample_data: [],
+      sources: [],
+      target: {
+        action_if_not_empty: 'set',
+        channel: null,
+        code: 'sku',
+        attribute_type: 'pim_catalog_identifier',
+        action_if_empty: 'skip',
+        locale: null,
+        type: 'attribute',
+        source_configuration: null,
+      },
+    },
+    {
+      uuid: '8175126a-5deb-426c-a829-c9b7949dc1f8',
+      operations: [],
+      sample_data: [],
+      sources: ['5f942671-3ba3-4639-b96b-245a720ea587', '5f942671-3ba3-4639-b96b-245a720ea588'],
+      target: {
+        action_if_not_empty: 'set',
+        channel: null,
+        code: 'colors',
+        attribute_type: 'pim_catalog_multiselect',
+        action_if_empty: 'skip',
+        locale: null,
+        type: 'attribute',
+        source_configuration: null,
+      },
+    },
+    {
+      uuid: 'd1249682-720e-11ec-90d6-0242ac120003',
+      operations: [],
+      sample_data: [],
+      sources: ['5f942671-3ba3-4639-b96b-245a720ea587', '5f942671-3ba3-4639-b96b-245a720ea589'],
+      target: {
+        action_if_not_empty: 'set',
+        channel: null,
+        code: 'brands',
+        attribute_type: 'pim_catalog_multiselect',
+        action_if_empty: 'clear',
+        locale: null,
+        type: 'attribute',
+        source_configuration: null,
+      },
+    },
+  ];
+
+  expect(countMappedColumnsInDataMappings(dataMappings)).toEqual(3);
+  expect(countMappedColumnsInDataMappings([])).toEqual(0);
 });

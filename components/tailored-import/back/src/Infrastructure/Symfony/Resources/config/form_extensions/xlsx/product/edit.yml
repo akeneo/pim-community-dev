@@ -123,7 +123,7 @@ extensions:
         position: 100
 
     pim-job-instance-xlsx-tailored-product-import-edit-meta:
-        module: pim/job/common/edit/meta
+        module: akeneotailoredimport/js/job/product/edit/meta
         parent: pim-job-instance-xlsx-tailored-product-import-edit
         targetZone: meta
         position: 100

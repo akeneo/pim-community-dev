@@ -74,6 +74,20 @@ const addSourceToDataMapping = (dataMapping: DataMapping, column: Column): DataM
   sources: [...dataMapping.sources, column.uuid],
 });
 
+const countMappedColumnsInDataMappings = (dataMappings: DataMapping[]): number => {
+  const mappedColumnIdentifiers: string[] = [];
+
+  dataMappings.forEach((dataMapping: DataMapping) => {
+    dataMapping.sources.forEach((columnIdentifier: ColumnIdentifier) => {
+      if (!mappedColumnIdentifiers.includes(columnIdentifier)) {
+        mappedColumnIdentifiers.push(columnIdentifier);
+      }
+    });
+  });
+
+  return mappedColumnIdentifiers.length;
+};
+
 export type {AttributeDataMapping, DataMapping, DataMappingType, PropertyDataMapping};
 export {
   addSourceToDataMapping,
@@ -83,4 +97,5 @@ export {
   MAX_DATA_MAPPING_COUNT,
   MAX_SOURCE_COUNT_FOR_COLLECTION_TARGETS,
   updateDataMapping,
+  countMappedColumnsInDataMappings,
 };

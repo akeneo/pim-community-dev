@@ -17,7 +17,7 @@ import BaseView from 'pimui/js/view/base';
 const __ = require('oro/translator');
 const fetcherRegistry = require('pim/fetcher-registry');
 
-class ColumnView extends BaseView {
+class ImportStructureView extends BaseView {
   public config: any;
   private validationErrors: ValidationError[] = [];
 
@@ -138,4 +138,4 @@ class ColumnView extends BaseView {
   }
 }
 
-export = ColumnView;
+export = ImportStructureView;

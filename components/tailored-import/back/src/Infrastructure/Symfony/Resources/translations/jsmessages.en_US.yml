@@ -1,6 +1,8 @@
 batch_jobs.xlsx_tailored_product_import.label: Tailored product import in XLSX
 
 akeneo.tailored_import:
+  meta:
+    mapped_columns: "{0}No column mapped|{1}{{ count }}/{{ total }} column mapped|]1, Inf[{{ count }}/{{ total }} columns mapped"
   global_settings:
     error_action:
       label: Error management
