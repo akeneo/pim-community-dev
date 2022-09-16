@@ -7,33 +7,11 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use PHPUnit\Framework\Assert;
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateListProductEndToEnd extends AbstractProductTestCase
 {
-    private array $emptyAssociations = [
-        'PACK' => [
-            'groups' => [],
-            'product_models' => [],
-            'products' => [],
-        ],
-        'SUBSTITUTION' => [
-            'groups' => [],
-            'product_models' => [],
-            'products' => [],
-        ],
-        'UPSELL' => [
-            'groups' => [],
-            'product_models' => [],
-            'products' => [],
-        ],
-        'X_SELL' => [
-            'groups' => [],
-            'product_models' => [],
-            'products' => [],
-        ]
-    ];
-
     /**
      * {@inheritdoc}
      */
@@ -53,13 +31,13 @@ class PartialUpdateListProductEndToEnd extends AbstractProductTestCase
     public function testCreateAndUpdateAListOfProducts()
     {
         $data =
-<<<JSON
+            <<<JSON
     {"identifier": "product_family", "family": "familyA1"}
     {"identifier": "my_identifier", "family": "familyA2"}
 JSON;
 
         $expectedContent =
-<<<JSON
+            <<<JSON
 {"line":1,"identifier":"product_family","status_code":204}
 {"line":2,"identifier":"my_identifier","status_code":201}
 JSON;
@@ -80,11 +58,15 @@ JSON;
                 'groups'        => [],
                 'categories'    => [],
                 'enabled'       => true,
-                'values'        => new \stdClass(),
+                'values'        => [
+                    'sku' => [
+                        ['locale' => null, 'scope' => null, 'data' => 'product_family'],
+                    ],
+                ],
                 'created'       => '2016-06-14T13:12:50+02:00',
                 'updated'       => '2016-06-14T13:12:50+02:00',
-                'associations'  => $this->emptyAssociations,
-                'quantified_associations' => new \stdClass(),
+                'associations'  => [],
+                'quantified_associations' => [],
             ],
             'my_identifier'  => [
                 'identifier'    => 'my_identifier',
@@ -93,11 +75,15 @@ JSON;
                 'groups'        => [],
                 'categories'    => [],
                 'enabled'       => true,
-                'values'        => new \stdClass(),
+                'values'        => [
+                    'sku' => [
+                        ['locale' => null, 'scope' => null, 'data' => 'my_identifier'],
+                    ],
+                ],
                 'created'       => '2016-06-14T13:12:50+02:00',
                 'updated'       => '2016-06-14T13:12:50+02:00',
-                'associations'  => $this->emptyAssociations,
-                'quantified_associations' => new \stdClass(),
+                'associations'  => [],
+                'quantified_associations' => [],
             ],
         ];
 
@@ -118,13 +104,13 @@ JSON;
     public function testCreateAndUpdateSameProduct()
     {
         $data =
-<<<JSON
+            <<<JSON
     {"identifier": "my_identifier"}
     {"identifier": "my_identifier"}
 JSON;
 
         $expectedContent =
-<<<JSON
+            <<<JSON
 {"line":1,"identifier":"my_identifier","status_code":201}
 {"line":2,"identifier":"my_identifier","status_code":204}
 JSON;
@@ -171,7 +157,7 @@ JSON;
         $data = implode(PHP_EOL, $data);
 
         $expectedContent =
-<<<JSON
+            <<<JSON
     {
         "code": 413,
         "message": "Too many resources to process, ${maxNumberResources} is the maximum allowed."
@@ -202,7 +188,7 @@ JSON;
         ];
 
         $data =
-<<<JSON
+            <<<JSON
 ${line['invalid_json_1']}
 ${line['invalid_json_2']}
 ${line['invalid_json_3']}
@@ -217,7 +203,7 @@ ${line['invalid_identifier_datatype']}
 JSON;
 
         $expectedContent =
-<<<JSON
+            <<<JSON
 {"line":1,"status_code":400,"message":"Invalid json message received"}
 {"line":2,"status_code":400,"message":"Invalid json message received"}
 {"line":3,"status_code":400,"message":"Invalid json message received"}
@@ -242,7 +228,7 @@ JSON;
     public function testErrorWhenIdentifierIsMissing()
     {
         $data =
-<<<JSON
+            <<<JSON
     {"code": "my_identifier"}
     {"identifier": null}
     {"identifier": ""}
@@ -251,7 +237,7 @@ JSON;
 JSON;
 
         $expectedContent =
-<<<JSON
+            <<<JSON
 {"line":1,"status_code":422,"message":"Identifier is missing."}
 {"line":2,"status_code":422,"message":"Identifier is missing."}
 {"line":3,"status_code":422,"message":"Identifier is missing."}
@@ -290,12 +276,12 @@ JSON;
     public function testUpdateWhenUpdaterFailed()
     {
         $data =
-<<<JSON
+            <<<JSON
     {"identifier": "foo", "group":"bar"}
 JSON;
 
         $expectedContent =
-<<<JSON
+            <<<JSON
 {"line":1,"identifier":"foo","status_code":422,"message":"Property \"group\" does not exist. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
 JSON;
 
@@ -309,12 +295,12 @@ JSON;
     public function testUpdateWhenValidationFailed()
     {
         $data =
-<<<JSON
+            <<<JSON
     {"identifier": "foo,"}
 JSON;
 
         $expectedContent =
-<<<JSON
+            <<<JSON
 {"line":1,"identifier":"foo,","status_code":422,"message":"Validation failed.","errors":[{"property":"identifier","message":"This field should not contain any comma or semicolon or leading\/trailing space"}]}
 JSON;
 
@@ -329,12 +315,12 @@ JSON;
     public function testPartialUpdateListWithBadContentType()
     {
         $data =
-<<<JSON
+            <<<JSON
     {"identifier": "my_identifier"}
 JSON;
 
         $expectedContent =
-<<<JSON
+            <<<JSON
     {
         "code": 415,
         "message": "\"application\/json\" in \"Content-Type\" header is not valid. Only \"application\/vnd.akeneo.collection+json\" is allowed."

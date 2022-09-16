@@ -27,7 +27,6 @@ class ProductStandardSortedCollectionIntegration extends TestCase
             ->build();
 
         $expected = [
-            'uuid' => $product->getUuid()->toString(),
             'identifier' => 'my-product',
             'family' => null,
             'parent' => null,
@@ -87,7 +86,6 @@ class ProductStandardSortedCollectionIntegration extends TestCase
             ->build();
 
         $expected = [
-            'uuid' => $product->getUuid()->toString(),
             'identifier' => 'my-product',
             'family' => null,
             'parent' => null,
@@ -143,7 +141,6 @@ class ProductStandardSortedCollectionIntegration extends TestCase
             ->build();
 
         $expected = [
-            'uuid' => $product->getUuid()->toString(),
             'identifier' => 'my-product',
             'family' => null,
             'parent' => null,
@@ -196,6 +193,7 @@ class ProductStandardSortedCollectionIntegration extends TestCase
     {
         $serializer = $this->get('pim_standard_format_serializer');
         $result = $serializer->normalize($product, 'standard');
+        unset($result['uuid']);
 
         $this->assertSame($expected, $result);
     }

@@ -90,6 +90,9 @@ JSON;
                 'categories'    => ["master"],
                 'enabled'       => true,
                 'values'        => [
+                    'sku'                                => [
+                        ['locale' => null, 'scope' => null, 'data' => 'apollon_optionb_true'],
+                    ],
                     'a_simple_select'                    => [
                         ['locale' => null, 'scope' => null, 'data' => 'optionB'],
                     ],
@@ -129,13 +132,8 @@ JSON;
                 ],
                 'created'       => '2016-06-14T13:12:50+02:00',
                 'updated'       => '2016-06-14T13:12:50+02:00',
-                'associations'  => [
-                    'PACK' => ['groups' => [], 'product_models' => [], 'products' => []],
-                    'SUBSTITUTION' => ['groups' => [], 'product_models' => [], 'products' => []],
-                    'UPSELL' => ['groups' => [], 'product_models' => [], 'products' => []],
-                    'X_SELL' => ['groups' => [], 'product_models' => [], 'products' => []],
-                ],
-                'quantified_associations' => new \stdClass(),
+                'associations'  => [],
+                'quantified_associations' => [],
             ],
             'apollon_optionb_false' => [
                 'identifier'    => 'apollon_optionb_false',
@@ -145,6 +143,9 @@ JSON;
                 'categories'    => [],
                 'enabled'       => true,
                 'values'        => [
+                    'sku'                                => [
+                        ['locale' => null, 'scope' => null, 'data' => 'apollon_optionb_false'],
+                    ],
                     'a_simple_select'                    => [
                         ['locale' => null, 'scope' => null, 'data' => 'optionB'],
                     ],
@@ -184,13 +185,8 @@ JSON;
                 ],
                 'created'       => '2016-06-14T13:12:50+02:00',
                 'updated'       => '2016-06-14T13:12:50+02:00',
-                'associations'  => [
-                    'PACK' => ['groups' => [], 'product_models' => [], 'products' => []],
-                    'SUBSTITUTION' => ['groups' => [], 'product_models' => [], 'products' => []],
-                    'UPSELL' => ['groups' => [], 'product_models' => [], 'products' => []],
-                    'X_SELL' => ['groups' => [], 'product_models' => [], 'products' => []],
-                ],
-                'quantified_associations' => new \stdClass(),
+                'associations'  => [],
+                'quantified_associations' => [],
             ],
         ];
 
