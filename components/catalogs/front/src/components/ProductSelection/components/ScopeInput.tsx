@@ -1,10 +1,10 @@
 import React, {FC} from 'react';
 import {SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {useInfiniteChannels} from '../hooks/useInfiniteChannels';
 import {useChannel} from '../hooks/useChannel';
-import {useUniqueEntitiesByCode} from '../hooks/useUniqueEntitiesByCode';
-import {Channel} from '../models/Channel';
+import {Channel} from '../../../models/Channel';
+import {useUniqueEntitiesByCode} from '../../../hooks/useUniqueEntitiesByCode';
+import {useInfiniteChannels} from '../../../hooks/useInfiniteChannels';
 
 type ScopableCriterionState = {
     scope: string | null;

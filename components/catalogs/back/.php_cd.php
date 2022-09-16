@@ -65,6 +65,7 @@ $rules = [
             'Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface',
             'Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode',
             'Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException',
+            'Akeneo\Channel\Infrastructure\Component\Repository\CurrencyRepositoryInterface',
 
             // @todo remove
             'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',

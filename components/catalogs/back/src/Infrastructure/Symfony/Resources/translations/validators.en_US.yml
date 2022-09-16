@@ -29,3 +29,10 @@ akeneo_catalogs:
                     unit:
                         not_exist: 'The unit of the field "{{ field }}" does not exist.'
                         not_empty: 'The unit must not be empty.'
+        product_value_filters:
+            channel:
+                unknown: 'The channel "{{ channel_name }}" has been deactivated. Please check your channel settings or remove this filter.'
+            currencies:
+                unknown: 'The currency "{{ currency_name }}" has been deactivated. Please check your currencies settings or remove this filter.'
+            locale:
+                unknown: 'The locale "{{ locale_name }}" has been deactivated. Please check your locale settings or remove this filter.'
