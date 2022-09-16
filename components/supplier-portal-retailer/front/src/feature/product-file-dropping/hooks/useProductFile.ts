@@ -1,5 +1,5 @@
-import {NotificationLevel, useIsMounted, useNotify, useRoute, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
-import {useCallback, useEffect, useMemo, useState} from 'react';
+import {NotificationLevel, useNotify, useRoute, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
+import {useCallback, useEffect, useState} from 'react';
 import {ProductFile} from '../models/ProductFile';
 
 const useProductFile = (productFileIdentifier: string) => {
@@ -84,7 +84,6 @@ const useProductFile = (productFileIdentifier: string) => {
         (async () => {
             await loadProductFile();
         })();
-
     }, [loadProductFile]);
 
     return [productFile, saveComment] as const;

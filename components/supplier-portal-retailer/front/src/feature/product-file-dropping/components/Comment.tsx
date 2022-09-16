@@ -11,59 +11,59 @@ type Props = {
 };
 
 const CommentRow = styled.div`
-  flex: 1 1 100%;
-  margin-top: 20px;
+    flex: 1 1 100%;
+    margin-top: 20px;
 `;
 
 const IconContainer = styled.div`
-  margin: 14px 12.5px;
-  border-right: 1px solid;
-  padding-right: 12.5px;
+    margin: 14px 12.5px;
+    border-right: 1px solid;
+    padding-right: 12.5px;
 `;
 
 const ContentContainer = styled.div`
-  margin-top: 10px;
+    margin-top: 10px;
 `;
 
 const FlexGrow = styled.div`
-  flex: 200px;
-  background-color: ${getColor('blue10')};
+    flex: 200px;
+    background-color: ${getColor('blue10')};
 `;
 
 const FillerContainer = styled.div`
-  flex: 100px;
+    flex: 100px;
 `;
 
-const CommentRowContent = styled.div<AkeneoThemedProps & { isRetailer: boolean }>`
-  display: flex;
-  ${({isRetailer}) =>
-          !isRetailer
-                  ? css`
-                    flex-direction: row-reverse;
-                  `
-                  : css`
-                    flex-direction: row;
-                  `}
+const CommentRowContent = styled.div<AkeneoThemedProps & {isRetailer: boolean}>`
+    display: flex;
+    ${({isRetailer}) =>
+        !isRetailer
+            ? css`
+                  flex-direction: row-reverse;
+              `
+            : css`
+                  flex-direction: row;
+              `}
 `;
 
 const ContributorEmailAndDate = styled.div`
-  font-weight: bold;
-  flex: 1 1 100%;
+    font-weight: bold;
+    flex: 1 1 100%;
 `;
 
 const FlexRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  word-break: break-word;
+    display: flex;
+    flex-direction: row;
+    word-break: break-word;
 `;
 
 const FlexColumn = styled.div`
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 `;
 
 const Content = styled.div`
-  flex: 1 1 100%;
+    flex: 1 1 100%;
 `;
 
 const Comment = ({isRetailer, contributorEmail, content, createdAt}: Props) => {
@@ -75,7 +75,7 @@ const Comment = ({isRetailer, contributorEmail, content, createdAt}: Props) => {
                 <FlexGrow>
                     <FlexRow>
                         <IconContainer>
-                            <DialogIcon color={pimTheme.color.grey140}/>
+                            <DialogIcon color={pimTheme.color.grey140} />
                         </IconContainer>
                         <ContentContainer>
                             <FlexColumn>
