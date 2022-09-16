@@ -9,6 +9,7 @@ use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 use Pim\Upgrade\Schema\Tests\ExecuteMigrationTrait;
 
+/** @group migration-supplier-portal */
 final class Version_7_0_20220906092635_supplier_portal_add_supplier_portal_product_file_retailer_comments_table_Integration extends TestCase
 {
     use ExecuteMigrationTrait;

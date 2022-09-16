@@ -158,10 +158,10 @@ endif
 migration-back: var/tests/phpunit #Doc: launch PHP unit tests for migration
 	cp vendor/akeneo/pim-community-dev/upgrades/schema/*.php upgrades/schema/.
 ifeq ($(CI),true)
-	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php PIM_Migration_Test
+	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php PIM_Migration_Test ${O}
 else
 	@echo Migration files from CE copied into upgrade/ dir. Do not commit them.
-	APP_ENV=test $(PHP_RUN) ./vendor/bin/phpunit -c . --testsuite PIM_Migration_Test
+	APP_ENV=test $(PHP_RUN) ./vendor/bin/phpunit -c . --testsuite PIM_Migration_Test ${O}
 endif
 
 ### End to end tests
