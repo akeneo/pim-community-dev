@@ -51,7 +51,7 @@ const useProductFile = (productFileIdentifier: string) => {
         };
 
         setProductFile(productFile);
-    }, []);
+    }, [getProductFileRoute, notify, translate]);
 
     const saveComment = useCallback(
         async (content: string, authorEmail: string) => {
@@ -86,7 +86,7 @@ const useProductFile = (productFileIdentifier: string) => {
         })();
     }, [loadProductFile]);
 
-    return [productFile, saveComment] as const;
+    return [productFile, saveComment, validationErrors] as const;
 };
 
 export {useProductFile};

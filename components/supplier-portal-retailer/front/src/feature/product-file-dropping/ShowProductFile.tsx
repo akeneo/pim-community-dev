@@ -19,7 +19,7 @@ const ShowProductFile = () => {
     const history = useHistory();
     const [isCurrent, switchTo] = useTabBar('discussion');
     const {productFileIdentifier} = useParams<{productFileIdentifier: string}>();
-    const [productFile, saveComment] = useProductFile(productFileIdentifier);
+    const [productFile, saveComment, validationErrors] = useProductFile(productFileIdentifier);
 
     if (null === productFile) {
         return null;
@@ -69,7 +69,13 @@ const ShowProductFile = () => {
                         {translate('supplier_portal.product_file_dropping.supplier_files.tabs.discussion')}
                     </TabBar.Tab>
                 </TabBar>
-                {isCurrent('discussion') && <Discussion productFile={productFile} saveComment={saveComment} />}
+                {isCurrent('discussion') && (
+                    <Discussion
+                        productFile={productFile}
+                        saveComment={saveComment}
+                        validationErrors={validationErrors}
+                    />
+                )}
             </PageContent>
         </>
     );

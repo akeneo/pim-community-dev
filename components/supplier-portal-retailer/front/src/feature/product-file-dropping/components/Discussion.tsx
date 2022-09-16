@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Button, Field, Helper, TextAreaInput} from 'akeneo-design-system';
-import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {getErrorsForPath, useTranslate, useUserContext, ValidationError} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {CommentList} from './CommentList';
 import {ProductFile} from '../models/ProductFile';
@@ -32,9 +32,10 @@ const Form = styled.form`
 type Props = {
     productFile: ProductFile;
     saveComment: (content: string, authorEmail: string) => {};
+    validationErrors: ValidationError[];
 };
 
-const Discussion = ({productFile, saveComment}: Props) => {
+const Discussion = ({productFile, saveComment, validationErrors}: Props) => {
     const translate = useTranslate();
     const [comment, setComment] = useState<string>('');
     const authorEmail = useUserContext().get('email');
@@ -58,6 +59,11 @@ const Discussion = ({productFile, saveComment}: Props) => {
                         )}
                     >
                         <StyledTextAreaInput readOnly={false} value={comment} onChange={setComment} />
+                        {getErrorsForPath(validationErrors, 'content').map((error, index) => (
+                            <Helper key={index} level="error">
+                                {translate(error.message)}
+                            </Helper>
+                        ))}
                     </Field>
                     <StyledButton level="tertiary" type="submit" disabled={isSubmitButtonDisabled} onClick={onSubmit}>
                         {translate(
