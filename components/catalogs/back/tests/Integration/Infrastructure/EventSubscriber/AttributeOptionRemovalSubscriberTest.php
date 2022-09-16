@@ -34,8 +34,6 @@ class AttributeOptionRemovalSubscriberTest extends IntegrationTestCase
             'options' => ['red', 'green', 'blue'],
         ]);
 
-        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
-
         $idUS = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
         $idFR = 'ed30425c-d9cf-468b-8bc7-fa346f41dd07';
 
@@ -44,7 +42,6 @@ class AttributeOptionRemovalSubscriberTest extends IntegrationTestCase
 
         $this->enableCatalog($idUS);
         $this->enableCatalog($idFR);
-
 
         $this->createProduct('tshirt-blue', [
             new SetSimpleSelectValue('color', null, null, 'blue')
@@ -62,7 +59,6 @@ class AttributeOptionRemovalSubscriberTest extends IntegrationTestCase
                 'locale' => null,
             ],
         ]);
-
         $this->setCatalogProductSelection($idFR, [
             [
                 'field' => 'color',
@@ -72,6 +68,8 @@ class AttributeOptionRemovalSubscriberTest extends IntegrationTestCase
                 'locale' => null,
             ],
         ]);
+
+        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
 
         $this->assertResponseEquals($idUS, 200, ['tshirt-blue', 'tshirt-green']);
         $this->assertResponseEquals($idFR, 200, ['tshirt-blue']);
