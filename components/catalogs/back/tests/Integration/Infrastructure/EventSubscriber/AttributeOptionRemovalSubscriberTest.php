@@ -27,6 +27,13 @@ class AttributeOptionRemovalSubscriberTest extends IntegrationTestCase
 
     public function testItDisablesCatalogsWhenAttributeOptionIsRemoved(): void
     {
+        $this->getAuthenticatedInternalApiClient('admin');
+        $this->createAttribute([
+            'code' => 'color',
+            'type' => 'pim_catalog_simpleselect',
+            'options' => ['red', 'green', 'blue'],
+        ]);
+
         $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
 
         $idUS = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
@@ -38,11 +45,6 @@ class AttributeOptionRemovalSubscriberTest extends IntegrationTestCase
         $this->enableCatalog($idUS);
         $this->enableCatalog($idFR);
 
-        $this->createAttribute([
-            'code' => 'color',
-            'type' => 'pim_catalog_simpleselect',
-            'options' => ['red', 'green', 'blue'],
-        ]);
 
         $this->createProduct('tshirt-blue', [
             new SetSimpleSelectValue('color', null, null, 'blue')
