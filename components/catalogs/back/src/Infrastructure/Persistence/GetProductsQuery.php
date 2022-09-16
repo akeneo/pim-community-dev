@@ -68,7 +68,7 @@ class GetProductsQuery implements GetProductsQueryInterface
             $this->findCatalogOwnerId($catalogId),
             null,
             null,
-            $filters['locales'] ?? null,
+            isset($filters['locales']) && !empty($filters['locales']) ? $filters['locales'] : null,
         );
 
         /** @var array<Product> $products */
