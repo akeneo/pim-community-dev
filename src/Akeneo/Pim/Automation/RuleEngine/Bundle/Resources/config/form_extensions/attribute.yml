@@ -2,6 +2,7 @@ extensions:
     pim-attribute-edit-form-rules-tab:
         module: pim/common/tab
         parent: pim-attribute-edit-form-form-tabs
+        aclResourceId: pimee_catalog_rule_rule_view_permissions
         targetZone: container
         position: 125
         feature: product_rules
