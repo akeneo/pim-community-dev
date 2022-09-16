@@ -22,7 +22,6 @@ class ProductStandardIntegration extends TestCase
 
     public function testEmptyDisabledProduct()
     {
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('bar');
         $expected = [
             'identifier'    => 'bar',
             'family'        => null,
@@ -43,7 +42,6 @@ class ProductStandardIntegration extends TestCase
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [],
             'quantified_associations' => [],
-            'uuid' => $product->getUuid()->toString(),
         ];
 
         $this->assertStandardFormat('bar', $expected);
@@ -51,7 +49,6 @@ class ProductStandardIntegration extends TestCase
 
     public function testEmptyEnabledProduct()
     {
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('baz');
         $expected = [
             'identifier'    => 'baz',
             'family'        => null,
@@ -72,7 +69,6 @@ class ProductStandardIntegration extends TestCase
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [],
             'quantified_associations' => [],
-            'uuid' => $product->getUuid()->toString(),
         ];
 
         $this->assertStandardFormat('baz', $expected);
@@ -80,7 +76,6 @@ class ProductStandardIntegration extends TestCase
 
     public function testProductWithAllAttributes()
     {
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
         $expected =
             [
                 'identifier'    => 'foo',
@@ -270,7 +265,6 @@ class ProductStandardIntegration extends TestCase
                         ]
                     ],
                 ],
-                'uuid' => $product->getUuid()->toString(),
             ];
 
         $this->assertStandardFormat('foo', $expected);
@@ -284,7 +278,6 @@ WHERE identifier = 'foo' ;
 SQL;
         $this->get('database_connection')->executeQuery($sql);
 
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
         $expected =
             [
                 'identifier'    => 'foo',
@@ -474,7 +467,6 @@ SQL;
                         ]
                     ],
                 ],
-                'uuid' => $product->getUuid()->toString(),
             ];
 
         $this->assertStandardFormat('foo', $expected);
@@ -490,6 +482,7 @@ SQL;
         $product = $repository->findOneByIdentifier($identifier);
 
         $result = $this->normalizeProductToStandardFormat($product);
+        unset($result['uuid']);
 
         //TODO: why do we need that?
         $result = $this->sanitizeMediaAttributeData($result);

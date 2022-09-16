@@ -45,12 +45,12 @@ class FindProductToImportSpec extends ObjectBehavior
     }
 
     function it_creates_product_from_flat_data_given_by_the_reader(
-        $productRepository,
-        $productBuilder,
+        IdentifiableObjectRepositoryInterface $productRepository,
+        ProductBuilderInterface $productBuilder,
         ProductInterface $product
     ) {
         $productRepository->findOneByIdentifier('product_identifier')->willReturn(null);
-        $productBuilder->createProduct('product_identifier', 'family')->willReturn($product);
+        $productBuilder->createProduct('product_identifier', 'family', null)->willReturn($product);
 
         $this->fromFlatData('product_identifier', 'family', null)->shouldReturn($product);
     }

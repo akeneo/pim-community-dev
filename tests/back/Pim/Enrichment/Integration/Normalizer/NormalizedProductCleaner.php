@@ -25,16 +25,10 @@ class NormalizedProductCleaner
     {
         self::sanitizeDateFields($productNormalized);
         self::sanitizeMediaAttributeData($productNormalized);
-        // this condition prevents values from ConnectorProductNormalizer to be sorted (because they're an stdClass)
-        if (is_array($productNormalized['values'])) {
-            self::sortValues($productNormalized['values']);
-        }
+        self::sortValues($productNormalized['values']);
         self::sortAssociations($productNormalized['associations']);
         if (isset($productNormalized['categories'])) {
             self::sortCategories($productNormalized['categories']);
-        }
-        if (isset($productNormalized['metadata'])) {
-            unset($productNormalized['metadata']);
         }
     }
 

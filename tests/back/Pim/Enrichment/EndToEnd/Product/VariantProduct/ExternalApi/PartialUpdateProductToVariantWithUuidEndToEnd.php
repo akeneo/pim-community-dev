@@ -62,6 +62,7 @@ JSON;
 
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_family_variant');
         $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
+        unset($standardizedProduct['uuid']);
         unset($standardizedProduct['categories']);
         NormalizedProductCleaner::clean($expectedProduct);
         NormalizedProductCleaner::clean($standardizedProduct);

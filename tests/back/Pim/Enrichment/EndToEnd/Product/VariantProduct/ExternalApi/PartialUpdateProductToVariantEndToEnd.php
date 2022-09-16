@@ -45,16 +45,12 @@ JSON;
                 ],
                 'a_simple_select' => [['locale' => null, 'scope' => null, 'data' => 'optionB']],
                 'a_yes_no' => [['locale' => null, 'scope' => null, 'data' => true]],
+                'sku' => [['locale' => null, 'scope' => null, 'data' => 'product_family_variant']],
             ],
             'created' => '2016-06-14T13:12:50+02:00',
             'updated' => '2016-06-14T13:12:50+02:00',
-            'associations'  => [
-                'PACK' => ['groups' => [], 'product_models' => [], 'products' => []],
-                'SUBSTITUTION' => ['groups' => [], 'product_models' => [], 'products' => []],
-                'UPSELL' => ['groups' => [], 'product_models' => [], 'products' => []],
-                'X_SELL' => ['groups' => [], 'product_models' => [], 'products' => []],
-            ],
-            'quantified_associations' => new \stdClass(),
+            'associations' => [],
+            'quantified_associations' => [],
         ];
 
         $this->assertSame('', $response->getContent());
