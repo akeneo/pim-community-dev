@@ -6,8 +6,8 @@ import {Comment} from './Comment';
 test('it renders a comment', () => {
     renderWithProviders(
         <Comment
-            isRetailer={true}
-            contributorEmail={'julia@roberts.com'}
+            outgoing={true}
+            authorEmail={'julia@roberts.com'}
             content={'Please add colors and size variations.'}
             createdAt={'2022-09-15T08:00:00+00:00'}
         />

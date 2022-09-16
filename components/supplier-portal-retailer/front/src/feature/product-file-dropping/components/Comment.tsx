@@ -4,8 +4,8 @@ import {useDateFormatter} from '@akeneo-pim-community/shared';
 import styled, {css} from 'styled-components';
 
 type Props = {
-    isRetailer: boolean;
-    contributorEmail: string;
+    outgoing: boolean;
+    authorEmail: string;
     content: string;
     createdAt: string;
 };
@@ -34,10 +34,10 @@ const FillerContainer = styled.div`
     flex: 100px;
 `;
 
-const CommentRowContent = styled.div<AkeneoThemedProps & {isRetailer: boolean}>`
+const CommentRowContent = styled.div<AkeneoThemedProps & {outgoing: boolean}>`
     display: flex;
-    ${({isRetailer}) =>
-        !isRetailer
+    ${({outgoing}) =>
+        !outgoing
             ? css`
                   flex-direction: row-reverse;
               `
@@ -46,7 +46,7 @@ const CommentRowContent = styled.div<AkeneoThemedProps & {isRetailer: boolean}>`
               `}
 `;
 
-const ContributorEmailAndDate = styled.div`
+const AuthorEmailAndDate = styled.div`
     font-weight: bold;
     flex: 1 1 100%;
 `;
@@ -66,12 +66,12 @@ const Content = styled.div`
     flex: 1 1 100%;
 `;
 
-const Comment = ({isRetailer, contributorEmail, content, createdAt}: Props) => {
+const Comment = ({outgoing, authorEmail, content, createdAt}: Props) => {
     const dateFormatter = useDateFormatter();
 
     return (
         <CommentRow>
-            <CommentRowContent isRetailer={isRetailer}>
+            <CommentRowContent outgoing={outgoing}>
                 <FlexGrow>
                     <FlexRow>
                         <IconContainer>
@@ -79,8 +79,8 @@ const Comment = ({isRetailer, contributorEmail, content, createdAt}: Props) => {
                         </IconContainer>
                         <ContentContainer>
                             <FlexColumn>
-                                <ContributorEmailAndDate>
-                                    <span>{contributorEmail}</span>,&nbsp;
+                                <AuthorEmailAndDate>
+                                    <span>{authorEmail}</span>,&nbsp;
                                     <span>
                                         {dateFormatter(createdAt, {
                                             day: '2-digit',
@@ -90,7 +90,7 @@ const Comment = ({isRetailer, contributorEmail, content, createdAt}: Props) => {
                                             year: 'numeric',
                                         })}
                                     </span>
-                                </ContributorEmailAndDate>
+                                </AuthorEmailAndDate>
                                 <Content>"{content}"</Content>
                             </FlexColumn>
                         </ContentContainer>

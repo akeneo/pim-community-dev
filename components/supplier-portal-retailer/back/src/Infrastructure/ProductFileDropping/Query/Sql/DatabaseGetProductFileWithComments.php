@@ -52,7 +52,6 @@ final class DatabaseGetProductFileWithComments implements GetProductFileWithComm
             LEFT JOIN supplier_comments sc
                 ON identifier = sc.product_file_identifier
             WHERE identifier = :productFileIdentifier;
-
         SQL;
 
         $productFileWithComments = $this->connection->executeQuery(

@@ -34,7 +34,7 @@ const useProductFile = (productFileIdentifier: string) => {
                         authorEmail: comment.author_email,
                         content: comment.content,
                         createdAt: comment.created_at,
-                        isRetailer: true,
+                        outgoing: true,
                     };
                 }
             ),
@@ -44,7 +44,7 @@ const useProductFile = (productFileIdentifier: string) => {
                         authorEmail: comment.author_email,
                         content: comment.content,
                         createdAt: comment.created_at,
-                        isRetailer: false,
+                        outgoing: false,
                     };
                 }
             ),

@@ -42,8 +42,8 @@ const CommentList = ({comments}: Props) => {
                     .map((comment: CommentReadModel, index) => (
                         <Comment
                             key={index}
-                            isRetailer={comment.isRetailer}
-                            contributorEmail={comment.authorEmail}
+                            outgoing={comment.outgoing}
+                            authorEmail={comment.authorEmail}
                             content={comment.content}
                             createdAt={comment.createdAt}
                         />

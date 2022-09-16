@@ -9,8 +9,20 @@ const backendResponse = {
     uploadedAt: '2022-07-22 16:50:45',
     uploadedByContributor: 'jimmy@supplier.com',
     uploadedBySupplier: '3d845092-0356-4895-8863-99a9a6ff172f',
-    retailerComments: [],
-    supplierComments: [],
+    retailerComments: [
+        {
+            content: 'This file is outdated, please send 2022 version instead.',
+            author_email: 'julia@akeneo.com',
+            created_at: '2022-09-22T04:08:00+00:00',
+        },
+    ],
+    supplierComments: [
+        {
+            content: 'Can you explain a bit more? I’m sure this is the right file.',
+            author_email: 'jimmy@supplier.com',
+            created_at: '2022-09-22T10:32:00+00:00',
+        },
+    ],
 };
 
 test('it loads a product file', async () => {
@@ -31,8 +43,22 @@ test('it loads a product file', async () => {
         uploadedAt: '2022-07-22 16:50:45',
         contributor: 'jimmy@supplier.com',
         supplier: '3d845092-0356-4895-8863-99a9a6ff172f',
-        retailerComments: [],
-        supplierComments: [],
+        retailerComments: [
+            {
+                content: 'This file is outdated, please send 2022 version instead.',
+                authorEmail: 'julia@akeneo.com',
+                createdAt: '2022-09-22T04:08:00+00:00',
+                outgoing: true,
+            },
+        ],
+        supplierComments: [
+            {
+                content: 'Can you explain a bit more? I’m sure this is the right file.',
+                authorEmail: 'jimmy@supplier.com',
+                createdAt: '2022-09-22T10:32:00+00:00',
+                outgoing: false,
+            },
+        ],
     });
 });
 

@@ -9,19 +9,19 @@ const comments: Comment[] = [
         authorEmail: 'julia@akeneo.com',
         content: 'This file is outdated, please send 2022 version instead.',
         createdAt: '2022-09-22T04:08:00+00:00',
-        isRetailer: true,
+        outgoing: true,
     },
     {
         authorEmail: 'jimmy@supplier.com',
         content: 'Can you explain a bit more? I’m sure this is the right file.',
         createdAt: '2022-09-22T10:32:00+00:00',
-        isRetailer: false,
+        outgoing: false,
     },
     {
         authorEmail: 'julia@akeneo.com',
         content: 'It does not fit our 2022 company standards.',
         createdAt: '2022-09-22T14:34:00+00:00',
-        isRetailer: true,
+        outgoing: true,
     },
 ];
 
