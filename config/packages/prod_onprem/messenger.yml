@@ -56,3 +56,4 @@ framework:
             'Akeneo\Tool\Component\BatchQueue\Queue\ImportJobExecutionMessage': import_export_job
             'Akeneo\Tool\Component\BatchQueue\Queue\ExportJobExecutionMessage': import_export_job
             'Akeneo\Tool\Component\BatchQueue\Queue\DataMaintenanceJobExecutionMessage': data_maintenance_job
+            'Akeneo\Tool\Component\BatchQueue\Queue\ScheduledJobMessage': scheduled_job

@@ -43,10 +43,12 @@ data:
   PUBSUB_SUBSCRIPTION_JOB_QUEUE_UI: {{ .Values.pim.pubsub.subscription_job_queue_ui }}
   PUBSUB_SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT: {{ .Values.pim.pubsub.subscription_job_queue_import_export }}
   PUBSUB_SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE: {{ .Values.pim.pubsub.subscription_job_queue_data_maintenance }}
+  PUBSUB_SUBSCRIPTION_JOB_QUEUE_SCHEDULED_JOB: {{ .Values.pim.pubsub.subscription_job_queue_scheduled_job }}
   PUBSUB_TOPIC_BUSINESS_EVENT: {{ .Values.pim.pubsub.topic_business_event }}
   PUBSUB_TOPIC_JOB_QUEUE_UI: {{ .Values.pim.pubsub.topic_job_queue_ui }}
   PUBSUB_TOPIC_JOB_QUEUE_IMPORT_EXPORT: {{ .Values.pim.pubsub.topic_job_queue_import_export }}
   PUBSUB_TOPIC_JOB_QUEUE_DATA_MAINTENANCE: {{ .Values.pim.pubsub.topic_job_queue_data_maintenance }}
+  PUBSUB_TOPIC_JOB_QUEUE_SCHEDULED_JOB: {{ .Values.pim.pubsub.topic_job_queue_scheduled_job }}
 
   LOGGING_LEVEL: {{ .Values.pim.logging_level }}
   {{- if .Values.free_trial.enabled }}
