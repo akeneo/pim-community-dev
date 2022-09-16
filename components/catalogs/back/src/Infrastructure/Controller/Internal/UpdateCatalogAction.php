@@ -8,6 +8,7 @@ use Akeneo\Catalogs\Application\Persistence\FindOneCatalogByIdQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\UpdateCatalogProductSelectionCriteriaQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\UpdateCatalogProductValueFiltersQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\UpsertCatalogQueryInterface;
+use Akeneo\Catalogs\Infrastructure\Persistence\UpsertCategoriesInSelectionIndexQuery;
 use Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdatePayload;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -30,6 +31,7 @@ final class UpdateCatalogAction
         private UpdateCatalogProductSelectionCriteriaQueryInterface $updateCatalogProductSelectionCriteriaQuery,
         private UpdateCatalogProductValueFiltersQueryInterface $updateCatalogProductValueFiltersQuery,
         private NormalizerInterface $normalizer,
+        private UpsertCategoriesInSelectionIndexQuery $upsertCategoriesInSelectionIndexQuery,
     ) {
     }
 
@@ -76,6 +78,10 @@ final class UpdateCatalogAction
         );
 
         $this->updateCatalogProductSelectionCriteriaQuery->execute(
+            $catalogId,
+            $payload['product_selection_criteria'],
+        );
+        $this->upsertCategoriesInSelectionIndexQuery->execute(
             $catalogId,
             $payload['product_selection_criteria'],
         );
