@@ -620,18 +620,7 @@ jobs:
                 name: Create an empty service account
                 command: |
                     mkdir secret
-                    echo "{
-                            \"type\": \"service_account\",
-                            \"project_id\": \"aob-dev\",
-                            \"private_key_id\": \"6394424e41d1c5020b7a03d4becdf6979c6ad461\",
-                            \"private_key\": \"-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDF6aL/dwv6WGhY\nM3vnVdcapkmThXUNuCyjBHqt9gP7fmrcURbLEVBzr02/W+5t6pKEov28PjkS7rl4\nZxBNSYVB8FnxvAlj7vaZt7GWqOlJcHmE7/lRZkOyn7Qj7oAgURS8lDcZbjTGMSKd\nXr9nJdWq/sp32WWpbde+ZYZKdB1oOtkm5Fkhvj2FYyEN4IYtGF1a+lXhiMVR5uiM\nOCT8sW22vbMs8ijlcvRjLLXtYRSb7d7axDehDPUy035Ba28QeGoLMMd0dn3LOavm\nQwWOc9R/evO6LP/EATiOyIeOyktUpoGQODA4FxAIFTjdgXFSojy5+edEMoIbTRBa\nMgsSaytlAgMBAAECggEAGU+bgnt5oy86TQlsj7XpOCXLJBw9z57dyo1wmR3s/XV5\n+io+tYLF3L2vPklmEVWeHmtv8uqsRvET9EOOEKxV6AxynFlVhBvUGu2kvyVkDHnf\neLJuGsxu3QHSuoOujDOCaOm1sEFpa21uRV0QMoNis6c5QqGhgE0ledqnFY+LEUC3\n1EOuRTlHJcFz/tOicZsvWoXTWQR4+iSYIxCZfdwhAf6OF9y5tGBPqGmGgzk68Nd3\n1EiDmsgDk+aGttF9wS+rL7sEn5dRO/bldczewZ9huyYXn9qAz9PdUvFieMoa9zn2\n25lmcwHhZwYtPrEYhxwfzotUbPyn+4JhzMCPaEXpAwKBgQDqmAhd0c56gLdkK24U\nKIYa3rR44XKBuHEF7o5NEE9oklBXp3Z2u/H8NAFJpFkTczD6Tyrw2IKE2GbRRmBd\nSPCgyN6JQNdrEUnBIx2Ovf9LGM0R9Srj3QqicBW3UJybmf6tVwWBF0DAiVqOeO/k\ngfTiAxrFGtFeLDdOKPoRJMq9GwKBgQDX+MDP7Z2efLvu95/+IO1PnN9g8AbPKg0R\nGSDO+bI3SneWPmYZhKE1ATYdkTKzAvFwA6t7298EnSDVMiMqf7mfKHHYOp4dyirC\n5aZ+RGDyk5lJiukieWYBGrDgZSJgqEFaZh6ZrJ/em/zEyVIuUpq5swjD3UM9P9iV\n+fwuvjLBfwKBgQC9P3p4XRnJv26yc0qxHmPY51IFtjGOrkEXPPQ0/PRicq43mBO8\nAzBaeYWUZ+2oACRBuX31n2PjUUPYjYKNnprnykOjy9g8Ok0abn6YuXNqnI5Kb1Jz\nUc0Tb4JFSNWdvSQzp+D728tTxzpzduJnn+LyNPjyiwjdhKP0/J+HFvwqgwKBgE83\n8EmUqBclO64o6GfH3iQwr4MYJ/c/PnHCHNWuo19CkmDq3HqJurP9kMMBqm4dK0Bi\nKDmTadeAZzWsYVfKZ+ToafHddngI2uyIXiy8mi8AUt619FPv4amQB8cXcaewr+Af\nyyOlPTLjVrE8A0f4hsaM1C877tj9nU1N1+GxZF6zAoGBALnSBr/OVjRAiyN5UlI6\nS/g1pZglaSdggtx/7UZKGbnQZvSTSiSfaOWwNEXDjTQTnftzHq1NoZqevW5VXq9B\nLpkfdfBFvpWBcLhJKFS0Imx30qdENbv1jPvKFHjro5MYDOLwmPY4lXuCL7Wb7iHM\nIPX7wQnTnxvgi01YZWxe2UJg\n-----END PRIVATE KEY-----\n\",
-                            \"client_email\": \"aob-dev-pubsub@aob-dev.iam.gserviceaccount.com\",
-                            \"client_id\": \"107018224724912880045\",
-                            \"auth_uri\": \"https://accounts.google.com/o/oauth2/auth\",
-                            \"token_uri\": \"https://accounts.google.com/o/oauth2/token\",
-                            \"auth_provider_x509_cert_url\": \"https://www.googleapis.com/oauth2/v1/certs\",
-                            \"client_x509_cert_url\": \"https://www.googleapis.com/robot/v1/metadata/x509/aob-dev-pubsub%40aob-dev.iam.gserviceaccount.com\"
-                          }" > secret/serviceAccount.json
+                    echo $ONBOARDER_TEST_SERVICE_ACCOUNT > secret/serviceAccount.json
           - run:
                 name: Load php pim image
                 command: |
