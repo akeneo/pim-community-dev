@@ -44,6 +44,16 @@ services:
             - '@security.token_storage'
             - '@oro_security.security_facade'
 
+    Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ExternalApi\CreateProductProposalByUuidController:
+        public: true
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@pimee_workflow.repository.product_draft'
+            - '@akeneo.pim.permission.product.query.fetch_user_rights_on_product'
+            - '@pimee_workflow.manager.product_draft'
+            - '@security.token_storage'
+            - '@oro_security.security_facade'
+
     pimee_workflow_controller.external_api.publish_product:
         class: '%pimee_workflow_controller.external_api.publish_product.class%'
         public: true
