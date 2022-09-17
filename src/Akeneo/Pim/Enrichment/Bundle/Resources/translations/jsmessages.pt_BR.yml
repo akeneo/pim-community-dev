@@ -5,10 +5,13 @@ flash:
   comment:
     create:
       success: Seu comentário foi criado com sucesso.
+      error: Ocorreu um erro durante a criação do seu comentário.
     delete:
       success: Seu comentário foi deletado com sucesso.
+      error: Ocorreu um erro durante a exclusão do seu comentário.
     reply:
       success: Sua resposta foi criada com sucesso.
+      error: Ocorreu um erro durante a criação da sua resposta.
 pim_enrich.entity.product:
   label: produto
   uppercase_label: Produto
@@ -19,6 +22,7 @@ pim_enrich.entity.product:
       fail: O produto não pode ser atualizado.
       fields_not_ready: "O produto não pode ser salvo agora. Os seguintes campos não estão prontos: {{ fields }}"
       already_in_upload: Um arquivo ja está sendo enviado para esse atributo no local "{{ locale }}" e no escopo "{{ scope }}"
+      file_upload: Ocorreu um erro durante o envio do arquivo
     delete:
       success: Produto deletado com sucesso.
       fail: O produto não pode ser deletado.
@@ -264,6 +268,8 @@ pim_enrich.mass_edit.product:
       label: Configurar
     confirm:
       label: Confirmar
+    launch_error:
+      label: Ocorreu um erro durante o lançamento da operação de edição em massa
     launched:
       label: A ação em massa "{{ operation }}" foi lançada. Você será notificado quando estiver pronto.
   operation:
@@ -297,6 +303,7 @@ pim_enrich.mass_edit.product:
     remove_from_category:
       label: Retirar produtos de categorias
       description: Os produtos serão retirados das seguintes categorias.
+      no_update: Não há categoria marcada para remover os produtos selecionados.
     add_to_existing_product_model:
       label: Adicionar a um modelo de produto existente
       description: O modelo de produto selecionado irá recolher os produtos e permite o enriquecimento dos atributos comuns.
@@ -318,6 +325,7 @@ pim_datagrid:
     delete:
       confirm_content: Você tem certeza que deseja remover os produtos selecionados?
       success: Produtos selecionados deletados com sucesso.
+      error: Ocorreu um erro ao tentar excluir os produtos selecionados, tente novamente.
     quick_export:
       csv_all: CSV (Todos atributos)
       csv_grid_context: CSV (Contexto de grelha)

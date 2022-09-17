@@ -1,6 +1,7 @@
 pim_enrich.acl_group.measurements: Единицы измерений
 measurements:
   acl:
+    manage_settings: Список единиц измерений
     family:
       create: Создать группу единиц измерений
       edit:

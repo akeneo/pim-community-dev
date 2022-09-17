@@ -67,3 +67,8 @@ pim_enrich.entity.currency:
   plural_label: Moedas
   page_title:
     index: "]-Inf, 1]{{ count }} moeda|]1, Inf[{{ count }} moedas"
+flash:
+  currency:
+    error:
+      linked_to_channel: Você não pode desativar uma moeda vinculada a um canal
+    updated: Moeda atualizada com sucesso
