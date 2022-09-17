@@ -30,7 +30,4 @@ btn:
 job_execution:
   summary:
     rule_calculated: Número de regras
-pim_datagrid:
-  cells:
-    type:
-      execute_rules: Execução de regras
+

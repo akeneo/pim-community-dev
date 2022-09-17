@@ -1,3 +1,6 @@
 akeneo_data_quality_insights:
   attribute_grid:
     quality_column_label: Qualidade
+  dictionary:
+    title: Dicionário
+akeneo_data_quality_insights_dictionary: Dicionário
