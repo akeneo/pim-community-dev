@@ -92,7 +92,7 @@ class BulkMediaFetcher
      *          'media'  => [
      *              'from'    => (string) 'a/b/c/d/my_picture.jpg',
      *              'to'      => [
-     *                  'filePath' => (string) '/tmp/files/identifier/code/',
+     *                  'filePath' => (string) '/%temp_dir%/files/identifier/code/',
      *                  'filename' => (string) 'my picture.jpg'
      *              ],
      *              'storage' => (string) 'catalogStorage',
