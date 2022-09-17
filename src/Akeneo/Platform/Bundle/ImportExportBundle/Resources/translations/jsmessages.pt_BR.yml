@@ -28,6 +28,8 @@ pim_import_export:
       flash:
         create:
           success: Perfil de importação criado com sucesso
+        upload:
+          error: Não foi possível carregar o arquivo. Seu tamanho pode exceder o tamanho máximo de envio configurado no seu servidor PHP ou HTTP
       page_title:
         index: "]-Inf, 1] {{ count }} perfil de importação|]1, Inf [{{ count }} perfis de importação"
       module:
@@ -87,6 +89,7 @@ pim_import_export:
           file_path:
             title: Caminho do arquivo
             help: Local no sistema onde o arquivo gerado deve ser gravado
+            help_import: Diretório do arquivo a ser usado para a importação
           delimiter:
             title: Limitador
             help: Um caracter usado para delimitar o campo
@@ -140,6 +143,7 @@ pim_import_export:
         import: Importação
         export: Exportação
         mass_edit: Edição em Massa
+        mass_edit_rule: Configurações de Regras
         quick_export: Exportação Rápida
         compute_product_models_descendants: Calcular os modelos de produto descendentes
         compute_family_variant_structure_changes: Calcular mudanças na estrutura da variante da família
