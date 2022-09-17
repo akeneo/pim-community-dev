@@ -109,7 +109,7 @@
         "symfony/routing": "4.4.18",
         "symfony/property-access": "4.4.18",
         "symfony/security-core": "4.4.18",
-        "symfony/security-http": "4.4.18",
+        "symfony/security-http": "4.4.42",
         "symfony/security-csrf": "4.4.18",
         "symfony/options-resolver": "4.4.18",
         "symfony/intl": "4.4.18",
