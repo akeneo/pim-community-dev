@@ -10,6 +10,5 @@ akeneo_data_quality_insights:
     filter_label:
       quality_score: Оценка качества
       enrichment_quality: Качество обогащения
-      images_quality: Качество изображений
 Enrichment: Обогащение
 Quality Score: Оценка качества
