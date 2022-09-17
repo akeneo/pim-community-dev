@@ -85,12 +85,29 @@ class ProductWriter extends AbstractItemMediaWriter implements
     {
         $this->hasItems = true;
         foreach ($items as $item) {
-            if (isset($item['family']) && !in_array($item['family'], $this->familyCodes)) {
-                $this->familyCodes[] = $item['family'];
+            if (isset($item['family'])) {
+                if (is_array($item['family'])) {
+                    foreach ($item['family'] as $valFamily) {
+                        $this->addToFamilyCodes($valFamily);
+                    }
+                } else {
+                    $this->addToFamilyCodes($item['family']);
+                }
             }
         }
 
         parent::write($items);
+    }
+
+    /**
+     * Adds the familyCode to current class property familyCodes:array if it doesn't already exist.
+     * @param $familyCode
+     * @author Akash M. Pai <makashpai@gmail.com>
+     */
+    private function addToFamilyCodes($familyCode){
+        if (!in_array($familyCode, $this->familyCodes)) {
+            $this->familyCodes[] = $familyCode;
+        }
     }
 
     /**
