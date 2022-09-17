@@ -1,6 +1,7 @@
 pim_notification:
   types:
     settings: Настройки
+    mass_delete: Удаление
 flash:
   comment:
     create:
@@ -27,6 +28,7 @@ pim_enrich.entity.product:
       fail: У продукта не указан атрибут в качестве идентификатора или у вас нет прав для его изменения.
   page_title:
     product: "]-Inf, 1]{{ count }} товар|]1, Inf[{{ count }} товаров"
+    product_model: "]-Inf, 1]{{ count }} модель продукта|]1, Inf[{{ count }} модели продуктов"
     product_and_product_model: "{{ productCount }}, {{ productModelCount }}"
   module:
     create:
@@ -54,7 +56,6 @@ pim_enrich.entity.product:
     history:
       version: Версия
       author: Автор
-      logged_at: Дата входа
       from: С
       modified: Изменен
       old_value: Старое значение
@@ -88,6 +89,7 @@ pim_enrich.entity.product:
       show_products: Показать продукты
       show_groups: Отображать группы
       number_of_associations: "{{ productCount }} продукт(ы), {{ productModelCount }} модель(и) продукта(ов) и {{ groupCount }} группа(ы)"
+      number_of_quantified_associations: "{{ productCount }} продукт(ов) и {{ productModelCount }} модели продукта(ов)"
       association_type_selector: Тип связи
       target: Цель
       manage: Добавить {{ associationType }} связи
@@ -99,11 +101,11 @@ pim_enrich.entity.product:
         quantity: Кол-во
       search:
         placeholder: Поиск по названию или идентификатору
-      no_result: Поиск не дал результатов.
       no_data: Нет связанных продуктов.
       remove: Удалить связь
       edit: Редактировать товар
       limit_reached: Вы не можете добавить более {{ maxLimit }} связей к этому товару.
+      variant_updated: Вы обновили количество вариантов продукта.
     attribute_filter:
       display: Показать
       all: Все атрибуты
@@ -155,7 +157,6 @@ pim_enrich.entity.product_model:
       read_only_parent_attribute_from_model: "Этот атрибут может быть обновлен в атрибутах {{ axes }}"
     variant_axis:
       create: Добавить новый
-      create_label: "Добавить новые {{ axes }}"
       required_label: '(вариант конфигурационного атрибута)'
     completeness:
       label: Вариант
@@ -259,12 +260,9 @@ pim_enrich.export.product:
   global_settings:
     title: Глобальные настройки
 pim_enrich.mass_edit.product:
-  title: Массовые действия по продуктам
   step:
     select:
       label: Выберите продукты
-    choose:
-      title: Массовые действия по продуктам
     configure:
       label: Настроить
     confirm:
@@ -276,41 +274,45 @@ pim_enrich.mass_edit.product:
       select_attributes: Выберите атрибуты
     change_status:
       label: Изменить статус
+      label_count: "{0}изменил статус нескольких <span class=\"AknFullPage-title--highlight\">продуктов</span>|{1}Изменить статус <span class=\"AknFullPage-title--highlight\">1 продукта</span>|]1, Inf[Изменить статус <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} продуктов</span>"
       description: Выбранные продукты будут активированы или дезактивированы.
       field: Включить
-    edit_common:
-      label: Изменить значения атрибутов
-      description: Только атрибуты, принадлежащие к семействам выбранных продуктов будут редактироваться для локали {{ locale }} и канала {{ scope }}.
-    add_attribute_value:
-      label: Добавьте значения атрибутов
-      description: Только атрибуты, имеющие несколько значений, будут редактироваться для {{ locale }} и {{ scope }}. Новые значения атрибутов добавляются, предыдущие значения сохраняются.
     change_family:
       label: Изменить семейство
+      label_count: "{0}изменил семейство нескольких <span class=\"AknFullPage-title--highlight\">продуктов</span>|{1}Изменить семейство <span class=\"AknFullPage-title--highlight\">1 продукта</span>|]1, Inf[Изменить семейство <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} продуктов</span>"
       description: Семейство для выбранных продуктов будет изменено на выбранное семейство
     add_to_group:
       label: Добавить в группы
+      label_count: "{0}Добавить несколько <span class=\"AknFullPage-title--highlight\">продуктов</span> в группы|{1}Добавить <span class=\"AknFullPage-title--highlight\">1 продукт</span> в группы|]1, Inf[Добавить <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} продукты</span> в группы"
       description: Выберите группы, в которые нужно добавить выбранные продукты
       field: Группы
     add_to_category:
       label: Добавить в категории
+      label_count: "{0}Добавить несколько <span class=\"AknFullPage-title--highlight\">продуктов</span> в категории|{1}Добавить <span class=\"AknFullPage-title--highlight\">1 продукт</span> в категории|]1, Inf[Добавить <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} продукты</span> в категории"
       description: Продукты будут классифицированы в следующие категории, исходная классификация сохранена.
     move_to_category:
       label: Переместить между категориями
+      label_count: "{0}Переместить несколько <span class=\"AknFullPage-title--highlight\">продуктов</span> между категориями |{1}Переместить <span class=\"AknFullPage-title--highlight\">1 продукт</span> между категориями|]1, Inf[Переместить <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} продукты</span> между категориями"
       description: Продукты будут классифицированы в следующие категории, исходная классификация не сохранена.
     remove_from_category:
       label: Удалить из категорий
+      label_count: "{0}Удалить несколько <span class=\"AknFullPage-title--highlight\">продуктов</span> из категорий|{1}Удалить <span class=\"AknFullPage-title--highlight\">1 продукт</span> из категорий|]1, Inf[Удалить <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} продукты</span> из категорий"
       description: Продукты будут удалены из следующих категорий.
     add_to_existing_product_model:
       label: Добавить к существующей модели продукта
+      label_count: "{0}Добавить несколько <span class=\"AknFullPage-title--highlight\">продуктов</span> в существующую модель продукта |{1}Добавить <span class=\"AknFullPage-title--highlight\">1 продукт</span> в существующую модель продукта|]1, Inf[Добавить <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} продукты</span> в существующую модель продукта"
       description: Выбранная модель продукта объединит продукты и позволит пополнить их общие свойства.
     convert_to_simple_products:
       label: Преобразовать в простой товар
+      label_count: "{0}Конвертировать несколько продуктов <span class=\"AknFullPage-title--highlight\"></span> в простые продукты |{1}Конвертировать <span class=\"AknFullPage-title--highlight\">1 продукт</span> в простой продукт|]1, Inf[Конвертировать <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} продукты</span> в простые продукты"
+      description: Все предыдущие значения, категории и ассоциации будут сохранены.
     associate_to_product_and_product_model:
-      label: Связать
+      label_count: "{0}Связать несколько <span class=\"AknFullPage-title--highlight\">продуктов</span> с продуктами или моделями продукта|{1}Связать <span class=\"AknFullPage-title--highlight\">1 продукт</span> с продуктами или моделями продукта|]1, Inf[Связать <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} продукты</span> с продуктами или моделями продуктов"
       description: Продукты, выбранные в таблице, будут связаны с выбранными продуктами и моделями продуктов для выбранного типа связи
       validate: Пожалуйста, добавьте связь до перехода к следующему шагу
     change_parent_product_model:
       label: Изменить родительскую модель продукта
+      label_count: "{0}Изменить родительскую модель продукта <span class=\"AknFullPage-title--highlight\">у нескольких продуктов</span>|{1}Изменить родительскую модель <span class=\"AknFullPage-title--highlight\">1 продукта</span>|]1, Inf[Изменить родительскую модель <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} продуктов</span>"
       description: Родительская модель продукта или варианта продукта, выделенная в представлении, будет изменена на выбранную модель продукта.
 pim_datagrid:
   mass_action_group:
@@ -343,6 +345,9 @@ pim_datagrid:
     mass_edit: Массовые действия
     sequential_edit: Последовательное редактирование
     mass_delete: Массовое удаление
+    selected:
+      family: "]-Inf, 1]{{ count }} семейство выбрано|]1, Inf[{{ count }} семейств выбрано"
+      product: "]-Inf, 1]{{ count }} результат выбран|]1, Inf[{{ count }} результатов выбрано"
   view_selector:
     view: Представления
   actions:
@@ -387,7 +392,6 @@ pim_datagrid:
       label: Родительский
     identifier:
       label: Идентификатор
-  search: Поиск по {{ label }}
 batch_jobs:
   add_association:
     label: Связать
@@ -441,6 +445,9 @@ batch_jobs:
   set_attribute_requirements:
     label: Установить обязательность/ необязательность атрибутов
     perform.label: Установить обязательность/ необязательность атрибутов
+  default_steps:
+    delete_products_and_product_models: Удалить продукты и модели продуктов
+    remove_completeness_for_channel_and_locale: Удалить завершенность для канала и локали
 error:
   removing:
     group: Невозможно удалить группу
