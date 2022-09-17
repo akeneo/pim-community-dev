@@ -40,17 +40,17 @@ JSON;
         $search = sprintf('{"updated":[{"operator":">","value":"%s"}]}', $discriminantDatetime->format('Y-m-d H:i:s'));
         $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
 
-        $client->request('GET', 'api/rest/v1/products?search=' . $search);
+        $client->request('GET', 'api/rest/v1/products?search_locale=en_US&search=' . $search);
         $response = $client->getResponse();
 
         $expected = <<<JSON
 {
     "_links":{
         "self":{
-            "href":"http:\/\/localhost\/api\/rest\/v1\/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"
+            "href":"http:\/\/localhost\/api\/rest\/v1\/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}&search_locale=en_US"
         },
         "first":{
-            "href":"http:\/\/localhost\/api\/rest\/v1\/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"
+            "href":"http:\/\/localhost\/api\/rest\/v1\/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}&search_locale=en_US"
         }
     },
     "current_page":1,

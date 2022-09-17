@@ -477,6 +477,9 @@ class ProductModelController
         if (null !== $query->searchChannelCode) {
             $queryParameters['search_scope'] = $query->searchChannelCode;
         }
+        if (null !== $query->searchLocaleCode) {
+            $queryParameters['search_locale'] = $query->searchLocaleCode;
+        }
         if (null !== $query->localeCodes) {
             $queryParameters['locales'] = join(',', $query->localeCodes);
         }
