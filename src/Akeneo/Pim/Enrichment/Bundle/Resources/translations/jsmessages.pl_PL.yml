@@ -285,7 +285,7 @@ pim_enrich.export.product:
     title: Ustawienia ogólne
 pim_enrich.mass_edit.product:
   title: Działanie zbiorcze produktów
-  confirm: "{0}Zamierzasz zaktualizować niektóre produkty następującymi informacjami, proszę potwierdzić.{1}Masz zamiar zaktualizować produkt następującymi informacjami, proszę potwierdź. ]1, Inf[Zamierzasz zaktualizować {{ itemsCount }} produktów następującymi informacjami, proszę potwierdzić."
+  confirm: "{0}Zamierzasz zaktualizować niektóre produkty następującymi informacjami, proszę potwierdzić.|{1}Masz zamiar zaktualizować produkt następującymi informacjami, proszę potwierdź. |]1, Inf[Zamierzasz zaktualizować {{ itemsCount }} produktów następującymi informacjami, proszę potwierdzić."
   step:
     select:
       label: Wybierz produkty

@@ -55,6 +55,10 @@ pim_analytics:
     is_demo_catalog: Демо каталог установлен
     data_source.tracked: Количество отслеживаемых исходных подключений API
     data_source.untracked: Количество не отслеживаемых соединений API
+    data_destination.tracked: Количество отслеживаемых подключений к API
+    data_destination.untracked: Количество неотслеживаемых подключений к API
+    other.tracked: Количество прочих отслеживаемых подключений к API
+    other.untracked: Количество прочих неотслеживаемых подключений к API
   acl:
     system_info:
       index: Информация о системе
