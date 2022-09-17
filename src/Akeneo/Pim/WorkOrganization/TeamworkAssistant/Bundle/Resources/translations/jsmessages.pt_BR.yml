@@ -31,12 +31,10 @@ teamwork_assistant:
     no_project_create: criar um novo projeto
     description: Descrição
     due_date: Data Limite
-    todo: TAREFAS
-    in_progress: EM ANDAMENTO
-    done: CONCLUÍDO
     all_contributors: Todos os contribuidores
     you: Você
     display_products: Exibir produtos
+    projects: Projetos
     placeholder:
       contributor_selector: Pesquisar contribuidor
       project_selector: Pesquisar projeto
@@ -47,12 +45,6 @@ teamwork_assistant:
 pim_datagrid:
   view_selector:
     project: Projetos
-pim_dashboard:
-  widget:
-    last_operations:
-      job_type:
-        refresh_project_completeness_calculation: Assistente de trabalho em equipe
-        project_calculation: Assistente de trabalho em equipe
 batch_jobs:
   project_calculation:
     project_calculation.label: Cálculo do projeto

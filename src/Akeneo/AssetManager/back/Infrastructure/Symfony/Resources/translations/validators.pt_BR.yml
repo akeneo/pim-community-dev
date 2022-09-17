@@ -1,0 +1,7 @@
+pim_asset_manager:
+  asset_family:
+    validation:
+      code:
+        pattern: 'Este campo pode conter apenas letras, números e sublinhados.'
+        should_be_unique: 'Já existe uma família de ativos com código "%asset_family_identifier%"'
+        limit_reached: 'Você não pode criar a família de ativos "%asset_family_identifier%" porque atingiu o limite de %limit% famílias de ativos'

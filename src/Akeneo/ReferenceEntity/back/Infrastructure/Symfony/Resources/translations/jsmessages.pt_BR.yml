@@ -65,7 +65,6 @@ pim_reference_entity:
       confirm: Salvar
     delete:
       message: Tem certeza que deseja excluir a entidade "{{ referenceEntityLabel }}"?
-      title: Atributo
     notification:
       save:
         success: Entidade de referência atualizada com sucesso.
@@ -83,6 +82,8 @@ pim_reference_entity:
       subtitle: Para gerenciar a permissão na entidade de referência, você precisa ter pelo menos um grupo de usuário.
       link: Clique aqui para adicionar seu primeiro grupo de usuários
   record:
+    mass_delete:
+      title: Registros
     validation:
       limit_reached: 'Você não pode criar o registro "{{ %record_label% }}", porque atingiu o limite de {{ %limit% }} registros para esta entidade de referência'
       code:
@@ -101,8 +102,6 @@ pim_reference_entity:
     button:
       save: Salvar
       create: Adicionar novo
-      delete: Deletar
-      delete_all: Excluir todos os registros
       back: Voltar à lista
     product:
       title: Produtos
@@ -130,8 +129,6 @@ pim_reference_entity:
     delete:
       message: Tem certeza que deseja excluir o registro "{{ recordLabel }}"? Se ele estiver ligado a produtos ou registros, os links serão removidos.
       title: Registro
-    delete_all:
-      confirm: Tem certeza que deseja excluir todos os registros "{{ entityIdentifier }}"? Se eles estiverem ligados a produtos, os links para os produtos serão removidos.
     grid:
       search: Pesquisar nos rótulos, código e atributos de texto
       filter:
@@ -170,8 +167,6 @@ pim_reference_entity:
         success: Registro criado com sucesso.
       delete:
         success: Registro "{{ code }}" excluído com sucesso.
-      delete_all:
-        success: Todos os "{{ entityIdentifier }}" registros foram excluídos com sucesso.
     completeness:
       label: Completo
   attribute:
@@ -261,12 +256,6 @@ pim_reference_entity:
       sub_title: Entidades de referência
       helper:
         title: Traduções do rótulo
-  modal:
-    delete:
-      subtitle: Confirmar exclusão
-      button:
-        cancel: Cancelar
-        confirm: Deletar
 pim_enrich:
   confirmation:
     discard_changes: 'Você perderá as alterações desta entidade "{{ entity }}" se você sair da página.'
@@ -293,3 +282,6 @@ pim_catalog_volume:
     count_reference_entity: Entidades de referência
     average_max_records_per_reference_entity: Registros por entidade de referência
     average_max_attributes_per_reference_entity: Atributos por entidade de referência
+job_execution:
+  summary:
+    records: Registros

@@ -12,22 +12,6 @@ pimee_workflow:
     status:
       label: Status
       working_copy: Cópia de Trabalho
-      in_progress: Em Progresso
-      ready: Aguardando aprovação
-      can_be_partially_reviewed: Pode ser parcialmente revisado
-      can_not_be_approved: Não pode ser revisado
-      can_not_be_deleted: Não pode ser excluído
-    status_message:
-      can_be_partially_reviewed: Você só pode rever esta proposta parcialmente porque algumas alterações se aplicam em valores que você não pode editar. Por favor, contate o administrador para alterar suas permissões.
-      can_not_be_approved: Você não pode rever esta proposta porque todas as alterações se aplicam em valores que você não pode editar. Por favor, contate o administrador para alterar duas permissões.
-      can_not_be_deleted: Você não pode excluir esta proposta porque todas as alterações se aplicam em valores que você não pode editar. Por favor, contate o administrador para alterar suas permissões.
-      in_progress: Esta proposta está atualmente em andamento e ainda não foi enviada.
-    action:
-      approve: Aprovar tudo
-      refuse: Rejeitar tudo
-      remove: Remover
-      partial_approve: Aprovar as alterações no atributo  %attribute% do produto %product%
-      partial_reject: Rejeitar as alterações no atributo %attribute% do produto %product% 
     notification:
       partial_approve: '%owner% aceitou valor(es) dos atributos %attributes% para o produto %product%'
       partial_approve_number: '%owner% aceitou valores de %attributes_count% atributos para o produto %product%'
@@ -51,9 +35,6 @@ pimee_workflow:
     individual_import: '%author.firstname% %author.lastname% enviou propostas para revisão da tarefa de importação'
     generic_import: Você tem propostas para revisar da tarefa de importação
     original_value: Original
-    new_value: Novo
-    no_diff: O valor "%value%" é o mesmo entre a proposta e a versão atual.
-    draft_in_progress: Um rascunho de %author% está em andamento para este produto.
   published_product:
     index: Produtos Publicados
     title: Produtos publicados
