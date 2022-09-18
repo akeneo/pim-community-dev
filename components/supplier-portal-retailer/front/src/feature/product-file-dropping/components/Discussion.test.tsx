@@ -30,6 +30,32 @@ test('it does not enable the send button if the comment textarea is not fulfille
     ).toBeDisabled();
 });
 
+test('it does not enable the send button if the comment textarea exceeds 255 characters', () => {
+    renderWithProviders(
+        <Discussion
+            productFile={productFile}
+            saveComment={(content: string, authorEmail: string) => {
+                return {};
+            }}
+            validationErrors={[]}
+        />
+    );
+
+    const commentInput = screen.getByLabelText(
+        'supplier_portal.product_file_dropping.supplier_files.discussion.comment_input_label'
+    );
+
+    fireEvent.change(commentInput, {
+        target: {
+            value: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+        },
+    });
+
+    expect(
+        screen.getByText('supplier_portal.product_file_dropping.supplier_files.discussion.submit_button_label')
+    ).toBeDisabled();
+});
+
 test('it enables the send button enabled if the comment textarea is fulfilled', () => {
     renderWithProviders(
         <Discussion

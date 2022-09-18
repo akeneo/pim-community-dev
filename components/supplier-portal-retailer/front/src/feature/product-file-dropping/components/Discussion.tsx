@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import {CommentList} from './CommentList';
 import {ProductFile} from '../models/ProductFile';
 
+const maxLengthComment = 255;
+
 const StickyContainer = styled.div`
     flex-shrink: 0;
 `;
@@ -38,13 +40,19 @@ type Props = {
 const Discussion = ({productFile, saveComment, validationErrors}: Props) => {
     const translate = useTranslate();
     const [comment, setComment] = useState<string>('');
+    const [commentLength, setCommentLength] = useState<number>(0);
     const authorEmail = useUserContext().get('email');
     const onSubmit = async (event: any) => {
         event.preventDefault();
         saveComment(comment, authorEmail);
         setComment('');
     };
-    const isSubmitButtonDisabled = '' === comment;
+    const handleChange = (value: any) => {
+        setCommentLength(value.length);
+        setComment(value);
+    };
+    const isCommentMaxLengthReached = maxLengthComment < commentLength;
+    const isSubmitButtonDisabled = '' === comment || isCommentMaxLengthReached;
 
     return (
         <>
@@ -58,12 +66,19 @@ const Discussion = ({productFile, saveComment, validationErrors}: Props) => {
                             'supplier_portal.product_file_dropping.supplier_files.discussion.comment_input_label'
                         )}
                     >
-                        <StyledTextAreaInput readOnly={false} value={comment} onChange={setComment} />
+                        <StyledTextAreaInput readOnly={false} value={comment} onChange={handleChange} />
                         {getErrorsForPath(validationErrors, 'content').map((error, index) => (
                             <Helper key={index} level="error">
                                 {translate(error.message)}
                             </Helper>
                         ))}
+                        {isCommentMaxLengthReached && (
+                            <Helper level="error">
+                                {translate(
+                                    'supplier_portal.product_file_dropping.supplier_files.discussion.max_comment_length_reached'
+                                )}
+                            </Helper>
+                        )}
                     </Field>
                     <StyledButton level="tertiary" type="submit" disabled={isSubmitButtonDisabled} onClick={onSubmit}>
                         {translate(
