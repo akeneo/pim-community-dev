@@ -15,3 +15,6 @@ oneup_flysystem:
         local_storage_adapter:
             local:
                 location: '/'
+        catalogs_mapping_adapter:
+            custom:
+                service: 'akeneo_flysystem_adapter.googlecloudstorage.catalogs_mapping_adapter'
