@@ -214,7 +214,7 @@ JSON;
 {"line":8,"status_code":413,"message":"Line is too long."}
 {"line":9,"status_code":413,"message":"Line is too long."}
 {"line":10,"status_code":400,"message":"Invalid json message received"}
-{"line":11,"identifier":123456,"status_code":422,"message":"The identifier field requires a string. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
+{"line":11,"status_code":422,"message":"identifier must be of type string."}
 JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/products', [], [], [], $data);
@@ -243,6 +243,27 @@ JSON;
 {"line":3,"status_code":422,"message":"Identifier is missing."}
 {"line":4,"status_code":422,"message":"Identifier is missing."}
 {"line":5,"status_code":422,"message":"Identifier is missing."}
+JSON;
+
+        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/products', [], [], [], $data);
+        $httpResponse = $response['http_response'];
+
+        $this->assertSame(Response::HTTP_OK, $httpResponse->getStatusCode());
+        $this->assertSame($expectedContent, $response['content']);
+    }
+
+    public function testErrorWhenIdentifierIsWrongType()
+    {
+        $data =
+            <<<JSON
+    {"identifier": []}
+    {"identifier": true}
+JSON;
+
+        $expectedContent =
+            <<<JSON
+{"line":1,"status_code":422,"message":"identifier must be of type string."}
+{"line":2,"status_code":422,"message":"identifier must be of type string."}
 JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/products', [], [], [], $data);
