@@ -23,6 +23,7 @@ const IconContainer = styled.div`
 
 const ContentContainer = styled.div`
     margin-top: 10px;
+    line-height: 15.6px;
 `;
 
 const FlexGrow = styled.div<AkeneoThemedProps & {outgoing: boolean}>`
