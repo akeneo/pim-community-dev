@@ -9,9 +9,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Domain\Model\Operation;
 
-final class ReferenceEntitySingleLinkReplacementOperation extends AbstractReplacementOperation
+final class SimpleReferenceEntityReplacementOperation extends AbstractReplacementOperation
 {
-    public const TYPE = 'reference_entity_single_link_replacement';
+    public const TYPE = 'simple_reference_entity_replacement';
 
     public function normalize(): array
     {

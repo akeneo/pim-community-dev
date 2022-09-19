@@ -16,7 +16,7 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Value\InvalidValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
-final class ReferenceEntitySingleLinkReplacementOperationApplier
+final class SimpleReferenceEntityReplacementOperationApplier implements OperationApplierInterface
 {
     public function applyOperation(OperationInterface $operation, ValueInterface $value): ValueInterface
     {
@@ -39,5 +39,10 @@ final class ReferenceEntitySingleLinkReplacementOperationApplier
         }
 
         return new StringValue($mappedValue);
+    }
+
+    public function supports(OperationInterface $operation): bool
+    {
+        return $operation instanceof SimpleReferenceEntityReplacementOperation;
     }
 }
