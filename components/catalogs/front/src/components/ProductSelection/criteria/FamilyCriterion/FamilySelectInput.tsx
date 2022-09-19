@@ -5,7 +5,7 @@ import {useInfiniteFamilies} from '../../hooks/useInfiniteFamilies';
 import {useFamiliesByCodes} from '../../hooks/useFamiliesByCodes';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {Family} from '../../models/Family';
-import {useUniqueEntitiesByCode} from '../../hooks/useUniqueEntitiesByCode';
+import {useUniqueEntitiesByCode} from '../../../../hooks/useUniqueEntitiesByCode';
 
 type Props = {
     state: FamilyCriterionState;

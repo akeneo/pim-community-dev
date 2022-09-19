@@ -105,6 +105,16 @@ services:
         tags:
             - { name: 'akeneo.pim.tests.pub_sub_queue_status.job' }
 
+    akeneo_integration_tests.pub_sub_queue_status.scheduled_job:
+        class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
+            - '%env(GOOGLE_CLOUD_PROJECT)%'
+            - '%env(PUBSUB_TOPIC_JOB_QUEUE_SCHEDULED_JOB)%'
+            - '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE_SCHEDULED_JOB)%'
+        tags:
+            - { name: 'akeneo.pim.tests.pub_sub_queue_status.job' }
+
     Context\FeatureContext:
         -   base_url: 'http://httpd-behat/'
             timeout: 25000

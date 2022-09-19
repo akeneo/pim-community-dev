@@ -1,20 +1,21 @@
-jest.unmock('./useInfiniteChannels');
+jest.unmock('./useInfiniteLocales');
+
+import {ReactQueryWrapper} from '../../../../tests/ReactQueryWrapper';
 
 import {act, renderHook} from '@testing-library/react-hooks';
-import {useInfiniteChannels} from './useInfiniteChannels';
-import {ReactQueryWrapper} from '../../../../tests/ReactQueryWrapper';
+import {useInfiniteLocales} from './useInfiniteLocales';
 import fetchMock from 'jest-fetch-mock';
 
-const channelPrint = {code: 'print', label: 'Print'};
-const channelEcommerce = {code: 'ecommerce', label: 'E-commerce'};
-const channelMobile = {code: 'mobile', label: 'Mobile'};
+const localeUS = {code: 'en_US', label: 'English'};
+const localeFR = {code: 'fr_FR', label: 'French'};
+const localeDE = {code: 'de_DE', label: 'German'};
 
-test('it fetches & paginates channels', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify([channelPrint, channelEcommerce]));
+test('it fetches & paginates locales', async () => {
+    fetchMock.mockResponseOnce(JSON.stringify([localeUS, localeFR]));
 
-    const {result, waitForNextUpdate} = renderHook(() => useInfiniteChannels({limit: 2}), {wrapper: ReactQueryWrapper});
+    const {result, waitForNextUpdate} = renderHook(() => useInfiniteLocales({limit: 2}), {wrapper: ReactQueryWrapper});
 
-    expect(fetchMock).toHaveBeenCalledWith('/rest/catalogs/channels?page=1&limit=2', expect.any(Object));
+    expect(fetchMock).toHaveBeenCalledWith('/rest/catalogs/locales?page=1&limit=2', expect.any(Object));
     expect(result.current).toMatchObject({
         isLoading: true,
         isError: false,
@@ -29,13 +30,13 @@ test('it fetches & paginates channels', async () => {
     expect(result.current).toMatchObject({
         isLoading: false,
         isError: false,
-        data: [channelPrint, channelEcommerce],
+        data: [localeUS, localeFR],
         error: null,
         hasNextPage: true,
         fetchNextPage: expect.any(Function),
     });
 
-    fetchMock.mockResponseOnce(JSON.stringify([channelMobile]));
+    fetchMock.mockResponseOnce(JSON.stringify([localeDE]));
 
     await act(async () => {
         await result.current.fetchNextPage();
@@ -44,7 +45,7 @@ test('it fetches & paginates channels', async () => {
     expect(result.current).toMatchObject({
         isLoading: false,
         isError: false,
-        data: [channelPrint, channelEcommerce, channelMobile],
+        data: [localeUS, localeFR, localeDE],
         error: null,
         hasNextPage: false,
         fetchNextPage: expect.any(Function),
@@ -52,11 +53,11 @@ test('it fetches & paginates channels', async () => {
 });
 
 test('it fetches with default parameters', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify([channelPrint, channelEcommerce]));
+    fetchMock.mockResponseOnce(JSON.stringify([localeUS, localeFR]));
 
-    const {result, waitForNextUpdate} = renderHook(() => useInfiniteChannels(), {wrapper: ReactQueryWrapper});
+    const {result, waitForNextUpdate} = renderHook(() => useInfiniteLocales(), {wrapper: ReactQueryWrapper});
 
-    expect(fetchMock).toHaveBeenCalledWith('/rest/catalogs/channels?page=1&limit=20', expect.any(Object));
+    expect(fetchMock).toHaveBeenCalledWith('/rest/catalogs/locales?page=1&limit=20', expect.any(Object));
     expect(result.current).toMatchObject({
         isLoading: true,
         isError: false,
@@ -71,7 +72,7 @@ test('it fetches with default parameters', async () => {
     expect(result.current).toMatchObject({
         isLoading: false,
         isError: false,
-        data: [channelPrint, channelEcommerce],
+        data: [localeUS, localeFR],
         error: null,
         hasNextPage: false,
         fetchNextPage: expect.any(Function),
@@ -81,7 +82,7 @@ test('it fetches with default parameters', async () => {
 test('it stops fetching if there is no more pages', async () => {
     fetchMock.mockResponseOnce(JSON.stringify([]));
 
-    const {result, waitForNextUpdate} = renderHook(() => useInfiniteChannels(), {
+    const {result, waitForNextUpdate} = renderHook(() => useInfiniteLocales(), {
         wrapper: ReactQueryWrapper,
     });
 

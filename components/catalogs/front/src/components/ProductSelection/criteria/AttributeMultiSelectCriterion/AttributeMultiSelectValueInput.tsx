@@ -1,11 +1,11 @@
 import React, {FC, useState} from 'react';
 import {MultiSelectInput} from 'akeneo-design-system';
 import {AttributeMultiSelectCriterionState} from './types';
-import {useUniqueEntitiesByCode} from '../../hooks/useUniqueEntitiesByCode';
 import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {AttributeOption} from '../../models/AttributeOption';
 import {useInfiniteAttributeOptions} from '../../hooks/useInfiniteAttributeOptions';
 import {useAttributeOptionsByCodes} from '../../hooks/useAttributeOptionsByCodes';
+import {useUniqueEntitiesByCode} from '../../../../hooks/useUniqueEntitiesByCode';
 
 type Props = {
     state: AttributeMultiSelectCriterionState;

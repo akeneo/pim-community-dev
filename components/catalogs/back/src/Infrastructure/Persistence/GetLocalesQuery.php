@@ -21,9 +21,17 @@ final class GetLocalesQuery implements GetLocalesQueryInterface
     /**
      * @inheritDoc
      */
-    public function execute(): array
+    public function execute(int $page = 1, int $limit = 20): array
     {
-        $locales = $this->localeRepository->getActivatedLocales();
+        /** @var array<LocaleInterface> $locales */
+        $locales = $this->localeRepository->findBy(
+            [
+                'activated' => true,
+            ],
+            [],
+            $limit,
+            ($page - 1) * $limit
+        );
 
         return \array_map(static fn (LocaleInterface $locale): array => [
             'code' => $locale->getCode(),
