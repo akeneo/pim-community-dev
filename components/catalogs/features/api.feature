@@ -36,37 +36,37 @@ Feature:
     Then the response should contain catalogs details
 
   @database
-  Scenario: Get product's identifiers with an enabled catalog
+  Scenario: Get product's identifiers from an enabled catalog
     Given an enabled catalog sets up with a product selection criteria
     When the external application retrieves the product's identifiers using the API
     Then the response should contain only the product's identifiers from the selection
 
   @database
-  Scenario: Get product's uuids with an enabled catalog
+  Scenario: Get product's uuids from an enabled catalog
     Given an enabled catalog sets up with a product selection criteria
     When the external application retrieves the product's uuids using the API
     Then the response should contain only the product's uuids from the selection
 
   @database
-  Scenario: Get products with an enabled catalog
+  Scenario: Get products from an enabled catalog
     Given an enabled catalog sets up with a product selection criteria
     When the external application retrieves the products using the API
     Then the response should contain only the products from the selection
 
   @database
-  Scenario: Get product's identifiers with a disabled catalog
+  Scenario: Get product's identifiers from a disabled catalog
     Given a disabled catalog
     When the external application retrieves the product's identifiers using the API
     Then the response should contain an empty list
 
   @database
-  Scenario: Get product's uuids with a disabled catalog
+  Scenario: Get product's uuids from a disabled catalog
     Given a disabled catalog
     When the external application retrieves the product's uuids using the API
     Then the response should contain an empty list
 
   @database
-  Scenario: Get products with a disabled catalog
+  Scenario: Get products from a disabled catalog
     Given a disabled catalog
     When the external application retrieves the products using the API
     Then the response should contain an empty list

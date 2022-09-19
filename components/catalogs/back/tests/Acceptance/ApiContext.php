@@ -61,9 +61,24 @@ class ApiContext implements Context
 
     /**
      * @Given an existing catalog
+     */
+    public function anExistingCatalog(): void
+    {
+        $connectedAppUserIdentifier = $this->getConnectedApp()->getUsername();
+        $this->authentication->logAs($connectedAppUserIdentifier);
+
+        $commandBus = $this->container->get(CommandBus::class);
+        $commandBus->execute(new CreateCatalogCommand(
+            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            'Store US',
+            $connectedAppUserIdentifier,
+        ));
+    }
+
+    /**
      * @Given a disabled catalog
      */
-    public function aDisabledExistingCatalog(): void
+    public function aDisabledCatalog(): void
     {
         $connectedAppUserIdentifier = $this->getConnectedApp()->getUsername();
         $this->authentication->logAs($connectedAppUserIdentifier);
