@@ -1,99 +1,155 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: {{{global.extraLabels.instanceName}}}
+  name: "{{{global.extraLabels.instanceName}}}"
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
-    instanceName: {{{global.extraLabels.instanceName}}}
-    pfid: {{{global.extraLabels.pfid}}}
-    instance_dns_record: {{{global.extraLabels.instance_dns_record}}}
-    instance_dns_zone: {{{global.extraLabels.instance_dns_zone}}}
-    papo_project_code: {{{global.extraLabels.papo_project_code}}}
-    papo_project_code_truncated: {{{global.extraLabels.papo_project_code_truncated}}}
-    papo_project_code_hashed: {{{global.extraLabels.papo_project_code_hashed}}}
+    instanceName: "{{{global.extraLabels.instanceName}}}"
+    pfid: "{{{global.extraLabels.pfid}}}"
+    instance_dns_record: "{{{global.extraLabels.instance_dns_record}}}"
+    instance_dns_zone: "{{{global.extraLabels.instance_dns_zone}}}"
+    papo_project_code: "{{{global.extraLabels.papo_project_code}}}"
+    papo_project_code_truncated: "{{{global.extraLabels.papo_project_code_truncated}}}"
+    papo_project_code_hashed: "{{{global.extraLabels.papo_project_code_hashed}}}"
 spec:
   project: default
   source:
-    repoUrl: {{{source.repoUrl}}}
-    path: {{{source.path}}}
-    targetRevision: {{{source.targetRevision}}}
+    repoUrl: "{{{source.repoUrl}}}"
+    path: "{{{source.path}}}"
+    targetRevision: "{{{source.targetRevision}}}"
     helm:
       parameters:
         - name: global.extraLabels.type
-          value: {{{global.extraLabels.type}}}
+          value: "{{{global.extraLabels.type}}}"
         - name: global.extraLabels.instanceName
-          value: {{{global.extraLabels.instanceName}}}
+          value: "{{{global.extraLabels.instanceName}}}"
         - name: global.extraLabels.pfid
-          value: {{{global.extraLabels.pfid}}}
+          value: "{{{global.extraLabels.pfid}}}"
         - name: global.extraLabels.instance_dns_record
-          value: {{{global.extraLabels.instance_dns_record}}}
+          value: "{{{global.extraLabels.instance_dns_record}}}"
         - name: global.extraLabels.instance_dns_zone
-          value: {{{global.extraLabels.instance_dns_zone}}}
+          value: "{{{global.extraLabels.instance_dns_zone}}}"
         - name: global.extraLabels.papo_project_code
-          value: {{{global.extraLabels.papo_project_code}}}
+          value: "{{{global.extraLabels.papo_project_code}}}"
         - name: global.extraLabels.papo_project_code_truncated
-          value: {{{global.extraLabels.papo_project_code_truncated}}}
+          value: "{{{global.extraLabels.papo_project_code_truncated}}}"
         - name: global.extraLabels.papo_project_code_hashed
-          value: {{{global.extraLabels.papo_project_code_hashed}}}
+          value: "{{{global.extraLabels.papo_project_code_hashed}}}"
+        - name: elasticsearch.client.heapSize
+          value: "{{{elasticsearch.client.heapSize}}}"
+        - name: elasticsearch.client.resources.requests.cpu
+          value: "{{{elasticsearch.client.resources.requests.cpu}}}"
+        - name: elasticsearch.client.resources.requests.memory
+          value: "{{{elasticsearch.client.resources.requests.memory}}}"
+        - name: elasticsearch.client.resources.limits.cpu
+          value: "{{{elasticsearch.client.resources.limits.cpu}}}"
+        - name: elasticsearch.client.resources.limits.memory
+          value: "{{{elasticsearch.client.resources.limits.memory}}}"
+        - name: elasticsearch.master.heapSize
+          value: "{{{elasticsearch.master.heapSize}}}"
+        - name: elasticsearch.master.resources.requests.cpu
+          value: "{{{elasticsearch.master.resources.requests.cpu}}}"
+        - name: elasticsearch.master.resources.requests.memory
+          value: "{{{elasticsearch.master.resources.requests.memory}}}"
+        - name: elasticsearch.master.resources.limits.cpu
+          value: "{{{elasticsearch.master.resources.limits.cpu}}}"
+        - name: elasticsearch.master.resources.limits.memory
+          value: "{{{elasticsearch.master.resources.limits.memory}}}"
+        - name: elasticsearch.data.heapSize
+          value: "{{{elasticsearch.data.heapSize}}}"
+        - name: elasticsearch.data.resources.requests.cpu
+          value: "{{{elasticsearch.data.resources.requests.cpu}}}"
+        - name: elasticsearch.data.resources.requests.memory
+          value: "{{{elasticsearch.data.resources.requests.memory}}}"
+        - name: elasticsearch.data.resources.limits.cpu
+          value: "{{{elasticsearch.data.resources.limits.cpu}}}"
+        - name: elasticsearch.data.resources.limits.memory
+          value: "{{{elasticsearch.data.resources.limits.memory}}}"
+        - name: memcached.resources.limits.cpu
+          value: "{{{memcached.resources.limits.cpu}}}"
+        - name: memcached.resources.limits.memory
+          value: "{{{memcached.resources.limits.memory}}}"
+        - name: memcached.resources.requests.cpu
+          value: "{{{memcached.resources.requests.cpu}}}"
+        - name: memcached.resources.requests.memory
+          value: "{{{memcached.resources.requests.memory}}}"
         - name: mailer.login
-          value: {{{mailer.login}}}
+          value: "{{{mailer.login}}}"
         - name: mailer.password
-          value: {{{mailer.password}}}
+          value: "{{{mailer.password}}}"
         - name: mailer.base_mailer_url
-          value: {{{mailer.base_mailer_url}}}
+          value: "{{{mailer.base_mailer_url}}}"
         - name: mailer.domain
-          value: {{{mailer.domain}}}
+          value: "{{{mailer.domain}}}"
         - name: mailer.api_key
-          value: {{{mailer.api_key}}}
+          value: "{{{mailer.api_key}}}"
         - name: backup.enabled
           value: "{{{backup.enabled}}}"
         - name: common.gcpProjectID
-          value: {{{common.gcpProjectID}}}
+          value: "{{{common.gcpProjectID}}}"
         - name: common.gcpFireStoreProjectID
-          value: {{{common.gcpFireStoreProjectID}}}
+          value: "{{{common.gcpFireStoreProjectID}}}"
         - name: common.googleZone
-          value: {{{common.googleZone}}}
+          value: "{{{common.googleZone}}}"
         - name: common.pimMasterDomain
-          value: {{{common.pimMasterDomain}}}
+          value: "{{{common.pimMasterDomain}}}"
         - name: common.dnsCloudDomain
-          value: {{{common.dnsCloudDomain}}}
+          value: "{{{common.dnsCloudDomain}}}"
         - name: common.workloadIdentityKSA
-          value: {{{common.workloadIdentityKSA}}}
+          value: "{{{common.workloadIdentityKSA}}}"
         - name: common.workloadIdentityGSA
-          value: {{{common.workloadIdentityGSA}}}
+          value: "{{{common.workloadIdentityGSA}}}"
         - name: image.pim.repository
-          value: {{{image.pim.repository}}}
+          value: "{{{image.pim.repository}}}"
         - name: image.pim.tag
-          value: {{{image.pim.tag}}}
+          value: "{{{image.pim.tag}}}"
         - name: pim.defaultAdminUser.login
-          value: {{{pim.defaultAdminUser.login}}}
+          value: "{{{pim.defaultAdminUser.login}}}"
         - name: pim.defaultAdminUser.firstName
-          value: {{{pim.defaultAdminUser.firstName}}}
+          value: "{{{pim.defaultAdminUser.firstName}}}"
         - name: pim.defaultAdminUser.lastName
-          value: {{{pim.defaultAdminUser.lastName}}}
+          value: "{{{pim.defaultAdminUser.lastName}}}"
         - name: pim.defaultAdminUser.email
-          value: {{{pim.defaultAdminUser.email}}}
+          value: "{{{pim.defaultAdminUser.email}}}"
         - name: pim.defaultAdminUser.password
-          value: {{{pim.defaultAdminUser.password}}}
+          value: "{{{pim.defaultAdminUser.password}}}"
         - name: pim.defaultAdminUser.uiLocale
-          value: {{{pim.defaultAdminUser.uiLocale}}}
+          value: "{{{pim.defaultAdminUser.uiLocale}}}"
         - name: pim.monitoring.authenticationToken
-          value: {{{pim.monitoring.authenticationToken}}}
+          value: "{{{pim.monitoring.authenticationToken}}}"
         - name: pim.api.namespace
-          value: {{{pim.api.namespace}}}
+          value: "{{{pim.api.namespace}}}"
         - name: pim.web.namespace
-          value: {{{pim.web.namespace}}}
+          value: "{{{pim.web.namespace}}}"
         - name: pim.secret
-          value: {{{pim.secret}}}
+          value: "{{{pim.secret}}}"
         - name: pim.storage.bucketName
-          value: {{{pim.storage.bucketName}}}
+          value: "{{{pim.storage.bucketName}}}"
+        - name: mysql.mysql.userPassword
+          value: "{{{mysql.mysql.userPassword}}}"
+        - name: mysql.mysql.rootPassword
+          value: "{{{mysql.mysql.rootPassword}}}"
+        - name: mysql.mysql.dataDiskSize
+          value: "{{{mysql.mysql.dataDiskSize}}}"
+        - name: mysql.mysql.innodbBufferPoolSize
+          value: "{{{mysql.mysql.innodbBufferPoolSize}}}"
+        - name: mysql.mysql.resources.requests.cpu
+          value: "{{{mysql.mysql.resources.requests.cpu}}}"
+        - name: mysql.mysql.resources.requests.memory
+          value: "{{{mysql.mysql.resources.requests.memory}}}"
+        - name: mysql.mysql.resources.limits.cpu
+          value: "{{{mysql.mysql.resources.limits.cpu}}}"
+        - name: mysql.mysql.resources.limits.memory
+          value: "{{{mysql.mysql.resources.limits.memory}}}"
         - name: mysql.common.persistentDisks.0
-          value: {{{mysql.common.persistentDisks.0}}}
+          value: "{{{mysql.common.persistentDisks.0}}}"
+        - name: mysql.common.class
+          value: "{{{mysql.common.class}}}"
   destination:
-    server: {{{destination.server}}}
-    namespace: {{{destination.namespace}}}
+    server: "{{{destination.server}}}"
+    namespace: "{{{destination.namespace}}}"
   syncPolicy:
     automated:
       prune: true

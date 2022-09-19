@@ -118,11 +118,11 @@ module "timmy_create_tenant" {
     GCP_PROJECT_ID           = local.project_id
     GOOGLE_MANAGED_ZONE_DNS  = local.domain
     GOOGLE_ZONE              = "europe-west1-b"
-    LOG_LEVEL                = "info"
+    LOG_LEVEL                = "debug"
     MAILER_BASE_URL          = "smtp://smtp.mailgun.org:2525"
     MAILER_DOMAIN            = "mg.cloud.akeneo.com"
     NODE_ENV                 = "production"
-    PIM_IMAGE_REPOSITORY     = "europe-west1-docker.pkg.dev/akecld-prd-pim-saas-shared/prd/pim-enterprise-dev"
+    PIM_IMAGE_REPOSITORY     = "europe-west1-docker.pkg.dev/akecld-prd-pim-saas-shared/prod/pim-enterprise-dev"
     PIM_IMAGE_TAG            = "v20220822000000"
     SOURCE_PATH              = "tenant"
     SOURCE_REPO_URL          = "https://github.com/akeneo/pim-saas-k8s-artifacts.git"

@@ -96,8 +96,8 @@ async function getArgoCdToken(url, username, password) {
   logger.info(`Authenticating with ${username} username to ArgoCD server ${url} to get a token`);
   const resourceUrl = new URL('/api/v1/session', url);
   const payload = JSON.stringify({username: username, password: password});
-  const config =  {httpsAgent: httpsAgent, headers: {'Content-Type': 'application/json' }};
-  
+  const config = {httpsAgent: httpsAgent, headers: {'Content-Type': 'application/json'}};
+
   try {
     const resp = await axios.post(resourceUrl.toString(), payload, config);
     const token = resp.data.token
@@ -161,14 +161,14 @@ function castYamlToJson(content) {
 async function createArgoCdApp(url, token, payload) {
   logger.info('Create the ArgoCD application for the new tenant');
   const resourceUrl = new URL('/api/v1/applications', url);
-  const config =  {
-    httpsAgent: httpsAgent, 
+  const config = {
+    httpsAgent: httpsAgent,
     headers: {
       'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json' 
+      'Content-Type': 'application/json'
     }
   };
-  
+
   try {
     return Promise.resolve(await axios.post(resourceUrl.toString(), payload, config));
   } catch (error) {
@@ -190,7 +190,7 @@ async function createArgoCdApp(url, token, payload) {
 async function ensureArgoCdAppIsHealthy(url, token, appName, maxRetries = 60, retryInterval = 10) {
   const path = `/api/v1/applications/${appName}`;
   const resourceUrl = new URL(path, url).toString();
-  const config =  {
+  const config = {
     httpsAgent: httpsAgent,
     headers: {
       'Authorization': `Bearer ${token}`,
@@ -258,7 +258,7 @@ async function ensureArgoCdAppIsHealthy(url, token, appName, maxRetries = 60, re
 async function ensureArgoCdAppIsSynced(url, token, appName, maxRetries = 20, retryInterval = 10) {
   const path = `/api/v1/applications/${appName}`
   const resourceUrl = new URL(path, url).toString();
-  const config =  {
+  const config = {
     httpsAgent: httpsAgent,
     headers: {
       'Authorization': `Bearer ${token}`,
@@ -392,191 +392,269 @@ function loadEnvironmentVariable(name) {
 }
 
 functions.http('createTenant', (req, res) => {
-  const ARGOCD_PASSWORD = loadEnvironmentVariable('ARGOCD_PASSWORD');
-  const ARGOCD_URL = new URL(loadEnvironmentVariable('ARGOCD_URL')).toString();
-  const ARGOCD_USERNAME = loadEnvironmentVariable('ARGOCD_USERNAME');
-  const GCP_FIRESTORE_PROJECT_ID = loadEnvironmentVariable('GCP_FIRESTORE_PROJECT_ID');
-  const GCP_PROJECT_ID = loadEnvironmentVariable('GCP_PROJECT_ID');
-  const GOOGLE_MANAGED_ZONE_DNS = loadEnvironmentVariable('GOOGLE_MANAGED_ZONE_DNS');
-  const GOOGLE_ZONE = loadEnvironmentVariable('GOOGLE_ZONE');
-  const LOG_LEVEL = loadEnvironmentVariable('LOG_LEVEL');
-  const MAILER_API_KEY = loadEnvironmentVariable('MAILER_API_KEY');
-  const MAILER_BASE_URL = loadEnvironmentVariable('MAILER_BASE_URL');
-  const MAILER_DOMAIN = loadEnvironmentVariable('MAILER_DOMAIN');
-  const PIM_IMAGE_REPOSITORY = loadEnvironmentVariable('PIM_IMAGE_REPOSITORY');
-  const PIM_IMAGE_TAG = loadEnvironmentVariable('PIM_IMAGE_TAG');
-  const SOURCE_PATH = loadEnvironmentVariable('SOURCE_PATH');
-  const SOURCE_REPO_URL = loadEnvironmentVariable('SOURCE_REPO_URL');
-  const SOURCE_TARGET_REVISION = loadEnvironmentVariable('SOURCE_TARGET_REVISION');
-  const TENANT_CONTEXT = loadEnvironmentVariable('TENANT_CONTEXT');
+    const ARGOCD_PASSWORD = loadEnvironmentVariable('ARGOCD_PASSWORD');
+    const ARGOCD_URL = new URL(loadEnvironmentVariable('ARGOCD_URL')).toString();
+    const ARGOCD_USERNAME = loadEnvironmentVariable('ARGOCD_USERNAME');
+    const GCP_FIRESTORE_PROJECT_ID = loadEnvironmentVariable('GCP_FIRESTORE_PROJECT_ID');
+    const GCP_PROJECT_ID = loadEnvironmentVariable('GCP_PROJECT_ID');
+    const GOOGLE_MANAGED_ZONE_DNS = loadEnvironmentVariable('GOOGLE_MANAGED_ZONE_DNS');
+    const GOOGLE_ZONE = loadEnvironmentVariable('GOOGLE_ZONE');
+    const LOG_LEVEL = loadEnvironmentVariable('LOG_LEVEL');
+    const MAILER_API_KEY = loadEnvironmentVariable('MAILER_API_KEY');
+    const MAILER_BASE_URL = loadEnvironmentVariable('MAILER_BASE_URL');
+    const MAILER_DOMAIN = loadEnvironmentVariable('MAILER_DOMAIN');
+    const PIM_IMAGE_REPOSITORY = loadEnvironmentVariable('PIM_IMAGE_REPOSITORY');
+    const PIM_IMAGE_TAG = loadEnvironmentVariable('PIM_IMAGE_TAG');
+    const SOURCE_PATH = loadEnvironmentVariable('SOURCE_PATH');
+    const SOURCE_REPO_URL = loadEnvironmentVariable('SOURCE_REPO_URL');
+    const SOURCE_TARGET_REVISION = loadEnvironmentVariable('SOURCE_TARGET_REVISION');
+    const TENANT_CONTEXT = loadEnvironmentVariable('TENANT_CONTEXT');
 
-  const body = JSON.parse(req.body);
+    const body = JSON.parse(req.body);
 
-  initializeLogger(GCP_PROJECT_ID, LOG_LEVEL, body.instanceName);
+    initializeLogger(GCP_PROJECT_ID, LOG_LEVEL, body.instanceName);
 
-  // Ensure the json object in the http request body respects the expected schema
-  logger.info('Validation of the JSON schema of the request body');
-  logger.debug(`HTTP request JSON body: ${JSON.stringify(req.body)}`);
+    // Ensure the json object in the http request body respects the expected schema
+    logger.info('Validation of the JSON schema of the request body');
+    logger.debug(`HTTP request JSON body: ${JSON.stringify(req.body)}`);
 
-  const schemaCheck = v.validate(body, schema);
-  if (!schemaCheck.valid) {
-    const error = schemaCheck.errors[0].message;
-    res.status(400).json({
-      status_code: 400,
-      message: `HTTP body json is not valid: ${error}`,
-    })
-    throw new Error(`The JSON schema of the received http body is not valid: ${error}`);
-  }
-  logger.debug(`Received HTTP json body: ${body}`);
+    const schemaCheck = v.validate(body, schema);
+    if (!schemaCheck.valid) {
+      const error = schemaCheck.errors[0].message;
+      res.status(400).json({
+        status_code: 400,
+        message: `HTTP body json is not valid: ${error}`,
+      })
+      throw new Error(`The JSON schema of the received http body is not valid: ${error}`);
+    }
+    logger.debug(`Received HTTP json body: ${body}`);
 
-  const instanceName = body.instanceName;
-  const extraLabelType = 'ucs';
-  const pfid = `${extraLabelType}-${instanceName}`;
-  const pimMasterDomain = `${instanceName}.${GOOGLE_MANAGED_ZONE_DNS}`;
+    const instanceName = body.instanceName;
+    const extraLabelType = 'ucs';
+    const pfid = `${extraLabelType}-${instanceName}`;
+    const pimMasterDomain = `${instanceName}.${GOOGLE_MANAGED_ZONE_DNS}`;
 
-  logger.debug(`Initialize the firestore client with instance in ${GCP_FIRESTORE_PROJECT_ID} project`);
-  const firestore = new Firestore({
-    projectId: GCP_FIRESTORE_PROJECT_ID,
-    timestampsInSnapshots: true
-  });
+    logger.debug(`Initialize the firestore client with instance in ${GCP_FIRESTORE_PROJECT_ID} project`);
+    const firestore = new Firestore({
+      projectId: GCP_FIRESTORE_PROJECT_ID,
+      timestampsInSnapshots: true
+    });
 
 
-  const prepareTenantCreation = async () => {
-    await updateFirestoreDocStatus(firestore, TENANT_CONTEXT, instanceName, FIRESTORE_STATUS.CREATION_IN_PREPARATION);
+    const prepareTenantCreation = async () => {
+        await updateFirestoreDocStatus(firestore, TENANT_CONTEXT, instanceName, FIRESTORE_STATUS.CREATION_IN_PREPARATION);
 
-    logger.info('Generate tenant credentials');
-    const mailerPassword = generatePassword();
-    logger.debug(`mailerPassword: ${mailerPassword}`);
-    const defaultAdminUserPassword = generatePassword();
-    logger.debug(`defaultAdminUserPassword: ${defaultAdminUserPassword}`);
-    const pimSecret = generatePassword();
-    logger.debug(`pimSecret: ${pimSecret}`);
-    const pimMonitoringToken = generatePassword();
-    logger.debug(`pimMonitoringToken: ${pimMonitoringToken}`);
+        logger.info('Generate tenant credentials');
+        const mailerPassword = generatePassword();
+        logger.debug(`mailerPassword: ${mailerPassword}`);
+        const defaultAdminUserPassword = generatePassword();
+        logger.debug(`defaultAdminUserPassword: ${defaultAdminUserPassword}`);
+        const pimSecret = generatePassword();
+        logger.debug(`pimSecret: ${pimSecret}`);
+        const pimMonitoringToken = generatePassword();
+        logger.debug(`pimMonitoringToken: ${pimMonitoringToken}`);
+        const mysqlUserPassword = generatePassword();
+        logger.debug(`mysqlUserPassword: ${mysqlUserPassword}`);
+        const mysqlRootPassword = generatePassword()
+        logger.debug(`mysqlRootPassword: ${mysqlRootPassword}`);
 
-    // Deep merge of the request json body and the computed json object
-    const parameters = merge(body, {
-      source: {
-        repoUrl: SOURCE_REPO_URL,
-        path: SOURCE_PATH,
-        targetRevision: SOURCE_TARGET_REVISION
-      },
-
-      destination: {
-        server: 'https://kubernetes.default.svc',
-        namespace: instanceName
-      },
-
-      backup: {
-        enabled: false
-      },
-      common: {
-        gcpProjectID: GCP_PROJECT_ID,
-        gcpFireStoreProjectID: GCP_FIRESTORE_PROJECT_ID,
-        googleZone: GOOGLE_ZONE,
-        pimMasterDomain: pimMasterDomain,
-        dnsCloudDomain: GOOGLE_MANAGED_ZONE_DNS,
-        workloadIdentityGSA: 'main-service-account',
-        workloadIdentityKSA: `${pfid}-ksa-workload-identity`,
-      },
-      global: {
-        extraLabels: {
-          instanceName: instanceName,
-          pfid: pfid,
-          instance_dns_zone: GOOGLE_MANAGED_ZONE_DNS,
-          instance_dns_record: pimMasterDomain,
-          papo_project_code: instanceName,
-          papo_project_code_truncated: instanceName,
-          papo_project_code_hashed: instanceName,
-          type: extraLabelType,
-        }
-      },
-      image: {
-        pim: {
-          repository: PIM_IMAGE_REPOSITORY,
-          tag: PIM_IMAGE_TAG,
-        }
-      },
-      mailer: {
-        login: `${instanceName}@{MAILER_DOMAIN}`,
-        password: mailerPassword,
-        base_mailer_url: MAILER_BASE_URL,
-        domain: MAILER_DOMAIN,
-        api_key: MAILER_API_KEY,
-      },
-      mysql: {
-        common: {
-          persistentDisks: [
-            `projects/${GCP_PROJECT_ID}/zones/${GOOGLE_ZONE}/disks/${pfid}-mysql`
-          ]
-        }
-      },
-      pim: {
-        api: {
-          namespace: 'pim'
-        },
-        web: {
-          namespace: 'pim'
-        },
-        storage: {
-          bucketName: pfid
-        },
-        defaultAdminUser: {
-          password: defaultAdminUserPassword
-        },
-        secret: pimSecret,
-        monitoring: {
-          authenticationToken: pimMonitoringToken
-        },
+        // Deep merge of the request json body and the computed json object
+        const parameters = merge(body, {
+          source: {
+            repoUrl: SOURCE_REPO_URL,
+            path: SOURCE_PATH,
+            targetRevision: SOURCE_TARGET_REVISION
+          },
+          destination: {
+            server: 'https://kubernetes.default.svc',
+            namespace: instanceName
+          },
+          backup: {
+            enabled: false
+          },
+          common: {
+            gcpProjectID: GCP_PROJECT_ID,
+            gcpFireStoreProjectID: GCP_FIRESTORE_PROJECT_ID,
+            googleZone: GOOGLE_ZONE,
+            pimMasterDomain: pimMasterDomain,
+            dnsCloudDomain: GOOGLE_MANAGED_ZONE_DNS,
+            workloadIdentityGSA: 'main-service-account',
+            workloadIdentityKSA: `${pfid}-ksa-workload-identity`,
+          },
+          elasticsearch: {
+            client: {
+              heapSize: "128m",
+              resources: {
+                requests: {
+                  cpu: "20m",
+                  memory: "1024Mi"
+                },
+                limits: {
+                  cpu: "1",
+                  memory: "1024Mi"
+                }
+              }
+            },
+            master: {
+              heapSize: "512m",
+              resources: {
+                requests: {
+                  cpu: "15m",
+                  memory: "768Mi"
+                },
+                limits: {
+                  cpu: "1",
+                  memory: "768Mi"
+                }
+              }
+            },
+            data: {
+              heapSize: "1024m",
+              resources: {
+                requests: {
+                  cpu: "40m",
+                  memory: "1536Mi"
+                },
+                limits: {
+                  cpu: "1",
+                  memory: "1740Mi"
+                }
+              }
+            },
+          },
+          global: {
+            extraLabels: {
+              instanceName: instanceName,
+              pfid: pfid,
+              instance_dns_zone: GOOGLE_MANAGED_ZONE_DNS,
+              instance_dns_record: pimMasterDomain,
+              papo_project_code: instanceName,
+              papo_project_code_truncated: instanceName,
+              papo_project_code_hashed: instanceName,
+              type: extraLabelType,
+            }
+          },
+          image: {
+            pim: {
+              repository: PIM_IMAGE_REPOSITORY,
+              tag: PIM_IMAGE_TAG,
+            }
+          },
+          mailer: {
+            login: `${instanceName}@${MAILER_DOMAIN}`,
+            password: mailerPassword,
+            base_mailer_url: MAILER_BASE_URL,
+            domain: MAILER_DOMAIN,
+            api_key: MAILER_API_KEY,
+          },
+          memcached: {
+            resources: {
+              limits: {
+                cpu: "1",
+                memory: "32Mi"
+              },
+              requests: {
+                cpu: "25m",
+                memory: "16Mi"
+              }
+            }
+          },
+          mysql: {
+            mysql: {
+              userPassword: mysqlUserPassword,
+              rootPassword: mysqlRootPassword,
+              dataDiskSize: "10",
+              innodbBufferPoolSize: "2G",
+              resources: {
+                limits: {
+                  cpu: "1",
+                  memory: "3584Mi"
+                },
+                requests: {
+                  cpu: "100m",
+                  memory: "3584Mi"
+                }
+              }
+            },
+            common: {
+              class: "standard",
+              persistentDisks: [
+                `projects/${GCP_PROJECT_ID}/zones/${GOOGLE_ZONE}/disks/${pfid}-mysql`
+              ]
+            }
+          },
+          pim: {
+            api: {
+              namespace: 'pim'
+            },
+            web: {
+              namespace: 'pim'
+            },
+            storage: {
+              bucketName: pfid
+            },
+            defaultAdminUser: {
+              password: defaultAdminUserPassword
+            },
+            secret: pimSecret,
+            monitoring: {
+              authenticationToken: pimMonitoringToken
+            },
+          }
+        });
+        logger.debug(`Prepared data for tenant creation: ${JSON.stringify(parameters)}`);
+        return parameters;
       }
-    });
-    logger.debug(`Prepared data for tenant creation: ${JSON.stringify(parameters)}`);
-    return parameters;
-  };
+    ;
 
-  const createTenant = async () => {
-    const parameters = await prepareTenantCreation()
-    await updateFirestoreDoc(firestore, TENANT_CONTEXT, instanceName, FIRESTORE_STATUS.CREATION_IN_PROGRESS, {
-      AKENEO_PIM_URL: `https://${instanceName}.${GOOGLE_MANAGED_ZONE_DNS}`,
-      APP_DATABASE_HOST: `pim-mysql.${pfid}.svc.cluster.local`,
-      APP_INDEX_HOSTS: `elasticsearch-client.${pfid}.svc.cluster.local`,
-      APP_TENANT_ID: pfid,
-      MAILER_PASSWORD: parameters.mailer.password,
-      MAILER_URL: parameters.mailer.base_mailer_url,
-      MEMCACHED_SVC: `memcached.${pfid}.svc.cluster.local`,
-      APP_DATABASE_PASSWORD: parameters.pim.secret,
-      PFID: pfid,
-      SRNT_GOOGLE_BUCKET_NAME: pfid
-    });
+    const createTenant = async () => {
+      const parameters = await prepareTenantCreation()
+      await updateFirestoreDoc(firestore, TENANT_CONTEXT, instanceName, FIRESTORE_STATUS.CREATION_IN_PROGRESS, {
+        AKENEO_PIM_URL: `https://${instanceName}.${GOOGLE_MANAGED_ZONE_DNS}`,
+        APP_DATABASE_HOST: `pim-mysql.${pfid}.svc.cluster.local`,
+        APP_DATABASE_PASSWORD: parameters.mysql.mysql.userPassword,
+        APP_INDEX_HOSTS: `elasticsearch-client.${pfid}.svc.cluster.local`,
+        APP_SECRET: parameters.pim.secret,
+        APP_TENANT_ID: pfid,
+        DATABASE_ROOT_PASSWORD: parameters.mysql.mysql.rootPassword,
+        MAILER_PASSWORD: parameters.mailer.password,
+        MAILER_URL: parameters.mailer.base_mailer_url,
+        MEMCACHED_SVC: `memcached.${pfid}.svc.cluster.local`,
+        MONITORING_AUTHENTICATION_TOKEN: parameters.pim.monitoring.authenticationToken,
+        PFID: pfid,
+        SRNT_GOOGLE_BUCKET_NAME: pfid
+      });
 
-    const manifest = templateArgoCdManifest(parameters);
-    const payload = castYamlToJson(manifest);
-    const token = await getArgoCdToken(ARGOCD_URL, ARGOCD_USERNAME, ARGOCD_PASSWORD);
-    const resp = await createArgoCdApp(ARGOCD_URL, token, payload);
-    await ensureArgoCdAppIsHealthy(ARGOCD_URL, token, instanceName);
-    // TODO PH-286: full synced is not possible because http routes objects are not synced. Fix that to uncomment this line
-    //await ensureArgoCdAppIsSynced(ARGOCD_URL, token, instanceName);
+      const manifest = templateArgoCdManifest(parameters);
+      const payload = castYamlToJson(manifest);
+      const token = await getArgoCdToken(ARGOCD_URL, ARGOCD_USERNAME, ARGOCD_PASSWORD);
+      const resp = await createArgoCdApp(ARGOCD_URL, token, payload);
+      await ensureArgoCdAppIsHealthy(ARGOCD_URL, token, instanceName);
+      // TODO PH-286: full synced is not possible because http routes objects are not synced. Fix that to uncomment this line
+      //await ensureArgoCdAppIsSynced(ARGOCD_URL, token, instanceName);
+    }
+
+    createTenant(res)
+      .then(async () => {
+        await updateFirestoreDocStatus(firestore, TENANT_CONTEXT, instanceName, FIRESTORE_STATUS.CREATED);
+
+        logger.info('Tenant is created');
+
+        // TODO : notify the portal with 'activated' status
+        res.status(200).json({
+          status_code: 200,
+          message: `Successfully created the tenant ${instanceName}`
+        })
+      })
+      .catch(async (error) => {
+        logger.error(error);
+        await updateFirestoreDocStatus(firestore, TENANT_CONTEXT, instanceName, FIRESTORE_STATUS.CREATION_FAILED);
+
+        res.status(500).json({
+          status_code: 500,
+          message: `Failed to create the tenant ${instanceName}: ${error}`
+        })
+      });
   }
-
-  createTenant(res)
-    .then(async () => {
-      await updateFirestoreDocStatus(firestore, TENANT_CONTEXT, instanceName, FIRESTORE_STATUS.CREATED);
-
-      logger.info('Tenant is created');
-
-      // TODO : notify the portal with 'activated' status
-      res.status(200).json({
-        status_code: 200,
-        message: `Successfully created the tenant ${instanceName}`
-      })
-    })
-    .catch(async (error) => {
-      logger.error(error);
-      await updateFirestoreDocStatus(firestore, TENANT_CONTEXT, instanceName, FIRESTORE_STATUS.CREATION_FAILED);
-
-      res.status(500).json({
-        status_code: 500,
-        message: `Failed to create the tenant ${instanceName}: ${error}`
-      })
-    });
-});
+)
+;

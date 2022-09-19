@@ -119,10 +119,10 @@ async function requestTenantsFromPortal(url, token, status, filters) {
 
   try {
     logger.info(`Retrieve tenants from the portal with ${status} status and ${filters} filters`);
-    logger.debug(`GET ${resourceUrl.toString()}`);
+    logger.debug(`GET ${resourceUrl}`);
     const resp = await axios.get(resourceUrl.toString(), headers);
     const tenants = resp.data;
-    logger.debug(`Tenants with ${status} status and ${filters} filter: + JSON.stringify(tenants)`);
+    logger.debug(`Tenants with ${status} status and ${filters} filter: + ${JSON.stringify(tenants)}`);
     return Promise.resolve(tenants);
   } catch (error) {
     const msg = `Failed to request tenants with ${status} status from the portal: ${error}`;
@@ -149,10 +149,10 @@ async function requestCloudFunction(url, method, data = null) {
       logger.debug('Request ' + url + ' with target audience ' + url + ' for authentication');
       const client = await auth.getIdTokenClient(url);
       logger.debug(`Client: ${client}`);
-      return Promise.resolve(client.request({url: url, method: method, data: data}));
+      return client.request({url: url, method: method, data: data});
     } else {
       logger.debug('Use Google default application credentials for authentication');
-      return Promise.resolve(auth.request({url: url, method: method, data: data}));
+      return auth.request({url: url, method: method, data: data});
     }
   } catch (error) {
     const msg = `Failed to call the cloud function ${url}: ${error}`;
@@ -193,7 +193,7 @@ functions.http('requestPortal', (req, res) => {
 
   const tenantsToCreate = async () => {
     const tenants = await getTenants(TENANT_STATUS.PENDING_CREATION);
-    for (const tenant of tenants) {
+    await Promise.allSettled(tenants.map(async tenant => {
       const subject = tenant['subject'];
       const cloudInstance = subject['cloud_instance'];
       const instanceName = subject['instance_fqdn']['prefix'];
@@ -219,13 +219,13 @@ functions.http('requestPortal', (req, res) => {
       } catch (error) {
         logger.error(`Failed to call the cloudfunction ${FUNCTION_URL_TIMMY_CREATE_TENANT} to create the tenant: ${JSON.stringify(error.response.data)}`);
       }
-    }
+    }));
   }
 
   const tenantsToDelete = async () => {
     const tenants = await getTenants(TENANT_STATUS.PENDING_DELETION);
 
-    for (const tenant of tenants) {
+    await Promise.allSettled(tenants.map(async tenant => {
       const subject = tenant['subject'];
       const instanceName = subject['instance_fqdn']['prefix'];
 
@@ -234,14 +234,14 @@ functions.http('requestPortal', (req, res) => {
       try {
         const resp = await requestCloudFunction(url.toString(), "POST");
       } catch (error) {
-        logger.error(`Failed to call the cloudfunction ${url.toString()} to delete the tenant: ${JSON.stringify(error)}`);
+        logger.error(`Failed to call the cloudfunction ${url} to delete the tenant: ${JSON.stringify(error)}`);
       }
-    }
+    }));
   }
 
   const dispatchActions = async () => {
     logger.info('Dispatch action to provisioning cloud functions');
-    await Promise.all([tenantsToCreate(), tenantsToDelete()]);
+    await Promise.all([tenantsToCreate()]);
   }
 
   dispatchActions(res)
