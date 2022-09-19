@@ -1,9 +1,5 @@
 import {LabelCollection} from '@akeneo-pim-community/shared';
 
-// TODO keep or remove ?
-export type CategoryAttributeUUID = string;
-export type CategoryAttributeCode = string;
-
 export const CATEGORY_ATTRIBUTE_TYPE_TEXT = 'text';
 export const CATEGORY_ATTRIBUTE_TYPE_AREA = 'textarea';
 export const CATEGORY_ATTRIBUTE_TYPE_RICHTEXT = 'richtext';
@@ -25,5 +21,5 @@ export type Attribute = {
   order: number;
   is_localizable: boolean;
   labels: LabelCollection;
-  template_identifier: string;
+  template_uuid: string;
 };

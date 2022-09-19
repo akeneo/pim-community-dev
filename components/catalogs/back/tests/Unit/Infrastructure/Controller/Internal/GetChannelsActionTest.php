@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Unit\Infrastructure\Controller\Internal;
 
+use Akeneo\Catalogs\Application\Persistence\GetChannelsByCodeQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\GetChannelsQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Controller\Internal\GetChannelsAction;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -20,11 +20,13 @@ class GetChannelsActionTest extends TestCase
 {
     private ?GetChannelsAction $getChannelsAction;
     private ?GetChannelsQueryInterface $getChannelsQuery;
+    private ?GetChannelsByCodeQueryInterface $getChannelsByCodeQuery;
 
     protected function setUp(): void
     {
         $this->getChannelsQuery = $this->createMock(GetChannelsQueryInterface::class);
-        $this->getChannelsAction = new GetChannelsAction($this->getChannelsQuery);
+        $this->getChannelsByCodeQuery = $this->createMock(GetChannelsByCodeQueryInterface::class);
+        $this->getChannelsAction = new GetChannelsAction($this->getChannelsQuery, $this->getChannelsByCodeQuery);
     }
 
     public function testItRedirectsWhenRequestIsNotAXmlHttpRequest(): void
@@ -49,6 +51,27 @@ class GetChannelsActionTest extends TestCase
         );
 
         self::assertSame(['channelA', 'channelB', 'channelC'], \json_decode($response->getContent(), null, 512, JSON_THROW_ON_ERROR));
+    }
+
+    public function testItReturnsNoChannelsWhenNoCodesAreProvided(): void
+    {
+        $this->getChannelsByCodeQuery
+            ->method('execute')
+            ->with([], 1, 20)
+            ->willReturn([]);
+
+        $response = ($this->getChannelsAction)(
+            new Request(
+                query: [
+                    'codes' => '',
+                ],
+                server: [
+                    'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                ],
+            )
+        );
+
+        self::assertSame([], \json_decode($response->getContent(), null, 512, JSON_THROW_ON_ERROR));
     }
 
     /**
@@ -91,6 +114,11 @@ class GetChannelsActionTest extends TestCase
                     'limit' => 0,
                 ],
             ],
+            'codes is not a string' => [
+                [
+                    'codes' => ['ecommerce', 'print'],
+                ],
+            ],
         ];
     }
 
@@ -119,6 +147,7 @@ class GetChannelsActionTest extends TestCase
                 [
                     'page' => 1,
                     'limit' => 1,
+                    'codes' => 'ecommerce,print',
                 ],
             ],
         ];
