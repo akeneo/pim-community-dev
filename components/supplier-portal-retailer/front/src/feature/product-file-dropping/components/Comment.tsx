@@ -31,6 +31,7 @@ const IconContainer = styled.div<AkeneoThemedProps & {outgoing: boolean}>`
 
 const ContentContainer = styled.div`
     margin-top: 10px;
+    margin-bottom: 10px;
     line-height: 15.6px;
 `;
 
