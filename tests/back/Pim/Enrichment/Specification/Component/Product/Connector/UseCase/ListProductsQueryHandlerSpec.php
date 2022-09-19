@@ -18,6 +18,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQua
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindId;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
@@ -80,6 +81,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         ])->shouldBeCalled()->willReturn($pqb);
 
         $pqb->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
+        $pqb->addFilter('identifier', Operators::IS_NOT_EMPTY, null)->shouldBeCalled();
 
         $connectorProduct1 = new ConnectorProduct(
             Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
@@ -147,6 +149,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         ])->shouldBeCalled()->willReturn($pqb);
 
         $pqb->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
+        $pqb->addFilter('identifier', Operators::IS_NOT_EMPTY, null)->shouldBeCalled();
 
         $connectorProduct1 = new ConnectorProduct(
             Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
@@ -212,6 +215,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         ])->shouldBeCalled()->willReturn($pqb);
 
         $pqb->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
+        $pqb->addFilter('identifier', Operators::IS_NOT_EMPTY, null)->shouldBeCalled();
 
         $connectorProduct1 = new ConnectorProduct(
             Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
@@ -284,6 +288,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
 
         $pqb->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
         $pqb->addFilter('categories', 'IN CHILDREN', ['master'], ['locale' => null, 'scope' => null])->shouldBeCalled();
+        $pqb->addFilter('identifier', Operators::IS_NOT_EMPTY, null)->shouldBeCalled();
 
         $getConnectorProducts
             ->fromProductQueryBuilder($pqb, 1, null, 'tablet', ['en_US'])
@@ -313,6 +318,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         ])->shouldBeCalled()->willReturn($pqb);
 
         $pqb->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
+        $pqb->addFilter('identifier', Operators::IS_NOT_EMPTY, null)->shouldBeCalled();
 
         $getConnectorProducts
             ->fromProductQueryBuilder($pqb, 1, null, null, ['en_US', 'fr_FR'])
@@ -342,6 +348,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         ])->shouldBeCalled()->willReturn($pqb);
 
         $pqb->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
+        $pqb->addFilter('identifier', Operators::IS_NOT_EMPTY, null)->shouldBeCalled();
 
         $getConnectorProducts
             ->fromProductQueryBuilder($pqb, 1, null, 'tablet', ['en_US', 'fr_FR'])
@@ -372,6 +379,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         ])->shouldBeCalled()->willReturn($pqb);
 
         $pqb->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
+        $pqb->addFilter('identifier', Operators::IS_NOT_EMPTY, null)->shouldBeCalled();
 
         $connectorProduct = new ConnectorProduct(
             Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
@@ -423,6 +431,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         ])->shouldBeCalled()->willReturn($pqb);
 
         $pqb->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
+        $pqb->addFilter('identifier', Operators::IS_NOT_EMPTY, null)->shouldBeCalled();
 
         $connectorProduct = new ConnectorProduct(
             Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
@@ -478,6 +487,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         ])->shouldBeCalled()->willReturn($pqb);
 
         $pqb->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
+        $pqb->addFilter('identifier', Operators::IS_NOT_EMPTY, null)->shouldBeCalled();
 
         $connectorProduct = new ConnectorProduct(
             Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
