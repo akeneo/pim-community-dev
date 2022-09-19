@@ -122,4 +122,27 @@ class JobPermissionsSubscriberSpec extends ObjectBehavior
 
         $this->shouldThrow(new AccessDeniedException())->during('checkJobExecutionPermission', [$event]);
     }
+
+    function it_does_not_check_permission_for_mass_actions_and_quick_export(
+        $authorizationChecker,
+        $event,
+        $jobExecution,
+        $job
+    ) {
+        foreach(['mass_edit', 'quick_export', 'mass_delete'] as $type) {
+            $job->getType()->willReturn($type);
+            $event->getSubject()->willReturn($jobExecution);
+            $this->checkJobExecutionPermission($event);
+
+            $authorizationChecker->isGranted(Attributes::EXECUTE, $job)->shouldNotBeCalled();
+        }
+
+        foreach(['import', 'export'] as $type) {
+            $job->getType()->willReturn($type);
+            $event->getSubject()->willReturn($jobExecution);
+            $this->checkJobExecutionPermission($event);
+
+            $authorizationChecker->isGranted(Attributes::EXECUTE, $job)->shouldBeCalled();
+        }
+    }
 }

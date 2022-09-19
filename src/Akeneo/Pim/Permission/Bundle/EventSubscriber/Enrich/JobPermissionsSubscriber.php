@@ -99,6 +99,9 @@ class JobPermissionsSubscriber implements EventSubscriberInterface
      */
     public function checkJobExecutionPermission(GenericEvent $event)
     {
+        if (in_array($event->getSubject()->getJobInstance()->getType(), ['mass_edit','quick_export','mass_delete'])) {
+            return;
+        }
         $this->isGranted(Attributes::EXECUTE, $event->getSubject()->getJobInstance());
     }
 
