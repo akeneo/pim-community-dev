@@ -24,7 +24,9 @@ class IdentifierFilterSpec extends ObjectBehavior
                 '=',
                 '!=',
                 'IN LIST',
-                'NOT IN LIST'
+                'NOT IN LIST',
+                'EMPTY',
+                'NOT EMPTY'
             ]
         );
     }
@@ -49,7 +51,9 @@ class IdentifierFilterSpec extends ObjectBehavior
                 '=',
                 '!=',
                 'IN LIST',
-                'NOT IN LIST'
+                'NOT IN LIST',
+                'EMPTY',
+                'NOT EMPTY'
             ]
 
         );
@@ -178,6 +182,34 @@ class IdentifierFilterSpec extends ObjectBehavior
 
         $this->setQueryBuilder($sqb);
         $this->addFieldFilter('identifier', Operators::NOT_IN_LIST, ['sku-001'], null, null, []);
+    }
+
+    function it_adds_a_field_filter_with_operator_empty(SearchQueryBuilder $sqb)
+    {
+        $sqb->addMustNot(
+            [
+                'exists' => [
+                    'field' => 'identifier',
+                ],
+            ]
+        )->shouldBeCalled();
+
+        $this->setQueryBuilder($sqb);
+        $this->addFieldFilter('identifier', Operators::IS_EMPTY, null, null, null, []);
+    }
+
+    function it_adds_a_field_filter_with_operator_not_empty(SearchQueryBuilder $sqb)
+    {
+        $sqb->addFilter(
+            [
+                'exists' => [
+                    'field' => 'identifier',
+                ],
+            ]
+        )->shouldBeCalled();
+
+        $this->setQueryBuilder($sqb);
+        $this->addFieldFilter('identifier', Operators::IS_NOT_EMPTY, null, null, null, []);
     }
 
     function it_throws_an_exception_when_the_search_query_builder_is_not_initialized(AttributeInterface $sku)

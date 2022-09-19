@@ -86,6 +86,7 @@ class QueueJobLauncherIntegration extends TestCase
             $this->get('akeneo_integration_tests.pub_sub_queue_status.ui_job')->getMessagesInQueue(),
             $this->get('akeneo_integration_tests.pub_sub_queue_status.import_export_job')->getMessagesInQueue(),
             $this->get('akeneo_integration_tests.pub_sub_queue_status.data_maintenance_job')->getMessagesInQueue(),
+            $this->get('akeneo_integration_tests.pub_sub_queue_status.scheduled_job')->getMessagesInQueue(),
         );
     }
 

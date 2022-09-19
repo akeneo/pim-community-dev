@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
@@ -140,6 +141,28 @@ class IdentifierFilterIntegration extends AbstractProductQueryBuilderTestCase
 
         $result = $this->executeFilter([['sku', Operators::NOT_IN_LIST, ['BAZZ', 'FOOO']]]);
         $this->assert($result, ['foo', 'bar', 'baz', 'BARISTA', 'BAZAR']);
+    }
+
+    public function testOperatorNotEmpty()
+    {
+        $result = $this->executeFilter([['identifier', Operators::IS_NOT_EMPTY, null]]);
+        $this->assert($result, ['foo', 'bar', 'baz', 'BARISTA', 'BAZAR']);
+    }
+
+    public function testOperatorEmpty()
+    {
+        // @TODO CPM-632: Unskip test once identifiers are nullable in products, and move product creation to setUp()
+        $this->markTestSkipped("Run this test once product identifiers are no longer required");
+
+        $this->createProduct(null, [
+            new SetTextValue('a_text', null, null, 'no_identifier')
+        ]);
+        $this->createProduct(null, [
+            new SetTextValue('a_text', null, null, 'second_no_identifier')
+        ]);
+
+        $result = $this->executeFilter([['identifier', Operators::IS_EMPTY, null]]);
+        $this->assertCount(2, $result);
     }
 
     public function testErrorDataIsMalformed()
