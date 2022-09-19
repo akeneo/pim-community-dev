@@ -279,7 +279,7 @@ jobs:
                   name: Create an empty service account
                   command: |
                       mkdir secret
-                      echo "{}" > secret/serviceAccount.json
+                      echo $ONBOARDER_TEST_SERVICE_ACCOUNT > secret/serviceAccount.json
             - run:
                   name: Load php pim image
                   command: docker load -i php-pim-image.tar
