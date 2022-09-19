@@ -67,6 +67,7 @@ MYSQL_USER_PASSWORD := $(shell bash -c 'echo $$(pwgen -sB 22)')
 MYSQL_ROOT_PASSWORD := $(shell bash -c 'echo $$(pwgen -sB 22)')
 MONITORING_AUTHENTICATION_TOKEN := $(shell bash -c 'echo $$(pwgen -sB 32)')
 
+
 MAILGUN_DOMAIN ?= mg.cloud.akeneo.com
 MAILGUN_LOGIN ?= $(PFID)-$(GOOGLE_PROJECT_ID)@$(MAILGUN_DOMAIN)
 MAILGUN_PASSWORD := $(shell bash -c 'echo $$(pwgen -sB 16)')
