@@ -148,6 +148,11 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithCommentsForSupplier:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetProductFileWithCommentsForSupplier
+        arguments:
+            - '@database_connection'
+
     Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\CountProductFileComments:
         public: true
         class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseCountProductFileComments
