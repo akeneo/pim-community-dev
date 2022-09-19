@@ -6,7 +6,7 @@ import {DeleteModal, useTranslate} from '@akeneo-pim-community/shared';
 import {getDefaultReplacementValueFilter, ReplacementModal, ReplacementValueFilter} from '../ReplacementModal';
 import {OPTION_COLLECTION_PAGE_SIZE, useRecords} from '../../../../hooks';
 
-const SIMPLE_REFERENCE_ENTITY_REPLACEMENT = 'reference_entity_single_link_replacement';
+const SIMPLE_REFERENCE_ENTITY_REPLACEMENT = 'simple_reference_entity_replacement';
 
 type SimpleReferenceEntityReplacementOperation = {
   uuid: string;
