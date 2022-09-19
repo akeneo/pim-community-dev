@@ -1,10 +1,7 @@
-import {AutoNumber} from "./Properties/AutoNumber";
-import {FreeText} from "./Properties/FreeText";
+import {AutoNumber, FreeText} from './Properties';
 
 type Property = AutoNumber | FreeText;
 
-type Structure = {
-  properties: Property[];
-}
+type Structure = Property[];
 
 export type {Structure};

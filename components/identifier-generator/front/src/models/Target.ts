@@ -1,5 +1,3 @@
-type Target = {
-  attributeCode: string;
-}
+type Target = string;
 
 export type {Target};

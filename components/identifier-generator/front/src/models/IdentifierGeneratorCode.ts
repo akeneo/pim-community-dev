@@ -1,5 +1,3 @@
-type IdentifierGeneratorCode = {
-  code: string;
-}
+type IdentifierGeneratorCode = string;
 
-export type {IdentifierGeneratorCode}
+export type {IdentifierGeneratorCode};

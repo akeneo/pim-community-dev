@@ -1,4 +1,3 @@
-type FreeText = {
-}
+type FreeText = {};
 
 export type {FreeText};

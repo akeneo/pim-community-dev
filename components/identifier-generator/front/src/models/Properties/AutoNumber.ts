@@ -1,4 +1,3 @@
-type AutoNumber = {
-}
+type AutoNumber = {};
 
-export type {AutoNumber}
+export type {AutoNumber};

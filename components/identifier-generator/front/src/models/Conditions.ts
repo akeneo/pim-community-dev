@@ -1,4 +1,3 @@
-type Conditions = {
-}
+type Conditions = {};
 
-export type {Conditions}
+export type {Conditions};

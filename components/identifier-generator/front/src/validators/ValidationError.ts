@@ -3,4 +3,4 @@ type ValidationError = {
   message: string;
 };
 
-export type {ValidationError}
+export type {ValidationError};
