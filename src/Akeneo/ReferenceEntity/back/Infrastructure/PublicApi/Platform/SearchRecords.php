@@ -36,15 +36,12 @@ class SearchRecords implements SearchRecordsInterface
                 'operator' => '=',
                 'value' => $referenceEntityCode,
             ],
-        ];
-
-        if (null !== $searchParameters->getSearch()) {
-            $recordQueryFilters[] = [
+            [
                 'field' => 'code_label',
                 'operator' => '=',
                 'value' => $searchParameters->getSearch(),
-            ];
-        }
+            ]
+        ];
 
         if (null !== $searchParameters->getIncludeCodes()) {
             if (empty($searchParameters->getIncludeCodes())) {
