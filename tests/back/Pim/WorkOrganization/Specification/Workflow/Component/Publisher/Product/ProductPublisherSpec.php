@@ -187,7 +187,6 @@ class ProductPublisherSpec extends ObjectBehavior
     ) {
         $product->getIdentifier()->willReturn(null);
         $product->getUuid()->willReturn($productUuid);
-        $productUuid->toString()->willReturn('c35ef104-f20c-4b70-a14c-c6e143992cb7');
 
         $this->shouldThrow(
             new ProductHasNoIdentifierException()
