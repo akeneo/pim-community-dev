@@ -113,6 +113,12 @@ resource "google_project_iam_member" "pim_cloud_function_sa_firestore" {
   member  = "serviceAccount:${google_service_account.pim_cloud_function_sa.email}"
 }
 
+resource "google_project_iam_member" "pim_cloud_function_sa_pubsub" {
+  project = var.project_id
+  role    = "roles/pubsub.publisher"
+  member  = "serviceAccount:${google_service_account.pim_cloud_function_sa.email}"
+}
+
 resource "google_service_account_iam_binding" "pim_cloud_function_sa_usage" {
   service_account_id = google_service_account.pim_cloud_function_sa.name
   role               = "roles/iam.serviceAccountUser"
