@@ -63,10 +63,14 @@ jobs:
 
                   # timmy
                   rm -rf /tmp/pim-saas-k8s-artifacts/timmy
-                  cp -r deployments-ucs/pim-saas-service /tmp/pim-saas-k8s-artifacts/timmy
+                  cp -r deployments-ucs/timmy /tmp/pim-saas-k8s-artifacts/timmy
 
                   cd /tmp/pim-saas-k8s-artifacts
                   git add k8s pim-saas-service tenant timmy
-                  git commit -m "Update release version"
+                  git commit -m "Update with release ${RELEASE_NAME}"
                   # Should the master branch be protected?
                   git push
+
+                  # Tag the repo with the release number
+                  git tag -a ${RELEASE_NAME} -m "Update with release ${RELEASE_NAME}"
+                  git push origin --tags
