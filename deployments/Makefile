@@ -15,6 +15,7 @@ DEPLOYMENT_DIR ?= $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 PIM_SRC_PATH ?= $(realpath $(DEPLOYMENT_DIR)/..)
 TYPE_LONG ?= serenity
 ENV_NAME ?= dev
+CIRCLE_PROJECT_REPONAME ?= local
 
 BUCKET ?= serenity-edition-dev
 
@@ -287,6 +288,7 @@ create-pim-main-tf: $(INSTANCE_DIR)
 	IMAGE_TAG=$(IMAGE_TAG) \
 	INSTANCE_NAME=$(INSTANCE_NAME) \
 	PFID=$(PFID) \
+	PROJECT_REPONAME=$(CIRCLE_PROJECT_REPONAME) \
 	BUCKET_PIM_SRC_DIR=$(BUCKET_PIM_SRC_DIR) \
 	PIM_SRC_DIR=$(PIM_ROOT_DIR) \
 	TYPE=$(TYPE) \

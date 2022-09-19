@@ -38,7 +38,7 @@
         "backend": {
             "gcs": {
                 "bucket": "akecld-terraform-dev",
-                "prefix": "saas/${GOOGLE_PROJECT_ID}/${GOOGLE_CLUSTER_ZONE}/${PFID}"
+                "prefix": "saas/${GOOGLE_PROJECT_ID}/${GOOGLE_CLUSTER_ZONE}/${PFID}-${PROJECT_REPONAME}"
             }
         }
     }
