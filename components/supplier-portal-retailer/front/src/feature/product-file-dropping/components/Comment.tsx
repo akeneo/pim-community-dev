@@ -15,10 +15,18 @@ const CommentRow = styled.div`
     margin-top: 20px;
 `;
 
-const IconContainer = styled.div`
+const IconContainer = styled.div<AkeneoThemedProps & {outgoing: boolean}>`
     margin: 14px 12.5px;
     border-right: 1px solid;
     padding-right: 12.5px;
+    ${({outgoing}) =>
+        !outgoing
+            ? css`
+                  color: ${getColor('blue140')};
+              `
+            : css`
+                  color: ${getColor('grey140')};
+              `}
 `;
 
 const ContentContainer = styled.div`
@@ -84,8 +92,8 @@ const Comment = ({outgoing, authorEmail, content, createdAt}: Props) => {
             <CommentRowContent outgoing={outgoing}>
                 <FlexGrow outgoing={outgoing}>
                     <FlexRow>
-                        <IconContainer>
-                            <DialogIcon color={pimTheme.color.grey140} />
+                        <IconContainer outgoing={outgoing}>
+                            <DialogIcon color={outgoing ? pimTheme.color.grey140 : pimTheme.color.blue140} />
                         </IconContainer>
                         <ContentContainer>
                             <FlexColumn>
