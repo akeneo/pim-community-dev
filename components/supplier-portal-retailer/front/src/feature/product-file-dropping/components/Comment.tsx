@@ -32,9 +32,11 @@ const FlexGrow = styled.div<AkeneoThemedProps & {outgoing: boolean}>`
         !outgoing
             ? css`
                   background-color: ${getColor('blue10')};
+                  color: ${getColor('blue140')};
               `
             : css`
                   background-color: ${getColor('grey20')};
+                  color: ${getColor('grey140')};
               `}
 `;
 
