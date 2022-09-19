@@ -20,7 +20,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
  */
 class PurgeJobExecutionCommand extends Command
 {
-    const JOB_CODE = 'job_executions_purge';
+    public const JOB_CODE = 'job_executions_purge';
 
     protected static $defaultName = 'akeneo:batch:purge-job-execution';
 
@@ -65,7 +65,7 @@ class PurgeJobExecutionCommand extends Command
             return Command::FAILURE;
         }
 
-        if (0 === (int)$days) {
+        if (0 === (int) $days) {
             /** @var QuestionHelper $helper */
             $helper = $this->getHelper('question');
             $confirmation = new ConfirmationQuestion('This will delete ALL job executions. Do you confirm? ', false);
@@ -77,7 +77,7 @@ class PurgeJobExecutionCommand extends Command
         }
 
         $batchConfig = [
-            'days' => $days,
+            'days' => (int) $days,
         ];
 
         $jobExecution = $this->jobExecutionFactory->createFromBatchCode(self::JOB_CODE, $batchConfig, null);

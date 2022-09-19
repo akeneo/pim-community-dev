@@ -25,12 +25,12 @@ class PurgeJobExecutions implements ConstraintCollectionProviderInterface, Defau
     public function getDefaultValues(): array
     {
         return [
-            'days' => 0,
+            'days' => 90,
         ];
     }
 
     /**
-     * days: Purges the job executions that are older than the number of days
+     * days: Purges the job executions that are older than the number of days.
      */
     public function getConstraintCollection(): Collection
     {

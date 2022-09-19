@@ -27,7 +27,7 @@ class PurgeJobExecutions implements TaskletInterface
 
     public function execute(): void
     {
-        $days = (int)$this->stepExecution->getJobParameters()->get('days');
+        $days = (int) $this->stepExecution->getJobParameters()->get('days');
 
         if (0 === $days) {
             $this->purgeJobExecution->all();
