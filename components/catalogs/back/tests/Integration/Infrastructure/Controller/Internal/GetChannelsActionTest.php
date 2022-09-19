@@ -48,4 +48,37 @@ class GetChannelsActionTest extends IntegrationTestCase
         ];
         Assert::assertEquals($expectedChannels, $channels);
     }
+
+    public function testItGetsChannelsByCodes(): void
+    {
+        $client = $this->getAuthenticatedInternalApiClient();
+
+        $this->createChannel('print', ['en_US']);
+        $this->createChannel('mobile', ['en_US']);
+        $client->request(
+            'GET',
+            '/rest/catalogs/channels',
+            ['codes' => 'ecommerce,print'],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ],
+        );
+
+        $response = $client->getResponse();
+        Assert::assertEquals(200, $response->getStatusCode());
+        $channels = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+        $expectedChannels = [
+            [
+                'code' => 'ecommerce',
+                'label' => '[ecommerce]',
+            ],
+            [
+                'code' => 'print',
+                'label' => '[print]',
+            ],
+        ];
+        Assert::assertEquals($expectedChannels, $channels);
+    }
 }
