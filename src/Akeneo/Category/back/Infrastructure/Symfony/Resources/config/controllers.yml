@@ -58,6 +58,7 @@ services:
             - '@Akeneo\Category\Application\Handler\FileHandler'
 
     Akeneo\Category\Infrastructure\Controller\InternalApi\ImagePreviewController:
+        public: true
         arguments:
             - '@Akeneo\Category\Domain\Query\GetAttribute'
             - '@pim_category.infrastructure.registry.preview_generator'
