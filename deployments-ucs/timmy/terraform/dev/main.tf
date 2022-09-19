@@ -32,7 +32,7 @@ module "timmy_request_portal" {
   project_id          = local.project_id
   name                = "${local.region_prefix}-timmy-request-portal"
   description         = "Request the portal to tenants to create/delete/update"
-  available_memory    = "256Mi"
+  available_memory    = "128Mi"
   bucket_name         = module.bucket.bucket_name
   entry_point         = "requestPortal"
   runtime             = local.function_runtime
