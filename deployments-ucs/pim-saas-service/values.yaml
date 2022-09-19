@@ -126,12 +126,12 @@ pim:
     topic_job_queue_ui: null # Generated
     topic_job_queue_import_export: null # Generated
     topic_job_queue_data_maintenance: null # Generated
-    topic_job_scheduler: null # Generated
+    topic_job_queue_scheduled_job: null # Generated
     subscription_webhook: null # Generated
     subscription_job_queue_ui: null # Generated
     subscription_job_queue_import_export: null # Generated
     subscription_job_queue_data_maintenance: null # Generated
-    subscription_job_scheduler: null # Generated
+    subscription_job_queue_scheduled_job: null # Generated
   hook:
     addAdmin:
       enabled: true
