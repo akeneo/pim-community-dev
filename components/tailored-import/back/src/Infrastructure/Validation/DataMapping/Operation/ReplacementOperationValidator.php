@@ -41,7 +41,7 @@ class ReplacementOperationValidator extends ConstraintValidator
                     MultiSelectReplacementOperation::TYPE,
                     CategoriesReplacementOperation::TYPE,
                     FamilyReplacementOperation::TYPE,
-                    SimpleReferenceEntityReplacementOperation::TYPE
+                    SimpleReferenceEntityReplacementOperation::TYPE,
                 ]),
                 'mapping' => new All([
                     new NotBlank([

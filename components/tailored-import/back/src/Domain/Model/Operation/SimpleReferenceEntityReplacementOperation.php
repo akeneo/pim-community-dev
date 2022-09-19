@@ -18,7 +18,7 @@ final class SimpleReferenceEntityReplacementOperation extends AbstractReplacemen
         return [
             'type' => self::TYPE,
             'uuid' => $this->uuid,
-            'mapping' => $this->getMapping()
+            'mapping' => $this->getMapping(),
         ];
     }
 }

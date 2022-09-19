@@ -14,6 +14,7 @@ use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Platform\SearchRecordsParame
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 final class GetRecordsAction
@@ -25,7 +26,7 @@ final class GetRecordsAction
     ) {
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
