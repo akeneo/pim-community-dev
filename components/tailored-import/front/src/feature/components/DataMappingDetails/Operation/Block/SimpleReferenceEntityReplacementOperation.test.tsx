@@ -45,7 +45,7 @@ jest.mock('../../../../hooks/useRecords', () => ({
 test('it can get the simple reference entity replacement operation', () => {
   expect(getDefaultSimpleReferenceEntityReplacementOperation()).toEqual({
     uuid: expect.any(String),
-    type: 'reference_entity_single_link_replacement',
+    type: 'simple_reference_entity_replacement',
     mapping: {},
   });
 });
@@ -55,7 +55,7 @@ test('it displays a simple reference entity replacement operation block', () => 
     <SimpleReferenceEntityReplacementOperationBlock
       targetCode="brand"
       targetReferenceDataName="simple_link_reference"
-      operation={{uuid: expect.any(String), type: 'reference_entity_single_link_replacement', mapping: {}}}
+      operation={{uuid: expect.any(String), type: 'simple_reference_entity_replacement', mapping: {}}}
       onChange={jest.fn()}
       onRemove={jest.fn()}
       isLastOperation={false}
@@ -80,7 +80,7 @@ test('it can be removed using the remove button', () => {
     <SimpleReferenceEntityReplacementOperationBlock
       targetCode="brand"
       targetReferenceDataName="simple_link_reference"
-      operation={{uuid: expect.any(String), type: 'reference_entity_single_link_replacement', mapping: {}}}
+      operation={{uuid: expect.any(String), type: 'simple_reference_entity_replacement', mapping: {}}}
       onChange={jest.fn()}
       onRemove={handleRemove}
       isLastOperation={false}
@@ -99,7 +99,7 @@ test('it can be removed using the remove button', () => {
 
   userEvent.click(screen.getByText('pim_common.delete'));
 
-  expect(handleRemove).toHaveBeenCalledWith('reference_entity_single_link_replacement');
+  expect(handleRemove).toHaveBeenCalledWith('simple_reference_entity_replacement');
 });
 
 test('it opens a replacement modal and handles change', async () => {
@@ -114,7 +114,7 @@ test('it opens a replacement modal and handles change', async () => {
     <SimpleReferenceEntityReplacementOperationBlock
       targetCode="brand"
       targetReferenceDataName="simple_link_reference"
-      operation={{uuid: expect.any(String), type: 'reference_entity_single_link_replacement', mapping: {}}}
+      operation={{uuid: expect.any(String), type: 'simple_reference_entity_replacement', mapping: {}}}
       onChange={handleChange}
       onRemove={jest.fn()}
       isLastOperation={false}
@@ -145,7 +145,7 @@ test('it opens a replacement modal and handles change', async () => {
 
   expect(handleChange).toHaveBeenCalledWith({
     uuid: expect.any(String),
-    type: 'reference_entity_single_link_replacement',
+    type: 'simple_reference_entity_replacement',
     mapping: {
       alessis: ['sweet'],
     },
@@ -159,7 +159,7 @@ test('it does not call handler when cancelling', () => {
     <SimpleReferenceEntityReplacementOperationBlock
       targetCode="brand"
       targetReferenceDataName="simple_link_reference"
-      operation={{uuid: expect.any(String), type: 'reference_entity_single_link_replacement', mapping: {}}}
+      operation={{uuid: expect.any(String), type: 'simple_reference_entity_replacement', mapping: {}}}
       onChange={handleChange}
       onRemove={jest.fn()}
       isLastOperation={false}
@@ -198,27 +198,29 @@ test('it throws an error if the operation is not a simple select replacement ope
         validationErrors={[]}
       />
     );
-  }).toThrowError('SimpleReferenceEntityReplacementBlock can only be used with SimpleReferenceEntityReplacementOperation');
+  }).toThrowError(
+    'SimpleReferenceEntityReplacementBlock can only be used with SimpleReferenceEntityReplacementOperation'
+  );
 
   mockedConsole.mockRestore();
 });
 
 test('it throws an error if reference data name is not provided', () => {
-    expect(() => {
-        renderWithProviders(
-            <SimpleReferenceEntityReplacementOperationBlock
-                targetCode="brand"
-                operation={{uuid: expect.any(String), type: 'reference_entity_single_link_replacement', mapping: {}}}
-                onChange={jest.fn()}
-                onRemove={jest.fn()}
-                isLastOperation={false}
-                previewData={{
-                    isLoading: false,
-                    hasError: false,
-                    data: operationPreviewData,
-                }}
-                validationErrors={[]}
-            />
-        );
-    }).toThrowError('Missing Reference Data name in attribute');
-})
+  expect(() => {
+    renderWithProviders(
+      <SimpleReferenceEntityReplacementOperationBlock
+        targetCode="brand"
+        operation={{uuid: expect.any(String), type: 'simple_reference_entity_replacement', mapping: {}}}
+        onChange={jest.fn()}
+        onRemove={jest.fn()}
+        isLastOperation={false}
+        previewData={{
+          isLoading: false,
+          hasError: false,
+          data: operationPreviewData,
+        }}
+        validationErrors={[]}
+      />
+    );
+  }).toThrowError('Missing Reference Data name in attribute');
+});

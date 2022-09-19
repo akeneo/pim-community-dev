@@ -43,7 +43,9 @@ const SimpleReferenceEntityReplacementOperationBlock = ({
   );
 
   if (!isSimpleReferenceEntityReplacement(operation)) {
-    throw new Error('SimpleReferenceEntityReplacementBlock can only be used with SimpleReferenceEntityReplacementOperation');
+    throw new Error(
+      'SimpleReferenceEntityReplacementBlock can only be used with SimpleReferenceEntityReplacementOperation'
+    );
   }
 
   if (!targetReferenceDataName) {
