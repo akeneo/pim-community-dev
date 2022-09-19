@@ -13,28 +13,31 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\UI\Web\Attribute;
 
-use Akeneo\AssetManager\Common\Helper\AuthenticatedClient;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsReadOnly;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
-use Akeneo\UserManagement\Component\Model\User;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Response;
@@ -117,6 +120,25 @@ class DeleteActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->assert404NotFound($this->client->getResponse());
     }
 
+    /** @test */
+    public function it_returns_an_error_when_the_attribute_is_used_as_main_media()
+    {
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::DELETE_ATTRIBUTE_ROUTE,
+            [
+                'attributeIdentifier' => sprintf('%s_%s_%s', 'custom_media', 'designer', md5('fingerprint')),
+                'assetFamilyIdentifier' => 'designer',
+            ],
+            'DELETE',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ]
+        );
+
+        $this->webClientHelper->assert400BadRequest($this->client->getResponse());
+    }
+
     /**
      * @test
      */
@@ -169,9 +191,11 @@ class DeleteActionTest extends ControllerIntegrationTestCase
         $attributeRepository = $this->getAttributeRepository();
         $assetFamilyRepository = $this->getAssetFamilyRepository();
 
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+
         $assetFamilyRepository->create(
             AssetFamily::create(
-                AssetFamilyIdentifier::fromString('designer'),
+                $assetFamilyIdentifier,
                 [],
                 Image::createEmpty(),
                 RuleTemplateCollection::empty()
@@ -180,7 +204,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
 
         $attributeItem = TextAttribute::createText(
             AttributeIdentifier::create('designer', 'name', md5('fingerprint')),
-            AssetFamilyIdentifier::fromString('designer'),
+            $assetFamilyIdentifier,
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(2),
@@ -193,6 +217,28 @@ class DeleteActionTest extends ControllerIntegrationTestCase
             AttributeRegularExpression::createEmpty()
         );
         $attributeRepository->create($attributeItem);
+
+        $mainMediaAttributeItem = MediaFileAttribute::create(
+            AttributeIdentifier::create('designer', 'custom_media', md5('fingerprint')),
+            $assetFamilyIdentifier,
+            AttributeCode::fromString('custom_media'),
+            LabelCollection::fromArray(['en_US' => 'Custom media']),
+            AttributeOrder::fromInteger(3),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeIsReadOnly::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxFileSize::noLimit(),
+            AttributeAllowedExtensions::fromList(AttributeAllowedExtensions::ALL_ALLOWED),
+            MediaType::fromString(MediaType::IMAGE),
+        );
+        $attributeRepository->create($mainMediaAttributeItem);
+
+        $assetFamily = $assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
+        $assetFamily->updateAttributeAsMainMediaReference(
+            AttributeAsMainMediaReference::createFromNormalized(sprintf('%s_%s_%s', 'custom_media', 'designer', md5('fingerprint')))
+        );
+        $assetFamilyRepository->update($assetFamily);
 
         $securityFacadeStub = $this->get('oro_security.security_facade');
         $securityFacadeStub->setIsGranted('akeneo_assetmanager_attribute_delete', true);
