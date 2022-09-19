@@ -51,3 +51,9 @@ services:
         arguments:
             $bucket: '@Google\Cloud\Storage\Bucket'
             $prefix: 'supplier_portal'
+
+    akeneo_flysystem_adapter.googlecloudstorage.catalogs_mapping_adapter:
+        class: 'League\Flysystem\GoogleCloudStorage\GoogleCloudStorageAdapter'
+        arguments:
+            $bucket: '@Google\Cloud\Storage\Bucket'
+            $prefix: 'catalogs_mapping'
