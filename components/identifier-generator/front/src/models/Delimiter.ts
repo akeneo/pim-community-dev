@@ -1,5 +1,3 @@
-type Delimiter = {
-  value: string;
-};
+type Delimiter = string;
 
 export type {Delimiter};

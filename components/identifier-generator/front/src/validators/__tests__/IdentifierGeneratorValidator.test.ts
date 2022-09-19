@@ -8,9 +8,14 @@ describe('IdentifierGeneratorValidator', () => {
           code: 'aValidCode',
           target: 'sku',
           conditions: [],
-          delimiter: {value: '-'},
-          labelCollection: {},
-          structure: [],
+          delimiter: '-',
+          labels: {},
+          structure: [
+            {
+              name: 'FreeText',
+              value: 'AKN',
+            },
+          ],
         },
         ''
       )
