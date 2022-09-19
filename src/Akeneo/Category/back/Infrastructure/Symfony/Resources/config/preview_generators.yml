@@ -13,19 +13,6 @@ services:
         tags:
             - { name: pim_category.preview_generator }
 
-    Akeneo\Category\Infrastructure\FileSystem\Loader\RestrictedProtocolStreamLoader:
-        arguments:
-            - '@Akeneo\Category\Infrastructure\FileSystem\Loader\RejectInvalidRedirectionStreamLoader'
-            - '%allowed_media_link_protocols%'
-        tags:
-            - { name: liip_imagine.binary.loader, loader: stream_data_loader }
-
-    Akeneo\Category\Infrastructure\FileSystem\Loader\RejectInvalidRedirectionStreamLoader:
-        arguments:
-            - '@Akeneo\Category\Infrastructure\Network\UrlChecker'
-        tags:
-            - { name: liip_imagine.binary.loader, loader: stream_data_loader }
-
     Akeneo\Category\Infrastructure\FileSystem\Loader\ImageLoader:
         arguments:
             - '@liip_imagine.extension_guesser'
