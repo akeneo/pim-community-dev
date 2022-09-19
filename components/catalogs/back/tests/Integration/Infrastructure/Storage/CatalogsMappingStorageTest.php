@@ -61,7 +61,7 @@ EOS;
         $this->assertTrue($exists);
     }
 
-    public function testItReturnAFileContents(): void
+    public function testItReturnsAFileContents(): void
     {
         $this->filesystem->write('db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json', self::SCHEMA);
 
