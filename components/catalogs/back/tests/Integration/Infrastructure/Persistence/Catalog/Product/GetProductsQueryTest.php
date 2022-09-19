@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence;
+namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence\Catalog\Product;
 
 use Akeneo\Catalogs\Application\Persistence\GetProductUuidFromIdentifierQueryInterface;
 use Akeneo\Catalogs\Domain\Operator;
-use Akeneo\Catalogs\Infrastructure\Persistence\GetProductsQuery;
+use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\Product\GetProductsQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
