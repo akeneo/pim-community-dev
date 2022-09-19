@@ -56,6 +56,34 @@ test('it does not enable the send button if the comment textarea exceeds 255 cha
     ).toBeDisabled();
 });
 
+test('it does not enable the send button if the number max of comments is reached', () => {
+    for (let i = 0; 50 > i; i++) {
+        productFile.retailerComments.push({
+            content: 'foo',
+            authorEmail: 'julia@roberts.com',
+            createdAt: '09/22/2022, 04:08 AM',
+        });
+    }
+    renderWithProviders(
+        <Discussion
+            productFile={productFile}
+            saveComment={(content: string, authorEmail: string) => {
+                return {};
+            }}
+            validationErrors={[]}
+        />
+    );
+
+    expect(
+        screen.getByText('supplier_portal.product_file_dropping.supplier_files.discussion.submit_button_label')
+    ).toBeDisabled();
+    expect(
+        screen.getByText(
+            'supplier_portal.product_file_dropping.supplier_files.discussion.max_number_of_comments_reached'
+        )
+    ).toBeInTheDocument();
+});
+
 test('it enables the send button enabled if the comment textarea is fulfilled', () => {
     renderWithProviders(
         <Discussion

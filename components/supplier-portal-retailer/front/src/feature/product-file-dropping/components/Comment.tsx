@@ -25,9 +25,16 @@ const ContentContainer = styled.div`
     margin-top: 10px;
 `;
 
-const FlexGrow = styled.div`
+const FlexGrow = styled.div<AkeneoThemedProps & {outgoing: boolean}>`
     flex: 200px;
-    background-color: ${getColor('blue10')};
+    ${({outgoing}) =>
+        !outgoing
+            ? css`
+                  background-color: ${getColor('blue10')};
+              `
+            : css`
+                  background-color: ${getColor('grey20')};
+              `}
 `;
 
 const FillerContainer = styled.div`
@@ -72,7 +79,7 @@ const Comment = ({outgoing, authorEmail, content, createdAt}: Props) => {
     return (
         <CommentRow>
             <CommentRowContent outgoing={outgoing}>
-                <FlexGrow>
+                <FlexGrow outgoing={outgoing}>
                     <FlexRow>
                         <IconContainer>
                             <DialogIcon color={pimTheme.color.grey140} />

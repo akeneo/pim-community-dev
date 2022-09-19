@@ -104,6 +104,7 @@ supplier_portal:
                 loading_error: An error occured while loading the product file.
                 comment_submit_error: An error occured while submitting the comment.
                 max_comment_length_reached: The comment should not exceed 255 characters.
+                max_number_of_comments_reached: You've reached the comment limit.
         pim_notification:
             button_label: See the product files
 

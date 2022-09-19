@@ -6,6 +6,7 @@ import {CommentList} from './CommentList';
 import {ProductFile} from '../models/ProductFile';
 
 const maxLengthComment = 255;
+const maxNumberOfComments = 50;
 
 const StickyContainer = styled.div`
     flex-shrink: 0;
@@ -52,13 +53,19 @@ const Discussion = ({productFile, saveComment, validationErrors}: Props) => {
         setComment(value);
     };
     const isCommentMaxLengthReached = maxLengthComment < commentLength;
+    const isMaxNumberOfCommentsReached =
+        maxNumberOfComments <= productFile.retailerComments.concat(productFile.supplierComments).length;
     const isSubmitButtonDisabled = '' === comment || isCommentMaxLengthReached;
 
     return (
         <>
             <StickyContainer>
-                <Helper level="info">
-                    {translate('supplier_portal.product_file_dropping.supplier_files.discussion.info')}
+                <Helper level={!isMaxNumberOfCommentsReached ? 'info' : 'warning'}>
+                    {!isMaxNumberOfCommentsReached
+                        ? translate('supplier_portal.product_file_dropping.supplier_files.discussion.info')
+                        : translate(
+                              'supplier_portal.product_file_dropping.supplier_files.discussion.max_number_of_comments_reached'
+                          )}
                 </Helper>
                 <Form method="POST" onSubmit={onSubmit} role="form">
                     <Field
