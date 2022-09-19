@@ -36,7 +36,7 @@ import {
   RemoveWhitespaceOperationBlock,
   SimpleSelectReplacementOperationBlock,
   SplitOperationBlock,
-  SimpleReferenceEntityReplacementOperationBlock
+  SimpleReferenceEntityReplacementOperationBlock,
 } from './Operation';
 import {usePreviewData} from '../../hooks';
 

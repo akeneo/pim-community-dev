@@ -37,6 +37,11 @@ test('it can get the default operation for each type', () => {
     type: 'remove_whitespace',
     modes: ['trim'],
   });
+  expect(getDefaultOperation('reference_entity_single_link_replacement')).toEqual({
+    uuid: expect.any(String),
+    type: 'reference_entity_single_link_replacement',
+    mapping: {}
+  });
   // @ts-expect-error invalid type
   expect(() => getDefaultOperation('unknown')).toThrowError('Invalid operation type: "unknown"');
 });

@@ -4,7 +4,7 @@ import {isSimpleReferenceEntityTarget} from './model';
 import {AttributeDataMappingConfiguratorProps, AttributeTarget} from '../../../../models';
 import {InvalidAttributeTargetError} from '../error';
 import {AttributeTargetParameters, Operations, Sources, ClearIfEmpty} from '../../../../components';
-import {SIMPLE_REFERENCE_ENTITY_REPLACEMENT} from "../../Operation";
+import {SIMPLE_REFERENCE_ENTITY_REPLACEMENT} from '../../Operation';
 
 const SimpleReferenceEntityConfigurator = ({
   dataMapping,

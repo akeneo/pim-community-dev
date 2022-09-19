@@ -44,7 +44,7 @@ type Operation =
   | SplitOperation
   | ChangeCaseOperation
   | RemoveWhitespaceOperation
-  | SimpleReferenceEntityReplacementOperation
+  | SimpleReferenceEntityReplacementOperation;
 type OperationType = Operation['type'];
 
 const getAttributeRequiredOperations = (attribute: Attribute): Operation[] => {
