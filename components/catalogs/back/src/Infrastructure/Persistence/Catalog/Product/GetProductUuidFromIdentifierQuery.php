@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Infrastructure\Persistence;
+namespace Akeneo\Catalogs\Infrastructure\Persistence\Catalog\Product;
 
-use Akeneo\Catalogs\Application\Persistence\GetProductUuidFromIdentifierQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductUuidFromIdentifierQueryInterface;
 use Doctrine\DBAL\Connection;
 
 /**

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence\Catalog\Product;
 
-use Akeneo\Catalogs\Application\Persistence\GetProductUuidFromIdentifierQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductUuidFromIdentifierQueryInterface;
 use Akeneo\Catalogs\Domain\Operator;
 use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\Product\GetProductsQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
