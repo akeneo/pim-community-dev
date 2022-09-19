@@ -37,19 +37,19 @@ Feature:
 
   @database
   Scenario: Get product's identifiers from an enabled catalog
-    Given an enabled catalog sets up with a product selection criteria
+    Given an enabled catalog with product selection criteria
     When the external application retrieves the product's identifiers using the API
     Then the response should contain only the product's identifiers from the selection
 
   @database
   Scenario: Get product's uuids from an enabled catalog
-    Given an enabled catalog sets up with a product selection criteria
+    Given an enabled catalog with product selection criteria
     When the external application retrieves the product's uuids using the API
     Then the response should contain only the product's uuids from the selection
 
   @database
   Scenario: Get products from an enabled catalog
-    Given an enabled catalog sets up with a product selection criteria
+    Given an enabled catalog with product selection criteria
     When the external application retrieves the products using the API
     Then the response should contain only the products from the selection
 

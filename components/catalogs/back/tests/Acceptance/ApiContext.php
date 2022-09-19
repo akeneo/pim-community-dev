@@ -118,9 +118,9 @@ class ApiContext implements Context
     }
 
     /**
-     * @Given an enabled catalog sets up with a product selection criteria
+     * @Given an enabled catalog with product selection criteria
      */
-    public function anEnabledCatalogSetsUpWithAProductSelectionCriteria(): void
+    public function anEnabledCatalogWithProductSelectionCriteria(): void
     {
         $connectedAppUserIdentifier = $this->getConnectedApp()->getUsername();
         $this->authentication->logAs($connectedAppUserIdentifier);
