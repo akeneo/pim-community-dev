@@ -238,7 +238,7 @@ async function ensureArgoCdAppIsHealthy(url, token, appName, maxRetries = 60, re
 
       if (healthStatus === HEALTH_STATUS.DEGRADED) {
         const msg = resp['data']['status']['operationState']['message'];
-        return Promise.reject(new Error(`The ArgoCD application health is degraded: ${msg}. Please check the ArgoCD application`));
+        return Promise.reject(new Error(`The ArgoCD application health is degraded: ${msg}. Please check the ArgoCD application at ${url}/applications/${appName}`));
       }
 
       currentRetry++;
@@ -250,7 +250,7 @@ async function ensureArgoCdAppIsHealthy(url, token, appName, maxRetries = 60, re
 
   }
 
-  msg = 'Exceeded maximum attempts to ensure healthiness, please check the ArgoCD application status';
+  msg = `Exceeded maximum attempts to ensure healthiness, please check the ArgoCD application status at ${url}/applications/${appName}`;
   logger.error(msg);
   return Promise.reject(msg);
 }
@@ -307,14 +307,14 @@ async function ensureArgoCdAppIsSynced(url, token, appName, maxRetries = 20, ret
 
       currentRetry++;
     } catch (error) {
-      msg = formatAxiosError('Failed to check the progression of the ArgoCD application sync status', error);
+      msg = formatAxiosError(`Failed to check the progression of the ArgoCD application sync status, please check ArgoCD application status at ${url}/applications/${appName}`, error);
       logger.error(msg);
       return Promise.reject(msg);
     }
 
   }
 
-  msg = 'Exceeded maximum attempts to ensure synchronization, please check the ArgoCD application status';
+  msg = `Exceeded maximum attempts to ensure synchronization, please check the ArgoCD application status at ${url}/applications/${appName}`;
 
   logger.error(msg);
   return Promise.reject(msg);

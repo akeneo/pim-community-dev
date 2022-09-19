@@ -232,7 +232,7 @@ async function ensureArgoCdAppIsDeleted(url, token, appName, maxRetries = 30, re
     }
   }
 
-  msg = 'The maximum number of attempts has been exceeded to verify the deletion. Please check the status of the ArgoCD application';
+  msg = `The maximum number of attempts has been exceeded to verify the deletion. Please check the status of the ArgoCD application at ${url}/applications/${appName}`;
   logger.error(msg);
   return Promise.reject(msg);
 }
