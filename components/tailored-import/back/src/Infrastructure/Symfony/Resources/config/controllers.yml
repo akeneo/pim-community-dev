@@ -90,3 +90,9 @@ services:
     arguments:
       - '@akeneo.tailored_import.infrastructure.public_api.find_category_trees'
       - '@akeneo.tailored_import.infrastructure.public_api.get_category_children_codes_per_tree'
+
+  akeneo.tailored_import.controller.get_records_action:
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Controller\GetRecordsAction
+    public: true
+    arguments:
+      - '@akeneo_referenceentity.infrastructure.persistence.query.platform.search_records'
