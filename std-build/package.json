@@ -36,6 +36,7 @@
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front",
     "vendor/akeneo/pim-community-dev/src/Oro/Bundle/ConfigBundle/front",
     "vendor/akeneo/pim-community-dev/components/catalogs/front",
-    "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/ImportExportBundle/front"
+    "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/ImportExportBundle/front",
+    "vendor/akeneo/pim-community-dev/components/identifier-generator/front"
   ]
 }
