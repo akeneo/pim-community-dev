@@ -1,7 +1,4 @@
 parameters:
-    allowed_media_link_protocols: ['http', 'https']
-    supported_pdf_mime_types:
-        - 'application/pdf'
     supported_image_mime_types:
         - 'image/g3fax'
         - 'image/gif'
