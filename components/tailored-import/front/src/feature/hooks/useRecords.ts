@@ -51,7 +51,7 @@ const useRecords = (
     };
 
     if (shouldFetch) void fetchRecords();
-  }, [shouldFetch, isMounted, recordsRoute, optionCodesToInclude, optionCodesToExclude, search, page, locale]);
+  }, [shouldFetch, isMounted, recordsRoute, optionCodesToInclude, optionCodesToExclude, search, page, locale, channel]);
 
   return [records, matchesCount] as const;
 };
