@@ -19,6 +19,12 @@ resource "google_project_iam_member" "timmy_firestore_sa_usage" {
   member  = "serviceAccount:${google_service_account.timmy_cloud_function_sa.email}"
 }
 
+resource "google_project_iam_member" "timmy_cloudfunction_invoker_sa_usage" {
+  project = var.project_id
+  role    = "roles/cloudfunctions.invoker"
+  member  = "serviceAccount:${google_service_account.timmy_cloud_function_sa.email}"
+}
+
 resource "google_service_account" "timmy_deploy_sa" {
   project      = var.project_id
   account_id   = "timmy-deployment"

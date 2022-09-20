@@ -8,42 +8,6 @@
       "description": "The tenant name",
       "type": "string"
     },
-    "mailer": {
-      "description": "Mailgun configuration for the tenant",
-      "type": "object",
-      "properties": {
-        "login": {
-          "description": "Mailgun login (email) for the tenant",
-          "type": "string",
-          "format": "email"
-        },
-        "password": {
-          "description": "Mailgun password for the login account",
-          "type": "string"
-        },
-        "base_mailer_url": {
-          "description": "Mailgun base url",
-          "type": "string",
-          "format": "uri",
-          "pattern": "^smtp://"
-        },
-        "domain": {
-          "description": "The Mailgun domain to create the account",
-          "type": "string"
-        },
-        "api_key": {
-          "description": "The Mailgun API key",
-          "type": "string"
-        }
-      },
-      "required": [
-        "login",
-        "password",
-        "base_mailer_url",
-        "domain",
-        "api_key"
-      ]
-    },
     "pim": {
       "description": "The PIM configuration for the tenant",
       "type": "object",
@@ -69,10 +33,6 @@
               "type": "string",
               "format": "email"
             },
-            "password": {
-              "description": "The password of the PIM admin user",
-              "type": "string"
-            },
             "uiLocale": {
               "description": "The ui locale of the PIM admin user",
               "type": "string"
@@ -83,33 +43,17 @@
             "firstName",
             "lastName",
             "email",
-            "password",
             "uiLocale"
-          ]
-        },
-        "monitoring": {
-          "description": "The monitoring configuration for the PIM",
-          "type": "object",
-          "properties": {
-            "authenticationToken": {
-              "description": "New token for the PIM monitoring",
-              "type": "string"
-            }
-          },
-          "required": [
-            "authenticationToken"
           ]
         }
       },
       "required": [
-        "monitoring",
         "defaultAdminUser"
       ]
     }
   },
   "required": [
     "instanceName",
-    "mailer",
     "pim"
   ]
 }

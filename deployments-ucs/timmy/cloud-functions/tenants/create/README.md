@@ -24,6 +24,7 @@ $ npm install
 Start the development server:
 
 ```
+$ gcloud config set project akecld-prd-pim-saas-dev
 $ gcloud auth application-default login
 $ npm start
 ```
@@ -31,8 +32,11 @@ $ npm start
 Execute the test to create the HTTP request:
 
 ```
-$ FUNCTION_URL=http://localhost:8080
-$ MAILER_API_KEY=<replace>
+$ gcloud auth login
+$ export $(xargs <.env)
+$ FUNCTION_URL=http://localhost:8081
+$ MAILER_API_KEY=$(gcloud secrets versions access latest --secret="MAILER_API_KEY" && echo)
+$ ARGOCD_PASSWORD=$(kubectl get secret -n argocd argocd-initial-admin-secret -o jsonpath='{.data.password}' | base64 -d)
 $ mocha tests/createTenant.system.http.test.js --timeout 10000000
 ```
 

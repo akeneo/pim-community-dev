@@ -3,6 +3,7 @@ locals {
   bucket_location                      = "EU"
   cloudscheduler_service_account_email = "timmy-deployment@${local.project_id}.iam.gserviceaccount.com"
   domain                               = "pim-saas-dev.dev.cloud.akeneo.com"
+  env                                  = "dev"
   firestore_project_id                 = "akecld-prd-pim-fire-eur-dev"
   function_labels                      = {
     application = "timmy"
@@ -10,6 +11,7 @@ locals {
   function_location              = "europe-west1"
   function_runtime               = "nodejs16"
   function_service_account_email = "timmy-cloud-function@${local.project_id}.iam.gserviceaccount.com"
+  network_project_id             = "akecld-prd-shared-infra"
   project_id                     = "akecld-prd-pim-saas-dev"
   tenant_contexts                = "tenant_contexts"
   region_prefix                  = "eur-w-1a"
@@ -26,18 +28,24 @@ module "bucket" {
 }
 
 module "timmy_request_portal" {
-  source                = "../modules/cloudfunction"
-  project_id            = local.project_id
-  name                  = "${local.region_prefix}-timmy-request-portal"
-  description           = "Request the portal to tenants to create/delete/update"
-  available_memory      = "256Mi"
-  bucket_name           = module.bucket.bucket_name
-  entry_point           = "requestPortal"
-  runtime               = local.function_runtime
-  source_dir            = abspath("../../cloud-functions/portal")
+  source              = "../modules/cloudfunction"
+  project_id          = local.project_id
+  name                = "${local.region_prefix}-timmy-request-portal"
+  description         = "Request the portal to tenants to create/delete/update"
+  available_memory    = "128Mi"
+  bucket_name         = module.bucket.bucket_name
+  entry_point         = "requestPortal"
+  runtime             = local.function_runtime
+  source_dir          = abspath("../../cloud-functions/portal")
+  source_dir_excludes = [
+    ".env",
+    "README.md",
+    "node_modules",
+    "tests"
+  ]
   location              = local.function_location
   service_account_email = local.function_service_account_email
-  timeout_seconds       = 90
+  timeout_seconds       = 3600
   max_instance_count    = 1
 
   secret_environment_variables = [
@@ -46,12 +54,6 @@ module "timmy_request_portal" {
       project_id = local.project_id
       secret     = "TIMMY_PORTAL"
       version    = "latest"
-    },
-    {
-      key        = "MAILER_API_KEY"
-      project_id = local.project_id
-      secret     = "MAILER_API_KEY"
-      version    = "latest"
     }
   ]
 
@@ -59,29 +61,35 @@ module "timmy_request_portal" {
     FUNCTION_URL_TIMMY_CREATE_TENANT = module.timmy_create_tenant.uri
     FUNCTION_URL_TIMMY_DELETE_TENANT = module.timmy_delete_tenant.uri
     GCP_PROJECT_ID                   = local.project_id
+    // TODO: switch to https when PH-202 is released
+    HTTP_SCHEMA                      = "http"
     LOG_LEVEL                        = "info"
-    MAILER_BASE_URL                  = "smtp://smtp.mailgun.org:2525"
-    MAILER_DOMAIN                    = "mg.cloud.akeneo.com"
-    PORTAL_HOSTNAME                  = "partners-preprod.ip.akeneo.com"
-    PORTAL_LOGIN_HOSTNAME            = "connect-preprod.ip.akeneo.com"
-    TENANT_EDITION_FLAGS             = "serenity_instance"
+    NODE_ENV                         = "production"
+    // TODO: replace portal hostnames with the private entry once PH-202 is released
+    PORTAL_HOSTNAME                  = "wiremock.pim-saas-dev.dev.cloud.akeneo.com"
+    PORTAL_LOGIN_HOSTNAME            = "wiremock.pim-saas-dev.dev.cloud.akeneo.com"
     TENANT_CONTINENT                 = "europe"
+    TENANT_EDITION_FLAGS             = "serenity_instance"
     TENANT_ENVIRONMENT               = "sandbox"
-    SECRET_PORTAL                    = "PORTAL_TIMMY"
-    SECRET_MAILER_API_KEY            = "MAILER_API_KEY"
   }
 }
 
 module "timmy_create_tenant" {
-  source                = "../modules/cloudfunction"
-  project_id            = local.project_id
-  name                  = "${local.region_prefix}-timmy-create-tenant"
-  description           = "Create a new UCS tenant"
-  available_memory      = "128Mi"
-  bucket_name           = module.bucket.bucket_name
-  entry_point           = "createTenant"
-  runtime               = local.function_runtime
-  source_dir            = abspath("../../cloud-functions/tenants/create")
+  source              = "../modules/cloudfunction"
+  project_id          = local.project_id
+  name                = "${local.region_prefix}-timmy-create-tenant"
+  description         = "Create a new UCS tenant"
+  available_memory    = "128Mi"
+  bucket_name         = module.bucket.bucket_name
+  entry_point         = "createTenant"
+  runtime             = local.function_runtime
+  source_dir          = abspath("../../cloud-functions/tenants/create")
+  source_dir_excludes = [
+    ".env",
+    "README.md",
+    "node_modules",
+    "tests"
+  ]
   location              = local.function_location
   service_account_email = local.function_service_account_email
   timeout_seconds       = 3600
@@ -93,16 +101,33 @@ module "timmy_create_tenant" {
       project_id = local.project_id
       secret     = "ARGOCD_PASSWORD"
       version    = "latest"
+    },
+    {
+      key        = "MAILER_API_KEY"
+      project_id = local.project_id
+      secret     = "MAILER_API_KEY"
+      version    = "latest"
     }
   ]
 
   environment_variables = {
     ARGOCD_URL               = local.argocd_url
     ARGOCD_USERNAME          = "admin"
-    GCP_PROJECT_ID           = local.project_id
+    DNS_CLOUD_DOMAIN         = "pim-saas-dev.dev.cloud.akeneo.com"
     GCP_FIRESTORE_PROJECT_ID = local.firestore_project_id
-    GOOGLE_ZONE              = "europe-west1-b"
+    GCP_PROJECT_ID           = local.project_id
     GOOGLE_MANAGED_ZONE_DNS  = local.domain
+    GOOGLE_ZONE              = "europe-west1-b"
+    LOG_LEVEL                = "debug"
+    MAILER_BASE_URL          = "smtp://smtp.mailgun.org:2525"
+    MAILER_DOMAIN            = "mg.cloud.akeneo.com"
+    NODE_ENV                 = "production"
+    PIM_IMAGE_REPOSITORY     = "europe-west1-docker.pkg.dev/akecld-prd-pim-saas-shared/prod/pim-enterprise-dev"
+    PIM_IMAGE_TAG            = "v20220920013749"
+    SOURCE_PATH              = "tenant"
+    SOURCE_REPO_URL          = "https://github.com/akeneo/pim-saas-k8s-artifacts.git"
+    SOURCE_TARGET_REVISION   = "master"
+    TENANT_CONTEXT           = local.tenant_contexts
   }
 
 }
@@ -132,9 +157,12 @@ module "timmy_delete_tenant" {
   ]
 
   environment_variables = {
-    ARGOCD_URL     = local.argocd_url
+    ARGOCD_URL               = local.argocd_url
     ARGOCD_USERNAME          = "admin"
-    GCP_PROJECT_ID = local.project_id
+    GCP_FIRESTORE_PROJECT_ID = "akecld-prd-pim-fire-eur-dev"
+    GCP_PROJECT_ID           = local.project_id
+    NODE_ENV                 = "production"
+    TENANT_CONTEXT           = local.tenant_contexts
   }
 }
 
