@@ -64,6 +64,9 @@ $rules = [
 
             // family bounded context
             'Akeneo\Pim\Structure\Family\ServiceAPI',
+
+            // Reference Entity bounded context
+            'Akeneo\ReferenceEntity\Infrastructure\PublicApi',
         ],
     )->in('Akeneo\Platform\TailoredImport\Infrastructure'),
 ];
