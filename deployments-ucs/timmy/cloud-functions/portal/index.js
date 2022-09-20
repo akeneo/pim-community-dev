@@ -241,7 +241,7 @@ functions.http('requestPortal', (req, res) => {
 
   const dispatchActions = async () => {
     logger.info('Dispatch action to provisioning cloud functions');
-    await Promise.all([tenantsToCreate()]);
+    await Promise.all([tenantsToCreate(), tenantsToDelete()]);
   }
 
   dispatchActions(res)
