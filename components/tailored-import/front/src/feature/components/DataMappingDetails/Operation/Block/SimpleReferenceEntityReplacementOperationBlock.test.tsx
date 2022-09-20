@@ -130,7 +130,7 @@ test('it opens a replacement modal and handles change', async () => {
   userEvent.click(screen.getByText('pim_common.edit'));
 
   expect(
-    screen.getByText('akeneo.tailored_import.data_mapping.operations.replacement.modal.options')
+    screen.getByText('akeneo.tailored_import.data_mapping.operations.replacement.modal.records')
   ).toBeInTheDocument();
 
   const [alessisMapping] = screen.getAllByPlaceholderText(
