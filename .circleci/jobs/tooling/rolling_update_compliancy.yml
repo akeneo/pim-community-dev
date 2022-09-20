@@ -93,6 +93,9 @@ jobs:
                           name: Migration timing and memory check
                           command: |
                             echo "Check migrations timings"
+                            
+                            if [[ $(ls /tmp/tests | wc -l) -eq 0 ]]; then echo "No migration found" && exit 0; fi
+                            
                             ls /tmp/tests | xargs -I{} ./deployments/bin/get_migration_data.sh -o timings -m "$(basename {} | tr '[:upper:]' '[:lower:]')"
                             echo ""
                             echo "=================================================="

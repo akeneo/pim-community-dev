@@ -80,6 +80,7 @@ function downloadArtifacts() {
     rm -rf ${RELEASE_DIRECTORY}/${SOURCE_RELEASE}/deployments/deployments/terraform/pim/templates/tests
     rm -rf ${RELEASE_DIRECTORY}/${SOURCE_RELEASE}/deployments/deployments/Makefile
     rm -rf ${RELEASE_DIRECTORY}/${SOURCE_RELEASE}/upgrades/upgrades/test_schema
+    rm ${RELEASE_DIRECTORY}/${SOURCE_RELEASE}/upgrades/upgrades/*
 
     # Download the target release Docker image and Terraform modules
     mkdir -p ${RELEASE_DIRECTORY}/${TARGET_RELEASE}/upgrades
@@ -94,6 +95,7 @@ function downloadArtifacts() {
     rm -rf ${RELEASE_DIRECTORY}/${TARGET_RELEASE}/deployments/deployments/terraform/pim/templates/tests
     rm -rf ${RELEASE_DIRECTORY}/${TARGET_RELEASE}/deployments/deployments/Makefile
     rm -rf ${RELEASE_DIRECTORY}/${TARGET_RELEASE}/upgrades/upgrades/test_schema
+    rm ${RELEASE_DIRECTORY}/${TARGET_RELEASE}/upgrades/upgrades/*
 }
 
 function getDiff() {
@@ -150,12 +152,12 @@ function getDiff() {
       echo "${COLOR}${TYPE} ${ACTION}: ${GIT_FILE_PATH}${COLOR_RESTORE}"
       if [[ ${ACTION} == "ADDED" ]]; then
         echo "${COLOR_BLUE}https://github.com/akeneo/pim-enterprise-dev/blob/master${GIT_FILE_PATH}${COLOR_RESTORE}"
+
+        if [[ ! -z "${DIFF_OUTPUT}" ]]; then
+          echo "" > "${DIFF_OUTPUT}/$(basename ${GIT_FILE_PATH} .php)"
+        fi
       fi
       echo "=================================================="
-
-      if [[ ! -z "${DIFF_OUTPUT}" ]]; then
-        echo "" > "${DIFF_OUTPUT}/$(basename ${GIT_FILE_PATH} .php)"
-      fi
 
       continue
     fi
