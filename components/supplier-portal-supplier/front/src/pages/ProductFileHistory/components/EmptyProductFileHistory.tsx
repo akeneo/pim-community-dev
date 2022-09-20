@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import {Link} from 'akeneo-design-system';
 import {routes} from '../../routes';
 import {useHistory} from 'react-router-dom';
+import {ConversationalHelper} from '../../../components';
 
 const Container = styled.div`
     display: flex;
@@ -23,14 +24,25 @@ const EmptyProductFileHistory = () => {
         history.push(routes.filesDropping);
     };
 
-    return (
-        <Container>
-            <FormattedMessage defaultMessage="Your file history is empty." id="nZPPr0" />
+    const HeaderWelcomeMessage = (
+        <>
+            <p>
+                <FormattedMessage defaultMessage="You will find here a recap of the files you shared." id="VeYJWI" />
+            </p>
+        </>
+    );
 
-            <Link onClick={goToFilesDroppingPage}>
-                <FormattedMessage defaultMessage="Please share an XLSX file first." id="KdWtos" />
-            </Link>
-        </Container>
+    return (
+        <>
+            <ConversationalHelper content={HeaderWelcomeMessage} />
+            <Container>
+                <FormattedMessage defaultMessage="Your file history is empty." id="nZPPr0" />
+
+                <Link onClick={goToFilesDroppingPage}>
+                    <FormattedMessage defaultMessage="Please share an XLSX file first." id="KdWtos" />
+                </Link>
+            </Container>
+        </>
     );
 };
 
