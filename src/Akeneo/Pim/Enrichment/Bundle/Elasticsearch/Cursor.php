@@ -56,6 +56,7 @@ class Cursor extends AbstractCursor implements CursorInterface, ResultAwareInter
     public function next()
     {
         if (false === next($this->items)) {
+            $this->position += count($this->items);
             $this->items = $this->getNextItems($this->esQuery);
             reset($this->items);
         }

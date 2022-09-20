@@ -100,7 +100,7 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
      */
     protected function getNextIdentifiers(array $esQuery): IdentifierResults
     {
-        $size = ($this->to - $this->from) > $this->pageSize ? $this->pageSize : ($this->to - $this->from);
+        $size = min(($this->to - $this->from), $this->pageSize);
         $esQuery['size'] = $size;
         $identifiers = new IdentifierResults();
 

@@ -20,6 +20,10 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
      */
     public function getItemsFromIdentifiers(array $identifiers): array
     {
+        if ([] === $identifiers) {
+            return [];
+        }
+
         $qb = $this
             ->createQueryBuilder('pm')
             ->where('pm.code IN (:codes)')

@@ -34,6 +34,8 @@ abstract class AbstractCursor implements CursorInterface
     /** @var int */
     protected $count;
 
+    protected int $position = 0;
+
     /**
      * {@inheritdoc}
      */
@@ -55,7 +57,7 @@ abstract class AbstractCursor implements CursorInterface
             $this->rewind();
         }
 
-        return key($this->items);
+        return key($this->items) + $this->position;
     }
 
     /**
@@ -101,7 +103,7 @@ abstract class AbstractCursor implements CursorInterface
         }
 
         $hydratedProducts = $this->productRepository->getItemsFromIdentifiers(
-            $identifierResults->getProductIdentifiers()
+            $identifierResults->getProductUuids()
         );
         $hydratedProductModels = $this->productModelRepository->getItemsFromIdentifiers(
             $identifierResults->getProductModelIdentifiers()
@@ -113,7 +115,7 @@ abstract class AbstractCursor implements CursorInterface
         foreach ($identifierResults->all() as $identifierResult) {
             foreach ($hydratedItems as $hydratedItem) {
                 if ($hydratedItem instanceof ProductInterface &&
-                    $identifierResult->isProductIdentifierEquals($hydratedItem->getIdentifier())
+                    $identifierResult->getId() === \sprintf('product_%s', $hydratedItem->getUuid()->toString())
                 ) {
                     $orderedItems[] = $hydratedItem;
                     break;
