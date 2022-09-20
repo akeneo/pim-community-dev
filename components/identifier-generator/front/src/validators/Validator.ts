@@ -1,5 +1,5 @@
-import {ValidationError} from './ValidationError';
+import {Violation} from './Violation';
 
-type Validator<T> = (model: T, path: string) => ValidationError[];
+type Validator<T> = (model: T, path: string) => Violation[];
 
 export type {Validator};

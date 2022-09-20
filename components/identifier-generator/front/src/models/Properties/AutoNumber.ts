@@ -1,5 +1,7 @@
+import {PROPERTY_NAMES} from '../Structure';
+
 type AutoNumber = {
-  name: 'AutoNumber';
+  propertyName: PROPERTY_NAMES.AUTO_NUMBER;
 };
 
 export type {AutoNumber};

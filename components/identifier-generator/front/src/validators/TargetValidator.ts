@@ -1,15 +1,15 @@
 import {Validator} from './Validator';
 import {Target} from '../models';
-import {ValidationError} from './ValidationError';
+import {Violation} from './Violation';
 
 const validateTarget: Validator<Target> = (target, path) => {
-  const result: ValidationError[] = [];
+  const violations: Violation[] = [];
 
   if (target.trim() === '') {
-    result.push({path, message: 'Target should not be empty'});
+    violations.push({path, message: 'Target should not be empty'});
   }
 
-  return result;
+  return violations;
 };
 
 export {validateTarget};

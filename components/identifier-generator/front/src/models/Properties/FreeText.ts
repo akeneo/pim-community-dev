@@ -1,5 +1,7 @@
+import {PROPERTY_NAMES} from '../Structure';
+
 type FreeText = {
-  name: 'FreeText';
+  propertyName: PROPERTY_NAMES.FREE_TEXT;
   value: string;
 };
 

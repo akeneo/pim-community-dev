@@ -1,18 +1,18 @@
 import {Validator} from './Validator';
 import {Structure} from '../models';
-import {ValidationError} from './ValidationError';
+import {Violation} from './Violation';
 
 const validateStructure: Validator<Structure> = (structure, path) => {
-  const result: ValidationError[] = [];
+  const violations: Violation[] = [];
 
   if (structure.length === 0) {
-    result.push({
+    violations.push({
       path,
       message: 'You need at least one property',
     });
   }
 
-  return result;
+  return violations;
 };
 
 export {validateStructure};
