@@ -33,10 +33,6 @@ class CellsFormatter
             case is_bool($cell):
                 return $cell ? 'TRUE' : 'FALSE';
             case is_string($cell):
-                if (is_numeric($cell)) {
-                    return rtrim(rtrim(number_format((float) $cell, decimals: MeasureConverter::SCALE, thousands_separator: ''), '0'), '.');
-                }
-
                 return $cell;
             case is_int($cell):
                 return (string) $cell;
