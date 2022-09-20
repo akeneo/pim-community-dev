@@ -84,20 +84,20 @@ class ComputeCompletenessOfProductsFamilyTasklet implements TaskletInterface
     {
         $productIdentifiers = $this->findProductIdentifiersForFamily($family);
 
-        $productIdentifierBatch = [];
+        $productUuidBatch = [];
         /** @var IdentifierResult $productIdentifier */
         foreach ($productIdentifiers as $productIdentifier) {
-            $productIdentifierBatch[] = $productIdentifier->getIdentifier();
-            if (self::BATCH_SIZE === \count($productIdentifierBatch)) {
-                $products = $this->productRepository->getItemsFromIdentifiers($productIdentifierBatch);
+            $productUuidBatch[] = \preg_replace('/^product_/', '', $productIdentifier->getId());
+            if (self::BATCH_SIZE === \count($productUuidBatch)) {
+                $products = $this->productRepository->getItemsFromIdentifiers($productUuidBatch);
                 $this->bulkProductSaver->saveAll($products, ['force_save' => true]);
                 $this->cacheClearer->clear();
-                $productIdentifierBatch = [];
+                $productUuidBatch = [];
             }
         }
 
-        if (0 < \count($productIdentifierBatch)) {
-            $products = $this->productRepository->getItemsFromIdentifiers($productIdentifierBatch);
+        if (0 < \count($productUuidBatch)) {
+            $products = $this->productRepository->getItemsFromIdentifiers($productUuidBatch);
             $this->bulkProductSaver->saveAll($products, ['force_save' => true]);
             $this->cacheClearer->clear();
         }

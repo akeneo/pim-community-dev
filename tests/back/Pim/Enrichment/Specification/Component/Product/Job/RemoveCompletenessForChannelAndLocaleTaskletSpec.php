@@ -112,7 +112,7 @@ class RemoveCompletenessForChannelAndLocaleTaskletSpec extends ObjectBehavior
         $productsCursor->next()->shouldBeCalled();
         $productsCursor->valid()->willReturn(true, false);
 
-        $productRepository->getItemsFromIdentifiers(['jean'])->willReturn([$jeanProduct]);
+        $productRepository->getItemsFromIdentifiers([$uuid->toString()])->willReturn([$jeanProduct]);
 
         $productBulkSaver->saveAll([$jeanProduct], ['force_save' => true])->shouldBeCalledOnce();
 
@@ -160,8 +160,8 @@ class RemoveCompletenessForChannelAndLocaleTaskletSpec extends ObjectBehavior
         $productsCursor->next()->shouldBeCalled();
         $productsCursor->valid()->willReturn(true, true, true, false);
 
-        $productRepository->getItemsFromIdentifiers(['jean', 'shoe'])->willReturn([$jeanProduct, $shoeProduct]);
-        $productRepository->getItemsFromIdentifiers(['hat'])->willReturn([$hatProduct]);
+        $productRepository->getItemsFromIdentifiers([$jeanUuid->toString(), $shoeUuid->toString()])->willReturn([$jeanProduct, $shoeProduct]);
+        $productRepository->getItemsFromIdentifiers([$hatUuid->toString()])->willReturn([$hatProduct]);
         $cacheClearer->clear()->shouldBeCalled();
 
         $productBulkSaver->saveAll([$jeanProduct, $shoeProduct], ['force_save' => true])->shouldBeCalledOnce();

@@ -55,21 +55,21 @@ class RemoveCompletenessForChannelAndLocaleTasklet implements TaskletInterface
         $this->notifyUsersItBegins($usersToNotify);
 
         $productIdentifiers = $this->productQueryBuilderFactory->create()->execute();
-        $productIdentifiersToClean = [];
+        $productUuidsToClean = [];
         /** @var IdentifierResult $productIdentifier */
         foreach ($productIdentifiers as $productIdentifier) {
-            $productIdentifiersToClean[] = $productIdentifier->getIdentifier();
+            $productUuidsToClean[] = \preg_replace('/^product_/', '', $productIdentifier->getId());
 
-            if (count($productIdentifiersToClean) >= $this->productBatchSize) {
-                $products = $this->productRepository->getItemsFromIdentifiers($productIdentifiersToClean);
+            if (count($productUuidsToClean) >= $this->productBatchSize) {
+                $products = $this->productRepository->getItemsFromIdentifiers($productUuidsToClean);
                 $this->cleanProducts($products);
                 $this->cacheClearer->clear();
-                $productIdentifiersToClean = [];
+                $productUuidsToClean = [];
             }
         }
 
-        if (!empty($productIdentifiersToClean)) {
-            $products = $this->productRepository->getItemsFromIdentifiers($productIdentifiersToClean);
+        if (!empty($productUuidsToClean)) {
+            $products = $this->productRepository->getItemsFromIdentifiers($productUuidsToClean);
             $this->cleanProducts($products);
         }
         $this->notifyUsersItIsDone($usersToNotify);

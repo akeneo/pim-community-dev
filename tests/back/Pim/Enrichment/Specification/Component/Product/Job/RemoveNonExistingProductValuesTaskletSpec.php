@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Job;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResults;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\GetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndScope;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
@@ -15,6 +18,7 @@ use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 class RemoveNonExistingProductValuesTaskletSpec extends ObjectBehavior
 {
@@ -59,26 +63,25 @@ class RemoveNonExistingProductValuesTaskletSpec extends ObjectBehavior
 
         $attribute = $this->createAttribute();
         $getAttributes->forCode('color')->willReturn($attribute);
-        $getProductAndProductModelIdsWithValues->forAttributeAndValues('color', 'option', ['red', 'blue'])->willReturn(
-            new \ArrayIterator([
-                ['code1', 'code2'],
-                ['code3'],
-            ])
-        );
-
+        $identifierResults1 = new IdentifierResults();
+        $identifierResults2 = new IdentifierResults();
         $product1 = new Product();
         $product2 = new Product();
         $productModel = new ProductModel();
-        $productRepository->getItemsFromIdentifiers(['code1', 'code2'])->willReturn([$product1, $product2]);
-        $productModelRepository->getItemsFromIdentifiers(['code1', 'code2'])->willReturn([]);
-        $productRepository->getItemsFromIdentifiers(['code3'])->willReturn([]);
+
+        $identifierResults1->add('code1', ProductInterface::class, 'product_' . $product1->getUuid()->toString());
+        $identifierResults1->add('code2',  ProductInterface::class, 'product_' . $product2->getUuid()->toString());
+        $identifierResults2->add('code3',  ProductModelInterface::class, 'product_model_' . $productModel->getCode());
+        $getProductAndProductModelIdsWithValues->forAttributeAndValues('color', 'option', ['red', 'blue'])->willYield(
+            [$identifierResults1, $identifierResults2]
+        );
+
+        $productRepository->getItemsFromIdentifiers([$product1->getUuid()->toString(), $product2->getUuid()->toString()])->willReturn([$product1, $product2]);
         $productModelRepository->getItemsFromIdentifiers(['code3'])->willReturn([$productModel]);
 
         $productSaver->saveAll([$product1, $product2], ['force_save' => true])->shouldBeCalled();
         $productModelSaver->saveAll([$productModel], ['force_save' => true])->shouldBeCalled();
-        $productSaver->saveAll([], ['force_save' => true])->shouldBeCalled();
-        $productModelSaver->saveAll([], ['force_save' => true])->shouldBeCalled();
-        $entityManagerClearer->clear()->shouldBeCalled();
+        $entityManagerClearer->clear()->shouldBeCalledTimes(2);
 
         $this->execute();
     }

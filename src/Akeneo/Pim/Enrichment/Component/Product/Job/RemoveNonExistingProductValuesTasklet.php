@@ -24,57 +24,24 @@ use Webmozart\Assert\Assert;
  */
 final class RemoveNonExistingProductValuesTasklet implements TaskletInterface
 {
-    /** @var StepExecution */
-    private $stepExecution;
-
-    /** @var GetAttributes */
-    private $getAttributes;
-
-    /** @var GetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndScope */
-    private $getProductAndProductModelIdentifiersWithValues;
-
-    /** @var CursorableRepositoryInterface */
-    private $productRepository;
-
-    /** @var CursorableRepositoryInterface */
-    private $productModelRepository;
-
-    /** @var BulkSaverInterface */
-    private $productSaver;
-
-    /** @var BulkSaverInterface */
-    private $productModelSaver;
-
-    /** @var EntityManagerClearerInterface */
-    private $entityManagerClearer;
-
-    /** @var int */
-    private $batchSize;
+    private ?StepExecution $stepExecution = null;
 
     public function __construct(
-        GetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndScope $getProductAndProductModelIdentifiersWithValues,
-        GetAttributes $getAttributes,
-        CursorableRepositoryInterface $productRepository,
-        CursorableRepositoryInterface $productModelRepository,
-        BulkSaverInterface $productSaver,
-        BulkSaverInterface $productModelSaver,
-        EntityManagerClearerInterface $entityManagerClearer,
-        int $batchSize
+        private GetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndScope $getProductAndProductModelIdentifiersWithValues,
+        private GetAttributes $getAttributes,
+        private CursorableRepositoryInterface $productRepository,
+        private CursorableRepositoryInterface $productModelRepository,
+        private BulkSaverInterface $productSaver,
+        private BulkSaverInterface $productModelSaver,
+        private EntityManagerClearerInterface $entityManagerClearer,
+        private int $batchSize
     ) {
-        $this->getProductAndProductModelIdentifiersWithValues = $getProductAndProductModelIdentifiersWithValues;
-        $this->getAttributes = $getAttributes;
-        $this->productRepository = $productRepository;
-        $this->productModelRepository = $productModelRepository;
-        $this->productSaver = $productSaver;
-        $this->productModelSaver = $productModelSaver;
-        $this->entityManagerClearer = $entityManagerClearer;
-        $this->batchSize = $batchSize;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
     }
@@ -84,7 +51,7 @@ final class RemoveNonExistingProductValuesTasklet implements TaskletInterface
      *
      * Loading the product filters the non existing values. We just need to save it again.
      */
-    public function execute()
+    public function execute(): void
     {
         $attributeCode = $this->stepExecution->getJobParameters()->get('attribute_code');
         Assert::string($attributeCode);
@@ -102,12 +69,16 @@ final class RemoveNonExistingProductValuesTasklet implements TaskletInterface
             $values
         );
 
-        foreach ($batchIdentifiers as $identifiers) {
-            $products = $this->productRepository->getItemsFromIdentifiers($identifiers);
-            $this->productSaver->saveAll($products, ['force_save' => true]);
+        foreach ($batchIdentifiers as $identifierResults) {
+            foreach (\array_chunk($identifierResults->getProductUuids(), $this->batchSize) as $productUuids) {
+                $products = $this->productRepository->getItemsFromIdentifiers($productUuids);
+                $this->productSaver->saveAll($products, ['force_save' => true]);
+            }
 
-            $productModels = $this->productModelRepository->getItemsFromIdentifiers($identifiers);
-            $this->productModelSaver->saveAll($productModels, ['force_save' => true]);
+            foreach (\array_chunk($identifierResults->getProductModelIdentifiers(), $this->batchSize) as $productModelCodes) {
+                $productModels = $this->productModelRepository->getItemsFromIdentifiers($productModelCodes);
+                $this->productModelSaver->saveAll($productModels, ['force_save' => true]);
+            }
 
             $this->entityManagerClearer->clear();
         }

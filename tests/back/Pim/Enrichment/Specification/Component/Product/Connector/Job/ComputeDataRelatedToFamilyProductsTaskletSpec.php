@@ -109,8 +109,8 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         $cursor->next()->shouldBeCalled();
         $cursor->count()->shouldBeCalled()->willReturn(3);
 
-        $productRepository->getItemsFromIdentifiers(['id1', 'id2'])->willReturn([$product1, $product2]);
-        $productRepository->getItemsFromIdentifiers(['id3'])->willReturn([$product3]);
+        $productRepository->getItemsFromIdentifiers([$product1Uuid->toString(), $product2Uuid->toString()])->willReturn([$product1, $product2]);
+        $productRepository->getItemsFromIdentifiers([$product3Uuid->toString()])->willReturn([$product3]);
         $productSaver->saveAll([$product1, $product2], ['force_save' => true])->shouldBeCalled();
         $productSaver->saveAll([$product3], ['force_save' => true])->shouldBeCalled();
 
@@ -177,8 +177,8 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         $cursor->next()->shouldBeCalled();
         $cursor->count()->shouldBeCalled()->willReturn(3);
 
-        $productRepository->getItemsFromIdentifiers(['id1', 'id2'])->willReturn([$variantProduct1, $variantProduct2]);
-        $productRepository->getItemsFromIdentifiers(['id3'])->willReturn([$variantProduct3]);
+        $productRepository->getItemsFromIdentifiers([$product1Uuid->toString(), $product2Uuid->toString()])->willReturn([$variantProduct1, $variantProduct2]);
+        $productRepository->getItemsFromIdentifiers([$product3Uuid->toString()])->willReturn([$variantProduct3]);
 
         $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$variantProduct1])->shouldBeCalled();
         $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$variantProduct2])->shouldBeCalled();
@@ -257,8 +257,8 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         $cursor->next()->shouldBeCalled();
         $cursor->count()->shouldBeCalled()->willReturn(3);
 
-        $productRepository->getItemsFromIdentifiers(['id1', 'id2'])->willReturn([$variantProduct1, $variantProduct2]);
-        $productRepository->getItemsFromIdentifiers(['id3'])->willReturn([$variantProduct3]);
+        $productRepository->getItemsFromIdentifiers([$product1Uuid->toString(), $product2Uuid->toString()])->willReturn([$variantProduct1, $variantProduct2]);
+        $productRepository->getItemsFromIdentifiers([$product3Uuid->toString()])->willReturn([$variantProduct3]);
 
         $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$variantProduct1])->shouldBeCalled();
         $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$variantProduct2])->shouldBeCalled();

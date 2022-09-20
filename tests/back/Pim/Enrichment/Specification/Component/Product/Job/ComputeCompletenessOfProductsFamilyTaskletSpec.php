@@ -87,7 +87,7 @@ class ComputeCompletenessOfProductsFamilyTaskletSpec extends ObjectBehavior
         $cursor->next()->shouldBeCalled();
         $cursor->rewind()->shouldBeCalled();
 
-        $productRepository->getItemsFromIdentifiers(['identifier1', 'identifier2', 'identifier3'])->willReturn(
+        $productRepository->getItemsFromIdentifiers([$uuid1->toString(), $uuid2->toString(), $uuid3->toString()])->willReturn(
             [$product1, $product2, $product3]
         );
 

@@ -101,21 +101,21 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
         $productIdentifiers = $this->getProductIdentifiersForFamilies($familyCodes);
         $this->stepExecution->setTotalItems($productIdentifiers->count());
 
-        $batchedProductIdentifiers = [];
+        $batchedProductUuids = [];
         /** @var IdentifierResult $productIdentifier */
         foreach ($productIdentifiers as $productIdentifier) {
             Assert::same($productIdentifier->getType(), ProductInterface::class);
-            $batchedProductIdentifiers[] = $productIdentifier->getIdentifier();
-            if (count($batchedProductIdentifiers) >= $this->batchSize) {
-                $products = $this->productRepository->getItemsFromIdentifiers($batchedProductIdentifiers);
+            $batchedProductUuids[] = \preg_replace('/^product_/', '', $productIdentifier->getId());
+            if (count($batchedProductUuids) >= $this->batchSize) {
+                $products = $this->productRepository->getItemsFromIdentifiers($batchedProductUuids);
                 $this->updateAndSaveProducts($products);
-                $batchedProductIdentifiers = [];
+                $batchedProductUuids = [];
                 $this->cacheClearer->clear();
             }
         }
 
-        if (count($batchedProductIdentifiers) > 0) {
-            $products = $this->productRepository->getItemsFromIdentifiers($batchedProductIdentifiers);
+        if (count($batchedProductUuids) > 0) {
+            $products = $this->productRepository->getItemsFromIdentifiers($batchedProductUuids);
             $this->updateAndSaveProducts($products);
             $this->cacheClearer->clear();
         }
