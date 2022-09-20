@@ -30,22 +30,17 @@ class SetImageApplierSpec extends ObjectBehavior
 
     function it_applies_set_image_user_intent(): void
     {
-
         $compositeKey = 'attribute_code' . ValueCollection::SEPARATOR . 'uuid';
-        $localeCompositeKey = 'attribute_code'
-            . ValueCollection::SEPARATOR . 'uuid' .
-            ValueCollection::SEPARATOR . 'locale_code';
+        $localeCompositeKey = 'attribute_code' . ValueCollection::SEPARATOR . 'uuid' . ValueCollection::SEPARATOR . 'locale_code';
 
-        $attributes = ValueCollection::fromArray(
-            [
-                'attribute_codes' => [$compositeKey],
-                $localeCompositeKey => [
-                    'data' => 'value',
-                    'locale' => 'locale_code',
-                    'attribute_code' => $compositeKey
-                ]
+        $attributes = ValueCollection::fromArray([
+            'attribute_codes' => [$compositeKey],
+            $localeCompositeKey => [
+                'data' => 'value',
+                'locale' => 'locale_code',
+                'attribute_code' => $compositeKey
             ]
-        );
+        ]);
 
         $category = new Category(
             id: new CategoryId(1),
@@ -58,19 +53,29 @@ class SetImageApplierSpec extends ObjectBehavior
             'uuid',
             'attribute_code',
             'locale_code',
-            'updated_value'
-        );
-
-        $expectedAttributes = ValueCollection::fromArray(
             [
-                'attribute_codes' => [$compositeKey],
-                $localeCompositeKey => [
-                    'data' => 'updated_value',
-                    'locale' => 'locale_code',
-                    'attribute_code' => $compositeKey
-                ]
+                'size' => 168107,
+                'extension' => 'jpg',
+                'file_path' => '8/8/3/d/883d041fc9f22ce42fee07d96c05b0b7ec7e66de_shoes.jpg',
+                'mime_type' => 'image/jpeg',
+                'original_filename' => 'shoes.jpg'
             ]
         );
+
+        $expectedAttributes = ValueCollection::fromArray([
+            'attribute_codes' => [$compositeKey],
+            $localeCompositeKey => [
+                'data' => [
+                    'size' => 168107,
+                    'extension' => 'jpg',
+                    'file_path' => '8/8/3/d/883d041fc9f22ce42fee07d96c05b0b7ec7e66de_shoes.jpg',
+                    'mime_type' => 'image/jpeg',
+                    'original_filename' => 'shoes.jpg'
+                ],
+                'locale' => 'locale_code',
+                'attribute_code' => $compositeKey
+            ]
+        ]);
 
         $this->apply($userIntent, $category);
 

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\FileSystem\PreviewGenerator;
 
-
 use Akeneo\Category\Domain\Model\Attribute\Attribute;
 
 /**

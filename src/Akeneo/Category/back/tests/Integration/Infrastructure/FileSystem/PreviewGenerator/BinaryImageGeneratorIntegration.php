@@ -47,14 +47,14 @@ class BinaryImageGeneratorIntegration extends TestCase
     }
 
     /** @test */
-    public function it_can_support_only_image_attribute()
+    public function it_can_support_only_image_attribute(): void
     {
         $isSupported = $this->binaryImageGenerator->supports(base64_encode($this->fileInfo->getOriginalFilename()), $this->attributeImage, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
         $this->assertTrue($isSupported);
     }
 
     /** @test */
-    public function it_can_support_only_supported_types_of_an_image_attribute()
+    public function it_can_support_only_supported_types_of_an_image_attribute(): void
     {
         $isSupported = $this->binaryImageGenerator->supports(base64_encode($this->fileInfo->getOriginalFilename()), $this->attributeImage, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
         $this->assertTrue($isSupported);
@@ -70,7 +70,7 @@ class BinaryImageGeneratorIntegration extends TestCase
     }
 
     /** @test */
-    public function it_gets_a_preview_for_an_image_attribute()
+    public function it_gets_a_preview_for_an_image_attribute(): void
     {
         $data = $this->generateJpegImage(10, 1);
 
@@ -85,7 +85,7 @@ class BinaryImageGeneratorIntegration extends TestCase
     }
 
     /** @test */
-    public function it_gets_a_preview_for_an_image_attribute_from_the_cache()
+    public function it_gets_a_preview_for_an_image_attribute_from_the_cache(): void
     {
         $data = $this->generateJpegImage(10, 1);
 
@@ -103,7 +103,7 @@ class BinaryImageGeneratorIntegration extends TestCase
     }
 
     /** @test */
-    public function it_gets_a_preview_for_an_image_attribute_from_the_cache_removed()
+    public function it_gets_a_preview_for_an_image_attribute_from_the_cache_removed(): void
     {
         $data = $this->generateJpegImage(10, 1);
         
@@ -127,7 +127,7 @@ class BinaryImageGeneratorIntegration extends TestCase
     }
 
     /** @test */
-    public function it_gets_a_default_preview_for_an_unknown_image()
+    public function it_gets_a_default_preview_for_an_unknown_image(): void
     {
         $this->binaryImageGenerator->supports('test', $this->attributeImage, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
         $previewImage = $this->binaryImageGenerator->generate(base64_encode('test'), $this->attributeImage, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
@@ -139,7 +139,7 @@ class BinaryImageGeneratorIntegration extends TestCase
     }
 
     /** @test */
-    public function it_returns_default_preview_when_the_file_size_is_too_big()
+    public function it_returns_default_preview_when_the_file_size_is_too_big(): void
     {
         $data = $this->generatePngImage(22000, 0);
 
@@ -148,7 +148,7 @@ class BinaryImageGeneratorIntegration extends TestCase
     }
 
     /** @test */
-    public function it_throws_an_error_when_resolution_is_too_big()
+    public function it_throws_an_error_when_resolution_is_too_big(): void
     {
         $data = $this->generatePngImage(16001, 9);
 
@@ -159,7 +159,7 @@ class BinaryImageGeneratorIntegration extends TestCase
     }
 
     /** @test */
-    public function it_returns_default_image_when_mime_type_is_not_supported()
+    public function it_returns_default_image_when_mime_type_is_not_supported(): void
     {
         $data = $this->uploadPdfFile();
 

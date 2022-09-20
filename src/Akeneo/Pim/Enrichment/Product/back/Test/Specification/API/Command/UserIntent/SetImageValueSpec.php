@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Product\API\Command\UserIntent;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFileValue;
+use Akeneo\Category\Api\Command\UserIntents\ValueImageUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -17,13 +16,24 @@ final class SetImageValueSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('name', 'ecommerce', 'en_US', '/path/to/image.png');
+        $this->beConstructedWith(
+            'name',
+            'ecommerce',
+            'en_US',
+            [
+                'size' => 168107,
+                'extension' => 'jpg',
+                'file_path' => '8/8/3/d/883d041fc9f22ce42fee07d96c05b0b7ec7e66de_shoes.jpg',
+                'mime_type' => 'image/jpeg',
+                'original_filename' => 'shoes.jpg'
+            ]
+        );
     }
 
     function it_is_initializable()
     {
         $this->shouldHaveType(SetImageValue::class);
-        $this->shouldImplement(ValueUserIntent::class);
+        $this->shouldImplement(ValueImageUserIntent::class);
     }
 
     function it_returns_the_attribute_code()
@@ -43,6 +53,12 @@ final class SetImageValueSpec extends ObjectBehavior
 
     function it_returns_the_value()
     {
-        $this->value()->shouldReturn('/path/to/image.png');
+        $this->value()->shouldReturn([
+            'size' => 168107,
+            'extension' => 'jpg',
+            'file_path' => '8/8/3/d/883d041fc9f22ce42fee07d96c05b0b7ec7e66de_shoes.jpg',
+            'mime_type' => 'image/jpeg',
+            'original_filename' => 'shoes.jpg'
+        ]);
     }
 }
