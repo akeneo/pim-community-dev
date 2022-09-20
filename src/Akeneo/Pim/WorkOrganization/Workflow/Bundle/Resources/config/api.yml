@@ -33,6 +33,27 @@ services:
             - '@security.authorization_checker'
             - '@oro_security.security_facade'
 
+    Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ExternalApi\GetProductDraftWithUuidController:
+        public: true
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@pimee_workflow.repository.product_draft'
+            - '@pimee_workflow.applier.draft'
+            - '@Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\ExternalApi\ProductWithUuidNormalizer'
+            - '@akeneo.pim.permission.product.query.fetch_user_rights_on_product'
+            - '@security.token_storage'
+            - '@oro_security.security_facade'
+
+    Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ExternalApi\CreateProductProposalByUuidController:
+        public: true
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@pimee_workflow.repository.product_draft'
+            - '@akeneo.pim.permission.product.query.fetch_user_rights_on_product'
+            - '@pimee_workflow.manager.product_draft'
+            - '@security.token_storage'
+            - '@oro_security.security_facade'
+
     pimee_workflow_controller.external_api.publish_product:
         class: '%pimee_workflow_controller.external_api.publish_product.class%'
         public: true
@@ -84,6 +105,13 @@ services:
             - '@pim_catalog.repository.product'
             - 'pimee_api_product_draft_get'
 
+    Akeneo\Pim\WorkOrganization\Workflow\Bundle\Router\ProxyProductUuidRouter:
+        arguments:
+            - '@router'
+            - '@pim_catalog.repository.product'
+            - '@pimee_workflow.repository.product_draft'
+            - '@security.token_storage'
+
     pimee_api.router.proxy_product_model:
         class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Router\ProxyRouter
         arguments:
@@ -121,3 +149,9 @@ services:
             - '@pimee_workflow.repository.product_model_draft'
             - '@pimee_security.cached_authorization_checker'
             - '@security.token_storage'
+
+    Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\ExternalApi\ProductWithUuidNormalizer:
+        arguments:
+            - '@akeneo.pim.enrichment.product.connector.get_product_from_uuids'
+            - '@Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductWithUuidNormalizer'
+            - '@pim_api.normalizer.values'

@@ -229,7 +229,7 @@ services:
         public: true
         arguments:
             - '@Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\FindProductWithAppliedDraft'
-            - '@router'
+            - '@Akeneo\Pim\WorkOrganization\Workflow\Bundle\Router\ProxyProductUuidRouter'
             - '@pim_catalog.comparator.filter.product'
             - '@event_dispatcher'
             - '@pim_api.checker.duplicate_value'

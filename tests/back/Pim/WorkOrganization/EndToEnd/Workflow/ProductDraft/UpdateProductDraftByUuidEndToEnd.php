@@ -24,7 +24,6 @@ class UpdateProductDraftByUuidEndToEnd extends AbstractProductTestCase
                 ]
             ]
         ]);
-        $this->originalProductUuid = $product->getUuid()->toString();
         $this->createEntityWithValuesDraft('mary', $product, [
             'values' => [
                 'a_simple_select' => [
@@ -32,6 +31,7 @@ class UpdateProductDraftByUuidEndToEnd extends AbstractProductTestCase
                 ]
             ]
         ]);
+        $this->originalProductUuid = $product->getUuid()->toString();
     }
 
     public function testErrorWhenFieldsAreUpdatedOnUpdateADraft()
@@ -72,11 +72,11 @@ JSON;
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
-//      TODO CPM-722: uncomment this assertion
-//        $this->assertSame(
-//            \sprintf('http://localhost/api/rest/v1/products-uuid/%s/draft', $this->originalProductUuid),
-//            $response->headers->get('location')
-//        );
+
+        $this->assertSame(
+            \sprintf('http://localhost/api/rest/v1/products-uuid/%s/draft', $this->originalProductUuid),
+            $response->headers->get('location')
+        );
 
         $product = $this->get('pim_catalog.repository.product')->find($this->originalProductUuid);
         $this->assertSame('a text', $product->getValue('a_text')->getData());
