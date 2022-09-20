@@ -101,6 +101,7 @@ const ProductFilesList = ({
                                                     'supplier_portal.product_file_dropping.supplier_files.columns.download'
                                                 )}
                                                 ghost={'borderless'}
+                                                onClick={(event: any) => event.stopPropagation()}
                                                 href={router.generate('supplier_portal_retailer_download_file', {
                                                     identifier: productFile.identifier,
                                                 })}
