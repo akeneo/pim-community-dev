@@ -27,6 +27,7 @@ PIM-10679: Fix out of sort memory on ProductModelImagesFromCodes
 
 ## Bug fixes
 
+- PIM-10631: increase the FOS OAuth scope column to VARCHAR(1000)
 - PIM-10435: [Backport] Fix search_after requests with codes using uppercase accented characters
 
 # 6.0.43 (2022-09-20)
