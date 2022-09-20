@@ -23,7 +23,7 @@ class SimpleYamlImportSpec extends ObjectBehavior
         $collection = $this->getConstraintCollection();
         $collection->shouldReturnAnInstanceOf('Symfony\Component\Validator\Constraints\Collection');
         $fields = $collection->fields;
-        $fields->shouldHaveCount(6);
+        $fields->shouldHaveCount(5);
         $fields->shouldHaveKey('storage');
         $fields->shouldHaveKey('uploadAllowed');
         $fields->shouldHaveKey('invalid_items_file_format');
