@@ -8,7 +8,7 @@ declare(strict_types=1);
  */
 namespace Akeneo\Test\Category\Integration\Infrastructure\FileSystem\PreviewGenerator;
 
-use Akeneo\Category\Application\Handler\FileHandler;
+use Akeneo\Category\Application\Handler\StoreUploadedFile;
 use Akeneo\Category\Domain\Model\Attribute\AttributeImage;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsLocalizable;
@@ -176,7 +176,7 @@ class BinaryImageGeneratorIntegration extends TestCase
         $fileInfo = new \SplFileInfo($this->getFixturePath('akeneo.jpg'));
         $fileToUpload = new UploadedFile($fileInfo->getPathname(), $fileInfo->getFilename(), 'image/jpg');
 
-        return $this->get(FileHandler::class)->storeFile($fileToUpload);
+        return $this->get(StoreUploadedFile::class)->__invoke($fileToUpload);
     }
 
     private function generateJpegImage(int $size, int $quality): string
@@ -186,7 +186,7 @@ class BinaryImageGeneratorIntegration extends TestCase
         self::assertTrue(imagejpeg($image, $imageFilename, $quality));
         $fileInfo = new \SplFileInfo($imageFilename);
         $fileToUpload = new UploadedFile($fileInfo->getPathname(), $fileInfo->getFilename(), 'image/jpg');
-        $file = $this->get(FileHandler::class)->storeFile($fileToUpload);
+        $file = $this->get(StoreUploadedFile::class)->__invoke($fileToUpload);
 
         return base64_encode($file->getKey());
     }
@@ -199,7 +199,7 @@ class BinaryImageGeneratorIntegration extends TestCase
         self::assertTrue(imagepng($image, $imageFilename, $quality));
         $fileInfo = new \SplFileInfo($imageFilename);
         $fileToUpload = new UploadedFile($fileInfo->getPathname(), $fileInfo->getFilename(), 'image/png');
-        $file = $this->get(FileHandler::class)->storeFile($fileToUpload);
+        $file = $this->get(StoreUploadedFile::class)->__invoke($fileToUpload);
 
         return base64_encode($file->getKey());
     }
@@ -208,7 +208,7 @@ class BinaryImageGeneratorIntegration extends TestCase
     {
         $fileInfo = new \SplFileInfo($this->getFixturePath('akeneo.pdf'));
         $fileToUpload = new UploadedFile($fileInfo->getPathname(), $fileInfo->getFilename(), 'application/pdf');
-        $file = $this->get(FileHandler::class)->storeFile($fileToUpload);
+        $file = $this->get(StoreUploadedFile::class)->__invoke($fileToUpload);
 
         return base64_encode($file->getKey());
     }
