@@ -143,3 +143,7 @@ services:
     Akeneo\Catalogs\Infrastructure\Persistence\GetCurrenciesQuery:
         arguments:
             - '@pim_catalog.repository.currency'
+
+    Akeneo\Catalogs\Infrastructure\Storage\CatalogsMappingStorage:
+        arguments:
+            $filesystem: '@oneup_flysystem.catalogs_mapping_filesystem'
