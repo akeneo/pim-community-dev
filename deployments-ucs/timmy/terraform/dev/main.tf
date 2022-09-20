@@ -45,7 +45,7 @@ module "timmy_request_portal" {
   ]
   location              = local.function_location
   service_account_email = local.function_service_account_email
-  timeout_seconds       = 90
+  timeout_seconds       = 3600
   max_instance_count    = 1
 
   secret_environment_variables = [
@@ -123,7 +123,7 @@ module "timmy_create_tenant" {
     MAILER_DOMAIN            = "mg.cloud.akeneo.com"
     NODE_ENV                 = "production"
     PIM_IMAGE_REPOSITORY     = "europe-west1-docker.pkg.dev/akecld-prd-pim-saas-shared/prod/pim-enterprise-dev"
-    PIM_IMAGE_TAG            = "v20220822000000"
+    PIM_IMAGE_TAG            = "v20220920013749"
     SOURCE_PATH              = "tenant"
     SOURCE_REPO_URL          = "https://github.com/akeneo/pim-saas-k8s-artifacts.git"
     SOURCE_TARGET_REVISION   = "master"
