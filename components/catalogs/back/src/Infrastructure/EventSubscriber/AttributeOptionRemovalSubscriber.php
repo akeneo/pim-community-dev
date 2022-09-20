@@ -1,19 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Catalogs\Infrastructure\EventSubscriber;
 
-use Akeneo\Catalogs\Application\Persistence\GetEnabledCatalogsByAttributeCodeAndAttributeOptionCodeQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\UpsertCatalogQueryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
+use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class AttributeOptionRemovalSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private GetEnabledCatalogsByAttributeCodeAndAttributeOptionCodeQueryInterface $getEnabledCatalogsByAttributeCodeAndAttributeOptionCodeQuery,
-        private UpsertCatalogQueryInterface $upsertCatalogQuery,
+        private IdentifiableObjectRepositoryInterface $jobInstanceRepository,
+        private TokenStorageInterface $tokenStorage,
+        private JobLauncherInterface $jobLauncher,
     ) {
     }
 
@@ -34,15 +38,11 @@ class AttributeOptionRemovalSubscriber implements EventSubscriberInterface
         $attributeCode = $attributeOption->getAttribute()->getCode();
         $attributeOptionCode = $attributeOption->getCode();
 
-        $catalogs = $this->getEnabledCatalogsByAttributeCodeAndAttributeOptionCodeQuery->execute($attributeCode, $attributeOptionCode);
+        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier('disable_catalog_on_attribute_option_removal');
 
-        foreach ($catalogs as $catalog) {
-            $this->upsertCatalogQuery->execute(
-                $catalog->getId(),
-                $catalog->getName(),
-                $catalog->getOwnerUsername(),
-                false,
-            );
-        }
+        $this->jobLauncher->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), [
+            'attribute_code' => $attributeCode,
+            'attribute_option_code' => $attributeOptionCode
+        ]);
     }
 }

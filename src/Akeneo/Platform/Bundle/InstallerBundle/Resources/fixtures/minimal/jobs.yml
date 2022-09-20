@@ -156,3 +156,8 @@ jobs:
         alias:     versioning_purge
         label:     Purge versions of entities, except first and last versions
         type:      scheduled_job
+    disable_catalog_on_attribute_option_removal:
+        connector: internal
+        alias:     disable_catalog_on_attribute_option_removal
+        label:     Disable catalog on attribute option removal
+        type:      disable_catalog_on_attribute_option_removal
