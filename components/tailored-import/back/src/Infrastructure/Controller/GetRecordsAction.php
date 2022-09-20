@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Controller;
 
+use Akeneo\Platform\TailoredImport\Infrastructure\Validation\GetRecords;
 use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Platform\SearchRecordsInterface;
 use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Platform\SearchRecordsParameters;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,6 +17,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class GetRecordsAction
 {
@@ -23,6 +26,8 @@ final class GetRecordsAction
 
     public function __construct(
         private SearchRecordsInterface $searchRecords,
+        private ValidatorInterface $validator,
+        private NormalizerInterface $violationNormalizer,
     ) {
     }
 
@@ -32,19 +37,9 @@ final class GetRecordsAction
             return new RedirectResponse('/');
         }
 
-        $referenceEntityCode = $request->get('reference_entity_code');
-        if (null === $referenceEntityCode) {
-            throw new BadRequestHttpException('Missing reference entity code');
-        }
-
-        $channel = $request->get('channel');
-        if (null === $channel) {
-            throw new BadRequestHttpException('Missing channel');
-        }
-
-        $locale = $request->get('locale');
-        if (null === $locale) {
-            throw new BadRequestHttpException('Missing locale');
+        $violations = $this->validator->validate($request, new GetRecords());
+        if (0 < $violations->count()) {
+            return new JsonResponse($this->violationNormalizer->normalize($violations), Response::HTTP_BAD_REQUEST);
         }
 
         $searchRecordsParameters = new SearchRecordsParameters();
@@ -55,9 +50,9 @@ final class GetRecordsAction
         $searchRecordsParameters->setPage($request->get('page', 1));
 
         $searchRecordsResult = $this->searchRecords->search(
-            $referenceEntityCode,
-            $channel,
-            $locale,
+            $request->get('reference_entity_code'),
+            $request->get('channel'),
+            $request->get('locale'),
             $searchRecordsParameters,
         );
 
