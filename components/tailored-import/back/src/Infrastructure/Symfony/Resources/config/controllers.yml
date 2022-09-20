@@ -96,3 +96,5 @@ services:
     public: true
     arguments:
       - '@akeneo_referenceentity.infrastructure.persistence.query.platform.search_records'
+      - '@validator'
+      - '@serializer'

@@ -13,5 +13,4 @@ use Symfony\Component\Validator\Constraint;
 
 final class GetRecords extends Constraint
 {
-
 }
