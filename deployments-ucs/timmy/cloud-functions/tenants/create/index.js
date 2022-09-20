@@ -427,7 +427,7 @@ functions.http('createTenant', (req, res) => {
       })
       throw new Error(`The JSON schema of the received http body is not valid: ${error}`);
     }
-    logger.debug(`Received HTTP json body: ${body}`);
+    logger.debug(`Received HTTP json body: ${JSON.stringify(body)}`);
 
     const instanceName = body.instanceName;
     const extraLabelType = 'ucs';
@@ -577,7 +577,7 @@ functions.http('createTenant', (req, res) => {
               }
             },
             common: {
-              class: "standard",
+              class: "ssd-retain-csi",
               persistentDisks: [
                 `projects/${GCP_PROJECT_ID}/zones/${GOOGLE_ZONE}/disks/${pfid}-mysql`
               ]
@@ -631,7 +631,7 @@ functions.http('createTenant', (req, res) => {
       const resp = await createArgoCdApp(ARGOCD_URL, token, payload);
       await ensureArgoCdAppIsHealthy(ARGOCD_URL, token, instanceName);
       // TODO PH-286: full synced is not possible because http routes objects are not synced. Fix that to uncomment this line
-      //await ensureArgoCdAppIsSynced(ARGOCD_URL, token, instanceName);
+      await ensureArgoCdAppIsSynced(ARGOCD_URL, token, instanceName);
     }
 
     createTenant(res)
