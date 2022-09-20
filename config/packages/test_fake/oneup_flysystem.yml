@@ -6,6 +6,8 @@ oneup_flysystem:
             memory: ~
         archivist_adapter:
             memory: ~
+        category_storage_adapter:
+            memory: ~
         local_storage_adapter:
             memory: ~
         catalogs_mapping_adapter:

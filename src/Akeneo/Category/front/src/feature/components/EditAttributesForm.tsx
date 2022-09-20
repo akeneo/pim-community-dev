@@ -1,9 +1,7 @@
 import React, {useCallback, useState, useMemo, useContext} from 'react';
 import styled from 'styled-components';
-
 import {SectionTitle, Helper} from 'akeneo-design-system';
 import {LocaleSelector, useTranslate} from '@akeneo-pim-community/shared';
-
 import {useTemplate} from '../hooks';
 import {
   Attribute,
@@ -53,13 +51,9 @@ export const EditAttributesForm = ({attributeValues, onAttributeValueChange}: Pr
   );
 
   const handleImageChange = useCallback(
-    (attribute: Attribute) => (value: AttributeInputValue) => {
+    (attribute: Attribute) => (value: AttributeInputValue | null) => {
       if (!isImageAttributeInputValue(value)) {
-        return;
-      }
-
-      // TODO handle value===null
-      if (!value || !value.size || !value.mimeType || !value.extension) {
+        onAttributeValueChange(attribute, locale, null);
         return;
       }
 

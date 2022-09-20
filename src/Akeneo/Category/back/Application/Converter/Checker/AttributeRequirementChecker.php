@@ -105,7 +105,6 @@ class AttributeRequirementChecker implements RequirementChecker
             self::assertKeyExist($value, 'attribute_code');
 
             try {
-                Assert::notEmpty($value['data']);
                 Assert::nullOrStringNotEmpty($value['locale']);
                 Assert::notEmpty($value['attribute_code']);
             } catch (\InvalidArgumentException $exception) {

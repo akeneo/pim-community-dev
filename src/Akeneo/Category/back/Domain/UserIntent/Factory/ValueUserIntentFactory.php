@@ -82,7 +82,17 @@ final class ValueUserIntentFactory implements UserIntentFactory
     }
 
     /**
-     * @param array{data: string, locale: string|null, attribute_code: string} $value
+     * @param array{
+     *     data: array{
+     *      size: int,
+     *      extension: string,
+     *      file_path: string,
+     *      mime_type: string,
+     *      original_filename: string,
+     *     } | string | null,
+     *     locale: string|null,
+     *     attribute_code: string
+     * } $value
      */
     private function getAttributeType(AttributeCollection $attributeCollection, array $value): ?AttributeType
     {
@@ -92,7 +102,17 @@ final class ValueUserIntentFactory implements UserIntentFactory
     }
 
     /**
-     * @param array{data: string, locale: string|null, attribute_code: string} $value
+     * @param array{
+     *     data: array{
+     *      size: int,
+     *      extension: string,
+     *      file_path: string,
+     *      mime_type: string,
+     *      original_filename: string,
+     *     } | string | null,
+     *     locale: string|null,
+     *     attribute_code: string
+     * } $value
      */
     private function addValueUserIntent(AttributeType $attributeType, array $value): UserIntent
     {

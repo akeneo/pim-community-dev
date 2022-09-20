@@ -114,8 +114,5 @@ class UpsertCategoryBaseSqlIntegration extends CategoryTestCase
         );
         $this->assertArrayHasKey($expectedCompositeKey, $updatedCategory->getAttributes()->normalize());
         $this->assertEquals($expectedData[$expectedCompositeKey], $updatedCategory->getAttributes()->normalize()[$expectedCompositeKey]);
-
-        $this->assertNotNull($updatedCategory->getParentId());
-        $this->assertEquals($expectedParentId->getValue(), $updatedCategory->getParentId()->getValue());
     }
 }

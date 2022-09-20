@@ -49,7 +49,7 @@ final class ValueCollection implements \IteratorAggregate, \Countable
         string $attributeUuid,
         string $attributeCode,
         ?string $localeCode,
-        string $value,
+        mixed $value,
     ): ValueCollection {
         $compositeKey = $attributeCode.self::SEPARATOR.$attributeUuid;
 
