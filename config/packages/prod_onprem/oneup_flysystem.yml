@@ -21,6 +21,9 @@ oneup_flysystem:
         supplier_portal_storage_adapter:
             local:
                 location: '%kernel.project_dir%/var/file_storage/supplier_portal'
+        category_storage_adapter:
+            local:
+                location: '%kernel.project_dir%/var/file_storage/category'
         local_storage_adapter:
             local:
                 location: '/'

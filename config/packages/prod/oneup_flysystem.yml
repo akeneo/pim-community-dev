@@ -21,6 +21,9 @@ oneup_flysystem:
         supplier_portal_storage_adapter:
             custom:
                 service: 'akeneo_flysystem_adapter.googlecloudstorage.supplier_portal_storage_adapter'
+        category_storage_adapter:
+            custom:
+                service: 'akeneo_flysystem_adapter.googlecloudstorage.category_storage_adapter'
         local_storage_adapter:
             local:
                 location: '/'

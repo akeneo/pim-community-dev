@@ -47,3 +47,7 @@ liip_imagine:
             filters:
                 icc_strip: ~
                 downscale: { max: [320, 240] }
+
+services:
+    liip_imagine.extension_guesser:
+        alias: "mime_types"

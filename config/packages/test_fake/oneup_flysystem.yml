@@ -14,6 +14,8 @@ oneup_flysystem:
             memory: ~
         supplier_portal_storage_adapter:
             memory: ~
+        category_storage_adapter:
+            memory: ~
         local_storage_adapter:
             memory: ~
         catalogs_mapping_adapter:

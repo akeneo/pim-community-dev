@@ -24,6 +24,9 @@ oneup_flysystem:
         supplier_portal:
             adapter: supplier_portal_storage_adapter
             mount: supplierPortal
+        category_storage:
+            adapter: category_storage_adapter
+            mount: categoryStorage
         catalogs_mapping:
             adapter: catalogs_mapping_adapter
             mount: catalogsMapping

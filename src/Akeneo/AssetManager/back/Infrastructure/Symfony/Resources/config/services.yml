@@ -127,7 +127,7 @@ services:
             - '@akeneo_file_storage.repository.file_info'
             - '@pim_enrich.guesser.file_type'
             - '@pim_enrich.provider.default_image'
-            - ['catalogStorage', 'assetStorage']
+            - ['catalogStorage', 'assetStorage', 'categoryStorage']
 
     # asset transformation factories
     Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCollectionFactory:
