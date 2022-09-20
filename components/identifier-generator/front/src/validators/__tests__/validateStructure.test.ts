@@ -1,4 +1,4 @@
-import {validateStructure} from '../StructureValidator';
+import {validateStructure} from '../validateStructure';
 
 describe('StructureValidator', () => {
   it('should not add violation for valid structure', () => {

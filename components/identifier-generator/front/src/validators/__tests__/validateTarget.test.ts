@@ -1,4 +1,4 @@
-import {validateTarget} from '../TargetValidator';
+import {validateTarget} from '../validateTarget';
 
 describe('TargetValidator', () => {
   it('should not add violation for valid target', () => {

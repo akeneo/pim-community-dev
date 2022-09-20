@@ -1,6 +1,6 @@
 import {Validator} from './Validator';
-import {IdentifierGeneratorCode} from '../models';
 import {Violation} from './Violation';
+import {IdentifierGeneratorCode} from '../models';
 
 const validateIdentifierGeneratorCode: Validator<IdentifierGeneratorCode> = (identifierGeneratorCode, path) => {
   const violations: Violation[] = [];

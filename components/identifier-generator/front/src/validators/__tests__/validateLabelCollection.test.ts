@@ -1,4 +1,4 @@
-import {validateLabelCollection} from '../LabelCollectionValidator';
+import {validateLabelCollection} from '../validateLabelCollection';
 
 describe('LabelCollectionValidator', () => {
   it('should not add violation for valid label collection', () => {

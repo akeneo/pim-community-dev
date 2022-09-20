@@ -1,4 +1,4 @@
-import {validateDelimiter} from '../DelimiterValidator';
+import {validateDelimiter} from '../validateDelimiter';
 
 describe('StructureValidator', () => {
   it('should not add violation for valid delimiter', () => {

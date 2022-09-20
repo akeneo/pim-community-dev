@@ -1,4 +1,4 @@
-import {validateIdentifierGenerator} from '../IdentifierGeneratorValidator';
+import {validateIdentifierGenerator} from '../validateIdentifierGenerator';
 
 describe('IdentifierGeneratorValidator', () => {
   it('should not add violation for valid identifier generator', () => {

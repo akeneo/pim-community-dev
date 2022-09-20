@@ -1,4 +1,4 @@
-import {AutoNumber, FreeText} from './Properties';
+import {AutoNumber, FreeText} from './properties';
 
 enum PROPERTY_NAMES {
   AUTO_NUMBER = 'auto_number',
