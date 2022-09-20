@@ -133,6 +133,17 @@ liip_imagine:
                 background:
                     color: "#ffffff"
 
+        am_binary_image_thumbnail_small_category:
+            cache: category_flysystem_cache
+            quality: 95
+            format: jpg
+            data_loader: flysystem_category_data_loader
+            filters:
+                icc_strip: ~
+                thumbnail: { size: [ 280, 280 ], mode: inset }
+                background:
+                    color: "#ffffff"
+
         am_url_pdf_preview:
             cache: asset_manager_flysystem_cache
             quality:          95
