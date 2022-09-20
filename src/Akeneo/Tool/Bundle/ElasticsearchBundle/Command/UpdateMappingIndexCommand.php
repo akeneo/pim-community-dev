@@ -89,6 +89,7 @@ TXT;
         }
 
         $io->success("All the indices listed above have been migrated");
+
         return 0;
     }
 

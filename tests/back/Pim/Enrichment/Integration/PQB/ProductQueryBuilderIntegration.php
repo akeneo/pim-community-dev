@@ -119,6 +119,21 @@ class ProductQueryBuilderIntegration extends AbstractProductQueryBuilderTestCase
         $pqb->addFilter('an_image', Operators::CONTAINS, 'AkenEO', ['locale' => 'en_US']);
         $productsFound = $pqb->execute();
         $this->assertCount(1, $productsFound);
+
+        $this->createProduct('product_with_image', [
+            new SetImageValue('an_image', null, null, $this->getFileInfoKey($this->getFixturePath('Akeneo Logo.jpg')))
+        ]);
+        $pqb = $this->get('pim_catalog.query.product_query_builder_factory_for_reading_purpose')->create();
+        $pqb->addFilter('an_image', Operators::CONTAINS, 'aKENEO', ['locale' => 'en_US']);
+        $productsFound = $pqb->execute();
+        // should retrieve both akeneo.jpg and Akeneo Logo.jpg
+        $this->assertCount(2, $productsFound);
+
+        $pqb = $this->get('pim_catalog.query.product_query_builder_factory_for_reading_purpose')->create();
+        $pqb->addFilter('an_image', Operators::CONTAINS, 'aKENEO lOGO', ['locale' => 'en_US']);
+        $productsFound = $pqb->execute();
+        // should retrieve Akeneo Logo.jpg
+        $this->assertCount(1, $productsFound);
     }
 
     /**
