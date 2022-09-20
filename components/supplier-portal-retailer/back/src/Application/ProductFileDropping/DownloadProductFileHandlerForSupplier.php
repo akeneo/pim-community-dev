@@ -23,7 +23,6 @@ final class DownloadProductFileHandlerForSupplier
     ) {
     }
 
-    //@phpstan-ignore-next-line
     public function __invoke(DownloadProductFileForSupplier $query): ProductFileNameAndResourceFile
     {
         $supplier = ($this->getSupplierFromContributorEmail)($query->contributorEmail);

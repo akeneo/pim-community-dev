@@ -27,6 +27,7 @@ final class DatabaseGetProductFileWithCommentsIntegration extends SqlIntegration
         static::assertSame([
             'identifier' => '5d001a43-a42d-4083-8673-b64bb4ecd26f',
             'originalFilename' => 'file.xlsx',
+            'path' => null,
             'uploadedByContributor' => 'jimmy@punchline.com',
             'uploadedBySupplier' => 'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7',
             'uploadedAt' => '2022-09-07 08:54:38',
