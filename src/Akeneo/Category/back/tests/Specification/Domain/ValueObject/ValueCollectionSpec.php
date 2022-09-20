@@ -14,17 +14,67 @@ use PhpSpec\ObjectBehavior;
  */
 class ValueCollectionSpec extends ObjectBehavior
 {
+    public function it_get_value(): void
+    {
+        $compositeKey = 'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d';
+        $localeCompositeKey = $compositeKey . ValueCollection::SEPARATOR . 'en_US';
+
+        $this->beConstructedThrough('fromArray', [[
+            'attribute_codes' => [$compositeKey],
+            $localeCompositeKey => [
+                'data' => 'Meta shoes',
+                'locale' => 'en_US',
+                'attribute_code' => $compositeKey
+            ]
+        ]]);
+        $this->shouldHaveType(ValueCollection::class);
+
+        $expectedValue = [
+            'data' => 'Meta shoes',
+            'locale' => 'en_US',
+            'attribute_code' => $compositeKey
+        ];
+
+        $this->getValue(
+            attributeCode: 'seo_meta_description',
+            attributeUuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
+            localeCode: 'en_US'
+        )->shouldBeLike($expectedValue);
+    }
+
+    public function it_returns_null_when_value_not_found(): void
+    {
+        $compositeKey = 'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d';
+        $localeCompositeKey = $compositeKey . ValueCollection::SEPARATOR . 'en_US';
+
+        $this->beConstructedThrough('fromArray', [[
+            'attribute_codes' => [$compositeKey],
+            $localeCompositeKey => [
+                'data' => 'Meta shoes',
+                'locale' => 'en_US',
+                'attribute_code' => $compositeKey
+            ]
+        ]]);
+        $this->shouldHaveType(ValueCollection::class);
+
+        $this->getValue(
+            attributeCode: 'seo_keyword',
+            attributeUuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
+            localeCode: 'fr_FR'
+        )->shouldBeLike(null);
+    }
+
     public function it_create_value_on_empty_value_collection_when_set_value(): void
     {
         $this->beConstructedThrough('fromArray', [[]]);
         $this->shouldHaveType(ValueCollection::class);
 
-        $identifier = 'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d';
-        $compositeKey = $identifier . ValueCollection::SEPARATOR . 'en_US';
+        $compositeKey = 'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d';
+        $localeCompositeKey = $compositeKey . ValueCollection::SEPARATOR . 'en_US';
 
         $expectedData = ValueCollection::fromArray([
-            'attribute_codes' => [$identifier],
-            $compositeKey => [
+            'attribute_codes' => [$compositeKey],
+            $localeCompositeKey => [
                 'data' => 'Meta shoes',
                 'locale' => 'en_US',
                 'attribute_code' => 'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d'
@@ -109,25 +159,25 @@ class ValueCollectionSpec extends ObjectBehavior
         )->shouldBeLike($expectedValues);
     }
 
-    public function it_update_values_on_duplicate_composite_key_when_set_value(): void
+    public function it_update_values_on_duplicate_locale_composite_key_when_set_value(): void
     {
         $uuid = '840fcd1a-f66b-4f0c-9bbd-596629732950';
         $code = 'description';
         $locale = 'en_US';
-        $identifier = $code . ValueCollection::SEPARATOR . $uuid;
+        $compositeKey = $code . ValueCollection::SEPARATOR . $uuid;
 
-        $duplicateCompositeKey = $code
+        $duplicateLocaleCompositeKey = $code
             . ValueCollection::SEPARATOR . $uuid
             . ValueCollection::SEPARATOR . $locale;
 
         $newValue = 'New Description Value';
 
         $initValueCollection = [
-            'attribute_codes' => [$identifier],
-            $duplicateCompositeKey => [
+            'attribute_codes' => [$compositeKey],
+            $duplicateLocaleCompositeKey => [
                 'data' => 'Description',
                 'locale' => $locale,
-                'attribute_code' => $identifier
+                'attribute_code' => $compositeKey
             ],
         ];
         $this->beConstructedThrough('fromArray', [$initValueCollection]);
@@ -135,11 +185,11 @@ class ValueCollectionSpec extends ObjectBehavior
 
         $expectedValues = ValueCollection::fromArray(
             [
-                'attribute_codes' => [$identifier],
-                $duplicateCompositeKey => [
+                'attribute_codes' => [$compositeKey],
+                $duplicateLocaleCompositeKey => [
                     'data' => $newValue,
                     'locale' => $locale,
-                    'attribute_code' => $identifier
+                    'attribute_code' => $compositeKey
                 ],
         ]);
 

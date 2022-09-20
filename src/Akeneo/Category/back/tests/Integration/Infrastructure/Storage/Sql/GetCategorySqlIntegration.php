@@ -52,7 +52,7 @@ class GetCategorySqlIntegration extends TestCase
                 "locale" => "fr_FR",
                 "attribute_code" => "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030"
             ],
-            $category->getAttributes()->getAttributeTextData(
+            $category->getAttributes()->getValue(
                 'title',
                 '87939c45-1d85-4134-9579-d594fff65030',
                 'fr_FR'
@@ -70,9 +70,10 @@ class GetCategorySqlIntegration extends TestCase
                 "locale" => null,
                 "attribute_code" => "photo" . ValueCollection::SEPARATOR . "8587cda6-58c8-47fa-9278-033e1d8c735c"
             ],
-            $category->getAttributes()->getAttributeData(
-                'photo',
-                '8587cda6-58c8-47fa-9278-033e1d8c735c'
+            $category->getAttributes()->getValue(
+                attributeCode: 'photo',
+                attributeUuid: '8587cda6-58c8-47fa-9278-033e1d8c735c',
+                localeCode: null
             )
         );
     }
@@ -96,7 +97,7 @@ class GetCategorySqlIntegration extends TestCase
                 "locale" => "fr_FR",
                 "attribute_code" => "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030",
             ],
-            $category->getAttributes()->getAttributeTextData(
+            $category->getAttributes()->getValue(
                 'title',
                 '87939c45-1d85-4134-9579-d594fff65030',
                 'fr_FR'
@@ -114,9 +115,10 @@ class GetCategorySqlIntegration extends TestCase
                 "locale" => null,
                 "attribute_code" => "photo" . ValueCollection::SEPARATOR . "8587cda6-58c8-47fa-9278-033e1d8c735c",
             ],
-            $category->getAttributes()->getAttributeData(
-                'photo',
-                '8587cda6-58c8-47fa-9278-033e1d8c735c'
+            $category->getAttributes()->getValue(
+                attributeCode: 'photo',
+                attributeUuid: '8587cda6-58c8-47fa-9278-033e1d8c735c',
+                localeCode: null
             )
         );
     }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Application\Converter\Checker;
 
-use Akeneo\Category\Infrastructure\Converter\InternalApi\InternalApiToStd;
+use Akeneo\Category\Domain\ValueObject\ValueCollection;
 use Akeneo\Category\Infrastructure\Exception\ArrayConversionException;
 use Akeneo\Category\Infrastructure\Exception\StructureArrayConversionException;
 use Webmozart\Assert\Assert;
@@ -13,27 +13,27 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  *
- * @phpstan-import-type AttributeValueApi from InternalApiToStd
- * @phpstan-import-type AttributeCodeApi from InternalApiToStd
+ * @phpstan-import-type Value from ValueCollection
+ * @phpstan-import-type AttributeCode from ValueCollection
  */
-class AttributeRequirementChecker implements RequirementChecker
+class ValueCollectionRequirementChecker implements RequirementChecker
 {
     /**
-     * @param array<string, AttributeCodeApi|AttributeValueApi> $data
+     * @param array<string, AttributeCode|Value> $data (example :["attribute_codes" => ["code|uuid"], "code|uuid|locale" => ["data" => [], "locale" => "en_US", "attribute_code" => "code|uuid"]])
      *
      * @throws ArrayConversionException
      */
     public function check(array $data): void
     {
-        self::checkAttributes($data);
+        self::checkValues($data);
     }
 
     /**
-     * @param array<string, AttributeCodeApi|AttributeValueApi> $attributes
+     * @param array<string, AttributeCode|Value> $attributes
      *
      * @throws ArrayConversionException
      */
-    public static function checkAttributes(array $attributes): void
+    public static function checkValues(array $attributes): void
     {
         if (empty($attributes)) {
             return;
@@ -95,7 +95,7 @@ class AttributeRequirementChecker implements RequirementChecker
     }
 
     /**
-     * @param array<string, AttributeValueApi> $attributeValues
+     * @param array<string, Value> $attributeValues
      */
     private static function assertAttributeValueArrayStructure(array $attributeValues): void
     {

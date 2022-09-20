@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Category\Application\Converter\Checker;
 
-use Akeneo\Category\Application\Converter\Checker\AttributeRequirementChecker;
+use Akeneo\Category\Application\Converter\Checker\AttributeApiRequirementChecker;
 use Akeneo\Category\Application\Converter\Checker\FieldsRequirementChecker;
 use Akeneo\Category\Application\Converter\Checker\InternalApiRequirementChecker;
 use Akeneo\Category\Application\Converter\Checker\RequirementChecker;
@@ -19,7 +19,7 @@ class InternalApiRequirementCheckerSpec extends ObjectBehavior
 {
     public function let(
         FieldsRequirementChecker $fieldsChecker,
-        AttributeRequirementChecker $attributeChecker
+        AttributeApiRequirementChecker $attributeChecker
     ): void {
         $this->beConstructedWith($fieldsChecker, $attributeChecker);
     }
