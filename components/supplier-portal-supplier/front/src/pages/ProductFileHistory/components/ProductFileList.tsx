@@ -45,6 +45,14 @@ const StyledIconButton = styled(IconButton)`
 const StyledSectionTitle = styled(SectionTitle)`
     margin: 50px 50px 0px;
     width: auto;
+    display: flex;
+    justify-content: space-between;
+`;
+
+const StyledNumberOfProductFiles = styled.span`
+    color: #3c86b3;
+    float: right;
+    text-transform: lowercase;
 `;
 
 const ProductFileList = ({productFiles}: Props) => {
@@ -57,6 +65,15 @@ const ProductFileList = ({productFiles}: Props) => {
                 <SectionTitle.Title>
                     <FormattedMessage defaultMessage="File history" id="E+F5l+" />
                 </SectionTitle.Title>
+                <StyledNumberOfProductFiles>
+                    <FormattedMessage
+                        defaultMessage="{numberOfProductFiles, plural, one {# result} other {# results}}"
+                        id="OEGUss"
+                        values={{
+                            numberOfProductFiles: productFiles.length,
+                        }}
+                    />
+                </StyledNumberOfProductFiles>
             </StyledSectionTitle>
             <StyledTable>
                 <Table.Header>

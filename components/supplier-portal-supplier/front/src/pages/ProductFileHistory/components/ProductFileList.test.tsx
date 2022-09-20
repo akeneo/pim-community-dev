@@ -31,3 +31,9 @@ test('it renders the product files', () => {
     expect(screen.getByText('07/28/2022, 02:58 PM')).toBeInTheDocument();
     expect(screen.getAllByTestId('Download icon')).toHaveLength(2);
 });
+
+test('it displays the number of product files', () => {
+    renderWithProviders(<ProductFileList productFiles={productFiles} />);
+
+    expect(screen.getByText('2 results')).toBeInTheDocument();
+});
