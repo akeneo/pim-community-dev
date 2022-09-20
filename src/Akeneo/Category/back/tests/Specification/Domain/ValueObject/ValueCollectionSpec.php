@@ -252,6 +252,53 @@ class ValueCollectionSpec extends ObjectBehavior
         )->shouldBeLike($expectedValueCollection);
     }
 
+    public function it_normalizes_without_attribute_codes_key_value(): void
+    {
+        $compositeKey = 'seo_meta_description' . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950';
+        $this->beConstructedThrough('fromArray', [[
+            'attribute_codes' => [$compositeKey],
+            $compositeKey => [
+                'data' => 'My meta SEO Description Value',
+                'locale' => null,
+                'attribute_code' => $compositeKey
+            ],
+        ]]);
+
+        $normalizedValueCollection = [
+            $compositeKey => [
+                'data' => 'My meta SEO Description Value',
+                'locale' => null,
+                'attribute_code' => $compositeKey
+            ]
+        ];
+
+        $this->normalize()->shouldBeLike($normalizedValueCollection);
+    }
+
+    public function it_gets_all_values(): void
+    {
+        $compositeKey = 'seo_meta_description' . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950';
+        $this->beConstructedThrough('fromArray', [[
+            'attribute_codes' => [$compositeKey],
+            $compositeKey => [
+                'data' => 'My meta SEO Description Value',
+                'locale' => null,
+                'attribute_code' => $compositeKey
+            ],
+        ]]);
+
+        $getValues = [
+            'attribute_codes' => [$compositeKey],
+            $compositeKey => [
+                'data' => 'My meta SEO Description Value',
+                'locale' => null,
+                'attribute_code' => $compositeKey
+            ]
+        ];
+
+        $this->getValues()->shouldBeLike($getValues);
+    }
+
     public function it_throw_structure_array_conversion_exception_when_create_value_with_wrong_format(): void
     {
         $this->beConstructedThrough('fromArray', [[

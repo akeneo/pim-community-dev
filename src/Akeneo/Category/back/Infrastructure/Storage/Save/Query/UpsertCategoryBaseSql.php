@@ -51,9 +51,9 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
             ;
         SQL;
 
-        $values = $categoryModel->getAttributes();
-        if (null !== $values) {
-            $values = json_encode($values->normalize());
+        $attributes = $categoryModel->getAttributes();
+        if (null !== $attributes) {
+            $attributes = json_encode($attributes->getValues());
         }
 
         $this->connection->executeQuery(
@@ -65,7 +65,7 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
                 'lvl' => 0,
                 'lft' => 1,
                 'rgt' => 2,
-                'value_collection' => $values,
+                'value_collection' => $attributes,
             ],
             [
                 'parent_id' => \PDO::PARAM_INT,
@@ -117,9 +117,9 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
                 ;
             SQL;
 
-        $values = $categoryModel->getAttributes();
-        if (null !== $values) {
-            $values = json_encode($values->normalize());
+        $attributes = $categoryModel->getAttributes();
+        if (null !== $attributes) {
+            $attributes = json_encode($attributes->getValues());
         }
 
         $this->connection->executeQuery(
@@ -131,7 +131,7 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
                 'lvl' => 0,
                 'lft' => 1,
                 'rgt' => 2,
-                'value_collection' => $values
+                'value_collection' => $attributes
             ],
             [
                 'category_code' => \PDO::PARAM_STR,

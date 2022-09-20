@@ -22,7 +22,9 @@ final class ValueCollection implements \IteratorAggregate, \Countable
         ValueCollectionRequirementChecker::checkValues($values);
     }
 
-    /** @phpstan-ignore-next-line */
+    /**
+     * @param array<string, AttributeCode|Value> $values
+     */
     public static function fromArray(array $values): self
     {
         return new self($values);
@@ -43,6 +45,22 @@ final class ValueCollection implements \IteratorAggregate, \Countable
         );
 
         return $this->values[$localCompositeKey] ?? null;
+    }
+
+    /**
+     * @return array<string, AttributeCode|Value>|null
+     */
+    public function getValues(): ?array
+    {
+        return $this->values;
+    }
+
+    /**
+     * @return AttributeCode
+     */
+    public function getCodes(): array
+    {
+        return $this->values['attribute_codes'] ?? [];
     }
 
     /**
@@ -76,11 +94,13 @@ final class ValueCollection implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @return array<string, array<string, mixed>>
+     * @return array<string, Value>
      */
     public function normalize(): array
     {
-        return $this->values ?? [];
+        return array_filter($this->values, function ($valueKey) {
+            return $valueKey !== 'attribute_codes';
+        }, ARRAY_FILTER_USE_KEY);
     }
 
     /**
