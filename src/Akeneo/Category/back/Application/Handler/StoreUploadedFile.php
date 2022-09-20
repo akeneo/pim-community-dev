@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FileHandler
+class StoreUploadedFile
 {
     public function __construct(
         private FileStorer $fileStorer,
@@ -22,7 +22,7 @@ class FileHandler
     ) {
     }
 
-    public function storeFile(UploadedFile $uploadedFile): FileInfoInterface
+    public function __invoke(UploadedFile $uploadedFile): FileInfoInterface
     {
         $hash = sha1_file($uploadedFile->getPathname());
         $originalFilename = $uploadedFile->getClientOriginalName();
