@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-10625: Asset Manager: Forbid the import of special character soft hyphen
+
 # 5.0.113 (2022-09-02)
 
 ## Bug fixes
