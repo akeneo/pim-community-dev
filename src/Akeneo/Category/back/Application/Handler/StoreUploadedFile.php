@@ -29,7 +29,7 @@ class StoreUploadedFile
         $file = $this->fileInfoRepository->findOneBy([
             'hash' => $hash,
             'originalFilename' => $originalFilename,
-            'storage' => Storage::CATEGORY_STORAGE_ALIAS
+            'storage' => Storage::CATEGORY_STORAGE_ALIAS,
         ]);
 
         if (null === $file) {

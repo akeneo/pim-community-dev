@@ -105,13 +105,8 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
         $query = <<< SQL
                 UPDATE pim_catalog_category
                 SET
-                    parent_id = :parent_id,
                     created = pim_catalog_category.created,
                     updated = NOW(),
-                    root = :root,
-                    lvl = :lvl,
-                    lft = :lft,
-                    rgt = :rgt,
                     value_collection = :value_collection
                 WHERE code = :category_code
                 ;
@@ -126,20 +121,10 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
             $query,
             [
                 'category_code' => (string) $categoryModel->getCode(),
-                'parent_id' => $categoryModel->getParentId()?->getValue(),
-                'root' => $categoryModel->getId()?->getValue(),
-                'lvl' => 0,
-                'lft' => 1,
-                'rgt' => 2,
                 'value_collection' => $values
             ],
             [
                 'category_code' => \PDO::PARAM_STR,
-                'parent_id' => \PDO::PARAM_INT,
-                'root' => \PDO::PARAM_INT,
-                'lvl' => \PDO::PARAM_INT,
-                'lft' => \PDO::PARAM_INT,
-                'rgt' => \PDO::PARAM_INT,
                 'value_collection' => \PDO::PARAM_STR
             ]
         );

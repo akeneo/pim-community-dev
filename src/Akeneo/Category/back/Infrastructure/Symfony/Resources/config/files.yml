@@ -1,0 +1,12 @@
+parameters:
+    pim_category.provider.default_image.images:
+        pim_category.default_image.image: { path: '%kernel.project_dir%/public/bundles/pimui/img/image_default.png', mime_type: image/png, extension: png }
+        pim_category.default_image.other: { path: '%kernel.project_dir%/public/bundles/pimui/img/image_default.png', mime_type: image/png, extension: png }
+
+services:
+    Akeneo\Category\Infrastructure\FileSystem\PreviewGenerator\DefaultImageProviderInterface:
+        class: Akeneo\Category\Infrastructure\FileSystem\PreviewGenerator\DefaultImageProvider
+        arguments:
+            - '@liip_imagine.filter.manager'
+            - '@liip_imagine.cache.manager'
+            - '%pim_category.provider.default_image.images%'
