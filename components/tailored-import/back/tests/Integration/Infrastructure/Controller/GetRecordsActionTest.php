@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class GetRecordsActionTest extends ControllerIntegrationTestCase
 {
-    private const ROUTE = 'pimee_tailored_import_get_reference_entity_records_action';
+    private const ROUTE = 'pimee_tailored_import_get_records_action';
 
     private WebClientHelper $webClientHelper;
 
@@ -29,52 +29,39 @@ final class GetRecordsActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper = $this->get('akeneo_integration_tests.helper.web_client');
     }
 
-    public function test_it_returns_available_records(): void
+    public function test_it_returns_records(): void
     {
-        $response = $this->makeCall('brand', 'ecommerce', 'fr_Fr');
+        $response = $this->makeCall();
         Assert::assertSame($response->getStatusCode(), Response::HTTP_OK);
     }
 
-    public function test_it_returns_a_400_response_if_reference_entity_code_is_not_given(): void
+    public function test_it_returns_errors_if_channel_is_missing(): void
     {
-        $response = $this->makeCall(null, 'ecommerce', 'fr_Fr');
+        $response = $this->makeCall(null);
         Assert::assertSame($response->getStatusCode(), Response::HTTP_BAD_REQUEST);
     }
 
-    public function test_it_returns_a_400_response_if_channel_is_not_given(): void
+    public function test_it_returns_errors_if_locale_is_missing(): void
     {
-        $response = $this->makeCall('brand', null, 'fr_Fr');
+        $response = $this->makeCall('ecommerce', null);
         Assert::assertSame($response->getStatusCode(), Response::HTTP_BAD_REQUEST);
     }
 
-    public function test_it_returns_a_400_response_if_locale_is_not_given(): void
+    private function makeCall(?string $channel = 'ecommerce', ?string $locale = 'fr_Fr'): Response
     {
-        $response = $this->makeCall('brand', 'ecommerce', null);
-        Assert::assertSame($response->getStatusCode(), Response::HTTP_BAD_REQUEST);
-    }
-
-    private function makeCall(?string $referenceEntityCode, ?string $channel, ?string $locale): Response
-    {
-        $params = [];
-
-        if (null !== $referenceEntityCode) {
-            $params['reference_entity_code'] = $referenceEntityCode;
-        }
-
-        if (null !== $channel) {
-            $params['channel'] = $channel;
-        }
-
-        if (null !== $locale) {
-            $params['locale'] = $locale;
-        }
-
         $this->webClientHelper->callApiRoute(
             $this->client,
             self::ROUTE,
+            ['reference_entity_code' => 'brand'],
+            'POST',
             [],
-            'GET',
-            $params
+            json_encode([
+                'include_codes' => null,
+                'exclude_codes' => null,
+                'search' => 'alessi',
+                'channel' => $channel,
+                'locale' => $locale
+            ])
         );
 
         return $this->client->getResponse();
