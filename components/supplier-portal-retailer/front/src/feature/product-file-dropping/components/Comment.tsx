@@ -1,5 +1,5 @@
 import React from 'react';
-import {AkeneoThemedProps, DialogIcon, getColor, pimTheme} from 'akeneo-design-system';
+import {AkeneoThemedProps, DialogIcon, getColor, onboarderTheme} from 'akeneo-design-system';
 import {useDateFormatter} from '@akeneo-pim-community/shared';
 import styled, {css} from 'styled-components';
 
@@ -22,7 +22,7 @@ const IconContainer = styled.div<AkeneoThemedProps & {outgoing: boolean}>`
     ${({outgoing}) =>
         !outgoing
             ? css`
-                  color: ${getColor('blue140')};
+                  color: #2d6486;
               `
             : css`
                   color: ${getColor('grey140')};
@@ -41,7 +41,7 @@ const FlexGrow = styled.div<AkeneoThemedProps & {outgoing: boolean}>`
         !outgoing
             ? css`
                   background-color: ${getColor('blue10')};
-                  color: ${getColor('blue140')};
+                  color: #2d6486;
               `
             : css`
                   background-color: ${getColor('grey20')};
@@ -94,7 +94,9 @@ const Comment = ({outgoing, authorEmail, content, createdAt}: Props) => {
                 <FlexGrow outgoing={outgoing}>
                     <FlexRow>
                         <IconContainer outgoing={outgoing}>
-                            <DialogIcon color={outgoing ? pimTheme.color.grey140 : pimTheme.color.blue140} />
+                            <DialogIcon
+                                color={outgoing ? onboarderTheme.color.grey140 : onboarderTheme.color.brand140}
+                            />
                         </IconContainer>
                         <ContentContainer>
                             <FlexColumn>
