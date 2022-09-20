@@ -1,5 +1,9 @@
 # 6.0.x
 
+## Improvements
+
+- CPM-721: Add line break support for attribute guidelines
+
 # 6.0.42 (2022-09-02)
 
 # 6.0.41 (2022-08-29)
