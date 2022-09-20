@@ -82,6 +82,7 @@
 - PIM-10624: Fix very slow query when counting variants for mass delete
 - PIM-10566: Fix wrong namespace for categories in resource_name column in pim_versioning_version table
 - PIM-10568: Fix error when running Version_7_0_20220629142647_dqi_update_pk_on_product_score during On-Premise/Flex to Serenity migration
+- PIM-10646: Fix export with label from a select attribute containing uppercase in its code exports code and not labels
 
 ## Improvements
 
