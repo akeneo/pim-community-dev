@@ -4,15 +4,29 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property;
 
+use Webmozart\Assert\Assert;
+
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 final class FreeText implements PropertyInterface
 {
-    public function __construct(
+    private function __construct(
         private string $value,
-    )
+    ) {
+    }
+
+    public static function fromString(string $value)
     {
+        $value = trim($value);
+        Assert::stringNotEmpty($value);
+        
+        return new self($value);
+    }
+
+    public function asString(): string
+    {
+        return $this->value;
     }
 }

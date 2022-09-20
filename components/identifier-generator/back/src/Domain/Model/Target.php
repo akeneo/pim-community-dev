@@ -4,16 +4,29 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model;
 
+use Webmozart\Assert\Assert;
+
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 final class Target
 {
-    public function __construct(
+    private function __construct(
         private string $attributeCode,
-    )
-    {
+    ) {
     }
 
+    public static function fromString(string $attributeCode): self
+    {
+        $attributeCode = trim($attributeCode);
+        Assert::stringNotEmpty($attributeCode);
+
+        return new self($attributeCode);
+    }
+
+    public function asString(): string
+    {
+        return $this->attributeCode;
+    }
 }

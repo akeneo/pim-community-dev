@@ -10,9 +10,18 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model;
  */
 final class Delimiter
 {
-    public function __construct(
+    private function __construct(
         private string $value,
-    )
+    ) {
+    }
+
+    public static function fromString(string $delimiter): self
     {
+        return new self($delimiter);
+    }
+
+    public function asString(): string
+    {
+        return $this->value;
     }
 }

@@ -13,9 +13,13 @@ final class Conditions
     /**
      * @param ConditionInterface[] $conditions
      */
-    public function __construct(
+    private function __construct(
         private array $conditions,
-    )
+    ) {
+    }
+
+    public static function fromArray(array $conditions): self
     {
+        return new self($conditions);
     }
 }
