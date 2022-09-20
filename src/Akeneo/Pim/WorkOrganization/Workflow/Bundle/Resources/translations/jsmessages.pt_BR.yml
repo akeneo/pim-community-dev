@@ -11,6 +11,12 @@ pim_datagrid:
   no_results:
     proposal: Não há proposta para revisar. Tente mudar seu critério de pesquisa.
     product_draft: Não há rascunho de produto para revisar.Tente mudar seu critério de pesquisa. 
+  workflow:
+    status:
+      in_progress: Em Progresso
+      ready: Aguardando aprovação
+    status_message:
+      ready: Aguardando aprovação
 pimee_datagrid:
   cells:
     expand:
@@ -28,20 +34,20 @@ pimee_workflow:
     mass_action_group:
       review:
         label: Ação em massa
-    partial_accept:
-      modal.title: Aprovar parte da informação
-      modal.label: Deixe um comentário (opcional)
-      modal.success: A proposta foi parcialmente validada com sucesso
+    approve:
+      title: Aprovar proposta
+      success: A proposta foi aplicada com sucesso.
+      error: "A proposta não pode ser aplicada devido ao seguinte erro: {{ error }}"
+    reject:
+      title: Rejeitar proposta
+    remove:
+      title: Remover proposta
     partial_approve:
-      modal:
-        title: Aprovar parcialmente as mudanças
-        label: Deixe um comentário (opcional)
-        success: As mudanças foram aprovadas com sucesso
+      title: Aprovar parte da informação
+      success: A proposta foi parcialmente validada com sucesso
     partial_reject:
-      modal:
-        title: Rejeitar parcialmente as mudanças
-        label: Deixe um comentário (opcional)
-        success: As mudanças foram rejeitadas com sucesso
+      title: Rejeitar parcialmente as mudanças
+      success: As mudanças foram rejeitadas com sucesso
 batch_jobs:
   csv_published_product_export:
     label: Exportar produto publicado em CSV
@@ -145,13 +151,6 @@ pimee_enrich.entity.published_product:
       label: Despublicar
 pimee_enrich.entity.product_draft:
   flash:
-    approve:
-      success: A proposta foi aplicada com sucesso.
-      fail: "A proposta não pode ser aplicada devido ao seguinte erro: {{ error }}"
-    reject:
-      success: A proposta foi rejeitada.
-    remove:
-      success: A proposta foi removida.
     update:
       success: O rascunho do produto foi salvo com sucesso
       fail: O rascunho do produto não pôde ser atualizado
@@ -160,14 +159,10 @@ pimee_enrich.entity.product_draft:
       fail: Você não pode enviar este rascunho para aprovação
   module:
     proposal:
-      accept: Aceitar proposta
-      accept_selected: Aceitar proposta(s) selecionada(s)
-      reject: Rejeitar proposta
-      reject_selected: Rejeitar proposta(s) selecionada(s)
-      remove: Remover proposta
-      comment_title: Comente sua proposta (opcional - 255 caracteres max.)
       comment_chars: caracteres.
       confirm: Enviar
+      accept_selected: Aceitar proposta(s) selecionada(s)
+      reject_selected: Rejeitar proposta(s) selecionada(s)
     edit:
       discard_changes: As alterações não salvas serão perdidas. Tem certeza que deseja enviar seu rascunho para aprovação sem as alterações não salvas?
       discard_changes_title: Tem certeza que deseja enviar este rascunho?

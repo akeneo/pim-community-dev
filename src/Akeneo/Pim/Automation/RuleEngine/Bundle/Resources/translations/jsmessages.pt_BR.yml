@@ -40,11 +40,22 @@ pimee_catalog_rule:
           confirm_content: Tem certeza que deseja excluir as regras selecionadas?
           success: Você excluiu com sucesso as regras.
           empty_selection: Nenhuma regra selecionada.
+      tags:
+        set: Definir
+        calculate: Calcular
+        clear: Limpar
+        concatenate: Concatenar
+        copy: Copiar
+        remove: Excluir
   form:
     attribute:
       tab:
         rules:
           title: Regras
+    edit:
+      actions:
+        set_attribute:
+          table_attribute_helper: Os valores anteriores deste atributo serão substituídos em toda a sua seleção de produtos
 pim_enrich:
   entity:
     rule:
@@ -54,7 +65,6 @@ pim_enrich:
 flash:
   rule:
     executed: A execução das regras foi iniciada. Você receberá uma notificação quando finalizar.
-pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Configurações de regras
 batch_jobs:
   add_attribute_value:
     execute_rules.label: Execução de regras
@@ -78,13 +88,15 @@ pim_notification:
     mass_edit_rule: Edição de regra em massa
     execute_rules: Execução de regras
 pim_menu:
+  navigation:
+    settings:
+      automation: Automação
   item:
     rule: Regras
 pim_title:
   pimee_catalog_rule_rule_index: Regras
   pimee_catalog_rule_new: Regras
-pim_import_export:
-  widget:
-    last_operations:
-      job_type:
-        execute_rules: Execução de regras
+akeneo_job_process_tracker:
+  type_filter:
+    mass_edit_rule: Edição de regra em massa
+    execute_rules: Execução de regras
