@@ -1,7 +1,6 @@
 import {cloneDeep, identity, isEqual, sortBy} from 'lodash/fp';
 import {FileInfo} from 'akeneo-design-system';
 import {LabelCollection} from '@akeneo-pim-community/shared';
-
 import {
   CategoryAttributes,
   CategoryImageAttributeValueData,

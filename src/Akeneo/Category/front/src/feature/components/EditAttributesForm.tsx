@@ -103,6 +103,7 @@ export const EditAttributesForm = ({attributeValues, onAttributeValueChange}: Pr
 
   const attributeFields = template?.attributes.map((attribute: Attribute) => {
     const AttributeField = attributeFieldFactory(attribute);
+
     if (AttributeField === null) {
       return (
         <Helper level="error">
@@ -134,7 +135,7 @@ export const EditAttributesForm = ({attributeValues, onAttributeValueChange}: Pr
         locale={locale}
         value={dataForInput}
         onChange={handlers[attribute.code]}
-        key={attribute.identifier}
+        key={attribute.uuid}
       ></AttributeField>
     );
   });

@@ -11,8 +11,8 @@ export type CompositeKeyWithoutLocale = string;
 const COMPOSITE_KEY_SEPARATOR = '|';
 
 export function buildCompositeKey(attribute: Attribute, localeCode: LocaleCode | null = null): CompositeKey {
-  const {code, identifier} = attribute;
-  const components = [code, identifier];
+  const {code, uuid} = attribute;
+  const components = [code, uuid];
 
   if (localeCode) {
     components.push(localeCode);

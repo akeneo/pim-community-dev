@@ -52,7 +52,7 @@ class Template
 
     /**
      * @return array{
-     *     identifier: string,
+     *     uuid: string,
      *     code: string,
      *     labels: array<string, string>,
      *     category_tree_identifier: ?int,
@@ -62,7 +62,7 @@ class Template
     public function normalize(): array
     {
         return [
-            'identifier' => (string) $this->uuid,
+            'uuid' => (string) $this->uuid,
             'code' => (string) $this->code,
             'labels' => $this->labelCollection->normalize(),
             'category_tree_identifier' => $this->categoryTreeId?->getValue(),
