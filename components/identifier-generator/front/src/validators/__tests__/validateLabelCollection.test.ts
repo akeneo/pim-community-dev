@@ -22,7 +22,7 @@ describe('LabelCollectionValidator', () => {
         },
         'labels'
       )
-    ).toEqual([{path: 'labels', message: 'Locale should not be empty'}]);
+    ).toEqual([{path: 'labels', message: 'The locale must be filled'}]);
   });
 
   it('should add violation with empty label', () => {
@@ -34,6 +34,18 @@ describe('LabelCollectionValidator', () => {
         },
         'labels'
       )
-    ).toEqual([{path: 'labels', message: 'Label for fr_FR should not be empty'}]);
+    ).toEqual([{path: 'labels', message: 'The label for "fr_FR" must be filled'}]);
+  });
+
+  it('should add violation with too long label', () => {
+    expect(
+      validateLabelCollection(
+        {
+          en_US: 'My generator',
+          fr_FR: 'a'.repeat(300),
+        },
+        'labels'
+      )
+    ).toEqual([{path: 'labels', message: 'The label for "fr_FR" is too long: it must be 255 characters or less'}]);
   });
 });

@@ -6,6 +6,6 @@ describe('TargetValidator', () => {
   });
 
   it('should add violation with empty code', () => {
-    expect(validateTarget('  ', 'target')).toEqual([{path: 'target', message: 'Target should not be empty'}]);
+    expect(validateTarget('  ', 'target')).toEqual([{path: 'target', message: 'The target must be filled'}]);
   });
 });

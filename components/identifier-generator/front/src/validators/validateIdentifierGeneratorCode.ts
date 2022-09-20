@@ -6,11 +6,11 @@ const validateIdentifierGeneratorCode: Validator<IdentifierGeneratorCode> = (ide
   const violations: Violation[] = [];
 
   if (identifierGeneratorCode.trim() === '') {
-    violations.push({path, message: 'Identifier generator code should not be empty'});
+    violations.push({path, message: 'The identifier generator code must be filled'});
   }
 
-  if (identifierGeneratorCode.length >= 100) {
-    violations.push({path, message: 'Identifier generator code max length is 100'});
+  if (identifierGeneratorCode.length > 100) {
+    violations.push({path, message: 'The identifier generator code is too long: it must be 100 characters or less'});
   }
 
   return violations;

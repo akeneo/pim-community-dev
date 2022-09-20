@@ -6,7 +6,7 @@ const validateTarget: Validator<Target> = (target, path) => {
   const violations: Violation[] = [];
 
   if (target.trim() === '') {
-    violations.push({path, message: 'Target should not be empty'});
+    violations.push({path, message: 'The target must be filled'});
   }
 
   return violations;

@@ -1,4 +1,5 @@
 import {validateStructure} from '../validateStructure';
+import {PROPERTY_NAMES} from '../../models';
 
 describe('StructureValidator', () => {
   it('should not add violation for valid structure', () => {
@@ -6,7 +7,7 @@ describe('StructureValidator', () => {
       validateStructure(
         [
           {
-            name: 'FreeText',
+            propertyName: PROPERTY_NAMES.FREE_TEXT,
             value: 'AKN',
           },
         ],
@@ -17,7 +18,7 @@ describe('StructureValidator', () => {
 
   it('should add a violation when there are no properties', () => {
     expect(validateStructure([], 'structure')).toEqual([
-      {path: 'structure', message: 'You need at least one property'},
+      {path: 'structure', message: 'The structure must contain at least 1 property'},
     ]);
   });
 });

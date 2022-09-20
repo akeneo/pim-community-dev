@@ -8,7 +8,7 @@ const validateStructure: Validator<Structure> = (structure, path) => {
   if (structure.length === 0) {
     violations.push({
       path,
-      message: 'You need at least one property',
+      message: 'The structure must contain at least 1 property',
     });
   }
 
