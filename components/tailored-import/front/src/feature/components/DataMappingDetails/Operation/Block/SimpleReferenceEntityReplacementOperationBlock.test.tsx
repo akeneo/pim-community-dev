@@ -5,7 +5,7 @@ import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {
   getDefaultSimpleReferenceEntityReplacementOperation,
   SimpleReferenceEntityReplacementOperationBlock,
-} from './SimpleReferenceEntityReplacementOperation';
+} from './SimpleReferenceEntityReplacementOperationBlock';
 import {OperationPreviewData} from 'feature/models';
 
 const operationPreviewData: OperationPreviewData = {

@@ -75,6 +75,9 @@ akeneo.tailored_import:
       simple_select_replacement:
         title: Simple select replacement
         option_labels: Option labels
+      simple_reference_entity_replacement:
+        title: Reference entity simple link replacement
+        option_labels: Record labels
       multi_select_replacement:
         title: Multi select replacement
         option_labels: Option labels
