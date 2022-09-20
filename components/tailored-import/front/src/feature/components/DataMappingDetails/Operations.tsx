@@ -11,7 +11,7 @@ import {
   useBooleanState,
 } from 'akeneo-design-system';
 import {filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
-import {DataMapping, getDefaultOperation, Operation, OperationType} from '../../models';
+import {DataMapping, getDefaultOperation, Operation, OperationType, isAttributeTarget} from '../../models';
 import {
   BOOLEAN_REPLACEMENT_OPERATION_TYPE,
   CATEGORIES_REPLACEMENT_OPERATION_TYPE,
@@ -139,7 +139,7 @@ const Operations = ({
             return (
               <OperationBlock
                 key={operation.type}
-                targetReferenceDataName={dataMapping.target.reference_data_name}
+                targetReferenceDataName={isAttributeTarget(dataMapping.target) ? dataMapping.target.reference_data_name : undefined}
                 targetCode={dataMapping.target.code}
                 operation={operation}
                 previewData={{

@@ -8,8 +8,8 @@ const useRecords = (
   referenceDataName: string,
   search: string,
   page: number,
-  optionCodesToInclude: string[] | null,
-  optionCodesToExclude: string[] | null,
+  recordCodesToInclude: string[] | null,
+  recordCodesToExclude: string[] | null,
   shouldFetch: boolean
 ) => {
   const [records, setRecords] = useState<Record[]>([]);
@@ -21,8 +21,6 @@ const useRecords = (
     reference_entity_code: referenceDataName,
   });
 
-  console.log(recordsRoute);
-
   useEffect(() => {
     const fetchRecords = async () => {
       const response = await fetch(recordsRoute, {
@@ -30,8 +28,8 @@ const useRecords = (
           search,
           page,
           limit: RECORDS_COLLECTION_PAGE_SIZE,
-          include_codes: optionCodesToInclude,
-          exclude_codes: optionCodesToExclude,
+          include_codes: recordCodesToInclude,
+          exclude_codes: recordCodesToExclude,
           locale,
           channel,
         }),
@@ -51,7 +49,7 @@ const useRecords = (
     };
 
     if (shouldFetch) void fetchRecords();
-  }, [shouldFetch, isMounted, recordsRoute, optionCodesToInclude, optionCodesToExclude, search, page, locale, channel]);
+  }, [shouldFetch, isMounted, recordsRoute, recordCodesToInclude, recordCodesToExclude, search, page, locale, channel]);
 
   return [records, matchesCount] as const;
 };

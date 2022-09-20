@@ -42,7 +42,6 @@ type AttributeTarget =
 
 type PropertyTarget = {
   code: string;
-  reference_data_name?: string;
   type: 'property';
   action_if_not_empty: TargetNotEmptyAction;
   action_if_empty: TargetEmptyAction;

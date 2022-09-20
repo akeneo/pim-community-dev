@@ -12,7 +12,7 @@ export * from './FileTemplateInformation';
 export * from './MeasurementFamily';
 export * from './Operation';
 export * from './PreviewData';
-export * from './Records';
+export * from './Record';
 export * from './ReplacementValues';
 export * from './SampleData';
 export * from './Target';

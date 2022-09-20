@@ -76,7 +76,7 @@ akeneo.tailored_import:
         title: Simple select replacement
         option_labels: Option labels
       simple_reference_entity_replacement:
-        title: Reference entity simple link replacement
+        title: Reference entity single link replacement
         option_labels: Record labels
       multi_select_replacement:
         title: Multi select replacement
@@ -103,6 +103,7 @@ akeneo.tailored_import:
       replacement:
         to_placeholder: Define the source values in your file.
         modal:
+          records: Manage records
           options: Manage options
           subtitle: Replacement
           no_result:

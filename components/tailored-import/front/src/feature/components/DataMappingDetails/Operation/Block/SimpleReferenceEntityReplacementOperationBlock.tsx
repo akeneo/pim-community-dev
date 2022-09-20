@@ -4,7 +4,7 @@ import {Block, Button, CloseIcon, IconButton, useBooleanState, uuid} from 'akene
 import {OperationBlockProps} from './OperationBlockProps';
 import {DeleteModal, useTranslate} from '@akeneo-pim-community/shared';
 import {getDefaultReplacementValueFilter, ReplacementModal, ReplacementValueFilter} from '../ReplacementModal';
-import {OPTION_COLLECTION_PAGE_SIZE, useRecords} from '../../../../hooks';
+import {RECORDS_COLLECTION_PAGE_SIZE, useRecords} from '../../../../hooks';
 
 const SIMPLE_REFERENCE_ENTITY_REPLACEMENT = 'simple_reference_entity_replacement';
 
@@ -52,7 +52,7 @@ const SimpleReferenceEntityReplacementOperationBlock = ({
     throw new Error('Missing Reference Data name in attribute');
   }
 
-  const [attributeOptions, totalItems] = useRecords(
+  const [records, totalItems] = useRecords(
     targetReferenceDataName,
     replacementValueFilter.searchValue,
     replacementValueFilter.page,
@@ -84,14 +84,14 @@ const SimpleReferenceEntityReplacementOperationBlock = ({
           </Button>
           {isReplacementModalOpen && (
             <ReplacementModal
-              title={translate('akeneo.tailored_import.data_mapping.operations.replacement.modal.options')}
+              title={translate('akeneo.tailored_import.data_mapping.operations.replacement.modal.records')}
               replacedValuesHeader={translate(
                 'akeneo.tailored_import.data_mapping.operations.simple_reference_entity_replacement.option_labels'
               )}
               replacementValueFilter={replacementValueFilter}
               onReplacementValueFilterChange={setReplacementValueFilter}
-              values={attributeOptions}
-              itemsPerPage={OPTION_COLLECTION_PAGE_SIZE}
+              values={records}
+              itemsPerPage={RECORDS_COLLECTION_PAGE_SIZE}
               totalItems={totalItems}
               operationType={SIMPLE_REFERENCE_ENTITY_REPLACEMENT}
               operationUuid={operation.uuid}
