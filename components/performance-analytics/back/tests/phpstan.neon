@@ -1,0 +1,6 @@
+parameters:
+    level: 9
+    paths:
+        - %rootDir%/../../../components/performance-analytics/back/src
+includes:
+    - %rootDir%/../../../vendor/phpstan/phpstan-webmozart-assert/extension.neon

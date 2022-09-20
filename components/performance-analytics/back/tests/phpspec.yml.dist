@@ -1,0 +1,8 @@
+## Rename this file in phpspec.yml to customize the phpspec configuration
+suites:
+    PerformanceAnalytics:
+        namespace: Akeneo\PerformanceAnalytics
+        psr4_prefix: Akeneo\PerformanceAnalytics
+        spec_path: components/performance-analytics/back/tests
+        src_path: components/performance-analytics/back/src
+        spec_prefix: Specification

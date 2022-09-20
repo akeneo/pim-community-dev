@@ -19,6 +19,7 @@ coupling-back: #Doc: launch all coupling detector tests
 	PIM_CONTEXT=tailored-import $(MAKE) coupling-back
 	PIM_CONTEXT=job-automation $(MAKE) coupling-back
 	PIM_CONTEXT=channel $(MAKE) channel-coupling-back
+	PIM_CONTEXT=performance-analytics $(MAKE) performance-analytics-coupling-back
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=upgrades/.php_cd.php upgrades/schema
 	$(PHP_RUN) vendor/bin/php-coupling-detector list-unused-requirements --config-file=upgrades/.php_cd.php upgrades/schema
 
@@ -55,6 +56,7 @@ lint-back: #Doc: launch all PHP linter tests
 	PIM_CONTEXT=tailored-import $(MAKE) lint-back
 	PIM_CONTEXT=job-automation $(MAKE) lint-back
 	PIM_CONTEXT=channel $(MAKE) channel-lint-back
+	PIM_CONTEXT=performance-analytics $(MAKE) performance-analytics-lint-back
 
 	$(DOCKER_COMPOSE) run --rm php rm -rf var/cache/dev
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
