@@ -5,9 +5,11 @@ enum PROPERTY_NAMES {
   FREE_TEXT = 'free_text',
 }
 
+const ALLOWED_PROPERTY_NAMES = [PROPERTY_NAMES.FREE_TEXT, PROPERTY_NAMES.AUTO_NUMBER];
+
 type Property = {propertyName: PROPERTY_NAMES} & (AutoNumber | FreeText);
 
 type Structure = Property[];
 
-export {PROPERTY_NAMES};
+export {ALLOWED_PROPERTY_NAMES, PROPERTY_NAMES};
 export type {Structure};

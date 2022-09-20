@@ -1,5 +1,5 @@
 import {Validator} from './Validator';
-import {Structure} from '../models';
+import {ALLOWED_PROPERTY_NAMES, Structure} from '../models';
 import {Violation} from './Violation';
 
 const validateStructure: Validator<Structure> = (structure, path) => {
@@ -11,6 +11,17 @@ const validateStructure: Validator<Structure> = (structure, path) => {
       message: 'The structure must contain at least 1 property',
     });
   }
+
+  structure.forEach((property, i) => {
+    if (!ALLOWED_PROPERTY_NAMES.includes(property.propertyName)) {
+      violations.push({
+        path: `${path}[${i}]`,
+        message: `The property type "${
+          property.propertyName
+        }" is unknown. Please choose one of the following: ${ALLOWED_PROPERTY_NAMES.join(', ')}`,
+      });
+    }
+  });
 
   return violations;
 };
