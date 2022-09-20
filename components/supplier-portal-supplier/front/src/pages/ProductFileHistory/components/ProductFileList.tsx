@@ -1,6 +1,6 @@
 import React from 'react';
 import {ProductFile} from '../model/ProductFile';
-import {DownloadIcon, getColor, IconButton, Table} from 'akeneo-design-system';
+import {ArrowRightIcon, DownloadIcon, getColor, IconButton, Table} from 'akeneo-design-system';
 import {FormattedMessage, useIntl} from 'react-intl';
 import styled from 'styled-components';
 import {useDateFormatter} from '../../../utils/date-formatter/use-date-formatter';
@@ -19,11 +19,17 @@ const StyledTable = styled(Table)`
     width: auto;
 `;
 
-const DownloadCell = styled(Table.ActionCell)`
-    width: 50px;
+const StyledActionCell = styled(Table.ActionCell)`
+    width: 32px;
+    padding-right: 6px;
+    padding-left: 6px;
 `;
 
 const StyledDownloadIcon = styled(DownloadIcon)`
+    color: ${getColor('grey100')};
+`;
+
+const StyledArrowRightIcon = styled(ArrowRightIcon)`
     color: ${getColor('grey100')};
 `;
 
@@ -54,6 +60,7 @@ const ProductFileList = ({productFiles}: Props) => {
                         <FormattedMessage defaultMessage="Product file name" id="2stUwi" />
                     </Table.HeaderCell>
                     <Table.HeaderCell></Table.HeaderCell>
+                    <Table.HeaderCell></Table.HeaderCell>
                 </Table.Header>
                 <Table.Body>
                     {productFiles.map((productFile: ProductFile) => {
@@ -72,10 +79,10 @@ const ProductFileList = ({productFiles}: Props) => {
                                 <Table.Cell>
                                     <FilenameCell>{productFile.filename}</FilenameCell>
                                 </Table.Cell>
-                                <DownloadCell>
+                                <StyledActionCell>
                                     <StyledIconButton
                                         data-testid="Download icon"
-                                        icon={<StyledDownloadIcon animateOnHover={true} />}
+                                        icon={<StyledDownloadIcon size={20} animateOnHover={true} />}
                                         title={intl.formatMessage({
                                             defaultMessage: 'Download',
                                             id: '5q3qC0',
@@ -83,7 +90,19 @@ const ProductFileList = ({productFiles}: Props) => {
                                         ghost={'borderless'}
                                         href={'/supplier-portal/download-file/' + productFile.identifier}
                                     />
-                                </DownloadCell>
+                                </StyledActionCell>
+                                <StyledActionCell>
+                                    <StyledIconButton
+                                        data-testid="Arrow icon"
+                                        icon={<StyledArrowRightIcon size={20} />}
+                                        title={intl.formatMessage({
+                                            defaultMessage: 'Arrow',
+                                            id: 'UTlLBb',
+                                        })}
+                                        ghost={'borderless'}
+                                        onClick={() => {}}
+                                    />
+                                </StyledActionCell>
                             </Table.Row>
                         );
                     })}
