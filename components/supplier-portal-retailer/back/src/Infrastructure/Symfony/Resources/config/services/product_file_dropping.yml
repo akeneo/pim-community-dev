@@ -89,6 +89,10 @@ services:
             - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail'
             - '@monolog.logger.supplier_portal'
 
+    Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\GetProductFileHandlerForSupplier:
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithCommentsForSupplier'
+
     # Validators
     Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Validation\CountCommentsValidator:
         arguments:
