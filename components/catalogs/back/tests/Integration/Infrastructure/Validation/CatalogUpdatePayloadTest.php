@@ -24,11 +24,13 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
 
         $this->validator = self::getContainer()->get(ValidatorInterface::class);
 
-        $this->purgeDataAndLoadMinimalCatalog();
+        $this->purgeData();
     }
 
     public function testItValidates(): void
     {
+        $this->purgeDataAndLoadMinimalCatalog();
+
         $violations = $this->validator->validate([
             'enabled' => false,
             'product_selection_criteria' => [
