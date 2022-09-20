@@ -1,6 +1,6 @@
 import React from 'react';
 import {ProductFile} from '../model/ProductFile';
-import {ArrowRightIcon, DownloadIcon, getColor, IconButton, Table} from 'akeneo-design-system';
+import {ArrowRightIcon, DownloadIcon, getColor, IconButton, Table, SectionTitle} from 'akeneo-design-system';
 import {FormattedMessage, useIntl} from 'react-intl';
 import styled from 'styled-components';
 import {useDateFormatter} from '../../../utils/date-formatter/use-date-formatter';
@@ -15,7 +15,7 @@ const FilenameCell = styled.span`
 `;
 
 const StyledTable = styled(Table)`
-    margin: 60px 40px 0 40px;
+    margin: 10px 50px 0 50px;
     width: auto;
 `;
 
@@ -42,12 +42,22 @@ const StyledIconButton = styled(IconButton)`
     }
 `;
 
+const StyledSectionTitle = styled(SectionTitle)`
+    margin: 50px 50px 0px;
+    width: auto;
+`;
+
 const ProductFileList = ({productFiles}: Props) => {
     const dateFormatter = useDateFormatter();
     const intl = useIntl();
 
     return (
         <>
+            <StyledSectionTitle>
+                <SectionTitle.Title>
+                    <FormattedMessage defaultMessage="File history" id="E+F5l+" />
+                </SectionTitle.Title>
+            </StyledSectionTitle>
             <StyledTable>
                 <Table.Header>
                     <Table.HeaderCell>
