@@ -76,6 +76,25 @@ class CategoryTestCase extends TestCase
         );
     }
 
+    /**
+     * Insert dummy category.
+     */
+    protected function insertBaseCategory(Code $code): Category
+    {
+        $category = new Category(
+            id: null,
+            code: $code,
+        );
+        $this->get(UpsertCategoryBase::class)->execute($category);
+
+        /** @var Category $createdCategory */
+        $createdCategory = $this
+            ->get(GetCategoryInterface::class)
+            ->byCode((string) $category->getCode());
+
+        return $createdCategory;
+    }
+
     protected function getConfiguration()
     {
         return $this->catalog->useMinimalCatalog();
