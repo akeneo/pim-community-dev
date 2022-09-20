@@ -9,7 +9,7 @@ final class ProductFile
     public function __construct(
         public string $identifier,
         public string $originalFilename,
-        public string $path,
+        public ?string $path,
         public ?string $uploadedByContributor,
         public string $uploadedBySupplier,
         public ?string $uploadedAt,

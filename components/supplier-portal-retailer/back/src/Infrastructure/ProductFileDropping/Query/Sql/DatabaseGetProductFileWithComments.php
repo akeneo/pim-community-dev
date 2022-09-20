@@ -66,6 +66,7 @@ final class DatabaseGetProductFileWithComments implements GetProductFileWithComm
         return new ProductFile(
             $productFileWithComments['identifier'],
             $productFileWithComments['original_filename'],
+            null,
             $productFileWithComments['uploaded_by_contributor'],
             $productFileWithComments['uploaded_by_supplier'],
             $productFileWithComments['uploaded_at'],

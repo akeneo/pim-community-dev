@@ -26,6 +26,7 @@ final class InMemoryGetProductFileWithComments implements GetProductFileWithComm
         return new ProductFile(
             $productFile->identifier(),
             $productFile->originalFilename(),
+            null,
             $productFile->contributorEmail(),
             $productFile->uploadedBySupplier(),
             $productFile->uploadedAt(),
