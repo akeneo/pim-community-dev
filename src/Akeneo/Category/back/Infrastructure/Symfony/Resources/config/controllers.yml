@@ -55,7 +55,7 @@ services:
         arguments:
             - '@validator'
             - '@category_serializer'
-            - '@Akeneo\Category\Application\Handler\FileHandler'
+            - '@Akeneo\Category\Application\Handler\StoreUploadedFile'
 
     Akeneo\Category\Infrastructure\Controller\InternalApi\ImagePreviewController:
         public: true
