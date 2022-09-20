@@ -1,8 +1,8 @@
-import React, {useCallback, useState, useMemo} from 'react';
+import React, {useCallback, useState, useMemo, useContext} from 'react';
 import styled from 'styled-components';
 
 import {SectionTitle, Helper} from 'akeneo-design-system';
-import {Locale, LocaleSelector, useTranslate} from '@akeneo-pim-community/shared';
+import {LocaleSelector, useTranslate} from '@akeneo-pim-community/shared';
 
 import {useTemplate} from '../hooks';
 import {
@@ -18,21 +18,7 @@ import {
   convertCategoryImageAttributeValueDataToFileInfo,
   convertFileInfoToCategoryImageAttributeValueData,
 } from '../helpers';
-
-const locales: Locale[] = [
-  {
-    code: 'en_US',
-    label: 'English (United States)',
-    region: 'United States',
-    language: 'English',
-  },
-  {
-    code: 'fr_FR',
-    label: 'French (France)',
-    region: 'France',
-    language: 'French',
-  },
-];
+import {EditCategoryContext} from './providers';
 
 interface Props {
   attributeValues: EnrichCategory['attributes'];
@@ -53,6 +39,7 @@ const FormContainer = styled.div`
 
 export const EditAttributesForm = ({attributeValues, onAttributeValueChange}: Props) => {
   const [locale, setLocale] = useState('en_US');
+  const {locales} = useContext(EditCategoryContext);
   const translate = useTranslate();
 
   const handleTextChange = useCallback(
@@ -145,7 +132,7 @@ export const EditAttributesForm = ({attributeValues, onAttributeValueChange}: Pr
       <SectionTitle>
         <SectionTitle.Title>{translate('Attributes')}</SectionTitle.Title>
         <SectionTitle.Spacer />
-        <LocaleSelector value={locale} values={locales} onChange={setLocale} />
+        <LocaleSelector value={locale} values={Object.values(locales)} onChange={setLocale} />
       </SectionTitle>
       {attributeFields}
     </FormContainer>
