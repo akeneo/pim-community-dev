@@ -57,7 +57,7 @@ const ProductFileList = ({productFiles}: Props) => {
                         <FormattedMessage defaultMessage="Contributor" id="+k5t/y" />
                     </Table.HeaderCell>
                     <Table.HeaderCell>
-                        <FormattedMessage defaultMessage="Product file name" id="2stUwi" />
+                        <FormattedMessage defaultMessage="File name" id="ppAn7O" />
                     </Table.HeaderCell>
                     <Table.HeaderCell></Table.HeaderCell>
                     <Table.HeaderCell></Table.HeaderCell>
