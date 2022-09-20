@@ -7,11 +7,11 @@ namespace Pim\Upgrade\Schema;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version_7_0_20220830000000_add_catalog_product_values_filters extends AbstractMigration
+final class Version_7_0_20220920100616_add_product_mapping extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        if ($schema->getTable('akeneo_catalog')->hasColumn('product_value_filters')) {
+        if ($schema->getTable('akeneo_catalog')->hasColumn('product_mapping')) {
             $this->disableMigrationWarning();
             return;
         }
@@ -19,7 +19,7 @@ final class Version_7_0_20220830000000_add_catalog_product_values_filters extend
         $this->addSql(
             <<<SQL
             ALTER TABLE akeneo_catalog
-            ADD product_value_filters JSON NOT NULL DEFAULT (JSON_OBJECT()) AFTER product_selection_criteria
+            ADD product_mapping JSON NOT NULL DEFAULT (JSON_OBJECT()) AFTER product_value_filters
             SQL
         );
     }
