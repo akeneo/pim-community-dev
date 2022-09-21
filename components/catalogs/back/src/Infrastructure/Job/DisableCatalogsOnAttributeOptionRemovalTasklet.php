@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Job;
 
+use Akeneo\Catalogs\Application\Persistence\DisableCatalogsQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\GetCatalogsToDisableOnAttributeOptionRemovalQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\UpsertCatalogQueryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
@@ -15,7 +15,7 @@ class DisableCatalogsOnAttributeOptionRemovalTasklet implements TaskletInterface
 
     public function __construct(
         private GetCatalogsToDisableOnAttributeOptionRemovalQueryInterface $getCatalogsToDisableQuery,
-        private UpsertCatalogQueryInterface $upsertCatalogQuery,
+        private DisableCatalogsQueryInterface $disableCatalogsQuery,
     ) {
     }
 
@@ -29,15 +29,7 @@ class DisableCatalogsOnAttributeOptionRemovalTasklet implements TaskletInterface
         $attributeCode = $this->stepExecution->getJobParameters()->get('attribute_code');
         $attributeOptionCode = $this->stepExecution->getJobParameters()->get('attribute_option_code');
 
-        $catalogs = $this->getCatalogsToDisableQuery->execute($attributeCode, $attributeOptionCode);
-
-        foreach ($catalogs as $catalog) {
-            $this->upsertCatalogQuery->execute(
-                $catalog->getId(),
-                $catalog->getName(),
-                $catalog->getOwnerUsername(),
-                false,
-            );
-        }
+        $catalogsUUID = $this->getCatalogsToDisableQuery->execute($attributeCode, $attributeOptionCode);
+        $this->disableCatalogsQuery->execute($catalogsUUID);
     }
 }

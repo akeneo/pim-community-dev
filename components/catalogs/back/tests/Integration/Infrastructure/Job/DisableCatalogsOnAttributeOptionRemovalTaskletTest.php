@@ -5,15 +5,11 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Job;
 
 use Akeneo\Catalogs\Domain\Operator;
-use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
-use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
-use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 
 class DisableCatalogsOnAttributeOptionRemovalTaskletTest extends IntegrationTestCase
 {
-    private ?QueryBus $queryBus;
     private ?JobLauncher $jobLauncher;
 
     protected function setUp(): void
@@ -22,7 +18,6 @@ class DisableCatalogsOnAttributeOptionRemovalTaskletTest extends IntegrationTest
 
         $this->purgeDataAndLoadMinimalCatalog();
 
-        $this->queryBus = self::getContainer()->get(QueryBus::class);
         $this->jobLauncher = self::getContainer()->get('akeneo_integration_tests.launcher.job_launcher');
         $this->jobLauncher->flushJobQueue();
     }
@@ -69,26 +64,6 @@ class DisableCatalogsOnAttributeOptionRemovalTaskletTest extends IntegrationTest
 
         $this->assertCatalogIsDisabled($idCatalogUS);
         $this->assertCatalogIsEnabled($idCatalogFR);
-    }
-
-    private function assertCatalogIsDisabled(string $id): void
-    {
-        $catalog = $this->getCatalog($id);
-        $this->assertFalse($catalog->isEnabled());
-    }
-    private function assertCatalogIsEnabled(string $id): void
-    {
-        $catalog = $this->getCatalog($id);
-        $this->assertTrue($catalog->isEnabled());
-    }
-
-    private function getCatalog(string $id): Catalog
-    {
-        /** @var ?Catalog $catalog */
-        $catalog = $this->queryBus->execute(new GetCatalogQuery($id));
-        $this->assertNotNull($catalog);
-
-        return $catalog;
     }
 
     private function removeAttributeOption(string $code): void

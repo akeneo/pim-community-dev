@@ -142,21 +142,6 @@ class UpdateCatalogActionTest extends IntegrationTestCase
         Assert::assertArrayHasKey('errors', $payload);
     }
 
-    private function assertCatalogIsEnabled(string $id): void
-    {
-        $query = <<<SQL
-        SELECT catalog.is_enabled
-        FROM akeneo_catalog catalog
-        WHERE id = :id
-        SQL;
-
-        $row = (bool) $this->connection->executeQuery($query, [
-            'id' => Uuid::fromString($id)->getBytes(),
-        ])->fetchOne();
-
-        $this->assertEquals(true, $row);
-    }
-
     private function assertCatalogHasProductSelectionCriteria(string $id, array $expected): void
     {
         $query = <<<SQL

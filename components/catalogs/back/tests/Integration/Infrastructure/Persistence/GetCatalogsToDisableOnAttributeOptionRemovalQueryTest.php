@@ -15,7 +15,7 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
  *
  * @covers \Akeneo\Catalogs\Infrastructure\Persistence\GetCatalogsToDisableOnAttributeOptionRemovalQuery
  */
-class GetEnabledCatalogsByAttributeCodeAndAttributeOptionCodeQueryTest extends IntegrationTestCase
+class GetCatalogsToDisableOnAttributeOptionRemovalQueryTest extends IntegrationTestCase
 {
     private ?GetCatalogsToDisableOnAttributeOptionRemovalQuery $query;
 
@@ -30,18 +30,18 @@ class GetEnabledCatalogsByAttributeCodeAndAttributeOptionCodeQueryTest extends I
 
     public function testItGetsCatalogsByAttributeOption(): void
     {
-        $this->createUser('owner');
-        $idUS = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
-        $idFR = 'ed30425c-d9cf-468b-8bc7-fa346f41dd07';
-        $idUK = '27c53e59-ee6a-4215-a8f1-2fccbb67ba0d';
+        $this->createUser('shopifi');
+        $uuidUS = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
+        $uuidFR = 'ed30425c-d9cf-468b-8bc7-fa346f41dd07';
+        $uuidUK = '27c53e59-ee6a-4215-a8f1-2fccbb67ba0d';
 
-        $this->createCatalog($idUS, 'Store US', 'owner');
-        $this->createCatalog($idFR, 'Store FR', 'owner');
-        $this->createCatalog($idUK, 'Store UK', 'owner');
+        $this->createCatalog($uuidUS, 'Store US', 'shopifi');
+        $this->createCatalog($uuidFR, 'Store FR', 'shopifi');
+        $this->createCatalog($uuidUK, 'Store UK', 'shopifi');
 
-        $this->enableCatalog($idUS);
-        $this->enableCatalog($idFR);
-        $this->enableCatalog($idUK);
+        $this->enableCatalog($uuidUS);
+        $this->enableCatalog($uuidFR);
+        $this->enableCatalog($uuidUK);
 
         $this->createAttribute([
             'code' => 'color',
@@ -49,7 +49,7 @@ class GetEnabledCatalogsByAttributeCodeAndAttributeOptionCodeQueryTest extends I
             'options' => ['red', 'green', 'blue'],
         ]);
 
-        $this->setCatalogProductSelection($idUS, [
+        $this->setCatalogProductSelection($uuidUS, [
             [
                 'field' => 'color',
                 'operator' => Operator::IN_LIST,
@@ -58,8 +58,7 @@ class GetEnabledCatalogsByAttributeCodeAndAttributeOptionCodeQueryTest extends I
                 'locale' => null,
             ],
         ]);
-
-        $this->setCatalogProductSelection($idFR, [
+        $this->setCatalogProductSelection($uuidFR, [
             [
                 'field' => 'color',
                 'operator' => Operator::IN_LIST,
@@ -70,20 +69,12 @@ class GetEnabledCatalogsByAttributeCodeAndAttributeOptionCodeQueryTest extends I
         ]);
 
         $resultRed = $this->query->execute('color', 'red');
-        $expectedRed = [
-            new Catalog($idUS, 'Store US', 'owner', true),
-            new Catalog($idFR, 'Store FR', 'owner', true),
-        ];
-        $this->assertEquals($expectedRed, $resultRed);
+        $this->assertEquals([$uuidUS, $uuidFR], $resultRed);
 
         $resultGreen = $this->query->execute('color', 'green');
-        $expectedGreen = [
-            new Catalog($idUS, 'Store US', 'owner', true),
-        ];
-        $this->assertEquals($expectedGreen, $resultGreen);
+        $this->assertEquals([$uuidUS], $resultGreen);
 
         $resultBlue = $this->query->execute('color', 'blue');
-        $expectedBlue = [];
-        $this->assertEquals($expectedBlue, $resultBlue);
+        $this->assertEquals([], $resultBlue);
     }
 }
