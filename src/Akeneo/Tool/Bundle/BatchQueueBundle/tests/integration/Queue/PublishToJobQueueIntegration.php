@@ -9,7 +9,7 @@ use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueue;
-use Doctrine\DBAL\Driver\Connection;
+use Doctrine\DBAL\Connection;
 use Google\Cloud\PubSub\Message;
 use InvalidArgumentException;
 use RuntimeException;

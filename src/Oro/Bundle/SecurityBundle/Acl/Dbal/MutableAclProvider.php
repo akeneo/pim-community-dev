@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\SecurityBundle\Acl\Dbal;
 
-use Doctrine\DBAL\Driver\Connection;
+use Doctrine\DBAL\Connection;
 use Symfony\Component\Security\Acl\Dbal\MutableAclProvider as BaseMutableAclProvider;
 use Symfony\Component\Security\Acl\Domain\Acl;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
@@ -32,7 +32,7 @@ class MutableAclProvider extends BaseMutableAclProvider
     /**
      * Constructor.
      *
-     * @param Connection                          $connection
+     * @param Connection    $connection                      $connection
      * @param PermissionGrantingStrategyInterface $permissionGrantingStrategy
      * @param array                               $options
      * @param AclCacheInterface                   $cache
