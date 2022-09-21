@@ -97,6 +97,7 @@ $rules = [
             'Akeneo\Tool\Component\Connector\Step\TaskletInterface',
             'Akeneo\Tool\Component\Batch\Job\JobInterface',
             'Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface',
+            'Akeneo\Tool\Component\Batch\Model\JobInstance',
         ]
     )->in('Akeneo\Catalogs\Infrastructure'),
 
