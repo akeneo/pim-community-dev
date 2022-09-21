@@ -1,8 +1,5 @@
 version: 2.1
 
-orbs:
-  pull-up: akeneo-orbs/pull-up@1.0
-
 jobs:
   checkout:
     parameters:
@@ -857,20 +854,6 @@ workflows:
           - test_back_data_migrations:
                 requires:
                     - build_dev
-  pull_up:
-      jobs:
-          - pull-up/pull-up:
-              from: "6.0"
-              into: "master"
-              branch_prefix: "60_to_master"
-              checkout_ours: 'src/Akeneo/Platform/EnterpriseVersion.php **/translations/*.yml'
-              github_token: MICHEL_TAG_TOKEN
-              github_username: "micheltag"
-              slack_webhook: "${SLACK_URL_PULL_UP}"
-              filters:
-                  branches:
-                      only:
-                        - "6.0"
 
 commands:
   install_yq:
