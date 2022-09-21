@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Akeneo\Platform\JobAutomation\Infrastructure\Command;
 
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
-use Akeneo\Platform\JobAutomation\Application\UpdateScheduledJobInstanceLastExecution\UpdateScheduledJobInstanceLastExecutionHandler;
+use Akeneo\Platform\JobAutomation\Application\PushScheduledJobsToQueue\PushScheduledJObsToQueueHandlerInterface;
+use Akeneo\Platform\JobAutomation\Application\PushScheduledJobsToQueue\PushScheduledJobsToQueueQuery;
 use Akeneo\Platform\JobAutomation\Domain\ClockInterface;
-use Akeneo\Platform\JobAutomation\Domain\Event\CouldNotLaunchAutomatedJobEvent;
+use Akeneo\Platform\JobAutomation\Application\UpdateScheduledJobInstanceLastExecution\UpdateScheduledJobInstanceLastExecutionHandlerInterface;
 use Akeneo\Platform\JobAutomation\Domain\FilterDueJobInstances;
 use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
 use Akeneo\Platform\JobAutomation\Domain\Query\FindScheduledJobInstancesQueryInterface;
-use Akeneo\Platform\JobAutomation\Domain\Query\FindUsersToNotifyQueryInterface;
 use Akeneo\Platform\JobAutomation\Infrastructure\EventSubscriber\RefreshScheduledJobInstanceAfterJobPublished;
 use Akeneo\Tool\Component\Batch\Exception\InvalidJobException;
 use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueue;
@@ -29,7 +29,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Validator\ConstraintViolationInterface;
 
 final class PushScheduledJobsToQueueCommand extends Command
 {
@@ -39,14 +38,12 @@ final class PushScheduledJobsToQueueCommand extends Command
     private const RETRY_DELAY_IN_MILLISECOND = 1000;
 
     public function __construct(
-        private FeatureFlag $jobAutomationFeatureFlag,
-        private FindScheduledJobInstancesQueryInterface $findScheduledJobInstancesQuery,
-        private FilterDueJobInstances $filterDueJobInstances,
-        private UpdateScheduledJobInstanceLastExecutionHandler $updateScheduledJobInstanceLastExecutionHandler,
-        private PublishJobToQueue $publishJobToQueue,
         private EventDispatcherInterface $eventDispatcher,
-        private FindUsersToNotifyQueryInterface $findUsersToNotifyQuery,
-        private LoggerInterface $logger,
+        private FeatureFlag $jobAutomationFeatureFlag,
+        private FilterDueJobInstances $filterDueJobInstances,
+        private FindScheduledJobInstancesQueryInterface $findScheduledJobInstancesQuery,
+        private PushScheduledJObsToQueueHandlerInterface $pushScheduledJobsToQueueHandler,
+        private UpdateScheduledJobInstanceLastExecutionHandlerInterface $updateScheduledJobInstanceLastExecutionHandler,
         private ClockInterface $clock,
     ) {
         parent::__construct();
@@ -120,5 +117,15 @@ final class PushScheduledJobsToQueueCommand extends Command
                 ]);
             }
         } while ($shouldRetry);
+
+        $this->pushScheduledJobsToQueueHandler->handle(
+            new PushScheduledJobsToQueueQuery(
+                $this->filterDueJobInstances->fromScheduledJobInstances(
+                    $this->findScheduledJobInstancesQuery->all()
+                )
+            )
+        );
+
+        return 0;
     }
 }

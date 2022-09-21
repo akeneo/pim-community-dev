@@ -9,3 +9,6 @@ services:
     arguments:
       - '@Akeneo\Platform\JobAutomation\Domain\ClockInterface'
       - '@akeneo.job_automation.query.update_automation_last_execution_date'
+
+  akeneo.job_automation.handler.push_scheduled_jobs_to_queue_handler:
+    class: Akeneo\Platform\JobAutomation\Application\PushScheduledJobsToQueue\PushScheduledJobsToQueueHandler

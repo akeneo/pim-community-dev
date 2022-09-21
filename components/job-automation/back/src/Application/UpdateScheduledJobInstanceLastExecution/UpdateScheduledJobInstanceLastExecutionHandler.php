@@ -16,7 +16,7 @@ namespace Akeneo\Platform\JobAutomation\Application\UpdateScheduledJobInstanceLa
 use Akeneo\Platform\JobAutomation\Domain\ClockInterface;
 use Akeneo\Platform\JobAutomation\Domain\Query\UpdateAutomationLastExecutionDateQueryInterface;
 
-class UpdateScheduledJobInstanceLastExecutionHandler
+class UpdateScheduledJobInstanceLastExecutionHandler implements UpdateScheduledJobInstanceLastExecutionHandlerInterface
 {
     public function __construct(
         private ClockInterface $clock,
