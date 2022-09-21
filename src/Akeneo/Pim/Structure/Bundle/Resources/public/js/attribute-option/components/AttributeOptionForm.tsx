@@ -26,7 +26,7 @@ const AttributeOptionForm: FC<AttributeOptionFormProps> = ({option, locale, onUp
         return;
       }
       handleOnChange(event.target.value);
-    }
+    };
     if (inputRef.current !== null) {
       inputRef.current.addEventListener('change', handleChangeRef);
     }
@@ -37,7 +37,6 @@ const AttributeOptionForm: FC<AttributeOptionFormProps> = ({option, locale, onUp
       if (inputRef.current !== null) {
         inputRef.current.removeEventListener('change', handleChangeRef);
       }
-
     };
   }, [locale, addRef, removeRef]);
 

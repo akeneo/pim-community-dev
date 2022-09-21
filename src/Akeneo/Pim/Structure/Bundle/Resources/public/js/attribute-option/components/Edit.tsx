@@ -19,22 +19,27 @@ const Edit = ({option, saveAttributeOption}: EditProps) => {
     setUpdatedOption(option);
   }, [option]);
 
-  const onUpdateOptionLabel = useCallback((newLabel: string, localeCode: string) => {
-    setUpdatedOption((updatedOption) => {
+  const onUpdateOptionLabel = useCallback(
+    (newLabel: string, localeCode: string) => {
+      setUpdatedOption(updatedOption => {
+        const newOption: AttributeOption = {
+          ...updatedOption,
+        };
+        newOption.optionValues[localeCode].value = newLabel;
 
-      const newOption: AttributeOption = {
-        ...updatedOption,
-      };
-      newOption.optionValues[localeCode].value = newLabel;
+        return newOption;
+      });
+    },
+    [setUpdatedOption]
+  );
 
-      return newOption;
-    });
-  }, [setUpdatedOption]);
-
-  const onSubmit = useCallback((event: any) => {
-    event.preventDefault();
-    saveAttributeOption(updatedOption);
-  }, [saveAttributeOption, updatedOption]);
+  const onSubmit = useCallback(
+    (event: any) => {
+      event.preventDefault();
+      saveAttributeOption(updatedOption);
+    },
+    [saveAttributeOption, updatedOption]
+  );
 
   return (
     <EditingOptionContextProvider option={option}>
