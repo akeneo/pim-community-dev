@@ -1,13 +1,14 @@
 import React, {FunctionComponent} from 'react';
 import styled from 'styled-components';
 import {Field, SelectInput, Helper} from 'akeneo-design-system';
-import {getErrorsForPath, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
+import {getErrorsForPath, useTranslate, ValidationError, useUserContext} from '@akeneo-pim-community/shared';
 import {
   availableFrequencyOptions,
   CronExpression,
   FrequencyOption,
   getCronExpressionFromFrequencyOption,
   getFrequencyOptionFromCronExpression,
+  getTimeInUserTimezone,
   isHourlyFrequency,
 } from '../models';
 import {
@@ -50,6 +51,9 @@ type CronExpressionFormProps = {
 
 const CronExpressionForm = ({cronExpression, validationErrors, onCronExpressionChange}: CronExpressionFormProps) => {
   const translate = useTranslate();
+  const uiLocale = useUserContext().get('uiLocale').replace('_', '-');
+  const timezone = useUserContext().get('timezone');
+  const selectedTimeInUserTimezone = getTimeInUserTimezone(cronExpression, uiLocale, timezone);
 
   const handleFrequencyOptionChange = (frequencyOption: FrequencyOption) =>
     onCronExpressionChange(getCronExpressionFromFrequencyOption(frequencyOption, cronExpression));
@@ -92,7 +96,10 @@ const CronExpressionForm = ({cronExpression, validationErrors, onCronExpressionC
         </Helper>
       ) : (
         <Helper inline={true} level="info">
-          {translate('akeneo.job_automation.scheduling.frequency.helper')}
+          {translate('akeneo.job_automation.scheduling.frequency.helper', {
+            selectedTimeInUserTimezone,
+            timezone,
+          })}
         </Helper>
       )}
       {validationErrors.map((error, index) => (

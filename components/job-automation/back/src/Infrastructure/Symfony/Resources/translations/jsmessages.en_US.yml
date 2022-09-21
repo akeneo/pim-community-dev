@@ -8,7 +8,7 @@ akeneo.job_automation:
     enable: Enable scheduling
     cannot_view_all_jobs: "You cannot view automated jobs in the Process tracker, as you do not have the following permission for your role: “View all jobs in process tracker”. Please contact your PIM administrator."
     frequency:
-      helper: Frequency is displayed in UTC 24-hour format.
+      helper: "Frequency is displayed in UTC. For your timezone ({{ timezone }}): {{ selectedTimeInUserTimezone }}"
       hourly_helper: Frequencies executed multiple times a day start at midnight (UTC).
       title: Frequency
       daily: Every day

@@ -94,6 +94,20 @@ const getCronExpressionFromMinutes = (minutes: string, cronExpression: CronExpre
   return `${Number(minutes)} ${Number(hours)} * * ${weekDay}`;
 };
 
+const getTimeInUserTimezone = (cronExpression: CronExpression, uiLocale: string, timezone: string): string => {
+  const hours = parseInt(getHoursFromCronExpression(cronExpression));
+  const minutes = parseInt(getMinutesFromCronExpression(cronExpression));
+  const time = new Date().setUTCHours(hours, minutes);
+
+  const timeFormat: Intl.DateTimeFormatOptions = {
+    hour: 'numeric',
+    minute: 'numeric',
+    timeZone: timezone,
+  };
+
+  return new Intl.DateTimeFormat(uiLocale, timeFormat).format(time);
+};
+
 export type {FrequencyOption, CronExpression};
 export {
   availableFrequencyOptions,
@@ -105,6 +119,7 @@ export {
   getMinutesFromCronExpression,
   getWeekDayFromCronExpression,
   getWeeklyCronExpressionFromWeekDay,
+  getTimeInUserTimezone,
   isHourlyFrequency,
   weekDays,
 };
