@@ -39,8 +39,3 @@ Akeneo\Category\Api\Command\UserIntents\SetRichText:
           - Length:
                 max: 65535 # See SQL TEXT Max length
                 maxMessage: akeneo.category.validation.upsert.value.richtext_too_long
-
-Akeneo\Category\Api\Command\UserIntents\SetImage:
-    properties:
-      value:
-          - NotBlank: ~

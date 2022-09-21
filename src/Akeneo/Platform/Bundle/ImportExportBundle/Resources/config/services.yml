@@ -16,7 +16,8 @@ services:
 
     Akeneo\Platform\Bundle\ImportExportBundle\Command\PurgeJobExecutionCommand:
         arguments:
-            - '@akeneo.platform.import_export.purge_job_execution'
+            - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandler'
+            - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler'
         tags:
             - { name: console.command }
 

@@ -2,7 +2,8 @@
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Command;
 
-use Akeneo\Platform\Bundle\ImportExportBundle\Purge\PurgeJobExecution;
+use Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler;
+use Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,18 +20,17 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
  */
 class PurgeJobExecutionCommand extends Command
 {
+    public const JOB_CODE = 'job_executions_purge';
+
     protected static $defaultName = 'akeneo:batch:purge-job-execution';
 
     private const DEFAULT_NUMBER_OF_DAYS = 90;
 
-    /** @var PurgeJobExecution */
-    private $purgeJobExecution;
-
-    public function __construct(PurgeJobExecution $purgeJobExecution)
-    {
+    public function __construct(
+        private ExecuteJobExecutionHandler $jobExecutionRunner,
+        private CreateJobExecutionHandler $jobExecutionFactory,
+    ) {
         parent::__construct();
-
-        $this->purgeJobExecution = $purgeJobExecution;
     }
 
     /**
@@ -74,12 +74,14 @@ class PurgeJobExecutionCommand extends Command
 
                 return Command::FAILURE;
             }
-            $this->purgeJobExecution->all();
-            $output->write("All jobs execution deleted ...\n");
-        } else {
-            $numberOfDeletedJobExecutions = $this->purgeJobExecution->olderThanDays($days);
-            $output->write(sprintf("%s jobs execution deleted ...\n", $numberOfDeletedJobExecutions));
         }
+
+        $batchConfig = [
+            'days' => (int) $days,
+        ];
+
+        $jobExecution = $this->jobExecutionFactory->createFromBatchCode(self::JOB_CODE, $batchConfig, null);
+        $this->jobExecutionRunner->executeFromJobExecutionId($jobExecution->getId());
 
         return Command::SUCCESS;
     }

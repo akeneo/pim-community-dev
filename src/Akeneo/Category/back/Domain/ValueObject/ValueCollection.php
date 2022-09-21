@@ -10,7 +10,14 @@ use Akeneo\Category\Application\Converter\Checker\ValueCollectionRequirementChec
  *
  * @implements \IteratorAggregate<int, ValueCollection>
  * @phpstan-type AttributeCode array<string>
- * @phpstan-type Value array{data: string, locale: string|null, attribute_code: string}
+ * @phpstan-type ImageValue array{
+ *     size: int,
+ *     extension: string,
+ *     file_path: string,
+ *     mime_type: string,
+ *     original_filename: string,
+ * }
+ * @phpstan-type Value array{data: string|ImageValue|null, locale: string|null, attribute_code: string}
  */
 final class ValueCollection implements \IteratorAggregate, \Countable
 {
@@ -65,12 +72,14 @@ final class ValueCollection implements \IteratorAggregate, \Countable
 
     /**
      * Set a value in value collection. If value already exist, update it.
+     *
+     * @param ImageValue|string|null $value
      */
     public function setValue(
         string $attributeUuid,
         string $attributeCode,
         ?string $localeCode,
-        string $value,
+        array|string|null $value,
     ): ValueCollection {
         $compositeKey = $attributeCode.self::SEPARATOR.$attributeUuid;
 

@@ -47,7 +47,7 @@ export interface CategoryImageAttributeValueData {
   original_filename: string;
 }
 
-export type CategoryAttributeValueData = CategoryTextAttributeValueData | CategoryImageAttributeValueData;
+export type CategoryAttributeValueData = CategoryTextAttributeValueData | CategoryImageAttributeValueData | null;
 
 export const isCategoryImageAttributeValueData = (
   data: CategoryAttributeValueData

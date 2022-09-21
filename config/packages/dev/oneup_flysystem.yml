@@ -9,6 +9,12 @@ oneup_flysystem:
         archivist_adapter:
             local:
                 location: '%kernel.project_dir%/var/file_storage/archive'
+        category_storage_adapter:
+            local:
+                location: '%kernel.project_dir%/var/file_storage/category'
         local_storage_adapter:
             local:
                 location: '/'
+        catalogs_mapping_adapter:
+            local:
+                location: '%kernel.project_dir%/var/file_storage/catalogs_mapping'

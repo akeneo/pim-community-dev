@@ -1,14 +1,14 @@
 import {cloneDeep, identity, isEqual, sortBy} from 'lodash/fp';
 import {FileInfo} from 'akeneo-design-system';
 import {LabelCollection} from '@akeneo-pim-community/shared';
-
 import {
   CategoryAttributes,
   CategoryImageAttributeValueData,
   CategoryPermissions,
   CategoryProperties,
   EnrichCategory,
-} from '../models/Category';
+  File
+} from '../models';
 
 function labelsAreEqual(l1: LabelCollection, l2: LabelCollection): boolean {
   // maybe too strict of simplistic, to adjust
@@ -64,8 +64,12 @@ export function normalizeCategory(category: EnrichCategory): EnrichCategory {
 }
 
 export const convertCategoryImageAttributeValueDataToFileInfo = (
-  valueData: CategoryImageAttributeValueData
-): FileInfo => {
+  valueData: CategoryImageAttributeValueData | null
+): File => {
+  if (valueData === null) {
+    return null;
+  }
+
   return {
     size: valueData.size,
     filePath: valueData.file_path,
@@ -75,7 +79,11 @@ export const convertCategoryImageAttributeValueDataToFileInfo = (
   };
 };
 
-export const convertFileInfoToCategoryImageAttributeValueData = (value: FileInfo): CategoryImageAttributeValueData => {
+export const convertFileInfoToCategoryImageAttributeValueData = (value: File): CategoryImageAttributeValueData | null => {
+  if (value === null) {
+    return null;
+  }
+
   return {
     size: value.size,
     file_path: value.filePath,

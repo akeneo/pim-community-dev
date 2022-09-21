@@ -8,3 +8,8 @@ services:
       - '@Akeneo\Category\Application\Storage\Save\CategorySaverProcessor'
     tags:
       - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Api\Command\UpsertCategoryCommand'}
+
+  Akeneo\Category\Application\Handler\StoreUploadedFile:
+    arguments:
+      - '@akeneo_file_storage.file_storage.file.file_storer'
+      - '@akeneo_file_storage.repository.file_info'

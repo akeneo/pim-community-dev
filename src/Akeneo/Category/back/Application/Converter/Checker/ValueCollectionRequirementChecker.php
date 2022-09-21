@@ -7,6 +7,7 @@ namespace Akeneo\Category\Application\Converter\Checker;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
 use Akeneo\Category\Infrastructure\Exception\ArrayConversionException;
 use Akeneo\Category\Infrastructure\Exception\StructureArrayConversionException;
+use InvalidArgumentException;
 use Webmozart\Assert\Assert;
 
 /**
@@ -15,6 +16,7 @@ use Webmozart\Assert\Assert;
  *
  * @phpstan-import-type Value from ValueCollection
  * @phpstan-import-type AttributeCode from ValueCollection
+ * @phpstan-import-type ImageValue from ValueCollection
  */
 class ValueCollectionRequirementChecker implements RequirementChecker
 {
@@ -51,7 +53,7 @@ class ValueCollectionRequirementChecker implements RequirementChecker
 
         self::assertLocalCompositeKeysExist($localCompositeKeys, $attributes['attribute_codes']);
 
-        self::assertAttributeValueArrayStructure($attributeValues);
+        self::assertValueArrayStructure($attributeValues);
     }
 
     /**
@@ -61,7 +63,7 @@ class ValueCollectionRequirementChecker implements RequirementChecker
     {
         try {
             Assert::keyExists($haystack, $key);
-        } catch (\InvalidArgumentException $exception) {
+        } catch (InvalidArgumentException $exception) {
             throw new StructureArrayConversionException(sprintf('Field "%s" is expected', $key));
         }
     }
@@ -95,22 +97,73 @@ class ValueCollectionRequirementChecker implements RequirementChecker
     }
 
     /**
-     * @param array<string, Value> $attributeValues
+     * @param array<string, Value> $values
      */
-    private static function assertAttributeValueArrayStructure(array $attributeValues): void
+    private static function assertValueArrayStructure(array $values): void
     {
-        foreach ($attributeValues as $key => $value) {
+        foreach ($values as $key => $value) {
             self::assertKeyExist($value, 'data');
             self::assertKeyExist($value, 'locale');
             self::assertKeyExist($value, 'attribute_code');
 
+            self::assertValueData($value['data']);
+
             try {
-                Assert::notEmpty($value['data']);
                 Assert::nullOrStringNotEmpty($value['locale']);
                 Assert::notEmpty($value['attribute_code']);
-            } catch (\InvalidArgumentException $exception) {
+            } catch (InvalidArgumentException $exception) {
                 throw new StructureArrayConversionException(sprintf('No empty value is expected, provided empty value for %s', $key));
             }
         }
+    }
+
+    /**
+     * @param ImageValue|string|null $data
+     *
+     * @throws StructureArrayConversionException
+     */
+    private static function assertValueData(array|string|null $data): void
+    {
+        try {
+            match (true) {
+                is_null($data), is_array($data) => self::assertImageData($data),
+                default => self::assertTextData($data),
+            };
+        } catch (InvalidArgumentException $exception) {
+            throw new StructureArrayConversionException($exception->getMessage());
+        }
+    }
+
+    /**
+     * @param ImageValue|null $imageData
+     *
+     * @throws StructureArrayConversionException|InvalidArgumentException
+     */
+    private static function assertImageData(?array $imageData): void
+    {
+        if (null === $imageData) {
+            return;
+        }
+
+        self::assertKeyExist($imageData, 'size');
+        self::assertKeyExist($imageData, 'extension');
+        self::assertKeyExist($imageData, 'file_path');
+        self::assertKeyExist($imageData, 'mime_type');
+        self::assertKeyExist($imageData, 'original_filename');
+
+        Assert::integer($imageData['size'], 'Expected Integer for key [size]');
+        $message = 'Expected String and not empty value for key ';
+        Assert::stringNotEmpty($imageData['extension'], $message.' [extension]');
+        Assert::stringNotEmpty($imageData['file_path'], $message.' [file_path]');
+        Assert::stringNotEmpty($imageData['mime_type'], $message.' [mime_type]');
+        Assert::stringNotEmpty($imageData['original_filename'], $message.' [original_filename]');
+    }
+
+    /**
+     * @throws StructureArrayConversionException|InvalidArgumentException
+     */
+    private static function assertTextData(string $textData): void
+    {
+        Assert::stringNotEmpty($textData, "Expected String and not empty value for 'data'");
     }
 }

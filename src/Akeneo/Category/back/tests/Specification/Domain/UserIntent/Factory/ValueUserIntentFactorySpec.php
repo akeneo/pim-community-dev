@@ -67,7 +67,13 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
                 'attribute_code' => 'color' . ValueCollection::SEPARATOR . '38439aaf-66a2-4b24-854e-29d7a467c7af'
             ],
             'banner' . ValueCollection::SEPARATOR . 'e0326684-0dff-44be-8283-9262deb9e4bc' . ValueCollection::SEPARATOR . 'en_US' => [
-                'data' => '3/7/7/e/377e7c2bad87efd2e71eb725006a9067918d5791_banner.jpg',
+                'data' => [
+                    'size' => 168107,
+                    'extension' => 'jpg',
+                    'file_path' => '8/8/3/d/883d041fc9f22ce42fee07d96c05b0b7ec7e66de_shoes.jpg',
+                    'mime_type' => 'image/jpeg',
+                    'original_filename' => 'shoes.jpg'
+                ],
                 'locale' => 'en_US',
                 'attribute_code' => 'banner' . ValueCollection::SEPARATOR . 'e0326684-0dff-44be-8283-9262deb9e4bc'
             ]
@@ -146,7 +152,13 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
                 'e0326684-0dff-44be-8283-9262deb9e4bc',
                 'banner',
                 'en_US',
-                '3/7/7/e/377e7c2bad87efd2e71eb725006a9067918d5791_banner.jpg'
+                [
+                    'size' => 168107,
+                    'extension' => 'jpg',
+                    'file_path' => '8/8/3/d/883d041fc9f22ce42fee07d96c05b0b7ec7e66de_shoes.jpg',
+                    'mime_type' => 'image/jpeg',
+                    'original_filename' => 'shoes.jpg'
+                ]
             ),
         ]);
     }
