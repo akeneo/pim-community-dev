@@ -3,11 +3,6 @@ variable "project_id" {
   description = "Default Project ID"
 }
 
-variable "project_id_target" {
-  type        = string
-  description = "Target Project ID"
-}
-
 variable "trigger_name" {
   type        = string
   description = "Name for the trigger (should be unique in the same cloud build project)"

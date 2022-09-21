@@ -39,7 +39,7 @@ resource "google_cloudbuild_trigger" "master-trigger" {
 }
 
 resource "google_storage_bucket" "cloudbuild_logs" {
-  name          = "${var.project_id_target}-cloudbuild-logs"
+  name          = "${var.trigger_name}-cloudbuild-logs"
   location      = "EU"
   force_destroy = true
   project       = var.project_id

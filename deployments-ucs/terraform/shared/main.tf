@@ -1,19 +1,20 @@
 locals {
-  project_id     = "akecld-prd-pim-saas-shared"
-  project_id_dev = "akecld-prd-pim-saas-dev"
-  ci_sa          = "main-service-account@akecld-prd-pim-saas-dev.iam.gserviceaccount.com"
-  main_sa        = "main-service-account@${local.project_id}.iam.gserviceaccount.com"
-  admins         = [
+  project_id                   = "akecld-prd-pim-saas-shared"
+  main_sa                      = "main-service-account@${local.project_id}.iam.gserviceaccount.com"
+  ci_sa                        = "main-service-account@akecld-prd-pim-saas-dev.iam.gserviceaccount.com"
+  admins                       = [
     "group:phoenix-squad@akeneo.com",
     "serviceAccount:ci-service-account@akecld-prd-pim-saas-dev.iam.gserviceaccount.com" # To be able to push image in the registry
   ]
-  viewers        = [
+  viewers                      = [
     "serviceAccount:argocd@akecld-prd-pim-saas-dev.iam.gserviceaccount.com",
     "serviceAccount:gke-sa@akecld-prd-pim-saas-dev.iam.gserviceaccount.com",
     "serviceAccount:cluster-bootstrap@akecld-prd-pim-saas-dev.iam.gserviceaccount.com",
   ]
-  region         = "europe-west1"
-  multi_region   = "EU"
+  cloudbuild_github_repository = "pim-enterprise-dev"
+  cloudbuild_github_branch     = "master"
+  region                       = "europe-west1"
+  multi_region                 = "EU"
 }
 
 module "registry_dev" {
@@ -39,7 +40,6 @@ module "registry_prod" {
 module "storage_bucket_dev" {
   source         = "../modules/storage-bucket"
   project_id     = local.project_id
-  owner_members  = concat(["serviceAccount:${local.main_sa}"])
   admin_members  = concat(local.admins, ["serviceAccount:${local.ci_sa}"])
   viewer_members = concat(local.admins, ["serviceAccount:${local.ci_sa}"], local.viewers)
   bucket_name    = "akeneo-pim-saas-charts-dev"
@@ -49,22 +49,31 @@ module "storage_bucket_dev" {
 module "storage_bucket_prod" {
   source         = "../modules/storage-bucket"
   project_id     = local.project_id
-  owner_members  = concat(["serviceAccount:${local.main_sa}"])
   admin_members  = concat(local.admins, ["serviceAccount:${local.ci_sa}"])
   viewer_members = concat(local.admins, ["serviceAccount:${local.ci_sa}"], local.viewers)
   bucket_name    = "akeneo-pim-saas-charts-prod"
   bucket_region  = local.multi_region
 }
 
-module "cloud_build_infra_dev" {
+module "cloud_build_infra_pim_saas_dev" {
   source                       = "../modules/cloudbuild"
   project_id                   = local.project_id
-  project_id_target            = local.project_id_dev
-  trigger_name                 = local.project_id_dev
-  cloudbuild_filename          = ".cloudbuild/infra/${local.project_id_dev}.yaml"
-  cloudbuild_included_files    = [".cloudbuild/infra/${local.project_id_dev}.yaml", "deployments-ucs/terraform/dev/**", "deployments-ucs/terraform/modules/**"]
-  cloudbuild_github_repository = "pim-enterprise-dev"
-  cloudbuild_github_branch     = "master"
+  trigger_name                 = "akecld-prd-pim-saas-dev"
+  cloudbuild_filename          = ".cloudbuild/infra/akecld-prd-pim-saas-dev.yaml"
+  cloudbuild_included_files    = [".cloudbuild/infra/akecld-prd-pim-saas-dev.yaml", "deployments-ucs/terraform/dev/**", "deployments-ucs/terraform/modules/**"]
+  cloudbuild_github_repository = local.cloudbuild_github_repository
+  cloudbuild_github_branch     = local.cloudbuild_github_branch
+  cloudbuild_service_account   = local.main_sa
+}
+
+module "cloud_build_cluster_pim_saas_dev_europe_west1" {
+  source                       = "../modules/cloudbuild"
+  project_id                   = local.project_id
+  trigger_name                 = "akecld-prd-pim-saas-dev-europe-west1"
+  cloudbuild_filename          = ".cloudbuild/clusters/akecld-prd-pim-saas-dev-europe-west1.yaml"
+  cloudbuild_included_files    = [".cloudbuild/clusters/akecld-prd-pim-saas-dev-europe-west1.yaml", "deployments-ucs/k8s/**", "deployments-ucs/k8s/**"]
+  cloudbuild_github_repository = local.cloudbuild_github_repository
+  cloudbuild_github_branch     = local.cloudbuild_github_branch
   cloudbuild_service_account   = local.main_sa
 }
 
