@@ -17,8 +17,8 @@ final class IdentifierGenerator
         private Conditions $conditions,
         private Structure $structure,
         private LabelCollection $labelCollection,
-        private ?Delimiter $delimiter,
         private Target $target,
+        private ?Delimiter $delimiter,
     )
     {
     }

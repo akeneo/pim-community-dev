@@ -11,8 +11,8 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property;
 final class AutoNumber implements PropertyInterface
 {
     public function __construct(
-        private int $minimalNumber,
-        private int $minDigits,
+        private int $numberMin,
+        private int $digitsMin,
     )
     {
     }
