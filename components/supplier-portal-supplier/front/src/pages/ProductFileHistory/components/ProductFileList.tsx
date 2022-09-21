@@ -1,18 +1,11 @@
 import React, {useState} from 'react';
 import {ProductFile} from '../model/ProductFile';
-import {
-    AkeneoThemedProps,
-    ArrowRightIcon,
-    DownloadIcon,
-    getColor,
-    IconButton,
-    SectionTitle,
-    Table,
-} from 'akeneo-design-system';
+import {ArrowRightIcon, DownloadIcon, getColor, IconButton, SectionTitle, Table} from 'akeneo-design-system';
 import {FormattedMessage, useIntl} from 'react-intl';
 import styled from 'styled-components';
 import {useDateFormatter} from '../../../utils/date-formatter/use-date-formatter';
 import {ConversationalHelper} from '../../../components';
+import {CommentPanel} from './CommentPanel';
 
 type Props = {
     productFiles: ProductFile[];
@@ -73,13 +66,6 @@ const PageContainer = styled.div`
     height: 100%;
 `;
 
-const CommentPanel = styled.div<AkeneoThemedProps & {showPanel: boolean}>`
-    width: ${({showPanel}) => (showPanel ? '447px' : '0px')};
-    background-color: red;
-    transition-property: width;
-    transition-duration: 1s;
-`;
-
 const FlexRow = styled.div`
     display: flex;
     flex-direction: row;
@@ -90,6 +76,11 @@ const ProductFileList = ({productFiles}: Props) => {
     const dateFormatter = useDateFormatter();
     const intl = useIntl();
     const [showPanel, setShowPanel] = useState<boolean>(false);
+    const [currentProductFile, setCurrentProductFile] = useState<ProductFile | null>(null);
+
+    const closePanel = () => {
+        setShowPanel(false);
+    };
 
     const HeaderWelcomeMessage = (
         <>
@@ -99,8 +90,9 @@ const ProductFileList = ({productFiles}: Props) => {
         </>
     );
 
-    const displayCommentPanel = () => {
+    const displayCommentPanel = (productFile: ProductFile) => {
         setShowPanel(!showPanel);
+        setCurrentProductFile(productFile);
     };
 
     return (
@@ -175,7 +167,7 @@ const ProductFileList = ({productFiles}: Props) => {
                                                         id: 'UTlLBb',
                                                     })}
                                                     ghost={'borderless'}
-                                                    onClick={() => displayCommentPanel()}
+                                                    onClick={() => displayCommentPanel(productFile)}
                                                 />
                                             </StyledActionCell>
                                         </Table.Row>
@@ -185,7 +177,7 @@ const ProductFileList = ({productFiles}: Props) => {
                         </StyledTable>
                     </FlexRow>
                 </ProductFilesContainer>
-                <CommentPanel showPanel={showPanel} />
+                <CommentPanel showPanel={showPanel} productFile={currentProductFile} closePanel={closePanel} />
             </PageContainer>
         </>
     );
