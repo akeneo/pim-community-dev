@@ -49,6 +49,14 @@ framework:
                     redeliver_timeout: 86400
                     auto_setup: false
                 serializer: akeneo_batch_queue.messenger.serializer
+            scheduled_job:
+                dsn: doctrine://default
+                options:
+                    table_name: messenger_messages
+                    queue_name: scheduled_job
+                    redeliver_timeout: 86400
+                    auto_setup: false
+                serializer: akeneo_batch_queue.messenger.serializer
         routing:
             'Akeneo\Platform\Component\EventQueue\Event': webhook
             'Akeneo\Platform\Component\EventQueue\BulkEvent': webhook
