@@ -9,7 +9,6 @@ use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 
 class DisableCatalogOnAttributeOptionRemovalTaskletTest extends IntegrationTestCase
@@ -33,19 +32,20 @@ class DisableCatalogOnAttributeOptionRemovalTaskletTest extends IntegrationTestC
         $this->getAuthenticatedInternalApiClient();
         $this->createAttribute([
             'code' => 'color',
-            'type' => 'pim_catalog_simpleselect',
-            'options' => ['red'],
-        ]);
-        $this->createProduct('tshirt-red', [
-            new SetSimpleSelectValue('color', null, null, 'red')
+            'type' => 'pim_catalog_multiselect',
+            'options' => ['red', 'blue'],
         ]);
 
-        $idCatalog = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
+        $idCatalogUS = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
+        $idCatalogFR = 'b79b09a3-cb4c-45f8-a086-4f70cc17f521';
         $this->createUser('shopifi');
-        $this->createCatalog($idCatalog, 'Store US', 'shopifi');
-        $this->enableCatalog($idCatalog);
+        $this->createUser('magento');
+        $this->createCatalog($idCatalogUS, 'Store US', 'shopifi');
+        $this->createCatalog($idCatalogFR, 'Store FR', 'magento');
+        $this->enableCatalog($idCatalogUS);
+        $this->enableCatalog($idCatalogFR);
 
-        $this->setCatalogProductSelection($idCatalog, [
+        $this->setCatalogProductSelection($idCatalogUS, [
             [
                 'field' => 'color',
                 'operator' => Operator::IN_LIST,
@@ -54,19 +54,41 @@ class DisableCatalogOnAttributeOptionRemovalTaskletTest extends IntegrationTestC
                 'locale' => null,
             ],
         ]);
+        $this->setCatalogProductSelection($idCatalogFR, [
+            [
+                'field' => 'color',
+                'operator' => Operator::IN_LIST,
+                'value' => ['blue'],
+                'scope' => null,
+                'locale' => null,
+            ],
+        ]);
 
         $this->removeAttributeOption('color.red');
         $this->jobLauncher->launchConsumerUntilQueueIsEmpty();
 
-        $this->assertCatalogIsDisabled($idCatalog);
+        $this->assertCatalogIsDisabled($idCatalogUS);
+        $this->assertCatalogIsEnabled($idCatalogFR);
     }
 
     private function assertCatalogIsDisabled(string $id): void
     {
+        $catalog = $this->getCatalog($id);
+        $this->assertFalse($catalog->isEnabled());
+    }
+    private function assertCatalogIsEnabled(string $id): void
+    {
+        $catalog = $this->getCatalog($id);
+        $this->assertTrue($catalog->isEnabled());
+    }
+
+    private function getCatalog(string $id): Catalog
+    {
         /** @var ?Catalog $catalog */
         $catalog = $this->queryBus->execute(new GetCatalogQuery($id));
         $this->assertNotNull($catalog);
-        $this->assertFalse($catalog->isEnabled());
+
+        return $catalog;
     }
 
     private function removeAttributeOption(string $code): void

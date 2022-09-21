@@ -927,3 +927,8 @@ jobs:
         alias:     job_executions_purge
         label:     Purge job executions
         type:      scheduled_job
+    disable_catalog_on_attribute_option_removal:
+        connector: internal
+        alias:     disable_catalog_on_attribute_option_removal
+        label:     Disable catalog on attribute option removal
+        type:      disable_catalog_on_attribute_option_removal
