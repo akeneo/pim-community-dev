@@ -40,7 +40,6 @@ final class PushScheduledJobsToQueueCommand extends Command
     public function __construct(
         private EventDispatcherInterface $eventDispatcher,
         private FeatureFlag $jobAutomationFeatureFlag,
-        private FilterDueJobInstances $filterDueJobInstances,
         private FindScheduledJobInstancesQueryInterface $findScheduledJobInstancesQuery,
         private PushScheduledJObsToQueueHandlerInterface $pushScheduledJobsToQueueHandler,
         private UpdateScheduledJobInstanceLastExecutionHandlerInterface $updateScheduledJobInstanceLastExecutionHandler,
