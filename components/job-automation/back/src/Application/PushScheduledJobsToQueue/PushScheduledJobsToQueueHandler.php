@@ -9,7 +9,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\JobAutomation\Application\PushScheduledJobsToQueue;
 
+use Akeneo\Platform\JobAutomation\Domain\CronExpressionFactory;
 use Akeneo\Platform\JobAutomation\Domain\Event\CouldNotLaunchAutomatedJobEvent;
+use Akeneo\Platform\JobAutomation\Domain\FilterDueJobInstances;
 use Akeneo\Platform\JobAutomation\Domain\Query\FindUsersToNotifyQueryInterface;
 use Akeneo\Tool\Component\BatchQueue\Exception\InvalidJobException;
 use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueueInterface;
@@ -22,15 +24,27 @@ final class PushScheduledJobsToQueueHandler implements PushScheduledJObsToQueueH
 {
     public function __construct(
         private FindUsersToNotifyQueryInterface $findUsersToNotifyQuery,
-        private PublishJobToQueueInterface $publishJobToQueue,
-        private EventDispatcherInterface $eventDispatcher,
-        private LoggerInterface $logger,
+        private PublishJobToQueueInterface      $publishJobToQueue,
+        private EventDispatcherInterface        $eventDispatcher,
+        private LoggerInterface                 $logger,
     ) {
     }
 
     public function handle(PushScheduledJobsToQueueQuery $query): void
     {
-        foreach ($query->getDueJobInstance() as $dueJobInstance) {
+        $dueJobInstances = [];
+        foreach ($query->getDueJobInstances() as $scheduledJobInstance) {
+            $dueJobInstances[] = FilterDueJobInstances::fromScheduledJobInstances(
+                $scheduledJobInstance,
+                CronExpressionFactory::fromExpression($scheduledJobInstance->cronExpression)
+            );
+        }
+
+        if (empty($dueJobInstances)) {
+            return;
+        }
+
+        foreach ($dueJobInstances as $dueJobInstance) {
             $usersToNotify = $this->findUsersToNotifyQuery->byUserIdsAndUserGroupsIds(
                 $dueJobInstance->notifiedUsers,
                 $dueJobInstance->notifiedUserGroups,

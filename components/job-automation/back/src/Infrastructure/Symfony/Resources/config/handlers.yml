@@ -12,3 +12,8 @@ services:
 
   akeneo.job_automation.handler.push_scheduled_jobs_to_queue_handler:
     class: Akeneo\Platform\JobAutomation\Application\PushScheduledJobsToQueue\PushScheduledJobsToQueueHandler
+    arguments:
+      - '@akeneo.job_automation.query.find_users_to_notify'
+      - '@akeneo_batch_queue.queue.publish_job_to_queue'
+      - '@event_dispatcher'
+      - '@logger'

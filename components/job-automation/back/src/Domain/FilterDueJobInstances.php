@@ -13,33 +13,24 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\JobAutomation\Domain;
 
+use Akeneo\Platform\JobAutomation\Domain\Model\CronExpression;
 use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
 use Webmozart\Assert\Assert;
 
 class FilterDueJobInstances
 {
-    public function __construct(
-        private CronExpressionFactory $cronExpressionFactory,
-    ) {
-    }
-
-    /**
-     * @return ScheduledJobInstance[]
-     */
-    public function fromScheduledJobInstances(array $scheduledJobInstances): array
+    public static function fromScheduledJobInstances(ScheduledJobInstance $scheduledJobInstance, CronExpression $cronExpression): ?ScheduledJobInstance
     {
-        Assert::allIsInstanceOf($scheduledJobInstances, ScheduledJobInstance::class);
+        Assert::isInstanceOf($scheduledJobInstance, ScheduledJobInstance::class);
 
-        return array_filter($scheduledJobInstances, function (ScheduledJobInstance $jobInstance) {
-            $cron = $this->cronExpressionFactory->fromExpression($jobInstance->cronExpression);
-
-            if (null === $jobInstance->lastExecutionDate) {
-                $jobIsDue = $cron->isDue() || $cron->getPreviousRunDate() > $jobInstance->setupDate;
-            } else {
-                $jobIsDue = $cron->isDue() || $cron->getPreviousRunDate() > $jobInstance->lastExecutionDate;
+        if (null === $scheduledJobInstance->lastExecutionDate) {
+            if ($cronExpression->isDue() || $cronExpression->getPreviousRunDate() > $scheduledJobInstance->setupDate) {
+                return $scheduledJobInstance;
             }
-
-            return $jobIsDue;
-        });
+        } else {
+            if ($cronExpression->isDue() || $cronExpression->getPreviousRunDate() > $scheduledJobInstance->lastExecutionDate) {
+                return $scheduledJobInstance;
+            }
+        }
     }
 }

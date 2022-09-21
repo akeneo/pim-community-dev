@@ -119,11 +119,7 @@ final class PushScheduledJobsToQueueCommand extends Command
         } while ($shouldRetry);
 
         $this->pushScheduledJobsToQueueHandler->handle(
-            new PushScheduledJobsToQueueQuery(
-                $this->filterDueJobInstances->fromScheduledJobInstances(
-                    $this->findScheduledJobInstancesQuery->all()
-                )
-            )
+            new PushScheduledJobsToQueueQuery($this->findScheduledJobInstancesQuery->all())
         );
 
         return 0;

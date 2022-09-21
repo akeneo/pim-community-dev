@@ -17,7 +17,7 @@ use Akeneo\Platform\JobAutomation\Domain\Model\CronExpression;
 
 class CronExpressionFactory
 {
-    public function fromExpression(string $expression): CronExpression
+    public static function fromExpression(string $expression): CronExpression
     {
         return new CronExpression($expression);
     }

@@ -2,14 +2,9 @@ services:
   akeneo.job_automation.commands.push_scheduled_jobs_to_queue:
     class: Akeneo\Platform\JobAutomation\Infrastructure\Command\PushScheduledJobsToQueueCommand
     arguments:
-      - '@akeneo.job_automation.feature'
-      - '@akeneo.job_automation.query.find_scheduled_job_instances'
-      - '@Akeneo\Platform\JobAutomation\Domain\FilterDueJobInstances'
-      - '@akeneo.job_automation.handler.update_scheduled_job_instance'
-      - '@akeneo_batch_queue.queue.publish_job_to_queue'
       - '@event_dispatcher'
-      - '@akeneo.job_automation.query.find_users_to_notify'
-      - '@logger'
+      - '@akeneo.job_automation.feature'
+      - '@'
       - '@Akeneo\Platform\JobAutomation\Domain\ClockInterface'
     tags:
       - { name: console.command }
