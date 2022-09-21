@@ -24,7 +24,7 @@ class CellsFormatterSpec extends ObjectBehavior
 
     public function it_formats_string_cells()
     {
-        $this->formatCells(['foo', 'bar'])->shouldReturn(['foo', 'bar']);
+        $this->formatCells(['foo', 'bar', '000012'])->shouldReturn(['foo', 'bar', '000012']);
     }
 
     public function it_formats_number_cells()
