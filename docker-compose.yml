@@ -105,7 +105,7 @@ services:
 
   object-storage:
     image: 'minio/minio:RELEASE.2021-09-15T04-54-25Z'
-    entrypoint: '/bin/sh -c "mkdir -p /data/archive /data/catalog /data/jobs && minio server --console-address :9091 /data"'
+    entrypoint: '/bin/sh -c "mkdir -p /data/archive /data/catalog /data/jobs /data/category /data/catalogs_mapping && minio server --console-address :9091 /data"'
     environment:
       MINIO_ACCESS_KEY: 'AKENEO_OBJECT_STORAGE_ACCESS_KEY'
       MINIO_SECRET_KEY: 'AKENEO_OBJECT_STORAGE_SECRET_KEY'

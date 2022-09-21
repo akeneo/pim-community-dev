@@ -144,6 +144,10 @@ services:
         arguments:
             - '@pim_catalog.repository.currency'
 
+    Akeneo\Catalogs\Infrastructure\Storage\CatalogsMappingStorage:
+        arguments:
+            $filesystem: '@oneup_flysystem.catalogs_mapping_filesystem'
+
     Akeneo\Catalogs\Infrastructure\EventSubscriber\AttributeOptionRemovalSubscriber:
         arguments:
             $jobInstanceRepository: '@akeneo_batch.job.job_instance_repository'

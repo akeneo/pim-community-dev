@@ -166,7 +166,9 @@ class FixturesLoader implements FixturesLoaderInterface
     public function purge(): void
     {
         $this->deleteAllDocumentsInElasticsearch();
-        $this->databaseSchemaHandler->reset();
+        if (!$this->experimentalTransactionHelper->isEnabled()) {
+            $this->databaseSchemaHandler->reset();
+        }
         $this->resetFilesystem();
         $this->clearAclCache();
         $this->jobLauncher->flushJobQueue();

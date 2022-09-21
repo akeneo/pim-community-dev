@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindId;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
@@ -83,6 +84,8 @@ final class ListProductsQueryHandler
     public function handle(ListProductsQuery $query): ConnectorProductList
     {
         $pqb = $this->getSearchPQB($query);
+
+        $pqb->addFilter('identifier', Operators::IS_NOT_EMPTY, null);
 
         try {
             $this->applyProductSearchQueryParametersToPQB->apply(

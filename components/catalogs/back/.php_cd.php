@@ -56,6 +56,7 @@ $rules = [
             'Akeneo\UserManagement\Component\Model\UserInterface',
             'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
             'Akeneo\Connectivity\Connection\ServiceApi',
+            'League\Flysystem\Filesystem',
 
             // @todo replace with the ones from service API when available
             'Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface',

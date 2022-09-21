@@ -25,7 +25,7 @@ class AttributeImage extends Attribute
         AttributeOrder $order,
         AttributeIsLocalizable $isLocalizable,
         LabelCollection $labelCollection,
-        TemplateUuid $templateId,
+        TemplateUuid $templateUuid,
     ) {
         parent::__construct(
             $uuid,
@@ -34,7 +34,7 @@ class AttributeImage extends Attribute
             $order,
             $isLocalizable,
             $labelCollection,
-            $templateId,
+            $templateUuid,
         );
     }
 
@@ -44,7 +44,7 @@ class AttributeImage extends Attribute
         AttributeOrder $order,
         AttributeIsLocalizable $isLocalizable,
         LabelCollection $labelCollection,
-        TemplateUuid $templateId,
+        TemplateUuid $templateUuid,
     ): AttributeImage {
         return new self(
             $uuid,
@@ -53,19 +53,19 @@ class AttributeImage extends Attribute
             $order,
             $isLocalizable,
             $labelCollection,
-            $templateId,
+            $templateUuid,
         );
     }
 
     /**
      * @return array{
-     *     identifier: string,
+     *     uuid: string,
      *     code: string,
      *     type: string,
      *     order: int,
      *     is_localizable: bool,
      *     labels: array<string, string>,
-     *     template_identifier: string
+     *     template_uuid: string
      * }
      */
     public function normalize(): array

@@ -57,6 +57,24 @@ class AttributeCollection
         return reset($attribute);
     }
 
+    /**
+     * Retrieve an Attribute by his code.
+     */
+    public function getAttributeByCode(string $code): ?Attribute
+    {
+        $attribute = array_filter(
+            $this->attributes,
+            static function ($attribute) use ($code) {
+                return (string) $attribute->getCode() === $code;
+            },
+        );
+        if (empty($attribute) || count($attribute) > 1) {
+            return null;
+        }
+
+        return reset($attribute);
+    }
+
     public function addAttribute(Attribute $attribute): self
     {
         $this->attributes[] = $attribute;

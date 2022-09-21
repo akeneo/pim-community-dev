@@ -9,6 +9,12 @@ oneup_flysystem:
         jobs_storage:
             adapter: jobs_storage_adapter
             mount: jobsStorage
+        category_storage:
+            adapter: category_storage_adapter
+            mount: categoryStorage
         local_storage:
             adapter: local_storage_adapter
             mount: localFilesystem
+        catalogs_mapping:
+            adapter: catalogs_mapping_adapter
+            mount: catalogsMapping

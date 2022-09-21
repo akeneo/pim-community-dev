@@ -3,6 +3,7 @@
 namespace Akeneo\UserManagement\Component\Repository;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 
 /**
@@ -15,7 +16,7 @@ interface GroupRepositoryInterface extends IdentifiableObjectRepositoryInterface
     /**
      * Get the default user group
      *
-     * @return null|object
+     * @return Group
      */
     public function getDefaultUserGroup();
 
