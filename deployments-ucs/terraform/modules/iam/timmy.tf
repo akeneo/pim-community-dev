@@ -13,15 +13,32 @@ resource "google_service_account_iam_binding" "timmy_cloud_function_sa_usage" {
   ]
 }
 
+resource "google_project_iam_custom_role" "timmy_cloud_function" {
+  project = var.project_id
+  role_id = "timmy_cloud_function.role"
+  title   = "Timmy Cloud Function Role"
+  description = "Role for executing Timmy cloud functions"
+  permissions = [
+    "cloudfunctions.functions.call",
+    "cloudfunctions.functions.invoke",
+  ]
+}
+
+resource "google_project_iam_member" "timmy_deploy_log_writer" {
+  project = var.project_id
+  role    = "roles/logging.logWriter"
+  member  = "serviceAccount:${google_service_account.timmy_cloud_function_sa.email}"
+}
+
 resource "google_project_iam_member" "timmy_firestore_sa_usage" {
   project = var.firestore_project_id
   role    = "roles/firebaserules.system"
   member  = "serviceAccount:${google_service_account.timmy_cloud_function_sa.email}"
 }
 
-resource "google_project_iam_member" "timmy_cloudfunction_invoker_sa_usage" {
+resource "google_project_iam_member" "timmy_cloud_function_role" {
   project = var.project_id
-  role    = "roles/cloudfunctions.invoker"
+  role    = google_project_iam_custom_role.timmy_cloud_function.name
   member  = "serviceAccount:${google_service_account.timmy_cloud_function_sa.email}"
 }
 
@@ -43,17 +60,5 @@ resource "google_service_account_iam_binding" "timmy_deploy_sa_usage" {
 resource "google_project_iam_member" "timmy_deploy_log_writer" {
   project = var.project_id
   role    = "roles/logging.logWriter"
-  member  = "serviceAccount:${google_service_account.timmy_deploy_sa.email}"
-}
-
-resource "google_project_iam_member" "timmy_deploy_source_reader" {
-  project = var.project_id
-  role    = "roles/source.reader"
-  member  = "serviceAccount:${google_service_account.timmy_deploy_sa.email}"
-}
-
-resource "google_project_iam_member" "timmy_deploy_cloudfunction_developer" {
-  project = var.project_id
-  role    = "roles/cloudfunctions.developer"
   member  = "serviceAccount:${google_service_account.timmy_deploy_sa.email}"
 }
