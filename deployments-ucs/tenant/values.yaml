@@ -372,9 +372,8 @@ pim:
         requests:
           cpu: "100m"
           memory: "80Mi"
-    batch-purge:
+    job_executions_purge:
       enabled: true
-      pimCommand: "akeneo:batch:purge-job-execution"
       schedule: "0 0 1 * *"
       resources:
         requests:
