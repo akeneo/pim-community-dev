@@ -17,8 +17,7 @@ final class DisableCatalogsQuery implements DisableCatalogsQueryInterface
 {
     public function __construct(
         private Connection $connection
-    )
-    {
+    ) {
     }
 
     public function execute(array $catalogsUUID): void
@@ -32,7 +31,7 @@ final class DisableCatalogsQuery implements DisableCatalogsQueryInterface
         $this->connection->executeQuery(
             $query,
             [
-                'uuids' => array_map(
+                'uuids' => \array_map(
                     static fn ($id) => Uuid::fromString($id)->getBytes(),
                     $catalogsUUID
                 ),

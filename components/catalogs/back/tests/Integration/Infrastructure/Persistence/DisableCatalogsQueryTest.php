@@ -15,7 +15,6 @@ class DisableCatalogsQueryTest extends IntegrationTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->connection = self::getContainer()->get('database_connection');
         $this->disableCatalogsQuery = self::getContainer()->get(DisableCatalogsQuery::class);
 
         $this->purgeDataAndLoadMinimalCatalog();
