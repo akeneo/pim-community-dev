@@ -42,6 +42,7 @@ lint-back:
 	$(MAKE) enrichment-product-lint-back
 	$(MAKE) channel-lint-back
 	$(MAKE) category-lint-back
+	$(MAKE) identifier-generator-lint-back
 	# Cache was created with debug enabled, removing it allows a faster one to be created for upcoming tests
 	$(DOCKER_COMPOSE) run --rm php rm -rf var/cache/dev
 
@@ -77,6 +78,7 @@ acceptance-back:
 	$(MAKE) job-acceptance-back
 	$(MAKE) channel-acceptance-back
 	$(MAKE) measurement-acceptance-back
+	$(MAKE) identifier-generator-acceptance-back
 
 .PHONY: acceptance-front
 acceptance-front:
