@@ -103,6 +103,8 @@ supplier_portal:
                 submit_button_label: Send
                 loading_error: An error occured while loading the product file.
                 comment_submit_error: An error occured while submitting the comment.
+                max_comment_length_reached: The comment should not exceed 255 characters.
+                max_number_of_comments_reached: You've reached the comment limit.
         pim_notification:
             button_label: See the product files
 
@@ -110,6 +112,7 @@ pim_title:
     supplier_portal_retailer_supplier_list: Suppliers
     supplier_portal_retailer_supplier_edit: Edit a supplier
     supplier_portal_retailer_product_files_list: Product files
+    supplier_portal_retailer_product_files_comment: Product file
 
 batch_jobs.supplier_portal_xlsx_supplier_import.label: Supplier Portal Supplier import in XLSX
 

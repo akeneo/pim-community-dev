@@ -1,5 +1,5 @@
 import React from 'react';
-import {AkeneoThemedProps, DialogIcon, getColor, pimTheme} from 'akeneo-design-system';
+import {AkeneoThemedProps, DialogIcon, getColor, onboarderTheme} from 'akeneo-design-system';
 import {useDateFormatter} from '@akeneo-pim-community/shared';
 import styled, {css} from 'styled-components';
 
@@ -15,19 +15,38 @@ const CommentRow = styled.div`
     margin-top: 20px;
 `;
 
-const IconContainer = styled.div`
+const IconContainer = styled.div<AkeneoThemedProps & {outgoing: boolean}>`
     margin: 14px 12.5px;
     border-right: 1px solid;
     padding-right: 12.5px;
+    ${({outgoing}) =>
+        !outgoing
+            ? css`
+                  color: #2d6486;
+              `
+            : css`
+                  color: ${getColor('grey140')};
+              `}
 `;
 
 const ContentContainer = styled.div`
     margin-top: 10px;
+    margin-bottom: 10px;
+    line-height: 15.6px;
 `;
 
-const FlexGrow = styled.div`
+const FlexGrow = styled.div<AkeneoThemedProps & {outgoing: boolean}>`
     flex: 200px;
-    background-color: ${getColor('blue10')};
+    ${({outgoing}) =>
+        !outgoing
+            ? css`
+                  background-color: ${getColor('blue10')};
+                  color: #2d6486;
+              `
+            : css`
+                  background-color: ${getColor('grey20')};
+                  color: ${getColor('grey140')};
+              `}
 `;
 
 const FillerContainer = styled.div`
@@ -72,10 +91,12 @@ const Comment = ({outgoing, authorEmail, content, createdAt}: Props) => {
     return (
         <CommentRow>
             <CommentRowContent outgoing={outgoing}>
-                <FlexGrow>
+                <FlexGrow outgoing={outgoing}>
                     <FlexRow>
-                        <IconContainer>
-                            <DialogIcon color={pimTheme.color.grey140} />
+                        <IconContainer outgoing={outgoing}>
+                            <DialogIcon
+                                color={outgoing ? onboarderTheme.color.grey140 : onboarderTheme.color.brand140}
+                            />
                         </IconContainer>
                         <ContentContainer>
                             <FlexColumn>
