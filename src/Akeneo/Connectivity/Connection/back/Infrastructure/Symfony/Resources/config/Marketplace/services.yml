@@ -1,11 +1,12 @@
 parameters:
-    akeneo_pim_marketplace_url: 'https://api.apps.akeneo.cloud'
+    akeneo_pim_app_store_url: 'https://apps.akeneo.com'
+    akeneo_pim_app_store_api_url: 'https://api.apps.akeneo.cloud'
     akeneo_pim_marketplace_api_pagination_size: 100
 
 services:
     Akeneo\Connectivity\Connection\Application\Marketplace\MarketplaceUrlGenerator:
         arguments:
-            - '%akeneo_pim_marketplace_url%'
+            - '%akeneo_pim_app_store_url%'
             - '@pim_catalog.version_provider'
             - '%env(AKENEO_PIM_URL)%'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetUserProfileQuery'
@@ -24,7 +25,7 @@ services:
         class: GuzzleHttp\Client
         arguments:
             -
-                base_uri: '%akeneo_pim_marketplace_url%'
+                base_uri: '%akeneo_pim_app_store_api_url%'
                 headers: {User-Agent: ~}
 
     Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi:
