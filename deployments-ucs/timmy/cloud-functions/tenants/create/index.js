@@ -14,6 +14,7 @@ const fs = require('fs');
 const yaml = require('js-yaml');
 const Mustache = require('mustache');
 const merge = require('deepmerge-json');
+const CryptoJS = require("crypto-js");
 
 const passwordGenerator = require('generate-password');
 const functions = require('@google-cloud/functions-framework');
@@ -339,6 +340,16 @@ function generatePassword(length = 16, numbers = true, lowercase = true, upperca
   });
 }
 
+async function encryptAES(text, key) {
+  try {
+    logger.debug(`Encrypt text with ${process.env.TENANT_CONTEXT_ENCRYPT_KEY} key`);
+    return await CryptoJS.AES.encrypt(text, key).toString();
+  } catch (error) {
+    logger.debug(`Failed to encrypt text with ${key} key`);
+    return Promise.reject(error);
+  }
+}
+
 /**
  * Update firestore document in collection if exists otherwise create it
  * @param firestore firestore client instance
@@ -346,31 +357,46 @@ function generatePassword(length = 16, numbers = true, lowercase = true, upperca
  * @param doc name of the document
  * @param status value of the status field
  * @param context object representing the context field
+ * @param encrypted encrypt the firestore document
  */
-async function updateFirestoreDoc(firestore, collection, doc, status, context = {}) {
-  logger.info(`Create the \`${doc}\` firestore document in \`${collection}\` collection with \`${status}\` status and tenant context`);
-  let data = {};
-  data[doc] = {
+async function updateFirestoreDoc(firestore, collection, doc, status, context) {
+  logger.info(`Create the \`${doc}\` Firestore document in \`${collection}\` collection with \`${status}\` status and tenant context`);
+  let data = {
     status: status,
     status_date: new Date().toISOString(),
     context: context
+  };
+
+  logger.debug(`Prepared Firestore document: ${JSON.stringify(data)}`);
+
+  if (process.env.TENANT_CONTEXT_ENCRYPT_KEY) {
+    try {
+      data.context = await encryptAES(JSON.stringify(data.context), process.env.TENANT_CONTEXT_ENCRYPT_KEY);
+    } catch (error) {
+      const msg = `Failed to encrypt \`${doc}\` Firestore document in \`${collection}\ collection: ${error}`;
+      logger.error(msg);
+      return Promise.reject(msg);
+    }
   }
-  logger.debug(`Prepared Firestore document: ${JSON.stringify(data)}`)
+
   try {
     await firestore.collection(collection).doc(doc).set(data);
   } catch (error) {
-    const msg = `Failed to update \`${doc}\` firestore document in \`${collection}\` collection: ${error}`;
+    const msg = `Failed to update \`${doc}\` Firestore document in \`${collection}\` collection: ${error}`;
     logger.error(msg);
-    throw new Error(msg);
+    return Promise.reject(msg);
   }
 
   logger.debug(`Updated Firestore document`);
 }
 
-async function updateFirestoreDocStatus(firestore, collection, doc, status) {
+async function updateFirestoreDocStatus(firestore, collection, doc, status, {}) {
   try {
     logger.info(`Update the \`${doc}\` firestore document in \`${collection}\` collection with \`${status}\` status`);
-    return Promise.resolve(await firestore.collection(collection).doc(doc).set({[`${doc}`]: {status: status}}, {merge: true}));
+    return Promise.resolve(await firestore.collection(collection).doc(doc).set({
+      status: status,
+      status_date: new Date().toISOString()
+    }, {merge: true}));
   } catch (error) {
     const msg = `Failed to update the \`${doc}\` firestore document in \`${collection}\` collection: ${error}`;
     logger.error(msg);
@@ -442,7 +468,7 @@ functions.http('createTenant', (req, res) => {
 
 
     const prepareTenantCreation = async () => {
-        await updateFirestoreDocStatus(firestore, TENANT_CONTEXT, instanceName, FIRESTORE_STATUS.CREATION_IN_PREPARATION);
+        await updateFirestoreDoc(firestore, TENANT_CONTEXT, instanceName, FIRESTORE_STATUS.CREATION_IN_PREPARATION);
 
         logger.info('Generate tenant credentials');
         const mailerPassword = generatePassword();
@@ -608,7 +634,7 @@ functions.http('createTenant', (req, res) => {
     ;
 
     const createTenant = async () => {
-      const parameters = await prepareTenantCreation()
+      const parameters = await prepareTenantCreation();
       await updateFirestoreDoc(firestore, TENANT_CONTEXT, instanceName, FIRESTORE_STATUS.CREATION_IN_PROGRESS, {
         AKENEO_PIM_URL: `https://${instanceName}.${GOOGLE_MANAGED_ZONE_DNS}`,
         APP_DATABASE_HOST: `pim-mysql.${pfid}.svc.cluster.local`,
@@ -636,6 +662,7 @@ functions.http('createTenant', (req, res) => {
 
     createTenant(res)
       .then(async () => {
+        // TODO: only update status field when decryption is released (PH-247)
         await updateFirestoreDocStatus(firestore, TENANT_CONTEXT, instanceName, FIRESTORE_STATUS.CREATED);
 
         logger.info('Tenant is created');
@@ -648,6 +675,7 @@ functions.http('createTenant', (req, res) => {
       })
       .catch(async (error) => {
         logger.error(error);
+        // TODO: only update status field when decryption is released (PH-247)
         await updateFirestoreDocStatus(firestore, TENANT_CONTEXT, instanceName, FIRESTORE_STATUS.CREATION_FAILED);
 
         res.status(500).json({

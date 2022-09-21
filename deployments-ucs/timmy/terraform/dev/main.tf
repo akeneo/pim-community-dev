@@ -107,6 +107,13 @@ module "timmy_create_tenant" {
       project_id = local.project_id
       secret     = "MAILER_API_KEY"
       version    = "latest"
+    },
+    // Presence of `TENANT_CONTEXT_ENCRYPT_KEY` enables the encryption in Firestore
+    {
+      key        = "TENANT_CONTEXT_ENCRYPT_KEY"
+      project_id = local.project_id
+      secret     = "TENANT_CONTEXT_ENCRYPT_KEY"
+      version    = "latest"
     }
   ]
 
@@ -153,7 +160,7 @@ module "timmy_delete_tenant" {
       project_id = local.project_id
       secret     = "ARGOCD_PASSWORD"
       version    = "latest"
-    }
+    },
   ]
 
   environment_variables = {
@@ -179,6 +186,14 @@ module "timmy_create_fire_document" {
   location              = local.function_location
   service_account_email = local.function_service_account_email
 
+  secret_environment_variables = [
+    {
+      key        = "TENANT_CONTEXT_ENCRYPT_KEY"
+      project_id = local.project_id
+      secret     = "TENANT_CONTEXT_ENCRYPT_KEY"
+      version    = "latest"
+    }
+  ]
   environment_variables = {
     domain             = "pim-saas-dev.dev.cloud.akeneo.com"
     projectId          = local.project_id

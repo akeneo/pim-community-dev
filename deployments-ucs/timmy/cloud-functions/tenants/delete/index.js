@@ -124,11 +124,14 @@ async function terminateArgoCdAppOperation(url, token, appName) {
   logger.info(`Ask ArgoCD server terminating the currently running operation on the application`);
   const path = `api/v1/applications/${appName}/operation`;
   const resourceUrl = new URL(path, url).toString();
-  const config = {httpsAgent: httpsAgent, headers: {'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json'}};
+  const config = {
+    httpsAgent: httpsAgent,
+    headers: {'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json'}
+  };
 
   try {
     return Promise.resolve(await axios.delete(resourceUrl, config));
-  } catch(error) {
+  } catch (error) {
     const msg = formatAxiosError('Failed to ask ArgoCD to terminate operation on the application', error);
     logger.error(msg);
     return Promise.reject(msg);
@@ -146,12 +149,15 @@ async function getArgoCdApp(url, token, appName) {
   logger.info(`Retrieving information about the ArgoCD application`);
   const path = `api/v1/applications/${appName}`;
   const resourceUrl = new URL(path, url).toString();
-  const config = {httpsAgent: httpsAgent, headers: {'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json'}};
+  const config = {
+    httpsAgent: httpsAgent,
+    headers: {'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json'}
+  };
 
   try {
     const resp = await axios.get(resourceUrl, config);
     return Promise.resolve(resp.data);
-  } catch(error) {
+  } catch (error) {
     const msg = formatAxiosError('Failed to get ArgoCD application info', error);
     logger.error(msg);
     return Promise.reject(msg);
@@ -169,11 +175,14 @@ async function deleteArgoCdApp(url, token, appName) {
   logger.info('Ask ArgoCD server to delete the application');
   const path = `/api/v1/applications/${appName}`
   const resourceUrl = new URL(path, url).toString();
-  const config = {httpsAgent: httpsAgent, headers: {'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json'}};
+  const config = {
+    httpsAgent: httpsAgent,
+    headers: {'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json'}
+  };
 
   try {
     return Promise.resolve(await axios.delete(resourceUrl, config));
-  } catch(error) {
+  } catch (error) {
     const msg = formatAxiosError('Failed to ask ArgoCD to delete the application', error);
     logger.error(msg);
     return Promise.reject(msg);
@@ -191,7 +200,10 @@ async function deleteArgoCdApp(url, token, appName) {
  */
 async function ensureArgoCdAppIsDeleted(url, token, appName, maxRetries = 30, retryInterval = 10) {
   const resourceUrl = new URL(`/api/v1/applications`, url).toString();
-  const config = {httpsAgent: httpsAgent, headers: {'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json'}};
+  const config = {
+    httpsAgent: httpsAgent,
+    headers: {'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json'}
+  };
 
   const sleep = (milliseconds) => {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
@@ -206,7 +218,7 @@ async function ensureArgoCdAppIsDeleted(url, token, appName, maxRetries = 30, re
     logger.info('Verify that the deletion of the ArgoCD application is complete');
     resp = await axios.get(resourceUrl, config);
     appNames = resp.data.items.map(x => x.metadata.name)
-  } catch(error) {
+  } catch (error) {
     const msg = formatAxiosError(msg, error);
     logger.error(msg);
     return Promise.reject(msg);
@@ -225,7 +237,7 @@ async function ensureArgoCdAppIsDeleted(url, token, appName, maxRetries = 30, re
       }
 
       currentRetry++;
-    } catch(error) {
+    } catch (error) {
       const msg = formatAxiosError(msg, error);
       logger.error(msg);
       return Promise.reject(msg);
@@ -240,14 +252,17 @@ async function ensureArgoCdAppIsDeleted(url, token, appName, maxRetries = 30, re
 async function updateFirestoreDocStatus(firestore, collection, doc, status) {
   try {
     logger.info(`Update the ${doc} firestore document in ${collection} collection with ${status} status`);
-    return Promise.resolve(await firestore.collection(collection).doc(doc).set({[`${doc}`]: {status: status}}, {merge: true}));
+    return Promise.resolve(await firestore.collection(collection).doc(doc).set({
+        status: status,
+        status_date: new Date().toISOString()
+    }, {merge: true}));
+
   } catch (error) {
     const msg = `Failed to update the ${doc} firestore document in ${collection} collection: ${error}`;
     logger.error(msg);
     return Promise.reject(msg);
   }
 }
-
 
 async function deleteFirestoreDocument(firestore, collection, doc) {
   try {

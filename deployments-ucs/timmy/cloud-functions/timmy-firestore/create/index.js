@@ -1,4 +1,6 @@
 const {Firestore} = require('@google-cloud/firestore');
+const CryptoJS = require("crypto-js");
+
 const firestore = new Firestore({
   projectId: process.env.fireStoreProjectId ,
   timestampsInSnapshots: true
@@ -23,9 +25,7 @@ var  bodyjson=req.body;
       res.status(402).send(" env variable empty !!!");
      }
   
-   data = JSON.stringify(
-     { "values":
-     JSON.stringify({
+   tenantContextData = JSON.stringify({instance_name :{
        "AKENEO_PIM_URL": "https://" + instance_name +"."+ domain,
        "APP_DATABASE_HOST": "pim-mysql." + pfid + ".svc.cluster.local",
        "APP_INDEX_HOSTS": "elasticsearch-client." + pfid + ".svc.cluster.local",
@@ -37,11 +37,38 @@ var  bodyjson=req.body;
        "APP_DATABASE_PASSWORD": mysql_password ,
        "PFID":  pfid ,
        "SRNT_GOOGLE_BUCKET_NAME":  pfid 
-     })
-   }
-   );
-   const docRef = firestore.collection(process.env.tenantContext).doc(instance_name).set(JSON.parse(data));
+     }
+    });
+
+  
+   const encryptKey = process.env.TENANT_CONTEXT_ENCRYPT_KEY;
+   async function  encryptAES (inputText, key){
+    return CryptoJS.AES.encrypt(inputText, key).toString();
+  }
+  encryptAES(tenantContextData, encryptKey).then((response) =>{
+       data= JSON.stringify(
+        {
+          "status" : "creation_in_progress",
+          "status_date": new Date().toISOString(),
+          "context" : response.toString()
+       }
+    );
+
+      const docRef = firestore.collection(process.env.tenantContext).doc(instance_name).set(JSON.parse(data),{merge: true});
+
+  });
+
+  async function  decryptAES (encryptedContext, encryptKey){
+      return CryptoJS.AES.decrypt(encryptedContext, encryptKey);
+};
+//TODO : if we need to decrypt document 
+/*
+let encryptedContext=" get my content from some where"
+  decryptAES(encryptedContext, encryptKey).then((response) =>{
+    const decrypted =response.toString()
+  });
+*/
+
    res.status(200).send(" the document create with success !!!");
 
 };
-
