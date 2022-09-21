@@ -20,9 +20,9 @@ final class DatabaseGetProductFileWithComments implements GetProductFileWithComm
             WITH retailer_comments AS (
                 SELECT product_file_identifier, JSON_ARRAYAGG(
                      CASE WHEN content IS NOT NULL THEN JSON_OBJECT(
-                     'content', content,
-                     'author_email', author_email,
-                     'created_at', created_at
+                         'content', content,
+                         'author_email', author_email,
+                         'created_at', created_at
                      ) END
                  ) AS retailer_comments
                 FROM akeneo_supplier_portal_product_file_retailer_comments
