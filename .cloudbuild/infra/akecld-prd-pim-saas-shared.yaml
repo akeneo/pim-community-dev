@@ -1,0 +1,56 @@
+steps:
+- id: 'tf sec'
+  name: 'aquasec/tfsec'
+  entrypoint: 'sh'
+  args:
+  - '-c'
+  - |
+      if [ -d "deployments-ucs/terraform/${_ENV}" ]; then
+        tfsec deployments-ucs/terraform/${_ENV}/ \
+            -m MEDIUM
+      else
+        echo "No files for deployments-ucs/terraform/${_ENV}. Exiting"
+      fi
+- id: 'tf plan'
+  name: 'hashicorp/terraform:1.1.3'
+  env:
+    - 'TF_IN_AUTOMATION=true'
+  entrypoint: 'sh'
+  args:
+  - '-c'
+  - |
+      if [ -d "deployments-ucs/terraform/${_ENV}/" ]; then
+        cd deployments-ucs/terraform/${_ENV}
+        echo "*************** TERRAFORM PLAN ******************"
+        echo "******* At project: ${PROJECT_ID} ********"
+        echo "*************************************************"
+        terraform init -no-color
+        terraform plan -no-color || exit 1
+      else
+        echo "No files for ${PROJECT_ID}. Exiting"
+      fi
+- id: 'tf apply'
+  name: 'hashicorp/terraform:1.1.3'
+  env:
+    - 'TF_IN_AUTOMATION=true'
+  entrypoint: 'sh'
+  args:
+  - '-c'
+  - |
+      if [ "${BRANCH_NAME}" != "master" ]; then
+        echo "Not on branch master. Leaving ..."
+      else
+        if [ -d "deployments-ucs/terraform/${_ENV}/" ]; then
+          cd deployments-ucs/terraform/${_ENV}
+          echo "*************** TERRAFORM APPLY ******************"
+          echo "******* At project: ${PROJECT_ID} ********"
+          echo "*************************************************"
+          terraform init -no-color
+          terraform apply -no-color -auto-approve || exit 1
+        else
+          echo "No files for ${PROJECT_ID}. Exiting"
+        fi
+      fi
+logsBucket: 'gs://${PROJECT_ID}-cloudbuild-logs'
+substitutions:
+  _ENV: shared

@@ -14,12 +14,17 @@ variable "bucket_region" {
   default     = "EU"
 }
 
+variable "owner_members" {
+  type        = list(string)
+  description = "Users/Groups/SA allowed to own the buckets"
+}
+
 variable "admin_members" {
   type        = list(string)
-  description = "Users/Groups/SA allowed to push to the bucket"
+  description = "Users/Groups/SA allowed to push to the buckets"
 }
 
 variable "viewer_members" {
   type        = list(string)
-  description = "Users/Groups/SA allowed to read from the bucket"
+  description = "Users/Groups/SA allowed to read from the buckets"
 }
