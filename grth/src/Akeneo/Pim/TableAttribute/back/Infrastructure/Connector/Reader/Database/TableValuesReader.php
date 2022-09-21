@@ -46,6 +46,7 @@ final class TableValuesReader implements ItemReaderInterface, TrackableItemReade
 
         $this->results = $this->pqbFactory->create([])->addFilter($tableAttributeCode, Operators::IS_NOT_EMPTY, [])
             ->execute();
+        $this->results->rewind();
     }
 
     public function read(): ?TableRow
@@ -105,11 +106,10 @@ final class TableValuesReader implements ItemReaderInterface, TrackableItemReade
     private function getNextResult(): ?EntityWithValuesInterface
     {
         if ($this->results->valid()) {
-            if (!$this->firstRead) {
-                $this->results->next();
-            }
+            $result = $this->results->current();
+            $this->results->next();
 
-            return $this->results->current();
+            return $result;
         }
 
         return null;
