@@ -29,7 +29,7 @@ class IdentifierGeneratorCodeSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_return_a_code()
+    function it_returns_a_code()
     {
         $this->asString()->shouldReturn('abcdef');
     }

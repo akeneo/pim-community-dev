@@ -35,12 +35,12 @@ class AutoNumberSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_return_a_number_min()
+    function it_returns_a_number_min()
     {
         $this->getNumberMin()->shouldReturn(5);
     }
 
-    function it_return_a_digits_min()
+    function it_returns_a_digits_min()
     {
         $this->getDigitsMin()->shouldReturn(2);
     }

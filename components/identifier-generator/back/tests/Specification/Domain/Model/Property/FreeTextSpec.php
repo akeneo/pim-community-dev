@@ -29,7 +29,7 @@ class FreeTextSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_return_a_free_text()
+    function it_returns_a_free_text()
     {
         $this->asString()->shouldReturn('ABC');
     }

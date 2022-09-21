@@ -23,7 +23,7 @@ class DelimiterSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(Delimiter::class);
     }
 
-    function it_return_a_delimiter()
+    function it_returns_a_delimiter()
     {
         $this->asString()->shouldReturn('-');
     }

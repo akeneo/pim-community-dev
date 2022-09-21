@@ -42,7 +42,7 @@ class IdentifierGeneratorSpec extends ObjectBehavior
         );
     }
 
-    function it_is_a_identifier_generator()
+    function it_is_an_identifier_generator()
     {
         $this->shouldBeAnInstanceOf(IdentifierGenerator::class);
     }
