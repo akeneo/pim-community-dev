@@ -6,6 +6,7 @@ enum Tabs {
     SETTINGS = '#catalog-settings',
     PRODUCT_SELECTION = '#catalog-product-selection',
     PRODUCT_VALUE_FILTERS = '#catalog-product-value-filters',
+    PRODUCT_MAPPING = '#catalog-product-mapping',
 }
 
 type Props = {
@@ -14,9 +15,10 @@ type Props = {
     invalid: {
         [key in Tabs]: boolean;
     };
+    displayMappingTab: boolean;
 };
 
-const TabBar: FC<PropsWithChildren<Props>> = ({isCurrent, switchTo, invalid}) => {
+const TabBar: FC<PropsWithChildren<Props>> = ({isCurrent, switchTo, invalid, displayMappingTab}) => {
     const translate = useTranslate();
 
     return (
@@ -33,13 +35,23 @@ const TabBar: FC<PropsWithChildren<Props>> = ({isCurrent, switchTo, invalid}) =>
                     {translate('akeneo_catalogs.catalog_edit.tabs.product_selection')}
                     {invalid[Tabs.PRODUCT_SELECTION] && <Pill level='danger' />}
                 </StyledTabBar.Tab>
-                <StyledTabBar.Tab
-                    isActive={isCurrent(Tabs.PRODUCT_VALUE_FILTERS)}
-                    onClick={() => switchTo(Tabs.PRODUCT_VALUE_FILTERS)}
-                >
-                    {translate('akeneo_catalogs.catalog_edit.tabs.product_value_filters')}
-                    {invalid[Tabs.PRODUCT_VALUE_FILTERS] && <Pill level='danger' />}
-                </StyledTabBar.Tab>
+                {displayMappingTab ? (
+                    <StyledTabBar.Tab
+                        isActive={isCurrent(Tabs.PRODUCT_MAPPING)}
+                        onClick={() => switchTo(Tabs.PRODUCT_MAPPING)}
+                    >
+                        {translate('akeneo_catalogs.catalog_edit.tabs.product_mapping')}
+                        {invalid[Tabs.PRODUCT_MAPPING] && <Pill level='danger' />}
+                    </StyledTabBar.Tab>
+                ) : (
+                    <StyledTabBar.Tab
+                        isActive={isCurrent(Tabs.PRODUCT_VALUE_FILTERS)}
+                        onClick={() => switchTo(Tabs.PRODUCT_VALUE_FILTERS)}
+                    >
+                        {translate('akeneo_catalogs.catalog_edit.tabs.product_value_filters')}
+                        {invalid[Tabs.PRODUCT_VALUE_FILTERS] && <Pill level='danger' />}
+                    </StyledTabBar.Tab>
+                )}
             </StyledTabBar>
         </>
     );

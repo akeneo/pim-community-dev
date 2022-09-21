@@ -12,13 +12,16 @@ import {mapProductSelectionCriteriaErrors} from '../utils/mapProductSelectionCri
 import {getTabsValidationStatus} from '../utils/getTabsValidationStatus';
 import {ProductValueFilters} from '../../ProductValueFilters';
 import {mapProductValueFiltersErrors} from '../utils/mapProductValueFiltersErrors';
+import {ProductMapping} from '../../ProductMapping';
+import {useCatalogMappingRequirements} from '../../../hooks/useCatalogMappingRequirements';
 
 type Props = {
+    id: string;
     values: CatalogFormValues;
     errors: CatalogFormErrors;
 };
 
-const Edit: FC<PropsWithChildren<Props>> = ({values, errors}) => {
+const Edit: FC<PropsWithChildren<Props>> = ({id, values, errors}) => {
     const dispatch = useCatalogFormContext();
     const [activeTab, setActiveTab] = useSessionStorageState<string>(Tabs.SETTINGS, 'pim_catalog_activeTab');
     const [isCurrent, switchTo] = useTabBar(activeTab);
@@ -44,9 +47,17 @@ const Edit: FC<PropsWithChildren<Props>> = ({values, errors}) => {
         [dispatch]
     );
 
+    const {data: mappingRequirements, isLoading} = useCatalogMappingRequirements(id);
+    const catalogMappingExists = isLoading === false && mappingRequirements !== null;
+
     return (
         <>
-            <TabBar isCurrent={isCurrent} switchTo={handleSwitchTo} invalid={getTabsValidationStatus(errors)} />
+            <TabBar
+                isCurrent={isCurrent}
+                switchTo={handleSwitchTo}
+                invalid={getTabsValidationStatus(errors)}
+                displayMappingTab={catalogMappingExists}
+            />
 
             {isCurrent(Tabs.SETTINGS) && (
                 <Settings
@@ -70,6 +81,7 @@ const Edit: FC<PropsWithChildren<Props>> = ({values, errors}) => {
                     errors={mapProductValueFiltersErrors(errors)}
                 />
             )}
+            {isCurrent(Tabs.PRODUCT_MAPPING) && <ProductMapping />}
         </>
     );
 };

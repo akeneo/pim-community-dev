@@ -21,6 +21,7 @@ const openDropdown = (selector: string): void => {
 };
 
 test('it can enable a catalog', () => {
+    const catalogId = 'catalog_id';
     const dispatch = jest.fn();
     const form = {
         values: {
@@ -36,7 +37,7 @@ test('it can enable a catalog', () => {
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
                 <CatalogFormContext.Provider value={dispatch}>
-                    <CatalogEdit form={form} />
+                    <CatalogEdit id={catalogId} form={form} />
                 </CatalogFormContext.Provider>
             </QueryClientProvider>
         </ThemeProvider>
@@ -50,6 +51,7 @@ test('it can enable a catalog', () => {
 test('it can change criteria in the product selection', async () => {
     mocked(generateRandomId).mockReturnValue('rdn');
 
+    const catalogId = 'catalog_id';
     const dispatch = jest.fn();
     const form = {
         values: {
@@ -65,7 +67,7 @@ test('it can change criteria in the product selection', async () => {
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
                 <CatalogFormContext.Provider value={dispatch}>
-                    <CatalogEdit form={form} />
+                    <CatalogEdit id={catalogId} form={form} />
                 </CatalogFormContext.Provider>
             </QueryClientProvider>
         </ThemeProvider>
@@ -99,6 +101,7 @@ test('it can add a product value filter on the channel', async () => {
         },
     ]);
 
+    const catalogId = 'catalog_id';
     const dispatch = jest.fn();
     const form = {
         values: {
@@ -114,7 +117,7 @@ test('it can add a product value filter on the channel', async () => {
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
                 <CatalogFormContext.Provider value={dispatch}>
-                    <CatalogEdit form={form} />
+                    <CatalogEdit id={catalogId} form={form} />
                 </CatalogFormContext.Provider>
             </QueryClientProvider>
         </ThemeProvider>
