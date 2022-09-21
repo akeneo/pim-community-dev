@@ -9,24 +9,24 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\GetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndScope;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
-use Ramsey\Uuid\Uuid;
 
 class RemoveNonExistingProductValuesTaskletSpec extends ObjectBehavior
 {
     function let(
         GetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndScope $getProductAndProductModelIdsWithValues,
         GetAttributes $getAttributes,
-        CursorableRepositoryInterface $productRepository,
-        CursorableRepositoryInterface $productModelRepository,
+        ProductRepositoryInterface $productRepository,
+        ProductModelRepositoryInterface $productModelRepository,
         BulkSaverInterface $productSaver,
         BulkSaverInterface $productModelSaver,
         EntityManagerClearerInterface $entityManagerClearer,
@@ -48,8 +48,8 @@ class RemoveNonExistingProductValuesTaskletSpec extends ObjectBehavior
     function it_removes_non_existing_product_values_from_attribute_code_and_options(
         GetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndScope $getProductAndProductModelIdsWithValues,
         GetAttributes $getAttributes,
-        CursorableRepositoryInterface $productRepository,
-        CursorableRepositoryInterface $productModelRepository,
+        ProductRepositoryInterface $productRepository,
+        ProductModelRepositoryInterface $productModelRepository,
         BulkSaverInterface $productSaver,
         BulkSaverInterface $productModelSaver,
         EntityManagerClearerInterface $entityManagerClearer,
@@ -76,7 +76,7 @@ class RemoveNonExistingProductValuesTaskletSpec extends ObjectBehavior
             [$identifierResults1, $identifierResults2]
         );
 
-        $productRepository->getItemsFromIdentifiers([$product1->getUuid()->toString(), $product2->getUuid()->toString()])->willReturn([$product1, $product2]);
+        $productRepository->getItemsFromUuids([$product1->getUuid()->toString(), $product2->getUuid()->toString()])->willReturn([$product1, $product2]);
         $productModelRepository->getItemsFromIdentifiers(['code3'])->willReturn([$productModel]);
 
         $productSaver->saveAll([$product1, $product2], ['force_save' => true])->shouldBeCalled();

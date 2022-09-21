@@ -7,9 +7,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Ramsey\Uuid\Uuid;
 
@@ -17,8 +18,8 @@ class FromSizeCursorSpec extends ObjectBehavior
 {
     function let(
         Client $esClient,
-        CursorableRepositoryInterface $productRepository,
-        CursorableRepositoryInterface $productModelRepository,
+        ProductRepositoryInterface $productRepository,
+        ProductModelRepositoryInterface $productModelRepository,
     ) {
         $this->beConstructedWith(
             $esClient,
@@ -39,11 +40,11 @@ class FromSizeCursorSpec extends ObjectBehavior
 
     function it_is_countable(
         Client $esClient,
-        CursorableRepositoryInterface $productRepository,
-        CursorableRepositoryInterface $productModelRepository
+        ProductRepositoryInterface $productRepository,
+        ProductModelRepositoryInterface $productModelRepository,
     ) {
         $this->shouldImplement(\Countable::class);
-        $productRepository->getItemsFromIdentifiers([])
+        $productRepository->getItemsFromUuids([])
             ->shouldBeCalledOnce()->willReturn([]);
         $productModelRepository->getItemsFromIdentifiers(['a-root-product-model', 'a-sub-product-model'])
             ->shouldBeCalledOnce()->willReturn([]);
@@ -72,8 +73,8 @@ class FromSizeCursorSpec extends ObjectBehavior
 
     function it_is_iterable(
         Client $esClient,
-        CursorableRepositoryInterface $productRepository,
-        CursorableRepositoryInterface $productModelRepository,
+        ProductRepositoryInterface $productRepository,
+        ProductModelRepositoryInterface $productModelRepository,
     ) {
         $simpleUuid = Uuid::uuid4();
         $simpleProduct = new Product($simpleUuid);
@@ -86,7 +87,7 @@ class FromSizeCursorSpec extends ObjectBehavior
         $subProductModel = new ProductModel();
         $subProductModel->setCode('a-sub-product-model');
 
-        $productRepository->getItemsFromIdentifiers([$simpleUuid->toString(), $variantUuid->toString()])
+        $productRepository->getItemsFromUuids([$simpleUuid->toString(), $variantUuid->toString()])
             ->shouldBeCalledOnce()->willReturn([$variantProduct, $simpleProduct]);
         $productModelRepository->getItemsFromIdentifiers(['a-root-product-model', 'a-non-existing-model', 'a-sub-product-model'])
             ->shouldBeCalledOnce()->willReturn([$rootProductModel, $subProductModel]);

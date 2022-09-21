@@ -7,9 +7,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Ramsey\Uuid\Uuid;
 
@@ -17,8 +18,8 @@ class CursorSpec extends ObjectBehavior
 {
     function let(
         Client $esClient,
-        CursorableRepositoryInterface $productRepository,
-        CursorableRepositoryInterface $productModelRepository,
+        ProductRepositoryInterface $productRepository,
+        ProductModelRepositoryInterface $productModelRepository,
     ) {
         $this->beConstructedWith(
             $esClient,
@@ -37,8 +38,8 @@ class CursorSpec extends ObjectBehavior
 
     function it_is_countable(
         Client $esClient,
-        CursorableRepositoryInterface $productRepository,
-        CursorableRepositoryInterface $productModelRepository
+        ProductRepositoryInterface $productRepository,
+        ProductModelRepositoryInterface $productModelRepository,
     ) {
         $this->shouldImplement(\Countable::class);
         $simpleUuid = Uuid::uuid4();
@@ -47,7 +48,7 @@ class CursorSpec extends ObjectBehavior
         $variantProduct = new Product($variantUuid);
         $variantProduct->setIdentifier('a-variant-product');
 
-        $productRepository->getItemsFromIdentifiers([$variantUuid->toString(), $simpleUuid->toString()])->shouldBeCalled()->willReturn(
+        $productRepository->getItemsFromUuids([$variantUuid->toString(), $simpleUuid->toString()])->shouldBeCalled()->willReturn(
             [$simpleProduct, $variantProduct]
         );
         $productModelRepository->getItemsFromIdentifiers([])->shouldBeCalled()->willReturn([]);
@@ -84,8 +85,8 @@ class CursorSpec extends ObjectBehavior
 
     function it_is_iterable(
         Client $esClient,
-        CursorableRepositoryInterface $productRepository,
-        CursorableRepositoryInterface $productModelRepository,
+        ProductRepositoryInterface $productRepository,
+        ProductModelRepositoryInterface $productModelRepository,
     ) {
         $simpleUuid = Uuid::uuid4();
         $simpleProduct = new Product($simpleUuid);
@@ -98,10 +99,10 @@ class CursorSpec extends ObjectBehavior
         $subProductModel = new ProductModel();
         $subProductModel->setCode('a-sub-product-model');
 
-        $productRepository->getItemsFromIdentifiers([$simpleUuid->toString()])->shouldBeCalled()->willReturn(
+        $productRepository->getItemsFromUuids([$simpleUuid->toString()])->shouldBeCalled()->willReturn(
             [$simpleProduct]
         );
-        $productRepository->getItemsFromIdentifiers([$variantUuid->toString()])->shouldBeCalled()->willReturn(
+        $productRepository->getItemsFromUuids([$variantUuid->toString()])->shouldBeCalled()->willReturn(
             [$variantProduct]
         );
         $productModelRepository->getItemsFromIdentifiers(['a-root-product-model'])->shouldBeCalled()->willReturn(
@@ -190,8 +191,8 @@ class CursorSpec extends ObjectBehavior
      */
     function it_is_iterable_and_returns_page_size_results(
         Client $esClient,
-        CursorableRepositoryInterface $productRepository,
-        CursorableRepositoryInterface $productModelRepository,
+        ProductRepositoryInterface $productRepository,
+        ProductModelRepositoryInterface $productModelRepository,
     ) {
         $simpleUuid = Uuid::uuid4();
         $simpleProduct = new Product($simpleUuid);
@@ -206,11 +207,11 @@ class CursorSpec extends ObjectBehavior
 
         $nonExistingUuid = Uuid::uuid4();
 
-        $productRepository->getItemsFromIdentifiers([$variantUuid->toString(), $nonExistingUuid->toString()])
+        $productRepository->getItemsFromUuids([$variantUuid->toString(), $nonExistingUuid->toString()])
             ->shouldBeCalledOnce()->willReturn([$variantProduct]);
-        $productRepository->getItemsFromIdentifiers([$simpleUuid->toString()])
+        $productRepository->getItemsFromUuids([$simpleUuid->toString()])
             ->shouldBeCalledOnce()->willReturn([$simpleProduct]);
-        $productRepository->getItemsFromIdentifiers([])
+        $productRepository->getItemsFromUuids([])
             ->shouldBeCalledOnce()->willReturn([]);
         $productModelRepository->getItemsFromIdentifiers(['a-sub-product-model'])
             ->shouldBeCalledOnce()->willReturn([$subProductModel]);

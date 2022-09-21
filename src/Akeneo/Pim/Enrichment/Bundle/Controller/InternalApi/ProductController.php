@@ -80,7 +80,7 @@ class ProductController
     public function indexAction(Request $request): JsonResponse
     {
         $productIdentifiers = explode(',', $request->get('identifiers'));
-        $products = $this->cursorableRepository->getItemsFromIdentifiers($productIdentifiers);
+        $products = $this->productRepository->findBy(['identifier' => $productIdentifiers]);
 
         $normalizedProducts = $this->normalizer->normalize(
             $products,
