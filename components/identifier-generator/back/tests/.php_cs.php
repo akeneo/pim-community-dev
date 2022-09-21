@@ -15,5 +15,5 @@ return (new PhpCsFixer\Config())
         PhpCsFixer\Finder::create()
             ->name('*.php')
             ->notName('*Spec.php')
-            ->in(__DIR__ )
+            ->in(__DIR__.'/../')
     );

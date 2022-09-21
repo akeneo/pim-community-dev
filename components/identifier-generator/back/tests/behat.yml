@@ -1,0 +1,17 @@
+default:
+    suites:
+        acceptance:
+            paths:
+                - '%paths.base%/features'
+            contexts:
+                - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\CreateIdentifierGeneratorContext
+            filters:
+                tags: '@acceptance-back'
+    extensions:
+        Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
+        FriendsOfBehat\SymfonyExtension:
+            kernel:
+                path: src/Kernel.php
+                class: Kernel
+                environment: test_fake
+                debug: false

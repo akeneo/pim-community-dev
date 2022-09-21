@@ -24,6 +24,8 @@ imports:
     - { resource: ../../../src/Akeneo/Channel/back/tests/Acceptance/Resources/config/services.yml }
     # Notification
     - { resource: ../../../tests/back/Platform/Acceptance/NotificationBundle/Resources/config/services.yml }
+    # Identifier Generator
+    - { resource: ../../../components/identifier-generator/back/tests/Acceptance/Resources/config/contexts.yml }
 
 services:
     akeneo_integration_tests.doctrine.connection.connection_closer:

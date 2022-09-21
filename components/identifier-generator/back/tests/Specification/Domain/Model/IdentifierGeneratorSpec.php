@@ -66,4 +66,9 @@ class IdentifierGeneratorSpec extends ObjectBehavior
         );
         $this->shouldBeAnInstanceOf(IdentifierGenerator::class);
     }
+
+    function it_returns_an_indentifier_generator_code()
+    {
+        $this->code()->shouldBeLike(IdentifierGeneratorCode::fromString('abcdef'));
+    }
 }
