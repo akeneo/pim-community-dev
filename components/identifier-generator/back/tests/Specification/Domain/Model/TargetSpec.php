@@ -29,12 +29,6 @@ class TargetSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_cannot_be_instantiated_with_blank_string()
-    {
-        $this->beConstructedThrough('fromString', ['  ']);
-        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
-    }
-
     function it_represents_a_target()
     {
         $this->asString()->shouldReturn('sku');

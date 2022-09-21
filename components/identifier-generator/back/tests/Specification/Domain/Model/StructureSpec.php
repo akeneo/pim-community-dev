@@ -6,6 +6,7 @@ namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\PropertyInterface;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use PhpSpec\ObjectBehavior;
 
@@ -42,9 +43,8 @@ class StructureSpec extends ObjectBehavior
     function it_has_properties_values()
     {
         $properties = $this->getProperties();
-        $properties[0]->asString()->shouldReturn('ABC');
-
-        $properties[1]->getMinimalNumber()->shouldReturn(5);
-        $properties[1]->getMinDigits()->shouldReturn(2);
+        $properties->shouldHaveCount(2);
+        $properties[0]->shouldBeAnInstanceOf(PropertyInterface::class);
+        $properties[1]->shouldBeAnInstanceOf(PropertyInterface::class);
     }
 }

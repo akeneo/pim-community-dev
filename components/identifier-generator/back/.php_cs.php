@@ -7,10 +7,13 @@ return (new PhpCsFixer\Config())
         'method_argument_space' => [
             'on_multiline' => 'ensure_fully_multiline'
         ],
+        'no_unused_imports' => true,
+        'blank_line_before_statement' => true,
     ))
     ->setCacheFile('var/php_cs.cache')
     ->setFinder(
         PhpCsFixer\Finder::create()
             ->name('*.php')
+            ->notName('*Spec.php')
             ->in(__DIR__ )
     );

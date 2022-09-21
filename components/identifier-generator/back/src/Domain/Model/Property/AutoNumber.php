@@ -15,13 +15,14 @@ final class AutoNumber implements PropertyInterface
     public function __construct(
         private int $numberMin,
         private int $digitsMin,
-    ){
+    ) {
     }
 
     public static function fromValues(int $numberMin, $digitsMin): self
     {
         Assert::greaterThanEq($numberMin, 0);
         Assert::greaterThanEq($digitsMin, 0);
+
         return new self($numberMin, $digitsMin);
     }
 

@@ -23,25 +23,25 @@ class AutoNumberSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(AutoNumber::class);
     }
 
-    function it_cannot_be_instantiated_with_minimal_number_negative()
+    function it_cannot_be_instantiated_with_number_min_negative()
     {
         $this->beConstructedThrough('fromValues', [-5,2]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_cannot_be_instantiated_with_min_digits_negative()
+    function it_cannot_be_instantiated_with_digits_min_negative()
     {
         $this->beConstructedThrough('fromValues', [5,-2]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_represents_a_minmal_number()
+    function it_return_a_number_min()
     {
-        $this->getMinimalNumber()->shouldReturn(5);
+        $this->getNumberMin()->shouldReturn(5);
     }
 
-    function it_represents_a_min_digit()
+    function it_return_a_digits_min()
     {
-        $this->getMinDigits()->shouldReturn(2);
+        $this->getDigitsMin()->shouldReturn(2);
     }
 }

@@ -19,7 +19,6 @@ final class IdentifierGeneratorCode
 
     public static function fromString(string $code): self
     {
-        $code = trim($code);
         Assert::stringNotEmpty($code);
 
         return new self($code);

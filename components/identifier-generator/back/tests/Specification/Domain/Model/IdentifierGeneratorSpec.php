@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorCode;
@@ -25,18 +26,20 @@ class IdentifierGeneratorSpec extends ObjectBehavior
 
         $freeText = FreeText::fromString('abc');
         $structure = Structure::fromArray([$freeText]);
+        $conditions = Conditions::fromArray([]);
 
         $label = LabelCollection::fromNormalized(['fr' => 'Générateur']);
         $delimiter = Delimiter::fromString('-');
         $target = Target::fromString('sku');
 
-        $this->beConstructedThrough('fromValues', [
+        $this->beConstructedWith(
             $identifierGeneratorCode,
+            $conditions,
             $structure,
             $label,
-            $delimiter,
             $target,
-        ]);
+            $delimiter,
+        );
     }
 
     function it_is_a_identifier_generator()
@@ -47,20 +50,20 @@ class IdentifierGeneratorSpec extends ObjectBehavior
     function it_can_instantiate_without_delimiter()
     {
         $identifierGeneratorCode = IdentifierGeneratorCode::fromString('abcdef');
-
+        $conditions = Conditions::fromArray([]);
         $freeText = FreeText::fromString('abc');
         $structure = Structure::fromArray([$freeText]);
-
         $label = LabelCollection::fromNormalized(['fr' => 'Générateur']);
         $target = Target::fromString('sku');
 
-        $this->beConstructedThrough('fromValues', [
+        $this->beConstructedWith(
             $identifierGeneratorCode,
+            $conditions,
             $structure,
             $label,
-            null,
             $target,
-        ]);
+            null,
+        );
         $this->shouldBeAnInstanceOf(IdentifierGenerator::class);
     }
 }

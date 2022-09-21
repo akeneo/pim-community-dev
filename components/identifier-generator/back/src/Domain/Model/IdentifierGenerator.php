@@ -19,6 +19,6 @@ final class IdentifierGenerator
         private LabelCollection $labelCollection,
         private Target $target,
         private ?Delimiter $delimiter,
-    ){}
-
+    ) {
+    }
 }

@@ -25,6 +25,7 @@ final class Structure
     {
         Assert::notEmpty($properties);
         Assert::allIsInstanceOf($properties, PropertyInterface::class);
+
         return new self($properties);
     }
 

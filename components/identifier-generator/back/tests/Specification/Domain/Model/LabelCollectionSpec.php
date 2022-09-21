@@ -16,8 +16,8 @@ class LabelCollectionSpec extends ObjectBehavior
     function it_throws_an_exception_when_an_array_key_is_not_string()
     {
         $this->beConstructedThrough('fromNormalized', [[
-            'en_US' => '',
-            1 => '',
+            'en_US' => 'Sugar',
+            1 => 'Sucre',
         ]]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
@@ -25,8 +25,8 @@ class LabelCollectionSpec extends ObjectBehavior
     function it_throws_an_exception_when_an_array_key_is_an_empty_string()
     {
         $this->beConstructedThrough('fromNormalized', [[
-            'en_US' => '',
-            '' => '',
+            'en_US' => 'Sugar',
+            '' => 'sucre',
         ]]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
@@ -34,7 +34,7 @@ class LabelCollectionSpec extends ObjectBehavior
     function it_throws_an_exception_when_a_value_is_not_a_string()
     {
         $this->beConstructedThrough('fromNormalized', [[
-            'en_US' => '',
+            'en_US' => 'Sugar',
             'fr_FR' => 12,
         ]]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();

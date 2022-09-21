@@ -19,7 +19,6 @@ final class Target
 
     public static function fromString(string $attributeCode): self
     {
-        $attributeCode = trim($attributeCode);
         Assert::stringNotEmpty($attributeCode);
 
         return new self($attributeCode);
