@@ -11,7 +11,7 @@ use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
 class DisableCatalogsOnAttributeOptionRemovalTasklet implements TaskletInterface
 {
-    private StepExecution $stepExecution;
+    private ?StepExecution $stepExecution = null;
 
     public function __construct(
         private GetCatalogsToDisableOnAttributeOptionRemovalQueryInterface $getCatalogsToDisableQuery,
@@ -26,7 +26,14 @@ class DisableCatalogsOnAttributeOptionRemovalTasklet implements TaskletInterface
 
     public function execute(): void
     {
+        if (null === $this->stepExecution) {
+            throw new \LogicException('the variable $stepExecution should not be null.');
+        }
+
+        /** @var string $attributeCode */
         $attributeCode = $this->stepExecution->getJobParameters()->get('attribute_code');
+
+        /** @var string $attributeOptionCode */
         $attributeOptionCode = $this->stepExecution->getJobParameters()->get('attribute_option_code');
 
         $catalogsUUID = $this->getCatalogsToDisableQuery->execute($attributeCode, $attributeOptionCode);

@@ -6,6 +6,7 @@ namespace Akeneo\Catalogs\Infrastructure\EventSubscriber;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -38,9 +39,10 @@ class AttributeOptionRemovalSubscriber implements EventSubscriberInterface
         $attributeCode = $attributeOption->getAttribute()->getCode();
         $attributeOptionCode = $attributeOption->getCode();
 
+        /** @var JobInstance $jobInstance */
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier('disable_catalogs_on_attribute_option_removal');
 
-        $this->jobLauncher->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), [
+        $this->jobLauncher->launch($jobInstance, $this->tokenStorage->getToken()?->getUser(), [
             'attribute_code' => $attributeCode,
             'attribute_option_code' => $attributeOptionCode
         ]);
