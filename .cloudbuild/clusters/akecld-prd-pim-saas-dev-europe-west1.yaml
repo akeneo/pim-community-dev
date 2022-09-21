@@ -7,14 +7,23 @@ steps:
     - |
         # Set project configuration
         gcloud config set project ${PROJECT_ID}
-        on_going_build=($(gcloud builds list --ongoing --format='value(id)' | xargs))
-        # on_going_build=($(gcloud builds list --ongoing --format='value(id)' --filter="substitutions.TRIGGER_NAME=$TRIGGER_NAME" | xargs))
-        for (( i=0; i<${#on_going_build[@]}; i++ )); do
-          if [ "$i" -gt "0" ]; then # skip current build
-            echo "Cancelling current build, because there is at least another build ongoing (${on_going_build[i]})"
-            exit 1
-          fi
-        done
+        if [ "${BRANCH_NAME}" != "master" ]; then
+          on_going_build_plan=($(gcloud builds list --ongoing --format='value(id)' --filter="${_CLUSTER_NAME}-plan" | xargs))
+          for (( i=0; i<${#on_going_build_plan[@]}; i++ )); do
+            if [ "$i" -gt "0" ]; then # skip current build
+              echo "Cancelling current build, because there is at least another build ongoing (${on_going_build_plan[i]})"
+              exit 1
+            fi
+          done
+        else
+          on_going_build_apply=($(gcloud builds list --ongoing --format='value(id)' --filter="${_CLUSTER_NAME}-apply" | xargs))
+          for (( i=0; i<${#on_going_build_apply[@]}; i++ )); do
+            if [ "$i" -gt "0" ]; then # skip current build
+              echo "Cancelling current build, because there is at least another build ongoing (${on_going_build_apply[i]})"
+              exit 1
+            fi
+          done
+        fi
   - id: Install prerequisite for the PIM
     name: "europe-west1-docker.pkg.dev/akecld-prd-pim-saas-shared/prod/pim-deployer:1.1.0"
     dir: "deployments-ucs"
@@ -39,22 +48,26 @@ steps:
         GSA_ARGOCD="argocd@${PROJECT_ID}.iam.gserviceaccount.com" yq -i '.repoServer.serviceAccount.annotations."iam.gke.io/gcp-service-account" = env(GSA_ARGOCD)' k8s/argocd/values.yaml
 
         # Set target revision to current branch
-        BRANCH_NAME="${BRANCH_NAME}" yq -i '.applications[].source.targetRevision = env(BRANCH_NAME)' k8s/argocd-apps/values.yaml
+        # BRANCH_NAME="${BRANCH_NAME}" yq -i '.applications[].source.targetRevision = env(BRANCH_NAME)' k8s/argocd-apps/values.yaml
         VALUES="values-${_CLUSTER_NAME}.yaml" yq -i '.applications[].helm.valueFiles[1] = env(VALUES)' k8s/argocd-apps/values.yaml
-
-        ## Datadog
-        kubectl create secret generic datadog-api-secret --from-literal api-key="$$DATADOG_API_KEY"
 
         # Use helm repo
         helm repo add argo https://argoproj.github.io/argo-helm
         helm repo update 2>&1
 
-        # Install prerequisite
-        ## ArgoCD
-        helm upgrade --version 5.4.2 --debug --atomic --cleanup-on-fail --history-max 5 -i --wait --create-namespace -n argocd argocd argo/argo-cd -f k8s/argocd/values.yaml
-        kubectl apply -f k8s/argocd/templates/argocd-cm.yaml
-        helm upgrade --version 0.0.1 --debug --atomic --cleanup-on-fail --history-max 5 -i --wait --create-namespace -n argocd argocd-apps argo/argocd-apps -f k8s/argocd-apps/values.yaml
+        if [ "${BRANCH_NAME}" != "master" ]; then
+          helm install --version 5.4.2 --dry-run --debug argocd argo/argo-cd -f k8s/argocd/values.yaml
+          helm install --version 0.0.1 --dry-run --debug argocd-apps argo/argocd-apps -f k8s/argocd-apps/values.yaml
+        else
+          ## Datadog
+          kubectl create secret generic datadog-api-secret --from-literal api-key="$$DATADOG_API_KEY"
 
+          # Install prerequisite
+          ## ArgoCD
+          helm upgrade --version 5.4.2 --debug --atomic --cleanup-on-fail --history-max 5 -i --wait --create-namespace -n argocd argocd argo/argo-cd -f k8s/argocd/values.yaml
+          kubectl apply -f k8s/argocd/templates/argocd-cm.yaml
+          helm upgrade --version 0.0.1 --debug --atomic --cleanup-on-fail --history-max 5 -i --wait --create-namespace -n argocd argocd-apps argo/argocd-apps -f k8s/argocd-apps/values.yaml
+        fi
     secretEnv: ['ARGOCD_TOKEN', 'DATADOG_API_KEY']
 logsBucket: 'gs://$PROJECT_ID-cloudbuild-logs'
 availableSecrets:
