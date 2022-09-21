@@ -25,22 +25,37 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getItemsFromIdentifiers(array $identifiers): array
+    public function getItemsFromIdentifiers(array $identifiers)
     {
-        if ([] === $identifiers) {
+        $qb = $this->createQueryBuilder('p')
+            ->where('p.identifier IN (:identifiers)')
+            ->setParameter('identifiers', $identifiers);
+
+        $query = $qb->getQuery();
+        $query->useQueryCache(false);
+
+        return $query->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemsFromUuids(array $uuids): array
+    {
+        if ([] === $uuids) {
             return [];
         }
 
-        $uuids = [];
-        foreach ($identifiers as $identifier) {
-            if (Uuid::isValid($identifier)) {
-                $uuids[] = Uuid::fromString($identifier)->getBytes();
+        $uuidsAsBytes = [];
+        foreach ($uuids as $uuid) {
+            if (Uuid::isValid($uuid)) {
+                $uuidsAsBytes[] = Uuid::fromString($uuid)->getBytes();
             } else {
-                $uuids[] = $identifier;
+                $uuidsAsBytes[] = $uuid;
             }
         }
 
-        return $this->findBy(['uuid' => $uuids]);
+        return $this->findBy(['uuid' => $uuidsAsBytes]);
     }
 
     /**
@@ -56,6 +71,10 @@ class ProductRepository extends EntityRepository implements
      */
     public function findOneByIdentifier($identifier)
     {
+        if (null === $identifier) {
+            return null;
+        }
+
         return $this->findOneBy(['identifier' => $identifier]);
     }
 

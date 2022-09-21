@@ -6,9 +6,10 @@ namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 
 /**
  * Common logic shared by all our product and product model cursors.
@@ -19,21 +20,11 @@ use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
  */
 abstract class AbstractCursor implements CursorInterface
 {
-    /** @var Client */
-    protected $esClient;
-
-    /** @var CursorableRepositoryInterface */
-    protected $productRepository;
-
-    /** @var CursorableRepositoryInterface */
-    protected $productModelRepository;
-
-    /** @var array */
-    protected $items;
-
-    /** @var int */
-    protected $count;
-
+    protected Client $esClient;
+    protected ProductRepositoryInterface $productRepository;
+    protected ProductModelRepositoryInterface $productModelRepository;
+    protected ?array $items = null;
+    protected ?int $count = null;
     protected int $position = 0;
 
     /**
@@ -102,7 +93,7 @@ abstract class AbstractCursor implements CursorInterface
             return [];
         }
 
-        $hydratedProducts = $this->productRepository->getItemsFromIdentifiers(
+        $hydratedProducts = $this->productRepository->getItemsFromUuids(
             $identifierResults->getProductUuids()
         );
         $hydratedProductModels = $this->productModelRepository->getItemsFromIdentifiers(

@@ -9,6 +9,7 @@ use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -33,7 +34,7 @@ class RemoveCompletenessForChannelAndLocaleTasklet implements TaskletInterface
         private NotifierInterface $notifier,
         private SimpleFactoryInterface $notificationFactory,
         private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
-        private CursorableRepositoryInterface $productRepository,
+        private ProductRepositoryInterface $productRepository,
         private ChannelRepositoryInterface $channelRepository,
         private BulkSaverInterface $productBulkSaver,
         private int $productBatchSize
@@ -61,7 +62,7 @@ class RemoveCompletenessForChannelAndLocaleTasklet implements TaskletInterface
             $productUuidsToClean[] = \preg_replace('/^product_/', '', $productIdentifier->getId());
 
             if (count($productUuidsToClean) >= $this->productBatchSize) {
-                $products = $this->productRepository->getItemsFromIdentifiers($productUuidsToClean);
+                $products = $this->productRepository->getItemsFromUuids($productUuidsToClean);
                 $this->cleanProducts($products);
                 $this->cacheClearer->clear();
                 $productUuidsToClean = [];
@@ -69,7 +70,7 @@ class RemoveCompletenessForChannelAndLocaleTasklet implements TaskletInterface
         }
 
         if (!empty($productUuidsToClean)) {
-            $products = $this->productRepository->getItemsFromIdentifiers($productUuidsToClean);
+            $products = $this->productRepository->getItemsFromUuids($productUuidsToClean);
             $this->cleanProducts($products);
         }
         $this->notifyUsersItIsDone($usersToNotify);

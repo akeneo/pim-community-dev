@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Job;
 
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\GetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndScope;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Webmozart\Assert\Assert;
 
@@ -29,8 +30,8 @@ final class RemoveNonExistingProductValuesTasklet implements TaskletInterface
     public function __construct(
         private GetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndScope $getProductAndProductModelIdentifiersWithValues,
         private GetAttributes $getAttributes,
-        private CursorableRepositoryInterface $productRepository,
-        private CursorableRepositoryInterface $productModelRepository,
+        private ProductRepositoryInterface $productRepository,
+        private ProductModelRepositoryInterface $productModelRepository,
         private BulkSaverInterface $productSaver,
         private BulkSaverInterface $productModelSaver,
         private EntityManagerClearerInterface $entityManagerClearer,
@@ -71,7 +72,7 @@ final class RemoveNonExistingProductValuesTasklet implements TaskletInterface
 
         foreach ($batchIdentifiers as $identifierResults) {
             foreach (\array_chunk($identifierResults->getProductUuids(), $this->batchSize) as $productUuids) {
-                $products = $this->productRepository->getItemsFromIdentifiers($productUuids);
+                $products = $this->productRepository->getItemsFromUuids($productUuids);
                 $this->productSaver->saveAll($products, ['force_save' => true]);
             }
 
