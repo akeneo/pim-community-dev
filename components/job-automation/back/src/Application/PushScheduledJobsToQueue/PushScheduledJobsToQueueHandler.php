@@ -12,6 +12,9 @@ namespace Akeneo\Platform\JobAutomation\Application\PushScheduledJobsToQueue;
 use Akeneo\Platform\JobAutomation\Domain\CronExpressionFactory;
 use Akeneo\Platform\JobAutomation\Domain\Event\CouldNotLaunchAutomatedJobEvent;
 use Akeneo\Platform\JobAutomation\Domain\FilterDueJobInstances;
+use Akeneo\Platform\JobAutomation\Domain\Model\DueJobInstance;
+use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
+use Akeneo\Platform\JobAutomation\Domain\Model\UserToNotifyCollection;
 use Akeneo\Platform\JobAutomation\Domain\Query\FindUsersToNotifyQueryInterface;
 use Akeneo\Tool\Component\BatchQueue\Exception\InvalidJobException;
 use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueueInterface;
@@ -32,33 +35,23 @@ final class PushScheduledJobsToQueueHandler implements PushScheduledJObsToQueueH
 
     public function handle(PushScheduledJobsToQueueQuery $query): void
     {
-        $dueJobInstances = [];
-        foreach ($query->getDueJobInstances() as $scheduledJobInstance) {
-            $dueJobInstances[] = FilterDueJobInstances::fromScheduledJobInstances(
-                $scheduledJobInstance,
-                CronExpressionFactory::fromExpression($scheduledJobInstance->cronExpression)
-            );
-        }
+        $dueJobInstances = $this->getDueJobs($query->getScheduledJobInstances());
 
         if (empty($dueJobInstances)) {
             return;
         }
 
         foreach ($dueJobInstances as $dueJobInstance) {
-            $usersToNotify = $this->findUsersToNotifyQuery->byUserIdsAndUserGroupsIds(
-                $dueJobInstance->notifiedUsers,
-                $dueJobInstance->notifiedUserGroups,
-            );
 
             try {
                 $this->publishJobToQueue->publish(
-                    jobInstanceCode: $dueJobInstance->code,
+                    jobInstanceCode: $dueJobInstance->getScheduledJobInstance()->code,
                     config: [
                         'is_user_authenticated' => true,
-                        'users_to_notify' => $usersToNotify->getUsernames(),
+                        'users_to_notify' => $dueJobInstance->getUsersToNotify()->getUsernames(),
                     ],
-                    username: $dueJobInstance->runningUsername,
-                    emails: $usersToNotify->getUniqueEmails(),
+                    username: $dueJobInstance->getScheduledJobInstance()->runningUsername,
+                    emails: $dueJobInstance->getUsersToNotify()->getUniqueEmails(),
                 );
             } catch (InvalidJobException $exception) {
                 $errorMessages = array_map(
@@ -66,14 +59,12 @@ final class PushScheduledJobsToQueueHandler implements PushScheduledJObsToQueueH
                     iterator_to_array($exception->getViolations()),
                 );
 
-                // TODO move $usersToNotify to $dueJobInstance
                 $this->eventDispatcher->dispatch(
-                    CouldNotLaunchAutomatedJobEvent::dueToInvalidJobInstance($dueJobInstance, $errorMessages, $usersToNotify),
+                    CouldNotLaunchAutomatedJobEvent::dueToInvalidJobInstance($dueJobInstance, $errorMessages),
                 );
             } catch (Exception $exception) {
-                // TODO move $usersToNotify to $dueJobInstance
                 $this->eventDispatcher->dispatch(
-                    CouldNotLaunchAutomatedJobEvent::dueToInternalError($dueJobInstance, $usersToNotify),
+                    CouldNotLaunchAutomatedJobEvent::dueToInternalError($dueJobInstance),
                 );
 
                 $this->logger->error('Cannot launch automated job', [
@@ -81,5 +72,28 @@ final class PushScheduledJobsToQueueHandler implements PushScheduledJObsToQueueH
                 ]);
             }
         }
+    }
+
+    /**
+     * @return DueJobInstance[]
+     */
+    private function getDueJobs(array $scheduledJobs): array
+    {
+        return array_map(
+            function (ScheduledJobInstance $scheduledJob) {
+                if (FilterDueJobInstances::fromScheduledJobInstances($scheduledJob, CronExpressionFactory::fromExpression($scheduledJob->cronExpression))) {
+                    return new DueJobInstance($scheduledJob, $this->getUsersToNotify($scheduledJob));
+                }
+            },
+            $scheduledJobs
+        );
+    }
+
+    private function getUsersToNotify(ScheduledJobInstance $dueJobInstance): UserToNotifyCollection
+    {
+        return $this->findUsersToNotifyQuery->byUserIdsAndUserGroupsIds(
+            $dueJobInstance->notifiedUsers,
+            $dueJobInstance->notifiedUserGroups,
+        );
     }
 }

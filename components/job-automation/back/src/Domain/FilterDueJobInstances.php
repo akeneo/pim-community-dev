@@ -19,18 +19,14 @@ use Webmozart\Assert\Assert;
 
 class FilterDueJobInstances
 {
-    public static function fromScheduledJobInstances(ScheduledJobInstance $scheduledJobInstance, CronExpression $cronExpression): ?ScheduledJobInstance
+    public static function fromScheduledJobInstances(ScheduledJobInstance $scheduledJobInstance, CronExpression $cronExpression): bool
     {
         Assert::isInstanceOf($scheduledJobInstance, ScheduledJobInstance::class);
 
         if (null === $scheduledJobInstance->lastExecutionDate) {
-            if ($cronExpression->isDue() || $cronExpression->getPreviousRunDate() > $scheduledJobInstance->setupDate) {
-                return $scheduledJobInstance;
-            }
+            return $cronExpression->isDue() || $cronExpression->getPreviousRunDate() > $scheduledJobInstance->setupDate;
         } else {
-            if ($cronExpression->isDue() || $cronExpression->getPreviousRunDate() > $scheduledJobInstance->lastExecutionDate) {
-                return $scheduledJobInstance;
-            }
+            return $cronExpression->isDue() || $cronExpression->getPreviousRunDate() > $scheduledJobInstance->lastExecutionDate;
         }
     }
 }

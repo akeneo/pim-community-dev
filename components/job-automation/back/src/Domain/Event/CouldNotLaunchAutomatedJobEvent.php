@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\JobAutomation\Domain\Event;
 
+use Akeneo\Platform\JobAutomation\Domain\Model\DueJobInstance;
 use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
 use Akeneo\Platform\JobAutomation\Domain\Model\UserToNotifyCollection;
 
@@ -20,24 +21,22 @@ use Akeneo\Platform\JobAutomation\Domain\Model\UserToNotifyCollection;
 class CouldNotLaunchAutomatedJobEvent
 {
     private function __construct(
-        public ScheduledJobInstance $scheduledJobInstance,
-        public array $errorMessages,
+        public ScheduledJobInstance   $scheduledJobInstance,
+        public array                  $errorMessages,
         public UserToNotifyCollection $userToNotify,
     ) {
     }
 
     public static function dueToInvalidJobInstance(
-        ScheduledJobInstance $scheduledJobInstance,
-        array $errorMessages,
-        UserToNotifyCollection $userToNotify,
+        DueJobInstance $dueJobInstance,
+        array          $errorMessages,
     ): self {
-        return new self($scheduledJobInstance, $errorMessages, $userToNotify);
+        return new self($dueJobInstance->getScheduledJobInstance(), $errorMessages, $dueJobInstance->getUsersToNotify());
     }
 
     public static function dueToInternalError(
-        ScheduledJobInstance $scheduledJobInstance,
-        UserToNotifyCollection $userToNotify,
+        DueJobInstance $dueJobInstance,
     ): self {
-        return new self($scheduledJobInstance, ['Internal system failure'], $userToNotify);
+        return new self($dueJobInstance->getScheduledJobInstance(), ['Internal system failure'], $dueJobInstance->getUsersToNotify());
     }
 }

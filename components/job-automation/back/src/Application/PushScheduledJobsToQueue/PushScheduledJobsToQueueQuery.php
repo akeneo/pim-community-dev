@@ -21,7 +21,7 @@ final class PushScheduledJobsToQueueQuery
     /**
      * @return ScheduledJobInstance[]
      */
-    public function getDueJobInstances(): array
+    public function getScheduledJobInstances(): array
     {
         return $this->scheduledJobInstances;
     }
