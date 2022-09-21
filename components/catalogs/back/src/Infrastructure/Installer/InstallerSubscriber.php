@@ -41,6 +41,7 @@ class InstallerSubscriber implements EventSubscriberInterface
                 is_enabled TINYINT NOT NULL DEFAULT 0,
                 product_selection_criteria JSON NOT NULL DEFAULT (JSON_ARRAY()),
                 product_value_filters JSON NOT NULL DEFAULT (JSON_OBJECT()),
+                product_mapping JSON NOT NULL DEFAULT (JSON_OBJECT()),
                 created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 INDEX idx_owner (owner_id),
