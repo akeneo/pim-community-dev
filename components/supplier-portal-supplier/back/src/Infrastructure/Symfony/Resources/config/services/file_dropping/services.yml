@@ -14,8 +14,3 @@ services:
         public: true
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\GetProductFiles\GetProductFiles'
-
-    Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Controller\GetProductFile:
-        public: true
-        arguments:
-            - '@Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\GetProductFile\GetProductFile'

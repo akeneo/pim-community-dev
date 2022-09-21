@@ -89,10 +89,6 @@ services:
             - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail'
             - '@monolog.logger.supplier_portal'
 
-    Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\GetProductFileHandlerForSupplier:
-        arguments:
-            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithCommentsForSupplier'
-
     # Validators
     Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Validation\CountCommentsValidator:
         arguments:
@@ -149,11 +145,6 @@ services:
 
     Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithComments:
         class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetProductFileWithComments
-        arguments:
-            - '@database_connection'
-
-    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithCommentsForSupplier:
-        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetProductFileWithCommentsForSupplier
         arguments:
             - '@database_connection'
 
@@ -255,7 +246,3 @@ services:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFilesForSupplier'
             - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail'
-
-    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\GetProductFile\GetProductFile:
-        arguments:
-            - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\GetProductFileHandlerForSupplier'

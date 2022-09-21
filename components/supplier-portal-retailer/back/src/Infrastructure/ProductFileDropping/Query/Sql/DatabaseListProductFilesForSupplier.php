@@ -58,25 +58,25 @@ final class DatabaseListProductFilesForSupplier implements ListProductFilesForSu
 
         return array_map(
             fn (array $file) => new ProductFile(
-            $file['identifier'],
-            $file['original_filename'],
-            $file['path'],
-            $file['uploaded_by_contributor'],
-            $supplierIdentifier,
-            $file['uploaded_at'],
-            $file['retailer_comments']
-                ? \array_filter(\json_decode(
-                    $file['retailer_comments'],
-                    true,
-                ))
-                : [],
-            $file['supplier_comments']
-                ? \array_filter(\json_decode(
-                    $file['supplier_comments'],
-                    true,
-                ))
-                : [],
-        ),
+                $file['identifier'],
+                $file['original_filename'],
+                $file['path'],
+                $file['uploaded_by_contributor'],
+                $supplierIdentifier,
+                $file['uploaded_at'],
+                $file['retailer_comments']
+                    ? \array_filter(\json_decode(
+                        $file['retailer_comments'],
+                        true,
+                    ))
+                    : [],
+                $file['supplier_comments']
+                    ? \array_filter(\json_decode(
+                        $file['supplier_comments'],
+                        true,
+                    ))
+                    : [],
+            ),
             $this->connection->executeQuery(
                 $sql,
                 [
