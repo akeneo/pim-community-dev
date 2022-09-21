@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Job;
 
-use Akeneo\Catalogs\Infrastructure\Job\DisableCatalogOnAttributeOptionRemovalConstraint;
+use Akeneo\Catalogs\Infrastructure\Job\DisableCatalogsOnAttributeOptionRemovalConstraint;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class DisableCatalogOnAttributeOptionRemovalConstraintTest extends IntegrationTestCase
+class DisableCatalogsOnAttributeOptionRemovalConstraintTest extends IntegrationTestCase
 {
     private ?ValidatorInterface $validator;
-    private ?DisableCatalogOnAttributeOptionRemovalConstraint $disableCatalogConstraint;
+    private ?DisableCatalogsOnAttributeOptionRemovalConstraint $disableCatalogConstraint;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->validator = self::getContainer()->get(ValidatorInterface::class);
-        $this->disableCatalogConstraint = self::getContainer()->get(DisableCatalogOnAttributeOptionRemovalConstraint::class);
+        $this->disableCatalogConstraint = self::getContainer()->get(DisableCatalogsOnAttributeOptionRemovalConstraint::class);
 
         $this->purgeData();
     }
@@ -38,8 +38,7 @@ class DisableCatalogOnAttributeOptionRemovalConstraintTest extends IntegrationTe
     public function testItProvidesConstraintToInvalidateParameters(
         array $parameters,
         string $expectedMessage,
-    ): void
-    {
+    ): void {
         $constraintCollection = $this->disableCatalogConstraint->getConstraintCollection();
         $violations = $this->validator->validate($parameters, $constraintCollection);
 

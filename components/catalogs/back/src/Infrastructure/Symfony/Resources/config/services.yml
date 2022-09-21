@@ -153,26 +153,26 @@ services:
             $jobInstanceRepository: '@akeneo_batch.job.job_instance_repository'
             $jobLauncher: '@akeneo_batch_queue.launcher.queue_job_launcher'
 
-    Akeneo\Catalogs\Infrastructure\Job\DisableCatalogOnAttributeOptionRemovalTasklet:
+    Akeneo\Catalogs\Infrastructure\Job\DisableCatalogsOnAttributeOptionRemovalTasklet:
         public: false
 
-    akeneo_catalogs.step.disable_catalog_on_attribute_option_removal:
+    akeneo_catalogs.step.disable_catalogs_on_attribute_option_removal:
         class: '%pim_connector.step.tasklet.class%'
         arguments:
-            - 'disable_catalog_on_attribute_option_removal'
+            - 'disable_catalogs_on_attribute_option_removal'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@Akeneo\Catalogs\Infrastructure\Job\DisableCatalogOnAttributeOptionRemovalTasklet'
+            - '@Akeneo\Catalogs\Infrastructure\Job\DisableCatalogsOnAttributeOptionRemovalTasklet'
         public: false
 
-    akeneo_catalogs.job.disable_catalog_on_attribute_option_removal:
+    akeneo_catalogs.job.disable_catalogs_on_attribute_option_removal:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
-            - 'disable_catalog_on_attribute_option_removal'
+            - 'disable_catalogs_on_attribute_option_removal'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@akeneo_catalogs.step.disable_catalog_on_attribute_option_removal'
+                - '@akeneo_catalogs.step.disable_catalogs_on_attribute_option_removal'
             - false
             - false
         public: false
@@ -180,16 +180,16 @@ services:
             -
                 name: akeneo_batch.job
                 connector: 'Disable catalogs on attribute option removal'
-                type: 'disable_catalog_on_attribute_option_removal'
+                type: 'disable_catalogs_on_attribute_option_removal'
 
-    akeneo_catalogs.job.job_parameters.default_values_provider.disable_catalog_on_attribute_option_removal:
+    akeneo_catalogs.job.job_parameters.default_values_provider.disable_catalogs_on_attribute_option_removal:
         class: '%akeneo_batch.job.job_parameters.empty_values_provider.class%'
         arguments:
             -
-                - 'disable_catalog_on_attribute_option_removal'
+                - 'disable_catalogs_on_attribute_option_removal'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
-    Akeneo\Catalogs\Infrastructure\Job\DisableCatalogOnAttributeOptionRemovalConstraint:
+    Akeneo\Catalogs\Infrastructure\Job\DisableCatalogsOnAttributeOptionRemovalConstraint:
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }

@@ -92,7 +92,11 @@ $rules = [
 
             'Akeneo\Tool\Component\StorageUtils\StorageEvents',
             'Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface',
-            'Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface'
+            'Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface',
+            'Akeneo\Tool\Component\Batch\Model\StepExecution',
+            'Akeneo\Tool\Component\Connector\Step\TaskletInterface',
+            'Akeneo\Tool\Component\Batch\Job\JobInterface',
+            'Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface',
         ]
     )->in('Akeneo\Catalogs\Infrastructure'),
 

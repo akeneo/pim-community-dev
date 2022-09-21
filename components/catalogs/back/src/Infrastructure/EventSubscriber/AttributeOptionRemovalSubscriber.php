@@ -38,7 +38,7 @@ class AttributeOptionRemovalSubscriber implements EventSubscriberInterface
         $attributeCode = $attributeOption->getAttribute()->getCode();
         $attributeOptionCode = $attributeOption->getCode();
 
-        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier('disable_catalog_on_attribute_option_removal');
+        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier('disable_catalogs_on_attribute_option_removal');
 
         $this->jobLauncher->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), [
             'attribute_code' => $attributeCode,

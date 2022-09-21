@@ -6,9 +6,11 @@ namespace Akeneo\Catalogs\Infrastructure\Job;
 
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
-use Symfony\Component\Validator\Constraints\{Collection, Required, Type};
+use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\Required;
+use Symfony\Component\Validator\Constraints\Type;
 
-class DisableCatalogOnAttributeOptionRemovalConstraint implements ConstraintCollectionProviderInterface
+class DisableCatalogsOnAttributeOptionRemovalConstraint implements ConstraintCollectionProviderInterface
 {
     public function getConstraintCollection(): Collection
     {
@@ -26,6 +28,6 @@ class DisableCatalogOnAttributeOptionRemovalConstraint implements ConstraintColl
 
     public function supports(JobInterface $job): bool
     {
-        return $job->getName() === 'disable_catalog_on_attribute_option_removal';
+        return $job->getName() === 'disable_catalogs_on_attribute_option_removal';
     }
 }

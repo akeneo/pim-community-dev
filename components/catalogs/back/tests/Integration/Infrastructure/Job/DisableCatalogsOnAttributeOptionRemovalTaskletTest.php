@@ -11,7 +11,7 @@ use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 
-class DisableCatalogOnAttributeOptionRemovalTaskletTest extends IntegrationTestCase
+class DisableCatalogsOnAttributeOptionRemovalTaskletTest extends IntegrationTestCase
 {
     private ?QueryBus $queryBus;
     private ?JobLauncher $jobLauncher;

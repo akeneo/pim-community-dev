@@ -9,7 +9,7 @@ use Akeneo\Catalogs\Application\Persistence\UpsertCatalogQueryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
-class DisableCatalogOnAttributeOptionRemovalTasklet implements TaskletInterface
+class DisableCatalogsOnAttributeOptionRemovalTasklet implements TaskletInterface
 {
     private StepExecution $stepExecution;
 
@@ -19,12 +19,12 @@ class DisableCatalogOnAttributeOptionRemovalTasklet implements TaskletInterface
     ) {
     }
 
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
     }
 
-    public function execute()
+    public function execute(): void
     {
         $attributeCode = $this->stepExecution->getJobParameters()->get('attribute_code');
         $attributeOptionCode = $this->stepExecution->getJobParameters()->get('attribute_option_code');
