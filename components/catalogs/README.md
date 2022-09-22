@@ -3,8 +3,10 @@ Catalogs
 
 ## What's a catalog?
 
-A catalog is a selection of products defined by one or several criteria. (status, categories, ...)  
-Additionnaly, a catalog can also provide mapped products based on the target requirements.
+A catalog is a selection of products.
+- The selection of products is defined by one or several criteria. (status, categories, ...)
+- It gives access to products with filtered values. (based on locale, channel, currency, ...)
+- It can also give access to mapped products based on any target requirements.
 
 ## Documentation
 
