@@ -18,11 +18,9 @@
   },
   "$defs": {
     "$id": {
-      "$ref": "#/$defs/uriReferenceString",
       "$comment": "Non-empty fragments not allowed.",
       "pattern": "^[^#]*#?$"
     },
-    "$ref": { "$ref": "#/$defs/uriReferenceString" },
     "$schema": { "$ref": "#/$defs/uriString" },
     "$comment": {
       "type": "string"
@@ -47,18 +45,14 @@
       "properties": {
         "title": { "$ref": "#/$defs/title" },
         "description": { "$ref": "#/$defs/description" },
-        "type": { "$ref": "#/$defs/propertyType" },
-        "$ref": { "$ref": "#/$defs/$ref" }
+        "type": { "$ref": "#/$defs/propertyType" }
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "required": ["type"]
     },
     "uriString": {
       "type": "string",
       "format": "uri"
-    },
-    "uriReferenceString": {
-      "type": "string",
-      "format": "uri-reference"
     }
   },
   "additionalProperties": false

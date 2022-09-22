@@ -72,13 +72,6 @@ class ProductSchemaValidatorTest extends IntegrationTestCase
       "title": "Description",
       "description": "Product description in raw HTML",
       "type": "string"
-    },
-    "url": { "$ref": "#/$defs/url" }
-  },
-  "$defs": {
-    "url": {
-      "title": "Url",
-      "type": "string"
     }
   }
 }
@@ -98,6 +91,16 @@ JSON,
     "price": {
       "type": "number"
     }
+  }
+}
+JSON,
+            ],
+            '0.0.1 with missing target type' => [
+                'schema' => <<<'JSON'
+{
+  "$schema": "https://api.akeneo.com/mapping/product/0.0.1/schema",
+  "properties": {
+    "price": {}
   }
 }
 JSON,
