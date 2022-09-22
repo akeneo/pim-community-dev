@@ -2,7 +2,7 @@
 
 {% block emailMessage %}
     Dear {{ email }},
-    {% if constant('Akeneo\\Tool\\Component\\Batch\\Job\\BatchStatus::FAILED') == jobExecution.status.value %}
+    {% if jobExecution.status.unsuccessful %}
         Akeneo completed your {{ jobExecution.jobInstance.type }} with errors.
     {% else %}
         Akeneo successfully completed your {{ jobExecution.jobInstance.type }}.

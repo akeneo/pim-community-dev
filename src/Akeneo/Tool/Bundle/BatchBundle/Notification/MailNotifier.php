@@ -61,7 +61,7 @@ class MailNotifier implements Notifier
             'jobExecution' => $jobExecution,
         ];
 
-        $subject = $jobExecution->getStatus()->getValue() == BatchStatus::FAILED ? 'Akeneo completed your export: fail' : 'Akeneo completed your export: success';
+        $subject = $jobExecution->getStatus()->isUnsuccessful() ? 'Akeneo completed your export: fail' : 'Akeneo completed your export: success';
 
         try {
             $txtBody = $this->twig->render('@AkeneoBatch/Email/notification.txt.twig', $parameters);

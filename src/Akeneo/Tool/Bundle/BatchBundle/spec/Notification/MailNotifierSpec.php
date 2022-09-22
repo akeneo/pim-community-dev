@@ -42,7 +42,7 @@ class MailNotifierSpec extends ObjectBehavior
 
     public function it_notifies_fail(JobExecution $jobExecution, $mailer): void
     {
-        $batchStatus = new BatchStatus(BatchStatus::FAILED);
+        $batchStatus = new BatchStatus(BatchStatus::UNKNOWN);
         $jobExecution->getStatus()->willReturn($batchStatus);
 
         $mailer->notify(
