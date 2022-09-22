@@ -9,6 +9,7 @@
 
 require('dotenv').config();
 
+const crypto = require('crypto');
 const axios = require('axios');
 const fs = require('fs');
 const yaml = require('js-yaml');
@@ -43,22 +44,26 @@ const FIRESTORE_STATUS = {
 };
 
 
-function initializeLogger(gcpProjectId, logLevel, instanceName) {
+function initializeLogger(instanceName) {
   logger = createLogger({
-    level: logLevel,
+    level: process.env.LOG_LEVEL,
     defaultMeta: {
+      id: crypto.randomUUID(),
       function: process.env.K_SERVICE || 'timmy-create-tenant',
       revision: process.env.K_REVISION,
-      gcpProjectId: gcpProjectId,
+      gcpProjectId: process.env.GCP_PROJECT_ID,
+      gcpProjectFirestoreId: process.env.GCP_FIRESTORE_PROJECT_ID,
       tenant: instanceName
     },
     format: format.combine(
       format.timestamp({format: 'YYYY-MM-DD HH:mm:ss'}),
       format.printf(info => {
         return `${info.timestamp} ${info.level}: ${JSON.stringify({
+          id: info.id,
           function: info.function,
           revision: info.revision,
           gcpProjectId: info.gcpProjectId,
+          gcpProjectFirestoreId: info.gcpProjectFirestoreId,
           message: info.message,
           tenant: info.tenant
         })}`;
@@ -74,6 +79,25 @@ function initializeLogger(gcpProjectId, logLevel, instanceName) {
     exitOnError: false,
   });
 }
+
+/**
+ * Ensure the presence of the required environment variables
+ * @param names list of required environment variables
+ */
+function requiredEnvironmentVariables(names) {
+  let envArr = {};
+  const missingVariables = [];
+
+  names.forEach(name => {
+    !process.env[name] && missingVariables.push(name);
+    envArr[name] = process.env[name];
+  });
+
+  if (missingVariables.length) {
+    throw new Error('Environment variables needed: ' + JSON.stringify(missingVariables));
+  }
+}
+
 
 function formatAxiosError(msg, error) {
   if (error.response) {
@@ -93,14 +117,14 @@ function formatAxiosError(msg, error) {
  * @param password the password for authentication
  * @returns {Promise<string|number>} a token
  */
-async function getArgoCdToken(url, username, password) {
-  logger.info(`Authenticating with ${username} username to ArgoCD server ${url} to get a token`);
-  const resourceUrl = new URL('/api/v1/session', url);
-  const payload = JSON.stringify({username: username, password: password});
+async function getArgoCdToken() {
+  logger.info(`Authenticating with ${process.env.ARGOCD_USERNAME} username to ArgoCD server ${process.env.ARGOCD_URL} to get a token`);
+  const url = new URL('/api/v1/session', process.env.ARGOCD_URL);
+  const payload = JSON.stringify({username: process.env.ARGOCD_USERNAME, password: process.env.ARGOCD_PASSWORD});
   const config = {httpsAgent: httpsAgent, headers: {'Content-Type': 'application/json'}};
 
   try {
-    const resp = await axios.post(resourceUrl.toString(), payload, config);
+    const resp = await axios.post(url.href.toString(), payload, config);
     const token = resp.data.token
     logger.debug(`Token: ${token}`);
     if (!token) {
@@ -159,9 +183,9 @@ function castYamlToJson(content) {
  * @param payload The JSON payload containing the application definition
  * @returns {Promise<*>}
  */
-async function createArgoCdApp(url, token, payload) {
+async function createArgoCdApp(token, payload) {
   logger.info('Create the ArgoCD application for the new tenant');
-  const resourceUrl = new URL('/api/v1/applications', url);
+  const url = new URL('/api/v1/applications', process.env.ARGOCD_URL);
   const config = {
     httpsAgent: httpsAgent,
     headers: {
@@ -171,7 +195,7 @@ async function createArgoCdApp(url, token, payload) {
   };
 
   try {
-    return Promise.resolve(await axios.post(resourceUrl.toString(), payload, config));
+    return Promise.resolve(await axios.post(url.href.toString(), payload, config));
   } catch (error) {
     const msg = formatAxiosError('Failed to create the ArgoCD application', error);
     logger.error(msg);
@@ -188,9 +212,8 @@ async function createArgoCdApp(url, token, payload) {
  * @param retryInterval time between each attempt
  * @returns {Promise<unknown>}
  */
-async function ensureArgoCdAppIsHealthy(url, token, appName, maxRetries = 60, retryInterval = 10) {
-  const path = `/api/v1/applications/${appName}`;
-  const resourceUrl = new URL(path, url).toString();
+async function ensureArgoCdAppIsHealthy(token, appName, maxRetries = 60, retryInterval = 10) {
+  const url = new URL(`/api/v1/applications/${appName}`, process.env.ARGOCD_URL);
   const config = {
     httpsAgent: httpsAgent,
     headers: {
@@ -215,7 +238,7 @@ async function ensureArgoCdAppIsHealthy(url, token, appName, maxRetries = 60, re
 
   try {
     logger.info('Verify that the the ArgoCD application is healthy');
-    resp = await axios.get(resourceUrl, config);
+    resp = await axios.get(url.href.toString(), config);
     healthStatus = resp['data']['status']['health']['status'];
   } catch (error) {
     msg = formatAxiosError('Failed to get the status of the ArgoCD application', error);
@@ -229,7 +252,7 @@ async function ensureArgoCdAppIsHealthy(url, token, appName, maxRetries = 60, re
       logger.info(`The ArgoCD application is being created and not healthy (HEALTH_STATUS: ${healthStatus}). Next check in ${retryInterval} seconds (${currentRetry}/${maxRetries} retries)`);
       await sleep(retryInterval * 1000);
 
-      resp = await axios.get(resourceUrl, config);
+      resp = await axios.get(url.href.toString(), config);
       healthStatus = resp['data']['status']['health']['status'];
 
       if (healthStatus === HEALTH_STATUS.HEALTHY) {
@@ -256,9 +279,8 @@ async function ensureArgoCdAppIsHealthy(url, token, appName, maxRetries = 60, re
   return Promise.reject(msg);
 }
 
-async function ensureArgoCdAppIsSynced(url, token, appName, maxRetries = 20, retryInterval = 10) {
-  const path = `/api/v1/applications/${appName}`
-  const resourceUrl = new URL(path, url).toString();
+async function ensureArgoCdAppIsSynced(token, appName, maxRetries = 20, retryInterval = 10) {
+  const url = new URL(`/api/v1/applications/${appName}`, process.env.ARGOCD_URL);
   const config = {
     httpsAgent: httpsAgent,
     headers: {
@@ -284,7 +306,7 @@ async function ensureArgoCdAppIsSynced(url, token, appName, maxRetries = 20, ret
 
   try {
     logger.info('Verify that the the ArgoCD application is fully synced');
-    resp = await axios.get(resourceUrl, config);
+    resp = await axios.get(url.href.toString(), config);
     syncStatus = resp['data']['status']['sync']['status'];
   } catch (error) {
     msg = formatAxiosError('Failed to retrieve the ArgoCD application sync status', error)
@@ -298,7 +320,7 @@ async function ensureArgoCdAppIsSynced(url, token, appName, maxRetries = 20, ret
       logger.info(`The ArgoCD application is not fully synced (SYNC_STATUS: ${syncStatus}). Next check in ${retryInterval} seconds (${currentRetry}/${maxRetries} retries)`);
       await sleep(retryInterval * 1000);
 
-      resp = await axios.get(resourceUrl, config);
+      resp = await axios.get(url.href.toString(), config);
       syncStatus = resp['data']['status']['sync']['status'];
 
       if (syncStatus === syncStatus.SYNCED) {
@@ -359,8 +381,8 @@ async function encryptAES(text, key) {
  * @param context object representing the context field
  * @param encrypted encrypt the firestore document
  */
-async function updateFirestoreDoc(firestore, collection, doc, status, context) {
-  logger.info(`Update the \`${doc}\` Firestore document in \`${collection}\` collection with \`${status}\` status and tenant context`);
+async function updateFirestoreDoc(firestore, doc, status, context) {
+  logger.info(`Update the \`${doc}\` Firestore document in \`${process.env.TENANT_CONTEXT_COLLECTION_NAME}\` collection with \`${status}\` status and tenant context`);
   let data = {
     status: status,
     status_date: new Date().toISOString(),
@@ -373,16 +395,16 @@ async function updateFirestoreDoc(firestore, collection, doc, status, context) {
     try {
       data.context = await encryptAES(JSON.stringify(data.context), process.env.TENANT_CONTEXT_ENCRYPT_KEY);
     } catch (error) {
-      const msg = `Failed to encrypt \`${doc}\` Firestore document in \`${collection}\ collection: ${error}`;
+      const msg = `Failed to encrypt \`${doc}\` Firestore document in \`${process.env.TENANT_CONTEXT_COLLECTION_NAME}\ collection: ${error}`;
       logger.error(msg);
       return Promise.reject(msg);
     }
   }
 
   try {
-    await firestore.collection(collection).doc(doc).set(data);
+    await firestore.collection(process.env.TENANT_CONTEXT).doc(doc).set(data);
   } catch (error) {
-    const msg = `Failed to update \`${doc}\` Firestore document in \`${collection}\` collection: ${error}`;
+    const msg = `Failed to update \`${doc}\` Firestore document in \`${process.env.TENANT_CONTEXT_COLLECTION_NAME}\` collection: ${error}`;
     logger.error(msg);
     return Promise.reject(msg);
   }
@@ -399,8 +421,8 @@ async function updateFirestoreDoc(firestore, collection, doc, status, context) {
  * @param status value of the status field
  * @param encrypted encrypt the firestore document
  */
- async function createFirestoreDoc(firestore, collection, docRef, status) {
-  logger.info(`Create the \`${docRef}\` Firestore document in \`${collection}\` collection with \`${status}\` status`);
+ async function createFirestoreDoc(firestore, docRef, status) {
+  logger.info(`Create the \`${docRef}\` Firestore document in \`${process.env.TENANT_CONTEXT_COLLECTION_NAME}\` collection with \`${status}\` status`);
   let data = {
     status: status,
     status_date: new Date().toISOString(),
@@ -410,7 +432,7 @@ async function updateFirestoreDoc(firestore, collection, doc, status, context) {
   logger.debug(`Prepared Firestore document: ${JSON.stringify(data)}`);
 
   try {
-    let document = firestore.collection(collection).doc(docRef);
+    let document = firestore.collection(process.env.TENANT_CONTEXT_COLLECTION_NAME).doc(docRef);
     const snapshot = await document.get();
     if (snapshot.exists){
       let msg = "The document "+ docRef +" already exists !!!";
@@ -419,10 +441,10 @@ async function updateFirestoreDoc(firestore, collection, doc, status, context) {
 
     }else{
       // add the new document.
-      await firestore.collection(collection).doc(docRef).set(data);
+      await firestore.collection(process.env.TENANT_CONTEXT_COLLECTION_NAME).doc(docRef).set(data);
     }
   } catch (error) {
-    const msg = `Failed to create  \`${docRef}\` Firestore document in \`${collection}\` collection: ${error}`;
+    const msg = `Failed to create  \`${docRef}\` Firestore document in \`${process.env.TENANT_CONTEXT_COLLECTION_NAME}\` collection: ${error}`;
     logger.error(msg);
     return Promise.reject(msg);
   }
@@ -431,15 +453,15 @@ async function updateFirestoreDoc(firestore, collection, doc, status, context) {
 }
 
 
-async function updateFirestoreDocStatus(firestore, collection, doc, status) {
+async function updateFirestoreDocStatus(firestore, doc, status) {
   try {
-    logger.info(`Update the \`${doc}\` firestore document in \`${collection}\` collection with \`${status}\` status`);
-    return Promise.resolve(await firestore.collection(collection).doc(doc).set({
+    logger.info(`Update the \`${doc}\` firestore document in \`${process.env.TENANT_CONTEXT_COLLECTION_NAME}\` collection with \`${status}\` status`);
+    return Promise.resolve(await firestore.collection(process.env.TENANT_CONTEXT_COLLECTION_NAME).doc(doc).set({
       status: status,
       status_date: new Date().toISOString()
     }, {merge: true}));
   } catch (error) {
-    const msg = `Failed to update the \`${doc}\` firestore document in \`${collection}\` collection: ${error}`;
+    const msg = `Failed to update the \`${doc}\` firestore document in \`${process.env.TENANT_CONTEXT_COLLECTION_NAME}\` collection: ${error}`;
     logger.error(msg);
     return Promise.reject(msg);
   }
@@ -459,26 +481,28 @@ function loadEnvironmentVariable(name) {
 }
 
 functions.http('createTenant', (req, res) => {
-    const ARGOCD_PASSWORD = loadEnvironmentVariable('ARGOCD_PASSWORD');
-    const ARGOCD_URL = new URL(loadEnvironmentVariable('ARGOCD_URL')).toString();
-    const ARGOCD_USERNAME = loadEnvironmentVariable('ARGOCD_USERNAME');
-    const GCP_FIRESTORE_PROJECT_ID = loadEnvironmentVariable('GCP_FIRESTORE_PROJECT_ID');
-    const GCP_PROJECT_ID = loadEnvironmentVariable('GCP_PROJECT_ID');
-    const GOOGLE_ZONE = loadEnvironmentVariable('GOOGLE_ZONE');
-    const LOG_LEVEL = loadEnvironmentVariable('LOG_LEVEL');
-    const MAILER_API_KEY = loadEnvironmentVariable('MAILER_API_KEY');
-    const MAILER_BASE_URL = loadEnvironmentVariable('MAILER_BASE_URL');
-    const MAILER_DOMAIN = loadEnvironmentVariable('MAILER_DOMAIN');
-    const PIM_IMAGE_REPOSITORY = loadEnvironmentVariable('PIM_IMAGE_REPOSITORY');
-    const PIM_IMAGE_TAG = loadEnvironmentVariable('PIM_IMAGE_TAG');
-    const SOURCE_PATH = loadEnvironmentVariable('SOURCE_PATH');
-    const SOURCE_REPO_URL = loadEnvironmentVariable('SOURCE_REPO_URL');
-    const SOURCE_TARGET_REVISION = loadEnvironmentVariable('SOURCE_TARGET_REVISION');
-    const TENANT_CONTEXT = loadEnvironmentVariable('TENANT_CONTEXT');
+    requiredEnvironmentVariables([
+      'ARGOCD_PASSWORD',
+      'ARGOCD_URL',
+      'ARGOCD_USERNAME',
+      'GCP_FIRESTORE_PROJECT_ID',
+      'GCP_PROJECT_ID',
+      'GOOGLE_ZONE',
+      'LOG_LEVEL',
+      'MAILER_API_KEY',
+      'MAILER_BASE_URL',
+      'MAILER_DOMAIN',
+      'PIM_IMAGE_REPOSITORY',
+      'PIM_IMAGE_TAG',
+      'SOURCE_PATH',
+      'SOURCE_REPO_URL',
+      'SOURCE_TARGET_REVISION',
+      'TENANT_CONTEXT_COLLECTION_NAME',
+    ]);
 
     const body = JSON.parse(req.body);
 
-    initializeLogger(GCP_PROJECT_ID, LOG_LEVEL, body.instanceName);
+    initializeLogger(body.instanceName);
 
     // Ensure the json object in the http request body respects the expected schema
     logger.info('Validation of the JSON schema of the request body');
@@ -501,15 +525,15 @@ functions.http('createTenant', (req, res) => {
     const pfid = `${extraLabelType}-${instanceName}`;
     const pimMasterDomain = `${instanceName}.${dnsCloudDomain}`;
 
-    logger.debug(`Initialize the firestore client with instance in ${GCP_FIRESTORE_PROJECT_ID} project`);
+    logger.debug('Initialize the firestore client');
     const firestore = new Firestore({
-      projectId: GCP_FIRESTORE_PROJECT_ID,
+      projectId: process.env.GCP_FIRESTORE_PROJECT_ID,
       timestampsInSnapshots: true
     });
 
 
     const prepareTenantCreation = async () => {
-        await createFirestoreDoc(firestore, TENANT_CONTEXT, instanceName, FIRESTORE_STATUS.CREATION_IN_PREPARATION);
+        await createFirestoreDoc(firestore, instanceName, FIRESTORE_STATUS.CREATION_IN_PREPARATION);
         logger.info('Generate tenant credentials');
         const mailerPassword = generatePassword();
         logger.debug(`mailerPassword: ${mailerPassword}`);
@@ -527,9 +551,9 @@ functions.http('createTenant', (req, res) => {
         // Deep merge of the request json body and the computed json object
         const parameters = merge(body, {
           source: {
-            repoUrl: SOURCE_REPO_URL,
-            path: SOURCE_PATH,
-            targetRevision: SOURCE_TARGET_REVISION
+            repoUrl: process.env.SOURCE_REPO_URL,
+            path: process.env.SOURCE_PATH,
+            targetRevision: process.env.SOURCE_TARGET_REVISION
           },
           destination: {
             server: 'https://kubernetes.default.svc',
@@ -539,9 +563,9 @@ functions.http('createTenant', (req, res) => {
             enabled: false
           },
           common: {
-            gcpProjectID: GCP_PROJECT_ID,
-            gcpFireStoreProjectID: GCP_FIRESTORE_PROJECT_ID,
-            googleZone: GOOGLE_ZONE,
+            gcpProjectID: process.env.GCP_PROJECT_ID,
+            gcpFireStoreProjectID: process.env.GCP_FIRESTORE_PROJECT_ID,
+            googleZone: process.env.GOOGLE_ZONE,
             pimMasterDomain: pimMasterDomain,
             dnsCloudDomain: dnsCloudDomain,
             workloadIdentityGSA: 'main-service-account',
@@ -602,16 +626,16 @@ functions.http('createTenant', (req, res) => {
           },
           image: {
             pim: {
-              repository: PIM_IMAGE_REPOSITORY,
-              tag: PIM_IMAGE_TAG,
+              repository: process.env.PIM_IMAGE_REPOSITORY,
+              tag: process.env.PIM_IMAGE_TAG,
             }
           },
           mailer: {
-            login: `${instanceName}@${MAILER_DOMAIN}`,
+            login: `${instanceName}@${process.env.MAILER_DOMAIN}`,
             password: mailerPassword,
-            base_mailer_url: MAILER_BASE_URL,
-            domain: MAILER_DOMAIN,
-            api_key: MAILER_API_KEY,
+            base_mailer_url: process.env.MAILER_BASE_URL,
+            domain: process.env.MAILER_DOMAIN,
+            api_key: process.env.MAILER_API_KEY,
           },
           memcached: {
             resources: {
@@ -645,7 +669,7 @@ functions.http('createTenant', (req, res) => {
             common: {
               class: "ssd-retain-csi",
               persistentDisks: [
-                `projects/${GCP_PROJECT_ID}/zones/${GOOGLE_ZONE}/disks/${pfid}-mysql`
+                `projects/${process.env.GCP_PROJECT_ID}/zones/${process.env.GOOGLE_ZONE}/disks/${pfid}-mysql`
               ]
             }
           },
@@ -675,7 +699,7 @@ functions.http('createTenant', (req, res) => {
 
     const createTenant = async () => {
       const parameters = await prepareTenantCreation();
-      await updateFirestoreDoc(firestore, TENANT_CONTEXT, instanceName, FIRESTORE_STATUS.CREATION_IN_PROGRESS, {
+      await updateFirestoreDoc(firestore, instanceName, FIRESTORE_STATUS.CREATION_IN_PROGRESS, {
         AKENEO_PIM_URL: `https://${instanceName}.${parameters.pim.dnsCloudDomain}`,
         APP_DATABASE_HOST: `pim-mysql.${pfid}.svc.cluster.local`,
         APP_DATABASE_PASSWORD: parameters.mysql.mysql.userPassword,
@@ -693,17 +717,16 @@ functions.http('createTenant', (req, res) => {
 
       const manifest = templateArgoCdManifest(parameters);
       const payload = castYamlToJson(manifest);
-      const token = await getArgoCdToken(ARGOCD_URL, ARGOCD_USERNAME, ARGOCD_PASSWORD);
-      const resp = await createArgoCdApp(ARGOCD_URL, token, payload);
-      await ensureArgoCdAppIsHealthy(ARGOCD_URL, token, instanceName);
-      // TODO PH-286: full synced is not possible because http routes objects are not synced. Fix that to uncomment this line
-      await ensureArgoCdAppIsSynced(ARGOCD_URL, token, instanceName);
+      const token = await getArgoCdToken();
+      await createArgoCdApp(token, payload);
+      await ensureArgoCdAppIsHealthy(token, instanceName);
+      await ensureArgoCdAppIsSynced(token, instanceName);
     }
 
     createTenant(res)
       .then(async () => {
         // TODO: only update status field when decryption is released (PH-247)
-        await updateFirestoreDocStatus(firestore, TENANT_CONTEXT, instanceName, FIRESTORE_STATUS.CREATED);
+        await updateFirestoreDocStatus(firestore, instanceName, FIRESTORE_STATUS.CREATED);
 
         logger.info('Tenant is created');
 
@@ -716,7 +739,7 @@ functions.http('createTenant', (req, res) => {
       .catch(async (error) => {
         logger.error(error);
         // TODO: only update status field when decryption is released (PH-247)
-        await updateFirestoreDocStatus(firestore, TENANT_CONTEXT, instanceName, FIRESTORE_STATUS.CREATION_FAILED);
+        await updateFirestoreDocStatus(firestore, instanceName, FIRESTORE_STATUS.CREATION_FAILED);
 
         res.status(500).json({
           status_code: 500,
@@ -724,5 +747,4 @@ functions.http('createTenant', (req, res) => {
         })
       });
   }
-)
-;
+);
