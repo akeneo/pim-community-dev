@@ -9,6 +9,5 @@ services:
   Akeneo\Platform\JobAutomation\Infrastructure\EventSubscriber\SendNotificationWhenJobInstanceCannotBeLaunched:
     arguments:
       - '@pim_notification.notifier'
-      - '@translator'
     tags:
       - { name: kernel.event_subscriber }

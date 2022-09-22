@@ -58,7 +58,7 @@ class DefaultValueOperationValidatorTest extends AbstractValidationTest
     {
         return [
             'invalid type' => [
-                'This value should be equal to "default_value".',
+                'This value should be equal to {{ compared_value }}.',
                 '[type]',
                 [
                     'type' => 'invalid type',
@@ -74,7 +74,7 @@ class DefaultValueOperationValidatorTest extends AbstractValidationTest
                 ],
             ],
             'invalid value type' => [
-                'This value should be of type string.',
+                'This value should be of type {{ type }}.',
                 '[value]',
                 [
                     'type' => 'default_value',

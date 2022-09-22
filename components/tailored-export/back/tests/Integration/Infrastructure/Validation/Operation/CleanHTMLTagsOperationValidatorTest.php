@@ -46,7 +46,7 @@ class CleanHTMLTagsOperationValidatorTest extends AbstractValidationTest
     {
         return [
             'invalid type' => [
-                'This value should be equal to "clean_html_tags".',
+                'This value should be equal to {{ compared_value }}.',
                 '[type]',
                 [
                     'type' => 'invalid type',
@@ -54,7 +54,7 @@ class CleanHTMLTagsOperationValidatorTest extends AbstractValidationTest
                 ],
             ],
             'invalid value' => [
-                'This value should be of type bool.',
+                'This value should be of type {{ type }}.',
                 '[value]',
                 [
                     'type' => 'clean_html_tags',

@@ -102,7 +102,7 @@ class AttributeTargetValidatorTest extends AbstractValidationTest
     {
         return [
             'an property target' => [
-                'This value should be equal to "attribute".',
+                'This value should be equal to {{ compared_value }}.',
                 '[type]',
                 [
                     'code' => 'categories',

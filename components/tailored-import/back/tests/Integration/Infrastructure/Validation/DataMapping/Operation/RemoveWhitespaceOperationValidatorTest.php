@@ -64,7 +64,7 @@ final class RemoveWhitespaceOperationValidatorTest extends AbstractValidationTes
                 ],
             ],
             'a remove whitespace with wrong type' => [
-                'This value should be equal to "remove_whitespace".',
+                'This value should be equal to {{ compared_value }}.',
                 '[type]',
                 [
                     'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',

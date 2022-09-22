@@ -139,7 +139,7 @@ class FormatValidatorTest extends AbstractValidationTest
                 ],
             ],
             'too long text value' => [
-                'This value is too long. It should have 255 characters or less.',
+                'This value is too long. It should have {{ limit }} character or less.|This value is too long. It should have {{ limit }} characters or less.',
                 '[elements][51120b12-a2bc-41bf-aa53-cd73daf330d0][value]',
                 [
                     'type' => 'concat',

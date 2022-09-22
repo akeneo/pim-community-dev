@@ -46,13 +46,13 @@ class JobValidatorTest extends AbstractValidationTest
         );
 
         $this->assertHasValidationError(
-            'This value should be equal to "code".',
+            'This value should be equal to {{ compared_value }}.',
             '[columns][018e1a5e-4d77-4a15-add8-f142111d4cd0][sources][72bdf3c7-5647-427b-be62-e3e560c0eb45][selection][type]',
             $parametersViolations,
         );
 
         $this->assertHasValidationError(
-            'This value should be of type string.',
+            'This value should be of type {{ type }}.',
             '[columns][018e1a5e-4d77-4a15-add8-f142111d4cd0][sources][1f6017dc-d844-499e-ae06-d7adadeb499b][operations][default_value][value]',
             $parametersViolations,
         );

@@ -65,7 +65,7 @@ class QualityScoreSourceValidatorTest extends AbstractValidationTest
     {
         return [
             'an invalid selection type' => [
-                'This value should be equal to "code".',
+                'This value should be equal to {{ compared_value }}.',
                 '[selection][type]',
                 [
                     'uuid' => '51120b12-a2bc-41bf-aa53-cd73daf330d0',

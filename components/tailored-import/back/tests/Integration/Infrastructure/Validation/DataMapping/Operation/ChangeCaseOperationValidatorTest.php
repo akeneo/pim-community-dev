@@ -64,7 +64,7 @@ final class ChangeCaseOperationValidatorTest extends AbstractValidationTest
                 ],
             ],
             'a change case with wrong type' => [
-                'This value should be equal to "change_case".',
+                'This value should be equal to {{ compared_value }}.',
                 '[type]',
                 [
                     'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',

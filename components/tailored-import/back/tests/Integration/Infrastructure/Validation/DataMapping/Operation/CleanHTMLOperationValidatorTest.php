@@ -59,7 +59,7 @@ final class CleanHTMLOperationValidatorTest extends AbstractValidationTest
     {
         return [
             'an invalid clean html' => [
-                'This value should be equal to "clean_html".',
+                'This value should be equal to {{ compared_value }}.',
                 '[type]',
                 [
                     'type' => 'invalid_operation',

@@ -102,7 +102,7 @@ class ColumnsValidator extends ConstraintValidator
 
     private function validateColumn(ValidatorInterface $validator, array $column): void
     {
-        $violations = $validator->validate($column, new Collection([
+        $validator->inContext($this->context)->atPath(sprintf('[%s]', $column['uuid']))->validate($column, new Collection([
             'fields' => [
                 'uuid' => [new Uuid(), new NotBlank()],
                 'index' => [
@@ -119,18 +119,5 @@ class ColumnsValidator extends ConstraintValidator
                 ],
             ],
         ]));
-
-        foreach ($violations as $violation) {
-            $builder = $this->context->buildViolation(
-                $violation->getMessage(),
-                $violation->getParameters(),
-            )
-                ->atPath(sprintf('[%s]%s', $column['uuid'], $violation->getPropertyPath()))
-                ->setInvalidValue($violation->getInvalidValue());
-            if ($violation->getPlural()) {
-                $builder->setPlural((int) $violation->getPlural());
-            }
-            $builder->addViolation();
-        }
     }
 }

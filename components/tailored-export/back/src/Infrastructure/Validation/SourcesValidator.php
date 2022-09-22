@@ -26,7 +26,6 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SourcesValidator extends ConstraintValidator
@@ -48,7 +47,7 @@ class SourcesValidator extends ConstraintValidator
         }
 
         $validator = $this->context->getValidator();
-        $violations = $validator->validate($sources, [
+        $validator->inContext($this->context)->validate($sources, [
             new Type(['type' => 'array']),
             new Count([
                 'max' => self::MAX_SOURCE_COUNT,
@@ -56,15 +55,7 @@ class SourcesValidator extends ConstraintValidator
             ]),
         ]);
 
-        if (0 < $violations->count()) {
-            foreach ($violations as $violation) {
-                $this->context->buildViolation(
-                    $violation->getMessage(),
-                    $violation->getParameters(),
-                )
-                    ->addViolation();
-            }
-
+        if (0 < $this->context->getViolations()->count()) {
             return;
         }
 
@@ -101,8 +92,7 @@ class SourcesValidator extends ConstraintValidator
             return;
         }
 
-        $violations = $validator->validate($source, $constraint);
-        $this->buildViolations($violations, $source);
+        $validator->inContext($this->context)->atPath(sprintf('[%s]', $source['uuid']))->validate($source, $constraint);
     }
 
     private function validateAssociationTypeSource(ValidatorInterface $validator, array $source): void
@@ -123,8 +113,7 @@ class SourcesValidator extends ConstraintValidator
             new QuantifiedAssociationTypeSourceConstraint() :
             new SimpleAssociationTypeSourceConstraint();
 
-        $violations = $validator->validate($source, $constraint);
-        $this->buildViolations($violations, $source);
+        $validator->inContext($this->context)->atPath(sprintf('[%s]', $source['uuid']))->validate($source, $constraint);
     }
 
     private function validateAttributeSource(ValidatorInterface $validator, array $source): void
@@ -150,22 +139,6 @@ class SourcesValidator extends ConstraintValidator
             return;
         }
 
-        $violations = $validator->validate($source, [new IsValidAttribute(), $constraint]);
-        $this->buildViolations($violations, $source);
-    }
-
-    private function buildViolations(ConstraintViolationListInterface $violations, array $source): void
-    {
-        foreach ($violations as $violation) {
-            $builder = $this->context->buildViolation(
-                $violation->getMessage(),
-                $violation->getParameters(),
-            )
-                ->atPath(sprintf('[%s]%s', $source['uuid'], $violation->getPropertyPath()));
-            if ($violation->getPlural()) {
-                $builder->setPlural((int) $violation->getPlural());
-            }
-            $builder->addViolation();
-        }
+        $validator->inContext($this->context)->atPath(sprintf('[%s]', $source['uuid']))->validate($source, [new IsValidAttribute(), $constraint]);
     }
 }

@@ -73,7 +73,7 @@ final class SampleDataQueryValidatorTest extends AbstractValidationTest
     {
         return [
             'invalid request with wrong sheet name type' => [
-                'This value should be of type string.',
+                'This value should be of type {{ type }}.',
                 '[sheet_name]',
                 new Request([
                     'file_key' => 'e/e/d/d/eedd05148a6311b2bffe29eb1adc80c2cf6ad9ca_bigfile.xlsx',

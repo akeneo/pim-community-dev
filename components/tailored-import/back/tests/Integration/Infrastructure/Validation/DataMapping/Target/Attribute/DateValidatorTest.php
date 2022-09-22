@@ -115,7 +115,7 @@ final class DateValidatorTest extends AbstractValidationTest
                 ],
             ],
             'a date data mapping does not handle add action if not empty' => [
-                'This value should be equal to "set".',
+                'This value should be equal to {{ compared_value }}.',
                 '[target][action_if_not_empty]',
                 [
                     'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
@@ -199,7 +199,7 @@ final class DateValidatorTest extends AbstractValidationTest
                 ],
             ],
             'a date data mapping with an invalid sample data' => [
-                'This value should be of type string.',
+                'This value should be of type {{ type }}.',
                 '[sample_data][0]',
                 [
                     'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',

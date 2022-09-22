@@ -147,7 +147,7 @@ test('it displays global validation errors', async () => {
     userEvent.click(screen.getByText('pim_common.confirm'));
   });
 
-  expect(screen.getByText('this is a global error')).toBeInTheDocument();
+  expect(screen.getByText('error.key.a_global_error')).toBeInTheDocument();
   mockedConsole.mockRestore();
 });
 

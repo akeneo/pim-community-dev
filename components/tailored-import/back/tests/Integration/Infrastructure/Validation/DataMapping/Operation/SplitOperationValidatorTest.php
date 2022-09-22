@@ -59,7 +59,7 @@ final class SplitOperationValidatorTest extends AbstractValidationTest
     {
         return [
             'an invalid split' => [
-                'This value should be equal to "split".',
+                'This value should be equal to {{ compared_value }}.',
                 '[type]',
                 [
                     'type' => 'invalid_operation',

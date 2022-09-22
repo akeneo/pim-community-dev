@@ -1,9 +1,14 @@
 import React, {useState} from 'react';
+import styled from 'styled-components';
 import {Block, Button, IconButton, useBooleanState, CloseIcon, Checkbox, uuid} from 'akeneo-design-system';
 import {useTranslate, DeleteModal} from '@akeneo-pim-community/shared';
 import {OperationBlockProps} from './OperationBlockProps';
 import {OperationPreviewData} from '../OperationPreviewData';
 import {Operation} from '../../../../models';
+
+const SpacedCheckbox = styled(Checkbox)`
+  margin: 0 0 20px;
+`;
 
 const REMOVE_WHITESPACE_OPERATION_TYPE = 'remove_whitespace';
 
@@ -97,13 +102,13 @@ const RemoveWhitespaceOperationBlock = ({
         }
       >
         {availableModes.map((name: Mode) => (
-          <Checkbox
+          <SpacedCheckbox
             key={name}
             checked={operation.modes.includes(name)}
             onChange={(value: boolean) => handleModeChange(value, name)}
           >
             {translate(`akeneo.tailored_import.data_mapping.operations.remove_whitespace.${name}`)}
-          </Checkbox>
+          </SpacedCheckbox>
         ))}
       </Block>
       <OperationPreviewData

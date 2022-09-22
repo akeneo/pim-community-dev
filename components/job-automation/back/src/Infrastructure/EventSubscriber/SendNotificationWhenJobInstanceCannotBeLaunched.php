@@ -15,17 +15,15 @@ use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
 use Akeneo\Platform\JobAutomation\Domain\Event\CouldNotLaunchAutomatedJobEvent;
 use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class SendNotificationWhenJobInstanceCannotBeLaunched implements EventSubscriberInterface
 {
     public function __construct(
         private NotifierInterface $pimNotifier,
-        private TranslatorInterface $translator,
     ) {
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             CouldNotLaunchAutomatedJobEvent::class => 'notifyUsersInvalidJobInstance',
@@ -38,7 +36,7 @@ final class SendNotificationWhenJobInstanceCannotBeLaunched implements EventSubs
         $this->pimNotifier->notify($notification, $event->userToNotify->getUsernames());
     }
 
-    private function createNotification(ScheduledJobInstance $jobInstance, array $errorMessage): NotificationInterface
+    private function createNotification(ScheduledJobInstance $jobInstance, array $errorMessages): NotificationInterface
     {
         $notification = new Notification();
 
@@ -48,7 +46,7 @@ final class SendNotificationWhenJobInstanceCannotBeLaunched implements EventSubs
             ->setMessageParams([
                 '{{ type }}' => $jobInstance->type,
                 '{{ label }}' => $jobInstance->code,
-                '{{ error }}' => implode(' ', array_map(fn (String $error) => $this->translator->trans($error), $errorMessage)),
+                '{{ error }}' => implode(' ', $errorMessages),
             ])
             ->setRoute(sprintf('pim_importexport_%s_profile_show', $jobInstance->type))
             ->setRouteParams(['code' => $jobInstance->code])

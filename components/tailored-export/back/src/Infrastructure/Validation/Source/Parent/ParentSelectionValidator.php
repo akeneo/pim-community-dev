@@ -24,14 +24,13 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\ConstraintViolationInterface;
 
 class ParentSelectionValidator extends ConstraintValidator
 {
     public function validate($selection, Constraint $constraint): void
     {
         $validator = $this->context->getValidator();
-        $violations = $validator->validate($selection, new Collection(
+        $validator->inContext($this->context)->validate($selection, new Collection(
             [
                 'fields' => [
                     'type' => new Choice(
@@ -48,17 +47,7 @@ class ParentSelectionValidator extends ConstraintValidator
             ],
         ));
 
-        if (0 < $violations->count()) {
-            /** @var ConstraintViolationInterface $violation */
-            foreach ($violations as $violation) {
-                $this->context->buildViolation(
-                    $violation->getMessage(),
-                    $violation->getParameters(),
-                )
-                    ->atPath($violation->getPropertyPath())
-                    ->addViolation();
-            }
-
+        if (0 < $this->context->getViolations()->count()) {
             return;
         }
 

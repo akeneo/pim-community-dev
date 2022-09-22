@@ -86,7 +86,7 @@ final class BooleanReplacementOperationValidatorTest extends AbstractValidationT
                 ],
             ],
             'a boolean replacement with wrong mapping' => [
-                'This value should be of type array|(Traversable&ArrayAccess).',
+                'This value should be of type {{ type }}.',
                 '[mapping]',
                 [
                     'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',

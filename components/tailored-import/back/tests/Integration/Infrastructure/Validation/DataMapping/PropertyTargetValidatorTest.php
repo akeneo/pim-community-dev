@@ -77,7 +77,7 @@ class PropertyTargetValidatorTest extends AbstractValidationTest
     {
         return [
             'a property target with wrong type' => [
-                'This value should be equal to "property".',
+                'This value should be equal to {{ compared_value }}.',
                 '[type]',
                 [
                     'code' => 'categories',

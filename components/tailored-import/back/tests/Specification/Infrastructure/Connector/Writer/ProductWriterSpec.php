@@ -67,7 +67,7 @@ class ProductWriterSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn(new JobParameters(['error_action' => 'skip_product']));
         $stepExecution->getSummaryInfo('item_position', 0)->willReturn(1);
         $stepExecution->getSummaryInfo('create', 0)->willReturn(1);
-        $stepExecution->getSummaryInfo('process', 0)->willReturn(0);
+        $stepExecution->getSummaryInfo('update', 0)->willReturn(0);
         $stepExecution->getSummaryInfo('skip', 0)->willReturn(0);
         $stepExecution->getSummaryInfo('skipped_no_diff', 0)->willReturn(0);
         $stepExecution->incrementSummaryInfo('skipped_no_diff', 0)->shouldBeCalled();

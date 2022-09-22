@@ -37,7 +37,6 @@ $rules = [
             'Doctrine\DBAL\Connection',
             'Symfony\Component',
             'Psr\Log\LoggerInterface',
-            'Symfony\Contracts\Translation\TranslatorInterface',
 
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
             'Akeneo\Platform\Bundle\ImportExportBundle\Domain',

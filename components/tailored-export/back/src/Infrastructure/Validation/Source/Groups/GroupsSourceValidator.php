@@ -37,15 +37,6 @@ class GroupsSourceValidator extends ConstraintValidator
             'default_value' => new Optional(new DefaultValueOperationConstraint()),
         ]]);
 
-        $violations = $validator->validate($source, new Collection(['fields' => $sourceConstraintFields]));
-
-        foreach ($violations as $violation) {
-            $this->context->buildViolation(
-                $violation->getMessage(),
-                $violation->getParameters(),
-            )
-                ->atPath($violation->getPropertyPath())
-                ->addViolation();
-        }
+        $validator->inContext($this->context)->validate($source, new Collection(['fields' => $sourceConstraintFields]));
     }
 }

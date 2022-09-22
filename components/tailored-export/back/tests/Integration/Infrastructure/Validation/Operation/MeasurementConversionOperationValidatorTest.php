@@ -58,7 +58,7 @@ class MeasurementConversionOperationValidatorTest extends AbstractValidationTest
     {
         return [
             'invalid type' => [
-                'This value should be equal to "measurement_conversion".',
+                'This value should be equal to {{ compared_value }}.',
                 '[type]',
                 [
                     'type' => 'invalid type',

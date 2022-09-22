@@ -139,7 +139,7 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
             </Helper>
             {globalValidationErrors.map((validationError, index) => (
               <Helper key={index} level="error">
-                {translate(validationError.message, validationError.parameters)}
+                {translate(validationError.messageTemplate, validationError.parameters)}
               </Helper>
             ))}
           </HelperContainer>

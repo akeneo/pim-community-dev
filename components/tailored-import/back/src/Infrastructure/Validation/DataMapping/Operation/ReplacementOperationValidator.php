@@ -32,7 +32,7 @@ class ReplacementOperationValidator extends ConstraintValidator
     {
         $validator = $this->context->getValidator();
 
-        $violations = $validator->validate($operation, new Collection([
+        $validator->inContext($this->context)->validate($operation, new Collection([
             'fields' => [
                 'uuid' => [new Uuid(), new NotBlank()],
                 'type' => new Choice([
@@ -57,15 +57,6 @@ class ReplacementOperationValidator extends ConstraintValidator
                 ]),
             ],
         ]));
-
-        foreach ($violations as $violation) {
-            $this->context->buildViolation(
-                $violation->getMessage(),
-                $violation->getParameters(),
-            )
-                ->atPath($violation->getPropertyPath())
-                ->addViolation();
-        }
 
         $this->validateSourceValuesAreUnique($operation['mapping']);
     }

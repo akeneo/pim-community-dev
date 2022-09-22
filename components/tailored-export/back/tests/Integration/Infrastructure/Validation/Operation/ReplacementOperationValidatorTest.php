@@ -61,7 +61,7 @@ class ReplacementOperationValidatorTest extends AbstractValidationTest
     {
         return [
             'invalid type' => [
-                'This value should be equal to "replacement".',
+                'This value should be equal to {{ compared_value }}.',
                 '[type]',
                 [
                     'type' => 'invalid type',

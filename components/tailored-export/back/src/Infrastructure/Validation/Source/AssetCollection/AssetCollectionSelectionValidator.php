@@ -30,7 +30,6 @@ use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\Constraints\Required;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AssetCollectionSelectionValidator extends ConstraintValidator
@@ -49,7 +48,7 @@ class AssetCollectionSelectionValidator extends ConstraintValidator
         }
 
         $validator = $this->context->getValidator();
-        $violations = $validator->validate($selection, [
+        $validator->inContext($this->context)->validate($selection, [
             new Collection(
                 [
                     'fields' => [
@@ -77,18 +76,15 @@ class AssetCollectionSelectionValidator extends ConstraintValidator
             ),
         ]);
 
-        if (0 < $violations->count()) {
-            $this->buildViolations($violations);
-
+        if (0 < $this->context->getViolations()->count()) {
             return;
         }
 
         if ('label' === $selection['type']) {
-            $violations = $validator->validate($selection['locale'] ?? null, [
+            $validator->inContext($this->context)->atPath('[locale]')->validate($selection['locale'] ?? null, [
                 new NotBlank(),
                 new LocaleShouldBeActive(),
             ]);
-            $this->buildViolations($violations, '[locale]');
         } elseif ('media_file' === $selection['type'] || 'media_link' === $selection['type']) {
             $attribute = $this->getAttributes->forCode($constraint->attributeCode);
             if (!$attribute instanceof Attribute) {
@@ -113,18 +109,6 @@ class AssetCollectionSelectionValidator extends ConstraintValidator
         }
     }
 
-    private function buildViolations(ConstraintViolationListInterface $violations, ?string $path = null): void
-    {
-        foreach ($violations as $violation) {
-            $this->context->buildViolation(
-                $violation->getMessage(),
-                $violation->getParameters(),
-            )
-                ->atPath($path ?? $violation->getPropertyPath())
-                ->addViolation();
-        }
-    }
-
     private function validateMediaFileSelection(
         array $selection,
         string $assetFamilyCode,
@@ -142,7 +126,7 @@ class AssetCollectionSelectionValidator extends ConstraintValidator
             return;
         }
 
-        $propertyViolations = $validator->validate($selection, new Collection([
+        $validator->inContext($this->context)->validate($selection, new Collection([
             'fields' => [
                 'property' => new Required([
                     new Choice(
@@ -158,8 +142,6 @@ class AssetCollectionSelectionValidator extends ConstraintValidator
             ],
             'allowExtraFields' => true,
         ]));
-
-        $this->buildViolations($propertyViolations);
     }
 
     private function validateMediaLinkSelection(
@@ -179,13 +161,11 @@ class AssetCollectionSelectionValidator extends ConstraintValidator
             return;
         }
 
-        $withSuffixAndPrefixViolations = $validator->validate($selection, new Collection([
+        $validator->inContext($this->context)->validate($selection, new Collection([
             'fields' => [
                 'with_prefix_and_suffix' => new Required(),
             ],
             'allowExtraFields' => true,
         ]));
-
-        $this->buildViolations($withSuffixAndPrefixViolations);
     }
 }

@@ -32,7 +32,7 @@ class CodeLabelCollectionSelectionValidator extends ConstraintValidator
     public function validate($selection, Constraint $constraint): void
     {
         $validator = $this->context->getValidator();
-        $violations = $validator->validate($selection, [
+        $validator->inContext($this->context)->validate($selection, [
             new Collection(
                 [
                     'fields' => [
@@ -55,33 +55,15 @@ class CodeLabelCollectionSelectionValidator extends ConstraintValidator
             ),
         ]);
 
-        if (0 < $violations->count()) {
-            foreach ($violations as $violation) {
-                $this->context->buildViolation(
-                    $violation->getMessage(),
-                    $violation->getParameters(),
-                )
-                    ->atPath($violation->getPropertyPath())
-                    ->addViolation();
-            }
-
+        if (0 < $this->context->getViolations()->count()) {
             return;
         }
 
         if ('label' === $selection['type']) {
-            $violations = $validator->validate($selection['locale'] ?? null, [
+            $validator->inContext($this->context)->atPath('[locale]')->validate($selection['locale'] ?? null, [
                 new NotBlank(),
                 new LocaleShouldBeActive(),
             ]);
-
-            foreach ($violations as $violation) {
-                $this->context->buildViolation(
-                    $violation->getMessage(),
-                    $violation->getParameters(),
-                )
-                    ->atPath('[locale]')
-                    ->addViolation();
-            }
         }
     }
 }

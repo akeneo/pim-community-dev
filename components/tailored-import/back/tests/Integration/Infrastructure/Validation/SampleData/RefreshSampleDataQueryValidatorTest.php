@@ -83,7 +83,7 @@ final class RefreshSampleDataQueryValidatorTest extends AbstractValidationTest
     {
         return [
             'invalid request with too many samples' => [
-                'This collection should contain 3 elements or less.',
+                'This collection should contain {{ limit }} element or less.|This collection should contain {{ limit }} elements or less.',
                 '[current_sample]',
                 new Request([
                     'file_key' => 'e/e/d/d/eedd05148a6311b2bffe29eb1adc80c2cf6ad9ca_bigfile.xlsx',

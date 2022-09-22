@@ -253,7 +253,7 @@ class AssetCollectionSelectionValidatorTest extends AbstractValidationTest
                 'my_media_link_asset_collection',
             ],
             'media link with invalid with_prefix_and_suffix' => [
-                'This value should be of type bool.',
+                'This value should be of type {{ type }}.',
                 '[with_prefix_and_suffix]',
                 [
                     'type' => 'media_link',

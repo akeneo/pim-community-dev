@@ -218,7 +218,7 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
     {
         return $stepExecution->getSummaryInfo('item_position', 0)
             - $stepExecution->getSummaryInfo('create', 0)
-            - $stepExecution->getSummaryInfo('process', 0)
+            - $stepExecution->getSummaryInfo('update', 0)
             - $stepExecution->getSummaryInfo('skip', 0)
             - $stepExecution->getSummaryInfo('skipped_no_diff', 0);
     }

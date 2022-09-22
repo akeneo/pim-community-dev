@@ -75,7 +75,7 @@ class MeasurementRoundingOperationValidatorTest extends AbstractValidationTest
     {
         return [
             'invalid type' => [
-                'This value should be equal to "measurement_rounding".',
+                'This value should be equal to {{ compared_value }}.',
                 '[type]',
                 [
                     'type' => 'invalid type',
@@ -111,7 +111,7 @@ class MeasurementRoundingOperationValidatorTest extends AbstractValidationTest
                 ],
             ],
             'invalid precision should be integers' => [
-                'This value should be of type int.',
+                'This value should be of type {{ type }}.',
                 '[precision]',
                 [
                     'type' => 'measurement_rounding',

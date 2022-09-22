@@ -27,7 +27,7 @@ abstract class AbstractValidationTest extends IntegrationTestCase
         $this->assertNotCount(0, $violationList, 'No violation found');
         $foundViolations = [];
         foreach ($violationList as $violation) {
-            $foundViolations[$violation->getPropertyPath()][] = $violation->getMessage();
+            $foundViolations[$violation->getPropertyPath()][] = $violation->getMessageTemplate();
         }
 
         $this->assertArrayHasKey(

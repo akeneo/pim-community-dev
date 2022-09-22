@@ -67,7 +67,7 @@ class SampleDataValidatorTest extends AbstractValidationTest
     {
         return [
             'too much sample data' => [
-                'This collection should contain 3 elements or less.',
+                'This collection should contain {{ limit }} element or less.|This collection should contain {{ limit }} elements or less.',
                 '',
                 [
                     'value1',
@@ -77,7 +77,7 @@ class SampleDataValidatorTest extends AbstractValidationTest
                 ],
             ],
             'too long sample data' => [
-                'This value is too long. It should have 101 characters or less.',
+                'This value is too long. It should have {{ limit }} character or less.|This value is too long. It should have {{ limit }} characters or less.',
                 '[0]',
                 [
                     str_repeat('a', 102),
@@ -86,7 +86,7 @@ class SampleDataValidatorTest extends AbstractValidationTest
                 ]
             ],
             'an integer sample data' => [
-                'This value should be of type string.',
+                'This value should be of type {{ type }}.',
                 '[1]',
                 [
                     'value1',

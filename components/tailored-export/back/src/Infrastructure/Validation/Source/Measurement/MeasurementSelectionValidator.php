@@ -38,7 +38,7 @@ class MeasurementSelectionValidator extends ConstraintValidator
     public function validate($selection, Constraint $constraint): void
     {
         $validator = $this->context->getValidator();
-        $violations = $validator->validate($selection, new Collection(
+        $validator->inContext($this->context)->validate($selection, new Collection(
             [
                 'fields' => [
                     'type' => new Choice(
@@ -63,16 +63,7 @@ class MeasurementSelectionValidator extends ConstraintValidator
             ],
         ));
 
-        if (0 < $violations->count()) {
-            foreach ($violations as $violation) {
-                $this->context->buildViolation(
-                    $violation->getMessage(),
-                    $violation->getParameters(),
-                )
-                    ->atPath($violation->getPropertyPath())
-                    ->addViolation();
-            }
-
+        if (0 < $this->context->getViolations()->count()) {
             return;
         }
 
@@ -80,19 +71,10 @@ class MeasurementSelectionValidator extends ConstraintValidator
             MeasurementUnitLabelSelection::TYPE === $selection['type']
             || MeasurementValueAndUnitLabelSelection::TYPE === $selection['type']
         ) {
-            $violations = $validator->validate($selection['locale'], [
+            $validator->inContext($this->context)->validate($selection['locale'], [
                 new NotBlank(),
                 new LocaleShouldBeActive(),
             ]);
-
-            foreach ($violations as $violation) {
-                $this->context->buildViolation(
-                    $violation->getMessage(),
-                    $violation->getParameters(),
-                )
-                    ->atPath('[locale]')
-                    ->addViolation();
-            }
         }
     }
 }
