@@ -26,7 +26,6 @@ use Psr\Log\Test\TestLogger;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactoryInterface;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -67,13 +66,11 @@ final class CreateProductFileHandlerTest extends TestCase
         $storeProductFileSpy = $this->createMock(StoreProductsFile::class);
         $eventDispatcherStub = new StubEventDispatcher();
 
-        $uploadedProductFile = $this->createMock(UploadedFile::class);
         $createProductFile = new CreateProductFile(
-            $uploadedProductFile,
+            'products.xlsx',
+            '/tmp/products.xlsx',
             'contributor@example.com',
         );
-        $uploadedProductFile->expects($this->once())->method('getPathname')->willReturn('/tmp/products.xlsx');
-        $uploadedProductFile->expects($this->exactly(4))->method('getClientOriginalName')->willReturn('products.xlsx');
 
         $storeProductFileSpy
             ->expects($this->once())
@@ -143,8 +140,6 @@ final class CreateProductFileHandlerTest extends TestCase
             ->method('validate')
             ->willReturn($violationsSpy);
 
-        $uploadedProductFile = $this->createMock(UploadedFile::class);
-
         $supplierRepository = new SupplierInMemoryRepository();
         $getSupplierFromContributorEmail = new InMemoryGetSupplierFromContributorEmail($supplierRepository);
         $productFileRepository = new ProductFileInMemoryRepository();
@@ -163,7 +158,8 @@ final class CreateProductFileHandlerTest extends TestCase
         static::expectException(InvalidProductFile::class);
         ($sut)(
             new CreateProductFile(
-                $uploadedProductFile,
+                'products.xlsx',
+                '/tmp/products.xlsx',
                 'contributor@example.com',
             )
         );
@@ -180,8 +176,6 @@ final class CreateProductFileHandlerTest extends TestCase
             ->expects($this->once())
             ->method('validate')
             ->willReturn($violationsSpy);
-
-        $uploadedProductFile = $this->createMock(UploadedFile::class);
 
         $supplierRepository = new SupplierInMemoryRepository();
         $getSupplierFromContributorEmail = new InMemoryGetSupplierFromContributorEmail($supplierRepository);
@@ -201,7 +195,8 @@ final class CreateProductFileHandlerTest extends TestCase
         static::expectException(ContributorDoesNotExist::class);
         ($sut)(
             new CreateProductFile(
-                $uploadedProductFile,
+                'products.xlsx',
+                '/tmp/products.xlsx',
                 'contributor@example.com',
             )
         );

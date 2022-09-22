@@ -20,7 +20,11 @@ final class UploadProductFile
     {
         try {
             ($this->createProductFileHandler)(
-                new CreateProductFile($uploadProductFileCommand->uploadedFile, $uploadProductFileCommand->contributorEmail),
+                new CreateProductFile(
+                    $uploadProductFileCommand->uploadedFile->getClientOriginalName(),
+                    $uploadProductFileCommand->uploadedFile->getPathname(),
+                    $uploadProductFileCommand->contributorEmail,
+                ),
             );
         } catch (InvalidProductFile | ContributorDoesNotExist | \RuntimeException $e) {
             throw new InvalidUploadedProductFile(message: $e->getMessage(), previous: $e);

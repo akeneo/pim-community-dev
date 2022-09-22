@@ -1,6 +1,10 @@
 Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CreateProductFile:
   properties:
-    uploadedFile:
+    originalFileName:
+      - Length:
+          max: 255
+          maxMessage: supplier_portal.supplier.product_file_dropping.validation.max_uploaded_filename_length
+    temporaryFilePath:
       - File:
           maxSize: 50M
           maxSizeMessage: supplier_portal.supplier.product_file_dropping.validation.max_uploaded_file_size
