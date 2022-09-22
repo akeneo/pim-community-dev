@@ -16,4 +16,6 @@ namespace Akeneo\Platform\JobAutomation\Domain;
 interface ClockInterface
 {
     public function now(): \DateTimeImmutable;
+
+    public function sleep(int $milliseconds): void;
 }

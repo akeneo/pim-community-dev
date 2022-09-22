@@ -38,6 +38,6 @@ class CouldNotLaunchAutomatedJobEvent
         ScheduledJobInstance $scheduledJobInstance,
         UserToNotifyCollection $userToNotify,
     ): self {
-        return new self($scheduledJobInstance, ['Internal error'], $userToNotify);
+        return new self($scheduledJobInstance, ['Internal system failure'], $userToNotify);
     }
 }

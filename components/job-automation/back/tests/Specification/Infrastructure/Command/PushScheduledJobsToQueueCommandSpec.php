@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Platform\JobAutomation\Infrastructure\Command;
 
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Platform\JobAutomation\Application\UpdateScheduledJobInstanceLastExecution\UpdateScheduledJobInstanceLastExecutionHandler;
+use Akeneo\Platform\JobAutomation\Domain\ClockInterface;
 use Akeneo\Platform\JobAutomation\Domain\Event\CouldNotLaunchAutomatedJobEvent;
 use Akeneo\Platform\JobAutomation\Domain\FilterDueJobInstances;
 use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
@@ -32,7 +33,8 @@ class PushScheduledJobsToQueueCommandSpec extends ObjectBehavior
         PublishJobToQueue $publishJobToQueue,
         EventDispatcherInterface $eventDispatcher,
         FindUsersToNotifyQueryInterface $findUsersToNotifyQuery,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        ClockInterface $clock,
     ): void {
         $eventDispatcher->addSubscriber(Argument::any())->shouldBeCalled();
 
@@ -43,7 +45,8 @@ class PushScheduledJobsToQueueCommandSpec extends ObjectBehavior
             $publishJobToQueue,
             $eventDispatcher,
             $findUsersToNotifyQuery,
-            $logger
+            $logger,
+            $clock,
         );
     }
 
@@ -127,7 +130,7 @@ class PushScheduledJobsToQueueCommandSpec extends ObjectBehavior
         $this->run($input, $output)->shouldReturn(0);
     }
 
-    public function it_handles_exceptions_on_publish_and_notify(
+    public function it_handles_invalid_job_exceptions_on_publish_and_notify(
         InputInterface $input,
         OutputInterface $output,
         FeatureFlag $jobAutomationFeatureFlag,
@@ -192,6 +195,81 @@ class PushScheduledJobsToQueueCommandSpec extends ObjectBehavior
                 [],
             )
             ->shouldBeCalled();
+
+        $this->run($input, $output)->shouldReturn(0);
+    }
+
+    public function it_handles_infrastructure_exceptions_on_publish_and_retry(
+        InputInterface $input,
+        OutputInterface $output,
+        FeatureFlag $jobAutomationFeatureFlag,
+        FindScheduledJobInstancesQueryInterface $findScheduledJobInstancesQuery,
+        FilterDueJobInstances $filterDueJobInstances,
+        FindUsersToNotifyQueryInterface $findUsersToNotifyQuery,
+        PublishJobToQueue $publishJobToQueue,
+        EventDispatcherInterface $eventDispatcher,
+        ClockInterface $clock,
+        LoggerInterface $logger,
+    ): void {
+        $jobAutomationFeatureFlag->isEnabled()->shouldBeCalled()->willReturn(true);
+
+        $scheduledJobInstance1 = $this->createScheduledJobInstance('job1', [1], [2, 3]);
+        $findScheduledJobInstancesQuery->all()->shouldBeCalled()->willReturn([$scheduledJobInstance1]);
+        $filterDueJobInstances
+            ->fromScheduledJobInstances([$scheduledJobInstance1])
+            ->shouldBeCalled()
+            ->willReturn([$scheduledJobInstance1]);
+
+        $usersToNotify = new UserToNotifyCollection([
+            new UserToNotify('admin', 'admin@akeneo.com'),
+            new UserToNotify('julia', 'julia@akeneo.com'),
+        ]);
+        $findUsersToNotifyQuery->byUserIdsAndUserGroupsIds([1], [2, 3])->willReturn($usersToNotify);
+
+        $publishJobToQueue
+            ->publish(
+                $scheduledJobInstance1->code,
+                [
+                    'is_user_authenticated' => true,
+                    'users_to_notify' => [
+                        'admin',
+                        'julia'
+                    ],
+                ],
+                false,
+                'job_automated_job1',
+                [
+                    'admin@akeneo.com',
+                    'julia@akeneo.com',
+                ],
+            )
+            ->willThrow(new \Exception('PubSub unavailable'));
+
+        $clock->sleep(1000)->shouldBeCalledTimes(1);
+        $eventDispatcher->dispatch(CouldNotLaunchAutomatedJobEvent::dueToInternalError($scheduledJobInstance1, $usersToNotify))->shouldNotBeCalled();
+        $logger->error('Cannot launch scheduled job due to an infrastructure error', ['error_message' => 'PubSub unavailable'])->shouldNotBeCalled();
+
+        $publishJobToQueue
+            ->publish(
+                $scheduledJobInstance1->code,
+                [
+                    'is_user_authenticated' => true,
+                    'users_to_notify' => [
+                        'admin',
+                        'julia'
+                    ],
+                ],
+                false,
+                'job_automated_job1',
+                [
+                    'admin@akeneo.com',
+                    'julia@akeneo.com',
+                ],
+            )
+            ->willThrow(new \Exception('PubSub unavailable'));
+
+        $eventDispatcher->dispatch(CouldNotLaunchAutomatedJobEvent::dueToInternalError($scheduledJobInstance1, $usersToNotify))->shouldBeCalled();
+        $logger->error('Cannot launch scheduled job due to an infrastructure error', ['error_message' => 'PubSub unavailable'])->shouldBeCalled();
 
         $this->run($input, $output)->shouldReturn(0);
     }

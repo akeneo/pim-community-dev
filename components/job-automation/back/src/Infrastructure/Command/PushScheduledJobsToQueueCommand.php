@@ -15,8 +15,10 @@ namespace Akeneo\Platform\JobAutomation\Infrastructure\Command;
 
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Platform\JobAutomation\Application\UpdateScheduledJobInstanceLastExecution\UpdateScheduledJobInstanceLastExecutionHandler;
+use Akeneo\Platform\JobAutomation\Domain\ClockInterface;
 use Akeneo\Platform\JobAutomation\Domain\Event\CouldNotLaunchAutomatedJobEvent;
 use Akeneo\Platform\JobAutomation\Domain\FilterDueJobInstances;
+use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
 use Akeneo\Platform\JobAutomation\Domain\Query\FindScheduledJobInstancesQueryInterface;
 use Akeneo\Platform\JobAutomation\Domain\Query\FindUsersToNotifyQueryInterface;
 use Akeneo\Platform\JobAutomation\Infrastructure\EventSubscriber\RefreshScheduledJobInstanceAfterJobPublished;
@@ -33,6 +35,9 @@ final class PushScheduledJobsToQueueCommand extends Command
 {
     public static $defaultName = 'pim:job-automation:push-scheduled-jobs-to-queue';
 
+    private const MAX_RETRY = 1;
+    private const RETRY_DELAY_IN_MILLISECOND = 1000;
+
     public function __construct(
         private FeatureFlag $jobAutomationFeatureFlag,
         private FindScheduledJobInstancesQueryInterface $findScheduledJobInstancesQuery,
@@ -42,6 +47,7 @@ final class PushScheduledJobsToQueueCommand extends Command
         private EventDispatcherInterface $eventDispatcher,
         private FindUsersToNotifyQueryInterface $findUsersToNotifyQuery,
         private LoggerInterface $logger,
+        private ClockInterface $clock,
     ) {
         parent::__construct();
     }
@@ -58,19 +64,31 @@ final class PushScheduledJobsToQueueCommand extends Command
         $dueJobInstances = $this->filterDueJobInstances->fromScheduledJobInstances($scheduledJobInstances);
 
         foreach ($dueJobInstances as $dueJobInstance) {
-            $usersToNotify = $this->findUsersToNotifyQuery->byUserIdsAndUserGroupsIds(
-                $dueJobInstance->notifiedUsers,
-                $dueJobInstance->notifiedUserGroups,
-            );
+            $this->pushJobToQueue($dueJobInstance);
+        }
 
+        return 0;
+    }
+
+    private function pushJobToQueue(ScheduledJobInstance $scheduledJobInstance): void
+    {
+        $usersToNotify = $this->findUsersToNotifyQuery->byUserIdsAndUserGroupsIds(
+            $scheduledJobInstance->notifiedUsers,
+            $scheduledJobInstance->notifiedUserGroups,
+        );
+
+        $shouldRetry = false;
+        $retryCount = 0;
+
+        do {
             try {
                 $this->publishJobToQueue->publish(
-                    jobInstanceCode: $dueJobInstance->code,
+                    jobInstanceCode: $scheduledJobInstance->code,
                     config: [
                         'is_user_authenticated' => true,
                         'users_to_notify' => $usersToNotify->getUsernames(),
                     ],
-                    username: $dueJobInstance->runningUsername,
+                    username: $scheduledJobInstance->runningUsername,
                     emails: $usersToNotify->getUniqueEmails(),
                 );
             } catch (InvalidJobException $exception) {
@@ -79,22 +97,28 @@ final class PushScheduledJobsToQueueCommand extends Command
                     iterator_to_array($exception->getViolations()),
                 );
 
-                // TODO move $usersToNotify to $dueJobInstance
+                // TODO move $usersToNotify to $scheduledJobInstance
                 $this->eventDispatcher->dispatch(
-                    CouldNotLaunchAutomatedJobEvent::dueToInvalidJobInstance($dueJobInstance, $errorMessages, $usersToNotify),
+                    CouldNotLaunchAutomatedJobEvent::dueToInvalidJobInstance($scheduledJobInstance, $errorMessages, $usersToNotify),
                 );
             } catch (\Exception $exception) {
-                // TODO move $usersToNotify to $dueJobInstance
+                $shouldRetry = self::MAX_RETRY > $retryCount;
+                if ($shouldRetry) {
+                    $exponentialBackoff = self::RETRY_DELAY_IN_MILLISECOND * ($retryCount + 1);
+                    $this->clock->sleep($exponentialBackoff);
+                    ++$retryCount;
+                    continue;
+                }
+
+                // TODO move $usersToNotify to $scheduledJobInstance
                 $this->eventDispatcher->dispatch(
-                    CouldNotLaunchAutomatedJobEvent::dueToInternalError($dueJobInstance, $usersToNotify),
+                    CouldNotLaunchAutomatedJobEvent::dueToInternalError($scheduledJobInstance, $usersToNotify),
                 );
 
-                $this->logger->error('Cannot launch automated job', [
+                $this->logger->error('Cannot launch scheduled job due to an infrastructure error', [
                     'error_message' => $exception->getMessage(),
                 ]);
             }
-        }
-
-        return 0;
+        } while ($shouldRetry);
     }
 }

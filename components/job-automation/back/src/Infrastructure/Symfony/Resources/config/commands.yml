@@ -10,5 +10,6 @@ services:
       - '@event_dispatcher'
       - '@akeneo.job_automation.query.find_users_to_notify'
       - '@logger'
+      - '@Akeneo\Platform\JobAutomation\Domain\ClockInterface'
     tags:
       - { name: console.command }

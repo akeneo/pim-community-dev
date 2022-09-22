@@ -21,4 +21,9 @@ final class SystemClock implements ClockInterface
     {
         return new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
     }
+
+    public function sleep(int $milliseconds): void
+    {
+        \usleep($milliseconds);
+    }
 }
