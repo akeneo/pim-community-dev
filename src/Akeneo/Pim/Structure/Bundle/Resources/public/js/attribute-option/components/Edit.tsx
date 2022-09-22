@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {AttributeOption, Locale} from '../model';
@@ -19,16 +19,27 @@ const Edit = ({option, saveAttributeOption}: EditProps) => {
     setUpdatedOption(option);
   }, [option]);
 
-  const onUpdateOptionLabel = (newLabel: string, localeCode: string) => {
-    let updatedOption: AttributeOption = {...option};
-    updatedOption.optionValues[localeCode].value = newLabel;
-    setUpdatedOption(updatedOption);
-  };
+  const onUpdateOptionLabel = useCallback(
+    (newLabel: string, localeCode: string) => {
+      setUpdatedOption(updatedOption => {
+        const newOption: AttributeOption = {
+          ...updatedOption,
+        };
+        newOption.optionValues[localeCode].value = newLabel;
 
-  const onSubmit = (event: any) => {
-    event.preventDefault();
-    saveAttributeOption(updatedOption);
-  };
+        return newOption;
+      });
+    },
+    [setUpdatedOption]
+  );
+
+  const onSubmit = useCallback(
+    (event: any) => {
+      event.preventDefault();
+      saveAttributeOption(updatedOption);
+    },
+    [saveAttributeOption, updatedOption]
+  );
 
   return (
     <EditingOptionContextProvider option={option}>
