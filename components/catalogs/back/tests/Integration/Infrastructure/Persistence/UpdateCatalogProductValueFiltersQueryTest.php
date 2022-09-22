@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence;
 
-use Akeneo\Catalogs\Application\Persistence\UpdateCatalogProductValueFiltersQueryInterface;
-use Akeneo\Catalogs\Infrastructure\Persistence\UpdateCatalogProductValueFiltersQuery;
+use Akeneo\Catalogs\Application\Persistence\Catalog\UpdateCatalogProductValueFiltersQueryInterface;
+use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\UpdateCatalogProductValueFiltersQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
@@ -15,7 +15,7 @@ use Ramsey\Uuid\Uuid;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @covers \Akeneo\Catalogs\Infrastructure\Persistence\UpdateCatalogProductValueFiltersQuery
+ * @covers \Akeneo\Catalogs\Infrastructure\Persistence\Catalog\UpdateCatalogProductValueFiltersQuery
  */
 class UpdateCatalogProductValueFiltersQueryTest extends IntegrationTestCase
 {

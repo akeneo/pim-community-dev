@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Acceptance;
 
-use Akeneo\Catalogs\Application\Persistence\UpdateCatalogProductSelectionCriteriaQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\UpsertCatalogQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Catalog\UpdateCatalogProductSelectionCriteriaQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Catalog\UpsertCatalogQueryInterface;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;

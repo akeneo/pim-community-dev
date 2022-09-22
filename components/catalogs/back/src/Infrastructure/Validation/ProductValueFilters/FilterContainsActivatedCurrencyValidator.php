@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Validation\ProductValueFilters;
 
-use Akeneo\Catalogs\Application\Persistence\IsCurrencyActivatedQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Currency\IsCurrencyActivatedQueryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;

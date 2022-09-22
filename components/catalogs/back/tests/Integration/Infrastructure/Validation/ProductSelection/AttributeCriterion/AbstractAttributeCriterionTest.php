@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Validation\ProductSelection\AttributeCriterion;
 
-use Akeneo\Catalogs\Application\Persistence\FindOneAttributeByCodeQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\GetAttributeOptionsByCodeQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\GetChannelLocalesQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\GetChannelQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\GetLocalesQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\GetMeasurementsFamilyQueryInterface;
-use Akeneo\Catalogs\Infrastructure\Persistence\FindOneAttributeByCodeQuery;
-use Akeneo\Catalogs\Infrastructure\Persistence\GetAttributeOptionsByCodeQuery;
-use Akeneo\Catalogs\Infrastructure\Persistence\GetChannelLocalesQuery;
-use Akeneo\Catalogs\Infrastructure\Persistence\GetChannelQuery;
-use Akeneo\Catalogs\Infrastructure\Persistence\GetLocalesQuery;
-use Akeneo\Catalogs\Infrastructure\Persistence\GetMeasurementsFamilyQuery;
+use Akeneo\Catalogs\Application\Persistence\Attribute\FindOneAttributeByCodeQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Attribute\GetAttributeOptionsByCodeQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Channel\GetChannelQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Locale\GetChannelLocalesQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Locale\GetLocalesQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Measurement\GetMeasurementsFamilyQueryInterface;
+use Akeneo\Catalogs\Infrastructure\Persistence\Attribute\FindOneAttributeByCodeQuery;
+use Akeneo\Catalogs\Infrastructure\Persistence\Attribute\GetAttributeOptionsByCodeQuery;
+use Akeneo\Catalogs\Infrastructure\Persistence\Channel\GetChannelQuery;
+use Akeneo\Catalogs\Infrastructure\Persistence\Locale\GetChannelLocalesQuery;
+use Akeneo\Catalogs\Infrastructure\Persistence\Locale\GetLocalesQuery;
+use Akeneo\Catalogs\Infrastructure\Persistence\Measurement\GetMeasurementsFamilyQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 
 /**

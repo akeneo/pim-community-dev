@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration;
 
-use Akeneo\Catalogs\Application\Persistence\GetLocalesQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Locale\GetLocalesQueryInterface;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\Test\Integration\Fakes\Clock;
