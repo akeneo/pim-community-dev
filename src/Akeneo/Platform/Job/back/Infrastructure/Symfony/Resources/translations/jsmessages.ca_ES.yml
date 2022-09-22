@@ -57,6 +57,7 @@ akeneo_job_process_tracker:
     all: Tot
     yes: Yes
     no: No
+    label: Automatització
   max_page_without_filter_helper: Per mostrar-vos els resultats més rellevants, milloreu la cerca.
   tracking:
     completed: "Temps emprat: {{ duration }}"
