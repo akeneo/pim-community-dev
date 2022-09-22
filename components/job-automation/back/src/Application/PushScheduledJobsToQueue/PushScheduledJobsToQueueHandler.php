@@ -2,19 +2,25 @@
 
 declare(strict_types=1);
 
-/**
- * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
- * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2022 Akeneo SAS (https://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Akeneo\Platform\JobAutomation\Application\PushScheduledJobsToQueue;
 
+use Akeneo\Platform\JobAutomation\Domain\ClockInterface;
 use Akeneo\Platform\JobAutomation\Domain\CronExpressionFactory;
 use Akeneo\Platform\JobAutomation\Domain\Event\CouldNotLaunchAutomatedJobEvent;
 use Akeneo\Platform\JobAutomation\Domain\IsJobDue;
 use Akeneo\Platform\JobAutomation\Domain\Model\DueJobInstance;
 use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
 use Akeneo\Platform\JobAutomation\Domain\Model\UserToNotifyCollection;
+use Akeneo\Platform\JobAutomation\Domain\Publisher\RetryPublisherInterface;
 use Akeneo\Platform\JobAutomation\Domain\Query\FindUsersToNotifyQueryInterface;
 use Akeneo\Tool\Component\BatchQueue\Exception\InvalidJobException;
 use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueueInterface;
@@ -29,7 +35,7 @@ final class PushScheduledJobsToQueueHandler implements PushScheduledJObsToQueueH
         private FindUsersToNotifyQueryInterface $findUsersToNotifyQuery,
         private PublishJobToQueueInterface      $publishJobToQueue,
         private EventDispatcherInterface        $eventDispatcher,
-        private LoggerInterface                 $logger,
+        private RetryPublisherInterface $retryPublisher,
     ) {
     }
 
@@ -42,35 +48,31 @@ final class PushScheduledJobsToQueueHandler implements PushScheduledJObsToQueueH
         }
 
         foreach ($dueJobInstances as $dueJobInstance) {
+            $this->retryPublisher->publish([$this, "pushJob"], $dueJobInstance);
+        }
+    }
 
-            try {
-                $this->publishJobToQueue->publish(
-                    jobInstanceCode: $dueJobInstance->getScheduledJobInstance()->code,
-                    config: [
-                        'is_user_authenticated' => true,
-                        'users_to_notify' => $dueJobInstance->getUsersToNotify()->getUsernames(),
-                    ],
-                    username: $dueJobInstance->getScheduledJobInstance()->runningUsername,
-                    emails: $dueJobInstance->getUsersToNotify()->getUniqueEmails(),
-                );
-            } catch (InvalidJobException $exception) {
-                $errorMessages = array_map(
-                    static fn (ConstraintViolationInterface $constraintViolation) => $constraintViolation->getMessage(),
-                    iterator_to_array($exception->getViolations()),
-                );
+    private function pushJob(DueJobInstance $dueJobInstance)
+    {
+        try {
+            $this->publishJobToQueue->publish(
+                jobInstanceCode: $dueJobInstance->getScheduledJobInstance()->code,
+                config: [
+                    'is_user_authenticated' => true,
+                    'users_to_notify' => $dueJobInstance->getUsersToNotify()->getUsernames(),
+                ],
+                username: $dueJobInstance->getScheduledJobInstance()->runningUsername,
+                emails: $dueJobInstance->getUsersToNotify()->getUniqueEmails(),
+            );
+        } catch (InvalidJobException $exception) {
+            $errorMessages = array_map(
+                static fn (ConstraintViolationInterface $constraintViolation) => $constraintViolation->getMessage(),
+                iterator_to_array($exception->getViolations()),
+            );
 
-                $this->eventDispatcher->dispatch(
-                    CouldNotLaunchAutomatedJobEvent::dueToInvalidJobInstance($dueJobInstance, $errorMessages),
-                );
-            } catch (Exception $exception) {
-                $this->eventDispatcher->dispatch(
-                    CouldNotLaunchAutomatedJobEvent::dueToInternalError($dueJobInstance),
-                );
-
-                $this->logger->error('Cannot launch automated job', [
-                    'error_message' => $exception->getMessage(),
-                ]);
-            }
+            $this->eventDispatcher->dispatch(
+                CouldNotLaunchAutomatedJobEvent::dueToInvalidJobInstance($dueJobInstance, $errorMessages),
+            );
         }
     }
 

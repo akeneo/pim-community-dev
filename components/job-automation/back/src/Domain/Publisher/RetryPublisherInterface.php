@@ -11,9 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\JobAutomation\Application\PushScheduledJobsToQueue;
+namespace Akeneo\Platform\JobAutomation\Domain\Publisher;
 
-interface PushScheduledJObsToQueueHandlerInterface
+use Akeneo\Platform\JobAutomation\Domain\Model\DueJobInstance;
+
+interface RetryPublisherInterface
 {
-    public function handle(PushScheduledJobsToQueueQuery $query): void;
+    public function publish(callable $pushJob, DueJobInstance $dueJobInstance): void;
 }
