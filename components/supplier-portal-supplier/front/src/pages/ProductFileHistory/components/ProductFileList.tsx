@@ -72,6 +72,12 @@ const FlexRow = styled.div`
     word-break: break-word;
 `;
 
+const StyledTableRow = styled(Table.Row)`
+    &:hover {
+        background-color: ${getColor('blue20')};
+    }
+`;
+
 const ProductFileList = ({productFiles}: Props) => {
     const dateFormatter = useDateFormatter();
     const intl = useIntl();
@@ -91,7 +97,9 @@ const ProductFileList = ({productFiles}: Props) => {
     );
 
     const displayCommentPanel = (productFile: ProductFile) => {
-        setShowPanel(!showPanel);
+        if (currentProductFile && productFile.identifier === currentProductFile.identifier) {
+            setShowPanel(!showPanel);
+        }
         setCurrentProductFile(productFile);
     };
 
@@ -132,7 +140,11 @@ const ProductFileList = ({productFiles}: Props) => {
                             <Table.Body>
                                 {productFiles.map((productFile: ProductFile) => {
                                     return (
-                                        <Table.Row key={productFile.identifier}>
+                                        <StyledTableRow
+                                            data-testid={productFile.identifier}
+                                            key={productFile.identifier}
+                                            onClick={() => displayCommentPanel(productFile)}
+                                        >
                                             <Table.Cell>
                                                 {dateFormatter(productFile.uploadedAt, {
                                                     day: '2-digit',
@@ -170,7 +182,7 @@ const ProductFileList = ({productFiles}: Props) => {
                                                     onClick={() => displayCommentPanel(productFile)}
                                                 />
                                             </StyledActionCell>
-                                        </Table.Row>
+                                        </StyledTableRow>
                                     );
                                 })}
                             </Table.Body>
