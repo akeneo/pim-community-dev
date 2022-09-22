@@ -1,10 +1,11 @@
 import React from 'react';
-import {PageContent, useFeatureFlags, useTranslate} from '@akeneo-pim-community/shared';
-import {Header} from './Header';
-import {CompletenessWidget, LastOperationsWidget} from './Widgets';
 import styled from 'styled-components';
-import {PimVersion} from './PimVersion';
 import {Helper, LockIcon, SectionTitle, useTheme} from 'akeneo-design-system';
+import {PageContent, useFeatureFlags, useTranslate} from '@akeneo-pim-community/shared';
+import {LastOperationsWidget} from '@akeneo-pim-community/process-tracker';
+import {Header} from './Header';
+import {CompletenessWidget} from './Widgets';
+import {PimVersion} from './PimVersion';
 
 const StyledPageContent = styled(PageContent)`
   height: calc(100vh - 202px);
