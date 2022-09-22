@@ -14,14 +14,21 @@ final class GetIdentifierAttributesControllerIntegration extends ControllerEndTo
     /**
      * @test
      */
-    public function it_should_be_authenticated(): void
+    public function it_should_redirect_on_non_xml_request(): void
     {
-        $this->getWebClientHelper()->callApiRoute(
+        $this->getAuthenticated()->logIn('Julia', $this->client);
+        $this->getWebClientHelper()->callRoute(
             $this->client,
-            'akeneo_identifier_generator_get_identifier_attributes'
+            'akeneo_identifier_generator_get_identifier_attributes',
+            [],
+            'GET',
+            [
+                'HTTP_X-Requested-With' => 'toto'
+            ]
         );
         $response = $this->client->getResponse();
-        Assert::assertSame(Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
+        Assert::AssertSame(Response::HTTP_FOUND, $response->getStatusCode());
+        Assert::assertTrue($response->isRedirect('/'));
     }
 
     /**
@@ -30,13 +37,38 @@ final class GetIdentifierAttributesControllerIntegration extends ControllerEndTo
     public function it_should_get_identifiers(): void
     {
         $this->getAuthenticated()->logIn('Julia', $this->client);
-        $this->getWebClientHelper()->callApiRoute(
+        $this->getWebClientHelper()->callRoute(
             $this->client,
-            'akeneo_identifier_generator_get_identifier_attributes'
+            'akeneo_identifier_generator_get_identifier_attributes',
+            [],
+            'GET',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest'
+            ]
         );
         $response = $this->client->getResponse();
         Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
         Assert::assertSame('[{"code":"sku","labels":{"en_US":"[sku]"}}]', $response->getContent());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_be_unauthorized(): void
+    {
+        $this->getAuthenticated()->logIn('admin', $this->client);
+        $this->disableAcl('action:pim_enrich_attribute_index');
+        $this->getWebClientHelper()->callRoute(
+            $this->client,
+            'akeneo_identifier_generator_get_identifier_attributes',
+            [],
+            'GET',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest'
+            ]
+        );
+        $response = $this->client->getResponse();
+        Assert::assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 
     protected function getConfiguration(): Configuration

@@ -2,4 +2,5 @@ services:
   Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetIdentifierAttributesController:
     public: true
     arguments:
-      [ '@akeneo.pim.structure.query.find_flatten_attributes' ]
+      - '@akeneo.pim.structure.query.find_flatten_attributes'
+      - '@oro_security.security_facade'
