@@ -11,7 +11,7 @@ const productFile = {
     uploadedAt: '2022-09-21 08:34:00-00:00',
 };
 
-test('it renders nothing if the panel is hidden', () => {
+test('it renders nothing if the product file because the user did not click on any product file row', () => {
     renderWithProviders(<CommentPanel productFile={null} showPanel={true} closePanel={() => {}} />);
 
     expect(screen.queryByText('product-file.xlsx')).not.toBeInTheDocument();
