@@ -360,7 +360,7 @@ async function encryptAES(text, key) {
  * @param encrypted encrypt the firestore document
  */
 async function updateFirestoreDoc(firestore, collection, doc, status, context) {
-  logger.info(`Create the \`${doc}\` Firestore document in \`${collection}\` collection with \`${status}\` status and tenant context`);
+  logger.info(`Update the \`${doc}\` Firestore document in \`${collection}\` collection with \`${status}\` status and tenant context`);
   let data = {
     status: status,
     status_date: new Date().toISOString(),
@@ -390,7 +390,48 @@ async function updateFirestoreDoc(firestore, collection, doc, status, context) {
   logger.debug(`Updated Firestore document`);
 }
 
-async function updateFirestoreDocStatus(firestore, collection, doc, status, {}) {
+
+/**
+ * create firestore document in the collection if it doesn't exist , otherwise logg a message
+ * @param firestore firestore client instance
+ * @param collection collection for the document
+ * @param doc name of the document
+ * @param status value of the status field
+ * @param encrypted encrypt the firestore document
+ */
+ async function createFirestoreDoc(firestore, collection, docRef, status) {
+  logger.info(`Create the \`${docRef}\` Firestore document in \`${collection}\` collection with \`${status}\` status`);
+  let data = {
+    status: status,
+    status_date: new Date().toISOString(),
+    context: {}
+  };
+
+  logger.debug(`Prepared Firestore document: ${JSON.stringify(data)}`);
+
+  try {
+    let document = firestore.collection(collection).doc(docRef);
+    const snapshot = await document.get();
+    if (snapshot.exists){
+      let msg = "The document "+ docRef +" already exists !!!";
+      logger.error(msg);
+      return Promise.reject(msg);
+
+    }else{
+      // add the new document.
+      await firestore.collection(collection).doc(docRef).set(data);
+    }
+  } catch (error) {
+    const msg = `Failed to create  \`${docRef}\` Firestore document in \`${collection}\` collection: ${error}`;
+    logger.error(msg);
+    return Promise.reject(msg);
+  }
+
+  logger.info("the document for the: "+docRef+" created with success !!!");
+}
+
+
+async function updateFirestoreDocStatus(firestore, collection, doc, status) {
   try {
     logger.info(`Update the \`${doc}\` firestore document in \`${collection}\` collection with \`${status}\` status`);
     return Promise.resolve(await firestore.collection(collection).doc(doc).set({
@@ -468,8 +509,7 @@ functions.http('createTenant', (req, res) => {
 
 
     const prepareTenantCreation = async () => {
-        await updateFirestoreDoc(firestore, TENANT_CONTEXT, instanceName, FIRESTORE_STATUS.CREATION_IN_PREPARATION);
-
+        await createFirestoreDoc(firestore, TENANT_CONTEXT, instanceName, FIRESTORE_STATUS.CREATION_IN_PREPARATION);
         logger.info('Generate tenant credentials');
         const mailerPassword = generatePassword();
         logger.debug(`mailerPassword: ${mailerPassword}`);
@@ -658,6 +698,7 @@ functions.http('createTenant', (req, res) => {
       await ensureArgoCdAppIsHealthy(ARGOCD_URL, token, instanceName);
       // TODO PH-286: full synced is not possible because http routes objects are not synced. Fix that to uncomment this line
       await ensureArgoCdAppIsSynced(ARGOCD_URL, token, instanceName);
+
     }
 
     createTenant(res)
