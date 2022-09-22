@@ -85,7 +85,7 @@ class AttributeOptionSpellcheckRepositoryIntegration extends TestCase
 
         $this->assertCountAttributeOptionSpellchecks(5);
 
-        $this->repository->deleteUnknownAttributeOptions();
+        $this->repository->deleteUnknownAttributeOptions('color');
         $this->assertCountAttributeOptionSpellchecks(2);
 
         $this->assertNotEmpty($this->getAttributeOptionSpellcheck('color', 'red'));

@@ -20,4 +20,6 @@ interface AttributeSpellcheckRepositoryInterface
     public function save(AttributeSpellcheck $attributeSpellcheck): void;
 
     public function deleteUnknownAttributes(): void;
+
+    public function delete(string $attributeCode): void;
 }

@@ -49,6 +49,8 @@ services:
             $evaluateUpdatedAttributes: '@Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateUpdatedAttributes'
             $evaluateUpdatedAttributeOptions: '@Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateUpdatedAttributeOptions'
             $dataQualityInsightsFeature: '@akeneo.pim.automation.data_quality_insights.feature'
+            $attributeSpellcheckRepository: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeSpellcheckRepository'
+            $attributeOptionSpellcheckRepository: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeOptionSpellcheckRepository'
         tags:
             - { name: kernel.event_subscriber }
 

@@ -9,6 +9,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\AttributeOptionWordI
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\AttributeWordIgnoredEvent;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeOptionCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeOptionSpellcheckRepository;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeSpellcheckRepository;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
@@ -23,13 +25,17 @@ final class InitializeEvaluationSubscriberSpec extends ObjectBehavior
     public function let(
         EvaluateUpdatedAttributes $evaluateUpdatedAttributes,
         EvaluateUpdatedAttributeOptions $evaluateUpdatedAttributeOptions,
-        FeatureFlag $dataQualityInsightsFeature
+        FeatureFlag $dataQualityInsightsFeature,
+        AttributeSpellcheckRepository       $attributeSpellcheckRepository,
+        AttributeOptionSpellcheckRepository $attributeOptionSpellcheckRepository,
     )
     {
         $this->beConstructedWith(
             $evaluateUpdatedAttributes,
             $evaluateUpdatedAttributeOptions,
-            $dataQualityInsightsFeature
+            $dataQualityInsightsFeature,
+            $attributeSpellcheckRepository,
+            $attributeOptionSpellcheckRepository
         );
     }
 
@@ -133,5 +139,21 @@ final class InitializeEvaluationSubscriberSpec extends ObjectBehavior
         $evaluateUpdatedAttributeOptions->evaluate(new AttributeOptionCode(new AttributeCode('attr_code'), 'option_code'))->shouldBeCalled();
 
         $this->onPostSave(new GenericEvent($attributeOption->getWrappedObject(), ['unitary' => true]));
+    }
+
+    public function it_deletes_unknown_attribute_option_on_unitary_attribute_option_post_remove(
+        $attributeOptionSpellcheckRepository,
+        $dataQualityInsightsFeature,
+        AttributeInterface $attribute,
+        AttributeOptionInterface $attributeOption
+    ): void
+    {
+        $dataQualityInsightsFeature->isEnabled()->willReturn(true);
+        $attribute->getCode()->willReturn('attr_code');
+        $attributeOption->getAttribute()->willReturn($attribute);
+        $attributeOption->getCode()->willReturn('option_code');
+        $attributeOptionSpellcheckRepository->deleteUnknownAttributeOption('attr_code', 'option_code')->shouldBeCalled();
+
+        $this->onPostRemove(new GenericEvent($attributeOption->getWrappedObject(), ['unitary' => true]));
     }
 }
