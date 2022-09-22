@@ -1,6 +1,10 @@
+import {constant, clone} from 'lodash/fp';
+
 import {LabelCollection, LocaleCode} from '@akeneo-pim-community/shared';
 import {TreeNode} from './Tree';
-import {CompositeKeyWithoutLocale} from './CompositeKey';
+import {buildCompositeKey, CompositeKey, CompositeKeyWithoutLocale} from './CompositeKey';
+import {Template} from './Template';
+import {Attribute, CategoryAttributeType} from './Attribute';
 
 export type Category = {
   id: number;
@@ -28,7 +32,7 @@ export type CategoryPermissions = {
 };
 
 export interface CategoryAttributes {
-  [key: string]: CategoryAttributeValueWrapper;
+  [key: CompositeKey]: CategoryAttributeValueWrapper;
 }
 
 export interface CategoryAttributeValueWrapper {
@@ -39,7 +43,7 @@ export interface CategoryAttributeValueWrapper {
 
 type CategoryTextAttributeValueData = string;
 
-export interface CategoryImageAttributeValueData {
+export interface CategoryImageAttributeValueDataFileInfo {
   size?: number;
   file_path: string;
   mime_type?: string;
@@ -47,12 +51,14 @@ export interface CategoryImageAttributeValueData {
   original_filename: string;
 }
 
-export type CategoryAttributeValueData = CategoryTextAttributeValueData | CategoryImageAttributeValueData | null;
+export type CategoryImageAttributeValueData = CategoryImageAttributeValueDataFileInfo | null;
+
+export type CategoryAttributeValueData = CategoryTextAttributeValueData | CategoryImageAttributeValueData;
 
 export const isCategoryImageAttributeValueData = (
   data: CategoryAttributeValueData
 ): data is CategoryImageAttributeValueData =>
-  data !== null && data.hasOwnProperty('original_filename') && data.hasOwnProperty('file_path');
+  data === null || (data.hasOwnProperty('original_filename') && data.hasOwnProperty('file_path'));
 
 export type BackendCategoryTree = {
   attr: {
@@ -105,6 +111,73 @@ export type EditCategoryForm = {
   };
   errors: string[];
 };
+
+const attributeDefaultValues: {[key in CategoryAttributeType]: CategoryAttributeValueData} = {
+  text: '',
+  textarea: '',
+  richtext: '', //'<p></p>\n',
+  image: null,
+};
+
+export function getAttributeValue(
+  attributes: CategoryAttributes,
+  attribute: Attribute,
+  localeCode: LocaleCode
+): CategoryAttributeValueData | undefined {
+  const compositeKey = buildCompositeKey(attribute, localeCode);
+  const value = attributes[compositeKey];
+  return value ? value.data : undefined;
+}
+
+/**
+ * return a copy of the given category where all attributes defined in template are valued
+ * @param category the category to normalize
+ * @param template the template describing the attribute of this category
+ * @param locales the locales to consider when generating default values
+ * @return the normalized category
+ */
+function normalizeCategoryAttributes(
+  category: EnrichCategory,
+  template: Template,
+  locales: LocaleCode[]
+): EnrichCategory {
+  const fixedCategory = clone(category);
+
+  template.attributes.forEach((attribute: Attribute) => {
+    const {code} = attribute;
+    if (fixedCategory.attributes.hasOwnProperty(code)) return;
+
+    fixedCategory.attributes = {
+      ...buildCategoryAttributeValues(attribute, locales),
+      // attributes values coming from the category in arguments must take precedence over generared ones
+      ...fixedCategory.attributes,
+    };
+  });
+
+  return fixedCategory;
+}
+
+/**
+ * Generate a CategoryAttributes structure for a given attribute in the requested locales.
+ * If the attribute in not localizable, then only one attribute value will be generated.
+ * @param attribute the attribute for which we want to geenrate values
+ * @param locales the locales to consider to build attribute values
+ * @returns the attributes values
+ */
+function buildCategoryAttributeValues(attribute: Attribute, locales: LocaleCode[]): CategoryAttributes {
+  const attributesValues = {};
+  const applicableLocales = attribute.is_localizable ? locales : [null];
+  for (const locale of applicableLocales) {
+    const key = buildCompositeKey(attribute, locale);
+    const keyNoLocale = locale === null ? key : buildCompositeKey(attribute, null);
+    attributesValues[key] = {
+      data: attributeDefaultValues[attribute.type],
+      locale,
+      attribute_code: keyNoLocale,
+    };
+  }
+  return attributesValues;
+}
 
 const convertToCategoryTree = (tree: BackendCategoryTree): CategoryTreeModel => {
   return {

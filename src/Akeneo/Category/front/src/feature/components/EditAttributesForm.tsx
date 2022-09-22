@@ -7,7 +7,9 @@ import {
   Attribute,
   buildCompositeKey,
   CategoryAttributeValueData,
+  CATEGORY_ATTRIBUTE_TYPE_RICHTEXT,
   EnrichCategory,
+  getAttributeValue,
   isCategoryImageAttributeValueData,
 } from '../models';
 import {attributeFieldFactory} from './attributes/templateAttributesFactory';
@@ -40,27 +42,27 @@ export const EditAttributesForm = ({attributeValues, onAttributeValueChange}: Pr
   const {locales} = useContext(EditCategoryContext);
   const translate = useTranslate();
 
-  const handleTextChange = useCallback(
+  const handleChange = useCallback( 
     (attribute: Attribute) => (value: AttributeInputValue) => {
       if (isImageAttributeInputValue(value)) {
+        onAttributeValueChange(attribute, locale, convertFileInfoToCategoryImageAttributeValueData(value));
         return;
       }
+
+      // attribute has textual type
+      const currentValue = getAttributeValue(attributeValues, attribute, locale);
+      if (attribute.type === CATEGORY_ATTRIBUTE_TYPE_RICHTEXT
+        && !currentValue
+        && value === '<p></p>\n'
+        ) {
+          // The RichTextEditor component triggers a call to onChange when focusing while value prop is ''
+          // the bore value is then '<p></p>\n' and must be ignored or we will have
+          // warnings concerning unsaved changed altough the user did change nothing
+          return;
+        }
       onAttributeValueChange(attribute, locale, value);
-    },
-    [locale, onAttributeValueChange]
-  );
-
-  const handleImageChange = useCallback(
-    (attribute: Attribute) => (value: AttributeInputValue | null) => {
-      if (!isImageAttributeInputValue(value)) {
-        onAttributeValueChange(attribute, locale, null);
-        return;
-      }
-
-      onAttributeValueChange(attribute, locale, convertFileInfoToCategoryImageAttributeValueData(value));
-    },
-    [locale, onAttributeValueChange]
-  );
+    }, [attributeValues, locale, onAttributeValueChange]);
+    
 
   // TODO change hardcoded value to use the template uuid
   const {data: template, isLoading, isError} = useTemplate('02274dac-e99a-4e1d-8f9b-794d4c3ba330');
@@ -68,11 +70,10 @@ export const EditAttributesForm = ({attributeValues, onAttributeValueChange}: Pr
   const handlers = useMemo(() => {
     const handlersMap: {[attributeUUID: string]: (value: AttributeInputValue) => void} = {};
     template?.attributes.forEach((attribute: Attribute) => {
-      handlersMap[attribute.code] =
-        attribute.type === 'image' ? handleImageChange(attribute) : handleTextChange(attribute);
+      handlersMap[attribute.code] = handleChange(attribute);
     });
     return handlersMap;
-  }, [template, handleImageChange, handleTextChange]);
+  }, [template, handleChange]);
 
   if (isLoading) {
     return <h1>{translate('LOADING ...')}</h1>;

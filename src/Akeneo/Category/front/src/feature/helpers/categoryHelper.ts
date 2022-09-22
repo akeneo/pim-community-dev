@@ -1,5 +1,4 @@
 import {cloneDeep, identity, isEqual, sortBy} from 'lodash/fp';
-import {FileInfo} from 'akeneo-design-system';
 import {LabelCollection} from '@akeneo-pim-community/shared';
 import {
   CategoryAttributes,
@@ -28,7 +27,6 @@ export function permissionsAreEqual(cp1: CategoryPermissions, cp2: CategoryPermi
 }
 
 function attributesAreEqual(a1: CategoryAttributes, a2: CategoryAttributes): boolean {
-  // maybe too strict of simplistic, to adjust
   return isEqual(a1, a2);
 }
 

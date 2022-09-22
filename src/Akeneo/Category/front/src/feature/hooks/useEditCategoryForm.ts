@@ -67,8 +67,6 @@ const useEditCategoryForm = (categoryId: number) => {
       notify(NotificationLevel.SUCCESS, translate('pim_enrich.entity.category.content.edit.success'));
     } else {
       notify(NotificationLevel.ERROR, translate('pim_enrich.entity.category.content.edit.fail'));
-      // const refreshedToken = {...editedFormData._token, value: response.form._token.value};
-      // setEditedFormData({...editedFormData, _token: refreshedToken});
     }
   }, [router, categoryEdited, applyPermissionsOnChildren, initializeEditionState, translate, notify]);
 
