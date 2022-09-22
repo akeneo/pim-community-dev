@@ -43,6 +43,9 @@ final class UpdateIndexMapping
         $body = $indexConfiguration->load()->buildAggregated();
 
         // That change makes the reindex faster
+        if ($body['settings'] instanceof \stdClass) {
+            $body['settings'] = [];
+        }
         $body['settings']['index']['number_of_replicas'] = 0;
         $body['settings']['index']['refresh_interval'] = -1;
 

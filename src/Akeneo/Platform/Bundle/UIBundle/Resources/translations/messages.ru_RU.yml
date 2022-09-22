@@ -47,31 +47,34 @@ pim_ui.system_config:
     loading_message.title: Загрузка сообщений
 other_actions: Другие действия
 pim_common:
+  association_types: Типы ассоциаций
   cancel: oтменить
-  save: Сохранить
-  delete: Удалить
-  update: Обновить
-  view: Представление
-  edit: Изменить
-  created: Создан
-  updated: обновлено
-  create: Создать
-  permissions: Права доступа
-  properties: Свойства
-  name: Имя
-  remove: Удалить
-  code: Код
-  quantity: Кол-во
-  products: Продукты
-  product_models: Модели продукта
   categories: Категории
+  code: Код
+  create: Создать
+  created: Создан
+  delete: Удалить
+  edit: Изменить
   enabled: Активирован
+  family_variant: Вид семейства
   family: Семейство
-  parent: Родительский
   groups: Группы
-  unit: Единица
-  yes: "Да"
+  label: Ярлык
+  name: Имя
   no: "Нет"
+  parent: Родительский
+  permissions: Права доступа
+  product_models: Модели продукта
+  products: Продукты
+  properties: Свойства
+  quantity: Кол-во
+  remove: Удалить
+  save: Сохранить
+  unit: Единица
+  update: Обновить
+  updated: обновлено
+  view: Представление
+  yes: "Да"
 pim_enrich:
   #ACLs
   acl:
@@ -96,11 +99,13 @@ pim_enrich:
       comment: Комментировать продукты
       download: Скачать продукт в PDF
       history: Просмотреть журнал продукта
+      convert_variant_to_simple: Преобразовать вариативный продукт в простой продукт
     product_model:
       create: Создать модель продукта
       edit_attributes: Изменить атрибуты модели продукта
       categories_view: Обращение к категориям модели продукта
       history: Просмотр истории модели продукта
+      remove: Удалить модель продукта (включая дочерние)
     category:
       list: Список категорий
       create: Создать категорию
@@ -215,6 +220,7 @@ flash:
     removed: Категория успешно удалена
   tree:
     removed: Дерево категорий успешно удалено
+    not removable: Нельзя удалить деревья, связанные с каналами.
   currency:
     updated: Валюта успешно обновлена
     error.linked_to_channel: Нельзя дезактивировать валюты, связанныe с каналом.
@@ -278,6 +284,7 @@ Unique: Уникальный
 Not required: Не обязательно
 Translatable: Переводимое
 Scopable: Область назначаема
+Localizable: Локализуемый
 Unique value: Уникальное значение
 Attribute group: Группа атрибутов
 Other: Другие
@@ -438,12 +445,14 @@ pim_datagrid:
       label: Группы
     enabled:
       label: Статус
+    scope:
+      label: Канал
     completeness:
       label: Завершено
     created:
-      label: Дата создания
+      label: Создан
     updated:
-      label: Дата обновления
+      label: обновлено
     label_or_identifier:
       label: Метка или идентификатор
     parent:
@@ -514,7 +523,6 @@ pim_mass_edit:
       success: Массовое удаление <strong>%label%</strong> завершено
 job_execution.summary:
   mass_edited: Редактировано
-  skip: Пропущено
   skipped_products: Пропущенные продукты
   skipped_attributes: Пропущенные атрибуты
   skipped_families: Пропущенные семейства
