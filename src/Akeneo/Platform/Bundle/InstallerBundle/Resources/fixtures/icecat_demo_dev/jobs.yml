@@ -932,3 +932,8 @@ jobs:
         alias:     disable_catalogs_on_attribute_option_removal
         label:     Disable catalogs on attribute option removal
         type:      disable_catalogs_on_attribute_option_removal
+    disable_catalogs_on_category_removal:
+        connector: internal
+        alias:     disable_catalogs_on_category_removal
+        label:     Disable catalogs on category removal
+        type:      disable_catalogs_on_category_removal
