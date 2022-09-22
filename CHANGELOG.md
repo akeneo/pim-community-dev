@@ -85,6 +85,7 @@
 - PIM-10568: Fix error when running Version_7_0_20220629142647_dqi_update_pk_on_product_score during On-Premise/Flex to Serenity migration
 - PIM-10646: Fix export with label from a select attribute containing uppercase in its code exports code and not labels
 - PIM-10622: Fix save options labels when using the automatic correction in Firefox
+- PIM-10634: Fix media filter values normalizer to be case insensitive
 
 ## Improvements
 

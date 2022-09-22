@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ElasticsearchFilterValidator;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\Elasticsearch\QueryString;
 
 /**
  * Media filter for an Elasticsearch query.
@@ -66,10 +67,11 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
                 break;
 
             case Operators::CONTAINS:
+                $escapedValue = QueryString::escapeValue($value);
                 $clause = [
                     'query_string' => [
                         'default_field' => $indexedAttributePath,
-                        'query'         => '*' . $value . '*',
+                        'query'         => '*' . $escapedValue . '*',
                     ],
                 ];
                 $this->searchQueryBuilder->addFilter($clause);

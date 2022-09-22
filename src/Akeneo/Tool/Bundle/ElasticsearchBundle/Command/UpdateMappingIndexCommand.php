@@ -70,7 +70,7 @@ TXT;
         if (!$io->confirm('Are you sure to continue?', true)) {
             $output->writeln("<info>You decided to abort your Elasticearch mapping update</info>");
 
-            return;
+            return 0;
         }
 
         $clients = $this->esClients($indices);
@@ -89,6 +89,8 @@ TXT;
         }
 
         $io->success("All the indices listed above have been migrated");
+
+        return 0;
     }
 
     private function buildNativeClient(Client $client): array
