@@ -68,6 +68,10 @@ class ProductRepository extends EntityRepository implements
      */
     public function findOneByIdentifier($identifier)
     {
+        if (null === $identifier) {
+            return null;
+        }
+
         return $this->findOneBy(['identifier' => $identifier]);
     }
 
