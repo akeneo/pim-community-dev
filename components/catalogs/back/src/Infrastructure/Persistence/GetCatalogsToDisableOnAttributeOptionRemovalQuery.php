@@ -34,12 +34,12 @@ final class GetCatalogsToDisableOnAttributeOptionRemovalQuery implements GetCata
             AND is_enabled IS TRUE
         SQL;
 
-        /** @var array<string> $catalogsUUID */
-        $catalogsUUID = $this->connection->executeQuery($query, [
+        /** @var array<string> $ids */
+        $ids = $this->connection->executeQuery($query, [
             'attributeCode' => $attributeCode,
             'attributeOptionCode' => $attributeOptionCode,
         ])->fetchFirstColumn();
 
-        return $catalogsUUID;
+        return $ids;
     }
 }

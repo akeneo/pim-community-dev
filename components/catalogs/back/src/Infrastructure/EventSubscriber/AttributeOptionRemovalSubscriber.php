@@ -40,15 +40,12 @@ class AttributeOptionRemovalSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $attributeCode = $attributeOption->getAttribute()->getCode();
-        $attributeOptionCode = $attributeOption->getCode();
-
         /** @var JobInstance $jobInstance */
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier('disable_catalogs_on_attribute_option_removal');
 
         $this->jobLauncher->launch($jobInstance, $this->tokenStorage->getToken()?->getUser(), [
-            'attribute_code' => $attributeCode,
-            'attribute_option_code' => $attributeOptionCode
+            'attribute_code' => $attributeOption->getAttribute()->getCode(),
+            'attribute_option_code' => $attributeOption->getCode(),
         ]);
     }
 }

@@ -12,7 +12,7 @@ namespace Akeneo\Catalogs\Application\Persistence;
 interface DisableCatalogsQueryInterface
 {
     /**
-     * @param array<string> $catalogsUUID
+     * @param array<string> $ids
      */
-    public function execute(array $catalogsUUID): void;
+    public function execute(array $ids): void;
 }

@@ -40,7 +40,7 @@ class DisableCatalogsOnAttributeOptionRemovalTasklet implements TaskletInterface
         /** @var string $attributeOptionCode */
         $attributeOptionCode = $this->stepExecution->getJobParameters()->get('attribute_option_code');
 
-        $catalogsUUID = $this->getCatalogsToDisableQuery->execute($attributeCode, $attributeOptionCode);
-        $this->disableCatalogsQuery->execute($catalogsUUID);
+        $ids = $this->getCatalogsToDisableQuery->execute($attributeCode, $attributeOptionCode);
+        $this->disableCatalogsQuery->execute($ids);
     }
 }
