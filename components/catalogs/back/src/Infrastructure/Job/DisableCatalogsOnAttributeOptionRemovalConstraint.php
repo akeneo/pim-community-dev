@@ -10,6 +10,10 @@ use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Required;
 use Symfony\Component\Validator\Constraints\Type;
 
+/**
+ * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class DisableCatalogsOnAttributeOptionRemovalConstraint implements ConstraintCollectionProviderInterface
 {
     public function getConstraintCollection(): Collection

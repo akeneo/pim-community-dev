@@ -7,6 +7,10 @@ namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Job;
 use Akeneo\Catalogs\Domain\Operator;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 
+/**
+ * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class DisableCatalogsOnAttributeOptionRemovalTaskletTest extends IntegrationTestCase
 {
     protected function setUp(): void
