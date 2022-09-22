@@ -8,7 +8,7 @@ use Akeneo\Catalogs\Domain\Operator;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 
-class DisableCatalogsOnAttributeOptionRemovalTaskletTest extends IntegrationTestCase
+class DisableCatalogsOnCategoryRemovalTaskletTest extends IntegrationTestCase
 {
     private ?JobLauncher $jobLauncher;
 
@@ -22,13 +22,16 @@ class DisableCatalogsOnAttributeOptionRemovalTaskletTest extends IntegrationTest
         $this->jobLauncher->flushJobQueue();
     }
 
-    public function testItDisablesCatalogOnAttributeOptionRemoval(): void
+    public function testItDisablesCatalogOnCategoryRemoval(): void
     {
         $this->getAuthenticatedInternalApiClient();
-        $this->createAttribute([
-            'code' => 'color',
-            'type' => 'pim_catalog_multiselect',
-            'options' => ['red', 'blue'],
+        $this->createCategory([
+            'code' => 'tshirt',
+            'labels' => ['en_US' => 'T-shirt'],
+        ]);
+        $this->createCategory([
+            'code' => 'scanner',
+            'labels' => ['en_US' => 'Scanner'],
         ]);
 
         $idCatalogUS = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
@@ -42,33 +45,33 @@ class DisableCatalogsOnAttributeOptionRemovalTaskletTest extends IntegrationTest
 
         $this->setCatalogProductSelection($idCatalogUS, [
             [
-                'field' => 'color',
+                'field' => 'category',
                 'operator' => Operator::IN_LIST,
-                'value' => ['red'],
+                'value' => ['tshirt'],
                 'scope' => null,
                 'locale' => null,
             ],
         ]);
         $this->setCatalogProductSelection($idCatalogFR, [
             [
-                'field' => 'color',
+                'field' => 'category',
                 'operator' => Operator::IN_LIST,
-                'value' => ['blue'],
+                'value' => ['scanner'],
                 'scope' => null,
                 'locale' => null,
             ],
         ]);
 
-        $this->removeAttributeOption('color.red');
+        $this->removeCategory('tshirt');
         $this->jobLauncher->launchConsumerUntilQueueIsEmpty();
 
         $this->assertCatalogIsDisabled($idCatalogUS);
         $this->assertCatalogIsEnabled($idCatalogFR);
     }
 
-    private function removeAttributeOption(string $code): void
+    private function removeCategory(string $code): void
     {
-        $attributeOption = self::getContainer()->get('pim_catalog.repository.attribute_option')->findOneByIdentifier($code);
-        self::getContainer()->get('pim_catalog.remover.attribute_option')->remove($attributeOption);
+        $category = self::getContainer()->get('pim_catalog.repository.category')->findOneByIdentifier($code);
+        self::getContainer()->get('pim_catalog.remover.category')->remove($category);
     }
 }
