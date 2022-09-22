@@ -10,7 +10,7 @@ const lastOperationsWidgetFilter: JobExecutionFilter = {
   size: 10,
 };
 
-const COLUMN_HEADERS = ['started_at', 'type', 'username', 'status', 'warning_count'];
+const COLUMN_HEADERS = ['started_at', 'type', 'job_name', 'username', 'status', 'warning_count'];
 
 const LastOperationsWidget = () => {
   const translate = useTranslate();
@@ -57,6 +57,7 @@ const LastOperationsWidget = () => {
                   : '-'}
               </Table.Cell>
               <Table.Cell>{translate(`akeneo_job_process_tracker.type_filter.${jobExecutionRow.type}`)}</Table.Cell>
+              <Table.Cell>{jobExecutionRow.job_name}</Table.Cell>
               <Table.Cell>{jobExecutionRow.username}</Table.Cell>
               <Table.Cell>
                 <JobExecutionStatus
