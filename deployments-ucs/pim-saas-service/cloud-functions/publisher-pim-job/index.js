@@ -1,65 +1,88 @@
-const {PubSub} = require('@google-cloud/pubsub');
-const {Firestore} = require('@google-cloud/firestore');
+const {PubSub} = require('@google-cloud/pubsub')
+const {Firestore} = require('@google-cloud/firestore')
 
 const firestore = new Firestore({
-  projectId: process.env.fireStoreProjectId ,
-  timestampsInSnapshots: true
-});
+    projectId: process.env.fireStoreProjectId,
+    timestampsInSnapshots: true
+})
 
-exports.publishCommand=(req, res) => {
-// parse application/json
-if (typeof req.body === 'object')  bodyjson=JSON.stringify(req.body)
-if (typeof req.body === 'string')  bodyjson=JSON.parse(req.body);
-   command  = JSON.parse(bodyjson).options;
-   code =  JSON.parse(bodyjson).code;
-   topicId = JSON.parse(bodyjson).topicId;
-//load tenants from file store
-firestore.collection(process.env.tenantContext).get()
-    .then((querySnapshot) => {
-      const tenantIds = [];
-      querySnapshot.forEach((doc) => {
-         tenantIds.push(doc.id);
-      });
-      if (tenantIds.length === 0) {
+const pubSubClient = new PubSub({projectId: process.env.projectId});
+
+const testTopicPermissions = async (topicId) => {
+    const permissionsToTest = [
+        'pubsub.topics.publish',
+    ];
+
+    const [permissions] = await pubSubClient
+        .topic(topicId)
+        .iam.testPermissions(permissionsToTest);
+
+    return permissions
+}
+
+const publishScheduledJob = async (topicId, tenantId, jobCode, jobOptions) => {
+    const dataBuffer = Buffer.from(JSON.stringify(
+        {
+            code: jobCode,
+            options: jobOptions,
+        }
+    ))
+
+    const message = {
+        data: dataBuffer,
+        attributes: {
+            tenant_id: tenantId,
+        },
+    }
+
+    try {
+        const messageId = await pubSubClient.topic(topicId).publishMessage(message)
+        console.debug('Message ID = %d', messageId)
+        console.info(
+            'Published a scheduled job "%s" with options "%s" for tenant ID %s',
+            jobCode,
+            JSON.stringify(jobOptions),
+            tenantId
+        )
+    } catch (err) {
+        console.error(
+            'Error while publishing scheduled job "%s" with options "%s" for tenant ID %s',
+            jobCode,
+            JSON.stringify(jobOptions),
+            tenantId
+        )
+        console.error(JSON.stringify(err))
+    }
+}
+
+exports.publishCommand = async (req, res) => {
+    const requestBody = typeof req.body === 'object' ? req.body : JSON.parse(req.body)
+    const jobCode = requestBody.job_code
+    const jobOptions = requestBody.job_options
+    const topicId = requestBody.topic_id
+
+    const permissions = await testTopicPermissions(topicId).catch(console.error);
+    console.debug(permissions)
+
+    console.info(
+        'Start publishing scheduled job "%s" with options "%s"',
+        jobCode,
+        JSON.stringify(jobOptions)
+    )
+
+    try {
+        const querySnapshot = await firestore.collection(process.env.tenantContext).get()
+        for (const document of querySnapshot.docs) {
+            console.debug('Publishing for tenant ID %s', document.id);
+            await publishScheduledJob(topicId, document.id, jobCode, jobOptions)
+        }
+    } catch (err) {
+        console.error(err);
         return res.status(404).send({
-          error: 'Unable to find the document'
+            error: 'Unable to fetch tenants from context store',
+            err
         });
-      }
-        console.log("command===="+JSON.stringify(command));
-      //read command and options jobs from the http request
-      let commandJson=JSON.parse(JSON.stringify(command));
-        let dataBuffer = Buffer.from(JSON.stringify(command));
-        const pubSubClient = new PubSub({ projectId: process.env.projectId });
-        for(var i = 0; i < tenantIds.length; i++){
-          let customAttributes = {
-              tenant_id: tenantIds[i],
-              code: JSON.stringify(code)
-            };
-            const message = {
-              data: dataBuffer,
-              attributes: customAttributes,
-            };
+    }
 
-          //publish message into pub/sub
-            let messageId =  pubSubClient
-              .topic(topicId)
-              .publishMessage(message).then(results => {
-                  console.log("Published a message with custom attributes: messageId="+ JSON.stringify(results)+"published.***** tenant_id="+tenantIds[i]+"***** codeJob:"+JSON.stringify(code));
-          }).catch(err => {
-            console.error(err);
-
-          });
-          }
-  res.status(200).send("Excution of batch"+code+ "finish with success");
-
-
-    }).catch(err => {
-      console.error(err);
-      return res.status(404).send({
-        error: 'Unable to retrieve the document',
-        err
-      });
-    });
-
-
+    return res.status(200).send(`Schedule for job ${jobCode} finish with success`);
 };

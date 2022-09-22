@@ -1,17 +1,17 @@
 {{ $tplCtx := . -}}
-{{ range $jobName, $jobOptions := .Values.pim.jobs -}}
-{{- if $jobOptions.enabled }}
+{{ range $schedulerKey, $jobConfiguration := .Values.pim.jobs -}}
+{{- if $jobConfiguration.enabled }}
 apiVersion: cloudscheduler.cnrm.cloud.google.com/v1beta1
 kind: CloudSchedulerJob
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: {{ $tplCtx.Values.common.gcpProjectID }}
-  name: "{{ $tplCtx.Values.pim.jobsPrefix }}-{{ $jobName }}"
+  name: "{{ $tplCtx.Values.pim.jobsPrefix }}-{{ $schedulerKey }}"
 spec:
-  description: "Schedule job for {{ $jobName }}"
+  description: "Schedule job for {{ $jobConfiguration.pimJobName }}"
   location: {{ $tplCtx.Values.common.region }}
   timeZone: {{ $tplCtx.Values.pim.cloudFunction.timeZone }}
-  schedule: '{{ $jobOptions.schedule }}'
+  schedule: '{{ $jobConfiguration.schedule }}'
   httpTarget:
     headers:
       Content-Type: application/json
@@ -22,7 +22,7 @@ spec:
       audience: "https://{{ $tplCtx.Values.common.region }}-{{ $tplCtx.Values.common.gcpProjectID }}.cloudfunctions.net/{{ $tplCtx.Values.pim.cloudFunction.name }}"
       serviceAccountRef:
         external: "{{ $tplCtx.Values.pim.cloudFunction.serviceAccountEmail }}"
-    body: {{ printf "{\"topicId\": \"%s\",\"code\":  \"%s\",\"env\": \"prod\",\"options\": \"%s\" }" $tplCtx.Values.pim.pubsub.topic_job_queue_scheduled_job $jobName $jobOptions.pimJobOptions | squote |  replace "'" ""| b64enc }}
+    body: {{ printf "{\"topic_id\": \"%s\",\"job_code\":  \"%s\",\"job_options\": \"%s\" }" $tplCtx.Values.pim.pubsub.topic_job_queue_scheduler_job $jobConfiguration.pimJobName $jobConfiguration.pimJobOptions | squote |  replace "'" ""| b64enc }}
 ---
 {{ end }}
 {{ end }}

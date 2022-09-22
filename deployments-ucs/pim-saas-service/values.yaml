@@ -214,96 +214,19 @@ pim:
   jobs:
     versioning-purge:
       enabled: true
+      pimJobName: "versioning_purge"
       pimJobOptions: "--more-than-days 90 --no-interaction --force"
       schedule: "0 1 * * 0"
-    batch-purge:
+    versioning-refresh:
       enabled: true
-      pimJobOptions: ""
-      schedule: "0 0 1 * *"
-    update-connectivity-audit-data:
-      enabled: true
-      pimJobOptions: ""
-      schedule: "1 * * * *"
-    purge-connectivity-connection-error:
-      enabled: true
-      pimJobOptions: ""
-      schedule: "10 * * * *"
-    purge-connectivity-audit-error-count:
-      enabled: true
-      pimJobOptions: ""
-      schedule: "40 12 * * *"
-    rule-run:
-      enabled: true
-      pimJobOptions: ""
-      schedule: "0 5,11,17,23 * * *"
-    versionning-refresh:
-      enabled: true
+      pimJobName: "versioning_refresh"
       pimJobOptions: ""
       schedule: "0 3 * * *"
-    volume-aggregate:
+    job-executions-purge:
       enabled: true
+      pimJobName: "job_executions_purge"
       pimJobOptions: ""
-      schedule: "0 4 * * *"
-    project-recalculate:
-      enabled: true
-      pimJobOptions: ""
-      schedule: "20 0 * * *"
-    project-notify-before-due-date:
-      enabled: true
-      pimJobOptions: ""
-      schedule: "0 2 * * *"
-    reference-entity-refresh-records:
-      enabled: true
-      pimJobOptions: ""
-      schedule: "0 23 * * *"
-    sso-log-rotate:
-      enabled: true
-      pimJobOptions: "pimee:sso:rotate-log 30"
-      schedule: "5 22 * * *"
-    data-quality-insights-periodic-tasks:
-      enabled: true
-      pimJobOptions: ""
-      schedule: "15 0 * * *"
-    data-quality-insights-prepare-evaluations:
-      enabled: true
-      pimJobOptions: ""
-      schedule: "*/10 * * * *"
-    data-quality-insights-evaluations:
-      enabled: true
-      pimJobOptions: ""
-      schedule: "*/30 * * * *"
-    purge-events-api-logs:
-      enabled: true
-      pimJobOptions: ""
-      schedule: "5 * * * *"
-    migrate-records-index-mapping:
-      enabled: true
-      pimJobOptions: "--no-interaction"
-      schedule: "*/30 * * * *"
-    migrate-job-execution-warning-count:
-      enabled: true
-      pimJobOptions: "--no-interaction"
-      schedule: "*/30 * * * *"
-    connectivity-openid-keys-regenerate:
-      enabled: true
-      pimJobOptions: "--no-interaction"
-      schedule: "4 21 * * 0"
-    clean-case-sensitive-attribute-option-spellcheck:
-      enabled: true
-      pimJobOptions: "--no-interaction"
-      schedule: "15 2 * * *"
-    clean-completeness-evaluation-results:
-      enabled: true
-      pimJobOptions: "--no-interaction"
-      schedule: "30 0 * * *"
-    clean-product-scores:
-      enabled: true
-      pimJobOptions: "--no-interaction"
-      schedule: "1 0 * * *"
-    zdd-migration-migrate:
-      enabled: true
-      pimCommand: "--no-interaction"
-      schedule: "45 * * * *"
+      schedule: "0 0 1 * *"
   supplier_portal:
     settings:
       enabled: false
