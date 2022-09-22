@@ -6,20 +6,15 @@ namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Job;
 
 use Akeneo\Catalogs\Domain\Operator;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
-use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 
 class DisableCatalogsOnAttributeOptionRemovalTaskletTest extends IntegrationTestCase
 {
-    private ?JobLauncher $jobLauncher;
-
     protected function setUp(): void
     {
         parent::setUp();
 
+        $this->disableExperimentalTestDatabase();
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->jobLauncher = self::getContainer()->get('akeneo_integration_tests.launcher.job_launcher');
-        $this->jobLauncher->flushJobQueue();
     }
 
     public function testItDisablesCatalogOnAttributeOptionRemoval(): void
@@ -60,15 +55,20 @@ class DisableCatalogsOnAttributeOptionRemovalTaskletTest extends IntegrationTest
         ]);
 
         $this->removeAttributeOption('color.red');
-        $this->jobLauncher->launchConsumerUntilQueueIsEmpty();
 
         $this->assertCatalogIsDisabled($idCatalogUS);
         $this->assertCatalogIsEnabled($idCatalogFR);
     }
 
-    private function removeAttributeOption(string $code): void
+    private function assertCatalogIsDisabled(string $id): void
     {
-        $attributeOption = self::getContainer()->get('pim_catalog.repository.attribute_option')->findOneByIdentifier($code);
-        self::getContainer()->get('pim_catalog.remover.attribute_option')->remove($attributeOption);
+        $catalog = $this->getCatalog($id);
+        $this->assertFalse($catalog->isEnabled());
+    }
+
+    private function assertCatalogIsEnabled(string $id): void
+    {
+        $catalog = $this->getCatalog($id);
+        $this->assertTrue($catalog->isEnabled());
     }
 }

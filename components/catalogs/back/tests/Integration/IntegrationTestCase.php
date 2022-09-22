@@ -79,6 +79,11 @@ abstract class IntegrationTestCase extends WebTestCase
         $fixturesLoader->load($configuration);
     }
 
+    protected function disableExperimentalTestDatabase(): void
+    {
+        self::getContainer()->get(ExperimentalTransactionHelper::class)->disable();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -382,17 +387,6 @@ abstract class IntegrationTestCase extends WebTestCase
         self::getContainer()->get('pim_catalog.saver.currency')->save($currency);
     }
 
-    protected function assertCatalogIsDisabled(string $id): void
-    {
-        $catalog = $this->getCatalog($id);
-        $this->assertFalse($catalog->isEnabled());
-    }
-    protected function assertCatalogIsEnabled(string $id): void
-    {
-        $catalog = $this->getCatalog($id);
-        $this->assertTrue($catalog->isEnabled());
-    }
-
     protected function getCatalog(string $id): Catalog
     {
         /** @var ?Catalog $catalog */
@@ -400,5 +394,20 @@ abstract class IntegrationTestCase extends WebTestCase
         $this->assertNotNull($catalog);
 
         return $catalog;
+    }
+
+    protected function removeAttributeOption(string $code): void
+    {
+        $attributeOption = self::getContainer()->get('pim_catalog.repository.attribute_option')
+            ->findOneByIdentifier($code);
+
+        self::getContainer()->get('pim_catalog.remover.attribute_option')->remove($attributeOption);
+
+        $this->waitForQueuedJobs();
+    }
+
+    protected function waitForQueuedJobs(): void
+    {
+        self::getContainer()->get('akeneo_integration_tests.launcher.job_launcher')->launchConsumerUntilQueueIsEmpty();
     }
 }

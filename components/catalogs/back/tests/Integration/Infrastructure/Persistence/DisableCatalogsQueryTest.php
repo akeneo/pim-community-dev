@@ -52,4 +52,16 @@ class DisableCatalogsQueryTest extends IntegrationTestCase
 
         $this->assertCatalogIsDisabled($uuidUS);
     }
+
+    private function assertCatalogIsDisabled(string $id): void
+    {
+        $catalog = $this->getCatalog($id);
+        $this->assertFalse($catalog->isEnabled());
+    }
+
+    private function assertCatalogIsEnabled(string $id): void
+    {
+        $catalog = $this->getCatalog($id);
+        $this->assertTrue($catalog->isEnabled());
+    }
 }

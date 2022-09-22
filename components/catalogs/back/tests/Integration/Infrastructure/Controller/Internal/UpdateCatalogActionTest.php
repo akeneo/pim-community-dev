@@ -171,4 +171,10 @@ class UpdateCatalogActionTest extends IntegrationTestCase
 
         $this->assertEquals($expected, \json_decode($row, true, 512, JSON_THROW_ON_ERROR));
     }
+
+    private function assertCatalogIsEnabled(string $id): void
+    {
+        $catalog = $this->getCatalog($id);
+        $this->assertTrue($catalog->isEnabled());
+    }
 }
