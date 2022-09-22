@@ -8,6 +8,10 @@
       "description": "The tenant name",
       "type": "string"
     },
+    "dnsCloudDomain": {
+      "description": "The DNS zone for the tenant",
+      "type": "string"
+    },
     "pim": {
       "description": "The PIM configuration for the tenant",
       "type": "object",
