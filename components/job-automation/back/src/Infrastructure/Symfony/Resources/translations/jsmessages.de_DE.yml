@@ -8,7 +8,6 @@ akeneo.job_automation:
     enable: Zeitplan aktivieren
     cannot_view_all_jobs: "Automatische Jobs können im Prozess-Tracker nicht angezeigt werden da Sie nicht über die folgende Berechtigung für Ihre Rolle verfügen: „Alle Jobs im Prozess-Tracker anzeigen“. Bitte kontaktieren Sie Ihren PIM-Administrator."
     frequency:
-      helper: Die Frequenz wird im UTC 24-Stunden Format angezeigt.
       hourly_helper: Frequenzen werden mehrmals täglich um Mitternacht (UTC) ausgeführt.
       title: Frequenz
       daily: Jeden Tag

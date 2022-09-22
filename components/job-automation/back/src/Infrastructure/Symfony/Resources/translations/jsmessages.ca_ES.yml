@@ -1,0 +1,36 @@
+akeneo.job_automation:
+  title: 'automatització'
+  scheduling:
+    title: 'Programat'
+    running_user_groups:
+      label: 'Permisos de grups d''usuaris'
+      disabled_helper: No teniu permisos per llistar grups d'usuaris.
+    enable: Habilita la planificació
+    frequency:
+      title: Freqüència
+      daily: Cada dia
+      weekly: Cada setmana
+      weekday: Dia de la setmana
+      every_4_hours: Cada 4 hores
+      every_8_hours: Cada 8 hores
+      every_12_hours: Cada 12 hores
+      hours: Hores
+      minutes: Minuts
+      monday: Dilluns
+      tuesday: Dimarts
+      wednesday: Dimecres
+      thursday: Dijous
+      friday: Divendres
+      saturday: Dissabte
+      sunday: Diumenge
+  notification:
+    title: Notificació
+    user_groups:
+      label: Grup d'usuaris
+      disabled_helper: No teniu permisos per llistar grups d'usuaris.
+    users:
+      label: Usuaris
+      disabled_helper: No teniu permís per llistar usuaris.
+  validation:
+    invalid_hours: Horari no vàlid
+    invalid_minutes: Minuts no vàlids
