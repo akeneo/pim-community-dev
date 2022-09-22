@@ -8,23 +8,29 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\Product
 
 final class ProductFile
 {
-    public function __construct(
+    private function __construct(
         public string $identifier,
         public string $originalFilename,
+        public string $path,
         public ?string $uploadedByContributor,
         public string $uploadedBySupplier,
         public ?string $uploadedAt,
+        public array $retailerComments = [],
+        public array $supplierComments = [],
     ) {
     }
 
-    public static function fromReadModel(ProductFileReadModel $productFileReadModel): self
+    public static function fromReadModel(ProductFileReadModel $productFile): self
     {
         return new self(
-            $productFileReadModel->identifier,
-            $productFileReadModel->originalFilename,
-            $productFileReadModel->uploadedByContributor,
-            $productFileReadModel->uploadedBySupplier,
-            $productFileReadModel->uploadedAt,
+            $productFile->identifier,
+            $productFile->originalFilename,
+            $productFile->path,
+            $productFile->uploadedByContributor,
+            $productFile->uploadedBySupplier,
+            $productFile->uploadedAt,
+            $productFile->retailerComments,
+            $productFile->supplierComments,
         );
     }
 
@@ -33,9 +39,12 @@ final class ProductFile
         return [
             'identifier' => $this->identifier,
             'originalFilename' => $this->originalFilename,
+            'path' => $this->path,
             'uploadedByContributor' => $this->uploadedByContributor,
             'uploadedBySupplier' => $this->uploadedBySupplier,
-            'uploadedAt' => $this->uploadedAt, // @todo Move the formatting to the Controller in supplier app (format('c'))
+            'uploadedAt' => $this->uploadedAt,
+            'retailerComments' => $this->retailerComments,
+            'supplierComments' => $this->supplierComments,
         ];
     }
 }

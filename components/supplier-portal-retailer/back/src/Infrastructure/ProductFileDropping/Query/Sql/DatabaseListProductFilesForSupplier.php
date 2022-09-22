@@ -17,30 +17,78 @@ final class DatabaseListProductFilesForSupplier implements ListProductFilesForSu
     public function __invoke(string $supplierIdentifier): array
     {
         $sql = <<<SQL
-            SELECT product_file.identifier, original_filename, uploaded_by_contributor, uploaded_at
+            WITH retailer_comments AS (
+                SELECT product_file_identifier, JSON_ARRAYAGG(
+                    CASE WHEN content IS NOT NULL THEN JSON_OBJECT(
+                            'content', content,
+                            'author_email', author_email,
+                            'created_at', created_at
+                        ) END
+                ) AS retailer_comments
+                FROM akeneo_supplier_portal_product_file_retailer_comments
+                GROUP BY product_file_identifier
+            ), supplier_comments AS (
+                SELECT product_file_identifier, JSON_ARRAYAGG(
+                    CASE WHEN content IS NOT NULL THEN JSON_OBJECT(
+                            'content', content,
+                            'author_email', author_email,
+                            'created_at', created_at
+                        ) END
+                ) AS supplier_comments
+                FROM akeneo_supplier_portal_product_file_supplier_comments
+                GROUP BY product_file_identifier
+            )
+            SELECT
+                product_file.identifier,
+                original_filename,
+                path,
+                uploaded_by_contributor,
+                uploaded_at,
+                rc.retailer_comments,
+                sc.supplier_comments
             FROM akeneo_supplier_portal_supplier_product_file product_file
-            where uploaded_by_supplier = :supplierIdentifier
-            ORDER BY uploaded_at DESC 
+            LEFT JOIN retailer_comments rc
+                ON identifier = rc.product_file_identifier
+            LEFT JOIN supplier_comments sc
+                ON identifier = sc.product_file_identifier
+            WHERE uploaded_by_supplier = :supplierIdentifier
+            ORDER BY uploaded_at DESC
             LIMIT :limit
         SQL;
 
-        return array_map(fn (array $file) => new ProductFile(
-            $file['identifier'],
-            $file['original_filename'],
-            $file['uploaded_by_contributor'],
-            $supplierIdentifier,
-            $file['uploaded_at'],
-        ), $this->connection->executeQuery(
-            $sql,
-            [
-                'supplierIdentifier' => $supplierIdentifier,
-                'limit' => ListProductFilesForSupplier::NUMBER_OF_PRODUCT_FILES,
-            ],
-            [
-                'supplierIdentifier' => \PDO::PARAM_STR,
-                'offset' => \PDO::PARAM_INT,
-                'limit' => \PDO::PARAM_INT,
-            ],
-        )->fetchAllAssociative());
+        return array_map(
+            fn (array $file) => new ProductFile(
+                $file['identifier'],
+                $file['original_filename'],
+                $file['path'],
+                $file['uploaded_by_contributor'],
+                $supplierIdentifier,
+                $file['uploaded_at'],
+                $file['retailer_comments']
+                    ? \array_filter(\json_decode(
+                        $file['retailer_comments'],
+                        true,
+                    ))
+                    : [],
+                $file['supplier_comments']
+                    ? \array_filter(\json_decode(
+                        $file['supplier_comments'],
+                        true,
+                    ))
+                    : [],
+            ),
+            $this->connection->executeQuery(
+                $sql,
+                [
+                    'supplierIdentifier' => $supplierIdentifier,
+                    'limit' => ListProductFilesForSupplier::NUMBER_OF_PRODUCT_FILES,
+                ],
+                [
+                    'supplierIdentifier' => \PDO::PARAM_STR,
+                    'offset' => \PDO::PARAM_INT,
+                    'limit' => \PDO::PARAM_INT,
+                ],
+            )->fetchAllAssociative(),
+        );
     }
 }

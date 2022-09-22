@@ -30,6 +30,7 @@ final class DatabaseListProductFiles implements ListProductFiles
         return array_map(fn (array $file) => new ProductFile(
             $file['identifier'],
             $file['original_filename'],
+            null,
             $file['uploaded_by_contributor'],
             $supplierIdentifier,
             $file['uploaded_at'],
