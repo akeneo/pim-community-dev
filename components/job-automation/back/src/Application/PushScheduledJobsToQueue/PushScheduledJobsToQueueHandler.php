@@ -52,7 +52,7 @@ final class PushScheduledJobsToQueueHandler implements PushScheduledJObsToQueueH
         }
     }
 
-    private function pushJob(DueJobInstance $dueJobInstance)
+    public function pushJob(DueJobInstance $dueJobInstance)
     {
         try {
             $this->publishJobToQueue->publish(

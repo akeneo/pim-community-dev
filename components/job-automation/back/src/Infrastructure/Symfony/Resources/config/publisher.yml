@@ -1,0 +1,7 @@
+services:
+  akeneo.controller.retry_publisher:
+    class: Akeneo\Platform\JobAutomation\Infrastructure\Publisher\RetryPublisher
+    arguments:
+      - '@Akeneo\Platform\JobAutomation\Domain\ClockInterface'
+      - '@event_dispatcher'
+      - '@logger'
