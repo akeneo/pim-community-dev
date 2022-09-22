@@ -17,5 +17,5 @@ use Akeneo\Platform\JobAutomation\Domain\Model\DueJobInstance;
 
 interface RetryPublisherInterface
 {
-    public function publish(callable $pushJob, DueJobInstance $dueJobInstance): void;
+    public function publish(DueJobInstance $dueJobInstance): void;
 }

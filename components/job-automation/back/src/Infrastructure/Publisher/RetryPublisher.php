@@ -17,8 +17,11 @@ use Akeneo\Platform\JobAutomation\Domain\ClockInterface;
 use Akeneo\Platform\JobAutomation\Domain\Event\CouldNotLaunchAutomatedJobEvent;
 use Akeneo\Platform\JobAutomation\Domain\Model\DueJobInstance;
 use Akeneo\Platform\JobAutomation\Domain\Publisher\RetryPublisherInterface;
+use Akeneo\Tool\Component\BatchQueue\Exception\InvalidJobException;
+use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueueInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Validator\ConstraintViolationInterface;
 
 final class RetryPublisher implements RetryPublisherInterface
 {
@@ -29,18 +32,19 @@ final class RetryPublisher implements RetryPublisherInterface
         private ClockInterface $clock,
         private EventDispatcherInterface $eventDispatcher,
         private LoggerInterface $logger,
+        private PublishJobToQueueInterface $publishJobToQueue,
     ) {
     }
 
-    public function publish(callable $pushJob, DueJobInstance $dueJobInstance): void
+    public function publish(DueJobInstance $dueJobInstance): void
     {
         $shouldRetry = false;
         $retryCount = 0;
 
         do {
             try {
-                call_user_func($pushJob, $dueJobInstance);
-            } catch (\Exception) {
+                $this->pushJob($dueJobInstance);
+            } catch (\Exception $exception) {
                 $shouldRetry = self::MAX_RETRY > $retryCount;
                 if ($shouldRetry) {
                     $exponentialBackoff = self::RETRY_DELAY_IN_MILLISECOND * ($retryCount + 1);
@@ -58,5 +62,29 @@ final class RetryPublisher implements RetryPublisherInterface
                 ]);
             }
         } while ($shouldRetry);
+    }
+
+    private function pushJob(DueJobInstance $dueJobInstance): void
+    {
+        try {
+            $this->publishJobToQueue->publish(
+                jobInstanceCode: $dueJobInstance->getScheduledJobInstance()->code,
+                config: [
+                    'is_user_authenticated' => true,
+                    'users_to_notify' => $dueJobInstance->getUsersToNotify()->getUsernames(),
+                ],
+                username: $dueJobInstance->getScheduledJobInstance()->runningUsername,
+                emails: $dueJobInstance->getUsersToNotify()->getUniqueEmails(),
+            );
+        } catch (InvalidJobException $exception) {
+            $errorMessages = array_map(
+                static fn (ConstraintViolationInterface $constraintViolation) => $constraintViolation->getMessage(),
+                iterator_to_array($exception->getViolations()),
+            );
+
+            $this->eventDispatcher->dispatch(
+                CouldNotLaunchAutomatedJobEvent::dueToInvalidJobInstance($dueJobInstance, $errorMessages),
+            );
+        }
     }
 }

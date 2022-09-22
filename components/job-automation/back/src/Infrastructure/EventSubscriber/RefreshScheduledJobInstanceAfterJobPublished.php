@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Platform\JobAutomation\Infrastructure\EventSubscriber;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\ResolveScheduledJobRunningUsername;
-use Akeneo\Platform\JobAutomation\Application\UpdateScheduledJobInstanceLastExecution\UpdateScheduledJobInstanceLastExecutionCommand;
-use Akeneo\Platform\JobAutomation\Application\UpdateScheduledJobInstanceLastExecution\UpdateScheduledJobInstanceLastExecutionHandler;
 use Akeneo\Platform\JobAutomation\Domain\ClockInterface;
 use Akeneo\Platform\JobAutomation\Domain\Query\UpdateAutomationLastExecutionDateQueryInterface;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
@@ -39,11 +37,11 @@ final class RefreshScheduledJobInstanceAfterJobPublished implements EventSubscri
 
     public function refreshScheduledJobInstance(JobExecutionEvent $event): void
     {
-       if (str_contains($event->getJobExecution()->getUser(), ResolveScheduledJobRunningUsername::AUTOMATED_USER_PREFIX)) {
+        if (str_contains($event->getJobExecution()->getUser(), ResolveScheduledJobRunningUsername::AUTOMATED_USER_PREFIX)) {
             $lastExecutionDate = $this->clock->now();
             $this->updateJobInstanceAutomationLastExecutionDate->forJobInstanceCode(
                 $event->getJobExecution()->getJobInstance()->getCode(),
-                $lastExecutionDate
+                $lastExecutionDate,
             );
         }
     }

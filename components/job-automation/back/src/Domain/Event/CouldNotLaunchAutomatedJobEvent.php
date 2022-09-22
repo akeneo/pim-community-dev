@@ -21,15 +21,15 @@ use Akeneo\Platform\JobAutomation\Domain\Model\UserToNotifyCollection;
 class CouldNotLaunchAutomatedJobEvent
 {
     private function __construct(
-        public ScheduledJobInstance   $scheduledJobInstance,
-        public array                  $errorMessages,
+        public ScheduledJobInstance $scheduledJobInstance,
+        public array $errorMessages,
         public UserToNotifyCollection $userToNotify,
     ) {
     }
 
     public static function dueToInvalidJobInstance(
         DueJobInstance $dueJobInstance,
-        array          $errorMessages,
+        array $errorMessages,
     ): self {
         return new self($dueJobInstance->getScheduledJobInstance(), $errorMessages, $dueJobInstance->getUsersToNotify());
     }

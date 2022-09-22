@@ -18,7 +18,7 @@ use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
 final class PushScheduledJobsToQueueQuery
 {
     public function __construct(
-        private array $scheduledJobInstances
+        private array $scheduledJobInstances,
     ) {
     }
 

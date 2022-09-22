@@ -44,7 +44,7 @@ final class PushScheduledJobsToQueueCommand extends Command
         }
 
         $this->pushScheduledJobsToQueueHandler->handle(
-            new PushScheduledJobsToQueueQuery($this->findScheduledJobInstancesQuery->all())
+            new PushScheduledJobsToQueueQuery($this->findScheduledJobInstancesQuery->all()),
         );
 
         return 0;
