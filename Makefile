@@ -23,6 +23,10 @@ YARN_RUN = $(NODE_RUN) yarn
 PHP_RUN = $(DOCKER_COMPOSE) run --rm php php
 PHP_EXEC = $(DOCKER_COMPOSE) exec -u www-data fpm php
 
+ifneq (,$(wildcard $(PIM_SRC_PATH)/make-file/local.mk))
+include $(PIM_SRC_PATH)/make-file/local.mk
+endif
+
 DATABASE_CATALOG_MINIMAL_PATH ?= src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
 DATABASE_CATALOG_ICECAT_PATH ?= src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
 
