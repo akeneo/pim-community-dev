@@ -1,0 +1,107 @@
+akeneo.tailored_import:
+  file_structure:
+    modal:
+      unique_identifier_column: Columna d'identificador únic
+  data_mapping_list:
+    no_sources: Cap font
+    add: Afegir atributs
+  data_mapping:
+    title: Configuració
+    property_not_valid: Aquesta propietat no és vàlida.
+    preview:
+      button: Vista prèvia
+      placeholder: N/A
+      refresh: Actualitzar
+    operations:
+      title: Operació(ns)
+      identifier: No hi ha cap operació disponible per a l'atribut d'identificador
+      add: Afegir una operació
+      common:
+        collapse: Replegar
+      clean_html:
+        title: Netejar HTML
+        remove: Eliminar etiquetes HTML
+        decode: Descodificar caràcters HTML
+      change_case:
+        title: Canviar cas
+        select: Selecciona el teu cas
+        uppercase: Majúscula
+        lowercase: Minúscules
+        capitalize: Primera lletra en majúscules
+      remove_whitespace:
+        title: Elimina l'espai en blanc
+        consecutive: Elimina els espais en blanc consecutius
+        trim: Elimina els espais en blanc del principi i el final
+      split:
+        title: Dividir
+        separator: Selecciona el separador
+        comma: Coma (,)
+        semicolon: Punt i coma (;)
+        pipe: Barra vertical (|)
+      simple_select_replacement:
+        option_labels: Etiqueta d'opcions
+      multi_select_replacement:
+        option_labels: Etiqueta d'opcions
+      categories_replacement:
+        modal:
+          title: Administrar categories
+          table:
+            header:
+              replacement: Etiquetes de les categories
+              source_values: Categories de la font
+      no_result: No hi ha disponible l'operació
+      no_available:
+        link: Cliqueu aquí per consultar el Centre d'Ajuda.
+      replacement:
+        modal:
+          options: Administrar opcions
+          no_result:
+            title: Ho sentim, no hi ha cap valor en aquest atribut.
+          empty_result:
+            title: Ho sentim, no hi ha cap resultat de la cerca.
+            text: Provi amb nous criteris de cerca.
+          filters:
+            mapped:
+              label: Mostrar
+              all: Tots els valors
+      boolean_replacement:
+        field:
+          yes_value: Valor Si
+          no_value: Valor No
+      enabled_replacement:
+        field:
+          enabled_value: Valor actiu
+          disabled_value: Valor inactiu
+    sources:
+      title: Font(s)
+      add:
+        label: Afegeix una font
+    target:
+      action_if_not_empty:
+        title: Assignar
+  validation:
+    columns:
+      label:
+        should_not_be_blank: Definiu un nom de columna.
+    target:
+      attribute_should_exist: L'atribut {{ attribute_code }} no existeix. Si us plau, crea o escull un diferent.
+      property_should_exist: La propietat {{ property_code }} no existeix. Si us plau, crea o escull una diferent.
+      source_configuration:
+        unit_should_exist: La unitat {{ unit_code }} no existeix per aquesta família mètrica {{ measurement_family }}. Si us plau, selecciona una unitat vàlida.
+    channel:
+      should_exist: El canal {{ channel_code }} s'ha suprimit. Seleccioneu un altre canal.
+    uploaded_file:
+      max_size: L'arxiu és massa gran. La mida màxima és {{ limit }}{{ suffix }}.
+      not_allowed_mime_type: Només estan suportats els arxius XLSX.
+      not_allowed_extension: Només estan suportats els arxius XLSX.
+    file_structure:
+      first_product_row_should_be_after_header_row: La primera fila de productes ha d'estar després de la capçalera.
+      unique_identifier_column_should_be_after_first_column_message: La columna de l'identificador ha de ser la primera columna.
+      header_row_should_not_contain_empty_cell: La fila de capçalera no ha de contenir cel·les buides.
+    file_preview:
+      empty_sheet:
+        title: Aquest full està buit.
+        description: Si us plau, selecciona un full amb una fila.
+pim_information:
+  import:
+    link.text: Cliqueu aquí per saber més.

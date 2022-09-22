@@ -8,7 +8,6 @@ akeneo.job_automation:
     enable: スケジュールを有効化
     cannot_view_all_jobs: "ご使用のロールに \"プロセストラッカーですべてのジョブを表示\" 権限がないため、プロセストラッカーで自動化されたジョブを表示できません。PIM管理者に連絡してください。"
     frequency:
-      helper: 頻度はUTC24時間フォーマットで表示されます。
       hourly_helper: 数回実行される頻度は、午前0時 (UTC) に開始します。
       title: 頻度
       daily: 毎日

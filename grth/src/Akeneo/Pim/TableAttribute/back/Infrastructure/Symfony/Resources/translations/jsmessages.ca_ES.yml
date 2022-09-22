@@ -130,6 +130,9 @@ pim_table_attribute:
       completeness_helper_text: "Per descobrir com funciona la integritat per a un atribut de taula,"
       completeness_helper_link: consulta el nostre centre d'ajuda.
       reference_entity: Entitat de referència
+      import_from_existing_attribute: Importar des de l'atribut existent
+      measurement_family: Família de mètrica
+      measurement_default_unit: Unitat de mesura per defecte
     product:
       items_per_page: Ítems per pàgina
       current_items: "{{ minItem }}-{{ maxItem }} de {{ itemCount }}"
@@ -159,6 +162,7 @@ pim_table_attribute:
       boolean: Sí/No
       select: Seleccionar
       reference_entity: Entitat de referència
+      measurement: Mètrica
   validations:
     column_code_must_be_filled: Cal omplir el codi
     not_available_code: Aquest codi de columna no està disponible
@@ -195,3 +199,4 @@ batch_jobs:
   xlsx_product_table_values_import.label: Importació de valors de taula de productes en XLSX
   csv_product_model_table_values_import.label: Importació dels valors de la taula del model de producte en CSV
   xlsx_product_model_table_values_import.label: Importació dels valors de la taula del model de producte en XLSX
+  default_steps.clean: Eliminació de valors d'opcions de taula no existents

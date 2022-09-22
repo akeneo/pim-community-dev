@@ -8,7 +8,6 @@ akeneo.job_automation:
     enable: 启用计划
     cannot_view_all_jobs: "您不能在进程跟踪器中查看自动作业， 因为您的角色没有以下权限：“查看进程跟踪器中的所有作业”。请联系您的 PIM 管理员。"
     frequency:
-      helper: 以 24 小时格式显示频率
       hourly_helper: 从一天中午夜 (UTC) 开始执行的频率。
       title: 频率
       daily: 每天
