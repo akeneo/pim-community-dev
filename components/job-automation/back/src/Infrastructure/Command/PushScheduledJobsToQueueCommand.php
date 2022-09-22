@@ -38,7 +38,6 @@ final class PushScheduledJobsToQueueCommand extends Command
     private const RETRY_DELAY_IN_MILLISECOND = 1000;
 
     public function __construct(
-        private EventDispatcherInterface $eventDispatcher,
         private FeatureFlag $jobAutomationFeatureFlag,
         private FindScheduledJobInstancesQueryInterface $findScheduledJobInstancesQuery,
         private PushScheduledJObsToQueueHandlerInterface $pushScheduledJobsToQueueHandler,

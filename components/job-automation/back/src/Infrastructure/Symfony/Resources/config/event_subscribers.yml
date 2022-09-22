@@ -11,3 +11,10 @@ services:
       - '@pim_notification.notifier'
     tags:
       - { name: kernel.event_subscriber }
+
+  Akeneo\Platform\JobAutomation\Infrastructure\EventSubscriber\RefreshScheduledJobInstanceAfterJobPublished:
+    arguments:
+      - '@Akeneo\Platform\JobAutomation\Domain\ClockInterface'
+      - '@akeneo.job_automation.query.update_automation_last_execution_date'
+    tags:
+      - { name: kernel.event_subscriber }
