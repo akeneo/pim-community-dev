@@ -6,7 +6,7 @@ use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Platform\JobAutomation\Application\UpdateScheduledJobInstanceLastExecution\UpdateScheduledJobInstanceLastExecutionHandler;
 use Akeneo\Platform\JobAutomation\Domain\ClockInterface;
 use Akeneo\Platform\JobAutomation\Domain\Event\CouldNotLaunchAutomatedJobEvent;
-use Akeneo\Platform\JobAutomation\Domain\FilterDueJobInstances;
+use Akeneo\Platform\JobAutomation\Domain\IsJobDue;
 use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
 use Akeneo\Platform\JobAutomation\Domain\Model\UserToNotify;
 use Akeneo\Platform\JobAutomation\Domain\Model\UserToNotifyCollection;
@@ -26,16 +26,17 @@ use Symfony\Component\Validator\ConstraintViolationList;
 class PushScheduledJobsToQueueCommandSpec extends ObjectBehavior
 {
     public function let(
-        FeatureFlag $jobAutomationFeatureFlag,
-        FindScheduledJobInstancesQueryInterface $findScheduledJobInstancesQuery,
-        FilterDueJobInstances $filterDueJobInstances,
+        FeatureFlag                                    $jobAutomationFeatureFlag,
+        FindScheduledJobInstancesQueryInterface        $findScheduledJobInstancesQuery,
+        IsJobDue                                       $filterDueJobInstances,
         UpdateScheduledJobInstanceLastExecutionHandler $refreshScheduledJobInstancesHandler,
-        PublishJobToQueue $publishJobToQueue,
-        EventDispatcherInterface $eventDispatcher,
-        FindUsersToNotifyQueryInterface $findUsersToNotifyQuery,
-        LoggerInterface $logger,
+        PublishJobToQueue                              $publishJobToQueue,
+        EventDispatcherInterface                       $eventDispatcher,
+        FindUsersToNotifyQueryInterface                $findUsersToNotifyQuery,
+        LoggerInterface                                $logger,
         ClockInterface $clock,
-    ): void {
+    ): void
+    {
         $eventDispatcher->addSubscriber(Argument::any())->shouldBeCalled();
 
         $this->beConstructedWith($jobAutomationFeatureFlag,
@@ -63,14 +64,15 @@ class PushScheduledJobsToQueueCommandSpec extends ObjectBehavior
     }
 
     public function it_pushes_scheduled_jobs_to_queue(
-        InputInterface $input,
-        OutputInterface $output,
-        FeatureFlag $jobAutomationFeatureFlag,
+        InputInterface                          $input,
+        OutputInterface                         $output,
+        FeatureFlag                             $jobAutomationFeatureFlag,
         FindScheduledJobInstancesQueryInterface $findScheduledJobInstancesQuery,
-        FilterDueJobInstances $filterDueJobInstances,
-        FindUsersToNotifyQueryInterface $findUsersToNotifyQuery,
-        PublishJobToQueue $publishJobToQueue,
-    ): void {
+        IsJobDue                                $filterDueJobInstances,
+        FindUsersToNotifyQueryInterface         $findUsersToNotifyQuery,
+        PublishJobToQueue                       $publishJobToQueue,
+    ): void
+    {
         $jobAutomationFeatureFlag->isEnabled()->shouldBeCalled()->willReturn(true);
 
         $scheduledJobInstance1 = $this->createScheduledJobInstance('job1');
@@ -131,15 +133,16 @@ class PushScheduledJobsToQueueCommandSpec extends ObjectBehavior
     }
 
     public function it_handles_invalid_job_exceptions_on_publish_and_notify(
-        InputInterface $input,
-        OutputInterface $output,
-        FeatureFlag $jobAutomationFeatureFlag,
+        InputInterface                          $input,
+        OutputInterface                         $output,
+        FeatureFlag                             $jobAutomationFeatureFlag,
         FindScheduledJobInstancesQueryInterface $findScheduledJobInstancesQuery,
-        FilterDueJobInstances $filterDueJobInstances,
-        FindUsersToNotifyQueryInterface $findUsersToNotifyQuery,
-        PublishJobToQueue $publishJobToQueue,
-        EventDispatcherInterface $eventDispatcher,
-    ): void {
+        IsJobDue                                $filterDueJobInstances,
+        FindUsersToNotifyQueryInterface         $findUsersToNotifyQuery,
+        PublishJobToQueue                       $publishJobToQueue,
+        EventDispatcherInterface                $eventDispatcher,
+    ): void
+    {
         $jobAutomationFeatureFlag->isEnabled()->shouldBeCalled()->willReturn(true);
 
         $scheduledJobInstance1 = $this->createScheduledJobInstance('job1', [1], [2, 3]);

@@ -17,7 +17,7 @@ use Akeneo\Platform\JobAutomation\Domain\Model\CronExpression;
 use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
 use Webmozart\Assert\Assert;
 
-class FilterDueJobInstances
+class IsJobDue
 {
     public static function fromScheduledJobInstances(ScheduledJobInstance $scheduledJobInstance, CronExpression $cronExpression): bool
     {

@@ -11,7 +11,7 @@ namespace Akeneo\Platform\JobAutomation\Application\PushScheduledJobsToQueue;
 
 use Akeneo\Platform\JobAutomation\Domain\CronExpressionFactory;
 use Akeneo\Platform\JobAutomation\Domain\Event\CouldNotLaunchAutomatedJobEvent;
-use Akeneo\Platform\JobAutomation\Domain\FilterDueJobInstances;
+use Akeneo\Platform\JobAutomation\Domain\IsJobDue;
 use Akeneo\Platform\JobAutomation\Domain\Model\DueJobInstance;
 use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
 use Akeneo\Platform\JobAutomation\Domain\Model\UserToNotifyCollection;
@@ -79,14 +79,17 @@ final class PushScheduledJobsToQueueHandler implements PushScheduledJObsToQueueH
      */
     private function getDueJobs(array $scheduledJobs): array
     {
-        return array_map(
-            function (ScheduledJobInstance $scheduledJob) {
-                if (FilterDueJobInstances::fromScheduledJobInstances($scheduledJob, CronExpressionFactory::fromExpression($scheduledJob->cronExpression))) {
-                    return new DueJobInstance($scheduledJob, $this->getUsersToNotify($scheduledJob));
+        $dueJobs = [];
+
+        if (!empty($scheduledJobs)) {
+            foreach ($scheduledJobs as $scheduledJob) {
+                if (IsJobDue::fromScheduledJobInstances($scheduledJob, CronExpressionFactory::fromExpression($scheduledJob->cronExpression))) {
+                    $dueJobs[] = new DueJobInstance($scheduledJob, $this->getUsersToNotify($scheduledJob));
                 }
-            },
-            $scheduledJobs
-        );
+            }
+        }
+
+        return $dueJobs;
     }
 
     private function getUsersToNotify(ScheduledJobInstance $dueJobInstance): UserToNotifyCollection
