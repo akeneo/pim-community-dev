@@ -259,6 +259,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\QuantifiedAssociations',
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
         'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
 
         // category bounded context
         'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',

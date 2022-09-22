@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Permission\Component\Remover;
 
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
@@ -11,6 +12,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException;
 use Akeneo\Pim\Permission\Component\Remover\ProductRemover;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class ProductRemoverSpec extends ObjectBehavior
@@ -19,7 +22,7 @@ class ProductRemoverSpec extends ObjectBehavior
         RemoverInterface $remover,
         BulkRemoverInterface $bulkRemover,
         AuthorizationCheckerInterface $authorizationChecker,
-        IdentifiableObjectRepositoryInterface $productRepository
+        ProductRepositoryInterface $productRepository
     ) {
         $this->beConstructedWith($remover, $bulkRemover, $authorizationChecker, $productRepository);
     }
@@ -40,8 +43,9 @@ class ProductRemoverSpec extends ObjectBehavior
 
         $options = ['option' => 'foo'];
 
-        $product->getIdentifier()->willReturn('code');
-        $productRepository->findOneByIdentifier('code')->willReturn($fullProduct);
+        $uuid = Uuid::uuid4();
+        $product->getUuid()->willReturn($uuid);
+        $productRepository->find($uuid)->willReturn($fullProduct);
 
         $remover->remove($fullProduct, $options)->shouldBeCalled();
         $this->remove($product, $options);
@@ -59,11 +63,13 @@ class ProductRemoverSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::OWN, $firstProduct)->willReturn(true);
         $authorizationChecker->isGranted(Attributes::OWN, $secondProduct)->willReturn(true);
 
-        $firstProduct->getIdentifier()->willReturn('code1');
-        $productRepository->findOneByIdentifier('code1')->willReturn($fullFirstProduct);
+        $firstUuid = Uuid::uuid4();
+        $firstProduct->getUuid()->willReturn($firstUuid);
+        $productRepository->find($firstUuid)->willReturn($fullFirstProduct);
 
-        $secondProduct->getIdentifier()->willReturn('code2');
-        $productRepository->findOneByIdentifier('code2')->willReturn($fullSecondProduct);
+        $secondUuid = Uuid::uuid4();
+        $secondProduct->getUuid()->willReturn($secondUuid);
+        $productRepository->find($secondUuid)->willReturn($fullSecondProduct);
 
         $products = [$fullFirstProduct, $fullSecondProduct];
         $options = ['option' => 'foo'];
@@ -82,13 +88,16 @@ class ProductRemoverSpec extends ObjectBehavior
             ->during('remove', [$invalidProduct]);
     }
 
-    function it_throws_an_exception_when_one_of_the_objects_to_remove_is_not_a_product(ProductInterface $firstProduct, $authorizationChecker)
-    {
+    function it_throws_an_exception_when_one_of_the_objects_to_remove_is_not_a_product(
+        ProductInterface $firstProduct,
+        UuidInterface $uuid,
+        $authorizationChecker
+    ) {
         $secondProduct = new \stdClass();
         $products = [$firstProduct, $secondProduct];
+        $firstProduct->getUuid()->willReturn($uuid);
 
         $authorizationChecker->isGranted(Attributes::OWN, $firstProduct)->willReturn(true);
-
 
         $this->shouldThrow(InvalidObjectException::objectExpected(\stdClass::class,
             ProductInterface::class
@@ -110,11 +119,13 @@ class ProductRemoverSpec extends ObjectBehavior
 
     function it_throws_an_exception_when_the_user_is_not_authorized_to_remove_one_of_the_products(
         ProductInterface $firstProduct,
+        UuidInterface $firstProductUuid,
         ProductInterface $secondProduct,
         $authorizationChecker
     ) {
         $authorizationChecker->isGranted(Attributes::OWN, $firstProduct)->willReturn(true);
         $authorizationChecker->isGranted(Attributes::OWN, $secondProduct)->willReturn(false);
+        $firstProduct->getUuid()->willReturn($firstProductUuid);
 
         $this->shouldThrow(
             new ResourceAccessDeniedException(
