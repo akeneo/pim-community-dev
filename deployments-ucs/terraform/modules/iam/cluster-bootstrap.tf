@@ -36,20 +36,6 @@ resource "google_project_iam_custom_role" "helm_admin_role" {
   ]
 }
 
-resource "google_project_iam_custom_role" "cloud_build_role" {
-  project     = var.project_id
-  role_id     = "pim.saas.cloudbuild.role"
-  title       = "Cloud build roles admin"
-  description = "Role for managing cloud build bindings"
-  permissions = [
-    "logging.buckets.write",
-    "logging.logEntries.create",
-
-    "cloudbuild.builds.get",
-    "cloudbuild.builds.list",
-  ]
-}
-
 resource "google_service_account" "cluster_bootstrap" {
   project      = var.project_id
   account_id   = "cluster-bootstrap"
@@ -71,15 +57,6 @@ resource "google_project_iam_member" "helm_dev_binding" {
   member  = "serviceAccount:${google_service_account.cluster_bootstrap.email}"
 }
 
-resource "google_project_iam_binding" "cloud_build_binding" {
-  project = var.project_id
-  role    = google_project_iam_custom_role.cloud_build_role.name
-
-  members = [
-    "serviceAccount:${google_service_account.cluster_bootstrap.email}",
-  ]
-}
-
 resource "google_service_account_iam_binding" "cluster_bootstrap_sa_cloudbuild_binding" {
   service_account_id = google_service_account.cluster_bootstrap.name
   role               = "roles/iam.serviceAccountTokenCreator"
@@ -93,4 +70,10 @@ resource "google_project_iam_member" "cluster_bootstrap_sa_cloudbuild_admin_bind
   project = var.project_id
   role    = "roles/iam.serviceAccountUser"
   member  = "serviceAccount:${google_service_account.cluster_bootstrap.email}"
+}
+
+resource "google_service_account_iam_member" "cloud_build_main" {
+  service_account_id = google_service_account.cluster_bootstrap.name
+  role               = "roles/iam.serviceAccountTokenCreator"
+  member             = "serviceAccount:main-service-account@akecld-prd-pim-saas-shared.iam.gserviceaccount.com"
 }
