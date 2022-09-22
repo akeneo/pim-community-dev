@@ -81,11 +81,10 @@ const StyledTableRow = styled(Table.Row)`
 const ProductFileList = ({productFiles}: Props) => {
     const dateFormatter = useDateFormatter();
     const intl = useIntl();
-    const [showPanel, setShowPanel] = useState<boolean>(false);
     const [currentProductFile, setCurrentProductFile] = useState<ProductFile | null>(null);
 
     const closePanel = () => {
-        setShowPanel(false);
+        setCurrentProductFile(null);
     };
 
     const HeaderWelcomeMessage = (
@@ -97,10 +96,9 @@ const ProductFileList = ({productFiles}: Props) => {
     );
 
     const displayCommentPanel = (productFile: ProductFile) => {
-        if (currentProductFile && productFile.identifier === currentProductFile.identifier) {
-            setShowPanel(!showPanel);
-        }
-        setCurrentProductFile(productFile);
+        setCurrentProductFile(
+            !currentProductFile || currentProductFile.identifier !== productFile.identifier ? productFile : null
+        );
     };
 
     return (
@@ -189,7 +187,7 @@ const ProductFileList = ({productFiles}: Props) => {
                         </StyledTable>
                     </FlexRow>
                 </ProductFilesContainer>
-                <CommentPanel showPanel={showPanel} productFile={currentProductFile} closePanel={closePanel} />
+                <CommentPanel productFile={currentProductFile} closePanel={closePanel} />
             </PageContainer>
         </>
     );

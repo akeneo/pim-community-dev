@@ -5,14 +5,13 @@ import {ProductFile} from '../model/ProductFile';
 import {FormattedMessage, useIntl} from 'react-intl';
 import {useDateFormatter} from '../../../utils/date-formatter/use-date-formatter';
 
-const Panel = styled.div<AkeneoThemedProps & {showPanel: boolean}>`
-    width: ${({showPanel}) => (showPanel ? '447px' : '0px')};
+const Panel = styled.div<AkeneoThemedProps & {currentProductFile: ProductFile | null}>`
+    width: ${({currentProductFile}) => (null !== currentProductFile ? '447px' : '0px')};
     transition-property: width;
     transition-duration: 0.5s;
 `;
 
 type Props = {
-    showPanel: boolean;
     productFile: ProductFile | null;
     closePanel: () => void;
 };
@@ -75,14 +74,14 @@ const UploadDateValue = styled.span`
     color: ${getColor('brand120')};
 `;
 
-const CommentPanel = ({showPanel, productFile, closePanel}: Props) => {
+const CommentPanel = ({productFile, closePanel}: Props) => {
     const intl = useIntl();
     const dateFormatter = useDateFormatter();
 
     return (
         <>
             {productFile && (
-                <Panel showPanel={showPanel}>
+                <Panel currentProductFile={productFile}>
                     <FlexRow>
                         <StyledFilename>{productFile.filename}</StyledFilename>
                         <DownloadIconContainer>
@@ -98,6 +97,7 @@ const CommentPanel = ({showPanel, productFile, closePanel}: Props) => {
                         </DownloadIconContainer>
                         <CloseIconContainer>
                             <StyledIconButton
+                                data-testid={'close-panel-icon'}
                                 icon={<CloseIcon size={16} />}
                                 title={intl.formatMessage({
                                     defaultMessage: 'Close',
