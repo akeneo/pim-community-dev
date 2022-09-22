@@ -60,6 +60,7 @@ class MigrateToUuidCommand extends Command
         $this->addOption('dry-run', 'd', InputOption::VALUE_NEGATABLE, 'dry run', false);
         $this->addOption('with-stats', 's', InputOption::VALUE_NEGATABLE, 'Display stats (be careful the command is way too slow)', false);
         $this->addOption('wait-for-dqi', 'w', InputOption::VALUE_NEGATABLE, 'Wait for DQI job before starting', true);
+        $this->addOption('algorithm-inplace', 'a', InputOption::VALUE_NEGATABLE, 'Use ALGORITHM=INPLACE for table migrations. This option does not lock the tables during migration.', true);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -72,7 +73,8 @@ class MigrateToUuidCommand extends Command
 
         $withStats = $input->getOption('with-stats');
         $waitForDQI = $input->getOption('wait-for-dqi');
-        $context = new Context($input->getOption('dry-run'), $withStats);
+        $algorithInplace = $input->getOption('algorithm-inplace');
+        $context = new Context($input->getOption('dry-run'), $withStats, $algorithInplace);
 
         if (!$this->isDatabaseReady()) {
             // As the migration can be run with a cron, the database can be not ready.
