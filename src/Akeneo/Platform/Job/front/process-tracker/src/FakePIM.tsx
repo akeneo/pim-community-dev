@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import {CardIcon, CommonStyle, DownloadIcon, getColor, MainNavigationItem} from 'akeneo-design-system';
 import {ProcessTrackerApp} from './feature/ProcessTrackerApp';
 import {JobInstanceDetail} from './feature/pages/JobInstanceDetail';
+import {LastOperationsWidget} from './feature/pages/LastOperationsWidget';
 
 const Container = styled.div`
   display: flex;
@@ -32,6 +33,13 @@ const FakePIM = () => {
     <Container>
       <Menu>
         <MainNavigationItem
+          onClick={() => setCurrentPage('dashboard')}
+          icon={<CardIcon />}
+          active={'dashboard' === currentPage}
+        >
+          Dashboard
+        </MainNavigationItem>
+        <MainNavigationItem
           onClick={() => setCurrentPage('process-tracker')}
           icon={<CardIcon />}
           active={'process-tracker' === currentPage}
@@ -47,6 +55,7 @@ const FakePIM = () => {
         </MainNavigationItem>
       </Menu>
       <Page>
+        {'dashboard' === currentPage && <LastOperationsWidget />}
         {'process-tracker' === currentPage && <ProcessTrackerApp />}
         {'job-instance' === currentPage && <JobInstanceDetail code="csv_product_export" type="export" />}
       </Page>
