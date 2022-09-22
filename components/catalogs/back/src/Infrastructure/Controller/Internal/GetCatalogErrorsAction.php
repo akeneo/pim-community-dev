@@ -53,10 +53,8 @@ final class GetCatalogErrorsAction
             new CatalogUpdatePayload(),
         ]);
 
-        if ($violations->count() > 0) {
-            return new JsonResponse($this->normalizer->normalize($violations), Response::HTTP_OK);
-        }
+        $normalizedViolations = $violations->count() > 0 ? $this->normalizer->normalize($violations) : [];
 
-        return new JsonResponse([], Response::HTTP_OK);
+        return new JsonResponse($normalizedViolations, Response::HTTP_OK);
     }
 }
