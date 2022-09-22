@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Application\Persistence;
+namespace Akeneo\Catalogs\Application\Persistence\Currency;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>

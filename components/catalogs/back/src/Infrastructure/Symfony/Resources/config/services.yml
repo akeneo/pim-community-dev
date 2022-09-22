@@ -136,11 +136,11 @@ services:
         arguments:
             - '@akeneo_measure.persistence.measurement_family_repository'
 
-    Akeneo\Catalogs\Infrastructure\Persistence\IsCurrencyActivatedQuery:
+    Akeneo\Catalogs\Infrastructure\Persistence\Currency\IsCurrencyActivatedQuery:
         arguments:
             - '@pim_catalog.repository.currency'
 
-    Akeneo\Catalogs\Infrastructure\Persistence\GetCurrenciesQuery:
+    Akeneo\Catalogs\Infrastructure\Persistence\Currency\GetCurrenciesQuery:
         arguments:
             - '@pim_catalog.repository.currency'
 

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Infrastructure\Persistence;
+namespace Akeneo\Catalogs\Infrastructure\Persistence\Currency;
 
-use Akeneo\Catalogs\Application\Persistence\IsCurrencyActivatedQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Currency\IsCurrencyActivatedQueryInterface;
 use Akeneo\Channel\Infrastructure\Component\Repository\CurrencyRepositoryInterface;
 
 /**
