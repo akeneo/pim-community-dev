@@ -20,9 +20,9 @@ pim_asset_manager:
     validation:
       code:
         limit_reached: 'Você não pode criar a família de mídia "{{ %reference_entity_label% }}", porque você chegou ao limite de {{ %limit% }} famílias de mídia'
-    product_link_rules:
-      execute_naming_convention:
-        cancel: Cancelar
+    transformations:
+      help:
+        description: Aqui você pode definir até 10 transformações por família de ativos.
     properties:
       media_file: Arquivo de mídia
   asset:
@@ -47,7 +47,6 @@ pim_asset_manager:
         label: Rótulo
         code: Código (obrigatório)
         create_another: Criar uma nova mídia
-      confirm: Salvar
     upload:
       lines: Arquivos
       remove: Remover
@@ -85,7 +84,6 @@ pim_asset_manager:
         value_per_channel: Valor por canal
       placeholder:
         asset_type: Selecione sua família de mídias vinculada
-      confirm: Salvar
     edit:
       delete: Excluir o atributo
       title: Editar atributo {{ code }}

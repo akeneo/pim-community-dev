@@ -10,8 +10,6 @@ akeneo_referenceentity:
     record:
       create: Criar um registro
       edit: Editar os registros
-      delete: Excluir um registro
-      delete_all: Excluir todos os registros da entidade
       list_product: Listar produtos vinculados para gravar
     attribute:
       create: Adicionar um atributo a uma entidade de referência
@@ -31,3 +29,6 @@ pim_analytics:
     average_percentage_localizable_only_attributes: Porcentagem média de atributos somente localizáveis por entidade de referência
     average_percentage_scopable_only_attributes: Porcentagem média de atributos somente acessíveis por entidade de referência
     average_percentage_scopable_and_localizable_attributes: Porcentagem média de atributos localizáveis e acessíveis por entidade de referência
+pim_api:
+  acl_group:
+    reference_entity: Entidades de referência
