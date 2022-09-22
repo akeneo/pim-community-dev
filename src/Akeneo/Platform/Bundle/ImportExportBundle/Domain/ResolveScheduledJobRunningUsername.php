@@ -11,7 +11,7 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Domain;
 
 class ResolveScheduledJobRunningUsername
 {
-    private const AUTOMATED_USER_PREFIX = 'job_automated_';
+    public const AUTOMATED_USER_PREFIX = 'job_automated_';
 
     public function fromJobCode(string $jobCode): string
     {
