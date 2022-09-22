@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Infrastructure\Job;
 
 use Akeneo\Catalogs\Application\Persistence\DisableCatalogsQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\GetCatalogsToDisableOnAttributeOptionRemovalQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\GetCatalogIdsContainingAttributeOptionQueryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
@@ -18,7 +18,7 @@ class DisableCatalogsOnAttributeOptionRemovalTasklet implements TaskletInterface
     private ?StepExecution $stepExecution = null;
 
     public function __construct(
-        private GetCatalogsToDisableOnAttributeOptionRemovalQueryInterface $getCatalogsToDisableQuery,
+        private GetCatalogIdsContainingAttributeOptionQueryInterface $getCatalogIdsContainingAttributeOptionQuery,
         private DisableCatalogsQueryInterface $disableCatalogsQuery,
     ) {
     }
@@ -40,7 +40,7 @@ class DisableCatalogsOnAttributeOptionRemovalTasklet implements TaskletInterface
         /** @var string $attributeOptionCode */
         $attributeOptionCode = $this->stepExecution->getJobParameters()->get('attribute_option_code');
 
-        $ids = $this->getCatalogsToDisableQuery->execute($attributeCode, $attributeOptionCode);
+        $ids = $this->getCatalogIdsContainingAttributeOptionQuery->execute($attributeCode, $attributeOptionCode);
         $this->disableCatalogsQuery->execute($ids);
     }
 }

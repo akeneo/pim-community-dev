@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Persistence;
 
-use Akeneo\Catalogs\Application\Persistence\GetCatalogsToDisableOnAttributeOptionRemovalQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\GetCatalogIdsContainingAttributeOptionQueryInterface;
 use Doctrine\DBAL\Connection;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GetCatalogsToDisableOnAttributeOptionRemovalQuery implements GetCatalogsToDisableOnAttributeOptionRemovalQueryInterface
+final class GetCatalogIdsContainingAttributeOptionQuery implements GetCatalogIdsContainingAttributeOptionQueryInterface
 {
     public function __construct(
         private Connection $connection,

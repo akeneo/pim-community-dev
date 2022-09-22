@@ -5,19 +5,18 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence;
 
 use Akeneo\Catalogs\Domain\Operator;
-use Akeneo\Catalogs\Infrastructure\Persistence\GetCatalogsToDisableOnAttributeOptionRemovalQuery;
-use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
+use Akeneo\Catalogs\Infrastructure\Persistence\GetCatalogIdsContainingAttributeOptionQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @covers \Akeneo\Catalogs\Infrastructure\Persistence\GetCatalogsToDisableOnAttributeOptionRemovalQuery
+ * @covers \Akeneo\Catalogs\Infrastructure\Persistence\GetCatalogIdsContainingAttributeOptionQuery
  */
-class GetCatalogsToDisableOnAttributeOptionRemovalQueryTest extends IntegrationTestCase
+class GetCatalogIdsContainingAttributeOptionQueryTest extends IntegrationTestCase
 {
-    private ?GetCatalogsToDisableOnAttributeOptionRemovalQuery $query;
+    private ?GetCatalogIdsContainingAttributeOptionQuery $query;
 
     protected function setUp(): void
     {
@@ -25,7 +24,7 @@ class GetCatalogsToDisableOnAttributeOptionRemovalQueryTest extends IntegrationT
 
         $this->purgeDataAndLoadMinimalCatalog();
 
-        $this->query = self::getContainer()->get(GetCatalogsToDisableOnAttributeOptionRemovalQuery::class);
+        $this->query = self::getContainer()->get(GetCatalogIdsContainingAttributeOptionQuery::class);
     }
 
     public function testItGetsCatalogsByAttributeOption(): void
