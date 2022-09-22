@@ -113,6 +113,9 @@ oro_config:
           label: Включить загрузку сообщений
         loading_messages:
           label: Доступна загрузка сообщений
+pim_ui:
+  flash:
+    unsaved_changes: 'У вас есть несохраненные изменения, вы уверены, что хотите выйти?'
 "Sorry, page was not loaded correctly": "Извините, страница загружена неправильно"
 "Your local changes will be lost. Are you sure you want to refresh the page?": "Ваши локальные изменения будут потеряны. Вы действительно хотите обновить страницу?"
 "navigation.message.content.outdated": "Содержание страницы {{ title }} устарело, пожалуйста, <a href='#' data-action='page-refresh'> обновите страницу</a>"
@@ -218,6 +221,9 @@ pim_common:
     STARTS WITH: Начинается с
     ENDS WITH: Заканчивается на
   read_more: Читать далее
+  groups: Группы
+  products: Продукты
+  more: Еще
 error:
   forbidden: Запрещено. У вас нет доступа к этой странице
 alert:
@@ -260,8 +266,8 @@ pim_title:
   pim_enrich_catalog_volume_index: Мониторинг объема каталога
   pim_enrich_categorytree_index: Деревья категории
   pim_enrich_categorytree_create: Деревья категорий | Создать
-  pim_enrich_categorytree_edit: Дерево категорий {{ category.label }} | Изменить
   pim_enrich_categorytree_create_tree: Деревья категорий | Создать
+  pim_enrich_categorytree_tree: Дерево категорий {{ category.label }} | Изменить
   pim_enrich_attribute_index: Атрибуты
   pim_enrich_attribute_create: Атрибуты | Создать
   pim_enrich_attribute_edit: Атрибуты {{ attribute.label }} | Редактировать
@@ -288,6 +294,8 @@ pim_title:
   pim_enrich_job_tracker_show: Трекер процессов | Показать задание
   pim_enrich_mass_edit_action: Массовое редактирование
   pim_analytics_system_info_index: Информация о системе
+  pim_settings_index: Настройки
+  pim_system_index: Система
 pim_menu:
   tab:
     activity: Активность
@@ -303,7 +311,6 @@ pim_menu:
     attribute_group: Группы атрибутов
     channel: Каналы
     currency: Валюты
-    dashboard: Панель управления
     family: Семейства
     group: Группы
     group_type: Типы групп
@@ -324,7 +331,8 @@ pim_menu:
     activity: Меню раздела Активность
     system: Меню раздела Система
     user: Меню раздела Управление пользователями
-    settings: Меню раздела Настройки
+    settings:
+      collapsed_label: Меню раздела Настройки
     product: Навигацию по продуктам
     product_infos: Информация о продуктах
   user:
@@ -336,3 +344,6 @@ pim_notification:
     export: Экспорт
     quick_export: Быстрый экспорт
     mass_edit: Массовое редактирование
+pim_system:
+  system_navigation: Меню раздела Система
+  users_management_navigation: Меню раздела Управление пользователями
