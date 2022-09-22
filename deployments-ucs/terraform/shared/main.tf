@@ -17,6 +17,31 @@ locals {
   multi_region                 = "EU"
 }
 
+module "secrets" {
+  source     = "../modules/secrets"
+  project_id = local.project_id
+  secrets    = [
+    {
+      name    = "DATADOG_API_KEY"
+      members = [
+        "serviceAccount:${local.main_sa}"
+      ]
+      labels = {
+        usage = "datadog"
+      }
+    },
+    {
+      name    = "ARGOCD_GITHUB_TOKEN"
+      members = [
+        "serviceAccount:${local.main_sa}"
+      ],
+      labels = {
+        usage = "argocd"
+      }
+    }
+  ]
+}
+
 module "registry_dev" {
   source               = "../modules/registry"
   project_id           = local.project_id

@@ -33,33 +33,3 @@ resource "google_project_iam_member" "argocd_workload_identity" {
   role    = "roles/iam.workloadIdentityUser"
   member  = "serviceAccount:${var.project_id}.svc.id.goog[argocd/argocd-repo-server]"
 }
-
-resource "google_secret_manager_secret" "argocd_token" {
-  project   = var.project_id
-  secret_id = "ARGOCD_TOKEN"
-
-  labels = {
-    usage = "argocd"
-  }
-
-  replication {
-    automatic = true
-  }
-}
-
-resource "google_secret_manager_secret_iam_binding" "argocd_token_ci" {
-  project   = var.project_id
-  secret_id = google_secret_manager_secret.argocd_token.secret_id
-  role      = "roles/secretmanager.secretAccessor"
-  members   = [
-    local.ci_sa,
-    "serviceAccount:${google_service_account.cluster_bootstrap.email}"
-  ]
-}
-
-resource "google_secret_manager_secret_iam_binding" "argocd_token_admins" {
-  project   = var.project_id
-  secret_id = google_secret_manager_secret.argocd_token.secret_id
-  role      = "roles/secretmanager.secretVersionManager"
-  members   = var.secrets_admins
-}
