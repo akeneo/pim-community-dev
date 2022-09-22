@@ -1,5 +1,5 @@
 import {useCallback, useEffect, useState} from 'react';
-import {convertHtmlContent, getEditorContent} from '../../../application/helper';
+import {convertHtmlContent, getEditorContent} from '../../../application';
 import EditorElement, {isEditableContent} from '../../../application/helper/EditorHighlight/EditorElement';
 
 type ElementContentState = {
@@ -13,7 +13,6 @@ const useElementContent = (element: HTMLElement): ElementContentState => {
   const [analyzableContent, setAnalyzableContent] = useState<string>('');
 
   const handleRefresh = useCallback(() => {
-    setContent('');
     setContent(getEditorContent(element as EditorElement));
   }, [element]);
 
