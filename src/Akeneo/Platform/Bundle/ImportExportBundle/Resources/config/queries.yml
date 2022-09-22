@@ -1,9 +1,4 @@
 services:
-    pim_import_export.query.get_last_operations:
-        class: 'Akeneo\Platform\Bundle\ImportExportBundle\Query\GetLastOperations'
-        arguments:
-            - '@database_connection'
-
     pim_import_export.query.get_job_execution_tracking:
         class: Akeneo\Platform\Bundle\ImportExportBundle\Query\GetJobExecutionTracking
         arguments:
