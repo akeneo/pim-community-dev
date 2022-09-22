@@ -26,11 +26,11 @@ export const useCatalogForm = (id: string): Result => {
     const [dirty, setDirty] = useState<boolean>(false);
     const [errors, setErrors] = useState<CatalogFormErrors>([]);
     const saveCatalog = useSaveCatalog();
-    const {data: catalogErrors} = useCatalogErrors(id);
+    const {data: initialErrors} = useCatalogErrors(id);
 
     const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
-    if (isFirstLoad && catalogErrors !== undefined) {
-        setErrors(catalogErrors);
+    if (isFirstLoad && initialErrors !== undefined) {
+        setErrors(initialErrors);
         setIsFirstLoad(false);
     }
 
