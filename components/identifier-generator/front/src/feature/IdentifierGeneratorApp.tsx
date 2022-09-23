@@ -1,6 +1,7 @@
 import React from 'react';
 import {Breadcrumb, Button, Helper} from 'akeneo-design-system';
 import {PageHeader, PimView, useTranslate} from '@akeneo-pim-community/shared';
+import {IdentifierAttributeSelector} from './components';
 
 const IdentifierGeneratorApp = () => {
   const translate = useTranslate();
@@ -8,14 +9,9 @@ const IdentifierGeneratorApp = () => {
   return (
     <div>
       <Helper level="error">
-        <p>
-          Under Construction: The Akeneo Product Team is hard at work developing new features for you. This feature will
-          launch soon, but is currently under development.
-        </p>
-        <p>
-          Please do not attempt to use this feature as it could lead to unexpected behaviors that impact your product
-          data.
-        </p>
+        Under Construction: The Akeneo Product Team is hard at work developing new features for you. This feature will
+        launch soon, but is currently under development. Please do not attempt to use this feature as it could lead to
+        unexpected behaviors that impact your product data.
       </Helper>
       <PageHeader>
         <PageHeader.Breadcrumb>
@@ -35,6 +31,7 @@ const IdentifierGeneratorApp = () => {
         </PageHeader.Actions>
         <PageHeader.Title>{translate('pim_title.akeneo_identifier_generator_index')}</PageHeader.Title>
       </PageHeader>
+      <IdentifierAttributeSelector code="sku" />
     </div>
   );
 };
