@@ -48,12 +48,7 @@ const Edit: FC<PropsWithChildren<Props>> = ({id, values, errors}) => {
 
     return (
         <>
-            <TabBar
-                isCurrent={isCurrent}
-                switchTo={handleSwitchTo}
-                invalid={getTabsValidationStatus(errors)}
-                id={id}
-            />
+            <TabBar isCurrent={isCurrent} switchTo={handleSwitchTo} invalid={getTabsValidationStatus(errors)} id={id} />
 
             {isCurrent(Tabs.SETTINGS) && (
                 <Settings

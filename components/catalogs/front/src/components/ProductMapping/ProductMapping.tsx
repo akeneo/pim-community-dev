@@ -1,5 +1,5 @@
 import React, {FC, useState} from 'react';
-import styled, {keyframes} from 'styled-components';
+import styled from 'styled-components';
 import {SectionTitle, SwitcherButton, Table} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {SourcePlaceholder} from './components/SourcePlaceholder';
@@ -69,7 +69,7 @@ export const ProductMapping: FC<Props> = () => {
                 </Table>
             </TargetContainer>
             <SourceContainer>
-                {selectedTarget === undefined && <SourcePlaceholder/>}
+                {selectedTarget === undefined && <SourcePlaceholder />}
                 {selectedTarget && (
                     <SectionTitle>
                         <SectionTitle.Title>Target Name</SectionTitle.Title>

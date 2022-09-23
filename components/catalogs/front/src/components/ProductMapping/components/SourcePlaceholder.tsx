@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {SectionTitle} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 
-export  const SourcePlaceholder = () => {
+export const SourcePlaceholder: FC = () => {
     const translate = useTranslate();
 
     return (

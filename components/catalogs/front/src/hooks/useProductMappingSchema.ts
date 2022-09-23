@@ -1,6 +1,6 @@
 import {useQuery} from 'react-query';
 
-type Data = null|boolean;
+type Data = null;
 type Error = string | null;
 type Result = {
     isLoading: boolean;
@@ -11,6 +11,6 @@ type Result = {
 
 export const useProductMappingSchema = (catalogId: string): Result => {
     return useQuery<Data, Error, Data>(['catalog-mapping-requirements', catalogId], () => {
-        return true;
+        return null;
     });
 };
