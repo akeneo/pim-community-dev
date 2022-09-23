@@ -17,7 +17,7 @@ final class Context
     public function __construct(
         private bool $dryRun,
         private bool $withStats,
-        private bool $algorithmInplace
+        private bool $lockTables
     ) {
     }
 
@@ -31,8 +31,8 @@ final class Context
         return $this->withStats;
     }
 
-    public function algorithmInplace(): bool
+    public function lockTables(): bool
     {
-        return $this->algorithmInplace;
+        return $this->lockTables;
     }
 }

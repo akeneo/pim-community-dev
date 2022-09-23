@@ -29,7 +29,7 @@ final class Version_7_0_20220429131804_execute_uuid_migration extends AbstractMi
         $input = new ArrayInput([
             'command' => 'pim:product:migrate-to-uuid',
             '--wait-for-dqi' => false,
-            '--algorithm-inplace' => false,
+            '--lock-tables' => true,
         ]);
         $output = new BufferedOutput();
         $exitCode = $application->run($input, $output);

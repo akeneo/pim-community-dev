@@ -84,7 +84,7 @@ class MigrateToUuidSetNotNullableUuidColumns implements MigrateToUuidStep
     public function addMissing(Context $context): bool
     {
         $logContext = $context->logContext;
-        $algorithmInplace = $context->algorithmInplace();
+        $lockTables = $context->lockTables();
 
         $updatedItems = 0;
         foreach ($this->getTablesToMigrate() as $tableName => $columnNames) {
@@ -95,7 +95,7 @@ class MigrateToUuidSetNotNullableUuidColumns implements MigrateToUuidStep
                     $this->setUuidColumnNotNullable(
                         $tableName,
                         $columnNames[self::UUID_COLUMN_INDEX],
-                        $algorithmInplace
+                        $lockTables
                     );
                     $this->logger->notice('Substep done', $logContext->toArray(['updated_items_count' => $updatedItems+=1]));
                 }
@@ -111,7 +111,7 @@ class MigrateToUuidSetNotNullableUuidColumns implements MigrateToUuidStep
                     SQL,
                     [
                         '{table_name}' => $tableName,
-                        '{algorithmInplace}' => $algorithmInplace ? ', ALGORITHM=INPLACE, LOCK=NONE' : '',
+                        '{algorithmInplace}' => $lockTables ? '' : ', ALGORITHM=INPLACE, LOCK=NONE',
                     ]
                 ));
                 $this->logger->notice('Substep done', $logContext->toArray([
@@ -124,7 +124,7 @@ class MigrateToUuidSetNotNullableUuidColumns implements MigrateToUuidStep
         return true;
     }
 
-    private function setUuidColumnNotNullable(string $tableName, string $uuidColumnName, bool $algorithmInplace): void
+    private function setUuidColumnNotNullable(string $tableName, string $uuidColumnName, bool $lockTables): void
     {
         $sql = <<<SQL
             ALTER TABLE `{table_name}`
@@ -136,7 +136,7 @@ class MigrateToUuidSetNotNullableUuidColumns implements MigrateToUuidStep
             [
                 '{table_name}' => $tableName,
                 '{uuid_column_name}' => $uuidColumnName,
-                '{algorithmInplace}' => $algorithmInplace ? ', ALGORITHM=INPLACE, LOCK=NONE' : '',
+                '{algorithmInplace}' => $lockTables ? '' : ', ALGORITHM=INPLACE, LOCK=NONE',
             ]
         );
 
