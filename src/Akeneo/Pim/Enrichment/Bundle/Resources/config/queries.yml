@@ -340,8 +340,8 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo.pim.enrichment.product.query.find_product_identifiers:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\FindProductIdentifiers'
+    Akeneo\Pim\Enrichment\Component\Product\Query\FindProductUuidsInGroup:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuidsInGroup'
         arguments:
             - '@database_connection'
 

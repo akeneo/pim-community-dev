@@ -46,7 +46,6 @@ datagrid:
                 type:          field
         properties:
             id: ~
-            identifier: ~
         sorters:
             columns:
                 in_group:

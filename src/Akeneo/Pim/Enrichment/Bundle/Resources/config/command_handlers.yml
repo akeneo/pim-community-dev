@@ -1,7 +1,7 @@
 services:
   Akeneo\Pim\Enrichment\Component\Product\Command\GroupProductsHandler:
     arguments:
-      - '@akeneo.pim.enrichment.product.query.find_product_identifiers'
+      - '@Akeneo\Pim\Enrichment\Component\Product\Query\FindProductUuidsInGroup'
       - '@pim_catalog.repository.group'
       - '@pim_catalog.saver.product'
       - '@pim_catalog.repository.product'

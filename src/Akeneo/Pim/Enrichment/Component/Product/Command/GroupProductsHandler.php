@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Command;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
-use Akeneo\Pim\Enrichment\Component\Product\Query\FindProductIdentifiersInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FindProductUuidsInGroup;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
@@ -18,58 +19,51 @@ use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
  */
 class GroupProductsHandler
 {
-    private FindProductIdentifiersInterface $findGroupProductIdentifiers;
-    private GroupRepositoryInterface $groupRepository;
-    private BulkSaverInterface $productSaver;
-    private ProductRepositoryInterface $productRepository;
-    private int $batchSize;
-
-
-    public function __construct(FindProductIdentifiersInterface $getGroupProductIdentifiers, GroupRepositoryInterface $groupRepository, BulkSaverInterface $productSaver, ProductRepositoryInterface $productRepository, int $batchSize)
-    {
-        $this->findGroupProductIdentifiers = $getGroupProductIdentifiers;
-        $this->groupRepository = $groupRepository;
-        $this->productSaver = $productSaver;
-        $this->productRepository = $productRepository;
-        $this->batchSize = $batchSize;
+    public function __construct(
+        private FindProductUuidsInGroup $findUuids,
+        private GroupRepositoryInterface $groupRepository,
+        private BulkSaverInterface $productSaver,
+        private ProductRepositoryInterface $productRepository,
+        private int $batchSize
+    ) {
     }
 
-    public function handle(GroupProductsCommand $updateProductsToGroupCommand)
+    public function handle(GroupProductsCommand $updateProductsToGroupCommand): void
     {
-        $newProductIds = $updateProductsToGroupCommand->productIds();
-        $oldProductIds = $this->findGroupProductIdentifiers->fromGroupId($updateProductsToGroupCommand->groupId());
+        $newProductUuids = $updateProductsToGroupCommand->productUuids();
+        $formerProductUuids = $this->findUuids->forGroupId($updateProductsToGroupCommand->groupId());
 
-        $addedProductIds = array_diff($newProductIds, $oldProductIds);
-        $removedProductIds = array_diff($oldProductIds, $newProductIds);
+        $addedProductUuids = \array_diff($newProductUuids, $formerProductUuids);
+        $removedProductUuids = \array_diff($formerProductUuids, $newProductUuids);
 
         $group = $this->groupRepository->find($updateProductsToGroupCommand->groupId());
 
         $this->batchProductExecution(
             $group,
-            $addedProductIds,
-            function (GroupInterface $group, Product $product) {
-                $product->addGroup($group);
+            $removedProductUuids,
+            function (GroupInterface $group, ProductInterface $product) {
+                $product->removeGroup($group);
             }
         );
 
         $this->batchProductExecution(
             $group,
-            $removedProductIds,
-            function (GroupInterface $group, Product $product) {
-                $product->removeGroup($group);
+            $addedProductUuids,
+            function (GroupInterface $group, ProductInterface $product) {
+                $product->addGroup($group);
             }
         );
     }
 
-    protected function batchProductExecution($group, array $productIds, \Closure $addGroup)
+    protected function batchProductExecution($group, array $productUuids, \Closure $closure): void
     {
-        $batchedProductIdsList = \array_chunk($productIds, $this->batchSize);
-        foreach ($batchedProductIdsList as $productIdList) {
+        $batchedProductUuidsList = \array_chunk($productUuids, $this->batchSize);
+        foreach ($batchedProductUuidsList as $productUuidList) {
             $batchedProducts = [];
-            foreach ($productIdList as $productId) {
-                $product = $this->productRepository->findOneByIdentifier($productId);
-                $addGroup($group, $product);
-                $batchedProducts[]=$product;
+            $products = $this->productRepository->getItemsFromUuids($productUuidList);
+            foreach ($products as $product) {
+                $closure($group, $product);
+                $batchedProducts[] = $product;
             }
             $this->productSaver->saveAll($batchedProducts);
         }

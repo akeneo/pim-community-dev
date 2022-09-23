@@ -116,7 +116,7 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.query.filter.product_registry'
             - '@pim_catalog.query.sorter.registry'
-            - '@pim_catalog.factory.product_from_size_cursor'
+            - '@pim_enrich.factory.product_and_product_model_from_size_cursor'
             - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
 
     pim_catalog.query.product_query_builder_from_size_factory_external_api:

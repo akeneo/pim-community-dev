@@ -20,7 +20,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\FindProductIdentifiersInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
@@ -1671,21 +1670,18 @@ class FixturesContext extends BaseFixturesContext
      *
      * @throws \Exception
      */
-    public function groupShouldContain($group, $products)
+    public function groupShouldContain($groupCode, $products)
     {
-        $group = $this->getProductGroup($group);
+        $group = $this->getProductGroup($groupCode);
         $this->refresh($group);
 
-        $groupProducts = [];
-        /** @var FindProductIdentifiersInterface $productIdentifiersFinder */
-        $productIdentifiersFinder = $this->getContainer()->get('akeneo.pim.enrichment.product.query.find_product_identifiers');
-        $productIds = $productIdentifiersFinder->fromGroupId($group->getId());
-        foreach ($productIds as $productId) {
-            $groupProducts[] = $this->getProductRepository()->findOneBy(['identifier'=>$productId]);
-        }
+        $productsInGroup = $this->getProductRepository()->getItemsFromUuids(
+            $this->getContainer()->get('Akeneo\Pim\Enrichment\Component\Product\Query\FindProductUuidsInGroup')
+                ->forGroupId($group->getId())
+        );
 
         foreach ($this->listToArray($products) as $sku) {
-            if (!in_array($this->getProduct($sku), $groupProducts)) {
+            if (!in_array($this->getProduct($sku), $productsInGroup)) {
                 throw new \Exception(
                     sprintf('Group "%s" doesn\'t contain product "%s"', $group->getCode(), $sku)
                 );
