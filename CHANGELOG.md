@@ -86,6 +86,7 @@
 - PIM-10646: Fix export with label from a select attribute containing uppercase in its code exports code and not labels
 - PIM-10622: Fix save options labels when using the automatic correction in Firefox
 - PIM-10634: Fix media filter values normalizer to be case insensitive
+- PIM-10649: Fix wrong attributes displayed when selecting attribute group in export profile filter when there is too many attributes selected
 
 ## Improvements
 
