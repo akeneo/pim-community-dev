@@ -464,7 +464,6 @@ functions.http('createTenant', (req, res) => {
     const ARGOCD_USERNAME = loadEnvironmentVariable('ARGOCD_USERNAME');
     const GCP_FIRESTORE_PROJECT_ID = loadEnvironmentVariable('GCP_FIRESTORE_PROJECT_ID');
     const GCP_PROJECT_ID = loadEnvironmentVariable('GCP_PROJECT_ID');
-    const GOOGLE_MANAGED_ZONE_DNS = loadEnvironmentVariable('GOOGLE_MANAGED_ZONE_DNS');
     const GOOGLE_ZONE = loadEnvironmentVariable('GOOGLE_ZONE');
     const LOG_LEVEL = loadEnvironmentVariable('LOG_LEVEL');
     const MAILER_API_KEY = loadEnvironmentVariable('MAILER_API_KEY');
@@ -497,9 +496,10 @@ functions.http('createTenant', (req, res) => {
     logger.debug(`Received HTTP json body: ${JSON.stringify(body)}`);
 
     const instanceName = body.instanceName;
+    const dnsCloudDomain = body.dnsCloudDomain;
     const extraLabelType = 'ucs';
     const pfid = `${extraLabelType}-${instanceName}`;
-    const pimMasterDomain = `${instanceName}.${GOOGLE_MANAGED_ZONE_DNS}`;
+    const pimMasterDomain = `${instanceName}.${dnsCloudDomain}`;
 
     logger.debug(`Initialize the firestore client with instance in ${GCP_FIRESTORE_PROJECT_ID} project`);
     const firestore = new Firestore({
@@ -543,7 +543,7 @@ functions.http('createTenant', (req, res) => {
             gcpFireStoreProjectID: GCP_FIRESTORE_PROJECT_ID,
             googleZone: GOOGLE_ZONE,
             pimMasterDomain: pimMasterDomain,
-            dnsCloudDomain: GOOGLE_MANAGED_ZONE_DNS,
+            dnsCloudDomain: dnsCloudDomain,
             workloadIdentityGSA: 'main-service-account',
             workloadIdentityKSA: `${pfid}-ksa-workload-identity`,
           },
@@ -592,7 +592,7 @@ functions.http('createTenant', (req, res) => {
             extraLabels: {
               instanceName: instanceName,
               pfid: pfid,
-              instance_dns_zone: GOOGLE_MANAGED_ZONE_DNS,
+              instance_dns_zone: dnsCloudDomain,
               instance_dns_record: pimMasterDomain,
               papo_project_code: instanceName,
               papo_project_code_truncated: instanceName,
@@ -676,7 +676,7 @@ functions.http('createTenant', (req, res) => {
     const createTenant = async () => {
       const parameters = await prepareTenantCreation();
       await updateFirestoreDoc(firestore, TENANT_CONTEXT, instanceName, FIRESTORE_STATUS.CREATION_IN_PROGRESS, {
-        AKENEO_PIM_URL: `https://${instanceName}.${GOOGLE_MANAGED_ZONE_DNS}`,
+        AKENEO_PIM_URL: `https://${instanceName}.${parameters.pim.dnsCloudDomain}`,
         APP_DATABASE_HOST: `pim-mysql.${pfid}.svc.cluster.local`,
         APP_DATABASE_PASSWORD: parameters.mysql.mysql.userPassword,
         APP_INDEX_HOSTS: `elasticsearch-client.${pfid}.svc.cluster.local`,
@@ -698,7 +698,6 @@ functions.http('createTenant', (req, res) => {
       await ensureArgoCdAppIsHealthy(ARGOCD_URL, token, instanceName);
       // TODO PH-286: full synced is not possible because http routes objects are not synced. Fix that to uncomment this line
       await ensureArgoCdAppIsSynced(ARGOCD_URL, token, instanceName);
-
     }
 
     createTenant(res)

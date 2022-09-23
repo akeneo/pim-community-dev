@@ -120,10 +120,8 @@ module "timmy_create_tenant" {
   environment_variables = {
     ARGOCD_URL               = local.argocd_url
     ARGOCD_USERNAME          = "admin"
-    DNS_CLOUD_DOMAIN         = "pim-saas-dev.dev.cloud.akeneo.com"
     GCP_FIRESTORE_PROJECT_ID = local.firestore_project_id
     GCP_PROJECT_ID           = local.project_id
-    GOOGLE_MANAGED_ZONE_DNS  = local.domain
     GOOGLE_ZONE              = "europe-west1-b"
     LOG_LEVEL                = "debug"
     MAILER_BASE_URL          = "smtp://smtp.mailgun.org:2525"

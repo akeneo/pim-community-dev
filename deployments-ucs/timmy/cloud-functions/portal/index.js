@@ -197,10 +197,12 @@ functions.http('requestPortal', (req, res) => {
       const subject = tenant['subject'];
       const cloudInstance = subject['cloud_instance'];
       const instanceName = subject['instance_fqdn']['prefix'];
+      const dnsCloudDomain = subject['instance_fqdn']['suffix'];
       const administrator = cloudInstance['administrator'];
 
       const payload = {
         instanceName: instanceName,
+        dnsCloudDomain: dnsCloudDomain,
         pim: {
           defaultAdminUser: {
             login: administrator['email'],
