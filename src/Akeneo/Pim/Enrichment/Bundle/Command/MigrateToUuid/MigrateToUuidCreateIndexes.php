@@ -63,6 +63,7 @@ class MigrateToUuidCreateIndexes implements MigrateToUuidStep
     public function addMissing(Context $context): bool
     {
         $logContext = $context->logContext;
+        $lockTables = $context->lockTables();
 
         $updatedItems = 0;
         foreach (MigrateToUuidStep::TABLES as $tableName => $tableProperties) {
@@ -78,7 +79,8 @@ class MigrateToUuidCreateIndexes implements MigrateToUuidStep
                     $this->addIndexOnUuid(
                         $tableName,
                         $tableProperties[self::UUID_COLUMN_INDEX],
-                        $indexName
+                        $indexName,
+                        $lockTables
                     );
                     $this->logger->notice(
                         \sprintf('index on uuid added for %s', $tableName),
@@ -94,7 +96,8 @@ class MigrateToUuidCreateIndexes implements MigrateToUuidStep
                         $this->addAdditionalIndex(
                             $tableName,
                             $additionalIndexName,
-                            $columns
+                            $columns,
+                            $lockTables
                         );
                         $this->logger->notice(
                             \sprintf('additional indexes added for %s', $tableName),
@@ -112,12 +115,14 @@ class MigrateToUuidCreateIndexes implements MigrateToUuidStep
         return true;
     }
 
-    private function addIndexOnUuid(string $tableName, string $uuidColumName, string $indexName): void
-    {
+    private function addIndexOnUuid(
+        string $tableName,
+        string $uuidColumName,
+        string $indexName,
+        bool $lockTables
+    ): void {
         $addUuidColumnAndIndexOnUuidSql = <<<SQL
-            ALTER TABLE `{table_name}` ADD {unique} INDEX `{index_name}` (`{uuid_column_name}`),
-                ALGORITHM=INPLACE,
-                LOCK=NONE;
+            ALTER TABLE `{table_name}` ADD {unique} INDEX `{index_name}` (`{uuid_column_name}`){algorithmInplace};
         SQL;
 
         $addUuidColumnAndIndexOnUuidQuery = \strtr(
@@ -127,6 +132,7 @@ class MigrateToUuidCreateIndexes implements MigrateToUuidStep
                 '{table_name}' => $tableName,
                 '{uuid_column_name}' => $uuidColumName,
                 '{index_name}' => $indexName,
+                '{algorithmInplace}' => $lockTables ? '' : ', ALGORITHM=INPLACE, LOCK=NONE',
             ]
         );
 
@@ -136,19 +142,22 @@ class MigrateToUuidCreateIndexes implements MigrateToUuidStep
     /**
      * @param string[] $columns
      */
-    private function addAdditionalIndex(string $tableName, string $indexName, array $columns): void
-    {
+    private function addAdditionalIndex(
+        string $tableName,
+        string $indexName,
+        array $columns,
+        bool $lockTables
+    ): void {
         $this->connection->executeQuery(\strtr(
             <<<SQL
             ALTER TABLE `{tableName}`
-            ADD INDEX `{indexName}` (`{columnNames}`),
-            ALGORITHM=INPLACE,
-            LOCK=NONE;
+            ADD INDEX `{indexName}` (`{columnNames}`){algorithmInplace};
             SQL,
             [
                 '{tableName}' => $tableName,
                 '{indexName}' => $indexName,
-                '{columnNames}' => \implode('`, `', $columns)
+                '{columnNames}' => \implode('`, `', $columns),
+                '{algorithmInplace}' => $lockTables ? '' : ', ALGORITHM=INPLACE, LOCK=NONE',
             ]
         ));
     }
