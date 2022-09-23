@@ -34,6 +34,8 @@ class SimpleSelectTranslator implements FlatAttributeValueTranslatorInterface
             $optionKeys
         );
 
+        $attributeOptionTranslations = array_change_key_case($attributeOptionTranslations, CASE_LOWER);
+
         $result = [];
         foreach ($values as $valueIndex => $value) {
             if (null === $value || '' === $value) {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Application\Handler;
 
-use Akeneo\Catalogs\Application\Persistence\GetProductIdentifiersQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductIdentifiersQueryInterface;
 use Akeneo\Catalogs\ServiceAPI\Query\GetProductIdentifiersQuery;
 
 /**

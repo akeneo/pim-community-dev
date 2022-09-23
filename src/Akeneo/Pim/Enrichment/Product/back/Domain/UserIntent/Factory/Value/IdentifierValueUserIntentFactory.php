@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\ValueUserIntentFactory;
@@ -30,7 +29,7 @@ class IdentifierValueUserIntentFactory implements ValueUserIntentFactory
         if (!\array_key_exists('data', $data)) {
             throw InvalidPropertyTypeException::arrayKeyExpected($attributeCode, 'data', static::class, $data);
         }
-        if (!\is_string($data['data'])) {
+        if (!\is_string($data['data']) && null !== $data['data']) {
             throw InvalidPropertyTypeException::stringExpected($attributeCode, static::class, $data['data']);
         }
 

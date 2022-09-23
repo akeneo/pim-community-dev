@@ -57,7 +57,7 @@ class ProductQueryBuilderAdapterSpec extends ObjectBehavior
         $filterRegistry->getFieldFilter('entity_type', Operators::EQUALS)
             ->shouldBeCalledOnce()->willReturn($fieldFilter);
 
-        $this->buildQuery(null)->shouldReturn(['_source' => ['identifier']]);
+        $this->buildQuery(null)->shouldReturn(['_source' => ['id', 'identifier', 'document_type']]);
     }
 
     function it_builds_the_query_with_a_user(
@@ -67,7 +67,7 @@ class ProductQueryBuilderAdapterSpec extends ObjectBehavior
         $filterRegistry->getFieldFilter('entity_type', Operators::EQUALS)
             ->shouldBeCalledOnce()->willReturn($fieldFilter);
 
-        $this->buildQuery(1)->shouldReturn(['_source' => ['identifier']]);
+        $this->buildQuery(1)->shouldReturn(['_source' => ['id', 'identifier', 'document_type']]);
     }
 
     function it_builds_the_query_with_a_search_after(
@@ -79,7 +79,7 @@ class ProductQueryBuilderAdapterSpec extends ObjectBehavior
 
         $uuid = Uuid::uuid4();
         $this->buildQuery(null, $uuid)
-            ->shouldReturn(['_source' => ['identifier'], 'search_after' => ['product_' . $uuid->toString()]]);
+            ->shouldReturn(['_source' => ['id', 'identifier', 'document_type'], 'search_after' => ['product_' . $uuid->toString()]]);
     }
 
     function it_adds_permission_filters_and_builds_the_query(
@@ -121,6 +121,6 @@ class ProductQueryBuilderAdapterSpec extends ObjectBehavior
         $filterRegistry->getFieldFilter('categories', Operators::IN_LIST_OR_UNCLASSIFIED)
             ->shouldBeCalledOnce()->willReturn($fieldFilter2);
 
-        $this->buildQuery(1)->shouldReturn(['_source' => ['identifier']]);
+        $this->buildQuery(1)->shouldReturn(['_source' => ['id', 'identifier', 'document_type']]);
     }
 }

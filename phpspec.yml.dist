@@ -104,6 +104,13 @@ suites:
         src_path: src/Akeneo/Pim/Automation/DataQualityInsights
         spec_prefix: Specification
 
+    IdentifierGenerator:
+        namespace: Akeneo\Pim\Automation\IdentifierGenerator
+        psr4_prefix: Akeneo\Pim\Automation\IdentifierGenerator
+        spec_path: components/identifier-generator/back/tests
+        src_path: components/identifier-generator
+        spec_prefix: Specification
+
     ## Akeneo Components
     Connector:
         namespace: Akeneo\Tool\Component\Connector

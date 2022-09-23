@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
 use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Product repository
@@ -39,6 +40,27 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
+    public function getItemsFromUuids(array $uuids): array
+    {
+        if ([] === $uuids) {
+            return [];
+        }
+
+        $uuidsAsBytes = [];
+        foreach ($uuids as $uuid) {
+            if (Uuid::isValid($uuid)) {
+                $uuidsAsBytes[] = Uuid::fromString($uuid)->getBytes();
+            } else {
+                $uuidsAsBytes[] = $uuid;
+            }
+        }
+
+        return $this->findBy(['uuid' => $uuidsAsBytes]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getIdentifierProperties()
     {
         return ['identifier'];
@@ -49,6 +71,10 @@ class ProductRepository extends EntityRepository implements
      */
     public function findOneByIdentifier($identifier)
     {
+        if (null === $identifier) {
+            return null;
+        }
+
         return $this->findOneBy(['identifier' => $identifier]);
     }
 

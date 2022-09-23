@@ -54,6 +54,7 @@ akeneo_connectivity.connection:
         description: Això és només una visió general. Per obtenir més detalls, feu una ullada a l'Akeneo App Store.
         link: Aneu a l'Akeneo App Store
       search:
+        placeholder: Cercar per nom
         total: '{0} Sense resultats|{1} 1 resultat|[2,Inf] {{ total }} resultats'
       card:
         developed_by: 'Desenvolupat per {{ author }}'
@@ -179,6 +180,10 @@ akeneo_connectivity.connection:
               3: a la configuració.
         catalogs:
           edit:
+            flash:
+              success: La configuració del catàleg s'ha actualitzat correctament.
+              error: No s'ha pogut desar el catàleg. Si us plau, resol els errors que es mostren i, a continuació, torna a desar.
+              unknown_error: S'ha produït un error al desar el catàleg.
             not_found: Catàleg no trobat
         flash:
           load_permissions_error.title: 'No s''han pogut carregar els permisos desats a {{ entity }}.'
@@ -237,6 +242,7 @@ akeneo_connectivity.connection:
           no_scope: No s'han demanat autoritzacions específiques.
           helper: Per obtenir més informació sobre l'autorització d'aplicacions,
           helper_link: Consulteu l'article del nostre Centre d'ajuda.
+          is_allowed_to: 'Ja es permet:'
         flash:
           success: L'aplicació s'ha configurat correctament.
           error: Ho sentim, s'ha produït un error al intentar connectar l'aplicació.
@@ -264,6 +270,11 @@ akeneo_connectivity.connection:
           reference_entity_record: registres d'entitat de referència
           asset_families: famílies de recursos
           assets: recursos
+          catalogs: Catàlegs
+        new: NOU
+      error:
+        sub_text: SI us plau, contacta  amb el servei de suport.
+        app_not_found: El client_id no coincideix amb cap aplicació existent.
       constraint:
         client_id:
           not_blank: El client_id és obligatori.
@@ -310,6 +321,8 @@ akeneo_connectivity.connection:
       type:
         required: El tipus de connexió és obligatori.
         too_long: El tipus de connexió és massa llarg. Ha de tenir 30 caràcters o menys.
+      user_group:
+        must_exist: No s'ha trobat el grup d'usuaris. Assegureu-vos que el grup d'usuaris especificat existeix.
   flow_type:
     data_source: Font de la dada | Font de les dades
     data_destination: Destinació de la dada | Destinació de les dades
@@ -569,5 +582,7 @@ pim_permissions:
       view: Vista
     all: Tot
 pim_notification:
+  types:
+    connected_app_authorizations: Aplicacions autoritzades connectades
   connected_app_authorizations:
     button_label: Obre l'aplicació

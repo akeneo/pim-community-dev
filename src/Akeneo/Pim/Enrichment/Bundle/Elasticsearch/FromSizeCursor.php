@@ -2,9 +2,10 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 
 /**
  * Bounded cursor to iterate over items where a start and a limit are defined.
@@ -20,52 +21,21 @@ use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
  */
 class FromSizeCursor extends AbstractCursor implements CursorInterface
 {
-    /** @var array */
-    protected $esQuery;
+    private int $initialFrom;
+    private int $to;
 
-    /** @var int */
-    protected $pageSize;
-
-    /** @var int */
-    protected $initialFrom;
-
-    /** @var int */
-    protected $from;
-
-    /** @var int */
-    protected $limit;
-
-    /** @var int */
-    protected $to;
-
-    /** @var int */
-    protected $fetchedItemsCount;
-
-    /**
-     * @param Client                        $esClient
-     * @param CursorableRepositoryInterface $productRepository
-     * @param CursorableRepositoryInterface $productModelRepository
-     * @param array                         $esQuery
-     * @param int                           $pageSize
-     * @param int                           $limit
-     * @param int                           $from
-     */
     public function __construct(
         Client $esClient,
-        CursorableRepositoryInterface $productRepository,
-        CursorableRepositoryInterface $productModelRepository,
-        array $esQuery,
-        $pageSize,
-        $limit,
-        $from = 0
+        ProductRepositoryInterface $productRepository,
+        ProductModelRepositoryInterface $productModelRepository,
+        private array $esQuery,
+        private int $pageSize,
+        private int $limit,
+        private int $from = 0
     ) {
         $this->esClient = $esClient;
         $this->productRepository = $productRepository;
         $this->productModelRepository = $productModelRepository;
-        $this->esQuery = $esQuery;
-        $this->pageSize = $pageSize;
-        $this->limit = $limit;
-        $this->from = $from;
         $this->initialFrom = $from;
         $this->to = $this->from + $this->limit;
     }
@@ -100,7 +70,7 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
      */
     protected function getNextIdentifiers(array $esQuery): IdentifierResults
     {
-        $size = ($this->to - $this->from) > $this->pageSize ? $this->pageSize : ($this->to - $this->from);
+        $size = min(($this->to - $this->from), $this->pageSize);
         $esQuery['size'] = $size;
         $identifiers = new IdentifierResults();
 

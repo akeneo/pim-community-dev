@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Unit\Infrastructure\Controller\Internal;
 
-use Akeneo\Catalogs\Application\Persistence\GetChannelQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Channel\GetChannelQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Controller\Internal\GetChannelAction;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;

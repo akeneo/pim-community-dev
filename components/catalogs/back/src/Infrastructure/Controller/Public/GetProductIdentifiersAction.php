@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Controller\Public;
 
-use Akeneo\Catalogs\Infrastructure\Persistence\GetProductUuidFromIdentifierQuery;
+use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\Product\GetProductUuidFromIdentifierQuery;
 use Akeneo\Catalogs\Infrastructure\Security\DenyAccessUnlessGrantedTrait;
 use Akeneo\Catalogs\Infrastructure\Security\GetCurrentUsernameTrait;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
