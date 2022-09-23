@@ -12,7 +12,7 @@ class SetIdentifierValue implements ValueUserIntent
 {
     public function __construct(
         private string $attributeCode,
-        private string $value
+        private ?string $value
     ) {
     }
 
@@ -31,7 +31,7 @@ class SetIdentifierValue implements ValueUserIntent
         return null;
     }
 
-    public function value(): string
+    public function value(): ?string
     {
         return $this->value;
     }

@@ -7,13 +7,13 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Job;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Batch\Job\UndefinedJobParameterException;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 
@@ -34,7 +34,7 @@ class ComputeCompletenessOfProductsFamilyTasklet implements TaskletInterface
     public function __construct(
         private IdentifiableObjectRepositoryInterface $familyRepository,
         private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
-        private CursorableRepositoryInterface $productRepository,
+        private ProductRepositoryInterface $productRepository,
         private BulkSaverInterface $bulkProductSaver,
         private EntityManagerClearerInterface $cacheClearer
     ) {
@@ -84,20 +84,20 @@ class ComputeCompletenessOfProductsFamilyTasklet implements TaskletInterface
     {
         $productIdentifiers = $this->findProductIdentifiersForFamily($family);
 
-        $productIdentifierBatch = [];
+        $productUuidBatch = [];
         /** @var IdentifierResult $productIdentifier */
         foreach ($productIdentifiers as $productIdentifier) {
-            $productIdentifierBatch[] = $productIdentifier->getIdentifier();
-            if (self::BATCH_SIZE === \count($productIdentifierBatch)) {
-                $products = $this->productRepository->getItemsFromIdentifiers($productIdentifierBatch);
+            $productUuidBatch[] = \preg_replace('/^product_/', '', $productIdentifier->getId());
+            if (self::BATCH_SIZE === \count($productUuidBatch)) {
+                $products = $this->productRepository->getItemsFromUuids($productUuidBatch);
                 $this->bulkProductSaver->saveAll($products, ['force_save' => true]);
                 $this->cacheClearer->clear();
-                $productIdentifierBatch = [];
+                $productUuidBatch = [];
             }
         }
 
-        if (0 < \count($productIdentifierBatch)) {
-            $products = $this->productRepository->getItemsFromIdentifiers($productIdentifierBatch);
+        if (0 < \count($productUuidBatch)) {
+            $products = $this->productRepository->getItemsFromUuids($productUuidBatch);
             $this->bulkProductSaver->saveAll($products, ['force_save' => true]);
             $this->cacheClearer->clear();
         }

@@ -2,9 +2,11 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 
 /**
  * @author    Julien Janvier <j.janvier@gmail.com>
@@ -13,16 +15,10 @@ use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
  */
 class CursorFactory implements CursorFactoryInterface
 {
-    /**
-     * @param Client                        $searchEngine
-     * @param CursorableRepositoryInterface $productRepository
-     * @param CursorableRepositoryInterface $productModelRepository
-     * @param int                           $pageSize
-     */
     public function __construct(
         protected Client $searchEngine,
-        private CursorableRepositoryInterface $productRepository,
-        private CursorableRepositoryInterface $productModelRepository,
+        private ProductRepositoryInterface $productRepository,
+        private ProductModelRepositoryInterface $productModelRepository,
         protected int $pageSize
     ) {
     }
@@ -30,7 +26,7 @@ class CursorFactory implements CursorFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createCursor($queryBuilder, array $options = [])
+    public function createCursor($queryBuilder, array $options = []): CursorInterface
     {
         $pageSize = !isset($options['page_size']) ? $this->pageSize : $options['page_size'];
 
