@@ -50,8 +50,7 @@ class QueueJobLauncherIntegration extends TestCase
 
         $connection = $this->getConnection();
         $stmt = $connection->prepare('SELECT user, status, exit_code, health_check_time from akeneo_batch_job_execution');
-        $stmt->execute();
-        $row = $stmt->fetch();
+        $row = $stmt->executeQuery()->fetchAssociative();
 
         $this->assertEquals('mary', $row['user']);
         $this->assertEquals(BatchStatus::STARTING, $row['status']);
@@ -61,8 +60,7 @@ class QueueJobLauncherIntegration extends TestCase
         $this->jobLauncher->launchConsumerOnce();
 
         $stmt = $connection->prepare('SELECT user, status, exit_code, health_check_time from akeneo_batch_job_execution');
-        $stmt->execute();
-        $row = $stmt->fetch();
+        $row = $stmt->executeQuery()->fetchAssociative();
 
         $this->assertEquals('mary', $row['user']);
         $this->assertEquals(BatchStatus::COMPLETED, $row['status']);

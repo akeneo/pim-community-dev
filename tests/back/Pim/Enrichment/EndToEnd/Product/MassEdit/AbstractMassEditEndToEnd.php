@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\MassEdit;
@@ -81,8 +82,7 @@ SQL;
                 );
             }
             $stmt->bindValue('instance_code', $jobInstanceCode);
-            $stmt->execute();
-            $result = $stmt->fetch();
+            $result = $stmt->executeQuery()->fetchAssociative();
 
             $isCompleted = isset($result['status']) && BatchStatus::COMPLETED === (int) $result['status'];
 

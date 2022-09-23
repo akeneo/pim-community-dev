@@ -183,9 +183,8 @@ class PublishToJobQueueIntegration extends TestCase
     {
         $connection = $this->getConnection();
         $stmt = $connection->prepare('SELECT * from akeneo_batch_job_execution');
-        $stmt->execute();
 
-        return $stmt->fetch();
+        return $stmt->executeQuery()->fetchAssociative();
     }
 
     private function createProduct(string $identifier, array $data = []): ProductInterface

@@ -61,7 +61,7 @@ class GetCompletenessPerChannelAndLocale implements GetCompletenessPerChannelAnd
      *
      *      ex : ['ecommerce', ['en_US' => 'Ecommerce'...], ['print','cameras'...], ['de_DE','fr_FR'...]]
      *
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     private function getCategoriesCodesAndLocalesByChannel(): array
     {

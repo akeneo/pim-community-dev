@@ -101,7 +101,7 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
                 }
             }
 
-            $stmt->execute();
+            $stmt->executeStatement();
         };
 
         try {

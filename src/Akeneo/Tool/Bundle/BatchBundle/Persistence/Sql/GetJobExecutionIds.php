@@ -7,7 +7,7 @@ namespace Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use DateTime;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Driver\ResultStatement;
+use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Types\Types;
 use InvalidArgumentException;
 
@@ -24,7 +24,7 @@ final class GetJobExecutionIds
         $this->connection = $connection;
     }
 
-    public function olderThanDays(int $days): ResultStatement
+    public function olderThanDays(int $days): Result
     {
         if ($days < 1) {
             throw new InvalidArgumentException(
@@ -53,7 +53,7 @@ final class GetJobExecutionIds
         );
     }
 
-    public function all(): ResultStatement
+    public function all(): Result
     {
         $query = <<<SQL
             SELECT id

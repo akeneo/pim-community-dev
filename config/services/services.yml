@@ -18,3 +18,9 @@ services:
     _defaults:
         autowire: false      # Automatically injects dependencies in your services.
         autoconfigure: false # Automatically registers your services as commands, event subscribers, etc.
+
+    # wraps the default dbal connection factory to replace it with an in memory one during cache warm up
+    connection_factory.skip_cache_warmup:
+        class: Akeneo\SkipSystemCommandsConnectionFactory
+        decorates: doctrine.dbal.connection_factory
+        arguments: ['@.inner']

@@ -183,9 +183,8 @@ class FixturesContext extends PimContext
         $sql = "SELECT backend_type FROM pim_catalog_attribute WHERE code = :attribute_code";
         $stmt = $db->prepare($sql);
         $stmt->bindValue("attribute_code", $attributeCode);
-        $stmt->execute();
 
-        return $stmt->fetch()['backend_type'];
+        return $stmt->executeQuery()->fetchOne();
     }
 
     protected function assertProductDataValueEquals(

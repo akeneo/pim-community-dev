@@ -277,8 +277,7 @@ class JobLauncher
                 throw new \RuntimeException(sprintf('Timeout: job execution "%s" is not complete.', $jobExecution->getId()));
             }
             $stmt->bindValue('id', $jobExecution->getId());
-            $stmt->execute();
-            $result = $stmt->fetch();
+            $result = $stmt->executeQuery()->fetchAssociative();
 
             $isCompleted = isset($result['status']) && BatchStatus::COMPLETED === (int) $result['status'];
 

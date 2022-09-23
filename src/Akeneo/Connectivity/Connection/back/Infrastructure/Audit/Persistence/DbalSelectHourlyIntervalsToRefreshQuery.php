@@ -6,7 +6,6 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\FetchMode;
 
 /**
  * Retrieve all hours from events that are not yet complete.

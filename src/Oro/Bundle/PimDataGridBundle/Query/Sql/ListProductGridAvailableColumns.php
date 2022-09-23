@@ -113,7 +113,7 @@ class ListProductGridAvailableColumns implements ListProductGridAvailableColumns
      *
      * @return array
      *
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     private function fetchAttributesAsColumn(string $locale, int $limit, int $offset, string $groupCode, string $searchOnLabel): array
     {

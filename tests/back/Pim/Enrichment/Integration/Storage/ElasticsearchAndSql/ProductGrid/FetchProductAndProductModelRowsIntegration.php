@@ -28,7 +28,7 @@ class FetchProductAndProductModelRowsIntegration extends TestCase
     {
         $userId = $this
             ->get('database_connection')
-            ->fetchColumn('SELECT id from oro_user where username = "admin"', [], 0);
+            ->fetchOne('SELECT id from oro_user where username = "admin"');
 
         $fixturesLoader = $this->get('akeneo_integration_tests.loader.product_grid_fixtures_loader');
         $imagePath = $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'));
