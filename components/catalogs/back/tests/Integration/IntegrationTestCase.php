@@ -50,13 +50,14 @@ abstract class IntegrationTestCase extends WebTestCase
 
         $this->clock = new Clock();
 
-        // When the container cache does not exist (var/cache is empty for exemple),
-        // Symfony build the container when the kernel is booted for the first time.
+        // When the container cache does not exist (var/cache is empty for example),
+        // Symfony builds the container when the kernel is booted for the first time.
         // During the first build of the container, some services, like the listeners, are initialized.
         // Trying to override a service already initialized is forbidden.
-        // The alternative solution of overidding services in the configuration is not appliable to us, doing so
+        // The alternative solution of overriding services in the configuration is not appliable to us, doing so
         // would affect ALL tests of all contexts in the PIM.
-        // Instead, the dirty but working solution is to catcn this error, reboot the kernel and retry.
+        // Instead, the dirty but working solution is to catch this error, reboot the kernel and retry.
+        // It works because on the second boot, the container is already cached, no services are initialized.
         try {
             $this->overrideServices();
         } catch (DependencyInjectionInvalidArgumentException) {
