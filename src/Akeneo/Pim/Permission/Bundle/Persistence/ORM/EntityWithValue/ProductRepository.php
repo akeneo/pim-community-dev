@@ -177,6 +177,16 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
+    public function getItemsFromUuids(array $uuids): array
+    {
+        $products = $this->productRepository->getItemsFromUuids($uuids);
+
+        return $this->getFilteredProducts($products);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getIdentifierProperties()
     {
         Assert::implementsInterface($this->productRepository, IdentifiableObjectRepositoryInterface::class);
