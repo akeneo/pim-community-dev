@@ -5,6 +5,7 @@
 ## Bug fixes
 
 - PIM-10435: [Backport] Fix search_after requests with codes using uppercase accented characters
+- PIM-10632: [Backport] Fix no purge done on the DQI when deleting option for multi-select and simple-select attributes
 
 # 6.0.43 (2022-09-20)
 
@@ -13,8 +14,6 @@
 # 6.0.41 (2022-08-29)
 
 # 6.0.40 (2022-08-25)
-
-PIM-1063: [Backport PIM-10613] Fix no purge done on the DQI when deleting option for multi-select and simple-select attributes
 
 # 6.0.39 (2022-08-23)
 
