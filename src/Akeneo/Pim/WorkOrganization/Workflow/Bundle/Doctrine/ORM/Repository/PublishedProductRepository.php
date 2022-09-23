@@ -195,4 +195,12 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
 
         return $qb->getQuery()->execute();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemsFromUuids(array $uuids): array
+    {
+        throw new \LogicException(\sprintf('%s cannot be used for retrieving published products', __METHOD__));
+    }
 }

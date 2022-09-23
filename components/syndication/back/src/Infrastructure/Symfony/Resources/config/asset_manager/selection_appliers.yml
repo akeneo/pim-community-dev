@@ -1,0 +1,37 @@
+services:
+  Akeneo\Platform\Syndication\Application\MapValues\SelectionApplier\AssetCollection\AssetCollectionCodeSelectionApplier:
+    public: true
+    tags:
+      - { name: akeneo.syndication.selection_applier }
+
+  Akeneo\Platform\Syndication\Application\MapValues\SelectionApplier\AssetCollection\AssetCollectionLabelSelectionApplier:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\Syndication\Domain\Query\FindAssetLabelsInterface'
+    tags:
+      - { name: akeneo.syndication.selection_applier }
+
+  Akeneo\Platform\Syndication\Application\MapValues\SelectionApplier\AssetCollection\AssetCollectionMediaFileSelectionApplier:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\Syndication\Domain\Query\FindAssetMainMediaDataInterface'
+      - '@Akeneo\Platform\Syndication\Application\ExtractMedia\MediaPathGenerator'
+    tags:
+      - { name: akeneo.syndication.selection_applier }
+
+  Akeneo\Platform\Syndication\Application\MapValues\SelectionApplier\AssetCollection\AssetCollectionMediaFileUrlSelectionApplier:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\Syndication\Domain\Query\FindAssetMainMediaDataInterface'
+    tags:
+      - { name: akeneo.syndication.selection_applier }
+
+  Akeneo\Platform\Syndication\Application\MapValues\SelectionApplier\AssetCollection\AssetCollectionMediaLinkSelectionApplier:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\Syndication\Domain\Query\FindAssetMainMediaDataInterface'
+      - '@Akeneo\Platform\Syndication\Domain\Query\AssetCollection\FindAssetMainMediaAttributeInterface'
+    tags:
+      - { name: akeneo.syndication.selection_applier }
+
+

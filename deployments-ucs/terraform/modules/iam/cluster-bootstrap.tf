@@ -63,6 +63,7 @@ resource "google_service_account_iam_binding" "cluster_bootstrap_sa_cloudbuild_b
 
   members = [
     "serviceAccount:service-${data.google_project.current.number}@gcp-sa-cloudbuild.iam.gserviceaccount.com",
+    "serviceAccount:main-service-account@akecld-prd-pim-saas-shared.iam.gserviceaccount.com"
   ]
 }
 
@@ -70,10 +71,4 @@ resource "google_project_iam_member" "cluster_bootstrap_sa_cloudbuild_admin_bind
   project = var.project_id
   role    = "roles/iam.serviceAccountUser"
   member  = "serviceAccount:${google_service_account.cluster_bootstrap.email}"
-}
-
-resource "google_service_account_iam_member" "cloud_build_main" {
-  service_account_id = google_service_account.cluster_bootstrap.name
-  role               = "roles/iam.serviceAccountTokenCreator"
-  member             = "serviceAccount:main-service-account@akecld-prd-pim-saas-shared.iam.gserviceaccount.com"
 }

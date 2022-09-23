@@ -1,0 +1,15 @@
+services:
+  Akeneo\Platform\Syndication\Domain\Query\FindRecordLabelsInterface:
+    class: Akeneo\Platform\Syndication\Infrastructure\Query\ReferenceEntity\FindRecordLabels
+    arguments:
+      - '@akeneo_referenceentity.infrastructure.persistence.query.enrich.find_records_labels_public_api'
+
+  Akeneo\Platform\Syndication\Domain\Query\Platform\FindPlatformInterface:
+    class: Akeneo\Platform\Syndication\Infrastructure\Query\Platform\FindPlatform
+    arguments:
+      - '@doctrine.dbal.default_connection'
+
+  Akeneo\Platform\Syndication\Domain\Query\Platform\FindPlatformFamilyInterface:
+    class: Akeneo\Platform\Syndication\Infrastructure\Query\Platform\FindPlatformFamily
+    arguments:
+      - '@doctrine.dbal.default_connection'

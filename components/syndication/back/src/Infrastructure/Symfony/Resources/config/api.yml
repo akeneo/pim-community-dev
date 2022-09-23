@@ -1,0 +1,106 @@
+services:
+    pim_syndication.controller.platform_configuration_list:
+        class: 'Akeneo\Platform\Syndication\Infrastructure\Controller\ExternalApi\GetPlatformConfigurationListAction'
+        public: true
+        arguments:
+            - '@Akeneo\Platform\Syndication\Domain\Query\PlatformConfiguration\FindPlatformConfigurationListQueryInterface'
+
+    pim_syndication.connector.use_cases.handler.list_product_ids:
+        class: Akeneo\Platform\Syndication\Infrastructure\UseCases\ListProductIdsQueryHandler
+        arguments:
+            - '@akeneo.pim.enrichment.use_cases.apply_product_search_query_parameters_to_pqb'
+            - '@pim_catalog.query.product_query_builder_from_size_factory_external_api'
+            - '@pim_catalog.query.product_query_builder_search_after_size_factory_external_api'
+            - '@akeneo.pim.enrichment.product.query.find_id'
+
+    pim_syndication.connector.use_cases.handler.list_product_model_ids:
+        class: Akeneo\Platform\Syndication\Infrastructure\UseCases\ListProductModelIdsQueryHandler
+        arguments:
+            - '@akeneo.pim.enrichment.use_cases.apply_product_search_query_parameters_to_pqb'
+            - '@pim_catalog.query.product_model_query_builder_from_size_factory_external_api'
+            - '@pim_catalog.query.product_model_query_builder_search_after_size_factory_external_api'
+            - '@akeneo.pim.enrichment.product_model.query.find_id'
+
+    pim_syndication.controller.platform_update:
+        class: 'Akeneo\Platform\Syndication\Infrastructure\Controller\ExternalApi\UpdatePlatformAction'
+        public: true
+        arguments:
+            - '@Akeneo\Platform\Syndication\Application\Command\UpdatePlatformHandler'
+
+    pim_syndication.controller.platform_family_update:
+        class: 'Akeneo\Platform\Syndication\Infrastructure\Controller\ExternalApi\UpdatePlatformFamilyAction'
+        public: true
+        arguments:
+            - '@Akeneo\Platform\Syndication\Application\Command\UpdatePlatformFamilyHandler'
+
+    pim_syndication.controller.media_download:
+        class: 'Akeneo\Platform\Syndication\Infrastructure\Controller\ExternalApi\DownloadMediaFileAction'
+        public: true
+        arguments:
+            - '@Akeneo\Platform\Syndication\Domain\Query\MediaFile\FindMediaFileInterface'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+
+
+    pim_syndication.controller.platform_configuration.catalog:
+        class: 'Akeneo\Platform\Syndication\Infrastructure\Controller\ExternalApi\PlatformConfiguration\GetCatalogsAction'
+        public: true
+        arguments:
+            - '@Akeneo\Platform\Syndication\Domain\Query\PlatformConfiguration\FindPlatformConfigurationQueryInterface'
+
+    pim_syndication.controller.platform_configuration.catalog.product_identifiers:
+        class: 'Akeneo\Platform\Syndication\Infrastructure\Controller\ExternalApi\PlatformConfiguration\Catalog\GetProductIdentifiersAction'
+        public: true
+        arguments:
+            - '%pim_api.configuration%'
+            - '@pim_enrich.connector.use_cases.validator.list_products'
+            - '@pim_syndication.connector.use_cases.handler.list_product_ids'
+            - '@security.token_storage'
+            - '@monolog.logger.pim_api_acl'
+            - '@oro_security.security_facade'
+            - '@Akeneo\Platform\Syndication\Domain\Query\PlatformConfiguration\FindPlatformConfigurationQueryInterface'
+
+    pim_syndication.controller.platform_configuration.catalog.product_model_identifiers:
+        class: 'Akeneo\Platform\Syndication\Infrastructure\Controller\ExternalApi\PlatformConfiguration\Catalog\GetProductModelIdentifiersAction'
+        public: true
+        arguments:
+            - '%pim_api.configuration%'
+            - '@pim_enrich.connector.use_cases.validator.list_product_models'
+            - '@pim_syndication.connector.use_cases.handler.list_product_model_ids'
+            - '@security.token_storage'
+            - '@monolog.logger.pim_api_acl'
+            - '@oro_security.security_facade'
+            - '@Akeneo\Platform\Syndication\Domain\Query\PlatformConfiguration\FindPlatformConfigurationQueryInterface'
+
+    pim_syndication.controller.platform_configuration.catalog.products:
+        class: 'Akeneo\Platform\Syndication\Infrastructure\Controller\ExternalApi\PlatformConfiguration\Catalog\GetProductsAction'
+        public: true
+        arguments:
+            - '@pim_enrich.connector.use_cases.validator.list_products'
+            - '%pim_api.configuration%'
+            - '@Akeneo\Platform\Syndication\Infrastructure\UseCases\ListProductsQueryHandler'
+            - '@security.token_storage'
+            - '@monolog.logger.pim_api_acl'
+            - '@oro_security.security_facade'
+            - '@akeneo.pim.structure.query.get_attributes'
+            - '@akeneo.pim.structure.query.get_association_types'
+            - '@Akeneo\Platform\Syndication\Infrastructure\Hydrator\ValueCollectionHydrator'
+            - '@Akeneo\Platform\Syndication\Infrastructure\Hydrator\ColumnCollectionHydrator'
+            - '@Akeneo\Platform\Syndication\Application\MapValues\MapValuesQueryHandler'
+            - '@Akeneo\Platform\Syndication\Domain\Query\PlatformConfiguration\FindPlatformConfigurationQueryInterface'
+
+    pim_syndication.controller.platform_configuration.catalog.product_models:
+        class: 'Akeneo\Platform\Syndication\Infrastructure\Controller\ExternalApi\PlatformConfiguration\Catalog\GetProductModelsAction'
+        public: true
+        arguments:
+            - '@pim_enrich.connector.use_cases.validator.list_product_models'
+            - '%pim_api.configuration%'
+            - '@pim_enrich.connector.use_cases.handler.list_product_models'
+            - '@security.token_storage'
+            - '@monolog.logger.pim_api_acl'
+            - '@oro_security.security_facade'
+            - '@akeneo.pim.structure.query.get_attributes'
+            - '@akeneo.pim.structure.query.get_association_types'
+            - '@Akeneo\Platform\Syndication\Infrastructure\Hydrator\ValueCollectionHydrator'
+            - '@Akeneo\Platform\Syndication\Infrastructure\Hydrator\ColumnCollectionHydrator'
+            - '@Akeneo\Platform\Syndication\Application\MapValues\MapValuesQueryHandler'
+            - '@Akeneo\Platform\Syndication\Domain\Query\PlatformConfiguration\FindPlatformConfigurationQueryInterface'

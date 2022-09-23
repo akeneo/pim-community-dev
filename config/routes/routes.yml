@@ -129,6 +129,9 @@ pim_job_automation:
 pim_tailored_export_reference_entity:
     resource: "@AkeneoTailoredExportBundle/Resources/config/reference_entity/routing.yml"
 
+pim_syndication:
+    resource: "@AkeneoSyndicationBundle/Resources/config/routing.yml"
+
 pimee_reference_entity:
     resource: "@AkeneoReferenceEntityBundle/Resources/config/routing.yml"
     defaults:

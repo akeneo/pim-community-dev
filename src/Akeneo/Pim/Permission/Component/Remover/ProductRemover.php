@@ -12,6 +12,7 @@
 namespace Akeneo\Pim\Permission\Component\Remover;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
@@ -28,34 +29,12 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class ProductRemover implements RemoverInterface, BulkRemoverInterface
 {
-    /** @var RemoverInterface */
-    protected $remover;
-
-    /** @var BulkRemoverInterface */
-    protected $bulkRemover;
-
-    /** @var AuthorizationCheckerInterface */
-    protected $authorizationChecker;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $productRepository;
-
-    /**
-     * @param RemoverInterface                      $remover
-     * @param BulkRemoverInterface                  $bulkRemover
-     * @param AuthorizationCheckerInterface         $authorizationChecker
-     * @param IdentifiableObjectRepositoryInterface $filteredProductRepository
-     */
     public function __construct(
-        RemoverInterface $remover,
-        BulkRemoverInterface $bulkRemover,
-        AuthorizationCheckerInterface $authorizationChecker,
-        IdentifiableObjectRepositoryInterface $filteredProductRepository
+        protected RemoverInterface $remover,
+        protected BulkRemoverInterface $bulkRemover,
+        protected AuthorizationCheckerInterface $authorizationChecker,
+        protected ProductRepositoryInterface $productRepository
     ) {
-        $this->remover = $remover;
-        $this->bulkRemover = $bulkRemover;
-        $this->authorizationChecker = $authorizationChecker;
-        $this->productRepository = $filteredProductRepository;
     }
 
     /**
@@ -68,7 +47,7 @@ class ProductRemover implements RemoverInterface, BulkRemoverInterface
 
         // As $filteredProduct is a product filtered with only granted data and is unknown by doctrine,
         // we have to find the full product to be able to remove it.
-        $fullProduct = $this->productRepository->findOneByIdentifier($filteredProduct->getIdentifier());
+        $fullProduct = $this->productRepository->find($filteredProduct->getUuid());
 
         $this->remover->remove($fullProduct, $options);
     }
@@ -85,7 +64,7 @@ class ProductRemover implements RemoverInterface, BulkRemoverInterface
 
             // As $filteredProduct is a product filtered with only granted data and is unknown by doctrine,
             // we have to find the full product to be able to remove it.
-            $fullProducts[] = $this->productRepository->findOneByIdentifier($filteredProduct->getIdentifier());
+            $fullProducts[] = $this->productRepository->find($filteredProduct->getUuid());
         }
 
         $this->bulkRemover->removeAll($fullProducts, $options);

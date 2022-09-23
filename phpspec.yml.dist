@@ -68,6 +68,14 @@ suites:
         src_path: components/tailored-export/back/src
         spec_prefix: Specification
 
+    ## Syndication context
+    Syndication:
+        namespace: Akeneo\Platform\Syndication
+        psr4_prefix: Akeneo\Platform\Syndication
+        spec_path: components/syndication/back/tests
+        src_path: components/syndication/back/src
+        spec_prefix: Specification #syndication
+
     ## Tailored import context
     TailoredImport:
         namespace: Akeneo\Platform\TailoredImport

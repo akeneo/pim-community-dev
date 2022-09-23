@@ -1,0 +1,45 @@
+services:
+    Akeneo\Platform\Syndication\Domain\Query\FindAssetLabelsInterface:
+        class: Akeneo\Platform\Syndication\Test\Acceptance\FakeServices\Asset\InMemoryFindAssetLabels
+
+    Akeneo\Platform\Syndication\Domain\Query\AssetCollection\FindAssetMainMediaAttributeInterface:
+        class: Akeneo\Platform\Syndication\Test\Acceptance\FakeServices\Asset\InMemoryFindAssetMainMediaAttribute
+
+    Akeneo\Platform\Syndication\Domain\Query\FindAssetMainMediaDataInterface:
+        class: Akeneo\Platform\Syndication\Test\Acceptance\FakeServices\Asset\InMemoryFindAssetMainMediaData
+
+    Akeneo\Platform\Syndication\Domain\Query\MeasurementConverterInterface:
+        class: Akeneo\Platform\Syndication\Test\Acceptance\FakeServices\Measurement\InMemoryMeasurementConverter
+
+    Akeneo\Platform\Syndication\Domain\Query\FindCategoryLabelsInterface:
+        class: Akeneo\Platform\Syndication\Test\Acceptance\FakeServices\Category\InMemoryFindCategoryLabels
+
+    Akeneo\Platform\Syndication\Domain\Query\FindFamilyLabelInterface:
+        class: Akeneo\Platform\Syndication\Test\Acceptance\FakeServices\Family\InMemoryFindFamilyLabel
+
+    Akeneo\Platform\Syndication\Domain\Query\FindFamilyVariantLabelInterface:
+        class: Akeneo\Platform\Syndication\Test\Acceptance\FakeServices\FamilyVariant\InMemoryFindFamilyVariantLabel
+
+    Akeneo\Platform\Syndication\Domain\Query\FindAttributeOptionLabelsInterface:
+        class: Akeneo\Platform\Syndication\Test\Acceptance\FakeServices\AttributeOption\InMemoryFindAttributeOptionLabels
+
+    Akeneo\Platform\Syndication\Domain\Query\FindRecordLabelsInterface:
+        class: Akeneo\Platform\Syndication\Test\Acceptance\FakeServices\ReferenceEntity\InMemoryFindRecordLabels
+
+    Akeneo\Platform\Syndication\Domain\Query\FindProductLabelsInterface:
+        class: Akeneo\Platform\Syndication\Test\Acceptance\FakeServices\Product\InMemoryFindProductLabels
+
+    Akeneo\Platform\Syndication\Domain\Query\FindProductModelLabelsInterface:
+        class: Akeneo\Platform\Syndication\Test\Acceptance\FakeServices\ProductModel\InMemoryFindProductModelLabels
+
+    Akeneo\Platform\Syndication\Domain\Query\FindGroupLabelsInterface:
+        class: Akeneo\Platform\Syndication\Test\Acceptance\FakeServices\Group\InMemoryFindGroupLabels
+
+    Akeneo\Platform\Syndication\Domain\Query\FindUnitLabelInterface:
+        class: Akeneo\Platform\Syndication\Test\Acceptance\FakeServices\Measurement\InMemoryFindUnitLabel
+
+    Akeneo\Platform\Syndication\Domain\Query\FindUnitSymbolInterface:
+        class: Akeneo\Platform\Syndication\Test\Acceptance\FakeServices\Measurement\InMemoryFindUnitSymbol
+
+    Akeneo\Platform\Syndication\Domain\Query\Platform\HasAtLeastOnePlatformInterface:
+        class: Akeneo\Platform\Syndication\Test\Acceptance\FakeServices\Query\Platform\HasAtLeastOnePlatform

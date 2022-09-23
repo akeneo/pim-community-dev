@@ -19,6 +19,10 @@ const RowNumberCell = styled(TableInput.Cell)`
   background-color: ${getColor('grey', 40)} !important;
 `;
 
+const PreCellContent = styled(TableInput.CellContent)`
+  white-space: pre;
+`;
+
 type FileTemplatePreviewProps = {
   fileTemplateInformation: FileTemplateInformation;
   fileStructure: FileStructure;
@@ -71,7 +75,7 @@ const FileTemplatePreview = ({fileTemplateInformation, fileStructure}: FileTempl
             </RowNumberCell>
             {row.map((cell, cellIndex) => (
               <TableInput.Cell key={cellIndex}>
-                <TableInput.CellContent>{cell}</TableInput.CellContent>
+                <PreCellContent>{cell}</PreCellContent>
               </TableInput.Cell>
             ))}
           </TableInput.Row>

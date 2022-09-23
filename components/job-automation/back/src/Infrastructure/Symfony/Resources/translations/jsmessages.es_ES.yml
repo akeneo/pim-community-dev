@@ -8,7 +8,6 @@ akeneo.job_automation:
     enable: Habilitar programación
     cannot_view_all_jobs: "No puede ver los trabajos automatizados en el Rastreador de procesos, ya que no tiene el siguiente permiso para su rol: «Ver todos los trabajos en el rastreador de procesos». Póngase en contacto con su administrador de PIM."
     frequency:
-      helper: La frecuencia se muestra en formato UTC de 24 horas.
       hourly_helper: Las frecuencias ejecutadas varias veces al día comienzan a medianoche (UTC).
       title: Frecuencia
       daily: Cada día

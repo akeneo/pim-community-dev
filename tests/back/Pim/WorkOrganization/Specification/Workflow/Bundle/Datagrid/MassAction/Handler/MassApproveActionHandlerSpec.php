@@ -2,18 +2,18 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\MassAction\Handler;
 
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Datasource\ProductProposalDatasource;
-use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
-use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
-use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Event\MassActionEvent;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
-use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Actions\Redirect\EditMassAction;
-use Oro\Bundle\PimFilterBundle\Datasource\FilterProductDatasourceAdapterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Datasource\ProductProposalDatasource;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\MassActionEvents;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
+use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Actions\Redirect\EditMassAction;
+use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Event\MassActionEvent;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -25,8 +25,8 @@ class MassApproveActionHandlerSpec extends ObjectBehavior
     }
 
     function it_handles_edit_mass_action(
-        $eventDispatcher,
-        $cursorFactory,
+        EventDispatcherInterface $eventDispatcher,
+        CursorFactoryInterface $cursorFactory,
         SearchQueryBuilder $searchQueryBuilder,
         DatagridInterface $datagrid,
         ProductProposalDatasource $datasource,
@@ -35,7 +35,8 @@ class MassApproveActionHandlerSpec extends ObjectBehavior
         ProductDraft $productDraft1,
         ProductDraft $productDraft2,
         ProductDraft $productDraft3,
-        ProductModelDraft $productModelDraft
+        ProductModelDraft $productModelDraft,
+        CursorInterface $cursor
     ) {
         $objectIds = [
             'product_draft_ids'       => [1, 2, 3],
@@ -62,7 +63,11 @@ class MassApproveActionHandlerSpec extends ObjectBehavior
         $productDraft3->getId()->willReturn(3);
         $productModelDraft->getId()->willReturn(1);
 
-        $cursorFactory->createCursor([])->willReturn([$productDraft1, $productDraft2, $productDraft3, $productModelDraft]);
+        $cursor->rewind()->shouldBeCalledOnce();
+        $cursor->valid()->shouldBeCalledTimes(5)->willReturn(true, true, true, true, false);
+        $cursor->current()->shouldBeCalledTimes(4)->willReturn($productDraft1, $productDraft2, $productDraft3, $productModelDraft);
+        $cursor->next()->shouldBeCalledTimes(4);
+        $cursorFactory->createCursor([])->willReturn($cursor);
 
         $this->handle($datagrid, $massAction)->shouldReturn($objectIds);
     }

@@ -1,0 +1,6 @@
+services:
+  Akeneo\Platform\Syndication\Application\ExtractMedia\ExtractMediaQueryHandler:
+    arguments:
+      - '@Akeneo\Platform\Syndication\Infrastructure\Query\AssetManager\FindMediaFileInfoCollection'
+      - '@Akeneo\Platform\Syndication\Application\ExtractMedia\MediaPathGenerator'
+    public: false

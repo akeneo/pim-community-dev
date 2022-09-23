@@ -1,0 +1,25 @@
+services:
+  akeneo.syndication.job.product.export:
+    class: '%pim_connector.job.simple_job.class%'
+    arguments:
+      - '%akeneo.syndication.connector.product.code%'
+      - '@event_dispatcher'
+      - '@akeneo_batch.job_repository'
+      - []
+      - true
+    tags:
+      - { name: akeneo_batch.job, connector: '%akeneo.syndication.connector.name%', type: '%pim_connector.job.export_type%', feature: as8 }
+
+  akeneo.syndication.job.job_parameters.product_default_values_provider:
+    class: 'Akeneo\Platform\Syndication\Infrastructure\Connector\DefaultValueProvider\ProductDefaultValueProvider'
+    arguments:
+      - - '%akeneo.syndication.connector.product.code%'
+    tags:
+      - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+  akeneo.syndication.job.job_parameters.constraint_collection_provider:
+    class: 'Akeneo\Platform\Syndication\Infrastructure\Connector\ConstraintCollectionProvider'
+    arguments:
+      - - '%akeneo.syndication.connector.product.code%'
+    tags:
+      - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }

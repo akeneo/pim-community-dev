@@ -1,0 +1,156 @@
+services:
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Selection\CodeLabelCollectionSelectionConstraint: ~
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Selection\CodeLabelSelectionConstraint: ~
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Source\AssetCollection\AssetCollectionSelectionConstraint: ~
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Source\AssetCollection\AssetCollectionSourceConstraint: ~
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Boolean\BooleanSourceConstraint: ~
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Categories\CategoriesSourceConstraint: ~
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Date\DateSourceConstraint: ~
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Enabled\EnabledSourceConstraint: ~
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Family\FamilySourceConstraint: ~
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Source\FamilyVariant\FamilyVariantSourceConstraint: ~
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Source\File\FileSourceConstraint: ~
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Groups\GroupsSourceConstraint: ~
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Measurement\MeasurementSelectionConstraint: ~
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Measurement\MeasurementSourceConstraint: ~
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Source\MultiSelect\MultiSelectSourceConstraint: ~
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Number\NumberSourceConstraint: ~
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Parent\ParentSelectionConstraint: ~
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Parent\ParentSourceConstraint: ~
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Source\PriceCollection\PriceCollectionSelectionConstraint: ~
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Source\PriceCollection\PriceCollectionSourceConstraint: ~
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Source\QualityScore\QualityScoreSourceConstraint: ~
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Static\Boolean\StaticBooleanSourceConstraint: ~
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Static\String\StaticStringSourceConstraint: ~
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Static\Measurement\StaticMeasurementSourceConstraint: ~
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Source\ReferenceEntity\ReferenceEntitySourceConstraint: ~
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Source\ReferenceEntityCollection\ReferenceEntityCollectionSourceConstraint: ~
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Scalar\ScalarSourceConstraint: ~
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Source\SimpleSelect\SimpleSelectSourceConstraint: ~
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Table\TableSourceConstraint: ~
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Text\TextSourceConstraint: ~
+
+  akeneo.syndication.validation.source:
+    class: 'Akeneo\Platform\Syndication\Infrastructure\Validation\SourcesValidator'
+    arguments:
+      - '@akeneo.pim.structure.query.get_attributes'
+      - '@akeneo.pim.structure.query.get_association_types'
+      -
+        akeneo_reference_entity: '@Akeneo\Platform\Syndication\Infrastructure\Validation\Source\ReferenceEntity\ReferenceEntitySourceConstraint'
+        akeneo_reference_entity_collection: '@Akeneo\Platform\Syndication\Infrastructure\Validation\Source\ReferenceEntityCollection\ReferenceEntityCollectionSourceConstraint'
+        pim_catalog_asset_collection: '@Akeneo\Platform\Syndication\Infrastructure\Validation\Source\AssetCollection\AssetCollectionSourceConstraint'
+        pim_catalog_boolean: '@Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Boolean\BooleanSourceConstraint'
+        pim_catalog_date: '@Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Date\DateSourceConstraint'
+        pim_catalog_file: '@Akeneo\Platform\Syndication\Infrastructure\Validation\Source\File\FileSourceConstraint'
+        pim_catalog_identifier: '@Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Scalar\ScalarSourceConstraint'
+        pim_catalog_image: '@Akeneo\Platform\Syndication\Infrastructure\Validation\Source\File\FileSourceConstraint'
+        pim_catalog_metric: '@Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Measurement\MeasurementSourceConstraint'
+        pim_catalog_multiselect: '@Akeneo\Platform\Syndication\Infrastructure\Validation\Source\MultiSelect\MultiSelectSourceConstraint'
+        pim_catalog_number: '@Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Number\NumberSourceConstraint'
+        pim_catalog_price_collection: '@Akeneo\Platform\Syndication\Infrastructure\Validation\Source\PriceCollection\PriceCollectionSourceConstraint'
+        pim_catalog_simpleselect: '@Akeneo\Platform\Syndication\Infrastructure\Validation\Source\SimpleSelect\SimpleSelectSourceConstraint'
+        pim_catalog_table: '@Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Table\TableSourceConstraint'
+        pim_catalog_text: '@Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Text\TextSourceConstraint'
+        pim_catalog_textarea: '@Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Text\TextSourceConstraint'
+      -
+        categories: '@Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Categories\CategoriesSourceConstraint'
+        enabled: '@Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Enabled\EnabledSourceConstraint'
+        family: '@Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Family\FamilySourceConstraint'
+        family_variant: '@Akeneo\Platform\Syndication\Infrastructure\Validation\Source\FamilyVariant\FamilyVariantSourceConstraint'
+        groups: '@Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Groups\GroupsSourceConstraint'
+        parent: '@Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Parent\ParentSourceConstraint'
+        quality_score: '@Akeneo\Platform\Syndication\Infrastructure\Validation\Source\QualityScore\QualityScoreSourceConstraint'
+      -
+        boolean: '@Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Static\Boolean\StaticBooleanSourceConstraint'
+        string: '@Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Static\String\StaticStringSourceConstraint'
+        measurement: '@Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Static\Measurement\StaticMeasurementSourceConstraint'
+    tags:
+      - { name: validator.constraint_validator, alias: akeneo.syndication.validation.source }
+    public: true
+
+  akeneo.syndication.validation.target:
+    class: 'Akeneo\Platform\Syndication\Infrastructure\Validation\Target\TargetValidator'
+    tags:
+      - { name: validator.constraint_validator, alias: akeneo.syndication.validation.target }
+    public: true
+
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Source\PriceCollection\PriceCollectionSelectionValidator:
+    arguments:
+      - [',', ';', '|']
+      - '@pim_catalog.query.find_activated_currencies'
+    tags:
+      - { name: validator.constraint_validator }
+    public: true
+
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Selection\CodeLabelCollectionSelectionValidator:
+    arguments:
+      - [',', ';', '|']
+    tags:
+      - { name: validator.constraint_validator }
+    public: true
+
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Source\QuantifiedAssociationType\QuantifiedAssociationSelectionValidator:
+    arguments:
+      - [ ',', ';', '|' ]
+    tags:
+      - { name: validator.constraint_validator }
+    public: true
+
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Source\SimpleAssociationType\SimpleAssociationSelectionValidator:
+    arguments:
+      - [',', ';', '|']
+    tags:
+      - { name: validator.constraint_validator }
+    public: true
+
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Measurement\MeasurementSelectionValidator:
+    arguments:
+      - [',', '.', '٫‎']
+    tags:
+      - { name: validator.constraint_validator }
+    public: true
+
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Source\Number\NumberSourceValidator:
+    arguments:
+      - [',', '.', '٫‎']
+    tags:
+      - { name: validator.constraint_validator }
+    public: true
+
+  Akeneo\Platform\Syndication\Infrastructure\Validation\IsValidAttributeValidator:
+    arguments:
+      - '@akeneo.pim.structure.query.get_attributes'
+      - '@pim_channel.query.cache.channel_exists_with_locale'
+    tags:
+      - { name: validator.constraint_validator, alias: 'akeneo.syndication.validation.locale_should_be_active' }
+    public: true
+
+  akeneo.syndication.validation.locale_should_be_active:
+    class: 'Akeneo\Platform\Syndication\Infrastructure\Validation\LocaleShouldBeActiveValidator'
+    arguments:
+      - '@pim_channel.query.cache.channel_exists_with_locale'
+    tags:
+      - { name: validator.constraint_validator, alias: 'akeneo.syndication.validation.locale_should_be_active' }
+    public: true
+
+  akeneo.syndication.validation.channel_should_exist:
+    class: 'Akeneo\Platform\Syndication\Infrastructure\Validation\ChannelShouldExistValidator'
+    arguments:
+      - '@pim_channel.query.cache.channel_exists_with_locale'
+    tags:
+      - { name: validator.constraint_validator, alias: 'akeneo.syndication.validation.channel_should_exist' }
+    public: true
+
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Measurement\UnitBelongsToMeasurementFamilyValidator:
+    arguments:
+      - '@akeneo_measure.manager'
+    tags:
+      - { name: validator.constraint_validator }
+    public: true
+
+  Akeneo\Platform\Syndication\Infrastructure\Validation\Operation\MeasurementConversionOperationValidator:
+    arguments:
+      - '@akeneo.pim.structure.query.get_attributes'
+    tags:
+      - { name: validator.constraint_validator }
+    public: true

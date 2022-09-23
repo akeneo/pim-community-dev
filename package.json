@@ -30,6 +30,7 @@
     "less": "node $npm_package_config_styles",
     "update-extensions": "node $npm_package_config_source/frontend/build/update-extensions.js",
     "generate-asset-manager-models": "node $npm_package_config_source/frontend/build/json-schema-to-typescript.js src/Akeneo/AssetManager/definitions/ public/bundles/akeneoassetmanager/infrastructure/model/",
+    "syndication:build": "yarn workspace @akeneo-pim-enterprise/syndication lib:build",
     "tailored-export:build": "yarn workspace @akeneo-pim-enterprise/tailored-export lib:build",
     "tailored-import:build": "yarn workspace @akeneo-pim-enterprise/tailored-import lib:build",
     "job-automation:build": "yarn workspace @akeneo-pim-enterprise/job-automation lib:build",
@@ -39,9 +40,9 @@
     "generate-models": "yarn generate-asset-manager-models && yarn workspace @akeneo-pim-community/communication-channel generate-models",
     "packages:build": "yarn workspace pim-community-dev packages:build && yarn enterprise-packages:build",
     "packages:unit": "yarn workspace pim-community-dev packages:unit && yarn enterprise-packages:unit",
-    "enterprise-packages:unit": "yarn workspace @akeneo-pim-enterprise/tailored-export test:unit:run && yarn workspace @akeneo-pim-enterprise/tailored-import test:unit:run && yarn workspace @akeneo-pim-enterprise/job-automation test:unit:run && yarn workspace @akeneo-pim-enterprise/performance-analytics test:unit:run",
-    "packages:lint:check": "yarn workspace @akeneo-pim-enterprise/tailored-export lint:check && yarn workspace @akeneo-pim-enterprise/tailored-import lint:check && yarn workspace @akeneo-pim-enterprise/job-automation lint:check && yarn workspace akeneo-pim-free-trial lint:check && yarn workspace @akeneo-pim-enterprise/performance-analytics lint:check",
-    "enterprise-packages:build": "yarn tailored-export:build && yarn tailored-import:build && yarn supplier-portal:build && yarn job-automation:build && yarn free-trial:build && yarn performance-analytics:build",
+    "enterprise-packages:unit": "yarn workspace @akeneo-pim-enterprise/tailored-export test:unit:run && yarn workspace @akeneo-pim-enterprise/tailored-import test:unit:run && yarn workspace @akeneo-pim-enterprise/job-automation test:unit:run && yarn workspace @akeneo-pim-enterprise/performance-analytics test:unit:run && yarn workspace @akeneo-pim-enterprise/syndication test:unit:run",
+    "packages:lint:check": "yarn workspace @akeneo-pim-enterprise/tailored-export lint:check && yarn workspace @akeneo-pim-enterprise/tailored-import lint:check && yarn workspace @akeneo-pim-enterprise/job-automation lint:check && yarn workspace akeneo-pim-free-trial lint:check && yarn workspace @akeneo-pim-enterprise/performance-analytics lint:check && yarn workspace @akeneo-pim-enterprise/syndication lint:check",
+    "enterprise-packages:build": "yarn tailored-export:build && yarn tailored-import:build && yarn supplier-portal:build && yarn job-automation:build && yarn free-trial:build && yarn performance-analytics:build && yarn syndication:build",
     "dsm:build": "yarn workspace pim-community-dev dsm:build"
   },
   "devDependencies": {
@@ -79,6 +80,7 @@
     "jest/**/ip-regex": "2.1.0"
   },
   "workspaces": [
+    "components/syndication/front",
     "components/tailored-export/front",
     "components/tailored-import/front",
     "components/supplier-portal-retailer/front",

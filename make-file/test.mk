@@ -15,6 +15,7 @@ coupling-back: #Doc: launch all coupling detector tests
 	PIM_CONTEXT=workflow $(MAKE) workflow-coupling-back
 	PIM_CONTEXT=permission $(MAKE) permission-coupling-back
 	PIM_CONTEXT=communication-channel $(MAKE) communication-channel-coupling-back
+	PIM_CONTEXT=syndication $(MAKE) coupling-back
 	PIM_CONTEXT=tailored-export $(MAKE) coupling-back
 	PIM_CONTEXT=tailored-import $(MAKE) coupling-back
 	PIM_CONTEXT=job-automation $(MAKE) coupling-back
@@ -52,6 +53,7 @@ lint-back: #Doc: launch all PHP linter tests
 	PIM_CONTEXT=asset-manager $(MAKE) asset-manager-lint-back
 	PIM_CONTEXT=communication-channel $(MAKE) communication-channel-lint-back
 	PIM_CONTEXT=shared-catalog $(MAKE) shared-catalog-lint-back
+	PIM_CONTEXT=syndication $(MAKE) lint-back
 	PIM_CONTEXT=tailored-export $(MAKE) lint-back
 	PIM_CONTEXT=tailored-import $(MAKE) lint-back
 	PIM_CONTEXT=job-automation $(MAKE) lint-back

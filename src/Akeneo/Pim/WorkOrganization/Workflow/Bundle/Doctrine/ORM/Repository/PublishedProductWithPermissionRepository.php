@@ -246,6 +246,14 @@ class PublishedProductWithPermissionRepository extends EntityRepository implemen
     /**
      * {@inheritdoc}
      */
+    public function getItemsFromUuids(array $uuids): array
+    {
+        throw new \LogicException(\sprintf('%s cannot be used for retrieving published products', __METHOD__));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function searchAfter(?ProductInterface $product, int $limit): array
     {
         $publishedProducts = $this->publishedProductRepository->searchAfter($product, $limit);

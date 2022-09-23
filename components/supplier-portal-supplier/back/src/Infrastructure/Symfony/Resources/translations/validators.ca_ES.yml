@@ -1,0 +1,9 @@
+supplier_portal:
+  supplier:
+    contributor_account:
+      validation:
+        min_password_length: La contrasenya ha de tenir com a mínim 8 caràcters.
+        max_password_length: La contrasenya no pot tenir més 255 caràcters.
+        must_contain_an_uppercase_letter: La contrasenya ha de tenir com a mínim una majúscula.
+        must_contain_a_lowercase_letter: La contrasenya ha de tenir com a mínim una minúscula.
+        must_contain_a_digit: La contrasenya ha de tenir com a mínim un número.

@@ -1,0 +1,269 @@
+services:
+    Akeneo\Platform\Syndication\Domain\Query\FindProductLabelsInterface:
+        class: Akeneo\Platform\Syndication\Infrastructure\Query\Enrichment\FindProductLabels
+        arguments:
+            - '@akeneo.pim.enrichment.product.query.get_product_labels'
+
+    Akeneo\Platform\Syndication\Domain\Query\FindProductModelLabelsInterface:
+        class: Akeneo\Platform\Syndication\Infrastructure\Query\Enrichment\FindProductModelLabels
+        arguments:
+            - '@akeneo.pim.enrichment.product.query.get_product_model_labels'
+
+    Akeneo\Platform\Syndication\Domain\Query\FindAttributeOptionLabelsInterface:
+        class: Akeneo\Platform\Syndication\Infrastructure\Query\Structure\FindAttributeOptionLabels
+        arguments:
+            - '@akeneo.pim.structure.query.lru_cached_get_existing_attribute_options_with_values'
+
+    Akeneo\Platform\Syndication\Domain\Query\FindGroupLabelsInterface:
+        class: Akeneo\Platform\Syndication\Infrastructure\Query\Structure\FindGroupLabels
+        arguments:
+            - '@akeneo.pim.structure.query.get_group_translations'
+
+    Akeneo\Platform\Syndication\Domain\Query\FindUnitLabelInterface:
+        class: Akeneo\Platform\Syndication\Infrastructure\Query\Measurement\FindUnitLabel
+        arguments:
+            - '@akeneo_measurement.service_api.get_unit_translations'
+
+    Akeneo\Platform\Syndication\Domain\Query\FindUnitSymbolInterface:
+        class: Akeneo\Platform\Syndication\Infrastructure\Query\Measurement\FindUnitSymbol
+        arguments:
+            - '@akeneo_measurement.service_api.get_unit'
+
+    Akeneo\Platform\Syndication\Domain\Query\MeasurementConverterInterface:
+        class: Akeneo\Platform\Syndication\Infrastructure\Query\Measurement\MeasurementConverter
+        arguments:
+            - '@akeneo_measure.measure_converter'
+
+    akeneo.syndication.query.find_product_system_sources:
+        class: Akeneo\Platform\Syndication\Infrastructure\Query\InMemoryFindSystemSources
+        arguments:
+            -
+                string:
+                    - 'categories'
+                    - 'enabled'
+                    - 'family'
+                    - 'parent'
+                    - 'groups'
+                    - 'family_variant'
+                    - 'quality_score'
+                    - 'code'
+                limited_string:
+                    - 'family'
+                    - 'code'
+                boolean:
+                    - 'enabled'
+                number: []
+                integer: []
+                measurement: []
+                string_collection:
+                    - 'categories'
+            - '@translator'
+
+    akeneo.syndication.query.find_product_model_system_sources:
+        class: Akeneo\Platform\Syndication\Infrastructure\Query\InMemoryFindSystemSources
+        arguments:
+            -
+                string:
+                    - 'categories'
+                    - 'family'
+                    - 'parent'
+                    - 'groups'
+                    - 'family_variant'
+                    - 'code'
+                limited_string:
+                    - 'family'
+                    - 'code'
+                string_collection:
+                    - 'categories'
+                boolean: []
+                number: []
+                integer: []
+                measurement: []
+            - '@translator'
+
+    akeneo.syndication.query.find_product_static_sources:
+        class: Akeneo\Platform\Syndication\Infrastructure\Query\InMemoryFindStaticSources
+        arguments:
+            -
+                string:
+                    - 'string'
+                limited_string:
+                    - 'string'
+                boolean:
+                    - 'boolean'
+                number: []
+                integer: []
+                measurement:
+                    - 'measurement'
+                url:
+                    - 'string'
+            - '@translator'
+
+    akeneo.syndication.query.find_product_model_static_sources:
+        class: Akeneo\Platform\Syndication\Infrastructure\Query\InMemoryFindStaticSources
+        arguments:
+            -
+                string:
+                    - 'string'
+                limited_string:
+                    - 'string'
+                boolean:
+                    - 'boolean'
+                number: []
+                integer: []
+                measurement:
+                    - 'measurement'
+                url:
+                    - 'string'
+            - '@translator'
+
+    akeneo.syndication.query.find_product_viewable_attributes:
+        class: Akeneo\Platform\Syndication\Infrastructure\Query\Structure\FindViewableAttributes
+        arguments:
+            - '@akeneo.pim.structure.query.find_flatten_attributes'
+            - '@pimee_security.query.get_viewable_attribute_codes_for_user'
+            - '@security.token_storage'
+            -
+                string:
+                    - 'akeneo_reference_entity_collection'
+                    - 'akeneo_reference_entity'
+                    - 'pim_catalog_asset_collection'
+                    - 'pim_catalog_boolean'
+                    - 'pim_catalog_date'
+                    - 'pim_catalog_file'
+                    - 'pim_catalog_identifier'
+                    - 'pim_catalog_image'
+                    - 'pim_catalog_metric'
+                    - 'pim_catalog_multiselect'
+                    - 'pim_catalog_number'
+                    - 'pim_catalog_price_collection'
+                    - 'pim_catalog_simpleselect'
+                    - 'pim_catalog_table'
+                    - 'pim_catalog_text'
+                    - 'pim_catalog_textarea'
+                url:
+                    - 'pim_catalog_image'
+                    - 'pim_catalog_text'
+                    - 'pim_catalog_asset_collection'
+                measurement:
+                    - 'pim_catalog_number'
+                    - 'pim_catalog_metric'
+                price:
+                    - 'pim_catalog_price_collection'
+                limited_string:
+                    - 'pim_catalog_simpleselect'
+                    - 'pim_catalog_text'
+                    - 'pim_catalog_textarea'
+                boolean:
+                    - 'pim_catalog_boolean'
+                integer:
+                    - 'pim_catalog_number'
+                    - 'pim_catalog_metric'
+                number:
+                    - 'pim_catalog_number'
+                    - 'pim_catalog_metric'
+                string_collection:
+                    - 'pim_catalog_multiselect'
+                    - 'pim_catalog_text'
+                    - 'pim_catalog_textarea'
+
+    akeneo.syndication.query.find_product_model_viewable_attributes:
+        class: Akeneo\Platform\Syndication\Infrastructure\Query\Structure\FindViewableAttributes
+        arguments:
+            - '@akeneo.pim.structure.query.find_flatten_attributes'
+            - '@pimee_security.query.get_viewable_attribute_codes_for_user'
+            - '@security.token_storage'
+            -
+                string:
+                    - 'akeneo_reference_entity_collection'
+                    - 'akeneo_reference_entity'
+                    - 'pim_catalog_asset_collection'
+                    - 'pim_catalog_boolean'
+                    - 'pim_catalog_date'
+                    - 'pim_catalog_file'
+                    - 'pim_catalog_image'
+                    - 'pim_catalog_metric'
+                    - 'pim_catalog_multiselect'
+                    - 'pim_catalog_number'
+                    - 'pim_catalog_price_collection'
+                    - 'pim_catalog_simpleselect'
+                    - 'pim_catalog_table'
+                    - 'pim_catalog_text'
+                    - 'pim_catalog_textarea'
+                url:
+                    - 'pim_catalog_image'
+                    - 'pim_catalog_text'
+                    - 'pim_catalog_asset_collection'
+                measurement:
+                    - 'pim_catalog_metric'
+                price:
+                    - 'pim_catalog_price_collection'
+                limited_string:
+                    - 'pim_catalog_simpleselect'
+                    - 'pim_catalog_text'
+                    - 'pim_catalog_textarea'
+                boolean:
+                    - 'pim_catalog_boolean'
+                number:
+                    - 'pim_catalog_number'
+                    - 'pim_catalog_metric'
+
+    Akeneo\Platform\Syndication\Domain\Query\FindCategoryLabelsInterface:
+        class: Akeneo\Platform\Syndication\Infrastructure\Query\Enrichment\FindCategoryLabels
+        arguments:
+            - '@akeneo.pim.structure.query.get_category_translations'
+
+    Akeneo\Platform\Syndication\Domain\Query\FindFamilyLabelInterface:
+        class: Akeneo\Platform\Syndication\Infrastructure\Query\Structure\FindFamilyLabel
+        arguments:
+            - '@akeneo.pim.structure.query.get_family_translations'
+
+    Akeneo\Platform\Syndication\Domain\Query\FindFamilyVariantLabelInterface:
+        class: Akeneo\Platform\Syndication\Infrastructure\Query\Structure\FindFamilyVariantLabel
+        arguments:
+            - '@akeneo.pim.structure.query.get_family_variant_translations'
+
+    Akeneo\Platform\Syndication\Domain\Query\FindCurrencyLabelsInterface:
+        class: Akeneo\Platform\Syndication\Infrastructure\Query\Structure\FindCurrencyLabels
+        arguments:
+            - '@pim_catalog.localization.translator.currency'
+
+    Akeneo\Platform\Syndication\Domain\Query\PlatformConfiguration\FindPlatformConfigurationListQueryInterface:
+        class: Akeneo\Platform\Syndication\Infrastructure\Query\PlatformConfiguration\FindPlatformConfigurationList
+        arguments:
+            - '@database_connection'
+            - '%akeneo.syndication.connector.product.code%'
+
+    Akeneo\Platform\Syndication\Domain\Query\Platform\HasAtLeastOnePlatformInterface:
+        class: Akeneo\Platform\Syndication\Infrastructure\Query\Platform\HasAtLeastOnePlatform
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Platform\Syndication\Domain\Query\PlatformConfiguration\FindPlatformConfigurationQueryInterface:
+        class: Akeneo\Platform\Syndication\Infrastructure\Query\PlatformConfiguration\FindPlatformConfiguration
+        arguments:
+            - '@database_connection'
+            - '%akeneo.syndication.connector.product.code%'
+
+    Akeneo\Platform\Syndication\Domain\Query\MediaFile\FindMediaFileInterface:
+        class: Akeneo\Platform\Syndication\Infrastructure\Query\MediaFile\FindMediaFile
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Platform\Syndication\Infrastructure\Query\Enrichment\GetValuesAndPropertiesFromProductUuids:
+        class: 'Akeneo\Platform\Syndication\Infrastructure\Query\Enrichment\GetValuesAndPropertiesFromProductUuids'
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Platform\Syndication\Infrastructure\Query\Enrichment\SqlGetConnectorProducts:
+        class: 'Akeneo\Platform\Syndication\Infrastructure\Query\Enrichment\SqlGetConnectorProducts'
+        arguments:
+            $getValuesAndPropertiesFromProductUuids: '@Akeneo\Platform\Syndication\Infrastructure\Query\Enrichment\GetValuesAndPropertiesFromProductUuids'
+            $getProductModelAssociationsByProductUuids: '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\Association\GetProductModelAssociationsByProductUuids'
+            $getGroupAssociationsByProductUuids: '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\Association\GetGroupAssociationsByProductUuids'
+            $getProductAssociationsByProductUuids: '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\Association\GetProductAssociationsByProductUuids'
+            $getProductQuantifiedAssociationsByProductUuids: '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\QuantifiedAssociation\GetProductQuantifiedAssociationsByProductUuids'
+            $getProductModelQuantifiedAssociationsByProductUuids: '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\QuantifiedAssociation\GetProductModelQuantifiedAssociationsByProductUuids'
+            $getCategoryCodesByProductUuids: '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetCategoryCodesByProductUuids'
+            $readValueCollectionFactory: '@akeneo.pim.enrichment.factory.read_value_collection'
+            $connection: '@database_connection'

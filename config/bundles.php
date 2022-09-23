@@ -101,6 +101,7 @@ return [
     AkeneoEnterprise\Connectivity\Connection\Infrastructure\Symfony\AkeneoEnterpriseConnectivityConnectionBundle::class => ['all' => true],
     Akeneo\Platform\TailoredExport\Infrastructure\Symfony\AkeneoTailoredExportBundle::class => ['all' => true],
     Akeneo\Platform\TailoredImport\Infrastructure\Symfony\AkeneoTailoredImportBundle::class => ['all' => true],
+    Akeneo\Platform\Syndication\Infrastructure\Symfony\AkeneoSyndicationBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\FrameworkBundle\PimEnterpriseFrameworkBundle::class => ['all' => true],
     Akeneo\Tool\Bundle\EnterpriseBatchQueueBundle\AkeneoEnterpriseBatchQueueBundle::class => ['all' => true],
     Akeneo\SupplierPortal\Retailer\Infrastructure\Symfony\AkeneoSupplierPortalRetailerBundle::class => ['all' => true],

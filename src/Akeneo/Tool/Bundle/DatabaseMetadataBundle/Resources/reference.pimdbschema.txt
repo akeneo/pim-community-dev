@@ -51,6 +51,8 @@ akeneo_supplier_portal_product_file_supplier_comments | BASE TABLE
 akeneo_supplier_portal_supplier | BASE TABLE
 akeneo_supplier_portal_supplier_contributor | BASE TABLE
 akeneo_supplier_portal_supplier_product_file | BASE TABLE
+akeneo_syndication_connected_channel | BASE TABLE
+akeneo_syndication_family | BASE TABLE
 lock_keys | BASE TABLE
 messenger_messages | BASE TABLE
 migration_versions | BASE TABLE
@@ -460,6 +462,13 @@ akeneo_supplier_portal_supplier_product_file | uploaded_by_contributor | YES | v
 akeneo_supplier_portal_supplier_product_file | uploaded_by_supplier | NO | varchar(36) | MUL
 akeneo_supplier_portal_supplier_product_file | uploaded_at | NO | datetime |
 akeneo_supplier_portal_supplier_product_file | downloaded | NO | tinyint(1) |
+akeneo_syndication_connected_channel | code | NO | varchar(255) | PRI
+akeneo_syndication_connected_channel | label | NO | varchar(255) |
+akeneo_syndication_connected_channel | enabled | NO | tinyint(1) |
+akeneo_syndication_family | code | NO | varchar(255) | PRI
+akeneo_syndication_family | connected_channel_code | NO | varchar(255) | PRI
+akeneo_syndication_family | label | NO | varchar(255) |
+akeneo_syndication_family | requirements | NO | json |
 lock_keys | key_id | NO | varchar(64) | PRI
 lock_keys | key_token | NO | varchar(44) |
 lock_keys | key_expiration | NO | int unsigned |
@@ -1109,6 +1118,9 @@ INDEX | akeneo_supplier_portal_supplier_contributor | supplier_identifier_foreig
 INDEX | akeneo_supplier_portal_supplier_contributor | UC_supplier_contributor_email | email
 INDEX | akeneo_supplier_portal_supplier_product_file | PRIMARY | identifier
 INDEX | akeneo_supplier_portal_supplier_product_file | uploaded_by_supplier_foreign_key | uploaded_by_supplier
+INDEX | akeneo_syndication_connected_channel | PRIMARY | code
+INDEX | akeneo_syndication_family | akeneo_syndication_family_code_family_ux | connected_channel_code, code
+INDEX | akeneo_syndication_family | PRIMARY | code, connected_channel_code
 INDEX | lock_keys | PRIMARY | key_id
 INDEX | messenger_messages | IDX_75EA56E016BA31DB | delivered_at
 INDEX | messenger_messages | IDX_75EA56E0E3BD61CE | available_at
@@ -1488,6 +1500,7 @@ FOREIGN CONSTRAINT | product_file_retailer_comments_product_file_identifier_fk |
 FOREIGN CONSTRAINT | product_file_supplier_comments_product_file_identifier_fk | akeneo_supplier_portal_product_file_supplier_comments.product_file_identifier | akeneo_supplier_portal_supplier_product_file.identifier
 FOREIGN CONSTRAINT | supplier_identifier_foreign_key | akeneo_supplier_portal_supplier_contributor.supplier_identifier | akeneo_supplier_portal_supplier.identifier
 FOREIGN CONSTRAINT | uploaded_by_supplier_foreign_key | akeneo_supplier_portal_supplier_product_file.uploaded_by_supplier | akeneo_supplier_portal_supplier.identifier
+FOREIGN CONSTRAINT | akeneo_syndication_connected_channel_code_foreign_key | akeneo_syndication_family.connected_channel_code | akeneo_syndication_connected_channel.code
 FOREIGN CONSTRAINT | FK_DAF6DF5524DB0683 | oro_config_value.config_id | oro_config.id
 FOREIGN CONSTRAINT | FK_F82840BC6ED78C3 | oro_user.file_info_id | akeneo_file_storage_file_info.id
 FOREIGN CONSTRAINT | FK_F82840BC7BBFC60C | oro_user.catalogLocale_id | pim_catalog_locale.id
@@ -1664,6 +1677,7 @@ UNIQUE CONSTRAINT | UC_comments_read_by_supplier_product_file_identifier | akene
 UNIQUE CONSTRAINT | UC_product_file_imported_by_job_execution_job_execution_id | akeneo_supplier_portal_product_file_imported_by_job_execution | job_execution_id
 UNIQUE CONSTRAINT | UC_supplier_code | akeneo_supplier_portal_supplier | code
 UNIQUE CONSTRAINT | UC_supplier_contributor_email | akeneo_supplier_portal_supplier_contributor | email
+UNIQUE CONSTRAINT | akeneo_syndication_family_code_family_ux | akeneo_syndication_family | code, connected_channel_code
 UNIQUE CONSTRAINT | UNIQ_FEF9EDB75E237E06 | oro_access_group | name
 UNIQUE CONSTRAINT | UNIQ_673F65E757698A6A | oro_access_role | role
 UNIQUE CONSTRAINT | CONFIG_UQ_ENTITY | oro_config | entity, record_id

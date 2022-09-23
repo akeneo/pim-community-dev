@@ -16,6 +16,7 @@
         "psr-4": {
             "Akeneo\\AssetManager\\": "src/Akeneo/AssetManager/back",
             "Akeneo\\Pim\\Automation\\DataQualityInsights\\": "src/Akeneo/Pim/Automation/DataQualityInsights/back",
+            "Akeneo\\Platform\\Syndication\\": "components/syndication/back/src/",
             "Akeneo\\Pim\\TableAttribute\\": "grth/src/Akeneo/Pim/TableAttribute/back",
             "Akeneo\\Platform\\": [
                 "src/Akeneo/Platform",
@@ -77,6 +78,7 @@
             "Akeneo\\Platform\\TailoredImport\\Test\\": "components/tailored-import/back/tests",
             "Specification\\Akeneo\\Platform\\TailoredImport\\": "components/tailored-import/back/tests/Specification",
             "Akeneo\\Test\\Pim\\TableAttribute\\": "grth/src/Akeneo/Pim/TableAttribute/tests/back",
+            "Akeneo\\Platform\\Syndication\\Test\\": "components/syndication/back/tests",
             "Akeneo\\Test\\Pim\\Enrichment\\Product\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Enrichment/Product/back/Test",
             "Akeneo\\Test\\Pim\\Enrichment\\Category\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Enrichment/Category/back/Test",
             "Akeneo\\Test\\Pim\\Structure\\Family\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Structure/Family/back/Test",
