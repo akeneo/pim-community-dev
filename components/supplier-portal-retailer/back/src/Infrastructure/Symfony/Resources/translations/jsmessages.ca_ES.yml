@@ -1,0 +1,120 @@
+supplier_portal:
+  menu_block_title: Portal de proveïdor
+  supplier:
+    breadcrumb:
+      root: Portal de proveïdor
+      suppliers: Proveïdors
+    supplier_create:
+      modal:
+        title: Proveïdor
+        code:
+          label: Codi
+        label:
+          label: Etiqueta
+      create_button:
+        label: Crea el teu primer proveïdor
+      notification:
+        title: S'ha creat el proveïdor.
+        content: Ara podeu editar-lo a la secció de gestió de proveïdors.
+      error:
+        unknown_error: S'ha produït un error en crear el proveïdor.
+        supplier_already_exists: 'Ja existeix un proveïdor amb el codi "{{ supplierCode }}".'
+    supplier_list:
+      menu_item: Proveïdors
+      title: "]-Inf, 1]{{ count }} proveïdor|]1, Inf[{{ count }} proveïdors"
+      no_supplier: Encara no hi ha proveïdors.
+      search_by_supplier: Cercar per proveïdor
+      no_search_result: No hi ha proveïdors que coincideixin amb la cerca.
+      notification:
+        error:
+          title: No podem mostrar la llista de proveïdors.
+          content: Disculpeu les molèsties, torneu-ho a provar d'aquí a uns instants.
+      dropdown:
+        export_suppliers: Exportar proveïdors
+        download_template: Descarrega la plantilla
+        import_suppliers: Import de proveïdors
+      columns:
+        supplier: Proveïdor
+        number_of_contributors: Nombre de col·laboradors
+        actions: Accions
+    supplier_delete:
+      sucess_message: El proveïdor s'ha esborrat correctament
+      modal:
+        title: Proveïdor
+        confirmation_question: Esteu segur que voleu esborrar aquest proveïdor?
+        warning: Si suprimiu aquest proveïdor, es perdrà qualsevol enriquiment no desat.
+        unknown_error: S'ha produït un error en suprimir el proveïdor.
+    supplier_edit:
+      tabs:
+        configuration: Configuració
+        contributors: Col·laboradors
+        product_files: Arxius de producte
+      configuration_form:
+        code: Codi
+        label: Etiqueta del proveïdor (obligatori)
+      contributors_form:
+        info: 'Afegiu col·laboradors per donar-los accés al portal de proveïdors d''Akeneo. Podeu omplir una llista d''adreces amb separadors: espai, coma, punt i coma i salt de línia.'
+        invalid_emails_warning: Alguns correus electrònics no són vàlids i no s'afegiran.
+        emails_belonging_to_other_suppliers_warning: Un col·laborador només pot pertànyer a un proveïdor. Quan deseu aquest proveïdor, se suprimiran tots els correus electrònics que es mostren com a advertiments.
+        add_contributors: Afegir col·laboradors
+        add_button: Afegir
+        search_by_email_address: Cercar per adreça de correu
+        columns:
+          email: Adreça email
+        no_contributor: Encara no hi ha col·laboradors.
+        result_counter: '{0} Sense resultat|{1}{{ count }} resultat|]1,Inf] {{ count }} resultats'
+        notification:
+          email_error:
+            title: No hem pogut afegir aquest col·laborador.
+            content: "El correu electrònic {{ emailAddress }} no és vàlid: {{ missatge }}"
+          contributor_email_already_exists:
+            title: No hem pogut afegir aquest col·laborador.
+            content: El correu electrònic {{ emailAddress }} ja s'utilitza per a un altre proveïdor i encara no admetem diversos proveïdors que tinguin el mateix col·laborador. Disculpeu les molèsties.
+      loading_error: S'ha produït un error en carregar el proveïdor.
+      success_message: El proveïdor s'ha actualitzat correctament
+      update_error: S'ha produït un error en actualitzar el proveïdor.
+      delete_label: Eliminar aquest proveïdor
+  product_file_dropping:
+    breadcrumb:
+      root: Portal de proveïdor
+      product_files: Arxius de producte
+    supplier_files:
+      menu_item: Arxius de producte
+      title: "]-Inf, 1]{{ count }} arxiu de producte|]1, Inf[{{ count }} arxius de producte"
+      no_files: Encara no hi ha arxius de producte.
+      columns:
+        upload_date: Data de càrrega
+        contributor: Col·laborador
+        supplier: Proveïdor
+        status: Estat
+        download: Descarregar icona
+      notification:
+        error_loading_supplier_files:
+          title: No podem mostrar els arxius del producte.
+          content: Disculpeu les molèsties, torneu-ho a provar d'aquí a uns instants.
+      tabs:
+        discussion: Discussió
+      discussion:
+        import_file_button_label: Importar arxiu
+        info: Envieu comentaris quan necessiteu intercanviar informació amb els vostres proveïdors.
+        comment_input_label: Enviar un nou missatge
+        discussion_title: Discussió
+        submit_button_label: Enviar
+        loading_error: S'ha produït un error en carregar l'arxiu del producte.
+        comment_submit_error: S'ha produït un error en enviar el comentari.
+        max_comment_length_reached: El comentari no pot tenir més de 255 caràcters.
+        max_number_of_comments_reached: Has arribat al límit de comentaris.
+    pim_notification:
+      button_label: Veure els arxius del producte
+pim_title:
+  supplier_portal_retailer_supplier_list: Proveïdors
+  supplier_portal_retailer_supplier_edit: Editar un proveïdor
+  supplier_portal_retailer_product_files_list: Arxius de producte
+  supplier_portal_retailer_product_files_comment: Arxiu de producte
+batch_jobs.supplier_portal_xlsx_supplier_import.label: Portal de proveïdors Importació de proveïdors a XLSX
+pim_notification:
+  supplier_portal:
+    new_product_file:
+      button_label: Veure arxius del producte
+  types:
+    new_product_file: Nou arxiu de producte
