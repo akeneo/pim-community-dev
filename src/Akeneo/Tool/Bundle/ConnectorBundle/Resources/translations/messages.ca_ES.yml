@@ -8,6 +8,7 @@ job_execution.summary:
   skip: omès
   create: creat
   process: processat
+  update: actualitzat
   update_products: productes actualitzats
   process_products: productes processats
   skip_products: productes omesos

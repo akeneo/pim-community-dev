@@ -150,4 +150,14 @@ class InMemoryProductRepository implements
 
         return $items;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemsFromUuids(array $uuids): array
+    {
+        return $this->products->filter(
+            static fn (ProductInterface $product): bool => \in_array($product->getUuid()->toString(), $uuids)
+        )->getValues();
+    }
 }

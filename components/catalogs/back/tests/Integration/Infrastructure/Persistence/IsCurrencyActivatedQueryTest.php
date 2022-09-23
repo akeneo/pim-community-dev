@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence;
 
-use Akeneo\Catalogs\Application\Persistence\IsCurrencyActivatedQueryInterface;
-use Akeneo\Catalogs\Infrastructure\Persistence\IsCurrencyActivatedQuery;
+use Akeneo\Catalogs\Application\Persistence\Currency\IsCurrencyActivatedQueryInterface;
+use Akeneo\Catalogs\Infrastructure\Persistence\Currency\IsCurrencyActivatedQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 
 class IsCurrencyActivatedQueryTest extends IntegrationTestCase

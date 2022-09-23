@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Unit\Infrastructure\Controller\Internal;
 
-use Akeneo\Catalogs\Application\Persistence\GetCategoryChildrenQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Category\GetCategoryChildrenQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Controller\Internal\GetCategoryChildrenAction;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;

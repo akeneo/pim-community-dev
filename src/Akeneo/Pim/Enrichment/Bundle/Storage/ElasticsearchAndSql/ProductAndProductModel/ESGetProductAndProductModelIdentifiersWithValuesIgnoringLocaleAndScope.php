@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResults;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\GetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndScope;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
@@ -31,6 +32,9 @@ final class ESGetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndSco
         $this->batchSize = $batchSize;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function forAttributeAndValues(string $attributeCode, string $backendType, array $values): iterable
     {
         $attributePath = sprintf('values.%s-%s.*', $attributeCode, $backendType);
@@ -38,7 +42,7 @@ final class ESGetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndSco
         $query = ([] === $values) ? '*' : implode(' OR ', $values);
 
         $baseQuery = [
-            '_source' => ['identifier'],
+            '_source' => ['id', 'identifier', 'document_type'],
             'size' => $this->batchSize,
             'query' => [
                 'bool' => [
@@ -74,9 +78,10 @@ final class ESGetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndSco
                 break;
             }
 
-            $identifiers = array_map(function (array $hit) {
-                return $hit['_source']['identifier'];
-            }, $hits);
+            $identifiers = new IdentifierResults();
+            foreach ($hits as $hit) {
+                $identifiers->add($hit['_source']['identifier'], $hit['_source']['document_type'], $hit['_source']['id']);
+            }
             yield $identifiers;
 
             $lastResult = end($hits);

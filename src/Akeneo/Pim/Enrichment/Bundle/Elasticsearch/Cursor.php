@@ -6,9 +6,10 @@ namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\ResultAwareInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ResultInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 
 /**
  * Cursor to iterate over all items.
@@ -23,31 +24,19 @@ use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
  */
 class Cursor extends AbstractCursor implements CursorInterface, ResultAwareInterface
 {
-    private array $esQuery;
-    private int $pageSize;
-    private array $searchAfter;
+    private array $searchAfter = [];
     private ?ResultInterface $result = null;
 
-    /**
-     * @param Client                        $esClient
-     * @param CursorableRepositoryInterface $productRepository
-     * @param CursorableRepositoryInterface $productModelRepository
-     * @param array                         $esQuery
-     * @param int                           $pageSize
-     */
     public function __construct(
         Client $esClient,
-        CursorableRepositoryInterface $productRepository,
-        CursorableRepositoryInterface $productModelRepository,
-        array $esQuery,
-        int $pageSize
+        ProductRepositoryInterface $productRepository,
+        ProductModelRepositoryInterface $productModelRepository,
+        private array $esQuery,
+        private int $pageSize
     ) {
         $this->esClient = $esClient;
         $this->productRepository = $productRepository;
         $this->productModelRepository = $productModelRepository;
-        $this->esQuery = $esQuery;
-        $this->pageSize = $pageSize;
-        $this->searchAfter = [];
     }
 
     /**
@@ -56,6 +45,7 @@ class Cursor extends AbstractCursor implements CursorInterface, ResultAwareInter
     public function next()
     {
         if (false === next($this->items)) {
+            $this->position += count($this->items);
             $this->items = $this->getNextItems($this->esQuery);
             reset($this->items);
         }
