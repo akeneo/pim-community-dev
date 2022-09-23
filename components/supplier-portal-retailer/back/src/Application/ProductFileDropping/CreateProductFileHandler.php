@@ -44,15 +44,15 @@ final class CreateProductFileHandler
 
         $storedProductFilePath = ($this->storeProductsFile)(
             Code::fromString($supplier->code),
-            Filename::fromString($createProductFile->uploadedFile->getClientOriginalName()),
+            Filename::fromString($createProductFile->originalFileName),
             Identifier::fromString(Uuid::uuid4()->toString()),
-            $createProductFile->uploadedFile->getPathname(),
+            $createProductFile->temporaryFilePath,
         );
 
         $productFileIdentifier = Identifier::fromString(Uuid::uuid4()->toString());
         $productFile = ProductFile::create(
             (string) $productFileIdentifier,
-            $createProductFile->uploadedFile->getClientOriginalName(),
+            $createProductFile->originalFileName,
             $storedProductFilePath,
             $createProductFile->uploadedByContributor,
             $supplier,
@@ -65,13 +65,13 @@ final class CreateProductFileHandler
         }
 
         $this->logger->info(
-            sprintf('Product file "%s" created.', $createProductFile->uploadedFile->getClientOriginalName()),
+            sprintf('Product file "%s" created.', $createProductFile->originalFileName),
             [
                 'data' => [
                     'identifier' => (string) $productFileIdentifier,
                     'supplier_identifier' => $supplier->identifier,
                     'supplier_code' => $supplier->code,
-                    'filename' => $createProductFile->uploadedFile->getClientOriginalName(),
+                    'filename' => $createProductFile->originalFileName,
                     'path' => $storedProductFilePath,
                     'uploaded_by_contributor' => $createProductFile->uploadedByContributor,
                     'metric_key' => 'supplier_file_dropped',
