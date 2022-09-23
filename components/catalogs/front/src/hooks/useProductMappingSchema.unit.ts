@@ -5,7 +5,7 @@ import {renderHook} from '@testing-library/react-hooks';
 import {useCatalog} from './useCatalog';
 import {useProductMappingSchema} from './useProductMappingSchema';
 
-test('it returns null', async () => {
+test('Catalog mapping is reachable', async () => {
     renderHook(() => useCatalog('123e4567-e89b-12d3-a456-426614174000'));
 
     const {result, waitForNextUpdate} = renderHook(
