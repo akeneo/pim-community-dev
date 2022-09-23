@@ -54,11 +54,6 @@ const saveEditCategoryForm = async (
   // because it is a modality for saving, not a part of a category state
   let payload = set(['permissions', 'apply_on_children'], options.applyPermissionsOnChildren, category);
 
-  const attributeWithoutMagicField = {...payload.attributes};
-  delete attributeWithoutMagicField.attribute_codes;
-
-  payload = set(['attributes', 'attribute_codes'], Object.keys(attributeWithoutMagicField), payload);
-
   const response = await fetch(router.generate('pim_enriched_category_rest_update', {id: category.id}), {
     method: 'POST',
     headers: [

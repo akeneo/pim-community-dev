@@ -2,54 +2,84 @@
 
 namespace Akeneo\Category\Domain\ValueObject;
 
-use Akeneo\Category\Application\Converter\Checker\AttributeRequirementChecker;
+use Akeneo\Category\Application\Converter\Checker\ValueCollectionRequirementChecker;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
  * @implements \IteratorAggregate<int, ValueCollection>
+ * @phpstan-type AttributeCode array<string>
+ * @phpstan-type ImageValue array{
+ *     size: int,
+ *     extension: string,
+ *     file_path: string,
+ *     mime_type: string,
+ *     original_filename: string,
+ * }
+ * @phpstan-type Value array{data: string|ImageValue|null, locale: string|null, attribute_code: string}
  */
 final class ValueCollection implements \IteratorAggregate, \Countable
 {
     public const SEPARATOR = '|';
 
-    // @phpstan-ignore-next-line
+    /** @phpstan-ignore-next-line */
     private function __construct(private ?array $values)
     {
-        AttributeRequirementChecker::checkAttributes($values);
+        ValueCollectionRequirementChecker::checkValues($values);
     }
 
-    // @phpstan-ignore-next-line
+    /**
+     * @param array<string, AttributeCode|Value> $values
+     */
     public static function fromArray(array $values): self
     {
         return new self($values);
     }
 
-    // @phpstan-ignore-next-line
-    public function getAttributeTextData(string $attributeCode, string $attributeIdentifier, string $localeCode): ?array
+    /**
+     * Get a value by his composite key.
+     *
+     * @return Value|null
+     */
+    public function getValue(string $attributeCode, string $attributeUuid, ?string $localeCode): ?array
     {
-        return $this->values[sprintf(
-            '%s'.self::SEPARATOR.'%s'.self::SEPARATOR.'%s',
+        $localCompositeKey = sprintf(
+            '%s%s%s',
             $attributeCode,
-            $attributeIdentifier,
-            $localeCode,
-        )];
+            self::SEPARATOR.$attributeUuid,
+            isset($localeCode) ? self::SEPARATOR.$localeCode : '',
+        );
+
+        return $this->values[$localCompositeKey] ?? null;
     }
 
-    // @phpstan-ignore-next-line
-    public function getAttributeData(string $attributeCode, string $attributeIdentifier): ?array
+    /**
+     * @return array<string, AttributeCode|Value>|null
+     */
+    public function getValues(): ?array
     {
-        return $this->values[sprintf('%s'.self::SEPARATOR.'%s', $attributeCode, $attributeIdentifier)];
+        return $this->values;
+    }
+
+    /**
+     * @return AttributeCode
+     */
+    public function getCodes(): array
+    {
+        return $this->values['attribute_codes'] ?? [];
     }
 
     /**
      * Set a value in value collection. If value already exist, update it.
+     *
+     * @param ImageValue|string|null $value
      */
     public function setValue(
         string $attributeUuid,
         string $attributeCode,
         ?string $localeCode,
-        mixed $value,
+        array|string|null $value,
     ): ValueCollection {
         $compositeKey = $attributeCode.self::SEPARATOR.$attributeUuid;
 
@@ -57,7 +87,7 @@ final class ValueCollection implements \IteratorAggregate, \Countable
             '%s%s%s',
             $attributeCode,
             self::SEPARATOR.$attributeUuid,
-            isset($localeCode) ? self::SEPARATOR.$localeCode : '',
+            !empty($localeCode) ? self::SEPARATOR.$localeCode : '',
         );
 
         $this->values['attribute_codes'][] = $compositeKey;
@@ -73,11 +103,13 @@ final class ValueCollection implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @return array<string, array<string, mixed>>
+     * @return array<string, Value>
      */
     public function normalize(): array
     {
-        return $this->values ?? [];
+        return array_filter($this->values, function ($valueKey) {
+            return $valueKey !== 'attribute_codes';
+        }, ARRAY_FILTER_USE_KEY);
     }
 
     /**

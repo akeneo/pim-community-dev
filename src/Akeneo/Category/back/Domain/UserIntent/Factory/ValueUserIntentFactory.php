@@ -20,7 +20,6 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  *
- * @phpstan-import-type AttributeCodeApi from InternalApiToStd
  * @phpstan-import-type AttributeValueApi from InternalApiToStd
  */
 final class ValueUserIntentFactory implements UserIntentFactory
@@ -38,28 +37,21 @@ final class ValueUserIntentFactory implements UserIntentFactory
     }
 
     /**
-     * @param array<string, mixed> $data
+     * @param array<string, AttributeValueApi> $data
      *
      * @return array|UserIntent[]
      */
     public function create(string $fieldName, mixed $data): array
     {
-        if (!\is_array($data) || !array_key_exists('attribute_codes', $data) || empty($data['attribute_codes'])) {
-            throw InvalidPropertyTypeException::arrayExpected($fieldName, static::class, $data);
+        if (!\is_array($data)) {
+            throw InvalidPropertyTypeException::arrayExpected($fieldName, ValueUserIntentFactory::class, $data);
         }
 
-        $attributeCollection = $this->getAttributeCollectionByCodes($data['attribute_codes']);
-
-        /** @var array<string, AttributeValueApi> $attributeValues */
-        $attributeValues = array_filter(
-            $data,
-            static fn ($attributeKey) => $attributeKey !== 'attribute_codes',
-            ARRAY_FILTER_USE_KEY,
-        );
+        $attributeCollection = $this->getAttributeCollectionByCodes($data);
 
         $userIntents = [];
-        if (!empty($attributeValues)) {
-            foreach ($attributeValues as $value) {
+        if (!empty($data)) {
+            foreach ($data as $value) {
                 $attributeType = $this->getAttributeType($attributeCollection, $value);
                 // /!\ No attribute type found for the value. Do nothing for now.
                 if (null === $attributeType) {
@@ -74,11 +66,32 @@ final class ValueUserIntentFactory implements UserIntentFactory
     }
 
     /**
-     * @param array<string> $attributeCodes
+     * @param array<string, AttributeValueApi> $attributes
      */
-    private function getAttributeCollectionByCodes(array $attributeCodes): AttributeCollection
+    private function getAttributeCollectionByCodes(array $attributes): AttributeCollection
     {
-        return $this->getAttribute->byIdentifiers($attributeCodes);
+        $compositeKeys = $this->extractCompositeKeys(array_keys($attributes));
+
+        return $this->getAttribute->byIdentifiers($compositeKeys);
+    }
+
+    /**
+     * Get a list of composite key from the local composite key list given in parameter.
+     *
+     * @param array<string> $localeCompositeKeys (example: ['code|uuid|locale'])
+     *
+     * @return array<string> (example: ['code|uuid'])
+     */
+    private function extractCompositeKeys(array $localeCompositeKeys): array
+    {
+        // Get keys, check unicity and rebuild it
+        $compositeKeys = array_map(function ($keyWithLocale) {
+            $exploded = explode(ValueCollection::SEPARATOR, $keyWithLocale);
+            // build the composite key ('code|uuid') and return it
+            return $exploded[0].ValueCollection::SEPARATOR.$exploded[1];
+        }, $localeCompositeKeys);
+
+        return array_unique($compositeKeys);
     }
 
     /**

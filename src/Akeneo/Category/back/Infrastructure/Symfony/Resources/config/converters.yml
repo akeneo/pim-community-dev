@@ -12,8 +12,10 @@ services:
   Akeneo\Category\Application\Converter\Checker\InternalApiRequirementChecker:
     arguments:
       - '@Akeneo\Category\Application\Converter\Checker\FieldsRequirementChecker'
-      - '@Akeneo\Category\Application\Converter\Checker\AttributeRequirementChecker'
+      - '@Akeneo\Category\Application\Converter\Checker\AttributeApiRequirementChecker'
 
   Akeneo\Category\Application\Converter\Checker\FieldsRequirementChecker: ~
 
-  Akeneo\Category\Application\Converter\Checker\AttributeRequirementChecker: ~
+  Akeneo\Category\Application\Converter\Checker\AttributeApiRequirementChecker: ~
+
+  Akeneo\Category\Application\Converter\Checker\ValueCollectionRequirementChecker: ~
