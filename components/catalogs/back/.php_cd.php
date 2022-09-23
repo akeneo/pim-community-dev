@@ -57,15 +57,13 @@ $rules = [
             'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
             'Akeneo\Connectivity\Connection\ServiceApi',
             'League\Flysystem\Filesystem',
+            'Akeneo\Tool\Bundle\MeasureBundle\ServiceApi\FindMeasurementFamilies',
 
             // @todo replace with the ones from service API when available
             'Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface',
             'Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface',
             'Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface',
             'Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface',
-            'Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface',
-            'Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode',
-            'Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException',
             'Akeneo\Channel\Infrastructure\Component\Repository\CurrencyRepositoryInterface',
 
             // @todo remove

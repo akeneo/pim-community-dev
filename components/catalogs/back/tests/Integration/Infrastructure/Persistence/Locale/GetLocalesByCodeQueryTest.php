@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence;
+namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence\Locale;
 
 use Akeneo\Catalogs\Infrastructure\Persistence\Locale\GetLocalesByCodeQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;

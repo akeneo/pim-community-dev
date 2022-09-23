@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence;
+namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence\Catalog;
 
 use Akeneo\Catalogs\Application\Persistence\Catalog\UpdateCatalogProductValueFiltersQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\UpdateCatalogProductValueFiltersQuery;
