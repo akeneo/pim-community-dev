@@ -21,7 +21,7 @@ final class Version_7_0_20220429132029_remove_temporary_indexes_from_uuid_migrat
     {
         $this->disableMigrationWarning();
         foreach (MigrateToUuidStep::TABLES as $tableName => $tableProperties) {
-            $indexNamesToDelete = \array_keys($tableProperties[MigrateToUuidStep::TEMPORARY_INDEXES_INDEX] ?? []);
+            $indexNamesToDelete = \array_keys($tableProperties[MigrateToUuidStep::TEMPORARY_INDEXES_INDEX]);
             $indexNamesToDelete[] = self::TEMPORARY_INDEX_NAME;
             // The addSql() method does not execute the query directly, it means the FK is not directly dropped
             // So we can try to drop the same FK twice => the second call fail. This variable helps to execute once.

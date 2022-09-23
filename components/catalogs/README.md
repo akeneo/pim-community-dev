@@ -1,35 +1,15 @@
 Catalogs
 ========
 
-## Features
+## What's a catalog?
 
-Checkout the directory [features](https://github.com/akeneo/pim-community-dev/blob/master/components/catalogs/features)
-to discover the list of features supported by Catalogs.
+A catalog is a selection of products.
+- The selection of products is defined by one or several criteria. (status, categories, ...)
+- It gives access to products with filtered values. (based on locale, channel, currency, ...)
+- It can also give access to mapped products based on any target requirements.
 
-## Tests
+## Documentation
 
-To run all tests of Catalogs, make sure that your PIM is running normally, then,
-execute the following commands:
-```shell
-APP_ENV=test make database
-make catalogs-tests
-```
-
-## UI Development
-
-The UI is developed as close as possible of the **micro-frontend** pattern.  
-A few components are exposed publicly and can be used as libraries by the PIM monolith.
-
-If you want to work on these components, you don't have to open the PIM,
-we provide an isolated `create-react-app` application.
-
-Make sure that your PIM is running normally, then,
-in the root directory of the PIM, execute the following commands:
-```shell
-make catalogs-fixtures
-yarn workspace @akeneo-pim-community/catalogs start
-
-# or with docker compose 
-docker-compose run -p 3000:3000 --rm node yarn workspace @akeneo-pim-community/catalogs start
-```
-It will automatically open your browser.
+- [full list of features](features)
+- [development setup](docs/development-setup.md)
+- [tests](docs/tests.md)

@@ -242,6 +242,7 @@ mappings:
                 path_match: 'values.*-media.*.original_filename'
                 mapping:
                     type: 'keyword'
+                    normalizer: 'text_normalizer'
         -
             media_size:
                 path_match: 'values.*-media.*.size'

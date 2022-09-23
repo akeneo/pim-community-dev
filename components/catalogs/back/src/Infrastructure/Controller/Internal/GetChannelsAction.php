@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Controller\Internal;
 
-use Akeneo\Catalogs\Application\Persistence\GetChannelsByCodeQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\GetChannelsQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Channel\GetChannelsByCodeQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Channel\GetChannelsQueryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

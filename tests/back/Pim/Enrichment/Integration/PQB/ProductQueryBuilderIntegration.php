@@ -103,6 +103,39 @@ class ProductQueryBuilderIntegration extends AbstractProductQueryBuilderTestCase
         $this->assertCount(1, $productsFound);
     }
 
+    public function testAddAnAttributeFilterIsCaseInsensitiveValues(): void
+    {
+        $pqb = $this->get('pim_catalog.query.product_query_builder_factory_for_reading_purpose')->create();
+        $pqb->addFilter('a_file', Operators::STARTS_WITH, 'AKEN');
+        $productsFound = $pqb->execute();
+        $this->assertCount(1, $productsFound);
+
+        $pqb = $this->get('pim_catalog.query.product_query_builder_factory_for_reading_purpose')->create();
+        $pqb->addFilter('a_localizable_image', Operators::CONTAINS, 'AkenEO', ['locale' => 'en_US']);
+        $productsFound = $pqb->execute();
+        $this->assertCount(1, $productsFound);
+
+        $pqb = $this->get('pim_catalog.query.product_query_builder_factory_for_reading_purpose')->create();
+        $pqb->addFilter('an_image', Operators::CONTAINS, 'AkenEO', ['locale' => 'en_US']);
+        $productsFound = $pqb->execute();
+        $this->assertCount(1, $productsFound);
+
+        $this->createProduct('product_with_image', [
+            new SetImageValue('an_image', null, null, $this->getFileInfoKey($this->getFixturePath('Akeneo Logo.jpg')))
+        ]);
+        $pqb = $this->get('pim_catalog.query.product_query_builder_factory_for_reading_purpose')->create();
+        $pqb->addFilter('an_image', Operators::CONTAINS, 'aKENEO', ['locale' => 'en_US']);
+        $productsFound = $pqb->execute();
+        // should retrieve both akeneo.jpg and Akeneo Logo.jpg
+        $this->assertCount(2, $productsFound);
+
+        $pqb = $this->get('pim_catalog.query.product_query_builder_factory_for_reading_purpose')->create();
+        $pqb->addFilter('an_image', Operators::CONTAINS, 'aKENEO lOGO', ['locale' => 'en_US']);
+        $productsFound = $pqb->execute();
+        // should retrieve Akeneo Logo.jpg
+        $this->assertCount(1, $productsFound);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -140,6 +173,7 @@ class ProductQueryBuilderIntegration extends AbstractProductQueryBuilderTestCase
                 ),
                 new SetImageValue('a_localizable_image', null, 'en_US', $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
                 new SetImageValue('a_localizable_image', null, 'fr_FR', $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
+                new SetImageValue('an_image', null, null, $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
                 new SetTextValue('a_regexp', null, null, '10000'),
                 new SetPriceCollectionValue('a_scopable_price', 'ecommerce', null, [
                     new PriceValue(12, 'EUR'),
