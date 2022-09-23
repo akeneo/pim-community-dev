@@ -17,8 +17,10 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\Ev
 use Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateUpdatedAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\AttributeOptionWordIgnoredEvent;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\AttributeWordIgnoredEvent;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\AttributeOptionSpellcheckRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeOptionCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeSpellcheckRepository;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
@@ -37,14 +39,22 @@ class InitializeEvaluationSubscriber implements EventSubscriberInterface
     /** @var FeatureFlag */
     private $dataQualityInsightsFeature;
 
+    private AttributeSpellcheckRepository $attributeSpellcheckRepository;
+
+    private AttributeOptionSpellcheckRepositoryInterface $attributeOptionSpellcheckRepository;
+
     public function __construct(
         EvaluateUpdatedAttributes $evaluateUpdatedAttributes,
         EvaluateUpdatedAttributeOptions $evaluateUpdatedAttributeOptions,
-        FeatureFlag $dataQualityInsightsFeature
+        FeatureFlag $dataQualityInsightsFeature,
+        AttributeSpellcheckRepository $attributeSpellcheckRepository,
+        AttributeOptionSpellcheckRepositoryInterface $attributeOptionSpellcheckRepository
     ) {
         $this->evaluateUpdatedAttributes = $evaluateUpdatedAttributes;
         $this->evaluateUpdatedAttributeOptions = $evaluateUpdatedAttributeOptions;
         $this->dataQualityInsightsFeature = $dataQualityInsightsFeature;
+        $this->attributeSpellcheckRepository = $attributeSpellcheckRepository;
+        $this->attributeOptionSpellcheckRepository = $attributeOptionSpellcheckRepository;
     }
 
     public static function getSubscribedEvents()
@@ -53,6 +63,7 @@ class InitializeEvaluationSubscriber implements EventSubscriberInterface
             AttributeWordIgnoredEvent::class => 'onIgnoredWord',
             AttributeOptionWordIgnoredEvent::class => 'onIgnoredOptionWord',
             StorageEvents::POST_SAVE => 'onPostSave',
+            StorageEvents::POST_REMOVE => 'onPostRemove',
         ];
     }
 
@@ -92,6 +103,38 @@ class InitializeEvaluationSubscriber implements EventSubscriberInterface
         }
     }
 
+    public function onPostRemove(GenericEvent $event)
+    {
+        $subject = $event->getSubject();
+        $isAboutAttribute = $subject instanceof AttributeInterface;
+        $isAboutAttributeOption = $subject instanceof AttributeOptionInterface;
+
+        if (!($isAboutAttribute || $isAboutAttributeOption)) {
+            return;
+        }
+
+        if (!$event->hasArgument('unitary') || false === $event->getArgument('unitary')) {
+            return;
+        }
+        if (!$this->dataQualityInsightsFeature->isEnabled()) {
+            return;
+        }
+
+        $attributeOptionCode = null;
+        if ($isAboutAttributeOption) {
+            $attributeCode = $subject->getAttribute()->getCode();
+            $attributeOptionCode = $subject->getCode();
+        } else {
+            // by first early return test : $subject is a AttributeInterface
+            // an attribute has been removed, all spellcheck related to its options must be removed
+            $attributeCode = $subject->getCode();
+
+            $this->attributeSpellcheckRepository->delete($attributeCode);
+        }
+
+        $this->handleAttributeOptionPostRemove($attributeCode, $attributeOptionCode);
+    }
+
     private function handleAttributePostSave(AttributeInterface $attribute): void
     {
         $attributeCode = new AttributeCode($attribute->getCode());
@@ -104,5 +147,10 @@ class InitializeEvaluationSubscriber implements EventSubscriberInterface
         $attributeOptionCode = new AttributeOptionCode($attributeCode, $attributeOption->getCode());
 
         $this->evaluateUpdatedAttributeOptions->evaluate($attributeOptionCode);
+    }
+
+    private function handleAttributeOptionPostRemove(string $attributeCode, string $attributeOptionCode = null): void
+    {
+        $this->attributeOptionSpellcheckRepository->deleteUnknownAttributeOption($attributeCode, $attributeOptionCode);
     }
 }

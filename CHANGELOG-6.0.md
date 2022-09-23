@@ -12,6 +12,8 @@
 
 # 6.0.40 (2022-08-25)
 
+PIM-1063: [Backport PIM-10613] Fix no purge done on the DQI when deleting option for multi-select and simple-select attributes
+
 # 6.0.39 (2022-08-23)
 
 ## Bug fixes

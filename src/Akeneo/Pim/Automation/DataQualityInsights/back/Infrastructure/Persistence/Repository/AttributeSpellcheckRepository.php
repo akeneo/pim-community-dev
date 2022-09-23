@@ -19,7 +19,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Structure\SpellcheckR
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\AttributeSpellcheckRepositoryInterface;
 use Doctrine\DBAL\Connection;
 
-final class AttributeSpellcheckRepository implements AttributeSpellcheckRepositoryInterface
+class AttributeSpellcheckRepository implements AttributeSpellcheckRepositoryInterface
 {
     /** @var Connection */
     private $dbConnection;
@@ -32,7 +32,7 @@ final class AttributeSpellcheckRepository implements AttributeSpellcheckReposito
     public function save(AttributeSpellcheck $attributeSpellcheck): void
     {
         $query = <<<SQL
-INSERT INTO pimee_dqi_attribute_spellcheck (attribute_code, evaluated_at, to_improve, result) 
+INSERT INTO pimee_dqi_attribute_spellcheck (attribute_code, evaluated_at, to_improve, result)
 VALUES (:attributeCode, :evaluatedAt, :toImprove, :result)
 ON DUPLICATE KEY UPDATE evaluated_at = :evaluatedAt, to_improve = :toImprove, result = :result;
 SQL;
@@ -54,13 +54,25 @@ SQL;
     public function deleteUnknownAttributes(): void
     {
         $query = <<<SQL
-DELETE spellcheck 
+DELETE spellcheck
 FROM pimee_dqi_attribute_spellcheck AS spellcheck
 LEFT JOIN pim_catalog_attribute AS attribute ON attribute.code = spellcheck.attribute_code
 WHERE attribute.code IS NULL;
 SQL;
 
         $this->dbConnection->executeQuery($query);
+    }
+
+    public function delete(string $attributeCode): void
+    {
+        $query =
+            <<<SQL
+DELETE spellcheck
+FROM pimee_dqi_attribute_spellcheck AS spellcheck
+WHERE spellcheck.attribute_code = :attribute_code
+SQL;
+        $queryParameters = ['attribute_code' => $attributeCode];
+        $this->dbConnection->executeQuery($query, $queryParameters);
     }
 
     private function formatSpellcheckResult(SpellcheckResultByLocaleCollection $result): string
