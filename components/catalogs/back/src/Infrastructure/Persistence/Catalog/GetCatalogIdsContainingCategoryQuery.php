@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Infrastructure\Persistence;
+namespace Akeneo\Catalogs\Infrastructure\Persistence\Catalog;
 
-use Akeneo\Catalogs\Application\Persistence\GetCatalogsToDisableOnCategoryRemovalQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\GetCatalogIdsContainingCategoryQueryInterface;
 use Doctrine\DBAL\Connection;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GetCatalogsToDisableOnCategoryRemovalQuery implements GetCatalogsToDisableOnCategoryRemovalQueryInterface
+final class GetCatalogIdsContainingCategoryQuery implements GetCatalogIdsContainingCategoryQueryInterface
 {
     public function __construct(
         private Connection $connection,
@@ -34,11 +34,11 @@ final class GetCatalogsToDisableOnCategoryRemovalQuery implements GetCatalogsToD
             AND is_enabled IS TRUE
         SQL;
 
-        /** @var array<string> $catalogsUUID */
-        $catalogsUUID = $this->connection->executeQuery($query, [
+        /** @var array<string> $catalogIds */
+        $catalogIds = $this->connection->executeQuery($query, [
             'categoryCode' => $categoryCode,
         ])->fetchFirstColumn();
 
-        return $catalogsUUID;
+        return $catalogIds;
     }
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Infrastructure\Job;
 
 use Akeneo\Catalogs\Application\Persistence\DisableCatalogsQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\GetCatalogsToDisableOnCategoryRemovalQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\GetCatalogIdsContainingCategoryQueryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
@@ -14,8 +14,8 @@ class DisableCatalogsOnCategoryRemovalTasklet implements TaskletInterface
     private ?StepExecution $stepExecution = null;
 
     public function __construct(
-        private GetCatalogsToDisableOnCategoryRemovalQueryInterface $getCatalogsToDisableQuery,
-        private DisableCatalogsQueryInterface $disableCatalogsQuery,
+        private GetCatalogIdsContainingCategoryQueryInterface $getCatalogsToDisableQuery,
+        private DisableCatalogsQueryInterface                 $disableCatalogsQuery,
     ) {
     }
 
@@ -33,7 +33,7 @@ class DisableCatalogsOnCategoryRemovalTasklet implements TaskletInterface
         /** @var string $categoryCode */
         $categoryCode = $this->stepExecution->getJobParameters()->get('attribute_code');
 
-        $catalogsUuids = $this->getCatalogsToDisableQuery->execute($categoryCode);
-        $this->disableCatalogsQuery->execute($catalogsUuids);
+        $catalogsIds = $this->getCatalogsToDisableQuery->execute($categoryCode);
+        $this->disableCatalogsQuery->execute($catalogsIds);
     }
 }

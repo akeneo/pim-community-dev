@@ -194,9 +194,6 @@ services:
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
-
-
-
     Akeneo\Catalogs\Infrastructure\EventSubscriber\CategoryRemovalSubscriber:
         arguments:
             $jobInstanceRepository: '@akeneo_batch.job.job_instance_repository'
