@@ -1,4 +1,4 @@
-jest.unmock('./useCatalogMappingRequirements');
+jest.unmock('./useProductMappingSchema');
 
 import {ReactQueryWrapper} from '../../tests/ReactQueryWrapper';
 import {renderHook} from '@testing-library/react-hooks';
