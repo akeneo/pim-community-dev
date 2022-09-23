@@ -6,7 +6,7 @@ import {FormattedMessage, useIntl} from 'react-intl';
 import {useDateFormatter} from '../../../utils/date-formatter/use-date-formatter';
 
 const Panel = styled.div<AkeneoThemedProps & {currentProductFile: ProductFile | null}>`
-    width: ${({currentProductFile}) => (null !== currentProductFile ? '447px' : '0px')};
+    width: ${({currentProductFile}) => (currentProductFile ? '447px' : '0px')};
     transition-property: width;
     transition-duration: 0.5s;
 `;
@@ -80,7 +80,7 @@ const CommentPanel = ({productFile, closePanel}: Props) => {
 
     return (
         <>
-            {productFile && (
+            {productFile ? (
                 <Panel currentProductFile={productFile}>
                     <FlexRow>
                         <StyledFilename>{productFile.filename}</StyledFilename>
@@ -127,6 +127,8 @@ const CommentPanel = ({productFile, closePanel}: Props) => {
                         <ContributorValue>{productFile.contributor}</ContributorValue>
                     </ContributorLabel>
                 </Panel>
+            ) : (
+                <Panel currentProductFile={productFile} />
             )}
         </>
     );
