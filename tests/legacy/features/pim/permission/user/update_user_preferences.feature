@@ -8,7 +8,7 @@ Feature: Update user preferences
     Given an "apparel" catalog configuration
     And I am logged in as "Julia"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-5434
+  # @jira https://akeneo.atlassian.net/browse/PIM-5434
   Scenario: Editing user profile without access to any category
     Given the following product category accesses:
       | product category | user group | access |
@@ -20,7 +20,8 @@ Feature: Update user preferences
     When I edit the "Peter" user
     Then I should see the text "Save"
 
-  @javascript @jira https://akeneo.atlassian.net/browse/PIM-6470
+  # @jira https://akeneo.atlassian.net/browse/PIM-6470
+  @javascript
   Scenario: Add permissions filter on default grid filters
     Given I edit the "Julia" user
     And I visit the "Additional" tab

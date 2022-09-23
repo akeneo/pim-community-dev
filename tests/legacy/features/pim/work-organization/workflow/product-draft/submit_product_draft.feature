@@ -27,7 +27,7 @@ Feature: Submit a modification on a product draft
     And I am logged in as "Mary"
     And I edit the "my-jacket" product
 
-  @jira https://akeneo.atlassian.net/browse/PIM-4604
+  # @jira https://akeneo.atlassian.net/browse/PIM-4604
   Scenario: Successfully propose a localized and scoped attribute change
     Given I switch the locale to "fr_FR"
     When I change the Description for scope mobile to "Un beau tricot"

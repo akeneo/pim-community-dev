@@ -27,7 +27,8 @@ Feature: Edit a product I have access
       | rangers | vintage, classy | rangers    |
       | boots   | boots           | boots      |
 
-  @critical @jira https://akeneo.atlassian.net/browse/PIM-4604
+  # @jira https://akeneo.atlassian.net/browse/PIM-4604
+  @critical
   Scenario: Successfully create, edit and save a product I have access
     Given I am on the "rangers" product page
     And I fill in the following information:

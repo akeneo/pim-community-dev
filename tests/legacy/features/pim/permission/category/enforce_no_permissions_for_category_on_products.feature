@@ -63,7 +63,8 @@ Feature: Enforce no permissions for a category
     Then the grid should contain 4 elements
     And I should see products unclassifiedOne, unclassifiedTwo, inProtectedTree and inProtectedNode
 
-  @critical @jira https://akeneo.atlassian.net/browse/PIM-5402
+  # @jira https://akeneo.atlassian.net/browse/PIM-5402
+  @critical
   Scenario: Successfully manage a product category when there is no permission
     Given I am logged in as "Mary"
     And I edit the "2014_collection" category

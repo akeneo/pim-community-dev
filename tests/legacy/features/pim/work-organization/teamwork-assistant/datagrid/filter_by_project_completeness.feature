@@ -122,7 +122,8 @@ Feature: Filter by project completeness in the product datagrid
     And I should see the available option "In progress" in the filter "project_completeness"
     And I should see the available option "Done" in the filter "project_completeness"
 
-  @skip @info To be fixed in PIM-6517
+  # @info To be fixed in PIM-6517
+  @skip
   Scenario: A contributor can filter by project completeness
     And I am logged in as "Julia"
     When I am on the products grid
@@ -150,7 +151,8 @@ Feature: Filter by project completeness in the product datagrid
       | project_completeness |          | In progress | tshirt-the-witcher-3 |
       | project_completeness |          | Done        | tshirt-skyrim        |
 
-  @skip @info To be fixed in PIM-6517
+  # @info To be fixed in PIM-6517
+  @skip
   Scenario: A project owner can filter by project completeness
     And I am logged in as "Julia"
     When I am on the "tshirt-skyrim" product page

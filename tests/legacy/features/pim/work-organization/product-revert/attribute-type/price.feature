@@ -8,7 +8,7 @@ Feature: Revert product attributes to a previous version
     Given a "clothing" catalog configuration
     And I am logged in as "Julia"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3351
+  # @jira https://akeneo.atlassian.net/browse/PIM-3351
   Scenario: Successfully revert a product with prices and leave them empty
     When I am on the products grid
     And I create a product

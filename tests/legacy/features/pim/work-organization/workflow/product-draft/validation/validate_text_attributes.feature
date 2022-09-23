@@ -24,7 +24,8 @@ Feature: Validate text attributes of a draft
     And I am logged in as "Mary"
     And I am on the "foo" product page
 
-  @skip @jira https://akeneo.atlassian.net/browse/PIM-4641
+  # @jira https://akeneo.atlassian.net/browse/PIM-4641
+  @skip
   Scenario: Validate the unique constraint of text attribute
     Given I change the Email to "bar@example.com"
     And I save the product

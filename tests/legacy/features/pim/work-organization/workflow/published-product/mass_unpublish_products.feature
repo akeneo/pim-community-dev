@@ -12,7 +12,7 @@ Feature: Unpublish many products at once
       | jackadi   | jackets | Jackadi    | jackets    |
       | teafortwo | tees    | My tee     | tees       |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-4600
+  # @jira https://akeneo.atlassian.net/browse/PIM-4600
   Scenario: Successfully unpublish all products
     Given I am logged in as "Julia"
     And I am on the published products grid
@@ -25,7 +25,7 @@ Feature: Unpublish many products at once
     And I am on the published products grid
     Then I should not see products unionjack and jackadi
 
-  @jira https://akeneo.atlassian.net/browse/PIM-4600
+  # @jira https://akeneo.atlassian.net/browse/PIM-4600
   Scenario: Only unpublish products on which user is the owner
     Given I am logged in as "Julia"
     And I am on the published products grid

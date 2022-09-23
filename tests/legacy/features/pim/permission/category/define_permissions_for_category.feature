@@ -38,7 +38,8 @@ Feature: Define permissions for a category
     And I open the category tab "Permissions"
     And I should see the category permission Allowed to view products with user groups Manager
 
-  @critical @jira https://akeneo.atlassian.net/browse/PIM-5999
+  # @jira https://akeneo.atlassian.net/browse/PIM-5999
+  @critical
   Scenario: Revoke category access let the user lists categories
     Given a "default" catalog configuration
     And I am logged in as "Peter"

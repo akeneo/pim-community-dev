@@ -26,7 +26,7 @@ Feature: Publish a product
     And I am on the "my-jacket" published product show page
     Then I should see the secondary action "Edit working copy"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-4600
+  # @jira https://akeneo.atlassian.net/browse/PIM-4600
   Scenario: Fail to delete attribute options if it's used by a published product
     Given the following attributes:
       | code    | label-en_US | type                    | scopable | localizable | allowed_extensions | metric_family | default_metric_unit | group |

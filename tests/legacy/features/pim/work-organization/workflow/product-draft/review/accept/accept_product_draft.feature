@@ -30,7 +30,7 @@ Feature: Review a product draft
       | side_view                |                   |
     And I logout
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3980
+  # @jira https://akeneo.atlassian.net/browse/PIM-3980
   Scenario: Not being able to approve or reject a proposal with values I can't edit
     Given Mary proposed the following change to "my-jacket":
       | field                          | value                                | tab                        |

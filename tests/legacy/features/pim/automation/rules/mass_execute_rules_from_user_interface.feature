@@ -67,7 +67,7 @@ Feature: Execute rules from the user interface
       """
     And I am logged in as "Julia"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6438
+  # @jira https://akeneo.atlassian.net/browse/PIM-6438
   Scenario: Successfully calculate the impacted products on a selection of rules from the user interface
     Given I am on the rules page
     When I select rows "Rule sku", "Rule weight"

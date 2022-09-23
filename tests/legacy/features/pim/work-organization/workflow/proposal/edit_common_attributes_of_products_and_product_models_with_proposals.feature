@@ -38,7 +38,7 @@ Feature: Apply permissions for an attribute group when mass edit common attribut
       | product_model_notviewable  |        | high_heels_size | jeans      |
       | product_model_unclassified |        | high_heels_size |            |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3980 https://akeneo.atlassian.net/browse/PIM-4775
+  # @jira https://akeneo.atlassian.net/browse/PIM-3980 https://akeneo.atlassian.net/browse/PIM-4775
   Scenario: Successfully creates proposal on editable products
     Given I am logged in as "Mary"
     And I am on the products grid

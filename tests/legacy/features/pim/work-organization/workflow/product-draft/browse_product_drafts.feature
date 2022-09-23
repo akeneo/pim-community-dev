@@ -17,8 +17,7 @@ Feature: Browse product drafts for a specific product
       | white-boots | ready       | pim    | PIM          | Sandra | Sandra Harvey | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My change3"}]}} |
     And I am logged in as "Julia"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3980
-
+  # @jira https://akeneo.atlassian.net/browse/PIM-3980
   Scenario: Successfully display product drafts
     Given I edit the "black-boots" product
     When I visit the "Proposals" column tab

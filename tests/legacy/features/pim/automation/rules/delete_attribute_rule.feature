@@ -1,4 +1,4 @@
-@javascript  @product-rules-feature-enabled
+@javascript @product-rules-feature-enabled
 Feature: Delete a rule
   In order ease the enrichment of the catalog
   As a regular user

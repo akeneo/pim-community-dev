@@ -24,7 +24,7 @@ Feature: Review a product draft
       | datasheet                |                   |
       | side_view                |                   |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3980
+  # @jira https://akeneo.atlassian.net/browse/PIM-3980
   Scenario: Successfully accept a number attribute from a product draft
     Given Mary proposed the following change to "my-jacket":
       | tab       | scope  | field           | value |
@@ -41,7 +41,7 @@ Feature: Review a product draft
     Then the product Number in stock for scope "mobile" should be "40"
     Then the product Number in stock for scope "tablet" should be "200"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3980
+  # @jira https://akeneo.atlassian.net/browse/PIM-3980
   Scenario: Successfully accept a prices attribute from a product draft
     Given Mary proposed the following change to "my-jacket":
       | tab       | field | value   |
@@ -58,7 +58,7 @@ Feature: Review a product draft
     Then the product Price in USD should be "90.00"
     Then the product Price in EUR should be "150.00"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3980
+  # @jira https://akeneo.atlassian.net/browse/PIM-3980
   Scenario: Successfully accept a date attribute from a product draft
     Given Mary proposed the following change to "my-jacket":
       | tab                 | field        | value      |
@@ -72,7 +72,7 @@ Feature: Review a product draft
     When I visit the "Attributes" column tab
     Then the product Release date for scope "mobile" should be "05/20/2014"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3980
+  # @jira https://akeneo.atlassian.net/browse/PIM-3980
   Scenario: Successfully accept a metric attribute from a product draft
     Given Mary proposed the following change to "my-jacket":
       | tab   | field  | value         |

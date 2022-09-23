@@ -32,7 +32,8 @@ Feature: Show a product
     And I should not be able to view the "Classify the product" action of the row which contains "rangers"
     And I should not be able to view the "Delete the product" action of the row which contains "rangers"
 
-  @critical @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4591
+  # @jira https://akeneo.atlassian.net/browse/PIM-4591
+  @critical @skip-pef
   Scenario: Being able to view a product I can not edit
     Given I am on the products grid
     And I should be able to access the show "boots" product page
@@ -58,7 +59,7 @@ Feature: Show a product
     And the product Main color should be "blue"
     And the field Main color should be read only
 
-  @jira https://akeneo.atlassian.net/browse/PIM-7196
+  # @jira https://akeneo.atlassian.net/browse/PIM-7196
   Scenario: Switch locale on a product page in read only mode
     Given I am on the "boots" product show page
     Then the locale "en_US" should be selected

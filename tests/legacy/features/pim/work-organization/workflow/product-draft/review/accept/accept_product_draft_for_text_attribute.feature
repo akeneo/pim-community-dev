@@ -24,7 +24,7 @@ Feature: Review a product draft
       | datasheet                |                   |
       | side_view                |                   |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3980
+  # @jira https://akeneo.atlassian.net/browse/PIM-3980
   Scenario: Successfully accept a text attribute from a product draft
     Given Mary proposed the following change to "my-jacket":
       | field | value |
@@ -38,7 +38,7 @@ Feature: Review a product draft
     When I visit the "Attributes" column tab
     Then the product Name should be "Coat"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3980
+  # @jira https://akeneo.atlassian.net/browse/PIM-3980
   Scenario: Successfully accept a textarea attribute from a product draft
     Given Mary proposed the following change to "my-jacket":
       | field       | locale | scope  | value           |

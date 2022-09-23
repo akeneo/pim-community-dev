@@ -12,7 +12,7 @@ Feature: Display localizable and scopable attributes
     And I am logged in as "Julia"
     And I publish the product "black_jacket"
 
-  @info https://akeneo.atlassian.net/browse/PIM-5949
+  # @info https://akeneo.atlassian.net/browse/PIM-5949
   Scenario: Successfully change locale
     Given I show the "black_jacket" Published Product
     Then the field Name should contain "A black jacket"
