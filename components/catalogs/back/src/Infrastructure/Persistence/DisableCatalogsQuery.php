@@ -20,7 +20,7 @@ final class DisableCatalogsQuery implements DisableCatalogsQueryInterface
     ) {
     }
 
-    public function execute(array $ids): void
+    public function execute(array $catalogIds): void
     {
         $query = <<<SQL
             UPDATE akeneo_catalog
@@ -33,7 +33,7 @@ final class DisableCatalogsQuery implements DisableCatalogsQueryInterface
             [
                 'uuids' => \array_map(
                     static fn ($id) => Uuid::fromString($id)->getBytes(),
-                    $ids
+                    $catalogIds
                 ),
             ],
             [
