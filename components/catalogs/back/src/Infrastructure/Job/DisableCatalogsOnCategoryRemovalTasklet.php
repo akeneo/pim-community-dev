@@ -15,7 +15,7 @@ class DisableCatalogsOnCategoryRemovalTasklet implements TaskletInterface
 
     public function __construct(
         private GetCatalogIdsContainingCategoryQueryInterface $getCatalogsToDisableQuery,
-        private DisableCatalogsQueryInterface                 $disableCatalogsQuery,
+        private DisableCatalogsQueryInterface $disableCatalogsQuery,
     ) {
     }
 
