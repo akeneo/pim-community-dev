@@ -4,7 +4,7 @@ import {screen} from '@testing-library/react';
 import {LastOperationsWidget} from './LastOperationsWidget';
 import {JobExecutionRow} from '../models';
 
-const rows: JobExecutionRow[] = [
+let mockedRows: JobExecutionRow[] = [
   {
     job_execution_id: 1,
     started_at: '2020-01-01T00:00:00+00:00',
@@ -78,8 +78,8 @@ const rows: JobExecutionRow[] = [
 jest.mock('../hooks/useJobExecutionTable', () => ({
   useJobExecutionTable: () => {
     const jobExecutionTable = {
-      rows,
-      matches_count: rows.length,
+      rows: mockedRows,
+      matches_count: mockedRows.length,
     };
 
     return [jobExecutionTable];
@@ -89,11 +89,27 @@ jest.mock('../hooks/useJobExecutionTable', () => ({
 test('it renders the last operations', () => {
   renderWithProviders(<LastOperationsWidget />);
 
+  // Section title
   expect(screen.getByText('akeneo_job_process_tracker.last_operations.title')).toBeInTheDocument();
   expect(screen.getByText('akeneo_job_process_tracker.last_operations.view_all')).toBeInTheDocument();
 
   // 1 header row + 4 operation rows
   expect(screen.getAllByRole('row')).toHaveLength(1 + 4);
 
+  // All expected columns
+  ['started_at', 'type', 'job_name', 'username', 'status', 'warning_count'].forEach(column => {
+    expect(
+      screen.getByText(`akeneo_job_process_tracker.job_execution_list.table.headers.${column}`)
+    ).toBeInTheDocument();
+  });
   expect(screen.getAllByText('akeneo_job.job_status.COMPLETED')).toHaveLength(2);
+});
+
+test('it renders a placeholder when there is no operation', () => {
+  mockedRows = [];
+
+  renderWithProviders(<LastOperationsWidget />);
+
+  expect(screen.getByText('akeneo_job_process_tracker.last_operations.no_result')).toBeInTheDocument();
+  expect(screen.queryByRole('table')).not.toBeInTheDocument();
 });
