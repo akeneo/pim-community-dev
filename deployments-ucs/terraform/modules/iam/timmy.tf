@@ -24,7 +24,7 @@ resource "google_project_iam_custom_role" "timmy_cloud_function" {
   ]
 }
 
-resource "google_project_iam_member" "timmy_deploy_log_writer" {
+resource "google_project_iam_member" "timmy_cloud_function_log_writer" {
   project = var.project_id
   role    = "roles/logging.logWriter"
   member  = "serviceAccount:${google_service_account.timmy_cloud_function_sa.email}"

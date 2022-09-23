@@ -1,7 +1,3 @@
-data "google_project" "host_project" {
-  project_id = var.host_project_id
-}
-
 data "google_project" "current" {
   project_id = var.project
 }
