@@ -3,13 +3,13 @@ jest.unmock('./useCatalogMappingRequirements');
 import {ReactQueryWrapper} from '../../tests/ReactQueryWrapper';
 import {renderHook} from '@testing-library/react-hooks';
 import {useCatalog} from './useCatalog';
-import {useCatalogMappingRequirements} from './useCatalogMappingRequirements';
+import {useProductMappingSchema} from './useProductMappingSchema';
 
 test('it returns null', async () => {
     renderHook(() => useCatalog('123e4567-e89b-12d3-a456-426614174000'));
 
     const {result, waitForNextUpdate} = renderHook(
-        () => useCatalogMappingRequirements('123e4567-e89b-12d3-a456-426614174000'),
+        () => useProductMappingSchema('123e4567-e89b-12d3-a456-426614174000'),
         {
             wrapper: ReactQueryWrapper,
         }

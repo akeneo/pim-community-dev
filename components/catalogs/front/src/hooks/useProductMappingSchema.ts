@@ -9,7 +9,7 @@ type Result = {
     error: Error;
 };
 
-export const useCatalogMappingRequirements = (catalogId: string): Result => {
+export const useProductMappingSchema = (catalogId: string): Result => {
     return useQuery<Data, Error, Data>(['catalog-mapping-requirements', catalogId], () => {
         return null;
     });

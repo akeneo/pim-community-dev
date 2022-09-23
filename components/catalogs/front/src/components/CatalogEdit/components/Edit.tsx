@@ -13,7 +13,7 @@ import {getTabsValidationStatus} from '../utils/getTabsValidationStatus';
 import {ProductValueFilters} from '../../ProductValueFilters';
 import {mapProductValueFiltersErrors} from '../utils/mapProductValueFiltersErrors';
 import {ProductMapping} from '../../ProductMapping';
-import {useCatalogMappingRequirements} from '../../../hooks/useCatalogMappingRequirements';
+import {useProductMappingSchema} from '../../../hooks/useProductMappingSchema';
 
 type Props = {
     id: string;
@@ -47,7 +47,7 @@ const Edit: FC<PropsWithChildren<Props>> = ({id, values, errors}) => {
         [dispatch]
     );
 
-    const {data: mappingRequirements, isLoading} = useCatalogMappingRequirements(id);
+    const {data: mappingRequirements, isLoading} = useProductMappingSchema(id);
     const catalogMappingExists = isLoading === false && mappingRequirements !== null;
 
     return (
