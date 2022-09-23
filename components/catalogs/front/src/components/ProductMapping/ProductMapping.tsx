@@ -2,21 +2,12 @@ import React, {FC, useState} from 'react';
 import styled, {keyframes} from 'styled-components';
 import {SectionTitle, SwitcherButton, Table} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-
-const slideIn = keyframes`
-  from {
-      flex-basis: 0;
-      width: 0;
-  }
-
-  to {
-      flex-basis: 50%;
-  }
-`;
+import {SourcePlaceholder} from './components/SourcePlaceholder';
 
 const MappingContainer = styled.div`
     display: flex;
     gap: 40px;
+    padding-top: 10px;
 `;
 const TargetContainer = styled.div`
     flex-basis: 50%;
@@ -24,11 +15,6 @@ const TargetContainer = styled.div`
 `;
 const SourceContainer = styled.div`
     flex-basis: 50%;
-    animation: ${slideIn} 0.2s ease-in-out;
-`;
-
-const ColumnTitle = styled(SectionTitle)`
-    margin: 10px 0;
 `;
 
 const TargetCell = styled(Table.Cell)`
@@ -49,13 +35,13 @@ export const ProductMapping: FC<Props> = () => {
     return (
         <MappingContainer>
             <TargetContainer>
-                <ColumnTitle>
+                <SectionTitle>
                     <SectionTitle.Title>{translate('akeneo_catalogs.product_mapping.target.title')}</SectionTitle.Title>
                     <SectionTitle.Spacer />
                     <SwitcherButton label={translate('akeneo_catalogs.product_mapping.target.filter.label')}>
                         {translate('akeneo_catalogs.product_mapping.target.filter.option.all')}
                     </SwitcherButton>
-                </ColumnTitle>
+                </SectionTitle>
                 <Table>
                     <Table.Header>
                         <Table.HeaderCell>
@@ -82,13 +68,14 @@ export const ProductMapping: FC<Props> = () => {
                     </Table.Body>
                 </Table>
             </TargetContainer>
-            {selectedTarget && (
-                <SourceContainer>
-                    <ColumnTitle>
+            <SourceContainer>
+                {selectedTarget === undefined && <SourcePlaceholder/>}
+                {selectedTarget && (
+                    <SectionTitle>
                         <SectionTitle.Title>Target Name</SectionTitle.Title>
-                    </ColumnTitle>
-                </SourceContainer>
-            )}
+                    </SectionTitle>
+                )}
+            </SourceContainer>
         </MappingContainer>
     );
 };

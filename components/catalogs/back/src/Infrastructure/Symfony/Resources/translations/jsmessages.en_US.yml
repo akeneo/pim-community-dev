@@ -110,3 +110,6 @@ akeneo_catalogs:
             table:
                 target: Target
                 source: Source
+        source:
+            placeholder:
+                title: Select source
