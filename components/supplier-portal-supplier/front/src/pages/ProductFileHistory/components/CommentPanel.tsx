@@ -9,6 +9,7 @@ const Panel = styled.div<AkeneoThemedProps & {currentProductFile: ProductFile | 
     width: ${({currentProductFile}) => (currentProductFile ? '447px' : '0px')};
     transition-property: width;
     transition-duration: 0.5s;
+    box-shadow: 0 0 16px rgba(89, 146, 199, 0.1);
 `;
 
 type Props = {
