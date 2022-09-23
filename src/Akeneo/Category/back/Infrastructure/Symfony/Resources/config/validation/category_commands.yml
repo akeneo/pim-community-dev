@@ -19,7 +19,6 @@ Akeneo\Category\Api\Command\UpsertCategoryCommand:
 Akeneo\Category\Command\UserIntents\SetText:
     properties:
       value:
-        - NotBlank: ~
         - Length:
             max: 65535 # See SQL TEXT Max length
             maxMessage: akeneo.category.validation.upsert.value.text_too_long
@@ -27,7 +26,6 @@ Akeneo\Category\Command\UserIntents\SetText:
 Akeneo\Category\Api\Command\UserIntents\SetTextArea:
     properties:
         value:
-            - NotBlank: ~
             - Length:
                   max: 65535 # See SQL TEXT Max length
                   maxMessage: akeneo.category.validation.upsert.value.textarea_too_long
@@ -35,7 +33,6 @@ Akeneo\Category\Api\Command\UserIntents\SetTextArea:
 Akeneo\Category\Api\Command\UserIntents\SetRichText:
     properties:
       value:
-          - NotBlank: ~
           - Length:
                 max: 65535 # See SQL TEXT Max length
                 maxMessage: akeneo.category.validation.upsert.value.richtext_too_long

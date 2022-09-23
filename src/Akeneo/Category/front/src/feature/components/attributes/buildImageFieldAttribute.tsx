@@ -1,5 +1,13 @@
 import React from 'react';
-import {Field, MediaFileInput, useBooleanState, IconButton, DownloadIcon, useInModal, FullscreenIcon} from 'akeneo-design-system';
+import {
+  Field,
+  MediaFileInput,
+  useBooleanState,
+  IconButton,
+  DownloadIcon,
+  useInModal,
+  FullscreenIcon,
+} from 'akeneo-design-system';
 import {AttributeFieldBuilder, AttributeInputValue, AttributeFieldProps, isImageAttributeInputValue} from './types';
 import {getLabelFromAttribute} from './templateAttributesFactory';
 import {memoize} from 'lodash/fp';
@@ -28,7 +36,7 @@ const unMemoizedBuildImageFieldAttribute: AttributeFieldBuilder<AttributeInputVa
     const previewUrl = getMediaPreviewUrl(router, {
       type: MediaPreviewType.Thumbnail,
       attributeCode: attribute.code,
-      data: imageInfo ? imageInfo.filePath : ''
+      data: imageInfo ? imageInfo.filePath : '',
     });
 
     return (
@@ -50,13 +58,7 @@ const unMemoizedBuildImageFieldAttribute: AttributeFieldBuilder<AttributeInputVa
             icon={<DownloadIcon />}
             title="Download"
           />
-          {!inModal && (
-            <IconButton
-              onClick={openFullscreenModal}
-              icon={<FullscreenIcon />}
-              title="Fullscreen"
-            />
-          )}
+          {!inModal && <IconButton onClick={openFullscreenModal} icon={<FullscreenIcon />} title="Fullscreen" />}
         </MediaFileInput>
         {isFullscreenModalOpen && !inModal && imageInfo && (
           <FullscreenPreview
