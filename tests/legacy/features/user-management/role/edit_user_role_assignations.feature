@@ -33,7 +33,7 @@ Feature: Edit a user groups and roles
     And I should not see the text "There are unsaved changes."
     Then the row "Sandra" should be checked
 
-  @jira https://akeneo.atlassian.net/browse/PIM-5201
+  # @jira https://akeneo.atlassian.net/browse/PIM-5201
   Scenario: Successfully remove a role from the group page
     Given I edit the "User" Role
     When I visit the "Permissions" tab

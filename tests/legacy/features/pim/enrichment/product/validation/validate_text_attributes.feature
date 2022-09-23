@@ -86,7 +86,7 @@ Feature: Validate text attributes of a product
     Then I should see validation tooltip "The manufacturer_number attribute must match the following regular expression: /^0\d*$/."
     And there should be 1 error in the "Other" tab
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3447
+  # @jira https://akeneo.atlassian.net/browse/PIM-3447
   Scenario: Validate the max database value length of text attribute
     Given I change the Description to an invalid value
     And I save the product

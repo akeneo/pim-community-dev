@@ -24,7 +24,7 @@ Feature: Edit a channel
     Then the grid should contain 2 element
     And I should see locale "en_US" and "fr_FR"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6025
+  # @jira https://akeneo.atlassian.net/browse/PIM-6025
   Scenario: Successfully replace a channel locale by another one when there is only one channel
     Given I am logged in as "Peter"
     And I am on the channels page

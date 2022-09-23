@@ -11,7 +11,7 @@ Feature: Import XLSX products with dates
       | date_family | destocking_date |
     And I am logged in as "Julia"
 
-  @info If Excel opens a file containing dates that match its locale config it will be transformed into a timestamp
+  # @info If Excel opens a file containing dates that match its locale config it will be transformed into a timestamp
   Scenario: Successfully import an XLSX file of products with dates as timestamps
     Given I am on the "xlsx_footwear_product_import" import job page
     When I upload and import the file "products_with_timestamp_dates.xlsx"
