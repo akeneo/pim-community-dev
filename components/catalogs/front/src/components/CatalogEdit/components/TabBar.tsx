@@ -1,6 +1,7 @@
 import React, {FC, PropsWithChildren} from 'react';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {Pill, TabBar as StyledTabBar} from 'akeneo-design-system';
+import {useProductMappingSchema} from '../../../hooks/useProductMappingSchema';
 
 enum Tabs {
     SETTINGS = '#catalog-settings',
@@ -15,11 +16,14 @@ type Props = {
     invalid: {
         [key in Tabs]: boolean;
     };
-    displayMappingTab: boolean;
+    id: string;
 };
 
-const TabBar: FC<PropsWithChildren<Props>> = ({isCurrent, switchTo, invalid, displayMappingTab}) => {
+const TabBar: FC<PropsWithChildren<Props>> = ({isCurrent, switchTo, invalid, id}) => {
     const translate = useTranslate();
+
+    const {data: mappingRequirements, isLoading} = useProductMappingSchema(id);
+    const catalogMappingExists = isLoading === false && mappingRequirements !== null;
 
     return (
         <>
@@ -35,7 +39,7 @@ const TabBar: FC<PropsWithChildren<Props>> = ({isCurrent, switchTo, invalid, dis
                     {translate('akeneo_catalogs.catalog_edit.tabs.product_selection')}
                     {invalid[Tabs.PRODUCT_SELECTION] && <Pill level='danger' />}
                 </StyledTabBar.Tab>
-                {displayMappingTab ? (
+                {catalogMappingExists ? (
                     <StyledTabBar.Tab
                         isActive={isCurrent(Tabs.PRODUCT_MAPPING)}
                         onClick={() => switchTo(Tabs.PRODUCT_MAPPING)}
