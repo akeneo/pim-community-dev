@@ -29,6 +29,10 @@ const CommonStyle = css<{readOnly: boolean; invalid: boolean} & AkeneoThemedProp
   &:focus-within {
     box-shadow: 0 0 0 2px ${getColor('blue', 40)};
   }
+
+  a.rdw-dropdown-selectedtext > span {
+    color: ${({readOnly}) => (readOnly ? getColor('grey', 100) : getColor('grey', 140))};
+  }
 `;
 
 const RichTextEditorContainer = styled.div<{readOnly: boolean; invalid: boolean} & AkeneoThemedProps>`
