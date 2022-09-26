@@ -9,6 +9,7 @@ use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
 use Liip\ImagineBundle\Controller\ImagineController;
+use Liip\ImagineBundle\Exception\LogicException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -49,14 +50,7 @@ class FileController
         $this->filesystemAliases = $filesystemAliases;
     }
 
-    /**
-     * @param Request $request
-     * @param string  $filename
-     * @param string  $filter
-     *
-     * @return RedirectResponse
-     */
-    public function showAction(Request $request, $filename, $filter = null)
+    public function showAction(Request $request, string $filename, ?string $filter = null): Response
     {
         $filename = urldecode($filename);
         $fileInfo = $this->fileInfoRepository->findOneByIdentifier($filename);
@@ -77,7 +71,7 @@ class FileController
 
         try {
             return $this->imagineController->filterAction($request, $filename, $filter);
-        } catch (NotFoundHttpException | \RuntimeException $exception) {
+        } catch (NotFoundHttpException | LogicException | \RuntimeException) {
             return $this->renderDefaultImage(FileTypes::IMAGE, $filter);
         }
     }
