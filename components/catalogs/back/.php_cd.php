@@ -57,36 +57,50 @@ $rules = [
             'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
             'Akeneo\Connectivity\Connection\ServiceApi',
             'League\Flysystem\Filesystem',
+            'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
+
+            // used in Persistence\Measurement
             'Akeneo\Tool\Bundle\MeasureBundle\ServiceApi\FindMeasurementFamilies',
 
-            // @todo replace with the ones from service API when available
-            'Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface',
-            'Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface',
-            'Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface',
-            'Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface',
-            'Akeneo\Channel\Infrastructure\Component\Repository\CurrencyRepositoryInterface',
-
-            // @todo remove
-            'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
-            'Akeneo\Pim\Enrichment\Component\Product\Query',
-            'Akeneo\Pim\Enrichment\Bundle\Elasticsearch',
+            // used in TemporaryEnrichmentBridge
             'Akeneo\Tool\Bundle\ElasticsearchBundle\Client',
             'Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface',
             'Symfony\Component\OptionsResolver',
-            'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
-            'Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface',
+
+            // @todo replace next ones with the ones from service API when available
+
+            // used in Persistence\Attribute
             'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
             'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
             'Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface',
-            'Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductWithUuidNormalizer',
+            'Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface',
 
-            // @todo replace with the ones from category service API when available
+            // used in Persistence\Catalog\Product
+            'Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductWithUuidNormalizer',
+            'Akeneo\Pim\Enrichment\Component\Product\Query',
+            'Akeneo\Pim\Enrichment\Bundle\Elasticsearch',
+
+            // used in Persistence\Category
             'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface',
             'Akeneo\Category\Infrastructure\Component\Model\CategoryInterface',
             'Akeneo\Category\Infrastructure\Component\Model\CategoryTranslationInterface',
             'Doctrine\Common\Collections\Collection',
             'Akeneo\Category\Api\FindCategoryTrees',
             'Akeneo\Category\Api\CategoryTree',
+
+            // used in Persistence\Channel
+            'Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface',
+            'Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface',
+
+            // used in Persistence\Currency
+            'Akeneo\Channel\Infrastructure\Component\Repository\CurrencyRepositoryInterface',
+
+            // used in Persistence\Locale
+            'Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface',
+            'Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface',
+
+            // used in Persistence\Family
+            'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
         ]
     )->in('Akeneo\Catalogs\Infrastructure'),
 
