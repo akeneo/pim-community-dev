@@ -41,5 +41,4 @@ class PurgeEventsApiLogs implements TaskletInterface
         );
         $this->logger->info('Purge of events API logs ended');
     }
-
 }
