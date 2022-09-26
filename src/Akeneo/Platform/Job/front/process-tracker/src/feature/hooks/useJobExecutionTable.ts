@@ -4,7 +4,10 @@ import {JobExecutionFilter, JobExecutionTable} from '../models';
 
 const AUTO_REFRESH_FREQUENCY = 5000;
 
-const useJobExecutionTable = ({page, size, sort, automation, type, status, code, user, search}: JobExecutionFilter) => {
+const useJobExecutionTable = (
+  {page, size, sort, automation, type, status, code, user, search}: JobExecutionFilter,
+  autoRefresh = true
+) => {
   const [jobExecutionTable, setJobExecutionTable] = useState<JobExecutionTable | null>(null);
   const route = useRoute('akeneo_job_index_action');
   const isMounted = useIsMounted();
@@ -46,7 +49,7 @@ const useJobExecutionTable = ({page, size, sort, automation, type, status, code,
   }, [searchJobExecution]);
 
   useEffect(() => {
-    if (!isDocumentVisible) return;
+    if (!isDocumentVisible || !autoRefresh) return;
 
     const interval = setInterval(() => {
       void searchJobExecution();
@@ -55,7 +58,7 @@ const useJobExecutionTable = ({page, size, sort, automation, type, status, code,
     return () => {
       clearInterval(interval);
     };
-  }, [isDocumentVisible, searchJobExecution, page, size, sort, type, status, search, user, code]);
+  }, [isDocumentVisible, searchJobExecution, page, size, sort, type, status, search, user, code, autoRefresh]);
 
   return [jobExecutionTable, searchJobExecution] as const;
 };
