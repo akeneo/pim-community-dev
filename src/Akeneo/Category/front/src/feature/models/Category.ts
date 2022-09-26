@@ -29,7 +29,7 @@ export type CategoryPermissions = {
 };
 
 export interface CategoryAttributes {
-  [key: CompositeKey]: CategoryAttributeValueWrapper;
+  [key: string]: CategoryAttributeValueWrapper;
 }
 
 export interface CategoryAttributeValueWrapper {
@@ -109,10 +109,15 @@ export type EditCategoryForm = {
   errors: string[];
 };
 
+// This is the empty value for DSM Rich Text Editor
+// If we do not use it in our model
+// then we have trouble telling whether a category has been modified or not
+export const RICH_TEXT_DEFAULT_VALUE = '<p></p>\n';
+
 export const attributeDefaultValues: {[key in CategoryAttributeType]: CategoryAttributeValueData} = {
   text: '',
   textarea: '',
-  richtext: '<p></p>\n',
+  richtext: RICH_TEXT_DEFAULT_VALUE,
   image: null,
 };
 

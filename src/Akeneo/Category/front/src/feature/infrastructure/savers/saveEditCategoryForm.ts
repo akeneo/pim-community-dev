@@ -42,7 +42,7 @@ type EditCategoryResponse = EditCategoryResponseOK | EditCategoryResponseKO;
 
 interface SaveOptions {
   applyPermissionsOnChildren: boolean;
-  responseCategoryNormalizer: (c: EnrichCategory) => EnrichCategory;
+  populateResponseCategory: (c: EnrichCategory) => EnrichCategory;
 }
 
 const saveEditCategoryForm = async (
@@ -50,7 +50,7 @@ const saveEditCategoryForm = async (
   category: EnrichCategory,
   options: SaveOptions
 ): Promise<EditCategoryResponse> => {
-  const {applyPermissionsOnChildren, responseCategoryNormalizer = x => x} = options;
+  const {applyPermissionsOnChildren, populateResponseCategory = x => x} = options;
 
   // this is for keeping compatibility at the moment, ideally it should not go into the category data
   // because it is a modality for saving, not a part of a category state
@@ -74,7 +74,7 @@ const saveEditCategoryForm = async (
   if (responseContent && response.ok) {
     const category = (responseContent as EditCategoryResponseOK).category;
 
-    return {success: true, category: responseCategoryNormalizer(category)};
+    return {success: true, category: populateResponseCategory(category)};
   }
 
   // TODO use(/create) real i18n keys below

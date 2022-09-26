@@ -13,7 +13,7 @@ import {
   EnrichCategory,
   Template,
 } from '../models';
-import {alterPermissionsConsistently, categoriesAreEqual, normalizeCategory} from '../helpers';
+import {alterPermissionsConsistently, categoriesAreEqual, populateCategory} from '../helpers';
 
 const useEditCategoryForm = (categoryId: number) => {
   const router = useRouter();
@@ -70,8 +70,8 @@ const useEditCategoryForm = (categoryId: number) => {
 
     const response = await saveEditCategoryForm(router, categoryEdited, {
       applyPermissionsOnChildren,
-      responseCategoryNormalizer: (category: EnrichCategory) =>
-        normalizeCategory(category, template!, Object.keys(locales)),
+      populateResponseCategory: (category: EnrichCategory) =>
+        populateCategory(category, template!, Object.keys(locales)),
     });
 
     if (response.success) {

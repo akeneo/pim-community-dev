@@ -60,12 +60,12 @@ export function getAttributeValue(
 
 /**
  * return a copy of the given category where all attributes defined in template are valued
- * @param category the category to normalize
+ * @param category the category to populate
  * @param template the template describing the attribute of this category
  * @param locales the locales to consider when generating default values
- * @return the normalized category
+ * @return the populated category
  */
-function normalizeCategoryAttributes(
+function populateCategoryAttributes(
   category: EnrichCategory,
   template: Template,
   locales: LocaleCode[]
@@ -86,6 +86,11 @@ function normalizeCategoryAttributes(
       ...fixedCategory.attributes,
     };
   });
+
+  // attribute_codes is a special entry in attributes, useful only on DB side
+  // should not come to front via GET
+  // but if it does we should ignore it (would break POSTing)
+  delete fixedCategory.attributes['attribute_codes'];
 
   return fixedCategory;
 }
@@ -115,18 +120,18 @@ function buildCategoryAttributeValues(attribute: Attribute, locales: LocaleCode[
 /**
  * Ensures no category field is null and ensures attributes values are populated.
  */
-export function normalizeCategory(category: EnrichCategory, template: Template, locales: LocaleCode[]): EnrichCategory {
-  let normalized = cloneDeep(category);
+export function populateCategory(category: EnrichCategory, template: Template, locales: LocaleCode[]): EnrichCategory {
+  let populated = cloneDeep(category);
   if (category.permissions === null) {
-    normalized.permissions = {view: [], edit: [], own: []};
+    populated.permissions = {view: [], edit: [], own: []};
   }
   if (category.properties.labels === null) {
-    normalized.properties.labels = {};
+    populated.properties.labels = {};
   }
 
-  normalized = normalizeCategoryAttributes(normalized, template, locales);
+  populated = populateCategoryAttributes(populated, template, locales);
 
-  return normalized;
+  return populated;
 }
 
 export const convertCategoryImageAttributeValueDataToFileInfo = (

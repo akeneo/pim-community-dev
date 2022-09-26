@@ -9,6 +9,7 @@ import {
   CATEGORY_ATTRIBUTE_TYPE_RICHTEXT,
   EnrichCategory,
   isCategoryImageAttributeValueData,
+  RICH_TEXT_DEFAULT_VALUE,
   Template,
 } from '../models';
 import {attributeFieldFactory} from './attributes/templateAttributesFactory';
@@ -38,6 +39,19 @@ const FormContainer = styled.div`
   }
 `;
 
+function mustChangeBeSkipped(
+  newValue: AttributeInputValue,
+  currentValueInModel: CategoryAttributeValueData,
+  attribute: Attribute
+): boolean {
+  // The RichTextEditor component triggers a call to onChange when focusing while value prop is ''
+  // the bore value is then '<p></p>\n' and must be ignored or we will have
+  // warnings concerning unsaved changed altough the user did change nothing
+  return (
+    attribute.type === CATEGORY_ATTRIBUTE_TYPE_RICHTEXT && !currentValueInModel && newValue === RICH_TEXT_DEFAULT_VALUE
+  );
+}
+
 export const EditAttributesForm = ({attributeValues, template, onAttributeValueChange}: Props) => {
   const [locale, setLocale] = useState('en_US');
   const {locales} = useContext(EditCategoryContext);
@@ -52,12 +66,10 @@ export const EditAttributesForm = ({attributeValues, template, onAttributeValueC
 
       // attribute has textual type
       const currentValue = getAttributeValue(attributeValues, attribute, locale);
-      if (attribute.type === CATEGORY_ATTRIBUTE_TYPE_RICHTEXT && !currentValue && value === '<p></p>\n') {
-        // The RichTextEditor component triggers a call to onChange when focusing while value prop is ''
-        // the bore value is then '<p></p>\n' and must be ignored or we will have
-        // warnings concerning unsaved changed altough the user did change nothing
+      if (mustChangeBeSkipped(value, currentValue!, attribute)) {
         return;
       }
+
       onAttributeValueChange(attribute, locale, value);
     },
     [attributeValues, locale, onAttributeValueChange]

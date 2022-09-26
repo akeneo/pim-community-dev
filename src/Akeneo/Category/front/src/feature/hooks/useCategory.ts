@@ -2,7 +2,7 @@ import {useContext, useMemo} from 'react';
 import {FetchStatus, useFetch, useRoute} from '@akeneo-pim-community/shared';
 import {EnrichCategory, Template} from '../models';
 import type {EditCategoryForm} from '../models';
-import {normalizeCategory} from '../helpers';
+import {populateCategory} from '../helpers';
 import {useTemplate} from './useTemplate';
 import {EditCategoryContext} from '../components';
 
@@ -48,8 +48,8 @@ const useCategory = (categoryId: number): UseCategoryResponse => {
     enabled: categoryFetchingStatus === 'fetched',
   });
 
-  const normalizedCategory = useMemo(
-    () => (category && template ? normalizeCategory(category, template, localeCodes) : null),
+  const populatedCategory = useMemo(
+    () => (category && template ? populateCategory(category, template, localeCodes) : null),
     [category, template, localeCodes]
   );
 
@@ -62,7 +62,7 @@ const useCategory = (categoryId: number): UseCategoryResponse => {
 
   if (categoryFetchingStatus === 'fetched') {
     if (templateFetchingStatus === 'success') {
-      return {load, status: 'fetched', category: normalizedCategory!, template: template!};
+      return {load, status: 'fetched', category: populatedCategory!, template: template!};
     }
     return {load, status: templateFetchingStatus === 'loading' ? 'fetching' : 'idle'};
   }
