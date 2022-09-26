@@ -76,6 +76,7 @@ class AkeneoConnectivityConnectionExtension extends Extension
         $loader->load('Webhook/persistence.yml');
         $loader->load('Webhook/services.yml');
         $loader->load('Webhook/validators.yml');
+        $loader->load('Webhook/jobs.yml');
 
         $loader->load('services.yml');
 

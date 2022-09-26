@@ -1,0 +1,33 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Job\PurgeEventsApiLogs:
+        arguments:
+            - '@logger'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\PurgeEventsApiSuccessLogsQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\PurgeEventsApiErrorLogsQuery'
+
+    pim_platform.job.events_api_purge:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'events_api_purge'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@Akeneo\Tool\Component\Connector\Step\CheckJobUniqueStep'
+                - '@pim_versioning.step.job_executions_purge'
+            - false
+            - false
+        public: false
+        tags:
+            -
+                name: akeneo_batch.job
+                connector: 'internal'
+                type: 'scheduled_job'
+
+    pim_versioning.step.events_api_purge:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'events_api_purge'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Job\PurgeEventsApiLogs'
+        public: false
