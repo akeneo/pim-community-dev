@@ -830,7 +830,7 @@ JSON;
             'message' => 'Property "identifier" does not exist. Check the expected format on the API documentation.',
             '_links' => [
                 'documentation' => [
-                    'href' => 'http://api.akeneo.com/api-reference.html#post_products'
+                    'href' => 'http://api.akeneo.com/api-reference.html#post_products_uuid'
                 ]
             ],
         ];
@@ -934,7 +934,7 @@ JSON;
             'message' => 'Property "extra_property" does not exist. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
-                    'href' => 'http://api.akeneo.com/api-reference.html#post_products'
+                    'href' => 'http://api.akeneo.com/api-reference.html#post_products_uuid'
                 ],
             ],
         ];
@@ -977,7 +977,7 @@ JSON;
             'message' => 'The unknown_attribute attribute does not exist in your PIM. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
-                    'href' => 'http://api.akeneo.com/api-reference.html#post_products'
+                    'href' => 'http://api.akeneo.com/api-reference.html#post_products_uuid'
                 ],
             ],
         ];
@@ -1058,7 +1058,7 @@ JSON;
     "message": "Property \"associations\" expects a valid product uuid. The product does not exist, \"$nonExistingUuid\" given. Check the expected format on the API documentation.",
     "_links": {
         "documentation": {
-            "href": "http:\/\/api.akeneo.com\/api-reference.html#post_products"
+            "href": "http:\/\/api.akeneo.com\/api-reference.html#post_products_uuid"
         }
     }
 }
@@ -1099,7 +1099,7 @@ JSON;
     "message": "Property \"associations\" expects a valid product model identifier. The product model does not exist, \"a_non_exiting_product_model\" given. Check the expected format on the API documentation.",
     "_links": {
         "documentation": {
-            "href": "http:\/\/api.akeneo.com\/api-reference.html#post_products"
+            "href": "http:\/\/api.akeneo.com\/api-reference.html#post_products_uuid"
         }
     }
 }

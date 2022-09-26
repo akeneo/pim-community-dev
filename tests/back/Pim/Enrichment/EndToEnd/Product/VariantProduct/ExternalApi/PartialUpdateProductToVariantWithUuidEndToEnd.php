@@ -94,7 +94,7 @@ JSON;
                 'message' => 'Property "parent" expects a valid parent code. The parent product model does not exist, "mayonnaise" given. Check the expected format on the API documentation.',
                 '_links' => [
                     'documentation' => [
-                        'href' => 'http://api.akeneo.com/api-reference.html#patch_products__code_'
+                        'href' => 'http://api.akeneo.com/api-reference.html#patch_products_uuid__uuid_'
                     ]
                 ]
             ],
