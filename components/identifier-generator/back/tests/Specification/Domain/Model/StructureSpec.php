@@ -47,4 +47,37 @@ class StructureSpec extends ObjectBehavior
         $properties[0]->shouldBeAnInstanceOf(PropertyInterface::class);
         $properties[1]->shouldBeAnInstanceOf(PropertyInterface::class);
     }
+
+    function it_normalize_a_structure()
+    {
+        $this->normalize()->shouldReturn([
+            [
+                'type' => 'free_text',
+                'string' => 'ABC',
+            ],
+            [
+                'type' => 'auto_number',
+                'numberMin' => 5,
+                'digitsMin' => 2,
+            ],
+        ]);
+    }
+
+    function it_creates_from_normalized()
+    {
+        $this->fromNormalized([
+            [
+                'type' => 'free_text',
+                'string' => 'CBA',
+            ],
+            [
+                'type' => 'auto_number',
+                'numberMin' => 5,
+                'digitsMin' => 6,
+            ],
+        ])->shouldBeLike(Structure::fromArray([
+            FreeText::fromString('CBA'),
+            AutoNumber::fromValues(5,6),
+        ]));
+    }
 }
