@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFileValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
@@ -20,6 +21,15 @@ use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProdu
 class ListProductWithCompletenessEndToEnd extends AbstractProductTestCase
 {
     /**
+     * product uuids used in these tests
+     */
+    private const PRODUCT_UUIDS = [
+        'product_complete' => 'aaf518b2-f91e-40f1-a53a-78ce5e81a6f9',
+        'product_complete_en_locale' => 'aec6780b-c813-4bd7-8e24-1a8574471576',
+        'product_incomplete' => '93f14b03-5ed3-4f23-87c6-ae3806041b6a',
+    ];
+
+    /**
      * {@inheritdoc}
      */
     public function setUp(): void
@@ -27,7 +37,8 @@ class ListProductWithCompletenessEndToEnd extends AbstractProductTestCase
         parent::setUp();
 
         // product complete, whatever the scope
-        $this->createProduct('product_complete', [
+        $this->createProductWithUuid(self::PRODUCT_UUIDS['product_complete'], [
+            new SetIdentifierValue('sku', 'product_complete'),
             new SetFamily('familyA2'),
             new SetCategories(['categoryA', 'categoryB', 'master']),
             new SetMeasurementValue('a_metric', null, null, 1, 'WATT'),
@@ -35,7 +46,8 @@ class ListProductWithCompletenessEndToEnd extends AbstractProductTestCase
         ]);
 
         // product complete only on en_US-tablet & en-US-ecommerce
-        $this->createProduct('product_complete_en_locale', [
+        $this->createProductWithUuid(self::PRODUCT_UUIDS['product_complete_en_locale'], [
+            new SetIdentifierValue('sku', 'product_complete_en_locale'),
             new SetFamily('familyA1'),
             new SetCategories(['categoryA', 'master', 'master_china']),
             new SetImageValue(
@@ -54,7 +66,8 @@ class ListProductWithCompletenessEndToEnd extends AbstractProductTestCase
         ]);
 
         // product incomplete
-        $this->createProduct('product_incomplete', [
+        $this->createProductWithUuid(self::PRODUCT_UUIDS['product_incomplete'], [
+            new SetIdentifierValue('sku', 'product_incomplete'),
             new SetFamily('familyA'),
             new SetCategories(['categoryA', 'master', 'master_china']),
             new SetFileValue(
@@ -75,6 +88,9 @@ class ListProductWithCompletenessEndToEnd extends AbstractProductTestCase
         $search = '{"completeness":[{"operator":"=","value":100,"scope":"ecommerce"}]}';
         $client->request('GET', 'api/rest/v1/products?scope=ecommerce&locales=en_US&limit=2&search=' . $search);
         $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
+
+        $uuids = self::PRODUCT_UUIDS;
+
         $expected = <<<JSON
 {
     "_links": {
@@ -91,6 +107,7 @@ class ListProductWithCompletenessEndToEnd extends AbstractProductTestCase
 		                "href": "http:\/\/localhost\/api\/rest\/v1\/products\/product_complete"
 		            }
 		        },
+                "uuid": "{$uuids['product_complete']}",
 		        "identifier": "product_complete",
 		        "family": "familyA2",
 		        "parent": null,
@@ -135,6 +152,7 @@ class ListProductWithCompletenessEndToEnd extends AbstractProductTestCase
 		        "_links": {
 		            "self": {"href": "http:\/\/localhost\/api\/rest\/v1\/products\/product_complete_en_locale"}
 		        },
+                "uuid": "{$uuids['product_complete_en_locale']}",
 		        "identifier": "product_complete_en_locale",
 		        "family": "familyA1",
                 "parent": null,

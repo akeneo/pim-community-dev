@@ -22,7 +22,6 @@ use Doctrine\DBAL\Connection as DbalConnection;
 use GuzzleHttp\Psr7\Message;
 use GuzzleHttp\Psr7\Request;
 use PHPUnit\Framework\Assert;
-use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -288,6 +287,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
     {
         return [
             'resource' => [
+                'uuid' => $product->getUuid(),
                 'identifier' => $product->getIdentifier(),
                 'enabled' => true,
                 'family' => $product->getFamily()->getCode(),
