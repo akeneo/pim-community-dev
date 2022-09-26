@@ -30,17 +30,17 @@ class GetCatalogsToDisableOnCategoryRemovalQueryTest extends IntegrationTestCase
     public function testItGetsCatalogsByCategory(): void
     {
         $this->createUser('shopifi');
-        $uuidUS = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
-        $uuidFR = 'ed30425c-d9cf-468b-8bc7-fa346f41dd07';
-        $uuidUK = '27c53e59-ee6a-4215-a8f1-2fccbb67ba0d';
+        $catalogIdUS = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
+        $catalogIdFR = 'ed30425c-d9cf-468b-8bc7-fa346f41dd07';
+        $catalogIdUK = '27c53e59-ee6a-4215-a8f1-2fccbb67ba0d';
 
-        $this->createCatalog($uuidUS, 'Store US', 'shopifi');
-        $this->createCatalog($uuidFR, 'Store FR', 'shopifi');
-        $this->createCatalog($uuidUK, 'Store UK', 'shopifi');
+        $this->createCatalog($catalogIdUS, 'Store US', 'shopifi');
+        $this->createCatalog($catalogIdFR, 'Store FR', 'shopifi');
+        $this->createCatalog($catalogIdUK, 'Store UK', 'shopifi');
 
-        $this->enableCatalog($uuidUS);
-        $this->enableCatalog($uuidFR);
-        $this->enableCatalog($uuidUK);
+        $this->enableCatalog($catalogIdUS);
+        $this->enableCatalog($catalogIdFR);
+        $this->enableCatalog($catalogIdUK);
 
         $this->createCategory([
             'code' => 'tshirt',
@@ -55,7 +55,7 @@ class GetCatalogsToDisableOnCategoryRemovalQueryTest extends IntegrationTestCase
             'labels' => ['en_US' => 'Shoes'],
         ]);
 
-        $this->setCatalogProductSelection($uuidUS, [
+        $this->setCatalogProductSelection($catalogIdUS, [
             [
                 'field' => 'category',
                 'operator' => Operator::IN_LIST,
@@ -64,7 +64,7 @@ class GetCatalogsToDisableOnCategoryRemovalQueryTest extends IntegrationTestCase
                 'locale' => null,
             ],
         ]);
-        $this->setCatalogProductSelection($uuidFR, [
+        $this->setCatalogProductSelection($catalogIdFR, [
             [
                 'field' => 'category',
                 'operator' => Operator::IN_LIST,
@@ -75,10 +75,10 @@ class GetCatalogsToDisableOnCategoryRemovalQueryTest extends IntegrationTestCase
         ]);
 
         $resultTshirt = $this->query->execute('tshirt');
-        $this->assertEquals([$uuidUS, $uuidFR], $resultTshirt);
+        $this->assertEquals([$catalogIdUS, $catalogIdFR], $resultTshirt);
 
         $resultHoodie = $this->query->execute('hoodie');
-        $this->assertEquals([$uuidUS], $resultHoodie);
+        $this->assertEquals([$catalogIdUS], $resultHoodie);
 
         $resultShoes = $this->query->execute('shoes');
         $this->assertEquals([], $resultShoes);

@@ -27,45 +27,45 @@ class DisableCatalogsQueryTest extends IntegrationTestCase
     public function testItDisablesCatalogsByUUID(): void
     {
         $this->createUser('shopifi');
-        $idUS = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
-        $idFR = 'ed30425c-d9cf-468b-8bc7-fa346f41dd07';
-        $idUK = '27c53e59-ee6a-4215-a8f1-2fccbb67ba0d';
+        $catalogIdUS = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
+        $catalogIdFR = 'ed30425c-d9cf-468b-8bc7-fa346f41dd07';
+        $catalogIdUK = '27c53e59-ee6a-4215-a8f1-2fccbb67ba0d';
 
-        $this->createCatalog($idUS, 'Store US', 'shopifi');
-        $this->createCatalog($idFR, 'Store FR', 'shopifi');
-        $this->createCatalog($idUK, 'Store UK', 'shopifi');
+        $this->createCatalog($catalogIdUS, 'Store US', 'shopifi');
+        $this->createCatalog($catalogIdFR, 'Store FR', 'shopifi');
+        $this->createCatalog($catalogIdUK, 'Store UK', 'shopifi');
 
-        $this->enableCatalog($idUS);
-        $this->enableCatalog($idFR);
-        $this->enableCatalog($idUK);
+        $this->enableCatalog($catalogIdUS);
+        $this->enableCatalog($catalogIdFR);
+        $this->enableCatalog($catalogIdUK);
 
-        $this->disableCatalogsQuery->execute([$idUS, $idFR]);
+        $this->disableCatalogsQuery->execute([$catalogIdUS, $catalogIdFR]);
 
-        $this->assertCatalogIsDisabled($idUS);
-        $this->assertCatalogIsDisabled($idFR);
-        $this->assertCatalogIsEnabled($idUK);
+        $this->assertCatalogIsDisabled($catalogIdUS);
+        $this->assertCatalogIsDisabled($catalogIdFR);
+        $this->assertCatalogIsEnabled($catalogIdUK);
     }
 
     public function testItDoesNothingOnCatalogsAlreadyDisabled(): void
     {
         $this->createUser('shopifi');
-        $idUS = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
-        $this->createCatalog($idUS, 'Store US', 'shopifi');
+        $catalogIdUS = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
+        $this->createCatalog($catalogIdUS, 'Store US', 'shopifi');
 
-        $this->disableCatalogsQuery->execute([$idUS]);
+        $this->disableCatalogsQuery->execute([$catalogIdUS]);
 
-        $this->assertCatalogIsDisabled($idUS);
+        $this->assertCatalogIsDisabled($catalogIdUS);
     }
 
-    private function assertCatalogIsDisabled(string $id): void
+    private function assertCatalogIsDisabled(string $catalogId): void
     {
-        $catalog = $this->getCatalog($id);
+        $catalog = $this->getCatalog($catalogId);
         $this->assertFalse($catalog->isEnabled());
     }
 
-    private function assertCatalogIsEnabled(string $id): void
+    private function assertCatalogIsEnabled(string $catalogId): void
     {
-        $catalog = $this->getCatalog($id);
+        $catalog = $this->getCatalog($catalogId);
         $this->assertTrue($catalog->isEnabled());
     }
 }
