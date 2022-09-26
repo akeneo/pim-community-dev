@@ -6,7 +6,7 @@ find-legacy-translations:
 	.circleci/find_legacy_translations.sh
 
 .PHONY: coupling-back
-coupling-back: structure-coupling-back user-management-coupling-back channel-coupling-back enrichment-coupling-back connectivity-connection-coupling-back communication-channel-coupling-back import-export-coupling-back job-coupling-back data-quality-insights-coupling-back enrichment-product-coupling-back migration-coupling-back
+coupling-back: structure-coupling-back user-management-coupling-back channel-coupling-back enrichment-coupling-back connectivity-connection-coupling-back communication-channel-coupling-back import-export-coupling-back job-coupling-back data-quality-insights-coupling-back enrichment-product-coupling-back migration-coupling-back identifier-generator-coupling-back
 
 .PHONY: migration-coupling-back
 migration-coupling-back:
