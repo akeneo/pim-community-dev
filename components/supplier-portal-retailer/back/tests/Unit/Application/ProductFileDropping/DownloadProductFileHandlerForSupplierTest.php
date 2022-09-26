@@ -154,7 +154,7 @@ final class DownloadProductFileHandlerForSupplierTest extends TestCase
         $downloadStoredProductFileMock
             ->method('__invoke')
             ->with('path/to/file.xlsx')
-            ->willThrowException(new \RuntimeException('An error occured'))
+            ->willThrowException(new \RuntimeException('An error occurred'))
         ;
 
         $this->expectException(ProductFileIsNotDownloadable::class);
