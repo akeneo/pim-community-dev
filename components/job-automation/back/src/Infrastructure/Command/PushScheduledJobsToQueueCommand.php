@@ -15,7 +15,7 @@ namespace Akeneo\Platform\JobAutomation\Infrastructure\Command;
 
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Platform\JobAutomation\Application\PushScheduledJobsToQueue\PushScheduledJobsToQueueHandlerInterface;
-use Akeneo\Platform\JobAutomation\Application\PushScheduledJobsToQueue\PushScheduledJobsToQueueQuery;
+use Akeneo\Platform\JobAutomation\Application\PushScheduledJobsToQueue\PushScheduledJobsToQueueCommand;
 use Akeneo\Platform\JobAutomation\Domain\Query\FindScheduledJobInstancesQueryInterface;
 use Akeneo\Platform\JobAutomation\Infrastructure\EventSubscriber\RefreshScheduledJobInstanceAfterJobPublished;
 use Akeneo\Tool\Component\Batch\Exception\InvalidJobException;
@@ -44,7 +44,7 @@ final class PushScheduledJobsToQueueCommand extends Command
         }
 
         $this->pushScheduledJobsToQueueHandler->handle(
-            new PushScheduledJobsToQueueQuery($this->findScheduledJobInstancesQuery->all()),
+            new PushScheduledJobsToQueueCommand($this->findScheduledJobInstancesQuery->all()),
         );
 
         return 0;

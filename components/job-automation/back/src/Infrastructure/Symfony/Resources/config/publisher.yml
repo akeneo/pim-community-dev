@@ -1,5 +1,5 @@
 services:
-  akeneo.controller.retry_publisher:
+  Akeneo\Platform\JobAutomation\Domain\Publisher\PublisherInterface:
     class: Akeneo\Platform\JobAutomation\Infrastructure\Publisher\RetryPublisher
     arguments:
       - '@Akeneo\Platform\JobAutomation\Domain\ClockInterface'

@@ -8,4 +8,4 @@ services:
     class: Akeneo\Platform\JobAutomation\Application\PushScheduledJobsToQueue\PushScheduledJobsToQueueHandler
     arguments:
       - '@akeneo.job_automation.query.find_users_to_notify'
-      - '@akeneo.controller.retry_publisher'
+      - '@Akeneo\Platform\JobAutomation\Domain\Publisher\PublisherInterface'

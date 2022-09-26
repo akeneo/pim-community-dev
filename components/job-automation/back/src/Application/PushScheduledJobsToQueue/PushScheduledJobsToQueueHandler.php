@@ -29,7 +29,7 @@ final class PushScheduledJobsToQueueHandler implements PushScheduledJobsToQueueH
     ) {
     }
 
-    public function handle(PushScheduledJobsToQueueQuery $query): void
+    public function handle(PushScheduledJobsToQueueCommand $query): void
     {
         $dueJobInstances = $this->getDueJobs($query->getScheduledJobInstances());
 
@@ -45,11 +45,9 @@ final class PushScheduledJobsToQueueHandler implements PushScheduledJobsToQueueH
     {
         $dueJobs = [];
 
-        if (!empty($scheduledJobs)) {
-            foreach ($scheduledJobs as $scheduledJob) {
-                if (IsJobDue::fromScheduledJobInstances($scheduledJob, CronExpressionFactory::fromExpression($scheduledJob->cronExpression))) {
-                    $dueJobs[] = new DueJobInstance($scheduledJob, $this->getUsersToNotify($scheduledJob));
-                }
+        foreach ($scheduledJobs as $scheduledJob) {
+            if (IsJobDue::fromScheduledJobInstances($scheduledJob, CronExpressionFactory::fromExpression($scheduledJob->cronExpression))) {
+                $dueJobs[] = new DueJobInstance($scheduledJob, $this->getUsersToNotify($scheduledJob));
             }
         }
 

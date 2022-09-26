@@ -15,8 +15,11 @@ namespace Akeneo\Platform\JobAutomation\Application\PushScheduledJobsToQueue;
 
 use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
 
-final class PushScheduledJobsToQueueQuery
+final class PushScheduledJobsToQueueCommand
 {
+    /**
+     * @param ScheduledJobInstance[] $scheduledJobInstances
+     */
     public function __construct(
         private array $scheduledJobInstances,
     ) {

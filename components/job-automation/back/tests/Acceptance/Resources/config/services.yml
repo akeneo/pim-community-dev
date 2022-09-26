@@ -15,7 +15,7 @@ services:
     tags:
       - { name: pim_import_export.storage_client_provider }
 
-  akeneo.controller.retry_publisher:
+  Akeneo\Platform\JobAutomation\Domain\Publisher\PublisherInterface:
     class: Akeneo\Platform\JobAutomation\Test\Acceptance\FakeService\FakeRetryPublisher
 
   akeneo.job_automation.query.find_users_to_notify:
