@@ -25,19 +25,19 @@ final class DisableCatalogsQuery implements DisableCatalogsQueryInterface
         $query = <<<SQL
             UPDATE akeneo_catalog
             SET is_enabled = 0
-            WHERE id IN (:uuids);
+            WHERE id IN (:catalogIds);
         SQL;
 
         $this->connection->executeQuery(
             $query,
             [
-                'uuids' => \array_map(
+                'catalogIds' => \array_map(
                     static fn ($id) => Uuid::fromString($id)->getBytes(),
                     $catalogIds
                 ),
             ],
             [
-                'uuids' => Connection::PARAM_STR_ARRAY,
+                'catalogIds' => Connection::PARAM_STR_ARRAY,
             ],
         );
     }

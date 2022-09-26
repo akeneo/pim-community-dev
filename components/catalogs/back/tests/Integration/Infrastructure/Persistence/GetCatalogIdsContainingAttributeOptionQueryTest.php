@@ -30,17 +30,17 @@ class GetCatalogIdsContainingAttributeOptionQueryTest extends IntegrationTestCas
     public function testItGetsCatalogsByAttributeOption(): void
     {
         $this->createUser('shopifi');
-        $uuidUS = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
-        $uuidFR = 'ed30425c-d9cf-468b-8bc7-fa346f41dd07';
-        $uuidUK = '27c53e59-ee6a-4215-a8f1-2fccbb67ba0d';
+        $catalogIdUS = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
+        $catalogIdFR = 'ed30425c-d9cf-468b-8bc7-fa346f41dd07';
+        $catalogIdUK = '27c53e59-ee6a-4215-a8f1-2fccbb67ba0d';
 
-        $this->createCatalog($uuidUS, 'Store US', 'shopifi');
-        $this->createCatalog($uuidFR, 'Store FR', 'shopifi');
-        $this->createCatalog($uuidUK, 'Store UK', 'shopifi');
+        $this->createCatalog($catalogIdUS, 'Store US', 'shopifi');
+        $this->createCatalog($catalogIdFR, 'Store FR', 'shopifi');
+        $this->createCatalog($catalogIdUK, 'Store UK', 'shopifi');
 
-        $this->enableCatalog($uuidUS);
-        $this->enableCatalog($uuidFR);
-        $this->enableCatalog($uuidUK);
+        $this->enableCatalog($catalogIdUS);
+        $this->enableCatalog($catalogIdFR);
+        $this->enableCatalog($catalogIdUK);
 
         $this->createAttribute([
             'code' => 'color',
@@ -48,7 +48,7 @@ class GetCatalogIdsContainingAttributeOptionQueryTest extends IntegrationTestCas
             'options' => ['red', 'green', 'blue'],
         ]);
 
-        $this->setCatalogProductSelection($uuidUS, [
+        $this->setCatalogProductSelection($catalogIdUS, [
             [
                 'field' => 'color',
                 'operator' => Operator::IN_LIST,
@@ -57,7 +57,7 @@ class GetCatalogIdsContainingAttributeOptionQueryTest extends IntegrationTestCas
                 'locale' => null,
             ],
         ]);
-        $this->setCatalogProductSelection($uuidFR, [
+        $this->setCatalogProductSelection($catalogIdFR, [
             [
                 'field' => 'color',
                 'operator' => Operator::IN_LIST,
@@ -68,10 +68,10 @@ class GetCatalogIdsContainingAttributeOptionQueryTest extends IntegrationTestCas
         ]);
 
         $resultRed = $this->query->execute('color', 'red');
-        $this->assertEquals([$uuidUS, $uuidFR], $resultRed);
+        $this->assertEquals([$catalogIdUS, $catalogIdFR], $resultRed);
 
         $resultGreen = $this->query->execute('color', 'green');
-        $this->assertEquals([$uuidUS], $resultGreen);
+        $this->assertEquals([$catalogIdUS], $resultGreen);
 
         $resultBlue = $this->query->execute('color', 'blue');
         $this->assertEquals([], $resultBlue);

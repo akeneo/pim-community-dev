@@ -30,16 +30,16 @@ class DisableCatalogsOnAttributeOptionRemovalTaskletTest extends IntegrationTest
             'options' => ['red', 'blue'],
         ]);
 
-        $idCatalogUS = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
-        $idCatalogFR = 'b79b09a3-cb4c-45f8-a086-4f70cc17f521';
+        $catalogIdUS = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
+        $catalogIdFR = 'b79b09a3-cb4c-45f8-a086-4f70cc17f521';
         $this->createUser('shopifi');
         $this->createUser('magento');
-        $this->createCatalog($idCatalogUS, 'Store US', 'shopifi');
-        $this->createCatalog($idCatalogFR, 'Store FR', 'magento');
-        $this->enableCatalog($idCatalogUS);
-        $this->enableCatalog($idCatalogFR);
+        $this->createCatalog($catalogIdUS, 'Store US', 'shopifi');
+        $this->createCatalog($catalogIdFR, 'Store FR', 'magento');
+        $this->enableCatalog($catalogIdUS);
+        $this->enableCatalog($catalogIdFR);
 
-        $this->setCatalogProductSelection($idCatalogUS, [
+        $this->setCatalogProductSelection($catalogIdUS, [
             [
                 'field' => 'color',
                 'operator' => Operator::IN_LIST,
@@ -48,7 +48,7 @@ class DisableCatalogsOnAttributeOptionRemovalTaskletTest extends IntegrationTest
                 'locale' => null,
             ],
         ]);
-        $this->setCatalogProductSelection($idCatalogFR, [
+        $this->setCatalogProductSelection($catalogIdFR, [
             [
                 'field' => 'color',
                 'operator' => Operator::IN_LIST,
@@ -60,8 +60,8 @@ class DisableCatalogsOnAttributeOptionRemovalTaskletTest extends IntegrationTest
 
         $this->removeAttributeOption('color.red');
 
-        $this->assertCatalogIsDisabled($idCatalogUS);
-        $this->assertCatalogIsEnabled($idCatalogFR);
+        $this->assertCatalogIsDisabled($catalogIdUS);
+        $this->assertCatalogIsEnabled($catalogIdFR);
     }
 
     private function assertCatalogIsDisabled(string $id): void
