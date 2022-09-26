@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence;
+namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence\Channel;
 
 use Akeneo\Catalogs\Infrastructure\Persistence\Channel\GetChannelsByCodeQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;

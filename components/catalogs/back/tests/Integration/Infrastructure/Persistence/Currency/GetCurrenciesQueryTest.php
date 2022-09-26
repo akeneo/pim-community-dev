@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence;
+namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence\Currency;
 
 use Akeneo\Catalogs\Application\Persistence\Currency\GetCurrenciesQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Persistence\Currency\GetCurrenciesQuery;

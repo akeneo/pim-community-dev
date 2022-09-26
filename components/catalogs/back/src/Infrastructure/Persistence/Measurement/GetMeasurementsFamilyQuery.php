@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Infrastructure\Persistence\Measurement;
 
 use Akeneo\Catalogs\Application\Persistence\Measurement\GetMeasurementsFamilyQueryInterface;
-use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
-use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
-use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface;
+use Akeneo\Tool\Bundle\MeasureBundle\ServiceApi\FindMeasurementFamilies;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -15,7 +13,7 @@ use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInte
  */
 final class GetMeasurementsFamilyQuery implements GetMeasurementsFamilyQueryInterface
 {
-    public function __construct(private MeasurementFamilyRepositoryInterface $measurementFamilyRepository)
+    public function __construct(private FindMeasurementFamilies $findMeasurementFamilies)
     {
     }
 
@@ -24,26 +22,21 @@ final class GetMeasurementsFamilyQuery implements GetMeasurementsFamilyQueryInte
      */
     public function execute(string $code, string $locale = 'en_US'): ?array
     {
-        try {
-            $measurementFamily = $this->measurementFamilyRepository->getByCode(MeasurementFamilyCode::fromString($code));
-        } catch (MeasurementFamilyNotFoundException) {
+        $measurementFamily = $this->findMeasurementFamilies->byCode($code);
+
+        if (null === $measurementFamily) {
             return null;
         }
-
-        $normalizedMeasurementFamily = $measurementFamily->normalize();
 
         $unitNormalizer = static fn (array $unit): array => [
             'code' => (string) $unit['code'],
             'label' => (string) ($unit['labels'][$locale] ?? \sprintf('[%s]', (string) $unit['code'])),
         ];
 
-        /** @var array<array-key, mixed> $units */
-        $units = $normalizedMeasurementFamily['units'];
-
-        $normalizedUnits = \array_map($unitNormalizer, $units);
+        $normalizedUnits = \array_map($unitNormalizer, $measurementFamily->units);
 
         return [
-            'code' => (string) $normalizedMeasurementFamily['code'],
+            'code' => $measurementFamily->code,
             'units' => $normalizedUnits,
         ];
     }
