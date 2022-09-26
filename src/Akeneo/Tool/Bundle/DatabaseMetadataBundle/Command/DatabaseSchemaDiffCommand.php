@@ -11,6 +11,7 @@ declare(strict_types=1);
  */
 namespace Akeneo\Tool\Bundle\DatabaseMetadataBundle\Command;
 
+use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Services\CleanDatabaseSchemaDiffOutput;
 use Jfcherng\Diff\DiffHelper;
 use Jfcherng\Diff\Renderer\RendererConstant;
 use Symfony\Component\Console\Command\Command;
@@ -28,13 +29,21 @@ class DatabaseSchemaDiffCommand extends Command
 
     protected static $defaultName = 'pimee:database:diff';
 
+    private CleanDatabaseSchemaDiffOutput $cleanDatabaseSchemaDiffOutput;
+
+    public function __construct(CleanDatabaseSchemaDiffOutput $cleanDatabaseSchemaDiffOutput)
+    {
+        parent::__construct(static::$defaultName);
+        $this->cleanDatabaseSchemaDiffOutput = $cleanDatabaseSchemaDiffOutput;
+    }
+
     protected function configure()
     {
         $this
             ->setDescription("This command outputs the differences between the given database schema file and a the reference for this branch.")
             ->addArgument('filename', InputArgument::OPTIONAL, "The filename of the database structure export.", IntrospectDatabaseCommand::DEFAULT_FILENAME)
             ->addOption('color', 'c', InputOption::VALUE_NONE, "Use color in output.", null)
-            ;
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -52,6 +61,9 @@ class DatabaseSchemaDiffCommand extends Command
         ];
 
         $lines = DiffHelper::calculateFiles(self::DB_REFERENCE_FILE, $filename, self::DIFF_MODE, $differOptions, $rendererOptions);
+
+        $lines = ($this->cleanDatabaseSchemaDiffOutput)($lines);
+
         $output->writeln($lines);
 
         return strlen($lines) === 0 ? 0 : -1;
