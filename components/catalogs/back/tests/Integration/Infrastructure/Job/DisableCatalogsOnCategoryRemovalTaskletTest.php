@@ -6,20 +6,15 @@ namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Job;
 
 use Akeneo\Catalogs\Domain\Operator;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
-use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 
 class DisableCatalogsOnCategoryRemovalTaskletTest extends IntegrationTestCase
 {
-    private ?JobLauncher $jobLauncher;
-
     protected function setUp(): void
     {
         parent::setUp();
 
+        $this->disableExperimentalTestDatabase();
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->jobLauncher = self::getContainer()->get('akeneo_integration_tests.launcher.job_launcher');
-        $this->jobLauncher->flushJobQueue();
     }
 
     public function testItDisablesCatalogOnCategoryRemoval(): void
@@ -63,15 +58,20 @@ class DisableCatalogsOnCategoryRemovalTaskletTest extends IntegrationTestCase
         ]);
 
         $this->removeCategory('tshirt');
-        $this->jobLauncher->launchConsumerUntilQueueIsEmpty();
 
         $this->assertCatalogIsDisabled($idCatalogUS);
         $this->assertCatalogIsEnabled($idCatalogFR);
     }
 
-    private function removeCategory(string $code): void
+    private function assertCatalogIsDisabled(string $id): void
     {
-        $category = self::getContainer()->get('pim_catalog.repository.category')->findOneByIdentifier($code);
-        self::getContainer()->get('pim_catalog.remover.category')->remove($category);
+        $catalog = $this->getCatalog($id);
+        $this->assertFalse($catalog->isEnabled());
+    }
+
+    private function assertCatalogIsEnabled(string $id): void
+    {
+        $catalog = $this->getCatalog($id);
+        $this->assertTrue($catalog->isEnabled());
     }
 }

@@ -406,6 +406,15 @@ abstract class IntegrationTestCase extends WebTestCase
         $this->waitForQueuedJobs();
     }
 
+    protected function removeCategory(string $code): void
+    {
+        $category = self::getContainer()->get('pim_catalog.repository.category')->findOneByCode($code);
+
+        self::getContainer()->get('pim_catalog.remover.category')->remove($category);
+
+        $this->waitForQueuedJobs();
+    }
+
     protected function waitForQueuedJobs(): void
     {
         self::getContainer()->get('akeneo_integration_tests.launcher.job_launcher')->launchConsumerUntilQueueIsEmpty();

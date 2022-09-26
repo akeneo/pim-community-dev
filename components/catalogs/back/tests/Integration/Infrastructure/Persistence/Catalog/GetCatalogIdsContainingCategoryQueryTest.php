@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence\Catalog;
 
 use Akeneo\Catalogs\Domain\Operator;
-use Akeneo\Catalogs\Infrastructure\Persistence\GetCatalogIdsContainingCategoryQuery;
+use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\GetCatalogIdsContainingCategoryQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 
 /**

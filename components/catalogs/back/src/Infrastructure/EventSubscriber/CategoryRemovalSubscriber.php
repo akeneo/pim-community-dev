@@ -13,6 +13,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
+/**
+ * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class CategoryRemovalSubscriber implements EventSubscriberInterface
 {
     public function __construct(
@@ -37,7 +41,7 @@ class CategoryRemovalSubscriber implements EventSubscriberInterface
         }
 
         /** @var JobInstance $jobInstance */
-        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier('disable_catalog_on_category_removal');
+        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier('disable_catalogs_on_category_removal');
 
         $this->jobLauncher->launch($jobInstance, $this->tokenStorage->getToken()?->getUser(), [
             'category_code' => $category->getCode(),

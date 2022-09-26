@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence;
 
 use Akeneo\Catalogs\Domain\Operator;
-use Akeneo\Catalogs\Infrastructure\Persistence\GetCatalogIdsContainingCategoryQuery;
+use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\GetCatalogIdsContainingCategoryQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @covers \Akeneo\Catalogs\Infrastructure\Persistence\GetCatalogIdsContainingCategoryQuery
+ * @covers \Akeneo\Catalogs\Infrastructure\Persistence\Catalog\GetCatalogIdsContainingCategoryQuery
  */
 class GetCatalogsToDisableOnCategoryRemovalQueryTest extends IntegrationTestCase
 {

@@ -31,7 +31,7 @@ class DisableCatalogsOnCategoryRemovalTasklet implements TaskletInterface
         }
 
         /** @var string $categoryCode */
-        $categoryCode = $this->stepExecution->getJobParameters()->get('attribute_code');
+        $categoryCode = $this->stepExecution->getJobParameters()->get('category_code');
 
         $catalogsIds = $this->getCatalogsToDisableQuery->execute($categoryCode);
         $this->disableCatalogsQuery->execute($catalogsIds);
