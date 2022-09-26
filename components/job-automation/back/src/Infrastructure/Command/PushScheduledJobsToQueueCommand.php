@@ -30,8 +30,8 @@ final class PushScheduledJobsToQueueCommand extends Command
     public static $defaultName = 'pim:job-automation:push-scheduled-jobs-to-queue';
 
     public function __construct(
-        private FeatureFlag                              $jobAutomationFeatureFlag,
-        private FindScheduledJobInstancesQueryInterface  $findScheduledJobInstancesQuery,
+        private FeatureFlag $jobAutomationFeatureFlag,
+        private FindScheduledJobInstancesQueryInterface $findScheduledJobInstancesQuery,
         private PushScheduledJobsToQueueHandlerInterface $pushScheduledJobsToQueueHandler,
     ) {
         parent::__construct();

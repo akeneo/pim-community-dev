@@ -23,10 +23,6 @@ class IsJobDue
     {
         Assert::isInstanceOf($scheduledJobInstance, ScheduledJobInstance::class);
 
-        $tralalal = $cronExpression->isDue();
-        $pouet = $cronExpression->getPreviousRunDate() > $scheduledJobInstance->setupDate;
-        $she = $cronExpression->getPreviousRunDate();
-
         if (null === $scheduledJobInstance->lastExecutionDate) {
             return $cronExpression->isDue() || $cronExpression->getPreviousRunDate() > $scheduledJobInstance->setupDate;
         } else {

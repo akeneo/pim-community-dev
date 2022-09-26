@@ -19,6 +19,7 @@ use Akeneo\Platform\JobAutomation\Domain\Model\DueJobInstance;
 use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
 use Akeneo\Platform\JobAutomation\Domain\Publisher\RetryPublisherInterface;
 use Akeneo\Platform\JobAutomation\Test\Acceptance\AcceptanceTestCase;
+use Akeneo\Platform\JobAutomation\Test\Acceptance\FakeService\FakeRetryPublisher;
 
 final class PushScheduledJobsToQueueTest extends AcceptanceTestCase
 {
@@ -69,7 +70,7 @@ final class PushScheduledJobsToQueueTest extends AcceptanceTestCase
         return $this->get('akeneo.job_automation.handler.push_scheduled_jobs_to_queue_handler');
     }
 
-    public function getPublisher(): RetryPublisherInterface
+    public function getPublisher(): FakeRetryPublisher
     {
         return $this->get('akeneo.controller.retry_publisher');
     }
