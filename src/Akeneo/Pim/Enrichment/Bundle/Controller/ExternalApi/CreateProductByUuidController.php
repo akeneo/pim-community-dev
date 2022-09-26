@@ -172,7 +172,7 @@ class CreateProductByUuidController
     {
         // TODO: CPM-711
         throw new DocumentedHttpException(
-            Documentation::URL . 'post_products',
+            Documentation::URL . 'post_products_uuid',
             sprintf('%s Check the expected format on the API documentation.', $message),
             $previousException
         );
