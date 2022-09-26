@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\JobAutomation\Test\Acceptance\UseCases;
 
 use Akeneo\Platform\JobAutomation\Application\PushScheduledJobsToQueue\PushScheduledJobsToQueueHandlerInterface;
-use Akeneo\Platform\JobAutomation\Application\PushScheduledJobsToQueue\PushScheduledJobsToQueueCommand;
+use Akeneo\Platform\JobAutomation\Application\PushScheduledJobsToQueue\PushScheduledJobsToQueueQuery;
 use Akeneo\Platform\JobAutomation\Domain\Model\DueJobInstance;
 use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
 use Akeneo\Platform\JobAutomation\Domain\Publisher\RetryPublisherInterface;
@@ -31,7 +31,7 @@ final class PushScheduledJobsToQueueTest extends AcceptanceTestCase
     {
         $date = new \DateTimeImmutable('now');
 
-        $this->getHandler()->handle(new PushScheduledJobsToQueueCommand([
+        $this->getHandler()->handle(new PushScheduledJobsToQueueQuery([
             new ScheduledJobInstance(
                 code: 'scheduled_job_instance_1',
                 label: 'scheduled job instance 1',

@@ -4,7 +4,7 @@ namespace Specification\Akeneo\Platform\JobAutomation\Infrastructure\Command;
 
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Platform\JobAutomation\Application\PushScheduledJobsToQueue\PushScheduledJobsToQueueHandlerInterface;
-use Akeneo\Platform\JobAutomation\Application\PushScheduledJobsToQueue\PushScheduledJobsToQueueCommand;
+use Akeneo\Platform\JobAutomation\Application\PushScheduledJobsToQueue\PushScheduledJobsToQueueQuery;
 use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
 use Akeneo\Platform\JobAutomation\Domain\Query\FindScheduledJobInstancesQueryInterface;
 use PhpSpec\ObjectBehavior;
@@ -54,7 +54,7 @@ class PushScheduledJobsToQueueCommandSpec extends ObjectBehavior
             ->willReturn([$scheduledJobInstance1, $scheduledJobInstance2, $scheduledJobInstance3]);
 
         $pushScheduledJobsToQueueHandler
-            ->handle(new PushScheduledJobsToQueueCommand([$scheduledJobInstance1, $scheduledJobInstance2, $scheduledJobInstance3]))
+            ->handle(new PushScheduledJobsToQueueQuery([$scheduledJobInstance1, $scheduledJobInstance2, $scheduledJobInstance3]))
             ->shouldBeCalled();
 
         $this->run($input, $output)->shouldReturn(0);
