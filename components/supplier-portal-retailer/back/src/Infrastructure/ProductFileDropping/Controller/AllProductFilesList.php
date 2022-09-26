@@ -25,7 +25,12 @@ final class AllProductFilesList
 
         return new JsonResponse([
             'product_files' => array_map(
-                fn (ProductFile $productFile) => $productFile->toArray(),
+                function (ProductFile $productFile) {
+                    $productFile = $productFile->toArray();
+                    $productFile['uploadedAt'] = (new \DateTimeImmutable($productFile['uploadedAt']))->format('c');
+
+                    return $productFile;
+                },
                 $productFiles,
             ),
             'total' => ($this->getProductFilesCount)(),
