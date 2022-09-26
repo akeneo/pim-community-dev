@@ -72,6 +72,6 @@ final class PushScheduledJobsToQueueTest extends AcceptanceTestCase
 
     public function getPublisher(): FakeRetryPublisher
     {
-        return $this->get('akeneo.controller.retry_publisher');
+        return $this->get('Akeneo\Platform\JobAutomation\Domain\Publisher\PublisherInterface');
     }
 }
