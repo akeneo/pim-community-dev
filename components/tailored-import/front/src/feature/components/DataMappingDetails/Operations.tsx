@@ -11,7 +11,7 @@ import {
   useBooleanState,
 } from 'akeneo-design-system';
 import {filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
-import {DataMapping, getDefaultOperation, Operation, OperationType} from '../../models';
+import {DataMapping, getDefaultOperation, Operation, OperationType, isAttributeTarget} from '../../models';
 import {
   BOOLEAN_REPLACEMENT_OPERATION_TYPE,
   CATEGORIES_REPLACEMENT_OPERATION_TYPE,
@@ -23,6 +23,7 @@ import {
   REMOVE_WHITESPACE_OPERATION_TYPE,
   SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE,
   SPLIT_OPERATION_TYPE,
+  SIMPLE_REFERENCE_ENTITY_REPLACEMENT,
   BooleanReplacementOperationBlock,
   CategoriesReplacementOperationBlock,
   CleanHTMLOperationBlock,
@@ -35,6 +36,7 @@ import {
   RemoveWhitespaceOperationBlock,
   SimpleSelectReplacementOperationBlock,
   SplitOperationBlock,
+  SimpleReferenceEntityReplacementOperationBlock,
 } from './Operation';
 import {usePreviewData} from '../../hooks';
 
@@ -63,6 +65,7 @@ const operationBlocks: {
   [FAMILY_REPLACEMENT_OPERATION_TYPE]: FamilyReplacementOperationBlock,
   [CHANGE_CASE_OPERATION_TYPE]: ChangeCaseOperationBlock,
   [REMOVE_WHITESPACE_OPERATION_TYPE]: RemoveWhitespaceOperationBlock,
+  [SIMPLE_REFERENCE_ENTITY_REPLACEMENT]: SimpleReferenceEntityReplacementOperationBlock,
 };
 
 type OperationsProps = {
@@ -136,6 +139,9 @@ const Operations = ({
             return (
               <OperationBlock
                 key={operation.type}
+                targetReferenceDataName={
+                  isAttributeTarget(dataMapping.target) ? dataMapping.target.reference_data_name : undefined
+                }
                 targetCode={dataMapping.target.code}
                 operation={operation}
                 previewData={{

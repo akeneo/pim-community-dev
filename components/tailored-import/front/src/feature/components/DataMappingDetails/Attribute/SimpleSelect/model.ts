@@ -3,6 +3,7 @@ import {Attribute, Target, TargetNotEmptyAction, TargetEmptyAction} from '../../
 
 type SimpleSelectTarget = {
   code: string;
+  reference_data_name?: string;
   channel: ChannelReference;
   locale: LocaleReference;
   type: 'attribute';
