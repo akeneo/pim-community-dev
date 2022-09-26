@@ -1,10 +1,10 @@
 import React from 'react';
+import styled from 'styled-components';
 import {PageContent, useFeatureFlags} from '@akeneo-pim-community/shared';
+import {LastOperationsWidget} from '@akeneo-pim-community/process-tracker';
 import {Header} from '@akeneo-pim-community/activity/src/components/Header';
 import {CompletenessWidget} from '@akeneo-pim-community/activity/src/components/Widgets/CompletenessWidget';
-import {LastOperationsWidget} from '@akeneo-pim-community/activity/src/components/Widgets/LastOperationsWidget';
 import {PimVersion} from '@akeneo-pim-community/activity/src/components/PimVersion';
-import styled from 'styled-components';
 import {TeamworkAssistantWidget, WorkflowWidget} from './Widgets';
 
 const StyledPageContent = styled(PageContent)`

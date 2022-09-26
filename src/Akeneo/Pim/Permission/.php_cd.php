@@ -101,7 +101,6 @@ $rules = [
         //TODO: It uses jobs (maybe ImportExportBundle is not part of the Platform)
         'Akeneo\Platform\Bundle\ImportExportBundle\Event\JobExecutionEvents',
         'Akeneo\Platform\Bundle\ImportExportBundle\Event\JobProfileEvents',
-        'Akeneo\Platform\Bundle\ImportExportBundle\Query\GetLastOperationsInterface',
         //TODO: we listen to this event to save the permissions
         'Akeneo\Pim\Structure\Bundle\Event\AttributeGroupEvents',
         'Akeneo\Platform\Bundle\ImportExportBundle\Event\JobInstanceEvents',
