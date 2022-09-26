@@ -164,6 +164,6 @@ class ValueCollectionRequirementChecker implements RequirementChecker
      */
     private static function assertTextData(string $textData): void
     {
-        Assert::stringNotEmpty($textData, "Expected String and not empty value for 'data'");
+        Assert::string($textData, "Expected String value for 'data'");
     }
 }

@@ -1,8 +1,10 @@
-import {useMemo} from 'react';
+import {useContext, useMemo} from 'react';
 import {FetchStatus, useFetch, useRoute} from '@akeneo-pim-community/shared';
-import {EnrichCategory} from '../models';
+import {EnrichCategory, Template} from '../models';
 import type {EditCategoryForm} from '../models';
-import {normalizeCategory} from '../helpers';
+import {populateCategory} from '../helpers';
+import {useTemplate} from './useTemplate';
+import {EditCategoryContext} from '../components';
 
 interface UseCategoryResponseCommon {
   load: () => Promise<void>;
@@ -10,6 +12,7 @@ interface UseCategoryResponseCommon {
 }
 export interface UseCategoryResponseOK extends UseCategoryResponseCommon {
   category: EnrichCategory;
+  template: Template;
   status: 'fetched';
 }
 
@@ -19,28 +22,52 @@ export interface UseCategoryResponsePending extends UseCategoryResponseCommon {
 
 export interface UseCategoryResponseKO extends UseCategoryResponseCommon {
   status: 'error';
-  error: string;
+  error: string | Error;
 }
 
 export type UseCategoryResponse = UseCategoryResponsePending | UseCategoryResponseOK | UseCategoryResponseKO;
 
 const useCategory = (categoryId: number): UseCategoryResponse => {
+  const {locales} = useContext(EditCategoryContext);
+
+  const localeCodes = useMemo(() => Object.keys(locales), [locales]);
+
   const url = useRoute('pim_enriched_category_rest_get', {
     id: categoryId.toString(),
   });
 
-  const [category, load, status, error] = useFetch<any>(url);
+  const [category, load, categoryFetchingStatus, categoryFetchingError] = useFetch<any>(url);
 
-  const normalizedCategory = useMemo(() => (category ? normalizeCategory(category) : null), [category]);
+  const {
+    data: template,
+    status: templateFetchingStatus,
+    error: templateFetchingError,
+  } = useTemplate({
+    // TODO when available : use template uuid from category.template_id
+    uuid: '02274dac-e99a-4e1d-8f9b-794d4c3ba330',
+    enabled: categoryFetchingStatus === 'fetched',
+  });
 
-  switch (status) {
-    case 'fetched':
-      return {load, status, category: normalizedCategory!};
-    case 'error':
-      return {load, status, error: error!};
+  const populatedCategory = useMemo(
+    () => (category && template ? populateCategory(category, template, localeCodes) : null),
+    [category, template, localeCodes]
+  );
+
+  if (categoryFetchingStatus === 'error') {
+    return {load, status: 'error', error: categoryFetchingError!};
+  }
+  if (templateFetchingStatus === 'error') {
+    return {load, status: 'error', error: templateFetchingError!};
   }
 
-  return {load, status};
+  if (categoryFetchingStatus === 'fetched') {
+    if (templateFetchingStatus === 'success') {
+      return {load, status: 'fetched', category: populatedCategory!, template: template!};
+    }
+    return {load, status: templateFetchingStatus === 'loading' ? 'fetching' : 'idle'};
+  }
+
+  return {load, status: categoryFetchingStatus};
 };
 
 export {useCategory};

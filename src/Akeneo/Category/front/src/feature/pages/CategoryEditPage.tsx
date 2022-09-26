@@ -69,6 +69,7 @@ const CategoryEditPage: FC = () => {
 
   const {
     category,
+    template,
     categoryFetchingStatus,
     applyPermissionsOnChildren,
     onChangeCategoryLabel,
@@ -269,8 +270,12 @@ const CategoryEditPage: FC = () => {
         {isCurrent(propertyTabName) && category && (
           <EditPropertiesForm category={category} onChangeLabel={onChangeCategoryLabel} />
         )}
-        {isCurrent(attributeTabName) && category && (
-          <EditAttributesForm attributeValues={category.attributes} onAttributeValueChange={onChangeAttribute} />
+        {isCurrent(attributeTabName) && category && template && (
+          <EditAttributesForm
+            attributeValues={category.attributes}
+            template={template}
+            onAttributeValueChange={onChangeAttribute}
+          />
         )}
         {isCurrent(historyTabName) && (
           <HistoryPimView

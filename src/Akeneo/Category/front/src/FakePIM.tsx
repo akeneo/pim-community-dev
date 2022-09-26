@@ -63,7 +63,7 @@ const FakePIM = ({children}: Props) => {
 
   // deps must be patched before CategoryApp is rendered !
   // can't wait for effect to be applied
-  patchDeps(deps, configuration); 
+  patchDeps(deps, configuration);
 
   useEffect(() => {
     patchDeps(deps, configuration);

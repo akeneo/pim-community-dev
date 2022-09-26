@@ -236,7 +236,9 @@ describe('useEditCategoryForm', () => {
     });
 
     expect(saveEditCategoryForm).toHaveBeenCalled();
-    expect(mockedSaveEditCategoryForm.mock.calls[0][2]).toStrictEqual({applyPermissionsOnChildren: false});
+
+    const options = mockedSaveEditCategoryForm.mock.calls[0][2];
+    expect(options.applyPermissionsOnChildren).toStrictEqual(false);
   });
 
   test('it saves a category and refreshes the category data on success', async () => {

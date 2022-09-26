@@ -74,12 +74,12 @@ class ValueCollectionRequirementCheckerSpec extends ObjectBehavior
             );
     }
 
-    public function it_should_throw_an_exception_when_key_data_for_string_value_is_empty(): void
+    public function it_should_not_throw_an_exception_when_key_data_for_string_value_is_empty(): void
     {
         $compositeKey = "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030";
         $localeCompositeKey = $compositeKey . ValueCollection::SEPARATOR . 'fr_FR';
         $this
-            ->shouldThrow(StructureArrayConversionException::class)
+            ->shouldNotThrow()
             ->duringCheck(
                 [
                     'attribute_codes' => [$compositeKey],

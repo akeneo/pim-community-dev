@@ -25,7 +25,7 @@ const MediaPreview = ({data, label, attribute}: MediaPreviewProps) => {
   const previewUrl = getMediaPreviewUrl(router, {
     type: MediaPreviewType.Thumbnail,
     attributeCode: attribute.code,
-    data: data && data.filePath ? data.filePath : ''
+    data: data && data.filePath ? data.filePath : '',
   });
 
   return (

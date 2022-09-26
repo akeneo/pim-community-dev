@@ -43,7 +43,6 @@ class AttributeApiRequirementChecker implements RequirementChecker
 
             try {
                 Assert::stringNotEmpty($key);
-                Assert::notEmpty($value['data']);
                 Assert::nullOrStringNotEmpty($value['locale']);
                 Assert::notEmpty($value['attribute_code']);
             } catch (\InvalidArgumentException $exception) {
