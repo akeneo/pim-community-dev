@@ -29,9 +29,9 @@ final class PushScheduledJobsToQueueHandler implements PushScheduledJobsToQueueH
     ) {
     }
 
-    public function handle(PushScheduledJobsToQueueCommand $query): void
+    public function handle(PushScheduledJobsToQueueCommand $command): void
     {
-        $dueJobInstances = $this->getDueJobs($query->getScheduledJobInstances());
+        $dueJobInstances = $this->getDueJobs($command->getScheduledJobInstances());
 
         foreach ($dueJobInstances as $dueJobInstance) {
             $this->retryPublisher->publish($dueJobInstance);

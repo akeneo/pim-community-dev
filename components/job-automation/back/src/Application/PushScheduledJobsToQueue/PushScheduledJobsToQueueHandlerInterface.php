@@ -15,5 +15,5 @@ namespace Akeneo\Platform\JobAutomation\Application\PushScheduledJobsToQueue;
 
 interface PushScheduledJobsToQueueHandlerInterface
 {
-    public function handle(PushScheduledJobsToQueueCommand $query): void;
+    public function handle(PushScheduledJobsToQueueCommand $command): void;
 }
