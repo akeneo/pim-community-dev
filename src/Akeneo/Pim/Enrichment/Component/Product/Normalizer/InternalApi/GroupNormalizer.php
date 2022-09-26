@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\FindProductIdentifiersInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FindProductUuidsInGroup;
 use Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
@@ -18,47 +18,25 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class GroupNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    /** @var array */
-    protected $supportedFormats = ['internal_api'];
-
-    /** @var NormalizerInterface */
-    protected $groupNormalizer;
-
-    /** @var StructureVersionProviderInterface */
-    protected $structureVersionProvider;
-
-    /** @var VersionManager */
-    protected $versionManager;
-
-    /** @var NormalizerInterface */
-    protected $versionNormalizer;
-
-    /** @var FindProductIdentifiersInterface */
-    private $getGroupProductIdentifiers;
+    protected array $supportedFormats = ['internal_api'];
 
     public function __construct(
-        NormalizerInterface $groupNormalizer,
-        StructureVersionProviderInterface $structureVersionProvider,
-        VersionManager $versionManager,
-        NormalizerInterface $versionNormalizer,
-        FindProductIdentifiersInterface $getGroupProductIdentifiers
+        protected NormalizerInterface $groupNormalizer,
+        protected StructureVersionProviderInterface $structureVersionProvider,
+        protected VersionManager $versionManager,
+        protected NormalizerInterface $versionNormalizer,
+        private  FindProductUuidsInGroup $findProductUuids
     ) {
-        $this->groupNormalizer = $groupNormalizer;
-        $this->structureVersionProvider = $structureVersionProvider;
-        $this->versionManager = $versionManager;
-        $this->versionNormalizer = $versionNormalizer;
-        $this->getGroupProductIdentifiers = $getGroupProductIdentifiers;
     }
 
     /**
      * {@inheritdoc}
-     * @param GroupInterface $group
      */
     public function normalize($group, $format = null, array $context = [])
     {
         $normalizedGroup = $this->groupNormalizer->normalize($group, 'standard', $context);
 
-        $normalizedGroup['products'] = $this->getGroupProductIdentifiers->fromGroupId($group->getId());
+        $normalizedGroup['products'] = $this->findProductUuids->forGroupId($group->getId());
 
         $firstVersion = $this->versionManager->getOldestLogEntry($group);
         $lastVersion = $this->versionManager->getNewestLogEntry($group);
@@ -85,7 +63,7 @@ class GroupNormalizer implements NormalizerInterface, CacheableSupportsMethodInt
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof GroupInterface && in_array($format, $this->supportedFormats);
     }

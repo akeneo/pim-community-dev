@@ -1,14 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Command\GroupProductsCommand;
 use Akeneo\Pim\Enrichment\Component\Product\Command\GroupProductsHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\GroupFactory;
-use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Akeneo\Pim\Enrichment\Component\Product\Query\FindProductIdentifiersInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
@@ -16,7 +14,6 @@ use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
-use Doctrine\ORM\EntityManager;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -37,77 +34,24 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class GroupController
 {
     /** @staticvar integer The maximum number of group products to be displayed */
-    const MAX_PRODUCTS = 5;
-
-    /** @var GroupRepositoryInterface */
-    protected $groupRepository;
-
-    /** @var ProductRepositoryInterface */
-    protected $productRepository;
-
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var ObjectUpdaterInterface */
-    protected $updater;
-
-    /** @var ValidatorInterface */
-    protected $validator;
-
-    /** @var NormalizerInterface */
-    protected $violationNormalizer;
-
-    /** @var SaverInterface */
-    protected $saver;
-
-    /** @var UserContext */
-    protected $userContext;
-
-    /** @var RemoverInterface */
-    protected $remover;
-
-    /** @var GroupFactory */
-    protected $groupFactory;
-
-    /** @var NormalizerInterface */
-    protected $constraintViolationNormalizer;
-
-    protected GroupProductsHandler $groupProductsHandler;
-
+    private const MAX_PRODUCTS = 5;
 
     public function __construct(
-        GroupRepositoryInterface $groupRepository,
-        ProductRepositoryInterface $productRepository,
-        NormalizerInterface $normalizer,
-        UserContext $userContext,
-        ObjectUpdaterInterface $updater,
-        ValidatorInterface $validator,
-        NormalizerInterface $violationNormalizer,
-        SaverInterface $saver,
-        RemoverInterface $remover,
-        GroupFactory $groupFactory,
-        NormalizerInterface $constraintViolationNormalizer,
-        GroupProductsHandler $groupProductsHandler
+        protected GroupRepositoryInterface $groupRepository,
+        protected ProductRepositoryInterface $productRepository,
+        protected NormalizerInterface $normalizer,
+        protected UserContext $userContext,
+        protected ObjectUpdaterInterface $updater,
+        protected ValidatorInterface $validator,
+        protected NormalizerInterface $violationNormalizer,
+        protected SaverInterface $saver,
+        protected RemoverInterface $remover,
+        protected GroupFactory $groupFactory,
+        protected NormalizerInterface $constraintViolationNormalizer,
+        protected GroupProductsHandler $groupProductsHandler
     ) {
-        $this->groupRepository = $groupRepository;
-        $this->productRepository = $productRepository;
-        $this->normalizer = $normalizer;
-        $this->violationNormalizer = $violationNormalizer;
-        $this->updater = $updater;
-        $this->saver = $saver;
-        $this->userContext = $userContext;
-        $this->validator = $validator;
-        $this->remover = $remover;
-        $this->groupFactory = $groupFactory;
-        $this->constraintViolationNormalizer = $constraintViolationNormalizer;
-        $this->groupProductsHandler = $groupProductsHandler;
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
     public function searchAction(Request $request): JsonResponse
     {
         $groups = $this->groupRepository->getOptions(
@@ -120,12 +64,7 @@ class GroupController
         return new JsonResponse($groups);
     }
 
-    /**
-     * @param string $identifier
-     *
-     * @return JsonResponse
-     */
-    public function getAction($identifier)
+    public function getAction(string $identifier): JsonResponse
     {
         $group = $this->groupRepository->findOneBy(['code' => $identifier]);
 
@@ -133,15 +72,11 @@ class GroupController
     }
 
     /**
-     * Display the products of a group
-     *
-     * @param string $identifier
-     *
-     * @return JsonResponse
+     * Displays the products of a group
      *
      * @AclAncestor("pim_enrich_product_index")
      */
-    public function listProductsAction($identifier)
+    public function listProductsAction(string $identifier): JsonResponse
     {
         $group = $this->groupRepository->findOneBy(['code' => $identifier]);
 
@@ -156,17 +91,12 @@ class GroupController
     }
 
     /**
-     * @param Request $request
-     * @param string  $code
-     *
      * @throws NotFoundHttpException     If product is not found or the user cannot see it
      * @throws AccessDeniedHttpException If the user does not have permissions to edit the product
      *
-     * @return Response
-     *
      * @AclAncestor("pim_enrich_group_edit")
      */
-    public function postAction(Request $request, $code)
+    public function postAction(Request $request, string $code): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -206,15 +136,9 @@ class GroupController
     }
 
     /**
-     * Remove a group
-     *
-     * @param string $code
-     *
      * @AclAncestor("pim_enrich_group_remove")
-     *
-     * @return Response
      */
-    public function removeAction(Request $request, $code)
+    public function removeAction(Request $request, string $code): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -231,15 +155,9 @@ class GroupController
     }
 
     /**
-     * Creates group
-     *
-     * @param Request $request
-     *
-     * @return Response
-     *
      * @AclAncestor("pim_enrich_group_create")
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');

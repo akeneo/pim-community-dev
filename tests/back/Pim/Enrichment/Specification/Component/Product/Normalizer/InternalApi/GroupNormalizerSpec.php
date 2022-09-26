@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\FindProductIdentifiersInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FindProductUuidsInGroup;
 use Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\Tool\Component\Versioning\Model\Version;
@@ -17,14 +17,14 @@ class GroupNormalizerSpec extends ObjectBehavior
         StructureVersionProviderInterface $structureVersionProvider,
         VersionManager $versionManager,
         NormalizerInterface $versionNormalizer,
-        FindProductIdentifiersInterface $getGroupProductIdentifiers
+        FindProductUuidsInGroup $findProductUuids
     ) {
         $this->beConstructedWith(
             $normalizer,
             $structureVersionProvider,
             $versionManager,
             $versionNormalizer,
-            $getGroupProductIdentifiers
+            $findProductUuids
         );
     }
 
@@ -34,11 +34,11 @@ class GroupNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_groups(
-        $normalizer,
-        $structureVersionProvider,
-        $versionManager,
-        $versionNormalizer,
-        FindProductIdentifiersInterface $getGroupProductIdentifiers,
+        NormalizerInterface $normalizer,
+        StructureVersionProviderInterface $structureVersionProvider,
+        VersionManager $versionManager,
+        NormalizerInterface $versionNormalizer,
+        FindProductUuidsInGroup $findProductUuids,
         GroupInterface $tshirt,
         Version $oldestLog,
         Version $newestLog
@@ -63,13 +63,13 @@ class GroupNormalizerSpec extends ObjectBehavior
 
         $tshirt->getId()->willReturn(12);
 
-        $getGroupProductIdentifiers->fromGroupId(12)->willReturn(['product_42', 'product_123']);
+        $findProductUuids->forGroupId(12)->shouldBeCalled()->willReturn(['a9bd2243-12d8-4b44-af6a-9a0d9b30c2c2', '48fd174e-34fd-44ec-8e81-f1b7a4cf65c9']);
 
         $this->normalize($tshirt, 'internal_api', $options)->shouldReturn(
             [
                 'code'     => 'my_group',
                 'type'     => 'related',
-                'products' => ['product_42', 'product_123'],
+                'products' => ['a9bd2243-12d8-4b44-af6a-9a0d9b30c2c2', '48fd174e-34fd-44ec-8e81-f1b7a4cf65c9'],
                 'meta'     => [
                     'id'                => 12,
                     'form'              => 'pim-group-edit-form',
