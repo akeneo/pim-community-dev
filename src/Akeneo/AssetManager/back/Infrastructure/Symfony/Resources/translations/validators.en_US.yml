@@ -65,6 +65,7 @@ pim_asset_manager:
                 file_size_exceeded: 'The file exceeds the max file size set for the attribute.'
                 should_exist: 'The file "%file_path%" was not found.'
                 target_readonly: 'You cannot update the value of "%attribute_code%" which is the target of a transformation.'
+                invalid_filename: 'The file "%file_path%" contains invalid characters.'
             option:
                 code_does_not_exist: 'The option with code "%option_code%" does not exist for this attribute'
             option_collection:

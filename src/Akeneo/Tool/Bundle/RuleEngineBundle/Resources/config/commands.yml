@@ -15,6 +15,8 @@ services:
     Akeneo\Tool\Bundle\RuleEngineBundle\Command\RunCommand:
         arguments:
             - '@logger'
+            - '@akeneo_batch.launcher.synchronous_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
             - '@event_dispatcher'
         tags:
             - { name: console.command }

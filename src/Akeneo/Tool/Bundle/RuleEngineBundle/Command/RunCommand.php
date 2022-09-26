@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\RuleEngineBundle\Command;
 
+use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
+use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -34,18 +36,13 @@ class RunCommand extends Command
 {
     protected static $defaultName = 'akeneo:rule:run';
 
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
-
-    private LoggerInterface $logger;
-
     public function __construct(
-        LoggerInterface $logger,
-        EventDispatcherInterface $eventDispatcher
+        private LoggerInterface $logger,
+        private JobLauncherInterface $jobLauncher,
+        private JobInstanceRepository $jobInstanceRepository,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
         parent::__construct();
-        $this->logger = $logger;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -86,7 +83,7 @@ class RunCommand extends Command
             'rule_codes' => $ruleCodes,
             'user_to_notify' => $username,
             'stop_on_error' => $stopOnError,
-            'dry_run' => $dryRun
+            'dry_run' => $dryRun,
         ];
 
         $params = [
