@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence;
 
-use Akeneo\Catalogs\Application\Persistence\DisableCatalogsQueryInterface;
-use Akeneo\Catalogs\Infrastructure\Persistence\DisableCatalogsQuery;
+use Akeneo\Catalogs\Application\Persistence\Catalog\DisableCatalogsQueryInterface;
+use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\DisableCatalogsQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 
 /**

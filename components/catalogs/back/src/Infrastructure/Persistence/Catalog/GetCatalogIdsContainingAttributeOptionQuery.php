@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Infrastructure\Persistence;
+namespace Akeneo\Catalogs\Infrastructure\Persistence\Catalog;
 
-use Akeneo\Catalogs\Application\Persistence\GetCatalogIdsContainingAttributeOptionQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogIdsContainingAttributeOptionQueryInterface;
 use Doctrine\DBAL\Connection;
 
 /**

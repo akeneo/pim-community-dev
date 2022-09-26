@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence;
 
 use Akeneo\Catalogs\Domain\Operator;
-use Akeneo\Catalogs\Infrastructure\Persistence\GetCatalogIdsContainingAttributeOptionQuery;
+use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\GetCatalogIdsContainingAttributeOptionQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @covers \Akeneo\Catalogs\Infrastructure\Persistence\GetCatalogIdsContainingAttributeOptionQuery
+ * @covers \Akeneo\Catalogs\Infrastructure\Persistence\Catalog\GetCatalogIdsContainingAttributeOptionQuery
  */
 class GetCatalogIdsContainingAttributeOptionQueryTest extends IntegrationTestCase
 {
