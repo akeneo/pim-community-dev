@@ -7,6 +7,7 @@ namespace Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -14,12 +15,43 @@ use Doctrine\DBAL\Types\Types;
  */
 final class DeleteJobExecution
 {
-    /** @var Connection */
-    private $connection;
-
-    public function __construct(Connection $connection)
+    public function __construct(private Connection $connection)
     {
-        $this->connection = $connection;
+    }
+
+    public function olderThanDays(int $days): int
+    {
+        if ($days < 1) {
+            throw new \InvalidArgumentException(
+                sprintf('Number of days should be strictly superior to 0, "%s% given', $days)
+            );
+        }
+
+        $endTime = new \DateTime();
+        $endTime->modify(sprintf('- %d days', $days));
+
+        return $this->deleteOlderThanTime($endTime);
+    }
+
+    public function olderThanHours(int $hours): int
+    {
+        Assert::greaterThanEq(
+            $hours,
+            1,
+            sprintf('Number of hours should be at least 1, "%s given', $hours)
+        );
+
+        $endTime = new \DateTime();
+        $endTime->modify(sprintf('- %d hours', $hours));
+
+        return $this->deleteOlderThanTime($endTime);
+    }
+
+    public function all(): int
+    {
+        $query = 'DELETE FROM akeneo_batch_job_execution';
+
+        return $this->connection->executeStatement($query);
     }
 
     /**
@@ -27,15 +59,8 @@ final class DeleteJobExecution
      * It is to avoid a limitation in Mysql that prevents the deletion in the same table as the subquery.
      * The query cannot be executed without it.
      */
-    public function olderThanDays(int $days): int
+    public function deleteOlderThanTime(\DateTime $createdTimeLimit): int
     {
-        if ($days < 1) {
-            throw new \InvalidArgumentException(sprintf('Number of days should be strictly superior to 0, "%s% given', $days));
-        }
-
-        $endTime = new \DateTime();
-        $endTime->modify(sprintf('- %d days', $days));
-
         $query = <<<SQL
             DELETE FROM akeneo_batch_job_execution WHERE id IN (
                 SELECT id FROM (
@@ -49,20 +74,12 @@ final class DeleteJobExecution
                     )
                 ) as job_execution_to_remove
             )
-SQL;
+        SQL;
 
-        $numberDeletedJobExecution = $this->connection->executeUpdate(
+        return $this->connection->executeStatement(
             $query,
-            ['create_time' => $endTime, 'status' => BatchStatus::COMPLETED],
+            ['create_time' => $createdTimeLimit, 'status' => BatchStatus::COMPLETED],
             ['create_time' => Types::DATETIME_MUTABLE]
         );
-
-        return $numberDeletedJobExecution;
-    }
-
-    public function all(): void
-    {
-        $query = 'DELETE FROM akeneo_batch_job_execution';
-        $this->connection->executeUpdate($query);
     }
 }

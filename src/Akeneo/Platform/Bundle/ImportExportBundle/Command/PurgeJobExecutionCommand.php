@@ -2,8 +2,7 @@
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Command;
 
-use Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler;
-use Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandler;
+use Akeneo\Platform\Bundle\ImportExportBundle\Purge\PurgeJobExecution;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,8 +26,7 @@ class PurgeJobExecutionCommand extends Command
     private const DEFAULT_NUMBER_OF_DAYS = 90;
 
     public function __construct(
-        private ExecuteJobExecutionHandler $jobExecutionRunner,
-        private CreateJobExecutionHandler $jobExecutionFactory,
+        private PurgeJobExecution $purgeJobExecution,
     ) {
         parent::__construct();
     }
@@ -65,10 +63,15 @@ class PurgeJobExecutionCommand extends Command
             return Command::FAILURE;
         }
 
-        if (0 === (int) $days) {
+        $days = (int) $days;
+
+        if (0 === $days) {
             /** @var QuestionHelper $helper */
             $helper = $this->getHelper('question');
-            $confirmation = new ConfirmationQuestion('This will delete ALL job executions. Do you confirm? ', false);
+            $confirmation = new ConfirmationQuestion(
+                'This will delete ALL job executions. Do you confirm? ',
+                false
+            );
             if (!$helper->ask($input, $output, $confirmation)) {
                 $output->write("Operation aborted\n");
 
@@ -76,12 +79,14 @@ class PurgeJobExecutionCommand extends Command
             }
         }
 
-        $batchConfig = [
-            'days' => (int) $days,
-        ];
-
-        $jobExecution = $this->jobExecutionFactory->createFromBatchCode(self::JOB_CODE, $batchConfig, null);
-        $this->jobExecutionRunner->executeFromJobExecutionId($jobExecution->getId());
+        if (0 === $days) {
+            $numberOfDeletedJobExecutions = $this->purgeJobExecution->all();
+            $output->writeln('All jobs execution deleted');
+        } else {
+            $numberOfDeletedJobExecutions = $this->purgeJobExecution->olderThanDays($days);
+            $output->writeln(sprintf('Purged jobs execution older than %d days', $days));
+        }
+        $output->writeln(sprintf('%d jobs execution deleted', $numberOfDeletedJobExecutions));
 
         return Command::SUCCESS;
     }
