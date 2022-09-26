@@ -7,7 +7,6 @@ use Akeneo\Platform\JobAutomation\Application\PushScheduledJobsToQueue\PushSched
 use Akeneo\Platform\JobAutomation\Application\PushScheduledJobsToQueue\PushScheduledJobsToQueueCommand;
 use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
 use Akeneo\Platform\JobAutomation\Domain\Query\FindScheduledJobInstancesQueryInterface;
-use DateTimeImmutable;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -71,7 +70,7 @@ class PushScheduledJobsToQueueCommandSpec extends ObjectBehavior
             $notifiedUsers,
             $notifiedUserGroups,
             '* * * * *',
-            new DateTimeImmutable('2022-10-30 00:00'),
+            new \DateTimeImmutable('2022-10-30 00:00'),
             null,
             sprintf('job_automated_%s', $code),
         );

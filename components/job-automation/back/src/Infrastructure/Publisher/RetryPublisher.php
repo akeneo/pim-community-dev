@@ -19,8 +19,8 @@ use Akeneo\Platform\JobAutomation\Domain\Model\DueJobInstance;
 use Akeneo\Platform\JobAutomation\Domain\Publisher\RetryPublisherInterface;
 use Akeneo\Tool\Component\BatchQueue\Exception\InvalidJobException;
 use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueueInterface;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
 final class RetryPublisher implements RetryPublisherInterface
@@ -30,7 +30,7 @@ final class RetryPublisher implements RetryPublisherInterface
 
     public function __construct(
         private ClockInterface $clock,
-        private EventDispatcherInterface $eventDispatcher,
+        private EventDispatcher $eventDispatcher,
         private LoggerInterface $logger,
         private PublishJobToQueueInterface $publishJobToQueue,
     ) {
