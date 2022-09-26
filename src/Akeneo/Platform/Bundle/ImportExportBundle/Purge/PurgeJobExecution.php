@@ -37,10 +37,21 @@ final class PurgeJobExecution
         return $numberOfDeletedJobExecutions;
     }
 
-    public function all(): void
+    public function olderThanHours(int $hours): int
+    {
+        $this->deleteJobExecutionLogs->olderThanHours($hours);
+        $numberOfDeletedJobExecutions = $this->deleteJobExecution->olderThanHours($hours);
+        $this->deleteOrphansJobExecutionDirectories->execute();
+
+        return $numberOfDeletedJobExecutions;
+    }
+
+    public function all(): int
     {
         $this->deleteJobExecutionLogs->all();
-        $this->deleteJobExecution->all();
+        $numberOfDeletedJobExecutions = $this->deleteJobExecution->all();
         $this->deleteOrphansJobExecutionDirectories->execute();
+
+        return $numberOfDeletedJobExecutions;
     }
 }
