@@ -59,6 +59,9 @@ $rules = [
             'League\Flysystem\Filesystem',
             'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
 
+            // used in Persistence\Measurement
+            'Akeneo\Tool\Bundle\MeasureBundle\ServiceApi\FindMeasurementFamilies',
+
             // used in TemporaryEnrichmentBridge
             'Akeneo\Tool\Bundle\ElasticsearchBundle\Client',
             'Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface',
@@ -98,9 +101,6 @@ $rules = [
 
             // used in Persistence\Family
             'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
-
-            // used in Persistence\Measurement
-            'Akeneo\Tool\Bundle\MeasureBundle\ServiceApi\FindMeasurementFamilies',
         ]
     )->in('Akeneo\Catalogs\Infrastructure'),
 
