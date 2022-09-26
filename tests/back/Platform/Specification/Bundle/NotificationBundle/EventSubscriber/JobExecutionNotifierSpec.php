@@ -40,8 +40,6 @@ class JobExecutionNotifierSpec extends ObjectBehavior
 
         $jobParameters->has('users_to_notify')->willReturn(true);
         $jobParameters->get('users_to_notify')->willReturn(['julia']);
-        //TODO RAB-1046: Remove this line
-        $jobParameters->has('user_to_notify')->willReturn(false);
 
         $stepExecution->getWarnings()->willReturn($warnings);
         $jobExecution->getId()->willReturn(5);
@@ -243,41 +241,5 @@ class JobExecutionNotifierSpec extends ObjectBehavior
 
         $this->shouldThrow(new \LogicException('No notification factory found for the "export" job type'))
             ->during('afterJobExecution', [$event]);
-    }
-
-    /**
-     * TODO RAB-1046: Remove this test
-     */
-    public function it_falls_back_on_user_to_notify_when_users_to_notify_does_not_exist(
-        $event,
-        $notifier,
-        $factoryRegistry,
-        $jobExecution,
-        JobParameters $jobParameters,
-        NotificationInterface $notification,
-        NotificationFactoryInterface $notificationFactory,
-        ExitStatus $exitStatus
-    ): void {
-        $factoryRegistry->get('export')->willReturn($notificationFactory);
-        $notificationFactory->create($jobExecution)->willReturn($notification);
-
-        $notification->setMessage('pim_import_export.notification.export.success')->willReturn($notification);
-        $notification->setMessageParams(['%label%' => 'Product export'])->willReturn($notification);
-        $notification->setRoute('pim_importexport_export_execution_show')->willReturn($notification);
-        $notification->setRouteParams(['id' => 5])->willReturn($notification);
-        $notification->setContext(['actionType' => 'export'])->willReturn($notification);
-
-        $jobExecution->getExitStatus()->willReturn($exitStatus);
-        $exitStatus->getExitCode()->willReturn(ExitStatus::COMPLETED);
-
-
-        $jobParameters->has('users_to_notify')->willReturn(false);
-        $jobParameters->get('users_to_notify')->shouldNotBeCalled();
-        $jobParameters->has('user_to_notify')->willReturn(true);
-        $jobParameters->get('user_to_notify')->willReturn('julia');
-
-        $notifier->notify($notification, ['julia'])->shouldBeCalled();
-
-        $this->afterJobExecution($event);
     }
 }
