@@ -5,3 +5,4 @@ services:
       - '@Akeneo\Platform\JobAutomation\Domain\ClockInterface'
       - '@event_dispatcher'
       - '@logger'
+      - '@akeneo_batch_queue.queue.publish_job_to_queue'
