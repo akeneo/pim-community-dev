@@ -36,7 +36,7 @@ class UpdateProductAssociationOnProductWithUuidEndToEnd extends AbstractProductT
 }
 JSON;
         $expectedContent = <<<JSON
-{"code":422,"message":"Property \"associations\" expects a valid product uuid. The product does not exist, \"{$productNotViewableByRedactor}\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
+{"code":422,"message":"Property \"associations\" expects a valid product uuid. The product does not exist, \"{$productNotViewableByRedactor}\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products_uuid__uuid_"}}}
 JSON;
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
         $uuid = Uuid::uuid4()->toString();
@@ -93,7 +93,7 @@ JSON;
         $response = $client->getResponse();
 
         $expectedContent = <<<JSON
-{"code":422,"message":"Property \"associations\" expects a valid product model identifier. The product model does not exist, \"product_model_no_view\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
+{"code":422,"message":"Property \"associations\" expects a valid product model identifier. The product model does not exist, \"product_model_no_view\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products_uuid__uuid_"}}}
 JSON;
 
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());

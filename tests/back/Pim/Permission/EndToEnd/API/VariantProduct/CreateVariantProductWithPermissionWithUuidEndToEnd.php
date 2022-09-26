@@ -389,7 +389,7 @@ JSON;
             "message": "%s",
             "_links": {
                 "documentation":{
-                    "href":"http://api.akeneo.com/api-reference.html#post_products"
+                    "href":"http://api.akeneo.com/api-reference.html#post_products_uuid"
                 }
             }
         }

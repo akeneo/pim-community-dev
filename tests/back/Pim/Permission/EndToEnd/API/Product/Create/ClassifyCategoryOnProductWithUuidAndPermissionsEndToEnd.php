@@ -27,7 +27,7 @@ class ClassifyCategoryOnProductWithUuidAndPermissionsEndToEnd extends AbstractPr
         $this->assertError422(
             $client->getResponse(),
             'Property \"categories\" expects a valid category code. The category does not exist, \"categoryB\" given',
-            'post_products'
+            'post_products_uuid'
         );
     }
 

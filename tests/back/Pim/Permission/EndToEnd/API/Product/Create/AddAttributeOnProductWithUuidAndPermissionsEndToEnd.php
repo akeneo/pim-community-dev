@@ -45,7 +45,7 @@ JSON;
         $this->assertError422(
             $client->getResponse(),
             'The a_metric_without_decimal_negative attribute does not exist in your PIM',
-            'post_products'
+            'post_products_uuid'
         );
     }
 
@@ -125,7 +125,7 @@ JSON;
         $expectedErrorMessage = 'Attribute \"a_localized_and_scopable_text_area\" expects an existing and ' .
             'activated locale, \"de_DE\" given';
         $client->request('POST', '/api/rest/v1/products-uuid', [], [], [], $data);
-        $this->assertError422($client->getResponse(), $expectedErrorMessage, 'post_products');
+        $this->assertError422($client->getResponse(), $expectedErrorMessage, 'post_products_uuid');
     }
 
     public function testErrorProductWithOnlyViewableLocaleForRedactor()

@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UpdateUncategorizedProductWithUuidEndToEnd extends AbstractProductTestCase
 {
-    const DOC_PATCH_CODE = 'patch_products__code_';
+    const DOC_PATCH_CODE = 'patch_products_uuid__uuid_';
 
     public function testSuccessfullyUpdateAGrantedLocalizedValueOnUncategorizedProductEvenIfANotGrantedLocaleIsFilled()
     {
