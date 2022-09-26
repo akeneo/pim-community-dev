@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Persistence\Catalog;
 
-use Akeneo\Catalogs\Application\Persistence\DisableCatalogsQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Catalog\DisableCatalogsQueryInterface;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
 
@@ -25,19 +25,19 @@ final class DisableCatalogsQuery implements DisableCatalogsQueryInterface
         $query = <<<SQL
             UPDATE akeneo_catalog
             SET is_enabled = 0
-            WHERE id IN (:uuids);
+            WHERE id IN (:catalogIds);
         SQL;
 
         $this->connection->executeQuery(
             $query,
             [
-                'uuids' => \array_map(
+                'catalogIds' => \array_map(
                     static fn ($id) => Uuid::fromString($id)->getBytes(),
                     $catalogIds
                 ),
             ],
             [
-                'uuids' => Connection::PARAM_STR_ARRAY,
+                'catalogIds' => Connection::PARAM_STR_ARRAY,
             ],
         );
     }

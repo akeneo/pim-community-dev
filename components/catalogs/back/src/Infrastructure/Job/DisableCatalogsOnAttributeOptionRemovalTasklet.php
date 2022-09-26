@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Job;
 
-use Akeneo\Catalogs\Application\Persistence\DisableCatalogsQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\GetCatalogIdsContainingAttributeOptionQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Catalog\DisableCatalogsQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogIdsContainingAttributeOptionQueryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 

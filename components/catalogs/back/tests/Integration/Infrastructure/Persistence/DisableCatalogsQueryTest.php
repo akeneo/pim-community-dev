@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence\Catalog;
+namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence;
 
 use Akeneo\Catalogs\Application\Persistence\Catalog\DisableCatalogsQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\DisableCatalogsQuery;
@@ -57,15 +57,15 @@ class DisableCatalogsQueryTest extends IntegrationTestCase
         $this->assertCatalogIsDisabled($catalogIdUS);
     }
 
-    private function assertCatalogIsDisabled(string $catalogId): void
+    private function assertCatalogIsDisabled(string $id): void
     {
-        $catalog = $this->getCatalog($catalogId);
+        $catalog = $this->getCatalog($id);
         $this->assertFalse($catalog->isEnabled());
     }
 
-    private function assertCatalogIsEnabled(string $catalogId): void
+    private function assertCatalogIsEnabled(string $id): void
     {
-        $catalog = $this->getCatalog($catalogId);
+        $catalog = $this->getCatalog($id);
         $this->assertTrue($catalog->isEnabled());
     }
 }
