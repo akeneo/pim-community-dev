@@ -52,6 +52,19 @@ define(['jquery', 'underscore', 'pim/base-fetcher', 'routing'], function ($, _, 
       return this.fetchByTypesPromises[cacheKey];
     },
 
+    search: function (searchOptions) {
+      const url = Routing.generate(this.options.urls.list);
+
+      return $.ajax({
+        data: JSON.stringify(searchOptions),
+        contentType: 'application/json',
+        type: 'POST',
+        url: url,
+      })
+        .then(_.identity)
+        .promise();
+    },
+
     /**
      * This method overrides the base method, to send a POST query instead of a GET query, because the request
      * URI can be too long.
