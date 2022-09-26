@@ -14,3 +14,9 @@ services:
       - 'Akeneo\Platform\JobAutomation\Domain\Model\SftpStorage'
     tags:
       - { name: pim_import_export.storage_client_provider }
+
+  akeneo.controller.retry_publisher:
+    class: Akeneo\Platform\JobAutomation\Test\Acceptance\FakeService\FakeRetryPublisher
+
+  akeneo.job_automation.query.find_users_to_notify:
+    class: Akeneo\Platform\JobAutomation\Test\Acceptance\FakeService\FakeFindUsersToNotifyQuery

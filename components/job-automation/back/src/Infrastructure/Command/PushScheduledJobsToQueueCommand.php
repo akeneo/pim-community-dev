@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\JobAutomation\Infrastructure\Command;
 
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
-use Akeneo\Platform\JobAutomation\Application\PushScheduledJobsToQueue\PushScheduledJObsToQueueHandlerInterface;
+use Akeneo\Platform\JobAutomation\Application\PushScheduledJobsToQueue\PushScheduledJobsToQueueHandlerInterface;
 use Akeneo\Platform\JobAutomation\Application\PushScheduledJobsToQueue\PushScheduledJobsToQueueQuery;
 use Akeneo\Platform\JobAutomation\Domain\Query\FindScheduledJobInstancesQueryInterface;
 use Akeneo\Platform\JobAutomation\Infrastructure\EventSubscriber\RefreshScheduledJobInstanceAfterJobPublished;
@@ -30,9 +30,9 @@ final class PushScheduledJobsToQueueCommand extends Command
     public static $defaultName = 'pim:job-automation:push-scheduled-jobs-to-queue';
 
     public function __construct(
-        private FeatureFlag $jobAutomationFeatureFlag,
-        private FindScheduledJobInstancesQueryInterface $findScheduledJobInstancesQuery,
-        private PushScheduledJObsToQueueHandlerInterface $pushScheduledJobsToQueueHandler,
+        private FeatureFlag                              $jobAutomationFeatureFlag,
+        private FindScheduledJobInstancesQueryInterface  $findScheduledJobInstancesQuery,
+        private PushScheduledJobsToQueueHandlerInterface $pushScheduledJobsToQueueHandler,
     ) {
         parent::__construct();
     }

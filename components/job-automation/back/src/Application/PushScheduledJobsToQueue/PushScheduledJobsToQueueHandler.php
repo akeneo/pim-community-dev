@@ -21,7 +21,7 @@ use Akeneo\Platform\JobAutomation\Domain\Model\UserToNotifyCollection;
 use Akeneo\Platform\JobAutomation\Domain\Publisher\RetryPublisherInterface;
 use Akeneo\Platform\JobAutomation\Domain\Query\FindUsersToNotifyQueryInterface;
 
-final class PushScheduledJobsToQueueHandler implements PushScheduledJObsToQueueHandlerInterface
+final class PushScheduledJobsToQueueHandler implements PushScheduledJobsToQueueHandlerInterface
 {
     public function __construct(
         private FindUsersToNotifyQueryInterface $findUsersToNotifyQuery,
@@ -32,10 +32,6 @@ final class PushScheduledJobsToQueueHandler implements PushScheduledJObsToQueueH
     public function handle(PushScheduledJobsToQueueQuery $query): void
     {
         $dueJobInstances = $this->getDueJobs($query->getScheduledJobInstances());
-
-        if (empty($dueJobInstances)) {
-            return;
-        }
 
         foreach ($dueJobInstances as $dueJobInstance) {
             $this->retryPublisher->publish($dueJobInstance);

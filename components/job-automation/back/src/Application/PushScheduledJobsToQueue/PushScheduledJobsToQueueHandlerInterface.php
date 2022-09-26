@@ -11,11 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\JobAutomation\Test\Acceptance\Infrastructure\Publisher;
+namespace Akeneo\Platform\JobAutomation\Application\PushScheduledJobsToQueue;
 
-use PHPUnit\Framework\TestCase;
-
-final class RetryPublisherTest extends TestCase
+interface PushScheduledJobsToQueueHandlerInterface
 {
-
+    public function handle(PushScheduledJobsToQueueQuery $query): void;
 }

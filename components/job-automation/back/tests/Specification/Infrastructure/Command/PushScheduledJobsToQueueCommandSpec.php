@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Platform\JobAutomation\Infrastructure\Command;
 
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
-use Akeneo\Platform\JobAutomation\Application\PushScheduledJobsToQueue\PushScheduledJObsToQueueHandlerInterface;
+use Akeneo\Platform\JobAutomation\Application\PushScheduledJobsToQueue\PushScheduledJobsToQueueHandlerInterface;
 use Akeneo\Platform\JobAutomation\Application\PushScheduledJobsToQueue\PushScheduledJobsToQueueQuery;
 use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
 use Akeneo\Platform\JobAutomation\Domain\Query\FindScheduledJobInstancesQueryInterface;
@@ -15,9 +15,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 class PushScheduledJobsToQueueCommandSpec extends ObjectBehavior
 {
     public function let(
-        FeatureFlag $jobAutomationFeatureFlag,
-        FindScheduledJobInstancesQueryInterface $findScheduledJobInstancesQuery,
-        PushScheduledJObsToQueueHandlerInterface $pushScheduledJobsToQueueHandler,
+        FeatureFlag                              $jobAutomationFeatureFlag,
+        FindScheduledJobInstancesQueryInterface  $findScheduledJobInstancesQuery,
+        PushScheduledJobsToQueueHandlerInterface $pushScheduledJobsToQueueHandler,
     ): void {
         $this->beConstructedWith(
             $jobAutomationFeatureFlag,
@@ -37,11 +37,11 @@ class PushScheduledJobsToQueueCommandSpec extends ObjectBehavior
     }
 
     public function it_pushes_scheduled_jobs_to_queue(
-        InputInterface                          $input,
-        OutputInterface                         $output,
-        FeatureFlag                             $jobAutomationFeatureFlag,
-        FindScheduledJobInstancesQueryInterface $findScheduledJobInstancesQuery,
-        PushScheduledJObsToQueueHandlerInterface $pushScheduledJobsToQueueHandler,
+        InputInterface                           $input,
+        OutputInterface                          $output,
+        FeatureFlag                              $jobAutomationFeatureFlag,
+        FindScheduledJobInstancesQueryInterface  $findScheduledJobInstancesQuery,
+        PushScheduledJobsToQueueHandlerInterface $pushScheduledJobsToQueueHandler,
     ): void {
         $jobAutomationFeatureFlag->isEnabled()->shouldBeCalled()->willReturn(true);
 
@@ -56,8 +56,7 @@ class PushScheduledJobsToQueueCommandSpec extends ObjectBehavior
 
         $pushScheduledJobsToQueueHandler
             ->handle(new PushScheduledJobsToQueueQuery([$scheduledJobInstance1, $scheduledJobInstance2, $scheduledJobInstance3]))
-            ->shouldBeCalled()
-            ->willReturn();
+            ->shouldBeCalled();
 
         $this->run($input, $output)->shouldReturn(0);
     }
