@@ -8,10 +8,9 @@ data "google_compute_network" "shared_vpc" {
 }
 
 data "google_compute_subnetwork" "gke" {
-  for_each = toset(var.regions)
   project  = var.host_project_id
-  region   = each.key
-  name     = "${data.google_project.current.project_id}-${each.value}"
+  region   = var.region
+  name     = "${data.google_project.current.project_id}-${var.region}"
 }
 
 data "google_secret_manager_secret_version" "network_config" {

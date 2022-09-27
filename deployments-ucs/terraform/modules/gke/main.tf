@@ -5,29 +5,12 @@ resource "google_project_iam_member" "gke_container_dev" {
   member   = each.value
 }
 
-resource "google_project_service" "services" {
-  for_each = toset([
-    "secretmanager.googleapis.com",
-    "certificatemanager.googleapis.com",
-    "multiclusterservicediscovery.googleapis.com",
-    "multiclusteringress.googleapis.com",
-    "gkehub.googleapis.com",
-    "cloudresourcemanager.googleapis.com",
-    "trafficdirector.googleapis.com",
-    "networkservices.googleapis.com",
-    "dns.googleapis.com"
-  ])
-  service = each.key
-  project = var.project
-}
-
 resource "google_container_cluster" "gke" {
-  for_each                 = toset(var.regions)
   project                  = var.project
-  name                     = "${data.google_project.current.project_id}-${each.value}"
-  location                 = each.value
+  name                     = "${data.google_project.current.project_id}-${var.region}"
+  location                 = var.region
   network                  = data.google_compute_network.shared_vpc.self_link
-  subnetwork               = data.google_compute_subnetwork.gke[each.value].self_link
+  subnetwork               = data.google_compute_subnetwork.gke.self_link
   networking_mode          = "VPC_NATIVE"
   initial_node_count       = 1
   remove_default_node_pool = true
@@ -77,15 +60,15 @@ resource "google_container_cluster" "gke" {
 }
 
 resource "google_container_node_pool" "gke" {
-  for_each           = local.node_pool_configs
+  for_each           = var.node_pool_configs
   project            = var.project
-  name               = each.key
-  location           = each.value.region
-  cluster            = google_container_cluster.gke[each.value.region].name
+  name               = "${each.value.name}-${var.region}"
+  location           = var.region
+  cluster            = google_container_cluster.gke.name
   initial_node_count = lookup(each.value, "autoscaling", true) ? lookup(each.value, "min_node_count", 1) : null
   node_count         = lookup(each.value, "autoscaling", true) ? null : lookup(each.value, "node_count", 1)
   max_pods_per_node  = lookup(each.value, "max_pods_per_node", 110)
-  node_locations     = lookup(lookup(var.node_locations, each.value.name, tomap({})), each.value.region, null)
+  node_locations     = lookup(lookup(var.node_locations, each.value.name, tomap({})), var.region, null)
 
   node_config {
     preemptible     = lookup(each.value, "preemptible", false)
@@ -115,8 +98,6 @@ resource "google_container_node_pool" "gke" {
     }
   }
 
-
-
   dynamic "autoscaling" {
     for_each = lookup(each.value, "autoscaling", true) ? [each.value] : []
     content {
@@ -124,6 +105,4 @@ resource "google_container_node_pool" "gke" {
       max_node_count = lookup(autoscaling.value, "max_node_count", 60)
     }
   }
-
-
 }

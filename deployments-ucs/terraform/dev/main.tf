@@ -5,7 +5,6 @@ locals {
   ci_sa                   = "main-service-account@${local.project_id}.iam.gserviceaccount.com"
   admins                  = ["group:phoenix-squad@akeneo.com"]
   viewers                 = ["group:phoenix-squad@akeneo.com"]
-  regions                 = ["europe-west1"]
   firestore_projects_id   = ["akecld-prd-pim-fire-eur-dev", "akecld-prd-pim-fire-us-dev"]
   firestore_database_type = "CLOUD_FIRESTORE"
   public_zone             = "pim-saas-dev.dev.cloud.akeneo.com"
@@ -79,21 +78,21 @@ module "secrets" {
   ]
 }
 
-module "gke" {
+module "gke_europe_west1" {
   source                 = "../modules/gke"
   project                = local.project_id
   host_project_id        = local.host_project_id
   shared_vpc_name        = local.shared_vpc_name
   gke_sa_email           = module.iam.gke_sa_email
-  regions                = local.regions
+  region                 = "europe-west1"
   cluster_developers     = concat(["serviceAccount:${local.ci_sa}"], local.admins)
   viewer_members         = local.viewers
   admin_members          = local.admins
   min_master_version     = "1.23.7"
   master_ipv4_cidr_block = "192.168.224.0/28"
 
-  node_pool_configs = [
-    {
+  node_pool_configs = {
+    "default" = {
       name              = "default"
       preemptible       = false
       machine_type      = "n1-standard-16"
@@ -101,15 +100,15 @@ module "gke" {
       max_node_count    = 60
       max_pods_per_node = 64
     },
-    {
+    "mysql" = {
       name              = "mysql"
       preemptible       = false
       machine_type      = "n1-highmem-16"
       min_node_count    = 1
       max_node_count    = 60
       max_pods_per_node = 64
-    },
-  ]
+    }
+  }
 
   node_pool_labels = {
     "default" = {
@@ -131,7 +130,60 @@ module "gke" {
       "europe-west1" = ["europe-west1-b"]
     }
   }
+}
 
+module "gke_europe_west3" {
+  source                 = "../modules/gke"
+  project                = local.project_id
+  host_project_id        = local.host_project_id
+  shared_vpc_name        = local.shared_vpc_name
+  gke_sa_email           = module.iam.gke_sa_email
+  region                 = "europe-west3"
+  cluster_developers     = concat(["serviceAccount:${local.ci_sa}"], local.admins)
+  viewer_members         = local.viewers
+  admin_members          = local.admins
+  min_master_version     = "1.23.7"
+  master_ipv4_cidr_block = "192.168.193.64/28"
+
+  node_pool_configs = {
+    "default" = {
+      name              = "default"
+      preemptible       = false
+      machine_type      = "n1-standard-16"
+      min_node_count    = 1
+      max_node_count    = 60
+      max_pods_per_node = 64
+    },
+    "mysql" = {
+      name              = "mysql"
+      preemptible       = false
+      machine_type      = "n1-highmem-16"
+      min_node_count    = 1
+      max_node_count    = 60
+      max_pods_per_node = 64
+    }
+  }
+
+  node_pool_labels = {
+    "default" = {
+      "node-type" = "default"
+    },
+    "mysql" = {
+      component = "mysql",
+      role      = "mysql-server"
+    }
+  }
+
+  node_pools_taints = {
+    default = [],
+    mysql   = []
+  }
+
+  node_locations = {
+    mysql = {
+      "europe-west3" = ["europe-west3-b"]
+    }
+  }
 }
 
 module "public_dns" {

@@ -13,16 +13,9 @@ variable "shared_vpc_name" {
   type        = string
 }
 
-variable "regions" {
-  description = "List of regions where gke is deployed"
-  type        = list(string)
-  default = [
-    "europe-west-1",
-    "europe-west-3",
-    "us-central-1",
-    "asia-east-2",
-    "australia-southeast-1",
-  ]
+variable "region" {
+  description = "Region where gke is deployed"
+  type        = string
 }
 
 variable "enable_master_global_access" {
@@ -44,10 +37,10 @@ variable "enable_config_connector" {
 }
 
 variable "node_pool_configs" {
-  description = "List of the configs of node pools"
-  type        = list(map(string))
-  default = [
-    {
+  description = "Map of the configs of node pools"
+  type        = map(map(string))
+  default     = {
+    "default" = {
       name              = "default"
       preemptible       = false
       machine_type      = "n1-standard-16"
@@ -55,13 +48,13 @@ variable "node_pool_configs" {
       max_node_count    = 60
       max_pods_per_node = 64
     }
-  ]
+  }
 }
 
 variable "node_pool_labels" {
   description = "Map of labels to apply on node pools"
   type        = map(map(string))
-  default = {
+  default     = {
     "default" = {
       "node-type" = "default"
     }
@@ -71,7 +64,7 @@ variable "node_pool_labels" {
 variable "node_pool_tags" {
   description = "Map of network tags to apply on node pools"
   type        = map(list(string))
-  default = {
+  default     = {
     "default" = []
   }
 }
@@ -79,7 +72,7 @@ variable "node_pool_tags" {
 variable "node_pools_taints" {
   type        = map(list(object({ key = string, value = string, effect = string })))
   description = "Map of lists containing node taints by node-pool name"
-  default = {
+  default     = {
     default = []
   }
 }
@@ -89,7 +82,6 @@ variable "node_locations" {
   type        = map(map(list(string)))
   default     = null
 }
-
 
 variable "cluster_developers" {
   type        = list(string)
