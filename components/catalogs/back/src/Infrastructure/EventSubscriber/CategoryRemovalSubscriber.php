@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\EventSubscriber;
 
-use Akeneo\Catalogs\Infrastructure\Persistence\Category\GetAllCategoryCodesFromParentCategoryCode;
+use Akeneo\Catalogs\Infrastructure\Persistence\Category\GetAllCategoryCodesFromParentCategoryCodeQuery;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
@@ -27,7 +27,7 @@ class CategoryRemovalSubscriber implements EventSubscriberInterface
         private IdentifiableObjectRepositoryInterface $jobInstanceRepository,
         private TokenStorageInterface $tokenStorage,
         private JobLauncherInterface $jobLauncher,
-        private GetAllCategoryCodesFromParentCategoryCode $getAllCategoryCodesFromParentCategoryCode,
+        private GetAllCategoryCodesFromParentCategoryCodeQuery $getAllCategoryCodesFromParentCategoryCodeQuery,
     ) {
     }
 
@@ -56,7 +56,7 @@ class CategoryRemovalSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->categoryCodes = $this->getAllCategoryCodesFromParentCategoryCode->execute($category->getCode());
+        $this->categoryCodes = $this->getAllCategoryCodesFromParentCategoryCodeQuery->execute($category->getCode());
     }
 
     public function disableCatalogsIfCategoryIsRemoved(GenericEvent $event): void

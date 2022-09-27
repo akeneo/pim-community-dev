@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Persistence\Category;
 
+use Akeneo\Catalogs\Application\Persistence\Category\GetAllCategoryCodesFromParentCategoryCodeQueryInterface;
 use Doctrine\DBAL\Connection;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetAllCategoryCodesFromParentCategoryCode
+class GetAllCategoryCodesFromParentCategoryCodeQuery implements GetAllCategoryCodesFromParentCategoryCodeQueryInterface
 {
     public function __construct(private Connection $connection)
     {

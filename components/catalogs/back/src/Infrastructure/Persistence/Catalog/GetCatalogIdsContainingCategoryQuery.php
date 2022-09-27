@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Persistence\Catalog;
 
-use Akeneo\Catalogs\Application\Persistence\GetCatalogIdsContainingCategoryQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogIdsContainingCategoryQueryInterface;
 use Doctrine\DBAL\Connection;
 
 /**
