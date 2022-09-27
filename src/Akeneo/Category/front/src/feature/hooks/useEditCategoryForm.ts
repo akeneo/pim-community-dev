@@ -63,6 +63,17 @@ const useEditCategoryForm = (categoryId: number) => {
     setCanLeavePage(!isModified);
   }, [setCanLeavePage, isModified]);
 
+  // If there are unsaved changes then user will be asked confirmation to leave
+  // If the edition form component is unmounted, it means that the user confirmed
+  // CategorySettings Component boolean canLeavePage must be reset
+  // so that we have no subsequent ghostly warnings about it
+  useEffect(
+    () => () => {
+      setCanLeavePage(true);
+    },
+    [setCanLeavePage]
+  );
+
   const saveCategory = useCallback(async () => {
     if (categoryEdited === null) {
       return;
