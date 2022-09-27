@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Component\BatchQueue\Exception;
+namespace Akeneo\Tool\Component\Batch\Exception;
 
-use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
