@@ -41,5 +41,22 @@ class AkeneoTailoredImportExtension extends Extension
         $loader->load('user_intent_builders.yml');
         $loader->load('validations.yml');
         $loader->load('writers.yml');
+
+        $this->configureReferenceEntityRelatedServices($container);
+    }
+
+    /**
+     * Enable or disable services related to Reference Entity based
+     * on the presence of the Reference Entity bundle.
+     */
+    private function configureReferenceEntityRelatedServices(ContainerBuilder $container): void
+    {
+        /** @var array $bundles */
+        $bundles = $container->getParameter('kernel.bundles');
+        if (isset($bundles['AkeneoReferenceEntityBundle'])) {
+            $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config/reference_entity'));
+            $loader->load('controllers.yml');
+            $loader->load('operation_appliers.yml');
+        }
     }
 }
