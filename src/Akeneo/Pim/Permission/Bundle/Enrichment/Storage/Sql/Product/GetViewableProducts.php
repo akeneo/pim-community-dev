@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Product;
 
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProducts as GetViewableProductsInterface;
 use Akeneo\Pim\Permission\Component\Authorization\Model\UserRightsOnProduct;
+use Akeneo\Pim\Permission\Component\Authorization\Model\UserRightsOnProductUuid;
 
 final class GetViewableProducts implements GetViewableProductsInterface
 {
@@ -33,12 +34,32 @@ final class GetViewableProducts implements GetViewableProductsInterface
         }
 
         $productRights = $this->fetchUserRightsOnProduct->fetchByIdentifiers($productIdentifiers, $userId);
-        $viewableAssociatedProducts = array_filter($productRights, function (UserRightsOnProduct $productRight) {
-            return $productRight->isProductViewable();
-        });
+        $viewableAssociatedProducts = array_filter(
+            $productRights,
+            static fn (UserRightsOnProduct $productRight) => $productRight->isProductViewable()
+        );
 
-        return array_map(function (UserRightsOnProduct $productRight) {
-            return $productRight->productIdentifier();
-        }, $viewableAssociatedProducts);
+        return array_map(
+            static fn (UserRightsOnProduct $productRight) => $productRight->productIdentifier(),
+            $viewableAssociatedProducts
+        );
+    }
+
+    public function fromProductUuids(array $productUuids, int $userId): array
+    {
+        if (empty($productUuids)) {
+            return [];
+        }
+
+        $productRights = $this->fetchUserRightsOnProduct->fetchByUuids($productUuids, $userId);
+        $viewableAssociatedProducts = array_filter(
+            $productRights,
+            static fn (UserRightsOnProductUuid $productRight) => $productRight->isProductViewable()
+        );
+
+        return array_map(
+            static fn (UserRightsOnProductUuid $productRight) => $productRight->productUuid(),
+            $viewableAssociatedProducts
+        );
     }
 }
