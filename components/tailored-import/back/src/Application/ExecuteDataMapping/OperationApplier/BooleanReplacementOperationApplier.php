@@ -25,25 +25,16 @@ final class BooleanReplacementOperationApplier implements OperationApplierInterf
 {
     public function applyOperation(OperationInterface $operation, ValueInterface $value): ValueInterface
     {
-        if (!$operation instanceof BooleanReplacementOperation) {
-            throw new UnexpectedValueException($operation, BooleanReplacementOperation::class, self::class);
-        }
-
-        if ($value instanceof InvalidValue) {
-            return $value;
-        }
-
-        if (!$value instanceof StringValue) {
-            throw new UnexpectedValueException($value, StringValue::class, self::class);
-        }
-
-        if (!$operation->hasMappedValue($value->getValue())) {
-            return new InvalidValue(sprintf('There is no mapped value for this source value: "%s"', $value->getValue()));
-        }
-
-        $mappedValue = $operation->getMappedValue($value->getValue());
-
-        return new BooleanValue($mappedValue);
+        return match (true) {
+            !$operation instanceof BooleanReplacementOperation => throw new UnexpectedValueException($operation, BooleanReplacementOperation::class, self::class),
+            $value instanceof InvalidValue => $value,
+            $value instanceof StringValue =>
+                !$operation->hasMappedValue($value->getValue()) ?
+                    throw new UnexpectedValueException($value, StringValue::class, self::class) :
+                    new BooleanValue($operation->getMappedValue($value->getValue()))
+            ,
+            default => throw new UnexpectedValueException($value, StringValue::class, self::class),
+        };
     }
 
     public function supports(OperationInterface $operation): bool

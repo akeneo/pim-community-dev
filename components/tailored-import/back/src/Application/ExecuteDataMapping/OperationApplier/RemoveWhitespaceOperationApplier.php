@@ -24,18 +24,16 @@ final class RemoveWhitespaceOperationApplier implements OperationApplierInterfac
 {
     public function applyOperation(OperationInterface $operation, ValueInterface $value): ValueInterface
     {
-        if (!$operation instanceof RemoveWhitespaceOperation) {
-            throw new UnexpectedValueException($operation, RemoveWhitespaceOperation::class, self::class);
-        }
+        return match (true) {
+            !$operation instanceof RemoveWhitespaceOperation => throw new UnexpectedValueException($operation, RemoveWhitespaceOperation::class, self::class),
+            $value instanceof InvalidValue => $value,
+            $value instanceof StringValue => $this->findModeAndApply($operation, $value),
+            default => throw new UnexpectedValueException($value, StringValue::class, self::class),
+        };
+    }
 
-        if ($value instanceof InvalidValue) {
-            return $value;
-        }
-
-        if (!$value instanceof StringValue) {
-            throw new UnexpectedValueException($value, StringValue::class, self::class);
-        }
-
+    private function findModeAndApply(RemoveWhitespaceOperation $operation, StringValue $value): StringValue
+    {
         foreach ($operation->getModes() as $mode) {
             $value = match ($mode) {
                 RemoveWhitespaceOperation::MODE_CONSECUTIVE => new StringValue(preg_replace('/\s+/', ' ', $value->getValue())),

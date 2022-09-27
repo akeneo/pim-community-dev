@@ -25,23 +25,13 @@ final class MultiSelectReplacementOperationApplier implements OperationApplierIn
 {
     public function applyOperation(OperationInterface $operation, ValueInterface $value): ValueInterface
     {
-        if (!$operation instanceof MultiSelectReplacementOperation) {
-            throw new UnexpectedValueException($operation, MultiSelectReplacementOperation::class, self::class);
-        }
-
-        if ($value instanceof InvalidValue) {
-            return $value;
-        }
-
-        if (!$value instanceof StringValue && !$value instanceof ArrayValue) {
-            throw new UnexpectedValueException($value, [StringValue::class, ArrayValue::class], self::class);
-        }
-
-        if ($value instanceof StringValue) {
-            return $this->applyOperationOnStringValue($operation, $value);
-        }
-
-        return $this->applyOperationOnArrayValue($operation, $value);
+        return match (true) {
+            !$operation instanceof MultiSelectReplacementOperation => throw new UnexpectedValueException($operation, MultiSelectReplacementOperation::class, self::class),
+            $value instanceof InvalidValue => $value,
+            $value instanceof StringValue => $this->applyOperationOnStringValue($operation, $value),
+            $value instanceof ArrayValue => $this->applyOperationOnArrayValue($operation, $value),
+            default => throw new UnexpectedValueException($value, [StringValue::class, ArrayValue::class], self::class),
+        };
     }
 
     private function applyOperationOnStringValue(MultiSelectReplacementOperation $operation, StringValue $value): StringValue

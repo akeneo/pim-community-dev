@@ -24,18 +24,16 @@ final class FamilyReplacementOperationApplier implements OperationApplierInterfa
 {
     public function applyOperation(OperationInterface $operation, ValueInterface $value): ValueInterface
     {
-        if (!$operation instanceof FamilyReplacementOperation) {
-            throw new UnexpectedValueException($operation, FamilyReplacementOperation::class, self::class);
-        }
+        return match (true) {
+            !$operation instanceof FamilyReplacementOperation => throw new UnexpectedValueException($operation, FamilyReplacementOperation::class, self::class),
+            $value instanceof InvalidValue => $value,
+            $value instanceof StringValue => $this->replace($operation, $value),
+            default => throw new UnexpectedValueException($value, StringValue::class, self::class)
+        };
+    }
 
-        if ($value instanceof InvalidValue) {
-            return $value;
-        }
-
-        if (!$value instanceof StringValue) {
-            throw new UnexpectedValueException($value, StringValue::class, self::class);
-        }
-
+    private function replace(FamilyReplacementOperation $operation, StringValue $value): StringValue
+    {
         $mappedValue = $operation->getMappedValue($value->getValue());
 
         if (null === $mappedValue) {

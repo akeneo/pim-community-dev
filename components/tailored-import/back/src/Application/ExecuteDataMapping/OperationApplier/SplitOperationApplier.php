@@ -25,18 +25,16 @@ final class SplitOperationApplier implements OperationApplierInterface
 {
     public function applyOperation(OperationInterface $operation, ValueInterface $value): ValueInterface
     {
-        if (!$operation instanceof SplitOperation) {
-            throw new UnexpectedValueException($operation, SplitOperation::class, self::class);
-        }
+        return match (true) {
+            !$operation instanceof SplitOperation => throw new UnexpectedValueException($operation, SplitOperation::class, self::class),
+            $value instanceof InvalidValue => $value,
+            $value instanceof StringValue => $this->split($operation, $value),
+            default => throw new UnexpectedValueException($value, StringValue::class, self::class),
+        };
+    }
 
-        if ($value instanceof InvalidValue) {
-            return $value;
-        }
-
-        if (!$value instanceof StringValue) {
-            throw new UnexpectedValueException($value, StringValue::class, self::class);
-        }
-
+    private function split(SplitOperation $operation, StringValue $value): ArrayValue
+    {
         return new ArrayValue(
             array_values(
                 array_filter(
