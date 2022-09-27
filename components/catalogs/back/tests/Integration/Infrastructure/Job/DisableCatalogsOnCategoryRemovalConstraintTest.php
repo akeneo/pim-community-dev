@@ -26,7 +26,7 @@ class DisableCatalogsOnCategoryRemovalConstraintTest extends IntegrationTestCase
     public function testItProvidesConstraintToValidateParameters(): void
     {
         $constraintCollection = $this->disableCatalogConstraint->getConstraintCollection();
-        $parameters = ['category_code' => 'categoryA'];
+        $parameters = ['category_codes' => ['categoryA']];
         $violations = $this->validator->validate($parameters, $constraintCollection);
 
         $this->assertEmpty($violations);
@@ -48,15 +48,15 @@ class DisableCatalogsOnCategoryRemovalConstraintTest extends IntegrationTestCase
     public function invalidParametersDataProvider(): array
     {
         return [
-            'missing category code' => [
+            'missing category codes' => [
                 'parameters' => [],
                 'expectedMessage' => 'This field is missing.',
             ],
-            'category code is not a string' => [
+            'category codes is not an array' => [
                 'parameters' => [
-                    'category_code' => ['categoryA', 'categoryB'],
+                    'category_codes' => 'categoryA',
                 ],
-                'expectedMessage' => 'This value should be of type string.',
+                'expectedMessage' => 'This value should be of type array.',
             ],
         ];
     }

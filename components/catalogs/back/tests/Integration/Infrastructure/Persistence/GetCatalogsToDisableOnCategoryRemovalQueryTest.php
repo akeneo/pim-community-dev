@@ -57,7 +57,7 @@ class GetCatalogsToDisableOnCategoryRemovalQueryTest extends IntegrationTestCase
 
         $this->setCatalogProductSelection($catalogIdUS, [
             [
-                'field' => 'category',
+                'field' => 'categories',
                 'operator' => Operator::IN_LIST,
                 'value' => ['tshirt', 'hoodie'],
                 'scope' => null,
@@ -66,7 +66,7 @@ class GetCatalogsToDisableOnCategoryRemovalQueryTest extends IntegrationTestCase
         ]);
         $this->setCatalogProductSelection($catalogIdFR, [
             [
-                'field' => 'category',
+                'field' => 'categories',
                 'operator' => Operator::IN_LIST,
                 'value' => ['tshirt'],
                 'scope' => null,
@@ -74,13 +74,13 @@ class GetCatalogsToDisableOnCategoryRemovalQueryTest extends IntegrationTestCase
             ],
         ]);
 
-        $resultTshirt = $this->query->execute('tshirt');
+        $resultTshirt = $this->query->execute(['tshirt']);
         $this->assertEquals([$catalogIdUS, $catalogIdFR], $resultTshirt);
 
-        $resultHoodie = $this->query->execute('hoodie');
+        $resultHoodie = $this->query->execute(['hoodie']);
         $this->assertEquals([$catalogIdUS], $resultHoodie);
 
-        $resultShoes = $this->query->execute('shoes');
+        $resultShoes = $this->query->execute(['shoes']);
         $this->assertEquals([], $resultShoes);
     }
 }
