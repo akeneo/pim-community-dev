@@ -37,7 +37,7 @@ final class RefreshScheduledJobInstanceAfterJobPublished implements EventSubscri
 
     public function refreshScheduledJobInstance(JobExecutionEvent $event): void
     {
-        if (str_contains($event->getJobExecution()->getUser(), ResolveScheduledJobRunningUsername::AUTOMATED_USER_PREFIX)) {
+        if (null !== $event->getJobExecution()->getUser() && str_contains($event->getJobExecution()->getUser(), ResolveScheduledJobRunningUsername::AUTOMATED_USER_PREFIX)) {
             $lastExecutionDate = $this->clock->now();
             $this->updateJobInstanceAutomationLastExecutionDate->forJobInstanceCode(
                 $event->getJobExecution()->getJobInstance()->getCode(),
