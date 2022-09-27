@@ -37,7 +37,7 @@ class QuantifiedAssociationUserIntentFactory implements UserIntentFactory
         foreach ($data as $associationType => $associations) {
             if (\array_key_exists('products', $associations)) {
                 $productQuantityValues = \array_map(
-                    fn ($association) => new QuantifiedEntity($association['identifier'], $association['quantity']),
+                    fn ($association) => new QuantifiedEntity($association['uuid'], $association['quantity']),
                     $associations['products']
                 );
                 $userIntents[] = new ReplaceAssociatedQuantifiedProducts((string)$associationType, $productQuantityValues);
