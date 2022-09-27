@@ -50,7 +50,7 @@ final class SimpleReferenceEntityValidator extends ConstraintValidator
                 ]),
                 'sources' => new Sources(false, $constraint->getColumnUuids()),
                 'operations' => new Operations([
-                    SimpleReferenceEntityReplacementOperation::TYPE
+                    SimpleReferenceEntityReplacementOperation::TYPE,
                 ]),
                 'sample_data' => new SampleData(),
             ],
