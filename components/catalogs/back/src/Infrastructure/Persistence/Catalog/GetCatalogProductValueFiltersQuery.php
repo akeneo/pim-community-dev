@@ -12,6 +12,8 @@ use Ramsey\Uuid\Uuid;
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @phpstan-import-type ProductValueFilters from GetCatalogProductValueFiltersQueryInterface
  */
 final class GetCatalogProductValueFiltersQuery implements GetCatalogProductValueFiltersQueryInterface
 {
@@ -41,7 +43,7 @@ final class GetCatalogProductValueFiltersQuery implements GetCatalogProductValue
             throw new \LogicException('Catalog not found');
         }
 
-        /** @var array{channel?: array<string>}|null $filters */
+        /** @var ProductValueFilters|null $filters */
         $filters = \json_decode($result, true, 512, JSON_THROW_ON_ERROR);
         if (!\is_array($filters)) {
             throw new \LogicException('Invalid JSON in product_value_filters column');

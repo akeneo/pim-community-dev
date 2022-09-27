@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Persistence\Catalog\Product;
 
+use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogProductValueFiltersQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductsQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductUuidsQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductWithUuidNormalizer;
@@ -18,12 +19,6 @@ use Ramsey\Uuid\UuidInterface;
  *
  * @phpstan-import-type Product from GetProductsQueryInterface
  * @phpstan-import-type ProductValue from GetProductsQueryInterface
- *
- * @phpstan-type ProductValueFilters array{
- *      channels?: array<string>|null,
- *      locales?: array<string>|null,
- *      currencies?: array<string>|null,
- * }
  */
 class GetProductsQuery implements GetProductsQueryInterface
 {
@@ -44,6 +39,7 @@ class GetProductsQuery implements GetProductsQueryInterface
     public function __construct(
         private GetProductUuidsQueryInterface $getProductUuidsQuery,
         private GetConnectorProducts $getConnectorProducts,
+        private GetCatalogProductValueFiltersQueryInterface $getCatalogProductValueFiltersQuery,
         private Connection $connection,
         private ConnectorProductWithUuidNormalizer $connectorProductWithUuidNormalizer,
     ) {
@@ -59,7 +55,7 @@ class GetProductsQuery implements GetProductsQueryInterface
         ?string $updatedAfter = null,
         ?string $updatedBefore = null,
     ): array {
-        $filters = $this->findProductValueFilters($catalogId);
+        $filters = $this->getCatalogProductValueFiltersQuery->execute($catalogId);
 
         $uuids = $this->getProductUuidsQuery->execute($catalogId, $searchAfter, $limit, $updatedAfter, $updatedBefore);
 
@@ -168,33 +164,5 @@ class GetProductsQuery implements GetProductsQueryInterface
         }
 
         return (int) $userId;
-    }
-
-    /**
-     * @return ProductValueFilters
-     */
-    private function findProductValueFilters(string $catalogId): array
-    {
-        $sql = <<<SQL
-            SELECT product_value_filters
-            FROM akeneo_catalog
-            WHERE id = :id
-        SQL;
-
-        /** @var string|false $raw */
-        $raw = $this->connection->fetchOne($sql, [
-            'id' => Uuid::fromString($catalogId)->getBytes(),
-        ]);
-
-        if (!$raw) {
-            throw new \LogicException('Catalog not found');
-        }
-
-        if (!\is_array($filters = \json_decode($raw, true, 512, JSON_THROW_ON_ERROR))) {
-            throw new \LogicException('Invalid JSON in product_value_filters column');
-        }
-
-        /** @var ProductValueFilters $filters */
-        return $filters;
     }
 }
