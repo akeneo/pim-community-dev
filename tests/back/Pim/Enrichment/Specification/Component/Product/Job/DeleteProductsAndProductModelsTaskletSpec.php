@@ -14,6 +14,7 @@ use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\CountProductModel
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -42,7 +43,8 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         CountVariantProductsInterface $countVariantProducts,
         JobStopper $jobStopper,
         JobRepositoryInterface $jobRepository,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        SecurityFacadeInterface $securityFacade
     ) {
         $this->beConstructedWith(
             $pqbFactory,
@@ -55,8 +57,11 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
             $countVariantProducts,
             $jobStopper,
             $jobRepository,
-            $validator
+            $validator,
+            $securityFacade
         );
+
+        $securityFacade->isGranted('pim_enrich_product_model_remove')->willReturn(true);
     }
 
     function it_is_a_tasklet()
@@ -153,6 +158,7 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         $stepExecution->incrementProcessedItems(1)->shouldBeCalledOnce();
         $stepExecution->incrementProcessedItems(2)->shouldBeCalledOnce();
         $stepExecution->incrementProcessedItems(0);
+
 
         $stepExecution->incrementSummaryInfo('deleted_product_models', 0)->shouldBeCalledTimes(2);
 
@@ -513,6 +519,115 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         $stepExecution->setTotalItems(4)->shouldBeCalledOnce();
         $stepExecution->incrementProcessedItems(1)->shouldBeCalledTimes(4);
         $stepExecution->incrementProcessedItems(0);
+
+        $cacheClearer->clear()->shouldBeCalledTimes(2);
+
+        $jobStopper->isStopping($stepExecution)->willReturn(false);
+
+        $this->execute();
+    }
+
+    function it_does_not_delete_product_model_nor_its_children_when_product_model_deletion_is_not_granted(
+        $pqbFactory,
+        $productRemover,
+        RemoveProductModelsHandler $removeProductModelsHandler,
+        $cacheClearer,
+        $filter,
+        $countProductModelsAndChildrenProductModels,
+        $countVariantProducts,
+        StepExecution $stepExecution,
+        JobParameters $jobParameters,
+        ProductQueryBuilderInterface $countItemPQB,
+        ProductQueryBuilderInterface $rootProductModelPQB,
+        ProductQueryBuilderInterface $subProductModelPQB,
+        ProductQueryBuilderInterface $variantProductsPQB,
+        CursorInterface $countItemCursor,
+        CursorInterface $rootProductModelCursor,
+        CursorInterface $subProductModelCursor,
+        CursorInterface $variantProductsCursor,
+        JobStopper $jobStopper,
+        ValidatorInterface $validator,
+        SecurityFacadeInterface $securityFacade
+    )
+    {
+        $productModel123 = new ProductModel();
+        $productModel456 = new ProductModel();
+        $productModel789 = new ProductModel();
+        $this->setStepExecution($stepExecution);
+        $filters = [
+            [
+                'field' => 'id',
+                'operator' => 'IN',
+                'values' => ['product_model_123', 'product_model_456', 'product_model_789']
+            ]
+        ];
+        $securityFacade->isGranted('pim_enrich_product_model_remove')->willReturn(false);
+
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($filters);
+
+        $pqbFactory->create(['filters' => $filters])
+            ->willReturn($countItemPQB, $rootProductModelPQB, $subProductModelPQB, $variantProductsPQB);
+
+        $countItemPQB->execute()->willReturn($countItemCursor);
+        $countItemCursor->count()->shouldBeCalled()->willReturn(3);
+
+        $rootProductModelPQB->addFilter('parent', Operators::IS_EMPTY, null)->shouldBeCalled();
+        $rootProductModelPQB->execute()->willReturn($rootProductModelCursor);
+        $rootProductModelCursor->valid()->willReturn(true, false);
+        $rootProductModelCursor->current()->willReturn($productModel789);
+        $rootProductModelCursor->next()->shouldBeCalled();
+
+        $subProductModelPQB->addFilter('entity_type', Operators::EQUALS, ProductModelInterface::class)->shouldBeCalled();
+        $subProductModelPQB->addFilter('parent', Operators::IS_NOT_EMPTY, null)->shouldBeCalled();
+        $subProductModelPQB->execute()->willReturn($subProductModelCursor);
+        $subProductModelCursor->valid()->willReturn(true, true, false);
+        $subProductModelCursor->current()->willReturn($productModel123, $productModel456);
+        $subProductModelCursor->next()->shouldBeCalled();
+
+        $variantProductsPQB->addFilter('entity_type', Operators::EQUALS, ProductInterface::class)->shouldBeCalled();
+        $variantProductsPQB->addFilter('parent', Operators::IS_NOT_EMPTY, null)->shouldBeCalled();
+        $variantProductsPQB->execute()->willReturn($variantProductsCursor);
+        $variantProductsCursor->valid()->willReturn(false);
+
+        $filter
+            ->filterObject(Argument::any(), 'pim.enrich.product.delete')
+            ->shouldBeCalled()
+            ->willReturn(false);
+
+        $productModel789->setCode('product_model_789_code');
+        $productModel123->setCode('product_model_123_code');
+        $productModel456->setCode('product_model_456_code');
+
+        $countProductModelsAndChildrenProductModels->forProductModelCodes(['product_model_789_code'])->willReturn(2);
+        $countProductModelsAndChildrenProductModels->forProductModelCodes(['product_model_123_code', 'product_model_456_code'])->willReturn(1);
+
+        $countVariantProducts->forProductModelCodes([])->willReturn(0);
+        $countVariantProducts->forProductModelCodes([])->willReturn(0);
+
+        $removePMCommand1 = RemoveProductModelsCommand::fromProductModels([
+            $productModel123,
+            $productModel456,
+        ]);
+        $removeProductModelsHandler->__invoke($removePMCommand1)->shouldNotBeCalled();
+
+        $productRemover->removeAll([])->shouldBeCalled();
+
+        $stepExecution->setTotalItems(3)->shouldBeCalledOnce();
+
+        $stepExecution->addSummaryInfo('deleted_products', 0)->shouldBeCalled();
+        $stepExecution->addSummaryInfo('deleted_product_models', 0)->shouldBeCalled();
+        $stepExecution->incrementReadCount()->shouldBeCalledTimes(3);
+
+        $stepExecution->incrementSummaryInfo('deleted_product_models', 0)->shouldBeCalledTimes(2);
+
+        $stepExecution->incrementSummaryInfo('deleted_products', 0)->shouldBeCalledTimes(2);
+
+        $stepExecution->addWarning('Access forbidden. You are not allowed to delete product models', [], Argument::type(DataInvalidItem::class))->shouldBeCalledTimes(2);;
+        $stepExecution->incrementSummaryInfo('skipped_deleted_product_models', 2)->shouldBeCalledOnce();
+        $stepExecution->incrementSummaryInfo('skipped_deleted_product_models', 1)->shouldBeCalledOnce();
+
+        $stepExecution->incrementProcessedItems(0)->shouldBeCalledTimes(4);
 
         $cacheClearer->clear()->shouldBeCalledTimes(2);
 
