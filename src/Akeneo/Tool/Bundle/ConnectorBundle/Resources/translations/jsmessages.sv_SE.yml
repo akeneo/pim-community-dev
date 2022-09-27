@@ -6,11 +6,16 @@ batch_jobs:
     import_root_product_model: Import av grundproduktmodell
     import_sub_product_model: Import av underliggande produktmodeller
     compute_data_related_to_family_root_product_models: Beräkna data för grundproduktmodeller
+    compute_data_related_to_family_sub_product_models: Beräkna data för underproduktmodeller
+    compute_data_related_to_family_products: Beräkna produktdata
     compute_family_variant_structure_changes: Beräkna variantfamiljers strukturförändringar
     compute_completeness_of_products_family: Beräkna fullständighet av produktfamilj
   csv_product_export:
     label: Exportera produkt till CSV
     export.label: Exportera produkt
+  csv_product_model_export:
+    label: Export av produktmodell i CSV
+    export.label: Export av produktmodell
   csv_category_export:
     label: Exportera kategorier till CSV
     export.label: Exportera kategorier
@@ -29,9 +34,15 @@ batch_jobs:
   csv_family_export:
     label: Exportera familjer till CSV
     export.label: Exportera familj
+  csv_family_variant_export:
+    label: Export av familjevariant i CSV
+    export.label: Export av familjevariant
   csv_product_import:
     label: Importera produkter från CSV
     import.label: Importera produkter
+  csv_product_model_import:
+    label: Export av produktmodell i CSV
+    import_product_model_descendants.label: Beräkna produktmodellers ättlingar
   csv_category_import:
     label: Importera kategorier från CSV
     import.label: Importera produkt

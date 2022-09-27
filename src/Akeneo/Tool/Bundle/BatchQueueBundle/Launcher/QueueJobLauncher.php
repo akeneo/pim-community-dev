@@ -65,10 +65,10 @@ class QueueJobLauncher implements JobLauncherInterface
     /**
      * {@inheritdoc}
      */
-    public function launch(JobInstance $jobInstance, UserInterface $user, array $configuration = []) : JobExecution
+    public function launch(JobInstance $jobInstance, ?UserInterface $user, array $configuration = []) : JobExecution
     {
         $options = ['env' => $this->environment];
-        if (isset($configuration['send_email']) && method_exists($user, 'getEmail')) {
+        if (isset($configuration['send_email']) && $user && method_exists($user, 'getEmail')) {
             $options['email'] = $user->getEmail();
             unset($configuration['send_email']);
         }
@@ -96,7 +96,7 @@ class QueueJobLauncher implements JobLauncherInterface
      *
      * @return JobExecution
      */
-    private function createJobExecution(JobInstance $jobInstance, UserInterface $user, array $configuration) : JobExecution
+    private function createJobExecution(JobInstance $jobInstance, ?UserInterface $user, array $configuration) : JobExecution
     {
         $job = $this->jobRegistry->get($jobInstance->getJobName());
         $configuration = array_merge($jobInstance->getRawParameters(), $configuration);
@@ -118,7 +118,11 @@ class QueueJobLauncher implements JobLauncherInterface
         }
 
         $jobExecution = $this->jobRepository->createJobExecution($job, $jobInstance, $jobParameters);
-        $jobExecution->setUser($user->getUsername());
+
+        if ($user) {
+            $jobExecution->setUser($user->getUsername());
+        }
+
         $this->jobRepository->updateJobExecution($jobExecution);
 
         $this->batchLogHandler->setSubDirectory($jobExecution->getId());
