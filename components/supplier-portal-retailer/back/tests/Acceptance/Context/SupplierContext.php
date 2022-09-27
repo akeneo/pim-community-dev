@@ -13,14 +13,11 @@ use Akeneo\SupplierPortal\Retailer\Application\Supplier\UpdateSupplier;
 use Akeneo\SupplierPortal\Retailer\Application\Supplier\UpdateSupplierHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\SupplierWithContributorCount;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Exception\SupplierAlreadyExistsException;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierList;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
-use Ramsey\Uuid\Uuid;
 
 final class SupplierContext implements Context
 {
@@ -56,19 +53,12 @@ final class SupplierContext implements Context
      */
     public function thereIsASupplier(string $code, ?string $label = null, ?int $contributorsCount = null): void
     {
-        $supplierIdentifier = Uuid::uuid4()->toString();
-
         $contributorEmails = [];
         for ($i = 1; $i <= $contributorsCount; $i++) {
             $contributorEmails[] = 'email'.$i.'@example.com';
         }
 
-        $this->supplierRepository->save(Supplier::create(
-            $supplierIdentifier,
-            $code,
-            $label ?: $code,
-            $contributorEmails,
-        ));
+        ($this->createSupplierHandler)(new CreateSupplier($code, $label ?: $code, $contributorEmails));
     }
 
     /**

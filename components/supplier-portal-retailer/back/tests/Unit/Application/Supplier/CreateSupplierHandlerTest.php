@@ -8,9 +8,9 @@ use Akeneo\SupplierPortal\Retailer\Application\Supplier\CreateSupplier;
 use Akeneo\SupplierPortal\Retailer\Application\Supplier\CreateSupplierHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorAdded;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Exception\SupplierAlreadyExistsException;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemorySupplierExists;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
+use Akeneo\SupplierPortal\Retailer\Test\Builders\SupplierBuilder;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use Psr\Log\Test\TestLogger;
@@ -105,7 +105,13 @@ final class CreateSupplierHandlerTest extends TestCase
         $supplierExists = new InMemorySupplierExists($repository);
         $eventDispatcher = $this->createMock(EventDispatcher::class);
 
-        $repository->save(Supplier::create($identifier, 'code', 'label', []));
+        $repository->save(
+            (new SupplierBuilder())
+                ->withIdentifier($identifier)
+                ->withCode('code')
+                ->withLabel('label')
+                ->build(),
+        );
 
         $this->expectExceptionObject(new SupplierAlreadyExistsException('code'));
 

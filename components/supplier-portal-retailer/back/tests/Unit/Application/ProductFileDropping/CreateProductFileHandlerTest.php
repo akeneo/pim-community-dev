@@ -14,12 +14,12 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\Produc
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Filename;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\InMemory\InMemoryRepository as ProductFileInMemoryRepository;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\StubEventDispatcher;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierFromContributorEmail;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository as SupplierInMemoryRepository;
+use Akeneo\SupplierPortal\Retailer\Test\Builders\SupplierBuilder;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use Psr\Log\Test\TestLogger;
@@ -52,12 +52,13 @@ final class CreateProductFileHandlerTest extends TestCase
             ->method('validate')
             ->willReturn($violationsSpy);
 
-        $supplier = Supplier::create(
-            '01319d4c-81c4-4f60-a992-41ea3546824c',
-            'mysupplier',
-            'My Supplier',
-            ['contributor@example.com'],
-        );
+        $supplier = (new SupplierBuilder())
+            ->withIdentifier('01319d4c-81c4-4f60-a992-41ea3546824c')
+            ->withCode('mysupplier')
+            ->withLabel('My Supplier')
+            ->withContributors(['contributor@example.com'])
+            ->build();
+
         $supplierRepository = new SupplierInMemoryRepository();
         $supplierRepository->save($supplier);
 

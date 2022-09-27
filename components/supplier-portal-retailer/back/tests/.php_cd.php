@@ -110,6 +110,7 @@ $rules = [
             'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\DeleteUnknownSupplierDirectoriesInGCSBucket',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\StoreProductsFileInGCSBucket',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Encoder\SuppliersEncoder',
+            'Akeneo\SupplierPortal\Retailer\Test\Builders\SupplierBuilder',
 
             // Supplier Portal Supplier coupling
 
@@ -132,6 +133,7 @@ $rules = [
             'Akeneo\SupplierPortal\Retailer\Domain',
             'Akeneo\SupplierPortal\Retailer\Application',
             'Akeneo\SupplierPortal\Retailer\Infrastructure',
+            'Akeneo\SupplierPortal\Retailer\Test\Builders\SupplierBuilder',
 
             // Supplier Portal Supplier coupling
 
@@ -171,7 +173,6 @@ $rules = [
             // External dependencies coupling
             'Behat',
             'PHPUnit\Framework',
-            'Ramsey\Uuid\Uuid',
         ],
     )->in('Akeneo\SupplierPortal\Retailer\Test\Acceptance'),
 ];
