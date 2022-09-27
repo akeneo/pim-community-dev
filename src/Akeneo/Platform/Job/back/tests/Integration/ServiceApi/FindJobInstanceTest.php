@@ -27,6 +27,9 @@ class FindJobInstanceTest extends IntegrationTestCase
         $this->loadFixtures();
 
         $query = new JobInstanceQuery();
+        $queryPagination = new JobInstanceQueryPagination();
+
+        $query->pagination = $queryPagination;
 
         $expectedJobInstances = [
             [
@@ -50,6 +53,9 @@ class FindJobInstanceTest extends IntegrationTestCase
         $this->loadFixtures();
 
         $query = new JobInstanceQuery();
+        $queryPagination = new JobInstanceQueryPagination();
+
+        $query->pagination = $queryPagination;
         $query->types = ['export'];
 
         $expectedJobInstances = [
@@ -70,6 +76,9 @@ class FindJobInstanceTest extends IntegrationTestCase
         $this->loadFixtures();
 
         $query = new JobInstanceQuery();
+        $queryPagination = new JobInstanceQueryPagination();
+
+        $query->pagination = $queryPagination;
         $query->search = 'a_product_import';
 
         $expectedJobInstances = [
@@ -92,8 +101,7 @@ class FindJobInstanceTest extends IntegrationTestCase
         $query = new JobInstanceQuery();
         $queryPagination = new JobInstanceQueryPagination();
 
-        $queryPagination->page = 1;
-        $queryPagination->limit = 10;
+        $queryPagination->limit = 2;
         $query->pagination = $queryPagination;
 
         $expectedJobInstances = [
@@ -102,8 +110,25 @@ class FindJobInstanceTest extends IntegrationTestCase
                 'label' => 'A product import',
             ],
             [
-                'code' => 'a_product_export',
-                'label' => 'A product export',
+                'code' => 'another_product_import',
+                'label' => 'Another product import',
+            ]
+        ];
+
+        $this->assertEquals($expectedJobInstances, $this->findJobInstanceQuery->fromQuery($query));
+
+        $queryPagination->page = 2;
+        $queryPagination->limit = 2;
+        $query->pagination = $queryPagination;
+
+        $expectedJobInstances = [
+            [
+                'code' => 'a_scheduled_job',
+                'label' => 'A scheduled job',
+            ],
+            [
+                'code' => 'a_quick_export',
+                'label' => 'A quick export',
             ]
         ];
 
@@ -120,10 +145,38 @@ class FindJobInstanceTest extends IntegrationTestCase
         ]);
 
         $this->fixturesJobHelper->createJobInstance([
+            'code' => 'another_product_import',
+            'job_name' => 'another_product_import',
+            'label' => 'Another product import',
+            'type' => 'import',
+        ]);
+
+        $this->fixturesJobHelper->createJobInstance([
             'code' => 'a_product_export',
             'job_name' => 'a_product_export',
             'label' => 'A product export',
             'type' => 'export',
+        ]);
+
+        $this->fixturesJobHelper->createJobInstance([
+            'code' => 'another_product_export',
+            'job_name' => 'another_product_export',
+            'label' => 'Another product export',
+            'type' => 'export',
+        ]);
+
+        $this->fixturesJobHelper->createJobInstance([
+            'code' => 'a_scheduled_job',
+            'job_name' => 'a_scheduled_job',
+            'label' => 'A scheduled job',
+            'type' => 'scheduled_job',
+        ]);
+
+        $this->fixturesJobHelper->createJobInstance([
+            'code' => 'a_quick_export',
+            'job_name' => 'a_quick_export',
+            'label' => 'A quick export',
+            'type' => 'quick_export',
         ]);
     }
 }
