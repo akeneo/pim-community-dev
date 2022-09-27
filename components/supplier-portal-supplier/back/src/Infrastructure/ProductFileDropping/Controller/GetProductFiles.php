@@ -23,7 +23,15 @@ final class GetProductFiles
         $productFiles = ($this->getProductFiles)(new GetProductFilesQuery($user->getUserIdentifier()));
 
         return new JsonResponse(
-            array_map(fn (ProductFile $productFile) => $productFile->toArray(), $productFiles),
+            array_map(
+                function (ProductFile $productFile) {
+                    $productFile = $productFile->toArray();
+                    $productFile['uploadedAt'] = (new \DateTimeImmutable($productFile['uploadedAt']))->format('c');
+
+                    return $productFile;
+                },
+                $productFiles,
+            ),
             Response::HTTP_OK,
         );
     }

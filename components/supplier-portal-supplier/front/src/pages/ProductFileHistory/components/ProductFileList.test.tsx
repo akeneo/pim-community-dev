@@ -9,14 +9,14 @@ const productFiles = [
         filename: 'product-file-1.xlsx',
         path: 'test/73d1078b-840c-4135-9564-682f8cbfb982-product-file.xlsx',
         contributor: 'contributor1@example.com',
-        uploadedAt: '2022-07-28 14:57:37-00:00',
+        uploadedAt: '2022-07-28T14:57:37+00:00',
     },
     {
         identifier: '8be6446b-befb-4d9f-aa94-0dfd390df690',
         filename: 'product-file-2.xlsx',
         path: 'test/73d1078b-840c-4135-9564-682f8cbfb982-product-file.xlsx',
         contributor: 'contributor2@example.com',
-        uploadedAt: '2022-07-28 14:58:38-00:00',
+        uploadedAt: '2022-07-28T14:58:38+00:00',
     },
 ];
 
