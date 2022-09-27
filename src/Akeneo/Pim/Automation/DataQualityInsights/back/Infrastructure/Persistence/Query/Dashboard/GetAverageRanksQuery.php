@@ -65,7 +65,7 @@ SQL;
 
         $entityAverageRanks = [];
         foreach ($entityCodes as $entityCode) {
-            $entityCode = strval($entityCode);
+            $entityCode = strtolower(strval($entityCode));
             $entityAverageRanks[$entityCode] = $averageRanks[$entityCode] ?? null;
         }
 
