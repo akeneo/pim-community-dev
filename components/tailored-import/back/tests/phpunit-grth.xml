@@ -24,6 +24,7 @@
         <testsuite name="TailoredImport_Integration_Test">
             <directory>Integration</directory>
             <exclude>Integration/Infrastructure/Query/Attribute/FindViewableAttributesIntegrationTest.php</exclude>
+            <exclude>Integration/Infrastructure/Controller/GetRecordsActionTest.php</exclude>
         </testsuite>
         <testsuite name="TailoredImport_Acceptance_Test">
             <directory>Acceptance</directory>

@@ -46,7 +46,7 @@ class AkeneoTailoredImportExtension extends Extension
     }
 
     /**
-     * Enable or disable services related to Asset Manager based
+     * Enable or disable services related to Reference Entity based
      * on the presence of the Reference Entity bundle.
      */
     private function configureReferenceEntityRelatedServices(ContainerBuilder $container): void
