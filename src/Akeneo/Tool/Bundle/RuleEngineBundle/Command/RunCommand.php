@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\RuleEngineBundle\Command;
 
-use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
-use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -38,8 +36,6 @@ class RunCommand extends Command
 
     public function __construct(
         private LoggerInterface $logger,
-        private JobLauncherInterface $jobLauncher,
-        private JobInstanceRepository $jobInstanceRepository,
         private EventDispatcherInterface $eventDispatcher,
     ) {
         parent::__construct();
