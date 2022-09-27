@@ -25,7 +25,7 @@ final class CleanHTMLOperationApplier implements OperationApplierInterface
     public function applyOperation(OperationInterface $operation, ValueInterface $value): ValueInterface
     {
         return match (true) {
-            !$operation instanceof CleanHTMLOperation =>  throw new UnexpectedValueException($operation, CleanHTMLOperation::class, self::class),
+            !$operation instanceof CleanHTMLOperation => throw new UnexpectedValueException($operation, CleanHTMLOperation::class, self::class),
             $value instanceof InvalidValue => $value,
             $value instanceof StringValue => $this->findModeAndApply($operation, $value),
             default => throw new UnexpectedValueException($value, StringValue::class, self::class),
