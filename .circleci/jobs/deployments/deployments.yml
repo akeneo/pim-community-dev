@@ -603,7 +603,7 @@ jobs:
               mv /tmp/pim-enterprise-dev/deployments-ucs/pim-saas-service /tmp/pim-saas-k8s-artifacts/pim-saas-service
 
               ## Create the values.yaml (values.yaml overide by values-ci.yaml)
-              cp /tmp/pim-enterprise-dev/deployments-ucs/config/ci-values.yaml /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml
+              cp /tmp/pim-enterprise-dev/deployments-ucs/config/values-pim-ci.yaml /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml
 
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml global.extraLabels.instanceName "${INSTANCE_NAME}"
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml common.gcpFireStoreProjectID "${GOOGLE_CLOUD_FIRESTORE_PROJECT}"

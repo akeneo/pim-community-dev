@@ -2,7 +2,6 @@ nameOverride: ""
 global:
   extraLabels:
     type: srnt
-    instanceName: null # Generated
   monitoring:
     enabled: false
 
