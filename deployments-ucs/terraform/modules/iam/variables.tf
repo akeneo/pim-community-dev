@@ -3,10 +3,15 @@ variable "project_id" {
   type        = string
 }
 
-variable "firestore_project_id" {
-  description = "firestore project id"
-  type        = string
+variable "firestore_projects_id" {
+  description = "List of Firestore projects id"
+  type        = list(string)
+  default = [
+    "akecld-prd-pim-fire-eur-dev",
+    "akecld-prd-pim-fire-eur-us",
+  ]
 }
+
 variable "secrets_admins" {
   description = "Secrets version managers"
   type        = list(string)

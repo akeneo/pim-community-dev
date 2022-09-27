@@ -6,6 +6,9 @@ variable "project_id" {
 variable "location_id" {
   type        = string
   description = "Target region for the firestore"
-  default     = "europe-west"
 }
 
+variable "database_type" {
+  type        = string
+  description = "Type of the firestore database"
+}

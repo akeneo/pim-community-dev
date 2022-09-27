@@ -31,9 +31,10 @@ resource "google_project_iam_member" "timmy_cloud_function_log_writer" {
 }
 
 resource "google_project_iam_member" "timmy_firestore_sa_usage" {
-  project = var.firestore_project_id
-  role    = "roles/firebaserules.system"
-  member  = "serviceAccount:${google_service_account.timmy_cloud_function_sa.email}"
+  for_each = toset(var.firestore_projects_id)
+  project  = each.value
+  role     = "roles/firebaserules.system"
+  member   = "serviceAccount:${google_service_account.timmy_cloud_function_sa.email}"
 }
 
 resource "google_project_iam_member" "timmy_cloud_function_role" {

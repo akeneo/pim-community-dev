@@ -1,34 +1,37 @@
 locals {
-  host_project_id      = "akecld-prd-shared-infra"
-  shared_vpc_name      = "akecld-prd-shared-infra-dev-xpn"
-  project_id           = "akecld-prd-pim-saas-dev"
-  firestore_project_id = "akecld-prd-pim-fire-eur-dev"
-  ci_sa                = "main-service-account@${local.project_id}.iam.gserviceaccount.com"
-  admins               = ["group:phoenix-squad@akeneo.com"]
-  viewers              = ["group:phoenix-squad@akeneo.com"]
-  regions              = ["europe-west1"]
-  public_zone          = "pim-saas-dev.dev.cloud.akeneo.com"
-  private_zone         = "pim-saas-dev.dev.local"
+  host_project_id         = "akecld-prd-shared-infra"
+  shared_vpc_name         = "akecld-prd-shared-infra-dev-xpn"
+  project_id              = "akecld-prd-pim-saas-dev"
+  ci_sa                   = "main-service-account@${local.project_id}.iam.gserviceaccount.com"
+  admins                  = ["group:phoenix-squad@akeneo.com"]
+  viewers                 = ["group:phoenix-squad@akeneo.com"]
+  regions                 = ["europe-west1"]
+  firestore_projects_id   = ["akecld-prd-pim-fire-eur-dev", "akecld-prd-pim-fire-us-dev"]
+  firestore_database_type = "CLOUD_FIRESTORE"
+  public_zone             = "pim-saas-dev.dev.cloud.akeneo.com"
+  private_zone            = "pim-saas-dev.dev.local"
 }
 
 module "iam" {
-  source               = "../modules/iam"
-  project_id           = local.project_id
-  firestore_project_id = local.firestore_project_id
-  secrets_admins       = local.admins
-  cloudbuild_admins    = local.admins
+  source                = "../modules/iam"
+  project_id            = local.project_id
+  firestore_projects_id = local.firestore_projects_id
+  secrets_admins        = local.admins
+  cloudbuild_admins     = local.admins
 }
 
-module "firestore-eur" {
-  source      = "../modules/firestore"
-  project_id  = "akecld-prd-pim-fire-eur-dev"
-  location_id = "europe-west"
+module "firestore_eur" {
+  source        = "../modules/firestore"
+  project_id    = "akecld-prd-pim-fire-eur-dev"
+  location_id   = "europe-west"
+  database_type = local.firestore_database_type
 }
 
-module "firestore-us" {
-  source      = "../modules/firestore"
-  project_id  = "akecld-prd-pim-fire-us-dev"
-  location_id = "us-central"
+module "firestore_us" {
+  source        = "../modules/firestore"
+  project_id    = "akecld-prd-pim-fire-us-dev"
+  location_id   = "us-central"
+  database_type = local.firestore_database_type
 }
 
 module "secrets" {
