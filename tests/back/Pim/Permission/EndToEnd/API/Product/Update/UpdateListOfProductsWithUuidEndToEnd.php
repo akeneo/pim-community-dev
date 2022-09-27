@@ -49,7 +49,7 @@ JSON;
     {"uuid": "{$uuid2->toString()}", "values": { "sku": [{"locale": null, "scope": null, "data": "not_existing_product"}]}}
 JSON;
         $expectedContent = <<<JSON
-{"line":1,"uuid":"{$uuid->toString()}","code":422,"message":"The a_metric_without_decimal_negative attribute does not exist in your PIM. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
+{"line":1,"uuid":"{$uuid->toString()}","code":422,"message":"The a_metric_without_decimal_negative attribute does not exist in your PIM. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products_uuid__uuid_"}}}
 {"line":2,"uuid":"{$uuid2->toString()}","status_code":201}
 JSON;
         $response = $this->executeAndCheckStreamRequest($data);
@@ -86,7 +86,7 @@ JSON;
     {"uuid": "{$uuid2->toString()}", "values": {"sku": [{"locale": null, "scope": null, "data": "toto"}]}}
 JSON;
         $expectedContent = <<<JSON
-{"line":1,"uuid":"{$uuid->toString()}","code":422,"message":"Property \"categories\" expects a valid category code. The category does not exist, \"categoryB\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
+{"line":1,"uuid":"{$uuid->toString()}","code":422,"message":"Property \"categories\" expects a valid category code. The category does not exist, \"categoryB\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products_uuid__uuid_"}}}
 {"line":2,"uuid":"{$uuid2->toString()}","status_code":201}
 JSON;
         $response = $this->executeAndCheckStreamRequest($data);
@@ -125,7 +125,7 @@ JSON;
     {"uuid": "{$uuid2->toString()}", "values": {"sku": [{"locale": null, "scope": null, "data": "toto"}]}}
 JSON;
         $expectedContent = <<<JSON
-{"line":1,"uuid":"{$uuid->toString()}","code":422,"message":"Attribute \"a_localized_and_scopable_text_area\" expects an existing and activated locale, \"de_DE\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
+{"line":1,"uuid":"{$uuid->toString()}","code":422,"message":"Attribute \"a_localized_and_scopable_text_area\" expects an existing and activated locale, \"de_DE\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products_uuid__uuid_"}}}
 {"line":2,"uuid":"{$uuid2->toString()}","status_code":201}
 JSON;
         $response = $this->executeAndCheckStreamRequest($data);
@@ -162,7 +162,7 @@ JSON;
     {"uuid": "{$uuid2->toString()}", "values": {"sku": [{"locale": null, "scope": null, "data": "toto"}]}}
 JSON;
         $expectedContent = <<<JSON
-{"line":1,"uuid":"{$uuid->toString()}","code":422,"message":"Property \"associations\" expects an array with valid data, association format is not valid for the association type \"PACK\", \"product_uuids\" expects an array of valid uuids.. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
+{"line":1,"uuid":"{$uuid->toString()}","code":422,"message":"Property \"associations\" expects an array with valid data, association format is not valid for the association type \"PACK\", \"product_uuids\" expects an array of valid uuids.. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products_uuid__uuid_"}}}
 {"line":2,"uuid":"{$uuid2->toString()}","status_code":201}
 JSON;
         $response = $this->executeAndCheckStreamRequest($data);
@@ -266,7 +266,7 @@ JSON;
     {"uuid": "{$newUuid->toString()}", "values": {"sku": [{"locale": null, "scope": null, "data": "toto"}]}}
 JSON;
         $expectedContent = <<<JSON
-{"line":1,"uuid":"{$uuid->toString()}","code":422,"message":"The a_metric_without_decimal_negative attribute does not exist in your PIM. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
+{"line":1,"uuid":"{$uuid->toString()}","code":422,"message":"The a_metric_without_decimal_negative attribute does not exist in your PIM. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products_uuid__uuid_"}}}
 {"line":2,"uuid":"{$newUuid->toString()}","status_code":201}
 JSON;
         $response = $this->executeAndCheckStreamRequest($data);
@@ -321,7 +321,7 @@ JSON;
     {"uuid": "{$newUuid->toString()}", "values": {"sku": [{"locale": null, "scope": null, "data": "toto"}]}}
 JSON;
         $expectedContent = <<<JSON
-{"line":1,"uuid":"{$uuid->toString()}","code":422,"message":"Attribute \"a_localized_and_scopable_text_area\" expects an existing and activated locale, \"de_DE\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
+{"line":1,"uuid":"{$uuid->toString()}","code":422,"message":"Attribute \"a_localized_and_scopable_text_area\" expects an existing and activated locale, \"de_DE\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products_uuid__uuid_"}}}
 {"line":2,"uuid":"{$newUuid->toString()}","status_code":201}
 JSON;
         $response = $this->executeAndCheckStreamRequest($data);
@@ -365,7 +365,7 @@ JSON;
     {"uuid": "{$newUuid->toString()}", "values": {"sku": [{"locale": null, "scope": null, "data": "toto"}]}}
 JSON;
         $expectedContent = <<<JSON
-{"line":1,"uuid":"{$uuid->toString()}","code":422,"message":"Property \"categories\" expects a valid category code. The category does not exist, \"categoryB\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
+{"line":1,"uuid":"{$uuid->toString()}","code":422,"message":"Property \"categories\" expects a valid category code. The category does not exist, \"categoryB\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products_uuid__uuid_"}}}
 {"line":2,"uuid":"{$newUuid->toString()}","status_code":201}
 JSON;
         $response = $this->executeAndCheckStreamRequest($data);
@@ -418,7 +418,7 @@ JSON;
 JSON;
         $expectedContent = <<<JSON
 {"line":1,"uuid":"{$uuid->toString()}","code":404,"message":"Product \"product_not_viewable_by_redactor\" does not exist or you do not have permission to access it."}
-{"line":2,"uuid":"{$uuid2->toString()}","code":422,"message":"Property \"associations\" expects an array with valid data, association format is not valid for the association type \"PACK\", \"product_uuids\" expects an array of valid uuids.. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
+{"line":2,"uuid":"{$uuid2->toString()}","code":422,"message":"Property \"associations\" expects an array with valid data, association format is not valid for the association type \"PACK\", \"product_uuids\" expects an array of valid uuids.. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products_uuid__uuid_"}}}
 JSON;
         $response = $this->executeAndCheckStreamRequest($data);
 

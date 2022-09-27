@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UpdateNotExistingProductWithUuidEndToEnd extends AbstractProductTestCase
 {
-    const DOC_PATCH_CODE = 'patch_products__code_';
+    const DOC_PATCH_CODE = 'patch_products_uuid__uuid_';
 
     public function testFailedToUpdateNotExistingProductWithNotGrantedAttribute()
     {
@@ -181,7 +181,7 @@ JSON;
 }
 JSON;
         $expectedResponseContent = <<<JSON
-{"code":422,"message":"Property \"associations\" expects a valid product uuid. The product does not exist, \"{$productNotViewableByRedactor}\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
+{"code":422,"message":"Property \"associations\" expects a valid product uuid. The product does not exist, \"{$productNotViewableByRedactor}\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products_uuid__uuid_"}}}
 JSON;
 
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');

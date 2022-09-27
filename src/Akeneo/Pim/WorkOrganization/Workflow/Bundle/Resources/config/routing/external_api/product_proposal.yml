@@ -10,7 +10,6 @@ pimee_api_product_proposal_create_uuid:
     defaults:
         _controller: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ExternalApi\CreateProductProposalByUuidController
         _format: json
-        _list_in_root_endpoint: false
     methods: [POST]
     requirements:
         uuid: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'

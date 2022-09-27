@@ -40,7 +40,7 @@ JSON;
         $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
         $response = $client->getResponse();
         $this->assertSame(sprintf(
-            '{"code":422,"message":"Property \"associations\" expects a valid product uuid. The product does not exist, \"%s\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#post_products"}}}',
+            '{"code":422,"message":"Property \"associations\" expects a valid product uuid. The product does not exist, \"%s\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#post_products_uuid"}}}',
             $productNotViewableUuid
         ), $response->getContent());
         $this->assertSame(422, $response->getStatusCode());
@@ -140,7 +140,7 @@ JSON;
         $response = $client->getResponse();
 
         $expectedResponseContent = <<<JSON
-{"code":422,"message":"Property \"associations\" expects a valid product model identifier. The product model does not exist, \"product_model_no_view\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#post_products"}}}
+{"code":422,"message":"Property \"associations\" expects a valid product model identifier. The product model does not exist, \"product_model_no_view\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#post_products_uuid"}}}
 JSON;
 
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
