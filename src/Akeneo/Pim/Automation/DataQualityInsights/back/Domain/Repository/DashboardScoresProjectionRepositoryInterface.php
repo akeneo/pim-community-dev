@@ -8,7 +8,11 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 
 interface DashboardScoresProjectionRepositoryInterface
 {
+    public const FAMILY_TYPE = 'family';
+
     public function save(Write\DashboardRatesProjection $dashboardRates): void;
 
     public function purgeRates(Write\DashboardPurgeDateCollection $purgeDates): void;
+
+    public function delete(string $type, string $code): void;
 }

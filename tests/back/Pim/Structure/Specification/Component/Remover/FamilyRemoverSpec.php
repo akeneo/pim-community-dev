@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Structure\Component\Remover;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardScoresProjectionRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -15,9 +16,14 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class FamilyRemoverSpec extends ObjectBehavior
 {
-    function let(ObjectManager $objectManager, EventDispatcherInterface $eventDispatcher, CountProductsWithFamilyInterface $counter)
+    function let(
+        ObjectManager $objectManager,
+        EventDispatcherInterface $eventDispatcher,
+        CountProductsWithFamilyInterface $counter,
+        DashboardScoresProjectionRepositoryInterface $dashboardScoresProjectionRepository
+    )
     {
-        $this->beConstructedWith($objectManager, $eventDispatcher, $counter);
+        $this->beConstructedWith($objectManager, $eventDispatcher, $counter, $dashboardScoresProjectionRepository);
     }
 
     function it_is_a_remover()
@@ -29,6 +35,7 @@ class FamilyRemoverSpec extends ObjectBehavior
         $objectManager,
         $eventDispatcher,
         $counter,
+        $dashboardScoresProjectionRepository,
         FamilyInterface $familyToRemove,
         Collection $familyVariants
     )
@@ -37,9 +44,11 @@ class FamilyRemoverSpec extends ObjectBehavior
         $familyToRemove->getFamilyVariants()->willReturn($familyVariants);
         $familyVariants->isEmpty()->willReturn(true);
         $familyToRemove->getId()->willReturn(1);
+        $familyToRemove->getCode()->willReturn('burger_family');
         $eventDispatcher->dispatch(Argument::cetera(), StorageEvents::PRE_REMOVE)->shouldBeCalled();
         $objectManager->remove($familyToRemove)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
+        $dashboardScoresProjectionRepository->delete(Argument::cetera(), $familyToRemove->getCode())->shouldBeCalled();
         $eventDispatcher->dispatch(Argument::cetera(), StorageEvents::POST_REMOVE)->shouldBeCalled();
 
         $this->remove($familyToRemove, []);
@@ -47,6 +56,7 @@ class FamilyRemoverSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_the_family_has_variants(
         $objectManager,
+        $dashboardScoresProjectionRepository,
         FamilyInterface $familyToRemove,
         Collection $familyVariants
     )
@@ -55,6 +65,7 @@ class FamilyRemoverSpec extends ObjectBehavior
         $familyVariants->isEmpty()->willReturn(false);
         $familyToRemove->getCode()->willReturn('burger_family');
         $objectManager->remove($familyToRemove)->shouldNotBeCalled();
+        $dashboardScoresProjectionRepository->delete(Argument::cetera(), $familyToRemove->getCode())->shouldNotBeCalled();
 
         $this->shouldThrow(\LogicException::class)->duringRemove($familyToRemove);
     }
@@ -62,6 +73,7 @@ class FamilyRemoverSpec extends ObjectBehavior
     function it_throws_an_exception_if_the_family_has_products_belonging_to_it(
         $objectManager,
         $counter,
+        $dashboardScoresProjectionRepository,
         FamilyInterface $familyToRemove,
         Collection $familyVariants
     )
@@ -72,6 +84,7 @@ class FamilyRemoverSpec extends ObjectBehavior
         $familyToRemove->getId()->willReturn(1);
         $familyToRemove->getCode()->willReturn('burger_family');
         $objectManager->remove($familyToRemove)->shouldNotBeCalled();
+        $dashboardScoresProjectionRepository->delete(Argument::cetera(), $familyToRemove->getCode())->shouldNotBeCalled();
 
         $this->shouldThrow(\LogicException::class)->duringRemove($familyToRemove);
     }

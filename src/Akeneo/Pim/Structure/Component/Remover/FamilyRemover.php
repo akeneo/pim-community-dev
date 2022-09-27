@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Component\Remover;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardScoresProjectionRepositoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardScoresProjectionRepository;
 use Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CountProductsWithFamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
@@ -23,28 +25,12 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class FamilyRemover implements RemoverInterface
 {
-    /** @var ObjectManager */
-    private $objectManager;
-
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
-
-    /** @var CountProductsWithFamilyInterface */
-    private $counter;
-
-    /**
-     * @param ObjectManager                    $objectManager
-     * @param EventDispatcherInterface         $eventDispatcher
-     * @param CountProductsWithFamilyInterface $counter
-     */
     public function __construct(
-        ObjectManager $objectManager,
-        EventDispatcherInterface $eventDispatcher,
-        CountProductsWithFamilyInterface $counter
+        private ObjectManager $objectManager,
+        private EventDispatcherInterface $eventDispatcher,
+        private CountProductsWithFamilyInterface $counter,
+        private DashboardScoresProjectionRepositoryInterface $dashboardScoresProjectionRepository
     ) {
-        $this->objectManager = $objectManager;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->counter = $counter;
     }
 
     /**
@@ -61,6 +47,11 @@ class FamilyRemover implements RemoverInterface
 
         $this->objectManager->remove($family);
         $this->objectManager->flush();
+
+        $this->dashboardScoresProjectionRepository->delete(
+            DashboardScoresProjectionRepositoryInterface::FAMILY_TYPE,
+            $family->getCode()
+        );
 
         $this->sendEvent($family, $familyId, StorageEvents::POST_REMOVE);
     }
