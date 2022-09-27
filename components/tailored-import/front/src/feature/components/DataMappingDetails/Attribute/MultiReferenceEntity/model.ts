@@ -3,6 +3,7 @@ import {Attribute, isTargetNotEmptyAction, Target, TargetEmptyAction, TargetNotE
 
 type MultiReferenceEntityTarget = {
   code: string;
+  reference_data_name?: string;
   channel: ChannelReference;
   locale: LocaleReference;
   type: 'attribute';

@@ -106,6 +106,30 @@ final class SimpleReferenceEntityValidatorTest extends AbstractValidationTest
                     'sample_data' => ['sample_1', 'sample_2', 'sample_3'],
                 ]
             ],
+            'a valid simple reference entity data mapping with sample data and replace operation' => [
+                [
+                    'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
+                    'target' => [
+                        'code' => 'a_simple_reference_entity',
+                        'type' => 'attribute',
+                        'attribute_type' => 'akeneo_reference_entity',
+                        'channel' => null,
+                        'locale' => null,
+                        'action_if_not_empty' => 'set',
+                        'action_if_empty' => 'skip',
+                        'source_configuration' => null,
+                    ],
+                    'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
+                    'operations' => [
+                        [
+                            'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',
+                            'type' => 'simple_reference_entity_replacement',
+                            'mapping' => ['alessis' => ['adidas']]
+                        ],
+                    ],
+                    'sample_data' => ['sample_1', 'sample_2', 'sample_3'],
+                ]
+            ],
         ];
     }
 

@@ -14,6 +14,7 @@ const getDefaultMeasurementSourceConfiguration = (attribute: Attribute): Measure
 
 type MeasurementTarget = {
   code: string;
+  reference_data_name?: string;
   channel: ChannelReference;
   locale: LocaleReference;
   type: 'attribute';

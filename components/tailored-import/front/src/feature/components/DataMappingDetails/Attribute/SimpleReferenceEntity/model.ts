@@ -3,6 +3,7 @@ import {Attribute, Target, TargetNotEmptyAction, TargetEmptyAction} from '../../
 
 type SimpleReferenceEntityTarget = {
   code: string;
+  reference_data_name?: string;
   channel: ChannelReference;
   locale: LocaleReference;
   type: 'attribute';
@@ -18,6 +19,7 @@ const getDefaultSimpleReferenceEntityTarget = (
   locale: LocaleReference
 ): SimpleReferenceEntityTarget => ({
   code: attribute.code,
+  reference_data_name: attribute.reference_data_name,
   type: 'attribute',
   attribute_type: attribute.type,
   locale,

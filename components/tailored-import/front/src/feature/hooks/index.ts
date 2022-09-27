@@ -10,6 +10,7 @@ export * from './useMeasurementFamily';
 export * from './useOffsetAvailableTargets';
 export * from './usePreviewData';
 export * from './useReadColumns';
+export * from './useRecords';
 export * from './useRefreshedSampleDataFetcher';
 export * from './useSampleDataFetcher';
 export * from './useSearchDataMappings';

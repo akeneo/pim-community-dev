@@ -14,6 +14,7 @@ const getDefaultPriceSourceConfiguration = (attribute: Attribute): PriceSourceCo
 
 type PriceTarget = {
   code: string;
+  reference_data_name?: string;
   channel: ChannelReference;
   locale: LocaleReference;
   type: 'attribute';

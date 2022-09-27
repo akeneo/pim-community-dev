@@ -28,6 +28,7 @@ const getDefaultDateSourceConfiguration = (): DateSourceConfiguration => ({date_
 
 type DateTarget = {
   code: string;
+  reference_data_name?: string;
   channel: ChannelReference;
   locale: LocaleReference;
   type: 'attribute';

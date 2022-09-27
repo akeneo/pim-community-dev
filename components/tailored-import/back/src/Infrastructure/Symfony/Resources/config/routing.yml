@@ -57,3 +57,8 @@ pimee_tailored_import_get_category_trees_action:
     path: /rest/tailored-import/get-category-trees
     defaults: { _controller: akeneo.tailored_import.controller.get_category_trees_action }
     methods: [POST]
+
+pimee_tailored_import_get_records_action:
+    path: /rest/tailored-import/records/{reference_entity_code}
+    defaults: { _controller: akeneo.tailored_import.controller.get_records_action }
+    methods: [POST]
