@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Persistence\Catalog\Product;
 
+use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogOwnerIdQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogProductValueFiltersQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductsQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductUuidsQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductWithUuidNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
-use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
@@ -40,7 +40,7 @@ class GetProductsQuery implements GetProductsQueryInterface
         private GetProductUuidsQueryInterface $getProductUuidsQuery,
         private GetConnectorProducts $getConnectorProducts,
         private GetCatalogProductValueFiltersQueryInterface $getCatalogProductValueFiltersQuery,
-        private Connection $connection,
+        private GetCatalogOwnerIdQueryInterface $getCatalogOwnerIdQuery,
         private ConnectorProductWithUuidNormalizer $connectorProductWithUuidNormalizer,
     ) {
     }
@@ -61,7 +61,7 @@ class GetProductsQuery implements GetProductsQueryInterface
 
         $connectorProducts = $this->getConnectorProducts->fromProductUuids(
             \array_map(static fn (string $uuid): UuidInterface => Uuid::fromString($uuid), $uuids),
-            $this->findCatalogOwnerId($catalogId),
+            $this->getCatalogOwnerIdQuery->execute($catalogId),
             null,
             null,
             $filters['locales'] ?? null,
@@ -144,25 +144,5 @@ class GetProductsQuery implements GetProductsQueryInterface
         }
 
         return $products;
-    }
-
-    private function findCatalogOwnerId(string $catalogId): int
-    {
-        $query = <<<SQL
-        SELECT catalog.owner_id
-        FROM akeneo_catalog catalog
-        WHERE catalog.id = :id
-        SQL;
-
-        /** @var mixed|false $userId */
-        $userId = $this->connection->fetchOne($query, [
-            'id' => Uuid::fromString($catalogId)->getBytes(),
-        ]);
-
-        if (null === $userId) {
-            throw new \LogicException('Catalog not found');
-        }
-
-        return (int) $userId;
     }
 }
