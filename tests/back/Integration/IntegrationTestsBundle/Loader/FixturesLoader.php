@@ -172,7 +172,6 @@ class FixturesLoader implements FixturesLoaderInterface
         $this->resetFilesystem();
         $this->clearAclCache();
         $this->jobLauncher->flushJobQueue();
-        $this->systemUserAuthenticator->createSystemUser();
     }
 
     protected function purgeMessengerEvents()
