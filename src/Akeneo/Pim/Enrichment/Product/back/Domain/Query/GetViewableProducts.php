@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\Domain\Query;
 
-use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -20,9 +20,9 @@ interface GetViewableProducts
     public function fromProductIdentifiers(array $productIdentifiers, int $userId): array;
 
     /**
-     * @param array<Uuid> $productUuids
+     * @param array<UuidInterface> $productUuids
      * @param int $userId
-     * @return array<Uuid>
+     * @return array<UuidInterface>
      */
     public function fromProductUuids(array $productUuids, int $userId): array;
 }
