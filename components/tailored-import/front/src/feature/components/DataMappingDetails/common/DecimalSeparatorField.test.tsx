@@ -50,7 +50,7 @@ test('it displays validation errors', () => {
           invalidValue: '#',
           message: 'this is a decimal separator error',
           parameters: {},
-          propertyPath: '[target][decimal_separator]',
+          propertyPath: '[target][source_configuration][decimal_separator]',
         },
       ]}
     />

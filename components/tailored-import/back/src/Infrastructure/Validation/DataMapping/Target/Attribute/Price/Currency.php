@@ -17,7 +17,8 @@ use Symfony\Component\Validator\Constraint;
 
 final class Currency extends Constraint
 {
-    public const CURRENCY_SHOULD_EXIST = 'akeneo.tailored_import.validation.target.source_configuration.currency_should_exist';
+    public const CURRENCY_SHOULD_BE_ACTIVE_ON_CHANNEL = 'akeneo.tailored_import.validation.target.source_configuration.currency_should_be_active_on_channel';
+    public const CURRENCY_SHOULD_BE_ACTIVE = 'akeneo.tailored_import.validation.target.source_configuration.currency_should_be_active';
 
     public function __construct(
         private ?string $channelCode,

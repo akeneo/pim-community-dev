@@ -31,15 +31,19 @@ final class CurrencyValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, CurrencyConstraint::class);
         }
 
-        $currencies = (null === $constraint->getChannelCode())
-            ? $this->findActivatedCurrencies->forAllChannels()
-            : $this->findActivatedCurrencies->forChannel($constraint->getChannelCode());
+        $hasChannel = null !== $constraint->getChannelCode();
+        $currencies = $hasChannel
+            ? $this->findActivatedCurrencies->forChannel($constraint->getChannelCode())
+            : $this->findActivatedCurrencies->forAllChannels();
 
         if (!in_array($currencyCode, $currencies)) {
+            $message = $hasChannel ? CurrencyConstraint::CURRENCY_SHOULD_BE_ACTIVE_ON_CHANNEL : CurrencyConstraint::CURRENCY_SHOULD_BE_ACTIVE;
+
             $this->context->buildViolation(
-                CurrencyConstraint::CURRENCY_SHOULD_EXIST,
+                $message,
                 [
                     '{{ currency_code }}' => $currencyCode,
+                    '{{ channel_code }}' => $constraint->getChannelCode(),
                 ],
             )
             ->addViolation();

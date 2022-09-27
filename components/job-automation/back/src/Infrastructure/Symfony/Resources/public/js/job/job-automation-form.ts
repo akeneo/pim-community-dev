@@ -1,5 +1,5 @@
 import BaseView = require('pimui/js/view/base');
-import {ValidationError, formatParameters} from '@akeneo-pim-community/shared';
+import {ValidationError, formatParameters, filterErrors} from '@akeneo-pim-community/shared';
 import {JobAutomationForm, JobAutomationFormProps, Automation} from '@akeneo-pim-enterprise/job-automation';
 const userContext = require('pim/user-context');
 
@@ -7,7 +7,8 @@ type JobAutomationFormControllerConfig = {tabCode?: string};
 
 class JobAutomationFormController extends BaseView {
   public config: JobAutomationFormControllerConfig;
-  private validationErrors: ValidationError[] = [];
+  private automationValidationErrors: ValidationError[] = [];
+  private scheduledValidationErrors: ValidationError[] = [];
 
   constructor(options: {config: JobAutomationFormControllerConfig}) {
     super(options);
@@ -18,13 +19,15 @@ class JobAutomationFormController extends BaseView {
   configure() {
     this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_save', () => {
       this.getRoot().trigger('pim_enrich:form:form-tabs:remove-errors');
-      this.setValidationErrors([]);
+      this.setValidationErrors([], []);
     });
 
     this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', event => {
-      const errors = formatParameters(event.response.normalized_errors);
-      this.setValidationErrors(errors);
+      const automationErrors = formatParameters(filterErrors(event.response.normalized_errors, '[automation]'));
+      const scheduledErrors = formatParameters(filterErrors(event.response.normalized_errors, '[scheduled]'));
+      this.setValidationErrors(automationErrors, scheduledErrors);
 
+      const errors = [...automationErrors, ...scheduledErrors];
       if (errors.length > 0) {
         this.getRoot().trigger('pim_enrich:form:form-tabs:add-errors', {
           tabCode: this.getTabCode(),
@@ -36,8 +39,9 @@ class JobAutomationFormController extends BaseView {
     return BaseView.prototype.configure.apply(this);
   }
 
-  setValidationErrors(validationErrors: ValidationError[]) {
-    this.validationErrors = validationErrors;
+  setValidationErrors(automationValidationErrors: ValidationError[], scheduledValidationErrors: ValidationError[]) {
+    this.automationValidationErrors = automationValidationErrors;
+    this.scheduledValidationErrors = scheduledValidationErrors;
     this.render();
   }
 
@@ -81,7 +85,8 @@ class JobAutomationFormController extends BaseView {
     const props: JobAutomationFormProps = {
       scheduled: formData.scheduled ?? false,
       automation: formData.automation ?? this.getDefaultAutomation(),
-      validationErrors: this.validationErrors,
+      automationValidationErrors: this.automationValidationErrors,
+      scheduledValidationErrors: this.scheduledValidationErrors,
       onScheduledChange: this.setScheduled.bind(this),
       onAutomationChange: this.setAutomationConfiguration.bind(this),
     };

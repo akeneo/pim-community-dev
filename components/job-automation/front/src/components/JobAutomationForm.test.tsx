@@ -84,7 +84,8 @@ test('it renders the job automation form', () => {
     <JobAutomationForm
       scheduled={true}
       automation={automation}
-      validationErrors={[]}
+      automationValidationErrors={[]}
+      scheduledValidationErrors={[]}
       onScheduledChange={jest.fn()}
       onAutomationChange={jest.fn()}
     />
@@ -107,7 +108,8 @@ test('it hides the running user group input if the permission is not enabled', (
     <JobAutomationForm
       scheduled={true}
       automation={automation}
-      validationErrors={[]}
+      automationValidationErrors={[]}
+      scheduledValidationErrors={[]}
       onScheduledChange={jest.fn()}
       onAutomationChange={jest.fn()}
     />
@@ -123,7 +125,8 @@ test('it disables the running user group input if the user cannot list the user 
     <JobAutomationForm
       scheduled={true}
       automation={automation}
-      validationErrors={[]}
+      automationValidationErrors={[]}
+      scheduledValidationErrors={[]}
       onScheduledChange={jest.fn()}
       onAutomationChange={jest.fn()}
     />
@@ -140,7 +143,8 @@ test('it displays a helper when user cannot view all jobs in process tracker', (
     <JobAutomationForm
       scheduled={true}
       automation={automation}
-      validationErrors={[]}
+      automationValidationErrors={[]}
+      scheduledValidationErrors={[]}
       onScheduledChange={jest.fn()}
       onAutomationChange={jest.fn()}
     />
@@ -156,7 +160,8 @@ test('it can change the running user groups', () => {
     <JobAutomationForm
       scheduled={true}
       automation={automation}
-      validationErrors={[]}
+      automationValidationErrors={[]}
+      scheduledValidationErrors={[]}
       onScheduledChange={jest.fn()}
       onAutomationChange={onAutomationChange}
     />
@@ -178,7 +183,8 @@ test('it can change the notification user groups', () => {
       scheduled={true}
       onScheduledChange={jest.fn()}
       automation={automation}
-      validationErrors={[]}
+      automationValidationErrors={[]}
+      scheduledValidationErrors={[]}
       onAutomationChange={onAutomationChange}
     />
   );
@@ -199,7 +205,8 @@ test('it can change the notification users', () => {
       scheduled={true}
       onScheduledChange={jest.fn()}
       automation={automation}
-      validationErrors={[]}
+      automationValidationErrors={[]}
+      scheduledValidationErrors={[]}
       onAutomationChange={onAutomationChange}
     />
   );
@@ -219,7 +226,8 @@ test('it can disable the scheduling', () => {
     <JobAutomationForm
       scheduled={true}
       automation={automation}
-      validationErrors={[]}
+      automationValidationErrors={[]}
+      scheduledValidationErrors={[]}
       onScheduledChange={onScheduledChange}
       onAutomationChange={jest.fn()}
     />
@@ -237,7 +245,8 @@ test('it can update the scheduling', () => {
     <JobAutomationForm
       scheduled={true}
       automation={automation}
-      validationErrors={[]}
+      automationValidationErrors={[]}
+      scheduledValidationErrors={[]}
       onScheduledChange={jest.fn()}
       onAutomationChange={onAutomationChange}
     />
@@ -261,7 +270,8 @@ test('it can save default automation values when enabling scheduling', () => {
     <JobAutomationForm
       scheduled={false}
       automation={automation}
-      validationErrors={[]}
+      automationValidationErrors={[]}
+      scheduledValidationErrors={[]}
       onScheduledChange={jest.fn()}
       onAutomationChange={onAutomationChange}
     />
@@ -275,14 +285,17 @@ test('it can save default automation values when enabling scheduling', () => {
 });
 
 test('it displays validation errors', () => {
-  const validationErrors: ValidationError[] = [
+  const automationValidationErrors: ValidationError[] = [
     {
       messageTemplate: 'error.key.a_type_error',
       invalidValue: '',
       message: 'this is a type error',
       parameters: {},
-      propertyPath: '[automation][running_user_groups]',
+      propertyPath: '[running_user_groups]',
     },
+  ];
+
+  const scheduledValidationErrors: ValidationError[] = [
     {
       messageTemplate: 'error.key.a_scheduled_error',
       invalidValue: '',
@@ -296,7 +309,8 @@ test('it displays validation errors', () => {
     <JobAutomationForm
       scheduled={true}
       automation={automation}
-      validationErrors={validationErrors}
+      automationValidationErrors={automationValidationErrors}
+      scheduledValidationErrors={scheduledValidationErrors}
       onScheduledChange={jest.fn()}
       onAutomationChange={jest.fn()}
     />

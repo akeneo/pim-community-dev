@@ -258,14 +258,14 @@ test('it should display helper if there are validation errors', async () => {
       invalidValue: 'FOO',
       message: 'this is a price currency error',
       parameters: {},
-      propertyPath: '[target][currency]',
+      propertyPath: '[target][source_configuration][currency]',
     },
     {
       messageTemplate: 'error.key.decimal_separator',
       invalidValue: '#',
       message: 'this is a decimal separator error',
       parameters: {},
-      propertyPath: '[target][decimal_separator]',
+      propertyPath: '[target][source_configuration][decimal_separator]',
     },
     {
       messageTemplate: 'error.key.target',

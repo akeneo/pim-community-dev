@@ -18,7 +18,7 @@ const NumberConfigurator = ({
   onTargetChange,
 }: AttributeDataMappingConfiguratorProps) => {
   const target = dataMapping.target;
-  const decimalSeparatorErrors = filterErrors(validationErrors, '[target][decimal_separator]');
+  const decimalSeparatorErrors = filterErrors(validationErrors, '[target][source_configuration][decimal_separator]');
   if (!isNumberTarget(target)) {
     throw new InvalidAttributeTargetError(`Invalid target data "${target.code}" for number configurator`);
   }

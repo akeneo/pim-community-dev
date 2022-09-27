@@ -21,7 +21,8 @@ const SpacedSection = styled(Section)`
 type JobAutomationFormProps = {
   scheduled: boolean;
   automation: Automation;
-  validationErrors: ValidationError[];
+  automationValidationErrors: ValidationError[];
+  scheduledValidationErrors: ValidationError[];
   onScheduledChange: (scheduled: boolean) => void;
   onAutomationChange: (automation: Automation) => void;
 };
@@ -29,7 +30,8 @@ type JobAutomationFormProps = {
 const JobAutomationForm = ({
   scheduled,
   automation,
-  validationErrors,
+  automationValidationErrors,
+  scheduledValidationErrors,
   onScheduledChange,
   onAutomationChange,
 }: JobAutomationFormProps) => {
@@ -69,7 +71,7 @@ const JobAutomationForm = ({
           readOnly={false}
           onChange={handleScheduledChange}
         />
-        {filterErrors(validationErrors, '[scheduled]').map((error, index) => (
+        {scheduledValidationErrors.map((error, index) => (
           <Helper key={index} inline={true} level="error">
             {translate(error.messageTemplate, error.parameters)}
           </Helper>
@@ -88,13 +90,13 @@ const JobAutomationForm = ({
           <CronExpressionForm
             cronExpression={automation.cron_expression}
             onCronExpressionChange={handleCronExpressionChange}
-            validationErrors={filterErrors(validationErrors, '[automation][cron_expression]')}
+            validationErrors={filterErrors(automationValidationErrors, '[cron_expression]')}
           />
           {isEnabled('permission') && (
             <UserGroupsForm
               userGroups={automation.running_user_groups}
               onUserGroupsChange={handleRunningUserGroupsChange}
-              validationErrors={filterErrors(validationErrors, '[automation][running_user_groups]')}
+              validationErrors={filterErrors(automationValidationErrors, '[running_user_groups]')}
               label={translate('akeneo.job_automation.scheduling.running_user_groups.label')}
               disabledHelperMessage={translate('akeneo.job_automation.scheduling.running_user_groups.disabled_helper')}
             />
@@ -107,14 +109,14 @@ const JobAutomationForm = ({
           <UserGroupsForm
             userGroups={automation.notification_user_groups}
             onUserGroupsChange={handleNotificationUserGroupsChange}
-            validationErrors={filterErrors(validationErrors, '[automation][notification_user_groups]')}
+            validationErrors={filterErrors(automationValidationErrors, '[notification_user_groups]')}
             label={translate('akeneo.job_automation.notification.user_groups.label')}
             disabledHelperMessage={translate('akeneo.job_automation.notification.user_groups.disabled_helper')}
           />
           <UsersForm
             users={automation.notification_users}
             onUsersChange={handleNotificationUsersChange}
-            validationErrors={filterErrors(validationErrors, '[automation][notification_users]')}
+            validationErrors={filterErrors(automationValidationErrors, '[notification_users]')}
           />
         </>
       )}

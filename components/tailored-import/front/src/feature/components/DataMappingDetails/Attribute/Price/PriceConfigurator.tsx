@@ -21,8 +21,8 @@ const PriceConfigurator = ({
     throw new InvalidAttributeTargetError(`Invalid target data "${dataMapping.target.code}" for price configurator`);
   }
 
-  const decimalSeparatorErrors = filterErrors(validationErrors, '[target][decimal_separator]');
-  const currencyErrors = filterErrors(validationErrors, '[target][currency]');
+  const decimalSeparatorErrors = filterErrors(validationErrors, '[target][source_configuration][decimal_separator]');
+  const currencyErrors = filterErrors(validationErrors, '[target][source_configuration][currency]');
 
   const handleSourceConfigurationChange = (sourceConfiguration: PriceSourceConfiguration) => {
     onTargetChange({...dataMapping.target, source_configuration: sourceConfiguration});

@@ -84,8 +84,8 @@ class PriceCollectionSelectionValidator extends ConstraintValidator
 
         if (!empty($inactiveCurrencies)) {
             $errorMessage = $channelReference ?
-                PriceCollectionSelectionConstraint::CURRENCY_SHOULD_BE_ACTIVATE_ON_CHANNEL_MESSAGE :
-                PriceCollectionSelectionConstraint::CURRENCY_SHOULD_BE_ACTIVATE_MESSAGE;
+                PriceCollectionSelectionConstraint::CURRENCY_SHOULD_BE_ACTIVE_ON_CHANNEL_MESSAGE :
+                PriceCollectionSelectionConstraint::CURRENCY_SHOULD_BE_ACTIVE_MESSAGE;
 
             $this
                 ->context

@@ -288,14 +288,14 @@ test('it should display helper if there are validation errors', async () => {
       invalidValue: 'FOO',
       message: 'this is a measurement unit error',
       parameters: {},
-      propertyPath: '[target][unit]',
+      propertyPath: '[target][source_configuration][unit]',
     },
     {
       messageTemplate: 'error.key.decimal_separator',
       invalidValue: '#',
       message: 'this is a decimal separator error',
       parameters: {},
-      propertyPath: '[target][decimal_separator]',
+      propertyPath: '[target][source_configuration][decimal_separator]',
     },
     {
       messageTemplate: 'error.key.target',

@@ -36,8 +36,8 @@ const MeasurementConfigurator = ({
 
   const catalogLocale = useUserContext().get('catalogLocale');
   const translate = useTranslate();
-  const decimalSeparatorErrors = filterErrors(validationErrors, '[target][decimal_separator]');
-  const unitErrors = filterErrors(validationErrors, '[target][unit]');
+  const decimalSeparatorErrors = filterErrors(validationErrors, '[target][source_configuration][decimal_separator]');
+  const unitErrors = filterErrors(validationErrors, '[target][source_configuration][unit]');
   const measurementFamily = useMeasurementFamily(attribute.metric_family);
 
   const handleSourceConfigurationChange = (sourceConfiguration: MeasurementSourceConfiguration) => {

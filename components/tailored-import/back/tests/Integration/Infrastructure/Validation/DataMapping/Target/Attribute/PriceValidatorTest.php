@@ -185,7 +185,7 @@ final class PriceValidatorTest extends AbstractValidationTest
                 ]
             ],
             'a price data mapping with an invalid currency' => [
-                'akeneo.tailored_import.validation.target.source_configuration.currency_should_exist',
+                'akeneo.tailored_import.validation.target.source_configuration.currency_should_be_active',
                 '[target][source_configuration][currency]',
                 [
                     'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
@@ -200,6 +200,29 @@ final class PriceValidatorTest extends AbstractValidationTest
                         'source_configuration' => [
                             'decimal_separator' => ',',
                             'currency' => 'FRANC',
+                        ]
+                    ],
+                    'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
+                    'operations' => [],
+                    'sample_data' => [],
+                ]
+            ],
+            'a price data mapping with an invalid currency on a channel' => [
+                'akeneo.tailored_import.validation.target.source_configuration.currency_should_be_active_on_channel',
+                '[target][source_configuration][currency]',
+                [
+                    'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
+                    'target' => [
+                        'code' => 'a_price',
+                        'type' => 'attribute',
+                        'attribute_type' => 'pim_catalog_price_collection',
+                        'channel' => 'ecommerce',
+                        'locale' => null,
+                        'action_if_not_empty' => 'set',
+                        'action_if_empty' => 'skip',
+                        'source_configuration' => [
+                            'decimal_separator' => ',',
+                            'currency' => 'ADP',
                         ]
                     ],
                     'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
