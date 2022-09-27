@@ -1,2 +1,6 @@
 includes:
     - phpstan-ee.neon
+
+parameters:
+  excludePaths:
+    - %rootDir%/../../../components/tailored-import/back/src/Infrastructure/Controller/GetRecordsAction.php
