@@ -42,7 +42,7 @@ const SupplierList = ({
     const [supplierIdentifierToDelete, setSupplierIdentifierToDelete] = useState<string>('');
 
     const goToSupplier = (identifier: string) => {
-        history.push(`/${identifier}`);
+        history.push(`/supplier/${identifier}`);
     };
 
     const handleOpenModal = (event: any, supplierIdentifier: string) => {

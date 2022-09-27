@@ -5,12 +5,12 @@ import {SupplierEdit} from './SupplierEdit';
 
 const SupplierApp = () => {
     return (
-        <Router basename="/retailer-portal/supplier">
+        <Router basename="/retailer-portal">
             <Switch>
-                <Route path="/:supplierIdentifier">
+                <Route path="/supplier/:supplierIdentifier">
                     <SupplierEdit />
                 </Route>
-                <Route path="/">
+                <Route path="/supplier">
                     <SupplierIndex />
                 </Route>
             </Switch>

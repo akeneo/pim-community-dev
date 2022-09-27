@@ -5,12 +5,12 @@ import {ShowProductFile} from './ShowProductFile';
 
 const ProductFileDroppingApp = () => {
     return (
-        <Router basename="/retailer-portal/product-file-dropping">
+        <Router basename="/retailer-portal">
             <Switch>
-                <Route path="/:productFileIdentifier">
+                <Route path="/product-file-dropping/:productFileIdentifier">
                     <ShowProductFile />
                 </Route>
-                <Route path="/">
+                <Route path="/product-file-dropping">
                     <ListProductFiles />
                 </Route>
             </Switch>
