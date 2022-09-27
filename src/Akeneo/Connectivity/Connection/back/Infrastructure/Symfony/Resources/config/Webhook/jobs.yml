@@ -5,6 +5,15 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\PurgeEventsApiSuccessLogsQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\PurgeEventsApiErrorLogsQuery'
 
+    pim_versioning.step.events_api_purge:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'events_api_purge'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Job\PurgeEventsApiLogs'
+        public: false
+
     pim_platform.job.events_api_purge:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
@@ -13,7 +22,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@Akeneo\Tool\Component\Connector\Step\CheckJobUniqueStep'
-                - '@pim_versioning.step.job_executions_purge'
+                - '@pim_versioning.step.events_api_purge'
             - false
             - false
         public: false
@@ -23,11 +32,10 @@ services:
                 connector: 'internal'
                 type: 'scheduled_job'
 
-    pim_versioning.step.events_api_purge:
-        class: '%pim_connector.step.tasklet.class%'
+    pim_versioning.job.job_parameters.default_values_provider.events_api_purge:
+        class: 'Akeneo\Tool\Component\Batch\Job\JobParameters\EmptyConstraintAndDefaultValuesProvider'
         arguments:
             - 'events_api_purge'
-            - '@event_dispatcher'
-            - '@akeneo_batch.job_repository'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Job\PurgeEventsApiLogs'
-        public: false
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }

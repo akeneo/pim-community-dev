@@ -6,15 +6,17 @@ use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Symfony\Component\Validator\Constraints\Collection;
 
 /**
- * Provides empty constraints that may be used to validate a JobParameters
+ * Provides the minimal providers to validate a Job parameters
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
+ * @author    JM Leroux <jean-marie.leroux@akeneo.com>
+ * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EmptyConstraintCollectionProvider implements ConstraintCollectionProviderInterface
+class EmptyConstraintAndDefaultValuesProvider implements
+    ConstraintCollectionProviderInterface,
+    DefaultValuesProviderInterface
 {
-    public function __construct(protected array $supportedJobNames)
+    public function __construct(protected string $supportedJobName)
     {
     }
 
@@ -31,6 +33,11 @@ class EmptyConstraintCollectionProvider implements ConstraintCollectionProviderI
      */
     public function supports(JobInterface $job): bool
     {
-        return in_array($job->getName(), $this->supportedJobNames);
+        return $job->getName() === $this->supportedJobName;
+    }
+
+    public function getDefaultValues(): array
+    {
+        return [];
     }
 }
