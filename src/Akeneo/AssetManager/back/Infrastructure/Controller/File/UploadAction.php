@@ -30,7 +30,7 @@ class UploadAction
 
     protected PathGeneratorInterface $pathGenerator;
 
-    private FileStorer $fileStorer;
+    private FileStorerInterface $fileStorer;
 
     private FileInfoRepositoryInterface $fileInfoRepository;
 
