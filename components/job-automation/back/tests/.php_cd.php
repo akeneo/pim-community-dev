@@ -50,7 +50,7 @@ $rules = [
             'Akeneo\Tool\Component\Batch\Event\JobExecutionEvent',
             'Akeneo\Tool\Component\Batch\Job',
             'Akeneo\Tool\Component\Batch\Model\JobInstance',
-            'Akeneo\Tool\Component\BatchQueue\Exception\InvalidJobException',
+            'Akeneo\Tool\Component\Batch\Exception\InvalidJobException',
             'Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueue',
             'Akeneo\UserManagement\ServiceApi',
 

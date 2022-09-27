@@ -22,7 +22,7 @@ use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
 use Akeneo\Platform\JobAutomation\Domain\Query\FindScheduledJobInstancesQueryInterface;
 use Akeneo\Platform\JobAutomation\Domain\Query\FindUsersToNotifyQueryInterface;
 use Akeneo\Platform\JobAutomation\Infrastructure\EventSubscriber\RefreshScheduledJobInstanceAfterJobPublished;
-use Akeneo\Tool\Component\BatchQueue\Exception\InvalidJobException;
+use Akeneo\Tool\Component\Batch\Exception\InvalidJobException;
 use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueue;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;

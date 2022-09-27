@@ -12,7 +12,7 @@ use Akeneo\Platform\JobAutomation\Domain\Model\UserToNotify;
 use Akeneo\Platform\JobAutomation\Domain\Model\UserToNotifyCollection;
 use Akeneo\Platform\JobAutomation\Domain\Query\FindScheduledJobInstancesQueryInterface;
 use Akeneo\Platform\JobAutomation\Domain\Query\FindUsersToNotifyQueryInterface;
-use Akeneo\Tool\Component\BatchQueue\Exception\InvalidJobException;
+use Akeneo\Tool\Component\Batch\Exception\InvalidJobException;
 use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueue;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
