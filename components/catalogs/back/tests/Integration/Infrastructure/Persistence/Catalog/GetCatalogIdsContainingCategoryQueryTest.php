@@ -57,7 +57,7 @@ class GetCatalogIdsContainingCategoryQueryTest extends IntegrationTestCase
 
         $this->setCatalogProductSelection($catalogIdUS, [
             [
-                'field' => 'category',
+                'field' => 'categories',
                 'operator' => Operator::IN_LIST,
                 'value' => ['tshirt', 'hoodie'],
                 'scope' => null,
@@ -66,7 +66,7 @@ class GetCatalogIdsContainingCategoryQueryTest extends IntegrationTestCase
         ]);
         $this->setCatalogProductSelection($catalogIdFR, [
             [
-                'field' => 'category',
+                'field' => 'categories',
                 'operator' => Operator::IN_LIST,
                 'value' => ['tshirt'],
                 'scope' => null,

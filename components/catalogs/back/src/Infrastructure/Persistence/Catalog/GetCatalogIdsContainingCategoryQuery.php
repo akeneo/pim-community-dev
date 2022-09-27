@@ -20,6 +20,8 @@ final class GetCatalogIdsContainingCategoryQuery implements GetCatalogIdsContain
 
     /**
      * {@inheritdoc}
+     * @throws \Doctrine\DBAL\Driver\Exception
+     * @throws \Doctrine\DBAL\Exception
      */
     public function execute(string $categoryCode): array
     {
@@ -30,15 +32,12 @@ final class GetCatalogIdsContainingCategoryQuery implements GetCatalogIdsContain
                      field VARCHAR(255)  PATH '$.field',
                      value json PATH '$.value')
                 ) AS criterion
-            WHERE criterion.field = 'category' AND JSON_CONTAINS(criterion.value, json_quote(:categoryCode), '$')
+            WHERE criterion.field = 'categories' AND JSON_CONTAINS(criterion.value, json_quote(:categoryCode), '$')
             AND is_enabled IS TRUE
         SQL;
 
-        /** @var array<string> $catalogIds */
-        $catalogIds = $this->connection->executeQuery($query, [
+        return $this->connection->executeQuery($query, [
             'categoryCode' => $categoryCode,
         ])->fetchFirstColumn();
-
-        return $catalogIds;
     }
 }
