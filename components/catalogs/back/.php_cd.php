@@ -37,6 +37,7 @@ $rules = [
             'Akeneo\Catalogs\Application',
             'Akeneo\Catalogs\Infrastructure',
 
+            // Allowed dependencies in Infrastructure
             'Symfony\Component\Config',
             'Symfony\Component\Console',
             'Symfony\Component\DependencyInjection',
@@ -50,24 +51,31 @@ $rules = [
             'Symfony\Component\Validator',
             'Doctrine\DBAL',
             'Ramsey\Uuid\Uuid',
+            'League\Flysystem\Filesystem',
+            'Opis\JsonSchema',
+            'Psr\Log\LoggerInterface',
             'Akeneo\Platform\Bundle\InstallerBundle',
             'Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface',
             'Akeneo\Tool\Component\Api',
-            'Akeneo\UserManagement\Component\Model\UserInterface',
-            'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
             'Akeneo\Connectivity\Connection\ServiceApi',
-            'League\Flysystem\Filesystem',
+            'Akeneo\Tool\Bundle\MeasureBundle\ServiceApi',
+
+            /**********************************************************************************************************/
+            /* Below are dependencies that we have, but we shouldn't rely on them.
+            /* They are coupling exceptions that should be replaced by better alternatives, like ServiceAPIs.
+            /**********************************************************************************************************/
+
+            // This class is not clearly identified as public API
             'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
 
-            // used in Persistence\Measurement
-            'Akeneo\Tool\Bundle\MeasureBundle\ServiceApi\FindMeasurementFamilies',
+            // used in GetCurrentUsernameTrait
+            'Akeneo\UserManagement\Component\Model\UserInterface',
+            'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
 
             // used in TemporaryEnrichmentBridge
             'Akeneo\Tool\Bundle\ElasticsearchBundle\Client',
             'Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface',
             'Symfony\Component\OptionsResolver',
-
-            // @todo replace next ones with the ones from service API when available
 
             // used in Persistence\Attribute
             'Akeneo\Pim\Structure\Component\Model\AttributeInterface',

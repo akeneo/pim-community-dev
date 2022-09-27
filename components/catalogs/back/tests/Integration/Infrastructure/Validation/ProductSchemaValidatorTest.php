@@ -56,7 +56,7 @@ class ProductSchemaValidatorTest extends IntegrationTestCase
     {
         return [
             '0.0.1 with valid schema' => [
-                'schema' => <<<'JSON'
+                'schema' => <<<'JSON_WRAP'
 {
   "$id": "https://example.com/product",
   "$schema": "https://api.akeneo.com/mapping/product/0.0.1/schema",
@@ -75,7 +75,7 @@ class ProductSchemaValidatorTest extends IntegrationTestCase
     }
   }
 }
-JSON,
+JSON_WRAP,
             ],
         ];
     }
@@ -84,7 +84,7 @@ JSON,
     {
         return [
             '0.0.1 with invalid type number' => [
-                'schema' => <<<'JSON'
+                'schema' => <<<'JSON_WRAP'
 {
   "$schema": "https://api.akeneo.com/mapping/product/0.0.1/schema",
   "properties": {
@@ -93,17 +93,17 @@ JSON,
     }
   }
 }
-JSON,
+JSON_WRAP,
             ],
             '0.0.1 with missing target type' => [
-                'schema' => <<<'JSON'
+                'schema' => <<<'JSON_WRAP'
 {
   "$schema": "https://api.akeneo.com/mapping/product/0.0.1/schema",
   "properties": {
     "price": {}
   }
 }
-JSON,
+JSON_WRAP,
             ],
         ];
     }

@@ -35,7 +35,7 @@ final class ProductSchemaValidator extends ConstraintValidator
         }
 
         $metaSchemaId = $value->{'$schema'} ?? null;
-        if (null === $metaSchemaId) {
+        if (null === $metaSchemaId || !\is_string($metaSchemaId)) {
             $this->context
                 ->buildViolation('You must provide a $schema reference.')
                 ->addViolation();
@@ -53,7 +53,9 @@ final class ProductSchemaValidator extends ConstraintValidator
         }
 
         $validator = new Validator();
-        $validator->resolver()->registerFile($metaSchemaId, $metaSchemaPath);
+        $resolver = $validator->resolver();
+        \assert(null !== $resolver);
+        $resolver->registerFile($metaSchemaId, $metaSchemaPath);
 
         $result = $validator->validate($value, $metaSchemaId);
 
