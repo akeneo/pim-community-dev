@@ -151,6 +151,8 @@ tests-supplier-portal-supplier: lint-front-supplier unit-front-supplier lint-bac
 .PHONY: build-supplier-portal-supplier-front-app
 build-supplier-portal-supplier-front-app: #Doc: Build Supplier Portal supplier frontend application
 	$(YARN_RUN) run --cwd=components/supplier-portal-supplier/front app:build
+	mkdir public/supplier-portal/
+	mv components/supplier-portal-supplier/front/build/* public/supplier-portal/
 
 .PHONY: trans-front-extract-supplier
 trans-front-extract-supplier: #Doc: Extract Supplier App translations for Crowdin
