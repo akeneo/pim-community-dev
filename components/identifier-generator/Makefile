@@ -11,3 +11,8 @@ identifier-generator-integration-back:
 		--testsuite Identifier_Generator_Integration \
 		--order-by random \
 		--log-junit var/tests/phpunit/phpunit_identifier_generator_integration.xml ${O}
+
+# TESTS FRONT
+.PHONY: identifier-generator-unit-front
+identifier-generator-unit-front: yarn-policies
+	$(IDENTIFIER_GENERATOR_YARN) workspace @akeneo-pim-community/identifier-generator test:unit:run --ci --coverage

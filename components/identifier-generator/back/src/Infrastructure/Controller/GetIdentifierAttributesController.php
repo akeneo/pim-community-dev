@@ -14,7 +14,7 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 final class GetIdentifierAttributesController
 {
-    // The limit of the number of identifier attributes in the PIM
+    // The maximum count of identifier attributes in the PIM
     const MAX_RESULTS = 1;
 
     public function __construct(

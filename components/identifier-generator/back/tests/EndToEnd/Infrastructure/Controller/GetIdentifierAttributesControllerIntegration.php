@@ -44,7 +44,7 @@ final class GetIdentifierAttributesControllerIntegration extends ControllerEndTo
         );
         $response = $this->client->getResponse();
         Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
-        Assert::assertSame('[{"code":"sku","label":"[sku]"}]', $response->getContent());
+        Assert::assertSame('[{"code":"coucou","label":"[sku]"}]', $response->getContent());
     }
 
     /** @test */
