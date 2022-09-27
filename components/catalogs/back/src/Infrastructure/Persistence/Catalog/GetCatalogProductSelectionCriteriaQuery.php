@@ -40,7 +40,7 @@ final class GetCatalogProductSelectionCriteriaQuery implements GetCatalogProduct
             throw new \LogicException('Catalog not found');
         }
 
-        /** @var array<array-key,array{field: string, operator: string, value?: mixed}>|null $criteria */
+        /** @var array<array-key, array{field: string, operator: string, value?: mixed, scope?: string|null, locale?: string|null}>|null $criteria */
         $criteria = \json_decode($result, true, 512, JSON_THROW_ON_ERROR);
         if (!\is_array($criteria)) {
             throw new \LogicException('Invalid JSON in product_selection_criteria column');
