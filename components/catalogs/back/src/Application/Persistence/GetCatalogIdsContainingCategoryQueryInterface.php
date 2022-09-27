@@ -10,7 +10,8 @@ namespace Akeneo\Catalogs\Application\Persistence;
 interface GetCatalogIdsContainingCategoryQueryInterface
 {
     /**
-     * @return array<string>
+     * @param string[] $categoryCodes
+     * @return string[]
      */
-    public function execute(string $categoryCode): array;
+    public function execute(array $categoryCodes): array;
 }

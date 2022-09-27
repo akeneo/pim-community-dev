@@ -6,9 +6,9 @@ namespace Akeneo\Catalogs\Infrastructure\Job;
 
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Required;
-use Symfony\Component\Validator\Constraints\Type;
 
 class DisableCatalogsOnCategoryRemovalConstraint implements ConstraintCollectionProviderInterface
 {
@@ -16,8 +16,13 @@ class DisableCatalogsOnCategoryRemovalConstraint implements ConstraintCollection
     {
         return new Collection([
             'fields' => [
-                'category_code' => new Required([
-                    new Type('string'),
+                'category_codes' => new Required([
+                    new Assert\Type('array'),
+                    new Assert\All([
+                        'constraints' => [
+                            new Assert\Type('string'),
+                        ],
+                    ]),
                 ]),
             ],
         ]);

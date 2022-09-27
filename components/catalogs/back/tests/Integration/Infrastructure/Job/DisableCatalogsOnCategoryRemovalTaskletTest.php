@@ -17,7 +17,7 @@ class DisableCatalogsOnCategoryRemovalTaskletTest extends IntegrationTestCase
         $this->purgeDataAndLoadMinimalCatalog();
     }
 
-    public function testItDisablesCatalogOnCategoryRemoval(): void
+    public function testItDisablesCatalogsOnCategoryRemoval(): void
     {
         $this->getAuthenticatedInternalApiClient();
         $this->createCategory([
@@ -40,7 +40,7 @@ class DisableCatalogsOnCategoryRemovalTaskletTest extends IntegrationTestCase
 
         $this->setCatalogProductSelection($idCatalogUS, [
             [
-                'field' => 'category',
+                'field' => 'categories',
                 'operator' => Operator::IN_LIST,
                 'value' => ['tshirt'],
                 'scope' => null,
@@ -49,7 +49,7 @@ class DisableCatalogsOnCategoryRemovalTaskletTest extends IntegrationTestCase
         ]);
         $this->setCatalogProductSelection($idCatalogFR, [
             [
-                'field' => 'category',
+                'field' => 'categories',
                 'operator' => Operator::IN_LIST,
                 'value' => ['scanner'],
                 'scope' => null,
@@ -61,6 +61,35 @@ class DisableCatalogsOnCategoryRemovalTaskletTest extends IntegrationTestCase
 
         $this->assertCatalogIsDisabled($idCatalogUS);
         $this->assertCatalogIsEnabled($idCatalogFR);
+    }
+
+    public function testItDisablesCatalogOnParentCategoryRemoval(): void
+    {
+        $this->getAuthenticatedInternalApiClient();
+
+        $this->createCategory(['code' => 'clothes']);
+        $this->createCategory(['code' => 'tshirt', 'parent' => 'clothes']);
+        $this->createCategory(['code' => 'pants', 'parent' => 'clothes']);
+        $this->createCategory(['code' => 'shorts', 'parent' => 'pants']);
+
+        $idCatalogUS = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
+        $this->createUser('shopifi');
+        $this->createCatalog($idCatalogUS, 'Store US', 'shopifi');
+        $this->enableCatalog($idCatalogUS);
+
+        $this->setCatalogProductSelection($idCatalogUS, [
+            [
+                'field' => 'categories',
+                'operator' => Operator::IN_LIST,
+                'value' => ['shorts'],
+                'scope' => null,
+                'locale' => null,
+            ],
+        ]);
+
+        $this->removeCategory('clothes');
+
+        $this->assertCatalogIsDisabled($idCatalogUS);
     }
 
     private function assertCatalogIsDisabled(string $id): void

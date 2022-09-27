@@ -27,7 +27,7 @@ class GetCatalogIdsContainingCategoryQueryTest extends IntegrationTestCase
         $this->query = self::getContainer()->get(GetCatalogIdsContainingCategoryQuery::class);
     }
 
-    public function testItGetsCatalogsByCategory(): void
+    public function testItGetsCatalogsByCategoryCodes(): void
     {
         $this->createUser('shopifi');
         $catalogIdUS = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
@@ -74,13 +74,13 @@ class GetCatalogIdsContainingCategoryQueryTest extends IntegrationTestCase
             ],
         ]);
 
-        $resultTshirt = $this->query->execute('tshirt');
+        $resultTshirt = $this->query->execute(['tshirt']);
         $this->assertEquals([$catalogIdUS, $catalogIdFR], $resultTshirt);
 
-        $resultHoodie = $this->query->execute('hoodie');
+        $resultHoodie = $this->query->execute(['hoodie']);
         $this->assertEquals([$catalogIdUS], $resultHoodie);
 
-        $resultShoes = $this->query->execute('shoes');
+        $resultShoes = $this->query->execute(['shoes']);
         $this->assertEquals([], $resultShoes);
     }
 }
