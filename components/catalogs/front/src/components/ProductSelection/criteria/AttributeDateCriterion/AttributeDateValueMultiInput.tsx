@@ -20,7 +20,7 @@ const value = (state: AttributeDateCriterionState, index: number): string => {
 const AttributeDateValueMultiInput: FC<Props> = ({state, onChange, isInvalid}) => {
     return (
         <>
-            <CriterionField width={200}>
+            <CriterionField width={140}>
                 <DateInput
                     onChange={v => onChange({...state, value: [v, value(state, 1)]})}
                     value={value(state, 0)}
@@ -29,7 +29,7 @@ const AttributeDateValueMultiInput: FC<Props> = ({state, onChange, isInvalid}) =
                     required
                 />
             </CriterionField>
-            <CriterionField width={200}>
+            <CriterionField width={140}>
                 <DateInput
                     onChange={v => onChange({...state, value: [value(state, 0), v]})}
                     value={value(state, 1)}

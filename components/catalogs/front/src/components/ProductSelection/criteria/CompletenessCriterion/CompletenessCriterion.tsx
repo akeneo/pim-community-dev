@@ -1,7 +1,6 @@
 import React, {FC} from 'react';
 import {CloseIcon, IconButton, List} from 'akeneo-design-system';
 import {CriterionModule} from '../../models/Criterion';
-import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {CompletenessCriterionState} from './types';
 import {CompletenessOperatorInput} from './CompletenessOperatorInput';
@@ -9,18 +8,7 @@ import {CompletenessValueInput} from './CompletenessValueInput';
 import {CompletenessLocaleInput} from './CompletenessLocaleInput';
 import {CompletenessScopeInput} from './CompletenessScopeInput';
 import {ErrorHelpers} from '../../components/ErrorHelpers';
-
-const Fields = styled.div`
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    flex-grow: 1;
-`;
-
-const Field = styled.div`
-    flex-basis: 200px;
-    flex-shrink: 0;
-`;
+import {CriterionField, CriterionFields} from '../../components/CriterionFields';
 
 const CompletenessCriterion: FC<CriterionModule<CompletenessCriterionState>> = ({
     state,
@@ -37,20 +25,20 @@ const CompletenessCriterion: FC<CriterionModule<CompletenessCriterionState>> = (
                 {translate('akeneo_catalogs.product_selection.criteria.completeness.label')}
             </List.TitleCell>
             <List.Cell width='auto'>
-                <Fields>
-                    <Field>
+                <CriterionFields>
+                    <CriterionField>
                         <CompletenessOperatorInput state={state} onChange={onChange} isInvalid={!!errors.operator} />
-                    </Field>
-                    <Field>
+                    </CriterionField>
+                    <CriterionField width={300}>
                         <CompletenessValueInput state={state} onChange={onChange} isInvalid={!!errors.value} />
-                    </Field>
-                    <Field>
+                    </CriterionField>
+                    <CriterionField width={120}>
                         <CompletenessScopeInput state={state} onChange={onChange} isInvalid={!!errors.scope} />
-                    </Field>
-                    <Field>
+                    </CriterionField>
+                    <CriterionField width={120}>
                         <CompletenessLocaleInput state={state} onChange={onChange} isInvalid={!!errors.locale} />
-                    </Field>
-                </Fields>
+                    </CriterionField>
+                </CriterionFields>
             </List.Cell>
             <List.RemoveCell>
                 <IconButton
