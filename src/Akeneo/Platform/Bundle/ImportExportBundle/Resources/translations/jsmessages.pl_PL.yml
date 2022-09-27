@@ -171,11 +171,6 @@ pim_import_export:
       connection_checker:
         label: Przetestuj ustawienia połączenia
         exception: Nie można ustanowić połączenia, sprawdź ustawienia.
-  widget:
-    last_operations:
-      empty: Obecnie nie ma operacji do wyświetlenia.
-      details: Szczegóły
-      header.view_all: Zobacz wszystko
   batch_status:
     1: Zakończone
     2: Rozpoczynanie
