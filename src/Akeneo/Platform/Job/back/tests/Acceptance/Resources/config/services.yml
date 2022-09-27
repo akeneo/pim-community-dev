@@ -7,3 +7,6 @@ services:
 
   Akeneo\Platform\Job\Application\FindJobType\FindJobTypeInterface:
     class: Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryFindJobType
+
+  Akeneo\Platform\Job\ServiceApi\JobInstance\FindJobInstanceInterface:
+    class: Akeneo\Platform\Job\Test\Integration\ServiceApi\InMemoryFindJobType
