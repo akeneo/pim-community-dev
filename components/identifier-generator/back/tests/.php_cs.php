@@ -9,6 +9,7 @@ return (new PhpCsFixer\Config())
         ],
         'no_unused_imports' => true,
         'blank_line_before_statement' => true,
+        'declare_strict_types' => true,
     ))
     ->setCacheFile('var/php_cs.cache')
     ->setFinder(
