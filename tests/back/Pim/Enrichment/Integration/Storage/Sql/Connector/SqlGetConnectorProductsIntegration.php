@@ -79,7 +79,7 @@ class SqlGetConnectorProductsIntegration extends TestCase
             ]
         );
 
-        $this->createProduct('apollon_A_false', [
+        $productApollonA = $this->createProduct('apollon_A_false', [
             new ChangeParent('amor'),
             new SetCategories(['categoryB', 'categoryC']),
             new SetSimpleSelectValue('a_simple_select', null, null, 'optionA'),
@@ -101,7 +101,7 @@ class SqlGetConnectorProductsIntegration extends TestCase
             new AssociateGroups('X_SELL', ['groupB']),
             new AssociateQuantifiedProducts(
                 'PRODUCT_SET',
-                [new QuantifiedEntity('apollon_A_false', 6)],
+                [new QuantifiedEntity((string) $productApollonA->getUuid(), 6)],
             ),
             new AssociateQuantifiedProductModels(
                 'ANOTHER_PRODUCT_SET',
@@ -109,7 +109,7 @@ class SqlGetConnectorProductsIntegration extends TestCase
             ),
             new AssociateQuantifiedProducts(
                 '11',
-                [new QuantifiedEntity('apollon_A_false', 2)],
+                [new QuantifiedEntity((string) $apollonAFalse->getUuid(), 2)],
             ),
         ]);
 

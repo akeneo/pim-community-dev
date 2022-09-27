@@ -194,7 +194,7 @@ CSV;
                 ]
             ]
         );
-        $this->createProduct(
+        $apollonPinkM = $this->createProduct(
             'apollon_pink_m',
             [
                 new SetFamily('clothing'),
@@ -218,7 +218,7 @@ CSV;
                 new AssociateProducts('X_SELL', ['apollon_pink_m']),
                 new AssociateProductModels('X_SELL', ['apollon']),
                 new AssociateQuantifiedProducts('QUANTITY', [
-                    new QuantifiedEntity('apollon_pink_m', 12)]
+                    new QuantifiedEntity((string) $apollonPinkM->getUuid(), 12)]
                 ),
                 new AssociateQuantifiedProductModels('QUANTITY', [
                     new QuantifiedEntity('apollon', 5)

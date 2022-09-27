@@ -100,7 +100,7 @@ class ConvertVariantToSimpleProductIntegration extends TestCase
         $associationType->setIsQuantified(true);
         $this->get('pim_catalog.saver.association_type')->save($associationType);
 
-        $this->upsertProduct('random', [new SetFamily('familyA')]);
+        $randomProduct = $this->upsertProduct('random', [new SetFamily('familyA')]);
         $this->upsertProduct('other', [new SetFamily('familyA1')]);
         $this->createProductModel(['code' => 'pm_1', 'family_variant' => 'familyVariantA1']);
         $this->createProductModel(['code' => 'pm_2', 'family_variant' => 'familyVariantA2']);
@@ -178,7 +178,9 @@ class ConvertVariantToSimpleProductIntegration extends TestCase
                 new AssociateProducts('PACK', ['other']),
                 new AssociateProductModels('UPSELL', ['pm_2']),
                 new AssociateGroups('UPSELL', ['groupB']),
-                new AssociateQuantifiedProducts('quantified', [new QuantifiedEntity('random', 2)])
+                new AssociateQuantifiedProducts('quantified', [
+                    new QuantifiedEntity((string) $randomProduct->getUuid(), 2)
+                ])
             ]
         );
         $this->get('pim_catalog.validator.unique_value_set')->reset();
