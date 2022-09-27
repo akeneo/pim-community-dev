@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Test\Integration\ServiceApi;
 
-use Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstanceQuery;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\FindJobInstanceInterface;
+use Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstanceQuery;
 use Akeneo\Platform\Job\Test\Integration\IntegrationTestCase;
 
 class FindJobInstanceTest extends IntegrationTestCase
 {
     private FindJobInstanceInterface $findJobInstanceQuery;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         parent::setUp();
         $this->findJobInstanceQuery = $this->get(FindJobInstanceInterface::class);
     }
@@ -20,7 +21,8 @@ class FindJobInstanceTest extends IntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_job_instances(): void {
+    public function it_returns_job_instances(): void
+    {
         $this->loadFixtures();
 
         $query = new JobInstanceQuery();
@@ -42,7 +44,8 @@ class FindJobInstanceTest extends IntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_job_instances_filtered_on_type(): void {
+    public function it_returns_job_instances_filtered_on_type(): void
+    {
         $this->loadFixtures();
 
         $query = new JobInstanceQuery();
@@ -61,7 +64,8 @@ class FindJobInstanceTest extends IntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_searched_job_instances(): void {
+    public function it_returns_searched_job_instances(): void
+    {
         $this->loadFixtures();
 
         $query = new JobInstanceQuery();
@@ -80,7 +84,8 @@ class FindJobInstanceTest extends IntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_paginated_job_instances(): void {
+    public function it_returns_paginated_job_instances(): void
+    {
         $this->loadFixtures();
 
         $query = new JobInstanceQuery();
@@ -101,7 +106,8 @@ class FindJobInstanceTest extends IntegrationTestCase
         $this->assertEquals($expectedJobInstances, $this->findJobInstanceQuery->fromQuery($query));
     }
 
-    private function loadFixtures(): void {
+    private function loadFixtures(): void
+    {
         $productImportJobInstance = $this->fixturesJobHelper->createJobInstance([
             'code' => 'a_product_import',
             'label' => 'A product import',
