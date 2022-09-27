@@ -151,6 +151,32 @@ final class MultiReferenceEntityValidatorTest extends AbstractValidationTest
                     'sample_data' => [],
                 ]
             ],
+            'a valid multi reference entity data mapping with replacement operation' => [
+                [
+                    'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
+                    'target' => [
+                        'code' => 'a_multi_reference',
+                        'type' => 'attribute',
+                        'attribute_type' => 'akeneo_reference_entity_collection',
+                        'channel' => null,
+                        'locale' => null,
+                        'action_if_not_empty' => 'set',
+                        'action_if_empty' => 'skip',
+                        'source_configuration' => null,
+                    ],
+                    'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
+                    'operations' => [
+                        [
+                            'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',
+                            'type' => 'multi_reference_entity_replacement',
+                            'mapping' => [
+                                'toto' => ['titi', 'tutu'],
+                            ],
+                        ]
+                    ],
+                    'sample_data' => [],
+                ]
+            ],
         ];
     }
 

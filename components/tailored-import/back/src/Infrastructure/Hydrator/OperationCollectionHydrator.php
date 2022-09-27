@@ -24,6 +24,7 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToNumberOperati
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToPriceOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\EnabledReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\FamilyReplacementOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\MultiReferenceEntityReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\MultiSelectReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\RemoveWhitespaceOperation;
@@ -75,6 +76,7 @@ class OperationCollectionHydrator implements OperationCollectionHydratorInterfac
                 ChangeCaseOperation::TYPE => new ChangeCaseOperation($normalizedOperation['uuid'], $normalizedOperation['mode']),
                 RemoveWhitespaceOperation::TYPE => new RemoveWhitespaceOperation($normalizedOperation['uuid'], $normalizedOperation['modes']),
                 SimpleReferenceEntityReplacementOperation::TYPE => new SimpleReferenceEntityReplacementOperation($normalizedOperation['uuid'], $normalizedOperation['mapping']),
+                MultiReferenceEntityReplacementOperation::TYPE => new MultiReferenceEntityReplacementOperation($normalizedOperation['uuid'], $normalizedOperation['mapping']),
                 default => throw new \InvalidArgumentException(sprintf('Unsupported "%s" Operation type', $normalizedOperation['type'])),
             },
             $normalizedOperations,

@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredImport\Domain\Model\Operation;
 
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\MultiReferenceEntityReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationInterface;
-use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SimpleReferenceEntityReplacementOperation;
 use PhpSpec\ObjectBehavior;
 
-final class SimpleReferenceEntityReplacementOperationSpec extends ObjectBehavior
+class MultiReferenceEntityReplacementOperationSpec extends ObjectBehavior
 {
     public function let()
     {
@@ -33,7 +33,7 @@ final class SimpleReferenceEntityReplacementOperationSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->shouldHaveType(SimpleReferenceEntityReplacementOperation::class);
+        $this->shouldHaveType(MultiReferenceEntityReplacementOperation::class);
     }
 
     public function it_implements_operation_interface(): void
@@ -58,8 +58,8 @@ final class SimpleReferenceEntityReplacementOperationSpec extends ObjectBehavior
     public function it_normalizes_operation(): void
     {
         $this->normalize()->shouldReturn([
-            'type' => 'simple_reference_entity_replacement',
             'uuid' => '00000000-0000-0000-0000-000000000000',
+            'type' => 'multi_reference_entity_replacement',
             'mapping' => [
                 'adidas' => ['nike', 'reebok'],
                 6 => ['foo', 'bar'],

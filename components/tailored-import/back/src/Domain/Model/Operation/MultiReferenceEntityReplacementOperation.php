@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Domain\Model\Operation;
 
-final class SimpleReferenceEntityReplacementOperation extends AbstractReplacementOperation
+final class MultiReferenceEntityReplacementOperation extends AbstractReplacementOperation
 {
-    public const TYPE = 'simple_reference_entity_replacement';
+    public const TYPE = 'multi_reference_entity_replacement';
 
     public function normalize(): array
     {
         return [
-            'type' => self::TYPE,
             'uuid' => $this->uuid,
-            'mapping' => $this->getMapping(),
+            'type' => self::TYPE,
+            'mapping' => $this->mapping,
         ];
     }
 }

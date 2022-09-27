@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\MultiReferenceEntity;
 
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\MultiReferenceEntityReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SplitOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\AttributeTarget;
@@ -53,6 +54,7 @@ final class MultiReferenceEntityValidator extends ConstraintValidator
                 'sources' => new Sources(true, $constraint->getColumnUuids()),
                 'operations' => new Operations([
                     SplitOperation::TYPE,
+                    MultiReferenceEntityReplacementOperation::TYPE,
                 ]),
                 'sample_data' => new SampleData(),
             ],
