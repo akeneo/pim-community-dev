@@ -1,0 +1,8 @@
+services:
+  akeneo.tailored_import.controller.get_records_action:
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Controller\GetRecordsAction
+    public: true
+    arguments:
+      - '@akeneo_referenceentity.infrastructure.persistence.query.platform.search_records'
+      - '@validator'
+      - '@serializer'

@@ -1,0 +1,4 @@
+services:
+  Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\SimpleReferenceEntityReplacementOperationApplier:
+    tags:
+      - { name: akeneo.tailored_import.operation_applier }
