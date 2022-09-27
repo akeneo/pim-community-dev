@@ -6,6 +6,7 @@ namespace Akeneo\Platform\Job\Test\Integration\ServiceApi;
 
 use Akeneo\Platform\Job\ServiceApi\JobInstance\FindJobInstanceInterface;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstanceQuery;
+use Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstanceQueryPagination;
 use Akeneo\Platform\Job\Test\Integration\IntegrationTestCase;
 
 class FindJobInstanceTest extends IntegrationTestCase
@@ -89,8 +90,11 @@ class FindJobInstanceTest extends IntegrationTestCase
         $this->loadFixtures();
 
         $query = new JobInstanceQuery();
-        $query->pagination->page = 1;
-        $query->pagination->limit = 10;
+        $queryPagination = new JobInstanceQueryPagination();
+
+        $queryPagination->page = 1;
+        $queryPagination->limit = 10;
+        $query->pagination = $queryPagination;
 
         $expectedJobInstances = [
             [
