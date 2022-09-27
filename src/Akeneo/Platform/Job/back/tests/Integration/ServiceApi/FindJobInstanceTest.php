@@ -108,14 +108,18 @@ class FindJobInstanceTest extends IntegrationTestCase
 
     private function loadFixtures(): void
     {
-        $productImportJobInstance = $this->fixturesJobHelper->createJobInstance([
+        $this->fixturesJobHelper->createJobInstance([
             'code' => 'a_product_import',
+            'job_name' => 'a_product_import',
             'label' => 'A product import',
+            'type' => 'import',
         ]);
 
-        $productExportJobInstance = $this->fixturesJobHelper->createJobInstance([
+        $this->fixturesJobHelper->createJobInstance([
             'code' => 'a_product_export',
+            'job_name' => 'a_product_export',
             'label' => 'A product export',
+            'type' => 'export',
         ]);
     }
 }
