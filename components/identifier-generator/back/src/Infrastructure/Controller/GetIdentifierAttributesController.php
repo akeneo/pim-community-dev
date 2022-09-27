@@ -5,7 +5,7 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\FindFlattenAttributesInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\FlattenAttribute;
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
-use Oro\Bundle\SecurityBundle\Exception\AccessDeniedException;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,9 +14,13 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 final class GetIdentifierAttributesController
 {
+    // The limit of the number of identifier attributes in the PIM
+    const MAX_RESULTS = 1;
+
     public function __construct(
         private FindFlattenAttributesInterface $findFlattenAttributes,
         private SecurityFacadeInterface $securityFacade,
+        private UserContext $userContext,
     ) {
     }
 
@@ -30,17 +34,15 @@ final class GetIdentifierAttributesController
         }
 
         $attributes = $this->findFlattenAttributes->execute(
-            'en_US',
-        20,
+            $this->userContext->getCurrentLocaleCode(),
+        self::MAX_RESULTS,
             ['pim_catalog_identifier']
         );
 
         $normalizeAttribute = static function (FlattenAttribute $attribute): array {
             return [
                 'code' => $attribute->getCode(),
-                'labels' => [
-                    'en_US' => $attribute->getLabel()
-                ]
+                'label' => $attribute->getLabel(),
             ];
         };
 

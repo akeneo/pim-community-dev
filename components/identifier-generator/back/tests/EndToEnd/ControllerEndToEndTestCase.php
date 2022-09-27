@@ -21,8 +21,7 @@ abstract class ControllerEndToEndTestCase extends WebTestCase
 {
     protected KernelBrowser $client;
 
-    /** @var CatalogInterface */
-    protected $catalog;
+    protected CatalogInterface $catalog;
 
     abstract protected function getConfiguration(): Configuration;
 

@@ -4,3 +4,4 @@ services:
     arguments:
       - '@akeneo.pim.structure.query.find_flatten_attributes'
       - '@oro_security.security_facade'
+      - '@pim_user.context.user'

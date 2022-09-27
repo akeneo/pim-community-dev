@@ -11,9 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class GetIdentifierAttributesControllerIntegration extends ControllerEndToEndTestCase
 {
-    /**
-     * @test
-     */
+    /** @test */
     public function it_should_redirect_on_non_xml_request(): void
     {
         $this->getAuthenticated()->logIn('Julia', $this->client);
@@ -31,9 +29,7 @@ final class GetIdentifierAttributesControllerIntegration extends ControllerEndTo
         Assert::assertTrue($response->isRedirect('/'));
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function it_should_get_identifiers(): void
     {
         $this->getAuthenticated()->logIn('Julia', $this->client);
@@ -48,12 +44,10 @@ final class GetIdentifierAttributesControllerIntegration extends ControllerEndTo
         );
         $response = $this->client->getResponse();
         Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
-        Assert::assertSame('[{"code":"sku","labels":{"en_US":"[sku]"}}]', $response->getContent());
+        Assert::assertSame('[{"code":"sku","label":"[sku]"}]', $response->getContent());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function it_should_be_unauthorized(): void
     {
         $this->getAuthenticated()->logIn('admin', $this->client);
