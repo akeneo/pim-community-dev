@@ -8,15 +8,28 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\Produc
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
+use Akeneo\SupplierPortal\Retailer\Test\Builders\SupplierBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
 
 final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        ($this->get(Repository::class))->save(
+            (new SupplierBuilder())
+                ->withIdentifier('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7')
+                ->withCode('supplier_1')
+                ->build(),
+        );
+    }
+
     /** @test */
     public function itSavesAProductFile(): void
     {
-        $this->createSupplier();
         $repository = $this->get(ProductFileRepository::class);
         $productFile = ProductFile::create(
             'b8b13d0b-496b-4a7c-a574-0d522ba90752',
@@ -39,7 +52,6 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
     /** @test */
     public function itSavesRetailerCommentsForAProductFile(): void
     {
-        $this->createSupplier();
         $repository = $this->get(ProductFileRepository::class);
         $productFile = ProductFile::create(
             'b8b13d0b-496b-4a7c-a574-0d522ba90752',
@@ -77,7 +89,6 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
     /** @test */
     public function itSavesSupplierCommentsForAProductFile(): void
     {
-        $this->createSupplier();
         $repository = $this->get(ProductFileRepository::class);
         $productFile = ProductFile::create(
             'b8b13d0b-496b-4a7c-a574-0d522ba90752',
@@ -115,7 +126,6 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
     /** @test */
     public function itFindsAProductFileFromItsIdentifier(): void
     {
-        $this->createSupplier();
         $this->createProductFile('8d388bdc-8243-4e88-9c7c-6be0d7afb9df');
 
         $repository = $this->get(ProductFileRepository::class);
@@ -197,15 +207,5 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
         return $this->get(Connection::class)
             ->executeQuery($sql, ['productFileIdentifier' => $productFileIdentifier])
             ->fetchAllAssociative();
-    }
-
-    private function createSupplier(): void
-    {
-        $sql = <<<SQL
-            INSERT INTO akeneo_supplier_portal_supplier (identifier, code, label) 
-            VALUES ('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7', 'supplier-1', 'Supplier 1');
-        SQL;
-
-        $this->get(Connection::class)->executeStatement($sql);
     }
 }

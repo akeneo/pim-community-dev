@@ -5,11 +5,25 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\ProductFileDropping\Query\Sql;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\CountProductFileComments;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
+use Akeneo\SupplierPortal\Retailer\Test\Builders\SupplierBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
 
 final class DatabaseCountProductFileCommentsIntegration extends SqlIntegrationTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        ($this->get(Repository::class))->save(
+            (new SupplierBuilder())
+                ->withIdentifier('cf09479f-f8c3-4128-a3f9-addbaac9362e')
+                ->build(),
+        );
+    }
+
+
     /** @test */
     public function itReturnsZeroIfTheGivenProductFileDoesNotExist(): void
     {
@@ -22,7 +36,6 @@ final class DatabaseCountProductFileCommentsIntegration extends SqlIntegrationTe
     /** @test */
     public function itReturnsZeroIfThereIsNoComment(): void
     {
-        $this->createSupplier();
         $this->createProductFile('594bb1e2-72a8-4bac-8651-e4a5384f3cdf');
 
         $numberOfProductFileComments = $this->get(CountProductFileComments::class)(
@@ -35,7 +48,6 @@ final class DatabaseCountProductFileCommentsIntegration extends SqlIntegrationTe
     /** @test */
     public function itCountsTheNumberOfCommentsForAProductFileWhenThereIsOnlyRetailerComments(): void
     {
-        $this->createSupplier();
         $this->createProductFile('594bb1e2-72a8-4bac-8651-e4a5384f3cdf');
         $this->createRetailerComment();
 
@@ -49,7 +61,6 @@ final class DatabaseCountProductFileCommentsIntegration extends SqlIntegrationTe
     /** @test */
     public function itCountsTheNumberOfCommentsForAProductFileWhenThereIsRetailerAndSupplierComments(): void
     {
-        $this->createSupplier();
         $this->createProductFile('594bb1e2-72a8-4bac-8651-e4a5384f3cdf');
         $this->createRetailerComment();
         $this->createSupplierComment();
@@ -83,23 +94,6 @@ final class DatabaseCountProductFileCommentsIntegration extends SqlIntegrationTe
                 'contributorEmail' => 'jimmy@punchline.com',
                 'supplierIdentifier' => 'cf09479f-f8c3-4128-a3f9-addbaac9362e',
                 'uploadedAt' => '2022-09-07 08:54:38',
-            ],
-        );
-    }
-
-    private function createSupplier(): void
-    {
-        $sql = <<<SQL
-            INSERT INTO `akeneo_supplier_portal_supplier` (identifier, code, label)
-            VALUES (:identifier, :code, :label)
-        SQL;
-
-        $this->get(Connection::class)->executeQuery(
-            $sql,
-            [
-                'identifier' => 'cf09479f-f8c3-4128-a3f9-addbaac9362e',
-                'code' => 'los_pollos_hermanos',
-                'label' => 'Los Pollos Hermanos',
             ],
         );
     }

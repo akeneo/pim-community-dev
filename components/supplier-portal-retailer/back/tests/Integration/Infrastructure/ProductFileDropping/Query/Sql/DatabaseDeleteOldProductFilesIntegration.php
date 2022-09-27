@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\ProductFileDropping\Query\Sql;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DeleteOldProductFiles;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
+use Akeneo\SupplierPortal\Retailer\Test\Builders\SupplierBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
@@ -14,7 +16,11 @@ final class DatabaseDeleteOldProductFilesIntegration extends SqlIntegrationTestC
     /** @test */
     public function itDeletesOldProductFiles(): void
     {
-        $this->createSupplier();
+        ($this->get(Repository::class))->save(
+            (new SupplierBuilder())
+                ->withIdentifier('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7')
+                ->build(),
+        );
         $this->createSupplierProductFiles();
 
         $this->get(DeleteOldProductFiles::class)();
@@ -24,16 +30,6 @@ final class DatabaseDeleteOldProductFilesIntegration extends SqlIntegrationTestC
             ['original_filename' => 'file1.xlsx'],
             ['original_filename' => 'file2.xlsx'],
         ], $supplierProductFilenames);
-    }
-
-    private function createSupplier(): void
-    {
-        $sql = <<<SQL
-            INSERT INTO akeneo_supplier_portal_supplier (identifier, code, label) 
-            VALUES ('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7', 'supplier-1', 'Supplier 1');
-        SQL;
-
-        $this->get(Connection::class)->executeStatement($sql);
     }
 
     private function createSupplierProductFiles(): void

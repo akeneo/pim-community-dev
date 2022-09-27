@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\ProductFileDropping\Query\Sql;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilesCount;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
+use Akeneo\SupplierPortal\Retailer\Test\Builders\SupplierBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
@@ -20,8 +22,19 @@ final class DatabaseGetProductFilesCountIntegration extends SqlIntegrationTestCa
     /** @test */
     public function itReturnsTheTotalNumberOfProductFiles(): void
     {
-        $this->createSupplier('44ce8069-8da1-4986-872f-311737f46f00', 'supplier_1', 'Supplier 1');
-        $this->createSupplier('a20576cd-840f-4124-9900-14d581491387', 'supplier_2', 'Supplier 2');
+        $supplierRepository = $this->get(Repository::class);
+        $supplierRepository->save(
+            (new SupplierBuilder())
+                ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f00')
+                ->withCode('supplier_1')
+                ->build(),
+        );
+        $supplierRepository->save(
+            (new SupplierBuilder())
+                ->withIdentifier('a20576cd-840f-4124-9900-14d581491387')
+                ->withCode('supplier_2')
+                ->build(),
+        );
 
         for ($i = 1; 15 >= $i; $i++) {
             $this->createProductFile('44ce8069-8da1-4986-872f-311737f46f00');
@@ -31,23 +44,6 @@ final class DatabaseGetProductFilesCountIntegration extends SqlIntegrationTestCa
         }
 
         static::assertSame(15, $this->get(GetProductFilesCount::class)('44ce8069-8da1-4986-872f-311737f46f00'));
-    }
-
-    private function createSupplier(string $identifier, string $code, string $label): void
-    {
-        $sql = <<<SQL
-            INSERT INTO `akeneo_supplier_portal_supplier` (identifier, code, label)
-            VALUES (:identifier, :code, :label)
-        SQL;
-
-        $this->get(Connection::class)->executeQuery(
-            $sql,
-            [
-                'identifier' => $identifier,
-                'code' => $code,
-                'label' => $label,
-            ],
-        );
     }
 
     private function createProductFile(string $supplierIdentifier): void

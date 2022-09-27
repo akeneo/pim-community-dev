@@ -5,12 +5,26 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\ProductFileDropping\Query\Sql;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithComments;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
+use Akeneo\SupplierPortal\Retailer\Test\Builders\SupplierBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 
 final class DatabaseGetProductFileWithCommentsIntegration extends SqlIntegrationTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        ($this->get(Repository::class))->save(
+            (new SupplierBuilder())
+                ->withIdentifier('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7')
+                ->withCode('supplier_1')
+                ->build(),
+        );
+    }
+
     /** @test */
     public function itGetsNullIfThereIsNoProductFileForTheGivenIdentifier(): void
     {
@@ -20,7 +34,6 @@ final class DatabaseGetProductFileWithCommentsIntegration extends SqlIntegration
     /** @test */
     public function itDoesNotGetAnyCommentIfThereIsNone(): void
     {
-        $this->createSupplier();
         $this->createProductFile('5d001a43-a42d-4083-8673-b64bb4ecd26f');
         $productFile = $this->get(GetProductFileWithComments::class)('5d001a43-a42d-4083-8673-b64bb4ecd26f');
 
@@ -39,7 +52,6 @@ final class DatabaseGetProductFileWithCommentsIntegration extends SqlIntegration
     /** @test */
     public function itGetsAProductFileWithItsComments(): void
     {
-        $this->createSupplier();
         $this->createProductFile('5d001a43-a42d-4083-8673-b64bb4ecd26f');
         $this->createRetailerComment(
             '5d001a43-a42d-4083-8673-b64bb4ecd26f',
@@ -74,16 +86,6 @@ final class DatabaseGetProductFileWithCommentsIntegration extends SqlIntegration
                 'created_at' => '2022-09-07 00:00:01.000000',
             ],
         ], $productFile->supplierComments);
-    }
-
-    private function createSupplier(): void
-    {
-        $sql = <<<SQL
-            INSERT INTO akeneo_supplier_portal_supplier (identifier, code, label) 
-            VALUES ('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7', 'supplier-1', 'Supplier 1');
-        SQL;
-
-        $this->get(Connection::class)->executeStatement($sql);
     }
 
     private function createProductFile(string $productFileIdentifier): void
