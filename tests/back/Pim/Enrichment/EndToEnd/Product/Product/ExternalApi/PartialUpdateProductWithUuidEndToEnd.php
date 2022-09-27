@@ -239,7 +239,7 @@ JSON;
             'code'    => 422,
             'message' => 'Property "a_metric" expects an array with valid data, one of the values is not an array. Check the expected format on the API documentation.',
             '_links' => [
-                'documentation' => ['href' => 'http://api.akeneo.com/api-reference.html#patch_products__code_'],
+                'documentation' => ['href' => 'http://api.akeneo.com/api-reference.html#patch_products_uuid__uuid_'],
             ],
         ];
 
@@ -271,7 +271,7 @@ JSON;
             'code'    => 422,
             'message' => 'Property "a_metric" expects an array with valid data, one of the values is not an array. Check the expected format on the API documentation.',
             '_links' => [
-                'documentation' => ['href' => 'http://api.akeneo.com/api-reference.html#patch_products__code_'],
+                'documentation' => ['href' => 'http://api.akeneo.com/api-reference.html#patch_products_uuid__uuid_'],
             ],
         ];
 
@@ -305,7 +305,7 @@ JSON;
             'code'    => 422,
             'message' => 'You cannot update the same product value on the "a_simple_select" attribute twice, with the same scope and locale. Check the expected format on the API documentation.',
             '_links' => [
-                'documentation' => ['href' => 'http://api.akeneo.com/api-reference.html#patch_products__code_'],
+                'documentation' => ['href' => 'http://api.akeneo.com/api-reference.html#patch_products_uuid__uuid_'],
             ],
         ];
 
@@ -802,7 +802,7 @@ JSON;
             'message' => 'Property "associations" expects an array with valid data, association format is not valid for the association type "PACK", "product_uuids" expects an array of valid uuids.. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
-                    'href' => 'http://api.akeneo.com/api-reference.html#patch_products__code_'
+                    'href' => 'http://api.akeneo.com/api-reference.html#patch_products_uuid__uuid_'
                 ],
             ],
         ];
@@ -1315,7 +1315,7 @@ JSON;
             'message' => 'Property "extra_property" does not exist. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
-                    'href' => 'http://api.akeneo.com/api-reference.html#patch_products__code_'
+                    'href' => 'http://api.akeneo.com/api-reference.html#patch_products_uuid__uuid_'
                 ],
             ],
         ];
@@ -1389,7 +1389,7 @@ JSON;
             'message' => 'Property "enabled" expects a boolean as data, "NULL" given. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
-                    'href' => 'http://api.akeneo.com/api-reference.html#patch_products__code_'
+                    'href' => 'http://api.akeneo.com/api-reference.html#patch_products_uuid__uuid_'
                 ],
             ],
         ];
@@ -1431,7 +1431,7 @@ JSON;
             'message' => 'The unknown_attribute attribute does not exist in your PIM. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
-                    'href' => "http://api.akeneo.com/api-reference.html#patch_products__code_"
+                    'href' => "http://api.akeneo.com/api-reference.html#patch_products_uuid__uuid_"
                 ],
             ],
         ];
@@ -1462,7 +1462,7 @@ JSON;
             'message' => 'Property "family" expects a scalar as data, "array" given. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
-                    'href' => "http://api.akeneo.com/api-reference.html#patch_products__code_"
+                    'href' => "http://api.akeneo.com/api-reference.html#patch_products_uuid__uuid_"
                 ],
             ],
         ];
@@ -1501,7 +1501,7 @@ JSON;
             'message' => 'The a_text attribute requires a string, a array was detected. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
-                    'href' => "http://api.akeneo.com/api-reference.html#patch_products__code_"
+                    'href' => "http://api.akeneo.com/api-reference.html#patch_products_uuid__uuid_"
                 ],
             ],
         ];
@@ -1535,7 +1535,7 @@ JSON;
     "message": "Property \"associations\" expects a valid product model identifier. The product model does not exist, \"a_non_exiting_product_model\" given. Check the expected format on the API documentation.",
     "_links": {
         "documentation": {
-            "href": "http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"
+            "href": "http:\/\/api.akeneo.com\/api-reference.html#patch_products_uuid__uuid_"
         }
     }
 }
