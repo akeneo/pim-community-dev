@@ -1,5 +1,3 @@
-IDENTIFIER_GENERATOR_PATH ?= components/identifier-generator
-
 .PHONY: identifier-generator-front-check
 identifier-generator-front-check:
 	$(YARN_RUN) workspace @akeneo-pim-community/identifier-generator lint:check
@@ -14,12 +12,15 @@ identifier-generator-unit-back:
 	$(PHP_RUN) vendor/bin/phpspec run $(IDENTIFIER_GENERATOR_PATH)/back/tests/Specification
 
 .PHONY: identifier-generator-fix-lint-back
-identifier-generator-fix-lint-back:
-	$(PHP_RUN) vendor/bin/php-cs-fixer fix --config=$(IDENTIFIER_GENERATOR_PATH)/back/tests/.php_cs.php
+identifier-generator-lint-back:
+	$(PHP_RUN) vendor/bin/php-cs-fixer fix --config=$(IDENTIFIER_GENERATOR_PATH)/back/tests/.php_cs.php --allow-risky=yes
+	$(PHP_RUN) vendor/bin/phpstan analyse \
+		--level 3 \
+		--configuration components/identifier-generator/back/tests/phpstan.neon
 
 .PHONY: identifier-generator-lint-back
 identifier-generator-lint-back:
-	$(PHP_RUN) vendor/bin/php-cs-fixer fix --config=$(IDENTIFIER_GENERATOR_PATH)/back/tests/.php_cs.php --dry-run
+	$(PHP_RUN) vendor/bin/php-cs-fixer fix --config=$(IDENTIFIER_GENERATOR_PATH)/back/tests/.php_cs.php --allow-risky=yes --dry-run
 
 .PHONY: identifier-generator-acceptance-back
 identifier-generator-acceptance-back:
