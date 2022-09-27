@@ -30,7 +30,7 @@ class DisableCatalogsOnCategoryRemovalTasklet implements TaskletInterface
             throw new \LogicException('the variable $stepExecution should not be null.');
         }
 
-        /** @var array<string> $categoryCodes */
+        /** @var string[] $categoryCodes */
         $categoryCodes = $this->stepExecution->getJobParameters()->get('category_codes');
 
         $catalogsIds = $this->getCatalogsToDisableQuery->execute($categoryCodes);
