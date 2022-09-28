@@ -105,6 +105,7 @@
         "monolog/monolog": "1.25.5",
         "ocramius/proxy-manager": "2.11.1",
         "oneup/flysystem-bundle": "^4.0.0",
+        "opis/json-schema": "^2.3",
         "phpseclib/phpseclib": "2.0.31",
         "psr/event-dispatcher": "^1.0.0",
         "ramsey/uuid": "^3.7",
@@ -205,7 +206,8 @@
         "sort-packages": true,
         "allow-plugins": {
             "symfony/flex": true,
-            "dealerdirect/phpcodesniffer-composer-installer": true
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "composer/package-versions-deprecated": true
         }
     },
     "extra": {
