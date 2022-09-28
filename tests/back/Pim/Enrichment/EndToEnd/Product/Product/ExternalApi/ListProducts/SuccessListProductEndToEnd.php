@@ -28,7 +28,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class SuccessListProductEndToEnd extends AbstractProductTestCase
 {
-    const PRODUCT_UUIDS = [
+    public const PRODUCT_UUIDS = [
         'simple' => '4cfd82f2-def8-4869-8008-eabdf658f57c',
         'simple_with_family_and_values' => 'a1a0956a-8d89-4737-a9ae-35b756245eb1',
         'simple_with_no_family' => '9d16f37a-6e0e-43ff-ab2b-85969c1cd4ef',
@@ -1105,12 +1105,9 @@ JSON;
 
     public function testDoesntShowProductsWithoutIdentifier()
     {
-        // @TODO CPM-632: Unskip test once identifiers are nullable in products
-        $this->markTestSkipped("Run this test once product identifiers are no longer required");
-
-        $this->createProductWithoutIdentifier([
+        $uuid = $this->createProductWithoutIdentifier([
             new SetTextValue('a_text', null, null, 'My product without identifier')
-        ]);
+        ])->getUuid();
 
         $client = $this->createAuthenticatedClient();
         $client->request('GET', 'api/rest/v1/products?with_count=true&limit=10&pagination_type=search_after');
@@ -1120,9 +1117,9 @@ JSON;
         Assert::assertArrayNotHasKey('next', $result['_links']);
 
         foreach ($result['_embedded']['items'] as $index => $product) {
-            if (isset($product['values']['a_text'])) {
-                // TODO CPM-737: Check using Uuid instead of the text attribute value
-                Assert::assertNotEquals('My product without identifier', $product['values']['a_text'][0]['data']);
+            if (isset($product['uuid'])) {
+                Assert::assertTrue(Uuid::isValid($product['uuid']));
+                Assert::assertNotEquals($uuid->toString(), $product['uuid']);
             }
         }
     }
