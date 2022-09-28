@@ -71,4 +71,27 @@ class IsValidCatalogProductQueryTest extends IntegrationTestCase
 
         $this->assertTrue($result, 'Product should belong to the catalog');
     }
+
+    public function testItDoesNotValidatesAnUnknownProduct(): void
+    {
+        $this->createUser('owner');
+        $this->logAs('owner');
+
+        $catalogId = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
+        $this->createCatalog($catalogId, 'Store US', 'owner');
+        $this->enableCatalog($catalogId);
+        $this->setCatalogProductSelection($catalogId, [
+            [
+                'field' => 'enabled',
+                'operator' => Operator::EQUALS,
+                'value' => true,
+            ],
+        ]);
+
+        $this->createProduct('tshirt-green', [new SetEnabled(false)]);
+
+        $result = $this->isValidCatalogProductQuery->execute($catalogId, 'c335c87e-ec23-4c5b-abfa-0638f141933a');
+
+        $this->assertFalse($result, 'Product should not belong to the catalog');
+    }
 }

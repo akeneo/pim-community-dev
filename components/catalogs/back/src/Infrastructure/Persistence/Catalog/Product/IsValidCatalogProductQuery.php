@@ -26,12 +26,17 @@ class IsValidCatalogProductQuery implements IsValidCatalogProductQueryInterface
 
     public function execute(string $catalogId, string $productUuid): bool
     {
+        $productIdentifier = $this->findProductIdentifier($productUuid);
+        if (null === $productIdentifier) {
+            return false;
+        }
+
         $pqb = $this->productQueryBuilderFactory->create([
             'filters' => $this->getFilters($catalogId),
             'limit' => 1,
         ]);
 
-        $pqb->addFilter('identifier', Operators::EQUALS, $this->findProductIdentifier($productUuid));
+        $pqb->addFilter('identifier', Operators::EQUALS, $productIdentifier);
 
         return $pqb->execute()->count() > 0;
     }
@@ -62,7 +67,7 @@ class IsValidCatalogProductQuery implements IsValidCatalogProductQueryInterface
         return $filters;
     }
 
-    private function findProductIdentifier(string $uuid): string
+    private function findProductIdentifier(string $uuid): ?string
     {
         $sql = <<<SQL
             SELECT identifier
@@ -76,7 +81,7 @@ class IsValidCatalogProductQuery implements IsValidCatalogProductQueryInterface
         ]);
 
         if (false === $identifier) {
-            throw new \InvalidArgumentException('Unknown uuid');
+            return null;
         }
 
         return (string) $identifier;
