@@ -25,8 +25,8 @@ metadata:
 spec:
   bucketRef:
     name: {{ .Values.pim.cloudFunction.bucket }}
-  entity: serviceAccount-{{ .Values.common.workloadIdentityGSA }}@{{ .Values.common.gcpProjectID }}.iam.gserviceaccount.com
-  role: roles/storage.objectAdmin
+  entity: user-{{ .Values.common.workloadIdentityGSA }}@{{ .Values.common.gcpProjectID }}.iam.gserviceaccount.com
+  role: OWNER
 ---
 apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageDefaultObjectAccessControl
