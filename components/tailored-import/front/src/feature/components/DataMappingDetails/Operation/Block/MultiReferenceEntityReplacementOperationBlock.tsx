@@ -1,33 +1,35 @@
 import React, {useState} from 'react';
-import {isReplacementValues, ReplacementValues} from '../../../../models';
 import {Block, Button, CloseIcon, IconButton, useBooleanState, uuid} from 'akeneo-design-system';
-import {OperationBlockProps} from './OperationBlockProps';
 import {DeleteModal, useTranslate} from '@akeneo-pim-community/shared';
-import {getDefaultReplacementValueFilter, ReplacementModal, ReplacementValueFilter} from '../ReplacementModal';
+import {isReplacementValues, ReplacementValues} from '../../../../models';
 import {RECORDS_COLLECTION_PAGE_SIZE, useRecords} from '../../../../hooks';
+import {OperationBlockProps} from './OperationBlockProps';
+import {getDefaultReplacementValueFilter, ReplacementModal, ReplacementValueFilter} from '../ReplacementModal';
 
-const SIMPLE_REFERENCE_ENTITY_REPLACEMENT_OPERATION_TYPE = 'simple_reference_entity_replacement';
+const MULTI_REFERENCE_ENTITY_REPLACEMENT_OPERATION_TYPE = 'multi_reference_entity_replacement';
 
-type SimpleReferenceEntityReplacementOperation = {
+type MultiReferenceEntityReplacementOperation = {
   uuid: string;
-  type: typeof SIMPLE_REFERENCE_ENTITY_REPLACEMENT_OPERATION_TYPE;
+  type: typeof MULTI_REFERENCE_ENTITY_REPLACEMENT_OPERATION_TYPE;
   mapping: ReplacementValues;
 };
 
-const isSimpleReferenceEntityReplacement = (operation?: any): operation is SimpleReferenceEntityReplacementOperation =>
+const isMultiReferenceEntityReplacementOperation = (
+  operation?: any
+): operation is MultiReferenceEntityReplacementOperation =>
   undefined !== operation &&
   'type' in operation &&
-  SIMPLE_REFERENCE_ENTITY_REPLACEMENT_OPERATION_TYPE === operation.type &&
+  MULTI_REFERENCE_ENTITY_REPLACEMENT_OPERATION_TYPE === operation.type &&
   'mapping' in operation &&
   isReplacementValues(operation.mapping);
 
-const getDefaultSimpleReferenceEntityReplacementOperation = (): SimpleReferenceEntityReplacementOperation => ({
+const getDefaultMultiReferenceEntityReplacementOperation = (): MultiReferenceEntityReplacementOperation => ({
   uuid: uuid(),
-  type: SIMPLE_REFERENCE_ENTITY_REPLACEMENT_OPERATION_TYPE,
+  type: MULTI_REFERENCE_ENTITY_REPLACEMENT_OPERATION_TYPE,
   mapping: {},
 });
 
-const SimpleReferenceEntityReplacementOperationBlock = ({
+const MultiReferenceEntityReplacementOperationBlock = ({
   targetReferenceDataName,
   operation,
   onChange,
@@ -40,9 +42,9 @@ const SimpleReferenceEntityReplacementOperationBlock = ({
     getDefaultReplacementValueFilter()
   );
 
-  if (!isSimpleReferenceEntityReplacement(operation)) {
+  if (!isMultiReferenceEntityReplacementOperation(operation)) {
     throw new Error(
-      'SimpleReferenceEntityReplacementOperationBlock can only be used with SimpleReferenceEntityReplacementOperation'
+      'MultiReferenceEntityReplacementOperationBlock can only be used with MultiReferenceEntityReplacementOperation'
     );
   }
 
@@ -74,7 +76,7 @@ const SimpleReferenceEntityReplacementOperationBlock = ({
 
   return (
     <Block
-      title={translate(`akeneo.tailored_import.data_mapping.operations.simple_reference_entity_replacement.title`)}
+      title={translate(`akeneo.tailored_import.data_mapping.operations.multi_reference_entity_replacement.title`)}
       actions={
         <>
           <Button level="tertiary" ghost={true} size="small" onClick={openReplacementModal}>
@@ -84,14 +86,14 @@ const SimpleReferenceEntityReplacementOperationBlock = ({
             <ReplacementModal
               title={translate('akeneo.tailored_import.data_mapping.operations.replacement.modal.records')}
               replacedValuesHeader={translate(
-                'akeneo.tailored_import.data_mapping.operations.simple_reference_entity_replacement.option_labels'
+                'akeneo.tailored_import.data_mapping.operations.multi_reference_entity_replacement.option_labels'
               )}
               replacementValueFilter={replacementValueFilter}
               onReplacementValueFilterChange={setReplacementValueFilter}
               values={records}
               itemsPerPage={RECORDS_COLLECTION_PAGE_SIZE}
               totalItems={totalItems}
-              operationType={SIMPLE_REFERENCE_ENTITY_REPLACEMENT_OPERATION_TYPE}
+              operationType={MULTI_REFERENCE_ENTITY_REPLACEMENT_OPERATION_TYPE}
               operationUuid={operation.uuid}
               initialMapping={operation.mapping}
               onConfirm={handleConfirm}
@@ -122,8 +124,8 @@ const SimpleReferenceEntityReplacementOperationBlock = ({
 };
 
 export {
-  SimpleReferenceEntityReplacementOperationBlock,
-  getDefaultSimpleReferenceEntityReplacementOperation,
-  SIMPLE_REFERENCE_ENTITY_REPLACEMENT_OPERATION_TYPE,
+  MultiReferenceEntityReplacementOperationBlock,
+  getDefaultMultiReferenceEntityReplacementOperation,
+  MULTI_REFERENCE_ENTITY_REPLACEMENT_OPERATION_TYPE,
 };
-export type {SimpleReferenceEntityReplacementOperation};
+export type {MultiReferenceEntityReplacementOperation};

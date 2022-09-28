@@ -3,9 +3,9 @@ import {screen, act} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {
-  getDefaultSimpleReferenceEntityReplacementOperation,
-  SimpleReferenceEntityReplacementOperationBlock,
-} from './SimpleReferenceEntityReplacementOperationBlock';
+  getDefaultMultiReferenceEntityReplacementOperation,
+  MultiReferenceEntityReplacementOperationBlock,
+} from './MultiReferenceEntityReplacementOperationBlock';
 import {OperationPreviewData} from 'feature/models';
 
 const operationPreviewData: OperationPreviewData = {
@@ -35,20 +35,20 @@ jest.mock('../../../../hooks/useRecords', () => ({
   ],
 }));
 
-test('it can get the simple reference entity replacement operation', () => {
-  expect(getDefaultSimpleReferenceEntityReplacementOperation()).toEqual({
+test('it can get the multi reference entity replacement operation', () => {
+  expect(getDefaultMultiReferenceEntityReplacementOperation()).toEqual({
     uuid: expect.any(String),
-    type: 'simple_reference_entity_replacement',
+    type: 'multi_reference_entity_replacement',
     mapping: {},
   });
 });
 
-test('it displays a simple reference entity replacement operation block', () => {
+test('it displays a multi reference entity replacement operation block', () => {
   renderWithProviders(
-    <SimpleReferenceEntityReplacementOperationBlock
+    <MultiReferenceEntityReplacementOperationBlock
       targetCode="brand"
-      targetReferenceDataName="simple_link_reference"
-      operation={{uuid: expect.any(String), type: 'simple_reference_entity_replacement', mapping: {}}}
+      targetReferenceDataName="multi_link_reference"
+      operation={{uuid: expect.any(String), type: 'multi_reference_entity_replacement', mapping: {}}}
       onChange={jest.fn()}
       onRemove={jest.fn()}
       isLastOperation={false}
@@ -62,7 +62,7 @@ test('it displays a simple reference entity replacement operation block', () => 
   );
 
   expect(
-    screen.getByText('akeneo.tailored_import.data_mapping.operations.simple_reference_entity_replacement.title')
+    screen.getByText('akeneo.tailored_import.data_mapping.operations.multi_reference_entity_replacement.title')
   ).toBeInTheDocument();
 });
 
@@ -70,10 +70,10 @@ test('it can be removed using the remove button', () => {
   const handleRemove = jest.fn();
 
   renderWithProviders(
-    <SimpleReferenceEntityReplacementOperationBlock
+    <MultiReferenceEntityReplacementOperationBlock
       targetCode="brand"
-      targetReferenceDataName="simple_link_reference"
-      operation={{uuid: expect.any(String), type: 'simple_reference_entity_replacement', mapping: {}}}
+      targetReferenceDataName="multi_link_reference"
+      operation={{uuid: expect.any(String), type: 'multi_reference_entity_replacement', mapping: {}}}
       onChange={jest.fn()}
       onRemove={handleRemove}
       isLastOperation={false}
@@ -92,7 +92,7 @@ test('it can be removed using the remove button', () => {
 
   userEvent.click(screen.getByText('pim_common.delete'));
 
-  expect(handleRemove).toHaveBeenCalledWith('simple_reference_entity_replacement');
+  expect(handleRemove).toHaveBeenCalledWith('multi_reference_entity_replacement');
 });
 
 test('it opens a replacement modal and handles change', async () => {
@@ -104,10 +104,10 @@ test('it opens a replacement modal and handles change', async () => {
   }));
 
   renderWithProviders(
-    <SimpleReferenceEntityReplacementOperationBlock
+    <MultiReferenceEntityReplacementOperationBlock
       targetCode="brand"
-      targetReferenceDataName="simple_link_reference"
-      operation={{uuid: expect.any(String), type: 'simple_reference_entity_replacement', mapping: {}}}
+      targetReferenceDataName="multi_link_reference"
+      operation={{uuid: expect.any(String), type: 'multi_reference_entity_replacement', mapping: {}}}
       onChange={handleChange}
       onRemove={jest.fn()}
       isLastOperation={false}
@@ -138,7 +138,7 @@ test('it opens a replacement modal and handles change', async () => {
 
   expect(handleChange).toHaveBeenCalledWith({
     uuid: expect.any(String),
-    type: 'simple_reference_entity_replacement',
+    type: 'multi_reference_entity_replacement',
     mapping: {
       alessis: ['sweet'],
     },
@@ -149,10 +149,10 @@ test('it does not call handler when cancelling', () => {
   const handleChange = jest.fn();
 
   renderWithProviders(
-    <SimpleReferenceEntityReplacementOperationBlock
+    <MultiReferenceEntityReplacementOperationBlock
       targetCode="brand"
-      targetReferenceDataName="simple_link_reference"
-      operation={{uuid: expect.any(String), type: 'simple_reference_entity_replacement', mapping: {}}}
+      targetReferenceDataName="multi_link_reference"
+      operation={{uuid: expect.any(String), type: 'multi_reference_entity_replacement', mapping: {}}}
       onChange={handleChange}
       onRemove={jest.fn()}
       isLastOperation={false}
@@ -171,14 +171,14 @@ test('it does not call handler when cancelling', () => {
   expect(handleChange).not.toHaveBeenCalled();
 });
 
-test('it throws an error if the operation is not a simple select replacement operation', () => {
+test('it throws an error if the operation is not a multi select replacement operation', () => {
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
 
   expect(() => {
     renderWithProviders(
-      <SimpleReferenceEntityReplacementOperationBlock
+      <MultiReferenceEntityReplacementOperationBlock
         targetCode="brand"
-        targetReferenceDataName="simple_link_reference"
+        targetReferenceDataName="multi_link_reference"
         operation={{uuid: expect.any(String), modes: ['remove'], type: 'clean_html'}}
         onChange={jest.fn()}
         onRemove={jest.fn()}
@@ -192,7 +192,7 @@ test('it throws an error if the operation is not a simple select replacement ope
       />
     );
   }).toThrowError(
-    'SimpleReferenceEntityReplacementOperationBlock can only be used with SimpleReferenceEntityReplacementOperation'
+    'MultiReferenceEntityReplacementOperationBlock can only be used with MultiReferenceEntityReplacementOperation'
   );
 
   mockedConsole.mockRestore();
@@ -203,9 +203,9 @@ test('it throws an error if reference data name is not provided', () => {
 
   expect(() => {
     renderWithProviders(
-      <SimpleReferenceEntityReplacementOperationBlock
+      <MultiReferenceEntityReplacementOperationBlock
         targetCode="brand"
-        operation={{uuid: expect.any(String), type: 'simple_reference_entity_replacement', mapping: {}}}
+        operation={{uuid: expect.any(String), type: 'multi_reference_entity_replacement', mapping: {}}}
         onChange={jest.fn()}
         onRemove={jest.fn()}
         isLastOperation={false}

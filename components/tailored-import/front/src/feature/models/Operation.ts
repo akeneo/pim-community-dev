@@ -15,16 +15,19 @@ import {
   getDefaultCleanHTMLOperation,
   getDefaultEnabledReplacementOperation,
   getDefaultFamilyReplacementOperation,
+  getDefaultMultiReferenceEntityReplacementOperation,
   getDefaultMultiSelectReplacementOperation,
   getDefaultRemoveWhitespaceOperation,
   getDefaultSimpleSelectReplacementOperation,
   getDefaultSplitOperation,
   getDefaultSimpleReferenceEntityReplacementOperation,
+  MULTI_REFERENCE_ENTITY_REPLACEMENT_OPERATION_TYPE,
+  MultiReferenceEntityReplacementOperation,
   MULTI_SELECT_REPLACEMENT_OPERATION_TYPE,
   MultiSelectReplacementOperation,
   REMOVE_WHITESPACE_OPERATION_TYPE,
   RemoveWhitespaceOperation,
-  SIMPLE_REFERENCE_ENTITY_REPLACEMENT,
+  SIMPLE_REFERENCE_ENTITY_REPLACEMENT_OPERATION_TYPE,
   SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE,
   SimpleReferenceEntityReplacementOperation,
   SimpleSelectReplacementOperation,
@@ -38,6 +41,7 @@ type Operation =
   | CategoriesReplacementOperation
   | CleanHTMLOperation
   | EnabledReplacementOperation
+  | MultiReferenceEntityReplacementOperation
   | MultiSelectReplacementOperation
   | SimpleSelectReplacementOperation
   | FamilyReplacementOperation
@@ -83,8 +87,10 @@ const getDefaultOperation = (operationType: OperationType): Operation => {
       return getDefaultChangeCaseOperation();
     case REMOVE_WHITESPACE_OPERATION_TYPE:
       return getDefaultRemoveWhitespaceOperation();
-    case SIMPLE_REFERENCE_ENTITY_REPLACEMENT:
+    case SIMPLE_REFERENCE_ENTITY_REPLACEMENT_OPERATION_TYPE:
       return getDefaultSimpleReferenceEntityReplacementOperation();
+    case MULTI_REFERENCE_ENTITY_REPLACEMENT_OPERATION_TYPE:
+      return getDefaultMultiReferenceEntityReplacementOperation();
     default:
       throw new Error(`Invalid operation type: "${operationType}"`);
   }

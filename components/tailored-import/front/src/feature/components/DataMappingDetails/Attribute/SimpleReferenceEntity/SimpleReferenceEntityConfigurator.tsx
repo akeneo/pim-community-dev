@@ -4,7 +4,7 @@ import {isSimpleReferenceEntityTarget} from './model';
 import {AttributeDataMappingConfiguratorProps, AttributeTarget} from '../../../../models';
 import {InvalidAttributeTargetError} from '../error';
 import {AttributeTargetParameters, Operations, Sources, ClearIfEmpty} from '../../../../components';
-import {SIMPLE_REFERENCE_ENTITY_REPLACEMENT} from '../../Operation';
+import {SIMPLE_REFERENCE_ENTITY_REPLACEMENT_OPERATION_TYPE} from '../../Operation';
 
 const SimpleReferenceEntityConfigurator = ({
   dataMapping,
@@ -43,7 +43,7 @@ const SimpleReferenceEntityConfigurator = ({
       />
       <Operations
         dataMapping={dataMapping}
-        compatibleOperations={[SIMPLE_REFERENCE_ENTITY_REPLACEMENT]}
+        compatibleOperations={[SIMPLE_REFERENCE_ENTITY_REPLACEMENT_OPERATION_TYPE]}
         onOperationsChange={onOperationsChange}
         onRefreshSampleData={onRefreshSampleData}
         validationErrors={filterErrors(validationErrors, '[operations]')}
