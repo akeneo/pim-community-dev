@@ -33,7 +33,7 @@ class FindJobInstance implements FindJobInstanceInterface
         $sql = <<<SQL
         SELECT
             job_instance.code,
-            job_instance.label,
+            job_instance.label
         FROM akeneo_batch_job_instance job_instance
         %s
         %s
