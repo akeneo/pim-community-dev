@@ -1,4 +1,4 @@
-import {NotificationLevel, UserContextValue, View} from '../DependenciesProvider.type';
+import {NotificationLevel, View} from '../DependenciesProvider.type';
 
 const view: View = {
   setElement: () => view,
@@ -21,7 +21,7 @@ const mockedDependencies = {
     return `${level} ${message}`;
   },
   user: {
-    get: (data: keyof UserContextValue) => {
+    get: (data: string) => {
       switch (data) {
         case 'catalogLocale':
           return 'en_US';
@@ -30,7 +30,7 @@ const mockedDependencies = {
         case 'timezone':
           return 'UTC';
         default:
-          return undefined;
+          return data;
       }
     },
     set: () => {},

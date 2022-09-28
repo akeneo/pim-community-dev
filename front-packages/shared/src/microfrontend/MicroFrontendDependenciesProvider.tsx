@@ -43,7 +43,7 @@ const MicroFrontendDependenciesProvider = ({
   children,
 }: CreateReactAppDependenciesProviderProps) => {
   const [securityContext, setSecurityContext] = useState<SecurityContext>({});
-  const [userContext, setUserContext] = useState<UserContext>({get: () => undefined, set: () => {}});
+  const [userContext, setUserContext] = useState<UserContext>({get: key => key, set: () => {}});
   const [notifications, notify, handleNotificationClose] = useNotifications();
   const isMounted = useIsMounted();
   const [translator, setTranslator] = useState(() => {
