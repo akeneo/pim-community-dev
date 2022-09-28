@@ -49,13 +49,7 @@ ReactDOM.render(
     <React.StrictMode>
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={client}>
-                <MicroFrontendDependenciesProvider
-                    routes={routes}
-                    translations={{
-                        locale: 'en_US',
-                        messages: {},
-                    }}
-                >
+                <MicroFrontendDependenciesProvider routes={routes}>
                     <Router>
                         <FakePIM>
                             <Switch>
