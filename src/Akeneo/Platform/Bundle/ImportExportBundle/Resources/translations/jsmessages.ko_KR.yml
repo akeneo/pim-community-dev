@@ -171,11 +171,6 @@ pim_import_export:
       connection_checker:
         label: 테스트 연결 설정
         exception: 연결할 수 없습니다. 설정을 확인하십시오.
-  widget:
-    last_operations:
-      empty: 현재 표시할 작업이 없습니다.
-      details: 세부 정보
-      header.view_all: 모두 보기
   batch_status:
     1: 완료
     2: 시작 중
