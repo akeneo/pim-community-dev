@@ -1,9 +1,3 @@
-import * as trans from 'pimui/lib/translator';
+import {translate} from '@akeneo-pim-community/shared';
 
-const __ = (key: string, placeholders: any = {}, number: number = 1) => {
-  const translation = trans.get(key, {...placeholders}, number);
-
-  return undefined === translation ? key : translation;
-};
-
-export default __;
+export default translate;
