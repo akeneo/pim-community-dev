@@ -256,6 +256,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext',
 
         'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
+        'Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface',
 
         'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
 
