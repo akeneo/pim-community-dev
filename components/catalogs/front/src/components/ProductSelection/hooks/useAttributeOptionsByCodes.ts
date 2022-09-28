@@ -54,10 +54,23 @@ export const useAttributeOptionsByCodes = (attribute: string, codes: string[], l
         }
     }
 
+    let attributeOptions: AttributeOption[] = Object.values(cache).filter(option => codes.includes(option.code));
+
+    if (!isLoading) {
+        const attributeOptionCodes = attributeOptions.map(attributeOption => attributeOption.code);
+
+        const removedAttributeOptionCodes = codes.filter(code => !attributeOptionCodes.includes(code));
+
+        attributeOptions = [
+            ...attributeOptions,
+            ...removedAttributeOptionCodes.map(code => ({code: code, label: `[${code}]`})),
+        ];
+    }
+
     return {
         isLoading: isLoading,
         isError: isError,
-        data: Object.values(cache).filter(option => codes.includes(option.code)),
+        data: attributeOptions,
         error: error,
     };
 };

@@ -6,26 +6,23 @@ import {renderHook} from '@testing-library/react-hooks';
 import {ReactQueryWrapper} from '../../../../tests/ReactQueryWrapper';
 import {useAttributeOptionsByCodes} from './useAttributeOptionsByCodes';
 
+const OPTION_XS = {code: 'xs', label: 'XS'};
+const OPTION_S = {code: 's', label: 'S'};
+
 test('it returns attribute options', async () => {
     mockFetchResponses([
         {
-            url: '/rest/catalogs/attributes/clothing_size/options?locale=en_US&codes=xs%2Cs&search=&page=1&limit=20',
-            json: [
-                {
-                    code: 'xs',
-                    label: 'XS',
-                },
-                {
-                    code: 's',
-                    label: 'S',
-                },
-            ],
+            url: '/rest/catalogs/attributes/clothing_size/options?locale=en_US&codes=xs%2Cs%2Cl&search=&page=1&limit=20',
+            json: [OPTION_XS, OPTION_S],
         },
     ]);
 
-    const {result, waitForValueToChange} = renderHook(() => useAttributeOptionsByCodes('clothing_size', ['xs', 's']), {
-        wrapper: ReactQueryWrapper,
-    });
+    const {result, waitForValueToChange} = renderHook(
+        () => useAttributeOptionsByCodes('clothing_size', ['xs', 's', 'l']),
+        {
+            wrapper: ReactQueryWrapper,
+        }
+    );
 
     expect(result.current).toMatchObject({
         isLoading: true,
@@ -40,13 +37,11 @@ test('it returns attribute options', async () => {
         isLoading: false,
         isError: false,
         data: [
+            OPTION_XS,
+            OPTION_S,
             {
-                code: 'xs',
-                label: 'XS',
-            },
-            {
-                code: 's',
-                label: 'S',
+                code: 'l',
+                label: '[l]', // removed options are wrapped with brackets
             },
         ],
         error: null,
