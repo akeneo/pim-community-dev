@@ -8,6 +8,7 @@ akeneo.job_automation:
     enable: Activer la planification
     cannot_view_all_jobs: "Vous ne pouvez pas afficher les tâches automatisées dans le traqueur de processus car vous ne disposez pas de l'autorisation suivante pour votre rôle : « Voir toutes les tâches dans le traqueur de processus ». Veuillez contacter votre administrateur PIM."
     frequency:
+      helper: "La fréquence est affichée à l'échelle de temps UTC. Pour votre fuseau horaire ({{ timezone }}), cela représente : {{ selectedTimeInUserTimezone }}"
       hourly_helper: Les fréquences exécutées plusieurs fois par jour démarrent à minuit (échelle UTC).
       title: Fréquence d'exécution
       daily: Chaque jour
