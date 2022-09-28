@@ -17,7 +17,6 @@ supplier_portal:
         title: Der Lieferant wurde erstellt.
         content: Sie können ihn nun im Abschnitt Lieferantenverwaltung bearbeiten.
       error:
-        unknown_error: Beim Erstellen des Lieferanten ist ein Fehler aufgetreten.
         supplier_already_exists: 'Ein Lieferant mit dem Code „{{ supplierCode }}“ existiert bereits.'
     supplier_list:
       menu_item: Lieferanten
@@ -43,7 +42,6 @@ supplier_portal:
         title: Lieferant
         confirmation_question: Sind Sie sicher, dass Sie diesen Lieferanten löschen möchten?
         warning: Durch das Löschen dieses Lieferanten geht jede nicht gespeicherte Anreicherung verloren.
-        unknown_error: Beim Löschen des Lieferanten ist ein Fehler aufgetreten.
     supplier_edit:
       tabs:
         configuration: Konfiguration
@@ -70,9 +68,7 @@ supplier_portal:
           contributor_email_already_exists:
             title: Wir konnten diesen Beitragenden nicht hinzufügen.
             content: Die E-Mail-Adresse {{ emailAddress }} wird bereits für einen anderen Lieferanten verwendet und wir unterstützen mehrere Lieferanten mit dem gleichen Beitragenden noch nicht. Entschuldigen Sie die Unannehmlichkeiten.
-      loading_error: Beim Laden des Lieferanten ist ein Fehler aufgetreten.
       success_message: Der Lieferant wurde erfolgreich aktualisiert.
-      update_error: Beim Aktualisieren des Lieferanten ist ein Fehler aufgetreten.
       delete_label: Diesen Lieferanten löschen
   product_file_dropping:
     breadcrumb:

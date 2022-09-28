@@ -17,7 +17,6 @@ supplier_portal:
         title: Se ha creado el proveedor.
         content: Ahora puede editarlo en la sección de gestión de proveedores.
       error:
-        unknown_error: Se ha producido un error al crear el proveedor.
         supplier_already_exists: 'Ya existe un proveedor con código «{{ supplierCode }}».'
     supplier_list:
       menu_item: Proveedores
@@ -43,7 +42,6 @@ supplier_portal:
         title: Proveedor
         confirmation_question: '¿Realmente quiere eliminar a este proveedor?'
         warning: Al eliminar este proveedor, se perderá cualquier enriquecimiento no guardado.
-        unknown_error: Se ha producido un error al eliminar el proveedor.
     supplier_edit:
       tabs:
         configuration: Configuración
@@ -70,9 +68,7 @@ supplier_portal:
           contributor_email_already_exists:
             title: No hemos podido añadir a este colaborador.
             content: El correo electrónico {{ emailAddress }} ya se utiliza para otro proveedor y todavía no admitimos que varios proveedores tengan el mismo colaborador. Disculpe las molestias.
-      loading_error: Se ha producido un error al cargar el proveedor.
       success_message: El proveedor se ha actualizado correctamente.
-      update_error: Se ha producido un error al actualizar el proveedor.
       delete_label: Eliminar este proveedor
   product_file_dropping:
     breadcrumb:

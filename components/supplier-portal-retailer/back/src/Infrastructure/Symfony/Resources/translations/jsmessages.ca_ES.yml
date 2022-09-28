@@ -17,7 +17,6 @@ supplier_portal:
         title: S'ha creat el proveïdor.
         content: Ara podeu editar-lo a la secció de gestió de proveïdors.
       error:
-        unknown_error: S'ha produït un error en crear el proveïdor.
         supplier_already_exists: 'Ja existeix un proveïdor amb el codi "{{ supplierCode }}".'
     supplier_list:
       menu_item: Proveïdors
@@ -43,7 +42,6 @@ supplier_portal:
         title: Proveïdor
         confirmation_question: Esteu segur que voleu esborrar aquest proveïdor?
         warning: Si suprimiu aquest proveïdor, es perdrà qualsevol enriquiment no desat.
-        unknown_error: S'ha produït un error en suprimir el proveïdor.
     supplier_edit:
       tabs:
         configuration: Configuració
@@ -70,9 +68,7 @@ supplier_portal:
           contributor_email_already_exists:
             title: No hem pogut afegir aquest col·laborador.
             content: El correu electrònic {{ emailAddress }} ja s'utilitza per a un altre proveïdor i encara no admetem diversos proveïdors que tinguin el mateix col·laborador. Disculpeu les molèsties.
-      loading_error: S'ha produït un error en carregar el proveïdor.
       success_message: El proveïdor s'ha actualitzat correctament
-      update_error: S'ha produït un error en actualitzar el proveïdor.
       delete_label: Eliminar aquest proveïdor
   product_file_dropping:
     breadcrumb:
@@ -100,8 +96,6 @@ supplier_portal:
         comment_input_label: Enviar un nou missatge
         discussion_title: Discussió
         submit_button_label: Enviar
-        loading_error: S'ha produït un error en carregar l'arxiu del producte.
-        comment_submit_error: S'ha produït un error en enviar el comentari.
         max_comment_length_reached: El comentari no pot tenir més de 255 caràcters.
         max_number_of_comments_reached: Has arribat al límit de comentaris.
     pim_notification:
