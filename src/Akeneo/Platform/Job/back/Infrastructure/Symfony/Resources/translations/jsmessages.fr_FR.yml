@@ -13,6 +13,11 @@ akeneo_job:
     UNKNOWN: Inconnu
     IN_PROGRESS: En cours
 akeneo_job_process_tracker:
+  last_operations:
+    title: Dernières opérations
+    view_all: Tout afficher
+    details: Détails
+    no_result: Il n'y a aucune opération à afficher pour le moment.
   last_executions:
     title: Dernières exécutions
   job_execution_list:
