@@ -27,7 +27,7 @@ final class IsJobDueTest extends TestCase
         $cronExpressionMock = $this->createMock(CronExpression::class);
         $cronExpressionMock->method('isDue')->willReturn(true);
         $cronExpressionMock->method('getPreviousRunDate')->willReturn(new \DateTime('2022-10-30 12:00'));
-        $this->assertTrue(IsJobDue::fromScheduledJobInstances($scheduledJobInstance, $cronExpressionMock));
+        $this->assertTrue(IsJobDue::fromScheduledJobInstance($scheduledJobInstance, $cronExpressionMock));
     }
 
     public function test_it_return_true_if_last_execution_date_is_in_the_past(): void
@@ -36,7 +36,7 @@ final class IsJobDueTest extends TestCase
         $cronExpressionMock = $this->createMock(CronExpression::class);
         $cronExpressionMock->method('isDue')->willReturn(false);
         $cronExpressionMock->method('getPreviousRunDate')->willReturn(new \DateTime('2022-10-30 12:00'));
-        $this->assertTrue(IsJobDue::fromScheduledJobInstances($scheduledJobInstance, $cronExpressionMock));
+        $this->assertTrue(IsJobDue::fromScheduledJobInstance($scheduledJobInstance, $cronExpressionMock));
     }
 
     public function test_it_return_false_if_too_early_for_the_next_execution(): void
@@ -45,7 +45,7 @@ final class IsJobDueTest extends TestCase
         $cronExpressionMock = $this->createMock(CronExpression::class);
         $cronExpressionMock->method('isDue')->willReturn(false);
         $cronExpressionMock->method('getPreviousRunDate')->willReturn(new \DateTime('2022-10-30 08:00'));
-        $this->assertFalse(IsJobDue::fromScheduledJobInstances($scheduledJobInstance, $cronExpressionMock));
+        $this->assertFalse(IsJobDue::fromScheduledJobInstance($scheduledJobInstance, $cronExpressionMock));
     }
 
     public function test_it_return_false_if_configured_too_late_to_be_run(): void
@@ -54,6 +54,6 @@ final class IsJobDueTest extends TestCase
         $cronExpressionMock = $this->createMock(CronExpression::class);
         $cronExpressionMock->method('isDue')->willReturn(false);
         $cronExpressionMock->method('getPreviousRunDate')->willReturn(new \DateTime('2022-10-30 12:00'));
-        $this->assertFalse(IsJobDue::fromScheduledJobInstances($scheduledJobInstance, $cronExpressionMock));
+        $this->assertFalse(IsJobDue::fromScheduledJobInstance($scheduledJobInstance, $cronExpressionMock));
     }
 }

@@ -46,7 +46,7 @@ final class PushScheduledJobsToQueueHandler implements PushScheduledJobsToQueueH
         $dueJobs = [];
 
         foreach ($scheduledJobs as $scheduledJob) {
-            if (IsJobDue::fromScheduledJobInstances($scheduledJob, CronExpressionFactory::fromExpression($scheduledJob->cronExpression))) {
+            if (IsJobDue::fromScheduledJobInstance($scheduledJob, CronExpressionFactory::fromExpression($scheduledJob->cronExpression))) {
                 $dueJobs[] = new DueJobInstance($scheduledJob, $this->getUsersToNotify($scheduledJob));
             }
         }

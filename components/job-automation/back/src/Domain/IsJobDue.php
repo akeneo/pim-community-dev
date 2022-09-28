@@ -19,7 +19,7 @@ use Webmozart\Assert\Assert;
 
 class IsJobDue
 {
-    public static function fromScheduledJobInstances(ScheduledJobInstance $scheduledJobInstance, CronExpression $cronExpression): bool
+    public static function fromScheduledJobInstance(ScheduledJobInstance $scheduledJobInstance, CronExpression $cronExpression): bool
     {
         Assert::isInstanceOf($scheduledJobInstance, ScheduledJobInstance::class);
 
