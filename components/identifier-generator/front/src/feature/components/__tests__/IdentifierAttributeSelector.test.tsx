@@ -37,12 +37,8 @@ describe('IdentifierAttributeSelector', () => {
 
     render(<IdentifierAttributeSelector code="sku" />);
 
-    await waitFor(() =>
-      screen.findByText('You can not list attributes. Please contact your administrator to change your rights.')
-    );
-    expect(
-      screen.getByText('You can not list attributes. Please contact your administrator to change your rights.')
-    ).toBeVisible();
+    await waitFor(() => screen.findByText('pim_error.unauthorized'));
+    expect(screen.getByText('pim_error.unauthorized')).toBeVisible();
   });
 
   it('should show error message when endpoint returns an error', async () => {
@@ -58,11 +54,7 @@ describe('IdentifierAttributeSelector', () => {
 
     render(<IdentifierAttributeSelector code="sku" />);
 
-    await waitFor(() =>
-      screen.findByText('An error occurred during the display of the attribute. Please contact your administrator.')
-    );
-    expect(
-      screen.getByText('An error occurred during the display of the attribute. Please contact your administrator.')
-    ).toBeVisible();
+    await waitFor(() => screen.findByText('pim_error.general'));
+    expect(screen.getByText('pim_error.general')).toBeVisible();
   });
 });

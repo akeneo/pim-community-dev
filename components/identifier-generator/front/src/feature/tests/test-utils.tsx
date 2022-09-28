@@ -5,15 +5,13 @@ import {MicroFrontendDependenciesProvider, Routes, Translations} from '@akeneo-p
 import {ThemeProvider} from 'styled-components';
 // @ts-ignore
 import {routes} from '../../routes.json';
-// @ts-ignore
-import translations from '../../translations.json';
 import {render, RenderOptions} from '@testing-library/react';
 
 const AllTheProviders: FC<{children: React.ReactNode}> = ({children}) => {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        // turns retries off
+        // turns retries off because we dont need it inside tests
         retry: false,
       },
     },
@@ -21,7 +19,7 @@ const AllTheProviders: FC<{children: React.ReactNode}> = ({children}) => {
 
   return (
     <ThemeProvider theme={pimTheme}>
-      <MicroFrontendDependenciesProvider routes={routes as Routes} translations={translations as Translations}>
+      <MicroFrontendDependenciesProvider routes={routes as Routes} translations={{messages: {}} as Translations}>
         <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
       </MicroFrontendDependenciesProvider>
     </ThemeProvider>

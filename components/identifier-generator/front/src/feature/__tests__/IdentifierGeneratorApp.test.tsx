@@ -6,9 +6,9 @@ describe('IdentifierGeneratorApp', () => {
   it('is just an example of unit test', () => {
     render(<IdentifierGeneratorApp />);
 
-    expect(screen.getAllByText('Identifier generators')).toHaveLength(2);
+    expect(screen.getAllByText('pim_title.akeneo_identifier_generator_index')).toHaveLength(2);
     act(() => {
-      fireEvent.click(screen.getByText('Create'));
+      fireEvent.click(screen.getByText('pim_common.create'));
     });
   });
 });
