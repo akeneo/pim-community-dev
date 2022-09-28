@@ -1,0 +1,3 @@
+services:
+    Akeneo\PerformanceAnalytics\Domain\TimeToEnrich\AverageTimeToEnrichRepository:
+        class: Akeneo\PerformanceAnalytics\Infrastructure\InMemory\InMemoryAverageTimeToEnrichRepository

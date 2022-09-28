@@ -1,0 +1,50 @@
+executor-machine: &executor-machine
+
+jobs:
+    test_front_performance_analytics:
+        machine:
+            image: *executor-machine
+            docker_layer_caching: true
+        steps:
+            - attach_workspace:
+                  at: ~/
+            - run:
+                  name: Create yarn cache folder
+                  command: mkdir -p  ~/.cache/yarn
+            - run:
+                  name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                  command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
+            - run:
+                  name: Pull docker image for node
+                  command: docker-compose pull node
+            - run:
+                  name: Lint front
+                  command: PIM_CONTEXT=performance-analytics make performance-analytics-lint-front
+            - run:
+                  name: Unit front
+                  command: PIM_CONTEXT=performance-analytics make performance-analytics-unit-front
+    test_back_performance_analytics:
+        machine:
+            image: *executor-machine
+            docker_layer_caching: true
+        steps:
+            - attach_workspace:
+                  at: ~/
+            - run:
+                  name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                  command: sudo chown -R 1000:1000 ../project
+            - run:
+                  name: Load php image
+                  command: docker load -i php-pim-image.tar
+            - run:
+                  name: Lint back
+                  command: PIM_CONTEXT=performance-analytics make performance-analytics-lint-back
+            - run:
+                  name: Coupling back
+                  command: PIM_CONTEXT=performance-analytics make performance-analytics-coupling-back
+            - run:
+                  name: Unit back
+                  command: PIM_CONTEXT=performance-analytics make performance-analytics-unit-back
+            - run:
+                  name: Integration back
+                  command: PIM_CONTEXT=performance-analytics make performance-analytics-integration-back

@@ -1,3 +1,9 @@
 # UI
 pimee_performance_analytics_dashboard:
-    path: /performance-analytics-dashboard
+    path: /performance-analytics/dashboard
+
+# Internal API
+pimee_performance_analytics_historical_average_tte:
+    path: /rest/performance-analytics/historical-average-tte
+    defaults: { _controller: Akeneo\PerformanceAnalytics\Infrastructure\InternalAPI\GetHistoricalTimeToEnrichAction }
+    methods: [GET]
