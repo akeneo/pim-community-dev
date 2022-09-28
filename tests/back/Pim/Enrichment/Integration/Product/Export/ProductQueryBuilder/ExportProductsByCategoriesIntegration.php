@@ -27,7 +27,7 @@ class ExportProductsByCategoriesIntegration extends AbstractExportTestCase
         $this->createProduct('product_without_category');
     }
 
-    public function testProductExportWithCategoryFilter()
+    public function testProductExportWithCategoryFilter(): void
     {
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_with_categories');
         $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_with_single_category_A');
@@ -52,6 +52,7 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);

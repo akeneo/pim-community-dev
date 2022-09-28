@@ -95,7 +95,7 @@ class ExportProductsByLocalesIntegration extends AbstractExportTestCase
         ]);
     }
 
-    public function testProductExportWithFrenchData()
+    public function testProductExportWithFrenchData(): void
     {
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('complete');
         $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('empty');
@@ -120,12 +120,13 @@ CSV;
                     'locales' => ['fr_FR'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
     }
 
-    public function testProductExportWithEnglishAndFrenchData()
+    public function testProductExportWithEnglishAndFrenchData(): void
     {
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('complete');
         $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('empty');
@@ -150,12 +151,13 @@ CSV;
                     'locales' => ['en_US', 'fr_FR'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
     }
 
-    public function testProductExportAfterRemovingFrenchLocaleFromTabletChannel()
+    public function testProductExportAfterRemovingFrenchLocaleFromTabletChannel(): void
     {
         $channel = $this->get('pim_api.repository.channel')->findOneByIdentifier('tablet');
         $this->get('pim_catalog.updater.channel')->update($channel, ['locales' => ['en_US']]);
@@ -186,6 +188,7 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);

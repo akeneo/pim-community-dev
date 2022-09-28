@@ -13,13 +13,11 @@ class ExportProductsByStatusIntegration extends AbstractExportTestCase
     protected function loadFixtures() : void
     {
         $this->createProduct('product_1', [new SetEnabled(true)]);
-
         $this->createProduct('product_2', [new SetEnabled(false)]);
-
         $this->createProduct('product_3');
     }
 
-    public function testProductExportByFilteringOnEnableProducts()
+    public function testProductExportByFilteringOnEnableProducts(): void
     {
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1');
         $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_3');
@@ -44,12 +42,13 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString(), $product2->getUuid()->toString()), $config);
     }
 
-    public function testProductExportByFilteringOnDisableProducts()
+    public function testProductExportByFilteringOnDisableProducts(): void
     {
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_2');
         $expectedCsv = <<<CSV
@@ -72,12 +71,13 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
     }
 
-    public function testProductExportWithoutFilterOnStatus()
+    public function testProductExportWithoutFilterOnStatus(): void
     {
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1');
         $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_2');
@@ -98,6 +98,7 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);

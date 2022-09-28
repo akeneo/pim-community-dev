@@ -37,7 +37,7 @@ class ExportProductsWithAttributesIntegration extends AbstractExportTestCase
         $this->createProduct('product_4');
     }
 
-    public function testProductExportBySelectingOnlyOneAttribute()
+    public function testProductExportBySelectingOnlyOneAttribute(): void
     {
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1');
         $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_2');
@@ -59,12 +59,13 @@ CSV;
                     'attributes'=> ['a_text_area'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv,$config);
     }
 
-    public function testProductExportWithAttributesInTheSameOrderAsTheFilter()
+    public function testProductExportWithAttributesInTheSameOrderAsTheFilter(): void
     {
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1');
         $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_2');
@@ -86,9 +87,10 @@ CSV;
                     'attributes'=> ['a_text_area', 'a_text'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
-        $this->assertProductExport($expectedCsv,$config);
+        $this->assertProductExport($expectedCsv, $config);
 
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups;a_text;a_text_area
@@ -107,6 +109,7 @@ CSV;
                     'attributes'=> ['a_text', 'a_text_area'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $csv = $this->jobLauncher->launchSubProcessExport('csv_product_export', null, $config);
@@ -117,7 +120,7 @@ CSV;
     /**
      * @jira https://akeneo.atlassian.net/browse/PIM-5994
      */
-    public function testProductExportByExportingTheAttributesOnlyOnce()
+    public function testProductExportByExportingTheAttributesOnlyOnce(): void
     {
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1');
         $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_2');
@@ -143,6 +146,7 @@ CSV;
                     'attributes'=> ['a_text_area', 'a_text'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);

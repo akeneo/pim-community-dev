@@ -14,14 +14,15 @@ Feature: Export products with only selected attributes
     And the following "high_heel_color" attribute options: Red, Blue
     And the following "high_heel_color_sole" attribute options: Green, Orange
     And the following products:
-      | sku    | family | name-en_US | weather_conditions | categories      |
-      | BOOT-1 | boots  | The boot 1 |                    | 2014_collection |
-      | BOOT-2 | boots  | The boot 2 | dry                | 2014_collection |
+      | uuid                                 | sku    | family | name-en_US | weather_conditions | categories      |
+      | 501c2a71-a6c2-4b6c-af94-dc074b7c8f25 | BOOT-1 | boots  | The boot 1 |                    | 2014_collection |
+      | 663fe0a8-84d9-449c-a6d7-4d36134dbb2f | BOOT-2 | boots  | The boot 2 | dry                | 2014_collection |
     And I am logged in as "Julia"
 
   Scenario: Export products by selecting multiple attribute in a specific order
     Given the following job "csv_footwear_product_export" configuration:
-      | storage | {"type": "local", "file_path": "%tmp%/product_export/product_export.csv"} |
+      | storage   | {"type": "local", "file_path": "%tmp%/product_export/product_export.csv"} |
+      | with_uuid | yes                                                                       |
     When I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
     And I filter by "completeness" with operator "No condition on completeness" and value ""
@@ -34,8 +35,8 @@ Feature: Export products with only selected attributes
     Then exported file of "csv_footwear_product_export" should contain:
     """
     uuid;sku;categories;enabled;family;groups;lace_color;weather_conditions
-    %uuid%;BOOT-1;;1;boots;;;
-    %uuid%;BOOT-2;;1;boots;;;dry
+    501c2a71-a6c2-4b6c-af94-dc074b7c8f25;BOOT-1;;1;boots;;;
+    663fe0a8-84d9-449c-a6d7-4d36134dbb2f;BOOT-2;;1;boots;;;dry
     """
     When I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
@@ -49,6 +50,6 @@ Feature: Export products with only selected attributes
     Then exported file of "csv_footwear_product_export" should contain:
     """
     uuid;sku;categories;enabled;family;groups;weather_conditions;lace_color
-    %uuid%;BOOT-1;;1;boots;;;
-    %uuid%;BOOT-2;;1;boots;;dry;
+    501c2a71-a6c2-4b6c-af94-dc074b7c8f25;BOOT-1;;1;boots;;;
+    663fe0a8-84d9-449c-a6d7-4d36134dbb2f;BOOT-2;;1;boots;;dry;
     """

@@ -173,19 +173,7 @@ class ImportExportContext extends PimContext
         $expectedLines = [];
         foreach ($behatData->getStrings() as $line) {
             if (!empty($line)) {
-                $lineData = explode($delimiter, str_replace($enclosure, '', $line));
-
-                // if expected line is uuid to be filled we retrieve product to replace value
-                if ($lineData[0] === '%uuid%' && $expectedLines[0][0] === 'uuid') {
-                    $productIdentifier = $lineData[1];
-
-                    $product = $this
-                        ->getService('pim_catalog.repository.product')
-                        ->findOneByIdentifier($productIdentifier);
-
-                    $lineData[0] = $product->getUuid()->toString();
-                }
-                $expectedLines[] = $lineData;
+                $expectedLines[] = explode($delimiter, str_replace($enclosure, '', $line));
             }
         }
 

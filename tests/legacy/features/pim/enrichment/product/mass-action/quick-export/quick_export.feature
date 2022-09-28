@@ -20,11 +20,11 @@ Feature: Quick export many products from datagrid
     And I add available attribute Attribute 123
     And I save the family
     And the following products:
-      | sku      | family   | categories        | name-en_US    | price          | size | color | 123 |
-      | boots    | boots    | winter_collection | Amazing boots | 20 EUR, 25 USD | 40   | black | aaa |
-      | sneakers | sneakers | summer_collection | Sneakers      | 50 EUR, 60 USD | 42   | white | bbb |
-      | sandals  | sandals  | summer_collection | Sandals       | 5 EUR, 5 USD   | 40   | red   | ccc |
-      | pump     |          | summer_collection | Pump          | 15 EUR, 20 USD | 41   | blue  | ddd |
+      | uuid                                 | sku      | family   | categories        | name-en_US    | price          | size | color | 123 |
+      | 1db6c838-3df1-4112-bad4-ee2e3335a942 | boots    | boots    | winter_collection | Amazing boots | 20 EUR, 25 USD | 40   | black | aaa |
+      | 1c8156c8-5988-4684-9aba-b99c130d1bc6 | sneakers | sneakers | summer_collection | Sneakers      | 50 EUR, 60 USD | 42   | white | bbb |
+      | 3b2952f9-d407-4d5c-90df-1c926ee5e4f5 | sandals  | sandals  | summer_collection | Sandals       | 5 EUR, 5 USD   | 40   | red   | ccc |
+      | e3441c81-1c45-4b10-8181-ec3a995e4c90 | pump     |          | summer_collection | Pump          | 15 EUR, 20 USD | 41   | blue  | ddd |
 
   Scenario: Successfully quick export all products as a CSV file
     Given I am on the products grid
@@ -48,10 +48,10 @@ Feature: Quick export many products from datagrid
     And first exported file of "csv_product_quick_export" should contain:
       """
       uuid;sku;123;categories;color;description-en_US-tablet;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
-      %uuid%;boots;aaa;winter_collection;black;;1;boots;;;;"Amazing boots";20;25;;;40;;
-      %uuid%;sneakers;bbb;summer_collection;white;;1;sneakers;;;;Sneakers;50;60;;;42;;
-      %uuid%;sandals;ccc;summer_collection;red;;1;sandals;;;;Sandals;5;5;;;40;;
-      %uuid%;pump;ddd;summer_collection;blue;;1;;;;;Pump;15;20;;;41;;
+      1db6c838-3df1-4112-bad4-ee2e3335a942;boots;aaa;winter_collection;black;;1;boots;;;;"Amazing boots";20;25;;;40;;
+      1c8156c8-5988-4684-9aba-b99c130d1bc6;sneakers;bbb;summer_collection;white;;1;sneakers;;;;Sneakers;50;60;;;42;;
+      3b2952f9-d407-4d5c-90df-1c926ee5e4f5;sandals;ccc;summer_collection;red;;1;sandals;;;;Sandals;5;5;;;40;;
+      e3441c81-1c45-4b10-8181-ec3a995e4c90;pump;ddd;summer_collection;blue;;1;;;;;Pump;15;20;;;41;;
       """
 
   @critical
@@ -74,6 +74,6 @@ Feature: Quick export many products from datagrid
     Then I should see the text "COMPLETED"
     And the names of the exported files of "xlsx_product_quick_export" should be "1_products_export_en_US_tablet.xlsx"
     And exported xlsx file 1 of "xlsx_product_quick_export" should contain:
-      |  uuid  | sku      | 123 | categories        | color | description-en_US-tablet | enabled | family   | groups | lace_color | manufacturer | name-en_US    | price-EUR | price-USD | rating | side_view | size | top_view | weather_conditions |
-      | %uuid% | boots    | aaa | winter_collection | black |                          | 1       | boots    |        |            |              | Amazing boots | 20        | 25        |        |           | 40   |          |                    |
-      | %uuid% | sneakers | bbb | summer_collection | white |                          | 1       | sneakers |        |            |              | Sneakers      | 50        | 60        |        |           | 42   |          |                    |
+      | uuid                                 | sku      | 123 | categories        | color | description-en_US-tablet | enabled | family   | groups | lace_color | manufacturer | name-en_US    | price-EUR | price-USD | rating | side_view | size | top_view | weather_conditions |
+      | 1db6c838-3df1-4112-bad4-ee2e3335a942 | boots    | aaa | winter_collection | black |                          | 1       | boots    |        |            |              | Amazing boots | 20        | 25        |        |           | 40   |          |                    |
+      | 1c8156c8-5988-4684-9aba-b99c130d1bc6 | sneakers | bbb | summer_collection | white |                          | 1       | sneakers |        |            |              | Sneakers      | 50        | 60        |        |           | 42   |          |                    |
