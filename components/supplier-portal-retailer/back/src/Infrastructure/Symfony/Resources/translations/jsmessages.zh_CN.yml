@@ -17,7 +17,6 @@ supplier_portal:
         title: 供应商已创建。
         content: 现在可以在供应商管理部分对其进行编辑。
       error:
-        unknown_error: 创建供应商时出错。
         supplier_already_exists: '代码为“{{ supplierCode }}”的供应商已存在。'
     supplier_list:
       menu_item: 供应商
@@ -43,7 +42,6 @@ supplier_portal:
         title: 供应商
         confirmation_question: 确定要删除此供应商吗？
         warning: 删除此供应商后，任何未保存的丰富度都将丢失。
-        unknown_error: 删除供应商时出错。
     supplier_edit:
       tabs:
         configuration: 配置
@@ -70,9 +68,7 @@ supplier_portal:
           contributor_email_already_exists:
             title: 我们无法添加此贡献者。
             content: 电子邮件 {{ emailAddress }} 已经用于另一个供应商，我们不支持多个具有相同贡献者的供应商。很抱歉给您带来不便。
-      loading_error: 加载供应商时出错。
       success_message: 此供应商已成功更新。
-      update_error: 更新供应商时出错。
       delete_label: 删除此供应商
   product_file_dropping:
     breadcrumb:

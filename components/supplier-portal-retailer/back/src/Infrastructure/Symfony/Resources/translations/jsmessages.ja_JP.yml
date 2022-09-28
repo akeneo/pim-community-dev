@@ -17,7 +17,6 @@ supplier_portal:
         title: サプライヤーが作成されました。
         content: サプライヤー管理セクションで編集できるようになりました。
       error:
-        unknown_error: サプライヤーを作成中にエラーが発生しました。
         supplier_already_exists: 'コード「{{ supplierCode }}」のサプライヤーは既に存在します。'
     supplier_list:
       menu_item: サプライヤー
@@ -43,7 +42,6 @@ supplier_portal:
         title: サプライヤー
         confirmation_question: このサプライヤーを削除してもよろしいですか？
         warning: このサプライヤーを削除すると、保存されていない充実は失われます。
-        unknown_error: サプライヤーを削除中にエラーが発生しました。
     supplier_edit:
       tabs:
         configuration: 構成
@@ -70,9 +68,7 @@ supplier_portal:
           contributor_email_already_exists:
             title: このコントリビューターを追加できませんでした。
             content: メールアドレス{{ emailAddress }}はすでに別のサプライヤーに使用されており、同じコントリビューターを持つ複数のサプライヤーは今のところサポートされていません。ご不便をおかけして申し訳ありません。
-      loading_error: サプライヤーを読み込み中にエラーが発生しました。
       success_message: サプライヤーが正常に更新されました。
-      update_error: サプライヤーを更新中にエラーが発生しました。
       delete_label: このサプライヤーを削除
   product_file_dropping:
     breadcrumb:
