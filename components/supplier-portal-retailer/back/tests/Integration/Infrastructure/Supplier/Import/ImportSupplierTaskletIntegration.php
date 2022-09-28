@@ -104,8 +104,6 @@ final class ImportSupplierTaskletIntegration extends SqlIntegrationTestCase
             ],
         )->fetchAssociative();
 
-        ;
-
         return false !== $row ? (new SupplierBuilder())
             ->withIdentifier($row['identifier'])
             ->withCode($row['code'])

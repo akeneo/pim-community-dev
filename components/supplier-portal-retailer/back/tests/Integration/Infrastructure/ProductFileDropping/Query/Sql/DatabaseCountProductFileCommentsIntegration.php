@@ -23,7 +23,6 @@ final class DatabaseCountProductFileCommentsIntegration extends SqlIntegrationTe
         );
     }
 
-
     /** @test */
     public function itReturnsZeroIfTheGivenProductFileDoesNotExist(): void
     {
