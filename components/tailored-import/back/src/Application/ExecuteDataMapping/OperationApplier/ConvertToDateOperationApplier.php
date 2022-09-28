@@ -21,22 +21,20 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Value\InvalidValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
-class ConvertToDateOperationApplier implements OperationApplierInterface
+final class ConvertToDateOperationApplier implements OperationApplierInterface
 {
     public function applyOperation(OperationInterface $operation, ValueInterface $value): ValueInterface
     {
-        if (!$operation instanceof ConvertToDateOperation) {
-            throw new UnexpectedValueException($operation, ConvertToDateOperation::class, self::class);
-        }
+        return match (true) {
+            !$operation instanceof ConvertToDateOperation => throw new UnexpectedValueException($operation, ConvertToDateOperation::class, self::class),
+            $value instanceof InvalidValue => $value,
+            $value instanceof StringValue => $this->convertToDateValue($operation, $value),
+            default => throw new UnexpectedValueException($value, StringValue::class, self::class),
+        };
+    }
 
-        if ($value instanceof InvalidValue) {
-            return $value;
-        }
-
-        if (!$value instanceof StringValue) {
-            throw new UnexpectedValueException($value, StringValue::class, self::class);
-        }
-
+    private function convertToDateValue(ConvertToDateOperation $operation, StringValue $value): DateValue|InvalidValue
+    {
         $date = \DateTimeImmutable::createFromFormat(
             $operation::DATE_FORMAT_TO_PHP_DATE_FORMAT_MAPPING[$operation->getDateFormat()],
             $value->getValue(),

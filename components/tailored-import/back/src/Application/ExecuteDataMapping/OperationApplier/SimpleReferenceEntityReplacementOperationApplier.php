@@ -24,18 +24,16 @@ final class SimpleReferenceEntityReplacementOperationApplier implements Operatio
 {
     public function applyOperation(OperationInterface $operation, ValueInterface $value): ValueInterface
     {
-        if (!$operation instanceof SimpleReferenceEntityReplacementOperation) {
-            throw new UnexpectedValueException($operation, SimpleReferenceEntityReplacementOperation::class, self::class);
-        }
+        return match (true) {
+            !$operation instanceof SimpleReferenceEntityReplacementOperation => throw new UnexpectedValueException($operation, SimpleReferenceEntityReplacementOperation::class, self::class),
+            $value instanceof InvalidValue => $value,
+            $value instanceof StringValue => $this->replace($operation, $value),
+            default => throw new UnexpectedValueException($value, StringValue::class, self::class)
+        };
+    }
 
-        if ($value instanceof InvalidValue) {
-            return $value;
-        }
-
-        if (!$value instanceof StringValue) {
-            throw new UnexpectedValueException($value, StringValue::class, self::class);
-        }
-
+    private function replace(SimpleReferenceEntityReplacementOperation $operation, StringValue $value): StringValue
+    {
         $mappedValue = $operation->getMappedValue($value->getValue());
 
         if (null === $mappedValue) {

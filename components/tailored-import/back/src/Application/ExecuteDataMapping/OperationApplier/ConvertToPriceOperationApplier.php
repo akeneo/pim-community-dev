@@ -27,18 +27,16 @@ final class ConvertToPriceOperationApplier implements OperationApplierInterface
 
     public function applyOperation(OperationInterface $operation, ValueInterface $value): ValueInterface
     {
-        if (!$operation instanceof ConvertToPriceOperation) {
-            throw new UnexpectedValueException($operation, ConvertToPriceOperation::class, self::class);
-        }
+        return match (true) {
+            !$operation instanceof ConvertToPriceOperation => throw new UnexpectedValueException($operation, ConvertToPriceOperation::class, self::class),
+            $value instanceof InvalidValue => $value,
+            $value instanceof StringValue => $this->convertToPrice($operation, $value),
+            default => throw new UnexpectedValueException($value, StringValue::class, self::class)
+        };
+    }
 
-        if ($value instanceof InvalidValue) {
-            return $value;
-        }
-
-        if (!$value instanceof StringValue) {
-            throw new UnexpectedValueException($value, StringValue::class, self::class);
-        }
-
+    private function convertToPrice(ConvertToPriceOperation $operation, StringValue $value): InvalidValue|PriceValue
+    {
         $numberValue = str_replace(
             $operation->getDecimalSeparator(),
             self::DEFAULT_DECIMAL_SEPARATOR,

@@ -25,25 +25,21 @@ final class BooleanReplacementOperationApplier implements OperationApplierInterf
 {
     public function applyOperation(OperationInterface $operation, ValueInterface $value): ValueInterface
     {
-        if (!$operation instanceof BooleanReplacementOperation) {
-            throw new UnexpectedValueException($operation, BooleanReplacementOperation::class, self::class);
+        return match (true) {
+            !$operation instanceof BooleanReplacementOperation => throw new UnexpectedValueException($operation, BooleanReplacementOperation::class, self::class),
+            $value instanceof InvalidValue => $value,
+            $value instanceof StringValue => $this->replace($operation, $value),
+            default => throw new UnexpectedValueException($value, StringValue::class, self::class),
+        };
+    }
+
+    private function replace(BooleanReplacementOperation $operation, StringValue $value): BooleanValue|InvalidValue
+    {
+        if ($operation->hasMappedValue($value->getValue())) {
+            return new BooleanValue($operation->getMappedValue($value->getValue()));
         }
 
-        if ($value instanceof InvalidValue) {
-            return $value;
-        }
-
-        if (!$value instanceof StringValue) {
-            throw new UnexpectedValueException($value, StringValue::class, self::class);
-        }
-
-        if (!$operation->hasMappedValue($value->getValue())) {
-            return new InvalidValue(sprintf('There is no mapped value for this source value: "%s"', $value->getValue()));
-        }
-
-        $mappedValue = $operation->getMappedValue($value->getValue());
-
-        return new BooleanValue($mappedValue);
+        return new InvalidValue(sprintf('There is no mapped value for this source value: "%s"', $value->getValue()));
     }
 
     public function supports(OperationInterface $operation): bool
