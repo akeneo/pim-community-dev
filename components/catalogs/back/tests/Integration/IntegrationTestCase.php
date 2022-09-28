@@ -7,6 +7,9 @@ namespace Akeneo\Catalogs\Test\Integration;
 use Akeneo\Catalogs\Application\Persistence\Locale\GetLocalesQueryInterface;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
+use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
+use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
+use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
 use Akeneo\Catalogs\Test\Integration\Fakes\Clock;
 use Akeneo\Catalogs\Test\Integration\Fakes\TimestampableSubscriber;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
@@ -396,5 +399,22 @@ abstract class IntegrationTestCase extends WebTestCase
             'enabled' => true,
         ]);
         self::getContainer()->get('pim_catalog.saver.currency')->save($currency);
+    }
+
+    protected function getCatalog(string $id): Catalog
+    {
+        /** @var ?Catalog $catalog */
+        $catalog = self::getContainer()->get(QueryBus::class)->execute(new GetCatalogQuery($id));
+        $this->assertNotNull($catalog);
+
+        return $catalog;
+    }
+
+    protected function removeAttributeOption(string $code): void
+    {
+        $attributeOption = self::getContainer()->get('pim_catalog.repository.attribute_option')
+            ->findOneByIdentifier($code);
+
+        self::getContainer()->get('pim_catalog.remover.attribute_option')->remove($attributeOption);
     }
 }
