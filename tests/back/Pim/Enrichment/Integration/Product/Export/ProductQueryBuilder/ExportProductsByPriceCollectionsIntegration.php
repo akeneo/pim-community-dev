@@ -4,7 +4,6 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Product\Export\ProductQueryBuild
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceCollectionValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase;
 
 class ExportProductsByPriceCollectionsIntegration extends AbstractExportTestCase
@@ -31,7 +30,7 @@ class ExportProductsByPriceCollectionsIntegration extends AbstractExportTestCase
         $this->createProduct('product_3');
     }
 
-    public function testProductExportByFilteringOnProductInferiorToAPrice()
+    public function testProductExportByFilteringOnProductInferiorToAPrice(): void
     {
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_2');
         $expectedCsv = <<<CSV
@@ -54,6 +53,7 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);

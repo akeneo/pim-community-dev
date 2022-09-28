@@ -17,6 +17,8 @@ use Akeneo\Tool\Component\Connector\Writer\File\DefaultColumnSorter;
  */
 class ProductColumnSorter extends DefaultColumnSorter implements ColumnSorterInterface
 {
+    private ?string $identifierAttributeCode = null;
+
     public function __construct(
         FieldSplitter $fieldSplitter,
         protected AttributeRepositoryInterface $attributeRepository,
@@ -31,14 +33,12 @@ class ProductColumnSorter extends DefaultColumnSorter implements ColumnSorterInt
      */
     public function sort(array $columns, array $context = [])
     {
-        $identifier = $this->attributeRepository->getIdentifierCode();
-
         if (isset($context['filters']['structure']['attributes']) &&
             !empty($context['filters']['structure']['attributes'])
         ) {
             $rawColumns = array_merge(
                 ['uuid'],
-                [$identifier],
+                [$this->identifierAttributeCode()],
                 $this->firstDefaultColumns,
                 array_map(function ($associationType) {
                     return $associationType->getCode();
@@ -56,8 +56,20 @@ class ProductColumnSorter extends DefaultColumnSorter implements ColumnSorterInt
             return array_unique($sortedColumns);
         }
 
-        array_unshift($this->firstDefaultColumns, 'uuid', $identifier);
-
         return parent::sort($columns);
+    }
+
+    protected function getFirstDefaultColumns(): array
+    {
+        return \array_merge(['uuid', $this->identifierAttributeCode()], $this->firstDefaultColumns);
+    }
+
+    private function identifierAttributeCode(): string
+    {
+        if (null === $this->identifierAttributeCode) {
+            $this->identifierAttributeCode = $this->attributeRepository->getIdentifierCode();
+        }
+
+        return $this->identifierAttributeCode;
     }
 }

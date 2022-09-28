@@ -49,7 +49,7 @@ class ExportProductsByCompletenessIntegration extends AbstractExportTestCase
         $this->createProduct('empty', [new SetFamily('localized')]);
     }
 
-    public function testProductExportWithCompleteProductsOnAtLeastOneLocale()
+    public function testProductExportWithCompleteProductsOnAtLeastOneLocale(): void
     {
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('complete');
         $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('english');
@@ -79,12 +79,13 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
     }
 
-    public function testProductExportWithCompleteProductsOnAllLocales()
+    public function testProductExportWithCompleteProductsOnAllLocales(): void
     {
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('complete');
         $expectedCsv = <<<CSV
@@ -110,12 +111,13 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
     }
 
-    public function testProductExportWithIncompleteProductsOnAllLocales()
+    public function testProductExportWithIncompleteProductsOnAllLocales(): void
     {
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('empty');
         $expectedCsv = <<<CSV
@@ -141,12 +143,13 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
     }
 
-    public function testProductExportWithoutFilterOnCompleteness()
+    public function testProductExportWithoutFilterOnCompleteness(): void
     {
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('complete');
         $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('empty');
@@ -169,6 +172,7 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);

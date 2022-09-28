@@ -35,21 +35,7 @@ class XlsxFileContext extends PimContext
         );
         $reader->close();
 
-        $expectedValues = array_values($expectedLines->getRows());
-        if ($expectedValues[0][0] === 'uuid') {
-            foreach ($expectedValues as $index => $row) {
-                if ($row[0] === '%uuid%') {
-                    $productIdentifier = $row[1];
-                    $product = $this
-                        ->getService('pim_catalog.repository.product')
-                        ->findOneByIdentifier($productIdentifier);
-
-                    $expectedValues[$index][0] = $product->getUuid()->toString();
-                }
-            }
-        }
-
-        $this->compareFile($expectedValues, array_values($actualLines), $archivePath);
+        $this->compareFile(array_values($expectedLines->getRows()), array_values($actualLines), $archivePath);
     }
 
     /**
