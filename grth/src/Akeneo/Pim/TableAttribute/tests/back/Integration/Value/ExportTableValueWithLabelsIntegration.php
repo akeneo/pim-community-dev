@@ -32,7 +32,7 @@ final class ExportTableValueWithLabelsIntegration extends TestCase
     /** @test */
     public function it_exports_a_table_value_with_labels_in_en_us_in_csv(): void
     {
-        $config = ['header_with_label' => true, 'with_label' => true, 'withHeader' => true, 'file_locale' => 'en_US'];
+        $config = ['header_with_label' => true, 'with_label' => true, 'withHeader' => true, 'file_locale' => 'en_US', 'with_uuid' => true];
         $csv = $this->jobLauncher->launchExport(self::CSV_EXPORT_JOB_CODE, null, $config);
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('toto');
         $expectedContent = <<<CSV
@@ -46,7 +46,7 @@ CSV;
     /** @test */
     public function it_exports_a_table_value_with_labels_in_fr_fr_in_csv(): void
     {
-        $config = ['header_with_label' => true, 'with_label' => true, 'withHeader' => true, 'file_locale' => 'fr_FR'];
+        $config = ['header_with_label' => true, 'with_label' => true, 'withHeader' => true, 'file_locale' => 'fr_FR', 'with_uuid' => true];
         $csv = $this->jobLauncher->launchExport(self::CSV_EXPORT_JOB_CODE, null, $config);
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('toto');
         $expectedContent = <<<CSV
@@ -60,7 +60,7 @@ CSV;
     /** @test */
     public function it_exports_a_table_attribute_in_en_us_in_xlsx(): void
     {
-        $config = ['header_with_label' => true, 'with_label' => true, 'withHeader' => true, 'file_locale' => 'en_US'];
+        $config = ['header_with_label' => true, 'with_label' => true, 'withHeader' => true, 'file_locale' => 'en_US', 'with_uuid' => true];
         $bin = $this->jobLauncher->launchExport(self::XLSX_EXPORT_JOB_CODE, null, $config, 'xlsx');
         $tmpfile = \tempnam(\sys_get_temp_dir(), 'test_table');
         \file_put_contents($tmpfile, $bin);

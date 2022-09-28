@@ -16,7 +16,7 @@ use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
  */
 class ExportProductsWithPermissionsIntegration extends AbstractProductExportTestCase
 {
-    public function testProductViewableByRedactor()
+    public function testProductViewableByRedactor(): void
     {
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_viewable_by_everybody_1');
         $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_viewable_by_everybody_2');
@@ -37,6 +37,7 @@ CSV;
                     'locales' => ['en_US', 'fr_FR', 'de_DE'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $csv = $this->jobLauncher->launchAuthenticatedExport('csv_product_export', 'mary', $config);
@@ -44,7 +45,7 @@ CSV;
         $this->assertSame($expectedCsv, $csv);
     }
 
-    public function testProductViewableByManager()
+    public function testProductViewableByManager(): void
     {
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_not_viewable_by_redactor');
         $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_viewable_by_everybody_1');
@@ -67,13 +68,14 @@ CSV;
                     'locales' => ['en_US', 'fr_FR', 'de_DE'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $csv = $this->jobLauncher->launchAuthenticatedExport('csv_product_export', 'julia', $config);
         $this->assertSame($expectedCsv, $csv);
     }
 
-    public function testProductExportWithNotGrantedPermissionsOnCategory()
+    public function testProductExportWithNotGrantedPermissionsOnCategory(): void
     {
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_viewable_by_everybody_2');
         $expectedCsv = <<<CSV
@@ -96,6 +98,7 @@ CSV;
                     'locales' => ['en_US', 'fr_FR', 'de_DE'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $csv = $this->jobLauncher->launchAuthenticatedExport('csv_product_export', 'mary', $config);
@@ -103,7 +106,7 @@ CSV;
         $this->assertSame($expectedCsv, $csv);
     }
 
-    public function testProductExportWithNotGrantedPermissionsOnAttributes()
+    public function testProductExportWithNotGrantedPermissionsOnAttributes(): void
     {
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_viewable_by_everybody_1');
         $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_viewable_by_everybody_2');
@@ -125,6 +128,7 @@ CSV;
                     'attributes' => ['a_metric_without_decimal_negative']
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $csv = $this->jobLauncher->launchAuthenticatedExport('csv_product_export', 'mary', $config);
@@ -132,7 +136,7 @@ CSV;
         $this->assertSame($expectedCsv, $csv);
     }
 
-    public function testProductViewableByRedactorWithAuthenticatedJobLauncher()
+    public function testProductViewableByRedactorWithAuthenticatedJobLauncher(): void
     {
         $filePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . JobLauncher::EXPORT_DIRECTORY . DIRECTORY_SEPARATOR . 'export.csv';
         if (file_exists($filePath)) {
@@ -168,6 +172,7 @@ CSV;
                 ],
             ],
             'storage' => ['type' => 'local', 'file_path' => $filePath],
+            'with_uuid' => true,
         ];
 
         $jobExecution = $this->get('pim_connector.launcher.authenticated_job_launcher')->launch($jobInstance, $user, $config);

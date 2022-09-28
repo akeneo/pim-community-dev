@@ -16,7 +16,7 @@ use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
  */
 class ExportProductsWithoutPermissionIntegration extends AbstractProductExportTestCase
 {
-    public function testProductViewableByRedactorWithoutPermissionApplied()
+    public function testProductViewableByRedactorWithoutPermissionApplied(): void
     {
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_not_viewable_by_redactor');
         $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_viewable_by_everybody_1');
@@ -39,6 +39,7 @@ CSV;
                     'locales' => ['en_US', 'fr_FR', 'de_DE'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $csv = $this->jobLauncher->launchExport('csv_product_export', null, $config);
@@ -46,7 +47,7 @@ CSV;
         $this->assertSame($expectedCsv, $csv);
     }
 
-    public function testProductViewableByManagerWithoutPermissionApplied()
+    public function testProductViewableByManagerWithoutPermissionApplied(): void
     {
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_not_viewable_by_redactor');
         $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_viewable_by_everybody_1');
@@ -69,6 +70,7 @@ CSV;
                     'locales' => ['en_US', 'fr_FR', 'de_DE'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $csv = $this->jobLauncher->launchExport('csv_product_export', null, $config);
@@ -76,7 +78,7 @@ CSV;
         $this->assertSame($expectedCsv, $csv);
     }
 
-    public function testProductViewableByRedactorWithQueueJobLauncher()
+    public function testProductViewableByRedactorWithQueueJobLauncher(): void
     {
         $filePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . JobLauncher::EXPORT_DIRECTORY . DIRECTORY_SEPARATOR . 'export.csv';
         if (file_exists($filePath)) {
@@ -112,6 +114,7 @@ CSV;
                 ],
             ],
             'storage' => ['type' => 'local', 'file_path' => $filePath],
+            'with_uuid' => true,
         ];
 
         $jobExecution = $this->get('akeneo_batch_queue.launcher.queue_job_launcher')->launch($jobInstance, $user, $config);

@@ -12,21 +12,27 @@ use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase 
 
 class ExportProductsWithLabelsIntegration extends ExportTestCase
 {
-    public function testProductExportWithLabels()
+    public function testProductExportWithLabels(): void
     {
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('a_product');
         $expectedCsvWithTranslations = <<<CSV
-uuid;[sku];Catégories;Activé;Famille;Groupes;"Collection images";"Les designers";"Les couleurs"
+"Identifiant unique";[sku];Catégories;Activé;Famille;Groupes;"Collection images";"Les designers";"Les couleurs"
 {$product->getUuid()->toString()};a_product;;Oui;[clothing];;Nike,Addidas;"Philippe Starck";"Philippe Starck,Marc Jacobs"
 
 CSV;
         $this->assertProductExport(
             $expectedCsvWithTranslations,
-            ['header_with_label' => true, 'with_label' => true, 'withHeader' => true, 'file_locale' => 'fr_FR']
+            [
+                'header_with_label' => true,
+                'with_label' => true,
+                'withHeader' => true,
+                'file_locale' => 'fr_FR',
+                'with_uuid' => true,
+            ]
         );
     }
 
-    public function testProductExportWithMissingLabelsForTheLocale()
+    public function testProductExportWithMissingLabelsForTheLocale(): void
     {
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('a_product');
         $expectedCsvWithNoTranslations = <<<CSV
@@ -34,7 +40,16 @@ CSV;
 {$product->getUuid()->toString()};a_product;;[yes];[clothing];;[nike],[addidas];[starck];[starck],[jacobs]
 
 CSV;
-        $this->assertProductExport($expectedCsvWithNoTranslations,['header_with_label' => true, 'with_label' => true, 'withHeader' => true, 'file_locale' => 'unknown_locale']);
+        $this->assertProductExport(
+            $expectedCsvWithNoTranslations,
+            [
+                'header_with_label' => true,
+                'with_label' => true,
+                'withHeader' => true,
+                'file_locale' => 'unknown_locale',
+                'with_uuid' => true,
+            ]
+        );
     }
 
     /**
@@ -127,5 +142,12 @@ CSV;
                 new SetAssetValue('assets', null, null, ['nike', 'addidas'])
             ]
         );
+
+        $frenchCatalogue = $this->get('translator')->getCatalogue('fr_FR');
+        $frenchCatalogue->set('pim_common.uuid', 'Identifiant unique');
+        $frenchCatalogue->set('pim_common.categories', 'Catégories');
+        $frenchCatalogue->set('pim_common.family', 'Famille');
+        $frenchCatalogue->set('pim_common.enabled', 'Activé');
+        $frenchCatalogue->set('pim_common.groups', 'Groupes');
     }
 }
