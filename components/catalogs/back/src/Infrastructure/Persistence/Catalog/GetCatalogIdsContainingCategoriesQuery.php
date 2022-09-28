@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Persistence\Catalog;
 
-use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogIdsContainingCategoryQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogIdsContainingCategoriesQueryInterface;
 use Doctrine\DBAL\Connection;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GetCatalogIdsContainingCategoryQuery implements GetCatalogIdsContainingCategoryQueryInterface
+final class GetCatalogIdsContainingCategoriesQuery implements GetCatalogIdsContainingCategoriesQueryInterface
 {
     public function __construct(
         private Connection $connection,

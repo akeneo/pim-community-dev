@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence;
 
 use Akeneo\Catalogs\Domain\Operator;
-use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\GetCatalogIdsContainingCategoryQuery;
+use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\GetCatalogIdsContainingCategoriesQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @covers \Akeneo\Catalogs\Infrastructure\Persistence\Catalog\GetCatalogIdsContainingCategoryQuery
+ * @covers \Akeneo\Catalogs\Infrastructure\Persistence\Catalog\GetCatalogIdsContainingCategoriesQuery
  */
 class GetCatalogsToDisableOnCategoryRemovalQueryTest extends IntegrationTestCase
 {
-    private ?GetCatalogIdsContainingCategoryQuery $query;
+    private ?GetCatalogIdsContainingCategoriesQuery $query;
 
     protected function setUp(): void
     {
@@ -24,7 +24,7 @@ class GetCatalogsToDisableOnCategoryRemovalQueryTest extends IntegrationTestCase
 
         $this->purgeDataAndLoadMinimalCatalog();
 
-        $this->query = self::getContainer()->get(GetCatalogIdsContainingCategoryQuery::class);
+        $this->query = self::getContainer()->get(GetCatalogIdsContainingCategoriesQuery::class);
     }
 
     public function testItGetsCatalogsByCategory(): void

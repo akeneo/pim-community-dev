@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Infrastructure\Job;
 
 use Akeneo\Catalogs\Application\Persistence\Catalog\DisableCatalogsQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogIdsContainingCategoryQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogIdsContainingCategoriesQueryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
@@ -14,8 +14,8 @@ class DisableCatalogsOnCategoryRemovalTasklet implements TaskletInterface
     private ?StepExecution $stepExecution = null;
 
     public function __construct(
-        private GetCatalogIdsContainingCategoryQueryInterface $getCatalogsToDisableQuery,
-        private DisableCatalogsQueryInterface $disableCatalogsQuery,
+        private GetCatalogIdsContainingCategoriesQueryInterface $getCatalogsToDisableQuery,
+        private DisableCatalogsQueryInterface                   $disableCatalogsQuery,
     ) {
     }
 
