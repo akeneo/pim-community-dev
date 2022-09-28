@@ -109,7 +109,7 @@ class SqlGetConnectorProductsIntegration extends TestCase
             ),
             new AssociateQuantifiedProducts(
                 '11',
-                [new QuantifiedEntity((string) $apollonAFalse->getUuid(), 2)],
+                [new QuantifiedEntity((string) $productApollonA->getUuid(), 2)],
             ),
         ]);
 

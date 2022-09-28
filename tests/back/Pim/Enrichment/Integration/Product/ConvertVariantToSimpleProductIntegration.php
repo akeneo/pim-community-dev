@@ -45,11 +45,11 @@ class ConvertVariantToSimpleProductIntegration extends TestCase
             'quantified' => [
                 'products' => [
                     [
-                        'identifier' => 'other',
+                        'uuid' => $this->getProductUuid('other'),
                         'quantity' => 10,
                     ],
                     [
-                        'identifier' => 'random',
+                        'uuid' => $this->getProductUuid('random'),
                         'quantity' => 2,
                     ],
                 ],
@@ -100,7 +100,7 @@ class ConvertVariantToSimpleProductIntegration extends TestCase
         $associationType->setIsQuantified(true);
         $this->get('pim_catalog.saver.association_type')->save($associationType);
 
-        $randomProduct = $this->upsertProduct('random', [new SetFamily('familyA')]);
+        $productRandom = $this->upsertProduct('random', [new SetFamily('familyA')]);
         $this->upsertProduct('other', [new SetFamily('familyA1')]);
         $this->createProductModel(['code' => 'pm_1', 'family_variant' => 'familyVariantA1']);
         $this->createProductModel(['code' => 'pm_2', 'family_variant' => 'familyVariantA2']);
@@ -179,7 +179,7 @@ class ConvertVariantToSimpleProductIntegration extends TestCase
                 new AssociateProductModels('UPSELL', ['pm_2']),
                 new AssociateGroups('UPSELL', ['groupB']),
                 new AssociateQuantifiedProducts('quantified', [
-                    new QuantifiedEntity((string) $randomProduct->getUuid(), 2)
+                    new QuantifiedEntity((string) $productRandom->getUuid(), 2)
                 ])
             ]
         );
@@ -285,5 +285,13 @@ class ConvertVariantToSimpleProductIntegration extends TestCase
         }
 
         return \intval($id);
+    }
+
+    private function getProductUuid(string $identifier): ?string
+    {
+        return $this->get('database_connection')->executeQuery(
+                'SELECT BIN_TO_UUID(uuid) AS uuid FROM pim_catalog_product WHERE identifier = :identifier',
+                ['identifier' => $identifier]
+            )->fetchOne() ?: null;
     }
 }

@@ -71,7 +71,7 @@ class GetFromIdentifiersAction
         );
 
         $productIdentifiers = array_map(
-            static fn($productIdentifier) => sprintf('product_%s', $productIdentifier),
+            static fn ($productIdentifier) => sprintf('product_%s', $productIdentifier),
             $productIdentifiers
         );
 

@@ -337,8 +337,8 @@ define([
             identifiers.map(item => {
               const matchProductModel = item.match(/^product_model;(.*)$/);
               const quantifiedLink = matchProductModel
-                  ? {identifier: matchProductModel[1], quantity: 1}
-                  : {uuid: item.match(/^product;(.*)$/)[1], quantity: 1}
+                ? {identifier: matchProductModel[1], quantity: 1}
+                : {uuid: item.match(/^product;(.*)$/)[1], quantity: 1};
 
               return {
                 quantifiedLink: quantifiedLink,
@@ -886,28 +886,28 @@ define([
               },
               okCloses: false,
               title: __('pim_enrich.entity.product.module.associations.manage', {
-              associationType: getLabel(associationType.labels, locale, associationType.code),
-            }),
-            innerDescription: __('pim_enrich.entity.product.module.associations.manage_description', {productLabel}),
-            content: '',
-            okText: __('pim_common.confirm'),
-            template: this.modalTemplate,
-            innerClassName: 'AknFullPage--full',
-          });
-
-          modal.open();
-          form.setElement(modal.$('.modal-body')).render();
-
-          modal.on('cancel', deferred.reject);
-          modal.on('ok', () => {
-            const productsAndProductModels = form.getItems().sort((a, b) => {
-              return a.code < b.code;
+                associationType: getLabel(associationType.labels, locale, associationType.code),
+              }),
+              innerDescription: __('pim_enrich.entity.product.module.associations.manage_description', {productLabel}),
+              content: '',
+              okText: __('pim_common.confirm'),
+              template: this.modalTemplate,
+              innerClassName: 'AknFullPage--full',
             });
-            modal.close();
 
-            deferred.resolve(productsAndProductModels);
+            modal.open();
+            form.setElement(modal.$('.modal-body')).render();
+
+            modal.on('cancel', deferred.reject);
+            modal.on('ok', () => {
+              const productsAndProductModels = form.getItems().sort((a, b) => {
+                return a.code < b.code;
+              });
+              modal.close();
+
+              deferred.resolve(productsAndProductModels);
+            });
           });
-        });
       });
 
       return deferred.promise();

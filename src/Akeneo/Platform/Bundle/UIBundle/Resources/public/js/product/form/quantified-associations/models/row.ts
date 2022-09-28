@@ -5,7 +5,7 @@ import {
   ProductsType,
   getProductsType,
   AssociationIdentifiers,
-  getQuantifiedLinkIdentifier
+  getQuantifiedLinkIdentifier,
 } from '../models';
 import {ValidationError} from '@akeneo-pim-community/shared';
 
@@ -20,10 +20,10 @@ const addProductToRows = (rows: Row[], products: Product[]): Row[] =>
   rows.map((row: Row) => {
     const product = products.find(product => {
       if (product.document_type === 'product') {
-        return product.id === getQuantifiedLinkIdentifier(row.quantifiedLink)
+        return product.id === getQuantifiedLinkIdentifier(row.quantifiedLink);
       }
 
-      return product.identifier === getQuantifiedLinkIdentifier(row.quantifiedLink)
+      return product.identifier === getQuantifiedLinkIdentifier(row.quantifiedLink);
     });
     if (undefined === product) return {...row, product: null};
 
@@ -54,14 +54,20 @@ const filterOnLabelOrIdentifier =
 
 const updateRowInCollection = (rows: Row[], {quantifiedLink, productType}: Row) =>
   rows.map(row => {
-    if (getQuantifiedLinkIdentifier(row.quantifiedLink) !== getQuantifiedLinkIdentifier(quantifiedLink) || row.productType !== productType) return row;
+    if (
+      getQuantifiedLinkIdentifier(row.quantifiedLink) !== getQuantifiedLinkIdentifier(quantifiedLink) ||
+      row.productType !== productType
+    )
+      return row;
 
     return {...row, quantifiedLink};
   });
 
 const removeRowFromCollection = (collection: Row[], {quantifiedLink, productType}: Row) =>
   collection.filter(
-    row => getQuantifiedLinkIdentifier(row.quantifiedLink) !== getQuantifiedLinkIdentifier(quantifiedLink) || row.productType !== productType
+    row =>
+      getQuantifiedLinkIdentifier(row.quantifiedLink) !== getQuantifiedLinkIdentifier(quantifiedLink) ||
+      row.productType !== productType
   );
 
 const addRowsToCollection = (collection: Row[], addedRows: Row[]) =>

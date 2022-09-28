@@ -45,12 +45,12 @@ class DeleteQuantifiedAssociationsFromVariantProductEndToEnd extends AbstractPro
             'values' => [],
         ]);
 
-        $this->createProduct('chair');
+        $productChair = $this->createProduct('chair');
         $this->createVariantProduct('garden_table_set-black-gold', [
             new ChangeParent('garden_table_set-black'),
             new SetBooleanValue('a_yes_no', null, null, true),
             new AssociateQuantifiedProducts('PRODUCTSET', [
-                new QuantifiedEntity('chair', 8)
+                new QuantifiedEntity((string) $productChair->getUuid(), 8)
             ]),
             new AssociateQuantifiedProductModels('PRODUCTSET', [
                 new QuantifiedEntity('umbrella', 2)

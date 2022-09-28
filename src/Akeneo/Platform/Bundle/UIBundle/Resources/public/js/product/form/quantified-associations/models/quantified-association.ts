@@ -6,12 +6,12 @@ const MAX_QUANTITY = 2147483647;
 type ProductQuantifiedLink = {
   uuid: Identifier;
   quantity: number;
-}
+};
 
 type ProductModelQuantifiedLink = {
   identifier: Identifier;
   quantity: number;
-}
+};
 
 /** To revalidated if we keep it */
 type QuantifiedLink = ProductQuantifiedLink | ProductModelQuantifiedLink;
@@ -27,15 +27,13 @@ const getQuantifiedLinkIdentifier = (quantifiedLink: QuantifiedLink) => {
   }
 
   return quantifiedLink.identifier;
-}
+};
 
 const isQuantifiedAssociationEmpty = (quantifiedAssociation: QuantifiedAssociation): boolean =>
   0 === quantifiedAssociation.products.length && 0 === quantifiedAssociation.product_models.length;
 
 const isProductQuantifiedLink = (quantifiedLink: QuantifiedLink): quantifiedLink is ProductQuantifiedLink =>
-  'object' === typeof quantifiedLink &&
-  'uuid' in quantifiedLink &&
-  'quantity' in quantifiedLink;
+  'object' === typeof quantifiedLink && 'uuid' in quantifiedLink && 'quantity' in quantifiedLink;
 
 const quantifiedAssociationToRowCollection = (collection: QuantifiedAssociation, errors: ValidationError[]): Row[] => [
   ...collection.products.map((quantifiedLink, index) => ({
@@ -59,11 +57,11 @@ const rowCollectionToQuantifiedAssociation = (rows: Row[]): QuantifiedAssociatio
   };
 
   rows.forEach(({quantifiedLink}) => {
-      if (isProductQuantifiedLink(quantifiedLink)) {
-        result.products.push({uuid: quantifiedLink.uuid, quantity: quantifiedLink.quantity})
-      } else {
-        result.product_models.push({identifier: quantifiedLink.identifier, quantity: quantifiedLink.quantity})
-      }
+    if (isProductQuantifiedLink(quantifiedLink)) {
+      result.products.push({uuid: quantifiedLink.uuid, quantity: quantifiedLink.quantity});
+    } else {
+      result.product_models.push({identifier: quantifiedLink.identifier, quantity: quantifiedLink.quantity});
+    }
   });
 
   return result;

@@ -41,6 +41,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Product\Domain',
 
         // Libs
+        'Ramsey\Uuid',
         'Webmozart\Assert\Assert',
         'Symfony\Component\Validator',
         'Symfony\Component\EventDispatcher',

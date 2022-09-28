@@ -36,6 +36,9 @@ final class UuidMapping
     /** @var array<int, string> */
     private array $idsToIdentifiers = [];
 
+    /** @var array<int, string> */
+    private array $idsToUuids = [];
+
     private function __construct(array $mapping)
     {
         foreach ($mapping as $line) {
@@ -51,6 +54,7 @@ final class UuidMapping
             $this->uuidsToIdentifiers[$line['uuid']] = $line['identifier'];
             $this->uuidsToIds[$line['uuid']] = $line['id'];
             $this->idsToIdentifiers[$line['id']] = $line['identifier'];
+            $this->idsToUuids[$line['id']] = $line['uuid'];
 
             if (null !== $line['identifier']) {
                 $this->identifiersToUuids[$line['identifier']] = Uuid::fromString($line['uuid']);
@@ -101,6 +105,16 @@ final class UuidMapping
     public function hasIdentifierFromId(int $id): bool
     {
         return isset($this->idsToIdentifiers[$id]);
+    }
+
+    public function hasUuidFromId(int $id): bool
+    {
+        return isset($this->idsToUuids[$id]);
+    }
+
+    public function getUuidFromId(int $id): ?string
+    {
+        return $this->idsToUuids[$id] ?? null;
     }
 
     public function getIdentifierFromId(int $id): ?string

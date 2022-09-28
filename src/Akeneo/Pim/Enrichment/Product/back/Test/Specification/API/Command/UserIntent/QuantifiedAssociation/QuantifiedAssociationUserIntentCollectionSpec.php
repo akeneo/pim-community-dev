@@ -19,7 +19,7 @@ class QuantifiedAssociationUserIntentCollectionSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith([new AssociateQuantifiedProducts('X_SELL', [new QuantifiedEntity('foo', 5)])]);
+        $this->beConstructedWith([new AssociateQuantifiedProducts('X_SELL', [new QuantifiedEntity('337d8ac9-1afe-4f1b-845c-b124412199da', 5)])]);
     }
 
     function it_is_initializable()
@@ -30,7 +30,7 @@ class QuantifiedAssociationUserIntentCollectionSpec extends ObjectBehavior
 
     function it_returns_the_association_user_intents()
     {
-        $userIntent = new AssociateQuantifiedProducts('X_SELL', [new QuantifiedEntity('foo', 5)]);
+        $userIntent = new AssociateQuantifiedProducts('X_SELL', [new QuantifiedEntity('337d8ac9-1afe-4f1b-845c-b124412199da', 5)]);
         $this->beConstructedWith([$userIntent]);
         $this->quantifiedAssociationUserIntents()->shouldReturn([$userIntent]);
     }
