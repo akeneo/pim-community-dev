@@ -11,7 +11,6 @@ use Akeneo\Platform\Job\Test\Integration\IntegrationTestCase;
 
 class FindJobInstanceTest extends IntegrationTestCase
 {
-    public array $expectedJobInstances;
     private FindJobInstanceInterface $findJobInstanceQuery;
 
     protected function setUp(): void
