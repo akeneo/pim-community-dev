@@ -67,14 +67,14 @@ SQL;
         $sqlPaginationParts = [];
 
         if (null !== $page) {
-            $sqlPaginationParts[] = 'OFFSET :offset';
+            $sqlPaginationParts[] = ':offset,';
         }
 
         if (null !== $limit) {
-            $sqlPaginationParts[] = 'LIMIT :limit';
+            $sqlPaginationParts[] = ':limit';
         }
 
-        return empty($sqlPaginationParts) ? '' : ' '.implode(' ', $sqlPaginationParts);
+        return empty($sqlPaginationParts) ? '' : 'LIMIT '.implode(' ', $sqlPaginationParts);
     }
 
     private function fetchJobInstances(string $sql, JobInstanceQuery $query): array
