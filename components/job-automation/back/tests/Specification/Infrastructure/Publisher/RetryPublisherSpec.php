@@ -18,7 +18,7 @@ use Akeneo\Platform\JobAutomation\Domain\Event\CouldNotLaunchAutomatedJobEvent;
 use Akeneo\Platform\JobAutomation\Domain\Model\DueJobInstance;
 use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
 use Akeneo\Platform\JobAutomation\Domain\Model\UserToNotifyCollection;
-use Akeneo\Tool\Component\BatchQueue\Exception\InvalidJobException;
+use Akeneo\Tool\Component\Batch\Exception\InvalidJobException;
 use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueueInterface;
 use PhpSpec\ObjectBehavior;
 use Psr\Log\LoggerInterface;
