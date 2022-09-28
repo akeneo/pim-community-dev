@@ -22,9 +22,18 @@ type Security = {isGranted: (acl: string) => boolean};
 
 type Translate = (id: string, placeholders?: {[name: string]: string | number}, count?: number) => string;
 
+type UserContextValue = {
+    uiLocale: string,
+    catalogLocale: string,
+    catalogScope: string,
+    timezone: string,
+    ui_locale_decimal_separator: string,
+    [key: string]: string|undefined,
+};
+
 type UserContext = {
-  get: (data: string) => string;
-  set: (key: string, value: string, options: {}) => void;
+  get: <K extends keyof UserContextValue>(key: K) => UserContextValue[K],
+  set: <K extends keyof UserContextValue>(key: K, value: UserContextValue[K], options: {}) => void;
 };
 
 type View = {
@@ -60,6 +69,7 @@ export type {
   Security,
   Translate,
   UserContext,
+  UserContextValue,
   View,
   ViewBuilder,
   Mediator,

@@ -13,7 +13,7 @@ type Page = {
 
 type QueryParams = {
     attribute: string;
-    locale: string;
+    locale?: string;
     search?: string;
     codes?: string[];
     limit?: number;
@@ -30,7 +30,7 @@ type Result = {
 
 export const useInfiniteAttributeOptions = ({
     attribute,
-    locale,
+    locale = 'en_US',
     search = '',
     codes = [],
     limit = 20,
