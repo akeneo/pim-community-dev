@@ -17,8 +17,8 @@ use Akeneo\Platform\JobAutomation\Domain\ClockInterface;
 use Akeneo\Platform\JobAutomation\Domain\Event\CouldNotLaunchAutomatedJobEvent;
 use Akeneo\Platform\JobAutomation\Domain\Model\DueJobInstance;
 use Akeneo\Platform\JobAutomation\Domain\Publisher\RetryPublisherInterface;
-use Akeneo\Tool\Component\BatchQueue\Exception\InvalidJobException;
-use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueueInterface;
+use Akeneo\Tool\Component\Batch\Exception\InvalidJobException;
+use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueue;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -32,7 +32,7 @@ final class RetryPublisher implements RetryPublisherInterface
         private ClockInterface $clock,
         private EventDispatcher $eventDispatcher,
         private LoggerInterface $logger,
-        private PublishJobToQueueInterface $publishJobToQueue,
+        private PublishJobToQueue $publishJobToQueue,
     ) {
     }
 
@@ -68,13 +68,13 @@ final class RetryPublisher implements RetryPublisherInterface
     {
         try {
             $this->publishJobToQueue->publish(
-                jobInstanceCode: $dueJobInstance->getScheduledJobInstance()->code,
+                jobInstanceCode: $dueJobInstance->scheduledJobInstance->code,
                 config: [
                     'is_user_authenticated' => true,
-                    'users_to_notify' => $dueJobInstance->getUsersToNotify()->getUsernames(),
+                    'users_to_notify' => $dueJobInstance->usersToNotify->getUsernames(),
                 ],
-                username: $dueJobInstance->getScheduledJobInstance()->runningUsername,
-                emails: $dueJobInstance->getUsersToNotify()->getUniqueEmails(),
+                username: $dueJobInstance->scheduledJobInstance->runningUsername,
+                emails: $dueJobInstance->usersToNotify->getUniqueEmails(),
             );
         } catch (InvalidJobException $exception) {
             $errorMessages = array_map(

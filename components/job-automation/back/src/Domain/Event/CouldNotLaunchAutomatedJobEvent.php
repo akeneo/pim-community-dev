@@ -31,12 +31,12 @@ class CouldNotLaunchAutomatedJobEvent
         DueJobInstance $dueJobInstance,
         array $errorMessages,
     ): self {
-        return new self($dueJobInstance->getScheduledJobInstance(), $errorMessages, $dueJobInstance->getUsersToNotify());
+        return new self($dueJobInstance->scheduledJobInstance, $errorMessages, $dueJobInstance->usersToNotify);
     }
 
     public static function dueToInternalError(
         DueJobInstance $dueJobInstance,
     ): self {
-        return new self($dueJobInstance->getScheduledJobInstance(), ['Internal system failure'], $dueJobInstance->getUsersToNotify());
+        return new self($dueJobInstance->scheduledJobInstance, ['Internal system failure'], $dueJobInstance->usersToNotify);
     }
 }

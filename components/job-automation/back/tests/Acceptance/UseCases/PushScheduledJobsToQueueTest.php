@@ -62,7 +62,7 @@ final class PushScheduledJobsToQueueTest extends AcceptanceTestCase
         $dueJobInstances = $this->getPublisher()->dueJobInstances;
 
         $this->assertEquals(1, \count($dueJobInstances));
-        $this->assertEquals("scheduled_job_instance_1", $dueJobInstances[0]->getScheduledJobInstance()->code);
+        $this->assertEquals("scheduled_job_instance_1", $dueJobInstances[0]->scheduledJobInstance->code);
     }
 
     public function getHandler(): PushScheduledJobsToQueueHandlerInterface

@@ -13,21 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\JobAutomation\Domain\Model;
 
+/** @readonly  */
 final class DueJobInstance
 {
     public function __construct(
-        private ScheduledJobInstance $scheduledJobInstance,
-        private UserToNotifyCollection $usersToNotify,
+        public ScheduledJobInstance $scheduledJobInstance,
+        public UserToNotifyCollection $usersToNotify,
     ) {
-    }
-
-    public function getScheduledJobInstance(): ScheduledJobInstance
-    {
-        return $this->scheduledJobInstance;
-    }
-
-    public function getUsersToNotify(): UserToNotifyCollection
-    {
-        return $this->usersToNotify;
     }
 }
