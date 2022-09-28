@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\FindFlattenAttributesInterface;
@@ -15,7 +17,7 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 final class GetIdentifierAttributesController
 {
     // The maximum count of identifier attributes in the PIM
-    const MAX_RESULTS = 1;
+    private const MAX_RESULTS = 1;
 
     public function __construct(
         private FindFlattenAttributesInterface $findFlattenAttributes,
@@ -35,7 +37,7 @@ final class GetIdentifierAttributesController
 
         $attributes = $this->findFlattenAttributes->execute(
             $this->userContext->getCurrentLocaleCode(),
-        self::MAX_RESULTS,
+            self::MAX_RESULTS,
             ['pim_catalog_identifier']
         );
 

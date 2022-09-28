@@ -1,15 +1,14 @@
 import React from 'react';
-import {screen, act, fireEvent} from '@testing-library/react';
 import {IdentifierGeneratorApp} from '../IdentifierGeneratorApp';
-import {renderWithProviders} from '@akeneo-pim-community/shared';
+import {render, screen, act, fireEvent} from '../tests/test-utils';
 
 describe('IdentifierGeneratorApp', () => {
   it('is just an example of unit test', () => {
-    renderWithProviders(<IdentifierGeneratorApp />);
+    render(<IdentifierGeneratorApp />);
 
-    expect(screen.getAllByText('pim_title.akeneo_identifier_generator_index')).toHaveLength(2);
+    expect(screen.getAllByText('Identifier generators')).toHaveLength(2);
     act(() => {
-      fireEvent.click(screen.getByText('pim_common.create'));
+      fireEvent.click(screen.getByText('Create'));
     });
   });
 });

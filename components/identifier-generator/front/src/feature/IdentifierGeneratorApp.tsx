@@ -2,7 +2,7 @@ import React from 'react';
 import {Breadcrumb, Button, Helper} from 'akeneo-design-system';
 import {PageHeader, PimView, useTranslate} from '@akeneo-pim-community/shared';
 import {IdentifierAttributeSelector} from './components';
-import {QueryClient, QueryClientProvider} from "react-query";
+import {QueryClient, QueryClientProvider} from 'react-query';
 
 // Create a client
 const queryClient = new QueryClient();

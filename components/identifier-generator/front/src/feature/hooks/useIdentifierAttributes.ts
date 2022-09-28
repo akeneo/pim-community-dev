@@ -1,21 +1,24 @@
 import {useQuery} from 'react-query';
-import {Attribute} from "../models/attributes";
+import {Attribute} from '../models/attributes';
 
 const useIdentifierAttributes = () => {
-  const getIdentifierAttributes = (): Promise<void | Attribute[]> => {
+  const getIdentifierAttributes = async () => {
     return fetch('/identifier-generator/identifier-attributes', {
       method: 'GET',
       headers: [['X-Requested-With', 'XMLHttpRequest']],
-    }).then((response: Response) => response.json().then(responseJson => responseJson));
+    }).then(res => {
+      if (!res.ok) throw new Error(res.statusText);
+      return res.json();
+    });
   };
 
-  const {data, isSuccess} = useQuery('getIdentifierAttributes', getIdentifierAttributes, {
+  const {error, data} = useQuery<Attribute[], Error, Attribute[]>('getIdentifierAttributes', getIdentifierAttributes, {
     keepPreviousData: true,
-    // TODO: check if needed
     refetchOnWindowFocus: false,
+    retry: false,
   });
 
-  return {data, isSuccess};
+  return {data, error};
 };
 
 export {useIdentifierAttributes};

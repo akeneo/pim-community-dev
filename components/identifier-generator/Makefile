@@ -15,4 +15,4 @@ identifier-generator-integration-back:
 # TESTS FRONT
 .PHONY: identifier-generator-unit-front
 identifier-generator-unit-front: yarn-policies
-	$(IDENTIFIER_GENERATOR_YARN) workspace @akeneo-pim-community/identifier-generator test:unit:run --ci --coverage
+	$(IDENTIFIER_GENERATOR_YARN) workspace @akeneo-pim-community/identifier-generator test:unit:run --ci --coverage ${O}
