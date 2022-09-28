@@ -42,6 +42,7 @@ trait ExecuteMigrationTrait
 
         Assert::assertEquals(1, $status, 'Migration should be irreversible.');
 
+        $output = [];
         exec(
             sprintf(
                 "%s %s/bin/console doctrine:migrations:execute 'Pim\Upgrade\Schema\Version%s' --up -n",
