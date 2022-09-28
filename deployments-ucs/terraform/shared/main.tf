@@ -96,7 +96,18 @@ module "cloud_build_cluster_pim_saas_dev_europe_west1" {
   project_id                   = local.project_id
   trigger_name                 = "akecld-prd-pim-saas-dev-europe-west1"
   cloudbuild_filename          = ".cloudbuild/clusters/akecld-prd-pim-saas-dev-europe-west1.yaml"
-  cloudbuild_included_files    = [".cloudbuild/clusters/akecld-prd-pim-saas-dev-europe-west1.yaml", "deployments-ucs/k8s/**", "deployments-ucs/k8s/**"]
+  cloudbuild_included_files    = [".cloudbuild/clusters/akecld-prd-pim-saas-dev-europe-west1.yaml", "deployments-ucs/k8s/**"]
+  cloudbuild_github_repository = local.cloudbuild_github_repository
+  cloudbuild_github_branch     = local.cloudbuild_github_branch
+  cloudbuild_service_account   = local.main_sa
+}
+
+module "cloud_build_cluster_pim_saas_dev_europe_west3" {
+  source                       = "../modules/cloudbuild"
+  project_id                   = local.project_id
+  trigger_name                 = "akecld-prd-pim-saas-dev-europe-west3"
+  cloudbuild_filename          = ".cloudbuild/clusters/akecld-prd-pim-saas-dev-europe-west3.yaml"
+  cloudbuild_included_files    = [".cloudbuild/clusters/akecld-prd-pim-saas-dev-europe-west3.yaml", "deployments-ucs/k8s/**"]
   cloudbuild_github_repository = local.cloudbuild_github_repository
   cloudbuild_github_branch     = local.cloudbuild_github_branch
   cloudbuild_service_account   = local.main_sa
