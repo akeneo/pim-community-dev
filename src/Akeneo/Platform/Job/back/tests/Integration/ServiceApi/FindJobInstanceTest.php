@@ -11,12 +11,14 @@ use Akeneo\Platform\Job\Test\Integration\IntegrationTestCase;
 
 class FindJobInstanceTest extends IntegrationTestCase
 {
+    public array $expectedJobInstances;
     private FindJobInstanceInterface $findJobInstanceQuery;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->findJobInstanceQuery = $this->get(FindJobInstanceInterface::class);
+        $this->loadFixtures();
     }
 
     /**
@@ -24,11 +26,8 @@ class FindJobInstanceTest extends IntegrationTestCase
      */
     public function it_returns_job_instances(): void
     {
-        $this->loadFixtures();
-
         $query = new JobInstanceQuery();
         $queryPagination = new JobInstanceQueryPagination();
-
         $query->pagination = $queryPagination;
 
         $expectedJobInstances = [
@@ -37,8 +36,16 @@ class FindJobInstanceTest extends IntegrationTestCase
                 'label' => 'A product import',
             ],
             [
+                'code' => 'a_scheduled_job',
+                'label' => 'A scheduled job',
+            ],
+            [
                 'code' => 'a_product_export',
                 'label' => 'A product export',
+            ],
+            [
+                'code' => 'a_quick_export',
+                'label' => 'A quick export',
             ]
         ];
 
@@ -50,20 +57,17 @@ class FindJobInstanceTest extends IntegrationTestCase
      */
     public function it_returns_job_instances_filtered_on_type(): void
     {
-        $this->loadFixtures();
-
+        $expectedJobInstances = [];
         $query = new JobInstanceQuery();
         $queryPagination = new JobInstanceQueryPagination();
 
         $query->pagination = $queryPagination;
-        $query->types = ['export'];
+        $query->types = ['quick_export'];
 
-        $expectedJobInstances = [
-            [
-                'code' => 'a_product_export',
-                'label' => 'A product export',
-            ]
-        ];
+        $expectedJobInstances = [[
+            'code' => 'a_quick_export',
+            'label' => 'A quick export',
+        ]];
 
         $this->assertEquals($expectedJobInstances, $this->findJobInstanceQuery->fromQuery($query));
     }
@@ -73,8 +77,6 @@ class FindJobInstanceTest extends IntegrationTestCase
      */
     public function it_returns_searched_job_instances(): void
     {
-        $this->loadFixtures();
-
         $query = new JobInstanceQuery();
         $queryPagination = new JobInstanceQueryPagination();
 
@@ -83,8 +85,8 @@ class FindJobInstanceTest extends IntegrationTestCase
 
         $expectedJobInstances = [
             [
-                'code' => 'a_product_import',
-                'label' => 'A product import',
+            'code' => 'a_product_import',
+            'label' => 'A product import',
             ]
         ];
 
@@ -96,8 +98,6 @@ class FindJobInstanceTest extends IntegrationTestCase
      */
     public function it_returns_paginated_job_instances(): void
     {
-        $this->loadFixtures();
-
         $query = new JobInstanceQuery();
         $queryPagination = new JobInstanceQueryPagination();
 
@@ -110,12 +110,13 @@ class FindJobInstanceTest extends IntegrationTestCase
                 'label' => 'A product import',
             ],
             [
-                'code' => 'another_product_import',
-                'label' => 'Another product import',
-            ]
+                'code' => 'a_scheduled_job',
+                'label' => 'A scheduled job',
+            ],
         ];
 
         $this->assertEquals($expectedJobInstances, $this->findJobInstanceQuery->fromQuery($query));
+        $expectedJobInstances = [];
 
         $queryPagination->page = 2;
         $queryPagination->limit = 2;
@@ -123,8 +124,8 @@ class FindJobInstanceTest extends IntegrationTestCase
 
         $expectedJobInstances = [
             [
-                'code' => 'a_scheduled_job',
-                'label' => 'A scheduled job',
+                'code' => 'a_product_export',
+                'label' => 'A product export',
             ],
             [
                 'code' => 'a_quick_export',
@@ -137,42 +138,28 @@ class FindJobInstanceTest extends IntegrationTestCase
 
     private function loadFixtures(): void
     {
-        $this->fixturesJobHelper->createJobInstance([
+        $this->expectedJobInstances[] = $this->fixturesJobHelper->createJobInstance([
             'code' => 'a_product_import',
             'job_name' => 'a_product_import',
             'label' => 'A product import',
             'type' => 'import',
         ]);
 
-        $this->fixturesJobHelper->createJobInstance([
-            'code' => 'another_product_import',
-            'job_name' => 'another_product_import',
-            'label' => 'Another product import',
-            'type' => 'import',
-        ]);
-
-        $this->fixturesJobHelper->createJobInstance([
-            'code' => 'a_product_export',
-            'job_name' => 'a_product_export',
-            'label' => 'A product export',
-            'type' => 'export',
-        ]);
-
-        $this->fixturesJobHelper->createJobInstance([
-            'code' => 'another_product_export',
-            'job_name' => 'another_product_export',
-            'label' => 'Another product export',
-            'type' => 'export',
-        ]);
-
-        $this->fixturesJobHelper->createJobInstance([
+        $this->expectedJobInstances[] = $this->fixturesJobHelper->createJobInstance([
             'code' => 'a_scheduled_job',
             'job_name' => 'a_scheduled_job',
             'label' => 'A scheduled job',
             'type' => 'scheduled_job',
         ]);
 
-        $this->fixturesJobHelper->createJobInstance([
+        $this->expectedJobInstances[] = $this->fixturesJobHelper->createJobInstance([
+            'code' => 'a_product_export',
+            'job_name' => 'a_product_export',
+            'label' => 'A product export',
+            'type' => 'export',
+        ]);
+
+        $this->expectedJobInstances[] = $this->fixturesJobHelper->createJobInstance([
             'code' => 'a_quick_export',
             'job_name' => 'a_quick_export',
             'label' => 'A quick export',
