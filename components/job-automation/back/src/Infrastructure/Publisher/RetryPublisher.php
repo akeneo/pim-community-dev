@@ -18,7 +18,6 @@ use Akeneo\Platform\JobAutomation\Domain\Event\CouldNotLaunchAutomatedJobEvent;
 use Akeneo\Platform\JobAutomation\Domain\Model\DueJobInstance;
 use Akeneo\Platform\JobAutomation\Domain\Publisher\RetryPublisherInterface;
 use Akeneo\Tool\Component\Batch\Exception\InvalidJobException;
-use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueue;
 use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueueInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
