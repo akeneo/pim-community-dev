@@ -141,15 +141,15 @@ final class QuantifiedAssociationUserIntentCollectionApplier implements UserInte
 
         $isUpdated = false;
         foreach ($quantifiedEntities as $quantifiedEntity) {
-            $identifier = $quantifiedEntity->entityIdentifier();
-            if (\array_key_exists($identifier, $indexedFormerAssociations)
-                && $indexedFormerAssociations[$identifier]['quantity'] === $quantifiedEntity->quantity()
+            $uuid = $quantifiedEntity->entityIdentifier();
+            if (\array_key_exists($uuid, $indexedFormerAssociations)
+                && $indexedFormerAssociations[$uuid]['quantity'] === $quantifiedEntity->quantity()
             ) {
                 continue;
             }
 
-            $indexedFormerAssociations[$identifier] = [
-                'uuid' => $identifier,
+            $indexedFormerAssociations[$uuid] = [
+                'uuid' => $uuid,
                 'quantity' => $quantifiedEntity->quantity(),
             ];
             $isUpdated = true;
@@ -203,10 +203,10 @@ final class QuantifiedAssociationUserIntentCollectionApplier implements UserInte
     ): ?array {
         Assert::isInstanceOf($quantifiedAssociationUserIntent, DissociateQuantifiedProducts::class);
 
-        $entityIdentifiers = $quantifiedAssociationUserIntent->productIdentifiers();
+        $productUuids = $quantifiedAssociationUserIntent->productIdentifiers();
         $newAssociations = \array_filter(
             $formerAssociations,
-            static fn (array $association): bool => !\in_array($association['uuid'], $entityIdentifiers)
+            static fn (array $association): bool => !\in_array($association['uuid'], $productUuids)
         );
 
         return \count($newAssociations) === \count($formerAssociations) ? null : \array_values($newAssociations);
@@ -243,7 +243,7 @@ final class QuantifiedAssociationUserIntentCollectionApplier implements UserInte
         Assert::isInstanceOf($quantifiedAssociationUserIntent, ReplaceAssociatedQuantifiedProducts::class);
 
         $quantifiedEntities = $quantifiedAssociationUserIntent->quantifiedProducts();
-        $newNormalizedAssociations = array_map(static fn(QuantifiedEntity $quantifiedEntity) => [
+        $newNormalizedAssociations = array_map(static fn (QuantifiedEntity $quantifiedEntity) => [
             'uuid' => $quantifiedEntity->entityIdentifier(),
             'quantity' => $quantifiedEntity->quantity(),
         ], $quantifiedEntities);
@@ -255,15 +255,15 @@ final class QuantifiedAssociationUserIntentCollectionApplier implements UserInte
             return null;
         }
 
-        $formerAssociatedIdentifiers = array_map(
+        $formerAssociatedUuids = array_map(
             static fn (array $formerAssociation) => Uuid::fromString($formerAssociation['uuid']),
             $formerAssociations
         );
 
-        $viewableIdentifiers = $this->getViewableProducts->fromProductUuids($formerAssociatedIdentifiers, $userId);
+        $viewableUuids = $this->getViewableProducts->fromProductUuids($formerAssociatedUuids, $userId);
         $nonViewableFormerAssociations = \array_values(\array_filter(
             $formerAssociations,
-            static fn (array $association): bool => !\in_array($association['uuid'], $viewableIdentifiers)
+            static fn (array $association): bool => !\in_array($association['uuid'], $viewableUuids)
         ));
 
         return \array_values(\array_merge($newNormalizedAssociations, $nonViewableFormerAssociations));
@@ -281,7 +281,7 @@ final class QuantifiedAssociationUserIntentCollectionApplier implements UserInte
         Assert::isInstanceOf($quantifiedAssociationUserIntent, ReplaceAssociatedQuantifiedProductModels::class);
 
         $quantifiedEntities = $quantifiedAssociationUserIntent->quantifiedProductModels();
-        $newAssociations = array_map(static fn(QuantifiedEntity $quantifiedEntity) => [
+        $newAssociations = array_map(static fn (QuantifiedEntity $quantifiedEntity) => [
             'identifier' => $quantifiedEntity->entityIdentifier(),
             'quantity' => $quantifiedEntity->quantity(),
         ], $quantifiedEntities);

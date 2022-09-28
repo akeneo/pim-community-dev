@@ -23,7 +23,8 @@ import {
   addRowsToCollection,
   filterOnLabelOrIdentifier,
   getAssociationIdentifiers,
-  getProductsType, getQuantifiedLinkIdentifier,
+  getProductsType,
+  getQuantifiedLinkIdentifier,
   hasUpdatedQuantifiedAssociations,
   isQuantifiedAssociationEmpty,
   newAndUpdatedQuantifiedAssociationsCount,
@@ -193,8 +194,16 @@ const QuantifiedAssociations = ({
                 isCompact={isCompact}
                 parentQuantifiedLink={
                   getProductsType(row.productType) === ProductsType.Products
-                    ? parentQuantifiedAssociations.products.find(quantifiedLink => getQuantifiedLinkIdentifier(quantifiedLink) === getQuantifiedLinkIdentifier(row.quantifiedLink))
-                    : parentQuantifiedAssociations.product_models.find(quantifiedLink => getQuantifiedLinkIdentifier(quantifiedLink) === getQuantifiedLinkIdentifier(row.quantifiedLink))
+                    ? parentQuantifiedAssociations.products.find(
+                        quantifiedLink =>
+                          getQuantifiedLinkIdentifier(quantifiedLink) ===
+                          getQuantifiedLinkIdentifier(row.quantifiedLink)
+                      )
+                    : parentQuantifiedAssociations.product_models.find(
+                        quantifiedLink =>
+                          getQuantifiedLinkIdentifier(quantifiedLink) ===
+                          getQuantifiedLinkIdentifier(row.quantifiedLink)
+                      )
                 }
                 onRemove={handleRemove}
                 onChange={handleChange}

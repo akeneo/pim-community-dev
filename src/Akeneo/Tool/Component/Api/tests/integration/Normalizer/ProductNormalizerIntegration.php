@@ -260,7 +260,7 @@ class ProductNormalizerIntegration extends TestCase
             'quantified_associations' => [
                 "PRODUCT_SET" => [
                     "products" => [
-                        ["identifier" => 'bar', "quantity" => 3]
+                        ["uuid" => $this->getProductUuid('bar'), "quantity" => 3]
                     ],
                     "product_models" => [
                         ["identifier" => 'baz', "quantity" => 2]
@@ -355,7 +355,7 @@ class ProductNormalizerIntegration extends TestCase
             'quantified_associations' => [
                 "PRODUCT_SET" => [
                     "products" => [
-                        ["identifier" => 'bar', "quantity" => 3]
+                        ["uuid" => $this->getProductUuid('bar'), "quantity" => 3]
                     ],
                     "product_models" => [
                         ["identifier" => 'baz', "quantity" => 2]
@@ -427,5 +427,13 @@ class ProductNormalizerIntegration extends TestCase
         }
 
         return $data;
+    }
+
+    private function getProductUuid(string $identifier): ?string
+    {
+        return $this->get('database_connection')->executeQuery(
+                'SELECT BIN_TO_UUID(uuid) AS uuid FROM pim_catalog_product WHERE identifier = :identifier',
+                ['identifier' => $identifier]
+            )->fetchOne() ?: null;
     }
 }

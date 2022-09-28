@@ -96,7 +96,9 @@ class UpsertProductCommandSpec extends ObjectBehavior
         $addMultiSelectValue = new AddMultiSelectValue('name', null, null, ['optionA']);
         $setAssetValue = new SetAssetValue('name', null, null, ['packshot1']);
         $setGroupsIntent = new SetGroups(['groupA', 'groupB']);
-        $associateQuantifiedProducts = new AssociateQuantifiedProducts('X_SELL', [new QuantifiedEntity('foo', 5)]);
+        $associateQuantifiedProducts = new AssociateQuantifiedProducts('X_SELL', [
+            new QuantifiedEntity('337d8ac9-1afe-4f1b-845c-b124412199da', 5)
+        ]);
 
         $this->beConstructedThrough('createFromCollection', [
             10,

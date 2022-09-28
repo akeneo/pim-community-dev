@@ -184,11 +184,11 @@ class LoadProductAndProductModelIntegration extends TestCase
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 
-    private function getProductUuid(string $identifier): string|null
+    private function getProductUuid(string $identifier): ?string
     {
         return $this->get('database_connection')->executeQuery(
             'SELECT BIN_TO_UUID(uuid) AS uuid FROM pim_catalog_product WHERE identifier = :identifier',
             ['identifier' => $identifier]
-        )->fetchOne() ?? null;
+        )->fetchOne() ?: null;
     }
 }

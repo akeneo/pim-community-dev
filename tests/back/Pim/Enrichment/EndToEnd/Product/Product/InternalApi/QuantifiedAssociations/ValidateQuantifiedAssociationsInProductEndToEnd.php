@@ -24,7 +24,7 @@ class ValidateQuantifiedAssociationsInProductEndToEnd extends AbstractProductWit
             'PRODUCTSET' => [
                 'products' => [
                     [
-                        'identifier' => 'THIS_PRODUCT_DOES_NOT_EXISTS',
+                        'uuid' => 'd215e419-a59d-4e75-8483-a1962c18ed4b',
                         'quantity' => 3,
                     ],
                 ],

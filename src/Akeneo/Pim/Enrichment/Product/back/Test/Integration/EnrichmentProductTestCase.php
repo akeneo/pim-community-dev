@@ -253,7 +253,7 @@ abstract class EnrichmentProductTestCase extends TestCase
 
         $quantifiedProducts = [];
         foreach ($quantifiedAssociationCollection->normalize()[$associationType]['products'] ?? [] as $product) {
-            $quantifiedProducts[] = new QuantifiedEntity($product['identifier'], $product['quantity']);
+            $quantifiedProducts[] = new QuantifiedEntity($product['uuid'], $product['quantity']);
         }
 
         return $quantifiedProducts;

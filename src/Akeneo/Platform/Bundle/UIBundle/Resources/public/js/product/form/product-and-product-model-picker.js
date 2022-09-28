@@ -22,9 +22,10 @@ define([
      * {@inheritdoc}
      */
     selectModel: function (model) {
-      const item = model.attributes.document_type === 'product_model'
-        ? `product_model;${model.get('identifier')}`
-        : `product;${model.get(this.config.columnName)}`;
+      const item =
+        model.attributes.document_type === 'product_model'
+          ? `product_model;${model.get('identifier')}`
+          : `product;${model.get(this.config.columnName)}`;
 
       this.addItem(item);
     },

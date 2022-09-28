@@ -45,7 +45,7 @@ class UpsertQuantifiedAssociationsIntegration extends EnrichmentProductTestCase
         Assert::assertNotNull($this->productRepository->findOneByIdentifier('associated_product1'));
 
         $this->commandMessageBus->dispatch(UpsertProductCommand::createWithIdentifier(userId: $this->getUserId('peter'), productIdentifier: ProductIdentifier::fromIdentifier('associated_product2'), userIntents: []));
-        Assert::assertNotNull($this->productRepository->findOneByIdentifier('associated_product1'));
+        Assert::assertNotNull($this->productRepository->findOneByIdentifier('associated_product2'));
 
         $this->commandMessageBus->dispatch(UpsertProductCommand::createWithIdentifier(userId: $this->getUserId('peter'), productIdentifier: ProductIdentifier::fromIdentifier('associated_product3'), userIntents: []));
         Assert::assertNotNull($this->productRepository->findOneByIdentifier('associated_product3'));
@@ -61,22 +61,23 @@ class UpsertQuantifiedAssociationsIntegration extends EnrichmentProductTestCase
     /** @test */
     public function it_associates_a_quantified_product(): void
     {
+        $associatedProduct1Uuid = $this->getProductUuid('associated_product1');
         Assert::assertEmpty($this->getAssociatedQuantifiedProducts('identifier'));
         $this->commandMessageBus->dispatch(UpsertProductCommand::createWithIdentifier($this->getUserId('peter'), ProductIdentifier::fromIdentifier('identifier'), [
-            new AssociateQuantifiedProducts('bundle', [new QuantifiedEntity('associated_product1', 5)]),
+            new AssociateQuantifiedProducts('bundle', [new QuantifiedEntity($associatedProduct1Uuid, 5)]),
         ]));
         Assert::assertEquals(
-            [new QuantifiedEntity('associated_product1', 5)],
+            [new QuantifiedEntity($associatedProduct1Uuid, 5)],
             $this->getAssociatedQuantifiedProducts('identifier')
         );
 
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
 
         $this->commandMessageBus->dispatch(UpsertProductCommand::createWithIdentifier($this->getUserId('peter'), ProductIdentifier::fromIdentifier('identifier'), [
-            new AssociateQuantifiedProducts('bundle', [new QuantifiedEntity('associated_product1', 8)]),
+            new AssociateQuantifiedProducts('bundle', [new QuantifiedEntity($associatedProduct1Uuid, 8)]),
         ]));
         Assert::assertEquals(
-            [new QuantifiedEntity('associated_product1', 8)],
+            [new QuantifiedEntity($associatedProduct1Uuid, 8)],
             $this->getAssociatedQuantifiedProducts('identifier')
         );
     }
@@ -88,36 +89,39 @@ class UpsertQuantifiedAssociationsIntegration extends EnrichmentProductTestCase
         $this->expectExceptionMessage("The following products don't exist: unknown. Please make sure the products haven't been deleted in the meantime.");
 
         $this->commandMessageBus->dispatch(UpsertProductCommand::createWithIdentifier($this->getUserId('peter'), ProductIdentifier::fromIdentifier('identifier'), [
-            new AssociateQuantifiedProducts('bundle', [new QuantifiedEntity('unknown', 5)]),
+            new AssociateQuantifiedProducts('bundle', [new QuantifiedEntity('631a992c-3b2b-4d82-ab0d-296adef2a66c', 5)]),
         ]));
     }
 
     /** @test */
     public function it_dissociates_a_quantified_product(): void
     {
+        $associatedProduct1Uuid = $this->getProductUuid('associated_product1');
+        $associatedProduct2Uuid = $this->getProductUuid('associated_product2');
+
         $this->commandMessageBus->dispatch(UpsertProductCommand::createWithIdentifier($this->getUserId('peter'), ProductIdentifier::fromIdentifier('identifier'), [
             new AssociateQuantifiedProducts('bundle', [
-                new QuantifiedEntity('associated_product1', 5),
-                new QuantifiedEntity('associated_product2', 4),
+                new QuantifiedEntity($associatedProduct1Uuid, 5),
+                new QuantifiedEntity($associatedProduct2Uuid, 4),
             ]),
         ]));
         Assert::assertEquals(
-            [new QuantifiedEntity('associated_product1', 5), new QuantifiedEntity('associated_product2', 4)],
+            [new QuantifiedEntity($associatedProduct1Uuid, 5), new QuantifiedEntity($associatedProduct2Uuid, 4)],
             $this->getAssociatedQuantifiedProducts('identifier')
         );
 
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
 
         $this->commandMessageBus->dispatch(UpsertProductCommand::createWithIdentifier($this->getUserId('peter'), ProductIdentifier::fromIdentifier('identifier'), [
-            new DissociateQuantifiedProducts('bundle', ['associated_product1']),
+            new DissociateQuantifiedProducts('bundle', [$associatedProduct1Uuid]),
         ]));
         Assert::assertEquals(
-            [new QuantifiedEntity('associated_product2', 4)],
+            [new QuantifiedEntity($associatedProduct2Uuid, 4)],
             $this->getAssociatedQuantifiedProducts('identifier')
         );
 
         $this->commandMessageBus->dispatch(UpsertProductCommand::createWithIdentifier($this->getUserId('peter'), ProductIdentifier::fromIdentifier('identifier'), [
-            new DissociateQuantifiedProducts('bundle', ['associated_product2', 'unknown']),
+            new DissociateQuantifiedProducts('bundle', [$associatedProduct2Uuid, 'd215e419-a59d-4e75-8483-a1962c18ed4b']),
         ]));
         Assert::assertEmpty($this->getAssociatedQuantifiedProducts('identifier'));
     }
@@ -125,14 +129,18 @@ class UpsertQuantifiedAssociationsIntegration extends EnrichmentProductTestCase
     /** @test */
     public function it_replaces_associated_quantified_products(): void
     {
+        $associatedProduct1Uuid = $this->getProductUuid('associated_product1');
+        $associatedProduct2Uuid = $this->getProductUuid('associated_product2');
+        $associatedProduct3Uuid = $this->getProductUuid('associated_product3');
+
         $this->commandMessageBus->dispatch(UpsertProductCommand::createWithIdentifier($this->getUserId('peter'), ProductIdentifier::fromIdentifier('identifier'), [
             new ReplaceAssociatedQuantifiedProducts('bundle', [
-                new QuantifiedEntity('associated_product1', 5),
-                new QuantifiedEntity('associated_product2', 4),
+                new QuantifiedEntity($associatedProduct1Uuid, 5),
+                new QuantifiedEntity($associatedProduct2Uuid, 4),
             ]),
         ]));
         Assert::assertEquals(
-            [new QuantifiedEntity('associated_product1', 5), new QuantifiedEntity('associated_product2', 4)],
+            [new QuantifiedEntity($associatedProduct1Uuid, 5), new QuantifiedEntity($associatedProduct2Uuid, 4)],
             $this->getAssociatedQuantifiedProducts('identifier')
         );
 
@@ -140,12 +148,12 @@ class UpsertQuantifiedAssociationsIntegration extends EnrichmentProductTestCase
 
         $this->commandMessageBus->dispatch(UpsertProductCommand::createWithIdentifier($this->getUserId('peter'), ProductIdentifier::fromIdentifier('identifier'), [
             new ReplaceAssociatedQuantifiedProducts('bundle', [
-                new QuantifiedEntity('associated_product1', 50),
-                new QuantifiedEntity('associated_product3', 2),
+                new QuantifiedEntity($associatedProduct1Uuid, 50),
+                new QuantifiedEntity($associatedProduct3Uuid, 2),
             ]),
         ]));
         Assert::assertEquals(
-            [new QuantifiedEntity('associated_product1', 50), new QuantifiedEntity('associated_product3', 2)],
+            [new QuantifiedEntity($associatedProduct1Uuid, 50), new QuantifiedEntity($associatedProduct3Uuid, 2)],
             $this->getAssociatedQuantifiedProducts('identifier')
         );
     }
@@ -229,5 +237,13 @@ class UpsertQuantifiedAssociationsIntegration extends EnrichmentProductTestCase
             [new QuantifiedEntity('product_model1', 50), new QuantifiedEntity('product_model3', 2)],
             $this->getAssociatedQuantifiedProductModels('identifier')
         );
+    }
+
+    private function getProductUuid(string $identifier): string
+    {
+        $product = $this->productRepository->findOneByIdentifier($identifier);
+        Assert::assertNotNull($product);
+
+        return $product->getUuid()->toString();
     }
 }

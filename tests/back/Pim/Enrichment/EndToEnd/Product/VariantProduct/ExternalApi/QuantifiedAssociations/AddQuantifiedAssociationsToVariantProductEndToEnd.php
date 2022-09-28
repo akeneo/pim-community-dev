@@ -39,7 +39,7 @@ class AddQuantifiedAssociationsToVariantProductEndToEnd extends AbstractProductT
             'values' => [],
         ]);
 
-        $this->createProduct('chair');
+        $productChairUuid = $this->createProduct('chair')->getUuid();
 
         $data = <<<JSON
 {
@@ -85,7 +85,7 @@ JSON;
             'quantified_associations' => [
                 'PRODUCTSET' => [
                     'products' => [
-                        ['identifier' => 'chair', 'quantity' => 8],
+                        ['uuid' => (string) $productChairUuid, 'quantity' => 8],
                     ],
                     'product_models' => [
                         ['identifier' => 'umbrella', 'quantity' => 2],

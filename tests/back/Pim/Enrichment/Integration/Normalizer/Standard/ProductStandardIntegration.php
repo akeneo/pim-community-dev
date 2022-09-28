@@ -258,7 +258,7 @@ class ProductStandardIntegration extends TestCase
                 'quantified_associations' => [
                     "PRODUCT_SET" => [
                         "products" => [
-                            ["identifier" => 'bar', "quantity" => 3]
+                            ["uuid" => $this->getProductUuid('bar'), "quantity" => 3]
                         ],
                         "product_models" => [
                             ["identifier" => 'baz', "quantity" => 2]
@@ -460,7 +460,7 @@ SQL;
                 'quantified_associations' => [
                     "PRODUCT_SET" => [
                         "products" => [
-                            ["identifier" => 'bar', "quantity" => 3]
+                            ["uuid" => $this->getProductUuid('bar'), "quantity" => 3]
                         ],
                         "product_models" => [
                             ["identifier" => 'baz', "quantity" => 2]
@@ -525,5 +525,13 @@ SQL;
         }
 
         return $data;
+    }
+
+    private function getProductUuid(string $identifier): string
+    {
+        $repository = $this->get('pim_catalog.repository.product');
+        $product = $repository->findOneByIdentifier($identifier);
+
+        return (string) $product->getUuid();
     }
 }
