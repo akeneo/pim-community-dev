@@ -21,6 +21,7 @@ class Category
         private Code $code,
         private ?LabelCollection $labels = null,
         private ?CategoryId $parentId = null,
+        private ?Category $root = null,
         private ?ValueCollection $attributes = null,
         private ?PermissionCollection $permissions = null,
     ) {
@@ -44,6 +45,11 @@ class Category
     public function getParentId(): ?CategoryId
     {
         return $this->parentId;
+    }
+
+    public function getRoot(): ?Category
+    {
+        return $this->root;
     }
 
     public function getAttributes(): ?ValueCollection
@@ -70,6 +76,7 @@ class Category
      * @return array{
      *     id: int|null,
      *     parent: int|null,
+     *     root: Category | null,
      *     properties: array{
      *       code: string,
      *       labels: array<string, string>|null
@@ -83,6 +90,7 @@ class Category
         return [
             'id' => $this->getId()?->getValue(),
             'parent' => $this->getParentId()?->getValue(),
+            'root' => $this->getRoot()?->normalize(),
             'properties' => [
                 'code' => (string) $this->getCode(),
                 'labels' => $this->getLabels()?->normalize(),
