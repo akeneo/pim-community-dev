@@ -497,7 +497,6 @@ config:
     pim/init-translator: pimui/js/init-translator
 
     pimuser/js/init-signin: pimuser/js/init-signin
-    translator-lib: pimui/lib/translator
     routing: pimui/js/fos-routing-wrapper
     pim/datagrid-view-fetcher: pimdatagrid/js/fetcher/datagrid-view-fetcher
     jquery-setup: pimui/js/jquery-setup.js
