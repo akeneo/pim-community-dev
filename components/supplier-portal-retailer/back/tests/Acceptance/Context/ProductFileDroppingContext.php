@@ -7,10 +7,11 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Acceptance\Context;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CommentProductFile;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CommentProductFileHandler;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\InvalidComment;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\CreateSupplier;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\CreateSupplierHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithComments;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\InMemory\InMemoryRepository as InMemoryProductFileRepository;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository as InMemorySupplierRepository;
 use Behat\Behat\Context\Context;
@@ -20,6 +21,7 @@ use PHPUnit\Framework\Assert;
 final class ProductFileDroppingContext implements Context
 {
     private string $productFileIdentifier;
+    private string $supplierIdentifier;
     private array $errors = [];
 
     public function __construct(
@@ -27,6 +29,7 @@ final class ProductFileDroppingContext implements Context
         private InMemoryProductFileRepository $productFileRepository,
         private CommentProductFileHandler $commentProductFileHandler,
         private GetProductFileWithComments $getProductFileWithComments,
+        private CreateSupplierHandler $createSupplierHandler,
     ) {
     }
 
@@ -35,12 +38,10 @@ final class ProductFileDroppingContext implements Context
      */
     public function aSupplier(): void
     {
-        $this->supplierRepository->save(Write\Model\Supplier::create(
-            'f7555f61-2ea6-4b0e-88f2-737e504e7b95',
-            'los_pollos_hermanos',
-            'Los Pollos Hermanos',
-            [],
-        ));
+        ($this->createSupplierHandler)(new CreateSupplier('los_pollos_hermanos', 'Los Pollos Hermanos', []));
+
+        $supplier = $this->supplierRepository->findByCode('los_pollos_hermanos');
+        $this->supplierIdentifier = $supplier->identifier();
     }
 
     /**
@@ -56,7 +57,7 @@ final class ProductFileDroppingContext implements Context
             'path/to/file.xlsx',
             'jimmy.punchline@los-pollos-hermanos.com',
             new Read\Model\Supplier(
-                'f7555f61-2ea6-4b0e-88f2-737e504e7b95',
+                $this->supplierIdentifier,
                 'los_pollos_hermanos',
                 'Los Pollos Hermanos',
             ),
@@ -76,7 +77,7 @@ final class ProductFileDroppingContext implements Context
             'path/to/file.xlsx',
             'jimmy.punchline@los-pollos-hermanos.com',
             new Read\Model\Supplier(
-                'f7555f61-2ea6-4b0e-88f2-737e504e7b95',
+                $this->supplierIdentifier,
                 'los_pollos_hermanos',
                 'Los Pollos Hermanos',
             ),
