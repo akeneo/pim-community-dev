@@ -9,4 +9,4 @@ spec:
   source:
     repoURL: https://github.com/akeneo/pim-saas-k8s-artifacts.git
     basePath: k8s/infra/charts/
-    targetRevision: null #To be overrided
+    targetRevision: master #To be overrided
