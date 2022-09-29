@@ -16,7 +16,6 @@ interface DisableOnlyInvalidCatalogInterface
     /**
      * Disable the catalog if it is invalid
      *
-     *
      * @return bool Is the catalog has been disabled or not
      */
     public function disable(Catalog $catalog): bool;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Controller\Public;
 
+use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductsQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Security\DenyAccessUnlessGrantedTrait;
 use Akeneo\Catalogs\Infrastructure\Security\GetCurrentUsernameTrait;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogDisabledException;
@@ -26,25 +27,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @phpstan-type ProductValue array{
- *      scope: string|null,
- *      locale: string|null,
- *      data: mixed,
- * }
- *
- * @phpstan-type Product array{
- *      uuid: string,
- *      enabled: boolean,
- *      family: string,
- *      categories: array<string>,
- *      groups: array<string>,
- *      parent: string|null,
- *      values: array<string, ProductValue>,
- *      associations: array<string, array{groups: array<string>, products: array<string>, product_models: array<string>}>,
- *      quantified_associations: array<string, array{products: array<string>, product_models: array<string>}>,
- *      created: string,
- *      updated: string,
- * }
+ * @phpstan-import-type Product from GetProductsQueryInterface
  */
 class GetProductsAction
 {
