@@ -2,14 +2,27 @@ kind: Gateway
 apiVersion: gateway.networking.k8s.io/v1alpha2
 metadata:
   name: external-http
-  annotations:
-    networking.gke.io/certmap: {{ .Values.gateway.certmap }}
+  labels:
+    domain: {{ .Values.global.publicDomain }}
 spec:
-  gatewayClassName: gke-l7-gxlb
+  gatewayClassName: contour
   listeners:
   - name: https
     protocol: HTTPS
     port: 443
+    tls:
+      certificateRefs:
+      - kind: Secret
+        group: ""
+        name: test-cert
+    allowedRoutes:
+      kinds:
+      - kind: HTTPRoute
+      namespaces:
+        from: All
+  - name: http
+    protocol: HTTP
+    port: 80
     allowedRoutes:
       kinds:
       - kind: HTTPRoute
