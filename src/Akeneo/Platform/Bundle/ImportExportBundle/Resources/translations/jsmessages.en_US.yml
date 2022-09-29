@@ -173,6 +173,8 @@ pim_import_export:
                     unavailable_type: This storage is not available, only {{ available_types }} are available.
                 file_path:
                     unsupported_extension: Unsupported file extension
+                fingerprint:
+                    invalid_encoding: Fingerprint should be a valid MD5 hash
             connection_checker:
                 label: Test connection settings
                 exception: Connection can't be established, please check your settings.
