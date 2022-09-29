@@ -11,7 +11,7 @@ type SftpStorage = {
   type: 'sftp';
   file_path: string;
   host: string;
-  fingerprint: string;
+  fingerprint?: string;
   port: number;
   username: string;
   password: string;

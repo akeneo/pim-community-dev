@@ -88,10 +88,8 @@ test('it allows user to fill fingerprint field', () => {
     <SftpStorageConfigurator storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />
   );
 
-  const hostInput = screen.getByLabelText(
-    'pim_import_export.form.job_instance.storage_form.fingerprint.label pim_common.required_label'
-  );
-  userEvent.type(hostInput, '8653a85f112ca9286bd78fbe47606a23');
+  const hostInput = screen.getByLabelText('pim_import_export.form.job_instance.storage_form.fingerprint.label');
+  userEvent.paste(hostInput, '8653a85f112ca9286bd78fbe47606a23');
 
   expect(onStorageChange).toHaveBeenLastCalledWith({...storage, fingerprint: '8653a85f112ca9286bd78fbe47606a23'});
 });

@@ -45,6 +45,7 @@ test('it throws an exception when passing a non-local storage', () => {
     type: 'sftp',
     file_path: '/tmp/file.xlsx',
     host: 'localhost',
+    fingerprint: '',
     port: 22,
     username: 'root',
     password: 'root',

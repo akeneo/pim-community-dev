@@ -22,6 +22,7 @@ const localStorage: LocalStorage = {
 const sftpStorage: SftpStorage = {
   type: 'sftp',
   host: 'example.com',
+  fingerprint: '',
   port: 22,
   username: 'test',
   password: 'test',
