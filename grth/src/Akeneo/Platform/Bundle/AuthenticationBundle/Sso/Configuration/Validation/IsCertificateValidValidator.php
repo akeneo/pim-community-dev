@@ -66,7 +66,12 @@ final class IsCertificateValidValidator extends ConstraintValidator
             return;
         }
 
-        $result = $this->x509->loadX509($certificate);
+        try {
+            $result = $this->x509->loadX509($certificate);
+        } catch (\Exception) {
+            $result = false;
+        }
+
         if (false === $result) {
             $this->context
                 ->buildViolation($constraint->invalidMessage)
