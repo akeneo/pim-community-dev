@@ -11,6 +11,7 @@ type SftpStorage = {
   type: 'sftp';
   file_path: string;
   host: string;
+  fingerprint: string;
   port: number;
   username: string;
   password: string;
@@ -60,6 +61,7 @@ const getDefaultStorage = (jobType: JobType, storageType: StorageType, fileExten
         type: 'sftp',
         file_path: getDefaultFilePath(jobType, fileExtension),
         host: '',
+        fingerprint: '',
         port: 22,
         username: '',
         password: '',

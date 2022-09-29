@@ -43,6 +43,13 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
         onChange={host => onStorageChange({...storage, host})}
         errors={filterErrors(validationErrors, '[host]')}
       />
+      <TextField
+        required={false}
+        value={storage.fingerprint}
+        label={translate('pim_import_export.form.job_instance.storage_form.fingerprint.label')}
+        onChange={fingerprint => onStorageChange({...storage, fingerprint})}
+        errors={filterErrors(validationErrors, '[fingerprint]')}
+      />
       <Field
         label={`${translate('pim_import_export.form.job_instance.storage_form.port.label')} ${translate(
           'pim_common.required_label'
