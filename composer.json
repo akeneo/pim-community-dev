@@ -94,7 +94,8 @@
             "Specification\\Akeneo\\Platform\\JobAutomation\\": "components/job-automation/back/tests/Specification",
             "Akeneo\\Catalogs\\Test\\": "vendor/akeneo/pim-community-dev/components/catalogs/back/tests",
             "AkeneoEnterprise\\Connectivity\\Connection\\Tests\\": "src/Akeneo/Connectivity/Connection/back/tests",
-            "Akeneo\\FreeTrial\\Test\\": "tria/src/Akeneo/FreeTrial/tests/back"
+            "Akeneo\\FreeTrial\\Test\\": "tria/src/Akeneo/FreeTrial/tests/back",
+            "Akeneo\\Test\\PerformanceAnalytics\\": "components/performance-analytics/back/tests"
         }
     },
     "require": {

@@ -1,0 +1,87 @@
+steps:
+  - id: "Stop current build if ongoing build is ongoing"
+    name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+    - -c
+    - |
+        # Set project configuration
+        gcloud config set project ${PROJECT_ID}
+        if [ "${BRANCH_NAME}" != "master" ]; then
+          on_going_build_plan=($(gcloud builds list --ongoing --format='value(id)' --filter="${_CLUSTER_NAME}-plan" | xargs))
+          for (( i=0; i<${#on_going_build_plan[@]}; i++ )); do
+            if [ "$i" -gt "0" ]; then # skip current build
+              echo "Cancelling current build, because there is at least another build ongoing (${on_going_build_plan[i]})"
+              exit 1
+            fi
+          done
+        else
+          on_going_build_apply=($(gcloud builds list --ongoing --format='value(id)' --filter="${_CLUSTER_NAME}-apply" | xargs))
+          for (( i=0; i<${#on_going_build_apply[@]}; i++ )); do
+            if [ "$i" -gt "0" ]; then # skip current build
+              echo "Cancelling current build, because there is at least another build ongoing (${on_going_build_apply[i]})"
+              exit 1
+            fi
+          done
+        fi
+  - id: Install prerequisite for the PIM
+    name: "europe-west1-docker.pkg.dev/akecld-prd-pim-saas-shared/prod/pim-deployer:1.1.0"
+    dir: "deployments-ucs"
+    entrypoint: 'sh'
+    args:
+    - '-c'
+    - |
+        # Set cluster authentication
+        gcloud config set auth/impersonate_service_account ${_TARGET_IMPERSONATE}
+        gcloud config set project ${_GOOGLE_PROJECT_ID}
+        gcloud config set compute/zone ${_GOOGLE_COMPUTE_ZONE}
+        gcloud container clusters get-credentials ${_CLUSTER_NAME} --project=${_GOOGLE_PROJECT_ID} --region=${_GOOGLE_CLUSTER_REGION}
+
+        # Custom configuration
+        ## Argocd
+        yq -i '.configs.credentialTemplates.https-creds.username = "argocd"' k8s/argocd/values.yaml
+        ARGOCD_GITHUB_TOKEN="$${ARGOCD_GITHUB_TOKEN}" yq -i '.configs.credentialTemplates.https-creds.password = env(ARGOCD_GITHUB_TOKEN)' k8s/argocd/values.yaml
+        yq -i 'del(.server.ingress.tls)' k8s/argocd/values.yaml
+        HOST="\"*.${_GOOGLE_DOMAIN}\"" yq -i e '.server.ingress.tls[0].hosts |= . + [env(HOST)] ' k8s/argocd/values.yaml
+        yq -i 'del(.server.ingress.hosts)' k8s/argocd/values.yaml
+        GOOGLE_DOMAIN="argocd-${_GOOGLE_CLUSTER_REGION}.${_GOOGLE_DOMAIN}" yq -i e '.server.ingress.hosts |= . + [env(GOOGLE_DOMAIN)] ' k8s/argocd/values.yaml
+        # Set the correct service account for argocd repoServer
+        GSA_ARGOCD="argocd@${_GOOGLE_PROJECT_ID}.iam.gserviceaccount.com" yq -i '.repoServer.serviceAccount.annotations."iam.gke.io/gcp-service-account" = env(GSA_ARGOCD)' k8s/argocd/values.yaml
+
+        # Append the values file to use for the argocd apps
+        VALUES="values-${_CLUSTER_NAME}.yaml" yq -i '.applications[].helm.valueFiles[1] = env(VALUES)' k8s/argocd-apps/values.yaml
+
+        # Use helm repo
+        helm repo add argo https://argoproj.github.io/argo-helm
+        helm repo update 2>&1
+
+        if [ "${BRANCH_NAME}" != "master" ]; then
+          helm upgrade --version ${_ARGOCD_HELM_VERSION} --dry-run --debug -i --create-namespace -n argocd argocd argo/argo-cd -f k8s/argocd/values.yaml
+          helm upgrade --version ${_ARGOCD_APP_HELM_VERSION} --dry-run --debug -i --create-namespace -n argocd argocd-apps argo/argocd-apps -f k8s/argocd-apps/values.yaml
+        else
+          ## Datadog
+          kubectl create secret generic datadog-api-secret --from-literal api-key="$${DATADOG_API_KEY}"
+
+          # Install prerequisite
+          ## ArgoCD
+          helm upgrade --version ${_ARGOCD_HELM_VERSION} --debug --atomic --cleanup-on-fail --history-max 5 -i --wait --create-namespace -n argocd argocd argo/argo-cd -f k8s/argocd/values.yaml
+          kubectl apply -f k8s/argocd/templates/argocd-cm.yaml
+          helm upgrade --version ${_ARGOCD_APP_HELM_VERSION} --debug --atomic --cleanup-on-fail --history-max 5 -i --wait --create-namespace -n argocd argocd-apps argo/argocd-apps -f k8s/argocd-apps/values.yaml
+        fi
+    secretEnv: ['ARGOCD_GITHUB_TOKEN', 'DATADOG_API_KEY']
+logsBucket: 'gs://${_GOOGLE_PROJECT_ID}-cloudbuild-logs'
+availableSecrets:
+  secretManager:
+  - versionName: projects/${PROJECT_ID}/secrets/ARGOCD_GITHUB_TOKEN/versions/latest
+    env: 'ARGOCD_GITHUB_TOKEN'
+  - versionName: projects/${PROJECT_ID}/secrets/DATADOG_API_KEY/versions/latest
+    env: 'DATADOG_API_KEY'
+substitutions:
+  _ARGOCD_HELM_VERSION: 5.4.2
+  _ARGOCD_APP_HELM_VERSION: 0.0.1
+  _CLUSTER_NAME: akecld-prd-pim-saas-dev-europe-west3
+  _GOOGLE_CLUSTER_REGION: europe-west3
+  _GOOGLE_COMPUTE_ZONE: europe-west3-b
+  _GOOGLE_DOMAIN: pim-saas-dev.dev.cloud.akeneo.com
+  _GOOGLE_PROJECT_ID: akecld-prd-pim-saas-dev
+  _TARGET_IMPERSONATE: cluster-bootstrap@akecld-prd-pim-saas-dev.iam.gserviceaccount.com

@@ -19,6 +19,7 @@ const getDefaultMultiReferenceEntityTarget = (
   locale: LocaleReference
 ): MultiReferenceEntityTarget => ({
   code: attribute.code,
+  reference_data_name: attribute.reference_data_name,
   type: 'attribute',
   attribute_type: attribute.type,
   locale,

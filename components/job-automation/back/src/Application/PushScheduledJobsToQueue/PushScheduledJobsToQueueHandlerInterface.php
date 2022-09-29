@@ -11,12 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\JobAutomation\Application\UpdateScheduledJobInstanceLastExecution;
+namespace Akeneo\Platform\JobAutomation\Application\PushScheduledJobsToQueue;
 
-final class UpdateScheduledJobInstanceLastExecutionCommand
+interface PushScheduledJobsToQueueHandlerInterface
 {
-    public function __construct(
-        public string $jobInstanceCode,
-    ) {
-    }
+    public function handle(PushScheduledJobsToQueueQuery $query): void;
 }

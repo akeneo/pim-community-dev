@@ -1,0 +1,62 @@
+{% extends "@PimNotification/Email/notification.html.twig" %}
+
+{% block title %}
+    Akeneo batch {{ jobExecution.jobInstance.type }}
+{% endblock %}
+
+{% block link %}
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,900" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+    <style>
+        @media only screen and (max-width: 500px) {
+            #result {
+                width: 90%;
+            }
+        }
+
+        @media only screen and (min-width: 660px) {
+            #result {
+                width: 70%;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block emailMessage %}
+    <p style="margin: 0 0 30px 0; font-size: 20px; font-family: 'Lato', sans-serif">
+        Akeneo couldn't start your {{ jobInstance.type }} profile.
+    </p>
+    <p style="margin: 0 0 20px 0; font-size: 12px;font-family: 'Lato', sans-serif">
+        {{ jobInstance.label }}
+    </p>
+    <div style="margin: auto; width: 80%; text-align: start; font-size: 12px;font-family: 'Lato', sans-serif" id="result">
+        <p>Internal system failure. Your job cannot be launched because of an infrastructure issue. Please retry later.</p>
+    </div>
+{% endblock %}
+
+{% block emailUserAction %}
+    {% if akeneo_pim_url is not empty %}
+        {% set url = jobInstance.type == 'import'
+            ? akeneo_pim_url ~ '/#' ~ path('pim_importexport_import_profile_show', {'code': jobInstance.code})
+            : akeneo_pim_url ~ '/#' ~ path('pim_importexport_export_profile_show', {'code': jobInstance.code})
+        %}
+        <span>
+            <a target="_blank"
+               role="button"
+               style="-webkit-appearance: button; -moz-appearance: button; appearance: auto;
+               padding: 10px 20px; border-radius: 25px; background-color: #9452ba; color: white;
+               text-decoration: none; text-transform: uppercase; font-size: 15px; font-weight: 900;"
+               href="{{ akeneo_pim_url ~ '/#' ~ path('pim_importexport_import_profile_show', {'code': jobInstance.code}) }}"
+            >
+                View job profile
+            </a>
+        </span>
+    {% else %}
+        <p style="margin: unset; font-size: 12px; font-style: italic;">
+            You should set the AKENEO_PIM_URL environment variable to view summary.
+        </p>
+    {% endif %}
+{% endblock %}

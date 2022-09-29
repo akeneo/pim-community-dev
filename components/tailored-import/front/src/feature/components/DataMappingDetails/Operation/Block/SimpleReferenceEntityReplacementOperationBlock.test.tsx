@@ -16,14 +16,7 @@ const operationPreviewData: OperationPreviewData = {
 };
 
 jest.mock('../../../../hooks/useRecords', () => ({
-  useRecords: (
-    referenceEntityCode: string,
-    search: string,
-    page: number,
-    includeCodes: string[],
-    excludeCodes: string[],
-    shouldFetch: boolean
-  ) => [
+  useRecords: () => [
     [
       {
         code: 'alessis',
@@ -199,13 +192,15 @@ test('it throws an error if the operation is not a simple select replacement ope
       />
     );
   }).toThrowError(
-    'SimpleReferenceEntityReplacementBlock can only be used with SimpleReferenceEntityReplacementOperation'
+    'SimpleReferenceEntityReplacementOperationBlock can only be used with SimpleReferenceEntityReplacementOperation'
   );
 
   mockedConsole.mockRestore();
 });
 
 test('it throws an error if reference data name is not provided', () => {
+  const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
+
   expect(() => {
     renderWithProviders(
       <SimpleReferenceEntityReplacementOperationBlock
@@ -223,4 +218,6 @@ test('it throws an error if reference data name is not provided', () => {
       />
     );
   }).toThrowError('Missing Reference Data name in attribute');
+
+  mockedConsole.mockRestore();
 });

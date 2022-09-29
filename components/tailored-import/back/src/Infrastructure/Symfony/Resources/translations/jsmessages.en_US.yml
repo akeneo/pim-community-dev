@@ -81,6 +81,9 @@ akeneo.tailored_import:
       multi_select_replacement:
         title: Multi select replacement
         option_labels: Option labels
+      multi_reference_entity_replacement:
+        title: Reference entity multiple links replacement
+        option_labels: Record labels
       categories_replacement:
         title: Categories replacement
         modal:

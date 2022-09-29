@@ -1,3 +1,4 @@
 akeneo.job_automation:
   notification:
     invalid_job_instance: 'The {{ type }} profile "{{ label }}" couldn’t start due to the following errors: {{ error }}'
+    internal_error: Internal system failure. Your job cannot be launched because of an infrastructure issue. Please retry later.

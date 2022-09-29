@@ -1,0 +1,4 @@
+services:
+    Akeneo\PerformanceAnalytics\Application\Query\GetHistoricalTimeToEnrichHandler:
+        arguments:
+            - '@Akeneo\PerformanceAnalytics\Domain\TimeToEnrich\AverageTimeToEnrichRepository'

@@ -8,115 +8,219 @@ metadata:
     app.kubernetes.io/name: argocd-cm
     app.kubernetes.io/part-of: argocd
 data:
-  resource.customizations: |
-    cloudfunctions.cnrm.cloud.google.com/CloudFunctionsFunction:
-        health.lua: |
-          hs = {
-            status = "Progressing",
-            message = "Update in progress"
-          }
-          if obj.status ~= nil then
-            if obj.status.conditions ~= nil then
-              for i, condition in ipairs(obj.status.conditions) do
-                -- Up To Date
-                if condition.reason == "UpToDate" and condition.status == "True" then
-                  hs.status = "Healthy"
-                  hs.message = condition.message
-                  return hs
-                end
-                -- Update Failed
-                if condition.reason == "UpdateFailed" then
-                  hs.status = "Degraded"
-                  hs.message = condition.message
-                  return hs
-                end
-                -- Dependency Not Found
-                if condition.reason == "DependencyNotFound" then
-                  hs.status = "Degraded"
-                  hs.message = condition.message
-                  return hs
-                end
-                -- Dependency Not Ready
-                if condition.reason == "DependencyNotReady" then
-                  hs.status = "Suspended"
-                  hs.message = condition.message
-                  return hs
-                end
-              end
-            end
+  resource.customizations.health.cloudfunctions.cnrm.cloud.google.com_CloudFunctionsFunction: |
+    hs = {
+      status = "Progressing",
+      message = "Update in progress"
+    }
+    if obj.status ~= nil then
+      if obj.status.conditions ~= nil then
+        for i, condition in ipairs(obj.status.conditions) do
+          -- Up To Date
+          if condition.reason == "UpToDate" and condition.status == "True" then
+            hs.status = "Healthy"
+            hs.message = condition.message
+            return hs
           end
-          return hs
-    cloudscheduler.cnrm.cloud.google.com/CloudSchedulerJob:
-        health.lua: |
-          hs = {
-            status = "Progressing",
-            message = "Update in progress"
-          }
-          if obj.status ~= nil then
-            if obj.status.conditions ~= nil then
-              for i, condition in ipairs(obj.status.conditions) do
-                -- Up To Date
-                if condition.reason == "UpToDate" and condition.status == "True" then
-                  hs.status = "Healthy"
-                  hs.message = condition.message
-                  return hs
-                end
-                -- Update Failed
-                if condition.reason == "UpdateFailed" then
-                  hs.status = "Degraded"
-                  hs.message = condition.message
-                  return hs
-                end
-                -- Dependency Not Found
-                if condition.reason == "DependencyNotFound" then
-                  hs.status = "Degraded"
-                  hs.message = condition.message
-                  return hs
-                end
-                -- Dependency Not Ready
-                if condition.reason == "DependencyNotReady" then
-                  hs.status = "Suspended"
-                  hs.message = condition.message
-                  return hs
-                end
-              end
-            end
+          -- Update Failed
+          if condition.reason == "UpdateFailed" then
+            hs.status = "Degraded"
+            hs.message = condition.message
+            return hs
           end
-          return hs
-    compute.cnrm.cloud.google.com/ComputeDisk:
-        health.lua: |
-          hs = {
-            status = "Progressing",
-            message = "Update in progress"
-          }
-          if obj.status ~= nil then
-            if obj.status.conditions ~= nil then
-              for i, condition in ipairs(obj.status.conditions) do
-                -- Up To Date
-                if condition.reason == "UpToDate" and condition.status == "True" then
-                  hs.status = "Healthy"
-                  hs.message = condition.message
-                  return hs
-                end
-                -- Update Failed
-                if condition.reason == "UpdateFailed" then
-                  hs.status = "Degraded"
-                  hs.message = condition.message
-                  return hs
-                end
-                -- Dependency Not Found
-                if condition.reason == "DependencyNotFound" then
-                  hs.status = "Degraded"
-                  hs.message = condition.message
-                  return hs
-                end
-                -- Dependency Not Ready
-                if condition.reason == "DependencyNotReady" then
-                  hs.status = "Suspended"
-                  hs.message = condition.message
-                  return hs
-                end
-              end
-            end
+          -- Dependency Not Found
+          if condition.reason == "DependencyNotFound" then
+            hs.status = "Degraded"
+            hs.message = condition.message
+            return hs
           end
-          return hs
+          -- Dependency Not Ready
+          if condition.reason == "DependencyNotReady" then
+            hs.status = "Suspended"
+            hs.message = condition.message
+            return hs
+          end
+        end
+      end
+    end
+    return hs
+  resource.customizations.health.cloudscheduler.cnrm.cloud.google.com_CloudSchedulerJob: |
+    hs = {
+      status = "Progressing",
+      message = "Update in progress"
+    }
+    if obj.status ~= nil then
+      if obj.status.conditions ~= nil then
+        for i, condition in ipairs(obj.status.conditions) do
+          -- Up To Date
+          if condition.reason == "UpToDate" and condition.status == "True" then
+            hs.status = "Healthy"
+            hs.message = condition.message
+            return hs
+          end
+          -- Update Failed
+          if condition.reason == "UpdateFailed" then
+            hs.status = "Degraded"
+            hs.message = condition.message
+            return hs
+          end
+          -- Dependency Not Found
+          if condition.reason == "DependencyNotFound" then
+            hs.status = "Degraded"
+            hs.message = condition.message
+            return hs
+          end
+          -- Dependency Not Ready
+          if condition.reason == "DependencyNotReady" then
+            hs.status = "Suspended"
+            hs.message = condition.message
+            return hs
+          end
+        end
+      end
+    end
+    return hs
+  resource.customizations.health.compute.cnrm.cloud.google.com_ComputeDisk: |
+    hs = {
+      status = "Progressing",
+      message = "Update in progress"
+    }
+    if obj.status ~= nil then
+      if obj.status.conditions ~= nil then
+        for i, condition in ipairs(obj.status.conditions) do
+          -- Up To Date
+          if condition.reason == "UpToDate" and condition.status == "True" then
+            hs.status = "Healthy"
+            hs.message = condition.message
+            return hs
+          end
+          -- Update Failed
+          if condition.reason == "UpdateFailed" then
+            hs.status = "Degraded"
+            hs.message = condition.message
+            return hs
+          end
+          -- Dependency Not Found
+          if condition.reason == "DependencyNotFound" then
+            hs.status = "Degraded"
+            hs.message = condition.message
+            return hs
+          end
+          -- Dependency Not Ready
+          if condition.reason == "DependencyNotReady" then
+            hs.status = "Suspended"
+            hs.message = condition.message
+            return hs
+          end
+        end
+      end
+    end
+    return hs
+  resource.customizations.health.iam.cnrm.cloud.google.com_IAMPolicyMember: |
+    hs = {
+      status = "Progressing",
+      message = "Update in progress"
+    }
+    if obj.status ~= nil then
+      if obj.status.conditions ~= nil then
+        for i, condition in ipairs(obj.status.conditions) do
+          -- Up To Date
+          if condition.reason == "UpToDate" and condition.status == "True" then
+            hs.status = "Healthy"
+            hs.message = condition.message
+            return hs
+          end
+          -- Update Failed
+          if condition.reason == "UpdateFailed" then
+            hs.status = "Degraded"
+            hs.message = condition.message
+            return hs
+          end
+          -- Dependency Not Found
+          if condition.reason == "DependencyNotFound" then
+            hs.status = "Degraded"
+            hs.message = condition.message
+            return hs
+          end
+          -- Dependency Not Ready
+          if condition.reason == "DependencyNotReady" then
+            hs.status = "Suspended"
+            hs.message = condition.message
+            return hs
+          end
+        end
+      end
+    end
+    return hs
+  resource.customizations.health.storage.cnrm.cloud.google.com_StorageBucketAccessControl: |
+    hs = {
+      status = "Progressing",
+      message = "Update in progress"
+    }
+    if obj.status ~= nil then
+      if obj.status.conditions ~= nil then
+        for i, condition in ipairs(obj.status.conditions) do
+          -- Up To Date
+          if condition.reason == "UpToDate" and condition.status == "True" then
+            hs.status = "Healthy"
+            hs.message = condition.message
+            return hs
+          end
+          -- Update Failed
+          if condition.reason == "UpdateFailed" then
+            hs.status = "Degraded"
+            hs.message = condition.message
+            return hs
+          end
+          -- Dependency Not Found
+          if condition.reason == "DependencyNotFound" then
+            hs.status = "Degraded"
+            hs.message = condition.message
+            return hs
+          end
+          -- Dependency Not Ready
+          if condition.reason == "DependencyNotReady" then
+            hs.status = "Suspended"
+            hs.message = condition.message
+            return hs
+          end
+        end
+      end
+    end
+    return hs
+  resource.customizations.health.storage.cnrm.cloud.google.com_StorageDefaultObjectAccessControl: |
+    hs = {
+      status = "Progressing",
+      message = "Update in progress"
+    }
+    if obj.status ~= nil then
+      if obj.status.conditions ~= nil then
+        for i, condition in ipairs(obj.status.conditions) do
+          -- Up To Date
+          if condition.reason == "UpToDate" and condition.status == "True" then
+            hs.status = "Healthy"
+            hs.message = condition.message
+            return hs
+          end
+          -- Update Failed
+          if condition.reason == "UpdateFailed" then
+            hs.status = "Degraded"
+            hs.message = condition.message
+            return hs
+          end
+          -- Dependency Not Found
+          if condition.reason == "DependencyNotFound" then
+            hs.status = "Degraded"
+            hs.message = condition.message
+            return hs
+          end
+          -- Dependency Not Ready
+          if condition.reason == "DependencyNotReady" then
+            hs.status = "Suspended"
+            hs.message = condition.message
+            return hs
+          end
+        end
+      end
+    end
+    return hs

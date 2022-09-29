@@ -6,32 +6,30 @@ import {DeleteModal, useTranslate} from '@akeneo-pim-community/shared';
 import {getDefaultReplacementValueFilter, ReplacementModal, ReplacementValueFilter} from '../ReplacementModal';
 import {RECORDS_COLLECTION_PAGE_SIZE, useRecords} from '../../../../hooks';
 
-const SIMPLE_REFERENCE_ENTITY_REPLACEMENT = 'simple_reference_entity_replacement';
+const SIMPLE_REFERENCE_ENTITY_REPLACEMENT_OPERATION_TYPE = 'simple_reference_entity_replacement';
 
 type SimpleReferenceEntityReplacementOperation = {
   uuid: string;
-  type: typeof SIMPLE_REFERENCE_ENTITY_REPLACEMENT;
+  type: typeof SIMPLE_REFERENCE_ENTITY_REPLACEMENT_OPERATION_TYPE;
   mapping: ReplacementValues;
 };
 
 const isSimpleReferenceEntityReplacement = (operation?: any): operation is SimpleReferenceEntityReplacementOperation =>
   undefined !== operation &&
   'type' in operation &&
-  SIMPLE_REFERENCE_ENTITY_REPLACEMENT === operation.type &&
+  SIMPLE_REFERENCE_ENTITY_REPLACEMENT_OPERATION_TYPE === operation.type &&
   'mapping' in operation &&
   isReplacementValues(operation.mapping);
 
 const getDefaultSimpleReferenceEntityReplacementOperation = (): SimpleReferenceEntityReplacementOperation => ({
   uuid: uuid(),
-  type: SIMPLE_REFERENCE_ENTITY_REPLACEMENT,
+  type: SIMPLE_REFERENCE_ENTITY_REPLACEMENT_OPERATION_TYPE,
   mapping: {},
 });
 
 const SimpleReferenceEntityReplacementOperationBlock = ({
   targetReferenceDataName,
   operation,
-  previewData,
-  isLastOperation,
   onChange,
   onRemove,
 }: OperationBlockProps) => {
@@ -44,7 +42,7 @@ const SimpleReferenceEntityReplacementOperationBlock = ({
 
   if (!isSimpleReferenceEntityReplacement(operation)) {
     throw new Error(
-      'SimpleReferenceEntityReplacementBlock can only be used with SimpleReferenceEntityReplacementOperation'
+      'SimpleReferenceEntityReplacementOperationBlock can only be used with SimpleReferenceEntityReplacementOperation'
     );
   }
 
@@ -93,7 +91,7 @@ const SimpleReferenceEntityReplacementOperationBlock = ({
               values={records}
               itemsPerPage={RECORDS_COLLECTION_PAGE_SIZE}
               totalItems={totalItems}
-              operationType={SIMPLE_REFERENCE_ENTITY_REPLACEMENT}
+              operationType={SIMPLE_REFERENCE_ENTITY_REPLACEMENT_OPERATION_TYPE}
               operationUuid={operation.uuid}
               initialMapping={operation.mapping}
               onConfirm={handleConfirm}
@@ -126,6 +124,6 @@ const SimpleReferenceEntityReplacementOperationBlock = ({
 export {
   SimpleReferenceEntityReplacementOperationBlock,
   getDefaultSimpleReferenceEntityReplacementOperation,
-  SIMPLE_REFERENCE_ENTITY_REPLACEMENT,
+  SIMPLE_REFERENCE_ENTITY_REPLACEMENT_OPERATION_TYPE,
 };
 export type {SimpleReferenceEntityReplacementOperation};

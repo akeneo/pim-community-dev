@@ -20,6 +20,8 @@ use Twig\Environment;
 
 final class SendEmailWhenJobInstanceCannotBeLaunched implements EventSubscriberInterface
 {
+    private const MAIL_SUBJECT = 'Could not launch scheduled job instance';
+
     public function __construct(
         private MailNotifierInterface $mailNotifier,
         private Environment $twig,
@@ -29,8 +31,22 @@ final class SendEmailWhenJobInstanceCannotBeLaunched implements EventSubscriberI
     public static function getSubscribedEvents(): array
     {
         return [
-            CouldNotLaunchAutomatedJobEvent::class => 'notifyUsersInvalidJobInstance',
+            CouldNotLaunchAutomatedJobEvent::class => 'notifyUsers',
         ];
+    }
+
+    public function notifyUsers(CouldNotLaunchAutomatedJobEvent $event): void
+    {
+        switch ($event->reason) {
+            case CouldNotLaunchAutomatedJobEvent::INVALID_JOB_REASON:
+                $this->notifyUsersInvalidJobInstance($event);
+                break;
+            case CouldNotLaunchAutomatedJobEvent::INTERNAL_ERROR_REASON:
+                $this->notifyUsersInternalError($event);
+                break;
+            default:
+                throw new \RuntimeException(sprintf('Unable to notify users for this reason : %s', $event->reason));
+        }
     }
 
     public function notifyUsersInvalidJobInstance(CouldNotLaunchAutomatedJobEvent $event): void
@@ -46,7 +62,25 @@ final class SendEmailWhenJobInstanceCannotBeLaunched implements EventSubscriberI
 
         $this->mailNotifier->notify(
             $emails,
-            'Could not launch scheduled job instance',
+            self::MAIL_SUBJECT,
+            $txtBody,
+            $htmlBody,
+        );
+    }
+
+    public function notifyUsersInternalError(CouldNotLaunchAutomatedJobEvent $event): void
+    {
+        $emails = $event->userToNotify->getUniqueEmails();
+        $parameters = [
+            'jobInstance' => $event->scheduledJobInstance,
+        ];
+
+        $txtBody = $this->twig->render('@AkeneoJobAutomation/Mail/internal_error.txt.twig', $parameters);
+        $htmlBody = $this->twig->render('@AkeneoJobAutomation/Mail/internal_error.html.twig', $parameters);
+
+        $this->mailNotifier->notify(
+            $emails,
+            self::MAIL_SUBJECT,
             $txtBody,
             $htmlBody,
         );

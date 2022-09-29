@@ -25,18 +25,16 @@ final class EnabledReplacementOperationApplier implements OperationApplierInterf
 {
     public function applyOperation(OperationInterface $operation, ValueInterface $value): ValueInterface
     {
-        if (!$operation instanceof EnabledReplacementOperation) {
-            throw new UnexpectedValueException($operation, EnabledReplacementOperation::class, self::class);
-        }
+        return match (true) {
+            !$operation instanceof EnabledReplacementOperation => throw new UnexpectedValueException($operation, EnabledReplacementOperation::class, self::class),
+            $value instanceof InvalidValue => $value,
+            $value instanceof StringValue => $this->replace($operation, $value),
+            default => throw new UnexpectedValueException($value, StringValue::class, self::class)
+        };
+    }
 
-        if ($value instanceof InvalidValue) {
-            return $value;
-        }
-
-        if (!$value instanceof StringValue) {
-            throw new UnexpectedValueException($value, StringValue::class, self::class);
-        }
-
+    private function replace(EnabledReplacementOperation $operation, StringValue $value): InvalidValue|BooleanValue
+    {
         if (!$operation->hasMappedValue($value->getValue())) {
             return new InvalidValue(sprintf('There is no mapped value for this source value: "%s"', $value->getValue()));
         }

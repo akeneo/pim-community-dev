@@ -24,18 +24,16 @@ final class ChangeCaseOperationApplier implements OperationApplierInterface
 {
     public function applyOperation(OperationInterface $operation, ValueInterface $value): ValueInterface
     {
-        if (!$operation instanceof ChangeCaseOperation) {
-            throw new UnexpectedValueException($operation, ChangeCaseOperation::class, self::class);
-        }
+        return match (true) {
+            !$operation instanceof ChangeCaseOperation => throw new UnexpectedValueException($operation, ChangeCaseOperation::class, self::class),
+            $value instanceof InvalidValue => $value,
+            $value instanceof StringValue => $this->findModeAndApply($operation, $value),
+            default => throw new UnexpectedValueException($value, StringValue::class, self::class)
+        };
+    }
 
-        if ($value instanceof InvalidValue) {
-            return $value;
-        }
-
-        if (!$value instanceof StringValue) {
-            throw new UnexpectedValueException($value, StringValue::class, self::class);
-        }
-
+    private function findModeAndApply(ChangeCaseOperation $operation, StringValue $value): StringValue
+    {
         return match ($operation->getMode()) {
             ChangeCaseOperation::MODE_UPPERCASE => new StringValue(\mb_strtoupper($value->getValue())),
             ChangeCaseOperation::MODE_LOWERCASE => new StringValue(\mb_strtolower($value->getValue())),

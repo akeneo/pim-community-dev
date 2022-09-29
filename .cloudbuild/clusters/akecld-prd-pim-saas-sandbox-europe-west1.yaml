@@ -44,7 +44,7 @@ steps:
         yq -i 'del(.server.ingress.tls)' k8s/argocd/values.yaml
         HOST="\"*.${_GOOGLE_DOMAIN}\"" yq -i e '.server.ingress.tls[0].hosts |= . + [env(HOST)] ' k8s/argocd/values.yaml
         yq -i 'del(.server.ingress.hosts)' k8s/argocd/values.yaml
-        GOOGLE_DOMAIN="argocd.${_GOOGLE_DOMAIN}" yq -i e '.server.ingress.hosts |= . + [env(GOOGLE_DOMAIN)] ' k8s/argocd/values.yaml
+        GOOGLE_DOMAIN="argocd-${_GOOGLE_CLUSTER_REGION}.${_GOOGLE_DOMAIN}" yq -i e '.server.ingress.hosts |= . + [env(GOOGLE_DOMAIN)] ' k8s/argocd/values.yaml
         # Set the correct service account for argocd repoServer
         GSA_ARGOCD="argocd@${_GOOGLE_PROJECT_ID}.iam.gserviceaccount.com" yq -i '.repoServer.serviceAccount.annotations."iam.gke.io/gcp-service-account" = env(GSA_ARGOCD)' k8s/argocd/values.yaml
 
@@ -60,8 +60,7 @@ steps:
           helm upgrade --version ${_ARGOCD_APP_HELM_VERSION} --dry-run --debug -i --create-namespace -n argocd argocd-apps argo/argocd-apps -f k8s/argocd-apps/values.yaml
         else
           ## Datadog
-          _DATADOG_API_KEY=$(cat SECRET_DATADOG_API_KEY.txt) && echo -n \)_DATADOG_API_KEY
-          kubectl create secret generic datadog-api-secret --from-literal api-key="${_DATADOG_API_KEY}"
+          kubectl create secret generic datadog-api-secret --from-literal api-key="$${DATADOG_API_KEY}"
 
           # Install prerequisite
           ## ArgoCD

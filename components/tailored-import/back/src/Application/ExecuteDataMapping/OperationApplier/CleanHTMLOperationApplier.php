@@ -24,18 +24,16 @@ final class CleanHTMLOperationApplier implements OperationApplierInterface
 {
     public function applyOperation(OperationInterface $operation, ValueInterface $value): ValueInterface
     {
-        if (!$operation instanceof CleanHTMLOperation) {
-            throw new UnexpectedValueException($operation, CleanHTMLOperation::class, self::class);
-        }
+        return match (true) {
+            !$operation instanceof CleanHTMLOperation => throw new UnexpectedValueException($operation, CleanHTMLOperation::class, self::class),
+            $value instanceof InvalidValue => $value,
+            $value instanceof StringValue => $this->findModeAndApply($operation, $value),
+            default => throw new UnexpectedValueException($value, StringValue::class, self::class),
+        };
+    }
 
-        if ($value instanceof InvalidValue) {
-            return $value;
-        }
-
-        if (!$value instanceof StringValue) {
-            throw new UnexpectedValueException($value, StringValue::class, self::class);
-        }
-
+    private function findModeAndApply(CleanHTMLOperation $operation, StringValue $value): StringValue
+    {
         foreach ($operation->getModes() as $mode) {
             $value = match ($mode) {
                 CleanHTMLOperation::MODE_REMOVE_HTML_TAGS => new StringValue(strip_tags($value->getValue())),

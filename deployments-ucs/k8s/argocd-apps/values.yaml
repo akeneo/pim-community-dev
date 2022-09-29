@@ -25,6 +25,9 @@ applications:
       automated:
         prune: false
         selfHeal: false
+      syncOptions: # Sync options which modifies sync behavior
+        - Validate=true # disables resource validation (equivalent to 'kubectl apply --validate=false') ( true by default ).
+        - CreateNamespace=true # Namespace Auto-Creation ensures that namespace specified as the application destination exists in the destination cluster.
   - name: pim-saas-service
     namespace: argocd
     additionalAnnotations:
@@ -41,6 +44,7 @@ applications:
           - values.yaml # To be changed by values-clustername.yaml
     destination:
       server: "https://kubernetes.default.svc"
+      namespace: pim
     syncPolicy:
       automated: # automated sync by default retries failed attempts 5 times with following delays between attempts ( 5s, 10s, 20s, 40s, 80s ); retry controlled using `retry` field.
         prune: true # Specifies if resources should be pruned during auto-syncing ( false by default ).

@@ -18,6 +18,10 @@ performance-analytics-lint-back-fix: #Doc: launch php-cs-fixer without dry-run f
 performance-analytics-coupling-back: #Doc: launch coupling detector for performance analytics
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=components/performance-analytics/back/tests/.php_cd.php components/performance-analytics/back/src
 
+.PHONY: performance-analytics-integration-back
+performance-analytics-integration-back:
+	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit -c components/performance-analytics/back/tests/phpunit.xml --testsuite Integration_Test $(O)
+
 .PHONY: performance-analytics-lint-front
 performance-analytics-lint-front: #Doc: launch Lint check and tsc for performance analytics
 	$(YARN_RUN) workspace @akeneo-pim-enterprise/performance-analytics lint:check
@@ -32,7 +36,7 @@ performance-analytics-unit-front: #Doc: launch unit tests for performance analyt
 	$(YARN_RUN) workspace @akeneo-pim-enterprise/performance-analytics test:unit:run
 
 .PHONY: performance-analytics-test-back
-performance-analytics-test-back: performance-analytics-lint-back performance-analytics-unit-back performance-analytics-coupling-back
+performance-analytics-test-back: performance-analytics-lint-back performance-analytics-unit-back performance-analytics-coupling-back performance-analytics-integration-back
 
 .PHONY: performance-analytics-test-front
 performance-analytics-test-front: performance-analytics-lint-front performance-analytics-unit-front

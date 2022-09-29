@@ -3,4 +3,6 @@ export type ProductFile = {
     filename: string;
     contributor: string;
     uploadedAt: string;
+    retailerComments: [];
+    supplierComments: [];
 };

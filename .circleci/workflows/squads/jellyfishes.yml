@@ -1,0 +1,53 @@
+workflows:
+    version: 2
+
+    jellyfishes_pull_request:
+        when:
+            not:
+                equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+        jobs:
+            - ready_to_build?:
+                  type: approval
+                  filters:
+                      branches:
+                          only:
+                              - /JEL-.*/
+            - checkout:
+                  requires:
+                      - ready_to_build?
+            - build_srnt_dev:
+                  requires:
+                      - checkout
+            - test_front_performance_analytics:
+                  requires:
+                      - build_srnt_dev
+            - test_back_performance_analytics:
+                  requires:
+                      - build_srnt_dev
+            - test_helm_generated_k8s_files:
+                  requires:
+                      - checkout
+            - deploy_pr_environment?:
+                type: approval
+                filters:
+                    branches:
+                         only:
+                             - /JEL-.*/
+            - build_srnt_prod:
+                  requires:
+                      - test_helm_generated_k8s_files
+                      - deploy_pr_environment?
+            - deploy_pr_environment:
+                  requires:
+                      - build_srnt_prod
+            - delete_pr_environment?:
+                  type: approval
+                  requires:
+                      - deploy_pr_environment
+            - delete_pr_environment:
+                  requires:
+                      - delete_pr_environment?
+            - pull_request_success:
+                  requires:
+                      - test_front_performance_analytics
+                      - test_back_performance_analytics

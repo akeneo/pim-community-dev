@@ -16,6 +16,8 @@ spec:
       parameters:
       - name: global.publicDomain
         value: {{ .Values.spec.destination.publicDomain }}
+      - name: global.clusterRegion
+        value: {{ .Values.spec.destination.clusterRegion }}
   destination:
     server: {{ .Values.spec.destination.server }}
     namespace: argocd

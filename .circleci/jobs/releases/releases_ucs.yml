@@ -54,6 +54,7 @@ jobs:
                   # pim-saas-services
                   rm -rf /tmp/pim-saas-k8s-artifacts/pim-saas-service
                   bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-dev-europe-west1.sh
+                  bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-dev-europe-west3.sh
                   bash deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-sandbox-europe-west1.sh
                   cp -r deployments-ucs/pim-saas-service /tmp/pim-saas-k8s-artifacts/pim-saas-service
 

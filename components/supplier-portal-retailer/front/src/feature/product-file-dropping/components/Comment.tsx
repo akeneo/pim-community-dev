@@ -37,6 +37,7 @@ const ContentContainer = styled.div`
 
 const FlexGrow = styled.div<AkeneoThemedProps & {outgoing: boolean}>`
     flex: 200px;
+    padding-right: 10px;
     ${({outgoing}) =>
         !outgoing
             ? css`

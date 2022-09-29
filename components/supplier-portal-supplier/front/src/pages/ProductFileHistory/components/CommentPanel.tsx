@@ -1,12 +1,23 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
-import {AkeneoThemedProps, CloseIcon, DownloadIcon, getColor, IconButton} from 'akeneo-design-system';
+import {
+    AkeneoThemedProps,
+    CloseIcon,
+    CheckPartialIcon,
+    DownloadIcon,
+    getColor,
+    IconButton,
+    PlusIcon,
+    SectionTitle,
+} from 'akeneo-design-system';
 import {ProductFile} from '../model/ProductFile';
 import {FormattedMessage, useIntl} from 'react-intl';
 import {useDateFormatter} from '../../../utils/date-formatter/use-date-formatter';
+import {Comment as CommentReadModel} from '../model/Comment';
+import {Comment} from './Comment';
 
 const Panel = styled.div<AkeneoThemedProps & {currentProductFile: ProductFile | null}>`
-    width: ${({currentProductFile}) => (currentProductFile ? '447px' : '0px')};
+    width: ${({currentProductFile}) => (currentProductFile ? '30%' : '0')};
     transition-property: width;
     transition-duration: 0.5s;
     box-shadow: 0 0 16px rgba(89, 146, 199, 0.1);
@@ -75,9 +86,53 @@ const UploadDateValue = styled.span`
     color: ${getColor('brand120')};
 `;
 
+const StyledSectionTitle = styled(SectionTitle)`
+    margin: 38px 30px 0px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: none;
+    border-top: solid 1px #f0f1f3;
+    padding-top: 15px;
+`;
+
+const StyledNumberOfComments = styled.span`
+    color: #355777;
+    border: 1px solid #5992c7;
+    border-radius: 2px;
+    line-height: 16px;
+    padding: 0 6px;
+    font-size: 11px;
+`;
+
+const StyledToggleCommentsButton = styled(IconButton)`
+    margin-left: auto;
+    color: ${getColor('grey100')};
+
+    &:hover:not([disabled]) {
+        background-color: transparent;
+        color: ${getColor('grey100')};
+    }
+`;
+
+const FlexColumn = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+`;
+
 const CommentPanel = ({productFile, closePanel}: Props) => {
     const intl = useIntl();
     const dateFormatter = useDateFormatter();
+    const [isExpand, setIsExpand] = useState<boolean>(true);
+    if (null === productFile) {
+        return <></>;
+    }
+    let comments = productFile.retailerComments
+        .concat(productFile.supplierComments)
+        .sort(
+            (a: CommentReadModel, b: CommentReadModel) =>
+                new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
 
     return (
         <>
@@ -127,6 +182,45 @@ const CommentPanel = ({productFile, closePanel}: Props) => {
                         <FormattedMessage defaultMessage="Contributor: " id="G/2O1m" />
                         <ContributorValue>{productFile.contributor}</ContributorValue>
                     </ContributorLabel>
+
+                    <FlexRow>
+                        <StyledSectionTitle>
+                            <SectionTitle.Title>
+                                <FormattedMessage defaultMessage="Comments" id="wCgTu5" />
+                            </SectionTitle.Title>
+                            <StyledNumberOfComments>{comments.length}</StyledNumberOfComments>
+                            <StyledToggleCommentsButton
+                                icon={isExpand ? <CheckPartialIcon size={20} /> : <PlusIcon size={20} />}
+                                title={
+                                    isExpand
+                                        ? intl.formatMessage({
+                                              defaultMessage: 'Collapse',
+                                              id: 'W/V6+Y',
+                                          })
+                                        : intl.formatMessage({
+                                              defaultMessage: 'Expand',
+                                              id: '0oLj/t',
+                                          })
+                                }
+                                ghost={'borderless'}
+                                onClick={() => setIsExpand(!isExpand)}
+                            />
+                        </StyledSectionTitle>
+                    </FlexRow>
+
+                    {isExpand && (
+                        <FlexColumn>
+                            {comments.map((comment: CommentReadModel, index) => (
+                                <Comment
+                                    key={index}
+                                    outgoing={comment.outgoing}
+                                    authorEmail={comment.authorEmail}
+                                    content={comment.content}
+                                    createdAt={comment.createdAt}
+                                />
+                            ))}
+                        </FlexColumn>
+                    )}
                 </Panel>
             ) : (
                 <Panel currentProductFile={productFile} />

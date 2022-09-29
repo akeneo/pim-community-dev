@@ -4,19 +4,11 @@ resource "google_project_iam_custom_role" "helm_admin_role" {
   title       = "GKE cluster roles admin"
   description = "Role for managing GKE clusterroles and bindings"
   permissions = [
-    "container.roles.create",
-    "container.roles.delete",
-    "container.roles.update",
-    "container.roles.bind",
-
-    "container.roleBindings.create",
-    "container.roleBindings.delete",
-    "container.roleBindings.update",
-
+    "container.clusterRoles.bind",
     "container.clusterRoles.create",
     "container.clusterRoles.delete",
+    "container.clusterRoles.escalate",
     "container.clusterRoles.update",
-    "container.clusterRoles.bind",
 
     "container.clusterRoleBindings.create",
     "container.clusterRoleBindings.delete",
@@ -26,13 +18,23 @@ resource "google_project_iam_custom_role" "helm_admin_role" {
     "container.mutatingWebhookConfigurations.delete",
     "container.mutatingWebhookConfigurations.update",
 
-    "container.validatingWebhookConfigurations.create",
-    "container.validatingWebhookConfigurations.delete",
-    "container.validatingWebhookConfigurations.update",
-
     "container.podSecurityPolicies.create",
     "container.podSecurityPolicies.delete",
     "container.podSecurityPolicies.update",
+
+    "container.roles.bind",
+    "container.roles.create",
+    "container.roles.delete",
+    "container.roles.escalate",
+    "container.roles.update",
+
+    "container.roleBindings.create",
+    "container.roleBindings.delete",
+    "container.roleBindings.update",
+
+    "container.validatingWebhookConfigurations.create",
+    "container.validatingWebhookConfigurations.delete",
+    "container.validatingWebhookConfigurations.update",
   ]
 }
 

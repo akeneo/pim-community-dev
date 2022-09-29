@@ -1,0 +1,5 @@
+services:
+    Akeneo\PerformanceAnalytics\Infrastructure\InternalAPI\GetHistoricalTimeToEnrichAction:
+        public: true
+        arguments:
+            - '@Akeneo\PerformanceAnalytics\Application\Query\GetHistoricalTimeToEnrichHandler'

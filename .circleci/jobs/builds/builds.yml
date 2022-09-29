@@ -159,6 +159,7 @@ jobs:
                       find vendor/akeneo/pim-community-dev/front-packages/shared -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/shared.hash
                       find components/tailored-export/front/ -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/tailored-export.hash
                       find components/tailored-import/front/ -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/tailored-import.hash
+                      find components/performance-analytics/front/ -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/performance-analytics.hash
                       find vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Job/front/process-tracker -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/process-tracker.hash
                       find vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/catalog-volume-monitoring.hash
                       find vendor/akeneo/pim-community-dev/src/Oro/Bundle/ConfigBundle/front -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/config.hash
@@ -181,6 +182,9 @@ jobs:
             - restore_cache:
                   name: Restore front package Tailored Import cache
                   key: front-packages-tailored-import-{{ checksum "~/tailored-import.hash" }}-{{ .Environment.CACHE_VERSION }}
+            - restore_cache:
+                  name: Restore front package Performance Analytics cache
+                  key: front-performance-analytics-import-{{ checksum "~/performance-analytics.hash" }}-{{ .Environment.CACHE_VERSION }}
             - restore_cache:
                   name: Restore micro frontend Process Tracker cache
                   key: micro-frontend-process-tracker-{{ checksum "~/process-tracker.hash" }}-{{ .Environment.CACHE_VERSION }}
@@ -237,6 +241,11 @@ jobs:
                   key: front-packages-tailored-import-{{ checksum "~/tailored-import.hash" }}-{{ .Environment.CACHE_VERSION }}
                   paths:
                       - front-packages/tailored-import/
+            - save_cache:
+                  name: Save front package Performance Analytics cache
+                  key: front-performance-analytics-import-{{ checksum "~/performance-analytics.hash" }}-{{ .Environment.CACHE_VERSION }}
+                  paths:
+                      - components/performance-analytics/front/
             - save_cache:
                   name: Save micro frontend Process Tracker cache
                   key: micro-frontend-process-tracker-{{ checksum "~/process-tracker.hash" }}-{{ .Environment.CACHE_VERSION }}

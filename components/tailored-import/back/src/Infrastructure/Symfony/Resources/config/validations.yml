@@ -10,6 +10,8 @@ parameters:
     pim_catalog_simpleselect: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\SimpleSelect\SimpleSelect'
     pim_catalog_text: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Text\Text'
     pim_catalog_textarea: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Text\Text'
+    akeneo_reference_entity: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\SimpleReferenceEntity\SimpleReferenceEntity'
+    akeneo_reference_entity_collection: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\MultiReferenceEntity\MultiReferenceEntity'
 
   akeneo.tailored_import.validation.property_target_constraints:
     categories: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Property\Categories\Categories'

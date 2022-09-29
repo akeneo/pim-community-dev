@@ -1,6 +1,7 @@
 import {NotificationLevel, useNotify, useRoute, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {useCallback, useEffect, useState} from 'react';
 import {ProductFile} from '../models/ProductFile';
+import {Comment} from '../models/read/Comment';
 
 const useProductFile = (productFileIdentifier: string) => {
     const getProductFileRoute = useRoute('supplier_portal_retailer_product_files_comment', {productFileIdentifier});
@@ -29,7 +30,7 @@ const useProductFile = (productFileIdentifier: string) => {
             supplier: responseBody.uploadedBySupplier,
             contributor: responseBody.uploadedByContributor,
             retailerComments: responseBody.retailerComments.map(
-                (comment: {author_email: string; content: string; created_at: string}) => {
+                (comment: {author_email: string; content: string; created_at: string}): Comment => {
                     return {
                         authorEmail: comment.author_email,
                         content: comment.content,
@@ -39,7 +40,7 @@ const useProductFile = (productFileIdentifier: string) => {
                 }
             ),
             supplierComments: responseBody.supplierComments.map(
-                (comment: {author_email: string; content: string; created_at: string}) => {
+                (comment: {author_email: string; content: string; created_at: string}): Comment => {
                     return {
                         authorEmail: comment.author_email,
                         content: comment.content,

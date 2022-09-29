@@ -6,7 +6,7 @@ import {AttributeTargetParameters} from '../../AttributeTargetParameters';
 import {ActionIfNotEmpty, ClearIfEmpty} from '../../common';
 import {Sources} from '../../Sources';
 import {Operations} from '../../Operations';
-import {SPLIT_OPERATION_TYPE} from '../../Operation';
+import {SPLIT_OPERATION_TYPE, MULTI_REFERENCE_ENTITY_REPLACEMENT_OPERATION_TYPE} from '../../Operation';
 import {isMultiReferenceEntityTarget} from './model';
 
 const MultiReferenceEntityConfigurator = ({
@@ -47,7 +47,7 @@ const MultiReferenceEntityConfigurator = ({
       />
       <Operations
         dataMapping={dataMapping}
-        compatibleOperations={[SPLIT_OPERATION_TYPE]}
+        compatibleOperations={[SPLIT_OPERATION_TYPE, MULTI_REFERENCE_ENTITY_REPLACEMENT_OPERATION_TYPE]}
         onOperationsChange={onOperationsChange}
         onRefreshSampleData={onRefreshSampleData}
         validationErrors={filterErrors(validationErrors, '[operations]')}
