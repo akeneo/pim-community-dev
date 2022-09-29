@@ -83,4 +83,4 @@ _.mixin({
 
 const translate = _.bind(Translator.get, Translator);
 
-export default translate;
+module.exports = translate;

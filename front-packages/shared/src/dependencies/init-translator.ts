@@ -16,7 +16,7 @@ const initTranslator = {
     Translator.fromJSON(messages);
 
     return Promise.resolve();
-  }
-}
+  },
+};
 
 export {initTranslator};

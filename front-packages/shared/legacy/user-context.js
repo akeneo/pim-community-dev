@@ -6,7 +6,7 @@ const _ = require('underscore');
 
 var contextData = {};
 
-export default _.extend({
+module.exports = _.extend({
   /**
    * Fetches data from the back then stores it.
    *
