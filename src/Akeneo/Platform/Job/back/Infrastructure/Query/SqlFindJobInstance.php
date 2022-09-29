@@ -2,15 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\Job\ServiceApi\JobInstance;
+namespace Akeneo\Platform\Job\Infrastructure\Query;
 
+use Akeneo\Platform\Job\ServiceApi\JobInstance\FindJobInstanceInterface;
+use Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstanceQuery;
+use Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstanceQueryPagination;
 use Doctrine\DBAL\Connection;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class FindJobInstance implements FindJobInstanceInterface
+class SqlFindJobInstance implements FindJobInstanceInterface
 {
     public function __construct(
         private Connection $connection,

@@ -2,15 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\Job\Test\Integration\ServiceApi;
+namespace Akeneo\Platform\Job\Test\Integration\Infrastructure\Query;
 
 use Akeneo\Platform\Job\ServiceApi\JobInstance\FindJobInstanceInterface;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstanceQuery;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstanceQueryPagination;
 use Akeneo\Platform\Job\Test\Integration\IntegrationTestCase;
 
-class FindJobInstanceTest extends IntegrationTestCase
+class SqlFindJobInstanceTest extends IntegrationTestCase
 {
+    public array $expectedJobInstances;
     private FindJobInstanceInterface $findJobInstanceQuery;
 
     protected function setUp(): void
