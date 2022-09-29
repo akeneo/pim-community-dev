@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import {AkeneoIcon, CommonStyle, getColor} from 'akeneo-design-system';
-import {ProductFileDroppingApp, SupplierApp} from './feature';
+import {RetailerApp} from './feature';
 import {AkeneoThemedProps, getFontSize} from 'akeneo-design-system/lib/theme/theme';
 
 const Container = styled.div`
@@ -97,8 +97,7 @@ const FakePIM = () => {
                 </SubMenuItem>
             </SubMenu>
             <Page>
-                {activeApp === apps.supplierManagement && <SupplierApp />}
-                {activeApp === apps.productFileDropping && <ProductFileDroppingApp />}
+                {(activeApp === apps.supplierManagement || activeApp === apps.productFileDropping) && <RetailerApp />}
             </Page>
         </Container>
     );
