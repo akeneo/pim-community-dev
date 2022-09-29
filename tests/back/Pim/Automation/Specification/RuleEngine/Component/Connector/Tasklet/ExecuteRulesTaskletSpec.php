@@ -20,6 +20,7 @@ use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ExecuteRulesTaskletSpec extends ObjectBehavior
@@ -33,7 +34,8 @@ class ExecuteRulesTaskletSpec extends ObjectBehavior
         StepExecution $stepExecution,
         JobRepositoryInterface $jobRepository,
         JobStopper $jobStopper,
-        EntityManagerClearerInterface $cacheClearer
+        EntityManagerClearerInterface $cacheClearer,
+        LoggerInterface $logger
     ) {
         $this->beConstructedWith(
             $ruleDefinitionRepository,
@@ -42,7 +44,8 @@ class ExecuteRulesTaskletSpec extends ObjectBehavior
             $eventDispatcher,
             $jobRepository,
             $jobStopper,
-            $cacheClearer
+            $cacheClearer,
+            $logger
         );
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);

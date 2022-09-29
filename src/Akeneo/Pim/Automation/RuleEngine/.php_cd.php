@@ -63,6 +63,7 @@ $rules = [
         'Akeneo\Tool\Component',
         'Doctrine\Common',
         'Doctrine\Persistence',
+        'Psr\Log\LoggerInterface',
         'Akeneo\Pim\Enrichment\Component\FileStorage',
         'Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException',
         'Akeneo\Tool\Component\FileStorage\Exception\FileTransferException',
