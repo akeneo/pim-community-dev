@@ -59,7 +59,7 @@ class GetProductsActionTest extends IntegrationTestCase
         }
     }
 
-    public function testItReturnsAnEmptyListWhenTheCatalogIsDisabled(): void
+    public function testItReturnsAnErrorMessagePayloadWhenTheCatalogIsDisabled(): void
     {
         $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
         $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'shopifi');
@@ -77,12 +77,14 @@ class GetProductsActionTest extends IntegrationTestCase
 
         $response = $this->client->getResponse();
         $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        $expectedMessage = 'No products to synchronize. The catalog db1079b6-f397-4a6a-bae4-8658e64ad47c has been ' .
+            'disabled on the PIM side. Note that you can get catalogs status with the GET /api/rest/v1/catalogs endpoint.';
 
         Assert::assertEquals(200, $response->getStatusCode());
-        Assert::assertCount(0, $payload['_embedded']['items']);
+        Assert::assertEquals($expectedMessage, $payload['message']);
     }
 
-    public function testItReturnsBadRequestWhenPaginationIsInvalid(): void
+    public function testItReturnsBadRequestWhenPaginationIsInvaliGetProductsQueryInterfaced(): void
     {
         $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
         $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'shopifi');
@@ -124,7 +126,7 @@ class GetProductsActionTest extends IntegrationTestCase
         Assert::assertEquals(403, $response->getStatusCode());
     }
 
-    public function testItReturnsNotFoundWhenCalalogDoesNotExist(): void
+    public function testItReturnsNotFoundWhenCatalogDoesNotExist(): void
     {
         $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
 

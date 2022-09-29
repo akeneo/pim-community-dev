@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Application\Handler;
 
+use Akeneo\Catalogs\Application\Persistence\Catalog\FindOneCatalogByIdQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductsQueryInterface;
 use Akeneo\Catalogs\Application\Service\DisableOnlyInvalidCatalogInterface;
-use Akeneo\Catalogs\ServiceAPI\Exception\InvalidCatalogException;
+use Akeneo\Catalogs\ServiceAPI\Exception\CatalogDisabledException;
+use Akeneo\Catalogs\ServiceAPI\Exception\CatalogDoesNotExistException;
 use Akeneo\Catalogs\ServiceAPI\Query\GetProductsQuery;
 
 /**
@@ -20,15 +22,27 @@ final class GetProductsHandler
     public function __construct(
         private GetProductsQueryInterface $query,
         private DisableOnlyInvalidCatalogInterface $disableOnlyInvalidCatalog,
+        private FindOneCatalogByIdQueryInterface $findOneCatalogByIdQuery,
     ) {
     }
 
     /**
      * @return array<Product>
-     * @throws InvalidCatalogException
+     *
+     * @throws CatalogDisabledException
+     * @throws CatalogDoesNotExistException
      */
     public function __invoke(GetProductsQuery $query): array
     {
+        $catalog = $this->findOneCatalogByIdQuery->execute($query->getCatalogId());
+        if (null === $catalog) {
+            throw new CatalogDoesNotExistException();
+        }
+
+        if (!$catalog->isEnabled()) {
+            throw new CatalogDisabledException();
+        }
+
         try {
             return $this->query->execute(
                 $query->getCatalogId(),
@@ -38,8 +52,11 @@ final class GetProductsHandler
                 $query->getUpdatedBefore(),
             );
         } catch (\Exception $exception) {
-            $this->disableOnlyInvalidCatalog->disable($query->getCatalogId());
-            throw new InvalidCatalogException(previous: $exception);
+            $isCatalogDisabled = $this->disableOnlyInvalidCatalog->disable($catalog);
+            if ($isCatalogDisabled) {
+                throw new CatalogDisabledException(previous: $exception);
+            }
+            throw $exception;
         }
     }
 }

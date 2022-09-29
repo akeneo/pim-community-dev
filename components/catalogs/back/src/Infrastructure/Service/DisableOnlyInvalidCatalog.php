@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Infrastructure\Service;
 
 use Akeneo\Catalogs\Application\Persistence\Catalog\DisableCatalogQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\Catalog\FindOneCatalogByIdQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogProductSelectionCriteriaQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogProductValueFiltersQueryInterface;
 use Akeneo\Catalogs\Application\Service\DisableOnlyInvalidCatalogInterface;
 use Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdatePayload;
 use Akeneo\Catalogs\ServiceAPI\Events\InvalidCatalogDisabledEvent;
+use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -22,7 +22,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class DisableOnlyInvalidCatalog implements DisableOnlyInvalidCatalogInterface
 {
     public function __construct(
-        private FindOneCatalogByIdQueryInterface $findOneCatalogByIdQuery,
         private ValidatorInterface $validator,
         private GetCatalogProductSelectionCriteriaQueryInterface $getProductSelectionCriteriaQuery,
         private GetCatalogProductValueFiltersQueryInterface $getProductValueFiltersQuery,
@@ -31,9 +30,8 @@ class DisableOnlyInvalidCatalog implements DisableOnlyInvalidCatalogInterface
     ) {
     }
 
-    public function disable(string $catalogId): bool
+    public function disable(Catalog $catalog): bool
     {
-        $catalog = $this->findOneCatalogByIdQuery->execute($catalogId);
         $violations = $this->validator->validate(
             [
                 'enabled' => $catalog->isEnabled(),
@@ -46,9 +44,9 @@ class DisableOnlyInvalidCatalog implements DisableOnlyInvalidCatalogInterface
         );
 
         if ($violations->count() > 0) {
-            $this->disableCatalogQuery->execute($catalogId);
+            $this->disableCatalogQuery->execute($catalog->getId());
 
-            $this->dispatcher->dispatch(new InvalidCatalogDisabledEvent($catalogId));
+            $this->dispatcher->dispatch(new InvalidCatalogDisabledEvent($catalog->getId()));
 
             return true;
         }

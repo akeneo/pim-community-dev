@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Application\Service;
 
+use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
+
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -14,9 +16,8 @@ interface DisableOnlyInvalidCatalogInterface
     /**
      * Disable the catalog if it is invalid
      *
-     * @param string $catalogId
      *
      * @return bool Is the catalog has been disabled or not
      */
-    public function disable(string $catalogId): bool;
+    public function disable(Catalog $catalog): bool;
 }

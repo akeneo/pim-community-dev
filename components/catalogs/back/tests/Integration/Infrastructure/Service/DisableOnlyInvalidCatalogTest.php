@@ -44,7 +44,7 @@ class DisableOnlyInvalidCatalogTest extends IntegrationTestCase
                 'locale' => null,
             ],
         ]);
-        $isCatalogDisabled = $this->disableOnlyInvalidCatalogQuery->disable($catalogIdUS);
+        $isCatalogDisabled = $this->disableOnlyInvalidCatalogQuery->disable($this->getCatalog($catalogIdUS));
 
         $this->assertFalse($isCatalogDisabled);
         $this->assertCatalogIsEnabled($catalogIdUS);
@@ -76,7 +76,7 @@ class DisableOnlyInvalidCatalogTest extends IntegrationTestCase
 
         $this->removeAttributeOption('color.red');
 
-        $isCatalogDisabled = $this->disableOnlyInvalidCatalogQuery->disable($catalogIdUS);
+        $isCatalogDisabled = $this->disableOnlyInvalidCatalogQuery->disable($this->getCatalog($catalogIdUS));
 
         $this->assertTrue($isCatalogDisabled);
         $this->assertCatalogIsDisabled($catalogIdUS);
