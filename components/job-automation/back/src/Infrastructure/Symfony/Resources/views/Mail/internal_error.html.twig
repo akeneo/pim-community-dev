@@ -33,14 +33,7 @@
         {{ jobInstance.label }}
     </p>
     <div style="margin: auto; width: 80%; text-align: start; font-size: 12px;font-family: 'Lato', sans-serif" id="result">
-        <p>The following errors prevented the {{ jobInstance.type }} profile to be started:</p>
-        <ul style="padding-left: 5px">
-            {% for error in errors %}
-                <li style="list-style-type: '- ';margin: 0">
-                    {{ error }}
-                </li>
-            {% endfor %}
-        </ul>
+        <p>Internal system failure. Your job cannot be launched because of an infrastructure issue. Please retry later.</p>
     </div>
 {% endblock %}
 
