@@ -1,6 +1,7 @@
 spec:
   destination:
     googleProject: akecld-prd-pim-saas-sandbox
+    clusterRegion: europe-west1
     publicDomain: pim-saas-sandbox.dev.cloud.akeneo.com
     privateDomain: pim-saas-sandbox.dev.local
   source:

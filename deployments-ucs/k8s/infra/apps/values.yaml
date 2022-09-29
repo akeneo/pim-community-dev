@@ -1,9 +1,9 @@
-
 spec:
   destination:
     namespace: argocd
     server: https://kubernetes.default.svc
     googleProject: null #To be overrided
+    clusterRegion: null #To be overrided
     publicDomain: null #To be overrided
     privateDomain: null #To be overrided
   source:
