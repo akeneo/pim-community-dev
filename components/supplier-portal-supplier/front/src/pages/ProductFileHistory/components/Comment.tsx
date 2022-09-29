@@ -1,7 +1,7 @@
 import React from 'react';
-import {AkeneoThemedProps, DialogIcon, getColor, onboarderTheme} from 'akeneo-design-system';
-import {useDateFormatter} from '@akeneo-pim-community/shared';
-import styled, {css} from 'styled-components';
+import {AkeneoThemedProps, DialogIcon, getColor} from 'akeneo-design-system';
+import {useDateFormatter} from '../../../utils/date-formatter/use-date-formatter';
+import styled from 'styled-components';
 
 type Props = {
     outgoing: boolean;
@@ -12,21 +12,14 @@ type Props = {
 
 const CommentRow = styled.div`
     flex: 1 1 100%;
-    margin-top: 20px;
+    margin-top: 10px;
 `;
 
 const IconContainer = styled.div<AkeneoThemedProps & {outgoing: boolean}>`
     margin: 14px 12.5px;
     border-right: 1px solid;
     padding-right: 12.5px;
-    ${({outgoing}) =>
-        !outgoing
-            ? css`
-                  color: #2d6486;
-              `
-            : css`
-                  color: ${getColor('grey140')};
-              `}
+    color: ${({outgoing}) => (outgoing ? getColor('grey140') : '#2d6486')};
 `;
 
 const ContentContainer = styled.div`
@@ -36,18 +29,10 @@ const ContentContainer = styled.div`
 `;
 
 const FlexGrow = styled.div<AkeneoThemedProps & {outgoing: boolean}>`
-    flex: 200px;
+    flex: 320px;
     padding-right: 10px;
-    ${({outgoing}) =>
-        !outgoing
-            ? css`
-                  background-color: ${getColor('blue10')};
-                  color: #2d6486;
-              `
-            : css`
-                  background-color: ${getColor('grey20')};
-                  color: ${getColor('grey140')};
-              `}
+    color: ${({outgoing}) => (outgoing ? getColor('grey140') : getColor('brand120'))};
+    background-color: ${({outgoing}) => (outgoing ? getColor('grey20') : getColor('blue10'))};
 `;
 
 const FillerContainer = styled.div`
@@ -56,14 +41,9 @@ const FillerContainer = styled.div`
 
 const CommentRowContent = styled.div<AkeneoThemedProps & {outgoing: boolean}>`
     display: flex;
-    ${({outgoing}) =>
-        !outgoing
-            ? css`
-                  flex-direction: row-reverse;
-              `
-            : css`
-                  flex-direction: row;
-              `}
+    flex-direction: ${({outgoing}) => (outgoing ? 'row-reverse' : 'row')};
+    margin-left: ${({outgoing}) => (outgoing ? '0' : '30px')};
+    margin-right: ${({outgoing}) => (outgoing ? '30px' : '0')};
 `;
 
 const AuthorEmailAndDate = styled.div`
@@ -95,9 +75,7 @@ const Comment = ({outgoing, authorEmail, content, createdAt}: Props) => {
                 <FlexGrow outgoing={outgoing}>
                     <FlexRow>
                         <IconContainer outgoing={outgoing}>
-                            <DialogIcon
-                                color={outgoing ? onboarderTheme.color.grey140 : onboarderTheme.color.brand140}
-                            />
+                            <DialogIcon color={outgoing ? '#11324d' : '#3c86b3'} />
                         </IconContainer>
                         <ContentContainer>
                             <FlexColumn>

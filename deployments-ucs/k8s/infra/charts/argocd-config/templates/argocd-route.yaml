@@ -8,7 +8,7 @@ spec:
   - name: external-http
     namespace: default
   hostnames:
-  - "argocd.{{ .Values.global.publicDomain }}"
+  - "argocd-{{ .Values.global.clusterRegion }}.{{ .Values.global.publicDomain }}"
   rules:
   - matches:
     - path:

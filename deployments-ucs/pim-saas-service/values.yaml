@@ -226,6 +226,11 @@ pim:
       pimJobName: "job_executions_purge"
       pimJobOptions: ""
       schedule: "0 0 1 * *"
+    events-api-purge:
+      enabled: true
+      pimJobName: "events_api_purge"
+      pimJobOptions: ""
+      schedule: "5 * * * *"
   supplier_portal:
     settings:
       enabled: false

@@ -44,7 +44,7 @@ const StyledIconButton = styled(IconButton)`
 `;
 
 const StyledSectionTitle = styled(SectionTitle)`
-    margin: 50px 50px 0px;
+    margin: 50px 50px 0;
     width: auto;
     display: flex;
     justify-content: space-between;
@@ -52,7 +52,6 @@ const StyledSectionTitle = styled(SectionTitle)`
 
 const StyledNumberOfProductFiles = styled.span`
     color: #3c86b3;
-    float: right;
     text-transform: lowercase;
 `;
 

@@ -11,14 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\JobAutomation\Domain;
+namespace Akeneo\Platform\JobAutomation\Domain\Publisher;
 
-use Akeneo\Platform\JobAutomation\Domain\Model\CronExpression;
+use Akeneo\Platform\JobAutomation\Domain\Model\DueJobInstance;
 
-class CronExpressionFactory
+interface RetryPublisherInterface
 {
-    public static function fromExpression(string $expression): CronExpression
-    {
-        return new CronExpression($expression);
-    }
+    public function publish(DueJobInstance $dueJobInstance): void;
 }

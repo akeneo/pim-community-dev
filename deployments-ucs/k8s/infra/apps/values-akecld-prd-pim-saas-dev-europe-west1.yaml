@@ -1,6 +1,7 @@
 spec:
   destination:
     googleProject: akecld-prd-pim-saas-dev
+    clusterRegion: europe-west1
     publicDomain: pim-saas-dev.dev.cloud.akeneo.com
     privateDomain: pim-saas-dev.dev.local
   source:

@@ -1,5 +1,7 @@
 batch_jobs.xlsx_tailored_product_import.label: Import sur mesure des produits en XLSX
 akeneo.tailored_import:
+  meta:
+    mapped_columns: "{0}Aucune colonne mappée|{1}{{ count }}/{{ total }} colonne mappée|]1, Inf[{{ count }}/{{ total }} colonnes mappées"
   global_settings:
     error_action:
       label: Gestion des erreurs
@@ -49,6 +51,10 @@ akeneo.tailored_import:
       add: Ajouter une opération
       common:
         collapse: Réduire
+      clean_html:
+        title: Nettoyer le code HTML
+        remove: Supprimer les balises HTML
+        decode: Décoder les caractères HTML
       change_case:
         title: Modifier la casse d'un texte
         select: Sélectionnez la modification de casse
@@ -68,6 +74,9 @@ akeneo.tailored_import:
       simple_select_replacement:
         title: Remplacement des listes à choix unique
         option_labels: Options du PIM
+      simple_reference_entity_replacement:
+        title: Remplacement des entités référentielles à lien simple
+        option_labels: Enregistrements du PIM
       multi_select_replacement:
         title: Remplacement des listes à choix multiple
         option_labels: Options du PIM
@@ -93,6 +102,7 @@ akeneo.tailored_import:
       replacement:
         to_placeholder: Définissez les valeurs de votre fichier source.
         modal:
+          records: Gérer les enregistrements
           options: Gérer les options
           subtitle: Remplacement
           no_result:
@@ -192,6 +202,8 @@ akeneo.tailored_import:
       property_should_exist: 'La propriété suivante n''existe plus : "{{ property_code }}". Veuillez la recréer ou choisissez une autre propriété. '
       source_configuration:
         unit_should_exist: L'unité "{{ unit_code }}" n'existe plus pour la famille de mesures "{{ measurement_family }}". Veuillez la recréer ou choisissez une autre unité.
+        currency_should_be_active: La devise {{ currency_code }} n'est liée à aucun canal.
+        currency_should_be_active_on_channel: La devise {{ currency_code }} n'est pas active pour le canal {{ channel_code }}.
     locale:
       should_be_active: La locale {{ locale_code }} a été désactivée. Réactivez-la ou sélectionnez une autre locale.
       should_be_bound_to_channel: La locale "{{ locale_code }}" a été désactivée pour le canal "{{ channel_code }}". Réactivez-la ou sélectionnez une autre locale.
