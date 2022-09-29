@@ -5,7 +5,9 @@
   },
   "response":{
     "status": 200,
-    "bodyFileName":"responses/authentication.json",
+    "jsonBody": {
+      "access_token": "random"
+    },
     "headers":{
       "Content-Type":"application/json"
     }
