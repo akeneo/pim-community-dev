@@ -14,21 +14,14 @@ use Symfony\Component\Validator\Constraints\Collection;
  */
 class EmptyConstraintCollectionProvider implements ConstraintCollectionProviderInterface
 {
-    /** @var array */
-    protected $supportedJobNames;
-
-    /**
-     * @param array $supportedJobNames
-     */
-    public function __construct(array $supportedJobNames)
+    public function __construct(protected array $supportedJobNames)
     {
-        $this->supportedJobNames = $supportedJobNames;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getConstraintCollection()
+    public function getConstraintCollection(): Collection
     {
         return new Collection(['fields' => []]);
     }
@@ -36,7 +29,7 @@ class EmptyConstraintCollectionProvider implements ConstraintCollectionProviderI
     /**
      * {@inheritdoc}
      */
-    public function supports(JobInterface $job)
+    public function supports(JobInterface $job): bool
     {
         return in_array($job->getName(), $this->supportedJobNames);
     }

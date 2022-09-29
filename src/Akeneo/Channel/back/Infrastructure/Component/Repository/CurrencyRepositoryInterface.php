@@ -25,7 +25,7 @@ interface CurrencyRepositoryInterface extends IdentifiableObjectRepositoryInterf
     /**
      * Return an array of currency codes
      *
-     * @return array
+     * @return array<string>
      */
     public function getActivatedCurrencyCodes();
 }

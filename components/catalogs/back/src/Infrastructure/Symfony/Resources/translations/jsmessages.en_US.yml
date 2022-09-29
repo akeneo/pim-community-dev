@@ -12,6 +12,7 @@ akeneo_catalogs:
             product_selection: Product selection
             more: More
             product_value_filters: Filter the values
+            product_mapping: Mapping
     settings:
         fields:
             enabled: Enabled
@@ -99,3 +100,16 @@ akeneo_catalogs:
             ">=": equals or greater than
             "<": less than
             "<=": equals or less than
+    product_mapping:
+        target:
+            title: Target list
+            filter:
+                label: Filter
+                option:
+                    all: All
+            table:
+                target: Target
+                source: Source
+        source:
+            placeholder:
+                title: Select source
