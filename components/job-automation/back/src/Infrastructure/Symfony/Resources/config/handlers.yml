@@ -4,8 +4,8 @@ services:
     arguments:
       - !tagged pim_import_export.storage_client_provider
 
-  akeneo.job_automation.handler.update_scheduled_job_instance:
-    class: Akeneo\Platform\JobAutomation\Application\UpdateScheduledJobInstanceLastExecution\UpdateScheduledJobInstanceLastExecutionHandler
+  akeneo.job_automation.handler.push_scheduled_jobs_to_queue_handler:
+    class: Akeneo\Platform\JobAutomation\Application\PushScheduledJobsToQueue\PushScheduledJobsToQueueHandler
     arguments:
-      - '@Akeneo\Platform\JobAutomation\Domain\ClockInterface'
-      - '@akeneo.job_automation.query.update_automation_last_execution_date'
+      - '@akeneo.job_automation.query.find_users_to_notify'
+      - '@Akeneo\Platform\JobAutomation\Domain\Publisher\PublisherInterface'

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\JobAutomation\Test\Acceptance\UseCases;
 
 use Akeneo\Platform\JobAutomation\Domain\Event\CouldNotLaunchAutomatedJobEvent;
+use Akeneo\Platform\JobAutomation\Domain\Model\DueJobInstance;
 use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
 use Akeneo\Platform\JobAutomation\Domain\Model\UserToNotify;
 use Akeneo\Platform\JobAutomation\Domain\Model\UserToNotifyCollection;
@@ -64,9 +65,8 @@ class SendEmailWhenJobInstanceCannotBeLaunchedTest extends AcceptanceTestCase
     private function dispatchInvalidJobInstance(array $usersToNotify): void
     {
         $event = CouldNotLaunchAutomatedJobEvent::dueToInvalidJobInstance(
-            $this->getScheduledJobInstance(),
+            new DueJobInstance($this->getScheduledJobInstance(), new UserToNotifyCollection($usersToNotify)),
             ['error1', 'error2'],
-            new UserToNotifyCollection($usersToNotify)
         );
 
         $this->getEventDispatcher()->dispatch($event);
@@ -75,9 +75,8 @@ class SendEmailWhenJobInstanceCannotBeLaunchedTest extends AcceptanceTestCase
     private function dispatchInternalErrorDuringJobScheduling(array $usersToNotify): void
     {
         $event = CouldNotLaunchAutomatedJobEvent::dueToInvalidJobInstance(
-            $this->getScheduledJobInstance(),
+            new DueJobInstance($this->getScheduledJobInstance(), new UserToNotifyCollection($usersToNotify)),
             ['error1', 'error2'],
-            new UserToNotifyCollection($usersToNotify)
         );
 
         $this->getEventDispatcher()->dispatch($event);

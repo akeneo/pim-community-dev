@@ -1,0 +1,8 @@
+services:
+  Akeneo\Platform\JobAutomation\Domain\Publisher\PublisherInterface:
+    class: Akeneo\Platform\JobAutomation\Infrastructure\Publisher\RetryPublisher
+    arguments:
+      - '@Akeneo\Platform\JobAutomation\Domain\ClockInterface'
+      - '@event_dispatcher'
+      - '@logger'
+      - '@akeneo_batch_queue.queue.publish_job_to_queue'

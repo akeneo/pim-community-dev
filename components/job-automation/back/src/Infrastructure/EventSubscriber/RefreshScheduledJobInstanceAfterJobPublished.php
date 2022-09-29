@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\JobAutomation\Infrastructure\EventSubscriber;
 
-use Akeneo\Platform\JobAutomation\Application\UpdateScheduledJobInstanceLastExecution\UpdateScheduledJobInstanceLastExecutionCommand;
-use Akeneo\Platform\JobAutomation\Application\UpdateScheduledJobInstanceLastExecution\UpdateScheduledJobInstanceLastExecutionHandler;
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\ResolveScheduledJobRunningUsername;
+use Akeneo\Platform\JobAutomation\Domain\ClockInterface;
+use Akeneo\Platform\JobAutomation\Domain\Query\UpdateAutomationLastExecutionDateQueryInterface;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -22,7 +23,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 final class RefreshScheduledJobInstanceAfterJobPublished implements EventSubscriberInterface
 {
     public function __construct(
-        private UpdateScheduledJobInstanceLastExecutionHandler $updateScheduledJobInstanceLastExecutionHandler,
+        private ClockInterface $clock,
+        private UpdateAutomationLastExecutionDateQueryInterface $updateJobInstanceAutomationLastExecutionDate,
     ) {
     }
 
@@ -35,8 +37,12 @@ final class RefreshScheduledJobInstanceAfterJobPublished implements EventSubscri
 
     public function refreshScheduledJobInstance(JobExecutionEvent $event): void
     {
-        $jobInstanceCode = $event->getJobExecution()->getJobInstance()->getCode();
-        $command = new UpdateScheduledJobInstanceLastExecutionCommand($jobInstanceCode);
-        $this->updateScheduledJobInstanceLastExecutionHandler->handle($command);
+        if (null !== $event->getJobExecution()->getUser() && str_contains($event->getJobExecution()->getUser(), ResolveScheduledJobRunningUsername::AUTOMATED_USER_PREFIX)) {
+            $lastExecutionDate = $this->clock->now();
+            $this->updateJobInstanceAutomationLastExecutionDate->forJobInstanceCode(
+                $event->getJobExecution()->getJobInstance()->getCode(),
+                $lastExecutionDate,
+            );
+        }
     }
 }
