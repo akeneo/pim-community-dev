@@ -2,6 +2,7 @@
   "+4C9Ii": "<b>{filename}</b> was sucessfully shared.",
   "+WFftU": "Browse your files",
   "+k5t/y": "Contributor",
+  "0oLj/t": "Expand",
   "5q3qC0": "Download",
   "5sg7KC": "Password",
   "67ZuXt": "At least an uppercase letter",
@@ -29,6 +30,7 @@
   "ShbYD9": "Please enter your email address to reset your password.",
   "UTlLBb": "Arrow",
   "VeYJWI": "You will find here a recap of the files you shared.",
+  "W/V6+Y": "Collapse",
   "WZVD1c": "If the email address exists, an email has been sent to reset your password.",
   "XurM/d": "Correct confirmation",
   "YwMziN": "At least 8 characters",
@@ -57,5 +59,6 @@
   "tp6tYp": "Akeneo Supplier Portal Assistant",
   "tq8W8G": "Receive a new invitation",
   "u0BAeP": "You have been invited to use Akeneo Supplier Portal.",
-  "w/ArXE": "Confirm your password"
+  "w/ArXE": "Confirm your password",
+  "wCgTu5": "Comments"
 }

@@ -10,6 +10,8 @@ const productFiles = [
         path: 'test/73d1078b-840c-4135-9564-682f8cbfb982-product-file.xlsx',
         contributor: 'contributor1@example.com',
         uploadedAt: '2022-07-28T14:57:37+00:00',
+        retailerComments: [],
+        supplierComments: [],
     },
     {
         identifier: '8be6446b-befb-4d9f-aa94-0dfd390df690',
@@ -17,6 +19,8 @@ const productFiles = [
         path: 'test/73d1078b-840c-4135-9564-682f8cbfb982-product-file.xlsx',
         contributor: 'contributor2@example.com',
         uploadedAt: '2022-07-28T14:58:38+00:00',
+        retailerComments: [],
+        supplierComments: [],
     },
 ];
 
@@ -48,6 +52,12 @@ test('it refreshes the comment panel content when clicking on another product fi
     expect(screen.getAllByText('07/28/2022, 02:58 PM')).toHaveLength(2);
 });
 
+test('it displays the number of product files', () => {
+    renderWithProviders(<ProductFileList productFiles={productFiles} />);
+
+    expect(screen.getByText('2 results')).toBeInTheDocument();
+});
+
 test('it displays the comment panel content when clicking on a product file row', () => {
     renderWithProviders(<ProductFileList productFiles={productFiles} />);
     const firstProductFileRow = screen.getByTestId('4b5ca8e4-0f89-4de0-9bc7-20c7617a9c86');
@@ -65,10 +75,4 @@ test('it hides the comment panel content when clicking twice on a product file r
     fireEvent.click(firstProductFileRow);
 
     expect(screen.queryByTestId('close-panel-icon')).not.toBeInTheDocument();
-});
-
-test('it displays the number of product files', () => {
-    renderWithProviders(<ProductFileList productFiles={productFiles} />);
-
-    expect(screen.getByText('2 results')).toBeInTheDocument();
 });
