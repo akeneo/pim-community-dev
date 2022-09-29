@@ -82,6 +82,7 @@ unit-back: var/tests/phpspec community-unit-back growth-unit-back #Doc: launch a
 	PIM_CONTEXT=tailored-import $(MAKE) unit-back
 	PIM_CONTEXT=job-automation $(MAKE) unit-back
 	PIM_CONTEXT=channel $(MAKE) channel-unit-back
+	PIM_CONTEXT=performance-analytics $(MAKE) performance-analytics-unit-back
 ifeq ($(CI),true)
 	$(DOCKER_COMPOSE) run -T --rm php php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
 	vendor/akeneo/pim-community-dev/.circleci/find_non_executed_phpspec.sh
