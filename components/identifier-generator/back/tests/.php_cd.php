@@ -38,6 +38,13 @@ $rules = [
             'Symfony\Component\DependencyInjection\ContainerBuilder',
             'Symfony\Component\DependencyInjection\Loader\YamlFileLoader',
             'Symfony\Component\HttpKernel\DependencyInjection\Extension',
+            'Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\FindFlattenAttributesInterface',
+            'Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\FlattenAttribute',
+            'Akeneo\UserManagement\Bundle\Context\UserContext',
+            'Symfony\Component\HttpFoundation\JsonResponse',
+            'Symfony\Component\HttpFoundation\RedirectResponse',
+            'Symfony\Component\HttpFoundation\Request',
+            'Symfony\Component\HttpFoundation\Response'
         ]
     )->in('Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure'),
 ];

@@ -1,6 +1,6 @@
-type Attribute = {
+type FlattenAttribute = {
   code: string;
   label: string;
 };
 
-export type {Attribute};
+export type {FlattenAttribute};

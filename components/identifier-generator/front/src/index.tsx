@@ -6,10 +6,8 @@ import {
   DangerousMicrofrontendAutomaticAuthenticator,
   MicroFrontendDependenciesProvider,
   Routes,
-  Translations,
 } from '@akeneo-pim-community/shared';
 import {routes} from './routes.json';
-import translations from './translations.json';
 import {IdentifierGeneratorApp} from './feature';
 
 DangerousMicrofrontendAutomaticAuthenticator.enable('admin', 'admin');
@@ -17,7 +15,7 @@ DangerousMicrofrontendAutomaticAuthenticator.enable('admin', 'admin');
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={pimTheme}>
-      <MicroFrontendDependenciesProvider routes={routes as Routes} translations={translations as Translations}>
+      <MicroFrontendDependenciesProvider routes={routes as Routes}>
         <IdentifierGeneratorApp />
       </MicroFrontendDependenciesProvider>
     </ThemeProvider>

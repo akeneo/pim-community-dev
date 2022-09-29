@@ -90,7 +90,7 @@ integration-front:
 	$(YARN_RUN) integration
 
 .PHONY: pim-integration-back
-pim-integration-back: var/tests/phpunit connectivity-connection-integration-back communication-channel-integration-back job-integration-back channel-integration-back
+pim-integration-back: var/tests/phpunit connectivity-connection-integration-back communication-channel-integration-back job-integration-back channel-integration-back identifier-generator-end-to-end-back
 ifeq ($(CI),true)
 	.circleci/run_phpunit.sh . .circleci/find_phpunit.php PIM_Integration_Test
 else

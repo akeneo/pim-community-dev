@@ -1,5 +1,5 @@
 import {useQuery} from 'react-query';
-import {Attribute} from '../models/attributes';
+import {FlattenAttribute} from '../models/attributes';
 
 const useIdentifierAttributes = () => {
   const getIdentifierAttributes = async () => {
@@ -12,11 +12,15 @@ const useIdentifierAttributes = () => {
     });
   };
 
-  const {error, data} = useQuery<Attribute[], Error, Attribute[]>('getIdentifierAttributes', getIdentifierAttributes, {
-    keepPreviousData: true,
-    refetchOnWindowFocus: false,
-    retry: false,
-  });
+  const {error, data} = useQuery<FlattenAttribute[], Error, FlattenAttribute[]>(
+    'getIdentifierAttributes',
+    getIdentifierAttributes,
+    {
+      keepPreviousData: true,
+      refetchOnWindowFocus: false,
+      retry: false,
+    }
+  );
 
   return {data, error};
 };

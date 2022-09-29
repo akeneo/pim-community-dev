@@ -6,11 +6,8 @@ namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
-use Oro\Bundle\SecurityBundle\Model\AclPermission;
-use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
-use Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity;
+use Akeneo\Test\IntegrationTestsBundle\Helper\AuthenticatorHelper;
+use Akeneo\Test\IntegrationTestsBundle\Helper\WebClientHelper;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -59,37 +56,39 @@ abstract class ControllerEndToEndTestCase extends WebTestCase
         $this->ensureKernelShutdown();
     }
 
-    protected function enableAcl(string $aclId, $role = 'ROLE_ADMINISTRATOR') : void
+    protected function loginAs(string $username): void
     {
-        $aclManager = $this->get('oro_security.acl.manager');
-        $role = $this->get('pim_user.repository.role')->findByIdentifier($role);
-        $privilege = new AclPrivilege();
-        $identity = new AclPrivilegeIdentity($aclId);
-        $privilege
-            ->setIdentity($identity)
-            ->addPermission(new AclPermission('EXECUTE', AccessLevel::BASIC_LEVEL));
-        $aclManager->getPrivilegeRepository()->savePrivileges(
-            $aclManager->getSid($role),
-            new ArrayCollection([$privilege])
-        );
-        $aclManager->flush();
-        $aclManager->clearCache();
+        $this->getAuthenticated()->logIn($username, $this->client);
     }
 
-    protected function disableAcl(string $aclPrivilegeIdentityId, $role = 'ROLE_ADMINISTRATOR') : void
+    private const DEFAULT_HEADER = [
+        'HTTP_X-Requested-With' => 'XMLHttpRequest'
+    ];
+
+    protected function callRoute(string $routeName, ?array $header = self::DEFAULT_HEADER): void
     {
-        $aclManager = $this->get('oro_security.acl.manager');
-        $role = $this->get('pim_user.repository.role')->findOneByIdentifier($role);
-        $privilege = new AclPrivilege();
-        $identity = new AclPrivilegeIdentity($aclPrivilegeIdentityId);
-        $privilege
-            ->setIdentity($identity)
-            ->addPermission(new AclPermission('EXECUTE', AccessLevel::NONE_LEVEL));
-        $aclManager->getPrivilegeRepository()->savePrivileges(
-            $aclManager->getSid($role),
-            new ArrayCollection([$privilege])
+        $this->getWebClientHelper()->callRoute(
+            $this->client,
+            $routeName,
+            [],
+            'GET',
+            $header
         );
-        $aclManager->flush();
-        $aclManager->clearCache();
+    }
+
+    private function getAuthenticated(): AuthenticatorHelper
+    {
+        /** @var AuthenticatorHelper $authenticatorHelper */
+        $authenticatorHelper = $this->get('akeneo_integration_tests.helper.authenticator');
+
+        return $authenticatorHelper;
+    }
+
+    private function getWebClientHelper(): WebClientHelper
+    {
+        /** @var WebClientHelper $webClientHelper */
+        $webClientHelper = $this->get('akeneo_integration_tests.helper.web_client');
+
+        return $webClientHelper;
     }
 }

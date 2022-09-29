@@ -1,25 +1,27 @@
 import React, {FC} from 'react';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import {pimTheme} from 'akeneo-design-system';
-import {MicroFrontendDependenciesProvider, Routes, Translations} from '@akeneo-pim-community/shared';
+import {MicroFrontendDependenciesProvider, Routes} from '@akeneo-pim-community/shared';
 import {ThemeProvider} from 'styled-components';
-// @ts-ignore
-import {routes} from '../../routes.json';
 import {render, RenderOptions} from '@testing-library/react';
 
 const AllTheProviders: FC<{children: React.ReactNode}> = ({children}) => {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        // turns retries off because we dont need it inside tests
+        // turns retries off because we don't need it inside tests
         retry: false,
       },
     },
   });
 
+  const fakeRoutes = {
+    pim_user_security_rest_get: {tokens: []}
+  }
+
   return (
     <ThemeProvider theme={pimTheme}>
-      <MicroFrontendDependenciesProvider routes={routes as Routes} translations={{messages: {}} as Translations}>
+      <MicroFrontendDependenciesProvider routes={fakeRoutes as Routes}>
         <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
       </MicroFrontendDependenciesProvider>
     </ThemeProvider>

@@ -4,6 +4,11 @@ import {render, screen} from '../../tests/test-utils';
 import {waitFor} from '@testing-library/react';
 import {setLogger} from 'react-query';
 
+jest.mock('@akeneo-pim-community/shared', () => ({
+  ...jest.requireActual('@akeneo-pim-community/shared'),
+  useTranslate: () => ((key: string) =>  key)
+}));
+
 setLogger({
   log: console.log,
   warn: console.warn,

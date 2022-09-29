@@ -29,12 +29,8 @@
     </groups>
 
     <testsuites>
-        <testsuite name="Identifier_Generator_Unit">
-            <directory suffix="Test.php">tests/Specification</directory>
-        </testsuite>
-
-        <testsuite name="Identifier_Generator_Integration">
-            <directory suffix="Integration.php">tests/EndToEnd</directory>
+        <testsuite name="Identifier_Generator_End_To_End">
+            <directory suffix="EndToEnd.php">tests/EndToEnd</directory>
         </testsuite>
     </testsuites>
     <coverage>
