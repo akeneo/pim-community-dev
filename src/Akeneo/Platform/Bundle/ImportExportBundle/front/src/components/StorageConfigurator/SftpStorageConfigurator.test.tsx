@@ -10,6 +10,7 @@ test('it renders the sftp storage configurator', () => {
     type: 'sftp',
     file_path: '/tmp/file.xlsx',
     host: 'example.com',
+    fingerprint: '8653a85f112ca9286bd78fbe47606a23',
     port: 22,
     username: 'root',
     password: 'root',
@@ -25,6 +26,7 @@ test('it allows user to fill file_path field', () => {
     type: 'sftp',
     file_path: '/tmp/test.xls',
     host: '',
+    fingerprint: '',
     port: 22,
     username: '',
     password: '',
@@ -49,6 +51,7 @@ test('it allows user to fill host field', () => {
     type: 'sftp',
     file_path: '',
     host: 'example.co',
+    fingerprint: '',
     port: 22,
     username: '',
     password: '',
@@ -68,11 +71,37 @@ test('it allows user to fill host field', () => {
   expect(onStorageChange).toHaveBeenLastCalledWith({...storage, host: 'example.com'});
 });
 
+test('it allows user to fill fingerprint field', () => {
+  const storage: SftpStorage = {
+    type: 'sftp',
+    file_path: '',
+    host: 'example.co',
+    fingerprint: '',
+    port: 22,
+    username: '',
+    password: '',
+  };
+
+  const onStorageChange = jest.fn();
+
+  renderWithProviders(
+    <SftpStorageConfigurator storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />
+  );
+
+  const hostInput = screen.getByLabelText(
+    'pim_import_export.form.job_instance.storage_form.fingerprint.label pim_common.required_label'
+  );
+  userEvent.type(hostInput, '8653a85f112ca9286bd78fbe47606a23');
+
+  expect(onStorageChange).toHaveBeenLastCalledWith({...storage, fingerprint: '8653a85f112ca9286bd78fbe47606a23'});
+});
+
 test('it allows user to fill port field', () => {
   const storage: SftpStorage = {
     type: 'sftp',
     file_path: '',
     host: '',
+    fingerprint: '',
     port: 2,
     username: '',
     password: '',
@@ -97,6 +126,7 @@ test('it allows user to fill username field', () => {
     type: 'sftp',
     file_path: '',
     host: '',
+    fingerprint: '',
     port: 22,
     username: 'roo',
     password: '',
@@ -121,6 +151,7 @@ test('it allows user to fill password field', () => {
     type: 'sftp',
     file_path: '',
     host: '',
+    fingerprint: '',
     port: 22,
     username: '',
     password: 'roo',
@@ -160,6 +191,7 @@ test('it displays validation errors', () => {
     type: 'sftp',
     file_path: '/tmp/file.xlsx',
     host: 'example.com',
+    fingerprint: '',
     port: 22,
     username: 'root',
     password: 'root',
@@ -219,6 +251,7 @@ test('it can check connection', async () => {
     type: 'sftp',
     file_path: '/tmp/file.xlsx',
     host: 'example.com',
+    fingerprint: '',
     port: 22,
     username: 'root',
     password: 'root',
@@ -245,6 +278,7 @@ test('it can check connection, display message if error', async () => {
     type: 'sftp',
     file_path: '/tmp/file.xlsx',
     host: 'example.com',
+    fingerprint: '',
     port: 22,
     username: 'root',
     password: 'root',
