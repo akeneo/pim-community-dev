@@ -10,13 +10,22 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
 use phpseclib3\Crypt\RSA;
 use phpseclib3\File\X509;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Version_6_0_20211214000000_add_openid_keys_into_pim_configuration extends AbstractMigration
+class Version_6_0_20211214000000_add_openid_keys_into_pim_configuration extends AbstractMigration implements ContainerAwareInterface
 {
+    private ContainerInterface $container;
+
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
+
     public function up(Schema $schema): void
     {
         $query = <<<SQL
@@ -53,7 +62,8 @@ class Version_6_0_20211214000000_add_openid_keys_into_pim_configuration extends 
          * in order to generate self-signed public key and private key.
          * see http://phpseclib.sourceforge.net/x509/guide.html#selfsigned
          */
-        RSA::setOpenSSLConfigPath($this->openSSLConfigPath);
+        $openSSLConfigPath = $this->container->getParameter('openssl_config_path');
+        RSA::setOpenSSLConfigPath($openSSLConfigPath);
         /** @var RSA\PrivateKey $privateKey */
         $privateKey = RSA::createKey();
         $publicKey = $privateKey->getPublicKey();
