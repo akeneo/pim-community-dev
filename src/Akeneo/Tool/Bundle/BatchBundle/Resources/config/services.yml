@@ -82,6 +82,15 @@ services:
             - '%kernel.environment%'
             - '%kernel.logs_dir%'
 
+    akeneo_batch.launcher.synchronous_job_launcher:
+        class: Akeneo\Tool\Bundle\BatchBundle\Launcher\SynchronousJobLauncher
+        arguments:
+            - '@akeneo_batch_queue.manager.job_execution_manager'
+            - '@akeneo_batch.job_repository'
+            - '@pim_enrich.repository.job_execution'
+            - '@logger'
+            - '%kernel.project_dir%'
+
     akeneo_batch.entity_manager.persisted_connection_entity_manager:
         class: '%akeneo_batch.entity_manager.persisted_connection_entity_manager.class%'
         arguments:
