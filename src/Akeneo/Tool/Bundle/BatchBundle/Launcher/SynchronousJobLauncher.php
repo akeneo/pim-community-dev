@@ -7,7 +7,6 @@ namespace Akeneo\Tool\Bundle\BatchBundle\Launcher;
 use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutionRepository;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
-use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
@@ -28,34 +27,18 @@ class SynchronousJobLauncher implements JobLauncherInterface
      */
     private const RUNNING_PROCESS_CHECK_INTERVAL = 5;
 
-    private JobExecutionManager $executionManager;
-    private JobRepositoryInterface $jobRepository;
-    private JobExecutionRepository $jobExecutionRepository;
-    private LoggerInterface $logger;
-    private JobRegistry $jobRegistry;
-    private string $projectDir;
-
     public function __construct(
-        JobExecutionManager $executionManager,
-        JobRepositoryInterface $jobRepository,
-        JobExecutionRepository $jobExecutionRepository,
-        LoggerInterface $logger,
-        JobRegistry $jobRegistry,
-        string $projectDir
+        private JobExecutionManager $executionManager,
+        private JobRepositoryInterface $jobRepository,
+        private JobExecutionRepository $jobExecutionRepository,
+        private LoggerInterface $logger,
+        private string $projectDir,
     ) {
-        // todo pull up 6.0 use shortened constructor
-        $this->executionManager = $executionManager;
-        $this->jobRepository = $jobRepository;
-        $this->jobExecutionRepository = $jobExecutionRepository;
-        $this->logger = $logger;
-        $this->jobRegistry = $jobRegistry;
-        $this->projectDir = $projectDir;
     }
 
     public function launch(JobInstance $jobInstance, ?UserInterface $user, array $configuration = []): JobExecution
     {
         $jobExecution = $this->createJobExecution($jobInstance, $user, $configuration);
-        // todo pull up 6.0 use only job execution id
         $jobExecutionMessage = JobExecutionMessage::createJobExecutionMessage($jobExecution->getId(), []);
 
         try {
@@ -76,7 +59,7 @@ class SynchronousJobLauncher implements JobLauncherInterface
         } finally {
             $exitStatus = $this->executionManager->getExitStatus($jobExecutionMessage);
             if ($exitStatus->isRunning()) {
-                $this->executionManager->markAsFailed($jobExecutionMessage);
+                $this->executionManager->markAsFailed($jobExecution->getId());
             }
         }
 

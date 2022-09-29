@@ -89,7 +89,6 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pim_enrich.repository.job_execution'
             - '@logger'
-            - '@akeneo_batch.job.job_registry'
             - '%kernel.project_dir%'
 
     akeneo_batch.entity_manager.persisted_connection_entity_manager:
