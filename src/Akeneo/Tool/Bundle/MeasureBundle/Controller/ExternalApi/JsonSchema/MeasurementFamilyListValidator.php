@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\Controller\ExternalApi\JsonSchema;
 
-use JsonSchema\Validator;
+use Opis\JsonSchema\Errors\ErrorFormatter;
+use Opis\JsonSchema\Errors\ValidationError;
+use Opis\JsonSchema\Helper;
+use Opis\JsonSchema\Validator;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -15,11 +18,27 @@ class MeasurementFamilyListValidator
     public function validate(array $normalizedMeasurementFamilies): array
     {
         $validator = new Validator();
-        $normalizedMeasurementFamilies = json_decode(json_encode($normalizedMeasurementFamilies));
+        $validator->setMaxErrors(50);
 
-        $validator->validate($normalizedMeasurementFamilies, $this->getJsonSchema());
+        $result = $validator->validate(
+            Helper::toJSON($normalizedMeasurementFamilies),
+            Helper::toJSON($this->getJsonSchema()),
+        );
 
-        return $validator->getErrors();
+        if (!$result->hasError()) {
+            return [];
+        }
+
+        $errorFormatter = new ErrorFormatter();
+
+        $customFormatter = function (ValidationError $error) use ($errorFormatter) {
+            return [
+                'property' => $errorFormatter->formatErrorKey($error),
+                'message' => $errorFormatter->formatErrorMessage($error),
+            ];
+        };
+
+        return $errorFormatter->formatFlat($result->error(), $customFormatter);
     }
 
     private function getJsonSchema(): array
