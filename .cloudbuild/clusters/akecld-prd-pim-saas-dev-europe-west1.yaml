@@ -60,8 +60,7 @@ steps:
           helm upgrade --version ${_ARGOCD_APP_HELM_VERSION} --dry-run --debug -i --create-namespace -n argocd argocd-apps argo/argocd-apps -f k8s/argocd-apps/values.yaml
         else
           ## Datadog
-          _DATADOG_API_KEY=$(cat SECRET_DATADOG_API_KEY.txt) && echo -n \)_DATADOG_API_KEY
-          kubectl create secret generic datadog-api-secret --from-literal api-key="${_DATADOG_API_KEY}"
+          kubectl create secret generic datadog-api-secret --from-literal api-key="$${DATADOG_API_KEY}"
 
           # Install prerequisite
           ## ArgoCD
