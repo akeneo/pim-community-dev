@@ -36,7 +36,7 @@ test('it can enable a catalog', () => {
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
                 <CatalogFormContext.Provider value={dispatch}>
-                    <CatalogEdit form={form} />
+                    <CatalogEdit id={'a134c164-9343-4796-9b4e-e2c04ba3765a'} form={form} />
                 </CatalogFormContext.Provider>
             </QueryClientProvider>
         </ThemeProvider>
@@ -65,7 +65,7 @@ test('it can change criteria in the product selection', async () => {
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
                 <CatalogFormContext.Provider value={dispatch}>
-                    <CatalogEdit form={form} />
+                    <CatalogEdit id={'a134c164-9343-4796-9b4e-e2c04ba3765a'} form={form} />
                 </CatalogFormContext.Provider>
             </QueryClientProvider>
         </ThemeProvider>
@@ -114,7 +114,7 @@ test('it can add a product value filter on the channel', async () => {
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
                 <CatalogFormContext.Provider value={dispatch}>
-                    <CatalogEdit form={form} />
+                    <CatalogEdit id={'a134c164-9343-4796-9b4e-e2c04ba3765a'} form={form} />
                 </CatalogFormContext.Provider>
             </QueryClientProvider>
         </ThemeProvider>

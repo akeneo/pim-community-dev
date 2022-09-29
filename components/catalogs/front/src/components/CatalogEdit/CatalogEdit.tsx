@@ -5,14 +5,15 @@ import {CatalogFormContext} from './contexts/CatalogFormContext';
 import {CatalogForm} from './hooks/useCatalogForm';
 
 type Props = {
+    id: string;
     form: CatalogForm;
 };
 
-const CatalogEdit: FC<PropsWithChildren<Props>> = ({form}) => {
+const CatalogEdit: FC<PropsWithChildren<Props>> = ({id, form}) => {
     return (
         <ErrorBoundary>
             <CatalogFormContext.Provider value={form.dispatch}>
-                <Edit values={form.values} errors={form.errors} />
+                <Edit id={id} values={form.values} errors={form.errors} />
             </CatalogFormContext.Provider>
         </ErrorBoundary>
     );

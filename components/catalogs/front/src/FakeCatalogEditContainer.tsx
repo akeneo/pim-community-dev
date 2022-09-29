@@ -52,7 +52,7 @@ const FakeCatalogEditContainer: FC<PropsWithChildren<Props>> = () => {
                 </Button>
                 {isDirty && <DirtyWarning>⚠️ There are unsaved changes.</DirtyWarning>}
             </TopRightContainer>
-            <CatalogEdit form={form} />
+            <CatalogEdit id={id} form={form} />
         </>
     );
 };
