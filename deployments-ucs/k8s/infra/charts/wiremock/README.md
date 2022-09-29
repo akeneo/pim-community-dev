@@ -21,6 +21,24 @@ Helm Chart for deployment Wiremock to Kubernetes
     $ curl -X POST http://127.0.0.1:8080/v1/hello
     ```
 
+# Scenarios
+
+## Tenant creation
+
+### States
+
+1. INITIAL `Started` status
+2. WHEN receiving `GET /api/v1/console/requests/pending_creation?subject_type=serenity_instance&continent=europe&environment=sandbox` THEN switch to `Pending` status
+3. WHEN in `Pending` status AND receives `PATCH api/v1/console/instances/{id}/status/failed_creation` THEN switch to `Failed` status
+   WHEN in `Pending` status AND receives `PATCH api/v1/console/instances/{id}/status/activated` THEN switch to `Activated` status
+
+### Reset the scenario
+
+```
+PUT /__admin/scenarios/tenant-creation/state
+{"state": "Started"}
+```
+
 # References:
 * https://github.com/holomekc/wiremock
 * https://github.com/tomakehurst/wiremock

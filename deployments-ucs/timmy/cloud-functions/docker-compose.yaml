@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   foo-api:
-    image: wiremock/wiremock:2.32.0
+    image: wiremock/wiremock:2.34.0
     ports:
       - "8080:8080"
     command:
@@ -9,5 +9,4 @@ services:
       - "--local-response-templating"
       - "--root-dir=/home/wiremock"
     volumes:
-      - ../../k8s/infra/charts/wiremock/responses:/home/wiremock/__files/responses
       - ../../k8s/infra/charts/wiremock/mappings:/home/wiremock/mappings
