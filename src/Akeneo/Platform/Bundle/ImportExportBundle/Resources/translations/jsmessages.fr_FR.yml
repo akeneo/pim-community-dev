@@ -152,7 +152,7 @@ pim_import_export:
             help: Définit la langue dans laquelle les libellés vont être affichés.
       file_path: Chemin du fichier
       storage_form:
-        title: Espace disque
+        title: Stockage
         connection:
           label: Type
           local: Local
