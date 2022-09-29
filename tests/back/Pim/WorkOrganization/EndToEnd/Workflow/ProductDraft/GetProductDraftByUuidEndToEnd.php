@@ -208,7 +208,7 @@ JSON;
 
         // create 3 products
         $this->upsertProduct($this->product1Uuid, 'julia', [new SetIdentifierValue('sku', 'product_1')]);
-        $this->upsertProduct($this->product2Uuid, 'julia', [new SetIdentifierValue('sku', 'product_2')]);
+        $product2 = $this->upsertProduct($this->product2Uuid, 'julia', [new SetIdentifierValue('sku', 'product_2')]);
         $this->upsertProduct($this->nonViewableProductUuid, 'julia', [
             new SetIdentifierValue('sku', 'non_viewable_product'),
             new SetCategories(['categoryB']),
@@ -220,7 +220,7 @@ JSON;
             new SetTextareaValue('a_localized_and_scopable_text_area', 'ecommerce', 'en_US', 'Original text US'),
             new SetTextareaValue('a_localized_and_scopable_text_area', 'tablet', 'fr_FR', 'Texte original FR'),
             new AssociateProducts('UPSELL', ['product_1', 'non_viewable_product']),
-            new AssociateQuantifiedProducts('PRODUCTSET', [new QuantifiedEntity('product_2', 5)])
+            new AssociateQuantifiedProducts('PRODUCTSET', [new QuantifiedEntity((string) $product2->getUuid(), 5)])
         ]);
 
         // create a draft for mary
