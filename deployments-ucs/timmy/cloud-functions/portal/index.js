@@ -13,6 +13,7 @@ const {GoogleAuth} = require('google-auth-library');
 const auth = new GoogleAuth();
 const {createLogger, format, transports} = require('winston');
 const {LoggingWinston} = require('@google-cloud/logging-winston');
+const path = require('path');
 const loggingWinston = new LoggingWinston();
 
 let logger = null;
@@ -26,14 +27,16 @@ const TENANT_STATUS = {
  * Initialize the logger
  * @param gcpProjectId the GCP project ID
  * @param logLevel level of severity for logs
+ * @param branchName
  */
-function initializeLogger(gcpProjectId, logLevel) {
+function initializeLogger(gcpProjectId, logLevel, branchName=null) {
   logger = createLogger({
     level: logLevel,
     defaultMeta: {
       function: process.env.K_SERVICE || 'timmy-request-portal',
       revision: process.env.K_REVISION,
       gcpProjectId: gcpProjectId,
+      branchName: branchName
     },
     format: format.combine(
       format.timestamp({format: 'YYYY-MM-DD HH:mm:ss'}),
@@ -43,6 +46,7 @@ function initializeLogger(gcpProjectId, logLevel) {
           revision: info.revision,
           gcpProjectId: info.gcpProjectId,
           message: info.message,
+          branchName: branchName
         })}`;
       }),
     ),
@@ -106,21 +110,19 @@ async function requestTokenFromPortal(url, credentials) {
 
 /**
  * Get tenants from the portal
- * @param url the portal base url
+ * @param baseUrl
  * @param token a token to authenticate to the portal
  * @param status
  * @param filters
  * @returns {Promise<any>}
  */
-async function requestTenantsFromPortal(url, token, status, filters) {
-  const path = `/api/v2/console/requests/${status}?${filters}`;
-  const resourceUrl = new URL(path, url);
-  const headers = {headers: {'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json'}};
-
+async function requestTenantsFromPortal(baseUrl, token, status, filters) {
   try {
+    const headers = {headers: {'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json'}};
     logger.info(`Retrieve tenants from the portal with ${status} status and ${filters} filters`);
-    logger.debug(`GET ${resourceUrl}`);
-    const resp = await axios.get(resourceUrl.toString(), headers);
+    const url = `${baseUrl}/api/v2/console/requests/${status}?${filters}`;
+    logger.debug(`GET - ${url}`);
+    const resp = await axios.get(url, headers);
     const tenants = resp.data;
     logger.debug(`Tenants with ${status} status and ${filters} filter: + ${JSON.stringify(tenants)}`);
     return Promise.resolve(tenants);
@@ -175,14 +177,17 @@ functions.http('requestPortal', (req, res) => {
   const TENANT_ENVIRONMENT = loadEnvironmentVariable('TENANT_ENVIRONMENT');
   const TIMMY_PORTAL = loadEnvironmentVariable('TIMMY_PORTAL');
 
-  initializeLogger(GCP_PROJECT_ID, LOG_LEVEL);
+  // Prefix url with branch name if present
+  const BRANCH_NAME = req.body.branchName || '';
+
+  initializeLogger(GCP_PROJECT_ID, LOG_LEVEL, BRANCH_NAME);
   logger.info('Recovery of the tenants from the portal');
 
   const getTenants = async (status) => {
-    let url = new URL(`${HTTP_SCHEMA}://${PORTAL_LOGIN_HOSTNAME}/auth/realms/connect/protocol/openid-connect/token`).toString();
+    let url = new URL(HTTP_SCHEMA + '://' + PORTAL_LOGIN_HOSTNAME + path.join('/', BRANCH_NAME + '/') + 'auth/realms/connect/protocol/openid-connect/token').href.toString();
     const token = await requestTokenFromPortal(url, TIMMY_PORTAL);
 
-    url = new URL(`${HTTP_SCHEMA}://${PORTAL_HOSTNAME}`)
+    url = new URL(HTTP_SCHEMA + '://' + PORTAL_HOSTNAME + path.join('/', BRANCH_NAME));
     return Promise.resolve(await requestTenantsFromPortal(url, token, status, new URLSearchParams({
       subject_type: TENANT_EDITION_FLAGS,
       continent: TENANT_CONTINENT,
