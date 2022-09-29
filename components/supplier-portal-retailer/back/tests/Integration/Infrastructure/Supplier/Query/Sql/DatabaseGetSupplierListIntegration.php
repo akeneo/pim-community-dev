@@ -7,7 +7,7 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\Supplie
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierList;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\SupplierWithContributorCount;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
-use Akeneo\SupplierPortal\Retailer\Test\Builders\SupplierBuilder;
+use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 use Ramsey\Uuid\Uuid;
 

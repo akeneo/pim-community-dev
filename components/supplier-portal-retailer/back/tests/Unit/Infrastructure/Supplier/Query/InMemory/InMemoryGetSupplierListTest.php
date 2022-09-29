@@ -6,7 +6,7 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Infrastructure\Supplier\Query
 
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierList;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
-use Akeneo\SupplierPortal\Retailer\Test\Builders\SupplierBuilder;
+use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 

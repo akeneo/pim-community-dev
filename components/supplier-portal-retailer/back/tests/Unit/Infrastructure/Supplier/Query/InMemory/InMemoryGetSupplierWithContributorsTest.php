@@ -7,7 +7,7 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Infrastructure\Supplier\Query
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierWithContributors;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
-use Akeneo\SupplierPortal\Retailer\Test\Builders\SupplierBuilder;
+use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use PHPUnit\Framework\TestCase;
 
 final class InMemoryGetSupplierWithContributorsTest extends TestCase

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\Supplier\Import;
 
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier;
-use Akeneo\SupplierPortal\Retailer\Test\Builders\SupplierBuilder;
+use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;

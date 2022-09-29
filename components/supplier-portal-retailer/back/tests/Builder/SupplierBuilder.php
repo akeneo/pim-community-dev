@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Retailer\Test\Builders;
+namespace Akeneo\SupplierPortal\Retailer\Test\Builder;
 
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier;
 use Ramsey\Uuid\Uuid;

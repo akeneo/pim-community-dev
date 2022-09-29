@@ -19,7 +19,7 @@ use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository
 use Akeneo\SupplierPortal\Retailer\Infrastructure\StubEventDispatcher;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierFromContributorEmail;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository as SupplierInMemoryRepository;
-use Akeneo\SupplierPortal\Retailer\Test\Builders\SupplierBuilder;
+use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use Psr\Log\Test\TestLogger;

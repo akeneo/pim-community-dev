@@ -7,7 +7,7 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Domain\Supplier\Write\Model;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorAdded;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorDeleted;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier;
-use Akeneo\SupplierPortal\Retailer\Test\Builders\SupplierBuilder;
+use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use PHPUnit\Framework\TestCase;
 
 final class SupplierTest extends TestCase
