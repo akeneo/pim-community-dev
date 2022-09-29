@@ -10,6 +10,8 @@ use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogProductSelectionCr
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogProductValueFiltersQueryInterface;
 use Akeneo\Catalogs\Application\Service\DisableOnlyInvalidCatalogInterface;
 use Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdatePayload;
+use Akeneo\Catalogs\ServiceAPI\Events\InvalidCatalogDisabledEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -25,6 +27,7 @@ class DisableOnlyInvalidCatalog implements DisableOnlyInvalidCatalogInterface
         private GetCatalogProductSelectionCriteriaQueryInterface $getProductSelectionCriteriaQuery,
         private GetCatalogProductValueFiltersQueryInterface $getProductValueFiltersQuery,
         private DisableCatalogQueryInterface $disableCatalogQuery,
+        private EventDispatcherInterface $dispatcher,
     ) {
     }
 
@@ -44,6 +47,8 @@ class DisableOnlyInvalidCatalog implements DisableOnlyInvalidCatalogInterface
 
         if ($violations->count() > 0) {
             $this->disableCatalogQuery->execute($catalogId);
+
+            $this->dispatcher->dispatch(new InvalidCatalogDisabledEvent($catalogId));
 
             return true;
         }

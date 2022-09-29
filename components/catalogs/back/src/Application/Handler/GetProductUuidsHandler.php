@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Application\Handler;
 
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductUuidsQueryInterface;
+use Akeneo\Catalogs\Application\Service\DisableOnlyInvalidCatalogInterface;
+use Akeneo\Catalogs\ServiceAPI\Exception\InvalidCatalogException;
 use Akeneo\Catalogs\ServiceAPI\Query\GetProductUuidsQuery;
 
 /**
@@ -15,6 +17,7 @@ final class GetProductUuidsHandler
 {
     public function __construct(
         private GetProductUuidsQueryInterface $query,
+        private DisableOnlyInvalidCatalogInterface $disableOnlyInvalidCatalog,
     ) {
     }
 
@@ -23,12 +26,17 @@ final class GetProductUuidsHandler
      */
     public function __invoke(GetProductUuidsQuery $query): array
     {
-        return $this->query->execute(
-            $query->getCatalogId(),
-            $query->getSearchAfter(),
-            $query->getLimit(),
-            $query->getUpdatedAfter(),
-            $query->getUpdatedBefore(),
-        );
+        try {
+            return $this->query->execute(
+                $query->getCatalogId(),
+                $query->getSearchAfter(),
+                $query->getLimit(),
+                $query->getUpdatedAfter(),
+                $query->getUpdatedBefore(),
+            );
+        } catch (\Exception $exception) {
+            $this->disableOnlyInvalidCatalog->disable($query->getCatalogId());
+            throw new InvalidCatalogException(previous: $exception);
+        }
     }
 }

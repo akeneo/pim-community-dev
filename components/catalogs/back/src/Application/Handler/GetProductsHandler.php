@@ -6,6 +6,7 @@ namespace Akeneo\Catalogs\Application\Handler;
 
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductsQueryInterface;
 use Akeneo\Catalogs\Application\Service\DisableOnlyInvalidCatalogInterface;
+use Akeneo\Catalogs\ServiceAPI\Exception\InvalidCatalogException;
 use Akeneo\Catalogs\ServiceAPI\Query\GetProductsQuery;
 
 /**
@@ -24,6 +25,7 @@ final class GetProductsHandler
 
     /**
      * @return array<Product>
+     * @throws InvalidCatalogException
      */
     public function __invoke(GetProductsQuery $query): array
     {
@@ -35,8 +37,9 @@ final class GetProductsHandler
                 $query->getUpdatedAfter(),
                 $query->getUpdatedBefore(),
             );
-        } catch (\Exception) {
+        } catch (\Exception $exception) {
             $this->disableOnlyInvalidCatalog->disable($query->getCatalogId());
+            throw new InvalidCatalogException(previous: $exception);
         }
     }
 }

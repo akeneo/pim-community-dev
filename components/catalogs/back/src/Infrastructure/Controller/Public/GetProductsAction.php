@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Controller\Public;
 
-use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductsQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Security\DenyAccessUnlessGrantedTrait;
 use Akeneo\Catalogs\Infrastructure\Security\GetCurrentUsernameTrait;
+use Akeneo\Catalogs\ServiceAPI\Exception\InvalidCatalogException;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
@@ -51,7 +51,14 @@ class GetProductsAction
         $this->denyAccessUnlessOwnerOfCatalog($catalog, $this->getCurrentUsername());
 
         [$searchAfter, $limit, $updatedAfter, $updatedBefore] = $this->getParameters($request);
-        $products = $this->getProducts($catalog, $searchAfter, $limit, $updatedAfter, $updatedBefore);
+        try {
+            $products = $this->getProducts($catalog, $searchAfter, $limit, $updatedAfter, $updatedBefore);
+        } catch (InvalidCatalogException $invalidCatalogException) {
+
+            return new JsonResponse([
+                'message' => 'No products to synchronize. The catalog catalog_id has been disabled on PIM side. Note that you can get catalogs status with the GET /api/rest/v1/catalogs endpoint.'
+            ], Response::HTTP_OK);
+        }
 
         return new JsonResponse($this->paginate($catalog, $products, $searchAfter, $limit, $updatedAfter, $updatedBefore), Response::HTTP_OK);
     }
