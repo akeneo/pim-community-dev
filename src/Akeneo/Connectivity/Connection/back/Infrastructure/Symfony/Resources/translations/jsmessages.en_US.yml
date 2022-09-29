@@ -596,5 +596,9 @@ pim_permissions:
 pim_notification:
     types:
         connected_app_authorizations: Connected App authorizations
+        disabled_catalog: Disabled Catalog
     connected_app_authorizations:
         button_label: Open App
+    disabled_catalog:
+        button_label: Open Catalog Settings
+
