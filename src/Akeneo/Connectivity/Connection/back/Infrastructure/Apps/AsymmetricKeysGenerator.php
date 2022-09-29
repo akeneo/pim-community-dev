@@ -23,7 +23,7 @@ class AsymmetricKeysGenerator implements AsymmetricKeysGeneratorInterface
         /*
          * Following algorithm is the implementation documented by the phpseclib library
          * in order to generate self-signed public key and private key.
-         * ( see http://phpseclib.sourceforge.net/x509/guide.html#selfsigned )
+         * see http://phpseclib.sourceforge.net/x509/guide.html#selfsigned
          */
         RSA::setOpenSSLConfigPath($this->openSSLConfigPath);
         /** @var RSA\PrivateKey $privateKey */

@@ -3,27 +3,20 @@ declare(strict_types=1);
 
 namespace Pim\Upgrade\Schema;
 
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\AsymmetricKeysGenerator;
+use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AsymmetricKeys;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\SaveAsymmetricKeysQuery;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use phpseclib3\Crypt\RSA;
+use phpseclib3\File\X509;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Version_6_0_20211214000000_add_openid_keys_into_pim_configuration extends AbstractMigration implements ContainerAwareInterface
+class Version_6_0_20211214000000_add_openid_keys_into_pim_configuration extends AbstractMigration
 {
-    private ContainerInterface $container;
-
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }
-
     public function up(Schema $schema): void
     {
         $query = <<<SQL
@@ -32,8 +25,7 @@ class Version_6_0_20211214000000_add_openid_keys_into_pim_configuration extends 
             ON DUPLICATE KEY UPDATE `values`= :asymmetricKeys
             SQL;
 
-        $generator = $this->container->get(AsymmetricKeysGenerator::class);
-        $asymmetricKeys = $generator->generate();
+        $asymmetricKeys = $this->generate();
 
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
@@ -52,5 +44,33 @@ class Version_6_0_20211214000000_add_openid_keys_into_pim_configuration extends 
     public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
+    }
+
+    private function generate(): AsymmetricKeys
+    {
+        /*
+         * Following algorithm is the implementation documented by the phpseclib library
+         * in order to generate self-signed public key and private key.
+         * see http://phpseclib.sourceforge.net/x509/guide.html#selfsigned
+         */
+        RSA::setOpenSSLConfigPath($this->openSSLConfigPath);
+        /** @var RSA\PrivateKey $privateKey */
+        $privateKey = RSA::createKey();
+        $publicKey = $privateKey->getPublicKey();
+
+        $subject = new X509();
+        $subject->setEndDate('99991231235959Z');
+        $subject->setDNProp('id-at-organizationName', 'Akeneo');
+        $subject->setPublicKey($publicKey);
+
+        $issuer = new X509();
+        $issuer->setPrivateKey($privateKey);
+        $issuer->setDn($subject->getDN());
+
+        $x509 = new X509();
+        $x509->makeCA();
+        $result = $x509->sign($issuer, $subject);
+
+        return AsymmetricKeys::create($x509->saveX509($result), $privateKey->toString('PKCS1'));
     }
 }
