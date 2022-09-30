@@ -7,6 +7,7 @@
 
 require('dotenv').config();
 
+const crypto = require('crypto');
 const axios = require('axios');
 const functions = require('@google-cloud/functions-framework');
 const {GoogleAuth} = require('google-auth-library');
@@ -189,7 +190,7 @@ functions.http('requestPortal', (req, res) => {
   logger.info('Recovery of the tenants from the portal');
 
   const tenantsToCreate = async () => {
-    const tenants = await requestTenantsFromPortal(BRANCH_NAME, TENANT_STATUS.PENDING_CREATION, new URLSearchParams({
+    const tenants = await requestTenantsFromPortal(branchName, TENANT_STATUS.PENDING_CREATION, new URLSearchParams({
       subject_type: process.env.TENANT_EDITION_FLAGS,
       continent: process.env.TENANT_CONTINENT,
       environment: process.env.TENANT_ENVIRONMENT
@@ -234,7 +235,7 @@ functions.http('requestPortal', (req, res) => {
   }
 
   const tenantsToDelete = async () => {
-    const tenants = await requestTenantsFromPortal(BRANCH_NAME, TENANT_STATUS.PENDING_DELETION, new URLSearchParams({
+    const tenants = await requestTenantsFromPortal(branchName, TENANT_STATUS.PENDING_DELETION, new URLSearchParams({
       subject_type: process.env.TENANT_EDITION_FLAGS,
       continent: process.env.TENANT_CONTINENT,
       environment: process.env.TENANT_ENVIRONMENT
@@ -257,7 +258,7 @@ functions.http('requestPortal', (req, res) => {
 
   const dispatchActions = async () => {
     logger.info('Dispatch action to provisioning cloud functions');
-    await Promise.all([tenantsToCreate(), tenantsToDelete()]);
+    await Promise.all([tenantsToCreate()]);
   }
 
   dispatchActions(res)

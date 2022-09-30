@@ -6,6 +6,7 @@
     "@google-cloud/logging-winston": "^5.1.4",
     "@google-cloud/secret-manager": "^4.1.1",
     "axios": "^0.27.2",
+    "crypto": "^1.0.1",
     "dotenv": "^16.0.2",
     "google-auth-library": "^8.5.1",
     "query-string": "^7.1.1",
