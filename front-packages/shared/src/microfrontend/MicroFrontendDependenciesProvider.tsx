@@ -5,13 +5,11 @@ import {DependenciesContext} from '../DependenciesContext';
 import {useNotifications} from './useNotifications';
 import {Notifications} from '../components';
 import {createQueryParam} from './model/queryParam';
+import {initTranslator, translate, userContext as LegacyUserContext} from '../dependencies';
+import {UserContext} from '../DependenciesProvider.type';
 
 type SecurityContext = {
   [acl: string]: boolean;
-};
-
-type UserContext = {
-  [setting: string]: string;
 };
 
 type Translations = {
@@ -25,7 +23,7 @@ type Routes = {
 
 type CreateReactAppDependenciesProviderProps = {
   routes: Routes;
-  translations: Translations;
+  translations?: Translations;
   children: ReactNode;
 };
 
@@ -45,9 +43,32 @@ const MicroFrontendDependenciesProvider = ({
   children,
 }: CreateReactAppDependenciesProviderProps) => {
   const [securityContext, setSecurityContext] = useState<SecurityContext>({});
-  const [userContext, setUserContext] = useState({});
+  const [userContext, setUserContext] = useState<UserContext>({get: key => key, set: () => {}});
   const [notifications, notify, handleNotificationClose] = useNotifications();
   const isMounted = useIsMounted();
+  const [translator, setTranslator] = useState(() => {
+    if (translations !== undefined) {
+      console.warn('The "translations" option MicroFrontendDependenciesProvider is deprecated.');
+
+      return (id: string, placeholders = {}) => {
+        const message = translations?.messages[`jsmessages:${id}`] ?? id;
+
+        return Object.keys(placeholders).reduce(
+          (message, placeholderKey) =>
+            message
+              // replaceAll is only available in esnext.
+              // We don't want to activate it in the tsconfig file as shared package should be as compatible as possible
+              // @ts-ignore
+              .replaceAll(`{{ ${placeholderKey} }}`, String(placeholders[placeholderKey]))
+              // @ts-ignore
+              .replaceAll(placeholderKey, String(placeholders[placeholderKey])),
+          message
+        );
+      };
+    }
+
+    return () => '';
+  });
 
   const generateUrl = useCallback(
     (route: string, parameters?: RouteParams) => {
@@ -82,7 +103,6 @@ const MicroFrontendDependenciesProvider = ({
     [routes]
   );
 
-  const currentUserUrl = generateUrl('pim_user_user_rest_get_current');
   const securityContextUrl = generateUrl('pim_user_security_rest_get');
 
   const view: View = {
@@ -93,19 +113,6 @@ const MicroFrontendDependenciesProvider = ({
   };
 
   useEffect(() => {
-    const fetchUserContext = async () => {
-      const json = await fetcher<UserContext>(currentUserUrl);
-
-      if (isMounted()) {
-        setUserContext({
-          ...json,
-          uiLocale: json.user_default_locale,
-          catalogLocale: json.catalog_default_locale,
-          catalogScope: json.catalog_default_scope,
-        });
-      }
-    };
-
     const fetchSecurityContext = async () => {
       const json = await fetcher<SecurityContext>(securityContextUrl);
 
@@ -114,38 +121,31 @@ const MicroFrontendDependenciesProvider = ({
       }
     };
 
-    fetchUserContext();
     fetchSecurityContext();
-  }, [currentUserUrl, securityContextUrl, isMounted]);
+
+    // @ts-ignore
+    LegacyUserContext.initialize().then(() => {
+      setUserContext(LegacyUserContext);
+
+      if (translations !== undefined) {
+        return;
+      }
+
+      initTranslator.fetch().then(() => setTranslator(() => translate));
+    });
+  }, [securityContextUrl, isMounted]);
 
   const dependencies = useMemo(
     () => ({
       notify,
-      user: {
-        get: (data: string) => userContext[data],
-        set: (key: string, value: string) => setUserContext(userContext => ({...userContext, [key]: value})),
-      },
+      user: userContext,
       security: {isGranted: (acl: string) => securityContext[acl] === true},
       router: {
         generate: generateUrl,
         redirect: (_fragment: string, _options?: object) => console.info('Not implemented'),
         redirectToRoute: (_route: string, _parameters?: object) => console.info('Not implemented'),
       },
-      translate: (id: string, placeholders = {}) => {
-        const message = translations.messages[`jsmessages:${id}`] ?? id;
-
-        return Object.keys(placeholders).reduce(
-          (message, placeholderKey) =>
-            message
-              // replaceAll is only available in esnext.
-              // We don't want to activate it in the tsconfig file as shared package should be as compatible as possible
-              // @ts-ignore
-              .replaceAll(`{{ ${placeholderKey} }}`, String(placeholders[placeholderKey]))
-              // @ts-ignore
-              .replaceAll(placeholderKey, String(placeholders[placeholderKey])),
-          message
-        );
-      },
+      translate: translator,
       viewBuilder: {
         build: async (_viewName: string) => view,
       },
@@ -161,7 +161,7 @@ const MicroFrontendDependenciesProvider = ({
         track: (event: string, properties?: object) => console.log('Track event', event, properties),
       },
     }),
-    [notify, userContext, securityContext, translations, generateUrl]
+    [notify, userContext, securityContext, translations, generateUrl, translator]
   );
 
   return (
