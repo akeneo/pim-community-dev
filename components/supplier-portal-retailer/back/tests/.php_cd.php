@@ -165,6 +165,7 @@ $rules = [
             'Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CommentProductFileHandler',
             'Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\InvalidComment',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\InMemory\InMemoryRepository',
+            'Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder',
 
             // Supplier Portal Supplier coupling
 
