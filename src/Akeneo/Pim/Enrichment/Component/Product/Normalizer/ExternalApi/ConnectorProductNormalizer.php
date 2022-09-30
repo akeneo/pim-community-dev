@@ -66,8 +66,7 @@ final class ConnectorProductNormalizer
             $normalizedProduct['quality_scores'] = $this->normalizeQualityScores($qualityScores);
         }
         if ($completenesses !== null) {
-            $normalizedCompletenesses = $this->normalizeCompletenesses($completenesses);
-            $normalizedProduct['completenesses'] = empty($normalizedCompletenesses) ? (object) [] : $normalizedCompletenesses;
+            $normalizedProduct['completenesses'] = $this->normalizeCompletenesses($completenesses);
         }
 
         if (!empty($connectorProduct->metadata())) {
