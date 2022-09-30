@@ -1,3 +1,4 @@
 akeneo.job_automation:
   notification:
     invalid_job_instance: 'Le profil {{ type }} "{{ label }}" n''a pas pu démarrer en raison des erreurs suivantes : {{ error }}'
+    internal_error: Échec du système interne. Votre tâche ne peut pas être lancée en raison d'un problème d'infrastructure. Veuillez réessayer plus tard.
