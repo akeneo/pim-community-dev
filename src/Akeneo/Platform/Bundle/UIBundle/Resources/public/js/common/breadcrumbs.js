@@ -60,13 +60,21 @@ define([
           if (undefined !== metaItem) {
             breadcrumbItem = {code: this.config.item, label: __(metaItem.config.title), active: true};
           }
-          if (
-            undefined !== this.config.itemPath &&
-            null !== propertyAccessor.accessProperty(this.getFormData(), this.config.itemPath)
-          ) {
-            const item = propertyAccessor.accessProperty(this.getFormData(), this.config.itemPath);
+          if (this.config.itemPath) {
+            let itemPaths = this.config.itemPath;
+            if (!Array.isArray(itemPaths)) {
+              itemPaths = [itemPaths];
+            }
+            itemPaths.forEach((itemPath) => {
+              if (
+                breadcrumbItem === null &&
+                null !== propertyAccessor.accessProperty(this.getFormData(), itemPath)
+              ) {
+                const item = propertyAccessor.accessProperty(this.getFormData(), itemPath);
 
-            breadcrumbItem = {code: item, label: item, active: false};
+                breadcrumbItem = {code: item, label: item, active: false};
+              }
+            });
           }
 
           const tab = React.createElement(Breadcrumb.Step, {className: 'breadcrumb-tab'}, breadcrumbTab.label);
