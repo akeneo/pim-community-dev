@@ -101,6 +101,7 @@ mailer:
   api_key: ${MAILGUN_API_KEY}
 
 pim:
+  secret: ${PIM_SECRET}
   web:
     namespace: ${PIM_NS}
   api:

@@ -66,6 +66,7 @@ MYSQL_DSIK_NAME ?= projects/$(GOOGLE_PROJECT_ID)/zones/$(GOOGLE_CLUSTER_ZONE)/di
 MYSQL_USER_PASSWORD := $(shell bash -c 'echo $$(pwgen -sB 22)')
 MYSQL_ROOT_PASSWORD := $(shell bash -c 'echo $$(pwgen -sB 22)')
 MONITORING_AUTHENTICATION_TOKEN := $(shell bash -c 'echo $$(pwgen -sB 32)')
+PIM_SECRET := $(shell bash -c 'echo $$(pwgen -sB 32)')
 
 
 MAILGUN_DOMAIN ?= mg.cloud.akeneo.com
@@ -172,6 +173,7 @@ generate_deployment_files: $(INSTANCE_DIR)
 	INSTANCE_NAME=$(INSTANCE_NAME) \
 	PFID=$(PFID) \
 	FQDN=$(FQDN) \
+	PIM_SECRET=${PIM_SECRET} \
 	PIM_NS=${PIM_NS} \
 	GOOGLE_MANAGED_ZONE_DNS=$(GOOGLE_MANAGED_ZONE_DNS) \
 	PRODUCT_REFERENCE_CODE=$(PRODUCT_REFERENCE_CODE) \
@@ -233,7 +235,7 @@ deploy_tenant_helm:
 
 .PHONY: deploy_tenant_go
 deploy_tenant_go:
-	cd $(DEPLOYMENT_DIR)/timmy && go run timmy-create.go $(PFID) $(INSTANCE_NAME) $(MYSQL_USER_PASSWORD) $(MAILGUN_PASSWORD)
+	cd $(DEPLOYMENT_DIR)/timmy && go run timmy-create.go $(PFID) $(INSTANCE_NAME) $(MYSQL_USER_PASSWORD) $(MAILGUN_PASSWORD) $(PIM_SECRET)
 
 ## Cleanup tenants
 .PHONY: delete_tenant

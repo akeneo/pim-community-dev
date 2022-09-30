@@ -165,7 +165,6 @@ pim:
           memory: "100Mi"
           cpu: "1m"
   extraLabels: {}
-  secret: null # Generate me with `uuidgen`
   web:
     replicas: 1
     fpm:
