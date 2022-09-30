@@ -93,7 +93,6 @@ JSON;
     {
         $productWithoutCategoryUuid = $this->getProductUuidFromIdentifier('product_without_category')->toString();
         $productViewableByEverybodyUuid = $this->getProductUuidFromIdentifier('product_viewable_by_everybody_1')->toString();
-        $productNotViewableByRedactorUuid = $this->getProductUuidFromIdentifier('product_not_viewable_by_redactor')->toString();
 
         $data = <<<JSON
 {
@@ -126,7 +125,7 @@ JSON;
         $expectedQuantifiedAssociations = [
             'PRODUCTSET' => [
                 'products' => [
-                    ['uuid' => $productNotViewableByRedactorUuid, 'quantity' => 1],
+                    ['identifier' => 'product_not_viewable_by_redactor', 'quantity' => 1],
                     ['uuid' => $productViewableByEverybodyUuid, 'quantity' => 2],
                     ['uuid' => $productWithoutCategoryUuid, 'quantity' => 3],
                 ],
