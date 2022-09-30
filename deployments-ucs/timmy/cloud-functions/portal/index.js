@@ -18,30 +18,50 @@ const loggingWinston = new LoggingWinston();
 
 let logger = null;
 
+const NODE_ENV_DEVELOPMENT = 'development';
+
 const TENANT_STATUS = {
   PENDING_CREATION: 'pending_creation',
   PENDING_DELETION: 'pending_deletion'
 }
 
 /**
- * Initialize the logger
- * @param gcpProjectId the GCP project ID
- * @param logLevel level of severity for logs
- * @param branchName
+ * Ensure the presence of the required environment variables
+ * @param names list of required environment variables
  */
-function initializeLogger(gcpProjectId, logLevel, branchName=null) {
+function requiredEnvironmentVariables(names) {
+  let envArr = {};
+  const missingVariables = [];
+
+  names.forEach(name => {
+    !process.env[name] && missingVariables.push(name);
+    envArr[name] = process.env[name];
+  });
+
+  if (missingVariables.length) {
+    throw new Error('Environment variables needed: ' + JSON.stringify(missingVariables));
+  }
+}
+
+/**
+ * Initialize the logger
+ */
+function initializeLogger(branchName) {
   logger = createLogger({
-    level: logLevel,
+    level: process.env.LOG_LEVEL,
     defaultMeta: {
+      // GCP does not provide id for cloud function instance, we generate it.
+      id: crypto.randomUUID(),
       function: process.env.K_SERVICE || 'timmy-request-portal',
       revision: process.env.K_REVISION,
-      gcpProjectId: gcpProjectId,
+      gcpProjectId: process.env.GCP_PROJECT_ID,
       branchName: branchName
     },
     format: format.combine(
       format.timestamp({format: 'YYYY-MM-DD HH:mm:ss'}),
       format.printf(info => {
         return `${info.timestamp} ${info.level}: ${JSON.stringify({
+          id: info.id,
           function: info.function,
           revision: info.revision,
           gcpProjectId: info.gcpProjectId,
@@ -61,76 +81,60 @@ function initializeLogger(gcpProjectId, logLevel, branchName=null) {
   });
 }
 
-/**
- * Ensure environment variable is not missing or undefined
- * @param name The name of the environment variable
- * @returns {string} The value of the environment variable
- */
-function loadEnvironmentVariable(name) {
-  if (!process.env[name]) {
-    throw new Error(`Undefined environment variable ${name}`);
-  }
-  return process.env[name];
-}
-
-/**
- * Authenticate and get a token from the portal
- * @param url the authentication portal url
- * @param credentials the credentials needed for authentication
- * @returns {Promise<*>}
- */
-async function requestTokenFromPortal(url, credentials) {
-  logger.info(`Authenticating to the portal ${url} to get a token`);
-  const payload = new URLSearchParams(JSON.parse(credentials));
-  const headers = {
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Content-Length': payload.toString().length,
-    }
-  }
-  logger.debug(`Payload: ${payload}`);
-  logger.debug(`Headers: ${JSON.stringify(headers['headers'])}`);
-
+async function refreshAccessToken(branchName) {
   try {
-    let resp = await axios.post(url, payload, headers);
-    const token = await resp['data']['access_token'];
-    logger.debug(`Portal token: ${token}`);
+    const payload = new URLSearchParams(JSON.parse(process.env.TIMMY_PORTAL));
+    const instance = axios.create({
+      baseURL: process.env.HTTP_SCHEMA + '://' + process.env.PORTAL_LOGIN_HOSTNAME + path.join('/', branchName + '/'),
+      timeout: 10000,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Length': payload.toString().length,
+      }
+    });
+    const response = await instance.post('auth/realms/connect/protocol/openid-connect/token', payload);
+    const token = response.data.access_token;
     if (!token) {
-      return Promise.reject('Received portal token is undefined');
+      return Promise.reject('Received access token from the portal is undefined!');
     }
-    logger.debug('Successfully authenticated to the portal and got a token');
     return Promise.resolve(token);
-
   } catch (error) {
-    const msg = `Failed to retrieve token from the portal with status code: ${error}`;
+    const msg = 'Failed to retrieve portal access token: ' + error;
     logger.error(msg);
     return Promise.reject(msg);
   }
 }
 
-/**
- * Get tenants from the portal
- * @param baseUrl
- * @param token a token to authenticate to the portal
- * @param status
- * @param filters
- * @returns {Promise<any>}
- */
-async function requestTenantsFromPortal(baseUrl, token, status, filters) {
-  try {
-    const headers = {headers: {'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json'}};
-    logger.info(`Retrieve tenants from the portal with ${status} status and ${filters} filters`);
-    const url = `${baseUrl}/api/v2/console/requests/${status}?${filters}`;
-    logger.debug(`GET - ${url}`);
-    const resp = await axios.get(url, headers);
-    const tenants = resp.data;
-    logger.debug(`Tenants with ${status} status and ${filters} filter: + ${JSON.stringify(tenants)}`);
-    return Promise.resolve(tenants);
-  } catch (error) {
-    const msg = `Failed to request tenants with ${status} status from the portal: ${error}`;
-    logger.error(msg);
-    return Promise.reject(msg);
-  }
+async function requestTenantsFromPortal(branchName, status, filters) {
+  const token = await refreshAccessToken(branchName);
+  const instance = axios.create({
+    baseURL: process.env.HTTP_SCHEMA + '://' + process.env.PORTAL_HOSTNAME + path.join('/', branchName + '/') + '/api/v2/',
+    timeout: 10000,
+    headers: {
+      'Authorization': 'Bearer ' + token,
+      'Content-Type': 'application/json'
+    }
+  });
+
+  instance.interceptors.response.use((response) => {
+    return response;
+  }, async (error) => {
+    const originalRequest = error.config;
+
+    if (error.response.status === 403 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      const accessToken = await refreshAccessToken(branchName);
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
+      return instance(originalRequest);
+    }
+
+    return Promise.reject(error);
+  });
+
+  const response = await instance.get(`console/requests/${status}?${filters}`);
+
+  //logger.debug('response: ' + response);
+  return Promise.resolve(response.data);
 }
 
 /**
@@ -142,15 +146,13 @@ async function requestTenantsFromPortal(baseUrl, token, status, filters) {
  */
 
 async function requestCloudFunction(url, method, data = null) {
-  let client = null;
   logger.debug(`Cloud function url: ${url}`);
   logger.debug(`Method: ${url}`);
   logger.debug(`Payload: ${JSON.stringify(data)}`);
   try {
-    if (process.env.NODE_ENV !== 'development') {
+    if (process.env.NODE_ENV !== NODE_ENV_DEVELOPMENT) {
       logger.debug('Request ' + url + ' with target audience ' + url + ' for authentication');
       const client = await auth.getIdTokenClient(url);
-      logger.debug(`Client: ${client}`);
       return client.request({url: url, method: method, data: data});
     } else {
       logger.debug('Use Google default application credentials for authentication');
@@ -164,41 +166,35 @@ async function requestCloudFunction(url, method, data = null) {
 }
 
 functions.http('requestPortal', (req, res) => {
-  const FUNCTION_URL_TIMMY_CREATE_TENANT = loadEnvironmentVariable('FUNCTION_URL_TIMMY_CREATE_TENANT');
-  const FUNCTION_URL_TIMMY_DELETE_TENANT = loadEnvironmentVariable('FUNCTION_URL_TIMMY_DELETE_TENANT');
-  const GCP_PROJECT_ID = loadEnvironmentVariable('GCP_PROJECT_ID');
-  const HTTP_SCHEMA = loadEnvironmentVariable('HTTP_SCHEMA');
-  const LOG_LEVEL = loadEnvironmentVariable('LOG_LEVEL');
-  const NODE_ENV = loadEnvironmentVariable('NODE_ENV');
-  const PORTAL_HOSTNAME = loadEnvironmentVariable('PORTAL_HOSTNAME');
-  const PORTAL_LOGIN_HOSTNAME = loadEnvironmentVariable('PORTAL_LOGIN_HOSTNAME');
-  const TENANT_CONTINENT = loadEnvironmentVariable('TENANT_CONTINENT');
-  const TENANT_EDITION_FLAGS = loadEnvironmentVariable('TENANT_EDITION_FLAGS');
-  const TENANT_ENVIRONMENT = loadEnvironmentVariable('TENANT_ENVIRONMENT');
-  const TIMMY_PORTAL = loadEnvironmentVariable('TIMMY_PORTAL');
+  requiredEnvironmentVariables([
+    'FUNCTION_URL_TIMMY_CREATE_TENANT',
+    'FUNCTION_URL_TIMMY_DELETE_TENANT',
+    'GCP_PROJECT_ID',
+    'HTTP_SCHEMA',
+    'LOG_LEVEL',
+    'NODE_ENV',
+    'PORTAL_HOSTNAME',
+    'PORTAL_LOGIN_HOSTNAME',
+    'TENANT_CONTINENT',
+    'TENANT_EDITION_FLAGS',
+    'TENANT_ENVIRONMENT',
+    'TIMMY_PORTAL'
+  ]);
 
   // Prefix url with branch name if present
   const branchName = req.body.branchName || '';
   const pimNamespace = branchName.length ? `pim-${branchName.lowercase}` : 'pim';
 
-  initializeLogger(GCP_PROJECT_ID, LOG_LEVEL, branchName);
+  initializeLogger(branchName);
   logger.info('Recovery of the tenants from the portal');
 
-  const getTenants = async (status) => {
-    let url = new URL(HTTP_SCHEMA + '://' + PORTAL_LOGIN_HOSTNAME + path.join('/', branchName + '/') + 'auth/realms/connect/protocol/openid-connect/token').href.toString();
-    const token = await requestTokenFromPortal(url, TIMMY_PORTAL);
-
-    url = new URL(HTTP_SCHEMA + '://' + PORTAL_HOSTNAME + path.join('/', branchName));
-    return Promise.resolve(await requestTenantsFromPortal(url, token, status, new URLSearchParams({
-      subject_type: TENANT_EDITION_FLAGS,
-      continent: TENANT_CONTINENT,
-      environment: TENANT_ENVIRONMENT
-    })));
-  }
-
-
   const tenantsToCreate = async () => {
-    const tenants = await getTenants(TENANT_STATUS.PENDING_CREATION);
+    const tenants = await requestTenantsFromPortal(BRANCH_NAME, TENANT_STATUS.PENDING_CREATION, new URLSearchParams({
+      subject_type: process.env.TENANT_EDITION_FLAGS,
+      continent: process.env.TENANT_CONTINENT,
+      environment: process.env.TENANT_ENVIRONMENT
+    }));
+
     await Promise.allSettled(tenants.map(async tenant => {
       const subject = tenant['subject'];
       const cloudInstance = subject['cloud_instance'];
@@ -227,28 +223,34 @@ functions.http('requestPortal', (req, res) => {
       };
       logger.debug("Prepared payload to send for tenant creation: " + JSON.stringify(payload));
 
-      logger.info(`Call the cloudfunction ${FUNCTION_URL_TIMMY_CREATE_TENANT} to create the tenant`);
+      logger.info(`Call the cloudfunction ${process.env.FUNCTION_URL_TIMMY_CREATE_TENANT} to create the tenant`);
       try {
-        const res = await requestCloudFunction(FUNCTION_URL_TIMMY_CREATE_TENANT, "POST", JSON.stringify(payload));
+        const response = await requestCloudFunction(process.env.FUNCTION_URL_TIMMY_CREATE_TENANT, "POST", JSON.stringify(payload));
+        logger.info(`Tenant ${instanceName} is created: ${response.data}`);
       } catch (error) {
-        logger.error(`Failed to call the cloudfunction ${FUNCTION_URL_TIMMY_CREATE_TENANT} to create the tenant: ${JSON.stringify(error.response.data)}`);
+        logger.error(`Failed to call the cloudfunction ${process.env.FUNCTION_URL_TIMMY_CREATE_TENANT} to create the tenant: ${JSON.stringify(error.response.data)}`);
       }
     }));
   }
 
   const tenantsToDelete = async () => {
-    const tenants = await getTenants(TENANT_STATUS.PENDING_DELETION);
+    const tenants = await requestTenantsFromPortal(BRANCH_NAME, TENANT_STATUS.PENDING_DELETION, new URLSearchParams({
+      subject_type: process.env.TENANT_EDITION_FLAGS,
+      continent: process.env.TENANT_CONTINENT,
+      environment: process.env.TENANT_ENVIRONMENT
+    }));
 
     await Promise.allSettled(tenants.map(async tenant => {
       const subject = tenant['subject'];
       const instanceName = subject['instance_fqdn']['prefix'];
 
-      logger.info(`Call the cloudfunction ${FUNCTION_URL_TIMMY_DELETE_TENANT} to delete the tenant`);
-      const url = new URL(`/${instanceName}`, FUNCTION_URL_TIMMY_DELETE_TENANT)
+      logger.info(`Call the cloudfunction ${process.env.FUNCTION_URL_TIMMY_DELETE_TENANT} to delete the tenant`);
+      const url = new URL(`/${instanceName}`, process.env.FUNCTION_URL_TIMMY_DELETE_TENANT)
       try {
-        const resp = await requestCloudFunction(url.toString(), "POST");
+        const response = await requestCloudFunction(url.href.toString(), "POST");
+        logger.info(`Tenant ${instanceName} is deleted: ${response.data}`);
       } catch (error) {
-        logger.error(`Failed to call the cloudfunction ${url} to delete the tenant: ${JSON.stringify(error)}`);
+        logger.error(`Failed to call the cloudfunction ${url} to delete the tenant: ${JSON.stringify(error.response.data)}`);
       }
     }));
   }
@@ -273,5 +275,4 @@ functions.http('requestPortal', (req, res) => {
         message: `Failed to dispatch tenant actions: ${error}`
       });
     });
-})
-;
+});
