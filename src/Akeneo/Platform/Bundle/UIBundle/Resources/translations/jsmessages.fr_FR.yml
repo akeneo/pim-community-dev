@@ -198,6 +198,7 @@ pim_common:
   loading: Chargement en cours...
   media_upload: Glissez et déposez un fichier pour le télécharger ou cliquez ici
   media_uploading: Envoi en cours…
+  media_upload_error: Une erreur est survenue lors du chargement
   more_actions: Autres actions
   more_than: Plus de
   next: Suivant
