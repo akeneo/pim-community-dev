@@ -6,6 +6,7 @@ namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repo
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Comment;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
@@ -98,6 +99,27 @@ final class DatabaseRepository implements ProductFileRepository
     public function find(Identifier $identifier): ?ProductFile
     {
         $sql = <<<SQL
+            WITH retailer_comments AS (
+                SELECT product_file_identifier, JSON_ARRAYAGG(
+                     CASE WHEN content IS NOT NULL THEN JSON_OBJECT(
+                         'content', content,
+                         'author_email', author_email,
+                         'created_at', created_at
+                     ) END
+                 ) AS retailer_comments
+                FROM akeneo_supplier_portal_product_file_retailer_comments
+                WHERE product_file_identifier = :identifier
+            ), supplier_comments AS (
+                SELECT product_file_identifier, JSON_ARRAYAGG(
+                   CASE WHEN content IS NOT NULL THEN JSON_OBJECT(
+                           'content', content,
+                           'author_email', author_email,
+                           'created_at', created_at
+                       ) END
+               ) AS supplier_comments
+                FROM akeneo_supplier_portal_product_file_supplier_comments
+                WHERE product_file_identifier = :identifier
+            )
             SELECT
                 identifier,
                 original_filename,
@@ -105,8 +127,14 @@ final class DatabaseRepository implements ProductFileRepository
                 uploaded_by_contributor,
                 uploaded_by_supplier,
                 uploaded_at,
-                downloaded
+                downloaded,
+                rc.retailer_comments,
+                sc.supplier_comments
             FROM `akeneo_supplier_portal_supplier_product_file`
+            LEFT JOIN retailer_comments rc
+                ON identifier = rc.product_file_identifier
+            LEFT JOIN supplier_comments sc
+                ON identifier = sc.product_file_identifier
             WHERE identifier = :identifier
         SQL;
 
@@ -116,6 +144,19 @@ final class DatabaseRepository implements ProductFileRepository
             return null;
         }
 
+        $retailerComments = $productFile['retailer_comments']
+            ? \array_filter(\json_decode(
+                $productFile['retailer_comments'],
+                true,
+            ))
+            : [];
+        $supplierComments = $productFile['supplier_comments']
+            ? \array_filter(\json_decode(
+                $productFile['supplier_comments'],
+                true,
+            ))
+            : [];
+
         return ProductFile::hydrate(
             $productFile['identifier'],
             $productFile['original_filename'],
@@ -124,6 +165,14 @@ final class DatabaseRepository implements ProductFileRepository
             $productFile['uploaded_by_supplier'],
             $productFile['uploaded_at'],
             (bool) $productFile['downloaded'],
+            array_map(
+                fn (array $comment) => Comment::hydrate($comment['content'], $comment['author_email'], new \DateTimeImmutable($comment['created_at'])),
+                $retailerComments,
+            ),
+            array_map(
+                fn (array $comment) => Comment::hydrate($comment['content'], $comment['author_email'], new \DateTimeImmutable($comment['created_at'])),
+                $supplierComments,
+            ),
         );
     }
 }

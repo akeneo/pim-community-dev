@@ -7,7 +7,3 @@ supplier_portal:
                 max_uploaded_filename_length: The filename should not exceed 255 characters.
                 max_uploaded_file_size: The file size should not exceed 50 MB.
                 must_be_an_xlsx_file: Please upload a valid xlsx file.
-                comment:
-                    max_length_content: The comment should not exceed 255 characters.
-                    empty_content: The comment should not be empty.
-                    count_max_reached: The product file cannot have more than 50 comments.

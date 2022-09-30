@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Button, Field, Helper, TextAreaInput} from 'akeneo-design-system';
-import {getErrorsForPath, useTranslate, useUserContext, ValidationError} from '@akeneo-pim-community/shared';
+import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {CommentList} from './CommentList';
 import {ProductFile} from '../models/ProductFile';
@@ -35,10 +35,10 @@ const Form = styled.form`
 type Props = {
     productFile: ProductFile;
     saveComment: (content: string, authorEmail: string) => {};
-    validationErrors: ValidationError[];
+    validationError: string | null;
 };
 
-const Discussion = ({productFile, saveComment, validationErrors}: Props) => {
+const Discussion = ({productFile, saveComment, validationError}: Props) => {
     const translate = useTranslate();
     const [comment, setComment] = useState<string>('');
     const [commentLength, setCommentLength] = useState<number>(0);
@@ -74,11 +74,7 @@ const Discussion = ({productFile, saveComment, validationErrors}: Props) => {
                         )}
                     >
                         <StyledTextAreaInput readOnly={false} value={comment} onChange={handleChange} />
-                        {getErrorsForPath(validationErrors, 'content').map((error, index) => (
-                            <Helper key={index} level="error">
-                                {translate(error.message)}
-                            </Helper>
-                        ))}
+                        {null !== validationError && <Helper level="error">{translate(validationError)}</Helper>}
                         {isCommentMaxLengthReached && (
                             <Helper level="error">
                                 {translate(

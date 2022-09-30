@@ -19,7 +19,7 @@ const ShowProductFile = () => {
     const history = useHistory();
     const [isCurrent, switchTo] = useTabBar('discussion');
     const {productFileIdentifier} = useParams<{productFileIdentifier: string}>();
-    const [productFile, saveComment, validationErrors] = useProductFile(productFileIdentifier);
+    const [productFile, saveComment, validationError] = useProductFile(productFileIdentifier);
 
     if (null === productFile) {
         return null;
@@ -70,11 +70,7 @@ const ShowProductFile = () => {
                     </TabBar.Tab>
                 </TabBar>
                 {isCurrent('discussion') && (
-                    <Discussion
-                        productFile={productFile}
-                        saveComment={saveComment}
-                        validationErrors={validationErrors}
-                    />
+                    <Discussion productFile={productFile} saveComment={saveComment} validationError={validationError} />
                 )}
             </PageContent>
         </>

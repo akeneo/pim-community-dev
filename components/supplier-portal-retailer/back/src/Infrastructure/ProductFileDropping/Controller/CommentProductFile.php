@@ -6,8 +6,10 @@ namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Cont
 
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CommentProductFile as CommentProductFileCommand;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CommentProductFileHandler;
-use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\InvalidComment;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\ProductFileDoesNotExist;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\CommentTooLong;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\EmptyComment;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\MaxCommentPerProductFileReached;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,17 +35,8 @@ final class CommentProductFile
             );
         } catch (ProductFileDoesNotExist) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
-        } catch (InvalidComment $e) {
-            $errors = [];
-            foreach ($e->violations() as $violation) {
-                $errors[] = [
-                    'propertyPath' => $violation->getPropertyPath(),
-                    'message' => $violation->getMessage(),
-                    'invalidValue' => $violation->getInvalidValue(),
-                ];
-            }
-
-            return new JsonResponse($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
+        } catch (EmptyComment | CommentTooLong | MaxCommentPerProductFileReached $e) {
+            return new JsonResponse($e->getMessage(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         return new JsonResponse(null, Response::HTTP_CREATED);

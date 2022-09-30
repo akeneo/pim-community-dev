@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Domain\ProductFileDropping\Write\ValueObject\Comment;
 
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\CommentTooLong;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\EmptyComment;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Comment\Content;
 use PHPUnit\Framework\TestCase;
 
@@ -12,30 +14,21 @@ final class ContentTest extends TestCase
     /** @test */
     public function itDoesNotCreateACommentContentIfItExceedsTwoHundredFiftyFiveCharacters(): void
     {
-        static::expectExceptionObject(
-            new \InvalidArgumentException('The comment content must not exceed 255 characters.'),
-        );
-
+        static::expectException(CommentTooLong::class);
         Content::fromString(str_repeat('q', 256));
     }
 
     /** @test */
     public function itDoesNotCreateACommentContentIfItIsEmpty(): void
     {
-        static::expectExceptionObject(
-            new \InvalidArgumentException('The comment content must not be empty.'),
-        );
-
+        static::expectException(EmptyComment::class);
         Content::fromString('');
     }
 
     /** @test */
     public function itDoesNotCreateACommentContentIfItContainsSpacesOnly(): void
     {
-        static::expectExceptionObject(
-            new \InvalidArgumentException('The comment content must not be empty.'),
-        );
-
+        static::expectException(EmptyComment::class);
         Content::fromString('   ');
     }
 

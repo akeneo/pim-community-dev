@@ -103,6 +103,7 @@ supplier_portal:
                 submit_button_label: Send
                 loading_error: An error occurred while loading the product file.
                 comment_submit_error: An error occurred while submitting the comment.
+                empty_content: The comment should not be empty.
                 max_comment_length_reached: The comment should not exceed 255 characters.
                 max_number_of_comments_reached: You've reached the comment limit.
         pim_notification:

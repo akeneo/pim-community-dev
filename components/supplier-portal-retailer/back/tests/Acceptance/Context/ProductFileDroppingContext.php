@@ -6,8 +6,10 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Acceptance\Context;
 
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CommentProductFile;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CommentProductFileHandler;
-use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\InvalidComment;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithComments;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\CommentTooLong;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\EmptyComment;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\MaxCommentPerProductFileReached;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\InMemory\InMemoryRepository as InMemoryProductFileRepository;
@@ -21,6 +23,7 @@ final class ProductFileDroppingContext implements Context
 {
     private string $productFileIdentifier;
     private array $errors = [];
+    private ?\Exception $exception = null;
 
     public function __construct(
         private InMemorySupplierRepository $supplierRepository,
@@ -100,8 +103,8 @@ final class ProductFileDroppingContext implements Context
                 $content,
                 new \DateTimeImmutable(),
             ));
-        } catch (InvalidComment $e) {
-            $this->normalizeValidationErrors($e);
+        } catch (\Exception $e) {
+            $this->exception = $e;
         }
     }
 
@@ -117,9 +120,33 @@ final class ProductFileDroppingContext implements Context
                 str_repeat('q', 256),
                 new \DateTimeImmutable(),
             ));
-        } catch (InvalidComment $e) {
-            $this->normalizeValidationErrors($e);
+        } catch (\Exception $e) {
+            $this->exception = $e;
         }
+    }
+
+    /**
+     * @Then I should have an error message telling that the comment should not be empty
+     */
+    public function iShouldHaveAnErrorForEmptyComment(): void
+    {
+        Assert::assertInstanceOf(EmptyComment::class, $this->exception);
+    }
+
+    /**
+     * @Then I should have an error message telling that the comment should not exceed 255 characters
+     */
+    public function iShouldHaveAnErrorForTooLongComment(): void
+    {
+        Assert::assertInstanceOf(CommentTooLong::class, $this->exception);
+    }
+
+    /**
+     * @Then I should have an error message telling that the product file cannot have more than 50 comments
+     */
+    public function iShouldHaveAnErrorForTooManyCommentsOnProductFile(): void
+    {
+        Assert::assertInstanceOf(MaxCommentPerProductFileReached::class, $this->exception);
     }
 
     /**
@@ -128,18 +155,6 @@ final class ProductFileDroppingContext implements Context
     public function iShouldHaveTheFollowingCommentValidationErrors(TableNode $table): void
     {
         Assert::assertEquals($table->getHash(), $this->errors);
-    }
-
-    private function normalizeValidationErrors(InvalidComment $e): void
-    {
-        $errors = [];
-        foreach ($e->violations() as $violation) {
-            $errors[] = [
-                'path' => $violation->getPropertyPath(),
-                'message' => $violation->getMessage(),
-            ];
-        }
-        $this->errors = $errors;
     }
 
     /**

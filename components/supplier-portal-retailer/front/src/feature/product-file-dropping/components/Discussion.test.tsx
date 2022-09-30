@@ -21,7 +21,7 @@ test('it does not enable the send button if the comment textarea is not fulfille
             saveComment={(content: string, authorEmail: string) => {
                 return {};
             }}
-            validationErrors={[]}
+            validationError={null}
         />
     );
 
@@ -37,7 +37,7 @@ test('it does not enable the send button if the comment textarea exceeds 255 cha
             saveComment={(content: string, authorEmail: string) => {
                 return {};
             }}
-            validationErrors={[]}
+            validationError={null}
         />
     );
 
@@ -70,7 +70,7 @@ test('it does not enable the send button if the number max of comments is reache
             saveComment={(content: string, authorEmail: string) => {
                 return {};
             }}
-            validationErrors={[]}
+            validationError={null}
         />
     );
 
@@ -91,7 +91,7 @@ test('it enables the send button enabled if the comment textarea is fulfilled', 
             saveComment={(content: string, authorEmail: string) => {
                 return {};
             }}
-            validationErrors={[]}
+            validationError={null}
         />
     );
 
@@ -114,7 +114,7 @@ test('it can save a comment', async () => {
 
     const saveComment = jest.fn();
 
-    renderWithProviders(<Discussion productFile={productFile} saveComment={saveComment} validationErrors={[]} />);
+    renderWithProviders(<Discussion productFile={productFile} saveComment={saveComment} validationError={null} />);
 
     userEvent.type(
         screen.getByLabelText('supplier_portal.product_file_dropping.supplier_files.discussion.comment_input_label'),
@@ -128,4 +128,11 @@ test('it can save a comment', async () => {
     });
 
     expect(saveComment).toHaveBeenCalledTimes(1);
+});
+
+test('it displays an error message', async () => {
+    renderWithProviders(
+        <Discussion productFile={productFile} saveComment={jest.fn()} validationError={'error message'} />
+    );
+    expect(screen.getByText('error message')).toBeInTheDocument();
 });
