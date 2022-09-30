@@ -86,7 +86,7 @@ class UpsertQuantifiedAssociationsIntegration extends EnrichmentProductTestCase
     public function it_cannot_associate_an_unknown_product(): void
     {
         $this->expectException(LegacyViolationsException::class);
-        $this->expectExceptionMessage("The following products don't exist: unknown. Please make sure the products haven't been deleted in the meantime.");
+        $this->expectExceptionMessage("The following products don't exist: 631a992c-3b2b-4d82-ab0d-296adef2a66c. Please make sure the products haven't been deleted in the meantime.");
 
         $this->commandMessageBus->dispatch(UpsertProductCommand::createWithIdentifier($this->getUserId('peter'), ProductIdentifier::fromIdentifier('identifier'), [
             new AssociateQuantifiedProducts('bundle', [new QuantifiedEntity('631a992c-3b2b-4d82-ab0d-296adef2a66c', 5)]),
