@@ -178,16 +178,17 @@ functions.http('requestPortal', (req, res) => {
   const TIMMY_PORTAL = loadEnvironmentVariable('TIMMY_PORTAL');
 
   // Prefix url with branch name if present
-  const BRANCH_NAME = req.body.branchName || '';
+  const branchName = req.body.branchName || '';
+  const pimNamespace = branchName.length ? `pim-${branchName.lowercase}` : 'pim';
 
-  initializeLogger(GCP_PROJECT_ID, LOG_LEVEL, BRANCH_NAME);
+  initializeLogger(GCP_PROJECT_ID, LOG_LEVEL, branchName);
   logger.info('Recovery of the tenants from the portal');
 
   const getTenants = async (status) => {
-    let url = new URL(HTTP_SCHEMA + '://' + PORTAL_LOGIN_HOSTNAME + path.join('/', BRANCH_NAME + '/') + 'auth/realms/connect/protocol/openid-connect/token').href.toString();
+    let url = new URL(HTTP_SCHEMA + '://' + PORTAL_LOGIN_HOSTNAME + path.join('/', branchName + '/') + 'auth/realms/connect/protocol/openid-connect/token').href.toString();
     const token = await requestTokenFromPortal(url, TIMMY_PORTAL);
 
-    url = new URL(HTTP_SCHEMA + '://' + PORTAL_HOSTNAME + path.join('/', BRANCH_NAME));
+    url = new URL(HTTP_SCHEMA + '://' + PORTAL_HOSTNAME + path.join('/', branchName));
     return Promise.resolve(await requestTenantsFromPortal(url, token, status, new URLSearchParams({
       subject_type: TENANT_EDITION_FLAGS,
       continent: TENANT_CONTINENT,
@@ -215,6 +216,12 @@ functions.http('requestPortal', (req, res) => {
             lastName: administrator['last_name'],
             email: administrator['email'],
             uiLocale: cloudInstance['locale']
+          },
+          api: {
+            namespace: pimNamespace
+          },
+          web: {
+            namespace: pimNamespace
           }
         }
       };

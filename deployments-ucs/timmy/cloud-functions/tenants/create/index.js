@@ -650,12 +650,6 @@ functions.http('createTenant', (req, res) => {
             }
           },
           pim: {
-            api: {
-              namespace: 'pim'
-            },
-            web: {
-              namespace: 'pim'
-            },
             storage: {
               bucketName: pfid
             },
