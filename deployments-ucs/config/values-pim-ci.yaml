@@ -4,6 +4,3 @@ backup:
 image:
   pim:
     repository: europe-west1-docker.pkg.dev/akecld-prd-pim-saas-shared/dev/pim-enterprise-dev
-
-pim:
-  secret: 5f559ffb-5b36-4922-9481-022057992057

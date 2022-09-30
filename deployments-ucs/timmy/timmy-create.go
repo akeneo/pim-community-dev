@@ -51,6 +51,7 @@ func main() {
     instance_name := os.Args[2]
     mysql_password := os.Args[3]
     email_password := os.Args[4]
+    pim_secret := os.Args[5]
     data := map[string]interface{}{
         "values": `{
             "AKENEO_PIM_URL": "https://` + instance_name + `.pim-saas-dev.dev.cloud.akeneo.com",
@@ -62,6 +63,7 @@ func main() {
             "MAILER_USER": "` + instance_name + `-akecld-prd-pim-saas-dev@mg.cloud.akeneo.com",
             "MEMCACHED_SVC": "memcached.` + pfid + `.svc.cluster.local",
             "APP_DATABASE_PASSWORD": "` + mysql_password + `",
+            "APP_SECRET": "` + pim_secret + `",
             "PFID": "` + pfid + `",
             "SRNT_GOOGLE_BUCKET_NAME": "` + pfid + `"
           }`,

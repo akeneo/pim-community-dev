@@ -21,7 +21,6 @@ data:
   {{- else }}
   FLAG_DATA_QUALITY_INSIGHTS_ENABLED: "0"
   {{- end }}
-  APP_SECRET: {{ .Values.pim.secret }}
   SRNT_GOOGLE_APPLICATION_CREDENTIALS: ""
   APP_ENV: prod
   TRUSTED_PROXY_IPS: 10.0.0.0/8
