@@ -43,7 +43,6 @@ define([
     collapsedClass: 'AknGrid-bodyContainer--collapsed',
     requiredLabel: __('pim_enrich.entity.family.module.attributes.required_label'),
     notRequiredLabel: __('pim_enrich.entity.family.module.attributes.not_required_label'),
-    identifierAttributeType: 'pim_catalog_identifier',
     template: _.template(template),
     errors: [],
     catalogLocale: UserContext.get('catalogLocale'),
