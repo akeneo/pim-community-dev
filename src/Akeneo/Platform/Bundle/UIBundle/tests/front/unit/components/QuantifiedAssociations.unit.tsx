@@ -13,7 +13,7 @@ jest.mock('pimui/js/product/form/quantified-associations/hooks/useProducts.ts', 
 
     return [
       {
-        id: 1,
+        id: '3fa79b52-5900-49e8-a197-1181f58ec3cb',
         identifier: 'bag',
         label: 'Nice bag',
         document_type: 'product',
@@ -49,7 +49,7 @@ afterEach(() => {
 });
 
 const quantifiedAssociationCollection = {
-  products: [{identifier: 'bag', quantity: 3}],
+  products: [{uuid: '3fa79b52-5900-49e8-a197-1181f58ec3cb', quantity: 3}],
   product_models: [{identifier: 'braided-hat', quantity: 15}],
 };
 
@@ -58,7 +58,10 @@ test('It displays quantified association rows for a quantified association colle
     renderDOMWithProviders(
       <QuantifiedAssociations
         quantifiedAssociations={quantifiedAssociationCollection}
-        parentQuantifiedAssociations={{products: [{identifier: 'bag', quantity: 1}], product_models: []}}
+        parentQuantifiedAssociations={{
+          products: [{uuid: '3fa79b52-5900-49e8-a197-1181f58ec3cb', quantity: 1}],
+          product_models: [{identifier: 'braided-hat', quantity: 12}]
+        }}
         errors={[]}
         onAssociationsChange={jest.fn()}
         onOpenPicker={jest.fn()}
@@ -73,11 +76,10 @@ test('It displays quantified association rows for a quantified association colle
   ) as HTMLInputElement[];
 
   expect(getByText(container, 'Nice bag')).toBeInTheDocument();
-  expect(
-    getAllByTitle(container, 'pim_enrich.entity.product.module.associations.quantified.unlinked')[0]
-  ).toBeInTheDocument();
+  expect(getAllByTitle(container, 'pim_enrich.entity.product.module.associations.quantified.unlinked')).toHaveLength(2);
   expect(queryByText(container, 'Braided hat')).toBeInTheDocument();
   expect(quantityInputs[0].value).toBe('3');
+  expect(quantityInputs[1].value).toBe('15');
   expect(quantityInputs.length).toBe(2);
 });
 
@@ -124,7 +126,7 @@ test('It triggers the onChange event when a quantity is changed', async () => {
   fireEvent.change(quantityInputs[0], {target: {value: '16'}});
 
   expect(onChange).toBeCalledWith({
-    products: [{identifier: 'bag', quantity: 16}],
+    products: [{uuid: '3fa79b52-5900-49e8-a197-1181f58ec3cb', quantity: 16}],
     product_models: [{identifier: 'braided-hat', quantity: 15}],
   });
 });
@@ -158,7 +160,7 @@ test('It adds products when the user confirm the picker', async () => {
   const onChange = jest.fn();
 
   const smallQuantifiedAssociationCollection = {
-    products: [{identifier: 'bag', quantity: 3}],
+    products: [{uuid: '3fa79b52-5900-49e8-a197-1181f58ec3cb', quantity: 3}],
     product_models: [],
   };
 
@@ -179,7 +181,7 @@ test('It adds products when the user confirm the picker', async () => {
             },
             {
               productType: ProductType.Product,
-              quantifiedLink: {identifier: 'bag', quantity: 1},
+              quantifiedLink: {uuid: '3fa79b52-5900-49e8-a197-1181f58ec3cb', quantity: 1},
               product: null,
               errors: [],
             },
@@ -209,7 +211,7 @@ test('It displays no table rows when the quantified association collection is nu
       <QuantifiedAssociations
         quantifiedAssociations={{
           //The useProducts mock defined above will simulate loading thanks to the 'null' identifier
-          products: [{identifier: 'null', quantity: 2}],
+          products: [{uuid: 'null', quantity: 2}],
           product_models: [],
         }}
         errors={[]}
@@ -309,7 +311,7 @@ test('It does not display the add association button if the user is not owner of
     renderDOMWithProviders(
       <QuantifiedAssociations
         quantifiedAssociations={quantifiedAssociationCollection}
-        parentQuantifiedAssociations={{products: [{identifier: 'bag', quantity: 1}], product_models: []}}
+        parentQuantifiedAssociations={{products: [{uuid: '3fa79b52-5900-49e8-a197-1181f58ec3cb', quantity: 1}], product_models: []}}
         errors={[]}
         isUserOwner={false}
         onAssociationsChange={jest.fn()}
