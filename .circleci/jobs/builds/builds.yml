@@ -159,6 +159,7 @@ jobs:
                       find vendor/akeneo/pim-community-dev/front-packages/shared -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/shared.hash
                       find components/tailored-export/front/ -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/tailored-export.hash
                       find components/tailored-import/front/ -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/tailored-import.hash
+                      find components/job-automation/front/ -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/job-automation.hash
                       find components/performance-analytics/front/ -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/performance-analytics.hash
                       find vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Job/front/process-tracker -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/process-tracker.hash
                       find vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/catalog-volume-monitoring.hash
@@ -177,11 +178,14 @@ jobs:
                   name: Restore front package Shared cache
                   key: front-packages-shared-{{ checksum "~/shared.hash" }}-{{ .Environment.CACHE_VERSION }}
             - restore_cache:
-                  name: Restore front package Tailored Export cache
-                  key: front-packages-tailored-export-{{ checksum "~/tailored-export.hash" }}-{{ .Environment.CACHE_VERSION }}
+                  name: Restore component Tailored Export cache
+                  key: components-tailored-export-{{ checksum "~/tailored-export.hash" }}-{{ .Environment.CACHE_VERSION }}
             - restore_cache:
-                  name: Restore front package Tailored Import cache
-                  key: front-packages-tailored-import-{{ checksum "~/tailored-import.hash" }}-{{ .Environment.CACHE_VERSION }}
+                  name: Restore component Tailored Import cache
+                  key: components-tailored-import-{{ checksum "~/tailored-import.hash" }}-{{ .Environment.CACHE_VERSION }}
+            - restore_cache:
+                  name: Restore component Job Automation cache
+                  key: components-job-automation-{{ checksum "~/job-automation.hash" }}-{{ .Environment.CACHE_VERSION }}
             - restore_cache:
                   name: Restore front package Performance Analytics cache
                   key: front-performance-analytics-import-{{ checksum "~/performance-analytics.hash" }}-{{ .Environment.CACHE_VERSION }}
@@ -207,7 +211,7 @@ jobs:
                   name: Change owner on project dir to have the right to cache the data
                   command: sudo chmod -R 777 ../project ~/.cache ~/.composer vendor/akeneo/pim-community-dev/front-packages/ front-packages/
             - save_cache:
-                  name: Save fontend dependency cache
+                  name: Save frontend dependency cache
                   paths:
                       - ~/.cache
                   key: frontend-dependency-cache-{{ checksum "~/front-dependency.hash" }}-{{ .Environment.CACHE_VERSION }}
@@ -222,7 +226,7 @@ jobs:
                   paths:
                       - vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system/
             - save_cache:
-                  name: Save front package measurement cache
+                  name: Save front package Measurement cache
                   key: front-packages-measurement-{{ checksum "~/measurement.hash" }}-{{ .Environment.CACHE_VERSION }}
                   paths:
                       - vendor/akeneo/pim-community-dev/front-packages/measurement/
@@ -232,15 +236,20 @@ jobs:
                   paths:
                       - vendor/akeneo/pim-community-dev/front-packages/shared/
             - save_cache:
-                  name: Save front package Tailored Export cache
-                  key: front-packages-tailored-export-{{ checksum "~/tailored-export.hash" }}-{{ .Environment.CACHE_VERSION }}
+                  name: Save component Tailored Export cache
+                  key: components-tailored-export-{{ checksum "~/tailored-export.hash" }}-{{ .Environment.CACHE_VERSION }}
                   paths:
-                      - front-packages/tailored-export/
+                      - components/tailored-export/
             - save_cache:
-                  name: Save front package Tailored Import cache
-                  key: front-packages-tailored-import-{{ checksum "~/tailored-import.hash" }}-{{ .Environment.CACHE_VERSION }}
+                  name: Save component Tailored Import cache
+                  key: components-tailored-import-{{ checksum "~/tailored-import.hash" }}-{{ .Environment.CACHE_VERSION }}
                   paths:
-                      - front-packages/tailored-import/
+                      - components/tailored-import/
+            - save_cache:
+                  name: Save component Job Automation cache
+                  key: components-job-automation-{{ checksum "~/job-automation.hash" }}-{{ .Environment.CACHE_VERSION }}
+                  paths:
+                      - components/job-automation/
             - save_cache:
                   name: Save front package Performance Analytics cache
                   key: front-performance-analytics-import-{{ checksum "~/performance-analytics.hash" }}-{{ .Environment.CACHE_VERSION }}
