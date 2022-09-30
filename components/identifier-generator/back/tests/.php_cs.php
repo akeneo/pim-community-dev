@@ -9,6 +9,7 @@ return (new PhpCsFixer\Config())
         ],
         'no_unused_imports' => true,
         'blank_line_before_statement' => true,
+        '@PSR12' => true
     ))
     ->setCacheFile('var/php_cs.cache')
     ->setFinder(

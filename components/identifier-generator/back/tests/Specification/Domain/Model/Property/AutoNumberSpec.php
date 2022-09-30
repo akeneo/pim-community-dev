@@ -14,34 +14,34 @@ use PhpSpec\ObjectBehavior;
  */
 class AutoNumberSpec extends ObjectBehavior
 {
-    function let()
+    public function let()
     {
         $this->beConstructedThrough('fromValues', [5,2]);
     }
 
-    function it_is_a_auto_number()
+    public function it_is_a_auto_number()
     {
         $this->shouldBeAnInstanceOf(AutoNumber::class);
     }
 
-    function it_cannot_be_instantiated_with_number_min_negative()
+    public function it_cannot_be_instantiated_with_number_min_negative()
     {
         $this->beConstructedThrough('fromValues', [-5,2]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_cannot_be_instantiated_with_digits_min_negative()
+    public function it_cannot_be_instantiated_with_digits_min_negative()
     {
         $this->beConstructedThrough('fromValues', [5,-2]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_returns_a_number_min()
+    public function it_returns_a_number_min()
     {
         $this->numberMin()->shouldReturn(5);
     }
 
-    function it_returns_a_digits_min()
+    public function it_returns_a_digits_min()
     {
         $this->digitsMin()->shouldReturn(2);
     }

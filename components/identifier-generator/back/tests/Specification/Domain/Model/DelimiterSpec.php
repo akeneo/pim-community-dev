@@ -13,17 +13,17 @@ use PhpSpec\ObjectBehavior;
  */
 class DelimiterSpec extends ObjectBehavior
 {
-    function let()
+    public function let()
     {
         $this->beConstructedThrough('fromString', ['-']);
     }
 
-    function it_is_a_delimiter()
+    public function it_is_a_delimiter()
     {
         $this->shouldBeAnInstanceOf(Delimiter::class);
     }
 
-    function it_returns_a_delimiter()
+    public function it_returns_a_delimiter()
     {
         $this->asString()->shouldReturn('-');
     }

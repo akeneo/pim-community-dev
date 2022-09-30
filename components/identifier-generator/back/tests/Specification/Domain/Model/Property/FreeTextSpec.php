@@ -13,23 +13,23 @@ use PhpSpec\ObjectBehavior;
  */
 class FreeTextSpec extends ObjectBehavior
 {
-    function let()
+    public function let()
     {
         $this->beConstructedThrough('fromString', ['ABC']);
     }
 
-    function it_is_a_free_text()
+    public function it_is_a_free_text()
     {
         $this->shouldBeAnInstanceOf(FreeText::class);
     }
 
-    function it_cannot_be_instantiated_with_an_empty_string()
+    public function it_cannot_be_instantiated_with_an_empty_string()
     {
         $this->beConstructedThrough('fromString', ['']);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_returns_a_free_text()
+    public function it_returns_a_free_text()
     {
         $this->asString()->shouldReturn('ABC');
     }

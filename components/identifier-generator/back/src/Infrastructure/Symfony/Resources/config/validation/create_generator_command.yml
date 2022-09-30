@@ -1,0 +1,6 @@
+Akeneo\Pim\Automation\IdentifierGenerator\Application\CreateGeneratorCommand:
+    properties:
+        target:
+            - NotBlank: ~
+            - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldExist: ~
+            - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldBeAnIdentifier: ~
