@@ -33,10 +33,10 @@ const ShowProductFile = () => {
                 </PageHeader.Illustration>
                 <PageHeader.Breadcrumb>
                     <Breadcrumb>
-                        <Breadcrumb.Step>
+                        <Breadcrumb.Step href={history.createHref({pathname: '/product-file-dropping'})}>
                             {translate('supplier_portal.product_file_dropping.breadcrumb.root')}
                         </Breadcrumb.Step>
-                        <Breadcrumb.Step href={history.createHref({pathname: '/'})}>
+                        <Breadcrumb.Step href={history.createHref({pathname: '/product-file-dropping'})}>
                             {translate('supplier_portal.product_file_dropping.breadcrumb.product_files')}
                         </Breadcrumb.Step>
                         <Breadcrumb.Step>{productFile.originalFilename}</Breadcrumb.Step>

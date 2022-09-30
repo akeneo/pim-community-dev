@@ -4,11 +4,13 @@ import {PageContent, PageHeader, PimView, useTranslate} from '@akeneo-pim-commun
 import styled from 'styled-components';
 import {useProductFiles} from './hooks';
 import {ProductFilesList} from './components';
+import {useHistory} from 'react-router';
 
 const ListProductFiles = () => {
     const translate = useTranslate();
     const [page, setPage] = useState<number>(1);
     const [productFiles, totalProductFiles] = useProductFiles(page);
+    const history = useHistory();
 
     useEffect(() => {
         0 < totalProductFiles && setPage(1);
@@ -19,7 +21,7 @@ const ListProductFiles = () => {
             <PageHeader>
                 <PageHeader.Breadcrumb>
                     <Breadcrumb>
-                        <Breadcrumb.Step>
+                        <Breadcrumb.Step href={history.createHref({pathname: '/product-file-dropping'})}>
                             {translate('supplier_portal.product_file_dropping.breadcrumb.root')}
                         </Breadcrumb.Step>
                         <Breadcrumb.Step>

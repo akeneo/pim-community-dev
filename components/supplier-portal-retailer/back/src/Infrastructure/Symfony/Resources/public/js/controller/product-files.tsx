@@ -3,7 +3,7 @@ import {ReactController} from '@akeneo-pim-community/legacy-bridge/src/bridge/re
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
-import {ProductFileDroppingApp} from '@akeneo-pim-enterprise/supplier-portal-retailer';
+import {RetailerApp} from '@akeneo-pim-enterprise/supplier-portal-retailer';
 
 const mediator = require('oro/mediator');
 
@@ -13,7 +13,7 @@ class ProductFiles extends ReactController {
     reactElementToMount() {
         return <DependenciesProvider>
             <ThemeProvider theme={pimTheme}>
-                <ProductFileDroppingApp/>
+                <RetailerApp/>
             </ThemeProvider>
         </DependenciesProvider>;
     }
