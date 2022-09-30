@@ -189,7 +189,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
                 $this->setAttributeRequirements($family, $data);
                 break;
             case 'attributes':
-                $this->addAttributes($family, $data);
+                $this->setAttributes($family, $data);
                 break;
             case 'attribute_as_label':
                 $this->setAttributeAsLabel($family, $data);
@@ -346,7 +346,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
      *
      * @throws InvalidPropertyException
      */
-    protected function addAttributes(FamilyInterface $family, array $data)
+    protected function setAttributes(FamilyInterface $family, array $data)
     {
         $newAttributes = [];
         foreach ($data as $attributeCode) {
