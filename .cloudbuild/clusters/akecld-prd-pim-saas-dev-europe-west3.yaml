@@ -1,3 +1,5 @@
+# Cluster dev N+1
+# For this cluster, we test the deployments modifications on the branches
 steps:
   - id: "Stop current build if ongoing build is ongoing"
     name: 'gcr.io/cloud-builders/gcloud'
@@ -51,23 +53,21 @@ steps:
         # Append the values file to use for the argocd apps
         VALUES="values-${_CLUSTER_NAME}.yaml" yq -i '.applications[].source.helm.valueFiles[1] = env(VALUES)' k8s/argocd-apps/values.yaml
 
+        # Change the branch for infra
+        BRANCH_NAME="${BRANCH_NAME}" yq -i '.applications[].source.targetRevision = env(BRANCH_NAME)' k8s/argocd-apps/values.yaml
+
         # Use helm repo
         helm repo add argo https://argoproj.github.io/argo-helm
         helm repo update 2>&1
 
-        if [ "${BRANCH_NAME}" != "master" ]; then
-          helm upgrade --version ${_ARGOCD_HELM_VERSION} --dry-run --debug -i --create-namespace -n argocd argocd argo/argo-cd -f k8s/argocd/values.yaml
-          helm upgrade --version ${_ARGOCD_APP_HELM_VERSION} --dry-run --debug -i --create-namespace -n argocd argocd-apps argo/argocd-apps -f k8s/argocd-apps/values.yaml
-        else
-          ## Datadog
-          kubectl create secret generic datadog-api-secret --from-literal api-key="$${DATADOG_API_KEY}"
+        ## Datadog
+        kubectl create secret generic datadog-api-secret --from-literal api-key="$${DATADOG_API_KEY}"
 
-          # Install prerequisite
-          ## ArgoCD
-          helm upgrade --version ${_ARGOCD_HELM_VERSION} --debug --atomic --cleanup-on-fail --history-max 5 -i --wait --create-namespace -n argocd argocd argo/argo-cd -f k8s/argocd/values.yaml
-          kubectl apply -f k8s/argocd/templates/argocd-cm.yaml
-          helm upgrade --version ${_ARGOCD_APP_HELM_VERSION} --debug --atomic --cleanup-on-fail --history-max 5 -i --wait --create-namespace -n argocd argocd-apps argo/argocd-apps -f k8s/argocd-apps/values.yaml
-        fi
+        # Install prerequisite
+        ## ArgoCD
+        helm upgrade --version ${_ARGOCD_HELM_VERSION} --debug --atomic --cleanup-on-fail --history-max 5 -i --wait --create-namespace -n argocd argocd argo/argo-cd -f k8s/argocd/values.yaml
+        kubectl apply -f k8s/argocd/templates/argocd-cm.yaml
+        helm upgrade --version ${_ARGOCD_APP_HELM_VERSION} --debug --atomic --cleanup-on-fail --history-max 5 -i --wait --create-namespace -n argocd argocd-apps argo/argocd-apps -f k8s/argocd-apps/values.yaml
     secretEnv: ['ARGOCD_GITHUB_TOKEN', 'DATADOG_API_KEY']
 logsBucket: 'gs://${_GOOGLE_PROJECT_ID}-cloudbuild-logs'
 availableSecrets:

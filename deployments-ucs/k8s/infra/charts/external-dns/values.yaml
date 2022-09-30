@@ -1,6 +1,7 @@
 global:
   googleProject: null # From parent
   publicDomain: null # From parent
+  clusterRegion: null # From parent
 external-dns:
   resources:
     requests:
@@ -18,6 +19,7 @@ external-dns:
     name: external-dns
     annotations:
       iam.gke.io/gcp-service-account: "external-dns@{{ .Values.global.googleProject }}.iam.gserviceaccount.com"
+  txtOwnerId: null # From parent
   sources:
   - gateway-httproute
   domainFilters: null # From parent

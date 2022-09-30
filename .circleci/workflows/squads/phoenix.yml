@@ -122,3 +122,19 @@ workflows:
                 name: "delete_tenant2_wb"
                 requires:
                     - test_ucs_deploy_2_wb
+
+          - ready_to_build_test_infra?:
+                type: approval
+                filters:
+                    branches:
+                        only:
+                            - /BH-.*/
+                            - /PH-.*/
+          - checkout:
+                name: ready_to_build_test_infra
+                requires:
+                    - ready_to_build_test_infra?
+          - build_ucs_infra:
+                name: build_ucs_infra
+                requires:
+                    - ready_to_build_test_infra

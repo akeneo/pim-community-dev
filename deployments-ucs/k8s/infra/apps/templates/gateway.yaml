@@ -14,6 +14,10 @@ spec:
     helm:
       releaseName: pim-saas-gateway
       parameters:
+      - name: global.publicDomain
+        value: {{ .Values.spec.destination.publicDomain }}
+      - name: global.privateDomain
+        value: {{ .Values.spec.destination.privateDomain }}
       - name: gateway.certmap
         value: {{ .Values.spec.destination.publicDomain | replace "." "-" }}-cert-map
   destination:

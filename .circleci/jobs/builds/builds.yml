@@ -789,3 +789,65 @@ jobs:
                   root: ~/
                   paths:
                       - project/persisted_env_vars
+
+    build_ucs_infra:
+        parameters:
+            PRODUCT_TYPE:
+                type: string
+                default: "srnt"
+        environment:
+            <<: *envVarsDeployPIMSaaSDev
+        machine:
+            image: *executor-machine
+        resource_class: medium
+        working_directory: ~/project
+        steps:
+            - attach_workspace:
+                  at: ~/
+            - set_gcloud_config_pim_saas_dev
+            - add_ssh_keys:
+                fingerprints:
+                  - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+            - install_yq_v3
+            - run:
+                  name: Define value for next steps
+                  command: |
+                      RELEASE_NAME=$(gcloud container images list-tags ${GOOGLE_CLUSTER_REGION}-docker.pkg.dev/${GOOGLE_PROJECT_ID_SHARED}/prod/pim-enterprise-dev --filter="tags~^v[0-9]{14}$" --sort-by="~tags" --limit=1 --format="value(tags)")
+                      echo export RELEASE_NAME=${RELEASE_NAME} >> $BASH_ENV
+
+                      echo "Release name: ${RELEASE_NAME}"
+            - run:
+                name: Create the infra branch deployement
+                command: |
+                  ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                  export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                  git config --global user.email "pim_ci@akeneo.com"
+                  git config --global user.name "pim_ci_deployment"
+
+                  cd /tmp
+                  git clone -b ${CIRCLE_BRANCH} --depth 1 git@github.com:akeneo/pim-enterprise-dev.git
+                  git clone -b ${CIRCLE_BRANCH} git@github.com:akeneo/pim-saas-k8s-artifacts.git && cd pim-saas-k8s-artifacts || { git clone git@github.com:akeneo/pim-saas-k8s-artifacts.git && cd pim-saas-k8s-artifacts && git checkout -b ${CIRCLE_BRANCH}; }
+
+                  # k8s
+                  rm -rf /tmp/pim-saas-k8s-artifacts/k8s
+                  yq w -i /tmp/pim-enterprise-dev/deployments-ucs/k8s/argocd-apps/values.yaml 'applications.*.source.targetRevision' "${CIRCLE_BRANCH}"
+                  cp -r /tmp/pim-enterprise-dev/deployments-ucs/k8s /tmp/pim-saas-k8s-artifacts/k8s
+
+                  # pim-saas-services
+                  rm -rf /tmp/pim-saas-k8s-artifacts/pim-saas-service
+                  bash /tmp/pim-enterprise-dev/deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-dev-europe-west1.sh
+                  bash /tmp/pim-enterprise-dev/deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-dev-europe-west3.sh
+                  bash /tmp/pim-enterprise-dev/deployments-ucs/bin/deploy_artifacts_akecld-prd-pim-saas-sandbox-europe-west1.sh
+                  cp -r /tmp/pim-enterprise-dev/deployments-ucs/pim-saas-service /tmp/pim-saas-k8s-artifacts/pim-saas-service
+
+                  # tenant
+                  rm -rf /tmp/pim-saas-k8s-artifacts/tenant
+                  cp -r /tmp/pim-enterprise-dev/deployments-ucs/tenant /tmp/pim-saas-k8s-artifacts/tenant
+
+                  # timmy
+                  rm -rf /tmp/pim-saas-k8s-artifacts/timmy
+                  cp -r /tmp/pim-enterprise-dev/deployments-ucs/timmy /tmp/pim-saas-k8s-artifacts/timmy
+
+                  git add k8s pim-saas-service tenant timmy
+                  git commit -m "Update with release ${RELEASE_NAME}"
+                  git push --set-upstream origin ${CIRCLE_BRANCH}
