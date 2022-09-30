@@ -12,6 +12,7 @@ export type Category = {
 
 export type EnrichCategory = {
   id: number;
+  isRoot: boolean;
   root: EnrichCategory | null;
   properties: CategoryProperties;
   attributes: CategoryAttributes;

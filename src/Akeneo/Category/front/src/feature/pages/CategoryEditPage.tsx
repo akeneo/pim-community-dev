@@ -118,8 +118,12 @@ const CategoryEditPage: FC = () => {
     const catalogLocale = userContext.get('catalogLocale');
 
     setCategoryLabel(getLabel(category.properties.labels, catalogLocale, category.properties.code));
-    if (category.root) {
-      const {root} = category;
+
+    let {root} = category;
+    if (category.isRoot) {
+      root = category;
+    }
+    if (root) {
       const {
         properties: {code, labels},
       } = root;

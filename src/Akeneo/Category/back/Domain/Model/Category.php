@@ -21,7 +21,7 @@ class Category
         private Code $code,
         private ?LabelCollection $labels = null,
         private ?CategoryId $parentId = null,
-        private ?Category $root = null,
+        private ?CategoryId $rootId = null,
         private ?ValueCollection $attributes = null,
         private ?PermissionCollection $permissions = null,
     ) {
@@ -47,9 +47,15 @@ class Category
         return $this->parentId;
     }
 
-    public function getRoot(): ?Category
+    public function getRootId(): ?CategoryId
     {
-        return $this->root;
+        return $this->rootId;
+    }
+
+    public function isRoot(): bool
+    {
+        // supposedly equivalent conditions, belt and braces
+        return $this->parentId === null || $this->rootId === $this->id;
     }
 
     public function getAttributes(): ?ValueCollection
@@ -76,7 +82,7 @@ class Category
      * @return array{
      *     id: int|null,
      *     parent: int|null,
-     *     root: Category | null,
+     *     root_id: int | null,
      *     properties: array{
      *       code: string,
      *       labels: array<string, string>|null
@@ -90,7 +96,7 @@ class Category
         return [
             'id' => $this->getId()?->getValue(),
             'parent' => $this->getParentId()?->getValue(),
-            'root' => $this->getRoot()?->normalize(),
+            'root_id' => $this->getRootId()?->getValue(),
             'properties' => [
                 'code' => (string) $this->getCode(),
                 'labels' => $this->getLabels()?->normalize(),

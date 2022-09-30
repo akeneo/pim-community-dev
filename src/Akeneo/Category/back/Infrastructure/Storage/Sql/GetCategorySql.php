@@ -55,7 +55,7 @@ class GetCategorySql implements GetCategoryInterface
                 category.id,
                 category.code, 
                 category.parent_id,
-                category.root,
+                category.root as root_id,
                 translation.translations,
                 category.value_collection
             FROM 
@@ -74,16 +74,6 @@ class GetCategorySql implements GetCategoryInterface
             return null;
         }
 
-        $root = null;
-        if ($result['parent_id'] !== null
-         || ($result['root'] != null && $result['root'] !== $result['id'])
-            // supposedly equivalent conditions, belt and braces
-        ) {
-            // getting the root category to be send alongside the requested category
-            // the termination of the recursive call is ensured by the consistency of the data in the nested tree implementation (TODO detect cycles anyway ?)
-            $root = $this->byId((int)$result['root']);
-        }
-
         return new Category(
             new CategoryId((int)$result['id']),
             new Code($result['code']),
@@ -97,7 +87,7 @@ class GetCategorySql implements GetCategoryInterface
                     )
                 ) : null,
             $result['parent_id'] ? new CategoryId((int)$result['parent_id']) : null,
-            $root,
+            $result['root_id'] ? new CategoryId((int)$result['root_id']) : null,
             $result['value_collection'] ?
                 ValueCollection::fromArray(json_decode($result['value_collection'], true)) : null,
             null
