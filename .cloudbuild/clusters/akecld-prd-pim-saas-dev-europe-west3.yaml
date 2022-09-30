@@ -49,7 +49,7 @@ steps:
         GSA_ARGOCD="argocd@${_GOOGLE_PROJECT_ID}.iam.gserviceaccount.com" yq -i '.repoServer.serviceAccount.annotations."iam.gke.io/gcp-service-account" = env(GSA_ARGOCD)' k8s/argocd/values.yaml
 
         # Append the values file to use for the argocd apps
-        VALUES="values-${_CLUSTER_NAME}.yaml" yq -i '.applications[].helm.valueFiles[1] = env(VALUES)' k8s/argocd-apps/values.yaml
+        VALUES="values-${_CLUSTER_NAME}.yaml" yq -i '.applications[].source.helm.valueFiles[1] = env(VALUES)' k8s/argocd-apps/values.yaml
 
         # Use helm repo
         helm repo add argo https://argoproj.github.io/argo-helm

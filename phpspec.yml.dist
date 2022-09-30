@@ -158,14 +158,6 @@ suites:
         spec_path: src/Akeneo/SharedCatalog/tests/back
         src_path: src/Akeneo/SharedCatalog
 
-    ## Performance Analytics
-    PerformanceAnalytics:
-        namespace: Akeneo\PerformanceAnalytics
-        psr4_prefix: Akeneo\PerformanceAnalytics
-        spec_path: components/performance-analytics/back/tests
-        src_path: components/performance-analytics/back/src
-        spec_prefix: Specification
-
     ## Acceptance
     Acceptance:
         namespace: AkeneoEnterprise\Test\Acceptance

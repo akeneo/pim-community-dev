@@ -4,7 +4,6 @@ metadata:
   name: {{ .Values.pim.cloudFunction.name }}
   annotations:
     argocd.argoproj.io/sync-wave: "1"
-    argocd.argoproj.io/sync-options: Replace=true
 spec:
   availableMemoryMb: {{ .Values.pim.cloudFunction.memory }}
   description: "transform command into pub/sub message"
@@ -30,7 +29,6 @@ metadata:
   name: {{ .Values.pim.cloudFunction.name }}
   annotations:
     argocd.argoproj.io/sync-wave: "1"
-    argocd.argoproj.io/sync-options: "Replace=true"
 spec:
   resourceRef:
     apiVersion: cloudfunctions.cnrm.cloud.google.com/v1beta1

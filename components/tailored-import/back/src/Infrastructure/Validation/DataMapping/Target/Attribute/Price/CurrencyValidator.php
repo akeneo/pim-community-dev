@@ -17,6 +17,8 @@ use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\FindActivatedCurrenc
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Price\Currency as CurrencyConstraint;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 
 final class CurrencyValidator extends ConstraintValidator
@@ -31,6 +33,21 @@ final class CurrencyValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, CurrencyConstraint::class);
         }
 
+        $validator = $this->context->getValidator();
+        $validator->inContext($this->context)->validate($currencyCode, [
+            new Type('string'),
+            new NotNull(null, CurrencyConstraint::CURRENCY_SHOULD_NOT_BE_NULL),
+        ]);
+
+        if (0 < $this->context->getViolations()->count()) {
+            return;
+        }
+
+        $this->validateCurrency($currencyCode, $constraint);
+    }
+
+    private function validateCurrency(string $currencyCode, CurrencyConstraint $constraint): void
+    {
         $hasChannel = null !== $constraint->getChannelCode();
         $currencies = $hasChannel
             ? $this->findActivatedCurrencies->forChannel($constraint->getChannelCode())
@@ -46,7 +63,7 @@ final class CurrencyValidator extends ConstraintValidator
                     '{{ channel_code }}' => $constraint->getChannelCode(),
                 ],
             )
-            ->addViolation();
+                ->addViolation();
         }
     }
 }

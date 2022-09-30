@@ -14,12 +14,25 @@ workflows:
       - checkout:
           requires:
             - "start_tailored_import?"
-      - build_srnt_dev:
-          requires:
-            - checkout
       - test_helm_generated_k8s_files:
+          name: "[<< matrix.PRODUCT_TYPE >>] Test helm generated k8s files"
+          matrix:
+            parameters:
+              PRODUCT_TYPE: [ "srnt", "grth", "tria" ]
           requires:
             - checkout
+      - build_srnt_dev:
+          name: "[srnt] Build"
+          requires:
+            - "[srnt] Test helm generated k8s files"
+      - build_grth:
+          name: "[grth] Build"
+          requires:
+            - "[grth] Test helm generated k8s files"
+      - build_tria:
+          name: "[tria] Build"
+          requires:
+            - "[tria] Test helm generated k8s files"
       - deploy_pr_environment?:
           type: approval
           filters:
@@ -29,8 +42,8 @@ workflows:
                 - /RAC-.*/
       - build_srnt_prod:
           requires:
-            - "test_helm_generated_k8s_files"
             - "deploy_pr_environment?"
+            - "[srnt] Test helm generated k8s files"
       - deploy_pr_environment:
           requires:
             - "build_srnt_prod"
@@ -43,14 +56,16 @@ workflows:
                 include_visit_job_action: false
       - test_front_tailored_import:
           requires:
-            - "build_srnt_dev"
+            - "[srnt] Build"
       - test_back_tailored_import:
           requires:
-            - "build_srnt_dev"
+            - "[srnt] Build"
       - pull_request_success:
           requires:
             - "test_front_tailored_import"
             - "test_back_tailored_import"
+            - "[grth] Build"
+            - "[tria] Build"
 
   raccoon_job_automation_pull_request:
     when:
@@ -67,12 +82,25 @@ workflows:
       - checkout:
           requires:
             - "start_job_automation?"
-      - build_srnt_dev:
-          requires:
-            - checkout
       - test_helm_generated_k8s_files:
+          name: "[<< matrix.PRODUCT_TYPE >>] Test helm generated k8s files"
+          matrix:
+            parameters:
+              PRODUCT_TYPE: [ "srnt", "grth", "tria" ]
           requires:
             - checkout
+      - build_srnt_dev:
+          name: "[srnt] Build"
+          requires:
+            - "[srnt] Test helm generated k8s files"
+      - build_grth:
+          name: "[grth] Build"
+          requires:
+            - "[grth] Test helm generated k8s files"
+      - build_tria:
+          name: "[tria] Build"
+          requires:
+            - "[tria] Test helm generated k8s files"
       - deploy_pr_environment?:
           type: approval
           filters:
@@ -82,7 +110,7 @@ workflows:
                 - /RAC-.*/
       - build_srnt_prod:
           requires:
-            - "test_helm_generated_k8s_files"
+            - "[srnt] Test helm generated k8s files"
             - "deploy_pr_environment?"
       - deploy_pr_environment:
           requires:
@@ -96,11 +124,13 @@ workflows:
                 include_visit_job_action: false
       - test_front_job_automation:
           requires:
-            - "build_srnt_dev"
+            - "[srnt] Build"
       - test_back_job_automation:
           requires:
-            - "build_srnt_dev"
+            - "[srnt] Build"
       - pull_request_success:
           requires:
             - "test_front_job_automation"
             - "test_back_job_automation"
+            - "[grth] Build"
+            - "[tria] Build"

@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: push-cloud-function
+  name:  "push-{{ .Values.pim.cloudFunction.name }}"
   labels:
     component: "push-cloud-function"
     app.kubernetes.io/component: "push-cloud-function"

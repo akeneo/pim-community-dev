@@ -6,6 +6,8 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\Product
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFilesForSupplier;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFile;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
+use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
@@ -13,20 +15,35 @@ use Ramsey\Uuid\Uuid;
 
 final class DatabaseListProductFilesForSupplierIntegration extends SqlIntegrationTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $suppplierRepository = $this->get(Repository::class);
+        $suppplierRepository->save(
+            (new SupplierBuilder())
+                ->withIdentifier('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7')
+                ->withCode('supplier_1')
+                ->withContributors(['contributor1@example.com', 'contributor2@example.com'])
+                ->build(),
+        );
+        $suppplierRepository->save(
+            (new SupplierBuilder())
+                ->withIdentifier('951c7717-8316-42e7-b053-61f265507178')
+                ->withCode('supplier_2')
+                ->build(),
+        );
+    }
+
     /** @test */
     public function itGetsNothingIfThereIsNoProductFilesForAGivenContributorAndTheContributorsBelongingToTheSameSupplier(): void
     {
-        $this->createSuppliers();
-        $this->createContributors();
-
         static::assertEmpty(($this->get(ListProductFilesForSupplier::class))('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7'));
     }
 
     /** @test */
     public function itGetsTheLatestTwentyFiveProductFilesForAGivenContributorAndTheContributorsBelongingToTheSameSupplier(): void
     {
-        $this->createSuppliers();
-        $this->createContributors();
         $this->createProductFiles();
 
         $sut = $this->get(ListProductFilesForSupplier::class);
@@ -50,7 +67,6 @@ final class DatabaseListProductFilesForSupplierIntegration extends SqlIntegratio
     /** @test */
     public function itGetsTheProductFilesWithTheirComments(): void
     {
-        $this->createSuppliers();
         $this->createProductFile('5d001a43-a42d-4083-8673-b64bb4ecd26f');
         $this->createRetailerComment(
             '5d001a43-a42d-4083-8673-b64bb4ecd26f',
@@ -88,17 +104,6 @@ final class DatabaseListProductFilesForSupplierIntegration extends SqlIntegratio
             'author_email' => 'jimmy@punchline.com',
             'created_at' => '2022-09-07 00:00:01.000000',
         ]], $productFiles[0]->supplierComments);
-    }
-
-    private function createSuppliers(): void
-    {
-        $sql = <<<SQL
-            INSERT INTO akeneo_supplier_portal_supplier (identifier, code, label) 
-            VALUES ('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7', 'supplier1', 'Supplier 1'),
-                   ('951c7717-8316-42e7-b053-61f265507178', 'supplier2', 'Supplier 2');
-        SQL;
-
-        $this->get(Connection::class)->executeStatement($sql);
     }
 
     private function createProductFiles(): void
@@ -169,18 +174,6 @@ final class DatabaseListProductFilesForSupplierIntegration extends SqlIntegratio
                 ],
             );
         }
-    }
-
-    private function createContributors(): void
-    {
-        $this->get(Connection::class)->executeStatement(
-            <<<SQL
-            INSERT INTO akeneo_supplier_portal_supplier_contributor (id, email, supplier_identifier)
-                VALUES (1, 'contributor1@example.com', 'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7'),
-                       (2, 'contributor2@example.com', 'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7')
-           ;
-        SQL
-        );
     }
 
     private function createProductFile(string $productFileIdentifier): void

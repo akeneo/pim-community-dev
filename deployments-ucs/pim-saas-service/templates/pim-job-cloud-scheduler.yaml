@@ -12,6 +12,12 @@ spec:
   location: {{ $tplCtx.Values.common.region }}
   timeZone: {{ $tplCtx.Values.pim.cloudFunction.timeZone }}
   schedule: '{{ $jobConfiguration.schedule }}'
+  retryConfig:
+    maxDoublings: 5
+    maxRetryDuration: "3600s"
+    retryCount: 4
+    minBackoffDuration: "10s"
+    maxBackoffDuration: "60s"
   httpTarget:
     headers:
       Content-Type: application/json

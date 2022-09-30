@@ -7,6 +7,7 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\Supplie
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
+use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
 
@@ -16,20 +17,19 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
     public function itCreatesAndFindsASupplier(): void
     {
         $supplierRepository = $this->get(Repository::class);
-
-        $supplierRepository->save(Supplier::create(
-            '44ce8069-8da1-4986-872f-311737f46f02',
-            'supplier_code',
-            'Supplier label',
-            ['contributor1@example.com', 'contributor2@example.com'],
-        ));
-
-        $supplierRepository->save(Supplier::create(
-            '44ce8069-8da1-4986-872f-311737f46f03',
-            'other_supplier_code',
-            'Other supplier label',
-            [],
-        ));
+        $supplierRepository->save(
+            (new SupplierBuilder())
+                ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f02')
+                ->withContributors(['contributor1@example.com', 'contributor2@example.com'])
+                ->build(),
+        );
+        $supplierRepository->save(
+            (new SupplierBuilder())
+                ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f03')
+                ->withCode('other_supplier_code')
+                ->withLabel('Other supplier label')
+                ->build(),
+        );
 
         $supplier = $this->findSupplier('44ce8069-8da1-4986-872f-311737f46f02');
         static::assertSame('supplier_code', $supplier['code']);
@@ -46,23 +46,23 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
     public function itUpdatesAnExistingSupplier(): void
     {
         $supplierRepository = $this->get(Repository::class);
-
-        $supplierRepository->save(Supplier::create(
-            '44ce8069-8da1-4986-872f-311737f46f02',
-            'supplier_code',
-            'Supplier label',
-            [],
-        ));
+        $supplierRepository->save(
+            (new SupplierBuilder())
+                ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f02')
+                ->build(),
+        );
         $supplierBeforeUpdate = $this->findSupplier('44ce8069-8da1-4986-872f-311737f46f02');
         $updatedAtBeforeUpdate = $supplierBeforeUpdate['updated_at'];
         sleep(1);
 
-        $supplierRepository->save(Supplier::create(
-            '44ce8069-8da1-4986-872f-311737f46f02',
-            'new_supplier_code',
-            'New supplier label',
-            ['contributor1@example.com', 'contributor2@example.com'],
-        ));
+        $supplierRepository->save(
+            (new SupplierBuilder())
+                ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f02')
+                ->withCode('new_supplier_code')
+                ->withLabel('New supplier label')
+                ->withContributors(['contributor1@example.com', 'contributor2@example.com'])
+                ->build(),
+        );
 
         $supplier = $this->findSupplier('44ce8069-8da1-4986-872f-311737f46f02');
         $updatedAtAfterUpdate = $supplier['updated_at'];
@@ -83,19 +83,19 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
     public function itFindsASupplier(): void
     {
         $supplierRepository = $this->get(Repository::class);
-
-        $supplierRepository->save(Supplier::create(
-            '44ce8069-8da1-4986-872f-311737f46f02',
-            'supplier_code',
-            'Supplier label',
-            ['contributor1@example.com', 'contributor2@example.com'],
-        ));
-        $supplierRepository->save(Supplier::create(
-            '44ce8069-8da1-4986-872f-311737f46f03',
-            'other_supplier_code',
-            'Other supplier label',
-            [],
-        ));
+        $supplierRepository->save(
+            (new SupplierBuilder())
+                ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f02')
+                ->withContributors(['contributor1@example.com', 'contributor2@example.com'])
+                ->build(),
+        );
+        $supplierRepository->save(
+            (new SupplierBuilder())
+                ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f03')
+                ->withCode('other_supplier_code')
+                ->withLabel('Other supplier label')
+                ->build(),
+        );
 
         $supplier = $supplierRepository->find(
             Identifier::fromString(
@@ -123,18 +123,19 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
     public function itDeletesASupplierAndItsContributors(): void
     {
         $supplierRepository = $this->get(Repository::class);
-        $supplierRepository->save(Supplier::create(
-            '44ce8069-8da1-4986-872f-311737f46f02',
-            'supplier_code',
-            'Supplier label',
-            ['contributor1@example.com', 'contributor2@example.com'],
-        ));
-        $supplierRepository->save(Supplier::create(
-            '44ce8069-8da1-4986-872f-311737f46f01',
-            'other_supplier_code',
-            'Other supplier label',
-            [],
-        ));
+        $supplierRepository->save(
+            (new SupplierBuilder())
+                ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f02')
+                ->withContributors(['contributor1@example.com', 'contributor2@example.com'])
+                ->build(),
+        );
+        $supplierRepository->save(
+            (new SupplierBuilder())
+                ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f01')
+                ->withCode('other_supplier_code')
+                ->withLabel('Other supplier label')
+                ->build(),
+        );
 
         $this->get(Repository::class)->delete(
             Identifier::fromString(

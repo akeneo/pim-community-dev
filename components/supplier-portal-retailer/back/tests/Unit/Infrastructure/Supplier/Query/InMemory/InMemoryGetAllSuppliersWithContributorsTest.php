@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Infrastructure\Supplier\Query\InMemory;
 
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemoryGetAllSuppliersWithContributors;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
+use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use PHPUnit\Framework\TestCase;
 
 final class InMemoryGetAllSuppliersWithContributorsTest extends TestCase
@@ -26,21 +26,20 @@ final class InMemoryGetAllSuppliersWithContributorsTest extends TestCase
         $sut = new InMemoryGetAllSuppliersWithContributors($supplierRepository);
 
         $supplierRepository->save(
-            Supplier::create(
-                'ca8baefd-0e05-4683-be48-6b9ff87e4cbc',
-                'supplier1',
-                'Supplier1',
-                ['foo1@foo.bar', 'foo2@foo.bar'],
-            ),
+            (new SupplierBuilder())
+                ->withIdentifier('ca8baefd-0e05-4683-be48-6b9ff87e4cbc')
+                ->withCode('supplier1')
+                ->withLabel('Supplier1')
+                ->withContributors(['foo1@foo.bar', 'foo2@foo.bar'])
+                ->build(),
         );
 
         $supplierRepository->save(
-            Supplier::create(
-                'c6a23965-7e5d-4cf4-bdaa-41ddfe7481b1',
-                'supplier2',
-                'Supplier2',
-                [],
-            ),
+            (new SupplierBuilder())
+                ->withIdentifier('c6a23965-7e5d-4cf4-bdaa-41ddfe7481b1')
+                ->withCode('supplier2')
+                ->withLabel('Supplier2')
+                ->build(),
         );
 
         $suppliers = ($sut)();

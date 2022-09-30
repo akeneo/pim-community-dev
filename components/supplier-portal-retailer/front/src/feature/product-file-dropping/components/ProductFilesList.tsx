@@ -42,7 +42,7 @@ const ProductFilesList = ({
     const router = useRouter();
 
     const goToProductFile = (productFileIdentifier: string) => {
-        history.push(`/${productFileIdentifier}`);
+        history.push(`/product-file-dropping/${productFileIdentifier}`);
     };
 
     return (

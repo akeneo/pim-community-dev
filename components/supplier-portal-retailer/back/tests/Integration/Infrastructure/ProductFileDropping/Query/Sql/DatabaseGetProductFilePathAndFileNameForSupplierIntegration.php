@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\ProductFileDropping\Query\Sql;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileNameForSupplier;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
+use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
 
@@ -13,10 +15,22 @@ final class DatabaseGetProductFilePathAndFileNameForSupplierIntegration extends 
     /** @test */
     public function itDoesNotGetTheFilenameAndThePathIfTheProductFileIdentifierHasNotBeenUploadedByOneOfTheContributorsOfTheSupplierTheContributorConnectedBelongsTo(): void
     {
-        $this->createSupplier('44ce8069-8da1-4986-872f-311737f46f00', 'supplier_1', 'Supplier 1');
-        $this->createSupplier('bb2241e8-5242-4dbb-9d20-5e4e38514566', 'supplier_2', 'Supplier 2');
-        $this->createContributor('contributor+supplier1@example.com', '44ce8069-8da1-4986-872f-311737f46f00');
-        $this->createContributor('contributor+supplier2@example.com', 'bb2241e8-5242-4dbb-9d20-5e4e38514566');
+        $supplierRepository = $this->get(Repository::class);
+        $supplierRepository->save(
+            (new SupplierBuilder())
+                ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f00')
+                ->withCode('supplier_1')
+                ->withContributors(['contributor+supplier1@example.com'])
+                ->build(),
+        );
+        $supplierRepository->save(
+            (new SupplierBuilder())
+                ->withIdentifier('bb2241e8-5242-4dbb-9d20-5e4e38514566')
+                ->withCode('supplier_2')
+                ->withContributors(['contributor+supplier2@example.com'])
+                ->build(),
+        );
+
         $this->createProductFile(
             'de42d046-fd5a-4254-b5d5-bda2cb6543d2',
             'path/to/products_file_of_another_supplier.xlsx',
@@ -36,9 +50,15 @@ final class DatabaseGetProductFilePathAndFileNameForSupplierIntegration extends 
     /** @test */
     public function itGetsTheFilenameAndThePathForProductFilesIOrMyTeammatesDropped(): void
     {
-        $this->createSupplier('44ce8069-8da1-4986-872f-311737f46f00', 'supplier_1', 'Supplier 1');
-        $this->createContributor('contributor1+supplier1@example.com', '44ce8069-8da1-4986-872f-311737f46f00');
-        $this->createContributor('contributor2+supplier1@example.com', '44ce8069-8da1-4986-872f-311737f46f00');
+        $supplierRepository = $this->get(Repository::class);
+        $supplierRepository->save(
+            (new SupplierBuilder())
+                ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f00')
+                ->withCode('supplier_1')
+                ->withContributors(['contributor1+supplier1@example.com', 'contributor2+supplier1@example.com'])
+                ->build(),
+        );
+
         $this->createProductFile(
             'd5852c6a-a418-4d53-b744-8934e2d9f0fb',
             'path/to/products_file_contributor_2.xlsx',
@@ -52,23 +72,6 @@ final class DatabaseGetProductFilePathAndFileNameForSupplierIntegration extends 
                 'de42d046-fd5a-4254-b5d5-bda2cb6543d2',
                 '44ce8069-8da1-4986-872f-311737f46f00',
             ),
-        );
-    }
-
-    private function createSupplier(string $identifier, string $code, string $label): void
-    {
-        $sql = <<<SQL
-            INSERT INTO `akeneo_supplier_portal_supplier` (identifier, code, label)
-            VALUES (:identifier, :code, :label)
-        SQL;
-
-        $this->get(Connection::class)->executeQuery(
-            $sql,
-            [
-                'identifier' => $identifier,
-                'code' => $code,
-                'label' => $label,
-            ],
         );
     }
 
@@ -102,22 +105,6 @@ final class DatabaseGetProductFilePathAndFileNameForSupplierIntegration extends 
                 'supplierIdentifier' => $supplierIdentifier,
                 'uploadedAt' => (new \DateTimeImmutable())->format('Y-m-d H:i:s'),
                 'downloaded' => 0,
-            ],
-        );
-    }
-
-    private function createContributor(string $email, string $supplierIdentifier): void
-    {
-        $sql = <<<SQL
-            INSERT INTO `akeneo_supplier_portal_supplier_contributor` (email, supplier_identifier)
-            VALUES (:email, :supplierIdentifier)
-        SQL;
-
-        $this->get(Connection::class)->executeQuery(
-            $sql,
-            [
-                'email' => $email,
-                'supplierIdentifier' => $supplierIdentifier,
             ],
         );
     }

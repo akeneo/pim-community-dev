@@ -1,2 +1,1 @@
-export * from './supplier-management';
-export * from './product-file-dropping';
+export {RetailerApp} from './RetailerApp';

@@ -564,8 +564,8 @@ jobs:
               SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE="srnt-job-queue-data-maintenance-${CIRCLE_BRANCH_LOWER}"
               SUBSCRIPTION_JOB_QUEUE_SCHEDULED_JOB="srnt-job-queue-scheduled-job-${CIRCLE_BRANCH_LOWER}"
 
-              CLOUD_FUNCTION_NAME="srnt-job-publisher-${CIRCLE_BRANCH_LOWER}"
-              CLOUD_FUNCTION_BUCKET="srnt-job-publisher-${CIRCLE_BRANCH_LOWER}"
+              CLOUD_FUNCTION_NAME="srnt-job-publisher-${CIRCLE_BRANCH_LOWER}-${IMAGE_TAG}"
+              CLOUD_FUNCTION_BUCKET="srnt-job-publisher-${CIRCLE_BRANCH_LOWER}-${IMAGE_TAG}"
 
               echo export CIRCLE_BRANCH_LOWER=${CIRCLE_BRANCH_LOWER} >> $BASH_ENV
               echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
@@ -654,7 +654,7 @@ jobs:
               kubectl config set-context --current --namespace=argocd
               argocd login --core argocd.${GOOGLE_DOMAIN} --username admin --password ${ARGOCD_PASSWORD}
               argocd app get pim-${CIRCLE_BRANCH_LOWER} --hard-refresh --core
-              argocd app sync pim-${CIRCLE_BRANCH_LOWER} --core || (argocd app terminate-op pim-${CIRCLE_BRANCH_LOWER} --core && argocd app wait --operation pim-${CIRCLE_BRANCH_LOWER} --core && argocd app sync pim-${CIRCLE_BRANCH_LOWER} --core)
+              argocd app sync pim-${CIRCLE_BRANCH_LOWER} --core --prune|| (argocd app terminate-op pim-${CIRCLE_BRANCH_LOWER} --core  && argocd app wait --operation pim-${CIRCLE_BRANCH_LOWER} --core && argocd app sync pim-${CIRCLE_BRANCH_LOWER} --core --prune)
               echo "argocd app sync successfull"
 
               echo "============================"
