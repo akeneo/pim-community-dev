@@ -80,6 +80,8 @@ akeneo.tailored_import:
       multi_select_replacement:
         title: Remplacement des listes à choix multiple
         option_labels: Options du PIM
+      multi_reference_entity_replacement:
+        option_labels: Enregistrements du PIM
       categories_replacement:
         title: Remplacement des catégories
         modal:
