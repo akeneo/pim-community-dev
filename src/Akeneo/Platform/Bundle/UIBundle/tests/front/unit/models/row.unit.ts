@@ -10,7 +10,7 @@ import {ProductType} from '../../../../Resources/public/js/product/form/quantifi
 
 const productRow = {
   productType: ProductType.Product,
-  quantifiedLink: {quantity: 3, identifier: 'bag'},
+  quantifiedLink: {quantity: 3, uuid: '3fa79b52-5900-49e8-a197-1181f58ec3cb'},
   product: null,
   errors: [],
 };
@@ -23,7 +23,7 @@ const productModelRow = {
 };
 
 const product = {
-  id: 1,
+  id: '3fa79b52-5900-49e8-a197-1181f58ec3cb',
   identifier: 'bag',
   label: 'Nice bag',
   document_type: ProductType.Product,
@@ -63,15 +63,16 @@ describe('row', () => {
 
   it('should return the identifiers of the provided rows', () => {
     expect(getAssociationIdentifiers([productRow, productModelRow])).toEqual({
-      products: ['bag'],
+      products: ['3fa79b52-5900-49e8-a197-1181f58ec3cb'],
       product_models: ['braided-hat'],
     });
   });
 
   it('can filter a row on its label or identifier', () => {
-    expect(filterOnLabelOrIdentifier('b')(productRow)).toEqual(true);
-    expect(filterOnLabelOrIdentifier('ba')(productRow)).toEqual(true);
+    expect(filterOnLabelOrIdentifier('b')(productRow)).toEqual(false);
+    expect(filterOnLabelOrIdentifier('ba')(productRow)).toEqual(false);
     expect(filterOnLabelOrIdentifier('Nice')({...productRow, product})).toEqual(true);
+    expect(filterOnLabelOrIdentifier('ba')({...productRow, product})).toEqual(true);
     expect(filterOnLabelOrIdentifier('k')(productRow)).toEqual(false);
   });
 

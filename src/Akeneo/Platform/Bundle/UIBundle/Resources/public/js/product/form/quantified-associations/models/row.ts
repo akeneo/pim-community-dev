@@ -18,12 +18,12 @@ type Row = {
 
 const addProductToRows = (rows: Row[], products: Product[]): Row[] =>
   rows.map((row: Row) => {
-    const product = products.find(product => {
-      if (product.document_type === 'product') {
-        return product.id === getQuantifiedLinkIdentifier(row.quantifiedLink);
-      }
+    if (null === products) return {...row, product: null};
 
-      return product.identifier === getQuantifiedLinkIdentifier(row.quantifiedLink);
+    const product = products.find(product => {
+      const quantifiedLinkIdentifier = product.document_type === 'product' ? product.id : product.identifier;
+
+      return quantifiedLinkIdentifier === getQuantifiedLinkIdentifier(row.quantifiedLink);
     });
     if (undefined === product) return {...row, product: null};
 
@@ -43,14 +43,14 @@ const getAssociationIdentifiers = (rows: Row[]): AssociationIdentifiers =>
     }
   );
 
-const filterOnLabelOrIdentifier =
-  (searchValue: string) =>
-  (row: Row): boolean =>
-    (null !== row.product &&
-      null !== row.product.label &&
-      -1 !== row.product.label.toLowerCase().indexOf(searchValue.toLowerCase())) ||
-    (undefined !== getQuantifiedLinkIdentifier(row.quantifiedLink) &&
-      -1 !== getQuantifiedLinkIdentifier(row.quantifiedLink).toLowerCase().indexOf(searchValue.toLowerCase()));
+const filterOnLabelOrIdentifier = (searchValue: string) => (row: Row): boolean => {
+  if (null === row.product) {
+    return false;
+  }
+
+  return (null !== row.product.label && -1 !== row.product.label.toLowerCase().indexOf(searchValue.toLowerCase()))
+    || (null !== row.product.identifier && -1 !== row.product.identifier.toLowerCase().indexOf(searchValue.toLowerCase()));
+}
 
 const updateRowInCollection = (rows: Row[], {quantifiedLink, productType}: Row) =>
   rows.map(row => {
