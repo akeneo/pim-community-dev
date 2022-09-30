@@ -206,6 +206,7 @@ akeneo.tailored_import:
       property_should_exist: The property {{ property_code }} does not exist. Please either create it or choose a different target.
       source_configuration:
         unit_should_exist: The unit {{ unit_code }} does not exist for the measurement family {{ measurement_family }}. Please select a valid unit.
+        currency_should_not_be_null: Please select a currency.
         currency_should_be_active: The currency {{ currency_code }} is not linked to any channel.
         currency_should_be_active_on_channel: The currency {{ currency_code }} is not active for channel {{ channel_code }}.
     locale:
