@@ -15,6 +15,7 @@ use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\SupplierWithContri
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Exception\SupplierAlreadyExistsException;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierList;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
+use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
@@ -58,7 +59,13 @@ final class SupplierContext implements Context
             $contributorEmails[] = 'email'.$i.'@example.com';
         }
 
-        ($this->createSupplierHandler)(new CreateSupplier($code, $label ?: $code, $contributorEmails));
+        $this->supplierRepository->save(
+            (new SupplierBuilder())
+                ->withCode($code)
+                ->withLabel($label ?: $code)
+                ->withContributors($contributorEmails)
+                ->build(),
+        );
     }
 
     /**

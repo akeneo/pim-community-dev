@@ -7,13 +7,12 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Acceptance\Context;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CommentProductFile;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CommentProductFileHandler;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\InvalidComment;
-use Akeneo\SupplierPortal\Retailer\Application\Supplier\CreateSupplier;
-use Akeneo\SupplierPortal\Retailer\Application\Supplier\CreateSupplierHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithComments;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\InMemory\InMemoryRepository as InMemoryProductFileRepository;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository as InMemorySupplierRepository;
+use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
@@ -21,7 +20,6 @@ use PHPUnit\Framework\Assert;
 final class ProductFileDroppingContext implements Context
 {
     private string $productFileIdentifier;
-    private string $supplierIdentifier;
     private array $errors = [];
 
     public function __construct(
@@ -29,7 +27,6 @@ final class ProductFileDroppingContext implements Context
         private InMemoryProductFileRepository $productFileRepository,
         private CommentProductFileHandler $commentProductFileHandler,
         private GetProductFileWithComments $getProductFileWithComments,
-        private CreateSupplierHandler $createSupplierHandler,
     ) {
     }
 
@@ -38,10 +35,11 @@ final class ProductFileDroppingContext implements Context
      */
     public function aSupplier(): void
     {
-        ($this->createSupplierHandler)(new CreateSupplier('los_pollos_hermanos', 'Los Pollos Hermanos', []));
-
-        $supplier = $this->supplierRepository->findByCode('los_pollos_hermanos');
-        $this->supplierIdentifier = $supplier->identifier();
+        $this->supplierRepository->save(
+            (new SupplierBuilder())
+                ->withIdentifier('f7555f61-2ea6-4b0e-88f2-737e504e7b95')
+                ->build(),
+        );
     }
 
     /**
@@ -57,9 +55,9 @@ final class ProductFileDroppingContext implements Context
             'path/to/file.xlsx',
             'jimmy.punchline@los-pollos-hermanos.com',
             new Read\Model\Supplier(
-                $this->supplierIdentifier,
-                'los_pollos_hermanos',
-                'Los Pollos Hermanos',
+                'f7555f61-2ea6-4b0e-88f2-737e504e7b95',
+                'supplier_code',
+                'Supplier label',
             ),
         ));
     }
@@ -77,9 +75,9 @@ final class ProductFileDroppingContext implements Context
             'path/to/file.xlsx',
             'jimmy.punchline@los-pollos-hermanos.com',
             new Read\Model\Supplier(
-                $this->supplierIdentifier,
-                'los_pollos_hermanos',
-                'Los Pollos Hermanos',
+                'f7555f61-2ea6-4b0e-88f2-737e504e7b95',
+                'supplier_code',
+                'Supplier label',
             ),
         );
 
