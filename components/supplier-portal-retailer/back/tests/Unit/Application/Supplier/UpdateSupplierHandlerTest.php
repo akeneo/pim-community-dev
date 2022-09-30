@@ -9,9 +9,9 @@ use Akeneo\SupplierPortal\Retailer\Application\Supplier\Exception\SupplierDoesNo
 use Akeneo\SupplierPortal\Retailer\Application\Supplier\UpdateSupplier;
 use Akeneo\SupplierPortal\Retailer\Application\Supplier\UpdateSupplierHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorAdded;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
+use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -34,7 +34,13 @@ final class UpdateSupplierHandlerTest extends TestCase
         $validatorSpy = $this->getValidatorSpyWithNoError($command);
 
         $repository = new InMemoryRepository();
-        $repository->save(Supplier::create((string) $identifier, 'code', 'label', []));
+        $repository->save(
+            (new SupplierBuilder())
+                ->withIdentifier((string) $identifier)
+                ->withCode('code')
+                ->withLabel('label')
+                ->build(),
+        );
 
         $eventDispatcherSpy = $this->createMock(EventDispatcher::class);
 

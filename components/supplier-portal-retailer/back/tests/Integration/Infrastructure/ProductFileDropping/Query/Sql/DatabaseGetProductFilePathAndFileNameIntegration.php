@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\ProductFileDropping\Query\Sql;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileName;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
+use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
 
@@ -19,7 +21,12 @@ final class DatabaseGetProductFilePathAndFileNameIntegration extends SqlIntegrat
     /** @test */
     public function itGetsTheFilenameAndThePathFromAFileIdentifier(): void
     {
-        $this->createSupplier('44ce8069-8da1-4986-872f-311737f46f00', 'supplier_1', 'Supplier 1');
+        ($this->get(Repository::class))->save(
+            (new SupplierBuilder())
+                ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f00')
+                ->build(),
+        );
+
         $this->createProductFile(
             'ad54830a-aeae-4b57-8313-679a2327c5f7',
             'path/to/products_file_1.xlsx',
@@ -35,23 +42,6 @@ final class DatabaseGetProductFilePathAndFileNameIntegration extends SqlIntegrat
         static::assertSame(
             'path/to/products_file_1.xlsx',
             $productFile->path,
-        );
-    }
-
-    private function createSupplier(string $identifier, string $code, string $label): void
-    {
-        $sql = <<<SQL
-            INSERT INTO `akeneo_supplier_portal_supplier` (identifier, code, label)
-            VALUES (:identifier, :code, :label)
-        SQL;
-
-        $this->get(Connection::class)->executeQuery(
-            $sql,
-            [
-                'identifier' => $identifier,
-                'code' => $code,
-                'label' => $label,
-            ],
         );
     }
 

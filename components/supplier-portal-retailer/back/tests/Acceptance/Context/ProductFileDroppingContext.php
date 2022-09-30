@@ -10,9 +10,9 @@ use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\Inv
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithComments;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\InMemory\InMemoryRepository as InMemoryProductFileRepository;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository as InMemorySupplierRepository;
+use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
@@ -35,12 +35,11 @@ final class ProductFileDroppingContext implements Context
      */
     public function aSupplier(): void
     {
-        $this->supplierRepository->save(Write\Model\Supplier::create(
-            'f7555f61-2ea6-4b0e-88f2-737e504e7b95',
-            'los_pollos_hermanos',
-            'Los Pollos Hermanos',
-            [],
-        ));
+        $this->supplierRepository->save(
+            (new SupplierBuilder())
+                ->withIdentifier('f7555f61-2ea6-4b0e-88f2-737e504e7b95')
+                ->build(),
+        );
     }
 
     /**
@@ -57,8 +56,8 @@ final class ProductFileDroppingContext implements Context
             'jimmy.punchline@los-pollos-hermanos.com',
             new Read\Model\Supplier(
                 'f7555f61-2ea6-4b0e-88f2-737e504e7b95',
-                'los_pollos_hermanos',
-                'Los Pollos Hermanos',
+                'supplier_code',
+                'Supplier label',
             ),
         ));
     }
@@ -77,8 +76,8 @@ final class ProductFileDroppingContext implements Context
             'jimmy.punchline@los-pollos-hermanos.com',
             new Read\Model\Supplier(
                 'f7555f61-2ea6-4b0e-88f2-737e504e7b95',
-                'los_pollos_hermanos',
-                'Los Pollos Hermanos',
+                'supplier_code',
+                'Supplier label',
             ),
         );
 

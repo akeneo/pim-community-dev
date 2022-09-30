@@ -5,16 +5,29 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\ProductFileDropping\Query\Sql;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathsOfOldProductFiles;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
+use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
 
 final class DatabaseGetProductFilePathsOfOldProductFilesIntegration extends SqlIntegrationTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        ($this->get(Repository::class))->save(
+            (new SupplierBuilder())
+                ->withIdentifier('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7')
+                ->withCode('supplier_1')
+                ->build(),
+        );
+    }
+
     /** @test */
     public function itGetsNothingIfThereIsNoOldProductFiles(): void
     {
-        $this->createSupplier();
         $this->createNonOldSupplierProductFiles();
 
         static::assertEmpty($this->get(GetProductFilePathsOfOldProductFiles::class)());
@@ -23,23 +36,12 @@ final class DatabaseGetProductFilePathsOfOldProductFilesIntegration extends SqlI
     /** @test */
     public function itGetsTheProductFilePathsOfOldProductFiles(): void
     {
-        $this->createSupplier();
         $this->createSupplierProductFiles();
 
         $sut = $this->get(GetProductFilePathsOfOldProductFiles::class);
         $productFilePaths = ($sut)();
 
         static::assertEqualsCanonicalizing(['supplier-1/file3.xlsx', 'supplier-1/file4.xlsx'], $productFilePaths);
-    }
-
-    private function createSupplier(): void
-    {
-        $sql = <<<SQL
-            INSERT INTO akeneo_supplier_portal_supplier (identifier, code, label) 
-            VALUES ('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7', 'supplier-1', 'Supplier 1');
-        SQL;
-
-        $this->get(Connection::class)->executeStatement($sql);
     }
 
     private function createSupplierProductFiles(): void

@@ -7,6 +7,7 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Infrastructure\Supplier\Repos
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
+use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use PHPUnit\Framework\TestCase;
 
 final class InMemoryRepositoryTest extends TestCase
@@ -17,12 +18,9 @@ final class InMemoryRepositoryTest extends TestCase
         $supplierRepository = new InMemoryRepository();
 
         $supplierRepository->save(
-            Supplier::create(
-                '44ce8069-8da1-4986-872f-311737f46f02',
-                'supplier_code',
-                'Supplier code',
-                [],
-            ),
+            (new SupplierBuilder())
+                ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f02')
+                ->build(),
         );
 
         $supplier = $supplierRepository->find(
@@ -32,7 +30,7 @@ final class InMemoryRepositoryTest extends TestCase
         );
 
         static::assertSame('supplier_code', $supplier->code());
-        static::assertSame('Supplier code', $supplier->label());
+        static::assertSame('Supplier label', $supplier->label());
     }
 
     /** @test */
@@ -40,19 +38,12 @@ final class InMemoryRepositoryTest extends TestCase
     {
         $supplierRepository = new InMemoryRepository();
 
-        $supplierRepository->save(
-            Supplier::create(
-                '44ce8069-8da1-4986-872f-311737f46f02',
-                'supplier_code',
-                'Supplier code',
-                [],
-            ),
-        );
+        $supplierRepository->save((new SupplierBuilder())->build());
 
         $supplier = $supplierRepository->findByCode('supplier_code');
 
         static::assertSame('supplier_code', $supplier->code());
-        static::assertSame('Supplier code', $supplier->label());
+        static::assertSame('Supplier label', $supplier->label());
     }
 
     /** @test */
@@ -61,12 +52,11 @@ final class InMemoryRepositoryTest extends TestCase
         $supplierRepository = new InMemoryRepository();
 
         $supplierRepository->save(
-            Supplier::create(
-                '44ce8069-8da1-4986-872f-311737f46f02',
-                'new_supplier_code',
-                'New supplier code',
-                [],
-            ),
+            (new SupplierBuilder())
+                ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f02')
+                ->withCode('new_supplier_code')
+                ->withLabel('New supplier label')
+                ->build(),
         );
 
         $supplier = $supplierRepository->find(
@@ -76,7 +66,7 @@ final class InMemoryRepositoryTest extends TestCase
         );
 
         static::assertSame('new_supplier_code', $supplier->code());
-        static::assertSame('New supplier code', $supplier->label());
+        static::assertSame('New supplier label', $supplier->label());
     }
 
     /** @test */
@@ -94,20 +84,16 @@ final class InMemoryRepositoryTest extends TestCase
         $supplierRepository = new InMemoryRepository();
         $identifier = Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f02');
         $supplierRepository->save(
-            Supplier::create(
-                (string) $identifier,
-                'supplier_code',
-                'Supplier code',
-                [],
-            ),
+            (new SupplierBuilder())
+                ->withIdentifier((string) $identifier)
+                ->build(),
         );
         $supplierRepository->save(
-            Supplier::create(
-                '44ce8069-8da1-4986-872f-311737f46f01',
-                'supplier_code2',
-                'Supplier code2',
-                [],
-            ),
+            (new SupplierBuilder())
+                ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f01')
+                ->withCode('supplier_code2')
+                ->withLabel('Supplier code2')
+                ->build(),
         );
         $supplierRepository->delete($identifier);
 
