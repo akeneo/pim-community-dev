@@ -7,9 +7,6 @@ namespace Akeneo\Connectivity\Connection\Tests\Integration\Apps\EventSubscriber;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Events\InvalidCatalogDisabledEvent;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
-use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\EventSubscriber\NotifyOnDisabledCatalogEventSubscriber;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Notifier\DisabledCatalogNotifier;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Security\AclLoader;
 use Akeneo\Test\Integration\Configuration;
@@ -27,8 +24,6 @@ class NotifyOnDisabledCatalogEventSubscriberIntegration extends TestCase
     private UserLoader $userLoader;
     private AclLoader $aclLoader;
     private CommandBus $commandBus;
-    private QueryBus $queryBus;
-    private DisabledCatalogNotifier $disabledCatalogNotifier;
     private EventDispatcher $eventDispatcher;
 
     protected function getConfiguration(): Configuration
@@ -44,11 +39,13 @@ class NotifyOnDisabledCatalogEventSubscriberIntegration extends TestCase
         $this->userLoader = $this->get(UserLoader::class);
         $this->aclLoader = $this->get(AclLoader::class);
         $this->commandBus = $this->get(CommandBus::class);
-        $this->queryBus = $this->get(QueryBus::class);
-        $this->disabledCatalogNotifier = $this->get(DisabledCatalogNotifier::class);
         $this->eventDispatcher = $this->get('event_dispatcher');
     }
 
+    /**
+     * @throws \Throwable
+     * @throws \Doctrine\DBAL\Exception
+     */
     public function test_it_notify_when_an_invalid_catalog_disabled_event_is_dispatched(): void
     {
         $userAdmin = $this->createAdminUser();
@@ -68,11 +65,6 @@ class NotifyOnDisabledCatalogEventSubscriberIntegration extends TestCase
             $catalogId,
             'Store FR',
             'user_catalog_owner',
-        ));
-
-        $this->eventDispatcher->addSubscriber(new NotifyOnDisabledCatalogEventSubscriber(
-            $this->queryBus,
-            $this->disabledCatalogNotifier,
         ));
 
         $this->eventDispatcher->dispatch(new InvalidCatalogDisabledEvent($catalogId));

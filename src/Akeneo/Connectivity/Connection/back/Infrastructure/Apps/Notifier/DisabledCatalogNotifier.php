@@ -7,6 +7,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Notifier;
 use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Akeneo\Connectivity\Connection\Application\Apps\Notifier\DisabledCatalogNotifierInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindAllUsernamesWithAclQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindOneConnectedAppByUserIdentifierQueryInterface;
 use Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification;
 use Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
@@ -19,6 +20,7 @@ final class DisabledCatalogNotifier implements DisabledCatalogNotifierInterface
 {
     public function __construct(
         private FindAllUsernamesWithAclQueryInterface $findAllUsernamesWithAclQuery,
+        private FindOneConnectedAppByUserIdentifierQueryInterface $findOneConnectedAppByUserIdentifierQuery,
         private NotifierInterface $notifier,
     ) {
     }
@@ -32,17 +34,26 @@ final class DisabledCatalogNotifier implements DisabledCatalogNotifierInterface
 
     private function createNotification(Catalog $catalog): NotificationInterface
     {
+        $connectedApp = $this->findOneConnectedAppByUserIdentifierQuery->execute($catalog->getOwnerUsername());
+        if (null === $connectedApp) {
+            throw new \LogicException('Connected App not found.');
+        }
+
         $notification = new Notification();
         $notification
             ->setType('error')
             ->setMessage('pim_notification.disabled_catalog.message')
-            ->setMessageParams(['%catalog_name%' => $catalog->getName()])
-            ->setRoute('akeneo_connectivity_connection_connect_apps_v1_redirect_to_catalog')
-            ->setRouteParams(['connectionCode' => $catalog->getId()])
+            ->setMessageParams(['{{ catalog_name }}' => $catalog->getName()])
+            ->setRoute('akeneo_connectivity_connection_connect_connected_apps_catalogs_edit')
+            ->setRouteParams([
+                'connectionCode' => $connectedApp->getConnectionCode(),
+                'catalogId' => $catalog->getId(),
+            ])
             ->setContext([
                 'buttonLabel' => 'pim_notification.disabled_catalog.button_label',
                 'actionType' => 'disabled_catalog',
-            ]);
+            ])
+        ;
 
         return $notification;
     }
