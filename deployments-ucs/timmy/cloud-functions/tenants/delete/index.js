@@ -9,6 +9,7 @@
 
 require('dotenv').config();
 
+const crypto = require('crypto');
 const axios = require('axios');
 const {createLogger, format, transports} = require('winston');
 const functions = require('@google-cloud/functions-framework');
@@ -29,22 +30,45 @@ const FIRESTORE_STATUS = {
   DELETION_IN_PROGRESS: "deletion_in_progress"
 };
 
-function initializeLogger(gcpProjectId, logLevel, instanceName) {
+/**
+ * Ensure the presence of the required environment variables
+ * @param names list of required environment variables
+ */
+function requiredEnvironmentVariables(names) {
+  let envArr = {};
+  const missingVariables = [];
+
+  names.forEach(name => {
+    !process.env[name] && missingVariables.push(name);
+    envArr[name] = process.env[name];
+  });
+
+  if (missingVariables.length) {
+    throw new Error('Environment variables needed: ' + JSON.stringify(missingVariables));
+  }
+}
+
+
+function initializeLogger(instanceName) {
   logger = createLogger({
-    level: logLevel,
+    level: process.env.LOG_LEVEL,
     defaultMeta: {
+      id: crypto.randomUUID(),
       function: process.env.K_SERVICE || 'timmy-delete-tenant',
       revision: process.env.K_REVISION,
-      gcpProjectId: gcpProjectId,
+      gcpProjectId: process.env.GCP_PROJECT_ID,
+      gcpProjectFirestoreId: process.env.GCP_FIRESTORE_PROJECT_ID,
       tenant: instanceName
     },
     format: format.combine(
       format.timestamp({format: 'YYYY-MM-DD HH:mm:ss'}),
       format.printf(info => {
         return `${info.timestamp} ${info.level}: ${JSON.stringify({
+          id: info.id,
           function: info.function,
           revision: info.revision,
           gcpProjectId: info.gcpProjectId,
+          gcpProjectFirestoreId: info.gcpProjectFirestoreId,
           message: info.message,
           tenant: info.tenant
         })}`;
@@ -61,18 +85,6 @@ function initializeLogger(gcpProjectId, logLevel, instanceName) {
   });
 }
 
-/**
- * Ensure environment variable is not missing or undefined
- * @param name The name of the environment variable
- * @returns {string} The value of the environment variable
- */
-function loadEnvironmentVariable(name) {
-  if (!process.env[name]) {
-    throw new Error(`The environment variable ${name} is missing or undefined`);
-  }
-  return process.env[name];
-}
-
 function formatAxiosError(msg, error) {
   if (error.response) {
     msg += ' with ' + error.response.status + ' status code: ' + JSON.stringify(error.response.data);
@@ -86,20 +98,17 @@ function formatAxiosError(msg, error) {
 
 /**
  * Retrieve a token from the ArgoCD server
- * @param url the url of the ArgoCD server
- * @param username the username for authentication
- * @param password the password for authentication
  * @returns {Promise<string|number>} a token
  */
-async function getArgoCdToken(url, username, password) {
-  logger.info(`Authenticate with ${username} username to ArgoCD server ${url} to get a token`);
-  const resourceUrl = new URL('/api/v1/session', url);
+async function getArgoCdToken() {
+  logger.info(`Authenticate with ${process.env.ARGOCD_USERNAME} username to ArgoCD server ${process.env.ARGOCD_URL} to get a token`);
+  const url = new URL('/api/v1/session', process.env.ARGOCD_URL);
   const config = {httpsAgent: httpsAgent, headers: {'Content-Type': 'application/json'}};
-  const payload = JSON.stringify({username: username, password: password});
+  const payload = JSON.stringify({username: process.env.ARGOCD_USERNAME, password: process.env.ARGOCD_PASSWORD});
 
   try {
-    const resp = await axios.post(resourceUrl.toString(), payload, config);
-    const token = await resp.data.token
+    const resp = await axios.post(url.href.toString(), payload, config);
+    const token = resp.data.token
     if (!token) {
       const msg = 'The ArgoCD token is undefined';
       logger.error(msg);
@@ -115,22 +124,20 @@ async function getArgoCdToken(url, username, password) {
 
 /**
  * Terminate the current running operation on an ArgoCD application
- * @param url the ArgoCD server base url
  * @param token the token to authenticate to the ArgoCD server
  * @param appName the ArgoCD application name
  * @returns {Promise<void>}
  */
-async function terminateArgoCdAppOperation(url, token, appName) {
+async function terminateArgoCdAppOperation(token, appName) {
   logger.info(`Ask ArgoCD server terminating the currently running operation on the application`);
-  const path = `api/v1/applications/${appName}/operation`;
-  const resourceUrl = new URL(path, url).toString();
+  const url = new URL(`api/v1/applications/${appName}/operation`, process.env.ARGOCD_URL);
   const config = {
     httpsAgent: httpsAgent,
     headers: {'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json'}
   };
 
   try {
-    return Promise.resolve(await axios.delete(resourceUrl, config));
+    return Promise.resolve(await axios.delete(url.href.toString(), config));
   } catch (error) {
     const msg = formatAxiosError('Failed to ask ArgoCD to terminate operation on the application', error);
     logger.error(msg);
@@ -140,22 +147,20 @@ async function terminateArgoCdAppOperation(url, token, appName) {
 
 /**
  * Retrieve information of an ArgoCD application
- * @param url the ArgoCD server url
  * @param token the token to authenticate to the ArgoCD server
  * @param appName the ArgoCD application name
  * @returns {Promise<unknown>}
  */
-async function getArgoCdApp(url, token, appName) {
+async function getArgoCdApp(token, appName) {
   logger.info(`Retrieving information about the ArgoCD application`);
-  const path = `api/v1/applications/${appName}`;
-  const resourceUrl = new URL(path, url).toString();
+  const url = new URL(`api/v1/applications/${appName}`, process.env.ARGOCD_URL);
   const config = {
     httpsAgent: httpsAgent,
     headers: {'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json'}
   };
 
   try {
-    const resp = await axios.get(resourceUrl, config);
+    const resp = await axios.get(url.href.toString(), config);
     return Promise.resolve(resp.data);
   } catch (error) {
     const msg = formatAxiosError('Failed to get ArgoCD application info', error);
@@ -171,17 +176,16 @@ async function getArgoCdApp(url, token, appName) {
  * @param appName the application name to delete
  * @returns {Promise<void>}
  */
-async function deleteArgoCdApp(url, token, appName) {
+async function deleteArgoCdApp(token, appName) {
   logger.info('Ask ArgoCD server to delete the application');
-  const path = `/api/v1/applications/${appName}`
-  const resourceUrl = new URL(path, url).toString();
+  const url = new URL(`/api/v1/applications/${appName}`, process.env.ARGOCD_URL);
   const config = {
     httpsAgent: httpsAgent,
     headers: {'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json'}
   };
 
   try {
-    return Promise.resolve(await axios.delete(resourceUrl, config));
+    return Promise.resolve(await axios.delete(url.href.toString(), config));
   } catch (error) {
     const msg = formatAxiosError('Failed to ask ArgoCD to delete the application', error);
     logger.error(msg);
@@ -198,8 +202,8 @@ async function deleteArgoCdApp(url, token, appName) {
  * @param retryInterval the interval in seconds between each retry
  * @returns {Promise<void>}
  */
-async function ensureArgoCdAppIsDeleted(url, token, appName, maxRetries = 30, retryInterval = 10) {
-  const resourceUrl = new URL(`/api/v1/applications`, url).toString();
+async function ensureArgoCdAppIsDeleted(token, appName, maxRetries = 30, retryInterval = 10) {
+  const url = new URL(`/api/v1/applications`, process.env.ARGOCD_URL);
   const config = {
     httpsAgent: httpsAgent,
     headers: {'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json'}
@@ -216,7 +220,7 @@ async function ensureArgoCdAppIsDeleted(url, token, appName, maxRetries = 30, re
 
   try {
     logger.info('Verify that the deletion of the ArgoCD application is complete');
-    resp = await axios.get(resourceUrl, config);
+    resp = await axios.get(url.href.toString(), config);
     appNames = resp.data.items.map(x => x.metadata.name)
   } catch (error) {
     const msg = formatAxiosError(msg, error);
@@ -228,7 +232,7 @@ async function ensureArgoCdAppIsDeleted(url, token, appName, maxRetries = 30, re
     try {
       logger.info(`The ArgoCD application is still being deleted. Next check in ${retryInterval} seconds (${currentRetry}/${maxRetries} retries)`);
       await sleep(retryInterval * 1000);
-      resp = await axios.get(resourceUrl, config);
+      resp = await axios.get(url.href.toString(), config);
       appNames = resp.data.items.map(x => x.metadata.name);
 
       if (!appNames.includes(appName)) {
@@ -249,27 +253,27 @@ async function ensureArgoCdAppIsDeleted(url, token, appName, maxRetries = 30, re
   return Promise.reject(msg);
 }
 
-async function updateFirestoreDocStatus(firestore, collection, doc, status) {
+async function updateFirestoreDocStatus(firestore, doc, status) {
   try {
-    logger.info(`Update the ${doc} firestore document in ${collection} collection with ${status} status`);
-    return Promise.resolve(await firestore.collection(collection).doc(doc).set({
+    logger.info(`Update the ${doc} firestore document in ${process.env.TENANT_CONTEXT_COLLECTION_NAME} collection with ${status} status`);
+    return Promise.resolve(await firestore.collection(process.env.TENANT_CONTEXT_COLLECTION_NAME).doc(doc).set({
         status: status,
         status_date: new Date().toISOString()
     }, {merge: true}));
 
   } catch (error) {
-    const msg = `Failed to update the ${doc} firestore document in ${collection} collection: ${error}`;
+    const msg = `Failed to update the ${doc} firestore document in ${process.env.TENANT_CONTEXT_COLLECTION_NAME} collection: ${error}`;
     logger.error(msg);
     return Promise.reject(msg);
   }
 }
 
-async function deleteFirestoreDocument(firestore, collection, doc) {
+async function deleteFirestoreDocument(firestore, doc) {
   try {
-    logger.info(`Delete the ${doc} firestore document in ${collection} collection`);
-    await firestore.collection(collection).doc(doc).delete();
+    logger.info(`Delete the ${doc} firestore document in ${process.env.TENANT_CONTEXT_COLLECTION_NAME} collection`);
+    await firestore.collection(process.env.TENANT_CONTEXT_COLLECTION_NAME).doc(doc).delete();
   } catch (error) {
-    const msg = `Failed to delete the ${doc} firestore document in ${collection} collection: ${error}`
+    const msg = `Failed to delete the ${doc} firestore document in ${process.env.TENANT_CONTEXT_COLLECTION_NAME} collection: ${error}`
     logger.error(msg);
     return Promise.reject(msg);
   }
@@ -283,42 +287,44 @@ functions.http('deleteTenant', (req, res) => {
     throw new Error('The tenant name is missing in the url: https://function_url/:tenantName')
   }
 
-  const ARGOCD_USERNAME = loadEnvironmentVariable('ARGOCD_USERNAME');
-  const ARGOCD_PASSWORD = loadEnvironmentVariable('ARGOCD_PASSWORD');
-  const ARGOCD_URL = loadEnvironmentVariable('ARGOCD_URL');
-  const GCP_PROJECT_ID = loadEnvironmentVariable('GCP_PROJECT_ID');
-  const LOG_LEVEL = loadEnvironmentVariable('LOG_LEVEL');
-  const TENANT_CONTEXT = loadEnvironmentVariable('TENANT_CONTEXT');
-  const GCP_FIRESTORE_PROJECT_ID = loadEnvironmentVariable('GCP_FIRESTORE_PROJECT_ID');
+  requiredEnvironmentVariables([
+    'ARGOCD_PASSWORD',
+    'ARGOCD_URL',
+    'ARGOCD_USERNAME',
+    'GCP_FIRESTORE_PROJECT_ID',
+    'GCP_PROJECT_ID',
+    'LOG_LEVEL',
+    'TENANT_CONTEXT_COLLECTION_NAME',
+  ]);
 
-  initializeLogger(GCP_PROJECT_ID, LOG_LEVEL, instanceName);
+  initializeLogger(instanceName);
 
   logger.debug('Instantiate firestore instance');
   const firestore = new Firestore({
-    projectId: GCP_FIRESTORE_PROJECT_ID,
+    projectId: process.env.GCP_FIRESTORE_PROJECT_ID,
     timestampsInSnapshots: true
   });
 
 
   const deleteTenant = async () => {
-    await updateFirestoreDocStatus(firestore, TENANT_CONTEXT, instanceName, FIRESTORE_STATUS.DELETION_IN_PREPARATION);
-    const token = await getArgoCdToken(ARGOCD_URL, ARGOCD_USERNAME, ARGOCD_PASSWORD);
-    const app = await getArgoCdApp(ARGOCD_URL, token, instanceName)
+    await updateFirestoreDocStatus(firestore, instanceName, FIRESTORE_STATUS.DELETION_IN_PREPARATION);
+    const token = await getArgoCdToken();
+    const app = await getArgoCdApp(token, instanceName)
 
     // Operation on ArgoCD app needs to be terminated before deleting the app
     if (app['status']['operationState']['phase'] === 'Running') {
-      await terminateArgoCdAppOperation(ARGOCD_URL, token, instanceName);
+      await terminateArgoCdAppOperation(token, instanceName);
     }
 
-    await deleteArgoCdApp(ARGOCD_URL, token, instanceName);
-    await updateFirestoreDocStatus(firestore, TENANT_CONTEXT, instanceName, FIRESTORE_STATUS.DELETION_IN_PROGRESS);
-    await ensureArgoCdAppIsDeleted(ARGOCD_URL, token, instanceName);
+    await deleteArgoCdApp(token, instanceName);
+    await updateFirestoreDocStatus(firestore, instanceName, FIRESTORE_STATUS.DELETION_IN_PROGRESS);
+    await ensureArgoCdAppIsDeleted(token, instanceName);
   }
 
 
   deleteTenant(res)
     .then(async () => {
-      await deleteFirestoreDocument(firestore, TENANT_CONTEXT, instanceName);
+      await deleteFirestoreDocument(firestore, instanceName);
       logger.info('Successfully deleted the tenant');
       res.status(200).json({
         status_code: 200,
