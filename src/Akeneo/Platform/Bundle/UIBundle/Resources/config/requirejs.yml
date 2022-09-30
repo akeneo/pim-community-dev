@@ -705,6 +705,7 @@ config:
     pim/product-edit-form/download-pdf:                      pimui/js/product/form/download-pdf
     pim/product-edit-form/attributes:                        pimui/js/product/form/attributes
     pim/product-edit-form/creation/identifier:               pimui/js/product/form/creation/identifier
+    pim/product-edit-form/creation/identifier-regarding-family: pimui/js/product/form/creation/identifier-regarding-family
     pim/product-edit-form/free-trial-start-copy:             pimui/js/product/form/free-trial-start-copy
     pim/product-edit-form/start-copy:                        pimui/js/product/form/start-copy
     pim/product-edit-form/convert-to-simple-product:         pimui/js/product/form/convert-to-simple-product.ts
