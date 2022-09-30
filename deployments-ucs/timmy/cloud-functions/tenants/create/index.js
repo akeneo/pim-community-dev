@@ -402,7 +402,7 @@ async function updateFirestoreDoc(firestore, doc, status, context) {
   }
 
   try {
-    await firestore.collection(process.env.TENANT_CONTEXT).doc(doc).set(data);
+    await firestore.collection(process.env.TENANT_CONTEXT_COLLECTION_NAME).doc(doc).set(data);
   } catch (error) {
     const msg = `Failed to update \`${doc}\` Firestore document in \`${process.env.TENANT_CONTEXT_COLLECTION_NAME}\` collection: ${error}`;
     logger.error(msg);
@@ -674,12 +674,6 @@ functions.http('createTenant', (req, res) => {
             }
           },
           pim: {
-            api: {
-              namespace: 'pim'
-            },
-            web: {
-              namespace: 'pim'
-            },
             storage: {
               bucketName: pfid
             },

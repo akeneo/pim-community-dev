@@ -183,13 +183,14 @@ functions.http('requestPortal', (req, res) => {
   ]);
 
   // Prefix url with branch name if present
-  const BRANCH_NAME = req.body.branchName || '';
+  const branchName = req.body.branchName || '';
+  const pimNamespace = branchName.length ? `pim-${branchName.lowercase}` : 'pim';
 
-  initializeLogger(BRANCH_NAME);
+  initializeLogger(branchName);
   logger.info('Recovery of the tenants from the portal');
 
   const tenantsToCreate = async () => {
-    const tenants = await requestTenantsFromPortal(BRANCH_NAME, TENANT_STATUS.PENDING_CREATION, new URLSearchParams({
+    const tenants = await requestTenantsFromPortal(branchName, TENANT_STATUS.PENDING_CREATION, new URLSearchParams({
       subject_type: process.env.TENANT_EDITION_FLAGS,
       continent: process.env.TENANT_CONTINENT,
       environment: process.env.TENANT_ENVIRONMENT
@@ -212,6 +213,12 @@ functions.http('requestPortal', (req, res) => {
             lastName: administrator['last_name'],
             email: administrator['email'],
             uiLocale: cloudInstance['locale']
+          },
+          api: {
+            namespace: pimNamespace
+          },
+          web: {
+            namespace: pimNamespace
           }
         }
       };
@@ -228,7 +235,7 @@ functions.http('requestPortal', (req, res) => {
   }
 
   const tenantsToDelete = async () => {
-    const tenants = await requestTenantsFromPortal(BRANCH_NAME, TENANT_STATUS.PENDING_DELETION, new URLSearchParams({
+    const tenants = await requestTenantsFromPortal(branchName, TENANT_STATUS.PENDING_DELETION, new URLSearchParams({
       subject_type: process.env.TENANT_EDITION_FLAGS,
       continent: process.env.TENANT_CONTINENT,
       environment: process.env.TENANT_ENVIRONMENT
@@ -251,7 +258,7 @@ functions.http('requestPortal', (req, res) => {
 
   const dispatchActions = async () => {
     logger.info('Dispatch action to provisioning cloud functions');
-    await Promise.all([tenantsToCreate(), tenantsToDelete()]);
+    await Promise.all([tenantsToCreate()]);
   }
 
   dispatchActions(res)
