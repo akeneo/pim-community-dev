@@ -29,6 +29,7 @@ define([
         .then((shouldDisplay) => {
         if (!shouldDisplay) {
           this.$el.html('');
+          this.updateModel({target: {value: undefined}});
 
           return this;
         }
