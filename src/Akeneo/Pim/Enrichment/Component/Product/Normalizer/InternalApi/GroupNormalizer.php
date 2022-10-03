@@ -35,26 +35,11 @@ class GroupNormalizer implements NormalizerInterface, CacheableSupportsMethodInt
     public function normalize($group, $format = null, array $context = [])
     {
         $normalizedGroup = $this->groupNormalizer->normalize($group, 'standard', $context);
-
         $normalizedGroup['products'] = $this->findProductUuids->forGroupId($group->getId());
-
-        $firstVersion = $this->versionManager->getOldestLogEntry($group);
-        $lastVersion = $this->versionManager->getNewestLogEntry($group);
-
-        $firstVersion = null !== $firstVersion ?
-            $this->versionNormalizer->normalize($firstVersion, 'internal_api') :
-            null;
-        $lastVersion = null !== $lastVersion ?
-            $this->versionNormalizer->normalize($lastVersion, 'internal_api') :
-            null;
-
         $normalizedGroup['meta'] = [
             'id' => $group->getId(),
             'form' => 'pim-group-edit-form',
-            'structure_version' => $this->structureVersionProvider->getStructureVersion(),
             'model_type' => 'group',
-            'created' => $firstVersion,
-            'updated' => $lastVersion,
         ];
 
         return $normalizedGroup;
