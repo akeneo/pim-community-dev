@@ -488,7 +488,7 @@ class ApiContext implements Context
     {
         $payload = \json_decode($this->response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
-        Assert::assertFalse(array_key_exists('_embedded', $payload));
-        Assert::assertTrue(array_key_exists('message', $payload));
+        Assert::assertFalse(\array_key_exists('_embedded', $payload));
+        Assert::assertTrue(\array_key_exists('message', $payload));
     }
 }
