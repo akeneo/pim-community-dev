@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-10567: Fix price proposal uncorrectly displayed after value is copied/pasted in product from a draft proposed
+
 # 5.0.114 (2022-09-20)
 
 ## Bug fixes
@@ -21,7 +25,6 @@
 ## Bug fixes
 
 - PIM-10586: [Backport PIM-10436] Always process a IccStripOperation in AM transformation pipeline
-- PIM-10567: Fix price proposal uncorrectly displayed after value is copied/pasted in product from a draft proposed
 
 # 5.0.109 (2022-08-23)
 
