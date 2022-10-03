@@ -39,7 +39,7 @@ variable "enable_config_connector" {
 variable "node_pool_configs" {
   description = "Map of the configs of node pools"
   type        = map(map(string))
-  default     = {
+  default = {
     "default" = {
       name              = "default"
       preemptible       = false
@@ -54,7 +54,7 @@ variable "node_pool_configs" {
 variable "node_pool_labels" {
   description = "Map of labels to apply on node pools"
   type        = map(map(string))
-  default     = {
+  default = {
     "default" = {
       "node-type" = "default"
     }
@@ -64,7 +64,7 @@ variable "node_pool_labels" {
 variable "node_pool_tags" {
   description = "Map of network tags to apply on node pools"
   type        = map(list(string))
-  default     = {
+  default = {
     "default" = []
   }
 }
@@ -72,7 +72,7 @@ variable "node_pool_tags" {
 variable "node_pools_taints" {
   type        = map(list(object({ key = string, value = string, effect = string })))
   description = "Map of lists containing node taints by node-pool name"
-  default     = {
+  default = {
     default = []
   }
 }

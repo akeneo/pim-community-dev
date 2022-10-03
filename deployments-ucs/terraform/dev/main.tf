@@ -1,6 +1,7 @@
 locals {
   host_project_id         = "akecld-prd-shared-infra"
   shared_vpc_name         = "akecld-prd-shared-infra-dev-xpn"
+  shared_project_id       = "akecld-prd-pim-saas-shared"
   project_id              = "akecld-prd-pim-saas-dev"
   ci_sa                   = "main-service-account@${local.project_id}.iam.gserviceaccount.com"
   admins                  = ["group:phoenix-squad@akeneo.com"]
@@ -9,6 +10,8 @@ locals {
   firestore_database_type = "CLOUD_FIRESTORE"
   public_zone             = "pim-saas-dev.dev.cloud.akeneo.com"
   private_zone            = "pim-saas-dev.dev.local"
+  ci_zone                 = "ci.pim.akeneo.cloud"
+  shared_zone_name        = "pim-akeneo-cloud"
 }
 
 module "iam" {
@@ -36,9 +39,9 @@ module "firestore_us" {
 module "secrets" {
   source     = "../modules/secrets"
   project_id = local.project_id
-  secrets    = [
+  secrets = [
     {
-      name    = "ARGOCD_USERNAME"
+      name = "ARGOCD_USERNAME"
       members = [
         "serviceAccount:${module.iam.portal_function_sa_email}"
       ]
@@ -48,7 +51,7 @@ module "secrets" {
       }
     },
     {
-      name    = "ARGOCD_PASSWORD"
+      name = "ARGOCD_PASSWORD"
       members = [
         "serviceAccount:${module.iam.portal_function_sa_email}"
       ],
@@ -58,7 +61,7 @@ module "secrets" {
       }
     },
     {
-      name    = "MAILER_API_KEY"
+      name = "MAILER_API_KEY"
       members = [
         "serviceAccount:${module.iam.portal_function_sa_email}"
       ]
@@ -67,7 +70,7 @@ module "secrets" {
       }
     },
     {
-      name    = "TIMMY_PORTAL"
+      name = "TIMMY_PORTAL"
       members = [
         "serviceAccount:${module.iam.portal_function_sa_email}"
       ]
@@ -190,6 +193,17 @@ module "public_dns" {
   source     = "../modules/public-dns"
   project_id = local.project_id
   zone_name  = local.public_zone
+}
+
+module "public_ci_dns" {
+  source     = "../modules/public-dns"
+  project_id = local.project_id
+  zone_name  = local.ci_zone
+
+  forward = {
+    target_project_id = local.shared_project_id
+    target_zone_name  = local.shared_zone_name
+  }
 }
 
 module "private_dns" {

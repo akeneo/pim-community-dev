@@ -14,9 +14,9 @@ resource "google_service_account_iam_binding" "timmy_cloud_function_sa_usage" {
 }
 
 resource "google_project_iam_custom_role" "timmy_cloud_function" {
-  project = var.project_id
-  role_id = "timmy_cloud_function.role"
-  title   = "Timmy Cloud Function Role"
+  project     = var.project_id
+  role_id     = "timmy_cloud_function.role"
+  title       = "Timmy Cloud Function Role"
   description = "Role for executing Timmy cloud functions"
   permissions = [
     "cloudfunctions.functions.call",

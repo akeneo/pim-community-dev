@@ -1,28 +1,33 @@
 locals {
-  project_id                   = "akecld-prd-pim-saas-shared"
-  main_sa                      = "main-service-account@${local.project_id}.iam.gserviceaccount.com"
-  ci_sa                        = "main-service-account@akecld-prd-pim-saas-dev.iam.gserviceaccount.com"
-  admins                       = [
+  project_id = "akecld-prd-pim-saas-shared"
+  main_sa    = "main-service-account@${local.project_id}.iam.gserviceaccount.com"
+  ci_sa      = "main-service-account@akecld-prd-pim-saas-dev.iam.gserviceaccount.com"
+  admins = [
     "group:phoenix-squad@akeneo.com",
     "serviceAccount:ci-service-account@akecld-prd-pim-saas-dev.iam.gserviceaccount.com" # To be able to push image in the registry
   ]
-  viewers                      = [
+  viewers = [
     "serviceAccount:argocd@akecld-prd-pim-saas-dev.iam.gserviceaccount.com",
     "serviceAccount:gke-sa@akecld-prd-pim-saas-dev.iam.gserviceaccount.com",
     "serviceAccount:cluster-bootstrap@akecld-prd-pim-saas-dev.iam.gserviceaccount.com",
+  ]
+  dns_delegated_projects = [
+    "akecld-prd-pim-saas-dev",
+    "akecld-prd-pim-saas-sandbox"
   ]
   cloudbuild_github_repository = "pim-enterprise-dev"
   cloudbuild_github_branch     = "master"
   region                       = "europe-west1"
   multi_region                 = "EU"
+  shared_dns_zone              = "pim.akeneo.cloud"
 }
 
 module "secrets" {
   source     = "../modules/secrets"
   project_id = local.project_id
-  secrets    = [
+  secrets = [
     {
-      name    = "DATADOG_API_KEY"
+      name = "DATADOG_API_KEY"
       members = [
         "serviceAccount:${local.main_sa}"
       ]
@@ -31,7 +36,7 @@ module "secrets" {
       }
     },
     {
-      name    = "ARGOCD_GITHUB_TOKEN"
+      name = "ARGOCD_GITHUB_TOKEN"
       members = [
         "serviceAccount:${local.main_sa}"
       ],
@@ -111,6 +116,13 @@ module "cloud_build_cluster_pim_saas_dev_europe_west3" {
   cloudbuild_github_repository = local.cloudbuild_github_repository
   cloudbuild_github_branch     = local.cloudbuild_github_branch
   cloudbuild_service_account   = local.main_sa
+}
+
+module "shared_dns_zone" {
+  source     = "../modules/shared-dns-zone"
+  project_id = local.project_id
+  zone_name  = local.shared_dns_zone
+  admins     = formatlist("serviceAccount:main-service-account@%s.iam.gserviceaccount.com", local.dns_delegated_projects)
 }
 
 terraform {
