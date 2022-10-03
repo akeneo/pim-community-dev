@@ -85,7 +85,7 @@ final class NonExistingReferenceEntitiesMultiSelectFilter implements NonExistent
                 foreach ($productData['values'] as $channel => $valuesIndexedByLocale) {
                     foreach ($valuesIndexedByLocale as $locale => $value) {
                         if (is_array($value)) {
-                            $multiSelectValues[$channel][$locale] = array_uintersect($value, $recordCodes[$referenceEntityIdentifier] ?? [], 'strcasecmp');
+                            $multiSelectValues[$channel][$locale] = array_values(array_uintersect($value, $recordCodes[$referenceEntityIdentifier] ?? [], 'strcasecmp'));
                         }
                     }
                 }

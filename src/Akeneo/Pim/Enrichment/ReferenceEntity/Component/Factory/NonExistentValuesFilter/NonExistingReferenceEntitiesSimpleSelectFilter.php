@@ -56,14 +56,14 @@ final class NonExistingReferenceEntitiesSimpleSelectFilter implements NonExisten
             foreach ($productData as $productValues) {
                 $singleLinkValues = [];
                 $referenceEntityIdentifier = strtolower($productValues['properties']['reference_data_name']);
-                array_walk_recursive($recordCodes, 'strtolower');
+                $existingRecordCodesForAttribute = array_map('strtolower', $recordCodes[$referenceEntityIdentifier]);
 
                 foreach ($productValues['values'] as $channel => $valuesIndexedByLocale) {
                     foreach ($valuesIndexedByLocale as $locale => $value) {
                         if (!is_array($value)) {
                             if (
                                 isset($recordCodes[$referenceEntityIdentifier])
-                                && in_array(strtolower($value), $recordCodes[$referenceEntityIdentifier])
+                                && in_array(strtolower($value), $existingRecordCodesForAttribute)
                             ) {
                                 $singleLinkValues[$channel][$locale] = $value;
                             } else {
