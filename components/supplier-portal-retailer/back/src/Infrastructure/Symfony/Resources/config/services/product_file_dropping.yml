@@ -70,6 +70,10 @@ services:
             - '@event_dispatcher'
             - '@monolog.logger.supplier_portal'
 
+    Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CommentProductFileHandlerForSupplier:
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'
+
     Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFileHandler:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'

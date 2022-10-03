@@ -20,3 +20,10 @@ supplier_portal_supplier_download_file:
     requirements:
         identifier: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
     methods: GET
+
+supplier_portal_supplier_comment_product_file:
+    path: /product-files/{productFileIdentifier}/comment
+    defaults:
+        _controller: Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Controller\CommentProductFile
+        _feature: supplier_portal_critical_path_collaborate
+    methods: POST
