@@ -73,6 +73,7 @@
 - PIM-10621: Fix API returning an empty list instead of an empty object for published products
 - PIM-10613: Fix no purge done on the DQI when deleting option for multi-select and simple-select attributes
 - PIM-10627: Fix Job executions permissions for 'mass_edit','quick_export','mass_delete'
+- PIM-10656: Fix asset collection sorting in PEF is not case-insensitive
 - PIM-10645: Fix tailored imports removes the prefix zeros on data
 
 ## Improvements

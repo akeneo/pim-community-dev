@@ -179,7 +179,11 @@ export const sortAssetCollection = <T extends ListAsset = ListAsset>(
   assetCollection: T[],
   assetCodes: AssetCode[]
 ): T[] => {
-  return [...assetCollection].sort((a, b) => assetCodes.indexOf(a.code) - assetCodes.indexOf(b.code));
+  const sanitizedAssetCodes = assetCodes.map(assetCode => assetCode.toLowerCase());
+  const sanitizedSortAssetCollection = (a: T, b: T) =>
+    sanitizedAssetCodes.indexOf(a.code.toLowerCase()) - sanitizedAssetCodes.indexOf(b.code.toLowerCase());
+
+  return [...assetCollection].sort(sanitizedSortAssetCollection);
 };
 
 export default ListAsset;
