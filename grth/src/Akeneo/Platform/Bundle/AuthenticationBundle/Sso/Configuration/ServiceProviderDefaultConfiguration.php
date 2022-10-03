@@ -45,7 +45,7 @@ class ServiceProviderDefaultConfiguration implements ServiceProviderDefaultConfi
         return ServiceProvider::fromArray([
             'entityId'    => sprintf('%s/saml/metadata', $this->akeneoPimUrl),
             'certificate' => $serviceProviderPublicKey,
-            'privateKey'  => $serviceProviderPrivateKey
+            'privateKey'  => $serviceProviderPrivateKey->toString('PKCS1')
         ]);
     }
 }
