@@ -35,7 +35,7 @@ class ProductNormalizerIntegration extends TestCase
             'created'                 => '2016-06-14T13:12:50+02:00',
             'updated'                 => '2016-06-14T13:12:50+02:00',
             'associations'            => new \StdClass(),
-            'quantified_associations' => [],
+            'quantified_associations' => new \StdClass(),
         ];
 
         $this->assertProduct('bar', $expected, []);
@@ -54,7 +54,7 @@ class ProductNormalizerIntegration extends TestCase
             'created'                 => '2016-06-14T13:12:50+02:00',
             'updated'                 => '2016-06-14T13:12:50+02:00',
             'associations'            => new \StdClass(),
-            'quantified_associations' => [],
+            'quantified_associations' => new \StdClass(),
         ];
 
         $this->assertProduct('baz', $expected, []);

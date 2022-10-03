@@ -34,8 +34,8 @@ class AddQuantifiedAssociationsToProductModelEndToEnd extends AbstractProductMod
     {
         $client = $this->createAuthenticatedClient();
         $this->createQuantifiedAssociationType('PRODUCTSET');
-        $this->createProduct('chair', []);
-        $this->createProduct('table', []);
+        $chair = $this->createProduct('chair', []);
+        $table = $this->createProduct('table', []);
         $this->createProductModel([
             'code' => 'umbrella',
             'family_variant' => 'familyVariantA1',
@@ -75,8 +75,8 @@ JSON;
             'quantified_associations' => [
                 'PRODUCTSET' => [
                     'products' => [
-                        ['identifier' => 'chair', 'quantity' => 4],
-                        ['identifier' => 'table', 'quantity' => 1],
+                        ['identifier' => 'chair', 'quantity' => 4, 'uuid' => (string) $chair->getUuid()],
+                        ['identifier' => 'table', 'quantity' => 1, 'uuid' => (string) $table->getUuid()],
                     ],
                     'product_models' => [
                         ['identifier' => 'umbrella', 'quantity' => 1],

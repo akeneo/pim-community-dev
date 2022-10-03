@@ -334,8 +334,9 @@ JSON;
             'quantified_associations' => [
                 'QUANTIFIEDASSOCIATION' => [
                     'products' => [[
-                        'uuid' => $this->getProductUuidFromIdentifier('simple')->toString(),
+                        'identifier' => 'simple',
                         'quantity' => 12,
+                        'uuid' => $this->getProductUuidFromIdentifier('simple')->toString(),
                     ]],
                     'product_models' => [],
                 ]
@@ -1135,21 +1136,6 @@ JSON;
         $response = $client->getResponse();
 
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
-    }
-
-    /**
-     * @param array  $expectedProduct normalized data of the product that should be created
-     * @param string $identifier identifier of the product that should be created
-     */
-    protected function assertSameProducts(array $expectedProduct, $identifier): void
-    {
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
-        $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
-
-        NormalizedProductCleaner::clean($standardizedProduct);
-        NormalizedProductCleaner::clean($expectedProduct);
-
-        $this->assertSame($expectedProduct, $standardizedProduct);
     }
 
     /**
