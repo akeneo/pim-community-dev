@@ -4,7 +4,6 @@ define([
   'jquery',
   'underscore',
   'backgrid',
-  'translator-lib',
   'oro/translator',
   'oro/mediator',
   'oro/loading-mask',
@@ -20,7 +19,6 @@ define([
   $,
   _,
   Backgrid,
-  Translator,
   __,
   mediator,
   LoadingMask,
@@ -391,7 +389,7 @@ define([
       ).toLowerCase();
       let key = _.isEmpty(this.collection.state.filters) ? 'pim_datagrid.no_entities' : 'pim_datagrid.no_results';
 
-      if (Translator.has('jsmessages:' + key + '.' + entityHint)) {
+      if (__(key + '.' + entityHint) !== key + '.' + entityHint) {
         key += '.' + entityHint;
       }
 

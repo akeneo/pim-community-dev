@@ -14,3 +14,8 @@ services:
         arguments:
             - '@database_connection'
             - '@Akeneo\Platform\Job\Infrastructure\Hydrator\JobExecutionRowHydrator'
+
+    Akeneo\Platform\Job\ServiceApi\JobInstance\FindJobInstanceInterface:
+        class: Akeneo\Platform\Job\Infrastructure\Query\SqlFindJobInstance
+        arguments:
+            - '@database_connection'

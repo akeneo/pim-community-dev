@@ -27,6 +27,14 @@ beforeEach(() => {
             url: '/rest/catalogs/locales?codes=de_DE',
             json: [DE],
         },
+        {
+            url: '/rest/catalogs/locales?codes=en_US',
+            json: [EN],
+        },
+        {
+            url: '/rest/catalogs/locales?codes=',
+            json: [],
+        },
     ]);
 });
 
