@@ -19,11 +19,14 @@ class MeasurementFamilyValidatorSpec extends ObjectBehavior
         $measurement = [
             'values' => null,
             'foo' => 'bar',
+            'code' => 1,
+            'units' => true,
+            'standard_unit_code' => [],
         ];
 
         $errors = $this->validate($measurement);
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(5);
+        $errors->shouldHaveCount(4);
     }
 
     function it_returns_an_empty_array_if_all_the_measurement_family_properties_are_valid()
