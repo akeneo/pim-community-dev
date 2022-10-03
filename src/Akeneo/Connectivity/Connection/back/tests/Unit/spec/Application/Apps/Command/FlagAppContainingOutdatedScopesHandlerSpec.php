@@ -6,8 +6,8 @@ namespace spec\Akeneo\Connectivity\Connection\Application\Apps\Command;
 
 use Akeneo\Connectivity\Connection\Application\Apps\Command\FlagAppContainingOutdatedScopesCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\FlagAppContainingOutdatedScopesHandler;
+use Akeneo\Connectivity\Connection\Application\Apps\Notifier\AuthorizationRequestNotifierInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Security\ScopeMapperRegistryInterface;
-use Akeneo\Connectivity\Connection\Application\Apps\Service\AuthorizationRequestNotifierInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\SaveConnectedAppOutdatedScopesFlagQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\ScopeListComparator;

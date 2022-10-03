@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Service;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Notifier;
 
-use Akeneo\Connectivity\Connection\Application\Apps\Service\AuthorizationRequestNotifierInterface;
+use Akeneo\Connectivity\Connection\Application\Apps\Notifier\AuthorizationRequestNotifierInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindAllUsernamesWithAclQueryInterface;
 use Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification;

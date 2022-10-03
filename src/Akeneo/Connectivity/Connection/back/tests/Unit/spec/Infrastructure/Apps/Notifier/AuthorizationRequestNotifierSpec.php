@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\Service;
+namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\Notifier;
 
-use Akeneo\Connectivity\Connection\Application\Apps\Service\AuthorizationRequestNotifierInterface;
+use Akeneo\Connectivity\Connection\Application\Apps\Notifier\AuthorizationRequestNotifierInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindAllUsernamesWithAclQueryInterface;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Service\AuthorizationRequestNotifier;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Notifier\AuthorizationRequestNotifier;
 use Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
 use PhpSpec\ObjectBehavior;

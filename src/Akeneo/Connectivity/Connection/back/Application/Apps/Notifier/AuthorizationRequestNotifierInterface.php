@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Application\Apps\Service;
+namespace Akeneo\Connectivity\Connection\Application\Apps\Notifier;
 
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
 

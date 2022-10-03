@@ -7,6 +7,7 @@ namespace Akeneo\Connectivity\Connection\Tests\Integration\Apps\EventSubscriber;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Events\InvalidCatalogDisabledEvent;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Security\AclLoader;
 use Akeneo\Test\Integration\Configuration;
@@ -24,6 +25,7 @@ class NotifyOnDisabledCatalogEventSubscriberIntegration extends TestCase
     private UserLoader $userLoader;
     private AclLoader $aclLoader;
     private CommandBus $commandBus;
+    private ConnectedAppLoader $connectedAppLoader;
     private EventDispatcher $eventDispatcher;
 
     protected function getConfiguration(): Configuration
@@ -39,6 +41,7 @@ class NotifyOnDisabledCatalogEventSubscriberIntegration extends TestCase
         $this->userLoader = $this->get(UserLoader::class);
         $this->aclLoader = $this->get(AclLoader::class);
         $this->commandBus = $this->get(CommandBus::class);
+        $this->connectedAppLoader = $this->get('akeneo_connectivity.connection.fixtures.connected_app_loader');
         $this->eventDispatcher = $this->get('event_dispatcher');
     }
 
@@ -48,14 +51,17 @@ class NotifyOnDisabledCatalogEventSubscriberIntegration extends TestCase
      */
     public function test_it_notify_when_an_invalid_catalog_disabled_event_is_dispatched(): void
     {
+        $this->connectedAppLoader->createConnectedAppWithUserAndTokens(
+            '2677e764-f852-4956-bf9b-1a1ec1b0d145',
+            'shopifi',
+        );
         $userAdmin = $this->createAdminUser();
-        $userCatalogOwner = $this->userLoader->createUser('user_catalog_owner', ['userGroupA'], ['ROLE_APP_A']);
-        $userWithManageAppAcl = $this->userLoader->createUser('user_with_manage_app_acl', ['userGroupB'], ['ROLE_APP_B']);
+        $userWithManageAppAcl = $this->userLoader->createUser('user_with_manage_app_acl', ['userGroupB'], ['ROLE_APP']);
         $userWithoutManageAppAcl = $this->userLoader->createUser('user_without_manage_app_acl', ['userGroupC'], ['ROLE_USER']);
-
+        $owner = $this->getOwnerByConnectedAppId('2677e764-f852-4956-bf9b-1a1ec1b0d145');
         $this->aclLoader->addAclToRoles('akeneo_connectivity_connection_manage_apps', [
-            'ROLE_APP_A',
-            'ROLE_APP_B',
+            'ROLE_SHOPIFI',
+            'ROLE_APP',
             'ROLE_ADMINISTRATOR'
         ]);
 
@@ -64,14 +70,14 @@ class NotifyOnDisabledCatalogEventSubscriberIntegration extends TestCase
         $this->commandBus->execute(new CreateCatalogCommand(
             $catalogId,
             'Store FR',
-            'user_catalog_owner',
+            $owner['username'],
         ));
 
         $this->eventDispatcher->dispatch(new InvalidCatalogDisabledEvent($catalogId));
 
         $this->assertNotificationExistsForUsers([
             $userAdmin->getId(),
-            $userCatalogOwner->getId(),
+            $owner['user_id'],
             $userWithManageAppAcl->getId(),
         ]);
 
@@ -120,5 +126,23 @@ class NotifyOnDisabledCatalogEventSubscriberIntegration extends TestCase
             ['userIds' => $userIds],
             ['userIds' => Connection::PARAM_INT_ARRAY]
         );
+    }
+
+    private function getOwnerByConnectedAppId(string $connectedAppId): array
+    {
+        $query = <<<SQL
+            SELECT
+                   user_id,
+                   username
+            FROM akeneo_connectivity_connected_app
+            INNER JOIN akeneo_connectivity_connection ON akeneo_connectivity_connected_app.connection_code = akeneo_connectivity_connection.code
+            INNER JOIN oro_user ON oro_user.id = user_id
+            WHERE 
+                  akeneo_connectivity_connected_app.id = :connectedAppId
+        SQL;
+
+        return $this->connection->fetchAssociative($query, [
+            'connectedAppId' => $connectedAppId,
+        ]);
     }
 }
