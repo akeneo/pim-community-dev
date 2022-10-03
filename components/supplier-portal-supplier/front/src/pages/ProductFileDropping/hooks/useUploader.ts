@@ -1,7 +1,7 @@
 import {useBooleanState} from 'akeneo-design-system';
 import {BadRequestError} from '../../../api/BadRequestError';
 
-const uploadUrl = '/supplier-portal/upload-product-file';
+const uploadUrl = '/supplier-portal/product-file/upload';
 
 type ErrorResponse = {error: string};
 

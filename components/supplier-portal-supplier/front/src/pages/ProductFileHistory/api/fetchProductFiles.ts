@@ -3,7 +3,7 @@ import {ProductFile} from '../model/ProductFile';
 import {Comment} from '../model/Comment';
 
 const fetchProductFiles = async (): Promise<ProductFile[]> => {
-    const response: any = await apiFetch(`/supplier-portal/product-files`);
+    const response: any = await apiFetch(`/supplier-portal/product-file/`);
 
     return response.map((item: any) => {
         return {

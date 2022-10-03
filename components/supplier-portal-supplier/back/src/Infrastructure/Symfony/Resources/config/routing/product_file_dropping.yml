@@ -1,19 +1,19 @@
 supplier_portal_upload_product_file:
-    path: /upload-product-file
+    path: /upload
     defaults:
         _controller: Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Controller\UploadProductFile
         _feature: supplier_portal
     methods: POST
 
 supplier_portal_get_product_files:
-    path: /product-files
+    path: /
     defaults:
         _controller: Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Controller\GetProductFiles
         _feature: supplier_portal
     methods: GET
 
 supplier_portal_supplier_download_file:
-    path: /download-file/{identifier}
+    path: /{productFileIdentifier}/download
     defaults:
         _controller: Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Controller\DownloadProductFile
         _feature: supplier_portal

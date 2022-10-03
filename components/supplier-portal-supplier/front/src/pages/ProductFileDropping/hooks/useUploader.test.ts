@@ -31,7 +31,7 @@ test('It can upload a file', async () => {
     await act(async () => {
         const uploadedFile = await uploader(excelFile, onProgress);
 
-        expect(xhrMock.open).toBeCalledWith('POST', '/supplier-portal/upload-product-file', true);
+        expect(xhrMock.open).toBeCalledWith('POST', '/supplier-portal/product-file/upload', true);
         expect(xhrMock.setRequestHeader).toBeCalledWith('X-Requested-With', 'XMLHttpRequest');
         expect(onProgress).toBeCalledWith(0.5);
         expect(uploadedFile).toEqual(fileInfo);

@@ -7,3 +7,4 @@ akeneo_supplier_portal_login:
 
 akeneo_supplier_portal_product_file_dropping:
     resource: '@AkeneoSupplierPortalSupplierBundle/Resources/config/routing/product_file_dropping.yml'
+    prefix: /product-file

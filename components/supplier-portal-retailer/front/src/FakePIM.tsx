@@ -59,7 +59,7 @@ const Page = styled.div`
 
 const apps = {
     supplierManagement: '#/retailer-portal/supplier',
-    productFileDropping: '#/retailer-portal/product-file-dropping',
+    productFileDropping: '#/retailer-portal/product-file',
 };
 
 const FakePIM = () => {

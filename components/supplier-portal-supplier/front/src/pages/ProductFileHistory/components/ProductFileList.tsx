@@ -164,7 +164,11 @@ const ProductFileList = ({productFiles}: Props) => {
                                                         id: '5q3qC0',
                                                     })}
                                                     ghost={'borderless'}
-                                                    href={'/supplier-portal/download-file/' + productFile.identifier}
+                                                    href={
+                                                        '/supplier-portal/product-file/' +
+                                                        productFile.identifier +
+                                                        '/download'
+                                                    }
                                                 />
                                             </StyledActionCell>
                                             <StyledActionCell>

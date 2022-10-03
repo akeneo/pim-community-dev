@@ -21,7 +21,7 @@ const ListProductFiles = () => {
             <PageHeader>
                 <PageHeader.Breadcrumb>
                     <Breadcrumb>
-                        <Breadcrumb.Step href={history.createHref({pathname: '/product-file-dropping/'})}>
+                        <Breadcrumb.Step href={history.createHref({pathname: '/product-file/'})}>
                             {translate('supplier_portal.product_file_dropping.breadcrumb.root')}
                         </Breadcrumb.Step>
                         <Breadcrumb.Step>
