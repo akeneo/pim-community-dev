@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AkeneoTestEnterprise\Platform\Integration\Tenant;
 
 use Akeneo\Platform\Component\Tenant\FirestoreContextFetcher;
+use Akeneo\Platform\Component\Tenant\TenantContextDecoder;
 use Google\Cloud\Firestore\CollectionReference;
 use Google\Cloud\Firestore\FirestoreClient;
 use PHPUnit\Framework\Assert;
@@ -104,9 +105,10 @@ final class FirestoreContextFetcherIntegration extends TestCase
 
         $this->firestoreContextFetcher = new FirestoreContextFetcher(
             logger: new NullLogger(),
+            tenantContextDecoder: new TenantContextDecoder(),
             googleProjectId: $_ENV['GOOGLE_CLOUD_PROJECT'],
             collection: self::TEST_COLLECTION,
-            cacheTtl: 5
+            cacheTtl: 5,
         );
     }
 

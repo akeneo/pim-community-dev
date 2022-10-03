@@ -1,6 +1,7 @@
 <?php
 
 use Akeneo\Platform\Component\Tenant\FirestoreContextFetcher;
+use Akeneo\Platform\Component\Tenant\TenantContextDecoder;
 use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -24,6 +25,7 @@ if (isset($_ENV['APP_TENANT_ID']) && '' !== $_ENV['APP_TENANT_ID']) {
 
     $contextFetcher = new FirestoreContextFetcher(
         logger: new Logger('bootstrap', [$handler]),
+        tenantContextDecoder: new TenantContextDecoder(),
         googleProjectId: $_ENV['GOOGLE_CLOUD_PROJECT']
     );
     $dotenv->populate(

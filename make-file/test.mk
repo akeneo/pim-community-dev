@@ -100,10 +100,12 @@ endif
 
 .PHONY: growth-unit-back
 growth-unit-back: var/tests/phpspec #Doc: launch PHPSpec for PIM grth
-ifeq ($(CI),true)
-	$(DOCKER_COMPOSE) run -T --rm php sh -c "cd grth && php ../vendor/bin/phpspec run --config=src/Akeneo/Pim/TableAttribute/tests/back/phpspec.yml.dist --format=junit > ../var/tests/phpspec/specs-ge.xml"
+ifeq ($(TYPE),"grth")
+	$(DOCKER_COMPOSE) run -T --rm php sh -c "cd grth && php ../vendor/bin/phpspec run --format=junit --config phpspec.yml.dist > ../var/tests/phpspec/specs-ge.xml"
+else ifeq ($(CI),true)
+	$(DOCKER_COMPOSE) run -T --rm php sh -c "cd grth && php ../vendor/bin/phpspec run --format=junit --config phpspec-ee.yml > ../var/tests/phpspec/specs-ge.xml"
 else
-	$(DOCKER_COMPOSE) run --rm php sh -c "cd grth && php ../vendor/bin/phpspec run --config=src/Akeneo/Pim/TableAttribute/tests/back/phpspec.yml.dist"
+	$(DOCKER_COMPOSE) run --rm php sh -c "cd grth && php ../vendor/bin/phpspec run"
 endif
 
 .PHONY: unit-front
