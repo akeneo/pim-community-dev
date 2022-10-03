@@ -90,7 +90,7 @@ class CleanDatabaseSchemaDiffOutputSpec extends ObjectBehavior
 -keep_this_table | keep | NO | int | PRI", $cleanedLines);
     }
 
-    public function it_does_nothing_if_bundle_is_activated(): void
+    public function it_dont_remove_onboarder_tables_if_bundle_is_activated(): void
     {
         $this->beConstructedWith(true);
         $cleanedLines = $this->__invoke(self::LINES)->getWrappedObject();

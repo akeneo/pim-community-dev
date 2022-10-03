@@ -29,12 +29,9 @@ class DatabaseSchemaDiffCommand extends Command
 
     protected static $defaultName = 'pimee:database:diff';
 
-    private CleanDatabaseSchemaDiffOutput $cleanDatabaseSchemaDiffOutput;
-
-    public function __construct(CleanDatabaseSchemaDiffOutput $cleanDatabaseSchemaDiffOutput)
+    public function __construct(private CleanDatabaseSchemaDiffOutput $cleanDatabaseSchemaDiffOutput)
     {
         parent::__construct(static::$defaultName);
-        $this->cleanDatabaseSchemaDiffOutput = $cleanDatabaseSchemaDiffOutput;
     }
 
     protected function configure()
