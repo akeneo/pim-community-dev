@@ -61,10 +61,10 @@ const SupplierEdit = () => {
                 </PageHeader.Illustration>
                 <PageHeader.Breadcrumb>
                     <Breadcrumb>
-                        <Breadcrumb.Step href={history.createHref({pathname: '/supplier'})}>
+                        <Breadcrumb.Step href={history.createHref({pathname: '/supplier/'})}>
                             {translate('supplier_portal.supplier.breadcrumb.root')}
                         </Breadcrumb.Step>
-                        <Breadcrumb.Step href={history.createHref({pathname: '/supplier'})}>
+                        <Breadcrumb.Step href={history.createHref({pathname: '/supplier/'})}>
                             {translate('supplier_portal.supplier.breadcrumb.suppliers')}
                         </Breadcrumb.Step>
                         <Breadcrumb.Step>{supplier.label}</Breadcrumb.Step>
