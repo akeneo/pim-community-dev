@@ -16,7 +16,7 @@ use Akeneo\AssetManager\Domain\Query\Attribute\ValueKeyCollection;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetHydrator;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\ValueHydratorInterface;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -24,7 +24,7 @@ class AssetHydratorSpec extends ObjectBehavior
 {
     public function let(ValueHydratorInterface $valueHydrator, Connection $connection)
     {
-        $connection->getDatabasePlatform()->willReturn(new MySqlPlatform());
+        $connection->getDatabasePlatform()->willReturn(new MySQLPlatform());
         $this->beConstructedWith($connection, $valueHydrator);
     }
 
@@ -208,7 +208,8 @@ class AssetHydratorSpec extends ObjectBehavior
             $indexedAttributes
         );
 
-        $asset->getValues()->normalize()->shouldReturn([
+        $asset->getValues()->normalize()->shouldReturn(
+            [
                 'label_game_fingerprint-fr_FR'     => $labelFrFrNormalized,
                 'label_game_fingerprint-en_US'     => $labelenUSNormalized,
                 'image_game_fingerprint'           => $imageNormalized,

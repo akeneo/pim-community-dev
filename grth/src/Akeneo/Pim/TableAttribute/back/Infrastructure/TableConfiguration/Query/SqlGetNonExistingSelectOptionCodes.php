@@ -54,7 +54,7 @@ SQL;
             'attributeCode' => $attributeCode,
             'selectOptionCodes' => array_unique($selectStringOptionCodes),
         ], [
-            ':selectOptionCodes' => Connection::PARAM_STR_ARRAY,
+            'selectOptionCodes' => Connection::PARAM_STR_ARRAY,
         ])->fetchFirstColumn();
 
         return \array_udiff(

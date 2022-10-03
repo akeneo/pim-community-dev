@@ -79,13 +79,7 @@ WHERE product.product_model_id IS NOT NULL
 GROUP BY family_id
 LIMIT ${limit}
 SQL;
-        $variantProductIdentifiers = [];
-        $rows = $this->get('database_connection')->executeQuery($sql)->fetchAll();
-        foreach ($rows as $row) {
-            $variantProductIdentifiers[] = $row['identifier'];
-        }
-
-        return $variantProductIdentifiers;
+        return $this->get('database_connection')->executeQuery($sql)->fetchFirstColumn();
     }
 
     private function getCategoryCodes(int $limit)
@@ -95,13 +89,7 @@ SELECT category.code AS code
 FROM pim_catalog_category category
 LIMIT ${limit}
 SQL;
-        $categoryCodes = [];
-        $rows = $this->get('database_connection')->executeQuery($sql)->fetchAll();
-        foreach ($rows as $row) {
-            $categoryCodes[] = $row['code'];
-        }
-
-        return $categoryCodes;
+        return $this->get('database_connection')->executeQuery($sql)->fetchFirstColumn();
     }
 
     private function getBody(): string

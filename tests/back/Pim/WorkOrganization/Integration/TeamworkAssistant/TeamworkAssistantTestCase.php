@@ -42,15 +42,15 @@ class TeamworkAssistantTestCase extends TestCase
         return new Configuration(
             [
                 $rootPath .
-                'tests' .
-                DIRECTORY_SEPARATOR .
-                'back' .
-                DIRECTORY_SEPARATOR .
-                'Integration' .
-                DIRECTORY_SEPARATOR .
-                'catalog' .
-                DIRECTORY_SEPARATOR .
-                'teamwork_assistant'
+                    'tests' .
+                    DIRECTORY_SEPARATOR .
+                    'back' .
+                    DIRECTORY_SEPARATOR .
+                    'Integration' .
+                    DIRECTORY_SEPARATOR .
+                    'catalog' .
+                    DIRECTORY_SEPARATOR .
+                    'teamwork_assistant'
             ],
             [],
             ['permission']
@@ -199,7 +199,7 @@ WHERE `instance`.`code` = :project_calculation
 AND `execution`.`exit_code` = 'COMPLETED'
 SQL;
 
-        return (int)$this->getConnection()->fetchColumn($sql, [
+        return (int)$this->getConnection()->fetchOne($sql, [
             'project_calculation' => $this->getParameter('pimee_teamwork_assistant.project_calculation.job_name'),
         ]);
     }

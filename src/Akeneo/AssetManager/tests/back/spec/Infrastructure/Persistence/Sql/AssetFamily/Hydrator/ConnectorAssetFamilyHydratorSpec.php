@@ -28,7 +28,7 @@ use Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\Conn
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorTransformationCollectionHydrator;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use PhpSpec\ObjectBehavior;
 
 class ConnectorAssetFamilyHydratorSpec extends ObjectBehavior
@@ -40,7 +40,7 @@ class ConnectorAssetFamilyHydratorSpec extends ObjectBehavior
         ConnectorNamingConventionHydrator $namingConventionHydrator,
         FindActivatedLocalesInterface $findActivatedLocales
     ) {
-        $connection->getDatabasePlatform()->willReturn(new MySqlPlatform());
+        $connection->getDatabasePlatform()->willReturn(new MySQLPlatform());
         $findActivatedLocales->findAll()->willReturn(['en_US', 'fr_FR']);
         $this->beConstructedWith(
             $connection,
@@ -198,7 +198,7 @@ class ConnectorAssetFamilyHydratorSpec extends ObjectBehavior
 
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
         $transformationCollectionHydrator->hydrate([['fake_transformation']], $assetFamilyIdentifier)
-                                         ->willReturn(new ConnectorTransformationCollection([]));
+            ->willReturn(new ConnectorTransformationCollection([]));
         $namingConvention = NamingConvention::createFromNormalized($normalizedNamingConvention);
         $namingConventionHydrator->hydrate($normalizedNamingConvention, $assetFamilyIdentifier)->willReturn($namingConvention);
 

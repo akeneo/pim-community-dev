@@ -63,6 +63,7 @@ $rules = [
 
         // TODO: Remove when MigrationPam folder is removed (RAB-521)
         'Akeneo\Pim\Enrichment\Component\Product',
+        'Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\DBAL\SkipSystemCommandsConnectionFactory',
         'Doctrine\Bundle\DoctrineBundle\ConnectionFactory',
     ])->in('Akeneo\AssetManager\Infrastructure'),
 ];

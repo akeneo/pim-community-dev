@@ -340,7 +340,7 @@ SQL;
         }
 JSON;
         Assert::assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-        if(!is_null($message)) {
+        if (!is_null($message)) {
             $expected = sprintf($error, Response::HTTP_UNPROCESSABLE_ENTITY, addslashes($message));
             Assert::assertJsonStringEqualsJsonString($expected, $response->getContent());
         }
@@ -372,9 +372,8 @@ JSON;
     protected function getDatabaseData(string $sql): array
     {
         $stmt = $this->get('doctrine.orm.entity_manager')->getConnection()->prepare($sql);
-        $stmt->execute();
 
-        return $stmt->fetchAll();
+        return $stmt->executeQuery()->fetchAllAssociative();
     }
 
     /**

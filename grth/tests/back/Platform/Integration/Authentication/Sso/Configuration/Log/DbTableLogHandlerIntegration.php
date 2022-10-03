@@ -1,23 +1,22 @@
 <?php
+
 declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Platform\Integration\Authentication\Sso\Log;
 
 use Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\DbTableLogHandler;
-use Akeneo\Platform\Component\Authentication\Sso\Configuration\Configuration;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\EnabledConfigurationRepository;
-use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\Repository;
 use Akeneo\Test\Integration\TestCase;
+use Doctrine\DBAL\Connection;
 use Monolog\Logger;
 
 final class DbTableLogHandlerIntegration extends TestCase
 {
     public function testItInsertsLogEntries(): void
     {
-        $connection = $this->get('database_connection');
         $configRepo = new EnabledConfigurationRepository();
 
-        $handler = new DbTableLogHandler($configRepo, $connection);
+        $handler = new DbTableLogHandler($configRepo, $this->getConnection());
 
         $handler->handle(
             [
@@ -45,12 +44,11 @@ final class DbTableLogHandlerIntegration extends TestCase
 
     public function testItIntegratesWithMonolog()
     {
-        $connection = $this->get('database_connection');
         $configRepo = new EnabledConfigurationRepository();
 
         $logger = new Logger('my_test_logger');
 
-        $handler = new DbTableLogHandler($configRepo, $connection);
+        $handler = new DbTableLogHandler($configRepo, $this->getConnection());
 
         $logger->pushHandler($handler);
 
@@ -65,9 +63,9 @@ final class DbTableLogHandlerIntegration extends TestCase
 
     private function assertLogTableIsSame(array $expected): void
     {
-        $connection =  $this->get('database_connection');
+        $connection = $this->getConnection();
 
-        $actual = $connection->fetchAll(
+        $actual = $connection->fetchAllAssociative(
             sprintf(
                 'SELECT channel, level, message, time FROM %s ORDER BY time ASC',
                 DbTableLogHandler::TABLE_NAME
@@ -79,15 +77,13 @@ final class DbTableLogHandlerIntegration extends TestCase
 
     private function assertLogTableRowCount(int $expectedCount): void
     {
-        $connection =  $this->get('database_connection');
+        $connection = $this->getConnection();
 
-        $actualCount = $connection->fetchColumn(
+        $actualCount = $connection->fetchOne(
             sprintf(
                 'SELECT COUNT(*) FROM %s',
                 DbTableLogHandler::TABLE_NAME
-            ),
-            [],
-            0
+            )
         );
 
         $this->assertEquals($expectedCount, $actualCount);
@@ -95,8 +91,8 @@ final class DbTableLogHandlerIntegration extends TestCase
 
     protected function tearDown(): void
     {
-        $connection = $this->get('database_connection');
-        if ($connection->getSchemaManager()->tablesExist([DbTableLogHandler::TABLE_NAME]) == true) {
+        $connection = $this->getConnection();
+        if ($connection->createSchemaManager()->tablesExist([DbTableLogHandler::TABLE_NAME]) == true) {
             $connection->executeQuery(sprintf('TRUNCATE TABLE %s', DbTableLogHandler::TABLE_NAME));
         }
     }
@@ -104,5 +100,10 @@ final class DbTableLogHandlerIntegration extends TestCase
     protected function getConfiguration()
     {
         return null;
+    }
+
+    private function getConnection(): Connection
+    {
+        return $this->get('database_connection');
     }
 }

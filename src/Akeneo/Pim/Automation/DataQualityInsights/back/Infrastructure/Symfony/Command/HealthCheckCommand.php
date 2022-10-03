@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command;
@@ -180,7 +181,7 @@ FROM pim_catalog_attribute
 WHERE attribute_type = 'pim_catalog_simpleselect'
 SQL
         );
-        $attributesSimpleSelect = $stmt->fetchColumn();
+        $attributesSimpleSelect = $stmt->fetchOne();
 
         $stmt = $this->db->executeQuery(
             <<<SQL
@@ -189,14 +190,14 @@ FROM pim_catalog_attribute
 WHERE attribute_type = 'pim_catalog_multiselect'
 SQL
         );
-        $attributesMultiSelect = $stmt->fetchColumn();
+        $attributesMultiSelect = $stmt->fetchOne();
 
         $stmt = $this->db->executeQuery(
             <<<SQL
 SELECT count(*) FROM pim_catalog_attribute_option;
 SQL
         );
-        $attributeOptions = $stmt->fetchColumn();
+        $attributeOptions = $stmt->fetchOne();
 
         $eta = $this->estimatedTimeOfArrivalForRemainingProducts();
 
@@ -331,9 +332,9 @@ SQL
         $io->section('Dictionaries generated on shared FS');
 
         $dictionaries = $this->filesystemProvider->getFilesystem('dataQualityInsightsSharedAdapter')
-                             ->listContents('/consistency', true)
-                             ->filter(fn (StorageAttributes $attrs): bool => $attrs->isFile())
-                             ->toArray();
+            ->listContents('/consistency', true)
+            ->filter(fn (StorageAttributes $attrs): bool => $attrs->isFile())
+            ->toArray();
 
         if (!empty($dictionaries)) {
             $dictionaries = array_filter($dictionaries, function ($path) {
@@ -346,9 +347,9 @@ SQL
         $io->section('Dictionaries generated on local FS');
 
         $dictionaries = $this->aspellDictionaryLocalFilesystem->getFilesystem()
-                             ->listContents('/consistency', true)
-                             ->filter(fn (StorageAttributes $attrs): bool => $attrs->isFile())
-                             ->toArray();
+            ->listContents('/consistency', true)
+            ->filter(fn (StorageAttributes $attrs): bool => $attrs->isFile())
+            ->toArray();
 
         if (!empty($dictionaries)) {
             $dictionaries = array_filter($dictionaries, function ($path) {
