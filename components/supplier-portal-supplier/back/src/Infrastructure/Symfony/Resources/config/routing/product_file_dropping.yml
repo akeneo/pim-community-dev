@@ -25,5 +25,5 @@ supplier_portal_supplier_comment_product_file:
     path: /{productFileIdentifier}/comment
     defaults:
         _controller: Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Controller\CommentProductFile
-        _feature: supplier_portal_critical_path_collaborate
+        _feature: supplier_portal
     methods: POST

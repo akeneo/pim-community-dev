@@ -91,7 +91,7 @@ const Comment = ({outgoing, authorEmail, content, createdAt}: Props) => {
                                         })}
                                     </span>
                                 </AuthorEmailAndDate>
-                                <Content>"{content}"</Content>
+                                <Content data-testid="commentContent">"{content}"</Content>
                             </FlexColumn>
                         </ContentContainer>
                     </FlexRow>

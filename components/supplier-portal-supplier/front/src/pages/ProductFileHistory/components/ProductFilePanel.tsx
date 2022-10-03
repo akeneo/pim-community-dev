@@ -12,6 +12,9 @@ const Panel = styled.div<AkeneoThemedProps & {currentProductFile: ProductFile | 
     transition-property: width;
     transition-duration: 0.5s;
     box-shadow: 0 0 16px rgba(89, 146, 199, 0.1);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
 `;
 
 type Props = {
@@ -40,7 +43,7 @@ const ProductFilePanel = ({productFile, closePanel}: Props) => {
         .concat(productFile.supplierComments)
         .sort(
             (a: CommentReadModel, b: CommentReadModel) =>
-                new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+                new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
         );
 
     return (
@@ -58,7 +61,7 @@ const ProductFilePanel = ({productFile, closePanel}: Props) => {
                         onClick={closePanel}
                     />
                     <Metadata productFile={productFile} />
-                    <Discussion comments={comments} />
+                    <Discussion comments={comments} productFileIdentifier={productFile.identifier} />
                 </Panel>
             ) : (
                 <Panel currentProductFile={productFile} />

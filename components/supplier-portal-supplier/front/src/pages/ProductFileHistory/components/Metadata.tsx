@@ -10,7 +10,7 @@ const Metadata = ({productFile}: {productFile: ProductFile}) => {
     const dateFormatter = useDateFormatter();
 
     return (
-        <>
+        <div>
             <FlexRow>
                 <StyledFilename>{productFile.filename}</StyledFilename>
                 <DownloadIconContainer>
@@ -43,7 +43,7 @@ const Metadata = ({productFile}: {productFile: ProductFile}) => {
                 <FormattedMessage defaultMessage="Contributor: " id="G/2O1m" />
                 <ContributorValue>{productFile.contributor}</ContributorValue>
             </ContributorLabel>
-        </>
+        </div>
     );
 };
 
