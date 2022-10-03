@@ -37,7 +37,7 @@ jobs:
                     command: PIM_CONTEXT=supplier-portal make tests-back-supplier-portal
             -   run:
                     name: Run migration tests for Supplier Portal
-                    command: PIM_CONTEXT=test O="--group migration-supplier-portal" make migration-back
+                    command: PIM_CONTEXT=supplier-portal make test-migrations
             - store_test_results:
                 path: var/tests/phpunit
     test_front_supplier_portal:

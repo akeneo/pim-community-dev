@@ -157,3 +157,7 @@ build-supplier-portal-supplier-front-app: #Doc: Build Supplier Portal supplier f
 .PHONY: trans-front-extract-supplier
 trans-front-extract-supplier: #Doc: Extract Supplier App translations for Crowdin
 	$(YARN_RUN) run --cwd=components/supplier-portal-supplier/front i18n-extract 'src/**/*.{ts,tsx}' --ignore '**/*.d.ts' --format simple --out-file translations/messages.en_US.json
+
+.PHONY: test-migrations
+test-migrations: #Doc: Execute SP integration tests for migrations
+	APP_ENV=test $(PHP_RUN) ./vendor/bin/phpunit -c . --testsuite PIM_Migration_Test --group migration-supplier-portal
