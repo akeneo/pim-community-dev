@@ -81,7 +81,7 @@ class CleanDatabaseSchemaDiffOutputSpec extends ObjectBehavior
         $this->shouldHaveType(CleanDatabaseSchemaDiffOutput::class);
     }
 
-    public function it_removes_onboarder_diff_if_bundle_not_activated(): void
+    public function it_removes_onboarder_tables_if_the_onboarder_bundle_is_not_activated(): void
     {
         $this->beConstructedWith(false);
         $cleanedLines = $this->__invoke(self::LINES)->getWrappedObject();
@@ -90,7 +90,7 @@ class CleanDatabaseSchemaDiffOutputSpec extends ObjectBehavior
 -keep_this_table | keep | NO | int | PRI", $cleanedLines);
     }
 
-    public function it_dont_remove_onboarder_tables_if_bundle_is_activated(): void
+    public function it_does_not_remove_onboarder_tables_if_bundle_is_activated(): void
     {
         $this->beConstructedWith(true);
         $cleanedLines = $this->__invoke(self::LINES)->getWrappedObject();
