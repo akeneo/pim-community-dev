@@ -1,0 +1,6 @@
+services:
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetIdentifierAttributesController:
+    public: true
+    arguments:
+      - '@akeneo.pim.structure.query.find_flatten_attributes'
+      - '@pim_user.context.user'
