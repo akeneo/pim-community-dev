@@ -154,7 +154,7 @@ final class ProductFileTest extends TestCase
     }
 
     /** @test */
-    public function itThrowAndErrorIfWeReachTheMaxCommentsLimit(): void
+    public function itThrowsAnErrorIfWeReachTheMaxCommentsLimit(): void
     {
         $comments = [];
         for ($i = 0; 50 > $i; $i++) {
@@ -169,7 +169,7 @@ final class ProductFileTest extends TestCase
         $this->expectException(MaxCommentPerProductFileReached::class);
 
         $productFile->addNewSupplierComment(
-            'Comment that throw an error',
+            'Comment that throws an error',
             'julia@roberts.com',
             new \DateTimeImmutable(),
         );

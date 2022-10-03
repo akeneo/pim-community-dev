@@ -129,17 +129,21 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
     public function itFindsAProductFileFromItsIdentifier(): void
     {
         $this->createProductFile('8d388bdc-8243-4e88-9c7c-6be0d7afb9df');
+
+        $retailerCommentDate = new \DateTimeImmutable('2022-09-07 00:00:00');
         $this->createRetailerComment(
             '8d388bdc-8243-4e88-9c7c-6be0d7afb9df',
             'julia@roberts.com',
             'Your product file is awesome!',
-            new \DateTimeImmutable('2022-09-07 00:00:00'),
+            $retailerCommentDate,
         );
+
+        $supplierCommentDate = new \DateTimeImmutable('2022-09-07 00:00:01');
         $this->createSupplierComment(
             '8d388bdc-8243-4e88-9c7c-6be0d7afb9df',
             'jimmy@punchline.com',
             'Here are the products I\'ve got for you.',
-            new \DateTimeImmutable('2022-09-07 00:00:01'),
+            $supplierCommentDate,
         );
 
         $repository = $this->get(ProductFileRepository::class);
@@ -156,6 +160,14 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
         static::assertContainsOnly(Comment::class, $productFile->supplierComments());
         static::assertCount(1, $productFile->retailerComments());
         static::assertCount(1, $productFile->supplierComments());
+
+        static::assertSame('Your product file is awesome!', $productFile->retailerComments()[0]->content());
+        static::assertSame('julia@roberts.com', $productFile->retailerComments()[0]->authorEmail());
+        static::assertEquals($retailerCommentDate, $productFile->retailerComments()[0]->createdAt());
+
+        static::assertSame('Here are the products I\'ve got for you.', $productFile->supplierComments()[0]->content());
+        static::assertSame('jimmy@punchline.com', $productFile->supplierComments()[0]->authorEmail());
+        static::assertEquals($supplierCommentDate, $productFile->supplierComments()[0]->createdAt());
     }
 
     private function createProductFile(string $productFileIdentifier): void

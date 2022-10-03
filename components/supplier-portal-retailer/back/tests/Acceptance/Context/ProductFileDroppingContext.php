@@ -16,13 +16,11 @@ use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository as InMemorySupplierRepository;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use Behat\Behat\Context\Context;
-use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
 
 final class ProductFileDroppingContext implements Context
 {
     private string $productFileIdentifier;
-    private array $errors = [];
     private ?\Exception $exception = null;
 
     public function __construct(
@@ -147,14 +145,6 @@ final class ProductFileDroppingContext implements Context
     public function iShouldHaveAnErrorForTooManyCommentsOnProductFile(): void
     {
         Assert::assertInstanceOf(MaxCommentPerProductFileReached::class, $this->exception);
-    }
-
-    /**
-     * @Then I should have the following comment validation errors:
-     */
-    public function iShouldHaveTheFollowingCommentValidationErrors(TableNode $table): void
-    {
-        Assert::assertEquals($table->getHash(), $this->errors);
     }
 
     /**
