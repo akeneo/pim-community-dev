@@ -89,13 +89,6 @@ services:
             - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail'
             - '@monolog.logger.supplier_portal'
 
-    # Validators
-    Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Validation\CountCommentsValidator:
-        arguments:
-            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\CountProductFileComments'
-        tags:
-            - { name: validator.constraint_validator }
-
     # Queries
     Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileName:
         class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetProductFilePathAndFileName
@@ -145,12 +138,6 @@ services:
 
     Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithComments:
         class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetProductFileWithComments
-        arguments:
-            - '@database_connection'
-
-    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\CountProductFileComments:
-        public: true
-        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseCountProductFileComments
         arguments:
             - '@database_connection'
 

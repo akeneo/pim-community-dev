@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Comment;
 
-use Webmozart\Assert\Assert;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\CommentTooLong;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\EmptyComment;
 
 final class Content
 {
@@ -12,16 +13,12 @@ final class Content
 
     private function __construct(private string $content)
     {
-        Assert::minLength(
-            $content,
-            1,
-            'The comment content must not be empty.',
-        );
-        Assert::maxLength(
-            $content,
-            self::MAX_CHARACTERS,
-            'The comment content must not exceed 255 characters.',
-        );
+        if (0 >= \mb_strlen($this->content)) {
+            throw new EmptyComment();
+        }
+        if (self::MAX_CHARACTERS < \mb_strlen($this->content)) {
+            throw new CommentTooLong();
+        }
     }
 
     public static function fromString(string $content): self

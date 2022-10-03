@@ -9,23 +9,17 @@ Feature: Supplier Portal - Product File Dropping - Comment a product file
   Scenario: Validates that a comment cannot be empty
     Given a product file
     When I comment it with " "
-    Then I should have the following comment validation errors:
-      | path    | message                          |
-      | content | The comment should not be empty. |
+    Then I should have an error message telling that the comment should not be empty
 
   Scenario: Validates that a comment cannot exceed 255 characters
     Given a product file
     When I comment it with a too long comment
-    Then I should have the following comment validation errors:
-      | path    | message                                       |
-      | content | The comment should not exceed 255 characters. |
+    Then I should have an error message telling that the comment should not exceed 255 characters
 
   Scenario: Validates that we cannot have more than 50 comments on the same product file
     Given a product file with 50 comments
     When I comment it with "Another comment, again!"
-    Then I should have the following comment validation errors:
-      | path    | message                                             |
-      | content | The product file cannot have more than 50 comments. |
+    Then I should have an error message telling that the product file cannot have more than 50 comments
 
   Scenario: Comment a product file
     Given a product file

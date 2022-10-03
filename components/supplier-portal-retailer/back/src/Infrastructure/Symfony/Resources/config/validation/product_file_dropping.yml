@@ -13,14 +13,3 @@ Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CreateProductFile
     uploadedByContributor:
       - NotBlank: ~
 
-Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CommentProductFile:
-  properties:
-    content:
-      - NotBlank:
-          allowNull: false
-          normalizer: 'trim'
-          message: supplier_portal.supplier.product_file_dropping.validation.comment.empty_content
-      - Length:
-          max: 255
-          maxMessage: supplier_portal.supplier.product_file_dropping.validation.comment.max_length_content
-      - Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Validation\CountComments: ~

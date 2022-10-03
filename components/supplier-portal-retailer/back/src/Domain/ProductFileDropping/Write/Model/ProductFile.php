@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Event\ProductFileAdded;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\MaxCommentPerProductFileReached;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Comment;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Filename;
@@ -14,6 +15,8 @@ use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 
 final class ProductFile
 {
+    const MAX_COMMENTS_PER_PRODUCT_FILE = 50;
+
     private Identifier $identifier;
     private Filename $originalFilename;
     private Path $path;
@@ -22,8 +25,8 @@ final class ProductFile
     private \DateTimeInterface $uploadedAt;
     private bool $downloaded;
     private array $events = [];
-    private array $newRetailerComments = [];
-    private array $newSupplierComments = [];
+    private array $retailerComments = [];
+    private array $supplierComments = [];
 
     private function __construct(
         string $identifier,
@@ -33,6 +36,8 @@ final class ProductFile
         string $uploadedBySupplier,
         ?\DateTimeInterface $uploadedAt,
         bool $downloaded = false,
+        array $retailerComments = [],
+        array $supplierComments = [],
     ) {
         $this->identifier = Identifier::fromString($identifier);
         $this->originalFilename = Filename::fromString($originalFilename);
@@ -41,6 +46,8 @@ final class ProductFile
         $this->uploadedBySupplier = $uploadedBySupplier;
         $this->uploadedAt = $uploadedAt;
         $this->downloaded = $downloaded;
+        $this->retailerComments = $retailerComments;
+        $this->supplierComments = $supplierComments;
     }
 
     public static function create(
@@ -72,6 +79,8 @@ final class ProductFile
         string $uploadedBySupplier,
         string $uploadedAt,
         bool $downloaded,
+        array $retailerComments = [],
+        array $supplierComments = [],
     ): self {
         return new self(
             $identifier,
@@ -81,6 +90,8 @@ final class ProductFile
             $uploadedBySupplier,
             new \DateTimeImmutable($uploadedAt),
             $downloaded,
+            $retailerComments,
+            $supplierComments,
         );
     }
 
@@ -130,12 +141,26 @@ final class ProductFile
 
     public function addNewRetailerComment(string $content, string $authorEmail, \DateTimeImmutable $createdAt): void
     {
-        $this->newRetailerComments[] = Comment::create($content, $authorEmail, $createdAt);
+        $this->checkCommentsLimitReached();
+
+        $this->retailerComments[] = Comment::create($content, $authorEmail, $createdAt);
     }
 
     public function addNewSupplierComment(string $content, string $authorEmail, \DateTimeImmutable $createdAt): void
     {
-        $this->newSupplierComments[] = Comment::create($content, $authorEmail, $createdAt);
+        $this->checkCommentsLimitReached();
+
+        $this->supplierComments[] = Comment::create($content, $authorEmail, $createdAt);
+    }
+
+    public function retailerComments(): array
+    {
+        return $this->retailerComments;
+    }
+
+    public function supplierComments(): array
+    {
+        return $this->supplierComments;
     }
 
     /**
@@ -143,7 +168,7 @@ final class ProductFile
      */
     public function newRetailerComments(): array
     {
-        return $this->newRetailerComments;
+        return array_filter($this->retailerComments, fn (Comment $comment) => $comment->isNew());
     }
 
     /**
@@ -151,6 +176,13 @@ final class ProductFile
      */
     public function newSupplierComments(): array
     {
-        return $this->newSupplierComments;
+        return array_filter($this->supplierComments, fn (Comment $comment) => $comment->isNew());
+    }
+
+    private function checkCommentsLimitReached(): void
+    {
+        if (self::MAX_COMMENTS_PER_PRODUCT_FILE <= count($this->retailerComments + $this->supplierComments)) {
+            throw new MaxCommentPerProductFileReached();
+        }
     }
 }

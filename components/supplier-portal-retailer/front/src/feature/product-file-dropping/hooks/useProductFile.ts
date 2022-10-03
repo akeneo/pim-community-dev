@@ -1,4 +1,4 @@
-import {NotificationLevel, useNotify, useRoute, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
+import {NotificationLevel, useNotify, useRoute, useTranslate} from '@akeneo-pim-community/shared';
 import {useCallback, useEffect, useState} from 'react';
 import {ProductFile} from '../models/ProductFile';
 import {Comment} from '../models/read/Comment';
@@ -7,7 +7,7 @@ const useProductFile = (productFileIdentifier: string) => {
     const getProductFileRoute = useRoute('supplier_portal_retailer_product_files_comment', {productFileIdentifier});
     const saveCommentRoute = useRoute('supplier_portal_retailer_comment_product_file', {productFileIdentifier});
     const [productFile, setProductFile] = useState<ProductFile | null>(null);
-    const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
+    const [validationError, setValidationError] = useState<string | null>(null);
     const notify = useNotify();
     const translate = useTranslate();
 
@@ -66,8 +66,8 @@ const useProductFile = (productFileIdentifier: string) => {
             });
 
             if (!response.ok) {
-                const errors: ValidationError[] = await response.json();
-                setValidationErrors(errors);
+                const error: string = await response.json();
+                setValidationError(error);
                 notify(
                     NotificationLevel.ERROR,
                     translate('supplier_portal.product_file_dropping.supplier_files.discussion.comment_submit_error')
@@ -75,7 +75,7 @@ const useProductFile = (productFileIdentifier: string) => {
                 return;
             }
 
-            setValidationErrors([]);
+            setValidationError(null);
             await loadProductFile();
         },
         [saveCommentRoute, notify, translate, loadProductFile]
@@ -87,7 +87,7 @@ const useProductFile = (productFileIdentifier: string) => {
         })();
     }, [loadProductFile]);
 
-    return [productFile, saveComment, validationErrors] as const;
+    return [productFile, saveComment, validationError] as const;
 };
 
 export {useProductFile};
