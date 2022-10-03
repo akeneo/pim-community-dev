@@ -5,7 +5,7 @@ import {FormattedMessage, useIntl} from 'react-intl';
 import styled from 'styled-components';
 import {useDateFormatter} from '../../../utils/date-formatter/use-date-formatter';
 import {ConversationalHelper} from '../../../components';
-import {CommentPanel} from './CommentPanel';
+import {ProductFilePanel} from './ProductFilePanel';
 
 type Props = {
     productFiles: ProductFile[];
@@ -94,7 +94,7 @@ const ProductFileList = ({productFiles}: Props) => {
         </>
     );
 
-    const displayCommentPanel = (productFile: ProductFile) => {
+    const displayProductFilePanel = (productFile: ProductFile) => {
         setCurrentProductFile(
             !currentProductFile || currentProductFile.identifier !== productFile.identifier ? productFile : null
         );
@@ -140,7 +140,7 @@ const ProductFileList = ({productFiles}: Props) => {
                                         <StyledTableRow
                                             data-testid={productFile.identifier}
                                             key={productFile.identifier}
-                                            onClick={() => displayCommentPanel(productFile)}
+                                            onClick={() => displayProductFilePanel(productFile)}
                                         >
                                             <Table.Cell>
                                                 {dateFormatter(productFile.uploadedAt, {
@@ -176,7 +176,7 @@ const ProductFileList = ({productFiles}: Props) => {
                                                         id: 'UTlLBb',
                                                     })}
                                                     ghost={'borderless'}
-                                                    onClick={() => displayCommentPanel(productFile)}
+                                                    onClick={() => displayProductFilePanel(productFile)}
                                                 />
                                             </StyledActionCell>
                                         </StyledTableRow>
@@ -186,7 +186,7 @@ const ProductFileList = ({productFiles}: Props) => {
                         </StyledTable>
                     </FlexRow>
                 </ProductFilesContainer>
-                <CommentPanel productFile={currentProductFile} closePanel={closePanel} />
+                <ProductFilePanel productFile={currentProductFile} closePanel={closePanel} />
             </PageContainer>
         </>
     );

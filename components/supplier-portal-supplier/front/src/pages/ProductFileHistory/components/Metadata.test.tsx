@@ -1,7 +1,7 @@
 import {renderWithProviders} from '../../../tests';
-import {CommentPanel} from './CommentPanel';
-import React from 'react';
+import {ProductFilePanel} from './ProductFilePanel';
 import {screen} from '@testing-library/react';
+import React from 'react';
 
 const productFile = {
     identifier: '4b5ca8e4-0f89-4de0-9bc7-20c7617a9c86',
@@ -13,16 +13,8 @@ const productFile = {
     supplierComments: [],
 };
 
-test('it renders nothing if the product file because the user did not click on any product file row', () => {
-    renderWithProviders(<CommentPanel productFile={null} closePanel={() => {}} />);
-
-    expect(screen.queryByText('product-file.xlsx')).not.toBeInTheDocument();
-    expect(screen.queryByText('jimmy.punchline@los-pollos-hermanos.com')).not.toBeInTheDocument();
-    expect(screen.queryByText('09/21/2022, 08:34 AM')).not.toBeInTheDocument();
-});
-
 test('it renders the general product file information', () => {
-    renderWithProviders(<CommentPanel productFile={productFile} closePanel={() => {}} />);
+    renderWithProviders(<ProductFilePanel productFile={productFile} closePanel={() => {}} />);
 
     expect(screen.getByText('product-file.xlsx')).toBeInTheDocument();
     expect(screen.getByText('jimmy.punchline@los-pollos-hermanos.com')).toBeInTheDocument();
