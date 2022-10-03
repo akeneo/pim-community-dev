@@ -28,7 +28,7 @@ class JsonSchemaErrorsFormatter
 
         $explodedOpisPropertyPath = explode('/', ltrim($opisPropertyPath, '/'));
         $explodedAkeneoPropertyPath = array_map(
-            static fn($propertyPath) => sprintf(is_numeric($propertyPath) ? '[%d]' : '.%s', $propertyPath),
+            static fn ($propertyPath) => sprintf(is_numeric($propertyPath) ? '[%d]' : '.%s', $propertyPath),
             $explodedOpisPropertyPath
         );
 
