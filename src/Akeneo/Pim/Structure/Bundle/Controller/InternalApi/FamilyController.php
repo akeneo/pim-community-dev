@@ -135,11 +135,13 @@ class FamilyController
 
         $normalizedFamilies = [];
         foreach ($families as $family) {
-            $normalizedFamilies[$family->getCode()] = $this->normalizer->normalize(
+            $normalizedFamilies[strtolower($family->getCode())] = $this->normalizer->normalize(
                 $family,
                 'internal_api',
                 ['expanded' => $expanded]
             );
+
+            $normalizedFamilies[strtolower($family->getCode())]['code'] = strtolower($family->getCode());
         }
 
         return new JsonResponse($normalizedFamilies);
@@ -255,7 +257,7 @@ class FamilyController
      */
     protected function getFamily(string $code): FamilyInterface
     {
-        $family = $this->familyRepository->findOneBy(['code' => $code]);
+        $family = $this->familyRepository->findOneByCode($code);
 
         if (null === $family) {
             throw new NotFoundHttpException(
