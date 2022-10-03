@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\Product;
 
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Exception\ProductHasNoIdentifierException;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\Product\ProductPublisher;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -17,6 +18,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterfa
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\Product\RelatedAssociationPublisher;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\PublisherInterface;
 use Prophecy\Argument;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -176,6 +178,18 @@ class ProductPublisherSpec extends ObjectBehavior
 
         $this->shouldThrow(
             new \LogicException('An error occurred while publishing product sku-01 ; Another process is publishing this product.')
+        )->during('publish', [$product]);
+    }
+
+    public function it_throws_an_exception_when_publishing_a_product_without_identifier(
+        ProductInterface $product,
+        UuidInterface $productUuid
+    ) {
+        $product->getIdentifier()->willReturn(null);
+        $product->getUuid()->willReturn($productUuid);
+
+        $this->shouldThrow(
+            new ProductHasNoIdentifierException()
         )->during('publish', [$product]);
     }
 }

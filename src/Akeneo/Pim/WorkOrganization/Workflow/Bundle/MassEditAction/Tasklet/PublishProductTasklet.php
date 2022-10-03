@@ -89,6 +89,20 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet implements T
                     continue;
                 }
 
+                if (null === $entityWithFamily->getIdentifier()) {
+                    $this->stepExecution->incrementSummaryInfo('skipped_products');
+                    $this->stepExecution->incrementProcessedItems();
+                    $invalidEntitiesWithFamily[$index] = $entityWithFamily;
+
+                    $this->stepExecution->addWarning(
+                        'pim_enrich.mass_edit_action.publish.message.no_identifier',
+                        [],
+                        new DataInvalidItem($entityWithFamily)
+                    );
+
+                    continue;
+                }
+
                 $isAuthorized = $this->authorizationChecker->isGranted(Attributes::OWN, $entityWithFamily);
 
                 if ($isAuthorized) {
@@ -99,17 +113,15 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet implements T
                     $this->stepExecution->incrementProcessedItems();
                     $invalidEntitiesWithFamily[$index] = $entityWithFamily;
 
-                    if (!$isAuthorized) {
-                        $this->stepExecution->addWarning(
-                            'pim_enrich.mass_edit_action.publish.message.error',
-                            [],
-                            new DataInvalidItem($entityWithFamily)
-                        );
-                    }
+                    $this->stepExecution->addWarning(
+                        'pim_enrich.mass_edit_action.publish.message.error',
+                        [],
+                        new DataInvalidItem($entityWithFamily)
+                    );
                 }
             }
 
-            $productsPage = array_diff_key($productsPage, $invalidEntitiesWithFamily);
+            $productsPage = array_values(array_diff_key($productsPage, $invalidEntitiesWithFamily));
             $this->manager->publishAll($productsPage);
 
             $this->cacheClearer->clear();

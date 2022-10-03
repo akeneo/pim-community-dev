@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\PublishedProductManager;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -115,6 +116,9 @@ class PublishProductTaskletSpec extends ObjectBehavior
 
         $violations->count()->willReturn(0);
 
+        $product1->getIdentifier()->willReturn('foo');
+        $product2->getIdentifier()->willReturn('bar');
+
         $manager->publishAll([$product1, $product2])->shouldBeCalled();
         $jobStopper->isStopping($stepExecution)->willReturn(false);
 
@@ -163,6 +167,9 @@ class PublishProductTaskletSpec extends ObjectBehavior
         $validator->validate($product1)->willReturn($violations);
         $validator->validate($product2)->willReturn($violations);
 
+        $product1->getIdentifier()->willReturn('foo');
+        $product1->getIdentifier()->willReturn('bar');
+
         $stepExecution->setTotalItems(2)->shouldBeCalledOnce();
         $stepExecution->incrementSummaryInfo('mass_published')->shouldBeCalledTimes(1);
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalledTimes(1);
@@ -177,6 +184,68 @@ class PublishProductTaskletSpec extends ObjectBehavior
         $violations->count()->willReturn(0);
 
         $manager->publishAll([$product1])->shouldBeCalled();
+        $jobStopper->isStopping($stepExecution)->willReturn(false);
+
+        $this->execute();
+    }
+
+    function it_skips_product_without_identifier(
+        $paginatorFactory,
+        $manager,
+        $cursor,
+        $validator,
+        $authorizationChecker,
+        $stepExecution,
+        ProductInterface $product1,
+        ProductInterface $product2,
+        ConstraintViolationListInterface $violations,
+        JobParameters $jobParameters,
+        JobStopper $jobStopper
+    ) {
+        $configuration = [
+            'filters' => [
+                [
+                    'field'    => 'sku',
+                    'operator' => 'IN',
+                    'value'    => ['1000', '1001']
+                ]
+            ],
+            'actions' => []
+        ];
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($configuration['filters']);
+        $jobParameters->get('actions')->willReturn($configuration['actions']);
+
+        $productsPage = [
+            [
+                $product1,
+                $product2
+            ]
+        ];
+        $cursor->count()->willReturn(2);
+        $paginatorFactory->createPaginator($cursor)->willReturn($productsPage);
+
+        $product1->getIdentifier()->willReturn(null);
+        $product2->getIdentifier()->willReturn('bar');
+
+        $authorizationChecker->isGranted(Attributes::OWN, $product1)->shouldNotBeCalled();
+        $authorizationChecker->isGranted(Attributes::OWN, $product2)->shouldBeCalled()->willReturn(true);
+
+        $validator->validate($product2)->willReturn($violations);
+        $violations->count()->willReturn(0);
+
+        $stepExecution->setTotalItems(2)->shouldBeCalledOnce();
+        $stepExecution->incrementSummaryInfo('mass_published')->shouldBeCalledTimes(1);
+        $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalledTimes(1);
+        $stepExecution->incrementProcessedItems()->shouldBeCalledTimes(2);
+
+        $stepExecution->addWarning(
+            'pim_enrich.mass_edit_action.publish.message.no_identifier',
+            [],
+            Argument::type(InvalidItemInterface::class)
+        )->shouldBeCalled();
+
+        $manager->publishAll([$product2])->shouldBeCalled();
         $jobStopper->isStopping($stepExecution)->willReturn(false);
 
         $this->execute();
