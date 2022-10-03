@@ -13,6 +13,11 @@ akeneo_job:
     UNKNOWN: Desconegut
     IN_PROGRESS: En procés
 akeneo_job_process_tracker:
+  last_operations:
+    title: Últimes operacions
+    view_all: Veure tots
+    details: Detalls
+    no_result: No hi ha cap operació per mostrar de moment.
   last_executions:
     title: Últimes execucions
   job_execution_list:
