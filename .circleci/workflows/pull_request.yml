@@ -64,10 +64,14 @@ workflows:
                       - build_dev
             - test_back_data_migrations:
                   requires:
-                      - build_dev
+                      - test_back_static_and_acceptance
+                      - test_front_static_acceptance_and_integration
+                      - test_back_phpunit
             - test_back_behat_legacy:
                   requires:
-                      - build_dev
+                      - test_back_static_and_acceptance
+                      - test_front_static_acceptance_and_integration
+                      - test_back_phpunit
             - test_back_catalogs_ee:
                   requires:
                       - build_dev
@@ -107,11 +111,13 @@ workflows:
             - test_back_data_migrations:
                   name: test_back_data_migrations_ce
                   requires:
-                      - build_dev_ce
+                      - test_back_phpunit_ce
             - test_back_behat_legacy:
                   name: test_back_behat_legacy_ce
                   requires:
-                      - build_dev_ce
+                      - test_back_static_and_acceptance_ce
+                      - test_front_static_acceptance_and_integration_ce
+                      - test_back_phpunit_ce
 
             - pull_request_success:
                   requires:

@@ -25,6 +25,8 @@ use Webmozart\Assert\Assert;
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @phpstan-type NormalizedProductAssociation array{uuid: string, identifier: string, quantity: int}
+ * @phpstan-type NormalizedProductModelAssociation array{identifier: string, quantity: int}
  */
 final class QuantifiedAssociationUserIntentCollectionApplier implements UserIntentApplier
 {
@@ -61,38 +63,36 @@ final class QuantifiedAssociationUserIntentCollectionApplier implements UserInte
             $associationType = $quantifiedAssociationUserIntent->associationType();
             $entityType = $this->getAssociationEntityType($quantifiedAssociationUserIntent);
 
-            $formerAssociations = $normalizedQuantifiedAssociations[$associationType][$entityType]
-                ?? $this->getFormerAssociations($quantifiedAssociationUserIntent, $product, $entityType);
+            switch ($quantifiedAssociationUserIntent::class) {
+                case AssociateQuantifiedProducts::class:
+                case DissociateQuantifiedProducts::class:
+                case ReplaceAssociatedQuantifiedProducts::class:
+                    $formerAssociations = $normalizedQuantifiedAssociations[$associationType][self::PRODUCTS]
+                        ?? $this->getProductFormerAssociations($product, $associationType);
 
-            $values = match ($quantifiedAssociationUserIntent::class) {
-                ReplaceAssociatedQuantifiedProductUuids::class =>
-                    $this->replaceQuantifiedProductUuids(
-                        $formerAssociations,
-                        $quantifiedAssociationUserIntent,
-                        $userId
-                    ),
-                AssociateQuantifiedProducts::class, AssociateQuantifiedProductModels::class =>
-                    $this->associateQuantifiedEntities(
-                        $formerAssociations,
-                        $quantifiedAssociationUserIntent
-                    ),
-                DissociateQuantifiedProducts::class, DissociateQuantifiedProductModels::class =>
-                    $this->dissociateQuantifiedEntities(
-                        $formerAssociations,
-                        $quantifiedAssociationUserIntent
-                    ),
-                ReplaceAssociatedQuantifiedProducts::class, ReplaceAssociatedQuantifiedProductModels::class =>
-                    $this->replaceQuantifiedEntities(
-                        $formerAssociations,
-                        $quantifiedAssociationUserIntent,
-                        $userId
-                    ),
-                default => throw new \InvalidArgumentException('Unsupported association userIntent')
-            };
-            if (\is_null($values)) {
-                continue;
+                    $values = $this->applyProductQuantifiedUserIntent($formerAssociations, $quantifiedAssociationUserIntent, $userId);
+                    if (\is_null($values)) {
+                        break 2;
+                    }
+
+                    $normalizedQuantifiedAssociations[$associationType][self::PRODUCTS] = $values;
+                    break;
+                case AssociateQuantifiedProductModels::class:
+                case DissociateQuantifiedProductModels::class:
+                case ReplaceAssociatedQuantifiedProductModels::class:
+                    $formerAssociations = $normalizedQuantifiedAssociations[$associationType][self::PRODUCT_MODELS]
+                        ?? $this->getProductModelFormerAssociations($product, $associationType);
+
+                    $values = $this->applyProductModelQuantifiedUserIntent($formerAssociations, $quantifiedAssociationUserIntent, $userId);
+                    if (\is_null($values)) {
+                        break 2;
+                    }
+
+                    $normalizedQuantifiedAssociations[$associationType][self::PRODUCT_MODELS] = $values;
+                    break;
+                default:
+                    throw new \InvalidArgumentException('Unsupported association userIntent');
             }
-            $normalizedQuantifiedAssociations[$quantifiedAssociationUserIntent->associationType()][$entityType] = $values;
         }
 
         if ([] === $normalizedQuantifiedAssociations) {
@@ -276,5 +276,59 @@ final class QuantifiedAssociationUserIntentCollectionApplier implements UserInte
         ));
 
         return \array_values(\array_merge($newAssociations, $nonViewableFormerAssociations));
+    }
+
+    /**
+     * @param NormalizedProductAssociation[] $formerAssociations
+     * @return NormalizedProductAssociation[]|null
+     */
+    private function applyProductQuantifiedUserIntent(array $formerAssociations, QuantifiedAssociationUserIntent $quantifiedAssociationUserIntent, int $userId)
+    {
+        return match ($quantifiedAssociationUserIntent::class) {
+            AssociateQuantifiedProducts::class =>
+            $this->associateQuantifiedProducts(
+                $formerAssociations,
+                $quantifiedAssociationUserIntent
+            ),
+            DissociateQuantifiedProducts::class =>
+            $this->dissociateQuantifiedProducts(
+                $formerAssociations,
+                $quantifiedAssociationUserIntent
+            ),
+            ReplaceAssociatedQuantifiedProducts::class =>
+            $this->replaceQuantifiedProducts(
+                $formerAssociations,
+                $quantifiedAssociationUserIntent,
+                $userId
+            ),
+            default => throw new \InvalidArgumentException('Unsupported association userIntent')
+        };
+    }
+
+    /**
+     * @param NormalizedProductModelAssociation[] $formerAssociations
+     * @return NormalizedProductModelAssociation[]|null
+     */
+    private function applyProductModelQuantifiedUserIntent(array $formerAssociations, QuantifiedAssociationUserIntent $quantifiedAssociationUserIntent, int $userId)
+    {
+        return match ($quantifiedAssociationUserIntent::class) {
+            AssociateQuantifiedProductModels::class =>
+            $this->associateQuantifiedProductModels(
+                $formerAssociations,
+                $quantifiedAssociationUserIntent
+            ),
+            DissociateQuantifiedProductModels::class =>
+            $this->dissociateQuantifiedProductModels(
+                $formerAssociations,
+                $quantifiedAssociationUserIntent
+            ),
+            ReplaceAssociatedQuantifiedProductModels::class =>
+            $this->replaceQuantifiedProductModels(
+                $formerAssociations,
+                $quantifiedAssociationUserIntent,
+                $userId
+            ),
+            default => throw new \InvalidArgumentException('Unsupported association userIntent')
+        };
     }
 }

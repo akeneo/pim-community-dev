@@ -21,8 +21,8 @@ class AddQuantifiedAssociationsToProductModelEndToEnd extends AbstractProductMod
             'PRODUCTSET' => [
                 'products' => [
                     [
-                        'uuid' => $this->getProductUuid('1111111111'),
                         'quantity' => 3,
+                        'uuid' => $this->getProductUuid('1111111111'),
                     ],
                 ],
                 'product_models' => [
