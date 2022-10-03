@@ -6,8 +6,14 @@ namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\CreateGeneratorCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\CreateGeneratorHandler;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorCode;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Exception\ViolationsException;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
@@ -23,6 +29,7 @@ use Webmozart\Assert\Assert;
 final class CreateIdentifierGeneratorContext implements Context
 {
     private ?ViolationsException $violations = null;
+    private ?\InvalidArgumentException $invalidArgumentException = null;
 
     public function __construct(
         private CreateGeneratorHandler $createGeneratorHandler,
@@ -99,6 +106,23 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
+     * @Given I should not get any error
+     */
+    public function iShouldNotGetAnyError()
+    {
+        Assert::null($this->violations);
+    }
+
+    /**
+     * @Then I should get an exception with message ':message'
+     */
+    public function iShouldGetAnExceptionWithMessage($message)
+    {
+        Assert::notNull($this->invalidArgumentException);
+        Assert::contains($this->invalidArgumentException->getMessage(), $message);
+    }
+
+    /**
      * @Then the identifier should not be created
      */
     public function theIdentifierShouldNotBeCreated(): void
@@ -137,5 +161,40 @@ final class CreateIdentifierGeneratorContext implements Context
         } catch (ViolationsException $exception) {
             $this->violations = $exception;
         }
+    }
+
+    /**
+     * @When I try to create new identifier generator
+     */
+    public function iTryToCreateNewIdentifierGenerator(): void
+    {
+        try {
+            ($this->createGeneratorHandler)(new CreateGeneratorCommand(
+                'abcdef',
+                [],
+                [FreeText::fromString('abcdef')],
+                ['fr' => 'Générateur'],
+                'sku',
+                '-'
+            ));
+        } catch (ViolationsException $exception) {
+            $this->violations = $exception;
+        }
+    }
+
+    /**
+     * @Given the identifier generator is created
+     */
+    public function theIdentifierGeneratorIsCreated(): void
+    {
+        $identifierGenerator = new IdentifierGenerator(
+            IdentifierGeneratorCode::fromString('abcdef'),
+            Conditions::fromArray([]),
+            Structure::fromArray([FreeText::fromString('abc')]),
+            LabelCollection::fromNormalized(['fr' => 'Générateur']),
+            Target::fromString('sku'),
+            Delimiter::fromString('-'),
+        );
+        $this->generatorRepository->save($identifierGenerator);
     }
 }

@@ -1,6 +1,13 @@
 Akeneo\Pim\Automation\IdentifierGenerator\Application\CreateGeneratorCommand:
+    constraints:
+        - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\IdentifierGeneratorCreationLimit:
+              limit: 1
     properties:
         target:
             - NotBlank: ~
             - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldExist: ~
             - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldBeAnIdentifier: ~
+        structure:
+            - NotBlank: ~
+        code:
+            - NotBlank: ~
