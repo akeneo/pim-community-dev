@@ -113,6 +113,11 @@ abstract class IntegrationTestCase extends WebTestCase
         parent::tearDown();
     }
 
+    protected function disableExperimentalTestDatabase(): void
+    {
+        self::getContainer()->get(ExperimentalTransactionHelper::class)->disable();
+    }
+
     protected function logAs(string $username): TokenInterface
     {
         $user = self::getContainer()->get('pim_user.repository.user')->findOneByIdentifier($username);
@@ -416,5 +421,11 @@ abstract class IntegrationTestCase extends WebTestCase
             ->findOneByIdentifier($code);
 
         self::getContainer()->get('pim_catalog.remover.attribute_option')->remove($attributeOption);
+        $this->waitForQueuedJobs();
+    }
+
+    protected function waitForQueuedJobs(): void
+    {
+        self::getContainer()->get('akeneo_integration_tests.launcher.job_launcher')->launchConsumerUntilQueueIsEmpty();
     }
 }
