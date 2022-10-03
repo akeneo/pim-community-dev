@@ -21,3 +21,6 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@akeneo_batch.job.job_stopper'
+            - '@logger'
+        tags:
+            - { name: monolog.logger, channel: rules_runner }

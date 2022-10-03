@@ -1,5 +1,19 @@
 # 5.0.x
 
+# 5.0.114 (2022-09-20)
+
+## Bug fixes
+
+- PIM-10625: Asset Manager: Forbid the import of special character soft hyphen
+
+# 5.0.113 (2022-09-02)
+
+## Bug fixes
+
+- PIM-10610 [Backport PIM-10504]: Fix job execution stuck in status in progress or stopping
+
+# 5.0.112 (2022-09-01)
+
 # 5.0.111 (2022-08-25)
 
 # 5.0.110 (2022-08-23)

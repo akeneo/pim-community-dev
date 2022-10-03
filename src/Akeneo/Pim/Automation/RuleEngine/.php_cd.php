@@ -60,6 +60,7 @@ $rules = [
         'Symfony\Component',
         'Akeneo\Tool\Component',
         'Doctrine\Common',
+        'Psr\Log\LoggerInterface',
         'Akeneo\Pim\Enrichment\Component\FileStorage',
         'Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException',
         'Akeneo\Tool\Component\FileStorage\Exception\FileTransferException',

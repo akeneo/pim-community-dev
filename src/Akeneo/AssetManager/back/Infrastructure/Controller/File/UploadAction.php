@@ -3,7 +3,8 @@
 namespace Akeneo\AssetManager\Infrastructure\Controller\File;
 
 use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
-use Akeneo\Tool\Component\FileStorage\File\FileStorer;
+use Akeneo\AssetManager\Infrastructure\Validation\File\UploadedFileName;
+use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\PathGeneratorInterface;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
@@ -43,7 +44,7 @@ class UploadAction
     public function __construct(
         ValidatorInterface $validator,
         PathGeneratorInterface $pathGenerator,
-        FileStorer $fileStorer,
+        FileStorerInterface $fileStorer,
         FileInfoRepositoryInterface $fileInfoRepository,
         NormalizerInterface $normalizer
     ) {
@@ -76,6 +77,7 @@ class UploadAction
         $violations = $this->validator->validate($uploadedFile, [
             new Assert\Valid(),
             new Assert\File(),
+            new UploadedFileName(),
         ]);
 
         if (count($violations) > 0) {

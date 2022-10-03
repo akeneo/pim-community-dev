@@ -20,6 +20,7 @@ use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ExecuteRulesTaskletSpec extends ObjectBehavior
@@ -32,9 +33,10 @@ class ExecuteRulesTaskletSpec extends ObjectBehavior
         JobParameters $jobParameters,
         StepExecution $stepExecution,
         JobRepositoryInterface $jobRepository,
-        JobStopper $jobStopper
+        JobStopper $jobStopper,
+        LoggerInterface $logger
     ) {
-        $this->beConstructedWith($ruleDefinitionRepository, $ruleRunner, $dryRuleRunner, $eventDispatcher, $jobRepository, $jobStopper);
+        $this->beConstructedWith($ruleDefinitionRepository, $ruleRunner, $dryRuleRunner, $eventDispatcher, $jobRepository, $jobStopper, $logger);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $this->setStepExecution($stepExecution);
