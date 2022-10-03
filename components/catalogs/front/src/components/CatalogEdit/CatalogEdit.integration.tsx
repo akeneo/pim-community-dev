@@ -97,6 +97,26 @@ test('it can add a product value filter on the channel', async () => {
             url: '/rest/catalogs/channels?page=1&limit=20',
             json: [ECOMMERCE, PRINT],
         },
+        {
+            url: '/rest/catalogs/channels?codes=',
+            json: [],
+        },
+        {
+            url: '/rest/catalogs/locales?codes=',
+            json: [],
+        },
+        {
+            url: '/rest/catalogs/locales?page=1&limit=20',
+            json: [],
+        },
+        {
+            url: '/rest/catalogs/currencies',
+            json: [],
+        },
+        {
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=',
+            json: [],
+        },
     ]);
 
     const dispatch = jest.fn();
