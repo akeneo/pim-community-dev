@@ -2,9 +2,9 @@ apiVersion: v2
 name: external-dns
 description: External DNS
 icon: https://raw.githubusercontent.com/akeneo/pim-community-dev/master/public/favicon.ico
-version: 0.0.0
-appVersion: 6.8.1
+version: 1.11.0
+appVersion: 0.12.2
 dependencies:
   - name: external-dns
-    version: 6.8.1
-    repository: https://charts.bitnami.com/bitnami
+    version: 1.11.0
+    repository: https://kubernetes-sigs.github.io/external-dns

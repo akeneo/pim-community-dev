@@ -1,8 +1,14 @@
 global:
   googleProject: null # From parent
   publicDomain: null # From parent
+  privateDomain: null # From parent
   clusterRegion: null # From parent
 external-dns:
+  domainFilters: null # From parent
+  extraArgs: null # From parent
+  nodeSelector:
+    iam.gke.io/gke-metadata-server-enabled: "true"
+  provider: google
   resources:
     requests:
       memory: "64Mi"
@@ -10,16 +16,10 @@ external-dns:
     limits:
       memory: "128Mi"
       cpu: "200m"
-  provider: google
-  google:
-    project: null
-  nodeSelector:
-    iam.gke.io/gke-metadata-server-enabled: "true"
   serviceAccount:
     name: external-dns
     annotations:
-      iam.gke.io/gcp-service-account: "external-dns@{{ .Values.global.googleProject }}.iam.gserviceaccount.com"
+      iam.gke.io/gcp-service-account: null # From parent
   txtOwnerId: null # From parent
   sources:
-  - gateway-httproute
-  domainFilters: null # From parent
+    - gateway-httproute
