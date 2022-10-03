@@ -39,6 +39,8 @@ akeneo_data_quality_insights:
       aria_label: "Suggeriments ortogràfics per a: {{ mistake }}"
   dqi_dashboard:
     key_indicators:
+      attributes: '{1}1 atribut|]1, 200[{{ count }} atributs|[200, Inf[més de {{ count }} atributs'
+      attributes_to_work_on: 'Tens <improvable_attributes_count_link/> per treballar.'
       list:
         has_image:
           no_data: Les col·leccions d'actius i els atributs d'imatge semblen buits, hauríeu de penjar imatges d'aquest indicador clau per destacar la qualitat dels vostres productes.

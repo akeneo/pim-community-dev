@@ -195,7 +195,7 @@ akeneo.tailored_import:
       should_exist: Il canale {{ channel_code }} è stato eliminato. Seleziona un altro canale.
     attribute:
       locale_should_not_be_blank: L'attributo {{ attribute_code }} ora ha un valore per l'impostazione locale. Creala o scegli un'altra destinazione.
-      channel_should_not_be_blank: L'attributo {{ attribute_code }} ora ha un valore per il canale. Crealo o scegli un'altra destinazione.
+      channel_should_not_be_blank: L'attributo {{ attribute_code }} ora ha un valore per il canale. Crea il canale o scegli un'altra destinazione.
       locale_should_be_blank: L'attributo {{ attribute_code }} non ha più un valore per l'impostazione locale. Eliminalo e ricrealo, oppure scegli un'altra destinazione.
       channel_should_be_blank: L'attributo {{ attribute_code }} non ha più un valore per il canale. Eliminalo e ricrealo, oppure scegli un'altra destinazione.
       invalid_specific_locale: L'attributo {{ attribute_code }} è specifico dell'impostazione locale. Seleziona un'altra impostazione locale.

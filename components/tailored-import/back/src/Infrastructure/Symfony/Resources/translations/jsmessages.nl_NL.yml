@@ -174,7 +174,7 @@ akeneo.tailored_import:
     data_mappings:
       target_should_unique: Het doel "{{ code }}" kan niet meerdere keren worden geselecteerd.
       max_count_reached: U hebt de limiet van {{ limit }} toewijzingen bereikt. U kunt geen toewijzingen meer toevoegen aan uw import.
-      no_identifier_target_found: Er is een identificatie die geen doel is van een toewijzing, voeg een toewijzing toe.
+      no_identifier_target_found: Er is een ID waaraan geen doel is toegewezen. Voeg een toewijzing toe.
       too_many_identifier_target_found: Er is een identificatie die doel is van meer dan één toewijzing, verwijder een toewijzing.
       uuid:
         should_be_unique: Deze toewijzings-UUID bestaat al. Voer een nieuwe UUID in.

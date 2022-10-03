@@ -7,6 +7,7 @@ akeneo.job_automation:
       disabled_helper: Non sei autorizzato a consultare elenchi di gruppi di utenti.
     enable: Abilita la pianificazione
     frequency:
+      hourly_helper: Le frequenze che prevedono più esecuzioni giornaliere iniziano a mezzanotte (UTC)
       title: Frequenza
       daily: Ogni giorno
       weekly: Ogni settimana

@@ -3,8 +3,8 @@ akeneo.job_automation:
   scheduling:
     title: '일정 예약'
     running_user_groups:
-      label: '사용자 그룹 권한'
-      disabled_helper: 사용자 그룹 목록을 볼 수 있는 권한이 없습니다.
+      label: '권한을 부여할 사용자 그룹'
+      disabled_helper: 사용자 그룹을 나열할 권한이 없습니다.
     enable: 일정 예약 활성화
     cannot_view_all_jobs: "귀하의 역할에는 \"프로세스 트래커 내 모든 작업 보기\" 권한이 없기 때문에 프로세스 트래커에 있는 자동화된 작업을 볼 수 없습니다. PIM 관리자에게 문의하십시오."
     frequency:

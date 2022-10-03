@@ -1,0 +1,41 @@
+akeneo.tailored_import:
+  validation:
+    data_mappings:
+      target_should_unique: L'objectiu "{{ code }}" no es pot seleccionar diverses vegades.
+      sources:
+        should_exist: Una de les fonts ja no existeix, suprimiu totes les fonts d'aquest mapeig i torneu-ho a provar
+    target:
+      attribute_should_exist: L'atribut {{ attribute_code }} no existeix. Si us plau, crea o escull un diferent.
+      property_should_exist: La propietat {{ property_code }} no existeix. Si us plau, crea o escull una diferent.
+      source_configuration:
+        unit_should_exist: La unitat {{ unit_code }} no existeix per aquesta família mètrica {{ measurement_family }}. Si us plau, selecciona una unitat vàlida.
+        currency_should_be_active: La moneda {{ currency_code }} no està enllaçada a cap canal.
+        currency_should_be_active_on_channel: La moneda {{ currency_code }} no està activa per al canal {{ channel_code }}.
+    locale:
+      should_be_active: La configuració regional {{ locale_code }} s'ha desactivat. Reactiveu-lo o seleccioneu una altra configuració regional.
+      should_be_bound_to_channel: La configuració regional {{ locale_code }} s'ha desactivat per al canal {{ channel_code }}. Reactiveu-lo o seleccioneu una altra configuració regional.
+    channel:
+      should_exist: El canal {{ channel_code }} s'ha suprimit. Seleccioneu un altre canal.
+    attribute:
+      locale_should_not_be_blank: L'atribut {{ attribute_code }} ara té un valor per configuració regional. Creeu-lo o trieu un objectiu diferent.
+      channel_should_not_be_blank: L'atribut {{ attribute_code }} ara té un valor per canal. Creeu-lo o trieu un objectiu diferent.
+      locale_should_be_blank: L'atribut {{ attribute_code }} ja no té un valor per configuració regional. Si us plau, suprimiu-lo i torneu-lo a crear o trieu un objectiu diferent.
+      channel_should_be_blank: L'atribut {{ attribute_code }} ja no té un valor per canal. Si us plau, suprimiu-lo i torneu-lo a crear o trieu un objectiu diferent.
+      invalid_specific_locale: L'atribut {{ attribute_code }} és específic de la configuració regional. Seleccioneu una altra configuració regional.
+    file_key:
+      does_not_exist: No s'ha trobat el fitxer {{ file_key }}.
+    uploaded_file:
+      max_size: L'arxiu és massa gran. La mida màxima és {{ limit }}{{ suffix }}.
+      not_allowed_mime_type: Només estan suportats els arxius XLSX.
+      not_allowed_extension: Només estan suportats els arxius XLSX.
+    file_structure:
+      first_product_row_should_be_after_header_row: La primera fila de productes ha d'estar després de la capçalera.
+      unique_identifier_column_should_be_after_first_column_message: La columna de l'identificador ha de ser la primera columna.
+      header_row_should_not_contain_empty_cell: La fila de capçalera no ha de contenir cel·les buides.
+    file_preview:
+      empty_sheet:
+        title: Aquest full està buit.
+        description: Si us plau, selecciona un full amb una fila.
+    operations:
+      incompatible_operation_type: El tipus d'operació {{ operation_type }} és incompatible amb el vostre tipus d'objectiu.
+      missing_required_operations: "Falten les operacions necessàries: {{ missing_required_operations }}"

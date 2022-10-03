@@ -50,8 +50,8 @@ akeneo.tailored_import:
       common:
         collapse: 折りたたむ
       change_case:
-        title: 大小文字を切り替え
-        select: 大小文字を選択
+        title: 大文字/小文字を切り替え
+        select: 大文字/小文字を選択
         uppercase: 大文字
         lowercase: 小文字
         capitalize: 最初の文字を大文字にする
