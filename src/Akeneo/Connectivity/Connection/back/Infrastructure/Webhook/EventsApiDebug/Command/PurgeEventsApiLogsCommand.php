@@ -40,6 +40,6 @@ class PurgeEventsApiLogsCommand extends Command
         $this->purgeErrorLogsQuery->execute((new \DateTimeImmutable('now', new \DateTimeZone('UTC')))
             ->sub(new \DateInterval('PT72H')));
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

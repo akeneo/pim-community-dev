@@ -8,6 +8,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\PropertyInte
 use Webmozart\Assert\Assert;
 
 /**
+ * Array of properties used to define the structure of an identifier generator
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
