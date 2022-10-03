@@ -3,12 +3,12 @@ akeneo.job_automation:
   scheduling:
     title: 'Planning'
     running_user_groups:
-      label: 'Machtiging voor gebruikersgroepen'
-      disabled_helper: U bent niet gemachtigd om gebruikersgroepen te vermelden.
+      label: 'Machtigingen voor gebruikersgroepen'
+      disabled_helper: U bent niet gemachtigd de lijst met gebruikersgroepen weer te geven.
     enable: Planning inschakelen
     cannot_view_all_jobs: "U kunt geen geautomatiseerde taken in de procestracker bekijken omdat u niet de volgende machtiging heeft voor uw rol: \"Alle taken in procestracker bekijken\". Neem contact op met uw PIM-beheerder."
     frequency:
-      hourly_helper: Frequenties met meerdere uitvoeringen per dag beginnen om middernacht (UTC).
+      hourly_helper: Bij een frequentie van meerdere uitvoeringen per dag is de eerste om middernacht (UTC).
       title: Frequentie
       daily: Elke dag
       weekly: Elke week

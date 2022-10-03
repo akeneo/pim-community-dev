@@ -40,6 +40,8 @@ pim_table_configuration:
       no_validations_allowed: 'No utilitzeu validacions en una columna "{{ columnType }}", tipus de columna actual: "{{ given }}"'
       invalid_validation_key: 'Les validacions "{{ given }}" no funcionen en una columna "{{ columnType }}", permeses: "{{ expected }}"'
       too_many_table_attributes: Heu assolit el nombre màxim d'atributs de taula dins del vostre PIM ({{ limit }})
+      measurement_family_code_must_be_filled: S'ha d'omplir el codi de la família de mesures
+      measurement_default_unit_code_must_be_filled: S'ha d'omplir el codi de la unitat de mesura per defecte
     product_value:
       non_existing_columns: '[0,1]La columna "{{ no_existing_columns }}" no existeix|]1,Inf[Les columnes "{{ non_existing_columns }}" no existeixen'
       unexpected_data_type: 'La columna "{{ columnCode }}" espera un {{ expected }}, {{ given }} donat'

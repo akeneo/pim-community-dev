@@ -1,6 +1,23 @@
 akeneo.tailored_import:
+  global_settings:
+    error_action:
+      label: Gestió d'errors
+      skip_product: Omet el producte
+      skip_value: Omet el valor
   file_structure:
+    placeholder:
+      title: El teu perfil d'importació està buit.
+      link: Consulteu el nostre Centre d'ajuda per obtenir més informació.
+      button: Inicialitzar l'estructura d'importació
     modal:
+      title: Definiu la vostra estructura d'importació
+      subtitle: Perfils d'importació
+      helper: Comenceu definint l'estructura del vostre fitxer per configurar la vostra importació.
+      link: Consulteu el nostre Centre d'ajuda per obtenir més informació.
+      upload:
+        placeholder: Deixeu el vostre fitxer aquí o navegueu pel vostre disc.
+        uploading: Pujant...
+        error: S'ha produït un error en carregar el fitxer. Comproveu el vostre fitxer i torneu-ho a provar.
       unique_identifier_column: Columna d'identificador únic
   data_mapping_list:
     no_sources: Cap font
@@ -69,6 +86,7 @@ akeneo.tailored_import:
           yes_value: Valor Si
           no_value: Valor No
       enabled_replacement:
+        title: S'ha activat la substitució
         field:
           enabled_value: Valor actiu
           disabled_value: Valor inactiu
@@ -77,19 +95,62 @@ akeneo.tailored_import:
       add:
         label: Afegeix una font
     target:
+      title: Objectiu
       action_if_not_empty:
         title: Assignar
+      clear_if_empty: Esborra si està buit al fitxer
+      parameters:
+        decimal_separator:
+          title: Separador de decimals
+          comma: Coma (,)
+          dot: Punt (.)
+          arabic_comma: Separador decimal àrab (٫)
+        date_format: Format de data
+        measurement_unit:
+          title: Unitat
+        price_currency:
+          title: Moneda
+          placeholder: Seleccioneu una moneda
+  form:
+    job_instance:
+      tab:
+        import-structure:
+          title: Estructura d'importació
+      edit:
+        title: Per editar, comproveu els vostres permisos amb l'administrador de PIM.
+      launch:
+        title: Per importar, comproveu els vostres permisos amb el vostre administrador de PIM.
   validation:
+    required: Aquest valor és obligatori.
+    max_length_reached: Aquest valor és massa llarg. Ha de contenir {{ limit }} caràcters o menys.
+    missing_query_params: "Falten els paràmetres següents a la consulta: {{ missing_params }}"
     columns:
+      at_least_one_required: La capçalera ha de contenir almenys {{ limit }} columnes.
+      index:
+        should_be_unique: Aquest índex de columna ja existeix; introduïu-ne un de nou.
       label:
         should_not_be_blank: Definiu un nom de columna.
+        max_length_reached: L'etiqueta de la columna és massa llarga. Ha de contenir {{ limit }} caràcters o menys.
+    data_mappings:
+      target_should_unique: L'objectiu "{{ code }}" no es pot seleccionar diverses vegades.
     target:
       attribute_should_exist: L'atribut {{ attribute_code }} no existeix. Si us plau, crea o escull un diferent.
       property_should_exist: La propietat {{ property_code }} no existeix. Si us plau, crea o escull una diferent.
       source_configuration:
         unit_should_exist: La unitat {{ unit_code }} no existeix per aquesta família mètrica {{ measurement_family }}. Si us plau, selecciona una unitat vàlida.
+        currency_should_not_be_null: Seleccioneu una moneda.
+        currency_should_be_active: La moneda {{ currency_code }} no està enllaçada a cap canal.
+        currency_should_be_active_on_channel: La moneda {{ currency_code }} no està activa per al canal {{ channel_code }}.
+    locale:
+      should_be_active: La configuració regional {{ locale_code }} s'ha desactivat. Reactiveu-lo o seleccioneu una altra configuració regional.
+      should_be_bound_to_channel: La configuració regional {{ locale_code }} s'ha desactivat per al canal {{ channel_code }}. Reactiveu-lo o seleccioneu una altra configuració regional.
     channel:
       should_exist: El canal {{ channel_code }} s'ha suprimit. Seleccioneu un altre canal.
+    attribute:
+      locale_should_not_be_blank: L'atribut {{ attribute_code }} ara té un valor per configuració regional. Creeu-lo o trieu un objectiu diferent.
+      channel_should_not_be_blank: L'atribut {{ attribute_code }} ara té un valor per canal. Creeu-lo o trieu un objectiu diferent.
+      locale_should_be_blank: L'atribut {{ attribute_code }} ja no té un valor per configuració regional. Si us plau, suprimiu-lo i torneu-lo a crear o trieu un objectiu diferent.
+      channel_should_be_blank: L'atribut {{ attribute_code }} ja no té un valor per canal. Si us plau, suprimiu-lo i torneu-lo a crear o trieu un objectiu diferent.
     uploaded_file:
       max_size: L'arxiu és massa gran. La mida màxima és {{ limit }}{{ suffix }}.
       not_allowed_mime_type: Només estan suportats els arxius XLSX.

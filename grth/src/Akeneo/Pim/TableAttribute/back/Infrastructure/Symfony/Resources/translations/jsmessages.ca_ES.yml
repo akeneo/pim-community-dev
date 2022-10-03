@@ -131,6 +131,7 @@ pim_table_attribute:
       completeness_helper_link: consulta el nostre centre d'ajuda.
       reference_entity: Entitat de referència
       import_from_existing_attribute: Importar des de l'atribut existent
+      option_count: "{0,1}{{ count }} opció|]1, Inf[{{ count }} opcions"
       measurement_family: Família de mètrica
       measurement_default_unit: Unitat de mesura per defecte
     product:
@@ -200,3 +201,6 @@ batch_jobs:
   csv_product_model_table_values_import.label: Importació dels valors de la taula del model de producte en CSV
   xlsx_product_model_table_values_import.label: Importació dels valors de la taula del model de producte en XLSX
   default_steps.clean: Eliminació de valors d'opcions de taula no existents
+akeneo_job_process_tracker:
+  type_filter:
+    clean_table_values_following_deleted_options: Elimineu els valors d'opcions de taula no existents dels productes i models de producte
