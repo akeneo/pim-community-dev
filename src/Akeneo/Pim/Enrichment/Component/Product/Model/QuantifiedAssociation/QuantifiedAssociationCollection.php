@@ -47,6 +47,7 @@ class QuantifiedAssociationCollection
                     if (isset($association['uuid'])) {
                         $quantifiedLink = QuantifiedLink::fromUuid(
                             $association['uuid'],
+                            $association['identifier'] ?? null,
                             $association['quantity']
                         );
                     } else {
@@ -92,6 +93,7 @@ class QuantifiedAssociationCollection
                 if (isset($productAssociation['id']) && $mappedProductIds->hasUuidFromId($productAssociation['id'])) {
                     $quantifiedLink = QuantifiedLink::fromUuid(
                         $mappedProductIds->getUuidFromId($productAssociation['id']),
+                        $mappedProductIds->getIdentifierFromId($productAssociation['id']),
                         $productAssociation['quantity']
                     );
                     $mappedQuantifiedAssociations[$associationType][self::PRODUCTS_QUANTIFIED_LINKS_KEY][] = $quantifiedLink;

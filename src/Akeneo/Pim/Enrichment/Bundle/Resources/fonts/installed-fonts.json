@@ -1,0 +1,14 @@
+{
+    "fireflysung": {
+        "normal": "fireflysung",
+        "bold": "fireflysung",
+        "italic": "fireflysung",
+        "bold_italic": "fireflysung"
+    },
+    "noto": {
+        "normal": "NotoSansSC-Regular-Alphabetic",
+        "bold": "NotoSansSC-Bold-Alphabetic",
+        "italic": "NotoSansSC-Regular-Alphabetic",
+        "bold_italic": "NotoSansSC-Regular-Alphabetic"
+    }
+}

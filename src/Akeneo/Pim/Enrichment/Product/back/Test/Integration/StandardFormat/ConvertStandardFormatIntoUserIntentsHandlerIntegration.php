@@ -37,8 +37,6 @@ class ConvertStandardFormatIntoUserIntentsHandlerIntegration extends EnrichmentP
     /** @test */
     public function it_converts_into_user_intents(): void
     {
-        $productAssociatedUuid = $this->getProductUuid('associated_product');
-
         $envelope = $this->get('pim_enrich.product.query_message_bus')->dispatch(new GetUserIntentsFromStandardFormat([
             'family' => 'accessories',
             'associations' => [
@@ -55,7 +53,7 @@ class ConvertStandardFormatIntoUserIntentsHandlerIntegration extends EnrichmentP
             ],
             'quantified_associations' => [
                 'bundle' => [
-                    'products' => [['uuid' => $productAssociatedUuid, 'quantity' => 12]],
+                    'products' => [['identifier' => 'associated_product', 'quantity' => 12]],
                     'product_models' => [['identifier' => 'associated_product_model', 'quantity' => 21]],
                 ]
             ],
@@ -77,7 +75,7 @@ class ConvertStandardFormatIntoUserIntentsHandlerIntegration extends EnrichmentP
             new ReplaceAssociatedProductModels('SUBSTITUTION', ['associated_product_model']),
             new ReplaceAssociatedGroups('SUBSTITUTION', []),
             new ReplaceAssociatedQuantifiedProducts('bundle', [
-                new QuantifiedEntity($productAssociatedUuid, 12)
+                new QuantifiedEntity('associated_product', 12)
             ]),
             new ReplaceAssociatedQuantifiedProductModels('bundle', [
                 new QuantifiedEntity('associated_product_model', 21)
@@ -134,14 +132,6 @@ class ConvertStandardFormatIntoUserIntentsHandlerIntegration extends EnrichmentP
             'decimals_allowed'    => true,
             'negative_allowed'    => true,
         ]);
-    }
-
-    private function getProductUuid(string $identifier): ?string
-    {
-        return $this->get('database_connection')->executeQuery(
-            'SELECT BIN_TO_UUID(uuid) AS uuid FROM pim_catalog_product WHERE identifier = :identifier',
-            ['identifier' => $identifier]
-        )->fetchOne() ?: null;
     }
 
     protected function getConfiguration(): Configuration

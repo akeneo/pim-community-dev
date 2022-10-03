@@ -89,7 +89,7 @@ final class UserIntentContext implements Context
             ],
             'quantified_associations' => [
                 'bundle' => [
-                    'products' => [['uuid' => '337d8ac9-1afe-4f1b-845c-b124412199da', 'quantity' => 12]],
+                    'products' => [['identifier' => 'associated_product', 'quantity' => 12]],
                     'product_models' => [['identifier' => 'associated_product_model', 'quantity' => 21]],
                 ]
             ],
@@ -145,7 +145,7 @@ final class UserIntentContext implements Context
             new ReplaceAssociatedProducts('SUBSTITUTION', []),
             new ReplaceAssociatedProductModels('SUBSTITUTION', ['associated_product_model']),
             new ReplaceAssociatedGroups('SUBSTITUTION', []),
-            new ReplaceAssociatedQuantifiedProducts('bundle', [new QuantifiedEntity('337d8ac9-1afe-4f1b-845c-b124412199da', 12)]),
+            new ReplaceAssociatedQuantifiedProducts('bundle', [new QuantifiedEntity('associated_product', 12)]),
             new ReplaceAssociatedQuantifiedProductModels('bundle', [new QuantifiedEntity('associated_product_model', 21)]),
         ];
     }
@@ -175,7 +175,7 @@ final class UserIntentContext implements Context
             ],
             'quantified_associations' => [
                 'bundle' => [
-                    'products' => [['uuid' => '337d8ac9-1afe-4f1b-845c-b124412199da', 'quantity' => 12]],
+                    'products' => [['identifier' => 'associated_product', 'quantity' => 12]],
                     'product_models' => [['identifier' => 'associated_product_model', 'quantity' => 21]],
                 ]
             ],
@@ -249,7 +249,7 @@ final class UserIntentContext implements Context
             new ReplaceAssociatedProducts('SUBSTITUTION', []),
             new ReplaceAssociatedProductModels('SUBSTITUTION', ['associated_product_model']),
             new ReplaceAssociatedGroups('SUBSTITUTION', []),
-            new ReplaceAssociatedQuantifiedProducts('bundle', [new QuantifiedEntity('337d8ac9-1afe-4f1b-845c-b124412199da', 12)]),
+            new ReplaceAssociatedQuantifiedProducts('bundle', [new QuantifiedEntity('associated_product', 12)]),
             new ReplaceAssociatedQuantifiedProductModels('bundle', [new QuantifiedEntity('associated_product_model', 21)]),
         ];
     }

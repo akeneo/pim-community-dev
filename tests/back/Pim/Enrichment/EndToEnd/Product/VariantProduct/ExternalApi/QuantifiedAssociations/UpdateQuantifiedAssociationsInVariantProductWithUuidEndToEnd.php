@@ -48,7 +48,7 @@ class UpdateQuantifiedAssociationsInVariantProductWithUuidEndToEnd extends Abstr
         $uuid = $this->createVariantProduct('garden_table_set-black-gold', [
             new ChangeParent('garden_table_set-black'),
             new SetBooleanValue('a_yes_no', null, null, true),
-            new AssociateQuantifiedProducts('PRODUCTSET', [new QuantifiedEntity((string) $chairUuid, 4)]),
+            new AssociateQuantifiedProducts('PRODUCTSET', [new QuantifiedEntity('chair', 4)]),
             new AssociateQuantifiedProductModels('PRODUCTSET', [
                 new QuantifiedEntity('umbrella', 4)
             ])
@@ -94,7 +94,7 @@ JSON;
             'quantified_associations' => [
                 'PRODUCTSET' => [
                     'products' => [
-                        ['uuid' => $chairUuid->toString(), 'quantity' => 6],
+                        ['identifier' => 'chair', 'quantity' => 6, 'uuid' => $chairUuid->toString()],
                     ],
                     'product_models' => [
                         ['identifier' => 'umbrella', 'quantity' => 4],

@@ -26,8 +26,8 @@ class QuantifiedAssociationUserIntentFactorySpec extends ObjectBehavior
         $this->create('quantified_associations', [
             'QUANTIFIED_ASS' => [
                 'products' => [
-                    ['uuid' => '4873080d-32a3-42a7-ae5c-1be518e40f3d', 'quantity' => 10],
-                    ['uuid' => '5dd9eb8b-261f-4e76-bf1d-f407063f931d', 'quantity' => 20]
+                    ['identifier' => 'identifier1', 'quantity' => 10],
+                    ['identifier' => 'identifier2', 'quantity' => 20]
                 ],
                 'product_models' => [
                     ['identifier' => 'code1', 'quantity' => 20],
@@ -36,7 +36,7 @@ class QuantifiedAssociationUserIntentFactorySpec extends ObjectBehavior
             ],
             '123' => [
                 'products' => [
-                    ['uuid' => '62071b85-67af-44dd-8db1-9bc1dab393e7', 'quantity' => 2],
+                    ['identifier' => 'foo', 'quantity' => 2],
                 ],
                 'product_models' => [
                     ['identifier' => 'bar', 'quantity' => 5],
@@ -44,15 +44,15 @@ class QuantifiedAssociationUserIntentFactorySpec extends ObjectBehavior
             ],
         ])->shouldBeLike([
             new ReplaceAssociatedQuantifiedProducts('QUANTIFIED_ASS', [
-                new QuantifiedEntity('4873080d-32a3-42a7-ae5c-1be518e40f3d', 10),
-                new QuantifiedEntity('5dd9eb8b-261f-4e76-bf1d-f407063f931d', 20),
+                new QuantifiedEntity('identifier1', 10),
+                new QuantifiedEntity('identifier2', 20),
             ]),
             new ReplaceAssociatedQuantifiedProductModels('QUANTIFIED_ASS', [
                 new QuantifiedEntity('code1', 20),
                 new QuantifiedEntity('code2', 10),
             ]),
             new ReplaceAssociatedQuantifiedProducts('123', [
-                new QuantifiedEntity('62071b85-67af-44dd-8db1-9bc1dab393e7', 2),
+                new QuantifiedEntity('foo', 2),
             ]),
             new ReplaceAssociatedQuantifiedProductModels('123', [
                 new QuantifiedEntity('bar', 5),

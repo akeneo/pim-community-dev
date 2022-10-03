@@ -60,7 +60,7 @@ test('It displays quantified association rows for a quantified association colle
         quantifiedAssociations={quantifiedAssociationCollection}
         parentQuantifiedAssociations={{
           products: [{uuid: '3fa79b52-5900-49e8-a197-1181f58ec3cb', quantity: 1}],
-          product_models: [{identifier: 'braided-hat', quantity: 12}]
+          product_models: [{identifier: 'braided-hat', quantity: 12}],
         }}
         errors={[]}
         onAssociationsChange={jest.fn()}
@@ -311,7 +311,10 @@ test('It does not display the add association button if the user is not owner of
     renderDOMWithProviders(
       <QuantifiedAssociations
         quantifiedAssociations={quantifiedAssociationCollection}
-        parentQuantifiedAssociations={{products: [{uuid: '3fa79b52-5900-49e8-a197-1181f58ec3cb', quantity: 1}], product_models: []}}
+        parentQuantifiedAssociations={{
+          products: [{uuid: '3fa79b52-5900-49e8-a197-1181f58ec3cb', quantity: 1}],
+          product_models: [],
+        }}
         errors={[]}
         isUserOwner={false}
         onAssociationsChange={jest.fn()}

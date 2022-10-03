@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProductModels;
@@ -29,7 +28,6 @@ class LoadProductAndProductModelIntegration extends TestCase
 {
     public function test_product_is_not_dirty_after_fetching_it_from_database()
     {
-        $productFooUuid = $this->getProductUuid('foo');
         $this->createProduct(
             'baz',
             [
@@ -43,9 +41,7 @@ class LoadProductAndProductModelIntegration extends TestCase
                 new AssociateGroups('X_SELL', ['groupB']),
                 new AssociateProducts('TWOWAY', ['foo']),
                 new AssociateProductModels('TWOWAY', ['bar']),
-                new AssociateQuantifiedProducts('QUANTIFIED', [
-                    new QuantifiedEntity($productFooUuid, 2)
-                ]),
+                new AssociateQuantifiedProducts('QUANTIFIED', [new QuantifiedEntity('foo', 2)]),
                 new AssociateQuantifiedProductModels('QUANTIFIED', [
                     new QuantifiedEntity('bar', 5)
                 ])
@@ -182,13 +178,5 @@ class LoadProductAndProductModelIntegration extends TestCase
         Assert::assertCount(0, $violations, \sprintf('The product model is not valid: %s', (string)$violations));
         $this->get('pim_catalog.saver.product_model')->save($productModel);
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-    }
-
-    private function getProductUuid(string $identifier): ?string
-    {
-        return $this->get('database_connection')->executeQuery(
-            'SELECT BIN_TO_UUID(uuid) AS uuid FROM pim_catalog_product WHERE identifier = :identifier',
-            ['identifier' => $identifier]
-        )->fetchOne() ?: null;
     }
 }

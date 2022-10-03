@@ -142,7 +142,7 @@ class QuantifiedAssociationsStructureValidatorSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyTypeException::validArrayStructureExpected(
                 $field,
-                'a quantified association should contain the key "uuid"',
+                'a quantified association should contain the key "identifier"',
                 QuantifiedAssociationsStructureValidator::class,
                 $data
             )
@@ -176,13 +176,13 @@ class QuantifiedAssociationsStructureValidatorSpec extends ObjectBehavior
         );
     }
 
-    public function it_throws_when_quantified_link_uuid_is_not_a_string()
+    public function it_throws_when_quantified_link_identifier_is_not_a_string()
     {
         $field = 'quantified_associations';
         $data = [
             'PACK' => [
                 'products' => [
-                    ['uuid' => 1, 'quantity' => 3],
+                    ['identifier' => 1, 'quantity' => 3],
                 ],
             ],
         ];
@@ -190,7 +190,7 @@ class QuantifiedAssociationsStructureValidatorSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyTypeException::validArrayStructureExpected(
                 $field,
-                'a quantified association should contain a valid uuid',
+                'a quantified association should contain a valid identifier',
                 QuantifiedAssociationsStructureValidator::class,
                 $data
             )
@@ -230,7 +230,7 @@ class QuantifiedAssociationsStructureValidatorSpec extends ObjectBehavior
         $data = [
             'PACK' => [
                 'products' => [
-                    ['uuid' => '52254bba-a2c8-40bb-abe1-195e3970bd93', 'quantity' => 3],
+                    ['identifier' => 'foo', 'quantity' => 3],
                 ],
             ],
         ];

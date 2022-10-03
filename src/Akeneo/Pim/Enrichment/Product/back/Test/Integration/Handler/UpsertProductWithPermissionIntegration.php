@@ -335,15 +335,11 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
             new SetCategories(['print', 'sales']),
             new SetSimpleSelectValue('main_color', null, null, 'green'),
         ]);
-
-        $productViewableByManagerUuid = $this->getProductUuid('product_viewable_by_manager');
-        $productNonViewableByManagerUuid = $this->getProductUuid('product_non_viewable_by_manager');
-
         $this->createProduct(
             'my_product',
             [new AssociateQuantifiedProducts('bundle', [
-                new QuantifiedEntity($productViewableByManagerUuid, 10),
-                new QuantifiedEntity($productNonViewableByManagerUuid, 8),
+                new QuantifiedEntity('product_viewable_by_manager', 10),
+                new QuantifiedEntity('product_non_viewable_by_manager', 8),
             ])]
         );
 
@@ -352,7 +348,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
             $this->getUserId('betty'),
             ProductIdentifier::fromIdentifier('my_product'),
             [new ReplaceAssociatedQuantifiedProducts('bundle', [
-                new QuantifiedEntity($productViewableByManagerUuid, 7),
+                new QuantifiedEntity('product_viewable_by_manager', 7),
             ])]
         ));
 
@@ -360,8 +356,8 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('peter');
         Assert::assertEqualsCanonicalizing(
             [
-                new QuantifiedEntity($productViewableByManagerUuid, 7),
-                new QuantifiedEntity($productNonViewableByManagerUuid, 8),
+                new QuantifiedEntity('product_viewable_by_manager', 7),
+                new QuantifiedEntity('product_non_viewable_by_manager', 8),
             ],
             $this->getAssociatedQuantifiedProducts('my_product')
         );
@@ -404,13 +400,5 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
             ],
             $this->getAssociatedQuantifiedProductModels('my_product')
         );
-    }
-
-    private function getProductUuid(string $identifier): ?string
-    {
-        return $this->get('database_connection')->executeQuery(
-            'SELECT BIN_TO_UUID(uuid) AS uuid FROM pim_catalog_product WHERE identifier = :identifier',
-            ['identifier' => $identifier]
-        )->fetchOne() ?: null;
     }
 }

@@ -86,13 +86,13 @@ JSON;
             'quantified_associations' => [
                 'PRODUCTSET_A' => [
                     'products' => [
-                        ['uuid' => (string) $productChair->getUuid(), 'quantity' => 6],
+                        ['identifier' => 'chair', 'quantity' => 6, 'uuid' => (string) $productChair->getUuid()],
                     ],
                     'product_models' => [],
                 ],
                 'PRODUCTSET_B' => [
                     'products' => [
-                        ['uuid' => (string) $productChair->getUuid(), 'quantity' => 4],
+                        ['identifier' => 'chair', 'quantity' => 4, 'uuid' => (string) $productChair->getUuid()],
                     ],
                     'product_models' => [],
                 ],

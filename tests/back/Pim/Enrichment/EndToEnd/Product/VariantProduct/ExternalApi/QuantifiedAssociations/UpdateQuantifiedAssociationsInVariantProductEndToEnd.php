@@ -23,7 +23,7 @@ class UpdateQuantifiedAssociationsInVariantProductEndToEnd extends AbstractProdu
     {
         $client = $this->createAuthenticatedClient();
         $this->createQuantifiedAssociationType('PRODUCTSET');
-        $productChair = $this->createProduct('chair');
+        $this->createProduct('chair');
         $this->createProductModel([
             'code' => 'garden_table_set',
             'family_variant' => 'familyVariantA1',
@@ -48,7 +48,7 @@ class UpdateQuantifiedAssociationsInVariantProductEndToEnd extends AbstractProdu
         $this->createVariantProduct('garden_table_set-black-gold', [
             new ChangeParent('garden_table_set-black'),
             new SetBooleanValue('a_yes_no', null, null, true),
-            new AssociateQuantifiedProducts('PRODUCTSET', [new QuantifiedEntity((string) $productChair->getUuid(), 4)]),
+            new AssociateQuantifiedProducts('PRODUCTSET', [new QuantifiedEntity('chair', 4)]),
             new AssociateQuantifiedProductModels('PRODUCTSET', [
                 new QuantifiedEntity('umbrella', 4)
             ])
@@ -93,7 +93,7 @@ JSON;
             'quantified_associations' => [
                 'PRODUCTSET' => [
                     'products' => [
-                        ['uuid' => (string) $productChair->getUuid(), 'quantity' => 6],
+                        ['identifier' => 'chair', 'quantity' => 6],
                     ],
                     'product_models' => [
                         ['identifier' => 'umbrella', 'quantity' => 4],

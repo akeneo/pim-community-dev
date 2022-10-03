@@ -13,8 +13,9 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 class QuantifiedAssociationsStructureValidator
 {
     private const PRODUCT_LINK_TYPE = 'products';
+    private const PRODUCT_UUID_LINK_TYPE = 'product_uuids';
     private const PRODUCT_MODEL_LINK_TYPE = 'product_models';
-    private const QUANTIFIED_LINK_TYPES = [self::PRODUCT_LINK_TYPE, self::PRODUCT_MODEL_LINK_TYPE];
+    private const QUANTIFIED_LINK_TYPES = [self::PRODUCT_LINK_TYPE, self::PRODUCT_UUID_LINK_TYPE, self::PRODUCT_MODEL_LINK_TYPE];
 
     /**
      * @param mixed $data
@@ -34,6 +35,18 @@ class QuantifiedAssociationsStructureValidator
                 throw InvalidPropertyTypeException::validArrayStructureExpected(
                     $field,
                     sprintf('"%s" should contain an array', $associationTypeCode),
+                    static::class,
+                    $data
+                );
+            }
+
+            if (
+                array_key_exists(self::PRODUCT_LINK_TYPE, $associationTypeValues)
+                && array_key_exists(self::PRODUCT_UUID_LINK_TYPE, $associationTypeValues)
+            ) {
+                throw InvalidPropertyTypeException::validArrayStructureExpected(
+                    $field,
+                    'a quantified association cannot have product and product uuid',
                     static::class,
                     $data
                 );
@@ -70,6 +83,19 @@ class QuantifiedAssociationsStructureValidator
                     );
                 }
 
+
+                if (!in_array($quantifiedLinkType, self::QUANTIFIED_LINK_TYPES)) {
+                    throw InvalidPropertyTypeException::validArrayStructureExpected(
+                        $field,
+                        sprintf(
+                            'entity type in "%s" should should contain one of these value',
+                            implode(',', self::QUANTIFIED_LINK_TYPES)
+                        ),
+                        static::class,
+                        $data
+                    );
+                }
+
                 foreach ($quantifiedLinks as $quantifiedLink) {
                     if (!isset($quantifiedLink['quantity'])) {
                         throw InvalidPropertyTypeException::validArrayStructureExpected(
@@ -89,6 +115,24 @@ class QuantifiedAssociationsStructureValidator
                     }
 
                     if ($quantifiedLinkType === self::PRODUCT_LINK_TYPE) {
+                        if (!isset($quantifiedLink['identifier'])) {
+                            throw InvalidPropertyTypeException::validArrayStructureExpected(
+                                $field,
+                                'a quantified association should contain the key "identifier"',
+                                static::class,
+                                $data
+                            );
+                        }
+
+                        if (!is_string($quantifiedLink['identifier'])) {
+                            throw InvalidPropertyTypeException::validArrayStructureExpected(
+                                $field,
+                                'a quantified association should contain a valid identifier',
+                                static::class,
+                                $data
+                            );
+                        }
+                    } elseif ($quantifiedLinkType === self::PRODUCT_UUID_LINK_TYPE) {
                         if (!isset($quantifiedLink['uuid'])) {
                             throw InvalidPropertyTypeException::validArrayStructureExpected(
                                 $field,

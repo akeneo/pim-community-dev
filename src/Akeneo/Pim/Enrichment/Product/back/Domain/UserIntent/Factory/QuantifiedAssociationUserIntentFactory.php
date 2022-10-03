@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedEntity;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\ReplaceAssociatedQuantifiedProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\ReplaceAssociatedQuantifiedProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\ReplaceAssociatedQuantifiedProductUuids;
 use Akeneo\Pim\Enrichment\Product\Domain\StandardFormat\Validator\QuantifiedAssociationsStructureValidator;
 
 /**
@@ -35,9 +36,16 @@ class QuantifiedAssociationUserIntentFactory implements UserIntentFactory
         $this->quantifiedAssociationsStructureValidator->validate($fieldName, $data);
         $userIntents = [];
         foreach ($data as $associationType => $associations) {
-            if (\array_key_exists('products', $associations)) {
+            if (\array_key_exists('product_uuids', $associations)) {
                 $productQuantityValues = \array_map(
                     fn ($association) => new QuantifiedEntity($association['uuid'], $association['quantity']),
+                    $associations['product_uuids']
+                );
+                $userIntents[] = new ReplaceAssociatedQuantifiedProductUuids((string)$associationType, $productQuantityValues);
+            }
+            if (\array_key_exists('products', $associations)) {
+                $productQuantityValues = \array_map(
+                    fn ($association) => new QuantifiedEntity($association['identifier'], $association['quantity']),
                     $associations['products']
                 );
                 $userIntents[] = new ReplaceAssociatedQuantifiedProducts((string)$associationType, $productQuantityValues);

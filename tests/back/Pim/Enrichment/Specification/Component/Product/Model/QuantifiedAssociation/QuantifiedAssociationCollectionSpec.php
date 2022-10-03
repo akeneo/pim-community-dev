@@ -161,10 +161,7 @@ class QuantifiedAssociationCollectionSpec extends ObjectBehavior
             ]
         );
 
-        $this->getQuantifiedAssociationsProductUuids()->shouldBeLike([
-            Uuid::fromString('3f090f5e-3f54-4f34-879c-87779297d130'),
-            Uuid::fromString('52254bba-a2c8-40bb-abe1-195e3970bd93')
-        ]);
+        $this->getQuantifiedAssociationsProductIdentifiers()->shouldReturn(['entity_1', 'entity_2']);
     }
 
     public function it_returns_the_list_of_product_model_codes()

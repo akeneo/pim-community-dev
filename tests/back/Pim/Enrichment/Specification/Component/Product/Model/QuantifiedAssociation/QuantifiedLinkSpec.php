@@ -47,11 +47,24 @@ class QuantifiedLinkSpec extends ObjectBehavior
     function it_is_created_with_a_uuid()
     {
         $uuid = Uuid::uuid4();
-        $this->beConstructedThrough('fromUuid', [$uuid->toString(), 10]);
+        $this->beConstructedThrough('fromUuid', [$uuid->toString(), 'an_identifier', 10]);
 
         $this->normalize()->shouldReturn([
+            'identifier' => 'an_identifier',
+            'quantity' => 10,
             'uuid' => $uuid->toString(),
-            'quantity' => 10
+        ]);
+    }
+
+    function it_can_be_created_without_identifier()
+    {
+        $uuid = Uuid::uuid4();
+        $this->beConstructedThrough('fromUuid', [$uuid->toString(), null, 10]);
+
+        $this->normalize()->shouldReturn([
+            'identifier' => null,
+            'quantity' => 10,
+            'uuid' => $uuid->toString(),
         ]);
     }
 }

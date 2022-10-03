@@ -14,6 +14,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\Q
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedEntity;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\ReplaceAssociatedQuantifiedProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\ReplaceAssociatedQuantifiedProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\ReplaceAssociatedQuantifiedProductUuids;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProductModels;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProducts;
@@ -24,14 +25,12 @@ use Webmozart\Assert\Assert;
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @phpstan-type NormalizedProductAssociation array{uuid: string, quantity: int}
- * @phpstan-type NormalizedProductModelAssociation array{identifier: string, quantity: int}
  */
 final class QuantifiedAssociationUserIntentCollectionApplier implements UserIntentApplier
 {
     private const PRODUCTS = 'products';
     private const PRODUCT_MODELS = 'product_models';
+    private const PRODUCT_UUIDS = 'product_uuids';
 
     public function __construct(
         private ObjectUpdaterInterface $productUpdater,
@@ -60,36 +59,40 @@ final class QuantifiedAssociationUserIntentCollectionApplier implements UserInte
         /** @var QuantifiedAssociationUserIntent $quantifiedAssociationUserIntent */
         foreach ($userIntent->quantifiedAssociationUserIntents() as $quantifiedAssociationUserIntent) {
             $associationType = $quantifiedAssociationUserIntent->associationType();
+            $entityType = $this->getAssociationEntityType($quantifiedAssociationUserIntent);
 
-            switch ($quantifiedAssociationUserIntent::class) {
-                case AssociateQuantifiedProducts::class:
-                case DissociateQuantifiedProducts::class:
-                case ReplaceAssociatedQuantifiedProducts::class:
-                    $formerAssociations = $normalizedQuantifiedAssociations[$associationType][self::PRODUCTS]
-                        ?? $this->getProductFormerAssociations($product, $associationType);
+            $formerAssociations = $normalizedQuantifiedAssociations[$associationType][$entityType]
+                ?? $this->getFormerAssociations($quantifiedAssociationUserIntent, $product, $entityType);
 
-                    $values = $this->applyProductQuantifiedUserIntent($formerAssociations, $quantifiedAssociationUserIntent, $userId);
-                    if (\is_null($values)) {
-                        break 2;
-                    }
-
-                    $normalizedQuantifiedAssociations[$associationType][self::PRODUCTS] = $values;
-                    break;
-                case AssociateQuantifiedProductModels::class:
-                case DissociateQuantifiedProductModels::class:
-                case ReplaceAssociatedQuantifiedProductModels::class:
-                    $formerAssociations = $normalizedQuantifiedAssociations[$associationType][self::PRODUCT_MODELS]
-                        ?? $this->getProductModelFormerAssociations($product, $associationType);
-
-                    $values = $this->applyProductModelQuantifiedUserIntent($formerAssociations, $quantifiedAssociationUserIntent, $userId);
-                    if (\is_null($values)) {
-                        break 2;
-                    }
-
-                    $normalizedQuantifiedAssociations[$associationType][self::PRODUCT_MODELS] = $values;
-                    break;
-                default: throw new \InvalidArgumentException('Unsupported association userIntent');
+            $values = match ($quantifiedAssociationUserIntent::class) {
+                ReplaceAssociatedQuantifiedProductUuids::class =>
+                    $this->replaceQuantifiedProductUuids(
+                        $formerAssociations,
+                        $quantifiedAssociationUserIntent,
+                        $userId
+                    ),
+                AssociateQuantifiedProducts::class, AssociateQuantifiedProductModels::class =>
+                    $this->associateQuantifiedEntities(
+                        $formerAssociations,
+                        $quantifiedAssociationUserIntent
+                    ),
+                DissociateQuantifiedProducts::class, DissociateQuantifiedProductModels::class =>
+                    $this->dissociateQuantifiedEntities(
+                        $formerAssociations,
+                        $quantifiedAssociationUserIntent
+                    ),
+                ReplaceAssociatedQuantifiedProducts::class, ReplaceAssociatedQuantifiedProductModels::class =>
+                    $this->replaceQuantifiedEntities(
+                        $formerAssociations,
+                        $quantifiedAssociationUserIntent,
+                        $userId
+                    ),
+                default => throw new \InvalidArgumentException('Unsupported association userIntent')
+            };
+            if (\is_null($values)) {
+                continue;
             }
+            $normalizedQuantifiedAssociations[$quantifiedAssociationUserIntent->associationType()][$entityType] = $values;
         }
 
         if ([] === $normalizedQuantifiedAssociations) {
@@ -100,75 +103,46 @@ final class QuantifiedAssociationUserIntentCollectionApplier implements UserInte
     }
 
     /**
-     * @return NormalizedProductAssociation[]
+     * @return array<array{identifier: string, quantity: int}>
      */
-    private function getProductFormerAssociations(
+    private function getFormerAssociations(
+        QuantifiedAssociationUserIntent $associationUserIntent,
         ProductInterface $product,
-        string $associationType
+        string $entityType
     ): array {
         $normalizedQuantifiedAssociations = $product->getQuantifiedAssociations()->normalize();
 
-        return $normalizedQuantifiedAssociations[$associationType][self::PRODUCTS] ?? [];
+        return $normalizedQuantifiedAssociations[$associationUserIntent->associationType()][$entityType] ?? [];
+    }
+
+    private function getAssociationEntityType(QuantifiedAssociationUserIntent $userIntent): string
+    {
+        return match ($userIntent::class) {
+            AssociateQuantifiedProducts::class, DissociateQuantifiedProducts::class, ReplaceAssociatedQuantifiedProducts::class
+                => self::PRODUCTS,
+            AssociateQuantifiedProductModels::class, DissociateQuantifiedProductModels::class, ReplaceAssociatedQuantifiedProductModels::class
+                => self::PRODUCT_MODELS,
+            ReplaceAssociatedQuantifiedProductUuids::class
+                => self::PRODUCT_UUIDS,
+            default => throw new \LogicException('User intent cannot be handled')
+        };
     }
 
     /**
-     * @return NormalizedProductModelAssociation[]
+     * @param array<array{identifier: string, quantity: int}> $formerAssociations
+     * @return array<array{identifier: string, quantity: int}>|null
      */
-    private function getProductModelFormerAssociations(
-        ProductInterface $product,
-        string $associationType
-    ): array {
-        $normalizedQuantifiedAssociations = $product->getQuantifiedAssociations()->normalize();
-
-        return $normalizedQuantifiedAssociations[$associationType][self::PRODUCT_MODELS] ?? [];
-    }
-
-    /**
-     * @param NormalizedProductAssociation[] $formerAssociations
-     * @return NormalizedProductAssociation[]|null
-     */
-    private function associateQuantifiedProducts(
+    private function associateQuantifiedEntities(
         array $formerAssociations,
         QuantifiedAssociationUserIntent $quantifiedAssociationUserIntent
     ): ?array {
-        Assert::isInstanceOf($quantifiedAssociationUserIntent, AssociateQuantifiedProducts::class);
-
-        $quantifiedEntities = $quantifiedAssociationUserIntent->quantifiedProducts();
-        $indexedFormerAssociations = [];
-        foreach ($formerAssociations as $formerAssociation) {
-            $indexedFormerAssociations[$formerAssociation['uuid']] = $formerAssociation;
+        if ($quantifiedAssociationUserIntent instanceof AssociateQuantifiedProducts) {
+            $quantifiedEntities = $quantifiedAssociationUserIntent->quantifiedProducts();
+        } elseif ($quantifiedAssociationUserIntent instanceof AssociateQuantifiedProductModels) {
+            $quantifiedEntities = $quantifiedAssociationUserIntent->quantifiedProductModels();
+        } else {
+            throw new \InvalidArgumentException('Unexpected user intent');
         }
-
-        $isUpdated = false;
-        foreach ($quantifiedEntities as $quantifiedEntity) {
-            $uuid = $quantifiedEntity->entityIdentifier();
-            if (\array_key_exists($uuid, $indexedFormerAssociations)
-                && $indexedFormerAssociations[$uuid]['quantity'] === $quantifiedEntity->quantity()
-            ) {
-                continue;
-            }
-
-            $indexedFormerAssociations[$uuid] = [
-                'uuid' => $uuid,
-                'quantity' => $quantifiedEntity->quantity(),
-            ];
-            $isUpdated = true;
-        }
-
-        return $isUpdated ? \array_values($indexedFormerAssociations) : null;
-    }
-
-    /**
-     * @param NormalizedProductModelAssociation[] $formerAssociations
-     * @return NormalizedProductModelAssociation[]|null
-     */
-    private function associateQuantifiedProductModels(
-        array $formerAssociations,
-        QuantifiedAssociationUserIntent $quantifiedAssociationUserIntent
-    ): ?array {
-        Assert::isInstanceOf($quantifiedAssociationUserIntent, AssociateQuantifiedProductModels::class);
-
-        $quantifiedEntities = $quantifiedAssociationUserIntent->quantifiedProductModels();
         $indexedFormerAssociations = [];
         foreach ($formerAssociations as $formerAssociation) {
             $indexedFormerAssociations[$formerAssociation['identifier']] = $formerAssociation;
@@ -194,35 +168,20 @@ final class QuantifiedAssociationUserIntentCollectionApplier implements UserInte
     }
 
     /**
-     * @param NormalizedProductAssociation[] $formerAssociations
-     * @return NormalizedProductAssociation[]|null
+     * @param array<array{identifier: string, quantity: int}> $formerAssociations
+     * @return array<array{identifier: string, quantity: int}>|null
      */
-    private function dissociateQuantifiedProducts(
+    private function dissociateQuantifiedEntities(
         array $formerAssociations,
         QuantifiedAssociationUserIntent $quantifiedAssociationUserIntent
     ): ?array {
-        Assert::isInstanceOf($quantifiedAssociationUserIntent, DissociateQuantifiedProducts::class);
-
-        $productUuids = $quantifiedAssociationUserIntent->productIdentifiers();
-        $newAssociations = \array_filter(
-            $formerAssociations,
-            static fn (array $association): bool => !\in_array($association['uuid'], $productUuids)
-        );
-
-        return \count($newAssociations) === \count($formerAssociations) ? null : \array_values($newAssociations);
-    }
-
-    /**
-     * @param NormalizedProductModelAssociation[] $formerAssociations
-     * @return NormalizedProductModelAssociation[]|null
-     */
-    private function dissociateQuantifiedProductModels(
-        array $formerAssociations,
-        QuantifiedAssociationUserIntent $quantifiedAssociationUserIntent
-    ): ?array {
-        Assert::isInstanceOf($quantifiedAssociationUserIntent, DissociateQuantifiedProductModels::class);
-
-        $entityIdentifiers = $quantifiedAssociationUserIntent->productModelCodes();
+        if ($quantifiedAssociationUserIntent instanceof DissociateQuantifiedProducts) {
+            $entityIdentifiers = $quantifiedAssociationUserIntent->productIdentifiers();
+        } elseif ($quantifiedAssociationUserIntent instanceof DissociateQuantifiedProductModels) {
+            $entityIdentifiers = $quantifiedAssociationUserIntent->productModelCodes();
+        } else {
+            throw new \InvalidArgumentException('Unexpected user intent');
+        }
         $newAssociations = \array_filter(
             $formerAssociations,
             static fn (array $association): bool => !\in_array($association['identifier'], $entityIdentifiers)
@@ -232,30 +191,80 @@ final class QuantifiedAssociationUserIntentCollectionApplier implements UserInte
     }
 
     /**
-     * @param NormalizedProductAssociation[] $formerAssociations
-     * @return NormalizedProductAssociation[]|null
+     * @param array<array{identifier: string, quantity: int}> $formerAssociations
+     * @return array<array{identifier: string, quantity: int}>|null
      */
-    private function replaceQuantifiedProducts(
+    private function replaceQuantifiedEntities(
         array $formerAssociations,
         QuantifiedAssociationUserIntent $quantifiedAssociationUserIntent,
         int $userId
     ): ?array {
-        Assert::isInstanceOf($quantifiedAssociationUserIntent, ReplaceAssociatedQuantifiedProducts::class);
+        if ($quantifiedAssociationUserIntent instanceof ReplaceAssociatedQuantifiedProducts) {
+            $quantifiedEntities = $quantifiedAssociationUserIntent->quantifiedProducts();
+        } elseif ($quantifiedAssociationUserIntent instanceof ReplaceAssociatedQuantifiedProductModels) {
+            $quantifiedEntities = $quantifiedAssociationUserIntent->quantifiedProductModels();
+        } else {
+            throw new \InvalidArgumentException('Unexpected user intent');
+        }
 
-        $quantifiedEntities = $quantifiedAssociationUserIntent->quantifiedProducts();
-        $newNormalizedAssociations = array_map(static fn (QuantifiedEntity $quantifiedEntity) => [
-            'uuid' => $quantifiedEntity->entityIdentifier(),
-            'quantity' => $quantifiedEntity->quantity(),
-        ], $quantifiedEntities);
+        $newAssociations = [];
+        /** @var QuantifiedEntity $quantifiedEntity */
+        foreach ($quantifiedEntities as $quantifiedEntity) {
+            $newAssociations[] = [
+                'identifier' => $quantifiedEntity->entityIdentifier(),
+                'quantity' => $quantifiedEntity->quantity(),
+            ];
+        }
 
-        $sortFunction = fn (array $a, array $b): int => \strcmp($a['uuid'], $b['uuid']);
-        \usort($newNormalizedAssociations, $sortFunction);
+        $sortFunction = fn (array $a, array $b): int => \strcmp($a['identifier'], $b['identifier']);
+        \usort($newAssociations, $sortFunction);
         \usort($formerAssociations, $sortFunction);
-        if ($newNormalizedAssociations === $formerAssociations) {
+        if ($newAssociations === $formerAssociations) {
             return null;
         }
 
-        $formerAssociatedUuids = array_map(
+        $formerAssociatedIdentifiers = \array_column($formerAssociations, 'identifier');
+        $viewableIdentifiers = $quantifiedAssociationUserIntent instanceof ReplaceAssociatedQuantifiedProducts
+            ? $this->getViewableProducts->fromProductIdentifiers($formerAssociatedIdentifiers, $userId)
+            : $this->getViewableProductModels->fromProductModelCodes($formerAssociatedIdentifiers, $userId);
+        $nonViewableFormerAssociations = \array_values(\array_filter(
+            $formerAssociations,
+            static fn (array $association): bool => !\in_array($association['identifier'], $viewableIdentifiers)
+        ));
+
+        return \array_values(\array_merge($newAssociations, $nonViewableFormerAssociations));
+    }
+
+
+    /**
+     * @param array<array{uuid: string, quantity: int}> $formerAssociations
+     * @return array<array{uuid: string, quantity: int}>|null
+     */
+    private function replaceQuantifiedProductUuids(
+        array $formerAssociations,
+        QuantifiedAssociationUserIntent $quantifiedAssociationUserIntent,
+        int $userId
+    ): ?array {
+        Assert::isInstanceOf($quantifiedAssociationUserIntent, ReplaceAssociatedQuantifiedProductUuids::class);
+        $quantifiedEntities = $quantifiedAssociationUserIntent->quantifiedProducts();
+
+        $newAssociations = [];
+        /** @var QuantifiedEntity $quantifiedEntity */
+        foreach ($quantifiedEntities as $quantifiedEntity) {
+            $newAssociations[] = [
+                'uuid' => $quantifiedEntity->entityIdentifier(),
+                'quantity' => $quantifiedEntity->quantity(),
+            ];
+        }
+
+        $sortFunction = fn (array $a, array $b): int => \strcmp($a['uuid'], $b['uuid']);
+        \usort($newAssociations, $sortFunction);
+        \usort($formerAssociations, $sortFunction);
+        if ($newAssociations === $formerAssociations) {
+            return null;
+        }
+
+        $formerAssociatedUuids = \array_map(
             static fn (array $formerAssociation) => Uuid::fromString($formerAssociation['uuid']),
             $formerAssociations
         );
@@ -266,94 +275,6 @@ final class QuantifiedAssociationUserIntentCollectionApplier implements UserInte
             static fn (array $association): bool => !\in_array($association['uuid'], $viewableUuids)
         ));
 
-        return \array_values(\array_merge($newNormalizedAssociations, $nonViewableFormerAssociations));
-    }
-
-    /**
-     * @param NormalizedProductModelAssociation[] $formerAssociations
-     * @return NormalizedProductModelAssociation[]|null
-     */
-    private function replaceQuantifiedProductModels(
-        array $formerAssociations,
-        QuantifiedAssociationUserIntent $quantifiedAssociationUserIntent,
-        int $userId
-    ): ?array {
-        Assert::isInstanceOf($quantifiedAssociationUserIntent, ReplaceAssociatedQuantifiedProductModels::class);
-
-        $quantifiedEntities = $quantifiedAssociationUserIntent->quantifiedProductModels();
-        $newAssociations = array_map(static fn (QuantifiedEntity $quantifiedEntity) => [
-            'identifier' => $quantifiedEntity->entityIdentifier(),
-            'quantity' => $quantifiedEntity->quantity(),
-        ], $quantifiedEntities);
-
-        $sortFunction = fn (array $a, array $b): int => \strcmp($a['identifier'], $b['identifier']);
-        \usort($newAssociations, $sortFunction);
-        \usort($formerAssociations, $sortFunction);
-        if ($newAssociations === $formerAssociations) {
-            return null;
-        }
-
-        $formerAssociatedIdentifiers = \array_column($formerAssociations, 'identifier');
-        $viewableIdentifiers = $this->getViewableProductModels->fromProductModelCodes($formerAssociatedIdentifiers, $userId);
-        $nonViewableFormerAssociations = \array_values(\array_filter(
-            $formerAssociations,
-            static fn (array $association): bool => !\in_array($association['identifier'], $viewableIdentifiers)
-        ));
-
         return \array_values(\array_merge($newAssociations, $nonViewableFormerAssociations));
-    }
-
-    /**
-     * @param NormalizedProductAssociation[] $formerAssociations
-     * @return NormalizedProductAssociation[]|null
-     */
-    private function applyProductQuantifiedUserIntent(array $formerAssociations, QuantifiedAssociationUserIntent $quantifiedAssociationUserIntent, int $userId)
-    {
-        return match ($quantifiedAssociationUserIntent::class) {
-            AssociateQuantifiedProducts::class =>
-                $this->associateQuantifiedProducts(
-                    $formerAssociations,
-                    $quantifiedAssociationUserIntent
-                ),
-            DissociateQuantifiedProducts::class =>
-                $this->dissociateQuantifiedProducts(
-                    $formerAssociations,
-                    $quantifiedAssociationUserIntent
-                ),
-            ReplaceAssociatedQuantifiedProducts::class =>
-                $this->replaceQuantifiedProducts(
-                    $formerAssociations,
-                    $quantifiedAssociationUserIntent,
-                    $userId
-                ),
-            default => throw new \InvalidArgumentException('Unsupported association userIntent')
-        };
-    }
-
-    /**
-     * @param NormalizedProductModelAssociation[] $formerAssociations
-     * @return NormalizedProductModelAssociation[]|null
-     */
-    private function applyProductModelQuantifiedUserIntent(array $formerAssociations, QuantifiedAssociationUserIntent $quantifiedAssociationUserIntent, int $userId)
-    {
-        return match ($quantifiedAssociationUserIntent::class) {
-            AssociateQuantifiedProductModels::class =>
-                $this->associateQuantifiedProductModels(
-                    $formerAssociations,
-                    $quantifiedAssociationUserIntent
-                ),
-            DissociateQuantifiedProductModels::class =>
-                $this->dissociateQuantifiedProductModels(
-                    $formerAssociations,
-                    $quantifiedAssociationUserIntent
-                ),
-            ReplaceAssociatedQuantifiedProductModels::class =>
-                $this->replaceQuantifiedProductModels(
-                    $formerAssociations,
-                    $quantifiedAssociationUserIntent,
-                    $userId
-                ),
-            default => throw new \InvalidArgumentException('Unsupported association userIntent')
-        };
     }
 }

@@ -43,14 +43,19 @@ const getAssociationIdentifiers = (rows: Row[]): AssociationIdentifiers =>
     }
   );
 
-const filterOnLabelOrIdentifier = (searchValue: string) => (row: Row): boolean => {
-  if (null === row.product) {
-    return false;
-  }
+const filterOnLabelOrIdentifier =
+  (searchValue: string) =>
+  (row: Row): boolean => {
+    if (null === row.product) {
+      return false;
+    }
 
-  return (null !== row.product.label && -1 !== row.product.label.toLowerCase().indexOf(searchValue.toLowerCase()))
-    || (null !== row.product.identifier && -1 !== row.product.identifier.toLowerCase().indexOf(searchValue.toLowerCase()));
-}
+    return (
+      (null !== row.product.label && -1 !== row.product.label.toLowerCase().indexOf(searchValue.toLowerCase())) ||
+      (null !== row.product.identifier &&
+        -1 !== row.product.identifier.toLowerCase().indexOf(searchValue.toLowerCase()))
+    );
+  };
 
 const updateRowInCollection = (rows: Row[], {quantifiedLink, productType}: Row) =>
   rows.map(row => {

@@ -258,7 +258,7 @@ class ProductStandardIntegration extends TestCase
                 'quantified_associations' => [
                     "PRODUCT_SET" => [
                         "products" => [
-                            ["uuid" => $this->getProductUuid('bar'), "quantity" => 3]
+                            ['identifier' => 'bar', "uuid" => $this->getProductUuid('bar'), "quantity" => 3]
                         ],
                         "product_models" => [
                             ["identifier" => 'baz', "quantity" => 2]
@@ -460,7 +460,7 @@ SQL;
                 'quantified_associations' => [
                     "PRODUCT_SET" => [
                         "products" => [
-                            ["uuid" => $this->getProductUuid('bar'), "quantity" => 3]
+                            ['identifier' => 'bar', "uuid" => $this->getProductUuid('bar'), "quantity" => 3]
                         ],
                         "product_models" => [
                             ["identifier" => 'baz', "quantity" => 2]

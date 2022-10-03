@@ -19,6 +19,7 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
 {
     const ALLOWED_LINK_TYPES = [
         'products',
+        'product_uuids',
         'product_models',
     ];
 
