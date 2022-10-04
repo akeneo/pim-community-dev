@@ -16,3 +16,6 @@ workflows:
             - remove_unused_resources:
                   requires:
                       - checkout
+            - delete_ucs_environments_hourly:
+                  requires:
+                      - checkout

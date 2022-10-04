@@ -166,3 +166,23 @@ jobs:
                   name: Remove unused resources
                   command:
                       make -C deployments/ remove_unused_resources
+
+    delete_ucs_environments_hourly:
+        environment:
+            <<: *envVarsDeployPIMSaaSDev
+        <<: *dockerCloudDeployerUCS
+        resource_class: small
+        steps:
+            - attach_workspace:
+                  at: ~/
+            - set_gcloud_config_pim_saas_dev
+            - run:
+                  name: Delete tenant environments
+                  no_output_timeout: 15m
+                  command: |
+                      sh deployments-ucs/bin/remove_tenants.sh
+            - run:
+                  name: Delete PIM environments
+                  no_output_timeout: 15m
+                  command: |
+                      sh deployments-ucs/bin/remove_pim.sh
