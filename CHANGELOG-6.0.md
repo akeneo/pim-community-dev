@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-10657: [Backport] Remove RequestedAuthContext from SAML Auth requests
+- PIM-10632: Fix detection of orphan attribute option spellcheck lines during orphan cleaning 
 
 # 6.0.44 (2022-09-23)
 
