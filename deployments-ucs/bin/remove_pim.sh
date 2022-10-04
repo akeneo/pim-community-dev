@@ -43,8 +43,8 @@ for PIM in ${NS_LIST}; do
         APP_NAME=$(kubectl get application -n argocd | grep ${PIM} | awk '{print $1}')
         case "${APP_NAME}" in
             ${PIM}) echo "  Command debug:"
-            echo "      argocd app delete ${PIM} && kubectl delete ${PIM} || true"
-            argocd app delete ${PIM} && kubectl delete ns ${PIM} || true
+            echo "      argocd app delete -y ${PIM} && kubectl delete ${PIM} || true"
+            argocd app delete -y ${PIM} && kubectl delete ns ${PIM} || true
             ;;
             *) echo "  Command debug:"
             echo "      kubectl delete ${PIM} || true"
