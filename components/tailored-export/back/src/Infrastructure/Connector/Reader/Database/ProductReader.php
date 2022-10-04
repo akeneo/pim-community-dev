@@ -59,25 +59,23 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
      */
     public function read()
     {
-        $product = null;
         if (null === $this->products) {
             throw new \Exception('Reader have not been properly initialized');
         }
 
-        if ($this->products->valid()) {
-            if (!$this->firstRead) {
-                $this->products->next();
-            }
-            $product = $this->products->current();
+        if (!$this->firstRead) {
+            $this->products->next();
         }
 
-        if (null !== $product) {
+        if ($this->products->valid()) {
+            $product = $this->products->current();
             $this->getStepExecution()->incrementSummaryInfo('read');
+            return $product;
         }
 
         $this->firstRead = false;
 
-        return $product;
+        return null;
     }
 
     /**
