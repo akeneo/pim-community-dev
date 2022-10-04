@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Persistence\Catalog;
 
-use Akeneo\Catalogs\Domain\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog\Catalog;
+use Akeneo\Catalogs\Domain\Catalog\GetCatalogQueryInterface;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
 
@@ -55,13 +55,13 @@ final class GetCatalogQuery implements GetCatalogQueryInterface
             throw new \LogicException('Catalog not found.');
         }
 
-        /** @var array<array-key, ProductSelectionCriterion> $productSelectionCriteria */
+        /** @var array<array-key, ProductSelectionCriterion>|null $productSelectionCriteria */
         $productSelectionCriteria = \json_decode($row['product_selection_criteria'], true, 512, JSON_THROW_ON_ERROR);
         if (!\is_array($productSelectionCriteria)) {
             throw new \LogicException('Invalid JSON in product_selection_criteria column');
         }
 
-        /** @var ProductValueFilters $filters */
+        /** @var ProductValueFilters|null $productValueFilters */
         $productValueFilters = \json_decode($row['product_value_filters'], true, 512, JSON_THROW_ON_ERROR);
         if (!\is_array($productValueFilters)) {
             throw new \LogicException('Invalid JSON in product_value_filters column');

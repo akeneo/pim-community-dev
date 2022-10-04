@@ -25,10 +25,6 @@ namespace Akeneo\Catalogs\Domain\Catalog;
 final class Catalog
 {
     /**
-     * @param string $id
-     * @param string $name
-     * @param string $ownerUsername
-     * @param bool   $enabled
      * @param array<array-key, ProductSelectionCriterion> $productSelectionCriteria
      * @param ProductValueFilters $productValueFilters
      */
