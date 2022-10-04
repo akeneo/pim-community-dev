@@ -50,9 +50,6 @@ services:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\GroupNormalizer'
         arguments:
             - '@pim_catalog.normalizer.standard.group'
-            - '@pim_structure_version.provider.structure_version.group'
-            - '@pim_versioning.manager.version'
-            - '@pim_enrich.normalizer.version'
             - '@Akeneo\Pim\Enrichment\Component\Product\Query\FindProductUuidsInGroup'
         tags:
             - { name: pim_internal_api_serializer.normalizer }

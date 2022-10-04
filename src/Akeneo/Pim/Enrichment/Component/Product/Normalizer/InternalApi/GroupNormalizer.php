@@ -4,8 +4,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindProductUuidsInGroup;
-use Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface;
-use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -21,11 +19,8 @@ class GroupNormalizer implements NormalizerInterface, CacheableSupportsMethodInt
     protected array $supportedFormats = ['internal_api'];
 
     public function __construct(
-        protected NormalizerInterface $groupNormalizer,
-        protected StructureVersionProviderInterface $structureVersionProvider,
-        protected VersionManager $versionManager,
-        protected NormalizerInterface $versionNormalizer,
-        private  FindProductUuidsInGroup $findProductUuids
+        private NormalizerInterface $groupNormalizer,
+        private FindProductUuidsInGroup $findProductUuids
     ) {
     }
 
@@ -35,26 +30,11 @@ class GroupNormalizer implements NormalizerInterface, CacheableSupportsMethodInt
     public function normalize($group, $format = null, array $context = [])
     {
         $normalizedGroup = $this->groupNormalizer->normalize($group, 'standard', $context);
-
         $normalizedGroup['products'] = $this->findProductUuids->forGroupId($group->getId());
-
-        $firstVersion = $this->versionManager->getOldestLogEntry($group);
-        $lastVersion = $this->versionManager->getNewestLogEntry($group);
-
-        $firstVersion = null !== $firstVersion ?
-            $this->versionNormalizer->normalize($firstVersion, 'internal_api') :
-            null;
-        $lastVersion = null !== $lastVersion ?
-            $this->versionNormalizer->normalize($lastVersion, 'internal_api') :
-            null;
-
         $normalizedGroup['meta'] = [
             'id' => $group->getId(),
             'form' => 'pim-group-edit-form',
-            'structure_version' => $this->structureVersionProvider->getStructureVersion(),
             'model_type' => 'group',
-            'created' => $firstVersion,
-            'updated' => $lastVersion,
         ];
 
         return $normalizedGroup;
