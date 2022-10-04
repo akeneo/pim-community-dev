@@ -38,6 +38,11 @@ final class GetAverageRanksQuery implements GetAverageRanksQueryInterface
     {
         $path = sprintf('\'$.average_ranks."%s"."%s"\'', $channelCode, $localeCode);
 
+
+//SELECT code
+//FROM pim_data_quality_insights_dashboard_scores_projection
+//WHERE type='family' AND code IN ('accessories');
+
         $query = <<<SQL
 SELECT
     code,
@@ -60,7 +65,7 @@ SQL;
 
         $averageRanks = [];
         while ($rawAverageRanks = $stmt->fetchAssociative()) {
-            $averageRanks[$rawAverageRanks['code']] = null !== $rawAverageRanks['average_rank'] ? Rank::fromString($rawAverageRanks['average_rank']) : null;
+            $averageRanks[strtolower($rawAverageRanks['code'])] = null !== $rawAverageRanks['average_rank'] ? Rank::fromString($rawAverageRanks['average_rank']) : null;
         }
 
         $entityAverageRanks = [];
