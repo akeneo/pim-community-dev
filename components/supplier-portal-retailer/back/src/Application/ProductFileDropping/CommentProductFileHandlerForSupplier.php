@@ -8,7 +8,7 @@ use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\Pro
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
 
-final class CommentProductFileHandlerForSupplier
+class CommentProductFileHandlerForSupplier
 {
     public function __construct(
         private ProductFileRepository $productFileRepository,

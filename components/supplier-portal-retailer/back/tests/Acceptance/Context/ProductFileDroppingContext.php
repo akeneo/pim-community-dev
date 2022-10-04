@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Test\Acceptance\Context;
 
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFile;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CommentProductFileForSupplier;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFileHandler;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CommentProductFileHandlerForSupplier;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithComments;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\CommentTooLong;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\EmptyComment;
@@ -28,6 +30,7 @@ final class ProductFileDroppingContext implements Context
         private InMemoryProductFileRepository $productFileRepository,
         private CommentProductFileHandler $commentProductFileHandler,
         private GetProductFileWithComments $getProductFileWithComments,
+        private CommentProductFileHandlerForSupplier $commentProductFileHandlerForSupplier,
     ) {
     }
 
@@ -90,9 +93,9 @@ final class ProductFileDroppingContext implements Context
     }
 
     /**
-     * @When I comment it with :content
+     * @When a retailer comments it with :content
      */
-    public function iCommentItWith(string $content): void
+    public function aRetailerCommentsItWith(string $content): void
     {
         try {
             ($this->commentProductFileHandler)(new CommentProductFile(
@@ -107,14 +110,48 @@ final class ProductFileDroppingContext implements Context
     }
 
     /**
-     * @When I comment it with a too long comment
+     * @When a supplier comments it with :content
      */
-    public function iCommentItWithATooLongComment(): void
+    public function aSupplierCommentsItWith(string $content): void
+    {
+        try {
+            ($this->commentProductFileHandlerForSupplier)(new CommentProductFileForSupplier(
+                $this->productFileIdentifier,
+                'jimmy@megasupplier.com',
+                $content,
+                new \DateTimeImmutable(),
+            ));
+        } catch (\Exception $e) {
+            $this->exception = $e;
+        }
+    }
+
+    /**
+     * @When a retailer comments it with a too long comment
+     */
+    public function aRetailerCommentsItWithATooLongComment(): void
     {
         try {
             ($this->commentProductFileHandler)(new CommentProductFile(
                 $this->productFileIdentifier,
                 'julia@roberts.com',
+                str_repeat('q', 256),
+                new \DateTimeImmutable(),
+            ));
+        } catch (\Exception $e) {
+            $this->exception = $e;
+        }
+    }
+
+    /**
+     * @When a supplier comments it with a too long comment
+     */
+    public function aSupplierCommentsItWithATooLongComment(): void
+    {
+        try {
+            ($this->commentProductFileHandlerForSupplier)(new CommentProductFileForSupplier(
+                $this->productFileIdentifier,
+                'jimmy@megasupplier.com',
                 str_repeat('q', 256),
                 new \DateTimeImmutable(),
             ));
@@ -148,13 +185,24 @@ final class ProductFileDroppingContext implements Context
     }
 
     /**
-     * @Then the product file contains the comment :content
+     * @Then the product file contains the retailer comment :content
      */
-    public function theProductFileContainsTheComment(string $content): void
+    public function theProductFileContainsTheRetailerComment(string $content): void
     {
         $productFile = ($this->getProductFileWithComments)($this->productFileIdentifier);
 
         Assert::assertCount(1, $productFile->retailerComments);
         Assert::assertSame($content, $productFile->retailerComments[0]->content());
+    }
+
+    /**
+     * @Then the product file contains the supplier comment :content
+     */
+    public function theProductFileContainsTheSupplierComment(string $content): void
+    {
+        $productFile = ($this->getProductFileWithComments)($this->productFileIdentifier);
+
+        Assert::assertCount(1, $productFile->supplierComments);
+        Assert::assertSame($content, $productFile->supplierComments[0]->content());
     }
 }
