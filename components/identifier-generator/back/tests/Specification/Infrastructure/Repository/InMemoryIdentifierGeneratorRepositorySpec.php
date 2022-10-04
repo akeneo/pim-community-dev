@@ -82,4 +82,21 @@ class InMemoryIdentifierGeneratorRepositorySpec extends ObjectBehavior
     {
         $this->get('unknown')->shouldReturn(null);
     }
+
+    public function it_can_count_identifer_generators()
+    {
+        $this->count()->shouldReturn(0);
+
+        $identifierGenerator = new IdentifierGenerator(
+            IdentifierGeneratorCode::fromString('aabbcc'),
+            Conditions::fromArray([]),
+            Structure::fromArray([FreeText::fromString('abc')]),
+            LabelCollection::fromNormalized(['fr' => 'Générateur']),
+            Target::fromString('sku'),
+            Delimiter::fromString('-'),
+        );
+        $this->save($identifierGenerator);
+
+        $this->count()->shouldReturn(1);
+    }
 }
