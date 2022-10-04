@@ -72,6 +72,7 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
         if ($this->products->valid()) {
             $product = $this->products->current();
             $this->getStepExecution()->incrementSummaryInfo('read');
+
             return $product;
         }
 
