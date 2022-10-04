@@ -77,7 +77,6 @@ class ProductReaderSpec extends ObjectBehavior
         $pqb->addFilter('completeness', Operators::GREATER_OR_EQUAL_THAN, 100, ['scope' => 'mobile'])->shouldBeCalled();
         $pqb->execute()->shouldBeCalled()->willReturn($cursor);
 
-        $cursor->rewind()->shouldBeCalled();
         $cursor->valid()->willReturn(true, true, true, false);
         $cursor->current()->will(new ReturnPromise([$product1, $product2, $product3]));
         $cursor->next()->shouldBeCalled();
@@ -134,7 +133,6 @@ class ProductReaderSpec extends ObjectBehavior
         $pqb->addFilter('completeness', Operators::GREATER_OR_EQUAL_THAN, 100, [])->shouldBeCalled();
         $pqb->execute()->shouldBeCalled()->willReturn($cursor);
 
-        $cursor->rewind()->shouldBeCalled();
         $cursor->count()->willReturn(10);
 
         $this->initialize();
