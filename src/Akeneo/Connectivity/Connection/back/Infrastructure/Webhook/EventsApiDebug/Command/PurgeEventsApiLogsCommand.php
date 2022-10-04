@@ -6,6 +6,9 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\C
 
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\PurgeEventsApiErrorLogsQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\PurgeEventsApiSuccessLogsQuery;
+use Elasticsearch\Common\Exceptions\Missing404Exception;
+use Elasticsearch\Common\Exceptions\NoNodesAvailableException;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,23 +25,25 @@ class PurgeEventsApiLogsCommand extends Command
      */
     protected static $defaultName = 'akeneo:connectivity-connection:purge-events-api-logs';
 
-    private PurgeEventsApiSuccessLogsQuery $purgeSuccessLogsQuery;
-    private PurgeEventsApiErrorLogsQuery $purgeErrorLogsQuery;
-
     public function __construct(
-        PurgeEventsApiSuccessLogsQuery $purgeSuccessLogsQuery,
-        PurgeEventsApiErrorLogsQuery $purgeErrorLogsQuery
+        private PurgeEventsApiSuccessLogsQuery $purgeSuccessLogsQuery,
+        private PurgeEventsApiErrorLogsQuery $purgeErrorLogsQuery,
+        private LoggerInterface $logger,
     ) {
         parent::__construct();
-        $this->purgeSuccessLogsQuery = $purgeSuccessLogsQuery;
-        $this->purgeErrorLogsQuery = $purgeErrorLogsQuery;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->purgeSuccessLogsQuery->execute();
-        $this->purgeErrorLogsQuery->execute((new \DateTimeImmutable('now', new \DateTimeZone('UTC')))
-            ->sub(new \DateInterval('PT72H')));
+        try {
+            $this->purgeSuccessLogsQuery->execute();
+            $this->purgeErrorLogsQuery->execute((new \DateTimeImmutable('now', new \DateTimeZone('UTC')))
+                ->sub(new \DateInterval('PT72H')));
+        } catch (Missing404Exception | NoNodesAvailableException $ex) {
+            $this->logger->warning('Elasticsearch is unavailable', ['exception' => $ex]);
+
+            return Command::FAILURE;
+        }
 
         return Command::SUCCESS;
     }
