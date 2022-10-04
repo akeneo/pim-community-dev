@@ -9,6 +9,7 @@ use Akeneo\Platform\Job\ServiceApi\JobInstance\CreateJobInstance\CreateJobInstan
 use Akeneo\Platform\Job\Test\Acceptance\AcceptanceTestCase;
 use Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryJobInstanceSaver;
 use Akeneo\Tool\Component\Batch\Exception\InvalidJobException;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 
 class CreateJobInstanceHandlerTest extends AcceptanceTestCase
 {
@@ -37,7 +38,7 @@ class CreateJobInstanceHandlerTest extends AcceptanceTestCase
         );
         $this->handler->handle($command);
 
-        $this->saver->get('test_job');
+        $this->assertInstanceOf(JobInstance::class, $this->saver->get('test_job'));
     }
 
     /**
