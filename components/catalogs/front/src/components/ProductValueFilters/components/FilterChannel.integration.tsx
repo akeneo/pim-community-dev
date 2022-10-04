@@ -26,6 +26,10 @@ beforeEach(() => {
             url: '/rest/catalogs/channels?codes=print',
             json: [PRINT],
         },
+        {
+            url: '/rest/catalogs/channels?codes=',
+            json: [],
+        },
     ]);
 });
 
