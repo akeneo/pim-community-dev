@@ -4,8 +4,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindProductUuidsInGroup;
-use Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface;
-use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -21,11 +19,8 @@ class GroupNormalizer implements NormalizerInterface, CacheableSupportsMethodInt
     protected array $supportedFormats = ['internal_api'];
 
     public function __construct(
-        protected NormalizerInterface $groupNormalizer,
-        protected StructureVersionProviderInterface $structureVersionProvider,
-        protected VersionManager $versionManager,
-        protected NormalizerInterface $versionNormalizer,
-        private  FindProductUuidsInGroup $findProductUuids
+        private NormalizerInterface $groupNormalizer,
+        private FindProductUuidsInGroup $findProductUuids
     ) {
     }
 
