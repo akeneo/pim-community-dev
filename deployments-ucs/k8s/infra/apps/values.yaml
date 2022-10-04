@@ -10,3 +10,5 @@ spec:
     repoURL: https://github.com/akeneo/pim-saas-k8s-artifacts.git
     basePath: k8s/infra/charts/
     targetRevision: master #To be overrided
+wiremock:
+  enabled: false
