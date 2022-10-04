@@ -49,6 +49,10 @@ class DuplicateModal extends BaseView {
     this.productIdentifierToDuplicate = productIdentifier;
   }
 
+  public setFamilyCode(familyCode: string) {
+    this.getFormModel().set('family', familyCode);
+  }
+
   public render(): BaseView {
     this.$el.html(
       this.template({
