@@ -4,7 +4,7 @@ akeneo.job_automation:
     title: '计划'
     running_user_groups:
       label: '权限用户组'
-      disabled_helper: 您没有列出用户组的权限。
+      disabled_helper: 您没有显示用户组列表的权限。
     enable: 启用计划
     cannot_view_all_jobs: "您不能在进程跟踪器中查看自动作业， 因为您的角色没有以下权限：“查看进程跟踪器中的所有作业”。请联系您的 PIM 管理员。"
     frequency:
