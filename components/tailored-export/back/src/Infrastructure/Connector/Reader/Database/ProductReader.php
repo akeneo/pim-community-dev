@@ -51,6 +51,7 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
         $filters = $this->getConfiguredFilters();
 
         $this->products = $this->getProductsCursor($filters);
+        $this->products->rewind();
         $this->firstRead = true;
     }
 
