@@ -20,85 +20,46 @@ use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class DuplicateProductHandler
 {
-    /** @var ProductRepositoryInterface */
-    private $productRepository;
-
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
-
-    /** @var RemoveUniqueAttributeValues */
-    private $removeUniqueAttributeValues;
-
-    /** @var ProductBuilderInterface */
-    private $productBuilder;
-
-    /** @var NormalizerInterface */
-    private $normalizer;
-
-    /** @var ObjectUpdaterInterface */
-    private $productUpdater;
-
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var SaverInterface */
-    private $productSaver;
-
-    /** @var SecurityFacade */
-    private $securityFacade;
-
-    /** @var FetchUserRightsOnProductInterface */
-    private $fetchUserRightsOnProduct;
-
     public function __construct(
-        ProductRepositoryInterface $productRepository,
-        AttributeRepositoryInterface $attributeRepository,
-        RemoveUniqueAttributeValues $removeUniqueAttributeValues,
-        ProductBuilderInterface $productBuilder,
-        NormalizerInterface $normalizer,
-        ObjectUpdaterInterface $productUpdater,
-        ValidatorInterface $validator,
-        SaverInterface $productSaver,
-        SecurityFacade $securityFacade,
-        FetchUserRightsOnProductInterface $fetchUserRightsOnProduct
+        private ProductRepositoryInterface $productRepository,
+        private AttributeRepositoryInterface $attributeRepository,
+        private RemoveUniqueAttributeValues $removeUniqueAttributeValues,
+        private ProductBuilderInterface $productBuilder,
+        private NormalizerInterface $normalizer,
+        private ObjectUpdaterInterface $productUpdater,
+        private ValidatorInterface $validator,
+        private SaverInterface $productSaver,
+        private SecurityFacade $securityFacade,
+        private FetchUserRightsOnProductInterface $fetchUserRightsOnProduct
     ) {
-        $this->productRepository = $productRepository;
-        $this->attributeRepository = $attributeRepository;
-        $this->removeUniqueAttributeValues = $removeUniqueAttributeValues;
-        $this->productBuilder = $productBuilder;
-        $this->normalizer = $normalizer;
-        $this->productUpdater = $productUpdater;
-        $this->validator = $validator;
-        $this->productSaver = $productSaver;
-        $this->securityFacade = $securityFacade;
-        $this->fetchUserRightsOnProduct = $fetchUserRightsOnProduct;
     }
 
     public function handle(DuplicateProduct $duplicateProductCommand): DuplicateProductResponse
     {
-        if (!$this->isUserAllowedToDuplicateProduct($duplicateProductCommand->productToDuplicateIdentifier(), $duplicateProductCommand->userId())) {
+        if (!$this->isUserAllowedToDuplicateProduct($duplicateProductCommand->productToDuplicateUuid(), $duplicateProductCommand->userId())) {
             throw new ObjectNotFoundException(
                 sprintf(
                     'Product "%s" is not editable by user id "%s".',
-                    $duplicateProductCommand->productToDuplicateIdentifier(),
+                    $duplicateProductCommand->productToDuplicateUuid()->toString(),
                     $duplicateProductCommand->userId()
                 )
             );
         }
 
-        /** @var ProductInterface */
-        $productToDuplicate = $this->productRepository->findOneByIdentifier($duplicateProductCommand->productToDuplicateIdentifier());
+        /** @var ProductInterface $productToDuplicate */
+        $productToDuplicate = $this->productRepository->find($duplicateProductCommand->productToDuplicateUuid());
 
         $normalizedProduct = $this->normalizeProductWithNewIdentifier($productToDuplicate, $duplicateProductCommand->duplicatedProductIdentifier());
 
         $duplicatedProduct = $this->productBuilder->createProduct(
             $duplicateProductCommand->duplicatedProductIdentifier(),
-            $productToDuplicate->getFamily() !== null ? $productToDuplicate->getFamily()->getCode() : null
+            $productToDuplicate->getFamily()?->getCode()
         );
 
         $this->productUpdater->update($duplicatedProduct, $normalizedProduct);
@@ -120,7 +81,7 @@ class DuplicateProductHandler
         return DuplicateProductResponse::error($violations);
     }
 
-    private function normalizeProductWithNewIdentifier(ProductInterface $productToDuplicate, string $newIdentifier): array
+    private function normalizeProductWithNewIdentifier(ProductInterface $productToDuplicate, ?string $newIdentifier): array
     {
         $normalizedProduct = $this->normalizer->normalize(
             $productToDuplicate,
@@ -148,10 +109,10 @@ class DuplicateProductHandler
         return $removedUniqueAttributeCodesWithoutIdentifier;
     }
 
-    private function isUserAllowedToDuplicateProduct(string $productToDuplicateIdentifier, int $userId): bool
+    private function isUserAllowedToDuplicateProduct(UuidInterface $productToDuplicateUuid, int $userId): bool
     {
-        $userRightsOnProduct = $this->fetchUserRightsOnProduct->fetchByIdentifier(
-            $productToDuplicateIdentifier,
+        $userRightsOnProduct = $this->fetchUserRightsOnProduct->fetchByUuid(
+            $productToDuplicateUuid,
             $userId
         );
 

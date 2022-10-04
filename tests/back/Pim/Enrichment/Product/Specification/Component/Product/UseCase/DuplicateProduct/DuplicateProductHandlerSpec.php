@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct\Dup
 use Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct\RemoveUniqueAttributeValues;
 use Akeneo\Pim\Permission\Component\Authorization\FetchUserRightsOnProductInterface;
 use Akeneo\Pim\Permission\Component\Authorization\Model\UserRightsOnProduct;
+use Akeneo\Pim\Permission\Component\Authorization\Model\UserRightsOnProductUuid;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -19,6 +20,8 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -65,7 +68,8 @@ class DuplicateProductHandlerSpec extends ObjectBehavior
         ProductInterface $productToDuplicate,
         ProductInterface $duplicatedProduct
     ) {
-        $productRepository->findOneByIdentifier('product_to_duplicate')->willReturn($productToDuplicate);
+        $productUuid = Uuid::uuid4();
+        $productRepository->find($productUuid)->willReturn($productToDuplicate);
         $attributeRepository->getIdentifierCode()->willReturn('sku');
 
         $productBuilder->createProduct(Argument::cetera())->willReturn($duplicatedProduct);
@@ -77,8 +81,8 @@ class DuplicateProductHandlerSpec extends ObjectBehavior
             ],
         ])->shouldBeCalled();
 
-        $userRightsOnProduct = new UserRightsOnProduct(
-            'product_to_duplicate',
+        $userRightsOnProduct = new UserRightsOnProductUuid(
+            $productUuid,
             1,
             1,
             1,
@@ -86,12 +90,12 @@ class DuplicateProductHandlerSpec extends ObjectBehavior
             1
         );
         $duplicateProductCommand = new DuplicateProduct(
-            'product_to_duplicate',
+            $productUuid,
             'duplicated_product',
             1
         );
 
-        $fetchUserRightsOnProduct->fetchByIdentifier(Argument::type('string'), Argument::type('integer'))->willReturn($userRightsOnProduct);
+        $fetchUserRightsOnProduct->fetchByUuid(Argument::type(UuidInterface::class), Argument::type('integer'))->willReturn($userRightsOnProduct);
         $securityFacade->isGranted(Argument::type('string'))->willReturn(true);
 
         $this->shouldNotThrow(ObjectNotFoundException::class)->during('handle', [$duplicateProductCommand]);
@@ -101,8 +105,9 @@ class DuplicateProductHandlerSpec extends ObjectBehavior
         $securityFacade,
         $fetchUserRightsOnProduct
     ) {
-        $userRightsOnProduct = new UserRightsOnProduct(
-            'product_to_duplicate',
+        $productUuid = Uuid::uuid4();
+        $userRightsOnProduct = new UserRightsOnProductUuid(
+            $productUuid,
             1,
             0,
             0,
@@ -110,12 +115,12 @@ class DuplicateProductHandlerSpec extends ObjectBehavior
             1
         );
         $duplicateProductCommand = new DuplicateProduct(
-            'product_to_duplicate',
+            $productUuid,
             'duplicated_product',
             1
         );
 
-        $fetchUserRightsOnProduct->fetchByIdentifier(Argument::type('string'), Argument::type('integer'))->willReturn($userRightsOnProduct);
+        $fetchUserRightsOnProduct->fetchByUuid(Argument::type(UuidInterface::class), Argument::type('integer'))->willReturn($userRightsOnProduct);
         $securityFacade->isGranted(Argument::type('string'))->willReturn(true);
 
         $this->shouldThrow(ObjectNotFoundException::class)->during('handle', [$duplicateProductCommand]);
@@ -125,8 +130,9 @@ class DuplicateProductHandlerSpec extends ObjectBehavior
         $securityFacade,
         $fetchUserRightsOnProduct
     ) {
-        $userRightsOnProduct = new UserRightsOnProduct(
-            'product_to_duplicate',
+        $productUuid = Uuid::uuid4();
+        $userRightsOnProduct = new UserRightsOnProductUuid(
+            $productUuid,
             1,
             1,
             1,
@@ -134,12 +140,12 @@ class DuplicateProductHandlerSpec extends ObjectBehavior
             1
         );
         $duplicateProductCommand = new DuplicateProduct(
-            'product_to_duplicate',
+            $productUuid,
             'duplicated_product',
             1
         );
 
-        $fetchUserRightsOnProduct->fetchByIdentifier(Argument::type('string'), Argument::type('integer'))->willReturn($userRightsOnProduct);
+        $fetchUserRightsOnProduct->fetchByUuid(Argument::type(UuidInterface::class), Argument::type('integer'))->willReturn($userRightsOnProduct);
         $securityFacade->isGranted(Argument::type('string'))->willReturn(false);
 
         $this->shouldThrow(ObjectNotFoundException::class)->during('handle', [$duplicateProductCommand]);

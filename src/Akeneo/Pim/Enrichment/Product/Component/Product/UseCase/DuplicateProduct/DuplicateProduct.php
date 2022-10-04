@@ -11,33 +11,23 @@
 
 namespace Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct;
 
+use Ramsey\Uuid\UuidInterface;
+
 final class DuplicateProduct
 {
-    /** @var string */
-    private $productToDuplicateIdentifier;
-
-    /** @var string */
-    private $duplicatedProductIdentifier;
-
-    /** @var int */
-    private $userId;
-
     public function __construct(
-        string $productToDuplicateIdentifier,
-        string $duplicatedProductIdentifier,
-        int $userId
+        private UuidInterface $productToDuplicateUuid,
+        private ?string $duplicatedProductIdentifier,
+        private int $userId
     ) {
-        $this->productToDuplicateIdentifier = $productToDuplicateIdentifier;
-        $this->duplicatedProductIdentifier = $duplicatedProductIdentifier;
-        $this->userId = $userId;
     }
 
-    public function productToDuplicateIdentifier(): string
+    public function productToDuplicateUuid(): UuidInterface
     {
-        return $this->productToDuplicateIdentifier;
+        return $this->productToDuplicateUuid;
     }
 
-    public function duplicatedProductIdentifier(): string
+    public function duplicatedProductIdentifier(): ?string
     {
         return $this->duplicatedProductIdentifier;
     }

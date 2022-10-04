@@ -29,43 +29,22 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class DuplicateProductController
 {
-    /** @var DuplicateProductHandler */
-    private $duplicateProductHandler;
-
-    /** @var ProductRepositoryInterface */
-    private $productRepository;
-
-    /** @var NormalizerInterface */
-    private $constraintViolationNormalizer;
-
-    /** @var UserContext */
-    private $userContext;
-
-    /** @var NormalizerInterface */
-    private $normalizer;
-
     public function __construct(
-        ProductRepositoryInterface $productRepository,
-        DuplicateProductHandler $duplicateProductHandler,
-        NormalizerInterface $constraintViolationNormalizer,
-        UserContext $userContext,
-        NormalizerInterface $normalizer
+        private ProductRepositoryInterface $productRepository,
+        private DuplicateProductHandler $duplicateProductHandler,
+        private NormalizerInterface $constraintViolationNormalizer,
+        private UserContext $userContext,
+        private NormalizerInterface $normalizer
     ) {
-        $this->productRepository = $productRepository;
-        $this->duplicateProductHandler = $duplicateProductHandler;
-        $this->constraintViolationNormalizer = $constraintViolationNormalizer;
-        $this->userContext = $userContext;
-        $this->normalizer = $normalizer;
     }
 
-    public function duplicateProductAction(Request $request, string $uuid)
+    public function duplicateProductAction(Request $request, string $uuid): JsonResponse
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
 
         $data = json_decode($request->getContent(), true);
-
         if (!isset($data['duplicated_product_identifier'])) {
             throw new UnprocessableEntityHttpException('You should give a "duplicated_product_identifier" key.');
         }
@@ -80,9 +59,10 @@ class DuplicateProductController
             throw new LogicException('No authenticated user found.');
         }
 
+        $duplicatedProductIdentifier = $data['duplicated_product_identifier'] ?? null;
         $duplicateProductCommand = new DuplicateProduct(
-            $product->getIdentifier(),
-            $data['duplicated_product_identifier'],
+            $product->getUuid(),
+            $duplicatedProductIdentifier,
             $this->userContext->getUser()->getId()
         );
 
