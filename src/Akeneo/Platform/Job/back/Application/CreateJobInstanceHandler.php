@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Application;
 
-use Akeneo\Platform\Job\ServiceApi\JobInstance\CreateJobInstanceCommand;
-use Akeneo\Platform\Job\ServiceApi\JobInstance\CreateJobInstanceHandlerInterface;
+use Akeneo\Platform\Job\ServiceApi\JobInstance\CreateJobInstance\CreateJobInstanceCommand;
+use Akeneo\Platform\Job\ServiceApi\JobInstance\CreateJobInstance\CreateJobInstanceHandlerInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceFactory;
 use Akeneo\Tool\Component\Batch\Exception\InvalidJobException;
-use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Tool\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
@@ -19,7 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class CreateJobInstance implements CreateJobInstanceHandlerInterface
+final class CreateJobInstanceHandler implements CreateJobInstanceHandlerInterface
 {
     public function __construct(
         private JobInstanceFactory $jobInstanceFactory,
@@ -41,19 +40,12 @@ class CreateJobInstance implements CreateJobInstanceHandlerInterface
         $jobInstance->setLabel($command->label);
         $jobInstance->setRawParameters($command->rawParameters);
 
-        $job = $this->jobRegistry->get($jobInstance->getJobName());
-        if (null === $job) {
-//            $output->writeln(
-//                sprintf(
-//                    '<error>Job "%s" does not exists.</error>',
-//                    $jobName
-//                )
-//            );
-//
-//            return self::EXIT_ERROR_CODE;
-        }
 
-        /** @var JobParameters $jobParameters */
+        if (!$this->jobRegistry->has($jobInstance->getJobName())) {
+            throw new \RuntimeException('Job does ' . $jobInstance->getJobName() . ' not exists.');
+        }
+        $job = $this->jobRegistry->get($jobInstance->getJobName());
+
         $jobParameters = $this->jobParametersFactory->create($job, $jobInstance->getRawParameters());
         $jobInstance->setRawParameters($jobParameters->all());
 

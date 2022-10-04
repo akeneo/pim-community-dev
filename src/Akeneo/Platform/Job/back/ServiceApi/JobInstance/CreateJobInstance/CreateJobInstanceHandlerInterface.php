@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Platform\Job\ServiceApi\JobInstance;
+namespace Akeneo\Platform\Job\ServiceApi\JobInstance\CreateJobInstance;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
