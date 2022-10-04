@@ -5,11 +5,11 @@ steps:
 #   args:
 #   - '-c'
 #   - |
-#       if [ -d "deployments-ucs/terraform/${_ENV}" ]; then
-#         tfsec deployments-ucs/terraform/${_ENV}/ \
+#       if [ -d "deployments-ucs/infra/terraform/${_ENV}" ]; then
+#         tfsec deployments-ucs/infra/terraform/${_ENV}/ \
 #             -m MEDIUM
 #       else
-#         echo "No files for deployments-ucs/terraform/${_ENV}. Exiting"
+#         echo "No files for deployments-ucs/infra/terraform/${_ENV}. Exiting"
 #       fi
 - id: 'tf plan'
   name: 'hashicorp/terraform:1.1.3'
@@ -20,8 +20,8 @@ steps:
   args:
   - '-c'
   - |
-      if [ -d "deployments-ucs/terraform/${_ENV}/" ]; then
-        cd deployments-ucs/terraform/${_ENV}
+      if [ -d "deployments-ucs/infra/terraform/${_ENV}/" ]; then
+        cd deployments-ucs/infra/terraform/${_ENV}
         echo "*************** TERRAFORM PLAN ******************"
         echo "******* At project: ${_TARGET_PROJECT_ID} ********"
         echo "*************************************************"
@@ -42,8 +42,8 @@ steps:
       if [ "${BRANCH_NAME}" != "master" ]; then
         echo "Not on branch master. Leaving ..."
       else
-        if [ -d "deployments-ucs/terraform/${_ENV}/" ]; then
-          cd deployments-ucs/terraform/${_ENV}
+        if [ -d "deployments-ucs/infra/terraform/${_ENV}/" ]; then
+          cd deployments-ucs/infra/terraform/${_ENV}
           echo "*************** TERRAFORM APPLY ******************"
           echo "******* At project: ${_TARGET_PROJECT_ID} ********"
           echo "*************************************************"

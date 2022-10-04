@@ -8,7 +8,7 @@ spec:
     privateDomain: null #To be overrided
   source:
     repoURL: https://github.com/akeneo/pim-saas-k8s-artifacts.git
-    basePath: k8s/infra/charts/
+    basePath: infra/k8s/charts
     targetRevision: master #To be overrided
 wiremock:
   enabled: false

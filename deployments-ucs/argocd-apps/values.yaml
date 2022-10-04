@@ -11,7 +11,7 @@ applications:
     project: infra
     source:
       repoURL: https://github.com/akeneo/pim-saas-k8s-artifacts.git
-      path: k8s/infra/apps
+      path: infra/k8s/argocd-apps
       targetRevision: master
       helm:
         parameters:
