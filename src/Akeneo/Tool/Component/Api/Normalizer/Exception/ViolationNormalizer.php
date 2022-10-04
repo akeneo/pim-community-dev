@@ -4,6 +4,7 @@ namespace Akeneo\Tool\Component\Api\Normalizer\Exception;
 
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRepository;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
@@ -223,6 +224,7 @@ class ViolationNormalizer implements NormalizerInterface, CacheableSupportsMetho
 
         if (
             AttributeTypes::PRICE_COLLECTION === $attributeType &&
+            $violation->getInvalidValue() instanceof ProductPriceInterface &&
             null !== $violation->getInvalidValue()->getCurrency()
         ) {
             $error['currency'] = $violation->getInvalidValue()->getCurrency();
