@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\PerformanceAnalytics\Application\Query;
 
+use Akeneo\PerformanceAnalytics\Application\Exception\InvalidQueryException;
 use Akeneo\PerformanceAnalytics\Domain\TimeToEnrich\AverageTimeToEnrichCollection;
 use Akeneo\PerformanceAnalytics\Domain\TimeToEnrich\AverageTimeToEnrichRepository;
 
@@ -24,6 +25,10 @@ final class GetHistoricalTimeToEnrichHandler
 
     public function __invoke(GetHistoricalTimeToEnrich $getHistoricalTimeToEnrich): AverageTimeToEnrichCollection
     {
+        if ($getHistoricalTimeToEnrich->startDate() > $getHistoricalTimeToEnrich->endDate()) {
+            throw new InvalidQueryException('Start date can not be superior to end date.');
+        }
+
         return $this->averageTimeToEnrichRepository->search(
             $getHistoricalTimeToEnrich->startDate(),
             $getHistoricalTimeToEnrich->endDate(),

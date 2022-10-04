@@ -17,10 +17,10 @@ use Webmozart\Assert\Assert;
 
 final class PeriodType
 {
-    private const DAY = 'day';
-    private const WEEK = 'week';
-    private const MONTH = 'month';
-    private const YEAR = 'year';
+    public const DAY = 'day';
+    public const WEEK = 'week';
+    public const MONTH = 'month';
+    public const YEAR = 'year';
 
     private function __construct(private string $type)
     {
