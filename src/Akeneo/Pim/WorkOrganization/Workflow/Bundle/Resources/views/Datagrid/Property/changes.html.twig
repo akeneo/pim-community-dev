@@ -87,7 +87,8 @@
                             </tr>
                         {% else %}
                             <tr class="AknGrid-bodyRow">
-                                <td class="AknGrid-bodyCell AknGrid-bodyCell--full" colspan="3"><em>{{ 'pimee_workflow.proposal.no_diff'|trans({'%value%': change.data }) }}</em></td>
+                                {% set noDiffData = change.data is iterable ? change.data|join(', ') : change.data %}
+                                <td class="AknGrid-bodyCell AknGrid-bodyCell--full" colspan="3"><em>{{ 'pimee_workflow.proposal.no_diff'|trans({'%value%': noDiffData }) }}</em></td>
                             </tr>
                         {% endif %}
                     </tbody>

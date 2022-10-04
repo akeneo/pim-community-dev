@@ -33,5 +33,5 @@ Feature: Display proposals in datagrid
     And I edit the "my-jacket" product
     And I visit the "Proposals" column tab
     Then I should see the following proposals:
-      | product   | author | attribute | original | new   |
-      | my-jacket | Mary   | price     | $45.00   | $5.00 |
+      | product   | author | attribute | original       | new           |
+      | my-jacket | Mary   | price     | €75.00, $45.00 | €75.00, $5.00 |

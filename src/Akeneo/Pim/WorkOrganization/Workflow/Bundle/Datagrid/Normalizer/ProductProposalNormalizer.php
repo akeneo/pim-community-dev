@@ -15,7 +15,9 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer;
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PricesPresenter;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
@@ -40,16 +42,21 @@ class ProductProposalNormalizer implements NormalizerInterface, CacheableSupport
     /** @var GetAttributes */
     private $getAttributesQuery;
 
+    /** @var PricesPresenter */
+    private $pricesPresenter;
+
     public function __construct(
         NormalizerInterface $standardNormalizer,
         NormalizerInterface $datagridNormlizer,
         ValueFactory $valueFactory,
-        GetAttributes $getAttributesQuery
+        GetAttributes $getAttributesQuery,
+        PricesPresenter $pricesPresenter
     ) {
         $this->standardNormalizer = $standardNormalizer;
         $this->datagridNormlizer = $datagridNormlizer;
         $this->valueFactory = $valueFactory;
         $this->getAttributesQuery = $getAttributesQuery;
+        $this->pricesPresenter = $pricesPresenter;
     }
 
     /**
@@ -141,7 +148,17 @@ class ProductProposalNormalizer implements NormalizerInterface, CacheableSupport
 
         $changes = $proposal->getChanges();
         foreach ($changes['values'] as $code => $changeset) {
+            $attribute = $this->getAttributesQuery->forCode((string) $code);
             foreach ($changeset as $index => $change) {
+                if ($attribute->type() === AttributeTypes::PRICE_COLLECTION) {
+                    $prices = $this->pricesPresenter->normalizeChange($change);
+                    $normalizedValues[$code][$index] = [
+                        'data' => $prices,
+                        'locale' => $change['locale'],
+                        'scope' => $change['scope']
+                    ];
+                }
+
                 if ($this->isChangeDataNull($change['data'])) {
                     $normalizedValues[$code][] = [
                         'data' => null,
