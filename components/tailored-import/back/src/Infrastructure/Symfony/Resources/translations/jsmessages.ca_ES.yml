@@ -7,6 +7,7 @@ akeneo.tailored_import:
   file_structure:
     placeholder:
       title: El teu perfil d'importació està buit.
+      helper: Feu clic a "Inicialitza l'estructura d'importació" per començar a crear-la.
       link: Consulteu el nostre Centre d'ajuda per obtenir més informació.
       button: Inicialitzar l'estructura d'importació
     modal:
@@ -18,6 +19,10 @@ akeneo.tailored_import:
         placeholder: Deixeu el vostre fitxer aquí o navegueu pel vostre disc.
         uploading: Pujant...
         error: S'ha produït un error en carregar el fitxer. Comproveu el vostre fitxer i torneu-ho a provar.
+      sheet: Full
+      header_row: Fila de capçalera
+      first_product_row: Primera fila de producte
+      first_column: Primera columna de producte
       unique_identifier_column: Columna d'identificador únic
   data_mapping_list:
     no_sources: Cap font
@@ -60,6 +65,7 @@ akeneo.tailored_import:
       multi_select_replacement:
         option_labels: Etiqueta d'opcions
       categories_replacement:
+        title: Substitució de categories
         modal:
           title: Administrar categories
           table:
@@ -124,7 +130,9 @@ akeneo.tailored_import:
     required: Aquest valor és obligatori.
     max_length_reached: Aquest valor és massa llarg. Ha de contenir {{ limit }} caràcters o menys.
     missing_query_params: "Falten els paràmetres següents a la consulta: {{ missing_params }}"
+    source_values_should_be_unique: Alguns d'aquests valors font ja s'utilitzen en un altre reemplaçament, si us plau, traieu-los.
     columns:
+      max_count_reached: El vostre full no ha de contenir més de {{ limit }} columnes.
       at_least_one_required: La capçalera ha de contenir almenys {{ limit }} columnes.
       index:
         should_be_unique: Aquest índex de columna ja existeix; introduïu-ne un de nou.
@@ -151,6 +159,8 @@ akeneo.tailored_import:
       channel_should_not_be_blank: L'atribut {{ attribute_code }} ara té un valor per canal. Creeu-lo o trieu un objectiu diferent.
       locale_should_be_blank: L'atribut {{ attribute_code }} ja no té un valor per configuració regional. Si us plau, suprimiu-lo i torneu-lo a crear o trieu un objectiu diferent.
       channel_should_be_blank: L'atribut {{ attribute_code }} ja no té un valor per canal. Si us plau, suprimiu-lo i torneu-lo a crear o trieu un objectiu diferent.
+    file_key:
+      does_not_exist: No s'ha trobat el fitxer {{ file_key }}.
     uploaded_file:
       max_size: L'arxiu és massa gran. La mida màxima és {{ limit }}{{ suffix }}.
       not_allowed_mime_type: Només estan suportats els arxius XLSX.
@@ -163,6 +173,9 @@ akeneo.tailored_import:
       empty_sheet:
         title: Aquest full està buit.
         description: Si us plau, selecciona un full amb una fila.
+    operations:
+      incompatible_operation_type: El tipus d'operació {{ operation_type }} és incompatible amb el vostre tipus d'objectiu.
+      missing_required_operations: "Falten les operacions necessàries: {{ missing_required_operations }}"
 pim_information:
   import:
     link.text: Cliqueu aquí per saber més.

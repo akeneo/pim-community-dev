@@ -194,7 +194,7 @@ akeneo.tailored_import:
     channel:
       should_exist: Der Kanal {{ channel_code }} wurde gelöscht. Bitte wählen Sie einen anderen Kanal.
     attribute:
-      locale_should_not_be_blank: Das Attribut {{ attribute_code }} hat jetzt einen Wert pro Gebietsschema. Bitte erstellen Sie es oder wählen Sie ein anderes Ziel.
+      locale_should_not_be_blank: Das Attribut {{ attribute_code }} hat jetzt einen Wert pro Gebietsschema. Bitte erstellen Sie eines oder wählen Sie ein anderes Ziel.
       channel_should_not_be_blank: Das Attribut {{ attribute_code }} hat jetzt einen Wert pro Kanal. Bitte erstellen Sie es oder wählen Sie ein anderes Ziel.
       locale_should_be_blank: Das Attribut {{ attribute_code }} hat keinen Wert pro Gebietsschema. Bitte löschen Sie es und erstellen Sie es anschließend neu oder wählen Sie ein anderes Ziel.
       channel_should_be_blank: Das Attribut {{ attribute_code }} hat keinen Wert pro Kanal mehr. Bitte löschen Sie es und erstellen Sie es anschließend neu oder wählen Sie ein anderes Ziel.
