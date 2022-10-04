@@ -19,11 +19,11 @@ final class DownloadProductFile
     ) {
     }
 
-    public function __invoke(#[CurrentUser] ContributorAccount $user, string $identifier): Response
+    public function __invoke(#[CurrentUser] ContributorAccount $user, string $productFileIdentifier): Response
     {
         try {
             $productFile = ($this->downloadProductFile)(
-                new DownloadProductFileQuery($identifier, $user->getUserIdentifier())
+                new DownloadProductFileQuery($productFileIdentifier, $user->getUserIdentifier())
             );
         } catch (ProductFileNotFound) {
             return new Response(null, Response::HTTP_NOT_FOUND);

@@ -4,7 +4,7 @@ import {ProductFile} from '../models/ProductFile';
 import {Comment} from '../models/read/Comment';
 
 const useProductFile = (productFileIdentifier: string) => {
-    const getProductFileRoute = useRoute('supplier_portal_retailer_product_files_comment', {productFileIdentifier});
+    const getProductFileRoute = useRoute('supplier_portal_retailer_product_files_show', {productFileIdentifier});
     const saveCommentRoute = useRoute('supplier_portal_retailer_comment_product_file', {productFileIdentifier});
     const [productFile, setProductFile] = useState<ProductFile | null>(null);
     const [validationError, setValidationError] = useState<string | null>(null);

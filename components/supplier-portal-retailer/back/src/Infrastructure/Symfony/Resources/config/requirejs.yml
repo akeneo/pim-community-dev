@@ -8,7 +8,7 @@ config:
           module: supplier-portal-retailer/controller/supplier-management
         supplier_portal_retailer_product_files_list:
           module: supplier-portal-retailer/controller/product-files
-        supplier_portal_retailer_product_files_comment:
+        supplier_portal_retailer_product_files_show:
           module: supplier-portal-retailer/controller/product-files
   paths:
     supplier-portal-retailer/controller/supplier-management: akeneosupplierportalretailer/js/controller/supplier-management.tsx

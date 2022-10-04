@@ -25,7 +25,7 @@ final class DownloadProductFile
     ) {
     }
 
-    public function __invoke(string $identifier): Response
+    public function __invoke(string $productFileIdentifier): Response
     {
         /** @var ?User $user */
         $user = $this->tokenStorage->getToken()?->getUser();
@@ -35,14 +35,14 @@ final class DownloadProductFile
 
         try {
             $productFileNameAndResourceFile = ($this->downloadProductFileHandler)(
-                new DownloadProductFileCommand($identifier)
+                new DownloadProductFileCommand($productFileIdentifier)
             );
         } catch (ProductFileDoesNotExist | ProductFileIsNotDownloadable) {
             return new Response(null, Response::HTTP_NOT_FOUND);
         }
 
         $this->eventDispatcher->dispatch(new ProductFileDownloaded(
-            $identifier,
+            $productFileIdentifier,
             $user->getId(),
         ));
 
