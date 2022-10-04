@@ -1,15 +1,15 @@
-import {IdentifierGeneratorCode} from './IdentifierGeneratorCode';
-import {Structure} from './Structure';
-import {Conditions} from './Conditions';
-import {Delimiter} from './Delimiter';
-import {Target} from './Target';
-import {LabelCollection} from './LabelCollection';
+import {LabelCollection} from './labelCollection';
+import {IdentifierGeneratorCode} from './identifierGeneratorCode';
+import {Target} from './target';
+import {Structure} from './structure';
+import {Conditions} from './conditions';
+import {Delimiter} from './delimiter';
 
 type IdentifierGenerator = {
   code: IdentifierGeneratorCode;
-  target: Target;
-  structure: Structure;
-  conditions: Conditions;
+  target?: Target;
+  structure?: Structure;
+  conditions?: Conditions;
   labels: LabelCollection;
   delimiter?: Delimiter;
 };
