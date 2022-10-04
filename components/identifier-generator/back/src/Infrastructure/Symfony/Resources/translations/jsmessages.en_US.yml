@@ -6,4 +6,10 @@ pim_error:
 pim_identifier_generator:
     create:
         form:
+            title: "Create a new Identifier Generator"
+            label: "Label"
+            code: "Code (required)"
+            cancel: "Cancel"
+            confirm: "Confirm"
+            close: "Close"
             select_identifier_attribute: "Select your identifier attribute"

@@ -12,7 +12,7 @@ const useIdentifierAttributes = () => {
     });
   };
 
-  const {error, data} = useQuery<FlattenAttribute[], Error, FlattenAttribute[]>(
+  const {error, data, isSuccess} = useQuery<FlattenAttribute[], Error, FlattenAttribute[]>(
     'getIdentifierAttributes',
     getIdentifierAttributes,
     {
@@ -22,7 +22,7 @@ const useIdentifierAttributes = () => {
     }
   );
 
-  return {data, error};
+  return {data, error, isSuccess};
 };
 
 export {useIdentifierAttributes};

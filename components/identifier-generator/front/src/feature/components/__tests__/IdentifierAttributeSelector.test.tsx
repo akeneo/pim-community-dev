@@ -13,12 +13,13 @@ setLogger({
   log: console.log,
   warn: console.warn,
   // no more errors on the console
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   error: () => {},
 });
 
 describe('IdentifierAttributeSelector', () => {
   it('should render the identifier selector according to the code', async () => {
-    // @ts-ignore;
+    // @ts-ignore
     jest.spyOn(global, 'fetch').mockResolvedValue({
       ok: true,
       json: () => Promise.resolve([{code: 'sku', label: 'Sku'}]),

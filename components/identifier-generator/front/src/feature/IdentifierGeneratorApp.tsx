@@ -1,12 +1,34 @@
-import React from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {Breadcrumb, Button, Helper} from 'akeneo-design-system';
 import {PageHeader, PimView, useTranslate} from '@akeneo-pim-community/shared';
 import {QueryClient, QueryClientProvider} from 'react-query';
+import {CreateGeneratorModal} from './components/CreateGeneratorModal';
+import {IdentifierGenerator} from '../models';
+import {EditGenerator} from './components/EditGenerator';
 
 const queryClient = new QueryClient();
 
-const IdentifierGeneratorApp = () => {
+enum Screens {
+  LIST,
+  CREATE,
+  EDIT,
+}
+
+const IdentifierGeneratorApp: React.FC = () => {
   const translate = useTranslate();
+  const [currentScreen, setCurrentScreen] = useState(Screens.LIST);
+  const [generators, setGenerators] = useState<IdentifierGenerator[]>([]);
+  const [generator, setGenerator] = useState<IdentifierGenerator | null>(null);
+
+  const goToCreation = useCallback(() => setCurrentScreen(Screens.CREATE), []);
+  const goToList = useCallback(() => setCurrentScreen(Screens.LIST), []);
+
+  const create = useCallback((value: IdentifierGenerator) => {
+    setGenerator(value);
+    setCurrentScreen(Screens.EDIT);
+  }, []);
+
+  const creationIsDisabled = useMemo(() => generators.length > 0, [generators.length]);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -30,10 +52,16 @@ const IdentifierGeneratorApp = () => {
             />
           </PageHeader.UserActions>
           <PageHeader.Actions>
-            <Button onClick={() => null}>{translate('pim_common.create')}</Button>
+            <Button onClick={goToCreation} disabled={creationIsDisabled}>
+              {translate('pim_common.create')}
+            </Button>
           </PageHeader.Actions>
           <PageHeader.Title>{translate('pim_title.akeneo_identifier_generator_index')}</PageHeader.Title>
         </PageHeader>
+        <div>
+          {currentScreen === Screens.CREATE && <CreateGeneratorModal onClose={goToList} onSave={create} />}
+          {currentScreen === Screens.EDIT && <EditGenerator generator={generator} />}
+        </div>
       </div>
     </QueryClientProvider>
   );
