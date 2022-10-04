@@ -63,7 +63,7 @@ class DuplicateModal extends BaseView {
 
   public open() {
     const modal = new (Backbone as any).BootstrapModal({
-      title: __(this.config.labels.title, {product_identifier: this.productIdentifierToDuplicate}),
+      title: __(this.config.labels.title, {product_identifier: this.productIdentifierToDuplicate || this.productUuidToDuplicate}),
       subtitle: __(this.config.labels.subTitle),
       picture: this.config.picture,
       content: '',
