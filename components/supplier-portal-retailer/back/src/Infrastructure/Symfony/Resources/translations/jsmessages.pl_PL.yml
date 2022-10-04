@@ -51,7 +51,7 @@ supplier_portal:
         code: Kod
         label: Etykieta dostawcy (wymagana)
       contributors_form:
-        info: 'Dodaj współtwórców, aby zapewnić im dostęp do Portalu dostawcy Akeneo. Adresy na liście możesz oddzielić następującymi separatorami: spacją, przecinkiem, średnikiem i podziałem wiersza.'
+        info: 'Dodaj współtwórców, aby zapewnić im dostęp do Akeneo Supplier Portal. Adresy na liście możesz oddzielić następującymi separatorami: spacją, przecinkiem, średnikiem i podziałem wiersza.'
         invalid_emails_warning: Część adresów e-mail jest nieprawidłowa i nie zostanie dodana.
         emails_belonging_to_other_suppliers_warning: Współtwórca może występować tylko u jednego dostawcy. Gdy zapiszesz tego dostawcę, wszystkie adresy e-mail z ostrzeżeniami zostaną usunięte.
         add_contributors: Dodaj współtwórców
