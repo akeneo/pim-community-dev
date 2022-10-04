@@ -56,6 +56,7 @@ final class CreateProductFileHandler
             $storedProductFilePath,
             $createProductFile->uploadedByContributor,
             $supplier,
+            new \DateTimeImmutable(),
         );
 
         $this->productFileRepository->save($productFile);

@@ -28,6 +28,7 @@ final class ProductFileTest extends TestCase
                 'los_pollos_hermanos',
                 'Los Pollos Hermanos',
             ),
+            new \DateTimeImmutable(),
         );
         $this->assertEquals((string) $productFileIdentifier, $productFile->identifier());
         $this->assertEquals('supplier-file.xlsx', $productFile->originalFilename());

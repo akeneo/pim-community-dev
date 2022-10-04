@@ -22,7 +22,7 @@ final class ProductFile
     private Path $path;
     private ?ContributorEmail $contributorEmail;
     private string $uploadedBySupplier;
-    private \DateTimeInterface $uploadedAt;
+    private \DateTimeImmutable $uploadedAt;
     private bool $downloaded;
     private array $events = [];
     private array $retailerComments = [];
@@ -34,7 +34,7 @@ final class ProductFile
         string $path,
         ?string $contributorEmail,
         string $uploadedBySupplier,
-        ?\DateTimeInterface $uploadedAt,
+        \DateTimeImmutable $uploadedAt,
         bool $downloaded = false,
         array $retailerComments = [],
         array $supplierComments = [],
@@ -56,6 +56,7 @@ final class ProductFile
         string $path,
         string $contributorEmail,
         Supplier $uploadedBySupplier,
+        \DateTimeImmutable $uploadedAt,
     ): self {
         $productFile = new self(
             $identifier,
@@ -63,7 +64,7 @@ final class ProductFile
             $path,
             $contributorEmail,
             $uploadedBySupplier->identifier,
-            new \DateTimeImmutable(),
+            $uploadedAt,
         );
 
         $productFile->events[] = new ProductFileAdded($productFile, $uploadedBySupplier->label);

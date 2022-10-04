@@ -39,6 +39,7 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
             '1/2/3/4/product-file.xlsx',
             'contributor@example.com',
             new Supplier('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7', 'los_pollos_hermanos', 'Los Pollos Hermanos'),
+            new \DateTimeImmutable(),
         );
         $repository->save($productFile);
 
@@ -61,6 +62,7 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
             '1/2/3/4/product-file.xlsx',
             'jimmy@punchline.com',
             new Supplier('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7', 'jimmy_punchline', 'Jimmy Punchline'),
+            new \DateTimeImmutable(),
         );
         $firstCommentCreatedAt = new \DateTimeImmutable('2022-09-08 17:02:52');
         $productFile->addNewRetailerComment(
@@ -98,6 +100,7 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
             '1/2/3/4/product-file.xlsx',
             'jimmy@punchline.com',
             new Supplier('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7', 'jimmy_punchline', 'Jimmy Punchline'),
+            new \DateTimeImmutable(),
         );
         $firstCommentCreatedAt = new \DateTimeImmutable('2022-09-08 17:02:52');
         $productFile->addNewSupplierComment(

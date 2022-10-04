@@ -46,6 +46,7 @@ final class NotifyUsersOnProductFileAddedTest extends TestCase
                         'supplier_code',
                         'Supplier label',
                     ),
+                    new \DateTimeImmutable(),
                 ),
                 'Supplier label',
             ),

@@ -29,6 +29,7 @@ final class CommentProductFileHandlerTest extends TestCase
                 'los_pollos_hermanos',
                 'Los Pollos Hermanos',
             ),
+            new \DateTimeImmutable(),
         ));
         $command = new CommentProductFile(
             '6ffc16ae-3e0d-4a10-a8c3-7e33e2a4c287',

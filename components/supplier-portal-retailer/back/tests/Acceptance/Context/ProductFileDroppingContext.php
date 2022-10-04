@@ -63,6 +63,7 @@ final class ProductFileDroppingContext implements Context
                 'supplier_code',
                 'Supplier label',
             ),
+            new \DateTimeImmutable(),
         ));
     }
 
@@ -83,6 +84,7 @@ final class ProductFileDroppingContext implements Context
                 'supplier_code',
                 'Supplier label',
             ),
+            new \DateTimeImmutable(),
         );
 
         for ($i = 0; 50 > $i; $i++) {
