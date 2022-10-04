@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Domain;
+namespace Akeneo\Catalogs\Domain\Catalog;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -15,6 +15,12 @@ namespace Akeneo\Catalogs\Domain;
  *      scope?: string,
  *      locale?: string,
  * }
+ *
+ * @phpstan-type ProductValueFilters array{
+ *      channels?: array<string>,
+ *      locales?: array<string>,
+ *      currencies?: array<string>,
+ * }
  */
 final class Catalog
 {
@@ -24,7 +30,7 @@ final class Catalog
      * @param string $ownerUsername
      * @param bool   $enabled
      * @param array<array-key, ProductSelectionCriterion> $productSelectionCriteria
-     * @param array{channels?: array<string>, locales?: array<string>, currencies?: array<string>} $productValueFilters
+     * @param ProductValueFilters $productValueFilters
      */
     public function __construct(
         private string $id,
@@ -65,7 +71,7 @@ final class Catalog
     }
 
     /**
-     * @return array{channels?: array<string>, locales?: array<string>, currencies?: array<string>}
+     * @return ProductValueFilters
      */
     public function getProductValueFilters(): array
     {
