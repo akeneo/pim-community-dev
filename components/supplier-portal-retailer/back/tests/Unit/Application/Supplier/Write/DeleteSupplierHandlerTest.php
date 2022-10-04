@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Application\Supplier;
+namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Application\Supplier\Write;
 
-use Akeneo\SupplierPortal\Retailer\Application\Supplier\DeleteSupplier;
-use Akeneo\SupplierPortal\Retailer\Application\Supplier\DeleteSupplierHandler;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\DeleteSupplier;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\DeleteSupplierHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorDeleted;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;

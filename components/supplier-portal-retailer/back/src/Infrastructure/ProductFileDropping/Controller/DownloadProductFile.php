@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller;
 
-use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProductFile as DownloadProductFileCommand;
-use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProductFileHandler;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\ProductFileDoesNotExist;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\ProductFileIsNotDownloadable;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\DownloadProductFile as DownloadProductFileCommand;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\DownloadProductFileHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Event\ProductFileDownloaded;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
 use Akeneo\UserManagement\Component\Model\User;

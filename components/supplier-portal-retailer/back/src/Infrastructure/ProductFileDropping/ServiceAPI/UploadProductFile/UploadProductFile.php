@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\UploadProductFile;
 
-use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CreateProductFile;
-use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CreateProductFileHandler;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\InvalidProductFile;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CreateProductFile;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CreateProductFileHandler;
 use Akeneo\SupplierPortal\Retailer\Application\Supplier\Exception\ContributorDoesNotExist;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\UploadProductFile\Exception\InvalidUploadedProductFile;
 

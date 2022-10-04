@@ -1,4 +1,4 @@
-Akeneo\SupplierPortal\Retailer\Application\Supplier\CreateSupplier:
+Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\CreateSupplier:
   properties:
     label:
       - NotBlank:
@@ -10,9 +10,9 @@ Akeneo\SupplierPortal\Retailer\Application\Supplier\CreateSupplier:
       - All:
           - Email:
               mode: 'strict'
-          - Akeneo\SupplierPortal\Retailer\Application\Supplier\Validation\UniqueContributorEmail: ~
+          - Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\Validation\UniqueContributorEmail: ~
 
-Akeneo\SupplierPortal\Retailer\Application\Supplier\UpdateSupplier:
+Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\UpdateSupplier:
   properties:
     label:
       - NotBlank:
@@ -26,4 +26,4 @@ Akeneo\SupplierPortal\Retailer\Application\Supplier\UpdateSupplier:
               mode: 'strict'
           - Length:
               max: 255
-          - Akeneo\SupplierPortal\Retailer\Application\Supplier\Validation\UniqueContributorEmail: ~
+          - Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\Validation\UniqueContributorEmail: ~

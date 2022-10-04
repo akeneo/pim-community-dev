@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Application\Supplier;
+namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Application\Supplier\Write;
 
 use Akeneo\SupplierPortal\Retailer\Application\Supplier\Exception\InvalidData;
 use Akeneo\SupplierPortal\Retailer\Application\Supplier\Exception\SupplierDoesNotExist;
-use Akeneo\SupplierPortal\Retailer\Application\Supplier\UpdateSupplier;
-use Akeneo\SupplierPortal\Retailer\Application\Supplier\UpdateSupplierHandler;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\UpdateSupplier;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\UpdateSupplierHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorAdded;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;

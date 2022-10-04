@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Application\ProductFileDropping;
+namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Application\ProductFileDropping\Read;
 
-use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProductFile;
-use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProductFileHandler;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\ProductFileDoesNotExist;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\ProductFileIsNotDownloadable;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\DownloadProductFile;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\DownloadProductFileHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DownloadStoredProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileName;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFilePathAndFileName;

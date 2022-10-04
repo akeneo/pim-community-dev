@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Retailer\Application\Supplier\Validation;
+namespace Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\Validation;
 
 use Symfony\Component\Validator\Constraint;
 
