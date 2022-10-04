@@ -27,43 +27,22 @@ use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
  */
 class FromSizeCursor extends AbstractCursor implements CursorInterface
 {
-    /** @var array */
-    protected $esQuery;
-
-    /** @var int */
-    protected $pageSize;
-
-    /** @var int */
-    protected $initialFrom;
-
-    /** @var int */
-    protected $from;
-
-    /** @var int */
-    protected $limit;
-
-    /** @var int */
-    protected $to;
-
-    /** @var int */
-    protected $fetchedItemsCount;
+    protected int $initialFrom;
+    protected int $to;
+    protected int $fetchedItemsCount;
 
     public function __construct(
         Client $esClient,
         CursorableRepositoryInterface $productDraftRepository,
         CursorableRepositoryInterface $productModelDraftRepository,
-        array $esQuery,
-        int $pageSize,
-        int $limit,
-        int $from = 0
+        protected array $esQuery,
+        protected int $pageSize,
+        protected int $limit,
+        protected int $from = 0
     ) {
         $this->esClient = $esClient;
         $this->productDraftRepository = $productDraftRepository;
         $this->productModelDraftRepository = $productModelDraftRepository;
-        $this->esQuery = $esQuery;
-        $this->pageSize = $pageSize;
-        $this->limit = $limit;
-        $this->from = $from;
         $this->initialFrom = $from;
         $this->to = $this->from + $this->limit;
     }
@@ -98,7 +77,7 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
      */
     protected function getNextIdentifiers(array $esQuery): IdentifierResults
     {
-        $size = ($this->to - $this->from) > $this->pageSize ? $this->pageSize : ($this->to - $this->from);
+        $size = min(($this->to - $this->from), $this->pageSize);
         $esQuery['size'] = $size;
         $identifiers = new IdentifierResults();
 
