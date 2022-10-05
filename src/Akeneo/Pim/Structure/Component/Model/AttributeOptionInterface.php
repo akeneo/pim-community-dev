@@ -14,127 +14,35 @@ use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
  */
 interface AttributeOptionInterface extends ReferableInterface, VersionableInterface
 {
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId();
+    public function getId(): ?int;
 
-    /**
-     * Set id
-     *
-     * @param int $id
-     *
-     * @return AttributeOptionInterface
-     */
-    public function setId($id);
+    public function setId(int $id): AttributeOptionInterface;
 
-    /**
-     * Get attribute
-     *
-     * @return AttributeInterface
-     */
-    public function getAttribute();
+    public function getAttribute(): AttributeInterface;
 
-    /**
-     * Set attribute
-     *
-     * @param AttributeInterface $attribute
-     *
-     * @return AttributeOptionInterface
-     */
-    public function setAttribute(AttributeInterface $attribute = null);
+    public function setAttribute(?AttributeInterface $attribute = null): AttributeOptionInterface;
 
-    /**
-     * Get values
-     *
-     * @return \ArrayAccess
-     */
-    public function getOptionValues();
+    public function getOptionValues(): \ArrayAccess;
 
-    /**
-     * Get used locale
-     *
-     * @return string $locale
-     */
-    public function getLocale();
+    public function getLocale(): ?string;
 
-    /**
-     * Set used locale
-     *
-     * @param string $locale
-     *
-     * @return AttributeOptionInterface
-     */
-    public function setLocale($locale);
+    public function setLocale(string $locale): AttributeOptionInterface;
 
-    /**
-     * Set sort order
-     *
-     * @param string $sortOrder
-     *
-     * @return AttributeOptionInterface
-     */
-    public function setSortOrder($sortOrder);
+    public function setSortOrder(int $sortOrder): AttributeOptionInterface;
 
-    /**
-     * Get sort order
-     *
-     * @return int
-     */
-    public function getSortOrder();
+    public function getSortOrder(): ?int;
 
-    /**
-     * Set code
-     *
-     * @param string $code
-     *
-     * @return AttributeOptionInterface
-     */
-    public function setCode($code);
+    public function setCode(string $code): AttributeOptionInterface;
 
-    /**
-     * Get code
-     *
-     * @return string
-     */
-    public function getCode();
+    public function getCode(): ?string;
 
-    /**
-     * Returns the current translation
-     *
-     * @return AttributeOptionValueInterface
-     */
-    public function getTranslation();
+    public function getTranslation(): ?AttributeOptionValueInterface;
 
-    /**
-     * Add option value
-     *
-     * @param AttributeOptionValueInterface $value
-     *
-     * @return AttributeOptionInterface
-     */
-    public function addOptionValue(AttributeOptionValueInterface $value);
+    public function addOptionValue(AttributeOptionValueInterface $value): AttributeOptionInterface;
 
-    /**
-     * Remove value
-     *
-     * @param AttributeOptionValueInterface $value
-     *
-     * @return AttributeOptionInterface
-     */
-    public function removeOptionValue(AttributeOptionValueInterface $value);
+    public function removeOptionValue(AttributeOptionValueInterface $value): AttributeOptionInterface;
 
-    /**
-     * Get localized value
-     *
-     * @return ?AttributeOptionValueInterface
-     */
-    public function getOptionValue();
+    public function getOptionValue(): ?AttributeOptionValueInterface;
 
-    /**
-     * @return string
-     */
-    public function __toString();
+    public function __toString(): string;
 }
