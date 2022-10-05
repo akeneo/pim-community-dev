@@ -230,6 +230,11 @@ pim:
       pimJobName: "events_api_purge"
       pimJobOptions: ""
       schedule: "5 * * * *"
+    aggregate-volume-queries:
+      enabled: true
+      pimJobName: "aggregate_volume_queries"
+      pimJobOptions: ""
+      schedule: "0 4 * * *"
   supplier_portal:
     settings:
       enabled: false
