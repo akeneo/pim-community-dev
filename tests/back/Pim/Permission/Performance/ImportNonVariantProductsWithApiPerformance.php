@@ -44,7 +44,7 @@ class ImportNonVariantProductsWithApiPerformance extends AbstractApiPerformance
         );
 
         // Original value was 1592.
-        $profileConfig->assert('metrics.sql.queries.count < 1691', 'SQL queries');
+        $profileConfig->assert('metrics.sql.queries.count < 1692', 'SQL queries');
         // Original value: 7.8s
         $profileConfig->assert('main.wall_time < 10s', 'Total time');
         // Original value: 31.2MB
