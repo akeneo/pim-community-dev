@@ -107,6 +107,9 @@ $rules = [
 
         'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
         'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags',
+
+        'Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardScoresProjectionRepositoryInterface',
+        'Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardScoresProjectionRepository'
     ])->in('Akeneo\Pim\Structure\Component'),
 ];
 

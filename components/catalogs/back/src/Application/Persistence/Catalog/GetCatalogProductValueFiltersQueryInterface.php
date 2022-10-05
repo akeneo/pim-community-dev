@@ -12,7 +12,7 @@ namespace Akeneo\Catalogs\Application\Persistence\Catalog;
 interface GetCatalogProductValueFiltersQueryInterface
 {
     /**
-     * @return array{channels?: array<string>, locales?: array<string>}
+     * @return array{channels?: array<string>, locales?: array<string>, currencies?: array<string>}
      */
     public function execute(string $id): array;
 }

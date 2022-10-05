@@ -13,6 +13,7 @@ use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\CountVolu
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Repository\AggregatedVolumeRepositoryInterface;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Service\VolumeAggregation;
 use Prophecy\Argument;
+use Psr\Log\LoggerInterface;
 
 class VolumeAggregationSpec extends ObjectBehavior
 {
@@ -20,12 +21,14 @@ class VolumeAggregationSpec extends ObjectBehavior
         AggregatedVolumeRepositoryInterface $aggregatedVolumeRepository,
         CountQuery $countQuery1,
         CountQuery $countQuery2,
-        AverageMaxQuery $averageMaxQuery
+        AverageMaxQuery $averageMaxQuery,
+        LoggerInterface $logger
     ) {
         $this->beConstructedWith(
             $aggregatedVolumeRepository,
             [$countQuery1, $countQuery2],
-            [$averageMaxQuery]
+            [$averageMaxQuery],
+            $logger
         );
     }
 

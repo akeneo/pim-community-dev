@@ -13,6 +13,7 @@
             "": "src/"
         },
         "psr-4": {
+            "Pim\\Upgrade\\Schema\\": "upgrades/schema",
             "Pim\\Upgrade\\": "upgrades/",
             "Akeneo\\Connectivity\\Connection\\": "src/Akeneo/Connectivity/Connection/back",
             "Akeneo\\Platform\\CommunicationChannel\\": "src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back",
@@ -52,7 +53,8 @@
             "Akeneo\\Test\\Channel\\": "src/Akeneo/Channel/back/tests",
             "Akeneo\\Catalogs\\Test\\": "components/catalogs/back/tests",
             "Akeneo\\Test\\Category\\": "src/Akeneo/Category/back/tests",
-            "Akeneo\\Test\\UserManagement\\": "src/Akeneo/UserManagement/back/tests"
+            "Akeneo\\Test\\UserManagement\\": "src/Akeneo/UserManagement/back/tests",
+            "Akeneo\\Test\\Pim\\Automation\\IdentifierGenerator\\": "components/identifier-generator/back/tests"
         }
     },
     "require": {

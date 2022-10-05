@@ -12,7 +12,7 @@ namespace Akeneo\Catalogs\Application\Persistence\Catalog;
 interface UpdateCatalogProductValueFiltersQueryInterface
 {
     /**
-     * @param array{channels?: array<string>, locales?: array<string>} $productValueFilters
+     * @param array{channels?: array<string>, locales?: array<string>, currencies?: array<string>} $productValueFilters
      */
     public function execute(
         string $id,

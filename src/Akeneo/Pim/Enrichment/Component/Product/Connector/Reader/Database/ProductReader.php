@@ -25,6 +25,7 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
 {
     protected ?StepExecution $stepExecution = null;
     protected ?CursorInterface $products = null;
+    protected bool $firstRead = true;
 
     public function __construct(
         protected ProductQueryBuilderFactoryInterface $pqbFactory,
@@ -43,6 +44,7 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
 
         $this->products = $this->getProductsCursor($filters, $channel);
         $this->products->rewind();
+        $this->firstRead = true;
     }
 
     /**
@@ -50,6 +52,10 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
      */
     public function read()
     {
+        if (!$this->firstRead) {
+            $this->products->next();
+        }
+        $this->firstRead = false;
         if ($this->products->valid()) {
             $product = $this->products->current();
             $this->stepExecution->incrementSummaryInfo('read');
@@ -58,8 +64,6 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
             if (null !== $channel) {
                 $this->metricConverter->convert($product, $channel);
             }
-
-            $this->products->next();
 
             return $product;
         }

@@ -5,6 +5,7 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
             - '@pim_catalog.doctrine.query.count_products_with_family'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardScoresProjectionRepository'
 
     pim_catalog.remover.family_variant:
         class: 'Akeneo\Pim\Structure\Component\Remover\FamilyVariantRemover'
