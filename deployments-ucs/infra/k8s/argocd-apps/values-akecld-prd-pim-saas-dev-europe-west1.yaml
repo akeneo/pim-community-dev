@@ -8,3 +8,8 @@ spec:
     targetRevision: null #To be overrided
 wiremock:
   enabled: true
+gateways:
+  externalHttp:
+    gatewayClassName: contour
+  internalHttp:
+    gatewayClassName: gke-l7-rilb

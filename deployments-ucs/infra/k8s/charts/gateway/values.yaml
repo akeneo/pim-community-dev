@@ -1,2 +1,6 @@
-gateway:
-  certmap: null # From parent
+gateways:
+  externalHttp:
+    gatewayClassName: null # From parent
+    certmap: null # From parent
+  internalHttp:
+    gatewayClassName: null # From parent

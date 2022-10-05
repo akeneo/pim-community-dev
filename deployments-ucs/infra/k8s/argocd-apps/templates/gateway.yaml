@@ -18,8 +18,12 @@ spec:
         value: {{ .Values.spec.destination.publicDomain }}
       - name: global.privateDomain
         value: {{ .Values.spec.destination.privateDomain }}
-      - name: gateway.certmap
+      - name: gateways.externalHttp.certmap
         value: {{ .Values.spec.destination.publicDomain | replace "." "-" }}-cert-map
+      - name: gateways.externalHttp.gatewayClassName
+        value: {{ .Values.gateways.externalHttp.gatewayClassName }}
+      - name: gateways.internalHttp.gatewayClassName
+        value: {{ .Values.gateways.internalHttp.gatewayClassName }}
   destination:
     server: {{ .Values.spec.destination.server }}
     namespace: default
