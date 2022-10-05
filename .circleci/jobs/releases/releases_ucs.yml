@@ -49,16 +49,16 @@ jobs:
 
                   # argocd
                   rm -rf /tmp/pim-saas-k8s-artifacts/argocd
-                  cp -r /tmp/pim-enterprise-dev/deployments-ucs/argocd /tmp/pim-saas-k8s-artifacts/argocd
+                  cp -r deployments-ucs/argocd /tmp/pim-saas-k8s-artifacts/argocd
 
                   # argocd-apps
                   rm -rf /tmp/pim-saas-k8s-artifacts/argocd-apps
-                  cp -r /tmp/pim-enterprise-dev/deployments-ucs/argocd-apps /tmp/pim-saas-k8s-artifacts/argocd-apps
+                  cp -r deployments-ucs/argocd-apps /tmp/pim-saas-k8s-artifacts/argocd-apps
 
                   # infra
                   rm -rf /tmp/pim-saas-k8s-artifacts/infra
                   mkdir -p /tmp/pim-saas-k8s-artifacts/infra
-                  cp -r /tmp/pim-enterprise-dev/deployments-ucs/infra/k8s /tmp/pim-saas-k8s-artifacts/infra/k8s
+                  cp -r deployments-ucs/infra/k8s /tmp/pim-saas-k8s-artifacts/infra/k8s
 
                   # k8s
                   rm -rf /tmp/pim-saas-k8s-artifacts/k8s
