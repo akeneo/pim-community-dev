@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Application\Persistence\Catalog;
 
+use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
 use Akeneo\Catalogs\Domain\Catalog;
 
 /**
@@ -12,5 +13,8 @@ use Akeneo\Catalogs\Domain\Catalog;
  */
 interface GetCatalogQueryInterface
 {
+    /**
+     * @throws CatalogNotFoundException
+     */
     public function execute(string $catalogId): Catalog;
 }
