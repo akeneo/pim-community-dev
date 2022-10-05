@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Application\ProductFileDropping;
+namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Application\ProductFileDropping\Write;
 
-use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CommentProductFile;
-use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CommentProductFileHandler;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\ProductFileDoesNotExist;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFile;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFileHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;

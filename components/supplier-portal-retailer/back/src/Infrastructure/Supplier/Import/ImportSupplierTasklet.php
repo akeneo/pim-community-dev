@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Import;
 
-use Akeneo\SupplierPortal\Retailer\Application\Supplier\CreateSupplier;
-use Akeneo\SupplierPortal\Retailer\Application\Supplier\CreateSupplierHandler;
-use Akeneo\SupplierPortal\Retailer\Application\Supplier\UpdateSupplier;
-use Akeneo\SupplierPortal\Retailer\Application\Supplier\UpdateSupplierHandler;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\CreateSupplier;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\CreateSupplierHandler;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\UpdateSupplier;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\UpdateSupplierHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetIdentifierFromCode;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\SupplierExists;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;

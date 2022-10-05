@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Retailer\Application\Supplier;
+namespace Akeneo\SupplierPortal\Retailer\Application\Supplier\Write;
 
 use Akeneo\SupplierPortal\Retailer\Application\Supplier\Exception\InvalidData;
 use Akeneo\SupplierPortal\Retailer\Application\Supplier\Exception\SupplierDoesNotExist;

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Application\Supplier;
+namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Application\Supplier\Write;
 
-use Akeneo\SupplierPortal\Retailer\Application\Supplier\CreateSupplier;
-use Akeneo\SupplierPortal\Retailer\Application\Supplier\CreateSupplierHandler;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\CreateSupplier;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\CreateSupplierHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorAdded;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Exception\SupplierAlreadyExistsException;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemorySupplierExists;

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Application\ProductFileDropping;
+namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Application\ProductFileDropping\Read;
 
-use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProductFile;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\DownloadProductFile;
 use PHPUnit\Framework\TestCase;
 
 final class DownloadProductFileTest extends TestCase

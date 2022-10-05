@@ -1,13 +1,13 @@
 services:
     Akeneo\SupplierPortal\Retailer\Test\Acceptance\Context\SupplierContext:
         - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository'
-        - '@Akeneo\SupplierPortal\Retailer\Application\Supplier\CreateSupplierHandler'
+        - '@Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\CreateSupplierHandler'
         - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierList'
-        - '@Akeneo\SupplierPortal\Retailer\Application\Supplier\DeleteSupplierHandler'
-        - '@Akeneo\SupplierPortal\Retailer\Application\Supplier\UpdateSupplierHandler'
+        - '@Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\DeleteSupplierHandler'
+        - '@Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\UpdateSupplierHandler'
 
     Akeneo\SupplierPortal\Retailer\Test\Acceptance\Context\ProductFileDroppingContext:
         - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository'
         - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'
-        - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CommentProductFileHandler'
+        - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFileHandler'
         - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithComments'

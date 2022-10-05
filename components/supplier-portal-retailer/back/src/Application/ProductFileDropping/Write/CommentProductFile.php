@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping;
+namespace Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write;
 
 final class CommentProductFile
 {

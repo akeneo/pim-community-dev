@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Controller;
 
-use Akeneo\SupplierPortal\Retailer\Application\Supplier\CreateSupplier;
-use Akeneo\SupplierPortal\Retailer\Application\Supplier\CreateSupplierHandler;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\CreateSupplier;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\CreateSupplierHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Exception\SupplierAlreadyExistsException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

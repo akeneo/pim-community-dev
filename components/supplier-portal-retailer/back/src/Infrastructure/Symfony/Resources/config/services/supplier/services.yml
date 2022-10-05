@@ -6,21 +6,21 @@ services:
             - '@database_connection'
 
     # Command/Handlers
-    Akeneo\SupplierPortal\Retailer\Application\Supplier\CreateSupplierHandler:
+    Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\CreateSupplierHandler:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository'
             - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\SupplierExists'
             - '@event_dispatcher'
             - '@monolog.logger.supplier_portal'
 
-    Akeneo\SupplierPortal\Retailer\Application\Supplier\UpdateSupplierHandler:
+    Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\UpdateSupplierHandler:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository'
             - '@validator'
             - '@monolog.logger.supplier_portal'
             - '@event_dispatcher'
 
-    Akeneo\SupplierPortal\Retailer\Application\Supplier\DeleteSupplierHandler:
+    Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\DeleteSupplierHandler:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository'
             - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierWithContributors'
@@ -88,12 +88,12 @@ services:
     Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Controller\SupplierCreate:
         public: true
         arguments:
-            - '@Akeneo\SupplierPortal\Retailer\Application\Supplier\CreateSupplierHandler'
+            - '@Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\CreateSupplierHandler'
 
     Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Controller\SupplierDelete:
         public: true
         arguments:
-            - '@Akeneo\SupplierPortal\Retailer\Application\Supplier\DeleteSupplierHandler'
+            - '@Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\DeleteSupplierHandler'
 
     Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Controller\GetSupplier:
         public: true
@@ -109,7 +109,7 @@ services:
     Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Controller\SupplierUpdate:
         public: true
         arguments:
-            - '@Akeneo\SupplierPortal\Retailer\Application\Supplier\UpdateSupplierHandler'
+            - '@Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\UpdateSupplierHandler'
             - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier'
 
     Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Controller\GetSupplierContributorsBelongingToAnotherSupplier:
@@ -153,8 +153,8 @@ services:
         arguments:
             - '@supplier_portal.connector.supplier.reader.file.xlsx'
             - '@validator'
-            - '@Akeneo\SupplierPortal\Retailer\Application\Supplier\CreateSupplierHandler'
-            - '@Akeneo\SupplierPortal\Retailer\Application\Supplier\UpdateSupplierHandler'
+            - '@Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\CreateSupplierHandler'
+            - '@Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\UpdateSupplierHandler'
             - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\SupplierExists'
             - '@akeneo_batch.job_repository'
             - '@event_dispatcher'
@@ -193,7 +193,7 @@ services:
             - { name: pim_enrich.provider.form }
 
     # Validators
-    Akeneo\SupplierPortal\Retailer\Application\Supplier\Validation\UniqueContributorEmailValidator:
+    Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\Validation\UniqueContributorEmailValidator:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier'
         tags:

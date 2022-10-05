@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Application\ProductFileDropping;
+namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Application\ProductFileDropping\Write;
 
-use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CommentProductFile;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFile;
 use PHPUnit\Framework\TestCase;
 
 final class CommentProductFileTest extends TestCase
