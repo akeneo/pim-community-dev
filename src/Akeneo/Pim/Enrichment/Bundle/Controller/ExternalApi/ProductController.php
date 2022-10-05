@@ -315,13 +315,6 @@ class ProductController
 
         $data = $this->getDecodedContent($request->getContent());
 
-        if (!isset($data['identifier']) || $data['identifier'] === '') {
-            throw new DocumentedHttpException(
-                Documentation::URL . 'patch_products_uuid__uuid_',
-                sprintf(self::NO_IDENTIFIER_MESSAGE)
-            );
-        }
-
         if (!\is_string($code)) {
             $message = 'The identifier field requires a string.';
             throw new DocumentedHttpException(
