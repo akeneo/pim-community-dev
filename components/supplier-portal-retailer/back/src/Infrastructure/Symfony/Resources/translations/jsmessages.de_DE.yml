@@ -51,7 +51,7 @@ supplier_portal:
         code: Code
         label: Lieferantenlabel (erforderlich)
       contributors_form:
-        info: 'Fügen Sie Beitragende hinzu, um ihnen den Zugriff auf Akeneo Lieferantenportal zu ermöglichen. Sie können eine Adressliste mit Trennzeichen ausfüllen: Leerzeichen, Komma, Semikolon & Zeilenumbrüche.'
+        info: 'Fügen Sie Beitragende hinzu, um ihnen den Zugriff auf Akeneo Supplier Portal zu ermöglichen. Sie können eine Adressliste mit Trennzeichen ausfüllen: Leerzeichen, Komma, Semikolon & Zeilenumbrüche.'
         invalid_emails_warning: Einige E-Mail-Adressen sind ungültig und werden nicht hinzugefügt.
         emails_belonging_to_other_suppliers_warning: Ein Beitragender kann nur zu einem Lieferanten gehören. Wenn Sie diesen Lieferanten speichern, werden alle E-Mails, die als Warnungen angezeigt werden, gelöscht.
         add_contributors: Beitragende hinzufügen
