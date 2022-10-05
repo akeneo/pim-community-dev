@@ -4,8 +4,6 @@ pim_enrich.acl_group.attribute:
     order: 20
 pim_enrich.acl_group.attribute_group:
     order: 30
-pim_enrich.acl_group.category:
-    order: 40
 pim_enrich.acl_group.channel:
     order: 50
 pim_enrich.acl_group.currency:
