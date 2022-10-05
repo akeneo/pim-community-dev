@@ -2,18 +2,14 @@
 
 namespace Akeneo\Tool\Bundle\BatchBundle\Command;
 
-use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceFactory;
-use Akeneo\Tool\Component\Batch\Job\JobInterface;
-use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
-use Akeneo\Tool\Component\Batch\Job\JobParametersValidator;
-use Akeneo\Tool\Component\Batch\Job\JobRegistry;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Platform\Job\ServiceApi\JobInstance\CreateJobInstance\CreateJobInstanceCommand as CreateJobInstanceCqrsCommand;
+use Akeneo\Platform\Job\ServiceApi\JobInstance\CreateJobInstance\CreateJobInstanceHandlerInterface;
+use Akeneo\Tool\Component\Batch\Exception\InvalidJobException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Create a JobInstance
@@ -22,47 +18,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CreateJobCommand extends Command
+class CreateJobInstanceCommand extends Command
 {
     protected static $defaultName = 'akeneo:batch:create-job';
 
     const EXIT_SUCCESS_CODE = 0;
     const EXIT_ERROR_CODE = 1;
 
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var JobParametersValidator */
-    private $jobParametersValidator;
-
-    /** @var JobParametersFactory */
-    private $jobParametersFactory;
-
-    /** @var JobInstanceFactory */
-    private $jobInstanceFactory;
-
-    /** @var SaverInterface */
-    private $jobInstanceSaver;
-
-    /** @var JobRegistry */
-    private $jobRegistry;
-
     public function __construct(
-        ValidatorInterface $validator,
-        JobParametersValidator $jobParametersValidator,
-        JobParametersFactory $jobParametersFactory,
-        JobInstanceFactory $jobInstanceFactory,
-        SaverInterface $jobInstanceSaver,
-        JobRegistry $jobRegistry
+        private CreateJobInstanceHandlerInterface $createJobInstanceHandler
     ) {
         parent::__construct();
-
-        $this->validator = $validator;
-        $this->jobParametersValidator = $jobParametersValidator;
-        $this->jobParametersFactory = $jobParametersFactory;
-        $this->jobInstanceFactory = $jobInstanceFactory;
-        $this->jobInstanceSaver = $jobInstanceSaver;
-        $this->jobRegistry = $jobRegistry;
     }
 
     /**
@@ -94,17 +60,18 @@ class CreateJobCommand extends Command
         $jsonConfig = $input->getArgument('config');
         $rawConfig = null === $jsonConfig ? [] : json_decode($jsonConfig, true);
 
-        $factory = $this->jobInstanceFactory;
-        $jobInstance = $factory->createJobInstance($type);
-        $jobInstance->setConnector($connector);
-        $jobInstance->setJobName($jobName);
-        $jobInstance->setCode($code);
-        $jobInstance->setLabel($label);
-        $jobInstance->setRawParameters($rawConfig);
+        $command = new CreateJobInstanceCqrsCommand(
+            $type,
+            $code,
+            $label,
+            $connector,
+            $jobName,
+            $rawConfig,
+        );
 
-        /** @var JobInterface */
-        $job = $this->jobRegistry->get($jobInstance->getJobName());
-        if (null === $job) {
+        try {
+            $this->createJobInstanceHandler->handle($command);
+        } catch (\RuntimeException $e) {
             $output->writeln(
                 sprintf(
                     '<error>Job "%s" does not exists.</error>',
@@ -113,39 +80,18 @@ class CreateJobCommand extends Command
             );
 
             return self::EXIT_ERROR_CODE;
-        }
-
-        /** @var JobParameters $jobParameters */
-        $jobParameters = $this->jobParametersFactory->create($job, $rawConfig);
-        $jobInstance->setRawParameters($jobParameters->all());
-
-        $violations = $this->jobParametersValidator->validate($job, $jobParameters);
-        if (count($violations) > 0) {
-            $output->writeln(
-                sprintf(
-                    '<error>A validation error occurred with the job configuration "%s".</error>',
-                    $this->getErrorMessages($violations)
-                )
-            );
-
-            return self::EXIT_ERROR_CODE;
-        }
-
-        $violations = $this->validator->validate($jobInstance);
-        if (count($violations) > 0) {
+        } catch (InvalidJobException $e) {
             $output->writeln(
                 sprintf(
                     '<error>A validation error occurred while creating the job instance "%s".</error>',
-                    $this->getErrorMessages($violations)
+                    $this->getErrorMessages($e->getViolations())
                 )
             );
 
             return self::EXIT_ERROR_CODE;
+        } finally {
+            return self::EXIT_SUCCESS_CODE;
         }
-
-        $this->jobInstanceSaver->save($jobInstance);
-
-        return self::EXIT_SUCCESS_CODE;
     }
 
     /**

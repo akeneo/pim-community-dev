@@ -8,9 +8,12 @@ use Akeneo\Platform\Job\ServiceApi\JobInstance\CreateJobInstance\CreateJobInstan
 use Akeneo\Platform\Job\ServiceApi\JobInstance\CreateJobInstance\CreateJobInstanceHandlerInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceFactory;
 use Akeneo\Tool\Component\Batch\Exception\InvalidJobException;
+use Akeneo\Tool\Component\Batch\Job\JobInterface;
+use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Tool\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -40,15 +43,27 @@ final class CreateJobInstanceHandler implements CreateJobInstanceHandlerInterfac
         $jobInstance->setLabel($command->label);
         $jobInstance->setRawParameters($command->rawParameters);
 
-
-        if (!$this->jobRegistry->has($jobInstance->getJobName())) {
-            throw new \RuntimeException('Job does ' . $jobInstance->getJobName() . ' not exists.');
-        }
-        $job = $this->jobRegistry->get($jobInstance->getJobName());
+        $job = $this->getJob($jobInstance);
 
         $jobParameters = $this->jobParametersFactory->create($job, $jobInstance->getRawParameters());
         $jobInstance->setRawParameters($jobParameters->all());
 
+        $this->validateJob($job, $jobParameters, $jobInstance);
+
+        $this->jobInstanceSaver->save($jobInstance);
+    }
+
+    private function getJob(JobInstance $jobInstance): JobInterface
+    {
+        if (!$this->jobRegistry->has($jobInstance->getJobName())) {
+            throw new \RuntimeException('Job does ' . $jobInstance->getJobName() . ' not exists.');
+        }
+
+        return  $this->jobRegistry->get($jobInstance->getJobName());
+    }
+
+    private function validateJob(JobInterface $job, JobParameters $jobParameters, JobInstance $jobInstance)
+    {
         $jobParametersViolations = $this->jobParametersValidator->validate($job, $jobParameters);
         if (0 < $jobParametersViolations->count()) {
             throw new InvalidJobException($jobInstance->getCode(), $job->getName(), $jobParametersViolations);
@@ -58,7 +73,5 @@ final class CreateJobInstanceHandler implements CreateJobInstanceHandlerInterfac
         if (0 < $jobInstanceViolations->count()) {
             throw new InvalidJobException($jobInstance->getCode(), $job->getName(), $jobInstanceViolations);
         }
-
-        $this->jobInstanceSaver->save($jobInstance);
     }
 }
