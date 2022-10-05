@@ -55,7 +55,7 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             StorageEvents::PRE_REMOVE => 'removeChannel',
@@ -142,7 +142,7 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
             [
                 'locales_identifier' => $localesCodes,
                 'channel_code' => $channelCode,
-                'username' => $user->getUsername(),
+                'username' => $user->getUserIdentifier(),
             ]
         );
     }

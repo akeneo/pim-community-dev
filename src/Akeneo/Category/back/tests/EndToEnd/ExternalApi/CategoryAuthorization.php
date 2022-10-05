@@ -25,7 +25,7 @@ class CategoryAuthorizationEndToEnd extends ApiTestCase
 JSON;
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
         $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 
@@ -53,7 +53,7 @@ JSON;
 JSON;
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
         $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 
@@ -81,7 +81,7 @@ JSON;
 JSON;
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
         $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 
@@ -98,7 +98,7 @@ JSON;
         $client->request('POST', '/api/rest/v1/categories', [], [], [], $data);
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
     }
 
     public function testAccessDeniedForCreatingACategory(): void
@@ -121,7 +121,7 @@ JSON;
 JSON;
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
         $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 
@@ -134,7 +134,7 @@ JSON;
         $client->request('PATCH', '/api/rest/v1/categories/master', [], [], [], $data);
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
     }
 
     public function testAccessDeniedForPartialUpdatingACategory(): void
@@ -153,7 +153,7 @@ JSON;
 JSON;
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
         $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 
@@ -198,7 +198,7 @@ JSON;
 JSON;
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
         $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 

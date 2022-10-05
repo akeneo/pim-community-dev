@@ -21,7 +21,7 @@ class JobUserProvider implements UserProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function loadUserByUsername($username)
+    public function loadUserByIdentifier($username)
     {
         $user = $this->userRepository->findOneByIdentifier($username);
         if (!$user || $user->isApiUser()) {
@@ -38,7 +38,7 @@ class JobUserProvider implements UserProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function refreshUser(UserInterface $user)
+    public function refreshUser(UserInterface $user): UserInterface
     {
         if (!$this->supportsClass($user::class)) {
             throw new UnsupportedUserException(sprintf('User object of class "%s" is not supported.', $user::class));
@@ -55,7 +55,7 @@ class JobUserProvider implements UserProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsClass($class)
+    public function supportsClass($class): bool
     {
         return is_subclass_of($class, 'Akeneo\UserManagement\Component\Model\UserInterface');
     }
