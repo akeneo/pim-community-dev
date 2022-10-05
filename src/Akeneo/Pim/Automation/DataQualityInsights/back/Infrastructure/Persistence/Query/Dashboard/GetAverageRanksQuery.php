@@ -38,11 +38,6 @@ final class GetAverageRanksQuery implements GetAverageRanksQueryInterface
     {
         $path = sprintf('\'$.average_ranks."%s"."%s"\'', $channelCode, $localeCode);
 
-
-//SELECT code
-//FROM pim_data_quality_insights_dashboard_scores_projection
-//WHERE type='family' AND code IN ('accessories');
-
         $query = <<<SQL
 SELECT
     code,

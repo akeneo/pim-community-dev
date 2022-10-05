@@ -257,7 +257,7 @@ class FamilyController
      */
     protected function getFamily(string $code): FamilyInterface
     {
-        $family = $this->familyRepository->findOneByCode($code);
+        $family = $this->familyRepository->findOneBy(['code' => $code]);
 
         if (null === $family) {
             throw new NotFoundHttpException(
