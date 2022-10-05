@@ -10,8 +10,4 @@ namespace Akeneo\Catalogs\Application\Exception;
  */
 class CatalogNotFoundException extends \Exception
 {
-    public function __construct(string $message = 'Catalog not found', int $code = 0, ?\Throwable $previous = null)
-    {
-        parent::__construct($message, $code, $previous);
-    }
 }
