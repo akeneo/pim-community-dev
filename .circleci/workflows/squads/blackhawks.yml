@@ -2,7 +2,7 @@ client-to-clone-srnt: &client-to-clone-srnt
 client-to-clone-grth: &client-to-clone-grth
 
 orbs:
-  security-hunter: akeneo-orbs/security-hunter@1.1.8
+  security-hunter: akeneo-orbs/security-hunter@1.2.0
 
 workflows:
     dev_pull_request:
@@ -25,24 +25,22 @@ workflows:
                   requires:
                       - checkout
 
-            # Security tests
+            # Security tests block
             - security-hunter/detect-secrets-in-latest-commits:
+                  name: "Scan secrets in PR commits"
                   requires:
                       - ready_to_build?
             - security-hunter/detect-secrets-in-directory:
-                  requires:
-                      - checkout
-            - security-hunter/scan-dependencies:
-                  requires:
-                      - checkout
-            - security-hunter/scan-dockerfile:
+                  name: "Scan secrets in directory"
                   requires:
                       - checkout
             - security-hunter/scan-iac-files:
+                  name: "Scan terraform files"
                   exclude_rules: "google-storage-enable-ubla"
                   requires:
                       - checkout
             - security-hunter/scan-docker-image:
+                  name: "Scan docker image"
                   archive_name: "php-pim-image.tar"
                   image_name: "akeneo/pim-dev/php:8.0"
                   requires:
@@ -101,14 +99,12 @@ workflows:
                       - test_back_data_migrations
                       - test_grth
                       - test_tria
-                      # Required security tests
-                      - security-hunter/detect-secrets-in-latest-commits
-                      - security-hunter/detect-secrets-in-directory
-                      # - security-hunter/scan-iac-files
-                      # - security-hunter/scan-dependencies
-                      # - security-hunter/scan-dockerfile
-                      # - security-hunter/scan-docker-image
-                      # End of security tests
+                      # Blocking security tests
+                      # - "Scan secrets in PR commits"
+                      # - "Scan secrets in directory"
+                      # - "Scan terraform files"
+                      # - "Scan docker image"
+                      # End of blocking security tests
 
     deployments_pull_request:
         when:
