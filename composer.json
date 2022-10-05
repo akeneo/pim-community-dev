@@ -13,6 +13,7 @@
             "": "src/"
         },
         "psr-4": {
+            "Pim\\Upgrade\\Schema\\": "upgrades/schema",
             "Pim\\Upgrade\\": "upgrades/",
             "Akeneo\\Connectivity\\Connection\\": "src/Akeneo/Connectivity/Connection/back",
             "Akeneo\\Platform\\CommunicationChannel\\": "src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back",
@@ -72,7 +73,7 @@
         "ext-zip": "*",
         "akeneo/oauth-server-bundle": "^2.0.0",
         "ass/xmlsecurity": "1.1.1",
-        "aws/aws-sdk-php": "3.172",
+        "aws/aws-sdk-php": "3.238.0",
         "box/spout": "^3.3.0",
         "doctrine/annotations": "^1.13.2",
         "doctrine/cache": "^1.12.1",
