@@ -13,7 +13,7 @@ class AttributeOption implements AttributeOptionInterface
 {
     protected ?int $id = null;
     protected ?string $code = null;
-    protected ArrayCollection $optionValues;
+    protected \ArrayAccess $optionValues;
     protected ?int $sortOrder = null;
 
     /**
@@ -39,9 +39,6 @@ class AttributeOption implements AttributeOptionInterface
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setId($id): static
     {
         $this->id = $id;
@@ -49,17 +46,11 @@ class AttributeOption implements AttributeOptionInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAttribute(): AttributeInterface
     {
         return $this->attribute;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setAttribute(AttributeInterface $attribute = null): static
     {
         $this->attribute = $attribute;
@@ -67,25 +58,16 @@ class AttributeOption implements AttributeOptionInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getOptionValues(): ArrayCollection
+    public function getOptionValues(): \ArrayAccess
     {
         return $this->optionValues;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getLocale(): ?string
     {
         return $this->locale;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setLocale($locale): static
     {
         $this->locale = $locale;
@@ -93,9 +75,6 @@ class AttributeOption implements AttributeOptionInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setSortOrder($sortOrder): static
     {
         if ($sortOrder !== null) {
@@ -105,17 +84,11 @@ class AttributeOption implements AttributeOptionInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSortOrder(): ?int
     {
         return $this->sortOrder;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setCode($code): static
     {
         $this->code = (string) $code;
@@ -123,19 +96,11 @@ class AttributeOption implements AttributeOptionInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCode(): ?string
     {
         return $this->code;
     }
 
-    /**
-     * Override to use default value
-     *
-     * {@inheritdoc}
-     */
     public function __toString(): string
     {
         $value = $this->getOptionValue();
@@ -143,9 +108,6 @@ class AttributeOption implements AttributeOptionInterface
         return ($value && $value->getValue()) ? $value->getValue() : '[' . $this->getCode() . ']';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getReference(): ?string
     {
         if (null === $this->code) {
@@ -155,9 +117,6 @@ class AttributeOption implements AttributeOptionInterface
         return ($this->attribute ? $this->attribute->getCode() : '') . '.' . $this->code;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTranslation(): ?AttributeOptionValueInterface
     {
         $value = $this->getOptionValue();
@@ -171,9 +130,6 @@ class AttributeOption implements AttributeOptionInterface
         return $value;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addOptionValue(AttributeOptionValueInterface $value): static
     {
         $this->optionValues[] = $value;
@@ -182,9 +138,6 @@ class AttributeOption implements AttributeOptionInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeOptionValue(AttributeOptionValueInterface $value): static
     {
         $this->optionValues->removeElement($value);
@@ -192,9 +145,6 @@ class AttributeOption implements AttributeOptionInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getOptionValue(): ?AttributeOptionValueInterface
     {
         $locale = $this->locale;
