@@ -177,6 +177,20 @@ const Page: FC = () => {
 
             <Field>
               <Checkbox
+                checked={configuration.acls.pim_enrich_product_category_edit_attributes}
+                onClick={() =>
+                  changeAcl(
+                    'pim_enrich_product_category_edit_attributes',
+                    !configuration.acls.pim_enrich_product_category_edit_attributes
+                  )
+                }
+              >
+                Edit category attributes
+              </Checkbox>
+            </Field>
+
+            <Field>
+              <Checkbox
                 checked={configuration.acls.pimee_enrich_category_edit_permissions}
                 onClick={() =>
                   changeAcl(

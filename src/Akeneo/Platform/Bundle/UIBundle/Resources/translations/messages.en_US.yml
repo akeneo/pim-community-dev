@@ -122,6 +122,7 @@ pim_enrich:
             children: See category children
             products: See category's products
             history: View category history
+            edit_attributes: Edit category attributes
         channel:
             index: List channels
             create: Create a channel
