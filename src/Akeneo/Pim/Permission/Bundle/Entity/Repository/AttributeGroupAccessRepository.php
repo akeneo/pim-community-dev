@@ -101,7 +101,7 @@ class AttributeGroupAccessRepository extends EntityRepository implements Identif
      * @param UserInterface $user
      * @param string        $accessLevel
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
     public function getGrantedAttributeGroupQB(UserInterface $user, $accessLevel)
     {

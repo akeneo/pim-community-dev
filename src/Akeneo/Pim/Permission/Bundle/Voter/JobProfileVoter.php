@@ -11,6 +11,7 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Voter;
 
+use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\Pim\Permission\Bundle\Manager\JobProfileAccessManager;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
@@ -44,7 +45,7 @@ class JobProfileVoter extends Voter implements VoterInterface
     /**
      * {@inheritdoc}
      */
-    public function vote(TokenInterface $token, $object, array $attributes)
+    public function vote(TokenInterface $token, $object, array $attributes): int
     {
         $result = VoterInterface::ACCESS_ABSTAIN;
         if (!$object instanceof JobInstance) {
@@ -70,7 +71,7 @@ class JobProfileVoter extends Voter implements VoterInterface
      * @param string      $attribute
      * @param JobInstance $object
      *
-     * @return \Akeneo\UserManagement\Component\Model\GroupInterface[]
+     * @return GroupInterface[]
      */
     protected function extractGroups($attribute, $object)
     {

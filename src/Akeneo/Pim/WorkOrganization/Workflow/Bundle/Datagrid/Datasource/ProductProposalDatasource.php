@@ -11,6 +11,7 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Datasource;
 
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
@@ -135,7 +136,7 @@ class ProductProposalDatasource implements DatasourceInterface, ParameterizableI
      *
      * @return array
      * @throws \Exception
-     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @throws ExceptionInterface
      */
     private function normalizeEntityWithValues(EntityWithValuesDraftInterface $item): array
     {

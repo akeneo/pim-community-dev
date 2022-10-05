@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\AttributeGrid;
 
+use Doctrine\ORM\Query\Expr\Join;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Structure\Quality;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Entity\AttributeLocaleQuality;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Entity\AttributeQuality;
@@ -72,7 +73,7 @@ class AddQualityDataExtension extends AbstractExtension
             ->leftJoin(
                 AttributeQuality::class,
                 self::ATTRIBUTE_QUALITY_ALIAS,
-                Expr\Join::WITH,
+                Join::WITH,
                 (string) $qb->expr()->eq($rootAlias . '.code', self::ATTRIBUTE_QUALITY_ALIAS . '.attributeCode')
             );
     }
@@ -84,7 +85,7 @@ class AddQualityDataExtension extends AbstractExtension
             ->leftJoin(
                 AttributeLocaleQuality::class,
                 self::ATTRIBUTE_LOCALE_QUALITY_ALIAS,
-                Expr\Join::WITH,
+                Join::WITH,
                 (string) $qb->expr()->andX(
                     $qb->expr()->eq($rootAlias . '.code', self::ATTRIBUTE_LOCALE_QUALITY_ALIAS . '.attributeCode'),
                     $qb->expr()->eq(self::ATTRIBUTE_LOCALE_QUALITY_ALIAS . '.locale', ':locale')

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluationResult;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluation;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\ComputeCaseWords\ComputeCaseWordsRate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Attribute;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollection;
@@ -59,7 +61,7 @@ final class EvaluateCaseWordsSpec extends ObjectBehavior
             new Rate($expectedRate)
         );
 
-        $actualResult->shouldBeLike((new Write\CriterionEvaluationResult())
+        $actualResult->shouldBeLike((new CriterionEvaluationResult())
             ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate($expectedRate))
             ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::done())
             ->addRateByAttributes(new ChannelCode('ecommerce'), new LocaleCode('en_US'), [$attributeName => $expectedRate]));
@@ -82,7 +84,7 @@ final class EvaluateCaseWordsSpec extends ObjectBehavior
             null,
         );
 
-        $actualResult->shouldBeLike((new Write\CriterionEvaluationResult())
+        $actualResult->shouldBeLike((new CriterionEvaluationResult())
             ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::notApplicable()));
     }
 
@@ -103,7 +105,7 @@ final class EvaluateCaseWordsSpec extends ObjectBehavior
             null,
         );
 
-        $actualResult->shouldBeLike((new Write\CriterionEvaluationResult())
+        $actualResult->shouldBeLike((new CriterionEvaluationResult())
             ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::notApplicable()));
     }
 
@@ -123,7 +125,7 @@ final class EvaluateCaseWordsSpec extends ObjectBehavior
             null
         );
 
-        $actualResult->shouldBeLike((new Write\CriterionEvaluationResult())
+        $actualResult->shouldBeLike((new CriterionEvaluationResult())
             ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::notApplicable()));
     }
 
@@ -158,7 +160,7 @@ final class EvaluateCaseWordsSpec extends ObjectBehavior
         $computeCaseWordsRate->__invoke($localeChannelValues1['ecommerce']['en_US'])->willReturn($expectedRate);
 
         return $this(
-            new Write\CriterionEvaluation(
+            new CriterionEvaluation(
                 new CriterionCode('criterion1'),
                 ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed')),
                 CriterionEvaluationStatus::pending()
@@ -178,12 +180,12 @@ final class EvaluateCaseWordsSpec extends ObjectBehavior
             ]
         ));
 
-        $expectedResult = (new Write\CriterionEvaluationResult())
+        $expectedResult = (new CriterionEvaluationResult())
             ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::notApplicable())
         ;
 
         ($this(
-            new Write\CriterionEvaluation(
+            new CriterionEvaluation(
                 new CriterionCode('criterion1'),
                 ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed')),
                 CriterionEvaluationStatus::pending()
@@ -236,13 +238,13 @@ final class EvaluateCaseWordsSpec extends ObjectBehavior
         $computeCaseWordsRate->__invoke($localeChannelValues1['ecommerce']['en_US'])->willReturn(new Rate($lowRate));
         $computeCaseWordsRate->__invoke($localeChannelValues2['ecommerce']['en_US'])->willReturn(new Rate($highRate));
 
-        $expectedResult = (new Write\CriterionEvaluationResult())
+        $expectedResult = (new CriterionEvaluationResult())
             ->addRate($channelEcommerce, $localeEn, new Rate($avgRate))
             ->addStatus($channelEcommerce, $localeEn, CriterionEvaluationResultStatus::done())
             ->addRateByAttributes($channelEcommerce, $localeEn, ['textarea_1' => $lowRate, 'textarea_2' => $highRate]);
 
         $result = $this(
-            new Write\CriterionEvaluation(
+            new CriterionEvaluation(
                 new CriterionCode('criterion1'),
                 ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed')),
                 CriterionEvaluationStatus::pending()

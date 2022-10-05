@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Query\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluationResult;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluationCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluation;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateAttributeOptionSpelling;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
@@ -75,26 +78,26 @@ final class FilterProductIdsWithCriterionNotEvaluatedSinceQueryIntegration exten
     {
         $criterionEvaluation = $this->createProductEvaluation($productUuid, $criterionCode);
 
-        $criterionEvaluation->end(new Write\CriterionEvaluationResult());
-        $this->productCriterionEvaluationRepository->update((new Write\CriterionEvaluationCollection)->add($criterionEvaluation));
+        $criterionEvaluation->end(new CriterionEvaluationResult());
+        $this->productCriterionEvaluationRepository->update((new CriterionEvaluationCollection)->add($criterionEvaluation));
 
         $this->evaluateProductCriterionAt($criterionEvaluation, $evaluatedAt);
     }
 
-    private function createProductEvaluation(ProductUuid $productUuid, CriterionCode $criterionCode): Write\CriterionEvaluation
+    private function createProductEvaluation(ProductUuid $productUuid, CriterionCode $criterionCode): CriterionEvaluation
     {
-        $criterionEvaluation = new Write\CriterionEvaluation(
+        $criterionEvaluation = new CriterionEvaluation(
             $criterionCode,
             $productUuid,
             CriterionEvaluationStatus::pending()
         );
 
-        $this->productCriterionEvaluationRepository->create((new Write\CriterionEvaluationCollection)->add($criterionEvaluation));
+        $this->productCriterionEvaluationRepository->create((new CriterionEvaluationCollection)->add($criterionEvaluation));
 
         return $criterionEvaluation;
     }
 
-    private function evaluateProductCriterionAt(Write\CriterionEvaluation $criterionEvaluation, \DateTimeImmutable $evaluatedAt): void
+    private function evaluateProductCriterionAt(CriterionEvaluation $criterionEvaluation, \DateTimeImmutable $evaluatedAt): void
     {
         $query = <<<SQL
 UPDATE pim_data_quality_insights_product_criteria_evaluation e, pim_catalog_product p

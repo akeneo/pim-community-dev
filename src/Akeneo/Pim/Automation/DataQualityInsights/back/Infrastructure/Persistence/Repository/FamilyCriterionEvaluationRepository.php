@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\FamilyCriterionEvaluation;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\FamilyCriterionEvaluationRepositoryInterface;
@@ -27,7 +29,7 @@ final class FamilyCriterionEvaluationRepository implements FamilyCriterionEvalua
         $this->dbConnection = $dbConnection;
     }
 
-    public function save(Write\FamilyCriterionEvaluation $familyCriterionEvaluation): void
+    public function save(FamilyCriterionEvaluation $familyCriterionEvaluation): void
     {
         $query = <<<SQL
 INSERT INTO pimee_dqi_family_criteria_evaluation (family_id, criterion_code, evaluated_at, result)
@@ -53,7 +55,7 @@ SQL;
         return null !== $evaluatedAt ? $evaluatedAt->format(Clock::TIME_FORMAT) : null;
     }
 
-    private function formatEvaluationResult(?Write\CriterionEvaluationResult $criterionEvaluationResult): ?string
+    private function formatEvaluationResult(?CriterionEvaluationResult $criterionEvaluationResult): ?string
     {
         return null !== $criterionEvaluationResult ? json_encode($criterionEvaluationResult->toArray()) : null;
     }

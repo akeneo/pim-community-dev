@@ -11,6 +11,7 @@
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\TextCheckerDictionaryWord;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DictionaryWord;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
@@ -31,7 +32,7 @@ interface TextCheckerDictionaryRepositoryInterface
      */
     public function filterExistingWords(LocaleCode $localeCode, array $words): array;
 
-    public function save(Write\TextCheckerDictionaryWord $dictionaryWord): void;
+    public function save(TextCheckerDictionaryWord $dictionaryWord): void;
 
     /**
      * @param Write\TextCheckerDictionaryWord[] $dictionaryWords

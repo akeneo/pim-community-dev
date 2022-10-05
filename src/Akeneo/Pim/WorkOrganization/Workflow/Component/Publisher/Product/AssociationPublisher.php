@@ -11,6 +11,7 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\Product;
 
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractAssociation;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\PublisherInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
@@ -94,7 +95,7 @@ class AssociationPublisher implements PublisherInterface
     }
 
     /**
-     * @return \Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductAssociation
+     * @return PublishedProductAssociation
      */
     protected function createNewPublishedAssociation()
     {

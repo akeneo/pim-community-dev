@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Query\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluation;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluationCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateAttributeSpelling;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory;
@@ -243,26 +246,26 @@ SQL;
 
     private function createProductModelAttributeSpellingEvaluation(ProductModelId $productModelId, \DateTimeImmutable $evaluatedAt, bool $pending = false): void
     {
-        $spellingEvaluation = new Write\CriterionEvaluation(
+        $spellingEvaluation = new CriterionEvaluation(
             new CriterionCode(EvaluateAttributeSpelling::CRITERION_CODE),
             $productModelId,
             CriterionEvaluationStatus::pending()
         );
-        $otherEvaluation = new Write\CriterionEvaluation(
+        $otherEvaluation = new CriterionEvaluation(
             new CriterionCode('spelling'),
             $productModelId,
             CriterionEvaluationStatus::pending()
         );
 
         $repository = $this->get('akeneo.pim.automation.data_quality_insights.repository.product_model_criterion_evaluation');
-        $evaluations = (new Write\CriterionEvaluationCollection())
+        $evaluations = (new CriterionEvaluationCollection())
             ->add($spellingEvaluation)
             ->add($otherEvaluation);
         $repository->create($evaluations);
 
         if (false === $pending) {
-            $spellingEvaluation->end(new Write\CriterionEvaluationResult());
-            $otherEvaluation->end(new Write\CriterionEvaluationResult());
+            $spellingEvaluation->end(new CriterionEvaluationResult());
+            $otherEvaluation->end(new CriterionEvaluationResult());
             $repository->update($evaluations);
         }
 

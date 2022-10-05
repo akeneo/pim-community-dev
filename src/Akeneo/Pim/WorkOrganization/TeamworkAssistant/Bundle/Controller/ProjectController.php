@@ -112,7 +112,7 @@ class ProjectController
             $projectData = array_intersect_key($projectData, array_flip(['label', 'due_date', 'description']));
             $this->projectUpdater->update($project, $projectData);
         } else {
-            $projectData['owner'] = $user->getUsername();
+            $projectData['owner'] = $user->getUserIdentifier();
             $projectData['product_filters'] = $this->filterConverter->convert($datagridViewFilters['f']);
 
             $project = $this->projectFactory->create($projectData);
@@ -165,7 +165,7 @@ class ProjectController
     {
         $options = ['limit' => 20, 'page' => 1, 'completeness' => '1'];
         $options = array_merge($options, $request->query->get('options', []));
-        $contributor = $this->tokenStorage->getToken()->getUser()->getUsername();
+        $contributor = $this->tokenStorage->getToken()->getUser()->getUserIdentifier();
         $computeCompleteness = boolval($options['completeness']);
 
         $projects = $this->projectRepository->findBySearch(
@@ -201,7 +201,7 @@ class ProjectController
 
     public function getAction(string $identifier): JsonResponse
     {
-        $contributor = $this->tokenStorage->getToken()->getUser()->getUsername();
+        $contributor = $this->tokenStorage->getToken()->getUser()->getUserIdentifier();
         $project = $this->projectRepository->findOneByIdentifier($identifier);
 
         $normalizedProject = $this->projectNormalizer->normalize($project, 'internal_api');

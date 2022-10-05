@@ -45,7 +45,7 @@ final class FindProductWithAppliedDraft implements FindProduct
 
         $userRights = $this->fetchUserRightsOnProduct->fetchByUuid(Uuid::fromString($uuid), $user->getId());
         if ($userRights->canApplyDraftOnProduct()) {
-            $productDraft = $this->productDraftRepository->findUserEntityWithValuesDraft($product, $user->getUsername());
+            $productDraft = $this->productDraftRepository->findUserEntityWithValuesDraft($product, $user->getUserIdentifier());
             if (null !== $productDraft) {
                 $this->productDraftApplier->applyAllChanges($product, $productDraft);
             }

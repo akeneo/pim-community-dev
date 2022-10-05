@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Bundle\Datagrid\Query\Sql;
 
+use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Connection;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration;
 use Oro\Bundle\DataGridBundle\Provider\ConfigurationProviderInterface;
@@ -119,7 +120,7 @@ class ListProductGridAvailableColumns implements ListProductGridAvailableColumns
      *
      * @return array
      *
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     private function fetchAttributesAsColumn(string $locale, int $limit, int $offset, string $groupCode, string $searchOnLabel, int $userId): array
     {

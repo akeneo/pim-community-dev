@@ -430,7 +430,7 @@ class ProductDraftController
      */
     protected function findDraftForProductOr404(ProductInterface $product)
     {
-        $username = $this->tokenStorage->getToken()->getUsername();
+        $username = $this->tokenStorage->getToken()->getUserIdentifier();
         $productDraft = $this->repository->findUserEntityWithValuesDraft($product, $username);
         if (null === $productDraft) {
             throw new NotFoundHttpException(sprintf('Draft for product %s not found', $product->getId()));

@@ -11,6 +11,7 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Datasource\ResultRecord;
 
+use Doctrine\ORM\Query;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Oro\Bundle\PimDataGridBundle\Datasource\ResultRecord\HydratorInterface;
@@ -38,7 +39,7 @@ class PublishedProductHistoryHydrator implements HydratorInterface
      */
     public function hydrate($qb, array $options = [])
     {
-        /** @var \Doctrine\ORM\Query $query */
+        /** @var Query $query */
         $query = $qb->getQuery();
         $productId = (int) $query->getParameter('objectId')->getValue();
         $publishedVersionId = $this->publishedRepository->getPublishedVersionIdByOriginalProductId($productId);

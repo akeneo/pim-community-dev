@@ -171,7 +171,7 @@ class DelegatingProductModelSaver implements SaverInterface, BulkSaverInterface
     private function saveProductModelDraft(ProductModelInterface $filteredProductModel, array $options): void
     {
         $fullProductModel = $this->getFullProductModel($filteredProductModel);
-        $username = $this->tokenStorage->getToken()->getUser()->getUsername();
+        $username = $this->tokenStorage->getToken()->getUser()->getUserIdentifier();
         $productModelDraft = $this->draftBuilder->build(
             $fullProductModel,
             $this->draftSourceFactory->createFromUser($this->tokenStorage->getToken()->getUser())

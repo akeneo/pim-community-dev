@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\FreeTrial\Infrastructure\Install\Command;
 
+use Symfony\Component\Process\Exception\LogicException;
 use Akeneo\FreeTrial\Infrastructure\Install\Command\Extractor\ExtractMediaFiles;
 use Akeneo\FreeTrial\Infrastructure\Install\Command\Extractor\ExtractProducts;
 use Akeneo\FreeTrial\Infrastructure\Install\Command\Extractor\ExtractStructure;
@@ -62,7 +63,7 @@ final class ExtractCatalogCommand extends Command
             ->setHidden(true);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->ensureAuthenticationParametersAreDefined();
 
@@ -133,7 +134,7 @@ final class ExtractCatalogCommand extends Command
     /**
      * @param Process $process
      *
-     * @throws \Symfony\Component\Process\Exception\LogicException
+     * @throws LogicException
      */
     private function waitExtractMedia(Process $process, OutputInterface $output): void
     {

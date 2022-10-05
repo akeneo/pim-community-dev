@@ -112,7 +112,7 @@ SQL;
         return $this->connection->executeQuery(
             $grantedLocaleCodesSql,
             ['localeCodes' => $localeCodes, 'userId' => $userId],
-            ['localeCodes' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
+            ['localeCodes' => Connection::PARAM_STR_ARRAY]
         )->fetchFirstColumn();
     }
 
@@ -147,7 +147,7 @@ SQL;
         return $this->connection->executeQuery(
             $attributesDataSql,
             ['attributeCodes' => $attributeCodes, 'userId' => $userId],
-            ['attributeCodes' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
+            ['attributeCodes' => Connection::PARAM_STR_ARRAY]
         )->fetchAllAssociative();
     }
 }

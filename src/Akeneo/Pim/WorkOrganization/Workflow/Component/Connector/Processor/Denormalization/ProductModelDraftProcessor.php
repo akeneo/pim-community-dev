@@ -194,6 +194,6 @@ class ProductModelDraftProcessor extends AbstractProcessor implements
 
     private function getUsername(): string
     {
-        return $this->tokenStorage->getToken()->getUsername();
+        return $this->tokenStorage->getToken()->getUserIdentifier();
     }
 }

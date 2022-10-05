@@ -82,7 +82,7 @@ final class GetProductDraftWithUuidController
             ));
         }
 
-        $productDraft = $this->productDraftRepository->findUserEntityWithValuesDraft($product, $user->getUsername());
+        $productDraft = $this->productDraftRepository->findUserEntityWithValuesDraft($product, $user->getUserIdentifier());
         if (null === $productDraft) {
             throw new NotFoundHttpException(sprintf('There is no draft created for the product "%s".', $uuid));
         }

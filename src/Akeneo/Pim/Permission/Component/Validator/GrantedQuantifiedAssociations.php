@@ -14,7 +14,7 @@ class GrantedQuantifiedAssociations extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }
@@ -22,7 +22,7 @@ class GrantedQuantifiedAssociations extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'pimee_granted_quantified_associations';
     }

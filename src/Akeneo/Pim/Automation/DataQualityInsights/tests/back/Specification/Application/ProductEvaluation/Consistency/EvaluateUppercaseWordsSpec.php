@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluation;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\ComputeCaseWords\ComputeCaseWordsRate;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateCaseWords;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValuesCollection;
@@ -32,14 +34,14 @@ final class EvaluateUppercaseWordsSpec extends ObjectBehavior
     public function it_calls_evaluate_method_with_upper_case_compute_for_criterion_and_product_values(
         EvaluateCaseWords $evaluateCaseWords, ComputeCaseWordsRate $computeCaseWordsRate
     ) {
-        $criterionEvaluation1 = new Write\CriterionEvaluation(
+        $criterionEvaluation1 = new CriterionEvaluation(
             new CriterionCode('criterion1'),
             ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed')),
             CriterionEvaluationStatus::pending()
         );
 
         $productValues1 = (new ProductValuesCollection());
-        $expectedResult = (new Write\CriterionEvaluationResult());
+        $expectedResult = (new CriterionEvaluationResult());
 
         $evaluateCaseWords->__invoke($criterionEvaluation1, $productValues1, $computeCaseWordsRate)->willReturn($expectedResult);
 

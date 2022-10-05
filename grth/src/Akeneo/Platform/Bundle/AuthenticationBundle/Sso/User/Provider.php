@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\AuthenticationBundle\Sso\User;
 
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\ConfigurationNotFound;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\Repository;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
@@ -36,21 +36,21 @@ final class Provider implements UserProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function loadUserByUsername($username)
+    public function loadUserByIdentifier($username)
     {
         if (!$this->isSSOEnabled()) {
             // If SSO is disabled, we want the next chained user provider to check if the user is valid.
             // The following exception is caught and silent.
-            throw new UsernameNotFoundException('SSO feature is not enabled, let another UserProvider do its job.');
+            throw new UserNotFoundException('SSO feature is not enabled, let another UserProvider do its job.');
         }
 
         $user = $this->userRepository->findOneBy(['username' => $username]);
         if (null === $user) {
-            throw new UsernameNotFoundException(sprintf('User with username "%s" does not exist.', $username));
+            throw new UserNotFoundException(sprintf('User with username "%s" does not exist.', $username));
         }
 
         if (!$user->isEnabled()) {
-            throw new UsernameNotFoundException('User account is disabled.');
+            throw new UserNotFoundException('User account is disabled.');
         }
 
         return $user;
@@ -59,7 +59,7 @@ final class Provider implements UserProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function refreshUser(UserInterface $user)
+    public function refreshUser(UserInterface $user): UserInterface
     {
         $userClass = ClassUtils::getClass($user);
         if (!$this->supportsClass($userClass)) {
@@ -68,7 +68,7 @@ final class Provider implements UserProviderInterface
 
         $reloadedUser = $this->userRepository->find($user->getId());
         if (null === $reloadedUser) {
-            throw new UsernameNotFoundException(sprintf('User with id %d not found', $user->getId()));
+            throw new UserNotFoundException(sprintf('User with id %d not found', $user->getId()));
         }
 
         return $reloadedUser;
@@ -77,7 +77,7 @@ final class Provider implements UserProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsClass($class)
+    public function supportsClass($class): bool
     {
         return is_subclass_of($class, 'Akeneo\UserManagement\Component\Model\UserInterface');
     }

@@ -426,7 +426,7 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
      * @param UserInterface     $user
      * @param string            $accessLevel
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
     protected function getGrantedChildrenQB(CategoryInterface $category, UserInterface $user, $accessLevel)
     {

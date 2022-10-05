@@ -61,7 +61,7 @@ final class SamlUserFactorySpec extends ObjectBehavior
         $featureFlags->isEnabled('free_trial')->willReturn(true);
 
         $userFactory->create()->willReturn($user);
-        $token->getUsername()->willReturn('an_user_name');
+        $token->getUserIdentifier()->willReturn('an_user_name');
 
         $userAttributes = [
             'akeneo_email' => 'ziggy@akeneo.com',
@@ -111,7 +111,7 @@ final class SamlUserFactorySpec extends ObjectBehavior
         $featureFlags->isEnabled('free_trial')->willReturn(true);
 
         $userFactory->create()->willReturn($user);
-        $token->getUsername()->willReturn('an_user_name');
+        $token->getUserIdentifier()->willReturn('an_user_name');
 
         $token->hasAttribute('akeneo_email')->willReturn(true);
         $token->getAttribute('akeneo_email')->willReturn(['ziggy@akeneo.com']);
@@ -134,7 +134,7 @@ final class SamlUserFactorySpec extends ObjectBehavior
         $featureFlags->isEnabled('free_trial')->willReturn(true);
 
         $userFactory->create()->willReturn($user);
-        $token->getUsername()->willReturn('an_user_name');
+        $token->getUserIdentifier()->willReturn('an_user_name');
 
         $token->hasAttribute('akeneo_email')->willReturn(true);
         $token->getAttribute('akeneo_email')->willReturn(['ziggy@akeneo.com']);
@@ -158,7 +158,7 @@ final class SamlUserFactorySpec extends ObjectBehavior
         $featureFlags->isEnabled('free_trial')->willReturn(true);
 
         $userFactory->create()->willReturn($user);
-        $token->getUsername()->willReturn('an_user_name');
+        $token->getUserIdentifier()->willReturn('an_user_name');
 
         $token->hasAttribute('akeneo_email')->willReturn(true);
         $token->getAttribute('akeneo_email')->willReturn(['ziggy@akeneo.com']);
@@ -183,7 +183,7 @@ final class SamlUserFactorySpec extends ObjectBehavior
         $featureFlags->isEnabled('free_trial')->willReturn(true);
 
         $userFactory->create()->willReturn($user);
-        $token->getUsername()->willReturn('an_user_name');
+        $token->getUserIdentifier()->willReturn('an_user_name');
 
         $userAttributes = [
             'akeneo_email' => 'invalid.email',

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\Dictionary;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\TextCheckerDictionaryWord;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\TextCheckerDictionaryRepositoryInterface;
@@ -39,7 +40,7 @@ class IgnoreWord
             throw new \InvalidArgumentException('Unable to process locales that are not handled by spellchecker');
         }
 
-        $dictionaryWord = new Write\TextCheckerDictionaryWord($localeCode, $word);
+        $dictionaryWord = new TextCheckerDictionaryWord($localeCode, $word);
         $this->textCheckerDictionaryRepository->save($dictionaryWord);
     }
 }

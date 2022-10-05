@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Locale;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\TextCheckerDictionaryWord;
 use Akeneo\Channel\Infrastructure\Component\Model\Channel;
 use Akeneo\Channel\Infrastructure\Component\Model\Locale;
 use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
@@ -109,7 +110,7 @@ final class AddDefaultDictionaryWordsSubscriberSpec extends ObjectBehavior
 
         $textCheckerDictionaryRepository->saveAll(Argument::that(function (array $words) {
             foreach ($words as $word) {
-                if (!$word instanceof Write\TextCheckerDictionaryWord) {
+                if (!$word instanceof TextCheckerDictionaryWord) {
                     return false;
                 }
             }

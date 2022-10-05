@@ -101,7 +101,7 @@ class ProjectCompletenessFilter extends OroChoiceFilter
             return false;
         }
 
-        $username = $this->tokenStorage->getToken()->getUsername();
+        $username = $this->tokenStorage->getToken()->getUserIdentifier();
         $productIdentifiers = $this->projectCompletenessRepo->findProductIdentifiers($project, $data['value'], $username);
 
         $this->util->applyFilter(

@@ -27,7 +27,7 @@ class ProductDraftVoter extends Voter implements VoterInterface
     /**
      * {@inheritdoc}
      */
-    public function vote(TokenInterface $token, $draft, array $attributes)
+    public function vote(TokenInterface $token, $draft, array $attributes): int
     {
         if (!($draft instanceof EntityWithValuesDraftInterface)) {
             return self::ACCESS_ABSTAIN;
@@ -59,6 +59,6 @@ class ProductDraftVoter extends Voter implements VoterInterface
      */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
-        return $token->getUser()->getUsername() === $subject->getAuthor();
+        return $token->getUser()->getUserIdentifier() === $subject->getAuthor();
     }
 }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetAttributeSpellcheckQueryInterface;
@@ -44,14 +45,14 @@ final class EvaluateAttributeSpelling
         $this->getAttributeSpellcheckQuery = $getAttributeSpellcheckQuery;
     }
 
-    public function byAttributeCodes(array $attributeCodes): Write\CriterionEvaluationResult
+    public function byAttributeCodes(array $attributeCodes): CriterionEvaluationResult
     {
         $localesByChannel = $this->localesByChannelQuery->getChannelLocaleCollection();
         $attributeSpellchecks = $this->getAttributeSpellcheckQuery->getByAttributeCodes($attributeCodes);
 
         $attributeRatesByLocale = $this->computeAttributeRatesByLocale($localesByChannel, $attributeCodes, $attributeSpellchecks);
 
-        $evaluationResult = new Write\CriterionEvaluationResult();
+        $evaluationResult = new CriterionEvaluationResult();
         foreach ($localesByChannel as $channelCode => $localeCodes) {
             foreach ($localeCodes as $localeCode) {
                 $rateByAttributes = $attributeRatesByLocale[strval($localeCode)];

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluation;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\ComputeCaseWords\ComputeCaseWordsRate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValues;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValuesCollection;
@@ -30,11 +32,11 @@ class EvaluateCaseWords
     ) {
     }
 
-    public function __invoke(Write\CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues, ComputeCaseWordsRate $computeCaseWordsRate): Write\CriterionEvaluationResult
+    public function __invoke(CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues, ComputeCaseWordsRate $computeCaseWordsRate): CriterionEvaluationResult
     {
         $localesByChannel = $this->localesByChannelQuery->getChannelLocaleCollection();
 
-        $evaluationResult = new Write\CriterionEvaluationResult();
+        $evaluationResult = new CriterionEvaluationResult();
         foreach ($localesByChannel as $channelCode => $localeCodes) {
             foreach ($localeCodes as $localeCode) {
                 $this->evaluateChannelLocaleRate($evaluationResult, $channelCode, $localeCode, $productValues, $computeCaseWordsRate);
@@ -44,7 +46,7 @@ class EvaluateCaseWords
         return $evaluationResult;
     }
 
-    private function evaluateChannelLocaleRate(Write\CriterionEvaluationResult $evaluationResult, ChannelCode $channelCode, LocaleCode $localeCode, ProductValuesCollection $productValues, ComputeCaseWordsRate $computeCaseWordsRate): void
+    private function evaluateChannelLocaleRate(CriterionEvaluationResult $evaluationResult, ChannelCode $channelCode, LocaleCode $localeCode, ProductValuesCollection $productValues, ComputeCaseWordsRate $computeCaseWordsRate): void
     {
         $attributesRates = [];
         /** @var ProductValues $productValueByChannelAndLocale */

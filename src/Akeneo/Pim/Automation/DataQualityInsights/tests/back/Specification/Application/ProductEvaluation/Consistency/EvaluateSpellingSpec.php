@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluation;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\HashText;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateSpelling;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\FilterProductValuesForSpelling;
@@ -90,7 +92,7 @@ class EvaluateSpellingSpec extends ObjectBehavior
         TextCheckResultCollection $textCheckResultTextPrintEn
     ) {
         $productUuid = ProductUuid::fromString(self::PRODUCT_UUID_WITHOUT_PREVIOUS_EVALUATION);
-        $criterionEvaluation = new Write\CriterionEvaluation(
+        $criterionEvaluation = new CriterionEvaluation(
             new CriterionCode(EvaluateSpelling::CRITERION_CODE),
             $productUuid,
             CriterionEvaluationStatus::pending()
@@ -173,7 +175,7 @@ class EvaluateSpellingSpec extends ObjectBehavior
         $hashText->hash('Les fautes de frappe arrivent')->willReturn('123453');
         $hashText->hash('Les fautes de frappe arrivent.')->willReturn('123454');
 
-        $expectedEvaluationResult = (new Write\CriterionEvaluationResult())
+        $expectedEvaluationResult = (new CriterionEvaluationResult())
             ->addRate($channelEcommerce, $localeEn, new Rate(94))
             ->addStatus($channelEcommerce, $localeEn, CriterionEvaluationResultStatus::done())
             ->addRateByAttributes($channelEcommerce, $localeEn, ['a_text' => 100, 'a_textarea' => 88])
@@ -208,7 +210,7 @@ class EvaluateSpellingSpec extends ObjectBehavior
         TextCheckResultCollection $textCheckResultTextEcommerceFR,
     ) {
         $productUuid = ProductUuid::fromString('fd470d52-7723-4890-85a0-e79be625e2de');
-        $criterionEvaluation = new Write\CriterionEvaluation(
+        $criterionEvaluation = new CriterionEvaluation(
             new CriterionCode(EvaluateSpelling::CRITERION_CODE),
             $productUuid,
             CriterionEvaluationStatus::pending()
@@ -300,7 +302,7 @@ class EvaluateSpellingSpec extends ObjectBehavior
         $hashText->hash('Les fotes de frappe arivve')->willReturn('123453');
         $hashText->hash('Les fautes de frappe arrivent')->willReturn('123454');
 
-        $expectedEvaluationResult = (new Write\CriterionEvaluationResult())
+        $expectedEvaluationResult = (new CriterionEvaluationResult())
             ->addRate($channelEcommerce, $localeEn, new Rate(94))
             ->addStatus($channelEcommerce, $localeEn, CriterionEvaluationResultStatus::done())
             ->addRateByAttributes($channelEcommerce, $localeEn, ['a_text' => 88, 'a_textarea' => 100])
@@ -324,7 +326,7 @@ class EvaluateSpellingSpec extends ObjectBehavior
         $hashText
     ) {
         $productUuid = ProductUuid::fromString(self::PRODUCT_UUID_WITHOUT_PREVIOUS_EVALUATION);
-        $criterionEvaluation = new Write\CriterionEvaluation(
+        $criterionEvaluation = new CriterionEvaluation(
             new CriterionCode(EvaluateSpelling::CRITERION_CODE),
             $productUuid,
             CriterionEvaluationStatus::pending()
@@ -362,7 +364,7 @@ class EvaluateSpellingSpec extends ObjectBehavior
         $hashText->hash('Success')->willReturn('123451');
         $hashText->hash('Fail')->willReturn('123452');
 
-        $expectedEvaluationResult = (new Write\CriterionEvaluationResult())
+        $expectedEvaluationResult = (new CriterionEvaluationResult())
             ->addRate($channelPrint, $localeEn, new Rate(100))
             ->addStatus($channelPrint, $localeEn, CriterionEvaluationResultStatus::done())
             ->addRateByAttributes($channelPrint, $localeEn, ['a_textarea' => 100])
@@ -381,7 +383,7 @@ class EvaluateSpellingSpec extends ObjectBehavior
         $filterProductValuesForSpelling
     ) {
         $productUuid = ProductUuid::fromString(self::PRODUCT_UUID_WITHOUT_PREVIOUS_EVALUATION);
-        $criterionEvaluation = new Write\CriterionEvaluation(
+        $criterionEvaluation = new CriterionEvaluation(
             new CriterionCode(EvaluateSpelling::CRITERION_CODE),
             $productUuid,
             CriterionEvaluationStatus::pending()
@@ -488,7 +490,7 @@ class EvaluateSpellingSpec extends ObjectBehavior
 
         $textChecker->check(Argument::cetera(), $localeEn)->shouldNotBeCalled();
 
-        $expectedEvaluationResult = (new Write\CriterionEvaluationResult())
+        $expectedEvaluationResult = (new CriterionEvaluationResult())
             ->addStatus($channelEcommerce, $localeEn, CriterionEvaluationResultStatus::notApplicable())
         ;
 
@@ -502,7 +504,7 @@ class EvaluateSpellingSpec extends ObjectBehavior
         FilterProductValuesForSpelling $filterProductValuesForSpelling
     ) {
         $productUuid = ProductUuid::fromString(self::PRODUCT_UUID_WITHOUT_PREVIOUS_EVALUATION);
-        $criterionEvaluation = new Write\CriterionEvaluation(
+        $criterionEvaluation = new CriterionEvaluation(
             new CriterionCode(EvaluateSpelling::CRITERION_CODE),
             $productUuid,
             CriterionEvaluationStatus::pending()
@@ -532,7 +534,7 @@ class EvaluateSpellingSpec extends ObjectBehavior
 
         $textChecker->check(Argument::cetera(), $localeEn)->shouldNotBeCalled();
 
-        $expectedEvaluationResult = (new Write\CriterionEvaluationResult())
+        $expectedEvaluationResult = (new CriterionEvaluationResult())
             ->addStatus($channelEcommerce, $localeEn, CriterionEvaluationResultStatus::notApplicable());
 
         $this->evaluate($criterionEvaluation, $productValues)->shouldBeLike($expectedEvaluationResult);
@@ -551,7 +553,7 @@ class EvaluateSpellingSpec extends ObjectBehavior
         $getDictionaryLastUpdateDateByLocaleQuery
     ) {
         $productUuid = ProductUuid::fromString('fd470d52-7723-4890-85a0-e79be625e2de');
-        $criterionEvaluation = new Write\CriterionEvaluation(
+        $criterionEvaluation = new CriterionEvaluation(
             new CriterionCode(EvaluateSpelling::CRITERION_CODE),
             $productUuid,
             CriterionEvaluationStatus::pending()
@@ -647,7 +649,7 @@ class EvaluateSpellingSpec extends ObjectBehavior
         $hashText->hash('Les fotes de frappe arivve')->willReturn('123453');
         $hashText->hash('Les fautes de frappe arrivent')->willReturn('123454');
 
-        $expectedEvaluationResult = (new Write\CriterionEvaluationResult())
+        $expectedEvaluationResult = (new CriterionEvaluationResult())
             ->addRate($channelEcommerce, $localeEn, new Rate(94))
             ->addStatus($channelEcommerce, $localeEn, CriterionEvaluationResultStatus::done())
             ->addRateByAttributes($channelEcommerce, $localeEn, ['a_text' => 88, 'a_textarea' => 100])

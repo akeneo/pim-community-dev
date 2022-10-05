@@ -31,7 +31,7 @@ class FirewallMap extends SymfonyFirewallMap
         $this->configRepository = $configRepository;
     }
 
-    public function getListeners(Request $request)
+    public function getListeners(Request $request): array
     {
         $context = $this->getFirewallContext($request);
 

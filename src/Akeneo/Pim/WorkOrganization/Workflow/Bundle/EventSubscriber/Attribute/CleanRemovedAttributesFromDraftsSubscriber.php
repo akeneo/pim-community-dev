@@ -32,7 +32,7 @@ final class CleanRemovedAttributesFromDraftsSubscriber implements EventSubscribe
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             AttributeEvents::POST_CLEAN => 'saveAffectedDrafts',

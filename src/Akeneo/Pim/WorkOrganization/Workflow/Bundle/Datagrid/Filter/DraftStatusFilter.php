@@ -74,8 +74,8 @@ class DraftStatusFilter extends ChoiceFilter
             throw new \Exception('Draft filter is only useable when user is authenticated');
         }
 
-        $productUuids = $this->selectProductUuidsByUserAndDraftStatusQuery->execute($user->getUsername(), $draftStatuses);
-        $productModelIds = $this->selectProductModelIdsByUserAndDraftStatusQuery->execute($user->getUsername(), $draftStatuses);
+        $productUuids = $this->selectProductUuidsByUserAndDraftStatusQuery->execute($user->getUserIdentifier(), $draftStatuses);
+        $productModelIds = $this->selectProductModelIdsByUserAndDraftStatusQuery->execute($user->getUserIdentifier(), $draftStatuses);
         $esIds = $this->prepareIdsForEsFilter($productUuids, $productModelIds);
         $esIds = empty($esIds) ? ['null'] : $esIds;
 

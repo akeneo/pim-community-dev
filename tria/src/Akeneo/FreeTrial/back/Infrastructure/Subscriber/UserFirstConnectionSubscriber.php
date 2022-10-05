@@ -35,7 +35,7 @@ final class UserFirstConnectionSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            AuthenticationEvents::AUTHENTICATION_SUCCESS => 'onUserConnectionSuccess',
+            AuthenticationSuccessEvent::class => 'onUserConnectionSuccess',
         ];
     }
 

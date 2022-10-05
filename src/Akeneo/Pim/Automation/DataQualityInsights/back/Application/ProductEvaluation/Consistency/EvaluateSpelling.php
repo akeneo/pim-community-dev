@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluation;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\HashText;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateCriterionInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\MultipleTextsChecker;
@@ -58,7 +60,7 @@ class EvaluateSpelling implements EvaluateCriterionInterface
     ) {
     }
 
-    public function evaluate(Write\CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues): Write\CriterionEvaluationResult
+    public function evaluate(CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues): CriterionEvaluationResult
     {
         $previousEvaluation = $this->getCriterionEvaluationResultQuery->execute(
             $criterionEvaluation->getEntityId(),
@@ -67,7 +69,7 @@ class EvaluateSpelling implements EvaluateCriterionInterface
 
         $localesByChannel = $this->localesByChannelQuery->getChannelLocaleCollection();
 
-        $evaluationResult = new Write\CriterionEvaluationResult();
+        $evaluationResult = new CriterionEvaluationResult();
         foreach ($localesByChannel as $channelCode => $localesCodes) {
             foreach ($localesCodes as $localeCode) {
                 $this->evaluateChannelLocaleRate($evaluationResult, $channelCode, $localeCode, $productValues, $previousEvaluation);
@@ -78,7 +80,7 @@ class EvaluateSpelling implements EvaluateCriterionInterface
     }
 
     private function evaluateChannelLocaleRate(
-        Write\CriterionEvaluationResult $evaluationResult,
+        CriterionEvaluationResult $evaluationResult,
         ChannelCode                     $channelCode,
         LocaleCode                      $localeCode,
         ProductValuesCollection         $productValues,

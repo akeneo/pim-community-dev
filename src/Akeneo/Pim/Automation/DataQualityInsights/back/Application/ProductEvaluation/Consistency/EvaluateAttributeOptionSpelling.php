@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluation;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateCriterionInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValuesCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
@@ -48,7 +50,7 @@ final class EvaluateAttributeOptionSpelling implements EvaluateCriterionInterfac
         $this->getAttributeOptionSpellcheckQuery = $getAttributeOptionSpellcheckQuery;
     }
 
-    public function evaluate(Write\CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues): Write\CriterionEvaluationResult
+    public function evaluate(CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues): CriterionEvaluationResult
     {
         $localesByChannel = $this->localesByChannelQuery->getChannelLocaleCollection();
 
@@ -69,7 +71,7 @@ final class EvaluateAttributeOptionSpelling implements EvaluateCriterionInterfac
             $this->optionsSpellchecksByAttribute[$attributeCode] = $spellChecks;
         }
 
-        $evaluationResult = new Write\CriterionEvaluationResult();
+        $evaluationResult = new CriterionEvaluationResult();
 
         foreach ($localesByChannel as $channelCode => $localesCodes) {
             foreach ($localesCodes as $localeCode) {
@@ -110,7 +112,7 @@ final class EvaluateAttributeOptionSpelling implements EvaluateCriterionInterfac
         }
     }
 
-    private function evaluateChannelLocaleRate(Write\CriterionEvaluationResult $evaluationResult, ChannelCode $channelCode, LocaleCode $localeCode, ProductValuesCollection $productValues): void
+    private function evaluateChannelLocaleRate(CriterionEvaluationResult $evaluationResult, ChannelCode $channelCode, LocaleCode $localeCode, ProductValuesCollection $productValues): void
     {
         $simpleSelectOptionCodes = $productValues->getSimpleSelectValues();
         $simpleSelectRates = $this->evaluateSimpleSelectAttributesRates($channelCode, $localeCode, $simpleSelectOptionCodes);

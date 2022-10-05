@@ -11,6 +11,7 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Entity\Repository;
 
+use Doctrine\ORM\QueryBuilder;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Permission\Component\Repository\AccessRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
@@ -82,7 +83,7 @@ class JobProfileAccessRepository extends EntityRepository implements
      * @param UserInterface $user
      * @param string        $accessLevel
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
     public function getGrantedJobsQB(UserInterface $user, $accessLevel)
     {

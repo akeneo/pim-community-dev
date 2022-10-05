@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository;
 
+use Doctrine\DBAL\Exception;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Structure\AttributeOptionSpellcheck;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Structure\SpellcheckResultByLocaleCollection;
@@ -80,7 +81,7 @@ SQL;
      * Manages to clean DQI spellcheck table rows related to some attribute option(s)
      * @param string $attributeCode the code of the attribute whose option spellcheck rows are to be deleted
      * @param string|null $attributeOptionCode the code of the option to delete, if null then all rows will be deleted
-     * @throws \Doctrine\DBAL\Exception
+     * @throws Exception
      */
     public function deleteUnknownAttributeOption(string $attributeCode, ?string $attributeOptionCode = null): void
     {

@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\FamilyCriterionEvaluation;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 
 interface FamilyCriterionEvaluationRepositoryInterface
 {
-    public function save(Write\FamilyCriterionEvaluation $familyCriterionEvaluation): void;
+    public function save(FamilyCriterionEvaluation $familyCriterionEvaluation): void;
 }

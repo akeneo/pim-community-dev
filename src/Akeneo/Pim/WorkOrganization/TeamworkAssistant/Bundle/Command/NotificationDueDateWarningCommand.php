@@ -51,7 +51,7 @@ class NotificationDueDateWarningCommand extends Command
                 $projectCompleteness = $this->projectCompletenessRepository
                     ->getProjectCompleteness($project, $user);
                 $this->projectNotifier->notifyUser($user, $project, $projectCompleteness);
-                $output->writeln(sprintf('User %s has been notified.', $user->getUsername()));
+                $output->writeln(sprintf('User %s has been notified.', $user->getUserIdentifier()));
             }
         }
 
