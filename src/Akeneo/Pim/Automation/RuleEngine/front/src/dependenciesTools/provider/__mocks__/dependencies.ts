@@ -41,4 +41,8 @@ export const dependencies = {
   security: {
     isGranted: jest.fn((_acl: string) => true),
   },
+  ruleManager: {
+    familyAttributesRulesNumberPromise: null,
+    getFamilyAttributesRulesNumber: jest.fn(),
+  },
 };
