@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Structure\Component\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @author    Nicolas Dupont <nicolas@akeneo.com>
@@ -13,7 +14,7 @@ class AttributeOption implements AttributeOptionInterface
 {
     protected ?int $id = null;
     protected ?string $code = null;
-    protected \ArrayAccess $optionValues;
+    protected Collection $optionValues;
     protected ?int $sortOrder = null;
 
     /**
@@ -58,7 +59,7 @@ class AttributeOption implements AttributeOptionInterface
         return $this;
     }
 
-    public function getOptionValues(): \ArrayAccess
+    public function getOptionValues(): Collection
     {
         return $this->optionValues;
     }
