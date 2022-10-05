@@ -41,7 +41,7 @@ final class GetCatalogProductValueFiltersQuery implements GetCatalogProductValue
             throw new \LogicException('Catalog not found');
         }
 
-        /** @var array{channel?: array<string>}|null $filters */
+        /** @var array{channels?: array<string>, locales?: array<string>, currencies?: array<string>}|null $filters */
         $filters = \json_decode($result, true, 512, JSON_THROW_ON_ERROR);
         if (!\is_array($filters)) {
             throw new \LogicException('Invalid JSON in product_value_filters column');
