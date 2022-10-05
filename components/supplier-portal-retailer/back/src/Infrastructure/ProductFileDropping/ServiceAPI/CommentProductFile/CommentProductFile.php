@@ -9,9 +9,7 @@ use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CommentProduc
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\CommentTooLong;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\EmptyComment;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\MaxCommentPerProductFileReached;
-use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\CommentProductFile\Exception\CommentTooLong as CommentTooLongApiException;
-use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\CommentProductFile\Exception\EmptyComment as EmptyCommentApiException;
-use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\CommentProductFile\Exception\MaxCommentPerProductFileReached as MaxCommentPerProductFileReachedApiException;
+use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\CommentProductFile\Exception\InvalidComment;
 
 final class CommentProductFile
 {
@@ -31,11 +29,11 @@ final class CommentProductFile
                 )
             );
         } catch (EmptyComment) {
-            throw new EmptyCommentApiException();
+            throw InvalidComment::emptyComment();
         } catch (CommentTooLong) {
-            throw new CommentTooLongApiException();
+            throw InvalidComment::commentTooLong();
         } catch (MaxCommentPerProductFileReached) {
-            throw new MaxCommentPerProductFileReachedApiException();
+            throw InvalidComment::maxCommentsPerProductFileReached();
         }
     }
 }

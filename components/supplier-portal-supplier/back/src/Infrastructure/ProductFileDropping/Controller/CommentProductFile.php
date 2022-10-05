@@ -6,9 +6,7 @@ namespace Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Cont
 
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\CommentProductFile\CommentProductFile as CommentProductFileServiceAPI;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\CommentProductFile\CommentProductFileCommand;
-use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\CommentProductFile\Exception\CommentTooLong;
-use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\CommentProductFile\Exception\EmptyComment;
-use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\CommentProductFile\Exception\MaxCommentPerProductFileReached;
+use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\CommentProductFile\Exception\InvalidComment;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,8 +29,8 @@ final class CommentProductFile
             ($this->commentProductFileServiceAPI)(
                 new CommentProductFileCommand($productFileIdentifier, $authorEmail, $content, new \DateTimeImmutable())
             );
-        } catch (EmptyComment | CommentTooLong | MaxCommentPerProductFileReached $e) {
-            return new JsonResponse($e->getErrorCode(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        } catch (InvalidComment $e) {
+            return new JsonResponse($e->errorCode, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         return new JsonResponse(null, Response::HTTP_CREATED);

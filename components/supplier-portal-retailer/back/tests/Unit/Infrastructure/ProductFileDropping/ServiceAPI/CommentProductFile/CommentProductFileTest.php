@@ -11,9 +11,7 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\Em
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\MaxCommentPerProductFileReached;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\CommentProductFile\CommentProductFile;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\CommentProductFile\CommentProductFileCommand;
-use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\CommentProductFile\Exception\CommentTooLong as CommentTooLongApiException;
-use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\CommentProductFile\Exception\EmptyComment as EmptyCommentApiException;
-use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\CommentProductFile\Exception\MaxCommentPerProductFileReached as MaxCommentPerProductFileReachedApiException;
+use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\CommentProductFile\Exception\InvalidComment;
 use PHPUnit\Framework\TestCase;
 
 final class CommentProductFileTest extends TestCase
@@ -26,52 +24,86 @@ final class CommentProductFileTest extends TestCase
 
         $serviceApiCommand = $this->generateCommentProductFileCommand();
 
-        $commandHandler->expects($this->once())->method('__invoke')->with(new CommentProductFileForSupplier(
-            'e77c4413-a6d5-49e6-a102-8042cf5bd439',
-            'jimmy@megasupplier.com',
-            'Here are your products',
-            $serviceApiCommand->createdAt,
-        ));
+        $commandHandler
+            ->expects($this->once())
+            ->method('__invoke')
+            ->with(new CommentProductFileForSupplier(
+                'e77c4413-a6d5-49e6-a102-8042cf5bd439',
+                'jimmy@megasupplier.com',
+                'Here are your products',
+                $serviceApiCommand->createdAt,
+            ));
+
         ($sut)($serviceApiCommand);
     }
 
     /** @test */
-    public function itReturnsAServiceAPIExceptionIfADomainEmptyCommentExceptionOccured(): void
+    public function itReturnsAServiceAPIExceptionIfADomainEmptyCommentExceptionOccurred(): void
     {
         $commandHandler = $this->createMock(CommentProductFileHandlerForSupplier::class);
         $sut = new CommentProductFile($commandHandler);
 
-        $serviceApiCommand = $this->generateCommentProductFileCommand();
+        $commandHandler
+            ->expects($this->once())
+            ->method('__invoke')
+            ->willThrowException(new EmptyComment());
 
-        $commandHandler->expects($this->once())->method('__invoke')->willThrowException(new EmptyComment());
-        $this->expectException(EmptyCommentApiException::class);
-        ($sut)($serviceApiCommand);
+        try {
+            ($sut)($this->generateCommentProductFileCommand());
+        } catch (\Exception $e) {
+            $this->assertSame(InvalidComment::class, \get_class($e));
+            $this->assertSame('empty_comment', $e->errorCode);
+
+            return;
+        }
+
+        $this->fail(sprintf('Expected a %s exception with code "empty_comment".', InvalidComment::class));
     }
 
     /** @test */
-    public function itReturnsAServiceAPIExceptionIfADomainCommentTooLongExceptionOccured(): void
+    public function itReturnsAServiceAPIExceptionIfADomainCommentTooLongExceptionOccurred(): void
     {
         $commandHandler = $this->createMock(CommentProductFileHandlerForSupplier::class);
         $sut = new CommentProductFile($commandHandler);
 
-        $serviceApiCommand = $this->generateCommentProductFileCommand();
+        $commandHandler
+            ->expects($this->once())
+            ->method('__invoke')
+            ->willThrowException(new CommentTooLong());
 
-        $commandHandler->expects($this->once())->method('__invoke')->willThrowException(new CommentTooLong());
-        $this->expectException(CommentTooLongApiException::class);
-        ($sut)($serviceApiCommand);
+        try {
+            ($sut)($this->generateCommentProductFileCommand());
+        } catch (\Exception $e) {
+            $this->assertSame(InvalidComment::class, \get_class($e));
+            $this->assertSame('comment_too_long', $e->errorCode);
+
+            return;
+        }
+
+        $this->fail(sprintf('Expected a %s exception with code "comment_too_long".', InvalidComment::class));
     }
 
     /** @test */
-    public function itReturnsAServiceAPIExceptionIfADomainMaxCommentPerProductFileReachedExceptionOccured(): void
+    public function itReturnsAServiceAPIExceptionIfADomainMaxCommentPerProductFileReachedExceptionOccurred(): void
     {
         $commandHandler = $this->createMock(CommentProductFileHandlerForSupplier::class);
         $sut = new CommentProductFile($commandHandler);
 
-        $serviceApiCommand = $this->generateCommentProductFileCommand();
+        $commandHandler
+            ->expects($this->once())
+            ->method('__invoke')
+            ->willThrowException(new MaxCommentPerProductFileReached());
 
-        $commandHandler->expects($this->once())->method('__invoke')->willThrowException(new MaxCommentPerProductFileReached());
-        $this->expectException(MaxCommentPerProductFileReachedApiException::class);
-        ($sut)($serviceApiCommand);
+        try {
+            ($sut)($this->generateCommentProductFileCommand());
+        } catch (\Exception $e) {
+            $this->assertSame(InvalidComment::class, \get_class($e));
+            $this->assertSame('max_comments_limit_reached', $e->errorCode);
+
+            return;
+        }
+
+        $this->fail(sprintf('Expected a %s exception with code "max_comments_limit_reached".', InvalidComment::class));
     }
 
     private function generateCommentProductFileCommand(): CommentProductFileCommand
