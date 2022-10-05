@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Infrastructure\Controller\Internal;
 
 use Akeneo\Catalogs\Application\Persistence\Catalog\FindOneCatalogByIdQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogProductSelectionCriteriaQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogProductValueFiltersQueryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -22,7 +21,6 @@ final class GetCatalogAction
 {
     public function __construct(
         private FindOneCatalogByIdQueryInterface $findOneCatalogByIdQuery,
-        private GetCatalogProductSelectionCriteriaQueryInterface $findCatalogProductSelectionCriteriaQuery,
         private GetCatalogProductValueFiltersQueryInterface $findCatalogProductValueFiltersQuery,
         private NormalizerInterface $normalizer,
     ) {
@@ -41,7 +39,6 @@ final class GetCatalogAction
         }
 
         $catalogNormalized = (array) $this->normalizer->normalize($catalog, 'internal');
-        $catalogNormalized['product_selection_criteria'] = $this->findCatalogProductSelectionCriteriaQuery->execute($catalogId);
         $catalogNormalized['product_value_filters'] = $this->findCatalogProductValueFiltersQuery->execute($catalogId);
 
         return new JsonResponse($catalogNormalized);
