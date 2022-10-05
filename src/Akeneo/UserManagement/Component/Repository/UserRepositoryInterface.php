@@ -2,6 +2,7 @@
 
 namespace Akeneo\UserManagement\Component\Repository;
 
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\CountableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Persistence\ObjectRepository;
@@ -20,7 +21,7 @@ interface UserRepositoryInterface extends IdentifiableObjectRepositoryInterface,
      *
      * @param array $groupIds
      *
-     * @return \Akeneo\UserManagement\Component\Model\UserInterface[]
+     * @return UserInterface[]
      */
     public function findByGroupIds(array $groupIds);
 }

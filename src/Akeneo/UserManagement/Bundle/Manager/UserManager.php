@@ -2,6 +2,8 @@
 
 namespace Akeneo\UserManagement\Bundle\Manager;
 
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\User;
@@ -9,9 +11,7 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface as SecurityUserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
@@ -20,7 +20,7 @@ class UserManager implements UserProviderInterface
     public function __construct(
         protected string $class,
         protected ObjectManager $om,
-        protected EncoderFactoryInterface $encoderFactory,
+        protected PasswordHasherFactoryInterface $encoderFactory,
         private SaverInterface $saver
     ) {
     }
@@ -163,10 +163,10 @@ class UserManager implements UserProviderInterface
      * @param  SecurityUserInterface    $user
      * @throws UnsupportedUserException if a User Instance is given which is not managed by this UserManager
      *                                  (so another Manager could try managing it)
-     * @throws UsernameNotFoundException if user could not be reloaded
+     * @throws UserNotFoundException if user could not be reloaded
      * @return SecurityUserInterface
      */
-    public function refreshUser(SecurityUserInterface $user)
+    public function refreshUser(SecurityUserInterface $user): \Symfony\Component\Security\Core\User\UserInterface
     {
         $class = $this->getClass();
 
@@ -183,7 +183,7 @@ class UserManager implements UserProviderInterface
         $refreshedUser = $this->findUserBy(['id' => $user->getId()]);
 
         if (null === $refreshedUser) {
-            throw new UsernameNotFoundException(sprintf('User with ID "%d" could not be reloaded', $user->getId()));
+            throw new UserNotFoundException(sprintf('User with ID "%d" could not be reloaded', $user->getId()));
         }
 
         return $refreshedUser;
@@ -195,15 +195,15 @@ class UserManager implements UserProviderInterface
      * all ACL checks.
      *
      * @param  string                    $username
-     * @throws UsernameNotFoundException if user not found
+     * @throws UserNotFoundException if user not found
      * @return SecurityUserInterface
      */
-    public function loadUserByUsername($username)
+    public function loadUserByIdentifier($username)
     {
         $user = $this->findUserByUsername($username);
 
         if (!$user) {
-            throw new UsernameNotFoundException(sprintf('No user with name "%s" was found.', $username));
+            throw new UserNotFoundException(sprintf('No user with name "%s" was found.', $username));
         }
 
         return $user;
@@ -222,7 +222,7 @@ class UserManager implements UserProviderInterface
     /**
      * {@inheritDoc}
      */
-    public function supportsClass($class)
+    public function supportsClass($class): bool
     {
         return $class === $this->getClass();
     }

@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\back\tests\Integration\Helper;
 
+use Doctrine\DBAL\Driver\Exception;
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryBase;
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryTranslations;
 use Akeneo\Category\Domain\Model\Category;
@@ -23,7 +24,7 @@ class CategoryTestCase extends TestCase
     /**
      * @param array<string, string>|null $labels
      *
-     * @throws \Doctrine\DBAL\Driver\Exception
+     * @throws Exception
      * @throws \Doctrine\DBAL\Exception
      */
     protected function createOrUpdateCategory(

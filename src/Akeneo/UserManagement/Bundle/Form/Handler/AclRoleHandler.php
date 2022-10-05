@@ -2,6 +2,7 @@
 
 namespace Akeneo\UserManagement\Bundle\Form\Handler;
 
+use Symfony\Component\Form\FormView;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Bundle\Form\Type\AclRoleType;
 use Akeneo\UserManagement\Component\Model\Role;
@@ -125,7 +126,7 @@ class AclRoleHandler
     /**
      * Create form view for current form
      *
-     * @return \Symfony\Component\Form\FormView
+     * @return FormView
      */
     public function createView()
     {
