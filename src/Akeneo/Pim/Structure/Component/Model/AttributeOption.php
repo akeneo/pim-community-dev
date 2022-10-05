@@ -20,12 +20,12 @@ class AttributeOption implements AttributeOptionInterface
     /**
      * Overrided to change target entity name
      */
-    protected ?AttributeInterface $attribute;
+    protected ?AttributeInterface $attribute = null;
 
     /**
      * Not persisted, allows to define the value locale
      */
-    protected ?string $locale;
+    protected ?string $locale = null;
 
     public function __construct()
     {
@@ -47,7 +47,7 @@ class AttributeOption implements AttributeOptionInterface
         return $this;
     }
 
-    public function getAttribute(): AttributeInterface
+    public function getAttribute(): ?AttributeInterface
     {
         return $this->attribute;
     }

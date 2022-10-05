@@ -18,11 +18,11 @@ interface AttributeOptionInterface extends ReferableInterface, VersionableInterf
 
     public function setId(int $id): AttributeOptionInterface;
 
-    public function getAttribute(): AttributeInterface;
+    public function getAttribute(): ?AttributeInterface;
 
     public function setAttribute(?AttributeInterface $attribute = null): AttributeOptionInterface;
 
-    public function getOptionValues(): \ArrayAccess;
+    public function getOptionValues(): \ArrayAccess|array;
 
     public function getLocale(): ?string;
 

@@ -37,12 +37,13 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_an_attribute_option_without_label(
         AttributeOptionInterface $attributeOption,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        \ArrayAccess $optionValues,
     ) {
         $attributeOption->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('color');
         $attributeOption->getCode()->willReturn('red');
-        $attributeOption->getOptionValues()->willReturn([]);
+        $attributeOption->getOptionValues()->willReturn($optionValues);
         $attributeOption->getSortOrder()->willReturn(1);
 
         $this->normalize($attributeOption, 'standard')->shouldReturn([
