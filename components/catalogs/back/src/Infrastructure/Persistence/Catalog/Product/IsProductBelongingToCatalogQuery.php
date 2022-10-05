@@ -27,7 +27,6 @@ class IsProductBelongingToCatalogQuery implements IsProductBelongingToCatalogQue
             'filters' => $this->getFilters($catalog),
             'limit' => 1,
         ]);
-        $pqb->addFilter('id', Operators::EQUALS, $productUuid);
         $results = $pqb->execute();
 
         return $results->count() !== 0;
