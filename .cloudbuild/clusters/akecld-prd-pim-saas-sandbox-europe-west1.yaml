@@ -57,10 +57,12 @@ steps:
 
         if [ "${BRANCH_NAME}" != "master" ]; then
           helm upgrade --version ${_ARGOCD_HELM_VERSION} --dry-run --debug -i --create-namespace -n argocd argocd argo/argo-cd -f argocd/values.yaml
+          kubectl create secret generic datadog-api-secret --from-literal api-key="$${DATADOG_API_KEY}" --dry-run=client -o yaml
           helm upgrade --version ${_ARGOCD_APP_HELM_VERSION} --dry-run --debug -i --create-namespace -n argocd argocd-apps argo/argocd-apps -f argocd-apps/values.yaml
         else
           ## Datadog
           kubectl create secret generic datadog-api-secret --from-literal api-key="$${DATADOG_API_KEY}"
+          kubectl create secret generic datadog-api-secret --from-literal api-key="$${DATADOG_API_KEY}" --dry-run=client -o yaml | kubectl apply -f -
 
           # Install prerequisite
           ## ArgoCD

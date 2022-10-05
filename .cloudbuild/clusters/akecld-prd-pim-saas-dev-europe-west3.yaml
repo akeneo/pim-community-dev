@@ -61,7 +61,7 @@ steps:
         helm repo update 2>&1
 
         ## Datadog
-        kubectl create secret generic datadog-api-secret --from-literal api-key="$${DATADOG_API_KEY}"
+        kubectl create secret generic datadog-api-secret --from-literal api-key="$${DATADOG_API_KEY}" --dry-run=client -o yaml | kubectl apply -f -
 
         # Install prerequisite
         ## ArgoCD
