@@ -1,23 +1,23 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: {{ .Release.Name }}
+  name: "{{ .Release.Name }}-role"
 rules:
 - apiGroups: [""]
   resources: ["namespaces"]
   verbs: ["get","watch","list"]
 - apiGroups: ["gateway.networking.k8s.io"]
-  resources: ["gateways","httproutes","tlsroutes","tcproutes","udproutes"] 
+  resources: ["gateways","httproutes","tlsroutes","tcproutes","udproutes"]
   verbs: ["get","watch","list"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ .Release.Name }}
+  name: "{{ .Release.Name }}-binding"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ .Release.Name }}
+  name: "{{ .Release.Name }}-role"
 subjects:
 - kind: ServiceAccount
   name: {{ index .Values "external-dns" "serviceAccount" "name" }}
