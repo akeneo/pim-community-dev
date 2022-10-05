@@ -10,5 +10,5 @@ namespace Akeneo\Catalogs\Domain\Catalog;
  */
 interface GetCatalogQueryInterface
 {
-    public function execute(string $id): Catalog;
+    public function execute(string $catalogId): Catalog;
 }

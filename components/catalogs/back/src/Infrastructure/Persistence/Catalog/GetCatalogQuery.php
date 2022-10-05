@@ -31,7 +31,7 @@ final class GetCatalogQuery implements GetCatalogQueryInterface
     {
     }
 
-    public function execute(string $id): Catalog
+    public function execute(string $catalogId): Catalog
     {
         $query = <<<SQL
         SELECT
@@ -48,7 +48,7 @@ final class GetCatalogQuery implements GetCatalogQueryInterface
 
         /** @var DatabaseCatalog|false $row */
         $row = $this->connection->executeQuery($query, [
-            'id' => Uuid::fromString($id)->getBytes(),
+            'id' => Uuid::fromString($catalogId)->getBytes(),
         ])->fetchAssociative();
 
         if (!$row) {
