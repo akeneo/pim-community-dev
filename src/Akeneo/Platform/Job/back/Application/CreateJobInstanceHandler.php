@@ -56,10 +56,10 @@ final class CreateJobInstanceHandler implements CreateJobInstanceHandlerInterfac
     private function getJob(JobInstance $jobInstance): JobInterface
     {
         if (!$this->jobRegistry->has($jobInstance->getJobName())) {
-            throw new \RuntimeException('Job does ' . $jobInstance->getJobName() . ' not exists.');
+            throw new \RuntimeException('Job does '.$jobInstance->getJobName().' not exists.');
         }
 
-        return  $this->jobRegistry->get($jobInstance->getJobName());
+        return $this->jobRegistry->get($jobInstance->getJobName());
     }
 
     private function validateJob(JobInterface $job, JobParameters $jobParameters, JobInstance $jobInstance): void
