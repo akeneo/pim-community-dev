@@ -7,7 +7,3 @@ supplier_portal:
         max_uploaded_filename_length: El nom de l'arxiu no pot tenir més de 255 caràcters.
         max_uploaded_file_size: La mida de l'arxiu no pot passar de 50 MB.
         must_be_an_xlsx_file: Si us plau, puja un arxiu xlsx vàlid.
-        comment:
-          max_length_content: El comentari no pot tenir més de 255 caràcters.
-          empty_content: El comentari no pot estar buit.
-          count_max_reached: L'arxiu del producte no pot tenir més de 50 comentaris.
