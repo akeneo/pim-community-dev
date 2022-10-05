@@ -55,6 +55,7 @@ class GetCategorySql implements GetCategoryInterface
                 category.id,
                 category.code, 
                 category.parent_id,
+                category.root as root_id,
                 translation.translations,
                 category.value_collection
             FROM 
@@ -86,6 +87,7 @@ class GetCategorySql implements GetCategoryInterface
                     )
                 ) : null,
             $result['parent_id'] ? new CategoryId((int)$result['parent_id']) : null,
+            $result['root_id'] ? new CategoryId((int)$result['root_id']) : null,
             $result['value_collection'] ?
                 ValueCollection::fromArray(json_decode($result['value_collection'], true)) : null,
             null
