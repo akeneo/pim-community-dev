@@ -1,5 +1,9 @@
 # 6.0.x
 
+## Bug fixes
+
+- PIM-10652: [Backport PIM-10646] Fix export with label from a select attribute containing uppercase in its code exports code and not labels
+
 # 6.0.44 (2022-09-23)
 
 ## Bug fixes

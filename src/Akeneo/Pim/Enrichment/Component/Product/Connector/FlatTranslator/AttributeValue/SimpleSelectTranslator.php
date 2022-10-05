@@ -29,16 +29,12 @@ class SimpleSelectTranslator implements FlatAttributeValueTranslatorInterface
 
     public function translate(string $attributeCode, array $properties, array $values, string $locale): array
     {
-        $optionKeys = array_map(
-            function ($value) use ($attributeCode) {
-                return sprintf('%s.%s', $attributeCode, $value);
-            },
-            $values
-        );
-
+        $optionKeys = $this->generateOptionKeys($attributeCode, $values);
         $attributeOptionTranslations = $this->getExistingAttributeOptionsWithValues->fromAttributeCodeAndOptionCodes(
             $optionKeys
         );
+
+        $attributeOptionTranslations = array_change_key_case($attributeOptionTranslations, CASE_LOWER);
 
         $result = [];
         foreach ($values as $valueIndex => $value) {
@@ -47,11 +43,30 @@ class SimpleSelectTranslator implements FlatAttributeValueTranslatorInterface
                 continue;
             }
 
-            $optionKey = sprintf('%s.%s', $attributeCode, $value);
+            $optionKey = self::generateOptionKey($attributeCode, $value);
             $attributeOptionTranslation = $attributeOptionTranslations[$optionKey][$locale] ?? sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $value);
             $result[$valueIndex] = $attributeOptionTranslation;
         }
 
         return $result;
+    }
+
+    private function generateOptionKeys(string $attributeCode, array $values): array
+    {
+        $optionKeys = [];
+        foreach ($values as $optionCode) {
+            if (null === $optionCode || '' === $optionCode) {
+                continue;
+            }
+
+            $optionKeys[] = self::generateOptionKey($attributeCode, $optionCode);
+        }
+
+        return array_values(array_unique($optionKeys));
+    }
+
+    private static function generateOptionKey(string $attributeCode, string $optionCode): string
+    {
+        return sprintf('%s.%s', strtolower($attributeCode), strtolower($optionCode));
     }
 }

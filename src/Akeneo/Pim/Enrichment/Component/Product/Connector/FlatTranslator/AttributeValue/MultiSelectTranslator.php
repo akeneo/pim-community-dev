@@ -35,6 +35,8 @@ class MultiSelectTranslator implements FlatAttributeValueTranslatorInterface
             $optionKeys
         );
 
+        $attributeOptionTranslations = array_change_key_case($attributeOptionTranslations, CASE_LOWER);
+
         $result = [];
         foreach ($values as $valueIndex => $value) {
             if (null === $value || '' === $value) {
@@ -45,7 +47,7 @@ class MultiSelectTranslator implements FlatAttributeValueTranslatorInterface
             $optionCodes = explode(',', $value);
             $labelizedOptions = array_map(
                 function ($optionCode) use ($attributeCode, $locale, $attributeOptionTranslations) {
-                    $optionKey = sprintf('%s.%s', $attributeCode, $optionCode);
+                    $optionKey = self::generateOptionKey($attributeCode, $optionCode);
 
                     return $attributeOptionTranslations[$optionKey][$locale] ?? sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $optionCode);
                 },
@@ -67,9 +69,7 @@ class MultiSelectTranslator implements FlatAttributeValueTranslatorInterface
             }
             $optionCodes = explode(',', $value);
             $currentOptionKeys = array_map(
-                function ($optionCode) use ($attributeCode) {
-                    return sprintf('%s.%s', $attributeCode, $optionCode);
-                },
+                static fn ($optionCode) => self::generateOptionKey($attributeCode, $optionCode),
                 $optionCodes
             );
 
@@ -77,5 +77,10 @@ class MultiSelectTranslator implements FlatAttributeValueTranslatorInterface
         }
 
         return $optionKeys;
+    }
+
+    private static function generateOptionKey(string $attributeCode, string $optionCode): string
+    {
+        return sprintf('%s.%s', strtolower($attributeCode), strtolower($optionCode));
     }
 }
