@@ -14,7 +14,7 @@ spec:
   - name: https
     protocol: HTTPS
     port: 443
-    {{ if not .Values.gateways.externalHttp.certmap -}}
+    {{ if not ( hasPrefix "gke-l7-gxlb" .Values.gateways.externalHttp.gatewayClassName ) -}}
     tls:
       certificateRefs:
       - kind: Secret
