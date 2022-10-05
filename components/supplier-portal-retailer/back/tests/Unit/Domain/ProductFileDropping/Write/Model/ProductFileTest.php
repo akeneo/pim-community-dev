@@ -9,7 +9,7 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\Ma
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Comment;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
+use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
 use PHPUnit\Framework\TestCase;
 
 final class ProductFileTest extends TestCase
@@ -18,21 +18,13 @@ final class ProductFileTest extends TestCase
     public function itCreatesAProductFileAndStoresAProductFileAddedEvent(): void
     {
         $productFileIdentifier = Identifier::fromString('d06c58da-4cd7-469d-a3fc-37209a05e9e2');
-        $productFile = ProductFile::create(
-            (string) $productFileIdentifier,
-            'supplier-file.xlsx',
-            '2/f/a/4/2fa4afe5465afe5655/supplier-file.xlsx',
-            'contributor@example.com',
-            new Supplier(
-                '44ce8069-8da1-4986-872f-311737f46f02',
-                'los_pollos_hermanos',
-                'Los Pollos Hermanos',
-            ),
-            new \DateTimeImmutable(),
-        );
+        $productFile = (new ProductFileBuilder())
+            ->withIdentifier((string) $productFileIdentifier)
+            ->withUploadedBySupplier('44ce8069-8da1-4986-872f-311737f46f02')
+            ->build();
         $this->assertEquals((string) $productFileIdentifier, $productFile->identifier());
-        $this->assertEquals('supplier-file.xlsx', $productFile->originalFilename());
-        $this->assertEquals('2/f/a/4/2fa4afe5465afe5655/supplier-file.xlsx', $productFile->path());
+        $this->assertEquals('file.xlsx', $productFile->originalFilename());
+        $this->assertEquals('path/to/file.xlsx', $productFile->path());
         $this->assertEquals('contributor@example.com', $productFile->contributorEmail());
         $this->assertIsString($productFile->uploadedAt());
         $this->assertFalse($productFile->downloaded());

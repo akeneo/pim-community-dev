@@ -9,8 +9,8 @@ use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\Comment
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\ProductFileDoesNotExist;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\InMemory\InMemoryRepository as ProductFileInMemoryRepository;
+use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
 use PHPUnit\Framework\TestCase;
 
 final class CommentProductFileHandlerTest extends TestCase
@@ -19,18 +19,13 @@ final class CommentProductFileHandlerTest extends TestCase
     public function itCommentsAProductFile(): void
     {
         $productFileRepository = new ProductFileInMemoryRepository();
-        $productFileRepository->save(ProductFile::create(
-            '6ffc16ae-3e0d-4a10-a8c3-7e33e2a4c287',
-            'file.xlsx',
-            'path/to/file.xlsx',
-            'julia@roberts.com',
-            new Supplier(
-                '64e9aa37-5935-4092-bbe6-54fe271fb2a7',
-                'los_pollos_hermanos',
-                'Los Pollos Hermanos',
-            ),
-            new \DateTimeImmutable(),
-        ));
+        $productFileRepository->save(
+            (new ProductFileBuilder())
+                ->withIdentifier('6ffc16ae-3e0d-4a10-a8c3-7e33e2a4c287')
+                ->withUploadedBySupplier('64e9aa37-5935-4092-bbe6-54fe271fb2a7')
+                ->withContributorEmail('julia@roberts.com')
+                ->build(),
+        );
         $command = new CommentProductFile(
             '6ffc16ae-3e0d-4a10-a8c3-7e33e2a4c287',
             'julia@roberts.com',

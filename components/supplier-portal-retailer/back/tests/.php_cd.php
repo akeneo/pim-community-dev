@@ -110,6 +110,7 @@ $rules = [
             'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\DeleteUnknownSupplierDirectoriesInGCSBucket',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Encoder\SuppliersEncoder',
             'Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder',
+            'Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder',
 
             // Supplier Portal Supplier coupling
 
@@ -133,6 +134,7 @@ $rules = [
             'Akeneo\SupplierPortal\Retailer\Application',
             'Akeneo\SupplierPortal\Retailer\Infrastructure',
             'Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder',
+            'Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder',
 
             // Supplier Portal Supplier coupling
 
@@ -170,6 +172,7 @@ $rules = [
             'Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFileHandler',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\InMemory\InMemoryRepository',
             'Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder',
+            'Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder',
 
             // Supplier Portal Supplier coupling
 
