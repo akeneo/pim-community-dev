@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidEntityCodeException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -85,7 +86,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
             /** @var AssociationTypeInterface $associationType */
             $associationType = $this->associationTypeRepository->findOneByIdentifier($typeCode);
             if (null === $associationType || $associationType->isQuantified()) {
-                throw InvalidPropertyException::validEntityCodeExpected(
+                throw new InvalidEntityCodeException(
                     'associations',
                     'association type code',
                     'The association type does not exist or is quantified',
