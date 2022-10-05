@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Domain\Catalog;
+namespace Akeneo\Catalogs\Application\Persistence\Catalog;
+
+use Akeneo\Catalogs\Domain\Catalog;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
