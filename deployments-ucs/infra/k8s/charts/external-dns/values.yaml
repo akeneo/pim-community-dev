@@ -9,6 +9,7 @@ external-dns:
   nodeSelector:
     iam.gke.io/gke-metadata-server-enabled: "true"
   provider: google
+  policy: sync
   resources:
     requests:
       memory: "64Mi"
@@ -16,10 +17,22 @@ external-dns:
     limits:
       memory: "128Mi"
       cpu: "200m"
+  rbac:
+    additionalPermissions:
+      - apiGroups: ["gateway.networking.k8s.io"]
+        resources: ["httproutes"]
+        verbs: ["get","watch","list"]
+    txtOwnerId: null # From parent
+    create: true
   serviceAccount:
     name: external-dns
     annotations:
       iam.gke.io/gcp-service-account: null # From parent
-  txtOwnerId: null # From parent
   sources:
+    - contour-httpproxy
     - gateway-httproute
+    - ingress
+    - node
+    - pod
+    - service
+  txtOwnerId: null # From parent
