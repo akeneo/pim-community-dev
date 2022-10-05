@@ -14,6 +14,16 @@ $rules = [
     $builder->only(
         [
             'Akeneo\Platform\Job\Domain',
+            'Akeneo\Platform\Job\ServiceApi',
+            'Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceFactory',
+            'Akeneo\Tool\Component\Batch\Exception\InvalidJobException',
+            'Akeneo\Tool\Component\Batch\Job\JobInterface',
+            'Akeneo\Tool\Component\Batch\Job\JobParameters',
+            'Akeneo\Tool\Component\Batch\Job\JobParametersFactory',
+            'Akeneo\Tool\Component\Batch\Job\JobRegistry',
+            'Akeneo\Tool\Component\Batch\Model\JobInstance',
+            'Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface',
+            'Symfony\Component\Validator\Validator\ValidatorInterface',
             'Webmozart\Assert\Assert',
         ],
     )->in('Akeneo\Platform\Job\Application'),
