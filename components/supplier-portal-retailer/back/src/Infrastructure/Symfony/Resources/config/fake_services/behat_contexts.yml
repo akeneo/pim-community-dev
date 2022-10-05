@@ -11,4 +11,4 @@ services:
         - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'
         - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFileHandler'
         - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithComments'
-        - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CommentProductFileHandlerForSupplier'
+        - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFileHandlerForSupplier'

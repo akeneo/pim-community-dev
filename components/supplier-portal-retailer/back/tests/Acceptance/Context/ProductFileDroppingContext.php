@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Test\Acceptance\Context;
 
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFile;
-use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CommentProductFileForSupplier;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFileForSupplier;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFileHandler;
-use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CommentProductFileHandlerForSupplier;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFileHandlerForSupplier;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithComments;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\CommentTooLong;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\EmptyComment;
