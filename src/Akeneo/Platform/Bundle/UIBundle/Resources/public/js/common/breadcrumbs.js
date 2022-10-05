@@ -65,11 +65,8 @@ define([
             if (!Array.isArray(itemPaths)) {
               itemPaths = [itemPaths];
             }
-            itemPaths.forEach((itemPath) => {
-              if (
-                breadcrumbItem === null &&
-                null !== propertyAccessor.accessProperty(this.getFormData(), itemPath)
-              ) {
+            itemPaths.forEach(itemPath => {
+              if (breadcrumbItem === null && null !== propertyAccessor.accessProperty(this.getFormData(), itemPath)) {
                 const item = propertyAccessor.accessProperty(this.getFormData(), itemPath);
 
                 breadcrumbItem = {code: item, label: item, active: false};

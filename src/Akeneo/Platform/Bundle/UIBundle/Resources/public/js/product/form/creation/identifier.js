@@ -25,8 +25,7 @@ define([
      * @return {Promise}
      */
     render: function () {
-      return this.shouldDisplay()
-        .then((shouldDisplay) => {
+      return this.shouldDisplay().then(shouldDisplay => {
         if (!shouldDisplay) {
           this.$el.html('');
           this.updateModel({target: {value: undefined}});
@@ -61,6 +60,6 @@ define([
 
     shouldDisplay: async function () {
       return new Promise(resolve => resolve(true));
-    }
+    },
   });
 });
