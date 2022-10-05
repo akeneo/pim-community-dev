@@ -87,6 +87,7 @@
 - PIM-10622: Fix save options labels when using the automatic correction in Firefox
 - PIM-10634: Fix media filter values normalizer to be case insensitive
 - PIM-10649: Fix wrong attributes displayed when selecting attribute group in export profile filter when there is too many attributes selected
+- PIM-10658: Fix database product reader
 - PIM-10576: Fix product model mass edit acl check
 - PIM-10633: Fix no DQI dashboard average rankings if code case changed
 
