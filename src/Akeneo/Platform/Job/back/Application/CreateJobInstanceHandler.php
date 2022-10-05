@@ -62,7 +62,7 @@ final class CreateJobInstanceHandler implements CreateJobInstanceHandlerInterfac
         return  $this->jobRegistry->get($jobInstance->getJobName());
     }
 
-    private function validateJob(JobInterface $job, JobParameters $jobParameters, JobInstance $jobInstance)
+    private function validateJob(JobInterface $job, JobParameters $jobParameters, JobInstance $jobInstance): void
     {
         $jobParametersViolations = $this->jobParametersValidator->validate($job, $jobParameters);
         if (0 < $jobParametersViolations->count()) {
