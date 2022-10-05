@@ -21,21 +21,12 @@ workflows:
                 requires:
                     - build_ucs
           - deploy_tenant:
-                name: "deploy_tenant_1"
+                requires:
+                    - build_ucs
+          - test_ucs_deploy:
                 requires:
                     - deploy_ucs_pim
-          - deploy_tenant:
-                name: "deploy_tenant_2"
-                requires:
-                    - deploy_ucs_pim
-          - test_ucs_deploy:
-                name: "test_ucs_deploy_1"
-                requires:
-                    - deploy_tenant_1
-          - test_ucs_deploy:
-                name: "test_ucs_deploy_2"
-                requires:
-                    - deploy_tenant_2
+                    - deploy_tenant
           - delete_pim?:
                 type: approval
                 filters:
@@ -48,7 +39,7 @@ workflows:
           - delete_pim:
                 requires:
                     - delete_pim?
-          - delete_tenant1?:
+          - delete_tenant?:
                 type: approval
                 filters:
                     branches:
@@ -56,24 +47,10 @@ workflows:
                             - /BH-.*/
                             - /PH-.*/
                 requires:
-                    - test_ucs_deploy_1
+                    - test_ucs_deploy
           - delete_tenant:
-                name: "delete_tenant1"
                 requires:
-                    - delete_tenant1?
-          - delete_tenant2?:
-                type: approval
-                filters:
-                    branches:
-                        only:
-                            - /BH-.*/
-                            - /PH-.*/
-                requires:
-                    - test_ucs_deploy_2
-          - delete_tenant:
-                name: "delete_tenant2"
-                requires:
-                    - delete_tenant2?
+                    - delete_tenant?
 
           - ready_to_build_wb?:
                 type: approval
@@ -95,33 +72,40 @@ workflows:
                 requires:
                     - build_ucs_wb
           - deploy_tenant:
-                name: "deploy_tenant_1_wb"
+                name: "deploy_tenant_wb"
+                requires:
+                    - build_ucs_wb
+          - test_ucs_deploy:
+                name: "test_ucs_deploy_wb"
                 requires:
                     - deploy_ucs_pim_wb
-          - deploy_tenant:
-                name: "deploy_tenant_2_wb"
+                    - deploy_tenant_wb
+          - delete_pim_wb?:
+                type: approval
+                filters:
+                    branches:
+                        only:
+                            - /BH-.*/
+                            - /PH-.*/
                 requires:
                     - deploy_ucs_pim_wb
-          - test_ucs_deploy:
-                name: "test_ucs_deploy_1_wb"
-                requires:
-                    - deploy_tenant_1_wb
-          - test_ucs_deploy:
-                name: "test_ucs_deploy_2_wb"
-                requires:
-                    - deploy_tenant_2_wb
           - delete_pim:
+                name: "delete_pim_wb"
                 requires:
-                    - test_ucs_deploy_1_wb
-                    - test_ucs_deploy_2_wb
+                    - delete_pim_wb?
+          - delete_tenant_wb?:
+                type: approval
+                filters:
+                    branches:
+                        only:
+                            - /BH-.*/
+                            - /PH-.*/
+                requires:
+                    - test_ucs_deploy_wb
           - delete_tenant:
-                name: "delete_tenant1_wb"
+                name: "delete_tenant_wb"
                 requires:
-                    - test_ucs_deploy_1_wb
-          - delete_tenant:
-                name: "delete_tenant2_wb"
-                requires:
-                    - test_ucs_deploy_2_wb
+                    - delete_tenant_wb?
 
           - ready_to_build_test_infra?:
                 type: approval

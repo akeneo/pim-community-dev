@@ -662,6 +662,12 @@ jobs:
               echo "user : admin"
               echo "password : ${ARGOCD_PASSWORD}"
               echo "============================"
+        - run:
+              name: Remove env on kubernetes
+              command: |
+                  kubectl delete app pim-${CIRCLE_BRANCH_LOWER} -n argocd
+                  kubectl delete ns pim-${CIRCLE_BRANCH_LOWER}
+              when: on_fail
 
     deploy_tenant:
         parameters:
@@ -678,9 +684,6 @@ jobs:
         steps:
             - attach_workspace:
                   at: ~/
-            - add_ssh_keys:
-                  fingerprints:
-                      - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
             - when:
                   condition:
                       equal: [true, << parameters.CLUSTER_NEXT >> ]
@@ -718,6 +721,8 @@ jobs:
             - run:
                   name: Deploy PIM on kubernetes
                   command: |
+                      # Create the pim namespace if not exist because, we need to create a httproute in pim namespace
+                      kubectl create namespace ${PIM_NS} --dry-run=client -o yaml | kubectl apply -f -
                       NS=${TYPE}-${INSTANCE_NAME} PHASE=install bash deployments-ucs/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
                       make -C deployments-ucs/ deploy_tenant
             - run:
@@ -736,8 +741,6 @@ jobs:
             - run:
                   name: Remove env on kubernetes
                   command: |
-                      ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                       DELETE_TENANT_STATUS_CODE=0
                       for i in 1 2 3; do make -C deployments-ucs/ delete_tenant && DELETE_TENANT_STATUS_CODE=0 && break || DELETE_TENANT_STATUS_CODE=1; done
                       exit ${DELETE_TENANT_STATUS_CODE}
