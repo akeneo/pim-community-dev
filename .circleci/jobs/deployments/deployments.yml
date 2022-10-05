@@ -125,7 +125,14 @@ jobs:
                       TYPE=<<parameters.PRODUCT_TYPE>>
                       echo export TYPE=${TYPE} >> $BASH_ENV
 
-                      LATEST_RELEASE=$(bash ${PWD}/deployments/bin/get_latest_release.sh)
+                      # Need to hardcode grth latest version because with the end of GE2SRNT migration they won't exist anymore and can't be retrivied by the script
+                      if [[ $TYPE=grth ]]
+                        then
+                            LATEST_RELEASE=growth-v20220927160459
+                        else
+                            LATEST_RELEASE=$(bash ${PWD}/deployments/bin/get_latest_release.sh)
+                      fi
+
                       if [[ -z "${LATEST_RELEASE}" ]]; then
                           echo "Could not retrieve latest deployed release"
                           exit 1

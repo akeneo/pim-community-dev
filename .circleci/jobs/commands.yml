@@ -151,7 +151,7 @@ commands:
               TO_TS="$(date -d '3 hours' '+%Y-%m-%dT%H:%M:%S%z' | cut -c1-22):00"
               LOGS=$(curl --location -H "Content-Type: application/json" -H "DD-API-KEY: ${DATADOG_API_KEY}" -H "DD-APPLICATION-KEY: ${DATADOG_APP_KEY}" --request POST "<<parameters.dd_domain>>/api/v2/logs/events/search" --data-raw '{"filter": {"query": "kube_namespace:'"<<parameters.pfid>>"' component:hook-upgrader container_name:pim-upgrade took","indexes": ["main"],"from": "'"${FROM_TS}"'","to": "'"${TO_TS}"'"},"sort": "timestamp","page": {"limit": 100}}')
               echo ${LOGS} > <<parameters.storage_file>>
-              if [[ "${LOGS}" != "" ]]; then
+              if [[ "${LOGS}" != "" && $(echo "${LOGS}" | jq -r ' .data | length') != 0 ]]; then
                 echo ${LOGS} | jq -r .data[].attributes.message
               fi
 
