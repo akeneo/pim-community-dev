@@ -749,13 +749,12 @@ JSON;
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Validation failed.',
-            'errors'  => [
-                [
-                    'property'   => 'identifier',
-                    'message' => 'The identifier attribute cannot be empty.',
-                ],
-            ],
+            'message' => 'Validation failed. The identifier field is required for this endpoint. If you want to manipulate products without identifiers, please use products-uuid endpoints.',
+            '_links'  => [
+                'documentation' => [
+                    'href' => 'http://api.akeneo.com/api-reference.html#post_products_uuid'
+                ]
+            ]
         ];
 
         $response = $client->getResponse();
@@ -774,13 +773,12 @@ JSON;
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Validation failed.',
-            'errors'  => [
-                [
-                    'property' => 'identifier',
-                    'message'  => 'The identifier attribute cannot be empty.',
-                ],
-            ],
+            'message' => 'Validation failed. The identifier field is required for this endpoint. If you want to manipulate products without identifiers, please use products-uuid endpoints.',
+            '_links'  => [
+                'documentation' => [
+                    'href' => 'http://api.akeneo.com/api-reference.html#post_products_uuid'
+                ]
+            ]
         ];
 
         $response = $client->getResponse();
@@ -826,6 +824,7 @@ JSON;
         $data =
             <<<JSON
     {
+        "identifier": "new_product",
         "extra_property": "foo"
     }
 JSON;
