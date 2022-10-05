@@ -59,7 +59,7 @@ final class Catalog
     }
 
     /**
-     * @return array<array-key, ProductSelectionCriterion>
+     * @return array<ProductSelectionCriterion>
      */
     public function getProductSelectionCriteria(): array
     {
@@ -72,5 +72,20 @@ final class Catalog
     public function getProductValueFilters(): array
     {
         return $this->productValueFilters;
+    }
+
+    /**
+     * @return array{id: string, name: string, enabled: bool, owner_username: string, product_selection_criteria: array<ProductSelectionCriterion>, product_value_filters: ProductValueFilters}
+     */
+    public function normalize(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'enabled' => $this->isEnabled(),
+            'owner_username' => $this->getOwnerUsername(),
+            'product_selection_criteria' => $this->getProductSelectionCriteria(),
+            'product_value_filters' => $this->getProductValueFilters()
+        ];
     }
 }
