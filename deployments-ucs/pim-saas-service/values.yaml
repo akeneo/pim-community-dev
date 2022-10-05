@@ -29,6 +29,7 @@ common:
   pimMasterDomain: null # Generated
   dnsCloudDomain: null # Generated
   region: null # Generated
+  tenantContext: null #Generated
   workloadIdentityKSA: null # Generated
   workloadIdentityGSA: pim-saas-service
   phpConfFPM:

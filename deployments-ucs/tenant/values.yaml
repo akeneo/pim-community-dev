@@ -37,6 +37,7 @@ common:
   extraLabels: {}
   gcpFireStoreProjectID: null
   gcpProjectID: null
+  tenantContext: null
   googleZone: null
   pimMasterDomain: null
   dnsCloudDomain: null

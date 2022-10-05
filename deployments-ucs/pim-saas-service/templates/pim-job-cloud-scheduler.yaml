@@ -28,7 +28,7 @@ spec:
       audience: "https://{{ $tplCtx.Values.common.region }}-{{ $tplCtx.Values.common.gcpProjectID }}.cloudfunctions.net/{{ $tplCtx.Values.pim.cloudFunction.name }}"
       serviceAccountRef:
         external: "{{ $tplCtx.Values.pim.cloudFunction.serviceAccountEmail }}"
-    body: {{ printf "{\"topic_id\": \"%s\",\"job_code\":  \"%s\",\"job_options\": \"%s\" }" $tplCtx.Values.pim.pubsub.topic_job_queue_scheduler_job $jobConfiguration.pimJobName $jobConfiguration.pimJobOptions | squote |  replace "'" ""| b64enc }}
+    body: {{ printf "{\"cluster_name\": \"%s\",\"topic_id\": \"%s\",\"job_code\":  \"%s\",\"job_options\": \"%s\" }" $tplCtx.Values.common.region $tplCtx.Values.pim.pubsub.topic_job_queue_scheduled_job $jobConfiguration.pimJobName $jobConfiguration.pimJobOptions | squote |  replace "'" ""| b64enc }}
 ---
 {{ end }}
 {{ end }}

@@ -60,7 +60,6 @@ exports.publishCommand = async (req, res) => {
     const jobCode = requestBody.job_code
     const jobOptions = requestBody.job_options
     const topicId = requestBody.topic_id
-
     const permissions = await testTopicPermissions(topicId).catch(console.error);
     console.debug(permissions)
 

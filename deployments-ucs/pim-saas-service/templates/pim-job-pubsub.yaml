@@ -3,7 +3,7 @@ kind: PubSubTopic
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: {{ .Values.common.gcpProjectID }}
-  name: {{ .Values.pim.pubsub.topic_job_queue_scheduled_job }}
+  name: "{{ .Values.pim.pubsub.topic_job_queue_scheduled_job }}"
 spec:
   resourceID: {{ .Values.pim.pubsub.topic_job_queue_scheduled_job }}
 ---
@@ -14,9 +14,9 @@ metadata:
     cnrm.cloud.google.com/project-id: {{ .Values.common.gcpProjectID }}
   labels:
     subscription_type: "ucs-jobs-scheduler"
-  name: {{ .Values.pim.pubsub.subscription_job_queue_scheduled_job }}
+  name: "{{ .Values.pim.pubsub.subscription_job_queue_scheduled_job }}"
 spec:
   ackDeadlineSeconds: 600
   topicRef:
-    name: {{ .Values.pim.pubsub.topic_job_queue_scheduled_job }}
-  resourceID: {{ .Values.pim.pubsub.subscription_job_queue_scheduled_job }}
+    name: "{{ .Values.pim.pubsub.topic_job_queue_scheduled_job }}"
+  resourceID: "{{ .Values.pim.pubsub.subscription_job_queue_scheduled_job }}"

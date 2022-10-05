@@ -555,6 +555,7 @@ jobs:
               INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
               GOOGLE_CLOUD_FIRESTORE_PROJECT=${GOOGLE_FIRESTORE_PROJECT_ID}
               GOOGLE_CLOUD_PROJECT=${GOOGLE_PROJECT_ID}
+              FIRESTORE_COLLECTION="${GOOGLE_CLUSTER_REGION}/${CIRCLE_BRANCH_LOWER}/tenant_contexts"
               GOOGLE_ZONE=${GOOGLE_COMPUTE_ZONE}
               LOCATION=EU
               PIM_MASTER_DOMAIN="${INSTANCE_NAME}.${GOOGLE_DOMAIN}"
@@ -564,21 +565,22 @@ jobs:
               TOPIC_JOB_QUEUE_UI="srnt-job-queue-ui-${CIRCLE_BRANCH_LOWER}"
               TOPIC_JOB_QUEUE_IMPORT_EXPORT="srnt-job-queue-import-export-${CIRCLE_BRANCH_LOWER}"
               TOPIC_JOB_QUEUE_DATA_MAINTENANCE="srnt-job-queue-data-maintenance-${CIRCLE_BRANCH_LOWER}"
-              TOPIC_JOB_QUEUE_SCHEDULED_JOB="srnt-job-queue-scheduled-job-${CIRCLE_BRANCH_LOWER}"
+              TOPIC_JOB_QUEUE_SCHEDULED_JOB="srnt-job-queue-scheduled-job-${GOOGLE_CLUSTER_REGION}-${CIRCLE_BRANCH_LOWER}"
               SUBSCRIPTION_WEBHOOK="srnt-webhook-${CIRCLE_BRANCH_LOWER}"
               SUBSCRIPTION_JOB_QUEUE_UI="srnt-job-queue-ui-${CIRCLE_BRANCH_LOWER}"
               SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT="srnt-job-queue-import-export-${CIRCLE_BRANCH_LOWER}"
               SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE="srnt-job-queue-data-maintenance-${CIRCLE_BRANCH_LOWER}"
-              SUBSCRIPTION_JOB_QUEUE_SCHEDULED_JOB="srnt-job-queue-scheduled-job-${CIRCLE_BRANCH_LOWER}"
+              SUBSCRIPTION_JOB_QUEUE_SCHEDULED_JOB="srnt-job-queue-scheduled-job-${GOOGLE_CLUSTER_REGION}-${CIRCLE_BRANCH_LOWER}"
 
-              CLOUD_FUNCTION_NAME="srnt-job-publisher-${CIRCLE_BRANCH_LOWER}-${IMAGE_TAG}"
-              CLOUD_FUNCTION_BUCKET="srnt-job-publisher-${CIRCLE_BRANCH_LOWER}-${IMAGE_TAG}"
+              CLOUD_FUNCTION_NAME="${GOOGLE_CLUSTER_REGION}-${CIRCLE_BRANCH_LOWER}-srnt-job-publisher-${IMAGE_TAG_DATE}"
+              CLOUD_FUNCTION_BUCKET="${GOOGLE_CLUSTER_REGION}-${CIRCLE_BRANCH_LOWER}-srnt-job-publisher-${IMAGE_TAG_DATE}"
 
               echo export CIRCLE_BRANCH_LOWER=${CIRCLE_BRANCH_LOWER} >> $BASH_ENV
               echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
               echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
               echo export GOOGLE_CLOUD_FIRESTORE_PROJECT=${GOOGLE_CLOUD_FIRESTORE_PROJECT} >> $BASH_ENV
               echo export GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT} >> $BASH_ENV
+              echo export FIRESTORE_COLLECTION=${FIRESTORE_COLLECTION}  >> $BASH_ENV
               echo export GOOGLE_ZONE=${GOOGLE_ZONE} >> $BASH_ENV
               echo export LOCATION=${LOCATION} >> $BASH_ENV
               echo export PIM_MASTER_DOMAIN=${PIM_MASTER_DOMAIN} >> $BASH_ENV
@@ -620,6 +622,7 @@ jobs:
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml common.pimMasterDomain "${PIM_MASTER_DOMAIN}"
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml common.dnsCloudDomain "${GOOGLE_DOMAIN}"
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml common.region "${GOOGLE_CLUSTER_REGION}"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml common.tenantContext  "${FIRESTORE_COLLECTION}"
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml common.workloadIdentityKSA "${WORKLOAD_IDENTITY_KSA}"
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml image.pim.tag "${IMAGE_TAG}"
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.pubsub.topic_business_event "${TOPIC_BUSINESS_EVENT}"
@@ -634,7 +637,7 @@ jobs:
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.pubsub.subscription_job_queue_scheduled_job "${SUBSCRIPTION_JOB_QUEUE_SCHEDULED_JOB}"
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.cloudFunction.name "${CLOUD_FUNCTION_NAME}"
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.cloudFunction.bucket "${CLOUD_FUNCTION_BUCKET}"
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.jobsPrefix "${CIRCLE_BRANCH_LOWER}-pim-job"
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/values-ci.yaml pim.jobsPrefix "${GOOGLE_CLUSTER_REGION}-${CIRCLE_BRANCH_LOWER}-pim-job"
 
               ## Charts
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/Chart.yaml appVersion ${IMAGE_TAG}
@@ -705,6 +708,8 @@ jobs:
                       INSTANCE_NAME_PREFIX=ucs
                       INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
                       CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
+                      
+                      FIRESTORE_COLLECTION="${GOOGLE_CLUSTER_REGION}/${CIRCLE_BRANCH_LOWER}/tenant_contexts"
 
                       WORKLOAD_IDENTITY_KSA="${INSTANCE_NAME}-ksa-workload-identity"
                       GOOGLE_ZONE=${GOOGLE_COMPUTE_ZONE}
@@ -714,7 +719,7 @@ jobs:
                       echo export WORKLOAD_IDENTITY_KSA=${WORKLOAD_IDENTITY_KSA} >> $BASH_ENV
                       echo export GOOGLE_ZONE=${GOOGLE_ZONE} >> $BASH_ENV
                       echo export PIM_NS=pim-${CIRCLE_BRANCH_LOWER} >> $BASH_ENV
-
+                      echo export FIRESTORE_COLLECTION=${FIRESTORE_COLLECTION} >> $BASH_ENV
                       echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
                       echo "Instance name: ${INSTANCE_NAME}"
                       echo "Image tag: ${IMAGE_TAG}"
