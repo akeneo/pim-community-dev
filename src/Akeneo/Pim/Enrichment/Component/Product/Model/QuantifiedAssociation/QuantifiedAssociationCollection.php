@@ -403,7 +403,7 @@ class QuantifiedAssociationCollection
             foreach ($associationsNormalized as $quantifiedLinksType => $quantifiedLinksNormalized) {
                 $result[$associationType][$quantifiedLinksType] = [];
                 foreach ($quantifiedLinksNormalized as $quantifiedLinkNormalized) {
-                    if (array_key_exists('uuid', $quantifiedLinkNormalized)) {
+                    if (array_key_exists('uuid', $quantifiedLinkNormalized) && !array_key_exists('identifier', $quantifiedLinkNormalized)) {
                         $result[$associationType][$quantifiedLinksType][$quantifiedLinkNormalized['uuid']] =
                             $quantifiedLinkNormalized;
                     }
