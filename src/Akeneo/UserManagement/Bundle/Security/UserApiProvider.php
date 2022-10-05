@@ -35,6 +35,14 @@ class UserApiProvider implements UserProviderInterface
     /**
      * {@inheritdoc}
      */
+    public function loadUserByUsername(string $username)
+    {
+        return $this->loadUserByIdentifier($username);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function loadUserByIdentifier($username)
     {
         $user = $this->userRepository->findOneByIdentifier($username);
