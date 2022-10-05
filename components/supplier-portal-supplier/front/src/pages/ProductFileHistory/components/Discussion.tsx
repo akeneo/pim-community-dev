@@ -76,15 +76,17 @@ const Discussion = ({comments, productFileIdentifier}: Props) => {
             </FlexRow>
 
             <Comments ref={commentsBlock}>
-                {comments.map((comment: CommentReadModel, index) => (
-                    <Comment
-                        key={index}
-                        outgoing={comment.outgoing}
-                        authorEmail={comment.authorEmail}
-                        content={comment.content}
-                        createdAt={comment.createdAt}
-                    />
-                ))}
+                <div>
+                    {comments.map((comment: CommentReadModel, index) => (
+                        <Comment
+                            key={index}
+                            outgoing={comment.outgoing}
+                            authorEmail={comment.authorEmail}
+                            content={comment.content}
+                            createdAt={comment.createdAt}
+                        />
+                    ))}
+                </div>
             </Comments>
 
             <FlexColumn>
@@ -162,7 +164,7 @@ const FlexColumn = styled.div`
 
 const Comments = styled.div`
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     margin-bottom: 30px;
     flex: 1;
     overflow-y: auto;
