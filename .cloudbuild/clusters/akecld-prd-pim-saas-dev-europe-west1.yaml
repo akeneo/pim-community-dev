@@ -41,10 +41,6 @@ steps:
         ## Argocd
         yq -i '.configs.credentialTemplates.https-creds.username = "argocd"' argocd/values.yaml
         ARGOCD_GITHUB_TOKEN="$${ARGOCD_GITHUB_TOKEN}" yq -i '.configs.credentialTemplates.https-creds.password = env(ARGOCD_GITHUB_TOKEN)' argocd/values.yaml
-        yq -i 'del(.server.ingress.tls)' argocd/values.yaml
-        HOST="\"*.${_GOOGLE_DOMAIN}\"" yq -i e '.server.ingress.tls[0].hosts |= . + [env(HOST)] ' argocd/values.yaml
-        yq -i 'del(.server.ingress.hosts)' argocd/values.yaml
-        GOOGLE_DOMAIN="argocd-${_GOOGLE_CLUSTER_REGION}.${_GOOGLE_DOMAIN}" yq -i e '.server.ingress.hosts |= . + [env(GOOGLE_DOMAIN)] ' argocd/values.yaml
         # Set the correct service account for argocd repoServer
         GSA_ARGOCD="argocd@${_GOOGLE_PROJECT_ID}.iam.gserviceaccount.com" yq -i '.repoServer.serviceAccount.annotations."iam.gke.io/gcp-service-account" = env(GSA_ARGOCD)' argocd/values.yaml
 

@@ -38,19 +38,8 @@ server:
   extraArgs:
     - --insecure
   ingress:
-    enabled: true
-    labels:
-      component: "argocd-ingress" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
-      app.kubernetes.io/component: "argocd-ingress"
-      app.kubernetes.io/instance: "argocd-ingress"
-      role: "argocd-ingress"
-    tls:
-    - hosts:
-      - null
-    hosts:
-      - null
-    paths:
-      - /
+    enabled: false
+
 
 # helm-gcs plugin: https://argo-cd.readthedocs.io/en/stable/user-guide/helm/#using-initcontainers
 # Permissions to gcs bucket are granted with workload identity
