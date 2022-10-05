@@ -11,10 +11,10 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class AttributeOption implements AttributeOptionInterface
 {
-    protected ?int $id;
-    protected ?string $code;
+    protected ?int $id = null;
+    protected ?string $code = null;
     protected ArrayCollection $optionValues;
-    protected ?int $sortOrder;
+    protected ?int $sortOrder = null;
 
     /**
      * Overrided to change target entity name
