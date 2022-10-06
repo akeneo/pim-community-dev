@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence\Catalog;
 
+use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\IsCatalogsNumberLimitReachedQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\UpsertCatalogQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
@@ -38,11 +39,14 @@ class IsCatalogsNumberLimitReachedQueryTest extends IntegrationTestCase
 
         for ($i = 0; $i < $this->catalogsNumberMaxLimit + 1; $i++) {
             $this->upsertQuery->execute(
-                Uuid::uuid4()->toString(),
-                'Store US',
-                'shopifi',
-                false
-            );
+                new Catalog(
+                    Uuid::uuid4()->toString(),
+                    'Store US',
+                    'shopifi',
+                    false,
+                    [],
+                    [],
+                ));
         }
 
         $this->assertTrue($this->query->execute('shopifi'));
