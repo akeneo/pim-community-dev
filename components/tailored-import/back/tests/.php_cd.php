@@ -33,6 +33,11 @@ $rules = [
             'Akeneo\Platform\TailoredImport\Domain',
             // TODO: Write more specific rules later
             'Akeneo\Pim\Enrichment\Product\API',
+
+            // Create Tailored Import ServiceAPI
+            'Akeneo\Platform\TailoredImport\ServiceApi',
+            'Akeneo\Tool\Bundle\BatchBundle\Job',
+            'Akeneo\Platform\Job\ServiceApi\JobInstance',
         ],
     )->in('Akeneo\Platform\TailoredImport\Application'),
 
