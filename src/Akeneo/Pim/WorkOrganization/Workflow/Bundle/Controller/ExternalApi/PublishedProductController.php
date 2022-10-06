@@ -47,86 +47,21 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class PublishedProductController
 {
-    /** @var ProductQueryBuilderFactoryInterface */
-    protected $searchAfterPqbFactory;
-
-    /** @var ProductQueryBuilderFactoryInterface */
-    protected $fromSizePqbFactory;
-
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $channelRepository;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $localeRepository;
-
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
-    /** @var PublishedProductRepositoryInterface */
-    protected $publishedProductRepository;
-
-    /** @var PaginatorInterface */
-    protected $searchAfterPaginator;
-
-    /** @var PaginatorInterface */
-    protected $offsetPaginator;
-
-    /** @var ParameterValidatorInterface */
-    protected $parameterValidator;
-
-    /** @var array */
-    protected $apiConfiguration;
-
-    private FindId $getPublishedProductId;
-
-    /** @var QueryParametersCheckerInterface */
-    protected $queryParametersChecker;
-
-    /**
-     * @param ProductQueryBuilderFactoryInterface   $searchAfterPqbFactory
-     * @param ProductQueryBuilderFactoryInterface   $fromSizePqbFactory
-     * @param QueryParametersCheckerInterface       $queryParametersChecker
-     * @param NormalizerInterface                   $normalizer
-     * @param IdentifiableObjectRepositoryInterface $channelRepository
-     * @param IdentifiableObjectRepositoryInterface $localeRepository
-     * @param AttributeRepositoryInterface          $attributeRepository
-     * @param PublishedProductRepositoryInterface   $publishedProductRepository
-     * @param PaginatorInterface                    $searchAfterPaginator
-     * @param PaginatorInterface                    $offsetPaginator
-     * @param ParameterValidatorInterface           $parameterValidator
-     * @param array                                 $apiConfiguration
-     */
     public function __construct(
-        ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
-        ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
-        QueryParametersCheckerInterface $queryParametersChecker,
-        NormalizerInterface $normalizer,
-        IdentifiableObjectRepositoryInterface $channelRepository,
-        IdentifiableObjectRepositoryInterface $localeRepository,
-        AttributeRepositoryInterface $attributeRepository,
-        PublishedProductRepositoryInterface $publishedProductRepository,
-        PaginatorInterface $searchAfterPaginator,
-        PaginatorInterface $offsetPaginator,
-        ParameterValidatorInterface $parameterValidator,
-        FindId $getPublishedProductId,
-        array $apiConfiguration
+        protected ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
+        protected ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
+        protected QueryParametersCheckerInterface $queryParametersChecker,
+        protected NormalizerInterface $normalizer,
+        protected IdentifiableObjectRepositoryInterface $channelRepository,
+        protected IdentifiableObjectRepositoryInterface $localeRepository,
+        protected AttributeRepositoryInterface $attributeRepository,
+        protected PublishedProductRepositoryInterface $publishedProductRepository,
+        protected PaginatorInterface $searchAfterPaginator,
+        protected PaginatorInterface $offsetPaginator,
+        protected ParameterValidatorInterface $parameterValidator,
+        protected FindId $getPublishedProductId,
+        protected array $apiConfiguration
     ) {
-        $this->searchAfterPqbFactory = $searchAfterPqbFactory;
-        $this->fromSizePqbFactory = $fromSizePqbFactory;
-        $this->normalizer = $normalizer;
-        $this->channelRepository = $channelRepository;
-        $this->localeRepository = $localeRepository;
-        $this->attributeRepository = $attributeRepository;
-        $this->publishedProductRepository = $publishedProductRepository;
-        $this->searchAfterPaginator = $searchAfterPaginator;
-        $this->offsetPaginator = $offsetPaginator;
-        $this->parameterValidator = $parameterValidator;
-        $this->apiConfiguration = $apiConfiguration;
-        $this->getPublishedProductId = $getPublishedProductId;
-        $this->queryParametersChecker = $queryParametersChecker;
     }
 
     /**
