@@ -9,6 +9,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorCode;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorId;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
@@ -32,6 +33,7 @@ class InMemoryIdentifierGeneratorRepositorySpec extends ObjectBehavior
     function it_can_save_identifier_generators()
     {
         $identifierGenerator = new IdentifierGenerator(
+            IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002'),
             IdentifierGeneratorCode::fromString('abcdef'),
             Conditions::fromArray([]),
             Structure::fromArray([FreeText::fromString('abc')]),
@@ -47,6 +49,7 @@ class InMemoryIdentifierGeneratorRepositorySpec extends ObjectBehavior
         ]);
 
         $identifierGenerator2 = new IdentifierGenerator(
+            IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002'),
             IdentifierGeneratorCode::fromString('fedcba'),
             Conditions::fromArray([]),
             Structure::fromArray([FreeText::fromString('abc')]),
@@ -65,6 +68,7 @@ class InMemoryIdentifierGeneratorRepositorySpec extends ObjectBehavior
     function it_can_retrieve_an_identifier_generator_with_its_code()
     {
         $identifierGenerator = new IdentifierGenerator(
+            IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002'),
             IdentifierGeneratorCode::fromString('aabbcc'),
             Conditions::fromArray([]),
             Structure::fromArray([FreeText::fromString('abc')]),
