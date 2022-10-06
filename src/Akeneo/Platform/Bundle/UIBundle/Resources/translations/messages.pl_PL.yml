@@ -109,15 +109,6 @@ pim_enrich:
       categories_view: Sprawdź kategorie modelu produktu
       history: Przeglądaj historię modelu produktu
       remove: Usuń model produktu (w tym elementy podrzędne)
-    category:
-      list: Przeglądanie kategorii
-      create: Tworzenie kategorii
-      edit: Edytowanie kategorii
-      remove: Usuwanie kategorii
-      move: Przenoszenie kategorii
-      children: Przeglądanie podkategorii
-      products: Przeglądanie produktów w kategorii
-      history: Przeglądanie historii kategorii
     channel:
       index: Przeglądanie kanałów
       create: Tworzenie kanału
