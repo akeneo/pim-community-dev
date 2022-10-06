@@ -8,6 +8,7 @@ use Akeneo\Catalogs\ServiceAPI\Events\InvalidCatalogDisabledEvent;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBusInterface;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
 use Akeneo\Connectivity\Connection\Application\Apps\Notifier\DisabledCatalogNotifierInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -19,25 +20,28 @@ class NotifyOnDisabledCatalogEventSubscriber implements EventSubscriberInterface
     public function __construct(
         private QueryBusInterface $queryBus,
         private DisabledCatalogNotifierInterface $disabledCatalogNotifier,
+        private LoggerInterface $logger,
     ) {
     }
 
     public static function getSubscribedEvents()
     {
-        return [InvalidCatalogDisabledEvent::class => 'notifyAllUsersGranted'];
+        return [InvalidCatalogDisabledEvent::class => 'notifyCatalogIsDisabled'];
     }
 
     /**
      * @throws \Throwable
      */
-    public function notifyAllUsersGranted(InvalidCatalogDisabledEvent $event)
+    public function notifyCatalogIsDisabled(InvalidCatalogDisabledEvent $event)
     {
         $catalogId = $event->getCatalogId();
 
         $catalog = $this->queryBus->execute(new GetCatalogQuery($catalogId));
 
         if (null === $catalog) {
-            throw new \LogicException(\sprintf('Catalog "%s" does not exist.', $catalogId));
+            $this->logger->error(
+                \sprintf('Notify failed because catalog "%s" does not exist.', $catalogId)
+            );
         }
 
         $this->disabledCatalogNotifier->notify($catalog);

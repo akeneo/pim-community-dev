@@ -13,5 +13,6 @@ services:
         arguments:
             - '@Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Notifier\DisabledCatalogNotifier'
+            - '@logger'
         tags:
             - { name: kernel.event_subscriber }
