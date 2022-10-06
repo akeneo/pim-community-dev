@@ -30,6 +30,7 @@ final class CreateIdentifierGeneratorContext implements Context
     public function iCreateAnIdentifierGenerator(): void
     {
         ($this->createGeneratorHandler)(new CreateGeneratorCommand(
+            '2038e1c9-68ff-4833-b06f-01e42d206002',
             'abcdef',
             [],
             [FreeText::fromString('abcdef')],

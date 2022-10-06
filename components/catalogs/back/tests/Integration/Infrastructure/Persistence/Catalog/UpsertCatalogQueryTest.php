@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence\Catalog;
 
+use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\UpsertCatalogQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Doctrine\DBAL\Connection;
@@ -34,14 +35,36 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
     {
         $owner = $this->createUser('test');
         $id = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
+        $productSelectionCriteria = [
+            [
+                'field' => 'enabled',
+                'operator' => '=',
+                'value' => true,
+            ],
+            [
+                'field' => 'enabled',
+                'operator' => '=',
+                'value' => false,
+            ],
+        ];
+        $productValueFilters = ['channels' => ['ecommerce', 'mobile']];
 
-        $this->query->execute($id, 'Store US', 'test', false);
+        $this->query->execute(new Catalog(
+            $id,
+            'Store US',
+            'test',
+            false,
+            $productSelectionCriteria,
+            $productValueFilters
+        ));
 
         $this->assertCatalogExists([
             'id' => $id,
             'name' => 'Store US',
             'owner_id' => $owner->getId(),
             'is_enabled' => '0',
+            'product_selection_criteria' => $productSelectionCriteria,
+            'product_value_filters' => $productValueFilters,
         ]);
     }
 
@@ -49,15 +72,44 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
     {
         $owner = $this->createUser('test');
         $id = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
+        $enabledCriterion = [
+            'field' => 'enabled',
+            'operator' => '=',
+            'value' => true,
+        ];
+        $disabledCriterion = [
+            'field' => 'enabled',
+            'operator' => '=',
+            'value' => false,
+        ];
+        $productValueFiltersChannel = ['channels' => ['ecommerce', 'mobile']];
+        $productValueFiltersLocale = ['locales' => ['en_US', 'fr_FR']];
 
-        $this->query->execute($id, 'Store US', 'test', false);
-        $this->query->execute($id, 'Store US [NEW]', 'test', true);
+        $this->query->execute(new Catalog(
+            $id,
+            'Store US',
+            'test',
+            false,
+            [$enabledCriterion],
+            $productValueFiltersChannel,
+        ));
+
+        $this->query->execute(new Catalog(
+            $id,
+            'Store US [NEW]',
+            'test',
+            true,
+            [$enabledCriterion, $disabledCriterion],
+            $productValueFiltersLocale,
+        ));
 
         $this->assertCatalogExists([
             'id' => $id,
             'name' => 'Store US [NEW]',
             'owner_id' => $owner->getId(),
             'is_enabled' => '1',
+            'product_selection_criteria' => [$enabledCriterion, $disabledCriterion],
+            'product_value_filters' => $productValueFiltersLocale,
         ]);
         $this->assertCountCatalogs(1);
     }
@@ -81,7 +133,9 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
             BIN_TO_UUID(catalog.id) AS id,
             catalog.name,
             catalog.owner_id,
-            catalog.is_enabled
+            catalog.is_enabled,
+            catalog.product_selection_criteria,
+            catalog.product_value_filters
         FROM akeneo_catalog catalog
         WHERE id = :id
         SQL;
@@ -90,6 +144,43 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
             'id' => Uuid::fromString($values['id'])->getBytes(),
         ])->fetchAssociative();
 
+        $row['product_selection_criteria'] = \json_decode($row['product_selection_criteria'], true, 512, JSON_THROW_ON_ERROR);
+        $row['product_value_filters'] = \json_decode($row['product_value_filters'], true, 512, JSON_THROW_ON_ERROR);
+
         $this->assertEquals($values, $row);
+    }
+
+    public function testProductSelectionCriteriaIsNumericallyIndexedOnceCatalogCreated(): void
+    {
+        $owner = $this->createUser('test');
+        $id = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
+        $enabledCriterion = [
+            'field' => 'enabled',
+            'operator' => '=',
+            'value' => true,
+        ];
+        $disabledCriterion = [
+            'field' => 'enabled',
+            'operator' => '=',
+            'value' => false,
+        ];
+
+        $this->query->execute(new Catalog(
+            $id,
+            'Store US',
+            'test',
+            false,
+            [3 => $enabledCriterion, 2 => $disabledCriterion],
+            []
+        ));
+
+        $this->assertCatalogExists([
+            'id' => $id,
+            'name' => 'Store US',
+            'owner_id' => $owner->getId(),
+            'is_enabled' => '0',
+            'product_selection_criteria' => [0 => $enabledCriterion, 1 => $disabledCriterion],
+            'product_value_filters' => [],
+        ]);
     }
 }

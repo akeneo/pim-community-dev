@@ -8,6 +8,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorCode;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorId;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
@@ -22,6 +23,7 @@ class IdentifierGeneratorSpec extends ObjectBehavior
 {
     function let()
     {
+        $identifierGeneratorId = IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002');
         $identifierGeneratorCode = IdentifierGeneratorCode::fromString('abcdef');
 
         $freeText = FreeText::fromString('abc');
@@ -33,6 +35,7 @@ class IdentifierGeneratorSpec extends ObjectBehavior
         $target = Target::fromString('sku');
 
         $this->beConstructedWith(
+            $identifierGeneratorId,
             $identifierGeneratorCode,
             $conditions,
             $structure,
@@ -49,6 +52,7 @@ class IdentifierGeneratorSpec extends ObjectBehavior
 
     function it_can_instantiated_without_delimiter()
     {
+        $identifierGeneratorId = IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002');
         $identifierGeneratorCode = IdentifierGeneratorCode::fromString('abcdef');
         $conditions = Conditions::fromArray([]);
         $freeText = FreeText::fromString('abc');
@@ -57,6 +61,7 @@ class IdentifierGeneratorSpec extends ObjectBehavior
         $target = Target::fromString('sku');
 
         $this->beConstructedWith(
+            $identifierGeneratorId,
             $identifierGeneratorCode,
             $conditions,
             $structure,
@@ -67,8 +72,38 @@ class IdentifierGeneratorSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(IdentifierGenerator::class);
     }
 
+    function it_returns_an_indentifier_generator_id()
+    {
+        $this->id()->shouldBeLike(IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002'));
+    }
+
     function it_returns_an_indentifier_generator_code()
     {
         $this->code()->shouldBeLike(IdentifierGeneratorCode::fromString('abcdef'));
+    }
+
+    function it_returns_a_delimiter()
+    {
+        $this->delimiter()->shouldBeLike(Delimiter::fromString('-'));
+    }
+
+    function it_returns_a_target()
+    {
+        $this->target()->shouldBeLike(Target::fromString('sku'));
+    }
+
+    function it_returns_a_conditions()
+    {
+        $this->conditions()->shouldBeLike(Conditions::fromArray([]));
+    }
+
+    function it_returns_a_structure()
+    {
+        $this->structure()->shouldBeLike(Structure::fromArray([FreeText::fromString('abc')]));
+    }
+
+    function it_returns_a_labels_collection()
+    {
+        $this->labelCollection()->shouldBeLike(LabelCollection::fromNormalized(['fr' => 'Générateur']));
     }
 }

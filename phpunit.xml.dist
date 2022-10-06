@@ -82,7 +82,7 @@
         </testsuite>
 
         <testsuite name="Category">
-            <directory suffix="Integration.php">src/Akeneo/Category/back/Tests/Integration</directory>
+            <directory suffix="Integration.php">src/Akeneo/Category/back/tests/Integration</directory>
         </testsuite>
 
         <testsuite name="Identifier_Generator_End_To_End">

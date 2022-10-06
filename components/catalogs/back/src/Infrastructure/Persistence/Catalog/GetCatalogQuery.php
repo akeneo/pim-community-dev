@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Persistence\Catalog;
 
+use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
 use Doctrine\DBAL\Connection;
@@ -52,7 +53,7 @@ final class GetCatalogQuery implements GetCatalogQueryInterface
         ])->fetchAssociative();
 
         if (!$row) {
-            throw new \LogicException('Catalog not found.');
+            throw new CatalogNotFoundException();
         }
 
         /** @var array<array-key, ProductSelectionCriterion>|null $productSelectionCriteria */
