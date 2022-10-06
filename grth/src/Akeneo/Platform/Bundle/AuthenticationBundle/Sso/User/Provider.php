@@ -34,9 +34,19 @@ final class Provider implements UserProviderInterface
     }
 
     /**
+     * @TODO: Remove this function when symfony will be in 6.0
+     * @param string $username
+     * @return UserInterface
+     */
+    public function loadUserByUsername($username)
+    {
+        return $this->loadUserByIdentifier($username);
+    }
+
+    /**
      * {@inheritdoc}
      */
-    public function loadUserByIdentifier($username)
+    public function loadUserByIdentifier(string $identifier): UserInterface
     {
         if (!$this->isSSOEnabled()) {
             // If SSO is disabled, we want the next chained user provider to check if the user is valid.
@@ -44,7 +54,7 @@ final class Provider implements UserProviderInterface
             throw new UserNotFoundException('SSO feature is not enabled, let another UserProvider do its job.');
         }
 
-        $user = $this->userRepository->findOneBy(['username' => $username]);
+        $user = $this->userRepository->findOneBy(['username' => $identifier]);
         if (null === $user) {
             throw new UserNotFoundException(sprintf('User with username "%s" does not exist.', $username));
         }
