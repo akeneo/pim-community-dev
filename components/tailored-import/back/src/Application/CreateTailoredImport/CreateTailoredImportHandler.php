@@ -9,19 +9,18 @@ use Akeneo\Platform\TailoredImport\ServiceApi\CreateTailoredImportCommand;
 use Akeneo\Platform\TailoredImport\ServiceApi\CreateTailoredImportHandlerInterface;
 use Akeneo\Platform\TailoredImport\ServiceApi\CreateTailoredImportResult;
 use Akeneo\Platform\TailoredImport\ServiceApi\File;
-use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
+use Symfony\Component\Routing\RouterInterface;
 
 class CreateTailoredImportHandler implements CreateTailoredImportHandlerInterface
 {
     private const TYPE = 'import';
     private const CONNECTOR = 'Akeneo Tailored Import';
     private const JOB_NAME = 'xlsx_tailored_product_import';
-    private const JOB_INSTANCE_EDIT_URL = '/collect/import/%s/edit';
 
     public function __construct(
         private CreateJobInstanceHandlerInterface $createJobInstanceHandler,
         private StoreFileInterface $fileStorer,
-        private JobInstanceRepository $jobInstanceRepository,
+        private RouterInterface $router,
     ) {
     }
 
@@ -30,10 +29,6 @@ class CreateTailoredImportHandler implements CreateTailoredImportHandlerInterfac
         $code = $createTailoredImportCommand->code;
         $fileTemplate = $createTailoredImportCommand->fileTemplate;
         $label = $createTailoredImportCommand->label;
-
-        if (null !== $this->jobInstanceRepository->findOneByIdentifier($code)) {
-            throw new \RuntimeException('Job '.$code.' already exists.');
-        }
 
         $rawParameters = $this->buildRawParameters($fileTemplate);
 
@@ -48,7 +43,9 @@ class CreateTailoredImportHandler implements CreateTailoredImportHandlerInterfac
 
         $this->createJobInstanceHandler->handle($createJobInstanceCommand);
 
-        $jobInstanceEditUrl = sprintf(self::JOB_INSTANCE_EDIT_URL, $code);
+        $jobInstanceEditUrl = $this->router->generate('pim_importexport_import_profile_edit', [
+            'code' => $code,
+        ]);
 
         return new CreateTailoredImportResult($jobInstanceEditUrl);
     }
@@ -56,7 +53,7 @@ class CreateTailoredImportHandler implements CreateTailoredImportHandlerInterfac
     private function buildRawParameters(File $fileTemplate): array
     {
         $fileMetadata = stream_get_meta_data($fileTemplate->getResource());
-        $fileName = substr($fileMetadata['uri'], strrpos($fileMetadata['uri'], '/') + 1);
+        $fileName = $fileTemplate->getFileName();
 
         $fileInfo = $this->fileStorer->store($fileMetadata['uri'], $fileName);
 

@@ -21,12 +21,14 @@ final class CreateTailoredImportHandlerTest extends IntegrationTestCase
     /**
      * @test
      */
-    public function it_creates_a_new_tailored_import_job_instance(): void {
+    public function it_creates_a_new_tailored_import_job_instance(): void
+    {
+        $fileName = 'simple_import.xlsx';
         $file = fopen(__DIR__ . '/../../../Common/simple_import.xlsx', 'r');
 
         $command = new CreateTailoredImportCommand(
             'test_tailored_import',
-            new File($file),
+            new File($fileName, $file),
             'Test Tailored Import'
         );
 
@@ -39,25 +41,6 @@ final class CreateTailoredImportHandlerTest extends IntegrationTestCase
 
         $expectedEditUrl = new CreateTailoredImportResult('/collect/import/test_tailored_import/edit');
         $this->assertEquals($expectedEditUrl, $jobInstanceEditUrl);
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_an_error_if_code_already_exists(): void {
-        $file = fopen(__DIR__ . '/../../../Common/simple_import.xlsx', 'r');
-
-        $command = new CreateTailoredImportCommand(
-            'test_tailored_import',
-            new File($file),
-            'Test Tailored Import'
-        );
-
-        $this->handler->handle($command);
-
-        $this->expectException(\RuntimeException::class);
-        $this->handler->handle($command);
-        fclose($file);
     }
 
     protected function getConfiguration(): Configuration

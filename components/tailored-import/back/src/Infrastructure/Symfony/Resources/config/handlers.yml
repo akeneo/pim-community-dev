@@ -53,7 +53,7 @@ services:
     arguments:
       - '@Akeneo\Platform\Job\Application\CreateJobInstanceHandler'
       - '@akeneo.tailored_import.query.filesystem.store_file'
-      - '@akeneo_batch.job.job_instance_repository'
+      - '@router'
 
   akeneo.tailored_import.user_intent_registry:
     class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentRegistry

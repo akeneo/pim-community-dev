@@ -35,8 +35,8 @@ $rules = [
             'Akeneo\Pim\Enrichment\Product\API',
 
             // Create Tailored Import ServiceAPI
+            'Symfony\Component\Routing\RouterInterface',
             'Akeneo\Platform\TailoredImport\ServiceApi',
-            'Akeneo\Tool\Bundle\BatchBundle\Job',
             'Akeneo\Platform\Job\ServiceApi\JobInstance',
         ],
     )->in('Akeneo\Platform\TailoredImport\Application'),
