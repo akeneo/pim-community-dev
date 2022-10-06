@@ -19,12 +19,12 @@ class ThereShouldBeLessTransformationThanLimit extends Constraint
 {
     public const ERROR_MESSAGE = 'pim_asset_manager.asset_family.validation.transformation.limit_reached';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return ThereShouldBeLessTransformationThanLimitValidator::class;
     }

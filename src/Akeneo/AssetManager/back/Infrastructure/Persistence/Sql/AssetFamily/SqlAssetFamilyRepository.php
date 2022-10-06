@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily;
 
+use Doctrine\DBAL\DBALException;
 use Akeneo\AssetManager\Domain\Event\AssetFamilyCreatedEvent;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
@@ -45,7 +46,7 @@ class SqlAssetFamilyRepository implements AssetFamilyRepositoryInterface
 
     /**
      * @throws \RuntimeException
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     public function create(AssetFamily $assetFamily): void
     {
@@ -81,7 +82,7 @@ SQL;
 
     /**
      * @throws \RuntimeException
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     public function update(AssetFamily $assetFamily): void
     {

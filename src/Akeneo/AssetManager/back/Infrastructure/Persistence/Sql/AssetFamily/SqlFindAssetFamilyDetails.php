@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily;
 
+use Doctrine\DBAL\DBALException;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
@@ -50,7 +51,7 @@ class SqlFindAssetFamilyDetails implements FindAssetFamilyDetailsInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     public function find(AssetFamilyIdentifier $identifier): ?AssetFamilyDetails
     {
@@ -106,7 +107,7 @@ SQL;
     }
 
     /**
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     private function hydrateAssetFamilyDetails(
         string $identifier,

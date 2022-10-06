@@ -36,7 +36,7 @@ class MassEditAssetsLauncher implements MassEditAssetsLauncherInterface
         array $updaters
     ): void {
         $token = $this->tokenStorage->getToken();
-        $username = null !== $token ? $token->getUsername() : null;
+        $username = null !== $token ? $token->getUserIdentifier() : null;
 
         $normalizedUpdaters = array_map(fn ($command) => $command->normalize(), $updaters);
 

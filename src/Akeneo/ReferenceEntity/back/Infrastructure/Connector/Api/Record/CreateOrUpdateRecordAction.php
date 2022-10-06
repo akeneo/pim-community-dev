@@ -169,7 +169,7 @@ class CreateOrUpdateRecordAction
             ], UrlGeneratorInterface::ABSOLUTE_URL)
         ];
 
-        return Response::create('', $responseStatusCode, $headers);
+        return new Response('', $responseStatusCode, $headers);
     }
 
     private function denyAccessUnlessAclIsGranted(): void

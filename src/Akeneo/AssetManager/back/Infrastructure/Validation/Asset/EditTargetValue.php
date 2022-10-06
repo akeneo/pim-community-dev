@@ -19,12 +19,12 @@ class EditTargetValue extends Constraint
 {
     public const TARGET_READONLY = 'pim_asset_manager.asset.validation.file.target_readonly';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'akeneo_assetmanager.validator.asset.edit_target_value_command';
     }

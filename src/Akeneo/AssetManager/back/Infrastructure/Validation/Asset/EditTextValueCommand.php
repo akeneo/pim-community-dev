@@ -23,7 +23,7 @@ class EditTextValueCommand extends Constraint
 {
     public const TEXT_INCOMPATIBLE_WITH_REGULAR_EXPRESSION = 'pim_asset_manager.asset.validation.text.incompatible_with_regular_expression';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

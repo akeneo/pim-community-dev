@@ -51,7 +51,7 @@ class SetDefaultAttributesOnAssetFamilyCreationSubscriber implements EventSubscr
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             AssetFamilyCreatedEvent::class => 'whenAssetFamilyCreated',

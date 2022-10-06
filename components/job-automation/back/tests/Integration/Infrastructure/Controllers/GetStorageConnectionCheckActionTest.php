@@ -42,7 +42,7 @@ final class GetStorageConnectionCheckActionTest extends ControllerIntegrationTes
             '{"type": "sftp","file_path": "import_%job_label%_%datetime%.xlsx","host": "127.0.0.1","port": 22,}'
         );
         $response = $this->client->getResponse();
-        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
         $response = \json_decode($response->getContent(), true);
         $this->assertEqualsCanonicalizing(null, $response);
     }
@@ -58,7 +58,7 @@ final class GetStorageConnectionCheckActionTest extends ControllerIntegrationTes
             '{"type": "sftp","file_path": "import_%job_label%_%datetime%.xlsx","host": "127.0.0.1","port": 22, "username": "foo", "password": "bar"}'
         );
         $response = $this->client->getResponse();
-        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
     }
 
     protected function getConfiguration(): Configuration

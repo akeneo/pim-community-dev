@@ -23,7 +23,7 @@ class EditRecordValueCommand extends Constraint
 {
     public const ERROR_MESSAGE = 'pim_reference_entity.record.validation.record.should_exist';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

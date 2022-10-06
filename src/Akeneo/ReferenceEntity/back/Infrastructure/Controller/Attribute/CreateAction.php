@@ -81,7 +81,7 @@ class CreateAction
     {
         $query = new CanEditReferenceEntityQuery(
             $referenceEntityIdentifier,
-            $this->tokenStorage->getToken()->getUser()->getUsername()
+            $this->tokenStorage->getToken()->getUser()->getUserIdentifier()
         );
 
         return $this->securityFacade->isGranted('akeneo_referenceentity_attribute_create')

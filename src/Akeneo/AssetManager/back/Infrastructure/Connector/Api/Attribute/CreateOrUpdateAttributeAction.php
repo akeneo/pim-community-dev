@@ -166,7 +166,7 @@ class CreateOrUpdateAttributeAction
             ], UrlGeneratorInterface::ABSOLUTE_URL)
         ];
 
-        return Response::create('', Response::HTTP_CREATED, $headers);
+        return new Response('', Response::HTTP_CREATED, $headers);
     }
 
     private function editAttribute(
@@ -223,7 +223,7 @@ class CreateOrUpdateAttributeAction
             ], UrlGeneratorInterface::ABSOLUTE_URL)
         ];
 
-        return Response::create('', Response::HTTP_NO_CONTENT, $headers);
+        return new Response('', Response::HTTP_NO_CONTENT, $headers);
     }
 
     private function denyAccessUnlessAclIsGranted(): void

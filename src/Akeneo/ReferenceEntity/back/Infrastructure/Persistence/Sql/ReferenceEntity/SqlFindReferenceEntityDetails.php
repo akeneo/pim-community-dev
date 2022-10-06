@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity;
 
+use Doctrine\DBAL\Exception;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsImageReference;
@@ -44,7 +45,7 @@ class SqlFindReferenceEntityDetails implements FindReferenceEntityDetailsInterfa
     /**
      * {@inheritdoc}
      *
-     * @throws \Doctrine\DBAL\Exception
+     * @throws Exception
      */
     public function find(ReferenceEntityIdentifier $identifier): ?ReferenceEntityDetails
     {
@@ -95,7 +96,7 @@ SQL;
     }
 
     /**
-     * @throws \Doctrine\DBAL\Exception
+     * @throws Exception
      */
     private function hydrateReferenceEntityDetails(
         string $identifier,

@@ -24,7 +24,7 @@ class MinMaxValue extends Constraint
     public const MESSAGE_SHOULD_BE_A_NUMBER = 'pim_reference_entity.attribute.validation.min_value.should_be_a_number';
     public const MESSAGE_MIN_CANNOT_BE_GREATER_THAN_MAX = 'pim_reference_entity.attribute.validation.min_value.cannot_be_greater_than_max';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

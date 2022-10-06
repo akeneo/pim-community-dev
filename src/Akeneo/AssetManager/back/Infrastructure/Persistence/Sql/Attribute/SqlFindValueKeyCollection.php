@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute;
 
+use Doctrine\DBAL\DBALException;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeyCollectionInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
@@ -45,7 +46,7 @@ class SqlFindValueKeyCollection implements FindValueKeyCollectionInterface
     /**
      *
      *
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     private function fetch(AssetFamilyIdentifier $assetFamilyIdentifier): ValueKeyCollection
     {

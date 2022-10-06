@@ -92,7 +92,7 @@ class RuleDenormalizer implements DenormalizerInterface, ChainedDenormalizerAwar
     /**
      * {@inheritdoc}
      */
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
         return $this->ruleClass === $type;
     }

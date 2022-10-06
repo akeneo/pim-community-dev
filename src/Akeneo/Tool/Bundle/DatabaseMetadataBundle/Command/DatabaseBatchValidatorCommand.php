@@ -46,7 +46,7 @@ class DatabaseBatchValidatorCommand extends Command
             ->setDescription("This command performs database batch validation checks.");
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $executionStatus = self::SUCCESS;
 
@@ -77,6 +77,6 @@ class DatabaseBatchValidatorCommand extends Command
             }
         }
         $this->logger->notice("Ending database validation", $this->baseContext);
-        return $executionStatus;
+        return (int) $executionStatus;
     }
 }

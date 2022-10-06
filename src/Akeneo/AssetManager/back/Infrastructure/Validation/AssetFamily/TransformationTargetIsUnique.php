@@ -23,12 +23,12 @@ class TransformationTargetIsUnique extends Constraint
 {
     public const ERROR_MESSAGE = 'pim_asset_manager.asset_family.validation.transformation.target_is_not_unique';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return TransformationTargetIsUniqueValidator::class;
     }

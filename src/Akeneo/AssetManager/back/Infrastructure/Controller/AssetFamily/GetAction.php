@@ -67,7 +67,7 @@ class GetAction
     {
         $canEditQuery = new CanEditAssetFamilyQuery(
             (string) $assetFamilyDetails->identifier,
-            $this->tokenStorage->getToken()->getUser()->getUsername()
+            $this->tokenStorage->getToken()->getUser()->getUserIdentifier()
         );
         $assetFamilyDetails->isAllowedToEdit = ($this->canEditAssetFamilyQueryHandler)($canEditQuery);
 

@@ -25,12 +25,12 @@ class EditMediaFileValueCommand extends Constraint
     public const FILE_SIZE_EXCEEDED_MESSAGE = 'pim_asset_manager.asset.validation.file.file_size_exceeded';
     public const FILE_SHOULD_EXIST = 'pim_asset_manager.asset.validation.file.should_exist';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'akeneo_assetmanager.validator.asset.edit_media_file_value_command';
     }

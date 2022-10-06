@@ -13,7 +13,7 @@ class ComputeTransformationFromAssetFamilyIdentifierLauncherSpec extends ObjectB
 {
     function let(PublishJobToQueue $publishJobToQueue, TokenStorageInterface $tokenStorage, TokenInterface $token)
     {
-        $token->getUsername()->willReturn('julia');
+        $token->getUserIdentifier()->willReturn('julia');
         $tokenStorage->getToken()->willReturn($token);
         $this->beConstructedWith($publishJobToQueue, $tokenStorage);
     }

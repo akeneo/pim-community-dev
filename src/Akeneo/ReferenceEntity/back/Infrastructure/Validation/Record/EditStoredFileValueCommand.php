@@ -25,12 +25,12 @@ class EditStoredFileValueCommand extends Constraint
     public const FILE_SIZE_EXCEEDED_MESSAGE = 'pim_reference_entity.record.validation.file.file_size_exceeded';
     public const FILE_SHOULD_EXIST = 'pim_reference_entity.record.validation.file.should_exist';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'akeneo_referenceentity.validator.record.edit_stored_file_value_command';
     }

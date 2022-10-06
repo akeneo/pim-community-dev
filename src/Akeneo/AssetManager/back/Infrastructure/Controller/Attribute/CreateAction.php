@@ -81,7 +81,7 @@ class CreateAction
     {
         $query = new CanEditAssetFamilyQuery(
             $assetFamilyIdentifier,
-            $this->tokenStorage->getToken()->getUser()->getUsername()
+            $this->tokenStorage->getToken()->getUser()->getUserIdentifier()
         );
 
         return $this->securityFacade->isGranted('akeneo_assetmanager_attribute_create')

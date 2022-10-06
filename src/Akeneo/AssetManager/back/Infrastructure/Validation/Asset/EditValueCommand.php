@@ -22,7 +22,7 @@ class EditValueCommand extends Constraint
     public const LOCALE_IS_NOT_ACTIVATED = 'pim_asset_manager.asset.validation.locale.is_not_activated';
     public const LOCALE_IS_NOT_ACTIVATED_FOR_CHANNEL = 'pim_asset_manager.asset.validation.locale.is_not_activated_for_channel';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

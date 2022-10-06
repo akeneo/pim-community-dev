@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
@@ -57,7 +58,7 @@ class Kernel extends BaseKernel
         $loader->load($confDir . '/{services}/' . $this->environment . '/**/*.yml', 'glob');
     }
 
-    protected function configureRoutes(RouteCollectionBuilder $routes): void
+    protected function configureRoutes(RoutingConfigurator $routes): void
     {
         $confDir = $this->getProjectDir() . '/config';
 

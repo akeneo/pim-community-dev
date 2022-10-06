@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity;
 
+use Doctrine\DBAL\Exception;
 use Akeneo\ReferenceEntity\Domain\Event\ReferenceEntityCreatedEvent;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
@@ -42,7 +43,7 @@ class SqlReferenceEntityRepository implements ReferenceEntityRepositoryInterface
 
     /**
      * @throws \RuntimeException
-     * @throws \Doctrine\DBAL\Exception
+     * @throws Exception
      */
     public function create(ReferenceEntity $referenceEntity): void
     {
@@ -76,7 +77,7 @@ SQL;
 
     /**
      * @throws \RuntimeException
-     * @throws \Doctrine\DBAL\Exception
+     * @throws Exception
      */
     public function update(ReferenceEntity $referenceEntity): void
     {
