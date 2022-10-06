@@ -27,3 +27,4 @@ pim_enrich_product_category_template:
   type: action
   label: pim_enrich.acl.category.template
   group_name: pim_enrich.acl_group.category
+  feature: enriched_category
