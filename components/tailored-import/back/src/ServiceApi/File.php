@@ -27,7 +27,8 @@ class File
         Assert::resource($resource, 'stream');
     }
 
-    public function getFileName(): string {
+    public function getFileName(): string
+    {
         return $this->fileName;
     }
 
