@@ -78,7 +78,7 @@ const AssetFamilyLoader = ({assetFamilyIdentifier, children}: AssetFamilyLoaderP
         dispatch(attributeListUpdated(assetFamilyResult.attributes));
         dispatch(assetFamilyPermissionChanged(assetFamilyResult.permission));
         dispatch(permissionEditionReceived(permissions));
-        dispatch(await updateChannels(fetcherRegistry.getFetcher('channel')) as any);
+        dispatch((await updateChannels(fetcherRegistry.getFetcher('channel'))) as any);
         dispatch(updateActivatedLocales(fetcherRegistry.getFetcher('locale')) as any);
         dispatch(defaultCatalogLocaleChanged(userContext.get('catalogLocale')));
         dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
