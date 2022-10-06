@@ -127,6 +127,10 @@ class SetAttributeOptionSortOrderSubscriberSpec extends ObjectBehavior
     ) {
         $color = new Attribute();
         $color->setCode('color');
+
+        $blue->setAttribute($color)->shouldBeCalled()->willReturn($blue);
+        $red->setAttribute($color)->shouldBeCalled()->willReturn($red);
+
         $color->addOption($blue->getWrappedObject());
         $color->addOption($red->getWrappedObject());
 
@@ -137,8 +141,8 @@ class SetAttributeOptionSortOrderSubscriberSpec extends ObjectBehavior
 
         $getAttributeOptionsMaxSortOrder->forAttributeCodes(['color'])->willReturn(['color' => 12]);
 
-        $blue->setSortOrder(13)->shouldBeCalled();
-        $red->setSortOrder(14)->shouldBeCalled();
+        $blue->setSortOrder(13)->shouldBeCalled()->willReturn($blue);
+        $red->setSortOrder(14)->shouldBeCalled()->willReturn($red);
 
         $this->onPreSave(new GenericEvent($color, ['unitary' => true]));
     }
@@ -152,6 +156,10 @@ class SetAttributeOptionSortOrderSubscriberSpec extends ObjectBehavior
     ) {
         $color = new Attribute();
         $color->setCode('color');
+
+        $blue->setAttribute($color)->shouldBeCalled()->willReturn($blue);
+        $red->setAttribute($color)->shouldBeCalled()->willReturn($red);
+
         $color->addOption($blue->getWrappedObject());
         $color->addOption($red->getWrappedObject());
 
@@ -162,6 +170,10 @@ class SetAttributeOptionSortOrderSubscriberSpec extends ObjectBehavior
 
         $size = new Attribute();
         $size->setCode('size');
+
+        $xl->setAttribute($size)->shouldBeCalled()->willReturn($xl);
+        $xxl->setAttribute($size)->shouldBeCalled()->willReturn($xxl);
+
         $size->addOption($xl->getWrappedObject());
         $size->addOption($xxl->getWrappedObject());
 
@@ -177,9 +189,9 @@ class SetAttributeOptionSortOrderSubscriberSpec extends ObjectBehavior
             ['color' => 12, 'size' => 41]
         );
 
-        $blue->setSortOrder(13)->shouldBeCalled();
-        $red->setSortOrder(14)->shouldBeCalled();
-        $xl->setSortOrder(42)->shouldBeCalled();
+        $blue->setSortOrder(13)->shouldBeCalled()->willReturn($blue);
+        $red->setSortOrder(14)->shouldBeCalled()->willReturn($red);
+        $xl->setSortOrder(42)->shouldBeCalled()->willReturn($xl);
         $xxl->setSortOrder(Argument::any())->shouldNotBeCalled();
 
         $this->onPreSaveAll(new GenericEvent([$color, $size, $name]));

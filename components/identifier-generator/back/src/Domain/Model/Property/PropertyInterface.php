@@ -8,4 +8,9 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property;
  */
 interface PropertyInterface
 {
+    public function normalize();
+
+    public static function fromNormalized(array $fromNormalized): self;
+
+    public static function type(): string;
 }

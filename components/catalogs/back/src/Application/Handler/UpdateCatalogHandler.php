@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Application\Handler;
 
-use Akeneo\Catalogs\Application\Persistence\Catalog\FindOneCatalogByIdQueryInterface;
+use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
+use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\UpsertCatalogQueryInterface;
+use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Command\UpdateCatalogCommand;
 
 /**
@@ -15,24 +17,26 @@ use Akeneo\Catalogs\ServiceAPI\Command\UpdateCatalogCommand;
 final class UpdateCatalogHandler
 {
     public function __construct(
-        private FindOneCatalogByIdQueryInterface $findOneCatalogByIdQuery,
+        private GetCatalogQueryInterface $getCatalogQuery,
         private UpsertCatalogQueryInterface $upsertCatalogQuery,
     ) {
     }
 
     public function __invoke(UpdateCatalogCommand $command): void
     {
-        $catalog = $this->findOneCatalogByIdQuery->execute($command->getId());
-
-        if (null === $catalog) {
+        try {
+            $catalog = $this->getCatalogQuery->execute($command->getId());
+        } catch (CatalogNotFoundException) {
             throw new \LogicException('Catalog must exist');
         }
 
-        $this->upsertCatalogQuery->execute(
+        $this->upsertCatalogQuery->execute(new Catalog(
             $catalog->getId(),
             $command->getName(),
             $catalog->getOwnerUsername(),
             $catalog->isEnabled(),
-        );
+            $catalog->getProductSelectionCriteria(),
+            $catalog->getProductValueFilters(),
+        ));
     }
 }

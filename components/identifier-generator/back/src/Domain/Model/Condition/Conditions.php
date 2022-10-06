@@ -21,13 +21,15 @@ final class Conditions
     ) {
     }
 
-    /**
-     * @param ConditionInterface[] $conditions
-     */
     public static function fromArray(array $conditions): self
     {
         Assert::allIsInstanceOf($conditions, ConditionInterface::class);
 
         return new self($conditions);
+    }
+
+    public function normalize(): array
+    {
+        return [];
     }
 }

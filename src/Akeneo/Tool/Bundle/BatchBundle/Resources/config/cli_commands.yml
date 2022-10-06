@@ -10,14 +10,9 @@ services:
         tags:
             - { name: console.command }
 
-    Akeneo\Tool\Bundle\BatchBundle\Command\CreateJobCommand:
+    Akeneo\Tool\Bundle\BatchBundle\Command\CreateJobInstanceCommand:
         arguments:
-            - '@validator'
-            - '@akeneo_batch.job.job_parameters_validator'
-            - '@akeneo_batch.job_parameters_factory'
-            - '@akeneo_batch.job_instance_factory'
-            - '@akeneo_batch.saver.job_instance'
-            - '@akeneo_batch.job.job_registry'
+            - '@Akeneo\Platform\Job\Application\CreateJobInstanceHandler'
         tags:
             - { name: console.command }
 
