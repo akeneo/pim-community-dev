@@ -41,20 +41,14 @@ $rules = [
             'Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface',
             'Akeneo\UserManagement\Bundle\Context\UserContext',
 
-            'Symfony\Component\HttpKernel\Bundle\Bundle',
             'Symfony\Component\Config\FileLocator',
             'Symfony\Component\DependencyInjection\ContainerBuilder',
             'Symfony\Component\DependencyInjection\Loader\YamlFileLoader',
             'Symfony\Component\HttpKernel\DependencyInjection\Extension',
-            'Symfony\Component\Validator\Constraint',
-            'Symfony\Component\Validator\ConstraintViolationList',
-            'Symfony\Component\Validator\ConstraintViolationListInterface',
-            'Symfony\Component\Validator\Validator\ValidatorInterface',
-            'Symfony\Component\HttpFoundation\JsonResponse',
-            'Symfony\Component\HttpFoundation\RedirectResponse',
-            'Symfony\Component\HttpFoundation\Request',
-            'Symfony\Component\HttpFoundation\Response',
+            'Symfony\Component\HttpKernel\Bundle\Bundle',
             'Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException',
+            'Symfony\Component\HttpFoundation',
+            'Symfony\Component\Validator',
             'Webmozart\Assert\Assert'
         ]
     )->in('Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure'),
