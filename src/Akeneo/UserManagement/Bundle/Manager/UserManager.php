@@ -29,10 +29,9 @@ class UserManager implements UserProviderInterface
      * Updates a user
      *
      * @param  SecurityUserInterface $user
-     * @param  bool                  $flush Whether to flush the changes (default true)
      * @throws \RuntimeException
      */
-    public function updateUser(SecurityUserInterface $user, $flush = true)
+    public function updateUser(SecurityUserInterface $user)
     {
         $this->updatePassword($user);
 
@@ -60,7 +59,7 @@ class UserManager implements UserProviderInterface
     {
         if (0 !== strlen($password = $user->getPlainPassword())) {
             $encoder = $this->getEncoder($user);
-            $user->setPassword($encoder->encodePassword($password, $user->getSalt()));
+            $user->setPassword($encoder->hash($password, $user->getSalt()));
         }
     }
 
@@ -166,7 +165,7 @@ class UserManager implements UserProviderInterface
      * @throws UserNotFoundException if user could not be reloaded
      * @return SecurityUserInterface
      */
-    public function refreshUser(SecurityUserInterface $user): \Symfony\Component\Security\Core\User\UserInterface
+    public function refreshUser(SecurityUserInterface $user): SecurityUserInterface
     {
         $class = $this->getClass();
 
@@ -190,20 +189,26 @@ class UserManager implements UserProviderInterface
     }
 
     /**
+     * @TODO: Remove this function when symfony will be in 6.0
+     */
+    public function loadUserByUsername(string $username)
+    {
+        return $this->loadUserByIdentifier($username);
+    }
+
+    /**
      * Loads a user by username.
      * It is strongly discouraged to call this method manually as it bypasses
      * all ACL checks.
      *
-     * @param  string                    $username
      * @throws UserNotFoundException if user not found
-     * @return SecurityUserInterface
      */
-    public function loadUserByIdentifier($username)
+    public function loadUserByIdentifier(string $identifier): SecurityUserInterface
     {
-        $user = $this->findUserByUsername($username);
+        $user = $this->findUserByUsername($identifier);
 
         if (!$user) {
-            throw new UserNotFoundException(sprintf('No user with name "%s" was found.', $username));
+            throw new UserNotFoundException(sprintf('No user with name "%s" was found.', $identifier));
         }
 
         return $user;
@@ -229,7 +234,7 @@ class UserManager implements UserProviderInterface
 
     protected function getEncoder(UserInterface $user)
     {
-        return $this->encoderFactory->getEncoder($user);
+        return $this->encoderFactory->getPasswordHasher($user);
     }
 
     /**

@@ -10,6 +10,7 @@ use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserInterface as SecurityUserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
@@ -33,7 +34,7 @@ class UserApiProvider implements UserProviderInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @TODO: Remove this function when symfony will be in 6.0
      */
     public function loadUserByUsername(string $username)
     {
@@ -43,11 +44,11 @@ class UserApiProvider implements UserProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function loadUserByIdentifier($username)
+    public function loadUserByIdentifier(string $identifier): SecurityUserInterface
     {
-        $user = $this->userRepository->findOneByIdentifier($username);
+        $user = $this->userRepository->findOneByIdentifier($identifier);
         if (!$user || $user->isJobUser()) {
-            throw new UserNotFoundException(sprintf('User with username "%s" does not exist or is not a Api user.', $username));
+            throw new UserNotFoundException(sprintf('User with username "%s" does not exist or is not a Api user.', $identifier));
         }
 
         if (!$user->isEnabled()) {

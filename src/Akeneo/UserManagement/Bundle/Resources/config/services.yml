@@ -8,7 +8,7 @@ services:
         arguments:
             - '%pim_user.entity.user.class%'
             - "@doctrine.orm.entity_manager"
-            - "@security.encoder_factory"
+            - "@security.password_hasher_factory"
             - "@pim_user.saver.user"
 
     pim_user.security.login:
