@@ -1,6 +1,6 @@
 import {LabelCollection, LocaleCode} from '@akeneo-pim-community/shared';
 import {TreeNode} from './Tree';
-import {CompositeKey, CompositeKeyWithoutLocale} from './CompositeKey';
+import {CompositeKeyWithoutLocale} from './CompositeKey';
 import {CategoryAttributeType} from './Attribute';
 
 export type Category = {
@@ -12,6 +12,8 @@ export type Category = {
 
 export type EnrichCategory = {
   id: number;
+  isRoot: boolean;
+  root: EnrichCategory | null;
   properties: CategoryProperties;
   attributes: CategoryAttributes;
   permissions: CategoryPermissions;
