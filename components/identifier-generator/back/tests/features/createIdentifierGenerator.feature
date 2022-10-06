@@ -23,4 +23,4 @@ Feature: Create Identifier Generator
   Scenario: Cannot create an identifier generator if the limit is reached
     Given the identifier generator is created
     When I try to create new identifier generator
-    Then I should get an error with message 'Limit of 1 identifier generator is reached'
+    Then I should get an error with message 'Limit of "1" identifier generators is reached'
