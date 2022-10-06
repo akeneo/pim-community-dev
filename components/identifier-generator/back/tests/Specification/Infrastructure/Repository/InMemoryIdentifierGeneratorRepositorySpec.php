@@ -83,7 +83,7 @@ class InMemoryIdentifierGeneratorRepositorySpec extends ObjectBehavior
         $this->get('unknown')->shouldReturn(null);
     }
 
-    public function it_can_count_identifer_generators()
+    public function it_counts_identifier_generators()
     {
         $this->count()->shouldReturn(0);
 
