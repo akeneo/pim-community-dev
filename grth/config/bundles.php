@@ -66,5 +66,6 @@ return [
     Akeneo\Platform\JobAutomation\Infrastructure\Symfony\AkeneoJobAutomationBundle::class => ['all' => true],
     Akeneo\Catalogs\Infrastructure\Symfony\AkeneoCatalogsBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\PimVersionBundle\PimVersionBundle::class => ['all' => true],
-    Akeneo\Category\Infrastructure\Symfony\AkeneoCategoryBundle::class => ['all' => true]
+    Akeneo\Category\Infrastructure\Symfony\AkeneoCategoryBundle::class => ['all' => true],
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Symfony\AkeneoIdentifierGeneratorBundle::class => ['all' => true],
 ];
