@@ -102,15 +102,18 @@ Cypress.Commands.add('deleteProduct', (SKU) => {
     cy.wait('@deleteProduct');
 });
 
-Cypress.Commands.add('exportProductList', (productType) => {
+Cypress.Commands.add('exportSingleProductList', () => {
     cy.intercept('GET', /\/datagrid\/export-profile-grid\/load.*/).as('getProductList');
     cy.findByText('Exports').click();
     cy.wait('@getProductList');
 
+    cy.intercept('GET', /\/datagrid\/export-profile-grid.*/).as('filterExportsList');
+    cy.get('input[class="AknFilterBox-search"]').click().type("demo");
+    cy.wait('@filterExportsList');
+
     cy.intercept('POST', '/rest/process-tracker').as('getLastExports');
     cy.get('table.AknGrid.grid tbody tr:first td.AknGrid-bodyCell--highlight:first').click();
     cy.wait('@getLastExports');
-
     
     cy.intercept('POST', /\/job-instance\/rest\/export\/.*\/launch/).as('export');
     cy.findByText('Export now').click()
@@ -118,35 +121,62 @@ Cypress.Commands.add('exportProductList', (productType) => {
     cy.wait('@export');
     cy.get('.AknLoadingMask').should('not.be.visible');
 
-    var csv_file = "";
-    var href = "";
-
-    if (productType == "srnt") {
+    cy.window().document().then(function (doc) {
+        var trickCypress;
+        doc.addEventListener('click', () => {
+            trickCypress = setTimeout(function () { doc.location.reload() }, 2000)
+        })
         cy.findByText('Download generated files').click();
-    }
-    
-
-    cy.get('a:contains("Download generated files")').should('have.attr', 'href')
-        .then((filename) => {
-            expect(filename).to.match(/.*\.(xlsx|csv)$/)
-            href = filename;
-            csv_file = filename.match(/(export_.*\.(xlsx|csv))/)[1];
-            cy.log(`CSV name **${csv_file}**`)
-        }).then(()=>{
-            cy.log(`HREF **${href}**`)
-            cy.request(href).as('downloadRequest');
-        });
-
-    cy.get('@downloadRequest').should((response) => {
-        assert.isNotNull(response.body, 'File not empty');
+        clearTimeout(trickCypress);
     })
-
-    if (productType == "srnt") {
-        cy.get('#dropdown-root > div[data-testid="backdrop"]').click()
-    }
 });
 
-Cypress.Commands.add('disconnect', (productType) => {
+Cypress.Commands.add('exportMultipleProductList', () => {
+    cy.intercept('GET', /\/datagrid\/export-profile-grid\/load.*/).as('getProductList');
+    cy.findByText('Exports').click();
+    cy.wait('@getProductList');
+
+    cy.intercept('GET', /\/datagrid\/export-profile-grid.*/).as('filterExportsList');
+    cy.get('input[class="AknFilterBox-search"]').focus().clear().type("Brands export");
+    cy.wait('@filterExportsList');
+
+    cy.intercept('POST', '/rest/process-tracker').as('getLastExports');
+    cy.get('body')
+    .then(($body) => {
+        if ($body.find('table.AknGrid.grid tbody tr:first td.AknGrid-bodyCell--highlight:first').length) {
+            cy.get('table.AknGrid.grid tbody tr:first td.AknGrid-bodyCell--highlight:first').click();
+            cy.wait('@getLastExports');
+            
+            cy.intercept('POST', /\/job-instance\/rest\/export\/.*\/launch/).as('export');
+            cy.findByText('Export now').click()
+            cy.get('.AknLoadingMask').should('be.visible');
+            cy.wait('@export');
+            cy.get('.AknLoadingMask').should('not.be.visible');
+            cy.findByText('Download generated files').click();
+            var csv_file = "";
+            var href = "";
+            cy.get('a:contains("Download generated files")').should('have.attr', 'href')
+            .then((filename) => {
+                expect(filename).to.match(/.*\.(xlsx|csv)$/)
+                href = filename;
+                csv_file = filename.match(/(export_.*\.(xlsx|csv))/)[1];
+                cy.log(`CSV name **${csv_file}**`)
+            }).then(()=>{
+                cy.log(`HREF **${href}**`)
+                cy.request(href).as('downloadRequest');
+            });
+        
+            cy.get('@downloadRequest').should((response) => {
+                assert.isNotNull(response.body, 'File is not empty');
+            })
+        } else {
+            cy.log("No export found with the specified filter, skipping the test");
+        }
+    })
+});
+
+Cypress.Commands.add('disconnect', () => {
+    cy.visit("/");
     cy.get('div.AknTitleContainer-userIcon').click();
     cy.get('div.AknDropdown-menuLink.logout').click();
 });

@@ -13,10 +13,12 @@ if (Cypress.env('DEPLOYMENT_TEST')) {
       cy.login(Cypress.env('PIM_WEB_LOGIN'), Cypress.env('PIM_WEB_PASSWORD'));
     });
 
-    it('Shown PIM version is version requested', () => {
-      // Check version
-      cy.validateVersionEqualsTo(Cypress.env('PIM_VERSION'));
-    });
+    // Check version
+    if (Cypress.env('PIM_VERSION')) {
+      it('Shown PIM version is version requested', () => {
+        cy.validateVersionEqualsTo(Cypress.env('PIM_VERSION'));
+      });
+    }
 
     it('User can show product grid', () => {
       cy.goToProductsGrid();
@@ -45,8 +47,12 @@ if (Cypress.env('DEPLOYMENT_TEST')) {
       cy.deleteProduct(SKU);
     });
 
-    it('User can export a product list', {defaultCommandTimeout: 30000}, () => {
-      cy.exportProductList(Cypress.env('PRODUCT_TYPE'));
+    it('User can export a product list (single file)', {defaultCommandTimeout: 30000}, () => {
+      cy.exportSingleProductList();
+    });
+
+    it('User can export a product list (multiple files)', {defaultCommandTimeout: 30000}, () => {
+      cy.exportMultipleProductList();
     });
 
     it('User can disconnect', () => {

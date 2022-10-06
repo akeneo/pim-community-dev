@@ -1,6 +1,5 @@
 {
     "baseUrl": "http://localhost:8080",
-    "integrationFolder": "tests/",
     "fixturesFolder": false,
     "videoUploadOnPasses": false,
     "env": {
