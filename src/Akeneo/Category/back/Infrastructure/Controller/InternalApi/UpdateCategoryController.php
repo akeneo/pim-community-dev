@@ -9,7 +9,7 @@ use Akeneo\Category\Api\Command\Exceptions\ViolationsException;
 use Akeneo\Category\Api\Command\UpsertCategoryCommand;
 use Akeneo\Category\Application\Converter\ConverterInterface;
 use Akeneo\Category\Application\Converter\StandardFormatToUserIntentsInterface;
-use Akeneo\Category\Application\Filter\CategoryEditACLFilter;
+use Akeneo\Category\Application\Filter\CategoryEditAclFilter;
 use Akeneo\Category\Application\Filter\CategoryEditUserIntentFilter;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Infrastructure\Converter\InternalAPI\InternalAPIToStd;
@@ -29,13 +29,13 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class UpdateCategoryController
 {
     public function __construct(
-        private CommandMessageBus $categoryCommandBus,
-        private SecurityFacade $securityFacade,
-        private ConverterInterface $internalApiToStandardConverter,
-        private CategoryEditACLFilter $ACLFilter,
+        private CommandMessageBus                    $categoryCommandBus,
+        private SecurityFacade                       $securityFacade,
+        private ConverterInterface                   $internalApiToStandardConverter,
+        private CategoryEditAclFilter                $categoryEditAclFilter,
         private StandardFormatToUserIntentsInterface $standardFormatToUserIntents,
-        private CategoryEditUserIntentFilter $categoryUserIntentFilter,
-        private GetCategoryInterface $getCategory,
+        private CategoryEditUserIntentFilter         $categoryUserIntentFilter,
+        private GetCategoryInterface                 $getCategory,
     ) {
     }
 
@@ -54,7 +54,7 @@ class UpdateCategoryController
         $data = $request->toArray();
         /** @var  StandardInternalApi $formattedData */
         $formattedData = $this->internalApiToStandardConverter->convert($data);
-        $filteredData = $this->ACLFilter->filterCollection($formattedData, 'category', []);
+        $filteredData = $this->categoryEditAclFilter->filterCollection($formattedData);
         $userIntents = $this->standardFormatToUserIntents->convert($filteredData);
         $filteredUserIntents = $this->categoryUserIntentFilter->filterCollection($userIntents);
 

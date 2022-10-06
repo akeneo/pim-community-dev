@@ -33,3 +33,4 @@ pim_enrich_product_category_edit_attributes:
   type: action
   label: pim_enrich.acl.category.edit_attributes
   group_name: pim_enrich.acl_group.category
+  feature: enriched_category
