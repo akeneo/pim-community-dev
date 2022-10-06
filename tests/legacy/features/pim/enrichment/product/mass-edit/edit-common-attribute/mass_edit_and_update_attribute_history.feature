@@ -11,24 +11,24 @@ Feature: Update product history when mass editing products
     And I am on the products grid
     And I create a product
     And I fill in the following information in the popin:
-      | SKU    | boots |
       | Family | Boots |
+      | SKU    | boots |
     And I press the "Save" button in the popin
     And I wait to be on the "boots" product page
     And I save the product
     And I am on the products grid
     And I create a product
     And I fill in the following information in the popin:
-      | SKU    | sneakers |
       | Family | Sneakers |
+      | SKU    | sneakers |
     And I press the "Save" button in the popin
     And I wait to be on the "sneakers" product page
     And I save the product
     And I am on the products grid
     And I create a product
     And I fill in the following information in the popin:
-      | SKU    | sandals |
       | Family | Sandals |
+      | SKU    | sandals |
     And I press the "Save" button in the popin
     And I wait to be on the "sandals" product page
     And I save the product
