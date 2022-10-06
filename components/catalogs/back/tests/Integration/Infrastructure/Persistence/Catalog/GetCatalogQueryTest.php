@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence\Catalog;
 
-use Akeneo\Catalogs\Domain\Catalog\Catalog;
+use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
+use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\GetCatalogQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Doctrine\DBAL\Connection;
@@ -66,8 +67,7 @@ class GetCatalogQueryTest extends IntegrationTestCase
 
     public function testItThrowsWhenCatalogDoesNotExist(): void
     {
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('Catalog not found.');
+        $this->expectException(CatalogNotFoundException::class);
 
         $this->query->execute('017c3d69-5c7d-4cd9-9d19-4ffe856026a3');
     }

@@ -67,7 +67,7 @@ const FamilyWidget: FunctionComponent<FamilyWidgetProps> = ({catalogChannel, cat
 
     const families = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (families) {
-      setWatchedFamilyCodes(JSON.parse(families));
+      setWatchedFamilyCodes(JSON.parse(families).map((code: string) => code.toLowerCase()));
     }
 
     return () => {
