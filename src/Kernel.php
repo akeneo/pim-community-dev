@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
@@ -17,7 +16,7 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
-use Symfony\Component\Routing\RouteCollectionBuilder;
+use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 /**
  * PIM Kernel
@@ -62,8 +61,8 @@ class Kernel extends BaseKernel
     {
         $confDir = $this->getProjectDir() . '/config';
 
-        $routes->import($confDir . '/{routes}/' . $this->environment . '/**/*.yml', '/', 'glob');
-        $routes->import($confDir . '/{routes}/*.yml', '/', 'glob');
+        $routes->import($confDir . '/{routes}/' . $this->environment . '/**/*.yml', 'glob');
+        $routes->import($confDir . '/{routes}/*.yml', 'glob');
     }
 
     /**
