@@ -23,6 +23,9 @@ akeneo_communication_channel:
 akeneo_job:
     resource: "@AkeneoJobBundle/Resources/config/routing.yml"
 
+identifier_generator:
+    resource: "@AkeneoIdentifierGeneratorBundle/Resources/config/routing.yml"
+
 # PIM
 pim_analytics:
     resource: "@PimAnalyticsBundle/Resources/config/routing.yml"
