@@ -49,7 +49,7 @@ class NotifyOnDisabledCatalogEventSubscriberIntegration extends TestCase
      * @throws \Throwable
      * @throws \Doctrine\DBAL\Exception
      */
-    public function test_it_notify_when_an_invalid_catalog_disabled_event_is_dispatched(): void
+    public function test_it_notifies_when_an_invalid_catalog_disabled_event_is_dispatched(): void
     {
         $this->connectedAppLoader->createConnectedAppWithUserAndTokens(
             '2677e764-f852-4956-bf9b-1a1ec1b0d145',
