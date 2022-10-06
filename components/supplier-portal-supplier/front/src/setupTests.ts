@@ -9,6 +9,8 @@ beforeEach(() => {
     // Cf this issue : https://github.com/facebook/jest/issues/5785
     jest.spyOn(console, 'error').mockImplementation(() => {});
 
+    window.HTMLElement.prototype.scrollTo = jest.fn();
+
     const intersectionObserverMock = () => ({
         observe: jest.fn(),
         unobserve: jest.fn(),

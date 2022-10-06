@@ -16,7 +16,7 @@ const COMMENT_MAX_LENGTH = 255;
 const Discussion = ({comments, productFileIdentifier}: Props) => {
     const intl = useIntl();
     const [comment, setComment] = useState('');
-    const saveCommentRoute = `/supplier-portal/product-files/${productFileIdentifier}/comment`;
+    const saveCommentRoute = `/supplier-portal/product-file/${productFileIdentifier}/comment`;
     const userContext = useUserContext();
     const [errorCode, setErrorCode] = useState('');
     const queryClient = useQueryClient();
@@ -44,25 +44,28 @@ const Discussion = ({comments, productFileIdentifier}: Props) => {
         }
     }, [comments]);
 
-    const saveComment = useCallback(async (event) => {
-        event.preventDefault();
-        try {
-            await apiFetch(saveCommentRoute, {
-                method: 'POST',
-                headers: {'Content-type': 'application/json'},
-                body: JSON.stringify({
-                    content: comment,
-                    authorEmail: userContext.user?.email,
-                }),
-            });
-            setComment('');
-            await queryClient.invalidateQueries('fetchProductFiles');
-        } catch (error) {
-            if (error instanceof BadRequestError) {
-                setErrorCode(error.data);
+    const saveComment = useCallback(
+        async event => {
+            event.preventDefault();
+            try {
+                await apiFetch(saveCommentRoute, {
+                    method: 'POST',
+                    headers: {'Content-type': 'application/json'},
+                    body: JSON.stringify({
+                        content: comment,
+                        authorEmail: userContext.user?.email,
+                    }),
+                });
+                setComment('');
+                await queryClient.invalidateQueries('fetchProductFiles');
+            } catch (error) {
+                if (error instanceof BadRequestError) {
+                    setErrorCode(error.data);
+                }
             }
-        }
-    }, [saveCommentRoute, comment, userContext.user?.email, queryClient]);
+        },
+        [saveCommentRoute, comment, userContext.user?.email, queryClient]
+    );
 
     return (
         <>

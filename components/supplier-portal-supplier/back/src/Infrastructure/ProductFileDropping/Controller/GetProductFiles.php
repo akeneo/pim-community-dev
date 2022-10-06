@@ -27,7 +27,7 @@ final class GetProductFiles
                 function (ProductFile $productFile) {
                     $productFile = $productFile->toArray();
                     $productFile['uploadedAt'] = (new \DateTimeImmutable($productFile['uploadedAt']))->format('c');
-                    $productFile['supplierComments'] = array_map(function(array $comment) {
+                    $productFile['supplierComments'] = array_map(function (array $comment) {
                         $comment['created_at'] = (new \DateTimeImmutable($comment['created_at']))->format('c');
                         return $comment;
                     }, $productFile['supplierComments']);
