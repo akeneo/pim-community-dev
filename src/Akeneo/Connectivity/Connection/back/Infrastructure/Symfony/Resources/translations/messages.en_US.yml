@@ -6,6 +6,6 @@ akeneo_connectivity.connection:
 
 pim_notification:
     connected_app_authorizations:
-        message: 'The <strong>%app_name%</strong> App requires an authorization update. Please open the app to proceed.'
+        message: 'The <strong>{{ app_name }}</strong> App requires an authorization update. Please open the app to proceed.'
     disabled_catalog:
         message: "One or several modifications in the settings of your PIM impacted the {{ catalog_name }} catalog. Please, review the related product selection and enable the catalog again."

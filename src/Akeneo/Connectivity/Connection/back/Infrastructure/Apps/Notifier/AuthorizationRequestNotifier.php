@@ -36,7 +36,7 @@ final class AuthorizationRequestNotifier implements AuthorizationRequestNotifier
         $notification
             ->setType('warning')
             ->setMessage('pim_notification.connected_app_authorizations.message')
-            ->setMessageParams(['%app_name%' => $connectedApp->getName()])
+            ->setMessageParams(['{{ app_name }}' => $connectedApp->getName()])
             ->setRoute('akeneo_connectivity_connection_connect_connected_apps_open')
             ->setRouteParams(['connectionCode' => $connectedApp->getConnectionCode()])
             ->setContext([
