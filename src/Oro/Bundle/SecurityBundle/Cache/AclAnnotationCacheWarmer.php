@@ -28,6 +28,8 @@ class AclAnnotationCacheWarmer implements CacheWarmerInterface
     public function warmUp($cacheDir): array
     {
         $this->provider->warmUpCache();
+
+        return [];
     }
 
     /**
