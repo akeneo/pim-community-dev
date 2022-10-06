@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * This compoonent allows to display an identifier field.
+ * This component allows to display an identifier field.
  * It is only displayed when the family contains the identifier attribute.
  *
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)

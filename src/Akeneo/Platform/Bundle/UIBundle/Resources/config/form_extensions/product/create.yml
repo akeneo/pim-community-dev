@@ -32,7 +32,7 @@ extensions:
             label: pim_enrich.entity.family.uppercase_label
             choiceRoute: pim_enrich_family_rest_index
 
-    pim-product-create-sku:
+    pim-product-create-identifier:
         module: pim/product-edit-form/creation/identifier-regarding-family
         parent: pim-product-create-modal
         targetZone: fields

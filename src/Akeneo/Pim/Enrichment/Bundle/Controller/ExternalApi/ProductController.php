@@ -76,7 +76,7 @@ use Webmozart\Assert\Assert;
  */
 class ProductController
 {
-    const NO_IDENTIFIER_MESSAGE = 'Validation failed. The identifier field is required for this endpoint. If you want to manipulate products without identifiers, please use products-uuid endpoints.';
+    private const NO_IDENTIFIER_MESSAGE = 'Validation failed. The identifier field is required for this endpoint. If you want to manipulate products without identifiers, please use products-uuid endpoints.';
 
     public function __construct(
         protected NormalizerInterface $normalizer,
