@@ -32,6 +32,7 @@ class CreateGeneratorHandlerSpec extends ObjectBehavior
     function it_must_call_save_repository(IdentifierGeneratorRepository $identifierGeneratorRepository): void
     {
         $command = new CreateGeneratorCommand(
+            '2038e1c9-68ff-4833-b06f-01e42d206002',
             'abcdef',
             [],
             [FreeText::fromString('abcdef')],
