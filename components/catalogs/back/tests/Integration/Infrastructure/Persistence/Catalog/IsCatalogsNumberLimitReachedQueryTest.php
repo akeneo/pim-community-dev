@@ -46,7 +46,8 @@ class IsCatalogsNumberLimitReachedQueryTest extends IntegrationTestCase
                     false,
                     [],
                     [],
-                ));
+                )
+            );
         }
 
         $this->assertTrue($this->query->execute('shopifi'));
