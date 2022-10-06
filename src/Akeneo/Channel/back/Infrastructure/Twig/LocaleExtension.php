@@ -2,9 +2,9 @@
 
 namespace Akeneo\Channel\Infrastructure\Twig;
 
-use Symfony\Component\Intl\Currencies;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\Intl;
+use Symfony\Component\Intl\Currencies;
 use Symfony\Component\Intl\Exception\MissingResourceException;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;

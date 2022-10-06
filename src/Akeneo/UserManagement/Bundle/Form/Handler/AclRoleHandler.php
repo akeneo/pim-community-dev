@@ -2,7 +2,6 @@
 
 namespace Akeneo\UserManagement\Bundle\Form\Handler;
 
-use Symfony\Component\Form\FormView;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Bundle\Form\Type\AclRoleType;
 use Akeneo\UserManagement\Component\Model\Role;
@@ -14,6 +13,7 @@ use Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository;
 use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
