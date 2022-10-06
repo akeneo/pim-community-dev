@@ -6,10 +6,21 @@ global:
 external-dns:
   domainFilters: null # From parent
   extraArgs: null # From parent
+  logLevel: debug
   nodeSelector:
     iam.gke.io/gke-metadata-server-enabled: "true"
-  provider: google
   policy: sync
+  provider: google
+  rbac:
+    additionalPermissions:
+      - apiGroups: [""]
+        resources: ["namespaces"]
+        verbs: ["get","watch","list"]
+      - apiGroups: ["gateway.networking.k8s.io"]
+        resources: ["gateways","httproutes"] 
+        verbs: ["get","watch","list"]
+    txtOwnerId: null # From parent
+    create: true
   resources:
     requests:
       memory: "64Mi"
@@ -17,13 +28,6 @@ external-dns:
     limits:
       memory: "128Mi"
       cpu: "200m"
-  rbac:
-    additionalPermissions:
-      - apiGroups: ["gateway.networking.k8s.io"]
-        resources: ["httproutes"]
-        verbs: ["get","watch","list"]
-    txtOwnerId: null # From parent
-    create: true
   serviceAccount:
     name: external-dns
     annotations:
@@ -31,8 +35,4 @@ external-dns:
   sources:
     - contour-httpproxy
     - gateway-httproute
-    - ingress
-    - node
-    - pod
-    - service
   txtOwnerId: null # From parent
