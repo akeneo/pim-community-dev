@@ -33,11 +33,21 @@ $rules = [
         [
             'Akeneo\Pim\Automation\IdentifierGenerator\Domain',
 
-            'Symfony\Component\HttpKernel\Bundle\Bundle',
+            'Akeneo\Pim\Structure\Component\AttributeTypes',
+            'Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\FindFlattenAttributesInterface',
+            'Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\FlattenAttribute',
+
+            'Akeneo\UserManagement\Bundle\Context\UserContext',
+
             'Symfony\Component\Config\FileLocator',
             'Symfony\Component\DependencyInjection\ContainerBuilder',
             'Symfony\Component\DependencyInjection\Loader\YamlFileLoader',
-            'Symfony\Component\HttpKernel\DependencyInjection\Extension',
+            'Symfony\Component\HttpFoundation\JsonResponse',
+            'Symfony\Component\HttpFoundation\RedirectResponse',
+            'Symfony\Component\HttpFoundation\Request',
+            'Symfony\Component\HttpFoundation\Response',
+            'Symfony\Component\HttpKernel\Bundle\Bundle',
+            'Symfony\Component\HttpKernel\DependencyInjection\Extension'
         ]
     )->in('Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure'),
 ];

@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Controller\Internal;
 
-use Akeneo\Catalogs\Application\Persistence\Catalog\FindOneCatalogByIdQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogProductValueFiltersQueryInterface;
+use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
+use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -20,9 +19,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 final class GetCatalogAction
 {
     public function __construct(
-        private FindOneCatalogByIdQueryInterface $findOneCatalogByIdQuery,
-        private GetCatalogProductValueFiltersQueryInterface $findCatalogProductValueFiltersQuery,
-        private NormalizerInterface $normalizer,
+        private GetCatalogQueryInterface $getCatalogQuery,
     ) {
     }
 
@@ -32,15 +29,12 @@ final class GetCatalogAction
             return new RedirectResponse('/');
         }
 
-        $catalog = $this->findOneCatalogByIdQuery->execute($catalogId);
-
-        if (null === $catalog) {
+        try {
+            $catalog = $this->getCatalogQuery->execute($catalogId);
+        } catch (CatalogNotFoundException) {
             throw new NotFoundHttpException(\sprintf('catalog "%s" does not exist.', $catalogId));
         }
 
-        $catalogNormalized = (array) $this->normalizer->normalize($catalog, 'internal');
-        $catalogNormalized['product_value_filters'] = $this->findCatalogProductValueFiltersQuery->execute($catalogId);
-
-        return new JsonResponse($catalogNormalized);
+        return new JsonResponse($catalog->normalize());
     }
 }

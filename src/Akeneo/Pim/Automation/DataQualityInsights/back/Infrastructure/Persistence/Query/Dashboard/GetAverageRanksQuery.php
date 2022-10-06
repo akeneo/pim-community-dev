@@ -60,12 +60,12 @@ SQL;
 
         $averageRanks = [];
         while ($rawAverageRanks = $stmt->fetchAssociative()) {
-            $averageRanks[$rawAverageRanks['code']] = null !== $rawAverageRanks['average_rank'] ? Rank::fromString($rawAverageRanks['average_rank']) : null;
+            $averageRanks[strtolower($rawAverageRanks['code'])] = null !== $rawAverageRanks['average_rank'] ? Rank::fromString($rawAverageRanks['average_rank']) : null;
         }
 
         $entityAverageRanks = [];
         foreach ($entityCodes as $entityCode) {
-            $entityCode = strval($entityCode);
+            $entityCode = strtolower(strval($entityCode));
             $entityAverageRanks[$entityCode] = $averageRanks[$entityCode] ?? null;
         }
 
