@@ -2,9 +2,9 @@
 
 namespace Akeneo\UserManagement\Component\Repository;
 
-use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\CountableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Persistence\ObjectRepository;
 
 /**

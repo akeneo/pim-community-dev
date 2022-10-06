@@ -2,10 +2,10 @@
 
 namespace Akeneo\UserManagement\Bundle\Security;
 
-use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 

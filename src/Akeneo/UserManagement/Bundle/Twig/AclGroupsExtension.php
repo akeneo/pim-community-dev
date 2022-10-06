@@ -2,9 +2,9 @@
 
 namespace Akeneo\UserManagement\Bundle\Twig;
 
-use Twig\Extension\AbstractExtension;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Symfony\Component\Yaml\Yaml;
+use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 /**
