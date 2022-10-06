@@ -30,7 +30,7 @@ class IsProductBelongingToCatalogQuery implements IsProductBelongingToCatalogQue
         $pqb->addFilter('id', Operators::EQUALS, $productUuid);
         $results = $pqb->execute();
 
-        return $results->count() !== 0;
+        return $results->count() === 1 && $this->getUuidFromIdentifierResult($results->current()->getId()) === $productUuid;
     }
 
     /**
@@ -56,5 +56,19 @@ class IsProductBelongingToCatalogQuery implements IsProductBelongingToCatalogQue
         }
 
         return $filters;
+    }
+
+    private function getUuidFromIdentifierResult(string $esId): string
+    {
+        $matches = [];
+        if (!\preg_match(
+            '/^product_(?P<uuid>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$/',
+            $esId,
+            $matches
+        )) {
+            throw new \LogicException(\sprintf('Invalid Elasticsearch identifier %s', $esId));
+        }
+
+        return $matches['uuid'];
     }
 }
