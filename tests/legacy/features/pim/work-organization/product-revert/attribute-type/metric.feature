@@ -12,8 +12,8 @@ Feature: Revert product attributes to a previous version
 
   Scenario: Successfully revert a metric attribute
     When I fill in the following information in the popin:
-      | SKU    | t-shirt |
       | Family | Jackets |
+      | SKU    | t-shirt |
     And I press the "Save" button in the popin
     And I am on the "t-shirt" product page
     And I visit the "Sizes" group
@@ -35,8 +35,8 @@ Feature: Revert product attributes to a previous version
 
   Scenario: Successfully revert an empty metric attribute
     When I fill in the following information in the popin:
-      | SKU    | marcel  |
       | Family | Jackets |
+      | SKU    | marcel  |
     And I press the "Save" button in the popin
     And I am on the "marcel" product page
     And I visit the "Sizes" group

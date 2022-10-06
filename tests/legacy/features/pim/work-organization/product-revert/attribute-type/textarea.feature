@@ -12,8 +12,8 @@ Feature: Revert product attributes to a previous version
     Given I am on the products grid
     And I create a product
     And I fill in the following information in the popin:
-      | SKU    | marcel |
       | Family | Tees   |
+      | SKU    | marcel |
     And I press the "Save" button in the popin
     And I wait to be on the "marcel" product page
     And I am on the products grid
