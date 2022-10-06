@@ -30,7 +30,7 @@ class UserProvider implements UserProviderInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @TODO: Remove this function when symfony will be in 6.0
      */
     public function loadUserByUsername(string $username)
     {
@@ -40,11 +40,11 @@ class UserProvider implements UserProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function loadUserByIdentifier($username)
+    public function loadUserByIdentifier(string $identifier): UserInterface
     {
-        $user = $this->userRepository->findOneByIdentifier($username);
+        $user = $this->userRepository->findOneByIdentifier($identifier);
         if (!$user || $user->isApiUser() || $user->isJobUser()) {
-            throw new UserNotFoundException(sprintf('User with username "%s" does not exist.', $username));
+            throw new UserNotFoundException(sprintf('User with username "%s" does not exist.', $identifier));
         }
 
         if (!$user->isEnabled()) {
