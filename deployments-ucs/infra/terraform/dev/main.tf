@@ -92,7 +92,7 @@ module "gke_europe_west1" {
   viewer_members         = local.viewers
   admin_members          = local.admins
   min_master_version     = "1.23"
-  master_ipv4_cidr_block = "192.168.224.0/28"
+  master_ipv4_cidr_block = "192.168.192.128/28"
 
   node_pool_configs = {
     "default" = {
