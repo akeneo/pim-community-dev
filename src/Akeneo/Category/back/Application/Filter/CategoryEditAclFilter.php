@@ -12,13 +12,6 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
  *
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @phpstan-type StandardInternalApi array{
- *     code: string,
- *     labels: array<string, string>
- *     values: array<string, array<AttributeValueApi>>
- * }
- * @phpstan-type AttributeValueApi array{data: string, locale: string|null, attribute_code: string}
  */
 class CategoryEditAclFilter
 {
