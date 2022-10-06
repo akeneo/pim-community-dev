@@ -8,3 +8,6 @@ services:
 
     Akeneo\Platform\Job\Infrastructure\Clock\ClockInterface:
         class: Akeneo\Platform\Job\Infrastructure\Clock\SystemClock
+
+    akeneo_platform.saver.job_instance:
+        alias: 'akeneo_batch.saver.job_instance'
