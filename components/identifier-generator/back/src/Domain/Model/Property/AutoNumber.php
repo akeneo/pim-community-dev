@@ -19,6 +19,23 @@ final class AutoNumber implements PropertyInterface
     ) {
     }
 
+    public static function type(): string
+    {
+        return 'auto_number';
+    }
+
+    public static function fromNormalized(array $normalizedProperty): PropertyInterface
+    {
+        Assert::keyExists($normalizedProperty, 'type');
+        Assert::same($normalizedProperty['type'], self::type());
+        Assert::keyExists($normalizedProperty, 'numberMin');
+        Assert::greaterThanEq($normalizedProperty['numberMin'], 0);
+        Assert::keyExists($normalizedProperty, 'digitsMin');
+        Assert::greaterThanEq($normalizedProperty['digitsMin'], 1);
+
+        return self::fromValues($normalizedProperty['numberMin'], $normalizedProperty['digitsMin']);
+    }
+
     public static function fromValues(int $numberMin, int $digitsMin): self
     {
         Assert::greaterThanEq($numberMin, 0);
@@ -27,12 +44,21 @@ final class AutoNumber implements PropertyInterface
         return new self($numberMin, $digitsMin);
     }
 
-    public function getNumberMin(): int
+    public function normalize()
+    {
+        return [
+            'type' => $this->type(),
+            'numberMin' => $this->numberMin,
+            'digitsMin' => $this->digitsMin,
+        ];
+    }
+
+    public function numberMin(): int
     {
         return $this->numberMin;
     }
 
-    public function getDigitsMin(): int
+    public function digitsMin(): int
     {
         return $this->digitsMin;
     }

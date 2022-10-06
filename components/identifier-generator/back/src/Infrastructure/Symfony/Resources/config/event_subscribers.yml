@@ -1,0 +1,6 @@
+services:
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Symfony\Install\InstallerSubscriber:
+    arguments:
+      - '@database_connection'
+    tags:
+      - { name: kernel.event_subscriber }

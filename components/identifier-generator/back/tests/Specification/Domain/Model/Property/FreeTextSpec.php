@@ -33,4 +33,46 @@ class FreeTextSpec extends ObjectBehavior
     {
         $this->asString()->shouldReturn('ABC');
     }
+
+    function it_normalize_a_free_text()
+    {
+        $this->normalize()->shouldReturn([
+            'type' => 'free_text',
+            'string' => 'ABC',
+        ]);
+    }
+
+    function it_creates_from_normalized()
+    {
+        $this->fromNormalized([
+            'type' => 'free_text',
+            'string' => 'ABC',
+        ])->shouldBeLike(FreeText::fromString('ABC'));
+    }
+
+    function it_throws_an_exception_when_type_is_bad()
+    {
+        $this->beConstructedThrough('fromNormalized', [[
+            'type' => 'bad',
+            'string' => 'ABC',
+        ]]);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    function it_throws_an_exception_when_type_key_is_missing()
+    {
+        $this->beConstructedThrough('fromNormalized', [[
+            'string' => 'ABC',
+        ]]);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    function it_throws_an_exception_from_normalized_with_empty_string()
+    {
+        $this->beConstructedThrough('fromNormalized', [[
+            'type' => 'free_text',
+            'string' => '',
+        ]]);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
 }

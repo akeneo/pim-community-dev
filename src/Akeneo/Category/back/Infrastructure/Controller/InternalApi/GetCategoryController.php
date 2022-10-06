@@ -34,6 +34,17 @@ class GetCategoryController
 
         $category = $this->getCategory->byId($id);
 
-        return new JsonResponse($category->normalize(), Response::HTTP_OK);
+        $isRoot = $category->isRoot();
+        $root = null;
+        if (!$isRoot) {
+            $root = $this->getCategory->byId($category->getRootId()?->getValue());
+        }
+
+        $response = $category->normalize();
+
+        $response['isRoot'] = $isRoot;
+        $response['root'] = $root?->normalize();
+
+        return new JsonResponse($response, Response::HTTP_OK);
     }
 }

@@ -6,6 +6,7 @@ namespace Akeneo\Catalogs\Infrastructure\Persistence\Catalog\Product;
 
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\IsProductBelongingToCatalogQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 
@@ -29,8 +30,10 @@ class IsProductBelongingToCatalogQuery implements IsProductBelongingToCatalogQue
         ]);
         $pqb->addFilter('id', Operators::EQUALS, $productUuid);
         $results = $pqb->execute();
+        /** @var IdentifierResult $result */
+        $result = $results->current();
 
-        return $results->count() !== 0;
+        return $results->count() === 1 && $this->getUuidFromIdentifierResult($result->getId()) === $productUuid;
     }
 
     /**
@@ -56,5 +59,19 @@ class IsProductBelongingToCatalogQuery implements IsProductBelongingToCatalogQue
         }
 
         return $filters;
+    }
+
+    private function getUuidFromIdentifierResult(string $esId): string
+    {
+        $matches = [];
+        if (!\preg_match(
+            '/^product_(?P<uuid>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$/',
+            $esId,
+            $matches
+        )) {
+            throw new \LogicException(\sprintf('Invalid Elasticsearch identifier %s', $esId));
+        }
+
+        return $matches['uuid'];
     }
 }
