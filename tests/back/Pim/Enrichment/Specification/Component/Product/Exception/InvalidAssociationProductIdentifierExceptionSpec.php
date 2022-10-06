@@ -5,18 +5,15 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Exception;
 use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessage;
 use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessageInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidEntityCodeException;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidAssociationProductIdentifierException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use PhpSpec\ObjectBehavior;
 
-class InvalidEntityCodeExceptionSpec extends ObjectBehavior
+class InvalidAssociationProductIdentifierExceptionSpec extends ObjectBehavior
 {
     function let()
     {
         $this->beConstructedWith(
-            'PROPERTY_NAME',
-            'KEY',
-            'BECAUSE',
             self::class,
             'PRODUCT_VALUE'
         );
@@ -24,7 +21,7 @@ class InvalidEntityCodeExceptionSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(InvalidEntityCodeException::class);
+        $this->shouldHaveType(InvalidAssociationProductIdentifierException::class);
     }
 
     function it_is_an_invalid_property_exception()
@@ -44,7 +41,7 @@ class InvalidEntityCodeExceptionSpec extends ObjectBehavior
 
     function it_returns_a_message()
     {
-        $this->getMessage()->shouldReturn('Property "PROPERTY_NAME" expects a valid KEY. BECAUSE, "PRODUCT_VALUE" given.');
+        $this->getMessage()->shouldReturn('The “associations” property expects a valid product identifier. The PRODUCT_VALUE product does not exist or your connection does not have permission to access it.');
     }
 
     function it_returns_a_message_template_and_parameters()
@@ -52,6 +49,6 @@ class InvalidEntityCodeExceptionSpec extends ObjectBehavior
         $templatedErrorMessage = $this->getTemplatedErrorMessage();
         $templatedErrorMessage->shouldBeAnInstanceOf(TemplatedErrorMessage::class);
         $templatedErrorMessage->__toString()
-            ->shouldReturn('Property "PROPERTY_NAME" expects a valid KEY. BECAUSE, "PRODUCT_VALUE" given.');
+            ->shouldReturn('The “associations” property expects a valid product identifier. The PRODUCT_VALUE product does not exist or your connection does not have permission to access it.');
     }
 }

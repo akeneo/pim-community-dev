@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
-use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidEntityCodeException;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidAssociationProductIdentifierException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -86,7 +86,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
             /** @var AssociationTypeInterface $associationType */
             $associationType = $this->associationTypeRepository->findOneByIdentifier($typeCode);
             if (null === $associationType || $associationType->isQuantified()) {
-                throw new InvalidEntityCodeException(
+                throw InvalidPropertyException::validEntityCodeExpected(
                     'associations',
                     'association type code',
                     'The association type does not exist or is quantified',
@@ -125,13 +125,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
         foreach ($productsIdentifiers as $productIdentifier) {
             $associatedProduct = $this->productRepository->findOneByIdentifier($productIdentifier);
             if (null === $associatedProduct) {
-                throw InvalidPropertyException::validEntityCodeExpected(
-                    'associations',
-                    'product identifier',
-                    'The product does not exist',
-                    static::class,
-                    $productIdentifier
-                );
+                throw new InvalidAssociationProductIdentifierException(static::class, $productIdentifier);
             }
             $this->addAssociatedProduct($owner, $associatedProduct, $associationType);
         }

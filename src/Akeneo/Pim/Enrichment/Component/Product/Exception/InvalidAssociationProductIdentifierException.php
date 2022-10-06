@@ -11,31 +11,23 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class InvalidEntityCodeException extends InvalidPropertyException implements
+final class InvalidAssociationProductIdentifierException extends InvalidPropertyException implements
     DomainErrorInterface,
     TemplatedErrorMessageInterface
 {
     private TemplatedErrorMessage $templatedErrorMessage;
 
     public function __construct(
-        string $propertyName,
-        string $key,
-        string $because,
         string $className,
         string $propertyValue
     ) {
         $this->templatedErrorMessage = new TemplatedErrorMessage(
-            'Property "{property_name}" expects a valid {key}. {because}, "{property_value}" given.',
-            [
-                'property_name' => $propertyName,
-                'key' => $key,
-                'because' => $because,
-                'property_value' => $propertyValue,
-            ]
+            'The “associations” property expects a valid product identifier. The {identifier} product does not exist or your connection does not have permission to access it.',
+            ['identifier' => $propertyValue]
         );
 
         parent::__construct(
-            $propertyName,
+            'associations',
             $propertyValue,
             $className,
             (string) $this->templatedErrorMessage,
