@@ -88,7 +88,7 @@ module "gke_europe_west1" {
   shared_vpc_name        = local.shared_vpc_name
   gke_sa_email           = module.iam.gke_sa_email
   region                 = "europe-west1"
-  cluster_developers     = concat(["serviceAccount:${local.ci_sa}"], local.admins)
+  cluster_developers     = local.admins
   viewer_members         = local.viewers
   admin_members          = local.admins
   min_master_version     = "1.23"
@@ -142,7 +142,7 @@ module "gke_europe_west3" {
   shared_vpc_name        = local.shared_vpc_name
   gke_sa_email           = module.iam.gke_sa_email
   region                 = "europe-west3"
-  cluster_developers     = concat(["serviceAccount:${local.ci_sa}"], local.admins)
+  cluster_developers     = local.admins
   viewer_members         = local.viewers
   admin_members          = local.admins
   min_master_version     = "1.23"
