@@ -662,7 +662,7 @@ jobs:
 
               # Login to argocd call k8s
               kubectl config set-context --current --namespace=argocd
-              argocd login --core argocd.${GOOGLE_DOMAIN} --username admin --password ${ARGOCD_PASSWORD}
+              argocd login --core argocd-${GOOGLE_CLUSTER_REGION}.${GOOGLE_DOMAIN} --username admin --password ${ARGOCD_PASSWORD}
               argocd app get pim-${CIRCLE_BRANCH_LOWER} --hard-refresh --core
               argocd app sync pim-${CIRCLE_BRANCH_LOWER} --core --prune|| (argocd app terminate-op pim-${CIRCLE_BRANCH_LOWER} --core  && argocd app wait --operation pim-${CIRCLE_BRANCH_LOWER} --core && argocd app sync pim-${CIRCLE_BRANCH_LOWER} --core --prune)
               echo "argocd app sync successfull"
