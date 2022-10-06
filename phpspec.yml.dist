@@ -150,6 +150,11 @@ suites:
         psr4_prefix: Akeneo\Tool\Bundle\RuleEngineBundle
         spec_path: src/Akeneo/Tool/Bundle/RuleEngineBundle
         src_path: src/Akeneo/Tool/Bundle/RuleEngineBundle
+    DatabaseMetadataBundle:
+        namespace: Akeneo\Tool\Bundle\DatabaseMetadataBundle
+        psr4_prefix: Akeneo\Tool\Bundle\DatabaseMetadataBundle
+        spec_path: src/Akeneo/Tool/Bundle/DatabaseMetadataBundle/tests
+        src_path: src/Akeneo/Tool/Bundle/DatabaseMetadataBundle
 
     ## Shared Catalog
     SharedCatalog:

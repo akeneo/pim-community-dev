@@ -18,6 +18,8 @@ services:
             - { name: console.command }
     akeneo.pim.database_diff.command:
         class: '%akeneo.pim.database_diff.command%'
+        arguments:
+            - '@Akeneo\Tool\Bundle\DatabaseMetadataBundle\Services\CleanDatabaseSchemaDiffOutput'
         tags: 
             - { name: console.command }
 
@@ -41,6 +43,10 @@ services:
             - '@akeneo_tool_bundle_database_metadata.services.entity_context_provider'
         tags:
             - { name: console.command }
+
+    Akeneo\Tool\Bundle\DatabaseMetadataBundle\Services\CleanDatabaseSchemaDiffOutput:
+        arguments:
+            - '%env(bool:default::FLAG_ONBOARDER_ENABLED)%'
 
     akeneo_tool_bundle_database_metadata.services.entity_context_provider:
         class: Akeneo\Tool\Bundle\DatabaseMetadataBundle\Services\EntityContextProvider
