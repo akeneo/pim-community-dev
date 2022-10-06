@@ -19,6 +19,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -870,6 +871,46 @@ JSON;
 
             $this->assertListResponse($client->getResponse(), $expected, true);
         }
+    }
+
+    public function testListProductsWithUuidFilter(): void
+    {
+        $standardizedProducts = $this->getStandardizedProducts();
+
+        $search = \json_encode([
+            'uuid' => [
+                [
+                    'operator' => 'IN',
+                    'value' => [
+                        $this->products['simple']->getUuid()->toString(),
+                        $this->products['localizable']->getUuid()->toString(),
+                        Uuid::uuid4()->toString(),
+                        $this->products['with_parent']->getUuid()->toString(),
+                    ],
+                ],
+            ],
+        ]);
+        $client = $this->createAuthenticatedClient();
+        $client->request('GET', 'api/rest/v1/products-uuid?search=' . $search);
+        $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
+        $expected = <<<JSON
+{
+    "_links": {
+        "self"  : {"href" : "http://localhost/api/rest/v1/products-uuid?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products-uuid?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"}
+    },
+    "current_page" : 1,
+    "_embedded"    : {
+        "items" : [
+            {$standardizedProducts['localizable']},
+            {$standardizedProducts['simple']},
+            {$standardizedProducts['with_parent']}
+        ]
+    }
+}
+JSON;
+
+        $this->assertListResponse($client->getResponse(), $expected, true);
     }
 
     public function testListProductsWithoutParent()
