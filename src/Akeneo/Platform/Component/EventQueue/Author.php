@@ -35,7 +35,7 @@ class Author
     {
         $type = $user->isApiUser() ? self::TYPE_API : self::TYPE_UI;
 
-        return new self($user->getUsername(), $type);
+        return new self($user->getUserIdentifier(), $type);
     }
 
     public static function fromNameAndType(string $name, string $type): Author

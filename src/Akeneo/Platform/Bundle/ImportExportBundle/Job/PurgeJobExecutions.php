@@ -2,10 +2,10 @@
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Job;
 
+use Psr\Log\LoggerInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Purge\PurgeJobExecution;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
-use Symfony\Bridge\Monolog\Logger;
 
 /**
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
@@ -16,7 +16,7 @@ class PurgeJobExecutions implements TaskletInterface
 {
     protected StepExecution $stepExecution;
 
-    public function __construct(private PurgeJobExecution $purgeJobExecution, private Logger $logger)
+    public function __construct(private PurgeJobExecution $purgeJobExecution, private LoggerInterface $logger)
     {
     }
 

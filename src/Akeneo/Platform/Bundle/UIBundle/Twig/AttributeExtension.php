@@ -2,6 +2,7 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\Twig;
 
+use Twig\Extension\AbstractExtension;
 use Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Twig\TwigFilter;
@@ -13,7 +14,7 @@ use Twig\TwigFilter;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeExtension extends \Twig\Extension\AbstractExtension
+class AttributeExtension extends AbstractExtension
 {
     /** @var PresenterInterface */
     protected $datePresenter;

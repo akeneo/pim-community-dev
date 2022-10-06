@@ -198,7 +198,7 @@ class BatchCommand extends Command
             $exitCode = self::EXIT_ERROR_CODE;
         }
 
-        return $exitCode;
+        return (int) $exitCode;
     }
 
     /**

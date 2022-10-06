@@ -14,7 +14,7 @@ class ShouldNotBeUsedByProductAttribute extends Constraint
 {
     public const MEASUREMENT_FAMILY_REMOVAL_NOT_ALLOWED = 'pim_measurements.validation.measurement_family.measurement_family_cannot_be_removed';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

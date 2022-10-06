@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\SecurityBundle\Acl\Domain;
 
+use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Exception\AclNotFoundException;
 use Symfony\Component\Security\Acl\Model\AclProviderInterface;
 use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
@@ -96,7 +97,7 @@ class RootBasedAclProvider implements AclProviderInterface
      * @param ObjectIdentityInterface $oid
      * @param array $sids
      * @param ObjectIdentityInterface $rootOid
-     * @return RootBasedAclWrapper|\Symfony\Component\Security\Acl\Model\AclInterface
+     * @return RootBasedAclWrapper|AclInterface
      */
     protected function getAcl(ObjectIdentityInterface $oid, array $sids, ObjectIdentityInterface $rootOid)
     {

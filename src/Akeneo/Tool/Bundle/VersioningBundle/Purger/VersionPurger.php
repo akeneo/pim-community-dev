@@ -2,10 +2,10 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\Purger;
 
+use Psr\Log\LoggerInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlDeleteVersionsByIdsQuery;
 use Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlGetAllResourceNamesQuery;
 use Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlGetPurgeableVersionListQuery;
-use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -25,7 +25,7 @@ class VersionPurger implements VersionPurgerInterface
         private SqlDeleteVersionsByIdsQuery $deleteVersionsByIdsQuery,
         private SqlGetAllResourceNamesQuery $getAllResourceNamesQuery,
         private SqlGetPurgeableVersionListQuery $getPurgeableVersionListQuery,
-        private Logger $logger,
+        private LoggerInterface $logger,
     ) {
     }
 

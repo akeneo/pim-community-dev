@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\PimDataGridBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Actions\Export\ExportMassAction;
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -48,7 +49,7 @@ class ExportController
     /**
      * Data export action
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function indexAction()
     {
@@ -62,7 +63,7 @@ class ExportController
     /**
      * Create a streamed response containing a file
      *
-     * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     * @return StreamedResponse
      */
     protected function createStreamedResponse()
     {
@@ -153,7 +154,7 @@ class ExportController
     /**
      * TODO: Get from datagrid builder ?
      *
-     * @return \Oro\Bundle\PimDataGridBundle\Extension\MassAction\Actions\Export\ExportMassAction
+     * @return ExportMassAction
      */
     protected function getExportMassAction()
     {

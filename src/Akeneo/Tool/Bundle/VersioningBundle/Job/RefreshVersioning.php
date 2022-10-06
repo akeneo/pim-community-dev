@@ -2,13 +2,13 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\Job;
 
+use Psr\Log\LoggerInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bridge\Monolog\Logger;
 
 /**
  * Refresh versioning data
@@ -22,7 +22,7 @@ class RefreshVersioning implements TaskletInterface
     private StepExecution $stepExecution;
 
     public function __construct(
-        private Logger $logger,
+        private LoggerInterface $logger,
         private VersionManager $versionManager,
         private BulkObjectDetacherInterface $bulkObjectDetacher,
         private EntityManagerInterface $entityManager

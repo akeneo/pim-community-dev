@@ -2,6 +2,8 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\Doctrine\ORM;
 
+use Doctrine\ORM\QueryBuilder;
+use Akeneo\Tool\Component\Versioning\Model\Version;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
@@ -90,7 +92,7 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
     /**
      * @param array $parameters
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
     public function createDatagridQueryBuilder(array $parameters = [])
     {
@@ -197,7 +199,7 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
      * @param bool|null $pending
      * @param string    $sort
      *
-     * @return \Akeneo\Tool\Component\Versioning\Model\Version|null
+     * @return Version|null
      */
     protected function getOneLogEntry($resourceName, $resourceId, ?UuidInterface $resourceUuid, $pending, $sort)
     {

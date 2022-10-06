@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Oro\Bundle\FilterBundle\Filter;
 
+use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\Query\Expr;
 use Oro\Bundle\FilterBundle\Datasource\ExpressionBuilderInterface;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
@@ -40,7 +41,7 @@ class StringFilterSpec extends ObjectBehavior
 
         $isNullExpr = 'teststring IS NULL';
         $eqExpr = 'teststring = :testrting1234';
-        $orExpr = new Expr\Orx();
+        $orExpr = new Orx();
 
         $builder->isNull(Argument::type('string'))->willReturn($isNullExpr);
         $builder->eq(Argument::type('string'), Argument::type('string'), true)->willReturn($eqExpr);

@@ -51,7 +51,7 @@ class PurgeMessengerCommand extends Command
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): ?int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $retentionTime = $input->getOption('retention-time');
         $tableName = $input->getArgument('table-name');

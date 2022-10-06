@@ -66,7 +66,7 @@ class ProductAssociationNormalizer implements NormalizerInterface, SerializerAwa
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ProductInterface && 'datagrid' === $format;
     }

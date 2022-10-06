@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\DataGridBundle\Datasource\Orm\QueryConverter;
 
+use Doctrine\ORM\Query\Expr\Select;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Config\Definition\Processor;
@@ -32,7 +33,7 @@ class YamlConverter implements QueryConverterInterface
 
         if (isset($value['select'])) {
             foreach ($value['select'] as $select) {
-                $qb->add('select', new Expr\Select($select), true);
+                $qb->add('select', new Select($select), true);
             }
         }
 

@@ -2,10 +2,10 @@
 
 namespace Akeneo\Platform\Bundle\NotificationBundle\Email;
 
+use Psr\Log\LoggerInterface;
 use Akeneo\Tool\Component\Email\SenderAddress;
 use Swift_Mailer;
 use Swift_Mime_SimpleMessage;
-use Symfony\Bridge\Monolog\Logger;
 
 /**
  * Notify by email
@@ -19,7 +19,7 @@ class MailNotifier implements MailNotifierInterface
     public function __construct(
         protected Swift_Mailer $mailer,
         protected string $mailerUrl,
-        private Logger $logger,
+        private LoggerInterface $logger,
     ) {
     }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Controller;
 
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Normalizer\Volumes;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Normalizer;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,11 +18,11 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class VolumeMonitoringController
 {
-    private Normalizer\Volumes $volumesNormalizer;
+    private Volumes $volumesNormalizer;
 
     private SecurityFacade $securityFacade;
 
-    public function __construct(Normalizer\Volumes $volumesNormalizer, SecurityFacade $securityFacade)
+    public function __construct(Volumes $volumesNormalizer, SecurityFacade $securityFacade)
     {
         $this->volumesNormalizer = $volumesNormalizer;
         $this->securityFacade = $securityFacade;

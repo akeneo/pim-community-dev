@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\ApiBundle\DependencyInjection;
 
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
@@ -24,7 +25,7 @@ class PimApiExtension extends Extension
 
         $container->setParameter('pim_api.configuration', $config);
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('controllers.yml');
         $loader->load('checkers.yml');
         $loader->load('converters.yml');

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\UIBundle\Http;
 
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -40,7 +41,7 @@ class FormAuthenticationEntryPoint implements AuthenticationEntryPointInterface
     /**
      * {@inheritdoc}
      */
-    public function start(Request $request, AuthenticationException $authException = null)
+    public function start(Request $request, AuthenticationException $authException = null): Response
     {
         if ($this->useForward) {
             //This is the added code
