@@ -40,11 +40,12 @@ class IsProductBelongingToCatalogQueryTest extends IntegrationTestCase
                 'value' => true,
             ],
         ]);
-        $tshirt = $this->createProduct('tshirt-blue', [new SetEnabled(true)]);
+        $tshirtBlue = $this->createProduct('tshirt-blue', [new SetEnabled(true)]);
+        $this->createProduct('tshirt-red', [new SetEnabled(true)]);
 
         $catalog = $this->getCatalogQuery->execute($catalogId);
 
-        $isProductBelongingToCatalog = $this->isProductBelongingToCatalogQuery->execute($catalog, (string) $tshirt->getUuid());
+        $isProductBelongingToCatalog = $this->isProductBelongingToCatalogQuery->execute($catalog, (string) $tshirtBlue->getUuid());
         $this->assertTrue($isProductBelongingToCatalog);
     }
 
@@ -64,6 +65,7 @@ class IsProductBelongingToCatalogQueryTest extends IntegrationTestCase
             ],
         ]);
         $tshirt = $this->createProduct('tshirt-blue', [new SetEnabled(false)]);
+        $this->createProduct('tshirt-red', [new SetEnabled(true)]);
 
         $catalog = $this->getCatalogQuery->execute($catalogId);
 
