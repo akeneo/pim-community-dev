@@ -42,6 +42,7 @@ pim_enrich.entity.product:
             title: Select your action
             choose_family: Choose a family
             choose_family_variant: Choose a family variant
+            helper: The identifier is now an optional field. <a href="{{ link }}" target="_blank">Read more</a> about this change and the possible impacts for your products.
         variant_navigation:
             common: Common
         status:
