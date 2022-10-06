@@ -5,7 +5,6 @@ namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\CreateGeneratorCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
-use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository\InMemoryIdentifierGeneratorRepository;
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\IdentifierGeneratorCreationLimit;
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\IdentifierGeneratorCreationLimitValidator;
 use PhpSpec\ObjectBehavior;
@@ -15,7 +14,7 @@ use Symfony\Component\Validator\Context\ExecutionContext;
 
 class IdentifierGeneratorCreationLimitValidatorSpec extends ObjectBehavior
 {
-    public function let(InMemoryIdentifierGeneratorRepository $repository, ExecutionContext $context): void
+    public function let(IdentifierGeneratorRepository $repository, ExecutionContext $context): void
     {
         $this->beConstructedWith($repository);
         $this->initialize($context);
