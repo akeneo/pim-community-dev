@@ -10,6 +10,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorCode;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorId;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
@@ -84,6 +85,7 @@ final class CreateIdentifierGeneratorContext implements Context
     {
         try {
             ($this->createGeneratorHandler)(new CreateGeneratorCommand(
+                '2038e1c9-68ff-4833-b06f-01e42d206002',
                 'abcdef',
                 [],
                 [FreeText::fromString('abcdef')],
@@ -151,6 +153,7 @@ final class CreateIdentifierGeneratorContext implements Context
     {
         try {
             ($this->createGeneratorHandler)(new CreateGeneratorCommand(
+                '2038e1c9-68ff-4833-b06f-01e42d206002',
                 'abcdef',
                 [],
                 [FreeText::fromString('abcdef')],
@@ -170,6 +173,7 @@ final class CreateIdentifierGeneratorContext implements Context
     {
         try {
             ($this->createGeneratorHandler)(new CreateGeneratorCommand(
+                '2038e1c9-68ff-4833-b06f-01e42d206002',
                 'abcdef',
                 [],
                 [FreeText::fromString('abcdef')],
@@ -188,6 +192,7 @@ final class CreateIdentifierGeneratorContext implements Context
     public function theIdentifierGeneratorIsCreated(): void
     {
         $identifierGenerator = new IdentifierGenerator(
+            IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002'),
             IdentifierGeneratorCode::fromString('abcdef'),
             Conditions::fromArray([]),
             Structure::fromArray([FreeText::fromString('abc')]),

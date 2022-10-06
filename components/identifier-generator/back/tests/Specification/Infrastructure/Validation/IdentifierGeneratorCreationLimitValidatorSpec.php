@@ -49,6 +49,7 @@ class IdentifierGeneratorCreationLimitValidatorSpec extends ObjectBehavior
             ->willReturn(1);
 
         $command = new CreateGeneratorCommand(
+            '2038e1c9-68ff-4833-b06f-01e42d206002',
             'generatorCode',
             [],
             [FreeText::fromString('abcdef')],
@@ -78,6 +79,7 @@ class IdentifierGeneratorCreationLimitValidatorSpec extends ObjectBehavior
             ->willReturn(2);
 
         $command = new CreateGeneratorCommand(
+            '2038e1c9-68ff-4833-b06f-01e42d206002',
             'generatorCode',
             [],
             [FreeText::fromString('abcdef')],
@@ -107,6 +109,7 @@ class IdentifierGeneratorCreationLimitValidatorSpec extends ObjectBehavior
             ->willReturn(1);
 
         $command = new CreateGeneratorCommand(
+            '2038e1c9-68ff-4833-b06f-01e42d206002',
             'generatorCode',
             [],
             [FreeText::fromString('abcdef')],

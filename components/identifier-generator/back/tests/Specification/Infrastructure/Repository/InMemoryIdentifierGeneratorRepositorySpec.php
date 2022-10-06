@@ -88,6 +88,7 @@ class InMemoryIdentifierGeneratorRepositorySpec extends ObjectBehavior
         $this->count()->shouldReturn(0);
 
         $identifierGenerator = new IdentifierGenerator(
+            IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002'),
             IdentifierGeneratorCode::fromString('aabbcc'),
             Conditions::fromArray([]),
             Structure::fromArray([FreeText::fromString('abc')]),

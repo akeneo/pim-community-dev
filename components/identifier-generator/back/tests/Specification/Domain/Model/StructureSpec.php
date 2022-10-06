@@ -48,7 +48,7 @@ class StructureSpec extends ObjectBehavior
         $properties[1]->shouldBeAnInstanceOf(PropertyInterface::class);
     }
 
-    function it_normalize_a_structure()
+    public function it_normalize_a_structure()
     {
         $this->normalize()->shouldReturn([
             [
@@ -63,7 +63,7 @@ class StructureSpec extends ObjectBehavior
         ]);
     }
 
-    function it_creates_from_normalized()
+    public function it_creates_from_normalized()
     {
         $this->fromNormalized([
             [
@@ -77,7 +77,7 @@ class StructureSpec extends ObjectBehavior
             ],
         ])->shouldBeLike(Structure::fromArray([
             FreeText::fromString('CBA'),
-            AutoNumber::fromValues(5,6),
+            AutoNumber::fromValues(5, 6),
         ]));
     }
 }

@@ -35,21 +35,24 @@ $rules = [
         [
             'Akeneo\Pim\Automation\IdentifierGenerator\Domain',
             'Akeneo\Pim\Automation\IdentifierGenerator\Application',
+            'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
 
             'Akeneo\Pim\Structure\Component\AttributeTypes',
             'Akeneo\Pim\Structure\Component\Query\PublicApi',
-            'Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface',
             'Akeneo\UserManagement\Bundle\Context\UserContext',
 
             'Symfony\Component\Config\FileLocator',
             'Symfony\Component\DependencyInjection\ContainerBuilder',
             'Symfony\Component\DependencyInjection\Loader\YamlFileLoader',
-            'Symfony\Component\HttpKernel\DependencyInjection\Extension',
             'Symfony\Component\HttpKernel\Bundle\Bundle',
-            'Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException',
+            'Symfony\Component\HttpKernel\DependencyInjection\Extension',
+            'Symfony\Component\EventDispatcher\EventSubscriberInterface',
             'Symfony\Component\HttpFoundation',
             'Symfony\Component\Validator',
-            'Webmozart\Assert\Assert'
+            'Doctrine\DBAL\Exception',
+            'Doctrine\DBAL\Connection',
+            'Ramsey\Uuid\Uuid',
+            'Webmozart\Assert\Assert',
         ]
     )->in('Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure'),
 ];
