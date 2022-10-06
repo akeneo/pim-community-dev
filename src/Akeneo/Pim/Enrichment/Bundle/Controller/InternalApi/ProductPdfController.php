@@ -72,7 +72,7 @@ class ProductPdfController
                 'content-type'        => 'application/pdf',
                 'content-disposition' => sprintf(
                     'attachment; filename=%s-%s.pdf',
-                    $product->getIdentifier() ?? $product->getUuid(),
+                    $product->getIdentifier() ?? $product->getUuid()->toString(),
                     $renderingDate->format('Y-m-d_H-i-s')
                 ),
             ]

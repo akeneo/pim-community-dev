@@ -176,6 +176,16 @@ final class UpsertProductIntegration extends TestCase
     }
 
     /** @test */
+    public function it_allows_to_delete_the_identifier()
+    {
+        $this->updateProduct(new SetTextValue('a_text', null, null, 'foo'));
+        $productUuid = $this->productRepository->findOneByIdentifier('identifier')->getUuid();
+        $this->updateProduct(new SetIdentifierValue('sku', ''));
+        Assert::assertNull($this->productRepository->findOneByIdentifier('identifier'));
+        Assert::assertEmpty($this->productRepository->find($productUuid)->getIdentifier());
+    }
+
+    /** @test */
     public function it_throws_an_exception_for_a_duplicate_identifier_value(): void
     {
         $this->messageBus->dispatch(UpsertProductCommand::createWithIdentifier(
@@ -1425,6 +1435,19 @@ final class UpsertProductIntegration extends TestCase
         $product = $this->productRepository->findOneByIdentifier('product_sku');
         Assert::assertNotNull($product);
         Assert::assertSame('product_sku', $product->getIdentifier());
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_create_a_product_without_identifier_value(): void
+    {
+        $productCount = $this->productRepository->countAll();
+        $this->messageBus->dispatch(UpsertProductCommand::createWithoutUuidNorIdentifier(
+            userId: $this->getUserId('admin'),
+            userIntents: [new SetEnabled(false)]
+        ));
+        Assert::assertEquals($productCount + 1, $this->productRepository->countAll());
     }
 
     private function getUserId(string $username): int
