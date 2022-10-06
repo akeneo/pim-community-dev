@@ -4,7 +4,8 @@ import {ThemeProvider} from 'styled-components';
 import {pimTheme, Breadcrumb} from 'akeneo-design-system';
 import {PageHeader, PageContent, Section} from '@akeneo-pim-community/shared';
 import {mountReactElementRef} from './helpers';
-import {Dummy} from '@akeneo-pim-enterprise/performance-analytics';
+import {PimFetcherProvider, TimeToEnrichDashboard} from '@akeneo-pim-enterprise/performance-analytics';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
@@ -38,22 +39,26 @@ class Dashboard extends BaseController {
     const dashboardHref = router.generate('pim_dashboard_index');
 
     return (
-      <ThemeProvider theme={pimTheme}>
-        <PageHeader>
-          <PageHeader.Breadcrumb>
-            <Breadcrumb>
-              <Breadcrumb.Step href={`#${dashboardHref}`}>{translate('pim_menu.tab.activity')}</Breadcrumb.Step>
-              <Breadcrumb.Step>{translate('akeneo.performance_analytics.title')}</Breadcrumb.Step>
-            </Breadcrumb>
-          </PageHeader.Breadcrumb>
-          <PageHeader.Title>{translate('akeneo.performance_analytics.title')}</PageHeader.Title>
-        </PageHeader>
-        <PageContent>
-          <Section>
-            <Dummy />
-          </Section>
-        </PageContent>
-      </ThemeProvider>
+      <DependenciesProvider>
+        <ThemeProvider theme={pimTheme}>
+          <PimFetcherProvider>
+            <PageHeader>
+              <PageHeader.Breadcrumb>
+                <Breadcrumb>
+                  <Breadcrumb.Step href={`#${dashboardHref}`}>{translate('pim_menu.tab.activity')}</Breadcrumb.Step>
+                  <Breadcrumb.Step>{translate('akeneo.performance_analytics.title')}</Breadcrumb.Step>
+                </Breadcrumb>
+              </PageHeader.Breadcrumb>
+              <PageHeader.Title>{translate('akeneo.performance_analytics.title')}</PageHeader.Title>
+            </PageHeader>
+            <PageContent>
+              <Section>
+                <TimeToEnrichDashboard />
+              </Section>
+            </PageContent>
+          </PimFetcherProvider>
+        </ThemeProvider>
+      </DependenciesProvider>
     );
   }
 }
