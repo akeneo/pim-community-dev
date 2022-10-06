@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Unit\Application\Handler;
 
 use Akeneo\Catalogs\Application\Handler\CreateCatalogHandler;
-use Akeneo\Catalogs\Application\Persistence\Catalog\UpdateCatalogProductSelectionCriteriaQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\UpsertCatalogQueryInterface;
+use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use PHPUnit\Framework\TestCase;
 
@@ -17,19 +17,14 @@ use PHPUnit\Framework\TestCase;
 class CreateCatalogHandlerTest extends TestCase
 {
     private ?UpsertCatalogQueryInterface $upsertCatalogQuery;
-    private ?UpdateCatalogProductSelectionCriteriaQueryInterface $updateCatalogProductSelectionCriteriaQuery;
     private ?CreateCatalogHandler $handler;
 
     protected function setUp(): void
     {
         $this->upsertCatalogQuery = $this->createMock(UpsertCatalogQueryInterface::class);
-        $this->updateCatalogProductSelectionCriteriaQuery = $this->createMock(
-            UpdateCatalogProductSelectionCriteriaQueryInterface::class
-        );
 
         $this->handler = new CreateCatalogHandler(
             $this->upsertCatalogQuery,
-            $this->updateCatalogProductSelectionCriteriaQuery,
         );
     }
 
@@ -39,24 +34,20 @@ class CreateCatalogHandlerTest extends TestCase
             ->expects($this->once())
             ->method('execute')
             ->with(
-                id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-                name: 'Store US',
-                ownerUsername: 'shopifi',
-                enabled: false,
-            );
-
-        $this->updateCatalogProductSelectionCriteriaQuery
-            ->expects($this->once())
-            ->method('execute')
-            ->with(
-                id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-                productSelectionCriteria: [
+                new Catalog(
+                    'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+                    'Store US',
+                    'shopifi',
+                    false,
                     [
-                        'field' => 'enabled',
-                        'operator' => '=',
-                        'value' => true,
+                        [
+                            'field' => 'enabled',
+                            'operator' => '=',
+                            'value' => true,
+                        ],
                     ],
-                ],
+                    []
+                )
             );
 
         $command = new CreateCatalogCommand(
