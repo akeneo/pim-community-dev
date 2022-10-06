@@ -24,7 +24,7 @@ final class GetProductIdentifiersHandler
     public function __invoke(GetProductIdentifiersQuery $query): array
     {
         return $this->query->execute(
-            $query->getCatalogId(),
+            $query->getCatalog(),
             $query->getSearchAfter(),
             $query->getLimit(),
         );
