@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Persistence\User;
 
+use Akeneo\Catalogs\Application\Exception\UserNotFoundException;
 use Akeneo\Catalogs\Application\Persistence\User\GetUserIdFromUsernameQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\User\UserNotFoundException;
 use Akeneo\UserManagement\ServiceApi\User\ListUsersHandlerInterface;
 use Akeneo\UserManagement\ServiceApi\User\User;
 use Akeneo\UserManagement\ServiceApi\User\UsersQuery;

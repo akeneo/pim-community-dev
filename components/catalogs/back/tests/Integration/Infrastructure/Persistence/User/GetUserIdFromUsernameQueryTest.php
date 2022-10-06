@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence\User;
 
+use Akeneo\Catalogs\Application\Exception\UserNotFoundException;
 use Akeneo\Catalogs\Application\Persistence\User\GetUserIdFromUsernameQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\User\UserNotFoundException;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 
 class GetUserIdFromUsernameQueryTest extends IntegrationTestCase
@@ -21,7 +21,7 @@ class GetUserIdFromUsernameQueryTest extends IntegrationTestCase
         $this->getUserIdFromUsernameQuery = self::getContainer()->get(GetUserIdFromUsernameQueryInterface::class);
     }
 
-    public function testItGetsTheUserIDFromTheUsername(): void
+    public function testItGetsTheUserIdFromTheUsername(): void
     {
         $this->createUser('julia');
 

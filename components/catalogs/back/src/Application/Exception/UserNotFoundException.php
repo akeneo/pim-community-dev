@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Application\Persistence\User;
+namespace Akeneo\Catalogs\Application\Exception;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
