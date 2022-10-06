@@ -20,7 +20,7 @@ Feature: Display the product history
       | version | property | value       | date |
       | 1       | SKU      | sandals-001 | now  |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3628
+  # @jira https://akeneo.atlassian.net/browse/PIM-3628
   Scenario: Update product history when updating product metric
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"

@@ -13,6 +13,7 @@
             "": "src/"
         },
         "psr-4": {
+            "Pim\\Upgrade\\Schema\\": "upgrades/schema",
             "Pim\\Upgrade\\": "upgrades/",
             "Akeneo\\Connectivity\\Connection\\": "src/Akeneo/Connectivity/Connection/back",
             "Akeneo\\Platform\\CommunicationChannel\\": "src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back",
@@ -25,7 +26,8 @@
             "Akeneo\\Channel\\": "src/Akeneo/Channel/back",
             "Akeneo\\Catalogs\\": "components/catalogs/back/src",
             "Akeneo\\Category\\": "src/Akeneo/Category/back",
-            "Akeneo\\UserManagement\\": "src/Akeneo/UserManagement/back"
+            "Akeneo\\UserManagement\\": "src/Akeneo/UserManagement/back",
+            "Akeneo\\Pim\\Automation\\IdentifierGenerator\\": "components/identifier-generator/back/src"
         }
     },
     "autoload-dev": {
@@ -47,10 +49,12 @@
             "Akeneo\\Test\\Pim\\Enrichment\\Product\\": "src/Akeneo/Pim/Enrichment/Product/back/Test",
             "Akeneo\\Test\\Pim\\Enrichment\\Category\\": "src/Akeneo/Pim/Enrichment/Category/back/Test",
             "Akeneo\\Test\\Pim\\Structure\\Family\\": "src/Akeneo/Pim/Structure/Family/back/Test",
+            "Akeneo\\Test\\Pim\\Automation\\IdentifierGenerator\\": "components/identifier-generator/back/tests",
             "Akeneo\\Test\\Channel\\": "src/Akeneo/Channel/back/tests",
             "Akeneo\\Catalogs\\Test\\": "components/catalogs/back/tests",
             "Akeneo\\Test\\Category\\": "src/Akeneo/Category/back/tests",
-            "Akeneo\\Test\\UserManagement\\": "src/Akeneo/UserManagement/back/tests"
+            "Akeneo\\Test\\UserManagement\\": "src/Akeneo/UserManagement/back/tests",
+            "Akeneo\\Test\\Pim\\Automation\\IdentifierGenerator\\": "components/identifier-generator/back/tests"
         }
     },
     "require": {
@@ -86,7 +90,7 @@
         "doctrine/migrations": "^3.1.4",
         "doctrine/orm": "^2.9.0",
         "doctrine/persistence": "^2.2.3",
-        "dompdf/dompdf": "^1.2.2",
+        "dompdf/dompdf": "2.0.0",
         "elasticsearch/elasticsearch": "7.11.0",
         "friendsofsymfony/jsrouting-bundle": "2.7.0",
         "friendsofsymfony/rest-bundle": "^3.0.5",
@@ -104,6 +108,7 @@
         "monolog/monolog": "1.25.5",
         "ocramius/proxy-manager": "2.11.1",
         "oneup/flysystem-bundle": "^4.0.0",
+        "opis/json-schema": "^2.3",
         "phpseclib/phpseclib": "2.0.31",
         "psr/event-dispatcher": "^1.0.0",
         "ramsey/uuid": "^3.7",
@@ -204,7 +209,8 @@
         "sort-packages": true,
         "allow-plugins": {
             "symfony/flex": true,
-            "dealerdirect/phpcodesniffer-composer-installer": true
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "composer/package-versions-deprecated": true
         }
     },
     "extra": {

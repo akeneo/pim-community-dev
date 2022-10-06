@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Application\Handler;
 
-use Akeneo\Catalogs\Application\Persistence\GetCatalogsByOwnerUsernameQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogsByOwnerUsernameQueryInterface;
 use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogsByOwnerUsernameQuery;
 

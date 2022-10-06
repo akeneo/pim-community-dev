@@ -38,17 +38,17 @@ const AttributeTextCriterion: FC<CriterionModule<AttributeTextCriterionState>> =
                         <AttributeTextOperatorInput state={state} onChange={onChange} isInvalid={!!errors.operator} />
                     </CriterionField>
                     {showValueInput && (
-                        <CriterionField>
+                        <CriterionField width={300}>
                             <AttributeTextValueInput state={state} onChange={onChange} isInvalid={!!errors.value} />
                         </CriterionField>
                     )}
                     {attribute?.scopable && (
-                        <CriterionField width={140}>
+                        <CriterionField width={120}>
                             <ScopeInput state={state} onChange={onChange} isInvalid={!!errors.scope} />
                         </CriterionField>
                     )}
                     {attribute?.localizable && (
-                        <CriterionField width={140}>
+                        <CriterionField width={120}>
                             <LocaleInput
                                 state={state}
                                 onChange={onChange}

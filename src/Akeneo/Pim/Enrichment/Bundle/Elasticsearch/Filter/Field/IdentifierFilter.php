@@ -41,7 +41,10 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
             throw new \LogicException('The search query builder is not initialized in the filter.');
         }
 
-        $this->checkValue($field, $operator, $value);
+        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
+            $this->checkValue($field, $operator, $value);
+        }
+
         $this->applyFilter($field, $operator, $value);
 
         return $this;
@@ -154,6 +157,21 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
                 ];
 
                 $this->searchQueryBuilder->addMustNot($clause);
+                break;
+
+            case Operators::IS_EMPTY:
+                $clause = [
+                    'exists' => ['field' => $field,],
+                ];
+
+                $this->searchQueryBuilder->addMustNot($clause);
+                break;
+
+            case Operators::IS_NOT_EMPTY:
+                $clause = [
+                    'exists' => ['field' => $field],
+                ];
+                $this->searchQueryBuilder->addFilter($clause);
                 break;
 
             default:

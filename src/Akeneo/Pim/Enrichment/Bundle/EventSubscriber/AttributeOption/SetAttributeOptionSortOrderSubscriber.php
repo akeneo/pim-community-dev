@@ -18,15 +18,14 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class SetAttributeOptionSortOrderSubscriber implements EventSubscriberInterface
 {
-    /** @var GetAttributeOptionsMaxSortOrder */
-    private $getAttributeOptionsMaxSortOrder;
+    private GetAttributeOptionsMaxSortOrder $getAttributeOptionsMaxSortOrder;
 
     public function __construct(GetAttributeOptionsMaxSortOrder $getAttributeOptionsMaxSortOrder)
     {
         $this->getAttributeOptionsMaxSortOrder = $getAttributeOptionsMaxSortOrder;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             StorageEvents::PRE_SAVE => 'onPreSave',
@@ -88,7 +87,7 @@ class SetAttributeOptionSortOrderSubscriber implements EventSubscriberInterface
         $options = array_filter($options, function (AttributeoptionInterface $option) {
             return null === $option->getSortOrder();
         });
-        if (empty($options)) {
+        if (0 === \count($options)) {
             return;
         }
 

@@ -48,7 +48,7 @@ define(['oro/translator', 'pim/form', 'pim/fetcher-registry', 'pim/user-context'
           currentGroup: this.getFormData().meta.id,
           id: this.getFormData().meta.id,
           selection: this.getFormData().products,
-          selectionIdentifier: 'identifier',
+          selectionIdentifier: 'id',
         });
 
         this.productGroupGrid.on(

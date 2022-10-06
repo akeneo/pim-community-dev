@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration;
 
-use Akeneo\Catalogs\Application\Persistence\GetLocalesQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Locale\GetLocalesQueryInterface;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\Test\Integration\Fakes\Clock;
@@ -28,6 +28,7 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
+use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException as DependencyInjectionInvalidArgumentException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -48,6 +49,28 @@ abstract class IntegrationTestCase extends WebTestCase
         static::bootKernel(['environment' => 'test', 'debug' => false]);
 
         $this->clock = new Clock();
+
+        // When the container cache does not exist (var/cache is empty for example),
+        // Symfony builds the container when the kernel is booted for the first time.
+        // During the first build of the container, some services, like the listeners, are initialized.
+        // Trying to override a service already initialized is forbidden.
+        // The alternative solution of overriding services in the configuration is not appliable to us, doing so
+        // would affect ALL tests of all contexts in the PIM.
+        // Instead, the dirty but working solution is to catch this error, reboot the kernel and retry.
+        // It works because on the second boot, the container is already cached, no services are initialized.
+        try {
+            $this->overrideServices();
+        } catch (DependencyInjectionInvalidArgumentException) {
+            static::bootKernel(['environment' => 'test', 'debug' => false]);
+            $this->overrideServices();
+        }
+
+        self::getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
+        self::getContainer()->get(ExperimentalTransactionHelper::class)->beginTransactions();
+    }
+
+    protected function overrideServices(): void
+    {
         self::getContainer()->set(
             'pim_catalog.event_subscriber.timestampable',
             new TimestampableSubscriber($this->clock)
@@ -56,10 +79,6 @@ abstract class IntegrationTestCase extends WebTestCase
             'pim_versioning.event_subscriber.timestampable',
             new TimestampableSubscriber($this->clock)
         );
-
-        self::getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
-
-        self::getContainer()->get(ExperimentalTransactionHelper::class)->beginTransactions();
     }
 
     protected static function purgeData(): void

@@ -23,7 +23,7 @@ class SimpleXlsxImportSpec extends ObjectBehavior
         $collection = $this->getConstraintCollection();
         $collection->shouldReturnAnInstanceOf('Symfony\Component\Validator\Constraints\Collection');
         $fields = $collection->fields;
-        $fields->shouldHaveCount(7);
+        $fields->shouldHaveCount(6);
         $fields->shouldHaveKey('storage');
         $fields->shouldHaveKey('withHeader');
         $fields->shouldHaveKey('uploadAllowed');

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Unit\Infrastructure\Controller\Internal;
 
-use Akeneo\Catalogs\Application\Persistence\GetChannelLocalesQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\GetChannelQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Channel\GetChannelQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Locale\GetChannelLocalesQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Controller\Internal\GetChannelLocalesAction;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;

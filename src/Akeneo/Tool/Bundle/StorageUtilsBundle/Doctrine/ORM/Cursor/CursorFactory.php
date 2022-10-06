@@ -3,6 +3,7 @@
 namespace Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor;
 
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Doctrine\ORM\EntityManager;
 
 /**
@@ -44,7 +45,7 @@ class CursorFactory implements CursorFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createCursor($queryBuilder, array $options = [])
+    public function createCursor($queryBuilder, array $options = []): CursorInterface
     {
         $pageSize = $options['page_size'] ?? $this->pageSize;
 

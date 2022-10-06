@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterfa
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
@@ -19,7 +20,6 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -60,7 +60,7 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
         JobRepositoryInterface $jobRepository,
         KeepOnlyValuesForVariation $keepOnlyValuesForVariation,
         ValidatorInterface $validator,
-        private CursorableRepositoryInterface $productRepository,
+        private ProductRepositoryInterface $productRepository,
         int $batchSize
     ) {
         $this->familyRepository = $familyRepository;
@@ -101,21 +101,21 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
         $productIdentifiers = $this->getProductIdentifiersForFamilies($familyCodes);
         $this->stepExecution->setTotalItems($productIdentifiers->count());
 
-        $batchedProductIdentifiers = [];
+        $batchedProductUuids = [];
         /** @var IdentifierResult $productIdentifier */
         foreach ($productIdentifiers as $productIdentifier) {
             Assert::same($productIdentifier->getType(), ProductInterface::class);
-            $batchedProductIdentifiers[] = $productIdentifier->getIdentifier();
-            if (count($batchedProductIdentifiers) >= $this->batchSize) {
-                $products = $this->productRepository->getItemsFromIdentifiers($batchedProductIdentifiers);
+            $batchedProductUuids[] = \preg_replace('/^product_/', '', $productIdentifier->getId());
+            if (count($batchedProductUuids) >= $this->batchSize) {
+                $products = $this->productRepository->getItemsFromUuids($batchedProductUuids);
                 $this->updateAndSaveProducts($products);
-                $batchedProductIdentifiers = [];
+                $batchedProductUuids = [];
                 $this->cacheClearer->clear();
             }
         }
 
-        if (count($batchedProductIdentifiers) > 0) {
-            $products = $this->productRepository->getItemsFromIdentifiers($batchedProductIdentifiers);
+        if (count($batchedProductUuids) > 0) {
+            $products = $this->productRepository->getItemsFromUuids($batchedProductUuids);
             $this->updateAndSaveProducts($products);
             $this->cacheClearer->clear();
         }

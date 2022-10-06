@@ -13,6 +13,7 @@ use Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CountVa
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\CountProductModelsAndChildrenProductModelsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
@@ -22,6 +23,7 @@ use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -34,42 +36,23 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class DeleteProductsAndProductModelsTasklet implements TaskletInterface, TrackableTaskletInterface
 {
     protected ?StepExecution $stepExecution = null;
-    protected BulkRemoverInterface $productRemover;
-    protected RemoveProductModelsHandler $removeProductModelsHandler;
-    protected ProductQueryBuilderFactoryInterface $pqbFactory;
-    protected EntityManagerClearerInterface $cacheClearer;
-    protected ObjectFilterInterface $filter;
     protected int $batchSize = 100;
-    private CountProductModelsAndChildrenProductModelsInterface $countProductModelsAndChildrenProductModels;
-    private CountVariantProductsInterface $countVariantProducts;
-    private JobStopper $jobStopper;
-    private JobRepositoryInterface $jobRepository;
-    private ValidatorInterface $validator;
 
     public function __construct(
-        ProductQueryBuilderFactoryInterface $pqbFactory,
-        BulkRemoverInterface $productRemover,
-        RemoveProductModelsHandler $removeProductModelsHandler,
-        EntityManagerClearerInterface $cacheClearer,
-        ObjectFilterInterface $filter,
+        protected ProductQueryBuilderFactoryInterface $pqbFactory,
+        protected BulkRemoverInterface $productRemover,
+        protected RemoveProductModelsHandler $removeProductModelsHandler,
+        protected EntityManagerClearerInterface $cacheClearer,
+        protected ObjectFilterInterface $filter,
         int $batchSize,
-        CountProductModelsAndChildrenProductModelsInterface $countProductModelsAndChildrenProductModels,
-        CountVariantProductsInterface $countVariantProducts,
-        JobStopper $jobStopper,
-        JobRepositoryInterface $jobRepository,
-        ValidatorInterface $validator
+        private CountProductModelsAndChildrenProductModelsInterface $countProductModelsAndChildrenProductModels,
+        private CountVariantProductsInterface $countVariantProducts,
+        private JobStopper $jobStopper,
+        private JobRepositoryInterface $jobRepository,
+        private ValidatorInterface $validator,
+        private SecurityFacadeInterface $securityFacade,
     ) {
-        $this->pqbFactory = $pqbFactory;
-        $this->productRemover = $productRemover;
-        $this->removeProductModelsHandler = $removeProductModelsHandler;
-        $this->cacheClearer = $cacheClearer;
         $this->batchSize = $batchSize;
-        $this->filter = $filter;
-        $this->countProductModelsAndChildrenProductModels = $countProductModelsAndChildrenProductModels;
-        $this->countVariantProducts = $countVariantProducts;
-        $this->jobStopper = $jobStopper;
-        $this->jobRepository = $jobRepository;
-        $this->validator = $validator;
     }
 
     /**
@@ -189,8 +172,18 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
         $products = $this->filterProducts($entities);
         $productModels = $this->filterProductModels($entities);
 
-        $deletedProductsCount = $this->countProductsToDelete($products, $productModels);
         $deletedProductModelsCount = $this->countProductModelsToDelete($productModels);
+
+        // When deletion for product models is not granted, we add a warning and reset the array so that there will be
+        // no deletion nor for their children
+        if (!$this->securityFacade->isGranted('pim_enrich_product_model_remove')) {
+            $this->stepExecution->addWarning('Access forbidden. You are not allowed to delete product models', [], new DataInvalidItem($productModels));
+            $this->stepExecution->incrementSummaryInfo('skipped_deleted_product_models', $deletedProductModelsCount);
+            $deletedProductModelsCount = 0;
+            $productModels = [];
+        }
+
+        $deletedProductsCount = $this->countProductsToDelete($products, $productModels);
 
         $this->productRemover->removeAll($products);
         $this->stepExecution->incrementSummaryInfo('deleted_products', $deletedProductsCount);

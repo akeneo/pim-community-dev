@@ -215,7 +215,7 @@ class UpdateProductByUuidController
     private function throwDocumentedHttpException(string $message, \Exception $previousException = null)
     {
         throw new DocumentedHttpException(
-            Documentation::URL . 'patch_products__code_',
+            Documentation::URL . 'patch_products_uuid__uuid_',
             sprintf('%s Check the expected format on the API documentation.', $message),
             $previousException
         );

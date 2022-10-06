@@ -121,6 +121,9 @@ pim_import_export:
           real_time_versioning:
             title: Обновление истории изменений в реальном времени
             help: Означает, что история изменений продукта автоматически обновляется, можно выключить для улучшения производительности
+          convert_variant_to_simple:
+            title: Преобразовать вариативный продукт в простой продукт
+            help: Преобразуйте вариативный продукт в простой, когда родительский столбец пустой. Если значение не задано, пустой родительский столбец будет проигнорирован
           family_variant_column:
             title: Столбец разновидности семейства
           with_label:
@@ -130,29 +133,17 @@ pim_import_export:
             title: Заголовки с метками
             help: Отобразить в экспортируемом файле метки заголовков вместо кодов заголовков
           file_locale:
+            title: Локаль файла
             help: Определите язык (локаль), в котором отображаются метки
       file_path: Путь к файлу
   widget:
     last_operations:
-      empty: Действие не найдено
-      date: Дата
-      profile_name: Название профиля
       details: Подробнее
-      warning_count: Предупреждения
-      username: Имя пользователя
-      job_type:
-        import: Импорт
-        export: Экспорт
-        mass_edit: Массовое редактирование
-        quick_export: Быстрый экспорт
-        compute_family_variant_structure_changes: Расчет структурных изменений разновидностей семейства
-        compute_completeness_of_products_family: Подсчитать полноту заполненности продуктов семейства
-        mass_delete: Массовое удаление продуктов
       header.view_all: Просмотреть все
   batch_status:
     1: Завершено
     2: Запущено
-    3: Запущено
+    3: In progress
     4: Завершается
     5: Завершено
     6: Не выполнено
@@ -161,7 +152,6 @@ pim_import_export:
   job_status:
     COMPLETED: Завершено
     STARTING: Запущено
-    STARTED: Запущено
     STOPPING: Завершается
     STOPPED: Завершено
     FAILED: Не выполнено
@@ -205,3 +195,4 @@ pim_title:
   pim_importexport_import_profile_show: Импорт профиля {{ job.label }} | Показать
   pim_importexport_import_execution_index: История запусков импорта
   pim_importexport_import_execution_show: Запуск импорта | Детали
+

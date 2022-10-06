@@ -39,7 +39,7 @@ class PimImportExportExtension extends Extension
         $loader->load('step.yml');
         $loader->load('storage_client.yml');
         $loader->load('validations.yml');
-        $loader->load('widget.yml');
+        $loader->load('jobs.yml');
 
         if ($config['record_mails']) {
             $loader->load('mail_recorder.yml');

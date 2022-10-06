@@ -74,6 +74,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder',
         'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
         'Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface',
+        'Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface',
         'Akeneo\Tool\Bundle\ElasticsearchBundle\Client',
         'Akeneo\Pim\Enrichment\Component\Product\Query',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator',

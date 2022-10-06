@@ -1,12 +1,18 @@
 parameters:
-    pim.category.api.user_intent.set_code.class: Akeneo\Category\Api\Command\UserIntents\SetCode
+    pim.category.api.user_intent.set_text.class: Akeneo\Category\Api\Command\UserIntents\SetText
+    pim.category.api.user_intent.set_rich_text.class: Akeneo\Category\Api\Command\UserIntents\SetRichText
+    pim.category.api.user_intent.set_text_area.class: Akeneo\Category\Api\Command\UserIntents\SetTextArea
+    pim.category.api.user_intent.set_image.class: Akeneo\Category\Api\Command\UserIntents\SetImage
 
 services:
     Akeneo\Category\Application\Storage\Save\Saver\CategoryBaseSaver:
         arguments:
             - '@Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryBase'
             - [
-                pim.category.api.user_intent.set_code.class,
+                '%pim.category.api.user_intent.set_text.class%',
+                '%pim.category.api.user_intent.set_text_area.class%',
+                '%pim.category.api.user_intent.set_rich_text.class%',
+                '%pim.category.api.user_intent.set_image.class%',
             ]
         tags:
             - { name: 'pim.category.save.category_saver' }

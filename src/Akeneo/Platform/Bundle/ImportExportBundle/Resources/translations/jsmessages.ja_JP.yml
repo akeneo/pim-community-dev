@@ -171,11 +171,6 @@ pim_import_export:
       connection_checker:
         label: テスト接続の設定
         exception: 接続を確立できません。設定を確認してください。
-  widget:
-    last_operations:
-      empty: 現在表示する操作はありません。
-      details: 詳細
-      header.view_all: 全て表示
   batch_status:
     1: 完了
     2: 開始中...

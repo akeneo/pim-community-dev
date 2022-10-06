@@ -3,6 +3,7 @@
 namespace Akeneo\Tool\Bundle\BatchBundle\Notification;
 
 use Akeneo\Platform\Bundle\NotificationBundle\Email\MailNotifierInterface as MailNotification;
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -60,10 +61,12 @@ class MailNotifier implements Notifier
             'jobExecution' => $jobExecution,
         ];
 
+        $subject = $jobExecution->getStatus()->isUnsuccessful() ? 'Akeneo completed your export: fail' : 'Akeneo completed your export: success';
+
         try {
             $txtBody = $this->twig->render('@AkeneoBatch/Email/notification.txt.twig', $parameters);
             $htmlBody = $this->twig->render('@AkeneoBatch/Email/notification.html.twig', $parameters);
-            $this->mailer->notify($emails, 'Job has been executed', $txtBody, $htmlBody);
+            $this->mailer->notify($emails, $subject, $txtBody, $htmlBody);
         } catch (Throwable $exception) {
             $this->logger->error(
                 MailNotifier::class . ' - Unable to send email : ' . $exception->getMessage(),

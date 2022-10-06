@@ -102,19 +102,29 @@ oro_config:
       tab:
         system:
           title: Sistema
+      save_ok: Configuració desada correctament
+      save_error: Ho sentim, no s'ha pogut desar la configuració ({{ reason }})
       group:
         localization:
+          title: Configuració de la pàgina d'accés
           fields:
             system_locale:
               label: Idioma
         notification:
+          title: Notificació de noves versions
+          helper: Quan està activat, rebràs una notificació quan hi hagi una versió nova disponible per a tu.
           fields:
             enabler:
               label: Activat
         loading_message:
+          title: Missatges de càrrega personalitzats
+          helper: Entreteniu els vostres usuaris amb missatges personalitzats per a les pantalles de càrrega.
+          placeholder: Si us plau, escriviu el vostre propi missatge perquè es mostri a la pantalla de càrrega
           fields:
             enabler:
               label: Permetre els missatges que s'estan carregant
+            messages:
+              label: Afegeix els teus propis missatges de càrrega
 pim_ui:
   flash:
     unsaved_changes: 'Té canvis no desats. Segur que voleu sortir?'
@@ -187,6 +197,8 @@ pim_common:
   less_than: Menys de
   loading: Carregant...
   media_upload: Arrossegar i deixar per carrgar o feu clic aquí
+  media_uploading: S'està pujant…
+  media_upload_error: S'ha produït un error durant la càrrega
   more_actions: Més accions
   more_than: Més de
   next: Següent

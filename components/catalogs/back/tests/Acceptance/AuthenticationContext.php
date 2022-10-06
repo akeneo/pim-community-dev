@@ -6,6 +6,8 @@ namespace Akeneo\Catalogs\Test\Acceptance;
 
 use Akeneo\Connectivity\Connection\ServiceApi\Model\ConnectedAppWithValidToken;
 use Akeneo\Connectivity\Connection\ServiceApi\Service\ConnectedAppFactory;
+use Akeneo\UserManagement\Component\Model\User;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Behat\Behat\Context\Context;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -19,6 +21,7 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 class AuthenticationContext implements Context
 {
     private ContainerInterface $container;
+    private ?UserInterface $adminUser = null;
 
     public function __construct(
         KernelInterface $kernel,
@@ -26,7 +29,39 @@ class AuthenticationContext implements Context
         $this->container = $kernel->getContainer()->get('test.service_container');
     }
 
-    private function createConnectedApp(array $scopes = []): ConnectedAppWithValidToken
+    public function getAdminUser(): UserInterface
+    {
+        return $this->adminUser ??= $this->createAdminUser();
+    }
+
+    private function createAdminUser(): UserInterface
+    {
+        $user = $this->container->get('pim_user.factory.user')->create();
+        $user->setUsername('admin');
+        $user->setPlainPassword('admin');
+        $user->setEmail('admin@example.com');
+        $user->setSalt('E1F53135E559C253');
+        $user->setFirstName('John');
+        $user->setLastName('Doe');
+
+        $this->container->get('pim_user.manager')->updatePassword($user);
+
+        $adminRole = $this->container->get('pim_user.repository.role')->findOneByIdentifier('ROLE_ADMINISTRATOR');
+        if (null !== $adminRole) {
+            $user->addRole($adminRole);
+        }
+
+        $userRole = $this->container->get('pim_user.repository.role')->findOneByIdentifier(User::ROLE_DEFAULT);
+        if (null !== $userRole) {
+            $user->removeRole($userRole);
+        }
+
+        $this->container->get('pim_user.saver.user')->save($user);
+
+        return $user;
+    }
+
+    public function createConnectedApp(array $scopes = []): ConnectedAppWithValidToken
     {
         $connectedAppFactory = $this->container->get(ConnectedAppFactory::class);
 
@@ -37,32 +72,19 @@ class AuthenticationContext implements Context
         );
     }
 
-    private function logAs(string $username): void
+    public function createAuthenticatedClient(ConnectedAppWithValidToken $connectedApp): KernelBrowser
     {
-        $user = $this->container->get('pim_user.repository.user')->findOneByIdentifier($username);
-        $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
-        $this->container->get('security.token_storage')->setToken($token);
-    }
-
-    public function createAccessToken(array $scopes = []): string
-    {
-        $connectedApp = $this->createConnectedApp($scopes);
-
-        return $connectedApp->getAccessToken();
-    }
-
-    public function createAuthenticatedClient(array $scopes = []): KernelBrowser
-    {
-        $connectedApp = $this->createConnectedApp($scopes);
-
         /** @var KernelBrowser $client */
         $client = $this->container->get(KernelBrowser::class);
         $client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer ' . $connectedApp->getAccessToken());
 
-        // The connected user is not derivated from the access token when in `test` env
-        // We need to explicitly log in with it
-        $this->logAs($connectedApp->getUsername());
-
         return $client;
+    }
+
+    public function logAs(string $username): void
+    {
+        $user = $this->container->get('pim_user.repository.user')->findOneByIdentifier($username);
+        $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
+        $this->container->get('security.token_storage')->setToken($token);
     }
 }

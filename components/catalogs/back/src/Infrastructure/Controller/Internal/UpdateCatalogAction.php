@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Controller\Internal;
 
-use Akeneo\Catalogs\Application\Persistence\FindOneCatalogByIdQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\UpdateCatalogProductSelectionCriteriaQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\UpdateCatalogProductValueFiltersQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\UpsertCatalogQueryInterface;
+use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
+use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Catalog\UpsertCatalogQueryInterface;
+use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdatePayload;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -25,10 +25,8 @@ final class UpdateCatalogAction
 {
     public function __construct(
         private ValidatorInterface $validator,
-        private FindOneCatalogByIdQueryInterface $findOneCatalogByIdQuery,
+        private GetCatalogQueryInterface $getCatalogQuery,
         private UpsertCatalogQueryInterface $upsertCatalogQuery,
-        private UpdateCatalogProductSelectionCriteriaQueryInterface $updateCatalogProductSelectionCriteriaQuery,
-        private UpdateCatalogProductValueFiltersQueryInterface $updateCatalogProductValueFiltersQuery,
         private NormalizerInterface $normalizer,
     ) {
     }
@@ -39,9 +37,9 @@ final class UpdateCatalogAction
             return new RedirectResponse('/');
         }
 
-        $catalog = $this->findOneCatalogByIdQuery->execute($catalogId);
-
-        if (null === $catalog) {
+        try {
+            $catalog = $this->getCatalogQuery->execute($catalogId);
+        } catch (CatalogNotFoundException) {
             throw new NotFoundHttpException(\sprintf('catalog "%s" does not exist.', $catalogId));
         }
 
@@ -68,21 +66,14 @@ final class UpdateCatalogAction
             );
         }
 
-        $this->upsertCatalogQuery->execute(
-            $catalogId,
+        $this->upsertCatalogQuery->execute(new Catalog(
+            $catalog->getId(),
             $catalog->getName(),
             $catalog->getOwnerUsername(),
             $payload['enabled'],
-        );
-
-        $this->updateCatalogProductSelectionCriteriaQuery->execute(
-            $catalogId,
             $payload['product_selection_criteria'],
-        );
-        $this->updateCatalogProductValueFiltersQuery->execute(
-            $catalogId,
             $payload['product_value_filters'],
-        );
+        ));
 
         return new JsonResponse(null, 204);
     }

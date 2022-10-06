@@ -10,16 +10,15 @@ declare(strict_types=1);
 namespace Akeneo\Test\Category\Integration\Infrastructure\Storage\Save\Query;
 
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryBase;
+use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\Model\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
-use Akeneo\Category\Domain\ValueObject\LabelCollection;
+use Akeneo\Category\Domain\ValueObject\ValueCollection;
 use Akeneo\Category\Infrastructure\Storage\Save\Query\UpsertCategoryBaseSql;
-use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
 
-class UpsertCategoryBaseSqlIntegration extends TestCase
+class UpsertCategoryBaseSqlIntegration extends CategoryTestCase
 {
     public function testInsertNewCategoryInDatabase(): void
     {
@@ -28,61 +27,92 @@ class UpsertCategoryBaseSqlIntegration extends TestCase
         $this->assertEquals(UpsertCategoryBaseSql::class, $upsertCategoryBaseQuery::class);
 
         $categoryCode = 'myCategory';
+        $baseCompositeKey = 'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d';
+        $expectedCompositeKey = $baseCompositeKey . ValueCollection::SEPARATOR . 'en_US';
+
+        $expectedData = [
+            'attribute_codes' => [$baseCompositeKey],
+            $expectedCompositeKey => [
+                'data' => 'Meta shoes',
+                'locale' => 'en_US',
+                'attribute_code' => 'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d'
+            ]
+        ];
+
         $category = new Category(
-            null,
-            new Code($categoryCode),
-            LabelCollection::fromArray([]),
-            null
+            id: null,
+            code: new Code($categoryCode),
+            attributes: ValueCollection::fromArray($expectedData),
         );
-
         $upsertCategoryBaseQuery->execute($category);
-        $getCategory = $this->get(GetCategoryInterface::class);
-        /** @var Category $result */
-        $result = $getCategory->byCode((string)$category->getCode());
 
-        $this->assertNotNull($result);
-        $this->assertSame((string)$category->getCode(), (string)$result->getCode());
+        /** @var Category $categoryInserted */
+        $categoryInserted = $this
+            ->get(GetCategoryInterface::class)
+            ->byCode((string)$category->getCode());
+
+        $this->assertNotNull($categoryInserted);
+        $this->assertSame((string)$category->getCode(), (string)$categoryInserted->getCode());
+        $this->assertNotNull($category->getAttributes());
+        $this->assertNotNull($categoryInserted->getAttributes());
+        $this->assertArrayHasKey('attribute_codes', $categoryInserted->getAttributes()->getValues());
+        $this->assertEquals(
+            $expectedData['attribute_codes'],
+            $categoryInserted->getAttributes()->getCodes()
+        );
+        $this->assertArrayHasKey($expectedCompositeKey, $categoryInserted->getAttributes()->getValues());
+        $this->assertEquals($expectedData[$expectedCompositeKey], $categoryInserted->getAttributes()->getValues()[$expectedCompositeKey]);
     }
 
     public function testUpdateExistingCategoryInDatabase(): void
     {
-        /** @var UpsertCategoryBaseSql $upsertCategoryBaseQuery */
-        $upsertCategoryBaseQuery = $this->get(UpsertCategoryBase::class);
-        $this->assertEquals(UpsertCategoryBaseSql::class, $upsertCategoryBaseQuery::class);
+        $categoryCode = new Code('myCategory');
+        $categoryInserted = $this->insertBaseCategory($categoryCode);
 
-        $categoryCode = 'myCategory';
-        $category = new Category(
-            null,
-            new Code($categoryCode),
-            LabelCollection::fromArray([]),
-            null
+        $baseCompositeKey = 'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d';
+        $expectedCompositeKey = $baseCompositeKey . ValueCollection::SEPARATOR . 'en_US';
+
+        $expectedData = [
+            'attribute_codes' => [$baseCompositeKey],
+            $expectedCompositeKey => [
+                'data' => 'Meta shoes',
+                'locale' => 'en_US',
+                'attribute_code' => 'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d'
+            ]
+        ];
+        $expectedParentId = new CategoryId($categoryInserted->getId()->getValue());
+
+        // Update Category
+        $categoryToUpdate = new Category(
+            id: $categoryInserted->getId(),
+            code: $categoryInserted->getCode(),
+            parentId: $expectedParentId,
+            attributes: ValueCollection::fromArray($expectedData)
         );
 
-        $upsertCategoryBaseQuery->execute($category);
-        $getCategory = $this->get(GetCategoryInterface::class);
-        /** @var Category $createdCategory */
-        $createdCategory = $getCategory->byCode((string)$category->getCode());
-        $this->assertNotNull($createdCategory);
+        /** @var UpsertCategoryBaseSql $upsertCategoryBaseSql */
+        $upsertCategoryBaseSql = $this->get(UpsertCategoryBase::class);
+        $this->assertEquals(UpsertCategoryBaseSql::class, $upsertCategoryBaseSql::class);
 
-        $updatedCategory = new Category(
-            null,
-            new Code('updatedCode'),
-            LabelCollection::fromArray([]),
-            new CategoryId($createdCategory->getId()->getValue())
+        // Update Category previously inserted
+        $upsertCategoryBaseSql->execute($categoryToUpdate);
+
+        /** @var Category $updatedCategory */
+        $updatedCategory = $this
+            ->get(GetCategoryInterface::class)
+            ->byCode((string)$categoryCode);
+
+        $this->assertNotNull($updatedCategory);
+        $this->assertSame((string)$categoryInserted->getCode(), (string)$updatedCategory->getCode());
+        $this->assertNotSame($updatedCategory, $categoryInserted);
+
+        $this->assertNotNull($updatedCategory->getAttributes());
+        $this->assertArrayHasKey('attribute_codes', $updatedCategory->getAttributes()->getValues());
+        $this->assertEquals(
+            $expectedData['attribute_codes'],
+            $updatedCategory->getAttributes()->getCodes()
         );
-
-        $upsertCategoryBaseQuery->execute($updatedCategory);
-        $getCategory = $this->get(GetCategoryInterface::class);
-        /** @var Category $editedCategoryData */
-        $editedCategoryData = $getCategory->byCode((string)$updatedCategory->getCode());
-
-        $this->assertNotNull($editedCategoryData);
-        $this->assertSame((string)$updatedCategory->getCode(), (string)$editedCategoryData->getCode());
-        $this->assertSame($updatedCategory->getParentId()?->getValue(), (int)$editedCategoryData->getParentId()->getValue());
-    }
-
-    protected function getConfiguration(): Configuration
-    {
-        return $this->catalog->useMinimalCatalog();
+        $this->assertArrayHasKey($expectedCompositeKey, $updatedCategory->getAttributes()->getValues());
+        $this->assertEquals($expectedData[$expectedCompositeKey], $updatedCategory->getAttributes()->getValues()[$expectedCompositeKey]);
     }
 }

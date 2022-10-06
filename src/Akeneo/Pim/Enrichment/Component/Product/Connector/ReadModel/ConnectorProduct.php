@@ -26,7 +26,7 @@ final class ConnectorProduct
 {
     public function __construct(
         private UuidInterface $uuid,
-        private string $identifier,
+        private ?string $identifier,
         private \DateTimeImmutable $createdDate,
         private \DateTimeImmutable $updatedDate,
         private bool $enabled,
@@ -132,7 +132,7 @@ final class ConnectorProduct
         return $this->uuid;
     }
 
-    public function identifier(): string
+    public function identifier(): ?string
     {
         return $this->identifier;
     }

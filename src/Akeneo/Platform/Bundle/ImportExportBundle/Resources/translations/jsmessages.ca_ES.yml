@@ -152,12 +152,22 @@ pim_import_export:
             help: Definiu la configuració regional en què es mostren les etiquetes
       file_path: Ruta de l'arxiu
       storage_form:
+        title: Emmagatzematge
+        connection:
+          label: Tipus
+          local: Local
+          sftp: SFTP
+          none: No s'ha configurat emmagatzematge
         file_path.label: Ruta de l'arxiu
-  widget:
-    last_operations:
-      empty: No hi ha cap operació per mostrar de moment.
-      details: Detalls
-      header.view_all: Veure tots
+        host.label: Host
+        port.label: Port
+        username.label: Iniciar Sessió
+        password.label: Contrasenya
+      validation:
+        file_path:
+          unsupported_extension: Extensió d'arxiu no admesa
+      connection_checker:
+        label: Provar configuració de connexió
   batch_status:
     1: Acabat
     2: Començant

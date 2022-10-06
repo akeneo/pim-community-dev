@@ -8,13 +8,22 @@ namespace Akeneo\Category\Api\Command\UserIntents;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SetImage implements ValueUserIntent
+class SetImage implements ValueImageUserIntent
 {
+    /**
+     * @param array{
+     *     size: int,
+     *     extension: string,
+     *     file_path: string,
+     *     mime_type: string,
+     *     original_filename: string,
+     * } | null $value
+     */
     public function __construct(
         private string $attributeUuid,
         private string $attributeCode,
         private ?string $localeCode,
-        private string $value,
+        private ?array $value,
     ) {
     }
 
@@ -33,7 +42,7 @@ class SetImage implements ValueUserIntent
         return $this->localeCode;
     }
 
-    public function value(): string
+    public function value(): ?array
     {
         return $this->value;
     }

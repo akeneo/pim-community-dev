@@ -19,18 +19,16 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
  */
 class PurgeJobExecutionCommand extends Command
 {
+    public const JOB_CODE = 'job_executions_purge';
+
     protected static $defaultName = 'akeneo:batch:purge-job-execution';
 
     private const DEFAULT_NUMBER_OF_DAYS = 90;
 
-    /** @var PurgeJobExecution */
-    private $purgeJobExecution;
-
-    public function __construct(PurgeJobExecution $purgeJobExecution)
-    {
+    public function __construct(
+        private PurgeJobExecution $purgeJobExecution,
+    ) {
         parent::__construct();
-
-        $this->purgeJobExecution = $purgeJobExecution;
     }
 
     /**
@@ -65,21 +63,30 @@ class PurgeJobExecutionCommand extends Command
             return Command::FAILURE;
         }
 
-        if (0 === (int) $days) {
+        $days = (int) $days;
+
+        if (0 === $days) {
             /** @var QuestionHelper $helper */
             $helper = $this->getHelper('question');
-            $confirmation = new ConfirmationQuestion('This will delete ALL job executions. Do you confirm? ', false);
+            $confirmation = new ConfirmationQuestion(
+                'This will delete ALL job executions. Do you confirm? ',
+                false
+            );
             if (!$helper->ask($input, $output, $confirmation)) {
                 $output->write("Operation aborted\n");
 
                 return Command::FAILURE;
             }
-            $this->purgeJobExecution->all();
-            $output->write("All jobs execution deleted ...\n");
+        }
+
+        if (0 === $days) {
+            $numberOfDeletedJobExecutions = $this->purgeJobExecution->all();
+            $output->writeln('All jobs execution deleted');
         } else {
             $numberOfDeletedJobExecutions = $this->purgeJobExecution->olderThanDays($days);
-            $output->write(sprintf("%s jobs execution deleted ...\n", $numberOfDeletedJobExecutions));
+            $output->writeln(sprintf('Purged jobs execution older than %d days', $days));
         }
+        $output->writeln(sprintf('%d jobs execution deleted', $numberOfDeletedJobExecutions));
 
         return Command::SUCCESS;
     }

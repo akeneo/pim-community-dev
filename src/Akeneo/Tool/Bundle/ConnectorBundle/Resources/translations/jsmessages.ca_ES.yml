@@ -1,6 +1,8 @@
 #Job labels
 batch_jobs:
   default_steps:
+    download_files: Descarrega arxiu(s)
+    upload_files: Carrega arxiu(s)
     export: Exportar
     import: Importar
     validation: Validació d'arxiu

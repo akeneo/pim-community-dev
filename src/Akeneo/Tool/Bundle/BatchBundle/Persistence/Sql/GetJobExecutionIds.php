@@ -7,9 +7,10 @@ namespace Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use DateTime;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Driver\ResultStatement;
+use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Types\Types;
 use InvalidArgumentException;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -17,14 +18,11 @@ use InvalidArgumentException;
  */
 final class GetJobExecutionIds
 {
-    private Connection $connection;
-
-    public function __construct(Connection $connection)
+    public function __construct(private Connection $connection)
     {
-        $this->connection = $connection;
     }
 
-    public function olderThanDays(int $days): ResultStatement
+    public function olderThanDays(int $days): Result
     {
         if ($days < 1) {
             throw new InvalidArgumentException(
@@ -35,6 +33,35 @@ final class GetJobExecutionIds
         $endTime = new DateTime();
         $endTime->modify(sprintf('- %d days', $days));
 
+        return $this->fetchOlderThanTime($endTime);
+    }
+
+    public function olderThanHours(int $hours): Result
+    {
+        Assert::greaterThanEq(
+            $hours,
+            1,
+            sprintf('Number of hours should be at least 1, "%s given', $hours)
+        );
+
+        $endTime = new DateTime();
+        $endTime->modify(sprintf('- %d hours', $hours));
+
+        return $this->fetchOlderThanTime($endTime);
+    }
+
+    public function all(): Result
+    {
+        $query = <<<SQL
+            SELECT id
+            FROM akeneo_batch_job_execution
+        SQL;
+
+        return $this->connection->executeQuery($query);
+    }
+
+    private function fetchOlderThanTime(DateTime $timeLimit): Result
+    {
         $query = <<<SQL
             SELECT id
             FROM akeneo_batch_job_execution
@@ -48,18 +75,8 @@ final class GetJobExecutionIds
 
         return $this->connection->executeQuery(
             $query,
-            ['create_time' => $endTime, 'status' => BatchStatus::COMPLETED],
+            ['create_time' => $timeLimit, 'status' => BatchStatus::COMPLETED],
             ['create_time' => Types::DATETIME_MUTABLE]
         );
-    }
-
-    public function all(): ResultStatement
-    {
-        $query = <<<SQL
-            SELECT id
-            FROM akeneo_batch_job_execution
-        SQL;
-
-        return $this->connection->executeQuery($query);
     }
 }

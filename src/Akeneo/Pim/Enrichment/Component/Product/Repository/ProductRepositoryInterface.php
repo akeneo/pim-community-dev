@@ -33,6 +33,13 @@ interface ProductRepositoryInterface extends ObjectRepository
     public function findOneByIdentifier($identifier);
 
     /**
+     * @param string[] $uuids
+     *
+     * @return ProductInterface[]
+     */
+    public function getItemsFromUuids(array $uuids): array;
+
+    /**
      * @param GroupInterface $group
      * @param int            $maxResults
      *

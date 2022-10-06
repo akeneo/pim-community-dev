@@ -7,7 +7,6 @@ use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderIn
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotNull;
-use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\Constraints\Type;
 
 /**
@@ -37,11 +36,10 @@ class SimpleMassEdit implements ConstraintCollectionProviderInterface
                 'fields' => [
                     'filters' => new NotNull(),
                     'actions' => new NotNull(),
-                    'user_to_notify' => new Optional(new Type('string')),
-                    'users_to_notify' => new Optional([
+                    'users_to_notify' => [
                         new Type('array'),
                         new All(new Type('string')),
-                    ]),
+                    ],
                     'is_user_authenticated' => new Type('bool'),
                 ]
             ]

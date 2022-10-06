@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Validation;
 
-use Akeneo\Catalogs\Application\Persistence\FindOneAttributeByCodeQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Attribute\FindOneAttributeByCodeQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterion\AttributeBooleanCriterion;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterion\AttributeDateCriterion;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterion\AttributeIdentifierCriterion;

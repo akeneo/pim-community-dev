@@ -4,7 +4,7 @@ Feature: Display the product history
   As a product manager
   I need to have access to a product history
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3420
+  # @jira https://akeneo.atlassian.net/browse/PIM-3420
   Scenario: Update product history when multiple linked attributes are removed
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"

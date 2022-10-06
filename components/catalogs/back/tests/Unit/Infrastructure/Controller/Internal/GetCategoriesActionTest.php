@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Unit\Infrastructure\Controller\Internal;
 
-use Akeneo\Catalogs\Application\Persistence\GetCategoriesByCodeQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\GetCategoryTreeRootsQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Category\GetCategoriesByCodeQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Category\GetCategoryTreeRootsQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Controller\Internal\GetCategoriesAction;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;

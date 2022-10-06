@@ -87,7 +87,8 @@ catalogs-acceptance-back:
 
 .PHONY: catalogs-coverage-back
 catalogs-coverage-back:
-	XDEBUG_MODE=coverage APP_ENV=test $(PHP_RUN) vendor/bin/phpunit \
+	XDEBUG_MODE=coverage APP_ENV=test EXPERIMENTAL_TEST_DATABASE=1 \
+	$(PHP_RUN) vendor/bin/phpunit \
 		--configuration $(CATALOGS_PATH)/back/ \
 		--bootstrap $(CATALOGS_BOOTSTRAP_PATH) \
 		--log-junit var/tests/phpunit/phpunit_catalogs_global.xml \

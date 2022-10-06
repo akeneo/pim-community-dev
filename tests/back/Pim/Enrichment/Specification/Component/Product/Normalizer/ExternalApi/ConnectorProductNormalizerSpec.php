@@ -23,6 +23,12 @@ use Symfony\Component\Routing\RouterInterface;
 
 class ConnectorProductNormalizerSpec extends ObjectBehavior
 {
+    const PRODUCT_UUIDS = [
+        'identifier_1' => '54162e35-ff81-48f1-96d5-5febd3f00fd5',
+        'identifier_2' => 'd9f573cc-8905-4949-8151-baf9d5328f26',
+        'identifier_3' => 'fdf6f091-3f75-418f-98af-8c19db8b0000',
+    ];
+
     function let(
         ProductValueNormalizer $productValueNormalizer,
         RouterInterface $router,
@@ -47,7 +53,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
         $identifier1 = ScalarValue::value('sku', 'identifier_1');
         $value1 = ScalarValue::value('another_attribute', 'value_1');
         $connector1 = new ConnectorProduct(
-            Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
+            Uuid::fromString(self::PRODUCT_UUIDS['identifier_1']),
             'identifier_1',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
@@ -108,7 +114,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
         $identifier2 = ScalarValue::value('sku', 'identifier_2');
         $value2 = ScalarValue::value('another_attribute', 'value_2');
         $connector2 = new ConnectorProduct(
-            Uuid::fromString('d9f573cc-8905-4949-8151-baf9d5328f26'),
+            Uuid::fromString(self::PRODUCT_UUIDS['identifier_2']),
             'identifier_2',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
@@ -128,7 +134,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
         $identifier3 = ScalarValue::value('sku', 'identifier_3');
         $value3 = ScalarValue::value('another_attribute', 'value_3');
         $connector3 = new ConnectorProduct(
-            Uuid::fromString('fdf6f091-3f75-418f-98af-8c19db8b0000'),
+            Uuid::fromString(self::PRODUCT_UUIDS['identifier_3']),
             'identifier_3',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
@@ -156,6 +162,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
             new ConnectorProductList(3, [$connector1, $connector2, $connector3])
         )->shouldBeLike([
             [
+                'uuid' => self::PRODUCT_UUIDS['identifier_1'],
                 'identifier' => 'identifier_1',
                 'created' => '2019-04-23T15:55:50+00:00',
                 'updated' => '2019-04-25T15:55:50+00:00',
@@ -206,6 +213,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
                 ]
             ],
             [
+                'uuid' => self::PRODUCT_UUIDS['identifier_2'],
                 'identifier' => 'identifier_2',
                 'created' => '2019-04-23T15:55:50+00:00',
                 'updated' => '2019-04-25T15:55:50+00:00',
@@ -223,6 +231,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
                 'metadata' => ['a_metadata' => 'viande'],
             ],
             [
+                'uuid' => self::PRODUCT_UUIDS['identifier_3'],
                 'identifier' => 'identifier_3',
                 'created' => '2019-04-23T15:55:50+00:00',
                 'updated' => '2019-04-25T15:55:50+00:00',
@@ -249,7 +258,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
         $identifier = ScalarValue::value('sku', 'identifier_1');
         $value = ScalarValue::value('another_attribute', 'value');
         $connector = new ConnectorProduct(
-            Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
+            Uuid::fromString(self::PRODUCT_UUIDS['identifier_1']),
             'identifier_1',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
@@ -292,6 +301,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
         $productValueNormalizer->normalize($value, 'standard')->shouldBeCalled()->willReturn(['normalizedValue']);
 
         $this->normalizeConnectorProduct($connector)->shouldBeLike([
+            'uuid' => self::PRODUCT_UUIDS['identifier_1'],
             'identifier' => 'identifier_1',
             'created' => '2019-04-23T15:55:50+00:00',
             'updated' => '2019-04-25T15:55:50+00:00',

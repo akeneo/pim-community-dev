@@ -2,37 +2,27 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver;
 
-use Akeneo\Pim\Enrichment\Component\Product\Query\FindProductIdentifiersInterface;
-use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
-use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\EntityManager;
-use Doctrine\Persistence\ObjectManager;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\GroupType;
-use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionContext;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
-use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Akeneo\Pim\Structure\Component\Model\GroupType;
+use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionContext;
+use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
+use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use Doctrine\Persistence\ObjectManager;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class GroupSaverSpec extends ObjectBehavior
 {
     function let(
-        ObjectManager                       $objectManager,
-        SavingOptionsResolverInterface      $optionsResolver,
-        VersionContext                      $versionContext,
-        EventDispatcherInterface            $eventDispatcher,
-        ProductQueryBuilderFactoryInterface $pqbFactory,
-        BulkObjectDetacherInterface         $detacher,
-        FindProductIdentifiersInterface     $getGroupProductIdentifiers,
-        EntityManager                       $entityManager
+        ObjectManager $objectManager,
+        SavingOptionsResolverInterface $optionsResolver,
+        VersionContext $versionContext,
+        EventDispatcherInterface $eventDispatcher,
+        BulkObjectDetacherInterface $detacher,
     ) {
         $this->beConstructedWith(
             $objectManager,
@@ -40,7 +30,8 @@ class GroupSaverSpec extends ObjectBehavior
             $optionsResolver,
             $eventDispatcher,
             $detacher,
-            'Pim\Bundle\CatalogBundle\Model');
+            Product::class
+        );
     }
 
     function it_is_a_saver()
@@ -57,7 +48,7 @@ class GroupSaverSpec extends ObjectBehavior
     ) {
         $optionsResolver->resolveSaveOptions([])->willReturn(
             [
-                'flush'                   => true,
+                'flush' => true,
                 'copy_values_to_products' => false,
             ]
         );

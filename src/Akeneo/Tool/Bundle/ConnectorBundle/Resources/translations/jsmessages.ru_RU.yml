@@ -4,6 +4,7 @@ batch_jobs:
     export: Экспорт
     validation: Подтверждение файла
     import_associations: Импорт ассоциаций
+    import_model_associations: Импорт ассоциаций
     import_root_product_model: Импорт корневой модели продукта
     import_sub_product_model: Импорт подчиненной модели
     compute_data_related_to_family_root_product_models: Расчет моделей корневых продуктов
@@ -14,6 +15,7 @@ batch_jobs:
     delete_products_and_product_models: Массовое удаление товаров
     clean_attribute:
       register_clean_job: Добавление кода в чёрный список
+      clean_product_model: Очистить модели продуктов
       clean_product: Очистка товаров
       remove_attribute_codes_from_blacklist: Убрать код из чёрного списка
   csv_product_export:
@@ -111,6 +113,7 @@ batch_jobs:
     label: Импорт продуктов из XLSX
     import.label: Импорт продуктов
   xlsx_product_model_import:
+    label: Импорт модели продукта в XLSX
     import_product_model_descendants.label: Расчет дочерней модели продукта
   xlsx_group_export:
     label: Экспорт групп в XLSX

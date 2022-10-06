@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Test\Integration\Configuration;
@@ -21,9 +22,12 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class GetProductEndToEnd extends AbstractProductTestCase
 {
+    const PRODUCT_UUID = '412eb420-e4d1-4997-94d4-70be156a33a8';
+
     public function test_it_gets_a_product_with_attribute_options_simple_select()
     {
-        $this->createProduct('product', [
+        $this->createProductWithUuid(self::PRODUCT_UUID, [
+            new SetIdentifierValue('sku', 'product'),
             new SetFamily('familyA'),
             new SetSimpleSelectValue('a_simple_select', null, null, 'optionA')
         ]);
@@ -32,6 +36,7 @@ class GetProductEndToEnd extends AbstractProductTestCase
         $client->request('GET', 'api/rest/v1/products/product?with_attribute_options=true');
 
         $expectedProduct = [
+            'uuid' => self::PRODUCT_UUID,
             'identifier' => 'product',
             'family' => 'familyA',
             'parent' => null,
@@ -73,7 +78,8 @@ class GetProductEndToEnd extends AbstractProductTestCase
 
     public function test_it_gets_a_product_with_attribute_options_multi_select()
     {
-        $this->createProduct('product', [
+        $this->createProductWithUuid(self::PRODUCT_UUID, [
+            new SetIdentifierValue('sku', 'product'),
             new SetFamily('familyA'),
             new SetMultiSelectValue('a_multi_select', null, null, ['optionA', 'optionB'])
         ]);
@@ -82,6 +88,7 @@ class GetProductEndToEnd extends AbstractProductTestCase
         $client->request('GET', 'api/rest/v1/products/product?with_attribute_options=true');
 
         $expectedProduct = [
+            'uuid' => self::PRODUCT_UUID,
             'identifier' => 'product',
             'family' => 'familyA',
             'parent' => null,
@@ -132,7 +139,8 @@ class GetProductEndToEnd extends AbstractProductTestCase
 
     public function test_it_gets_a_product_with_attribute_options_multi_select_with_wrong_case()
     {
-        $this->createProduct('product', [
+        $this->createProductWithUuid(self::PRODUCT_UUID, [
+            new SetIdentifierValue('sku', 'product'),
             new SetFamily('familyA'),
             new SetMultiSelectValue('a_multi_select', null, null, ['optionA', 'OptiONB'])
         ]);
@@ -141,6 +149,7 @@ class GetProductEndToEnd extends AbstractProductTestCase
         $client->request('GET', 'api/rest/v1/products/product?with_attribute_options=true');
 
         $expectedProduct = [
+            'uuid' => self::PRODUCT_UUID,
             'identifier' => 'product',
             'family' => 'familyA',
             'parent' => null,
@@ -194,7 +203,8 @@ class GetProductEndToEnd extends AbstractProductTestCase
      */
     public function test_it_gets_a_product()
     {
-        $this->createProduct('product', [
+        $this->createProductWithUuid(self::PRODUCT_UUID, [
+            new SetIdentifierValue('sku', 'product'),
             new SetFamily('familyA1'),
             new SetEnabled(true),
             new SetCategories(['categoryA', 'master', 'master_china']),
@@ -206,6 +216,7 @@ class GetProductEndToEnd extends AbstractProductTestCase
         $client->request('GET', 'api/rest/v1/products/product');
 
         $standardProduct = [
+            'uuid' => self::PRODUCT_UUID,
             'identifier' => 'product',
             'family' => 'familyA1',
             'parent' => null,
@@ -249,7 +260,10 @@ class GetProductEndToEnd extends AbstractProductTestCase
 
     public function test_it_gets_a_product_with_quality_scores()
     {
-        $product = $this->createProduct('product', [new SetFamily('familyA')]);
+        $product = $this->createProductWithUuid(self::PRODUCT_UUID, [
+            new SetIdentifierValue('sku', 'product'),
+            new SetFamily('familyA')
+        ]);
 
         ($this->get('Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts'))(
             ProductUuidCollection::fromString($product->getUuid()->toString())
@@ -259,6 +273,7 @@ class GetProductEndToEnd extends AbstractProductTestCase
         $client->request('GET', 'api/rest/v1/products/product?with_quality_scores=true');
 
         $expectedProduct = [
+            'uuid' => self::PRODUCT_UUID,
             'identifier' => 'product',
             'family' => 'familyA',
             'parent' => null,
@@ -293,7 +308,8 @@ class GetProductEndToEnd extends AbstractProductTestCase
 
     public function test_it_gets_a_product_with_completenesses()
     {
-        $this->createProduct('product', [
+        $this->createProductWithUuid(self::PRODUCT_UUID, [
+            new SetIdentifierValue('sku', 'product'),
             new SetFamily('familyA'),
             new SetSimpleSelectValue('a_simple_select', null, null, 'optionA')
         ]);
@@ -302,6 +318,7 @@ class GetProductEndToEnd extends AbstractProductTestCase
         $client->request('GET', 'api/rest/v1/products/product?with_completenesses=true');
 
         $expectedProduct = [
+            'uuid' => self::PRODUCT_UUID,
             'identifier' => 'product',
             'family' => 'familyA',
             'parent' => null,

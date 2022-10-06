@@ -133,7 +133,7 @@ Feature: Execute a job
     And I visit the "Cross sell (0)" association type
     Then I should see the text "0 product(s), 0 product model(s) and 0 group(s)"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-5696
+  # @jira https://akeneo.atlassian.net/browse/PIM-5696
   Scenario: Successfully import products with associations and numeric value as SKU
     Given the following XLSX file to import:
       """

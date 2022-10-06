@@ -3,22 +3,10 @@ import {CloseIcon, IconButton, List, SelectInput} from 'akeneo-design-system';
 import {Operator} from '../../models/Operator';
 import {CriterionModule} from '../../models/Criterion';
 import {StatusCriterionOperator, StatusCriterionState} from './types';
-import styled from 'styled-components';
 import {useOperatorTranslator} from '../../hooks/useOperatorTranslator';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {ErrorHelpers} from '../../components/ErrorHelpers';
-
-const Fields = styled.div`
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    flex-grow: 1;
-`;
-
-const Field = styled.div`
-    flex-basis: 200px;
-    flex-shrink: 0;
-`;
+import {CriterionField, CriterionFields} from '../../components/CriterionFields';
 
 const StatusCriterion: FC<CriterionModule<StatusCriterionState>> = ({state, onChange, onRemove, errors}) => {
     const translateOperator = useOperatorTranslator();
@@ -31,8 +19,8 @@ const StatusCriterion: FC<CriterionModule<StatusCriterionState>> = ({state, onCh
                 {translate('akeneo_catalogs.product_selection.criteria.status.label')}
             </List.TitleCell>
             <List.Cell width='auto'>
-                <Fields>
-                    <Field>
+                <CriterionFields>
+                    <CriterionField>
                         <SelectInput
                             emptyResultLabel=''
                             openLabel=''
@@ -49,8 +37,8 @@ const StatusCriterion: FC<CriterionModule<StatusCriterionState>> = ({state, onCh
                                 {translateOperator(Operator.NOT_EQUAL)}
                             </SelectInput.Option>
                         </SelectInput>
-                    </Field>
-                    <Field>
+                    </CriterionField>
+                    <CriterionField width={300}>
                         <SelectInput
                             emptyResultLabel=''
                             openLabel=''
@@ -67,8 +55,8 @@ const StatusCriterion: FC<CriterionModule<StatusCriterionState>> = ({state, onCh
                                 {translate('akeneo_catalogs.product_selection.criteria.status.disabled')}
                             </SelectInput.Option>
                         </SelectInput>
-                    </Field>
-                </Fields>
+                    </CriterionField>
+                </CriterionFields>
             </List.Cell>
             <List.RemoveCell>
                 <IconButton

@@ -14,29 +14,25 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 final class DeleteJobExecutionLogs
 {
-    /** @var GetJobExecutionIds */
-    private $getJobExecutionIds;
-
-    /** @var Filesystem */
-    private $filesystem;
-
-    /** @var string */
-    private $logDir;
-
     public function __construct(
-        GetJobExecutionIds $getJobExecutionIds,
-        Filesystem $filesystem,
-        string $logDir
+        private GetJobExecutionIds $getJobExecutionIds,
+        private Filesystem $filesystem,
+        private string $logDir
     ) {
-        $this->getJobExecutionIds = $getJobExecutionIds;
-        $this->filesystem = $filesystem;
-        $this->logDir = $logDir;
     }
 
     public function olderThanDays(int $days): void
     {
         $statement = $this->getJobExecutionIds->olderThanDays($days);
-        while ($id = $statement->fetch(FetchMode::COLUMN)) {
+        while ($id = $statement->fetchOne()) {
+            $this->filesystem->remove($this->getJobExecutionLogDirectory($id));
+        }
+    }
+
+    public function olderThanHours(int $hours): void
+    {
+        $statement = $this->getJobExecutionIds->olderThanHours($hours);
+        while ($id = $statement->fetchOne()) {
             $this->filesystem->remove($this->getJobExecutionLogDirectory($id));
         }
     }
@@ -44,7 +40,7 @@ final class DeleteJobExecutionLogs
     public function all(): void
     {
         $statement = $this->getJobExecutionIds->all();
-        while ($id = $statement->fetch(FetchMode::COLUMN)) {
+        while ($id = $statement->fetchOne()) {
             $this->filesystem->remove($this->getJobExecutionLogDirectory($id));
         }
     }

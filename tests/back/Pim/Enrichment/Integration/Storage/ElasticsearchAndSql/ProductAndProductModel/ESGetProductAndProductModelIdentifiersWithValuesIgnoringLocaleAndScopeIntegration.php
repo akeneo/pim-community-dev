@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Storage\ElasticsearchAndSql\ProductAndProductModel;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResults;
 use Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\ESGetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndScope;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -37,15 +38,26 @@ final class ESGetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndSco
             ['blue']
         );
 
-        $totalIdentifiers = [];
-        foreach ($results as $identifiers) {
-            $totalIdentifiers = array_merge($totalIdentifiers, $identifiers);
+        $allIdentifierResults = is_array($results) ? $results : iterator_to_array($results);
+        Assert::assertContainsOnlyInstancesOf(IdentifierResults::class, $allIdentifierResults);
+        $productIdentifiers = [];
+        $productModelCodes = [];
+        foreach ($allIdentifierResults as $identifierResult) {
+            $productIdentifiers = array_merge(
+                $productIdentifiers,
+                $identifierResult->getProductIdentifiers()
+            );
+            $productModelCodes = array_merge(
+                $productModelCodes,
+                $identifierResult->getProductModelIdentifiers()
+            );
         }
 
-        $this->assertNotEmpty($totalIdentifiers);
-        $this->assertContains('1111111111', $totalIdentifiers);
-        $this->assertContains('artemis_blue', $totalIdentifiers);
-        $this->assertNotContains('artemis_red', $totalIdentifiers);
+        $this->assertNotEmpty($productIdentifiers);
+        $this->assertNotEmpty($productModelCodes);
+        $this->assertContains('1111111111', $productIdentifiers);
+        $this->assertContains('artemis_blue', $productModelCodes);
+        $this->assertNotContains('artemis_red', $productModelCodes);
     }
 
     public function test_it_returns_products_and_product_models_for_a_localizable_attribute()
@@ -56,13 +68,23 @@ final class ESGetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndSco
             ['athena']
         );
 
-        $totalIdentifiers = [];
-        foreach ($results as $identifiers) {
-            $totalIdentifiers = array_merge($totalIdentifiers, $identifiers);
+        $allIdentifierResults = is_array($results) ? $results : iterator_to_array($results);
+        Assert::assertContainsOnlyInstancesOf(IdentifierResults::class, $allIdentifierResults);
+        $productIdentifiers = [];
+        $productModelCodes = [];
+        foreach ($allIdentifierResults as $identifierResult) {
+            $productIdentifiers = array_merge(
+                $productIdentifiers,
+                $identifierResult->getProductIdentifiers()
+            );
+            $productModelCodes = array_merge(
+                $productModelCodes,
+                $identifierResult->getProductModelIdentifiers()
+            );
         }
 
-        $this->assertCount(1, $totalIdentifiers);
-        $this->assertSame('athena', $totalIdentifiers[0]);
+        $this->assertEmpty($productIdentifiers);
+        $this->assertSame(['athena'], $productModelCodes);
     }
 
     public function test_it_returns_all_products_and_models_with_non_empty_values_if_provided_options_are_empty()
@@ -73,15 +95,25 @@ final class ESGetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndSco
             []
         );
 
-        $totalIdentifiers = [];
-        foreach ($results as $identifiers) {
-            $totalIdentifiers = array_merge($totalIdentifiers, $identifiers);
+        $allIdentifierResults = is_array($results) ? $results : iterator_to_array($results);
+        Assert::assertContainsOnlyInstancesOf(IdentifierResults::class, $allIdentifierResults);
+        $productIdentifiers = [];
+        $productModelCodes = [];
+        foreach ($allIdentifierResults as $identifierResult) {
+            $productIdentifiers = array_merge(
+                $productIdentifiers,
+                $identifierResult->getProductIdentifiers()
+            );
+            $productModelCodes = array_merge(
+                $productModelCodes,
+                $identifierResult->getProductModelIdentifiers()
+            );
         }
 
-        Assert::assertContains('1111111111', $totalIdentifiers);
-        Assert::assertNotContains('1111111173', $totalIdentifiers);
-        Assert::assertContains('tshirt-divided-navy-blue-xxs', $totalIdentifiers);
-        Assert::assertNotContains('artemis_red', $totalIdentifiers);
+        Assert::assertContains('1111111111', $productIdentifiers);
+        Assert::assertNotContains('1111111173', $productIdentifiers);
+        Assert::assertContains('tshirt-divided-navy-blue-xxs', $productIdentifiers);
+        Assert::assertNotContains('artemis_red', $productModelCodes);
     }
 
     /**

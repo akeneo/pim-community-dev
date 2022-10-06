@@ -15,7 +15,6 @@ pim_catalog_volume:
     count_products: Продукты
     average_max_attributes_per_family: Количество атрибутов на семейство
     count_channels: Каналы
-    count_locales: Локали (действующие)
     count_scopable_attributes: Видимые атрибуты
     count_localizable_and_scopable_attributes: Локализуемые и видимые атрибуты
     count_localizable_attributes: Локализуемые атрибуты
@@ -26,4 +25,6 @@ pim_catalog_volume:
     count_category_trees: Деревья категории
     count_variant_products: Варианты продуктов
     count_product_models: Модели продукта
-    warning: Ух ты! Вы побили рекорд по этому измерению! Не стесняйтесь обращаться к нам, если вам нужна помощь.
+    title:
+      product: Продукт
+  max: 'Макс.:'

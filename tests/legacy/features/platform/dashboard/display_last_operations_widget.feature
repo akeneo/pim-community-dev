@@ -27,5 +27,5 @@ Feature: Display last operations widget
     And I wait for the "csv_footwear_category_export" job to finish
     When I am on the dashboard page
     Then I should see the text "Last operations"
-    And I press the "Show job tracker" button
+    And I press the "View all" button
     Then I should be redirected on the job tracker page

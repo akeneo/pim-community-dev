@@ -179,4 +179,23 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
         $this->findOneBy(['uuid' => $productB->getUuid()])->shouldBe($productB);
         $this->findOneBy(['uuid' => Uuid::uuid4()])->shouldBeNull();
     }
+
+    function it_gets_products_by_uuids()
+    {
+        $product1 = new Product();
+        $product1->setIdentifier('foo');
+        $this->save($product1);
+        $product2 = new Product();
+        $product2->setIdentifier('bar');
+        $this->save($product2);
+
+        $this->getItemsFromUuids(
+            [
+                $product1->getUuid()->toString(),
+                'not_a_uuid',
+                Uuid::uuid4()->toString(),
+                $product2->getUuid()->toString(),
+            ]
+        )->shouldReturn([$product1, $product2]);
+    }
 }

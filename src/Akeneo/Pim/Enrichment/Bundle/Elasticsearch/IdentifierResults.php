@@ -22,7 +22,7 @@ class IdentifierResults
     /** @var IdentifierResult[] */
     private array $identifierResults = [];
 
-    public function add(string $identifier, string $type, string $id): void
+    public function add(?string $identifier, string $type, string $id): void
     {
         $this->identifierResults[] = new IdentifierResult($identifier, $type, $id);
     }
@@ -35,6 +35,19 @@ class IdentifierResults
     public function getProductIdentifiers(): array
     {
         return $this->getIdentifiersByType(ProductInterface::class);
+    }
+
+    public function getProductUuids(): array
+    {
+        return \array_values(
+            \array_map(
+                static fn (IdentifierResult $result): string => \preg_replace('/^product_/', '', $result->getId()),
+                \array_filter(
+                    $this->identifierResults,
+                    static fn (IdentifierResult $result): bool => ProductInterface::class === $result->getType()
+                )
+            )
+        );
     }
 
     /**

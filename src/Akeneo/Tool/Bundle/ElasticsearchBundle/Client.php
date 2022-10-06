@@ -334,6 +334,10 @@ class Client
      */
     public function createIndex()
     {
+        if ($this->hasIndexForAlias()) {
+            throw new \LogicException(sprintf('Index %s already exists', $this->indexName));
+        }
+
         $configuration = $this->configurationLoader->load();
         $body = $configuration->buildAggregated();
         $body['aliases'] = [$this->indexName => (object) []];

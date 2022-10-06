@@ -3,6 +3,7 @@
 namespace spec\Akeneo\Tool\Component\BatchQueue\Queue;
 
 use Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository;
+use Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler;
 use Akeneo\Tool\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Akeneo\Tool\Bundle\BatchBundle\Validator\Constraints\JobInstance as JobInstanceConstraint;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
@@ -31,27 +32,21 @@ class PublishJobToQueueSpec extends ObjectBehavior
     public function let(
         DoctrineJobRepository $jobRepository,
         ValidatorInterface $validator,
-        JobRegistry $jobRegistry,
-        JobParametersFactory $jobParametersFactory,
-        EntityManagerInterface $entityManager,
-        JobParametersValidator $jobParametersValidator,
         JobExecutionQueueInterface $jobExecutionQueue,
         JobExecutionMessageFactory $jobExecutionMessageFactory,
         EventDispatcherInterface $eventDispatcher,
-        BatchLogHandler $batchLogHandler
+        BatchLogHandler $batchLogHandler,
+        CreateJobExecutionHandler $createJobExecutionHandler,
     ): void {
         $this->beConstructedWith(
             'prod',
             $jobRepository,
             $validator,
-            $jobRegistry,
-            $jobParametersFactory,
-            $entityManager,
-            $jobParametersValidator,
             $jobExecutionQueue,
             $jobExecutionMessageFactory,
             $eventDispatcher,
-            $batchLogHandler
+            $batchLogHandler,
+            $createJobExecutionHandler,
         );
     }
 
@@ -63,50 +58,36 @@ class PublishJobToQueueSpec extends ObjectBehavior
     public function it_publishes_a_job_to_the_execution_queue(
         DoctrineJobRepository $jobRepository,
         ValidatorInterface $validator,
-        JobRegistry $jobRegistry,
-        JobParametersFactory $jobParametersFactory,
-        EntityManagerInterface $entityManager,
-        JobParametersValidator $jobParametersValidator,
         JobExecutionQueueInterface $jobExecutionQueue,
+        JobExecutionMessageFactory $jobExecutionMessageFactory,
         EventDispatcherInterface $eventDispatcher,
         BatchLogHandler $batchLogHandler,
+        CreateJobExecutionHandler $createJobExecutionHandler,
+        EntityManagerInterface $entityManager,
         ObjectRepository $jobInstanceRepository,
         JobInstance $jobInstance,
-        Job $job,
-        JobParameters $jobParameters,
         JobExecution $jobExecution,
-        JobExecutionMessageFactory $jobExecutionMessageFactory
     ): void {
-        $jobInstance->getJobName()->willReturn('job-code');
-        $jobInstance->getRawParameters()->willReturn([]);
+        $batchCode = 'job-code';
+        $config = [];
 
-        $jobInstanceRepository->findOneBy(['code' => 'job-code'])->willReturn($jobInstance);
-        $entityManager->getRepository(JobInstance::class)->willReturn($jobInstanceRepository);
         $jobRepository->getJobManager()->willReturn($entityManager);
+        $entityManager->getRepository(JobInstance::class)->willReturn($jobInstanceRepository);
 
-        $jobRegistry->get('job-code')->willReturn($job);
-        $jobParametersFactory->create($job, [])->willReturn($jobParameters);
+        $jobInstanceRepository->findOneBy(['code' => $batchCode])->willReturn($jobInstance);
 
-        $entityManager->merge($jobInstance)->shouldBeCalled();
-        $validator->validate($jobInstance, Argument::any())
-            ->shouldBeCalled()->willReturn(new ConstraintViolationList([]));
-        $jobParametersValidator->validate($job, $jobParameters, ['Default', 'Execution'])
-                               ->shouldBeCalled()->willReturn(new ConstraintViolationList([]));
-        $entityManager->clear(get_class($jobInstance->getWrappedObject()))->shouldBeCalled();
+        $createJobExecutionHandler->createFromJobInstance($jobInstance, $config, null)->willReturn($jobExecution);
 
         $jobExecution->getId()->willReturn(42);
-        $jobRepository->createJobExecution($job, $jobInstance, $jobParameters)->shouldBeCalled()->willReturn($jobExecution);
+        $batchLogHandler->setSubDirectory('42')->shouldBeCalled();
 
         $jobExecutionMessage = UiJobExecutionMessage::createJobExecutionMessage(42, []);
         $jobExecutionMessageFactory->buildFromJobInstance($jobInstance, 42, ['env' => 'prod'])
             ->willReturn($jobExecutionMessage);
 
-        $batchLogHandler->setSubDirectory('42')->shouldBeCalled();
-        $jobRepository->updateJobExecution($jobExecution)->shouldBeCalled();
-
         $jobExecutionQueue->publish($jobExecutionMessage)->shouldBeCalled();
         $eventDispatcher->dispatch(Argument::type(JobExecutionEvent::class), EventInterface::JOB_EXECUTION_CREATED)->shouldBeCalled();
 
-        $this->publish('job-code', []);
+        $this->publish($batchCode, $config);
     }
 }

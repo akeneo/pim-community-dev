@@ -2,59 +2,32 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\FromSizeCursor;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\FromSizeCursor;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Ramsey\Uuid\Uuid;
 
 class FromSizeCursorSpec extends ObjectBehavior
 {
     function let(
         Client $esClient,
-        CursorableRepositoryInterface $productRepository,
-        CursorableRepositoryInterface $productModelRepository,
-        ProductModelInterface $subProductModel
+        ProductRepositoryInterface $productRepository,
+        ProductModelRepositoryInterface $productModelRepository,
     ) {
-        $variantProduct = new Product();
-        $variantProduct->setIdentifier('a-variant-product');
-        $productRepository->getItemsFromIdentifiers(['a-variant-product'])->willReturn([$variantProduct]);
-
-        $subProductModel->getCode()->willReturn('a-sub-product-model');
-        $productModelRepository->getItemsFromIdentifiers(['a-sub-product-model'])->willReturn([$subProductModel]);
-
-        $esClient->search([
-            'from' => 0,
-            'size' => 2,
-            'sort' => ['_id' => 'asc'],
-            'track_total_hits' => true,
-        ])
-            ->willReturn([
-                'hits' => [
-                    'total' => ['value' => 4, 'relation' => 'eq'],
-                    'hits' => [
-                        [
-                            '_source' => ['identifier' => 'a-variant-product', 'document_type' => ProductInterface::class, 'id' => 'product_' . $variantProduct->getUuid()->toString()],
-                            'sort' => ['#a-variant-product']
-                        ],
-                        [
-                            '_source' => ['identifier' => 'a-sub-product-model', 'document_type' => ProductModelInterface::class, 'id' => 'product_model_a-sub-product-model'],
-                            'sort' => ['#a-sub-product-model']
-                        ],
-                    ]
-                ]
-            ]);
-
         $this->beConstructedWith(
             $esClient,
             $productRepository,
             $productModelRepository,
             [],
-            3,
-            2,
+            25,
+            20,
             0
         );
     }
@@ -65,162 +38,109 @@ class FromSizeCursorSpec extends ObjectBehavior
         $this->shouldImplement(CursorInterface::class);
     }
 
-    function it_is_countable()
-    {
+    function it_is_countable(
+        Client $esClient,
+        ProductRepositoryInterface $productRepository,
+        ProductModelRepositoryInterface $productModelRepository,
+    ) {
         $this->shouldImplement(\Countable::class);
-        $this->count()->shouldReturn(4);
+        $productRepository->getItemsFromUuids([])
+            ->shouldBeCalledOnce()->willReturn([]);
+        $productModelRepository->getItemsFromIdentifiers(['a-root-product-model', 'a-sub-product-model'])
+            ->shouldBeCalledOnce()->willReturn([]);
+        $esClient->search([
+            'from' => 0,
+            'size' => 20,
+            'sort' => ['_id' => 'asc'],
+            'track_total_hits' => true,
+        ])->shouldBeCalledOnce()->willReturn([
+            'hits' => [
+                'total' => ['value' => 2, 'relation' => 'eq'],
+                'hits' => [
+                    [
+                        '_source' => ['identifier' => 'a-root-product-model', 'document_type' => ProductModelInterface::class, 'id' => 'product_model_67'],
+                        'sort' => ['#product_model_67']
+                    ],
+                    [
+                        '_source' => ['identifier' => 'a-sub-product-model', 'document_type' => ProductModelInterface::class, 'id' => 'product_model_6'],
+                        'sort' => ['#product_model_6']
+                    ],
+                ]
+            ]
+        ]);
+        $this->count()->shouldReturn(2);
     }
 
     function it_is_iterable(
-        $esClient,
-        $subProductModel,
-        $productRepository,
-        $productModelRepository,
-        ProductModelInterface $rootProductModel
+        Client $esClient,
+        ProductRepositoryInterface $productRepository,
+        ProductModelRepositoryInterface $productModelRepository,
     ) {
-        $variantProduct = new Product();
+        $simpleUuid = Uuid::uuid4();
+        $simpleProduct = new Product($simpleUuid);
+        $variantUuid = Uuid::uuid4();
+        $variantProduct = new Product($variantUuid);
         $variantProduct->setIdentifier('a-variant-product');
-        $productRepository->getItemsFromIdentifiers(['a-variant-product'])->willReturn([$variantProduct]);
 
-        $product = new Product();
-        $product->setIdentifier('a-product');
-        $productRepository->getItemsFromIdentifiers(['a-product'])->willReturn([$product]);
+        $rootProductModel = new ProductModel();
+        $rootProductModel->setCode('a-root-product-model');
+        $subProductModel = new ProductModel();
+        $subProductModel->setCode('a-sub-product-model');
 
-        $rootProductModel->getCode()->willReturn('a-root-product-model');
-        $productModelRepository->getItemsFromIdentifiers(['a-root-product-model'])->willReturn([$rootProductModel]);
+        $productRepository->getItemsFromUuids([$simpleUuid->toString(), $variantUuid->toString()])
+            ->shouldBeCalledOnce()->willReturn([$variantProduct, $simpleProduct]);
+        $productModelRepository->getItemsFromIdentifiers(['a-root-product-model', 'a-non-existing-model', 'a-sub-product-model'])
+            ->shouldBeCalledOnce()->willReturn([$rootProductModel, $subProductModel]);
 
         $esClient->search(
             [
-                'size' => 2,
+                'size' => 20,
                 'sort' => ['_id' => 'asc'],
-                'from' => 2
-            ])
-            ->willReturn([
-                'hits' => [
-                    'total' => 4,
-                    'hits' => [
-                        [
-                            '_source' => ['identifier' => 'a-root-product-model', 'document_type' => ProductModelInterface::class, 'id' => 'product_model_a-root-product-model'],
-                            'sort' => ['#a-root-product-model']
-                        ],
-                        [
-                            '_source' => ['identifier' => 'a-product', 'document_type' => ProductInterface::class, 'id' => 'product_' . $product->getUuid()->toString()],
-                            'sort' => ['#a-product']
-                        ],
-                    ]
-                ]
-            ]);
-        $esClient->search(
-            [
-                'size' => 2,
-                'sort' => ['_id' => 'asc'],
-                'from' => 3
-            ])->willReturn([
+                'from' => 0,
+                'track_total_hits' => true,
+            ]
+        )->shouldBeCalled()->willReturn([
             'hits' => [
-                'total' => 4,
+                'total' => ['value' => 5, 'relation' => 'eq'],
+                'hits' => [
+                    [
+                        '_source' => ['identifier' => 'a-root-product-model', 'document_type' => ProductModelInterface::class, 'id' => 'product_model_10'],
+                        'sort' => ['#product_model_10']
+                    ],
+                    [
+                        '_source' => ['identifier' => 'a-product', 'document_type' => ProductInterface::class, 'id' => 'product_' . $simpleUuid->toString()],
+                        'sort' => ['#product_' . $simpleUuid->toString()]
+                    ],
+                    [
+                        '_source' => ['identifier' => 'a-non-existing-model', 'document_type' => ProductModelInterface::class, 'id' => 'product_model_55'],
+                        'sort' => ['#product_model_55']
+                    ],
+                    [
+                        '_source' => ['identifier' => 'a-variant-product', 'document_type' => ProductInterface::class, 'id' => 'product_' . $variantUuid->toString()],
+                        'sort' => ['#product_' . $variantUuid->toString()]
+                    ],
+                    [
+                        '_source' => ['identifier' => 'a-sub-product-model', 'document_type' => ProductModelInterface::class, 'id' => 'product_model_24'],
+                        'sort' => ['#product_model_24']
+                    ],
+                ]
+            ]
+        ]);
+
+        $esClient->search(
+            [
+                'size' => 16,
+                'sort' => ['_id' => 'asc'],
+                'from' => 4,
+                'track_total_hits' => true,
+            ]
+        )->shouldBeCalled()->willReturn([
+            'hits' => [
+                'total' => ['value' => 5, 'relation' => 'eq'],
                 'hits' => []
             ]
         ]);
 
-        $page1 = [$variantProduct, $subProductModel];
-        $page2 = [$rootProductModel, $product];
-        $data = array_merge($page1, $page2);
-
-        $this->shouldImplement(\Iterator::class);
-
-        for ($i = 0; $i < 2; $i++) {
-            if ($i > 0) {
-                $this->next()->shouldReturn(null);
-            }
-            $this->valid()->shouldReturn(true);
-            $this->current()->shouldReturn($data[$i]);
-
-            $n = 0 === $i%2 ? 0 : $i;
-            $this->key()->shouldReturn($n);
-        }
-
-        $this->next()->shouldReturn(null);
-        $this->valid()->shouldReturn(false);
-
-        // check behaviour after the end of data
-        $this->current()->shouldReturn(false);
-        $this->key()->shouldReturn(null);
-    }
-
-    function it_is_iterable_with_products_and_product_models_having_the_same_identifiers(
-        $esClient,
-        $subProductModel,
-        $productRepository,
-        $productModelRepository,
-        ProductInterface $product,
-        ProductModelInterface $rootProductModel
-    ) {
-        $variantProduct = new Product();
-        $variantProduct->setIdentifier('a-variant-product');
-        $productRepository->getItemsFromIdentifiers(['a-variant-product'])->willReturn([$variantProduct]);
-
-        $product = new Product();
-        $product->setIdentifier('foo');
-        $productRepository->getItemsFromIdentifiers(['foo'])->willReturn([$product]);
-
-        $rootProductModel->getCode()->willReturn('foo');
-        $productModelRepository->getItemsFromIdentifiers(['foo'])->willReturn([$rootProductModel]);
-
-        $esClient->search(
-            [
-                'size' => 2,
-                'sort' => ['_id' => 'asc'],
-                'from' => 2
-            ])
-            ->willReturn([
-                'hits' => [
-                    'total' => 4,
-                    'hits' => [
-                        [
-                            '_source' => ['identifier' => 'foo', 'document_type' => ProductModelInterface::class, 'id' => 'product_model_foo'],
-                            'sort' => ['#foo']
-                        ],
-                        [
-                            '_source' => ['identifier' => 'foo', 'document_type' => ProductInterface::class, 'id' => 'product_' . $product->getUuid()->toString()],
-                            'sort' => ['#foo']
-                        ],
-                    ]
-                ]
-            ]);
-        $esClient->search(
-            [
-                'size' => 2,
-                'sort' => ['_id' => 'asc'],
-                'from' => 3
-            ])->willReturn([
-            'hits' => [
-                'total' => 4,
-                'hits' => []
-            ]
-        ]);
-
-        $page1 = [$variantProduct, $subProductModel];
-        $page2 = [$rootProductModel, $product];
-        $data = array_merge($page1, $page2);
-
-        $this->shouldImplement(\Iterator::class);
-
-        for ($i = 0; $i < 2; $i++) {
-            if ($i > 0) {
-                $this->next()->shouldReturn(null);
-            }
-            $this->valid()->shouldReturn(true);
-            $this->current()->shouldReturn($data[$i]);
-
-            $n = 0 === $i%2 ? 0 : $i;
-            $this->key()->shouldReturn($n);
-        }
-
-        $this->next()->shouldReturn(null);
-        $this->valid()->shouldReturn(false);
-
-        // check behaviour after the end of data
-        $this->current()->shouldReturn(false);
-        $this->key()->shouldReturn(null);
+        $this->shouldIterateLike([$rootProductModel, $simpleProduct, $variantProduct, $subProductModel]);
     }
 }

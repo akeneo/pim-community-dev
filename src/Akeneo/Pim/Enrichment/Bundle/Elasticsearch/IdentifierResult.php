@@ -76,16 +76,6 @@ class IdentifierResult
      *
      * @return bool
      */
-    public function isProductIdentifierEquals(string $identifier): bool
-    {
-        return $identifier === $this->identifier && ProductInterface::class === $this->type;
-    }
-
-    /**
-     * @param string $identifier
-     *
-     * @return bool
-     */
     public function isProductModelIdentifierEquals(string $identifier): bool
     {
         return $identifier === $this->identifier && ProductModelInterface::class === $this->type;

@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification;
 use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -19,7 +20,6 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -32,7 +32,7 @@ class RemoveCompletenessForChannelAndLocaleTaskletSpec extends ObjectBehavior
         NotifierInterface $notifier,
         SimpleFactoryInterface $notificationFactory,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
-        CursorableRepositoryInterface $productRepository,
+        ProductRepositoryInterface $productRepository,
         ChannelRepositoryInterface $channelRepository,
         BulkSaverInterface $productBulkSaver,
         StepExecution $stepExecution,
@@ -83,7 +83,7 @@ class RemoveCompletenessForChannelAndLocaleTaskletSpec extends ObjectBehavior
         NotifierInterface $notifier,
         SimpleFactoryInterface $notificationFactory,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
-        CursorableRepositoryInterface $productRepository,
+        ProductRepositoryInterface $productRepository,
         BulkSaverInterface $productBulkSaver,
         JobParameters $jobParameters,
         ProductQueryBuilderInterface $pqb,
@@ -112,7 +112,7 @@ class RemoveCompletenessForChannelAndLocaleTaskletSpec extends ObjectBehavior
         $productsCursor->next()->shouldBeCalled();
         $productsCursor->valid()->willReturn(true, false);
 
-        $productRepository->getItemsFromIdentifiers(['jean'])->willReturn([$jeanProduct]);
+        $productRepository->getItemsFromUuids([$uuid->toString()])->willReturn([$jeanProduct]);
 
         $productBulkSaver->saveAll([$jeanProduct], ['force_save' => true])->shouldBeCalledOnce();
 
@@ -124,7 +124,7 @@ class RemoveCompletenessForChannelAndLocaleTaskletSpec extends ObjectBehavior
         NotifierInterface $notifier,
         SimpleFactoryInterface $notificationFactory,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
-        CursorableRepositoryInterface $productRepository,
+        ProductRepositoryInterface $productRepository,
         BulkSaverInterface $productBulkSaver,
         JobParameters $jobParameters,
         ProductQueryBuilderInterface $pqb,
@@ -160,8 +160,8 @@ class RemoveCompletenessForChannelAndLocaleTaskletSpec extends ObjectBehavior
         $productsCursor->next()->shouldBeCalled();
         $productsCursor->valid()->willReturn(true, true, true, false);
 
-        $productRepository->getItemsFromIdentifiers(['jean', 'shoe'])->willReturn([$jeanProduct, $shoeProduct]);
-        $productRepository->getItemsFromIdentifiers(['hat'])->willReturn([$hatProduct]);
+        $productRepository->getItemsFromUuids([$jeanUuid->toString(), $shoeUuid->toString()])->willReturn([$jeanProduct, $shoeProduct]);
+        $productRepository->getItemsFromUuids([$hatUuid->toString()])->willReturn([$hatProduct]);
         $cacheClearer->clear()->shouldBeCalled();
 
         $productBulkSaver->saveAll([$jeanProduct, $shoeProduct], ['force_save' => true])->shouldBeCalledOnce();

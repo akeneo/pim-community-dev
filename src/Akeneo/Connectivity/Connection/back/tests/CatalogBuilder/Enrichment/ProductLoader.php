@@ -10,6 +10,7 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Messenger\TraceableMessageBus;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -42,16 +43,21 @@ class ProductLoader
         $this->messageBus = $messageBus;
     }
 
-    public function create($identifier, array $data): ProductInterface
+    public function createWithUuid($uuid, $identifier, array $data): ProductInterface
     {
-        $family = isset($data['family']) ? $data['family'] : null;
+        $family = $data['family'] ?? null;
 
-        $product = $this->builder->createProduct($identifier, $family);
+        $product = $this->builder->createProduct($identifier, $family, $uuid);
         $this->update($product, $data);
 
         $this->messageBus->reset();
 
         return $product;
+    }
+
+    public function create($identifier, array $data): ProductInterface
+    {
+        return $this->createWithUuid(Uuid::uuid4()->toString(), $identifier, $data);
     }
 
     public function update(ProductInterface $product, array $data): void

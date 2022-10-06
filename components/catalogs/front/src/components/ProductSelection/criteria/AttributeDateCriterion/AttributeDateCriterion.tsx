@@ -39,7 +39,7 @@ const AttributeDateCriterion: FC<CriterionModule<AttributeDateCriterionState>> =
                         <AttributeDateOperatorInput state={state} onChange={onChange} isInvalid={!!errors.operator} />
                     </CriterionField>
                     {showValueSingleInput && (
-                        <CriterionField width={200}>
+                        <CriterionField width={300}>
                             <AttributeDateValueSingleInput
                                 state={state}
                                 onChange={onChange}
@@ -51,12 +51,12 @@ const AttributeDateCriterion: FC<CriterionModule<AttributeDateCriterionState>> =
                         <AttributeDateValueMultiInput state={state} onChange={onChange} isInvalid={!!errors.value} />
                     )}
                     {attribute?.scopable && (
-                        <CriterionField width={140}>
+                        <CriterionField width={120}>
                             <ScopeInput state={state} onChange={onChange} isInvalid={!!errors.scope} />
                         </CriterionField>
                     )}
                     {attribute?.localizable && (
-                        <CriterionField width={140}>
+                        <CriterionField width={120}>
                             <LocaleInput
                                 state={state}
                                 onChange={onChange}

@@ -1,0 +1,158 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Specification\Akeneo\Category\Application\Converter\Checker;
+
+use Akeneo\Category\Application\Converter\Checker\AttributeApiRequirementChecker;
+use Akeneo\Category\Application\Converter\Checker\RequirementChecker;
+use Akeneo\Category\Domain\ValueObject\ValueCollection;
+use Akeneo\Category\Infrastructure\Exception\StructureArrayConversionException;
+use PhpSpec\ObjectBehavior;
+
+/**
+ * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
+class AttributeApiRequirementCheckerSpec extends ObjectBehavior
+{
+    function it_is_initializable()
+    {
+        $this->shouldHaveType(AttributeApiRequirementChecker::class);
+        $this->shouldImplement(RequirementChecker::class);
+    }
+
+    public function it_should_throw_an_exception_when_locale_composite_key_is_missing(): void
+    {
+        $compositeKey = "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030";
+        $this
+            ->shouldThrow(StructureArrayConversionException::class)
+            ->duringCheck(
+                [
+                    [
+                        "data" => "",
+                        "locale" => "fr_FR",
+                        "attribute_code" => $compositeKey
+                    ],
+                ]
+            );
+    }
+
+    public function it_should_throw_an_exception_when_locale_composite_key_is_empty(): void
+    {
+        $compositeKey = "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030";
+        $localeCompositeKey = "";
+        $this
+            ->shouldThrow(StructureArrayConversionException::class)
+            ->duringCheck(
+                [
+                    $localeCompositeKey => [
+                        "data" => "",
+                        "locale" => "fr_FR",
+                        "attribute_code" => $compositeKey
+                    ],
+                ]
+            );
+    }
+
+    public function it_should_throw_an_exception_when_attribute_key_data_is_missing(): void
+    {
+        $compositeKey = "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030";
+        $localeCompositeKey = $compositeKey . ValueCollection::SEPARATOR . 'fr_FR';
+        $this
+            ->shouldThrow(StructureArrayConversionException::class)
+            ->duringCheck(
+                [
+                    $localeCompositeKey => [
+                        "locale" => "fr_FR",
+                        "attribute_code" => $compositeKey
+                    ],
+                ]
+            );
+    }
+
+    public function it_should_not_throw_an_exception_when_attribute_key_data_is_empty(): void
+    {
+        $compositeKey = "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030";
+        $localeCompositeKey = $compositeKey . ValueCollection::SEPARATOR . 'fr_FR';
+        $this
+            ->shouldNotThrow()
+            ->duringCheck(
+                [
+                    $localeCompositeKey => [
+                        "data" => "",
+                        "locale" => "fr_FR",
+                        "attribute_code" => $compositeKey
+                    ],
+                ]
+            );
+    }
+
+    public function it_should_throw_an_exception_when_attribute_key_locale_is_missing(): void
+    {
+        $compositeKey = "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030";
+        $localeCompositeKey = $compositeKey . ValueCollection::SEPARATOR . 'fr_FR';
+        $this
+            ->shouldThrow(StructureArrayConversionException::class)
+            ->duringCheck(
+                [
+                    $localeCompositeKey => [
+                        "data" => "Shoes",
+                        "attribute_code" => $compositeKey
+                    ],
+                ]
+            );
+    }
+
+    public function it_should_throw_an_exception_when_attribute_key_locale_is_empty(): void
+    {
+        $compositeKey = "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030";
+        $localeCompositeKey = $compositeKey . ValueCollection::SEPARATOR . 'fr_FR';
+        $this
+            ->shouldThrow(StructureArrayConversionException::class)
+            ->duringCheck(
+                [
+                    $localeCompositeKey => [
+                        "data" => "Shoes",
+                        "locale" => "",
+                        "attribute_code" => $compositeKey
+                    ],
+                ]
+            );
+    }
+
+    public function it_should_throw_an_exception_when_attribute_code_key_is_missing(): void
+    {
+        $compositeKey = "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030";
+        $localeCompositeKey = $compositeKey . ValueCollection::SEPARATOR . 'fr_FR';
+        $this
+            ->shouldThrow(StructureArrayConversionException::class)
+            ->duringCheck(
+                [
+                    $localeCompositeKey => [
+                        "data" => "Shoes",
+                        "locale" => "fr_FR"
+                    ],
+                ]
+            );
+    }
+
+    public function it_should_throw_an_exception_when_attribute_code_key_is_empty(): void
+    {
+        $localeCompositeKey = "title"
+            . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030"
+            . ValueCollection::SEPARATOR . 'fr_FR';
+
+        $this
+            ->shouldThrow(StructureArrayConversionException::class)
+            ->duringCheck(
+                [
+                    $localeCompositeKey => [
+                        "data" => "Shoes",
+                        "locale" => "fr_FR",
+                        "attribute_code" => ""
+                    ],
+                ]
+            );
+    }
+}

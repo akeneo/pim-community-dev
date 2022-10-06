@@ -2,6 +2,9 @@ parameters:
     pim_catalog.normalizer.standard.category.class: Akeneo\Category\Infrastructure\Component\Normalizer\Standard\CategoryNormalizer
 
 services:
+    category_serializer:
+        class: Symfony\Component\Serializer\Serializer
+
     pim_catalog.normalizer.standard.category:
         class: '%pim_catalog.normalizer.standard.category.class%'
         arguments:

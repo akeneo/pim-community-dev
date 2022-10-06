@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Controller\Internal;
 
-use Akeneo\Catalogs\Application\Persistence\GetLocalesByCodeQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\GetLocalesQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Locale\GetLocalesByCodeQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Locale\GetLocalesQueryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

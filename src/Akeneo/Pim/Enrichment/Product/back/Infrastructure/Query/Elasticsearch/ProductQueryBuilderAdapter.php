@@ -16,6 +16,7 @@ use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetGrantedCateg
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Ramsey\Uuid\UuidInterface;
 use Webmozart\Assert\Assert;
@@ -42,9 +43,9 @@ final class ProductQueryBuilderAdapter extends AbstractEntityWithValuesQueryBuil
             /**
              * @param mixed $queryBuilder
              * @param array<string, mixed> $options
-             * @return mixed
+             * @return CursorInterface
              */
-            public function createCursor($queryBuilder, array $options = [])
+            public function createCursor($queryBuilder, array $options = []): CursorInterface
             {
                 throw new \RuntimeException('This class should not be called anymore');
             }

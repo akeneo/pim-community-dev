@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -25,7 +26,7 @@ class SearchAfterSizeIdentifierResultCursorFactory implements CursorFactoryInter
     /**
      * {@inheritdoc}
      */
-    public function createCursor($esQuery, array $options = [])
+    public function createCursor($esQuery, array $options = []): CursorInterface
     {
         $options = $this->resolveOptions($options);
         $sort = ['_id' => 'asc'];

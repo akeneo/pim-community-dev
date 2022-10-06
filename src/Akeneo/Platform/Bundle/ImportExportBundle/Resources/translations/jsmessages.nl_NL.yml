@@ -171,11 +171,6 @@ pim_import_export:
       connection_checker:
         label: Verbindingsinstellingen testen
         exception: Er kan geen verbinding tot stand worden gebracht. Controleer de instellingen.
-  widget:
-    last_operations:
-      empty: Er is op dit moment geen bewerking om weer te geven.
-      details: Details
-      header.view_all: Alles weergeven
   batch_status:
     1: Voltooid
     2: Opstarten

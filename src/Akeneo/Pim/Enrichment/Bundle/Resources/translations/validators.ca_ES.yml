@@ -19,6 +19,7 @@ This value should not be a decimal.: Aquest valor no ha de ser un decimal.
 "The {{ attribute_code }} attribute can not have the same value more than once. The {{ value }} value is already set on another product.": L'atribut {{ attribute_code }} no pot tenir el mateix valor més d'una vegada. El valor {{ value }} ja està establert en un altre producte.
 The same identifier is already set on another product: L'identificador ja està utilitzat per un altre producte
 regex.comma_or_semicolon_or_surrounding_space.message: Aquest camp no hauria de contenir cap coma ni punt i coma i ni espais
+regex.line_break.message: Aquest camp no pot tenir salts de línia
 file.extensions.message: 'Aquesta extensió d''arxiu no està permesa (extensions permeses: %extensions%).'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": Aquest tipus de valor espera l'ús de {{ decimal_separator }} per separar els decimals.
 "This type of value expects the use of dot (.) to separate decimals.": Aquest tipus de valor espera l'ús d'un punt (.) per separar els decimals.
@@ -65,6 +66,8 @@ pim_catalog:
     variant_product_invalid_family: 'La variant de la família de producte ha de ser igual que el seu pare'
     php_int_max_reached: 'El nombre màxim ha de ser inferior a %php_int_max%.'
     not_null_family: La família no pot ser "nul·la" perquè el vostre producte amb l'identificador %sku% és un producte variant.
+    variant_product_has_parent: 'El producte variant ha de tenir un pare'
+    invalid_variant_product_parent: 'El producte variant no pot tenir el model de producte "%product_model%" com a pare (aquest model de producte només pot tenir altres models de producte com a fills)'
     modified_variant_axis_value: 'Els variants d''eixos "%variant_axis%" no poden ser modificats, "%provided_value%" donats'
     family_variant_attributes_unique: Els atributs han de ser únics, "%attributes%" s'utilitzen diverses vegades en la configuració de variants d'atributs
     family_variant_axes_unique: Els variants d'eixos han de ser únics, "%attributes%" s'utilitzen diverses vegades en la configuració de variants d'atributs

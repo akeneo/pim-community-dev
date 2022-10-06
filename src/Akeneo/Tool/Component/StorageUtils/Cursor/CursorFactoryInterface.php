@@ -19,5 +19,5 @@ interface CursorFactoryInterface
      *
      * @return CursorInterface
      */
-    public function createCursor($queryBuilder, array $options = []);
+    public function createCursor($queryBuilder, array $options = []): CursorInterface;
 }

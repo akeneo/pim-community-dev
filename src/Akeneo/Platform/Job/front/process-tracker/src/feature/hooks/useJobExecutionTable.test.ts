@@ -113,6 +113,27 @@ test('It automatically refreshes the job execution table', async () => {
   expect(result.current[0]).toBe(expectedFetchedJobExecutionTable);
 });
 
+test('It does not automatically refresh the job execution table when told', async () => {
+  jest.useFakeTimers();
+
+  const filter = getDefaultJobExecutionFilter();
+  const {result, waitForNextUpdate} = renderHookWithProviders(() => useJobExecutionTable(filter, false));
+
+  await act(async () => {
+    await waitForNextUpdate();
+  });
+
+  expect(global.fetch).toHaveBeenCalledTimes(1);
+  expect(result.current[0]).toBe(expectedFetchedJobExecutionTable);
+
+  await act(async () => {
+    jest.advanceTimersByTime(5000);
+  });
+
+  expect(global.fetch).toHaveBeenCalledTimes(1);
+  expect(result.current[0]).toBe(expectedFetchedJobExecutionTable);
+});
+
 test('It does not refresh the job execution table when document is not visible', async () => {
   jest.useFakeTimers();
   mockedDocumentVisibility = false;

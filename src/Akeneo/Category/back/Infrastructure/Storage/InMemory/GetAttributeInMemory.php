@@ -45,7 +45,7 @@ class GetAttributeInMemory implements GetAttribute
                 new AttributeCode('banner_image'),
                 AttributeOrder::fromInteger(2),
                 AttributeIsLocalizable::fromBoolean(false),
-                LabelCollection::fromArray(['fr_FR' => 'Banner image']),
+                LabelCollection::fromArray(['en_US' => 'Banner image']),
                 $templateUuid
             ),
             AttributeText::create(

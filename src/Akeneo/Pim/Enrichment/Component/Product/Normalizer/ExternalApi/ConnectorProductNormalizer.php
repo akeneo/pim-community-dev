@@ -48,6 +48,7 @@ final class ConnectorProductNormalizer
         $quantifiedAssociations = $this->normalizeQuantifiedAssociations($connectorProduct->quantifiedAssociations());
 
         $normalizedProduct =  [
+            'uuid' => $connectorProduct->uuid(),
             'identifier' => $connectorProduct->identifier(),
             'enabled' => $connectorProduct->enabled(),
             'family' => $connectorProduct->familyCode(),

@@ -5,11 +5,14 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -42,18 +45,29 @@ abstract class AbstractProductQueryBuilderTestCase extends TestCase
     /**
      * @param UserIntent[] $userIntents
      */
-    protected function createProduct(string $identifier, array $userIntents): ProductInterface
+    protected function createProduct(?string $identifier, array $userIntents): ProductInterface
     {
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
-        $command = UpsertProductCommand::createFromCollection(
-            userId: $this->getUserId('admin'),
-            productIdentifier: $identifier,
-            userIntents: $userIntents
-        );
+
+        if (null !== $identifier) {
+            $command = UpsertProductCommand::createWithIdentifier(
+                userId: $this->getUserId('admin'),
+                productIdentifier: ProductIdentifier::fromIdentifier($identifier),
+                userIntents: $userIntents
+            );
+        } else {
+            $uuid = Uuid::uuid4();
+            $command = UpsertProductCommand::createWithUuid(
+                userId: $this->getUserId('admin'),
+                productUuid: ProductUuid::fromUuid($uuid),
+                userIntents: $userIntents
+            );
+        }
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
-        return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
+        return null !== $identifier ? $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier) :
+            $this->get('pim_catalog.repository.product')->find($uuid);
     }
 
     /**

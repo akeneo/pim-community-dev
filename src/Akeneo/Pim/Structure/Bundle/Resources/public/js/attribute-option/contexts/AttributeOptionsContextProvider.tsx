@@ -141,14 +141,14 @@ const AttributeOptionsContextProvider: FC<Props> = ({children, attributeOptionsQ
     setIsSaving(false);
   }, []);
 
-  const handleRefreshEvaluation = async () => {
+  const handleRefreshEvaluation = useCallback(async () => {
     if (attributeOptionsQualityFetcher && attributeOptions !== null) {
       const attributeOptionsEvaluation: SpellcheckEvaluation | null = await attributeOptionsQualityFetcher();
       let newAttributeOptions = [...attributeOptions];
       newAttributeOptions = mergeAttributeOptionsEvaluation(newAttributeOptions, attributeOptionsEvaluation);
       setAttributeOptions(newAttributeOptions);
     }
-  };
+  }, [attributeOptions, attributeOptionsQualityFetcher]);
 
   useEffect(() => {
     (async () => {

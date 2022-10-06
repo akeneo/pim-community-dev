@@ -80,7 +80,16 @@
 - PIM-10620: Fix export product options values with label to be case insensitive with codes
 - PIM-10606: Fix computeFamilyVariantStructureChange on attribute removal
 - PIM-10624: Fix very slow query when counting variants for mass delete
+- PIM-10648: Migrate all job conf which contains old user_to_notify param
 - PIM-10566: Fix wrong namespace for categories in resource_name column in pim_versioning_version table
+- PIM-10568: Fix error when running Version_7_0_20220629142647_dqi_update_pk_on_product_score during On-Premise/Flex to Serenity migration
+- PIM-10646: Fix export with label from a select attribute containing uppercase in its code exports code and not labels
+- PIM-10622: Fix save options labels when using the automatic correction in Firefox
+- PIM-10634: Fix media filter values normalizer to be case insensitive
+- PIM-10649: Fix wrong attributes displayed when selecting attribute group in export profile filter when there is too many attributes selected
+- PIM-10658: Fix database product reader
+- PIM-10576: Fix product model mass edit acl check
+- PIM-10633: Fix no DQI dashboard average rankings if code case changed
 
 ## Improvements
 

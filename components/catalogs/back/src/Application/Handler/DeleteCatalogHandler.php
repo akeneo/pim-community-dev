@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Application\Handler;
 
-use Akeneo\Catalogs\Application\Persistence\DeleteCatalogQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Catalog\DeleteCatalogQueryInterface;
 use Akeneo\Catalogs\ServiceAPI\Command\DeleteCatalogCommand;
 
 /**

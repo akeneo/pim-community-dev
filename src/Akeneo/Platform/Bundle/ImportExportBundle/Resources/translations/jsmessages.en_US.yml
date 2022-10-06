@@ -176,11 +176,6 @@ pim_import_export:
             connection_checker:
                 label: Test connection settings
                 exception: Connection can't be established, please check your settings.
-    widget:
-        last_operations:
-            empty: There is no operation to display for now.
-            details: Details
-            header.view_all: View all
     batch_status:
         1: Completed
         2: Starting

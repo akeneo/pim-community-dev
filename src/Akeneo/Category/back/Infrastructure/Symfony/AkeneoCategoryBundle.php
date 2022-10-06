@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Category\Infrastructure\Symfony;
 
 use Akeneo\Category\Infrastructure\Symfony\DependencyInjection\CompilerPass\RegisterCategoryItemCounterPass;
+use Akeneo\Category\Infrastructure\Symfony\DependencyInjection\CompilerPass\RegisterPreviewGeneratorPass;
 use Akeneo\Category\Infrastructure\Symfony\DependencyInjection\CompilerPass\ResolveDoctrineTargetModelPass;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -25,6 +26,7 @@ class AkeneoCategoryBundle extends Bundle
         $container
             ->addCompilerPass(new ResolveDoctrineTargetModelPass())
             ->addCompilerPass(new RegisterCategoryItemCounterPass())
+            ->addCompilerPass(new RegisterPreviewGeneratorPass())
         ;
 
         $mappings = [

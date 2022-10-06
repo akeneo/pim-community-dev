@@ -5,21 +5,21 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Job;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
-use Akeneo\Tool\Component\Batch\Job\JobParameters;
-use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
-use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Job\ComputeCompletenessOfProductsFamilyTasklet;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
+use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
+use PhpSpec\ObjectBehavior;
 use Ramsey\Uuid\Uuid;
 
 class ComputeCompletenessOfProductsFamilyTaskletSpec extends ObjectBehavior
@@ -27,7 +27,7 @@ class ComputeCompletenessOfProductsFamilyTaskletSpec extends ObjectBehavior
     function let(
         IdentifiableObjectRepositoryInterface $familyRepository,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
-        CursorableRepositoryInterface $productRepository,
+        ProductRepositoryInterface $productRepository,
         BulkSaverInterface $bulkProductSaver,
         EntityManagerClearerInterface $cacheClearer
     ) {
@@ -53,7 +53,7 @@ class ComputeCompletenessOfProductsFamilyTaskletSpec extends ObjectBehavior
     function it_recomputes_the_completeness_of_all_the_products_belonging_the_given_family(
         IdentifiableObjectRepositoryInterface $familyRepository,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
-        CursorableRepositoryInterface $productRepository,
+        ProductRepositoryInterface $productRepository,
         BulkSaverInterface $bulkProductSaver,
         EntityManagerClearerInterface $cacheClearer,
         StepExecution $stepExecution,
@@ -87,7 +87,7 @@ class ComputeCompletenessOfProductsFamilyTaskletSpec extends ObjectBehavior
         $cursor->next()->shouldBeCalled();
         $cursor->rewind()->shouldBeCalled();
 
-        $productRepository->getItemsFromIdentifiers(['identifier1', 'identifier2', 'identifier3'])->willReturn(
+        $productRepository->getItemsFromUuids([$uuid1->toString(), $uuid2->toString(), $uuid3->toString()])->willReturn(
             [$product1, $product2, $product3]
         );
 

@@ -2,9 +2,11 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -16,8 +18,8 @@ class FromSizeCursorFactory implements CursorFactoryInterface
 {
     public function __construct(
         private Client $searchEngine,
-        private CursorableRepositoryInterface $productRepository,
-        private CursorableRepositoryInterface $productModelRepository,
+        private ProductRepositoryInterface $productRepository,
+        private ProductModelRepositoryInterface $productModelRepository,
         private int $pageSize
     ) {
     }
@@ -25,7 +27,7 @@ class FromSizeCursorFactory implements CursorFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createCursor($queryBuilder, array $options = [])
+    public function createCursor($queryBuilder, array $options = []): CursorInterface
     {
         $options = $this->resolveOptions($options);
 
@@ -42,12 +44,7 @@ class FromSizeCursorFactory implements CursorFactoryInterface
         );
     }
 
-    /**
-     * @param array $options
-     *
-     * @return array
-     */
-    protected function resolveOptions(array $options)
+    protected function resolveOptions(array $options): array
     {
         $resolver = new OptionsResolver();
         $resolver->setDefined(

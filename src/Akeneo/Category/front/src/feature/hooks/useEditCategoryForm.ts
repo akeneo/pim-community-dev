@@ -5,8 +5,15 @@ import {NotificationLevel, useNotify, useRouter, useTranslate} from '@akeneo-pim
 import {saveEditCategoryForm} from '../infrastructure';
 import {useCategory} from './useCategory';
 import {EditCategoryContext} from '../components';
-import {buildCompositeKey, Attribute, CategoryAttributeValueData, CategoryPermissions, EnrichCategory} from '../models';
-import {alterPermissionsConsistently, categoriesAreEqual} from '../helpers';
+import {
+  buildCompositeKey,
+  Attribute,
+  CategoryAttributeValueData,
+  CategoryPermissions,
+  EnrichCategory,
+  Template,
+} from '../models';
+import {alterPermissionsConsistently, categoriesAreEqual, populateCategory} from '../helpers';
 
 const useEditCategoryForm = (categoryId: number) => {
   const router = useRouter();
@@ -17,8 +24,10 @@ const useEditCategoryForm = (categoryId: number) => {
   const {status: categoryFetchingStatus, load: loadCategory} = useCategoryResult;
 
   let fetchedCategory: EnrichCategory | null = null;
+  let template: Template | null = null;
   if (useCategoryResult.status === 'fetched') {
     fetchedCategory = useCategoryResult.category;
+    template = useCategoryResult.template;
   }
 
   const [category, setCategory] = useState<EnrichCategory | null>(null);
@@ -27,7 +36,7 @@ const useEditCategoryForm = (categoryId: number) => {
   const [applyPermissionsOnChildren, setApplyPermissionsOnChildren] = useState(true);
 
   const [historyVersion, setHistoryVersion] = useState<number>(0);
-  const {setCanLeavePage} = useContext(EditCategoryContext);
+  const {setCanLeavePage, locales} = useContext(EditCategoryContext);
 
   const isModified =
     useCategoryResult.status === 'fetched' &&
@@ -54,12 +63,27 @@ const useEditCategoryForm = (categoryId: number) => {
     setCanLeavePage(!isModified);
   }, [setCanLeavePage, isModified]);
 
+  // If there are unsaved changes then user will be asked confirmation to leave
+  // If the edition form component is unmounted, it means that the user confirmed
+  // CategorySettings Component boolean canLeavePage must be reset
+  // so that we have no subsequent ghostly warnings about it
+  useEffect(
+    () => () => {
+      setCanLeavePage(true);
+    },
+    [setCanLeavePage]
+  );
+
   const saveCategory = useCallback(async () => {
     if (categoryEdited === null) {
       return;
     }
 
-    const response = await saveEditCategoryForm(router, categoryEdited, {applyPermissionsOnChildren});
+    const response = await saveEditCategoryForm(router, categoryEdited, {
+      applyPermissionsOnChildren,
+      populateResponseCategory: (category: EnrichCategory) =>
+        populateCategory(category, template!, Object.keys(locales)),
+    });
 
     if (response.success) {
       initializeEditionState(response.category);
@@ -67,10 +91,17 @@ const useEditCategoryForm = (categoryId: number) => {
       notify(NotificationLevel.SUCCESS, translate('pim_enrich.entity.category.content.edit.success'));
     } else {
       notify(NotificationLevel.ERROR, translate('pim_enrich.entity.category.content.edit.fail'));
-      // const refreshedToken = {...editedFormData._token, value: response.form._token.value};
-      // setEditedFormData({...editedFormData, _token: refreshedToken});
     }
-  }, [router, categoryEdited, applyPermissionsOnChildren, initializeEditionState, translate, notify]);
+  }, [
+    router,
+    categoryEdited,
+    applyPermissionsOnChildren,
+    initializeEditionState,
+    translate,
+    notify,
+    locales,
+    template,
+  ]);
 
   const onChangeCategoryLabel = useCallback(
     (localeCode: string, label: string) => {
@@ -104,7 +135,7 @@ const useEditCategoryForm = (categoryId: number) => {
 
       const value = {
         data: attributeValue,
-        locale: localeCode,
+        locale: attribute.is_localizable ? localeCode : null,
         attribute_code: compositeKeyWithoutLocale,
       };
 
@@ -121,6 +152,7 @@ const useEditCategoryForm = (categoryId: number) => {
   return {
     categoryFetchingStatus,
     category: categoryEdited,
+    template,
     applyPermissionsOnChildren,
     onChangeCategoryLabel,
     onChangePermissions,

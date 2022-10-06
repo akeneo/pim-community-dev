@@ -4,12 +4,20 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueValuesSet;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
+use Akeneo\Test\IntegrationTestsBundle\Helper\AuthenticatorHelper;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client as EsClient;
+use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -21,36 +29,64 @@ abstract class AbstractProductTestCase extends ApiTestCase
     /**
      * @param UserIntent[] $userIntents
      */
-    protected function createProduct(string $identifier, array $userIntents = []): ProductInterface
+    protected function createProductWithUuid(string $uuid, array $userIntents = []): ProductInterface
     {
-        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
-        $command = UpsertProductCommand::createFromCollection(
-            userId: $this->getUserId('admin'),
-            productIdentifier: $identifier,
-            userIntents: $userIntents
-        );
-        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+        $this->getAuthenticator()->logIn('admin');
 
-        return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
+        $command = UpsertProductCommand::createWithUuid(
+            $this->getUserId('admin'),
+            ProductUuid::fromUuid(Uuid::fromString($uuid)),
+            $userIntents
+        );
+
+        $this->getMessageBus()->dispatch($command);
+
+        return $this->getProductRepository()->find($uuid);
     }
 
     /**
      * @param UserIntent[] $userIntents
      */
-    protected function createVariantProduct(string $identifier, array $userIntents = []) : ProductInterface
+    protected function createProductWithoutIdentifier(array $userIntents = []): ProductInterface
     {
-        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
+        return $this->createProductWithUuid(Uuid::uuid4()->toString(), $userIntents);
+    }
+
+    /**
+     * @param UserIntent[] $userIntents
+     */
+    protected function createProduct(string $identifier, array $userIntents = []): ProductInterface
+    {
+        $this->getAuthenticator()->logIn('admin');
+
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: $identifier,
             userIntents: $userIntents
         );
-        $this->get('pim_enrich.product.message_bus')->dispatch($command);
-        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-        $this->get('pim_connector.doctrine.cache_clearer')->clear();
 
-        return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
+        $this->getMessageBus()->dispatch($command);
+
+        return $this->getProductRepository()->findOneByIdentifier($identifier);
+    }
+
+    /**
+     * @param UserIntent[] $userIntents
+     */
+    protected function createVariantProduct(string $identifier, array $userIntents = []): ProductInterface
+    {
+        $product = $this->createProduct($identifier, $userIntents);
+
+        $this->clearAllCache();
+
+        return $product;
+    }
+
+    protected function clearAllCache()
+    {
+        $this->getUniqueValueSetValidator()->reset();
+        $this->getEsIndex()->refreshIndex();
+        $this->getOrmCacheClearer()->clear();
     }
 
     /**
@@ -62,7 +98,7 @@ abstract class AbstractProductTestCase extends ApiTestCase
      * @return ProductModelInterface
      * @throws \Exception
      */
-    protected function createProductModel(array $data = []) : ProductModelInterface
+    protected function createProductModel(array $data = []): ProductModelInterface
     {
         $productModel = $this->get('pim_catalog.factory.product_model')->create();
         $this->get('pim_catalog.updater.product_model')->update($productModel, $data);
@@ -76,7 +112,7 @@ abstract class AbstractProductTestCase extends ApiTestCase
             ));
         }
         $this->get('pim_catalog.saver.product_model')->save($productModel);
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->getEsIndex()->refreshIndex();
 
         return $productModel;
     }
@@ -117,8 +153,8 @@ abstract class AbstractProductTestCase extends ApiTestCase
      */
     protected function assertSameProducts(array $expectedProduct, $identifier)
     {
-        $this->get('pim_connector.doctrine.cache_clearer')->clear();
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
+        $this->getOrmCacheClearer()->clear();
+        $product = $this->getProductRepository()->findOneByIdentifier($identifier);
 
         $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
 
@@ -140,5 +176,39 @@ abstract class AbstractProductTestCase extends ApiTestCase
         }
 
         return \intval($id);
+    }
+
+    /**
+     * Type aware service accessors below
+     */
+
+    private function getAuthenticator(): AuthenticatorHelper
+    {
+        return $this->get('akeneo_integration_tests.helper.authenticator');
+    }
+
+    private function getMessageBus(): MessageBusInterface
+    {
+        return $this->get('pim_enrich.product.message_bus');
+    }
+
+    private function getProductRepository(): ProductRepositoryInterface
+    {
+        return $this->get('pim_catalog.repository.product');
+    }
+
+    private function getUniqueValueSetValidator(): UniqueValuesSet
+    {
+        return $this->get('pim_catalog.validator.unique_value_set');
+    }
+
+    protected function getEsIndex(): EsClient
+    {
+        return $this->get('akeneo_elasticsearch.client.product_and_product_model');
+    }
+
+    private function getOrmCacheClearer(): EntityManagerClearerInterface
+    {
+        return $this->get('pim_connector.doctrine.cache_clearer');
     }
 }

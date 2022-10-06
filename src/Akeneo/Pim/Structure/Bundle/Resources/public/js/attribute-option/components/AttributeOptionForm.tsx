@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useRef} from 'react';
+import React, {FC, useCallback, useEffect, useRef} from 'react';
 
 import {AttributeOption, Locale} from '../model';
 import {useEditingOptionContext} from '../contexts';
@@ -15,13 +15,30 @@ const AttributeOptionForm: FC<AttributeOptionFormProps> = ({option, locale, onUp
   const inputRef = useRef<HTMLInputElement>(null);
   const {addRef, removeRef} = useEditingOptionContext();
 
+  const handleOnChange = useCallback(newLabel => onUpdateOptionLabel(newLabel, locale.code), []);
+
+  // In order to be able to apply the spellcheck on EE, we share the reference of the input field for the locale
+  // To fix the PIM-10622 issue on Firefox, we listen the changes on the reference input field to ensure to apply them on the state.
   useEffect(() => {
     addRef(locale.code, inputRef);
+    const handleChangeRef = (event: any) => {
+      if (!event.target || event.target.value === undefined) {
+        return;
+      }
+      handleOnChange(event.target.value);
+    };
+    if (inputRef.current !== null) {
+      inputRef.current.addEventListener('change', handleChangeRef);
+    }
 
     return () => {
       removeRef(locale.code, inputRef);
+
+      if (inputRef.current !== null) {
+        inputRef.current.removeEventListener('change', handleChangeRef);
+      }
     };
-  }, [inputRef, addRef]);
+  }, [locale, addRef, removeRef]);
 
   return (
     <Container>
@@ -29,7 +46,7 @@ const AttributeOptionForm: FC<AttributeOptionFormProps> = ({option, locale, onUp
         <TextInputStyled
           ref={inputRef}
           value={option.optionValues[locale.code].value ?? ''}
-          onChange={newLabel => onUpdateOptionLabel(newLabel, locale.code)}
+          onChange={handleOnChange}
           data-locale={locale.code}
           data-testid="attribute-option-label"
         />

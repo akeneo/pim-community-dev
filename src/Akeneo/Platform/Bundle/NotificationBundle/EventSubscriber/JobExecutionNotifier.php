@@ -60,20 +60,11 @@ class JobExecutionNotifier implements EventSubscriberInterface
      */
     private function getUsersToNotify(?JobParameters $jobParameters): array
     {
-        if (null === $jobParameters) {
+        if (null === $jobParameters || !$jobParameters->has('users_to_notify')) {
             return [];
         }
 
-        if ($jobParameters->has('users_to_notify')) {
-            return $jobParameters->get('users_to_notify');
-        }
-
-        //TODO RAB-1046: remove this condition
-        if ($jobParameters->has('user_to_notify')) {
-            return [$jobParameters->get('user_to_notify')];
-        }
-
-        return [];
+        return $jobParameters->get('users_to_notify');
     }
 
     private function createNotification(JobExecution $jobExecution): NotificationInterface

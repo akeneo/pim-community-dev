@@ -49,6 +49,7 @@ pim_enrich.entity.product:
     download_pdf:
       label: PDF
     copy:
+      button_label: Comparar
       label: Comparar / traduir
       select: Seleccionar
       all_visible: Tot visible
@@ -107,6 +108,7 @@ pim_enrich.entity.product:
       variant_products: Variant de productes
       quantified:
         quantity: 'Quantitat:'
+        unlinked: Desvinculat
       search:
         placeholder: Cercar etiqueta o identificador
       no_data: No hi ha productes associats.

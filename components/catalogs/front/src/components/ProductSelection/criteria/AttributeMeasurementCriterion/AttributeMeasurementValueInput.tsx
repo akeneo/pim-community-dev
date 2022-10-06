@@ -1,5 +1,13 @@
 import React, {ChangeEvent, FC, useMemo, useState} from 'react';
-import {ArrowDownIcon, Dropdown, getColor, getFontSize, GroupsIllustration, Search} from 'akeneo-design-system';
+import {
+    AkeneoThemedProps,
+    ArrowDownIcon,
+    Dropdown,
+    getColor,
+    getFontSize,
+    GroupsIllustration,
+    Search,
+} from 'akeneo-design-system';
 import {AttributeMeasurementCriterionState} from './types';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
@@ -45,14 +53,14 @@ const ValueInput = styled.input`
     }
 `;
 
-const MeasurementInput = styled.input`
+const MeasurementInput = styled.input<{invalid: boolean; isOpen: boolean} & AkeneoThemedProps>`
     width: 100%;
     height: 40px;
     border: 1px solid ${({invalid}) => (invalid ? getColor('red', 100) : getColor('grey', 80))};
     border-left: 0;
     border-radius: 0 2px 2px 0;
     box-sizing: border-box;
-    background: ${getColor('grey', 20)};
+    background: ${({isOpen}) => (isOpen ? getColor('grey', 20) : getColor('white'))};
     color: ${getColor('grey', 100)};
     font-size: ${getFontSize('default')};
     line-height: 40px;
@@ -144,6 +152,7 @@ const AttributeMeasurementValueInput: FC<Props> = ({state, onChange, isInvalid, 
                         value={findMeasurementLabelByCode(state.value?.unit)}
                         data-testid='unit'
                         invalid={isInvalid}
+                        isOpen={isOpen}
                     />
                     <MeasurementInputArrowDownIcon size={16} />
                 </TextInputContainer>

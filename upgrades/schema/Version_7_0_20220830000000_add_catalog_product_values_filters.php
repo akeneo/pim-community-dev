@@ -11,7 +11,7 @@ final class Version_7_0_20220830000000_add_catalog_product_values_filters extend
 {
     public function up(Schema $schema): void
     {
-        if ($schema->getTable('akeneo_catalog')->hasColumn('product_product_filter_channel')) {
+        if ($schema->getTable('akeneo_catalog')->hasColumn('product_value_filters')) {
             $this->disableMigrationWarning();
             return;
         }

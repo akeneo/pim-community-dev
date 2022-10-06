@@ -171,11 +171,6 @@ pim_import_export:
       connection_checker:
         label: Prova impostazioni di connessione
         exception: Impossibile stabilire la connessione, controlla le impostazioni.
-  widget:
-    last_operations:
-      empty: Al momento non ci sono operazioni da visualizzare.
-      details: Dettaglio
-      header.view_all: Mostra tutti
   batch_status:
     1: Completato
     2: In avvio

@@ -49,3 +49,17 @@ services:
         arguments:
             - '@oro_security.security_facade'
             - '@Akeneo\Category\Application\Query\GetTemplate'
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\UploadController:
+        public: true
+        arguments:
+            - '@validator'
+            - '@category_serializer'
+            - '@Akeneo\Category\Application\Handler\StoreUploadedFile'
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\ImagePreviewController:
+        public: true
+        arguments:
+            - '@Akeneo\Category\Domain\Query\GetAttribute'
+            - '@pim_category.infrastructure.registry.preview_generator'
+            - '@Akeneo\Category\Infrastructure\FileSystem\Loader\ImageLoader'
