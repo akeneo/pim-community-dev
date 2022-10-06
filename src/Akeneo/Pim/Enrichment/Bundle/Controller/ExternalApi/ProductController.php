@@ -323,7 +323,7 @@ class ProductController
 
         $data = $this->getDecodedContent($request->getContent());
 
-        if (!isset($data['identifier']) || $data['identifier'] === '') {
+        if (array_key_exists('identifier', $data) && (null === $data['identifier'] || '' === $data['identifier'])) {
             throw new DocumentedHttpException(
                 Documentation::URL . 'patch_products_uuid__uuid_',
                 sprintf(self::NO_IDENTIFIER_MESSAGE)
