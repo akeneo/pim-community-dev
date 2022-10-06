@@ -6,6 +6,7 @@ namespace Akeneo\Catalogs\Infrastructure\Persistence\Catalog\Product;
 
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\IsProductBelongingToCatalogQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 
@@ -29,8 +30,10 @@ class IsProductBelongingToCatalogQuery implements IsProductBelongingToCatalogQue
         ]);
         $pqb->addFilter('id', Operators::EQUALS, $productUuid);
         $results = $pqb->execute();
+        /** @var IdentifierResult $result */
+        $result = $results->current();
 
-        return $results->count() === 1 && $this->getUuidFromIdentifierResult($results->current()->getId()) === $productUuid;
+        return $results->count() === 1 && $this->getUuidFromIdentifierResult($result->getId()) === $productUuid;
     }
 
     /**
