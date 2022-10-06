@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\BatchBundle\Command;
 
+use Symfony\Component\Console\Helper\HelperInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Symfony\Component\Console\Command\Command;
@@ -75,7 +76,7 @@ class ListJobsCommand extends Command
      * @param array           $jobs
      * @param OutputInterface $output
      *
-     * @return \Symfony\Component\Console\Helper\HelperInterface
+     * @return HelperInterface
      */
     protected function buildTable(array $jobs, OutputInterface $output)
     {

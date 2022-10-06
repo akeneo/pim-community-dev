@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Tool\Component\Connector\Reader\File\Xlsx;
 
+use PhpSpec\Wrapper\Collaborator;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Connector\Exception\BusinessArrayConversionException;
 use Akeneo\Tool\Component\Connector\Exception\InvalidItemFromViolationsException;
@@ -126,10 +127,10 @@ class ReaderSpec extends ObjectBehavior
     }
 
     /**
-     * @param \PhpSpec\Wrapper\Collaborator $stepExecution
+     * @param Collaborator $stepExecution
      * @param $jobParameters
      */
-    private function initStepExecution(\PhpSpec\Wrapper\Collaborator $stepExecution, $jobParameters): void
+    private function initStepExecution(Collaborator $stepExecution, $jobParameters): void
     {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->has('storage')->willReturn(true);
@@ -140,10 +141,10 @@ class ReaderSpec extends ObjectBehavior
     }
 
     /**
-     * @param \PhpSpec\Wrapper\Collaborator $fileIteratorFactory
+     * @param Collaborator $fileIteratorFactory
      * @param $fileIterator
      */
-    private function initFileIterator(\PhpSpec\Wrapper\Collaborator $fileIteratorFactory, $fileIterator): void
+    private function initFileIterator(Collaborator $fileIteratorFactory, $fileIterator): void
     {
         $fileIteratorFactory->create($this->initFilePath(), [])->willReturn($fileIterator);
 

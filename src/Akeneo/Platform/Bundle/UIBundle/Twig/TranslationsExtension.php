@@ -2,6 +2,7 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\Twig;
 
+use Twig\Extension\AbstractExtension;
 use Akeneo\Tool\Component\Console\CommandLauncher;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\TwigFunction;
@@ -16,7 +17,7 @@ use Twig\TwigFunction;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class TranslationsExtension extends \Twig\Extension\AbstractExtension
+class TranslationsExtension extends AbstractExtension
 {
     /** @var CommandLauncher */
     protected $commandLauncher;

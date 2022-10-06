@@ -30,7 +30,7 @@ final class ExternalMeasurementFamilyNormalizer implements NormalizerInterface
         return $normalizedMeasurementFamily;
     }
 
-    public function supportsNormalization($data, string $format = null)
+    public function supportsNormalization($data, string $format = null): bool
     {
         return $data instanceof MeasurementFamily;
     }

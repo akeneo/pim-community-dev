@@ -2,6 +2,7 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\Form\Transformer;
 
+use Symfony\Component\Form\DataTransformerInterface;
 interface TransformerFactoryInterface
 {
     /**
@@ -9,7 +10,7 @@ interface TransformerFactoryInterface
      *
      * @param array $options
      *
-     * @return \Symfony\Component\Form\DataTransformerInterface
+     * @return DataTransformerInterface
      */
     public function create(array $options);
 }

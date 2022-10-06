@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\Persistence;
 
+use Doctrine\DBAL\DBALException;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\LabelCollection;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
@@ -187,7 +188,7 @@ SQL;
     /**
      * @return array
      *
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     private function loadMeasurementFamiliesIndexByCodes(): array
     {

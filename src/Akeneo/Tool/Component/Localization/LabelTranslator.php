@@ -2,13 +2,13 @@
 
 namespace Akeneo\Tool\Component\Localization;
 
-use Symfony\Component\Translation\Translator;
+use Symfony\Component\Translation\TranslatorBagInterface;
 
 class LabelTranslator implements LabelTranslatorInterface
 {
     private $translator;
 
-    public function __construct(Translator $translator)
+    public function __construct(TranslatorBagInterface $translator)
     {
         $this->translator = $translator;
     }

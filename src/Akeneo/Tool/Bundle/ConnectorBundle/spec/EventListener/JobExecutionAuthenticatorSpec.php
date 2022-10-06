@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Tool\Bundle\ConnectorBundle\EventListener;
 
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -11,7 +12,6 @@ use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\JobExecutionAuthenticator;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
@@ -149,11 +149,11 @@ class JobExecutionAuthenticatorSpec extends ObjectBehavior
         $jobParameters->has('is_user_authenticated')->willReturn(true);
         $jobParameters->get('is_user_authenticated')->willReturn(true);
 
-        $userProvider->loadUserByUsername('julia')->willThrow(UsernameNotFoundException::class);
+        $userProvider->loadUserByUsername('julia')->willThrow(UserNotFoundException::class);
 
         $token  = new UsernamePasswordToken($user->getWrappedObject(), null, 'main', ['role']);
         $tokenStorage->setToken($token)->shouldNotBeCalled();
 
-        $this->shouldThrow(UsernameNotFoundException::class)->during('authenticate', [$event]);
+        $this->shouldThrow(UserNotFoundException::class)->during('authenticate', [$event]);
     }
 }

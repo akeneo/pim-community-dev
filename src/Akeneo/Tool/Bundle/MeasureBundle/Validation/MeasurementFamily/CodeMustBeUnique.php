@@ -14,7 +14,7 @@ class CodeMustBeUnique extends Constraint
 {
     public string $message = 'pim_measurements.validation.measurement_family.code.must_be_unique';
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'akeneo_measure.validation.measurement_family.code_must_be_unique';
     }

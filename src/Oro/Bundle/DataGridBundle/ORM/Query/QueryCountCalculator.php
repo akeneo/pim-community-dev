@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\DataGridBundle\ORM\Query;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\ParameterTypeInferer;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\Query\Parser;
@@ -16,7 +18,7 @@ class QueryCountCalculator
      * Calculates total count of query records
      *
      * @param Query $query
-     * @param \Doctrine\Common\Collections\ArrayCollection|array|null $parameters Query parameters.
+     * @param ArrayCollection|array|null $parameters Query parameters.
      * @return integer
      */
     public static function calculateCount(Query $query, $parameters = null)
@@ -30,7 +32,7 @@ class QueryCountCalculator
      * Calculates total count of query records
      *
      * @param Query $query
-     * @param \Doctrine\Common\Collections\ArrayCollection|array|null $parameters Query parameters.
+     * @param ArrayCollection|array|null $parameters Query parameters.
      * @return integer
      */
     public function getCount(Query $query, $parameters = null)
@@ -57,7 +59,7 @@ class QueryCountCalculator
     /**
      * @param Query                              $query
      * @param array                              $paramMappings
-     * @throws \Doctrine\ORM\Query\QueryException
+     * @throws QueryException
      * @return array
      */
     protected function processParameterMappings(Query $query, $paramMappings)
@@ -76,7 +78,7 @@ class QueryCountCalculator
             $value = $query->processParameterValue($parameter->getValue());
             $type = ($parameter->getValue() === $value)
                 ? $parameter->getType()
-                : Query\ParameterTypeInferer::inferType($value);
+                : ParameterTypeInferer::inferType($value);
 
             foreach ($paramMappings[$key] as $position) {
                 $types[$position] = $type;
