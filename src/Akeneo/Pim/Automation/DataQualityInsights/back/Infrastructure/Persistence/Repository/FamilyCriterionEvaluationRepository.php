@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\FamilyCriterionEvaluation;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluationResult;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\FamilyCriterionEvaluation;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\FamilyCriterionEvaluationRepositoryInterface;
 use Doctrine\DBAL\Connection;
 

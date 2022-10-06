@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository;
 
-use Doctrine\DBAL\Exception;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Structure\AttributeOptionSpellcheck;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Structure\SpellcheckResultByLocaleCollection;
@@ -22,6 +21,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeOptionCode;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception;
 
 class AttributeOptionSpellcheckRepository implements AttributeOptionSpellcheckRepositoryInterface
 {

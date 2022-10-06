@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\AttributeGrid;
 
-use Doctrine\ORM\Query\Expr\Join;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Structure\Quality;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Entity\AttributeLocaleQuality;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Entity\AttributeQuality;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;

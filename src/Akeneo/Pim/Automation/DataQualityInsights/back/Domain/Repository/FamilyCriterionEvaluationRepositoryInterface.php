@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\FamilyCriterionEvaluation;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\FamilyCriterionEvaluation;
 
 interface FamilyCriterionEvaluationRepositoryInterface
 {

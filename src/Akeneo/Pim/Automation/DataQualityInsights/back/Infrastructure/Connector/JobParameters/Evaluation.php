@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters;
 
-use Symfony\Component\Validator\Constraints\Collection;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Constraints\Collection;
 
 class Evaluation implements ConstraintCollectionProviderInterface, DefaultValuesProviderInterface
 {
