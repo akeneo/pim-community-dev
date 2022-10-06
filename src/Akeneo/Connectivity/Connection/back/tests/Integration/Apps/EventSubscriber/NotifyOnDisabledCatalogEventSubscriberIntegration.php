@@ -113,12 +113,15 @@ class NotifyOnDisabledCatalogEventSubscriberIntegration extends TestCase
     private function getUserNotificationCountByUserIds(array $userIds): int
     {
         $query = <<<SQL
-            SELECT COUNT(*)
-            FROM pim_notification_notification
-            LEFT JOIN pim_notification_user_notification on pim_notification_notification.id = pim_notification_user_notification.notification
-            WHERE
-                message = "pim_notification.disabled_catalog.message" 
-                AND user IN (:userIds)
+            SELECT SUM(grouped_count.nb) FROM (
+                SELECT COUNT(*) as nb
+                FROM pim_notification_notification
+                LEFT JOIN pim_notification_user_notification on pim_notification_notification.id = pim_notification_user_notification.notification
+                WHERE
+                    message = "pim_notification.disabled_catalog.message" 
+                    AND user IN (:userIds)
+                GROUP BY user
+            ) grouped_count
         SQL;
 
         return (int) $this->connection->fetchOne(
