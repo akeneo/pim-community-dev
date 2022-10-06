@@ -1,9 +1,11 @@
 workflows:
     hourly_cleanup:
         when:
-            and:
-                - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
-                - equal: [ "hourly_cleanup", << pipeline.schedule.name >> ]
+            or:
+              - and:
+                  - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+                  - equal: [ "hourly_cleanup", << pipeline.schedule.name >> ]
+              - equal: [ "hourly_cleanup", << pipeline.parameters.trigger >> ]
         jobs:
             - checkout
             - delete_environments_hourly:

@@ -31,7 +31,10 @@ GOOGLE_CLUSTER_ZONE="${GOOGLE_CLUSTER_ZONE:-europe-west3-a}"
 echo "1 - initializing terraform in $(pwd)"
 cat ${PWD}/main.tf.json
 
-gsutil rm gs://akecld-terraform-dev/saas/akecld-saas-dev/${GOOGLE_CLUSTER_ZONE}/${PFID}/default.tflock || true
+BUCKET=$(yq r ${PWD}/main.tf.json 'terraform.backend.gcs.bucket')
+PREFIX=$(yq r ${PWD}/main.tf.json 'terraform.backend.gcs.prefix')
+
+gsutil rm gs://${BUCKET}/${PREFIX}/default.tflock || true
 
 if [[ ${PFID} =~ "grth" ]]; then
   SOURCE_PATH=$(cat ${PWD}/main.tf.json | jq -r '.module.pim.source')
