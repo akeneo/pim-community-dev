@@ -75,7 +75,6 @@ class TargetAttributeShouldBeAnIdentifierValidatorSpec extends ObjectBehavior
         $this->validate('sku', new TargetAttributeShouldBeAnIdentifier());
     }
 
-
     public function it_should_be_valid_when_target_attribute_is_an_identifier(
         GetAttributes $getAttributes,
         ExecutionContext $context
