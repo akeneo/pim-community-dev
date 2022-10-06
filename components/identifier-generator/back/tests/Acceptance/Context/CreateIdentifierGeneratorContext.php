@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\CreateGeneratorCommand;
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\CreateGeneratorHandler;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Command\CreateGeneratorCommand;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Command\CreateGeneratorHandler;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
@@ -16,7 +17,6 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
-use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Exception\ViolationsException;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -103,7 +103,7 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iShouldGetAnErrorWithMessage(string $message): void
     {
-        Assert::notNull($this->violations);
+//        Assert::notNull($this->violations);
         Assert::contains($this->violations->violations()->__toString(), $message);
     }
 

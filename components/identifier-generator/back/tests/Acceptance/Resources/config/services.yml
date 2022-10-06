@@ -3,7 +3,7 @@ services:
   Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\CreateIdentifierGeneratorContext:
     public: true
     arguments:
-      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\CreateGeneratorHandler'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Command\CreateGeneratorHandler'
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
       - '@pim_catalog.repository.attribute'
 

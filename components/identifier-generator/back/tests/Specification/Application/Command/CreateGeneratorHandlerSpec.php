@@ -2,17 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Application;
+namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Application\Command;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\CreateGeneratorCommand;
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\CreateGeneratorHandler;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Command\CreateGeneratorCommand;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Command\CreateGeneratorHandler;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation\CommandValidatorInterface;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -22,7 +21,7 @@ class CreateGeneratorHandlerSpec extends ObjectBehavior
 {
     public function let(
         IdentifierGeneratorRepository $identifierGeneratorRepository,
-        ValidatorInterface $validator
+        CommandValidatorInterface $validator
     ) {
         $this->beConstructedWith($identifierGeneratorRepository, $validator);
     }
@@ -32,7 +31,7 @@ class CreateGeneratorHandlerSpec extends ObjectBehavior
         $this->shouldImplement(CreateGeneratorHandler::class);
     }
 
-    public function it_must_call_save_repository(IdentifierGeneratorRepository $identifierGeneratorRepository, ValidatorInterface $validator): void
+    public function it_must_call_save_repository(IdentifierGeneratorRepository $identifierGeneratorRepository, CommandValidatorInterface $validator): void
     {
         $command = new CreateGeneratorCommand(
             '2038e1c9-68ff-4833-b06f-01e42d206002',
@@ -45,7 +44,6 @@ class CreateGeneratorHandlerSpec extends ObjectBehavior
         );
         $validator->validate($command)
             ->shouldBeCalledOnce()
-            ->willReturn(new ConstraintViolationList())
         ;
 
         $this->__invoke($command);

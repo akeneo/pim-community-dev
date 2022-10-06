@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Exception;
+namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception;
 
-use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation\ErrorList;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -13,16 +12,16 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  */
 final class ViolationsException extends \LogicException
 {
-    public function __construct(private ConstraintViolationListInterface $constraintViolationList)
+    public function __construct(private ErrorList $constraintViolationList)
     {
         parent::__construct(
-            $this->constraintViolationList instanceof ConstraintViolationList
+            $this->constraintViolationList instanceof ErrorList
                 ? (string)$this->constraintViolationList
                 : 'Some violation(s) are raised'
         );
     }
 
-    public function violations(): ConstraintViolationListInterface
+    public function violations(): ErrorList
     {
         return $this->constraintViolationList;
     }
