@@ -313,13 +313,20 @@ class ProductController
     {
         $this->denyAccessUnlessAclIsGranted('pim_api_product_edit');
 
-        $data = $this->getDecodedContent($request->getContent());
-
         if (!\is_string($code)) {
             $message = 'The identifier field requires a string.';
             throw new DocumentedHttpException(
                 Documentation::URL . 'patch_products__code_',
                 sprintf('%s Check the expected format on the API documentation.', $message)
+            );
+        }
+
+        $data = $this->getDecodedContent($request->getContent());
+
+        if (!isset($data['identifier']) || $data['identifier'] === '') {
+            throw new DocumentedHttpException(
+                Documentation::URL . 'patch_products_uuid__uuid_',
+                sprintf(self::NO_IDENTIFIER_MESSAGE)
             );
         }
 
