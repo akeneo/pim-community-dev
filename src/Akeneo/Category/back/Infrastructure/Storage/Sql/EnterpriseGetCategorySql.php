@@ -76,7 +76,8 @@ class EnterpriseGetCategorySql implements GetCategoryInterface
             SELECT
                 category.id, 
                 category.code, 
-                category.parent_id, 
+                category.parent_id,
+                category.root,
                 translation.translations,
                 category.value_collection,
                 JSON_OBJECT(
@@ -115,6 +116,7 @@ class EnterpriseGetCategorySql implements GetCategoryInterface
                     )
                 ) : null,
             $result['parent_id'] ? new CategoryId((int)$result['parent_id']) : null,
+            $result['root'] ? new CategoryId((int)$result['root']) : null,
             $result['value_collection'] ?
                 ValueCollection::fromArray(json_decode($result['value_collection'], true)) : null,
             $result['permissions'] ?
