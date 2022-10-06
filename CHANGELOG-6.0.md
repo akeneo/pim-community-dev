@@ -1,5 +1,7 @@
 # 6.0.x
 
+# 6.0.45 (2022-10-06)
+
 ## Bug fixes
 
 - PIM-10657: [Backport] Remove RequestedAuthContext from SAML Auth requests
