@@ -913,6 +913,46 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected, true);
     }
 
+    public function testListProductsWithUuidNotInFilter(): void
+    {
+        $standardizedProducts = $this->getStandardizedProducts();
+
+        $search = \json_encode([
+            'uuid' => [
+                [
+                    'operator' => 'NOT IN',
+                    'value' => [
+                        $this->products['simple']->getUuid()->toString(),
+                        $this->products['localizable']->getUuid()->toString(),
+                        $this->products['with_parent']->getUuid()->toString(),
+                    ],
+                ],
+            ],
+        ]);
+        $client = $this->createAuthenticatedClient();
+        $client->request('GET', 'api/rest/v1/products-uuid?search=' . $search);
+        $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
+        $expected = <<<JSON
+{
+    "_links": {
+        "self"  : {"href" : "http://localhost/api/rest/v1/products-uuid?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products-uuid?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"}
+    },
+    "current_page" : 1,
+    "_embedded"    : {
+        "items" : [
+            {$standardizedProducts['scopable']},
+            {$standardizedProducts['localizable_and_scopable']},
+            {$standardizedProducts['china']},
+            {$standardizedProducts['without_category']}
+        ]
+    }
+}
+JSON;
+
+        $this->assertListResponse($client->getResponse(), $expected, true);
+    }
+
     public function testListProductsWithoutParent()
     {
         $standardizedProducts = $this->getStandardizedProducts();

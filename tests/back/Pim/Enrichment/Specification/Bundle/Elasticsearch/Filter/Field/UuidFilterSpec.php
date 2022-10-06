@@ -23,7 +23,7 @@ class UuidFilterSpec extends ObjectBehavior
         $this->shouldHaveType(UuidFilter::class);
     }
 
-    function it_only_supports_in_list_operator()
+    function it_only_supports_in_list_and_not_in_list_operators()
     {
         $this->shouldThrow(InvalidOperatorException::class)->during(
             'addFieldFilter',
@@ -84,6 +84,23 @@ class UuidFilterSpec extends ObjectBehavior
         $this->addFieldFilter(
             'uuid',
             'IN',
+            ['ca4787d5-36fd-4893-ba46-f4edd71b7186', 'dc832a6d-b2fb-4918-b169-eadb92242b85']
+        )->shouldReturn($this);
+    }
+
+    function it_adds_a_not_in_list_filter(SearchQueryBuilder $queryBuilder)
+    {
+        $queryBuilder->addMustNot([
+            'terms' => [
+                'id' => [
+                    'product_ca4787d5-36fd-4893-ba46-f4edd71b7186',
+                    'product_dc832a6d-b2fb-4918-b169-eadb92242b85',
+                ],
+            ],
+        ])->shouldBeCalled();
+        $this->addFieldFilter(
+            'uuid',
+            'NOT IN',
             ['ca4787d5-36fd-4893-ba46-f4edd71b7186', 'dc832a6d-b2fb-4918-b169-eadb92242b85']
         )->shouldReturn($this);
     }

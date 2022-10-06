@@ -17,7 +17,7 @@ final class UuidFilter extends AbstractFieldFilter
     public function __construct(private string $prefix)
     {
         $this->supportedFields = ['uuid'];
-        $this->supportedOperators = [Operators::IN_LIST];
+        $this->supportedOperators = [Operators::IN_LIST, Operators::NOT_IN_LIST];
     }
 
     /**
@@ -49,6 +49,18 @@ final class UuidFilter extends AbstractFieldFilter
 
                 $this->searchQueryBuilder->addFilter($clause);
                 break;
+            case Operators::NOT_IN_LIST:
+                $clause = [
+                    'terms' => [
+                        'id' => \array_map(
+                            fn (string $uuid): string => \sprintf('%s%s', $this->prefix, $uuid),
+                            $value
+                        ),
+                    ],
+                ];
+
+                $this->searchQueryBuilder->addMustNot($clause);
+                break;
             default:
                 throw InvalidOperatorException::notSupported($operator, static::class);
         }
@@ -58,7 +70,7 @@ final class UuidFilter extends AbstractFieldFilter
 
     private function checkValue($operator, $value): void
     {
-        if (Operators::IN_LIST === $operator) {
+        if (Operators::IN_LIST === $operator || Operators::NOT_IN_LIST === $operator) {
             FieldFilterHelper::checkArrayOfStrings('uuid', $value, self::class);
         }
     }

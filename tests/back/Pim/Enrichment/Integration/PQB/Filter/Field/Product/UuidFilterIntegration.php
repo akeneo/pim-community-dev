@@ -26,8 +26,14 @@ class UuidFilterIntegration extends AbstractProductQueryBuilderTestCase
 
     public function testOperatorInList(): void
     {
-        $result = $this->executeFilter([['uuid', Operators::IN_LIST, [$this->uuids['bar'], $this->uuids['baz']]]]);
-        $this->assert($result, ['bar', 'baz']);
+        $result = $this->executeFilter([['uuid', Operators::IN_LIST, [$this->uuids['foo'], $this->uuids['baz']]]]);
+        $this->assert($result, ['foo', 'baz']);
+    }
+
+    public function testOperatorNotInList(): void
+    {
+        $result = $this->executeFilter([['uuid', Operators::NOT_IN_LIST, [$this->uuids['foo'], $this->uuids['baz']]]]);
+        $this->assert($result, ['bar']);
     }
 
     public function testEmptyList(): void
