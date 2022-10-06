@@ -43,7 +43,7 @@ services:
             - ''
             - ''
             - ''
-            - '@security.encoder_factory'
+            - '@security.password_hasher_factory'
             - '@pim_user.manager'
             - '%pim_user.account_lock.duration%'
             - '%pim_user.account_lock.max_consecutive_failures%'

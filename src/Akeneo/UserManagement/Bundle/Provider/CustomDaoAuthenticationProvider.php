@@ -26,9 +26,17 @@ class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider
 
     private int $accountMaxConsecutiveFailure;
 
-    public function __construct(UserProviderInterface $userProvider, UserCheckerInterface $userChecker, string $providerKey, PasswordHasherFactoryInterface $encoderFactory, UserManager $userManager, int $accountLockDuration, int $accountMaxConsecutiveFailure, bool $hideUserNotFoundExceptions = true)
-    {
-        parent::__construct($userProvider, $userChecker, $providerKey, $encoderFactory, $hideUserNotFoundExceptions);
+    public function __construct(
+        UserProviderInterface $userProvider,
+        UserCheckerInterface $userChecker,
+        string $providerKey,
+        PasswordHasherFactoryInterface $hasherFactory,
+        UserManager $userManager,
+        int $accountLockDuration,
+        int $accountMaxConsecutiveFailure,
+        bool $hideUserNotFoundExceptions = true
+    ) {
+        parent::__construct($userProvider, $userChecker, $providerKey, $hasherFactory, $hideUserNotFoundExceptions);
         $this->userManager = $userManager;
         $this->accountLockDuration = $accountLockDuration;
         $this->accountMaxConsecutiveFailure = $accountMaxConsecutiveFailure;
