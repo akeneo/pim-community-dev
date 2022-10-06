@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\ApiBundle\Security;
 
+use OAuth2\OAuth2ServerException;
 use Akeneo\Tool\Component\Api\Event\ApiAuthenticationEvent;
 use Akeneo\Tool\Component\Api\Event\ApiAuthenticationFailedEvent;
 use Akeneo\UserManagement\Component\Model\User;
@@ -60,7 +61,7 @@ class OAuth2 extends BaseOAuth2
      *
      * @return Response
      *
-     * @throws \OAuth2\OAuth2ServerException
+     * @throws OAuth2ServerException
      */
     public function grantAccessToken(Request $request = null): Response
     {

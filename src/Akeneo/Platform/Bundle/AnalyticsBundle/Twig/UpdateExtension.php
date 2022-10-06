@@ -2,6 +2,7 @@
 
 namespace Akeneo\Platform\Bundle\AnalyticsBundle\Twig;
 
+use Twig\Extension\AbstractExtension;
 use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Twig\TwigFunction;
@@ -13,7 +14,7 @@ use Twig\TwigFunction;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class UpdateExtension extends \Twig\Extension\AbstractExtension
+class UpdateExtension extends AbstractExtension
 {
     /** @var ConfigManager */
     protected $configManager;

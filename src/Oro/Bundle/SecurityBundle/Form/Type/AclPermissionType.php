@@ -34,7 +34,7 @@ class AclPermissionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'oro_acl_permission';
     }

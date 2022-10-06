@@ -1855,7 +1855,7 @@ JSON;
 
         $response = $client->getResponse();
 
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
         $expected = '{"code":422,"message":"Pagination type is not supported."}';
         $this->assertEquals($response->getContent(), $expected);
     }

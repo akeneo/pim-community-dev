@@ -134,8 +134,7 @@ class DeleteMeasurementFamilyTest extends AcceptanceTestCase
     }
 
     /**
-     * @param \Symfony\Component\Validator\ConstraintViolationListInterface $violations
-     *
+     * @param ConstraintViolationListInterface $violations
      */
     private function assertCannotRemoveTheMeasurementFamily(
         ConstraintViolationListInterface $violations

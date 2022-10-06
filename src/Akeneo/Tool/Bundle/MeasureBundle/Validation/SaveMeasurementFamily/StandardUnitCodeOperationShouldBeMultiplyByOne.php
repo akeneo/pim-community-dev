@@ -15,7 +15,7 @@ class StandardUnitCodeOperationShouldBeMultiplyByOne extends Constraint
 {
     public const ERROR_MESSAGE = 'pim_measurements.validation.measurement_family.standard_unit_code.operation_should_be_multiply_by_one';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return Constraint::CLASS_CONSTRAINT;
     }

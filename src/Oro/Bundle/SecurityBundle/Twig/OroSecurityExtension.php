@@ -2,10 +2,11 @@
 
 namespace Oro\Bundle\SecurityBundle\Twig;
 
+use Twig\Extension\AbstractExtension;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Twig\TwigFunction;
 
-class OroSecurityExtension extends \Twig\Extension\AbstractExtension
+class OroSecurityExtension extends AbstractExtension
 {
     /**
      * @var SecurityFacade

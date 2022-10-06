@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\FilterBundle\Datasource\Orm;
 
+use Doctrine\ORM\Query\Expr\Comparison;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
@@ -127,7 +128,7 @@ class OrmFilterDatasourceAdapter implements FilterDatasourceAdapterInterface
      */
     protected function fixComparison($restriction, $condition)
     {
-        if ($restriction instanceof Expr\Comparison
+        if ($restriction instanceof Comparison
             && ($restriction->getOperator() === 'LIKE' || $restriction->getOperator() === 'NOT LIKE')
         ) {
             return $this->tryApplyWhereRestriction($restriction, $condition);
@@ -146,7 +147,7 @@ class OrmFilterDatasourceAdapter implements FilterDatasourceAdapterInterface
      */
     protected function tryApplyWhereRestriction($restriction, $condition)
     {
-        if (!($restriction instanceof Expr\Comparison)) {
+        if (!($restriction instanceof Comparison)) {
             return false;
         }
 
@@ -165,7 +166,7 @@ class OrmFilterDatasourceAdapter implements FilterDatasourceAdapterInterface
             return false;
         }
 
-        $restriction = new Expr\Comparison(
+        $restriction = new Comparison(
             $extraSelect,
             $restriction->getOperator(),
             $restriction->getRightExpr()

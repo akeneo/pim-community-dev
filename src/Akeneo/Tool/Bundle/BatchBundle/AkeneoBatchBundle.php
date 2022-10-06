@@ -2,6 +2,10 @@
 
 namespace Akeneo\Tool\Bundle\BatchBundle;
 
+use Akeneo\Tool\Bundle\BatchBundle\DependencyInjection\Compiler\RegisterNotifiersPass;
+use Akeneo\Tool\Bundle\BatchBundle\DependencyInjection\Compiler\PushBatchLogHandlerPass;
+use Akeneo\Tool\Bundle\BatchBundle\DependencyInjection\Compiler\RegisterJobsPass;
+use Akeneo\Tool\Bundle\BatchBundle\DependencyInjection\Compiler\RegisterJobParametersPass;
 use Akeneo\Tool\Bundle\BatchBundle\DependencyInjection\Compiler;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -25,11 +29,11 @@ class AkeneoBatchBundle extends Bundle
             realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Akeneo\Tool\Component\Batch\Model'
         ];
         $container
-            ->addCompilerPass(new Compiler\RegisterNotifiersPass())
-            ->addCompilerPass(new Compiler\PushBatchLogHandlerPass())
-            ->addCompilerPass(new Compiler\RegisterJobsPass())
-            ->addCompilerPass(new Compiler\RegisterJobParametersPass('default_values_provider'))
-            ->addCompilerPass(new Compiler\RegisterJobParametersPass('constraint_collection_provider'))
+            ->addCompilerPass(new RegisterNotifiersPass())
+            ->addCompilerPass(new PushBatchLogHandlerPass())
+            ->addCompilerPass(new RegisterJobsPass())
+            ->addCompilerPass(new RegisterJobParametersPass('default_values_provider'))
+            ->addCompilerPass(new RegisterJobParametersPass('constraint_collection_provider'))
             ->addCompilerPass(
                 DoctrineOrmMappingsPass::createYamlMappingDriver(
                     $mappings,
