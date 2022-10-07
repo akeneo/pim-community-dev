@@ -19,68 +19,195 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class GetRecordsValidatorTest extends AbstractValidationTest
 {
-    public function test_it_validate_request_when_valid(): void
+    /**
+     * @dataProvider validRequest
+     */
+    public function test_it_does_not_build_violations_when_request_is_valid(Request $value): void
     {
-        $request = new Request(
-            request: [
-                'channel' => 'ecommerce',
-                'locale' => 'en_Us',
-                'include_codes' => null,
-                'exclude_codes' => null,
-                'search' => null,
-                'limit' => 25,
-                'page' => 1
-            ],
-            attributes: [
-                'reference_entity_code' => 'brand'
-            ]
-        );
-        $violations = $this->getValidator()->validate($request, new GetRecords());
+        $violations = $this->getValidator()->validate($value, new GetRecords());
 
         $this->assertNoViolation($violations);
     }
 
-    public function test_it_build_violation_if_no_locale(): void
-    {
-        $request = new Request(
-            request: [
-                'channel' => 'ecommerce',
-                'locale' => null,
-                'include_codes' => null,
-                'exclude_codes' => null,
-                'search' => null,
-                'limit' => 25,
-                'page' => 1
-            ],
-            attributes: [
-                'reference_entity_code' => 'brand'
-            ]
-        );
-        $violations = $this->getValidator()->validate($request, new GetRecords());
+    /**
+     * @dataProvider invalidRequest
+     */
+    public function test_it_builds_violations_when_request_is_invalid(
+        string $expectedErrorMessage,
+        string $expectedErrorPath,
+        Request $value,
+    ): void {
+        $violations = $this->getValidator()->validate($value, new GetRecords());
 
-        $this->assertHasValidationError('This value should not be null.', '[locale]',$violations);
+        $this->assertHasValidationError($expectedErrorMessage, $expectedErrorPath, $violations);
     }
 
-    public function test_it_build_violation_if_no_channel(): void
+    public function validRequest(): array
     {
-        $request = new Request(
-            request: [
-                'channel' => null,
-                'locale' => 'en_Us',
-                'include_codes' => null,
-                'exclude_codes' => null,
-                'search' => null,
-                'limit' => 25,
-                'page' => 1
+        return [
+            'valid request with all parameters' => [
+                new Request(
+                    request: [
+                        'channel' => 'ecommerce',
+                        'locale' => 'en_US',
+                        'include_codes' => ['1'],
+                        'exclude_codes' => ['1'],
+                        'search' => null,
+                        'limit' => 25,
+                        'page' => 1
+                    ],
+                    attributes: [
+                        'reference_entity_code' => 'brand'
+                    ],
+                ),
             ],
-            attributes: [
-                'reference_entity_code' => 'brand'
-            ]
-        );
-        $violations = $this->getValidator()->validate($request, new GetRecords());
-
-        $this->assertHasValidationError('This value should not be null.', '[channel]',$violations);
+            'valid request without include & exclude codes' => [
+                new Request(
+                    request: [
+                        'channel' => 'ecommerce',
+                        'locale' => 'en_US',
+                        'include_codes' => null,
+                        'exclude_codes' => null,
+                        'search' => null,
+                        'limit' => 25,
+                        'page' => 1
+                    ],
+                    attributes: [
+                        'reference_entity_code' => 'brand'
+                    ],
+                ),
+            ],
+        ];
     }
+
+    public function invalidRequest(): array
+    {
+        return [
+            'request with invalid locale' => [
+                'This value should not be null.',
+                '[locale]',
+                new Request(
+                    request: [
+                        'channel' => 'ecommerce',
+                        'locale' => null,
+                        'include_codes' => null,
+                        'exclude_codes' => null,
+                        'search' => null,
+                        'limit' => 25,
+                        'page' => 1
+                    ],
+                    attributes: [
+                        'reference_entity_code' => 'brand'
+                    ]
+                ),
+            ],
+            'request with invalid channel' => [
+                'This value should not be null.',
+                '[channel]',
+                new Request(
+                    request: [
+                        'channel' => null,
+                        'locale' => 'en_US',
+                        'include_codes' => null,
+                        'exclude_codes' => null,
+                        'search' => null,
+                        'limit' => 25,
+                        'page' => 1
+                    ],
+                    attributes: [
+                        'reference_entity_code' => 'brand'
+                    ]
+                ),
+            ],
+            'request with include_codes' => [
+                'This value should be of type {{ type }}.',
+                '[include_codes]',
+                new Request(
+                    request: [
+                        'channel' => null,
+                        'locale' => 'en_US',
+                        'include_codes' => '1, 2, 3',
+                        'exclude_codes' => null,
+                        'search' => null,
+                        'limit' => 25,
+                        'page' => 1
+                    ],
+                    attributes: [
+                        'reference_entity_code' => 'brand'
+                    ]
+                ),
+            ],
+            'request with include_codes' => [
+                'This value should be of type {{ type }}.',
+                '[exclude_codes]',
+                new Request(
+                    request: [
+                        'channel' => null,
+                        'locale' => 'en_US',
+                        'include_codes' => null,
+                        'exclude_codes' => '1, 2, 3',
+                        'search' => null,
+                        'limit' => 25,
+                        'page' => 1
+                    ],
+                    attributes: [
+                        'reference_entity_code' => 'brand'
+                    ]
+                ),
+            ],
+        ];
+    }
+
+
+
+
+
+
+
+
+
+
+//    public function test_it_build_violation_if_no_locale(): void
+//    {
+//        $request = new Request(
+//            request: [
+//                'channel' => 'ecommerce',
+//                'locale' => null,
+//                'include_codes' => null,
+//                'exclude_codes' => null,
+//                'search' => null,
+//                'limit' => 25,
+//                'page' => 1
+//            ],
+//            attributes: [
+//                'reference_entity_code' => 'brand'
+//            ]
+//        );
+//        $violations = $this->getValidator()->validate($request, new GetRecords());
+//
+//        $this->assertHasValidationError('This value should not be null.', '[locale]',$violations);
+//    }
+//
+//    public function test_it_build_violation_if_no_channel(): void
+//    {
+//        $request = new Request(
+//            request: [
+//                'channel' => null,
+//                'locale' => 'en_Us',
+//                'include_codes' => null,
+//                'exclude_codes' => null,
+//                'search' => null,
+//                'limit' => 25,
+//                'page' => 1
+//            ],
+//            attributes: [
+//                'reference_entity_code' => 'brand'
+//            ]
+//        );
+//        $violations = $this->getValidator()->validate($request, new GetRecords());
+//
+//        $this->assertHasValidationError('This value should not be null.', '[channel]',$violations);
+//    }
 
     protected function getConfiguration(): Configuration
     {
