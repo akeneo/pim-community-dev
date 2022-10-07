@@ -33,6 +33,13 @@ final class StoreProductsFileInGCSBucket implements StoreProductsFile
             $fileSystem->createDirectory((string) $supplierCode);
 
             if (!is_readable($temporaryPath)) {
+                $this->logger->error('Temporary path is not readable.', [
+                    'data' => [
+                        'fileIdentifier' => (string) $identifier,
+                        'filename' => (string) $originalFilename,
+                        'path' => $path,
+                    ],
+                ]);
                 throw new UnableToStoreProductFile();
             }
 
