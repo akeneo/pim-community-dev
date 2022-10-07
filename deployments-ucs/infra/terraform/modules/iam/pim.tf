@@ -2,75 +2,12 @@ resource "google_project_iam_custom_role" "pim_role" {
   project     = var.project_id
   role_id     = "pim.role"
   title       = "PIM Role"
-  description = "Role for using PIM" # Set the same roles as configconnector, should be refine later
+  description = "Role for using PIM"
   permissions = [
-    "cloudbuild.builds.approve",
-    "cloudbuild.builds.create",
-    "cloudbuild.builds.get",
-    "cloudbuild.builds.list",
-    "cloudbuild.builds.update",
-
-    "cloudfunctions.functions.call",
-    "cloudfunctions.functions.create",
-    "cloudfunctions.functions.delete",
-    "cloudfunctions.functions.get",
-    "cloudfunctions.functions.invoke",
-    "cloudfunctions.functions.list",
-    "cloudfunctions.functions.sourceCodeGet",
-    "cloudfunctions.functions.sourceCodeSet",
-    "cloudfunctions.functions.getIamPolicy",
-    "cloudfunctions.functions.setIamPolicy",
-    "cloudfunctions.functions.update",
-    "cloudfunctions.runtimes.list",
-    "cloudfunctions.locations.list",
-    "cloudfunctions.operations.get",
-    "cloudfunctions.operations.list",
-
-    "cloudscheduler.jobs.create",
-    "cloudscheduler.jobs.delete",
-    "cloudscheduler.jobs.enable",
-    "cloudscheduler.jobs.get",
-    "cloudscheduler.jobs.update",
-    "cloudscheduler.locations.get",
-
-    "compute.disks.create",
-    "compute.disks.delete",
-    "compute.disks.get",
-    "compute.disks.setLabels",
-    "compute.instances.detachDisk",
-    "compute.instances.get",
-    "compute.zoneOperations.get",
-
-    "datastore.entities.create",
-    "datastore.entities.delete",
-    "datastore.entities.get",
-    "datastore.entities.update",
-
-    "iam.serviceAccounts.create",
-    "iam.serviceAccounts.delete",
-    "iam.serviceAccounts.get",
-    "iam.serviceAccounts.getIamPolicy",
-    "iam.serviceAccounts.list",
-    "iam.serviceAccounts.setIamPolicy",
-
-    "pubsub.subscriptions.create",
-    "pubsub.subscriptions.delete",
     "pubsub.subscriptions.get",
     "pubsub.subscriptions.consume",
-    "pubsub.topics.attachSubscription",
-    "pubsub.topics.create",
-    "pubsub.topics.delete",
     "pubsub.topics.get",
-
-    "resourcemanager.projects.getIamPolicy",
-    "resourcemanager.projects.setIamPolicy",
-
-    "storage.buckets.create",
-    "storage.buckets.delete",
-    "storage.buckets.get",
-    "storage.buckets.getIamPolicy",
-    "storage.buckets.setIamPolicy",
-    "storage.buckets.update",
+    "pubsub.topics.publish",
 
     "storage.objects.get",
     "storage.objects.list",
