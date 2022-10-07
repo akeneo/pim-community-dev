@@ -19,6 +19,7 @@ final class ContributorAccountTest extends TestCase
         $this->assertIsString($contributorAccount->accessToken());
         $this->assertIsString($contributorAccount->createdAt());
         $this->assertIsString($contributorAccount->accessTokenCreatedAt());
+        $this->assertFalse($contributorAccount->hasConsent());
     }
 
     /** @test */
@@ -32,6 +33,7 @@ final class ContributorAccountTest extends TestCase
             '1vn466x20fr44wk40w0s88c40c0owwso0sgoksko0kgcggk848',
             '2022-06-06 12:52:44',
             null,
+            true,
         );
         $this->assertSame('b8b13d0b-496b-4a7c-a574-0d522ba90752', $contributorAccount->identifier());
         $this->assertSame('contributor@example.com', $contributorAccount->email());
@@ -43,6 +45,7 @@ final class ContributorAccountTest extends TestCase
         $this->assertSame('2022-06-06 12:52:44', $contributorAccount->accessTokenCreatedAt());
         $this->assertSame('2022-06-06 12:52:44', $contributorAccount->createdAt());
         $this->assertNull($contributorAccount->lastLoggedAt());
+        $this->assertTrue($contributorAccount->hasConsent());
     }
 
     /** @test */
@@ -68,6 +71,7 @@ final class ContributorAccountTest extends TestCase
             'foo',
             (new \DateTimeImmutable())->modify('-2 days')->format('Y-m-d H:i:s'),
             null,
+            true,
         );
 
         $contributorAccount->resetPassword();
@@ -91,6 +95,7 @@ final class ContributorAccountTest extends TestCase
             'foo',
             (new \DateTimeImmutable())->modify('-2 days')->format('Y-m-d H:i:s'),
             null,
+            true,
         );
 
         $contributorAccount->renewAccessToken();

@@ -27,6 +27,7 @@ final class ResetPasswordHandlerTest extends TestCase
             '1vn466x20fr44wk40w0s88c40c0owwso0sgoksko0kgcggk848',
             '2022-06-28 10:16:44',
             '2022-06-28 10:16:44',
+            true,
         );
         $contributorAccountRepository = new InMemoryRepository();
         $contributorAccountRepository->save($contributorAccount);
