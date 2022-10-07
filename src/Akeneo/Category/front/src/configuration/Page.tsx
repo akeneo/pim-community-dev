@@ -188,6 +188,19 @@ const Page: FC = () => {
                 Manage category permissions
               </Checkbox>
             </Field>
+            <Field>
+              <Checkbox
+                  checked={configuration.acls.pim_enrich_product_category_order_trees}
+                  onClick={() =>
+                      changeAcl(
+                          'pim_enrich_product_category_order_trees',
+                          !configuration.acls.pim_enrich_product_category_order_trees
+                      )
+                  }
+              >
+                Order/reorder trees in a category
+              </Checkbox>
+            </Field>
           </Content>
         </Section>
       </PageContent>
