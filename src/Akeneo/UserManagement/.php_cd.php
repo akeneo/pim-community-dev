@@ -81,6 +81,7 @@ $rules = [
         // PLG-692: use email notification from Notification bundle
         'Akeneo\Platform\Bundle\NotificationBundle\Email\MailNotifierInterface',
         'Twig\Environment',
+        'Twig\Extension\AbstractExtension',
         'Throwable',
         'Psr\Log\LoggerInterface',
 
