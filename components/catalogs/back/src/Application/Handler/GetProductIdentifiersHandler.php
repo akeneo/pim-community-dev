@@ -7,7 +7,7 @@ namespace Akeneo\Catalogs\Application\Handler;
 use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductIdentifiersQueryInterface;
-use Akeneo\Catalogs\ServiceApi\Exception\CatalogNotFoundException as ServiceApiCatalogNotFoundException;
+use Akeneo\Catalogs\ServiceAPI\Exception\CatalogNotFoundException as ServiceApiCatalogNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Query\GetProductIdentifiersQuery;
 
 /**

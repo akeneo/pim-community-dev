@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\ServiceApi\Exception;
+namespace Akeneo\Catalogs\ServiceAPI\Exception;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
