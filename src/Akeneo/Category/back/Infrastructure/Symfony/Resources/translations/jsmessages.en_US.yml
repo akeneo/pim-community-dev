@@ -1,4 +1,5 @@
 akeneo.category:
+    attributes: Attributes
     edition_form:
         error:
             unhandled_attribute_type: Could not find attribute field builder for attribute type "{{type}}"
