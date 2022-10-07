@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Application\Filter;
 
-use Akeneo\Category\Domain\Model\Category;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 /**

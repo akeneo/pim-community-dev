@@ -29,13 +29,13 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class UpdateCategoryController
 {
     public function __construct(
-        private CommandMessageBus                    $categoryCommandBus,
-        private SecurityFacade                       $securityFacade,
-        private ConverterInterface                   $internalApiToStandardConverter,
-        private CategoryEditAclFilter                $categoryEditAclFilter,
+        private CommandMessageBus $categoryCommandBus,
+        private SecurityFacade $securityFacade,
+        private ConverterInterface $internalApiToStandardConverter,
+        private CategoryEditAclFilter $categoryEditAclFilter,
         private StandardFormatToUserIntentsInterface $standardFormatToUserIntents,
-        private CategoryEditUserIntentFilter         $categoryUserIntentFilter,
-        private GetCategoryInterface                 $getCategory,
+        private CategoryEditUserIntentFilter $categoryUserIntentFilter,
+        private GetCategoryInterface $getCategory,
     ) {
     }
 
