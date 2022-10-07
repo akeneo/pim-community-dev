@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage;
 
-use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\ProductFileDoesNotExist;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DownloadStoredProductFile;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Exception\ProductFileDoesNotExist;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Exception\UnableToReadProductFile;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\UnableToCheckFileExistence;
@@ -37,7 +38,7 @@ final class DownloadStoredProductFileFromGCSBucket implements DownloadStoredProd
                 ],
             ]);
 
-            throw new UnableToReadProductFile();
+            throw new UnableToReadProductFile(previous: $e);
         }
     }
 }

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage;
 
-use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\UnableToStoreProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\StoreProductsFile;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\UnableToStoreProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Filename;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code;
@@ -45,8 +45,8 @@ final class StoreProductsFileInGCSBucket implements StoreProductsFile
         } catch (FilesystemException $e) {
             $this->logger->error('Product file could not be stored.', [
                 'data' => [
-                    'fileIdentifier' => $identifier,
-                    'filename' => $originalFilename,
+                    'fileIdentifier' => (string) $identifier,
+                    'filename' => (string) $originalFilename,
                     'path' => $path,
                     'error' => $e->getMessage(),
                 ],

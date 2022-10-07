@@ -7,6 +7,7 @@ namespace Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Cont
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\DownloadProductFile\DownloadProductFile as DownloadProductFileServiceAPI;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\DownloadProductFile\DownloadProductFileQuery;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\DownloadProductFile\Exception\ProductFileNotFound;
+use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\DownloadProductFile\Exception\UnableToReadProductFile;
 use Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccount;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,6 +28,8 @@ final class DownloadProductFile
             );
         } catch (ProductFileNotFound) {
             return new Response(null, Response::HTTP_NOT_FOUND);
+        } catch (UnableToReadProductFile) {
+            return new Response(null, Response::HTTP_SERVICE_UNAVAILABLE);
         }
 
         $headers['Content-Disposition'] = sprintf(

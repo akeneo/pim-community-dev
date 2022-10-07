@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\ProductFileDropping\GoogleCloudStorage;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\StoreProductsFile;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\UnableToStoreProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Filename;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code;
@@ -57,7 +58,7 @@ final class StoreProductsFileInGCSBucketIntegration extends SqlIntegrationTestCa
 
         $fileIdentifier = Identifier::fromString('d06c58da-4cd7-469d-a3fc-37209a05e9e2');
 
-        static::expectException(\RuntimeException::class);
+        static::expectException(UnableToStoreProductFile::class);
         ($sut)(
             Code::fromString('supplier_a'),
             Filename::fromString('products.xlsx'),

@@ -108,7 +108,6 @@ $rules = [
             'Akeneo\SupplierPortal\Retailer\Infrastructure\Install\AddSupplierPortalJobs',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\Storage',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\DeleteUnknownSupplierDirectoriesInGCSBucket',
-            'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\StoreProductsFileInGCSBucket',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Encoder\SuppliersEncoder',
             'Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder',
 

@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Application\ProductFileDropping\Read;
 
-use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\ProductFileDoesNotExist;
-use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\ProductFileIsNotDownloadable;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\DownloadProductFile;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\DownloadProductFileHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DownloadStoredProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileName;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Exception\ProductFileDoesNotExist;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Exception\UnableToReadProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFilePathAndFileName;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\StubEventDispatcher;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\NullLogger;
 
 final class DownloadProductFileHandlerTest extends TestCase
 {
@@ -26,7 +25,6 @@ final class DownloadProductFileHandlerTest extends TestCase
         $sut = new DownloadProductFileHandler(
             $getProductFilePathAndFileNameMock,
             $downloadStoredProductFileMock,
-            new NullLogger(),
         );
 
         $getProductFilePathAndFileNameMock
@@ -66,7 +64,6 @@ final class DownloadProductFileHandlerTest extends TestCase
         $sut = new DownloadProductFileHandler(
             $getProductFilePathAndFileNameMock,
             $downloadStoredProductFileMock,
-            new NullLogger(),
         );
 
         $getProductFilePathAndFileNameMock->expects($this->once())->method('__invoke')->willReturn(null);
@@ -85,7 +82,6 @@ final class DownloadProductFileHandlerTest extends TestCase
         $sut = new DownloadProductFileHandler(
             $getProductFilePathAndFileNameMock,
             $downloadStoredProductFileMock,
-            new NullLogger(),
         );
 
         $getProductFilePathAndFileNameMock
@@ -98,10 +94,10 @@ final class DownloadProductFileHandlerTest extends TestCase
         $downloadStoredProductFileMock
             ->method('__invoke')
             ->with('path/to/file.xlsx')
-            ->willThrowException(new \RuntimeException())
+            ->willThrowException(new UnableToReadProductFile())
         ;
 
-        $this->expectException(ProductFileIsNotDownloadable::class);
+        $this->expectException(UnableToReadProductFile::class);
         ($sut)(new DownloadProductFile('file-identifier'));
 
         $this->assertEmpty($eventDispatcher->getDispatchedEvents());
