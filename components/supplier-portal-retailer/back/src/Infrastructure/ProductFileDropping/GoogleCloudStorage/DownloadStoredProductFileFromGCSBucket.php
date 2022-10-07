@@ -9,8 +9,6 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Exception\Pro
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Exception\UnableToReadProductFile;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use League\Flysystem\FilesystemException;
-use League\Flysystem\UnableToCheckFileExistence;
-use League\Flysystem\UnableToReadFile;
 use Psr\Log\LoggerInterface;
 
 final class DownloadStoredProductFileFromGCSBucket implements DownloadStoredProductFile
@@ -26,11 +24,12 @@ final class DownloadStoredProductFileFromGCSBucket implements DownloadStoredProd
 
         try {
             if (!$fileSystem->fileExists($path)) {
+                $this->logger->error('Product file does not exist.', ['data' => ['path' => $path,],]);
                 throw new ProductFileDoesNotExist('The requested file does not exist on the bucket.');
             }
 
             return $fileSystem->readStream($path);
-        } catch (FilesystemException | UnableToCheckFileExistence | UnableToReadFile $e) {
+        } catch (FilesystemException $e) {
             $this->logger->error('Product file could not be downloaded.', [
                 'data' => [
                     'path' => $path,
