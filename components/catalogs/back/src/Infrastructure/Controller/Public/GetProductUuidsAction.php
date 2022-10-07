@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Controller\Public;
 
+use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Security\DenyAccessUnlessGrantedTrait;
 use Akeneo\Catalogs\Infrastructure\Security\GetCurrentUsernameTrait;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
@@ -35,6 +36,7 @@ class GetProductUuidsAction
         private TokenStorageInterface $tokenStorage,
         private SecurityFacadeInterface $security,
         private RouterInterface $router,
+        private GetCatalogQueryInterface $getCatalogQuery,
     ) {
     }
 
@@ -45,7 +47,8 @@ class GetProductUuidsAction
 
         $catalog = $this->getCatalog($id);
 
-        $this->denyAccessUnlessOwnerOfCatalog($catalog, $this->getCurrentUsername());
+        $domainCatalog = $this->getCatalogQuery->execute($id);
+        $this->denyAccessUnlessOwnerOfCatalog($domainCatalog, $this->getCurrentUsername());
 
         [$searchAfter, $limit, $updatedAfter, $updatedBefore] = $this->getParameters($request);
         $uuids = $this->getProductUuids($catalog, $searchAfter, $limit, $updatedAfter, $updatedBefore);

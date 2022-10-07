@@ -34,3 +34,9 @@ pim_enrich_product_category_edit_attributes:
   label: pim_enrich.acl.category.edit_attributes
   group_name: pim_enrich.acl_group.category
   feature: enriched_category
+
+pim_enrich_product_category_order_trees:
+  type: action
+  label: pim_enrich.acl.category.order_trees
+  group_name: pim_enrich.acl_group.category
+  feature: enriched_category

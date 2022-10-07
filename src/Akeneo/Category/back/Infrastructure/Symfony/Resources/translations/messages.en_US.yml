@@ -11,3 +11,4 @@ pim_enrich:
       history: View category history
       template: Manage category template
       edit_attributes: Edit category attributes
+      order_trees: Order/reorder trees in a category

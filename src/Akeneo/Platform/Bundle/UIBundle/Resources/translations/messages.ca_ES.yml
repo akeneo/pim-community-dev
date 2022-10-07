@@ -109,15 +109,6 @@ pim_enrich:
       categories_view: Consultar les categories d'un model de producte
       history: Veure l'històric del model de producte
       remove: Eliminar un model de producte (inclosos els fills)
-    category:
-      list: Llistar categories
-      create: Crear una categoria
-      edit: Editar una categoria
-      remove: Eliminar una categoria
-      move: Moure categoria
-      children: Veure subcategories
-      products: Veure productes de la categoria
-      history: Veure l'històric de la categoria
     channel:
       index: Llistar canals
       create: Crear un canal
