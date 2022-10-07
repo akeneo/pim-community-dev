@@ -13,6 +13,7 @@ const useUiLocales: () => {
   error: Error | null,
   isSuccess: boolean
 } = () => {
+  // TODO Ui calls 2 times the route
   const getUiLocales = async () => {
     return fetch('/system/locale/ui', {
       method: 'GET',

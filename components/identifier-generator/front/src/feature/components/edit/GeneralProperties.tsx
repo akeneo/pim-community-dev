@@ -1,9 +1,9 @@
 import React, {useCallback} from 'react';
-import {IdentifierGenerator} from '../../../models';
+import {IdentifierGenerator, LabelCollection} from '../../../models';
 import {Field, SectionTitle, TextInput} from 'akeneo-design-system';
 import {IdentifierAttributeSelector} from '../IdentifierAttributeSelector';
 import {Styled} from '../Styled';
-import {useUiLocales} from '../../hooks/useUiLocales';
+import {LabelTranslations} from './LabelTranslations';
 
 type GeneralPropertiesProps = {
   generator: IdentifierGenerator;
@@ -11,11 +11,10 @@ type GeneralPropertiesProps = {
 };
 
 const GeneralProperties: React.FC<GeneralPropertiesProps> = ({generator, onGeneratorChange}) => {
-  const {data: locales} = useUiLocales();
   const defaultIdentifierCode = 'sku';
 
-  const onLabelChange = useCallback((locale: string) => (label: string) => {
-    generator.labels[locale] = label;
+  const onLabelChange = useCallback((labelCollection: LabelCollection) => {
+    generator.labels = labelCollection;
     onGeneratorChange({...generator});
   }, [onGeneratorChange, generator]);
 
@@ -31,18 +30,7 @@ const GeneralProperties: React.FC<GeneralPropertiesProps> = ({generator, onGener
       </Field>
       <IdentifierAttributeSelector code={generator.target || defaultIdentifierCode}/>
     </Styled.FormContainer>
-    <SectionTitle>
-      <SectionTitle.Title>
-        Label translations in UI locale TODO
-      </SectionTitle.Title>
-    </SectionTitle>
-    <Styled.FormContainer>
-      {(locales || []).map(locale => (
-        <Field label={locale.label} key={locale.code} locale={locale.code}>
-          <TextInput value={generator.labels[locale.code] || ''} onChange={onLabelChange(locale.code)}/>
-        </Field>
-      ))}
-    </Styled.FormContainer>
+    <LabelTranslations labelCollection={generator.labels} onLabelsChange={onLabelChange}/>
   </>;
 };
 
