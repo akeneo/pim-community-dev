@@ -3,6 +3,7 @@ import {IdentifierGenerator} from '../../../models';
 import {Field, SectionTitle, TextInput} from 'akeneo-design-system';
 import {IdentifierAttributeSelector} from '../IdentifierAttributeSelector';
 import {Styled} from '../Styled';
+import {useUiLocales} from '../../hooks/useUiLocales';
 
 type GeneralPropertiesProps = {
   generator: IdentifierGenerator;
@@ -10,7 +11,7 @@ type GeneralPropertiesProps = {
 };
 
 const GeneralProperties: React.FC<GeneralPropertiesProps> = ({generator, onGeneratorChange}) => {
-  const locales = ['en_US', 'fr_FR'];
+  const {data: locales} = useUiLocales();
   const defaultIdentifierCode = 'sku';
 
   const onLabelChange = useCallback((locale: string) => (label: string) => {
@@ -36,9 +37,9 @@ const GeneralProperties: React.FC<GeneralPropertiesProps> = ({generator, onGener
       </SectionTitle.Title>
     </SectionTitle>
     <Styled.FormContainer>
-      {locales.map(locale => (
-        <Field label={`${locale} TODO`} key={locale} locale={locale}>
-          <TextInput value={generator.labels[locale] || ''} onChange={onLabelChange(locale)}/>
+      {(locales || []).map(locale => (
+        <Field label={locale.label} key={locale.code} locale={locale.code}>
+          <TextInput value={generator.labels[locale.code] || ''} onChange={onLabelChange(locale.code)}/>
         </Field>
       ))}
     </Styled.FormContainer>
