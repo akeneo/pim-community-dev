@@ -11,8 +11,8 @@
 
 namespace Akeneo\Pim\Permission\Component\Repository;
 
-use Doctrine\ORM\QueryBuilder;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * Interface for access repository

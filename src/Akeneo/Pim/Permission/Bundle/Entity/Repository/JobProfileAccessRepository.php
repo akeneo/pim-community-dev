@@ -11,7 +11,6 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Entity\Repository;
 
-use Doctrine\ORM\QueryBuilder;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Permission\Component\Repository\AccessRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
@@ -20,6 +19,7 @@ use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * Job profile access repository
