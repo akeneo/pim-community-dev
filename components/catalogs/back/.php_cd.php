@@ -60,10 +60,6 @@ $rules = [
             'Akeneo\Connectivity\Connection\ServiceApi',
             'Akeneo\Tool\Bundle\MeasureBundle\ServiceApi',
 
-            'Akeneo\UserManagement\ServiceApi\User\ListUsersHandlerInterface',
-            'Akeneo\UserManagement\ServiceApi\User\User',
-            'Akeneo\UserManagement\ServiceApi\User\UsersQuery',
-
             /**********************************************************************************************************/
             /* Below are dependencies that we have, but we shouldn't rely on them.
             /* They are coupling exceptions that should be replaced by better alternatives, like ServiceAPIs.

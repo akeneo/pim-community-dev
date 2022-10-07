@@ -6,9 +6,7 @@ namespace Akeneo\Catalogs\Infrastructure\Persistence\User;
 
 use Akeneo\Catalogs\Application\Exception\UserNotFoundException;
 use Akeneo\Catalogs\Application\Persistence\User\GetUserIdFromUsernameQueryInterface;
-use Akeneo\UserManagement\ServiceApi\User\ListUsersHandlerInterface;
-use Akeneo\UserManagement\ServiceApi\User\User;
-use Akeneo\UserManagement\ServiceApi\User\UsersQuery;
+use Doctrine\DBAL\Connection;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -18,18 +16,23 @@ use Akeneo\UserManagement\ServiceApi\User\UsersQuery;
 class GetUserIdFromUsernameQuery implements GetUserIdFromUsernameQueryInterface
 {
     public function __construct(
-        private ListUsersHandlerInterface $listUsersHandler,
+        private Connection $connection,
     ) {
     }
 
     public function execute(string $username): int
     {
-        /** @var array<User> $users */
-        $users = $this->listUsersHandler->fromQuery(new UsersQuery(search: $username, limit: 1));
-        if (\count($users) !== 1) {
+        $sql = <<<SQL
+        SELECT id
+        FROM oro_user
+        WHERE username = :username
+SQL;
+
+        $userId = $this->connection->fetchFirstColumn($sql, ['username' => $username]);
+        if (\count($userId) !== 1) {
             throw new UserNotFoundException();
         }
 
-        return $users[0]->getId();
+        return (int)$userId[0];
     }
 }
