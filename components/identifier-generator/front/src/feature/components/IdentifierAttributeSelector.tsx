@@ -15,7 +15,7 @@ const IdentifierAttributeSelector: React.FC<{code: string}> = ({code}) => {
   const status = error?.message === 'Forbidden' ? Status.FORBIDDEN : error?.message ? Status.ERROR : Status.SUCCESS;
 
   return (
-    <Field label="Select your identifier attribute">
+    <Field label={translate('pim_identifier_generator.create.form.select_identifier_attribute')}>
       <SelectInput
         emptyResultLabel={translate('pim_common.no_result')}
         data-testid="identifierAttribute"
