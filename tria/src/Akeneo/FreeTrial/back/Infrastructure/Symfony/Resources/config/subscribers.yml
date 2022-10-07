@@ -9,6 +9,7 @@ services:
     arguments:
       - '@Akeneo\FreeTrial\Domain\Query\GetInvitedUserQuery'
       - '@Akeneo\FreeTrial\Domain\Repository\InvitedUserRepository'
+      - '@feature_flags'
     tags:
       - { name: 'kernel.event_subscriber' }
 

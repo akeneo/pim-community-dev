@@ -15,23 +15,21 @@ namespace Akeneo\FreeTrial\Infrastructure\Subscriber;
 
 use Akeneo\FreeTrial\Domain\Query\GetInvitedUserQuery;
 use Akeneo\FreeTrial\Domain\Repository\InvitedUserRepository;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\AuthenticationEvents;
 use Symfony\Component\Security\Core\Event\AuthenticationSuccessEvent;
 
+;
+
 final class UserFirstConnectionSubscriber implements EventSubscriberInterface
 {
-    private GetInvitedUserQuery $getInvitedUserQuery;
-
-    private InvitedUserRepository $invitedUserRepository;
-
     public function __construct(
-        GetInvitedUserQuery $getInvitedUserQuery,
-        InvitedUserRepository $invitedUserRepository
+        private GetInvitedUserQuery $getInvitedUserQuery,
+        private InvitedUserRepository $invitedUserRepository,
+        private FeatureFlags $featureFlags,
     ) {
-        $this->getInvitedUserQuery = $getInvitedUserQuery;
-        $this->invitedUserRepository = $invitedUserRepository;
     }
 
     public static function getSubscribedEvents(): array
@@ -43,6 +41,10 @@ final class UserFirstConnectionSubscriber implements EventSubscriberInterface
 
     public function onUserConnectionSuccess(AuthenticationSuccessEvent $event)
     {
+        if (!$this->featureFlags->isEnabled('free_trial')) {
+            return;
+        }
+
         $user = $event->getAuthenticationToken()->getUser();
         if (!$user instanceof UserInterface) {
             return;
