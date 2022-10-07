@@ -21,7 +21,7 @@ test('it allows to post a new comment related to a product file', async () => {
     renderWithProviders(<Discussion comments={[]} productFileIdentifier={'4b5ca8e4-0f89-4de0-9bc7-20c7617a9c86'} />);
     let commentInput = screen.getByPlaceholderText('Say something about this file');
 
-    fireEvent.change(commentInput, {target: {value: 'This is a nice product file'}});
+    fireEvent.change(commentInput, {target: {value: 'What do you think about this product file?'}});
     fireEvent.submit(screen.getByRole('form'));
 
     expect(apiFetch).toHaveBeenCalled();
@@ -39,7 +39,7 @@ test('it renders an error message when something went wrong', async () => {
     renderWithProviders(<Discussion comments={[]} productFileIdentifier={'4b5ca8e4-0f89-4de0-9bc7-20c7617a9c86'} />);
     let commentInput = screen.getByPlaceholderText('Say something about this file');
 
-    fireEvent.change(commentInput, {target: {value: 'This is a nice product file'}});
+    fireEvent.change(commentInput, {target: {value: 'What do you think about this product file?'}});
     fireEvent.submit(screen.getByRole('form'));
 
     await waitFor(() => {
@@ -47,7 +47,7 @@ test('it renders an error message when something went wrong', async () => {
     });
 });
 
-test('it disables the comment sending if the comment is empty', async () => {
+test('it disables the comment sending if the comment is empty', () => {
     renderWithProviders(<Discussion comments={[]} productFileIdentifier={'4b5ca8e4-0f89-4de0-9bc7-20c7617a9c86'} />);
     let commentInput = screen.getByPlaceholderText('Say something about this file');
     fireEvent.change(commentInput, {target: {value: ''}});
@@ -55,7 +55,7 @@ test('it disables the comment sending if the comment is empty', async () => {
     expect(screen.getByRole('button')).toBeDisabled();
 });
 
-test('it disables the comment sending if the comment is too long', async () => {
+test('it disables the comment sending if the comment is too long', () => {
     renderWithProviders(<Discussion comments={[]} productFileIdentifier={'4b5ca8e4-0f89-4de0-9bc7-20c7617a9c86'} />);
     let commentInput = screen.getByPlaceholderText('Say something about this file');
     fireEvent.change(commentInput, {target: {value: 'a'.repeat(300)}});
