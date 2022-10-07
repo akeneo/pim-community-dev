@@ -22,14 +22,10 @@ use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
  */
 class BoundedContextResolver
 {
-    private ControllerResolverInterface $controllerResolver;
-    /** @var string[] */
-    private array $boundedContexts;
-
-    public function __construct(ControllerResolverInterface $controllerResolver, array $boundedContexts)
-    {
-        $this->controllerResolver = $controllerResolver;
-        $this->boundedContexts = $boundedContexts;
+    public function __construct(
+        private ControllerResolverInterface $controllerResolver,
+        private array $boundedContexts
+    ) {
     }
 
     public function fromRequest(Request $request): string
@@ -60,7 +56,7 @@ class BoundedContextResolver
     private function findContext(string $nameSpace): ?string
     {
         foreach ($this->boundedContexts as $namespaceStart => $boundedContext) {
-            if (strpos($nameSpace, $namespaceStart) === 0) {
+            if (str_starts_with($nameSpace, $namespaceStart)) {
                 return $boundedContext;
             }
         }

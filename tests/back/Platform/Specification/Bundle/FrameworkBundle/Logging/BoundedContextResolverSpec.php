@@ -10,6 +10,7 @@ use Symfony\Component\ErrorHandler\Error\ClassNotFoundError;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
+use Symfony\Component\Messenger\Command\ConsumeMessagesCommand;
 
 class BoundedContextResolverSpec extends ObjectBehavior
 {
@@ -111,5 +112,31 @@ class BoundedContextResolverSpec extends ObjectBehavior
         $this->beConstructedWith($controllerResolver, $boundedContexts);
 
         $this->fromRequest($request)->shouldReturn('Unknown request context: unable to instantiate the controller');
+    }
+
+    function it_resolves_context_from_command(
+        ConsumeMessagesCommand $cmd,
+        ControllerResolverInterface $controllerResolver
+    ) {
+        $boundedContexts = [
+            'Double\Symfony\Component\Messenger\Command' => 'FoundContext',
+        ];
+
+        $this->beConstructedWith($controllerResolver, $boundedContexts);
+
+        $this->fromCommand($cmd)->shouldReturn('FoundContext');
+    }
+
+    function it_cannot_resolve_context_from_command(
+        ConsumeMessagesCommand $cmd,
+        ControllerResolverInterface $controllerResolver
+    ) {
+        $boundedContexts = [
+            'Double\Akeneo\Pim\Enrichment' => 'Enrichment',
+        ];
+
+        $this->beConstructedWith($controllerResolver, $boundedContexts);
+
+        $this->fromCommand($cmd)->shouldReturn(null);
     }
 }
