@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Command\CommandInterface;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\CommandInterface;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsException;
 
 /**

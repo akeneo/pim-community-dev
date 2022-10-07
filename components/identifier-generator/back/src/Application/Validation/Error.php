@@ -13,4 +13,28 @@ final class Error
     public function __construct(private string $message, private array $parameters = [], private ?string $path = null)
     {
     }
+
+    /**
+     * @return string
+     */
+    public function getMessage(): string
+    {
+        return $this->message;
+    }
+
+    /**
+     * @return array
+     */
+    public function getParameters(): array
+    {
+        return $this->parameters;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPath(): ?string
+    {
+        return $this->path;
+    }
 }

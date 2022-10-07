@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Command;
+namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Create;
+
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\CommandInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)

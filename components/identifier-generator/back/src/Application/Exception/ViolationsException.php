@@ -16,7 +16,7 @@ final class ViolationsException extends \LogicException
     {
         parent::__construct(
             $this->constraintViolationList instanceof ErrorList
-                ? (string)$this->constraintViolationList
+                ? $this->constraintViolationList->getAllMessages()
                 : 'Some violation(s) are raised'
         );
     }

@@ -1,5 +1,5 @@
 services:
-  Akeneo\Pim\Automation\IdentifierGenerator\Application\Command\CreateGeneratorHandler:
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler:
     arguments:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\CreateGeneratorCommandValidator'

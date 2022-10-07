@@ -14,7 +14,7 @@ final class ErrorList implements \Countable
     {
     }
 
-    public function count()
+    public function count(): int
     {
         return count($this->errors);
     }
@@ -27,20 +27,7 @@ final class ErrorList implements \Countable
         $this->errors[] = $error;
     }
 
-    /**
-     * Merges an existing violation list into this list.
-     */
-    public function addAll(self $otherList): void
-    {
-        $this->errors = array_merge($otherList, $this->errors);
-    }
-
-    /**
-     * Converts the violation into a string for debugging purposes.
-     *
-     * @return string
-     */
-    public function __toString(): string
+    public function getAllMessages(): string
     {
         $string = '';
 

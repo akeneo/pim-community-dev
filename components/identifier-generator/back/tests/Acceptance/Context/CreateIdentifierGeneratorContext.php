@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Command\CreateGeneratorCommand;
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Command\CreateGeneratorHandler;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorCommand;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
@@ -103,8 +103,8 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iShouldGetAnErrorWithMessage(string $message): void
     {
-//        Assert::notNull($this->violations);
-        Assert::contains($this->violations->violations()->__toString(), $message);
+        Assert::notNull($this->violations);
+        Assert::contains($this->violations->violations()->getAllMessages(), $message);
     }
 
     /**

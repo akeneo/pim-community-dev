@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Application\Command;
+namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Application\Create;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Command\CreateGeneratorCommand;
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Command\CreateGeneratorHandler;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorCommand;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation\CommandValidatorInterface;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
