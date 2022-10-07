@@ -1,11 +1,12 @@
 import React, {FC, useEffect, useState} from 'react';
 import {useParams} from 'react-router';
-import {Breadcrumb, SkeletonPlaceholder, SectionTitle, useBooleanState} from 'akeneo-design-system';
+import {Breadcrumb, SectionTitle, SkeletonPlaceholder, useBooleanState} from 'akeneo-design-system';
 import {
   FullScreenError,
   PageContent,
   PageHeader,
   PimView,
+  useFeatureFlags,
   useRouter,
   useSecurity,
   useSessionStorageState,
@@ -36,6 +37,7 @@ const CategoriesTreePage: FC = () => {
   const router = useRouter();
   const translate = useTranslate();
   const {isGranted} = useSecurity();
+  const featureFlags = useFeatureFlags();
   const [lastSelectedCategory] = useSessionStorageState<lastSelectedCategory>(
     {
       treeId: treeId,
@@ -139,7 +141,7 @@ const CategoriesTreePage: FC = () => {
           </SectionTitle>
           <CategoryTree
             root={tree}
-            orderable={isGranted('pim_enrich_product_category_edit')}
+            orderable={(featureFlags.isEnabled('enriched_category') ? isGranted('pim_enrich_product_category_order_trees') : isGranted('pim_enrich_product_category_edit'))}
             followCategory={
               isGranted('pim_enrich_product_category_edit') ? cat => followEditCategory(cat.id) : undefined
             }
