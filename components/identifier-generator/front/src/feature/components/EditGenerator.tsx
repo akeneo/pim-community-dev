@@ -2,6 +2,8 @@ import React, {useCallback, useState} from 'react';
 import {TabBar} from 'akeneo-design-system';
 import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/shared';
+import {GeneralProperties} from './edit/GeneralProperties';
+import {IdentifierGenerator} from '../../models';
 
 enum Tabs {
   GENERAL,
@@ -13,7 +15,12 @@ const Container = styled.div`
   padding: 40px 40px 20px;
 `;
 
-const EditGenerator: React.FC = () => {
+type EditGeneratorProps = {
+  generator: IdentifierGenerator;
+  onGeneratorChange: (generator: IdentifierGenerator) => void;
+}
+
+const EditGenerator: React.FC<EditGeneratorProps> = ({generator, onGeneratorChange}) => {
   const [currentTab, setCurrentTab] = useState(Tabs.GENERAL);
   const createSetTab = useCallback((value: Tabs) => () => setCurrentTab(value), []);
   const translate = useTranslate();
@@ -31,6 +38,7 @@ const EditGenerator: React.FC = () => {
           {translate('pim_identifier_generator.tabs.identifier_structure')}
         </TabBar.Tab>
       </TabBar>
+      {currentTab === Tabs.GENERAL && <GeneralProperties generator={generator} onGeneratorChange={onGeneratorChange}/>}
     </Container>
   );
 };

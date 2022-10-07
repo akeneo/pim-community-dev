@@ -17,7 +17,8 @@ enum Screen {
 const IdentifierGeneratorApp: React.FC = () => {
   const translate = useTranslate();
   const [currentScreen, setCurrentScreen] = useState(Screen.LIST);
-  const [generators, setGenerators] = useState<IdentifierGenerator[]>([]);
+  //const [generators, setGenerators] = useState<IdentifierGenerator[]>([]);
+  const generators = [];
   const [generator, setGenerator] = useState<IdentifierGenerator | null>(null);
 
   const goTo = useCallback((value: Screen) => () => setCurrentScreen(value), []);
@@ -59,7 +60,10 @@ const IdentifierGeneratorApp: React.FC = () => {
         </PageHeader>
         <div>
           {currentScreen === Screen.CREATE && <CreateGeneratorModal onClose={goTo(Screen.LIST)} onSave={create} />}
-          {currentScreen === Screen.EDIT && <EditGenerator />}
+          {currentScreen === Screen.EDIT && generator && <EditGenerator
+              generator={generator}
+              onGeneratorChange={setGenerator}
+          />}
         </div>
       </div>
     </QueryClientProvider>
