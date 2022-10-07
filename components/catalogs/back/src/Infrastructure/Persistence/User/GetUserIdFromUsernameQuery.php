@@ -23,16 +23,16 @@ class GetUserIdFromUsernameQuery implements GetUserIdFromUsernameQueryInterface
     public function execute(string $username): int
     {
         $sql = <<<SQL
-        SELECT id
-        FROM oro_user
-        WHERE username = :username
-SQL;
+            SELECT id
+            FROM oro_user
+            WHERE username = :username
+        SQL;
 
         $userId = $this->connection->fetchFirstColumn($sql, ['username' => $username]);
         if (\count($userId) !== 1) {
             throw new UserNotFoundException();
         }
 
-        return (int)$userId[0];
+        return (int) $userId[0];
     }
 }
