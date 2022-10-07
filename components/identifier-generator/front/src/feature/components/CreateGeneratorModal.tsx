@@ -4,19 +4,6 @@ import styled from 'styled-components';
 import {IdentifierGenerator} from '../../models';
 import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 
-const BreadCrumb = styled.label`
-  color: #9452ba;
-  text-transform: uppercase;
-  margin-bottom: 10px;
-`;
-
-const Title = styled.div`
-  font-size: 28px;
-  color: #11324d;
-  line-height: 150%;
-  margin-bottom: 40px;
-`;
-
 const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -50,7 +37,7 @@ const CreateGeneratorModal: React.FC<GeneratorCreationProps> = ({onClose, onSave
     setCode(value);
   }, []);
 
-  const onClick = useCallback(() => {
+  const onConfirm = useCallback(() => {
     onSave({
       code: code,
       labels: {[uiLocale]: label},
@@ -60,27 +47,23 @@ const CreateGeneratorModal: React.FC<GeneratorCreationProps> = ({onClose, onSave
   const isFormInvalid = React.useMemo(() => code === '', [code]);
 
   return (
-    <Modal
-      closeTitle={translate('pim_identifier_generator.create.form.close')}
-      illustration={<AttributesIllustration />}
-      onClose={onClose}
-    >
-      <BreadCrumb>Settings / identifier generator</BreadCrumb>
-      <Title>{translate('pim_identifier_generator.create.form.title')}</Title>
+    <Modal closeTitle={translate('pim_common.close')} illustration={<AttributesIllustration />} onClose={onClose}>
+      <Modal.SectionTitle color="brand">{translate('pim_title.akeneo_identifier_generator_index')}</Modal.SectionTitle>
+      <Modal.Title>{translate('pim_identifier_generator.create.form.title')}</Modal.Title>
       <FormContainer>
-        <Field label={translate('pim_identifier_generator.create.form.label')} locale={uiLocale}>
+        <Field label={translate('pim_common.label')} locale={uiLocale}>
           <TextInput name="label" value={label} onChange={onLabelChange} />
         </Field>
-        <Field label={translate('pim_identifier_generator.create.form.code')}>
+        <Field label={translate('pim_common.code')} requiredLabel={translate('pim_common.required_label')}>
           <TextInput name="code" value={code} onChange={onCodeChange} />
         </Field>
       </FormContainer>
       <Modal.BottomButtons>
         <Button onClick={onClose} level="tertiary">
-          {translate('pim_identifier_generator.create.form.cancel')}
+          {translate('pim_common.cancel')}
         </Button>
-        <Button onClick={onClick} disabled={isFormInvalid}>
-          {translate('pim_identifier_generator.create.form.confirm')}
+        <Button onClick={onConfirm} disabled={isFormInvalid}>
+          {translate('pim_common.confirm')}
         </Button>
       </Modal.BottomButtons>
     </Modal>
