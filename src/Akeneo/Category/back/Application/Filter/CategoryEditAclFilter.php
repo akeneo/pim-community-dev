@@ -14,7 +14,6 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
  */
 class CategoryEditAclFilter
 {
-    /** @var array */
     private const ACLS = [
         'values' => 'pim_enrich_product_category_edit_attributes',
     ];
@@ -33,13 +32,15 @@ class CategoryEditAclFilter
      *      attribute_code: string
      *     }>
      * } $collection
+     *
+     * @return array<string, mixed>
      */
     public function filterCollection(array $collection): array
     {
         $newCategoryData = [];
 
         foreach ($collection as $type => $data) {
-            if (!empty($type) && $this->isAllowed($type)) {
+            if ($this->isAllowed($type)) {
                 $newCategoryData[$type] = $data;
             }
         }
