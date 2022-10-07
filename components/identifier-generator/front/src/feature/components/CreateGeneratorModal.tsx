@@ -1,14 +1,8 @@
 import React, {useCallback, useState} from 'react';
 import {AttributesIllustration, Button, Field, Modal, TextInput} from 'akeneo-design-system';
-import styled from 'styled-components';
 import {IdentifierGenerator} from '../../models';
 import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-
-const FormContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-`;
+import {Styled} from './Styled';
 
 type GeneratorCreationProps = {
   onClose: () => void;
@@ -50,14 +44,14 @@ const CreateGeneratorModal: React.FC<GeneratorCreationProps> = ({onClose, onSave
     <Modal closeTitle={translate('pim_common.close')} illustration={<AttributesIllustration />} onClose={onClose}>
       <Modal.SectionTitle color="brand">{translate('pim_title.akeneo_identifier_generator_index')}</Modal.SectionTitle>
       <Modal.Title>{translate('pim_identifier_generator.create.form.title')}</Modal.Title>
-      <FormContainer>
+      <Styled.FormContainer>
         <Field label={translate('pim_common.label')} locale={uiLocale}>
           <TextInput name="label" value={label} onChange={onLabelChange} />
         </Field>
         <Field label={translate('pim_common.code')} requiredLabel={translate('pim_common.required_label')}>
           <TextInput name="code" value={code} onChange={onCodeChange} />
         </Field>
-      </FormContainer>
+      </Styled.FormContainer>
       <Modal.BottomButtons>
         <Button onClick={onClose} level="tertiary">
           {translate('pim_common.cancel')}
