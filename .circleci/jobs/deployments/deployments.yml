@@ -550,12 +550,13 @@ jobs:
             name: Prepare the variables
             command: |
               CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
+              PIM_NS=pim-${CIRCLE_BRANCH_LOWER}
 
               INSTANCE_NAME_PREFIX=ucs
               INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
               GOOGLE_CLOUD_FIRESTORE_PROJECT=${GOOGLE_FIRESTORE_PROJECT_ID}
               GOOGLE_CLOUD_PROJECT=${GOOGLE_PROJECT_ID}
-              FIRESTORE_COLLECTION="${GOOGLE_CLUSTER_REGION}/${CIRCLE_BRANCH_LOWER}/tenant_contexts"
+              FIRESTORE_COLLECTION="${GOOGLE_CLUSTER_REGION}/${PIM_NS}/tenant_contexts"
               GOOGLE_ZONE=${GOOGLE_COMPUTE_ZONE}
               LOCATION=EU
               PIM_MASTER_DOMAIN="${INSTANCE_NAME}.${GOOGLE_DOMAIN}"
@@ -576,6 +577,7 @@ jobs:
               CLOUD_FUNCTION_BUCKET="${GOOGLE_CLUSTER_REGION}-${CIRCLE_BRANCH_LOWER}-srnt-job-publisher-${IMAGE_TAG_DATE}"
 
               echo export CIRCLE_BRANCH_LOWER=${CIRCLE_BRANCH_LOWER} >> $BASH_ENV
+              echo export PIM_NS=${PIM_NS} >> $BASH_ENV
               echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
               echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
               echo export GOOGLE_CLOUD_FIRESTORE_PROJECT=${GOOGLE_CLOUD_FIRESTORE_PROJECT} >> $BASH_ENV
@@ -644,9 +646,9 @@ jobs:
 
               ## ArgoCD
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/argocd-app/pim-application.yaml spec.source.targetRevision ${CIRCLE_BRANCH}
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/argocd-app/pim-application.yaml spec.destination.namespace pim-${CIRCLE_BRANCH_LOWER}
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/argocd-app/pim-application.yaml metadata.name pim-${CIRCLE_BRANCH_LOWER}
-              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/argocd-app/pim-application.yaml metadata.labels.name pim-${CIRCLE_BRANCH_LOWER}
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/argocd-app/pim-application.yaml spec.destination.namespace ${PIM_NS}
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/argocd-app/pim-application.yaml metadata.name ${PIM_NS}
+              yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/argocd-app/pim-application.yaml metadata.labels.name ${PIM_NS}
               yq w -i /tmp/pim-saas-k8s-artifacts/pim-saas-service/argocd-app/pim-application.yaml spec.source.helm.valueFiles[+] values-ci.yaml
 
               git add pim-saas-service
@@ -663,8 +665,8 @@ jobs:
               # Login to argocd call k8s
               kubectl config set-context --current --namespace=argocd
               argocd login --core argocd-${GOOGLE_CLUSTER_REGION}.${GOOGLE_DOMAIN} --username admin --password ${ARGOCD_PASSWORD}
-              argocd app get pim-${CIRCLE_BRANCH_LOWER} --hard-refresh --core
-              argocd app sync pim-${CIRCLE_BRANCH_LOWER} --core --prune|| (argocd app terminate-op pim-${CIRCLE_BRANCH_LOWER} --core  && argocd app wait --operation pim-${CIRCLE_BRANCH_LOWER} --core && argocd app sync pim-${CIRCLE_BRANCH_LOWER} --core --prune)
+              argocd app get ${PIM_NS} --hard-refresh --core
+              argocd app sync ${PIM_NS} --core --prune|| (argocd app terminate-op ${PIM_NS} --core  && argocd app wait --operation ${PIM_NS} --core && argocd app sync ${PIM_NS} --core --prune)
               echo "argocd app sync successfull"
 
               echo "============================"
@@ -675,8 +677,8 @@ jobs:
         - run:
               name: Remove env on kubernetes
               command: |
-                  kubectl delete app pim-${CIRCLE_BRANCH_LOWER} -n argocd
-                  kubectl delete ns pim-${CIRCLE_BRANCH_LOWER}
+                  kubectl delete app ${PIM_NS} -n argocd
+                  kubectl delete ns ${PIM_NS}
               when: on_fail
 
     deploy_tenant:
@@ -708,8 +710,9 @@ jobs:
                       INSTANCE_NAME_PREFIX=ucs
                       INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
                       CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
-                      
-                      FIRESTORE_COLLECTION="${GOOGLE_CLUSTER_REGION}/${CIRCLE_BRANCH_LOWER}/tenant_contexts"
+                      PIM_NS=pim-${CIRCLE_BRANCH_LOWER}
+
+                      FIRESTORE_COLLECTION="${GOOGLE_CLUSTER_REGION}/${PIM_NS}/tenant_contexts"
 
                       WORKLOAD_IDENTITY_KSA="${INSTANCE_NAME}-ksa-workload-identity"
                       GOOGLE_ZONE=${GOOGLE_COMPUTE_ZONE}
@@ -718,7 +721,7 @@ jobs:
                       echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
                       echo export WORKLOAD_IDENTITY_KSA=${WORKLOAD_IDENTITY_KSA} >> $BASH_ENV
                       echo export GOOGLE_ZONE=${GOOGLE_ZONE} >> $BASH_ENV
-                      echo export PIM_NS=pim-${CIRCLE_BRANCH_LOWER} >> $BASH_ENV
+                      echo export PIM_NS=${PIM_NS} >> $BASH_ENV
                       echo export FIRESTORE_COLLECTION=${FIRESTORE_COLLECTION} >> $BASH_ENV
                       echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
                       echo "Instance name: ${INSTANCE_NAME}"
