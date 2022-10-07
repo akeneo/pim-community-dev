@@ -6,6 +6,8 @@ namespace Akeneo\Catalogs\Infrastructure\Persistence\Catalog\Product;
 
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductsQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductUuidsQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\User\GetUserIdFromUsernameQueryInterface;
+use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductWithUuidNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Doctrine\DBAL\Connection;
@@ -46,6 +48,7 @@ class GetProductsQuery implements GetProductsQueryInterface
         private GetConnectorProducts $getConnectorProducts,
         private Connection $connection,
         private ConnectorProductWithUuidNormalizer $connectorProductWithUuidNormalizer,
+        private GetUserIdFromUsernameQueryInterface $getUserIdFromUsernameQuery,
     ) {
     }
 
@@ -53,19 +56,19 @@ class GetProductsQuery implements GetProductsQueryInterface
      * {@inheritDoc}
      */
     public function execute(
-        string $catalogId,
+        Catalog $catalog,
         ?string $searchAfter = null,
         int $limit = 100,
         ?string $updatedAfter = null,
         ?string $updatedBefore = null,
     ): array {
-        $filters = $this->findProductValueFilters($catalogId);
+        $filters = $this->findProductValueFilters($catalog->getId());
 
-        $uuids = $this->getProductUuidsQuery->execute($catalogId, $searchAfter, $limit, $updatedAfter, $updatedBefore);
+        $uuids = $this->getProductUuidsQuery->execute($catalog->getId(), $searchAfter, $limit, $updatedAfter, $updatedBefore);
 
         $connectorProducts = $this->getConnectorProducts->fromProductUuids(
             \array_map(static fn (string $uuid): UuidInterface => Uuid::fromString($uuid), $uuids),
-            $this->findCatalogOwnerId($catalogId),
+            $this->getUserIdFromUsernameQuery->execute($catalog->getOwnerUsername()),
             null,
             null,
             isset($filters['locales']) && !empty($filters['locales']) ? $filters['locales'] : null,
@@ -148,26 +151,6 @@ class GetProductsQuery implements GetProductsQueryInterface
         }
 
         return $products;
-    }
-
-    private function findCatalogOwnerId(string $catalogId): int
-    {
-        $query = <<<SQL
-        SELECT catalog.owner_id
-        FROM akeneo_catalog catalog
-        WHERE catalog.id = :id
-        SQL;
-
-        /** @var mixed|false $userId */
-        $userId = $this->connection->fetchOne($query, [
-            'id' => Uuid::fromString($catalogId)->getBytes(),
-        ]);
-
-        if (null === $userId) {
-            throw new \LogicException('Catalog not found');
-        }
-
-        return (int) $userId;
     }
 
     /**
