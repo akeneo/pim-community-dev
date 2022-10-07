@@ -22,27 +22,28 @@ use Symfony\Component\HttpFoundation\RequestStack;
  */
 class ContextLogProcessor
 {
-    private RequestStack $requestStack;
-    private BoundedContextResolver $boundedContextResolver;
-
     private array $cachedContext = [];
-    private ?string $traceId=null;
+    private ?string $traceId = null;
 
-    public function __construct(RequestStack $requestStack, BoundedContextResolver $boundedContextResolver)
-    {
-        $this->requestStack = $requestStack;
-        $this->boundedContextResolver = $boundedContextResolver;
+    public function __construct(
+        private RequestStack $requestStack,
+        private BoundedContextResolver $boundedContextResolver
+    ) {
     }
 
     public function __invoke(array $record): array
     {
         if (empty($this->cachedContext)) {
-            if ($request = $this->requestStack->getMainRequest()) { //http request context
-                $this->cachedContext['path_info'] = sprintf('%s%s', $request->getSchemeAndHttpHost(), $request->getPathInfo());
+            if ($request = $this->requestStack->getMainRequest()) {
+                $this->cachedContext['path_info'] = sprintf(
+                    '%s%s',
+                    $request->getSchemeAndHttpHost(),
+                    $request->getPathInfo()
+                );
                 $this->cachedContext['akeneo_context'] = $this->boundedContextResolver->fromRequest($request);
-                $this->traceId = $request->headers->get('X-Datadog-Trace-Id')?: $request->headers->get('trace-id');
+                $this->traceId = $request->headers->get('X-Datadog-Trace-Id') ?: $request->headers->get('trace-id');
             }
-            $this->traceId= $this->traceId ?: (string) Uuid::uuid4();
+            $this->traceId = $this->traceId ?: (string) Uuid::uuid4();
         }
 
         $record['context'] = array_merge($record['context'] ?? [], $this->cachedContext);

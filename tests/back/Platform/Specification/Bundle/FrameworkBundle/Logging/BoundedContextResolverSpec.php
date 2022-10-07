@@ -119,12 +119,12 @@ class BoundedContextResolverSpec extends ObjectBehavior
         ControllerResolverInterface $controllerResolver
     ) {
         $boundedContexts = [
-            'Double\Symfony\Component\Messenger\Command' => 'FoundContext',
+            'Double\Symfony\Component\Messenger\Command' => 'Tool',
         ];
 
         $this->beConstructedWith($controllerResolver, $boundedContexts);
 
-        $this->fromCommand($cmd)->shouldReturn('FoundContext');
+        $this->fromCommand($cmd)->shouldReturn('Tool');
     }
 
     function it_cannot_resolve_context_from_command(
