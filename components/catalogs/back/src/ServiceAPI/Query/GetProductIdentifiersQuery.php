@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\ServiceAPI\Query;
 
-use Akeneo\Catalogs\Domain\Catalog;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -19,7 +18,7 @@ class GetProductIdentifiersQuery implements QueryInterface
     public function __construct(
         #[Assert\NotBlank]
         #[Assert\Uuid]
-        private Catalog $catalog,
+        private string $catalogId,
         #[Assert\Uuid]
         private ?string $searchAfter = null,
         #[Assert\Range(min: 1, max: 1000)]
@@ -27,9 +26,9 @@ class GetProductIdentifiersQuery implements QueryInterface
     ) {
     }
 
-    public function getCatalog(): Catalog
+    public function getCatalogId(): string
     {
-        return $this->catalog;
+        return $this->catalogId;
     }
 
     public function getSearchAfter(): ?string

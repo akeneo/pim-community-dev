@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Application\Handler;
 
+use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductIdentifiersQueryInterface;
 use Akeneo\Catalogs\ServiceAPI\Query\GetProductIdentifiersQuery;
 
@@ -15,6 +16,7 @@ final class GetProductIdentifiersHandler
 {
     public function __construct(
         private GetProductIdentifiersQueryInterface $query,
+        private GetCatalogQueryInterface $getCatalogQuery
     ) {
     }
 
@@ -23,8 +25,10 @@ final class GetProductIdentifiersHandler
      */
     public function __invoke(GetProductIdentifiersQuery $query): array
     {
+        $catalogDomain = $this->getCatalogQuery->execute($query->getCatalogId());
+
         return $this->query->execute(
-            $query->getCatalog(),
+            $catalogDomain,
             $query->getSearchAfter(),
             $query->getLimit(),
         );

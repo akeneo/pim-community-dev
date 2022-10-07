@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Controller\Public;
 
-use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
-use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
-use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\Product\GetProductUuidFromIdentifierQuery;
 use Akeneo\Catalogs\Infrastructure\Security\DenyAccessUnlessGrantedTrait;
 use Akeneo\Catalogs\Infrastructure\Security\GetCurrentUsernameTrait;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
+use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
+use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
 use Akeneo\Catalogs\ServiceAPI\Query\GetProductIdentifiersQuery;
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
@@ -38,7 +37,6 @@ class GetProductIdentifiersAction
         private SecurityFacadeInterface $security,
         private RouterInterface $router,
         private GetProductUuidFromIdentifierQuery $getProductUuidFromIdentifierQuery,
-        private GetCatalogQueryInterface $getCatalogQuery
     ) {
     }
 
@@ -60,9 +58,13 @@ class GetProductIdentifiersAction
     private function getCatalog(string $id): Catalog
     {
         try {
-            $catalog = $this->getCatalogQuery->execute($id);
-        } catch (CatalogNotFoundException $e) {
+            $catalog = $this->queryBus->execute(new GetCatalogQuery($id));
+        } catch (ValidationFailedException $e) {
             throw new NotFoundHttpException(\sprintf('Catalog "%s" does not exist or you can\'t access it.', $id), $e);
+        }
+
+        if (null === $catalog) {
+            throw new NotFoundHttpException(\sprintf('Catalog "%s" does not exist or you can\'t access it.', $id));
         }
 
         return $catalog;
@@ -95,7 +97,7 @@ class GetProductIdentifiersAction
         try {
             return $this->queryBus->execute(
                 new GetProductIdentifiersQuery(
-                    $catalog,
+                    $catalog->getId(),
                     $searchAfter,
                     $limit,
                 )
