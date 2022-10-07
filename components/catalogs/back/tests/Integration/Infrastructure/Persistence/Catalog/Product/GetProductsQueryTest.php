@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence\Catalog\Product;
 
+use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductUuidFromIdentifierQueryInterface;
 use Akeneo\Catalogs\Domain\Operator;
 use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\Product\GetProductsQuery;
@@ -19,6 +20,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
  */
 class GetProductsQueryTest extends IntegrationTestCase
 {
+    private ?GetCatalogQueryInterface $getCatalogQuery;
     private ?GetProductsQuery $query;
 
     protected function setUp(): void
@@ -29,6 +31,7 @@ class GetProductsQueryTest extends IntegrationTestCase
 
         $this->purgeDataAndLoadMinimalCatalog();
 
+        $this->getCatalogQuery = self::getContainer()->get(GetCatalogQueryInterface::class);
         $this->query = self::getContainer()->get(GetProductsQuery::class);
     }
 
@@ -49,7 +52,9 @@ class GetProductsQueryTest extends IntegrationTestCase
         $this->createProduct('tshirt-blue', [new SetEnabled(true)]);
         $this->createProduct('tshirt-green', [new SetEnabled(false)]);
 
-        $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', null, 10);
+        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+
+        $result = $this->query->execute($catalog, null, 10);
 
         $this->assertEquals([
             [
@@ -131,7 +136,9 @@ class GetProductsQueryTest extends IntegrationTestCase
         ]);
         $this->createProduct('tshirt-green', [new SetEnabled(false)]);
 
-        $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', null, 10);
+        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+
+        $result = $this->query->execute($catalog, null, 10);
 
         $this->assertEquals([
             [
@@ -226,7 +233,9 @@ class GetProductsQueryTest extends IntegrationTestCase
             new SetTextValue('name', 'print', 'en_US', 'Indigo'),
         ]);
 
-        $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', null, 10);
+        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+
+        $result = $this->query->execute($catalog, null, 10);
 
         $this->assertEquals([
             [
@@ -312,7 +321,9 @@ class GetProductsQueryTest extends IntegrationTestCase
             new SetTextValue('name', 'print', 'de_DE', 'Blau'),
         ]);
 
-        $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', null, 10);
+        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+
+        $result = $this->query->execute($catalog, null, 10);
 
         $this->assertEquals([
             [
@@ -404,7 +415,9 @@ class GetProductsQueryTest extends IntegrationTestCase
             ]),
         ]);
 
-        $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', null, 10);
+        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+
+        $result = $this->query->execute($catalog, null, 10);
 
         $this->assertEquals([
             [
@@ -515,7 +528,9 @@ class GetProductsQueryTest extends IntegrationTestCase
             ]),
         ]);
 
-        $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', null, 10);
+        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+
+        $result = $this->query->execute($catalog, null, 10);
 
         $this->assertEquals([
             [
@@ -596,7 +611,9 @@ class GetProductsQueryTest extends IntegrationTestCase
         $this->clock->set(new \DateTimeImmutable('2022-09-01T15:40:00+00:00'));
         $this->createProduct('tshirt-green', [new SetEnabled(true)]);
 
-        $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', null, 100, '2022-09-01T17:35:00+02:00');
+        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+
+        $result = $this->query->execute($catalog, null, 100, '2022-09-01T17:35:00+02:00');
 
         $this->assertEquals([
             [
@@ -665,7 +682,9 @@ class GetProductsQueryTest extends IntegrationTestCase
         $this->clock->set(new \DateTimeImmutable('2022-09-01T15:40:00+00:00'));
         $this->createProduct('tshirt-green', [new SetEnabled(true)]);
 
-        $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', null, 100, null, '2022-09-01T17:35:00+02:00');
+        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+
+        $result = $this->query->execute($catalog, null, 100, null, '2022-09-01T17:35:00+02:00');
 
         $this->assertEquals([
             [
@@ -734,7 +753,9 @@ class GetProductsQueryTest extends IntegrationTestCase
         $this->clock->set(new \DateTimeImmutable('2022-09-01T15:40:00+00:00'));
         $this->createProduct('tshirt-green', [new SetEnabled(true)]);
 
-        $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', null, 100, '2022-09-01T17:35:00+02:00', '2022-09-01T17:45:00+02:00');
+        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+
+        $result = $this->query->execute($catalog, null, 100, '2022-09-01T17:35:00+02:00', '2022-09-01T17:45:00+02:00');
 
         $this->assertEquals([
             [

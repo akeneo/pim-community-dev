@@ -26,6 +26,7 @@ $rules = [
             'Akeneo\Catalogs\ServiceAPI\Model',
             'Akeneo\Catalogs\ServiceAPI\Command',
             'Akeneo\Catalogs\ServiceAPI\Query',
+            'Akeneo\Catalogs\ServiceAPI\Exception',
         ]
     )->in('Akeneo\Catalogs\Application'),
 
