@@ -8,7 +8,7 @@ import {EditGenerator} from './components/EditGenerator';
 
 const queryClient = new QueryClient();
 
-enum Screens {
+enum Screen {
   LIST,
   CREATE,
   EDIT,
@@ -16,16 +16,15 @@ enum Screens {
 
 const IdentifierGeneratorApp: React.FC = () => {
   const translate = useTranslate();
-  const [currentScreen, setCurrentScreen] = useState(Screens.LIST);
+  const [currentScreen, setCurrentScreen] = useState(Screen.LIST);
   const [generators, setGenerators] = useState<IdentifierGenerator[]>([]);
   const [generator, setGenerator] = useState<IdentifierGenerator | null>(null);
 
-  const goToCreation = useCallback(() => setCurrentScreen(Screens.CREATE), []);
-  const goToList = useCallback(() => setCurrentScreen(Screens.LIST), []);
+  const goTo = useCallback((value: Screen) => () => setCurrentScreen(value), []);
 
   const create = useCallback((value: IdentifierGenerator) => {
     setGenerator(value);
-    setCurrentScreen(Screens.EDIT);
+    setCurrentScreen(Screen.EDIT);
   }, []);
 
   const creationIsDisabled = useMemo(() => generators.length > 0, [generators.length]);
@@ -52,15 +51,15 @@ const IdentifierGeneratorApp: React.FC = () => {
             />
           </PageHeader.UserActions>
           <PageHeader.Actions>
-            <Button onClick={goToCreation} disabled={creationIsDisabled}>
+            <Button onClick={goTo(Screen.CREATE)} disabled={creationIsDisabled}>
               {translate('pim_common.create')}
             </Button>
           </PageHeader.Actions>
           <PageHeader.Title>{translate('pim_title.akeneo_identifier_generator_index')}</PageHeader.Title>
         </PageHeader>
         <div>
-          {currentScreen === Screens.CREATE && <CreateGeneratorModal onClose={goToList} onSave={create} />}
-          {currentScreen === Screens.EDIT && <EditGenerator generator={generator} />}
+          {currentScreen === Screen.CREATE && <CreateGeneratorModal onClose={goTo(Screen.LIST)} onSave={create} />}
+          {currentScreen === Screen.EDIT && <EditGenerator />}
         </div>
       </div>
     </QueryClientProvider>
