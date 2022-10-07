@@ -97,6 +97,105 @@ class GetProductsQueryTest extends IntegrationTestCase
         ], $result);
     }
 
+    public function testItReturnsProductsWithEmptyFilters(): void
+    {
+        $this->createUser('owner');
+        $this->logAs('owner');
+
+        $this->createChannel('print', ['en_US', 'fr_FR', 'de_DE']);
+        $this->createAttribute([
+            'code' => 'name',
+            'type' => 'pim_catalog_text',
+            'scopable' => true,
+            'localizable' => true,
+        ]);
+        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'owner');
+        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        $this->setCatalogProductSelection('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
+            [
+                'field' => 'enabled',
+                'operator' => Operator::EQUALS,
+                'value' => true,
+            ],
+        ]);
+        $this->setCatalogProductValueFilters('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
+            'channels' => [],
+            'locales' => [],
+            'currencies' => [],
+        ]);
+        $this->createProduct('tshirt-blue', [
+            new SetEnabled(true),
+            new SetTextValue('name', 'ecommerce', 'en_US', 'Blue'),
+            new SetTextValue('name', 'print', 'en_US', 'Indigo'),
+            new SetTextValue('name', 'print', 'fr_FR', 'Indigo'),
+        ]);
+        $this->createProduct('tshirt-green', [new SetEnabled(false)]);
+
+        $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', null, 10);
+
+        $this->assertEquals([
+            [
+                'uuid' => $this->findProductUuid('tshirt-blue'),
+                'enabled' => true,
+                'family' => null,
+                'categories' => [],
+                'groups' => [],
+                'parent' => null,
+                'values' => [
+                    'sku' => [
+                        [
+                            'locale' => null,
+                            'scope' => null,
+                            'data' => 'tshirt-blue',
+                        ],
+                    ],
+                    'name' => [
+                        [
+                            'locale' => 'en_US',
+                            'scope' => 'print',
+                            'data' => 'Indigo',
+                        ],
+                        [
+                            'locale' => 'fr_FR',
+                            'scope' => 'print',
+                            'data' => 'Indigo',
+                        ],
+                        [
+                            'locale' => 'en_US',
+                            'scope' => 'ecommerce',
+                            'data' => 'Blue',
+                        ],
+                    ],
+                ],
+                'associations' => [
+                    'PACK' => [
+                        'groups' => [],
+                        'products' => [],
+                        'product_models' => [],
+                    ],
+                    'UPSELL' => [
+                        'groups' => [],
+                        'products' => [],
+                        'product_models' => [],
+                    ],
+                    'X_SELL' => [
+                        'groups' => [],
+                        'products' => [],
+                        'product_models' => [],
+                    ],
+                    'SUBSTITUTION' => [
+                        'groups' => [],
+                        'products' => [],
+                        'product_models' => [],
+                    ],
+                ],
+                'quantified_associations' => (object) [],
+                'created' => '2022-08-30T15:30:00+00:00',
+                'updated' => '2022-08-30T15:30:00+00:00',
+            ],
+        ], $result);
+    }
+
     public function testItReturnsProductsWithValuesFilteredByChannels(): void
     {
         $this->createUser('owner');
