@@ -136,7 +136,9 @@ class GetProductsQueryTest extends IntegrationTestCase
         ]);
         $this->createProduct('tshirt-green', [new SetEnabled(false)]);
 
-        $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', null, 10);
+        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+
+        $result = $this->query->execute($catalog, null, 10);
 
         $this->assertEquals([
             [
