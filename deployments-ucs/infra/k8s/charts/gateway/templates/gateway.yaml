@@ -22,15 +22,11 @@ spec:
         name: {{ .Values.gateways.externalHttp.certSecret | default "test-cert" }}
     {{- end }}
     allowedRoutes:
-      kinds:
-      - kind: HTTPRoute
       namespaces:
         from: All
   - name: http
     protocol: HTTP
     port: 80
     allowedRoutes:
-      kinds:
-      - kind: HTTPRoute
       namespaces:
         from: All

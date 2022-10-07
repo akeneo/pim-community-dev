@@ -17,7 +17,7 @@ external-dns:
         resources: ["namespaces"]
         verbs: ["get","watch","list"]
       - apiGroups: ["gateway.networking.k8s.io"]
-        resources: ["gateways","httproutes"] 
+        resources: ["gateways","httproutes"]
         verbs: ["get","watch","list"]
     txtOwnerId: null # From parent
     create: true
@@ -33,6 +33,5 @@ external-dns:
     annotations:
       iam.gke.io/gcp-service-account: null # From parent
   sources:
-    - contour-httpproxy
     - gateway-httproute
   txtOwnerId: null # From parent
