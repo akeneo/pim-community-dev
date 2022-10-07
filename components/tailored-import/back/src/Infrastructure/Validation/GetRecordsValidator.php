@@ -60,8 +60,6 @@ final class GetRecordsValidator extends ConstraintValidator
                         new Type('string'),
                     ]),
                 ],
-                'page' => new Type('int'),
-                'limit' => new Type('int'),
             ],
         ], allowExtraFields: true));
         $validator->validate($value->request->get('reference_entity_code'), new Type('string'));
