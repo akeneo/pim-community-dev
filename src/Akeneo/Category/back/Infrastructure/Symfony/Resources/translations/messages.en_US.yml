@@ -10,3 +10,4 @@ pim_enrich:
       products: See category's products
       history: View category history
       template: Manage category template
+      order_trees: Order/reorder trees in a category
