@@ -204,6 +204,19 @@ const Page: FC = () => {
             </Field>
             <Field>
               <Checkbox
+                  checked={configuration.acls.pim_enrich_product_category_template}
+                  onClick={() =>
+                      changeAcl(
+                          'pim_enrich_product_category_template',
+                          !configuration.acls.pim_enrich_product_category_template
+                      )
+                  }
+              >
+                Manage category template
+              </Checkbox>
+            </Field>
+            <Field>
+              <Checkbox
                   checked={configuration.acls.pim_enrich_product_category_order_trees}
                   onClick={() =>
                       changeAcl(
