@@ -64,7 +64,7 @@ pim_analytics:
 category.permissions:
   view.label: Berechtigte Produkte anzuzeigen
   edit.label: Berechtigte Produkte bearbeiten
-  own.label: Erlaubt eigene Produkte
+  own.label: Berechtigt, Produkte zu besitzen
   own.help: Artikel bewerten, veröffentlichen, unveröffentlichen, klassifizieren und verknüpfen
   no_access_to_products: Sie haben keinen Zugriff auf Produkte in einem Strukturbaum. Bitte kontaktieren Sie Ihren Administrator.
   apply_on_children.label: Übernehme Änderungen auf Kindelemente
