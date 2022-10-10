@@ -111,7 +111,7 @@ class ChannelLocaleSubscriberSpec extends ObjectBehavior
 
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
-        $user->getUsername()->willReturn('julia');
+        $user->getUserIdentifier()->willReturn('julia');
 
         $jobInstanceRepository
             ->findOneByIdentifier('remove_completeness_for_channel_and_locale')
