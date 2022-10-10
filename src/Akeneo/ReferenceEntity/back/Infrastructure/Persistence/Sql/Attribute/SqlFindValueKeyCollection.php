@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
 
-use Doctrine\DBAL\Exception;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeyCollectionInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception;
 
 class SqlFindValueKeyCollection implements FindValueKeyCollectionInterface
 {

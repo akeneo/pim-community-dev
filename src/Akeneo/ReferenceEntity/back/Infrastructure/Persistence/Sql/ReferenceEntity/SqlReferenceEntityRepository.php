@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity;
 
-use Doctrine\DBAL\Exception;
 use Akeneo\ReferenceEntity\Domain\Event\ReferenceEntityCreatedEvent;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
@@ -25,6 +24,7 @@ use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityNotFoundException;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
