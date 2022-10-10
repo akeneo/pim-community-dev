@@ -24,12 +24,12 @@ final class AllIfIterable extends Composite
 {
     public $constraints = [];
 
-    public function getDefaultOption()
+    public function getDefaultOption(): ?string
     {
         return 'constraints';
     }
 
-    public function getRequiredOptions()
+    public function getRequiredOptions(): array
     {
         return ['constraints'];
     }
@@ -39,12 +39,12 @@ final class AllIfIterable extends Composite
         return 'constraints';
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return AllIfIterableValidator::class;
     }
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return static::PROPERTY_CONSTRAINT;
     }

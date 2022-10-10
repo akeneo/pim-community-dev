@@ -24,17 +24,17 @@ class MeasurementUnit extends Constraint
     public $attributeProperty;
     public $unitProperty;
 
-    public function getRequiredOptions()
+    public function getRequiredOptions(): array
     {
         return ['attributeProperty', 'unitProperty'];
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return MeasurementUnitValidator::class;
     }
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return static::CLASS_CONSTRAINT;
     }

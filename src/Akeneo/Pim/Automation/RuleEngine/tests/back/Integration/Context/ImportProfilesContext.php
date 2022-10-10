@@ -163,7 +163,7 @@ final class ImportProfilesContext implements Context
             throw new \RuntimeException(sprintf('The "%s" job instance is not found.', $jobIdentifier));
         }
 
-        $user = $this->userProvider->loadUserByUsername('admin');
+        $user = $this->userProvider->loadUserByIdentifier('admin');
         $jobExecution = $this->jobLauncher->launch($jobInstance, $user, []);
         $this->jobLauncherTest->launchConsumerOnce();
         $this->jobLauncherTest->waitCompleteJobExecution($jobExecution);

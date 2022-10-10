@@ -20,7 +20,7 @@ class IsAttribute extends Constraint
 {
     public $message = 'pimee_catalog_rule.rule_definition.validation.attribute.unknown';
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return IsAttributeValidator::class;
     }

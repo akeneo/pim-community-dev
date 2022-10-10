@@ -44,7 +44,7 @@ class ProductRuleExecutionSubscriber implements EventSubscriberInterface
         $this->jobRepository = $jobRepository;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             RuleEvents::PRE_EXECUTE => 'preExecute',

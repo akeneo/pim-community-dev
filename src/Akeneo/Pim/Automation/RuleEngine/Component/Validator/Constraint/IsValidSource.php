@@ -20,7 +20,7 @@ class IsValidSource extends Constraint
 {
     public $message = 'pimee_catalog_rule.rule_definition.validation.actions.concatenate.invalid_source';
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return IsValidSourceValidator::class;
     }
