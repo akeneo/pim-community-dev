@@ -2,10 +2,10 @@
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Job;
 
-use Psr\Log\LoggerInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Purge\PurgeJobExecution;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>

@@ -2,9 +2,9 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\Twig;
 
-use Twig\Extension\AbstractExtension;
 use Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
+use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 /**

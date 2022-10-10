@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\PimDataGridBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Actions\Export\ExportMassAction;
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Serializer\SerializerInterface;

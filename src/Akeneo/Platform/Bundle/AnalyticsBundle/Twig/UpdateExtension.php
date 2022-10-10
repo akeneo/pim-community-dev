@@ -2,9 +2,9 @@
 
 namespace Akeneo\Platform\Bundle\AnalyticsBundle\Twig;
 
-use Twig\Extension\AbstractExtension;
 use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 /**

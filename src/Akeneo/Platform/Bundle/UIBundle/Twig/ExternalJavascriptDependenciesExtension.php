@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\UIBundle\Twig;
 
-use Twig\Extension\AbstractExtension;
 use Akeneo\Platform\Bundle\UIBundle\Provider\ExternalJavascriptDependenciesProvider;
+use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 final class ExternalJavascriptDependenciesExtension extends AbstractExtension

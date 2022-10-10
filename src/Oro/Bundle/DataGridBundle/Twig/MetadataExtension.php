@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\DataGridBundle\Twig;
 
-use Twig\Extension\AbstractExtension;
 use Oro\Bundle\DataGridBundle\Datagrid\MetadataParser;
+use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class MetadataExtension extends AbstractExtension

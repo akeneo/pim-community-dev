@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\FilterBundle\Datasource\Orm;
 
-use Doctrine\ORM\Query\Expr\Comparison;
 use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\Query\Expr\Comparison;
 use Oro\Bundle\FilterBundle\Datasource\ExpressionBuilderInterface;
 
 class OrmExpressionBuilder implements ExpressionBuilderInterface

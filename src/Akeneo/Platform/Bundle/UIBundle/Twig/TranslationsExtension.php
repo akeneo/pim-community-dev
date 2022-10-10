@@ -2,9 +2,9 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\Twig;
 
-use Twig\Extension\AbstractExtension;
 use Akeneo\Tool\Component\Console\CommandLauncher;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 /**

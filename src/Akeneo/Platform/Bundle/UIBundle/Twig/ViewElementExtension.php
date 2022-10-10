@@ -2,10 +2,10 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\Twig;
 
-use Twig\Extension\AbstractExtension;
 use Akeneo\Platform\Bundle\UIBundle\ViewElement\ViewElementInterface;
 use Akeneo\Platform\Bundle\UIBundle\ViewElement\ViewElementRegistry;
 use Twig\Environment;
+use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 /**

@@ -2,8 +2,8 @@
 
 namespace Akeneo\Platform\Bundle\DashboardBundle;
 
-use Akeneo\Platform\Bundle\DashboardBundle\DependencyInjection\Compiler\RegisterWidgetsPass;
 use Akeneo\Platform\Bundle\DashboardBundle\DependencyInjection\Compiler;
+use Akeneo\Platform\Bundle\DashboardBundle\DependencyInjection\Compiler\RegisterWidgetsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
