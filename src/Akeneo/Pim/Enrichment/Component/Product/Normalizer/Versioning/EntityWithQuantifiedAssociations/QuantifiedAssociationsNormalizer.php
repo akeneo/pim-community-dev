@@ -50,7 +50,7 @@ class QuantifiedAssociationsNormalizer implements NormalizerInterface, Cacheable
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof EntityWithQuantifiedAssociationsInterface && $format === 'flat';
     }

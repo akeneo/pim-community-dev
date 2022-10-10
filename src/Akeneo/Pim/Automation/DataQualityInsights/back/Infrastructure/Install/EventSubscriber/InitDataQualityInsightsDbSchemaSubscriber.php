@@ -18,7 +18,7 @@ class InitDataQualityInsightsDbSchemaSubscriber implements EventSubscriberInterf
         $this->dbalConnection = $dbalConnection;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             InstallerEvents::POST_DB_CREATE => 'initDbSchema'

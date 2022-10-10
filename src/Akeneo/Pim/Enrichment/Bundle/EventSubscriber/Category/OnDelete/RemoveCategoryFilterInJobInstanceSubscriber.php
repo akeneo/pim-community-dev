@@ -40,7 +40,7 @@ class RemoveCategoryFilterInJobInstanceSubscriber implements EventSubscriberInte
         $this->bulkSaver = $bulkSaver;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             StorageEvents::PRE_REMOVE      => 'computeAndHoldCategoryTreeCodes',
