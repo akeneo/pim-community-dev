@@ -88,7 +88,7 @@ class CustomDaoAuthenticationProviderSpec extends ObjectBehavior
 
         $this->initUsernamePasswordToken($usernamePasswordToken);
         $userProvider->loadUserByIdentifier(self::USERNAME)->shouldBeCalled()->willReturn($user);
-        $passwordHasher->isPasswordValid(Argument::any(), Argument::any(), Argument::any())->willReturn(false);
+        $passwordHasher->verify(Argument::any(), Argument::any(), Argument::any())->willReturn(false);
         $hasherFactory->getPasswordHasher(Argument::any())->willReturn($passwordHasher);
 
         $this->shouldThrow(LockedAccountException::class)
@@ -111,7 +111,7 @@ class CustomDaoAuthenticationProviderSpec extends ObjectBehavior
 
         $this->initUsernamePasswordToken($usernamePasswordToken);
         $userProvider->loadUserByIdentifier(self::USERNAME)->shouldBeCalled()->willReturn($user);
-        $passwordHasher->isPasswordValid(Argument::any(), Argument::any(), Argument::any())->willReturn(false);
+        $passwordHasher->verify(Argument::any(), Argument::any(), Argument::any())->willReturn(false);
         $hasherFactory->getPasswordHasher(Argument::any())->willReturn($passwordHasher);
         $this->shouldThrow(BadCredentialsException::class)
             ->duringAuthenticate($usernamePasswordToken);
