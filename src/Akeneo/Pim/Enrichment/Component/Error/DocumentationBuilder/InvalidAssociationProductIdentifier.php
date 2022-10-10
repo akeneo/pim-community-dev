@@ -19,11 +19,7 @@ final class InvalidAssociationProductIdentifier implements DocumentationBuilderI
 {
     public function support($object): bool
     {
-        if ($object instanceof InvalidAssociationProductIdentifierException) {
-            return true;
-        }
-
-        return false;
+        return $object instanceof InvalidAssociationProductIdentifierException;
     }
 
     public function buildDocumentation($object): DocumentationCollection
