@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\UIBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Akeneo\Platform\Bundle\InstallerBundle\DependencyInjection\PimInstallerExtension as BasePimInstallerExtension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 final class PimEnterpriseUIExtension extends BasePimInstallerExtension
 {

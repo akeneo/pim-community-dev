@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily;
 
-use Doctrine\DBAL\DBALException;
 use Akeneo\AssetManager\Domain\Event\AssetFamilyCreatedEvent;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
@@ -27,6 +26,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

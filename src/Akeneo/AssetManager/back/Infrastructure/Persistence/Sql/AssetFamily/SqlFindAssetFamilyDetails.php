@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily;
 
-use Doctrine\DBAL\DBALException;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
@@ -29,6 +28,7 @@ use Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\Conn
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorTransformationCollectionHydrator;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 
