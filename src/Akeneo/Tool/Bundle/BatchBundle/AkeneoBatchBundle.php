@@ -2,11 +2,11 @@
 
 namespace Akeneo\Tool\Bundle\BatchBundle;
 
-use Akeneo\Tool\Bundle\BatchBundle\DependencyInjection\Compiler\RegisterNotifiersPass;
-use Akeneo\Tool\Bundle\BatchBundle\DependencyInjection\Compiler\PushBatchLogHandlerPass;
-use Akeneo\Tool\Bundle\BatchBundle\DependencyInjection\Compiler\RegisterJobsPass;
-use Akeneo\Tool\Bundle\BatchBundle\DependencyInjection\Compiler\RegisterJobParametersPass;
 use Akeneo\Tool\Bundle\BatchBundle\DependencyInjection\Compiler;
+use Akeneo\Tool\Bundle\BatchBundle\DependencyInjection\Compiler\PushBatchLogHandlerPass;
+use Akeneo\Tool\Bundle\BatchBundle\DependencyInjection\Compiler\RegisterJobParametersPass;
+use Akeneo\Tool\Bundle\BatchBundle\DependencyInjection\Compiler\RegisterJobsPass;
+use Akeneo\Tool\Bundle\BatchBundle\DependencyInjection\Compiler\RegisterNotifiersPass;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;

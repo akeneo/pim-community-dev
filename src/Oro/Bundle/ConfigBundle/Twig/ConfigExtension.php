@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\ConfigBundle\Twig;
 
-use Twig\Extension\AbstractExtension;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class ConfigExtension extends AbstractExtension

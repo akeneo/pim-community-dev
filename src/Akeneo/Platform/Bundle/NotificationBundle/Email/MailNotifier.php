@@ -2,8 +2,8 @@
 
 namespace Akeneo\Platform\Bundle\NotificationBundle\Email;
 
-use Psr\Log\LoggerInterface;
 use Akeneo\Tool\Component\Email\SenderAddress;
+use Psr\Log\LoggerInterface;
 use Swift_Mailer;
 use Swift_Mime_SimpleMessage;
 

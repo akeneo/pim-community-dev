@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Controller;
 
-use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Normalizer\Volumes;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Normalizer;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Normalizer\Volumes;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;

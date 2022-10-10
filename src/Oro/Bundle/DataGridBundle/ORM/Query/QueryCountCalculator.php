@@ -3,9 +3,9 @@
 namespace Oro\Bundle\DataGridBundle\ORM\Query;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Query\ParameterTypeInferer;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Parameter;
+use Doctrine\ORM\Query\ParameterTypeInferer;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\QueryException;
 

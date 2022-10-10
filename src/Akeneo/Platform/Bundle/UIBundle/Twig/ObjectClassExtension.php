@@ -2,8 +2,8 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\Twig;
 
-use Twig\Extension\AbstractExtension;
 use Doctrine\Common\Util\ClassUtils;
+use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 /**

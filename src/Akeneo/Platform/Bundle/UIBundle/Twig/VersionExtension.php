@@ -2,8 +2,8 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\Twig;
 
-use Twig\Extension\AbstractExtension;
 use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
+use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 /**

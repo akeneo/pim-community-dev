@@ -2,9 +2,9 @@
 
 namespace Akeneo\Platform\Bundle\NotificationBundle\Twig;
 
-use Twig\Extension\AbstractExtension;
 use Akeneo\Platform\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
+use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 /**

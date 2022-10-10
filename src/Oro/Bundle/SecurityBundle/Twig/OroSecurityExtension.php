@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\SecurityBundle\Twig;
 
-use Twig\Extension\AbstractExtension;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class OroSecurityExtension extends AbstractExtension
