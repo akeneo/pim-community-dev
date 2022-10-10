@@ -40,7 +40,7 @@ class AddDefaultValuesSubscriber implements EventSubscriberInterface
         $this->getChannelWithLocales = $getChannelWithLocales;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             StorageEvents::PRE_SAVE => ['addDefaultValues', 100],

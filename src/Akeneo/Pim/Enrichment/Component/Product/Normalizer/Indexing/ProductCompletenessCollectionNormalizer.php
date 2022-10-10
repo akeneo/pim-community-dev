@@ -37,7 +37,7 @@ class ProductCompletenessCollectionNormalizer implements NormalizerInterface, Ca
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return
             in_array($format, [

@@ -27,7 +27,7 @@ class InitializeEvaluationOfAProductModelSubscriber implements EventSubscriberIn
     ) {
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             StorageEvents::POST_SAVE => 'onPostSave',

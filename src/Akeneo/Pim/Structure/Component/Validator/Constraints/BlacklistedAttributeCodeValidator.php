@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Component\Validator\Constraints;
 
+use Symfony\Component\Translation\TranslatorBagInterface;
 use Akeneo\Pim\Structure\Component\Query\InternalApi\GetBlacklistedAttributeJobExecutionIdInterface;
 use Akeneo\Pim\Structure\Component\Query\InternalApi\IsAttributeCodeBlacklistedInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Translation\Translator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -18,13 +18,13 @@ class BlacklistedAttributeCodeValidator extends ConstraintValidator
 
     protected IsAttributeCodeBlacklistedInterface $isAttributeCodeBlacklisted;
     private GetBlacklistedAttributeJobExecutionIdInterface $getBlacklistedAttributeJobExecutionId;
-    private Translator $translator;
+    private TranslatorBagInterface $translator;
     private RouterInterface $router;
 
     public function __construct(
         IsAttributeCodeBlacklistedInterface $isAttributeCodeBlacklisted,
         GetBlacklistedAttributeJobExecutionIdInterface $getBlacklistedAttributeJobExecutionId,
-        Translator $translator,
+        TranslatorBagInterface $translator,
         RouterInterface $router
     ) {
         $this->isAttributeCodeBlacklisted = $isAttributeCodeBlacklisted;
