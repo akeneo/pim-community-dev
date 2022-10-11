@@ -77,8 +77,22 @@ module "secrets" {
       labels = {
         usage = "timmy-portal-auth"
       }
+    },
+    {
+      name = "TENANT_CONTEXT_ENCRYPTION_KEY"
+      members = [
+        "serviceAccount:${module.iam.pim_sa_email}"
+      ]
+      labels = {
+        usage = "tenant-context-encryption-key"
+      }
     }
   ]
+}
+
+module "tenant_context_encryption_key" {
+  source    = "../modules/tenant-context-secret"
+  secret_id = module.secrets.google_secrets_ids["TENANT_CONTEXT_ENCRYPTION_KEY"]
 }
 
 module "gke_europe_west1" {

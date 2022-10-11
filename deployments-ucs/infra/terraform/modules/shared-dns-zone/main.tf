@@ -12,7 +12,7 @@ resource "google_dns_managed_zone" "pim_zone" {
     managed_by = "terraform"
   }
   dnssec_config {
-     state = "on"
+    state = "on"
   }
 }
 

@@ -246,3 +246,6 @@ pim:
     sourceCodeZip: publisher-pim-job.zip
     timeZone: "Europe/Paris"
     serviceAccountEmail: pim-cloud-function@akecld-prd-pim-saas-dev.iam.gserviceaccount.com
+  tenantContextEncryption:
+    enabled: true
+    encryptionKeySecretName: TENANT_CONTEXT_ENCRYPTION_KEY

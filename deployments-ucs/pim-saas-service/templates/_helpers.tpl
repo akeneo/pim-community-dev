@@ -92,3 +92,22 @@ Create pim.DomainEscaped
 {{- define "pim.DomainEscaped" -}}
 {{- printf "%s" .Values.common.dnsCloudDomain | replace "." "\\." | quote -}}
 {{- end -}}
+
+{{/*
+Tenant context encyption key volume
+*/}}
+{{- define "pim.tenantContextEncryption.encryptionKey.volume" -}}
+name: tenant-context-encryption-keys
+csi:
+    driver: secrets-store.csi.k8s.io
+    readOnly: true
+    volumeAttributes:
+        secretProviderClass: "tenant-context-encryption-keys"
+{{- end -}}
+
+{{- define "pim.tenantContextEncryption.encryptionKey.volumeMount" -}}
+name: tenant-context-encryption-keys
+mountPath: "/var/run/secrets/pim"
+{{- end -}}
+
+

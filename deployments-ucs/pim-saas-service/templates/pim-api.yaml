@@ -78,6 +78,9 @@ spec:
               mountPath: /scripts-dir
             - name: web-src
               mountPath: /srv/pim/public
+            {{- if .Values.pim.tenantContextEncryption.enabled | default true }}
+            - {{ include "pim.tenantContextEncryption.encryptionKey.volumeMount" . | nindent 15 }}
+            {{- end }}
           envFrom: [ configMapRef: { name: pim-env-configmap } ]
           env:
             - { name: GOOGLE_NAMESPACE, valueFrom: { fieldRef: { fieldPath: metadata.namespace } } }
@@ -159,3 +162,6 @@ spec:
             items:
               - key: fpm.conf
                 path: zzz-akeneo.conf
+        {{- if .Values.pim.tenantContextEncryption.enabled | default true }}
+        - {{ include "pim.tenantContextEncryption.encryptionKey.volume" . | nindent 11 }}
+        {{- end }}
