@@ -57,7 +57,7 @@ class GrantedProductAttributeFilter implements AttributeFilterInterface
 
             foreach ($standardProduct['values'] as $attributeCode => $values) {
                 if (!isset($grantedAttributeCodes[(string)$attributeCode])) {
-                    throw UnknownPropertyException::unknownProperty($attributeCode);
+                    throw UnknownPropertyException::unknownProperty((string)$attributeCode);
                 }
 
                 if (is_array($values)) {
