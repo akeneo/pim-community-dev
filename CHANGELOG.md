@@ -76,6 +76,7 @@
 - PIM-10656: Fix asset collection sorting in PEF is not case-insensitive
 - PIM-10658: Fix TE database product reader
 - PIM-10645: Fix tailored imports removes the prefix zeros on data
+- PIM-10665: Fix error when updating product models through API with non existing attributes as numbers
 
 ## Improvements
 

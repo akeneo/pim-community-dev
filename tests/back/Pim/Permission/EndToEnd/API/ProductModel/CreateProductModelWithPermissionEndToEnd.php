@@ -235,6 +235,46 @@ JSON;
         $this->assertCreated($data);
     }
 
+
+    public function testResponseWhenSettingNonExistingAttributeAsNumber()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data = <<<JSON
+{
+    "code": "a_product_model",
+    "values": {
+      "42": [
+        {
+          "scope": null,
+          "locale": null,
+          "data": "a data"
+        }
+      ]
+    }
+}
+JSON;
+
+        $expected = <<<JSON
+{
+    "code": 422,
+    "message": "Property \"42\" does not exist. Check the expected format on the API documentation.",
+    "_links": {
+        "documentation": {
+            "href": "http:\/\/api.akeneo.com\/api-reference.html#post_product_models"
+        }
+    }
+}
+JSON;
+
+        $client->request('POST', 'api/rest/v1/product-models', [], [], [], $data);
+
+        $response = $client->getResponse();
+
+        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+    }
+
     /**
      * @param string $data data submitted
      */
