@@ -7,5 +7,5 @@ spec:
     privateDomains: 
     - pim-saas-dev.dev.local
 argocd:
-  privateDomain: pim-saas-dev.dev.cloud.akeneo.com
-  publicDomain: pim-saas-dev.dev.local
+  privateDomain: pim-saas-dev.dev.local
+  publicDomain: pim-saas-dev.dev.cloud.akeneo.com

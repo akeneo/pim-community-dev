@@ -6,8 +6,8 @@ spec:
     privateDomains:
     - pim-saas-sandbox.dev.local
 argocd:
-  privateDomain: pim-saas-sandbox.dev.cloud.akeneo.com
-  publicDomain: pim-saas-sandbox.dev.local
+  privateDomain: pim-saas-sandbox.dev.local
+  publicDomain: pim-saas-sandbox.dev.cloud.akeneo.com
 gateways:
   externalHttp:
     gatewayClassName: gke-l7-gxlb
