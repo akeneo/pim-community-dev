@@ -29,7 +29,7 @@ steps:
   - id: Install prerequisite for the PIM
     name: "europe-west1-docker.pkg.dev/akecld-prd-pim-saas-shared/prod/pim-deployer:1.1.0"
     dir: "deployments-ucs"
-    entrypoint: 'sh'
+    entrypoint: 'bash'
     args:
     - '-c'
     - |
@@ -47,7 +47,17 @@ steps:
         GSA_ARGOCD="argocd@${_GOOGLE_PROJECT_ID}.iam.gserviceaccount.com" yq -i '.repoServer.serviceAccount.annotations."iam.gke.io/gcp-service-account" = env(GSA_ARGOCD)' argocd/values.yaml
 
         # Append the values file to use for the argocd apps
-        VALUES="values-${_CLUSTER_NAME}.yaml" yq -i '.applications[].source.helm.valueFiles[1] = env(VALUES)' argocd-apps/values.yaml
+        VALUES_FILES=("values.yaml" "values-${_CLUSTER_ENV}.yaml" "values-${_GOOGLE_CLUSTER_REGION}.yaml" "values-${_GOOGLE_PROJECT_ID}.yaml" "values-${_CLUSTER_NAME}.yaml")
+        yq -i '.applications[].source.helm.valueFiles = []' argocd-apps/values.yaml
+        for VALUES in "$${VALUES_FILES[@]}"
+        do
+          if [[ -f "infra/k8s/argocd-apps/$${VALUES}" ]]; then
+            echo "Adding infra/k8s/argocd-apps/$${VALUES} to values"
+            VALUES="$${VALUES}" yq -i '.applications[].source.helm.valueFiles += env(VALUES)' argocd-apps/values.yaml
+          else
+            echo "infra/k8s/argocd-apps/$${VALUES} does not exists"
+          fi
+        done
 
         # Change the branch for infra
         BRANCH_NAME="${BRANCH_NAME}" yq -i '.applications[].source.targetRevision = env(BRANCH_NAME)' argocd-apps/values.yaml
@@ -75,6 +85,7 @@ availableSecrets:
 substitutions:
   _ARGOCD_HELM_VERSION: 5.4.2
   _ARGOCD_APP_HELM_VERSION: 0.0.1
+  _CLUSTER_ENV: dev
   _CLUSTER_NAME: akecld-prd-pim-saas-dev-europe-west3
   _GOOGLE_CLUSTER_REGION: europe-west3
   _GOOGLE_COMPUTE_ZONE: europe-west3-b

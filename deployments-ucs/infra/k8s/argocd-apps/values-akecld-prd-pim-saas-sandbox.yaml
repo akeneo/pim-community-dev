@@ -1,0 +1,13 @@
+spec:
+  destination:
+    googleProject: akecld-prd-pim-saas-sandbox
+    publicDomains:
+    - pim-saas-sandbox.dev.cloud.akeneo.com
+    privateDomains:
+    - pim-saas-sandbox.dev.local
+argocd:
+  privateDomain: pim-saas-sandbox.dev.cloud.akeneo.com
+  publicDomain: pim-saas-sandbox.dev.local
+gateways:
+  externalHttp:
+    gatewayClassName: gke-l7-gxlb

@@ -2,8 +2,6 @@ kind: Gateway
 apiVersion: gateway.networking.k8s.io/v1beta1
 metadata:
   name: external-http
-  labels:
-    domain: {{ .Values.global.publicDomain }}
   annotations:
     {{ if and ( hasPrefix "gke-l7-gxlb" .Values.gateways.externalHttp.gatewayClassName ) .Values.gateways.externalHttp.certmap -}}
     networking.gke.io/certmap: {{ .Values.gateways.externalHttp.certmap }}

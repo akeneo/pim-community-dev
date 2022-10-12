@@ -13,11 +13,6 @@ spec:
     targetRevision: {{ .Values.spec.source.targetRevision }}
     helm:
       releaseName: contour
-      parameters:
-        - name: global.publicDomain
-          value: {{ .Values.spec.destination.publicDomain }}
-        - name: global.privateDomain
-          value: {{ .Values.spec.destination.privateDomain }}
   destination:
     server: {{ .Values.spec.destination.server }}
     namespace: projectcontour

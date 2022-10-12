@@ -4,11 +4,19 @@ spec:
     server: https://kubernetes.default.svc
     googleProject: null #To be overrided
     clusterRegion: null #To be overrided
-    publicDomain: null #To be overrided
-    privateDomain: null #To be overrided
+    publicDomains: null #To be overrided
+    privateDomains: null #To be overrided
   source:
     repoURL: https://github.com/akeneo/pim-saas-k8s-artifacts.git
     basePath: infra/k8s/charts
     targetRevision: master #To be overrided
 wiremock:
   enabled: false
+argocd:
+  privateDomain: null #To be overrided
+  publicDomain: null #To be overrided
+gateways:
+  externalHttp:
+    gatewayClassName: contour
+  internalHttp:
+    gatewayClassName: gke-l7-rilb

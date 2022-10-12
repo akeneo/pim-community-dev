@@ -14,10 +14,10 @@ spec:
     helm:
       releaseName: argocd-config
       parameters:
-      - name: global.publicDomain
-        value: {{ .Values.spec.destination.publicDomain }}
-      - name: global.clusterRegion
-        value: {{ .Values.spec.destination.clusterRegion }}
+      - name: argocdConfig.privateHostname
+        value: "argocd-{{ .Values.spec.destination.clusterRegion }}.{{ .Values.argocd.privateDomain }}"
+      - name: argocdConfig.publicHostname
+        value: "argocd-{{ .Values.spec.destination.clusterRegion }}.{{ .Values.argocd.publicDomain }}"
   destination:
     server: {{ .Values.spec.destination.server }}
     namespace: argocd

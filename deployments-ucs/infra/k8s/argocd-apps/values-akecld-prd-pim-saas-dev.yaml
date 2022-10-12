@@ -1,0 +1,11 @@
+spec:
+  destination:
+    googleProject: akecld-prd-pim-saas-dev
+    publicDomains: 
+    - pim-saas-dev.dev.cloud.akeneo.com
+    - ci.pim.akeneo.cloud
+    privateDomains: 
+    - pim-saas-dev.dev.local
+argocd:
+  privateDomain: pim-saas-dev.dev.cloud.akeneo.com
+  publicDomain: pim-saas-dev.dev.local
