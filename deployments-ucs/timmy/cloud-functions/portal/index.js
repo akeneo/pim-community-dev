@@ -21,6 +21,9 @@ let logger = null;
 
 const NODE_ENV_DEVELOPMENT = 'development';
 
+const DEFAULT_BRANCH_NAME = 'master';
+const DEFAULT_PIM_NAMESPACE = 'pim';
+
 const TENANT_STATUS = {
   PENDING_CREATION: 'pending_creation',
   PENDING_DELETION: 'pending_deletion'
@@ -82,11 +85,15 @@ function initializeLogger(branchName) {
   });
 }
 
+function prefixUrlWithBranchName(url, branchName) {
+  return (branchName === DEFAULT_BRANCH_NAME ? url : path.join(url, '/' + branchName + '/'));
+}
+
 async function refreshAccessToken(branchName) {
   try {
     const payload = new URLSearchParams(JSON.parse(process.env.TIMMY_PORTAL));
     const instance = axios.create({
-      baseURL: process.env.HTTP_SCHEMA + '://' + process.env.PORTAL_LOGIN_HOSTNAME + path.join('/', branchName + '/'),
+      baseURL: prefixUrlWithBranchName(process.env.HTTP_SCHEMA + '://' + process.env.PORTAL_LOGIN_HOSTNAME, branchName),
       timeout: 10000,
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -109,7 +116,7 @@ async function refreshAccessToken(branchName) {
 async function requestTenantsFromPortal(branchName, status, filters) {
   const token = await refreshAccessToken(branchName);
   const instance = axios.create({
-    baseURL: process.env.HTTP_SCHEMA + '://' + process.env.PORTAL_HOSTNAME + path.join('/', branchName + '/') + '/api/v2/',
+    baseURL: prefixUrlWithBranchName(process.env.HTTP_SCHEMA + '://' + process.env.PORTAL_HOSTNAME,  branchName) + '/api/v2/',
     timeout: 10000,
     headers: {
       'Authorization': 'Bearer ' + token,
@@ -183,8 +190,8 @@ functions.http('requestPortal', (req, res) => {
   ]);
 
   // Prefix url with branch name if present
-  const branchName = req.body.branchName || '';
-  const pimNamespace = branchName.length ? `pim-${branchName.lowercase}` : 'pim';
+  const branchName = (req.body.branchName || DEFAULT_BRANCH_NAME).toLowerCase();
+  const pimNamespace = (branchName === DEFAULT_BRANCH_NAME ? DEFAULT_PIM_NAMESPACE : `pim-${branchName}`);
 
   initializeLogger(branchName);
   logger.info('Recovery of the tenants from the portal');
@@ -204,6 +211,7 @@ functions.http('requestPortal', (req, res) => {
       const administrator = cloudInstance['administrator'];
 
       const payload = {
+        branchName: branchName,
         instanceName: instanceName,
         dnsCloudDomain: dnsCloudDomain,
         pim: {
@@ -229,7 +237,7 @@ functions.http('requestPortal', (req, res) => {
         const response = await requestCloudFunction(process.env.FUNCTION_URL_TIMMY_CREATE_TENANT, "POST", JSON.stringify(payload));
         logger.info(`Tenant ${instanceName} is created: ${response.data}`);
       } catch (error) {
-        logger.error(`Failed to call the cloudfunction ${process.env.FUNCTION_URL_TIMMY_CREATE_TENANT} to create the tenant: ${JSON.stringify(error.response.data)}`);
+        logger.error(`Failed to call the cloudfunction ${process.env.FUNCTION_URL_TIMMY_CREATE_TENANT} to create the tenant: ${JSON.stringify(error)}`);
       }
     }));
   }
@@ -245,20 +253,23 @@ functions.http('requestPortal', (req, res) => {
       const subject = tenant['subject'];
       const instanceName = subject['instance_fqdn']['prefix'];
 
-      logger.info(`Call the cloudfunction ${process.env.FUNCTION_URL_TIMMY_DELETE_TENANT} to delete the tenant`);
-      const url = new URL(`/${instanceName}`, process.env.FUNCTION_URL_TIMMY_DELETE_TENANT)
       try {
-        const response = await requestCloudFunction(url.href.toString(), "POST");
+        logger.info(`Call the cloudfunction ${process.env.FUNCTION_URL_TIMMY_DELETE_TENANT} to delete the tenant`);
+        const response = await requestCloudFunction(process.env.FUNCTION_URL_TIMMY_DELETE_TENANT, "POST", JSON.stringify({
+          instanceName: instanceName,
+          branchName: branchName
+        }));
+
         logger.info(`Tenant ${instanceName} is deleted: ${response.data}`);
       } catch (error) {
-        logger.error(`Failed to call the cloudfunction ${url} to delete the tenant: ${JSON.stringify(error.response.data)}`);
+        logger.error(`Failed to call the cloudfunction ${process.env.FUNCTION_URL_TIMMY_DELETE_TENANT} to delete the tenant: ${JSON.stringify(error)}`);
       }
     }));
   }
 
   const dispatchActions = async () => {
     logger.info('Dispatch action to provisioning cloud functions');
-    await Promise.all([tenantsToCreate()]);
+    await Promise.all([tenantsToCreate(), tenantsToDelete()]);
   }
 
   dispatchActions(res)

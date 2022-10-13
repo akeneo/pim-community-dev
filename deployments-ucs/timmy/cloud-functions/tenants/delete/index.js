@@ -15,9 +15,13 @@ const {createLogger, format, transports} = require('winston');
 const functions = require('@google-cloud/functions-framework');
 const {LoggingWinston} = require('@google-cloud/logging-winston');
 const loggingWinston = new LoggingWinston();
+const {Validator, ValidationError} = require("jsonschema");
+const v = new Validator();
+const schema = require('./schemas/request-body.json');
 const {Firestore} = require('@google-cloud/firestore');
 const https = require("https");
 
+let firestoreCollection = null;
 let logger = null;
 
 const httpsAgent = new https.Agent({
@@ -25,6 +29,7 @@ const httpsAgent = new https.Agent({
   rejectUnauthorized: false
 });
 
+const DEFAULT_BRANCH_NAME = 'master';
 const FIRESTORE_STATUS = {
   DELETION_IN_PREPARATION: "deletion_in_preparation",
   DELETION_IN_PROGRESS: "deletion_in_progress"
@@ -48,8 +53,7 @@ function requiredEnvironmentVariables(names) {
   }
 }
 
-
-function initializeLogger(instanceName) {
+function initializeLogger(branchName, instanceName) {
   logger = createLogger({
     level: process.env.LOG_LEVEL,
     defaultMeta: {
@@ -58,7 +62,8 @@ function initializeLogger(instanceName) {
       revision: process.env.K_REVISION,
       gcpProjectId: process.env.GCP_PROJECT_ID,
       gcpProjectFirestoreId: process.env.GCP_FIRESTORE_PROJECT_ID,
-      tenant: instanceName
+      tenant: instanceName,
+      branchName: branchName
     },
     format: format.combine(
       format.timestamp({format: 'YYYY-MM-DD HH:mm:ss'}),
@@ -70,7 +75,8 @@ function initializeLogger(instanceName) {
           gcpProjectId: info.gcpProjectId,
           gcpProjectFirestoreId: info.gcpProjectFirestoreId,
           message: info.message,
-          tenant: info.tenant
+          tenant: info.tenant,
+          branchName: info.branchName
         })}`;
       }),
     ),
@@ -255,14 +261,14 @@ async function ensureArgoCdAppIsDeleted(token, appName, maxRetries = 30, retryIn
 
 async function updateFirestoreDocStatus(firestore, doc, status) {
   try {
-    logger.info(`Update the ${doc} firestore document in ${process.env.TENANT_CONTEXT_COLLECTION_NAME} collection with ${status} status`);
-    return Promise.resolve(await firestore.collection(process.env.TENANT_CONTEXT_COLLECTION_NAME).doc(doc).set({
+    logger.info(`Update the ${doc} firestore document in ${firestoreCollection} collection with ${status} status`);
+    return Promise.resolve(await firestore.collection(firestoreCollection).doc(doc).set({
         status: status,
         status_date: new Date().toISOString()
     }, {merge: true}));
 
   } catch (error) {
-    const msg = `Failed to update the ${doc} firestore document in ${process.env.TENANT_CONTEXT_COLLECTION_NAME} collection: ${error}`;
+    const msg = `Failed to update the ${doc} firestore document in ${firestoreCollection} collection: ${error}`;
     logger.error(msg);
     return Promise.reject(msg);
   }
@@ -270,23 +276,16 @@ async function updateFirestoreDocStatus(firestore, doc, status) {
 
 async function deleteFirestoreDocument(firestore, doc) {
   try {
-    logger.info(`Delete the ${doc} firestore document in ${process.env.TENANT_CONTEXT_COLLECTION_NAME} collection`);
-    await firestore.collection(process.env.TENANT_CONTEXT_COLLECTION_NAME).doc(doc).delete();
+    logger.info(`Delete the ${doc} firestore document in ${firestoreCollection} collection`);
+    await firestore.collection(firestoreCollection).doc(doc).delete();
   } catch (error) {
-    const msg = `Failed to delete the ${doc} firestore document in ${process.env.TENANT_CONTEXT_COLLECTION_NAME} collection: ${error}`
+    const msg = `Failed to delete the ${doc} firestore document in ${firestoreCollection} collection: ${error}`
     logger.error(msg);
     return Promise.reject(msg);
   }
 }
 
 functions.http('deleteTenant', (req, res) => {
-  let instanceName = req.url.split('/');
-  instanceName = instanceName[instanceName.length - 1];
-
-  if (!instanceName) {
-    throw new Error('The tenant name is missing in the url: https://function_url/:tenantName')
-  }
-
   requiredEnvironmentVariables([
     'ARGOCD_PASSWORD',
     'ARGOCD_URL',
@@ -297,14 +296,31 @@ functions.http('deleteTenant', (req, res) => {
     'TENANT_CONTEXT_COLLECTION_NAME',
   ]);
 
-  initializeLogger(instanceName);
+  const body = JSON.parse(req.body);
+  const branchName = body.branchName;
+  const instanceName = body.instanceName;
+
+  initializeLogger(branchName, instanceName);
+
+  logger.info('Validation of the JSON schema of the request body');
+  logger.debug(`HTTP request JSON body: ${JSON.stringify(req.body)}`);
+
+  const schemaCheck = v.validate(body, schema);
+  if (!schemaCheck.valid) {
+    const error = schemaCheck.errors[0].message;
+    res.status(400).json({
+      status_code: 400,
+      message: `HTTP body json is not valid: ${error}`,
+    });
+  }
+
+  firestoreCollection = `${process.env.REGION}/${branchName}/${process.env.TENANT_CONTEXT_COLLECTION_NAME}`;
 
   logger.debug('Instantiate firestore instance');
   const firestore = new Firestore({
     projectId: process.env.GCP_FIRESTORE_PROJECT_ID,
     timestampsInSnapshots: true
   });
-
 
   const deleteTenant = async () => {
     await updateFirestoreDocStatus(firestore, instanceName, FIRESTORE_STATUS.DELETION_IN_PREPARATION);
