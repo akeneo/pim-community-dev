@@ -36,12 +36,10 @@ class SearchFiltersValidator
 
         $errorFormatter = new ErrorFormatter();
 
-        $customFormatter = function (ValidationError $error) use ($errorFormatter) {
-            return [
-                'property' => $errorFormatter->formatErrorKey($error),
-                'message' => $errorFormatter->formatErrorMessage($error),
-            ];
-        };
+        $customFormatter = fn (ValidationError $error) => [
+            'property' => $errorFormatter->formatErrorKey($error),
+            'message' => $errorFormatter->formatErrorMessage($error),
+        ];
 
         return $errorFormatter->formatFlat($result->error(), $customFormatter);
     }
