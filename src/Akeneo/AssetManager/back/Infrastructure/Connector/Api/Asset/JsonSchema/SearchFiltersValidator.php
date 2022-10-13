@@ -67,7 +67,7 @@ class SearchFiltersValidator
                         ],
                         'locales' => [
                             'type' => 'array',
-                            'items' => [
+                            'contains' => [
                                 'type' => 'string',
                             ],
                             'minItems' => 1,
@@ -147,21 +147,19 @@ class SearchFiltersValidator
                 'code' => [
                     'type' => 'array',
                     'minItems' => 1,
-                    'items' => [
-                        [
-                            'type' => 'object',
-                            'required' => ['operator', 'value'],
-                            'properties' => [
-                                'operator' => [
+                    'contains' => [
+                        'type' => 'object',
+                        'required' => ['operator', 'value'],
+                        'properties' => [
+                            'operator' => [
+                                'type' => 'string',
+                                'enum' => ['IN'],
+                            ],
+                            'value' => [
+                                'type' => 'array',
+                                'minItems' => 1,
+                                'items' => [
                                     'type' => 'string',
-                                    'enum' => ['IN'],
-                                ],
-                                'value' => [
-                                    'type' => 'array',
-                                    'minItems' => 1,
-                                    'items' => [
-                                        'type' => 'string',
-                                    ],
                                 ],
                             ],
                         ],
