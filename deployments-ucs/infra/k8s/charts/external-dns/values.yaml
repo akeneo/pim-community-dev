@@ -30,5 +30,5 @@ external-dns:
   sources:
     - gateway-httproute
   txtOwnerId: null # From parent
-  triggerLoopOnEvent: true
-  interval: 10m
+  triggerLoopOnEvent: false
+  interval: 30s

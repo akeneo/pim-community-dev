@@ -14,6 +14,11 @@ spec:
     targetRevision: {{ .Values.spec.source.targetRevision }}
     helm:
       releaseName: wiremock
+      parameters:
+      - name: routes.private.hostname
+        value: "wiremock-{{ .Values.spec.destination.clusterRegion }}.{{ .Values.wiremock.privateDomain | default (index .Values.spec.destination.privateDomains 0) }}"
+      - name: routes.public.hostname
+        value: "wiremock-{{ .Values.spec.destination.clusterRegion }}.{{ .Values.wiremock.publicDomain | default (index .Values.spec.destination.publicDomains 0) }}"
   destination:
     server: {{ .Values.spec.destination.server }}
     namespace: wiremock

@@ -36,6 +36,19 @@ ingress:
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
+
+routes:
+  private:
+    enabled: true
+    gateway:
+      name: internal-http
+      namespace: default
+  public:
+    enabled: true
+    gateway:
+      name: external-http
+      namespace: default
+
 env:
   WIREMOCK_OPTIONS: "--port=9021,--max-request-journal=1000,--local-response-templating,--root-dir=/home/wiremock/storage"
 

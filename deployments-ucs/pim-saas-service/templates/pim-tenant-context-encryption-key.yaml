@@ -6,5 +6,5 @@ spec:
   provider: gcp
   parameters:
     secrets: |
-      - resourceName: "projects/{{ .Values.common.gcpProjectID }}/secrets/{{ .Values.pim.tenantContext.encryptionKeySecretName | default "TENANT_CONTEXT_ENCRYPTION_KEY" }}/versions/latest"
+      - resourceName: "projects/{{ .Values.common.gcpProjectID }}/secrets/{{ .Values.pim.tenantContextEncryption.encryptionKeySecretName | default "TENANT_CONTEXT_ENCRYPTION_KEY" }}/versions/latest"
         path: "tenant_context_encryption_key_b64_latest"
