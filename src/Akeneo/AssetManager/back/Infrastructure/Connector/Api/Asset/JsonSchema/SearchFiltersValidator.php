@@ -92,6 +92,12 @@ class SearchFiltersValidator
                                     'value' => [
                                         'type' => 'string',
                                         'format' => 'date-time',
+                                        '$filters' => [
+                                            '$func' => 'min-date',
+                                            '$vars' => [
+                                                'value' => '1970-01-01',
+                                            ],
+                                        ],
                                     ],
                                 ],
                             ],
@@ -112,6 +118,12 @@ class SearchFiltersValidator
                                         'contains' => [
                                             'type' => 'string',
                                             'format' => 'date-time',
+                                        ],
+                                        '$filters' => [
+                                            '$func' => 'min-date',
+                                            '$vars' => [
+                                                'value' => '1970-01-01',
+                                            ],
                                         ],
                                     ],
                                 ],
