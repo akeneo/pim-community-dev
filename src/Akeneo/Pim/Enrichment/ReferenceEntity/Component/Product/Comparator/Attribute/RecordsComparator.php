@@ -17,21 +17,14 @@ use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorInterface;
 
 final class RecordsComparator implements ComparatorInterface
 {
-    /** @var array */
-    protected $types;
-
     /**
      * @param array $types
      */
-    public function __construct(array $types)
+    public function __construct(private array $types)
     {
-        $this->types = $types;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function supports($type)
+    public function supports($type): bool
     {
         return in_array($type, $this->types);
     }
@@ -39,7 +32,7 @@ final class RecordsComparator implements ComparatorInterface
     /**
      * {@inheritdoc}
      */
-    public function compare($data, $originals)
+    public function compare($data, $originals): ?array
     {
         $default = ['locale' => null, 'scope' => null, 'data' => []];
         $originals = \array_merge($default, $originals);
