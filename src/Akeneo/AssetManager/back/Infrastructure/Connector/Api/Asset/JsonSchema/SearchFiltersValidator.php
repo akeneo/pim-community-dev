@@ -25,8 +25,6 @@ class SearchFiltersValidator
         $validator = new Validator();
         $validator->setMaxErrors(50);
 
-        $json = json_encode($this->getJsonSchema());
-
         $result = $validator->validate(
             Helper::toJSON($searchFilters),
             Helper::toJSON($this->getJsonSchema())
