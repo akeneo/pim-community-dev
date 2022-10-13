@@ -36,11 +36,12 @@ $rules = [
         'Ramsey\Uuid\Uuid',
         'Symfony',
         'Webmozart\Assert\Assert',
+        'Opis\JsonSchema',
         'JsonSchema\Validator',
         'PDO',
         'Akeneo\UserManagement\Component\Model\GroupInterface', // Because of an EventSubscriber on UserGroup deletion
         'Akeneo\UserManagement\Component\Model\Group', // For a constant usage
-        'Psr\Log\LoggerInterface', //Use logger in command
+        'Psr\Log\LoggerInterface', // Use logger in command
         // TODO: reference entities should not depend on PIM
         'Akeneo\Pim\Enrichment\ReferenceEntity\Component',
         'Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes',
