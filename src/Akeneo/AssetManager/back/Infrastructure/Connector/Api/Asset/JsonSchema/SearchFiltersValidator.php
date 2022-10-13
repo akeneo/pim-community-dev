@@ -25,7 +25,7 @@ class SearchFiltersValidator
         $validator = new Validator();
         $validator->setMaxErrors(50);
 
-        $json = Helper::toJSON($this->getJsonSchema());
+        $json = json_encode($this->getJsonSchema());
 
         $result = $validator->validate(
             Helper::toJSON($searchFilters),
@@ -109,15 +109,9 @@ class SearchFiltersValidator
                                         'type' => 'array',
                                         'minItems' => 2,
                                         'maxItems' => 2,
-                                        'items' => [
-                                            [
-                                                'type' => 'string',
-                                                'format' => 'date-time'
-                                            ],
-                                            [
-                                                'type' => 'string',
-                                                'format' => 'date-time'
-                                            ],
+                                        'contains' => [
+                                            'type' => 'string',
+                                            'format' => 'date-time',
                                         ],
                                     ],
                                 ],
