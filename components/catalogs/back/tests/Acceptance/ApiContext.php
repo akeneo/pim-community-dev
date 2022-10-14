@@ -7,6 +7,7 @@ namespace Akeneo\Catalogs\Test\Acceptance;
 use Akeneo\Catalogs\Application\Persistence\Catalog\UpsertCatalogQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
+use Akeneo\Catalogs\ServiceAPI\Command\UpdateCatalogProductMappingSchemaCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
@@ -477,6 +478,70 @@ class ApiContext implements Context
         $payload = \json_decode($this->response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEmpty($payload['_embedded']['items']);
+    }
+
+    /**
+     * @Given an existing catalog with a product mapping schema
+     */
+    public function anExistingCatalogWithAProductMappingSchema(): void
+    {
+        $connectedAppUserIdentifier = $this->getConnectedApp()->getUsername();
+        $this->authentication->logAs($connectedAppUserIdentifier);
+
+        $commandBus = $this->container->get(CommandBus::class);
+        $commandBus->execute(new CreateCatalogCommand(
+            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            'Store US',
+            $connectedAppUserIdentifier,
+        ));
+        $commandBus->execute(new UpdateCatalogProductMappingSchemaCommand(
+            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            \json_decode(
+                <<<'JSON_WRAP'
+                {
+                  "$id": "https://example.com/product",
+                  "$schema": "https://api.akeneo.com/mapping/product/0.0.1/schema",
+                  "$comment": "My first schema !",
+                  "title": "Product Mapping",
+                  "description": "JSON Schema describing the structure of products expected by our application",
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "body_html": {
+                      "title": "Description",
+                      "description": "Product description in raw HTML",
+                      "type": "string"
+                    }
+                  }
+                }
+                JSON_WRAP,
+                false,
+                512,
+                JSON_THROW_ON_ERROR
+            ),
+        ));
+    }
+
+    /**
+     * @When the external application retrieves the catalog product mapping schema using the API
+     */
+    public function theExternalApplicationRetrievesTheCatalogProductMappingSchemaUsingTheApi(): void
+    {
+        $this->authentication->logAs($this->getConnectedApp()->getUsername());
+
+        $this->getConnectedAppClient()->request(
+            method: 'GET',
+            uri: '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapping-schemas/product',
+            server: [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+        );
+
+        $this->response = $this->getConnectedAppClient()->getResponse();
+
+        Assert::assertEquals(200, $this->response->getStatusCode());
     }
 
     /**
