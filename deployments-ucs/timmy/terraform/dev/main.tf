@@ -1,27 +1,26 @@
 locals {
-  argocd_url                           = "https://argocd.${local.domain}"
+  region                               = "europe-west1"
+  argocd_url                           = "https://argocd-${local.region}.${local.domain}"
   bucket_location                      = "EU"
   cloudscheduler_service_account_email = "timmy-deployment@${local.project_id}.iam.gserviceaccount.com"
   domain                               = "pim-saas-dev.dev.cloud.akeneo.com"
   env                                  = "dev"
-  firestore_project_id                 = "akecld-prd-pim-fire-eur-dev"
+  firestore_project_id                  = "akecld-prd-pim-fire-eur-dev"
   function_labels                      = {
     application = "timmy"
   }
-  function_location              = "europe-west1"
   function_runtime               = "nodejs16"
   function_service_account_email = "timmy-cloud-function@${local.project_id}.iam.gserviceaccount.com"
   network_project_id             = "akecld-prd-shared-infra"
   project_id                     = "akecld-prd-pim-saas-dev"
-  source_target_revision         = "master"
-  tenant_contexts                = "${local.function_location}/${local.source_target_revision}/tenant_contexts"
-  region_prefix                  = "eur-w-1a"
+  tenant_contexts                = "tenant_contexts"
+  region_prefix                   = "eur-w-1a"
 }
 
 module "bucket" {
   source                      = "../modules/bucket"
   location                    = local.bucket_location
-  name                        = "${local.project_id}-timmy"
+  name                        = "${local.project_id}-timmy-b"
   project_id                  = local.project_id
   force_destroy               = true
   uniform_bucket_level_access = true
@@ -44,7 +43,7 @@ module "timmy_request_portal" {
     "node_modules",
     "tests"
   ]
-  location              = local.function_location
+  location              = local.region
   service_account_email = local.function_service_account_email
   timeout_seconds       = 3600
   max_instance_count    = 1
@@ -67,8 +66,8 @@ module "timmy_request_portal" {
     LOG_LEVEL                        = "info"
     NODE_ENV                         = "production"
     // TODO: replace portal hostnames with the private entry once PH-202 is released
-    PORTAL_HOSTNAME                  = "wiremock.pim-saas-dev.dev.cloud.akeneo.com"
-    PORTAL_LOGIN_HOSTNAME            = "wiremock.pim-saas-dev.dev.cloud.akeneo.com"
+    PORTAL_HOSTNAME                  = "wiremock-${local.region}.pim-saas-dev.dev.cloud.akeneo.com"
+    PORTAL_LOGIN_HOSTNAME            = "wiremock-${local.region}.pim-saas-dev.dev.cloud.akeneo.com"
     TENANT_CONTINENT                 = "europe"
     TENANT_EDITION_FLAGS             = "serenity_instance"
     TENANT_ENVIRONMENT               = "sandbox"
@@ -91,7 +90,7 @@ module "timmy_create_tenant" {
     "node_modules",
     "tests"
   ]
-  location              = local.function_location
+  location              = local.region
   service_account_email = local.function_service_account_email
   timeout_seconds       = 3600
   max_instance_count    = 1000
@@ -119,21 +118,21 @@ module "timmy_create_tenant" {
   ]
 
   environment_variables = {
-    ARGOCD_URL               = local.argocd_url
-    ARGOCD_USERNAME          = "admin"
-    GCP_FIRESTORE_PROJECT_ID = local.firestore_project_id
-    GCP_PROJECT_ID           = local.project_id
-    GOOGLE_ZONE              = "europe-west1-b"
-    LOG_LEVEL                = "debug"
-    MAILER_BASE_URL          = "smtp://smtp.mailgun.org:2525"
-    MAILER_DOMAIN            = "mg.cloud.akeneo.com"
-    NODE_ENV                 = "production"
-    PIM_IMAGE_REPOSITORY     = "europe-west1-docker.pkg.dev/akecld-prd-pim-saas-shared/prod/pim-enterprise-dev"
-    PIM_IMAGE_TAG            = "v20220920013749"
-    SOURCE_PATH              = "tenant"
-    SOURCE_REPO_URL          = "https://github.com/akeneo/pim-saas-k8s-artifacts.git"
-    SOURCE_TARGET_REVISION   = local.source_target_revision
-    TENANT_CONTEXT           = local.tenant_contexts
+    ARGOCD_URL                     = local.argocd_url
+    ARGOCD_USERNAME                = "admin"
+    GCP_FIRESTORE_PROJECT_ID       = local.firestore_project_id
+    GCP_PROJECT_ID                 = local.project_id
+    GOOGLE_ZONE                    = "europe-west1-b"
+    LOG_LEVEL                      = "debug"
+    MAILER_BASE_URL                = "smtp://smtp.mailgun.org:2525"
+    MAILER_DOMAIN                  = "mg.cloud.akeneo.com"
+    NODE_ENV                       = "production"
+    PIM_IMAGE_REPOSITORY           = "europe-west1-docker.pkg.dev/akecld-prd-pim-saas-shared/prod/pim-enterprise-dev"
+    PIM_IMAGE_TAG                  = "v20220920013749"
+    REGION                         = local.region
+    SOURCE_PATH                    = "tenant"
+    SOURCE_REPO_URL                = "https://github.com/akeneo/pim-saas-k8s-artifacts.git"
+    TENANT_CONTEXT_COLLECTION_NAME = local.tenant_contexts
   }
 
 }
@@ -148,7 +147,7 @@ module "timmy_delete_tenant" {
   entry_point           = "deleteTenant"
   runtime               = local.function_runtime
   source_dir            = abspath("../../cloud-functions/tenants/delete")
-  location              = local.function_location
+  location              = local.region
   service_account_email = local.function_service_account_email
   timeout_seconds       = 3600
   max_instance_count    = 1000
@@ -163,12 +162,13 @@ module "timmy_delete_tenant" {
   ]
 
   environment_variables = {
-    ARGOCD_URL               = local.argocd_url
-    ARGOCD_USERNAME          = "admin"
-    GCP_FIRESTORE_PROJECT_ID = "akecld-prd-pim-fire-eur-dev"
-    GCP_PROJECT_ID           = local.project_id
-    NODE_ENV                 = "production"
-    TENANT_CONTEXT           = local.tenant_contexts
+    ARGOCD_URL                     = local.argocd_url
+    ARGOCD_USERNAME                = "admin"
+    GCP_FIRESTORE_PROJECT_ID       = "akecld-prd-pim-fire-eur-dev"
+    GCP_PROJECT_ID                 = local.project_id
+    NODE_ENV                       = "production"
+    REGION                         = local.region
+    TENANT_CONTEXT_COLLECTION_NAME = local.tenant_contexts
   }
 }
 
@@ -182,7 +182,7 @@ module "timmy_create_fire_document" {
   entry_point           = "createDocument"
   runtime               = local.function_runtime
   source_dir            = abspath("../../cloud-functions/timmy-firestore/create")
-  location              = local.function_location
+  location              = local.region
   service_account_email = local.function_service_account_email
 
   secret_environment_variables = [
@@ -212,7 +212,7 @@ module "timmy_delete_fire_document" {
   entry_point           = "deleteDocument"
   runtime               = local.function_runtime
   source_dir            = abspath("../../cloud-functions/timmy-firestore/delete")
-  location              = local.function_location
+  location              = local.region
   service_account_email = local.function_service_account_email
 
   environment_variables = {
@@ -225,7 +225,7 @@ module "timmy_delete_fire_document" {
 module "timmy_cloudscheduler" {
   source                     = "../modules/cloudscheduler"
   project_id                 = local.project_id
-  region                     = local.function_location
+  region                     = local.region
   name                       = "${local.region_prefix}-timmy-request-portal"
   description                = "Trigger timmy-request-portal cloudfunction every 2 minutes"
   http_method                = "POST"
