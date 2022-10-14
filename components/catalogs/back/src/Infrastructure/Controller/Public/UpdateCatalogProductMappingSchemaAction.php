@@ -9,6 +9,7 @@ use Akeneo\Catalogs\Infrastructure\Security\GetCurrentUsernameTrait;
 use Akeneo\Catalogs\ServiceAPI\Command\UpdateCatalogProductMappingSchemaCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
+use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogProductMappingSchemaQuery;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
@@ -42,16 +43,9 @@ final class UpdateCatalogProductMappingSchemaAction
     {
         $this->denyAccessUnlessGrantedToEditCatalogs();
 
-        try {
-            $catalog = $this->queryBus->execute(new GetCatalogQuery($catalogId));
-        } catch (ValidationFailedException $e) {
-            throw $this->notFound($catalogId);
-        }
+        $catalog = $this->getCatalog($catalogId);
 
-        $username = $this->getCurrentUsername();
-        if (null === $catalog || $catalog->getOwnerUsername() !== $username) {
-            throw $this->notFound($catalogId);
-        }
+        $this->denyAccessUnlessOwnerOfCatalog($catalog, $this->getCurrentUsername());
 
         try {
             /** @var object $productMappingSchemaPayload */
@@ -71,10 +65,18 @@ final class UpdateCatalogProductMappingSchemaAction
         return new JsonResponse($productMappingSchema, Response::HTTP_OK);
     }
 
-    private function notFound(string $catalogId): NotFoundHttpException
+    private function getCatalog(string $id): Catalog
     {
-        return new NotFoundHttpException(
-            \sprintf('Catalog "%s" does not exist or you can\'t access it.', $catalogId)
-        );
+        try {
+            $catalog = $this->queryBus->execute(new GetCatalogQuery($id));
+        } catch (ValidationFailedException $e) {
+            throw new NotFoundHttpException(\sprintf('Catalog "%s" does not exist or you can\'t access it.', $id), $e);
+        }
+
+        if (null === $catalog) {
+            throw new NotFoundHttpException(\sprintf('Catalog "%s" does not exist or you can\'t access it.', $id));
+        }
+
+        return $catalog;
     }
 }

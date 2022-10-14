@@ -6,7 +6,7 @@ namespace Akeneo\Catalogs\Application\Handler;
 
 use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
-use Akeneo\Catalogs\Application\Storage\MappingStorageInterface;
+use Akeneo\Catalogs\Application\Storage\CatalogsMappingStorageInterface;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogNotFoundException as ServiceApiCatalogNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogProductMappingSchemaQuery;
 
@@ -18,10 +18,14 @@ final class GetCatalogProductMappingSchemaHandler
 {
     public function __construct(
         private GetCatalogQueryInterface $getCatalogQuery,
-        private MappingStorageInterface $catalogsMappingStorage,
+        private CatalogsMappingStorageInterface $catalogsMappingStorage,
     ) {
     }
 
+    /**
+     * @psalm-suppress MixedReturnStatement
+     * @psalm-suppress MixedInferredReturnType
+     */
     public function __invoke(GetCatalogProductMappingSchemaQuery $query): object
     {
         try {
@@ -31,7 +35,7 @@ final class GetCatalogProductMappingSchemaHandler
         }
 
         $catalogProductMappingSchema = \stream_get_contents(
-            $this->catalogsMappingStorage->read(\sprintf('catalogs/%d/mappings/product.json', $catalog->getId()))
+            $this->catalogsMappingStorage->read(\sprintf('%d_product.json', $catalog->getId()))
         );
 
         if (false === $catalogProductMappingSchema) {
