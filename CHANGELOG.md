@@ -77,6 +77,7 @@
 - PIM-10658: Fix TE database product reader
 - PIM-10645: Fix tailored imports removes the prefix zeros on data
 - PIM-10665: Fix error when updating product models through API with non existing attributes as numbers
+- PIM-10650: Fix white page when editing asset in a new tab
 
 ## Improvements
 
