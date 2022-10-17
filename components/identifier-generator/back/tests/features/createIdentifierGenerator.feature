@@ -34,8 +34,3 @@ Feature: Create Identifier Generator
     When I try to create an identifier generator with target 'name'
     Then I should get an error with message 'name'
     And the identifier should not be created
-
-  Scenario: Cannot create an identifier generator if the limit is reached
-    Given the identifier generator is created
-    When I try to create new identifier generator
-    Then I should get an error with message 'Limit of 1 identifier generator is reached'
