@@ -104,7 +104,7 @@ class QueueJobLauncherSpec extends ObjectBehavior
         $jobInstance->getJobName()->willReturn('job_instance_name');
         $jobInstance->getType()->willReturn('export');
         $jobInstance->getRawParameters()->willReturn(['foo' => 'bar']);
-        $user->getUsername()->willReturn('julia');
+        $user->getUserIdentifier()->willReturn('julia');
         $jobExecution->getId()->willReturn(1);
         $constraintViolationList->count()->willReturn(0);
 

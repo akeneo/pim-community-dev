@@ -2,14 +2,14 @@
 
 namespace spec\Akeneo\Tool\Component\Localization;
 
-use Symfony\Component\Translation\TranslatorBagInterface;
 use Akeneo\Tool\Component\Localization\LabelTranslator;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Translation\MessageCatalogueInterface;
+use Symfony\Component\Translation\Translator;
 
 class LabelTranslatorSpec extends ObjectBehavior
 {
-    function let(TranslatorBagInterface $translator)
+    function let(Translator $translator)
     {
         $this->beConstructedWith($translator);
     }
@@ -19,7 +19,7 @@ class LabelTranslatorSpec extends ObjectBehavior
         $this->shouldHaveType(LabelTranslator::class);
     }
 
-    function it_translates_labels_and_returns_fallback_if_not_found(TranslatorBagInterface $translator, MessageCatalogueInterface $catalogue)
+    function it_translates_labels_and_returns_fallback_if_not_found(Translator $translator, MessageCatalogueInterface $catalogue)
     {
         $translator->getCatalogue('fr_FR')->willReturn($catalogue);
         $catalogue->defines('some.key')->willReturn(true);
