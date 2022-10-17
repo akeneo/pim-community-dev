@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Application\Authentication\ContributorAccount\Write;
 
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\Exception\InvalidPassword;
+use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Exception\UserHasNotConsent;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\UpdatePassword;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\UpdatePasswordHandler;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\Validation\Password;
@@ -42,6 +43,7 @@ final class UpdatePasswordHandlerTest extends TestCase
         $updatePassword = new UpdatePassword(
             'b8b13d0b-496b-4a7c-a574-0d522ba90752',
             'P@ssw0rd*foo',
+            true,
         );
 
         $violationsSpy->expects($this->once())->method('count')->willReturn(0);
@@ -60,6 +62,25 @@ final class UpdatePasswordHandlerTest extends TestCase
     }
 
     /** @test */
+    public function itThrowsAnExceptionIfTheUserHasNotConsentToOurTermsAndConditions(): void
+    {
+        $passwordHasher = $this->createMock(HashPassword::class);
+        $validator = $this->createMock(ValidatorInterface::class);
+        $contributorAccountRepository = new InMemoryRepository();
+
+        $updatePassword = new UpdatePassword(
+            'b8b13d0b-496b-4a7c-a574-0d522ba90752',
+            'P@ssw0rd*foo',
+            false,
+        );
+
+        $sut = new UpdatePasswordHandler($contributorAccountRepository, $validator, $passwordHasher, new NullLogger());
+
+        static::expectException(UserHasNotConsent::class);
+        ($sut)($updatePassword);
+    }
+
+    /** @test */
     public function itThrowsAnExceptionIfTheContributorAccountCannotBeFound(): void
     {
         $passwordHasher = $this->createMock(HashPassword::class);
@@ -69,6 +90,7 @@ final class UpdatePasswordHandlerTest extends TestCase
         $updatePassword = new UpdatePassword(
             'b8b13d0b-496b-4a7c-a574-0d522ba90752',
             'P@ssw0rd*foo',
+            true,
         );
 
         $sut = new UpdatePasswordHandler($contributorAccountRepository, $validator, $passwordHasher, new NullLogger());
@@ -100,6 +122,7 @@ final class UpdatePasswordHandlerTest extends TestCase
         $updatePassword = new UpdatePassword(
             'b8b13d0b-496b-4a7c-a574-0d522ba90752',
             'foo',
+            true,
         );
 
         $violationsSpy = $this->createMock(ConstraintViolationList::class);

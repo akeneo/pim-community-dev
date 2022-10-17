@@ -6,6 +6,7 @@ namespace Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\Contribut
 
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\Exception\InvalidPassword;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\UpdatePassword;
+use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Exception\UserHasNotConsent;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\UpdatePasswordHandler;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Exception\ContributorAccountDoesNotExist;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -30,9 +31,10 @@ final class SetUpPassword
                 new UpdatePassword(
                     $request->get('contributorAccountIdentifier'),
                     $request->get('plainTextPassword'),
+                    (bool) $request->get('consent', false),
                 )
             );
-        } catch (InvalidPassword) {
+        } catch (InvalidPassword | UserHasNotConsent) {
             return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
         } catch (ContributorAccountDoesNotExist) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);

@@ -9,6 +9,7 @@ final class UpdatePassword
     public function __construct(
         public string $contributorAccountIdentifier,
         public string $plainTextPassword,
+        public bool $hasConsent,
     ) {
     }
 }
