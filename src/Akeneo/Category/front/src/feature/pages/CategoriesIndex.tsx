@@ -37,7 +37,7 @@ const CategoriesIndex: FC = () => {
         {isGranted('pim_enrich_product_category_create') && (
           <PageHeader.Actions>
             <Button onClick={openModal} level="primary">
-              {translate('pim_common.create')}
+              {translate('akeneo.category.template.create')}
             </Button>
           </PageHeader.Actions>
         )}

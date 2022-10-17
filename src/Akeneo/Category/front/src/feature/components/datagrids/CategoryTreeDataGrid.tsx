@@ -158,7 +158,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                         onClick={() => onDeleteCategoryTree(tree)}
                         disabled={!tree.hasOwnProperty('productsNumber')}
                       >
-                        {translate('pim_common.delete')}
+                        {translate('akeneo.category.template.delete')}
                       </Button>
                     )}
                   </TableActionCell>
