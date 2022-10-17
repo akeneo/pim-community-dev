@@ -77,7 +77,7 @@ class ProjectRepository extends EntityRepository implements ProjectRepositoryInt
         }
 
         $qb->orWhere($qb->expr()->eq('owner.username', ':username'));
-        $qb->setParameter('username', $options['user']->getUsername());
+        $qb->setParameter('username', $options['user']->getUserIdentifier());
 
         if (null !== $search && '' !== $search) {
             $qb->andWhere('project.label LIKE :search')->setParameter('search', sprintf('%%%s%%', $search));

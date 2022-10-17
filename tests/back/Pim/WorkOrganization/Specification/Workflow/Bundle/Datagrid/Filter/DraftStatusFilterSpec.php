@@ -49,7 +49,7 @@ class DraftStatusFilterSpec extends ObjectBehavior
         FilterDatasourceAdapterInterface $filterDatasource
     ) {
         $userContext->getUser()->willReturn($user);
-        $user->getUsername()->willReturn('mary');
+        $user->getUserIdentifier()->willReturn('mary');
 
         $uuid1 = Uuid::uuid4();
         $uuid2 = Uuid::uuid4();
@@ -75,7 +75,7 @@ class DraftStatusFilterSpec extends ObjectBehavior
         FilterDatasourceAdapterInterface $filterDatasource
     ) {
         $userContext->getUser()->willReturn($user);
-        $user->getUsername()->willReturn('mary');
+        $user->getUserIdentifier()->willReturn('mary');
 
         $uuid1 = Uuid::uuid4();
         $uuid2 = Uuid::uuid4();
@@ -126,7 +126,7 @@ class DraftStatusFilterSpec extends ObjectBehavior
         FilterDatasourceAdapterInterface $filterDatasource
     ) {
         $userContext->getUser()->willReturn($user);
-        $user->getUsername()->willReturn('mary');
+        $user->getUserIdentifier()->willReturn('mary');
 
         $selectProductUuidsByUserAndDraftStatusQuery
             ->execute('mary', [EntityWithValuesDraftInterface::IN_PROGRESS])

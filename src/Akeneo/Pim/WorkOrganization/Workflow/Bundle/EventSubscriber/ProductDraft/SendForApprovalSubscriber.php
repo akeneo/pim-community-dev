@@ -96,7 +96,7 @@ class SendForApprovalSubscriber implements EventSubscriberInterface
             'f' => [
                 'author' => [
                     'value' => [
-                        $author->getUsername(),
+                        $author->getUserIdentifier(),
                     ],
                 ],
                 'identifier'    => [

@@ -266,11 +266,11 @@ class ProductModelDraftProcessorSpec extends ObjectBehavior
         $sourceLabel = 'PIM';
 
         $user->getFullName()->willReturn($fullName);
-        $user->getUsername()->willReturn($username);
+        $user->getUserIdentifier()->willReturn($username);
 
         $tokenStorage->getToken()->willReturn($token);
 
-        $token->getUsername()->willReturn($username);
+        $token->getUserIdentifier()->willReturn($username);
         $token->getUser()->willReturn($user);
 
         $draftSource->getSource()->willReturn($source);

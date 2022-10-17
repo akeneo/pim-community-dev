@@ -73,6 +73,6 @@ class UpdateDraftAuthorSubscriber implements EventSubscriberInterface
         $user = $event->getSubject();
 
         return $event->getArgument('previous_username') !== null
-            && $user->getUsername() !== $event->getArgument('previous_username');
+            && $user->getUserIdentifier() !== $event->getArgument('previous_username');
     }
 }
