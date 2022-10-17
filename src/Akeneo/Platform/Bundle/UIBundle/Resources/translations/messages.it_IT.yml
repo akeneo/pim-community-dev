@@ -109,15 +109,6 @@ pim_enrich:
       categories_view: Consulta le categorie di un modello di prodotto
       history: Visualizza la cronologia del modello di prodotto
       remove: Rimuovi un modello prodotto (compresi figli)
-    category:
-      list: Elenco categorie
-      create: Creare una categoria
-      edit: Modificare una categoria
-      remove: Rimuovere una categoria
-      move: Sposta la categoria
-      children: Visualizza categoria bambini
-      products: Visualizza i prodotti della categoria
-      history: Visualizza lo storico della categoria
     channel:
       index: Elenco canali
       create: Creare un canale

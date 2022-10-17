@@ -25,5 +25,6 @@ class AkeneoIdentifierGeneratorExtension extends Extension
         $loader->load('persistence.yml');
         $loader->load('controllers.yml');
         $loader->load('event_subscribers.yml');
+        $loader->load('validators.yml');
     }
 }

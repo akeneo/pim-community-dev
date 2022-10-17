@@ -231,15 +231,17 @@ const CategoryEditPage: FC = () => {
           >
             {translate('pim_common.properties')}
           </TabBar.Tab>
-          <TabBar.Tab
-            isActive={isCurrent(attributeTabName)}
-            onClick={() => {
-              setActiveTab(attributeTabName);
-              switchTo(attributeTabName);
-            }}
-          >
-            {translate('Attributes')}
-          </TabBar.Tab>
+          {isGranted('pim_enrich_product_category_edit_attributes') && (
+            <TabBar.Tab
+              isActive={isCurrent(attributeTabName)}
+              onClick={() => {
+                setActiveTab(attributeTabName);
+                switchTo(attributeTabName);
+              }}
+            >
+              {translate('akeneo.category.attributes')}
+            </TabBar.Tab>
+          )}
           {category &&
             category.permissions &&
             permissionsAreEnabled &&

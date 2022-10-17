@@ -41,4 +41,9 @@ class InMemoryIdentifierGeneratorRepository implements IdentifierGeneratorReposi
     {
         return IdentifierGeneratorId::fromString(Uuid::uuid4()->toString());
     }
+
+    public function count(): int
+    {
+        return count($this->generators);
+    }
 }

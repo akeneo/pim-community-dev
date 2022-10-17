@@ -26,6 +26,7 @@ $rules = [
             'Akeneo\Catalogs\ServiceAPI\Model',
             'Akeneo\Catalogs\ServiceAPI\Command',
             'Akeneo\Catalogs\ServiceAPI\Query',
+            'Akeneo\Catalogs\ServiceAPI\Exception',
         ]
     )->in('Akeneo\Catalogs\Application'),
 
@@ -59,10 +60,6 @@ $rules = [
             'Akeneo\Tool\Component\Api',
             'Akeneo\Connectivity\Connection\ServiceApi',
             'Akeneo\Tool\Bundle\MeasureBundle\ServiceApi',
-
-            'Akeneo\UserManagement\ServiceApi\User\ListUsersHandlerInterface',
-            'Akeneo\UserManagement\ServiceApi\User\User',
-            'Akeneo\UserManagement\ServiceApi\User\UsersQuery',
 
             /**********************************************************************************************************/
             /* Below are dependencies that we have, but we shouldn't rely on them.

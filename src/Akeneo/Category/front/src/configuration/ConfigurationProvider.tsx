@@ -13,7 +13,10 @@ type Configuration = {
     pim_enrich_product_category_history: boolean;
     pim_enrich_product_category_list: boolean;
     pim_enrich_product_category_remove: boolean;
+    pim_enrich_product_category_edit_attributes: boolean;
     pimee_enrich_category_edit_permissions: boolean;
+    pim_enrich_product_category_template: boolean;
+    pim_enrich_product_category_order_trees: boolean;
   };
 };
 
@@ -29,7 +32,10 @@ type WriteConfiguration = {
     pim_enrich_product_category_history?: boolean;
     pim_enrich_product_category_list?: boolean;
     pim_enrich_product_category_remove?: boolean;
+    pim_enrich_product_category_edit_attributes?: boolean;
     pimee_enrich_category_edit_permissions?: boolean;
+    pim_enrich_product_category_template?: boolean;
+    pim_enrich_product_category_order_trees?: boolean;
   };
 };
 
@@ -54,7 +60,10 @@ const DEFAULT_CONFIGURATION: Configuration = {
     pim_enrich_product_category_history: true,
     pim_enrich_product_category_list: true,
     pim_enrich_product_category_remove: true,
+    pim_enrich_product_category_edit_attributes: true,
     pimee_enrich_category_edit_permissions: true,
+    pim_enrich_product_category_template: true,
+    pim_enrich_product_category_order_trees: true,
   },
 };
 
@@ -76,7 +85,10 @@ const ConfigurationProvider: FC = ({children}) => {
         pim_enrich_product_category_history: true,
         pim_enrich_product_category_list: true,
         pim_enrich_product_category_remove: true,
+        pim_enrich_product_category_edit_attributes: true,
         pimee_enrich_category_edit_permissions: false,
+        pim_enrich_product_category_template: true,
+        pim_enrich_product_category_order_trees: true,
       },
     });
   }, [setConfiguration]);
@@ -94,7 +106,10 @@ const ConfigurationProvider: FC = ({children}) => {
         pim_enrich_product_category_history: true,
         pim_enrich_product_category_list: true,
         pim_enrich_product_category_remove: true,
+        pim_enrich_product_category_edit_attributes: true,
         pimee_enrich_category_edit_permissions: true,
+        pim_enrich_product_category_template: true,
+        pim_enrich_product_category_order_trees: true,
       },
     });
   }, [setConfiguration]);

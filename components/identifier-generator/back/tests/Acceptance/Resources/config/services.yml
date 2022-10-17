@@ -5,6 +5,7 @@ services:
     arguments:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\CreateGeneratorHandler'
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
+      - '@pim_catalog.repository.attribute'
 
   # Persistence
   Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository:

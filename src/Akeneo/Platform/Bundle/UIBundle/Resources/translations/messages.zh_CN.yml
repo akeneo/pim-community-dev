@@ -109,15 +109,6 @@ pim_enrich:
       categories_view: 查阅产品模型的类别
       history: 查看产品模型的历史记录
       remove: 移除产品模型（包括子产品）
-    category:
-      list: 列出类别
-      create: 创建类别
-      edit: 编辑类别
-      remove: 移除类别
-      move: 移动类别
-      children: 查看子类别
-      products: 查看类别的产品
-      history: 查看类别历史记录
     channel:
       index: 列出渠道
       create: 创建渠道

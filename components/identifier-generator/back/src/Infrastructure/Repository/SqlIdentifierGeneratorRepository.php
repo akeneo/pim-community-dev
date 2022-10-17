@@ -95,4 +95,9 @@ SQL;
     {
         return IdentifierGeneratorId::fromString(Uuid::uuid4()->toString());
     }
+
+    public function count(): int
+    {
+        throw new \Exception('Not implemented yet');
+    }
 }

@@ -33,7 +33,7 @@ services:
             - '@category.command.message_bus'
             - '@oro_security.security_facade'
             - '@Akeneo\Category\Application\Converter\ConverterInterface'
-            - '@Akeneo\Category\Application\Filter\CategoryEditACLFilter'
+            - '@Akeneo\Category\Application\Filter\CategoryEditAclFilter'
             - '@Akeneo\Category\Application\Converter\StandardFormatToUserIntentsInterface'
             - '@Akeneo\Category\Application\Filter\CategoryEditUserIntentFilter'
             - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
