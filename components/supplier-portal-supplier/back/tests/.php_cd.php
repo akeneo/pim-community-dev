@@ -132,6 +132,8 @@ $rules = [
             'PHPUnit\Framework',
         ],
     )->in('Akeneo\SupplierPortal\Supplier\Test\Acceptance'),
+    $builder->forbids(['Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Read'])->in('Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write'),
+    $builder->forbids(['Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write'])->in('Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Read'),
 ];
 
 return new Configuration($rules, $finder);
