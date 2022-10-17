@@ -45,7 +45,7 @@ class Cursor extends AbstractCursor implements CursorInterface
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         if (false === next($this->items)) {
             $this->items = $this->getNextItems($this->esQuery);
@@ -56,7 +56,7 @@ class Cursor extends AbstractCursor implements CursorInterface
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->searchAfter = [];
         $this->items = $this->getNextItems($this->esQuery);

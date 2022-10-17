@@ -42,27 +42,27 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
         ca-certificates \
         imagemagick \
         libmagickcore-6.q16-6-extra \
-        php8.1-fpm \
-        php8.1-cli \
-        php8.1-intl \
-        php8.1-opcache \
-        php8.1-memcached \
-        php8.1-mysql \
-        php8.1-zip \
-        php8.1-xml \
-        php8.1-curl \
-        php8.1-mbstring \
-        php8.1-bcmath \
-        php8.1-imagick \
-        php8.1-gd \
-        php8.1-apcu \
-        php8.1-exif \
-        php8.1-grpc \
-        php8.1-protobuf && \
+        php8.0-fpm \
+        php8.0-cli \
+        php8.0-intl \
+        php8.0-opcache \
+        php8.0-memcached \
+        php8.0-mysql \
+        php8.0-zip \
+        php8.0-xml \
+        php8.0-curl \
+        php8.0-mbstring \
+        php8.0-bcmath \
+        php8.0-imagick \
+        php8.0-gd \
+        php8.0-apcu \
+        php8.0-exif \
+        php8.0-grpc \
+        php8.0-protobuf && \
     apt-get install --yes --quiet libpcre2-8-0 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
-    ln -s /usr/sbin/php-fpm8.1 /usr/local/sbin/php-fpm && \
+    ln -s /usr/sbin/php-fpm8.0 /usr/local/sbin/php-fpm && \
     usermod --uid 1000 www-data && groupmod --gid 1000 www-data && \
     mkdir /srv/pim && \
     usermod -d /srv/pim www-data && \
@@ -72,8 +72,8 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
 RUN sed -i '/<!-- <policy domain="module" rights="none" pattern="{PS,PDF,XPS}" \/> -->/c\  <policy domain="module" rights="read|write" pattern="{PS,PDF,XPS}" \/>' /etc/ImageMagick-6/policy.xml
 RUN sed -i '/<policy domain="coder" rights="none" pattern="PDF" \/>/c\  <policy domain="coder" rights="read|write" pattern="PDF" \/>' /etc/ImageMagick-6/policy.xml
 
-COPY grth/docker/php.ini /etc/php/8.1/cli/conf.d/99-akeneo.ini
-COPY grth/docker/php.ini /etc/php/8.1/fpm/conf.d/99-akeneo.ini
+COPY grth/docker/php.ini /etc/php/8.0/cli/conf.d/99-akeneo.ini
+COPY grth/docker/php.ini /etc/php/8.0/fpm/conf.d/99-akeneo.ini
 
 #
 # Image used for development
@@ -101,10 +101,10 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-COPY grth/docker/build/xdebug.ini /etc/php/8.1/cli/conf.d/99-akeneo-xdebug.ini
-COPY grth/docker/build/xdebug.ini /etc/php/8.1/fpm/conf.d/99-akeneo-xdebug.ini
-COPY grth/docker/build/blackfire.ini /etc/php/8.1/cli/conf.d/99-akeneo-blackfire.ini
-COPY grth/docker/build/blackfire.ini /etc/php/8.1/fpm/conf.d/99-akeneo-blackfire.ini
+COPY grth/docker/build/xdebug.ini /etc/php/8.0/cli/conf.d/99-akeneo-xdebug.ini
+COPY grth/docker/build/xdebug.ini /etc/php/8.0/fpm/conf.d/99-akeneo-xdebug.ini
+COPY grth/docker/build/blackfire.ini /etc/php/8.0/cli/conf.d/99-akeneo-blackfire.ini
+COPY grth/docker/build/blackfire.ini /etc/php/8.0/fpm/conf.d/99-akeneo-blackfire.ini
 
 # TODO RAB-1083: remove fixed version when https://github.com/composer/composer/issues/11073 is resolved
 COPY --from=composer:2.4.1 /usr/bin/composer /usr/local/bin/composer

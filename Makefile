@@ -223,7 +223,7 @@ down-pim-saas-like: #Doc: shutdown all docker containers
 
 .PHONY: php-image-dev
 php-image-dev: #Doc: pull docker image for pim-enterprise-dev with the dev tag
-	DOCKER_BUILDKIT=1 docker build --progress=plain --pull --tag akeneo/pim-dev/php:8.1 --target dev .
+	DOCKER_BUILDKIT=1 docker build --progress=plain --pull --tag akeneo/pim-dev/php:8.0 --target dev .
 
 .PHONY: up
 up: #Doc: run docker-compose up
