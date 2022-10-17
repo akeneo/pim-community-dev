@@ -22,6 +22,7 @@ variable "description" {
 variable "runtime" {
   description = "The runtime in which to run the function"
   type        = string
+  default     = "nodejs16"
 }
 
 variable "entry_point" {
