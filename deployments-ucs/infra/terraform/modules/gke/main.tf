@@ -6,6 +6,7 @@ resource "google_project_iam_member" "gke_container_dev" {
 }
 
 #tfsec:ignore:google-gke-no-public-control-plane
+#tfsec:ignore:google-gke-enable-network-policy
 resource "google_container_cluster" "gke" {
   project                  = var.project
   name                     = "${data.google_project.current.project_id}-${var.region}"
@@ -18,7 +19,7 @@ resource "google_container_cluster" "gke" {
   min_master_version       = var.min_master_version
 
   network_policy {
-    enabled = true
+    enabled = false
   }
 
   ip_allocation_policy {
