@@ -426,6 +426,7 @@ akeneo_supplier_portal_contributor_account | access_token | YES | varchar(255) |
 akeneo_supplier_portal_contributor_account | access_token_created_at | YES | datetime |
 akeneo_supplier_portal_contributor_account | created_at | NO | datetime |
 akeneo_supplier_portal_contributor_account | last_logged_at | YES | datetime |
+akeneo_supplier_portal_contributor_account | consent | NO | tinyint |
 akeneo_supplier_portal_product_file_comments_read_by_retailer | id | NO | bigint unsigned | PRI
 akeneo_supplier_portal_product_file_comments_read_by_retailer | product_file_identifier | NO | char(36) | UNI
 akeneo_supplier_portal_product_file_comments_read_by_retailer | last_read_at | NO | datetime |
