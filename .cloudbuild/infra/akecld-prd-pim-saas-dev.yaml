@@ -1,16 +1,16 @@
 steps:
-# - id: 'tf sec'
-#   name: 'aquasec/tfsec'
-#   entrypoint: 'sh'
-#   args:
-#   - '-c'
-#   - |
-#       if [ -d "deployments-ucs/infra/terraform/${_ENV}" ]; then
-#         tfsec deployments-ucs/infra/terraform/${_ENV}/ \
-#             -m MEDIUM
-#       else
-#         echo "No files for deployments-ucs/infra/terraform/${_ENV}. Exiting"
-#       fi
+- id: 'tf sec'
+  name: 'aquasec/tfsec'
+  entrypoint: 'sh'
+  args:
+  - '-c'
+  - |
+      if [ -d "deployments-ucs/infra/terraform/${_ENV}" ]; then
+        tfsec deployments-ucs/infra/terraform/${_ENV}/ \
+            -m MEDIUM
+      else
+        echo "No files for deployments-ucs/infra/terraform/${_ENV}. Exiting"
+      fi
 - id: 'tf plan'
   name: 'hashicorp/terraform:1.1.3'
   env:

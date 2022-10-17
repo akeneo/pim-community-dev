@@ -481,7 +481,7 @@ functions.http('createTenant', (req, res) => {
     // If branchName is an empty string it is the default branch
     const branchName = body.branchName
     const instanceName = body.instanceName;
-    firestoreCollection = `${process.env.REGION}/${branchName}/${process.env.TENANT_CONTEXT_COLLECTION_NAME}`;
+    firestoreCollection = `${process.env.REGION}/pim-`+branchName.toLowerCase()+`/${process.env.TENANT_CONTEXT_COLLECTION_NAME}`;
 
     initializeLogger(branchName, instanceName);
 

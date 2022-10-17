@@ -80,6 +80,7 @@ final class InstallSupplierPortalTables implements EventSubscriberInterface
             `access_token_created_at` DATETIME DEFAULT NULL,
             `created_at` datetime NOT NULL,
             `last_logged_at` datetime DEFAULT NULL,
+            `consent` TINYINT NOT NULL DEFAULT 0,
             PRIMARY KEY (`id`),
             CONSTRAINT `UC_contributor_account_email` UNIQUE (`email`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

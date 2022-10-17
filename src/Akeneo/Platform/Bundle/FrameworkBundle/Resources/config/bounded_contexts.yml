@@ -67,3 +67,4 @@ parameters:
         'Oro\Bundle\TranslationBundle': 'Enrichment'
 
         'Symfony\Bundle\FrameworkBundle\Controller\TemplateController': 'Tool'
+        'Symfony\Component\Messenger\Command': 'Tool'

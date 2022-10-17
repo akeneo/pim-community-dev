@@ -8,6 +8,14 @@ resource "google_dns_managed_zone" "public_zone" {
   dns_name    = "${var.zone_name}."
   description = "Managed by Terraform and kubernetes.io/external-dns"
   visibility  = "public"
+
+  cloud_logging_config {
+    enable_logging = true
+  }
+
+  dnssec_config {
+     state = "on"
+  }
 }
 
 resource "random_string" "random" {

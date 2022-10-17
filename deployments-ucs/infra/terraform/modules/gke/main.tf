@@ -5,6 +5,8 @@ resource "google_project_iam_member" "gke_container_dev" {
   member   = each.value
 }
 
+#tfsec:ignore:google-gke-no-public-control-plane
+#tfsec:ignore:google-gke-enable-network-policy
 resource "google_container_cluster" "gke" {
   project                  = var.project
   name                     = "${data.google_project.current.project_id}-${var.region}"
@@ -15,6 +17,10 @@ resource "google_container_cluster" "gke" {
   initial_node_count       = 1
   remove_default_node_pool = true
   min_master_version       = var.min_master_version
+
+  network_policy {
+    enabled = false
+  }
 
   ip_allocation_policy {
     cluster_secondary_range_name  = "pods"
@@ -36,6 +42,10 @@ resource "google_container_cluster" "gke" {
     cidr_blocks {
       cidr_block = "0.0.0.0/0"
     }
+  }
+
+  pod_security_policy_config {
+    enabled = "true"
   }
 
   workload_identity_config {

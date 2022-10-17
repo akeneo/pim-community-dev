@@ -11,6 +11,11 @@ resource "google_dns_managed_zone" "pim_zone" {
   labels = {
     managed_by = "terraform"
   }
+
+  cloud_logging_config {
+    enable_logging = true
+  }
+
   dnssec_config {
     state = "on"
   }
