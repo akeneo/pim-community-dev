@@ -23,9 +23,9 @@ describe('CreateGeneratorModal', () => {
     render(<CreateGeneratorModal onClose={jest.fn()} onSave={onSave} />);
     await waitFor(() => screen.getByText('pim_identifier_generator.create.form.title'));
 
-    const confirmButton = screen.getByText('pim_identifier_generator.create.form.confirm');
-    const labelInput = screen.getByRole('textbox', {name: 'pim_identifier_generator.create.form.label'});
-    const codeInput = screen.getByRole('textbox', {name: 'pim_identifier_generator.create.form.code'});
+    const confirmButton = screen.getByText('pim_common.confirm');
+    const labelInput = screen.getByRole('textbox', {name: 'pim_common.label'});
+    const codeInput = screen.getByRole('textbox', {name: 'pim_common.code pim_common.required_label'});
 
     // confirm button should be disable
     expect(confirmButton).toBeDisabled();
@@ -53,8 +53,8 @@ describe('CreateGeneratorModal', () => {
     render(<CreateGeneratorModal onClose={jest.fn()} onSave={onSave} />);
     await waitFor(() => screen.getByText('pim_identifier_generator.create.form.title'));
 
-    const confirmButton = screen.getByText('pim_identifier_generator.create.form.confirm');
-    const codeInput = screen.getByRole('textbox', {name: 'pim_identifier_generator.create.form.code'});
+    const confirmButton = screen.getByText('pim_common.confirm');
+    const codeInput = screen.getByRole('textbox', {name: 'pim_common.code pim_common.required_label'});
 
     // confirm button should be disable
     expect(confirmButton).toBeDisabled();

@@ -11,7 +11,7 @@ type GeneralPropertiesProps = {
 };
 
 const GeneralProperties: React.FC<GeneralPropertiesProps> = ({generator, onGeneratorChange}) => {
-  const defaultIdentifierCode = 'sku';
+  const defaultIdentifierCode = 'sku'; // TODO
 
   const onLabelChange = useCallback((labelCollection: LabelCollection) => {
     generator.labels = labelCollection;
