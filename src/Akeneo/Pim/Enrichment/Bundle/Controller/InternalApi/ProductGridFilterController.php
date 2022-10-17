@@ -2,7 +2,6 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
-use Symfony\Component\Translation\TranslatorBagInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -12,6 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Controller to list the filters in the product grid.
@@ -27,7 +27,7 @@ class ProductGridFilterController
     protected SearchableRepositoryInterface $attributeSearchRepository;
     private NormalizerInterface $lightAttributeNormalizer;
     private UserContext $userContext;
-    private TranslatorBagInterface $translator;
+    private TranslatorInterface $translator;
 
     public function __construct(
         Manager $datagridManager,
@@ -35,7 +35,7 @@ class ProductGridFilterController
         SearchableRepositoryInterface $attributeSearchRepository,
         NormalizerInterface $lightAttributeNormalizer,
         UserContext $userContext,
-        TranslatorBagInterface $translator
+        TranslatorInterface $translator
     ) {
         $this->datagridManager = $datagridManager;
         $this->tokenStorage = $tokenStorage;
