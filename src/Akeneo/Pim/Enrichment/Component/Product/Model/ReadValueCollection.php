@@ -59,7 +59,7 @@ final class ReadValueCollection implements \Countable, \IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function key()
+    public function key(): mixed
     {
         return key($this->values);
     }
@@ -104,7 +104,7 @@ final class ReadValueCollection implements \Countable, \IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function count()
+    public function count(): int
     {
         return count($this->values);
     }
@@ -120,7 +120,7 @@ final class ReadValueCollection implements \Countable, \IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->values);
     }

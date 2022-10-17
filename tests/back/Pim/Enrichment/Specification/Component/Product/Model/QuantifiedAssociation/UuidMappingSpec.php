@@ -40,7 +40,7 @@ class UuidMappingSpec extends ObjectBehavior
             'id' => 42
         ]]]);
 
-        $this->getIdentifier(Uuid::fromString($uuid))->shouldReturn($identifier);
+        $this->getIdentifier($uuid)->shouldReturn($identifier);
         $this->getUuidFromIdentifier($identifier)->equals($uuid)->shouldBe(true);
         $this->hasIdentifier($uuid)->shouldReturn(true);
         $this->getUuidFromId(42)->shouldReturn($uuidAsStr);

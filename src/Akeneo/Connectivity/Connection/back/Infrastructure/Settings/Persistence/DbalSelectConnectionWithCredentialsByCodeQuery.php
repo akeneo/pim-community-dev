@@ -53,7 +53,7 @@ SQL;
             $selectSQL,
             [
                 'code' => $code,
-                'default_group' => User::GROUP_DEFAULT
+                'default_group' => User::GROUP_DEFAULT,
             ]
         )->fetchAllAssociative();
 
@@ -74,7 +74,7 @@ SQL;
             $row['label'],
             $row['flow_type'],
             $row['image'],
-            $row['client_id'] . '_' . $row['random_id'],
+            \sprintf('%s_%s', $row['client_id'], $row['random_id']),
             $row['secret'],
             $row['username'],
             $row['role_id'],

@@ -18,6 +18,9 @@ doctrine:
                 server_version: '8.0'
                 mapping_types:
                     json: string
+                options:
+                    # active PDO::ATTR_STRINGIFY_FETCHES witch is false by default in php-8.1
+                    17: true
         types:
             datetime: Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\DBAL\Types\UTCDateTimeType
             datetime_immutable: Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\DBAL\Types\UTCDateTimeImmutableType

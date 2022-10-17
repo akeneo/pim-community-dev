@@ -175,7 +175,7 @@ jobs:
                             command: |
                                 ls php-pim-image.tar && docker load -i php-pim-image.tar
                                 ls php-pim-image.tar || make php-image-dev
-                                ls php-pim-image.tar || docker save -o php-pim-image.tar akeneo/pim-dev/php:8.1
+                                ls php-pim-image.tar || docker save -o php-pim-image.tar akeneo/pim-dev/php:8.0
                       - save_cache:
                             name: Save PHP docker image cache
                             key: php-docker-image-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/php-docker-image.hash" }}
