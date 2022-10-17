@@ -14,10 +14,10 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @covers \Akeneo\Catalogs\Infrastructure\Controller\Public\UpdateCatalogProductMappingSchemaAction
- * @covers \Akeneo\Catalogs\Application\Handler\UpdateCatalogProductMappingSchemaHandler
+ * @covers \Akeneo\Catalogs\Infrastructure\Controller\Public\UpdateProductMappingSchemaAction
+ * @covers \Akeneo\Catalogs\Application\Handler\UpdateProductMappingSchemaHandler
  */
-class UpdateCatalogProductMappingSchemaActionTest extends IntegrationTestCase
+class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
 {
     private ?KernelBrowser $client = null;
     private ?CommandBus $commandBus;

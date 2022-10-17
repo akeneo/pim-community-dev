@@ -7,14 +7,14 @@ namespace Akeneo\Catalogs\Application\Handler;
 use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Storage\CatalogsMappingStorageInterface;
-use Akeneo\Catalogs\ServiceAPI\Command\UpdateCatalogProductMappingSchemaCommand;
+use Akeneo\Catalogs\ServiceAPI\Command\UpdateProductMappingSchemaCommand;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogNotFoundException as ServiceApiCatalogNotFoundException;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class UpdateCatalogProductMappingSchemaHandler
+final class UpdateProductMappingSchemaHandler
 {
     public function __construct(
         private GetCatalogQueryInterface $getCatalogQuery,
@@ -22,7 +22,7 @@ final class UpdateCatalogProductMappingSchemaHandler
     ) {
     }
 
-    public function __invoke(UpdateCatalogProductMappingSchemaCommand $command): void
+    public function __invoke(UpdateProductMappingSchemaCommand $command): void
     {
         try {
             $catalog = $this->getCatalogQuery->execute($command->getCatalogId());

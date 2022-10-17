@@ -9,7 +9,7 @@ use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
-use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogProductMappingSchemaQuery;
+use Akeneo\Catalogs\ServiceAPI\Query\GetProductMappingSchemaQuery;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
 use Akeneo\Connectivity\Connection\ServiceApi\Model\ConnectedAppWithValidToken;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
@@ -525,7 +525,7 @@ class ApiContext implements Context
     public function theCatalogProductMappingSchemaShouldBeUpdatedInThePim(): void
     {
         $productMappingSchema = \json_encode(
-            $this->queryBus->execute(new GetCatalogProductMappingSchemaQuery('db1079b6-f397-4a6a-bae4-8658e64ad47c')),
+            $this->queryBus->execute(new GetProductMappingSchemaQuery('db1079b6-f397-4a6a-bae4-8658e64ad47c')),
             JSON_THROW_ON_ERROR
         );
 

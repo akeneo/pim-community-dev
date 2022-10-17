@@ -6,11 +6,11 @@ namespace Akeneo\Catalogs\Infrastructure\Controller\Public;
 
 use Akeneo\Catalogs\Infrastructure\Security\DenyAccessUnlessGrantedTrait;
 use Akeneo\Catalogs\Infrastructure\Security\GetCurrentUsernameTrait;
-use Akeneo\Catalogs\ServiceAPI\Command\UpdateCatalogProductMappingSchemaCommand;
+use Akeneo\Catalogs\ServiceAPI\Command\UpdateProductMappingSchemaCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
-use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogProductMappingSchemaQuery;
+use Akeneo\Catalogs\ServiceAPI\Query\GetProductMappingSchemaQuery;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
@@ -26,7 +26,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class UpdateCatalogProductMappingSchemaAction
+final class UpdateProductMappingSchemaAction
 {
     use DenyAccessUnlessGrantedTrait;
     use GetCurrentUsernameTrait;
@@ -55,12 +55,12 @@ final class UpdateCatalogProductMappingSchemaAction
         }
 
         try {
-            $this->commandBus->execute(new UpdateCatalogProductMappingSchemaCommand($catalogId, $productMappingSchemaPayload));
+            $this->commandBus->execute(new UpdateProductMappingSchemaCommand($catalogId, $productMappingSchemaPayload));
         } catch (ValidationFailedException $e) {
             throw new ViolationHttpException($e->getViolations());
         }
 
-        $productMappingSchema = $this->queryBus->execute(new GetCatalogProductMappingSchemaQuery($catalogId));
+        $productMappingSchema = $this->queryBus->execute(new GetProductMappingSchemaQuery($catalogId));
 
         return new JsonResponse($productMappingSchema, Response::HTTP_OK);
     }

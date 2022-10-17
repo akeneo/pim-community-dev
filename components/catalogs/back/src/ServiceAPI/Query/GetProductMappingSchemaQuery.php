@@ -2,36 +2,28 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\ServiceAPI\Command;
+namespace Akeneo\Catalogs\ServiceAPI\Query;
 
-use Akeneo\Catalogs\Infrastructure\Validation as CatalogAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
+ * @implements QueryInterface<object>
  * @codeCoverageIgnore
  */
-final class UpdateCatalogProductMappingSchemaCommand implements CommandInterface
+final class GetProductMappingSchemaQuery implements QueryInterface
 {
     public function __construct(
         #[Assert\NotBlank]
         #[Assert\Uuid]
         private string $catalogId,
-        #[Assert\NotBlank]
-        #[CatalogAssert\ProductSchema]
-        private object $productMappingSchema,
     ) {
     }
 
     public function getCatalogId(): string
     {
         return $this->catalogId;
-    }
-
-    public function getProductMappingSchema(): object
-    {
-        return $this->productMappingSchema;
     }
 }
