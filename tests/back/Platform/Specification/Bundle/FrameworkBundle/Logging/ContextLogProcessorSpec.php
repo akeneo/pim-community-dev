@@ -36,18 +36,27 @@ class ContextLogProcessorSpec extends ObjectBehavior
         $this->shouldHaveType(ContextLogProcessor::class);
     }
 
-    private function initIncomingRecord()
+    private function initIncomingRecord(): array
     {
         return [self::REF_KEY => self::REF_VALUE];
     }
 
-    private function initIncomingContextfullRecord()
+    private function initIncomingContextfullRecord(): array
     {
-        return [self::REF_KEY => self::REF_VALUE, self::CONTEXT => [self::REF_KEY_2 => self::REF_VALUE_2]];
+        return [
+            self::REF_KEY => self::REF_VALUE,
+            self::CONTEXT => [
+                self::REF_KEY_2 => self::REF_VALUE_2
+            ]
+        ];
     }
 
-    function it_will_enrich_request_with_path_info_and_requestid(RequestStack $requestStack, Request $request, BoundedContextResolver $boundedContextResolver, HeaderBag $headerBag)
-    {
+    function it_will_enrich_request_with_path_info_and_requestid(
+        RequestStack $requestStack,
+        Request $request,
+        BoundedContextResolver $boundedContextResolver,
+        HeaderBag $headerBag
+    ) {
         $requestStack->getMainRequest()->willReturn($request);
         $request->headers = $headerBag;
         $headerBag->get('X-Datadog-Trace-Id')->willReturn(self::TRACE_ID_VALUE);
@@ -57,43 +66,84 @@ class ContextLogProcessorSpec extends ObjectBehavior
         //checks
         $returnedMock->shouldHaveKeyWithValue(self::REF_KEY, self::REF_VALUE); //unchanged existing record
 
-        $returnedMock['context']->shouldHaveKeyWithValue(self::REF_KEY_2, self::REF_VALUE_2); //unchanged existing context
+        $returnedMock['context']->shouldHaveKeyWithValue(
+            self::REF_KEY_2,
+            self::REF_VALUE_2
+        ); //unchanged existing context
         $returnedMock['context']->shouldHaveKeyWithValue('path_info', self::TEST_SCHEMA . self::PATH_INFO);
         $returnedMock['context']->shouldHaveKeyWithValue('akeneo_context', self::BOUNDED_CONTEXT);
         $returnedMock->shouldHaveKeyWithValue('trace_id',self::TRACE_ID_VALUE);
 
     }
 
-    function it_will_enrich_request_with_path_info_and_generated_requestid(RequestStack $requestStack, Request $request, BoundedContextResolver $boundedContextResolver, HeaderBag $headerBag)
-    {
+    function it_will_enrich_request_with_path_info_and_generated_requestid(
+        RequestStack $requestStack,
+        Request $request,
+        BoundedContextResolver $boundedContextResolver,
+        HeaderBag $headerBag
+    ) {
         $requestStack->getMainRequest()->willReturn($request);
         $request->headers = $headerBag;
 
         $returnedMock = $this->__invoke($this->initIncomingContextfullRecord());
 
         //checks
-        $returnedMock->shouldHaveKeyWithValue(self::REF_KEY, self::REF_VALUE); //unchanged existing record
+        $returnedMock->shouldHaveKeyWithValue(
+            self::REF_KEY,
+            self::REF_VALUE
+        ); //unchanged existing record
 
-        $returnedMock['context']->shouldHaveKeyWithValue(self::REF_KEY_2, self::REF_VALUE_2); //unchanged existing context
-        $returnedMock['context']->shouldHaveKeyWithValue('path_info', self::TEST_SCHEMA . self::PATH_INFO);
-        $returnedMock['context']->shouldHaveKeyWithValue('akeneo_context', self::BOUNDED_CONTEXT);
-        $returnedMock['trace_id']->shouldMatch('/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/'); //UUID v4 pattern matching https://stackoverflow.com/a/6223251
+        $returnedMock['context']->shouldHaveKeyWithValue(
+            self::REF_KEY_2,
+            self::REF_VALUE_2
+        ); //unchanged existing context
+        $returnedMock['context']->shouldHaveKeyWithValue(
+            'path_info',
+            self::TEST_SCHEMA . self::PATH_INFO
+        );
+        $returnedMock['context']->shouldHaveKeyWithValue(
+            'akeneo_context',
+            self::BOUNDED_CONTEXT
+        );
+        $returnedMock['trace_id']->shouldMatch(
+            '/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/'
+        ); //UUID v4 pattern matching https://stackoverflow.com/a/6223251
 
     }
 
-    function it_can_initialize_command_with_known_context(Command $cmd, BoundedContextResolver $boundedContextResolver) {
+    function it_can_initialize_command_with_known_context(
+        Command $cmd,
+        BoundedContextResolver $boundedContextResolver
+    ) {
         $cmd->getName()->willReturn(self::CMD_NAME);
         $boundedContextResolver->fromCommand($cmd)->willReturn(self::BOUNDED_CONTEXT);
         $this->initCommandContext($cmd);
         $returnedMock = $this->__invoke($this->initIncomingContextfullRecord());
-        $returnedMock->shouldHaveKeyWithValue(self::REF_KEY, self::REF_VALUE); //unchanged existing record
-        $returnedMock['context']->shouldHaveKeyWithValue(self::REF_KEY_2, self::REF_VALUE_2); //unchanged existing context
-        $returnedMock['context']->shouldHaveKeyWithValue('cmd_name', self::CMD_NAME);
-        $returnedMock['context']->shouldHaveKeyWithValue('akeneo_context', self::BOUNDED_CONTEXT);
-        $returnedMock['trace_id']->shouldMatch('/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/'); //UUID v4 pattern matching https://stackoverflow.com/a/6223251
+        $returnedMock->shouldHaveKeyWithValue(
+            self::REF_KEY,
+            self::REF_VALUE
+        ); //unchanged existing record
+        $returnedMock['context']->shouldHaveKeyWithValue(
+            self::REF_KEY_2,
+            self::REF_VALUE_2
+        ); //unchanged existing context
+        $returnedMock['context']->shouldHaveKeyWithValue(
+            'cmd_name',
+            self::CMD_NAME
+        );
+        $returnedMock['context']->shouldHaveKeyWithValue(
+            'akeneo_context',
+            self::BOUNDED_CONTEXT
+        );
+        $returnedMock['trace_id']->shouldMatch(
+            '/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/'
+        ); //UUID v4 pattern matching https://stackoverflow.com/a/6223251
     }
 
-    function it_can_initialize_command_with_unknown_context(Command $cmd, BoundedContextResolver $boundedContextResolver) {
+    function it_can_initialize_command_with_unknown_context(
+        Command $cmd,
+        BoundedContextResolver $boundedContextResolver
+    ) {
         $cmd->getName()->willReturn(self::CMD_NAME);
         $boundedContextResolver->fromCommand($cmd)->willReturn(null);
         $this->initCommandContext($cmd);
