@@ -1,3 +1,9 @@
+resource "google_service_account" "argocd" {
+  project      = var.project_id
+  account_id   = "argocd"
+  display_name = "ArgoCD service account"
+}
+
 resource "google_project_iam_custom_role" "argocd_role" {
   project     = var.project_id
   role_id     = "argocd.role"
@@ -11,12 +17,6 @@ resource "google_project_iam_custom_role" "argocd_role" {
     "storage.objects.get",
     "storage.objects.list",
   ]
-}
-
-resource "google_service_account" "argocd" {
-  project      = var.project_id
-  account_id   = "argocd"
-  display_name = "ArgoCD service account"
 }
 
 resource "google_project_iam_binding" "argocd_binding" {

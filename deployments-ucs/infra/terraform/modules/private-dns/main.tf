@@ -18,4 +18,11 @@ resource "google_dns_managed_zone" "private_zone" {
     }
   }
 
+  cloud_logging_config {
+    enable_logging = true
+  }
+
+  dnssec_config {
+     state = "on"
+  }
 }

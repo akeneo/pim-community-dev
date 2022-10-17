@@ -1,3 +1,9 @@
+resource "google_service_account" "cluster_bootstrap" {
+  project      = var.project_id
+  account_id   = "cluster-bootstrap"
+  display_name = "Cluster bootstrap service account"
+}
+
 resource "google_project_iam_custom_role" "helm_admin_role" {
   project     = var.project_id
   role_id     = "pim.saas.clusteradmin.role"
@@ -38,15 +44,28 @@ resource "google_project_iam_custom_role" "helm_admin_role" {
   ]
 }
 
-resource "google_service_account" "cluster_bootstrap" {
-  project      = var.project_id
-  account_id   = "cluster-bootstrap"
-  display_name = "Cluster bootstrap service account"
+resource "google_project_iam_custom_role" "resource_manager_project_reader_role" {
+  project     = var.project_id
+  role_id     = "resource_project_reader.role"
+  title       = "Resource manager project reader"
+  description = "Role for managing resource project reader"
+  permissions = [
+    "resourcemanager.projects.get",
+  ]
 }
 
 resource "google_project_iam_binding" "helm_admin_binding" {
   project = var.project_id
   role    = google_project_iam_custom_role.helm_admin_role.name
+
+  members = [
+    "serviceAccount:${google_service_account.cluster_bootstrap.email}",
+  ]
+}
+
+resource "google_project_iam_binding" "resource_manager_project_reader_binding" {
+  project = var.project_id
+  role    = google_project_iam_custom_role.resource_manager_project_reader_role.name
 
   members = [
     "serviceAccount:${google_service_account.cluster_bootstrap.email}",
@@ -67,10 +86,4 @@ resource "google_service_account_iam_binding" "cluster_bootstrap_sa_cloudbuild_b
     "serviceAccount:service-${data.google_project.current.number}@gcp-sa-cloudbuild.iam.gserviceaccount.com",
     "serviceAccount:main-service-account@akecld-prd-pim-saas-shared.iam.gserviceaccount.com"
   ]
-}
-
-resource "google_project_iam_member" "cluster_bootstrap_sa_cloudbuild_admin_binding" {
-  project = var.project_id
-  role    = "roles/iam.serviceAccountUser"
-  member  = "serviceAccount:${google_service_account.cluster_bootstrap.email}"
 }

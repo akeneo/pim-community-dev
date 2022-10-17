@@ -1,3 +1,9 @@
+resource "google_service_account" "configconnector" {
+  project      = var.project_id
+  account_id   = "config-connector"
+  display_name = "Config Connector service account"
+}
+
 resource "google_project_iam_custom_role" "configconnector_role" {
   project     = var.project_id
   role_id     = "configconnector.role"
@@ -76,12 +82,6 @@ resource "google_project_iam_custom_role" "configconnector_role" {
     "storage.objects.create",
     "storage.objects.delete"
   ]
-}
-
-resource "google_service_account" "configconnector" {
-  project      = var.project_id
-  account_id   = "config-connector"
-  display_name = "Config Connector service account"
 }
 
 resource "google_project_iam_binding" "configconnector_binding" {

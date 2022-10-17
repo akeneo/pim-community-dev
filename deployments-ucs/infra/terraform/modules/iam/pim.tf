@@ -1,3 +1,9 @@
+resource "google_service_account" "pim_sa" {
+  project      = var.project_id
+  account_id   = "pim-saas-service"
+  display_name = "PIM service account"
+}
+
 resource "google_project_iam_custom_role" "pim_role" {
   project     = var.project_id
   role_id     = "pim.role"
@@ -16,12 +22,6 @@ resource "google_project_iam_custom_role" "pim_role" {
   ]
 }
 
-resource "google_service_account" "pim_sa" {
-  project      = var.project_id
-  account_id   = "pim-saas-service"
-  display_name = "PIM service account"
-}
-
 resource "google_project_iam_binding" "pim_sa_binding" {
   project = var.project_id
   role    = google_project_iam_custom_role.pim_role.name
@@ -38,6 +38,7 @@ resource "google_project_iam_member" "pim_sa_firestore" {
   member   = "serviceAccount:${google_service_account.pim_sa.email}"
 }
 
+# Service account for cloud function
 resource "google_service_account" "pim_cloud_function_sa" {
   project      = var.project_id
   account_id   = "pim-cloud-function"
