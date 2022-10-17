@@ -65,6 +65,12 @@ const AssetLoader = ({assetFamilyIdentifier, assetCode, children}: AssetLoaderPr
         const assetResult = await assetFetcher.fetch(assetFamilyIdentifier, assetCode);
         dispatch(assetEditionReceived(assetResult.asset));
         dispatch(assetFamilyPermissionChanged(assetResult.permission));
+        dispatch(await updateChannels(fetcherRegistry.getFetcher('channel')));
+        dispatch(updateActivatedLocales(fetcherRegistry.getFetcher('locale')) as any);
+        dispatch(defaultCatalogLocaleChanged(userContext.get('catalogLocale')));
+        dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
+        dispatch(catalogChannelChanged(userContext.get('catalogScope')) as any);
+        dispatch(uiLocaleChanged(userContext.get('uiLocale')));
         assetIsFetched();
       } catch (error) {
         setError({
@@ -96,12 +102,7 @@ class AssetEditController extends BaseController {
     $(window).on('beforeunload', this.beforeUnload);
 
     this.store = createStore(true, {router, datagridState, translate, notify, userContext})(assetReducer);
-    this.store.dispatch(updateChannels(fetcherRegistry.getFetcher('channel')) as any);
-    this.store.dispatch(defaultCatalogLocaleChanged(userContext.get('catalogLocale')));
-    this.store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
-    this.store.dispatch(catalogChannelChanged(userContext.get('catalogScope')) as any);
-    this.store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
-    this.store.dispatch(updateActivatedLocales(fetcherRegistry.getFetcher('locale')) as any);
+
     document.addEventListener('keydown', shortcutDispatcher(this.store));
 
     fetcherRegistry

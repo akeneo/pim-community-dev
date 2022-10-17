@@ -4,6 +4,10 @@
   "description": "This document describes the details of the request body for tenant creation",
   "type": "object",
   "properties": {
+    "branchName": {
+      "description": "The branch name",
+      "type": "string"
+    },
     "instanceName": {
       "description": "The tenant name",
       "type": "string"
@@ -57,6 +61,7 @@
     }
   },
   "required": [
+    "branchName",
     "instanceName",
     "pim"
   ]

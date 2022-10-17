@@ -828,10 +828,22 @@ jobs:
                   git clone -b ${CIRCLE_BRANCH} --depth 1 git@github.com:akeneo/pim-enterprise-dev.git
                   git clone -b ${CIRCLE_BRANCH} git@github.com:akeneo/pim-saas-k8s-artifacts.git && cd pim-saas-k8s-artifacts || { git clone git@github.com:akeneo/pim-saas-k8s-artifacts.git && cd pim-saas-k8s-artifacts && git checkout -b ${CIRCLE_BRANCH}; }
 
+                  # argocd
+                  rm -rf /tmp/pim-saas-k8s-artifacts/argocd
+                  cp -r /tmp/pim-enterprise-dev/deployments-ucs/argocd /tmp/pim-saas-k8s-artifacts/argocd
+
+                  # argocd-apps
+                  rm -rf /tmp/pim-saas-k8s-artifacts/argocd-apps
+                  yq w -i /tmp/pim-enterprise-dev/deployments-ucs/argocd-apps/values.yaml 'applications.*.source.targetRevision' "${CIRCLE_BRANCH}"
+                  cp -r /tmp/pim-enterprise-dev/deployments-ucs/argocd-apps /tmp/pim-saas-k8s-artifacts/argocd-apps
+
+                  # infra
+                  rm -rf /tmp/pim-saas-k8s-artifacts/infra
+                  mkdir -p /tmp/pim-saas-k8s-artifacts/infra
+                  cp -r /tmp/pim-enterprise-dev/deployments-ucs/infra/k8s /tmp/pim-saas-k8s-artifacts/infra/k8s
+
                   # k8s
                   rm -rf /tmp/pim-saas-k8s-artifacts/k8s
-                  yq w -i /tmp/pim-enterprise-dev/deployments-ucs/k8s/argocd-apps/values.yaml 'applications.*.source.targetRevision' "${CIRCLE_BRANCH}"
-                  cp -r /tmp/pim-enterprise-dev/deployments-ucs/k8s /tmp/pim-saas-k8s-artifacts/k8s
 
                   # pim-saas-services
                   rm -rf /tmp/pim-saas-k8s-artifacts/pim-saas-service
@@ -848,6 +860,6 @@ jobs:
                   rm -rf /tmp/pim-saas-k8s-artifacts/timmy
                   cp -r /tmp/pim-enterprise-dev/deployments-ucs/timmy /tmp/pim-saas-k8s-artifacts/timmy
 
-                  git add k8s pim-saas-service tenant timmy
+                  git add -A
                   git commit -m "Update with release ${RELEASE_NAME}"
                   git push --set-upstream origin ${CIRCLE_BRANCH}

@@ -235,14 +235,14 @@ deploy_tenant_helm:
 
 .PHONY: deploy_tenant_go
 deploy_tenant_go:
-	cd $(DEPLOYMENT_DIR)/timmy && go run timmy-create.go $(PFID) $(INSTANCE_NAME) $(MYSQL_USER_PASSWORD) $(MAILGUN_PASSWORD) $(PIM_SECRET)
+	cd $(DEPLOYMENT_DIR)/timmy && go run timmy-create.go $(PFID) $(INSTANCE_NAME) $(MYSQL_USER_PASSWORD) $(MAILGUN_PASSWORD) $(PIM_SECRET) $(FIRESTORE_COLLECTION)
 
 ## Cleanup tenants
 .PHONY: delete_tenant
 delete_tenant:
 	helm3 delete $(PFID) --namespace $(PFID)
 	kubectl delete ns $(PFID)
-	cd $(DEPLOYMENT_DIR)/timmy && go run timmy-remove.go $(PFID)
+	cd $(DEPLOYMENT_DIR)/timmy && go run timmy-remove.go $(PFID) $(FIRESTORE_COLLECTION)
 
 ###################
 ### infra				###

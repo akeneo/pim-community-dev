@@ -14,6 +14,7 @@ data:
   PAPO_PROJECT_CODE_HASHED: {{ .Values.global.extraLabels.papo_project_code_hashed}}
   GOOGLE_CLOUD_PROJECT: {{ .Values.common.gcpProjectID | quote }}
   FIRESTORE_PROJECT_ID: {{ .Values.common.gcpFireStoreProjectID | quote }}
+  APP_TENANT_CONTEXT_COLLECTION_NAME: {{ .Values.common.tenantContext | quote }}
   GOOGLE_LOCATION: {{ .Values.common.googleZone | quote }}
   K8S_CLUSTER_NAME: {{ .Values.common.googleZone | quote }}
   LC_ALL: C.UTF-8

@@ -91,6 +91,9 @@ spec:
               subPath: key.json
               readOnly: true
             {{- end }}
+            {{- if .Values.pim.tenantContextEncryption.enabled | default true }}
+            - {{ include "pim.tenantContextEncryption.encryptionKey.volumeMount" . | nindent 15 }}
+            {{- end }}
           envFrom: [ configMapRef: { name: pim-env-configmap } ]
           env:
             - { name: GOOGLE_NAMESPACE, valueFrom: { fieldRef: { fieldPath: metadata.namespace } } }
@@ -179,4 +182,7 @@ spec:
             items:
             - key: akobOnboarderKey
               path: key.json
+        {{- end }}
+        {{- if .Values.pim.tenantContextEncryption.enabled | default true }}
+        - {{ include "pim.tenantContextEncryption.encryptionKey.volume" . | nindent 11 }}
         {{- end }}

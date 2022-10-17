@@ -15,10 +15,10 @@ const RetailerApp = () => {
                 <Route path="/supplier">
                     <SupplierIndex />
                 </Route>
-                <Route path="/product-file-dropping/:productFileIdentifier">
+                <Route path="/product-file/:productFileIdentifier">
                     <ShowProductFile />
                 </Route>
-                <Route path="/product-file-dropping">
+                <Route path="/product-file">
                     <ListProductFiles />
                 </Route>
             </Switch>

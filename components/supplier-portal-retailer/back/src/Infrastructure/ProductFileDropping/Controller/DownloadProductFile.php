@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller;
 
-use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProductFile as DownloadProductFileCommand;
-use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProductFileHandler;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\ProductFileDoesNotExist;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\ProductFileIsNotDownloadable;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\DownloadProductFile as DownloadProductFileCommand;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\DownloadProductFileHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Event\ProductFileDownloaded;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
 use Akeneo\UserManagement\Component\Model\User;
@@ -25,7 +25,7 @@ final class DownloadProductFile
     ) {
     }
 
-    public function __invoke(string $identifier): Response
+    public function __invoke(string $productFileIdentifier): Response
     {
         /** @var ?User $user */
         $user = $this->tokenStorage->getToken()?->getUser();
@@ -35,14 +35,14 @@ final class DownloadProductFile
 
         try {
             $productFileNameAndResourceFile = ($this->downloadProductFileHandler)(
-                new DownloadProductFileCommand($identifier)
+                new DownloadProductFileCommand($productFileIdentifier)
             );
         } catch (ProductFileDoesNotExist | ProductFileIsNotDownloadable) {
             return new Response(null, Response::HTTP_NOT_FOUND);
         }
 
         $this->eventDispatcher->dispatch(new ProductFileDownloaded(
-            $identifier,
+            $productFileIdentifier,
             $user->getId(),
         ));
 

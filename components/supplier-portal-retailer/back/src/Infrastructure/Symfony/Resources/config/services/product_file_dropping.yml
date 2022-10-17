@@ -3,7 +3,7 @@ services:
     Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\DownloadProductFile:
         public: true
         arguments:
-            - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProductFileHandler'
+            - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\DownloadProductFileHandler'
             - '@event_dispatcher'
             - '@security.token_storage'
 
@@ -22,7 +22,7 @@ services:
     Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\CommentProductFile:
         public: true
         arguments:
-            - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CommentProductFileHandler'
+            - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFileHandler'
 
     Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\GetProductFile:
         public: true
@@ -61,7 +61,7 @@ services:
             - '@pim_user.repository.user'
 
     # Command/Handlers
-    Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CreateProductFileHandler:
+    Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CreateProductFileHandler:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail'
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'
@@ -70,19 +70,23 @@ services:
             - '@event_dispatcher'
             - '@monolog.logger.supplier_portal'
 
-    Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CommentProductFileHandler:
+    Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFileHandlerForSupplier:
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'
+
+    Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFileHandler:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'
             - '@validator'
 
     # Query/Handlers
-    Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProductFileHandler:
+    Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\DownloadProductFileHandler:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileName'
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DownloadStoredProductFile'
             - '@monolog.logger.supplier_portal'
 
-    Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProductFileHandlerForSupplier:
+    Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\DownloadProductFileHandlerForSupplier:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileNameForSupplier'
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DownloadStoredProductFile'
@@ -223,13 +227,17 @@ services:
     # Service APIs
     Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\DownloadProductFile\DownloadProductFile:
         arguments:
-            - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProductFileHandlerForSupplier'
+            - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\DownloadProductFileHandlerForSupplier'
 
     Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\UploadProductFile\UploadProductFile:
         arguments:
-            - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CreateProductFileHandler'
+            - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CreateProductFileHandler'
 
     Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\GetProductFiles\GetProductFiles:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFilesForSupplier'
             - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail'
+
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\CommentProductFile\CommentProductFile:
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFileHandlerForSupplier'

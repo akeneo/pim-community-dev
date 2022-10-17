@@ -6,12 +6,15 @@ import {MicroFrontendDependenciesProvider, Routes, Translations} from '@akeneo-p
 import {routes} from './routes.json';
 import translations from './translations.json';
 import {FakePIM} from './FakePIM';
+import {FakeFetcherProvider} from './feature';
 
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={pimTheme}>
       <MicroFrontendDependenciesProvider routes={routes as Routes} translations={translations as Translations}>
-        <FakePIM />
+        <FakeFetcherProvider>
+          <FakePIM />
+        </FakeFetcherProvider>
       </MicroFrontendDependenciesProvider>
     </ThemeProvider>
   </React.StrictMode>,

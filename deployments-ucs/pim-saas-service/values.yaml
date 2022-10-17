@@ -29,6 +29,7 @@ common:
   pimMasterDomain: null # Generated
   dnsCloudDomain: null # Generated
   region: null # Generated
+  tenantContext: null # Generated
   workloadIdentityKSA: null # Generated
   workloadIdentityGSA: pim-saas-service
   phpConfFPM:
@@ -230,6 +231,11 @@ pim:
       pimJobName: "events_api_purge"
       pimJobOptions: ""
       schedule: "5 * * * *"
+    aggregate-volume-queries:
+      enabled: true
+      pimJobName: "aggregate_volume_queries"
+      pimJobOptions: ""
+      schedule: "0 4 * * *"
   supplier_portal:
     settings:
       enabled: false
@@ -240,3 +246,6 @@ pim:
     sourceCodeZip: publisher-pim-job.zip
     timeZone: "Europe/Paris"
     serviceAccountEmail: pim-cloud-function@akecld-prd-pim-saas-dev.iam.gserviceaccount.com
+  tenantContextEncryption:
+    enabled: true
+    encryptionKeySecretName: TENANT_CONTEXT_ENCRYPTION_KEY

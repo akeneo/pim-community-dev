@@ -1,0 +1,10 @@
+apiVersion: secrets-store.csi.x-k8s.io/v1
+kind: SecretProviderClass
+metadata:
+  name: tenant-context-encryption-keys
+spec:
+  provider: gcp
+  parameters:
+    secrets: |
+      - resourceName: "projects/{{ .Values.common.gcpProjectID }}/secrets/{{ .Values.pim.tenantContextEncryption.encryptionKeySecretName | default "TENANT_CONTEXT_ENCRYPTION_KEY" }}/versions/latest"
+        path: "tenant_context_encryption_key_b64_latest"

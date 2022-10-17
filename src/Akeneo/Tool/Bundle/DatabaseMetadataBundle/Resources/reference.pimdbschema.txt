@@ -109,6 +109,7 @@ pim_catalog_group_product | BASE TABLE
 pim_catalog_group_translation | BASE TABLE
 pim_catalog_group_type | BASE TABLE
 pim_catalog_group_type_translation | BASE TABLE
+pim_catalog_identifier_generator | BASE TABLE
 pim_catalog_locale | BASE TABLE
 pim_catalog_product | BASE TABLE
 pim_catalog_product_model | BASE TABLE
@@ -728,6 +729,13 @@ pim_catalog_group_type_translation | id | NO | int | PRI
 pim_catalog_group_type_translation | foreign_key | YES | int | MUL
 pim_catalog_group_type_translation | label | YES | varchar(100) |
 pim_catalog_group_type_translation | locale | NO | varchar(20) | MUL
+pim_catalog_identifier_generator | uuid | NO | binary(16) | PRI
+pim_catalog_identifier_generator | code | NO | varchar(100) | UNI
+pim_catalog_identifier_generator | conditions | NO | json |
+pim_catalog_identifier_generator | structure | NO | json |
+pim_catalog_identifier_generator | labels | NO | json |
+pim_catalog_identifier_generator | target | NO | varchar(100) |
+pim_catalog_identifier_generator | delimiter | YES | varchar(100) |
 pim_catalog_locale | id | NO | int | PRI
 pim_catalog_locale | code | NO | varchar(20) | UNI
 pim_catalog_locale | is_activated | NO | tinyint(1) |
@@ -1290,6 +1298,8 @@ INDEX | pim_catalog_group_type | UNIQ_693B2EF777153098 | code
 INDEX | pim_catalog_group_type_translation | IDX_6EF81AEB7E366551 | foreign_key
 INDEX | pim_catalog_group_type_translation | locale_foreign_key_idx | locale, foreign_key
 INDEX | pim_catalog_group_type_translation | PRIMARY | id
+INDEX | pim_catalog_identifier_generator | PRIMARY | uuid
+INDEX | pim_catalog_identifier_generator | unique_identifier_generator_code | code
 INDEX | pim_catalog_locale | PRIMARY | id
 INDEX | pim_catalog_locale | UNIQ_7405C7B177153098 | code
 INDEX | pim_catalog_product | IDX_91CD19C08A37AD0 | family_variant_id
@@ -1714,6 +1724,7 @@ UNIQUE CONSTRAINT | UNIQ_5D6997ED77153098 | pim_catalog_group | code
 UNIQUE CONSTRAINT | locale_foreign_key_idx | pim_catalog_group_translation | foreign_key, locale
 UNIQUE CONSTRAINT | UNIQ_693B2EF777153098 | pim_catalog_group_type | code
 UNIQUE CONSTRAINT | locale_foreign_key_idx | pim_catalog_group_type_translation | foreign_key, locale
+UNIQUE CONSTRAINT | unique_identifier_generator_code | pim_catalog_identifier_generator | code
 UNIQUE CONSTRAINT | UNIQ_7405C7B177153098 | pim_catalog_locale | code
 UNIQUE CONSTRAINT | UNIQ_91CD19C0772E836A | pim_catalog_product | identifier
 UNIQUE CONSTRAINT | UNIQ_91CD19C0BF396750 | pim_catalog_product | id

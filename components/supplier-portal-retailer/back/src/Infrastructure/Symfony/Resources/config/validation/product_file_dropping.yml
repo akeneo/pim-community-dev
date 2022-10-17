@@ -1,4 +1,4 @@
-Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CreateProductFile:
+Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CreateProductFile:
   properties:
     originalFileName:
       - Length:
@@ -12,4 +12,3 @@ Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\CreateProductFile
           mimeTypesMessage: supplier_portal.supplier.product_file_dropping.validation.must_be_an_xlsx_file
     uploadedByContributor:
       - NotBlank: ~
-

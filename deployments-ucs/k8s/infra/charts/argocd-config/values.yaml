@@ -1,3 +1,0 @@
-global:
-  publicDomain: null # From parent
-  clusterRegion: null # From parent

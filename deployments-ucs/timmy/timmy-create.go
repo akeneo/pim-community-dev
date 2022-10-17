@@ -46,7 +46,7 @@ func main() {
 
     // Firestore
     clientFirestore := createClientFirestore(ctx, firestoreProjectID)
-    collection := "tenant_contexts"
+    collection := os.Args[6]
     pfid := os.Args[1]
     instance_name := os.Args[2]
     mysql_password := os.Args[3]

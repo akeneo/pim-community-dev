@@ -29,7 +29,7 @@ steps:
   - id: Install prerequisite for the PIM
     name: "europe-west1-docker.pkg.dev/akecld-prd-pim-saas-shared/prod/pim-deployer:1.1.0"
     dir: "deployments-ucs"
-    entrypoint: 'sh'
+    entrypoint: 'bash'
     args:
     - '-c'
     - |
@@ -41,33 +41,42 @@ steps:
 
         # Custom configuration
         ## Argocd
-        yq -i '.configs.credentialTemplates.https-creds.username = "argocd"' k8s/argocd/values.yaml
-        ARGOCD_GITHUB_TOKEN="$${ARGOCD_GITHUB_TOKEN}" yq -i '.configs.credentialTemplates.https-creds.password = env(ARGOCD_GITHUB_TOKEN)' k8s/argocd/values.yaml
-        yq -i 'del(.server.ingress.tls)' k8s/argocd/values.yaml
-        HOST="\"*.${_GOOGLE_DOMAIN}\"" yq -i e '.server.ingress.tls[0].hosts |= . + [env(HOST)] ' k8s/argocd/values.yaml
-        yq -i 'del(.server.ingress.hosts)' k8s/argocd/values.yaml
-        GOOGLE_DOMAIN="argocd-${_GOOGLE_CLUSTER_REGION}.${_GOOGLE_DOMAIN}" yq -i e '.server.ingress.hosts |= . + [env(GOOGLE_DOMAIN)] ' k8s/argocd/values.yaml
+        yq -i '.configs.credentialTemplates.https-creds.username = "argocd"' argocd/values.yaml
+        ARGOCD_GITHUB_TOKEN="$${ARGOCD_GITHUB_TOKEN}" yq -i '.configs.credentialTemplates.https-creds.password = env(ARGOCD_GITHUB_TOKEN)' argocd/values.yaml
         # Set the correct service account for argocd repoServer
-        GSA_ARGOCD="argocd@${_GOOGLE_PROJECT_ID}.iam.gserviceaccount.com" yq -i '.repoServer.serviceAccount.annotations."iam.gke.io/gcp-service-account" = env(GSA_ARGOCD)' k8s/argocd/values.yaml
+        GSA_ARGOCD="argocd@${_GOOGLE_PROJECT_ID}.iam.gserviceaccount.com" yq -i '.repoServer.serviceAccount.annotations."iam.gke.io/gcp-service-account" = env(GSA_ARGOCD)' argocd/values.yaml
 
         # Append the values file to use for the argocd apps
-        VALUES="values-${_CLUSTER_NAME}.yaml" yq -i '.applications[].source.helm.valueFiles[1] = env(VALUES)' k8s/argocd-apps/values.yaml
+        VALUES_FILES=("values.yaml" "values-${_CLUSTER_ENV}.yaml" "values-${_GOOGLE_CLUSTER_REGION}.yaml" "values-${_GOOGLE_PROJECT_ID}.yaml" "values-${_CLUSTER_NAME}.yaml")
+        yq -i '(.applications.[] | select(.name == "infra-apps").source.helm.valueFiles) = []' argocd-apps/values.yaml
+        for VALUES in "$${VALUES_FILES[@]}"
+        do
+          if [[ -f "infra/k8s/argocd-apps/$${VALUES}" ]]; then
+            echo "Adding infra/k8s/argocd-apps/$${VALUES} to values"
+            VALUES="$${VALUES}" yq -i '(.applications.[] | select(.name == "infra-apps").source.helm.valueFiles) += env(VALUES)' argocd-apps/values.yaml
+          else
+            echo "infra/k8s/argocd-apps/$${VALUES} does not exists"
+          fi
+        done
+
+        # Append the values file to use for the argocd apps (pim-saas-service)
+        VALUES="values-${_CLUSTER_NAME}.yaml" yq -i '(.applications.[] | select(.name != "infra-apps").source.helm.valueFiles) += env(VALUES)' argocd-apps/values.yaml
 
         # Change the branch for infra
-        BRANCH_NAME="${BRANCH_NAME}" yq -i '.applications[].source.targetRevision = env(BRANCH_NAME)' k8s/argocd-apps/values.yaml
+        BRANCH_NAME="${BRANCH_NAME}" yq -i '.applications[].source.targetRevision = env(BRANCH_NAME)' argocd-apps/values.yaml
 
         # Use helm repo
         helm repo add argo https://argoproj.github.io/argo-helm
         helm repo update 2>&1
 
         ## Datadog
-        kubectl create secret generic datadog-api-secret --from-literal api-key="$${DATADOG_API_KEY}"
+        kubectl create secret generic datadog-api-secret --from-literal api-key="$${DATADOG_API_KEY}" --dry-run=client -o yaml | kubectl apply -f -
 
         # Install prerequisite
         ## ArgoCD
-        helm upgrade --version ${_ARGOCD_HELM_VERSION} --debug --atomic --cleanup-on-fail --history-max 5 -i --wait --create-namespace -n argocd argocd argo/argo-cd -f k8s/argocd/values.yaml
-        kubectl apply -f k8s/argocd/templates/argocd-cm.yaml
-        helm upgrade --version ${_ARGOCD_APP_HELM_VERSION} --debug --atomic --cleanup-on-fail --history-max 5 -i --wait --create-namespace -n argocd argocd-apps argo/argocd-apps -f k8s/argocd-apps/values.yaml
+        helm upgrade --version ${_ARGOCD_HELM_VERSION} --debug --atomic --cleanup-on-fail --history-max 5 -i --wait --create-namespace -n argocd argocd argo/argo-cd -f argocd/values.yaml
+        kubectl apply -f argocd/templates/argocd-cm.yaml
+        helm upgrade --version ${_ARGOCD_APP_HELM_VERSION} --debug --atomic --cleanup-on-fail --history-max 5 -i --wait --create-namespace -n argocd argocd-apps argo/argocd-apps -f argocd-apps/values.yaml
     secretEnv: ['ARGOCD_GITHUB_TOKEN', 'DATADOG_API_KEY']
 logsBucket: 'gs://${_GOOGLE_PROJECT_ID}-cloudbuild-logs'
 availableSecrets:
@@ -79,6 +88,7 @@ availableSecrets:
 substitutions:
   _ARGOCD_HELM_VERSION: 5.4.2
   _ARGOCD_APP_HELM_VERSION: 0.0.1
+  _CLUSTER_ENV: dev
   _CLUSTER_NAME: akecld-prd-pim-saas-dev-europe-west3
   _GOOGLE_CLUSTER_REGION: europe-west3
   _GOOGLE_COMPUTE_ZONE: europe-west3-b

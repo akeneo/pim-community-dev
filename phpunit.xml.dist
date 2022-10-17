@@ -80,5 +80,9 @@
         <testsuite name="Enrichment_Product_EE">
             <directory suffix="Integration.php">vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Enrichment/Product/back/Test/Integration</directory>
         </testsuite>
+
+        <testsuite name="Category">
+            <directory suffix="Integration.php">vendor/akeneo/pim-community-dev/src/Akeneo/Category/back/tests/Integration</directory>
+        </testsuite>
     </testsuites>
 </phpunit>

@@ -42,7 +42,7 @@ const ProductFilesList = ({
     const router = useRouter();
 
     const goToProductFile = (productFileIdentifier: string) => {
-        history.push(`/product-file-dropping/${productFileIdentifier}`);
+        history.push(`/product-file/${productFileIdentifier}`);
     };
 
     return (
@@ -103,7 +103,7 @@ const ProductFilesList = ({
                                                 ghost={'borderless'}
                                                 onClick={(event: any) => event.stopPropagation()}
                                                 href={router.generate('supplier_portal_retailer_download_file', {
-                                                    identifier: productFile.identifier,
+                                                    productFileIdentifier: productFile.identifier,
                                                 })}
                                             />
                                         </DownloadCell>

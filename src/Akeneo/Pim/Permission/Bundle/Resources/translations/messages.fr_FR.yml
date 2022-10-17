@@ -61,6 +61,7 @@ pim_enrich:
       message:
         error: Vous n'êtes pas le propriétaire du produit, vous ne pouvez pas le publier.
         warning: Vous n'êtes pas propriétaire de tous les produits sélectionnés. Vous ne pouvez pas publier les produits "%notGranted%".
+        no_identifier: Impossible de publier ce produit car il n'a pas d'identifiant
       not_editable: Vous n'avez pas la permission de modifier les produits "%identifiers%".
     unpublish:
       message:

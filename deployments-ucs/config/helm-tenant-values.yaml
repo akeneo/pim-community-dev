@@ -88,7 +88,7 @@ common:
   googleZone: ${GOOGLE_CLUSTER_ZONE}
   pimMasterDomain: ${FQDN}
   dnsCloudDomain: ${GOOGLE_MANAGED_ZONE_DNS}
-
+  tenantContext: ${FIRESTORE_COLLECTION}
 backup:
   projectId: ${GOOGLE_PROJECT_ID}
   zone: ${GOOGLE_CLUSTER_ZONE}

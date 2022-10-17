@@ -23,10 +23,14 @@ if (isset($_ENV['APP_TENANT_ID']) && '' !== $_ENV['APP_TENANT_ID']) {
     $jsonFormatter->includeStacktraces();
     $handler->setFormatter($jsonFormatter);
 
+    $contextCollectionName = $_ENV['APP_TENANT_CONTEXT_COLLECTION_NAME'] ?? null;
+
     $contextFetcher = new FirestoreContextFetcher(
         logger: new Logger('bootstrap', [$handler]),
         tenantContextDecoder: new TenantContextDecoder(),
-        googleProjectId: $_ENV['FIRESTORE_PROJECT_ID']
+        googleProjectId: $_ENV['FIRESTORE_PROJECT_ID'],
+        collection: $contextCollectionName,
+
     );
     $dotenv->populate(
         values: $contextFetcher->getTenantContext($_ENV['APP_TENANT_ID']),

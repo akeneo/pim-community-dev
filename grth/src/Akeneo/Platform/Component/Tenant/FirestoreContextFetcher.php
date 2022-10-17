@@ -16,9 +16,12 @@ final class FirestoreContextFetcher implements TenantContextFetcherInterface
         private LoggerInterface $logger,
         private TenantContextDecoderInterface $tenantContextDecoder,
         private string $googleProjectId,
-        private string $collection = self::TENANT_COLLECTION,
+        private string $collection,
         private int $cacheTtl = 30
     ) {
+        if (null === $collection) {
+            $this->collection = self::TENANT_COLLECTION;
+        }
     }
 
     /**

@@ -1,0 +1,26 @@
+{{- if .Values.routes.public.enabled -}}
+{{- $fullName := .Values.service.name -}}
+{{- $servicePort := .Values.service.externalPort -}}
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: HTTPRoute
+metadata:
+  name: {{ $fullName }}-public-route
+  labels:
+    app.kubernetes.io/name: {{ include "wiremock.name" . }}
+    helm.sh/chart: {{ include "wiremock.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  parentRefs:
+  - name: {{ .Values.routes.public.gateway.name }}
+    namespace: {{ .Values.routes.public.gateway.namespace }}
+  hostnames:
+  - "{{ .Values.routes.public.hostname }}"
+  rules:
+  - matches:
+    - path:
+        value: /
+    backendRefs:
+    - name: {{ $fullName }}
+      port: {{ $servicePort }}
+{{- end }}

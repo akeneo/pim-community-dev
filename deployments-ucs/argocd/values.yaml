@@ -1,0 +1,85 @@
+## Argo CD configuration
+## Ref: https://github.com/argoproj/argo-cd
+##
+
+nameOverride: argocd
+
+global:
+  image:
+    repository: quay.io/argoproj/argocd
+    tag: "v2.4.11"
+    imagePullPolicy: IfNotPresent
+
+## Argo Configs
+configs:
+  # -- Provide one or multiple [external cluster credentials]
+  # @default -- `[]` (See [values.yaml])
+  ## Ref:
+  ## - https://argoproj.github.io/argo-cd/operator-manual/declarative-setup/#clusters
+  ## - https://argoproj.github.io/argo-cd/operator-manual/security/#external-cluster-credentials
+
+  # -- Repository credentials to be used as Templates for other repos
+  ## Creates a secret for each key/value specified below to create repository credentials
+  credentialTemplates:
+    https-creds:
+      url: https://github.com/akeneo/pim-saas-k8s-artifacts.git
+      password: null
+      username: null
+
+  # -- Repositories list to be used by applications
+  ## Creates a secret for each key/value specified below to create repositories
+  ## Note: the last example in the list would use a repository credential template, configured under "configs.repositoryCredentials".
+  repositories:
+    private-repo:
+      name: pim-saas-k8s-artifacts
+      url: https://github.com/akeneo/pim-saas-k8s-artifacts
+
+server:
+  extraArgs:
+    - --insecure
+  ingress:
+    enabled: false
+
+
+# helm-gcs plugin: https://argo-cd.readthedocs.io/en/stable/user-guide/helm/#using-initcontainers
+# Permissions to gcs bucket are granted with workload identity
+repoServer:
+  volumes:
+    - name: helm
+      emptyDir: {}
+  volumeMounts:
+    - mountPath: /helm
+      name: helm
+  env:
+    - name: HELM_DATA_HOME
+      value: /helm
+    - name: HELM_CACHE_HOME
+      value: /helm/cache
+    - name: HELM_CONFIG_HOME
+      value: /helm/config
+    - name: HELM_PLUGINS
+      value: /helm/plugins/
+  serviceAccount:
+    create: true
+    annotations:
+      iam.gke.io/gcp-service-account: null
+  initContainers:
+    - name: install-helm-plugins
+      image: alpine/helm:3.8.2
+      volumeMounts:
+        - mountPath: /helm
+          name: helm
+      env:
+        - name: HELM_DATA_HOME
+          value: /helm
+        - name: HELM_CACHE_HOME
+          value: /helm/cache
+        - name: HELM_CONFIG_HOME
+          value: /helm/config
+      command: ["/bin/sh", "-c"]
+      args:
+        - apk --no-cache add curl;
+          helm plugin install https://github.com/hayorov/helm-gcs.git;
+          helm repo add akeneo-charts gs://akeneo-pim-saas-charts-prod;
+          helm repo update;
+          chmod -R 777 $HELM_DATA_HOME;

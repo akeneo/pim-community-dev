@@ -8,6 +8,7 @@ GOOGLE_CLUSTER_REGION="europe-west3"
 GOOGLE_ZONE="europe-west3-b"
 LOCATION="EU"
 PREFIX_CLUSTER="eur-w-3a"
+TENANT_CONTEXT="${GOOGLE_CLUSTER_REGION}/pim/tenant_contexts"
 TOPIC_BUSINESS_EVENT="${PREFIX_CLUSTER}-srnt-business-event" # Should we really set the srnt in it?
 TOPIC_JOB_QUEUE_UI="${PREFIX_CLUSTER}-srnt-job-queue-ui" # Should we really set the srnt in it?
 TOPIC_JOB_QUEUE_IMPORT_EXPORT="${PREFIX_CLUSTER}-srnt-job-queue-import-export" # Should we really set the srnt in it?
@@ -21,6 +22,8 @@ SUBSCRIPTION_JOB_QUEUE_SCHEDULED_JOB="${PREFIX_CLUSTER}-srnt-job-queue-scheduled
 CLOUD_FUNCTION_NAME="${PREFIX_CLUSTER}-srnt-job-publisher"
 CLOUD_FUNCTION_BUCKET="${PREFIX_CLUSTER}-srnt-job-publisher"
 CLOUD_SCHEDULER_PREFIX="${PREFIX_CLUSTER}-srnt-job-publisher"
+TENANT_CONTEXT_ENCRYPTION_ENABLED="true"
+ENCRYPTION_KEY_SECRET_NAME="TENANT_CONTEXT_ENCRYPTION_KEY"
 
 INSTANCE_NAME="ucs" # Should be removed
 PIM_MASTER_DOMAIN="ucs.${GOOGLE_DOMAIN}" # Should be removed
@@ -40,6 +43,7 @@ yq w -i ${PIM_SAAS_SERVICE_DIRECTORY_PATH}/values-${GOOGLE_CLUSTER_NAME}.yaml co
 yq w -i ${PIM_SAAS_SERVICE_DIRECTORY_PATH}/values-${GOOGLE_CLUSTER_NAME}.yaml common.pimMasterDomain "${PIM_MASTER_DOMAIN}"
 yq w -i ${PIM_SAAS_SERVICE_DIRECTORY_PATH}/values-${GOOGLE_CLUSTER_NAME}.yaml common.dnsCloudDomain "${GOOGLE_DOMAIN}"
 yq w -i ${PIM_SAAS_SERVICE_DIRECTORY_PATH}/values-${GOOGLE_CLUSTER_NAME}.yaml common.region "${GOOGLE_CLUSTER_REGION}"
+yq w -i ${PIM_SAAS_SERVICE_DIRECTORY_PATH}/values-${GOOGLE_CLUSTER_NAME}.yaml common.tenantContext "${TENANT_CONTEXT}"
 yq w -i ${PIM_SAAS_SERVICE_DIRECTORY_PATH}/values-${GOOGLE_CLUSTER_NAME}.yaml common.workloadIdentityKSA "${WORKLOAD_IDENTITY_KSA}"
 yq w -i ${PIM_SAAS_SERVICE_DIRECTORY_PATH}/values-${GOOGLE_CLUSTER_NAME}.yaml image.pim.tag "${RELEASE_NAME}"
 yq w -i ${PIM_SAAS_SERVICE_DIRECTORY_PATH}/values-${GOOGLE_CLUSTER_NAME}.yaml pim.pubsub.topic_business_event "${TOPIC_BUSINESS_EVENT}"
@@ -55,6 +59,8 @@ yq w -i ${PIM_SAAS_SERVICE_DIRECTORY_PATH}/values-${GOOGLE_CLUSTER_NAME}.yaml pi
 yq w -i ${PIM_SAAS_SERVICE_DIRECTORY_PATH}/values-${GOOGLE_CLUSTER_NAME}.yaml pim.cloudFunction.name "${CLOUD_FUNCTION_NAME}"
 yq w -i ${PIM_SAAS_SERVICE_DIRECTORY_PATH}/values-${GOOGLE_CLUSTER_NAME}.yaml pim.cloudFunction.bucket "${CLOUD_FUNCTION_BUCKET}"
 yq w -i ${PIM_SAAS_SERVICE_DIRECTORY_PATH}/values-${GOOGLE_CLUSTER_NAME}.yaml pim.jobsPrefix "${CLOUD_SCHEDULER_PREFIX}"
+yq w -i ${PIM_SAAS_SERVICE_DIRECTORY_PATH}/values-${GOOGLE_CLUSTER_NAME}.yaml tenantContextEncryption.enabled "${TENANT_CONTEXT_ENCRYPTION_ENABLED}"
+yq w -i ${PIM_SAAS_SERVICE_DIRECTORY_PATH}/values-${GOOGLE_CLUSTER_NAME}.yaml tenantContextEncryption.encryptionKeySecretName "${ENCRYPTION_KEY_SECRET_NAME}"
 
 ## Charts
 yq w -i ${PIM_SAAS_SERVICE_DIRECTORY_PATH}/Chart.yaml appVersion ${RELEASE_NAME}

@@ -1,5 +1,17 @@
 akeneo.tailored_import:
   validation:
+    required: Aquest valor és obligatori.
+    max_length_reached: Aquest valor és massa llarg. Ha de contenir {{ limit }} caràcters o menys.
+    missing_query_params: "Falten els paràmetres següents a la consulta: {{ missing_params }}"
+    source_values_should_be_unique: Alguns d'aquests valors font ja s'utilitzen en un altre reemplaçament, si us plau, traieu-los.
+    columns:
+      max_count_reached: El vostre full no ha de contenir més de {{ limit }} columnes.
+      at_least_one_required: La capçalera ha de contenir almenys {{ limit }} columnes.
+      index:
+        should_be_unique: Aquest índex de columna ja existeix; introduïu-ne un de nou.
+      label:
+        should_not_be_blank: Definiu un nom de columna.
+        max_length_reached: L'etiqueta de la columna és massa llarga. Ha de contenir {{ limit }} caràcters o menys.
     data_mappings:
       target_should_unique: L'objectiu "{{ code }}" no es pot seleccionar diverses vegades.
       sources:

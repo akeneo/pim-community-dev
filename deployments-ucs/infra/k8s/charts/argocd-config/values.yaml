@@ -1,0 +1,5 @@
+global:
+  clusterRegion: null # From parent
+argocdConfig:
+  publicHostname: null # From parent
+  privateHostname: null # From parent

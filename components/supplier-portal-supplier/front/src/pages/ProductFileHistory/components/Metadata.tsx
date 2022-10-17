@@ -21,7 +21,7 @@ const Metadata = ({productFile}: {productFile: ProductFile}) => {
                             id: '5q3qC0',
                         })}
                         ghost={'borderless'}
-                        href={'/supplier-portal/download-file/' + productFile.identifier}
+                        href={'/supplier-portal/product-file/' + productFile.identifier + '/download'}
                     />
                 </DownloadIconContainer>
             </FlexRow>

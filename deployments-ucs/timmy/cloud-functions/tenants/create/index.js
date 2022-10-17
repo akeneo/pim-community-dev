@@ -29,13 +29,12 @@ const schema = require('./schemas/request-body.json');
 const {Firestore} = require('@google-cloud/firestore');
 const https = require("https");
 
-let logger = null;
-
 const httpsAgent = new https.Agent({
   // Trust self-signed certificates
   rejectUnauthorized: false
 });
 
+const DEFAULT_BRANCH_NAME = 'master';
 const FIRESTORE_STATUS = {
   CREATED: "created",
   CREATION_FAILED: "creation_failed",
@@ -43,8 +42,10 @@ const FIRESTORE_STATUS = {
   CREATION_IN_PROGRESS: "creation_in_progress",
 };
 
+let firestoreCollection = null;
+let logger = null;
 
-function initializeLogger(instanceName) {
+function initializeLogger(branchName, instanceName) {
   logger = createLogger({
     level: process.env.LOG_LEVEL,
     defaultMeta: {
@@ -53,6 +54,7 @@ function initializeLogger(instanceName) {
       revision: process.env.K_REVISION,
       gcpProjectId: process.env.GCP_PROJECT_ID,
       gcpProjectFirestoreId: process.env.GCP_FIRESTORE_PROJECT_ID,
+      branchName: branchName,
       tenant: instanceName
     },
     format: format.combine(
@@ -65,6 +67,7 @@ function initializeLogger(instanceName) {
           gcpProjectId: info.gcpProjectId,
           gcpProjectFirestoreId: info.gcpProjectFirestoreId,
           message: info.message,
+          branchName: info.branchName,
           tenant: info.tenant
         })}`;
       }),
@@ -98,7 +101,6 @@ function requiredEnvironmentVariables(names) {
   }
 }
 
-
 function formatAxiosError(msg, error) {
   if (error.response) {
     msg += ' with ' + error.response.status + ' status code: ' + JSON.stringify(error.response.data);
@@ -112,9 +114,6 @@ function formatAxiosError(msg, error) {
 
 /**
  * Retrieve a token from the ArgoCD server
- * @param url the url of the ArgoCD server
- * @param username the username for authentication
- * @param password the password for authentication
  * @returns {Promise<string|number>} a token
  */
 async function getArgoCdToken() {
@@ -298,7 +297,6 @@ async function ensureArgoCdAppIsSynced(token, appName, maxRetries = 20, retryInt
     OUT_OF_SYNC: 'OutOfSync'
   }
 
-
   let currentRetry = 1;
   let resp;
   let syncStatus;
@@ -313,7 +311,6 @@ async function ensureArgoCdAppIsSynced(token, appName, maxRetries = 20, retryInt
     logger.error(msg);
     return Promise.reject(msg);
   }
-
 
   while (syncStatus !== SYNC_STATUS.SYNCED && currentRetry <= maxRetries) {
     try {
@@ -334,7 +331,6 @@ async function ensureArgoCdAppIsSynced(token, appName, maxRetries = 20, retryInt
       logger.error(msg);
       return Promise.reject(msg);
     }
-
   }
 
   msg = `Exceeded maximum attempts to ensure synchronization, please check the ArgoCD application status at ${url}/applications/${appName}`;
@@ -375,14 +371,12 @@ async function encryptAES(text, key) {
 /**
  * Update firestore document in collection if exists otherwise create it
  * @param firestore firestore client instance
- * @param collection collection for the document
- * @param doc name of the document
+ * @param docRef document reference
  * @param status value of the status field
  * @param context object representing the context field
- * @param encrypted encrypt the firestore document
  */
-async function updateFirestoreDoc(firestore, doc, status, context) {
-  logger.info(`Update the \`${doc}\` Firestore document in \`${process.env.TENANT_CONTEXT_COLLECTION_NAME}\` collection with \`${status}\` status and tenant context`);
+async function updateFirestoreDoc(firestore, docRef, status, context) {
+  logger.info(`Update the \`${docRef}\` Firestore document in \`${firestoreCollection}\` collection with \`${status}\` status and tenant context`);
   let data = {
     status: status,
     status_date: new Date().toISOString(),
@@ -395,16 +389,16 @@ async function updateFirestoreDoc(firestore, doc, status, context) {
     try {
       data.context = await encryptAES(JSON.stringify(data.context), process.env.TENANT_CONTEXT_ENCRYPT_KEY);
     } catch (error) {
-      const msg = `Failed to encrypt \`${doc}\` Firestore document in \`${process.env.TENANT_CONTEXT_COLLECTION_NAME}\ collection: ${error}`;
+      const msg = `Failed to encrypt \`${docRef}\` Firestore document in \`${firestoreCollection}\` collection: ${error}`;
       logger.error(msg);
       return Promise.reject(msg);
     }
   }
 
   try {
-    await firestore.collection(process.env.TENANT_CONTEXT_COLLECTION_NAME).doc(doc).set(data);
+    await firestore.collection(firestoreCollection).doc(docRef).set(data);
   } catch (error) {
-    const msg = `Failed to update \`${doc}\` Firestore document in \`${process.env.TENANT_CONTEXT_COLLECTION_NAME}\` collection: ${error}`;
+    const msg = `Failed to update \`${docRef}\` Firestore document in \`${firestoreCollection}\` collection: ${error}`;
     logger.error(msg);
     return Promise.reject(msg);
   }
@@ -412,17 +406,14 @@ async function updateFirestoreDoc(firestore, doc, status, context) {
   logger.debug(`Updated Firestore document`);
 }
 
-
 /**
  * create firestore document in the collection if it doesn't exist , otherwise logg a message
  * @param firestore firestore client instance
- * @param collection collection for the document
- * @param doc name of the document
+ * @param docRef document reference
  * @param status value of the status field
- * @param encrypted encrypt the firestore document
  */
- async function createFirestoreDoc(firestore, docRef, status) {
-  logger.info(`Create the \`${docRef}\` Firestore document in \`${process.env.TENANT_CONTEXT_COLLECTION_NAME}\` collection with \`${status}\` status`);
+async function createFirestoreDoc(firestore, docRef, status) {
+  logger.info(`Create the \`${docRef}\` Firestore document in \`${firestoreCollection}\` collection with \`${status}\` status`);
   let data = {
     status: status,
     status_date: new Date().toISOString(),
@@ -432,52 +423,38 @@ async function updateFirestoreDoc(firestore, doc, status, context) {
   logger.debug(`Prepared Firestore document: ${JSON.stringify(data)}`);
 
   try {
-    let document = firestore.collection(process.env.TENANT_CONTEXT_COLLECTION_NAME).doc(docRef);
+    let document = firestore.collection(firestoreCollection).doc(docRef);
     const snapshot = await document.get();
-    if (snapshot.exists){
-      let msg = "The document "+ docRef +" already exists !!!";
+    if (snapshot.exists) {
+      let msg = "The document " + docRef + " already exists !!!";
       logger.error(msg);
       return Promise.reject(msg);
-
-    }else{
+    } else {
       // add the new document.
-      await firestore.collection(process.env.TENANT_CONTEXT_COLLECTION_NAME).doc(docRef).set(data);
+      await firestore.collection(firestoreCollection).doc(docRef).set(data);
     }
   } catch (error) {
-    const msg = `Failed to create  \`${docRef}\` Firestore document in \`${process.env.TENANT_CONTEXT_COLLECTION_NAME}\` collection: ${error}`;
+    const msg = `Failed to create  \`${docRef}\` Firestore document in \`${firestoreCollection}\` collection: ${error}`;
     logger.error(msg);
     return Promise.reject(msg);
   }
 
-  logger.info("the document for the: "+docRef+" created with success !!!");
+  logger.info("the document for the: " + docRef + " created with success !!!");
 }
 
 
-async function updateFirestoreDocStatus(firestore, doc, status) {
+async function updateFirestoreDocStatus(firestore, docRef, status) {
   try {
-    logger.info(`Update the \`${doc}\` firestore document in \`${process.env.TENANT_CONTEXT_COLLECTION_NAME}\` collection with \`${status}\` status`);
-    return Promise.resolve(await firestore.collection(process.env.TENANT_CONTEXT_COLLECTION_NAME).doc(doc).set({
+    logger.info(`Update the \`${docRef}\` firestore document in \`${firestoreCollection}\` collection with \`${status}\` status`);
+    return Promise.resolve(await firestore.collection(firestoreCollection).doc(docRef).set({
       status: status,
       status_date: new Date().toISOString()
     }, {merge: true}));
   } catch (error) {
-    const msg = `Failed to update the \`${doc}\` firestore document in \`${process.env.TENANT_CONTEXT_COLLECTION_NAME}\` collection: ${error}`;
+    const msg = `Failed to update the \`${docRef}\` firestore document in \`${firestoreCollection}\` collection: ${error}`;
     logger.error(msg);
     return Promise.reject(msg);
   }
-}
-
-/**
- * Ensure environment variable is not missing or undefined
- * @param name The name of the environment variable
- * @returns {string} The value of the environment variable
- */
-function loadEnvironmentVariable(name) {
-  if (!process.env[name]) {
-    const msg = `The environment variable ${name} is missing or undefined`;
-    throw new Error(msg);
-  }
-  return process.env[name];
 }
 
 functions.http('createTenant', (req, res) => {
@@ -494,15 +471,19 @@ functions.http('createTenant', (req, res) => {
       'MAILER_DOMAIN',
       'PIM_IMAGE_REPOSITORY',
       'PIM_IMAGE_TAG',
+      'REGION',
       'SOURCE_PATH',
       'SOURCE_REPO_URL',
-      'SOURCE_TARGET_REVISION',
       'TENANT_CONTEXT_COLLECTION_NAME',
     ]);
 
     const body = JSON.parse(req.body);
+    // If branchName is an empty string it is the default branch
+    const branchName = body.branchName
+    const instanceName = body.instanceName;
+    firestoreCollection = `${process.env.REGION}/${branchName}/${process.env.TENANT_CONTEXT_COLLECTION_NAME}`;
 
-    initializeLogger(body.instanceName);
+    initializeLogger(branchName, instanceName);
 
     // Ensure the json object in the http request body respects the expected schema
     logger.info('Validation of the JSON schema of the request body');
@@ -515,11 +496,8 @@ functions.http('createTenant', (req, res) => {
         status_code: 400,
         message: `HTTP body json is not valid: ${error}`,
       })
-      throw new Error(`The JSON schema of the received http body is not valid: ${error}`);
     }
-    logger.debug(`Received HTTP json body: ${JSON.stringify(body)}`);
 
-    const instanceName = body.instanceName;
     const dnsCloudDomain = body.dnsCloudDomain;
     const extraLabelType = 'ucs';
     const pfid = `${extraLabelType}-${instanceName}`;
@@ -553,7 +531,7 @@ functions.http('createTenant', (req, res) => {
           source: {
             repoUrl: process.env.SOURCE_REPO_URL,
             path: process.env.SOURCE_PATH,
-            targetRevision: process.env.SOURCE_TARGET_REVISION
+            targetRevision: branchName
           },
           destination: {
             server: 'https://kubernetes.default.svc',
@@ -719,7 +697,6 @@ functions.http('createTenant', (req, res) => {
 
     createTenant(res)
       .then(async () => {
-        // TODO: only update status field when decryption is released (PH-247)
         await updateFirestoreDocStatus(firestore, instanceName, FIRESTORE_STATUS.CREATED);
 
         logger.info('Tenant is created');

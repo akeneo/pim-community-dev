@@ -81,6 +81,7 @@ akeneo.tailored_import:
         title: Remplacement des listes à choix multiple
         option_labels: Options du PIM
       multi_reference_entity_replacement:
+        title: Remplacement des entités référentielles à lien multiple
         option_labels: Enregistrements du PIM
       categories_replacement:
         title: Remplacement des catégories
@@ -204,6 +205,7 @@ akeneo.tailored_import:
       property_should_exist: 'La propriété suivante n''existe plus : "{{ property_code }}". Veuillez la recréer ou choisissez une autre propriété. '
       source_configuration:
         unit_should_exist: L'unité "{{ unit_code }}" n'existe plus pour la famille de mesures "{{ measurement_family }}". Veuillez la recréer ou choisissez une autre unité.
+        currency_should_not_be_null: Veuillez sélectionner une devise.
         currency_should_be_active: La devise {{ currency_code }} n'est liée à aucun canal.
         currency_should_be_active_on_channel: La devise {{ currency_code }} n'est pas active pour le canal {{ channel_code }}.
     locale:

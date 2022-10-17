@@ -6,14 +6,14 @@ supplier_portal_retailer_product_files_list:
     methods: [GET]
 
 supplier_portal_retailer_download_file:
-    path: /download-file/{identifier}
+    path: /{productFileIdentifier}/download
     defaults:
         _controller: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\DownloadProductFile
         _feature: supplier_portal
     methods: [GET]
 
 supplier_portal_retailer_supplier_product_files_list:
-    path: /product-files/{supplierIdentifier}
+    path: /supplier/{supplierIdentifier}
     defaults:
         _controller: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\ProductFilesList
         _feature: supplier_portal
@@ -28,7 +28,7 @@ supplier_portal_retailer_comment_product_file:
         _feature: supplier_portal_critical_path_collaborate
     methods: POST
 
-supplier_portal_retailer_product_files_comment:
+supplier_portal_retailer_product_files_show:
     path: /{productFileIdentifier}
     defaults:
         _controller: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\GetProductFile

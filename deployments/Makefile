@@ -531,7 +531,7 @@ test_helm_generated_k8s_files: #Doc Test helm generated templates are K8S compli
 
 .PHONY: test_deployment_e2e
 test_deployment_e2e: configure-cypress #Doc Test srnt (c3po)/grth(r2d2) instances
-	cd $(DEPLOYMENT_DIR)/test/e2e/ && docker-compose run --rm cypress -c testFiles=deployment/* --headless --config-file ./config/cypress.$(TYPE).json
+	cd $(DEPLOYMENT_DIR)/test/e2e/ && docker-compose run --rm cypress --headless --config-file ./config/cypress.$(TYPE).json
 
 .PHONY: configure-cypress
 configure-cypress: update-cypress-config get-pim-community-cypress-command

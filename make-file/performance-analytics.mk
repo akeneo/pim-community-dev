@@ -33,7 +33,7 @@ performance-analytics-lint-front-fix:
 
 .PHONY: performance-analytics-unit-front
 performance-analytics-unit-front: #Doc: launch unit tests for performance analytics Front
-	$(YARN_RUN) workspace @akeneo-pim-enterprise/performance-analytics test:unit:run
+	$(YARN_RUN) workspace @akeneo-pim-enterprise/performance-analytics test:unit:run $(O)
 
 .PHONY: performance-analytics-test-back
 performance-analytics-test-back: performance-analytics-lint-back performance-analytics-unit-back performance-analytics-coupling-back performance-analytics-integration-back

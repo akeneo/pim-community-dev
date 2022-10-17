@@ -47,9 +47,21 @@ jobs:
 
                   git clone git@github.com:akeneo/pim-saas-k8s-artifacts.git /tmp/pim-saas-k8s-artifacts
 
+                  # argocd
+                  rm -rf /tmp/pim-saas-k8s-artifacts/argocd
+                  cp -r deployments-ucs/argocd /tmp/pim-saas-k8s-artifacts/argocd
+
+                  # argocd-apps
+                  rm -rf /tmp/pim-saas-k8s-artifacts/argocd-apps
+                  cp -r deployments-ucs/argocd-apps /tmp/pim-saas-k8s-artifacts/argocd-apps
+
+                  # infra
+                  rm -rf /tmp/pim-saas-k8s-artifacts/infra
+                  mkdir -p /tmp/pim-saas-k8s-artifacts/infra
+                  cp -r deployments-ucs/infra/k8s /tmp/pim-saas-k8s-artifacts/infra/k8s
+
                   # k8s
                   rm -rf /tmp/pim-saas-k8s-artifacts/k8s
-                  cp -r deployments-ucs/k8s /tmp/pim-saas-k8s-artifacts/k8s
 
                   # pim-saas-services
                   rm -rf /tmp/pim-saas-k8s-artifacts/pim-saas-service
@@ -67,7 +79,7 @@ jobs:
                   cp -r deployments-ucs/timmy /tmp/pim-saas-k8s-artifacts/timmy
 
                   cd /tmp/pim-saas-k8s-artifacts
-                  git add k8s pim-saas-service tenant timmy
+                  git add -A
                   git commit -m "Update with release ${RELEASE_NAME}"
                   # Should the master branch be protected?
                   git push

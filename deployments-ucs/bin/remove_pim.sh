@@ -11,10 +11,6 @@ NS_LIST=$(kubectl get ns | grep Active | grep "${TYPE}-" | awk '{print $1}')
 echo "${TYPE} PIM list :"
 echo "${NS_LIST}"
 
-ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
-kubectl config set-context --current --namespace=argocd
-argocd login --core argocd.${GOOGLE_DOMAIN} --username admin --password ${ARGOCD_PASSWORD}
-
 for PIM in ${NS_LIST}; do
     NS_INFO=$(kubectl get ns | grep ${PIM})
     PIM=$(echo ${NS_INFO} | awk '{print $1}')
@@ -43,8 +39,8 @@ for PIM in ${NS_LIST}; do
         APP_NAME=$(kubectl get application -n argocd | grep ${PIM} | awk '{print $1}')
         case "${APP_NAME}" in
             ${PIM}) echo "  Command debug:"
-            echo "      argocd app delete -y ${PIM} && kubectl delete ${PIM} || true"
-            argocd app delete -y ${PIM} && kubectl delete ns ${PIM} || true
+            echo "      kubectl delete app ${PIM} -n argocd && kubectl delete ${PIM} || true"
+            kubectl delete app ${PIM} -n argocd && kubectl delete ns ${PIM} || true
             ;;
             *) echo "  Command debug:"
             echo "      kubectl delete ${PIM} || true"

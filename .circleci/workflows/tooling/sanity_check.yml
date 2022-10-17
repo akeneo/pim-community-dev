@@ -2,6 +2,12 @@ orbs:
     slack: circleci/slack@3.4.2
     cypress: cypress-io/cypress@1
 
+executors:
+  cypress-legacy-with-chrome:
+    docker:
+      - image: 'cypress/included:7.6.0'
+    resource_class: large
+
 workflows:
     on_demand_deployment_validation:
         when:
@@ -40,14 +46,13 @@ workflows:
                       - "Cypress install"
             - cypress/run:
                   name: "[srnt] Post deployment e2e validation"
-                  executor: cypress-with-chrome
+                  executor: cypress-legacy-with-chrome
                   browser: chrome
                   store_artifacts: true
                   post-checkout:
                       - run: cp -R ~/deployments ~/project
                   attach-workspace: true
                   config-file: ./config/cypress.srnt.json
-                  spec: tests/deployment/*
                   working_directory: deployments/test/e2e
                   cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}'
                   no-workspace: true
@@ -55,14 +60,13 @@ workflows:
                       - "[srnt] Configure cypress"
             - cypress/run:
                   name: "[grth] Post deployment e2e validation"
-                  executor: cypress-with-chrome
+                  executor: cypress-legacy-with-chrome
                   browser: chrome
                   store_artifacts: true
                   post-checkout:
                       - run: cp -R ~/deployments ~/project
                   attach-workspace: true
                   config-file: ./config/cypress.grth.json
-                  spec: tests/deployment/*
                   working_directory: deployments/test/e2e
                   cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}'
                   no-workspace: true
