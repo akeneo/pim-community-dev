@@ -98,7 +98,7 @@ module "timmy_create_tenant" {
     {
       key        = "TENANT_CONTEXT_ENCRYPT_KEY"
       project_id = var.project_id
-      secret     = "TENANT_CONTEXT_ENCRYPT_KEY"
+      secret     = "TENANT_CONTEXT_ENCRYPTION_KEY"
       version    = "latest"
     }
   ]
@@ -173,7 +173,7 @@ module "timmy_create_fire_document" {
     {
       key        = "TENANT_CONTEXT_ENCRYPT_KEY"
       project_id = var.project_id
-      secret     = "TENANT_CONTEXT_ENCRYPT_KEY"
+      secret     = "TENANT_CONTEXT_ENCRYPTION_KEY"
       version    = "latest"
     }
   ]
