@@ -50,7 +50,8 @@ class BoundedContextResolver
 
         return $this->findContext($namespace) ?: sprintf(
             'Unknown namespace context: %s',
-            str_replace('\\', '\\\\', $namespace));
+            str_replace('\\', '\\\\', $namespace)
+        );
     }
 
     private function findContext(string $nameSpace): ?string
