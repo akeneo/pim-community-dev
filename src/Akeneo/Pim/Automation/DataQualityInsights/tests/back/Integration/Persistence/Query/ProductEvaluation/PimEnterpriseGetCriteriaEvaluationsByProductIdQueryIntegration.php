@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Query\ProductEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluation;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationResult;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\FamilyCriterionEvaluation;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateAttributeSpelling;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
@@ -48,12 +45,12 @@ final class PimEnterpriseGetCriteriaEvaluationsByProductIdQueryIntegration exten
 
         $familyAttributeSpellingEvaluation = $this->givenAFamilyAttributeSpellingEvaluation($familyId);
 
-        $expectedAttributeSpellingEvaluation = new CriterionEvaluation(
+        $expectedAttributeSpellingEvaluation = new Read\CriterionEvaluation(
             $familyAttributeSpellingEvaluation->getCriterionCode(),
             $productUuid,
             $productEvaluatedAt,
             CriterionEvaluationStatus::done(),
-            new CriterionEvaluationResult(
+            new Read\CriterionEvaluationResult(
                 (new ChannelLocaleRateCollection())->addRate(
                     $channel,
                     $locale,
@@ -72,14 +69,14 @@ final class PimEnterpriseGetCriteriaEvaluationsByProductIdQueryIntegration exten
         );
     }
 
-    private function givenAFamilyAttributeSpellingEvaluation(FamilyId $familyId): FamilyCriterionEvaluation
+    private function givenAFamilyAttributeSpellingEvaluation(FamilyId $familyId): Write\FamilyCriterionEvaluation
     {
         $attributeSpellingEvaluationResult = (new Write\CriterionEvaluationResult())
             ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::done())
             ->addRateByAttributes(new ChannelCode('ecommerce'), new LocaleCode('en_US'), ['name' => 100, 'title' => 0])
             ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(75));
 
-        $familyAttributeSpellingEvaluation = new FamilyCriterionEvaluation(
+        $familyAttributeSpellingEvaluation = new Write\FamilyCriterionEvaluation(
             $familyId,
             new CriterionCode(EvaluateAttributeSpelling::CRITERION_CODE),
             new \DateTimeImmutable('2020-11-01 12:43:32'),
@@ -91,7 +88,7 @@ final class PimEnterpriseGetCriteriaEvaluationsByProductIdQueryIntegration exten
         return $familyAttributeSpellingEvaluation;
     }
 
-    private function assertReadCriterionEvaluationEquals(CriterionEvaluation $expectedCriterionEvaluation, CriterionEvaluation $criterionEvaluation): void
+    private function assertReadCriterionEvaluationEquals(Read\CriterionEvaluation $expectedCriterionEvaluation, Read\CriterionEvaluation $criterionEvaluation): void
     {
         $this->assertEquals($expectedCriterionEvaluation->getCriterionCode(), $criterionEvaluation->getCriterionCode());
         $this->assertEquals($expectedCriterionEvaluation->getProductId(), $criterionEvaluation->getProductId());

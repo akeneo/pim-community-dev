@@ -23,8 +23,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValuesCollecti
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResultCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluation;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dictionary\GetDictionaryLastUpdateDateByLocaleQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriterionEvaluationByProductIdAndCriterionCodeQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
@@ -60,7 +58,7 @@ class EvaluateSpelling implements EvaluateCriterionInterface
     ) {
     }
 
-    public function evaluate(CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues): CriterionEvaluationResult
+    public function evaluate(Write\CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues): Write\CriterionEvaluationResult
     {
         $previousEvaluation = $this->getCriterionEvaluationResultQuery->execute(
             $criterionEvaluation->getEntityId(),
@@ -69,7 +67,7 @@ class EvaluateSpelling implements EvaluateCriterionInterface
 
         $localesByChannel = $this->localesByChannelQuery->getChannelLocaleCollection();
 
-        $evaluationResult = new CriterionEvaluationResult();
+        $evaluationResult = new Write\CriterionEvaluationResult();
         foreach ($localesByChannel as $channelCode => $localesCodes) {
             foreach ($localesCodes as $localeCode) {
                 $this->evaluateChannelLocaleRate($evaluationResult, $channelCode, $localeCode, $productValues, $previousEvaluation);
@@ -80,7 +78,7 @@ class EvaluateSpelling implements EvaluateCriterionInterface
     }
 
     private function evaluateChannelLocaleRate(
-        CriterionEvaluationResult $evaluationResult,
+        Write\CriterionEvaluationResult $evaluationResult,
         ChannelCode                     $channelCode,
         LocaleCode                      $localeCode,
         ProductValuesCollection         $productValues,

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Repository;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\TextCheckerDictionaryWord;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DictionaryWord;
@@ -52,10 +51,10 @@ final class TextCheckerDictionaryRepositoryIntegration extends TestCase
         $samsung = new DictionaryWord('samsung');
         $panasonic = new DictionaryWord('panasonic');
 
-        $this->repository->save(new TextCheckerDictionaryWord($enUS, new DictionaryWord('sony')));
-        $this->repository->save(new TextCheckerDictionaryWord($enUS, new DictionaryWord('lg')));
-        $this->repository->save(new TextCheckerDictionaryWord($enUS, new DictionaryWord('samsung')));
-        $this->repository->save(new TextCheckerDictionaryWord(new LocaleCode('fr_FR'), new DictionaryWord('panasonic')));
+        $this->repository->save(new Write\TextCheckerDictionaryWord($enUS, new DictionaryWord('sony')));
+        $this->repository->save(new Write\TextCheckerDictionaryWord($enUS, new DictionaryWord('lg')));
+        $this->repository->save(new Write\TextCheckerDictionaryWord($enUS, new DictionaryWord('samsung')));
+        $this->repository->save(new Write\TextCheckerDictionaryWord(new LocaleCode('fr_FR'), new DictionaryWord('panasonic')));
 
 
         $filteredWords = $this->repository->filterExistingWords($enUS, [$sony, $samsung, $panasonic]);
@@ -65,9 +64,9 @@ final class TextCheckerDictionaryRepositoryIntegration extends TestCase
 
     public function test_it_does_not_saves_the_same_word_several_times()
     {
-        $this->repository->save(new TextCheckerDictionaryWord(new LocaleCode('en_US'), new DictionaryWord('samsung')));
-        $this->repository->save(new TextCheckerDictionaryWord(new LocaleCode('en_US'), new DictionaryWord('Samsung')));
-        $this->repository->save(new TextCheckerDictionaryWord(new LocaleCode('en_US'), new DictionaryWord('samsung')));
+        $this->repository->save(new Write\TextCheckerDictionaryWord(new LocaleCode('en_US'), new DictionaryWord('samsung')));
+        $this->repository->save(new Write\TextCheckerDictionaryWord(new LocaleCode('en_US'), new DictionaryWord('Samsung')));
+        $this->repository->save(new Write\TextCheckerDictionaryWord(new LocaleCode('en_US'), new DictionaryWord('samsung')));
 
         $this->assertCount(1, $this->repository->findByLocaleCode(new LocaleCode('en_US')));
     }
@@ -76,9 +75,9 @@ final class TextCheckerDictionaryRepositoryIntegration extends TestCase
     {
         $this->createWords();
         $this->repository->saveAll([
-            new TextCheckerDictionaryWord(new LocaleCode('en_US'), new DictionaryWord('samsung')),
-            new TextCheckerDictionaryWord(new LocaleCode('en_US'), new DictionaryWord('Panasonic')),
-            new TextCheckerDictionaryWord(new LocaleCode('fr_FR'), new DictionaryWord('samsung')),
+            new Write\TextCheckerDictionaryWord(new LocaleCode('en_US'), new DictionaryWord('samsung')),
+            new Write\TextCheckerDictionaryWord(new LocaleCode('en_US'), new DictionaryWord('Panasonic')),
+            new Write\TextCheckerDictionaryWord(new LocaleCode('fr_FR'), new DictionaryWord('samsung')),
         ]);
 
         $this->assertDictionaryWordExists('en_US', 'samsung');
@@ -90,9 +89,9 @@ final class TextCheckerDictionaryRepositoryIntegration extends TestCase
     {
         $this->createWords();
         $this->repository->saveAll([
-            new TextCheckerDictionaryWord(new LocaleCode('fr_FR'), new DictionaryWord('ete')),
-            new TextCheckerDictionaryWord(new LocaleCode('fr_FR'), new DictionaryWord('été')),
-            new TextCheckerDictionaryWord(new LocaleCode('fr_FR'), new DictionaryWord('ètè')),
+            new Write\TextCheckerDictionaryWord(new LocaleCode('fr_FR'), new DictionaryWord('ete')),
+            new Write\TextCheckerDictionaryWord(new LocaleCode('fr_FR'), new DictionaryWord('été')),
+            new Write\TextCheckerDictionaryWord(new LocaleCode('fr_FR'), new DictionaryWord('ètè')),
         ]);
 
         $this->assertDictionaryWordExists('fr_FR', 'ete');
@@ -153,12 +152,12 @@ final class TextCheckerDictionaryRepositoryIntegration extends TestCase
 
     public function test_it_retrieves_if_the_dictionary_is_empty_for_a_given_locale()
     {
-        $this->repository->save(new TextCheckerDictionaryWord(new LocaleCode('fr_FR'), new DictionaryWord('samsung')));
+        $this->repository->save(new Write\TextCheckerDictionaryWord(new LocaleCode('fr_FR'), new DictionaryWord('samsung')));
         $enUS = new LocaleCode('en_US');
 
         $this->assertTrue($this->repository->isEmptyForLocale($enUS));
 
-        $this->repository->save(new TextCheckerDictionaryWord($enUS, new DictionaryWord('samsung')));
+        $this->repository->save(new Write\TextCheckerDictionaryWord($enUS, new DictionaryWord('samsung')));
 
         $this->assertFalse($this->repository->isEmptyForLocale($enUS));
     }
@@ -184,7 +183,7 @@ SQL;
     {
         $this->createWords();
 
-        $alreadyEnabledWord = new TextCheckerDictionaryWord(new LocaleCode('en_US'), new DictionaryWord('samsung'));
+        $alreadyEnabledWord = new Write\TextCheckerDictionaryWord(new LocaleCode('en_US'), new DictionaryWord('samsung'));
 
         $this->repository->saveAll([$alreadyEnabledWord]);
         $this->repository->save($alreadyEnabledWord);

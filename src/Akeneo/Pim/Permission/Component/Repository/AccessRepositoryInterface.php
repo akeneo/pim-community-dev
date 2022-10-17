@@ -12,7 +12,6 @@
 namespace Akeneo\Pim\Permission\Component\Repository;
 
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Doctrine\ORM\QueryBuilder;
 
 /**
  * Interface for access repository
@@ -27,7 +26,7 @@ interface AccessRepositoryInterface
      * @param UserInterface $user
      * @param string        $accessLevel
      *
-     * @return QueryBuilder
+     * @return \Doctrine\ORM\QueryBuilder
      */
     public function getGrantedEntitiesQB(UserInterface $user, $accessLevel);
 }

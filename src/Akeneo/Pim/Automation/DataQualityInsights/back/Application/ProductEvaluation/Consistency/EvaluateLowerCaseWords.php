@@ -17,8 +17,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Cons
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateCriterionInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValuesCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluation;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 
 final class EvaluateLowerCaseWords implements EvaluateCriterionInterface
@@ -43,7 +41,7 @@ final class EvaluateLowerCaseWords implements EvaluateCriterionInterface
         return self::CRITERION_COEFFICIENT;
     }
 
-    public function evaluate(CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues): CriterionEvaluationResult
+    public function evaluate(Write\CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues): Write\CriterionEvaluationResult
     {
         return ($this->evaluateCaseWords)($criterionEvaluation, $productValues, $this->computeCaseWordsRate);
     }

@@ -12,11 +12,6 @@
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\DependencyInjection\Compiler;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\DependencyInjection\Compiler\ConfigureUserServicePass;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\DependencyInjection\Compiler\RegisterProductDraftPresentersPass;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\DependencyInjection\Compiler\RegisterProductProposalQueryFilterPass;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\DependencyInjection\Compiler\RegisterPublishersPass;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -34,9 +29,9 @@ class AkeneoPimWorkflowBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $container
-            ->addCompilerPass(new ResolveDoctrineTargetModelsPass())
-            ->addCompilerPass(new RegisterProductProposalQueryFilterPass('product_proposal'))
-            ->addCompilerPass(new RegisterProductProposalQueryFilterPass('published_product'));
+            ->addCompilerPass(new Compiler\ResolveDoctrineTargetModelsPass())
+            ->addCompilerPass(new Compiler\RegisterProductProposalQueryFilterPass('product_proposal'))
+            ->addCompilerPass(new Compiler\RegisterProductProposalQueryFilterPass('published_product'));
         ;
 
         $mappings = [
@@ -52,9 +47,9 @@ class AkeneoPimWorkflowBundle extends Bundle
         );
 
         $container
-            ->addCompilerPass(new RegisterProductDraftPresentersPass())
-            ->addCompilerPass(new RegisterPublishersPass())
-            ->addCompilerPass(new ConfigureUserServicePass())
+            ->addCompilerPass(new Compiler\RegisterProductDraftPresentersPass())
+            ->addCompilerPass(new Compiler\RegisterPublishersPass())
+            ->addCompilerPass(new DependencyInjection\Compiler\ConfigureUserServicePass())
         ;
     }
 }

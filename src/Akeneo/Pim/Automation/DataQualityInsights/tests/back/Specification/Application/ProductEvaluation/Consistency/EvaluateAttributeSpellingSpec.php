@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Structure\AttributeSpellcheck;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Structure\SpellcheckResultByLocaleCollection;
@@ -58,7 +57,7 @@ final class EvaluateAttributeSpellingSpec extends ObjectBehavior
             'size' => $this->createSizeAttributeEvaluation(),
         ]);
 
-        $expectedResult = (new CriterionEvaluationResult())
+        $expectedResult = (new Write\CriterionEvaluationResult())
             ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::done())
             ->addRateByAttributes(new ChannelCode('ecommerce'), new LocaleCode('en_US'), ['sku' => 100, 'height' => 100, 'size' => 0])
             ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(67))

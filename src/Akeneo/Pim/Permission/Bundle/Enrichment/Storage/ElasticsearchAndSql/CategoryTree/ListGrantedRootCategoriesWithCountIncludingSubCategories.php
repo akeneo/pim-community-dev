@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Permission\Bundle\Enrichment\Storage\ElasticsearchAndSql\CategoryTree;
 
 use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query;
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query\ListRootCategoriesWithCountIncludingSubCategories;
 use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\RootCategory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
@@ -15,7 +14,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ListGrantedRootCategoriesWithCountIncludingSubCategories implements ListRootCategoriesWithCountIncludingSubCategories
+class ListGrantedRootCategoriesWithCountIncludingSubCategories implements Query\ListRootCategoriesWithCountIncludingSubCategories
 {
     /** @var Connection */
     private $connection;

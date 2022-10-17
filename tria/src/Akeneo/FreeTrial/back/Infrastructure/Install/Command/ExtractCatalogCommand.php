@@ -13,19 +13,15 @@ declare(strict_types=1);
 
 namespace Akeneo\FreeTrial\Infrastructure\Install\Command;
 
-use Symfony\Component\Process\Exception\LogicException;
-use Akeneo\FreeTrial\Infrastructure\Install\Command\Extractor\ExtractMediaFiles;
 use Akeneo\FreeTrial\Infrastructure\Install\Command\Extractor\ExtractProducts;
 use Akeneo\FreeTrial\Infrastructure\Install\Command\Extractor\ExtractStructure;
 use Akeneo\FreeTrial\Infrastructure\Install\InstallCatalogTrait;
 use Akeneo\Pim\ApiClient\AkeneoPimClientBuilder;
 use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
-use Akeneo\Pim\Enrichment\Component\FileStorage;
-use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
-use League\Flysystem\FilesystemOperator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\Exception\LogicException;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 

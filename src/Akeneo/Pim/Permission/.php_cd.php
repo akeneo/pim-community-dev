@@ -182,7 +182,6 @@ $rules = [
         'Symfony\Component',
         'Webmozart\Assert',
         'Doctrine\Common',
-        'Doctrine\ORM\QueryBuilder',
         'Doctrine\Persistence',
         'Akeneo\Tool',
         'Ramsey\Uuid',

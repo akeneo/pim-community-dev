@@ -15,9 +15,6 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateAttributeSpelling;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluation;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByEntityIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
@@ -32,7 +29,7 @@ final class PimEnterpriseGetCriteriaEvaluationsByProductUuidQuery implements Get
     ) {
     }
 
-    public function execute(ProductEntityIdInterface $productId): CriterionEvaluationCollection
+    public function execute(ProductEntityIdInterface $productId): Read\CriterionEvaluationCollection
     {
         Assert::isInstanceOf($productId, ProductUuid::class);
 
@@ -43,11 +40,11 @@ final class PimEnterpriseGetCriteriaEvaluationsByProductUuidQuery implements Get
             return $productCriteriaEvaluations;
         }
 
-        $completeCriterionEvaluations = new CriterionEvaluationCollection();
+        $completeCriterionEvaluations = new Read\CriterionEvaluationCollection();
 
         foreach ($productCriteriaEvaluations as $criterionEvaluation) {
             if (EvaluateAttributeSpelling::CRITERION_CODE === (string)$criterionEvaluation->getCriterionCode()) {
-                $criterionEvaluation = new CriterionEvaluation(
+                $criterionEvaluation = new Read\CriterionEvaluation(
                     $criterionEvaluation->getCriterionCode(),
                     $criterionEvaluation->getProductId(),
                     $criterionEvaluation->getEvaluatedAt(),
@@ -61,7 +58,7 @@ final class PimEnterpriseGetCriteriaEvaluationsByProductUuidQuery implements Get
         return $completeCriterionEvaluations;
     }
 
-    private function getAttributeSpellingResultFromProductFamily(ProductUuid $productUuid): ?CriterionEvaluationResult
+    private function getAttributeSpellingResultFromProductFamily(ProductUuid $productUuid): ?Read\CriterionEvaluationResult
     {
         $query = <<<SQL
 SELECT family_evaluation.result
@@ -84,6 +81,6 @@ SQL;
 
         $rawResult = json_decode($rawResult, true, JSON_THROW_ON_ERROR);
 
-        return CriterionEvaluationResult::fromArray($rawResult);
+        return Read\CriterionEvaluationResult::fromArray($rawResult);
     }
 }

@@ -16,8 +16,6 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluatio
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateCriterionInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValuesCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluation;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetAttributeOptionSpellcheckQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
@@ -50,7 +48,7 @@ final class EvaluateAttributeOptionSpelling implements EvaluateCriterionInterfac
         $this->getAttributeOptionSpellcheckQuery = $getAttributeOptionSpellcheckQuery;
     }
 
-    public function evaluate(CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues): CriterionEvaluationResult
+    public function evaluate(Write\CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues): Write\CriterionEvaluationResult
     {
         $localesByChannel = $this->localesByChannelQuery->getChannelLocaleCollection();
 
@@ -71,7 +69,7 @@ final class EvaluateAttributeOptionSpelling implements EvaluateCriterionInterfac
             $this->optionsSpellchecksByAttribute[$attributeCode] = $spellChecks;
         }
 
-        $evaluationResult = new CriterionEvaluationResult();
+        $evaluationResult = new Write\CriterionEvaluationResult();
 
         foreach ($localesByChannel as $channelCode => $localesCodes) {
             foreach ($localesCodes as $localeCode) {
@@ -112,7 +110,7 @@ final class EvaluateAttributeOptionSpelling implements EvaluateCriterionInterfac
         }
     }
 
-    private function evaluateChannelLocaleRate(CriterionEvaluationResult $evaluationResult, ChannelCode $channelCode, LocaleCode $localeCode, ProductValuesCollection $productValues): void
+    private function evaluateChannelLocaleRate(Write\CriterionEvaluationResult $evaluationResult, ChannelCode $channelCode, LocaleCode $localeCode, ProductValuesCollection $productValues): void
     {
         $simpleSelectOptionCodes = $productValues->getSimpleSelectValues();
         $simpleSelectRates = $this->evaluateSimpleSelectAttributesRates($channelCode, $localeCode, $simpleSelectOptionCodes);

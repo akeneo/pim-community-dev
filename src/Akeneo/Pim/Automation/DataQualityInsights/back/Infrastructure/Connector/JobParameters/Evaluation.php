@@ -17,7 +17,6 @@ use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 use Symfony\Component\Validator\Constraints;
-use Symfony\Component\Validator\Constraints\Collection;
 
 class Evaluation implements ConstraintCollectionProviderInterface, DefaultValuesProviderInterface
 {
@@ -25,12 +24,12 @@ class Evaluation implements ConstraintCollectionProviderInterface, DefaultValues
     public const EVALUATED_SINCE_DATE_FORMAT = 'Y-m-d H:i:s';
     public const EVALUATED_SINCE_DEFAULT_TIME = '-1 DAY';
 
-    public function getConstraintCollection(): Collection
+    public function getConstraintCollection(): Constraints\Collection
     {
         $dateConstraint = new Constraints\DateTime();
         $dateConstraint->format = self::EVALUATED_SINCE_DATE_FORMAT;
 
-        return new Collection(
+        return new Constraints\Collection(
             [
                 'fields' => [
                     self::EVALUATED_SINCE_PARAMETER => $dateConstraint,

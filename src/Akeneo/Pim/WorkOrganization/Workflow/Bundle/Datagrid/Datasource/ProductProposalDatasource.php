@@ -24,7 +24,6 @@ use Oro\Bundle\PimDataGridBundle\Datasource\ParameterizableInterface;
 use Oro\Bundle\PimDataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\MassActionRepositoryInterface;
 use Oro\Bundle\PimDataGridBundle\Extension\Pager\PagerExtension;
-use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -136,7 +135,7 @@ class ProductProposalDatasource implements DatasourceInterface, ParameterizableI
      *
      * @return array
      * @throws \Exception
-     * @throws ExceptionInterface
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
      */
     private function normalizeEntityWithValues(EntityWithValuesDraftInterface $item): array
     {

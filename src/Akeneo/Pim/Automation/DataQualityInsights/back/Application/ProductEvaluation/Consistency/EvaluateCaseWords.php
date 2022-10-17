@@ -17,8 +17,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Cons
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValues;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValuesCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluation;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
@@ -32,11 +30,11 @@ class EvaluateCaseWords
     ) {
     }
 
-    public function __invoke(CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues, ComputeCaseWordsRate $computeCaseWordsRate): CriterionEvaluationResult
+    public function __invoke(Write\CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues, ComputeCaseWordsRate $computeCaseWordsRate): Write\CriterionEvaluationResult
     {
         $localesByChannel = $this->localesByChannelQuery->getChannelLocaleCollection();
 
-        $evaluationResult = new CriterionEvaluationResult();
+        $evaluationResult = new Write\CriterionEvaluationResult();
         foreach ($localesByChannel as $channelCode => $localeCodes) {
             foreach ($localeCodes as $localeCode) {
                 $this->evaluateChannelLocaleRate($evaluationResult, $channelCode, $localeCode, $productValues, $computeCaseWordsRate);
@@ -46,7 +44,7 @@ class EvaluateCaseWords
         return $evaluationResult;
     }
 
-    private function evaluateChannelLocaleRate(CriterionEvaluationResult $evaluationResult, ChannelCode $channelCode, LocaleCode $localeCode, ProductValuesCollection $productValues, ComputeCaseWordsRate $computeCaseWordsRate): void
+    private function evaluateChannelLocaleRate(Write\CriterionEvaluationResult $evaluationResult, ChannelCode $channelCode, LocaleCode $localeCode, ProductValuesCollection $productValues, ComputeCaseWordsRate $computeCaseWordsRate): void
     {
         $attributesRates = [];
         /** @var ProductValues $productValueByChannelAndLocale */

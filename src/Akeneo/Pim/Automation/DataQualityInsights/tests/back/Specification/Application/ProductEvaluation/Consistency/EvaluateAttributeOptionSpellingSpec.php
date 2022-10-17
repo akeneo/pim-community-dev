@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluation;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateAttributeOptionSpelling;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Attribute;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollection;
@@ -58,7 +56,7 @@ class EvaluateAttributeOptionSpellingSpec extends ObjectBehavior
         GetAttributeOptionSpellcheckQueryInterface $getAttributeOptionSpellcheckQuery
     ) {
         $productUuid = ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed'));
-        $criterionEvaluation = new CriterionEvaluation(
+        $criterionEvaluation = new Write\CriterionEvaluation(
             new CriterionCode(EvaluateAttributeOptionSpelling::CRITERION_CODE),
             $productUuid,
             CriterionEvaluationStatus::pending()
@@ -164,7 +162,7 @@ class EvaluateAttributeOptionSpellingSpec extends ObjectBehavior
         $localeEn = new LocaleCode('en_US');
         $localeFr = new LocaleCode('fr_FR');
 
-        $expectedEvaluationResult = (new CriterionEvaluationResult())
+        $expectedEvaluationResult = (new Write\CriterionEvaluationResult())
             ->addRate($channelEcommerce, $localeEn, new Rate(66))
             ->addStatus($channelEcommerce, $localeEn, CriterionEvaluationResultStatus::done())
             ->addRateByAttributes($channelEcommerce, $localeEn, ['size' => 100, 'color' => 33])

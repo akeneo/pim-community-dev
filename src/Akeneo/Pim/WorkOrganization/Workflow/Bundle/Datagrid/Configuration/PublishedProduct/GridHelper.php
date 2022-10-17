@@ -12,7 +12,6 @@
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Configuration\PublishedProduct;
 
 use Akeneo\Pim\Permission\Component\Attributes;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -50,7 +49,7 @@ class GridHelper
     public function getActionConfigurationClosure()
     {
         return function (ResultRecordInterface $record) {
-            /** @var PublishedProductInterface $published */
+            /** @var \Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface $published */
             $published = $this->publishedRepository->find($record->getValue('id'));
             $product = $published->getOriginalProduct();
             $ownershipGranted = $this->authorizationChecker->isGranted(Attributes::OWN, $product);
