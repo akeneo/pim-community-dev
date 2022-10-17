@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write;
 
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\Exception\InvalidPassword;
+use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Exception\UserHasNotConsent;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\Validation\Password;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\HashPassword;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository;
@@ -25,6 +26,10 @@ final class UpdatePasswordHandler
 
     public function __invoke(UpdatePassword $updatePassword): void
     {
+        if (false ===  $updatePassword->hasConsent) {
+            throw new UserHasNotConsent();
+        }
+
         $contributorAccount = $this->contributorAccountRepository->find(
             Identifier::fromString($updatePassword->contributorAccountIdentifier),
         );

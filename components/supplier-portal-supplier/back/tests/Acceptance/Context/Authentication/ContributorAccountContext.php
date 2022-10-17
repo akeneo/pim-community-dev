@@ -57,7 +57,7 @@ final class ContributorAccountContext implements Context
     {
         $contributorAccount = $this->contributorAccountRepository->findByEmail(Email::fromString($email));
         try {
-            ($this->updatePasswordHandler)(new UpdatePassword($contributorAccount->identifier(), $password));
+            ($this->updatePasswordHandler)(new UpdatePassword($contributorAccount->identifier(), $password, true));
         } catch (InvalidPassword $e) {
             $this->storeValidationErrors($e);
         }
