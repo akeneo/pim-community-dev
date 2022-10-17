@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useState} from 'react';
 import {Breadcrumb, Button, TabBar} from 'akeneo-design-system';
 import styled from 'styled-components';
 import {PageHeader, PimView, useTranslate} from '@akeneo-pim-community/shared';
@@ -22,7 +22,6 @@ type EditGeneratorProps = {
 
 const CreateGenerator: React.FC<EditGeneratorProps> = ({initialGenerator}) => {
   const [currentTab, setCurrentTab] = useState(Tabs.GENERAL);
-  const createSetTab = useCallback((value: Tabs) => () => setCurrentTab(value), []);
   const translate = useTranslate();
   const [generator, setGenerator] = useState<IdentifierGenerator>(initialGenerator);
 
@@ -44,7 +43,8 @@ const CreateGenerator: React.FC<EditGeneratorProps> = ({initialGenerator}) => {
           />
         </PageHeader.UserActions>
         <PageHeader.Actions>
-          <Button onClick={() => alert('Not implemented yet')}>
+          {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
+          <Button onClick={/* istanbul ignore next */() => {} /* TODO */}>;
             {translate('pim_common.save')}
           </Button>
         </PageHeader.Actions>
@@ -52,13 +52,13 @@ const CreateGenerator: React.FC<EditGeneratorProps> = ({initialGenerator}) => {
       </PageHeader>
       <Container>
         <TabBar moreButtonTitle="More">
-          <TabBar.Tab isActive={currentTab === Tabs.GENERAL} onClick={createSetTab(Tabs.GENERAL)}>
+          <TabBar.Tab isActive={currentTab === Tabs.GENERAL} onClick={() => setCurrentTab(Tabs.GENERAL)}>
             {translate('pim_identifier_generator.tabs.general')}
           </TabBar.Tab>
-          <TabBar.Tab isActive={currentTab === Tabs.PRODUCT_SELECTION} onClick={createSetTab(Tabs.PRODUCT_SELECTION)}>
+          <TabBar.Tab isActive={currentTab === Tabs.PRODUCT_SELECTION} onClick={() => setCurrentTab(Tabs.PRODUCT_SELECTION)}>
             {translate('pim_identifier_generator.tabs.product_selection')}
           </TabBar.Tab>
-          <TabBar.Tab isActive={currentTab === Tabs.STRUCTURE} onClick={createSetTab(Tabs.STRUCTURE)}>
+          <TabBar.Tab isActive={currentTab === Tabs.STRUCTURE} onClick={() => setCurrentTab(Tabs.STRUCTURE)}>
             {translate('pim_identifier_generator.tabs.identifier_structure')}
           </TabBar.Tab>
         </TabBar>

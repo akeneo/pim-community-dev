@@ -1,19 +1,11 @@
 import {useQuery} from 'react-query';
-
-type UiLocale = {
-  id: number;
-  code: string;
-  label: string;
-  region: string;
-  language: string;
-}
+import {UiLocale} from '../models/ui-locale';
 
 const useUiLocales: () => {
   data?: UiLocale[],
   error: Error | null,
   isSuccess: boolean
 } = () => {
-  // TODO Ui calls 2 times the route
   const getUiLocales = async () => {
     return fetch('/system/locale/ui', {
       method: 'GET',

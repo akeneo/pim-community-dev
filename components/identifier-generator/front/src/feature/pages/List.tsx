@@ -52,7 +52,6 @@ const List: React.FC<{}> = () => {
       </PageHeader>
     </>
     }
-
     {currentScreen === Screen.CREATE_MODAL &&
     <CreateGeneratorModal onClose={closeModal} onSave={openCreatePage} />
     }

@@ -4,6 +4,7 @@ import {Field, SectionTitle, TextInput} from 'akeneo-design-system';
 import {IdentifierAttributeSelector} from '../IdentifierAttributeSelector';
 import {Styled} from '../Styled';
 import {LabelTranslations} from './LabelTranslations';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 type GeneralPropertiesProps = {
   generator: IdentifierGenerator;
@@ -12,6 +13,7 @@ type GeneralPropertiesProps = {
 
 const GeneralProperties: React.FC<GeneralPropertiesProps> = ({generator, onGeneratorChange}) => {
   const defaultIdentifierCode = 'sku'; // TODO
+  const translate = useTranslate();
 
   const onLabelChange = useCallback((labelCollection: LabelCollection) => {
     generator.labels = labelCollection;
@@ -21,11 +23,11 @@ const GeneralProperties: React.FC<GeneralPropertiesProps> = ({generator, onGener
   return <>
     <SectionTitle>
       <SectionTitle.Title>
-        General parameters TODO
+        {translate('pim_identifier_generator.general.title')}
       </SectionTitle.Title>
     </SectionTitle>
     <Styled.FormContainer>
-      <Field label={'Code TODO'}>
+      <Field label={'pim_common.code'}>
         <TextInput value={generator.code} readOnly={true} />
       </Field>
       <IdentifierAttributeSelector code={generator.target || defaultIdentifierCode}/>

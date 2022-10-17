@@ -1,8 +1,9 @@
 import React, {useCallback} from 'react';
-import {Field, SectionTitle, TextInput} from 'akeneo-design-system';
+import {Field, Helper, SectionTitle, TextInput} from 'akeneo-design-system';
 import {Styled} from '../Styled';
-import {useUiLocales} from '../../hooks/useUiLocales';
+import {useUiLocales} from '../../hooks';
 import {LabelCollection} from '../../../models';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 type LabelTranslationsProps = {
   labelCollection: LabelCollection;
@@ -10,7 +11,8 @@ type LabelTranslationsProps = {
 }
 
 const LabelTranslations: React.FC<LabelTranslationsProps> = ({labelCollection, onLabelsChange}) => {
-  const {data: locales} = useUiLocales();
+  const translate = useTranslate();
+  const {data: locales, error} = useUiLocales();
 
   const onLabelChange = useCallback((locale: string) => (label: string) => {
     labelCollection[locale] = label;
@@ -20,15 +22,19 @@ const LabelTranslations: React.FC<LabelTranslationsProps> = ({labelCollection, o
   return <>
     <SectionTitle>
       <SectionTitle.Title>
-        Label translations in UI locale TODO
+        {translate('pim_identifier_generator.general.label_translations_in_ui_locale')}
       </SectionTitle.Title>
     </SectionTitle>
     <Styled.FormContainer>
-      {(locales || []).map(locale => (
+      {!error?.message && (locales || []).map(locale => (
         <Field label={locale.label} key={locale.code} locale={locale.code}>
           <TextInput value={labelCollection[locale.code] || ''} onChange={onLabelChange(locale.code)}/>
         </Field>
       ))}
+      {error?.message && <Helper inline level="error">
+        {translate('pim_error.general')}
+      </Helper>
+      }
     </Styled.FormContainer>
   </>;
 };

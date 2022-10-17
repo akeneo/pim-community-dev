@@ -3,7 +3,7 @@ import {renderHook} from '@testing-library/react-hooks';
 import {useIdentifierAttributes} from '../useIdentifierAttributes';
 import {createWrapper} from '../../tests/hooks/config/createWrapper';
 import {act} from 'react-dom/test-utils';
-import {FlattenAttribute} from '../../models/attributes';
+import {FlattenAttribute} from '../../models/flatten-attribute';
 
 describe('useIdentifierAttributes', () => {
   beforeEach(() => {
@@ -14,7 +14,11 @@ describe('useIdentifierAttributes', () => {
   });
 
   test('it retrieves identifier attribute list', async () => {
-    const {result} = renderHook<null, {isSuccess: boolean; data: FlattenAttribute[] | undefined}>(
+    const {result} = renderHook<null, {
+      isSuccess: boolean;
+      data?: FlattenAttribute[] | undefined;
+      error: Error | null
+    }>(
       () => useIdentifierAttributes(),
       {
         wrapper: createWrapper(),
