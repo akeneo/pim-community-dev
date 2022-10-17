@@ -12,4 +12,7 @@ pim_identifier_generator:
         general: "General"
         product_selection: "Product Selection"
         identifier_structure: "Identifier Structure"
+    general:
+        title: "General properties"
+        label_translations_in_ui_locale: "Label translations in UI locale"
 
