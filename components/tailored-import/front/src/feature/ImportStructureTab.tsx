@@ -124,8 +124,11 @@ const ImportStructureTab = ({
 
   return (
     <>
-      {null === structureConfiguration.file_key ? (
-        <InitializeFileStructure onConfirm={handleFileStructureInitialized} />
+      {null === structureConfiguration.file_key || 0 === structureConfiguration.import_structure.columns.length ? (
+        <InitializeFileStructure
+          initialFileKey={structureConfiguration.file_key}
+          onConfirm={handleFileStructureInitialized}
+        />
       ) : (
         <Container>
           <DataMappingList

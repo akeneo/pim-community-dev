@@ -11,13 +11,7 @@ test('It fetch the template information', async () => {
   const {result} = renderHookWithProviders(() => useFileTemplateInformationFetcher());
   const fileTemplateInformationFetcher = result.current;
 
-  fileTemplateInformationFetcher(
-    {
-      originalFilename: 'foo.xlsx',
-      filePath: 'path/to/foo.xlsx',
-    },
-    null
-  );
+  fileTemplateInformationFetcher('path/to/foo.xlsx', null);
 
   expect(global.fetch).toBeCalledWith('pimee_tailored_import_get_file_template_information_action', {
     headers: {

@@ -12,11 +12,6 @@ const fileStructure: FileStructure = {
   sheet_name: 'first sheet',
 };
 
-const fileInfo = {
-  originalFilename: 'foo.xlsx',
-  filePath: 'path/to/foo.xlsx',
-};
-
 let mockFileTemplateInformationFetcher: jest.Mock;
 beforeEach(() => {
   mockFileTemplateInformationFetcher = jest.fn(
@@ -43,7 +38,7 @@ test('it displays inputs in order to modify the file structure and a preview of 
       fileStructure={fileStructure}
       onFileStructureChange={jest.fn()}
       validationErrors={[]}
-      fileInfo={fileInfo}
+      fileKey="path/to/foo.xlsx"
     />
   );
 
@@ -73,7 +68,7 @@ test('it change file structure and refresh displayed preview when sheet is chang
       fileStructure={fileStructure}
       onFileStructureChange={handleFileStructureChange}
       validationErrors={[]}
-      fileInfo={fileInfo}
+      fileKey="path/to/foo.xlsx"
     />
   );
 
@@ -82,7 +77,7 @@ test('it change file structure and refresh displayed preview when sheet is chang
     await fireEvent.click(screen.getByText('second sheet'));
   });
 
-  expect(mockFileTemplateInformationFetcher).toHaveBeenCalledWith(fileInfo, 'second sheet');
+  expect(mockFileTemplateInformationFetcher).toHaveBeenCalledWith('path/to/foo.xlsx', 'second sheet');
   expect(handleFileStructureChange).toHaveBeenCalledWith({
     header_row: 1,
     first_column: 0,
