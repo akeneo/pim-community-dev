@@ -34,6 +34,7 @@ services:
       BLACKFIRE_CLIENT_ID: '${BLACKFIRE_CLIENT_ID:-client_id}'
       BLACKFIRE_CLIENT_TOKEN: '${BLACKFIRE_CLIENT_TOKEN:-client_token}'
       ASPELL_BINARY_PATH: '${ASPELL_BINARY_PATH:-aspell}'
+      MAGICK_CONFIGURE_PATH: '/etc/php/8.0/fpm/'
     volumes:
       - './:/srv/pim'
       - './docker/fpm.conf:/etc/php/8.0/fpm/pool.d/zzz-akeneo.conf'
