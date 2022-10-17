@@ -1,6 +1,10 @@
 import {apiFetch} from '../../../api/apiFetch';
 
-const savePassword = async (data: {contributorAccountIdentifier: string; plainTextPassword: string}) => {
+const savePassword = async (data: {
+    contributorAccountIdentifier: string;
+    plainTextPassword: string;
+    consent: boolean;
+}) => {
     return await apiFetch(`/supplier-portal/authentication/set-up-password`, {
         method: 'PUT',
         headers: {

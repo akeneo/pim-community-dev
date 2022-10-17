@@ -22,7 +22,7 @@ const useContributorAccount = (accessToken: string) => {
 
     const mutation = useMutation(savePassword);
 
-    const submitPassword = async (password: string) => {
+    const submitPassword = async (password: string, hasConsentToPrivacyPolicy: boolean) => {
         if (!contributorAccount) {
             return;
         }
@@ -31,6 +31,7 @@ const useContributorAccount = (accessToken: string) => {
             await mutation.mutateAsync({
                 contributorAccountIdentifier: contributorAccount.id,
                 plainTextPassword: password,
+                consent: hasConsentToPrivacyPolicy,
             });
             notify(
                 intl.formatMessage({

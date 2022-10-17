@@ -92,14 +92,29 @@ test('it does not enable submit button if the password does not contain at least
     expect(screen.queryAllByTestId('password-rule-is-valid')).toHaveLength(4);
 });
 
-test('it enables submit button if passwords are equal and match requirements', async () => {
+test('it does not enable submit button if the user has not consent to privacy policy', async () => {
     renderWithProviders(<SetUpPassword />);
 
     let passwordInput = screen.getByTestId('password-input');
     let confirmPasswordInput = screen.getByTestId('confirm-password-input');
 
+    fireEvent.change(passwordInput, {target: {value: 'aAAAAAAA'}});
+    fireEvent.change(confirmPasswordInput, {target: {value: 'aAAAAAAA'}});
+
+    let submitButton = screen.getByTestId('submit-button');
+    expect(submitButton).toBeDisabled();
+});
+
+test('it enables submit button if passwords are equal, match requirements and if the user consents to privacy policy', async () => {
+    renderWithProviders(<SetUpPassword />);
+
+    let passwordInput = screen.getByTestId('password-input');
+    let confirmPasswordInput = screen.getByTestId('confirm-password-input');
+    const consentCheckbox = screen.getByRole('checkbox');
+
     fireEvent.change(passwordInput, {target: {value: '1aAAAAAA'}});
     fireEvent.change(confirmPasswordInput, {target: {value: '1aAAAAAA'}});
+    fireEvent.click(consentCheckbox);
 
     let submitButton = screen.getByTestId('submit-button');
     expect(submitButton).toBeEnabled();
