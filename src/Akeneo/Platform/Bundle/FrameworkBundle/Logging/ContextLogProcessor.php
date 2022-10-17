@@ -48,14 +48,15 @@ class ContextLogProcessor
 
         $record['context'] = array_merge($record['context'] ?? [], $this->cachedContext);
         $record['trace_id'] = $this->traceId;
+
         return $record;
     }
 
     public function initCommandContext(Command $cmd)
     {
         $this->traceId= (string) Uuid::uuid4();
-        $this->cachedContext['cmd_name']= $cmd->getName();
-        $this->cachedContext['akeneo_context']= $this->boundedContextResolver->fromCommand($cmd)?: "Unknown context";
+        $this->cachedContext['cmd_name'] = $cmd->getName();
+        $this->cachedContext['akeneo_context'] = $this->boundedContextResolver->fromCommand($cmd) ?: "Unknown context";
     }
 
     public function insertContext(string $key, string $value): void

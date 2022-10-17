@@ -88,12 +88,26 @@ class ContextLogProcessorSpec extends ObjectBehavior
         $returnedMock = $this->__invoke($this->initIncomingContextfullRecord());
 
         //checks
-        $returnedMock->shouldHaveKeyWithValue(self::REF_KEY, self::REF_VALUE); //unchanged existing record
+        $returnedMock->shouldHaveKeyWithValue(
+            self::REF_KEY,
+            self::REF_VALUE
+        ); //unchanged existing record
 
-        $returnedMock['context']->shouldHaveKeyWithValue(self::REF_KEY_2, self::REF_VALUE_2); //unchanged existing context
-        $returnedMock['context']->shouldHaveKeyWithValue('path_info', self::TEST_SCHEMA . self::PATH_INFO);
-        $returnedMock['context']->shouldHaveKeyWithValue('akeneo_context', self::BOUNDED_CONTEXT);
-        $returnedMock['trace_id']->shouldMatch('/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/'); //UUID v4 pattern matching https://stackoverflow.com/a/6223251
+        $returnedMock['context']->shouldHaveKeyWithValue(
+            self::REF_KEY_2,
+            self::REF_VALUE_2
+        ); //unchanged existing context
+        $returnedMock['context']->shouldHaveKeyWithValue(
+            'path_info',
+            self::TEST_SCHEMA . self::PATH_INFO
+        );
+        $returnedMock['context']->shouldHaveKeyWithValue(
+            'akeneo_context',
+            self::BOUNDED_CONTEXT
+        );
+        $returnedMock['trace_id']->shouldMatch(
+            '/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/'
+        ); //UUID v4 pattern matching https://stackoverflow.com/a/6223251
 
     }
 
@@ -105,11 +119,25 @@ class ContextLogProcessorSpec extends ObjectBehavior
         $boundedContextResolver->fromCommand($cmd)->willReturn(self::BOUNDED_CONTEXT);
         $this->initCommandContext($cmd);
         $returnedMock = $this->__invoke($this->initIncomingContextfullRecord());
-        $returnedMock->shouldHaveKeyWithValue(self::REF_KEY, self::REF_VALUE); //unchanged existing record
-        $returnedMock['context']->shouldHaveKeyWithValue(self::REF_KEY_2, self::REF_VALUE_2); //unchanged existing context
-        $returnedMock['context']->shouldHaveKeyWithValue('cmd_name', self::CMD_NAME);
-        $returnedMock['context']->shouldHaveKeyWithValue('akeneo_context', self::BOUNDED_CONTEXT);
-        $returnedMock['trace_id']->shouldMatch('/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/'); //UUID v4 pattern matching https://stackoverflow.com/a/6223251
+        $returnedMock->shouldHaveKeyWithValue(
+            self::REF_KEY,
+            self::REF_VALUE
+        ); //unchanged existing record
+        $returnedMock['context']->shouldHaveKeyWithValue(
+            self::REF_KEY_2,
+            self::REF_VALUE_2
+        ); //unchanged existing context
+        $returnedMock['context']->shouldHaveKeyWithValue(
+            'cmd_name',
+            self::CMD_NAME
+        );
+        $returnedMock['context']->shouldHaveKeyWithValue(
+            'akeneo_context',
+            self::BOUNDED_CONTEXT
+        );
+        $returnedMock['trace_id']->shouldMatch(
+            '/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/'
+        ); //UUID v4 pattern matching https://stackoverflow.com/a/6223251
     }
 
     function it_can_initialize_command_with_unknown_context(

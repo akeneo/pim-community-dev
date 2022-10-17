@@ -127,7 +127,7 @@ class BoundedContextResolverSpec extends ObjectBehavior
         $this->fromCommand($cmd)->shouldReturn('Tool');
     }
 
-    function it_cannot_resolve_context_from_command(
+    function it_cannot_resolve_context_from_unknown_command(
         ConsumeMessagesCommand $cmd,
         ControllerResolverInterface $controllerResolver
     ) {

@@ -48,9 +48,9 @@ class BoundedContextResolver
 
         $namespace = is_array($controller) ? get_class($controller[0]) : get_class($controller);
 
-
-
-        return $this->findContext($namespace)?: sprintf('Unknown namespace context: %s', str_replace('\\', '\\\\', $namespace));
+        return $this->findContext($namespace) ?: sprintf(
+            'Unknown namespace context: %s',
+            str_replace('\\', '\\\\', $namespace));
     }
 
     private function findContext(string $nameSpace): ?string
@@ -60,6 +60,7 @@ class BoundedContextResolver
                 return $boundedContext;
             }
         }
+
         return null;
     }
 
