@@ -15,9 +15,9 @@ final class InMemoryGetSupplierWithContributors implements GetSupplierWithContri
     {
     }
 
-    public function __invoke(Identifier $identifier): ?SupplierWithContributors
+    public function __invoke(string $identifier): ?SupplierWithContributors
     {
-        $supplier = $this->supplierRepository->find($identifier);
+        $supplier = $this->supplierRepository->find(Identifier::fromString($identifier));
 
         if (null === $supplier) {
             return null;
