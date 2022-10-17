@@ -1117,10 +1117,8 @@ JSON;
         Assert::assertArrayNotHasKey('next', $result['_links']);
 
         foreach ($result['_embedded']['items'] as $index => $product) {
-            if (isset($product['uuid'])) {
-                Assert::assertTrue(Uuid::isValid($product['uuid']));
-                Assert::assertNotEquals($uuid->toString(), $product['uuid']);
-            }
+            Assert::assertIsString($product['uuid'] ?? null);
+            Assert::assertNotEquals($uuid->toString(), $product['uuid']);
         }
     }
 
