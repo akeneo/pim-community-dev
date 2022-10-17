@@ -119,7 +119,7 @@ final class GetRecordsValidatorTest extends AbstractValidationTest
                     ]
                 ),
             ],
-            'request with include_codes' => [
+            'request with invalid include_codes' => [
                 'This value should be of type {{ type }}.',
                 '[include_codes]',
                 new Request(
@@ -137,7 +137,7 @@ final class GetRecordsValidatorTest extends AbstractValidationTest
                     ]
                 ),
             ],
-            'request with include_codes' => [
+            'request with invalid exclude_codes' => [
                 'This value should be of type {{ type }}.',
                 '[exclude_codes]',
                 new Request(
