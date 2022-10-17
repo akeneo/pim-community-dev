@@ -52,7 +52,7 @@ class JobExecutionAuthenticatorSpec extends ObjectBehavior
         $jobParameters->has('is_user_authenticated')->willReturn(true);
         $jobParameters->get('is_user_authenticated')->willReturn(true);
 
-        $userProvider->loadUserByUsername('julia')->willReturn($user);
+        $userProvider->loadUserByIdentifier('julia')->willReturn($user);
 
         $user->getRoles()->willReturn(['role']);
 
@@ -149,7 +149,7 @@ class JobExecutionAuthenticatorSpec extends ObjectBehavior
         $jobParameters->has('is_user_authenticated')->willReturn(true);
         $jobParameters->get('is_user_authenticated')->willReturn(true);
 
-        $userProvider->loadUserByUsername('julia')->willThrow(UserNotFoundException::class);
+        $userProvider->loadUserByIdentifier('julia')->willThrow(UserNotFoundException::class);
 
         $token  = new UsernamePasswordToken($user->getWrappedObject(), null, 'main', ['role']);
         $tokenStorage->setToken($token)->shouldNotBeCalled();
