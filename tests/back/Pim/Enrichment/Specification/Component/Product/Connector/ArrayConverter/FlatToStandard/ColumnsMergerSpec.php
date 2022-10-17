@@ -385,4 +385,35 @@ class ColumnsMergerSpec extends ObjectBehavior
         ];
         $this->merge($row)->shouldReturn($mergedRow);
     }
+
+    public function it_removes_line_breaks_from_measurements(
+        AssociationColumnsResolver $associationColumnResolver,
+        AttributeColumnInfoExtractor $fieldExtractor,
+        AttributeInterface $weight
+    ) {
+        $row = [
+            'weight' => "10\n",
+            "weight-unit" => "CENTIMETER"
+        ];
+
+        $fieldExtractor->extractColumnInfo('weight')->willReturn([
+            'attribute' => $weight,
+            'locale_code' => null,
+            'scope_code' => null,
+            'metric_unit' => null,
+        ]);
+        $fieldExtractor->extractColumnInfo('weight-unit')->willReturn([
+            'attribute' => $weight,
+            'locale_code' => null,
+            'scope_code' => null,
+            'metric_unit' => 'unit',
+        ]);
+        $weight->getBackendType()->willReturn('metric');
+        $weight->getCode()->willReturn('weight');
+
+        $associationColumnResolver->resolveQuantifiedQuantityAssociationColumns()->willReturn([]);
+        $associationColumnResolver->resolveQuantifiedIdentifierAssociationColumns()->willReturn([]);
+
+        $this->merge($row)->shouldReturn(['weight' => "10 CENTIMETER"]);
+    }
 }
