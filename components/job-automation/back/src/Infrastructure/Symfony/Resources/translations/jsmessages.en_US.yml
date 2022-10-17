@@ -13,12 +13,12 @@ akeneo.job_automation:
       title: Frequency
       daily: Every day
       weekly: Every week
-      weekday: Weekday
+      weekday: Day
       every_4_hours: Every 4 hours
       every_8_hours: Every 8 hours
       every_12_hours: Every 12 hours
-      hours: Hours
-      minutes: Minutes
+      hours: Hour
+      minutes: Minute
       monday: Monday
       tuesday: Tuesday
       wednesday: Wednesday
