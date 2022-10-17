@@ -11,7 +11,7 @@ use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 final class DownloadStoredProductFileFromGCSBucketIntegration extends SqlIntegrationTestCase
 {
     /** @test */
-    public function itDownloadsAProductsFileInAGCSBucket(): void
+    public function itDownloadsAProductsFileFromAGCSBucket(): void
     {
         $fileContent = 'file content';
 
@@ -22,12 +22,5 @@ final class DownloadStoredProductFileFromGCSBucketIntegration extends SqlIntegra
         $streamedResource = ($this->get(DownloadStoredProductFile::class))('path/to/file.xlsx');
 
         $this->assertSame($fileContent, stream_get_contents($streamedResource));
-    }
-
-    /** @test */
-    public function itThrowsAnExceptionIfTheRequestedFileDoesNotExist(): void
-    {
-        $this->expectException(\RuntimeException::class);
-        ($this->get(DownloadStoredProductFile::class))('path/to/unknown-file.xlsx');
     }
 }

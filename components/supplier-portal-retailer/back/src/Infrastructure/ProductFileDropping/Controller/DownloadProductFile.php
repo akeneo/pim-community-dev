@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller;
 
-use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\ProductFileDoesNotExist;
-use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\ProductFileIsNotDownloadable;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\DownloadProductFile as DownloadProductFileCommand;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\DownloadProductFileHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Event\ProductFileDownloaded;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Exception\ProductFileDoesNotExist;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Exception\UnableToReadProductFile;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
 use Akeneo\UserManagement\Component\Model\User;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -37,8 +37,10 @@ final class DownloadProductFile
             $productFileNameAndResourceFile = ($this->downloadProductFileHandler)(
                 new DownloadProductFileCommand($productFileIdentifier)
             );
-        } catch (ProductFileDoesNotExist | ProductFileIsNotDownloadable) {
+        } catch (ProductFileDoesNotExist) {
             return new Response(null, Response::HTTP_NOT_FOUND);
+        } catch (UnableToReadProductFile) {
+            return new Response(null, Response::HTTP_SERVICE_UNAVAILABLE);
         }
 
         $this->eventDispatcher->dispatch(new ProductFileDownloaded(

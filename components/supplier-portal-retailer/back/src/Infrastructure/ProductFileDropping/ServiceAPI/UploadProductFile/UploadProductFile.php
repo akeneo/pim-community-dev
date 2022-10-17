@@ -8,7 +8,7 @@ use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\Inv
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CreateProductFile;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CreateProductFileHandler;
 use Akeneo\SupplierPortal\Retailer\Application\Supplier\Exception\ContributorDoesNotExist;
-use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\UploadProductFile\Exception\InvalidUploadedProductFile;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\UnableToStoreProductFile;
 
 final class UploadProductFile
 {
@@ -26,8 +26,10 @@ final class UploadProductFile
                     $uploadProductFileCommand->contributorEmail,
                 ),
             );
-        } catch (InvalidProductFile | ContributorDoesNotExist | \RuntimeException $e) {
-            throw new InvalidUploadedProductFile(message: $e->getMessage(), previous: $e);
+        } catch (InvalidProductFile | ContributorDoesNotExist $e) {
+            throw new Exception\InvalidUploadedProductFile(message: $e->getMessage(), previous: $e);
+        } catch (UnableToStoreProductFile $e) {
+            throw new Exception\UnableToStoreProductFile(message: $e->getMessage(), previous: $e);
         }
     }
 }

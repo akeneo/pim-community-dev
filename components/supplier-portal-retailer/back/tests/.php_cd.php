@@ -108,7 +108,6 @@ $rules = [
             'Akeneo\SupplierPortal\Retailer\Infrastructure\Install\AddSupplierPortalJobs',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\Storage',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\DeleteUnknownSupplierDirectoriesInGCSBucket',
-            'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\StoreProductsFileInGCSBucket',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Encoder\SuppliersEncoder',
             'Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder',
 
@@ -141,10 +140,16 @@ $rules = [
             'Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification',
             'Akeneo\Platform\Bundle\NotificationBundle\Notifier',
             'Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker',
+            'Akeneo\Tool\Component\FileStorage\FilesystemProvider',
             'Akeneo\Test\Acceptance\User\InMemoryUserRepository',
             'Akeneo\UserManagement\Component\Model\User',
 
             // External dependencies coupling
+            'League\Flysystem\Filesystem',
+            'League\Flysystem\UnableToCheckFileExistence',
+            'League\Flysystem\UnableToCreateDirectory',
+            'League\Flysystem\UnableToReadFile',
+            'League\Flysystem\UnableToWriteFile',
             'PHPUnit\Framework',
             'Psr\Log\NullLogger',
             'Psr\Log\Test\TestLogger',

@@ -5,11 +5,15 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DownloadStoredProductFile;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Exception\ProductFileDoesNotExist;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Exception\UnableToReadProductFile;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
+use League\Flysystem\FilesystemException;
+use Psr\Log\LoggerInterface;
 
 final class DownloadStoredProductFileFromGCSBucket implements DownloadStoredProductFile
 {
-    public function __construct(private FilesystemProvider $filesystemProvider)
+    public function __construct(private FilesystemProvider $filesystemProvider, private LoggerInterface $logger)
     {
     }
 
@@ -18,10 +22,22 @@ final class DownloadStoredProductFileFromGCSBucket implements DownloadStoredProd
     {
         $fileSystem = $this->filesystemProvider->getFilesystem(Storage::FILE_STORAGE_ALIAS);
 
-        if (!$fileSystem->fileExists($path)) {
-            throw new \RuntimeException('The requested file does not exist on the bucket.');
-        }
+        try {
+            if (!$fileSystem->fileExists($path)) {
+                $this->logger->error('Product file does not exist.', ['data' => ['path' => $path,],]);
+                throw new ProductFileDoesNotExist('The requested file does not exist on the bucket.');
+            }
 
-        return $fileSystem->readStream($path);
+            return $fileSystem->readStream($path);
+        } catch (FilesystemException $e) {
+            $this->logger->error('Product file could not be downloaded.', [
+                'data' => [
+                    'path' => $path,
+                    'error' => $e->getMessage(),
+                ],
+            ]);
+
+            throw new UnableToReadProductFile(previous: $e);
+        }
     }
 }

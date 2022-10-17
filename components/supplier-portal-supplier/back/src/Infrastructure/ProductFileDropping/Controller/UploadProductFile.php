@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Controller;
 
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\UploadProductFile\Exception\InvalidUploadedProductFile;
+use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\UploadProductFile\Exception\UnableToStoreProductFile;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\UploadProductFile\UploadProductFile as UploadProductFileServiceAPI;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\UploadProductFile\UploadProductFileCommand;
 use Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccount;
@@ -31,6 +32,8 @@ final class UploadProductFile
             ($this->uploadProductFile)(new UploadProductFileCommand($uploadedFile, $user->getUserIdentifier()));
         } catch (InvalidUploadedProductFile $e) {
             return new JsonResponse(['error' => $e->getMessage()], Response::HTTP_UNPROCESSABLE_ENTITY);
+        } catch (UnableToStoreProductFile) {
+            return new JsonResponse([], Response::HTTP_SERVICE_UNAVAILABLE);
         }
 
         return new JsonResponse(null, Response::HTTP_CREATED);

@@ -5,14 +5,17 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\StoreProductsFile;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\UnableToStoreProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Filename;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
+use League\Flysystem\FilesystemException;
+use Psr\Log\LoggerInterface;
 
 final class StoreProductsFileInGCSBucket implements StoreProductsFile
 {
-    public function __construct(private FilesystemProvider $filesystemProvider)
+    public function __construct(private FilesystemProvider $filesystemProvider, private LoggerInterface $logger)
     {
     }
 
@@ -24,18 +27,38 @@ final class StoreProductsFileInGCSBucket implements StoreProductsFile
     ): string {
         $fileSystem = $this->filesystemProvider->getFilesystem(Storage::FILE_STORAGE_ALIAS);
 
-        $fileSystem->createDirectory((string) $supplierCode);
         $path = sprintf('%s/%s-%s', $supplierCode, $identifier, $originalFilename);
 
-        if (!is_readable($temporaryPath)) {
-            throw new \RuntimeException();
-        }
+        try {
+            $fileSystem->createDirectory((string) $supplierCode);
 
-        $contents = fopen($temporaryPath, 'r');
-        $fileSystem->writeStream($path, $contents);
+            if (!is_readable($temporaryPath)) {
+                $this->logger->error('Temporary path is not readable.', [
+                    'data' => [
+                        'fileIdentifier' => (string) $identifier,
+                        'filename' => (string) $originalFilename,
+                        'path' => $path,
+                    ],
+                ]);
+                throw new UnableToStoreProductFile();
+            }
 
-        if (is_resource($contents)) {
-            fclose($contents);
+            $contents = fopen($temporaryPath, 'r');
+            $fileSystem->writeStream($path, $contents);
+
+            if (is_resource($contents)) {
+                fclose($contents);
+            }
+        } catch (FilesystemException $e) {
+            $this->logger->error('Product file could not be stored.', [
+                'data' => [
+                    'fileIdentifier' => (string) $identifier,
+                    'filename' => (string) $originalFilename,
+                    'path' => $path,
+                    'error' => $e->getMessage(),
+                ],
+            ]);
+            throw new UnableToStoreProductFile();
         }
 
         return $path;

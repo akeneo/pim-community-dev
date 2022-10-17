@@ -4,18 +4,17 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Application\ProductFileDropping\Read;
 
-use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\ProductFileDoesNotExist;
-use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\ProductFileIsNotDownloadable;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\DownloadProductFileForSupplier;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\DownloadProductFileHandlerForSupplier;
 use Akeneo\SupplierPortal\Retailer\Application\Supplier\Exception\SupplierDoesNotExist;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DownloadStoredProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileNameForSupplier;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Exception\ProductFileDoesNotExist;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Exception\UnableToReadProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFilePathAndFileName;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\NullLogger;
 
 final class DownloadProductFileHandlerForSupplierTest extends TestCase
 {
@@ -30,7 +29,6 @@ final class DownloadProductFileHandlerForSupplierTest extends TestCase
             $getProductFilePathAndFileNameMock,
             $downloadStoredProductFileMock,
             $getSupplierFromContributorEmail,
-            new NullLogger(),
         );
 
         $getProductFilePathAndFileNameMock
@@ -58,7 +56,10 @@ final class DownloadProductFileHandlerForSupplierTest extends TestCase
         ;
 
         $productFileNameAndResourceFile = ($sut)(
-            new DownloadProductFileForSupplier('1ed45c7b-6c61-4862-a11c-00c9580a8710', 'contributor@example.com')
+            new DownloadProductFileForSupplier(
+                '1ed45c7b-6c61-4862-a11c-00c9580a8710',
+                'contributor@example.com',
+            )
         );
         $this->assertSame(
             'file.xlsx',
@@ -81,7 +82,6 @@ final class DownloadProductFileHandlerForSupplierTest extends TestCase
             $getProductFilePathAndFileNameMock,
             $downloadStoredProductFileMock,
             $getSupplierFromContributorEmail,
-            new NullLogger(),
         );
 
         $getSupplierFromContributorEmail
@@ -91,7 +91,11 @@ final class DownloadProductFileHandlerForSupplierTest extends TestCase
         ;
 
         $this->expectException(SupplierDoesNotExist::class);
-        ($sut)(new DownloadProductFileForSupplier('1ed45c7b-6c61-4862-a11c-00c9580a8710', 'contributor@example.com'));
+        ($sut)(new DownloadProductFileForSupplier(
+            '1ed45c7b-6c61-4862-a11c-00c9580a8710',
+            'contributor@example.com',
+        )
+        );
     }
 
     /** @test */
@@ -105,7 +109,6 @@ final class DownloadProductFileHandlerForSupplierTest extends TestCase
             $getProductFilePathAndFileNameMock,
             $downloadStoredProductFileMock,
             $getSupplierFromContributorEmail,
-            new NullLogger(),
         );
 
         $getSupplierFromContributorEmail
@@ -119,7 +122,10 @@ final class DownloadProductFileHandlerForSupplierTest extends TestCase
         $getProductFilePathAndFileNameMock->expects($this->once())->method('__invoke')->willReturn(null);
 
         $this->expectException(ProductFileDoesNotExist::class);
-        ($sut)(new DownloadProductFileForSupplier('1ed45c7b-6c61-4862-a11c-00c9580a8710', 'contributor@example.com'));
+        ($sut)(new DownloadProductFileForSupplier(
+            '1ed45c7b-6c61-4862-a11c-00c9580a8710',
+            'contributor@example.com',
+        ));
     }
 
     /** @test */
@@ -133,7 +139,6 @@ final class DownloadProductFileHandlerForSupplierTest extends TestCase
             $getProductFilePathAndFileNameMock,
             $downloadStoredProductFileMock,
             $getSupplierFromContributorEmail,
-            new NullLogger(),
         );
 
         $getSupplierFromContributorEmail
@@ -154,10 +159,13 @@ final class DownloadProductFileHandlerForSupplierTest extends TestCase
         $downloadStoredProductFileMock
             ->method('__invoke')
             ->with('path/to/file.xlsx')
-            ->willThrowException(new \RuntimeException('An error occurred'))
+            ->willThrowException(new UnableToReadProductFile())
         ;
 
-        $this->expectException(ProductFileIsNotDownloadable::class);
-        ($sut)(new DownloadProductFileForSupplier('1ed45c7b-6c61-4862-a11c-00c9580a8710', 'contributor@example.com'));
+        $this->expectException(UnableToReadProductFile::class);
+        ($sut)(new DownloadProductFileForSupplier(
+            '1ed45c7b-6c61-4862-a11c-00c9580a8710',
+            'contributor@example.com',
+        ));
     }
 }
