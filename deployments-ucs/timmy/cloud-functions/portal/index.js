@@ -86,7 +86,7 @@ function initializeLogger(branchName) {
 }
 
 function prefixUrlWithBranchName(url, branchName) {
-  return (branchName === DEFAULT_BRANCH_NAME ? url : path.join(url, '/' + branchName + '/'));
+  return (branchName === DEFAULT_BRANCH_NAME ? url : url+'/' + branchName + '/');
 }
 
 async function refreshAccessToken(branchName) {
