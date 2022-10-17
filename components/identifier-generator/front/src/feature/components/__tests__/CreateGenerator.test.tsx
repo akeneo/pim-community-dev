@@ -14,10 +14,10 @@ describe('CreateGenerator', () => {
     const initialGenerator: IdentifierGenerator = {
       code: 'initialCode',
       labels: {
-        'en_US': 'Initial Label'
-      }
+        en_US: 'Initial Label',
+      },
     };
-    render(<CreateGenerator initialGenerator={initialGenerator}/>);
+    render(<CreateGenerator initialGenerator={initialGenerator} />);
     expect(screen.getByText('GeneratorPropertiesMock')).toBeInTheDocument();
 
     fireEvent.click(screen.getByText('pim_identifier_generator.tabs.product_selection'));

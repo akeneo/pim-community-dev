@@ -4,4 +4,4 @@ export type UiLocale = {
   label: string;
   region: string;
   language: string;
-}
+};

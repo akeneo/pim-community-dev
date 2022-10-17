@@ -13,10 +13,10 @@ describe('GeneralProperties', () => {
   it('should render the code input', () => {
     const generator: IdentifierGenerator = {
       code: 'initialCode',
-      labels: {}
+      labels: {},
     };
     const onGeneratorChange = jest.fn();
-    render(<GeneralProperties generator={generator} onGeneratorChange={onGeneratorChange}/>);
+    render(<GeneralProperties generator={generator} onGeneratorChange={onGeneratorChange} />);
     expect(screen.getByText('pim_identifier_generator.general.title')).toBeInTheDocument();
     expect(screen.getByText('pim_common.code')).toBeInTheDocument();
     expect(screen.getByTitle('initialCode')).toBeInTheDocument();
@@ -25,17 +25,17 @@ describe('GeneralProperties', () => {
   it('should update labels', () => {
     const generator: IdentifierGenerator = {
       code: 'initialCode',
-      labels: {}
+      labels: {},
     };
     const onGeneratorChange = jest.fn();
-    render(<GeneralProperties generator={generator} onGeneratorChange={onGeneratorChange}/>);
+    render(<GeneralProperties generator={generator} onGeneratorChange={onGeneratorChange} />);
     expect(screen.getByText('LabelTranslationsMock')).toBeInTheDocument();
     fireEvent.click(screen.getByText('Update French Label'));
     expect(onGeneratorChange).toBeCalledWith({
       code: 'initialCode',
       labels: {
-        'fr_FR': 'FrenchUpdated',
-      }
+        fr_FR: 'FrenchUpdated',
+      },
     });
   });
 });

@@ -2,9 +2,9 @@ import {useQuery} from 'react-query';
 import {FlattenAttribute} from '../models/flatten-attribute';
 
 const useIdentifierAttributes: () => {
-  data?: FlattenAttribute[],
-  error: Error | null,
-  isSuccess: boolean
+  data?: FlattenAttribute[];
+  error: Error | null;
+  isSuccess: boolean;
 } = () => {
   const getIdentifierAttributes = async () => {
     return fetch('/identifier-generator/identifier-attributes', {

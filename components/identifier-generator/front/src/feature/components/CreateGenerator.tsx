@@ -18,7 +18,7 @@ const Container = styled.div`
 
 type EditGeneratorProps = {
   initialGenerator: IdentifierGenerator;
-}
+};
 
 const CreateGenerator: React.FC<EditGeneratorProps> = ({initialGenerator}) => {
   const [currentTab, setCurrentTab] = useState(Tabs.GENERAL);
@@ -27,7 +27,7 @@ const CreateGenerator: React.FC<EditGeneratorProps> = ({initialGenerator}) => {
 
   return (
     <>
-      <Common.Helper/>
+      <Common.Helper />
       <PageHeader>
         <PageHeader.Breadcrumb>
           <Breadcrumb>
@@ -44,9 +44,7 @@ const CreateGenerator: React.FC<EditGeneratorProps> = ({initialGenerator}) => {
         </PageHeader.UserActions>
         <PageHeader.Actions>
           {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
-          <Button onClick={/* istanbul ignore next */() => {} /* TODO */}>;
-            {translate('pim_common.save')}
-          </Button>
+          <Button onClick={/* istanbul ignore next */ () => {} /* TODO */}>;{translate('pim_common.save')}</Button>
         </PageHeader.Actions>
         <PageHeader.Title>{translate('pim_title.akeneo_identifier_generator_index')}</PageHeader.Title>
       </PageHeader>
@@ -55,14 +53,17 @@ const CreateGenerator: React.FC<EditGeneratorProps> = ({initialGenerator}) => {
           <TabBar.Tab isActive={currentTab === Tabs.GENERAL} onClick={() => setCurrentTab(Tabs.GENERAL)}>
             {translate('pim_identifier_generator.tabs.general')}
           </TabBar.Tab>
-          <TabBar.Tab isActive={currentTab === Tabs.PRODUCT_SELECTION} onClick={() => setCurrentTab(Tabs.PRODUCT_SELECTION)}>
+          <TabBar.Tab
+            isActive={currentTab === Tabs.PRODUCT_SELECTION}
+            onClick={() => setCurrentTab(Tabs.PRODUCT_SELECTION)}
+          >
             {translate('pim_identifier_generator.tabs.product_selection')}
           </TabBar.Tab>
           <TabBar.Tab isActive={currentTab === Tabs.STRUCTURE} onClick={() => setCurrentTab(Tabs.STRUCTURE)}>
             {translate('pim_identifier_generator.tabs.identifier_structure')}
           </TabBar.Tab>
         </TabBar>
-        {currentTab === Tabs.GENERAL && <GeneralProperties generator={generator} onGeneratorChange={setGenerator}/>}
+        {currentTab === Tabs.GENERAL && <GeneralProperties generator={generator} onGeneratorChange={setGenerator} />}
         {currentTab === Tabs.PRODUCT_SELECTION && <div>Not implemented YET</div>}
         {currentTab === Tabs.STRUCTURE && <div>Not implemented YET</div>}
       </Container>
