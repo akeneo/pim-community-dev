@@ -482,12 +482,13 @@ class ApiContext implements Context
     }
 
     /**
-     * @Then the response should contain an empty list
+     * @Then the response should contain an error message
      */
-    public function theResponseShouldContainAnEmptyList(): void
+    public function theResponseShouldContainAnErrorMessage(): void
     {
         $payload = \json_decode($this->response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
-        Assert::assertEmpty($payload['_embedded']['items']);
+        Assert::assertFalse(\array_key_exists('_embedded', $payload));
+        Assert::assertTrue(\array_key_exists('message', $payload));
     }
 }

@@ -26,7 +26,6 @@ test('it fetches & paginates attribute options', async () => {
         () =>
             useInfiniteAttributeOptions({
                 attribute: 'clothing_size',
-                locale: 'en_US',
                 limit: 2,
             }),
         {

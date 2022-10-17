@@ -1,0 +1,4 @@
+services:
+  Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository:
+#    TODO change this for SQL Implementation
+    class: 'Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository\InMemoryIdentifierGeneratorRepository'

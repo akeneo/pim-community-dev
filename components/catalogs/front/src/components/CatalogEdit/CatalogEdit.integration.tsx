@@ -36,7 +36,7 @@ test('it can enable a catalog', () => {
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
                 <CatalogFormContext.Provider value={dispatch}>
-                    <CatalogEdit form={form} />
+                    <CatalogEdit id={'a134c164-9343-4796-9b4e-e2c04ba3765a'} form={form} />
                 </CatalogFormContext.Provider>
             </QueryClientProvider>
         </ThemeProvider>
@@ -65,7 +65,7 @@ test('it can change criteria in the product selection', async () => {
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
                 <CatalogFormContext.Provider value={dispatch}>
-                    <CatalogEdit form={form} />
+                    <CatalogEdit id={'a134c164-9343-4796-9b4e-e2c04ba3765a'} form={form} />
                 </CatalogFormContext.Provider>
             </QueryClientProvider>
         </ThemeProvider>
@@ -97,6 +97,26 @@ test('it can add a product value filter on the channel', async () => {
             url: '/rest/catalogs/channels?page=1&limit=20',
             json: [ECOMMERCE, PRINT],
         },
+        {
+            url: '/rest/catalogs/channels?codes=',
+            json: [],
+        },
+        {
+            url: '/rest/catalogs/locales?codes=',
+            json: [],
+        },
+        {
+            url: '/rest/catalogs/locales?page=1&limit=20',
+            json: [],
+        },
+        {
+            url: '/rest/catalogs/currencies',
+            json: [],
+        },
+        {
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=',
+            json: [],
+        },
     ]);
 
     const dispatch = jest.fn();
@@ -114,7 +134,7 @@ test('it can add a product value filter on the channel', async () => {
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
                 <CatalogFormContext.Provider value={dispatch}>
-                    <CatalogEdit form={form} />
+                    <CatalogEdit id={'a134c164-9343-4796-9b4e-e2c04ba3765a'} form={form} />
                 </CatalogFormContext.Provider>
             </QueryClientProvider>
         </ThemeProvider>

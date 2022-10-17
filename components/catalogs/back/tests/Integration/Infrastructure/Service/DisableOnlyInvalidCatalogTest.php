@@ -17,6 +17,7 @@ class DisableOnlyInvalidCatalogTest extends IntegrationTestCase
     {
         parent::setUp();
 
+        $this->disableExperimentalTestDatabase();
         $this->disableOnlyInvalidCatalogQuery = self::getContainer()->get(DisableOnlyInvalidCatalog::class);
         $this->purgeDataAndLoadMinimalCatalog();
     }
