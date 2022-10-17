@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Application\Authentication\ContributorAccount;
+namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Application\Authentication\ContributorAccount\Write;
 
-use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Exception\ContributorAccountDoesNotExist;
-use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\RequestNewInvitation;
-use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\RequestNewInvitationHandler;
+use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\Exception\ContributorAccountDoesNotExist;
+use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\RequestNewInvitation;
+use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\RequestNewInvitationHandler;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendWelcomeEmail;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;

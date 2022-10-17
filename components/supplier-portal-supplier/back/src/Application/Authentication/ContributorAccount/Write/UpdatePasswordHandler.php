@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount;
+namespace Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write;
 
-use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Exception\ContributorAccountDoesNotExist;
-use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Exception\InvalidPassword;
-use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Validation\Password;
+use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\Exception\ContributorAccountDoesNotExist;
+use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\Exception\InvalidPassword;
+use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\Validation\Password;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\HashPassword;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Identifier;
