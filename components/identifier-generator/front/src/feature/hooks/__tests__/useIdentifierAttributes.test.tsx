@@ -14,16 +14,16 @@ describe('useIdentifierAttributes', () => {
   });
 
   test('it retrieves identifier attribute list', async () => {
-    const {result} = renderHook<null, {
-      isSuccess: boolean;
-      data?: FlattenAttribute[] | undefined;
-      error: Error | null
-    }>(
-      () => useIdentifierAttributes(),
+    const {result} = renderHook<
+      null,
       {
-        wrapper: createWrapper(),
+        isSuccess: boolean;
+        data?: FlattenAttribute[] | undefined;
+        error: Error | null;
       }
-    );
+    >(() => useIdentifierAttributes(), {
+      wrapper: createWrapper(),
+    });
 
     await waitFor(() => result.current.isSuccess);
 

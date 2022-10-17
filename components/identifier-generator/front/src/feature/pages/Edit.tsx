@@ -5,10 +5,12 @@ import {useParams} from 'react-router-dom';
 const Edit: React.FC<{}> = () => {
   const {identifierGeneratorCode} = useParams<{identifierGeneratorCode: string}>();
 
-  return <div>
-    Edit TODO
-    {identifierGeneratorCode}
-  </div>;
+  return (
+    <div>
+      Edit TODO
+      {identifierGeneratorCode}
+    </div>
+  );
 };
 
 export {Edit};

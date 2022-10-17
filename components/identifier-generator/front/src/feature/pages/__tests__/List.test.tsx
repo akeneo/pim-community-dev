@@ -11,12 +11,12 @@ jest.mock('../../components/CreateGenerator');
 
 describe('List', () => {
   it('should be in the index page on loading', () => {
-    render(<List/>);
+    render(<List />);
     expect(screen.getAllByText('pim_title.akeneo_identifier_generator_index')).toHaveLength(2);
   });
 
   it('should open the create dialog and close it', () => {
-    render(<List/>);
+    render(<List />);
     fireEvent.click(screen.getByText('pim_common.create'));
     expect(screen.getByText('CreateGeneratorModalMock')).toBeInTheDocument();
     fireEvent.click(screen.getByText('Close Modal'));
@@ -24,7 +24,7 @@ describe('List', () => {
   });
 
   it('should open the create dialog then the create page', () => {
-    render(<List/>);
+    render(<List />);
     fireEvent.click(screen.getByText('pim_common.create'));
     expect(screen.getByText('CreateGeneratorModalMock')).toBeInTheDocument();
     fireEvent.click(screen.getByText('Save Modal'));

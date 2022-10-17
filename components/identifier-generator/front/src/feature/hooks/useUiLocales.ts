@@ -2,9 +2,9 @@ import {useQuery} from 'react-query';
 import {UiLocale} from '../models/ui-locale';
 
 const useUiLocales: () => {
-  data?: UiLocale[],
-  error: Error | null,
-  isSuccess: boolean
+  data?: UiLocale[];
+  error: Error | null;
+  isSuccess: boolean;
 } = () => {
   const getUiLocales = async () => {
     return fetch('/system/locale/ui', {

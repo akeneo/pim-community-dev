@@ -18,25 +18,29 @@ setLogger({
   error: () => {},
 });
 
-const defaultUiLocales = [{
-  id: 42,
-  code: 'en_US',
-  label: 'English (United States)',
-  region: 'United States',
-  language: 'English',
-}, {
-  id: 69,
-  code: 'fr_FR',
-  label: 'French (France)',
-  region: 'France',
-  language: 'French',
-}, {
-  id: 96,
-  code: 'de_DE',
-  label: 'German (Germany)',
-  region: 'Germany',
-  language: 'German',
-}];
+const defaultUiLocales = [
+  {
+    id: 42,
+    code: 'en_US',
+    label: 'English (United States)',
+    region: 'United States',
+    language: 'English',
+  },
+  {
+    id: 69,
+    code: 'fr_FR',
+    label: 'French (France)',
+    region: 'France',
+    language: 'French',
+  },
+  {
+    id: 96,
+    code: 'de_DE',
+    label: 'German (Germany)',
+    region: 'Germany',
+    language: 'German',
+  },
+];
 
 const labelCollection = {
   en_US: 'English Label',
@@ -51,9 +55,8 @@ describe('LabelTranslations', () => {
       json: () => Promise.resolve(defaultUiLocales),
     });
 
-
     const onLabelsChange = jest.fn();
-    render(<LabelTranslations labelCollection={labelCollection} onLabelsChange={onLabelsChange}/>);
+    render(<LabelTranslations labelCollection={labelCollection} onLabelsChange={onLabelsChange} />);
 
     expect(screen.getByText('pim_identifier_generator.general.label_translations_in_ui_locale')).toBeInTheDocument();
     await waitFor(() => screen.getByText('English (United States)'));
@@ -74,14 +77,14 @@ describe('LabelTranslations', () => {
     });
 
     const onLabelsChange = jest.fn();
-    render(<LabelTranslations labelCollection={labelCollection} onLabelsChange={onLabelsChange}/>);
+    render(<LabelTranslations labelCollection={labelCollection} onLabelsChange={onLabelsChange} />);
 
     await waitFor(() => screen.getByText('English (United States)'));
     fireEvent.change(screen.getByTitle(''), {target: {value: 'German Label'}});
     expect(onLabelsChange).toBeCalledWith({
-      'de_DE': 'German Label',
-      'en_US': 'English Label',
-      'fr_FR': 'French Label',
+      de_DE: 'German Label',
+      en_US: 'English Label',
+      fr_FR: 'French Label',
     });
   });
 
@@ -94,7 +97,7 @@ describe('LabelTranslations', () => {
     });
     const onLabelsChange = jest.fn();
 
-    render(<LabelTranslations labelCollection={labelCollection} onLabelsChange={onLabelsChange}/>);
+    render(<LabelTranslations labelCollection={labelCollection} onLabelsChange={onLabelsChange} />);
     expect(await screen.findByText('pim_error.general')).toBeInTheDocument();
   });
 });

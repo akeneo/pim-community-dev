@@ -12,10 +12,10 @@ const IdentifierGeneratorApp: React.FC = () => {
       <Router basename="/configuration/identifier-generator">
         <Switch>
           <Route path="/:identifierGeneratorCode">
-            <Edit/>
+            <Edit />
           </Route>
           <Route path="/">
-            <List/>
+            <List />
           </Route>
         </Switch>
       </Router>

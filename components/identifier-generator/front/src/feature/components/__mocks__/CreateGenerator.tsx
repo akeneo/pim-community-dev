@@ -1,9 +1,7 @@
 import React from 'react';
 
 const CreateGenerator: React.FC = () => {
-  return <>
-    CreateGeneratorMock
-  </>;
+  return <>CreateGeneratorMock</>;
 };
 
 export {CreateGenerator};

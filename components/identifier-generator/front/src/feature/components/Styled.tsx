@@ -9,7 +9,7 @@ const FormContainer = styled.div`
 `;
 
 const Styled = {
-  FormContainer
+  FormContainer,
 };
 
 export {Styled};
