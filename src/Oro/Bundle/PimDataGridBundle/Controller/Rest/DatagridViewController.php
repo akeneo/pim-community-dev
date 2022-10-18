@@ -156,7 +156,7 @@ class DatagridViewController
             throw new BadRequestHttpException('Parameter "view" needed in the request.');
         }
 
-        $loggedUsername = $this->tokenStorage->getToken()->getUser()->getUsername();
+        $loggedUsername = $this->tokenStorage->getToken()->getUser()->getUserIdentifier();
         if (isset($view['id'])) {
             $creation = false;
             $datagridView = $this->datagridViewRepo->findOneBy(['id' => $view['id'], 'datagridAlias' => $alias]);
@@ -165,7 +165,7 @@ class DatagridViewController
             }
 
             $owner = $datagridView->getOwner();
-            if (!$owner instanceof UserInterface || $owner->getUsername() !== $loggedUsername) {
+            if (!$owner instanceof UserInterface || $owner->getUserIdentifier() !== $loggedUsername) {
                 throw new AccessDeniedException();
             }
 

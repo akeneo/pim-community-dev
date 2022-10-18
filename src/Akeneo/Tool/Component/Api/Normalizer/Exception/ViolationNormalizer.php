@@ -52,7 +52,7 @@ class ViolationNormalizer implements NormalizerInterface, CacheableSupportsMetho
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($exception, $format = null)
+    public function supportsNormalization($exception, $format = null): bool
     {
         return $exception instanceof ViolationHttpException;
     }

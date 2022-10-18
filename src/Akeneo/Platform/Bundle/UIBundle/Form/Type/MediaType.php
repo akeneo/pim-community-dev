@@ -38,7 +38,7 @@ class MediaType extends FileInfoType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'pim_enrich_media';
     }

@@ -499,7 +499,7 @@ class SaveMeasurementFamiliesActionEndToEnd extends ApiTestCase
     {
         $response = $this->request(['values' => null]);
 
-        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
         $this->assertSame(
             [
                 'code' => 400,

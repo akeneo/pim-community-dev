@@ -61,7 +61,7 @@ class ActionAclVoter extends Voter implements VoterInterface
     /**
      * {@inheritdoc}
      */
-    public function vote(TokenInterface $token, $object, array $attributes)
+    public function vote(TokenInterface $token, $object, array $attributes): int
     {
         foreach ($attributes as $attribute) {
             if (!$this->supports($attribute, $object)) {
