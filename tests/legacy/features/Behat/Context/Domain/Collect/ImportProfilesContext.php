@@ -5,9 +5,9 @@ namespace Pim\Behat\Context\Domain\Collect;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
-use Box\Spout\Common\Type;
-use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
-use Box\Spout\Writer\Common\Creator\WriterFactory;
+use OpenSpout\Common\Type;
+use OpenSpout\Writer\Common\Creator\WriterEntityFactory;
+use OpenSpout\Writer\Common\Creator\WriterFactory;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\Domain\ImportExportContext;
 

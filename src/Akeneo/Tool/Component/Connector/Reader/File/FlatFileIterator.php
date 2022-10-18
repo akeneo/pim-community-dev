@@ -3,13 +3,13 @@
 namespace Akeneo\Tool\Component\Connector\Reader\File;
 
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
-use Box\Spout\Common\Entity\Row;
-use Box\Spout\Common\Exception\IOException;
-use Box\Spout\Common\Exception\UnsupportedTypeException;
-use Box\Spout\Common\Type;
-use Box\Spout\Reader\Common\Creator\ReaderFactory;
-use Box\Spout\Reader\IteratorInterface;
-use Box\Spout\Reader\ReaderInterface;
+use OpenSpout\Common\Entity\Row;
+use OpenSpout\Common\Exception\IOException;
+use OpenSpout\Common\Exception\UnsupportedTypeException;
+use OpenSpout\Common\Type;
+use OpenSpout\Reader\Common\Creator\ReaderFactory;
+use OpenSpout\Reader\IteratorInterface;
+use OpenSpout\Reader\ReaderInterface;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;

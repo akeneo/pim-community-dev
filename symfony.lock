@@ -29,9 +29,6 @@
     "behat/transliterator": {
         "version": "v1.2.0"
     },
-    "box/spout": {
-        "version": "v2.7.2"
-    },
     "composer/package-versions-deprecated": {
         "version": "1.11.99.5"
     },
