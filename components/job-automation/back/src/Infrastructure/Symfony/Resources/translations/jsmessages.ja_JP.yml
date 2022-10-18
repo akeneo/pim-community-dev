@@ -12,12 +12,9 @@ akeneo.job_automation:
       title: 頻度
       daily: 毎日
       weekly: 毎週
-      weekday: 平日
       every_4_hours: 4時間ごと
       every_8_hours: 8時間ごと
       every_12_hours: 12時間ごと
-      hours: 時間
-      minutes: 分
       monday: 月曜日
       tuesday: 火曜日
       wednesday: 水曜日

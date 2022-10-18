@@ -12,12 +12,9 @@ akeneo.job_automation:
       title: 빈도
       daily: 매일
       weekly: 매주
-      weekday: 평일
       every_4_hours: 4시간마다
       every_8_hours: 8시간마다
       every_12_hours: 12시간마다
-      hours: 시간
-      minutes: 분
       monday: 월요일
       tuesday: 화요일
       wednesday: 수요일
