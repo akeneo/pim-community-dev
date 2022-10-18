@@ -310,7 +310,7 @@ class UserContext
     /**
      * Get authenticated user
      *
-     * @return \Akeneo\UserManagement\Component\Model\UserInterface|null
+     * @return UserInterface|null
      */
     public function getUser()
     {

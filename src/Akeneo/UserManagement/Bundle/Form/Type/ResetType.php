@@ -66,7 +66,7 @@ class ResetType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'pim_user_reset';
     }
