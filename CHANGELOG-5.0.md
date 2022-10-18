@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.115 (2022-10-18)
+
 ## Bug fixes
 
 - PIM-10567: Fix price proposal uncorrectly displayed after value is copied/pasted in product from a draft proposed
