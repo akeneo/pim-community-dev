@@ -36,7 +36,7 @@ final class ExportTableValueWithLabelsIntegration extends TestCase
         $csv = $this->jobLauncher->launchExport(self::CSV_EXPORT_JOB_CODE, null, $config);
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('toto');
         $expectedContent = <<<CSV
-[uuid];SKU;Categories;Enabled;Family;Groups;Nutrition
+uuid;SKU;Categories;Enabled;Family;Groups;Nutrition
 {$product->getUuid()->toString()};toto;"Master catalog";Yes;;;"[{""Ingredients"":""Salt"",""Is allergenic"":""No""},{""Ingredients"":""[egg]"",""Quantity"":""2""},{""Ingredients"":""[butter]"",""Quantity"":""25"",""Is allergenic"":""Yes"",""Energy"":""3.5 kilocalorie""}]"
 
 CSV;
@@ -50,7 +50,7 @@ CSV;
         $csv = $this->jobLauncher->launchExport(self::CSV_EXPORT_JOB_CODE, null, $config);
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('toto');
         $expectedContent = <<<CSV
-uuid;[sku];Catégories;Activé;Famille;Groupes;[nutrition]
+[uuid];[sku];Catégories;Activé;Famille;Groupes;[nutrition]
 {$product->getUuid()->toString()};toto;[master];Oui;;;"[{""Ingredients"":""Sel"",""[is_allergenic]"":""Non""},{""Ingredients"":""[egg]"",""Quantité"":""2""},{""Ingredients"":""[butter]"",""Quantité"":""25"",""[is_allergenic]"":""Oui"",""[2]"":""3.5 kilocalorie""}]"
 
 CSV;
