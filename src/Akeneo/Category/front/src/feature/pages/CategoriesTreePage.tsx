@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useState} from 'react';
 import {useParams} from 'react-router';
-import {Breadcrumb, SkeletonPlaceholder, SectionTitle, useBooleanState} from 'akeneo-design-system';
+import {Breadcrumb, SkeletonPlaceholder, SectionTitle, useBooleanState, Button} from 'akeneo-design-system';
 import {
   FullScreenError,
   PageContent,
@@ -92,6 +92,11 @@ const CategoriesTreePage: FC = () => {
     closeDeleteCategoryModal();
   };
 
+  const onCreateTemplate = () => {
+    const url = router.generate('pim_category_template_rest_create');
+    router.redirect(url);
+  }
+
   useEffect(() => {
     loadTree();
   }, [loadTree, treeId]);
@@ -130,6 +135,13 @@ const CategoriesTreePage: FC = () => {
             className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
           />
         </PageHeader.UserActions>
+        {isGranted('pim_enrich_product_category_create') && (
+          <PageHeader.Actions>
+            <Button onClick={() => onCreateTemplate()} level="tertiary" ghost>
+              {translate('akeneo.category.template.create')}
+            </Button>
+          </PageHeader.Actions>
+        )}
         <PageHeader.Title>{tree?.label ?? treeId}</PageHeader.Title>
       </PageHeader>
       <PageContent>

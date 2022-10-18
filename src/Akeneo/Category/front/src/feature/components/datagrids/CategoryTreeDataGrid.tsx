@@ -70,6 +70,10 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
     closeConfirmationModal();
   };
 
+  const onCreateTemplate = (categoryTree: CategoryTreeModel) => {
+    const url = router.generate('pim_category_template_rest_create');
+    router.redirect(url);
+  }
   const onDeleteCategoryTree = (categoryTree: CategoryTreeModel) => {
     if (categoryTree.productsNumber && categoryTree.productsNumber > 100) {
       notify(
@@ -132,6 +136,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
               <Table.HeaderCell>
                 {translate('pim_enrich.entity.category.content.tree_list.columns.number_of_categories')}
               </Table.HeaderCell>
+                {translate('pim_enrich.entity.category.content.tree_list.columns.actions')}
               <Table.HeaderCell />
             </Table.Header>
             <Table.Body>
@@ -150,6 +155,19 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                       )}
                   </Table.Cell>
                   <TableActionCell>
+                    {isGranted('pim_enrich_product_category_create') && (
+                      <Button
+                          ghost
+                          level="tertiary"
+                          size={'small'}
+                          onClick={() => onCreateTemplate(tree)}
+                          disabled={!tree.hasOwnProperty('productsNumber')}
+                      >
+                        {translate('akeneo.category.template.create')}
+                      </Button>
+                    )}
+                  </TableActionCell>
+                  <TableActionCell>
                     {isGranted('pim_enrich_product_category_remove') && (
                       <Button
                         ghost
@@ -158,7 +176,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                         onClick={() => onDeleteCategoryTree(tree)}
                         disabled={!tree.hasOwnProperty('productsNumber')}
                       >
-                        {translate('akeneo.category.template.delete')}
+                        {translate('akeneo.category.tree.delete')}
                       </Button>
                     )}
                   </TableActionCell>
