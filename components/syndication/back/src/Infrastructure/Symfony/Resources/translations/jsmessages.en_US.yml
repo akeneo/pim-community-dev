@@ -30,6 +30,8 @@ akeneo.syndication:
     categories:
       label: Categories
       selection: Selection
+    enabled:
+      label: Enabled
     quality_score:
       score:
         remove: Remove quality score
@@ -147,6 +149,7 @@ akeneo.syndication:
           value_and_unit_label: Value and unit label
           value_and_unit_symbol: Value and unit symbol
         price:
+          currency: Currency
           currency_code: Currency code
           currency_label: Currency label
           currency_locale: Currency locale
@@ -281,3 +284,8 @@ akeneo.syndication:
     currency:
       should_be_active: '{0} The currencies "{{ currency_codes }}" are not linked to any channel.|{1} The currency "{{ currency_codes }}" is not linked to any channel.|]1,Inf] The currencies "{{ currency_codes }}" are not linked to any channel.'
       should_be_active_on_channel: '{0} The currencies "{{ currency_codes }}" are not active for channel "{{ channel_code }}.|{1} The currency "{{ currency_codes }}" is not active for channel "{{ channel_code }}".|]1,Inf] The currencies "{{ currency_codes }}" are not active for channel "{{ channel_code }}".'
+
+pim_enrich.export.product.filter.enabled:
+  all: All
+  enabled: Enabled
+  disabled: Disabled
