@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-10651: replace a technical exception by a new business exception
+
 # 5.0.114 (2022-09-20)
 
 # 5.0.113 (2022-09-02)

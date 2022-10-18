@@ -56,7 +56,7 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "xlsx_footwear_product_import" job to finish
     Then there should be 1 product
-    And I should see the text "Property \"associations\" expects a valid product identifier. The product does not exist, \"SKU-002\" given."
+    And I should see the text "The “associations” property expects a valid product identifier. The SKU-002 product does not exist or your connection does not have permission to access it."
 
   Scenario: Successfully import a xlsx file with associations between invalid but existing products
     Given the following products:
