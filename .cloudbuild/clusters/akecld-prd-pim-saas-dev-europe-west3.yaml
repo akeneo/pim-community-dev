@@ -92,6 +92,6 @@ substitutions:
   _CLUSTER_NAME: akecld-prd-pim-saas-dev-europe-west3
   _GOOGLE_CLUSTER_REGION: europe-west3
   _GOOGLE_COMPUTE_ZONE: europe-west3-b
-  _GOOGLE_DOMAIN: pim-saas-dev.dev.cloud.akeneo.com
+  _GOOGLE_DOMAIN: ci.pim.akeneo.cloud
   _GOOGLE_PROJECT_ID: akecld-prd-pim-saas-dev
   _TARGET_IMPERSONATE: cluster-bootstrap@akecld-prd-pim-saas-dev.iam.gserviceaccount.com

@@ -2,7 +2,7 @@
 
 GOOGLE_CLOUD_PROJECT="akecld-prd-pim-saas-dev"
 GOOGLE_CLOUD_FIRESTORE_PROJECT="akecld-prd-pim-fire-eur-dev"
-GOOGLE_DOMAIN="pim-saas-dev.dev.cloud.akeneo.com"
+GOOGLE_DOMAIN="ci.pim.akeneo.cloud"
 GOOGLE_CLUSTER_NAME="akecld-prd-pim-saas-dev-europe-west1"
 GOOGLE_CLUSTER_REGION="europe-west1"
 GOOGLE_ZONE="europe-west1-b"

@@ -178,7 +178,7 @@ module "timmy_create_fire_document" {
     }
   ]
   environment_variables = {
-    domain             = "pim-saas-dev.dev.cloud.akeneo.com"
+    domain             = var.domain
     projectId          = var.project_id
     fireStoreProjectId = var.firestore_project_id
     mailerBaseUrl      = "smtp://smtp.mailgun.org:2525"

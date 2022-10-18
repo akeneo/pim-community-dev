@@ -8,7 +8,7 @@ locals {
   viewers                 = ["group:phoenix-squad@akeneo.com"]
   firestore_projects_id   = ["akecld-prd-pim-fire-eur-dev", "akecld-prd-pim-fire-us-dev"]
   firestore_database_type = "CLOUD_FIRESTORE"
-  public_zone             = "pim-saas-dev.dev.cloud.akeneo.com"
+  public_zone             = "ci.pim.akeneo.cloud"
   private_zone            = "pim-saas-dev.dev.local"
   ci_zone                 = "ci.pim.akeneo.cloud"
   shared_zone_name        = "pim-akeneo-cloud"

@@ -20,7 +20,7 @@ variable "google_zone" {
 
 variable "domain" {
   type    = string
-  default = "pim-saas-dev.dev.cloud.akeneo.com"
+  default = "ci.pim.akeneo.cloud"
 }
 
 variable "function_labels" {
