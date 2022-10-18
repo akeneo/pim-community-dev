@@ -75,5 +75,4 @@ Feature:
   Scenario: Update product mapping schema of a catalog
     Given an existing catalog
     When the external application updates a catalog product mapping schema using the API
-    Then the response should contain the catalog product mapping schema
-    And the catalog product mapping schema should be updated in the PIM
+    Then the catalog product mapping schema should be updated in the PIM
