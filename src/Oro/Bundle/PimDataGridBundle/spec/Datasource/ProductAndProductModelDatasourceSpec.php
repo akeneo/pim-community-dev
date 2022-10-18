@@ -2,8 +2,6 @@
 
 namespace spec\Oro\Bundle\PimDataGridBundle\Datasource;
 
-use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRows;
-use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRowsParameters;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Rows;
@@ -31,7 +29,7 @@ class ProductAndProductModelDatasourceSpec extends ObjectBehavior
         ProductQueryBuilderFactoryInterface $pqbFactory,
         NormalizerInterface $rowNormalizer,
         ValidatorInterface $validator,
-        FetchProductAndProductModelRows $query
+        Query\FetchProductAndProductModelRows $query
     ) {
         $this->beConstructedWith($objectManager, $pqbFactory, $rowNormalizer, $validator, $query);
 
@@ -59,7 +57,7 @@ class ProductAndProductModelDatasourceSpec extends ObjectBehavior
     ) {
         $violations = new ConstraintViolationList();
         $validator
-            ->validate(Argument::type(FetchProductAndProductModelRowsParameters::class))
+            ->validate(Argument::type(Query\FetchProductAndProductModelRowsParameters::class))
             ->willReturn($violations);
 
         $config = [
@@ -109,7 +107,7 @@ class ProductAndProductModelDatasourceSpec extends ObjectBehavior
             'parent_code',
             new WriteValueCollection()
         );
-        $query->__invoke(new FetchProductAndProductModelRowsParameters(
+        $query->__invoke(new Query\FetchProductAndProductModelRowsParameters(
             $pqb->getWrappedObject(),
             ['attribute_1', 'attribute_2'],
             'ecommerce',
@@ -197,7 +195,7 @@ class ProductAndProductModelDatasourceSpec extends ObjectBehavior
         $violations = new ConstraintViolationList([$constraint->getWrappedObject()]);
         $constraint->__toString()->willReturn('error');
         $validator
-            ->validate(Argument::type(FetchProductAndProductModelRowsParameters::class))
+            ->validate(Argument::type(Query\FetchProductAndProductModelRowsParameters::class))
             ->willReturn($violations);
 
 

@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Oro\Bundle\PimDataGridBundle\Datasource;
 
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query;
-use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRows;
-use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRowsParameters;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -51,7 +49,7 @@ class ProductAndProductModelDatasource extends Datasource
         ProductQueryBuilderFactoryInterface $factory,
         NormalizerInterface $serializer,
         ValidatorInterface $validator,
-        FetchProductAndProductModelRows $fetchRows
+        Query\FetchProductAndProductModelRows $fetchRows
     ) {
         $this->om = $om;
         $this->factory = $factory;
@@ -70,7 +68,7 @@ class ProductAndProductModelDatasource extends Datasource
         $channelCode = $this->getConfiguration('scope_code');
         $localeCode = $this->getConfiguration('locale_code');
 
-        $getRowsQueryParameters = new FetchProductAndProductModelRowsParameters(
+        $getRowsQueryParameters = new Query\FetchProductAndProductModelRowsParameters(
             $this->pqb,
             $attributesToDisplay,
             $channelCode,

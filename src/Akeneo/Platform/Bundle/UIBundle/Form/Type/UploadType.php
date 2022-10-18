@@ -18,6 +18,14 @@ class UploadType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    public function getBlockPrefix(): string
+    {
+        return 'upload';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getParent(): ?string
     {
         return FormType::class;

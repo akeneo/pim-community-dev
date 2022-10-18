@@ -31,6 +31,14 @@ class LightEntityType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    public function getBlockPrefix(): string
+    {
+        return 'light_entity';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->addViewTransformer(
