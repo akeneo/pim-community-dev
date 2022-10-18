@@ -34,7 +34,7 @@ final class Version_7_0_20221018000000_create_connected_channel_table_for_growth
                 `code` VARCHAR(255) NOT NULL,
                 `connected_channel_code` VARCHAR(255) NOT NULL,
                 `label` VARCHAR(255) NOT NULL,
-                `data` JSON NOT NULL,
+                `requirements` JSON NOT NULL,
                 PRIMARY KEY (`code`, `connected_channel_code`),
                 UNIQUE akeneo_syndication_family_code_family_ux (connected_channel_code, code),
                 CONSTRAINT akeneo_syndication_connected_channel_code_foreign_key FOREIGN KEY (connected_channel_code) REFERENCES akeneo_syndication_connected_channel (code)
