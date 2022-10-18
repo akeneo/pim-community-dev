@@ -6,8 +6,8 @@ namespace Akeneo\Platform\Job\Infrastructure\Clock;
 
 class SystemClock implements ClockInterface
 {
-    public function now(): \DateTimeInterface
+    public function now(): \DateTimeImmutable
     {
-        return new \DateTime('now', new \DateTimeZone('UTC'));
+        return new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
     }
 }
