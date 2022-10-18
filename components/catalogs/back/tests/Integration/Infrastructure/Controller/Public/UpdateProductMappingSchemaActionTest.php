@@ -54,10 +54,8 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
         );
 
         $response = $this->client->getResponse();
-        $payload = $response->getContent();
 
-        Assert::assertEquals(200, $response->getStatusCode());
-        Assert::assertJsonStringEqualsJsonString($this->getValidSchemaData(), $payload);
+        Assert::assertEquals(204, $response->getStatusCode());
     }
 
     public function testItReturnsForbiddenWhenMissingPermissions(): void

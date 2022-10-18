@@ -516,7 +516,7 @@ class ApiContext implements Context
 
         $this->response = $this->getConnectedAppClient()->getResponse();
 
-        Assert::assertEquals(200, $this->response->getStatusCode());
+        Assert::assertEquals(204, $this->response->getStatusCode());
     }
 
     /**

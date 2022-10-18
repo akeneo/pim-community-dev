@@ -11,7 +11,6 @@ use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
-use Akeneo\Catalogs\ServiceAPI\Query\GetProductMappingSchemaQuery;
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -60,9 +59,7 @@ final class UpdateProductMappingSchemaAction
             throw new ViolationHttpException($e->getViolations());
         }
 
-        $productMappingSchema = $this->queryBus->execute(new GetProductMappingSchemaQuery($catalogId));
-
-        return new JsonResponse($productMappingSchema, Response::HTTP_OK);
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
     private function getCatalog(string $id): Catalog
