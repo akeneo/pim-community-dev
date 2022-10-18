@@ -15,6 +15,11 @@ akeneo_job:
     IN_PROGRESS: In progress
 
 akeneo_job_process_tracker:
+  last_operations:
+    title: Last operations
+    view_all: View all
+    details: Details
+    no_result: There is no operation to display for now.
   last_executions:
     title: Last executions
   job_execution_list:

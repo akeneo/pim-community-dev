@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Application\Handler;
 
+use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
+use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductsQueryInterface;
+use Akeneo\Catalogs\ServiceAPI\Exception\CatalogNotFoundException as ServiceApiCatalogNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Query\GetProductsQuery;
 
 /**
@@ -16,17 +19,26 @@ use Akeneo\Catalogs\ServiceAPI\Query\GetProductsQuery;
 final class GetProductsHandler
 {
     public function __construct(
-        private GetProductsQueryInterface $query,
+        private GetProductsQueryInterface $getProductsQuery,
+        private GetCatalogQueryInterface $getCatalogQuery,
     ) {
     }
 
     /**
      * @return array<Product>
+     *
+     * @throws ServiceApiCatalogNotFoundException
      */
     public function __invoke(GetProductsQuery $query): array
     {
-        return $this->query->execute(
-            $query->getCatalogId(),
+        try {
+            $catalog = $this->getCatalogQuery->execute($query->getCatalogId());
+        } catch (CatalogNotFoundException) {
+            throw new ServiceApiCatalogNotFoundException();
+        }
+
+        return $this->getProductsQuery->execute(
+            $catalog,
             $query->getSearchAfter(),
             $query->getLimit(),
             $query->getUpdatedAfter(),

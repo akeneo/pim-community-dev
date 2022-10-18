@@ -37,13 +37,16 @@ final class SearchAttributeOptionsQuery implements SearchAttributeOptionsQueryIn
                 'page' => $page,
             ],
         );
+        $normalize = function (AttributeOptionInterface $option) use ($locale): array {
+            /** @var string $code */
+            $code = $option->getCode();
 
-        return \array_map(
-            static fn (AttributeOptionInterface $option) => [
-                'code' => $option->getCode(),
-                'label' => $option->setLocale($locale)->getOptionValue()?->getLabel() ?: '[' . $option->getCode() . ']',
-            ],
-            $options
-        );
+            return [
+                'code' => $code,
+                'label' => $option->setLocale($locale)->getOptionValue()?->getLabel() ?: '[' . $code . ']',
+            ];
+        };
+
+        return \array_map($normalize, $options);
     }
 }

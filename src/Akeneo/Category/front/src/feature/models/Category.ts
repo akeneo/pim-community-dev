@@ -1,6 +1,7 @@
 import {LabelCollection, LocaleCode} from '@akeneo-pim-community/shared';
 import {TreeNode} from './Tree';
 import {CompositeKeyWithoutLocale} from './CompositeKey';
+import {CategoryAttributeType} from './Attribute';
 
 export type Category = {
   id: number;
@@ -11,6 +12,8 @@ export type Category = {
 
 export type EnrichCategory = {
   id: number;
+  isRoot: boolean;
+  root: EnrichCategory | null;
   properties: CategoryProperties;
   attributes: CategoryAttributes;
   permissions: CategoryPermissions;
@@ -39,7 +42,7 @@ export interface CategoryAttributeValueWrapper {
 
 type CategoryTextAttributeValueData = string;
 
-export interface CategoryImageAttributeValueData {
+export interface CategoryImageAttributeValueDataFileInfo {
   size?: number;
   file_path: string;
   mime_type?: string;
@@ -47,12 +50,14 @@ export interface CategoryImageAttributeValueData {
   original_filename: string;
 }
 
-export type CategoryAttributeValueData = CategoryTextAttributeValueData | CategoryImageAttributeValueData | null;
+export type CategoryImageAttributeValueData = CategoryImageAttributeValueDataFileInfo | null;
+
+export type CategoryAttributeValueData = CategoryTextAttributeValueData | CategoryImageAttributeValueData;
 
 export const isCategoryImageAttributeValueData = (
   data: CategoryAttributeValueData
 ): data is CategoryImageAttributeValueData =>
-  data !== null && data.hasOwnProperty('original_filename') && data.hasOwnProperty('file_path');
+  data === null || (data.hasOwnProperty('original_filename') && data.hasOwnProperty('file_path'));
 
 export type BackendCategoryTree = {
   attr: {
@@ -104,6 +109,18 @@ export type EditCategoryForm = {
     apply_on_children: HiddenFormField;
   };
   errors: string[];
+};
+
+// This is the empty value for DSM Rich Text Editor
+// If we do not use it in our model
+// then we have trouble telling whether a category has been modified or not
+export const RICH_TEXT_DEFAULT_VALUE = '<p></p>\n';
+
+export const attributeDefaultValues: {[key in CategoryAttributeType]: CategoryAttributeValueData} = {
+  text: '',
+  textarea: '',
+  richtext: RICH_TEXT_DEFAULT_VALUE,
+  image: null,
 };
 
 const convertToCategoryTree = (tree: BackendCategoryTree): CategoryTreeModel => {

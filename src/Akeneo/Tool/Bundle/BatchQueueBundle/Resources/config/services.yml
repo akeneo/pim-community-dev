@@ -37,14 +37,11 @@ services:
             - '%kernel.environment%'
             - '@akeneo_batch.job_repository'
             - '@validator'
-            - '@akeneo_batch.job.job_registry'
-            - '@akeneo_batch.job_parameters_factory'
-            - '@doctrine.orm.default_entity_manager'
-            - '@akeneo_batch.job.job_parameters_validator'
             - '@akeneo_batch_queue.queue.job_execution_queue'
             - '@akeneo_batch_queue.factory.job_execution_message'
             - '@event_dispatcher'
             - '@akeneo_batch.logger.batch_log_handler'
+            - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler'
 
     # override of the original Akeneo Batch simple job launcher
     akeneo_batch.launcher.simple_job_launcher:

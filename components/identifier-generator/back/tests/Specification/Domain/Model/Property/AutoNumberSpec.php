@@ -13,35 +13,110 @@ use PhpSpec\ObjectBehavior;
  */
 class AutoNumberSpec extends ObjectBehavior
 {
-    function let()
+    public function let()
     {
         $this->beConstructedThrough('fromValues', [5,2]);
     }
 
-    function it_is_a_auto_number()
+    public function it_is_a_auto_number()
     {
         $this->shouldBeAnInstanceOf(AutoNumber::class);
     }
 
-    function it_cannot_be_instantiated_with_number_min_negative()
+    public function it_cannot_be_instantiated_with_number_min_negative()
     {
         $this->beConstructedThrough('fromValues', [-5,2]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_cannot_be_instantiated_with_digits_min_negative()
+    public function it_cannot_be_instantiated_with_digits_min_negative()
     {
         $this->beConstructedThrough('fromValues', [5,-2]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_returns_a_number_min()
+    public function it_returns_a_number_min()
     {
-        $this->getNumberMin()->shouldReturn(5);
+        $this->numberMin()->shouldReturn(5);
     }
 
-    function it_returns_a_digits_min()
+    public function it_returns_a_digits_min()
     {
-        $this->getDigitsMin()->shouldReturn(2);
+        $this->digitsMin()->shouldReturn(2);
+    }
+
+    public function it_normalize_an_auto_number()
+    {
+        $this->normalize()->shouldReturn([
+            'type' => 'auto_number',
+            'numberMin' => 5,
+            'digitsMin' => 2,
+        ]);
+    }
+
+    public function it_creates_from_normalized()
+    {
+        $this->fromNormalized([
+            'type' => 'auto_number',
+            'numberMin' => 7,
+            'digitsMin' => 8,
+        ])->shouldBeLike(AutoNumber::fromValues(7, 8));
+    }
+
+    public function it_throws_an_exception_when_type_is_bad()
+    {
+        $this->beConstructedThrough('fromNormalized', [[
+            'type' => 'bad',
+            'numberMin' => 7,
+            'digitsMin' => 8,
+        ]]);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    public function it_throws_an_exception_when_type_key_is_missing()
+    {
+        $this->beConstructedThrough('fromNormalized', [[
+            'numberMin' => 7,
+            'digitsMin' => 8,
+        ]]);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    public function it_throws_an_exception_when_number_min_key_is_missing()
+    {
+        $this->beConstructedThrough('fromNormalized', [[
+            'type' => 'auto_number',
+            'digitsMin' => 8,
+        ]]);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    public function it_throws_an_exception_when_digits_min_key_is_missing()
+    {
+        $this->beConstructedThrough('fromNormalized', [[
+            'type' => 'auto_number',
+            'numberMin' => 7,
+        ]]);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    public function it_throws_an_exception_from_normalized_with_number_min_negative()
+    {
+        $this->beConstructedThrough('fromNormalized', [[
+            'type' => 'auto_number',
+            'numberMin' => -7,
+            'digitsMin' => 8,
+        ]]);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    public function it_throws_an_exception_from_normalized_with_digits_min_negative()
+    {
+        $this->beConstructedThrough('fromNormalized', [[
+            'type' => 'auto_number',
+            'numberMin' => 7,
+            'digitsMin' => -8,
+        ]]);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 }

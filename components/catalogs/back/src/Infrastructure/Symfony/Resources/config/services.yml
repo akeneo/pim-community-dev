@@ -134,7 +134,7 @@ services:
 
     Akeneo\Catalogs\Infrastructure\Persistence\Measurement\GetMeasurementsFamilyQuery:
         arguments:
-            - '@akeneo_measure.persistence.measurement_family_repository'
+            - '@akeneo_measurement.service_api.find_measurement_families'
 
     Akeneo\Catalogs\Infrastructure\Persistence\Currency\IsCurrencyActivatedQuery:
         arguments:

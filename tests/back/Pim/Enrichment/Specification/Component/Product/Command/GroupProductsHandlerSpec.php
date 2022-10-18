@@ -4,62 +4,119 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Command;
 
 use Akeneo\Pim\Enrichment\Component\Product\Command\GroupProductsCommand;
 use Akeneo\Pim\Enrichment\Component\Product\Command\GroupProductsHandler;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
-use Akeneo\Pim\Enrichment\Component\Product\Query\FindProductIdentifiersInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FindProductUuidsInGroup;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 class GroupProductsHandlerSpec extends ObjectBehavior
 {
-    function let(FindProductIdentifiersInterface $getGroupProductIdentifiers, GroupRepositoryInterface $groupRepository, BulkSaverInterface $productSaver, ProductRepositoryInterface $productRepository)
-    {
-        $this->beConstructedWith($getGroupProductIdentifiers, $groupRepository, $productSaver, $productRepository, 2);
+    function let(
+        FindProductUuidsInGroup $findProductUuids,
+        GroupRepositoryInterface $groupRepository,
+        BulkSaverInterface $productSaver,
+        ProductRepositoryInterface $productRepository
+    ) {
+        $this->beConstructedWith($findProductUuids, $groupRepository, $productSaver, $productRepository, 2);
     }
 
-    function it_is_initializable() {
+    function it_is_initializable()
+    {
         $this->shouldHaveType(GroupProductsHandler::class);
     }
 
-    function it_can_propagate_product_added_group(FindProductIdentifiersInterface $getGroupProductIdentifiers, GroupRepositoryInterface $groupRepository, BulkSaverInterface $productSaver, ProductRepositoryInterface $productRepository){
-        $product2 = new Product();
-        $getGroupProductIdentifiers->fromGroupId(1)->willReturn(["productId1"]);
-        $groupRepository->find(1)->willReturn(new Group());
-        $productRepository->findOneByIdentifier("productId2")->willReturn($product2);
+    function it_can_add_products_to_a_group(
+        FindProductUuidsInGroup $findProductUuids,
+        GroupRepositoryInterface $groupRepository,
+        BulkSaverInterface $productSaver,
+        ProductRepositoryInterface $productRepository,
+        ProductInterface $productToAddInGroup,
+        GroupInterface $group
+    ) {
+        $alreadyInGroupUuid = Uuid::uuid4();
+        $productToAddInGroupUuid = Uuid::uuid4();
 
-        $this->handle(new GroupProductsCommand(1, ["productId1", "productId2"]));
+        $findProductUuids->forGroupId(1)->shouldBeCalled()->willReturn([$alreadyInGroupUuid->toString()]);
+        $groupRepository->find(1)->willReturn($group);
+        $productRepository->getItemsFromUuids([$productToAddInGroupUuid->toString()])
+                          ->shouldBeCalled()->willReturn([$productToAddInGroup]);
 
-        $productSaver->saveAll([$product2])->shouldHaveBeenCalled();
+        $productToAddInGroup->addGroup($group)->shouldBeCalled();
+        $productSaver->saveAll([$productToAddInGroup])->shouldBeCalledOnce();
 
+        $this->handle(
+            new GroupProductsCommand(1, [$alreadyInGroupUuid->toString(), $productToAddInGroupUuid->toString()])
+        );
     }
 
-    function it_can_propagate_product_removed_group(FindProductIdentifiersInterface $getGroupProductIdentifiers, GroupRepositoryInterface $groupRepository, BulkSaverInterface $productSaver, ProductRepositoryInterface $productRepository){
-        $product = new Product();
-        $getGroupProductIdentifiers->fromGroupId(1)->willReturn(["productId1", "productId2"]);
-        $groupRepository->find(1)->willReturn(new Group());
-        $productRepository->findOneByIdentifier("productId1")->willReturn($product);
+    function it_removes_products_from_a_group(
+        FindProductUuidsInGroup $findProductUuids,
+        GroupRepositoryInterface $groupRepository,
+        BulkSaverInterface $productSaver,
+        ProductRepositoryInterface $productRepository,
+        ProductInterface $productToRemoveFromGroup,
+        GroupInterface $group
+    ) {
+        $alreadyInGroupUuid = Uuid::uuid4();
+        $productToRemoveFromGroupUuid = Uuid::uuid4();
 
-        $this->handle(new GroupProductsCommand(1, ["productId2"]));
+        $findProductUuids->forGroupId(1)->shouldBeCalled()->willReturn([
+            $alreadyInGroupUuid->toString(),
+            $productToRemoveFromGroupUuid->toString(),
+        ]);
+        $groupRepository->find(1)->willReturn($group);
+        $productRepository->getItemsFromUuids([$productToRemoveFromGroupUuid->toString()])
+                          ->shouldBeCalled()->willReturn([$productToRemoveFromGroup]);
 
-        $productSaver->saveAll([$product])->shouldHaveBeenCalled();
+        $productToRemoveFromGroup->removeGroup($group)->shouldBeCalled();
+        $productSaver->saveAll([$productToRemoveFromGroup])->shouldBeCalledOnce();
+
+        $this->handle(
+            new GroupProductsCommand(1, [$alreadyInGroupUuid->toString()])
+        );
     }
 
-    function it_can_batch_product_commands(FindProductIdentifiersInterface $getGroupProductIdentifiers, GroupRepositoryInterface $groupRepository, BulkSaverInterface $productSaver, ProductRepositoryInterface $productRepository){
-        $product1 = new Product();
-        $product2 = new Product();
-        $product3 = new Product();
-        $getGroupProductIdentifiers->fromGroupId(1)->willReturn([]);
-        $groupRepository->find(1)->willReturn(new Group());
-        $productRepository->findOneByIdentifier("productId1")->willReturn($product1);
-        $productRepository->findOneByIdentifier("productId2")->willReturn($product2);
-        $productRepository->findOneByIdentifier("productId3")->willReturn($product3);
+    function it_can_batch_product_commands(
+        FindProductUuidsInGroup $findProductUuids,
+        GroupRepositoryInterface $groupRepository,
+        BulkSaverInterface $productSaver,
+        ProductRepositoryInterface $productRepository,
+        GroupInterface $group,
+        ProductInterface $product1,
+        ProductInterface $product3,
+        ProductInterface $product4,
+    ) {
+        $uuid1 = Uuid::uuid4();
+        $uuid2 = Uuid::uuid4();
+        $uuid3 = Uuid::uuid4();
+        $uuid4 = Uuid::uuid4();
 
-        $this->handle(new GroupProductsCommand(1, ["productId1", "productId2", "productId3"]));
+        $groupRepository->find(1)->willReturn($group);
+        $findProductUuids->forGroupId(1)->shouldBeCalled()->willReturn([
+            $uuid2->toString(),
+            $uuid4->toString(),
+        ]);
 
-        $productSaver->saveAll([$product1, $product2])->shouldHaveBeenCalled();
-        $productSaver->saveAll([$product3])->shouldHaveBeenCalled();
+        $productRepository->getItemsFromUuids([$uuid1->toString(), $uuid3->toString()])
+            ->shouldBeCalled()->willReturn([$product1, $product3]);
+        $product1->addGroup($group)->shouldBeCalled();
+        $product3->addGroup($group)->shouldBeCalled();
+        $productSaver->saveAll([$product1, $product3])->shouldBeCalled();
+
+        $productRepository->getItemsFromUuids([$uuid4->toString()])
+                          ->shouldBeCalled()->willReturn([$product4]);
+        $product4->removeGroup($group)->shouldBeCalled();
+        $productSaver->saveAll([$product4])->shouldBeCalled();
+
+        $this->handle(new GroupProductsCommand(1, [
+            $uuid1->toString(),
+            $uuid2->toString(),
+            $uuid3->toString(),
+        ]));
     }
 
 }

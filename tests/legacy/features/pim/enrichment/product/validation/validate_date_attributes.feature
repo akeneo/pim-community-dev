@@ -29,28 +29,28 @@ Feature: Validate date attributes of a product
     Then I should see validation tooltip "The release attribute can not have the same value more than once. The 2013-01-01 value is already set on another product."
     And there should be 1 error in the "Other" tab
 
-  @jira https://akeneo.atlassian.net/browse/PIM-4216
+  # @jira https://akeneo.atlassian.net/browse/PIM-4216
   Scenario: Validate the date min constraint of date attribute
     Given I change the Release to "01/01/2011"
     And I save the product
     Then I should see validation tooltip "The release attribute requires a date that should be 2013-01-01 or after."
     And there should be 1 error in the "Other" tab
 
-  @jira https://akeneo.atlassian.net/browse/PIM-4216
+  # @jira https://akeneo.atlassian.net/browse/PIM-4216
   Scenario: Validate the date min constraint of scopable date attribute
     Given I change the Available to "01/01/2012"
     And I save the product
     Then I should see validation tooltip "The available attribute requires a date that should be 2013-01-01 or after."
     And there should be 1 error in the "Other" tab
 
-  @jira https://akeneo.atlassian.net/browse/PIM-4216
+  # @jira https://akeneo.atlassian.net/browse/PIM-4216
   Scenario: Validate the date max constraint of date attribute
     Given I change the Release to "01/01/2016"
     And I save the product
     Then I should see validation tooltip "The release attribute requires a date that should be 2015-12-12 or before."
     And there should be 1 error in the "Other" tab
 
-  @jira https://akeneo.atlassian.net/browse/PIM-4216
+  # @jira https://akeneo.atlassian.net/browse/PIM-4216
   Scenario: Validate the date max constraint of scopable date attribute
     Given I change the Available to "03/03/2017"
     And I save the product

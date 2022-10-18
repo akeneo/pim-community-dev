@@ -207,7 +207,7 @@ Feature: Execute a job
     And I visit the "Upsell (0)" association type
     Then I should see the text "0 product(s), 0 product model(s) and 0 group(s)"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6019
+  # @jira https://akeneo.atlassian.net/browse/PIM-6019
   @javascript
   Scenario: Successfully import product without remove already existing associations when option "compare values" is set to false
     Given the following product:
@@ -234,7 +234,7 @@ Feature: Execute a job
     And I wait for the "csv_footwear_product_import" job to finish
     Then I should see the text "skipped product (no associations detected)"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6042
+  # @jira https://akeneo.atlassian.net/browse/PIM-6042
   Scenario: Successfully import product associations without removing already existing associations when option "compare values" is set to true
     Given the following product:
       | sku     | name-en_US |
@@ -257,7 +257,7 @@ Feature: Execute a job
       | X_SELL | SKU-002  |
       | UPSELL | SKU-003  |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6071
+  # @jira https://akeneo.atlassian.net/browse/PIM-6071
   Scenario: Successfully import product associations with an attribute having the same code
     Given the following product:
       | sku     | name-en_US |

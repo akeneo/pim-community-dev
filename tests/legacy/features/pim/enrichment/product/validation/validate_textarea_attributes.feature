@@ -53,7 +53,8 @@ Feature: Validate textarea attributes of a product
     Then I should see validation tooltip "The long_description attribute must not contain more than 10 characters. The submitted value is too long."
     And there should be 1 error in the "Other" tab
 
-  @skip @info This generates an unresponsive script, should be checked on the backend @jira https://akeneo.atlassian.net/browse/PIM-3447
+  # @info This generates an unresponsive script, should be checked on the backend @jira https://akeneo.atlassian.net/browse/PIM-3447
+  @skip
   Scenario: Validate the max database value length of textarea attribute
     Given I change the Longtext to an invalid value
     And I save the product

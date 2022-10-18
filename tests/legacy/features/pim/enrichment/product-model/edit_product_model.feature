@@ -49,7 +49,7 @@ Feature: Edit a product model
     Then the field Notice should be read only
     And I should see the text "This attribute can be updated in the common attributes."
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6861
+  # @jira https://akeneo.atlassian.net/browse/PIM-6861
   Scenario: Display a product model without any children
     Given I am logged in as "Mary"
     When I am on the "1111111113" product page
@@ -68,7 +68,7 @@ Feature: Edit a product model
     And I visit the "Marketing" group
     Then the product Model name should be "Heritage jacket navy"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6816
+  # @jira https://akeneo.atlassian.net/browse/PIM-6816
   Scenario: Successfully display a validation error message
     Given I am logged in as "Mary"
     And I am on the "amor" product model page
@@ -92,7 +92,7 @@ Feature: Edit a product model
     And I visit the "All" group
     Then the Care instructions, Collection, Model picture fields should be highlighted
 
-  @jira https://akeneo.atlassian.net/browse/PIM-7382
+  # @jira https://akeneo.atlassian.net/browse/PIM-7382
   Scenario: Successfully display a product model's scopable value after editing it
     Given I am logged in as "Mary"
     And I am on the "bacchus" product model page

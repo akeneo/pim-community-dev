@@ -121,7 +121,11 @@ class ColumnsMerger
         if ('unit' === $attributeInfos['metric_unit']) {
             $collectedMetrics[$cleanField]['unit'] = $fieldValue;
         } else {
-            $collectedMetrics[$cleanField]['data'] = $fieldValue;
+            if (is_string($fieldValue)) {
+                $collectedMetrics[$cleanField]['data'] = trim($fieldValue);
+            } else {
+                $collectedMetrics[$cleanField]['data'] = $fieldValue;
+            }
         }
 
         return $collectedMetrics;

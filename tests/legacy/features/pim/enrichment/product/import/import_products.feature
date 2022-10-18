@@ -152,7 +152,7 @@ Feature: Import products coming from an external application
     And product "SKU-003" should be disabled
     And product "SKU-004" should be enabled
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6085
+  # @jira https://akeneo.atlassian.net/browse/PIM-6085
   @javascript
   Scenario: Successfully import product associations with modified column name
     Given I am logged in as "Julia"

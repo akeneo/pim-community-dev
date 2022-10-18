@@ -55,13 +55,13 @@ class UpsertCategoryBaseSqlIntegration extends CategoryTestCase
         $this->assertSame((string)$category->getCode(), (string)$categoryInserted->getCode());
         $this->assertNotNull($category->getAttributes());
         $this->assertNotNull($categoryInserted->getAttributes());
-        $this->assertArrayHasKey('attribute_codes', $categoryInserted->getAttributes()->normalize());
+        $this->assertArrayHasKey('attribute_codes', $categoryInserted->getAttributes()->getValues());
         $this->assertEquals(
             $expectedData['attribute_codes'],
-            $categoryInserted->getAttributes()->normalize()['attribute_codes']
+            $categoryInserted->getAttributes()->getCodes()
         );
-        $this->assertArrayHasKey($expectedCompositeKey, $categoryInserted->getAttributes()->normalize());
-        $this->assertEquals($expectedData[$expectedCompositeKey], $categoryInserted->getAttributes()->normalize()[$expectedCompositeKey]);
+        $this->assertArrayHasKey($expectedCompositeKey, $categoryInserted->getAttributes()->getValues());
+        $this->assertEquals($expectedData[$expectedCompositeKey], $categoryInserted->getAttributes()->getValues()[$expectedCompositeKey]);
     }
 
     public function testUpdateExistingCategoryInDatabase(): void
@@ -107,12 +107,12 @@ class UpsertCategoryBaseSqlIntegration extends CategoryTestCase
         $this->assertNotSame($updatedCategory, $categoryInserted);
 
         $this->assertNotNull($updatedCategory->getAttributes());
-        $this->assertArrayHasKey('attribute_codes', $updatedCategory->getAttributes()->normalize());
+        $this->assertArrayHasKey('attribute_codes', $updatedCategory->getAttributes()->getValues());
         $this->assertEquals(
             $expectedData['attribute_codes'],
-            $updatedCategory->getAttributes()->normalize()['attribute_codes']
+            $updatedCategory->getAttributes()->getCodes()
         );
-        $this->assertArrayHasKey($expectedCompositeKey, $updatedCategory->getAttributes()->normalize());
-        $this->assertEquals($expectedData[$expectedCompositeKey], $updatedCategory->getAttributes()->normalize()[$expectedCompositeKey]);
+        $this->assertArrayHasKey($expectedCompositeKey, $updatedCategory->getAttributes()->getValues());
+        $this->assertEquals($expectedData[$expectedCompositeKey], $updatedCategory->getAttributes()->getValues()[$expectedCompositeKey]);
     }
 }

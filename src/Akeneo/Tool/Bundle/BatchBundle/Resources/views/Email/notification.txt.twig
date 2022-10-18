@@ -2,7 +2,11 @@
 
 {% block emailMessage %}
     Dear {{ email }},
-    Akeneo successfully completed your batch {{ jobExecution.jobInstance.type }}.
+    {% if jobExecution.status.unsuccessful %}
+        Akeneo completed your {{ jobExecution.jobInstance.type }} with errors.
+    {% else %}
+        Akeneo successfully completed your {{ jobExecution.jobInstance.type }}.
+    {% endif %}
 
     Started on {{ jobExecution.startTime|date("Y-m-d") }} at {{ jobExecution.startTime|date("H:i:s")  }}.
     Ended on {{ jobExecution.endTime|date("Y-m-d") }} at {{ jobExecution.endTime|date("H:i:s")  }}.

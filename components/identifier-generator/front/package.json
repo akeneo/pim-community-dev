@@ -31,9 +31,10 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
     "typescript": "^4.0.3",
-    "web-vitals": "^0.2.4"
+    "web-vitals": "^0.2.4",
+    "react-query": "^3.39.1"
   },
-  "proxy": "http://localhost:8080",
+  "proxy": "http://httpd",
   "scripts": {
     "app:start": "yarn translation:build && yarn route:build && yarn packages:build && react-scripts start",
     "test:unit:run": "react-scripts test --watchAll=false --coverage --coverageDirectory=coverage --maxWorkers=3",

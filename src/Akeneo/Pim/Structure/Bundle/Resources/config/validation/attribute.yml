@@ -101,7 +101,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
             - Length:
                 max: 255
             - Regex:
-                pattern: /^(?!(id|associationTypes|categories|categoryId|completeness|enabled|(?i)\bfamily\b|groups|associations|products|scope|treeId|values|category|parent|label|(.)*_(products|groups)|entity_type|attributes)$)/i
+                pattern: /^(?!(id|associationTypes|categories|categoryId|completeness|enabled|(?i)\bfamily\b|groups|associations|products|scope|treeId|values|category|parent|label|(.)*_(products|groups)|entity_type|attributes|uuid)$)/i
                 message: This code is not available
             - Regex:
                 pattern: /^[^\n]+$/D

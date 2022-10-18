@@ -7,3 +7,6 @@ services:
 
   Akeneo\Platform\Job\Application\FindJobType\FindJobTypeInterface:
     class: Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryFindJobType
+
+  akeneo_platform.saver.job_instance:
+    class: Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryJobInstanceSaver

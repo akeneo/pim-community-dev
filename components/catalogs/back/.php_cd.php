@@ -26,6 +26,7 @@ $rules = [
             'Akeneo\Catalogs\ServiceAPI\Model',
             'Akeneo\Catalogs\ServiceAPI\Command',
             'Akeneo\Catalogs\ServiceAPI\Query',
+            'Akeneo\Catalogs\ServiceAPI\Exception',
         ]
     )->in('Akeneo\Catalogs\Application'),
 
@@ -37,6 +38,7 @@ $rules = [
             'Akeneo\Catalogs\Application',
             'Akeneo\Catalogs\Infrastructure',
 
+            // Allowed dependencies in Infrastructure
             'Symfony\Component\Config',
             'Symfony\Component\Console',
             'Symfony\Component\DependencyInjection',
@@ -50,45 +52,64 @@ $rules = [
             'Symfony\Component\Validator',
             'Doctrine\DBAL',
             'Ramsey\Uuid\Uuid',
+            'League\Flysystem\Filesystem',
+            'Opis\JsonSchema',
+            'Psr\Log\LoggerInterface',
             'Akeneo\Platform\Bundle\InstallerBundle',
             'Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface',
             'Akeneo\Tool\Component\Api',
+            'Akeneo\Connectivity\Connection\ServiceApi',
+            'Akeneo\Tool\Bundle\MeasureBundle\ServiceApi',
+
+            /**********************************************************************************************************/
+            /* Below are dependencies that we have, but we shouldn't rely on them.
+            /* They are coupling exceptions that should be replaced by better alternatives, like ServiceAPIs.
+            /**********************************************************************************************************/
+
+            // This class is not clearly identified as public API
+            'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
+
+            // used in GetCurrentUsernameTrait
             'Akeneo\UserManagement\Component\Model\UserInterface',
             'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
-            'Akeneo\Connectivity\Connection\ServiceApi',
-            'League\Flysystem\Filesystem',
 
-            // @todo replace with the ones from service API when available
-            'Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface',
-            'Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface',
-            'Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface',
-            'Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface',
-            'Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface',
-            'Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode',
-            'Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException',
-            'Akeneo\Channel\Infrastructure\Component\Repository\CurrencyRepositoryInterface',
-
-            // @todo remove
-            'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
-            'Akeneo\Pim\Enrichment\Component\Product\Query',
-            'Akeneo\Pim\Enrichment\Bundle\Elasticsearch',
+            // used in TemporaryEnrichmentBridge
             'Akeneo\Tool\Bundle\ElasticsearchBundle\Client',
             'Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface',
             'Symfony\Component\OptionsResolver',
-            'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
-            'Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface',
+
+            // used in Persistence\Attribute
             'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
             'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
             'Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface',
-            'Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductWithUuidNormalizer',
+            'Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface',
 
-            // @todo replace with the ones from category service API when available
+            // used in Persistence\Catalog\Product
+            'Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductWithUuidNormalizer',
+            'Akeneo\Pim\Enrichment\Component\Product\Query',
+            'Akeneo\Pim\Enrichment\Bundle\Elasticsearch',
+
+            // used in Persistence\Category
             'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface',
             'Akeneo\Category\Infrastructure\Component\Model\CategoryInterface',
             'Akeneo\Category\Infrastructure\Component\Model\CategoryTranslationInterface',
             'Doctrine\Common\Collections\Collection',
             'Akeneo\Category\Api\FindCategoryTrees',
             'Akeneo\Category\Api\CategoryTree',
+
+            // used in Persistence\Channel
+            'Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface',
+            'Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface',
+
+            // used in Persistence\Currency
+            'Akeneo\Channel\Infrastructure\Component\Repository\CurrencyRepositoryInterface',
+
+            // used in Persistence\Locale
+            'Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface',
+            'Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface',
+
+            // used in Persistence\Family
+            'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
         ]
     )->in('Akeneo\Catalogs\Infrastructure'),
 

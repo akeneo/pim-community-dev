@@ -1,0 +1,5 @@
+services:
+  Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository:
+    class: 'Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository\SqlIdentifierGeneratorRepository'
+    arguments:
+      - '@database_connection'

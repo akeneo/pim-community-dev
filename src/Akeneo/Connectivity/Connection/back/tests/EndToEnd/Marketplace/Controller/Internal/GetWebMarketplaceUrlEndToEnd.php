@@ -33,7 +33,7 @@ class GetWebMarketplaceUrlEndToEnd extends WebTestCase
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         Assert::assertMatchesRegularExpression(
-            '/https:\/\/api\.apps\.akeneo\.cloud\/.*/',
+            '/https:\/\/apps\.akeneo\.com\/.*/',
             $result,
         );
     }

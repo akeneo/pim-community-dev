@@ -13,12 +13,48 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
 final class IdentifierGenerator
 {
     public function __construct(
-        private IdentifierGeneratorCode $identifierGeneratorCode,
+        private IdentifierGeneratorId $id,
+        private IdentifierGeneratorCode $code,
         private Conditions $conditions,
         private Structure $structure,
         private LabelCollection $labelCollection,
         private Target $target,
         private ?Delimiter $delimiter,
     ) {
+    }
+
+    public function id(): IdentifierGeneratorId
+    {
+        return $this->id;
+    }
+
+    public function code(): IdentifierGeneratorCode
+    {
+        return $this->code;
+    }
+
+    public function conditions(): Conditions
+    {
+        return $this->conditions;
+    }
+
+    public function structure(): Structure
+    {
+        return $this->structure;
+    }
+
+    public function labelCollection(): LabelCollection
+    {
+        return $this->labelCollection;
+    }
+
+    public function target(): Target
+    {
+        return $this->target;
+    }
+
+    public function delimiter(): ?Delimiter
+    {
+        return $this->delimiter;
     }
 }

@@ -14,8 +14,11 @@ final class Context
 {
     public LogContext $logContext;
 
-    public function __construct(private bool $dryRun, private bool $withStats)
-    {
+    public function __construct(
+        private bool $dryRun,
+        private bool $withStats,
+        private bool $lockTables
+    ) {
     }
 
     public function dryRun(): bool
@@ -26,5 +29,10 @@ final class Context
     public function withStats(): bool
     {
         return $this->withStats;
+    }
+
+    public function lockTables(): bool
+    {
+        return $this->lockTables;
     }
 }

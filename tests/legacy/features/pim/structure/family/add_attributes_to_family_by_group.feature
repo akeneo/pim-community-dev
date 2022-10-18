@@ -8,7 +8,7 @@ Feature: Add attributes by attribute groups to a family
     Given a "footwear" catalog configuration
     And I am logged in as "Peter"
 
-  @info https://akeneo.atlassian.net/browse/PIM-6095
+  # @info https://akeneo.atlassian.net/browse/PIM-6095
   Scenario: Successfully add attributes by attribute groups to a family
     Given I am on the "Sandals" family page
     And I visit the "Attributes" tab

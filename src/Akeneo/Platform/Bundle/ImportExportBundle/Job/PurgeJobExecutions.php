@@ -30,12 +30,12 @@ class PurgeJobExecutions implements TaskletInterface
         $days = (int) $this->stepExecution->getJobParameters()->get('days');
 
         if (0 === $days) {
-            $this->purgeJobExecution->all();
-            $this->logger->info('All jobs execution deleted');
+            $numberOfDeletedJobExecutions = $this->purgeJobExecution->olderThanHours(1);
+            $this->logger->info('Purged jobs execution older than 1 hour');
         } else {
             $numberOfDeletedJobExecutions = $this->purgeJobExecution->olderThanDays($days);
             $this->logger->info(sprintf('Purged jobs execution older than %d days', $days));
-            $this->logger->info(sprintf('%d jobs execution deleted', $numberOfDeletedJobExecutions));
         }
+        $this->logger->info(sprintf('%d jobs execution deleted', $numberOfDeletedJobExecutions));
     }
 }

@@ -10,3 +10,13 @@ services:
     Akeneo\Platform\Job\Application\FindJobType\FindJobTypeHandler:
         arguments:
             - '@Akeneo\Platform\Job\Application\FindJobType\FindJobTypeInterface'
+
+    Akeneo\Platform\Job\Application\CreateJobInstanceHandler:
+        public: true
+        arguments:
+            - '@akeneo_batch.job_instance_factory'
+            - '@akeneo_batch.job.job_registry'
+            - '@akeneo_batch.job_parameters_factory'
+            - '@akeneo_batch.job.job_parameters_validator'
+            - '@validator'
+            - '@akeneo_platform.saver.job_instance'

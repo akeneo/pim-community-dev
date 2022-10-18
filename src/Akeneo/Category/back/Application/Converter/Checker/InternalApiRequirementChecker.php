@@ -15,14 +15,13 @@ use Webmozart\Assert\Assert;
  *
  * @phpstan-import-type InternalApi from InternalApiToStd
  * @phpstan-import-type PropertyApi from InternalApiToStd
- * @phpstan-import-type AttributeCodeApi from InternalApiToStd
  * @phpstan-import-type AttributeValueApi from InternalApiToStd
  */
 class InternalApiRequirementChecker implements RequirementChecker
 {
     /**
      * @param FieldsRequirementChecker $fieldsChecker
-     * @param AttributeRequirementChecker $attributeChecker
+     * @param AttributeApiRequirementChecker $attributeChecker
      */
     public function __construct(
         private RequirementChecker $fieldsChecker,
@@ -45,7 +44,7 @@ class InternalApiRequirementChecker implements RequirementChecker
     /**
      * @param array{
      *     properties: PropertyApi,
-     *     attributes: array<string, AttributeCodeApi|AttributeValueApi>
+     *     attributes: array<string, AttributeValueApi>
      * } $data
      */
     public function checkArrayStructure(array $data): void

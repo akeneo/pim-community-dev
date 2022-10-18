@@ -41,7 +41,7 @@ class CategoriesSettings extends ReactController {
   }
 
   canLeave() {
-    return this.canLeavePage || confirm(__('pim_ui.flash.unsaved_changes'));
+    return this.canLeavePage || confirm(__('akeneo.category.edition_form.unsaved_changes'));
   }
 
   getContainerRef(): Element {

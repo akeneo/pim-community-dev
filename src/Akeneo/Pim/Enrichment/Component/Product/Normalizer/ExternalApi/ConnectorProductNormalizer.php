@@ -48,6 +48,7 @@ final class ConnectorProductNormalizer
         $quantifiedAssociations = $this->normalizeQuantifiedAssociations($connectorProduct->quantifiedAssociations());
 
         $normalizedProduct =  [
+            'uuid' => $connectorProduct->uuid(),
             'identifier' => $connectorProduct->identifier(),
             'enabled' => $connectorProduct->enabled(),
             'family' => $connectorProduct->familyCode(),
@@ -65,8 +66,7 @@ final class ConnectorProductNormalizer
             $normalizedProduct['quality_scores'] = $this->normalizeQualityScores($qualityScores);
         }
         if ($completenesses !== null) {
-            $normalizedCompletenesses = $this->normalizeCompletenesses($completenesses);
-            $normalizedProduct['completenesses'] = empty($normalizedCompletenesses) ? (object) [] : $normalizedCompletenesses;
+            $normalizedProduct['completenesses'] = $this->normalizeCompletenesses($completenesses);
         }
 
         if (!empty($connectorProduct->metadata())) {

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\BatchBundle\JobExecution;
 
+use Akeneo\Tool\Bundle\BatchBundle\Validator\Constraints\JobInstance as JobInstanceConstraint;
+use Akeneo\Tool\Component\Batch\Exception\InvalidJobException;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
@@ -15,7 +17,7 @@ use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
-use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Create and persist a new JobExecution for the provided job code
@@ -32,6 +34,7 @@ class CreateJobExecutionHandler
         private JobRegistry $jobRegistry,
         private JobParametersFactory $jobParametersFactory,
         private JobParametersValidator $jobParametersValidator,
+        private ValidatorInterface $validator,
     ) {
     }
 
@@ -47,9 +50,17 @@ class CreateJobExecutionHandler
             throw new \InvalidArgumentException(sprintf('Could not find job instance "%s".', $batchCode));
         }
 
+        return $this->createFromJobInstance($jobInstance, $jobExecutionConfig, $username);
+    }
+
+    public function createFromJobInstance(
+        JobInstance $jobInstance,
+        array $jobExecutionConfig,
+        ?string $username,
+    ): JobExecution {
         $job = $this->jobRegistry->get($jobInstance->getJobName());
         $jobParameters = $this->createJobParameters($job, $jobInstance, $jobExecutionConfig);
-        $this->validateJobParameters($job, $jobInstance, $jobParameters, $batchCode);
+        $this->validateJob($job, $jobInstance, $jobParameters, $jobInstance->getCode());
         $jobExecution = $job->getJobRepository()->createJobExecution($job, $jobInstance, $jobParameters);
 
         if (null !== $username) {
@@ -60,17 +71,17 @@ class CreateJobExecutionHandler
         return $jobExecution;
     }
 
-    protected function getJobManager(): EntityManagerInterface
+    private function getJobManager(): EntityManagerInterface
     {
         return $this->jobRepository->getJobManager();
     }
 
-    protected function getDefaultEntityManager(): ObjectManager
+    private function getDefaultEntityManager(): ObjectManager
     {
         return $this->doctrine->getManager();
     }
 
-    protected function createJobParameters(
+    private function createJobParameters(
         JobInterface $job,
         JobInstance $jobInstance,
         array $jobExecutionConfig
@@ -80,41 +91,24 @@ class CreateJobExecutionHandler
         return $this->jobParametersFactory->create($job, $rawParameters);
     }
 
-    /**
-     * @throws \RuntimeException
-     */
-    protected function validateJobParameters(
-        JobInterface $job,
-        JobInstance $jobInstance,
-        JobParameters $jobParameters,
-        string $code
-    ): void {
+    private function validateJob(JobInterface $job, JobInstance $jobInstance, JobParameters $jobParameters, string $code): void
+    {
         // We merge the JobInstance from the JobManager EntityManager to the DefaultEntityManager
         // in order to be able to have a working UniqueEntity validation
         $this->getDefaultEntityManager()->merge($jobInstance);
-        $errors = $this->jobParametersValidator->validate($job, $jobParameters, ['Default', 'Execution']);
 
-        if (\count($errors) > 0) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Job instance "%s" running the job "%s" with parameters "%s" is invalid because of "%s"',
-                    $code,
-                    $job->getName(),
-                    print_r($jobParameters->all(), true),
-                    $this->getErrorMessages($errors)
-                )
-            );
-        }
-    }
+        $jobInstanceViolations = $this->validator->validate($jobInstance, new JobInstanceConstraint());
 
-    private function getErrorMessages(ConstraintViolationList $errors): string
-    {
-        $errorsStr = '';
-
-        foreach ($errors as $error) {
-            $errorsStr .= sprintf("\n  - %s", $error);
+        if (0 < $jobInstanceViolations->count()) {
+            throw new InvalidJobException($code, $job->getName(), $jobInstanceViolations);
         }
 
-        return $errorsStr;
+        $jobParametersViolations = $this->jobParametersValidator->validate($job, $jobParameters, ['Default', 'Execution']);
+
+        if (0 < $jobParametersViolations->count()) {
+            throw new InvalidJobException($code, $job->getName(), $jobParametersViolations);
+        }
+
+        $this->getDefaultEntityManager()->clear(get_class($jobInstance));
     }
 }

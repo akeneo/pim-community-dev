@@ -24,6 +24,7 @@ use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -50,10 +51,6 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
     function it_creates_a_list_of_value_intent_based_on_values_field(GetAttribute $getAttribute): void
     {
         $data = [
-            'attribute_codes' => [
-                'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d',
-                'description' . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950',
-            ],
             'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d' . ValueCollection::SEPARATOR . 'en_US' => [
                 'data' => 'Meta shoes',
                 'locale' => 'en_US',
@@ -118,7 +115,14 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
             ),
         ]);
 
-        $getAttribute->byIdentifiers($data['attribute_codes'])
+        $identifiers = [
+            'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d',
+            'description' . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950',
+            'color' . ValueCollection::SEPARATOR . '38439aaf-66a2-4b24-854e-29d7a467c7af',
+            'banner' . ValueCollection::SEPARATOR . 'e0326684-0dff-44be-8283-9262deb9e4bc'
+        ];
+
+        $getAttribute->byIdentifiers($identifiers)
             ->shouldBeCalledOnce()
             ->willReturn($attributes);
 
@@ -162,10 +166,6 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
     function it_does_not_add_value_user_intent_when_corresponding_attribute_type_no_found(GetAttribute $getAttribute): void
     {
         $data = [
-            'attribute_codes' => [
-                'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d',
-                'description' . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950',
-            ],
             'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d' . ValueCollection::SEPARATOR . 'en_US' => [
                 'data' => 'Meta shoes',
                 'locale' => 'en_US',
@@ -190,7 +190,12 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
             )
         ]);
 
-        $getAttribute->byIdentifiers($data['attribute_codes'])
+        $identifiers = [
+            'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d',
+            'description' . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950'
+        ];
+
+        $getAttribute->byIdentifiers($identifiers)
             ->shouldBeCalledOnce()
             ->willReturn($valueCollection);
 

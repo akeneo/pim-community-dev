@@ -109,15 +109,6 @@ pim_enrich:
       categories_view: 商品モデルのカテゴリを相談
       history: 商品モデルの履歴を表示
       remove: 商品モデルを削除 (下位を含む)
-    category:
-      list: カテゴリを一覧表示
-      create: カテゴリを作成
-      edit: カテゴリを編集
-      remove: カテゴリーを削除
-      move: カテゴリを移動
-      children: 下位カテゴリを見る
-      products: カテゴリの商品を見る
-      history: カテゴリの履歴を表示
     channel:
       index: チャンネルを一覧表示
       create: チャンネルを作成

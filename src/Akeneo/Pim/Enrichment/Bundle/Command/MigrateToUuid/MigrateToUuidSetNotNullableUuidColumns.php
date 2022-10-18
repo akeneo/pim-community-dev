@@ -84,6 +84,7 @@ class MigrateToUuidSetNotNullableUuidColumns implements MigrateToUuidStep
     public function addMissing(Context $context): bool
     {
         $logContext = $context->logContext;
+        $lockTables = $context->lockTables();
 
         $updatedItems = 0;
         foreach ($this->getTablesToMigrate() as $tableName => $columnNames) {
@@ -93,7 +94,8 @@ class MigrateToUuidSetNotNullableUuidColumns implements MigrateToUuidStep
                 if (!$context->dryRun()) {
                     $this->setUuidColumnNotNullable(
                         $tableName,
-                        $columnNames[self::UUID_COLUMN_INDEX]
+                        $columnNames[self::UUID_COLUMN_INDEX],
+                        $lockTables
                     );
                     $this->logger->notice('Substep done', $logContext->toArray(['updated_items_count' => $updatedItems+=1]));
                 }
@@ -105,11 +107,12 @@ class MigrateToUuidSetNotNullableUuidColumns implements MigrateToUuidStep
                 $this->connection->executeQuery(\strtr(
                     <<<SQL
                     ALTER TABLE {table_name}
-                    MODIFY resource_id varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-                    ALGORITHM=INPLACE,
-                    LOCK=NONE;
+                    MODIFY resource_id varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT NULL{algorithmInplace};
                     SQL,
-                    ['{table_name}' => $tableName]
+                    [
+                        '{table_name}' => $tableName,
+                        '{algorithmInplace}' => $lockTables ? '' : ', ALGORITHM=INPLACE, LOCK=NONE',
+                    ]
                 ));
                 $this->logger->notice('Substep done', $logContext->toArray([
                     'updated_items_count' => $updatedItems+=1,
@@ -121,13 +124,11 @@ class MigrateToUuidSetNotNullableUuidColumns implements MigrateToUuidStep
         return true;
     }
 
-    private function setUuidColumnNotNullable(string $tableName, string $uuidColumnName): void
+    private function setUuidColumnNotNullable(string $tableName, string $uuidColumnName, bool $lockTables): void
     {
         $sql = <<<SQL
             ALTER TABLE `{table_name}`
-            MODIFY {uuid_column_name} BINARY(16) NOT NULL,
-            ALGORITHM=INPLACE,
-            LOCK=NONE;
+            MODIFY {uuid_column_name} BINARY(16) NOT NULL{algorithmInplace};
         SQL;
 
         $query = \strtr(
@@ -135,6 +136,7 @@ class MigrateToUuidSetNotNullableUuidColumns implements MigrateToUuidStep
             [
                 '{table_name}' => $tableName,
                 '{uuid_column_name}' => $uuidColumnName,
+                '{algorithmInplace}' => $lockTables ? '' : ', ALGORITHM=INPLACE, LOCK=NONE',
             ]
         );
 

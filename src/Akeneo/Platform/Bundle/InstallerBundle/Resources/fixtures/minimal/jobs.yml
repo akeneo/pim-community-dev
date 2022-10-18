@@ -161,3 +161,14 @@ jobs:
         alias:     job_executions_purge
         label:     Purge job executions
         type:      scheduled_job
+    events_api_purge:
+        connector: internal
+        alias:     events_api_purge
+        label:     Purge events API
+        type:      scheduled_job
+    aggregate_volume_queries:
+        connector: internal
+        alias:     aggregate_volume_queries
+        label:     Aggregate volume monitoring queries
+        type:      scheduled_job
+

@@ -7,19 +7,23 @@ const TEMPLATE_FETCH_STALE_TIME = 60 * 60 * 1000;
 
 type ResultError = Error | null;
 type Result = {
-  isLoading: boolean;
-  isError: boolean;
+  status: 'idle' | 'loading' | 'success' | 'error';
   data: Template | undefined;
   error: ResultError;
 };
 
-export const useTemplate = (templateUuid: string): Result => {
+interface UseTemplateParameters {
+  uuid: string;
+  enabled?: boolean;
+}
+
+export const useTemplate = ({uuid, enabled = true}: UseTemplateParameters): Result => {
   const url = useRoute('pim_category_template_rest_get', {
-    templateUuid: templateUuid,
+    templateUuid: uuid,
   });
 
   const fetchTemplate = useCallback(async () => {
-    if (templateUuid.length === 0) {
+    if (uuid.length === 0) {
       return {};
     }
 
@@ -30,7 +34,12 @@ export const useTemplate = (templateUuid: string): Result => {
     }
 
     return await response.json();
-  }, [templateUuid, url]);
+  }, [uuid, url]);
 
-  return useQuery<Template, ResultError, Template>(['template'], fetchTemplate, {staleTime: TEMPLATE_FETCH_STALE_TIME});
+  const options = {
+    enabled,
+    staleTime: TEMPLATE_FETCH_STALE_TIME,
+  };
+
+  return useQuery<Template, ResultError, Template>(['template'], fetchTemplate, options);
 };

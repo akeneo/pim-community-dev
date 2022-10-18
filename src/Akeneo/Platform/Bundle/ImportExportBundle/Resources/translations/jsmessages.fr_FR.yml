@@ -152,7 +152,7 @@ pim_import_export:
             help: Définit la langue dans laquelle les libellés vont être affichés.
       file_path: Chemin du fichier
       storage_form:
-        title: Espace disque
+        title: Stockage
         connection:
           label: Type
           local: Local
@@ -171,11 +171,6 @@ pim_import_export:
       connection_checker:
         label: Tester les paramètres de connexion
         exception: La connexion ne peut pas être établie, veuillez vérifier vos paramètres.
-  widget:
-    last_operations:
-      empty: Il n'y a aucune opération à afficher pour le moment.
-      details: Détails
-      header.view_all: Afficher tout
   batch_status:
     1: Terminé
     2: Démarrage

@@ -171,11 +171,6 @@ pim_import_export:
       connection_checker:
         label: 测试连接设置
         exception: 无法建立连接，请检查您的设置。
-  widget:
-    last_operations:
-      empty: 现在没有要显示的运算。
-      details: 详细信息
-      header.view_all: 查看全部
   batch_status:
     1: 已完成
     2: 正在启动

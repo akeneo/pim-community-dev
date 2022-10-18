@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\ListProducts;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceCollectionValue;
@@ -20,6 +20,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -27,8 +28,18 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class SuccessListProductEndToEnd extends AbstractProductTestCase
 {
-    /** @var ProductInterface[] $products */
-    private array $products = [];
+    const PRODUCT_UUIDS = [
+        'simple' => '4cfd82f2-def8-4869-8008-eabdf658f57c',
+        'simple_with_family_and_values' => 'a1a0956a-8d89-4737-a9ae-35b756245eb1',
+        'simple_with_no_family' => '9d16f37a-6e0e-43ff-ab2b-85969c1cd4ef',
+        'simple_with_no_values' => 'f0f4ffe6-ae7c-4586-82db-e5f5360d1d0c',
+        'localizable' => 'e7dd6e7f-9801-48f9-b4d6-57620754b4bc',
+        'scopable' => '612859a6-3378-4c10-a58d-8e12931bc965',
+        'localizable_and_scopable' => '015df514-b2ec-43d3-b297-e81980c017fe',
+        'product_china' => '3947031d-6554-4586-85f0-2a3e89636dad',
+        'product_without_category' => '6d2fd8b3-734f-4141-9503-8af8d7e2e959',
+        'product_with_parent' => 'f9d366dc-631b-429b-ae81-dd5c1efedb5d',
+    ];
 
     /**
      * {@inheritdoc}
@@ -38,7 +49,8 @@ class SuccessListProductEndToEnd extends AbstractProductTestCase
         parent::setUp();
 
         // no locale, no scope, 1 category
-        $this->createProduct('simple', [
+        $this->createProductWithUuid(self::PRODUCT_UUIDS['simple'], [
+            new SetIdentifierValue('sku', 'simple'),
             new SetCategories(['master']),
             new SetMeasurementValue('a_metric', null, null, 10, 'KILOWATT'),
             new SetTextValue('a_text', null, null, 'Text')
@@ -46,7 +58,8 @@ class SuccessListProductEndToEnd extends AbstractProductTestCase
 
         // localizable, categorized in 1 tree (master)
         $path = $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'));
-        $this->createProduct('localizable', [
+        $this->createProductWithUuid(self::PRODUCT_UUIDS['localizable'], [
+            new SetIdentifierValue('sku', 'localizable'),
             new SetCategories(['categoryB']),
             new SetImageValue('a_localizable_image', null, 'en_US', $path),
             new SetImageValue('a_localizable_image', null, 'fr_FR', $path),
@@ -54,7 +67,8 @@ class SuccessListProductEndToEnd extends AbstractProductTestCase
         ]);
 
         // scopable, categorized in 1 tree (master)
-        $this->createProduct('scopable', [
+        $this->createProductWithUuid(self::PRODUCT_UUIDS['scopable'], [
+            new SetIdentifierValue('sku', 'scopable'),
             new SetCategories(['categoryA1', 'categoryA2']),
             new SetPriceCollectionValue('a_scopable_price', 'ecommerce', null, [
                 new PriceValue('78.77', 'CNY'),
@@ -69,7 +83,8 @@ class SuccessListProductEndToEnd extends AbstractProductTestCase
         ]);
 
         // localizable & scopable, categorized in 2 trees (master and master_china)
-        $this->createProduct('localizable_and_scopable', [
+        $this->createProductWithUuid(self::PRODUCT_UUIDS['localizable_and_scopable'], [
+            new SetIdentifierValue('sku', 'localizable_and_scopable'),
             new SetCategories(['categoryA', 'master_china']),
             new SetTextareaValue('a_localized_and_scopable_text_area', 'ecommerce', 'en_US', 'Big description'),
             new SetTextareaValue('a_localized_and_scopable_text_area', 'tablet', 'en_US', 'Medium description'),
@@ -78,11 +93,13 @@ class SuccessListProductEndToEnd extends AbstractProductTestCase
             new SetTextareaValue('a_localized_and_scopable_text_area', 'ecommerce_china', 'zh_CN', 'hum...'),
         ]);
 
-        $this->createProduct('product_china', [
+        $this->createProductWithUuid(self::PRODUCT_UUIDS['product_china'], [
+            new SetIdentifierValue('sku', 'product_china'),
             new SetCategories(['master_china'])
         ]);
 
-        $this->createProduct('product_without_category', [
+        $this->createProductWithUuid(self::PRODUCT_UUIDS['product_without_category'], [
+            new SetIdentifierValue('sku', 'product_without_category'),
             new SetBooleanValue('a_yes_no', null, null, true)
         ]);
 
@@ -113,11 +130,13 @@ class SuccessListProductEndToEnd extends AbstractProductTestCase
             ]
         );
 
-        $this->createVariantProduct('product_with_parent', [
+        $this->createProductWithUuid(self::PRODUCT_UUIDS['product_with_parent'], [
+            new SetIdentifierValue('sku', 'product_with_parent'),
             new SetCategories(['master']),
             new ChangeParent('prod_mod_optA'),
             new SetBooleanValue('a_yes_no', null, null, true)
         ]);
+        $this->clearAllCache();
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
     }
@@ -156,6 +175,8 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/products?scope=tablet&locales=fr_FR&attributes=a_scopable_price,a_metric,a_localized_and_scopable_text_area&pagination_type=page');
+
+        $uuids = self::PRODUCT_UUIDS;
         $expected = <<<JSON
 {
     "_links"       : {
@@ -169,6 +190,7 @@ JSON;
                 "_links" : {
                     "self" : {"href" : "http://localhost/api/rest/v1/products/localizable"}
                 },
+                "uuid"          : "{$uuids['localizable']}",
                 "identifier"    : "localizable",
                 "family"        : null,
                 "parent"        : null,
@@ -190,6 +212,7 @@ JSON;
                 "_links" : {
                     "self" : {"href" : "http://localhost/api/rest/v1/products/localizable_and_scopable"}
                 },
+                "uuid"          : "{$uuids['localizable_and_scopable']}",
                 "identifier"    : "localizable_and_scopable",
                 "family"        : null,
                 "parent"        : null,
@@ -215,6 +238,7 @@ JSON;
                 "_links": {
                     "self": { "href": "http:\/\/localhost\/api\/rest\/v1\/products\/product_with_parent" }
                 },
+                "uuid": "{$uuids['product_with_parent']}",
                 "identifier": "product_with_parent",
                 "enabled": true,
                 "family": "familyA",
@@ -236,6 +260,7 @@ JSON;
                 "_links" : {
                     "self" : {"href" : "http://localhost/api/rest/v1/products/scopable"}
                 },
+                "uuid"          : "{$uuids['scopable']}",
                 "identifier"    : "scopable",
                 "family"        : null,
                 "parent"        : null,
@@ -268,6 +293,7 @@ JSON;
                 "_links" : {
                     "self" : {"href" : "http://localhost/api/rest/v1/products/simple"}
                 },
+                "uuid"          : "{$uuids['simple']}",
                 "identifier"    : "simple",
                 "family"        : null,
                 "parent"        : null,
@@ -311,6 +337,8 @@ JSON;
         $search = '{"a_metric":[{"operator":">","value":{"amount":"9","unit":"KILOWATT"}}],"enabled":[{"operator":"=","value":true}]}';
         $client->request('GET', 'api/rest/v1/products?pagination_type=page&search=' . $search);
         $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
+
+        $uuids = self::PRODUCT_UUIDS;
         $expected = <<<JSON
 {
     "_links"       : {
@@ -324,6 +352,7 @@ JSON;
                 "_links" : {
                     "self" : {"href" : "http://localhost/api/rest/v1/products/simple"}
                 },
+                "uuid"          : "{$uuids['simple']}",
                 "identifier"    : "simple",
                 "family"        : null,
                 "parent"        : null,
@@ -472,21 +501,24 @@ JSON;
 
     public function testListProductsWithQualityScores()
     {
-        $product1 = $this->createProduct('simple_with_family_and_values', [
+        $product1 = $this->createProductWithUuid(self::PRODUCT_UUIDS['simple_with_family_and_values'], [
+            new SetIdentifierValue('sku', 'simple_with_family_and_values'),
             new SetCategories(['master']),
             new SetFamily('familyA'),
             new SetTextValue('a_text', null, null, 'Text')
         ]);
-        $product2 = $this->createProduct('simple_with_no_family', [
+        $product2 = $this->createProductWithUuid(self::PRODUCT_UUIDS['simple_with_no_family'], [
+            new SetIdentifierValue('sku', 'simple_with_no_family'),
             new SetCategories(['master']),
             new SetTextValue('a_text', null, null, 'Text')
         ]);
-        $product3 = $this->createProduct('simple_with_no_values', [
+        $product3 = $this->createProductWithUuid(self::PRODUCT_UUIDS['simple_with_no_values'], [
+            new SetIdentifierValue('sku', 'simple_with_no_values'),
             new SetCategories(['master']),
             new SetFamily('familyA'),
         ]);
 
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->getEsIndex()->refreshIndex();
 
         ($this->get('Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts'))(
             $this->get(ProductUuidFactory::class)->createCollection([
@@ -511,9 +543,27 @@ JSON;
             {"scope": "ecommerce_china", "locale": "en_US", "data": "E"},
             {"scope": "ecommerce_china", "locale": "zh_CN", "data": "E"}
         ]';
-        $standardizedProducts['simple_with_family_and_values'] = $this->getStandardizedProductsForQualityScore('simple_with_family_and_values', '"familyA"', $values, $qualityScores);
-        $standardizedProducts['simple_with_no_family'] = $this->getStandardizedProductsForQualityScore('simple_with_no_family', 'null', $values, '[]');
-        $standardizedProducts['simple_with_no_values'] = $this->getStandardizedProductsForQualityScore('simple_with_no_values', '"familyA"', '{}', $qualityScores);
+        $standardizedProducts['simple_with_family_and_values'] = $this->getStandardizedProductsForQualityScore(
+            self::PRODUCT_UUIDS['simple_with_family_and_values'],
+            'simple_with_family_and_values',
+            '"familyA"',
+            $values,
+            $qualityScores
+        );
+        $standardizedProducts['simple_with_no_family'] = $this->getStandardizedProductsForQualityScore(
+            self::PRODUCT_UUIDS['simple_with_no_family'],
+            'simple_with_no_family',
+            'null',
+            $values,
+            '[]'
+        );
+        $standardizedProducts['simple_with_no_values'] = $this->getStandardizedProductsForQualityScore(
+            self::PRODUCT_UUIDS['simple_with_no_values'],
+            'simple_with_no_values',
+            '"familyA"',
+            '{}',
+            $qualityScores
+        );
 
         $client = $this->createAuthenticatedClient();
         $search = '{"sku":[{"operator":"IN","value":["simple_with_family_and_values","simple_with_no_family","simple_with_no_values"]}]}';
@@ -542,20 +592,23 @@ JSON;
 
     public function testListProductsWithCompletenesses()
     {
-        $this->createProduct('simple_with_family_and_values', [
+        $this->createProductWithUuid(self::PRODUCT_UUIDS['simple_with_family_and_values'], [
+            new SetIdentifierValue('sku', 'simple_with_family_and_values'),
             new SetCategories(['master']),
             new SetFamily('familyA'),
             new SetTextValue('a_text', null, null, 'Text'),
         ]);
-        $this->createProduct('simple_with_no_family', [
+        $this->createProductWithUuid(self::PRODUCT_UUIDS['simple_with_no_family'], [
+            new SetIdentifierValue('sku', 'simple_with_no_family'),
             new SetCategories(['master']),
             new SetTextValue('a_text', null, null, 'Text'),
         ]);
-        $this->createProduct('simple_with_no_values', [
+        $this->createProductWithUuid(self::PRODUCT_UUIDS['simple_with_no_values'], [
+            new SetIdentifierValue('sku', 'simple_with_no_values'),
             new SetCategories(['master']),
             new SetFamily('familyA')
         ]);
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->getEsIndex()->refreshIndex();
 
         $values = '{
             "a_text": [{
@@ -580,9 +633,27 @@ JSON;
             {"scope":"tablet","locale":"en_US","data":5},
             {"scope":"tablet","locale":"fr_FR","data":5}
         ]';
-        $standardizedProducts['simple_with_family_and_values'] = $this->getStandardizedProductsForCompletenesses('simple_with_family_and_values', '"familyA"', $values, $completenessesFamVal);
-        $standardizedProducts['simple_with_no_family'] = $this->getStandardizedProductsForCompletenesses('simple_with_no_family', 'null', $values, '[]');
-        $standardizedProducts['simple_with_no_values'] = $this->getStandardizedProductsForCompletenesses('simple_with_no_values', '"familyA"', '{}', $completenessesNoVal);
+        $standardizedProducts['simple_with_family_and_values'] = $this->getStandardizedProductsForCompletenesses(
+            self::PRODUCT_UUIDS['simple_with_family_and_values'],
+            'simple_with_family_and_values',
+            '"familyA"',
+            $values,
+            $completenessesFamVal
+        );
+        $standardizedProducts['simple_with_no_family'] = $this->getStandardizedProductsForCompletenesses(
+            self::PRODUCT_UUIDS['simple_with_no_family'],
+            'simple_with_no_family',
+            'null',
+            $values,
+            '[]'
+        );
+        $standardizedProducts['simple_with_no_values'] = $this->getStandardizedProductsForCompletenesses(
+            self::PRODUCT_UUIDS['simple_with_no_values'],
+            'simple_with_no_values',
+            '"familyA"',
+            '{}',
+            $completenessesNoVal
+        );
 
         $client = $this->createAuthenticatedClient();
         $search = '{"sku":[{"operator":"IN","value":["simple_with_family_and_values","simple_with_no_family","simple_with_no_values"]}]}';
@@ -790,9 +861,16 @@ JSON;
 
     public function testSearchAfterPaginationWithUppercaseIdentifier(): void
     {
-        $this->createProduct('AN_UPPERCASE_IDENTIFIER', []);
-        $this->createProduct('MY_OTHER_UPPERCASE_IDENTIFIER', []);
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $anUppercaseUuid = 'bbf0d0f8-de9c-4d3d-8623-ccbe2b93ca5c';
+        $myOtherUppercaseUuid = 'fbc049ec-1594-4e79-adf3-c95215a7029a';
+
+        $this->createProductWithUuid($anUppercaseUuid, [
+            new SetIdentifierValue('sku', 'AN_UPPERCASE_IDENTIFIER'),
+        ]);
+        $this->createProductWithUuid($myOtherUppercaseUuid, [
+            new SetIdentifierValue('sku', 'MY_OTHER_UPPERCASE_IDENTIFIER'),
+        ]);
+        $this->getEsIndex()->refreshIndex();
 
         $standardizedProducts = $this->getStandardizedProducts();
         $client = $this->createAuthenticatedClient();
@@ -818,6 +896,7 @@ JSON;
                         "href": "http://localhost/api/rest/v1/products/MY_OTHER_UPPERCASE_IDENTIFIER"
                     }
                 },
+                "uuid": "$myOtherUppercaseUuid",
                 "identifier": "MY_OTHER_UPPERCASE_IDENTIFIER",
                 "family": null,
                 "parent": null,
@@ -902,6 +981,86 @@ JSON;
         }
     }
 
+    public function testListProductsWithUuidFilter(): void
+    {
+        $standardizedProducts = $this->getStandardizedProducts();
+
+        $search = \json_encode([
+            'uuid' => [
+                [
+                    'operator' => 'IN',
+                    'value' => [
+                        self::PRODUCT_UUIDS['simple'],
+                        self::PRODUCT_UUIDS['localizable'],
+                        Uuid::uuid4()->toString(),
+                        self::PRODUCT_UUIDS['product_with_parent'],
+                    ],
+                ],
+            ],
+        ]);
+        $client = $this->createAuthenticatedClient();
+        $client->request('GET', 'api/rest/v1/products?search=' . $search);
+        $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
+        $expected = <<<JSON
+{
+    "_links": {
+        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"}
+    },
+    "current_page" : 1,
+    "_embedded"    : {
+        "items" : [
+            {$standardizedProducts['localizable']},
+            {$standardizedProducts['product_with_parent']},
+            {$standardizedProducts['simple']}
+        ]
+    }
+}
+JSON;
+
+        $this->assertListResponse($client->getResponse(), $expected);
+    }
+
+    public function testListProductsWithUuidNotInFilter(): void
+    {
+        $standardizedProducts = $this->getStandardizedProducts();
+
+        $search = \json_encode([
+            'uuid' => [
+                [
+                    'operator' => 'NOT IN',
+                    'value' => [
+                        self::PRODUCT_UUIDS['simple'],
+                        self::PRODUCT_UUIDS['localizable'],
+                        self::PRODUCT_UUIDS['product_with_parent'],
+                    ],
+                ],
+            ],
+        ]);
+        $client = $this->createAuthenticatedClient();
+        $client->request('GET', 'api/rest/v1/products?search=' . $search);
+        $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
+        $expected = <<<JSON
+{
+    "_links": {
+        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"}
+    },
+    "current_page" : 1,
+    "_embedded"    : {
+        "items" : [
+            {$standardizedProducts['localizable_and_scopable']},
+            {$standardizedProducts['product_china']},
+            {$standardizedProducts['product_without_category']},
+            {$standardizedProducts['scopable']}
+        ]
+    }
+}
+JSON;
+
+        $this->assertListResponse($client->getResponse(), $expected);
+    }
+
     public function testListProductsWithoutParent()
     {
         $standardizedProducts = $this->getStandardizedProducts();
@@ -962,7 +1121,7 @@ JSON;
 
         foreach ($result['_embedded']['items'] as $index => $product) {
             if (isset($product['values']['a_text'])) {
-	    	// TODO CPM-737: Check using Uuid instead of the text attribute value
+                // TODO CPM-737: Check using Uuid instead of the text attribute value
                 Assert::assertNotEquals('My product without identifier', $product['values']['a_text'][0]['data']);
             }
         }
@@ -973,6 +1132,8 @@ JSON;
      */
     private function getStandardizedProducts(bool $withAttributeOptions = false): array
     {
+        $uuids = self::PRODUCT_UUIDS;
+
         $standardizedProducts['simple'] = <<<JSON
 {
     "_links": {
@@ -980,6 +1141,7 @@ JSON;
             "href": "http://localhost/api/rest/v1/products/simple"
         }
     },
+    "uuid": "{$uuids['simple']}",
     "identifier": "simple",
     "family": null,
     "parent": null,
@@ -1020,6 +1182,7 @@ JSON;
             "href": "http://localhost/api/rest/v1/products/localizable"
         }
     },
+    "uuid": "{$uuids['localizable']}",
     "identifier": "localizable",
     "family": null,
     "parent": null,
@@ -1075,6 +1238,7 @@ JSON;
             "href": "http://localhost/api/rest/v1/products/scopable"
         }
     },
+    "uuid": "{$uuids['scopable']}",
     "identifier": "scopable",
     "family": null,
     "parent": null,
@@ -1123,6 +1287,7 @@ JSON;
             "href": "http://localhost/api/rest/v1/products/localizable_and_scopable"
         }
     },
+    "uuid": "{$uuids['localizable_and_scopable']}",
     "identifier": "localizable_and_scopable",
     "family": null,
     "parent": null,
@@ -1171,6 +1336,7 @@ JSON;
            "href": "http://localhost/api/rest/v1/products/product_china"
        }
    },
+   "uuid": "{$uuids['product_china']}",
    "identifier": "product_china",
    "family": null,
    "parent": null,
@@ -1197,6 +1363,7 @@ JSON;
             "href": "http://localhost/api/rest/v1/products/product_without_category"
         }
     },
+    "uuid": "{$uuids['product_without_category']}",
     "identifier": "product_without_category",
     "family": null,
     "parent": null,
@@ -1230,6 +1397,7 @@ JSON;
             "href": "http:\/\/localhost\/api\/rest\/v1\/products\/product_with_parent"
         }
 	},
+    "uuid": "{$uuids['product_with_parent']}",
     "identifier": "product_with_parent",
     "enabled": true,
     "family": "familyA",
@@ -1267,7 +1435,6 @@ JSON;
     "quantified_associations": {}
 }
 JSON;
-
         } else {
             $standardizedProducts['product_with_parent'] = <<<JSON
 {
@@ -1276,6 +1443,7 @@ JSON;
             "href": "http:\/\/localhost\/api\/rest\/v1\/products\/product_with_parent"
         }
 	},
+    "uuid": "{$uuids['product_with_parent']}",
     "identifier": "product_with_parent",
     "enabled": true,
     "family": "familyA",
@@ -1313,7 +1481,7 @@ JSON;
         return $this->catalog->useTechnicalCatalog();
     }
 
-    private function getStandardizedProductsForQualityScore(string $identifier, string $family, string $values, string $qualityScores)
+    private function getStandardizedProductsForQualityScore(string $uuid, string $identifier, string $family, string $values, string $qualityScores)
     {
         return <<<JSON
 {
@@ -1322,6 +1490,7 @@ JSON;
             "href": "http://localhost/api/rest/v1/products/$identifier"
         }
     },
+    "uuid": "$uuid",
     "identifier": "$identifier",
     "family": $family,
     "parent": null,
@@ -1343,7 +1512,7 @@ JSON;
 JSON;
     }
 
-    private function getStandardizedProductsForCompletenesses(string $identifier, string $family, string $values, string $completenesses)
+    private function getStandardizedProductsForCompletenesses(string $uuid, string $identifier, string $family, string $values, string $completenesses)
     {
         return <<<JSON
 {
@@ -1352,6 +1521,7 @@ JSON;
             "href": "http://localhost/api/rest/v1/products/$identifier"
         }
     },
+    "uuid": "$uuid",
     "identifier": "$identifier",
     "family": $family,
     "parent": null,

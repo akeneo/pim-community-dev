@@ -1,13 +1,17 @@
-import {cloneDeep, identity, isEqual, sortBy} from 'lodash/fp';
-import {FileInfo} from 'akeneo-design-system';
-import {LabelCollection} from '@akeneo-pim-community/shared';
+import {clone, cloneDeep, identity, isEqual, sortBy} from 'lodash/fp';
+import {LabelCollection, LocaleCode} from '@akeneo-pim-community/shared';
 import {
+  Attribute,
+  attributeDefaultValues,
+  buildCompositeKey,
   CategoryAttributes,
+  CategoryAttributeValueData,
   CategoryImageAttributeValueData,
   CategoryPermissions,
   CategoryProperties,
   EnrichCategory,
-  File
+  File,
+  Template,
 } from '../models';
 
 function labelsAreEqual(l1: LabelCollection, l2: LabelCollection): boolean {
@@ -28,7 +32,6 @@ export function permissionsAreEqual(cp1: CategoryPermissions, cp2: CategoryPermi
 }
 
 function attributesAreEqual(a1: CategoryAttributes, a2: CategoryAttributes): boolean {
-  // maybe too strict of simplistic, to adjust
   return isEqual(a1, a2);
 }
 
@@ -45,22 +48,90 @@ export function categoriesAreEqual(c1: EnrichCategory, c2: EnrichCategory): bool
   );
 }
 
+export function getAttributeValue(
+  attributes: CategoryAttributes,
+  attribute: Attribute,
+  localeCode: LocaleCode
+): CategoryAttributeValueData | undefined {
+  const compositeKey = buildCompositeKey(attribute, localeCode);
+  const value = attributes[compositeKey];
+  return value ? value.data : undefined;
+}
+
 /**
- * Ensure no category field is null.
+ * return a copy of the given category where all attributes defined in template are valued
+ * @param category the category to populate
+ * @param template the template describing the attribute of this category
+ * @param locales the locales to consider when generating default values
+ * @return the populated category
  */
-export function normalizeCategory(category: EnrichCategory): EnrichCategory {
-  const normalized = cloneDeep(category);
-  if (category.permissions === null) {
-    normalized.permissions = {view: [], edit: [], own: []};
+function populateCategoryAttributes(
+  category: EnrichCategory,
+  template: Template,
+  locales: LocaleCode[]
+): EnrichCategory {
+  const fixedCategory = clone(category);
+
+  if (fixedCategory.attributes === null) {
+    fixedCategory.attributes = {};
   }
-  if (category.attributes === null) {
-    // TODO use fetched template to populate default values here
-    normalized.attributes = {};
+
+  template.attributes.forEach((attribute: Attribute) => {
+    const {code} = attribute;
+    if (fixedCategory.attributes.hasOwnProperty(code)) return;
+
+    fixedCategory.attributes = {
+      ...buildCategoryAttributeValues(attribute, locales),
+      // attributes values coming from the category in arguments must take precedence over generared ones
+      ...fixedCategory.attributes,
+    };
+  });
+
+  // attribute_codes is a special entry in attributes, useful only on DB side
+  // should not come to front via GET
+  // but if it does we should ignore it (would break POSTing)
+  delete fixedCategory.attributes['attribute_codes'];
+
+  return fixedCategory;
+}
+
+/**
+ * Generate a CategoryAttributes structure for a given attribute in the requested locales.
+ * If the attribute in not localizable, then only one attribute value will be generated.
+ * @param attribute the attribute for which we want to geenrate values
+ * @param locales the locales to consider to build attribute values
+ * @returns the attributes values
+ */
+function buildCategoryAttributeValues(attribute: Attribute, locales: LocaleCode[]): CategoryAttributes {
+  const attributesValues = {};
+  const applicableLocales = attribute.is_localizable ? locales : [null];
+  for (const locale of applicableLocales) {
+    const key = buildCompositeKey(attribute, locale);
+    const keyNoLocale = locale === null ? key : buildCompositeKey(attribute, null);
+    attributesValues[key] = {
+      data: attributeDefaultValues[attribute.type],
+      locale,
+      attribute_code: keyNoLocale,
+    };
+  }
+  return attributesValues;
+}
+
+/**
+ * Ensures no category field is null and ensures attributes values are populated.
+ */
+export function populateCategory(category: EnrichCategory, template: Template, locales: LocaleCode[]): EnrichCategory {
+  let populated = cloneDeep(category);
+  if (category.permissions === null) {
+    populated.permissions = {view: [], edit: [], own: []};
   }
   if (category.properties.labels === null) {
-    normalized.properties.labels = {};
+    populated.properties.labels = {};
   }
-  return normalized;
+
+  populated = populateCategoryAttributes(populated, template, locales);
+
+  return populated;
 }
 
 export const convertCategoryImageAttributeValueDataToFileInfo = (
@@ -79,7 +150,9 @@ export const convertCategoryImageAttributeValueDataToFileInfo = (
   };
 };
 
-export const convertFileInfoToCategoryImageAttributeValueData = (value: File): CategoryImageAttributeValueData | null => {
+export const convertFileInfoToCategoryImageAttributeValueData = (
+  value: File
+): CategoryImageAttributeValueData | null => {
   if (value === null) {
     return null;
   }

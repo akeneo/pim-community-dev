@@ -126,6 +126,7 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         $expectedCollection = new EventDataCollection();
         $expectedCollection->setEventData($blueJeanEvent, [
             'resource' => [
+                'uuid' => $blueJeanUuid,
                 'identifier' => 'blue_jean',
                 'created' => '2020-04-23T15:55:50+00:00',
                 'updated' => '2020-04-25T15:55:50+00:00',
@@ -141,6 +142,7 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         ]);
         $expectedCollection->setEventData($redJeanEvent, [
             'resource' => [
+                'uuid' => $redJeanUuid,
                 'identifier' => 'red_jean',
                 'created' => '2020-04-23T15:55:50+00:00',
                 'updated' => '2020-04-25T15:55:50+00:00',
@@ -188,6 +190,7 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         $expectedCollection = new EventDataCollection();
         $expectedCollection->setEventData($blueJeanEvent, [
             'resource' => [
+                'uuid' => $blueJeanUuid,
                 'identifier' => 'blue_jean',
                 'created' => '2020-04-23T15:55:50+00:00',
                 'updated' => '2020-04-25T15:55:50+00:00',
