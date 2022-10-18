@@ -16,7 +16,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ValuesNormali
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Routing\RouterInterface;
@@ -213,7 +212,7 @@ class ConnectorProductWithUuidNormalizerSpec extends ObjectBehavior
                 'associations' => (object) [],
                 'quantified_associations' => (object) [],
                 'metadata' => ['a_metadata' => 'viande'],
-                'completenesses' => (object) [],
+                'completenesses' => [],
             ],
         ]);
     }

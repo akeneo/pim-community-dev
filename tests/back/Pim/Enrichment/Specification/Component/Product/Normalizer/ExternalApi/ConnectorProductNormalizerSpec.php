@@ -247,12 +247,12 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
                 'associations' => (object) [],
                 'quantified_associations' => (object) [],
                 'metadata' => ['a_metadata' => 'viande'],
-                'completenesses' => (object) [],
+                'completenesses' => [],
             ],
         ]);
     }
 
-    function it_normalize_a_single_connection_product(
+    function it_normalizes_a_single_connector_product(
         ProductValueNormalizer $productValueNormalizer
     ) {
         $identifier = ScalarValue::value('sku', 'identifier_1');
