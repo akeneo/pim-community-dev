@@ -7,6 +7,7 @@ resource "google_project_iam_member" "gke_container_dev" {
 
 #tfsec:ignore:google-gke-no-public-control-plane
 #tfsec:ignore:google-gke-enable-network-policy
+#tfsec:ignore:google-gke-enforce-pod-security-policy
 resource "google_container_cluster" "gke" {
   project                  = var.project
   name                     = "${data.google_project.current.project_id}-${var.region}"
@@ -45,7 +46,7 @@ resource "google_container_cluster" "gke" {
   }
 
   pod_security_policy_config {
-    enabled = "true"
+    enabled = "false"
   }
 
   workload_identity_config {
