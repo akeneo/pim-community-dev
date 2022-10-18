@@ -3,6 +3,7 @@ import {AttributesIllustration, Button, Field, Modal, TextInput} from 'akeneo-de
 import {IdentifierGenerator} from '../../models';
 import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {Styled} from './Styled';
+import {useIdentifierAttributes} from "../hooks";
 
 type GeneratorCreationProps = {
   onClose: () => void;
@@ -10,9 +11,17 @@ type GeneratorCreationProps = {
 };
 
 const CreateGeneratorModal: React.FC<GeneratorCreationProps> = ({onClose, onSave}) => {
-  const [label, setLabel] = useState('');
-  const [code, setCode] = useState('');
+  const [label, setLabel] = useState<string>('');
+  const [code, setCode] = useState<string>('');
   const [isCodeDirty, setIsCodeDirty] = useState(false);
+  const [target, setTarget] = useState<string | undefined>();
+
+  React.useEffect(() => {
+    const {data: attributes} = useIdentifierAttributes();
+    if (attributes) {
+      setTarget(attributes[0].code);
+    }
+  }, []);
 
   const translate = useTranslate();
   const userContext = useUserContext();
@@ -33,7 +42,8 @@ const CreateGeneratorModal: React.FC<GeneratorCreationProps> = ({onClose, onSave
 
   const onConfirm = useCallback(() => {
     onSave({
-      code: code,
+      code,
+      target,
       labels: {[uiLocale]: label},
     });
   }, [code, label, onSave, uiLocale]);
