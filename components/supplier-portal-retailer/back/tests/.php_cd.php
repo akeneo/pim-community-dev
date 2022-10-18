@@ -183,6 +183,12 @@ $rules = [
             'PHPUnit\Framework',
         ],
     )->in('Akeneo\SupplierPortal\Retailer\Test\Acceptance'),
+    $builder->forbids(['Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read'])->in('Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write'),
+    $builder->forbids(['Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write'])->in('Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read'),
+    $builder->forbids(['Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read'])->in('Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write'),
+    $builder->forbids(['Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write'])->in('Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read'),
+    $builder->forbids(['Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read', 'Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read'])->in('Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write'),
+    $builder->forbids(['Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write', 'Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write'])->in('Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read'),
 ];
 
 return new Configuration($rules, $finder);

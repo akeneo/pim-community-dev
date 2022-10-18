@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount;
+namespace Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write;
 
 class CreateContributorAccount
 {

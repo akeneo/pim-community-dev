@@ -6,7 +6,6 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\Supplie
 
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierWithContributors;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 
@@ -15,9 +14,7 @@ final class DatabaseGetSupplierWithContributorsIntegration extends SqlIntegratio
     /** @test */
     public function itReturnsNullIfThereIsNoSupplier(): void
     {
-        static::assertNull(($this->get(GetSupplierWithContributors::class))(
-            Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f02')
-        ));
+        static::assertNull(($this->get(GetSupplierWithContributors::class))('44ce8069-8da1-4986-872f-311737f46f02'));
     }
 
     /** @test */
@@ -33,9 +30,7 @@ final class DatabaseGetSupplierWithContributorsIntegration extends SqlIntegratio
                 ->build(),
         );
 
-        $supplier = ($this->get(GetSupplierWithContributors::class))(
-            Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f02')
-        );
+        $supplier = ($this->get(GetSupplierWithContributors::class))('44ce8069-8da1-4986-872f-311737f46f02');
 
         static::assertSame('44ce8069-8da1-4986-872f-311737f46f02', $supplier->identifier);
         static::assertSame('supplier_code', $supplier->code);
@@ -58,9 +53,7 @@ final class DatabaseGetSupplierWithContributorsIntegration extends SqlIntegratio
                 ->build(),
         );
 
-        $supplier = ($this->get(GetSupplierWithContributors::class))(
-            Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f02')
-        );
+        $supplier = ($this->get(GetSupplierWithContributors::class))('44ce8069-8da1-4986-872f-311737f46f02');
 
         static::assertSame('44ce8069-8da1-4986-872f-311737f46f02', $supplier->identifier);
         static::assertSame('supplier_code', $supplier->code);
