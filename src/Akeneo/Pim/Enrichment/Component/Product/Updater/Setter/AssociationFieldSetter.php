@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidAssociationProductIdentifierException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -124,13 +125,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
         foreach ($productsIdentifiers as $productIdentifier) {
             $associatedProduct = $this->productRepository->findOneByIdentifier($productIdentifier);
             if (null === $associatedProduct) {
-                throw InvalidPropertyException::validEntityCodeExpected(
-                    'associations',
-                    'product identifier',
-                    'The product does not exist',
-                    static::class,
-                    $productIdentifier
-                );
+                throw new InvalidAssociationProductIdentifierException(static::class, $productIdentifier);
             }
             $this->addAssociatedProduct($owner, $associatedProduct, $associationType);
         }
