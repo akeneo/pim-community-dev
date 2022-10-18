@@ -3,7 +3,7 @@ import {AttributesIllustration, Button, Field, Modal, TextInput} from 'akeneo-de
 import {IdentifierGenerator} from '../../models';
 import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {Styled} from './Styled';
-import {useIdentifierAttributes} from "../hooks";
+import {useIdentifierAttributes} from '../hooks';
 
 type GeneratorCreationProps = {
   onClose: () => void;
@@ -15,13 +15,13 @@ const CreateGeneratorModal: React.FC<GeneratorCreationProps> = ({onClose, onSave
   const [code, setCode] = useState<string>('');
   const [isCodeDirty, setIsCodeDirty] = useState(false);
   const [target, setTarget] = useState<string | undefined>();
+  const identifierAttributesData = useIdentifierAttributes();
 
   React.useEffect(() => {
-    const {data: attributes} = useIdentifierAttributes();
-    if (attributes) {
-      setTarget(attributes[0].code);
+    if (identifierAttributesData?.data) {
+      setTarget(identifierAttributesData.data[0].code);
     }
-  }, []);
+  }, [identifierAttributesData]);
 
   const translate = useTranslate();
   const userContext = useUserContext();
@@ -46,7 +46,7 @@ const CreateGeneratorModal: React.FC<GeneratorCreationProps> = ({onClose, onSave
       target,
       labels: {[uiLocale]: label},
     });
-  }, [code, label, onSave, uiLocale]);
+  }, [code, label, onSave, uiLocale, target]);
 
   const isFormInvalid = React.useMemo(() => code === '', [code]);
 

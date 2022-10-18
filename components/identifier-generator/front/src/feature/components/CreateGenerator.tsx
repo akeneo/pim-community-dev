@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {Breadcrumb, Button, TabBar} from 'akeneo-design-system';
-import styled from 'styled-components';
 import {PageHeader, PimView, useTranslate} from '@akeneo-pim-community/shared';
 import {GeneralProperties} from './edit/GeneralProperties';
 import {IdentifierGenerator} from '../../models';

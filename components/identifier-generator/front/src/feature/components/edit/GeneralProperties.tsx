@@ -12,7 +12,6 @@ type GeneralPropertiesProps = {
 };
 
 const GeneralProperties: React.FC<GeneralPropertiesProps> = ({generator, onGeneratorChange}) => {
-  const defaultIdentifierCode = 'sku'; // TODO
   const translate = useTranslate();
 
   const onLabelChange = useCallback(
@@ -29,7 +28,7 @@ const GeneralProperties: React.FC<GeneralPropertiesProps> = ({generator, onGener
         <Field label={'pim_common.code'}>
           <TextInput value={generator.code} readOnly={true} />
         </Field>
-        <IdentifierAttributeSelector code={generator.target || defaultIdentifierCode} />
+        <IdentifierAttributeSelector code={generator.target || ''} />
       </Styled.FormContainer>
       <LabelTranslations labelCollection={generator.labels} onLabelsChange={onLabelChange} />
     </>

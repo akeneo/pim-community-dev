@@ -7,6 +7,7 @@ jest.mock('@akeneo-pim-community/shared', () => ({
   ...jest.requireActual('@akeneo-pim-community/shared'),
   useTranslate: () => (key: string) => key,
 }));
+jest.mock('../../hooks/useIdentifierAttributes');
 
 describe('CreateGeneratorModal', () => {
   beforeEach(() => {
@@ -45,7 +46,7 @@ describe('CreateGeneratorModal', () => {
     await waitFor(() => expect(codeInput).toHaveValue('new_code'));
 
     fireEvent.click(confirmButton);
-    expect(onSave).toBeCalledWith({code: 'new_code', labels: {uiLocale: 'Other label'}});
+    expect(onSave).toBeCalledWith({code: 'new_code', labels: {uiLocale: 'Other label'}, target: 'sku'});
   });
 
   it('should enable form with only code', async () => {
