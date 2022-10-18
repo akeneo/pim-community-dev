@@ -19,11 +19,10 @@ services:
             - '%pim_job_product_batch_size%'
 
     pimee_workflow.factory.published_product_search_after_size_cursor:
-        class: '%akeneo_elasticsearch.cursor.search_after_size_cursor_factory.class%'
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\PublishedProduct\SearchAfterSizeCursorFactory'
         arguments:
             - '@akeneo_elasticsearch.client.published_product'
             - '@pimee_workflow.repository.published_product'
-            - '%akeneo_elasticsearch.cursor.search_after_size_cursor.class%'
             - '%pim_job_product_batch_size%'
 
     pimee_workflow.factory.product_and_product_model_proposal_from_size_cursor:

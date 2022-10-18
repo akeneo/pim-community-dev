@@ -18,12 +18,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-class FromSizeCursorFactory implements CursorFactoryInterface
+class SearchAfterSizeCursorFactory implements CursorFactoryInterface
 {
     public function __construct(
-        private Client $searchEngine,
-        private PublishedProductRepositoryInterface $publishedProductRepository,
-        private int $pageSize
+        protected Client $searchEngine,
+        protected PublishedProductRepositoryInterface $publishedProductRepository,
+        protected int $pageSize
     ) {
     }
 
@@ -34,37 +34,44 @@ class FromSizeCursorFactory implements CursorFactoryInterface
     {
         $options = $this->resolveOptions($options);
 
-        $queryBuilder['_source'] = array_merge($queryBuilder['_source'], ['id', 'identifier']);
-
-        return new FromSizeCursor(
+        return new SearchAfterSizeCursor(
             $this->searchEngine,
             $this->publishedProductRepository,
             $queryBuilder,
+            $options['search_after'],
             $options['page_size'],
             $options['limit'],
-            $options['from']
+            $options['search_after_unique_key']
         );
     }
 
-    protected function resolveOptions(array $options): array
+    /**
+     * @param array $options
+     *
+     * @return array
+     */
+    protected function resolveOptions(array $options)
     {
         $resolver = new OptionsResolver();
         $resolver->setDefined(
             [
                 'page_size',
-                'limit',
-                'from',
+                'search_after',
+                'search_after_unique_key',
+                'limit'
             ]
         );
         $resolver->setDefaults(
             [
                 'page_size' => $this->pageSize,
-                'from' => 0
+                'search_after' => [],
+                'search_after_unique_key' => null
             ]
         );
         $resolver->setAllowedTypes('page_size', 'int');
+        $resolver->setAllowedTypes('search_after', 'array');
+        $resolver->setAllowedTypes('search_after_unique_key', ['string', 'null']);
         $resolver->setAllowedTypes('limit', 'int');
-        $resolver->setAllowedTypes('from', 'int');
 
         $options = $resolver->resolve($options);
 
