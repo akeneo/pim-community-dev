@@ -21,12 +21,12 @@ use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Bundle\User\UserContext;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Exception\PublishedProductConsistencyException;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,7 +35,6 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -58,34 +57,31 @@ class CategoryTreeController extends BaseCategoryTreeController
     protected TokenStorageInterface $tokenStorage;
 
     public function __construct(
-        EventDispatcherInterface $eventDispatcher,
-        UserContext $userContext,
-        SaverInterface $categorySaver,
-        RemoverInterface $categoryRemover,
-        SimpleFactoryInterface $categoryFactory,
-        CategoryRepositoryInterface $categoryRepository,
-        SecurityFacade $securityFacade,
-        TranslatorInterface $translator,
-        NormalizerInterface $normalizer,
-        ObjectUpdaterInterface $categoryUpdater,
-        ValidatorInterface $validator,
-        NormalizerInterface $constraintViolationNormalizer,
-        CategoryItemsCounterInterface $categoryItemsCounter,
-        CountTreesChildrenInterface $countTreesChildrenQuery,
+        private UserContext $userContext,
+        private SaverInterface $categorySaver,
+        private RemoverInterface $categoryRemover,
+        private SimpleFactoryInterface $categoryFactory,
+        private CategoryRepositoryInterface $categoryRepository,
+        private SecurityFacade $securityFacade,
+        private NormalizerInterface $normalizer,
+        private ObjectUpdaterInterface $categoryUpdater,
+        private ValidatorInterface $validator,
+        private NormalizerInterface $constraintViolationNormalizer,
+        private CategoryItemsCounterInterface $categoryItemsCounter,
+        private CountTreesChildrenInterface $countTreesChildrenQuery,
+        CategoryFormViewNormalizerInterface $categoryFormViewNormalizer,
         array $rawConfiguration,
+        private FeatureFlags $featureFlags,
         CategoryAccessRepository $categoryAccessRepo,
         TokenStorageInterface $tokenStorage,
-        CategoryFormViewNormalizerInterface $categoryFormViewNormalizer
     ) {
         parent::__construct(
-            $eventDispatcher,
             $userContext,
             $categorySaver,
             $categoryRemover,
             $categoryFactory,
             $categoryRepository,
             $securityFacade,
-            $translator,
             $normalizer,
             $categoryUpdater,
             $validator,
@@ -93,7 +89,8 @@ class CategoryTreeController extends BaseCategoryTreeController
             $categoryItemsCounter,
             $countTreesChildrenQuery,
             $categoryFormViewNormalizer,
-            $rawConfiguration
+            $rawConfiguration,
+            $featureFlags,
         );
 
         $this->categoryAccessRepo = $categoryAccessRepo;
