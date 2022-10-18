@@ -151,6 +151,8 @@ fi
 echo "Running terraform destroy"
 terraform destroy ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE}
 
+unset KUBECONFIG
+
 echo "3 - Removing shared state files"
 # I'm sorry for that, but it's the max time communicate by google to apply consistent between list and delete operation on versionning bucket. See: https://cloud.google.com/storage/docs/object-versioning
 sleep 30
