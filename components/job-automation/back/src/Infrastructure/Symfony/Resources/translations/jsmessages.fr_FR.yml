@@ -13,12 +13,9 @@ akeneo.job_automation:
       title: Fréquence d'exécution
       daily: Chaque jour
       weekly: Chaque semaine
-      weekday: Un jour de la semaine
       every_4_hours: Toutes les 4 heures
       every_8_hours: Toutes les 8 heures
       every_12_hours: Toutes les 12 heures
-      hours: Heures
-      minutes: Minutes
       monday: Lundi
       tuesday: Mardi
       wednesday: Mercredi

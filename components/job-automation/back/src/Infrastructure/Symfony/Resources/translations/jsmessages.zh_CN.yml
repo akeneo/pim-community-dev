@@ -12,12 +12,9 @@ akeneo.job_automation:
       title: 频率
       daily: 每天
       weekly: 每周
-      weekday: 工作日
       every_4_hours: 每 4 小时
       every_8_hours: 每 8 小时
       every_12_hours: 每 12 小时
-      hours: 小时
-      minutes: 分钟
       monday: 周一
       tuesday: 周二
       wednesday: 周三

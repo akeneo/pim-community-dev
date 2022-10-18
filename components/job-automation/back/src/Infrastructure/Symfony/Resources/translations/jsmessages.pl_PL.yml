@@ -12,12 +12,9 @@ akeneo.job_automation:
       title: Częstotliwość
       daily: Codziennie
       weekly: Co tydzień
-      weekday: Dzień roboczy
       every_4_hours: Co 4 godziny
       every_8_hours: Co 8 godzin
       every_12_hours: Co 12 godzin
-      hours: Godziny
-      minutes: Minuty
       monday: Poniedziałek
       tuesday: Wtorek
       wednesday: Środa
