@@ -24,6 +24,10 @@ final class Structure
     ) {
     }
 
+    /**
+     * @param PropertyInterface[] $properties
+     * @return static
+     */
     public static function fromArray(array $properties): self
     {
         Assert::notEmpty($properties);
@@ -32,11 +36,18 @@ final class Structure
         return new self($properties);
     }
 
+    /**
+     * @return array<array<string, string>>
+     */
     public function normalize(): array
     {
         return \array_map(static fn (PropertyInterface $property) => $property->normalize(), $this->properties);
     }
 
+    /**
+     * @param array<array<string, string>> $normalizedValues
+     * @return static
+     */
     public static function fromNormalized(array $normalizedValues): self
     {
         $properties = [];

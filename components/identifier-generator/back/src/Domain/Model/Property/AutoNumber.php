@@ -24,6 +24,9 @@ final class AutoNumber implements PropertyInterface
         return 'auto_number';
     }
 
+    /**
+     * @inheritDoc
+     */
     public static function fromNormalized(array $normalizedProperty): PropertyInterface
     {
         Assert::keyExists($normalizedProperty, 'type');
@@ -33,7 +36,7 @@ final class AutoNumber implements PropertyInterface
         Assert::keyExists($normalizedProperty, 'digitsMin');
         Assert::greaterThanEq($normalizedProperty['digitsMin'], 1);
 
-        return self::fromValues($normalizedProperty['numberMin'], $normalizedProperty['digitsMin']);
+        return self::fromValues(intval($normalizedProperty['numberMin']), intval($normalizedProperty['digitsMin']));
     }
 
     public static function fromValues(int $numberMin, int $digitsMin): self
@@ -44,7 +47,10 @@ final class AutoNumber implements PropertyInterface
         return new self($numberMin, $digitsMin);
     }
 
-    public function normalize()
+    /**
+     * @inheritDoc
+     */
+    public function normalize(): array
     {
         return [
             'type' => $this->type(),
