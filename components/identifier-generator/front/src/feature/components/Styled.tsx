@@ -8,8 +8,13 @@ const FormContainer = styled.div`
   margin-bottom: 20px;
 `;
 
+const TabContainer = styled.div`
+  padding: 20px 40px;
+`;
+
 const Styled = {
   FormContainer,
+  TabContainer,
 };
 
 export {Styled};
