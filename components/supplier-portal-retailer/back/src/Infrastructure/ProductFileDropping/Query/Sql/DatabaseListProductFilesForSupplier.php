@@ -45,12 +45,18 @@ final class DatabaseListProductFilesForSupplier implements ListProductFilesForSu
                 uploaded_by_contributor,
                 uploaded_at,
                 rc.retailer_comments,
-                sc.supplier_comments
+                sc.supplier_comments,
+                comments_read_by_retailer.last_read_at as retailer_last_read_at,
+                comments_read_by_supplier.last_read_at as supplier_last_read_at
             FROM akeneo_supplier_portal_supplier_product_file product_file
             LEFT JOIN retailer_comments rc
                 ON identifier = rc.product_file_identifier
             LEFT JOIN supplier_comments sc
                 ON identifier = sc.product_file_identifier
+            LEFT JOIN akeneo_supplier_portal_product_file_comments_read_by_retailer comments_read_by_retailer 
+                ON product_file.identifier = comments_read_by_retailer.product_file_identifier
+            LEFT JOIN akeneo_supplier_portal_product_file_comments_read_by_supplier comments_read_by_supplier 
+                ON product_file.identifier = comments_read_by_supplier.product_file_identifier
             WHERE uploaded_by_supplier = :supplierIdentifier
             ORDER BY uploaded_at DESC
             LIMIT :limit
@@ -77,6 +83,8 @@ final class DatabaseListProductFilesForSupplier implements ListProductFilesForSu
                         true,
                     ))
                     : [],
+                $file['retailer_last_read_at'],
+                $file['supplier_last_read_at'],
             ),
             $this->connection->executeQuery(
                 $sql,
