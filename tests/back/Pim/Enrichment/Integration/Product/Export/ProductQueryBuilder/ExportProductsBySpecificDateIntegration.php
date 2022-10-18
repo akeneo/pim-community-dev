@@ -13,13 +13,11 @@ class ExportProductsBySpecificDateIntegration extends AbstractExportTestCase
     protected function loadFixtures() : void
     {
         $this->createProduct('product_1', [new SetFamily('familyA2')]);
-
         $this->createProduct('product_2', [new SetFamily('familyA2')]);
-
         $this->createProduct('product_3', [new SetFamily('familyA2')]);
     }
 
-    public function testProductExportByFilteringOnDateSinceLastJob()
+    public function testProductExportByFilteringOnDateSinceLastJob(): void
     {
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1');
         $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_2');
@@ -46,6 +44,7 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
@@ -66,7 +65,7 @@ CSV;
         $this->assertSame($expectedCsv, $csv);
     }
 
-    public function testProductExportByFilteringSinceASpecificDate()
+    public function testProductExportByFilteringSinceASpecificDate(): void
     {
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1');
         $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_2');
@@ -93,12 +92,13 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
     }
 
-    public function testProductExportByFilteringUntilASpecificDate()
+    public function testProductExportByFilteringUntilASpecificDate(): void
     {
         $expectedCsv = '';
 
@@ -116,6 +116,7 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);

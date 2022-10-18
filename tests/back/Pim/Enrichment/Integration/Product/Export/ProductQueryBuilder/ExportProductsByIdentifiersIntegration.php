@@ -15,7 +15,7 @@ class ExportProductsByIdentifiersIntegration extends AbstractExportTestCase
         $this->createProduct('product_2');
     }
 
-    public function testProductExportWithFilterOnOneIdentifier()
+    public function testProductExportWithFilterOnOneIdentifier(): void
     {
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1');
         $expectedCsv = <<<CSV
@@ -38,12 +38,13 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
     }
 
-    public function testProductExportWithFilterOnAListOfIdentifiers()
+    public function testProductExportWithFilterOnAListOfIdentifiers(): void
     {
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1');
         $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_2');
@@ -68,6 +69,7 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);

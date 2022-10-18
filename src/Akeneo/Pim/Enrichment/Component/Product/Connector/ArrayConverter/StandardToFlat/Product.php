@@ -4,7 +4,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\Stand
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ProductValueConverter;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\QualityScoreConverter;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScoresInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\StandardToFlat\AbstractSimpleArrayConverter;
 
@@ -26,7 +25,7 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
     /**
      * {@inheritdoc}
      */
-    protected function convertProperty($property, $data, array $convertedItem, array $options)
+    protected function convertProperty($property, $data, array $convertedItem, array $options): array
     {
         switch ($property) {
             case 'associations':
@@ -38,11 +37,13 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
             case 'categories':
                 $convertedItem[$property] = implode(',', $data);
                 break;
+            case 'uuid':
+                $convertedItem = $this->convertUuid($data, $convertedItem, $options['with_uuid'] ?? true);
+                break;
             case 'enabled':
                 $convertedItem[$property] = false === $data || null === $data ? '0' : '1';
                 break;
             case 'family':
-            case 'uuid':
                 $convertedItem[$property] = (string) $data;
                 break;
             case 'parent':
@@ -184,6 +185,15 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
                 $convertedItem[$propertyName] = implode(',', array_column($quantifiedLinks, 'identifier'));
                 $convertedItem[sprintf('%s-quantity', $propertyName)] = implode('|', array_column($quantifiedLinks, 'quantity'));
             }
+        }
+
+        return $convertedItem;
+    }
+
+    protected function convertUuid($data, array $convertedItem, bool $exportUuid): array
+    {
+        if ($exportUuid) {
+            return $convertedItem + ['uuid' => (string) $data];
         }
 
         return $convertedItem;

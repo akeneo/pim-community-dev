@@ -76,6 +76,12 @@ class ProductXlsxExport implements ConstraintCollectionProviderInterface
                 'groups' => ['Default', 'FileConfiguration'],
             ]
         );
+        $constraintFields['with_uuid'] = new Type(
+            [
+                'type'   => 'bool',
+                'groups' => ['Default', 'FileConfiguration'],
+            ]
+        );
         $constraintFields['filters'] = [
             new Collection(
                 [

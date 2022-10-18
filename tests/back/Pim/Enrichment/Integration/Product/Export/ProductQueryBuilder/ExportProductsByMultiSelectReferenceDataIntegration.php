@@ -42,7 +42,7 @@ class ExportProductsByMultiSelectReferenceDataIntegration extends AbstractExport
         $this->createProduct('product_without_option_attribute', [new SetFamily('a_family')]);
     }
 
-    public function testProductExportByFilteringOnOneOption()
+    public function testProductExportByFilteringOnOneOption(): void
     {
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_airguard');
         $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_airguard_braid');
@@ -67,12 +67,13 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
     }
 
-    public function testProductExportByFilteringOnTwoOptions()
+    public function testProductExportByFilteringOnTwoOptions(): void
     {
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_airguard');
         $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_airguard_braid');
@@ -99,12 +100,13 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
     }
 
-    public function testProductExportByFilteringWithEmpty()
+    public function testProductExportByFilteringWithEmpty(): void
     {
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_without_option');
         $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_without_option_attribute');
@@ -129,12 +131,13 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
     }
 
-    public function testProductExportByFilteringWithAnEmptyList()
+    public function testProductExportByFilteringWithAnEmptyList(): void
     {
         $expectedCsv = '';
 
@@ -152,6 +155,7 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);

@@ -8,7 +8,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Webmozart\Assert\Assert;
 
 /**
  * Transform the properties of a product object (fields and product values)

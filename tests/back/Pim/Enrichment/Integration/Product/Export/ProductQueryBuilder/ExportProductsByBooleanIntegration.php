@@ -38,7 +38,7 @@ class ExportProductsByBooleanIntegration extends AbstractExportTestCase
         ]);
     }
 
-    public function testProductExportWithBooleanFilterEqualsTrue()
+    public function testProductExportWithBooleanFilterEqualsTrue(): void
     {
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_with_boolean_true');
         $expectedCsv = <<<CSV
@@ -61,12 +61,13 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
     }
 
-    public function testProductExportWithBooleanFilterEqualsFalse()
+    public function testProductExportWithBooleanFilterEqualsFalse(): void
     {
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_with_boolean_false');
         $expectedCsv = <<<CSV
@@ -89,12 +90,13 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
     }
 
-    public function testProductExportWithLocalisableAndScopableBooleanFilter()
+    public function testProductExportWithLocalisableAndScopableBooleanFilter(): void
     {
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_with_localisable_scopable_boolean');
         $expectedCsv = <<<CSV
@@ -118,6 +120,7 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);

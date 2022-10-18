@@ -155,6 +155,9 @@ pim_import_export:
                     file_locale:
                         title: File locale
                         help: Define the locale in which labels are displayed
+                    with_uuid:
+                        title: With product UUID
+                        help: Export the product's UUID as the first column
             file_path: File path
             storage_form:
                 title: Storage

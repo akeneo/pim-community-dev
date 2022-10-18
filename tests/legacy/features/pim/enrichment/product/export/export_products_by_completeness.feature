@@ -13,17 +13,18 @@ Feature: Export products according to a completeness policy
       | code      | requirements-ecommerce | attributes |
       | localized | sku,name               | sku,name   |
     And the following products:
-      | sku      | categories | family    | name-fr_FR | name-en_US |
-      | french   | default    | localized | French     |            |
-      | english  | default    | localized |            | English    |
-      | complete | default    | localized | Complete   | Complete   |
-      | empty    | default    | localized |            |            |
+      | uuid                                 | sku      | categories | family    | name-fr_FR | name-en_US |
+      | 65981adb-242a-473e-80a5-8e4f2080edf1 | french   | default    | localized | French     |            |
+      | 8e43d1d2-96e7-45dd-9120-ca11df22cbd4 | english  | default    | localized |            | English    |
+      | 77db32aa-7164-4444-b516-890d587af7eb | complete | default    | localized | Complete   | Complete   |
+      | f9316596-dfca-4ebc-9452-f6b81b704045 | empty    | default    | localized |            |            |
     And the following jobs:
       | connector            | type   | alias              | code               | label              |
       | Akeneo CSV Connector | export | csv_product_export | csv_product_export | CSV product export |
     Given the following job "csv_product_export" configuration:
-      | storage | {"type": "local", "file_path": "%tmp%/product_export/product_export.csv"} |
-      | filters  | {"structure": {"locales": ["fr_FR", "en_US"], "scope": "ecommerce"},"data":[]} |
+      | storage   | {"type": "local", "file_path": "%tmp%/product_export/product_export.csv"}      |
+      | filters   | {"structure": {"locales": ["fr_FR", "en_US"], "scope": "ecommerce"},"data":[]} |
+      | with_uuid | yes                                                                            |
     And I am logged in as "Julia"
 
   Scenario: Export products with operator ALL on completeness
@@ -37,8 +38,8 @@ Feature: Export products according to a completeness policy
     Then exported file of "csv_product_export" should contain:
       """
       uuid;sku;categories;enabled;family;groups;name-en_US;name-fr_FR
-      %uuid%;french;default;1;localized;;;French
-      %uuid%;english;default;1;localized;;English;
-      %uuid%;complete;default;1;localized;;Complete;Complete
-      %uuid%;empty;default;1;localized;;;
+      65981adb-242a-473e-80a5-8e4f2080edf1;french;default;1;localized;;;French
+      8e43d1d2-96e7-45dd-9120-ca11df22cbd4;english;default;1;localized;;English;
+      77db32aa-7164-4444-b516-890d587af7eb;complete;default;1;localized;;Complete;Complete
+      f9316596-dfca-4ebc-9452-f6b81b704045;empty;default;1;localized;;;
       """
