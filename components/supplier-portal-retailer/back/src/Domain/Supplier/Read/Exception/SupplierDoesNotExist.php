@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Retailer\Application\Supplier\Exception;
+namespace Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Exception;
 
 class SupplierDoesNotExist extends \Exception
 {
