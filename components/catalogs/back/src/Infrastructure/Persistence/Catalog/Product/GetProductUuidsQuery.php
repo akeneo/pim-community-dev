@@ -46,7 +46,6 @@ final class GetProductUuidsQuery implements GetProductUuidsQueryInterface
         if (null !== $searchAfter) {
             $pqbOptions['search_after'] = [
                 \sprintf('product_%s', $searchAfter),
-                \sprintf('product_%s', $searchAfter),
             ];
         }
 
