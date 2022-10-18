@@ -114,6 +114,7 @@ define([
       });
 
       this.trigger('selected:update:after', this.selected);
+      this.updateAttributeList();
     },
 
     /**

@@ -2,3 +2,4 @@ services:
   Akeneo\Pim\Automation\IdentifierGenerator\Application\CreateGeneratorHandler:
     arguments:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
+      - '@validator'

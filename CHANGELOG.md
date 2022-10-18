@@ -91,6 +91,7 @@
 - PIM-10576: Fix product model mass edit acl check
 - PIM-10633: Fix no DQI dashboard average rankings if code case changed
 - PIM-10667: Fix product import when measurement contains line break
+- PIM-10669: Fix the attribute list does not update if we don't scroll
 
 ## Improvements
 

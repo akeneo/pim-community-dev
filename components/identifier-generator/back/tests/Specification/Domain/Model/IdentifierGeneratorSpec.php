@@ -72,37 +72,37 @@ class IdentifierGeneratorSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(IdentifierGenerator::class);
     }
 
-    function it_returns_an_indentifier_generator_id()
+    public function it_returns_an_indentifier_generator_id()
     {
         $this->id()->shouldBeLike(IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002'));
     }
 
-    function it_returns_an_indentifier_generator_code()
+    public function it_returns_an_indentifier_generator_code()
     {
         $this->code()->shouldBeLike(IdentifierGeneratorCode::fromString('abcdef'));
     }
 
-    function it_returns_a_delimiter()
+    public function it_returns_a_delimiter()
     {
         $this->delimiter()->shouldBeLike(Delimiter::fromString('-'));
     }
 
-    function it_returns_a_target()
+    public function it_returns_a_target()
     {
         $this->target()->shouldBeLike(Target::fromString('sku'));
     }
 
-    function it_returns_a_conditions()
+    public function it_returns_a_conditions()
     {
         $this->conditions()->shouldBeLike(Conditions::fromArray([]));
     }
 
-    function it_returns_a_structure()
+    public function it_returns_a_structure()
     {
         $this->structure()->shouldBeLike(Structure::fromArray([FreeText::fromString('abc')]));
     }
 
-    function it_returns_a_labels_collection()
+    public function it_returns_a_labels_collection()
     {
         $this->labelCollection()->shouldBeLike(LabelCollection::fromNormalized(['fr' => 'Générateur']));
     }

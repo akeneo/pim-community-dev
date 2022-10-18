@@ -44,7 +44,7 @@ final class FreeText implements PropertyInterface
     public static function fromString(string $value)
     {
         Assert::stringNotEmpty($value);
-        
+
         return new self($value);
     }
 

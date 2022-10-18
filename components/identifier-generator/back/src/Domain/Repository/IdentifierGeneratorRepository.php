@@ -24,4 +24,6 @@ interface IdentifierGeneratorRepository
     public function get(string $identifierGeneratorCode): ?IdentifierGenerator;
 
     public function getNextId(): IdentifierGeneratorId;
+
+    public function count(): int;
 }
