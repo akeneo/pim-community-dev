@@ -46,7 +46,7 @@ class JobExecutionTableSpec extends ObjectBehavior
                     'username' => 'admin',
                     'status' => 'COMPLETED',
                     'warning_count' => 0,
-                    'has_error' => false,
+                    'error_count' => 0,
                     'tracking' => [
                         'current_step' => 1,
                         'total_step' => 2,
