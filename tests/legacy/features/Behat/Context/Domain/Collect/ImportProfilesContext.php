@@ -5,10 +5,10 @@ namespace Pim\Behat\Context\Domain\Collect;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use Context\Spin\SpinCapableTrait;
 use OpenSpout\Common\Type;
 use OpenSpout\Writer\Common\Creator\WriterEntityFactory;
 use OpenSpout\Writer\Common\Creator\WriterFactory;
-use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\Domain\ImportExportContext;
 
 class ImportProfilesContext extends ImportExportContext
