@@ -200,10 +200,10 @@ extensions:
         position: 220
         targetZone: properties
         config:
-            fieldCode: configuration.export_uuid_column
+            fieldCode: configuration.with_uuid
             readOnly: false
-            label: pim_import_export.form.job_instance.tab.properties.export_uuid_column.title
-            tooltip: pim_import_export.form.job_instance.tab.properties.export_uuid_column.help
+            label: pim_import_export.form.job_instance.tab.properties.with_uuid.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.with_uuid.help
 
     pim-job-instance-xlsx-product-export-edit-content-structure:
         module: pim/job/product/edit/content/structure
