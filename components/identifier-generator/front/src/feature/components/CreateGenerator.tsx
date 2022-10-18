@@ -5,16 +5,13 @@ import {PageHeader, PimView, useTranslate} from '@akeneo-pim-community/shared';
 import {GeneralProperties} from './edit/GeneralProperties';
 import {IdentifierGenerator} from '../../models';
 import {Common} from '../pages/Common';
+import {Styled} from './Styled';
 
 enum Tabs {
   GENERAL,
   PRODUCT_SELECTION,
   STRUCTURE,
 }
-
-const Container = styled.div`
-  padding: 20px 40px;
-`;
 
 type EditGeneratorProps = {
   initialGenerator: IdentifierGenerator;
@@ -48,8 +45,8 @@ const CreateGenerator: React.FC<EditGeneratorProps> = ({initialGenerator}) => {
         </PageHeader.Actions>
         <PageHeader.Title>{translate('pim_title.akeneo_identifier_generator_index')}</PageHeader.Title>
       </PageHeader>
-      <Container>
-        <TabBar moreButtonTitle="More">
+      <Styled.TabContainer>
+        <TabBar moreButtonTitle={translate('pim_common.more')}>
           <TabBar.Tab isActive={currentTab === Tabs.GENERAL} onClick={() => setCurrentTab(Tabs.GENERAL)}>
             {translate('pim_identifier_generator.tabs.general')}
           </TabBar.Tab>
@@ -66,7 +63,7 @@ const CreateGenerator: React.FC<EditGeneratorProps> = ({initialGenerator}) => {
         {currentTab === Tabs.GENERAL && <GeneralProperties generator={generator} onGeneratorChange={setGenerator} />}
         {currentTab === Tabs.PRODUCT_SELECTION && <div>Not implemented YET</div>}
         {currentTab === Tabs.STRUCTURE && <div>Not implemented YET</div>}
-      </Container>
+      </Styled.TabContainer>
     </>
   );
 };

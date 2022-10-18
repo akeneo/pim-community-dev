@@ -16,10 +16,7 @@ const GeneralProperties: React.FC<GeneralPropertiesProps> = ({generator, onGener
   const translate = useTranslate();
 
   const onLabelChange = useCallback(
-    (labelCollection: LabelCollection) => {
-      generator.labels = labelCollection;
-      onGeneratorChange({...generator});
-    },
+    (labels: LabelCollection) => onGeneratorChange({...generator, labels}),
     [onGeneratorChange, generator]
   );
 
