@@ -141,7 +141,11 @@ const CategoriesTreePage: FC = () => {
           </SectionTitle>
           <CategoryTree
             root={tree}
-            orderable={(featureFlags.isEnabled('enriched_category') ? isGranted('pim_enrich_product_category_order_trees') : isGranted('pim_enrich_product_category_edit'))}
+            orderable={
+              featureFlags.isEnabled('enriched_category')
+                ? isGranted('pim_enrich_product_category_order_trees')
+                : isGranted('pim_enrich_product_category_edit')
+            }
             followCategory={
               isGranted('pim_enrich_product_category_edit') ? cat => followEditCategory(cat.id) : undefined
             }

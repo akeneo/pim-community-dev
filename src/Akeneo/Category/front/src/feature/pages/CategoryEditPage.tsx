@@ -26,11 +26,11 @@ import {
   useTranslate,
   useUserContext,
 } from '@akeneo-pim-community/shared';
-import {CategoryToDelete, useDeleteCategory, useEditCategoryForm, useCountProductsBeforeDeleteCategory} from '../hooks';
+import {CategoryToDelete, useCountProductsBeforeDeleteCategory, useDeleteCategory, useEditCategoryForm} from '../hooks';
 import {EnrichCategory} from '../models';
 import {HistoryPimView, View} from './HistoryPimView';
 import {DeleteCategoryModal} from '../components/datagrids/DeleteCategoryModal';
-import {EditPermissionsForm, EditPropertiesForm, EditAttributesForm} from '../components';
+import {EditAttributesForm, EditPermissionsForm, EditPropertiesForm} from '../components';
 
 type Params = {
   categoryId: string;
@@ -64,6 +64,10 @@ const CategoryEditPage: FC = () => {
   // ui state
   const [activeTab, setActiveTab] = useSessionStorageState(propertyTabName, 'pim_category_activeTab');
   const [isCurrent, switchTo] = useTabBar(activeTab);
+  if (activeTab === attributeTabName && !isGranted('pim_enrich_product_category_edit_attributes')) {
+    setActiveTab(propertyTabName);
+    switchTo(propertyTabName);
+  }
   const [secondaryActionIsOpen, openSecondaryAction, closeSecondaryAction] = useBooleanState(false);
   const [isDeleteCategoryModalOpen, openDeleteCategoryModal, closeDeleteCategoryModal] = useBooleanState();
 
@@ -272,13 +276,16 @@ const CategoryEditPage: FC = () => {
         {isCurrent(propertyTabName) && category && (
           <EditPropertiesForm category={category} onChangeLabel={onChangeCategoryLabel} />
         )}
-        {isCurrent(attributeTabName) && category && template && (
-          <EditAttributesForm
-            attributeValues={category.attributes}
-            template={template}
-            onAttributeValueChange={onChangeAttribute}
-          />
-        )}
+        {isGranted('pim_enrich_product_category_edit_attributes') &&
+          isCurrent(attributeTabName) &&
+          category &&
+          template && (
+            <EditAttributesForm
+              attributeValues={category.attributes}
+              template={template}
+              onAttributeValueChange={onChangeAttribute}
+            />
+          )}
         {isCurrent(historyTabName) && (
           <HistoryPimView
             viewName="pim-category-edit-form-history"
