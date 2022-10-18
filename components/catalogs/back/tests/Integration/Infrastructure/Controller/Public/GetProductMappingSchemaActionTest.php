@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Controller\Public;
 
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
-use Akeneo\Catalogs\ServiceAPI\Command\UpdateCatalogProductMappingSchemaCommand;
+use Akeneo\Catalogs\ServiceAPI\Command\UpdateProductMappingSchemaCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Assert;
@@ -15,10 +15,10 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @covers \Akeneo\Catalogs\Infrastructure\Controller\Public\GetCatalogProductMappingSchemaAction
- * @covers \Akeneo\Catalogs\Application\Handler\GetCatalogProductMappingSchemaHandler
+ * @covers \Akeneo\Catalogs\Infrastructure\Controller\Public\GetProductMappingSchemaAction
+ * @covers \Akeneo\Catalogs\Application\Handler\GetProductMappingSchemaHandler
  */
-class GetCatalogProductMappingSchemaActionTest extends IntegrationTestCase
+class GetProductMappingSchemaActionTest extends IntegrationTestCase
 {
     private ?KernelBrowser $client = null;
     private ?CommandBus $commandBus;
@@ -42,7 +42,7 @@ class GetCatalogProductMappingSchemaActionTest extends IntegrationTestCase
             'Store US',
             'shopifi',
         ));
-        $this->commandBus->execute(new UpdateCatalogProductMappingSchemaCommand(
+        $this->commandBus->execute(new UpdateProductMappingSchemaCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             \json_decode($this->getValidSchemaData(), false, 512, JSON_THROW_ON_ERROR),
         ));
@@ -72,7 +72,7 @@ class GetCatalogProductMappingSchemaActionTest extends IntegrationTestCase
             'Store US',
             'shopifi',
         ));
-        $this->commandBus->execute(new UpdateCatalogProductMappingSchemaCommand(
+        $this->commandBus->execute(new UpdateProductMappingSchemaCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             \json_decode($this->getValidSchemaData(), false, 512, JSON_THROW_ON_ERROR),
         ));
