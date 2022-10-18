@@ -64,10 +64,6 @@ const CategoryEditPage: FC = () => {
   // ui state
   const [activeTab, setActiveTab] = useSessionStorageState(propertyTabName, 'pim_category_activeTab');
   const [isCurrent, switchTo] = useTabBar(activeTab);
-  if (activeTab === attributeTabName && !isGranted('pim_enrich_product_category_edit_attributes')) {
-    setActiveTab(propertyTabName);
-    switchTo(propertyTabName);
-  }
   const [secondaryActionIsOpen, openSecondaryAction, closeSecondaryAction] = useBooleanState(false);
   const [isDeleteCategoryModalOpen, openDeleteCategoryModal, closeDeleteCategoryModal] = useBooleanState();
 
@@ -139,6 +135,13 @@ const CategoryEditPage: FC = () => {
       );
     }
   }, [category, userContext]);
+
+  useEffect(() => {
+    if (activeTab === attributeTabName && !isGranted('pim_enrich_product_category_edit_attributes')) {
+      setActiveTab(propertyTabName);
+      switchTo(propertyTabName);
+    }
+  }, [activeTab]);
 
   if (categoryFetchingStatus === 'error') {
     return (
