@@ -12,10 +12,10 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWith
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\CommentTooLong;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\EmptyComment;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\MaxCommentPerProductFileReached;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\ProductFile;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\InMemory\InMemoryRepository as InMemoryProductFileRepository;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository as InMemorySupplierRepository;
+use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
@@ -53,17 +53,18 @@ final class ProductFileDroppingContext implements Context
     {
         $this->productFileIdentifier = '893e5eab-d85c-4c47-9c4f-3afc17d6b1eb';
 
-        $this->productFileRepository->save(ProductFile::create(
-            $this->productFileIdentifier,
-            'file.xlsx',
-            'path/to/file.xlsx',
-            'jimmy.punchline@los-pollos-hermanos.com',
-            new Read\Model\Supplier(
-                'f7555f61-2ea6-4b0e-88f2-737e504e7b95',
-                'supplier_code',
-                'Supplier label',
-            ),
-        ));
+        $this->productFileRepository->save(
+            (new ProductFileBuilder())
+                ->withIdentifier($this->productFileIdentifier)
+                ->uploadedBySupplier(
+                    new Supplier(
+                        'f7555f61-2ea6-4b0e-88f2-737e504e7b95',
+                        'supplier_code',
+                        'Supplier label',
+                    ),
+                )
+                ->build(),
+        );
     }
 
     /**
@@ -73,17 +74,16 @@ final class ProductFileDroppingContext implements Context
     {
         $this->productFileIdentifier = '893e5eab-d85c-4c47-9c4f-3afc17d6b1eb';
 
-        $productFile = ProductFile::create(
-            $this->productFileIdentifier,
-            'file.xlsx',
-            'path/to/file.xlsx',
-            'jimmy.punchline@los-pollos-hermanos.com',
-            new Read\Model\Supplier(
-                'f7555f61-2ea6-4b0e-88f2-737e504e7b95',
-                'supplier_code',
-                'Supplier label',
-            ),
-        );
+        $productFile = (new ProductFileBuilder())
+            ->withIdentifier($this->productFileIdentifier)
+            ->uploadedBySupplier(
+                new Supplier(
+                    'f7555f61-2ea6-4b0e-88f2-737e504e7b95',
+                    'supplier_code',
+                    'Supplier label',
+                ),
+            )
+            ->build();
 
         for ($i = 0; 50 > $i; $i++) {
             $productFile->addNewRetailerComment('foo', 'julia@roberts.com', new \DateTimeImmutable());

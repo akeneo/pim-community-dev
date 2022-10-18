@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\ProductFileDropping\Query\Sql;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilesCount;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
+use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
-use Doctrine\DBAL\Connection;
-use Ramsey\Uuid\Uuid;
 
 final class DatabaseGetProductFilesCountIntegration extends SqlIntegrationTestCase
 {
@@ -36,34 +37,34 @@ final class DatabaseGetProductFilesCountIntegration extends SqlIntegrationTestCa
                 ->build(),
         );
 
+        $productFileRepository = $this->get(ProductFileRepository::class);
+
+        $supplierOne = new Supplier(
+            '44ce8069-8da1-4986-872f-311737f46f00',
+            'supplier_1',
+            'Supplier 1 label',
+        );
         for ($i = 1; 15 >= $i; $i++) {
-            $this->createProductFile('44ce8069-8da1-4986-872f-311737f46f00');
+            $productFileRepository->save(
+                (new ProductFileBuilder())
+                    ->uploadedBySupplier($supplierOne)
+                    ->build(),
+            );
         }
+
+        $supplierTwo = new Supplier(
+            'a20576cd-840f-4124-9900-14d581491387',
+            'supplier_2',
+            'Supplier 2 label',
+        );
         for ($i = 1; 10 >= $i; $i++) {
-            $this->createProductFile('a20576cd-840f-4124-9900-14d581491387');
+            $productFileRepository->save(
+                (new ProductFileBuilder())
+                    ->uploadedBySupplier($supplierTwo)
+                    ->build(),
+            );
         }
 
         static::assertSame(15, $this->get(GetProductFilesCount::class)('44ce8069-8da1-4986-872f-311737f46f00'));
-    }
-
-    private function createProductFile(string $supplierIdentifier): void
-    {
-        $sql = <<<SQL
-            INSERT INTO `akeneo_supplier_portal_supplier_product_file` (identifier, original_filename, path, uploaded_by_contributor, uploaded_by_supplier, uploaded_at, downloaded)
-            VALUES (:identifier, :originalFilename, :path, :contributorEmail, :supplierIdentifier, :uploadedAt, :downloaded)
-        SQL;
-
-        $this->get(Connection::class)->executeQuery(
-            $sql,
-            [
-                'identifier' => Uuid::uuid4()->toString(),
-                'originalFilename' => 'file.xlsx',
-                'path' => 'path/to/file/file.xlsx',
-                'contributorEmail' => 'contributor@megasupplier.com',
-                'supplierIdentifier' => $supplierIdentifier,
-                'uploadedAt' => (new \DateTimeImmutable())->format('Y-m-d H:i:s'),
-                'downloaded' => 0,
-            ],
-        );
     }
 }

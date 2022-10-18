@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\ProductFileDropping\Query\Sql;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithComments;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
+use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
@@ -23,6 +26,20 @@ final class DatabaseGetProductFileWithCommentsIntegration extends SqlIntegration
                 ->withCode('supplier_1')
                 ->build(),
         );
+        ($this->get(ProductFileRepository::class))->save(
+            (new ProductFileBuilder())
+                ->withIdentifier('5d001a43-a42d-4083-8673-b64bb4ecd26f')
+                ->uploadedBySupplier(
+                    new Supplier(
+                        'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7',
+                        'supplier_1',
+                        'Supplier label',
+                    ),
+                )
+                ->withContributorEmail('contributor@contributor.com')
+                ->uploadedAt(new \DateTimeImmutable('2022-09-07 08:54:38'))
+                ->build(),
+        );
     }
 
     /** @test */
@@ -34,14 +51,13 @@ final class DatabaseGetProductFileWithCommentsIntegration extends SqlIntegration
     /** @test */
     public function itDoesNotGetAnyCommentIfThereIsNone(): void
     {
-        $this->createProductFile('5d001a43-a42d-4083-8673-b64bb4ecd26f');
         $productFile = $this->get(GetProductFileWithComments::class)('5d001a43-a42d-4083-8673-b64bb4ecd26f');
 
         static::assertSame([
             'identifier' => '5d001a43-a42d-4083-8673-b64bb4ecd26f',
             'originalFilename' => 'file.xlsx',
             'path' => null,
-            'uploadedByContributor' => 'jimmy@punchline.com',
+            'uploadedByContributor' => 'contributor@contributor.com',
             'uploadedBySupplier' => 'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7',
             'uploadedAt' => '2022-09-07 08:54:38',
             'retailerComments' => [],
@@ -52,7 +68,6 @@ final class DatabaseGetProductFileWithCommentsIntegration extends SqlIntegration
     /** @test */
     public function itGetsAProductFileWithItsComments(): void
     {
-        $this->createProductFile('5d001a43-a42d-4083-8673-b64bb4ecd26f');
         $this->createRetailerComment(
             '5d001a43-a42d-4083-8673-b64bb4ecd26f',
             'julia@roberts.com',
@@ -69,7 +84,7 @@ final class DatabaseGetProductFileWithCommentsIntegration extends SqlIntegration
 
         static::assertSame('5d001a43-a42d-4083-8673-b64bb4ecd26f', $productFile->identifier);
         static::assertSame('file.xlsx', $productFile->originalFilename);
-        static::assertSame('jimmy@punchline.com', $productFile->uploadedByContributor);
+        static::assertSame('contributor@contributor.com', $productFile->uploadedByContributor);
         static::assertSame('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7', $productFile->uploadedBySupplier);
         static::assertSame('2022-09-07 08:54:38', $productFile->uploadedAt);
         static::assertEquals([
@@ -86,32 +101,6 @@ final class DatabaseGetProductFileWithCommentsIntegration extends SqlIntegration
                 'created_at' => '2022-09-07 00:00:01.000000',
             ],
         ], $productFile->supplierComments);
-    }
-
-    private function createProductFile(string $productFileIdentifier): void
-    {
-        $sql = <<<SQL
-            INSERT INTO `akeneo_supplier_portal_supplier_product_file` (
-                identifier, 
-                original_filename, 
-                path, 
-                uploaded_by_contributor, 
-                uploaded_by_supplier, 
-                uploaded_at
-            ) VALUES (:identifier, :originalFilename, :path, :contributorEmail, :supplierIdentifier, :uploadedAt)
-        SQL;
-
-        $this->get(Connection::class)->executeQuery(
-            $sql,
-            [
-                'identifier' => $productFileIdentifier,
-                'originalFilename' => 'file.xlsx',
-                'path' => 'path/to/file/file.xlsx',
-                'contributorEmail' => 'jimmy@punchline.com',
-                'supplierIdentifier' => 'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7',
-                'uploadedAt' => '2022-09-07 08:54:38',
-            ],
-        );
     }
 
     private function createRetailerComment(

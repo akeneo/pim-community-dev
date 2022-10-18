@@ -5,14 +5,17 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\ProductFileDropping\Query\Sql;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetAllProductFiles;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
+use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
-use Doctrine\DBAL\Connection;
-use Ramsey\Uuid\Uuid;
 
 final class DatabaseGetAllProductFilesIntegration extends SqlIntegrationTestCase
 {
+    private Supplier $supplier;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -20,9 +23,13 @@ final class DatabaseGetAllProductFilesIntegration extends SqlIntegrationTestCase
         ($this->get(Repository::class))->save(
             (new SupplierBuilder())
                 ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f00')
-                ->withCode('supplier_1')
-                ->withLabel('Supplier 1')
                 ->build(),
+        );
+
+        $this->supplier = new Supplier(
+            '44ce8069-8da1-4986-872f-311737f46f00',
+            'supplier_code',
+            'Supplier label',
         );
     }
     /** @test */
@@ -35,7 +42,11 @@ final class DatabaseGetAllProductFilesIntegration extends SqlIntegrationTestCase
     public function itGetsNoMoreThanTwentyFiveProductFilesAtATime(): void
     {
         for ($i = 1; 30 >= $i; $i++) {
-            $this->createProductFile('file.xlsx', new \DateTimeImmutable());
+            $this->get(ProductFileRepository::class)->save(
+                (new ProductFileBuilder())
+                    ->uploadedBySupplier($this->supplier)
+                    ->build(),
+            );
         }
 
         static::assertCount(25, $this->get(GetAllProductFiles::class)());
@@ -45,7 +56,11 @@ final class DatabaseGetAllProductFilesIntegration extends SqlIntegrationTestCase
     public function itPaginatesTheProductFilesList(): void
     {
         for ($i = 1; 30 >= $i; $i++) {
-            $this->createProductFile('file.xlsx', new \DateTimeImmutable());
+            $this->get(ProductFileRepository::class)->save(
+                (new ProductFileBuilder())
+                    ->uploadedBySupplier($this->supplier)
+                    ->build(),
+            );
         }
 
         $productFiles = $this->get(GetAllProductFiles::class)(2);
@@ -56,9 +71,30 @@ final class DatabaseGetAllProductFilesIntegration extends SqlIntegrationTestCase
     /** @test */
     public function itSortsTheProductFilesListByUploadedDateDescending(): void
     {
-        $this->createProductFile('file1.xlsx', (new \DateTimeImmutable())->modify('-10 DAY'));
-        $this->createProductFile('file2.xlsx', new \DateTimeImmutable());
-        $this->createProductFile('file3.xlsx', (new \DateTimeImmutable())->modify('-2 DAY'));
+        $productFileRepository = $this->get(ProductFileRepository::class);
+        $productFileRepository->save(
+            (new ProductFileBuilder())
+                ->withOriginalFilename('file2.xlsx')
+                ->uploadedBySupplier($this->supplier)
+                ->uploadedAt(new \DateTimeImmutable())
+                ->build(),
+        );
+
+        $productFileRepository->save(
+            (new ProductFileBuilder())
+                ->withOriginalFilename('file3.xlsx')
+                ->uploadedBySupplier($this->supplier)
+                ->uploadedAt((new \DateTimeImmutable())->modify('-2 DAY'))
+                ->build(),
+        );
+
+        $productFileRepository->save(
+            (new ProductFileBuilder())
+                ->withOriginalFilename('file1.xlsx')
+                ->uploadedBySupplier($this->supplier)
+                ->uploadedAt((new \DateTimeImmutable())->modify('-10 DAY'))
+                ->build(),
+        );
 
         $productFiles = $this->get(GetAllProductFiles::class)();
 
@@ -73,34 +109,29 @@ final class DatabaseGetAllProductFilesIntegration extends SqlIntegrationTestCase
         $file1Date = new \DateTimeImmutable();
         $file2Date = (new \DateTimeImmutable())->modify('-2 DAY');
 
-        $this->createProductFile('file1.xlsx', $file1Date);
-        $this->createProductFile('file2.xlsx', $file2Date);
+        $productFileRepository = $this->get(ProductFileRepository::class);
+        $productFileRepository->save(
+            (new ProductFileBuilder())
+                ->withOriginalFilename('file1.xlsx')
+                ->uploadedBySupplier($this->supplier)
+                ->withContributorEmail('contributor@megasupplier.com')
+                ->uploadedAt($file1Date)
+                ->build(),
+        );
+
+        $productFileRepository->save(
+            (new ProductFileBuilder())
+                ->withOriginalFilename('file2.xlsx')
+                ->uploadedBySupplier($this->supplier)
+                ->uploadedAt($file2Date)
+                ->build(),
+        );
 
         $productFiles = $this->get(GetAllProductFiles::class)();
 
         static::assertSame('file1.xlsx', $productFiles[0]->originalFilename);
         static::assertSame('contributor@megasupplier.com', $productFiles[0]->uploadedByContributor);
-        static::assertSame('Supplier 1', $productFiles[0]->uploadedBySupplier);
+        static::assertSame('Supplier label', $productFiles[0]->uploadedBySupplier);
         static::assertSame($file1Date->format('Y-m-d H:i:s'), $productFiles[0]->uploadedAt);
-    }
-
-    private function createProductFile(string $filename, \DateTimeImmutable $uploadedAt): void
-    {
-        $sql = <<<SQL
-            INSERT INTO `akeneo_supplier_portal_supplier_product_file` (identifier, original_filename, path, uploaded_by_contributor, uploaded_by_supplier, uploaded_at)
-            VALUES (:identifier, :original_filename, :path, :contributorEmail, :supplierIdentifier, :uploadedAt)
-        SQL;
-
-        $this->get(Connection::class)->executeQuery(
-            $sql,
-            [
-                'identifier' => Uuid::uuid4()->toString(),
-                'original_filename' => $filename,
-                'path' => sprintf('path/to/%s', $filename),
-                'contributorEmail' => 'contributor@megasupplier.com',
-                'supplierIdentifier' => '44ce8069-8da1-4986-872f-311737f46f00',
-                'uploadedAt' => $uploadedAt->format('Y-m-d H:i:s'),
-            ],
-        );
     }
 }
