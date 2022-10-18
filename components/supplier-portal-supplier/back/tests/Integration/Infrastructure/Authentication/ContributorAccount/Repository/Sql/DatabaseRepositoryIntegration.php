@@ -29,7 +29,21 @@ class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
         $this->assertSame($contributorAccount->accessToken(), $savedContributorAccount['access_token']);
         $this->assertSame($contributorAccount->createdAt(), $savedContributorAccount['created_at']);
         $this->assertSame($contributorAccount->accessTokenCreatedAt(), $savedContributorAccount['access_token_created_at']);
-        $this->assertNotNull($contributorAccount->getPassword(), $savedContributorAccount['password']);
+        $this->assertNotNull($savedContributorAccount['password']);
+        $this->assertFalse($savedContributorAccount['consent']);
+    }
+
+    /** @test */
+    public function itSavesAContributorAccountConsent(): void
+    {
+        $repository = $this->get(ContributorAccountRepository::class);
+        $contributorAccount = ContributorAccount::fromEmail('burger@example.com');
+        $contributorAccount->consent();
+        $repository->save($contributorAccount);
+
+        $savedContributorAccount = $this->findContributorAccount('burger@example.com');
+
+        $this->assertTrue($savedContributorAccount['consent']);
     }
 
     /** @test */
@@ -44,6 +58,7 @@ class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
             '1vn466x20fr44wk40w0s88c40c0owwso0sgoksko0kgcggk848',
             '2022-06-06 12:52:44',
             '2022-06-06 12:52:44',
+            true,
         );
         $repository->save($contributorAccount);
         $repository->save(ContributorAccount::fromEmail('jambon@example.com'));
@@ -66,6 +81,7 @@ class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
             '1vn466x20fr44wk40w0s88c40c0owwso0sgoksko0kgcggk848',
             '2022-06-28 11:10:44',
             '2022-06-28 11:10:44',
+            true,
         );
         $repository->save($contributorAccount);
         $repository->save(ContributorAccount::fromEmail('contributor2@example.com'));
@@ -88,6 +104,7 @@ class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
             '1vn466x20fr44wk40w0s88c40c0owwso0sgoksko0kgcggk848',
             '2022-06-06 12:52:44',
             '2022-06-06 12:52:44',
+            true,
         );
         $repository->save($contributorAccount);
 
@@ -123,6 +140,10 @@ class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
             ->executeQuery($sql, ['email' => $email])
             ->fetchAssociative()
         ;
+
+        if (false !== $contributorAccount) {
+            $contributorAccount['consent'] = (bool) $contributorAccount['consent'];
+        }
 
         return $contributorAccount ?: null;
     }

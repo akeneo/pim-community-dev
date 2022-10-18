@@ -32,6 +32,7 @@ final class UpdatePasswordHandlerTest extends TestCase
             '1vn466x20fr44wk40w0s88c40c0owwso0sgoksko0kgcggk848',
             '2022-06-06 12:52:44',
             '2022-06-06 12:52:44',
+            true,
         );
         $contributorAccountRepository = new InMemoryRepository();
         $contributorAccountRepository->save($contributorAccount);
@@ -89,6 +90,7 @@ final class UpdatePasswordHandlerTest extends TestCase
             '1vn466x20fr44wk40w0s88c40c0owwso0sgoksko0kgcggk848',
             '2022-06-06 12:52:44',
             '2022-06-06 12:52:44',
+            true,
         );
         $contributorAccountRepository = new InMemoryRepository();
         $contributorAccountRepository->save($contributorAccount);

@@ -25,9 +25,10 @@ class DatabaseRepository implements ContributorAccountRepository
                 password,
                 access_token,
                 access_token_created_at,
-                created_at
+                created_at,
+                consent
             )
-            VALUES (:id, :email, :password, :access_token, :access_token_created_at, :created_at)
+            VALUES (:id, :email, :password, :access_token, :access_token_created_at, :created_at, :consent)
         SQL;
 
         $this->connection->executeStatement(
@@ -39,6 +40,7 @@ class DatabaseRepository implements ContributorAccountRepository
                 'access_token' => $contributorAccount->accessToken(),
                 'access_token_created_at' => $contributorAccount->accessTokenCreatedAt(),
                 'created_at' => $contributorAccount->createdAt(),
+                'consent' => true === $contributorAccount->hasConsent() ? 1 : 0,
             ],
         );
     }
@@ -46,7 +48,7 @@ class DatabaseRepository implements ContributorAccountRepository
     public function find(Identifier $contributorAccountIdentifier): ?ContributorAccount
     {
         $sql = <<<SQL
-            SELECT id, email, created_at, password, access_token, access_token_created_at, last_logged_at
+            SELECT id, email, created_at, password, access_token, access_token_created_at, last_logged_at, consent
             FROM akeneo_supplier_portal_contributor_account
             WHERE id = :identifier
         SQL;
@@ -66,6 +68,7 @@ class DatabaseRepository implements ContributorAccountRepository
                 $result['access_token'],
                 $result['access_token_created_at'],
                 $result['last_logged_at'],
+                (bool) $result['consent'],
             )
             : null
         ;
@@ -74,7 +77,7 @@ class DatabaseRepository implements ContributorAccountRepository
     public function findByEmail(Email $email): ?ContributorAccount
     {
         $sql = <<<SQL
-            SELECT id, email, created_at, password, access_token, access_token_created_at, last_logged_at
+            SELECT id, email, created_at, password, access_token, access_token_created_at, last_logged_at, consent
             FROM akeneo_supplier_portal_contributor_account
             WHERE email = :email
         SQL;
@@ -94,6 +97,7 @@ class DatabaseRepository implements ContributorAccountRepository
                 $result['access_token'],
                 $result['access_token_created_at'],
                 $result['last_logged_at'],
+                (bool) $result['consent'],
             )
             : null
             ;
@@ -115,6 +119,7 @@ class DatabaseRepository implements ContributorAccountRepository
         ?string $accessToken,
         ?string $accessTokenCreatedAt,
         ?string $lastLoggedAt,
+        bool $consent,
     ): ContributorAccount {
         return ContributorAccount::hydrate(
             $id,
@@ -124,6 +129,7 @@ class DatabaseRepository implements ContributorAccountRepository
             $accessToken,
             $accessTokenCreatedAt,
             $lastLoggedAt,
+            $consent,
         );
     }
 }

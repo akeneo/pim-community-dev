@@ -17,6 +17,7 @@ class ContributorAccount
         private ?AccessToken $accessToken,
         private ?\DateTimeInterface $accessTokenCreatedAt,
         private ?\DateTimeInterface $lastLoggedAt,
+        private bool $consent,
     ) {
     }
 
@@ -30,6 +31,7 @@ class ContributorAccount
             AccessToken::generate(),
             new \DateTimeImmutable(),
             null,
+            false,
         );
     }
 
@@ -41,6 +43,7 @@ class ContributorAccount
         ?string $accessToken,
         ?string $accessTokenCreatedAt,
         ?string $lastLoggedAt,
+        bool $consent,
     ): self {
         return new self(
             Identifier::fromString($identifier),
@@ -50,6 +53,7 @@ class ContributorAccount
             null !== $accessToken ? AccessToken::fromString($accessToken) : null,
             null !== $accessTokenCreatedAt ? new \DateTimeImmutable($accessTokenCreatedAt) : null,
             null !== $lastLoggedAt ? new \DateTimeImmutable($lastLoggedAt) : null,
+            $consent,
         );
     }
 
@@ -108,5 +112,15 @@ class ContributorAccount
     {
         $this->accessToken = AccessToken::generate();
         $this->accessTokenCreatedAt = new \DateTimeImmutable();
+    }
+
+    public function hasConsent(): bool
+    {
+        return $this->consent;
+    }
+
+    public function consent(): void
+    {
+        $this->consent = true;
     }
 }

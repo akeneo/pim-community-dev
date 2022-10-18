@@ -27,6 +27,7 @@ final class RequestNewInvitationHandlerTest extends TestCase
             '1vn466x20fr44wk40w0s88c40c0owwso0sgoksko0kgcggk848',
             '2022-06-28 10:16:44',
             '2022-06-28 10:16:44',
+            false,
         );
 
         $contributorAccountRepository = new InMemoryRepository();
