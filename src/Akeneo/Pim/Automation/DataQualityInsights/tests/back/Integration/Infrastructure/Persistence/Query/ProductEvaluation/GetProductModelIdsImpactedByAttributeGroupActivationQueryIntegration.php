@@ -32,7 +32,7 @@ final class GetProductModelIdsImpactedByAttributeGroupActivationQueryIntegration
     {
         $this->createAttributeGroupActivation('other', false, $this->updatedSince->modify('-1 day'));
         $this->createAttributeGroupWithAttributes('not_recently_activated', ['name', 'description'], true, $this->updatedSince->modify('-1 second'));
-        $this->createAttributeGroupWithAttributes('recently_activated', ['ean', 'uuid'], true, $this->updatedSince->modify('+1 minute'));
+        $this->createAttributeGroupWithAttributes('recently_activated', ['ean'], true, $this->updatedSince->modify('+1 minute'));
         $this->createAttributeGroupWithAttributes('recently_deactivated', ['weight', 'length'], false, $this->updatedSince->modify('+1 second'));
         $this->createAttributeGroupWithAttributesForVariationAxes('not_recently_deactivated', ['color', 'size'], false, $this->updatedSince->modify('-1 month'));
 
