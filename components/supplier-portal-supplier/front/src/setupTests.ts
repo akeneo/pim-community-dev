@@ -9,6 +9,8 @@ beforeEach(() => {
     // Cf this issue : https://github.com/facebook/jest/issues/5785
     jest.spyOn(console, 'error').mockImplementation(() => {});
 
+    //The nodeJS implementation of Element HTML object does not support the scrollTo function (or other scroll* methods)
+    //So to make our tests work, we have to define it
     window.HTMLElement.prototype.scrollTo = jest.fn();
 
     const intersectionObserverMock = () => ({
