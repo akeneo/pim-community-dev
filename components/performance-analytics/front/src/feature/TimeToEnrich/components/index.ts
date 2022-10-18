@@ -1,4 +1,4 @@
 export * from './TimeToEnrichHistoricalChart';
 export * from './TimeToEnrichHistoricalChartTooltip';
-export * from './TimeToEnrichHistoricalFilterAbstract';
+export * from './TimeToEnrichChartLegend';
 export * from './TimeToEnrichTable';

@@ -2,3 +2,8 @@ pim_title.pimee_performance_analytics_dashboard: Performance Analytics Dashboard
 
 akeneo.performance_analytics:
     title: Performance Analytics
+    graph:
+        control_panel_button: Open control panel
+        tooltip_day_to_enrich: days to enrich a product
+        tooltip_compared_period: compared to the previous period
+        tooltip_compared_period_same: Same compared to the previous period

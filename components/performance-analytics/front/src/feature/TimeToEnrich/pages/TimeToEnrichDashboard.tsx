@@ -1,11 +1,10 @@
 import React, {FC, useState, useEffect} from 'react';
 import {Information, AddingValueIllustration} from 'akeneo-design-system';
-import {TimeToEnrichHistoricalChart, TimeToEnrichHistoricalFilterAbstract} from '../components';
+import {TimeToEnrichHistoricalChart, TimeToEnrichChartLegend} from '../components';
 import {TimeToEnrich, TimeToEnrichFilters} from '../models';
 import {useFetchers} from '../../Common';
 
 const TimeToEnrichDashboard: FC = () => {
-  // const theme = useTheme();
   const fetcher = useFetchers();
 
   const [referenceTimeToEnrichList, setReferenceTimeToEnrichList] = useState<TimeToEnrich[] | undefined>(undefined);
@@ -30,7 +29,7 @@ const TimeToEnrichDashboard: FC = () => {
     };
     fetchData('2022-07-01', '2022-09-30', 'week', result => setReferenceTimeToEnrichList(result));
     fetchData('2022-07-01', '2022-09-30', 'week', result => setComparisonTimeToEnrichList(result));
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -43,7 +42,7 @@ const TimeToEnrichDashboard: FC = () => {
           The family “Xylophones” is the most at risk. <b>Focus on this family</b>
         </p>
       </Information>
-      {filters && <TimeToEnrichHistoricalFilterAbstract filters={filters} />}
+      {filters && <TimeToEnrichChartLegend filters={filters} />}
       {referenceTimeToEnrichList && comparisonTimeToEnrichList && (
         <TimeToEnrichHistoricalChart
           referenceTimeToEnrichList={referenceTimeToEnrichList}
