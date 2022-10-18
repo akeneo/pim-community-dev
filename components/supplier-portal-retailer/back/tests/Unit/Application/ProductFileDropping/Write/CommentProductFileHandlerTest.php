@@ -22,8 +22,6 @@ final class CommentProductFileHandlerTest extends TestCase
         $productFileRepository->save(
             (new ProductFileBuilder())
                 ->withIdentifier('6ffc16ae-3e0d-4a10-a8c3-7e33e2a4c287')
-                ->withUploadedBySupplier('64e9aa37-5935-4092-bbe6-54fe271fb2a7')
-                ->withContributorEmail('julia@roberts.com')
                 ->build(),
         );
         $command = new CommentProductFile(
@@ -32,9 +30,8 @@ final class CommentProductFileHandlerTest extends TestCase
             'Your product file is awesome!',
             new \DateTimeImmutable(),
         );
-        $sut = new CommentProductFileHandler($productFileRepository);
 
-        ($sut)($command);
+        (new CommentProductFileHandler($productFileRepository))($command);
 
         $productFile = $productFileRepository->find(
             Identifier::fromString(
@@ -60,8 +57,7 @@ final class CommentProductFileHandlerTest extends TestCase
             'Your product file is awesome!',
             new \DateTimeImmutable(),
         );
-        $sut = new CommentProductFileHandler($productFileRepository);
 
-        ($sut)($command);
+        (new CommentProductFileHandler($productFileRepository))($command);
     }
 }

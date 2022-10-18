@@ -14,7 +14,7 @@ final class ProductFileBuilder
     private string $originalFilename = 'file.xlsx';
     private string $path = 'path/to/file.xlsx';
     private string $contributorEmail = 'contributor@example.com';
-    private ?string $uploadedBySupplier = null;
+    private ?Supplier $uploadedBySupplier = null;
     private ?\DateTimeImmutable $uploadedAt = null;
 
     public function withIdentifier(string $identifier): self
@@ -45,14 +45,14 @@ final class ProductFileBuilder
         return $this;
     }
 
-    public function withUploadedBySupplier(string $uploadedBySupplier): self
+    public function uploadedBySupplier(Supplier $uploadedBySupplier): self
     {
         $this->uploadedBySupplier = $uploadedBySupplier;
 
         return $this;
     }
 
-    public function withUploadedAt(\DateTimeImmutable $uploadedAt): self
+    public function uploadedAt(\DateTimeImmutable $uploadedAt): self
     {
         $this->uploadedAt = $uploadedAt;
 
@@ -66,8 +66,8 @@ final class ProductFileBuilder
             $this->originalFilename,
             $this->path,
             $this->contributorEmail,
-            new Supplier(
-                $this->uploadedBySupplier ?? Uuid::uuid4()->toString(),
+            $this->uploadedBySupplier ?? new Supplier(
+                Uuid::uuid4()->toString(),
                 'supplier_code',
                 'Supplier label',
             ),

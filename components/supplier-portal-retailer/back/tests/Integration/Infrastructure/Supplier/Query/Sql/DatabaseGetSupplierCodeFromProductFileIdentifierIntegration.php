@@ -6,6 +6,7 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\Supplie
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierCodeFromProductFileIdentifier;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
@@ -20,6 +21,7 @@ final class DatabaseGetSupplierCodeFromProductFileIdentifierIntegration extends 
         ($this->get(Repository::class))->save(
             (new SupplierBuilder())
                 ->withIdentifier('a3aac0e2-9eb9-4203-8af2-5425b2062ad4')
+                ->withCode('supplier_code')
                 ->build(),
         );
     }
@@ -29,12 +31,20 @@ final class DatabaseGetSupplierCodeFromProductFileIdentifierIntegration extends 
     {
         ($this->get(ProductFileRepository::class))->save(
             (new ProductFileBuilder())
-                ->withUploadedBySupplier('a3aac0e2-9eb9-4203-8af2-5425b2062ad4')
+                ->uploadedBySupplier(
+                    new Supplier(
+                        'a3aac0e2-9eb9-4203-8af2-5425b2062ad4',
+                        'supplier_code',
+                        'Supplier label',
+                    ),
+                )
                 ->withIdentifier('ede6024b-bdce-47d0-ba0c-7132f217992f')
                 ->build(),
         );
 
-        $supplierCode = ($this->get(GetSupplierCodeFromProductFileIdentifier::class))('ede6024b-bdce-47d0-ba0c-7132f217992f');
+        $supplierCode = ($this->get(GetSupplierCodeFromProductFileIdentifier::class))(
+            'ede6024b-bdce-47d0-ba0c-7132f217992f'
+        );
 
         static::assertSame('supplier_code', $supplierCode);
     }
@@ -48,7 +58,9 @@ final class DatabaseGetSupplierCodeFromProductFileIdentifierIntegration extends 
                 ->build(),
         );
 
-        $supplierCode = ($this->get(GetSupplierCodeFromProductFileIdentifier::class))('606abe11-353f-470c-aa1c-7f9e793b29a0');
+        $supplierCode = ($this->get(GetSupplierCodeFromProductFileIdentifier::class))(
+            '606abe11-353f-470c-aa1c-7f9e793b29a0'
+        );
 
         static::assertNull($supplierCode);
     }

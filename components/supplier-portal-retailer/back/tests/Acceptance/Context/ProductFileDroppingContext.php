@@ -12,6 +12,7 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWith
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\CommentTooLong;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\EmptyComment;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\MaxCommentPerProductFileReached;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\InMemory\InMemoryRepository as InMemoryProductFileRepository;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository as InMemorySupplierRepository;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
@@ -55,7 +56,13 @@ final class ProductFileDroppingContext implements Context
         $this->productFileRepository->save(
             (new ProductFileBuilder())
                 ->withIdentifier($this->productFileIdentifier)
-                ->withUploadedBySupplier('f7555f61-2ea6-4b0e-88f2-737e504e7b95')
+                ->uploadedBySupplier(
+                    new Supplier(
+                        'f7555f61-2ea6-4b0e-88f2-737e504e7b95',
+                        'supplier_code',
+                        'Supplier label',
+                    ),
+                )
                 ->build(),
         );
     }
@@ -69,7 +76,13 @@ final class ProductFileDroppingContext implements Context
 
         $productFile = (new ProductFileBuilder())
             ->withIdentifier($this->productFileIdentifier)
-            ->withUploadedBySupplier('f7555f61-2ea6-4b0e-88f2-737e504e7b95')
+            ->uploadedBySupplier(
+                new Supplier(
+                    'f7555f61-2ea6-4b0e-88f2-737e504e7b95',
+                    'supplier_code',
+                    'Supplier label',
+                ),
+            )
             ->build();
 
         for ($i = 0; 50 > $i; $i++) {

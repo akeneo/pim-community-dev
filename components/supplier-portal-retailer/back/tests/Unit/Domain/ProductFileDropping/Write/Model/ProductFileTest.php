@@ -20,7 +20,9 @@ final class ProductFileTest extends TestCase
         $productFileIdentifier = Identifier::fromString('d06c58da-4cd7-469d-a3fc-37209a05e9e2');
         $productFile = (new ProductFileBuilder())
             ->withIdentifier((string) $productFileIdentifier)
-            ->withUploadedBySupplier('44ce8069-8da1-4986-872f-311737f46f02')
+            ->withOriginalFilename('file.xlsx')
+            ->withPath('path/to/file.xlsx')
+            ->withContributorEmail('contributor@example.com')
             ->build();
         $this->assertEquals((string) $productFileIdentifier, $productFile->identifier());
         $this->assertEquals('file.xlsx', $productFile->originalFilename());

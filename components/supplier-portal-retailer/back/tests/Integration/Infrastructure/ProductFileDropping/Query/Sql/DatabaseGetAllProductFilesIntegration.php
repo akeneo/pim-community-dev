@@ -6,6 +6,7 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\Product
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetAllProductFiles;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
@@ -13,6 +14,8 @@ use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 
 final class DatabaseGetAllProductFilesIntegration extends SqlIntegrationTestCase
 {
+    private Supplier $supplier;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -21,6 +24,12 @@ final class DatabaseGetAllProductFilesIntegration extends SqlIntegrationTestCase
             (new SupplierBuilder())
                 ->withIdentifier('44ce8069-8da1-4986-872f-311737f46f00')
                 ->build(),
+        );
+
+        $this->supplier = new Supplier(
+            '44ce8069-8da1-4986-872f-311737f46f00',
+            'supplier_code',
+            'Supplier label',
         );
     }
     /** @test */
@@ -35,7 +44,7 @@ final class DatabaseGetAllProductFilesIntegration extends SqlIntegrationTestCase
         for ($i = 1; 30 >= $i; $i++) {
             $this->get(ProductFileRepository::class)->save(
                 (new ProductFileBuilder())
-                    ->withUploadedBySupplier('44ce8069-8da1-4986-872f-311737f46f00')
+                    ->uploadedBySupplier($this->supplier)
                     ->build(),
             );
         }
@@ -49,7 +58,7 @@ final class DatabaseGetAllProductFilesIntegration extends SqlIntegrationTestCase
         for ($i = 1; 30 >= $i; $i++) {
             $this->get(ProductFileRepository::class)->save(
                 (new ProductFileBuilder())
-                    ->withUploadedBySupplier('44ce8069-8da1-4986-872f-311737f46f00')
+                    ->uploadedBySupplier($this->supplier)
                     ->build(),
             );
         }
@@ -66,24 +75,24 @@ final class DatabaseGetAllProductFilesIntegration extends SqlIntegrationTestCase
         $productFileRepository->save(
             (new ProductFileBuilder())
                 ->withOriginalFilename('file2.xlsx')
-                ->withUploadedBySupplier('44ce8069-8da1-4986-872f-311737f46f00')
-                ->withUploadedAt(new \DateTimeImmutable())
+                ->uploadedBySupplier($this->supplier)
+                ->uploadedAt(new \DateTimeImmutable())
                 ->build(),
         );
 
         $productFileRepository->save(
             (new ProductFileBuilder())
                 ->withOriginalFilename('file3.xlsx')
-                ->withUploadedBySupplier('44ce8069-8da1-4986-872f-311737f46f00')
-                ->withUploadedAt((new \DateTimeImmutable())->modify('-2 DAY'))
+                ->uploadedBySupplier($this->supplier)
+                ->uploadedAt((new \DateTimeImmutable())->modify('-2 DAY'))
                 ->build(),
         );
 
         $productFileRepository->save(
             (new ProductFileBuilder())
                 ->withOriginalFilename('file1.xlsx')
-                ->withUploadedBySupplier('44ce8069-8da1-4986-872f-311737f46f00')
-                ->withUploadedAt((new \DateTimeImmutable())->modify('-10 DAY'))
+                ->uploadedBySupplier($this->supplier)
+                ->uploadedAt((new \DateTimeImmutable())->modify('-10 DAY'))
                 ->build(),
         );
 
@@ -104,23 +113,24 @@ final class DatabaseGetAllProductFilesIntegration extends SqlIntegrationTestCase
         $productFileRepository->save(
             (new ProductFileBuilder())
                 ->withOriginalFilename('file1.xlsx')
-                ->withUploadedBySupplier('44ce8069-8da1-4986-872f-311737f46f00')
-                ->withUploadedAt($file1Date)
+                ->uploadedBySupplier($this->supplier)
+                ->withContributorEmail('contributor@megasupplier.com')
+                ->uploadedAt($file1Date)
                 ->build(),
         );
 
         $productFileRepository->save(
             (new ProductFileBuilder())
                 ->withOriginalFilename('file2.xlsx')
-                ->withUploadedBySupplier('44ce8069-8da1-4986-872f-311737f46f00')
-                ->withUploadedAt($file2Date)
+                ->uploadedBySupplier($this->supplier)
+                ->uploadedAt($file2Date)
                 ->build(),
         );
 
         $productFiles = $this->get(GetAllProductFiles::class)();
 
         static::assertSame('file1.xlsx', $productFiles[0]->originalFilename);
-        static::assertSame('contributor@example.com', $productFiles[0]->uploadedByContributor);
+        static::assertSame('contributor@megasupplier.com', $productFiles[0]->uploadedByContributor);
         static::assertSame('Supplier label', $productFiles[0]->uploadedBySupplier);
         static::assertSame($file1Date->format('Y-m-d H:i:s'), $productFiles[0]->uploadedAt);
     }

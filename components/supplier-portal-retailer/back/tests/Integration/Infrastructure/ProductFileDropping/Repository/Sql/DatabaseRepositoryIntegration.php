@@ -8,6 +8,7 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Model\Produc
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Comment;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
@@ -35,7 +36,13 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
         $repository = $this->get(ProductFileRepository::class);
         $productFile = (new ProductFileBuilder())
             ->withIdentifier('b8b13d0b-496b-4a7c-a574-0d522ba90752')
-            ->withUploadedBySupplier('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7')
+            ->uploadedBySupplier(
+                new Supplier(
+                    'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7',
+                    'supplier_code',
+                    'Supplier label',
+                ),
+            )
             ->build();
         $repository->save($productFile);
 
@@ -54,7 +61,11 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
         $repository = $this->get(ProductFileRepository::class);
         $productFile = (new ProductFileBuilder())
             ->withIdentifier('b8b13d0b-496b-4a7c-a574-0d522ba90752')
-            ->withUploadedBySupplier('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7')
+            ->uploadedBySupplier(new Supplier(
+                'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7',
+                'supplier_code',
+                'Supplier label',
+            ))
             ->build();
         $firstCommentCreatedAt = new \DateTimeImmutable('2022-09-08 17:02:52');
         $productFile->addNewRetailerComment(
@@ -88,7 +99,11 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
         $repository = $this->get(ProductFileRepository::class);
         $productFile = (new ProductFileBuilder())
             ->withIdentifier('b8b13d0b-496b-4a7c-a574-0d522ba90752')
-            ->withUploadedBySupplier('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7')
+            ->uploadedBySupplier(new Supplier(
+                'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7',
+                'supplier_code',
+                'Supplier label',
+            ))
             ->build();
         $firstCommentCreatedAt = new \DateTimeImmutable('2022-09-08 17:02:52');
         $productFile->addNewSupplierComment(
@@ -122,8 +137,13 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
         ($this->get(ProductFileRepository::class))->save(
             (new ProductFileBuilder())
                 ->withIdentifier('8d388bdc-8243-4e88-9c7c-6be0d7afb9df')
-                ->withUploadedBySupplier('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7')
-                ->withUploadedAt(new \DateTimeImmutable('2022-09-07 08:54:38'))
+                ->uploadedBySupplier(new Supplier(
+                    'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7',
+                    'supplier_code',
+                    'Supplier label',
+                ))
+                ->withContributorEmail('contributor@contributor.com')
+                ->uploadedAt(new \DateTimeImmutable('2022-09-07 08:54:38'))
                 ->build(),
         );
 
@@ -149,7 +169,7 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
 
         static::assertSame('file.xlsx', $productFile->originalFilename());
         static::assertSame('path/to/file.xlsx', $productFile->path());
-        static::assertSame('contributor@example.com', $productFile->contributorEmail());
+        static::assertSame('contributor@contributor.com', $productFile->contributorEmail());
         static::assertSame('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7', $productFile->uploadedBySupplier());
         static::assertSame('2022-09-07 08:54:38', $productFile->uploadedAt());
         static::assertFalse($productFile->downloaded());

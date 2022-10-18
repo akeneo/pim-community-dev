@@ -6,6 +6,7 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\Product
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithComments;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
@@ -28,8 +29,15 @@ final class DatabaseGetProductFileWithCommentsIntegration extends SqlIntegration
         ($this->get(ProductFileRepository::class))->save(
             (new ProductFileBuilder())
                 ->withIdentifier('5d001a43-a42d-4083-8673-b64bb4ecd26f')
-                ->withUploadedBySupplier('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7')
-                ->withUploadedAt(new \DateTimeImmutable('2022-09-07 08:54:38'))
+                ->uploadedBySupplier(
+                    new Supplier(
+                        'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7',
+                        'supplier_1',
+                        'Supplier label',
+                    ),
+                )
+                ->withContributorEmail('contributor@contributor.com')
+                ->uploadedAt(new \DateTimeImmutable('2022-09-07 08:54:38'))
                 ->build(),
         );
     }
@@ -49,7 +57,7 @@ final class DatabaseGetProductFileWithCommentsIntegration extends SqlIntegration
             'identifier' => '5d001a43-a42d-4083-8673-b64bb4ecd26f',
             'originalFilename' => 'file.xlsx',
             'path' => null,
-            'uploadedByContributor' => 'contributor@example.com',
+            'uploadedByContributor' => 'contributor@contributor.com',
             'uploadedBySupplier' => 'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7',
             'uploadedAt' => '2022-09-07 08:54:38',
             'retailerComments' => [],
@@ -76,7 +84,7 @@ final class DatabaseGetProductFileWithCommentsIntegration extends SqlIntegration
 
         static::assertSame('5d001a43-a42d-4083-8673-b64bb4ecd26f', $productFile->identifier);
         static::assertSame('file.xlsx', $productFile->originalFilename);
-        static::assertSame('contributor@example.com', $productFile->uploadedByContributor);
+        static::assertSame('contributor@contributor.com', $productFile->uploadedByContributor);
         static::assertSame('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7', $productFile->uploadedBySupplier);
         static::assertSame('2022-09-07 08:54:38', $productFile->uploadedAt);
         static::assertEquals([

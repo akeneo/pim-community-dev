@@ -7,6 +7,7 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\Product
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFilesForSupplier;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
@@ -16,6 +17,8 @@ use Doctrine\DBAL\Types\Types;
 
 final class DatabaseListProductFilesForSupplierIntegration extends SqlIntegrationTestCase
 {
+    private Supplier $supplier;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -34,6 +37,12 @@ final class DatabaseListProductFilesForSupplierIntegration extends SqlIntegratio
                 ->withCode('supplier_2')
                 ->build(),
         );
+
+        $this->supplier = new Supplier(
+            'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7',
+            'supplier_1',
+            'Supplier label',
+        );
     }
 
     /** @test */
@@ -49,10 +58,10 @@ final class DatabaseListProductFilesForSupplierIntegration extends SqlIntegratio
         for ($i = 0; 30 > $i; $i++) {
             $productFileRepository->save(
                 (new ProductFileBuilder())
-                    ->withUploadedBySupplier('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7')
+                    ->uploadedBySupplier($this->supplier)
                     ->withContributorEmail($i % 2 ? 'contributor1@example.com' : 'contributor2@example.com')
                     ->withOriginalFilename(sprintf('products_%d.xlsx', $i+1))
-                    ->withUploadedAt(
+                    ->uploadedAt(
                         (new \DateTimeImmutable())->add(
                             \DateInterval::createFromDateString(sprintf('%d minutes', 30 - $i)),
                         ),
@@ -83,8 +92,8 @@ final class DatabaseListProductFilesForSupplierIntegration extends SqlIntegratio
         ($this->get(ProductFileRepository::class))->save(
             (new ProductFileBuilder())
                 ->withIdentifier('5d001a43-a42d-4083-8673-b64bb4ecd26f')
-                ->withUploadedBySupplier('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7')
-                ->withUploadedAt(new \DateTimeImmutable('2022-09-07 08:54:38'))
+                ->uploadedBySupplier($this->supplier)
+                ->uploadedAt(new \DateTimeImmutable('2022-09-07 08:54:38'))
                 ->build(),
         );
 

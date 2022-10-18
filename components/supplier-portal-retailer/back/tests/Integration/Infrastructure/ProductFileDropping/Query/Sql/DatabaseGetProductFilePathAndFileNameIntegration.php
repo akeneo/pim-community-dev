@@ -6,6 +6,7 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\Product
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileName;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
@@ -31,7 +32,13 @@ final class DatabaseGetProductFilePathAndFileNameIntegration extends SqlIntegrat
         ($this->get(ProductFileRepository::class))->save(
             (new ProductFileBuilder())
                 ->withIdentifier('ad54830a-aeae-4b57-8313-679a2327c5f7')
-                ->withUploadedBySupplier('44ce8069-8da1-4986-872f-311737f46f00')
+                ->uploadedBySupplier(
+                    new Supplier(
+                        '44ce8069-8da1-4986-872f-311737f46f00',
+                        'supplier_code',
+                        'Supplier label',
+                    ),
+                )
                 ->build(),
         );
 

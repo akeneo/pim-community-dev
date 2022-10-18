@@ -6,6 +6,7 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\Product
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilesCount;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
@@ -37,17 +38,29 @@ final class DatabaseGetProductFilesCountIntegration extends SqlIntegrationTestCa
         );
 
         $productFileRepository = $this->get(ProductFileRepository::class);
+
+        $supplierOne = new Supplier(
+            '44ce8069-8da1-4986-872f-311737f46f00',
+            'supplier_1',
+            'Supplier 1 label',
+        );
         for ($i = 1; 15 >= $i; $i++) {
             $productFileRepository->save(
                 (new ProductFileBuilder())
-                    ->withUploadedBySupplier('44ce8069-8da1-4986-872f-311737f46f00')
+                    ->uploadedBySupplier($supplierOne)
                     ->build(),
             );
         }
+
+        $supplierTwo = new Supplier(
+            'a20576cd-840f-4124-9900-14d581491387',
+            'supplier_2',
+            'Supplier 2 label',
+        );
         for ($i = 1; 10 >= $i; $i++) {
             $productFileRepository->save(
                 (new ProductFileBuilder())
-                    ->withUploadedBySupplier('a20576cd-840f-4124-9900-14d581491387')
+                    ->uploadedBySupplier($supplierTwo)
                     ->build(),
             );
         }
