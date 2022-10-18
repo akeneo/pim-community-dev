@@ -10,8 +10,6 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
-use Doctrine\DBAL\Connection;
-use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -21,7 +19,6 @@ final class GetProductUuidsQuery implements GetProductUuidsQueryInterface
 {
     public function __construct(
         private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
-        private Connection $connection,
     ) {
     }
 
@@ -47,16 +44,14 @@ final class GetProductUuidsQuery implements GetProductUuidsQueryInterface
         ];
 
         if (null !== $searchAfter) {
-            $searchAfterProductIdentifier = $this->findProductIdentifier($searchAfter);
-
             $pqbOptions['search_after'] = [
-                \strtolower($searchAfterProductIdentifier),
+                \sprintf('product_%s', $searchAfter),
                 \sprintf('product_%s', $searchAfter),
             ];
         }
 
         $pqb = $this->productQueryBuilderFactory->create($pqbOptions);
-        $pqb->addSorter('identifier', Directions::ASCENDING);
+        $pqb->addSorter('id', Directions::ASCENDING);
 
         $results = $pqb->execute();
 
@@ -64,26 +59,6 @@ final class GetProductUuidsQuery implements GetProductUuidsQueryInterface
             fn (IdentifierResult $result) => $this->getUuidFromIdentifierResult($result->getId()),
             \iterator_to_array($results)
         );
-    }
-
-    private function findProductIdentifier(string $uuid): string
-    {
-        $sql = <<<SQL
-            SELECT identifier
-            FROM pim_catalog_product
-            WHERE uuid = :uuid
-        SQL;
-
-        /** @var mixed|false $identifier */
-        $identifier = $this->connection->fetchOne($sql, [
-            'uuid' => Uuid::fromString($uuid)->getBytes(),
-        ]);
-
-        if (false === $identifier) {
-            throw new \InvalidArgumentException('Unknown uuid');
-        }
-
-        return (string) $identifier;
     }
 
     /**
