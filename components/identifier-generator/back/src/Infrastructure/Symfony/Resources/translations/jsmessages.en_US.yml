@@ -1,2 +1,9 @@
 pim_title:
     akeneo_identifier_generator_index: "Identifier generators"
+pim_error:
+    unauthorized: "You cannot list attributes. Please contact your administrator to change your rights."
+    general: "An error occurred during the display of the attribute. Please contact your administrator."
+pim_identifier_generator:
+    create:
+        form:
+            select_identifier_attribute: "Select your identifier attribute"

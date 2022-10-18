@@ -13,24 +13,66 @@ use PhpSpec\ObjectBehavior;
  */
 class FreeTextSpec extends ObjectBehavior
 {
-    function let()
+    public function let()
     {
         $this->beConstructedThrough('fromString', ['ABC']);
     }
 
-    function it_is_a_free_text()
+    public function it_is_a_free_text()
     {
         $this->shouldBeAnInstanceOf(FreeText::class);
     }
 
-    function it_cannot_be_instantiated_with_an_empty_string()
+    public function it_cannot_be_instantiated_with_an_empty_string()
     {
         $this->beConstructedThrough('fromString', ['']);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_returns_a_free_text()
+    public function it_returns_a_free_text()
     {
         $this->asString()->shouldReturn('ABC');
+    }
+
+    public function it_normalize_a_free_text()
+    {
+        $this->normalize()->shouldReturn([
+            'type' => 'free_text',
+            'string' => 'ABC',
+        ]);
+    }
+
+    public function it_creates_from_normalized()
+    {
+        $this->fromNormalized([
+            'type' => 'free_text',
+            'string' => 'ABC',
+        ])->shouldBeLike(FreeText::fromString('ABC'));
+    }
+
+    public function it_throws_an_exception_when_type_is_bad()
+    {
+        $this->beConstructedThrough('fromNormalized', [[
+            'type' => 'bad',
+            'string' => 'ABC',
+        ]]);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    public function it_throws_an_exception_when_type_key_is_missing()
+    {
+        $this->beConstructedThrough('fromNormalized', [[
+            'string' => 'ABC',
+        ]]);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    public function it_throws_an_exception_from_normalized_with_empty_string()
+    {
+        $this->beConstructedThrough('fromNormalized', [[
+            'type' => 'free_text',
+            'string' => '',
+        ]]);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 }

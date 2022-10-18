@@ -1,6 +1,0 @@
-services:
-  Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\CreateIdentifierGeneratorContext:
-    public: true
-    arguments:
-      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\CreateGeneratorHandler'
-      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'

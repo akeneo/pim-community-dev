@@ -11,6 +11,7 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Application;
 final class CreateGeneratorCommand
 {
     public function __construct(
+        public string $id,
         public string $code,
         public array $conditions,
         public array $structure,

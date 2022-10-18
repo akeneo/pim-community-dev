@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence\Catalog\Product;
 
+use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductUuidsQueryInterface;
 use Akeneo\Catalogs\Domain\Operator;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
@@ -17,8 +18,9 @@ use Doctrine\DBAL\Connection;
  */
 class GetProductUuidsQueryTest extends IntegrationTestCase
 {
-    private ?GetProductUuidsQueryInterface $query;
     private ?Connection $connection;
+    private ?GetCatalogQueryInterface $getCatalogQuery;
+    private ?GetProductUuidsQueryInterface $query;
 
     protected function setUp(): void
     {
@@ -26,8 +28,9 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
 
         $this->purgeDataAndLoadMinimalCatalog();
 
-        $this->query = self::getContainer()->get(GetProductUuidsQueryInterface::class);
         $this->connection = self::getContainer()->get(Connection::class);
+        $this->getCatalogQuery = self::getContainer()->get(GetCatalogQueryInterface::class);
+        $this->query = self::getContainer()->get(GetProductUuidsQueryInterface::class);
     }
 
     public function testItGetsMatchingProductsUuids(): void
@@ -50,7 +53,9 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
 
         $uuids = $this->getProductIdentifierToUuidMapping();
 
-        $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+
+        $result = $this->query->execute($catalog);
 
         $this->assertEquals([
             $uuids['tshirt-blue'],
@@ -79,7 +84,9 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
 
         $uuids = $this->getProductIdentifierToUuidMapping();
 
-        $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', $uuids['tshirt-green'], 1);
+        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+
+        $result = $this->query->execute($catalog, $uuids['tshirt-green'], 1);
 
         $this->assertEquals([
             $uuids['tshirt-red'],
@@ -101,7 +108,9 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
 
         $this->expectException(\InvalidArgumentException::class);
 
-        $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'invalid_search_after');
+        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+
+        $this->query->execute($catalog, 'invalid_search_after');
     }
 
     public function testItGetsMatchingProductsUuidsWhenUsingScopableAndLocalizableCriterion(): void
@@ -140,7 +149,9 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
 
         $uuids = $this->getProductIdentifierToUuidMapping();
 
-        $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+
+        $result = $this->query->execute($catalog);
 
         $this->assertEquals([
             $uuids['tshirt-blue'],
@@ -170,7 +181,9 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
 
         $uuids = $this->getProductIdentifierToUuidMapping();
 
-        $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', null, 100, '2022-09-01T17:35:00+02:00');
+        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+
+        $result = $this->query->execute($catalog, null, 100, '2022-09-01T17:35:00+02:00');
 
         $this->assertEquals([
             $uuids['tshirt-green'],
@@ -200,7 +213,9 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
 
         $uuids = $this->getProductIdentifierToUuidMapping();
 
-        $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', null, 100, null, '2022-09-01T17:35:00+02:00');
+        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+
+        $result = $this->query->execute($catalog, null, 100, null, '2022-09-01T17:35:00+02:00');
 
         $this->assertEquals([
             $uuids['tshirt-blue'],
@@ -230,7 +245,9 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
 
         $uuids = $this->getProductIdentifierToUuidMapping();
 
-        $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', null, 100, '2022-09-01T17:35:00+02:00', '2022-09-01T17:45:00+02:00');
+        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+
+        $result = $this->query->execute($catalog, null, 100, '2022-09-01T17:35:00+02:00', '2022-09-01T17:45:00+02:00');
 
         $this->assertEquals([
             $uuids['tshirt-green'],

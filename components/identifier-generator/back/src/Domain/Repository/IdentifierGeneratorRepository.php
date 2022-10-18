@@ -2,7 +2,10 @@
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\UnableToFetchIdentifierGeneratorException;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\UnableToSaveIdentifierGeneratorException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorId;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -10,7 +13,17 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
  */
 interface IdentifierGeneratorRepository
 {
+    /**
+     * @throws UnableToSaveIdentifierGeneratorException
+     */
     public function save(IdentifierGenerator $identifierGenerator): void;
 
+    /**
+     * @throws UnableToFetchIdentifierGeneratorException
+     */
     public function get(string $identifierGeneratorCode): ?IdentifierGenerator;
+
+    public function getNextId(): IdentifierGeneratorId;
+
+    public function count(): int;
 }

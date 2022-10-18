@@ -109,15 +109,6 @@ pim_enrich:
       categories_view: Die Kategorien eines Produktmodells anzeigen
       history: Produkthistorie ansehen
       remove: Entfernen eines Produktmodells (einschließlich Kinder)
-    category:
-      list: Kategorien auflisten
-      create: Eine Kategorie anlegen
-      edit: Eine Kategorie bearbeiten
-      remove: Eine Kategorie löschen
-      move: Kategorie verschieben
-      children: Kategorie-Kindelemente sehen
-      products: Produkte von Kategorien sehen
-      history: Kategoriehistorie ansehen
     channel:
       index: Ausgabekanäle auflisten
       create: Einen Ausgabekanal anlegen

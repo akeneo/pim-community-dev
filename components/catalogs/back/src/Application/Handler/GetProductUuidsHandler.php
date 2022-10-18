@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Application\Handler;
 
+use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
+use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\FindOneCatalogByIdQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductUuidsQueryInterface;
+use Akeneo\Catalogs\ServiceAPI\Exception\CatalogNotFoundException as ServiceApiCatalogNotFoundException;
 use Akeneo\Catalogs\Application\Service\DisableOnlyInvalidCatalogInterface;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogDisabledException;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogDoesNotExistException;
@@ -19,6 +22,7 @@ final class GetProductUuidsHandler
 {
     public function __construct(
         private GetProductUuidsQueryInterface $query,
+        private GetCatalogQueryInterface $getCatalogQuery,
         private DisableOnlyInvalidCatalogInterface $disableOnlyInvalidCatalog,
         private FindOneCatalogByIdQueryInterface $findOneCatalogByIdQuery,
     ) {
@@ -27,6 +31,7 @@ final class GetProductUuidsHandler
     /**
      * @return array<string>
      *
+     * @throws ServiceApiCatalogNotFoundException
      * @throws CatalogDisabledException
      * @throws CatalogDoesNotExistException
      */
@@ -42,8 +47,14 @@ final class GetProductUuidsHandler
         }
 
         try {
+            $catalogDomain = $this->getCatalogQuery->execute($query->getCatalogId());
+        } catch (CatalogNotFoundException) {
+            throw new ServiceApiCatalogNotFoundException();
+        }
+
+        try {
             return $this->query->execute(
-                $query->getCatalogId(),
+                $catalogDomain,
                 $query->getSearchAfter(),
                 $query->getLimit(),
                 $query->getUpdatedAfter(),

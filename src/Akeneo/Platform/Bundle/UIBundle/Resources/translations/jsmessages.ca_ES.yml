@@ -106,6 +106,7 @@ oro_config:
       save_error: Ho sentim, no s'ha pogut desar la configuració ({{ reason }})
       group:
         localization:
+          title: Configuració de la pàgina d'accés
           fields:
             system_locale:
               label: Idioma

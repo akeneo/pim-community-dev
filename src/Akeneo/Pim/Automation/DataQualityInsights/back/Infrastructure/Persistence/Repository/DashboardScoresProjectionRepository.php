@@ -140,4 +140,18 @@ SQL;
             'consolidated_at' => $ratesProjection->getConsolidationDate()->format('Y-m-d H:i:s')
         ]);
     }
+
+    public function delete(string $type, string $code): void
+    {
+        $query = <<<SQL
+DELETE FROM pim_data_quality_insights_dashboard_scores_projection
+WHERE type = :type
+AND code = :code
+SQL;
+
+        $this->db->executeQuery($query, [
+            'type' => $type,
+            'code' => $code
+        ]);
+    }
 }

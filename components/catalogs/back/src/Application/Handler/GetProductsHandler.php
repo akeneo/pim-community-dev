@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Application\Handler;
 
+use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
+use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\FindOneCatalogByIdQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductsQueryInterface;
+use Akeneo\Catalogs\ServiceAPI\Exception\CatalogNotFoundException as ServiceApiCatalogNotFoundException;
 use Akeneo\Catalogs\Application\Service\DisableOnlyInvalidCatalogInterface;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogDisabledException;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogDoesNotExistException;
@@ -20,7 +23,8 @@ use Akeneo\Catalogs\ServiceAPI\Query\GetProductsQuery;
 final class GetProductsHandler
 {
     public function __construct(
-        private GetProductsQueryInterface $query,
+        private GetProductsQueryInterface $getProductsQuery,
+        private GetCatalogQueryInterface $getCatalogQuery,
         private DisableOnlyInvalidCatalogInterface $disableOnlyInvalidCatalog,
         private FindOneCatalogByIdQueryInterface $findOneCatalogByIdQuery,
     ) {
@@ -29,6 +33,7 @@ final class GetProductsHandler
     /**
      * @return array<Product>
      *
+     * @throws ServiceApiCatalogNotFoundException
      * @throws CatalogDisabledException
      * @throws CatalogDoesNotExistException
      */
@@ -44,8 +49,14 @@ final class GetProductsHandler
         }
 
         try {
-            return $this->query->execute(
-                $query->getCatalogId(),
+            $catalogDomain = $this->getCatalogQuery->execute($query->getCatalogId());
+        } catch (CatalogNotFoundException) {
+            throw new ServiceApiCatalogNotFoundException();
+        }
+
+        try {
+            return $this->getProductsQuery->execute(
+                $catalogDomain,
                 $query->getSearchAfter(),
                 $query->getLimit(),
                 $query->getUpdatedAfter(),

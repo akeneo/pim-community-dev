@@ -70,3 +70,15 @@ pim_enrich.entity.locale:
   grid:
     columns:
       code: Locals activats
+    filters:
+      search_placeholder: Cercar una configuració regional habilitada
+    no_search_result: Ho sentim, no hi ha cap resultat de la cerca.
+pim_enrich.entity.currency:
+  plural_label: Monedes
+  page_title:
+    index: "]-Inf, 1]{{ count }} moneda|]1, Inf[{{ count }} monedes"
+flash:
+  currency:
+    error:
+      linked_to_channel: No podeu inhabilitar una moneda vinculada a un canal
+    updated: Moneda actualitzada correctament
