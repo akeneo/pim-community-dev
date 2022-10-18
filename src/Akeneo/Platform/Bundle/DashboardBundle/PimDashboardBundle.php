@@ -3,7 +3,6 @@
 namespace Akeneo\Platform\Bundle\DashboardBundle;
 
 use Akeneo\Platform\Bundle\DashboardBundle\DependencyInjection\Compiler;
-use Akeneo\Platform\Bundle\DashboardBundle\DependencyInjection\Compiler\RegisterWidgetsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -21,6 +20,6 @@ class PimDashboardBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new RegisterWidgetsPass());
+        $container->addCompilerPass(new Compiler\RegisterWidgetsPass());
     }
 }

@@ -3,10 +3,9 @@
 namespace Oro\Bundle\DataGridBundle\Twig;
 
 use Oro\Bundle\DataGridBundle\Datagrid\MetadataParser;
-use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-class MetadataExtension extends AbstractExtension
+class MetadataExtension extends \Twig\Extension\AbstractExtension
 {
     /**
      * @param ContainerInterface $container

@@ -3,7 +3,6 @@
 namespace Oro\Bundle\FilterBundle\Datasource\Orm;
 
 use Doctrine\ORM\Query\Expr;
-use Doctrine\ORM\Query\Expr\Comparison;
 use Oro\Bundle\FilterBundle\Datasource\ExpressionBuilderInterface;
 
 class OrmExpressionBuilder implements ExpressionBuilderInterface
@@ -36,7 +35,7 @@ class OrmExpressionBuilder implements ExpressionBuilderInterface
      */
     public function comparison($x, $operator, $y, $withParam = false)
     {
-        return new Comparison($x, $operator, $withParam ? ':' . $y : $y);
+        return new Expr\Comparison($x, $operator, $withParam ? ':' . $y : $y);
     }
 
     /**

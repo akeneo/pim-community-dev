@@ -50,4 +50,12 @@ class SwitchType extends AbstractType
     {
         return CheckboxType::class;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix(): string
+    {
+        return 'switch';
+    }
 }
