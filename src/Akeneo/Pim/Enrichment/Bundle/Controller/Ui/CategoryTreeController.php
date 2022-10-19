@@ -124,16 +124,19 @@ class CategoryTreeController extends AbstractController
             $selectNode = $this->userContext->getUserCategoryTree($this->rawConfiguration['related_entity']);
         }
 
-        return $this->render(
-            '@AkeneoPimEnrichment/CategoryTree/listTree.json.twig',
-            [
-                'trees'          => $this->categoryRepository->getTrees(),
-                'selectedTreeId' => $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot(),
-                'include_sub'    => (bool) $request->get('include_sub', false),
-                'item_count'     => (bool) $request->get('with_items_count', true),
-                'related_entity' => $this->rawConfiguration['related_entity']
-            ]
-        );
+        $trees = $this->categoryRepository->getTrees();
+        $selectedTreeId = $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot();
+
+        $formatedTrees = array_map(function ($tree) use ($selectedTreeId) {
+            return [
+                'id' => $tree->getId(),
+                'code' => $tree->getCode(),
+                'label' => $tree->getLabel(),
+                'selected' => $tree->getId() === $selectedTreeId ? 'true' : 'false'
+            ];
+        }, $trees);
+
+        return new JsonResponse($formatedTrees);
     }
 
     /**
