@@ -37,6 +37,11 @@ const Discussion = ({comments, productFileIdentifier}: Props) => {
         }),
     };
 
+    const updateComment = (comment: string) => {
+        setComment(comment);
+        setErrorCode('');
+    };
+
     useEffect(() => {
         const height: number = commentsBlock?.current?.scrollHeight ?? 0;
         if (commentsBlock && commentsBlock.current) {
@@ -56,6 +61,7 @@ const Discussion = ({comments, productFileIdentifier}: Props) => {
                         authorEmail: userContext.user?.email,
                     }),
                 });
+                setErrorCode('');
                 setComment('');
                 await queryClient.invalidateQueries('fetchProductFiles');
             } catch (error) {
@@ -95,7 +101,7 @@ const Discussion = ({comments, productFileIdentifier}: Props) => {
             <FlexColumn>
                 <SendCommentForm onSubmit={saveComment} role="form">
                     <TextInput
-                        onChange={setComment}
+                        onChange={updateComment}
                         value={comment}
                         placeholder={intl.formatMessage({
                             defaultMessage: 'Say something about this file',
@@ -174,7 +180,7 @@ const Comments = styled.div`
 `;
 
 const StyledHelper = styled(Helper)`
-    margin-left: 30px;
+    margin: 5px 0 0 30px;
 `;
 
 export {Discussion};
