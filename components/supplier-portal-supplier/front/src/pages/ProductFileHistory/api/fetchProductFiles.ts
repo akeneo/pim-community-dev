@@ -2,10 +2,15 @@ import {apiFetch} from '../../../api/apiFetch';
 import {ProductFile} from '../model/ProductFile';
 import {Comment} from '../model/Comment';
 
-const fetchProductFiles = async (): Promise<ProductFile[]> => {
-    const response: any = await apiFetch(`/supplier-portal/product-file/`);
+export type ProductFiles = {
+    product_files: ProductFile[];
+    total: number;
+};
 
-    return response.map((item: any) => {
+const fetchProductFiles = async (page: number): Promise<ProductFiles> => {
+    const response: any = await apiFetch(`/supplier-portal/product-file/?page=${page}`);
+
+    const productFiles = response.product_files.map((item: any) => {
         return {
             identifier: item.identifier,
             filename: item.originalFilename,
@@ -33,6 +38,8 @@ const fetchProductFiles = async (): Promise<ProductFile[]> => {
             ),
         };
     });
+
+    return {product_files: productFiles, total: response.total};
 };
 
 export {fetchProductFiles};

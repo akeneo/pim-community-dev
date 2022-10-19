@@ -1,13 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import {Menu} from '../../components';
 import {EmptyProductFileHistory, ProductFileList} from './components';
-import {useQuery} from 'react-query';
-import {fetchProductFiles} from './api/fetchProductFiles';
-import {ProductFile} from './model/ProductFile';
+import {useProductFiles} from './hooks/useProductFiles';
 
 const ProductFileHistory = () => {
-    const {data: productFiles} = useQuery<ProductFile[]>('fetchProductFiles', () => fetchProductFiles());
+    const [page, setPage] = useState<number>(1);
+    const productFiles = useProductFiles(page);
 
     if (!productFiles) {
         return null;
@@ -17,8 +16,15 @@ const ProductFileHistory = () => {
         <Container>
             <Menu activeItem="history" />
             <Content>
-                {0 === productFiles.length && <EmptyProductFileHistory />}
-                {0 < productFiles.length && <ProductFileList productFiles={productFiles} />}
+                {0 === productFiles.total && <EmptyProductFileHistory />}
+                {0 < productFiles.total && (
+                    <ProductFileList
+                        productFiles={productFiles.product_files}
+                        totalProductFiles={productFiles.total}
+                        currentPage={page}
+                        onChangePage={setPage}
+                    />
+                )}
             </Content>
         </Container>
     );
