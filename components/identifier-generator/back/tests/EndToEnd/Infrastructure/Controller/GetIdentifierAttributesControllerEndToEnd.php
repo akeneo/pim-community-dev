@@ -14,7 +14,7 @@ final class GetIdentifierAttributesControllerEndToEnd extends ControllerEndToEnd
     {
         $this->loginAs('Julia');
         $this->callRoute('akeneo_identifier_generator_get_identifier_attributes', [
-            'HTTP_X-Requested-With' => 'toto'
+            'HTTP_X-Requested-With' => 'toto',
         ]);
         $response = $this->client->getResponse();
         Assert::AssertSame(Response::HTTP_FOUND, $response->getStatusCode());
