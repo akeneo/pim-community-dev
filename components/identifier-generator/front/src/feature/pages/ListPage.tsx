@@ -11,7 +11,8 @@ type ListPageProps = {
 const ListPage: React.FC<ListPageProps> = ({onCreate, isCreateEnabled}) => {
   const translate = useTranslate();
 
-  return <>
+  return (
+    <>
       <Common.Helper />
       <PageHeader>
         <PageHeader.Breadcrumb>
@@ -33,7 +34,8 @@ const ListPage: React.FC<ListPageProps> = ({onCreate, isCreateEnabled}) => {
         </PageHeader.Actions>
         <PageHeader.Title>{translate('pim_title.akeneo_identifier_generator_index')}</PageHeader.Title>
       </PageHeader>
-    </>;
+    </>
+  );
 };
 
 export {ListPage};

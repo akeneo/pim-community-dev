@@ -14,11 +14,13 @@ const CreateGeneratorModal: React.FC<CreateGeneratorModalProps> = ({onClose, onS
     },
   };
 
-  return <>
-    CreateGeneratorModalMock
-    <button onClick={onClose}>Close Modal</button>
-    <button onClick={() => onSave(defaultIdentifierGenerator)}>Save Modal</button>
-  </>;
+  return (
+    <>
+      CreateGeneratorModalMock
+      <button onClick={onClose}>Close Modal</button>
+      <button onClick={() => onSave(defaultIdentifierGenerator)}>Save Modal</button>
+    </>
+  );
 };
 
 export {CreateGeneratorModal};
