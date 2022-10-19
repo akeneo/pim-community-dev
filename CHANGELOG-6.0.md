@@ -1,5 +1,8 @@
 # 6.0.x
 
+## Bug fixes
+PIM-10670: Fix memory leak on creating combinations for currencies
+
 # 6.0.45 (2022-10-06)
 
 ## Bug fixes
