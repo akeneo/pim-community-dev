@@ -1,4 +1,4 @@
-Akeneo\Pim\Automation\IdentifierGenerator\Application\CreateGeneratorCommand:
+Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorCommand:
     constraints:
         - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\IdentifierGeneratorCreationLimit:
               limit: 1

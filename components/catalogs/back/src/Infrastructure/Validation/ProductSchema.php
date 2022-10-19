@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraint;
  *
  * @psalm-suppress PropertyNotSetInConstructor
  */
+#[\Attribute]
 final class ProductSchema extends Constraint
 {
 }
