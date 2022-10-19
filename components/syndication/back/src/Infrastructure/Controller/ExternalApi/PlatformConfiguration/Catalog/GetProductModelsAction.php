@@ -185,7 +185,7 @@ class GetProductModelsAction
             $user = $this->getUser();
             $this->apiProductModelAclLogger->warning(sprintf(
                 'User "%s" with roles %s is not granted "%s"',
-                $user->getUsername(),
+                $user->getUserIdentifier(),
                 implode(',', $user->getRoles()),
                 $acl
             ));
