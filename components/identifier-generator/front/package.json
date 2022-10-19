@@ -53,7 +53,7 @@
       "react-app/jest"
     ]
   },
-  "main": "lib/index.js",
+  "main": "lib/feature/index.js",
   "browserslist": {
     "production": [
       ">0.2%",
