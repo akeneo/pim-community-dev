@@ -3,6 +3,7 @@ import {Button, Search, Table, useBooleanState} from 'akeneo-design-system';
 import {
   NotificationLevel,
   useDebounceCallback,
+  useFeatureFlags,
   useNotify,
   useRouter,
   useSecurity,
@@ -12,7 +13,7 @@ import {CategoryTreeModel} from '../../models';
 import styled from 'styled-components';
 import {NoResults} from './NoResults';
 import {DeleteCategoryModal} from './DeleteCategoryModal';
-import {deleteCategory} from '../../infrastructure/removers';
+import {deleteCategory} from '../../infrastructure';
 import {useCountCategoryTreesChildren} from '../../hooks';
 
 type Props = {
@@ -23,6 +24,7 @@ type Props = {
 const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
   const translate = useTranslate();
   const router = useRouter();
+  const featureFlags = useFeatureFlags();
   const {isGranted} = useSecurity();
   const [searchString, setSearchString] = useState('');
   const [filteredTrees, setFilteredTrees] = useState<CategoryTreeModel[]>(trees);
@@ -132,6 +134,13 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
               <Table.HeaderCell>
                 {translate('pim_enrich.entity.category.content.tree_list.columns.number_of_categories')}
               </Table.HeaderCell>
+              {featureFlags.isEnabled('enriched_category') &&
+                (isGranted('pim_enrich_product_category_template') ||
+                  isGranted('pim_enrich_product_category_edit_attributes')) && (
+                  <Table.HeaderCell>
+                    {translate('akeneo.category.tree_list.column.category_templates')}
+                  </Table.HeaderCell>
+                )}
               <Table.HeaderCell />
             </Table.Header>
             <Table.Body>
@@ -149,6 +158,9 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                         countTreesChildren.hasOwnProperty(tree.code) ? countTreesChildren[tree.code] : 0
                       )}
                   </Table.Cell>
+                  {featureFlags.isEnabled('enriched_category') &&
+                    (isGranted('pim_enrich_product_category_template') ||
+                      isGranted('pim_enrich_product_category_edit_attributes')) && <Table.Cell>test</Table.Cell>}
                   <TableActionCell>
                     {isGranted('pim_enrich_product_category_remove') && (
                       <Button
