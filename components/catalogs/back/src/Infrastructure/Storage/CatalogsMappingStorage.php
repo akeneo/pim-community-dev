@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Storage;
 
+use Akeneo\Catalogs\Application\Storage\CatalogsMappingStorageInterface;
 use Akeneo\Catalogs\Infrastructure\Exception\FilesystemException;
 use League\Flysystem\Filesystem;
 
@@ -11,7 +12,7 @@ use League\Flysystem\Filesystem;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class CatalogsMappingStorage
+final class CatalogsMappingStorage implements CatalogsMappingStorageInterface
 {
     public function __construct(
         private Filesystem $filesystem,

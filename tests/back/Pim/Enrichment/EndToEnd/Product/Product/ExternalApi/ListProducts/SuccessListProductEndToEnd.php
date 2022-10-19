@@ -20,6 +20,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -978,6 +979,86 @@ JSON;
 
             $this->assertListResponse($client->getResponse(), $expected);
         }
+    }
+
+    public function testListProductsWithUuidFilter(): void
+    {
+        $standardizedProducts = $this->getStandardizedProducts();
+
+        $search = \json_encode([
+            'uuid' => [
+                [
+                    'operator' => 'IN',
+                    'value' => [
+                        self::PRODUCT_UUIDS['simple'],
+                        self::PRODUCT_UUIDS['localizable'],
+                        Uuid::uuid4()->toString(),
+                        self::PRODUCT_UUIDS['product_with_parent'],
+                    ],
+                ],
+            ],
+        ]);
+        $client = $this->createAuthenticatedClient();
+        $client->request('GET', 'api/rest/v1/products?search=' . $search);
+        $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
+        $expected = <<<JSON
+{
+    "_links": {
+        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"}
+    },
+    "current_page" : 1,
+    "_embedded"    : {
+        "items" : [
+            {$standardizedProducts['localizable']},
+            {$standardizedProducts['product_with_parent']},
+            {$standardizedProducts['simple']}
+        ]
+    }
+}
+JSON;
+
+        $this->assertListResponse($client->getResponse(), $expected);
+    }
+
+    public function testListProductsWithUuidNotInFilter(): void
+    {
+        $standardizedProducts = $this->getStandardizedProducts();
+
+        $search = \json_encode([
+            'uuid' => [
+                [
+                    'operator' => 'NOT IN',
+                    'value' => [
+                        self::PRODUCT_UUIDS['simple'],
+                        self::PRODUCT_UUIDS['localizable'],
+                        self::PRODUCT_UUIDS['product_with_parent'],
+                    ],
+                ],
+            ],
+        ]);
+        $client = $this->createAuthenticatedClient();
+        $client->request('GET', 'api/rest/v1/products?search=' . $search);
+        $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
+        $expected = <<<JSON
+{
+    "_links": {
+        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"}
+    },
+    "current_page" : 1,
+    "_embedded"    : {
+        "items" : [
+            {$standardizedProducts['localizable_and_scopable']},
+            {$standardizedProducts['product_china']},
+            {$standardizedProducts['product_without_category']},
+            {$standardizedProducts['scopable']}
+        ]
+    }
+}
+JSON;
+
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     public function testListProductsWithoutParent()

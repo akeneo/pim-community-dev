@@ -3,10 +3,10 @@
 namespace Pim\Behat\Context\Domain;
 
 use Behat\Gherkin\Node\PyStringNode;
-use Box\Spout\Common\Entity\Row;
-use Box\Spout\Common\Type;
-use Box\Spout\Reader\Common\Creator\ReaderFactory;
-use Box\Spout\Reader\CSV\Reader as CsvReader;
+use OpenSpout\Common\Entity\Row;
+use OpenSpout\Common\Type;
+use OpenSpout\Reader\Common\Creator\ReaderFactory;
+use OpenSpout\Reader\CSV\Reader as CsvReader;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 
