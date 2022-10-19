@@ -1,5 +1,5 @@
 import React from 'react';
-import {LabelCollection} from '../../../../models';
+import {LabelCollection} from '../../models';
 
 type LabelTranslationsMockProps = {
   onLabelsChange: (labelCollection: LabelCollection) => void;

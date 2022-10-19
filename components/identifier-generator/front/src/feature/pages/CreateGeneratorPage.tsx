@@ -1,10 +1,9 @@
 import React, {useState} from 'react';
 import {Breadcrumb, Button, TabBar} from 'akeneo-design-system';
 import {PageHeader, PimView, useTranslate} from '@akeneo-pim-community/shared';
-import {GeneralProperties} from './edit/GeneralProperties';
-import {IdentifierGenerator} from '../../models';
-import {Common} from '../pages/Common';
-import {Styled} from './Styled';
+import {GeneralPropertiesTab} from '../tabs';
+import {IdentifierGenerator} from '../models';
+import {Common, Styled} from '../components';
 
 enum Tabs {
   GENERAL,
@@ -16,7 +15,7 @@ type EditGeneratorProps = {
   initialGenerator: IdentifierGenerator;
 };
 
-const CreateGenerator: React.FC<EditGeneratorProps> = ({initialGenerator}) => {
+const CreateGeneratorPage: React.FC<EditGeneratorProps> = ({initialGenerator}) => {
   const [currentTab, setCurrentTab] = useState(Tabs.GENERAL);
   const translate = useTranslate();
   const [generator, setGenerator] = useState<IdentifierGenerator>(initialGenerator);
@@ -59,7 +58,7 @@ const CreateGenerator: React.FC<EditGeneratorProps> = ({initialGenerator}) => {
             {translate('pim_identifier_generator.tabs.identifier_structure')}
           </TabBar.Tab>
         </TabBar>
-        {currentTab === Tabs.GENERAL && <GeneralProperties generator={generator} onGeneratorChange={setGenerator} />}
+        {currentTab === Tabs.GENERAL && <GeneralPropertiesTab generator={generator} onGeneratorChange={setGenerator} />}
         {currentTab === Tabs.PRODUCT_SELECTION && <div>Not implemented YET</div>}
         {currentTab === Tabs.STRUCTURE && <div>Not implemented YET</div>}
       </Styled.TabContainer>
@@ -67,4 +66,4 @@ const CreateGenerator: React.FC<EditGeneratorProps> = ({initialGenerator}) => {
   );
 };
 
-export {CreateGenerator};
+export {CreateGeneratorPage};

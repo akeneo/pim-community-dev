@@ -1,23 +1,7 @@
 import React from 'react';
-import {IdentifierAttributeSelector} from '../IdentifierAttributeSelector';
+import {IdentifierAttributeSelector} from '../';
 import {render, screen} from '../../tests/test-utils';
 import {waitFor} from '@testing-library/react';
-import {setLogger} from 'react-query';
-
-jest.mock('@akeneo-pim-community/shared', () => ({
-  ...jest.requireActual('@akeneo-pim-community/shared'),
-  useTranslate: () => (key: string) => key,
-}));
-
-setLogger({
-  // eslint-disable-next-line no-console
-  log: console.log,
-  // eslint-disable-next-line no-console
-  warn: console.warn,
-  // no more errors on the console
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  error: () => {},
-});
 
 describe('IdentifierAttributeSelector', () => {
   it('should render the identifier selector according to the code', async () => {
@@ -36,6 +20,7 @@ describe('IdentifierAttributeSelector', () => {
   });
 
   it('should show error message when endpoint is forbidden', async () => {
+    const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
     // @ts-ignore;
     jest.spyOn(global, 'fetch').mockResolvedValue({
       ok: false,
@@ -47,9 +32,11 @@ describe('IdentifierAttributeSelector', () => {
 
     await waitFor(() => screen.findByText('pim_error.unauthorized'));
     expect(screen.getByText('pim_error.unauthorized')).toBeVisible();
+    mockedConsole.mockRestore();
   });
 
   it('should show error message when endpoint returns an error', async () => {
+    const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
     // @ts-ignore
     jest.spyOn(global, 'fetch').mockImplementation(input => {
       if (input === '/identifier-generator/identifier-attributes') {
@@ -64,5 +51,6 @@ describe('IdentifierAttributeSelector', () => {
 
     await waitFor(() => screen.findByText('pim_error.general'));
     expect(screen.getByText('pim_error.general')).toBeVisible();
+    mockedConsole.mockRestore();
   });
 });

@@ -1,9 +1,7 @@
 import React, {useCallback} from 'react';
-import {IdentifierGenerator, LabelCollection} from '../../../models';
+import {IdentifierGenerator, LabelCollection} from '../models';
 import {Field, SectionTitle, TextInput} from 'akeneo-design-system';
-import {IdentifierAttributeSelector} from '../IdentifierAttributeSelector';
-import {Styled} from '../Styled';
-import {LabelTranslations} from './LabelTranslations';
+import {IdentifierAttributeSelector, LabelTranslations, Styled} from '../components';
 import {useTranslate} from '@akeneo-pim-community/shared';
 
 type GeneralPropertiesProps = {
@@ -11,7 +9,7 @@ type GeneralPropertiesProps = {
   onGeneratorChange: (generator: IdentifierGenerator) => void;
 };
 
-const GeneralProperties: React.FC<GeneralPropertiesProps> = ({generator, onGeneratorChange}) => {
+const GeneralPropertiesTab: React.FC<GeneralPropertiesProps> = ({generator, onGeneratorChange}) => {
   const translate = useTranslate();
 
   const onLabelChange = useCallback(
@@ -35,4 +33,4 @@ const GeneralProperties: React.FC<GeneralPropertiesProps> = ({generator, onGener
   );
 };
 
-export {GeneralProperties};
+export {GeneralPropertiesTab};

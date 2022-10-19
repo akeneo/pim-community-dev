@@ -1,9 +1,8 @@
 import {waitFor} from '@testing-library/react';
 import {renderHook} from '@testing-library/react-hooks';
-import {useIdentifierAttributes} from '../useIdentifierAttributes';
+import {useIdentifierAttributes} from '../';
 import {createWrapper} from '../../tests/hooks/config/createWrapper';
-import {act} from 'react-dom/test-utils';
-import {FlattenAttribute} from '../../models/flatten-attribute';
+import {FlattenAttribute} from '../../models/';
 
 describe('useIdentifierAttributes', () => {
   beforeEach(() => {
@@ -27,9 +26,7 @@ describe('useIdentifierAttributes', () => {
 
     await waitFor(() => result.current.isSuccess);
 
-    act(() => {
-      expect(result.current.data).toBeDefined();
-      expect(result.current.data).toEqual([{code: 'sku', label: 'Sku'}]);
-    });
+    expect(result.current.data).toBeDefined();
+    expect(result.current.data).toEqual([{code: 'sku', label: 'Sku'}]);
   });
 });

@@ -1,7 +1,6 @@
 import React from 'react';
 import {HashRouter as Router, Route, Switch} from 'react-router-dom';
-import {List} from './pages/List';
-import {Edit} from './pages/Edit';
+import {Edit, List} from './controllers';
 import {QueryClient, QueryClientProvider} from 'react-query';
 
 const queryClient = new QueryClient();

@@ -1,12 +1,8 @@
 import React from 'react';
 import {fireEvent, render, screen} from '../../tests/test-utils';
-import {CreateGeneratorModal} from '../CreateGeneratorModal';
+import {CreateGeneratorModal} from '../';
 import {waitFor} from '@testing-library/react';
 
-jest.mock('@akeneo-pim-community/shared', () => ({
-  ...jest.requireActual('@akeneo-pim-community/shared'),
-  useTranslate: () => (key: string) => key,
-}));
 jest.mock('../../hooks/useIdentifierAttributes');
 
 describe('CreateGeneratorModal', () => {

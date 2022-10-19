@@ -18,7 +18,7 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "outDir": "lib",
-    "rootDir": "src",
+    "rootDir": "src/feature",
     "skipLibCheck": true,
     "sourceMap": true,
     "strictBindCallApply": true,
@@ -42,9 +42,6 @@
     "isolatedModules": true
   },
   "include": [
-    "src",
-  ],
-  "exclude": [
-    "src/index.tsx"
+    "src/feature",
   ]
 }

@@ -1,22 +1,6 @@
 import React from 'react';
-import {fireEvent, render, screen, waitFor} from '../../../tests/test-utils';
+import {fireEvent, render, screen, waitFor} from '../../tests/test-utils';
 import {LabelTranslations} from '../LabelTranslations';
-import {setLogger} from 'react-query';
-
-jest.mock('@akeneo-pim-community/shared', () => ({
-  ...jest.requireActual('@akeneo-pim-community/shared'),
-  useTranslate: () => (key: string) => key,
-}));
-
-setLogger({
-  // eslint-disable-next-line no-console
-  log: console.log,
-  // eslint-disable-next-line no-console
-  warn: console.warn,
-  // no more errors on the console
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  error: () => {},
-});
 
 const defaultUiLocales = [
   {
@@ -89,6 +73,7 @@ describe('LabelTranslations', () => {
   });
 
   it('should display an error if impossible to fetch locales', async () => {
+    const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
     // @ts-ignore
     jest.spyOn(global, 'fetch').mockResolvedValue({
       ok: false,
@@ -99,5 +84,6 @@ describe('LabelTranslations', () => {
 
     render(<LabelTranslations labelCollection={labelCollection} onLabelsChange={onLabelsChange} />);
     expect(await screen.findByText('pim_error.general')).toBeInTheDocument();
+    mockedConsole.mockRestore();
   });
 });

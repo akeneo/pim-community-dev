@@ -1,5 +1,5 @@
 import {useQuery} from 'react-query';
-import {UiLocale} from '../models/ui-locale';
+import {UiLocale} from '../models';
 
 const useUiLocales: () => {
   data?: UiLocale[];

@@ -1,5 +1,5 @@
 import {useQuery} from 'react-query';
-import {FlattenAttribute} from '../models/flatten-attribute';
+import {FlattenAttribute} from '../models';
 
 const useIdentifierAttributes: () => {
   data?: FlattenAttribute[];

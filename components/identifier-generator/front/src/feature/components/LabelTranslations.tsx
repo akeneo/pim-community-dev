@@ -1,8 +1,8 @@
 import React, {useCallback} from 'react';
 import {Field, Helper, SectionTitle, TextInput} from 'akeneo-design-system';
-import {Styled} from '../Styled';
-import {useUiLocales} from '../../hooks';
-import {LabelCollection} from '../../../models';
+import {Styled} from './Styled';
+import {useUiLocales} from '../hooks';
+import {LabelCollection} from '../models';
 import {useTranslate} from '@akeneo-pim-community/shared';
 
 type LabelTranslationsProps = {

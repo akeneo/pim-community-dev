@@ -1,16 +1,16 @@
 import React, {useCallback, useState} from 'react';
 import {AttributesIllustration, Button, Field, Modal, TextInput} from 'akeneo-design-system';
-import {IdentifierGenerator} from '../../models';
+import {IdentifierGenerator} from '../models';
 import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {Styled} from './Styled';
+import {Styled} from '../components';
 import {useIdentifierAttributes} from '../hooks';
 
-type GeneratorCreationProps = {
+type CreateGeneratorModalProps = {
   onClose: () => void;
   onSave: (value: IdentifierGenerator) => void;
 };
 
-const CreateGeneratorModal: React.FC<GeneratorCreationProps> = ({onClose, onSave}) => {
+const CreateGeneratorModal: React.FC<CreateGeneratorModalProps> = ({onClose, onSave}) => {
   const [label, setLabel] = useState<string>('');
   const [code, setCode] = useState<string>('');
   const [isCodeDirty, setIsCodeDirty] = useState(false);

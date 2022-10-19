@@ -1,13 +1,9 @@
 import React from 'react';
 import {fireEvent, render, screen} from '../../tests/test-utils';
-import {List} from '../List';
+import {List} from '../';
 
-jest.mock('@akeneo-pim-community/shared', () => ({
-  ...jest.requireActual('@akeneo-pim-community/shared'),
-  useTranslate: () => (key: string) => key,
-}));
-jest.mock('../../components/CreateGeneratorModal');
-jest.mock('../../components/CreateGenerator');
+jest.mock('../../pages/CreateGeneratorModal');
+jest.mock('../../pages/CreateGeneratorPage');
 
 describe('List', () => {
   it('should be in the index page on loading', () => {
