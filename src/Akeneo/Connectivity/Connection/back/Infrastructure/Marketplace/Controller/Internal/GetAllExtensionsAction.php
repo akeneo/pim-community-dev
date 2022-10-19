@@ -46,7 +46,7 @@ final class GetAllExtensionsAction
             return new Response(null, Response::HTTP_NO_CONTENT);
         }
 
-        $username = $this->userContext->getUser()->getUsername();
+        $username = $this->userContext->getUser()->getUserIdentifier();
         $analyticsQueryParameters = $this->marketplaceAnalyticsGenerator->getExtensionQueryParameters($username);
         $result = $result->withAnalytics($analyticsQueryParameters);
 
