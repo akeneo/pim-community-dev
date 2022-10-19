@@ -52,7 +52,8 @@
             "Akeneo\\Test\\Channel\\": "src/Akeneo/Channel/back/tests",
             "Akeneo\\Catalogs\\Test\\": "components/catalogs/back/tests",
             "Akeneo\\Test\\Category\\": "src/Akeneo/Category/back/tests",
-            "Akeneo\\Test\\UserManagement\\": "src/Akeneo/UserManagement/back/tests"
+            "Akeneo\\Test\\UserManagement\\": "src/Akeneo/UserManagement/back/tests",
+            "Akeneo\\Test\\Pim\\Automation\\IdentifierGenerator\\": "components/identifier-generator/back/tests"
         }
     },
     "require": {
