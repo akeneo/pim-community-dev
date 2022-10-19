@@ -4,10 +4,10 @@ namespace Pim\Behat\Context\Domain\Spread;
 
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ExpectationException;
-use Box\Spout\Common\Entity\Row;
-use Box\Spout\Common\Exception\UnsupportedTypeException;
-use Box\Spout\Common\Type;
-use Box\Spout\Reader\Common\Creator\ReaderFactory;
+use OpenSpout\Common\Entity\Row;
+use OpenSpout\Common\Exception\UnsupportedTypeException;
+use OpenSpout\Common\Type;
+use OpenSpout\Reader\Common\Creator\ReaderFactory;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 
