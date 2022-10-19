@@ -17,6 +17,7 @@ class ContributorAccount
         private ?AccessToken $accessToken,
         private ?\DateTimeInterface $accessTokenCreatedAt,
         private ?\DateTimeInterface $lastLoggedAt,
+        //Consent to Akeneo Privacy Policy / terms & conditions
         private bool $consent,
     ) {
     }
