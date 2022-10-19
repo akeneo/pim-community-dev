@@ -85,7 +85,7 @@ final class Catalog
             'enabled' => $this->isEnabled(),
             'owner_username' => $this->getOwnerUsername(),
             'product_selection_criteria' => $this->getProductSelectionCriteria(),
-            'product_value_filters' => $this->getProductValueFilters()
+            'product_value_filters' => $this->getProductValueFilters(),
         ];
     }
 }

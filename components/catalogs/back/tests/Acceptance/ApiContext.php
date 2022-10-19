@@ -10,6 +10,7 @@ use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
+use Akeneo\Catalogs\ServiceAPI\Query\GetProductMappingSchemaQuery;
 use Akeneo\Connectivity\Connection\ServiceApi\Model\ConnectedAppWithValidToken;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
@@ -476,5 +477,110 @@ class ApiContext implements Context
         $payload = \json_decode($this->response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEmpty($payload['_embedded']['items']);
+    }
+
+    /**
+     * @When the external application updates a catalog product mapping schema using the API
+     */
+    public function theExternalApplicationUpdatesACatalogProductMappingSchemaUsingTheApi(): void
+    {
+        $this->authentication->logAs($this->getConnectedApp()->getUsername());
+
+        $this->getConnectedAppClient()->request(
+            method: 'PUT',
+            uri: '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapping-schemas/product',
+            server: [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+            content: <<<'JSON_WRAP'
+            {
+              "$id": "https://example.com/product",
+              "$schema": "https://api.akeneo.com/mapping/product/0.0.1/schema",
+              "$comment": "My first schema !",
+              "title": "Product Mapping",
+              "description": "JSON Schema describing the structure of products expected by our application",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "body_html": {
+                  "title": "Description",
+                  "description": "Product description in raw HTML",
+                  "type": "string"
+                }
+              }
+            }
+            JSON_WRAP,
+        );
+
+        $this->response = $this->getConnectedAppClient()->getResponse();
+
+        Assert::assertEquals(204, $this->response->getStatusCode());
+    }
+
+    /**
+     * @Then the catalog product mapping schema should be updated in the PIM
+     */
+    public function theCatalogProductMappingSchemaShouldBeUpdatedInThePim(): void
+    {
+        $productMappingSchema = \json_encode(
+            $this->queryBus->execute(new GetProductMappingSchemaQuery('db1079b6-f397-4a6a-bae4-8658e64ad47c')),
+            JSON_THROW_ON_ERROR
+        );
+
+        Assert::assertJsonStringEqualsJsonString(
+            <<<'JSON_WRAP'
+            {
+              "$id": "https://example.com/product",
+              "$schema": "https://api.akeneo.com/mapping/product/0.0.1/schema",
+              "$comment": "My first schema !",
+              "title": "Product Mapping",
+              "description": "JSON Schema describing the structure of products expected by our application",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "body_html": {
+                  "title": "Description",
+                  "description": "Product description in raw HTML",
+                  "type": "string"
+                }
+              }
+            }
+            JSON_WRAP,
+            $productMappingSchema,
+        );
+    }
+
+    /**
+     * @Then the response should contain the catalog product mapping schema
+     */
+    public function theResponseShouldContainTheCatalogProductMappingSchema(): void
+    {
+        Assert::assertJsonStringEqualsJsonString(
+            <<<'JSON_WRAP'
+            {
+              "$id": "https://example.com/product",
+              "$schema": "https://api.akeneo.com/mapping/product/0.0.1/schema",
+              "$comment": "My first schema !",
+              "title": "Product Mapping",
+              "description": "JSON Schema describing the structure of products expected by our application",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "body_html": {
+                  "title": "Description",
+                  "description": "Product description in raw HTML",
+                  "type": "string"
+                }
+              }
+            }
+            JSON_WRAP,
+            $this->response->getContent(),
+        );
     }
 }
