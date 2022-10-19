@@ -1,14 +1,22 @@
 services:
-    Akeneo\Category\Application\Storage\Save\CategorySaverProcessor:
+    Akeneo\Category\Application\Template\CreateTemplate:
         arguments:
-            - '@Akeneo\Category\Application\Storage\Save\CategorySaverRegistry'
+            - '@Akeneo\Category\Application\Query\GetTemplate'
+            - '@Akeneo\Category\Application\Template\TemplateRepository'
+            - '@Akeneo\Category\Application\Template\CategoryTreeTemplateRepository'
+            - '@Akeneo\Category\Application\Template\TemplateAttributeRepository'
 
-    Akeneo\Category\Application\Storage\Save\CategorySaverRegistry:
-        arguments:
-            - !tagged_iterator 'pim.category.save.category_saver'
-
-    Akeneo\Category\Application\Storage\Save\Saver\TemplateSaver:
-        class: 'Akeneo\Category\Application\Storage\Save\Saver\TemplateSaver'
+    Akeneo\Category\Application\Template\TemplateRepository:
+        class: 'Akeneo\Category\Infrastructure\Storage\Save\Query\SqlTemplateRepository'
         arguments:
             - '@database_connection'
-            - '@Akeneo\Category\Application\Query\GetTemplate'
+
+    Akeneo\Category\Application\Template\CategoryTreeTemplateRepository:
+        class: 'Akeneo\Category\Infrastructure\Storage\Save\Query\SqlCategoryTreeTemplateRepository'
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Category\Application\Template\TemplateAttributeRepository:
+        class: 'Akeneo\Category\Infrastructure\Storage\Save\Query\SqlTemplateAttributeRepository'
+        arguments:
+            - '@database_connection'
