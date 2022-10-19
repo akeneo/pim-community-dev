@@ -18,7 +18,7 @@ class CreateTailoredImportCommand
     public function __construct(
         public string $code,
         public File $fileTemplate,
-        public ?string $label = null,
+        public string $label,
     ) {
     }
 }

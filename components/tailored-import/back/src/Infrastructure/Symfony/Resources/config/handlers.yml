@@ -48,6 +48,13 @@ services:
       - '@Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\OperationApplier'
       - '@Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\OperationCollectionHydrator'
 
+  akeneo.tailored_import.handler.create_tailored_import_handler:
+    class: Akeneo\Platform\TailoredImport\Application\CreateTailoredImport\CreateTailoredImportHandler
+    arguments:
+      - '@Akeneo\Platform\Job\Application\CreateJobInstanceHandler'
+      - '@akeneo.tailored_import.query.filesystem.store_file'
+      - '@router'
+
   akeneo.tailored_import.user_intent_registry:
     class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentRegistry
     arguments:

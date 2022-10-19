@@ -21,9 +21,15 @@ class File
      * @param resource $resource
      */
     public function __construct(
+        private string $fileName,
         private $resource,
     ) {
         Assert::resource($resource, 'stream');
+    }
+
+    public function getFileName(): string
+    {
+        return $this->fileName;
     }
 
     /**
