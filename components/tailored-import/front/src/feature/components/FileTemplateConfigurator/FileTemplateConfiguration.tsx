@@ -1,6 +1,5 @@
 import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
 import styled from 'styled-components';
-import {FileInfo} from 'akeneo-design-system';
 import {ValidationError} from '@akeneo-pim-community/shared';
 import {FileTemplateConfigurator} from './FileTemplateConfigurator';
 import {FileTemplatePreview} from './FileTemplatePreview';
@@ -15,14 +14,14 @@ const FileTemplateConfiguratorContainer = styled.div`
 `;
 
 type FileTemplateConfigurationProps = {
-  fileInfo: FileInfo;
+  fileKey: string;
   fileStructure: FileStructure;
   onFileStructureChange: Dispatch<SetStateAction<FileStructure>>;
   validationErrors: ValidationError[];
 };
 
 const FileTemplateConfiguration = ({
-  fileInfo,
+  fileKey,
   fileStructure,
   onFileStructureChange,
   validationErrors,
@@ -32,7 +31,7 @@ const FileTemplateConfiguration = ({
 
   useEffect(() => {
     const refreshFileTemplateInformation = async () => {
-      const fileTemplateInformation = await fileTemplateInformationFetcher(fileInfo, null);
+      const fileTemplateInformation = await fileTemplateInformationFetcher(fileKey, null);
       setFileTemplateInformation(fileTemplateInformation);
       onFileStructureChange(fileStructure => ({...fileStructure, sheet_name: fileTemplateInformation.sheet_names[0]}));
     };
@@ -43,7 +42,7 @@ const FileTemplateConfiguration = ({
   }, [
     fileTemplateInformation,
     fileTemplateInformationFetcher,
-    fileInfo,
+    fileKey,
     onFileStructureChange,
     fileStructure.sheet_name,
   ]);
@@ -51,7 +50,7 @@ const FileTemplateConfiguration = ({
   const handleSheetChange = async (sheetName: string) => {
     if (fileTemplateInformation) {
       onFileStructureChange({...getDefaultFileStructure(), sheet_name: sheetName});
-      setFileTemplateInformation(await fileTemplateInformationFetcher(fileInfo, sheetName));
+      setFileTemplateInformation(await fileTemplateInformationFetcher(fileKey, sheetName));
     }
   };
 

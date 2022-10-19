@@ -50,6 +50,7 @@ const HelperContainer = styled.div`
 `;
 
 type InitializeFileStructureProps = {
+  initialFileKey: null | string;
   onConfirm: (
     fileKey: string,
     columns: Column[],
@@ -58,10 +59,10 @@ type InitializeFileStructureProps = {
   ) => void;
 };
 
-const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
+const InitializeFileStructure = ({initialFileKey, onConfirm}: InitializeFileStructureProps) => {
   const translate = useTranslate();
   const [isModalOpen, openModal, closeModal] = useBooleanState();
-  const [fileInfo, setFileInfo] = useState<FileInfo | null>(null);
+  const [fileKey, setFileKey] = useState<string | null>(initialFileKey);
   const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
   const [fileStructure, setFileStructure] = useState<FileStructure>(getDefaultFileStructure());
   const readColumns = useReadColumns();
@@ -71,13 +72,13 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
   const handleConfirm = async () => {
     setValidationErrors([]);
 
-    if (null !== fileInfo) {
+    if (null !== fileKey) {
       try {
-        const columns = await readColumns(fileInfo.filePath, fileStructure);
+        const columns = await readColumns(fileKey, fileStructure);
 
         const columnIdentifier =
           columns.find(column => column.index === fileStructure.unique_identifier_column) ?? null;
-        onConfirm(fileInfo.filePath, columns, columnIdentifier, fileStructure);
+        onConfirm(fileKey, columns, columnIdentifier, fileStructure);
         closeModal();
       } catch (validationErrors: any) {
         setValidationErrors(formatParameters(validationErrors));
@@ -86,11 +87,11 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
   };
 
   const handleFileUpload = async (file: FileInfo | null) => {
-    setFileInfo(file);
+    setFileKey(file?.filePath ?? null);
   };
 
   const handleClose = () => {
-    setFileInfo(null);
+    setFileKey(initialFileKey);
     setFileStructure(getDefaultFileStructure());
     closeModal();
   };
@@ -102,14 +103,14 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
   const handlePrevious = () => {
     setFileStructure(getDefaultFileStructure());
     setValidationErrors([]);
-    setFileInfo(null);
+    setFileKey(null);
   };
 
-  const canConfirm = null !== fileInfo && !isDefaultFileStructure(fileStructure);
+  const canConfirm = null !== fileKey && !isDefaultFileStructure(fileStructure);
 
   return isModalOpen ? (
     <Modal onClose={handleClose} closeTitle={translate('pim_common.close')}>
-      {fileInfo && (
+      {fileKey && !initialFileKey && (
         <Modal.TopLeftButtons>
           <Button onClick={handlePrevious} level="tertiary">
             {translate('pim_common.previous')}
@@ -143,11 +144,11 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
               </Helper>
             ))}
           </HelperContainer>
-          {!fileInfo ? (
+          {!fileKey ? (
             <FileTemplateUploader onFileTemplateUpload={handleFileUpload} />
           ) : (
             <FileTemplateConfiguration
-              fileInfo={fileInfo}
+              fileKey={fileKey}
               fileStructure={fileStructure}
               onFileStructureChange={setFileStructure}
               validationErrors={fileStructureValidationErrors}

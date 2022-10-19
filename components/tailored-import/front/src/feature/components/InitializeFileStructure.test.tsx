@@ -67,7 +67,7 @@ beforeEach(() => {
 });
 
 test('it displays a placeholder and a button when the file is not yet uploaded', async () => {
-  await renderWithProviders(<InitializeFileStructure onConfirm={jest.fn()} />);
+  await renderWithProviders(<InitializeFileStructure initialFileKey={null} onConfirm={jest.fn()} />);
 
   expect(screen.getByText('akeneo.tailored_import.file_structure.placeholder.title')).toBeInTheDocument();
   expect(screen.getByText('akeneo.tailored_import.file_structure.placeholder.button')).toBeInTheDocument();
@@ -76,7 +76,7 @@ test('it displays a placeholder and a button when the file is not yet uploaded',
 test('it can upload and send back a list of columns', async () => {
   const handleConfirm = jest.fn();
 
-  await renderWithProviders(<InitializeFileStructure onConfirm={handleConfirm} />);
+  await renderWithProviders(<InitializeFileStructure initialFileKey={null} onConfirm={handleConfirm} />);
 
   userEvent.click(screen.getByText('akeneo.tailored_import.file_structure.placeholder.button'));
   userEvent.click(screen.getByText('Upload file'));
@@ -110,7 +110,7 @@ test('it displays validation errors when read columns fails', async () => {
       ])
   );
 
-  await renderWithProviders(<InitializeFileStructure onConfirm={jest.fn()} />);
+  await renderWithProviders(<InitializeFileStructure initialFileKey={null} onConfirm={jest.fn()} />);
 
   userEvent.click(screen.getByText('akeneo.tailored_import.file_structure.placeholder.button'));
   userEvent.click(screen.getByText('Upload file'));
@@ -138,7 +138,7 @@ test('it displays global validation errors', async () => {
       ])
   );
 
-  await renderWithProviders(<InitializeFileStructure onConfirm={jest.fn()} />);
+  await renderWithProviders(<InitializeFileStructure initialFileKey={null} onConfirm={jest.fn()} />);
 
   userEvent.click(screen.getByText('akeneo.tailored_import.file_structure.placeholder.button'));
   userEvent.click(screen.getByText('Upload file'));
@@ -154,7 +154,7 @@ test('it displays global validation errors', async () => {
 test('it clears the uploaded file when the user closes the modal', async () => {
   const handleConfirm = jest.fn();
 
-  await renderWithProviders(<InitializeFileStructure onConfirm={handleConfirm} />);
+  await renderWithProviders(<InitializeFileStructure initialFileKey={null} onConfirm={handleConfirm} />);
 
   userEvent.click(screen.getByText('akeneo.tailored_import.file_structure.placeholder.button'));
   userEvent.click(screen.getByText('Upload file'));
@@ -164,7 +164,7 @@ test('it clears the uploaded file when the user closes the modal', async () => {
 });
 
 test('it clears the file structure information when user click on previous', async () => {
-  await renderWithProviders(<InitializeFileStructure onConfirm={jest.fn()} />);
+  await renderWithProviders(<InitializeFileStructure initialFileKey={null} onConfirm={jest.fn()} />);
 
   userEvent.click(screen.getByText('akeneo.tailored_import.file_structure.placeholder.button'));
 
@@ -176,4 +176,18 @@ test('it clears the file structure information when user click on previous', asy
   userEvent.click(screen.getByText('Upload file'));
 
   expect(screen.getByText('first sheet')).toBeInTheDocument();
+});
+
+test('it does not display previous button when initial file key is given', async () => {
+  await renderWithProviders(<InitializeFileStructure initialFileKey={'path/to/file.xlsx'} onConfirm={jest.fn()} />);
+
+  userEvent.click(screen.getByText('akeneo.tailored_import.file_structure.placeholder.button'));
+
+  expect(screen.queryByText('Upload file')).not.toBeInTheDocument();
+
+  expect(screen.getByText('first sheet')).toBeInTheDocument();
+  userEvent.click(screen.getByText('Change file structure'));
+  expect(screen.getByText('second sheet')).toBeInTheDocument();
+
+  expect(screen.queryByText('pim_common.previous')).not.toBeInTheDocument();
 });
