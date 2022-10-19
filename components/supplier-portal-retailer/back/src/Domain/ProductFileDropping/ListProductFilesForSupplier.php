@@ -13,5 +13,5 @@ interface ListProductFilesForSupplier
     /**
      * @return ProductFile[]
      */
-    public function __invoke(string $supplierIdentifier): array;
+    public function __invoke(string $supplierIdentifier, int $page = 1): array;
 }

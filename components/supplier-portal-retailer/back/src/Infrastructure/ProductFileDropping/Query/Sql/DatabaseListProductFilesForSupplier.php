@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql;
 
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFiles;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFilesForSupplier;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFile;
 use Doctrine\DBAL\Connection;
@@ -14,7 +15,7 @@ final class DatabaseListProductFilesForSupplier implements ListProductFilesForSu
     {
     }
 
-    public function __invoke(string $supplierIdentifier): array
+    public function __invoke(string $supplierIdentifier, int $page = 1): array
     {
         $sql = <<<SQL
             WITH retailer_comments AS (
@@ -54,6 +55,7 @@ final class DatabaseListProductFilesForSupplier implements ListProductFilesForSu
             WHERE uploaded_by_supplier = :supplierIdentifier
             ORDER BY uploaded_at DESC
             LIMIT :limit
+            OFFSET :offset
         SQL;
 
         return array_map(
@@ -81,7 +83,8 @@ final class DatabaseListProductFilesForSupplier implements ListProductFilesForSu
                 $sql,
                 [
                     'supplierIdentifier' => $supplierIdentifier,
-                    'limit' => ListProductFilesForSupplier::NUMBER_OF_PRODUCT_FILES,
+                    'offset' => ListProductFiles::NUMBER_OF_PRODUCT_FILES_PER_PAGE * ($page - 1),
+                    'limit' => ListProductFiles::NUMBER_OF_PRODUCT_FILES_PER_PAGE,
                 ],
                 [
                     'supplierIdentifier' => \PDO::PARAM_STR,
