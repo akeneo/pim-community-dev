@@ -1,0 +1,14 @@
+services:
+    Akeneo\Category\Application\Storage\Save\CategorySaverProcessor:
+        arguments:
+            - '@Akeneo\Category\Application\Storage\Save\CategorySaverRegistry'
+
+    Akeneo\Category\Application\Storage\Save\CategorySaverRegistry:
+        arguments:
+            - !tagged_iterator 'pim.category.save.category_saver'
+
+    Akeneo\Category\Application\Storage\Save\Saver\TemplateSaver:
+        class: 'Akeneo\Category\Application\Storage\Save\Saver\TemplateSaver'
+        arguments:
+            - '@database_connection'
+            - '@Akeneo\Category\Application\Query\GetTemplate'
