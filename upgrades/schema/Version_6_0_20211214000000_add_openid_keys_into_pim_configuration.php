@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Pim\Upgrade\Schema;
@@ -66,6 +67,7 @@ class Version_6_0_20211214000000_add_openid_keys_into_pim_configuration extends 
         RSA::setOpenSSLConfigPath($openSSLConfigPath);
         /** @var RSA\PrivateKey $privateKey */
         $privateKey = RSA::createKey();
+        $privateKey = $privateKey->withPadding(RSA::SIGNATURE_PKCS1);
         $publicKey = $privateKey->getPublicKey();
 
         $subject = new X509();

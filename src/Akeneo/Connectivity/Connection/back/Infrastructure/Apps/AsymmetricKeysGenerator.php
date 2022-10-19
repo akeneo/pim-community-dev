@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps;
@@ -28,6 +29,7 @@ class AsymmetricKeysGenerator implements AsymmetricKeysGeneratorInterface
         RSA::setOpenSSLConfigPath($this->openSSLConfigPath);
         /** @var RSA\PrivateKey $privateKey */
         $privateKey = RSA::createKey();
+        $privateKey = $privateKey->withPadding(RSA::SIGNATURE_PKCS1);
         $publicKey = $privateKey->getPublicKey();
 
         $subject = new X509();
