@@ -42,6 +42,8 @@
     "isolatedModules": true
   },
   "include": [
-    "src"
+    "src/feature",
+    "src/models",
+    "src/validators",
   ]
 }
