@@ -19,6 +19,8 @@ class UuidFilterIntegration extends AbstractProductQueryBuilderTestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
+
         foreach (['foo', 'bar', 'baz'] as $identifier) {
             $this->uuids[$identifier] = $this->createProduct($identifier, [])->getUuid()->toString();
         }
