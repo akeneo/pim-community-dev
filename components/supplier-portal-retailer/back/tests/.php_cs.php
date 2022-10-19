@@ -5,7 +5,6 @@ return (new PhpCsFixer\Config())
         [
             '@PSR2' => true, // https://www.php-fig.org/psr/psr-2/
             'linebreak_after_opening_tag' => true, // Ensure there is no code on the same line as the PHP open tag.
-            'ordered_imports' => true, // Ordering use statements.
             'no_unused_imports' => true, // Unused use statements must be removed.
             'yoda_style' => [
                 'equal' => true,
