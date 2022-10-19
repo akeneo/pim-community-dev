@@ -929,7 +929,7 @@ JSON;
         $expected = <<<JSON
 {
     "code": 422,
-    "message": "Property \"associations\" expects a valid product identifier. The product does not exist, \"a_non_exiting_product\" given. Check the expected format on the API documentation.",
+    "message": "The “associations” property expects a valid product identifier. The a_non_exiting_product product does not exist or your connection does not have permission to access it. Check the expected format on the API documentation.",
     "_links": {
         "documentation": {
             "href": "http:\/\/api.akeneo.com\/api-reference.html#post_product_models"
