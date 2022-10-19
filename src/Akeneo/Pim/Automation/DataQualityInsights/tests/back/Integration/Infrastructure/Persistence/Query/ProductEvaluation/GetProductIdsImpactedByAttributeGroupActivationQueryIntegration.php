@@ -21,12 +21,12 @@ final class GetProductIdsImpactedByAttributeGroupActivationQueryIntegration exte
 
         $this->createAttributeGroupActivation('other', false, $updatedSince->modify('-1 day'));
         $this->createAttributeGroupWithAttributes('not_recently_activated', ['name', 'description'], true, $updatedSince->modify('-1 month'));
-        $this->createAttributeGroupWithAttributes('recently_deactivated', ['ean', 'uuid'], false, $updatedSince->modify('+1 second'));
+        $this->createAttributeGroupWithAttributes('recently_deactivated', ['ean'], false, $updatedSince->modify('+1 second'));
         $this->createAttributeGroupWithAttributes('recently_activated', ['brand'], true, $updatedSince->modify('+1 minute'));
 
         $this->createFamily('not_impacted_family', ['attributes' => ['name', 'description']]);
         $this->createFamily('impacted_family_A', ['attributes' => ['name', 'ean']]);
-        $this->createFamily('impacted_family_B', ['attributes' => ['brand', 'uuid']]);
+        $this->createFamily('impacted_family_B', ['attributes' => ['brand']]);
 
         $expectedProducts[] = $this->createProduct('expected_product_A', ['family' => 'impacted_family_A']);
         $expectedProducts[] = $this->createProduct('expected_product_B', ['family' => 'impacted_family_B']);
