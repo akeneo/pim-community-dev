@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration;
@@ -24,6 +25,7 @@ class ServiceProviderDefaultConfiguration implements ServiceProviderDefaultConfi
         RSA::setOpenSSLConfigPath(__DIR__ . '/openssl.cnf');
         /** @var RSA\PrivateKey $privateKey */
         $privateKey = RSA::createKey();
+        $privateKey = $privateKey->withPadding(RSA::SIGNATURE_PKCS1);
         $publicKey = $privateKey->getPublicKey();
 
         $subject = new X509();
@@ -45,7 +47,7 @@ class ServiceProviderDefaultConfiguration implements ServiceProviderDefaultConfi
         return ServiceProvider::fromArray([
             'entityId'    => sprintf('%s/saml/metadata', $this->akeneoPimUrl),
             'certificate' => $serviceProviderPublicKey,
-            'privateKey'  => $serviceProviderPrivateKey->toString('PKCS1')
+            'privateKey'  => $serviceProviderPrivateKey->toString('PKCS1'),
         ]);
     }
 }
