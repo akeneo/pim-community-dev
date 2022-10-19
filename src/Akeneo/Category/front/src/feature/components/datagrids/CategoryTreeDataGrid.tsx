@@ -13,6 +13,7 @@ import styled from 'styled-components';
 import {NoResults} from './NoResults';
 import {DeleteCategoryModal} from './DeleteCategoryModal';
 import {deleteCategory} from '../../infrastructure/removers';
+import {createTemplate} from "../templates/createTemplate";
 import {useCountCategoryTreesChildren} from '../../hooks';
 
 type Props = {
@@ -71,9 +72,15 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
   };
 
   const onCreateTemplate = (categoryTree: CategoryTreeModel) => {
-    const url = router.generate('pim_category_template_rest_create');
-    router.redirect(url);
+    const errors = createTemplate(categoryTree, router);
+    if (Object.keys(errors).length > 0) {
+      notify(NotificationLevel.ERROR, translate('akeneo.category.template.notification_error'));
+    } else {
+      notify(NotificationLevel.SUCCESS, translate('akeneo.category.template.notification_success'));
+      router.redirect('TBD');
+    }
   }
+
   const onDeleteCategoryTree = (categoryTree: CategoryTreeModel) => {
     if (categoryTree.productsNumber && categoryTree.productsNumber > 100) {
       notify(
@@ -155,7 +162,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                       )}
                   </Table.Cell>
                   <TableActionCell>
-                    {isGranted('pim_enrich_product_category_create') && (
+                    {isGranted('pim_enrich_product_category_template') && (
                       <Button
                           ghost
                           level="tertiary"

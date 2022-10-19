@@ -3,10 +3,12 @@ import {useParams} from 'react-router';
 import {Breadcrumb, SkeletonPlaceholder, SectionTitle, useBooleanState, Button} from 'akeneo-design-system';
 import {
   FullScreenError,
+  NotificationLevel,
   PageContent,
   PageHeader,
   PimView,
   useRouter,
+  useNotify,
   useSecurity,
   useSessionStorageState,
   useSetPageTitle,
@@ -16,6 +18,8 @@ import {CategoryToDelete, useCategoryTree, useDeleteCategory} from '../hooks';
 import {CategoryTree} from '../components';
 import {NewCategoryModal} from './NewCategoryModal';
 import {DeleteCategoryModal} from '../components/datagrids/DeleteCategoryModal';
+import {createTemplate} from "../components/templates/createTemplate";
+import {CategoryTreeModel} from "../models";
 
 type Params = {
   treeId: string;
@@ -35,6 +39,7 @@ const CategoriesTreePage: FC = () => {
   let {treeId} = useParams<Params>();
   const router = useRouter();
   const translate = useTranslate();
+  const notify = useNotify();
   const {isGranted} = useSecurity();
   const [lastSelectedCategory] = useSessionStorageState<lastSelectedCategory>(
     {
@@ -92,9 +97,14 @@ const CategoriesTreePage: FC = () => {
     closeDeleteCategoryModal();
   };
 
-  const onCreateTemplate = () => {
-    const url = router.generate('pim_category_template_rest_create');
-    router.redirect(url);
+  const onCreateTemplate = (categoryTree: CategoryTreeModel) => {
+    const errors = createTemplate(categoryTree, router);
+    if (Object.keys(errors).length > 0) {
+      notify(NotificationLevel.ERROR, translate('akeneo.category.template.notification_error'));
+    } else {
+      notify(NotificationLevel.SUCCESS, translate('akeneo.category.template.notification_success'));
+      router.redirect('TBD');
+    }
   }
 
   useEffect(() => {
@@ -135,11 +145,11 @@ const CategoriesTreePage: FC = () => {
             className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
           />
         </PageHeader.UserActions>
-        {isGranted('pim_enrich_product_category_create') && (
+        {isGranted('pim_enrich_product_category_template') && (
           <PageHeader.Actions>
-            <Button onClick={() => onCreateTemplate()} level="tertiary" ghost>
-              {translate('akeneo.category.template.create')}
-            </Button>
+            {/*<Button onClick={() => onCreateTemplate(tree)} level="tertiary" ghost>*/}
+            {/*  {translate('akeneo.category.template.create')}*/}
+            {/*</Button>*/}
           </PageHeader.Actions>
         )}
         <PageHeader.Title>{tree?.label ?? treeId}</PageHeader.Title>

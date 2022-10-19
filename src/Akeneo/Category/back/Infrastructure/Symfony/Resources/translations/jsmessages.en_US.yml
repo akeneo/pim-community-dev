@@ -12,3 +12,5 @@ akeneo.category:
     template:
         create: Create template
         delete: Delete template
+        notification_success: Template created successfully
+        notification_error: Template could not be created
