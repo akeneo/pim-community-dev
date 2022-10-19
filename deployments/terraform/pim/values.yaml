@@ -378,6 +378,8 @@ onboarder:
       enabled: true
     pushChannelToOnboarder:
       enabled: true
+    pushAssetAttributeMediaFileToOnboarder:
+      enabled: true
     pushCatalogToOnboarder:
       enabled: false
     importAdditionalOnboarderFixtures:
