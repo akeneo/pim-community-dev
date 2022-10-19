@@ -14,7 +14,6 @@ use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Types\Types;
 
 final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
 {
@@ -134,34 +133,29 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
     /** @test */
     public function itFindsAProductFileFromItsIdentifier(): void
     {
-        ($this->get(ProductFileRepository::class))->save(
-            (new ProductFileBuilder())
-                ->withIdentifier('8d388bdc-8243-4e88-9c7c-6be0d7afb9df')
-                ->uploadedBySupplier(new Supplier(
-                    'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7',
-                    'supplier_code',
-                    'Supplier label',
-                ))
-                ->withContributorEmail('contributor@contributor.com')
-                ->uploadedAt(new \DateTimeImmutable('2022-09-07 08:54:38'))
-                ->build(),
-        );
-
+        $productFile = (new ProductFileBuilder())
+            ->withIdentifier('8d388bdc-8243-4e88-9c7c-6be0d7afb9df')
+            ->uploadedBySupplier(new Supplier(
+                'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7',
+                'supplier_code',
+                'Supplier label',
+            ))
+            ->withContributorEmail('contributor@contributor.com')
+            ->uploadedAt(new \DateTimeImmutable('2022-09-07 08:54:38'))
+            ->build();
         $retailerCommentDate = new \DateTimeImmutable('2022-09-07 00:00:00');
-        $this->createRetailerComment(
-            '8d388bdc-8243-4e88-9c7c-6be0d7afb9df',
-            'julia@roberts.com',
+        $productFile->addNewRetailerComment(
             'Your product file is awesome!',
+            'julia@roberts.com',
             $retailerCommentDate,
         );
-
         $supplierCommentDate = new \DateTimeImmutable('2022-09-07 00:00:01');
-        $this->createSupplierComment(
-            '8d388bdc-8243-4e88-9c7c-6be0d7afb9df',
-            'jimmy@punchline.com',
+        $productFile->addNewSupplierComment(
             'Here are the products I\'ve got for you.',
+            'jimmy@punchline.com',
             $supplierCommentDate,
         );
+        ($this->get(ProductFileRepository::class))->save($productFile);
 
         $repository = $this->get(ProductFileRepository::class);
         /** @var ProductFile $productFile */
@@ -228,63 +222,5 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
         return $this->get(Connection::class)
             ->executeQuery($sql, ['productFileIdentifier' => $productFileIdentifier])
             ->fetchAllAssociative();
-    }
-
-    private function createRetailerComment(
-        string $productFileIdentifier,
-        string $authorEmail,
-        string $content,
-        \DateTimeImmutable $createdAt,
-    ): void {
-        $sql = <<<SQL
-            INSERT INTO `akeneo_supplier_portal_product_file_retailer_comments` (
-                author_email, 
-                product_file_identifier, 
-                content, 
-                created_at
-            ) VALUES (:authorEmail, :productFileIdentifier, :content, :createdAt); 
-        SQL;
-
-        $this->get(Connection::class)->executeStatement(
-            $sql,
-            [
-                'authorEmail' => $authorEmail,
-                'productFileIdentifier' => $productFileIdentifier,
-                'content' => $content,
-                'createdAt' => $createdAt,
-            ],
-            [
-                'createdAt' => Types::DATETIME_IMMUTABLE,
-            ],
-        );
-    }
-
-    private function createSupplierComment(
-        string $productFileIdentifier,
-        string $authorEmail,
-        string $content,
-        \DateTimeImmutable $createdAt,
-    ): void {
-        $sql = <<<SQL
-            INSERT INTO `akeneo_supplier_portal_product_file_supplier_comments` (
-                author_email, 
-                product_file_identifier, 
-                content, 
-                created_at
-            ) VALUES (:authorEmail, :productFileIdentifier, :content, :createdAt); 
-        SQL;
-
-        $this->get(Connection::class)->executeStatement(
-            $sql,
-            [
-                'authorEmail' => $authorEmail,
-                'productFileIdentifier' => $productFileIdentifier,
-                'content' => $content,
-                'createdAt' => $createdAt,
-            ],
-            [
-                'createdAt' => Types::DATETIME_IMMUTABLE,
-            ],
-        );
     }
 }

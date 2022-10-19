@@ -17,11 +17,11 @@ use Akeneo\Platform\TailoredImport\Domain\Exception\FileNotFoundException;
 use Akeneo\Platform\TailoredImport\Domain\Exception\SheetNotFoundException;
 use Akeneo\Platform\TailoredImport\Domain\Model\File\FileHeaderCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\File\FileStructure;
-use Box\Spout\Reader\Common\Creator\ReaderFactory;
-use Box\Spout\Reader\IteratorInterface;
-use Box\Spout\Reader\ReaderInterface;
-use Box\Spout\Reader\SheetInterface;
-use Box\Spout\Reader\XLSX\Reader;
+use OpenSpout\Reader\Common\Creator\ReaderFactory;
+use OpenSpout\Reader\IteratorInterface;
+use OpenSpout\Reader\ReaderInterface;
+use OpenSpout\Reader\SheetInterface;
+use OpenSpout\Reader\XLSX\Reader;
 
 class XlsxFileIterator implements FileIteratorInterface
 {

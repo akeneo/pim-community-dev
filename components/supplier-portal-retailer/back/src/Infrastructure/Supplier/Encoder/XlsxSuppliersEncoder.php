@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Encoder;
 
-use Box\Spout\Common\Exception\IOException;
-use Box\Spout\Common\Type;
-use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
-use Box\Spout\Writer\Common\Creator\WriterFactory;
-use Box\Spout\Writer\Exception\WriterNotOpenedException;
+use OpenSpout\Common\Exception\IOException;
+use OpenSpout\Common\Type;
+use OpenSpout\Writer\Common\Creator\WriterEntityFactory;
+use OpenSpout\Writer\Common\Creator\WriterFactory;
+use OpenSpout\Writer\Exception\WriterNotOpenedException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
