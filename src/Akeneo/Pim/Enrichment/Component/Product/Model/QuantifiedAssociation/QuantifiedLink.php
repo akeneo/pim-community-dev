@@ -56,15 +56,17 @@ class QuantifiedLink
 
     public function normalize(): array
     {
-        $result = [
+        if (null !== $this->uuid) {
+            return [
+                self::UUID_KEY => $this->uuid->toString(),
+                self::IDENTIFIER_KEY => $this->identifier,
+                self::QUANTITY_KEY => $this->quantity,
+            ];
+        }
+
+        return [
             self::IDENTIFIER_KEY => $this->identifier,
             self::QUANTITY_KEY => $this->quantity,
         ];
-
-        if (null !== $this->uuid) {
-            $result[self::UUID_KEY] = $this->uuid->toString();
-        }
-
-        return $result;
     }
 }
