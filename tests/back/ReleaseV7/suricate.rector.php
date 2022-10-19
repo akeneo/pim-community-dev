@@ -10,6 +10,7 @@ return static function (RectorConfig $rectorConfig): void {
     $paths = [
         __DIR__ . '/../../../components/supplier-portal-retailer',
         __DIR__ . '/../../../components/supplier-portal-supplier',
+        __DIR__ . '/../../../vendor/akeneo/pim-onboarder',
     ];
 
     $rectorConfig->cacheClass(FileCacheStorage::class);
