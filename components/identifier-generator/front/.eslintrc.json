@@ -45,5 +45,8 @@
     "react": {
       "version": "detect"
     }
-  }
+  },
+  "ignorePatterns": [
+    "src/index.tsx"
+  ]
 }

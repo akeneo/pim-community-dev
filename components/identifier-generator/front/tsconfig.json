@@ -42,8 +42,9 @@
     "isolatedModules": true
   },
   "include": [
-    "src/feature",
-    "src/models",
-    "src/validators",
+    "src",
+  ],
+  "exclude": [
+    "src/index.tsx"
   ]
 }
