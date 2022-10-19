@@ -26,6 +26,7 @@ class InitCategoryDbSchemaSubscriber implements EventSubscriberInterface
     {
         $this->addValueCollectionInCategoryTable();
         $this->addCategoryTemplateTable();
+        $this->addCategoryTreeTemplateTable();
     }
 
     private function addValueCollectionInCategoryTable()
@@ -45,12 +46,27 @@ SQL;
     private function addCategoryTemplateTable()
     {
         $query = <<<SQL
-CREATE TABLE IF NOT EXISTS pim_catalog_category_template (
-    uuid binary(16) PRIMARY KEY,
-    code VARCHAR(100) NOT NULL,
-    labels JSON NOT NULL DEFAULT ('{}')
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-SQL;
+        CREATE TABLE IF NOT EXISTS pim_catalog_category_template (
+            uuid binary(16) PRIMARY KEY,
+            code VARCHAR(100) NOT NULL,
+            labels JSON NOT NULL DEFAULT ('{}')
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+        SQL;
+
+        $this->dbalConnection->executeQuery($query);
+    }
+
+    private function addCategoryTreeTemplateTable()
+    {
+        $query = <<<SQL
+            CREATE TABLE IF NOT EXISTS `pim_catalog_category_tree_template` (
+                `category_tree_id` int NOT NULL,  
+                `category_template_uuid` binary(16) NOT NULL,
+                CONSTRAINT `FK_TREE_TEMPLATE_template_uuid` FOREIGN KEY (`category_template_uuid`) REFERENCES `pim_catalog_category_template` (`uuid`),
+                CONSTRAINT `FK_TREE_TEMPLATE_tree_id` FOREIGN KEY (`category_tree_id`) REFERENCES `pim_catalog_category` (`id`),
+                CONSTRAINT `PRIMARY` PRIMARY KEY (category_tree_id,category_template_uuid)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+        SQL;
 
         $this->dbalConnection->executeQuery($query);
     }
