@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: holomekc/wiremock-gui
-  tag: 2.32.0.2
+  tag: 2.34.0.0
   pullPolicy: IfNotPresent
 
 initContainer:
