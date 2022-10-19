@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write;
 
-use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\Exception\InvalidPassword;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Exception\UserHasNotConsent;
+use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\Exception\InvalidPassword;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\Validation\Password;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\HashPassword;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository;
