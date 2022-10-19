@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Automation\IdentifierGenerator\Application;
+namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Create;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation\CommandValidatorInterface;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
@@ -13,8 +14,6 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
-use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Exception\ViolationsException;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -24,16 +23,13 @@ final class CreateGeneratorHandler
 {
     public function __construct(
         private IdentifierGeneratorRepository $identifierGeneratorRepository,
-        private ValidatorInterface $validator
+        private CommandValidatorInterface $validator
     ) {
     }
 
     public function __invoke(CreateGeneratorCommand $command): void
     {
-        $violations = $this->validator->validate($command);
-        if (0 < $violations->count()) {
-            throw new ViolationsException($violations);
-        }
+        $this->validator->validate($command);
 
         $identifierGenerator = new IdentifierGenerator(
             IdentifierGeneratorId::fromString($command->id),

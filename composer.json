@@ -49,11 +49,11 @@
             "Akeneo\\Test\\Pim\\Enrichment\\Product\\": "src/Akeneo/Pim/Enrichment/Product/back/Test",
             "Akeneo\\Test\\Pim\\Enrichment\\Category\\": "src/Akeneo/Pim/Enrichment/Category/back/Test",
             "Akeneo\\Test\\Pim\\Structure\\Family\\": "src/Akeneo/Pim/Structure/Family/back/Test",
-            "Akeneo\\Test\\Pim\\Automation\\IdentifierGenerator\\": "components/identifier-generator/back/tests",
             "Akeneo\\Test\\Channel\\": "src/Akeneo/Channel/back/tests",
             "Akeneo\\Catalogs\\Test\\": "components/catalogs/back/tests",
             "Akeneo\\Test\\Category\\": "src/Akeneo/Category/back/tests",
-            "Akeneo\\Test\\UserManagement\\": "src/Akeneo/UserManagement/back/tests"
+            "Akeneo\\Test\\UserManagement\\": "src/Akeneo/UserManagement/back/tests",
+            "Akeneo\\Test\\Pim\\Automation\\IdentifierGenerator\\": "components/identifier-generator/back/tests"
         }
     },
     "require": {
