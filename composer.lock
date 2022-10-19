@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8e4516cc177605d7ad149e38ade10bc1",
+    "content-hash": "aecb58734adffe5f1419fbc987ee900b",
     "packages": [
         {
             "name": "akeneo/oauth-server-bundle",
@@ -4521,32 +4521,36 @@
         },
         {
             "name": "openspout/openspout",
-            "version": "v3.7.4",
+            "version": "v4.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openspout/openspout.git",
-                "reference": "dfbbd53b5edcd486b45a37f6a04fac33073c70f3"
+                "reference": "18f0c3d9ad0b49240fdb7eaa9da7ee772513da4c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openspout/openspout/zipball/dfbbd53b5edcd486b45a37f6a04fac33073c70f3",
-                "reference": "dfbbd53b5edcd486b45a37f6a04fac33073c70f3",
+                "url": "https://api.github.com/repos/openspout/openspout/zipball/18f0c3d9ad0b49240fdb7eaa9da7ee772513da4c",
+                "reference": "18f0c3d9ad0b49240fdb7eaa9da7ee772513da4c",
                 "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
+                "ext-fileinfo": "*",
                 "ext-filter": "*",
                 "ext-libxml": "*",
                 "ext-xmlreader": "*",
                 "ext-zip": "*",
-                "php": "~7.3.0 || ~7.4.0 || ~8.0.0 || ~8.1.0"
+                "php": "~8.0.0 || ~8.1.0 || ~8.2.0"
             },
             "require-dev": {
                 "ext-zlib": "*",
-                "friendsofphp/php-cs-fixer": "^3.4",
-                "phpstan/phpstan": "^1.4",
-                "phpstan/phpstan-phpunit": "^1.0",
-                "phpunit/phpunit": "^9.5"
+                "friendsofphp/php-cs-fixer": "^3.8.0",
+                "infection/infection": "^0.26.10",
+                "phpbench/phpbench": "^1.2.5",
+                "phpstan/phpstan": "^1.6.8",
+                "phpstan/phpstan-phpunit": "^1.1.1",
+                "phpstan/phpstan-strict-rules": "^1.2.3",
+                "phpunit/phpunit": "^9.5.20"
             },
             "suggest": {
                 "ext-iconv": "To handle non UTF-8 CSV files (if \"php-intl\" is not already installed or is too limited)",
@@ -4594,7 +4598,7 @@
             ],
             "support": {
                 "issues": "https://github.com/openspout/openspout/issues",
-                "source": "https://github.com/openspout/openspout/tree/v3.7.4"
+                "source": "https://github.com/openspout/openspout/tree/v4.8.0"
             },
             "funding": [
                 {
@@ -4606,7 +4610,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-03-31T06:15:15+00:00"
+            "time": "2022-10-19T07:47:10+00:00"
         },
         {
             "name": "opis/json-schema",
