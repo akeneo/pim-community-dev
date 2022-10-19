@@ -11,7 +11,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 
 /**
- * Save values from model into pim_catolog_category table:
+ * Save values from model into pim_catalog_category table:
  * The values are inserted if the id is new, they are updated if the id already exists.
  *
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -26,8 +26,9 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
     }
 
     /**
+     * @param Category $categoryModel
+     * @return void
      * @throws Exception
-     * @throws \Doctrine\DBAL\Driver\Exception
      */
     public function execute(Category $categoryModel): void
     {
