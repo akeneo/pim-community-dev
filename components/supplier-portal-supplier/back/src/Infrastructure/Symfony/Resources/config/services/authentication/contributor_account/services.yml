@@ -18,7 +18,7 @@ services:
     #Event subscribers
     Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Subscriber\CreateContributorAccountOnContributorAdded:
         arguments:
-            - '@Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\CreateContributorAccountHandler'
+            - '@Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\CreateContributorAccountHandler'
         tags:
             - 'kernel.event_subscriber'
 
@@ -49,7 +49,7 @@ services:
         tags:
             - 'kernel.event_subscriber'
     # Validators
-    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Validation\PasswordValidator:
+    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\Validation\PasswordValidator:
         tags:
             - { name: validator.constraint_validator }
 
@@ -57,7 +57,7 @@ services:
     Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\SetUpPassword:
         public: true
         arguments:
-            - '@Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\UpdatePasswordHandler'
+            - '@Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\UpdatePasswordHandler'
 
     Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\GetContributorAccount:
         public: true
@@ -67,12 +67,12 @@ services:
     Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\RequestNewInvitation:
         public: true
         arguments:
-            - '@Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\RequestNewInvitationHandler'
+            - '@Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\RequestNewInvitationHandler'
 
     Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\ResetPassword:
         public: true
         arguments:
-            - '@Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\ResetPasswordHandler'
+            - '@Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\ResetPasswordHandler'
 
     Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\Security:
         public: true
@@ -81,7 +81,7 @@ services:
         public: true
 
     #Command handlers
-    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\CreateContributorAccountHandler:
+    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\CreateContributorAccountHandler:
         arguments:
             - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
             - '@event_dispatcher'
@@ -92,19 +92,19 @@ services:
             - '@event_dispatcher'
             - '@monolog.logger.supplier_portal'
 
-    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\UpdatePasswordHandler:
+    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\UpdatePasswordHandler:
         arguments:
             - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
             - '@validator'
             - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\HashPassword'
             - '@logger'
 
-    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\RequestNewInvitationHandler:
+    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\RequestNewInvitationHandler:
         arguments:
             - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
             - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendWelcomeEmail'
 
-    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\ResetPasswordHandler:
+    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\ResetPasswordHandler:
         arguments:
             - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
             - '@event_dispatcher'

@@ -12,12 +12,9 @@ akeneo.job_automation:
       title: Frequentie
       daily: Elke dag
       weekly: Elke week
-      weekday: Weekdag
       every_4_hours: Elke 4 uur
       every_8_hours: Elke 8 uur
       every_12_hours: Elke 12 uur
-      hours: Uur
-      minutes: Minuten
       monday: maandag
       tuesday: dinsdag
       wednesday: woensdag

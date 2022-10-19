@@ -120,9 +120,9 @@ $rules = [
         [
             // Supplier Portal supplier coupling
             'Akeneo\SupplierPortal\Supplier\Domain',
-            'Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Exception\InvalidPassword',
-            'Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\UpdatePassword',
-            'Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\UpdatePasswordHandler',
+            'Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\Exception\InvalidPassword',
+            'Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\UpdatePassword',
+            'Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\UpdatePasswordHandler',
             'Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication',
 
             // PIM coupling
@@ -132,6 +132,8 @@ $rules = [
             'PHPUnit\Framework',
         ],
     )->in('Akeneo\SupplierPortal\Supplier\Test\Acceptance'),
+    $builder->forbids(['Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Read'])->in('Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write'),
+    $builder->forbids(['Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write'])->in('Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Read'),
 ];
 
 return new Configuration($rules, $finder);

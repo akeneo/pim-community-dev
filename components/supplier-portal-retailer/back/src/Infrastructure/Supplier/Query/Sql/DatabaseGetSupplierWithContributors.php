@@ -6,7 +6,6 @@ namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\Sql;
 
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierWithContributors;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\SupplierWithContributors;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
 use Doctrine\DBAL\Connection;
 
 final class DatabaseGetSupplierWithContributors implements GetSupplierWithContributors
@@ -15,7 +14,7 @@ final class DatabaseGetSupplierWithContributors implements GetSupplierWithContri
     {
     }
 
-    public function __invoke(Identifier $identifier): ?SupplierWithContributors
+    public function __invoke(string $identifier): ?SupplierWithContributors
     {
         $supplier = $this->connection->executeQuery(
             <<<SQL

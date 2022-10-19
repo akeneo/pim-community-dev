@@ -25,7 +25,7 @@ final class DeleteSupplierHandler
     {
         $supplierIdentifier = Identifier::fromString($deleteSupplier->identifier);
 
-        $supplierWithContributors = ($this->getSupplierWithContributors)($supplierIdentifier);
+        $supplierWithContributors = ($this->getSupplierWithContributors)($deleteSupplier->identifier);
 
         $this->supplierRepository->delete($supplierIdentifier);
 
