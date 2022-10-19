@@ -11,7 +11,7 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property;
 interface PropertyInterface
 {
     /**
-     * @return array<string, string>
+     * @return array<string, int|string>
      */
     public function normalize(): array;
 
