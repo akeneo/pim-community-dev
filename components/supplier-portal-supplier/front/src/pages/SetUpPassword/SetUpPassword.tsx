@@ -142,7 +142,13 @@ const SetUpPassword = () => {
                             id="HnRQny"
                             values={{
                                 link: chunks => (
-                                    <Link href="https://www.akeneo.com/privacy-policy/" target="_blank">
+                                    <Link
+                                        onClick={(event: any) => {
+                                            event.stopPropagation();
+                                        }}
+                                        href="https://www.akeneo.com/privacy-policy/"
+                                        target="_blank"
+                                    >
                                         <strong>{chunks}</strong>
                                     </Link>
                                 ),
