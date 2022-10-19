@@ -46,6 +46,28 @@ class SqlTemplateRepository implements TemplateRepository
                 'labels' => \PDO::PARAM_STR,
             ]
         );
+
+        // We must update the category table to add the foreign key pointing to the inserted template.
+        // We update the pim_catalog_category.template_uuid only if the category has no linked template.
+        $query = <<< SQL
+            UPDATE pim_catalog_category
+            SET category_template_uuid=:template_uuid
+            WHERE category_template_uuid IS NULL 
+              AND (id=:category_id OR parent_id=:category_id)
+            ;
+        SQL;
+
+        $this->connection->executeQuery(
+            $query,
+            [
+                'template_uuid' => (string) $templateModel->getUuid(),
+                'category_id' => $templateModel->getCategoryTreeId(),
+            ],
+            [
+                'template_uuid' => \PDO::PARAM_STR,
+                'category_id' => \PDO::PARAM_INT,
+            ]
+        );
     }
 
     public function update(Template $templateModel)

@@ -7,6 +7,8 @@ namespace Akeneo\Category\Infrastructure\Storage\Save\Query;
 use Akeneo\Category\Application\Template\TemplateAttributeRepository;
 use Akeneo\Category\Domain\Model\Attribute\Attribute;
 use Akeneo\Category\Domain\Model\Template;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
+use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 
@@ -24,13 +26,13 @@ class SqlTemplateAttributeRepository implements TemplateAttributeRepository
     /**
      * @throws Exception
      */
-    public function insert(Template $templateModel): void
+    public function insert(TemplateUuid $templateUuid, AttributeCollection $attributeCollection): void
     {
         $queries = '';
-        $params = ['template_uuid' => (string) $templateModel->getUuid()];
+        $params = ['template_uuid' => (string) $templateUuid];
         $types = ['template_uuid' => \PDO::PARAM_STR];
         $loopIndex = 0;
-        foreach ($templateModel->getAttributeCollection()->getAttributes() as $attribute) {
+        foreach ($attributeCollection->getAttributes() as $attribute) {
             /** @var Attribute $attribute */
             $queries .= $this->buildInsertQuery($loopIndex);
 
@@ -69,7 +71,7 @@ class SqlTemplateAttributeRepository implements TemplateAttributeRepository
         );
     }
 
-    public function update(Template $templateModel)
+    public function update(TemplateUuid $templateUuid, AttributeCollection $attributeCollection)
     {
         // TODO: Implement update() method.
     }
@@ -94,24 +96,5 @@ class SqlTemplateAttributeRepository implements TemplateAttributeRepository
                  )
             ;
 SQL;
-    }
-
-    //TODO is it useful ?
-    private function attributeAlreadyExists(Attribute $attribute): bool
-    {
-        $query = <<<SQL
-            SELECT * FROM pim_catalog_category_attribute
-            WHERE identifier=:identifier;
-SQL;
-
-        return $this->connection->fetchOne(
-            $query,
-            [
-                'identifier' => (string) $attribute->getUuid(),
-            ],
-            [
-                'identifier' => \PDO::PARAM_STR,
-            ]
-        );
     }
 }
