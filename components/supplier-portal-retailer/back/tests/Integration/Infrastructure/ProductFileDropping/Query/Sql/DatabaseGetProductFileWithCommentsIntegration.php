@@ -11,8 +11,6 @@ use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Types\Types;
 
 final class DatabaseGetProductFileWithCommentsIntegration extends SqlIntegrationTestCase
 {
@@ -26,6 +24,17 @@ final class DatabaseGetProductFileWithCommentsIntegration extends SqlIntegration
                 ->withCode('supplier_1')
                 ->build(),
         );
+    }
+
+    /** @test */
+    public function itGetsNullIfThereIsNoProductFileForTheGivenIdentifier(): void
+    {
+        static::assertNull($this->get(GetProductFileWithComments::class)('82a69bc5-111b-4b79-9fc1-2421e1d304e7'));
+    }
+
+    /** @test */
+    public function itDoesNotGetAnyCommentIfThereIsNone(): void
+    {
         ($this->get(ProductFileRepository::class))->save(
             (new ProductFileBuilder())
                 ->withIdentifier('5d001a43-a42d-4083-8673-b64bb4ecd26f')
@@ -40,17 +49,7 @@ final class DatabaseGetProductFileWithCommentsIntegration extends SqlIntegration
                 ->uploadedAt(new \DateTimeImmutable('2022-09-07 08:54:38'))
                 ->build(),
         );
-    }
 
-    /** @test */
-    public function itGetsNullIfThereIsNoProductFileForTheGivenIdentifier(): void
-    {
-        static::assertNull($this->get(GetProductFileWithComments::class)('82a69bc5-111b-4b79-9fc1-2421e1d304e7'));
-    }
-
-    /** @test */
-    public function itDoesNotGetAnyCommentIfThereIsNone(): void
-    {
         $productFile = $this->get(GetProductFileWithComments::class)('5d001a43-a42d-4083-8673-b64bb4ecd26f');
 
         static::assertSame([
@@ -68,18 +67,30 @@ final class DatabaseGetProductFileWithCommentsIntegration extends SqlIntegration
     /** @test */
     public function itGetsAProductFileWithItsComments(): void
     {
-        $this->createRetailerComment(
-            '5d001a43-a42d-4083-8673-b64bb4ecd26f',
-            'julia@roberts.com',
+        $productFile = (new ProductFileBuilder())
+            ->withIdentifier('5d001a43-a42d-4083-8673-b64bb4ecd26f')
+            ->uploadedBySupplier(
+                new Supplier(
+                    'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7',
+                    'supplier_1',
+                    'Supplier label',
+                ),
+            )
+            ->withContributorEmail('contributor@contributor.com')
+            ->uploadedAt(new \DateTimeImmutable('2022-09-07 08:54:38'))
+            ->build();
+        $productFile->addNewRetailerComment(
             'Your product file is awesome!',
+            'julia@roberts.com',
             new \DateTimeImmutable('2022-09-07 00:00:00'),
         );
-        $this->createSupplierComment(
-            '5d001a43-a42d-4083-8673-b64bb4ecd26f',
-            'jimmy@punchline.com',
+        $productFile->addNewSupplierComment(
             'Here are the products I\'ve got for you.',
+            'jimmy@punchline.com',
             new \DateTimeImmutable('2022-09-07 00:00:01'),
         );
+        ($this->get(ProductFileRepository::class))->save($productFile);
+
         $productFile = $this->get(GetProductFileWithComments::class)('5d001a43-a42d-4083-8673-b64bb4ecd26f');
 
         static::assertSame('5d001a43-a42d-4083-8673-b64bb4ecd26f', $productFile->identifier);
@@ -101,63 +112,5 @@ final class DatabaseGetProductFileWithCommentsIntegration extends SqlIntegration
                 'created_at' => '2022-09-07 00:00:01.000000',
             ],
         ], $productFile->supplierComments);
-    }
-
-    private function createRetailerComment(
-        string $productFileIdentifier,
-        string $authorEmail,
-        string $content,
-        \DateTimeImmutable $createdAt,
-    ): void {
-        $sql = <<<SQL
-            INSERT INTO `akeneo_supplier_portal_product_file_retailer_comments` (
-                author_email, 
-                product_file_identifier, 
-                content, 
-                created_at
-            ) VALUES (:authorEmail, :productFileIdentifier, :content, :createdAt); 
-        SQL;
-
-        $this->get(Connection::class)->executeStatement(
-            $sql,
-            [
-                'authorEmail' => $authorEmail,
-                'productFileIdentifier' => $productFileIdentifier,
-                'content' => $content,
-                'createdAt' => $createdAt,
-            ],
-            [
-                'createdAt' => Types::DATETIME_IMMUTABLE,
-            ],
-        );
-    }
-
-    private function createSupplierComment(
-        string $productFileIdentifier,
-        string $authorEmail,
-        string $content,
-        \DateTimeImmutable $createdAt,
-    ): void {
-        $sql = <<<SQL
-            INSERT INTO `akeneo_supplier_portal_product_file_supplier_comments` (
-                author_email, 
-                product_file_identifier, 
-                content, 
-                created_at
-            ) VALUES (:authorEmail, :productFileIdentifier, :content, :createdAt); 
-        SQL;
-
-        $this->get(Connection::class)->executeStatement(
-            $sql,
-            [
-                'authorEmail' => $authorEmail,
-                'productFileIdentifier' => $productFileIdentifier,
-                'content' => $content,
-                'createdAt' => $createdAt,
-            ],
-            [
-                'createdAt' => Types::DATETIME_IMMUTABLE,
-            ],
-        );
     }
 }

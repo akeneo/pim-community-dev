@@ -121,7 +121,6 @@ $rules = [
             'Box\Spout\Common\Type',
             'Box\Spout\Reader\Common\Creator\ReaderFactory',
             'Doctrine\DBAL\Connection',
-            'Doctrine\DBAL\Types\Types',
             'Ramsey\Uuid\Uuid',
             'Symfony',
         ],
