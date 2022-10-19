@@ -51,7 +51,6 @@ workflows:
           - delete_tenant:
                 requires:
                     - delete_tenant?
-
           - ready_to_build_wb?:
                 type: approval
                 filters:
@@ -69,6 +68,10 @@ workflows:
                     - checkout_wb
           - deploy_ucs_pim:
                 name: deploy_ucs_pim_wb
+                requires:
+                    - build_ucs_wb
+          - deploy_tenant_wb_timmy:
+                name: "deploy_tenant_wb_timmy"
                 requires:
                     - build_ucs_wb
           - deploy_tenant:
