@@ -26,17 +26,19 @@ final class GetProductsHandler
 
     /**
      * @return array<Product>
+     *
+     * @throws ServiceApiCatalogNotFoundException
      */
     public function __invoke(GetProductsQuery $query): array
     {
         try {
-            $domainCatalog = $this->getCatalogQuery->execute($query->getCatalogId());
+            $catalog = $this->getCatalogQuery->execute($query->getCatalogId());
         } catch (CatalogNotFoundException) {
             throw new ServiceApiCatalogNotFoundException();
         }
 
         return $this->getProductsQuery->execute(
-            $domainCatalog,
+            $catalog,
             $query->getSearchAfter(),
             $query->getLimit(),
             $query->getUpdatedAfter(),

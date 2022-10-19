@@ -35,11 +35,13 @@ class SearchAfterSizeUuidResultCursorFactory implements CursorFactoryInterface
     {
         /** @var array{_source: array<string>, sort?: array<string>, size: int} $queryBuilder */
 
+        if (!isset($queryBuilder['sort']) || \count($queryBuilder['sort']) === 0) {
+            throw new \InvalidArgumentException('PQB requires sort to be defined');
+        }
+
         $options = $this->resolveOptions($options);
-        $sort = ['_id' => 'asc'];
 
         $queryBuilder['_source'] = \array_merge($queryBuilder['_source'], ['document_type', 'id']);
-        $queryBuilder['sort'] = isset($queryBuilder['sort']) ? \array_merge($queryBuilder['sort'], $sort) : $sort;
         $queryBuilder['size'] = $options['limit'];
         if (0 !== \count($options['search_after'])) {
             $queryBuilder['search_after'] = $options['search_after'];
