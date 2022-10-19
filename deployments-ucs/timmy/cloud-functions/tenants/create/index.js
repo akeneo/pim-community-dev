@@ -35,6 +35,7 @@ const httpsAgent = new https.Agent({
 });
 
 const DEFAULT_BRANCH_NAME = 'master';
+const DEFAULT_PIM_NAMESPACE = 'pim';
 const FIRESTORE_STATUS = {
   CREATED: "created",
   CREATION_FAILED: "creation_failed",
@@ -481,7 +482,9 @@ functions.http('createTenant', (req, res) => {
     // If branchName is an empty string it is the default branch
     const branchName = body.branchName
     const instanceName = body.instanceName;
-    firestoreCollection = `${process.env.REGION}/pim-`+branchName.toLowerCase()+`/${process.env.TENANT_CONTEXT_COLLECTION_NAME}`;
+    const pimNamespace = (branchName === DEFAULT_BRANCH_NAME ? DEFAULT_PIM_NAMESPACE : DEFAULT_PIM_NAMESPACE+"-"+branchName.toLowerCase());
+
+    firestoreCollection = `${process.env.REGION}/${pimNamespace}/${process.env.TENANT_CONTEXT_COLLECTION_NAME}`;
 
     initializeLogger(branchName, instanceName);
 
