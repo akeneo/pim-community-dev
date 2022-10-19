@@ -7,6 +7,7 @@ export * from './AssetsIllustration';
 export * from './AssociationTypesIllustration';
 export * from './AttributeGroupsIllustration';
 export * from './AttributesIllustration';
+export * from './CatalogsIllustration';
 export * from './ChannelsIllustration';
 export * from './CityIllustration';
 export * from './ClientErrorIllustration';

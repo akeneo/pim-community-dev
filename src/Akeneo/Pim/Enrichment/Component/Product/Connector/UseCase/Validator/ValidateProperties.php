@@ -18,6 +18,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 final class ValidateProperties
 {
     private static $productFields = [
+        'uuid',
         'family',
         'categories',
         'completeness',
