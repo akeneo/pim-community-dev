@@ -51,5 +51,6 @@ class AkeneoCategoryExtension extends Extension
         $loader->load('files.yml');
         $loader->load('parameters.yml');
         $loader->load('preview_generators.yml');
+        $loader->load('builders.yml');
     }
 }
