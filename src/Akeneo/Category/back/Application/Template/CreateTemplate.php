@@ -14,7 +14,6 @@ class CreateTemplate
         private GetTemplate $getTemplate,
         private TemplateRepository $templateRepository,
         private CategoryTreeTemplateRepository $categoryTreeTemplateRepository,
-        private TemplateAttributeRepository $templateAttributeRepository,
     ) {
     }
 
@@ -28,7 +27,5 @@ class CreateTemplate
         if (!$this->categoryTreeTemplateRepository->linkAlreadyExists($templateModel)) {
             $this->categoryTreeTemplateRepository->insert($templateModel);
         }
-
-        $this->templateAttributeRepository->insert($templateModel);
     }
 }
