@@ -42,7 +42,6 @@ final class GetProductIdentifiersQuery implements GetProductIdentifiersQueryInte
 
             $pqbOptions['search_after'] = [
                 \strtolower($searchAfterProductIdentifier),
-                \sprintf('product_%s', $searchAfter),
             ];
         }
 
