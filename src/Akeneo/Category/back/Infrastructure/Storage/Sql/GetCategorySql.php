@@ -24,7 +24,7 @@ class GetCategorySql implements GetCategoryInterface
 
     public function byId(int $categoryId): ?Category
     {
-        $condition['sqlWhere'] = 'category.id = :category_id';
+        $condition['sqlWhere'] = 'WHERE category.id = :category_id';
         $condition['params'] = ['category_id' => $categoryId];
         $condition['types'] = ['category_id' => \PDO::PARAM_INT];
 
@@ -33,23 +33,36 @@ class GetCategorySql implements GetCategoryInterface
 
     public function byCode(string $categoryCode): ?Category
     {
-        $condition['sqlWhere'] = 'category.code = :category_code';
+        $condition['sqlWhere'] = 'WHERE category.code = :category_code';
         $condition['params'] = ['category_code' => $categoryCode];
         $condition['types'] = ['category_code' => \PDO::PARAM_STR];
 
         return $this->execute($condition);
     }
 
-    private function execute(array $condition): ?Category
+    public function getTrees(): array
     {
-        $sqlWhere = $condition['sqlWhere'];
+        $condition['sqlWhere'] = 'WHERE category.parent_id IS NULL AND category.root = category.id';
+        $condition['sqlGroupBy'] = 'GROUP BY category.code';
+        $orderBy['sortField'] = 'created';
+        $orderBy['direction'] = 'DESC';
 
-        $sqlQuery = <<<SQL
+        return $this->executeAll($condition, $orderBy);
+    }
+
+    private function sqlQuery(array $condition, array $orderBy = []): string
+    {
+        $sqlWhere = $condition['sqlWhere'] ?? '';
+        $sqlGroupBy = $condition['sqlGroupBy'] ?? '';
+        $sqlOrderBy = !empty($orderBy) ? sprintf('ORDER BY category.%s %s', $orderBy['sortField'], $orderBy['direction']) : '';
+
+        return <<<SQL
             WITH translation as (
                 SELECT category.code, JSON_OBJECTAGG(translation.locale, translation.label) as translations
                 FROM pim_catalog_category category
                 JOIN pim_catalog_category_translation translation ON translation.foreign_key = category.id
-                WHERE $sqlWhere
+                $sqlWhere
+                $sqlGroupBy
             )
             SELECT
                 category.id,
@@ -61,19 +74,46 @@ class GetCategorySql implements GetCategoryInterface
             FROM 
                 pim_catalog_category category
                 LEFT JOIN translation ON translation.code = category.code
-            WHERE $sqlWhere
+            $sqlWhere
+            $sqlOrderBy
         SQL;
+    }
+
+    private function execute($condition): ?Category
+    {
+        $params = $condition['params'] ?? [];
+        $types = $condition['types'] ?? [];
 
         $result = $this->connection->executeQuery(
-            $sqlQuery,
-            $condition['params'],
-            $condition['types']
+            $this->sqlQuery($condition),
+            $params,
+            $types
         )->fetchAssociative();
 
         if (!$result) {
             return null;
         }
 
+        return $this->buildCategory($result);
+    }
+
+    private function executeAll($condition, $orderBy): ?array
+    {
+        $results = $this->connection->executeQuery(
+            $this->sqlQuery($condition, $orderBy)
+        )->fetchAllAssociative();
+
+        if (!$results) {
+            return null;
+        }
+
+        return array_map(function ($result) {
+            return $this->buildCategory($result);
+        }, $results);
+    }
+
+    private function buildCategory($result): Category
+    {
         return new Category(
             new CategoryId((int)$result['id']),
             new Code($result['code']),

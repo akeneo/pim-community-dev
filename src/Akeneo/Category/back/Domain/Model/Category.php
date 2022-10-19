@@ -68,6 +68,17 @@ class Category
         return $this->permissions;
     }
 
+    public function getLabel(string $localeCode): string
+    {
+        $label = $this->labels->getTranslation($localeCode);
+
+        if (!$label) {
+            return '[' . $this->code . ']';
+        }
+
+        return $label;
+    }
+
     public function setLabel(string $localeCode, string $label): void
     {
         $this->labels->setTranslation($localeCode, $label);

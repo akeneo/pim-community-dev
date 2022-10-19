@@ -15,4 +15,6 @@ interface GetCategoryInterface
     public function byId(int $categoryId): ?Category;
 
     public function byCode(string $categoryCode): ?Category;
+
+    public function getTrees(): array;
 }

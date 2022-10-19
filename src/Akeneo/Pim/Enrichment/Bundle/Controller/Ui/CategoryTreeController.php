@@ -2,6 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\Ui;
 
+use Akeneo\Category\Domain\Model\Category;
+use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizerInterface;
@@ -76,6 +78,7 @@ class CategoryTreeController extends AbstractController
         CategoryItemsCounterInterface $categoryItemsCounter,
         CountTreesChildrenInterface $countTreesChildrenQuery,
         CategoryFormViewNormalizerInterface $categoryFormViewNormalizer,
+        private GetCategoryInterface $getCategory,
         array $rawConfiguration
     ) {
         $this->eventDispatcher = $eventDispatcher;
@@ -118,21 +121,25 @@ class CategoryTreeController extends AbstractController
 
         $selectNodeId = $request->get('select_node_id', -1);
 
-        try {
-            $selectNode = $this->findCategory($selectNodeId);
-        } catch (NotFoundHttpException $e) {
+        $selectNode = $this->getCategory->byId($selectNodeId);
+        if (!$selectNode) {
             $selectNode = $this->userContext->getUserCategoryTree($this->rawConfiguration['related_entity']);
         }
 
-        $trees = $this->categoryRepository->getTrees();
-        $selectedTreeId = $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot();
+        $trees = $this->getCategory->getTrees();
 
-        $formatedTrees = array_map(function ($tree) use ($selectedTreeId) {
+        if ($selectNode instanceof Category) {
+            $selectedTreeId = $selectNode->isRoot() ? (int) $selectNode->getId() : (int) $selectNode->getRootId();
+        } else {
+            $selectedTreeId = $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot();
+        }
+
+        $formatedTrees = array_map(function (Category $tree) use ($selectedTreeId) {
             return [
-                'id' => $tree->getId(),
-                'code' => $tree->getCode(),
-                'label' => $tree->getLabel(),
-                'selected' => $tree->getId() === $selectedTreeId ? 'true' : 'false'
+                'id' => (int) $tree->getId(),
+                'code' => (string) $tree->getCode(),
+                'label' => $tree->getLabel($this->userContext->getCurrentLocaleCode()),
+                'selected' => (int) $tree->getId() === $selectedTreeId ? 'true' : 'false'
             ];
         }, $trees);
 
