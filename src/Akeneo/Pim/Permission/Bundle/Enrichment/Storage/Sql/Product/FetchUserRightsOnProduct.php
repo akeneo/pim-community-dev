@@ -182,6 +182,7 @@ SQL;
                 ) access ON access.category_id = product_categories.category_id
             GROUP BY 
                 product_categories.uuid
+            ORDER BY FIELD(product_categories.uuid, :productUuids)
 SQL;
 
         $productUuidsAsBytes = array_map(
