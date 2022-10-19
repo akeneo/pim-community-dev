@@ -6,8 +6,8 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\Supplie
 
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\SupplierWithContributors;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Encoder\SuppliersEncoder;
-use Box\Spout\Common\Type;
-use Box\Spout\Reader\Common\Creator\ReaderFactory;
+use OpenSpout\Common\Type;
+use OpenSpout\Reader\Common\Creator\ReaderFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 final class XlsxSuppliersEncoderIntegration extends KernelTestCase

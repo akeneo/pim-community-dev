@@ -86,11 +86,11 @@ $rules = [
             'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
 
             // External dependencies coupling
-            'Box\Spout\Common\Exception\IOException',
-            'Box\Spout\Common\Type',
-            'Box\Spout\Writer\Common\Creator\WriterEntityFactory',
-            'Box\Spout\Writer\Common\Creator\WriterFactory',
-            'Box\Spout\Writer\Exception\WriterNotOpenedException',
+            'OpenSpout\Common\Exception\IOException',
+            'OpenSpout\Common\Type',
+            'OpenSpout\Writer\Common\Creator\WriterEntityFactory',
+            'OpenSpout\Writer\Common\Creator\WriterFactory',
+            'OpenSpout\Writer\Exception\WriterNotOpenedException',
             'Doctrine\DBAL\Connection',
             'Doctrine\DBAL\Types\Types',
             'League\Flysystem',
@@ -118,8 +118,8 @@ $rules = [
             'Akeneo\Tool\Component\Batch\Job\JobParameters',
             'Akeneo\Tool\Component\Batch\Model\JobExecution',
             // External dependencies coupling
-            'Box\Spout\Common\Type',
-            'Box\Spout\Reader\Common\Creator\ReaderFactory',
+            'OpenSpout\Common\Type',
+            'OpenSpout\Reader\Common\Creator\ReaderFactory',
             'Doctrine\DBAL\Connection',
             'Ramsey\Uuid\Uuid',
             'Symfony',

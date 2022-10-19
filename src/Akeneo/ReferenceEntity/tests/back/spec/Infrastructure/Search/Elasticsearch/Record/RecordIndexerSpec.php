@@ -10,7 +10,7 @@ use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordInde
 use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordNormalizerInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
-use Box\Spout\Reader\IteratorInterface;
+use OpenSpout\Reader\IteratorInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

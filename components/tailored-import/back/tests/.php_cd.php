@@ -43,7 +43,7 @@ $rules = [
 
     $builder->only(
         [
-            'Box\Spout\Reader',
+            'OpenSpout\Reader',
             'Symfony\Component',
             'Symfony\Contracts',
             'Webmozart\Assert\Assert',

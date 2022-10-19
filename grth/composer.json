@@ -60,6 +60,7 @@
         "justinrainbow/json-schema": "^5.2",
         "league/flysystem-google-cloud-storage": "^2.0",
         "league/flysystem-sftp": "^3.0",
+        "openspout/openspout": "^3.3.0",
         "phpseclib/phpseclib": "2.0.31"
     },
     "require-dev": {
