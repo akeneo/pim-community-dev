@@ -16,7 +16,7 @@ interface PropertyInterface
     public function normalize(): array;
 
     /**
-     * @param array<string, string> $fromNormalized
+     * @param array<string, int|string> $fromNormalized
      * @return self
      */
     public static function fromNormalized(array $fromNormalized): self;

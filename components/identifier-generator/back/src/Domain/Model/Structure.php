@@ -37,7 +37,7 @@ final class Structure
     }
 
     /**
-     * @return array<array<string, string>>
+     * @return array<array<string, int|string>>
      */
     public function normalize(): array
     {
@@ -45,7 +45,7 @@ final class Structure
     }
 
     /**
-     * @param array<array<string, string>> $normalizedValues
+     * @param array<array<string, int|string>> $normalizedValues
      * @return static
      */
     public static function fromNormalized(array $normalizedValues): self
