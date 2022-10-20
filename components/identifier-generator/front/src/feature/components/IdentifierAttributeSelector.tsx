@@ -1,6 +1,6 @@
 import React from 'react';
 import {Field, Helper, SelectInput} from 'akeneo-design-system';
-import {useIdentifierAttributes} from '../hooks/useIdentifierAttributes';
+import {useIdentifierAttributes} from '../hooks/';
 import {useTranslate} from '@akeneo-pim-community/shared';
 
 enum Status {

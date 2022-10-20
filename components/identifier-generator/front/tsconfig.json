@@ -43,6 +43,5 @@
   },
   "include": [
     "src/feature",
-    "src/tests"
   ]
 }

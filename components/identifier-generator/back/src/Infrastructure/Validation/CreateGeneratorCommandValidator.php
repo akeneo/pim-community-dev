@@ -25,12 +25,12 @@ class CreateGeneratorCommandValidator implements CommandValidatorInterface
     {
         $violations = $this->validator->validate($command);
         if (0 < $violations->count()) {
-            $errorList = new ErrorList();
-            foreach ($violations as $violation) {
-                $errorList->add(new Error($violation->getMessage(), $violation->getParameters(), $violation->getPropertyPath()));
-            }
-
-            throw new ViolationsException($errorList);
+            throw new ViolationsException(new ErrorList(
+                array_map(
+                    static fn ($violation) => new Error($violation->getMessage(), $violation->getParameters(), $violation->getPropertyPath()),
+                    iterator_to_array($violations)
+                )
+            ));
         }
     }
 }
