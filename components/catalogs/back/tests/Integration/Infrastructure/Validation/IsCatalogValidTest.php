@@ -2,40 +2,41 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Service;
+namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Validation;
 
-use Akeneo\Catalogs\Application\Service\DisableOnlyInvalidCatalogInterface;
+use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
+use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\Domain\Operator;
-use Akeneo\Catalogs\Infrastructure\Service\DisableOnlyInvalidCatalog;
+use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\GetCatalogQuery;
+use Akeneo\Catalogs\Infrastructure\Validation\IsCatalogValid;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 
-class DisableOnlyInvalidCatalogTest extends IntegrationTestCase
+/**
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+class IsCatalogValidTest extends IntegrationTestCase
 {
-    private ?DisableOnlyInvalidCatalogInterface $disableOnlyInvalidCatalogQuery;
-
+    private ?IsCatalogValid $isCatalogValid;
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->disableExperimentalTestDatabase();
-        $this->disableOnlyInvalidCatalogQuery = self::getContainer()->get(DisableOnlyInvalidCatalog::class);
+//        $this->disableExperimentalTestDatabase();
+        $this->isCatalogValid = self::getContainer()->get(IsCatalogValid::class);
         $this->purgeDataAndLoadMinimalCatalog();
     }
 
-    public function testItDoesNothingIfCatalogIsValid(): void
+    public function testItReturnsTrueIfCatalogIsValid(): void
     {
-        $this->getAuthenticatedInternalApiClient();
         $this->createAttribute([
             'code' => 'color',
             'type' => 'pim_catalog_multiselect',
             'options' => ['red', 'blue'],
         ]);
-
         $catalogIdUS = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
         $this->createUser('shopifi');
         $this->createCatalog($catalogIdUS, 'Store US', 'shopifi');
         $this->enableCatalog($catalogIdUS);
-
         $this->setCatalogProductSelection($catalogIdUS, [
             [
                 'field' => 'color',
@@ -45,26 +46,22 @@ class DisableOnlyInvalidCatalogTest extends IntegrationTestCase
                 'locale' => null,
             ],
         ]);
-        $isCatalogDisabled = $this->disableOnlyInvalidCatalogQuery->disable($this->getCatalog($catalogIdUS));
 
-        $this->assertFalse($isCatalogDisabled);
-        $this->assertCatalogIsEnabled($catalogIdUS);
+        $isCatalogValid = ($this->isCatalogValid)($this->getCatalogDomain($catalogIdUS));
+        $this->assertTrue($isCatalogValid);
     }
 
-    public function testItDisablesAnInvalidCatalog(): void
+    public function testItReturnsFalseIfCatalogIsNotValid(): void
     {
-        $this->getAuthenticatedInternalApiClient();
         $this->createAttribute([
             'code' => 'color',
             'type' => 'pim_catalog_multiselect',
             'options' => ['red', 'blue'],
         ]);
-
         $catalogIdUS = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
         $this->createUser('shopifi');
         $this->createCatalog($catalogIdUS, 'Store US', 'shopifi');
         $this->enableCatalog($catalogIdUS);
-
         $this->setCatalogProductSelection($catalogIdUS, [
             [
                 'field' => 'color',
@@ -74,24 +71,14 @@ class DisableOnlyInvalidCatalogTest extends IntegrationTestCase
                 'locale' => null,
             ],
         ]);
-
         $this->removeAttributeOption('color.red');
 
-        $isCatalogDisabled = $this->disableOnlyInvalidCatalogQuery->disable($this->getCatalog($catalogIdUS));
-
-        $this->assertTrue($isCatalogDisabled);
-        $this->assertCatalogIsDisabled($catalogIdUS);
+        $isCatalogValid = ($this->isCatalogValid)($this->getCatalogDomain($catalogIdUS));
+        $this->assertFalse($isCatalogValid);
     }
 
-    private function assertCatalogIsDisabled(string $id): void
+    private function getCatalogDomain(string $id): Catalog
     {
-        $catalog = $this->getCatalog($id);
-        $this->assertFalse($catalog->isEnabled());
-    }
-
-    private function assertCatalogIsEnabled(string $id): void
-    {
-        $catalog = $this->getCatalog($id);
-        $this->assertTrue($catalog->isEnabled());
+        return self::getContainer()->get(GetCatalogQueryInterface::class)->execute($id);
     }
 }
