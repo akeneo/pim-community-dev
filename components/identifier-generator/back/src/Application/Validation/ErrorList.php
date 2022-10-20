@@ -19,22 +19,13 @@ final class ErrorList implements \Countable
         return count($this->errors);
     }
 
-    /**
-     * Adds an error to this list.
-     */
     public function add(Error $error): void
     {
         $this->errors[] = $error;
     }
 
-    public function getAllMessages(): string
+    public function getMergedMessages(): string
     {
-        $string = '';
-
-        foreach ($this->errors as $error) {
-            $string .= $error->getMessage()."\n";
-        }
-
-        return $string;
+        return \join("\n", array_map(fn ($error) => $error->getMessage(), $this->errors));
     }
 }

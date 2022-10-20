@@ -104,7 +104,7 @@ final class CreateIdentifierGeneratorContext implements Context
     public function iShouldGetAnErrorWithMessage(string $message): void
     {
         Assert::notNull($this->violations);
-        Assert::contains($this->violations->violations()->getAllMessages(), $message);
+        Assert::contains($this->violations->violations()->getMergedMessages(), $message);
     }
 
     /**
