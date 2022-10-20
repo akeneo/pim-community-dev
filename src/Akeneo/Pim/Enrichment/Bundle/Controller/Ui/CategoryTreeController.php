@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Controller\Ui;
 
 use Akeneo\Category\Domain\Model\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
+use Akeneo\Category\Domain\Query\GetCategoryTreesInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizerInterface;
@@ -79,6 +80,7 @@ class CategoryTreeController extends AbstractController
         CountTreesChildrenInterface $countTreesChildrenQuery,
         CategoryFormViewNormalizerInterface $categoryFormViewNormalizer,
         private GetCategoryInterface $getCategory,
+        private GetCategoryTreesInterface $getCategoryTrees,
         array $rawConfiguration
     ) {
         $this->eventDispatcher = $eventDispatcher;
@@ -126,7 +128,7 @@ class CategoryTreeController extends AbstractController
             $selectNode = $this->userContext->getUserCategoryTree($this->rawConfiguration['related_entity']);
         }
 
-        $trees = $this->getCategory->getTrees();
+        $trees = ($this->getCategoryTrees)();
 
         if ($selectNode instanceof Category) {
             $selectedTreeId = $selectNode->isRoot() ? (int) $selectNode->getId() : (int) $selectNode->getRootId();
