@@ -1,5 +1,21 @@
 # 6.0.x
 
+# 6.0.46 (2022-10-20)
+
+# 6.0.45 (2022-10-06)
+
+## Bug fixes
+
+- PIM-10657: [Backport] Remove RequestedAuthContext from SAML Auth requests
+- PIM-10632: Fix detection of orphan attribute option spellcheck lines during orphan cleaning 
+
+# 6.0.44 (2022-09-23)
+
+## Bug fixes
+
+- PIM-10435: [Backport] Fix search_after requests with codes using uppercase accented characters
+- PIM-10632: [Backport] Fix no purge done on the DQI when deleting option for multi-select and simple-select attributes
+
 # 6.0.43 (2022-09-20)
 
 # 6.0.42 (2022-09-02)

@@ -57,12 +57,21 @@ SQL;
 
     public function deleteUnknownAttributeOptions(): void
     {
+        // Note 1: the query impact 2 things: it cleans spellcheck lines concerning an attribute option whose linked attribute
+        // has been deleted (even if the attribute is recreated with the same code)
+        // AND it cleans spellcheck lines concerning a deleted attribute option.
+        // Note 2: Spellcheck table store codes of attribute and attribute_option. But 2 different "select attribute" can have
+        // an "attribute option" with the same code (but different id). We make sure here that we clean spellcheck lines
+        // linked to a deleted attribute by checking on the attribute_id
         $query = <<<SQL
 DELETE spellcheck
 FROM pimee_dqi_attribute_option_spellcheck AS spellcheck
-LEFT JOIN pim_catalog_attribute_option AS attribute_option ON attribute_option.code = spellcheck.attribute_option_code
-LEFT JOIN pim_catalog_attribute AS attribute ON attribute.id = attribute_option.attribute_id
-WHERE attribute_option.id IS NULL OR attribute.id IS NULL
+LEFT JOIN pim_catalog_attribute AS attribute ON attribute.code = spellcheck.attribute_code
+LEFT JOIN pim_catalog_attribute_option AS attribute_option ON (
+    attribute_option.attribute_id=attribute.id
+    AND attribute_option.code = spellcheck.attribute_option_code
+)
+WHERE attribute_option.id IS NULL
 SQL;
         $this->dbConnection->executeQuery($query);
     }
