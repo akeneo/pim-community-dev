@@ -84,7 +84,43 @@ jobs:
                       DELETE_TENANT_STATUS_CODE=0
                       for i in 1 2 3; do make -C deployments-ucs/ delete_tenant && DELETE_TENANT_STATUS_CODE=0 && break || DELETE_TENANT_STATUS_CODE=1; done
                       exit ${DELETE_TENANT_STATUS_CODE}
+   
+    delete_tenant_timmy:
+        parameters:
+            PRODUCT_TYPE:
+                type: string
+                default: "srnt"
+        environment:
+            <<: *envVarsDeployPIMSaaSDev
+        <<: *dockerCloudDeployerUCS
+        resource_class: small
+        steps:
+            - attach_workspace:
+                  at: ~/
+            - set_gcloud_config_pim_saas_dev
+            - restore_persisted_env_vars
+            - run:
+                  name: Define value for next steps
+                  command: |
+                      TENANT_ID="<<parameters.PRODUCT_TYPE>>-${INSTANCE_NAME}"
+                      REGION_PREFIX="eur-w-1b"
+                      echo export TENANT_ID=${TENANT_ID} >> $BASH_ENV
+                      echo export REGION_PREFIX=${REGION_PREFIX} >> $BASH_ENV
 
+                      echo "Tenant id : ${TENANT_ID}"
+                      echo "CIRCLE_BRANCH : ${CIRCLE_BRANCH}"
+                      echo "Region Prefix : ${REGION_PREFIX}"
+            - run:
+                  name: Delete Tenant
+                  no_output_timeout: 30m
+                  command: |
+                      JSON_BODY_STRING=$(printf "{\"branchName\":\"%s\",\"instanceName\":\"%s\"}\n" $CIRCLE_BRANCH $TENANT_ID )
+                      echo $JSON_BODY_STRING
+                      gcloud  config unset auth/impersonate_service_account
+                      DELETE_TENANT_STATUS_CODE=0
+                      gcloud  beta functions call ${REGION_PREFIX}-timmy-delete-tenant --region=${GOOGLE_CLUSTER_REGION}  --data  $JSON_BODY_STRING --gen2 || DELETE_TENANT_STATUS_CODE=1
+                      exit ${DELETE_TENANT_STATUS_CODE}
+    
     delete_pim:
         parameters:
             PRODUCT_TYPE:

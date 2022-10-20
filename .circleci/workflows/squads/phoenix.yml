@@ -105,11 +105,23 @@ workflows:
                             - /PH-.*/
                 requires:
                     - test_ucs_deploy_wb
+          - delete_tenant_wb_timmy?:
+                type: approval
+                filters:
+                    branches:
+                        only:
+                            - /BH-.*/
+                            - /PH-.*/
+                requires:
+                    - deploy_tenant_wb_timmy
           - delete_tenant:
                 name: "delete_tenant_wb"
                 requires:
                     - delete_tenant_wb?
-
+          - delete_tenant_timmy:
+                name: "delete_tenant_wb_timmy"
+                requires:
+                    - delete_tenant_wb_timmy?
           - ready_to_build_test_infra?:
                 type: approval
                 filters:

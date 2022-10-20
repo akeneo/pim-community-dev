@@ -729,6 +729,14 @@ jobs:
                       echo "Instance name: ${INSTANCE_NAME}"
                       echo "Image tag: ${IMAGE_TAG}"
             - run:
+                  name: Persist env vars for next jobs
+                  command: |
+                      echo export INSTANCE_NAME="${INSTANCE_NAME}" >> persisted_env_vars
+            - persist_to_workspace:
+                  root: ~/
+                  paths:
+                      - project/persisted_env_vars
+            - run:
                   name: Deploy Tenant with Timmy 
                   command: |
                       TENANT_STATUS_CODE=0
