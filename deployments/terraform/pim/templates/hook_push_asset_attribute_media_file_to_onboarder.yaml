@@ -15,7 +15,6 @@ metadata:
     "helm.sh/hook": "post-install,post-upgrade"
     "helm.sh/hook-weight": "35"
     "helm.sh/hook-delete-policy": hook-succeeded
-    "helm.sh/resource-policy": keep
 spec:
   template:
     metadata:
