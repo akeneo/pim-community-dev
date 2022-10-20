@@ -54,7 +54,7 @@ class AssetCollectionMediaFileUrlSelectionApplier implements SelectionApplierInt
 
         $assetMainMedia = current($assetMainMediaFileData);
 
-        return $assetMainMedia['fileKey'];
+        return is_string($assetMainMedia) ? $assetMainMedia : $assetMainMedia['fileKey'];
     }
 
     public function supports(SelectionInterface $selection, Target $target, SourceValueInterface $value): bool
