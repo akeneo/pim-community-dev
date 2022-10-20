@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation\Error;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation\ErrorList;
 
 /**
@@ -23,5 +24,16 @@ final class ViolationsException extends \LogicException
     public function normalize(): array
     {
         return $this->constraintViolationList->normalize();
+    }
+
+    public function normalize(): array
+    {
+        return array_map(fn (Error $error): array => [
+                'path' => $error->getPath(),
+                'parameters' => $error->getParameters(),
+                'message' => $error->getMessage(),
+            ],
+            $this->constraintViolationList->getErrors()
+        );
     }
 }
