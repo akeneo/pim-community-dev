@@ -9,5 +9,14 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
             - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldBeAnIdentifier: ~
         structure:
             - NotBlank: ~
+            - All:
+                - Collection:
+                    fields:
+                        type:
+                            - Choice:
+                                choices: ['free_text', 'auto_number']
+                                message: 'Type can only be "free_text" or "auto_number"'
+
+                    allowExtraFields: true
         code:
             - NotBlank: ~

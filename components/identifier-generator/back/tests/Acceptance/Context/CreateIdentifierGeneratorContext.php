@@ -47,7 +47,7 @@ final class CreateIdentifierGeneratorContext implements Context
         ($this->createGeneratorHandler)(new CreateGeneratorCommand(
             'abcdef',
             [],
-            [FreeText::fromString('abcdef')],
+            [['type' => 'free_text', 'string' => 'abcdef']],
             ['fr' => 'Générateur'],
             'sku',
             '-'
@@ -84,10 +84,9 @@ final class CreateIdentifierGeneratorContext implements Context
     {
         try {
             ($this->createGeneratorHandler)(new CreateGeneratorCommand(
-                '2038e1c9-68ff-4833-b06f-01e42d206002',
                 'abcdef',
                 [],
-                [FreeText::fromString('abcdef')],
+                [['type' => 'free_text', 'string' => 'abcdef']],
                 ['fr' => 'Générateur'],
                 $target,
                 '-'
@@ -152,10 +151,9 @@ final class CreateIdentifierGeneratorContext implements Context
     {
         try {
             ($this->createGeneratorHandler)(new CreateGeneratorCommand(
-                '2038e1c9-68ff-4833-b06f-01e42d206002',
                 'abcdef',
                 [],
-                [FreeText::fromString('abcdef')],
+                [['type' => 'free_text', 'string' => 'abcdef']],
                 ['fr' => 'Générateur'],
                 $target,
                 '-'
@@ -172,10 +170,9 @@ final class CreateIdentifierGeneratorContext implements Context
     {
         try {
             ($this->createGeneratorHandler)(new CreateGeneratorCommand(
-                '2038e1c9-68ff-4833-b06f-01e42d206002',
                 'abcdef',
                 [],
-                [FreeText::fromString('abcdef')],
+                [['type' => 'free_text', 'string' => 'abcdef']],
                 ['fr' => 'Générateur'],
                 'sku',
                 '-'
@@ -200,5 +197,24 @@ final class CreateIdentifierGeneratorContext implements Context
             Delimiter::fromString('-'),
         );
         $this->generatorRepository->save($identifierGenerator);
+    }
+
+    /**
+     * @When I try to create an identifier generator with an unknown property
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithAnUnknownProperty()
+    {
+        try {
+            ($this->createGeneratorHandler)(new CreateGeneratorCommand(
+                'abcdef',
+                [],
+                [['type' => 'unknown', 'string' => 'abcdef']],
+                ['fr' => 'Générateur'],
+                'sku',
+                '-'
+            ));
+        } catch (ViolationsException $exception) {
+            $this->violations = $exception;
+        }
     }
 }

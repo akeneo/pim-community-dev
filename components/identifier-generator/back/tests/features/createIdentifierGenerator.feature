@@ -25,12 +25,7 @@ Feature: Create Identifier Generator
     When I try to create new identifier generator
     Then I should get an error with message 'Limit of "1" identifier generators is reached'
 
-  Scenario: Cannot create an identifier with not existing target
-    When I try to create an identifier generator with not existing target 'toto'
-    Then I should get an error with message 'toto'
-    And the identifier should not be created
-
-  Scenario: Cannot create an identifier with non identifier target
-    When I try to create an identifier generator with target 'name'
-    Then I should get an error with message 'name'
+  Scenario: Cannot create an identifier generator if property does not exist
+    When I try to create an identifier generator with an unknown property
+    Then I should get an error with message 'Type can only be "free_text" or "auto_number"'
     And the identifier should not be created
