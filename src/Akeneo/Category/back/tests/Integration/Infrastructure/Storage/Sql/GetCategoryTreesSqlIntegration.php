@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Sql;
 
+use Akeneo\Category\Domain\Model\Category;
 use Akeneo\Category\Domain\Query\GetCategoryTreesInterface;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface as CategoryDoctrine;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
@@ -14,15 +16,28 @@ use Akeneo\Test\Integration\TestCase;
  */
 class GetCategoryTreesSqlIntegration extends TestCase
 {
-    public function testGetCategoryTrees(): void
-    {
-        $this->createCategory(['code' => 'category_A']);
-        $this->createCategory(['code' => 'category_A_1', 'parent' => 'master']);
+    private CategoryDoctrine|Category $categoryParent;
 
-        $categoryTrees = $this->get(GetCategoryTreesInterface::class)->__invoke();
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->categoryParent = $this->createCategory(['code' => 'categoryParent']);
+        $this->createCategory(['code' => 'categoryChild', 'parent' => 'categoryParent']);
+    }
+
+    public function testGetAllCategoryTrees(): void
+    {
+        $categoryTrees = $this->get(GetCategoryTreesInterface::class)->getAll();
         $this->assertCount(2, $categoryTrees);
-        $this->assertSame('category_A', (string) $categoryTrees[0]->getCode());
+        $this->assertSame('categoryParent', (string) $categoryTrees[0]->getCode());
         $this->assertSame('master', (string) $categoryTrees[1]->getCode());
+    }
+
+    public function testGetCategoryTreesByIds(): void
+    {
+        $categoryTrees = $this->get(GetCategoryTreesInterface::class)->byIds([$this->categoryParent->getId()]);
+        $this->assertSame('categoryParent', (string) $categoryTrees[0]->getCode());
     }
 
     protected function getConfiguration(): Configuration
