@@ -27,13 +27,13 @@ final class ErrorList implements \Countable
         $this->errors[] = $error;
     }
 
-    public function getMergedMessages(): string
-    {
-        return \join("\n", array_map(fn ($error) => $error->getMessage(), $this->errors));
-    }
-
     public function normalize(): array
     {
         return array_map(fn (Error $error): array => $error->normalize(), $this->errors);
+    }
+
+    public function __toString()
+    {
+        return \join("\n", array_map(fn (Error $error): string => $error->__toString(), $this->errors));
     }
 }

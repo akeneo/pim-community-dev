@@ -14,13 +14,7 @@ final class ViolationsException extends \LogicException
 {
     public function __construct(private ErrorList $constraintViolationList)
     {
-        parent::__construct($this->constraintViolationList->getMergedMessages());
-    }
-
-    // TODO This seems only be used in tests, check if we should not use normalized instead
-    public function violations(): ErrorList
-    {
-        return $this->constraintViolationList;
+        parent::__construct($this->constraintViolationList->__toString());
     }
 
     public function normalize(): array

@@ -45,4 +45,13 @@ final class Error
             'message' => $this->message,
         ];
     }
+
+    public function __toString()
+    {
+        if (null !== $this->path && '' !== $this->path) {
+            return sprintf("%s: %s", $this->path, $this->message);
+        }
+
+        return $this->message;
+    }
 }

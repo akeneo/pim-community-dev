@@ -97,12 +97,12 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @Then I should get an error with message ':message'
+     * @Then /^I should get an error with message '(?P<message>[^']*)'$/
      */
     public function iShouldGetAnErrorWithMessage(string $message): void
     {
         Assert::notNull($this->violations);
-        Assert::contains($this->violations->violations()->getMergedMessages(), $message);
+        Assert::contains($this->violations->getMessage(), $message);
     }
 
     /**
