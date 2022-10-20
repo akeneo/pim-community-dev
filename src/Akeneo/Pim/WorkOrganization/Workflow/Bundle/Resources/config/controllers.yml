@@ -134,24 +134,23 @@ services:
         public: true
         class: 'Akeneo\Pim\Permission\Bundle\Controller\Ui\CategoryTreeController'
         arguments:
-            - '@event_dispatcher'
             - '@pim_user.context.user'
             - '@pim_catalog.saver.category'
             - '@pim_catalog.remover.category'
             - '@pim_catalog.factory.category'
             - '@pim_catalog.repository.category'
             - '@oro_security.security_facade'
-            - '@translator'
             - '@pim_internal_api_serializer'
             - '@pim_catalog.updater.category'
             - '@validator'
             - '@pim_enrich.normalizer.violation'
             - '@pim_enrich.doctrine.counter.category_product'
             - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\CountTreesChildren'
+            - '@Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizer'
             - { related_entity: published_product, form_type: 'Akeneo\Category\Infrastructure\Symfony\Form\Type\CategoryType', acl: pim_enrich_product, route: pim_enrich }
+            - '@feature_flags'
             - '@pimee_security.repository.category_access'
             - '@security.token_storage'
-            - '@Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizer'
         calls:
             - [ setContainer, [ '@service_container' ] ]
 
