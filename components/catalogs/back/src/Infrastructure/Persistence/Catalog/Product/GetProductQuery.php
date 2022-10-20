@@ -7,6 +7,8 @@ namespace Akeneo\Catalogs\Infrastructure\Persistence\Catalog\Product;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\User\GetUserIdFromUsernameQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
+use Akeneo\Catalogs\ServiceAPI\Exception\ProductNotFoundException;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductWithUuidNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Ramsey\Uuid\Uuid;
@@ -47,10 +49,14 @@ class GetProductQuery implements GetProductQueryInterface
      */
     public function execute(Catalog $catalog, string $productUuid): array
     {
-        $connectorProduct = $this->getConnectorProducts->fromProductUuid(
-            Uuid::fromString($productUuid),
-            $this->getUserIdFromUsernameQuery->execute($catalog->getOwnerUsername()),
-        );
+        try {
+            $connectorProduct = $this->getConnectorProducts->fromProductUuid(
+                Uuid::fromString($productUuid),
+                $this->getUserIdFromUsernameQuery->execute($catalog->getOwnerUsername()),
+            );
+        } catch (ObjectNotFoundException $notFoundException) {
+            throw new ProductNotFoundException(previous: $notFoundException);
+        }
 
         $valueFilters = $catalog->getProductValueFilters();
 

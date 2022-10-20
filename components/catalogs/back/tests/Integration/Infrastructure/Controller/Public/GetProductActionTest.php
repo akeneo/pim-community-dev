@@ -34,6 +34,8 @@ class GetProductActionTest extends IntegrationTestCase
         $this->enableCatalog($catalogId);
 
         $product = $this->createProduct('blue', [new SetEnabled(true)]);
+        $this->createProduct('red', [new SetEnabled(true)]);
+        $this->createProduct('green', [new SetEnabled(false)]);
         $productUuid = (string) $product->getUuid();
 
         $this->client->request(
@@ -54,9 +56,28 @@ class GetProductActionTest extends IntegrationTestCase
         Assert::assertTrue($result['enabled']);
     }
 
-    public function testItReturnsForbiddenWhenMissingPermissions(): void
+    public function testItReturnsForbiddenWhenMissingReadProductsPermissions(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient([]);
+        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs']);
+
+        $this->client->request(
+            'GET',
+            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products/c335c87e-ec23-4c5b-abfa-0638f141933a',
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+        );
+
+        $response = $this->client->getResponse();
+
+        Assert::assertEquals(403, $response->getStatusCode());
+    }
+
+    public function testItReturnsForbiddenWhenMissingReadCatalogsPermissions(): void
+    {
+        $this->client = $this->getAuthenticatedPublicApiClient(['read_products']);
 
         $this->client->request(
             'GET',

@@ -47,6 +47,8 @@ class GetProductQueryTest extends IntegrationTestCase
         );
 
         $productEnabled = $this->createProduct('tshirt-blue', [new SetEnabled(true)]);
+        $this->createProduct('tshirt-red', [new SetEnabled(true)]);
+        $this->createProduct('tshirt-green', [new SetEnabled(false)]);
         $productEnabledUuid = (string) $productEnabled->getUuid();
 
         $result = $this->getProductQuery->execute($catalog, $productEnabledUuid);

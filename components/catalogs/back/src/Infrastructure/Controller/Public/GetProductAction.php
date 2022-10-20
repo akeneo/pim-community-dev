@@ -6,6 +6,8 @@ namespace Akeneo\Catalogs\Infrastructure\Controller\Public;
 
 use Akeneo\Catalogs\Infrastructure\Security\DenyAccessUnlessGrantedTrait;
 use Akeneo\Catalogs\Infrastructure\Security\GetCurrentUsernameTrait;
+use Akeneo\Catalogs\ServiceAPI\Exception\CatalogNotFoundException;
+use Akeneo\Catalogs\ServiceAPI\Exception\ProductNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
@@ -78,17 +80,20 @@ class GetProductAction
     private function getProduct(string $catalogId, string $productUuid): array
     {
         try {
-            /** @var Product|null $product */
             $product = $this->queryBus->execute(new GetProductQuery(
                 $catalogId,
                 $productUuid
             ));
         } catch (ValidationFailedException $e) {
-            throw new ViolationHttpException($e->getViolations());
-        }
-
-        if (null === $product) {
-            throw new NotFoundHttpException($this->getNotFoundMessage($catalogId, $productUuid));
+            throw new ViolationHttpException(
+                violations: $e->getViolations(),
+                previous: $e,
+            );
+        } catch (CatalogNotFoundException|ProductNotFoundException $notFoundException) {
+            throw new NotFoundHttpException(
+                message: $this->getNotFoundMessage($catalogId, $productUuid),
+                previous: $notFoundException,
+            );
         }
 
         return $product;

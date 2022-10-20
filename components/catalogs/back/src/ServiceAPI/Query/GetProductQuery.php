@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace Akeneo\Catalogs\ServiceAPI\Query;
 
 use Symfony\Component\Validator\Constraints as Assert;
