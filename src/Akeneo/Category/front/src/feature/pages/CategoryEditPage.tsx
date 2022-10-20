@@ -27,7 +27,7 @@ import {
   useUserContext,
 } from '@akeneo-pim-community/shared';
 import {CategoryToDelete, useDeleteCategory, useEditCategoryForm, useCountProductsBeforeDeleteCategory} from '../hooks';
-import {Category} from '../models';
+import {EnrichCategory} from '../models';
 import {HistoryPimView, View} from './HistoryPimView';
 import {DeleteCategoryModal} from '../components/datagrids/DeleteCategoryModal';
 import {EditPermissionsForm, EditPropertiesForm, EditAttributesForm} from '../components';
@@ -59,7 +59,7 @@ const CategoryEditPage: FC = () => {
   const [treeLabel, setTreeLabel] = useState('');
   const countProductsBeforeDeleteCategory = useCountProductsBeforeDeleteCategory(parseInt(categoryId));
   const [categoryToDelete, setCategoryToDelete] = useState<CategoryToDelete | null>(null);
-  const [tree, setTree] = useState<Category | null>(null);
+  const [tree, setTree] = useState<EnrichCategory | null>(null);
 
   // ui state
   const [activeTab, setActiveTab] = useSessionStorageState(propertyTabName, 'pim_category_activeTab');
@@ -116,24 +116,24 @@ const CategoryEditPage: FC = () => {
     }
 
     const catalogLocale = userContext.get('catalogLocale');
-    // TODO: https://akeneo.atlassian.net/browse/GRF-237
-    // const rootCategory = category.root ? category.root : category;
-    const rootCategory: Category = {
-      id: 1,
-      code: 'master',
-      labels: {
-        en_US: 'Master catalog',
-      },
-      root: null,
-    };
 
     setCategoryLabel(getLabel(category.properties.labels, catalogLocale, category.properties.code));
-    setTreeLabel(getLabel(rootCategory.labels, catalogLocale, rootCategory.code));
-    setTree(rootCategory);
-    sessionStorage.setItem(
-      'lastSelectedCategory',
-      JSON.stringify({treeId: rootCategory.id.toString(), categoryId: category.id})
-    );
+
+    let {root} = category;
+    if (category.isRoot) {
+      root = category;
+    }
+    if (root) {
+      const {
+        properties: {code, labels},
+      } = root;
+      setTreeLabel(getLabel(labels, catalogLocale, code));
+      setTree(root);
+      sessionStorage.setItem(
+        'lastSelectedCategory',
+        JSON.stringify({treeId: root.id.toString(), categoryId: category.id})
+      );
+    }
   }, [category, userContext]);
 
   if (categoryFetchingStatus === 'error') {
@@ -231,15 +231,17 @@ const CategoryEditPage: FC = () => {
           >
             {translate('pim_common.properties')}
           </TabBar.Tab>
-          <TabBar.Tab
-            isActive={isCurrent(attributeTabName)}
-            onClick={() => {
-              setActiveTab(attributeTabName);
-              switchTo(attributeTabName);
-            }}
-          >
-            {translate('Attributes')}
-          </TabBar.Tab>
+          {isGranted('pim_enrich_product_category_edit_attributes') && (
+            <TabBar.Tab
+              isActive={isCurrent(attributeTabName)}
+              onClick={() => {
+                setActiveTab(attributeTabName);
+                switchTo(attributeTabName);
+              }}
+            >
+              {translate('akeneo.category.attributes')}
+            </TabBar.Tab>
+          )}
           {category &&
             category.permissions &&
             permissionsAreEnabled &&

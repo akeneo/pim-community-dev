@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Application\Handler;
 
-use Akeneo\Catalogs\Application\Persistence\Catalog\FindOneCatalogByIdQueryInterface;
+use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
+use Akeneo\Catalogs\Application\Persistence\Catalog\DisableCatalogQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductUuidsQueryInterface;
-use Akeneo\Catalogs\Application\Service\DisableOnlyInvalidCatalogInterface;
+use Akeneo\Catalogs\Application\Service\DispatchInvalidCatalogDisabledEventInterface;
+use Akeneo\Catalogs\Application\Validation\IsCatalogValidInterface;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogDisabledException;
-use Akeneo\Catalogs\ServiceAPI\Exception\CatalogDoesNotExistException;
+use Akeneo\Catalogs\ServiceAPI\Exception\CatalogNotFoundException as ServiceApiCatalogNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Query\GetProductUuidsQuery;
 
 /**
@@ -19,41 +22,46 @@ final class GetProductUuidsHandler
 {
     public function __construct(
         private GetProductUuidsQueryInterface $query,
-        private DisableOnlyInvalidCatalogInterface $disableOnlyInvalidCatalog,
-        private FindOneCatalogByIdQueryInterface $findOneCatalogByIdQuery,
+        private GetCatalogQueryInterface $getCatalogQuery,
+        private DisableCatalogQueryInterface $disableCatalogQuery,
+        private IsCatalogValidInterface $isCatalogValid,
+        private DispatchInvalidCatalogDisabledEventInterface $dispatchInvalidCatalogDisabledEvent,
     ) {
     }
 
     /**
      * @return array<string>
      *
+     * @throws ServiceApiCatalogNotFoundException
      * @throws CatalogDisabledException
-     * @throws CatalogDoesNotExistException
      */
     public function __invoke(GetProductUuidsQuery $query): array
     {
-        $catalog = $this->findOneCatalogByIdQuery->execute($query->getCatalogId());
-        if (null === $catalog) {
-            throw new CatalogDoesNotExistException();
+        try {
+            $catalogDomain = $this->getCatalogQuery->execute($query->getCatalogId());
+        } catch (CatalogNotFoundException) {
+            throw new ServiceApiCatalogNotFoundException();
         }
 
-        if (!$catalog->isEnabled()) {
+        if (!$catalogDomain->isEnabled()) {
             throw new CatalogDisabledException();
         }
 
         try {
             return $this->query->execute(
-                $query->getCatalogId(),
+                $catalogDomain,
                 $query->getSearchAfter(),
                 $query->getLimit(),
                 $query->getUpdatedAfter(),
                 $query->getUpdatedBefore(),
             );
         } catch (\Exception $exception) {
-            $isCatalogDisabled = $this->disableOnlyInvalidCatalog->disable($catalog);
-            if ($isCatalogDisabled) {
+            if (!($this->isCatalogValid)($catalogDomain)) {
+                $this->disableCatalogQuery->execute($catalogDomain->getId());
+                ($this->dispatchInvalidCatalogDisabledEvent)($catalogDomain->getId());
                 throw new CatalogDisabledException(previous: $exception);
             }
+
             throw $exception;
         }
     }

@@ -16,35 +16,68 @@ use PhpSpec\ObjectBehavior;
  */
 class StructureSpec extends ObjectBehavior
 {
-    function let()
+    public function let()
     {
         $freeText = FreeText::fromString('ABC');
-        $autoNumber = AutoNumber::fromValues(5,2);
+        $autoNumber = AutoNumber::fromValues(5, 2);
         $this->beConstructedThrough('fromArray', [[$freeText, $autoNumber]]);
     }
 
-    function it_is_a_structure()
+    public function it_is_a_structure()
     {
         $this->shouldBeAnInstanceOf(Structure::class);
     }
 
-    function it_throws_an_exception_when_en_empty_array()
+    public function it_throws_an_exception_when_en_empty_array()
     {
         $this->beConstructedThrough('fromArray', [[]]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_throws_an_exception_when_an_array_value_is_not_an_property()
+    public function it_throws_an_exception_when_an_array_value_is_not_an_property()
     {
         $this->beConstructedThrough('fromArray', [[5, '']]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_has_properties_values()
+    public function it_has_properties_values()
     {
         $properties = $this->getProperties();
         $properties->shouldHaveCount(2);
         $properties[0]->shouldBeAnInstanceOf(PropertyInterface::class);
         $properties[1]->shouldBeAnInstanceOf(PropertyInterface::class);
+    }
+
+    public function it_normalize_a_structure()
+    {
+        $this->normalize()->shouldReturn([
+            [
+                'type' => 'free_text',
+                'string' => 'ABC',
+            ],
+            [
+                'type' => 'auto_number',
+                'numberMin' => 5,
+                'digitsMin' => 2,
+            ],
+        ]);
+    }
+
+    public function it_creates_from_normalized()
+    {
+        $this->fromNormalized([
+            [
+                'type' => 'free_text',
+                'string' => 'CBA',
+            ],
+            [
+                'type' => 'auto_number',
+                'numberMin' => 5,
+                'digitsMin' => 6,
+            ],
+        ])->shouldBeLike(Structure::fromArray([
+            FreeText::fromString('CBA'),
+            AutoNumber::fromValues(5, 6),
+        ]));
     }
 }

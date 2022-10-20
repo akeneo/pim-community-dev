@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Application\Handler;
 
-use Akeneo\Catalogs\Application\Persistence\Catalog\UpdateCatalogProductSelectionCriteriaQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\UpsertCatalogQueryInterface;
+use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\Domain\Operator;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 
@@ -17,28 +17,26 @@ final class CreateCatalogHandler
 {
     public function __construct(
         private UpsertCatalogQueryInterface $upsertCatalogQuery,
-        private UpdateCatalogProductSelectionCriteriaQueryInterface $updateCatalogProductSelectionCriteriaQuery,
     ) {
     }
 
     public function __invoke(CreateCatalogCommand $command): void
     {
         $this->upsertCatalogQuery->execute(
-            $command->getId(),
-            $command->getName(),
-            $command->getOwnerUsername(),
-            false,
-        );
-
-        $this->updateCatalogProductSelectionCriteriaQuery->execute(
-            $command->getId(),
-            [
+            new Catalog(
+                $command->getId(),
+                $command->getName(),
+                $command->getOwnerUsername(),
+                false,
                 [
-                    'field' => 'enabled',
-                    'operator' => Operator::EQUALS,
-                    'value' => true,
+                    [
+                        'field' => 'enabled',
+                        'operator' => Operator::EQUALS,
+                        'value' => true,
+                    ],
                 ],
-            ],
+                []
+            )
         );
     }
 }

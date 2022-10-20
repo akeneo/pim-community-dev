@@ -300,6 +300,12 @@ services:
         tags:
             - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
 
+    Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\UuidFilter:
+        arguments:
+            - 'product_'
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+
     pim_catalog.query.elasticsearch.product_model.filter.id:
         class: '%pim_catalog.query.elasticsearch.filter.id.class%'
         arguments:

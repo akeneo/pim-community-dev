@@ -32,8 +32,8 @@ class AttributeOptionsSorterSpec extends ObjectBehavior
 
         $attribute->getOptions()->willReturn([$size, $width]);
 
-        $size->setSortOrder(2)->shouldBeCalled();
-        $width->setSortOrder(1)->shouldBeCalled();
+        $size->setSortOrder(2)->shouldBeCalled()->willReturn($size);
+        $width->setSortOrder(1)->shouldBeCalled()->willReturn($width);
 
         $optionSaver->saveAll([0 => $size, 1 => $width])->shouldBeCalled();
 

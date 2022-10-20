@@ -8,10 +8,13 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorCode;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorId;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
+use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Exception\ViolationsException;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -19,16 +22,21 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGenera
  */
 final class CreateGeneratorHandler
 {
-    private IdentifierGeneratorRepository $identifierGeneratorRepository;
-
-    public function __construct(IdentifierGeneratorRepository $identifierGeneratorRepository)
-    {
-        $this->identifierGeneratorRepository = $identifierGeneratorRepository;
+    public function __construct(
+        private IdentifierGeneratorRepository $identifierGeneratorRepository,
+        private ValidatorInterface $validator
+    ) {
     }
 
     public function __invoke(CreateGeneratorCommand $command): void
     {
+        $violations = $this->validator->validate($command);
+        if (0 < $violations->count()) {
+            throw new ViolationsException($violations);
+        }
+
         $identifierGenerator = new IdentifierGenerator(
+            IdentifierGeneratorId::fromString($command->id),
             IdentifierGeneratorCode::fromString($command->code),
             Conditions::fromArray($command->conditions),
             Structure::fromArray($command->structure),

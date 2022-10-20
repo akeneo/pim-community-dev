@@ -109,15 +109,6 @@ pim_enrich:
       categories_view: Raadpleeg de categorieën van een productmodel
       history: Bekijk productmodel-geschiedenis
       remove: Verwijder een productmodel (inclusief varianten)
-    category:
-      list: Categorieën oplijsten
-      create: Categorie aanmaken
-      edit: Categorie wijzigen
-      remove: Categorie verwijderen
-      move: Categorie verplaatsen
-      children: Kinderen van categorie weergeven
-      products: Producten van categorie weergeven
-      history: Bekijk categoriegeschiedenis
     channel:
       index: Kanalen weergeven
       create: Kanaal aanmaken

@@ -166,4 +166,9 @@ jobs:
         alias:     events_api_purge
         label:     Purge events API
         type:      scheduled_job
+    aggregate_volume_queries:
+        connector: internal
+        alias:     aggregate_volume_queries
+        label:     Aggregate volume monitoring queries
+        type:      scheduled_job
 

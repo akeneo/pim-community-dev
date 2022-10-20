@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Acceptance;
 
-use Akeneo\Catalogs\Application\Persistence\Catalog\UpdateCatalogProductSelectionCriteriaQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\UpsertCatalogQueryInterface;
+use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
@@ -39,7 +39,6 @@ class ApiContext implements Context
         private AuthenticationContext $authentication,
         private QueryBus $queryBus,
         private UpsertCatalogQueryInterface $upsertCatalogQuery,
-        private UpdateCatalogProductSelectionCriteriaQueryInterface $updateCatalogProductSelectionCriteriaQuery,
     ) {
         $this->container = $kernel->getContainer()->get('test.service_container');
     }
@@ -125,34 +124,22 @@ class ApiContext implements Context
         $connectedAppUserIdentifier = $this->getConnectedApp()->getUsername();
         $this->authentication->logAs($connectedAppUserIdentifier);
 
-        // create catalog
-        $commandBus = $this->container->get(CommandBus::class);
-        $commandBus->execute(new CreateCatalogCommand(
-            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            'Store US',
-            $connectedAppUserIdentifier,
-        ));
-
-        // enable catalog
+        // create  enabled catalog with product selection criteria
         $this->upsertCatalogQuery->execute(
-            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            'Store US',
-            $connectedAppUserIdentifier,
-            true,
-        );
-
-        // create product selection
-        $productSelectionCriteria = [
-            [
-                'field' => 'enabled',
-                'operator' => '=',
-                'value' => true,
-            ],
-        ];
-
-        $this->updateCatalogProductSelectionCriteriaQuery->execute(
-            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            $productSelectionCriteria,
+            new Catalog(
+                'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+                'Store US',
+                $connectedAppUserIdentifier,
+                true,
+                [
+                    [
+                        'field' => 'enabled',
+                        'operator' => '=',
+                        'value' => true,
+                    ],
+                ],
+                []
+            )
         );
 
         // create products
