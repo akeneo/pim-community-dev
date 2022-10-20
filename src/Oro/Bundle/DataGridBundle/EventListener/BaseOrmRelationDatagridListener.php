@@ -28,6 +28,8 @@ class BaseOrmRelationDatagridListener
     /** @var boolean */
     protected $isEditMode;
 
+    private RequestParameters $requestParams;
+
     /**
      * @param string            $paramName  Parameter name that should be taken from request and binded to query
      * @param RequestParameters $requestParams
