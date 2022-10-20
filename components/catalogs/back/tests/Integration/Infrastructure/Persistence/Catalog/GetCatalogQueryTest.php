@@ -59,7 +59,8 @@ class GetCatalogQueryTest extends IntegrationTestCase
                     'value' => true,
                 ],
             ],
-            ['channels' => ['ecommerce', 'print']]
+            ['channels' => ['ecommerce', 'print']],
+            []
         );
 
         $this->assertEquals($expected, $result);
