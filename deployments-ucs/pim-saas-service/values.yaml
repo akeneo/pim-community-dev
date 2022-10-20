@@ -49,6 +49,8 @@ common:
     value: "22527" # E_ALL & ~E_DEPRECATED & ~E_STRICT
   - name: "PHP_CONF_DATE_TIMEZONE"
     value: "Etc/UTC"
+  - name: "MAGICK_CONFIGURE_PATH"
+    value: "/etc/php/8.0/fpm/"
   phpConfCLI:
   - name: "PHP_CONF_MAX_EXECUTION_TIME"
     value: "0"

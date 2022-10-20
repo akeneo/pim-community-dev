@@ -75,6 +75,7 @@ RUN sed -i '/<policy domain="resource" name="disk" value="1GiB"\/>/c\  <policy d
 
 COPY docker/php.ini /etc/php/8.0/cli/conf.d/99-akeneo.ini
 COPY docker/php.ini /etc/php/8.0/fpm/conf.d/99-akeneo.ini
+COPY docker/fpm_policy.xml /etc/php/8.0/fpm/policy.xml
 
 #
 # Image used for development

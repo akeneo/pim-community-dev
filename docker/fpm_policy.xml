@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE policymap [
+        <!ELEMENT policymap (policy)*>
+        <!ATTLIST policymap xmlns CDATA #FIXED ''>
+        <!ELEMENT policy EMPTY>
+        <!ATTLIST policy xmlns CDATA #FIXED '' domain NMTOKEN #REQUIRED
+                name NMTOKEN #IMPLIED pattern CDATA #IMPLIED rights NMTOKEN #IMPLIED
+                stealth NMTOKEN #IMPLIED value CDATA #IMPLIED>
+        ]>
+
+<!--
+    Override default values of ImageMagick policy.xml for FPM process.
+    An override can only specify a more restrictive value than the default value.
+
+    See MAGICK_CONFIGURE_PATH environment variable.
+-->
+<policymap>
+    <!--
+        https://akeneo.atlassian.net/browse/PIM-10678 deactivate memory mapping strategy (called "map") for ImageMagick cache
+        it does it by specifying a limit inferior to memory cache strategy
+        1. ImageMagick will take "memory" cache strategy from 0 to 256 Mib cache size
+        2. if cache size superior to 256 Mib, it will try "map" cache strategy, from 0 to 1 Mib, which is never the case
+        3. as "map" is not possible, it takes "disk" cache strategy from 256 Mib to 3 GiB
+        4 if cache size is superior to 4 Gib it fails with a catchable exception
+
+
+        Map cache can produce very high IO usage during several minutes when used concurrently on big images, blocking the fpm child process several minutes.
+        Also, our FPM container has not a very big memory limit configured, limiting the interest of memory mapping as soon as you have more than 2 concurrent images to transform.
+
+        That's why it is deactivated in for fpm process.
+    -->
+    <policy domain="resource" name="map" value="1MiB" />
+
+    <!--
+       Safeguard to not exhaust resources on the transformation of an image. Indeed, ImageMagick transformation will not trigger a PHP timeout
+       as the transformation is done in the function of an extension. As a consequence, it can take all the FPM child process and make the PIM unavailable.
+
+       Do note that the time is global per process, and not by ImageMagick operation.
+       That's why it is specified for FPM, but not in CLI where you can handle multiple images in a job.
+    -->
+    <policy domain="resource" name="time" value="60"/>
+</policymap>
