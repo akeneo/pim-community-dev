@@ -1,5 +1,7 @@
 # 6.0.x
 
+# 6.0.46 (2022-10-20)
+
 ## Bug fixes
 PIM-10670: Fix memory leak on creating combinations for currencies
 PIM-10679: Fix out of sort memory on ProductModelImagesFromCodes
