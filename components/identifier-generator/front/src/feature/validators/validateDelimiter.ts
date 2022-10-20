@@ -1,7 +1,7 @@
 import {Validator} from './Validator';
 import {Delimiter} from '../models';
 
-const validateDelimiter: Validator<Delimiter | undefined> = (_delimiter, _path) => {
+const validateDelimiter: Validator<Delimiter | null> = (_delimiter, _path) => {
   return [];
 };
 
