@@ -49,8 +49,9 @@ final class DatabaseListProductFilesForSupplierIntegration extends SqlIntegratio
         static::assertEmpty(($this->get(ListProductFilesForSupplier::class))('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7'));
     }
 
+
     /** @test */
-    public function itGetsTheLatestTwentyFiveProductFilesForAGivenContributorAndTheContributorsBelongingToTheSameSupplier(): void
+    public function itGetsNoMoreThanTwentyFiveProductFilesAtATime(): void
     {
         $productFileRepository = $this->get(ProductFileRepository::class);
         for ($i = 0; 30 > $i; $i++) {
@@ -82,6 +83,62 @@ final class DatabaseListProductFilesForSupplierIntegration extends SqlIntegratio
                 $supplierProductFiles,
             ),
         );
+    }
+
+    /** @test */
+    public function itPaginatesTheProductFilesList(): void
+    {
+        $productFileRepository = $this->get(ProductFileRepository::class);
+        for ($i = 0; 30 > $i; $i++) {
+            $productFileRepository->save(
+                (new ProductFileBuilder())
+                    ->uploadedBySupplier($this->supplier)
+                    ->withContributorEmail($i % 2 ? 'contributor1@example.com' : 'contributor2@example.com')
+                    ->withOriginalFilename(sprintf('products_%d.xlsx', $i+1))
+                    ->uploadedAt(
+                        (new \DateTimeImmutable())->add(
+                            \DateInterval::createFromDateString(sprintf('%d minutes', 30 - $i)),
+                        ),
+                    )
+                    ->build(),
+            );
+        }
+
+        $productFiles = ($this->get(ListProductFilesForSupplier::class))('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7', 2);
+
+        static::assertCount(5, $productFiles);
+    }
+
+    /** @test */
+    public function itSortsTheProductFilesListByUploadedDateDescending(): void
+    {
+        $productFileRepository = $this->get(ProductFileRepository::class);
+        $productFileRepository->save(
+            (new ProductFileBuilder())
+                ->uploadedBySupplier($this->supplier)
+                ->withOriginalFilename('file1.xlsx')
+                ->uploadedAt((new \DateTimeImmutable())->modify('-10 DAY'))
+                ->build(),
+        );
+        $productFileRepository->save(
+            (new ProductFileBuilder())
+                ->uploadedBySupplier($this->supplier)
+                ->withOriginalFilename('file2.xlsx')
+                ->build(),
+        );
+        $productFileRepository->save(
+            (new ProductFileBuilder())
+                ->uploadedBySupplier($this->supplier)
+                ->withOriginalFilename('file3.xlsx')
+                ->uploadedAt((new \DateTimeImmutable())->modify('-2 DAY'))
+                ->build(),
+        );
+
+        $productFiles = $this->get(ListProductFilesForSupplier::class)('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7');
+
+        static::assertSame('file2.xlsx', $productFiles[0]->originalFilename);
+        static::assertSame('file3.xlsx', $productFiles[1]->originalFilename);
+        static::assertSame('file1.xlsx', $productFiles[2]->originalFilename);
     }
 
     /** @test */
