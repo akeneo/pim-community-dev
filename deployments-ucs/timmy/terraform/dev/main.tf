@@ -94,9 +94,9 @@ module "timmy_create_tenant" {
       secret     = "MAILER_API_KEY"
       version    = "latest"
     },
-    // Presence of `TENANT_CONTEXT_ENCRYPT_KEY` enables the encryption in Firestore
+    // Presence of `TENANT_CONTEXT_ENCRYPTION_KEY` enables the encryption in Firestore
     {
-      key        = "TENANT_CONTEXT_ENCRYPT_KEY"
+      key        = "TENANT_CONTEXT_ENCRYPTION_KEY"
       project_id = var.project_id
       secret     = "TENANT_CONTEXT_ENCRYPTION_KEY"
       version    = "latest"
@@ -147,6 +147,7 @@ module "timmy_delete_tenant" {
   ]
   
   environment_variables = {
+
     ARGOCD_URL                     = local.argocd_url
     ARGOCD_USERNAME                = "admin"
     GCP_FIRESTORE_PROJECT_ID       = "akecld-prd-pim-fire-eur-dev"
@@ -171,7 +172,7 @@ module "timmy_create_fire_document" {
   
   secret_environment_variables = [
     {
-      key        = "TENANT_CONTEXT_ENCRYPT_KEY"
+      key        = "TENANT_CONTEXT_ENCRYPTION_KEY"
       project_id = var.project_id
       secret     = "TENANT_CONTEXT_ENCRYPTION_KEY"
       version    = "latest"

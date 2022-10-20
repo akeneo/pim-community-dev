@@ -16,10 +16,10 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Spout;
 use Akeneo\Platform\TailoredImport\Domain\Exception\FileNotFoundException;
 use Akeneo\Platform\TailoredImport\Domain\Exception\SheetNotFoundException;
 use Akeneo\Platform\TailoredImport\Domain\Query\Filesystem\XlsxFileReaderInterface;
-use Box\Spout\Reader\Common\Creator\ReaderFactory;
-use Box\Spout\Reader\ReaderInterface;
-use Box\Spout\Reader\SheetInterface;
-use Box\Spout\Reader\XLSX\Reader;
+use OpenSpout\Reader\Common\Creator\ReaderFactory;
+use OpenSpout\Reader\ReaderInterface;
+use OpenSpout\Reader\SheetInterface;
+use OpenSpout\Reader\XLSX\Reader;
 
 class XlsxFileReader implements XlsxFileReaderInterface
 {

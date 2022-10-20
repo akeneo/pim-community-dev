@@ -86,6 +86,7 @@ function initializeLogger(branchName) {
 }
 
 function prefixUrlWithBranchName(url, branchName) {
+
   return (branchName === DEFAULT_BRANCH_NAME ? url : url+'/' + branchName + '/');
 }
 
@@ -190,8 +191,8 @@ functions.http('requestPortal', (req, res) => {
   ]);
 
   // Prefix url with branch name if present
-  const branchName = (req.body.branchName || DEFAULT_BRANCH_NAME).toLowerCase();
-  const pimNamespace = (branchName === DEFAULT_BRANCH_NAME ? DEFAULT_PIM_NAMESPACE : `pim-${branchName}`);
+  const branchName = (req.body.branchName || DEFAULT_BRANCH_NAME);
+  const pimNamespace = (branchName === DEFAULT_BRANCH_NAME ? DEFAULT_PIM_NAMESPACE : `pim-${branchName}`).toLowerCase();
 
   initializeLogger(branchName);
   logger.info('Recovery of the tenants from the portal');

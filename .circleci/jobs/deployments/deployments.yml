@@ -680,6 +680,63 @@ jobs:
                   kubectl delete app ${PIM_NS} -n argocd
                   kubectl delete ns ${PIM_NS}
               when: on_fail
+           
+    deploy_tenant_wb_timmy:
+        parameters:
+            PRODUCT_TYPE:
+                type: string
+                default: "srnt"
+            CLUSTER_NEXT:
+                type: boolean
+                default: false
+        environment:
+            <<: *envVarsDeployPIMSaaSDev
+        <<: *dockerCloudDeployerUCS
+        resource_class: small
+        steps:
+            - attach_workspace:
+                  at: ~/
+            - when:
+                  condition:
+                      equal: [true, << parameters.CLUSTER_NEXT >> ]
+                  steps:
+                      - modify_cluster
+            - set_gcloud_config_pim_saas_dev
+            - restore_persisted_env_vars
+            - install_yq_v3
+            - run:
+                  name: Define value for next steps
+                  command: |
+                      INSTANCE_NAME_PREFIX=ucs
+                      INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
+                      CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
+                      PIM_NS=pim-${CIRCLE_BRANCH_LOWER}
+                      FIRESTORE_COLLECTION="${GOOGLE_CLUSTER_REGION}/${CIRCLE_BRANCH}/tenant_contexts"
+                      REGION_PREFIX="eur-w-1b"
+                      WORKLOAD_IDENTITY_KSA="${INSTANCE_NAME}-ksa-workload-identity"
+                      GOOGLE_ZONE=${GOOGLE_COMPUTE_ZONE}
+
+                      echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
+                      echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+                      echo export WORKLOAD_IDENTITY_KSA=${WORKLOAD_IDENTITY_KSA} >> $BASH_ENV
+                      echo export GOOGLE_ZONE=${GOOGLE_ZONE} >> $BASH_ENV
+                      echo export PIM_NS=${PIM_NS} >> $BASH_ENV
+                      echo export FIRESTORE_COLLECTION=${FIRESTORE_COLLECTION} >> $BASH_ENV
+                      echo export REGION_PREFIX=${REGION_PREFIX} >> $BASH_ENV
+                      echo export CIRCLE_BRANCH=${CIRCLE_BRANCH} >> $BASH_ENV
+
+                      echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
+                      echo "Instance name: ${INSTANCE_NAME}"
+                      echo "Image tag: ${IMAGE_TAG}"
+            - run:
+                  name: Deploy Tenant with Timmy 
+                  command: |
+                      TENANT_STATUS_CODE=0
+                      JSON_BODY_STRING=$(printf "{\"branchName\":\"%s\"}\n" $CIRCLE_BRANCH)
+                      echo $JSON_BODY_STRING
+                      gcloud  config unset auth/impersonate_service_account
+                      gcloud beta functions call ${REGION_PREFIX}-timmy-request-portal  --region=${GOOGLE_CLUSTER_REGION}  --data  $JSON_BODY_STRING  --gen2  || TENANT_STATUS_CODE=1
+                      exit ${TENANT_STATUS_CODE}
 
     deploy_tenant:
         parameters:
@@ -711,12 +768,9 @@ jobs:
                       INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
                       CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
                       PIM_NS=pim-${CIRCLE_BRANCH_LOWER}
-
                       FIRESTORE_COLLECTION="${GOOGLE_CLUSTER_REGION}/${PIM_NS}/tenant_contexts"
-
                       WORKLOAD_IDENTITY_KSA="${INSTANCE_NAME}-ksa-workload-identity"
                       GOOGLE_ZONE=${GOOGLE_COMPUTE_ZONE}
-
                       echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
                       echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
                       echo export WORKLOAD_IDENTITY_KSA=${WORKLOAD_IDENTITY_KSA} >> $BASH_ENV

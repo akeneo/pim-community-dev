@@ -30,6 +30,7 @@ const httpsAgent = new https.Agent({
 });
 
 const DEFAULT_BRANCH_NAME = 'master';
+const DEFAULT_PIM_NAMESPACE = 'pim'
 const FIRESTORE_STATUS = {
   DELETION_IN_PREPARATION: "deletion_in_preparation",
   DELETION_IN_PROGRESS: "deletion_in_progress"
@@ -314,7 +315,8 @@ functions.http('deleteTenant', (req, res) => {
     });
   }
 
-  firestoreCollection = `${process.env.REGION}/${branchName}/${process.env.TENANT_CONTEXT_COLLECTION_NAME}`;
+  const pimNamespace = (branchName === DEFAULT_BRANCH_NAME ? DEFAULT_PIM_NAMESPACE : DEFAULT_PIM_NAMESPACE+"-"+branchName.toLowerCase());
+  firestoreCollection = `${process.env.REGION}/${pimNamespace}/${process.env.TENANT_CONTEXT_COLLECTION_NAME}`;
 
   logger.debug('Instantiate firestore instance');
   const firestore = new Firestore({

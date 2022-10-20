@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: holomekc/wiremock-gui
-  tag: 2.32.0.2
+  tag: 2.34.0.0
   pullPolicy: IfNotPresent
 
 initContainer:
@@ -50,7 +50,10 @@ routes:
       namespace: default
 
 env:
-  WIREMOCK_OPTIONS: "--port=9021,--max-request-journal=1000,--local-response-templating,--root-dir=/home/wiremock/storage"
+  WIREMOCK_PORT: 9021
+  WIREMOCK_MAX_REQUEST_JOURNAL: 1000
+  WIREMOCK_LOCAL_RESPONSE_TEMPLATING:
+  WIREMOCK_ROOT_DIR: /home/wiremock/storage
 
 resources: {}
   #limits:

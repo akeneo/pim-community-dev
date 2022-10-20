@@ -24,9 +24,9 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
-use Box\Spout\Common\Type;
-use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
-use Box\Spout\Writer\Common\Creator\WriterFactory;
+use OpenSpout\Common\Type;
+use OpenSpout\Writer\Common\Creator\WriterEntityFactory;
+use OpenSpout\Writer\Common\Creator\WriterFactory;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**

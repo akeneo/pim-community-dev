@@ -19,8 +19,8 @@ use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Test\Pim\TableAttribute\Helper\EntityBuilderTrait;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance;
-use Box\Spout\Common\Entity\Row;
-use Box\Spout\Reader\Common\Creator\ReaderFactory;
+use OpenSpout\Common\Entity\Row;
+use OpenSpout\Reader\Common\Creator\ReaderFactory;
 use PHPUnit\Framework\Assert;
 
 final class ExportTableAttributeIntegration extends TestCase

@@ -35,7 +35,6 @@ final class DatabaseDeleteOldProductFilesIntegration extends SqlIntegrationTestC
                 (new ProductFileBuilder())
                     ->uploadedBySupplier($supplier)
                     ->withOriginalFilename(sprintf('file%d.xlsx', $i + 1))
-                    ->withPath(sprintf('supplier-1/file%d.xlsx', $i + 1))
                     ->uploadedAt(
                         (new \DateTimeImmutable())->add(
                             \DateInterval::createFromDateString(sprintf('-%d days', ($i + 1) * 40)),

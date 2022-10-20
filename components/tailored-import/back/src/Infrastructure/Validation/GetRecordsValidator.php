@@ -15,6 +15,7 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Type;
@@ -33,8 +34,6 @@ final class GetRecordsValidator extends ConstraintValidator
             return;
         }
 
-        $test = $value->request->all();
-
         $validator = $this->context->getValidator()->inContext($this->context);
         $validator->validate($value->request->all(), new Collection([
             'fields' => [
@@ -50,10 +49,16 @@ final class GetRecordsValidator extends ConstraintValidator
                     new NotNull(),
                 ],
                 'include_codes' => [
-                    new Type('string'),
+                    new Type('array'),
+                    new All([
+                        new Type('string'),
+                    ]),
                 ],
                 'exclude_codes' => [
-                    new Type('string'),
+                    new Type('array'),
+                    new All([
+                        new Type('string'),
+                    ]),
                 ],
             ],
         ], allowExtraFields: true));

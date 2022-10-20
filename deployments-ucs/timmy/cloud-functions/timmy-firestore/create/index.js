@@ -41,7 +41,7 @@ var  bodyjson=req.body;
     });
 
   
-   const encryptKey = process.env.TENANT_CONTEXT_ENCRYPT_KEY;
+   const encryptKey = process.env.TENANT_CONTEXT_ENCRYPTION_KEY;
    async function  encryptAES (inputText, key){
     return CryptoJS.AES.encrypt(inputText, key).toString();
   }

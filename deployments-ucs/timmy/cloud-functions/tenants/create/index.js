@@ -35,6 +35,7 @@ const httpsAgent = new https.Agent({
 });
 
 const DEFAULT_BRANCH_NAME = 'master';
+const DEFAULT_PIM_NAMESPACE = 'pim';
 const FIRESTORE_STATUS = {
   CREATED: "created",
   CREATION_FAILED: "creation_failed",
@@ -360,7 +361,7 @@ function generatePassword(length = 16, numbers = true, lowercase = true, upperca
 
 async function encryptAES(text, key) {
   try {
-    logger.debug(`Encrypt text with ${process.env.TENANT_CONTEXT_ENCRYPT_KEY} key`);
+    logger.debug(`Encrypt text with ${process.env.TENANT_CONTEXT_ENCRYPTION_KEY} key`);
     return await CryptoJS.AES.encrypt(text, key).toString();
   } catch (error) {
     logger.debug(`Failed to encrypt text with ${key} key`);
@@ -385,9 +386,9 @@ async function updateFirestoreDoc(firestore, docRef, status, context) {
 
   logger.debug(`Prepared Firestore document: ${JSON.stringify(data)}`);
 
-  if (process.env.TENANT_CONTEXT_ENCRYPT_KEY) {
+  if (process.env.TENANT_CONTEXT_ENCRYPTION_KEY) {
     try {
-      data.context = await encryptAES(JSON.stringify(data.context), process.env.TENANT_CONTEXT_ENCRYPT_KEY);
+      data.context = await encryptAES(JSON.stringify(data.context), process.env.TENANT_CONTEXT_ENCRYPTION_KEY);
     } catch (error) {
       const msg = `Failed to encrypt \`${docRef}\` Firestore document in \`${firestoreCollection}\` collection: ${error}`;
       logger.error(msg);
@@ -481,7 +482,9 @@ functions.http('createTenant', (req, res) => {
     // If branchName is an empty string it is the default branch
     const branchName = body.branchName
     const instanceName = body.instanceName;
-    firestoreCollection = `${process.env.REGION}/pim-`+branchName.toLowerCase()+`/${process.env.TENANT_CONTEXT_COLLECTION_NAME}`;
+    const pimNamespace = (branchName === DEFAULT_BRANCH_NAME ? DEFAULT_PIM_NAMESPACE : DEFAULT_PIM_NAMESPACE+"-"+branchName.toLowerCase());
+
+    firestoreCollection = `${process.env.REGION}/${pimNamespace}/${process.env.TENANT_CONTEXT_COLLECTION_NAME}`;
 
     initializeLogger(branchName, instanceName);
 
@@ -548,6 +551,7 @@ functions.http('createTenant', (req, res) => {
             dnsCloudDomain: dnsCloudDomain,
             workloadIdentityGSA: 'main-service-account',
             workloadIdentityKSA: `${pfid}-ksa-workload-identity`,
+            tenantContext: firestoreCollection ,
           },
           elasticsearch: {
             client: {

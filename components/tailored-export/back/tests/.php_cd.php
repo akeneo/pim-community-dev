@@ -36,9 +36,9 @@ $rules = [
             'Symfony\Contracts',
             'Akeneo\Tool',
             'Webmozart\Assert\Assert',
-            'Box\Spout\Writer\Common\Creator\WriterEntityFactory',
-            'Box\Spout\Writer\Common\Creator\WriterFactory',
-            'Box\Spout\Writer\WriterInterface',
+            'OpenSpout\Writer\Common\Creator\WriterEntityFactory',
+            'OpenSpout\Writer\Common\Creator\WriterFactory',
+            'OpenSpout\Writer\WriterInterface',
             'Ramsey\Uuid\UuidInterface',
 
             'Akeneo\Platform\TailoredExport\Application',
