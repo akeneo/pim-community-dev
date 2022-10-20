@@ -13,7 +13,7 @@ use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository
 use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
 use PHPUnit\Framework\TestCase;
 
-final class MarkCommentsAsReadBySupplierTest extends TestCase
+final class MarkCommentsAsReadBySupplierHandlerTest extends TestCase
 {
     /** @test */
     public function itThrowsAnExceptionIfWeTryToMarkAsReadCommentsOfAProductFileThatDoesNotExist(): void

@@ -10,7 +10,7 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\Pr
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
 
-final class MarkCommentsAsReadBySupplierHandler
+class MarkCommentsAsReadBySupplierHandler
 {
     public function __construct(
         private MarkCommentsAsReadBySupplierQuery $markCommentsAsReadBySupplier,
