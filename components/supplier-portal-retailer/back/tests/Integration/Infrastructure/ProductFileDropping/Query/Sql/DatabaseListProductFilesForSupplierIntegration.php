@@ -171,7 +171,7 @@ final class DatabaseListProductFilesForSupplierIntegration extends SqlIntegratio
             $sql,
             [
                 'productFileIdentifier' => '5d001a43-a42d-4083-8673-b64bb4ecd26f',
-                'lastReadAt' => new \DateTimeImmutable('2022-09-07 00:00:00')
+                'lastReadAt' => new \DateTimeImmutable('2022-09-07 00:00:00'),
             ],
             [
                 'lastReadAt' => Types::DATETIME_IMMUTABLE,
@@ -202,6 +202,6 @@ final class DatabaseListProductFilesForSupplierIntegration extends SqlIntegratio
             'created_at' => '2022-09-07 00:00:01.000000',
         ]], $productFiles[0]->supplierComments);
         static::assertNull($productFiles[0]->retailerLastReadAt);
-        static::assertSame("2022-09-07 00:00:00", $productFiles[0]->supplierLastReadAt);
+        static::assertSame('2022-09-07 00:00:00', $productFiles[0]->supplierLastReadAt);
     }
 }

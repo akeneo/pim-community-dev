@@ -76,7 +76,7 @@ final class DatabaseMarkCommentsAsReadBySupplierIntegration extends SqlIntegrati
 
         $result = $this->get(Connection::class)->executeQuery($sql)->fetchAssociative();
 
-        if ($result === false) {
+        if (false === $result) {
             return null;
         }
 

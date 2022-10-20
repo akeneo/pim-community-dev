@@ -191,6 +191,19 @@ final class ProductFileTest extends TestCase
         static::assertFalse($productFile->downloaded());
     }
 
+    /** @test */
+    public function itChecksIfProductFileHasComments(): void
+    {
+        $productFileBuilder = new ProductFileBuilder();
+        $productFile = $productFileBuilder->build();
+
+        self::assertFalse($productFile->hasComments());
+
+        $productFile->addNewRetailerComment('content', 'julia@roberts.com', new \DateTimeImmutable('2022-09-07 00:00:00'));
+
+        self::assertTrue($productFile->hasComments());
+    }
+
     private function buildProductFile(Identifier $productFileIdentifier, array $retailerComments = [], array $supplierComments = []): ProductFile
     {
         return ProductFile::hydrate(
