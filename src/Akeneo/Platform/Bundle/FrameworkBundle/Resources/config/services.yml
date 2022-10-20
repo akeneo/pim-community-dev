@@ -26,6 +26,7 @@ services:
         arguments:
             - '@request_stack'
             - '@Akeneo\Platform\Bundle\FrameworkBundle\Logging\BoundedContextResolver'
+            - '%env(default::string:APP_TENANT_ID)%'
         tags:
             - { name: monolog.processor }
 
@@ -33,6 +34,7 @@ services:
         arguments:
             - '@Akeneo\Platform\Bundle\FrameworkBundle\Logging\BoundedContextResolver'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\FindCurrentAppId'
+            - '%env(default::string:APP_TENANT_ID)%'
         tags:
             - { name: kernel.event_listener, event: kernel.response, method: injectAkeneoContextHeader }
 

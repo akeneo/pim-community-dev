@@ -28,10 +28,12 @@ class AddContextHeaderResponseListener
     private const HEADER_REQUEST_URI = 'x-request-path';
     private const HEADER_SYMFONY_ROUTE = 'x-symfony-route';
     private const HEADER_APP_ID = 'x-app-id';
+    private const HEADER_APP_TENANT_ID = 'x-app-tenant-id';
 
     public function __construct(
         private BoundedContextResolver $boundedContextResolver,
         private FindCurrentAppIdInterface $findCurrentAppId,
+        private ?string $tenantId,
     ) {
     }
 
@@ -55,6 +57,11 @@ class AddContextHeaderResponseListener
         $event->getResponse()->headers->set(
             self::HEADER_APP_ID,
             $this->findCurrentAppId->execute(),
+        );
+
+        $event->getResponse()->headers->set(
+            self::HEADER_APP_TENANT_ID,
+            $this->tenantId,
         );
     }
 }

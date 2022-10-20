@@ -40,13 +40,14 @@ class AddContextHeaderResponseListenerSpec extends ObjectBehavior
 
         $response->headers = $headers;
 
-        $this->beConstructedWith($boundedContextResolver, $findCurrentAppId);
+        $this->beConstructedWith($boundedContextResolver, $findCurrentAppId, 'my_tenant_id');
         $this->shouldHaveType(AddContextHeaderResponseListener::class);
 
         $headers->set('x-akeneo-context', 'my_context')->shouldBeCalled();
         $headers->set('x-request-path', 'my_path_info')->shouldBeCalled();
         $headers->set('x-symfony-route', 'my_symfony_route')->shouldBeCalled();
         $headers->set('x-app-id', 'my_app_id')->shouldBeCalled();
+        $headers->set('x-app-tenant-id', 'my_tenant_id')->shouldBeCalled();
 
         $this->injectAkeneoContextHeader($event);
     }

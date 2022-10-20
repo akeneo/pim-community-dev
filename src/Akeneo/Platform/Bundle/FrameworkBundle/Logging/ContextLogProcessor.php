@@ -27,7 +27,8 @@ class ContextLogProcessor
 
     public function __construct(
         private RequestStack $requestStack,
-        private BoundedContextResolver $boundedContextResolver
+        private BoundedContextResolver $boundedContextResolver,
+        private ?string $tenantId,
     ) {
     }
 
@@ -48,11 +49,12 @@ class ContextLogProcessor
 
         $record['context'] = array_merge($record['context'] ?? [], $this->cachedContext);
         $record['trace_id'] = $this->traceId;
+        $record['tenant_id'] = $this->tenantId ?? '';
 
         return $record;
     }
 
-    public function initCommandContext(Command $cmd)
+    public function initCommandContext(Command $cmd): void
     {
         $this->traceId= (string) Uuid::uuid4();
         $this->cachedContext['cmd_name'] = $cmd->getName();

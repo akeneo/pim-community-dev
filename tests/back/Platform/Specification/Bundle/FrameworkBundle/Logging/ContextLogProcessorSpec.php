@@ -28,7 +28,7 @@ class ContextLogProcessorSpec extends ObjectBehavior
         $request->getSchemeAndHttpHost()->willReturn(self::TEST_SCHEMA);
         $request->getPathInfo()->willReturn(self::PATH_INFO);
         $boundedContextResolver->fromRequest($request)->willReturn(self::BOUNDED_CONTEXT);
-        $this->beConstructedWith($requestStack, $boundedContextResolver);
+        $this->beConstructedWith($requestStack, $boundedContextResolver, 'my_tenant_id');
     }
 
     function it_is_initializable()
@@ -46,8 +46,8 @@ class ContextLogProcessorSpec extends ObjectBehavior
         return [
             self::REF_KEY => self::REF_VALUE,
             self::CONTEXT => [
-                self::REF_KEY_2 => self::REF_VALUE_2
-            ]
+                self::REF_KEY_2 => self::REF_VALUE_2,
+            ],
         ];
     }
 
@@ -72,8 +72,7 @@ class ContextLogProcessorSpec extends ObjectBehavior
         ); //unchanged existing context
         $returnedMock['context']->shouldHaveKeyWithValue('path_info', self::TEST_SCHEMA . self::PATH_INFO);
         $returnedMock['context']->shouldHaveKeyWithValue('akeneo_context', self::BOUNDED_CONTEXT);
-        $returnedMock->shouldHaveKeyWithValue('trace_id',self::TRACE_ID_VALUE);
-
+        $returnedMock->shouldHaveKeyWithValue('trace_id', self::TRACE_ID_VALUE);
     }
 
     function it_will_enrich_request_with_path_info_and_generated_requestid(
@@ -108,7 +107,7 @@ class ContextLogProcessorSpec extends ObjectBehavior
         $returnedMock['trace_id']->shouldMatch(
             '/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/'
         ); //UUID v4 pattern matching https://stackoverflow.com/a/6223251
-
+        $returnedMock['tenant_id']->shouldBe('my_tenant_id');
     }
 
     function it_can_initialize_command_with_known_context(
@@ -138,6 +137,7 @@ class ContextLogProcessorSpec extends ObjectBehavior
         $returnedMock['trace_id']->shouldMatch(
             '/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/'
         ); //UUID v4 pattern matching https://stackoverflow.com/a/6223251
+        $returnedMock['tenant_id']->shouldBe('my_tenant_id');
     }
 
     function it_can_initialize_command_with_unknown_context(
@@ -150,5 +150,4 @@ class ContextLogProcessorSpec extends ObjectBehavior
         $returnedMock = $this->__invoke($this->initIncomingContextfullRecord());
         $returnedMock['context']->shouldHaveKeyWithValue('akeneo_context', "Unknown context");
     }
-
 }
