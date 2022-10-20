@@ -34,7 +34,7 @@ final class CreateGeneratorCommand implements CommandInterface
 
     public static function fromNormalized(array $content): self
     {
-        foreach(['code', 'conditions', 'structure', 'labels', 'target', 'delimiter'] as $key) {
+        foreach (['code', 'conditions', 'structure', 'labels', 'target', 'delimiter'] as $key) {
             Assert::keyExists($content, $key);
         }
         Assert::string($content['code']);

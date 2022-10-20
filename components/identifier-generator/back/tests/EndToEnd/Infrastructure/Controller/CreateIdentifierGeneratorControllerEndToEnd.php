@@ -54,7 +54,7 @@ final class CreateIdentifierGeneratorControllerEndToEnd extends ControllerEndToE
                 $uuid
             ),
             $response->getContent()
-    );
+        );
     }
 
     /** @test */
