@@ -1,7 +1,7 @@
 import {Validator} from './Validator';
 import {Conditions} from '../models';
 
-const validateConditions: Validator<Conditions> = (_conditions, _path) => {
+const validateConditions: Validator<Conditions | undefined> = (_conditions, _path) => {
   return [];
 };
 
