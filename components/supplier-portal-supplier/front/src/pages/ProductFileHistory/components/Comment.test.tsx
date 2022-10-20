@@ -9,7 +9,7 @@ test('it renders a supplier comment', () => {
             outgoing={true}
             authorEmail={'jimmy@punchline.com'}
             content={"Can you explain a bit more? I'm sure this is the right file."}
-            createdAt={'2022-09-26 12:06:00'}
+            createdAt={'2022-09-26T12:06:00+00:00'}
         />
     );
 
@@ -24,7 +24,7 @@ test('it renders a retailer comment', () => {
             outgoing={true}
             authorEmail={'julia@roberts.com'}
             content={'Please add colors and size variations.'}
-            createdAt={'2022-09-15 08:00:00'}
+            createdAt={'2022-09-15T08:00:00+00:00'}
         />
     );
 

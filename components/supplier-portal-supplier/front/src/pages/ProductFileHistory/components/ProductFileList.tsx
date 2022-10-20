@@ -80,10 +80,10 @@ const StyledTableRow = styled(Table.Row)`
 const ProductFileList = ({productFiles}: Props) => {
     const dateFormatter = useDateFormatter();
     const intl = useIntl();
-    const [currentProductFile, setCurrentProductFile] = useState<ProductFile | null>(null);
+    const [currentProductFileIdentifier, setCurrentProductFileIdentifier] = useState<string | null>(null);
 
     const closePanel = () => {
-        setCurrentProductFile(null);
+        setCurrentProductFileIdentifier(null);
     };
 
     const HeaderWelcomeMessage = (
@@ -94,11 +94,17 @@ const ProductFileList = ({productFiles}: Props) => {
         </>
     );
 
-    const displayProductFilePanel = (productFile: ProductFile) => {
-        setCurrentProductFile(
-            !currentProductFile || currentProductFile.identifier !== productFile.identifier ? productFile : null
+    const displayProductFilePanel = (productFileIdentifier: string) => {
+        setCurrentProductFileIdentifier(
+            !currentProductFileIdentifier || currentProductFileIdentifier !== productFileIdentifier
+                ? productFileIdentifier
+                : null
         );
     };
+
+    const currentProductFile: ProductFile | undefined = productFiles.find(
+        (productFile: ProductFile) => productFile.identifier === currentProductFileIdentifier
+    );
 
     return (
         <>
@@ -140,7 +146,7 @@ const ProductFileList = ({productFiles}: Props) => {
                                         <StyledTableRow
                                             data-testid={productFile.identifier}
                                             key={productFile.identifier}
-                                            onClick={() => displayProductFilePanel(productFile)}
+                                            onClick={() => displayProductFilePanel(productFile.identifier)}
                                         >
                                             <Table.Cell>
                                                 {dateFormatter(productFile.uploadedAt, {
@@ -180,7 +186,7 @@ const ProductFileList = ({productFiles}: Props) => {
                                                         id: 'UTlLBb',
                                                     })}
                                                     ghost={'borderless'}
-                                                    onClick={() => displayProductFilePanel(productFile)}
+                                                    onClick={() => displayProductFilePanel(productFile.identifier)}
                                                 />
                                             </StyledActionCell>
                                         </StyledTableRow>
@@ -190,7 +196,10 @@ const ProductFileList = ({productFiles}: Props) => {
                         </StyledTable>
                     </FlexRow>
                 </ProductFilesContainer>
-                <ProductFilePanel productFile={currentProductFile} closePanel={closePanel} />
+                <ProductFilePanel
+                    productFile={currentProductFile ? currentProductFile : null}
+                    closePanel={closePanel}
+                />
             </PageContainer>
         </>
     );
