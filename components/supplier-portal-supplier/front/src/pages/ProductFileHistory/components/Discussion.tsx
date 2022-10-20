@@ -8,6 +8,7 @@ import {useUserContext} from '../../../contexts';
 import {apiFetch} from '../../../api/apiFetch';
 import {BadRequestError} from '../../../api/BadRequestError';
 import {useQueryClient} from 'react-query';
+import {markCommentsAsRead} from '../api/markCommentsAsRead';
 
 type Props = {comments: CommentReadModel[]; productFileIdentifier: string};
 
@@ -48,6 +49,13 @@ const Discussion = ({comments, productFileIdentifier}: Props) => {
             commentsBlock?.current?.scrollTo({top: height});
         }
     }, [comments]);
+
+    useEffect(() => {
+        (async () => {
+            await markCommentsAsRead(productFileIdentifier);
+            await queryClient.invalidateQueries('fetchProductFiles');
+        })();
+    }, [productFileIdentifier, queryClient]);
 
     const saveComment = useCallback(
         async event => {

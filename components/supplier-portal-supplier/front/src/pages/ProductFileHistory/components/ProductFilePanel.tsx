@@ -18,7 +18,7 @@ const Panel = styled.div<AkeneoThemedProps & {currentProductFile: ProductFile | 
 `;
 
 type Props = {
-    productFile: ProductFile | null;
+    productFile: ProductFile;
     closePanel: () => void;
 };
 
@@ -36,15 +36,6 @@ const StyledIconButton = styled(IconButton)`
 
 const ProductFilePanel = ({productFile, closePanel}: Props) => {
     const intl = useIntl();
-    if (null === productFile) {
-        return <></>;
-    }
-    let comments = productFile.retailerComments
-        .concat(productFile.supplierComments)
-        .sort(
-            (a: CommentReadModel, b: CommentReadModel) =>
-                new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-        );
 
     return (
         <>
@@ -61,7 +52,7 @@ const ProductFilePanel = ({productFile, closePanel}: Props) => {
                         onClick={closePanel}
                     />
                     <Metadata productFile={productFile} />
-                    <Discussion comments={comments} productFileIdentifier={productFile.identifier} />
+                    <Discussion comments={productFile.comments} productFileIdentifier={productFile.identifier} />
                 </Panel>
             ) : (
                 <Panel currentProductFile={productFile} />

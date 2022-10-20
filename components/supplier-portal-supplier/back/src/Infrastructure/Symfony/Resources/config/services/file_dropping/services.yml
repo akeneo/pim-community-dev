@@ -19,3 +19,8 @@ services:
         public: true
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\CommentProductFile\CommentProductFile'
+
+    Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Controller\MarkCommentsAsRead:
+        public: true
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\MarkCommentsAsRead\MarkCommentsAsRead'

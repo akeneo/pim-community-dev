@@ -1,14 +1,6 @@
 import React, {useState} from 'react';
 import {ProductFile} from '../model/ProductFile';
-import {
-    ArrowRightIcon,
-    DownloadIcon,
-    getColor,
-    IconButton,
-    Pagination,
-    SectionTitle,
-    Table,
-} from 'akeneo-design-system';
+import {ArrowRightIcon, DownloadIcon, getColor, IconButton, Pill, SectionTitle, Table} from 'akeneo-design-system';
 import {FormattedMessage, useIntl} from 'react-intl';
 import styled from 'styled-components';
 import {useDateFormatter} from '../../../utils/date-formatter/use-date-formatter';
@@ -33,7 +25,7 @@ const StyledTable = styled(Table)`
     margin: 10px 50px 0 50px;
 `;
 
-const StyledActionCell = styled(Table.ActionCell)`
+const StyledActionCell = styled(Table.Cell)`
     width: 32px;
     padding-right: 6px;
     padding-left: 6px;
@@ -88,6 +80,10 @@ const StyledTableRow = styled(Table.Row)`
     &:hover {
         background-color: ${getColor('blue20')};
     }
+`;
+
+const StyledPill = styled(Pill)`
+    background-color: ${getColor('blue100')};
 `;
 
 const ProductFileList = ({productFiles, totalProductFiles, currentPage, onChangePage}: Props) => {
@@ -152,6 +148,7 @@ const ProductFileList = ({productFiles, totalProductFiles, currentPage, onChange
                                 </Table.HeaderCell>
                                 <Table.HeaderCell></Table.HeaderCell>
                                 <Table.HeaderCell></Table.HeaderCell>
+                                <Table.HeaderCell></Table.HeaderCell>
                             </Table.Header>
                             <Table.Body>
                                 {productFiles.map((productFile: ProductFile) => {
@@ -174,6 +171,9 @@ const ProductFileList = ({productFiles, totalProductFiles, currentPage, onChange
                                             <Table.Cell>
                                                 <FilenameCell>{productFile.filename}</FilenameCell>
                                             </Table.Cell>
+                                            <StyledActionCell>
+                                                {productFile.displayNewMessageIndicatorPill && <StyledPill level="primary" />}
+                                            </StyledActionCell>
                                             <StyledActionCell>
                                                 <StyledIconButton
                                                     data-testid="Download icon"
@@ -215,10 +215,7 @@ const ProductFileList = ({productFiles, totalProductFiles, currentPage, onChange
                         itemsPerPage={PRODUCT_FILES_PER_PAGE}
                     />
                 </ProductFilesContainer>
-                <ProductFilePanel
-                    productFile={currentProductFile ? currentProductFile : null}
-                    closePanel={closePanel}
-                />
+                {currentProductFile && <ProductFilePanel productFile={currentProductFile} closePanel={closePanel}/>}
             </PageContainer>
         </>
     );
