@@ -114,7 +114,7 @@ elasticsearch:
     replicas: 2
     persistence:
       size: 1Gi
-      storageClass: ssd-retain-csi
+      storageClass: ssd-csi
     heapSize: "384m"
     resources:
       limits:
@@ -128,7 +128,7 @@ elasticsearch:
     replicas: 2
     persistence:
       size: 10Gi
-      storageClass: ssd-retain-csi
+      storageClass: ssd-csi
     heapSize: "1024m"
     resources:
       limits:
