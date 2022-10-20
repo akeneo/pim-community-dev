@@ -12,7 +12,7 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model;
 final class Delimiter
 {
     private function __construct(
-        private string $value,
+        private ?string $value,
     ) {
     }
 
@@ -21,7 +21,7 @@ final class Delimiter
         return new self($delimiter ?: '');
     }
 
-    public function asString(): string
+    public function asString(): ?string
     {
         return $this->value;
     }

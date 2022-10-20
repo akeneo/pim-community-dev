@@ -32,10 +32,10 @@ final class CreateGeneratorHandler
         $this->validator->validate($command);
 
         $identifierGenerator = new IdentifierGenerator(
-            IdentifierGeneratorId::fromString($command->id),
+            $this->identifierGeneratorRepository->getNextId(),
             IdentifierGeneratorCode::fromString($command->code),
             Conditions::fromArray($command->conditions),
-            Structure::fromArray($command->structure),
+            Structure::fromNormalized($command->structure),
             LabelCollection::fromNormalized($command->labels),
             Target::fromString($command->target),
             Delimiter::fromString($command->delimiter),

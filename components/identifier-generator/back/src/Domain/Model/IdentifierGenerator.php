@@ -57,4 +57,17 @@ final class IdentifierGenerator
     {
         return $this->delimiter;
     }
+
+    public function normalize(): array
+    {
+        return [
+            'uuid' => $this->id->asString(),
+            'code' => $this->code->asString(),
+            'conditions' => $this->conditions->normalize(),
+            'structure' => $this->structure->normalize(),
+            'labels' => $this->labelCollection->normalize(),
+            'target' => $this->target->asString(),
+            'delimiter' => $this->delimiter?->asString(),
+        ];
+    }
 }

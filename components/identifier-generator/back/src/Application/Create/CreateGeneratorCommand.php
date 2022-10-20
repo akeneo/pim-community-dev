@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Create;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\CommandInterface;
+use Webmozart\Assert\Assert;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\ConditionInterface;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\PropertyInterface;
@@ -25,7 +26,6 @@ final class CreateGeneratorCommand implements CommandInterface
      * @param string|null $delimiter
      */
     public function __construct(
-        public string $id,
         public string $code,
         public array $conditions,
         public array $structure,
@@ -33,5 +33,27 @@ final class CreateGeneratorCommand implements CommandInterface
         public string $target,
         public ?string $delimiter,
     ) {
+    }
+
+    public static function fromNormalized(array $content): self
+    {
+        foreach(['code', 'conditions', 'structure', 'labels', 'target', 'delimiter'] as $key) {
+            Assert::keyExists($content, $key);
+        }
+        Assert::stringNotEmpty($content['code']);
+        Assert::isArray($content['conditions']);
+        Assert::isArray($content['structure']);
+        Assert::isArray($content['labels']);
+        Assert::stringNotEmpty($content['target']);
+        Assert::nullOrString($content['delimiter']);
+
+        return new self(
+            $content['code'],
+            $content['conditions'],
+            $content['structure'],
+            $content['labels'],
+            $content['target'],
+            $content['delimiter']
+        );
     }
 }
