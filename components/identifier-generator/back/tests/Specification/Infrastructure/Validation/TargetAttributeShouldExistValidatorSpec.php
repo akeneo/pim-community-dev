@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\CreateGeneratorCommand;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldExist;
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldExistValidator;
 use Akeneo\Pim\Structure\Component\AttributeTypes;

@@ -16,7 +16,8 @@ $rules = [
     // Domain layer should only use classes from itself and Assert
     $builder->only(
         [
-            'Webmozart\Assert\Assert'
+            'Akeneo\Pim\Automation\IdentifierGenerator\Domain',
+            'Webmozart\Assert\Assert',
         ]
     )->in('Akeneo\Pim\Automation\IdentifierGenerator\Domain'),
 
@@ -24,10 +25,6 @@ $rules = [
         [
             'Akeneo\Pim\Automation\IdentifierGenerator\Domain',
             'Webmozart\Assert\Assert',
-
-            // TODO CPM-756
-            'Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Exception\ViolationsException',
-            'Symfony\Component\Validator\Validator\ValidatorInterface'
         ]
     )->in('Akeneo\Pim\Automation\IdentifierGenerator\Application'),
 
