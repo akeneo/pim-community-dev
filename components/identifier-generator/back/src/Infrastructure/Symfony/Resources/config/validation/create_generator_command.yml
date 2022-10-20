@@ -16,7 +16,6 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
                             - Choice:
                                 choices: ['free_text', 'auto_number']
                                 message: 'Type {{ value }} can only be one of the following: {{ choices }}'
-
                     allowExtraFields: true
         code:
             - NotBlank: ~

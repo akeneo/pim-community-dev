@@ -41,7 +41,6 @@ final class Error
     {
         return [
             'path' => $this->path,
-            'parameters' => $this->parameters,
             'message' => $this->message,
         ];
     }

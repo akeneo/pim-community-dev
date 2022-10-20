@@ -19,7 +19,6 @@ class ErrorSpec extends ObjectBehavior
     {
         $this->normalize()->shouldReturn([
             'path' => 'a path',
-            'parameters' => ['parameter1' => 'value1'],
             'message' => 'a message'
         ]);
     }

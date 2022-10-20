@@ -20,12 +20,10 @@ class ErrorListSpec extends ObjectBehavior
         $this->normalize()->shouldReturn([
             [
                 'path' => null,
-                'parameters' => [],
                 'message' => 'message1'
             ],
             [
                 'path' => null,
-                'parameters' => [],
                 'message' => 'message2'
             ],
         ]);
