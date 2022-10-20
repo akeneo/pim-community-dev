@@ -4,10 +4,10 @@ namespace Akeneo\Tool\Component\Connector\Writer\File;
 
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
-use Box\Spout\Common\Exception\UnsupportedTypeException;
-use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
-use Box\Spout\Writer\Common\Creator\WriterFactory;
-use Box\Spout\Writer\WriterInterface;
+use OpenSpout\Common\Exception\UnsupportedTypeException;
+use OpenSpout\Writer\Common\Creator\WriterEntityFactory;
+use OpenSpout\Writer\Common\Creator\WriterFactory;
+use OpenSpout\Writer\WriterInterface;
 
 /**
  * Flushes the flat item buffer into one or multiple output files.

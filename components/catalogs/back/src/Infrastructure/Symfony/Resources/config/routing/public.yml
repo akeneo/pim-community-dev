@@ -38,6 +38,11 @@ akeneo_catalogs_public_get_products:
     controller: Akeneo\Catalogs\Infrastructure\Controller\Public\GetProductsAction
     methods: [ GET ]
 
+akeneo_catalogs_public_get_products_mapping_schema:
+    path: '/api/rest/v1/catalogs/{catalogId}/mapping-schemas/product'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Public\GetProductMappingSchemaAction
+    methods: [ GET ]
+
 akeneo_catalogs_public_update_products_mapping_schema:
     path: '/api/rest/v1/catalogs/{catalogId}/mapping-schemas/product'
     controller: Akeneo\Catalogs\Infrastructure\Controller\Public\UpdateProductMappingSchemaAction

@@ -3,7 +3,7 @@ import {QueryClient, QueryClientProvider} from 'react-query';
 import {pimTheme} from 'akeneo-design-system';
 import {MicroFrontendDependenciesProvider, Routes} from '@akeneo-pim-community/shared';
 import {ThemeProvider} from 'styled-components';
-import {render, RenderOptions} from '@testing-library/react';
+import {render, RenderOptions, RenderResult} from '@testing-library/react';
 
 const AllTheProviders: FC<{children: React.ReactNode}> = ({children}) => {
   const queryClient = new QueryClient({
@@ -32,7 +32,7 @@ const customRender = (
   ui: React.ReactElement,
   options?: Omit<RenderOptions, 'wrapper'>
   // @ts-ignore
-) => render(ui, {wrapper: AllTheProviders, ...options});
+): RenderResult => render(ui, {wrapper: AllTheProviders, ...options});
 
 export * from '@testing-library/react';
 export {customRender as render};
