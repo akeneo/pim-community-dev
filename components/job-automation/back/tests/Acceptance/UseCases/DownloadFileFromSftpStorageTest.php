@@ -32,6 +32,7 @@ class DownloadFileFromSftpStorageTest extends AcceptanceTestCase
             'file_path' => 'a_file_path',
             'host' => 'localhost',
             'port' => 22,
+            'login_type' => 'credentials',
             'username' => 'root',
             'password' => 'root',
         ];

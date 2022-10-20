@@ -43,12 +43,12 @@ final class SftpStorageClientProvider implements RemoteStorageClientProviderInte
 
         $encryptionKey = $this->getEncryptionKey($storage);
 
-        $connection = new SftpConnectionProvider(
+        $connection = $this->getConnection(
+            loginType: $storage->getLoginType(),
             host: $storage->getHost(),
             username: $storage->getUsername(),
             password: $this->encrypter->decrypt($storage->getPassword(), $encryptionKey),
-            privateKey: null,
-            passphrase: null,
+            privateKey: $storage->getPrivateKey(),
             port: $storage->getPort(),
             useAgent: self::USE_AGENT,
             timeout: self::TIMEOUT,
@@ -70,12 +70,12 @@ final class SftpStorageClientProvider implements RemoteStorageClientProviderInte
             throw new \InvalidArgumentException('The provider only support SftpStorage');
         }
 
-        return new SftpConnectionProvider(
+        return $this->getConnection(
+            loginType: $storage->getLoginType(),
             host: $storage->getHost(),
             username: $storage->getUsername(),
             password: $storage->getPassword(),
-            privateKey: null,
-            passphrase: null,
+            privateKey: $storage->getPrivateKey(),
             port: $storage->getPort(),
             useAgent: self::USE_AGENT,
             timeout: self::TIMEOUT,
@@ -91,6 +91,62 @@ final class SftpStorageClientProvider implements RemoteStorageClientProviderInte
             $storage->getUsername(),
             $storage->getHost(),
             $storage->getPort(),
+        );
+    }
+
+    private function getConnection(
+        string $loginType,
+        string $host,
+        string $username,
+        string $password,
+        string $privateKey,
+        int $port,
+        bool $useAgent,
+        int $timeout,
+        int $maxTries,
+        string $hostFingerprint,
+    ): SftpConnectionProvider {
+        return match ($loginType) {
+            SftpStorage::LOGIN_TYPE_CREDENTIALS => $this->getConnectionWithPassword($host, $username, $password, $port),
+            SftpStorage::LOGIN_TYPE_PRIVATE_KEY => $this->getConnectionWithPrivateKey($host, $username, $privateKey, $port),
+        };
+    }
+
+    private function getConnectionWithPassword(
+        string $host,
+        string $username,
+        string $password,
+        int $port
+    ): SftpConnectionProvider {
+        return new SftpConnectionProvider(
+            $host,
+            $username,
+            $password,
+            null,
+            null,
+            $port,
+            self::USE_AGENT,
+            self::TIMEOUT,
+            self::MAX_RETRIES,
+        );
+    }
+
+    private function getConnectionWithPrivateKey(
+        string $host,
+        string $username,
+        string $privateKey,
+        int $port
+    ): SftpConnectionProvider {
+        return new SftpConnectionProvider(
+            $host,
+            $username,
+            null,
+            $privateKey,
+            null,
+            $port,
+            self::USE_AGENT,
+            self::TIMEOUT,
+            self::MAX_RETRIES,
         );
     }
 }

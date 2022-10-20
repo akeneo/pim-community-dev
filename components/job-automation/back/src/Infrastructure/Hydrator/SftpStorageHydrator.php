@@ -24,6 +24,7 @@ final class SftpStorageHydrator implements StorageHydratorInterface
         return new SftpStorage(
             $normalizedStorage['host'],
             $normalizedStorage['port'],
+            $normalizedStorage['login_type'],
             $normalizedStorage['username'],
             $normalizedStorage['password'],
             $normalizedStorage['file_path'],
@@ -34,5 +35,10 @@ final class SftpStorageHydrator implements StorageHydratorInterface
     public function supports(array $normalizedStorage): bool
     {
         return array_key_exists('type', $normalizedStorage) && SftpStorage::TYPE === $normalizedStorage['type'];
+    }
+
+    private function getConnectionKey()
+    {
+
     }
 }

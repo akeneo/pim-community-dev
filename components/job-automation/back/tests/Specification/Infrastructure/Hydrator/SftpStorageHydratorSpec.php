@@ -29,6 +29,7 @@ class SftpStorageHydratorSpec extends ObjectBehavior
             'password' => 'my_favorite_password',
             'file_path' => 'upload',
             'port' => 22,
+            'login_type' => 'password',
         ])->shouldReturn(true);
         $this->supports(['type' => 'none'])->shouldReturn(false);
         $this->supports(['type' => 'local'])->shouldReturn(false);
@@ -44,8 +45,9 @@ class SftpStorageHydratorSpec extends ObjectBehavior
             'password' => 'my_favorite_password',
             'file_path' => 'upload',
             'port' => 22,
+            'login_type' => 'password',
         ])->shouldBeLike(
-            new SftpStorage('my_host', 22, 'user', 'my_favorite_password', 'upload'),
+            new SftpStorage('my_host', 22, 'password', 'user', 'my_favorite_password', 'upload'),
         );
 
         $this->hydrate([
