@@ -1,6 +1,17 @@
 import React, {ReactElement, useEffect, useState} from 'react';
 import styled from 'styled-components';
-import {AkeneoThemedProps, Button, CheckIcon, Field, getColor, Helper, TextInput} from 'akeneo-design-system';
+import {
+    AkeneoThemedProps,
+    Button,
+    CheckIcon,
+    Field,
+    getColor,
+    Helper,
+    TextInput,
+    Checkbox,
+    Link,
+    getFontSize,
+} from 'akeneo-design-system';
 import {PasswordInput} from './components/PasswordInput';
 import {SupplierPortalLogo, UnauthenticatedContainer} from '../../components';
 import {FormattedMessage, useIntl} from 'react-intl';
@@ -19,6 +30,7 @@ const SetUpPassword = () => {
     const [password, setPassword] = useState('');
     const [passwordConfirmation, setPasswordConfirmation] = useState('');
     const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState(true);
+    const [hasConsentToPrivacyPolicy, setConsentToPrivacyPolicy] = useState(false);
     const intl = useIntl();
     const {accessToken} = useParams<Params>();
     const {loadingError, contributorAccount, submitPassword, passwordHasErrors} = useContributorAccount(accessToken);
@@ -26,8 +38,8 @@ const SetUpPassword = () => {
     useEffect(() => {
         const isPasswordValid =
             password.match(/(^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,255})$/) && password === passwordConfirmation;
-        setIsSubmitButtonDisabled(!isPasswordValid);
-    }, [password, passwordConfirmation, setIsSubmitButtonDisabled]);
+        setIsSubmitButtonDisabled(!isPasswordValid || !hasConsentToPrivacyPolicy);
+    }, [password, passwordConfirmation, setIsSubmitButtonDisabled, hasConsentToPrivacyPolicy]);
 
     if (loadingError instanceof BadRequestError) {
         return <RequestNewInvitation />;
@@ -122,11 +134,34 @@ const SetUpPassword = () => {
                         <FormattedMessage defaultMessage="Correct confirmation" id="XurM/d" />
                     </PasswordRule>
                 </PasswordRequirements>
+
+                <ConsentToPrivacyPolicyContainer>
+                    <Checkbox checked={hasConsentToPrivacyPolicy} onChange={setConsentToPrivacyPolicy}>
+                        <FormattedMessage
+                            defaultMessage="I consent to the <link>Akeneo Privacy policy</link>."
+                            id="HnRQny"
+                            values={{
+                                link: chunks => (
+                                    <Link
+                                        onClick={(event: any) => {
+                                            event.stopPropagation();
+                                        }}
+                                        href="https://www.akeneo.com/privacy-policy/"
+                                        target="_blank"
+                                    >
+                                        <strong>{chunks}</strong>
+                                    </Link>
+                                ),
+                            }}
+                        />
+                    </Checkbox>
+                </ConsentToPrivacyPolicyContainer>
+
                 <Button
                     data-testid="submit-button"
                     type="button"
                     disabled={isSubmitButtonDisabled}
-                    onClick={async () => await submitPassword(password)}
+                    onClick={async () => await submitPassword(password, hasConsentToPrivacyPolicy)}
                 >
                     <FormattedMessage defaultMessage="Create My password" id="d8nJr6" />
                 </Button>
@@ -167,10 +202,22 @@ const StyledField = styled(Field)`
 `;
 const PasswordRequirements = styled.div`
     color: ${getColor('grey120')};
-    margin-bottom: 50px;
+    margin-bottom: 25px;
 
     p:first-child {
         color: ${getColor('grey140')};
+    }
+`;
+const ConsentToPrivacyPolicyContainer = styled.div`
+    color: ${getColor('grey140')};
+    display: flex;
+    margin-bottom: 20px;
+
+    a {
+        text-decoration: none;
+    }
+    label {
+        font-size: ${getFontSize('default')};
     }
 `;
 
