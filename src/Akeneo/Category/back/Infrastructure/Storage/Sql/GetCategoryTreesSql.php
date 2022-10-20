@@ -22,8 +22,26 @@ class GetCategoryTreesSql implements GetCategoryTreesInterface
     {
     }
 
-    public function __invoke(): ?array
+    public function getAll(): ?array
     {
+        return $this->execute();
+    }
+
+    public function byIds(array $categryTreeIds): ? array
+    {
+        $condition['sqlAnd'] = 'AND category.id IN (:ids)';
+        $condition['params'] = ['ids' => $categryTreeIds];
+        $condition['types'] = ['ids' => Connection::PARAM_INT_ARRAY];
+
+        return $this->execute($condition);
+    }
+
+    private function execute(array $condition = []): ?array
+    {
+        $sqlAnd = $condition['sqlAnd'] ?? '';
+        $sqlParams = $condition['params'] ?? [];
+        $sqlTypes = $condition['types'] ?? [];
+
         $sqlQuery = <<<SQL
             WITH translation as (
                 SELECT category.code, JSON_OBJECTAGG(translation.locale, translation.label) as translations
@@ -31,6 +49,7 @@ class GetCategoryTreesSql implements GetCategoryTreesInterface
                 JOIN pim_catalog_category_translation translation ON translation.foreign_key = category.id
                 WHERE category.parent_id IS NULL 
                 AND category.root = category.id
+                $sqlAnd
                 GROUP BY category.code
             )
             SELECT
@@ -45,11 +64,14 @@ class GetCategoryTreesSql implements GetCategoryTreesInterface
                 LEFT JOIN translation ON translation.code = category.code
             WHERE category.parent_id IS NULL 
             AND category.root = category.id
+            $sqlAnd
             ORDER BY category.created DESC
         SQL;
 
         $results = $this->connection->executeQuery(
             $sqlQuery,
+            $sqlParams,
+            $sqlTypes
         )->fetchAllAssociative();
 
         if (empty($results)) {

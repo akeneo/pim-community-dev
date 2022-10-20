@@ -10,5 +10,7 @@ namespace Akeneo\Category\Domain\Query;
  */
 interface GetCategoryTreesInterface
 {
-    public function __invoke(): ?array;
+    public function getAll(): ?array;
+
+    public function byIds(array $categryTreeIds): ?array;
 }

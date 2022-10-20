@@ -88,7 +88,7 @@ class CategoryTreeController extends AbstractController
             $selectNode = $this->userContext->getUserCategoryTree($this->rawConfiguration['related_entity']);
         }
 
-        $trees = ($this->getCategoryTrees)();
+        $trees = $this->getCategoryTrees->getAll();
 
         if ($selectNode instanceof Category) {
             $selectedTreeId = $selectNode->isRoot() ? (int) $selectNode->getId() : (int) $selectNode->getRootId();
