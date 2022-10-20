@@ -19,7 +19,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Structure\SpellcheckR
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\AttributeSpellcheckRepositoryInterface;
 use Doctrine\DBAL\Connection;
 
-final class AttributeSpellcheckRepository implements AttributeSpellcheckRepositoryInterface
+class AttributeSpellcheckRepository implements AttributeSpellcheckRepositoryInterface
 {
     /** @var Connection */
     private $dbConnection;

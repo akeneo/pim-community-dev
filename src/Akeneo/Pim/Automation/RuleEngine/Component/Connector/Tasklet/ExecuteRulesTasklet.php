@@ -73,6 +73,11 @@ final class ExecuteRulesTasklet implements TaskletInterface, TrackableTaskletInt
 
         $subscriber = new ProductRuleExecutionSubscriber($this->stepExecution, $this->jobRepository);
         $this->eventDispatcher->addSubscriber($subscriber);
+        $ruleRunDuration = $startedTime->diff(new \DateTimeImmutable('now'));
+        $this->logger->notice(
+            'rules run stats',
+            ['duration' => $ruleRunDuration->format('%s.%fs'), 'rules_count' => $numberOfExecutedRules]
+        );
 
         foreach ($this->getRuleDefinitions() as $ruleDefinition) {
             if ($this->jobStopper->isStopping($this->stepExecution)) {
