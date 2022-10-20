@@ -78,4 +78,6 @@ category:
   overview: Categorias
 tree:
   edit: Editar árvore
+  remove:
+    error_linked: Esta árvore de categorias não pode ser excluída, está vinculada a um canal
   create: Criar uma árvore de categoria
