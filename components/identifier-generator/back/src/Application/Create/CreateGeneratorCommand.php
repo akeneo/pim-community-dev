@@ -37,11 +37,11 @@ final class CreateGeneratorCommand implements CommandInterface
         foreach(['code', 'conditions', 'structure', 'labels', 'target', 'delimiter'] as $key) {
             Assert::keyExists($content, $key);
         }
-        Assert::stringNotEmpty($content['code']);
+        Assert::string($content['code']);
         Assert::isArray($content['conditions']);
         Assert::isArray($content['structure']);
         Assert::isArray($content['labels']);
-        Assert::stringNotEmpty($content['target']);
+        Assert::string($content['target']);
         Assert::nullOrString($content['delimiter']);
 
         return new self(

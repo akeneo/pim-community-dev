@@ -36,4 +36,13 @@ final class Error
     {
         return $this->path;
     }
+
+    public function normalize()
+    {
+        return [
+            'path' => $this->path,
+            'parameters' => $this->parameters,
+            'message' => $this->message,
+        ];
+    }
 }

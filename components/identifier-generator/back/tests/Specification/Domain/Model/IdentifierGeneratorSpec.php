@@ -106,4 +106,24 @@ class IdentifierGeneratorSpec extends ObjectBehavior
     {
         $this->labelCollection()->shouldBeLike(LabelCollection::fromNormalized(['fr' => 'Générateur']));
     }
+
+    public function it_can_be_normalized()
+    {
+        $this->normalize()->shouldReturn([
+            'uuid' => '2038e1c9-68ff-4833-b06f-01e42d206002',
+            'code' => 'abcdef',
+            'conditions' => [],
+            'structure' => [
+                [
+                    'type' => 'free_text',
+                    'string' => 'abc',
+                ],
+            ],
+            'labels' => [
+                'fr' => 'Générateur',
+            ],
+            'target' => 'sku',
+            'delimiter' => '-',
+        ]);
+    }
 }

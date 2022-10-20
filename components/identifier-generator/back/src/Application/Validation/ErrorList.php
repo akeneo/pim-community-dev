@@ -32,11 +32,8 @@ final class ErrorList implements \Countable
         return \join("\n", array_map(fn ($error) => $error->getMessage(), $this->errors));
     }
 
-    /**
-     * @return Error[]
-     */
-    public function getErrors(): array
+    public function normalize(): array
     {
-        return $this->errors;
+        return array_map(fn (Error $error): array => $error->normalize(), $this->errors);
     }
 }
