@@ -12,7 +12,7 @@ use Akeneo\Category\Application\Converter\StandardFormatToUserIntentsInterface;
 use Akeneo\Category\Application\Filter\CategoryEditAclFilter;
 use Akeneo\Category\Application\Filter\CategoryEditUserIntentFilter;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
-use Akeneo\Category\Infrastructure\Converter\InternalAPI\InternalAPIToStd;
+use Akeneo\Category\Infrastructure\Converter\InternalApi\InternalApiToStd;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +24,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @phpstan-import-type StandardInternalApi from InternalAPIToStd
+ * @phpstan-import-type StandardInternalApi from InternalApiToStd
  */
 class UpdateCategoryController
 {
@@ -52,7 +52,7 @@ class UpdateCategoryController
 
         // Transform request to a user intent list
         $data = $request->toArray();
-        /** @var  StandardInternalApi $formattedData */
+        /** @var StandardInternalApi $formattedData */
         $formattedData = $this->internalApiToStandardConverter->convert($data);
         $filteredData = $this->categoryEditAclFilter->filterCollection($formattedData);
         $userIntents = $this->standardFormatToUserIntents->convert($filteredData);

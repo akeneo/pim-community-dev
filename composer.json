@@ -171,6 +171,7 @@
         "phpspec/phpspec": "^7.1.0",
         "phpspec/prophecy": "^1.14.0",
         "phpstan/phpstan": "^1.8",
+        "phpstan/phpstan-deprecation-rules": "^1.0.0",
         "phpstan/phpstan-symfony": "^1.2.5",
         "phpstan/phpstan-webmozart-assert": "^1.2.0",
         "phpunit/phpunit": "^9.5",
