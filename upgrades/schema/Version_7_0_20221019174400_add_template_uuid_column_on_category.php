@@ -19,8 +19,6 @@ final class Version_7_0_20221019174400_add_template_uuid_column_on_category exte
             ALTER TABLE pim_catalog_category ADD CONSTRAINT FK_CATEGORY_template_uuid FOREIGN KEY (category_template_uuid) REFERENCES pim_catalog_category_template(uuid);
             SQL
         );
-
-
     }
 
     public function down(Schema $schema) : void
