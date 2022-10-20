@@ -10,6 +10,11 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation;
  */
 final class Error
 {
+    /**
+     * @param string $message
+     * @param string[] $parameters
+     * @param string|null $path
+     */
     public function __construct(private string $message, private array $parameters = [], private ?string $path = null)
     {
     }
@@ -19,6 +24,9 @@ final class Error
         return $this->message;
     }
 
+    /**
+     * @return string[]
+     */
     public function getParameters(): array
     {
         return $this->parameters;

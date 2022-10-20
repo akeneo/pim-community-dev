@@ -10,6 +10,9 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation;
  */
 final class ErrorList implements \Countable
 {
+    /**
+     * @param Error[] $errors
+     */
     public function __construct(private array $errors = [])
     {
     }
