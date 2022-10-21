@@ -13,8 +13,8 @@ describe('IdentifierGeneratorValidator', () => {
           labels: {},
           structure: [
             {
-              propertyName: PROPERTY_NAMES.FREE_TEXT,
-              value: 'AKN',
+              type: PROPERTY_NAMES.FREE_TEXT,
+              string: 'AKN',
             },
           ],
         },
