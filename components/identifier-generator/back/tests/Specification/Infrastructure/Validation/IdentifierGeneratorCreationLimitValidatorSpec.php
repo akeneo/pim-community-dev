@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorCommand;
