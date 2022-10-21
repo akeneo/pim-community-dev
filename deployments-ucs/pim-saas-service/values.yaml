@@ -187,6 +187,7 @@ pim:
   api:
     ratelimit:
       enabled: true
+      securityPolicy:  null # Generated
       average: 100
       burst: 25
     replicas: 1

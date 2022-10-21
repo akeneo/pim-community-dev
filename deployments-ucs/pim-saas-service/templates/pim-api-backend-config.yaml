@@ -1,7 +1,7 @@
 apiVersion: cloud.google.com/v1
 kind: BackendConfig
 metadata:
-  name: pim-web-backendconfig
+  name: pim-api-backendconfig
 spec:
   healthCheck:
     checkIntervalSec: 15
@@ -10,7 +10,7 @@ spec:
     requestPath: /server-status
   connectionDraining:
     drainingTimeoutSec: 60
-{{- if .Values.pim.web.ratelimit.enabled | default "false" }}
+{{- if .Values.pim.api.ratelimit.enabled | default "false" }}
   securityPolicy:
-    name: {{ .Values.pim.web.ratelimit.securityPolicy | default ( printf "%s-throttle-web" .Values.common.gcpProjectID ) }}
+    name: {{ .Values.pim.api.ratelimit.securityPolicy | default ( printf "%s-throttle-api" .Values.common.gcpProjectID ) }}
 {{- end }}

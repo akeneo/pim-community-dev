@@ -229,6 +229,13 @@ module "private_dns" {
   #networks   = [data.google_compute_network.vpc.id]
 }
 
+module "cloudarmor" {
+  source     = "../modules/cloudarmor"
+  project_id = local.project_id
+
+  enable_rate_limiting_api = false
+}
+
 terraform {
   backend "gcs" {
     bucket = "akecld-terraform-pim-saas-dev"
