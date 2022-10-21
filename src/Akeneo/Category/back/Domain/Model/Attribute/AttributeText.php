@@ -22,18 +22,17 @@ use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 class AttributeText extends Attribute
 {
     protected function __construct(
-        AttributeUuid                 $uuid,
-        AttributeCode                 $code,
-        AttributeType                 $type,
-        AttributeOrder                $order,
-        AttributeIsRequired           $isRequired,
-        AttributeIsScopable           $isScopable,
-        AttributeIsLocalizable        $isLocalizable,
-        LabelCollection               $labelCollection,
-        TemplateUuid                  $templateUuid,
+        AttributeUuid $uuid,
+        AttributeCode $code,
+        AttributeType $type,
+        AttributeOrder $order,
+        AttributeIsRequired $isRequired,
+        AttributeIsScopable $isScopable,
+        AttributeIsLocalizable $isLocalizable,
+        LabelCollection $labelCollection,
+        TemplateUuid $templateUuid,
         AttributeAdditionalProperties $additionalProperties,
-    )
-    {
+    ) {
         parent::__construct(
             $uuid,
             $code,
@@ -49,17 +48,16 @@ class AttributeText extends Attribute
     }
 
     public static function create(
-        AttributeUuid                 $uuid,
-        AttributeCode                 $code,
-        AttributeOrder                $order,
-        AttributeIsRequired           $isRequired,
-        AttributeIsScopable           $isScopable,
-        AttributeIsLocalizable        $isLocalizable,
-        LabelCollection               $labelCollection,
-        TemplateUuid                  $templateUuid,
+        AttributeUuid $uuid,
+        AttributeCode $code,
+        AttributeOrder $order,
+        AttributeIsRequired $isRequired,
+        AttributeIsScopable $isScopable,
+        AttributeIsLocalizable $isLocalizable,
+        LabelCollection $labelCollection,
+        TemplateUuid $templateUuid,
         AttributeAdditionalProperties $additionalProperties,
-    ): AttributeText
-    {
+    ): AttributeText {
         return new self(
             $uuid,
             $code,

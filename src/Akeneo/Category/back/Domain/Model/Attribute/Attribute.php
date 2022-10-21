@@ -83,17 +83,11 @@ abstract class Attribute
         return $this->order;
     }
 
-    /**
-     * @return AttributeIsRequired
-     */
     public function isRequired(): AttributeIsRequired
     {
         return $this->isRequired;
     }
 
-    /**
-     * @return AttributeIsScopable
-     */
     public function isScopable(): AttributeIsScopable
     {
         return $this->isScopable;
@@ -122,9 +116,6 @@ abstract class Attribute
         return $this->getCode().ValueCollection::SEPARATOR.$this->getUuid();
     }
 
-    /**
-     * @return AttributeAdditionalProperties
-     */
     public function getAdditionalProperties(): AttributeAdditionalProperties
     {
         return $this->additionalProperties;
