@@ -27,6 +27,6 @@ jest.mock('@akeneo-pim-community/shared', () => ({
     };
   },
   useNotify: () => {
-    return () => {}
-  }
+    return () => {};
+  },
 }));

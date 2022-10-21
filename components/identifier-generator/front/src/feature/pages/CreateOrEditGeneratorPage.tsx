@@ -53,7 +53,10 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
         {validationErrors.length > 0 && (
           <Helper level="error">
             {validationErrors.map(({path, message}) => (
-              <div key={`${path || ''}${message}`}>{path && `${path}: `}{message}</div>
+              <div key={`${path || ''}${message}`}>
+                {path && `${path}: `}
+                {message}
+              </div>
             ))}
           </Helper>
         )}
