@@ -14,14 +14,12 @@ enum Tabs {
 
 type CreateOrEditGeneratorProps = {
   initialGenerator: IdentifierGenerator;
-  mainButtonLabel: string;
   mainButtonCallback: (identifierGenerator: IdentifierGenerator) => void;
   validationErrors: Violation[];
 };
 
 const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
   initialGenerator,
-  mainButtonLabel,
   mainButtonCallback,
   validationErrors,
 }) => {
@@ -47,18 +45,15 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
           />
         </PageHeader.UserActions>
         <PageHeader.Actions>
-          <Button onClick={() => mainButtonCallback(generator)}>{mainButtonLabel}</Button>
+          <Button onClick={() => mainButtonCallback(generator)}>{translate('pim_common.save')}</Button>
         </PageHeader.Actions>
         <PageHeader.Title>{translate('pim_title.akeneo_identifier_generator_index')}</PageHeader.Title>
       </PageHeader>
       <Styled.TabContainer>
         {validationErrors.length > 0 && (
           <Helper level="error">
-            {validationErrors.map((error, i) => (
-              <div key={i}>
-                {error.path && `${error.path}: `}
-                {error.message}
-              </div>
+            {validationErrors.map(({path, message}) => (
+              <div key={`${path || ''}${message}`}>{path && `${path}: `}{message}</div>
             ))}
           </Helper>
         )}

@@ -24,11 +24,9 @@ describe('CreateOrEditGeneratorPage', () => {
         initialGenerator={initialGenerator}
         validationErrors={[]}
         mainButtonCallback={mainButtonCallback}
-        mainButtonLabel={'Main button label'}
       />
     );
 
-    expect(screen.getByText('Main button label')).toBeInTheDocument();
     expect(screen.getByText('GeneratorPropertiesMock')).toBeInTheDocument();
 
     fireEvent.click(screen.getByText('pim_identifier_generator.tabs.product_selection'));
@@ -50,11 +48,10 @@ describe('CreateOrEditGeneratorPage', () => {
         initialGenerator={initialGenerator}
         validationErrors={[]}
         mainButtonCallback={mainButtonCallback}
-        mainButtonLabel={'Main button label'}
       />
     );
 
-    fireEvent.click(screen.getByText('Main button label'));
+    fireEvent.click(screen.getByText('pim_common.save'));
     expect(mainButtonCallback).toBeCalledWith(initialGenerator);
   });
 
@@ -65,11 +62,9 @@ describe('CreateOrEditGeneratorPage', () => {
         initialGenerator={initialGenerator}
         validationErrors={[{message: 'a message', path: 'a path'}, {message: 'another message'}]}
         mainButtonCallback={mainButtonCallback}
-        mainButtonLabel={'Main button label'}
       />
     );
 
-    fireEvent.click(screen.getByText('Main button label'));
     expect(screen.getByText('a path: a message')).toBeInTheDocument();
     expect(screen.getByText('another message')).toBeInTheDocument();
   });

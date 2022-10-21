@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 import React from 'react';
 import {useParams} from 'react-router-dom';
-import {EditGeneratorPage} from '../pages/EditGeneratorPage';
+import {EditGeneratorPage} from '../pages/';
 import {PROPERTY_NAMES} from '../models';
 
 const Edit: React.FC<{}> = () => {

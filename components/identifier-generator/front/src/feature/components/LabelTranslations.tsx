@@ -37,7 +37,7 @@ const LabelTranslations: React.FC<LabelTranslationsProps> = ({labelCollection, o
             </Field>
           ))}
         {error?.message && (
-          <Helper inline level="error">
+          <Helper level="error">
             {translate('pim_error.general')}
           </Helper>
         )}

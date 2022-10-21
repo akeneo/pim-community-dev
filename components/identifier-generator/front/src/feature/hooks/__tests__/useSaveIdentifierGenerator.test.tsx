@@ -30,8 +30,7 @@ describe('useSaveIdentifierGenerator', () => {
     reactRouterDom.useHistory = jest.fn().mockReturnValue({push: pushMock});
 
     jest.spyOn(global, 'fetch').mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve(identifierGenerator),
+      status: 201,
     } as Response);
     const {result, waitFor} = renderHook<null, OnSaveIdentifierProps>(() => useSaveIdentifierGenerator(), {
       wrapper: createWrapper(),
@@ -61,5 +60,18 @@ describe('useSaveIdentifierGenerator', () => {
     });
 
     waitFor(() => expect(result.current.validationErrors).toEqual(violationErrors));
+  });
+
+  test('it manages 500', () => {
+    jest.spyOn(global, 'fetch').mockResolvedValue({
+      status: 500,
+    } as Response);
+    const {result} = renderHook<null, OnSaveIdentifierProps>(() => useSaveIdentifierGenerator(), {
+      wrapper: createWrapper(),
+    });
+
+    act(() => {
+      result.current.onSave(identifierGenerator);
+    });
   });
 });

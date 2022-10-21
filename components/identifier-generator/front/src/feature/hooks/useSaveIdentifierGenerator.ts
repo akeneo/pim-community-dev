@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import {IdentifierGenerator} from '../models';
-import {useRouter} from '@akeneo-pim-community/shared';
+import {NotificationLevel, useNotify, useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import {Violation} from '../validators/Violation';
 import {useHistory} from 'react-router-dom';
 
@@ -11,6 +11,8 @@ type OnSaveIdentifierProps = () => {
 
 const useSaveIdentifierGenerator: OnSaveIdentifierProps = () => {
   const router = useRouter();
+  const notify = useNotify();
+  const translate = useTranslate();
   const history = useHistory();
   const [validationErrors, setValidationErrors] = useState<Violation[]>([]);
 
@@ -23,16 +25,17 @@ const useSaveIdentifierGenerator: OnSaveIdentifierProps = () => {
       },
       body: JSON.stringify(generator),
     }).then(response => {
-      if (response.status === 400) {
+      if (response.status >= 400 && response.status < 500) {
         response.json().then(json => {
+          notify(NotificationLevel.ERROR, translate('pim_identifier_generator.flash.create.error'));
           setValidationErrors(json);
         });
+      } else if (response.status === 201) {
+        notify(NotificationLevel.SUCCESS, translate('pim_identifier_generator.flash.create.success'));
+        setValidationErrors([]);
+        history.push(`/${generator.code}`);
       } else {
-        response.json().then(json => {
-          // TODO Add flash message
-          const code = json.code;
-          history.push(`/${code}`);
-        });
+        notify(NotificationLevel.ERROR, translate('pim_error.unexpected'));
       }
     });
   };
