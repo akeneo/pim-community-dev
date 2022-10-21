@@ -197,6 +197,8 @@ pim_common:
   less_than: <
   loading: 読み込み中…
   media_upload: ドラッグ＆ドロップでアップロードするか、こちらをクリック
+  media_uploading: アップロード中…
+  media_upload_error: アップロード中にエラーが発生しました
   more_actions: その他の操作
   more_than: '>'
   next: 次

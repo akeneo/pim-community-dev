@@ -1,0 +1,4 @@
+pim_enrich:
+  acl:
+    category:
+      children: Kategorie-Kindelemente sehen

@@ -1,0 +1,11 @@
+akeneo.category:
+  validation:
+    upsert:
+      category_code:
+        wrong_format: カテゴリコードに利用できるのは半角英数字とアンダースコアのみです
+        line_feed: カテゴリコードに改行文字を含めることはできません
+      duplicated_localize_user_intents: ロケール {{ locale }} の値は複数回更新されています。
+      value:
+        text_too_long: 値は{{count}}文字より長くすることはできません
+        textarea_too_long: 値は{{count}}文字より長くすることはできません
+        richtext_too_long: 値は{{count}}文字より長くすることはできません
