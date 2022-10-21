@@ -276,18 +276,7 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
             throw new \InvalidArgumentException('Option "type" have to be defined');
         }
 
-        $writer = SpoutWriterFactory::create($options['type']);
-        unset($options['type']);
-
-        foreach ($options as $name => $option) {
-            $setter = 'set' . ucfirst($name);
-            if (method_exists($writer, $setter)) {
-                $writer->$setter($option);
-            } else {
-                $message = sprintf('Option "%s" does not exist in writer "%s"', $setter, get_class($writer));
-                throw new \InvalidArgumentException($message);
-            }
-        }
+        $writer = SpoutWriterFactory::create($options['type'], $options);
 
         $writer->openToFile($filePath);
 
