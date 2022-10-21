@@ -36,10 +36,8 @@ describe('CreateGeneratorModal', () => {
       conditions: [],
       delimiter: null,
       labels: {uiLocale: 'Other label'},
-      structure: [
-        {type: 'free_text', string: 'AKN'}
-      ],
-      target: 'sku'
+      structure: [{type: 'free_text', string: 'AKN'}],
+      target: 'sku',
     });
   });
 

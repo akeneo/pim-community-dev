@@ -49,7 +49,7 @@ const CreateGeneratorModal: React.FC<CreateGeneratorModalProps> = ({onClose, onS
         conditions: [],
         // Temporary
         structure: [{type: PROPERTY_NAMES.FREE_TEXT, string: 'AKN'}],
-        delimiter: null
+        delimiter: null,
       });
     }
   }, [code, label, onSave, uiLocale, target]);

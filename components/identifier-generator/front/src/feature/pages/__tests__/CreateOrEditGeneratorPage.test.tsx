@@ -13,18 +13,20 @@ const initialGenerator: IdentifierGenerator = {
   conditions: [],
   structure: [{type: PROPERTY_NAMES.FREE_TEXT, string: 'AKN'}],
   delimiter: null,
-  target: 'sku'
+  target: 'sku',
 };
 
 describe('CreateOrEditGeneratorPage', () => {
   it('should switch tabs', () => {
     const mainButtonCallback = jest.fn();
-    render(<CreateOrEditGeneratorPage
-      initialGenerator={initialGenerator}
-      validationErrors={[]}
-      mainButtonCallback={mainButtonCallback}
-      mainButtonLabel={'Main button label'}
-    />);
+    render(
+      <CreateOrEditGeneratorPage
+        initialGenerator={initialGenerator}
+        validationErrors={[]}
+        mainButtonCallback={mainButtonCallback}
+        mainButtonLabel={'Main button label'}
+      />
+    );
 
     expect(screen.getByText('Main button label')).toBeInTheDocument();
     expect(screen.getByText('GeneratorPropertiesMock')).toBeInTheDocument();
@@ -43,12 +45,14 @@ describe('CreateOrEditGeneratorPage', () => {
 
   it('should call callback', () => {
     const mainButtonCallback = jest.fn();
-    render(<CreateOrEditGeneratorPage
-      initialGenerator={initialGenerator}
-      validationErrors={[]}
-      mainButtonCallback={mainButtonCallback}
-      mainButtonLabel={'Main button label'}
-    />);
+    render(
+      <CreateOrEditGeneratorPage
+        initialGenerator={initialGenerator}
+        validationErrors={[]}
+        mainButtonCallback={mainButtonCallback}
+        mainButtonLabel={'Main button label'}
+      />
+    );
 
     fireEvent.click(screen.getByText('Main button label'));
     expect(mainButtonCallback).toBeCalledWith(initialGenerator);
@@ -56,12 +60,14 @@ describe('CreateOrEditGeneratorPage', () => {
 
   it('should display validation errors', () => {
     const mainButtonCallback = jest.fn();
-    render(<CreateOrEditGeneratorPage
-      initialGenerator={initialGenerator}
-      validationErrors={[{message: 'a message', path: 'a path'}, {message: 'another message'}]}
-      mainButtonCallback={mainButtonCallback}
-      mainButtonLabel={'Main button label'}
-    />);
+    render(
+      <CreateOrEditGeneratorPage
+        initialGenerator={initialGenerator}
+        validationErrors={[{message: 'a message', path: 'a path'}, {message: 'another message'}]}
+        mainButtonCallback={mainButtonCallback}
+        mainButtonLabel={'Main button label'}
+      />
+    );
 
     fireEvent.click(screen.getByText('Main button label'));
     expect(screen.getByText('a path: a message')).toBeInTheDocument();

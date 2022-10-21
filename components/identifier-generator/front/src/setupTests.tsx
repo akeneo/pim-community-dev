@@ -24,7 +24,6 @@ jest.mock('@akeneo-pim-community/shared', () => ({
   useRouter: () => {
     return {
       generate: (key: string) => key,
-    }
-  }
+    };
+  },
 }));
-

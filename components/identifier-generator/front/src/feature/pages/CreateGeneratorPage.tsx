@@ -12,12 +12,14 @@ const CreateGeneratorPage: React.FC<CreateGeneratorProps> = ({initialGenerator})
   const translate = useTranslate();
   const {onSave, validationErrors} = useSaveIdentifierGenerator();
 
-  return <CreateOrEditGeneratorPage
-    initialGenerator={initialGenerator}
-    mainButtonLabel={translate('pim_common.save')}
-    mainButtonCallback={onSave}
-    validationErrors={validationErrors}
-  />;
+  return (
+    <CreateOrEditGeneratorPage
+      initialGenerator={initialGenerator}
+      mainButtonLabel={translate('pim_common.save')}
+      mainButtonCallback={onSave}
+      validationErrors={validationErrors}
+    />
+  );
 };
 
 export {CreateGeneratorPage};

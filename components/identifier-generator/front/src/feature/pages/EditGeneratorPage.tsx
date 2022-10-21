@@ -10,15 +10,17 @@ type EditGeneratorProps = {
 const EditGeneratorPage: React.FC<EditGeneratorProps> = ({initialGenerator}) => {
   const translate = useTranslate();
 
-  return <CreateOrEditGeneratorPage
-    initialGenerator={initialGenerator}
-    mainButtonCallback={
-      /* istanbul ignore next */
-      () => alert('not implemented')
-    }
-    mainButtonLabel={translate('pim_common.save')}
-    validationErrors={[]}
-  />;
+  return (
+    <CreateOrEditGeneratorPage
+      initialGenerator={initialGenerator}
+      mainButtonCallback={
+        /* istanbul ignore next */
+        () => alert('not implemented')
+      }
+      mainButtonLabel={translate('pim_common.save')}
+      validationErrors={[]}
+    />
+  );
 };
 
 export {EditGeneratorPage};

@@ -5,8 +5,8 @@ import {Violation} from '../validators/Violation';
 import {useHistory} from 'react-router-dom';
 
 type OnSaveIdentifierProps = () => {
-  onSave: (generator: IdentifierGenerator) => void,
-  validationErrors: Violation[],
+  onSave: (generator: IdentifierGenerator) => void;
+  validationErrors: Violation[];
 };
 
 const useSaveIdentifierGenerator: OnSaveIdentifierProps = () => {

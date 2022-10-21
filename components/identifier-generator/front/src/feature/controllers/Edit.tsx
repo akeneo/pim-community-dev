@@ -14,12 +14,10 @@ const Edit: React.FC<{}> = () => {
     labels: {en_US: 'a label'},
     conditions: [],
     structure: [{type: PROPERTY_NAMES.FREE_TEXT, string: 'AKN'}],
-    delimiter: null
+    delimiter: null,
   };
 
-  return (
-    <EditGeneratorPage initialGenerator={generator}/>
-  );
+  return <EditGeneratorPage initialGenerator={generator} />;
 };
 
 export {Edit};

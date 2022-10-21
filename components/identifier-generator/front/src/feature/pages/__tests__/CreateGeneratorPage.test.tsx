@@ -11,12 +11,12 @@ const initialGenerator: IdentifierGenerator = {
   conditions: [],
   structure: [],
   delimiter: null,
-  target: 'sku'
+  target: 'sku',
 };
 
 describe('CreateGeneratorPage', () => {
   it('should render page', () => {
-    render(<CreateGeneratorPage initialGenerator={initialGenerator}/>);
+    render(<CreateGeneratorPage initialGenerator={initialGenerator} />);
     expect(screen.getByText('pim_common.save')).toBeInTheDocument();
   });
 });

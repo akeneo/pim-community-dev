@@ -23,7 +23,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
   initialGenerator,
   mainButtonLabel,
   mainButtonCallback,
-  validationErrors
+  validationErrors,
 }) => {
   const [currentTab, setCurrentTab] = useState(Tabs.GENERAL);
   const translate = useTranslate();
@@ -52,9 +52,16 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
         <PageHeader.Title>{translate('pim_title.akeneo_identifier_generator_index')}</PageHeader.Title>
       </PageHeader>
       <Styled.TabContainer>
-        {validationErrors.length > 0 && <Helper level="error">
-          {validationErrors.map((error, i) => <div key={i}>{error.path && `${error.path}: `}{error.message}</div>)}
-        </Helper>}
+        {validationErrors.length > 0 && (
+          <Helper level="error">
+            {validationErrors.map((error, i) => (
+              <div key={i}>
+                {error.path && `${error.path}: `}
+                {error.message}
+              </div>
+            ))}
+          </Helper>
+        )}
 
         <TabBar moreButtonTitle={translate('pim_common.more')}>
           <TabBar.Tab isActive={currentTab === Tabs.GENERAL} onClick={() => setCurrentTab(Tabs.GENERAL)}>
@@ -71,14 +78,18 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
           </TabBar.Tab>
         </TabBar>
         {currentTab === Tabs.GENERAL && <GeneralPropertiesTab generator={generator} onGeneratorChange={setGenerator} />}
-        {currentTab === Tabs.PRODUCT_SELECTION && <>
+        {currentTab === Tabs.PRODUCT_SELECTION && (
+          <>
             <div>Not implemented YET</div>
             <div>{JSON.stringify(generator.conditions)}</div>
-        </>}
-        {currentTab === Tabs.STRUCTURE && <>
+          </>
+        )}
+        {currentTab === Tabs.STRUCTURE && (
+          <>
             <div>Not implemented YET</div>
             <div>{JSON.stringify(generator.structure)}</div>
-        </>}
+          </>
+        )}
       </Styled.TabContainer>
     </>
   );

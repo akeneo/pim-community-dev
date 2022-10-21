@@ -16,13 +16,13 @@ const identifierGenerator: IdentifierGenerator = {
   conditions: [],
   structure: [],
   delimiter: null,
-  target: 'sku'
+  target: 'sku',
 };
 
 type OnSaveIdentifierProps = {
   onSave: (identifierGenerator: IdentifierGenerator) => void;
   validationErrors: Violation[];
-}
+};
 
 describe('useSaveIdentifierGenerator', () => {
   test('it saves an identifier generator', () => {
@@ -33,10 +33,7 @@ describe('useSaveIdentifierGenerator', () => {
       ok: true,
       json: () => Promise.resolve(identifierGenerator),
     } as Response);
-    const {result, waitFor} = renderHook<
-      null,
-      OnSaveIdentifierProps
-      >(() => useSaveIdentifierGenerator(), {
+    const {result, waitFor} = renderHook<null, OnSaveIdentifierProps>(() => useSaveIdentifierGenerator(), {
       wrapper: createWrapper(),
     });
 
@@ -55,10 +52,7 @@ describe('useSaveIdentifierGenerator', () => {
       status: 400,
       json: () => Promise.resolve(violationErrors),
     } as Response);
-    const {result, waitFor} = renderHook<
-      null,
-      OnSaveIdentifierProps
-      >(() => useSaveIdentifierGenerator(), {
+    const {result, waitFor} = renderHook<null, OnSaveIdentifierProps>(() => useSaveIdentifierGenerator(), {
       wrapper: createWrapper(),
     });
 
