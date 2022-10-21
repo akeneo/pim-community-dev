@@ -68,7 +68,6 @@ describe('CreateGeneratorPage', () => {
       fireEvent.click(screen.getByText('Main button'));
     });
 
-    //await waitFor(async () => await screen.findByText('a path a message'));
     expect(await screen.findByText('a path a message')).toBeInTheDocument();
     expect(await screen.findByText('another message')).toBeInTheDocument();
   });

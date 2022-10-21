@@ -26,7 +26,7 @@ class IdentifierGeneratorController extends ReactController {
 
   renderRoute() {
     mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-settings'});
-    mediator.trigger('pim_menu:highlight:item', {extension: 'pim-menu-identifier-generator-settings'});
+    mediator.trigger('pim_menu:highlight:item', {extension: 'pim-menu-settings-identifier-generator'});
 
     return super.renderRoute();
   }
