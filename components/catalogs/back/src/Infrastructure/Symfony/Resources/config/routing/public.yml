@@ -52,3 +52,8 @@ akeneo_catalogs_public_delete_products_mapping_schema:
     path: '/api/rest/v1/catalogs/{catalogId}/mapping-schemas/product'
     controller: Akeneo\Catalogs\Infrastructure\Controller\Public\DeleteProductMappingSchemaAction
     methods: [ DELETE ]
+
+akeneo_catalogs_public_get_mapped_products:
+    path: '/api/rest/v1/catalogs/{catalogId}/mapped-products'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Public\GetMappedProductsAction
+    methods: [ GET ]
