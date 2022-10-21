@@ -77,13 +77,13 @@ class ConvertVariantToSimpleProductIntegration extends TestCase
             'quantified' => [
                 'products' => [
                     [
-                        'identifier' => 'other',
                         'uuid' => $this->getProductUuid('other'),
+                        'identifier' => 'other',
                         'quantity' => 10,
                     ],
                     [
-                        'identifier' => 'random',
                         'uuid' => $this->getProductUuid('random'),
+                        'identifier' => 'random',
                         'quantity' => 2,
                     ],
                 ],
