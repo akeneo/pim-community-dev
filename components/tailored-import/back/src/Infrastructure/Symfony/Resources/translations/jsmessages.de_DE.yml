@@ -64,9 +64,15 @@ akeneo.tailored_import:
       simple_select_replacement:
         title: Einfachauswahl-Ersetzung
         option_labels: Optionsbezeichnungen
+      simple_reference_entity_replacement:
+        title: Ersetzen von Referenz-Entität Einzelverknüpfung
+        option_labels: Datensatz Label
       multi_select_replacement:
         title: Mehrfachauswahl-Ersetzung
         option_labels: Optionsbezeichnungen
+      multi_reference_entity_replacement:
+        title: Ersetzen von Referenz-Entität Mehrfachverknüpfungen
+        option_labels: Datensatz Label
       categories_replacement:
         title: Kategorien ersetzen
         modal:

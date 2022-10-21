@@ -1,5 +1,7 @@
 batch_jobs.xlsx_tailored_product_import.label: カスタム商品をXLSX形式でインポート
 akeneo.tailored_import:
+  meta:
+    mapped_columns: "{0}列がマップされていません|{1}{{ count }}/{{ total }} 列がマップされています|]1, Inf[{{ count }}/{{ total }} 列がマップされています"
   global_settings:
     error_action:
       label: エラー管理
@@ -49,12 +51,20 @@ akeneo.tailored_import:
       add: 操作を追加
       common:
         collapse: 折りたたむ
+      clean_html:
+        title: HTMLを消去
+        remove: HTMLタグを削除
+        decode: HTML文字をデコード
       change_case:
         title: 大文字/小文字を切り替え
         select: 大文字/小文字を選択
         uppercase: 大文字
         lowercase: 小文字
         capitalize: 最初の文字を大文字にする
+      remove_whitespace:
+        title: 空白を削除
+        consecutive: 連続した空白を消去
+        trim: 最初と最後の空白を削除
       split:
         title: 分割
         separator: 区切り文字を選択
@@ -64,9 +74,15 @@ akeneo.tailored_import:
       simple_select_replacement:
         title: シンプルな選択の置換
         option_labels: オプションのラベル
+      simple_reference_entity_replacement:
+        title: 参照エンティティの単一リンクの置換
+        option_labels: レコードラベル
       multi_select_replacement:
         title: 複数の選択の置換
         option_labels: オプションのラベル
+      multi_reference_entity_replacement:
+        title: 参照エンティティの複数リンクの置換
+        option_labels: レコードラベル
       categories_replacement:
         title: カテゴリの置換
         modal:
@@ -89,6 +105,7 @@ akeneo.tailored_import:
       replacement:
         to_placeholder: ファイル内のソースの値を定義します。
         modal:
+          records: レコードを管理
           options: オプションを管理
           subtitle: 置換
           no_result:
@@ -188,6 +205,9 @@ akeneo.tailored_import:
       property_should_exist: プロパティ {{ property_code }} は存在しません。作成するか、別のターゲットを選択してください。
       source_configuration:
         unit_should_exist: ユニット {{ unit_code }} は、測定ファミリー {{ measurement_family_code }} に存在しません。有効なユニットを選択してください。
+        currency_should_not_be_null: 通貨を選択してください。
+        currency_should_be_active: 通貨 {{ currency_code }} がどのチャンネルにもリンクされていません。
+        currency_should_be_active_on_channel: 通貨 {{ currency_code }} がチャンネル {{ channel_code }} で有効ではありません。
     locale:
       should_be_active: ロケール {{ locale_code }} は無効化されています。再度有効にするか、別のロケールを選択してください。
       should_be_bound_to_channel: チャンネル {{ channel_code }} のロケール {{ locale_code }} は無効化されています。再度有効にするか、別のロケールを選択してください。

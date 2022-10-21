@@ -12,9 +12,12 @@ akeneo.job_automation:
       title: Frequenz
       daily: Jeden Tag
       weekly: Jede Woche
+      weekday: Tag
       every_4_hours: Alle 4 Stunden
       every_8_hours: Alle 8 Stunden
       every_12_hours: Alle 12 Stunden
+      hours: Stunde
+      minutes: Minute
       monday: Montag
       tuesday: Dienstag
       wednesday: Mittwoch

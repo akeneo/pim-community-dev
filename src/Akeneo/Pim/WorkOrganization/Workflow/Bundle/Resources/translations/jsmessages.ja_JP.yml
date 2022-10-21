@@ -183,6 +183,7 @@ pimee_enrich.entity.published_product:
     publish:
       success: 商品を正常に公開しました
       fail: この商品を公開できませんでした
+      fail_no_identifier: 識別子がないため、この商品を公開できません
     unpublish:
       success: 商品を正常に非公開にしました
       fail: この商品を非公開にできませんでした
