@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Controller\Public;
 
+use Akeneo\Catalogs\Domain\Catalog;
+use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\GetCatalogQuery;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
+use Akeneo\Catalogs\ServiceAPI\Command\UpdateProductMappingSchemaCommand;
+use Akeneo\Catalogs\ServiceAPI\Exception\ProductSchemaMappingNotFoundException as ServiceApiProductSchemaMappingNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Query\GetProductMappingSchemaQuery;
@@ -16,10 +20,10 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @covers \Akeneo\Catalogs\Infrastructure\Controller\Public\UpdateProductMappingSchemaAction
- * @covers \Akeneo\Catalogs\Application\Handler\UpdateProductMappingSchemaHandler
+ * @covers \Akeneo\Catalogs\Infrastructure\Controller\Public\DeleteProductMappingSchemaAction
+ * @covers \Akeneo\Catalogs\Application\Handler\DeleteProductMappingSchemaHandler
  */
-class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
+class DeleteProductMappingSchemaActionTest extends IntegrationTestCase
 {
     private ?KernelBrowser $client = null;
     private ?CommandBus $commandBus;
@@ -40,33 +44,43 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
         $this->client = $this->getAuthenticatedPublicApiClient([
             'write_catalogs',
         ]);
-        $this->commandBus->execute(new CreateCatalogCommand(
+        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'shopifi');
+        $this->commandBus->execute(new UpdateProductMappingSchemaCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            'Store US',
-            'shopifi',
+            \json_decode($this->getValidSchemaData(), false, 512, JSON_THROW_ON_ERROR),
         ));
+        $this->setCatalogProductMapping('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
+            'name' => [
+                'attribute' => 'title',
+                'scope' => 'ecommerce',
+                'locale' => 'en_US',
+            ],
+        ]);
 
         $this->client->request(
-            'PUT',
+            'DELETE',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapping-schemas/product',
             [],
             [],
             [
                 'CONTENT_TYPE' => 'application/json',
             ],
-            $this->getValidSchemaData(),
         );
 
         $response = $this->client->getResponse();
 
         Assert::assertEquals(204, $response->getStatusCode());
 
-        $productMappingSchema = $this->queryBus->execute(
+        $this->expectException(ServiceApiProductSchemaMappingNotFoundException::class);
+        $this->queryBus->execute(
             new GetProductMappingSchemaQuery('db1079b6-f397-4a6a-bae4-8658e64ad47c')
         );
+
+        /** @var Catalog $catalog */
+        $catalog = self::getContainer()->get(GetCatalogQuery::class)->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
         Assert::assertJsonStringEqualsJsonString(
-            $this->getValidSchemaData(),
-            \json_encode($productMappingSchema, JSON_THROW_ON_ERROR)
+            '[]',
+            \json_encode($catalog->getProductMapping(), JSON_THROW_ON_ERROR)
         );
     }
 
@@ -80,14 +94,13 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
         ));
 
         $this->client->request(
-            'PUT',
+            'DELETE',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapping-schemas/product',
             [],
             [],
             [
                 'CONTENT_TYPE' => 'application/json',
             ],
-            $this->getValidSchemaData(),
         );
 
         $response = $this->client->getResponse();
@@ -102,14 +115,13 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
         ]);
 
         $this->client->request(
-            'PUT',
+            'DELETE',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapping-schemas/product',
             [],
             [],
             [
                 'CONTENT_TYPE' => 'application/json',
             ],
-            $this->getValidSchemaData(),
         );
 
         $response = $this->client->getResponse();
@@ -130,73 +142,18 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
         ));
 
         $this->client->request(
-            'PUT',
+            'DELETE',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapping-schemas/product',
             [],
             [],
             [
                 'CONTENT_TYPE' => 'application/json',
             ],
-            $this->getValidSchemaData(),
         );
 
         $response = $this->client->getResponse();
 
         Assert::assertEquals(404, $response->getStatusCode());
-    }
-
-    public function testItReturnsBadRequestWhenPayloadIsNotValidJson(): void
-    {
-        $this->client = $this->getAuthenticatedPublicApiClient([
-            'write_catalogs',
-        ]);
-        $this->commandBus->execute(new CreateCatalogCommand(
-            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            'Store US',
-            'shopifi',
-        ));
-
-        $this->client->request(
-            'PUT',
-            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapping-schemas/product',
-            [],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-            ],
-            '{',
-        );
-
-        $response = $this->client->getResponse();
-
-        Assert::assertEquals(400, $response->getStatusCode());
-    }
-
-    public function testItReturnsUnprocessableEntityWhenPayloadIsNotAValidSchema(): void
-    {
-        $this->client = $this->getAuthenticatedPublicApiClient([
-            'write_catalogs',
-        ]);
-        $this->commandBus->execute(new CreateCatalogCommand(
-            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            'Store US',
-            'shopifi',
-        ));
-
-        $this->client->request(
-            'PUT',
-            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapping-schemas/product',
-            [],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-            ],
-            '{}',
-        );
-
-        $response = $this->client->getResponse();
-
-        Assert::assertEquals(422, $response->getStatusCode());
     }
 
     private function getValidSchemaData(): string
