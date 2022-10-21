@@ -80,8 +80,8 @@ class SaveMeasurementFamiliesActionEndToEnd extends ApiTestCase
                 'message' => 'The measurement family has an invalid format.',
                 'errors' => [
                     [
-                        'property' => 'code',
-                        'message' => 'The property code is required',
+                        'property' => '',
+                        'message' => 'The required properties (code) are missing',
                     ]
                 ],
             ]
@@ -507,7 +507,7 @@ class SaveMeasurementFamiliesActionEndToEnd extends ApiTestCase
                 'errors' => [
                     [
                         'property' => '',
-                        'message' => 'Object value found, but an array is required',
+                        'message' => 'The data (object) must match the type: array',
                     ],
                 ]
             ],
@@ -535,13 +535,9 @@ class SaveMeasurementFamiliesActionEndToEnd extends ApiTestCase
                 'errors' =>
                     [
                         [
-                            'property' => 'units',
-                            'message' => 'The property units is required',
-                        ],
-                        [
-                            'property' => 'standard_unit_code',
-                            'message' => 'The property standard_unit_code is required',
-                        ],
+                            'property' => '',
+                            'message' => 'The required properties (units, standard_unit_code) are missing'
+                        ]
                     ],
             ]
         ], json_decode($response->getContent(), true));
@@ -591,7 +587,7 @@ class SaveMeasurementFamiliesActionEndToEnd extends ApiTestCase
                     [
                         [
                             'property' => '',
-                            'message' => 'The property foo is not defined and the definition does not allow additional properties',
+                            'message' => 'Additional object properties are not allowed: foo',
                         ],
                     ],
             ]

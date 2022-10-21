@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Infrastructure\Persistence\Catalog\Product;
 
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductIdentifiersQueryInterface;
+use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
@@ -29,10 +30,10 @@ final class GetProductIdentifiersQuery implements GetProductIdentifiersQueryInte
      *
      * @return array<string>
      */
-    public function execute(string $catalogId, ?string $searchAfter = null, int $limit = 100): array
+    public function execute(Catalog $catalog, ?string $searchAfter = null, int $limit = 100): array
     {
         $pqbOptions = [
-            'filters' => $this->getFilters($catalogId),
+            'filters' => $this->getFilters($catalog),
             'limit' => $limit,
         ];
 
@@ -41,7 +42,6 @@ final class GetProductIdentifiersQuery implements GetProductIdentifiersQueryInte
 
             $pqbOptions['search_after'] = [
                 \strtolower($searchAfterProductIdentifier),
-                \sprintf('product_%s', $searchAfter),
             ];
         }
 
@@ -80,38 +80,11 @@ final class GetProductIdentifiersQuery implements GetProductIdentifiersQueryInte
     /**
      * @return array<mixed>
      */
-    private function findProductSelectionCriteria(string $catalogId): array
-    {
-        $sql = <<<SQL
-            SELECT product_selection_criteria
-            FROM akeneo_catalog
-            WHERE id = :id
-        SQL;
-
-        /** @var string|false $raw */
-        $raw = $this->connection->fetchOne($sql, [
-            'id' => Uuid::fromString($catalogId)->getBytes(),
-        ]);
-
-        if (!$raw) {
-            throw new \InvalidArgumentException('Unknown catalog');
-        }
-
-        if (!\is_array($criteria = \json_decode($raw, true, 512, JSON_THROW_ON_ERROR))) {
-            throw new \LogicException('Invalid JSON in product_selection_criteria column');
-        }
-
-        return $criteria;
-    }
-
-    /**
-     * @return array<mixed>
-     */
-    private function getFilters(string $catalogId): array
+    private function getFilters(Catalog $catalog): array
     {
         $filters = [];
         /** @var array<array-key, array{field: string, operator: string, value?: mixed, scope?: string|null, locale?: string|null}> $productSelectionCriteria */
-        $productSelectionCriteria = $this->findProductSelectionCriteria($catalogId);
+        $productSelectionCriteria = $catalog->getProductSelectionCriteria();
         foreach ($productSelectionCriteria as $criterion) {
             $filter = $criterion;
 

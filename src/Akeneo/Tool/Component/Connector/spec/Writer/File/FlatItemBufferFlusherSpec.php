@@ -173,7 +173,7 @@ class FlatItemBufferFlusherSpec extends ObjectBehavior
 
         $buffer->getHeaders()->willReturn(['colA', 'colB']);
 
-        $this->shouldThrow('Box\Spout\Common\Exception\UnsupportedTypeException')
+        $this->shouldThrow('OpenSpout\Common\Exception\UnsupportedTypeException')
             ->during('flush', [$buffer, ['type' => 'undefined'], Argument::any()]);
     }
 }

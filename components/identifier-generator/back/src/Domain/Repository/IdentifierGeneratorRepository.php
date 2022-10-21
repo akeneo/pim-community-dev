@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\UnableToFetchIdentifierGeneratorException;
@@ -24,4 +26,6 @@ interface IdentifierGeneratorRepository
     public function get(string $identifierGeneratorCode): ?IdentifierGenerator;
 
     public function getNextId(): IdentifierGeneratorId;
+
+    public function count(): int;
 }

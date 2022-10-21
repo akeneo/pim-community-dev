@@ -62,7 +62,7 @@ abstract class ControllerEndToEndTestCase extends WebTestCase
     }
 
     private const DEFAULT_HEADER = [
-        'HTTP_X-Requested-With' => 'XMLHttpRequest'
+        'HTTP_X-Requested-With' => 'XMLHttpRequest',
     ];
 
     protected function callRoute(string $routeName, ?array $header = self::DEFAULT_HEADER): void
