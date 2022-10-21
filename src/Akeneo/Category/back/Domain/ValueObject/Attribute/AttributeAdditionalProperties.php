@@ -8,63 +8,48 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @implements \IteratorAggregate<string, string>
- * @phpstan-type Locale string
- * @phpstan-type LocalizedAdditionalProperty
- * array<Locale, string>
+ * @phpstan-type AdditionalProperties array<string, mixed>
  */
 final class AttributeAdditionalProperties implements \IteratorAggregate
 {
     /**
-     * @param LocalizedAdditionalProperty
-     * $translatedAdditionalProperty
-     *
+     * @param AdditionalProperties $additionalProperties
      */
-    private function __construct(private ?array $translatedAdditionalProperty
-    )
+    private function __construct(private ?array $additionalProperties)
     {
-        Assert::allString($translatedAdditionalProperty
-        );
-        Assert::allStringNotEmpty(\array_keys($translatedAdditionalProperty
-        ));
+        Assert::allString($additionalProperties);
+        Assert::allStringNotEmpty(\array_keys($additionalProperties));
     }
 
     /**
-     * @param LocalizedAdditionalProperty
-     * $translatedAdditionalProperty
-     *
+     * @param AdditionalProperties $additionalProperties
      */
-    public static function fromArray(array $translatedAdditionalProperty
-    ): self
+    public static function fromArray(array $additionalProperties): self
     {
-        return new self($translatedAdditionalProperty
-        );
+        return new self($additionalProperties);
     }
 
     /**
-     * @return LocalizedAdditionalProperty
-     *
+     * @return AdditionalProperties
      */
-    public function getTranslations(): array
+    public function getAdditionalProperties(): array
     {
-        return $this->translatedAdditionalProperty;
+        return $this->additionalProperties;
     }
 
-    public function getTranslation(string $localeCode): ?string
+    public function getAdditionalProperty(string $propertyName): ?string
     {
-        return $this->translatedAdditionalProperty
-        [$localeCode] ?? null;
+        return $this->additionalProperties[$propertyName] ?? null;
     }
 
-    public function setTranslation(string $localeCode, string $label): void
+    public function setAdditionalProperty(string $propertyName, string $value): void
     {
-        $this->translatedAdditionalProperty
-        [$localeCode] = $label;
+        $this->additionalProperties[$propertyName] = $value;
     }
 
-    public function hasTranslation(string $localeCode): bool
+    public function hasAdditionalProperty(string $propertyName): bool
     {
-        return array_key_exists($localeCode, $this->translatedAdditionalProperty
-        );
+        return array_key_exists($propertyName, $this->additionalProperties);
     }
 
     /**
@@ -72,17 +57,14 @@ final class AttributeAdditionalProperties implements \IteratorAggregate
      */
     public function getIterator(): \ArrayIterator
     {
-        return new \ArrayIterator($this->translatedAdditionalProperty
-        );
+        return new \ArrayIterator($this->additionalProperties);
     }
 
     /**
-     * @return LocalizedAdditionalProperty
-     *
+     * @return AdditionalProperties
      */
     public function normalize(): array
     {
-        return $this->translatedAdditionalProperty
-            ?? [];
+        return $this->additionalProperties ?? [];
     }
 }
