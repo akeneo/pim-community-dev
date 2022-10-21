@@ -29,6 +29,7 @@ final class SpoutWriterFactory
                 $options = new CsvOptions();
                 $options->FIELD_DELIMITER = $normalizedOptions['fieldDelimiter'] ?? $options->FIELD_DELIMITER;
                 $options->FIELD_ENCLOSURE = $normalizedOptions['filedEnclosure'] ?? $options->FIELD_ENCLOSURE;
+                $options->SHOULD_ADD_BOM = $normalizedOptions['shouldAddBOM'] ?? $options->SHOULD_ADD_BOM;
                 break;
             default:
                 throw new \InvalidArgumentException(sprintf('"%s" is not a valid writer type', $type));

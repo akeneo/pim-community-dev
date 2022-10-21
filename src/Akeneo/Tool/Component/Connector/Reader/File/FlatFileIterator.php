@@ -50,7 +50,7 @@ class FlatFileIterator implements FileIteratorInterface
         }
 
         $mimeType = finfo_file(finfo_open(FILEINFO_MIME_TYPE), $this->filePath);
-        if ('application/zip' === $mimeType && Type::XLSX !== $this->fileInfo->getExtension()) {
+        if ('application/zip' === $mimeType && SpoutReaderFactory::XLSX !== $this->fileInfo->getExtension()) {
             $this->extractZipArchive();
         }
 
