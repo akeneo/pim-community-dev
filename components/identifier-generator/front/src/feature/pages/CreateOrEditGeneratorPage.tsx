@@ -71,8 +71,14 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
           </TabBar.Tab>
         </TabBar>
         {currentTab === Tabs.GENERAL && <GeneralPropertiesTab generator={generator} onGeneratorChange={setGenerator} />}
-        {currentTab === Tabs.PRODUCT_SELECTION && <div>Not implemented YET {JSON.stringify(generator.conditions)}</div>}
-        {currentTab === Tabs.STRUCTURE && <div>Not implemented YET {JSON.stringify(generator.structure)}</div>}
+        {currentTab === Tabs.PRODUCT_SELECTION && <>
+            <div>Not implemented YET</div>
+            <div>{JSON.stringify(generator.conditions)}</div>
+        </>}
+        {currentTab === Tabs.STRUCTURE && <>
+            <div>Not implemented YET</div>
+            <div>{JSON.stringify(generator.structure)}</div>
+        </>}
       </Styled.TabContainer>
     </>
   );

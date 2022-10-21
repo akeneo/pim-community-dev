@@ -21,4 +21,10 @@ jest.mock('@akeneo-pim-community/shared/lib/components/PimView', () => ({
 jest.mock('@akeneo-pim-community/shared', () => ({
   ...jest.requireActual('@akeneo-pim-community/shared'),
   useTranslate: () => (key: string) => key,
+  useRouter: () => {
+    return {
+      generate: (key: string) => key,
+    }
+  }
 }));
+

@@ -12,7 +12,10 @@ const EditGeneratorPage: React.FC<EditGeneratorProps> = ({initialGenerator}) => 
 
   return <CreateOrEditGeneratorPage
     initialGenerator={initialGenerator}
-    mainButtonCallback={() => alert('not implemented')}
+    mainButtonCallback={
+      /* istanbul ignore next */
+      () => alert('not implemented')
+    }
     mainButtonLabel={translate('pim_common.save')}
     validationErrors={[]}
   />;
