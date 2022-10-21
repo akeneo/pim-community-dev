@@ -17,10 +17,10 @@ final class IdentifierGeneratorCreationLimit extends Constraint
 
     public function __construct($options = null, array $groups = null, $payload = null)
     {
-        parent::__construct($options, $groups, $payload);
-        if (null === $options || !isset($options['limit']) || null === $options['limit']) {
+        if (null === $options || (is_array($options) && !isset($options['limit']))) {
             $options['limit'] = $this->limit;
         }
+        parent::__construct($options, $groups, $payload);
     }
 
     public function getDefaultOption()

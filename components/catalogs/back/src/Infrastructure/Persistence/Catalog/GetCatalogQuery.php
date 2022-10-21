@@ -21,10 +21,12 @@ use Ramsey\Uuid\Uuid;
  *      is_enabled: string,
  *      product_selection_criteria: string,
  *      product_value_filters: string,
+ *      product_mapping: string,
  * }
  *
  * @phpstan-import-type ProductSelectionCriterion from Catalog
  * @phpstan-import-type ProductValueFilters from Catalog
+ * @phpstan-import-type ProductMapping from Catalog
  */
 final class GetCatalogQuery implements GetCatalogQueryInterface
 {
@@ -41,7 +43,8 @@ final class GetCatalogQuery implements GetCatalogQueryInterface
             catalog.is_enabled,
             oro_user.username AS owner_username,
             catalog.product_selection_criteria,
-            catalog.product_value_filters
+            catalog.product_value_filters,
+            catalog.product_mapping
         FROM akeneo_catalog catalog
         JOIN oro_user ON oro_user.id = catalog.owner_id
         WHERE catalog.id = :id
@@ -68,6 +71,12 @@ final class GetCatalogQuery implements GetCatalogQueryInterface
             throw new \LogicException('Invalid JSON in product_value_filters column');
         }
 
+        /** @var ProductMapping|null $productMapping */
+        $productMapping = \json_decode($row['product_mapping'], true, 512, JSON_THROW_ON_ERROR);
+        if (!\is_array($productMapping)) {
+            throw new \LogicException('Invalid JSON in product_mapping column');
+        }
+
         return new Catalog(
             $row['id'],
             $row['name'],
@@ -75,6 +84,7 @@ final class GetCatalogQuery implements GetCatalogQueryInterface
             (bool) $row['is_enabled'],
             $productSelectionCriteria,
             $productValueFilters,
+            $productMapping,
         );
     }
 }

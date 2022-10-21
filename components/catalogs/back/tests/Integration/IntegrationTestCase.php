@@ -312,6 +312,21 @@ abstract class IntegrationTestCase extends WebTestCase
         );
     }
 
+    protected function setCatalogProductMapping(string $id, array $productMapping)
+    {
+        $connection = self::getContainer()->get(Connection::class);
+        $connection->executeQuery(
+            'UPDATE akeneo_catalog SET product_mapping = :productMapping WHERE id = :id',
+            [
+                'id' => Uuid::fromString($id)->getBytes(),
+                'productMapping' => $productMapping,
+            ],
+            [
+                'productMapping' => Types::JSON,
+            ]
+        );
+    }
+
     /**
      * @param array{
      *     code: string,

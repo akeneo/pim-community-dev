@@ -20,7 +20,7 @@ final class IdentifierGeneratorCreationLimitValidator extends ConstraintValidato
     {
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         Assert::isInstanceOf($constraint, IdentifierGeneratorCreationLimit::class);
         $command = $this->context->getRoot();

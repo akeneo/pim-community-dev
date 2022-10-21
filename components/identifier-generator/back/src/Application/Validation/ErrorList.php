@@ -10,6 +10,9 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation;
  */
 final class ErrorList implements \Countable
 {
+    /**
+     * @param Error[] $errors
+     */
     public function __construct(private array $errors = [])
     {
     }
@@ -24,8 +27,16 @@ final class ErrorList implements \Countable
         $this->errors[] = $error;
     }
 
-    public function getMergedMessages(): string
+    /**
+     * @return array<array{message: string, path: string | null}>
+     */
+    public function normalize(): array
     {
-        return \join("\n", array_map(fn ($error) => $error->getMessage(), $this->errors));
+        return array_map(fn (Error $error): array => $error->normalize(), $this->errors);
+    }
+
+    public function __toString()
+    {
+        return \join("\n", array_map(fn (Error $error): string => $error->__toString(), $this->errors));
     }
 }

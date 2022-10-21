@@ -66,7 +66,7 @@ class TargetAttributeShouldBeAnIdentifierValidatorSpec extends ObjectBehavior
             ));
         $context->getRoot()
             ->shouldBeCalledOnce()
-            ->willReturn(new CreateGeneratorCommand('2038e1c9-68ff-4833-b06f-01e42d206002', 'generatorCode', [], [], [], 'sku', '-'));
+            ->willReturn(new CreateGeneratorCommand('generatorCode', [], [], [], 'sku', '-'));
 
         $context->buildViolation(
             'validation.create.target_attribute_is_not_an_identifier',
@@ -96,7 +96,6 @@ class TargetAttributeShouldBeAnIdentifierValidatorSpec extends ObjectBehavior
                 []
             ));
         $command = new CreateGeneratorCommand(
-            '2038e1c9-68ff-4833-b06f-01e42d206002',
             'generatorCode',
             [],
             [FreeText::fromString('abcdef')],
