@@ -78,9 +78,12 @@ class AttributeText extends Attribute
      *     code: string,
      *     type: string,
      *     order: int,
+     *     is_required: bool,
      *     is_localizable: bool,
+     *     is_scopable: bool,
      *     labels: array<string, string>,
-     *     template_uuid: string
+     *     template_uuid: string,
+     *     additional_properties: array<string, mixed>
      * }
      */
     public function normalize(): array

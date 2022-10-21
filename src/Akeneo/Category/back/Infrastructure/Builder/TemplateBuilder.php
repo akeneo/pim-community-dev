@@ -8,9 +8,12 @@ use Akeneo\Category\Domain\Model\Attribute\AttributeText;
 use Akeneo\Category\Domain\Model\Attribute\AttributeTextArea;
 use Akeneo\Category\Domain\Model\Template;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsLocalizable;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsRequired;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsScopable;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeOrder;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Akeneo\Category\Domain\ValueObject\Code;
@@ -56,41 +59,56 @@ class TemplateBuilder
                     AttributeUuid::fromUuid(Uuid::uuid4()),
                     new AttributeCode('description'),
                     AttributeOrder::fromInteger(1),
+                    AttributeIsRequired::fromBoolean(true),
+                    AttributeIsScopable::fromBoolean(true),
                     AttributeIsLocalizable::fromBoolean(true),
                     LabelCollection::fromArray(['en_US' => 'Description']),
-                    $templateUuid
+                    $templateUuid,
+                    AttributeAdditionalProperties::fromArray([])
                 ),
                 AttributeImage::create(
                     AttributeUuid::fromUuid(Uuid::uuid4()),
                     new AttributeCode('banner_image'),
                     AttributeOrder::fromInteger(2),
+                    AttributeIsRequired::fromBoolean(true),
+                    AttributeIsScopable::fromBoolean(false),
                     AttributeIsLocalizable::fromBoolean(false),
                     LabelCollection::fromArray(['en_US' => 'Banner image']),
-                    $templateUuid
+                    $templateUuid,
+                    AttributeAdditionalProperties::fromArray([])
                 ),
                 AttributeText::create(
                     AttributeUuid::fromUuid(Uuid::uuid4()),
                     new AttributeCode('seo_meta_title'),
                     AttributeOrder::fromInteger(3),
+                    AttributeIsRequired::fromBoolean(true),
+                    AttributeIsScopable::fromBoolean(true),
                     AttributeIsLocalizable::fromBoolean(true),
                     LabelCollection::fromArray(['en_US' => 'SEO Meta Title']),
-                    $templateUuid
+                    $templateUuid,
+                    AttributeAdditionalProperties::fromArray([])
                 ),
                 AttributeTextArea::create(
                     AttributeUuid::fromUuid(Uuid::uuid4()),
                     new AttributeCode('seo_meta_description'),
                     AttributeOrder::fromInteger(4),
+                    AttributeIsRequired::fromBoolean(true),
+                    AttributeIsScopable::fromBoolean(true),
                     AttributeIsLocalizable::fromBoolean(true),
                     LabelCollection::fromArray(['en_US' => 'SEO Meta Description']),
-                    $templateUuid
+                    $templateUuid,
+                    AttributeAdditionalProperties::fromArray([])
                 ),
                 AttributeTextArea::create(
                     AttributeUuid::fromUuid(Uuid::uuid4()),
                     new AttributeCode('seo_keywords'),
                     AttributeOrder::fromInteger(5),
+                    AttributeIsRequired::fromBoolean(true),
+                    AttributeIsScopable::fromBoolean(true),
                     AttributeIsLocalizable::fromBoolean(true),
                     LabelCollection::fromArray(['en_US' => 'SEO Keywords']),
-                    $templateUuid
+                    $templateUuid,
+                    AttributeAdditionalProperties::fromArray([])
                 ),
             ])
         );
