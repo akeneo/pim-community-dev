@@ -2,17 +2,17 @@ import {Validator} from './Validator';
 import {ALLOWED_PROPERTY_NAMES, Structure} from '../models';
 import {Violation} from './Violation';
 
-const validateStructure: Validator<Structure> = (structure, path) => {
+const validateStructure: Validator<Structure | undefined> = (structure, path) => {
   const violations: Violation[] = [];
 
-  if (structure.length === 0) {
+  if (structure?.length === 0) {
     violations.push({
       path,
       message: 'The structure must contain at least 1 property',
     });
   }
 
-  structure.forEach((property, i) => {
+  structure?.forEach((property, i) => {
     if (!ALLOWED_PROPERTY_NAMES.includes(property.propertyName)) {
       violations.push({
         path: `${path}[${i}]`,

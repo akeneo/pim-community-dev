@@ -7,6 +7,8 @@ namespace Akeneo\Catalogs\Test\Acceptance;
 use Akeneo\Catalogs\Application\Persistence\Catalog\UpsertCatalogQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
+use Akeneo\Catalogs\ServiceAPI\Command\UpdateProductMappingSchemaCommand;
+use Akeneo\Catalogs\ServiceAPI\Exception\ProductSchemaMappingNotFoundException as ServiceApiProductSchemaMappingNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
@@ -139,7 +141,8 @@ class ApiContext implements Context
                         'value' => true,
                     ],
                 ],
-                []
+                [],
+                [],
             )
         );
 
@@ -480,6 +483,70 @@ class ApiContext implements Context
     }
 
     /**
+     * @Given an existing catalog with a product mapping schema
+     */
+    public function anExistingCatalogWithAProductMappingSchema(): void
+    {
+        $connectedAppUserIdentifier = $this->getConnectedApp()->getUsername();
+        $this->authentication->logAs($connectedAppUserIdentifier);
+
+        $commandBus = $this->container->get(CommandBus::class);
+        $commandBus->execute(new CreateCatalogCommand(
+            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            'Store US',
+            $connectedAppUserIdentifier,
+        ));
+        $commandBus->execute(new UpdateProductMappingSchemaCommand(
+            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            \json_decode(
+                <<<'JSON_WRAP'
+                {
+                  "$id": "https://example.com/product",
+                  "$schema": "https://api.akeneo.com/mapping/product/0.0.1/schema",
+                  "$comment": "My first schema !",
+                  "title": "Product Mapping",
+                  "description": "JSON Schema describing the structure of products expected by our application",
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "body_html": {
+                      "title": "Description",
+                      "description": "Product description in raw HTML",
+                      "type": "string"
+                    }
+                  }
+                }
+                JSON_WRAP,
+                false,
+                512,
+                JSON_THROW_ON_ERROR
+            ),
+        ));
+    }
+
+    /**
+     * @When the external application retrieves the catalog product mapping schema using the API
+     */
+    public function theExternalApplicationRetrievesTheCatalogProductMappingSchemaUsingTheApi(): void
+    {
+        $this->authentication->logAs($this->getConnectedApp()->getUsername());
+
+        $this->getConnectedAppClient()->request(
+            method: 'GET',
+            uri: '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapping-schemas/product',
+            server: [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+        );
+
+        $this->response = $this->getConnectedAppClient()->getResponse();
+
+        Assert::assertEquals(200, $this->response->getStatusCode());
+    }
+
+    /**
      * @When the external application updates a catalog product mapping schema using the API
      */
     public function theExternalApplicationUpdatesACatalogProductMappingSchemaUsingTheApi(): void
@@ -582,5 +649,40 @@ class ApiContext implements Context
             JSON_WRAP,
             $this->response->getContent(),
         );
+    }
+
+    /**
+     * @When the external application deletes a catalog product mapping schema using the API
+     */
+    public function theExternalApplicationDeletesACatalogProductMappingSchemaUsingTheApi(): void
+    {
+        $this->authentication->logAs($this->getConnectedApp()->getUsername());
+
+        $this->getConnectedAppClient()->request(
+            method: 'DELETE',
+            uri: '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapping-schemas/product',
+            server: [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+        );
+
+        $this->response = $this->getConnectedAppClient()->getResponse();
+
+        Assert::assertEquals(204, $this->response->getStatusCode());
+    }
+
+    /**
+     * @Then the catalog product mapping schema should be empty in the PIM
+     */
+    public function theCatalogProductMappingSchemaShouldBeEmptyInThePim(): void
+    {
+        $productSchemaMappingNotFoundExceptionThrown = false;
+        try {
+            $this->queryBus->execute(new GetProductMappingSchemaQuery('db1079b6-f397-4a6a-bae4-8658e64ad47c'));
+        } catch (ServiceApiProductSchemaMappingNotFoundException) {
+            $productSchemaMappingNotFoundExceptionThrown = true;
+        }
+
+        Assert::assertTrue($productSchemaMappingNotFoundExceptionThrown);
     }
 }

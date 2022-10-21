@@ -5,3 +5,8 @@ akeneo_identifier_generator_get_identifier_attributes:
     path: '/identifier-generator/identifier-attributes'
     controller: Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetIdentifierAttributesController
     methods: [GET]
+
+akeneo_identifier_generator_rest_create:
+    path: '/rest/identifier-generator'
+    controller: Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\CreateIdentifierGeneratorController
+    methods: [POST]

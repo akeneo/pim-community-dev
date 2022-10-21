@@ -6,4 +6,13 @@ pim_error:
 pim_identifier_generator:
     create:
         form:
+            title: "Create a new Identifier Generator"
             select_identifier_attribute: "Select your identifier attribute"
+    tabs:
+        general: "General"
+        product_selection: "Product Selection"
+        identifier_structure: "Identifier Structure"
+    general:
+        title: "General properties"
+        label_translations_in_ui_locale: "Label translations in UI locale"
+

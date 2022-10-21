@@ -37,6 +37,7 @@ final class UpdateCatalogHandler
             $catalog->isEnabled(),
             $catalog->getProductSelectionCriteria(),
             $catalog->getProductValueFilters(),
+            $catalog->getProductMapping(),
         ));
     }
 }

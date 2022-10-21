@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property;
 
 /**
@@ -8,8 +10,15 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property;
  */
 interface PropertyInterface
 {
-    public function normalize();
+    /**
+     * @return array<string, int|string>
+     */
+    public function normalize(): array;
 
+    /**
+     * @param array<string, int|string> $fromNormalized
+     * @return self
+     */
     public static function fromNormalized(array $fromNormalized): self;
 
     public static function type(): string;

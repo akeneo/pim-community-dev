@@ -76,7 +76,7 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
         ]);
 
         $this->expectException(ViolationsException::class);
-        $this->expectExceptionMessage('Property "associations" expects a valid product identifier. The product does not exist, "unknown" given.');
+        $this->expectExceptionMessage('The “associations” property expects a valid product identifier. The unknown product does not exist or your connection does not have permission to access it.');
         $this->commandMessageBus->dispatch($command);
     }
 
