@@ -36,7 +36,7 @@ final class ProductFilesList
                 $productFiles,
             ),
             'total' => ($this->getProductFilesCount)($supplierIdentifier),
-            'items_per_page' => ListProductFilesForSupplier::NUMBER_OF_PRODUCT_FILES,
+            'items_per_page' => ListProductFilesForSupplier::NUMBER_OF_PRODUCT_FILES_PER_PAGE,
         ]);
     }
 }

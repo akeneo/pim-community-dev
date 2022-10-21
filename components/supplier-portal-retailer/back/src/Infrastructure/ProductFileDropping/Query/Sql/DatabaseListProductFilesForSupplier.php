@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFiles;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFilesForSupplier;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFile;
 use Doctrine\DBAL\Connection;
@@ -83,8 +82,8 @@ final class DatabaseListProductFilesForSupplier implements ListProductFilesForSu
                 $sql,
                 [
                     'supplierIdentifier' => $supplierIdentifier,
-                    'offset' => ListProductFiles::NUMBER_OF_PRODUCT_FILES_PER_PAGE * ($page - 1),
-                    'limit' => ListProductFiles::NUMBER_OF_PRODUCT_FILES_PER_PAGE,
+                    'offset' => ListProductFilesForSupplier::NUMBER_OF_PRODUCT_FILES_PER_PAGE * ($page - 1),
+                    'limit' => ListProductFilesForSupplier::NUMBER_OF_PRODUCT_FILES_PER_PAGE,
                 ],
                 [
                     'supplierIdentifier' => \PDO::PARAM_STR,

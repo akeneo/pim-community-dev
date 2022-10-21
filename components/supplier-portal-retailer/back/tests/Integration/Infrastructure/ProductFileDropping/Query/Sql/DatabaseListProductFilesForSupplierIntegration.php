@@ -51,7 +51,7 @@ final class DatabaseListProductFilesForSupplierIntegration extends SqlIntegratio
 
 
     /** @test */
-    public function itGetsNoMoreThanTwentyFiveProductFilesAtATime(): void
+    public function itGetsNoMoreThanTenFiveProductFilesAtATime(): void
     {
         $productFileRepository = $this->get(ProductFileRepository::class);
         for ($i = 0; 30 > $i; $i++) {
@@ -72,7 +72,7 @@ final class DatabaseListProductFilesForSupplierIntegration extends SqlIntegratio
         $supplierProductFiles = ($this->get(ListProductFilesForSupplier::class))('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7');
 
         $expectedProductFilenames = [];
-        for ($i = 0; 25 > $i; $i++) {
+        for ($i = 0; ListProductFilesForSupplier::NUMBER_OF_PRODUCT_FILES_PER_PAGE > $i; $i++) {
             $expectedProductFilenames[] = sprintf('products_%d.xlsx', $i+1);
         }
 
@@ -89,7 +89,7 @@ final class DatabaseListProductFilesForSupplierIntegration extends SqlIntegratio
     public function itPaginatesTheProductFilesList(): void
     {
         $productFileRepository = $this->get(ProductFileRepository::class);
-        for ($i = 0; 30 > $i; $i++) {
+        for ($i = 0; 35 > $i; $i++) {
             $productFileRepository->save(
                 (new ProductFileBuilder())
                     ->uploadedBySupplier($this->supplier)
@@ -104,7 +104,7 @@ final class DatabaseListProductFilesForSupplierIntegration extends SqlIntegratio
             );
         }
 
-        $productFiles = ($this->get(ListProductFilesForSupplier::class))('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7', 2);
+        $productFiles = ($this->get(ListProductFilesForSupplier::class))('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7', 4);
 
         static::assertCount(5, $productFiles);
     }

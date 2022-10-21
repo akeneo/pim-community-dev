@@ -46,7 +46,7 @@ test('it renders a paginated list of product files', async () => {
     expect(screen.queryAllByText('contributor@los-pollos-hermanos.com').length).toBe(25);
     expect(screen.queryAllByText('10/19/2022, 02:57 PM').length).toBe(25);
     expect(screen.getAllByTestId('Download icon')).toHaveLength(25);
-    expect(screen.getAllByTestId('paginationItem')).toHaveLength(2);
+    expect(screen.getAllByTestId('paginationItem')).toHaveLength(3);
 });
 
 test('it refreshes the comment panel content when clicking on another product file row', () => {

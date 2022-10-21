@@ -22,7 +22,7 @@ type Props = {
     onChangePage: (pageNumber: number) => void;
 };
 
-export const PRODUCT_FILES_PER_PAGE = 25;
+export const PRODUCT_FILES_PER_PAGE = 10;
 
 const FilenameCell = styled.span`
     text-overflow: ellipsis;
