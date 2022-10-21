@@ -27,7 +27,6 @@ class InitCategoryDbSchemaSubscriber implements EventSubscriberInterface
         $this->addValueCollectionInCategoryTable();
         $this->addCategoryTemplateTable();
         $this->addCategoryTreeTemplateTable();
-        $this->addCategoryTemplateUuidColumn();
         $this->addCategoryAttributeTable();
     }
 
@@ -73,16 +72,6 @@ class InitCategoryDbSchemaSubscriber implements EventSubscriberInterface
         $this->dbalConnection->executeQuery($query);
     }
 
-    private function addCategoryTemplateUuidColumn()
-    {
-        $query = <<<SQL
-            ALTER TABLE pim_catalog_category ADD category_template_uuid binary(16) NULL;
-            ALTER TABLE pim_catalog_category ADD CONSTRAINT FK_CATEGORY_template_uuid FOREIGN KEY (category_template_uuid) REFERENCES pim_catalog_category_template(uuid);
-        SQL;
-
-        $this->dbalConnection->executeQuery($query);
-    }
-
     private function addCategoryAttributeTable()
     {
         $query = <<<SQL
@@ -93,9 +82,9 @@ class InitCategoryDbSchemaSubscriber implements EventSubscriberInterface
                 `labels` JSON NOT NULL,
                 `attribute_type` VARCHAR(100) NOT NULL,
                 `attribute_order` INT NOT NULL,
-                `is_required` TINYINT NOT NULL,
-                `is_scopable` TINYINT NOT NULL,
-                `is_localizable` TINYINT NOT NULL,
+                `is_required` TINYINT(1) NOT NULL,
+                `is_scopable` TINYINT(1) NOT NULL,
+                `is_localizable` TINYINT(1) NOT NULL,
                 `additional_properties` JSON NOT NULL,
                 CONSTRAINT `FK_ATTRIBUTE_template_uiid` FOREIGN KEY (`category_template_uuid`) REFERENCES `pim_catalog_category_template` (`uuid`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
