@@ -7,7 +7,7 @@ use Webmozart\Assert\Assert;
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- * @implements \IteratorAggregate<string, string>
+ * @implements \IteratorAggregate<string, mixed>
  * @phpstan-type AdditionalProperties array<string, mixed>
  */
 final class AttributeAdditionalProperties implements \IteratorAggregate
@@ -53,7 +53,7 @@ final class AttributeAdditionalProperties implements \IteratorAggregate
     }
 
     /**
-     * @return \ArrayIterator<string, string>
+     * @return \ArrayIterator<string, mixed>
      */
     public function getIterator(): \ArrayIterator
     {
