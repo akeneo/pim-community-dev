@@ -1,0 +1,19 @@
+akeneo.tailored_import:
+  validation:
+    source_values_should_be_unique: Einige dieser Quellwerte werden bereits in einem anderen Ersatz verwendet, bitte entfernen Sie sie.
+    data_mappings:
+      no_identifier_target_found: Es gibt kein Mapping-Ziel für einen Identifikator, bitte fügen Sie eins hinzu.
+      too_many_identifier_target_found: Es gibt mehr als ein Mapping auf einen Identifikator, bitte entfernen Sie eines.
+      uuid:
+        should_be_unique: Diese Mapping-UUID existiert bereits, bitte geben Sie eine neue ein.
+    locale:
+      should_be_active: Das Gebietsschema {{ locale_code }} wurde deaktiviert. Reaktivieren Sie es oder wählen Sie ein anderes Gebietsschema.
+      should_be_bound_to_channel: Die Gebietsschema {{ locale_code }} wurde für den Kanal {{ channel_code }}deaktiviert. Reaktivieren Sie ihn oder wählen Sie ein anderes Gebietsschema.
+    attribute:
+      locale_should_not_be_blank: Das Attribut {{ attribute_code }} hat jetzt einen Wert pro Gebietsschema. Bitte erstellen Sie eines oder wählen Sie ein anderes Ziel.
+      channel_should_not_be_blank: Das Attribut {{ attribute_code }} hat jetzt einen Wert pro Kanal. Bitte erstellen Sie es oder wählen Sie ein anderes Ziel.
+      locale_should_be_blank: Das Attribut {{ attribute_code }} hat keinen Wert pro Gebietsschema. Bitte löschen Sie es und erstellen Sie es anschließend neu oder wählen Sie ein anderes Ziel.
+      channel_should_be_blank: Das Attribut {{ attribute_code }} hat keinen Wert pro Kanal mehr. Bitte löschen Sie es und erstellen Sie es anschließend neu oder wählen Sie ein anderes Ziel.
+      invalid_specific_locale: Das Attribut {{ attribute_code }} ist gebietsschemaspezifisch. Bitte wählen Sie ein anderes Gebietsschema.
+    file_structure:
+      unique_identifier_column_should_be_after_first_column_message: Eindeutige Identifikatorspalte sollte mindestens die erste Spalte sein.

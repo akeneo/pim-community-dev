@@ -1,0 +1,63 @@
+akeneo.tailored_import:
+  validation:
+    required: この値は必須です。
+    max_length_reached: 値が長すぎます。{{ limit }}文字以下である必要があります。
+    missing_query_params: "次のパラメーターがクエリに見つかりません: {{ missing_params }}"
+    source_values_should_be_unique: これらのソースの値で別の置換に既に使用されているものがあります。それらを削除してください。
+    columns:
+      max_count_reached: シートに{{ limit }}列以上を含めることはできません。
+      at_least_one_required: ヘッダに少なくとも{{ limit }}列を含める必要があります。
+      uuid:
+        should_be_unique: この列のUUIDはすでに存在します。新しいUUIDを入力してください。
+      index:
+        should_be_unique: この列のインデックスはすでに存在します。新しいインデックスを入力してください。
+      label:
+        should_not_be_blank: 列ラベルを定義してください。
+        max_length_reached: 列ラベルが長すぎます。{{ limit }}文字以下である必要があります。
+    data_mappings:
+      target_should_unique: ターゲット "{{ code }}" は複数回選択できません。
+      max_count_reached: '{{ limit }}マッピングの上限に達しました。これ以上インポートにマッピングを追加できません。'
+      no_identifier_target_found: 識別子をターゲットにしているマッピングがありません。1つ追加してください。
+      too_many_identifier_target_found: 識別子をターゲットにしているマッピングが複数あります。1つ削除してください。
+      uuid:
+        should_be_unique: このマッピングのUUIDはすでに存在します。新しいUUIDを入力してください。
+      sources:
+        at_least_one_required: 少なくとも1つのソースをマッピングに追加する必要があります。
+        max_count_reached: '{{ limit }}ソースの上限に達しました。これ以上マッピングにソースを追加できません。'
+        should_be_unique: このソースはすでに存在します。新しいソースを入力してください。
+        should_exist: ソースのいずれかが存在しません。このマッピングのすべてのソースを削除して再試行してください
+    target:
+      attribute_should_exist: 属性 {{ attribute_code }} は存在しません。作成するか、別のターゲットを選択してください。
+      property_should_exist: プロパティ {{ property_code }} は存在しません。作成するか、別のターゲットを選択してください。
+      source_configuration:
+        unit_should_exist: ユニット {{ unit_code }} は、測定ファミリー {{ measurement_family_code }} に存在しません。有効なユニットを選択してください。
+        currency_should_be_active: 通貨 {{ currency_code }} がどのチャンネルにもリンクされていません。
+        currency_should_be_active_on_channel: 通貨 {{ currency_code }} がチャンネル {{ channel_code }} で有効ではありません。
+    locale:
+      should_be_active: ロケール {{ locale_code }} は無効化されています。再度有効にするか、別のロケールを選択してください。
+      should_be_bound_to_channel: チャンネル {{ channel_code }} のロケール {{ locale_code }} は無効化されています。再度有効にするか、別のロケールを選択してください。
+    channel:
+      should_exist: チャンネル {{ channel_code }} は削除されています。別のチャンネルを選択してください。
+    attribute:
+      locale_should_not_be_blank: 属性 {{ attribute_code }} はロケールごとに値を持つようになりました。ロケールを作成するか、別のターゲットを選択してください。
+      channel_should_not_be_blank: 属性 {{ attribute_code }} はチャンネルごとに値を持つようになりました。チャンネルを作成するか、別のターゲットを選択してください。
+      locale_should_be_blank: 属性 {{ attribute_code }} はロケールごとに値を持たなくなりました。ロケールを削除して再作成するか、別のターゲットを選択してください。
+      channel_should_be_blank: 属性 {{ attribute_code }} はチャンネルごとに値を持たなくなりました。チャンネルを削除して再作成するか、別のターゲットを選択してください。
+      invalid_specific_locale: 属性 {{ attribute_code }} はロケール固有です。別のロケールを選択してください。
+    file_key:
+      does_not_exist: ファイル {{ file_key }} が見つかりませんでした。
+    uploaded_file:
+      max_size: ファイルが大きすぎます。最大サイズは{{ limit }} {{ suffix }}です。
+      not_allowed_mime_type: XLSXファイルのみがサポートされています。
+      not_allowed_extension: XLSXファイルのみがサポートされています。
+    file_structure:
+      first_product_row_should_be_after_header_row: 最初の商品行はヘッダ行の後になければなりません。
+      unique_identifier_column_should_be_after_first_column_message: 一意識別子列が少なくとも最初の列にある必要があります。
+      header_row_should_not_contain_empty_cell: ヘッダ行は空のセルを含めることはできません。
+    file_preview:
+      empty_sheet:
+        title: このシートは空です。
+        description: 少なくとも1つの行がある別のシートを選択してください。
+    operations:
+      incompatible_operation_type: 操作タイプ {{ operation_type }} にターゲットタイプとの互換性がありません。
+      missing_required_operations: "必須操作がありません: {{ missing_required_operations }}"

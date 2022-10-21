@@ -1,0 +1,4 @@
+akeneo.job_automation:
+  notification:
+    invalid_job_instance: '{{ type }}プロファイル "{{ label }}" は次のエラーにより開始できませんでした: {{ error }}'
+    internal_error: 内部システムエラーが発生しました。インフラストラクチャに問題があるため、ジョブを開始できません。後で再試行してください。

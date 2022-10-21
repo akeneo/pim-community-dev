@@ -61,6 +61,7 @@ pim_enrich:
       message:
         error: 商品の所有者ではないため公開することはできません
         warning: 指定した商品すべての所有者ではありません。商品「%notGranted%」を公開できません
+        no_identifier: 識別子がないため、この商品を公開できません。
       not_editable: 商品「%identifiers%」を編集する権限がありません
     unpublish:
       message:
