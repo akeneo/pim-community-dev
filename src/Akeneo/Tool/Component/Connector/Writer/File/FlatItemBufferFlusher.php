@@ -148,7 +148,7 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
                 $writtenLinesCount = 0;
                 $writer = $this->getWriter($filePath, $writerOptions);
                 if ([] !== $headers) {
-                    $writer->addRow(WriterEntityFactory::createRowFromArray($headers));
+                    $writer->addRow(Row::fromValues($headers));
                 }
             }
 
@@ -160,7 +160,7 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
             $incompleteItem = array_combine($incompleteKeys, $incompleteItem);
 
             $item = array_replace($hollowItem, $incompleteItem);
-            $writer->addRow(WriterEntityFactory::createRowFromArray($item));
+            $writer->addRow(Row::fromValues($item));
             $writtenLinesCount++;
 
             if (null !== $this->stepExecution) {
