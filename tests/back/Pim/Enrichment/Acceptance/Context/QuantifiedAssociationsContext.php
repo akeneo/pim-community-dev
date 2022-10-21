@@ -417,12 +417,14 @@ final class QuantifiedAssociationsContext implements Context
         $expectedQuantifiedAssociations = [
             'PACK' => [
                 'products' => [
-                    ['identifier' => 'accessory', 'quantity' => 42],
                     ['identifier' => 'something_else', 'quantity' => 2],
+                    ['identifier' => 'accessory', 'quantity' => 42],
                 ],
                 'product_models' => [],
             ],
         ];
+        var_dump($actualQuantifiedAssociations);
+        var_dump($expectedQuantifiedAssociations);
 
         Assert::same($actualQuantifiedAssociations, $expectedQuantifiedAssociations);
     }
