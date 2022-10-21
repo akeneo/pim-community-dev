@@ -20,6 +20,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -79,6 +80,10 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         $convertVariantToSimple = $jobParameters->get('convertVariantToSimple');
         if (true !== $convertVariantToSimple && '' === $parentProductModelCode) {
             unset($item['parent']);
+        }
+
+        if (\key_exists('uuid', $item) && $item['uuid'] !== '' && !Uuid::isValid($item['uuid'])) {
+            $this->skipItemWithMessage($item, 'The uuid must be valid');
         }
 
         try {
