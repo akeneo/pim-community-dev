@@ -24,8 +24,8 @@ class ActivateTemplate
         private GetCategoryInterface $getCategory,
         private IsCategoryTreeLinkedToTemplateSql $isCategoryTreeLinkedToTemplateSql,
         private TemplateBuilder $templateBuilder,
-        private CategoryTemplateSaver $templateRepository,
-        private CategoryTreeTemplateSaver $categoryTreeTemplateRepository,
+        private CategoryTemplateSaver $categoryTemplateSaver,
+        private CategoryTreeTemplateSaver $categoryTreeTemplateSaver,
     ) {
     }
 
@@ -49,13 +49,13 @@ class ActivateTemplate
             );
         }
 
-        return $this->activateTemplate(
-            $this->templateBuilder->generateTemplate(
-                $categoryTree->getId(),
-                $templateCode,
-                $templateLabelCollection
-            )
+        $templateToSave = $this->templateBuilder->generateTemplate(
+            $categoryTree->getId(),
+            $templateCode,
+            $templateLabelCollection
         );
+
+        return $this->activateTemplate($templateToSave);
     }
 
     /**
@@ -92,10 +92,10 @@ class ActivateTemplate
      */
     private function activateTemplate(Template $templateModel): Template
     {
-        $this->templateRepository->insert($templateModel);
+        $this->categoryTemplateSaver->insert($templateModel);
 
-        if (!$this->categoryTreeTemplateRepository->linkAlreadyExists($templateModel)) {
-            $this->categoryTreeTemplateRepository->insert($templateModel);
+        if (!$this->categoryTreeTemplateSaver->linkAlreadyExists($templateModel)) {
+            $this->categoryTreeTemplateSaver->insert($templateModel);
         }
 
         return $this->getTemplate->byUuid((string) $templateModel->getUuid());

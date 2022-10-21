@@ -44,7 +44,7 @@ class TemplateBuilder
      */
     public function generateTemplate(
         CategoryId $categoryTreeId,
-        string $templateCode,
+        TemplateCode $templateCode,
         LabelCollection $templateLabelCollection
     ) : Template {
         $categoryTree = $this->getCategory->byId($categoryTreeId->getValue());
