@@ -140,7 +140,7 @@ CSV;
         $writer->openToFile($temporaryFile);
         $writer->addRows(
             \array_map(
-                fn (array $data): Row => WriterEntityFactory::createRowFromArray($data),
+                fn (array $data): Row => Row::fromValues($data),
                 [
                     ['role', 'label', 'permissions'],
                     ['ROLE_ADMINISTRATOR', 'Administrator', 'action:pim_enrich_product_create,action:pim_enrich_product_edit_attributes,action:pim_enrich_product_history,action:pim_enrich_product_index'],
