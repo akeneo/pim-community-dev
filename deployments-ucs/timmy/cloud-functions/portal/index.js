@@ -214,6 +214,7 @@ functions.http('requestPortal', (req, res) => {
       const payload = {
         branchName: branchName,
         instanceName: instanceName,
+        pim_edition: process.env.TENANT_EDITION_FLAGS,
         dnsCloudDomain: dnsCloudDomain,
         pim: {
           defaultAdminUser: {

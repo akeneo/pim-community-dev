@@ -10,6 +10,7 @@ INSTANCE_NAME ?=  $(INSTANCE_NAME_PREFIX)-$(IMAGE_TAG_SHORTED)
 PFID ?= $(TYPE)-$(INSTANCE_NAME)
 TYPE_LONG ?= serenity
 ENV_NAME ?= dev
+PIM_EDITION ?= serenity_instance
 PRODUCT_REFERENCE_TYPE ?= $(TYPE_LONG)_instance
 PRODUCT_REFERENCE_CODE ?= $(TYPE_LONG)_$(ENV_NAME)
 PRODUCT_REFERENCE_SIZE ?= S
@@ -235,7 +236,7 @@ deploy_tenant_helm:
 
 .PHONY: deploy_tenant_go
 deploy_tenant_go:
-	cd $(DEPLOYMENT_DIR)/timmy && go run timmy-create.go $(PFID) $(INSTANCE_NAME) $(MYSQL_USER_PASSWORD) $(MAILGUN_PASSWORD) $(PIM_SECRET) $(FIRESTORE_COLLECTION)
+	cd $(DEPLOYMENT_DIR)/timmy && go run timmy-create.go $(PFID) $(INSTANCE_NAME) $(MYSQL_USER_PASSWORD) $(MAILGUN_PASSWORD) $(PIM_SECRET) $(FIRESTORE_COLLECTION) $(PIM_EDITION)
 
 ## Cleanup tenants
 .PHONY: delete_tenant

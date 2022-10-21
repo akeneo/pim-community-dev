@@ -84,7 +84,7 @@ jobs:
                       DELETE_TENANT_STATUS_CODE=0
                       for i in 1 2 3; do make -C deployments-ucs/ delete_tenant && DELETE_TENANT_STATUS_CODE=0 && break || DELETE_TENANT_STATUS_CODE=1; done
                       exit ${DELETE_TENANT_STATUS_CODE}
-   
+
     delete_tenant_timmy:
         parameters:
             PRODUCT_TYPE:
@@ -120,7 +120,7 @@ jobs:
                       DELETE_TENANT_STATUS_CODE=0
                       gcloud  beta functions call ${REGION_PREFIX}-timmy-delete-tenant --region=${GOOGLE_CLUSTER_REGION}  --data  $JSON_BODY_STRING --gen2 || DELETE_TENANT_STATUS_CODE=1
                       exit ${DELETE_TENANT_STATUS_CODE}
-    
+
     delete_pim:
         parameters:
             PRODUCT_TYPE:

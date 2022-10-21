@@ -502,6 +502,7 @@ functions.http('createTenant', (req, res) => {
     }
 
     const dnsCloudDomain = body.dnsCloudDomain;
+    const pim_edition = body.pim_edition;
     const extraLabelType = 'ucs';
     const pfid = `${extraLabelType}-${instanceName}`;
     const pimMasterDomain = `${instanceName}.${dnsCloudDomain}`;
@@ -688,6 +689,7 @@ functions.http('createTenant', (req, res) => {
         MEMCACHED_SVC: `memcached.${pfid}.svc.cluster.local`,
         MONITORING_AUTHENTICATION_TOKEN: parameters.pim.monitoring.authenticationToken,
         PFID: pfid,
+        PIM_EDITION: pim_edition,
         SRNT_GOOGLE_BUCKET_NAME: pfid
       });
 

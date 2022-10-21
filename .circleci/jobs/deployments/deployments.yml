@@ -680,7 +680,7 @@ jobs:
                   kubectl delete app ${PIM_NS} -n argocd
                   kubectl delete ns ${PIM_NS}
               when: on_fail
-           
+
     deploy_tenant_wb_timmy:
         parameters:
             PRODUCT_TYPE:
@@ -737,7 +737,7 @@ jobs:
                   paths:
                       - project/persisted_env_vars
             - run:
-                  name: Deploy Tenant with Timmy 
+                  name: Deploy Tenant with Timmy
                   command: |
                       TENANT_STATUS_CODE=0
                       JSON_BODY_STRING=$(printf "{\"branchName\":\"%s\"}\n" $CIRCLE_BRANCH)
