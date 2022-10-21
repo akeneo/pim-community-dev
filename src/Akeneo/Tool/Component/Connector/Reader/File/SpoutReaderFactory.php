@@ -36,7 +36,7 @@ final class SpoutReaderFactory
                 throw new \InvalidArgumentException(sprintf('"%s" is not a valid reader type', $type));
         }
 
-        return match($type) {
+        return match ($type) {
             self::XLSX => new XlsxReader($options),
             self::CSV => new CsvReader($options),
         };
