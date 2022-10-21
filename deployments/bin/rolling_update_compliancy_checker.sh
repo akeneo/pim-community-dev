@@ -76,9 +76,14 @@ function downloadArtifacts() {
         docker cp $(docker create --rm eu.gcr.io/akeneo-cloud/pim-enterprise-dev:${SOURCE_RELEASE}):/srv/pim/src/Akeneo/Tool/Bundle/DatabaseMetadataBundle/Resources/reference.pimdbschema.txt ${RELEASE_DIRECTORY}/${SOURCE_RELEASE}/dbschema/reference.pimdbschema.txt
     fi
     BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/${RELEASE_BUCKET}/${SOURCE_RELEASE}/deployments/ ${RELEASE_DIRECTORY}/${SOURCE_RELEASE}/deployments
+    rm -rf ${RELEASE_DIRECTORY}/${SOURCE_RELEASE}/deployments/deployments/asset
     rm -rf ${RELEASE_DIRECTORY}/${SOURCE_RELEASE}/deployments/deployments/bin
+    rm -rf ${RELEASE_DIRECTORY}/${SOURCE_RELEASE}/deployments/deployments/cypress
+    rm -rf ${RELEASE_DIRECTORY}/${SOURCE_RELEASE}/deployments/deployments/instances
     rm -rf ${RELEASE_DIRECTORY}/${SOURCE_RELEASE}/deployments/deployments/terraform/pim/templates/tests
+    rm -rf ${RELEASE_DIRECTORY}/${SOURCE_RELEASE}/deployments/deployments/test
     rm -rf ${RELEASE_DIRECTORY}/${SOURCE_RELEASE}/deployments/deployments/Makefile
+    rm -rf ${RELEASE_DIRECTORY}/${SOURCE_RELEASE}/deployments/deployments/README.md
     rm -rf ${RELEASE_DIRECTORY}/${SOURCE_RELEASE}/upgrades/upgrades/test_schema
     rm ${RELEASE_DIRECTORY}/${SOURCE_RELEASE}/upgrades/upgrades/*
 
@@ -91,9 +96,14 @@ function downloadArtifacts() {
         docker cp $(docker create --rm eu.gcr.io/akeneo-cloud/pim-enterprise-dev:${TARGET_RELEASE}):/srv/pim/src/Akeneo/Tool/Bundle/DatabaseMetadataBundle/Resources/reference.pimdbschema.txt ${RELEASE_DIRECTORY}/${TARGET_RELEASE}/dbschema/reference.pimdbschema.txt
     fi
     BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/${RELEASE_BUCKET}/${TARGET_RELEASE}/deployments/ ${RELEASE_DIRECTORY}/${TARGET_RELEASE}/deployments
+    rm -rf ${RELEASE_DIRECTORY}/${TARGET_RELEASE}/deployments/deployments/asset
     rm -rf ${RELEASE_DIRECTORY}/${TARGET_RELEASE}/deployments/deployments/bin
+    rm -rf ${RELEASE_DIRECTORY}/${TARGET_RELEASE}/deployments/deployments/cypress
+    rm -rf ${RELEASE_DIRECTORY}/${TARGET_RELEASE}/deployments/deployments/instances
     rm -rf ${RELEASE_DIRECTORY}/${TARGET_RELEASE}/deployments/deployments/terraform/pim/templates/tests
+    rm -rf ${RELEASE_DIRECTORY}/${TARGET_RELEASE}/deployments/deployments/test
     rm -rf ${RELEASE_DIRECTORY}/${TARGET_RELEASE}/deployments/deployments/Makefile
+    rm -rf ${RELEASE_DIRECTORY}/${TARGET_RELEASE}/deployments/deployments/README.md
     rm -rf ${RELEASE_DIRECTORY}/${TARGET_RELEASE}/upgrades/upgrades/test_schema
     rm ${RELEASE_DIRECTORY}/${TARGET_RELEASE}/upgrades/upgrades/*
 }
