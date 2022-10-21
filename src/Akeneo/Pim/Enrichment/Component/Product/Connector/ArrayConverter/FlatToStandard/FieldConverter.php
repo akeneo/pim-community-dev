@@ -65,10 +65,8 @@ class FieldConverter implements FieldConverterInterface
             return $this->extractGroup($value);
         } elseif ('enabled' === $fieldName) {
             return new ConvertedField($fieldName, (bool) $value);
-        } elseif (in_array($fieldName, ['family', 'parent'])) {
+        } elseif (in_array($fieldName, ['family', 'parent', 'uuid'])) {
             return new ConvertedField($fieldName, $value);
-        } elseif ('uuid' === $fieldName) {
-            return new ConvertedField($fieldName, $value ? Uuid::fromString($value) : $value);
         }
 
         throw new \LogicException(sprintf('No converters found for attribute type "%s"', $fieldName));
