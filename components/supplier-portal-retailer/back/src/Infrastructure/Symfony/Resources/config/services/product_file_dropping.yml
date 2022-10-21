@@ -231,6 +231,7 @@ services:
     Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\UploadProductFile\UploadProductFile:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CreateProductFileHandler'
+            - '@monolog.logger.supplier_portal'
 
     Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\GetProductFiles\GetProductFiles:
         arguments:
