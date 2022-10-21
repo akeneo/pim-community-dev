@@ -6,11 +6,10 @@ namespace AkeneoTest\UserManagement\Integration\Bundle\Import;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance;
+use Akeneo\Tool\Component\Connector\Writer\File\SpoutWriterFactory;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
 use OpenSpout\Common\Entity\Row;
-use OpenSpout\Writer\Common\Creator\WriterEntityFactory;
-use OpenSpout\Writer\Common\Creator\WriterFactory;
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use PHPUnit\Framework\Assert;
@@ -137,7 +136,7 @@ CSV;
     public function it_imports_user_roles_in_xlsx(): void
     {
         $temporaryFile = tempnam(sys_get_temp_dir(), 'test_user_role_import');
-        $writer = WriterFactory::createFromType('xlsx');
+        $writer = SpoutWriterFactory::create(SpoutWriterFactory::XLSX);
         $writer->openToFile($temporaryFile);
         $writer->addRows(
             \array_map(

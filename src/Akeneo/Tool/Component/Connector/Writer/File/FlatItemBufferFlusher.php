@@ -4,9 +4,8 @@ namespace Akeneo\Tool\Component\Connector\Writer\File;
 
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
+use OpenSpout\Common\Entity\Row;
 use OpenSpout\Common\Exception\UnsupportedTypeException;
-use OpenSpout\Writer\Common\Creator\WriterEntityFactory;
-use OpenSpout\Writer\Common\Creator\WriterFactory;
 use OpenSpout\Writer\WriterInterface;
 
 /**
@@ -89,7 +88,7 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
 
         $writer = $this->getWriter($filePath, $writerOptions);
         if ([] !== $headers) {
-            $writer->addRow(WriterEntityFactory::createRowFromArray($headers));
+            $writer->addRow(Row::fromValues($headers));
         }
 
         foreach ($buffer as $incompleteItem) {
@@ -101,7 +100,7 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
             $incompleteItem = array_combine($incompleteKeys, $incompleteItem);
 
             $item = array_replace($hollowItem, $incompleteItem);
-            $writer->addRow(WriterEntityFactory::createRowFromArray($item));
+            $writer->addRow(Row::fromValues($item));
 
             if (null !== $this->stepExecution) {
                 $this->stepExecution->incrementSummaryInfo('write');
@@ -277,7 +276,7 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
             throw new \InvalidArgumentException('Option "type" have to be defined');
         }
 
-        $writer = WriterFactory::createFromType($options['type']);
+        $writer = SpoutWriterFactory::create($options['type']);
         unset($options['type']);
 
         foreach ($options as $name => $option) {
