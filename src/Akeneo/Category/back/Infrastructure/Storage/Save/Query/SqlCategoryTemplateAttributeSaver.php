@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Storage\Save\Query;
 
-use Akeneo\Category\Application\Template\TemplateAttributeRepository;
+use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver;
 use Akeneo\Category\Domain\Model\Attribute\Attribute;
-use Akeneo\Category\Domain\Model\Template;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Doctrine\DBAL\Connection;
@@ -16,7 +15,7 @@ use Doctrine\DBAL\Exception;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SqlTemplateAttributeRepository implements TemplateAttributeRepository
+class SqlCategoryTemplateAttributeSaver implements CategoryTemplateAttributeSaver
 {
     public function __construct(
         private Connection $connection,
@@ -79,7 +78,7 @@ class SqlTemplateAttributeRepository implements TemplateAttributeRepository
     private function buildInsertQuery(int $loopIndex): string
     {
         return <<<SQL
-            INSERT INTO pim_catalog_category_attribute
+            INSERT INTO pim_catalog_category_template_attribute
                 (uuid, code, labels, template_uuid, attribute_type, attribute_order, is_required, is_scopable, is_localizable, additional_properties)
             VALUES
                 (

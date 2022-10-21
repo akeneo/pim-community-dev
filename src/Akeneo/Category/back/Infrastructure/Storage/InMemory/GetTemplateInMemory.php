@@ -98,4 +98,9 @@ class GetTemplateInMemory implements GetTemplate
         );
         return $template;
     }
+
+    public function exists(TemplateCode $templateCode): bool
+    {
+        return false;
+    }
 }

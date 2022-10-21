@@ -18,3 +18,8 @@ services:
     class: Akeneo\Category\Infrastructure\Storage\InMemory\GetAttributeInMemory
     arguments:
       - '@database_connection'
+
+  Akeneo\Category\Application\Query\IsCategoryTreeLinkedToTemplate:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\IsCategoryTreeLinkedToTemplateSql
+    arguments:
+      - '@database_connection'
