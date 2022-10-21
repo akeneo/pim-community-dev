@@ -80,7 +80,12 @@ class ProductController
     public function indexAction(Request $request): JsonResponse
     {
         $productIdentifiers = explode(',', $request->get('identifiers'));
-        $products = $this->cursorableRepository->getItemsFromIdentifiers($productIdentifiers);
+        $productUuids = explode(',', $request->get('uuids'));
+
+        $products = array_merge(
+            $this->cursorableRepository->getItemsFromIdentifiers($productIdentifiers),
+            $this->productRepository->getItemsFromUuids($productUuids),
+        );
 
         $normalizedProducts = $this->normalizer->normalize(
             $products,

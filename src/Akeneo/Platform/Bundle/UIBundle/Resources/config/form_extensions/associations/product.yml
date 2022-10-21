@@ -1,7 +1,7 @@
 extensions:
     # @TODO CPM-739: Remove this extension
     pim-associations-product-picker-form:
-        module: pim/product-edit-form/product-and-product-model-picker
+        module: pim/product-edit-form/legacy-product-and-product-model-picker
         config:
             datagridName: association-product-picker-grid
             categoryTreeRoute: pim_enrich_categorytree

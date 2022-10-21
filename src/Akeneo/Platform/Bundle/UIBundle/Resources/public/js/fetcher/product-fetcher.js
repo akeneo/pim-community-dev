@@ -35,6 +35,17 @@ define(['jquery', 'backbone', 'pim/base-fetcher', 'routing', 'oro/mediator', 'pi
         .promise();
     },
 
+    fetchByUuids: function (uuids, options) {
+      options = options || {};
+      if (0 === uuids.length) {
+          return Promise.resolve([]);
+      }
+
+      return this.getJSON(this.options.urls.list, _.extend({uuids: uuids.join(',')}, options))
+          .then(_.identity)
+          .promise();
+    },
+
     /**
      * {@inheritdoc}
      */
