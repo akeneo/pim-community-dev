@@ -7,11 +7,10 @@ namespace Akeneo\Platform\Component\Tenant;
 use Google\Cloud\Core\Exception\GoogleException;
 use Google\Cloud\Firestore\FirestoreClient;
 use Psr\Log\LoggerInterface;
+use Webmozart\Assert\Assert;
 
 final class FirestoreContextFetcher implements TenantContextFetcherInterface
 {
-    private const TENANT_COLLECTION = 'tenant_contexts';
-
     public function __construct(
         private LoggerInterface $logger,
         private TenantContextDecoderInterface $tenantContextDecoder,
@@ -19,9 +18,8 @@ final class FirestoreContextFetcher implements TenantContextFetcherInterface
         private string $collection,
         private int $cacheTtl = 30
     ) {
-        if (null === $collection) {
-            $this->collection = self::TENANT_COLLECTION;
-        }
+        Assert::notEmpty($googleProjectId, 'The Google Project ID must not be empty');
+        Assert::notEmpty($collection, 'The collection name must not be empty');
     }
 
     /**
