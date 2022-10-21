@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 import {Breadcrumb, Button, Helper, TabBar} from 'akeneo-design-system';
 import {PageHeader, PimView, useTranslate} from '@akeneo-pim-community/shared';
 import {GeneralPropertiesTab} from '../tabs';
@@ -26,6 +26,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
   const [currentTab, setCurrentTab] = useState(Tabs.GENERAL);
   const translate = useTranslate();
   const [generator, setGenerator] = useState<IdentifierGenerator>(initialGenerator);
+  const changeTab = useCallback(tabName => () => setCurrentTab(tabName), []);
 
   return (
     <>
@@ -62,16 +63,13 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
         )}
 
         <TabBar moreButtonTitle={translate('pim_common.more')}>
-          <TabBar.Tab isActive={currentTab === Tabs.GENERAL} onClick={() => setCurrentTab(Tabs.GENERAL)}>
+          <TabBar.Tab isActive={currentTab === Tabs.GENERAL} onClick={changeTab(Tabs.GENERAL)}>
             {translate('pim_identifier_generator.tabs.general')}
           </TabBar.Tab>
-          <TabBar.Tab
-            isActive={currentTab === Tabs.PRODUCT_SELECTION}
-            onClick={() => setCurrentTab(Tabs.PRODUCT_SELECTION)}
-          >
+          <TabBar.Tab isActive={currentTab === Tabs.PRODUCT_SELECTION} onClick={changeTab(Tabs.PRODUCT_SELECTION)}>
             {translate('pim_identifier_generator.tabs.product_selection')}
           </TabBar.Tab>
-          <TabBar.Tab isActive={currentTab === Tabs.STRUCTURE} onClick={() => setCurrentTab(Tabs.STRUCTURE)}>
+          <TabBar.Tab isActive={currentTab === Tabs.STRUCTURE} onClick={changeTab(Tabs.STRUCTURE)}>
             {translate('pim_identifier_generator.tabs.identifier_structure')}
           </TabBar.Tab>
         </TabBar>
