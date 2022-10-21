@@ -24,7 +24,7 @@ class GetProductUuidsActionTest extends IntegrationTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
+        $this->disableExperimentalTestDatabase();
         $this->purgeDataAndLoadMinimalCatalog();
     }
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\CreateGeneratorCommand;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\CommandInterface;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -20,11 +20,11 @@ final class IdentifierGeneratorCreationLimitValidator extends ConstraintValidato
     {
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         Assert::isInstanceOf($constraint, IdentifierGeneratorCreationLimit::class);
         $command = $this->context->getRoot();
-        Assert::isInstanceOf($command, CreateGeneratorCommand::class);
+        Assert::isInstanceOf($command, CommandInterface::class);
 
         if ($this->repository->count() >= $constraint->limit) {
             $this->context

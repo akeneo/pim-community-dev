@@ -11,6 +11,7 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Doctrine\DBAL\Connection;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -47,19 +48,15 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
                 'value' => true,
             ],
         ]);
-        $this->createProduct('tshirt-blue', [new SetEnabled(true)]);
-        $this->createProduct('tshirt-green', [new SetEnabled(true)]);
-        $this->createProduct('tshirt-red', [new SetEnabled(false)]);
-
-        $uuids = $this->getProductIdentifierToUuidMapping();
+        $this->createProduct(Uuid::fromString('00380587-3893-46e6-a8c2-8fee6404cc9e'), [new SetEnabled(true)]);
+        $this->createProduct(Uuid::fromString('c07ad6f1-78a1-4add-84af-3c1d7d8484a3'), [new SetEnabled(false)]);
 
         $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
         $result = $this->query->execute($catalog);
 
         $this->assertEquals([
-            $uuids['tshirt-blue'],
-            $uuids['tshirt-green'],
+            '00380587-3893-46e6-a8c2-8fee6404cc9e',
         ], $result);
     }
 
@@ -77,40 +74,17 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
                 'value' => true,
             ],
         ]);
-        $this->createProduct('tshirt-blue', [new SetEnabled(true)]);
-        $this->createProduct('tshirt-green', [new SetEnabled(true)]);
-        $this->createProduct('tshirt-red', [new SetEnabled(true)]);
-        $this->createProduct('tshirt-yellow', [new SetEnabled(true)]);
-
-        $uuids = $this->getProductIdentifierToUuidMapping();
+        $this->createProduct(Uuid::fromString('00380587-3893-46e6-a8c2-8fee6404cc9e'), [new SetEnabled(true)]);
+        $this->createProduct(Uuid::fromString('8985de43-08bc-484d-aee0-4489a56ba02d'), [new SetEnabled(true)]);
+        $this->createProduct(Uuid::fromString('c07ad6f1-78a1-4add-84af-3c1d7d8484a3'), [new SetEnabled(true)]);
 
         $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
-        $result = $this->query->execute($catalog, $uuids['tshirt-green'], 1);
+        $result = $this->query->execute($catalog, '00380587-3893-46e6-a8c2-8fee6404cc9e', 1);
 
         $this->assertEquals([
-            $uuids['tshirt-red'],
+            '8985de43-08bc-484d-aee0-4489a56ba02d',
         ], $result);
-    }
-
-    public function testItThrowsWhenTheSearchAfterIsInvalid(): void
-    {
-        $this->createUser('owner');
-        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'owner');
-        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
-        $this->setCatalogProductSelection('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
-            [
-                'field' => 'enabled',
-                'operator' => Operator::EQUALS,
-                'value' => true,
-            ],
-        ]);
-
-        $this->expectException(\InvalidArgumentException::class);
-
-        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
-
-        $this->query->execute($catalog, 'invalid_search_after');
     }
 
     public function testItGetsMatchingProductsUuidsWhenUsingScopableAndLocalizableCriterion(): void
@@ -137,24 +111,22 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
                 'locale' => 'fr_FR',
             ],
         ]);
-        $this->createProduct('tshirt-blue', [
+        $this->createProduct(Uuid::fromString('00380587-3893-46e6-a8c2-8fee6404cc9e'), [
             new SetTextValue('name', 'mobile', 'en_US', 'Blue'),
             new SetTextValue('name', 'print', 'en_US', 'Light blue'),
             new SetTextValue('name', 'print', 'fr_FR', 'Bleu clair'),
         ]);
-        $this->createProduct('wrong_blue', [
+        $this->createProduct(Uuid::fromString('8985de43-08bc-484d-aee0-4489a56ba02d'), [
             new SetTextValue('name', 'mobile', 'fr_FR', 'Bleu clair'), // wrong channel
             new SetTextValue('name', 'print', 'en_US', 'Bleu clair'), // wrong locale
         ]);
-
-        $uuids = $this->getProductIdentifierToUuidMapping();
 
         $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
         $result = $this->query->execute($catalog);
 
         $this->assertEquals([
-            $uuids['tshirt-blue'],
+            '00380587-3893-46e6-a8c2-8fee6404cc9e',
         ], $result);
     }
 
@@ -174,19 +146,17 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
         ]);
 
         $this->clock->set(new \DateTimeImmutable('2022-09-01T15:30:00+00:00'));
-        $this->createProduct('tshirt-blue', [new SetEnabled(true)]);
+        $this->createProduct(Uuid::fromString('00380587-3893-46e6-a8c2-8fee6404cc9e'), [new SetEnabled(true)]);
 
         $this->clock->set(new \DateTimeImmutable('2022-09-01T15:40:00+00:00'));
-        $this->createProduct('tshirt-green', [new SetEnabled(true)]);
-
-        $uuids = $this->getProductIdentifierToUuidMapping();
+        $this->createProduct(Uuid::fromString('8985de43-08bc-484d-aee0-4489a56ba02d'), [new SetEnabled(true)]);
 
         $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
         $result = $this->query->execute($catalog, null, 100, '2022-09-01T17:35:00+02:00');
 
         $this->assertEquals([
-            $uuids['tshirt-green'],
+            '8985de43-08bc-484d-aee0-4489a56ba02d',
         ], $result);
     }
 
@@ -206,19 +176,17 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
         ]);
 
         $this->clock->set(new \DateTimeImmutable('2022-09-01T15:30:00+00:00'));
-        $this->createProduct('tshirt-blue', [new SetEnabled(true)]);
+        $this->createProduct(Uuid::fromString('00380587-3893-46e6-a8c2-8fee6404cc9e'), [new SetEnabled(true)]);
 
         $this->clock->set(new \DateTimeImmutable('2022-09-01T15:40:00+00:00'));
-        $this->createProduct('tshirt-green', [new SetEnabled(true)]);
-
-        $uuids = $this->getProductIdentifierToUuidMapping();
+        $this->createProduct(Uuid::fromString('8985de43-08bc-484d-aee0-4489a56ba02d'), [new SetEnabled(true)]);
 
         $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
         $result = $this->query->execute($catalog, null, 100, null, '2022-09-01T17:35:00+02:00');
 
         $this->assertEquals([
-            $uuids['tshirt-blue'],
+            '00380587-3893-46e6-a8c2-8fee6404cc9e',
         ], $result);
     }
 
@@ -238,39 +206,47 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
         ]);
 
         $this->clock->set(new \DateTimeImmutable('2022-09-01T15:30:00+00:00'));
-        $this->createProduct('tshirt-blue', [new SetEnabled(true)]);
+        $this->createProduct(Uuid::fromString('00380587-3893-46e6-a8c2-8fee6404cc9e'), [new SetEnabled(true)]);
 
         $this->clock->set(new \DateTimeImmutable('2022-09-01T15:40:00+00:00'));
-        $this->createProduct('tshirt-green', [new SetEnabled(true)]);
-
-        $uuids = $this->getProductIdentifierToUuidMapping();
+        $this->createProduct(Uuid::fromString('8985de43-08bc-484d-aee0-4489a56ba02d'), [new SetEnabled(true)]);
 
         $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
         $result = $this->query->execute($catalog, null, 100, '2022-09-01T17:35:00+02:00', '2022-09-01T17:45:00+02:00');
 
         $this->assertEquals([
-            $uuids['tshirt-green'],
+            '8985de43-08bc-484d-aee0-4489a56ba02d',
         ], $result);
     }
 
-    /**
-     * @return array<string, string>
-     */
-    private function getProductIdentifierToUuidMapping(): array
+    public function testItSortsProductUuids(): void
     {
-        $sql = <<<SQL
-            SELECT BIN_TO_UUID(uuid) AS uuid, identifier
-            FROM pim_catalog_product
-        SQL;
+        $this->createUser('owner');
+        $this->logAs('owner');
 
-        $rows = $this->connection->fetchAllAssociative($sql);
-        $map = [];
+        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'owner');
+        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        $this->setCatalogProductSelection('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
+            [
+                'field' => 'enabled',
+                'operator' => Operator::EQUALS,
+                'value' => true,
+            ],
+        ]);
 
-        foreach ($rows as $row) {
-            $map[$row['identifier']] = $row['uuid'];
-        }
+        $this->createProduct(Uuid::fromString('8985de43-08bc-484d-aee0-4489a56ba02d'), [new SetEnabled(true)]);
+        $this->createProduct(Uuid::fromString('00380587-3893-46e6-a8c2-8fee6404cc9e'), [new SetEnabled(true)]);
+        $this->createProduct(Uuid::fromString('c07ad6f1-78a1-4add-84af-3c1d7d8484a3'), [new SetEnabled(true)]);
 
-        return $map;
+        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+
+        $result = $this->query->execute($catalog);
+
+        $this->assertEquals([
+            '00380587-3893-46e6-a8c2-8fee6404cc9e',
+            '8985de43-08bc-484d-aee0-4489a56ba02d',
+            'c07ad6f1-78a1-4add-84af-3c1d7d8484a3',
+        ], $result);
     }
 }

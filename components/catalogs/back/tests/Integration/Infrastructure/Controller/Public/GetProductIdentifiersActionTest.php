@@ -24,6 +24,7 @@ class GetProductIdentifiersActionTest extends IntegrationTestCase
     {
         parent::setUp();
 
+        $this->disableExperimentalTestDatabase();
         $this->purgeDataAndLoadMinimalCatalog();
     }
 

@@ -17,8 +17,10 @@ use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Connectivity\Connection\ServiceApi\Service\ConnectedAppFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionValue;
@@ -28,6 +30,7 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
@@ -230,7 +233,7 @@ abstract class IntegrationTestCase extends WebTestCase
     /**
      * @param array<UserIntent> $intents
      */
-    protected function createProduct(string $identifier, array $intents = [], ?int $userId = null): AbstractProduct
+    protected function createProduct(string | UuidInterface $identifier, array $intents = [], ?int $userId = null): AbstractProduct
     {
         $bus = self::getContainer()->get('pim_enrich.product.message_bus');
 
@@ -242,11 +245,22 @@ abstract class IntegrationTestCase extends WebTestCase
 
         Assert::notNull($userId);
 
-        $command = UpsertProductCommand::createWithIdentifier(
-            $userId,
-            ProductIdentifier::fromIdentifier($identifier),
-            $intents
-        );
+        $command = \is_string($identifier) ?
+            UpsertProductCommand::createWithIdentifier(
+                $userId,
+                ProductIdentifier::fromIdentifier($identifier),
+                $intents,
+            ) :
+            UpsertProductCommand::createWithUuid(
+                $userId,
+                ProductUuid::fromUuid($identifier),
+                \array_merge(
+                    [
+                        new SetIdentifierValue('sku', $identifier->toString())
+                    ],
+                    $intents,
+                ),
+            );
 
         $bus->dispatch($command);
 

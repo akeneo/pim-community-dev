@@ -1,11 +1,6 @@
 import React from 'react';
-import {IdentifierGeneratorApp} from '../IdentifierGeneratorApp';
+import {IdentifierGeneratorApp} from '../';
 import {render, screen, act, fireEvent} from '../tests/test-utils';
-
-jest.mock('@akeneo-pim-community/shared', () => ({
-  ...jest.requireActual('@akeneo-pim-community/shared'),
-  useTranslate: () => (key: string) => key,
-}));
 
 describe('IdentifierGeneratorApp', () => {
   it('is just an example of unit test', () => {

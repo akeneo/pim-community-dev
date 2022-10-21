@@ -26,16 +26,20 @@ class GetProductsActionTest extends IntegrationTestCase
     {
         parent::setUp();
 
+        $this->disableExperimentalTestDatabase();
         $this->purgeDataAndLoadMinimalCatalog();
+        $this->createUser('admin', ['IT support'], ['ROLE_ADMINISTRATOR']);
     }
 
     public function testItGetsPaginatedProductsByCatalogId(): void
     {
+        $this->logAs('admin'); // Creating products requires an authenticated user with higher permissions
+        $this->createProduct(Uuid::fromString('8985de43-08bc-484d-aee0-4489a56ba02d'), [new SetEnabled(true)]);
+        $this->createProduct(Uuid::fromString('00380587-3893-46e6-a8c2-8fee6404cc9e'), [new SetEnabled(true)]);
+
         $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
         $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'shopifi');
         $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
-        $this->createProduct('blue', [new SetEnabled(true)]);
-        $this->createProduct('green', [new SetEnabled(true)]);
 
         $this->client->request(
             'GET',
@@ -54,17 +58,21 @@ class GetProductsActionTest extends IntegrationTestCase
 
         Assert::assertEquals(200, $response->getStatusCode());
         Assert::assertCount(2, $payload['_embedded']['items']);
-        foreach ($payload['_embedded']['items'] as $product) {
-            Assert::assertTrue(Uuid::isValid($product['uuid']), 'Not a valid UUID');
-            Assert::assertTrue($product['enabled']);
-        }
+
+        $uuids = \array_map(static fn (array $item): string => $item['uuid'], $payload['_embedded']['items']);
+        Assert::assertEquals([
+            '00380587-3893-46e6-a8c2-8fee6404cc9e',
+            '8985de43-08bc-484d-aee0-4489a56ba02d'
+        ], $uuids);
     }
 
     public function testItReturnsAnErrorMessagePayloadWhenTheCatalogIsDisabled(): void
     {
+        $this->logAs('admin'); // Creating products requires an authenticated user with higher permissions
+        $this->createProduct('blue');
+
         $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
         $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'shopifi');
-        $this->createProduct('blue');
 
         $this->client->request(
             'GET',

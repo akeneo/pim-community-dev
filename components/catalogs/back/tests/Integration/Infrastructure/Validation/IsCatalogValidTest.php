@@ -21,7 +21,7 @@ class IsCatalogValidTest extends IntegrationTestCase
     protected function setUp(): void
     {
         parent::setUp();
-//        $this->disableExperimentalTestDatabase();
+        $this->disableExperimentalTestDatabase();
         $this->isCatalogValid = self::getContainer()->get(IsCatalogValid::class);
         $this->purgeDataAndLoadMinimalCatalog();
     }
