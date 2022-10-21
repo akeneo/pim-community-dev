@@ -16,6 +16,7 @@ use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsRequired;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsScopable;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeOrder;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
+use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
@@ -42,11 +43,11 @@ class TemplateBuilder
      * @throws \Exception
      */
     public function generateTemplate(
-        Code $categoryTreeCode,
+        CategoryId $categoryTreeId,
         string $templateCode,
         LabelCollection $templateLabelCollection
     ) : Template {
-        $categoryTree = $this->getCategory->byCode((string) $categoryTreeCode);
+        $categoryTree = $this->getCategory->byId($categoryTreeId->getValue());
         $templateUuid = TemplateUuid::fromUuid(Uuid::uuid4());
 
         return new Template(

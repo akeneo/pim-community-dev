@@ -1,22 +1,24 @@
 services:
-    Akeneo\Category\Application\Template\CreateTemplate:
+    Akeneo\Category\Application\ActivateTemplate:
         arguments:
             - '@Akeneo\Category\Application\Query\GetTemplate'
-            - '@Akeneo\Category\Application\Template\TemplateRepository'
-            - '@Akeneo\Category\Application\Template\CategoryTreeTemplateRepository'
-            - '@Akeneo\Category\Application\Template\TemplateAttributeRepository'
+            - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
+            - '@Akeneo\Category\Application\Query\IsCategoryTreeLinkedToTemplate'
+            - '@Akeneo\Category\Infrastructure\Builder\TemplateBuilder'
+            - '@Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver'
+            - '@Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver'
 
-    Akeneo\Category\Application\Template\TemplateRepository:
-        class: 'Akeneo\Category\Infrastructure\Storage\Save\Query\SqlTemplateRepository'
+    Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver:
+        class: 'Akeneo\Category\Infrastructure\Storage\Save\Query\SqlCategoryTemplateSaver'
         arguments:
             - '@database_connection'
 
-    Akeneo\Category\Application\Template\CategoryTreeTemplateRepository:
-        class: 'Akeneo\Category\Infrastructure\Storage\Save\Query\SqlCategoryTreeTemplateRepository'
+    Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver:
+        class: 'Akeneo\Category\Infrastructure\Storage\Save\Query\SqlCategoryTreeTemplateSaver'
         arguments:
             - '@database_connection'
 
-    Akeneo\Category\Application\Template\TemplateAttributeRepository:
-        class: 'Akeneo\Category\Infrastructure\Storage\Save\Query\SqlTemplateAttributeRepository'
+    Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver:
+        class: 'Akeneo\Category\Infrastructure\Storage\Save\Query\SqlCategoryTemplateAttributeSaver'
         arguments:
             - '@database_connection'

@@ -3,14 +3,12 @@
 namespace Specification\Akeneo\Category\Application\Template;
 
 use Akeneo\Category\Application\Query\GetTemplate;
-use Akeneo\Category\Application\Template\CategoryTreeTemplateRepository;
+use Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver;
+use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver;
 use Akeneo\Category\Application\Template\CreateTemplate;
-use Akeneo\Category\Application\Template\TemplateAttributeRepository;
 use Akeneo\Category\Application\Template\TemplateRepository;
 use Akeneo\Category\Domain\Model\Attribute\AttributeImage;
 use Akeneo\Category\Domain\Model\Attribute\AttributeRichText;
-use Akeneo\Category\Domain\Model\Attribute\AttributeText;
-use Akeneo\Category\Domain\Model\Attribute\AttributeTextArea;
 use Akeneo\Category\Domain\Model\Template;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
@@ -27,10 +25,10 @@ use Ramsey\Uuid\Uuid;
 class CreateTemplateSpec extends ObjectBehavior
 {
     function let(
-        GetTemplate $getTemplate,
-        TemplateRepository $templateRepository,
-        CategoryTreeTemplateRepository $categoryTreeTemplateRepository,
-        TemplateAttributeRepository $templateAttributeRepository,
+        GetTemplate                    $getTemplate,
+        TemplateRepository             $templateRepository,
+        CategoryTreeTemplateSaver      $categoryTreeTemplateRepository,
+        CategoryTemplateAttributeSaver $templateAttributeRepository,
     ) {
         $this->beConstructedWith(
             $getTemplate,
@@ -46,9 +44,9 @@ class CreateTemplateSpec extends ObjectBehavior
     }
 
     function it_insert_a_new_template_in_database (
-        GetTemplate $getTemplate,
-        TemplateRepository $templateRepository,
-        CategoryTreeTemplateRepository $categoryTreeTemplateRepository,
+        GetTemplate               $getTemplate,
+        TemplateRepository        $templateRepository,
+        CategoryTreeTemplateSaver $categoryTreeTemplateRepository,
     )
     {
         $templateUuid = TemplateUuid::fromUuid(Uuid::uuid4());
@@ -86,11 +84,11 @@ class CreateTemplateSpec extends ObjectBehavior
     }
 
     function it_does_not_insert_a_already_existing_template_in_database (
-        GetTemplate $getTemplate,
-        Template $alreadyExistingTemplate,
-        TemplateRepository $templateRepository,
-        CategoryTreeTemplateRepository $categoryTreeTemplateRepository,
-        TemplateAttributeRepository $templateAttributeRepository,
+        GetTemplate                    $getTemplate,
+        Template                       $alreadyExistingTemplate,
+        TemplateRepository             $templateRepository,
+        CategoryTreeTemplateSaver      $categoryTreeTemplateRepository,
+        CategoryTemplateAttributeSaver $templateAttributeRepository,
     )
     {
         $templateUuid = TemplateUuid::fromUuid(Uuid::uuid4());

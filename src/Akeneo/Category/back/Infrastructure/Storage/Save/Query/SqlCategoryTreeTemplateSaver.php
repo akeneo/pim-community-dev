@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Storage\Save\Query;
 
-use Akeneo\Category\Application\Template\CategoryTreeTemplateRepository;
+use Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver;
 use Akeneo\Category\Domain\Model\Template;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
@@ -13,7 +13,7 @@ use Doctrine\DBAL\Exception;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SqlCategoryTreeTemplateRepository implements CategoryTreeTemplateRepository
+class SqlCategoryTreeTemplateSaver implements CategoryTreeTemplateSaver
 {
     public function __construct(
         private Connection $connection,
