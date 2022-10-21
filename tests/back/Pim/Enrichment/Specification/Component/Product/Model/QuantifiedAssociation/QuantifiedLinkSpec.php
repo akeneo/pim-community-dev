@@ -50,9 +50,9 @@ class QuantifiedLinkSpec extends ObjectBehavior
         $this->beConstructedThrough('fromUuid', [$uuid->toString(), 'an_identifier', 10]);
 
         $this->normalize()->shouldReturn([
+            'uuid' => $uuid->toString(),
             'identifier' => 'an_identifier',
             'quantity' => 10,
-            'uuid' => $uuid->toString(),
         ]);
     }
 
@@ -62,9 +62,9 @@ class QuantifiedLinkSpec extends ObjectBehavior
         $this->beConstructedThrough('fromUuid', [$uuid->toString(), null, 10]);
 
         $this->normalize()->shouldReturn([
+            'uuid' => $uuid->toString(),
             'identifier' => null,
             'quantity' => 10,
-            'uuid' => $uuid->toString(),
         ]);
     }
 }

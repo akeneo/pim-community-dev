@@ -150,7 +150,7 @@ final class QuantifiedAssociationUserIntentCollectionApplier implements UserInte
 
             $indexedFormerAssociations[$identifier] = [
                 'identifier' => $identifier,
-                'uuid' => null,
+                'uuid' => $indexedFormerAssociations[$identifier]['uuid'] ?? null,
                 'quantity' => $quantifiedEntity->quantity(),
             ];
             $isUpdated = true;

@@ -215,7 +215,7 @@ class QuantifiedAssociationCollection
 
     private function mergeQuantifiedLinks(array $currentQuantifiedLinks, array $quantifiedLinksToMerge): array
     {
-        $mergedQuantifiedLinks = array_merge($quantifiedLinksToMerge, $currentQuantifiedLinks);
+        $mergedQuantifiedLinks = array_reverse(array_merge($currentQuantifiedLinks, $quantifiedLinksToMerge));
 
         $uuidList = [];
         $identifierList = [];
@@ -233,12 +233,12 @@ class QuantifiedAssociationCollection
                 $uuidList[] = $mergedQuantifiedLink['uuid'];
             }
 
-            if (isset($mergedQuantifiedLink['uuid'])) {
+            if (isset($mergedQuantifiedLink['identifier'])) {
                 $identifierList[] = $mergedQuantifiedLink['identifier'];
             }
         }
 
-        return array_values($mergedQuantifiedLinks);
+        return array_reverse(array_values($mergedQuantifiedLinks));
     }
 
     /**

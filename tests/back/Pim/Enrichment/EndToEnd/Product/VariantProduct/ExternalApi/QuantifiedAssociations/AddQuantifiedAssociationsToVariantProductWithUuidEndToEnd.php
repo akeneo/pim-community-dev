@@ -87,7 +87,7 @@ JSON;
             'quantified_associations' => [
                 'PRODUCTSET' => [
                     'products' => [
-                        ['uuid' => (string) $chairUuid, 'quantity' => 8, 'identifier' => 'chair'],
+                        ['uuid' => (string) $chairUuid, 'identifier' => 'chair', 'quantity' => 8],
                     ],
                     'product_models' => [
                         ['identifier' => 'umbrella', 'quantity' => 2],

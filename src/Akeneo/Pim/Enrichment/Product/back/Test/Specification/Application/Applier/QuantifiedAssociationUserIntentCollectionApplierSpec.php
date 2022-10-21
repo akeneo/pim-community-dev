@@ -45,8 +45,8 @@ class QuantifiedAssociationUserIntentCollectionApplierSpec extends ObjectBehavio
         $product->mergeQuantifiedAssociations(QuantifiedAssociationCollection::createFromNormalized([
             'bundle' => [
                 'products' => [
-                    ['identifier' => 'foo', 'quantity' => 2],
-                    ['identifier' => 'bar', 'quantity' => 4],
+                    ['identifier' => 'foo', 'uuid' => '04cc1240-e68b-4350-a829-097e5cedd7cd', 'quantity' => 2],
+                    ['identifier' => 'bar', 'uuid' => 'ae639bdc-cc03-4961-9e28-7e6a2e3a6623', 'quantity' => 4],
                 ],
             ],
         ]));
@@ -54,8 +54,8 @@ class QuantifiedAssociationUserIntentCollectionApplierSpec extends ObjectBehavio
         $productUpdater->update($product, ['quantified_associations' => [
             'bundle' => [
                 'products' => [
-                    ['identifier' => 'foo', 'quantity' => 8],
-                    ['identifier' => 'bar', 'quantity' => 4],
+                    ['identifier' => 'foo', 'uuid' => '04cc1240-e68b-4350-a829-097e5cedd7cd', 'quantity' => 8],
+                    ['identifier' => 'bar', 'uuid' => 'ae639bdc-cc03-4961-9e28-7e6a2e3a6623', 'quantity' => 4],
                 ],
             ],
         ]])->shouldBeCalledOnce();
@@ -76,8 +76,8 @@ class QuantifiedAssociationUserIntentCollectionApplierSpec extends ObjectBehavio
         $product->mergeQuantifiedAssociations(QuantifiedAssociationCollection::createFromNormalized([
             'bundle' => [
                 'products' => [
-                    ['identifier' => 'foo', 'quantity' => 2],
-                    ['identifier' => 'bar', 'quantity' => 4],
+                    ['identifier' => 'foo', 'uuid' => '04cc1240-e68b-4350-a829-097e5cedd7cd', 'quantity' => 2],
+                    ['identifier' => 'bar', 'uuid' => 'ae639bdc-cc03-4961-9e28-7e6a2e3a6623', 'quantity' => 4],
                 ],
             ],
         ]));
@@ -85,9 +85,9 @@ class QuantifiedAssociationUserIntentCollectionApplierSpec extends ObjectBehavio
         $productUpdater->update($product, ['quantified_associations' => [
             'bundle' => [
                 'products' => [
-                    ['identifier' => 'foo', 'quantity' => 8],
-                    ['identifier' => 'bar', 'quantity' => 4],
-                    ['identifier' => 'baz', 'quantity' => 3],
+                    ['identifier' => 'foo', 'uuid' => '04cc1240-e68b-4350-a829-097e5cedd7cd', 'quantity' => 8],
+                    ['identifier' => 'bar', 'uuid' => 'ae639bdc-cc03-4961-9e28-7e6a2e3a6623', 'quantity' => 4],
+                    ['identifier' => 'baz', 'uuid' => null, 'quantity' => 3],
                 ],
             ],
         ]])->shouldBeCalledOnce();
@@ -108,8 +108,8 @@ class QuantifiedAssociationUserIntentCollectionApplierSpec extends ObjectBehavio
         $product->mergeQuantifiedAssociations(QuantifiedAssociationCollection::createFromNormalized([
             'bundle' => [
                 'products' => [
-                    ['identifier' => 'foo', 'quantity' => 2],
-                    ['identifier' => 'bar', 'quantity' => 4],
+                    ['identifier' => 'foo', 'uuid' => '04cc1240-e68b-4350-a829-097e5cedd7cd', 'quantity' => 2],
+                    ['identifier' => 'bar', 'uuid' => 'ae639bdc-cc03-4961-9e28-7e6a2e3a6623', 'quantity' => 4],
                 ],
             ],
         ]));
@@ -131,8 +131,8 @@ class QuantifiedAssociationUserIntentCollectionApplierSpec extends ObjectBehavio
         $product->mergeQuantifiedAssociations(QuantifiedAssociationCollection::createFromNormalized([
             'bundle' => [
                 'products' => [
-                    ['identifier' => 'foo', 'quantity' => 2],
-                    ['identifier' => 'bar', 'quantity' => 4],
+                    ['identifier' => 'foo', 'uuid' => '04cc1240-e68b-4350-a829-097e5cedd7cd', 'quantity' => 2],
+                    ['identifier' => 'bar', 'uuid' => 'ae639bdc-cc03-4961-9e28-7e6a2e3a6623', 'quantity' => 4],
                 ],
             ],
         ]));
@@ -140,7 +140,7 @@ class QuantifiedAssociationUserIntentCollectionApplierSpec extends ObjectBehavio
         $productUpdater->update($product, ['quantified_associations' => [
             'bundle' => [
                 'products' => [
-                    ['identifier' => 'bar', 'quantity' => 4],
+                    ['identifier' => 'bar', 'uuid' => 'ae639bdc-cc03-4961-9e28-7e6a2e3a6623', 'quantity' => 4],
                 ],
             ],
         ]])->shouldBeCalledOnce();
@@ -160,8 +160,8 @@ class QuantifiedAssociationUserIntentCollectionApplierSpec extends ObjectBehavio
         $product->mergeQuantifiedAssociations(QuantifiedAssociationCollection::createFromNormalized([
             'bundle' => [
                 'products' => [
-                    ['identifier' => 'foo', 'quantity' => 2],
-                    ['identifier' => 'bar', 'quantity' => 4],
+                    ['identifier' => 'foo', 'uuid' => '04cc1240-e68b-4350-a829-097e5cedd7cd', 'quantity' => 2],
+                    ['identifier' => 'bar', 'uuid' => 'ae639bdc-cc03-4961-9e28-7e6a2e3a6623', 'quantity' => 4],
                 ],
             ],
         ]));
@@ -187,9 +187,9 @@ class QuantifiedAssociationUserIntentCollectionApplierSpec extends ObjectBehavio
         $product->mergeQuantifiedAssociations(QuantifiedAssociationCollection::createFromNormalized([
             'bundle' => [
                 'products' => [
-                    ['identifier' => 'foo', 'quantity' => 2],
-                    ['identifier' => 'bar', 'quantity' => 4],
-                    ['identifier' => 'baz', 'quantity' => 5],
+                    ['identifier' => 'foo', 'uuid' => '04cc1240-e68b-4350-a829-097e5cedd7cd', 'quantity' => 2],
+                    ['identifier' => 'bar', 'uuid' => 'ae639bdc-cc03-4961-9e28-7e6a2e3a6623', 'quantity' => 4],
+                    ['identifier' => 'baz', 'uuid' => '70baf7a0-a8f0-427c-9937-4ca06ec6e484', 'quantity' => 5],
                 ],
             ],
         ]));
@@ -199,8 +199,8 @@ class QuantifiedAssociationUserIntentCollectionApplierSpec extends ObjectBehavio
         $productUpdater->update($product, ['quantified_associations' => [
             'bundle' => [
                 'products' => [
-                    ['identifier' => 'foo', 'quantity' => 8],
-                    ['identifier' => 'baz', 'quantity' => 5],
+                    ['identifier' => 'foo', 'uuid' => null, 'quantity' => 8],
+                    ['identifier' => 'baz', 'uuid' => '70baf7a0-a8f0-427c-9937-4ca06ec6e484', 'quantity' => 5],
                 ],
             ],
         ]])->shouldBeCalledOnce();

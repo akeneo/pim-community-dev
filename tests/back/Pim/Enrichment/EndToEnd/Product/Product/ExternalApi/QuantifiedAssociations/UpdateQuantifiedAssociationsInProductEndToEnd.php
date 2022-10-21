@@ -97,19 +97,19 @@ JSON;
             'quantified_associations' => [
                 '1234' => [
                     'products' => [
-                        ['identifier' => 'chair', 'quantity' => 2, 'uuid' => (string) $productChair->getUuid()],
+                        ['uuid' => (string) $productChair->getUuid(), 'identifier' => 'chair', 'quantity' => 2],
                     ],
                     'product_models' => [],
                 ],
                 'PRODUCTSET_A' => [
                     'products' => [
-                        ['identifier' => 'chair', 'quantity' => 6, 'uuid' => (string) $productChair->getUuid()],
+                        ['uuid' => (string) $productChair->getUuid(), 'identifier' => 'chair', 'quantity' => 6],
                     ],
                     'product_models' => [],
                 ],
                 'PRODUCTSET_B' => [
                     'products' => [
-                        ['identifier' => 'chair', 'quantity' => 4, 'uuid' => (string) $productChair->getUuid()],
+                        ['uuid' => (string) $productChair->getUuid(), 'identifier' => 'chair', 'quantity' => 4],
                     ],
                     'product_models' => [],
                 ],

@@ -538,7 +538,8 @@ class QuantifiedAssociationCollectionSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_merge_quantified_associations_and_overwrite_quantities_from_duplicated_identifiers() {
+    public function it_merge_quantified_associations_and_overwrite_quantities_from_duplicated_identifiers()
+    {
         $this->beConstructedThrough(
             'createFromNormalized',
             [

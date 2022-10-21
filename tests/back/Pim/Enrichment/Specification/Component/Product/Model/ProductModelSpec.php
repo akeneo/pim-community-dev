@@ -353,8 +353,8 @@ class ProductModelSpec extends ObjectBehavior
         $this->normalizeQuantifiedAssociations()->shouldReturn([
             'PACK' => [
                 'products'       => [
-                    ['identifier' => 'entity_1', 'quantity' => 1, 'uuid' => self::UUID1],
-                    ['identifier' => 'entity_2', 'quantity' => 2, 'uuid' => self::UUID2]
+                    ['uuid' => self::UUID1, 'identifier' => 'entity_1', 'quantity' => 1],
+                    ['uuid' => self::UUID2, 'identifier' => 'entity_2', 'quantity' => 2]
                 ],
                 'product_models' => [
                     ['identifier' => 'entity_1', 'quantity' => 1],
@@ -384,8 +384,8 @@ class ProductModelSpec extends ObjectBehavior
         $this->normalizeQuantifiedAssociations()->shouldReturn([
             'PACK' => [
                 'products'       => [
-                    ['identifier' => 'entity_1', 'quantity' => 1, 'uuid' => self::UUID1],
-                    ['identifier' => 'entity_2', 'quantity' => 2, 'uuid' => self::UUID2]
+                    ['uuid' => self::UUID1, 'identifier' => 'entity_1', 'quantity' => 1],
+                    ['uuid' => self::UUID2, 'identifier' => 'entity_2', 'quantity' => 2]
                 ],
                 'product_models' => [
                     ['identifier' => 'entity_1', 'quantity' => 1],
@@ -426,8 +426,8 @@ class ProductModelSpec extends ObjectBehavior
         $this->normalizeQuantifiedAssociations()->shouldReturn([
             'PACK' => [
                 'products'       => [
-                    ['identifier' => 'entity_1', 'quantity' => 1, 'uuid' => self::UUID1],
-                    ['identifier' => 'entity_2', 'quantity' => 2, 'uuid' => self::UUID2]
+                    ['uuid' => self::UUID1, 'identifier' => 'entity_1', 'quantity' => 1],
+                    ['uuid' => self::UUID2, 'identifier' => 'entity_2', 'quantity' => 2]
                 ],
                 'product_models' => [
                     ['identifier' => 'entity_1', 'quantity' => 1],
@@ -1367,8 +1367,8 @@ class ProductModelSpec extends ObjectBehavior
     private function uuidMapping(): UuidMapping
     {
         return UuidMapping::createFromMapping([
-            ['id' => 1, 'identifier' => 'entity_1', 'uuid' => self::UUID1],
-            ['id' => 2, 'identifier' => 'entity_2', 'uuid' => self::UUID2],
+            ['uuid' => self::UUID1, 'id' => 1, 'identifier' => 'entity_1'],
+            ['uuid' => self::UUID2, 'id' => 2, 'identifier' => 'entity_2'],
         ]);
     }
 }
