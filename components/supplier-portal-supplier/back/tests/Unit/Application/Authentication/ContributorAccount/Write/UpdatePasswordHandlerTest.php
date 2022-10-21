@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Application\Authentication\ContributorAccount\Write;
 
-use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Exception\UserHasNotConsent;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\Exception\InvalidPassword;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\UpdatePassword;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\UpdatePasswordHandler;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\Validation\Password;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\HashPassword;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Exception\ContributorAccountDoesNotExist;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Exception\UserHasNotConsent;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
 use Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Repository\InMemory\InMemoryRepository;
 use PHPUnit\Framework\TestCase;
