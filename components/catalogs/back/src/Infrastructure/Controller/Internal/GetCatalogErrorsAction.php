@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Controller\Internal;
 
-use Akeneo\Catalogs\Application\Persistence\FindOneCatalogByIdQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\GetCatalogProductSelectionCriteriaQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\GetCatalogProductValueFiltersQueryInterface;
+use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
+use Akeneo\Catalogs\Application\Persistence\Catalog\FindOneCatalogByIdQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdatePayload;
+use Akeneo\Catalogs\ServiceAPI\Exception\CatalogNotFoundException as ServiceApiCatalogNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,9 +26,8 @@ final class GetCatalogErrorsAction
     public function __construct(
         private ValidatorInterface $validator,
         private FindOneCatalogByIdQueryInterface $findOneCatalogByIdQuery,
-        private GetCatalogProductSelectionCriteriaQueryInterface $findCatalogProductSelectionCriteriaQuery,
-        private GetCatalogProductValueFiltersQueryInterface $findCatalogProductValueFiltersQuery,
         private NormalizerInterface $normalizer,
+        private GetCatalogQueryInterface $getCatalogQuery,
     ) {
     }
 
@@ -43,10 +43,16 @@ final class GetCatalogErrorsAction
             throw new NotFoundHttpException(\sprintf('catalog "%s" does not exist.', $catalogId));
         }
 
+        try {
+            $catalogDomain = $this->getCatalogQuery->execute($catalogId);
+        } catch (CatalogNotFoundException) {
+            throw new ServiceApiCatalogNotFoundException();
+        }
+
         $catalogNormalized = [
             'enabled' => $catalog->isEnabled(),
-            'product_selection_criteria' => $this->findCatalogProductSelectionCriteriaQuery->execute($catalogId),
-            'product_value_filters' => $this->findCatalogProductValueFiltersQuery->execute($catalogId),
+            'product_selection_criteria' => $catalogDomain->getProductSelectionCriteria(),
+            'product_value_filters' => $catalogDomain->getProductValueFilters(),
         ];
 
         $violations = $this->validator->validate($catalogNormalized, [
