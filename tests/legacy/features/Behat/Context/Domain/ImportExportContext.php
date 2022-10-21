@@ -2,11 +2,9 @@
 
 namespace Pim\Behat\Context\Domain;
 
+use Akeneo\Tool\Component\Connector\Reader\File\SpoutReaderFactory;
 use Behat\Gherkin\Node\PyStringNode;
 use OpenSpout\Common\Entity\Row;
-use OpenSpout\Common\Type;
-use OpenSpout\Reader\Common\Creator\ReaderFactory;
-use OpenSpout\Reader\CSV\Reader as CsvReader;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 
@@ -184,14 +182,10 @@ class ImportExportContext extends PimContext
     {
         $jobContext = $this->getMainContext()->getSubcontext('job');
 
-        $reader = ReaderFactory::createFromType($fileType);
-
-        if (Type::CSV === $fileType && $reader instanceof CsvReader) {
-            $reader
-                ->setFieldDelimiter($config['delimiter'])
-                ->setFieldEnclosure($config['enclosure'])
-            ;
-        }
+        $reader = SpoutReaderFactory::create($fileType, [
+            'fieldDelimiter' => $config['delimiter'],
+            'fieldEnclosure' => $config['enclosure'],
+        ]);
 
         $reader->open($jobContext->copyArchiveLocally($archivePath));
         $sheet = current(iterator_to_array($reader->getSheetIterator()));
