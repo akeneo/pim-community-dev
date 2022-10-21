@@ -1,7 +1,11 @@
 import {useQuery} from 'react-query';
-import {FlattenAttribute} from '../models/flatten-attribute';
+import {FlattenAttribute} from '../models';
 
-const useIdentifierAttributes = () => {
+const useIdentifierAttributes: () => {
+  data?: FlattenAttribute[];
+  error: Error | null;
+  isSuccess: boolean;
+} = () => {
   const getIdentifierAttributes = async () => {
     return fetch('/identifier-generator/identifier-attributes', {
       method: 'GET',
@@ -12,7 +16,7 @@ const useIdentifierAttributes = () => {
     });
   };
 
-  const {error, data} = useQuery<FlattenAttribute[], Error, FlattenAttribute[]>(
+  const {error, data, isSuccess} = useQuery<FlattenAttribute[], Error, FlattenAttribute[]>(
     'getIdentifierAttributes',
     getIdentifierAttributes,
     {
@@ -22,7 +26,7 @@ const useIdentifierAttributes = () => {
     }
   );
 
-  return {data, error};
+  return {data, error, isSuccess};
 };
 
 export {useIdentifierAttributes};

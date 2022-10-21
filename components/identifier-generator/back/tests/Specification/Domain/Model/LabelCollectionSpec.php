@@ -86,7 +86,7 @@ class LabelCollectionSpec extends ObjectBehavior
                 [
                     'en_US' => 'Sugar',
                     'fr_FR' => '',
-                ]
+                ],
             ]
         );
 

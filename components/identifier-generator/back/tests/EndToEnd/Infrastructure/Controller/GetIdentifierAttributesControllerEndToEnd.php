@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\Infrastructure\Controller;
 
 use Akeneo\Test\Integration\Configuration;
@@ -14,7 +16,7 @@ final class GetIdentifierAttributesControllerEndToEnd extends ControllerEndToEnd
     {
         $this->loginAs('Julia');
         $this->callRoute('akeneo_identifier_generator_get_identifier_attributes', [
-            'HTTP_X-Requested-With' => 'toto'
+            'HTTP_X-Requested-With' => 'toto',
         ]);
         $response = $this->client->getResponse();
         Assert::AssertSame(Response::HTTP_FOUND, $response->getStatusCode());
