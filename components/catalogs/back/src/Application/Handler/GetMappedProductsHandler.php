@@ -58,10 +58,28 @@ final class GetMappedProductsHandler
         }
 
         $productMappingSchema = \json_decode($productMappingSchemaRaw, false, 512, JSON_THROW_ON_ERROR);
+        $productMapping = $catalog->getProductMapping();
 
         return \array_map(
-            function (ProductInterface $product): array {
-                return [];
+            static function (ProductInterface $product) use ($productMappingSchema, $productMapping): array {
+                $mappedProduct = [];
+                foreach ($productMappingSchema as $key => $property) {
+                    $sourceValue = '';
+                    if (\array_key_exists($key, $productMapping)) {
+                        // @todo manage system code
+                        $productAttributeValue = $product->getValue(
+                            $productMapping[$key]['source'],
+                            $productMapping[$key]['locale'],
+                            $productMapping[$key]['scope']
+                        );
+
+                        if (null !== $productAttributeValue) {
+                            $sourceValue = (string) $productAttributeValue->getData();
+                        }
+                    }
+                    $mappedProduct[$key] = $sourceValue;
+                }
+                return $mappedProduct;
             },
             $products
         );
