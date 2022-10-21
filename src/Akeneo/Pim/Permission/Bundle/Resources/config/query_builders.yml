@@ -10,13 +10,12 @@ services:
             - '@pim_catalog.query.product_query_builder_resolver'
 
     pim_catalog.factory.product_cursor_without_permission:
-        class: '%akeneo_elasticsearch.cursor.cursor_factory.class%'
+        class: '%pim_catalog.elasticsearch.cursor_factory.class%'
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@pim_catalog.repository.product_without_permission'
-            - '%akeneo_elasticsearch.cursor.cursor.class%'
+            - '@pim_catalog.repository.product_model'
             - '%pim_job_product_batch_size%'
-            - 'pim_catalog_product'
 
     pim_catalog.query.product_and_product_model_query_builder_factory.with_product_and_product_model_cursor:
         public: false
