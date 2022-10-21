@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Webmozart\Assert\Assert;
 
 class CreateIdentifierGeneratorController
 {
@@ -22,15 +23,14 @@ class CreateIdentifierGeneratorController
     ) {
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
 
-        $content = $this->getContent($request);
-
         try {
+            $content = $this->getContent($request);
             $command = CreateGeneratorCommand::fromNormalized($content);
         } catch (\InvalidArgumentException $exception) {
             return new JsonResponse([['message' => $exception->getMessage()]], Response::HTTP_BAD_REQUEST);
@@ -43,16 +43,23 @@ class CreateIdentifierGeneratorController
         }
 
         $identifierGenerator = $this->identifierGeneratorRepository->get($content['code']);
+        Assert::notNull($identifierGenerator);
 
         return new JsonResponse($identifierGenerator->normalize(), Response::HTTP_CREATED);
     }
 
+    /**
+     * @return array{code: string}
+     */
     private function getContent(Request $request): array
     {
         $content = json_decode($request->getContent(), true);
         if (null === $content) {
             throw new BadRequestHttpException('Invalid json message received');
         }
+
+        Assert::isArray($content);
+        Assert::keyExists($content, 'code');
 
         return $content;
     }

@@ -95,7 +95,7 @@ SQL;
         Assert::string($result['labels']);
         Assert::isArray(json_decode($result['labels'], true));
         Assert::string($result['target']);
-        Assert::string($result['delimiter']);
+        Assert::nullOrString($result['delimiter']);
 
         return new IdentifierGenerator(
             IdentifierGeneratorId::fromString($result['uuid']),
@@ -118,6 +118,6 @@ SQL;
 
     public function count(): int
     {
-        return (int) $this->connection->fetchOne('SELECT COUNT(1) FROM pim_catalog_identifier_generator');
+        return \intval($this->connection->fetchOne('SELECT COUNT(1) FROM pim_catalog_identifier_generator'));
     }
 }

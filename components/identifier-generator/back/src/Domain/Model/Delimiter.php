@@ -18,7 +18,7 @@ final class Delimiter
 
     public static function fromString(?string $delimiter): self
     {
-        return new self($delimiter ?: '');
+        return new self($delimiter);
     }
 
     public function asString(): ?string

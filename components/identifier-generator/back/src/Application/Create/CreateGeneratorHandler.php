@@ -33,7 +33,7 @@ final class CreateGeneratorHandler
         $identifierGenerator = new IdentifierGenerator(
             $this->identifierGeneratorRepository->getNextId(),
             IdentifierGeneratorCode::fromString($command->code),
-            Conditions::fromArray($command->conditions),
+            Conditions::fromNormalized($command->conditions),
             Structure::fromNormalized($command->structure),
             LabelCollection::fromNormalized($command->labels),
             Target::fromString($command->target),
