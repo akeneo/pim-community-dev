@@ -14,10 +14,9 @@ use Webmozart\Assert\Assert;
 final class CreateGeneratorCommand implements CommandInterface
 {
     /**
-     * @param string $id
      * @param string $code
-     * @param array[] $conditions
-     * @param array[] $structure
+     * @param array<mixed> $conditions
+     * @param array<mixed> $structure
      * @param array<string, string> $labels
      * @param string $target
      * @param string|null $delimiter
@@ -32,25 +31,28 @@ final class CreateGeneratorCommand implements CommandInterface
     ) {
     }
 
-    public static function fromNormalized(array $content): self
+    /**
+     * @param array<string, mixed> $normalizedGenerator
+     */
+    public static function fromNormalized(array $normalizedGenerator): self
     {
         foreach (['code', 'conditions', 'structure', 'labels', 'target', 'delimiter'] as $key) {
-            Assert::keyExists($content, $key);
+            Assert::keyExists($normalizedGenerator, $key);
         }
-        Assert::string($content['code']);
-        Assert::isArray($content['conditions']);
-        Assert::isArray($content['structure']);
-        Assert::isArray($content['labels']);
-        Assert::string($content['target']);
-        Assert::nullOrString($content['delimiter']);
+        Assert::string($normalizedGenerator['code']);
+        Assert::isArray($normalizedGenerator['conditions']);
+        Assert::isArray($normalizedGenerator['structure']);
+        Assert::isArray($normalizedGenerator['labels']);
+        Assert::string($normalizedGenerator['target']);
+        Assert::nullOrString($normalizedGenerator['delimiter']);
 
         return new self(
-            $content['code'],
-            $content['conditions'],
-            $content['structure'],
-            $content['labels'],
-            $content['target'],
-            $content['delimiter']
+            $normalizedGenerator['code'],
+            $normalizedGenerator['conditions'],
+            $normalizedGenerator['structure'],
+            $normalizedGenerator['labels'],
+            $normalizedGenerator['target'],
+            $normalizedGenerator['delimiter']
         );
     }
 }

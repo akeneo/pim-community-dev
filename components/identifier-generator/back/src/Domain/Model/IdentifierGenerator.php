@@ -58,6 +58,17 @@ final class IdentifierGenerator
         return $this->delimiter;
     }
 
+    /**
+     * @return array{
+     *     uuid: string,
+     *     code: string,
+     *     conditions: array<mixed>,
+     *     structure: array<mixed>,
+     *     labels: array<string, string>|\stdClass,
+     *     target: string,
+     *     delimiter: string | null,
+     * }
+     */
     public function normalize(): array
     {
         return [

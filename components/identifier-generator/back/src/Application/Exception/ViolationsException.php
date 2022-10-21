@@ -17,6 +17,9 @@ final class ViolationsException extends \LogicException
         parent::__construct($this->constraintViolationList->__toString());
     }
 
+    /**
+     * @return array<array{message: string, path: string | null}>
+     */
     public function normalize(): array
     {
         return $this->constraintViolationList->normalize();

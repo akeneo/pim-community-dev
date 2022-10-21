@@ -33,8 +33,7 @@ final class Conditions
     }
 
     /**
-     * @param array $normalizedConditions
-     * @return static
+     * @param array<mixed> $normalizedConditions
      */
     public static function fromNormalized(array $normalizedConditions): self
     {

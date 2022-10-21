@@ -27,6 +27,9 @@ final class ErrorList implements \Countable
         $this->errors[] = $error;
     }
 
+    /**
+     * @return array<array{message: string, path: string | null}>
+     */
     public function normalize(): array
     {
         return array_map(fn (Error $error): array => $error->normalize(), $this->errors);
