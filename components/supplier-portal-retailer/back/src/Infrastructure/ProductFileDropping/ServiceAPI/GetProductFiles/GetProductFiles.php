@@ -18,20 +18,17 @@ final class GetProductFiles
     ) {
     }
 
-    public function __invoke(GetProductFilesQuery $getProductFilesQuery): array
+    public function __invoke(GetProductFilesQuery $getProductFilesQuery): ProductFiles
     {
         $supplier = ($this->getSupplierFromContributorEmail)($getProductFilesQuery->contributorEmail);
 
         if (null === $supplier) {
-            return [];
+            return new ProductFiles([], 0);
         }
 
-        return [
-            'product_files' => array_map(
-                fn (ProductFileReadModel $productFileReadModel) => ProductFile::fromReadModel($productFileReadModel),
-                ($this->listProductFilesForSupplier)($supplier->identifier, $getProductFilesQuery->page),
-            ),
-            'total' => ($this->getProductFilesCount)($supplier->identifier),
-        ];
+        return new ProductFiles(array_map(
+            fn (ProductFileReadModel $productFileReadModel) => ProductFile::fromReadModel($productFileReadModel),
+            ($this->listProductFilesForSupplier)($supplier->identifier, $getProductFilesQuery->page),
+        ), ($this->getProductFilesCount)($supplier->identifier));
     }
 }

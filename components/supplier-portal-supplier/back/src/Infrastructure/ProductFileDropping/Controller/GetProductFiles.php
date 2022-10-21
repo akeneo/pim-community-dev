@@ -41,9 +41,9 @@ final class GetProductFiles
 
                         return $productFile;
                     },
-                    $productFiles['product_files'],
+                    $productFiles->productFiles,
                 ),
-                'total' => $productFiles['total'],
+                'total' => $productFiles->numberTotalOfProductFiles,
             ],
             Response::HTTP_OK,
         );
