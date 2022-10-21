@@ -60,18 +60,7 @@ class PriceCollectionMaskItemGenerator implements MaskItemGeneratorForAttributeT
         }
         sort($filledCurrencies);
 
-        $result = [];
-        foreach ($this->getCurrencyCombinations($filledCurrencies) as $currencyCombination) {
-            $result[] = sprintf(
-                '%s-%s-%s-%s',
-                $attributeCode,
-                join('-', $currencyCombination),
-                $channelCode,
-                $localeCode
-            );
-        }
-
-        return $result;
+        return $this->getCurrencyCombinations($filledCurrencies, $attributeCode, '-' . $channelCode . '-' . $localeCode);
     }
 
     public function supportedAttributeTypes(): array
@@ -79,17 +68,34 @@ class PriceCollectionMaskItemGenerator implements MaskItemGeneratorForAttributeT
         return [AttributeTypes::PRICE_COLLECTION];
     }
 
-    private function getCurrencyCombinations($currencies)
+    /**
+     * @param string[] $currencies ex: ['EUR', 'GBP', 'USD']
+     * @return string[] ex: [
+     *      'EUR',
+     *      'GPB',
+     *      'EUR-GPB',
+     *      'USD',
+     *      'EUR-USD',
+     *      'GPB-USD',
+     *      'EUR-GPB-USD',
+     *   ]
+     */
+    private function getCurrencyCombinations(array $currencies, string $header, string $footer): array
     {
-        $combinations = [[]];
+        // TODO: CPM-762 Fix memory leak with more than 20 items
+        $result = [];
 
         foreach ($currencies as $currency) {
-            foreach ($combinations as $combination) {
-                array_push($combinations, array_merge($combination, [$currency]));
-            }
+            $result[] = $header . '-' . $currency . $footer;
         }
-        unset($combinations[0]);
 
-        return $combinations;
+        $keys = \array_keys($currencies);
+        foreach ($keys as $key) {
+            $currency = $currencies[$key];
+            $remainingCurrencies = \array_slice($currencies, $key + 1);
+            $result = \array_merge_recursive($result, $this->getCurrencyCombinations($remainingCurrencies, $header . '-' . $currency, $footer));
+        }
+
+        return $result;
     }
 }

@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Updater\TwoWayAssociationUpdater;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidAssociationProductIdentifierException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
@@ -438,15 +439,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
 
         $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
 
-        $this->shouldThrow(
-            InvalidPropertyException::validEntityCodeExpected(
-                'associations',
-                'product identifier',
-                'The product does not exist',
-                AssociationFieldSetter::class,
-                'not existing product'
-            )
-        )->during(
+        $this->shouldThrow(InvalidAssociationProductIdentifierException::class)->during(
             'setFieldData',
             [
                 $product,

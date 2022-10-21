@@ -820,11 +820,11 @@ services:
             - '@pim_catalog.query.product_query_builder_resolver'
 
     pim_enrich.factory.sequential_edit_product_cursor:
-        class: '%akeneo_elasticsearch.cursor.cursor_factory.class%'
+        class: '%pim_catalog.elasticsearch.cursor_factory.class%'
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@pim_catalog.repository.product'
-            - 'Akeneo\Pim\Enrichment\Bundle\Cursor\SequentialEditProduct'
+            - '@pim_catalog.repository.product_model'
             - 1000
 
     pim_enrich.query.product_and_product_model_search_aggregator:

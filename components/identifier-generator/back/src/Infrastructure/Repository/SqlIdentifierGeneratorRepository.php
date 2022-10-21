@@ -18,6 +18,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGenera
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Ramsey\Uuid\Uuid;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -39,6 +40,8 @@ class SqlIdentifierGeneratorRepository implements IdentifierGeneratorRepository
 INSERT INTO pim_catalog_identifier_generator (uuid, code, target, delimiter, labels, conditions, structure)
 VALUES (UUID_TO_BIN(:uuid), :code, :target, :delimiter, :labels, :conditions, :structure);
 SQL;
+
+        Assert::notNull($identifierGenerator->delimiter());
 
         try {
             $this->connection->executeStatement($query, [
@@ -76,6 +79,17 @@ SQL;
         if (!$result) {
             return null;
         }
+
+        Assert::string($result['uuid']);
+        Assert::string($result['code']);
+        Assert::string($result['conditions']);
+        Assert::isArray(json_decode($result['conditions'], true));
+        Assert::string($result['structure']);
+        Assert::isArray(json_decode($result['structure'], true));
+        Assert::string($result['labels']);
+        Assert::isArray(json_decode($result['labels'], true));
+        Assert::string($result['target']);
+        Assert::string($result['delimiter']);
 
         return new IdentifierGenerator(
             IdentifierGeneratorId::fromString($result['uuid']),

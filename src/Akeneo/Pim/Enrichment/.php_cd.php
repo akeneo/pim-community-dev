@@ -121,6 +121,7 @@ $rules = [
         'ArPHP\I18N\Arabic',
 
         'Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode',
+        'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
 
         // Category Bounded Context
         'Akeneo\Category\Api', // legit
