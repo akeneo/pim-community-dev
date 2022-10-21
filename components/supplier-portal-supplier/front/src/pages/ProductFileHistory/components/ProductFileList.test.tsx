@@ -2,12 +2,12 @@ import React from 'react';
 import {fireEvent, screen} from '@testing-library/react';
 import {renderWithProviders} from '../../../tests';
 import {ProductFileList} from './ProductFileList';
+import {ProductFile} from '../model/ProductFile';
 
-const productFiles = [
+const productFiles: ProductFile[] = [
     {
         identifier: '4b5ca8e4-0f89-4de0-9bc7-20c7617a9c86',
         filename: 'product-file-1.xlsx',
-        path: 'test/73d1078b-840c-4135-9564-682f8cbfb982-product-file.xlsx',
         contributor: 'contributor1@example.com',
         uploadedAt: '2022-07-28T14:57:37+00:00',
         retailerComments: [],
@@ -16,7 +16,6 @@ const productFiles = [
     {
         identifier: '8be6446b-befb-4d9f-aa94-0dfd390df690',
         filename: 'product-file-2.xlsx',
-        path: 'test/73d1078b-840c-4135-9564-682f8cbfb982-product-file.xlsx',
         contributor: 'contributor2@example.com',
         uploadedAt: '2022-07-28T14:58:38+00:00',
         retailerComments: [],
@@ -24,20 +23,36 @@ const productFiles = [
     },
 ];
 
-test('it renders the product files', () => {
-    renderWithProviders(<ProductFileList productFiles={productFiles} />);
+test('it renders a paginated list of product files', async () => {
+    const productFileList: ProductFile[] = [...Array(25)].map((_, index) => ({
+        identifier: `file${index}`,
+        filename: `product-file-${index}.xlsx`,
+        path: `test/${index}-product-file.xlsx`,
+        contributor: 'contributor@los-pollos-hermanos.com',
+        uploadedAt: '2022-10-19T14:57:37+00:00',
+        retailerComments: [],
+        supplierComments: [],
+    }));
 
+    renderWithProviders(
+        <ProductFileList
+            productFiles={productFileList}
+            totalProductFiles={30}
+            currentPage={1}
+            onChangePage={() => {}}
+        />
+    );
     expect(screen.getByText('product-file-1.xlsx')).toBeInTheDocument();
-    expect(screen.getByText('contributor1@example.com')).toBeInTheDocument();
-    expect(screen.getByText('07/28/2022, 02:57 PM')).toBeInTheDocument();
-    expect(screen.getByText('product-file-2.xlsx')).toBeInTheDocument();
-    expect(screen.getByText('contributor2@example.com')).toBeInTheDocument();
-    expect(screen.getByText('07/28/2022, 02:58 PM')).toBeInTheDocument();
-    expect(screen.getAllByTestId('Download icon')).toHaveLength(2);
+    expect(screen.queryAllByText('contributor@los-pollos-hermanos.com').length).toBe(25);
+    expect(screen.queryAllByText('10/19/2022, 02:57 PM').length).toBe(25);
+    expect(screen.getAllByTestId('Download icon')).toHaveLength(25);
+    expect(screen.getAllByTestId('paginationItem')).toHaveLength(3);
 });
 
 test('it refreshes the comment panel content when clicking on another product file row', () => {
-    renderWithProviders(<ProductFileList productFiles={productFiles} />);
+    renderWithProviders(
+        <ProductFileList productFiles={productFiles} totalProductFiles={2} currentPage={1} onChangePage={() => {}} />
+    );
     const firstProductFileRow = screen.getByTestId('4b5ca8e4-0f89-4de0-9bc7-20c7617a9c86');
     const secondProductFileRow = screen.getByTestId('8be6446b-befb-4d9f-aa94-0dfd390df690');
 
@@ -53,13 +68,17 @@ test('it refreshes the comment panel content when clicking on another product fi
 });
 
 test('it displays the number of product files', () => {
-    renderWithProviders(<ProductFileList productFiles={productFiles} />);
+    renderWithProviders(
+        <ProductFileList productFiles={productFiles} totalProductFiles={2} currentPage={1} onChangePage={() => {}} />
+    );
 
     expect(screen.getByText('2 results')).toBeInTheDocument();
 });
 
 test('it displays the comment panel content when clicking on a product file row', () => {
-    renderWithProviders(<ProductFileList productFiles={productFiles} />);
+    renderWithProviders(
+        <ProductFileList productFiles={productFiles} totalProductFiles={2} currentPage={1} onChangePage={() => {}} />
+    );
     const firstProductFileRow = screen.getByTestId('4b5ca8e4-0f89-4de0-9bc7-20c7617a9c86');
 
     fireEvent.click(firstProductFileRow);
@@ -68,7 +87,9 @@ test('it displays the comment panel content when clicking on a product file row'
 });
 
 test('it hides the comment panel content when clicking twice on a product file row', () => {
-    renderWithProviders(<ProductFileList productFiles={productFiles} />);
+    renderWithProviders(
+        <ProductFileList productFiles={productFiles} totalProductFiles={2} currentPage={1} onChangePage={() => {}} />
+    );
     const firstProductFileRow = screen.getByTestId('4b5ca8e4-0f89-4de0-9bc7-20c7617a9c86');
 
     fireEvent.click(firstProductFileRow);

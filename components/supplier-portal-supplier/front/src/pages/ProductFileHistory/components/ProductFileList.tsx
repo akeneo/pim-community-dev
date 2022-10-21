@@ -1,6 +1,14 @@
 import React, {useState} from 'react';
 import {ProductFile} from '../model/ProductFile';
-import {ArrowRightIcon, DownloadIcon, getColor, IconButton, SectionTitle, Table} from 'akeneo-design-system';
+import {
+    ArrowRightIcon,
+    DownloadIcon,
+    getColor,
+    IconButton,
+    Pagination,
+    SectionTitle,
+    Table,
+} from 'akeneo-design-system';
 import {FormattedMessage, useIntl} from 'react-intl';
 import styled from 'styled-components';
 import {useDateFormatter} from '../../../utils/date-formatter/use-date-formatter';
@@ -9,7 +17,12 @@ import {ProductFilePanel} from './ProductFilePanel';
 
 type Props = {
     productFiles: ProductFile[];
+    totalProductFiles: number;
+    currentPage: number;
+    onChangePage: (pageNumber: number) => void;
 };
+
+export const PRODUCT_FILES_PER_PAGE = 10;
 
 const FilenameCell = styled.span`
     text-overflow: ellipsis;
@@ -77,7 +90,7 @@ const StyledTableRow = styled(Table.Row)`
     }
 `;
 
-const ProductFileList = ({productFiles}: Props) => {
+const ProductFileList = ({productFiles, totalProductFiles, currentPage, onChangePage}: Props) => {
     const dateFormatter = useDateFormatter();
     const intl = useIntl();
     const [currentProductFileIdentifier, setCurrentProductFileIdentifier] = useState<string | null>(null);
@@ -195,6 +208,12 @@ const ProductFileList = ({productFiles}: Props) => {
                             </Table.Body>
                         </StyledTable>
                     </FlexRow>
+                    <Pagination
+                        followPage={onChangePage}
+                        currentPage={currentPage}
+                        totalItems={totalProductFiles}
+                        itemsPerPage={PRODUCT_FILES_PER_PAGE}
+                    />
                 </ProductFilesContainer>
                 <ProductFilePanel
                     productFile={currentProductFile ? currentProductFile : null}

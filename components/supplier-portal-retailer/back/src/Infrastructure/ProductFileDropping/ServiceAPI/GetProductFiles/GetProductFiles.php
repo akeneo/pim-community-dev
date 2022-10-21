@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\GetProductFiles;
 
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilesCount;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFilesForSupplier;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFile as ProductFileReadModel;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail;
@@ -13,23 +14,21 @@ final class GetProductFiles
     public function __construct(
         private ListProductFilesForSupplier $listProductFilesForSupplier,
         private GetSupplierFromContributorEmail $getSupplierFromContributorEmail,
+        private GetProductFilesCount $getProductFilesCount,
     ) {
     }
 
-    /**
-     * @return ProductFile[]
-     */
-    public function __invoke(GetProductFilesQuery $getProductFilesQuery): array
+    public function __invoke(GetProductFilesQuery $getProductFilesQuery): ProductFiles
     {
         $supplier = ($this->getSupplierFromContributorEmail)($getProductFilesQuery->contributorEmail);
 
         if (null === $supplier) {
-            return [];
+            return new ProductFiles([], 0);
         }
 
-        return array_map(
+        return new ProductFiles(array_map(
             fn (ProductFileReadModel $productFileReadModel) => ProductFile::fromReadModel($productFileReadModel),
-            ($this->listProductFilesForSupplier)($supplier->identifier),
-        );
+            ($this->listProductFilesForSupplier)($supplier->identifier, $getProductFilesQuery->page),
+        ), ($this->getProductFilesCount)($supplier->identifier));
     }
 }
