@@ -9,11 +9,14 @@ use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CreateP
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CreateProductFileHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\ContributorDoesNotExist;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\UnableToStoreProductFile;
+use Psr\Log\LoggerInterface;
 
 final class UploadProductFile
 {
-    public function __construct(private CreateProductFileHandler $createProductFileHandler)
-    {
+    public function __construct(
+        private CreateProductFileHandler $createProductFileHandler,
+        private LoggerInterface $logger,
+    ) {
     }
 
     public function __invoke(UploadProductFileCommand $uploadProductFileCommand): void
@@ -26,7 +29,15 @@ final class UploadProductFile
                     $uploadProductFileCommand->contributorEmail,
                 ),
             );
-        } catch (InvalidProductFile | ContributorDoesNotExist $e) {
+        } catch (InvalidProductFile $e) {
+            throw new Exception\InvalidUploadedProductFile(message: $e->getMessage(), previous: $e);
+        } catch (ContributorDoesNotExist $e) {
+            $this->logger->error('The product file upload failed because the contributor does not exist.', [
+                'data' => [
+                    'contributor_email' => $uploadProductFileCommand->contributorEmail,
+                ],
+            ]);
+
             throw new Exception\InvalidUploadedProductFile(message: $e->getMessage(), previous: $e);
         } catch (UnableToStoreProductFile $e) {
             throw new Exception\UnableToStoreProductFile(message: $e->getMessage(), previous: $e);
