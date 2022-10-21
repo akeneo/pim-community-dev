@@ -19,11 +19,7 @@ const useUiLocales: () => {
     });
   };
 
-  const {error, data, isSuccess} = useQuery<UiLocale[], Error, UiLocale[]>('getUiLocales', getUiLocales, {
-    keepPreviousData: true,
-    refetchOnWindowFocus: false,
-    retry: false,
-  });
+  const {error, data, isSuccess} = useQuery<UiLocale[], Error, UiLocale[]>('getUiLocales', getUiLocales);
 
   return {data, error, isSuccess};
 };
