@@ -4,6 +4,12 @@
 
 - PIM-10677: [Backport PIM-10420 and PIM-10484] Fix job still shows under in progress when failed
 
+# 6.0.46 (2022-10-20)
+
+## Bug fixes
+PIM-10670: Fix memory leak on creating combinations for currencies
+PIM-10679: Fix out of sort memory on ProductModelImagesFromCodes
+
 # 6.0.45 (2022-10-06)
 
 ## Bug fixes
