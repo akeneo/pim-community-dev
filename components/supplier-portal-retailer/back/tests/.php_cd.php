@@ -96,6 +96,7 @@ $rules = [
             'League\Flysystem',
             'Psr\Log\LoggerInterface',
             'Symfony',
+            'Webmozart\Assert\Assert',
         ],
     )->in('Akeneo\SupplierPortal\Retailer\Infrastructure'),
 
