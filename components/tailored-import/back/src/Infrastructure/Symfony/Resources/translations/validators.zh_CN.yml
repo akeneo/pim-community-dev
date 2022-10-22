@@ -1,0 +1,63 @@
+akeneo.tailored_import:
+  validation:
+    required: 此值为必填项。
+    max_length_reached: 此值太长。其不应超过 {{ limit }} 个字符。
+    missing_query_params: "查询缺少以下参数：{{ missing_params }}"
+    source_values_should_be_unique: 有些源值已在其他替换中使用，请移除它们。
+    columns:
+      max_count_reached: 工作表不得超过 {{ limit }} 列。
+      at_least_one_required: 标题必须至少包含 {{ limit }} 列。
+      uuid:
+        should_be_unique: 此列 UUID 已存在，请新输入一个。
+      index:
+        should_be_unique: 此列指数已存在，请新输入一个。
+      label:
+        should_not_be_blank: 请定义列标签。
+        max_length_reached: 列标签太长。其不应超过 {{ limit }} 个字符。
+    data_mappings:
+      target_should_unique: 目标"{{ code }}"不能多次选择。
+      max_count_reached: 已达到映射的上限数目 {{ limit }} ，无法再将映射添加到导入中。
+      no_identifier_target_found: 没有针对标识符的映射，请添加一个。
+      too_many_identifier_target_found: 针对标识符的映射多于一个，请移除多余项。
+      uuid:
+        should_be_unique: 此映射 UUID 已存在，请新输入一个。
+      sources:
+        at_least_one_required: 需要为您的映射添加至少一个源。
+        max_count_reached: 已达到源的上限数目 {{ limit }} ，无法再将源添加到映射中。
+        should_be_unique: 此源已存在，请新输入一个。
+        should_exist: 其中一个源已不存在，请删除此映射的所有源并重试
+    target:
+      attribute_should_exist: 属性 {{ attribute_code }} 不存在。请进行创建或选择其他的目标。
+      property_should_exist: 属性 {{ property_code }} 不存在。请进行创建或选择其他的目标。
+      source_configuration:
+        unit_should_exist: 测量单位群 {{ measure_family }} 不存在单位 {{ unit_code }}。请选择一个有效的单位。
+        currency_should_be_active: 货币 {{ currency_code }} 没有链接到任何渠道。
+        currency_should_be_active_on_channel: 货币 {{ currency_code }} 对于渠道 {{ channel_code }} 未激活。
+    locale:
+      should_be_active: 区域 {{ locale_code }} 已被停用。可以将其重新激活或选择其他的区域。
+      should_be_bound_to_channel: 区域 {{ locale_code }} 已对渠道 {{ channel_code }} 停用。可以将其重新激活或选择其他的区域。
+    channel:
+      should_exist: 渠道 {{ channel_code }} 已被删除。请选择其他的渠道。
+    attribute:
+      locale_should_not_be_blank: 属性 {{ attribute_code }} 现在针对每个区域都有一个值。请进行创建或选择其他的目标。
+      channel_should_not_be_blank: 属性 {{ attribute_code }} 现在针对每个渠道都有一个值。请进行创建或选择其他的目标。
+      locale_should_be_blank: 属性 {{ attribute_code }} 不再针对每个区域提供值。请删除然后重新创建或选择其他的目标。
+      channel_should_be_blank: 属性 {{ attribute_code }} 不再针对每个渠道提供值。请删除然后重新创建或选择其他的目标。
+      invalid_specific_locale: 属性 {{ attribute_code }} 为区域特定。请选择其他的区域。
+    file_key:
+      does_not_exist: 未找到文件 {{ file_key }}。
+    uploaded_file:
+      max_size: 该文件太大。最大大小为 {{ limit }} {{ suffix }}。
+      not_allowed_mime_type: 只支持 XLSX 文件。
+      not_allowed_extension: 只支持 XLSX 文件。
+    file_structure:
+      first_product_row_should_be_after_header_row: 第一产品行应位于标题行之后。
+      unique_identifier_column_should_be_after_first_column_message: 唯一标识符列应始终是第一信息列。
+      header_row_should_not_contain_empty_cell: 标题行不应包含空单元格。
+    file_preview:
+      empty_sheet:
+        title: 此工作表为空。
+        description: 请选择另一张至少有一行的工作表。
+    operations:
+      incompatible_operation_type: 操作类型 {{ operation_type }} 与您的目标类型不兼容。
+      missing_required_operations: "缺少所需操作：{{ missing_required_operations }}"

@@ -183,6 +183,7 @@ pimee_enrich.entity.published_product:
     publish:
       success: 产品已成功发布
       fail: 发布此产品失败
+      fail_no_identifier: 无法发布此产品，因为其没有标识符
     unpublish:
       success: 产品已成功取消发布
       fail: 取消发布此产品失败

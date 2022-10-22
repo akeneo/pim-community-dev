@@ -1,0 +1,4 @@
+akeneo.job_automation:
+  notification:
+    invalid_job_instance: '由于以下错误，{{ type }} 配置文件"{{ label }}" 无法开始：{{ error }}'
+    internal_error: 内部系统失败。由于基础设施问题，无法启动您的作业。请稍后重试。
