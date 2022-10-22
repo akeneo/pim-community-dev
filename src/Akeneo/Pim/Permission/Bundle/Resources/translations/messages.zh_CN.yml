@@ -61,6 +61,7 @@ pim_enrich:
       message:
         error: 您不是该产品的所有者，您不能发布它。
         warning: 你不是所有选定产品的所有者，您不能发布产品 "%notGranted%"。
+        no_identifier: 无法发布此产品，因为其没有标识符。
       not_editable: 您没有权限编辑产品"%identifiers%"。
     unpublish:
       message:

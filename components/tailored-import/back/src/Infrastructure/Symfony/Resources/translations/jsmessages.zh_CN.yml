@@ -1,5 +1,7 @@
 batch_jobs.xlsx_tailored_product_import.label: 以 XLSX 格式定制导入产品
 akeneo.tailored_import:
+  meta:
+    mapped_columns: "{0}没有列映射|{1}{{ count }}/{{ total }} 列已映射|]1，Inf [{{ count }}/{{ total }} 列已映射"
   global_settings:
     error_action:
       label: 错误管理
@@ -49,12 +51,20 @@ akeneo.tailored_import:
       add: 添加操作
       common:
         collapse: 折叠
+      clean_html:
+        title: 清理 HTML
+        remove: 移除 HTML 标签
+        decode: 解码 HTML 字符
       change_case:
         title: 更改大小写
         select: 选择大小写
         uppercase: 大写
         lowercase: 小写
         capitalize: 首字母转换为大写
+      remove_whitespace:
+        title: 移除空白
+        consecutive: 清理连续的空白
+        trim: 移除开头和结束处的空白
       split:
         title: 分割
         separator: 选择分隔符
@@ -64,9 +74,15 @@ akeneo.tailored_import:
       simple_select_replacement:
         title: 单选替换
         option_labels: 选项标签
+      simple_reference_entity_replacement:
+        title: 参考实体单个链接替换
+        option_labels: 记录标签
       multi_select_replacement:
         title: 多选替换
         option_labels: 选项标签
+      multi_reference_entity_replacement:
+        title: 参考实体多个链接替换
+        option_labels: 记录标签
       categories_replacement:
         title: 类别替换
         modal:
@@ -89,6 +105,7 @@ akeneo.tailored_import:
       replacement:
         to_placeholder: 定义文件中的源值。
         modal:
+          records: 管理记录
           options: 管理选项
           subtitle: 替换
           no_result:
@@ -188,6 +205,9 @@ akeneo.tailored_import:
       property_should_exist: 属性 {{ property_code }} 不存在。请进行创建或选择其他的目标。
       source_configuration:
         unit_should_exist: 测量单位群 {{ measure_family }} 不存在单位 {{ unit_code }}。请选择一个有效的单位。
+        currency_should_not_be_null: 请选择货币。
+        currency_should_be_active: 货币 {{ currency_code }} 没有链接到任何渠道。
+        currency_should_be_active_on_channel: 货币 {{ currency_code }} 对于渠道 {{ channel_code }} 未激活。
     locale:
       should_be_active: 区域 {{ locale_code }} 已被停用。可以将其重新激活或选择其他的区域。
       should_be_bound_to_channel: 区域 {{ locale_code }} 已对渠道 {{ channel_code }} 停用。可以将其重新激活或选择其他的区域。
