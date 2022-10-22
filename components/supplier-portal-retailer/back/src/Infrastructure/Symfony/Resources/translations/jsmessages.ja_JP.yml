@@ -17,6 +17,7 @@ supplier_portal:
         title: サプライヤーが作成されました。
         content: サプライヤー管理セクションで編集できるようになりました。
       error:
+        unknown_error: サプライヤーを作成中にエラーが発生しました。
         supplier_already_exists: 'コード「{{ supplierCode }}」のサプライヤーは既に存在します。'
     supplier_list:
       menu_item: サプライヤー
@@ -42,6 +43,7 @@ supplier_portal:
         title: サプライヤー
         confirmation_question: このサプライヤーを削除してもよろしいですか？
         warning: このサプライヤーを削除すると、保存されていない充実は失われます。
+        unknown_error: サプライヤーを削除中にエラーが発生しました。
     supplier_edit:
       tabs:
         configuration: 構成
@@ -68,7 +70,9 @@ supplier_portal:
           contributor_email_already_exists:
             title: このコントリビューターを追加できませんでした。
             content: メールアドレス{{ emailAddress }}はすでに別のサプライヤーに使用されており、同じコントリビューターを持つ複数のサプライヤーは今のところサポートされていません。ご不便をおかけして申し訳ありません。
+      loading_error: サプライヤーを読み込み中にエラーが発生しました。
       success_message: サプライヤーが正常に更新されました。
+      update_error: サプライヤーを更新中にエラーが発生しました。
       delete_label: このサプライヤーを削除
   product_file_dropping:
     breadcrumb:
@@ -88,12 +92,26 @@ supplier_portal:
         error_loading_supplier_files:
           title: 商品ファイルを表示できません。
           content: ご不便をおかけして申し訳ございません。しばらくしてからもう一度お試しください。
+      tabs:
+        discussion: ディスカッション
+      discussion:
+        import_file_button_label: ファイルをインポート
+        info: サプライヤーと情報を交換する必要がある場合にコメントを送信します。
+        comment_input_label: 新しいコメントを送信
+        discussion_title: ディスカッション
+        submit_button_label: 送信
+        loading_error: 商品ファイルを読み込み中にエラーが発生しました。
+        comment_submit_error: コメントを送信中にエラーが発生しました。
+        empty_content: コメントは空にできません。
+        max_comment_length_reached: コメントは255文字以下にする必要があります。
+        max_number_of_comments_reached: コメントの上限に達しました。
     pim_notification:
       button_label: 商品ファイルを表示
 pim_title:
   supplier_portal_retailer_supplier_list: サプライヤー
   supplier_portal_retailer_supplier_edit: サプライヤーを編集
   supplier_portal_retailer_product_files_list: 商品ファイル
+  supplier_portal_retailer_product_files_comment: 商品ファイル
 batch_jobs.supplier_portal_xlsx_supplier_import.label: サプライヤーポータルのサプライヤーをXLSX形式でインポート
 pim_notification:
   supplier_portal:
