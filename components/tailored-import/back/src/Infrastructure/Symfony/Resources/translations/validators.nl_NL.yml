@@ -1,0 +1,63 @@
+akeneo.tailored_import:
+  validation:
+    required: Deze waarde is verplicht.
+    max_length_reached: Deze waarde is te lang. Hij mag {{ limit }} tekens of minder bevatten.
+    missing_query_params: "De volgende parameters ontbreken in de query: {{ missing_params }}"
+    source_values_should_be_unique: Enkele van deze bronwaarden worden gebruikt in een andere vervanging. Verwijder deze bronwaarden.
+    columns:
+      max_count_reached: Uw werkblad mag niet meer dan {{ limit }} kolommen bevatten.
+      at_least_one_required: De kopregel moet ten minste {{ limit }} kolommen bevatten.
+      uuid:
+        should_be_unique: Deze kolom-UUID bestaat al. Voer een nieuwe UUID in.
+      index:
+        should_be_unique: Deze kolomindex bestaat al, voer een nieuwe index in.
+      label:
+        should_not_be_blank: Geef een kolomlabel op.
+        max_length_reached: Het kolomlabel is te lang. Het mag {{ limit }} tekens of minder bevatten.
+    data_mappings:
+      target_should_unique: Het doel "{{ code }}" kan niet meerdere keren worden geselecteerd.
+      max_count_reached: U hebt de limiet van {{ limit }} toewijzingen bereikt. U kunt geen toewijzingen meer toevoegen aan uw import.
+      no_identifier_target_found: Er is een ID die geen toewijzing heeft. Voeg een toewijzing toe.
+      too_many_identifier_target_found: Er is een id die meer dan één toewijzing heeft. Verwijder een toewijzing.
+      uuid:
+        should_be_unique: Deze toewijzings-UUID bestaat al. Voer een nieuwe UUID in.
+      sources:
+        at_least_one_required: U moet minimaal één bron toevoegen aan uw toewijzing.
+        max_count_reached: U hebt de limiet van {{ limit }} bronnen bereikt. U kunt geen bronnen meer toevoegen aan uw toewijzing.
+        should_be_unique: Deze bron bestaat al, voer een nieuwe bron in.
+        should_exist: Een van de bronnen bestaat niet meer. Verwijder alle bronnen van deze toewijzing en probeer het opnieuw
+    target:
+      attribute_should_exist: Het attribuut {{ attribute_code }} bestaat niet. Maak het aan of kies een ander doel.
+      property_should_exist: De eigenschap {{ property_code }} bestaat niet. Maak hem aan of kies een ander doel.
+      source_configuration:
+        unit_should_exist: De eenheid {{ unit_code }} bestaat niet in de meetfamilie {{ measurement_family }}. Selecteer een geldige eenheid.
+        currency_should_be_active: De valuta {{ currency_code }} is niet gekoppeld aan een kanaal.
+        currency_should_be_active_on_channel: De valuta {{ currency_code }} is niet actief voor kanaal {{ channel_code }}.
+    locale:
+      should_be_active: De taal {{ locale_code }} is gedeactiveerd. Activeer hem opnieuw of selecteer een andere taal.
+      should_be_bound_to_channel: De taal {{ locale_code }} is gedeactiveerd voor het kanaal {{ channel_code }}. Activeer hem opnieuw of selecteer een andere taal.
+    channel:
+      should_exist: Het kanaal {{ channel_code }} is verwijderd. Selecteer een ander kanaal.
+    attribute:
+      locale_should_not_be_blank: Het attribuut {{ attribute_code }} bevat nu een waarde per taal. Maak een taal aan of kies een ander doel.
+      channel_should_not_be_blank: Het attribuut {{ attribute_code }} heeft nu een waarde per kanaal. Maak een kanaal aan of kies een ander doel.
+      locale_should_be_blank: Het attribuut {{ attribute_code }} heeft geen waarde per taal meer. Verwijder het en maak het opnieuw aan of kies een ander doel.
+      channel_should_be_blank: Het attribuut {{ attribute_code }} heeft geen waarde per kanaal meer. Verwijder het en maak het opnieuw aan of kies een ander doel.
+      invalid_specific_locale: Het attribuut {{ attribute_code }} is taalspecifiek. Selecteer een andere taal.
+    file_key:
+      does_not_exist: Het bestand {{ file_key }} is niet gevonden.
+    uploaded_file:
+      max_size: Het bestand is te groot. Toegestane maximale grootte is {{ limit }}{{ suffix }}.
+      not_allowed_mime_type: Alleen XLSX-bestanden worden ondersteund.
+      not_allowed_extension: Alleen XLSX-bestanden worden ondersteund.
+    file_structure:
+      first_product_row_should_be_after_header_row: Eerste productrij moet na de kopregel staan.
+      unique_identifier_column_should_be_after_first_column_message: De kolom met de unieke ID moet in ieder geval de eerste kolom zijn.
+      header_row_should_not_contain_empty_cell: De kopregel mag geen lege cellen bevatten.
+    file_preview:
+      empty_sheet:
+        title: Dit werkblad is leeg.
+        description: Selecteer een ander werkblad met minimaal één rij.
+    operations:
+      incompatible_operation_type: Het type bewerking {{ operation_type }} is niet compatibel met uw doeltype.
+      missing_required_operations: "Er ontbreken vereiste bewerkingen: {{ missing_required_operations }}"

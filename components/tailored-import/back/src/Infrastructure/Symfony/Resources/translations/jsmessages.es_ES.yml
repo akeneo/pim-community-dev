@@ -1,5 +1,7 @@
 batch_jobs.xlsx_tailored_product_import.label: Importación de productos a medida en XLSX
 akeneo.tailored_import:
+  meta:
+    mapped_columns: "{0}Ninguna columna asignada|{1}{{ count }}/{{ total }} columna asignada|]1, Inf[{{ count }}/{{ total }} columnas asignadas"
   global_settings:
     error_action:
       label: Gestión de errores
@@ -49,12 +51,20 @@ akeneo.tailored_import:
       add: Añadir una operación
       common:
         collapse: Contraer
+      clean_html:
+        title: Limpiar HTML
+        remove: Eliminar etiquetas HTML
+        decode: Decodificar caracteres HTML
       change_case:
         title: Cambiar mayúsculas/minúsculas
         select: Seleccione mayúscula/minúscula
         uppercase: Mayúscula
         lowercase: Minúscula
         capitalize: Primera letra mayúscula
+      remove_whitespace:
+        title: Eliminar espacios en blanco
+        consecutive: Limpiar espacios en blanco consecutivos
+        trim: Elimina los espacios en blanco al principio y al final
       split:
         title: Dividir
         separator: Seleccione el separador
@@ -64,9 +74,15 @@ akeneo.tailored_import:
       simple_select_replacement:
         title: Reemplazo de selección simple
         option_labels: Etiquetas de opciones
+      simple_reference_entity_replacement:
+        title: Sustitución del enlace único de la entidad de referencia
+        option_labels: Etiquetas de registro
       multi_select_replacement:
         title: Reemplazo de selección múltiple
         option_labels: Etiquetas de opciones
+      multi_reference_entity_replacement:
+        title: Reemplazo de múltiples enlaces de la entidad de referencia
+        option_labels: Etiquetas de registro
       categories_replacement:
         title: Reemplazo de categorías
         modal:
@@ -89,6 +105,7 @@ akeneo.tailored_import:
       replacement:
         to_placeholder: Defina los valores de origen en su archivo.
         modal:
+          records: Gestionar los registros
           options: Administrar opciones
           subtitle: Reemplazo
           no_result:
@@ -188,6 +205,9 @@ akeneo.tailored_import:
       property_should_exist: La propiedad {{ property_code }} no existe. Créela o elija un objetivo diferente.
       source_configuration:
         unit_should_exist: La unidad {{ unit_code }} no existe para la familia de medidas {{ measurement_family }}. Seleccione una unidad válida.
+        currency_should_not_be_null: Seleccione una moneda.
+        currency_should_be_active: La moneda {{ currency_code }} no está vinculada a ningún canal.
+        currency_should_be_active_on_channel: La moneda {{ currency_code }} no está activa para el canal {{ channel_code }}.
     locale:
       should_be_active: La configuración regional {{ locale_code }} ha sido desactivada. Reactívela o seleccione otra configuración regional.
       should_be_bound_to_channel: La configuración regional {{ locale_code }} ha sido desactivada para el canal {{ channel_code }}. Reactívela o seleccione otra configuración regional.

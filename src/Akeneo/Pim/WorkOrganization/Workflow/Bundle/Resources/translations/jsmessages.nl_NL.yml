@@ -183,6 +183,7 @@ pimee_enrich.entity.published_product:
     publish:
       success: Product succesvol gepubliceerd
       fail: Publicatie van dit product mislukt
+      fail_no_identifier: Dit product kan niet gepubliceerd worden omdat het geen id heeft
     unpublish:
       success: Publicatie van product succesvol ongedaan gemaakt
       fail: Ongedaan maken van publicatie mislukt

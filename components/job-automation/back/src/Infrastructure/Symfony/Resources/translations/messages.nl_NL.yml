@@ -1,0 +1,4 @@
+akeneo.job_automation:
+  notification:
+    invalid_job_instance: 'Het {{ type }}-profiel "{{ label }}" kan niet worden gestart vanwege de volgende fouten: {{ error }}'
+    internal_error: Interne systeemfout. Uw taak kan niet worden gestart vanwege een probleem met de infrastructuur. Probeer het later opnieuw.

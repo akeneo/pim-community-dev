@@ -1,0 +1,63 @@
+akeneo.tailored_import:
+  validation:
+    required: Questo valore è obbligatorio.
+    max_length_reached: Questo valore è troppo lungo. Deve contenere al massimo {{ limit }} caratteri.
+    missing_query_params: "Nella query mancano i seguenti parametri: {{ missing_params }}"
+    source_values_should_be_unique: Alcuni di questi valori di origine sono già utilizzati in un'altra sostituzione, per favore rimuovili.
+    columns:
+      max_count_reached: Il foglio non deve contenere più di {{ limit }} colonne.
+      at_least_one_required: L'intestazione deve contenere almeno {{ limit }} colonne.
+      uuid:
+        should_be_unique: Questo UUID di colonna esiste già, inseriscine uno nuovo.
+      index:
+        should_be_unique: Questo indice di colonna esiste già, inseriscine uno nuovo.
+      label:
+        should_not_be_blank: Definisci un'etichetta per la colonna.
+        max_length_reached: L'etichetta della colonna è troppo lunga. Deve contenere al massimo {{ limit }} caratteri.
+    data_mappings:
+      target_should_unique: La destinazione "{{ code }}" non può essere selezionata più volte.
+      max_count_reached: Hai raggiunto il limite di {{ limit }} mappature, non puoi aggiungerne altre all'importazione.
+      no_identifier_target_found: C'è un identificatore che non è destinazione di una mappatura. Aggiungine una.
+      too_many_identifier_target_found: Un identificatore è destinazione di più di una mappatura, rimuovine una.
+      uuid:
+        should_be_unique: Questo UUID di mappatura esiste già, inseriscine uno nuovo.
+      sources:
+        at_least_one_required: È necessario aggiungere almeno un'origine alla mappatura.
+        max_count_reached: Hai raggiunto il limite di {{ limit }} origini, non puoi aggiungere altre origini alla mappatura.
+        should_be_unique: Questa origine esiste già, inseriscine una nuova.
+        should_exist: Una delle origini non esiste più, elimina tutte le origini di questa mappatura e riprova
+    target:
+      attribute_should_exist: L'attributo {{ attribute_code }} non esiste. Crealo oppure scegli un'altra destinazione.
+      property_should_exist: La proprietà {{ property_code }} non esiste. Creala oppure scegli un'altra destinazione.
+      source_configuration:
+        unit_should_exist: L'unità {{ unit_code }} non esiste nella famiglia di unità di misura {{ measurement_family }}. Seleziona un'unità valida.
+        currency_should_be_active: La valuta {{ currency_code }} non è collegata ad alcun canale.
+        currency_should_be_active_on_channel: La valuta {{ currency_code }} non è attiva per il canale {{ channel_code }}.
+    locale:
+      should_be_active: L'impostazione locale {{ locale_code }} è stata disattivata. Riattivala o seleziona un'altra impostazione locale.
+      should_be_bound_to_channel: L'impostazione locale {{ locale_code }} è stata disattivata per il canale {{ channel_code }}. Riattivala o seleziona un'altra impostazione locale.
+    channel:
+      should_exist: Il canale {{ channel_code }} è stato eliminato. Seleziona un altro canale.
+    attribute:
+      locale_should_not_be_blank: L'attributo {{ attribute_code }} ora ha un valore per l'impostazione locale. Creala o scegli un'altra destinazione.
+      channel_should_not_be_blank: L'attributo {{ attribute_code }} ora ha un valore per il canale. Crea il canale o scegli un'altra destinazione.
+      locale_should_be_blank: L'attributo {{ attribute_code }} non ha più un valore per l'impostazione locale. Eliminalo e ricrealo, oppure scegli un'altra destinazione.
+      channel_should_be_blank: L'attributo {{ attribute_code }} non ha più un valore per il canale. Eliminalo e ricrealo, oppure scegli un'altra destinazione.
+      invalid_specific_locale: L'attributo {{ attribute_code }} è specifico dell'impostazione locale. Seleziona un'altra impostazione locale.
+    file_key:
+      does_not_exist: Il file {{ file_key }} non è stato trovato.
+    uploaded_file:
+      max_size: Il file è troppo grande. La dimensione massima è {{ limit }}{{ suffix }}.
+      not_allowed_mime_type: Sono supportati solo i file XLSX.
+      not_allowed_extension: Sono supportati solo i file XLSX.
+    file_structure:
+      first_product_row_should_be_after_header_row: La prima riga di prodotto deve essere dopo la riga di intestazione.
+      unique_identifier_column_should_be_after_first_column_message: La colonna dell'identificatore univoco deve essere almeno la prima colonna.
+      header_row_should_not_contain_empty_cell: La riga di intestazione non deve conenere celle vuote.
+    file_preview:
+      empty_sheet:
+        title: Questo foglio è vuoto.
+        description: Seleziona un altro foglio con almeno una riga.
+    operations:
+      incompatible_operation_type: Il tipo di operazione {{ operation_type }} è incompatibile con il tipo di destinazione.
+      missing_required_operations: "Mancano una o più operazioni obbligatorie: {{ missing_required_operations }}"

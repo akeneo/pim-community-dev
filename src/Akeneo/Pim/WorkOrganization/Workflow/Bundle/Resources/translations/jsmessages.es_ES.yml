@@ -183,6 +183,7 @@ pimee_enrich.entity.published_product:
     publish:
       success: Producto publicado exitosamente
       fail: Error al publicar este producto
+      fail_no_identifier: Imposible publicar este producto porque no tiene ningún identificador
     unpublish:
       success: Publicación del producto removida exitosamente
       fail: Error al remover la publicación de este Producto

@@ -8,13 +8,17 @@ akeneo.job_automation:
     enable: Habilitar programación
     cannot_view_all_jobs: "No puede ver los trabajos automatizados en el Rastreador de procesos, ya que no tiene el siguiente permiso para su rol: «Ver todos los trabajos en el rastreador de procesos». Póngase en contacto con su administrador de PIM."
     frequency:
+      helper: "La frecuencia se muestra en UTC. Para su zona horaria ({{ timezone }}): {{ selectedTimeInUserTimezone }}"
       hourly_helper: Las frecuencias ejecutadas varias veces al día comienzan a medianoche (UTC).
       title: Frecuencia
       daily: Cada día
       weekly: Cada semana
+      weekday: Día
       every_4_hours: Cada 4 horas
       every_8_hours: Cada 8 horas
       every_12_hours: Cada 12 horas
+      hours: Hora
+      minutes: Minuto
       monday: Lunes
       tuesday: Martes
       wednesday: Miércoles

@@ -1,0 +1,4 @@
+akeneo.job_automation:
+  notification:
+    invalid_job_instance: 'Non è stato possibile avviare il profilo {{ type }} "{{ label }}" a causa del seguente errore: {{ error }}'
+    internal_error: Errore interno del sistema. L'attività non è stata avviata a causa di un problema dell'infrastruttura. Riprova più tardi.
