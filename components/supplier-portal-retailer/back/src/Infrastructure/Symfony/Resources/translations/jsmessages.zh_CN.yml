@@ -17,6 +17,7 @@ supplier_portal:
         title: 供应商已创建。
         content: 现在可以在供应商管理部分对其进行编辑。
       error:
+        unknown_error: 创建供应商时出错。
         supplier_already_exists: '代码为“{{ supplierCode }}”的供应商已存在。'
     supplier_list:
       menu_item: 供应商
@@ -42,6 +43,7 @@ supplier_portal:
         title: 供应商
         confirmation_question: 确定要删除此供应商吗？
         warning: 删除此供应商后，任何未保存的丰富度都将丢失。
+        unknown_error: 删除供应商时出错。
     supplier_edit:
       tabs:
         configuration: 配置
@@ -68,7 +70,9 @@ supplier_portal:
           contributor_email_already_exists:
             title: 我们无法添加此贡献者。
             content: 电子邮件 {{ emailAddress }} 已经用于另一个供应商，我们不支持多个具有相同贡献者的供应商。很抱歉给您带来不便。
+      loading_error: 加载供应商时出错。
       success_message: 此供应商已成功更新。
+      update_error: 更新供应商时出错。
       delete_label: 删除此供应商
   product_file_dropping:
     breadcrumb:
@@ -88,12 +92,26 @@ supplier_portal:
         error_loading_supplier_files:
           title: 我们无法显示产品文件。
           content: 非常抱歉给您带来不便！请稍后再试。
+      tabs:
+        discussion: 讨论
+      discussion:
+        import_file_button_label: 导入文件
+        info: 当您需要与您的供应商交换信息时发送评论。
+        comment_input_label: 发送新评论
+        discussion_title: 讨论
+        submit_button_label: 发送
+        loading_error: 加载产品文件时出错。
+        comment_submit_error: 提交评论时出错。
+        empty_content: 评论不应为空。
+        max_comment_length_reached: 评论不应超过 255 个字符。
+        max_number_of_comments_reached: 您已达到评论限额。
     pim_notification:
       button_label: 查看产品文件
 pim_title:
   supplier_portal_retailer_supplier_list: 供应商
   supplier_portal_retailer_supplier_edit: 编辑供应商
   supplier_portal_retailer_product_files_list: 产品文件
+  supplier_portal_retailer_product_files_comment: 产品文件
 batch_jobs.supplier_portal_xlsx_supplier_import.label: 以 XLSX 格式导入供应商门户
 pim_notification:
   supplier_portal:
