@@ -6,14 +6,19 @@ akeneo.job_automation:
       label: 'Autorizzazione gruppi di utenti'
       disabled_helper: Non sei autorizzato a consultare elenchi di gruppi di utenti.
     enable: Abilita la pianificazione
+    cannot_view_all_jobs: "Non puoi visualizzare le operazioni automatizzate nel tracker di processo, perché il tuo ruolo non ha la seguente autorizzazione: \"Visualizza tutti i job nel tracker di processo\""
     frequency:
+      helper: "La frequenza è visualizzata nell'orario UTC. Per il tuo fuso orario {{ timezone }}: {{ selectedTimeInUserTimezone }}"
       hourly_helper: Le frequenze che prevedono più esecuzioni giornaliere iniziano a mezzanotte (UTC)
       title: Frequenza
       daily: Ogni giorno
       weekly: Ogni settimana
+      weekday: Giorno
       every_4_hours: Ogni 4 ore
       every_8_hours: Ogni 8 ore
       every_12_hours: Ogni 12 ore
+      hours: Ora
+      minutes: Minuti
       monday: Lunedì
       tuesday: Martedì
       wednesday: Mercoledì

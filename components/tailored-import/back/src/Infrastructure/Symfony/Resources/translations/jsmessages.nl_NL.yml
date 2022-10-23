@@ -1,5 +1,7 @@
 batch_jobs.xlsx_tailored_product_import.label: Op maat gemaakte import van producten in XLSX
 akeneo.tailored_import:
+  meta:
+    mapped_columns: "{0}Geen kolom toegewezen|{1}{{ count }}/{{ total }} kolom toegewezen|]1, Inf[{{ count }}/{{ total }} kolommen toegewezen"
   global_settings:
     error_action:
       label: Foutenbeheer
@@ -49,12 +51,20 @@ akeneo.tailored_import:
       add: Bewerking toevoegen
       common:
         collapse: Samenvouwen
+      clean_html:
+        title: HTML opschonen
+        remove: HTML-tags verwijderen
+        decode: HTML-tekens decoderen
       change_case:
         title: Hoofd- en kleine letters wisselen
         select: Selecteer hoofd- of kleine letters
         uppercase: Hoofdletters
         lowercase: Kleine letters
         capitalize: Eerste letter hoofdletter
+      remove_whitespace:
+        title: Spaties verwijderen
+        consecutive: Meerdere opeenvolgende spaties opschonen
+        trim: Spaties aan het begin en het einde verwijderen
       split:
         title: Splitsen
         separator: Selecteer het scheidingsteken
@@ -64,9 +74,15 @@ akeneo.tailored_import:
       simple_select_replacement:
         title: Enkelvoudige selectie vervanging
         option_labels: Optielabels
+      simple_reference_entity_replacement:
+        title: Vervanging van referentie-entiteit door enkele link
+        option_labels: Recordlabels
       multi_select_replacement:
         title: Meervoudige selectie vervanging
         option_labels: Optielabels
+      multi_reference_entity_replacement:
+        title: Vervanging van referentie-entiteit door meerdere links
+        option_labels: Recordlabels
       categories_replacement:
         title: Vervanging van categorieën
         modal:
@@ -89,6 +105,7 @@ akeneo.tailored_import:
       replacement:
         to_placeholder: Definieer de bronwaarden in uw bestand.
         modal:
+          records: Records beheren
           options: Opties beheren
           subtitle: Vervanging
           no_result:
@@ -188,6 +205,9 @@ akeneo.tailored_import:
       property_should_exist: De eigenschap {{ property_code }} bestaat niet. Maak hem aan of kies een ander doel.
       source_configuration:
         unit_should_exist: De eenheid {{ unit_code }} bestaat niet in de meetfamilie {{ measurement_family }}. Selecteer een geldige eenheid.
+        currency_should_not_be_null: Selecteer een valuta
+        currency_should_be_active: De valuta {{ currency_code }} is niet gekoppeld aan een kanaal.
+        currency_should_be_active_on_channel: De valuta {{ currency_code }} is niet actief voor kanaal {{ channel_code }}.
     locale:
       should_be_active: De taal {{ locale_code }} is gedeactiveerd. Activeer hem opnieuw of selecteer een andere taal.
       should_be_bound_to_channel: De taal {{ locale_code }} is gedeactiveerd voor het kanaal {{ channel_code }}. Activeer hem opnieuw of selecteer een andere taal.

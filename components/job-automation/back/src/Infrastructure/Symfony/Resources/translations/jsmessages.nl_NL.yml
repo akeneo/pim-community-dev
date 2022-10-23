@@ -8,13 +8,17 @@ akeneo.job_automation:
     enable: Planning inschakelen
     cannot_view_all_jobs: "U kunt geen geautomatiseerde taken in de procestracker bekijken omdat u niet de volgende machtiging heeft voor uw rol: \"Alle taken in procestracker bekijken\". Neem contact op met uw PIM-beheerder."
     frequency:
+      helper: "De frequentie wordt weergegeven in UTC. Voor uw tijdzone ({{ timezone }}): {{ selectedTimeInUserTimezone }}"
       hourly_helper: Bij een frequentie van meerdere uitvoeringen per dag is de eerste om middernacht (UTC).
       title: Frequentie
       daily: Elke dag
       weekly: Elke week
+      weekday: Dag
       every_4_hours: Elke 4 uur
       every_8_hours: Elke 8 uur
       every_12_hours: Elke 12 uur
+      hours: Uur
+      minutes: Minuut
       monday: maandag
       tuesday: dinsdag
       wednesday: woensdag

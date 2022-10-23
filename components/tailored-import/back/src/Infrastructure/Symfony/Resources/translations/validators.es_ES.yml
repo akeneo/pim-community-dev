@@ -1,0 +1,63 @@
+akeneo.tailored_import:
+  validation:
+    required: Este valor es obligatorio.
+    max_length_reached: Este valor es demasiado largo. Debe contener {{ limit }} caracteres o menos.
+    missing_query_params: "Faltan los siguientes parámetros en la consulta: {{ missing_params }}"
+    source_values_should_be_unique: Algunos de estos valores de origen ya se utilizan en otro reemplazo, por favor, elimínelos.
+    columns:
+      max_count_reached: Su hoja no debe contener más de {{ limit }} columnas.
+      at_least_one_required: El encabezado debe contener al menos {{ limit }} columnas.
+      uuid:
+        should_be_unique: Esta UUID de columna ya existe, introduzca una nueva.
+      index:
+        should_be_unique: Este índice de columna ya existe, introduzca uno nuevo.
+      label:
+        should_not_be_blank: Defina una etiqueta de columna.
+        max_length_reached: La etiqueta de la columna es demasiado larga. Debe contener {{ limit }} caracteres o menos.
+    data_mappings:
+      target_should_unique: El objetivo «{{ code }}» no puede seleccionarse varias veces.
+      max_count_reached: Ha alcanzado el límite de asignaciones {{ limit }}, ya no puede añadir asignaciones a su importación.
+      no_identifier_target_found: No hay ninguna asignación que apunte a un identificador, por favor, añada una.
+      too_many_identifier_target_found: Hay más de una asignación dirigida a un identificador, por favor, elimine una.
+      uuid:
+        should_be_unique: Esta UUID de asignación ya existe, introduzca una nueva.
+      sources:
+        at_least_one_required: Tiene que añadir al menos una fuente a su asignación.
+        max_count_reached: Ha alcanzado el límite de fuentes {{ limit }}, ya no puede añadir fuentes a su asignación.
+        should_be_unique: Esta fuente ya existe, introduzca una nueva.
+        should_exist: Una de las fuentes ya no existe, elimine todas las fuentes de esta asignación y vuelva a intentarlo
+    target:
+      attribute_should_exist: El atributo {{ attribute_code }} no existe. Créelo o elija un objetivo diferente.
+      property_should_exist: La propiedad {{ property_code }} no existe. Créela o elija un objetivo diferente.
+      source_configuration:
+        unit_should_exist: La unidad {{ unit_code }} no existe para la familia de medidas {{ measurement_family }}. Seleccione una unidad válida.
+        currency_should_be_active: La moneda {{ currency_code }} no está vinculada a ningún canal.
+        currency_should_be_active_on_channel: La moneda {{ currency_code }} no está activa para el canal {{ channel_code }}.
+    locale:
+      should_be_active: La configuración regional {{ locale_code }} ha sido desactivada. Reactívela o seleccione otra configuración regional.
+      should_be_bound_to_channel: La configuración regional {{ locale_code }} ha sido desactivada para el canal {{ channel_code }}. Reactívela o seleccione otra configuración regional.
+    channel:
+      should_exist: El canal {{ channel_code }} ha sido eliminado. Seleccione otro canal.
+    attribute:
+      locale_should_not_be_blank: El atributo {{ attribute_code }} tiene ahora un valor por configuración regional. Créelo o elija un objetivo diferente.
+      channel_should_not_be_blank: El atributo {{ attribute_code }} tiene ahora un valor por canal. Créelo o elija un objetivo diferente.
+      locale_should_be_blank: El atributo {{ attribute_code }} ya no tiene un valor por configuración regional. Elimínelo y vuelva a crearlo o elija un objetivo diferente.
+      channel_should_be_blank: El atributo {{ attribute_code }} ya no tiene un valor por canal. Elimínelo y vuelva a crearlo o elija un objetivo diferente.
+      invalid_specific_locale: El atributo {{ attribute_code }} es específico de la configuración regional. Seleccione otra configuración regional.
+    file_key:
+      does_not_exist: No se ha encontrado el archivo {{ file_key }}.
+    uploaded_file:
+      max_size: El archivo es demasiado grande. El tamaño máximo es {{ limit }}{ suffix }}.
+      not_allowed_mime_type: Solo se admiten archivos XLSX.
+      not_allowed_extension: Solo se admiten archivos XLSX.
+    file_structure:
+      first_product_row_should_be_after_header_row: La primera fila de productos debe estar después de la fila del encabezado.
+      unique_identifier_column_should_be_after_first_column_message: La columna del identificador único debe ser al menos la primera columna.
+      header_row_should_not_contain_empty_cell: La fila del encabezado no debe contener celdas vacías.
+    file_preview:
+      empty_sheet:
+        title: Esta hoja está vacía.
+        description: Seleccione otra hoja con al menos una fila.
+    operations:
+      incompatible_operation_type: El tipo de operación {{ operation_type }} es incompatible con su tipo de destino.
+      missing_required_operations: "Falta(n) operación(es) obligatoria(s): {{ missing_required_operations }}"

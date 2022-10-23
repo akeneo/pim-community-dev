@@ -61,6 +61,7 @@ pim_enrich:
       message:
         error: U bent niet de eigenaar het product, u kan het niet publiceren.
         warning: U bent niet de eigenaar van alle geselecteerde producten. U kan de producten "%notGranted%" niet publiceren.
+        no_identifier: Dit product kan niet gepubliceerd worden omdat het geen id heeft.
       not_editable: U heeft geen machtiging om de producten "%identifiers%" te bewerken.
     unpublish:
       message:
