@@ -108,6 +108,7 @@ pim_enrich.entity.product:
       variant_products: Variant producten
       quantified:
         quantity: Aantal
+        unlinked: Ontkoppeld
       search:
         placeholder: Zoeken op label of ID
       no_data: Er zijn geen gekoppelde producten

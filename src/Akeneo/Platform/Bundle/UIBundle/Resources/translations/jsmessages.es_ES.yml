@@ -197,6 +197,8 @@ pim_common:
   less_than: menor que
   loading: Cargando...
   media_upload: Arrastre y suelte aquí o haga clic aquí para subir el fichero
+  media_uploading: Subiendo…
+  media_upload_error: Se ha producido un error durante la subida
   more_actions: Más acciones
   more_than: mayor que
   next: Siguiente

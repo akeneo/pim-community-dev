@@ -8,6 +8,7 @@ job_execution.summary:
   skip: saltato
   create: creato
   process: elaborato
+  update: aggiornato
   update_products: prodotti aggiornati
   process_products: prodotti elaborati
   skip_products: prodotti saltati

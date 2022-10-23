@@ -197,6 +197,8 @@ pim_common:
   less_than: Meno di
   loading: Caricamento in corso...
   media_upload: Trascina e rilascia qui un file per caricarlo o fai click qui
+  media_uploading: Caricamento...
+  media_upload_error: Si è verificato un errore durante il caricamento
   more_actions: Altre azioni
   more_than: Più di
   next: Successivo
