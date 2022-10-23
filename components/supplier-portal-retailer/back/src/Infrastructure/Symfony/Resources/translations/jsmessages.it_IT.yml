@@ -17,6 +17,7 @@ supplier_portal:
         title: Il fornitore è stato creato.
         content: Ora puoi modificarlo nella sezione di gestione fornitori.
       error:
+        unknown_error: Si è verificato un errore durante la creazione del fornitore.
         supplier_already_exists: 'Esiste già un fornitore con codice "{{ supplierCode }}".'
     supplier_list:
       menu_item: Fornitori
@@ -42,6 +43,7 @@ supplier_portal:
         title: Fornitore
         confirmation_question: Sei sicuro di voler eliminare questo fornitore?
         warning: Se si elimina questo fornitore, ogni arricchimento non salvato andrà perso.
+        unknown_error: Si è verificato un errore durante l'eliminazione del fornitore.
     supplier_edit:
       tabs:
         configuration: Configurazione
@@ -68,7 +70,9 @@ supplier_portal:
           contributor_email_already_exists:
             title: Non è stato possibile aggiungere questo contributore.
             content: L'e-mail {{ emailAddress }} è già utilizzata per un altro fornitore e non supportiamo ancora la possibilità che più fornitori abbiano lo stesso contributore. Ci scusiamo per l'inconveniente.
+      loading_error: Si è verificato un errore durante il caricamento del fornitore.
       success_message: Il fornitore è stato aggiornato correttamente.
+      update_error: Si è verificato un errore durante l'aggiornamento del fornitore.
       delete_label: Elimina questo fornitore
   product_file_dropping:
     breadcrumb:
@@ -87,6 +91,14 @@ supplier_portal:
         error_loading_supplier_files:
           title: Impossibile visualizzare i file di prodotto.
           content: Ci scusiamo per l'inconveniente, ti invitiamo a riprovare tra qualche istante.
+      tabs:
+        discussion: Discussione
+      discussion:
+        import_file_button_label: Importa file
+        info: Invia commenti quando hai bisogno di scambiare informazioni con i tuoi fornitori.
+        comment_input_label: Invia un nuovo commento
+        discussion_title: Discussione
+        submit_button_label: Invia
     pim_notification:
       button_label: Vedi i file di prodotto
 pim_title:

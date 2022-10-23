@@ -17,6 +17,7 @@ supplier_portal:
         title: De leverancier is aangemaakt
         content: U kunt dit nu bewerken in de sectie leveranciersbeheer.
       error:
+        unknown_error: Er is een fout opgetreden tijdens het aanmaken van de leverancier.
         supplier_already_exists: 'Er bestaat al een leverancier met code "{{ supplierCode }}".'
     supplier_list:
       menu_item: Leveranciers
@@ -42,6 +43,7 @@ supplier_portal:
         title: Leverancier
         confirmation_question: Weet u zeker dat u deze leverancier wilt verwijderen?
         warning: Als u deze leverancier verwijdert, verliest u een niet opgeslagen verrijking.
+        unknown_error: Er is een fout opgetreden bij het verwijderen van de leverancier.
     supplier_edit:
       tabs:
         configuration: Configuratie
@@ -68,7 +70,9 @@ supplier_portal:
           contributor_email_already_exists:
             title: We kunnen deze bijdrager niet toevoegen.
             content: Het e-mailadres {{ emailAddress }} wordt al gebruikt voor een andere leverancier en we ondersteunen nog niet dat meerdere leveranciers dezelfde bijdrager hebben. Excuses voor het ongemak.
+      loading_error: Er is een fout opgetreden tijdens het laden van de leverancier.
       success_message: De leverancier is bijgewerkt.
+      update_error: Er is een fout opgetreden tijdens het bijwerken van de leverancier.
       delete_label: Deze leverancier verwijderen
   product_file_dropping:
     breadcrumb:
@@ -88,12 +92,26 @@ supplier_portal:
         error_loading_supplier_files:
           title: We kunnen de productbestanden niet weergeven.
           content: Excuses voor dit ongemak. Probeer het over enkele ogenblikken opnieuw.
+      tabs:
+        discussion: Discussie
+      discussion:
+        import_file_button_label: Bestand importeren
+        info: Stuur een reactie wanneer u informatie wilt uitwisselen met uw leveranciers.
+        comment_input_label: Stuur een nieuwe reactie
+        discussion_title: Discussie
+        submit_button_label: Versturen
+        loading_error: Er is een fout opgetreden tijdens het laden van het productbestand.
+        comment_submit_error: Er is een fout opgetreden tijdens het versturen van de reactie.
+        empty_content: De reactie mag niet leeg zijn.
+        max_comment_length_reached: De reactie mag niet meer dan 255 tekens bevatten.
+        max_number_of_comments_reached: Je hebt de limiet voor reacties bereikt.
     pim_notification:
       button_label: Productbestanden bekijken
 pim_title:
   supplier_portal_retailer_supplier_list: Leveranciers
   supplier_portal_retailer_supplier_edit: Een leverancier bewerken
   supplier_portal_retailer_product_files_list: Productbestanden
+  supplier_portal_retailer_product_files_comment: Productbestand
 batch_jobs.supplier_portal_xlsx_supplier_import.label: Import van leveranciers uit Supplier Portal in XLSX
 pim_notification:
   supplier_portal:
