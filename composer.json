@@ -101,7 +101,7 @@
     "require": {
         "ext-openssl": "*",
         "akeneo/api-php-client": "^9.0",
-        "akeneo/pim-community-dev": "dev-RAB-1132",
+        "akeneo/pim-community-dev": "dev-master",
         "akeneo/pim-onboarder": "^7.0.0",
         "dragonmantank/cron-expression": "^3.3",
         "google/cloud-firestore": "^1.22",
