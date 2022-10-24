@@ -1,5 +1,7 @@
 batch_jobs.xlsx_tailored_product_import.label: Dostosowany import produktów w formacie XLSX
 akeneo.tailored_import:
+  meta:
+    mapped_columns: "{0}Brak zmapowanych kolumn|{1}Zmapowane kolumny: {{ count }}/{{ total }}|]1, Inf[Zmapowane kolumny: {{ count }}/{{ total }}"
   global_settings:
     error_action:
       label: Zarządzanie błędem
@@ -49,12 +51,20 @@ akeneo.tailored_import:
       add: Dodaj operację
       common:
         collapse: Zwiń
+      clean_html:
+        title: Wyczyść kod HTML
+        remove: Usuń znaczniki HTML
+        decode: Dekoduj znaki języka HTML
       change_case:
         title: Zmień wielkość liter
         select: Wybierz wielkość liter
         uppercase: Wielkie litery
         lowercase: Małe litery
         capitalize: Pierwsza litera wielka
+      remove_whitespace:
+        title: Usuń spacje
+        consecutive: Usuń występujące po sobie spacje
+        trim: Usuń spacje na początku i na końcu
       split:
         title: Podziel
         separator: Wybierz separator
@@ -64,9 +74,15 @@ akeneo.tailored_import:
       simple_select_replacement:
         title: Zastąpienie pojedynczego wyboru
         option_labels: Etykiety opcji
+      simple_reference_entity_replacement:
+        title: Zastąpienie pojedynczego linku do obiektu referencyjnego
+        option_labels: Etykiety rekordów
       multi_select_replacement:
         title: Zastąpienie wielokrotnego wyboru
         option_labels: Etykiety opcji
+      multi_reference_entity_replacement:
+        title: Zastąpienie wielu linków do obiektu referencyjnego
+        option_labels: Etykiety rekordów
       categories_replacement:
         title: Zastąpienie katagorii
         modal:
@@ -89,6 +105,7 @@ akeneo.tailored_import:
       replacement:
         to_placeholder: Zdefiniuj wartości źródłowe w pliku.
         modal:
+          records: Zarządzaj rekordami
           options: Zarządzaj opcjami
           subtitle: Zastąpienie
           no_result:
@@ -188,6 +205,9 @@ akeneo.tailored_import:
       property_should_exist: Właściwość {{ property_code }} nie istnieje. Utwórz ją lub wybierz inny cel.
       source_configuration:
         unit_should_exist: Jednostka {{ unit_code }} nie istnieje w rodzinie miar {{ measurement_family_code }}. Wybierz prawidłową jednostkę.
+        currency_should_not_be_null: Wybierz walutę.
+        currency_should_be_active: Waluta {{ currency_code }} nie jest powiązana z żadnym kanałem.
+        currency_should_be_active_on_channel: Waluta {{ currency_code }} nie jest aktywna w kanale {{ channel_code }}.
     locale:
       should_be_active: Wersja językowa {{ locale_code }} została zdezaktywowana. Aktywuj ją ponownie lub wybierz inną.
       should_be_bound_to_channel: Wersja językowa {{ locale_code }} została zdezaktywowana w kanale {{ channel_code }}. Aktywuj ją ponownie lub wybierz inną.

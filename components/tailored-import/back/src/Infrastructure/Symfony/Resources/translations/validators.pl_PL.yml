@@ -1,0 +1,63 @@
+akeneo.tailored_import:
+  validation:
+    required: Ta wartość jest wymagana.
+    max_length_reached: 'Ta wartość jest zbyt długa. Powinna składać się z nie więcej niż następującej liczby znaków: {{ limit }}.'
+    missing_query_params: "W zapytaniu brakuje następujących parametrów: {{ missing_params }}"
+    source_values_should_be_unique: Niektóre z tych wartości źródłowych są już używane w innym zastąpieniu, usuń je.
+    columns:
+      max_count_reached: 'Twój arkusz może zawierać maksymalnie następującą liczbę kolumn: {{ limit }}.'
+      at_least_one_required: Twój nagłówek musi zawierać przynajmniej następującą liczbę kolumn {{ limit }}.
+      uuid:
+        should_be_unique: Identyfikator UUID kolumny już istnieje. Wprowadź nowy.
+      index:
+        should_be_unique: Indeks kolumny już istnieje. Wprowadź nowy.
+      label:
+        should_not_be_blank: Zdefiniuj etykietę kolumny.
+        max_length_reached: 'Etykieta kolumny jest zbyt długa. Powinna składać się z nie więcej niż następującej liczby znaków: {{ limit }}.'
+    data_mappings:
+      target_should_unique: Docelowego kodu „{{ code }}” nie można wybrać wielokrotnie.
+      max_count_reached: Osiągnięto limit {{ limit }} mapowań. Nie możesz już dodawać mapowania do importu.
+      no_identifier_target_found: Do identyfikatora nie przypisano mapowania, dodaj mapowanie.
+      too_many_identifier_target_found: Do identyfikatora przypisano więcej niż jedno mapowanie, usuń jedno z nich.
+      uuid:
+        should_be_unique: Identyfikator UUID mapowania już istnieje, podaj nowy.
+      sources:
+        at_least_one_required: Musisz dodać co najmniej jedno źródło do swojego mapowania.
+        max_count_reached: Osiągnięto limit {{ limit }} źródeł. Nie możesz już dodawać źródeł do mapowania.
+        should_be_unique: To źródło już istnieje, dodaj nowe.
+        should_exist: Jedno ze źródeł już nie istnieje, usuń wszystkie źródła tego mapowania i spróbuj ponownie.
+    target:
+      attribute_should_exist: Atrybut {{ attribute_code }} nie istnieje. Utwórz go lub wybierz inny cel.
+      property_should_exist: Właściwość {{ property_code }} nie istnieje. Utwórz ją lub wybierz inny cel.
+      source_configuration:
+        unit_should_exist: Jednostka {{ unit_code }} nie istnieje w rodzinie miar {{ measurement_family_code }}. Wybierz prawidłową jednostkę.
+        currency_should_be_active: Waluta {{ currency_code }} nie jest powiązana z żadnym kanałem.
+        currency_should_be_active_on_channel: Waluta {{ currency_code }} nie jest aktywna w kanale {{ channel_code }}.
+    locale:
+      should_be_active: Wersja językowa {{ locale_code }} została zdezaktywowana. Aktywuj ją ponownie lub wybierz inną.
+      should_be_bound_to_channel: Wersja językowa {{ locale_code }} została zdezaktywowana w kanale {{ channel_code }}. Aktywuj ją ponownie lub wybierz inną.
+    channel:
+      should_exist: Kanał {{ channel_code }} został usunięty. Wybierz inny kanał.
+    attribute:
+      locale_should_not_be_blank: Atrybut {{ attribute_code }} ma obecnie wartość zależną od wersji językowej. Utwórz ją lub wybierz inny cel.
+      channel_should_not_be_blank: Atrybut {{ attribute_code }} ma obecnie wartość zależną od kanału. Utwórz go lub wybierz inny cel.
+      locale_should_be_blank: Atrybut {{ attribute_code }} nie ma już wartości zależnej od wersji językowej. Usuń go, a następnie odtwórz lub wybierz inny cel.
+      channel_should_be_blank: Atrybut {{ attribute_code }} nie ma już wartości zależnej od kanału. Usuń go, a następnie odtwórz lub wybierz inny cel.
+      invalid_specific_locale: Atrybut {{ attribute_code }} jest przypisany do wersji językowej. Wybierz inną wersję językową.
+    file_key:
+      does_not_exist: Nie znaleziono pliku {{ file_key }}.
+    uploaded_file:
+      max_size: Plik jest za duży. Maksymalny dozwolony rozmiar to {{ limit }} {{ suffix }}.
+      not_allowed_mime_type: Obsługiwane są tylko pliki XLSX.
+      not_allowed_extension: Obsługiwane są tylko pliki XLSX.
+    file_structure:
+      first_product_row_should_be_after_header_row: Wiersz pierwszego produktu powinien znajdować się po wierszu nagłówka.
+      unique_identifier_column_should_be_after_first_column_message: Kolumna niepowtarzalnego identyfikatora nie może znajdować się w kolumnie poprzedzającej początek danych.
+      header_row_should_not_contain_empty_cell: Wiersz nagłówka nie powinien zawierać pustych komórek.
+    file_preview:
+      empty_sheet:
+        title: Ten arkusz jest pusty.
+        description: Wybierz inny arkusz z co najmniej jednym wierszem.
+    operations:
+      incompatible_operation_type: Typ operacji {{ operation_type }} jest niekompatybilny z Twoim typem celu.
+      missing_required_operations: "Brakuje wymaganych operacji: {{ missing_required_operations }}"
