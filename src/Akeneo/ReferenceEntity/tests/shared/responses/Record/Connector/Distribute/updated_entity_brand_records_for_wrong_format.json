@@ -14,28 +14,56 @@
       "message": "The search filters have an invalid format.",
       "errors": [
         {
-          "message": "Does not have a value in the enumeration [\"SINCE LAST N DAYS\"]",
-          "property": "updated[0].operator"
+          "message": "The properties must match schema: updated",
+          "property": "/"
         },
         {
-          "message": "String value found, but an integer is required",
-          "property": "updated[0].value"
+          "message": "The data should match exactly one schema",
+          "property": "/updated"
         },
         {
-          "message": "Invalid date-time \"abc123\", expected format YYYY-MM-DDThh:mm:ssZ or YYYY-MM-DDThh:mm:ss+hh:mm",
-          "property": "updated[0].value"
+          "message": "All array items must match schema",
+          "property": "/updated"
         },
         {
-          "message": "Does not have a value in the enumeration [\"BETWEEN\",\"NOT BETWEEN\"]",
-          "property": "updated[0].operator"
+          "message": "The properties must match schema: value",
+          "property": "/updated/0"
         },
         {
-          "message": "String value found, but an array is required",
-          "property": "updated[0].value"
+          "message": "The data must match the 'date-time' format",
+          "property": "/updated/0/value"
         },
         {
-          "message": "Failed to match exactly one schema",
-          "property": "updated[0]"
+          "message": "All array items must match schema",
+          "property": "/updated"
+        },
+        {
+          "message": "The properties must match schema: operator, value",
+          "property": "/updated/0"
+        },
+        {
+          "message": "The data should match one item from enum",
+          "property": "/updated/0/operator"
+        },
+        {
+          "message": "The data (string) must match the type: array",
+          "property": "/updated/0/value"
+        },
+        {
+          "message": "All array items must match schema",
+          "property": "/updated"
+        },
+        {
+          "message": "The properties must match schema: operator, value",
+          "property": "/updated/0"
+        },
+        {
+          "message": "The data should match one item from enum",
+          "property": "/updated/0/operator"
+        },
+        {
+          "message": "The data (string) must match the type: integer",
+          "property": "/updated/0/value"
         }
       ]
     }

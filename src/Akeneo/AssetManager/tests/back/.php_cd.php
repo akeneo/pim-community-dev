@@ -59,6 +59,7 @@ $rules = [
         'Symfony\Component',
         'Symfony\Contracts',
         'Webmozart\Assert\Assert',
+        'Opis\JsonSchema',
 
         // TODO: Remove when MigrationPam folder is removed (RAB-521)
         'Akeneo\Pim\Enrichment\Component\Product',

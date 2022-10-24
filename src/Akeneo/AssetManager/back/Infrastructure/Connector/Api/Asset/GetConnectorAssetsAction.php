@@ -71,9 +71,9 @@ class GetConnectorAssetsAction
 
         if (!empty($searchFiltersErrors)) {
             return new JsonResponse([
-                'code'    => Response::HTTP_UNPROCESSABLE_ENTITY,
+                'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
                 'message' => 'The search filters have an invalid format.',
-                'errors'  => JsonSchemaErrorsFormatter::format($searchFiltersErrors),
+                'errors' => JsonSchemaErrorsFormatter::format($searchFiltersErrors),
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
@@ -122,21 +122,21 @@ class GetConnectorAssetsAction
         $lastAssetCode = $lastSortValue[0] ?? null;
 
         $paginationParameters = [
-            'list_route_name'     => 'akeneo_asset_manager_assets_rest_connector_get',
-            'item_route_name'     => 'akeneo_asset_manager_asset_rest_connector_get',
-            'search_after'        => [
+            'list_route_name' => 'akeneo_asset_manager_assets_rest_connector_get',
+            'item_route_name' => 'akeneo_asset_manager_asset_rest_connector_get',
+            'search_after' => [
                 'self' => $request->get('search_after', null),
-                'next' => $lastAssetCode
+                'next' => $lastAssetCode,
             ],
-            'limit'               => $this->limit->intValue(),
+            'limit' => $this->limit->intValue(),
             'item_identifier_key' => 'code',
-            'uri_parameters'      => [
+            'uri_parameters' => [
                 'assetFamilyIdentifier' => (string) $assetFamilyIdentifier,
             ],
-            'query_parameters'    => [
+            'query_parameters' => [
                 'channel' => $request->get('channel', null),
                 'locales' => $request->get('locales', null),
-                'search'  => $request->get('search', null),
+                'search' => $request->get('search', null),
             ],
         ];
 
@@ -147,7 +147,6 @@ class GetConnectorAssetsAction
     {
         $locales = $request->get('locales', '');
         $locales = '' === $locales ? [] : explode(',', $locales);
-
 
         return LocaleIdentifierCollection::fromNormalized($locales);
     }
@@ -173,10 +172,10 @@ class GetConnectorAssetsAction
 
         if (isset($rawFilters['complete'])) {
             $formattedFilters[] = [
-                'field'    => 'complete',
+                'field' => 'complete',
                 'operator' => $rawFilters['complete']['operator'],
-                'value'    => $rawFilters['complete']['value'],
-                'context'  => [
+                'value' => $rawFilters['complete']['value'],
+                'context' => [
                     'channel' => $rawFilters['complete']['channel'],
                     'locales' => $rawFilters['complete']['locales'],
                 ],
@@ -188,7 +187,7 @@ class GetConnectorAssetsAction
                 $formattedFilters[] = [
                     'field' => 'updated',
                     'operator' => $rawFilter['operator'],
-                    'value' => $rawFilter['value']
+                    'value' => $rawFilter['value'],
                 ];
             }
         }
@@ -198,7 +197,7 @@ class GetConnectorAssetsAction
                 $formattedFilters[] = [
                     'field' => 'code',
                     'operator' => $rawFilter['operator'],
-                    'value' => $rawFilter['value']
+                    'value' => $rawFilter['value'],
                 ];
             }
         }
