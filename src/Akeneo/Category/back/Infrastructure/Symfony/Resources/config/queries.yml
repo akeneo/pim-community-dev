@@ -19,7 +19,12 @@ services:
     arguments:
       - '@database_connection'
 
-  Akeneo\Category\Application\Query\IsCategoryTreeLinkedToTemplate:
-    class: Akeneo\Category\Infrastructure\Storage\Sql\IsCategoryTreeLinkedToTemplateSql
+  Akeneo\Category\Application\Query\GetCategoryTemplateByCategoryTree:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryTemplateByCategoryTreeSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Application\Query\GetCategoryTreeByCategoryTemplate:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryTreeByCategoryTemplateSql
     arguments:
       - '@database_connection'

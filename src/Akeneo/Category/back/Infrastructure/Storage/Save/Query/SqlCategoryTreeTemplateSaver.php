@@ -56,19 +56,17 @@ class SqlCategoryTreeTemplateSaver implements CategoryTreeTemplateSaver
         $query = <<< SQL
             SELECT * FROM pim_catalog_category_tree_template
             WHERE template_uuid=:template_uuid 
-                AND category_tree_id=:category_tree_id
+                AND category_tree_id NOT NULL
             ;
         SQL;
 
         return $this->connection->fetchOne(
             $query,
             [
-                'template_uuid' => (string) $templateModel->getUuid(),
-                'category_tree_id' => $templateModel->getCategoryTreeId()->getValue(),
+                'template_uuid' => (string) $templateModel->getUuid()
             ],
             [
-                'template_uuid' => \PDO::PARAM_STR,
-                'category_tree_id' => \PDO::PARAM_INT,
+                'template_uuid' => \PDO::PARAM_STR
             ]
         );
     }
