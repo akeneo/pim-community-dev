@@ -3,13 +3,24 @@
 namespace AkeneoTestEnterprise\Pim\Permission\Integration\Export\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
+use Ramsey\Uuid\Uuid;
 
 abstract class AbstractProductExportTestCase extends TestCase
 {
-    /** @var JobLauncher */
-    protected $jobLauncher;
+    protected JobLauncher $jobLauncher;
+    private int $adminId;
 
     /**
      * {@inheritdoc}
@@ -18,42 +29,51 @@ abstract class AbstractProductExportTestCase extends TestCase
     {
         parent::setUp();
 
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
+        $this->adminId = (int)$this->get('database_connection')->fetchOne(
+            'SELECT id FROM oro_user WHERE username = :username',
+            ['username' => 'admin']
+        );
+
         $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
 
-        $product = $this->createProduct('product_viewable_by_everybody_1', [
-            'categories' => ['categoryA2'],
-            'values'     => [
-                'a_localized_and_scopable_text_area' => [
-                    ['data' => 'EN tablet', 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['data' => 'FR tablet', 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                    ['data' => 'DE tablet', 'locale' => 'de_DE', 'scope' => 'tablet']
-                ],
-                'a_number_float' => [['data' => '12.05', 'locale' => null, 'scope' => null]],
-                'a_localizable_image' => [
-                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'en_US', 'scope' => null],
-                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'fr_FR', 'scope' => null],
-                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'de_DE', 'scope' => null]
-                ],
-                'a_metric_without_decimal_negative' => [
-                    ['data' => ['amount' => -10, 'unit' => 'CELSIUS'], 'locale' => null, 'scope' => null]
-                ]
+        $this->createProduct(
+            '8df9e79b-f95e-44a5-8b56-d961f2b34f08',
+            [
+                new SetIdentifierValue('sku', 'product_viewable_by_everybody_1'),
+                new SetCategories(['categoryA2']),
+                new SetTextareaValue('a_localized_and_scopable_text_area', 'tablet', 'en_US', 'EN tablet'),
+                new SetTextareaValue('a_localized_and_scopable_text_area', 'tablet', 'fr_FR', 'FR tablet'),
+                new SetTextareaValue('a_localized_and_scopable_text_area', 'tablet', 'de_DE', 'DE tablet'),
+                new SetNumberValue('a_number_float', null, null, '12.05'),
+                new SetImageValue('a_localizable_image', null, 'en_US', $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
+                new SetImageValue('a_localizable_image', null, 'fr_FR', $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
+                new SetImageValue('a_localizable_image', null, 'de_DE', $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
+                new SetMeasurementValue('a_metric_without_decimal_negative', null, null, -10, 'CELSIUS'),
             ]
-        ]);
+        );
 
-        $this->createProduct('product_viewable_by_everybody_2', [
-            'categories' => ['categoryA2', 'categoryB']
-        ]);
-
-        $this->createProduct('product_not_viewable_by_redactor', [
-            'categories' => ['categoryB']
-        ]);
-
-        $this->createProduct('product_without_category', [
-            'associations' => [
-                'X_SELL' => ['products' => ['product_viewable_by_everybody_2', 'product_not_viewable_by_redactor']]
+        $this->createProduct(
+            '1f434202-4c66-472a-9535-26cd17f1ebf9',
+            [
+                new SetIdentifierValue('sku', 'product_viewable_by_everybody_2'),
+                new SetCategories(['categoryA2', 'categoryB']),
             ]
-        ]);
-
+        );
+        $this->createProduct(
+            'ef2f1fdf-1548-4b0b-8cb4-f13b5646cb87',
+            [
+                new SetIdentifierValue('sku', 'product_not_viewable_by_redactor'),
+                new SetCategories(['categoryB']),
+            ]
+        );
+        $this->createProduct(
+            '5dea2c67-818f-40e9-b732-bdcd22fd5f88',
+            [
+                new SetIdentifierValue('sku', 'product_without_category'),
+                new AssociateProducts('X_SELL', ['product_viewable_by_everybody_2', 'product_not_viewable_by_redactor'])
+            ]
+        );
         $this->get('doctrine')->getManager()->clear();
     }
 
@@ -66,19 +86,22 @@ abstract class AbstractProductExportTestCase extends TestCase
     }
 
     /**
-     * @param string $identifier
-     * @param array  $data
+     * @param string $uuid
+     * @param UserIntent[] $userIntents
      *
      * @return ProductInterface
      */
-    protected function createProduct(string $identifier, array $data = []) : ProductInterface
+    protected function createProduct(string $uuid, array $userIntents = []) : ProductInterface
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-        $this->get('pim_catalog.saver.product')->save($product);
-
+        $this->get('pim_enrich.product.message_bus')->dispatch(
+            UpsertProductCommand::createWithUuid(
+                $this->adminId,
+                ProductUuid::fromUuid(Uuid::fromString($uuid)),
+                $userIntents
+            )
+        );
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
-        return $product;
+        return $this->get('pim_catalog.repository.product')->find($uuid);
     }
 }

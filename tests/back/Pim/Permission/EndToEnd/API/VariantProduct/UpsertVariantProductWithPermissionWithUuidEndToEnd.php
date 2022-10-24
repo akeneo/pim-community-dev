@@ -44,6 +44,7 @@ JSON;
         $this->assertUpdated('variant_product', $data);
 
         $expectedProduct = [
+            'uuid'         => $this->getProductUuidFromIdentifier('variant_product')->toString(),
             'identifier'   => 'variant_product',
             'family'       => 'family_permission',
             'parent'       => 'sub_product_model',
@@ -115,6 +116,7 @@ JSON;
         $this->assertUpdated('variant_product', $data);
 
         $expectedProduct = [
+            'uuid'         => $this->getProductUuidFromIdentifier('variant_product')->toString(),
             'identifier'    => 'variant_product',
             'family'        => 'family_permission',
             'parent'        => 'sub_product_model',
