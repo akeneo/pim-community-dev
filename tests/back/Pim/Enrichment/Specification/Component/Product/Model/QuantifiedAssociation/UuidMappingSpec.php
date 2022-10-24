@@ -42,10 +42,13 @@ class UuidMappingSpec extends ObjectBehavior
 
         $this->getIdentifier(Uuid::fromString($uuid))->shouldReturn($identifier);
         $this->getUuidFromIdentifier($identifier)->equals($uuid)->shouldBe(true);
+        $this->getUuidFromId($identifier)->shouldReturn($uuid);
         $this->hasUuid($identifier)->shouldReturn(true);
         $this->hasIdentifier($uuid)->shouldReturn(true);
+        $this->hasId(42)->shouldReturn(true);
         $this->hasUuid('nice')->shouldReturn(false);
         $this->hasIdentifier(Uuid::fromString('52254bba-a2c8-40bb-abe1-195e3970bd93'))->shouldReturn(false);
+        $this->hasId(1)->shouldReturn(false);
     }
 
     public function it_throws_if_the_product_uuid_is_not_a_real_uuid()

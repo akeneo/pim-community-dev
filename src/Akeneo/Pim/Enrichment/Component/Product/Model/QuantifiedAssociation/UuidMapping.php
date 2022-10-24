@@ -107,7 +107,7 @@ final class UuidMapping
         return isset($this->idsToIdentifiers[$id]);
     }
 
-    public function hasUuidFromId(int $id): bool
+    public function hasId(int $id): bool
     {
         return isset($this->idsToUuids[$id]);
     }

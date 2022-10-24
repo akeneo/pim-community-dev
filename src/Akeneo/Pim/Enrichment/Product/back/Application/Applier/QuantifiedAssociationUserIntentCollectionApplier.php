@@ -93,7 +93,7 @@ final class QuantifiedAssociationUserIntentCollectionApplier implements UserInte
             }
         }
 
-        if ([] === $normalizedQuantifiedAssociations) {
+        if (empty($normalizedQuantifiedAssociations)) {
             return;
         }
 
