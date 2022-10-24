@@ -17,6 +17,7 @@ supplier_portal:
         title: Se ha creado el proveedor.
         content: Ahora puede editarlo en la sección de gestión de proveedores.
       error:
+        unknown_error: Se ha producido un error al crear el proveedor.
         supplier_already_exists: 'Ya existe un proveedor con código «{{ supplierCode }}».'
     supplier_list:
       menu_item: Proveedores
@@ -42,6 +43,7 @@ supplier_portal:
         title: Proveedor
         confirmation_question: '¿Realmente quiere eliminar a este proveedor?'
         warning: Al eliminar este proveedor, se perderá cualquier enriquecimiento no guardado.
+        unknown_error: Se ha producido un error al eliminar el proveedor.
     supplier_edit:
       tabs:
         configuration: Configuración
@@ -68,7 +70,9 @@ supplier_portal:
           contributor_email_already_exists:
             title: No hemos podido añadir a este colaborador.
             content: El correo electrónico {{ emailAddress }} ya se utiliza para otro proveedor y todavía no admitimos que varios proveedores tengan el mismo colaborador. Disculpe las molestias.
+      loading_error: Se ha producido un error al cargar el proveedor.
       success_message: El proveedor se ha actualizado correctamente.
+      update_error: Se ha producido un error al actualizar el proveedor.
       delete_label: Eliminar este proveedor
   product_file_dropping:
     breadcrumb:
@@ -88,12 +92,26 @@ supplier_portal:
         error_loading_supplier_files:
           title: No podemos mostrar los archivos del producto.
           content: Lamentamos este inconveniente, inténtelo de nuevo en unos momentos.
+      tabs:
+        discussion: Discusión
+      discussion:
+        import_file_button_label: Importar archivo
+        info: Envíe comentarios cuando necesite intercambiar información con sus proveedores.
+        comment_input_label: Enviar un nuevo comentario
+        discussion_title: Discusión
+        submit_button_label: Enviar
+        loading_error: Se ha producido un error al cargar el archivo del producto.
+        comment_submit_error: Se ha producido un error al enviar el comentario.
+        empty_content: El comentario no debe estar vacío.
+        max_comment_length_reached: El comentario no debe exceder de 255 caracteres.
+        max_number_of_comments_reached: Ha alcanzado el límite de comentarios.
     pim_notification:
       button_label: Ver las fichas de los productos
 pim_title:
   supplier_portal_retailer_supplier_list: Proveedores
   supplier_portal_retailer_supplier_edit: Editar un proveedor
   supplier_portal_retailer_product_files_list: Archivos de productos
+  supplier_portal_retailer_product_files_comment: Archivo de producto
 batch_jobs.supplier_portal_xlsx_supplier_import.label: Importación de Proveedores de Portal de proveedores en XLSX
 pim_notification:
   supplier_portal:
