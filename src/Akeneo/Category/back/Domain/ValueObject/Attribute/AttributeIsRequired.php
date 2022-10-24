@@ -20,7 +20,7 @@ class AttributeIsRequired
         return new self($isRequired);
     }
 
-    public function isYes(): bool
+    public function getValue(): bool
     {
         return $this->isRequired;
     }
