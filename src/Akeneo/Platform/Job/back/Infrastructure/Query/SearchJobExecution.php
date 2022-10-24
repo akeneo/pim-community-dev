@@ -66,9 +66,9 @@ SQL;
             job_instance.type,
             job_execution.start_time,
             job_execution.user,
-            job_execution.status,
             job_execution.is_stoppable,
-            job_execution.step_count
+            job_execution.step_count,
+            %s AS calculated_status
         FROM akeneo_batch_job_execution job_execution
         JOIN akeneo_batch_job_instance job_instance ON job_execution.job_instance_id = job_instance.id
         WHERE job_execution.is_visible = 1
@@ -99,7 +99,7 @@ SQL;
         $whereSqlPart = $this->buildSqlWherePart($query);
         $orderBySqlPart = $this->buildSqlOrderByPart($query);
 
-        return sprintf($sql, $whereSqlPart, $orderBySqlPart, str_replace('job_instance', 'job_execution', $orderBySqlPart));
+        return sprintf($sql, $this->buildStatusSubQuery(), $whereSqlPart, $orderBySqlPart, str_replace('job_instance', 'job_execution', $orderBySqlPart));
     }
 
     private function buildSqlWherePart(SearchJobExecutionQuery $query): string
@@ -120,7 +120,7 @@ SQL;
         }
 
         if (!empty($status)) {
-            $sqlWhereParts[] = 'job_execution.status IN (:status)';
+            $sqlWhereParts[] = $this->buildStatusSubQuery().' IN (:status)';
         }
 
         if (!empty($user)) {
@@ -129,7 +129,7 @@ SQL;
 
         if (!empty($search)) {
             $searchParts = explode(' ', $search);
-            foreach ($searchParts as $index => $searchPart) {
+            foreach (array_keys($searchParts) as $index) {
                 $sqlWhereParts[] = sprintf('job_instance.label LIKE :%s_%s', self::SEARCH_PART_PARAM_SUFFIX, $index);
             }
         }
@@ -142,15 +142,29 @@ SQL;
         $sortDirection = $query->sortDirection;
 
         $orderByColumn = match ($query->sortColumn) {
-            'job_name' => sprintf("job_instance.label %s", $sortDirection),
-            'type' => sprintf("job_instance.type %s", $sortDirection),
-            'started_at' => sprintf("job_execution.start_time %s", $sortDirection),
-            'username' => sprintf("job_execution.user %s", $sortDirection),
-            'status' => sprintf("job_execution.status %s", $sortDirection),
+            'job_name' => sprintf('job_instance.label %s', $sortDirection),
+            'type' => sprintf('job_instance.type %s', $sortDirection),
+            'started_at' => sprintf('job_execution.start_time %s', $sortDirection),
+            'username' => sprintf('job_execution.user %s', $sortDirection),
+            'status' => sprintf('calculated_status %s', $sortDirection),
             default => throw new \InvalidArgumentException(sprintf('Unknown sort column "%s"', $query->sortColumn)),
         };
 
         return sprintf('ORDER BY %s', $orderByColumn);
+    }
+
+    /**
+     * this query part is here to prevent wrong status from being displayed when a job has been interrupted
+     * by a major crash (deamon failing, sql pod error during process etc...). Since such error is not manageable
+     * we got job with an non updated status in db (mostly IN_PROGRESS).
+     */
+    private function buildStatusSubQuery(): string
+    {
+        return 'CASE TIMESTAMPDIFF(SECOND, job_execution.health_check_time, CURRENT_TIME()) > 10
+                AND job_execution.status in (:starting_status_code, :in_progress_status_code, :stopping_status_code)
+                AND job_execution.health_check_time is not null
+                WHEN TRUE THEN :failed_status_code ELSE job_execution.status
+                END';
     }
 
     private function fetchJobExecutionRows(string $sql, SearchJobExecutionQuery $query): array
@@ -186,6 +200,10 @@ SQL;
             'status' => array_map(static fn (string $status) => Status::fromLabel($status)->getStatus(), $query->status),
             'user' => $query->user,
             'code' => $query->code,
+            'starting_status_code' => Status::STARTING,
+            'in_progress_status_code' => Status::IN_PROGRESS,
+            'stopping_status_code' => Status::STOPPING,
+            'failed_status_code' => Status::FAILED,
         ];
 
         $searchParts = explode(' ', $query->search);
