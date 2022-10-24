@@ -75,15 +75,14 @@ final class GetMappedProductsHandler
                 foreach ($productMappingSchema->properties as $key => $property) {
                     $sourceValue = '';
                     if (\array_key_exists($key, $productMapping)) {
-
                         $sourceValue = match ($key) {
                             'family' => $product->getFamily()->setLocale($productMapping[$key]['locale'])->getLabel(),
-                            'category' => implode(',', $product->getCategories()->map(static fn (Category $category)
+                            'category' => \implode(',', $product->getCategories()->map(static fn (Category $category)
                             => $category->setLocale($productMapping[$key]['locale'])->getLabel())->getValues()),
-                            'enabled' => $product->isEnabled() ? 'trou':'fau',
+                            'enabled' => $product->isEnabled() ? 'true':'false',
                             'parent' => $product->getParent()->getLabel($productMapping[$key]['locale']),
-                            'groups' => implode(',', $product->getGroups()->map(static fn (Group $category)
-                            => $category->setLocale($productMapping[$key]['locale'])->getLabel())->getValues()),
+                            'group' => \implode(',', $product->getGroups()->map(static fn (Group $group)
+                            => $group->setLocale($productMapping[$key]['locale'])->getLabel())->getValues()),
                             default => (string) $product->getValue(
                                 $productMapping[$key]['source'],
                                 $productMapping[$key]['locale'],

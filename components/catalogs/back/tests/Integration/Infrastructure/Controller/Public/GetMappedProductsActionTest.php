@@ -53,25 +53,25 @@ class GetMappedProductsActionTest extends IntegrationTestCase
         ));
 
         $this->setCatalogProductMapping('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
-            "title" => [
-                "source" => "name",
-                "scope" => "ecommerce",
-                "locale" => "en_US",
+            'title' => [
+                'source' => 'name',
+                'scope' => 'ecommerce',
+                'locale' => 'en_US',
             ],
-            "family" => [
-                "source" => "family",
-                "scope" => null,
-                "locale" => "en_US",
+            'family' => [
+                'source' => 'family',
+                'scope' => null,
+                'locale' => 'en_US',
             ],
-            "category" => [
-                "source" => "category",
-                "scope" => null,
-                "locale" => "en_US",
+            'category' => [
+                'source' => 'category',
+                'scope' => null,
+                'locale' => 'en_US',
             ],
-            "group" => [
-                "source" => "group",
-                "scope" => null,
-                "locale" => "en_US",
+            'group' => [
+                'source' => 'group',
+                'scope' => null,
+                'locale' => 'en_US',
             ],
         ]);
 
@@ -96,7 +96,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             new SetTextValue('name', 'ecommerce', 'en_US', 'Blue'),
             new SetFamily('familyA'),
             new SetCategories(['categoryA', 'categoryB']),
-            new SetGroups(['GroupA', 'GroupB'])
+            new SetGroups(['groupA', 'groupB'])
         ]);
 
         $this->client->request(
