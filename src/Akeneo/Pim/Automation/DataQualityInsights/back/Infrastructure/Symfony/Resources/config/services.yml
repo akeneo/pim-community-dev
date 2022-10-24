@@ -285,3 +285,10 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Hydrator\hydrateCriterionEvaluationResult:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultIds'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\EvaluationsLauncher:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobLauncher\RunUniqueProcessJob'
+            - '@akeneo.pim.automation.data_quality_insights.feature'
+            - '@database_connection'
+            - '@logger'
