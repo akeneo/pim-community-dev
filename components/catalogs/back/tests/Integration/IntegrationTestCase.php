@@ -23,6 +23,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionValue;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Test\IntegrationTestsBundle\Helper\ExperimentalTransactionHelper;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
@@ -415,6 +416,21 @@ abstract class IntegrationTestCase extends WebTestCase
         $category = self::getContainer()->get('pim_catalog.factory.category')->create();
         self::getContainer()->get('pim_catalog.updater.category')->update($category, $data);
         self::getContainer()->get('pim_catalog.saver.category')->save($category);
+    }
+
+    protected function createGroup(array $data = []): void
+    {
+        /** @var GroupInterface $group */
+        $group = self::getContainer()->get('pim_catalog.factory.group')->create();
+        self::getContainer()->get('pim_catalog.updater.group')->update($group, $data);
+        self::getContainer()->get('pim_catalog.saver.group')->save($group);
+    }
+    protected function createGroupType(array $data = []): void
+    {
+        /** @var GroupInterface $group */
+        $groupType = self::getContainer()->get('pim_catalog.factory.group_type')->create();
+        self::getContainer()->get('pim_catalog.updater.group_type')->update($groupType, $data);
+        self::getContainer()->get('pim_catalog.saver.group_type')->save($groupType);
     }
 
     protected function enableCurrency(string $code): void

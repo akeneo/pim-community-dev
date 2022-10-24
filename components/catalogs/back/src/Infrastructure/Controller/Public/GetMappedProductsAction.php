@@ -53,9 +53,6 @@ final class GetMappedProductsAction
 
         try {
             $mappedProducts = $this->queryBus->execute(new GetMappedProductsQuery($catalogId, $searchAfter, $limit));
-
-            dd($mappedProducts);
-
         } catch (ValidationFailedException $e) {
             throw new ViolationHttpException($e->getViolations());
         }

@@ -12,6 +12,8 @@ use Akeneo\Catalogs\ServiceAPI\Exception\CatalogDisabledException;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogNotFoundException as ServiceApiCatalogNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Exception\ProductSchemaMappingNotFoundException as ServiceApiProductSchemaMappingNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductsQuery;
+use Akeneo\Category\Infrastructure\Component\Model\Category;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 
@@ -50,8 +52,6 @@ final class GetMappedProductsHandler
         $productUuids = $this->getProductUuidsQuery->execute($catalog, $query->getSearchAfter(), $query->getLimit());
         $products = $this->productRepository->getItemsFromUuids($productUuids);
 
-        dump($products);
-
         $productMappingSchemaFile = \sprintf('%s_product.json', $catalog->getId());
 
         if (!$this->catalogsMappingStorage->exists($productMappingSchemaFile)) {
@@ -75,16 +75,21 @@ final class GetMappedProductsHandler
                 foreach ($productMappingSchema->properties as $key => $property) {
                     $sourceValue = '';
                     if (\array_key_exists($key, $productMapping)) {
-                        // @todo manage system code
-                        $productAttributeValue = $product->getValue(
-                            $productMapping[$key]['source'],
-                            $productMapping[$key]['locale'],
-                            $productMapping[$key]['scope']
-                        );
 
-                        if (null !== $productAttributeValue) {
-                            $sourceValue = (string) $productAttributeValue->getData();
-                        }
+                        $sourceValue = match ($key) {
+                            'family' => $product->getFamily()->setLocale($productMapping[$key]['locale'])->getLabel(),
+                            'category' => implode(',', $product->getCategories()->map(static fn (Category $category)
+                            => $category->setLocale($productMapping[$key]['locale'])->getLabel())->getValues()),
+                            'enabled' => $product->isEnabled() ? 'trou':'fau',
+                            'parent' => $product->getParent()->getLabel($productMapping[$key]['locale']),
+                            'groups' => implode(',', $product->getGroups()->map(static fn (Group $category)
+                            => $category->setLocale($productMapping[$key]['locale'])->getLabel())->getValues()),
+                            default => (string) $product->getValue(
+                                $productMapping[$key]['source'],
+                                $productMapping[$key]['locale'],
+                                $productMapping[$key]['scope']
+                            )?->getData() ?: '',
+                        };
                     }
                     $mappedProduct[$key] = $sourceValue;
                 }

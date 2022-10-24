@@ -8,6 +8,8 @@ use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Command\UpdateProductMappingSchemaCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -33,73 +35,6 @@ class GetMappedProductsActionTest extends IntegrationTestCase
         $this->purgeDataAndLoadMinimalCatalog();
     }
 
-    /*
-    public function testItGetsPaginatedMappedProductsByCatalogId(): void
-    {
-        $catalogId = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
-
-        $this->client = $this->getAuthenticatedPublicApiClient([
-            'read_catalogs', 'read_products',
-        ]);
-        $this->commandBus->execute(new CreateCatalogCommand(
-            $catalogId,
-            'Store US',
-            'shopifi',
-        ));
-
-        $this->commandBus->execute(new UpdateProductMappingSchemaCommand(
-            $catalogId,
-            \json_decode($this->getProductMappingSchemaRaw(), false, 512, JSON_THROW_ON_ERROR),
-        ));
-
-        $this->setCatalogProductMapping($catalogId, [
-            "title" => [
-                "source" => "name",
-                "scope" => "ecommerce",
-                "locale" => "en_US",
-            ]
-        ]);
-
-        $this->createAttribute([
-            'code' => 'name',
-            'type' => 'pim_catalog_text',
-            'scopable' => true,
-            'localizable' => true,
-        ]);
-
-        $this->createProduct('tshirt-blue', [
-            new SetTextValue('name', 'ecommerce', 'en_US', 'Blue'),
-        ]);
-
-        $this->client->request(
-            'GET',
-            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapped-products',
-            [
-                'limit' => 2,
-            ],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-            ],
-        );
-
-        $response = $this->client->getResponse();
-        $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
-
-        dd($payload);
-
-        Assert::assertEquals(200, $response->getStatusCode());
-
-        $mappedProducts = [
-            ['title' => 'Blue']
-        ];
-
-        Assert::assertEquals($mappedProducts, $payload['_embedded']['items']);
-
-    }
-    */
-
-
     public function testItGetsPaginatedMappedProductsByCatalogId(): void
     {
         $this->client = $this->getAuthenticatedPublicApiClient([
@@ -121,8 +56,25 @@ class GetMappedProductsActionTest extends IntegrationTestCase
                 "source" => "name",
                 "scope" => "ecommerce",
                 "locale" => "en_US",
-            ]
+            ],
+            "family" => [
+                "source" => "family",
+                "scope" => null,
+                "locale" => "en_US",
+            ],
+            "category" => [
+                "source" => "category",
+                "scope" => null,
+                "locale" => "en_US",
+            ],
+            "group" => [
+                "source" => "group",
+                "scope" => null,
+                "locale" => "en_US",
+            ],
         ]);
+
+        $this->createFamily(['code' => 'familyA', 'labels' => ['en_US' => 'Family A', 'fr_FR' => 'Famille A']]);
 
         $this->createAttribute([
             'code' => 'name',
@@ -131,8 +83,19 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             'localizable' => true,
         ]);
 
+        $this->createCategory(['code' => 'categoryA', 'labels' => ['en_US' => 'Category A', 'fr_FR' => 'Categorie A']]);
+        $this->createCategory(['code' => 'categoryB', 'labels' => ['en_US' => 'Category B', 'fr_FR' => 'Categorie B']]);
+
+
+        $this->createGroupType(['code' => 'groupeType', 'labels' => ['en_US' => 'Group type', 'fr_FR' => 'Groupe type']]);
+        $this->createGroup(['code' => 'groupA', 'type' => 'groupeType', 'labels' => ['en_US' => 'Group A', 'fr_FR' => 'Groupe A']]);
+        $this->createGroup(['code' => 'groupB', 'type' => 'groupeType', 'labels' => ['en_US' => 'Group B', 'fr_FR' => 'Groupe B']]);
+
         $this->createProduct('tshirt-blue', [
             new SetTextValue('name', 'ecommerce', 'en_US', 'Blue'),
+            new SetFamily('familyA'),
+            new SetCategories(['categoryA', 'categoryB']),
+            new SetGroups(['GroupA', 'GroupB'])
         ]);
 
         $this->client->request(
@@ -146,40 +109,18 @@ class GetMappedProductsActionTest extends IntegrationTestCase
         );
 
         $response = $this->client->getResponse();
-        $payload = $response->getContent();
-
-        Assert::assertEquals(200, $response->getStatusCode());
-
-        $mappedProducts = [
-            ['title' => 'Blue']
+        $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        $expectedMappedProducts = [
+            [
+                'title' => 'Blue',
+                'family' => 'Family A',
+                'category' => 'Category A,Category B',
+                'group' => 'Group A,Group B'
+            ],
         ];
 
-        Assert::assertEquals($mappedProducts, $payload['_embedded']['items']);
-    }
-
-
-    /*
-    public function testItReturnsAnEmptyListWhenTheCatalogIsDisabled(): void
-    {
-        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
-        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'shopifi');
-        $this->createProduct('tshirt-blue');
-
-        $this->client->request(
-            'GET',
-            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/product-identifiers',
-            [],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-            ],
-        );
-
-        $response = $this->client->getResponse();
-        $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
-
         Assert::assertEquals(200, $response->getStatusCode());
-        Assert::assertCount(0, $payload['_embedded']['items']);
+        Assert::assertEquals($expectedMappedProducts, $payload['_embedded']['items']);
     }
 
     public function testItReturnsBadRequestWhenPaginationIsInvalid(): void
@@ -190,7 +131,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
 
         $this->client->request(
             'GET',
-            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/product-identifiers',
+            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapped-products',
             [
                 'limit' => -1,
             ],
@@ -211,7 +152,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
 
         $this->client->request(
             'GET',
-            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/product-identifiers',
+            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapped-products',
             [],
             [],
             [
@@ -224,13 +165,13 @@ class GetMappedProductsActionTest extends IntegrationTestCase
         Assert::assertEquals(403, $response->getStatusCode());
     }
 
-    public function testItReturnsNotFoundWhenCalalogDoesNotExist(): void
+    public function testItReturnsNotFoundWhenCatalogDoesNotExist(): void
     {
         $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
 
         $this->client->request(
             'GET',
-            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/product-identifiers',
+            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapped-products',
             [],
             [],
             [
@@ -242,8 +183,6 @@ class GetMappedProductsActionTest extends IntegrationTestCase
 
         Assert::assertEquals(404, $response->getStatusCode());
     }
-    */
-
 
     private function getProductMappingSchemaRaw(): string
     {
@@ -257,6 +196,15 @@ class GetMappedProductsActionTest extends IntegrationTestCase
           "type": "object",
           "properties": {
             "title": {
+              "type": "string"
+            },
+            "family": {
+              "type": "string"
+            },
+            "category": {
+              "type": "string"
+            }
+            "group": {
               "type": "string"
             }
           }
