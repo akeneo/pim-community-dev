@@ -2,66 +2,59 @@
 
 namespace Akeneo\Platform\Bundle\NotificationBundle\Email;
 
-use Akeneo\Tool\Component\Email\SenderAddress;
-use Swift_Mailer;
-use Swift_Mime_SimpleMessage;
-use Symfony\Bridge\Monolog\Logger;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 /**
- * Notify by email
- *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
+ * @copyright 2015 Akeneo SAS (https://www.akeneo.com)
+ * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class MailNotifier implements MailNotifierInterface
 {
     public function __construct(
-        protected Swift_Mailer $mailer,
-        protected string $mailerUrl,
-        private Logger $logger,
+        private MailerInterface $mailer,
+        private LoggerInterface $logger,
     ) {
     }
 
+    /**
+     * @param string[] $recipients
+     */
     public function notify(
         array $recipients,
         string $subject,
         string $txtBody,
-        $htmlBody = null,
+        ?string $htmlBody = null,
         array $options = []
     ): void {
-        $this->send($recipients, $subject, $txtBody, $htmlBody);
-    }
+        $email = (new Email())
+            ->subject($subject)
+            ->text($txtBody)
+            ->html($htmlBody);
 
-    private function send($recipients, $subject, $txtBody, $htmlBody): void
-    {
-        /** @var Swift_Mime_SimpleMessage $message */
-        $message = $this->mailer->createMessage();
-        $sender = (string)SenderAddress::fromMailerUrl($this->mailerUrl);
-        $message->setSubject($subject)
-            ->setFrom($sender)
-            ->setBcc($recipients)
-            ->setCharset('UTF-8')
-            ->setContentType('text/html')
-            ->setBody($txtBody, 'text/plain')
-            ->addPart($htmlBody, 'text/html');
+        foreach ($recipients as $recipient) {
+            $email->addBcc($recipient);
+        }
 
-        $sentCount = $this->mailer->send($message);
+        try {
+            $this->mailer->send($email);
 
-        if (0 === $sentCount) {
-            $this->logger->error(
-                sprintf('Mail error from %s', $sender),
+            $this->logger->info(
+                'Mail sent',
                 [
-                    'Subject' => $message->getSubject(),
-                    'Recipients' => $message->getBcc(),
+                    'Subject' => $email->getSubject(),
+                    'Recipients' => $email->getBcc(),
                 ]
             );
-        } else {
-            $this->logger->info(
-                sprintf('Mail sent from %s', $sender),
+        } catch (TransportExceptionInterface $e) {
+            $this->logger->error(
+                sprintf('Cannot sent mail : %s', $e),
                 [
-                    'Subject' => $message->getSubject(),
-                    'Recipients' => $message->getBcc(),
+                    'Subject' => $email->getSubject(),
+                    'Recipients' => $email->getBcc(),
                 ]
             );
         }
