@@ -26,6 +26,7 @@ class RuleCollectionNormalizer implements NormalizerInterface, SerializerAwareIn
 {
     /** @var string[] */
     protected $supportedFormats = ['array'];
+    private SerializerInterface $serializer;
 
     /**
      * {@inheritdoc}

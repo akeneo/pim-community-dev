@@ -45,6 +45,7 @@ class GenericEntityMySQLIndexFinderIntegration extends TestCase
                 ["product_1", "product_10", "product_100", "product_101"]));
 
         $resultsQuery = $this->query->findAllByOrder($entityIndexConfiguration);
+        $resultsOrderQueryFormat = [];
         for ($i = 0; $i < sizeof($resultsFixtures); $i++) {
             $resultsOrderQueryFormat[] = IndexResultsFactory::initIndexFormatDataResults($resultsQuery[$i]["identifier"], null);
         }

@@ -28,6 +28,5 @@ final class ContributorAccountProviderTest extends TestCase
         $provider = new ContributorAccountProvider($query);
 
         $this->assertEquals($contributorAccount, $provider->loadUserByIdentifier('burger@example.com'));
-        $this->assertEquals($contributorAccount, $provider->loadUserByUsername('burger@example.com'));
     }
 }

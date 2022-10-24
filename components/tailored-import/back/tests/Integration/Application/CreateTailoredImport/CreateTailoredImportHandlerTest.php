@@ -2,7 +2,9 @@
 
 namespace Akeneo\Platform\TailoredImport\Test\Integration\Application\CreateTailoredImport;
 
+use Akeneo\Platform\TailoredImport\Application\CreateTailoredImport\CreateTailoredImportHandler;
 use Akeneo\Platform\TailoredImport\ServiceApi\CreateTailoredImportResult;
+use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Platform\TailoredImport\ServiceApi\CreateTailoredImportCommand;
 use Akeneo\Platform\TailoredImport\Test\Integration\IntegrationTestCase;
@@ -11,6 +13,9 @@ use Akeneo\Platform\TailoredImport\ServiceApi\File;
 
 final class CreateTailoredImportHandlerTest extends IntegrationTestCase
 {
+    private CreateTailoredImportHandler $handler;
+    private JobInstanceRepository $jobInstanceRepository;
+
     protected function setUp(): void
     {
         parent::setUp();

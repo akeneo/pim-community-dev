@@ -99,7 +99,7 @@ final class GetNumberOfProductsImpactedByAttributeOptionSpellingMistakesQueryInt
         $this->createProductVariant($subProductModel->getCode());
 
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-        $impactedProducts = $this->query->byAttribute(new Attribute(new AttributeCode('a_simple_select'), AttributeType::simpleSelect(), false, false));
+        $impactedProducts = $this->query->byAttribute(new Attribute(new AttributeCode('a_simple_select'), AttributeType::simpleSelect(), false));
 
         $this->assertSame(3, $impactedProducts);
     }
@@ -189,7 +189,7 @@ final class GetNumberOfProductsImpactedByAttributeOptionSpellingMistakesQueryInt
         ]);
 
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-        $impactedProducts = $this->query->byAttribute(new Attribute(new AttributeCode('a_localizable_multi_select'), AttributeType::multiSelect(), true, false));
+        $impactedProducts = $this->query->byAttribute(new Attribute(new AttributeCode('a_localizable_multi_select'), AttributeType::multiSelect(), true));
 
         $this->assertSame(2, $impactedProducts);
     }
