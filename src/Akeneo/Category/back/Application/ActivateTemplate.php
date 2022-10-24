@@ -45,6 +45,11 @@ class ActivateTemplate
         LabelCollection $templateLabelCollection
     ): ?Template {
         $categoryTree = $this->getCategory->byId($categoryTreeId->getValue());
+
+        if ($categoryTree === null) {
+            throw new \Exception(sprintf("Category tree not found. Id: %d", $categoryTreeId->getValue()));
+        }
+
         if (!$this->validateTemplateActivation($categoryTree, $templateCode)) {
             throw new \Exception(
                 \sprintf("Template for category tree '%s' cannot be activated.", $categoryTree->getCode())

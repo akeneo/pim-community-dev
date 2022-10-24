@@ -9,6 +9,4 @@ interface CategoryTreeTemplateSaver
     public function insert(Template $templateModel);
 
     public function update(Template $templateModel);
-
-    public function linkAlreadyExists($templateModel): bool;
 }

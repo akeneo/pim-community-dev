@@ -39,14 +39,14 @@ class GetCategoryTreeByCategoryTemplateSql implements GetCategoryTreeByCategoryT
             SELECT * FROM pim_catalog_category category
                 JOIN pim_catalog_category_tree_template category_tree_template
                      ON category_tree_template.category_tree_id=category.id
-            WHERE template_uuid=:template_uuid
+            WHERE category_template_uuid=:template_uuid
             ;
         SQL;
 
         $result = $this->connection->executeQuery(
             $query,
             [
-                'template_uuid' => (string) $templateUuid
+                'template_uuid' => $templateUuid->toBytes()
             ],
             [
                 'template_uuid' => \PDO::PARAM_STR

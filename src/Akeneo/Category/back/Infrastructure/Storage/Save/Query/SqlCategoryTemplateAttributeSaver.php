@@ -35,7 +35,7 @@ class SqlCategoryTemplateAttributeSaver implements CategoryTemplateAttributeSave
             /** @var Attribute $attribute */
             $queries .= $this->buildInsertQuery($loopIndex);
 
-            $params['identifier' . $loopIndex] = (string) $attribute->getUuid();
+            $params['uuid' . $loopIndex] = (string) $attribute->getUuid();
             $params['code' . $loopIndex] = (string) $attribute->getCode();
             $params['labels' . $loopIndex] = json_encode($attribute->getLabelCollection()->normalize());
             $params['attribute_type' . $loopIndex] = (string) $attribute->getType();
@@ -45,7 +45,7 @@ class SqlCategoryTemplateAttributeSaver implements CategoryTemplateAttributeSave
             $params['is_localizable' . $loopIndex] = false; // TODO
             $params['additional_properties' . $loopIndex] = json_encode([]); // TODO
 
-            $types['identifier' . $loopIndex] = \PDO::PARAM_STR;
+            $types['uuid' . $loopIndex] = \PDO::PARAM_STR;
             $types['code' . $loopIndex] = \PDO::PARAM_STR;
             $types['labels' . $loopIndex] = \PDO::PARAM_STR;
             $types['attribute_type' . $loopIndex] = \PDO::PARAM_STR;
@@ -82,7 +82,7 @@ class SqlCategoryTemplateAttributeSaver implements CategoryTemplateAttributeSave
                 (uuid, code, labels, template_uuid, attribute_type, attribute_order, is_required, is_scopable, is_localizable, additional_properties)
             VALUES
                 (
-                    :identifier,
+                    UUID_TO_BIN(:uuid),
                     :code$loopIndex,
                     :labels$loopIndex,
                     :template_uuid,
