@@ -1,5 +1,6 @@
 services:
     Akeneo\Category\Application\ActivateTemplate:
+        class: 'Akeneo\Category\Application\ActivateTemplate'
         arguments:
             - '@Akeneo\Category\Application\Query\GetTemplate'
             - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
