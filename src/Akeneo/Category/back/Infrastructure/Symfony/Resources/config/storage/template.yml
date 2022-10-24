@@ -3,7 +3,8 @@ services:
         arguments:
             - '@Akeneo\Category\Application\Query\GetTemplate'
             - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
-            - '@Akeneo\Category\Application\Query\IsCategoryTreeLinkedToTemplate'
+            - '@Akeneo\Category\Application\Query\GetCategoryTemplateByCategoryTree'
+            - '@Akeneo\Category\Application\Query\GetCategoryTreeByCategoryTemplate'
             - '@Akeneo\Category\Infrastructure\Builder\TemplateBuilder'
             - '@Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver'
             - '@Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver'

@@ -2,6 +2,8 @@
 
 namespace Akeneo\Category\Application;
 
+use Akeneo\Category\Application\Query\GetCategoryTemplateByCategoryTree;
+use Akeneo\Category\Application\Query\GetCategoryTreeByCategoryTemplate;
 use Akeneo\Category\Application\Query\GetTemplate;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver;
@@ -12,7 +14,6 @@ use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
 use Akeneo\Category\Infrastructure\Builder\TemplateBuilder;
-use Akeneo\Category\Infrastructure\Storage\Sql\IsCategoryTreeLinkedToTemplateSql;
 
 /**
  * Validate the new static category template data and save the template in database
@@ -22,7 +23,8 @@ class ActivateTemplate
     public function __construct(
         private GetTemplate $getTemplate,
         private GetCategoryInterface $getCategory,
-        private IsCategoryTreeLinkedToTemplateSql $isCategoryTreeLinkedToTemplateSql,
+        private GetCategoryTemplateByCategoryTree $getCategoryTemplateByCategoryTree,
+        private GetCategoryTreeByCategoryTemplate $getCategoryTreeByCategoryTemplate,
         private TemplateBuilder $templateBuilder,
         private CategoryTemplateSaver $categoryTemplateSaver,
         private CategoryTreeTemplateSaver $categoryTreeTemplateSaver,
@@ -71,7 +73,7 @@ class ActivateTemplate
      */
     private function validateTemplateActivation(Category $categoryTree, TemplateCode $templateCode): bool
     {
-        if (($this->isCategoryTreeLinkedToTemplateSql)($categoryTree->getId())) {
+        if (($this->getCategoryTemplateByCategoryTree)($categoryTree->getId())) {
             return false;
         }
 
@@ -94,7 +96,7 @@ class ActivateTemplate
     {
         $this->categoryTemplateSaver->insert($templateModel);
 
-        if (!$this->categoryTreeTemplateSaver->linkAlreadyExists($templateModel)) {
+        if (($this->getCategoryTreeByCategoryTemplate)($templateModel->getUuid()) === null) {
             $this->categoryTreeTemplateSaver->insert($templateModel);
         }
 
