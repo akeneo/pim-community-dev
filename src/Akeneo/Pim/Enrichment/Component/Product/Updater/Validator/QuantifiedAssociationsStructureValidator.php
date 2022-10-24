@@ -58,10 +58,7 @@ class QuantifiedAssociationsStructureValidator implements QuantifiedAssociations
                         );
                     }
 
-                    if (
-                        !isset($quantifiedLink['identifier']) && !isset($quantifiedLink['uuid'])
-                        || isset($quantifiedLink['identifier']) && isset($quantifiedLink['uuid'])
-                    ) {
+                    if (!isset($quantifiedLink['identifier']) && !isset($quantifiedLink['uuid'])) {
                         throw InvalidPropertyTypeException::validArrayStructureExpected(
                             $field,
                             'a quantified association should contain one of these keys: "identifier" or "uuid"',
@@ -79,7 +76,7 @@ class QuantifiedAssociationsStructureValidator implements QuantifiedAssociations
                         );
                     }
 
-                    if (isset($quantifiedLink['uuid']) && !(is_string($quantifiedLink['uuid']) || Uuid::isValid($quantifiedLink['uuid']))) {
+                    if (isset($quantifiedLink['uuid']) && (!is_string($quantifiedLink['uuid']) || !Uuid::isValid($quantifiedLink['uuid']))) {
                         throw InvalidPropertyTypeException::validArrayStructureExpected(
                             $field,
                             'a quantified association should contain a valid uuid',

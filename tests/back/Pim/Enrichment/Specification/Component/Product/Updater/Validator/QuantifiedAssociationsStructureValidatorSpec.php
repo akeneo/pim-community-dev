@@ -134,7 +134,7 @@ class QuantifiedAssociationsStructureValidatorSpec extends ObjectBehavior
         );
     }
 
-    public function it_throws_when_quantified_link_has_no_identifier()
+    public function it_throws_when_quantified_link_has_no_identifier_and_no_uuid()
     {
         $field = 'quantified_associations';
         $data = [
@@ -206,13 +206,13 @@ class QuantifiedAssociationsStructureValidatorSpec extends ObjectBehavior
         );
     }
 
-    public function it_throws_when_there_is_an_identifier_and_an_uuid_in_quantified_link()
+    public function it_throws_when_quantified_link_uuid_is_not_a_string()
     {
         $field = 'quantified_associations';
         $data = [
             'PACK' => [
                 'products' => [
-                    ['identifier' => 'foo', 'uuid' => 'b8f895c5-330a-4d6d-9a74-78db307633bd', 'quantity' => 8],
+                    ['uuid' => 1, 'quantity' => 3],
                 ],
             ],
         ];
@@ -220,7 +220,31 @@ class QuantifiedAssociationsStructureValidatorSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyTypeException::validArrayStructureExpected(
                 $field,
-                'a quantified association should contain one of these keys: "identifier" or "uuid"',
+                'a quantified association should contain a valid uuid',
+                QuantifiedAssociationsStructureValidator::class,
+                $data
+            )
+        )->during(
+            'validate',
+            [$field, $data]
+        );
+    }
+
+    public function it_throws_when_quantified_link_uuid_is_not_a_valid_uuid()
+    {
+        $field = 'quantified_associations';
+        $data = [
+            'PACK' => [
+                'products' => [
+                    ['uuid' => 'invalid_uuid', 'quantity' => 3],
+                ],
+            ],
+        ];
+
+        $this->shouldThrow(
+            InvalidPropertyTypeException::validArrayStructureExpected(
+                $field,
+                'a quantified association should contain a valid uuid',
                 QuantifiedAssociationsStructureValidator::class,
                 $data
             )
