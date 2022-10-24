@@ -4,8 +4,8 @@ locals {
   shared_project_id       = "akecld-prd-pim-saas-shared"
   project_id              = "akecld-prd-pim-saas-dev"
   ci_sa                   = "main-service-account@${local.project_id}.iam.gserviceaccount.com"
-  admins                  = ["group:phoenix-squad@akeneo.com"]
-  viewers                 = ["group:phoenix-squad@akeneo.com"]
+  admins                  = ["group:ucs@akeneo.com"]
+  viewers                 = ["group:ucs@akeneo.com"]
   firestore_projects_id   = ["akecld-prd-pim-fire-eur-dev", "akecld-prd-pim-fire-us-dev"]
   firestore_database_type = "CLOUD_FIRESTORE"
   dev_zone                = "pim-saas-dev.dev.cloud.akeneo.com"
