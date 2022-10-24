@@ -13,3 +13,4 @@ A catalog is a selection of products.
 - [full list of features](features)
 - [development setup](docs/development-setup.md)
 - [tests](docs/tests.md)
+
