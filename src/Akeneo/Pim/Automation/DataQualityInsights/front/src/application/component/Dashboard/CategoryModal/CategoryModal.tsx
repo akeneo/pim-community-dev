@@ -52,7 +52,9 @@ const CategoryModal = ({
   const modalContent = (
     <>
       {null !== errorMessage && (
-        <div className="AknMessageBox AknMessageBox--error AknMessageBox--withIcon AknMessageBox--bold">{errorMessage}</div>
+        <div className="AknMessageBox AknMessageBox--error AknMessageBox--withIcon AknMessageBox--bold">
+          {errorMessage}
+        </div>
       )}
       <div className="AknHorizontalNavtab nav nav-tabs">
         <div className="AknButtonList catalog-switcher">
