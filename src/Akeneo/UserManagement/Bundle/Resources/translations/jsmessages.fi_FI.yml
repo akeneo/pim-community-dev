@@ -30,7 +30,6 @@ pim_enrich:
 pim_user.profile:
   caption: Kerro ensiksi, mikä on pääasiallinen tehtäväsi. Se auttaa meitä tarjoamaan sinulle sopivaa sisältöä.
   why_is_it_needed: Miksi tarvitsemme näitä tietoja?
-  save_button: Tallenna ja yhdistä kauppapaikkaan
   selector:
     placeholder: Valitse vaihtoehto
     not_found: Tuloksia ei löytynyt

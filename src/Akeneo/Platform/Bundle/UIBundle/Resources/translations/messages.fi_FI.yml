@@ -47,7 +47,7 @@ pim_ui.system_config:
     loading_message.title: Latausviestit
 other_actions: Muut toiminnot
 pim_common:
-  association_types: Tuoteliitostyypit
+  association_types: Assosiaatiotyypit
   cancel: Peruuta
   categories: Kategoriat
   code: Koodi
@@ -55,7 +55,7 @@ pim_common:
   created: Luotu
   delete: Poista
   edit: Muokkaa
-  enabled: Käytössä
+  enabled: Otettu käyttöön
   family_variant: Varianttiperhe
   family: Perhe
   groups: Ryhmät
@@ -92,8 +92,8 @@ pim_enrich:
       add_attribute: Lisää attribuutti tuotteelle
       remove_attribute: Poista attribuutti tuotteelta
       categories_view: Katso tuotteen kategorioita
-      associations_view: Näytä tuotteen tuoteliitokset
-      associations_edit: Lisää tuoteliitoksia tuotteelle
+      associations_view: Näytä tuotteen assosiaatiot
+      associations_edit: Lisää assosiaatiot tuotteelle
       change_family: Vaihda perhettä
       change_state: Muuta tuotteen tilaa
       add_to_groups: Lisää tuote ryhmiin
@@ -108,15 +108,6 @@ pim_enrich:
       categories_view: Tarkastele tuotemallin kategorioita
       history: Näytä tuotemallin muutoshistoria
       remove: Poista tuotemalli (mukaan lukien variantit)
-    category:
-      list: Listaa kategoriat
-      create: Luo kategoria
-      edit: Muokkaa kategoriaa
-      remove: Poista kategoria
-      move: Siirrä kategoriaa
-      children: Katso kategorian alikategorioita
-      products: Katso kategorian tuotteet
-      history: Katso kategorian historia
     channel:
       index: Listaa kanavat
       create: Luo kanava
@@ -161,19 +152,19 @@ pim_enrich:
       edit: Muokkaa ryhmätyyppiä
       remove: Poista ryhmätyyppi
     association_type:
-      index: Listaa tuoteliitostyypit
-      create: Luo tuoteliitostyyppi
-      edit: Muokkaa tuoteliitostyyppiä
-      remove: Poista tuoteliitostyyppi
-      history: Näytä tuoteliitostyypin historia
+      index: Listaa assosiaatiotyypit
+      create: Luo assosiaatiotyyppi
+      edit: Muokkaa assosiaatiotyyppiä
+      remove: Poista assosiaatiotyyppi
+      history: Näytä assosiaatiotyypin historia
     association:
-      remove: Poista tuotteen tuoteliitokset
+      remove: Poista tuotteen assosiaatiot
     job_tracker:
       index: Näytä prosessien seuraaja
       view_all_jobs: Näytä kaikki työt prosessiselaimessa
       stop_job: Pysäytä käynnissä oleva työ
   acl_group:
-    association_type: Tuoteliitostyypit
+    association_type: Assosiaatiotyypit
     attribute: Attribuutit
     attribute_group: Attribuuttiryhmät
     category: Kategoriat
@@ -201,7 +192,7 @@ pim_enrich:
     locale: luo alue
     product: luo tuote
     group: luo ryhmä
-    association type: luo tuoteliitostyyppi
+    association type: luo assosiaatiotyyppi
     group type: luo ryhmätyyppi
     drag_or_upload: Vedä ja pudota tuodaksesi tai klikkaa tästä
 #Confirmation messages
@@ -251,9 +242,9 @@ info:
     keep attributes: Mitään attribuutteja ei poisteta.
     number of associations: '%productCount% tuotetta ja %groupCount% ryhmää'
     enable: Ota käyttöön
-    enabled: Käytössä
+    enabled: Otettu käyttöön
     disable: Poista käytöstä
-    disabled: Ei käytössä
+    disabled: Poistettu käytöstä
   group:
     axis: 'Varianttiulottuvuus: %attributes%'
     select products: Valitse tuotteet joiden tulisi kuulua tähän ryhmään.
@@ -263,8 +254,8 @@ info:
   association type:
     show products: Näytä tuotteet
     show groups: Näytä ryhmät
-    remove from products: Tuoteliitostyypin poistaminen poistaa sen myös %count% tuotteelta.
-    none exist: Tuoteliitostyyppiä ei ole olemassa.
+    remove from products: Assosiaatiotyypin poistaminen poistaa sen myös %count% tuotteelta.
+    none exist: Assosiaatiotyyppiä ei ole olemassa.
     create one: Klikkaa tästä luodaksesi sellainen
   attribute:
     auto option sorting: Jos käytössä, vaihtoehdot lajitellaan automaattisesti riippuen niiden alueellisesta otsikosta
@@ -422,7 +413,7 @@ pane.accordion:
   group_values: Ryhmän arvot
 #Popin titles
 popin.create:
-  association_type.title: Luo uusi tuoteliitostyyppi
+  association_type.title: Luo uusi assosiaatiotyyppi
   group.title: Luo uusi ryhmä
   product.title: Luo uusi tuote
   option.title: Luo uusi vaihtoehto
@@ -433,8 +424,8 @@ Is associated: Liittyy
 Complete: Valmis
 Created At: Luontiaika
 Updated At: Päivitysaika
-Enabled: Käytössä
-Disabled: Ei käytössä
+Enabled: Otettu käyttöön
+Disabled: Poistettu käytöstä
 Status: Status
 pim_datagrid:
   filters:
