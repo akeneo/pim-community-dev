@@ -8,6 +8,7 @@ use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Command\UpdateProductMappingSchemaCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\SetGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
@@ -230,7 +231,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             },
             "category": {
               "type": "string"
-            }
+            },
             "group": {
               "type": "string"
             }
