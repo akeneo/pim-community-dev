@@ -10,7 +10,8 @@ akeneo.category:
         create: Create tree
         delete: Delete tree
     template:
-        create: Create template
+        create: Activate template
+        edit: View template
         delete: Delete template
-        notification_success: Template created successfully
-        notification_error: Template could not be created
+        notification_success: Template activated successfully
+        notification_error: Template could not be activated

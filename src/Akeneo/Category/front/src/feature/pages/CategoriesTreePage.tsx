@@ -109,6 +109,10 @@ const CategoriesTreePage: FC = () => {
     }
   }
 
+  const redirectToTemplate = (templateUuid: string) => {
+    router.redirect(router.generate('TBD', {templateUuid: templateUuid}));
+  }
+
   useEffect(() => {
     loadTree();
   }, [loadTree, treeId]);
@@ -147,11 +151,22 @@ const CategoriesTreePage: FC = () => {
             className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
           />
         </PageHeader.UserActions>
-        {isGranted('pim_enrich_product_category_template') && (
+        {featureFlags.isEnabled('enriched_category')
+            && isGranted('pim_enrich_product_category_template')
+            && (
           <PageHeader.Actions>
-            {/*<Button onClick={() => onCreateTemplate(tree)} level="tertiary" ghost>*/}
-            {/*  {translate('akeneo.category.template.create')}*/}
-            {/*</Button>*/}
+            {tree &&
+            <Button
+                onClick={() => (tree.templateUuid) ? redirectToTemplate(tree.templateUuid) : onCreateTemplate(tree)}
+                level="tertiary"
+                ghost
+            >
+              {translate((tree.templateUuid)
+                  ? 'akeneo.category.template.edit'
+                  : 'akeneo.category.template.create'
+              )}
+            </Button>
+            }
           </PageHeader.Actions>
         )}
         <PageHeader.Title>{tree?.label ?? treeId}</PageHeader.Title>

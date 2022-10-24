@@ -5,6 +5,14 @@ pim_category_template_rest_get:
         _feature: enriched_category
     methods: [GET]
 
+pim_category_template_rest_get_by_category_tree:
+    path: /rest/{CategoryId}
+    defaults: {
+        _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\GetTemplateController:getTemplateByCategoryTreeId,
+        _feature: enriched_category
+    }
+    methods: [GET]
+
 pim_category_template_rest_create:
     path: /rest/{templateCode}/{categoryTreeId}
     defaults:
