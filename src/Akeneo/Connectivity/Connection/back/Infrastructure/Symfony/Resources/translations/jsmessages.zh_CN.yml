@@ -479,6 +479,7 @@ akeneo_connectivity.connection:
       url: 链接
       secret: 密钥
       enabled: 事件订阅激活
+      is_using_uuid: 使用产品 UUID 而非产品标识符？
       test: 测试
     error:
       wrong_url: 网址无效。

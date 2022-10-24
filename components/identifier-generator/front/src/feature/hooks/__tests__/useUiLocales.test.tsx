@@ -1,8 +1,7 @@
-import {waitFor} from '@testing-library/react';
 import {renderHook} from '@testing-library/react-hooks';
 import {createWrapper} from '../../tests/hooks/config/createWrapper';
 import {act} from 'react-dom/test-utils';
-import {UiLocale} from '../../models/ui-locale';
+import {UiLocale} from '../../models';
 import {useUiLocales} from '../useUiLocales';
 
 const uiLocales = [
@@ -38,7 +37,7 @@ describe('useUiLocales', () => {
   });
 
   test('it retrieves ui locales list', async () => {
-    const {result} = renderHook<
+    const {result, waitFor} = renderHook<
       null,
       {
         isSuccess: boolean;

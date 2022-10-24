@@ -1,10 +1,115 @@
 akeneo_catalogs:
+  catalog_list:
+    catalogs_name: Nombre del catálogo
+    status: Estado
+    enabled: habilitado
+    disabled: deshabilitado
+    empty: No hay catálogo
+    more_information: Consulte nuestro Centro de ayuda para obtener más información.
+  catalog_edit:
+    tabs:
+      settings: Configuración del catálogo
+      product_selection: Selección de productos
+      more: Más
+      product_value_filters: Filtrar los valores
+      product_mapping: Asignación
   settings:
+    fields:
+      enabled: Habilitado
     inputs:
       yes: Yes
       no: No
+  product_value_filters:
+    action:
+      open: Abrir
+      remove: Eliminar
+    filters:
+      channel:
+        label: Canal
+        no_matches: No se encontraron coincidencias
+        placeholder: Seleccione su canal
+      locale:
+        label: Configuración regional
+        no_matches: No se encontraron coincidencias
+        placeholder: Seleccione su configuración regional
+      currency:
+        label: Moneda
+        no_matches: No se encontraron coincidencias
+        placeholder: Seleccione su moneda
   product_selection:
+    empty: Añada criterios de selección para crear su selección de productos
+    more_information: Consulte nuestro Centro de ayuda para obtener más información.
+    add_criteria:
+      label: añadir criterios de selección
+      search: Criterio de búsqueda
+      no_results: no se encontraron coincidencias
+      section_system: sistema
+      section_attributes: atributos
+    action:
+      open: Abrir
+      remove: Eliminar
+    locale:
+      label: Configuración regional
+      empty: No se encontró configuración regional
+    channel:
+      label: Canal
+      empty: No se encontró ningún canal
     criteria:
+      unknown: Este atributo ha sido eliminado.
+      status:
+        label: Estado
+        enabled: Habilitado
+        disabled: Deshabilitado
+      family:
+        label: Familia
+        no_matches: No se encontraron coincidencias
+        placeholder: Seleccione sus familias
+      completeness:
+        label: Completitud
+      attribute_option:
+        no_matches: No se encontraron coincidencias
+        placeholder: Seleccione sus opciones
+      category:
+        label: Categoría
+        remove: Eliminar categoría
+        category_tree: Árbol de categoría
+      measurement:
+        search: Seleccione su unidad
+        no_results: No se encontraron coincidencias
       boolean:
         yes: Yes
         no: No
+    operators:
+      "STARTS WITH": comienza con
+      "ENDS WITH": termina con
+      "CONTAINS": contiene
+      "DOES NOT CONTAIN": no contiene
+      "EMPTY": está vacío
+      "NOT EMPTY": no está vacío
+      "IN": en
+      "NOT IN": no en
+      "IN CHILDREN": en descendiente
+      "NOT IN CHILDREN": no en descendiente
+      "UNCLASSIFIED": sin clasificar
+      "IN OR UNCLASSIFIED": sin clasificar o dentro
+      "BETWEEN": entre
+      "NOT BETWEEN": no entre
+      "=": es igual a
+      "!=": no es igual a
+      ">": es mayor que
+      ">=": igual o mayor que
+      "<": menor que
+      "<=": igual o menor que
+  product_mapping:
+    target:
+      title: Lista de contactos
+      filter:
+        label: Filtro
+        option:
+          all: Todo
+      table:
+        target: Destino
+        source: Origen
+    source:
+      placeholder:
+        title: Seleccionar origen
