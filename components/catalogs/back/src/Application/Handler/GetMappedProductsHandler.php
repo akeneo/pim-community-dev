@@ -50,8 +50,6 @@ final class GetMappedProductsHandler
         $productUuids = $this->getProductUuidsQuery->execute($catalog, $query->getSearchAfter(), $query->getLimit());
         $products = $this->productRepository->getItemsFromUuids($productUuids);
 
-        dump($products);
-
         $productMappingSchemaFile = \sprintf('%s_product.json', $catalog->getId());
 
         if (!$this->catalogsMappingStorage->exists($productMappingSchemaFile)) {
@@ -75,16 +73,14 @@ final class GetMappedProductsHandler
                 foreach ($productMappingSchema->properties as $key => $property) {
                     $sourceValue = '';
                     if (\array_key_exists($key, $productMapping)) {
-                        // @todo manage system code
-                        $productAttributeValue = $product->getValue(
-                            $productMapping[$key]['source'],
-                            $productMapping[$key]['locale'],
-                            $productMapping[$key]['scope']
-                        );
-
-                        if (null !== $productAttributeValue) {
-                            $sourceValue = (string) $productAttributeValue->getData();
-                        }
+                        $sourceValue = match ($key) {
+                            'family' => $product->getFamily()->getLabel(),
+                            default => (string) $product->getValue(
+                                $productMapping[$key]['source'],
+                                $productMapping[$key]['locale'],
+                                $productMapping[$key]['scope']
+                            )->getData() ?: '',
+                        };
                     }
                     $mappedProduct[$key] = $sourceValue;
                 }

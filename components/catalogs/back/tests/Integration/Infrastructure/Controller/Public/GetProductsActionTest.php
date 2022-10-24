@@ -131,7 +131,7 @@ class GetProductsActionTest extends IntegrationTestCase
         Assert::assertEquals(403, $response->getStatusCode());
     }
 
-    public function testItReturnsNotFoundWhenCalalogDoesNotExist(): void
+    public function testItReturnsNotFoundWhenCatalogDoesNotExist(): void
     {
         $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
 
