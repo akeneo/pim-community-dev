@@ -152,6 +152,6 @@ class ProductWriter extends AbstractItemMediaWriter implements ItemWriterInterfa
      */
     protected function getItemIdentifier(array $product): string
     {
-        return $product['identifier'];
+        return $product['uuid'] ?? $product['identifier'];
     }
 }

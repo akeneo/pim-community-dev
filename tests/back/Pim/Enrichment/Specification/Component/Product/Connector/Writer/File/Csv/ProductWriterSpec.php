@@ -117,6 +117,7 @@ class ProductWriterSpec extends ObjectBehavior
         $stepExecution->getJobExecution()->willReturn($jobExecution);
 
         $productStandard = [
+            'uuid' => '47617b09-f227-4ae5-b55d-287cd237cfe6',
             'identifier' => 'jacket',
             'enabled' => true,
             'categories' => ['2015_clothes', '2016_clothes'],
@@ -166,10 +167,10 @@ class ProductWriterSpec extends ObjectBehavior
                 'data' => 'a/b/c/123456_filename.jpg',
             ],
             [
-                'identifier' => 'jacket',
+                'identifier' => '47617b09-f227-4ae5-b55d-287cd237cfe6',
                 'code' => 'media',
             ]
-        )->shouldBeCalled()->willReturn('files/jacket/media/');
+        )->shouldBeCalled()->willReturn('files/47617b09-f227-4ae5-b55d-287cd237cfe6/media/');
 
         $filesystemProvider->getFilesystem('catalogStorage')->willReturn($catalogFilesystem);
         $catalogFilesystem->fileExists('a/b/c/123456_filename.jpg')->shouldBeCalled()->willReturn(true);
@@ -182,7 +183,7 @@ class ProductWriterSpec extends ObjectBehavior
                         [
                             'locale' => null,
                             'scope' => null,
-                            'data' => 'files/jacket/media/the file name.jpg',
+                            'data' => 'files/47617b09-f227-4ae5-b55d-287cd237cfe6/media/the file name.jpg',
                         ],
                     ],
                 ],
@@ -212,7 +213,7 @@ class ProductWriterSpec extends ObjectBehavior
                 WrittenFileInfo::fromFileStorage(
                     'a/b/c/123456_filename.jpg',
                     'catalogStorage',
-                    'files/jacket/media/the file name.jpg'
+                    'files/47617b09-f227-4ae5-b55d-287cd237cfe6/media/the file name.jpg'
                 ),
             ]
         );
@@ -241,6 +242,7 @@ class ProductWriterSpec extends ObjectBehavior
         $stepExecution->getJobExecution()->willReturn($jobExecution);
 
         $productStandard = [
+            'uuid' => '93700f68-51ec-464a-8c47-ca9ac92d0b5c',
             'identifier' => 'sku042',
             'values' => [
                 'sku' => [['locale' => null, 'scope' => null, 'data' => 'sku042']],
@@ -261,10 +263,10 @@ class ProductWriterSpec extends ObjectBehavior
                 'data' => 'a/b/c/abc123_filename.png',
             ],
             [
-                'identifier' => 'sku042',
+                'identifier' => '93700f68-51ec-464a-8c47-ca9ac92d0b5c',
                 'code' => 'media',
             ]
-        )->shouldBeCalled()->willReturn('files/sku042/media/');
+        )->shouldBeCalled()->willReturn('files/93700f68-51ec-464a-8c47-ca9ac92d0b5c/media/');
 
         $fileInfo->getOriginalFilename()->willReturn('filename.png');
         $fileInfo->getKey()->willReturn('a/b/c/abc123_filename.png');
@@ -282,7 +284,7 @@ class ProductWriterSpec extends ObjectBehavior
                     return $argument instanceof InvalidItemInterface && $argument->getInvalidData() == [
                         'from' => 'a/b/c/abc123_filename.png',
                         'to' => [
-                            'filePath' => 'files/sku042/media',
+                            'filePath' => 'files/93700f68-51ec-464a-8c47-ca9ac92d0b5c/media',
                             'filename' => 'filename.png',
                         ],
                         'storage' => 'catalogStorage',
@@ -326,6 +328,7 @@ class ProductWriterSpec extends ObjectBehavior
         $stepExecution->getJobExecution()->willReturn($jobExecution);
 
         $productStandard = [
+            'uuid' => '351922ae-64dc-4df2-8260-73d62ccc4bc6',
             'identifier' => 'jacket',
             'enabled' => true,
             'categories' => ['2015_clothes', '2016_clothes'],

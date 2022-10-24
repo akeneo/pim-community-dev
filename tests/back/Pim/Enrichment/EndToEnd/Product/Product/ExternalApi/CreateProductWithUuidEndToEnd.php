@@ -82,6 +82,7 @@ JSON;
         $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $expectedProduct = [
+            'uuid'          => $this->getProductUuidFromIdentifier('product_creation_family')->toString(),
             'identifier'    => 'product_creation_family',
             'family'        => 'familyA',
             'parent'        => null,
@@ -129,6 +130,7 @@ JSON;
         $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $expectedProduct = [
+            'uuid'          => $this->getProductUuidFromIdentifier('product_creation_groups')->toString(),
             'identifier'    => 'product_creation_groups',
             'family'        => null,
             'parent'        => null,
@@ -174,6 +176,7 @@ JSON;
         $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $expectedProduct = [
+            'uuid'          => $this->getProductUuidFromIdentifier('product_creation_categories')->toString(),
             'identifier'    => 'product_creation_categories',
             'family'        => null,
             'parent'        => null,
@@ -236,6 +239,7 @@ JSON;
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
 
         $this->assertSameProducts([
+            'uuid' => $this->getProductUuidFromIdentifier('foo')->toString(),
             'identifier' => 'foo',
             'family' => 'familyA',
             'parent' => 'a_sub_product_model',
@@ -296,6 +300,7 @@ JSON;
         $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $expectedProduct = [
+            'uuid'          => $this->getProductUuidFromIdentifier('product_creation_associations')->toString(),
             'identifier'    => 'product_creation_associations',
             'family'        => null,
             'parent'        => null,
@@ -552,6 +557,7 @@ JSON;
         $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $expectedProduct = [
+            'uuid'          => $this->getProductUuidFromIdentifier('product_creation_product_values')->toString(),
             'identifier'    => 'product_creation_product_values',
             'family'        => 'familyA',
             'parent'        => null,
@@ -750,8 +756,10 @@ JSON;
         "updated": "2014-06-14T13:12:50+02:00"
     }
 JSON;
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $expectedProduct = [
+            'uuid'          => $this->getProductUuidFromIdentifier('foo')->toString(),
             'identifier'    => 'foo',
             'family'        => null,
             'parent'        => null,
@@ -769,11 +777,7 @@ JSON;
             'quantified_associations' => [],
         ];
 
-        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
-
         $response = $client->getResponse();
-
-
         $this->assertSame('', $response->getContent());
         $this->assertSameProducts($expectedProduct, 'foo');
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
