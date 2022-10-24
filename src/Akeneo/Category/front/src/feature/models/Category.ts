@@ -2,6 +2,7 @@ import {LabelCollection, LocaleCode} from '@akeneo-pim-community/shared';
 import {TreeNode} from './Tree';
 import {CompositeKeyWithoutLocale} from './CompositeKey';
 import {CategoryAttributeType} from './Attribute';
+import {Template} from './Template';
 
 export type Category = {
   id: number;
@@ -77,7 +78,7 @@ export type CategoryTreeModel = {
   isLeaf: boolean;
   children?: CategoryTreeModel[];
   productsNumber?: number;
-  template: any;
+  template?: Template;
 };
 
 export type FormField = {

@@ -106,13 +106,17 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
   const countTreesChildren = useCountCategoryTreesChildren();
 
   useEffect(() => {
+    let hasTemplates = false;
+
     filteredTrees.map(function (tree) {
       if (tree.template !== undefined && tree.template) {
-        setHasTemplates(true);
+        hasTemplates = true;
       }
+
+      return hasTemplates;
     });
 
-    setHasTemplates(false);
+    setHasTemplates(hasTemplates);
   }, [filteredTrees]);
 
   return (
@@ -172,7 +176,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                   {featureFlags.isEnabled('enriched_category') &&
                     (isGranted('pim_enrich_product_category_template') ||
                       isGranted('pim_enrich_product_category_edit_attributes')) && hasTemplates && (
-                      <Table.Cell>{typeof tree.template !== undefined ? tree.template.label : ''}</Table.Cell>
+                      <Table.Cell>{typeof tree.template !== undefined ? tree.template : ''}</Table.Cell>
                     )}
                   <TableActionCell>
                     {isGranted('pim_enrich_product_category_remove') && (

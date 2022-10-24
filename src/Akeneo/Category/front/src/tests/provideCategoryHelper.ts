@@ -1,5 +1,5 @@
 import {LabelCollection} from '@akeneo-pim-community/shared';
-import {BackendCategoryTree, Category, CategoryTreeModel} from 'feature/models';
+import {BackendCategoryTree, Category, CategoryTreeModel, Template} from 'feature/models';
 
 const aCategory = (
   code: string = 'a_category',
@@ -25,7 +25,8 @@ const aCategoryTree = (
   isRoot: boolean = true,
   isLeaf: boolean = false,
   id: number = 1234,
-  productsNumber?: number
+  productsNumber?: number,
+  template?: Template
 ): CategoryTreeModel => {
   return {
     id,
@@ -45,6 +46,7 @@ const aCategoryTree = (
       )
     ),
     productsNumber,
+    template
   };
 };
 
@@ -54,7 +56,8 @@ const aCategoryTreeWithChildren = (
   isRoot: boolean = true,
   isLeaf: boolean = false,
   id: number = 1234,
-  productsNumber?: number
+  productsNumber?: number,
+  template?: Template
 ): CategoryTreeModel => {
   return {
     id,
@@ -64,6 +67,7 @@ const aCategoryTreeWithChildren = (
     isLeaf,
     children,
     productsNumber,
+    template
   };
 };
 
