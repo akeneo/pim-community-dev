@@ -182,10 +182,8 @@ class ImportExportContext extends PimContext
     {
         $jobContext = $this->getMainContext()->getSubcontext('job');
 
-        $reader = SpoutReaderFactory::create($fileType, [
-            'fieldDelimiter' => $config['delimiter'],
-            'fieldEnclosure' => $config['enclosure'],
-        ]);
+        $readerOptions = SpoutReaderFactory::CSV === $fileType ? ['fieldDelimiter' => $config['delimiter'], 'fieldEnclosure' => $config['enclosure']] : [];
+        $reader = SpoutReaderFactory::create($fileType, $readerOptions);
 
         $reader->open($jobContext->copyArchiveLocally($archivePath));
         $sheet = current(iterator_to_array($reader->getSheetIterator()));
