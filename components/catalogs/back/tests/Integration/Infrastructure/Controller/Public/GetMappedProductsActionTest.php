@@ -146,6 +146,33 @@ class GetMappedProductsActionTest extends IntegrationTestCase
         Assert::assertEquals(422, $response->getStatusCode());
     }
 
+    public function testItReturnsAnErrorMessagePayloadWhenTheCatalogIsDisabled(): void
+    {
+        $this->client = $this->getAuthenticatedPublicApiClient([
+            'read_catalogs', 'read_products',
+        ]);
+        $this->commandBus->execute(new CreateCatalogCommand(
+            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            'Store US',
+            'shopifi'
+        ));
+        $this->client->request(
+            'GET',
+            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapped-products',
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+        );
+        $response = $this->client->getResponse();
+        $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        $expectedMessage = 'No products to synchronize. The catalog db1079b6-f397-4a6a-bae4-8658e64ad47c has been ' .
+            'disabled on the PIM side. Note that you can get catalogs status with the GET /api/rest/v1/catalogs endpoint.';
+        Assert::assertEquals(200, $response->getStatusCode());
+        Assert::assertEquals($expectedMessage, $payload['message']);
+    }
+
     public function testItReturnsForbiddenWhenMissingPermissions(): void
     {
         $this->client = $this->getAuthenticatedPublicApiClient([]);

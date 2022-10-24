@@ -6,6 +6,7 @@ namespace Akeneo\Catalogs\Infrastructure\Controller\Public;
 
 use Akeneo\Catalogs\Infrastructure\Security\DenyAccessUnlessGrantedTrait;
 use Akeneo\Catalogs\Infrastructure\Security\GetCurrentUsernameTrait;
+use Akeneo\Catalogs\ServiceAPI\Exception\CatalogDisabledException;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
@@ -55,6 +56,17 @@ final class GetMappedProductsAction
             $mappedProducts = $this->queryBus->execute(new GetMappedProductsQuery($catalogId, $searchAfter, $limit));
         } catch (ValidationFailedException $e) {
             throw new ViolationHttpException($e->getViolations());
+        } catch (CatalogDisabledException) {
+            return new JsonResponse(
+                [
+                    'message' => \sprintf(
+                        'No products to synchronize. The catalog %s has been disabled on the PIM side.' .
+                        ' Note that you can get catalogs status with the GET /api/rest/v1/catalogs endpoint.',
+                        $catalog->getId()
+                    )
+                ],
+                Response::HTTP_OK,
+            );
         }
 
         return new JsonResponse($this->paginate($catalog, $mappedProducts, $searchAfter, $limit), Response::HTTP_OK);
