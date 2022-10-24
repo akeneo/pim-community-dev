@@ -46,7 +46,8 @@ class CreateCatalogHandlerTest extends TestCase
                             'value' => true,
                         ],
                     ],
-                    []
+                    [],
+                    [],
                 )
             );
 

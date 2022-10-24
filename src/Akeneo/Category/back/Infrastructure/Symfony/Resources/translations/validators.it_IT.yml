@@ -1,0 +1,11 @@
+akeneo.category:
+  validation:
+    upsert:
+      category_code:
+        wrong_format: Il codice della categoria può contenere solo lettere, numeri e caratteri di sottolineatura
+        line_feed: Il codice della categoria non può contenere caratteri di ritorno a capo
+      duplicated_localize_user_intents: Il valore per l'impostazione locale {{ locale }} è stato aggiornato più volte.
+      value:
+        text_too_long: Il valore non può essere più lungo di {{ limit }} caratteri
+        textarea_too_long: Il valore non può essere più lungo di {{ limit }} caratteri
+        richtext_too_long: Il valore non può essere più lungo di {{ limit }} caratteri

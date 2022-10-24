@@ -21,12 +21,15 @@ namespace Akeneo\Catalogs\Domain;
  *      locales?: array<string>,
  *      currencies?: array<string>,
  * }
+ *
+ * @phpstan-type ProductMapping array<string, array<mixed>>
  */
 final class Catalog
 {
     /**
      * @param array<array-key, ProductSelectionCriterion> $productSelectionCriteria
      * @param ProductValueFilters $productValueFilters
+     * @param ProductMapping $productMapping
      */
     public function __construct(
         private string $id,
@@ -35,6 +38,7 @@ final class Catalog
         private bool $enabled,
         private array $productSelectionCriteria,
         private array $productValueFilters,
+        private array $productMapping,
     ) {
     }
 
@@ -72,6 +76,14 @@ final class Catalog
     public function getProductValueFilters(): array
     {
         return $this->productValueFilters;
+    }
+
+    /**
+     * @return ProductMapping
+     */
+    public function getProductMapping(): array
+    {
+        return $this->productMapping;
     }
 
     /**

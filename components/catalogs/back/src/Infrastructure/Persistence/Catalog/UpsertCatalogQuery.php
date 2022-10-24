@@ -28,7 +28,8 @@ final class UpsertCatalogQuery implements UpsertCatalogQueryInterface
             owner_id,
             is_enabled,
             product_selection_criteria,
-            product_value_filters
+            product_value_filters,
+            product_mapping
         )
         VALUES (
             UUID_TO_BIN(:id),
@@ -36,13 +37,15 @@ final class UpsertCatalogQuery implements UpsertCatalogQueryInterface
             (SELECT id FROM oro_user WHERE username = :owner_username LIMIT 1),
             :is_enabled,
             :product_selection_criteria,
-            :product_value_filters
+            :product_value_filters,
+            :product_mapping
         )
         ON DUPLICATE KEY UPDATE
             name = :name,
             is_enabled = :is_enabled,
             product_selection_criteria = :product_selection_criteria,
             product_value_filters = :product_value_filters,
+            product_mapping = :product_mapping,
             updated = NOW()
         SQL;
 
@@ -55,11 +58,13 @@ final class UpsertCatalogQuery implements UpsertCatalogQueryInterface
                 'is_enabled' => $catalog->isEnabled(),
                 'product_selection_criteria' => \array_values($catalog->getProductSelectionCriteria()),
                 'product_value_filters' => $catalog->getProductValueFilters(),
+                'product_mapping' => $catalog->getProductMapping(),
             ],
             [
                 'is_enabled' => Types::BOOLEAN,
                 'product_selection_criteria' => Types::JSON,
                 'product_value_filters' => Types::JSON,
+                'product_mapping' => Types::JSON,
             ]
         );
     }

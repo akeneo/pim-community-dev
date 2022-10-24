@@ -20,7 +20,7 @@ class AttributeIsLocalizable
         return new self($isLocalizable);
     }
 
-    public function isYes(): bool
+    public function getValue(): bool
     {
         return $this->isLocalizable;
     }
