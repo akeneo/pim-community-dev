@@ -76,7 +76,7 @@ class InitCategoryDbSchemaSubscriber implements EventSubscriberInterface
     {
         $query = <<<SQL
             CREATE TABLE IF NOT EXISTS `pim_catalog_category_attribute` (
-                `identifier` BINARY(16) PRIMARY KEY,
+                `uuid` BINARY(16) PRIMARY KEY,
                 `code` VARCHAR(100) NOT NULL,  
                 `category_template_uuid` binary(16) NOT NULL,
                 `labels` JSON NOT NULL,
