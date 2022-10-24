@@ -144,8 +144,10 @@ class GetProductsAction
 
             return [
                 'identifier' => $connectorProduct->identifier(),
-                'type'      => null === $connectorProduct->parentProductModelCode() ? 'simple' : 'child',
-                'values'    => $values,
+                'type' => null === $connectorProduct->parentProductModelCode() ? 'simple' : 'child',
+                'rootParentCode' => $connectorProduct->parentProductModelCode() ?? null,
+                'uuid' => $connectorProduct->uuid(),
+                'values' => $values,
             ];
         }, $connectorProducts);
 

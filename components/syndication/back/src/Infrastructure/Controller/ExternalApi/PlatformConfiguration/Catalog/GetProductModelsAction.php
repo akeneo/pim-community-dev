@@ -144,8 +144,10 @@ class GetProductModelsAction
 
             return [
                 'identifier' => $connectorProduct->code(),
-                'type'      => 'parent',
-                'values'    => $values,
+                'type' => 'parent',
+                'values' => $values,
+                'rootParentCode' => $connectorProduct->parentCode(),
+                'uuid' => null
             ];
         }, $connectorProductModels);
 
