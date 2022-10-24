@@ -1,13 +1,16 @@
 import {useQuery} from 'react-query';
 import {UiLocale} from '../models';
+import {useRouter} from '@akeneo-pim-community/shared';
 
 const useUiLocales: () => {
   data?: UiLocale[];
   error: Error | null;
   isSuccess: boolean;
 } = () => {
+  const router = useRouter();
+
   const getUiLocales = async () => {
-    return fetch('/system/locale/ui', {
+    return fetch(router.generate('pim_localization_locale_index'), {
       method: 'GET',
       headers: [['X-Requested-With', 'XMLHttpRequest']],
     }).then(res => {

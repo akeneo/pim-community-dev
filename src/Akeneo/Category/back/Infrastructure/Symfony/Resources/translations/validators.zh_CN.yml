@@ -1,0 +1,11 @@
+akeneo.category:
+  validation:
+    upsert:
+      category_code:
+        wrong_format: 类别代码仅可包含字母、数字和下划线
+        line_feed: 类别代码不能包含换行字符
+      duplicated_localize_user_intents: 区域 {{ locale }} 的值被多次更新。
+      value:
+        text_too_long: 此值不能超过 {{ limit }} 个字符
+        textarea_too_long: 此值不能超过 {{ limit }} 个字符
+        richtext_too_long: 此值不能超过 {{ limit }} 个字符

@@ -22,11 +22,6 @@ final class ErrorList implements \Countable
         return count($this->errors);
     }
 
-    public function add(Error $error): void
-    {
-        $this->errors[] = $error;
-    }
-
     /**
      * @return array<array{message: string, path: string | null}>
      */
@@ -35,7 +30,7 @@ final class ErrorList implements \Countable
         return array_map(fn (Error $error): array => $error->normalize(), $this->errors);
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return \join("\n", array_map(fn (Error $error): string => $error->__toString(), $this->errors));
     }
