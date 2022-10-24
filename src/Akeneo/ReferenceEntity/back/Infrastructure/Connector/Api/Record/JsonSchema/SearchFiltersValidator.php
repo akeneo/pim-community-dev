@@ -36,7 +36,7 @@ class SearchFiltersValidator
 
         $errorFormatter = new ErrorFormatter();
 
-        $customFormatter = fn (ValidationError $error) => [
+        $customFormatter = static fn (ValidationError $error) => [
             'property' => $errorFormatter->formatErrorKey($error),
             'message' => $errorFormatter->formatErrorMessage($error),
         ];
