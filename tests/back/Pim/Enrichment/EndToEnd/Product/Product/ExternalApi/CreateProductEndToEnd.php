@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
@@ -21,7 +22,7 @@ class CreateProductEndToEnd extends AbstractProductTestCase
     {
         parent::setUp();
 
-        $this->createProduct('simple', []);
+        $this->createProductWithUuid('71dfe9d2-e8aa-4574-a2d4-0f0c40f8a5f1', [new SetIdentifierValue('sku', 'simple')]);
     }
 
     public function testHttpHeadersInResponseWhenAProductIsCreated()
@@ -1019,6 +1020,7 @@ JSON;
     {
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
         $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
+        unset($standardizedProduct['uuid']);
 
         NormalizedProductCleaner::clean($standardizedProduct);
         NormalizedProductCleaner::clean($expectedProduct);

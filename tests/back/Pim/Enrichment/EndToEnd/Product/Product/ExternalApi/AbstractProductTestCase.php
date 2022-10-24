@@ -157,6 +157,7 @@ abstract class AbstractProductTestCase extends ApiTestCase
         $product = $this->getProductRepository()->findOneByIdentifier($identifier);
 
         $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
+        unset($standardizedProduct['uuid']);
 
         NormalizedProductCleaner::clean($expectedProduct);
         NormalizedProductCleaner::clean($standardizedProduct);
