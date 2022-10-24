@@ -53,6 +53,9 @@ final class GetMappedProductsAction
 
         try {
             $mappedProducts = $this->queryBus->execute(new GetMappedProductsQuery($catalogId, $searchAfter, $limit));
+
+            dd($mappedProducts);
+
         } catch (ValidationFailedException $e) {
             throw new ViolationHttpException($e->getViolations());
         }
@@ -99,18 +102,19 @@ final class GetMappedProductsAction
     {
         $last = \end($mappedProducts);
 
+
         $result = [
             '_links' => [
                 'self' => [
                     'href' => $this->router->generate('akeneo_catalogs_public_get_mapped_products', [
-                        'id' => $catalog->getId(),
+                        'catalogId' => $catalog->getId(),
                         'search_after' => $searchAfter,
                         'limit' => $limit,
                     ]),
                 ],
                 'first' => [
                     'href' => $this->router->generate('akeneo_catalogs_public_get_mapped_products', [
-                        'id' => $catalog->getId(),
+                        'catalogId' => $catalog->getId(),
                         'limit' => $limit,
                     ]),
                 ],
@@ -123,7 +127,7 @@ final class GetMappedProductsAction
         if (false !== $last && \count($mappedProducts) >= $limit) {
             $result['_links']['next'] = [
                 'href' => $this->router->generate('akeneo_catalogs_public_get_mapped_products', [
-                    'id' => $catalog->getId(),
+                    'catalogId' => $catalog->getId(),
                     'search_after' => $last['uuid'],
                     'limit' => $limit,
                 ]),

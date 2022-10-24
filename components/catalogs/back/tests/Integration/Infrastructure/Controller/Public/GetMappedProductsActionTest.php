@@ -99,7 +99,8 @@ class GetMappedProductsActionTest extends IntegrationTestCase
     }
     */
 
-    public function testItGetsTheCatalogProductMappingSchema(): void
+
+    public function testItGetsPaginatedMappedProductsByCatalogId(): void
     {
         $this->client = $this->getAuthenticatedPublicApiClient([
             'read_catalogs', 'read_products',
@@ -115,6 +116,25 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             \json_decode($this->getProductMappingSchemaRaw(), false, 512, JSON_THROW_ON_ERROR),
         ));
 
+        $this->setCatalogProductMapping('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
+            "title" => [
+                "source" => "name",
+                "scope" => "ecommerce",
+                "locale" => "en_US",
+            ]
+        ]);
+
+        $this->createAttribute([
+            'code' => 'name',
+            'type' => 'pim_catalog_text',
+            'scopable' => true,
+            'localizable' => true,
+        ]);
+
+        $this->createProduct('tshirt-blue', [
+            new SetTextValue('name', 'ecommerce', 'en_US', 'Blue'),
+        ]);
+
         $this->client->request(
             'GET',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapped-products',
@@ -128,9 +148,13 @@ class GetMappedProductsActionTest extends IntegrationTestCase
         $response = $this->client->getResponse();
         $payload = $response->getContent();
 
-        dd($payload);
-
         Assert::assertEquals(200, $response->getStatusCode());
+
+        $mappedProducts = [
+            ['title' => 'Blue']
+        ];
+
+        Assert::assertEquals($mappedProducts, $payload['_embedded']['items']);
     }
 
 
@@ -232,12 +256,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
           "description": "JSON Schema describing the structure of products expected by our application",
           "type": "object",
           "properties": {
-            "name": {
-              "type": "string"
-            },
-            "body_html": {
-              "title": "Description",
-              "description": "Product description in raw HTML",
+            "title": {
               "type": "string"
             }
           }
