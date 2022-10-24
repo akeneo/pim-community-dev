@@ -46,7 +46,7 @@ const aCategoryTree = (
       )
     ),
     productsNumber,
-    template
+    template,
   };
 };
 
@@ -67,7 +67,7 @@ const aCategoryTreeWithChildren = (
     isLeaf,
     children,
     productsNumber,
-    template
+    template,
   };
 };
 

@@ -24,6 +24,7 @@ class Category
         private ?CategoryId $rootId = null,
         private ?ValueCollection $attributes = null,
         private ?PermissionCollection $permissions = null,
+        private ?Template $template = null
     ) {
     }
 
@@ -89,6 +90,11 @@ class Category
         $this->attributes = $attributes;
     }
 
+    public function getTemplate(): ?Template
+    {
+        return $this->template;
+    }
+
     /**
      * @return array{
      *     id: int|null,
@@ -114,6 +120,7 @@ class Category
             ],
             'attributes' => $this->getAttributes()?->normalize(),
             'permissions' => $this->getPermissions()?->normalize(),
+            'template' => $this->getTemplate()?->normalize(),
         ];
     }
 }

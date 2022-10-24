@@ -8,6 +8,7 @@ import {
   useRouter,
   useSecurity,
   useTranslate,
+  useUserContext,
 } from '@akeneo-pim-community/shared';
 import {CategoryTreeModel} from '../../models';
 import styled from 'styled-components';
@@ -26,12 +27,14 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
   const router = useRouter();
   const featureFlags = useFeatureFlags();
   const {isGranted} = useSecurity();
+  const userContext = useUserContext();
   const [searchString, setSearchString] = useState('');
   const [filteredTrees, setFilteredTrees] = useState<CategoryTreeModel[]>(trees);
   const notify = useNotify();
   const [isConfirmationModalOpen, openConfirmationModal, closeConfirmationModal] = useBooleanState();
   const [categoryTreeToDelete, setCategoryTreeToDelete] = useState<CategoryTreeModel | null>(null);
   const [hasTemplates, setHasTemplates] = useState<boolean>(false);
+  const uiLocale = userContext.get('uiLocale');
 
   const followCategoryTree = useCallback(
     (tree: CategoryTreeModel): void => {
@@ -109,7 +112,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
     let hasTemplates = false;
 
     filteredTrees.map(function (tree) {
-      if (tree.template !== undefined && tree.template) {
+      if (tree.template) {
         hasTemplates = true;
       }
 
@@ -151,7 +154,8 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
               </Table.HeaderCell>
               {featureFlags.isEnabled('enriched_category') &&
                 (isGranted('pim_enrich_product_category_template') ||
-                  isGranted('pim_enrich_product_category_edit_attributes')) && hasTemplates && (
+                  isGranted('pim_enrich_product_category_edit_attributes')) &&
+                hasTemplates && (
                   <Table.HeaderCell>
                     {translate('akeneo.category.tree_list.column.category_templates')}
                   </Table.HeaderCell>
@@ -175,8 +179,13 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                   </Table.Cell>
                   {featureFlags.isEnabled('enriched_category') &&
                     (isGranted('pim_enrich_product_category_template') ||
-                      isGranted('pim_enrich_product_category_edit_attributes')) && hasTemplates && (
-                      <Table.Cell>{typeof tree.template !== undefined ? tree.template : ''}</Table.Cell>
+                      isGranted('pim_enrich_product_category_edit_attributes')) &&
+                    hasTemplates && (
+                      <Table.Cell>
+                        {tree.template && tree.template.labels[uiLocale]
+                            ? tree.template.labels[uiLocale]
+                            : `[${tree.code}]`}
+                      </Table.Cell>
                     )}
                   <TableActionCell>
                     {isGranted('pim_enrich_product_category_remove') && (
