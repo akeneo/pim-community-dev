@@ -20,7 +20,7 @@ class AttributeIsScopable
         return new self($isScopable);
     }
 
-    public function isYes(): bool
+    public function getValue(): bool
     {
         return $this->isScopable;
     }
