@@ -35,7 +35,7 @@ final class GetProductMappingSchemaHandler
             throw new ServiceApiCatalogNotFoundException();
         }
 
-        $productMappingSchemaFile = \sprintf('%d_product.json', $catalog->getId());
+        $productMappingSchemaFile = \sprintf('%s_product.json', $catalog->getId());
 
         if (!$this->catalogsMappingStorage->exists($productMappingSchemaFile)) {
             throw new ServiceApiProductSchemaMappingNotFoundException();

@@ -8,9 +8,9 @@ use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductUuidsQueryInterface;
 use Akeneo\Catalogs\Application\Storage\CatalogsMappingStorageInterface;
-use Akeneo\Catalogs\ServiceAPI\Command\UpdateProductMappingSchemaCommand;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogDisabledException;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogNotFoundException as ServiceApiCatalogNotFoundException;
+use Akeneo\Catalogs\ServiceAPI\Exception\ProductSchemaMappingNotFoundException as ServiceApiProductSchemaMappingNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductsQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
@@ -42,6 +42,7 @@ final class GetMappedProductsHandler
             throw new ServiceApiCatalogNotFoundException();
         }
 
+
         if (!$catalog->isEnabled()) {
             throw new CatalogDisabledException();
         }
@@ -49,8 +50,14 @@ final class GetMappedProductsHandler
         $productUuids = $this->getProductUuidsQuery->execute($catalog, $query->getSearchAfter(), $query->getLimit());
         $products = $this->productRepository->getItemsFromUuids($productUuids);
 
+        $productMappingSchemaFile = \sprintf('%s_product.json', $catalog->getId());
+
+        if (!$this->catalogsMappingStorage->exists($productMappingSchemaFile)) {
+            throw new ServiceApiProductSchemaMappingNotFoundException();
+        }
+
         $productMappingSchemaRaw = \stream_get_contents(
-            $this->catalogsMappingStorage->read(\sprintf('%s_product.json', $catalog->getId()))
+            $this->catalogsMappingStorage->read($productMappingSchemaFile)
         );
 
         if (false === $productMappingSchemaRaw) {
@@ -60,28 +67,33 @@ final class GetMappedProductsHandler
         $productMappingSchema = \json_decode($productMappingSchemaRaw, false, 512, JSON_THROW_ON_ERROR);
         $productMapping = $catalog->getProductMapping();
 
-        return \array_map(
-            static function (ProductInterface $product) use ($productMappingSchema, $productMapping): array {
-                $mappedProduct = [];
-                foreach ($productMappingSchema as $key => $property) {
-                    $sourceValue = '';
-                    if (\array_key_exists($key, $productMapping)) {
-                        // @todo manage system code
-                        $productAttributeValue = $product->getValue(
-                            $productMapping[$key]['source'],
-                            $productMapping[$key]['locale'],
-                            $productMapping[$key]['scope']
-                        );
+        try {
+            return \array_map(
+                static function (ProductInterface $product) use ($productMappingSchema, $productMapping): array {
+                    $mappedProduct = [];
+                    foreach ($productMappingSchema as $key => $property) {
+                        $sourceValue = '';
+                        if (\array_key_exists($key, $productMapping)) {
+                            // @todo manage system code
+                            $productAttributeValue = $product->getValue(
+                                $productMapping[$key]['source'],
+                                $productMapping[$key]['locale'],
+                                $productMapping[$key]['scope']
+                            );
 
-                        if (null !== $productAttributeValue) {
-                            $sourceValue = (string) $productAttributeValue->getData();
+                            if (null !== $productAttributeValue) {
+                                $sourceValue = (string)$productAttributeValue->getData();
+                            }
                         }
+                        $mappedProduct[$key] = $sourceValue;
                     }
-                    $mappedProduct[$key] = $sourceValue;
-                }
-                return $mappedProduct;
-            },
-            $products
-        );
+                    return $mappedProduct;
+                },
+                $products
+            );
+        }
+        catch (\Exception $e) {
+            dd($e);
+        }
     }
 }

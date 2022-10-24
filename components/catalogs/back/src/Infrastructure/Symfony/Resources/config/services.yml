@@ -41,6 +41,9 @@ services:
     Akeneo\UserManagement\Component\Repository\UserRepositoryInterface:
         alias: 'pim_user.repository.user'
 
+    Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface:
+        alias: 'pim_catalog.repository.product'
+
     Akeneo\Catalogs\Infrastructure\Command\CatalogFixtureCommand:
         arguments:
             $env: '%kernel.environment%'
