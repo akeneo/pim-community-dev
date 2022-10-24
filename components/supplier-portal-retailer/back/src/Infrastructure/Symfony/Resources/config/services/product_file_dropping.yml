@@ -168,6 +168,11 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\MarkCommentsAsReadByRetailer:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseMarkCommentsAsReadByRetailer
+        arguments:
+            - '@database_connection'
+
     # Event subscribers
     Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Subscriber\NotifyUsersOnProductFileAdded:
         arguments:
