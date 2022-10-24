@@ -44,4 +44,4 @@ services:
             - '@pim_catalog.association.filter.parent_associations'
             - '@pim_catalog.quantified_associations.quantified_associations_from_ancestors_filter'
             - '@pim_catalog.updater.validator.quantified_associations_structure_validator'
-            - ['identifier', 'created', 'updated', 'parent_associations', 'metadata']
+            - ['uuid', 'identifier', 'created', 'updated', 'parent_associations', 'metadata']
