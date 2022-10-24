@@ -42,6 +42,14 @@ class ProductCreationEndToEnd extends InternalApiTestCase
         $this->assertEquals($identifier, $createdProduct[0]->identifier());
     }
 
+    public function testThatWeCanCreateAProductWithoutIdentifier(): void
+    {
+        $previousCount = $this->getProductsCount();
+        $this->createProductWithInternalApi('');
+
+        $this->assertEquals($previousCount + 1, $this->getProductsCount());
+    }
+
     private function createProductWithInternalApi(string $identifier): void
     {
         $this->client->request(
@@ -88,5 +96,14 @@ SQL;
                 ['identifiers' => Connection::PARAM_STR_ARRAY]
             )
         );
+    }
+
+    private function getProductsCount(): int
+    {
+        $sql = <<<SQL
+SELECT COUNT(1) FROM pim_catalog_product
+SQL;
+
+        return \intval(self::getContainer()->get('database_connection')->executeQuery($sql)->fetchOne());
     }
 }
