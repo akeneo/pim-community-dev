@@ -53,7 +53,7 @@ class ProductModelCreatedAndUpdatedEventDataBuilderIntegration extends TestCase
 
         $collection = $this->productModelCreatedAndUpdatedEventDataBuilder->build(
             new BulkEvent([$productModelNotViewableUpdatedEvent, $productModelViewableUpdatedEvent]),
-            new Context($user->getUsername(), $user->getId()),
+            new Context($user->getUserIdentifier(), $user->getId()),
         );
 
         $error = $collection->getEventData($productModelNotViewableUpdatedEvent);
