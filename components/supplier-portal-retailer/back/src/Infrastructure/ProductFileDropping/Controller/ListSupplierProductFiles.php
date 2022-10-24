@@ -11,7 +11,7 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\Product
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-final class ProductFilesList
+final class ListSupplierProductFiles
 {
     public function __construct(
         private ListProductFiles $getProductFiles,

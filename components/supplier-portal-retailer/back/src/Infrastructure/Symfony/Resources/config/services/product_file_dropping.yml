@@ -13,7 +13,7 @@ services:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetAllProductFiles'
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetAllProductFilesCount'
 
-    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\ProductFilesList:
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\ListSupplierProductFiles:
         public: true
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFiles'
