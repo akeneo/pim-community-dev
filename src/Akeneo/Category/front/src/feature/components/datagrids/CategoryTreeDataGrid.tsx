@@ -31,6 +31,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
   const notify = useNotify();
   const [isConfirmationModalOpen, openConfirmationModal, closeConfirmationModal] = useBooleanState();
   const [categoryTreeToDelete, setCategoryTreeToDelete] = useState<CategoryTreeModel | null>(null);
+  const [hasTemplates, setHasTemplates] = useState<boolean>(false);
 
   const followCategoryTree = useCallback(
     (tree: CategoryTreeModel): void => {
@@ -104,6 +105,16 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
 
   const countTreesChildren = useCountCategoryTreesChildren();
 
+  useEffect(() => {
+    filteredTrees.map(function (tree) {
+      if (tree.template !== undefined && tree.template) {
+        setHasTemplates(true);
+      }
+    });
+
+    setHasTemplates(false);
+  }, [filteredTrees]);
+
   return (
     <>
       <StyledSearch
@@ -136,7 +147,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
               </Table.HeaderCell>
               {featureFlags.isEnabled('enriched_category') &&
                 (isGranted('pim_enrich_product_category_template') ||
-                  isGranted('pim_enrich_product_category_edit_attributes')) && (
+                  isGranted('pim_enrich_product_category_edit_attributes')) && hasTemplates && (
                   <Table.HeaderCell>
                     {translate('akeneo.category.tree_list.column.category_templates')}
                   </Table.HeaderCell>
@@ -160,7 +171,9 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                   </Table.Cell>
                   {featureFlags.isEnabled('enriched_category') &&
                     (isGranted('pim_enrich_product_category_template') ||
-                      isGranted('pim_enrich_product_category_edit_attributes')) && <Table.Cell>test</Table.Cell>}
+                      isGranted('pim_enrich_product_category_edit_attributes')) && hasTemplates && (
+                      <Table.Cell>{typeof tree.template !== undefined ? tree.template.label : ''}</Table.Cell>
+                    )}
                   <TableActionCell>
                     {isGranted('pim_enrich_product_category_remove') && (
                       <Button
