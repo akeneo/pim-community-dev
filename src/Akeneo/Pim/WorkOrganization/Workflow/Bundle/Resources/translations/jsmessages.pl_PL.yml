@@ -183,6 +183,7 @@ pimee_enrich.entity.published_product:
     publish:
       success: Produkt pomyślnie opublikowano
       fail: Nie udało się opublikować tego produktu
+      fail_no_identifier: Nie można opublikować tego produktu, ponieważ nie ma identyfikatora.
     unpublish:
       success: Publikacja produktu cofnięta pomyślnie
       fail: Nie udało się cofnąć publikacji tego produktu

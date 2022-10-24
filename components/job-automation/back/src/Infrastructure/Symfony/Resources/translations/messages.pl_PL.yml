@@ -1,0 +1,4 @@
+akeneo.job_automation:
+  notification:
+    invalid_job_instance: 'Nie można uruchomić profilu „{{ label }}” typu {{ type }} z powodu następujących błędów: {{ error }}'
+    internal_error: Wewnętrzny błąd systemu. Nie można uruchomić zadania z powodu problemu z infrastrukturą. Spróbuj ponownie później.

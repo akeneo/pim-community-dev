@@ -8,13 +8,17 @@ akeneo.job_automation:
     enable: Włącz harmonogram
     cannot_view_all_jobs: "Nie możesz wyświetlić zautomatyzowanych zadań w module Tracker procesu, ponieważ nie masz następującego uprawnienia w ramach Twojej roli: „Zobacz wysztkie zadania w trackerze procesów”. Skontaktuj się z administratorem PIM."
     frequency:
+      helper: "Częstotliwość jest wyświetlana zgodnie z czasem UTC. W Twojej strefie czasowej ({{ timezone }}): {{ selectedTimeInUserTimezone }}"
       hourly_helper: Częstotliwości występujące kilka razy dziennie zaczynają się o północy (UTC).
       title: Częstotliwość
       daily: Codziennie
       weekly: Co tydzień
+      weekday: Dzień
       every_4_hours: Co 4 godziny
       every_8_hours: Co 8 godzin
       every_12_hours: Co 12 godzin
+      hours: Godzina
+      minutes: Minuta
       monday: Poniedziałek
       tuesday: Wtorek
       wednesday: Środa
