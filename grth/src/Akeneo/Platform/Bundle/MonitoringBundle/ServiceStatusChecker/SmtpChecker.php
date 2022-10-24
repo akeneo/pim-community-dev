@@ -13,25 +13,24 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker;
 
-use Exception;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Mailer\Transport\Dsn;
+use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransportFactory;
 
 final class SmtpChecker
 {
-    private \Swift_Transport $transport;
-    private LoggerInterface $logger;
-
-
-    public function __construct(\Swift_Transport $transport, LoggerInterface $logger)
-    {
-        $this->transport = $transport;
-        $this->logger = $logger;
+    public function __construct(
+        private EsmtpTransportFactory $transportFactory,
+        private string $mailerDsn,
+        private LoggerInterface $logger,
+    ) {
     }
 
     public function status(): ServiceStatus
     {
         try {
-            $ping = $this->transport->ping();
+            $transport = $this->transportFactory->create(Dsn::fromString($this->mailerDsn));
+            $ping = $transport->executeCommand("NOOP\r\n", [250]);
         } catch (\Throwable $e) {
             $this->logger->error("Smtp ServiceCheck error", ['exception' => $e]);
             return ServiceStatus::notOk(sprintf('Unable to ping the mailer transport: "%s".', $e->getMessage()));

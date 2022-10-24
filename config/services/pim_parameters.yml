@@ -4,9 +4,6 @@ parameters:
     session_handler:      ~
     database_unix_socket: ~
 
-    mailer_url: '%env(MAILER_URL)%'
-    mailer_from_name:     Akeneo Admin
-
     # WebSocket server config
     websocket_host:       "127.0.0.1"
     websocket_port:       8080

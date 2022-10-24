@@ -30,7 +30,8 @@ services:
     Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\SmtpChecker:
         class: 'Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\SmtpChecker'
         arguments:
-            - '@swiftmailer.mailer.default.transport.real'
+            - '@mailer.transport_factory.smtp'
+            - '%env(MAILER_DSN)'
             - '@logger'
 
     Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\Controller:
