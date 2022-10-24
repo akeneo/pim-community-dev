@@ -19,6 +19,9 @@ final class SpoutReaderFactory
     public const XLSX = 'xlsx';
     public const CSV = 'csv';
 
+    /**
+     * @return XlsxReader|CsvReader
+     */
     public static function create(string $type, array $normalizedOptions = []): ReaderInterface
     {
         switch ($type) {
