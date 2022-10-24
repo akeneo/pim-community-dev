@@ -34,7 +34,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
   const [isConfirmationModalOpen, openConfirmationModal, closeConfirmationModal] = useBooleanState();
   const [categoryTreeToDelete, setCategoryTreeToDelete] = useState<CategoryTreeModel | null>(null);
   const [hasTemplates, setHasTemplates] = useState<boolean>(false);
-  const uiLocale = userContext.get('uiLocale');
+  const catalogLocale = userContext.get('catalogLocale');
 
   const followCategoryTree = useCallback(
     (tree: CategoryTreeModel): void => {
@@ -182,8 +182,8 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                       isGranted('pim_enrich_product_category_edit_attributes')) &&
                     hasTemplates && (
                       <Table.Cell>
-                        {tree.template && tree.template.labels[uiLocale]
-                            ? tree.template.labels[uiLocale]
+                        {tree.template && tree.template.labels[catalogLocale]
+                            ? tree.template.labels[catalogLocale]
                             : `[${tree.code}]`}
                       </Table.Cell>
                     )}
