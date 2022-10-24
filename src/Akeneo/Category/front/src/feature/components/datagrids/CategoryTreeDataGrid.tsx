@@ -183,8 +183,8 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                     hasTemplates && (
                       <Table.Cell>
                         {tree.template && tree.template.labels[catalogLocale]
-                            ? tree.template.labels[catalogLocale]
-                            : `[${tree.code}]`}
+                          ? tree.template.labels[catalogLocale]
+                          : `[${tree.code}]`}
                       </Table.Cell>
                     )}
                   <TableActionCell>
