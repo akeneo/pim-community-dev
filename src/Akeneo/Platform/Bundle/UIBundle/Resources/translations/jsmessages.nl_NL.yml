@@ -197,6 +197,8 @@ pim_common:
   less_than: Minder dan
   loading: Laden...
   media_upload: Klik en sleep een bestand om te uploaden of klik hier
+  media_uploading: Bezig met uploaden…
+  media_upload_error: Er is een fout opgetreden tijdens het uploaden
   more_actions: Meer acties
   more_than: Meer dan
   next: Volgende

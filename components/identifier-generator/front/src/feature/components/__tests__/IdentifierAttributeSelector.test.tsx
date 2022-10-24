@@ -39,7 +39,7 @@ describe('IdentifierAttributeSelector', () => {
     const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
     // @ts-ignore
     jest.spyOn(global, 'fetch').mockImplementation(input => {
-      if (input === '/identifier-generator/identifier-attributes') {
+      if (input === 'akeneo_identifier_generator_get_identifier_attributes') {
         return Promise.reject({message: 'unexpected error'});
       }
       return Promise.resolve({
