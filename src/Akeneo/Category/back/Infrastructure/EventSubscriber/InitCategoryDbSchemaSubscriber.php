@@ -38,7 +38,7 @@ class InitCategoryDbSchemaSubscriber implements EventSubscriberInterface
         }
 
         $addCategoryValueCollectionQuery = <<<SQL
-            ALTER TABLE pim_catalog_category ADD value_collection JSON;
+            ALTER TABLE pim_catalog_category ADD COLUMN value_collection JSON AFTER rgt;
         SQL;
 
         $this->dbalConnection->executeQuery($addCategoryValueCollectionQuery);
