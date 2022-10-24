@@ -171,4 +171,8 @@ jobs:
         alias:     aggregate_volume_queries
         label:     Aggregate volume monitoring queries
         type:      scheduled_job
-
+    schedule_dqi_periodic_tasks:
+        connector: internal
+        alias:     schedule_dqi_periodic_tasks
+        label:     Schedule the periodic tasks of Data-Quality-Insights.
+        type:      scheduled_job
