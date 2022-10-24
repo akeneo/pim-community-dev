@@ -24,6 +24,7 @@ ifeq ($(TYPE),grth)
 	PIM_SRC_PATH := $(realpath $(DEPLOYMENT_DIR)/../$(TYPE))
 	BUCKET := growth-edition-dev
 endif
+
 ifeq ($(TYPE),tria)
 	TYPE_LONG := pim_trial
 	PIM_SRC_PATH := $(realpath $(DEPLOYMENT_DIR)/../$(TYPE))
@@ -529,33 +530,18 @@ test-helm-cronjob: #Doc: Test declared cronjob job are available via the PIM con
 test_helm_generated_k8s_files: #Doc Test helm generated templates are K8S compliant
 	bash $(DEPLOYMENT_DIR)/bin/test_helm_generated_k8s_files.sh
 
-.PHONY: test_deployment_e2e
-test_deployment_e2e: configure-cypress #Doc Test srnt (c3po)/grth(r2d2) instances
-	cd $(DEPLOYMENT_DIR)/test/e2e/ && docker-compose run --rm cypress --headless --config-file ./config/cypress.$(TYPE).json
-
-.PHONY: configure-cypress
-configure-cypress: update-cypress-config get-pim-community-cypress-command
-	@echo "Cypress configuration done"
-
-update-cypress-config: update-cypress-config-login update-cypress-config-password update-cypress-config-version
-
-update-cypress-config-login:
-ifneq ($(origin LOGIN),undefined)
-	yq w -i -j -P $(DEPLOYMENT_DIR)/test/e2e/config/cypress.$(TYPE).json 'env.PIM_WEB_LOGIN' ${LOGIN}
-	@echo "PIM login set to ${LOGIN}"
-endif
-
-update-cypress-config-password:
-ifneq ($(origin PASSWORD),undefined)
-	yq w -i -j -P $(DEPLOYMENT_DIR)/test/e2e/config/cypress.$(TYPE).json 'env.PIM_WEB_PASSWORD' ${PASSWORD}
-	@echo "PIM password set"
-endif
-
-update-cypress-config-version:
-ifneq ($(origin VERSION),undefined)
-	yq w -i -j -P $(DEPLOYMENT_DIR)/test/e2e/config/cypress.$(TYPE).json 'env.PIM_VERSION' ${VERSION}
-	@echo "PIM version set to ${VERSION}"
-endif
-
 get-pim-community-cypress-command:
 	cd $(DEPLOYMENT_DIR)/test/e2e/ && wget https://raw.githubusercontent.com/akeneo/pim-community-dev/master/cypress/support/commands.js -O ./cypress/support/commands.js
+
+.PHONY: test_deployment_e2e
+test_deployment_e2e: get-pim-community-cypress-command #Doc: Test srnt (c3po)/grth(r2d2) instances
+ifeq ($(TYPE),grth)
+	export PIM_BASEURL="https://r2d2.demo.cloud.akeneo.com/"
+endif
+ifeq ($(TYPE),srnt)
+	export PIM_BASEURL="https://c3po.demo.cloud.akeneo.com/"
+endif
+ifeq ($(TYPE),tria)
+	export PIM_BASEURL="https://to.be.defined/"
+endif
+	cd $(DEPLOYMENT_DIR)/test/e2e/ && docker-compose run --rm cypress --headless --config baseUrl=${PIM_BASEURL} --env PRODUCT_TYPE=${TYPE},PIM_VERSION=${PIM_VERSION}

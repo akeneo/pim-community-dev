@@ -1,9 +1,0 @@
-{
-  "extends": "../cypress.json",
-  "projectId": "grth-validation",
-  "baseUrl": "https://r2d2.demo.cloud.akeneo.com/",
-  "env": {
-    "CHECK_IMAGE_LOADING": false,
-    "PRODUCT_TYPE": "grth"
-  }
-}

@@ -1,13 +1,7 @@
 {
-    "baseUrl": "http://localhost:8080",
     "fixturesFolder": false,
     "videoUploadOnPasses": false,
     "env": {
-        "CHECK_IMAGE_LOADING": true,
-        "DEPLOYMENT_TEST": true,
-        "PIM_VERSION": "master",
-        "PIM_WEB_LOGIN": "admin",
-        "PIM_WEB_PASSWORD": "admin",
-        "PRODUCT_TYPE": "srnt"
+        "DEPLOYMENT_TEST": true
     }
 }

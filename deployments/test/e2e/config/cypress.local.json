@@ -1,5 +1,0 @@
-{
-  "extends": "../cypress.json",
-  "projectId": "local-validation",
-  "env": {}
-}

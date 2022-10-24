@@ -1,12 +1,5 @@
 orbs:
     slack: circleci/slack@3.4.2
-    cypress: cypress-io/cypress@1
-
-executors:
-  cypress-legacy-with-chrome:
-    docker:
-      - image: 'cypress/included:7.6.0'
-    resource_class: large
 
 workflows:
     on_demand_deployment_validation:
@@ -28,50 +21,26 @@ workflows:
                   cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}'
                   requires:
                       - "Start test ?"
-            - configure_deployment_e2e_validation:
-                  name: "[srnt] Configure cypress"
+                  post-install:
+                    - run:
+                        name: Get the required file commands.js from pim-community-dev
+                        command: wget https://raw.githubusercontent.com/akeneo/pim-community-dev/master/cypress/support/commands.js -O ./deployments/test/e2e/cypress/support/commands.js
+            - cypress_e2e:
+                  name: "[srnt] Execute e2e tests"
                   matrix:
                       parameters:
                           PRODUCT_TYPE: ["srnt"]
                           PFID: ["srnt-c3po"]
                   requires:
-                      - "Cypress install"
-            - configure_deployment_e2e_validation:
-                  name: "[grth] Configure cypress"
+                    - "Cypress install"
+            - cypress_e2e:
+                  name: "[grth] Execute e2e tests"
                   matrix:
                       parameters:
                           PRODUCT_TYPE: ["grth"]
                           PFID: ["grth-r2d2"]
                   requires:
-                      - "Cypress install"
-            - cypress/run:
-                  name: "[srnt] Post deployment e2e validation"
-                  executor: cypress-legacy-with-chrome
-                  browser: chrome
-                  store_artifacts: true
-                  post-checkout:
-                      - run: cp -R ~/deployments ~/project
-                  attach-workspace: true
-                  config-file: ./config/cypress.srnt.json
-                  working_directory: deployments/test/e2e
-                  cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}'
-                  no-workspace: true
-                  requires:
-                      - "[srnt] Configure cypress"
-            - cypress/run:
-                  name: "[grth] Post deployment e2e validation"
-                  executor: cypress-legacy-with-chrome
-                  browser: chrome
-                  store_artifacts: true
-                  post-checkout:
-                      - run: cp -R ~/deployments ~/project
-                  attach-workspace: true
-                  config-file: ./config/cypress.grth.json
-                  working_directory: deployments/test/e2e
-                  cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}'
-                  no-workspace: true
-                  requires:
-                      - "[grth] Configure cypress"
+                    - "Cypress install"
 
     on_demand_compliancy_checker:
         when:

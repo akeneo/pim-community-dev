@@ -4,10 +4,7 @@ dockerCloudDeployerNext: &dockerCloudDeployerNext
 executor-machine: &executor-machine
 
 jobs:
-    # Description :
-    #    Define parameters to use cypress in order to validate prod deployment
-    #    The check in done on grth (r2d2) and srnt (c3po) instances
-    configure_deployment_e2e_validation:
+    cypress_e2e:
         parameters:
             PRODUCT_TYPE:
                 type: string
@@ -17,23 +14,28 @@ jobs:
                 default: "srnt-c3po"
         machine:
           image: *executor-machine
+          docker_layer_caching: true
         resource_class: medium
+        working_directory: ~/project/deployments
         steps:
-            - attach_workspace:
-                  at: ~/
-            - checkout
-            - install_yq_v3
-            - run:
-                  name: Configure cypress deployment validation for <<parameters.PRODUCT_TYPE>>
-                  command: |
-                      CURRENT_TIME=$(date +%s)
-                      LAST_HOUR_TIME=$(( CURRENT_TIME - 60*60 ))
-                      VERSION=$(curl --location -s -g -H "Content-Type: application/json" -H "DD-API-KEY: ${DATADOG_API_KEY}" -H "DD-APPLICATION-KEY: ${DATADOG_APP_KEY}" --request GET "https://api.datadoghq.eu/api/v1/query?from=${LAST_HOUR_TIME}&to=${CURRENT_TIME}&query=sum:kubernetes.containers.running{project:akecld-saas-demo,short_image:pim-enterprise-dev,app:pim,component:pim-web,type:<<parameters.PRODUCT_TYPE>>,pfid:<<parameters.PFID>>}%20by%20{image_tag}" | yq r - 'series[*].tag_set[0]' | sort | tail -n1 | cut -c11-)
-                      TYPE=<<parameters.PRODUCT_TYPE>> LOGIN=${E2E_LOGIN_<<parameters.PRODUCT_TYPE>>} PASSWORD=${E2E_PASSWORD_<<parameters.PRODUCT_TYPE>>} VERSION=${VERSION} make -C deployments/ configure-cypress
-            - persist_to_workspace:
-                  root: /home/circleci
-                  paths:
-                      - project
+          - attach_workspace:
+              at: ~/
+          - restore_persisted_env_vars
+          - run:
+              name: Configure cypress deployment validation for <<parameters.PRODUCT_TYPE>>
+              command: |
+                  CURRENT_TIME=$(date +%s)
+                  LAST_HOUR_TIME=$(( CURRENT_TIME - 60*60 ))
+                  VERSION=$(curl --location -s -g -H "Content-Type: application/json" -H "DD-API-KEY: ${DATADOG_API_KEY}" -H "DD-APPLICATION-KEY: ${DATADOG_APP_KEY}" --request GET "https://api.datadoghq.eu/api/v1/query?from=${LAST_HOUR_TIME}&to=${CURRENT_TIME}&query=sum:kubernetes.containers.running{project:akecld-saas-demo,short_image:pim-enterprise-dev,app:pim,component:pim-web,type:<<parameters.PRODUCT_TYPE>>,pfid:<<parameters.PFID>>}%20by%20{image_tag}" | yq e '.series[].tag_set[0]' - | sort | tail -n1 | cut -c11-)
+                  echo "PIM version to check : ${VERSION}"
+                  echo "PIM_VERSION=${VERSION}" >> $BASH_ENV
+          - run:
+              name: execute tests
+              command: PIM_VERSION=${PIM_VERSION} PIM_WEB_LOGIN=${E2E_LOGIN_<<parameters.PRODUCT_TYPE>>} PIM_WEB_PASSWORD=${E2E_PASSWORD_<<parameters.PRODUCT_TYPE>>} TYPE=<<parameters.PRODUCT_TYPE>> make test_deployment_e2e
+          - store_artifacts:
+                path: test/e2e/cypress/screenshots
+          - store_artifacts:
+                path: test/e2e/cypress/videos
 
     # Description :
     #    Use cypress to do UI sanity checks on dev instances
