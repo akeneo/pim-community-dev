@@ -33,6 +33,8 @@ define([
           return this;
         }
 
+        this.updateModel({target: {value: this.getFormData()[this.identifier] || ''}});
+
         return FetcherRegistry.getFetcher('attribute')
           .getIdentifierAttribute()
           .then(
