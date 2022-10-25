@@ -57,7 +57,7 @@ final class ESGetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndSco
                     ],
                 ],
             ],
-            'sort' => ['_id' => 'asc'],
+            'sort' => ['id' => 'asc'],
         ];
 
         $searchAfter = null;
