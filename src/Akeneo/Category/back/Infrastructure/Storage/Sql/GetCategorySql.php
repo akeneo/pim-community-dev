@@ -77,4 +77,3 @@ class GetCategorySql implements GetCategoryInterface
         return Category::fromDatabase($result);
     }
 }
-

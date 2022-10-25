@@ -23,8 +23,7 @@ class Category
         private ?CategoryId $parentId = null,
         private ?CategoryId $rootId = null,
         private ?ValueCollection $attributes = null,
-        private ?PermissionCollection $permissions = null,
-        private ?Template $template = null
+        private ?PermissionCollection $permissions = null
     ) {
     }
 
@@ -98,17 +97,6 @@ class Category
         return $this->permissions;
     }
 
-    public function getLabel(string $localeCode): string
-    {
-        $label = $this->labels->getTranslation($localeCode);
-
-        if (!$label) {
-            return '[' . $this->code . ']';
-        }
-
-        return $label;
-    }
-
     public function setLabel(string $localeCode, string $label): void
     {
         $this->labels->setTranslation($localeCode, $label);
@@ -117,11 +105,6 @@ class Category
     public function setAttributes(ValueCollection $attributes): void
     {
         $this->attributes = $attributes;
-    }
-
-    public function getTemplate(): ?Template
-    {
-        return $this->template;
     }
 
     /**
@@ -148,8 +131,7 @@ class Category
                 'labels' => $this->getLabels()?->normalize(),
             ],
             'attributes' => $this->getAttributes()?->normalize(),
-            'permissions' => $this->getPermissions()?->normalize(),
-            'template' => $this->getTemplate()?->normalize(),
+            'permissions' => $this->getPermissions()?->normalize()
         ];
     }
 }

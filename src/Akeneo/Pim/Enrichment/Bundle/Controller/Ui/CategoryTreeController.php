@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\Ui;
 
-use Akeneo\Category\Domain\Model\Category;
+use Akeneo\Category\Domain\Model\CategoryTree;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\Query\GetCategoryTreesInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
@@ -90,13 +90,13 @@ class CategoryTreeController extends AbstractController
 
         $trees = $this->getCategoryTrees->getAll();
 
-        if ($selectNode instanceof Category) {
-            $selectedTreeId = $selectNode->isRoot() ? (int) $selectNode->getId() : (int) $selectNode->getRootId();
+        if ($selectNode instanceof CategoryTree) {
+            $selectedTreeId = (int) $selectNode->getId();
         } else {
             $selectedTreeId = $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot();
         }
 
-        $formatedTrees = array_map(function (Category $tree) use ($selectedTreeId) {
+        $formatedTrees = array_map(function (CategoryTree $tree) use ($selectedTreeId) {
             return [
                 'id' => (int) $tree->getId(),
                 'code' => (string) $tree->getCode(),
