@@ -8,7 +8,6 @@ use Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\PurgeAuditEr
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
-
 /**
  * @author    Sébastien DESTRÉ <sebastien.destre@akeneo.com>
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
