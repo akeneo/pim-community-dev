@@ -50,10 +50,10 @@ final class GetMappedProductsAction
 
         $this->denyAccessUnlessOwnerOfCatalog($catalog, $this->getCurrentUsername());
 
-        [$searchAfter, $limit] = $this->getParameters($request);
+        [$searchAfter, $limit, $updatedAfter, $updatedBefore] = $this->getParameters($request);
 
         try {
-            $mappedProducts = $this->queryBus->execute(new GetMappedProductsQuery($catalogId, $searchAfter, $limit));
+            $mappedProducts = $this->queryBus->execute(new GetMappedProductsQuery($catalogId, $searchAfter, $limit, $updatedAfter, $updatedBefore));
         } catch (ValidationFailedException $e) {
             throw new ViolationHttpException($e->getViolations());
         } catch (CatalogDisabledException) {
@@ -79,12 +79,22 @@ final class GetMappedProductsAction
     {
         $searchAfter = $request->query->get('search_after');
         $limit = (int) $request->query->get('limit', 100);
+        $updatedAfter = $request->query->get('updated_after');
+        $updatedBefore = $request->query->get('updated_before');
 
         if (null !== $searchAfter && !\is_string($searchAfter)) {
             throw new BadRequestHttpException();
         }
 
-        return [$searchAfter, $limit];
+        if (null !== $updatedAfter && !\is_string($updatedAfter)) {
+            throw new BadRequestHttpException();
+        }
+
+        if (null !== $updatedBefore && !\is_string($updatedBefore)) {
+            throw new BadRequestHttpException();
+        }
+
+        return [$searchAfter, $limit, $updatedAfter, $updatedBefore];
     }
 
     private function getCatalog(string $id): Catalog

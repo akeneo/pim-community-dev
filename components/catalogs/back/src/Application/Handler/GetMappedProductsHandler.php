@@ -30,7 +30,7 @@ final class GetMappedProductsHandler
     }
 
     /**
-     * @return array<MappedProduct>
+     * @return array<array-key, MappedProduct>
      */
     public function __invoke(GetMappedProductsQuery $query): array
     {
@@ -40,12 +40,17 @@ final class GetMappedProductsHandler
             throw new ServiceApiCatalogNotFoundException();
         }
 
-
         if (!$catalog->isEnabled()) {
             throw new CatalogDisabledException();
         }
 
-        $products = $this->getProductsQuery->execute($catalog, $query->getSearchAfter(), $query->getLimit());
+        $products = $this->getProductsQuery->execute(
+            $catalog,
+            $query->getSearchAfter(),
+            $query->getLimit(),
+            $query->getUpdatedAfter(),
+            $query->getUpdatedBefore(),
+        );
 
         $productMappingSchemaFile = \sprintf('%s_product.json', $catalog->getId());
 
@@ -67,6 +72,8 @@ final class GetMappedProductsHandler
         return \array_map(
             static function (ProductInterface $product) use ($productMappingSchema, $productMapping): array {
                 $mappedProduct = [];
+
+                /** @var string $key */
                 foreach ($productMappingSchema->properties as $key => $property) {
                     $sourceValue = '';
                     if (\array_key_exists($key, $productMapping)) {
