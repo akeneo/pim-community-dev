@@ -6,7 +6,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 
-final class Version_7_0_20221025104400_add_scheduled_jobs_purge_audit_error extends TestCase
+final class Version_7_0_20221025104400_add_scheduled_jobs_purge_audit_error_Integration extends TestCase
 {
     use ExecuteMigrationTrait;
 
