@@ -6,9 +6,3 @@ akeneo.category:
         template:
             fetching_failed: An error occured while fetching template
         unsaved_changes: You will lose changes to the category if you leave the page.
-
-pim_enrich.entity.template:
-    label: template
-    uppercase_label: Template
-    page_title:
-        index: "]-Inf, 1]{{ count }} tree|]1, Inf[{{ count }} trees"

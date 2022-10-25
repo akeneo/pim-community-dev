@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
-import {Breadcrumb, Button, SkeletonPlaceholder, TabBar, useBooleanState, useTabBar} from 'akeneo-design-system';
+import {Breadcrumb, SkeletonPlaceholder, TabBar, useBooleanState, useTabBar} from 'akeneo-design-system';
 import {
   FullScreenError,
   PageContent,
@@ -29,6 +29,7 @@ const TemplateIndex: FC = () => {
   const {isGranted} = useSecurity();
 
   const {tree, loadingStatus, loadTree} = useCategoryTree(parseInt(treeId), '-1');
+  const templateLabel = 'Template Label';
 
   const [treeLabel, setTreeLabel] = useState<string>('');
   const followSettingsIndex = () => router.redirect(router.generate('pim_settings_index'));
@@ -40,7 +41,7 @@ const TemplateIndex: FC = () => {
     router.redirect(router.generate('pim_enrich_categorytree_tree', {id: tree.id}));
   };
 
-  const [activeTab, setActiveTab] = useSessionStorageState(propertyTabName, 'pim_category_activeTab');
+  const [activeTab, setActiveTab] = useSessionStorageState(attributeTabName, 'pim_category_activeTab');
   const [isCurrent, switchTo] = useTabBar(activeTab);
 
   useEffect(() => {
@@ -74,7 +75,7 @@ const TemplateIndex: FC = () => {
               {treeLabel || <SkeletonPlaceholder as="span">{treeId}</SkeletonPlaceholder>}
             </Breadcrumb.Step>
             <Breadcrumb.Step>
-              {'templateLabel' || <SkeletonPlaceholder as="span">{templateId}</SkeletonPlaceholder>}
+              {templateLabel || <SkeletonPlaceholder as="span">{templateId}</SkeletonPlaceholder>}
             </Breadcrumb.Step>
           </Breadcrumb>
         </PageHeader.Breadcrumb>
@@ -84,14 +85,7 @@ const TemplateIndex: FC = () => {
             className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
           />
         </PageHeader.UserActions>
-        {isGranted('pim_enrich_product_category_create') && (
-          <PageHeader.Actions>
-            <Button onClick={openModal} level="primary">
-              {translate('pim_common.create')}
-            </Button>
-          </PageHeader.Actions>
-        )}
-        <PageHeader.Title>{translate('pim_enrich.entity.template.page_title.index')}</PageHeader.Title>
+        <PageHeader.Title>templateLabel</PageHeader.Title>
       </PageHeader>
       <PageContent>
         <TabBar moreButtonTitle={'More'}>
