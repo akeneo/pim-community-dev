@@ -88,3 +88,8 @@ Feature:
     Given an existing catalog with a product mapping schema
     When the external application deletes a catalog product mapping schema using the API
     Then the catalog product mapping schema should be empty in the PIM
+  @database
+  Scenario: Get mapped products of a catalog
+    Given an existing catalog with a product mapping
+    When the external application gets mapped products using the API
+    Then the response should contain the mapped products
