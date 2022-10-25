@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import React, {ReactNode, Ref, SyntheticEvent} from 'react';
 import {Button, ButtonProps, IconButton} from '../../';
 import {getColor} from '../../../theme';
+import {Override} from '../../../shared';
 
 const TableActionCellContainer = styled.td`
   color: ${getColor('grey', 140)};
@@ -15,12 +16,15 @@ const InnerTableActionCellContainer = styled.div`
   opacity: 0;
 `;
 
-type ActionCellProps = {
-  /**
-   * Multiple buttons
-   */
-  children?: ReactNode;
-};
+type ActionCellProps = Override<
+  React.TdHTMLAttributes<HTMLTableCellElement>,
+  {
+    /**
+     * Multiple buttons
+     */
+    children?: ReactNode;
+  }
+>;
 
 const TableActionCell = React.forwardRef<HTMLTableCellElement, ActionCellProps>(
   ({children, ...rest}: ActionCellProps, forwardedRef: Ref<HTMLTableCellElement>) => {
