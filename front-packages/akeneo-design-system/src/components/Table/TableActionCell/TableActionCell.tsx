@@ -17,13 +17,13 @@ const InnerTableActionCellContainer = styled.div`
 `;
 
 type ActionCellProps = Override<
-    React.TdHTMLAttributes<HTMLTableCellElement>,
-    {
-      /**
-       * Multiple buttons
-       */
-      children?: ReactNode;
-    }
+  React.TdHTMLAttributes<HTMLTableCellElement>,
+  {
+    /**
+     * Multiple buttons
+     */
+    children?: ReactNode;
+  }
 >;
 
 const TableActionCell = React.forwardRef<HTMLTableCellElement, ActionCellProps>(
