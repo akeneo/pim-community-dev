@@ -73,6 +73,9 @@ final class StreamResourceResponse
                     if (null === $data) {
                         throw new BadRequestHttpException('Invalid json message received');
                     }
+                    if (isset($data[$this->identifierKey]) && !is_string($data[$this->identifierKey])) {
+                        throw new UnprocessableEntityHttpException(\sprintf('%s must be of type string.', $this->identifierKey));
+                    }
                     if (!isset($data[$this->identifierKey]) || '' === trim($data[$this->identifierKey])) {
                         throw new UnprocessableEntityHttpException(sprintf('%s is missing.', ucfirst($this->identifierKey)));
                     }

@@ -14,15 +14,14 @@ final class ViolationsException extends \LogicException
 {
     public function __construct(private ErrorList $constraintViolationList)
     {
-        parent::__construct(
-            $this->constraintViolationList instanceof ErrorList
-                ? $this->constraintViolationList->getAllMessages()
-                : 'Some violation(s) are raised'
-        );
+        parent::__construct($this->constraintViolationList->__toString());
     }
 
-    public function violations(): ErrorList
+    /**
+     * @return array<array{message: string, path: string | null}>
+     */
+    public function normalize(): array
     {
-        return $this->constraintViolationList;
+        return $this->constraintViolationList->normalize();
     }
 }

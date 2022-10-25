@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
 use Akeneo\Category\Domain\Model\Category;
+use Akeneo\Category\Domain\Model\CategoryTree;
 use Akeneo\Category\Domain\Query\GetCategoryTreesInterface;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
+use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
 use Doctrine\DBAL\Connection;
 
@@ -43,7 +45,7 @@ class GetCategoryTreesSql implements GetCategoryTreesInterface
         $sqlTypes = $condition['types'] ?? [];
 
         $sqlQuery = <<<SQL
-            WITH translation as (
+            WITH category_tree_translation as (
                 SELECT category.code, JSON_OBJECTAGG(translation.locale, translation.label) as translations
                 FROM pim_catalog_category category
                 JOIN pim_catalog_category_translation translation ON translation.foreign_key = category.id
@@ -54,14 +56,15 @@ class GetCategoryTreesSql implements GetCategoryTreesInterface
             )
             SELECT
                 category.id,
-                category.code, 
-                category.parent_id,
-                category.root as root_id,
-                translation.translations,
-                category.value_collection
+                category.code,
+                category_tree_translation.translations,
+                BIN_TO_UUID(template.uuid) as template_uuid,
+                template.labels as template_labels
             FROM 
                 pim_catalog_category category
-                LEFT JOIN translation ON translation.code = category.code
+                LEFT JOIN category_tree_translation ON category_tree_translation.code = category.code
+                LEFT JOIN pim_catalog_category_tree_template ctt ON ctt.category_tree_id = category.id
+                LEFT JOIN pim_catalog_category_template template ON template.uuid = ctt.category_template_uuid
             WHERE category.parent_id IS NULL 
             AND category.root = category.id
             $sqlAnd
@@ -79,25 +82,7 @@ class GetCategoryTreesSql implements GetCategoryTreesInterface
         }
 
         return array_map(function ($result) {
-            return new Category(
-                new CategoryId((int)$result['id']),
-                new Code($result['code']),
-                $result['translations'] ?
-                    LabelCollection::fromArray(
-                        json_decode(
-                            $result['translations'],
-                            true,
-                            512,
-                            JSON_THROW_ON_ERROR
-                        )
-                    ) : null,
-                $result['parent_id'] ? new CategoryId((int)$result['parent_id']) : null,
-                $result['root_id'] ? new CategoryId((int)$result['root_id']) : null,
-                $result['value_collection'] ?
-                    ValueCollection::fromArray(json_decode($result['value_collection'], true)) : null,
-                null
-            );
+            return CategoryTree::fromDatabase($result);
         }, $results);
     }
 }
-

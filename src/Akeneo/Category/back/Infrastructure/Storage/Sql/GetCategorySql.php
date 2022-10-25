@@ -74,24 +74,7 @@ class GetCategorySql implements GetCategoryInterface
             return null;
         }
 
-        return new Category(
-            new CategoryId((int)$result['id']),
-            new Code($result['code']),
-            $result['translations'] ?
-                LabelCollection::fromArray(
-                    json_decode(
-                        $result['translations'],
-                        true,
-                        512,
-                        JSON_THROW_ON_ERROR
-                    )
-                ) : null,
-            $result['parent_id'] ? new CategoryId((int)$result['parent_id']) : null,
-            $result['root_id'] ? new CategoryId((int)$result['root_id']) : null,
-            $result['value_collection'] ?
-                ValueCollection::fromArray(json_decode($result['value_collection'], true)) : null,
-            null
-        );
+        return Category::fromDatabase($result);
     }
 }
 

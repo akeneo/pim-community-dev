@@ -8,7 +8,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGenerator
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation\CommandValidatorInterface;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorId;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -34,10 +34,9 @@ class CreateGeneratorHandlerSpec extends ObjectBehavior
     public function it_must_call_save_repository(IdentifierGeneratorRepository $identifierGeneratorRepository, CommandValidatorInterface $validator): void
     {
         $command = new CreateGeneratorCommand(
-            '2038e1c9-68ff-4833-b06f-01e42d206002',
             'abcdef',
             [],
-            [FreeText::fromString('abcdef')],
+            [['type' => 'free_text', 'string' => 'abcdef']],
             ['fr' => 'Générateur'],
             'sku',
             '-'
@@ -45,6 +44,10 @@ class CreateGeneratorHandlerSpec extends ObjectBehavior
         $validator->validate($command)
             ->shouldBeCalledOnce()
         ;
+        $identifierGeneratorRepository
+            ->getNextId()
+            ->shouldBeCalled()
+            ->willReturn(IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002'));
 
         $this->__invoke($command);
 

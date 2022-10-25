@@ -1,68 +1,50 @@
 import React, {useState} from 'react';
-import {Breadcrumb, Button, TabBar} from 'akeneo-design-system';
-import {PageHeader, PimView, useTranslate} from '@akeneo-pim-community/shared';
-import {GeneralPropertiesTab} from '../tabs';
 import {IdentifierGenerator} from '../models';
-import {Common, Styled} from '../components';
+import {CreateOrEditGeneratorPage} from './CreateOrEditGeneratorPage';
+import {NotificationLevel, useNotify, useRouter, useTranslate} from '@akeneo-pim-community/shared';
+import {Violation} from '../validators/Violation';
+import {useHistory} from 'react-router-dom';
 
-enum Tabs {
-  GENERAL,
-  PRODUCT_SELECTION,
-  STRUCTURE,
-}
-
-type EditGeneratorProps = {
+type CreateGeneratorProps = {
   initialGenerator: IdentifierGenerator;
 };
 
-const CreateGeneratorPage: React.FC<EditGeneratorProps> = ({initialGenerator}) => {
-  const [currentTab, setCurrentTab] = useState(Tabs.GENERAL);
+const CreateGeneratorPage: React.FC<CreateGeneratorProps> = ({initialGenerator}) => {
+  const router = useRouter();
+  const notify = useNotify();
   const translate = useTranslate();
-  const [generator, setGenerator] = useState<IdentifierGenerator>(initialGenerator);
+  const history = useHistory();
+  const [validationErrors, setValidationErrors] = useState<Violation[]>([]);
+
+  const onSave = async (generator: IdentifierGenerator) => {
+    const response = await fetch(router.generate('akeneo_identifier_generator_rest_create'), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+      body: JSON.stringify(generator),
+    });
+
+    if (response.status >= 400 && response.status < 500) {
+      const json = await response.json();
+      notify(NotificationLevel.ERROR, translate('pim_identifier_generator.flash.create.error'));
+      setValidationErrors(json);
+    } else if (response.status === 201) {
+      notify(NotificationLevel.SUCCESS, translate('pim_identifier_generator.flash.create.success'));
+      history.push(`/${generator.code}`);
+    } else {
+      /* istanbul ignore next */
+      notify(NotificationLevel.ERROR, translate('pim_error.unexpected'));
+    }
+  };
 
   return (
-    <>
-      <Common.Helper />
-      <PageHeader>
-        <PageHeader.Breadcrumb>
-          <Breadcrumb>
-            <Breadcrumb.Step href="#">{translate('pim_title.pim_settings_index')}</Breadcrumb.Step>
-            {/*TODO Add alert when going out this page if not saved*/}
-            <Breadcrumb.Step href="#">{translate('pim_title.akeneo_identifier_generator_index')}</Breadcrumb.Step>
-          </Breadcrumb>
-        </PageHeader.Breadcrumb>
-        <PageHeader.UserActions>
-          <PimView
-            className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
-            viewName="pim-identifier-generator-user-navigation"
-          />
-        </PageHeader.UserActions>
-        <PageHeader.Actions>
-          {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
-          <Button onClick={/* istanbul ignore next */ () => {} /* TODO */}>;{translate('pim_common.save')}</Button>
-        </PageHeader.Actions>
-        <PageHeader.Title>{translate('pim_title.akeneo_identifier_generator_index')}</PageHeader.Title>
-      </PageHeader>
-      <Styled.TabContainer>
-        <TabBar moreButtonTitle={translate('pim_common.more')}>
-          <TabBar.Tab isActive={currentTab === Tabs.GENERAL} onClick={() => setCurrentTab(Tabs.GENERAL)}>
-            {translate('pim_identifier_generator.tabs.general')}
-          </TabBar.Tab>
-          <TabBar.Tab
-            isActive={currentTab === Tabs.PRODUCT_SELECTION}
-            onClick={() => setCurrentTab(Tabs.PRODUCT_SELECTION)}
-          >
-            {translate('pim_identifier_generator.tabs.product_selection')}
-          </TabBar.Tab>
-          <TabBar.Tab isActive={currentTab === Tabs.STRUCTURE} onClick={() => setCurrentTab(Tabs.STRUCTURE)}>
-            {translate('pim_identifier_generator.tabs.identifier_structure')}
-          </TabBar.Tab>
-        </TabBar>
-        {currentTab === Tabs.GENERAL && <GeneralPropertiesTab generator={generator} onGeneratorChange={setGenerator} />}
-        {currentTab === Tabs.PRODUCT_SELECTION && <div>Not implemented YET</div>}
-        {currentTab === Tabs.STRUCTURE && <div>Not implemented YET</div>}
-      </Styled.TabContainer>
-    </>
+    <CreateOrEditGeneratorPage
+      initialGenerator={initialGenerator}
+      mainButtonCallback={onSave}
+      validationErrors={validationErrors}
+    />
   );
 };
 

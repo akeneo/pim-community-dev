@@ -82,3 +82,9 @@ Feature:
     Given an existing catalog
     When the external application updates a catalog product mapping schema using the API
     Then the catalog product mapping schema should be updated in the PIM
+
+  @database
+  Scenario: Delete product mapping schema of a catalog
+    Given an existing catalog with a product mapping schema
+    When the external application deletes a catalog product mapping schema using the API
+    Then the catalog product mapping schema should be empty in the PIM
