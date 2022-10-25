@@ -113,23 +113,20 @@ services:
     Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendWelcomeEmail:
         class: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\SendTwigWelcomeEmail
         arguments:
-            - '@Akeneo\SupplierPortal\Supplier\Infrastructure\Mailer\SendSwiftmailerEmail'
-            - '@twig'
+            - '@Akeneo\SupplierPortal\Supplier\Infrastructure\Mailer\SendSymfonyEmail'
             - '%env(AKENEO_PIM_URL)%'
             - '%kernel.project_dir%/public/bundles/akeneosupplierportalsupplier'
 
     Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendGoodbyeEmail:
         class: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\SendTwigGoodbyeEmail
         arguments:
-            - '@Akeneo\SupplierPortal\Supplier\Infrastructure\Mailer\SendSwiftmailerEmail'
-            - '@twig'
+            - '@Akeneo\SupplierPortal\Supplier\Infrastructure\Mailer\SendSymfonyEmail'
             - '%kernel.project_dir%/public/bundles/akeneosupplierportalsupplier'
 
     Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendResetPasswordEmail:
         class: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\SendTwigResetPasswordEmail
         arguments:
-            - '@Akeneo\SupplierPortal\Supplier\Infrastructure\Mailer\SendSwiftmailerEmail'
-            - '@twig'
+            - '@Akeneo\SupplierPortal\Supplier\Infrastructure\Mailer\SendSymfonyEmail'
             - '%env(AKENEO_PIM_URL)%'
             - '%kernel.project_dir%/public/bundles/akeneosupplierportalsupplier'
 
