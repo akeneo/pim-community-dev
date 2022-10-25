@@ -21,7 +21,7 @@ class DateDecorator extends ElementDecorator
     {
         if (null !== $operator && '' !== $operator) {
             $operatorField = $this->decorate(
-                $this->find('css', '.operator.select2-container'),
+                $this->element->find('css', '.operator.select2-container'),
                 [Select2Decorator::class]
             );
             $operatorField->setValue($operator);
@@ -55,18 +55,16 @@ class DateDecorator extends ElementDecorator
     /**
      * @param string $element 'value-start', 'value-end'
      * @param string $value
-     *
-     * @return NodeElement
      */
     protected function setValueToDatepicker($element, $value)
     {
         $this->spin(function () use ($element, $value) {
-            $field = $this->find(
+            $field = $this->element->find(
                 'css',
                 sprintf(
                     '.filter-item[data-name="%s"][data-type="%s"] [name="filter-%s"]',
-                    $this->getAttribute('data-name'),
-                    $this->getAttribute('data-type'),
+                    $this->element->getAttribute('data-name'),
+                    $this->element->getAttribute('data-type'),
                     $element
                 )
             );
@@ -82,11 +80,11 @@ class DateDecorator extends ElementDecorator
      */
     protected function triggerChange($element)
     {
-        $this->getSession()->executeScript(
+        $this->element->getSession()->executeScript(
             sprintf(
                 '$(\'.filter-item[data-name="%s"][data-type="%s"] [name="filter-%s"]\').trigger(\'change\')',
-                $this->getAttribute('data-name'),
-                $this->getAttribute('data-type'),
+                $this->element->getAttribute('data-name'),
+                $this->element->getAttribute('data-type'),
                 $element
             )
         );

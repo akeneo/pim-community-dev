@@ -24,7 +24,7 @@ trait ClosestTrait
             $result = $result->getParent();
 
             if (null === $result) {
-                throw new ElementNotFoundException($this->getSession());
+                throw new ElementNotFoundException($node->getSession());
             }
         }
 

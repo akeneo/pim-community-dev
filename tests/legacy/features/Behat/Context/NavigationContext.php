@@ -203,7 +203,7 @@ class NavigationContext extends PimContext implements PageObjectAware
         $page = $this->getPageMapping()[$pageName];
 
         $this->openPage($page, $options);
-        $this->spin(function () use ($page, $options) {
+        $this->spin(function () {
             $expectedFullUrl = $this->getCurrentPage()->getUrl();
             $actualFullUrl = $this->getSession()->getCurrentUrl();
             $expectedUrl = $this->sanitizeUrl($expectedFullUrl);
@@ -239,7 +239,7 @@ class NavigationContext extends PimContext implements PageObjectAware
     public function iShouldNotBeAbleToAccessThePage($not, $page)
     {
         $this->iAmOnThePage($page);
-        $this->spin(function () use ($not, $page) {
+        $this->spin(function () use ($not) {
             if (!$not) {
                 $this->assertSession()->pageTextNotContains('Forbidden');
 

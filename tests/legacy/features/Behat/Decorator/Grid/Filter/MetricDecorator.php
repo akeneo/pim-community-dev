@@ -18,11 +18,11 @@ class MetricDecorator extends ElementDecorator
     public function filter($operator, $value)
     {
         $operatorDropdown = $this->decorate(
-            $this->find('css', '.operator *[data-toggle="dropdown"]'),
+            $this->element->find('css', '.operator *[data-toggle="dropdown"]'),
             [OperatorDecorator::class]
         );
         $unitDropdown = $this->decorate(
-            $this->find('css', '.unit *[data-toggle="dropdown"]'),
+            $this->element->find('css', '.unit *[data-toggle="dropdown"]'),
             [OperatorDecorator::class]
         );
 
@@ -30,7 +30,7 @@ class MetricDecorator extends ElementDecorator
         if (!in_array($operator, ['is empty', 'is not empty'])) {
             list($numericValue, $unitValue) = explode(' ', $value);
 
-            $this->find('css', 'input[name="value"]')->setValue($numericValue);
+            $this->element->find('css', 'input[name="value"]')->setValue($numericValue);
             $unitDropdown->setValue($unitValue);
         }
 
@@ -38,10 +38,10 @@ class MetricDecorator extends ElementDecorator
 
         // We submit the filter
         $this->spin(function () {
-            if (!$this->find('css', '.filter-criteria')->isVisible()) {
+            if (!$this->element->find('css', '.filter-criteria')->isVisible()) {
                 return true;
             }
-            $this->find('css', '.filter-update')->click();
+            $this->element->find('css', '.filter-update')->click();
 
             return false;
         }, 'Cannot update the filter');

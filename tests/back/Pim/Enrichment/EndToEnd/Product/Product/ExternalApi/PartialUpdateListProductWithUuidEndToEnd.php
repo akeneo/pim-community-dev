@@ -136,12 +136,14 @@ JSON;
         $maxNumberResources = $this->getMaxNumberResources();
 
         $uuids = [];
+        $data = [];
         for ($i = 0; $i < $maxNumberResources; $i++) {
             $uuids[sprintf('uuid_%s', $i)] = Uuid::uuid4();
             $data[] = sprintf('{"uuid": "%s", "values": {"sku": [{"locale": null, "scope": null, "data": "my_identifier_%s" }]}}', $uuids[sprintf('uuid_%s', $i)], $i);
         }
         $data = implode(PHP_EOL, $data);
 
+        $expectedContent = [];
         for ($i = 0; $i < $maxNumberResources; $i++) {
             $expectedContent[] = sprintf('{"line":%s,"uuid":"%s","status_code":201}', $i+1, $uuids[sprintf('uuid_%s', $i)]);
         }
@@ -161,6 +163,7 @@ JSON;
 
         $maxNumberResources = $this->getMaxNumberResources();
 
+        $data = [];
         for ($i = 0; $i < $maxNumberResources + 1; $i++) {
             $data[] = sprintf('{"uuid": "%s", "values": {"sku": [{"locale": null, "scope": null, "data": "my_identifier_%s" }]}}', Uuid::uuid4(), $i);
         }

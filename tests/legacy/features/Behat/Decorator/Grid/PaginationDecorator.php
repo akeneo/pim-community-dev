@@ -89,7 +89,7 @@ class PaginationDecorator extends ElementDecorator
             $button->click();
 
             $item = null;
-            $items = $this->findAll('css', $this->selectors['page size items']);
+            $items = $this->element->findAll('css', $this->selectors['page size items']);
             foreach ($items as $link) {
                 if (null === $item && $link->getText() === strval($num) && $link->isVisible()) {
                     $item = $link;
@@ -112,7 +112,7 @@ class PaginationDecorator extends ElementDecorator
     protected function getPaginationField()
     {
         return $this->spin(function () {
-            return $this->find('css', $this->selectors['pagination input']);
+            return $this->element->find('css', $this->selectors['pagination input']);
         }, 'Cannot find the pagination filter');
     }
 
@@ -124,7 +124,7 @@ class PaginationDecorator extends ElementDecorator
     protected function getPageSizeButton()
     {
         return $this->spin(function () {
-            return $this->find('css', $this->selectors['page size button']);
+            return $this->element->find('css', $this->selectors['page size button']);
         }, 'Cannot find the change page size button');
     }
 
@@ -136,7 +136,7 @@ class PaginationDecorator extends ElementDecorator
     protected function getLastPageButton()
     {
         return $this->spin(function () {
-            return $this->find('css', $this->selectors['pagination last page']);
+            return $this->element->find('css', $this->selectors['pagination last page']);
         }, 'Cannot find the button for the last page');
     }
 }

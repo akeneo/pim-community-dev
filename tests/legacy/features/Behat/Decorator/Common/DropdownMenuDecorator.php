@@ -19,20 +19,20 @@ class DropdownMenuDecorator extends ElementDecorator
     public function open()
     {
         $this->spin(function () {
-            if ($this->hasClass('open')) {
+            if ($this->element->hasClass('open')) {
                 return true;
             }
 
-            $button = $this->find('css', '.dropdown-button');
+            $button = $this->element->find('css', '.dropdown-button');
             if (null !== $button) {
                 $button->click();
 
                 return true;
             }
 
-            if ('button' === $this->getTagName()) {
-                if (null === $this->getParent()->find('css', 'div[data-testid="backdrop"]')) {
-                    $this->click();
+            if ('button' === $this->element->getTagName()) {
+                if (null === $this->element->getParent()->find('css', 'div[data-testid="backdrop"]')) {
+                    $this->element->click();
                 }
 
                 return true;
@@ -52,7 +52,7 @@ class DropdownMenuDecorator extends ElementDecorator
      */
     public function getMenuItem($actionName)
     {
-        $dropdownMenu = $this->getBody()->findById('dropdown-root') ?? $this->getParent();
+        $dropdownMenu = $this->getBody()->findById('dropdown-root') ?? $this->element->getParent();
 
         $links = $dropdownMenu->findAll('css', '.AknDropdown-menuLink, a');
         foreach ($links as $link) {
@@ -69,7 +69,7 @@ class DropdownMenuDecorator extends ElementDecorator
      */
     public function close()
     {
-        if ($this->getBody()->find('css', 'div[data-testid="backdrop"]') || $this->hasClass('open')) {
+        if ($this->getBody()->find('css', 'div[data-testid="backdrop"]') || $this->element->hasClass('open')) {
             $this->getBody()->click();
         }
     }

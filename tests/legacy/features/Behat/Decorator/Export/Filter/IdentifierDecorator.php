@@ -18,9 +18,9 @@ class IdentifierDecorator extends ElementDecorator
     public function filter($operator, $value)
     {
         $field = $this->spin(function () {
-            return $this->find('css', '.identifier');
+            return $this->element->find('css', '.identifier');
         }, 'Cannot find identifier element.');
         $field->setValue($value);
-        $this->getSession()->executeScript('$(\'.identifier\').trigger(\'change\')');
+        $this->element->getSession()->executeScript('$(\'.identifier\').trigger(\'change\')');
     }
 }

@@ -85,7 +85,7 @@ abstract class AbstractAddSelectDecorator extends ElementDecorator implements Ad
     protected function openDropList()
     {
         $this->spin(function () {
-            $button = $this->find('css', $this->getElements()['dropListBtn']);
+            $button = $this->element->find('css', $this->getElements()['dropListBtn']);
 
             if (null !== $button) {
                 $button->click();
@@ -112,7 +112,7 @@ abstract class AbstractAddSelectDecorator extends ElementDecorator implements Ad
             "').val('" . preg_replace('/[\[\]]/u', '', $query) .
             "').trigger('input');";
 
-        $this->getSession()->evaluateScript($script);
+        $this->element->element->getSession()->evaluateScript($script);
 
         return $this;
     }
@@ -127,7 +127,7 @@ abstract class AbstractAddSelectDecorator extends ElementDecorator implements Ad
     protected function getResultForSearch($query)
     {
         $searchResults = $this->spin(function () use ($query) {
-            return $this->findAll(
+            return $this->element->findAll(
                 'css',
                 sprintf($this->getElements()['resultItemSelector'], $query)
             );
@@ -148,7 +148,7 @@ abstract class AbstractAddSelectDecorator extends ElementDecorator implements Ad
     protected function addSelectedItems()
     {
         $this->spin(function () {
-            $multiselectButtons = $this->findAll('css', '.ui-multiselect-footer button');
+            $multiselectButtons = $this->element->findAll('css', '.ui-multiselect-footer button');
 
             foreach ($multiselectButtons as $button) {
                 if ($button->isVisible()) {
@@ -170,7 +170,7 @@ abstract class AbstractAddSelectDecorator extends ElementDecorator implements Ad
      */
     protected function closeDropList()
     {
-        $this->getSession()->evaluateScript('jQuery(\'#select2-drop-mask\').click();');
+        $this->element->getSession()->evaluateScript('jQuery(\'#select2-drop-mask\').click();');
 
         return $this;
     }

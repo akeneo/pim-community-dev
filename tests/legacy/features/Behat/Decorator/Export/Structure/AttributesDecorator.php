@@ -34,7 +34,7 @@ class AttributesDecorator extends ElementDecorator
     public function open()
     {
         $editButton = $this->spin(function () {
-            return $this->find('css', 'button.edit');
+            return $this->element->find('css', 'button.edit');
         }, 'Cannot find the open button');
 
         $editButton->click();

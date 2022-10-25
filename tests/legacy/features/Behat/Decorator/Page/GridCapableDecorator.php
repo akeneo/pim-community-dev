@@ -50,7 +50,7 @@ class GridCapableDecorator extends ElementDecorator
     public function getViewSelector()
     {
         $viewSelector = $this->spin(function () {
-            $result = $this->find('css', $this->selectors['View selector']);
+            $result = $this->element->find('css', $this->selectors['View selector']);
             if ((null === $result) || !$result->isVisible()) {
                 return false;
             }
@@ -70,7 +70,7 @@ class GridCapableDecorator extends ElementDecorator
     {
         $viewSelector = $this->getViewSelector();
         $this->spin(function () use ($viewSelector) {
-            $result = $this->find('css', '.select2-drop.grid-view-selector');
+            $result = $this->element->find('css', '.select2-drop.grid-view-selector');
             if ((null === $result) || !$result->isVisible()) {
                 $viewSelector->find('css', '.select2-arrow')->click();
 
@@ -87,11 +87,11 @@ class GridCapableDecorator extends ElementDecorator
         $selector = $this->selectors['Create view button'];
 
         $button = $this->spin(function () use ($selector) {
-            return $this->find('css', $selector);
+            return $this->element->find('css', $selector);
         }, sprintf('Create view button not found (%s).', $selector));
 
         $this->spin(function () use ($button) {
-            if (null !== $this->find('css', '.modal-body')) {
+            if (null !== $this->element->find('css', '.modal-body')) {
                 return true;
             }
             $button->click();
@@ -119,7 +119,7 @@ class GridCapableDecorator extends ElementDecorator
         $selector = $this->selectors['Save view button'];
 
         $button = $this->spin(function () use ($selector) {
-            return $this->find('css', $selector);
+            return $this->element->find('css', $selector);
         }, sprintf('Save view button not found (%s).', $selector));
 
         $button->click();
@@ -136,11 +136,11 @@ class GridCapableDecorator extends ElementDecorator
         $selector = $this->selectors['Remove view button'];
 
         $button = $this->spin(function () use ($selector) {
-            return $this->find('css', $selector);
+            return $this->element->find('css', $selector);
         }, sprintf('Remove view button not found (%s).', $selector));
 
         $this->spin(function () use ($button) {
-            $modal = $this->find('css', '.modal');
+            $modal = $this->element->find('css', '.modal');
             if ($modal !== null && $modal->isVisible()) {
                 return true;
             };
@@ -161,7 +161,7 @@ class GridCapableDecorator extends ElementDecorator
 
         try {
             return $this->spin(function () use ($selector) {
-                $button = $this->find('css', $selector);
+                $button = $this->element->find('css', $selector);
 
                 return $button ? true : false;
             }, sprintf('Remove view button not found (%s).', $selector));
@@ -180,7 +180,7 @@ class GridCapableDecorator extends ElementDecorator
 
         try {
             return $this->spin(function () use ($selector) {
-                $button = $this->find('css', $selector);
+                $button = $this->element->find('css', $selector);
 
                 return $button ? true : false;
             }, sprintf('Save view button not found (%s).', $selector));
@@ -198,12 +198,12 @@ class GridCapableDecorator extends ElementDecorator
     {
         $grid = $this->spin(
             function () {
-                $modal = $this->find('css', $this->selectors['Dialog grid']);
+                $modal = $this->element->find('css', $this->selectors['Dialog grid']);
                 if (null !== $modal && $modal->isVisible()) {
                     return $modal->find('css', $this->selectors['Grid']);
                 }
 
-                return $this->find('css', $this->selectors['Grid']);
+                return $this->element->find('css', $this->selectors['Grid']);
             },
             'No visible grid found'
         );
@@ -219,7 +219,7 @@ class GridCapableDecorator extends ElementDecorator
     public function switchViewType($type)
     {
         $selector = $this->spin(function () {
-            $selector = $this->find('css', $this->selectors['View type switcher']);
+            $selector = $this->element->find('css', $this->selectors['View type switcher']);
             if (null !== $selector) {
                 if ($selector->getParent()->hasClass('open')) {
                     return $selector;
@@ -236,7 +236,7 @@ class GridCapableDecorator extends ElementDecorator
                 return true;
             }
 
-            $viewType = $this->find('css', sprintf('.view-type-item[title="%s"]', $type));
+            $viewType = $this->element->find('css', sprintf('.view-type-item[title="%s"]', $type));
             if (null !== $viewType) {
                 $viewType->click();
             }
@@ -251,7 +251,7 @@ class GridCapableDecorator extends ElementDecorator
     public function existViewType(string $type)
     {
         $this->spin(function () use ($type) {
-            $viewType = $this->find('css', sprintf('.view-type-item[title="%s"]', $type));
+            $viewType = $this->element->find('css', sprintf('.view-type-item[title="%s"]', $type));
 
             return null !== $viewType;
         }, sprintf('View type "%s" does not exist but it should.', $type));
@@ -263,7 +263,7 @@ class GridCapableDecorator extends ElementDecorator
     public function notExistViewType(string $type)
     {
         $this->spin(function () use ($type) {
-            $viewType = $this->find('css', sprintf('.view-type-item[title="%s"]', $type));
+            $viewType = $this->element->find('css', sprintf('.view-type-item[title="%s"]', $type));
 
             return null == $viewType;
         }, sprintf('View type "%s" exists but it should not.', $type));
@@ -291,7 +291,7 @@ class GridCapableDecorator extends ElementDecorator
     protected function openSecondaryActions()
     {
         $this->spin(function () {
-            $element = $this->find('css', $this->selectors['Grid view secondary actions']);
+            $element = $this->element->find('css', $this->selectors['Grid view secondary actions']);
             if ($element !== null) {
                 if ($element->hasClass('open')) {
                     return true;

@@ -21,7 +21,7 @@ final class AssociationTypeContext extends PimContext
      */
     public function iSearchAssociationTypesWithTheWord($searchWord)
     {
-        $searchInput = $this->spin(function () use ($searchWord) {
+        $searchInput = $this->spin(function () {
             return $this->getCurrentPage()->find('css', '.association-type-grid-search input');
         }, 'Search input not found');
 

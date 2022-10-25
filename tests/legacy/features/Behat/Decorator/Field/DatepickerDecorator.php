@@ -11,6 +11,6 @@ class DatepickerDecorator extends ElementDecorator
      */
     public function setValue($value)
     {
-        $this->getSession()->executeScript(sprintf("$('#%s').val('%s');", $this->getAttribute('id'), $value));
+        $this->element->getSession()->executeScript(sprintf("$('#%s').val('%s');", $this->element->getAttribute('id'), $value));
     }
 }

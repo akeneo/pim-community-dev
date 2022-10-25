@@ -127,11 +127,13 @@ JSON;
     {
         $maxNumberResources = $this->getMaxNumberResources();
 
+        $data = [];
         for ($i = 0; $i < $maxNumberResources; $i++) {
             $data[] = sprintf('{"identifier": "my_identifier_%s"}', $i);
         }
         $data = implode(PHP_EOL, $data);
 
+        $expectedContent = [];
         for ($i = 0; $i < $maxNumberResources; $i++) {
             $expectedContent[] = sprintf('{"line":%s,"identifier":"my_identifier_%s","status_code":201}', $i + 1, $i);
         }
@@ -151,6 +153,7 @@ JSON;
 
         $maxNumberResources = $this->getMaxNumberResources();
 
+        $data = [];
         for ($i = 0; $i < $maxNumberResources + 1; $i++) {
             $data[] = sprintf('{"identifier": "my_identifier_%s"}', $i);
         }

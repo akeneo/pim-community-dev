@@ -112,7 +112,7 @@ class ProductStorage implements Context
             throw new \Exception(sprintf('The product "%s" does not exist', $productIdentifier));
         }
 
-        Assert::isFalse($product->isVariant());
+        Assert::assertFalse($product->isVariant());
     }
 
     /**
@@ -126,6 +126,6 @@ class ProductStorage implements Context
             throw new \Exception(sprintf('The product "%s" does not exist', $productIdentifier));
         }
 
-        Assert::isTrue($product->isVariant());
+        Assert::assertTrue($product->isVariant());
     }
 }

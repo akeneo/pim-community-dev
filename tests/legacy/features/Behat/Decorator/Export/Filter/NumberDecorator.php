@@ -19,14 +19,14 @@ class NumberDecorator extends ElementDecorator
     public function filter($operator, $value)
     {
         $operatorField = $this->decorate(
-            $this->find('css', '.select2-container.operator'),
+            $this->element->find('css', '.select2-container.operator'),
             [Select2Decorator::class]
         );
         $operatorField->setValue($operator);
 
         if (null !== $value && '' !== $value) {
             $fieldValue = $this->spin(function () {
-                return $this->find('css', '.value');
+                return $this->element->find('css', '.value');
             }, 'Field value for number not found.');
             $fieldValue->setValue($value);
         }

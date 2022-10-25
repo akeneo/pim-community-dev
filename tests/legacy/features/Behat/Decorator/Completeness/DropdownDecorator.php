@@ -40,7 +40,7 @@ class DropdownDecorator extends ElementDecorator
     public function getCompletenessData()
     {
         $completenesses = [];
-        $channelCompletenesses = $this->findAll('css', $this->selectors['Channel completeness']['css']);
+        $channelCompletenesses = $this->element->findAll('css', $this->selectors['Channel completeness']['css']);
 
         foreach ($channelCompletenesses as $position => $channelCompleteness) {
             $missingCount = $channelCompleteness->getAttribute('data-missing-count');

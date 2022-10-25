@@ -76,7 +76,7 @@ final class ProductModel
 
         if (!$this->parent->empty()) {
             if (null === $parent = $this->productModelRepository->findOneByIdentifier((string) $this->parent)) {
-                throw new \InvalidArgumentException(sprintf('The parent "%s" does not exist.'));
+                throw new \InvalidArgumentException(sprintf('The parent "%s" does not exist.', (string) $this->parent));
             }
 
             $productModel->setParent($parent);

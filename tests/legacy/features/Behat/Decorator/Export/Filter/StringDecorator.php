@@ -20,7 +20,7 @@ class StringDecorator extends ElementDecorator
     public function filter($operator, $value)
     {
         $operatorField = $this->spin(function () {
-            return $this->find('css', '.select2-container.operator');
+            return $this->element->find('css', '.select2-container.operator');
         }, 'Cannot find the operator field');
 
         $operatorField = $this->decorate(
@@ -32,13 +32,13 @@ class StringDecorator extends ElementDecorator
         if ('' !== $value) {
             list($data) = explode(' ', $value);
 
-            $field = $this->find('css', '[name="filter-value"]');
+            $field = $this->element->find('css', '[name="filter-value"]');
             $field->setValue($data);
-            $this->getSession()->executeScript(
+            $this->element->getSession()->executeScript(
                 sprintf(
                     '$(\'.filter-item[data-name="%s"][data-type="%s"] [name="filter-value"]\').trigger(\'change\')',
-                    $this->getAttribute('data-name'),
-                    $this->getAttribute('data-type')
+                    $this->element->getAttribute('data-name'),
+                    $this->element->getAttribute('data-type')
                 )
             );
         }
@@ -53,7 +53,7 @@ class StringDecorator extends ElementDecorator
     {
         try {
             $filterInput = $this->spin(function () {
-                return $this->find('css', '[name="filter-value"]');
+                return $this->element->find('css', '[name="filter-value"]');
             }, 'Cannot find the filter-value input');
         } catch (TimeoutException $exception) {
             return false;

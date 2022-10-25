@@ -55,7 +55,7 @@ class InMemoryGroupRepository implements GroupRepositoryInterface, SaverInterfac
      */
     public function find($id)
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException(__METHOD__);
     }
 
     /**
@@ -71,7 +71,7 @@ class InMemoryGroupRepository implements GroupRepositoryInterface, SaverInterfac
      */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException(__METHOD__);
     }
 
     /**
@@ -79,7 +79,7 @@ class InMemoryGroupRepository implements GroupRepositoryInterface, SaverInterfac
      */
     public function findOneBy(array $criteria)
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException(__METHOD__);
     }
 
     /**
@@ -87,7 +87,7 @@ class InMemoryGroupRepository implements GroupRepositoryInterface, SaverInterfac
      */
     public function getClassName()
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException(__METHOD__);
     }
 
     /**
@@ -95,11 +95,11 @@ class InMemoryGroupRepository implements GroupRepositoryInterface, SaverInterfac
      */
     public function getDefaultUserGroup()
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException(__METHOD__);
     }
 
     public function findOneById(int $id): ?GroupInterface
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException(__METHOD__);
     }
 }

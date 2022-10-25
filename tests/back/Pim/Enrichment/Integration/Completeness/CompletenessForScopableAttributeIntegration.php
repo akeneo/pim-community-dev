@@ -58,7 +58,7 @@ class CompletenessForScopableAttributeIntegration extends AbstractCompletenessTe
             'product_witout_values',
             [new SetFamily('another_family')]
         );
-        $this->assertNotComplete($productWithoutValues, 'ecommerce', ['a_text']);
+        $this->assertNotComplete($productWithoutValues, 'ecommerce');
 
         $productDataEmpty = $this->createProductWithStandardValues(
             'product_data_empty',

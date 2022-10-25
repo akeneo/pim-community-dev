@@ -25,7 +25,7 @@ class BaseDecorator extends ElementDecorator
     public function remove()
     {
         $this->spin(function () {
-            return $this->find('css', '.remove');
+            return $this->element->find('css', '.remove');
         }, 'Can not find the remove button.')->click();
     }
 
@@ -37,7 +37,7 @@ class BaseDecorator extends ElementDecorator
     public function setLocale($locale)
     {
         $option = $this->spin(function () use ($locale) {
-            $dropdown = $this->find('css', '.locale-switcher');
+            $dropdown = $this->element->find('css', '.locale-switcher');
 
             if (null === $dropdown) {
                 return false;
@@ -72,7 +72,7 @@ class BaseDecorator extends ElementDecorator
     public function setScope($scope)
     {
         $scopeSwitcher = $this->spin(function () {
-            return $this->find('css', '.scope-switcher');
+            return $this->element->find('css', '.scope-switcher');
         }, 'Cannot find the scope switcher. Are you sure that this attribute is scopable?');
 
         $scopeSwitcher->find('css', '.dropdown-toggle, *[data-toggle="dropdown"]')->click();

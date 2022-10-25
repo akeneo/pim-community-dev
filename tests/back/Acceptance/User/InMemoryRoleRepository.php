@@ -55,7 +55,7 @@ class InMemoryRoleRepository implements RoleRepositoryInterface, SaverInterface,
      */
     public function find($id)
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException(__METHOD__);
     }
 
     /**
@@ -71,7 +71,7 @@ class InMemoryRoleRepository implements RoleRepositoryInterface, SaverInterface,
      */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException(__METHOD__);
     }
 
     /**
@@ -79,7 +79,7 @@ class InMemoryRoleRepository implements RoleRepositoryInterface, SaverInterface,
      */
     public function findOneBy(array $criteria)
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException(__METHOD__);
     }
 
     /**
@@ -87,6 +87,6 @@ class InMemoryRoleRepository implements RoleRepositoryInterface, SaverInterface,
      */
     public function getClassName()
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException(__METHOD__);
     }
 }

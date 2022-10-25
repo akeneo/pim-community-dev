@@ -594,7 +594,7 @@ class Edit extends ProductEditForm
 
         $validationButton->click();
 
-        return $this->spin(function () use ($family) {
+        return $this->spin(function () {
             return $this
                 ->getElement('Meta zone')
                 ->find('css', '.product-family');

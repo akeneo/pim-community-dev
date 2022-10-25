@@ -68,8 +68,6 @@ class Notifier implements NotifierInterface
 
         $this->notificationSaver->save($notification);
         $this->userNotifsSaver->saveAll($userNotifications);
-
-        return $this;
     }
 
     /**

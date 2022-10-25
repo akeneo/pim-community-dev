@@ -21,7 +21,7 @@ class BooleanDecorator extends ElementDecorator
     public function filter($operator, $value)
     {
         $wrapper = $this->spin(function () {
-            return $this->find('css', '.switch-animate');
+            return $this->element->find('css', '.switch-animate');
         }, 'Can\'t find Bootstrap switch wrapper');
 
         $value = 'Yes' === $value;

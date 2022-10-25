@@ -22,7 +22,7 @@ class MetricDecorator extends ElementDecorator
     public function filter($operator, $value)
     {
         $operatorField = $this->spin(function () {
-            return $this->find('css', '.select2-container.operator');
+            return $this->element->find('css', '.select2-container.operator');
         }, 'Cannot find the metric operator field');
 
         $operatorField = $this->decorate(
@@ -35,20 +35,20 @@ class MetricDecorator extends ElementDecorator
             list($data, $unit) = explode(' ', $value);
 
             $field = $this->spin(function () {
-                return $this->find('css', '[name="filter-data"]');
+                return $this->element->find('css', '[name="filter-data"]');
             }, 'Cannot find the metric data field');
 
             $field->setValue($data);
-            $this->getSession()->executeScript(
+            $this->element->getSession()->executeScript(
                 sprintf(
                     '$(\'.filter-item[data-name="%s"][data-type="%s"] [name="filter-data"]\').trigger(\'change\')',
-                    $this->getAttribute('data-name'),
-                    $this->getAttribute('data-type')
+                    $this->element->getAttribute('data-name'),
+                    $this->element->getAttribute('data-type')
                 )
             );
 
             $unitField = $this->spin(function () {
-                return $this->find('css', '.select2-container.unit');
+                return $this->element->find('css', '.select2-container.unit');
             }, 'Cannot find the metric unit field');
 
             $unitField = $this->decorate(
@@ -57,12 +57,12 @@ class MetricDecorator extends ElementDecorator
             );
 
             $unitField->setValue($unit);
-            $this->getSession()->executeScript(
+            $this->element->getSession()->executeScript(
                 sprintf(
                     '$(\'.filter-item[data-name="%s"][data-type="%s"] '.
                     'select[name="filter-unit"]\').trigger(\'change\')',
-                    $this->getAttribute('data-name'),
-                    $this->getAttribute('data-type')
+                    $this->element->getAttribute('data-name'),
+                    $this->element->getAttribute('data-type')
                 )
             );
         }

@@ -51,7 +51,7 @@ class NavigationContext extends BaseNavigationContext
         $page   = 'UserGroup';
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
-        $this->openPage(sprintf('UserGroup edit', $page), ['id' => $entity->getId()]);
+        $this->openPage('UserGroup edit', ['id' => $entity->getId()]);
     }
 
     /**
@@ -64,7 +64,7 @@ class NavigationContext extends BaseNavigationContext
         $page   = 'UserRole';
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($label);
-        $this->openPage(sprintf('UserRole edit', $page), ['id' => $entity->getId()]);
+        $this->openPage('UserRole edit', ['id' => $entity->getId()]);
     }
 
     /**

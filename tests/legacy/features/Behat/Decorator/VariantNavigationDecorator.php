@@ -29,7 +29,7 @@ class VariantNavigationDecorator extends ElementDecorator
     public function getAxisNameForLevel(int $level): NodeElement
     {
         $axisNames = $this->spin(function () {
-            return $this->findAll('css', '.AknVariantNavigation-axisName');
+            return $this->element->findAll('css', '.AknVariantNavigation-axisName');
         }, 'Impossible to find any axis name in the Variant Navigation bar.');
 
         if (count($axisNames) < $level) {
@@ -54,7 +54,7 @@ class VariantNavigationDecorator extends ElementDecorator
     public function getSelectedAxisValuesForLevel(int $level): NodeElement
     {
         $selectedAxisValues = $this->spin(function () {
-            return $this->findAll('css', '.AknVariantNavigation-axisValue');
+            return $this->element->findAll('css', '.AknVariantNavigation-axisValue');
         }, 'Impossible to find any selected axis value in the Variant Navigation bar.');
 
         if (count($selectedAxisValues) < $level) {
@@ -78,7 +78,7 @@ class VariantNavigationDecorator extends ElementDecorator
     public function getChildrenSelectorForLevel(int $level): ElementDecorator
     {
         $childrenSelectors = $this->spin(function () {
-            return $this->findAll('css', '.variant-navigation.select2-container');
+            return $this->element->findAll('css', '.variant-navigation.select2-container');
         }, 'No children selector found in the Variant Navigation bar.');
 
         if (count($childrenSelectors) < $level) {

@@ -22,7 +22,7 @@ class PriceDecorator extends ElementDecorator
     public function filter($operator, $value)
     {
         $operatorField = $this->spin(function () {
-            return $this->find('css', '.select2-container.operator');
+            return $this->element->find('css', '.select2-container.operator');
         }, 'Cannot find the price operator field');
 
         $operatorField = $this->decorate(
@@ -35,20 +35,20 @@ class PriceDecorator extends ElementDecorator
             list($data, $currency) = explode(' ', $value);
 
             $field = $this->spin(function () {
-                return $this->find('css', '[name="filter-data"]');
+                return $this->element->find('css', '[name="filter-data"]');
             }, 'Cannot find the price data field');
 
             $field->setValue($data);
-            $this->getSession()->executeScript(
+            $this->element->getSession()->executeScript(
                 sprintf(
                     '$(\'.filter-item[data-name="%s"][data-type="%s"] [name="filter-data"]\').trigger(\'change\')',
-                    $this->getAttribute('data-name'),
-                    $this->getAttribute('data-type')
+                    $this->element->getAttribute('data-name'),
+                    $this->element->getAttribute('data-type')
                 )
             );
 
             $currencyField = $this->spin(function () {
-                return $this->find('css', '.select2-container.currency');
+                return $this->element->find('css', '.select2-container.currency');
             }, 'Cannot find the price currency field');
 
             $currencyField = $this->decorate(
@@ -57,12 +57,12 @@ class PriceDecorator extends ElementDecorator
             );
 
             $currencyField->setValue($currency);
-            $this->getSession()->executeScript(
+            $this->element->getSession()->executeScript(
                 sprintf(
                     '$(\'.filter-item[data-name="%s"][data-type="%s"] '.
                     'select[name="filter-currency"]\').trigger(\'change\')',
-                    $this->getAttribute('data-name'),
-                    $this->getAttribute('data-type')
+                    $this->element->getAttribute('data-name'),
+                    $this->element->getAttribute('data-type')
                 )
             );
         }

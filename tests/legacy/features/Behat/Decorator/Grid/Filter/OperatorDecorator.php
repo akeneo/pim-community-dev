@@ -25,7 +25,7 @@ class OperatorDecorator extends ElementDecorator
         // We can't use contains("%s") here, as ">=" contains ">" too, the css selector is not strict enough,
         // we need to do a perfect match on the label
         $this->spin(function () use ($value) {
-            $this->click();
+            $this->element->click();
             $operatorChoices = $this->getClosest($this, 'AknDropdown')->findAll(
                 'css',
                 '.label, .AknDropdown-menu .choice_value, .AknDropdown-menu .operator_choice'

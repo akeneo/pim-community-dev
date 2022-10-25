@@ -128,11 +128,13 @@ JSON;
     {
         $maxNumberResources = $this->getMaxNumberResources();
 
+        $data = [];
         for ($i = 0; $i < $maxNumberResources; $i++) {
             $data[] = sprintf('{"code": "my_code_%s", "type":"pim_catalog_text","group":"other"}', $i);
         }
         $data = implode(PHP_EOL, $data);
 
+        $expectedContent = [];
         for ($i = 0; $i < $maxNumberResources; $i++) {
             $expectedContent[] = sprintf('{"line":%s,"code":"my_code_%s","status_code":201}', $i + 1, $i);
         }
@@ -152,6 +154,7 @@ JSON;
 
         $maxNumberResources = $this->getMaxNumberResources();
 
+        $data = [];
         for ($i = 0; $i < $maxNumberResources + 1; $i++) {
             $data[] = sprintf('{"identifier": "my_code_%s"}', $i);
         }

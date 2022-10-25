@@ -44,7 +44,6 @@ class InMemoryAverageMaxQuery implements AverageMaxQuery
      */
     public function setLimit(int $limit): void
     {
-        $this->limit = $limit;
     }
 
     /**

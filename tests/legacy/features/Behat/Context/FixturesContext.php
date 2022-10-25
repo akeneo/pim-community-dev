@@ -99,6 +99,66 @@ class FixturesContext extends PimContext
         return $this->entities;
     }
 
+    public function getAttribute(string $code)
+    {
+        return $this->getEntity('Attribute', $code);
+    }
+
+    public function getFamily(string $code)
+    {
+        return $this->getEntity('Family', $code);
+    }
+
+    public function getFamilyVariant(string $code)
+    {
+        return $this->getEntity('FamilyVariant', $code);
+    }
+
+    public function getCurrency(string $code)
+    {
+        return $this->getEntity('Currency', $code);
+    }
+
+    public function getLocale(string $code)
+    {
+        return $this->getEntity('Locale', $code);
+    }
+
+    public function getChannel(string $code)
+    {
+        return $this->getEntity('Channel', $code);
+    }
+
+    public function getGroupType(string $code)
+    {
+        return $this->getEntity('GroupType', $code);
+    }
+
+    public function getAttributeGroup(string $code)
+    {
+        return $this->getEntity('AttributeGroup', $code);
+    }
+
+    public function getCategory(string $code)
+    {
+        return $this->getEntity('Category', $code);
+    }
+
+    public function getAssociationType(string $code)
+    {
+        return $this->getEntity('AssociationType', $code);
+    }
+
+    public function getProductGroup(string $code)
+    {
+        return $this->getEntity('ProductGroup', $code);
+    }
+
+    public function getJobInstance(string $code)
+    {
+        return $this->getEntity('JobInstance', $code);
+    }
+
     /**
      * @throws \InvalidArgumentException If entity is not found
      */
@@ -227,7 +287,7 @@ class FixturesContext extends PimContext
             $price = $productValue->getPrice($priceCurrency);
 
             if ($value === null) {
-                Assert::isNull($price);
+                Assert::assertNull($price);
             } else {
                 Assert::assertEquals((float)$value, (float)$price->getData());
             }
@@ -260,9 +320,9 @@ class FixturesContext extends PimContext
     protected function validate(object $object)
     {
         if ($object instanceof ProductInterface) {
-            $validator = $this->getContainer()->get('pim_catalog.validator.product');
+            $validator = $this->getMainContext()->getContainer()->get('pim_catalog.validator.product');
         } else {
-            $validator = $this->getContainer()->get('validator');
+            $validator = $this->getMainContext()->getContainer()->get('validator');
         }
         $violations = $validator->validate($object);
 

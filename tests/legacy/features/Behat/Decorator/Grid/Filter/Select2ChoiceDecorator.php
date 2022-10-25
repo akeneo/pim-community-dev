@@ -19,8 +19,8 @@ class Select2ChoiceDecorator extends ElementDecorator
     public function filter($operator, $value)
     {
         $field = $this->spin(function () {
-            return $this->find('css', '.select-field');
-        }, sprintf('Cannot find the value field for the filter "%s"', $this->getAttribute('data-name')));
+            return $this->element->find('css', '.select-field');
+        }, sprintf('Cannot find the value field for the filter "%s"', $this->element->getAttribute('data-name')));
 
         $field = $this->decorate($field, [Select2Decorator::class]);
         $field->close();
@@ -29,7 +29,7 @@ class Select2ChoiceDecorator extends ElementDecorator
             $field->setValue($value);
         }
 
-        $operatorDropdown = $this->find('css', '*[data-toggle="dropdown"]');
+        $operatorDropdown = $this->element->find('css', '*[data-toggle="dropdown"]');
         if (null !== $operatorDropdown) {
             $operatorDropdown = $this->decorate(
                 $operatorDropdown,
@@ -39,10 +39,10 @@ class Select2ChoiceDecorator extends ElementDecorator
         }
 
         $this->spin(function () {
-            if (!$this->find('css', '.filter-criteria')->isVisible()) {
+            if (!$this->element->find('css', '.filter-criteria')->isVisible()) {
                 return true;
             }
-            $this->find('css', '.filter-update')->click();
+            $this->element->find('css', '.filter-update')->click();
 
             return false;
         }, 'Cannot update the filter');
@@ -56,8 +56,8 @@ class Select2ChoiceDecorator extends ElementDecorator
     public function getOptions()
     {
         $options = $this->spin(function () {
-            return $this->findAll('css', '.select2-choices .select2-search-choice');
-        }, sprintf('Unable to find choices in filter "%s"', $this->getAttribute('data-name')));
+            return $this->element->findAll('css', '.select2-choices .select2-search-choice');
+        }, sprintf('Unable to find choices in filter "%s"', $this->element->getAttribute('data-name')));
 
         $data = [];
         foreach ($options as $option) {

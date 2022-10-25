@@ -21,7 +21,7 @@ class AttributeSelectorDecorator extends ElementDecorator
     {
         foreach ($attributes as $attribute) {
             $this->spin(function () use ($attribute) {
-                $headerInput = $this->find('css', 'header input');
+                $headerInput = $this->element->find('css', 'header input');
 
                 if (!$headerInput->isVisible() && $headerInput->isValid()) {
                     return false;
@@ -33,11 +33,11 @@ class AttributeSelectorDecorator extends ElementDecorator
             }, 'Cannot fill the header input');
 
             $attributeItem = $this->spin(function () use ($attribute) {
-                return $this->find('css', sprintf('li[data-attribute-code="%s"]', $attribute));
+                return $this->element->find('css', sprintf('li[data-attribute-code="%s"]', $attribute));
             }, sprintf('Cannot find the attribute %s in the list', $attribute));
 
             $dropZone = $this->spin(function () {
-                return $this->find('css', '.selected-attributes ul');
+                return $this->element->find('css', '.selected-attributes ul');
             }, 'Cannot find the drop zone to select attributes');
 
             $this->dragElementTo($attributeItem, $dropZone);
@@ -50,7 +50,7 @@ class AttributeSelectorDecorator extends ElementDecorator
     public function close()
     {
         $button = $this->spin(function () {
-            return $this->find('css', '.modal .ok');
+            return $this->element->find('css', '.modal .ok');
         }, 'Cannot find the close button');
 
         $button->click();
@@ -62,9 +62,9 @@ class AttributeSelectorDecorator extends ElementDecorator
     public function clear()
     {
         $button = $this->spin(function () {
-            $button = $this->find('css', '.reset');
+            $button = $this->element->find('css', '.reset');
             if (null === $button) {
-                $button = $this->find('css', '.clear');
+                $button = $this->element->find('css', '.clear');
             }
 
             return $button;
@@ -72,7 +72,7 @@ class AttributeSelectorDecorator extends ElementDecorator
 
         $button->click();
         $this->spin(function () {
-            $selectedAttributes = $this->find(
+            $selectedAttributes = $this->element->find(
                 'css',
                 '.selected-attributes .AknColumnConfigurator-listContainer .AknVerticalList'
             );
@@ -89,7 +89,7 @@ class AttributeSelectorDecorator extends ElementDecorator
      */
     protected function dragElementTo($element, $dropZone)
     {
-        $session = $this->getSession()->getDriver()->getWebDriverSession();
+        $session = $this->element->getSession()->getDriver()->getWebDriverSession();
 
         $from = $session->element('xpath', $element->getXpath());
         $to = $session->element('xpath', $dropZone->getXpath());

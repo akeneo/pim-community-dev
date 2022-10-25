@@ -19,15 +19,15 @@ class StringDecorator extends ElementDecorator
     public function filter($operator, $value)
     {
         $operatorDropdown = $this->decorate(
-            $this->find('css', '*[data-toggle="dropdown"]'),
+            $this->element->find('css', '*[data-toggle="dropdown"]'),
             [OperatorDecorator::class]
         );
         $operatorDropdown->setValue($operator);
 
         if (!in_array($operator, ['is empty', 'is not empty'])) {
             $field = $this->spin(function () {
-                return $this->find('css', '.select-field');
-            }, sprintf('Cannot find the value field for the filter "%s"', $this->getAttribute('data-name')));
+                return $this->element->find('css', '.select-field');
+            }, sprintf('Cannot find the value field for the filter "%s"', $this->element->getAttribute('data-name')));
 
             if ('in list' === $operator) {
                 $field = $this->decorate($field, [Select2Decorator::class]);
@@ -37,10 +37,10 @@ class StringDecorator extends ElementDecorator
         }
 
         $this->spin(function () {
-            if (!$this->find('css', '.filter-criteria')->isVisible()) {
+            if (!$this->element->find('css', '.filter-criteria')->isVisible()) {
                 return true;
             }
-            $this->find('css', '.filter-update')->click();
+            $this->element->find('css', '.filter-update')->click();
 
             return false;
         }, 'Cannot update the filter');

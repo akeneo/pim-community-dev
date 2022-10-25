@@ -22,7 +22,7 @@ class MediaDecorator extends ElementDecorator
     public function filter($operator, $value)
     {
         $operatorField = $this->spin(function () {
-            return $this->find('css', '.select2-container.operator');
+            return $this->element->find('css', '.select2-container.operator');
         }, 'Cannot find the media operator field');
 
         $operatorField = $this->decorate(
@@ -33,15 +33,15 @@ class MediaDecorator extends ElementDecorator
 
         if ('' !== $value) {
             $field = $this->spin(function () {
-                return $this->find('css', '[name="filter-value"]');
+                return $this->element->find('css', '[name="filter-value"]');
             }, 'Cannot find the media data field');
 
             $field->setValue($value);
-            $this->getSession()->executeScript(
+            $this->element->getSession()->executeScript(
                 sprintf(
                     '$(\'.filter-item[data-name="%s"][data-type="%s"] [name="filter-value"]\').trigger(\'change\')',
-                    $this->getAttribute('data-name'),
-                    $this->getAttribute('data-type')
+                    $this->element->getAttribute('data-name'),
+                    $this->element->getAttribute('data-type')
                 )
             );
         }

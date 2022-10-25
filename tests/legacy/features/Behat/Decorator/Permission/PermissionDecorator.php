@@ -32,7 +32,7 @@ class PermissionDecorator extends ElementDecorator
     public function findGroup($group)
     {
         return $this->spin(function () use ($group) {
-            return $this->find('css', sprintf($this->selectors['Group'], $group));
+            return $this->element->find('css', sprintf($this->selectors['Group'], $group));
         }, sprintf('Group "%s" not found.', $group));
     }
 
@@ -44,7 +44,7 @@ class PermissionDecorator extends ElementDecorator
     public function findResource($resourceLabel)
     {
         $resourceElement = $this->spin(function () use ($resourceLabel) {
-            $resources = $this->findAll('css', $this->selectors['Resource']);
+            $resources = $this->element->findAll('css', $this->selectors['Resource']);
 
             foreach ($resources as $resource) {
                 if ($resourceLabel === strip_tags($resource->getOuterHtml())) {
@@ -167,7 +167,7 @@ class PermissionDecorator extends ElementDecorator
     protected function findGroupIcon($group)
     {
         return $this->spin(function () use ($group) {
-            return $this->find('css', sprintf($this->selectors['Group toggle'], $group));
+            return $this->element->find('css', sprintf($this->selectors['Group toggle'], $group));
         }, sprintf('Group icon "%s" not found', $group));
     }
 }

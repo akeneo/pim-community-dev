@@ -199,7 +199,7 @@ class AssertionContext extends PimContext
         $priceField = $priceLabelField->getParent()->getParent();
 
         foreach ($currencies as $currency) {
-            $this->spin(function () use ($priceField, $currency, $field) {
+            $this->spin(function () use ($priceField, $currency) {
                 return $priceField->find('css', sprintf('input[data-currency="%s"]', $currency));
             }, sprintf('Expecting to see the currency "%s" on price field "%s".', $currency, $field));
         }

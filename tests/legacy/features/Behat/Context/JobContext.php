@@ -129,7 +129,6 @@ class JobContext extends PimContext
      */
     public function iShouldNotBeAbleToAccessTheJob($action, JobInstance $job)
     {
-        $this->currentPage = sprintf("%s %s", ucfirst($job->getType()), $action);
         $this->getCurrentPage()->open(['code' => $job->getCode()]);
 
         $message = 'launch' === $action ?

@@ -6,6 +6,7 @@ namespace AkeneoTest\Pim\Structure\Integration\AttributeOption;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetOptionsCountAndTranslationByAttribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\SearchAttributeOptionsInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Webmozart\Assert\Assert;
@@ -15,7 +16,6 @@ class SqlGetOptionsCountAndTranslationByAttributeIntegration extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->sqlSearchAttributeOptions = $this->get('akeneo.pim.structure.query.search_attribute_options');
 
         // Simple Select attributes
         $this->createSimpleAttribute('color', ['en_US' => 'Color', 'fr_FR' => 'Couleur']);

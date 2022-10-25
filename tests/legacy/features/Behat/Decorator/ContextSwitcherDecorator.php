@@ -23,7 +23,7 @@ class ContextSwitcherDecorator extends ElementDecorator
     public function switchLocale($localeCode)
     {
         $this->spin(function () use ($localeCode) {
-            $dropdown = $this->find('css', $this->selectors['Locales dropdown']);
+            $dropdown = $this->element->find('css', $this->selectors['Locales dropdown']);
             if (null === $dropdown) {
                 return false;
             }
@@ -58,7 +58,7 @@ class ContextSwitcherDecorator extends ElementDecorator
     public function getSelectedLocale()
     {
         $dropdown = $this->spin(function () {
-            return $this->find('css', $this->selectors['Locales dropdown']);
+            return $this->element->find('css', $this->selectors['Locales dropdown']);
         }, 'Could not find locale switcher');
 
         $active = $this->spin(function () use ($dropdown) {
@@ -76,7 +76,7 @@ class ContextSwitcherDecorator extends ElementDecorator
     public function switchScope($scopeCode)
     {
         $this->spin(function () use ($scopeCode) {
-            $dropdown = $this->find('css', $this->selectors['Channel dropdown']);
+            $dropdown = $this->element->find('css', $this->selectors['Channel dropdown']);
             if (null === $dropdown) {
                 return false;
             }

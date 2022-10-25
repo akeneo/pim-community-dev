@@ -18,13 +18,13 @@ class JsNodeDecorator extends ElementDecorator
     public function open()
     {
         $arrow = $this->spin(function () {
-            return $this->find('css', 'ins');
+            return $this->element->find('css', 'ins');
         }, 'Category tree arrow not found. Can not open category tree.');
 
         $arrow->click();
 
         $this->spin(function () {
-            return null === $this->find('css', 'a.jstree-loading');
+            return null === $this->element->find('css', 'a.jstree-loading');
         }, sprintf('Cannot open the node "%s"', $this->getName()));
     }
 
@@ -33,15 +33,15 @@ class JsNodeDecorator extends ElementDecorator
      */
     public function select()
     {
-        $checkbox = $this->find('css', '.jstree-checkbox');
+        $checkbox = $this->element->find('css', '.jstree-checkbox');
         if ($checkbox) {
             $this->spin(function () use ($checkbox) {
                 $checkbox->click();
 
                 return true;
-            }, 'Cannot check the node %s', $this->getName());
+            }, sprintf('Cannot check the node %s', $this->getName()));
         } else {
-            $this->find('css', 'a')->click();
+            $this->element->find('css', 'a')->click();
         }
     }
 
@@ -52,7 +52,7 @@ class JsNodeDecorator extends ElementDecorator
      */
     public function isOpen()
     {
-        return !$this->hasClass('jstree-closed');
+        return !$this->element->hasClass('jstree-closed');
     }
 
     /**
@@ -62,11 +62,11 @@ class JsNodeDecorator extends ElementDecorator
      */
     public function isSelected()
     {
-        if (null !== $this->find('css', '.jstree-checkbox .jstree-checked')) {
+        if (null !== $this->element->find('css', '.jstree-checkbox .jstree-checked')) {
             return true;
         }
 
-        if (null !== $this->find('css', '.jstree-selected')) {
+        if (null !== $this->element->find('css', '.jstree-selected')) {
             return true;
         }
 
@@ -80,6 +80,6 @@ class JsNodeDecorator extends ElementDecorator
      */
     protected function getName()
     {
-        return $this->find('css', 'a')->getText();
+        return $this->element->find('css', 'a')->getText();
     }
 }

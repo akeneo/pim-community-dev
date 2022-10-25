@@ -76,11 +76,13 @@ JSON;
         $maxNumberResources = $this->getMaxNumberResources();
 
         $json = '{"code": "my_code_%s", "variant_attribute_sets": [{"level": 1, "axes": ["a_simple_select"], "attributes": ["a_simple_select"]}]}';
+        $data = [];
         for ($i = 0; $i < $maxNumberResources; $i++) {
             $data[] = sprintf($json, $i);
         }
         $data = implode(PHP_EOL, $data);
 
+        $expectedContent = [];
         for ($i = 0; $i < $maxNumberResources; $i++) {
             $expectedContent[] = sprintf('{"line":%s,"code":"my_code_%s","status_code":201}', $i + 1, $i);
         }
@@ -100,6 +102,7 @@ JSON;
 
         $maxNumberResources = $this->getMaxNumberResources();
 
+        $data = [];
         for ($i = 0; $i < $maxNumberResources + 1; $i++) {
             $data[] = sprintf('{"code": "my_code_%s"}', $i);
         }

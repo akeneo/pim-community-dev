@@ -26,10 +26,10 @@ class Select2Decorator extends ElementDecorator
             $widget = $this->getWidget();
             $value = trim($value);
 
-            $this->getSession()->executeScript(
+            $this->element->getSession()->executeScript(
                 sprintf(
                     '$(\'#%s input[type="text"]\').val(\'%s\').trigger(\'input\');',
-                    $this->getAttribute('id'),
+                    $this->element->getAttribute('id'),
                     $value
                 )
             );
@@ -38,7 +38,7 @@ class Select2Decorator extends ElementDecorator
                 $result = $widget->find('css', sprintf('.select2-result-label:contains("%s")', $value));
 
                 if (null !== $result && $result->isVisible()) {
-                    $this->getSession()->executeScript(
+                    $this->element->getSession()->executeScript(
                         sprintf('$(\'.select2-result-label:contains("%s")\').mouseup();', $value)
                     );
                     return true;
@@ -47,7 +47,7 @@ class Select2Decorator extends ElementDecorator
                 throw new SpinException(sprintf(
                     'Could not find any result available with value "%s" for attributes "%s"',
                     $value,
-                    $this->getAttribute('data-name')
+                    $this->element->getAttribute('data-name')
                 ));
             }, sprintf('A result has been found for "%s", but it seems we can not click on it.', $value));
         }
@@ -65,7 +65,7 @@ class Select2Decorator extends ElementDecorator
      */
     public function prune()
     {
-        $elements = array_reverse($this->findAll(
+        $elements = array_reverse($this->element->findAll(
             'css',
             '.select2-choices li.select2-search-choice,'.
             'a.select2-choice'
@@ -92,7 +92,7 @@ class Select2Decorator extends ElementDecorator
     public function open()
     {
         $openerElement = $this->spin(function () {
-            return $this->find('css', '.select2-arrow') ?? $this->find('css', '.select2-search-field');
+            return $this->element->find('css', '.select2-arrow') ?? $this->element->find('css', '.select2-search-field');
         }, 'Could not find opener element');
 
         if (!$this->element->hasClass('select2-dropdown-open')) {
@@ -105,13 +105,13 @@ class Select2Decorator extends ElementDecorator
      */
     public function close()
     {
-        $selectElementExists = $this->find('css', '.select2-dropdown-open') !== null;
+        $selectElementExists = $this->element->find('css', '.select2-dropdown-open') !== null;
 
-        if ($selectElementExists && false !== strstr($this->getAttribute('class'), 'select2-dropdown-open')) {
+        if ($selectElementExists && false !== strstr($this->element->getAttribute('class'), 'select2-dropdown-open')) {
             $dropMask = $this->getBody()->find('css', '#select2-drop-mask');
 
             if (null !== $dropMask) {
-                $this->getSession()->executeScript('$("#select2-drop-mask").click();');
+                $this->element->getSession()->executeScript('$("#select2-drop-mask").click();');
             }
         }
     }
@@ -147,15 +147,15 @@ class Select2Decorator extends ElementDecorator
      */
     public function getCodes()
     {
-        if (false !== strpos('select2-container-multi', $this->getAttribute('class'))) {
+        if (false !== strpos('select2-container-multi', $this->element->getAttribute('class'))) {
             throw new \Exception('Not implement yet');
         }
 
-        $id = $this->getAttribute('id');
+        $id = $this->element->getAttribute('id');
         $id = sprintf('#%s', substr($id, 5, strlen($id)));
 
         $select = $this->spin(function () use ($id) {
-            return $this->getSession()->getPage()->find('css', $id);
+            return $this->element->getSession()->getPage()->find('css', $id);
         }, sprintf('Impossible to find the select element for the select2 %s', $id));
 
         return [$select->getValue()];
@@ -171,12 +171,12 @@ class Select2Decorator extends ElementDecorator
      */
     public function getValues()
     {
-        if (false !== strpos('select2-container-multi', $this->getAttribute('class'))) {
+        if (false !== strpos('select2-container-multi', $this->element->getAttribute('class'))) {
             throw new \Exception('Not implement yet');
         }
 
         $element = $this->spin(function () {
-            return $this->find('css', '.select2-chosen');
+            return $this->element->find('css', '.select2-chosen');
         }, 'Impossible to find the open of the the select2');
 
         return [$element->getHtml()];
@@ -233,7 +233,7 @@ class Select2Decorator extends ElementDecorator
 
         $text = trim($text);
 
-        $this->getSession()->executeScript(
+        $this->element->getSession()->executeScript(
             sprintf(
                 '$(\'%s .select2-search input[type="text"]\')' .
                 '.val(\'%s\')' .
@@ -252,7 +252,7 @@ class Select2Decorator extends ElementDecorator
     public function getCurrentValue()
     {
         $input = $this->spin(function () {
-            return $this->find('css', '.select2-selection-label-view');
+            return $this->element->find('css', '.select2-selection-label-view');
         }, 'Cannot find the Select2 current selection input');
 
         return $input->getText();

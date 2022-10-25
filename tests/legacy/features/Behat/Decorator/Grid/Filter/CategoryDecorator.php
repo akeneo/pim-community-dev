@@ -19,7 +19,7 @@ class CategoryDecorator extends ElementDecorator
     {
         if ('unclassified' === $operator) {
             $this->spin(function () {
-                $node = $this->find('css', 'button[title="Unclassified products"]');
+                $node = $this->element->find('css', 'button[title="Unclassified products"]');
                 if (null === $node) {
                     return false;
                 }
@@ -33,7 +33,7 @@ class CategoryDecorator extends ElementDecorator
 
             foreach ($values as $value) {
                 $this->spin(function () use ($value) {
-                    $node = $this->findNodeInTree($value);
+                    $node = $this->element->findNodeInTree($value);
                     if (null === $node) {
                         return false;
                     }
@@ -56,7 +56,7 @@ class CategoryDecorator extends ElementDecorator
     public function expand()
     {
         $filter = $this->spin(function () {
-            return $this->getParent()->getParent()->getParent()
+            return $this->element->getParent()->getParent()->getParent()
                 ->find('css', '.separator.collapsed i.icon-double-angle-right');
         }, 'Cannot open the category filter');
 
@@ -69,7 +69,7 @@ class CategoryDecorator extends ElementDecorator
     public function remove()
     {
         $filter = $this->spin(function () {
-            return $this->getParent()->getParent()->find('css', '.sidebar .sidebar-controls i.icon-double-angle-left');
+            return $this->element->getParent()->getParent()->find('css', '.sidebar .sidebar-controls i.icon-double-angle-left');
         }, 'Cannot remove the category filter');
 
         $filter->click();

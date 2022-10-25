@@ -43,8 +43,8 @@ class FetchProductAndProductModelRowsIntegration extends TestCase
         $queryParameters = new FetchProductAndProductModelRowsParameters(
             $pqb,
             ['sku', 'a_localizable_image', 'a_scopable_image'],
-            'ecommerce', 'en_US',
-            (int) $userId
+            'ecommerce',
+            'en_US',
         );
 
         $rows = $query($queryParameters);

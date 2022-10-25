@@ -26,7 +26,7 @@ class ComparisonPanelDecorator extends ElementDecorator
     public function selectElements($mode)
     {
         $this->spin(function () use ($mode) {
-            $dropdown = $this->find('css', $this->selectors['Change selection dropdown']);
+            $dropdown = $this->element->find('css', $this->selectors['Change selection dropdown']);
             if (null === $dropdown) {
                 return false;
             }
@@ -52,7 +52,7 @@ class ComparisonPanelDecorator extends ElementDecorator
         }, 'No selection before copy');
 
         $this->spin(function () {
-            $copyButton = $this->find('css', $this->selectors['Copy selected button']);
+            $copyButton = $this->element->find('css', $this->selectors['Copy selected button']);
             if (null === $copyButton) {
                 return false;
             }
@@ -68,7 +68,7 @@ class ComparisonPanelDecorator extends ElementDecorator
     public function switchSource($source)
     {
         $dropdown = $this->spin(function () {
-            $dropdown = $this->find('css', $this->selectors['Copy source dropdown']);
+            $dropdown = $this->element->find('css', $this->selectors['Copy source dropdown']);
             if (null === $dropdown) {
                 return false;
             }

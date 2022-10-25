@@ -19,7 +19,7 @@ class UpdatedDecorator extends ElementDecorator
     public function filter($operator, $value)
     {
         $operatorField = $this->decorate(
-            $this->find('css', '.select2-container.operator'),
+            $this->element->find('css', '.select2-container.operator'),
             [Select2Decorator::class]
         );
         $operatorField->setValue($operator);
@@ -27,14 +27,14 @@ class UpdatedDecorator extends ElementDecorator
         if ('' !== $value) {
             $fieldSelector = sprintf(
                 '.filter-item[data-name="%s"][data-type="%s"] [name="filter-value-updated"]',
-                $this->getAttribute('data-name'),
-                $this->getAttribute('data-type')
+                $this->element->getAttribute('data-name'),
+                $this->element->getAttribute('data-type')
             );
-            $valueField = $this->find('css', $fieldSelector);
+            $valueField = $this->element->find('css', $fieldSelector);
 
             $valueField->setValue($value);
 
-            $this->getSession()->executeScript(
+            $this->element->getSession()->executeScript(
                 sprintf(
                     '$(\'%s\').trigger(\'change\')',
                     $fieldSelector

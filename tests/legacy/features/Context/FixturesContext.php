@@ -117,7 +117,7 @@ class FixturesContext extends BaseFixturesContext
 
         if (is_array($data)) {
             foreach ($data as $key => $value) {
-                if (!(null === $data || (is_string($data) && trim($data) === '') || (is_array($data) && empty($data)))) {
+                if (!(null === $value || (is_string($value) && trim($value) === '') || (is_array($value) && empty($value)))) {
                     $nonEmptyData[$key] = $value;
                 }
             }
@@ -1793,8 +1793,6 @@ class FixturesContext extends BaseFixturesContext
      * @param string $searchedLabel
      * @param string $associationType Can be 'group' or 'role'
      *
-     * @return bool
-     *
      * @Then /^the user "([^"]+)" should be in the "([^"]+)" (group)$/
      * @Then /^the user "([^"]+)" should have the "([^"]+)" (role)$/
      */
@@ -1817,8 +1815,6 @@ class FixturesContext extends BaseFixturesContext
      * @param string $username
      * @param int $count
      * @param string $associationType Can be 'group' or 'role'
-     *
-     * @return bool
      *
      * @throws Spin\TimeoutException
      *
@@ -1866,8 +1862,6 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param string $username
      * @param string $locale
-     *
-     * @return bool
      *
      * @Then /^the user "([^"]+)" should have "([^"]+)" locale$/
      */

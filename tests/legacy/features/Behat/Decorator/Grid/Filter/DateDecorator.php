@@ -18,7 +18,7 @@ class DateDecorator extends ElementDecorator
     public function filter($operator, $value)
     {
         $operatorDropdown = $this->decorate(
-            $this->find('css', '*[data-toggle="dropdown"]'),
+            $this->element->find('css', '*[data-toggle="dropdown"]'),
             [OperatorDecorator::class]
         );
         $operatorDropdown->setValue($operator);
@@ -32,8 +32,8 @@ class DateDecorator extends ElementDecorator
         }
 
         // Depending on the operator, we won't fill the same inputs
-        $inputStart = $this->find('css', 'input[name="start"]');
-        $inputEnd   = $this->find('css', 'input[name="end"]');
+        $inputStart = $this->element->find('css', 'input[name="start"]');
+        $inputEnd   = $this->element->find('css', 'input[name="end"]');
 
         switch ($operator) {
             case 'between':
@@ -59,10 +59,10 @@ class DateDecorator extends ElementDecorator
 
         // We submit the filter
         $this->spin(function () {
-            if (!$this->find('css', '.filter-criteria')->isVisible()) {
+            if (!$this->element->find('css', '.filter-criteria')->isVisible()) {
                 return true;
             }
-            $this->find('css', '.filter-update')->click();
+            $this->element->find('css', '.filter-update')->click();
 
             return false;
         }, 'Cannot update the filter');

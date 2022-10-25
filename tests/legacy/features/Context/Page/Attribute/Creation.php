@@ -92,7 +92,7 @@ class Creation extends Form
             $labelField = $this->spin(function () use ($locale) {
                 return $this->find('css', sprintf('input[data-testid=%s][data-locale="%s"]', 'attribute-option-label', $locale));
             }, 'Unable to find the attribute option label for locale ' . $locale);
-            $this->spin(function () use ($locale, $label, $labelField) {
+            $this->spin(function () use ($label, $labelField) {
                 $labelField->setValue($label);
 
                 return $labelField->getValue() === $label;

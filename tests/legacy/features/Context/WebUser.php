@@ -110,8 +110,6 @@ class WebUser extends PimContext
      * @param string $type
      * @param string $code
      *
-     * @return Then[]
-     *
      * @Given /^I create a(?:n)? "([^"]*)" attribute with code "([^"]*)"?$/
      */
     public function iCreateAnAttribute($type, $code = '')
@@ -1574,8 +1572,6 @@ class WebUser extends PimContext
      * @Given /^I open "([^"]*)" in the current window$/
      *
      * @throws ExpectationException
-     *
-     * @return Step\Given
      */
     public function iOpenInTheCurrentWindow($link)
     {
@@ -1587,7 +1583,7 @@ class WebUser extends PimContext
             $this->getCurrentPage()
                 ->find('css', sprintf('.preview .filename:contains("%s")', $link))
                 ->getParent()
-                ->find('css', sprintf('.open-media', $link))
+                ->find('css', '.open-media')
                 ->click();
         } catch (UnsupportedDriverActionException $e) {
             throw $this->createExpectationException('You must use selenium for this feature.');
@@ -1711,7 +1707,7 @@ class WebUser extends PimContext
         $currentPage->pressButton($button, true);
 
         if (null !== $modalWait) {
-            $this->spin(function () use ($button, $currentPage) {
+            $this->spin(function () use ($currentPage) {
                 foreach ($currentPage->findAll('css', 'div.modal') as $modal) {
                     if ($modal->isVisible()) {
                         return true;
@@ -1905,7 +1901,7 @@ class WebUser extends PimContext
      */
     public function iPressOnTheDropdownButton($item, $button)
     {
-        $this->spin(function () use ($item, $button) {
+        $this->spin(function () {
             $loading = $this->getCurrentPage()->find('css', '#loading-wrapper');
             return null === $loading || !$loading->isVisible();
         }, 'Could not press the dropdown buttons because of loading wrapper');
@@ -2471,12 +2467,12 @@ class WebUser extends PimContext
 
             return $field;
         }, 'System locale field was not found');
-      
+
         $selectInput->click();
 
         $optionElt =  $this->spin(function () use ($language) {
             $elt  =$this->getCurrentPage()->find('css', "[title~=\"$language\"]");
-           
+
             if (null === $elt) {
                 throw new ElementNotFoundException($this->getCurrentPage()->getDriver());
             }

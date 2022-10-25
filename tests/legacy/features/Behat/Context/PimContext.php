@@ -5,12 +5,15 @@ namespace Pim\Behat\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Context\FeatureContext;
+use Context\Spin\SpinCapableTrait;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use SensioLabs\Behat\PageObjectExtension\PageObject\PageObject;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class PimContext extends RawMinkContext
 {
+    use SpinCapableTrait;
+
     protected static array $placeholderValues = [];
     private KernelInterface $kernel;
     protected string $mainContextClass;

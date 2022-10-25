@@ -32,13 +32,13 @@ class SearchDecorator extends ElementDecorator
      */
     public function filter($operator, $value)
     {
-        $field = $this->find('css', '[name="value"]');
+        $field = $this->element->find('css', '[name="value"]');
         $field->setValue($value);
-        $this->getSession()->executeScript(
+        $this->element->getSession()->executeScript(
             sprintf(
                 '$(\'.filter-item[data-name="%s"][data-type="%s"] [name="value"]\').trigger(\'change\')',
-                $this->getAttribute('data-name'),
-                $this->getAttribute('data-type')
+                $this->element->getAttribute('data-name'),
+                $this->element->getAttribute('data-type')
             )
         );
     }
@@ -52,7 +52,7 @@ class SearchDecorator extends ElementDecorator
     {
         try {
             $filterInput = $this->spin(function () {
-                return $this->find('css', '[name="value"]');
+                return $this->element->find('css', '[name="value"]');
             }, 'Cannot find the value input');
         } catch (TimeoutException $exception) {
             return false;
@@ -69,6 +69,6 @@ class SearchDecorator extends ElementDecorator
      */
     public function search($value)
     {
-        $this->setValue($value);
+        $this->element->setValue($value);
     }
 }

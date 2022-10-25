@@ -60,7 +60,6 @@ class ImportExportContext extends PimContext
                     "Header in the file %s does not match the expected one. Given:\n\t%s\nDuplicated fields detected.",
                     $path,
                     implode(' | ', $currentActualLines),
-                    implode(' | ', $headerDiff)
                 )
             );
         }
@@ -122,7 +121,6 @@ class ImportExportContext extends PimContext
                     "Header in the file %s does not match the expected one. Given:\n\t%s\nDuplicated fields detected.",
                     $path,
                     implode(' | ', $currentActualLines),
-                    implode(' | ', $headerDiff)
                 )
             );
         }

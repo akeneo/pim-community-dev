@@ -39,7 +39,7 @@ final class AttributeCodeBlacklisterIntegration extends TestCase
 
         $blacklister->registerJob('nice_attribute_code', $jobExecution->getId());
 
-        $this->assertJobIsRegistered('nice_attribute_code', $jobExecution->getId());
+        $this->assertJobIsRegistered('nice_attribute_code');
     }
 
     public function test_it_whitelists_an_attribute_code(): void

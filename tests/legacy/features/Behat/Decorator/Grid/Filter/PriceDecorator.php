@@ -33,30 +33,30 @@ class PriceDecorator extends ElementDecorator
         }
 
         $operatorDropdown = $this->decorate(
-            $this->find('css', '.operator *[data-toggle="dropdown"]'),
+            $this->element->find('css', '.operator *[data-toggle="dropdown"]'),
             [OperatorDecorator::class]
         );
         $operatorDropdown->setValue($operator);
 
         if (null !== $currency) {
             $currencyDropdown = $this->decorate(
-                $this->find('css', '.currency *[data-toggle="dropdown"]'),
+                $this->element->find('css', '.currency *[data-toggle="dropdown"]'),
                 [OperatorDecorator::class]
             );
             $currencyDropdown->setValue($currency);
         }
 
         if (null !== $amount) {
-            $this->find('css', 'input[name="value"]')->setValue($amount);
+            $this->element->find('css', 'input[name="value"]')->setValue($amount);
         }
 
         // Update the filter
         $this->spin(
             function () {
-                if (!$this->find('css', '.filter-criteria')->isVisible()) {
+                if (!$this->element->find('css', '.filter-criteria')->isVisible()) {
                     return true;
                 }
-                $this->find('css', '.filter-update')->click();
+                $this->element->find('css', '.filter-update')->click();
 
                 return false;
             },

@@ -19,8 +19,6 @@ interface NotifierInterface
      *
      * @param NotificationInterface    $notification
      * @param string[]|UserInterface[] $users
-     *
-     * @return NotifierInterface
      */
     public function notify(NotificationInterface $notification, array $users);
 }

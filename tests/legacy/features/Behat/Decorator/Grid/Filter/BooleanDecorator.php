@@ -19,8 +19,8 @@ class BooleanDecorator extends ElementDecorator
     public function filter($operator, $value)
     {
         $field = $this->spin(function () {
-            return $this->find('css', '.filter-select');
-        }, sprintf('Cannot find the value field for the filter "%s"', $this->getAttribute('data-name')));
+            return $this->element->find('css', '.filter-select');
+        }, sprintf('Cannot find the value field for the filter "%s"', $this->element->getAttribute('data-name')));
 
         $field = $this->decorate($field, [MultiSelectDecorator::class]);
         $field->setValue($value);

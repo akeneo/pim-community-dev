@@ -20,7 +20,7 @@ class Select2Decorator extends ElementDecorator
     {
         if (null !== $operator && '' !== $operator) {
             $operatorField = $this->spin(function () {
-                return $this->find('css', '.select2-container.operator');
+                return $this->element->find('css', '.select2-container.operator');
             }, 'Cannot find the operator field');
 
             $operatorField = $this->decorate(
@@ -32,13 +32,13 @@ class Select2Decorator extends ElementDecorator
 
         if (null !== $value && '' !== $value) {
             $valueField = $this->decorate(
-                $this->find('css', '.value.select2-container'),
+                $this->element->find('css', '.value.select2-container'),
                 [Select2DecoratorField::class]
             );
             $valueField->setValue($value);
 
-            $this->getSession()->executeScript(
-                sprintf('$(\'.filter-item[data-name="%s"][data-type="%s"] [name="filter-value"]\').trigger(\'change\')', $this->getAttribute('data-name'), $this->getAttribute('data-type'))
+            $this->element->getSession()->executeScript(
+                sprintf('$(\'.filter-item[data-name="%s"][data-type="%s"] [name="filter-value"]\').trigger(\'change\')', $this->element->getAttribute('data-name'), $this->element->getAttribute('data-type'))
             );
             $this->spin(function () use ($valueField, $value) {
                 foreach (explode(',', $value) as $subValue) {

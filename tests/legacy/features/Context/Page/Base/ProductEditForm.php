@@ -255,6 +255,7 @@ class ProductEditForm extends Form
 
         $field = $fieldContainer->find('css', '.field-input');
         if (null !== $select) {
+            $item = null;
             if (null !== $link = $field->find('css', 'a.select2-choice')) {
                 $link->click();
 
