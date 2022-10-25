@@ -1,0 +1,9 @@
+akeneo_catalogs:
+  validation:
+    product_selection:
+      criteria:
+        locale:
+          not_empty: 'Dieses Gebietsschema muss leer sein.'
+          empty: 'Dieses Gebietsschema darf nicht leer sein.'
+          unknown: 'Dieses Gebietsschema existiert nicht.'
+          disabled: 'Dieses Gebietsschema ist für diesen Kanal deaktiviert. Bitte überprüfen Sie Ihre Kanaleinstellungen oder entfernen Sie dieses Kriterium.'

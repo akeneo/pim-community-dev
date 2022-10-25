@@ -25,6 +25,7 @@ final class TargetAttributeShouldExistValidator extends ConstraintValidator
         Assert::isInstanceOf($constraint, TargetAttributeShouldExist::class);
         $command = $this->context->getRoot();
         Assert::isInstanceOf($command, CommandInterface::class);
+        Assert::string($target);
 
         $attribute = $this->getAttributes->forCode($target);
         if (null === $attribute) {

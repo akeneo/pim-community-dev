@@ -26,6 +26,7 @@ final class TargetAttributeShouldBeAnIdentifierValidator extends ConstraintValid
         Assert::isInstanceOf($constraint, TargetAttributeShouldBeAnIdentifier::class);
         $command = $this->context->getRoot();
         Assert::isInstanceOf($command, CommandInterface::class);
+        Assert::string($target);
 
         $attribute = $this->getAttributes->forCode($target);
         if (null !== $attribute && AttributeTypes::IDENTIFIER !== $attribute->type()) {

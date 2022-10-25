@@ -314,7 +314,7 @@ JSON;
 {"line":3,"status_code":422,"message":"Code is missing."}
 {"line":4,"status_code":422,"message":"Code is missing."}
 {"line":5,"status_code":422,"message":"Code is missing."}
-{"line":6,"code":123456,"status_code":422,"message":"The code field requires a string. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_product_models__code_"}}}
+{"line":6,"status_code":422,"message":"code must be of type string."}
 JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/product-models', [], [], [], $data);

@@ -23,6 +23,9 @@ final class FreeText implements PropertyInterface
         return 'free_text';
     }
 
+    /**
+     * @inheritDoc
+     */
     public static function fromNormalized(array $normalizedProperty): PropertyInterface
     {
         Assert::keyExists($normalizedProperty, 'type');
@@ -33,6 +36,9 @@ final class FreeText implements PropertyInterface
         return self::fromString($normalizedProperty['string']);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function normalize(): array
     {
         return [
@@ -41,7 +47,7 @@ final class FreeText implements PropertyInterface
         ];
     }
 
-    public static function fromString(string $value)
+    public static function fromString(string $value): self
     {
         Assert::stringNotEmpty($value);
 

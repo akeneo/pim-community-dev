@@ -3,14 +3,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
-use Doctrine\DBAL\Connection;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Oro\Bundle\PimDataGridBundle\Adapter\GridFilterAdapterInterface;
-use Oro\Bundle\PimDataGridBundle\Normalizer\IdEncoder;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -53,7 +51,15 @@ class SequentialEditController
         );
 
         while ($cursor->valid() && $cursor->key() < self::MAX_PRODUCT_COUNT) {
-            $products[] = IdEncoder::decode($cursor->current());
+            $item = $cursor->current();
+            $products[] = $item instanceof ProductModelInterface ?
+                [
+                    'id' => $item->getId(),
+                    'type' => 'product_model'
+                ] : [
+                    'id' => $item->getUuid()->toString(),
+                    'type' => 'product'
+                ];
             $cursor->next();
         }
 

@@ -9,6 +9,7 @@ return (new PhpCsFixer\Config())
         ],
         'no_unused_imports' => true,
         'blank_line_before_statement' => true,
+        'declare_strict_types' => true,
         '@PSR12' => true,
         'no_extra_blank_lines' => true,
         'trailing_comma_in_multiline' => true,

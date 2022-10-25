@@ -48,6 +48,13 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
             ],
         ];
         $productValueFilters = ['channels' => ['ecommerce', 'mobile']];
+        $productMapping = [
+            'name' => [
+                'attribute' => 'title',
+                'scope' => 'ecommerce',
+                'locale' => 'en_US',
+            ],
+        ];
 
         $this->query->execute(new Catalog(
             $id,
@@ -55,7 +62,8 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
             'test',
             false,
             $productSelectionCriteria,
-            $productValueFilters
+            $productValueFilters,
+            $productMapping,
         ));
 
         $this->assertCatalogExists([
@@ -65,6 +73,7 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
             'is_enabled' => '0',
             'product_selection_criteria' => $productSelectionCriteria,
             'product_value_filters' => $productValueFilters,
+            'product_mapping' => $productMapping,
         ]);
     }
 
@@ -84,6 +93,13 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
         ];
         $productValueFiltersChannel = ['channels' => ['ecommerce', 'mobile']];
         $productValueFiltersLocale = ['locales' => ['en_US', 'fr_FR']];
+        $productMapping = [
+            'name' => [
+                'attribute' => 'title',
+                'scope' => 'ecommerce',
+                'locale' => 'en_US',
+            ],
+        ];
 
         $this->query->execute(new Catalog(
             $id,
@@ -92,6 +108,7 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
             false,
             [$enabledCriterion],
             $productValueFiltersChannel,
+            [],
         ));
 
         $this->query->execute(new Catalog(
@@ -101,6 +118,7 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
             true,
             [$enabledCriterion, $disabledCriterion],
             $productValueFiltersLocale,
+            $productMapping,
         ));
 
         $this->assertCatalogExists([
@@ -110,6 +128,7 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
             'is_enabled' => '1',
             'product_selection_criteria' => [$enabledCriterion, $disabledCriterion],
             'product_value_filters' => $productValueFiltersLocale,
+            'product_mapping' => $productMapping,
         ]);
         $this->assertCountCatalogs(1);
     }
@@ -135,7 +154,8 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
             catalog.owner_id,
             catalog.is_enabled,
             catalog.product_selection_criteria,
-            catalog.product_value_filters
+            catalog.product_value_filters,
+            catalog.product_mapping
         FROM akeneo_catalog catalog
         WHERE id = :id
         SQL;
@@ -146,6 +166,7 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
 
         $row['product_selection_criteria'] = \json_decode($row['product_selection_criteria'], true, 512, JSON_THROW_ON_ERROR);
         $row['product_value_filters'] = \json_decode($row['product_value_filters'], true, 512, JSON_THROW_ON_ERROR);
+        $row['product_mapping'] = \json_decode($row['product_mapping'], true, 512, JSON_THROW_ON_ERROR);
 
         $this->assertEquals($values, $row);
     }
@@ -171,7 +192,8 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
             'test',
             false,
             [3 => $enabledCriterion, 2 => $disabledCriterion],
-            []
+            [],
+            [],
         ));
 
         $this->assertCatalogExists([
@@ -181,6 +203,7 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
             'is_enabled' => '0',
             'product_selection_criteria' => [0 => $enabledCriterion, 1 => $disabledCriterion],
             'product_value_filters' => [],
+            'product_mapping' => [],
         ]);
     }
 }

@@ -197,6 +197,8 @@ pim_common:
   less_than: 小于
   loading: 加载...
   media_upload: 拖放即可上传或点击这里
+  media_uploading: 正在上传…
+  media_upload_error: 上传过程中发生错误
   more_actions: 更多操作
   more_than: 多于
   next: 下一步

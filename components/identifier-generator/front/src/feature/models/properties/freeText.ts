@@ -1,8 +1,8 @@
 import {PROPERTY_NAMES} from '../structure';
 
 type FreeText = {
-  propertyName: PROPERTY_NAMES.FREE_TEXT;
-  value: string;
+  type: PROPERTY_NAMES.FREE_TEXT;
+  string: string;
 };
 
 export type {FreeText};

@@ -479,6 +479,7 @@ akeneo_connectivity.connection:
       url: URL
       secret: 非公開
       enabled: イベントサブスクリプションの有効化
+      is_using_uuid: 商品識別子の代わりに商品UUIDを使用しますか？
       test: テスト
     error:
       wrong_url: この値は有効な URL ではありません。

@@ -7,11 +7,11 @@ import {Delimiter} from './delimiter';
 
 type IdentifierGenerator = {
   code: IdentifierGeneratorCode;
-  target?: Target;
-  structure?: Structure;
-  conditions?: Conditions;
+  target: Target;
+  structure: Structure;
+  conditions: Conditions;
   labels: LabelCollection;
-  delimiter?: Delimiter;
+  delimiter: Delimiter | null;
 };
 
 export type {IdentifierGenerator};
