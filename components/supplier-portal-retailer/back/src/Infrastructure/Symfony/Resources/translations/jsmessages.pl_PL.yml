@@ -17,6 +17,7 @@ supplier_portal:
         title: Utworzono dostawcę.
         content: Teraz możesz go edytować w sekcji zarządzania dostawcą.
       error:
+        unknown_error: Podczas tworzenia dostawcy wystąpił błąd.
         supplier_already_exists: 'Dostawca z kodem „{{ supplierCode }}” już istnieje.'
     supplier_list:
       menu_item: Dostawcy
@@ -42,6 +43,7 @@ supplier_portal:
         title: Dostawca
         confirmation_question: Na pewno chcesz usunąć tego dostawcę?
         warning: Usunięcie tego dostawcy spowoduje utratę niezapisanego wzbogacenia danych.
+        unknown_error: Podczas usuwania dostawcy wystąpił błąd.
     supplier_edit:
       tabs:
         configuration: Konfiguracja
@@ -68,7 +70,9 @@ supplier_portal:
           contributor_email_already_exists:
             title: Nie można dodać tego współtwórcy.
             content: Adres e-mail {{ emailAddress }} jest już używany przez innego dostawcę, a obecnie jeden współtwórca nie może przynależeć do kilku dostawców. Przepraszamy za utrudnienia.
+      loading_error: Podczas ładowania dostawcy wystąpił błąd.
       success_message: Dostawca został pomyślnie zaktualizowany.
+      update_error: Podczas aktualizacji dostawcy wystąpił błąd.
       delete_label: Usuń dostawcę
   product_file_dropping:
     breadcrumb:
@@ -88,12 +92,26 @@ supplier_portal:
         error_loading_supplier_files:
           title: Nie można wyświetlić plików produktowych.
           content: Przepraszamy za utrudnienia, spróbuj ponownie za chwilę.
+      tabs:
+        discussion: Dyskusja
+      discussion:
+        import_file_button_label: Importuj plik
+        info: Wyślij komentarze, gdy musisz wymienić się informacjami ze swoimi dostawcami.
+        comment_input_label: Wyślij nowy komentarz
+        discussion_title: Dyskusja
+        submit_button_label: Wyślij
+        loading_error: Podczas wczytywania pliku produktowego wystąpił błąd.
+        comment_submit_error: Podczas wysyłania komentarza wystąpił błąd.
+        empty_content: Komentarz nie powinien być pusty.
+        max_comment_length_reached: Komentarz może składać się z maksymalnie 255 znaków.
+        max_number_of_comments_reached: Osiągnięto limit komentarzy.
     pim_notification:
       button_label: Zobacz pliki produktowe
 pim_title:
   supplier_portal_retailer_supplier_list: Dostawcy
   supplier_portal_retailer_supplier_edit: Edytuj dostawcę
   supplier_portal_retailer_product_files_list: Pliki produktowe
+  supplier_portal_retailer_product_files_comment: Plik produktowy
 batch_jobs.supplier_portal_xlsx_supplier_import.label: Import dostawców do Portalu dostawcy w formacie XLSX
 pim_notification:
   supplier_portal:
