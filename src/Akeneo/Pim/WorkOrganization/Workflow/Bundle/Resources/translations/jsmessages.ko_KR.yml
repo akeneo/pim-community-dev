@@ -183,6 +183,7 @@ pimee_enrich.entity.published_product:
     publish:
       success: 제품 게시됨
       fail: 이 제품을 게시하지 못함
+      fail_no_identifier: 식별자가 없으므로 이 제품을 게시할 수 없습니다.
     unpublish:
       success: 제품 게시 취소됨
       fail: 이 제품을 게시 취소하지 못함
