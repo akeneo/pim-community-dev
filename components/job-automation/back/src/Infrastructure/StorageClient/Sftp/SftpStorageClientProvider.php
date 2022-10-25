@@ -109,6 +109,7 @@ final class SftpStorageClientProvider implements RemoteStorageClientProviderInte
         return match ($loginType) {
             SftpStorage::LOGIN_TYPE_CREDENTIALS => $this->getConnectionWithPassword($host, $username, $password, $port),
             SftpStorage::LOGIN_TYPE_PRIVATE_KEY => $this->getConnectionWithPrivateKey($host, $username, $privateKey, $port),
+            default => throw new \LogicException(sprintf('Unsupported login type "%s"', $loginType)),
         };
     }
 

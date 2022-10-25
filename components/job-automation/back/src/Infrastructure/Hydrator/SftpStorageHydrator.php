@@ -31,6 +31,7 @@ final class SftpStorageHydrator implements StorageHydratorInterface
         return match ($normalizedStorage['login_type']) {
             SftpStorage::LOGIN_TYPE_PASSWORD => $this->hydrateForPasswordLoginType($normalizedStorage),
             SftpStorage::LOGIN_TYPE_PRIVATE_KEY => $this->hydrateForPrivateKeyLoginType($normalizedStorage),
+            default => throw new \LogicException(sprintf('Unsupported login type "%s"', $normalizedStorage['login_type'])),
         };
     }
 

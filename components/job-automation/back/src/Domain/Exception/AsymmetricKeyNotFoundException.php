@@ -16,7 +16,7 @@ class AsymmetricKeyNotFoundException extends \Exception
 {
     public const MESSAGE = 'No keys found for %s';
 
-    public function __construct($code)
+    public function __construct(string $code)
     {
         parent::__construct(sprintf(self::MESSAGE, $code));
     }
