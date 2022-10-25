@@ -18,15 +18,12 @@ class PurgeAuditErrorTasklet implements TaskletInterface
 {
     protected const JOB_CODE = 'purge_audit_error';
 
-    private StepExecution $stepExecution;
-
     public function __construct(private PurgeAuditErrorQuery $purgeAuditErrorsQuery)
     {
     }
 
     public function setStepExecution(StepExecution $stepExecution)
     {
-        $this->stepExecution = $stepExecution;
     }
 
     public function execute()
