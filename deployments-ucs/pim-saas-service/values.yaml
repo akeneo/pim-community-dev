@@ -239,6 +239,11 @@ pim:
       pimJobName: "aggregate_volume_queries"
       pimJobOptions: ""
       schedule: "0 4 * * *"
+    rule-engine-execute-rules:
+      enabled: true
+      pimJobName: "rule_engine_execute_rules"
+      pimJobOptions: ""
+      schedule: "0 5,11,17,23 * * *"
   supplier_portal:
     settings:
       enabled: false

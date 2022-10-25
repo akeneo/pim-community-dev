@@ -406,14 +406,6 @@ pim:
         requests:
           cpu: "10m"
           memory: "10Mi"
-    rule-run:
-      enabled: true
-      pimCommand: "akeneo:rule:run"
-      schedule: "0 5,11,17,23 * * *"
-      resources:
-        requests:
-          cpu: "800m"
-          memory: "400Mi"
     versionning-refresh:
       enabled: true
       pimCommand: "pim:versioning:refresh"
