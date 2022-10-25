@@ -27,16 +27,27 @@ class Category
     ) {
     }
 
+    /**
+     * @param array{
+     *     id: int,
+     *     code: string,
+     *     translations: string|null,
+     *     parent_id: int|null,
+     *     root_id: int|null,
+     *     value_collection: string|null,
+     *     permissions: string|null
+     * } $result
+     */
     public static function fromDatabase(array $result): self
     {
-        $id = new CategoryId((int)$result['id']);
+        $id = new CategoryId((int) $result['id']);
         $code = new Code($result['code']);
         $labelCollection = $result['translations'] ?
             LabelCollection::fromArray(
-                json_decode($result['translations'], true, 512, JSON_THROW_ON_ERROR)
+                json_decode($result['translations'], true, 512, JSON_THROW_ON_ERROR),
             ) : null;
-        $parentId = $result['parent_id'] ? new CategoryId((int)$result['parent_id']) : null;
-        $rootId = $result['root_id'] ? new CategoryId((int)$result['root_id']) : null;
+        $parentId = $result['parent_id'] ? new CategoryId((int) $result['parent_id']) : null;
+        $rootId = $result['root_id'] ? new CategoryId((int) $result['root_id']) : null;
         $attributes = $result['value_collection'] ?
                 ValueCollection::fromArray(json_decode($result['value_collection'], true)) : null;
         $permissions = isset($result['permissions']) && $result['permissions'] ?

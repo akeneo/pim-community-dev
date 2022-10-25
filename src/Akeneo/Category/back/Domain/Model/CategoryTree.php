@@ -24,18 +24,27 @@ class CategoryTree
     ) {
     }
 
+    /**
+     * @param array{
+     *     id: int,
+     *     code: string,
+     *     translations: string|null,
+     *     template_uuid: string|null,
+     *     template_labels: string|null
+     * } $result
+     */
     public static function fromDatabase(array $result): self
     {
-        $id = new CategoryId((int)$result['id']);
+        $id = new CategoryId((int) $result['id']);
         $code = new Code($result['code']);
         $labelCollection = $result['translations'] ?
             LabelCollection::fromArray(
-                json_decode($result['translations'], true, 512, JSON_THROW_ON_ERROR)
+                json_decode($result['translations'], true, 512, JSON_THROW_ON_ERROR),
             ) : null;
         $templateUuid = $result['template_uuid'] ? TemplateUuid::fromString($result['template_uuid']) : null;
         $templateLabels = $result['template_labels'] ?
             LabelCollection::fromArray(
-                json_decode($result['template_labels'], true, 512, JSON_THROW_ON_ERROR)
+                json_decode($result['template_labels'], true, 512, JSON_THROW_ON_ERROR),
             ) : null;
 
         return new self($id, $code, $labelCollection, $templateUuid, $templateLabels);
@@ -91,7 +100,7 @@ class CategoryTree
                 'labels' => $this->getLabels()?->normalize(),
             ],
             'templateUuid' => (string) $this->getTemplateUuid(),
-            'templateLabels' => (string) $this->getLabels()?->normalize(),
+            'templateLabels' => $this->getLabels()?->normalize(),
         ];
     }
 }
