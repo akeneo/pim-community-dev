@@ -937,3 +937,8 @@ jobs:
         alias:     aggregate_volume_queries
         label:     Aggregate volume monitoring queries
         type:      scheduled_job
+    create_openid_keys:
+        connector: internal
+        alias: create_openid_keys
+        label: Create or update a public/private openId key couple
+        type: scheduled_job
