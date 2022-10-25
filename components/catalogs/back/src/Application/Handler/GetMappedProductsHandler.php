@@ -6,16 +6,13 @@ namespace Akeneo\Catalogs\Application\Handler;
 
 use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductUuidsQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Product\GetProductsQueryInterface;
 use Akeneo\Catalogs\Application\Storage\CatalogsMappingStorageInterface;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogDisabledException;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogNotFoundException as ServiceApiCatalogNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Exception\ProductSchemaMappingNotFoundException as ServiceApiProductSchemaMappingNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductsQuery;
-use Akeneo\Category\Infrastructure\Component\Model\Category;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -28,8 +25,7 @@ final class GetMappedProductsHandler
     public function __construct(
         private GetCatalogQueryInterface $getCatalogQuery,
         private CatalogsMappingStorageInterface $catalogsMappingStorage,
-        private GetProductUuidsQueryInterface $getProductUuidsQuery,
-        private ProductRepositoryInterface $productRepository,
+        private GetProductsQueryInterface $getProductsQuery,
     ) {
     }
 
@@ -49,8 +45,7 @@ final class GetMappedProductsHandler
             throw new CatalogDisabledException();
         }
 
-        $productUuids = $this->getProductUuidsQuery->execute($catalog, $query->getSearchAfter(), $query->getLimit());
-        $products = $this->productRepository->getItemsFromUuids($productUuids);
+        $products = $this->getProductsQuery->execute($catalog, $query->getSearchAfter(), $query->getLimit());
 
         $productMappingSchemaFile = \sprintf('%s_product.json', $catalog->getId());
 
@@ -75,23 +70,15 @@ final class GetMappedProductsHandler
                 foreach ($productMappingSchema->properties as $key => $property) {
                     $sourceValue = '';
                     if (\array_key_exists($key, $productMapping)) {
-                        $sourceValue = match ($key) {
-                            'family' => $product->getFamily()->setLocale($productMapping[$key]['locale'])->getLabel(),
-                            'category' => \implode(',', $product->getCategories()->map(static fn (Category $category)
-                            => $category->setLocale($productMapping[$key]['locale'])->getLabel())->getValues()),
-                            'enabled' => $product->isEnabled() ? 'true':'false',
-                            'parent' => $product->getParent()->getLabel($productMapping[$key]['locale']),
-                            'group' => \implode(',', $product->getGroups()->map(static fn (Group $group)
-                            => $group->setLocale($productMapping[$key]['locale'])->getLabel())->getValues()),
-                            default => (string) $product->getValue(
-                                $productMapping[$key]['source'],
-                                $productMapping[$key]['locale'],
-                                $productMapping[$key]['scope']
-                            )?->getData() ?: '',
-                        };
+                        $sourceValue = (string) $product->getValue(
+                            $productMapping[$key]['source'],
+                            $productMapping[$key]['locale'],
+                            $productMapping[$key]['scope']
+                        )?->getData() ?: '';
                     }
                     $mappedProduct[$key] = $sourceValue;
                 }
+
                 return $mappedProduct;
             },
             $products
