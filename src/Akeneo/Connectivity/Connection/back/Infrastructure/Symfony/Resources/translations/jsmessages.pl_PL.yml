@@ -479,6 +479,7 @@ akeneo_connectivity.connection:
       url: URL
       secret: Sekret
       enabled: Aktywacja subskrypcji zdarzeń
+      is_using_uuid: Użyć UUID produktu zamiast identyfikatora produktu?
       test: Test
     error:
       wrong_url: Ta wartość nie jest prawidłowym adresem URL.
