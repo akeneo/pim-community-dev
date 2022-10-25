@@ -937,3 +937,8 @@ jobs:
         alias:     aggregate_volume_queries
         label:     Aggregate volume monitoring queries
         type:      scheduled_job
+    update_audit_data:
+        connector: internal
+        alias:     update_audit_data
+        label:     'Akeneo connectivity - update audit data'
+        type:      scheduled_job
