@@ -8,9 +8,6 @@ use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Command\UpdateProductMappingSchemaCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\SetGroups;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -53,6 +50,11 @@ class GetMappedProductsActionTest extends IntegrationTestCase
         ));
 
         $this->setCatalogProductMapping('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
+            'uuid' => [
+                'source' => 'uuid',
+                'scope' => null,
+                'locale' => null,
+            ],
             'title' => [
                 'source' => 'name',
                 'scope' => 'ecommerce',
@@ -67,7 +69,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             'localizable' => true,
         ]);
 
-        $this->createProduct('tshirt-blue', [
+        $product = $this->createProduct('tshirt-blue', [
             new SetTextValue('name', 'ecommerce', 'en_US', 'Blue'),
         ]);
 
@@ -83,7 +85,10 @@ class GetMappedProductsActionTest extends IntegrationTestCase
 
         $response = $this->client->getResponse();
         $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
-        $expectedMappedProducts = [['title' => 'Blue']];
+        $expectedMappedProducts = [[
+            'uuid' => $product->getUuid()->toString(),
+            'title' => 'Blue',
+        ]];
 
         Assert::assertEquals(200, $response->getStatusCode());
         Assert::assertEquals($expectedMappedProducts, $payload['_embedded']['items']);
@@ -188,6 +193,9 @@ class GetMappedProductsActionTest extends IntegrationTestCase
           "description": "JSON Schema describing the structure of products expected by our application",
           "type": "object",
           "properties": {
+            "uuid": {
+              "type": "string"
+            },
             "title": {
               "type": "string"
             }

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Application\Persistence\Product;
+namespace Akeneo\Catalogs\Application\Persistence\Catalog\Product;
 
 use Akeneo\Catalogs\Domain\Catalog;
 
@@ -29,7 +29,7 @@ use Akeneo\Catalogs\Domain\Catalog;
  *      updated: string,
  * }
  */
-interface GetProductsQueryInterface
+interface GetProductsWithFilteredValuesQueryInterface
 {
     /**
      * @return array<Product>

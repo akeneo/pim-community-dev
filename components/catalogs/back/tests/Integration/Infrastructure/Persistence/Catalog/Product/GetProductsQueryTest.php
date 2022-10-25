@@ -7,7 +7,7 @@ namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence\Catalog\Pr
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductUuidFromIdentifierQueryInterface;
 use Akeneo\Catalogs\Domain\Operator;
-use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\Product\GetProductsQuery;
+use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\Product\GetProductsWithFilteredValuesQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
@@ -21,7 +21,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 class GetProductsQueryTest extends IntegrationTestCase
 {
     private ?GetCatalogQueryInterface $getCatalogQuery;
-    private ?GetProductsQuery $query;
+    private ?GetProductsWithFilteredValuesQuery $query;
 
     protected function setUp(): void
     {
@@ -32,7 +32,7 @@ class GetProductsQueryTest extends IntegrationTestCase
         $this->purgeDataAndLoadMinimalCatalog();
 
         $this->getCatalogQuery = self::getContainer()->get(GetCatalogQueryInterface::class);
-        $this->query = self::getContainer()->get(GetProductsQuery::class);
+        $this->query = self::getContainer()->get(GetProductsWithFilteredValuesQuery::class);
     }
 
     public function testItReturnsProductsMatchingTheCatalog(): void

@@ -6,8 +6,9 @@ namespace Akeneo\Catalogs\Application\Handler;
 
 use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\Product\GetProductsQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductsQueryInterface;
 use Akeneo\Catalogs\Application\Storage\CatalogsMappingStorageInterface;
+use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogDisabledException;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogNotFoundException as ServiceApiCatalogNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Exception\ProductSchemaMappingNotFoundException as ServiceApiProductSchemaMappingNotFoundException;
@@ -53,7 +54,56 @@ final class GetMappedProductsHandler
             $query->getUpdatedBefore(),
         );
 
-        $productMappingSchemaFile = \sprintf('%s_product.json', $catalog->getId());
+        return $this->mapProducts($products, $catalog);
+    }
+
+    /**
+     * @param array<Product> $products
+     *
+     * @return array<MappedProduct>
+     */
+    private function mapProducts(array $products, Catalog $catalog): array
+    {
+        $productMappingSchema = $this->getProductMappingSchema($catalog->getId());
+        $productMapping = $catalog->getProductMapping();
+
+        return \array_map(
+            /** @param Product $product */
+            function (array $product) use ($productMappingSchema, $productMapping): array {
+                $mappedProduct = [];
+
+                /** @var string $key */
+                foreach (\array_keys($productMappingSchema['properties']) as $key) {
+                    $sourceValue = '';
+
+                    if ('uuid' === $key) {
+                        $sourceValue = $product['uuid'];
+                    } elseif (\array_key_exists($key, $productMapping)) {
+                        $sourceValue = $this->getProductAttributeValue(
+                            $product,
+                            $productMapping[$key]['source'],
+                            $productMapping[$key]['locale'],
+                            $productMapping[$key]['scope']
+                        );
+                    }
+
+                    $mappedProduct[$key] = $sourceValue;
+                }
+
+                return $mappedProduct;
+            },
+            $products
+        );
+    }
+
+    /**
+     * @return array{
+     *      properties: array<array-key, mixed>
+     * }
+     */
+    private function getProductMappingSchema(string $catalogId): array
+    {
+        $productMappingSchemaFile = \sprintf('%s_product.json', $catalogId);
 
         if (!$this->catalogsMappingStorage->exists($productMappingSchemaFile)) {
             throw new ServiceApiProductSchemaMappingNotFoundException();
@@ -74,30 +124,7 @@ final class GetMappedProductsHandler
          */
         $productMappingSchema = \json_decode($productMappingSchemaRaw, true, 512, JSON_THROW_ON_ERROR);
 
-        $productMapping = $catalog->getProductMapping();
-
-        return \array_map(
-            /** @param Product $product */
-            function (array $product) use ($productMappingSchema, $productMapping): array {
-                $mappedProduct = [];
-
-                /** @var string $key */
-                foreach (\array_keys($productMappingSchema['properties']) as $key) {
-                    $sourceValue = '';
-                    if (\array_key_exists($key, $productMapping)) {
-                        $sourceValue = $this->getProductAttributeValue(
-                            $product,
-                            $productMapping[$key]['source'],
-                            $productMapping[$key]['locale'],
-                            $productMapping[$key]['scope']
-                        );
-                    }
-                    $mappedProduct[$key] = $sourceValue;
-                }
-                return $mappedProduct;
-            },
-            $products
-        );
+        return $productMappingSchema;
     }
 
     /**
@@ -113,6 +140,7 @@ final class GetMappedProductsHandler
                 }
             }
         }
+
         return '';
     }
 }
