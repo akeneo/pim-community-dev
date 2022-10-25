@@ -26,7 +26,6 @@ class SendTwigGoodbyeEmail implements SendGoodbyeEmail
             '@AkeneoSupplierPortalSupplier/Email/contributor-removed.txt.twig',
             [
                 'contributorEmail' => $email,
-                'logoPath' => $embeddedLogoPath,
             ],
             $email,
             $embeddedLogoPath,
