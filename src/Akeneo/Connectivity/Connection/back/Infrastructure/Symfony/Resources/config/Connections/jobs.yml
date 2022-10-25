@@ -1,0 +1,40 @@
+services:
+  Akeneo\Connectivity\Connection\Infrastructure\Audit\Job\PurgeAuditErrorTasklet:
+    arguments:
+      - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\PurgeAuditErrorQuery'
+    public: false
+
+  akeneo_connectivity_connection.step.purge_audit_error:
+    class: '%pim_connector.step.tasklet.class%'
+    arguments:
+      - 'purge_audit_error'
+      - '@event_dispatcher'
+      - '@akeneo_batch.job_repository'
+      - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\Job\PurgeAuditErrorTasklet'
+    public: false
+
+  akeneo_connectivity_connection.job.purge_audit_error:
+    class: '%pim_connector.job.simple_job.class%'
+    arguments:
+      - 'purge_audit_error'
+      - '@event_dispatcher'
+      - '@akeneo_batch.job_repository'
+      -
+        - '@Akeneo\Tool\Component\Connector\Step\CheckJobUniqueStep'
+        - '@akeneo_connectivity_connection.step.purge_audit_error'
+      - false
+      - false
+    public: false
+    tags:
+      -
+        name: akeneo_batch.job
+        connector: 'internal'
+        type: 'scheduled_job'
+
+  akeneo_connectivity_connection.job.job_parameters.default_values_provider.purge_audit_error:
+    class: 'Akeneo\Tool\Component\Batch\Job\JobParameters\EmptyConstraintAndDefaultValuesProvider'
+    arguments:
+      - 'purge_audit_error'
+    tags:
+      - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+      - { name: akeneo_batch.job.job_parameters.default_values_provider }

@@ -171,4 +171,9 @@ jobs:
         alias:     aggregate_volume_queries
         label:     Aggregate volume monitoring queries
         type:      scheduled_job
+    purge_audit_error:
+        connector: internal
+        alias:     purge_audit_error
+        label:     Purge audit error table
+        type:      scheduled_job
 
