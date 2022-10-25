@@ -10,8 +10,6 @@ declare(strict_types=1);
 namespace Akeneo\Test\Category\Integration\Infrastructure\Storage\Save\Query;
 
 use Akeneo\Category\Application\Query\GetCategoryTreeByCategoryTemplate;
-use Akeneo\Category\Application\Query\GetTemplate;
-use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver;
 use Akeneo\Category\back\tests\Integration\CategoryTemplateTrait;
@@ -32,9 +30,9 @@ class SqlCategoryTreeTemplateSaverIntegration extends CategoryTestCase
         $this->get(CategoryTemplateSaver::class)->insert($templateModel);
         $this->get(CategoryTreeTemplateSaver::class)->insert($templateModel);
 
-        $retrievedCategory = ($this->get(GetCategoryTreeByCategoryTemplate::class))($templateModel->getUuid());
+        $retrievedCategoryTree = ($this->get(GetCategoryTreeByCategoryTemplate::class))($templateModel->getUuid());
 
-        $this->assertEquals($category->getId(), $retrievedCategory->getId());
+        $this->assertEquals($category->getId(), $retrievedCategoryTree->getId());
     }
 
 
