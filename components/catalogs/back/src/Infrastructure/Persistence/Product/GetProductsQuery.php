@@ -50,6 +50,8 @@ class GetProductsQuery implements GetProductsQueryInterface
         );
 
         /** @var array<Product> $products */
-        return $this->connectorProductWithUuidNormalizer->normalizeConnectorProductList($connectorProducts);
+        $products = $this->connectorProductWithUuidNormalizer->normalizeConnectorProductList($connectorProducts);
+
+        return $products;
     }
 }

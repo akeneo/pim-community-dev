@@ -41,9 +41,6 @@ services:
     Akeneo\UserManagement\Component\Repository\UserRepositoryInterface:
         alias: 'pim_user.repository.user'
 
-    Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface:
-        alias: 'pim_catalog.repository.product'
-
     Akeneo\Catalogs\Infrastructure\Command\CatalogFixtureCommand:
         arguments:
             $env: '%kernel.environment%'
@@ -136,6 +133,10 @@ services:
             $getConnectorProducts: '@akeneo.pim.enrichment.product.connector.get_product_from_uuids'
 
     Akeneo\Catalogs\Infrastructure\Persistence\Catalog\Product\GetProductQuery:
+        arguments:
+            $getConnectorProducts: '@akeneo.pim.enrichment.product.connector.get_product_from_uuids'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\Product\GetProductsQuery:
         arguments:
             $getConnectorProducts: '@akeneo.pim.enrichment.product.connector.get_product_from_uuids'
 

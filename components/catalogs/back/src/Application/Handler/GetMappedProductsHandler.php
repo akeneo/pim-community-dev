@@ -19,6 +19,7 @@ use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductsQuery;
  *
  * @phpstan-import-type MappedProduct from GetMappedProductsQuery
  * @phpstan-import-type Product from GetProductsQueryInterface
+ * @phpstan-import-type ProductValue from GetProductsQueryInterface
  */
 final class GetMappedProductsHandler
 {
@@ -66,27 +67,33 @@ final class GetMappedProductsHandler
             throw new \LogicException('Product mapping schema is unreadable.');
         }
 
-        $productMappingSchema = \json_decode($productMappingSchemaRaw, false, 512, JSON_THROW_ON_ERROR);
+        /**
+         * @var array{
+         *      properties: array<array-key, mixed>
+         * } $productMappingSchema
+         */
+        $productMappingSchema = \json_decode($productMappingSchemaRaw, true, 512, JSON_THROW_ON_ERROR);
+
         $productMapping = $catalog->getProductMapping();
 
         return \array_map(
-            /** @var Product $product */
-            static function (array $product) use ($productMappingSchema, $productMapping): array {
+            /** @param Product $product */
+            function (array $product) use ($productMappingSchema, $productMapping): array {
                 $mappedProduct = [];
 
                 /** @var string $key */
-                foreach ($productMappingSchema->properties as $key => $property) {
+                foreach (\array_keys($productMappingSchema['properties']) as $key) {
                     $sourceValue = '';
                     if (\array_key_exists($key, $productMapping)) {
-                        $sourceValue = (string) $product->getValue(
+                        $sourceValue = $this->getProductAttributeValue(
+                            $product,
                             $productMapping[$key]['source'],
                             $productMapping[$key]['locale'],
                             $productMapping[$key]['scope']
-                        )?->getData() ?: '';
+                        );
                     }
                     $mappedProduct[$key] = $sourceValue;
                 }
-
                 return $mappedProduct;
             },
             $products
@@ -96,8 +103,16 @@ final class GetMappedProductsHandler
     /**
      * @param Product $product
      */
-    private function getProductValue(array $product, ?string $attributeCode, ?string $locale, ?string $scope): string
+    private function getProductAttributeValue(array $product, string $attributeCode, ?string $locale, ?string $scope): string
     {
-//        return ;
+        if (\array_key_exists($attributeCode, $product['values'])) {
+            /** @var ProductValue $attributeValues */
+            foreach ($product['values'][$attributeCode] as $attributeValues) {
+                if ($attributeValues['locale'] === $locale && $attributeValues['scope'] === $scope) {
+                    return (string) $attributeValues['data'];
+                }
+            }
+        }
+        return '';
     }
 }
