@@ -58,7 +58,7 @@ class GetCategoryTreesSql implements GetCategoryTreesInterface
                 category.id,
                 category.code,
                 category_tree_translation.translations,
-                template.uuid as template_uuid,
+                BIN_TO_UUID(template.uuid) as template_uuid,
                 template.labels as template_labels
             FROM 
                 pim_catalog_category category
@@ -94,7 +94,7 @@ class GetCategoryTreesSql implements GetCategoryTreesInterface
                             JSON_THROW_ON_ERROR
                         )
                     ) : null,
-                $result['template_uuid'] ? TemplateUuid::fromUuid($result['template_uuid']) : null,
+                $result['template_uuid'] ? TemplateUuid::fromString($result['template_uuid']) : null,
                 $result['template_labels'] ?
                     LabelCollection::fromArray(
                         json_decode(

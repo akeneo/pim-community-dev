@@ -7,9 +7,7 @@ namespace Akeneo\Category\Domain\Model;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
-use Akeneo\Category\Domain\ValueObject\PermissionCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
-use Akeneo\Category\Domain\ValueObject\ValueCollection;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -21,7 +19,6 @@ class CategoryTree
         private ?CategoryId $id,
         private Code $code,
         private ?LabelCollection $labels = null,
-        private ?PermissionCollection $permissions = null,
         private ?TemplateUuid $templateUuid = null,
         private ?LabelCollection $templateLabels = null,
     ) {
@@ -40,11 +37,6 @@ class CategoryTree
     public function getLabels(): ?LabelCollection
     {
         return $this->labels;
-    }
-
-    public function getPermissions(): ?PermissionCollection
-    {
-        return $this->permissions;
     }
 
     public function getTemplateUuid(): ?TemplateUuid
@@ -69,7 +61,6 @@ class CategoryTree
      *       code: string,
      *       labels: array<string, string>|null
      *     },
-     *     permissions: array<string, array<int>>|null,
      *     templateUuid: string|null,
      *     templateLabels: array<string, string>|null
      * }
@@ -82,7 +73,6 @@ class CategoryTree
                 'code' => (string) $this->getCode(),
                 'labels' => $this->getLabels()?->normalize(),
             ],
-            'permissions' => $this->getPermissions()?->normalize(),
             'templateUuid' => (string) $this->getTemplateUuid(),
             'templateLabels' => (string) $this->getLabels()?->normalize(),
         ];
