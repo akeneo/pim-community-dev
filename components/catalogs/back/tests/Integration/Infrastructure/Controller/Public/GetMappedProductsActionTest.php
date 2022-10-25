@@ -58,24 +58,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
                 'scope' => 'ecommerce',
                 'locale' => 'en_US',
             ],
-            'family' => [
-                'source' => 'family',
-                'scope' => null,
-                'locale' => 'en_US',
-            ],
-            'category' => [
-                'source' => 'category',
-                'scope' => null,
-                'locale' => 'en_US',
-            ],
-            'group' => [
-                'source' => 'group',
-                'scope' => null,
-                'locale' => 'en_US',
-            ],
         ]);
-
-        $this->createFamily(['code' => 'familyA', 'labels' => ['en_US' => 'Family A', 'fr_FR' => 'Famille A']]);
 
         $this->createAttribute([
             'code' => 'name',
@@ -84,19 +67,8 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             'localizable' => true,
         ]);
 
-        $this->createCategory(['code' => 'categoryA', 'labels' => ['en_US' => 'Category A', 'fr_FR' => 'Categorie A']]);
-        $this->createCategory(['code' => 'categoryB', 'labels' => ['en_US' => 'Category B', 'fr_FR' => 'Categorie B']]);
-
-
-        $this->createGroupType(['code' => 'groupeType', 'labels' => ['en_US' => 'Group type', 'fr_FR' => 'Groupe type']]);
-        $this->createGroup(['code' => 'groupA', 'type' => 'groupeType', 'labels' => ['en_US' => 'Group A', 'fr_FR' => 'Groupe A']]);
-        $this->createGroup(['code' => 'groupB', 'type' => 'groupeType', 'labels' => ['en_US' => 'Group B', 'fr_FR' => 'Groupe B']]);
-
         $this->createProduct('tshirt-blue', [
             new SetTextValue('name', 'ecommerce', 'en_US', 'Blue'),
-            new SetFamily('familyA'),
-            new SetCategories(['categoryA', 'categoryB']),
-            new SetGroups(['groupA', 'groupB'])
         ]);
 
         $this->client->request(
@@ -111,14 +83,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
 
         $response = $this->client->getResponse();
         $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
-        $expectedMappedProducts = [
-            [
-                'title' => 'Blue',
-                'family' => 'Family A',
-                'category' => 'Category A,Category B',
-                'group' => 'Group A,Group B'
-            ],
-        ];
+        $expectedMappedProducts = [['title' => 'Blue']];
 
         Assert::assertEquals(200, $response->getStatusCode());
         Assert::assertEquals($expectedMappedProducts, $payload['_embedded']['items']);
@@ -224,15 +189,6 @@ class GetMappedProductsActionTest extends IntegrationTestCase
           "type": "object",
           "properties": {
             "title": {
-              "type": "string"
-            },
-            "family": {
-              "type": "string"
-            },
-            "category": {
-              "type": "string"
-            },
-            "group": {
               "type": "string"
             }
           }
