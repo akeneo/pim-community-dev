@@ -63,15 +63,16 @@ class RestoreAdminRolePermissionsIntegration extends TestCase
         $permissions = $roleWithPermissions->permissions();
         $revokedPermissions = [];
 
-        foreach ($permissions as $acl) {
+        foreach ($permissions as $acl => $isGranted) {
             $revokedPermissions[$acl] = false;
         }
 
-        $this->get('pim_user.updater.role_with_permissions')->update($roleWithPermissions, [
-            'permissions' => $revokedPermissions,
-        ]);
+        $roleWithPermissions->setPermissions($revokedPermissions);
 
         $this->get('pim_user.saver.role_with_permissions')->saveAll([$roleWithPermissions]);
+
+        $this->get('oro_security.acl.manager')->flush();
+        $this->get('oro_security.acl.manager')->clearCache();
     }
 
     private function removeAdminRole(): void

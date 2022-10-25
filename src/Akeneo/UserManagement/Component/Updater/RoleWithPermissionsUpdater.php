@@ -70,7 +70,7 @@ final class RoleWithPermissionsUpdater implements ObjectUpdaterInterface
         foreach ($grantedPermissions as $grantedPermission) {
             $privileges[$grantedPermission] = true;
         }
-
+var_dump(__METHOD__);
         $roleWithPermissions->setPermissions($privileges);
     }
 }

@@ -29,8 +29,8 @@ class RestoreAdminRolePermissions
         $permissions = $roleWithPermissions->permissions();
 
         $restoredPermissions = [];
-        foreach ($permissions as $aclName => $isEnabled) {
-            $restoredPermissions[$aclName] = true;
+        foreach ($permissions as $acl => $isGranted) {
+            $restoredPermissions[$acl] = true;
         }
 
         $roleWithPermissions->setPermissions($restoredPermissions);
