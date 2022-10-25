@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\UserManagement\Component\Connector;
@@ -45,7 +46,7 @@ final class RoleWithPermissions
     public function setPermissions(array $permissions): void
     {
         Assert::allBoolean($permissions);
-        Assert::allStringNotEmpty(\array_keys($permissions));
+        // Assert::allStringNotEmpty(\array_keys($permissions));
         $this->permissions = $permissions;
     }
 }

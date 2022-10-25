@@ -11,6 +11,8 @@ use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 
 class RestoreAdminRolePermissions
 {
+    public const ROLE_ADMINISTRATOR_IDENTIFIER = 'ROLE_ADMINISTRATOR';
+
     public function __construct(
         private AclManager $aclManager,
         private RoleWithPermissionsFactory $roleWithPermissionsFactory,
@@ -23,7 +25,26 @@ class RestoreAdminRolePermissions
 
     public function __invoke(bool $forceCreation = false): void
     {
-        $roleIdentifier = 'ROLE_ADMINISTRATOR';
+        $roleWithPermissions = $this->findOrCreateRole($forceCreation);
+        $permissions = $roleWithPermissions->permissions();
+
+        $restoredPermissions = [];
+        foreach ($permissions as $aclName => $isEnabled) {
+            $restoredPermissions[$aclName] = true;
+        }
+
+        $roleWithPermissions->setPermissions($restoredPermissions);
+
+        $this->roleWithPermissionsSaver->saveAll([$roleWithPermissions]);
+
+        $this->aclManager->flush();
+        $this->aclManager->clearCache();
+    }
+
+    private function findOrCreateRole(bool $forceCreation): RoleWithPermissions
+    {
+        $roleIdentifier = self::ROLE_ADMINISTRATOR_IDENTIFIER
+        ;
         $roleWithPermissions = $this->roleWithPermissionsRepository->findOneByIdentifier($roleIdentifier);
         if (null === $roleWithPermissions) {
             if (!$forceCreation) {
@@ -31,18 +52,13 @@ class RestoreAdminRolePermissions
             }
 
             $roleWithPermissions = $this->createRole($roleIdentifier);
+
+            // Save and reload the Role to ensure to apply all the permissions (even Web API)
+            $this->roleWithPermissionsSaver->saveAll([$roleWithPermissions]);
+            $roleWithPermissions = $this->roleWithPermissionsRepository->findOneByIdentifier($roleIdentifier);
         }
 
-        $permissions = $roleWithPermissions->permissions();
-        foreach ($permissions as $aclName => $isEnabled) {
-            $permissions[$aclName] = true;
-        }
-        $roleWithPermissions->setPermissions($permissions);
-
-        $this->roleWithPermissionsSaver->saveAll([$roleWithPermissions]);
-
-        $this->aclManager->flush();
-        $this->aclManager->clearCache();
+        return $roleWithPermissions;
     }
 
     private function createRole(string $roleIdentifier): RoleWithPermissions

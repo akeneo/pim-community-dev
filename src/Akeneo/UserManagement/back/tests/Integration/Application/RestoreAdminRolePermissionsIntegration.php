@@ -17,13 +17,13 @@ class RestoreAdminRolePermissionsIntegration extends TestCase
 
         $adminRole = $this->getAdminRoleWithPermissions();
 
-        Assert::allFalse(array_values($adminRole->permissions()));
+        Assert::allFalse($adminRole->permissions());
 
         ($this->get(RestoreAdminRolePermissions::class))();
 
         $restoredAdminRole = $this->getAdminRoleWithPermissions();
 
-        Assert::allTrue(array_values($restoredAdminRole->permissions()));
+        Assert::allTrue($restoredAdminRole->permissions());
 
     }
 
@@ -40,14 +40,14 @@ class RestoreAdminRolePermissionsIntegration extends TestCase
         $restoredAdminRole = $this->getAdminRoleWithPermissions();
 
         Assert::isInstanceOf($restoredAdminRole, RoleWithPermissions::class);
-        Assert::allTrue(array_values($restoredAdminRole->permissions()));
+        Assert::allTrue($restoredAdminRole->permissions());
     }
 
     public function testItFailsWhenRoleNotExistAndCreationNotForced(): void
     {
         $this->removeAdminRole();
 
-        $this->throwException(new UnknownUserRole('The "ROLE_ADMINISTRATOR" user role does not exist'));
+        $this->expectException(UnknownUserRole::class);
 
         ($this->get(RestoreAdminRolePermissions::class))(false);
     }
@@ -61,14 +61,17 @@ class RestoreAdminRolePermissionsIntegration extends TestCase
     {
         $roleWithPermissions = $this->getAdminRoleWithPermissions();
         $permissions = $roleWithPermissions->permissions();
+        $revokedPermissions = [];
 
         foreach ($permissions as $acl) {
-            $permissions[$acl] = false;
+            $revokedPermissions[$acl] = false;
         }
 
-        $roleWithPermissions->setPermissions($permissions);
+        $this->get('pim_user.updater.role_with_permissions')->update($roleWithPermissions, [
+            'permissions' => $revokedPermissions,
+        ]);
 
-        $this->get('pim_user.saver.role_with_permissions')->saveAll($roleWithPermissions);
+        $this->get('pim_user.saver.role_with_permissions')->saveAll([$roleWithPermissions]);
     }
 
     private function removeAdminRole(): void
