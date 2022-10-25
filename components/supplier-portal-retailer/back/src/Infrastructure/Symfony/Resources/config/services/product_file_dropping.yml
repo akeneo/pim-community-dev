@@ -83,6 +83,11 @@ services:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\MarkCommentsAsReadBySupplier'
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'
 
+    Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadByRetailerHandler:
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\MarkCommentsAsReadByRetailer'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'
+
     # Query/Handlers
     Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\DownloadProductFile\DownloadProductFileHandler:
         arguments:
