@@ -82,29 +82,7 @@ class GetCategoryTreesSql implements GetCategoryTreesInterface
         }
 
         return array_map(function ($result) {
-            return new CategoryTree(
-                new CategoryId((int)$result['id']),
-                new Code($result['code']),
-                $result['translations'] ?
-                    LabelCollection::fromArray(
-                        json_decode(
-                            $result['translations'],
-                            true,
-                            512,
-                            JSON_THROW_ON_ERROR
-                        )
-                    ) : null,
-                $result['template_uuid'] ? TemplateUuid::fromString($result['template_uuid']) : null,
-                $result['template_labels'] ?
-                    LabelCollection::fromArray(
-                        json_decode(
-                            $result['template_labels'],
-                            true,
-                            512,
-                            JSON_THROW_ON_ERROR
-                        )
-                    ) : null,
-            );
+            return CategoryTree::fromDatabase($result);
         }, $results);
     }
 }

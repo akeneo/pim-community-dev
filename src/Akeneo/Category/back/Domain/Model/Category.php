@@ -27,6 +27,24 @@ class Category
     ) {
     }
 
+    public static function fromDatabase(array $result): self
+    {
+        $id = new CategoryId((int)$result['id']);
+        $code = new Code($result['code']);
+        $labelCollection = $result['translations'] ?
+            LabelCollection::fromArray(
+                json_decode($result['translations'], true, 512, JSON_THROW_ON_ERROR)
+            ) : null;
+        $parentId = $result['parent_id'] ? new CategoryId((int)$result['parent_id']) : null;
+        $rootId = $result['root_id'] ? new CategoryId((int)$result['root_id']) : null;
+        $attributes = $result['value_collection'] ?
+                ValueCollection::fromArray(json_decode($result['value_collection'], true)) : null;
+        $permissions = isset($result['permissions']) && $result['permissions'] ?
+            PermissionCollection::fromArray(json_decode($result['permissions'], true)) : null;
+
+        return new self($id, $code, $labelCollection, $parentId, $rootId, $attributes, $permissions);
+    }
+
     public function getId(): ?CategoryId
     {
         return $this->id;
