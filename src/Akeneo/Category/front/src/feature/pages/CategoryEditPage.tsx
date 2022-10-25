@@ -72,13 +72,10 @@ const CategoryEditPage: FC = () => {
   const [secondaryActionIsOpen, openSecondaryAction, closeSecondaryAction] = useBooleanState(false);
   const [isDeleteCategoryModalOpen, openDeleteCategoryModal, closeDeleteCategoryModal] = useBooleanState();
 
-  const handleSwitchTo = useCallback(
-    (tab: string) => {
-      setActiveTab(tab);
-      switchTo(tab);
-    },
-    []
-  );
+  const handleSwitchTo = useCallback((tab: string) => {
+    setActiveTab(tab);
+    switchTo(tab);
+  }, []);
 
   const {
     category,

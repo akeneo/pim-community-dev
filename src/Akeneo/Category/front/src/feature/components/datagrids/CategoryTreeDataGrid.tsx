@@ -112,7 +112,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
     let hasTemplates = false;
 
     filteredTrees.map(function (tree) {
-      if (tree.template) {
+      if (tree.templateLabel) {
         hasTemplates = true;
       }
 
@@ -180,13 +180,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                   {featureFlags.isEnabled('enriched_category') &&
                     (isGranted('pim_enrich_product_category_template') ||
                       isGranted('pim_enrich_product_category_edit_attributes')) &&
-                    hasTemplates && (
-                      <Table.Cell>
-                        {tree.template && tree.template.labels[catalogLocale]
-                          ? tree.template.labels[catalogLocale]
-                          : `[${tree.code}]`}
-                      </Table.Cell>
-                    )}
+                    hasTemplates && <Table.Cell>{tree.templateLabel}</Table.Cell>}
                   <TableActionCell>
                     {isGranted('pim_enrich_product_category_remove') && (
                       <Button
