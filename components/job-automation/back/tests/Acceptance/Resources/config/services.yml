@@ -20,3 +20,6 @@ services:
 
   akeneo.job_automation.query.find_users_to_notify:
     class: Akeneo\Platform\JobAutomation\Test\Acceptance\FakeService\FakeFindUsersToNotifyQuery
+
+  Akeneo\Platform\JobAutomation\Domain\Query\GetAsymmetricKeysQueryInterface:
+    class: Akeneo\Platform\JobAutomation\Test\Acceptance\FakeService\FakeGetAsymmetricKeysQuery

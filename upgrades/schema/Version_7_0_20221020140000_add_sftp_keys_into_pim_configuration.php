@@ -11,9 +11,6 @@ use Doctrine\Migrations\AbstractMigration;
 use phpseclib\Crypt\RSA;
 use phpseclib\File\X509;
 
-/**
- *
- */
 class Version_7_0_20221020140000_add_sftp_keys_into_pim_configuration extends AbstractMigration
 {
     public function up(Schema $schema): void

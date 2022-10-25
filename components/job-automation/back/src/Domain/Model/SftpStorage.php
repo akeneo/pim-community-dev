@@ -18,9 +18,10 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
 final class SftpStorage implements StorageInterface
 {
     public const TYPE = 'sftp';
-    public const LOGIN_TYPES = [self::LOGIN_TYPE_CREDENTIALS, self::LOGIN_TYPE_PRIVATE_KEY];
-    public const LOGIN_TYPE_CREDENTIALS = 'credentials';
+    public const LOGIN_TYPES = [self::LOGIN_TYPE_PASSWORD, self::LOGIN_TYPE_PRIVATE_KEY];
+    public const LOGIN_TYPE_PASSWORD = 'password';
     public const LOGIN_TYPE_PRIVATE_KEY = 'private_key';
+    public const ASYMMETRIC_KEYS = 'SFTP_ASYMMETRIC_KEYS';
 
     public function __construct(
         private string $host,
@@ -29,8 +30,8 @@ final class SftpStorage implements StorageInterface
         private string $username,
         private ?string $password,
         private string $filePath,
-        private string $privateKey,
-        private string $publicKey,
+        private ?string $privateKey,
+        private ?string $publicKey,
         private ?string $fingerprint = null,
     ) {
     }

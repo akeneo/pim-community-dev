@@ -3,7 +3,6 @@
 namespace Akeneo\Platform\JobAutomation\Test\Acceptance\Infrastructure\Validation;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage;
-use Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\Sftp\SftpStorage;
 use AkeneoTest\Platform\Acceptance\ImportExport\Infrastructure\Validation\AbstractValidationTest;
 
 class ValidateStorageTest extends AbstractValidationTest
@@ -33,6 +32,7 @@ class ValidateStorageTest extends AbstractValidationTest
                     'file_path' => '/tmp/file.xlsx',
                     'host' => 'example.com',
                     'port' => 22,
+                    'login_type' => 'password',
                     'username' => 'ziggy',
                     'password' => 'MySecretPassword',
                 ],

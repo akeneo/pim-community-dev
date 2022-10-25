@@ -15,11 +15,26 @@ namespace Akeneo\Platform\JobAutomation\Infrastructure\Hydrator;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageHydratorInterface;
+use Akeneo\Platform\JobAutomation\Domain\Model\AsymmetricKeys;
 use Akeneo\Platform\JobAutomation\Domain\Model\SftpStorage;
+use Akeneo\Platform\JobAutomation\Domain\Query\GetAsymmetricKeysQueryInterface;
 
 final class SftpStorageHydrator implements StorageHydratorInterface
 {
+    public function __construct(
+        private GetAsymmetricKeysQueryInterface $getAsymmetricKeysQuery,
+    ) {
+    }
+
     public function hydrate(array $normalizedStorage): StorageInterface
+    {
+        return match ($normalizedStorage['login_type']) {
+            SftpStorage::LOGIN_TYPE_PASSWORD => $this->hydrateForPasswordLoginType($normalizedStorage),
+            SftpStorage::LOGIN_TYPE_PRIVATE_KEY => $this->hydrateForPrivateKeyLoginType($normalizedStorage),
+        };
+    }
+
+    private function hydrateForPasswordLoginType(array $normalizedStorage): StorageInterface
     {
         return new SftpStorage(
             $normalizedStorage['host'],
@@ -28,6 +43,25 @@ final class SftpStorageHydrator implements StorageHydratorInterface
             $normalizedStorage['username'],
             $normalizedStorage['password'],
             $normalizedStorage['file_path'],
+            null,
+            null,
+            $normalizedStorage['fingerprint'] ?? null,
+        );
+    }
+
+    private function hydrateForPrivateKeyLoginType(array $normalizedStorage): StorageInterface
+    {
+        $asymmetricKeys = $this->getAsymmetricKeysQuery->execute(SftpStorage::ASYMMETRIC_KEYS)->normalize();
+
+        return new SftpStorage(
+            $normalizedStorage['host'],
+            $normalizedStorage['port'],
+            $normalizedStorage['login_type'],
+            $normalizedStorage['username'],
+            null,
+            $normalizedStorage['file_path'],
+            $asymmetricKeys[AsymmetricKeys::PRIVATE_KEY],
+            $asymmetricKeys[AsymmetricKeys::PUBLIC_KEY],
             $normalizedStorage['fingerprint'] ?? null,
         );
     }
@@ -35,10 +69,5 @@ final class SftpStorageHydrator implements StorageHydratorInterface
     public function supports(array $normalizedStorage): bool
     {
         return array_key_exists('type', $normalizedStorage) && SftpStorage::TYPE === $normalizedStorage['type'];
-    }
-
-    private function getConnectionKey()
-    {
-
     }
 }

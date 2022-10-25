@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Platform\JobAutomation\Test\Common\FakeServiceApi;
+namespace Akeneo\Platform\JobAutomation\Test\Common\FakeService;
 
 use Akeneo\UserManagement\ServiceApi\User\ListUsersHandlerInterface;
 use Akeneo\UserManagement\ServiceApi\User\User;

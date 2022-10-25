@@ -37,7 +37,7 @@ final class SftpStorageValidator extends ConstraintValidator
 
         $validator = $this->context->getValidator()->inContext($this->context);
 
-        $this->context->getValidator()->inContext($this->context)->validate($value, new Collection([
+        $validator->validate($value, new Collection([
             'fields' => [
                 'type' => new EqualTo(SftpStorageModel::TYPE),
                 'file_path' => new FilePath($constraint->getFilePathSupportedFileExtensions()),
@@ -46,11 +46,12 @@ final class SftpStorageValidator extends ConstraintValidator
                 'port' => [new NotBlank(), new GreaterThanOrEqual(1), new LessThanOrEqual(65535)],
                 'login_type' => [new NotBlank(), new Choice(['choices' => SftpStorageModel::LOGIN_TYPES])],
                 'username' => new NotBlank(),
+                'password' => new Optional(),
             ],
         ]));
 
-        if (SftpStorageModel::LOGIN_TYPE_CREDENTIALS === $value['login_type']) {
-            $validator->atPath('[password]')->validate($value['password'], [
+        if (SftpStorageModel::LOGIN_TYPE_PASSWORD === $value['login_type']) {
+            $validator->atPath('[password]')->validate($value['password'] ?? null, [
                 new NotBlank(),
             ]);
         }

@@ -35,6 +35,7 @@ $rules = [
     $builder->only(
         [
             'Doctrine\DBAL\Connection',
+            'Doctrine\DBAL\Types\Types',
             'Symfony\Component',
             'Symfony\Contract',
             'Psr\Log\LoggerInterface',

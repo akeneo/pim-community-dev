@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\JobAutomation\Infrastructure\Query;
 
-use Akeneo\Platform\JobAutomation\Domain\Model\AsymmetricKeys;
 use Akeneo\Platform\JobAutomation\Domain\ClockInterface;
+use Akeneo\Platform\JobAutomation\Domain\Model\AsymmetricKeys;
 use Akeneo\Platform\JobAutomation\Domain\Query\SaveAsymmetricKeysQueryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
@@ -35,7 +35,7 @@ final class SaveAsymmetricKeysQuery implements SaveAsymmetricKeysQueryInterface
             INSERT INTO pim_configuration (`code`,`values`)
             VALUES (:code, :asymmetricKeys)
             ON DUPLICATE KEY UPDATE `values`= :asymmetricKeys
-            SQL;
+        SQL;
 
         $updatedAt = $this->clock->now()->format(\DateTimeInterface::ATOM);
 
