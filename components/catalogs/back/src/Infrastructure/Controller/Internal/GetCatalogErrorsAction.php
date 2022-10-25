@@ -8,7 +8,6 @@ use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
 use Akeneo\Catalogs\Application\Persistence\Catalog\FindOneCatalogByIdQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdatePayload;
-use Akeneo\Catalogs\ServiceAPI\Exception\CatalogNotFoundException as ServiceApiCatalogNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,20 +36,14 @@ final class GetCatalogErrorsAction
             return new RedirectResponse('/');
         }
 
-        $catalog = $this->findOneCatalogByIdQuery->execute($catalogId);
-
-        if (null === $catalog) {
-            throw new NotFoundHttpException(\sprintf('catalog "%s" does not exist.', $catalogId));
-        }
-
         try {
             $catalogDomain = $this->getCatalogQuery->execute($catalogId);
         } catch (CatalogNotFoundException) {
-            throw new ServiceApiCatalogNotFoundException();
+            throw new NotFoundHttpException(\sprintf('catalog "%s" does not exist.', $catalogId));
         }
 
         $catalogNormalized = [
-            'enabled' => $catalog->isEnabled(),
+            'enabled' => $catalogDomain->isEnabled(),
             'product_selection_criteria' => $catalogDomain->getProductSelectionCriteria(),
             'product_value_filters' => $catalogDomain->getProductValueFilters(),
         ];
