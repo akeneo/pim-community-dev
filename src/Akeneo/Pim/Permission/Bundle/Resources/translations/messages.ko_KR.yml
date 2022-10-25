@@ -61,6 +61,7 @@ pim_enrich:
       message:
         error: 제품의 소유자가 아니므로, 게시할 수 없습니다.
         warning: 선택한 모든 제품의 소유자가 아니므로, 제품 '%notGranted%'을(를) 게시할 수 없습니다.
+        no_identifier: 식별자가 없으므로 이 제품을 게시할 수 없습니다.
       not_editable: '''%identifiers%'' 제품을 편집할 수 있는 권한이 없습니다.'
     unpublish:
       message:
