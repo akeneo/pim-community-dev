@@ -32,7 +32,7 @@ final class MarkCommentsAsReadBySupplierHandlerTest extends TestCase
     }
 
     /** @test */
-    public function itMarksProductFileCommentsAsReadForASupplier()
+    public function itMarksProductFileCommentsAsReadForASupplier(): void
     {
         $productFileRepository = new ProductFileInMemoryRepository();
         $productFile = (new ProductFileBuilder())
@@ -55,7 +55,7 @@ final class MarkCommentsAsReadBySupplierHandlerTest extends TestCase
     }
 
     /** @test */
-    public function itDoesNothingIfWeTryToMarkAsReadCommentsOfAProductFileThatDoesNotHaveAnyComment()
+    public function itDoesNothingIfWeTryToMarkAsReadCommentsOfAProductFileThatDoesNotHaveAnyComment(): void
     {
         $productFileRepository = new ProductFileInMemoryRepository();
         $productFileRepository->save(

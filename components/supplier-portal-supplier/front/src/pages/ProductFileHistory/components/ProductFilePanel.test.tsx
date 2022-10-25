@@ -8,15 +8,12 @@ const productFile: any = {
     filename: 'product-file-1.xlsx',
     contributor: 'contributor1@example.com',
     uploadedAt: '2022-07-28T14:57:37+00:00',
-    retailerComments: [
-        {content: 'test retailer 2', createdAt: '2022-10-08T00:20:35+00:00', authorEmail: 'julia@akeneo.com'},
-        {content: 'test retailer 1', createdAt: '2022-10-05T21:20:35+00:00', authorEmail: 'julia@akeneo.com'},
+    comments: [
+        {content: 'test supplier 1', createdAt: '2022-10-05T00:20:35+00:00', authorEmail: 'julia@akeneo.com'},
+        {content: 'test retailer 2', createdAt: '2022-10-09T21:20:35+00:00', authorEmail: 'julia@akeneo.com'},
         {content: 'test retailer 3', createdAt: '2022-10-11T13:20:35+00:00', authorEmail: 'julia@akeneo.com'},
     ],
-    supplierComments: [
-        {content: 'test supplier 2', createdAt: '2022-10-08T13:20:35+00:00', authorEmail: 'jimmy@supplier.com'},
-        {content: 'test supplier 1', createdAt: '2022-10-05T13:20:35+00:00', authorEmail: 'jimmy@supplier.com'},
-    ],
+    displayNewMessageIndicatorPill: false,
 };
 
 test('it renders nothing if the product file because the user did not click on any product file row', () => {
@@ -32,9 +29,7 @@ test('it renders the most recent comments at the end', () => {
 
     expect(screen.getAllByTestId('commentContent').map((element: any) => element.textContent)).toStrictEqual([
         '"test supplier 1"',
-        '"test retailer 1"',
         '"test retailer 2"',
-        '"test supplier 2"',
         '"test retailer 3"',
     ]);
 });

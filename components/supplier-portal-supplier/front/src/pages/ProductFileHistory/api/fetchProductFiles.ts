@@ -37,11 +37,10 @@ const fetchProductFiles = async (page: number): Promise<ProductFiles> => {
                 (a: CommentReadModel, b: CommentReadModel) =>
                     new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
             );
-
         let displayNewMessageIndicatorPill = false;
         if (0 < comments.length) {
             const lastReadAtTimestamp = null !== item.supplierLastReadAt ? Date.parse(item.supplierLastReadAt) : null;
-            const lastComment: any = comments.pop();
+            const lastComment: any = comments.slice(-1)[0];
             const lastCommentTimestamp = Date.parse(lastComment.createdAt);
             if (null !== lastReadAtTimestamp && lastCommentTimestamp > lastReadAtTimestamp) {
                 displayNewMessageIndicatorPill = true;

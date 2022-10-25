@@ -12,6 +12,7 @@ use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
+use Doctrine\DBAL\Connection;
 
 final class DatabaseListProductFilesForSupplierIntegration extends SqlIntegrationTestCase
 {
@@ -171,10 +172,7 @@ final class DatabaseListProductFilesForSupplierIntegration extends SqlIntegratio
             $sql,
             [
                 'productFileIdentifier' => '5d001a43-a42d-4083-8673-b64bb4ecd26f',
-                'lastReadAt' => new \DateTimeImmutable('2022-09-07 00:00:00'),
-            ],
-            [
-                'lastReadAt' => Types::DATETIME_IMMUTABLE,
+                'lastReadAt' => (new \DateTimeImmutable('2022-09-07 00:00:00'))->format('Y-m-d H:i:s'),
             ],
         );
 

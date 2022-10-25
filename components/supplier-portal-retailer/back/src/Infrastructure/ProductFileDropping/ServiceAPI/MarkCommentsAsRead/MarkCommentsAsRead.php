@@ -15,7 +15,7 @@ final class MarkCommentsAsRead
     {
     }
 
-    public function __invoke(MarkCommentsAsReadCommand $markCommentsAsReadCommand)
+    public function __invoke(MarkCommentsAsReadCommand $markCommentsAsReadCommand): void
     {
         try {
             ($this->markCommentsAsReadBySupplierHandler)(

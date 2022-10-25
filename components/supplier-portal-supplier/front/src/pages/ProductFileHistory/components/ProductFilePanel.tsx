@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import {AkeneoThemedProps, CloseIcon, getColor, IconButton} from 'akeneo-design-system';
 import {ProductFile} from '../model/ProductFile';
 import {useIntl} from 'react-intl';
-import {Comment as CommentReadModel} from '../model/Comment';
 import {Metadata} from './Metadata';
 import {Discussion} from './Discussion';
 

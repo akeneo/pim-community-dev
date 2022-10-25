@@ -1,6 +1,15 @@
 import React, {useState} from 'react';
 import {ProductFile} from '../model/ProductFile';
-import {ArrowRightIcon, DownloadIcon, getColor, IconButton, Pill, SectionTitle, Table} from 'akeneo-design-system';
+import {
+    ArrowRightIcon,
+    DownloadIcon,
+    getColor,
+    IconButton,
+    Pagination,
+    Pill,
+    SectionTitle,
+    Table,
+} from 'akeneo-design-system';
 import {FormattedMessage, useIntl} from 'react-intl';
 import styled from 'styled-components';
 import {useDateFormatter} from '../../../utils/date-formatter/use-date-formatter';
@@ -172,7 +181,9 @@ const ProductFileList = ({productFiles, totalProductFiles, currentPage, onChange
                                                 <FilenameCell>{productFile.filename}</FilenameCell>
                                             </Table.Cell>
                                             <StyledActionCell>
-                                                {productFile.displayNewMessageIndicatorPill && <StyledPill level="primary" />}
+                                                {productFile.displayNewMessageIndicatorPill && (
+                                                    <StyledPill level="primary" />
+                                                )}
                                             </StyledActionCell>
                                             <StyledActionCell>
                                                 <StyledIconButton
@@ -215,7 +226,7 @@ const ProductFileList = ({productFiles, totalProductFiles, currentPage, onChange
                         itemsPerPage={PRODUCT_FILES_PER_PAGE}
                     />
                 </ProductFilesContainer>
-                {currentProductFile && <ProductFilePanel productFile={currentProductFile} closePanel={closePanel}/>}
+                {currentProductFile && <ProductFilePanel productFile={currentProductFile} closePanel={closePanel} />}
             </PageContainer>
         </>
     );
