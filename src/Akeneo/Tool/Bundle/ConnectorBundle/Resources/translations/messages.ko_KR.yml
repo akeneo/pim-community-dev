@@ -8,6 +8,7 @@ job_execution.summary:
   skip: 건너뜀
   create: 생성함
   process: 처리함
+  update: 업데이트됨
   update_products: 업데이트한 제품
   process_products: 처리한 제품
   skip_products: 건너뛴 제품

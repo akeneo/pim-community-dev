@@ -13,6 +13,11 @@ akeneo_job:
     UNKNOWN: 알 수 없음
     IN_PROGRESS: 진행 중
 akeneo_job_process_tracker:
+  last_operations:
+    title: 마지막 작업
+    view_all: 모두 보기
+    details: 세부 정보
+    no_result: 현재 표시할 작업이 없습니다.
   last_executions:
     title: 마지막 실행
   job_execution_list:
@@ -57,6 +62,7 @@ akeneo_job_process_tracker:
     all: 모두
     yes: Yes
     no: No
+    label: 자동화
   max_page_without_filter_helper: 가장 관련성이 높은 결과를 표시하려면 검색 범위를 좁히십시오.
   tracking:
     completed: "경과 시간: {{ duration }}"
