@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Application\Query;
 
-use Akeneo\Category\Domain\Model\Category;
+use Akeneo\Category\Domain\Model\CategoryTree;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 
 /**
@@ -13,5 +13,5 @@ use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
  */
 interface GetCategoryTreeByCategoryTemplate
 {
-    public function __invoke(TemplateUuid $templateUuid): ?Category;
+    public function __invoke(TemplateUuid $templateUuid): ?CategoryTree;
 }

@@ -30,10 +30,11 @@ class GetCategoryTreeByCategoryTemplateSqlIntegration extends TestCase
         $this->get(CategoryTemplateSaver::class)->insert($templateModel);
         $this->get(CategoryTreeTemplateSaver::class)->insert($templateModel);
 
-        $retrievedCategory = ($this->get(GetCategoryTreeByCategoryTemplate::class))($templateModel->getUuid());
+        $retrievedCategoryTree = ($this->get(GetCategoryTreeByCategoryTemplate::class))($templateModel->getUuid());
 
-        $this->assertEquals($category->getId(), $retrievedCategory->getId());
-        $this->assertEquals($category->getCode(), $retrievedCategory->getCode());
+        $this->assertEquals($category->getId(), $retrievedCategoryTree->getId());
+        $this->assertEquals($category->getCode(), $retrievedCategoryTree->getCode());
+        $this->assertEquals($templateModel->getLabelCollection(), $retrievedCategoryTree->getTemplateLabels());
     }
 
     protected function getConfiguration(): Configuration
