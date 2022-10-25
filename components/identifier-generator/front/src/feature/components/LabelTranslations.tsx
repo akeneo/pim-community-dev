@@ -36,11 +36,7 @@ const LabelTranslations: React.FC<LabelTranslationsProps> = ({labelCollection, o
               <TextInput value={labelCollection[locale.code] || ''} onChange={onLabelChange(locale.code)} />
             </Field>
           ))}
-        {error?.message && (
-          <Helper inline level="error">
-            {translate('pim_error.general')}
-          </Helper>
-        )}
+        {error?.message && <Helper level="error">{translate('pim_error.general')}</Helper>}
       </Styled.FormContainer>
     </>
   );

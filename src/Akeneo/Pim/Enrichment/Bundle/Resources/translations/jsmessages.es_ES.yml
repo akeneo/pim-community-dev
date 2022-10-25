@@ -108,6 +108,7 @@ pim_enrich.entity.product:
       variant_products: Productos variantes
       quantified:
         quantity: Cantidad
+        unlinked: Desvinculado
       search:
         placeholder: Buscar en etiqueta o identificador
       no_data: No hay productos asociados.

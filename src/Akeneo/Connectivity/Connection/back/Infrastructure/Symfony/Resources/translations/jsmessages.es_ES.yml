@@ -479,6 +479,7 @@ akeneo_connectivity.connection:
       url: URL
       secret: Secreto
       enabled: Activación de suscripción al evento
+      is_using_uuid: '¿Usar UUID de producto en lugar de identificador de producto?'
       test: Prueba
     error:
       wrong_url: Este valor no es una URL válida.

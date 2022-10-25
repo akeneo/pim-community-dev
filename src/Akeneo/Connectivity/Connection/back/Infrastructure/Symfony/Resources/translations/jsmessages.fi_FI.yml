@@ -16,11 +16,7 @@ pim_menu:
     connection_webhook_event_logs: Tapahtumalokit
     data_flows: Tietovirrat
     connect_connection_settings: API-yhteyksien asetukset
-    marketplace: Marketplace
-    connected_apps: Sovellukset
 pim_title:
-  akeneo_connectivity_connection_connect_marketplace: Marketplace
-  akeneo_connectivity_connection_connect_marketplace_profile: Marketplace
   akeneo_connectivity_connection_connect_apps_activate: Yhdistä
   akeneo_connectivity_connection_connect_apps_authorize: Yhdistä
   akeneo_connectivity_connection_connect_apps_authenticate: Yhdistä
@@ -35,21 +31,17 @@ pim_title:
   akeneo_connectivity_connection_webhook_regenerate_secret: Tapahtumatilaus
   akeneo_connectivity_connection_webhook_event_logs: Tapahtumalokit
   akeneo_connectivity_connection_settings_redirect: Yhteydet
-  akeneo_connectivity_connection_connect_connected_apps: Sovellukset
   akeneo_connectivity_connection_connect_connected_apps_edit: Sovellusasetukset
   akeneo_connectivity_connection_connect_marketplace_test_app_create: Luo testisovellus
   akeneo_connectivity_connection_connect_marketplace_test_app_delete: Poista testisovellus
+  akeneo_connectivity_connection_connect_connected_apps_open: Avaa sovellus
 akeneo_connectivity.connection:
   connect:
     marketplace:
       title: Haluatko yhdistää PIMin toiseen sovellukseen? 🤟
-      sub_title: Tarkista Marketplace-sivustolta, mitkä sovellukset voidaan yhdistää Akeneo PIMiin.
-      link: Yhteys kauppapaikkaan
       helper:
         title: '{0} PIM-versiosi kanssa yhteensopivia sovelluksia tai konnektoreita ei ole.|{1} PIM-versiosi kanssa on yhteensopiva {{ count }} sovellus tai konnektori. |[2,Inf] PIM-versiosi kanssa yhteensopivia sovelluksia ja konnektoreita on {{ count }}.'
         title_without_apps: '{0} PIM-versiosi kanssa yhteensopivia konnektoreita ei ole.{1} {{ count }} PIM-versiosi kanssa yhteensopiva konnektori. [2,Inf] {{ count }} PIM-versiosi kanssa yhteensopivia konnektoria.'
-        description: Tämä on vain yleiskatsaus. Katso lisätietoja kauppapaikaltamme.
-        link: Siirry kauppapaikkaan
       card:
         developed_by: 'Kehittäjä {{ author }}'
         read_more: lue lisää
@@ -64,7 +56,6 @@ akeneo_connectivity.connection:
         title: Sovellukset
         total: '{0} Ei sovelluksia|{1} 1 sovellus|[2,Inf] {{ total }} sovellusta'
         empty: Ei versiosi kanssa yhteensopivia sovelluksia
-      unreachable: Emme pääse nyt kauppapaikkaan. Ole hyvä ja yritä myöhemmin uudelleen.
       scroll_to_top: Siirry ylös
       test_apps:
         title: Minun testisovellukseni
@@ -101,7 +92,6 @@ akeneo_connectivity.connection:
           subtitle: Sovellukset
           title: Vahvista poisto
           description: Olet aikeissa poistaa testisovelluksesi tästä PIM:stä.
-          warning: Vahvistamalla poistamisen voit poistaa testisovelluksen markkinapaikan sivulta ja siihen liittyvästä yhdistetystä sovelluksesta.
           flash:
             success: Testisovellus poistettiin onnistuneesti.
             error: Valitettavasti testisovellusta poistettaessa tapahtui virhe.
@@ -112,13 +102,11 @@ akeneo_connectivity.connection:
           total: '{0} Ei sovelluksia|{1} 1 sovellus|[2,Inf] {{ total }} sovellusta'
           empty: Ei yhdistettyjä sovelluksia
           check_marketplace: 'Tarkista {{ marketplaceLink }} selataksesi kaiken käytettävissä olevan sisällön ja asenna ensimmäinen sovellus.'
-          marketplace_link_anchor: Sovelluskauppa
         test_apps:
           title: Minun testisovellukseni
           removed_user: Poistettu käyttäjä
         helper:
           title: '[0,1] PIM on yhteydessä {{ count }} sovellukseen.|[2,Inf] PIM on yhteydessä {{ count }} sovellukseen.'
-          description_1: Uusia sovelluksia kehitetään säännöllisesti, joten pysy kuulolla ja tarkista Sovelluskauppa-sivumme usein löytääksesi uusia sovelluksia.
           description_2: Haluaa tietää lisää Sovelluksista?
           link: Katso lisätietoja ohjekeskuksestamme.
         card:
@@ -141,6 +129,8 @@ akeneo_connectivity.connection:
             information: 'Jos haluat tietää lisää sovelluksen valtuutuksista, tutustu osoitteeseen {{ link }}.'
             information_link_anchor: Ohje Keskuksen artikkeli
             no_scope: Erityisiä valtuutuksia ei ole pyydetty.
+          authentication:
+            information_link_anchor: Ohje Keskuksen artikkeli
         error_monitoring:
           error: Hups, jokin meni pieleen!
           helper:
@@ -178,7 +168,6 @@ akeneo_connectivity.connection:
           previous: Edellinen
           next: Seuraava
           allow_and_next: Salli ja seuraava
-          allow_and_finish: Salli ja lopeta
         progress:
           authentication: Todennus
           authorizations: Tunnistautumiset
@@ -188,8 +177,6 @@ akeneo_connectivity.connection:
           title: '{{ app_name }} tarvitsee'
           helper: Jos haluat tietää lisää sovelluksen todennuksesta, tarkista meidän artikkeli
           helper_link: Miten yhdistän PIMin sovelluksiin?
-          scope_profile: Näytä etunimi ja sukunimi
-          scope_email: Näytä sähköpostiosoitteesi
         authorize:
           title: '{{ app_name }} tarvitsee'
           no_scope_title: '{{ app_name }} haluaisi käyttää PIM:iäsi.'
@@ -222,8 +209,6 @@ akeneo_connectivity.connection:
           reference_entity_record: viitetiedon tietueet
           asset_families: assettiperheet
           assets: assetit
-      error:
-        sub_text: Ota yhteyttä sovelluksen kehittäjään tai Akeneo-tukeen
       constraint:
         client_id:
           not_blank: Asiakkastunnus on pakollinen.
@@ -476,3 +461,6 @@ pim_permissions:
       edit: Muokkaus
       view: Näyttäminen
     all: Kaikki
+pim_notification:
+  connected_app_authorizations:
+    button_label: Avaa sovellus

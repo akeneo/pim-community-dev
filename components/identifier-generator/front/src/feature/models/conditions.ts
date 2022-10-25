@@ -1,3 +1,3 @@
-type Conditions = {};
+type Conditions = {}[];
 
 export type {Conditions};
