@@ -6,7 +6,6 @@ namespace Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\MarkCommentsAsReadBySupplier as MarkCommentsAsReadBySupplierQuery;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\ProductFileDoesNotExist;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\ProductFileDoesNotHaveComments;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
 
@@ -28,7 +27,7 @@ class MarkCommentsAsReadBySupplierHandler
             throw new ProductFileDoesNotExist();
         }
         if (!$productFile->hasComments()) {
-            throw new ProductFileDoesNotHaveComments();
+            return;
         }
 
         ($this->markCommentsAsReadBySupplier)($markCommentsAsReadBySupplier->productFileIdentifier, $markCommentsAsReadBySupplier->lastReadAt);

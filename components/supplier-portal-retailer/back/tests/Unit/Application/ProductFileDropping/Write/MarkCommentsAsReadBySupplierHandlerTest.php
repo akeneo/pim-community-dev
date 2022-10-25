@@ -8,7 +8,6 @@ use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCom
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadBySupplierHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\MarkCommentsAsReadBySupplier;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\ProductFileDoesNotExist;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\ProductFileDoesNotHaveComments;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\InMemory\InMemoryRepository as ProductFileInMemoryRepository;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
 use PHPUnit\Framework\TestCase;
@@ -56,7 +55,7 @@ final class MarkCommentsAsReadBySupplierHandlerTest extends TestCase
     }
 
     /** @test */
-    public function itThrowsAnExceptionIfWeTryToMarkAsReadCommentsOfAProductFileThatDoesNotHaveAnyComment()
+    public function itDoesNothingIfWeTryToMarkAsReadCommentsOfAProductFileThatDoesNotHaveAnyComment()
     {
         $productFileRepository = new ProductFileInMemoryRepository();
         $productFileRepository->save(
@@ -69,8 +68,6 @@ final class MarkCommentsAsReadBySupplierHandlerTest extends TestCase
 
         $queryMock = $this->createMock(MarkCommentsAsReadBySupplier::class);
         $queryMock->expects($this->never())->method('__invoke');
-
-        static::expectExceptionObject(new ProductFileDoesNotHaveComments());
 
         (new MarkCommentsAsReadBySupplierHandler($queryMock, $productFileRepository))(
             new MarkCommentsAsReadBySupplierCommand(
