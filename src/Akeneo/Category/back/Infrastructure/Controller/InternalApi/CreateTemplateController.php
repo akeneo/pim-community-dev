@@ -25,7 +25,6 @@ class CreateTemplateController
     public function __construct(
         private SecurityFacade $securityFacade,
         private GetCategoryInterface $getCategory,
-        private TemplateBuilder $templateBuilder,
         private ActivateTemplate $activateTemplate
     ) {
     }

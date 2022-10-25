@@ -8,6 +8,9 @@ use Akeneo\Category\Application\Query\GetCategoryTemplateByCategoryTree;
 use Akeneo\Category\Domain\Model\Template;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
+use Akeneo\Category\Domain\ValueObject\LabelCollection;
+use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
+use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -29,7 +32,12 @@ class GetCategoryTemplateByCategoryTreeSql implements GetCategoryTemplateByCateg
     public function __invoke(CategoryId $categoryTreeId): ?Template
     {
         $query = <<<SQL
-            SELECT * FROM pim_catalog_category_template category_template
+            SELECT 
+                BIN_TO_UUID(category_template.uuid) as uuid,
+                category_template.code as code,
+                category_template.labels as labels,
+                category_tree_template.category_tree_id as category_tree_id
+            FROM pim_catalog_category_template category_template
             JOIN pim_catalog_category_tree_template category_tree_template 
                 ON category_tree_template.category_template_uuid=category_template.uuid
             WHERE category_tree_id=:category_id
@@ -44,10 +52,19 @@ class GetCategoryTemplateByCategoryTreeSql implements GetCategoryTemplateByCateg
         $template =null;
         if ($result) {
             $template = new Template(
-                $result['uuid'],
-                $result['code'],
-                $result['labels'],
-                $result['category_tree_id'],
+                TemplateUuid::fromString($result['uuid']),
+                new TemplateCode($result['code']),
+                $result['labels'] ?
+                    LabelCollection::fromArray(
+                        json_decode(
+                            $result['labels'],
+                            true,
+                            512,
+                            JSON_THROW_ON_ERROR
+                        )
+                    )
+                    : LabelCollection::fromArray([]),
+                new CategoryId((int) $result['category_tree_id']),
                 // TODO this must be implemented at the same time we implement all getTemplate queries
                 AttributeCollection::fromArray([]),
             );

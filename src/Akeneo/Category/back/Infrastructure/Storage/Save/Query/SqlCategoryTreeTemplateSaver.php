@@ -46,7 +46,7 @@ class SqlCategoryTreeTemplateSaver implements CategoryTreeTemplateSaver
         );
     }
 
-    public function update(Template $templateModel)
+    public function update(Template $templateModel): void
     {
         // TODO: Implement update() method.
     }

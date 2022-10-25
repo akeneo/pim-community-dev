@@ -6,7 +6,7 @@ use Akeneo\Category\Domain\Model\Template;
 
 interface CategoryTemplateSaver
 {
-    public function insert(Template $templateModel);
+    public function insert(Template $templateModel): void;
 
-    public function update(Template $templateModel);
+    public function update(Template $templateModel): void;
 }
