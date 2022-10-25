@@ -12,13 +12,13 @@ use Akeneo\Catalogs\ServiceAPI\Exception\CatalogDisabledException;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogNotFoundException as ServiceApiCatalogNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Exception\ProductSchemaMappingNotFoundException as ServiceApiProductSchemaMappingNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductsQuery;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @phpstan-import-type MappedProduct from GetMappedProductsQuery
+ * @phpstan-import-type Product from GetProductsQueryInterface
  */
 final class GetMappedProductsHandler
 {
@@ -70,7 +70,8 @@ final class GetMappedProductsHandler
         $productMapping = $catalog->getProductMapping();
 
         return \array_map(
-            static function (ProductInterface $product) use ($productMappingSchema, $productMapping): array {
+            /** @var Product $product */
+            static function (array $product) use ($productMappingSchema, $productMapping): array {
                 $mappedProduct = [];
 
                 /** @var string $key */
@@ -90,5 +91,13 @@ final class GetMappedProductsHandler
             },
             $products
         );
+    }
+
+    /**
+     * @param Product $product
+     */
+    private function getProductValue(array $product, ?string $attributeCode, ?string $locale, ?string $scope): string
+    {
+//        return ;
     }
 }
