@@ -478,7 +478,7 @@ functions.http('createTenant', (req, res) => {
       'TENANT_CONTEXT_COLLECTION_NAME',
     ]);
 
-    const body = JSON.parse(req.body);
+    const body = JSON.parse(JSON.stringify(req.body));
     // If branchName is an empty string it is the default branch
     const branchName = body.branchName
     const instanceName = body.instanceName;

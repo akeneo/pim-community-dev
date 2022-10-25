@@ -689,6 +689,9 @@ jobs:
             CLUSTER_NEXT:
                 type: boolean
                 default: false
+            PIM_EDITION:
+                type: string
+                default: "serenity_instance"
         environment:
             <<: *envVarsDeployPIMSaaSDev
         <<: *dockerCloudDeployerUCS
@@ -716,6 +719,7 @@ jobs:
                       WORKLOAD_IDENTITY_KSA="${INSTANCE_NAME}-ksa-workload-identity"
                       GOOGLE_ZONE=${GOOGLE_COMPUTE_ZONE}
 
+                      echo export CIRCLE_BRANCH_LOWER=${CIRCLE_BRANCH_LOWER} >> $BASH_ENV
                       echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
                       echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
                       echo export WORKLOAD_IDENTITY_KSA=${WORKLOAD_IDENTITY_KSA} >> $BASH_ENV
@@ -740,10 +744,11 @@ jobs:
                   name: Deploy Tenant with Timmy
                   command: |
                       TENANT_STATUS_CODE=0
-                      JSON_BODY_STRING=$(printf "{\"branchName\":\"%s\"}\n" $CIRCLE_BRANCH)
+                      JSON_BODY_STRING=\''{"pim_edition":"'"<<parameters.PIM_EDITION>>"'","branchName":"'"${CIRCLE_BRANCH}"'","instanceName":"'"<<parameters.PRODUCT_TYPE>>-${INSTANCE_NAME}"'","dnsCloudDomain":"'"${GOOGLE_DOMAIN}"'","pim":{"defaultAdminUser":{"login":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","firstName":"'"${CIRCLE_BRANCH_LOWER}"'","lastName":"'"${CIRCLE_BRANCH_LOWER}"'","email":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","uiLocale":"en_US"},"api":{"namespace":"'"${PIM_NS}"'"},"web":{"namespace":"'"${PIM_NS}"'"}}}'
+                      JSON_BODY_STRING=${JSON_BODY_STRING:1}
                       echo $JSON_BODY_STRING
-                      gcloud  config unset auth/impersonate_service_account
-                      gcloud beta functions call ${REGION_PREFIX}-timmy-request-portal  --region=${GOOGLE_CLUSTER_REGION}  --data  $JSON_BODY_STRING  --gen2  || TENANT_STATUS_CODE=1
+                      FUNCTION_URL=$(gcloud beta functions describe ${REGION_PREFIX}-timmy-create-tenant --format='value(serviceConfig.uri)' --gen2 --region=${GOOGLE_CLUSTER_REGION})
+                      curl -m 3610 -X POST ${FUNCTION_URL} -H "Authorization: bearer $(gcloud auth print-identity-token)" -H "Content-Type: application/json" -d ${JSON_BODY_STRING} || TENANT_STATUS_CODE=1
                       exit ${TENANT_STATUS_CODE}
 
     deploy_tenant:
