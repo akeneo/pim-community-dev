@@ -77,7 +77,7 @@ const CategoryEditPage: FC = () => {
       setActiveTab(tab);
       switchTo(tab);
     },
-    [setActiveTab, switchTo]
+    []
   );
 
   const {
@@ -153,7 +153,7 @@ const CategoryEditPage: FC = () => {
     if (activeTab === Tabs.ATTRIBUTE && !isGranted('pim_enrich_product_category_edit_attributes')) {
       handleSwitchTo(Tabs.PROPERTY);
     }
-  }, [activeTab, handleSwitchTo, isGranted]);
+  }, [activeTab]);
 
   if (categoryFetchingStatus === 'error') {
     return (
