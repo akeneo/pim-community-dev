@@ -27,6 +27,11 @@ services:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithComments'
 
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\MarkCommentsAsRead:
+        public: true
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadByRetailerHandler'
+
     # GCS Bucket services
     Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\StoreProductsFile:
         class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\StoreProductsFileInGCSBucket

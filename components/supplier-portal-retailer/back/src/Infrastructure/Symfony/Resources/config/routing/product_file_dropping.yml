@@ -36,3 +36,12 @@ supplier_portal_retailer_product_files_show:
     requirements:
         productFileIdentifier: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
     methods: GET
+
+supplier_portal_retailer_mark_comments_as_read:
+    path: /{productFileIdentifier}/comments/read
+    defaults:
+        _controller: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\MarkCommentsAsRead
+        _feature:
+    requirements:
+        productFileIdentifier: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
+    methods: POST
