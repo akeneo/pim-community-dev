@@ -23,7 +23,7 @@ class Category
         private ?CategoryId $parentId = null,
         private ?CategoryId $rootId = null,
         private ?ValueCollection $attributes = null,
-        private ?PermissionCollection $permissions = null
+        private ?PermissionCollection $permissions = null,
     ) {
     }
 
@@ -131,7 +131,7 @@ class Category
                 'labels' => $this->getLabels()?->normalize(),
             ],
             'attributes' => $this->getAttributes()?->normalize(),
-            'permissions' => $this->getPermissions()?->normalize()
+            'permissions' => $this->getPermissions()?->normalize(),
         ];
     }
 }

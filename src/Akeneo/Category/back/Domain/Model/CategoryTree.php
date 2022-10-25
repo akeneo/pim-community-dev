@@ -65,7 +65,7 @@ class CategoryTree
         $label = $this->labels->getTranslation($localeCode);
 
         if (!$label) {
-            return '[' . $this->code . ']';
+            return '['.$this->code.']';
         }
 
         return $label;
