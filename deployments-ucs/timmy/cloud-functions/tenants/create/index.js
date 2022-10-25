@@ -470,8 +470,6 @@ functions.http('createTenant', (req, res) => {
       'MAILER_API_KEY',
       'MAILER_BASE_URL',
       'MAILER_DOMAIN',
-      'PIM_IMAGE_REPOSITORY',
-      'PIM_IMAGE_TAG',
       'REGION',
       'SOURCE_PATH',
       'SOURCE_REPO_URL',
@@ -605,12 +603,6 @@ functions.http('createTenant', (req, res) => {
               papo_project_code_truncated: instanceName,
               papo_project_code_hashed: instanceName,
               type: extraLabelType,
-            }
-          },
-          image: {
-            pim: {
-              repository: process.env.PIM_IMAGE_REPOSITORY,
-              tag: process.env.PIM_IMAGE_TAG,
             }
           },
           mailer: {
