@@ -91,4 +91,34 @@ describe('akeneo > reference entity > application > hydrator --- product', () =>
     expect(() => hydrator({identifier: 'starck'})).toThrow();
     expect(() => hydrator({referenceEntityIdentifier: 'designer'})).toThrow();
   });
+
+  test('I can hydrate a new product without identifier', () => {
+    expect(
+      hydrator(
+        {
+          id: '123456',
+          document_type: 'product',
+          identifier: '',
+          label: 'My nice product',
+          image: null,
+          completeness: 60,
+          variant_product_completenesses: null,
+        },
+        {locale: createLocaleReference('en_US')}
+      )
+    ).toEqual(
+      denormalizeProduct({
+        id: '123456',
+        identifier: '',
+        type: 'product',
+        labels: {en_US: 'My nice product'},
+        image: null,
+        completeness: {
+          completeChildren: 0,
+          totalChildren: 0,
+          ratio: 60,
+        },
+      })
+    );
+  });
 });
