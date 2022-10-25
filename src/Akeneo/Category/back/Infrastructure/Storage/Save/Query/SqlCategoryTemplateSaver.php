@@ -48,7 +48,7 @@ class SqlCategoryTemplateSaver implements CategoryTemplateSaver
         );
     }
 
-    public function update(Template $templateModel)
+    public function update(Template $templateModel): void
     {
         // TODO: Implement update() method.
     }

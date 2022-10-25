@@ -7,13 +7,14 @@ use Akeneo\Category\Application\Query\GetTemplate;
 use Akeneo\Category\back\tests\Integration\CategoryTemplateTrait;
 use Akeneo\Category\Domain\Model\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
 class ActiveTemplateIntegration extends TestCase
 {
     use CategoryTemplateTrait;
 
-    public function testItActivateATemplateInDatabase()
+    public function testItActivateATemplateInDatabase(): void
     {
         /** @var Category $masterCategory */
         $masterCategory = $this->get(GetCategoryInterface::class)->byCode('master');
@@ -41,7 +42,7 @@ class ActiveTemplateIntegration extends TestCase
         );
     }
 
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
     }

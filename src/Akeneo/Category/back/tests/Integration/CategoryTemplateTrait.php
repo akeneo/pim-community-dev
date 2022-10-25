@@ -25,11 +25,10 @@ trait CategoryTemplateTrait
 {
     public function generateStaticCategoryTemplate(
         ?string $templateUuid = null,
-        ?int $categoryTreeId = 1
-    ): Template
-    {
+        ?int $categoryTreeId = 1,
+    ): Template {
         if ($templateUuid === null) {
-            $templateUuid = TemplateUuid::fromString(Uuid::uuid4());
+            $templateUuid = TemplateUuid::fromUuid(Uuid::uuid4());
         } else {
             $templateUuid = TemplateUuid::fromString($templateUuid);
         }
@@ -49,7 +48,7 @@ trait CategoryTemplateTrait
                     AttributeIsLocalizable::fromBoolean(true),
                     LabelCollection::fromArray(['en_US' => 'Description']),
                     $templateUuid,
-                    AttributeAdditionalProperties::fromArray([])
+                    AttributeAdditionalProperties::fromArray([]),
                 ),
                 AttributeImage::create(
                     AttributeUuid::fromString('8dda490c-0fd1-4485-bdc5-342929783d9a'),
@@ -60,7 +59,7 @@ trait CategoryTemplateTrait
                     AttributeIsLocalizable::fromBoolean(false),
                     LabelCollection::fromArray(['en_US' => 'Banner image']),
                     $templateUuid,
-                    AttributeAdditionalProperties::fromArray([])
+                    AttributeAdditionalProperties::fromArray([]),
                 ),
                 AttributeText::create(
                     AttributeUuid::fromString('4873080d-32a3-42a7-ae5c-1be518e40f3d'),
@@ -71,7 +70,7 @@ trait CategoryTemplateTrait
                     AttributeIsLocalizable::fromBoolean(true),
                     LabelCollection::fromArray(['en_US' => 'SEO Meta Title']),
                     $templateUuid,
-                    AttributeAdditionalProperties::fromArray([])
+                    AttributeAdditionalProperties::fromArray([]),
                 ),
                 AttributeTextArea::create(
                     AttributeUuid::fromString('69e251b3-b876-48b5-9c09-92f54bfb528d'),
@@ -82,7 +81,7 @@ trait CategoryTemplateTrait
                     AttributeIsLocalizable::fromBoolean(true),
                     LabelCollection::fromArray(['en_US' => 'SEO Meta Description']),
                     $templateUuid,
-                    AttributeAdditionalProperties::fromArray([])
+                    AttributeAdditionalProperties::fromArray([]),
                 ),
                 AttributeTextArea::create(
                     AttributeUuid::fromString('4ba33f06-de92-4366-8322-991d1bad07b9'),
@@ -93,9 +92,9 @@ trait CategoryTemplateTrait
                     AttributeIsLocalizable::fromBoolean(true),
                     LabelCollection::fromArray(['en_US' => 'SEO Keywords']),
                     $templateUuid,
-                    AttributeAdditionalProperties::fromArray([])
+                    AttributeAdditionalProperties::fromArray([]),
                 ),
-            ])
+            ]),
         );
     }
 }

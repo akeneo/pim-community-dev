@@ -41,6 +41,12 @@ class GetTemplateInMemoryIntegration extends TestCase
         $this->assertEquals($expectedTemplate, $template);
     }
 
+    public function testTemplateExists(): void
+    {
+        $templateCode = new TemplateCode('default_template');
+        $this->assertFalse($this->get(GetTemplate::class)->exists($templateCode));
+    }
+
     protected function getConfiguration()
     {
         return $this->catalog->useMinimalCatalog();

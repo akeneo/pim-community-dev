@@ -1,0 +1,43 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Sql;
+
+use Akeneo\Category\Application\Query\GetCategoryTreeByCategoryTemplate;
+use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver;
+use Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver;
+use Akeneo\Category\back\tests\Integration\CategoryTemplateTrait;
+use Akeneo\Category\Domain\Model\Category;
+use Akeneo\Category\Domain\Query\GetCategoryInterface;
+use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\Integration\TestCase;
+
+/**
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+class GetCategoryTreeByCategoryTemplateSqlIntegration extends TestCase
+{
+    use CategoryTemplateTrait;
+
+    public function testItRetrieveACategoryTreeByCategoryTemplate(): void
+    {
+        /** @var Category $category */
+        $category = $this->get(GetCategoryInterface::class)->byCode('master');
+        $templateModel = $this->generateStaticCategoryTemplate(categoryTreeId: $category->getId()->getValue());
+
+        $this->get(CategoryTemplateSaver::class)->insert($templateModel);
+        $this->get(CategoryTreeTemplateSaver::class)->insert($templateModel);
+
+        $retrievedCategory = ($this->get(GetCategoryTreeByCategoryTemplate::class))($templateModel->getUuid());
+
+        $this->assertEquals($category->getId(), $retrievedCategory->getId());
+        $this->assertEquals($category->getCode(), $retrievedCategory->getCode());
+    }
+
+    protected function getConfiguration(): Configuration
+    {
+        return $this->catalog->useMinimalCatalog();
+    }
+}

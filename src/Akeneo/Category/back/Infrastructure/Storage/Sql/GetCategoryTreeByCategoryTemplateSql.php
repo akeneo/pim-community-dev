@@ -36,9 +36,17 @@ class GetCategoryTreeByCategoryTemplateSql implements GetCategoryTreeByCategoryT
     public function __invoke(TemplateUuid $templateUuid): ?Category
     {
         $query = <<< SQL
+            WITH translation as (
+                SELECT category.code, JSON_OBJECTAGG(translation.locale, translation.label) as translations
+                FROM pim_catalog_category category
+                JOIN pim_catalog_category_translation translation ON translation.foreign_key = category.id
+                GROUP BY code
+            )
             SELECT * FROM pim_catalog_category category
                 JOIN pim_catalog_category_tree_template category_tree_template
                      ON category_tree_template.category_tree_id=category.id
+                JOIN translation 
+                     ON category.code = translation.code
             WHERE category_template_uuid=:template_uuid
             ;
         SQL;
@@ -59,10 +67,19 @@ class GetCategoryTreeByCategoryTemplateSql implements GetCategoryTreeByCategoryT
             $category = new Category(
                 new CategoryId((int) $result['id']),
                 new Code((string) $result['code']),
-                LabelCollection::fromArray($result['labels']),
-                new CategoryId((int) $result['parent_id']),
+                LabelCollection::fromArray(
+                    json_decode(
+                        $result['translations'],
+                        true,
+                        512,
+                        JSON_THROW_ON_ERROR
+                    )
+                ),
+                $result['parent_id'] ? new CategoryId((int) $result['parent_id']) : null,
                 new CategoryId((int) $result['root']),
-                ValueCollection::fromArray($result['value_collection']),
+                $result['value_collection'] ?
+                    ValueCollection::fromArray($result['value_collection'])
+                    : ValueCollection::fromArray([]),
                 //TODO implement when permissions will be added
                 null,
             );

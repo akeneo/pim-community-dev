@@ -16,7 +16,7 @@ use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
 use Akeneo\Category\Infrastructure\Builder\TemplateBuilder;
 
 /**
- * Validate the new static category template data and save the template in database
+ * Validate the new static category template data and save the template in database.
  */
 class ActivateTemplate
 {
@@ -32,34 +32,28 @@ class ActivateTemplate
     }
 
     /**
-     * @param CategoryId $categoryTreeId
-     * @param TemplateCode $templateCode
-     * @param LabelCollection $templateLabelCollection
-     * @return Template|null
      * @throws \Doctrine\DBAL\Driver\Exception
      * @throws \Doctrine\DBAL\Exception
      */
     public function __invoke(
         CategoryId $categoryTreeId,
         TemplateCode $templateCode,
-        LabelCollection $templateLabelCollection
+        LabelCollection $templateLabelCollection,
     ): ?Template {
         $categoryTree = $this->getCategory->byId($categoryTreeId->getValue());
 
         if ($categoryTree === null) {
-            throw new \Exception(sprintf("Category tree not found. Id: %d", $categoryTreeId->getValue()));
+            throw new \Exception(sprintf('Category tree not found. Id: %d', $categoryTreeId->getValue()));
         }
 
         if (!$this->validateTemplateActivation($categoryTree, $templateCode)) {
-            throw new \Exception(
-                \sprintf("Template for category tree '%s' cannot be activated.", $categoryTree->getCode())
-            );
+            throw new \Exception(\sprintf("Template for category tree '%s' cannot be activated.", $categoryTree->getCode()));
         }
 
         $templateToSave = $this->templateBuilder->generateTemplate(
             $categoryTree->getId(),
             $templateCode,
-            $templateLabelCollection
+            $templateLabelCollection,
         );
 
         return $this->activateTemplate($templateToSave);
@@ -69,10 +63,8 @@ class ActivateTemplate
      * A template activation is considered valid if:
      *  - the current category tree has no template attached
      *  - the attached category id is the root of a category tree
-     *  - the template code is not already in use
-     * @param Category $categoryTree
-     * @param TemplateCode $templateCode
-     * @return bool
+     *  - the template code is not already in use.
+     *
      * @throws \Doctrine\DBAL\Driver\Exception
      * @throws \Doctrine\DBAL\Exception
      */
@@ -93,10 +85,6 @@ class ActivateTemplate
         return true;
     }
 
-    /**
-     * @param Template $templateModel
-     * @return Template
-     */
     private function activateTemplate(Template $templateModel): Template
     {
         $this->categoryTemplateSaver->insert($templateModel);

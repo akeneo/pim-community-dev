@@ -70,7 +70,7 @@ class SqlCategoryTemplateAttributeSaver implements CategoryTemplateAttributeSave
         );
     }
 
-    public function update(TemplateUuid $templateUuid, AttributeCollection $attributeCollection)
+    public function update(TemplateUuid $templateUuid, AttributeCollection $attributeCollection): void
     {
         // TODO: Implement update() method.
     }
@@ -78,14 +78,25 @@ class SqlCategoryTemplateAttributeSaver implements CategoryTemplateAttributeSave
     private function buildInsertQuery(int $loopIndex): string
     {
         return <<<SQL
-            INSERT INTO pim_catalog_category_template_attribute
-                (uuid, code, labels, template_uuid, attribute_type, attribute_order, is_required, is_scopable, is_localizable, additional_properties)
+            INSERT INTO pim_catalog_category_attribute
+                (
+                    uuid,
+                    code,
+                    category_template_uuid,
+                    labels,
+                    attribute_type,
+                    attribute_order,
+                    is_required,
+                    is_scopable,
+                    is_localizable,
+                    additional_properties
+                )
             VALUES
                 (
-                    UUID_TO_BIN(:uuid),
+                    UUID_TO_BIN(:uuid$loopIndex),
                     :code$loopIndex,
+                    UUID_TO_BIN(:template_uuid),
                     :labels$loopIndex,
-                    :template_uuid,
                     :attribute_type$loopIndex,
                     :attribute_order$loopIndex,
                     :is_required$loopIndex,
