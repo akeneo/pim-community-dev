@@ -10,7 +10,3 @@ spec:
     requestPath: /server-status
   connectionDraining:
     drainingTimeoutSec: 60
-{{- if .Values.pim.web.ratelimit.enabled | default "false" }}
-  securityPolicy:
-    name: {{ .Values.pim.web.ratelimit.securityPolicy | default ( printf "%s-throttle-web" .Values.common.gcpProjectID ) }}
-{{- end }}
