@@ -102,19 +102,14 @@ final class UuidMapping
         return $this->uuidsToIds[$uuid] ?? null;
     }
 
-    public function hasIdentifierFromId(int $id): bool
-    {
-        return isset($this->idsToIdentifiers[$id]);
-    }
-
-    public function hasId(int $id): bool
-    {
-        return isset($this->idsToUuids[$id]);
-    }
-
     public function getUuidFromId(int $id): ?string
     {
         return $this->idsToUuids[$id] ?? null;
+    }
+
+    public function hasIdentifierFromId(int $id): bool
+    {
+        return isset($this->idsToIdentifiers[$id]);
     }
 
     public function getIdentifierFromId(int $id): ?string

@@ -66,6 +66,9 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
         }
 
         $productModelStandard['quantified_associations'] = $this->formatQuantifiedAssociations($productModelStandard['quantified_associations']);
+        if (empty($productModelStandard['quantified_associations'])) {
+            $productModelStandard['quantified_associations'] = (object) $productModelStandard['quantified_associations'];
+        }
 
         return $productModelStandard;
     }

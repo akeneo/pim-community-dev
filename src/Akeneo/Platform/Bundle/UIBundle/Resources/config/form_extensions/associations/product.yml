@@ -29,13 +29,13 @@ extensions:
             columnName: id
             fetcher: product
 
-    pim-association-product-and-product-picker-modal-filters-list:
+    pim-association-product-and-product-model-picker-modal-filters-list:
         module: oro/datafilter/filters-list
         parent: pim-associations-product-and-product-model-picker-modal
         targetZone: filters
 
-    pim-association-product-and-product-picker-modal-filters-manage:
+    pim-association-product-and-product-model-picker-modal-filters-manage:
         module: oro/datafilter/filters-button
-        parent: pim-association-product-and-product-picker-modal-filters-list
+        parent: pim-association-product-and-product-model-picker-modal-filters-list
         config:
             displayAsPanel: true

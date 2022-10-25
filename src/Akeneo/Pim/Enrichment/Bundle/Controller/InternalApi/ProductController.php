@@ -79,6 +79,7 @@ class ProductController
      */
     public function indexAction(Request $request): JsonResponse
     {
+        /** @TODO CPM-739: Remove search by identifiers */
         $productIdentifiers = explode(',', $request->get('identifiers'));
         $productUuids = explode(',', $request->get('uuids'));
 

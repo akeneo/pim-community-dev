@@ -25,6 +25,7 @@ $rules = [
 
         // Libs
         'Webmozart\Assert\Assert',
+        'Ramsey\Uuid\Uuid',
 
         // PIM
         'Akeneo\Pim\Structure\Component\AttributeTypes',

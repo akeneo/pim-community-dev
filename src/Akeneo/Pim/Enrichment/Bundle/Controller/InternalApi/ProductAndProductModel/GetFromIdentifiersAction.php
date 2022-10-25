@@ -2,7 +2,6 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductAndProductModel;
 
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\IdentifierFilter;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRows;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRowsParameters;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Rows;
@@ -58,7 +57,7 @@ class GetFromIdentifiersAction
     }
 
     private function findLinkedProductWithAssociations(
-        array $productIdentifiers,
+        array $productUuids,
         string $localeCode,
         string $channelCode
     ): Rows {
@@ -70,12 +69,13 @@ class GetFromIdentifiersAction
             ]
         );
 
-        $productIdentifiers = array_map(
-            static fn ($productIdentifier) => sprintf('product_%s', $productIdentifier),
-            $productIdentifiers
+        $productUuids = array_map(
+            static fn (string $productUuid) => sprintf('product_%s', $productUuid),
+            $productUuids
         );
 
-        $queryBuilder->addFilter('id', Operators::IN_LIST, $productIdentifiers);
+        $queryBuilder->addFilter('id', Operators::IN_LIST, $productUuids);
+        $queryBuilder->addFilter('entity_type', Operators::EQUALS, ProductInterface::class);
         $queryBuilder->addSorter('updated', 'DESC');
 
         $getRowsQueryParameters = new FetchProductAndProductModelRowsParameters(
@@ -89,9 +89,8 @@ class GetFromIdentifiersAction
         return ($this->fetchProductAndProductModelRows)($getRowsQueryParameters);
     }
 
-
     private function findLinkedProductModelWithAssociations(
-        array $productModelIdentifiers,
+        array $productModelCodes,
         string $localeCode,
         string $channelCode
     ): Rows {
@@ -102,7 +101,7 @@ class GetFromIdentifiersAction
                 'limit' => self::MAX_RESULTS
             ]
         );
-        $queryBuilder->addFilter('identifier', Operators::IN_LIST, $productModelIdentifiers);
+        $queryBuilder->addFilter('identifier', Operators::IN_LIST, $productModelCodes);
         $queryBuilder->addFilter('entity_type', Operators::EQUALS, ProductModelInterface::class);
         $queryBuilder->addSorter('updated', 'DESC');
 

@@ -13,7 +13,6 @@ type ProductModelQuantifiedLink = {
   quantity: number;
 };
 
-/** To revalidated if we keep it */
 type QuantifiedLink = ProductQuantifiedLink | ProductModelQuantifiedLink;
 
 type QuantifiedAssociation = {

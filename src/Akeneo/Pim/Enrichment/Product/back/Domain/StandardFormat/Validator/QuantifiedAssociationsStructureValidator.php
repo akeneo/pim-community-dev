@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Product\Domain\StandardFormat\Validator;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -46,7 +47,7 @@ class QuantifiedAssociationsStructureValidator
             ) {
                 throw InvalidPropertyTypeException::validArrayStructureExpected(
                     $field,
-                    'a quantified association cannot have product and product uuid',
+                    'a quantified association cannot have both "product" and "product_uuid" keys',
                     static::class,
                     $data
                 );
@@ -82,7 +83,6 @@ class QuantifiedAssociationsStructureValidator
                         $data
                     );
                 }
-
 
                 if (!in_array($quantifiedLinkType, self::QUANTIFIED_LINK_TYPES)) {
                     throw InvalidPropertyTypeException::validArrayStructureExpected(
@@ -142,7 +142,7 @@ class QuantifiedAssociationsStructureValidator
                             );
                         }
 
-                        if (!is_string($quantifiedLink['uuid'])) {
+                        if (!is_string($quantifiedLink['uuid']) || !Uuid::isValid($quantifiedLink['uuid'])) {
                             throw InvalidPropertyTypeException::validArrayStructureExpected(
                                 $field,
                                 'a quantified association should contain a valid uuid',
