@@ -3,7 +3,15 @@ import {HashRouter as Router, Route, Switch} from 'react-router-dom';
 import {Edit, List} from './controllers';
 import {QueryClient, QueryClientProvider} from 'react-query';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: false,
+      staleTime: Infinity,
+    },
+  },
+});
 
 const IdentifierGeneratorApp: React.FC = () => {
   return (

@@ -33,7 +33,7 @@ final class DeleteProductMappingSchemaHandler
             throw new ServiceApiCatalogNotFoundException();
         }
 
-        $this->catalogsMappingStorage->delete(\sprintf('%d_product.json', $catalog->getId()));
+        $this->catalogsMappingStorage->delete(\sprintf('%s_product.json', $catalog->getId()));
 
         $this->upsertCatalogQuery->execute(new Catalog(
             $catalog->getId(),

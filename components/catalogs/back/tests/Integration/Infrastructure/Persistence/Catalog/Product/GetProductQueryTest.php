@@ -44,6 +44,7 @@ class GetProductQueryTest extends IntegrationTestCase
             true,
             [],
             [],
+            [],
         );
 
         $productEnabled = $this->createProduct('tshirt-blue', [new SetEnabled(true)]);
@@ -121,6 +122,7 @@ class GetProductQueryTest extends IntegrationTestCase
                 'value' => true,
             ],
             ['channels' => ['ecommerce']],
+            [],
         );
 
         $product = $this->createProduct('tshirt-blue', [
@@ -207,6 +209,7 @@ class GetProductQueryTest extends IntegrationTestCase
                 'value' => true,
             ],
             ['locales' => ['en_US', 'fr_FR']],
+            [],
         );
 
 
@@ -299,6 +302,7 @@ class GetProductQueryTest extends IntegrationTestCase
                 'value' => true,
             ],
             ['currencies' => ['USD', 'EUR']],
+            [],
         );
 
         $product = $this->createProduct('tshirt-blue', [
@@ -402,6 +406,7 @@ class GetProductQueryTest extends IntegrationTestCase
                 'locales' => ['en_US'],
                 'currencies' => ['USD'],
             ],
+            [],
         );
 
         $product = $this->createProduct('tshirt-blue', [

@@ -27,6 +27,9 @@ use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
+use League\Flysystem\FileAttributes;
+use League\Flysystem\Filesystem;
+use League\Flysystem\StorageAttributes;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -87,14 +90,32 @@ abstract class IntegrationTestCase extends WebTestCase
 
     protected static function purgeData(): void
     {
+        self::resetCatalogMappingFilesystem();
         $fixturesLoader = self::getContainer()->get('akeneo_integration_tests.loader.fixtures_loader');
         $fixturesLoader->purge();
+    }
+
+    protected static function resetCatalogMappingFilesystem(): void
+    {
+        /** @var Filesystem $catalogMappingFilesystem */
+        $catalogMappingFilesystem = self::getContainer()->get('oneup_flysystem.catalogs_mapping_filesystem');
+
+        $paths = $catalogMappingFilesystem->listContents('/')->filter(
+            fn (StorageAttributes $attributes): bool => $attributes instanceof FileAttributes
+        )->map(
+            fn (FileAttributes $attributes): string => $attributes->path()
+        );
+
+        foreach ($paths as $path) {
+            $catalogMappingFilesystem->delete($path);
+        }
     }
 
     protected function purgeDataAndLoadMinimalCatalog(): void
     {
         $catalog = self::getContainer()->get('akeneo_integration_tests.catalogs');
         $configuration = $catalog->useMinimalCatalog();
+        self::resetCatalogMappingFilesystem();
         $fixturesLoader = self::getContainer()->get('akeneo_integration_tests.loader.fixtures_loader');
         $fixturesLoader->load($configuration);
     }
