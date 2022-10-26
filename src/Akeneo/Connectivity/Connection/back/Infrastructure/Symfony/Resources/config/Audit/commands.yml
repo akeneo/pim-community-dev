@@ -7,8 +7,6 @@ services:
 
     Akeneo\Connectivity\Connection\Infrastructure\Audit\Command\UpdateAuditDataCommand:
         arguments:
-            - '@Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataSourceProductEventCountHandler'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalSelectHourlyIntervalsToRefreshQuery'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalPurgeAuditProductQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\UpdateAuditData'
         tags:
             - { name: 'console.command' }

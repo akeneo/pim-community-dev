@@ -1,14 +1,7 @@
 'use strict';
 
 /**
- * This extension allows user to display a fullscreen item picker.
- * It overrides the default item picker because we have to manage 2 types of entities:
- * - products (identified by their identifier)
- * - product models (identifier by their code)
- *
- * @author    Pierre Allard <pierre.allard@akeneo.com>
- * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ # @TODO CPM-739: Remove this file
  */
 define([
   'jquery',
@@ -41,21 +34,21 @@ define([
      * {@inheritdoc}
      */
     updateBasket: function () {
-      let productUuids = [];
-      let productModelCodes = [];
+      let productIds = [];
+      let productModelIds = [];
       this.getItems().forEach(item => {
         const matchProductModel = item.match(/^product_model;(.*)$/);
         if (matchProductModel) {
-          productModelCodes.push(matchProductModel[1]);
+          productModelIds.push(matchProductModel[1]);
         } else {
           const matchProduct = item.match(/^product;(.*)$/);
-          productUuids.push(matchProduct[1]);
+          productIds.push(matchProduct[1]);
         }
       });
 
       $.when(
-        FetcherRegistry.getFetcher('product-model').fetchByIdentifiers(productModelCodes),
-        FetcherRegistry.getFetcher('product').fetchByUuids(productUuids)
+        FetcherRegistry.getFetcher('product-model').fetchByIdentifiers(productModelIds),
+        FetcherRegistry.getFetcher('product').fetchByIdentifiers(productIds)
       ).then(
         function (productModels, products) {
           this.renderBasket(products.concat(productModels));
