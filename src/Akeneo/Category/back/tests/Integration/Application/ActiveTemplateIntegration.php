@@ -4,22 +4,26 @@ namespace Akeneo\Category\back\tests\Integration\Application;
 
 use Akeneo\Category\Application\ActivateTemplate;
 use Akeneo\Category\Application\Query\GetTemplate;
-use Akeneo\Category\back\tests\Integration\CategoryTemplateTrait;
+use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\Model\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
-class ActiveTemplateIntegration extends TestCase
+class ActiveTemplateIntegration extends CategoryTestCase
 {
-    use CategoryTemplateTrait;
-
     public function testItActivateATemplateInDatabase(): void
     {
         /** @var Category $masterCategory */
         $masterCategory = $this->get(GetCategoryInterface::class)->byCode('master');
 
-        $templateModel = $this->generateStaticCategoryTemplate(categoryTreeId: $masterCategory->getId()->getValue());
+        $templateModel = $this->generateMockedCategoryTemplateModel(
+            null,
+            null,
+            null,
+            $masterCategory->getId()->getValue(),
+            null
+        );
 
         $activateTemplateService = $this->get(ActivateTemplate::class);
 

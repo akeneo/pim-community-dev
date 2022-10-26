@@ -11,16 +11,19 @@ namespace Akeneo\Test\Category\Integration\Infrastructure\Storage\Save\Query;
 
 use Akeneo\Category\Application\Query\GetTemplate;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver;
-use Akeneo\Category\back\tests\Integration\CategoryTemplateTrait;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 
 class SqlCategoryTemplateSaverIntegration extends CategoryTestCase
 {
-    use CategoryTemplateTrait;
-
     public function testInsertNewCategoryTemplateInDatabase(): void
     {
-        $templateModel = $this->generateStaticCategoryTemplate();
+        $templateModel = $this->generateMockedCategoryTemplateModel(
+            null,
+            null,
+            null,
+            null,
+            null
+        );
 
         $this->get(CategoryTemplateSaver::class)->insert($templateModel);
 

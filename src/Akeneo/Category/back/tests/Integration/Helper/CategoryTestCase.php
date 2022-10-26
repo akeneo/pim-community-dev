@@ -11,11 +11,28 @@ namespace Akeneo\Category\back\tests\Integration\Helper;
 
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryBase;
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryTranslations;
+use Akeneo\Category\Domain\Model\Attribute\AttributeImage;
+use Akeneo\Category\Domain\Model\Attribute\AttributeRichText;
+use Akeneo\Category\Domain\Model\Attribute\AttributeText;
+use Akeneo\Category\Domain\Model\Attribute\AttributeTextArea;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
+use Akeneo\Category\Domain\Model\Template; // TODO
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsLocalizable;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsRequired;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsScopable;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeOrder;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeType;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
+use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
+use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
+use Akeneo\Category\Infrastructure\Storage\InMemory\GetTemplateInMemory;
 use Akeneo\Test\Integration\TestCase;
 
 class CategoryTestCase extends TestCase
@@ -93,6 +110,92 @@ class CategoryTestCase extends TestCase
             ->byCode((string) $category->getCode());
 
         return $createdCategory;
+    }
+
+    public function generateMockedCategoryTemplateModel(
+        ?string $templateUuid,
+        ?string $templateCode,
+        ?array $templateLabels,
+        ?int $categoryTreeId,
+        ?array $templateAttributes
+    ): Template {
+        /** @var Template $defaultTemplate */
+        //$defaultTemplate = $this->get(GetTemplateInMemory::class)->byUuid('');
+        $getTemplate = new GetTemplateInMemory();
+        $defaultTemplate = $getTemplate->byUuid('');
+
+        if ($templateUuid === null) {
+            $templateUuid = $defaultTemplate->getUuid();
+        } else {
+            $templateUuid = TemplateUuid::fromString($templateUuid);
+        }
+
+        if ($templateCode === null) {
+            $templateCode = $defaultTemplate->getCode();
+        } else {
+            $templateCode = new TemplateCode($templateCode);
+        }
+
+        if ($templateLabels === null) {
+            $templateLabels = $defaultTemplate->getLabelCollection();
+        } else {
+            $templateLabels = LabelCollection::fromArray($templateLabels);
+        }
+
+        if ($categoryTreeId === null ) {
+            $categoryTreeId = $defaultTemplate->getCategoryTreeId();
+        } else {
+            $categoryTreeId = new CategoryId($categoryTreeId);
+        }
+
+        if ($templateAttributes === null ) {
+            $templateAttributes = $defaultTemplate->getAttributeCollection();
+        } else {
+            $attributes = [];
+            foreach ($templateAttributes as $attribute) {
+                if (!array_key_exists('type', $attribute)) {
+                    throw new \Exception('Can\'t generate mocked template: missing attribute type');
+                }
+
+                switch ($attribute['type']) {
+                    case AttributeType::TEXTAREA:
+                        $attributeClass = AttributeTextArea::class;
+                        break;
+                    case AttributeType::TEXT:
+                        $attributeClass = AttributeText::class;
+                        break;
+                    case AttributeType::IMAGE:
+                        $attributeClass = AttributeImage::class;
+                        break;
+                    case AttributeType::RICH_TEXT:
+                        $attributeClass = AttributeRichText::class;
+                        break;
+                    default:
+                        throw new \Exception(sprintf('Can\'t generate mocked template: unknown attribute type "%s"', $attribute['type']));
+                }
+
+                $attributes[] = new $attributeClass(
+                    AttributeUuid::fromString($attribute['uuid']),
+                    new AttributeCode($attribute['code']),
+                    AttributeOrder::fromInteger((int)$attribute['order']),
+                    AttributeIsRequired::fromBoolean($attribute['is_required']),
+                    AttributeIsScopable::fromBoolean($attribute['is_scopable']),
+                    AttributeIsLocalizable::fromBoolean($attribute['is_localizable']),
+                    LabelCollection::fromArray($attribute['labels']),
+                    TemplateUuid::fromString($attribute['template_uuid']),
+                    AttributeAdditionalProperties::fromArray($attribute['additional_properties']),
+                );
+            }
+            $templateAttributes = AttributeCollection::fromArray($attributes);
+        }
+
+        return new Template(
+            $templateUuid,
+            $templateCode,
+            $templateLabels,
+            $categoryTreeId,
+            $templateAttributes
+        );
     }
 
     protected function getConfiguration()
