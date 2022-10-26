@@ -548,7 +548,6 @@ functions.http('createTenant', (req, res) => {
             googleZone: process.env.GOOGLE_ZONE,
             pimMasterDomain: pimMasterDomain,
             dnsCloudDomain: dnsCloudDomain,
-            workloadIdentityGSA: 'main-service-account',
             workloadIdentityKSA: `${pfid}-ksa-workload-identity`,
             tenantContext: firestoreCollection ,
           },
@@ -561,7 +560,6 @@ functions.http('createTenant', (req, res) => {
                   memory: "1024Mi"
                 },
                 limits: {
-                  cpu: "1",
                   memory: "1024Mi"
                 }
               }
@@ -574,7 +572,6 @@ functions.http('createTenant', (req, res) => {
                   memory: "768Mi"
                 },
                 limits: {
-                  cpu: "1",
                   memory: "768Mi"
                 }
               }
@@ -587,7 +584,6 @@ functions.http('createTenant', (req, res) => {
                   memory: "1536Mi"
                 },
                 limits: {
-                  cpu: "1",
                   memory: "1740Mi"
                 }
               }
@@ -615,7 +611,6 @@ functions.http('createTenant', (req, res) => {
           memcached: {
             resources: {
               limits: {
-                cpu: "1",
                 memory: "32Mi"
               },
               requests: {
@@ -632,7 +627,6 @@ functions.http('createTenant', (req, res) => {
               innodbBufferPoolSize: "2G",
               resources: {
                 limits: {
-                  cpu: "1",
                   memory: "3584Mi"
                 },
                 requests: {

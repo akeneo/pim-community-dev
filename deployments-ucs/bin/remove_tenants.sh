@@ -17,7 +17,6 @@ for TENANT in ${NS_LIST}; do
     echo "Tenant : ${TENANT}"
     echo "  Status :                ${NS_STATUS}"
     echo "  Age :                   ${NS_AGE}"
-    TENANT_NAME=$(echo ${TENANT} | sed "s/${TYPE}-//")
 
     # Delete tenant environments that failed (not automatically removed by circleCI)
     # Theses environments are aged of 1 hour
@@ -29,14 +28,14 @@ for TENANT in ${NS_LIST}; do
     echo "  Marked for deletion :   ${DELETE_TENANT}"
 
     if [ ${DELETE_TENANT} = true ]; then
-        echo "---[TODELETE] Tenant ${TENANT} with status ${NS_STATUS} since ${NS_AGE} (TENANT_NAME=${TENANT_NAME})"
+        echo "---[TODELETE] Tenant ${TENANT} with status ${NS_STATUS} since ${NS_AGE}"
 
-        # Check if release exists
-        HELM_RELEASE=$(helm list -n ${TENANT} | grep ${TENANT} | awk '{print $1}')
-        case "${HELM_RELEASE}" in
+        # Check if application exists
+        APP_NAME=$(kubectl get application -n argocd | grep ${TENANT} | awk '{print $1}')
+        case "${APP_NAME}" in
             ${TENANT}) echo "  Command debug:"
-            echo "      helm3 delete ${TENANT} -n ${TENANT} && kubectl delete ${TENANT} || true"
-            helm3 delete ${TENANT} -n ${TENANT} && kubectl delete ns ${TENANT} || true
+            echo "      kubectl delete app ${TENANT} -n argocd && kubectl delete ${TENANT} || true"
+            kubectl delete app ${TENANT} -n argocd && kubectl delete ns ${TENANT} || true
             ;;
             *) echo "  Command debug:"
             echo "      kubectl delete ${TENANT} || true"

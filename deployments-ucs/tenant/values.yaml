@@ -279,6 +279,8 @@ pim:
       enabled: true
     installPim:
       enabled: true
+    tests:
+      enabled: false
   storage:
     bucketName: null
     serviceAccountKey: null # Duplicate?
