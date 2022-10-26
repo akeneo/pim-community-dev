@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {RefObject, useCallback, useRef, useState} from 'react';
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import ListAsset, {
@@ -14,6 +14,7 @@ import {Card, Link} from 'akeneo-design-system';
 import {CompletenessBadge} from 'akeneoassetmanager/application/component/app/completeness';
 import Completeness from 'akeneoassetmanager/domain/model/asset/completeness';
 import {useRouter, useIsMounted} from '@akeneo-pim-community/shared';
+import {useOnFirstScreenDisplay} from '../../../../hooks/useOnFirstScreenDisplay';
 
 type AssetCardProps = {
   asset: ListAsset;
@@ -23,11 +24,13 @@ type AssetCardProps = {
   assetWithLink?: boolean;
   onSelectionChange?: (code: AssetCode, value: boolean) => void;
   onClick?: (code: AssetCode) => void;
+  containerRef: RefObject<Element>;
 };
 
 const AssetCard = ({
   asset,
   context,
+  containerRef,
   isSelected,
   onSelectionChange,
   isDisabled,
@@ -35,6 +38,7 @@ const AssetCard = ({
   onClick,
 }: AssetCardProps) => {
   const router = useRouter();
+  const ref = useRef(null);
   const [url, setUrl] = useState<string | null>(null);
   const imageUrl = getMediaPreviewUrl(router, getListAssetMainMediaThumbnail(asset, context.channel, context.locale));
   const [, , refreshedUrl] = useRegenerate(imageUrl);
@@ -48,8 +52,8 @@ const AssetCard = ({
     tab: 'enrich',
   });
 
-  useEffect(() => {
-    if (isMounted()) {
+  useOnFirstScreenDisplay(
+    () => {
       addToLoadingQueue(refreshedUrl)
         .then(() => {
           if (isMounted()) {
@@ -59,8 +63,11 @@ const AssetCard = ({
         .catch(() => {
           setUrl(emptyMediaUrl);
         });
-    }
-  }, []);
+    },
+    ref,
+    containerRef,
+    '50%'
+  );
 
   const handleClick = useCallback(() => {
     onClick?.(asset.code);
@@ -75,6 +82,8 @@ const AssetCard = ({
 
   return (
     <Card
+      ref={ref}
+      loading="lazy"
       src={url}
       fit="contain"
       isSelected={isSelected}
@@ -83,7 +92,7 @@ const AssetCard = ({
       disabled={isDisabled}
     >
       {assetHasCompleteness(asset) && (
-        <Card.BadgeContainer>
+        <Card.BadgeContainer stacked={false}>
           <CompletenessBadge completeness={Completeness.createFromNormalized(asset.completeness)} />
         </Card.BadgeContainer>
       )}
