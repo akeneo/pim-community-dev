@@ -12,20 +12,23 @@ namespace Akeneo\Test\Category\Integration\Infrastructure\Storage\Save\Query;
 use Akeneo\Category\Application\Query\GetCategoryTreeByCategoryTemplate;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver;
-use Akeneo\Category\back\tests\Integration\CategoryTemplateTrait;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\Model\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 
 class SqlCategoryTreeTemplateSaverIntegration extends CategoryTestCase
 {
-    use CategoryTemplateTrait;
-
     public function testInsertNewCategoryTemplateInDatabase(): void
     {
         /** @var Category $category */
         $category = $this->get(GetCategoryInterface::class)->byCode('master');
-        $templateModel = $this->generateStaticCategoryTemplate(categoryTreeId: $category->getId()->getValue());
+        $templateModel = $this->generateMockedCategoryTemplateModel(
+            null,
+            null,
+            null,
+            $category->getId()->getValue(),
+            null
+        );
 
         $this->get(CategoryTemplateSaver::class)->insert($templateModel);
         $this->get(CategoryTreeTemplateSaver::class)->insert($templateModel);

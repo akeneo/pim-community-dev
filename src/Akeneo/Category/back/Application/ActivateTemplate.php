@@ -78,7 +78,7 @@ class ActivateTemplate
             return false;
         }
 
-        if ($this->getTemplate->exists($templateCode)) {
+        if ($this->getTemplate->isExistingCategoryTemplate($templateCode)) {
             return false;
         }
 
