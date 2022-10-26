@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\Domain\Model;
+namespace Akeneo\Category\Domain\Model\Classification;
 
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
-use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -19,8 +18,7 @@ class CategoryTree
         private ?CategoryId $id,
         private Code $code,
         private ?LabelCollection $labels = null,
-        private ?TemplateUuid $templateUuid = null,
-        private ?LabelCollection $templateLabels = null,
+        private ?CategoryTreeTemplate $categoryTreeTemplate = null,
     ) {
     }
 
@@ -41,13 +39,10 @@ class CategoryTree
             LabelCollection::fromArray(
                 json_decode($result['translations'], true, 512, JSON_THROW_ON_ERROR),
             ) : null;
-        $templateUuid = $result['template_uuid'] ? TemplateUuid::fromString($result['template_uuid']) : null;
-        $templateLabels = $result['template_labels'] ?
-            LabelCollection::fromArray(
-                json_decode($result['template_labels'], true, 512, JSON_THROW_ON_ERROR),
-            ) : null;
 
-        return new self($id, $code, $labelCollection, $templateUuid, $templateLabels);
+        $categoryTreeTemplate = !$result['template_uuid'] && !$result['template_labels'] ? null : CategoryTreeTemplate::fromDatabase($result);
+
+        return new self($id, $code, $labelCollection, $categoryTreeTemplate);
     }
 
     public function getId(): ?CategoryId
@@ -76,14 +71,9 @@ class CategoryTree
         return $this->labels;
     }
 
-    public function getTemplateUuid(): ?TemplateUuid
+    public function getCategoryTreeTemplate(): ?CategoryTreeTemplate
     {
-        return $this->templateUuid;
-    }
-
-    public function getTemplateLabels(): ?LabelCollection
-    {
-        return $this->templateLabels;
+        return $this->categoryTreeTemplate;
     }
 
     public function getTemplateLabel(string $localeCode): ?string
@@ -109,8 +99,10 @@ class CategoryTree
      *       code: string,
      *       labels: array<string, string>|null
      *     },
-     *     templateUuid: string|null,
-     *     templateLabels: array<string, string>|null
+     *     categoryTreeTemplate: array{
+     *       templateUuid: string|null,
+     *       templateLabels: array<string, string>|null
+     *     }|null
      * }
      */
     public function normalize(): array
@@ -121,8 +113,7 @@ class CategoryTree
                 'code' => (string) $this->getCode(),
                 'labels' => $this->getLabels()?->normalize(),
             ],
-            'templateUuid' => (string) $this->getTemplateUuid(),
-            'templateLabels' => $this->getLabels()?->normalize(),
+            'categoryTreeTemplate' => $this->getCategoryTreeTemplate()?->normalize(),
         ];
     }
 }
