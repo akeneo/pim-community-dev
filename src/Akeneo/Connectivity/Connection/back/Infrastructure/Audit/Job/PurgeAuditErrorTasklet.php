@@ -16,7 +16,7 @@ use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
  */
 class PurgeAuditErrorTasklet implements TaskletInterface
 {
-    protected const JOB_CODE = 'purge_audit_error';
+    protected const JOB_CODE = 'connectivity_audit_purge_error';
 
     public function __construct(private PurgeAuditErrorQuery $purgeAuditErrorsQuery)
     {

@@ -7,12 +7,12 @@ namespace Pim\Upgrade\Schema;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version_7_0_20221025104400_add_scheduled_jobs_purge_audit_error extends AbstractMigration
+final class Version_7_0_20221025104400_add_scheduled_jobs_connectivity_audit_purge_error extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
         $this->addScheduledJob(
-            'purge_audit_error',
+            'connectivity_audit_purge_error',
             'Purge audit_error table',
             []
         );
