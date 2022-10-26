@@ -20,18 +20,18 @@ final class Version_7_0_20221026090000_add_scheduled_job_update_audit_data_Integ
 
     public function test_it_adds_an_instance_if_not_present()
     {
-        $this->deleteJobInstance('update_audit_data');
-        $this->assertNull($this->jobInstanceId('update_audit_data'));
+        $this->deleteJobInstance('update_connectivity_audit_data');
+        $this->assertNull($this->jobInstanceId('update_connectivity_audit_data'));
         $this->reExecuteMigration($this->migrationLabel());
-        $this->assertNotNull($this->jobInstanceId('update_audit_data'));
+        $this->assertNotNull($this->jobInstanceId('update_connectivity_audit_data'));
     }
 
     public function test_it_does_not_adds_an_instance_if_present()
     {
-        $jobInstanceId = $this->jobInstanceId('update_audit_data');
+        $jobInstanceId = $this->jobInstanceId('update_connectivity_audit_data');
         $this->assertNotNull($jobInstanceId);
         $this->reExecuteMigration($this->migrationLabel());
-        $this->assertEquals($jobInstanceId, $this->jobInstanceId('update_audit_data'));
+        $this->assertEquals($jobInstanceId, $this->jobInstanceId('update_connectivity_audit_data'));
     }
 
     protected function getConfiguration(): Configuration

@@ -10,7 +10,7 @@ use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
 class UpdateAuditDataTasklet implements TaskletInterface
 {
-    protected const JOB_CODE = 'update_audit_data';
+    protected const JOB_CODE = 'update_connectivity_audit_data';
 
     public function __construct(private UpdateAuditData $updateAuditData)
     {

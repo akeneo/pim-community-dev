@@ -12,7 +12,7 @@ final class Version_7_0_20221026090000_add_scheduled_job_update_audit_data exten
     public function up(Schema $schema): void
     {
         $this->addScheduledJob(
-            'update_audit_data',
+            'update_connectivity_audit_data',
             'Akeneo connectivity - update audit data',
             []
         );
