@@ -34,7 +34,7 @@ use Webmozart\Assert\Assert;
 final class AssociationUserIntentCollectionApplier implements UserIntentApplier
 {
     private const PRODUCTS = 'products';
-    private const PRODUCTS_UUID = 'product_uuids';
+    private const PRODUCT_UUIDS = 'product_uuids';
     private const PRODUCT_MODELS = 'product_models';
     private const GROUPS = 'groups';
 
@@ -99,7 +99,7 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
             self::PRODUCTS => $product
                     ->getAssociatedProducts($associationUserIntent->associationType())
                     ?->map(fn (ProductInterface $product): string => $product->getIdentifier())?->toArray() ?? [],
-            self::PRODUCTS_UUID => $product
+            self::PRODUCT_UUIDS => $product
                     ->getAssociatedProducts($associationUserIntent->associationType())
                     ?->map(fn (ProductInterface $product): string => $product->getUuid()->toString())?->toArray() ?? [],
             self::PRODUCT_MODELS => $product
@@ -120,7 +120,7 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
             AssociateProducts::class, DissociateProducts::class, ReplaceAssociatedProducts::class => self::PRODUCTS,
             AssociateProductModels::class, DissociateProductModels::class, ReplaceAssociatedProductModels::class => self::PRODUCT_MODELS,
             AssociateGroups::class, DissociateGroups::class, ReplaceAssociatedGroups::class => self::GROUPS,
-            ReplaceAssociatedProductUuids::class => self::PRODUCTS_UUID,
+            ReplaceAssociatedProductUuids::class => self::PRODUCT_UUIDS,
             default => throw new \LogicException('User intent cannot be handled')
         };
     }
@@ -132,7 +132,7 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
     {
         if ($entityType === self::PRODUCTS && \method_exists($associationUserIntent, 'productIdentifiers')) {
             return $associationUserIntent->productIdentifiers();
-        } elseif ($entityType === self::PRODUCTS_UUID) {
+        } elseif ($entityType === self::PRODUCT_UUIDS) {
             return $associationUserIntent->productUuids();
         } elseif ($entityType === self::PRODUCT_MODELS && \method_exists($associationUserIntent, 'productModelCodes')) {
             return $associationUserIntent->productModelCodes();
