@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
-use Akeneo\Platform\Bundle\InstallerBundle\CommandExecutor;
 use Akeneo\Platform\Bundle\InstallerBundle\InstallStatusManager\InstallStatusManager;
+use Akeneo\Tool\Component\Console\CommandExecutor;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -22,7 +22,7 @@ class InstallCommand extends Command
 {
     protected static $defaultName = 'pim:install';
 
-    /** @var CommandExecutor */
+    /** @var \Akeneo\Tool\Component\Console\CommandExecutor */
     private $commandExecutor;
 
     /** @var InstallStatusManager */
