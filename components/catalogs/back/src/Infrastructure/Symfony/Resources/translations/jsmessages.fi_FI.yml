@@ -1,0 +1,12 @@
+akeneo_catalogs:
+  settings:
+    inputs:
+      yes: Yes
+      no: No
+  product_selection:
+    criteria:
+      boolean:
+        yes: Yes
+        no: No
+    operators:
+      "NOT EMPTY": ei tyhjä

@@ -46,6 +46,7 @@ class IsCatalogsNumberLimitReachedQueryTest extends IntegrationTestCase
                     false,
                     [],
                     [],
+                    [],
                 )
             );
         }

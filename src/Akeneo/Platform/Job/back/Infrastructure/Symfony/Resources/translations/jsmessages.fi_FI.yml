@@ -53,6 +53,10 @@ akeneo_job_process_tracker:
     stopping: Pysäytetään
     unknown: Tuntematon
     in_progress: Työn alla
+  automation_filter:
+    all: Kaikki
+    yes: Yes
+    no: No
   max_page_without_filter_helper: Jotta voisit näyttää sinulle tärkeimmät tulokset, ole hyvä ja tarkista hakusi.
   tracking:
     completed: "Käytetty aika: {{ duration }}"

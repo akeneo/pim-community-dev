@@ -13,11 +13,11 @@ const validateStructure: Validator<Structure | undefined> = (structure, path) =>
   }
 
   structure?.forEach((property, i) => {
-    if (!ALLOWED_PROPERTY_NAMES.includes(property.propertyName)) {
+    if (!ALLOWED_PROPERTY_NAMES.includes(property.type)) {
       violations.push({
         path: `${path}[${i}]`,
         message: `The property type "${
-          property.propertyName
+          property.type
         }" is unknown. Please choose one of the following: ${ALLOWED_PROPERTY_NAMES.join(', ')}`,
       });
     }

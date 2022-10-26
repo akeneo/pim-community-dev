@@ -1,4 +1,12 @@
-import {ProductType, QuantifiedLink, Product, ProductsType, getProductsType, AssociationIdentifiers} from '../models';
+import {
+  ProductType,
+  QuantifiedLink,
+  Product,
+  ProductsType,
+  getProductsType,
+  AssociationIdentifiers,
+  getQuantifiedLinkIdentifier,
+} from '../models';
 import {ValidationError} from '@akeneo-pim-community/shared';
 
 type Row = {
@@ -11,7 +19,12 @@ type Row = {
 const addProductToRows = (rows: Row[], products: Product[]): Row[] =>
   rows.map((row: Row) => {
     if (null === products) return {...row, product: null};
-    const product = products.find(product => product.identifier === row.quantifiedLink.identifier);
+
+    const product = products.find(product => {
+      const quantifiedLinkIdentifier = product.document_type === 'product' ? product.id : product.identifier;
+
+      return quantifiedLinkIdentifier === getQuantifiedLinkIdentifier(row.quantifiedLink);
+    });
     if (undefined === product) return {...row, product: null};
 
     return {...row, product};
@@ -20,7 +33,7 @@ const addProductToRows = (rows: Row[], products: Product[]): Row[] =>
 const getAssociationIdentifiers = (rows: Row[]): AssociationIdentifiers =>
   rows.reduce(
     (identifiers: AssociationIdentifiers, row): AssociationIdentifiers => {
-      identifiers[getProductsType(row.productType)].push(row.quantifiedLink.identifier);
+      identifiers[getProductsType(row.productType)].push(getQuantifiedLinkIdentifier(row.quantifiedLink));
 
       return identifiers;
     },
@@ -32,23 +45,34 @@ const getAssociationIdentifiers = (rows: Row[]): AssociationIdentifiers =>
 
 const filterOnLabelOrIdentifier =
   (searchValue: string) =>
-  (row: Row): boolean =>
-    (null !== row.product &&
-      null !== row.product.label &&
-      -1 !== row.product.label.toLowerCase().indexOf(searchValue.toLowerCase())) ||
-    (undefined !== row.quantifiedLink.identifier &&
-      -1 !== row.quantifiedLink.identifier.toLowerCase().indexOf(searchValue.toLowerCase()));
+  (row: Row): boolean => {
+    if (null === row.product) {
+      return false;
+    }
+
+    return (
+      (null !== row.product.label && -1 !== row.product.label.toLowerCase().indexOf(searchValue.toLowerCase())) ||
+      (null !== row.product.identifier &&
+        -1 !== row.product.identifier.toLowerCase().indexOf(searchValue.toLowerCase()))
+    );
+  };
 
 const updateRowInCollection = (rows: Row[], {quantifiedLink, productType}: Row) =>
   rows.map(row => {
-    if (row.quantifiedLink.identifier !== quantifiedLink.identifier || row.productType !== productType) return row;
+    if (
+      getQuantifiedLinkIdentifier(row.quantifiedLink) !== getQuantifiedLinkIdentifier(quantifiedLink) ||
+      row.productType !== productType
+    )
+      return row;
 
     return {...row, quantifiedLink};
   });
 
 const removeRowFromCollection = (collection: Row[], {quantifiedLink, productType}: Row) =>
   collection.filter(
-    row => row.quantifiedLink.identifier !== quantifiedLink.identifier || row.productType !== productType
+    row =>
+      getQuantifiedLinkIdentifier(row.quantifiedLink) !== getQuantifiedLinkIdentifier(quantifiedLink) ||
+      row.productType !== productType
   );
 
 const addRowsToCollection = (collection: Row[], addedRows: Row[]) =>
@@ -56,7 +80,7 @@ const addRowsToCollection = (collection: Row[], addedRows: Row[]) =>
     (collection: Row[], addedRow: Row) => {
       const row = collection.find(
         row =>
-          addedRow.quantifiedLink.identifier === row.quantifiedLink.identifier &&
+          getQuantifiedLinkIdentifier(addedRow.quantifiedLink) === getQuantifiedLinkIdentifier(row.quantifiedLink) &&
           addedRow.productType === row.productType
       );
 

@@ -7,8 +7,8 @@ describe('StructureValidator', () => {
       validateStructure(
         [
           {
-            propertyName: PROPERTY_NAMES.FREE_TEXT,
-            value: 'AKN',
+            type: PROPERTY_NAMES.FREE_TEXT,
+            string: 'AKN',
           },
         ],
         'structure'
@@ -27,7 +27,7 @@ describe('StructureValidator', () => {
       validateStructure(
         [
           {
-            propertyName: 'unknown',
+            type: 'unknown',
           },
         ] as Structure,
         'structure'

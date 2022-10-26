@@ -13,6 +13,11 @@ akeneo_job:
     UNKNOWN: Nieznany
     IN_PROGRESS: W toku
 akeneo_job_process_tracker:
+  last_operations:
+    title: Ostatnie operacje
+    view_all: Zobacz wszystko
+    details: Szczegóły
+    no_result: Obecnie nie ma operacji do wyświetlenia.
   last_executions:
     title: Ostatnie wykonania
   job_execution_list:
@@ -57,6 +62,7 @@ akeneo_job_process_tracker:
     all: Wszystkie
     yes: Yes
     no: No
+    label: Automatyzacja
   max_page_without_filter_helper: Aby wyświetlić najodpowiedniejsze wyniki, zawęź wyszukiwanie.
   tracking:
     completed: "Poświęcony czas: {{ duration }}"

@@ -241,6 +241,7 @@ JSON;
     {"uuid": ""}
     {"uuid": " "}
     {}
+    {"values": {"sku": [{"locale": null, "scope": null, "data": "AKNSTK2"}]}, "family": "tshirts"}
 JSON;
 
         $expectedContent =
@@ -250,6 +251,7 @@ JSON;
 {"line":3,"status_code":422,"message":"Uuid is missing."}
 {"line":4,"status_code":422,"message":"Uuid is missing."}
 {"line":5,"status_code":422,"message":"Uuid is missing."}
+{"line":6,"status_code":422,"message":"Uuid is missing."}
 JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/products-uuid', [], [], [], $data);

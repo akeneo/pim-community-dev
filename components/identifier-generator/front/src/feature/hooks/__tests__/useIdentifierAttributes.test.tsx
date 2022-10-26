@@ -1,4 +1,3 @@
-import {waitFor} from '@testing-library/react';
 import {renderHook} from '@testing-library/react-hooks';
 import {useIdentifierAttributes} from '../';
 import {createWrapper} from '../../tests/hooks/config/createWrapper';
@@ -13,7 +12,7 @@ describe('useIdentifierAttributes', () => {
   });
 
   test('it retrieves identifier attribute list', async () => {
-    const {result} = renderHook<
+    const {result, waitFor} = renderHook<
       null,
       {
         isSuccess: boolean;
