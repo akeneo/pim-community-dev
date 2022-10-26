@@ -16,9 +16,9 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AssociationsNormalizerSpec extends ObjectBehavior
 {
-    function let(GetAssociatedProductUuidsByProduct $getAssociatedProductCodesByProduct)
+    function let(GetAssociatedProductUuidsByProduct $getAssociatedProductUuidsByProduct)
     {
-        $this->beConstructedWith($getAssociatedProductCodesByProduct);
+        $this->beConstructedWith($getAssociatedProductUuidsByProduct);
     }
 
     function it_is_initializable()
@@ -41,7 +41,7 @@ class AssociationsNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_product_associations_in_standard_format_only(
-        GetAssociatedProductUuidsByProduct $getAssociatedProductCodesByProduct,
+        GetAssociatedProductUuidsByProduct $getAssociatedProductUuidsByProduct,
         ProductInterface $product,
         AssociationInterface $association1,
         AssociationInterface $association2,
@@ -58,7 +58,8 @@ class AssociationsNormalizerSpec extends ObjectBehavior
         $association1->getProducts()->willReturn(new ArrayCollection());
         $association1->getProductModels()->willReturn(new ArrayCollection());
 
-        $productAssociated->getReference()->willReturn('product_code');
+        $associatedProductUuid = Uuid::uuid4();
+        $productAssociated->getUuid()->willReturn($associatedProductUuid);
         $associationType2->getCode()->willReturn('PACK');
         $association2->getAssociationType()->willReturn($associationType2);
         $association2->getGroups()->willReturn(new ArrayCollection());
@@ -72,19 +73,19 @@ class AssociationsNormalizerSpec extends ObjectBehavior
         $product->getParent()->willReturn(null);
         $product->getAssociations()->willReturn([$association1, $association2]);
 
-        $getAssociatedProductCodesByProduct->getCodes($uuid, $association1)->willReturn([]);
-        $getAssociatedProductCodesByProduct->getCodes($uuid, $association2)->willReturn(['product_code']);
+        $getAssociatedProductUuidsByProduct->getUuids($uuid, $association1)->willReturn([]);
+        $getAssociatedProductUuidsByProduct->getUuids($uuid, $association2)->willReturn([$associatedProductUuid->toString()]);
 
         $this->normalize($product, 'standard')->shouldReturn(
             [
                 'PACK' => [
                     'groups' => [],
-                    'products' => ['product_code'],
+                    'product_uuids' => [$associatedProductUuid->toString()],
                     'product_models' => ['product_model_code'],
                 ],
                 'XSELL' => [
                     'groups' => ['group_code'],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
             ]
@@ -99,7 +100,7 @@ class AssociationsNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_product_associations_with_query_to_find_associated_products_codes(
-        GetAssociatedProductUuidsByProduct $getAssociatedProductCodesByProduct,
+        GetAssociatedProductUuidsByProduct $getAssociatedProductUuidsByProduct,
         ProductInterface $product,
         ProductModelInterface $productModel,
         AssociationInterface $association1,
@@ -117,9 +118,10 @@ class AssociationsNormalizerSpec extends ObjectBehavior
         $association1->getProductModels()->willReturn(new ArrayCollection());
         $uuid = Uuid::fromString('114c9108-444d-408a-ab43-195068166d2c');
         $product->getUuid()->willReturn($uuid);
-        $getAssociatedProductCodesByProduct->getCodes($uuid, $association1)->willReturn([]);
+        $getAssociatedProductUuidsByProduct->getUuids($uuid, $association1)->willReturn([]);
 
-        $productAssociated->getReference()->willReturn('product_code');
+        $associatedProductUuid = Uuid::uuid4();
+        $productAssociated->getUuid()->willReturn($associatedProductUuid);
         $productModel->getCode()->willReturn('product_model_code');
         $associationType2->getCode()->willReturn('PACK');
         $associationType2->getId()->willReturn(7);
@@ -128,7 +130,7 @@ class AssociationsNormalizerSpec extends ObjectBehavior
         $association2->getProducts()->willReturn([$productAssociated->getWrappedObject()]);
         $association2->getProductModels()->willReturn(new ArrayCollection([$productModel->getWrappedObject()]));
 
-        $getAssociatedProductCodesByProduct->getCodes($uuid, $association2)->willReturn(['product_code']);
+        $getAssociatedProductUuidsByProduct->getUuids($uuid, $association2)->willReturn([$associatedProductUuid->toString()]);
 
         $product->getParent()->willReturn(null);
         $product->getAssociations()->willReturn([$association1, $association2]);
@@ -138,12 +140,12 @@ class AssociationsNormalizerSpec extends ObjectBehavior
             [
                 'PACK' => [
                     'groups' => [],
-                    'products' => ['product_code'],
+                    'product_uuids' => [$associatedProductUuid->toString()],
                     'product_models' => ['product_model_code'],
                 ],
                 'XSELL' => [
                     'groups' => ['group_code'],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
             ]
