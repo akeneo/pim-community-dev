@@ -16,15 +16,12 @@ final class CreateOpenIdKeysTasklet implements TaskletInterface
 {
     protected const JOB_CODE = 'create_openid_keys';
 
-    private StepExecution $stepExecution;
-
     public function __construct(private GenerateAsymmetricKeysHandler $generateAsymmetricKeysHandler)
     {
     }
 
     public function setStepExecution(StepExecution $stepExecution): void
     {
-        $this->stepExecution = $stepExecution;
     }
 
     public function execute(): void

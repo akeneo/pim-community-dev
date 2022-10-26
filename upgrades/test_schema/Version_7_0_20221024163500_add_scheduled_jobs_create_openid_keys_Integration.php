@@ -6,7 +6,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 
-final class Version_7_0_20221024163500_add_scheduled_jobs_create_openid_key_Integration extends TestCase
+final class Version_7_0_20221024163500_add_scheduled_jobs_create_openid_keys_Integration extends TestCase
 {
     use ExecuteMigrationTrait;
 
@@ -20,7 +20,7 @@ final class Version_7_0_20221024163500_add_scheduled_jobs_create_openid_key_Inte
         $this->connection = $this->get('database_connection');
     }
 
-    public function test_it_adds_an_instance_if_not_present()
+    public function test_it_adds_an_instance_if_not_present(): void
     {
         $this->deleteJobInstance('create_openid_keys');
         $this->assertNull($this->jobInstanceId('create_openid_keys'));
@@ -28,7 +28,7 @@ final class Version_7_0_20221024163500_add_scheduled_jobs_create_openid_key_Inte
         $this->assertNotNull($this->jobInstanceId('create_openid_keys'));
     }
 
-    public function test_it_does_not_adds_an_instance_if_present()
+    public function test_it_does_not_adds_an_instance_if_present(): void
     {
         $jobInstanceId = $this->jobInstanceId('create_openid_keys');
         $this->assertNotNull($jobInstanceId);
