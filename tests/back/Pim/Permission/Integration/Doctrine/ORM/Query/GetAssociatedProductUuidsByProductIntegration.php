@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
  * | Manager  | View,Edit,Own | View,Edit,Own |
  * +----------+-------------------------------+
  */
-class GetAssociatedProductCodesByProductIntegration extends TestCase
+class GetAssociatedProductUuidsByProductIntegration extends TestCase
 {
     public function testQueryToGetAssociatedProductCodes()
     {
@@ -48,7 +48,7 @@ class GetAssociatedProductCodesByProductIntegration extends TestCase
             $productAssociations[$productAssociation->getAssociationType()->getCode()] = $productAssociation;
         }
 
-        $query = $this->get('pim_catalog.query.get_associated_product_codes_by_product');
+        $query = $this->get('pim_catalog.query.get_associated_product_uuids_by_product');
         $this->assertSame(['productView'], $query->getCodes($mainProduct->getUuid(), $productAssociations['X_SELL']));
         $this->assertSame(['productWithoutCategory'], $query->getCodes($mainProduct->getUuid(), $productAssociations['PACK']));
         $this->assertSame([], $query->getCodes($mainProduct->getUuid(), $productAssociations['UPSELL']));
