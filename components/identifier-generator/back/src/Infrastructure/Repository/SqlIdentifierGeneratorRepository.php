@@ -86,6 +86,34 @@ SQL;
             return null;
         }
 
+        return $this->fromDatabaseToModel($result);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAll(): array
+    {
+        $sql = <<<SQL
+SELECT BIN_TO_UUID(uuid) AS uuid, code, conditions, structure, labels, target, delimiter
+FROM pim_catalog_identifier_generator
+SQL;
+        $stmt = $this->connection->prepare($sql);
+
+        try {
+            $result = $stmt->executeQuery()->fetchAllAssociative();
+        } catch (DriverException) {
+            throw new UnableToFetchIdentifierGeneratorException('Cannot fetch identifiers generators');
+        }
+
+        return array_map(fn ($data) => $this->fromDatabaseToModel($data), $result);
+    }
+
+    /**
+     * @param array<mixed> $result
+     */
+    private function fromDatabaseToModel(array $result): IdentifierGenerator
+    {
         Assert::string($result['uuid']);
         Assert::string($result['code']);
         Assert::string($result['conditions']);
