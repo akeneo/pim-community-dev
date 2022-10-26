@@ -1,0 +1,63 @@
+akeneo.tailored_import:
+  validation:
+    required: 이 값은 필수입니다.
+    max_length_reached: 이 값은 너무 깁니다. {{ limit }}자 이하여야 합니다.
+    missing_query_params: "쿼리에 다음 매개변수가 누락되었습니다: {{ missing_params }}"
+    source_values_should_be_unique: 이 소스 값 중 일부는 이미 다른 대체 값에서 사용 중입니다. 해당 소스 값을 제거하십시오.
+    columns:
+      max_count_reached: 시트의 열은 {{ limit }}개 이하여야 합니다.
+      at_least_one_required: 헤더의 열은 {{ limit }}개 이상이어야 합니다.
+      uuid:
+        should_be_unique: 이 열 UUID는 이미 있습니다. 새 UUID를 입력하십시오.
+      index:
+        should_be_unique: 이 열 인덱스는 이미 있습니다. 새 인덱스를 입력하십시오.
+      label:
+        should_not_be_blank: 열 레이블을 정의하십시오.
+        max_length_reached: 열 레이블이 너무 깁니다. {{ limit }}자 이하여야 합니다.
+    data_mappings:
+      target_should_unique: 대상 "{{ code }}"은(는) 여러 번 선택할 수 없습니다.
+      max_count_reached: '{{ limit }}개의 매핑 제한에 도달했습니다. 더 이상 가져오기에 매핑을 추가할 수 없습니다.'
+      no_identifier_target_found: 식별자를 대상으로 하는 매핑이 없습니다. 매핑을 추가하십시오.
+      too_many_identifier_target_found: 식별자를 대상으로 하는 매핑이 2개 이상 있습니다. 매핑을 제거하십시오.
+      uuid:
+        should_be_unique: 이 매핑 UUID는 이미 있습니다. 새 UUID를 입력하십시오.
+      sources:
+        at_least_one_required: 매핑에 1개 이상의 소스를 추가해야 합니다.
+        max_count_reached: '{{ limit }}개의 소스 제한에 도달했습니다. 더 이상 매핑에 소스를 추가할 수 없습니다.'
+        should_be_unique: 이 소스는 이미 있습니다. 새 소스를 입력하십시오.
+        should_exist: 소스 중 1개가 더 이상 존재하지 않습니다. 이 매핑의 모든 소스를 삭제하고 다시 시도하십시오.
+    target:
+      attribute_should_exist: 특성 {{ attribute_code }}이(가) 없습니다. 생성하거나 다른 대상을 선택하십시오.
+      property_should_exist: 속성 {{ attribute_code }}이(가) 없습니다. 생성하거나 다른 대상을 선택하십시오.
+      source_configuration:
+        unit_should_exist: 단위 {{ unit_code }}이(가) 측정 패밀리 {{ measurement_family_code }}에 없습니다. 유효한 단위를 선택하십시오.
+        currency_should_be_active: 통화 {{ currency_code }}은(는) 어떤 채널에도 연결되어 있지 않습니다.
+        currency_should_be_active_on_channel: 통화 {{ currency_code }}은(는) 채널 {{ channel_code }}에 대해 활성화되지 않았습니다.
+    locale:
+      should_be_active: 로케일 {{ locale_code }}이(가) 비활성화되었습니다. 다시 활성화하거나 다른 로케일을 선택하십시오.
+      should_be_bound_to_channel: 로케일 {{ locale_code }}이(가) 채널 {{ channel_code }}에 대해 비활성화되었습니다. 다시 활성화하거나 다른 로케일을 선택하십시오.
+    channel:
+      should_exist: 채널 {{ channel_code }}이(가) 삭제되었습니다. 다른 채널을 선택하십시오.
+    attribute:
+      locale_should_not_be_blank: 이제 특성 {{ attribute_code }}에 로케일별 값이 있습니다. 생성하거나 다른 대상을 선택하십시오.
+      channel_should_not_be_blank: 이제 특성 {{ attribute_code }}에 채널별 값이 있습니다. 생성하거나 다른 대상을 선택하십시오.
+      locale_should_be_blank: 특성 {{ attribute_code }}에 로케일별 값이 더 이상 없습니다. 특성을 삭제한 후 재생성하거나 다른 대상을 선택하십시오.
+      channel_should_be_blank: 특성 {{ attribute_code }}에 채널별 값이 더 이상 없습니다. 특성을 삭제한 후 재생성하거나 다른 대상을 선택하십시오.
+      invalid_specific_locale: 특성 {{ attribute_code }}은(는) 특정 로케일에 한정됩니다. 다른 로케일을 선택하십시오.
+    file_key:
+      does_not_exist: '{{ file_key }} 파일을 찾을 수 없습니다.'
+    uploaded_file:
+      max_size: 파일이 너무 큽니다. 최대 크기는 {{ limit }}{{ suffix }}입니다.
+      not_allowed_mime_type: XLSX 파일만 지원됩니다.
+      not_allowed_extension: XLSX 파일만 지원됩니다.
+    file_structure:
+      first_product_row_should_be_after_header_row: 첫 번째 제품 행은 헤더 행 다음에 와야 합니다.
+      unique_identifier_column_should_be_after_first_column_message: 고유한 식별자 열이 최소한 첫 번째 열이어야 합니다.
+      header_row_should_not_contain_empty_cell: 헤더 행에 빈 셀이 있으면 안 됩니다.
+    file_preview:
+      empty_sheet:
+        title: 이 시트는 비어 있습니다.
+        description: 행이 1개 이상 있는 다른 시트를 선택하십시오.
+    operations:
+      incompatible_operation_type: 작업 유형 {{ operation_type }}이(가) 대상 유형과 호환되지 않습니다.
+      missing_required_operations: "필수 작업이 누락되었습니다: {{ missing_required_operations }}"
