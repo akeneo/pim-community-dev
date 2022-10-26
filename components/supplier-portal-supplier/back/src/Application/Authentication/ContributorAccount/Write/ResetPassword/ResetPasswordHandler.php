@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write;
+namespace Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\ResetPassword;
 
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Event\PasswordReset;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository;
