@@ -132,9 +132,7 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
     {
         if ($entityType === self::PRODUCTS && \method_exists($associationUserIntent, 'productIdentifiers')) {
             return $associationUserIntent->productIdentifiers();
-        } elseif ($entityType === self::PRODUCT_UUIDS) {
-            Assert::isInstanceOf(ReplaceAssociatedProductUuids::class, $associationUserIntent);
-
+        } elseif ($entityType === self::PRODUCT_UUIDS && \method_exists($associationUserIntent, 'productUuids')) {
             return $associationUserIntent->productUuids();
         } elseif ($entityType === self::PRODUCT_MODELS && \method_exists($associationUserIntent, 'productModelCodes')) {
             return $associationUserIntent->productModelCodes();
