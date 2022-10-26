@@ -8,7 +8,7 @@ use Akeneo\Category\Api\Command\UserIntents\UserIntent;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryBaseSaver;
 use Akeneo\Category\Application\Storage\Save\Saver\CategorySaver as CategorySaverInterface;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTranslationsSaver;
-use Akeneo\Category\Domain\Model\Category;
+use Akeneo\Category\Domain\Model\Enrichment\Category;
 
 /**
  * This is the entry point to save a Category. The categoryModel is used to get the data's values to save.
