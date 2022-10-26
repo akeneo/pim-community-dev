@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Application\Storage\Save\Query;
 
-use Akeneo\Category\Domain\Model\Category;
+use Akeneo\Category\Domain\Model\Enrichment\Category;
 
 interface UpsertCategoryTranslations
 {

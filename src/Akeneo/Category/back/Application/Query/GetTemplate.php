@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Application\Query;
 
-use Akeneo\Category\Domain\Model\Template;
+use Akeneo\Category\Domain\Model\Enrichment\Template;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)

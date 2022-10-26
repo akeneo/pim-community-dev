@@ -4,14 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
-use Akeneo\Category\Domain\Model\Category;
-use Akeneo\Category\Domain\Model\CategoryTree;
+use Akeneo\Category\Domain\Model\Classification\CategoryTree;
 use Akeneo\Category\Domain\Query\GetCategoryTreesInterface;
-use Akeneo\Category\Domain\ValueObject\CategoryId;
-use Akeneo\Category\Domain\ValueObject\Code;
-use Akeneo\Category\Domain\ValueObject\LabelCollection;
-use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
-use Akeneo\Category\Domain\ValueObject\ValueCollection;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -29,10 +23,10 @@ class GetCategoryTreesSql implements GetCategoryTreesInterface
         return $this->execute();
     }
 
-    public function byIds(array $categoryTreeIds): ?array
+    public function byIds(array $categryTreeIds): ? array
     {
         $condition['sqlAnd'] = 'AND category.id IN (:ids)';
-        $condition['params'] = ['ids' => $categoryTreeIds];
+        $condition['params'] = ['ids' => $categryTreeIds];
         $condition['types'] = ['ids' => Connection::PARAM_INT_ARRAY];
 
         return $this->execute($condition);
