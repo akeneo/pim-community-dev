@@ -25,7 +25,8 @@ const aCategoryTree = (
   isRoot: boolean = true,
   isLeaf: boolean = false,
   id: number = 1234,
-  productsNumber?: number
+  productsNumber?: number,
+  templateLabel?: string
 ): CategoryTreeModel => {
   return {
     id,
@@ -45,6 +46,7 @@ const aCategoryTree = (
       )
     ),
     productsNumber,
+    templateLabel,
   };
 };
 
@@ -54,7 +56,8 @@ const aCategoryTreeWithChildren = (
   isRoot: boolean = true,
   isLeaf: boolean = false,
   id: number = 1234,
-  productsNumber?: number
+  productsNumber?: number,
+  templateLabel?: string
 ): CategoryTreeModel => {
   return {
     id,
@@ -64,6 +67,7 @@ const aCategoryTreeWithChildren = (
     isLeaf,
     children,
     productsNumber,
+    templateLabel,
   };
 };
 

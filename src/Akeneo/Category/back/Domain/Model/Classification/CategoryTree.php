@@ -55,6 +55,17 @@ class CategoryTree
         return $this->code;
     }
 
+    public function getLabel(string $localeCode): string
+    {
+        $label = $this->labels->getTranslation($localeCode);
+
+        if (!$label) {
+            return '['.$this->code.']';
+        }
+
+        return $label;
+    }
+
     public function getLabels(): ?LabelCollection
     {
         return $this->labels;

@@ -3,16 +3,18 @@ import {Button, Search, Table, useBooleanState} from 'akeneo-design-system';
 import {
   NotificationLevel,
   useDebounceCallback,
+  useFeatureFlags,
   useNotify,
   useRouter,
   useSecurity,
   useTranslate,
+  useUserContext,
 } from '@akeneo-pim-community/shared';
 import {CategoryTreeModel} from '../../models';
 import styled from 'styled-components';
 import {NoResults} from './NoResults';
 import {DeleteCategoryModal} from './DeleteCategoryModal';
-import {deleteCategory} from '../../infrastructure/removers';
+import {deleteCategory} from '../../infrastructure';
 import {useCountCategoryTreesChildren} from '../../hooks';
 
 type Props = {
@@ -23,12 +25,16 @@ type Props = {
 const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
   const translate = useTranslate();
   const router = useRouter();
+  const featureFlags = useFeatureFlags();
   const {isGranted} = useSecurity();
+  const userContext = useUserContext();
   const [searchString, setSearchString] = useState('');
   const [filteredTrees, setFilteredTrees] = useState<CategoryTreeModel[]>(trees);
   const notify = useNotify();
   const [isConfirmationModalOpen, openConfirmationModal, closeConfirmationModal] = useBooleanState();
   const [categoryTreeToDelete, setCategoryTreeToDelete] = useState<CategoryTreeModel | null>(null);
+  const [hasTemplates, setHasTemplates] = useState<boolean>(false);
+  const catalogLocale = userContext.get('catalogLocale');
 
   const followCategoryTree = useCallback(
     (tree: CategoryTreeModel): void => {
@@ -102,6 +108,27 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
 
   const countTreesChildren = useCountCategoryTreesChildren();
 
+  useEffect(() => {
+    let hasTemplates = false;
+
+    filteredTrees.map(function (tree) {
+      if (tree.templateLabel) {
+        hasTemplates = true;
+      }
+
+      return hasTemplates;
+    });
+
+    setHasTemplates(hasTemplates);
+  }, [filteredTrees]);
+
+  const displayCategoryTemplatesColumn = () => {
+    const hasRights =
+      isGranted('pim_enrich_product_category_template') || isGranted('pim_enrich_product_category_edit_attributes');
+
+    return featureFlags.isEnabled('enriched_category') && hasRights && hasTemplates;
+  };
+
   return (
     <>
       <StyledSearch
@@ -132,6 +159,9 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
               <Table.HeaderCell>
                 {translate('pim_enrich.entity.category.content.tree_list.columns.number_of_categories')}
               </Table.HeaderCell>
+              {displayCategoryTemplatesColumn() && (
+                <Table.HeaderCell>{translate('akeneo.category.tree_list.column.category_templates')}</Table.HeaderCell>
+              )}
               <Table.HeaderCell />
             </Table.Header>
             <Table.Body>
@@ -149,6 +179,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                         countTreesChildren.hasOwnProperty(tree.code) ? countTreesChildren[tree.code] : 0
                       )}
                   </Table.Cell>
+                  {displayCategoryTemplatesColumn() && <Table.Cell>{tree.templateLabel}</Table.Cell>}
                   <TableActionCell>
                     {isGranted('pim_enrich_product_category_remove') && (
                       <Button
