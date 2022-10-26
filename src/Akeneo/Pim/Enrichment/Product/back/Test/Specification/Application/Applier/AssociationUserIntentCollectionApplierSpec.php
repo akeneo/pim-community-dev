@@ -17,6 +17,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateP
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProductUuids;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\AssociationUserIntentCollectionApplier;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplier;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProductModels;
@@ -25,6 +26,7 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -247,6 +249,39 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
         $getViewableProducts->fromProductIdentifiers(['baz', 'non_viewable_product'], 42)
             ->shouldBeCalled()
             ->willReturn(['baz']);
+
+        $this->apply($collection, $product, 42);
+    }
+
+    function it_replaces_associated_products_with_uuids(
+        ObjectUpdaterInterface $productUpdater,
+        GetViewableProducts $getViewableProducts,
+        ProductInterface $product,
+    ) {
+        $viewableProduct = new Product();
+        $nonViewableProduct = new Product();
+        $associatedProducts = [$viewableProduct, $nonViewableProduct];
+
+        $product->getAssociatedProducts('X_SELL')->shouldBeCalledOnce()->willReturn(
+            new ArrayCollection($associatedProducts)
+        );
+        $newAssociatedProductUuid1 = Uuid::uuid4()->toString();
+        $newAssociatedProductUuid2 = Uuid::uuid4()->toString();
+        $newAssociatedProductUuid3 = Uuid::uuid4()->toString();
+        $collection = new AssociationUserIntentCollection([
+            new ReplaceAssociatedProductUuids('X_SELL', [$newAssociatedProductUuid1, $newAssociatedProductUuid2, $newAssociatedProductUuid3]),
+        ]);
+
+        // product is updated with new values and non viewable product identifiers
+        $productUpdater->update($product, ['associations' => [
+            'X_SELL' => [
+                'product_uuids' => [$nonViewableProduct->getUuid()->toString(), $newAssociatedProductUuid1, $newAssociatedProductUuid2, $newAssociatedProductUuid3],
+            ]
+        ]])->shouldBeCalledOnce();
+
+        $getViewableProducts->fromProductUuids([$viewableProduct->getUuid(), $nonViewableProduct->getUuid()], 42)
+            ->shouldBeCalled()
+            ->willReturn([$viewableProduct->getUuid()]);
 
         $this->apply($collection, $product, 42);
     }

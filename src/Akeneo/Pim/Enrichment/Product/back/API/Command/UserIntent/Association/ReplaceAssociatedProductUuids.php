@@ -20,7 +20,7 @@ final class ReplaceAssociatedProductUuids implements AssociationUserIntent
      */
     public function __construct(
         private string $associationType,
-        private array  $productUuids,
+        private array $productUuids,
     ) {
         Assert::allStringNotEmpty($productUuids);
         Assert::stringNotEmpty($associationType);
