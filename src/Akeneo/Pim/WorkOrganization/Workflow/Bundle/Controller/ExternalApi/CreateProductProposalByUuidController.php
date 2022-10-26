@@ -49,6 +49,8 @@ final class CreateProductProposalByUuidController
             throw new AccessDeniedHttpException('Access forbidden. You are not allowed to create or update products.');
         }
 
+        $uuid = Uuid::fromString($uuid)->toString();
+
         try {
             $product = $this->productRepository->find($uuid);
         } catch (ResourceAccessDeniedException) {
