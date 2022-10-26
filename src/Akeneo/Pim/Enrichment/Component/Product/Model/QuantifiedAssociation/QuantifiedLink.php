@@ -33,14 +33,15 @@ class QuantifiedLink
         return new self($quantity, $identifier, null);
     }
 
-    public static function fromUuid(string $uuid, int $quantity)
+    public static function fromUuid(string $uuid, ?string $identifier, int $quantity)
     {
+        Assert::nullOrStringNotEmpty($identifier);
         Assert::uuid(
             $uuid,
             sprintf('The associated product "%s" is not a valid uuid', $uuid)
         );
 
-        return new self($quantity, null, Uuid::fromString($uuid));
+        return new self($quantity, $identifier, Uuid::fromString($uuid));
     }
 
     public function identifier(): ?string
@@ -55,15 +56,17 @@ class QuantifiedLink
 
     public function normalize(): array
     {
-        if (null === $this->identifier) {
+        if (null !== $this->uuid) {
             return [
                 self::UUID_KEY => $this->uuid->toString(),
-                self::QUANTITY_KEY => $this->quantity
+                self::IDENTIFIER_KEY => $this->identifier,
+                self::QUANTITY_KEY => $this->quantity,
             ];
         }
+
         return [
             self::IDENTIFIER_KEY => $this->identifier,
-            self::QUANTITY_KEY => $this->quantity
+            self::QUANTITY_KEY => $this->quantity,
         ];
     }
 }

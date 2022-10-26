@@ -19,4 +19,12 @@ final class GetViewableProducts implements GetViewableProductsInterface
     {
         return $productIdentifiers;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function fromProductUuids(array $productUuids, int $userId): array
+    {
+        return $productUuids;
+    }
 }
