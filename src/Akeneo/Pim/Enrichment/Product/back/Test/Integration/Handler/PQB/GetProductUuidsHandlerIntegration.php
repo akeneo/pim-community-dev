@@ -145,15 +145,6 @@ final class GetProductUuidsHandlerIntegration extends EnrichmentProductTestCase
         $this->launchPQBCommand(['updated' => $dateInTheFuture]);
     }
 
-    protected function getProductUuid(string $productIdentifier): string
-    {
-        $product = $this->productRepository->findOneByIdentifier($productIdentifier);
-        Assert::assertNotNull($product);
-        WebmozartAssert::isInstanceOf($product, Product::class);
-
-        return $product->getUuid()->toString();
-    }
-
     private function launchPQBCommand(array $search, ?UuidInterface $searchAfterUuid = null): ProductUuidCursor
     {
         $envelope = $this->queryMessageBus->dispatch(new GetProductUuidsQuery($search, null, $searchAfterUuid));
