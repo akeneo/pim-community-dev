@@ -2,14 +2,13 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product;
 
-use Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductUuidsByProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductCodesByPublishedProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductUuidsByProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Webmozart\Assert\Assert;
@@ -24,7 +23,7 @@ use Webmozart\Assert\Assert;
 class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     public function __construct(
-        private GetAssociatedProductUuidsByProduct $getAssociatedProductCodeByProduct
+        private GetAssociatedProductUuidsByProduct $getAssociatedProductUuidsByProduct
     ) {
     }
 
@@ -95,14 +94,14 @@ class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMe
                 $data[$code]['product_uuids'] = $data[$code]['product_uuids'] ?? [];
                 if ($associationAwareEntity instanceof ProductModelInterface) {
                     foreach ($association->getProducts() as $product) {
-                        $data[$code]['product_uuids'][] = $product->getReference();
+                        $data[$code]['product_uuids'][] = $product->getUuid()->toString();
                     }
                     sort($data[$code]['product_uuids']);
                 } elseif (\get_class($associationAwareEntity) === 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct') {
                     // do nothing, published product associations are computed in their own normalizer
                     // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment
                 } elseif ($associationAwareEntity instanceof ProductInterface) {
-                    $data[$code]['product_uuids'] = array_merge($data[$code]['product_uuids'], $this->getAssociatedProductCodeByProduct->getUuids(
+                    $data[$code]['product_uuids'] = array_merge($data[$code]['product_uuids'], $this->getAssociatedProductUuidsByProduct->getUuids(
                         $associationAwareEntity->getUuid(),
                         $association
                     ));

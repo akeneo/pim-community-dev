@@ -24,7 +24,7 @@ FROM pim_catalog_association a
     INNER JOIN pim_catalog_association_product ap ON a.id = ap.association_id
     INNER JOIN pim_catalog_product p ON p.uuid = ap.product_uuid
 WHERE a.owner_uuid = UUID_TO_BIN(:ownerUuid) AND a.association_type_id = :associationTypeId
-ORDER BY p.uuid ASC;
+ORDER BY uuid ASC;
 SQL;
         $stmt = $this->connection->executeQuery(
             $sql,
