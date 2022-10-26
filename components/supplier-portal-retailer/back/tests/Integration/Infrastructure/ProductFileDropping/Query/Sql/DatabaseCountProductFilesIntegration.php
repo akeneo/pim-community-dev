@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\ProductFileDropping\Query\Sql;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetAllProductFilesCount;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\CountProductFiles;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
@@ -12,12 +12,12 @@ use Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 
-final class DatabaseGetAllProductFilesCountIntegration extends SqlIntegrationTestCase
+final class DatabaseCountProductFilesIntegration extends SqlIntegrationTestCase
 {
     /** @test */
     public function itReturns0IfThereIsNoFile(): void
     {
-        static::assertSame(0, $this->get(GetAllProductFilesCount::class)());
+        static::assertSame(0, $this->get(CountProductFiles::class)());
     }
 
     /** @test */
@@ -43,6 +43,6 @@ final class DatabaseGetAllProductFilesCountIntegration extends SqlIntegrationTes
             );
         }
 
-        static::assertSame(15, $this->get(GetAllProductFilesCount::class)());
+        static::assertSame(15, $this->get(CountProductFiles::class)());
     }
 }
