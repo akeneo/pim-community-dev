@@ -6,7 +6,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 
-final class Version_7_0_20221024163500_add_scheduled_jobs_create_openid_keys_Integration extends TestCase
+final class Version_7_0_20221024154100_add_scheduled_jobs_create_openid_keys_Integration extends TestCase
 {
     use ExecuteMigrationTrait;
 
