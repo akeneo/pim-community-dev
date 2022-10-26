@@ -1,5 +1,5 @@
 services:
-  Akeneo\Pim\Enrichment\Bundle\Job\CreateOpenIdKeysTasklet:
+  Akeneo\Connectivity\Connection\Infrastructure\Apps\Job\CreateOpenIdKeysTasklet:
     arguments:
       - '@Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler'
     public: false
@@ -10,7 +10,7 @@ services:
       - 'create_openid_keys'
       - '@event_dispatcher'
       - '@akeneo_batch.job_repository'
-      - '@Akeneo\Pim\Enrichment\Bundle\Job\CreateOpenIdKeysTasklet'
+      - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Job\CreateOpenIdKeysTasklet'
     public: false
 
   akeneo_connectivity_connection.job.create_openid_keys:
