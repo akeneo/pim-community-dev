@@ -816,6 +816,36 @@ JSON;
         $this->assertSame($this->getProductUuidFromIdentifier('foo')->toString(), 'a48ca2b8-656d-4b2c-b9cc-b2243e876ebf');
     }
 
+    public function testItCreatesWithUppercaseUuid()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+            <<<JSON
+    {
+        "uuid": "A48CA2B8-656D-4b2c-b9cc-b2243e876ebf",
+        "values": {
+            "sku": [
+                {"locale": null, "scope": null, "data": "foo"}
+            ]
+        }
+    }
+JSON;
+
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
+        $response = $client->getResponse();
+
+        $this->assertSame('', $response->getContent());
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertArrayHasKey('location', $response->headers->all());
+        $this->assertSame(
+            'http://localhost/api/rest/v1/products-uuid/a48ca2b8-656d-4b2c-b9cc-b2243e876ebf',
+            $response->headers->get('location')
+        );
+
+        $this->assertSame($this->getProductUuidFromIdentifier('foo')->toString(), 'a48ca2b8-656d-4b2c-b9cc-b2243e876ebf');
+    }
+
     public function testResponseWhenIdentifierIsFilled()
     {
         $client = $this->createAuthenticatedClient();
