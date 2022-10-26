@@ -169,6 +169,8 @@ $rules = [
             'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier',
             'Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFile',
             'Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFileHandler',
+            'Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadBySupplier',
+            'Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadBySupplierHandler',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\InMemory\InMemoryRepository',
             'Akeneo\SupplierPortal\Retailer\Test\Builder\SupplierBuilder',
             'Akeneo\SupplierPortal\Retailer\Test\Builder\ProductFileBuilder',
