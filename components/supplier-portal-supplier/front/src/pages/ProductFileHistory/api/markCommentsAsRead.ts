@@ -1,6 +1,6 @@
 import {apiFetch} from '../../../api/apiFetch';
 
-const markCommentsAsRead = async (productFileIdentifier: string) => {
+const markCommentsAsRead = async (productFileIdentifier: string): Promise<void> => {
     await apiFetch(`/supplier-portal/product-file/${productFileIdentifier}/markCommentsAsRead`, {
         method: 'POST',
         headers: [

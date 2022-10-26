@@ -9,7 +9,7 @@ const productFile: any = {
     contributor: 'contributor1@example.com',
     uploadedAt: '2022-07-28T14:57:37+00:00',
     comments: [
-        {content: 'test supplier 1', createdAt: '2022-10-05T00:20:35+00:00', authorEmail: 'julia@akeneo.com'},
+        {content: 'test supplier 1', createdAt: '2022-10-05T00:20:35+00:00', authorEmail: 'jimmy@akeneo.com'},
         {content: 'test retailer 2', createdAt: '2022-10-09T21:20:35+00:00', authorEmail: 'julia@akeneo.com'},
         {content: 'test retailer 3', createdAt: '2022-10-11T13:20:35+00:00', authorEmail: 'julia@akeneo.com'},
     ],

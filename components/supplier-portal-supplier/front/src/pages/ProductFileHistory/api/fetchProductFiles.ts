@@ -31,21 +31,22 @@ const fetchProductFiles = async (page: number): Promise<ProductFiles> => {
                 };
             }
         );
-        const comments = retailerComments
+        const comments: CommentReadModel[] = retailerComments
             .concat(supplierComments)
             .sort(
                 (a: CommentReadModel, b: CommentReadModel) =>
                     new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
             );
-        let displayNewMessageIndicatorPill = false;
+        let displayNewMessageIndicatorPill: boolean = false;
         if (0 < comments.length) {
-            const lastReadAtTimestamp = null !== item.supplierLastReadAt ? Date.parse(item.supplierLastReadAt) : null;
+            const lastReadAtTimestamp: number | null =
+                null !== item.supplierLastReadAt ? Date.parse(item.supplierLastReadAt) : null;
 
             if (null === lastReadAtTimestamp) {
                 displayNewMessageIndicatorPill = true;
             } else {
-                const lastComment: any = comments.slice(-1)[0];
-                const lastCommentTimestamp = Date.parse(lastComment.createdAt);
+                const lastComment: CommentReadModel = comments.slice(-1)[0];
+                const lastCommentTimestamp: number = Date.parse(lastComment.createdAt);
                 if (lastCommentTimestamp > lastReadAtTimestamp) {
                     displayNewMessageIndicatorPill = true;
                 }
