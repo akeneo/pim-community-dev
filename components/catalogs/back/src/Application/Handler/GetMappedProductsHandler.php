@@ -132,7 +132,7 @@ final class GetMappedProductsHandler
      */
     private function getProductAttributeValue(array $product, string $attributeCode, ?string $locale, ?string $scope): string
     {
-        if (\array_key_exists($attributeCode, $product['values'])) {
+        if (\array_key_exists($attributeCode, (array) $product['values'])) {
             /** @var ProductValue $attributeValues */
             foreach ($product['values'][$attributeCode] as $attributeValues) {
                 if ($attributeValues['locale'] === $locale && $attributeValues['scope'] === $scope) {
@@ -140,7 +140,6 @@ final class GetMappedProductsHandler
                 }
             }
         }
-
         return '';
     }
 }
