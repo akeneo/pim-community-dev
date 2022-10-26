@@ -20,27 +20,27 @@ var  bodyjson=req.body;
    //check envar
     domain = process.env.domain;
     projectId = process.env.projectId;
-    mailerBaseUrl = process.env.mailerBaseUrl;
-    if (!domain || !projectId || !mailerBaseUrl){
+    mailerBaseDsn = process.env.mailerBaseDsn;
+    if (!domain || !projectId || !mailerBaseDsn){
       res.status(402).send(" env variable empty !!!");
      }
-  
+
    tenantContextData = JSON.stringify({instance_name :{
        "AKENEO_PIM_URL": "https://" + instance_name +"."+ domain,
        "APP_DATABASE_HOST": "pim-mysql." + pfid + ".svc.cluster.local",
        "APP_INDEX_HOSTS": "elasticsearch-client." + pfid + ".svc.cluster.local",
        "APP_TENANT_ID":   pfid ,
        "MAILER_PASSWORD":  email_password ,
-       "MAILER_URL": mailerBaseUrl+"?encryption=tls&auth_mode=login&username=" + instance_name + "-"+ projectId+"@mg.cloud.akeneo.com&password=" + email_password + "&sender_address=no-reply%40" + pfid + "."+ domain,
+       "MAILER_DSN": mailerBaseDsn+"?encryption=tls&auth_mode=login&username=" + instance_name + "-"+ projectId+"@mg.cloud.akeneo.com&password=" + email_password + "&sender_address=no-reply%40" + pfid + "."+ domain,
        "MAILER_USER": instance_name + "-"+projectId+"@mg.cloud.akeneo.com",
        "MEMCACHED_SVC": "memcached." + pfid + ".svc.cluster.local",
        "APP_DATABASE_PASSWORD": mysql_password ,
        "PFID":  pfid ,
-       "SRNT_GOOGLE_BUCKET_NAME":  pfid 
+       "SRNT_GOOGLE_BUCKET_NAME":  pfid
      }
     });
 
-  
+
    const encryptKey = process.env.TENANT_CONTEXT_ENCRYPTION_KEY;
    async function  encryptAES (inputText, key){
     return CryptoJS.AES.encrypt(inputText, key).toString();
@@ -61,7 +61,7 @@ var  bodyjson=req.body;
   async function  decryptAES (encryptedContext, encryptKey){
       return CryptoJS.AES.decrypt(encryptedContext, encryptKey);
 };
-//TODO : if we need to decrypt document 
+//TODO : if we need to decrypt document
 /*
 let encryptedContext=" get my content from some where"
   decryptAES(encryptedContext, encryptKey).then((response) =>{

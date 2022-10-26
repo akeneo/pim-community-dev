@@ -177,7 +177,7 @@ image:
 mailer:
   login: null
   password: null
-  base_mailer_url: null
+  base_mailer_dsn: null
   domain: null
   api_key: null
 

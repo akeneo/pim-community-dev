@@ -39,7 +39,7 @@ spec:
           value: guillaume.vincent@getakeneo.com
         - name: mailer.password
           value: 'test'
-        - name: mailer.base_mailer_url
+        - name: mailer.base_mailer_dsn
           value: 'smtp://smtp.mailgun.org:2525'
         - name: mailer.domain
           value: 'mg.cloud.akeneo.com' # mg.dev.akeneo.ch

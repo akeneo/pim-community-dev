@@ -616,7 +616,7 @@ functions.http('createTenant', (req, res) => {
           mailer: {
             login: `${instanceName}@${process.env.MAILER_DOMAIN}`,
             password: mailerPassword,
-            base_mailer_url: process.env.MAILER_BASE_URL,
+            base_mailer_dsn: process.env.MAILER_BASE_DSN,
             domain: process.env.MAILER_DOMAIN,
             api_key: process.env.MAILER_API_KEY,
           },
@@ -685,7 +685,7 @@ functions.http('createTenant', (req, res) => {
         APP_TENANT_ID: pfid,
         DATABASE_ROOT_PASSWORD: parameters.mysql.mysql.rootPassword,
         MAILER_PASSWORD: parameters.mailer.password,
-        MAILER_URL: parameters.mailer.base_mailer_url,
+        MAILER_DSN: parameters.mailer.base_mailer_dsn,
         MEMCACHED_SVC: `memcached.${pfid}.svc.cluster.local`,
         MONITORING_AUTHENTICATION_TOKEN: parameters.pim.monitoring.authenticationToken,
         PFID: pfid,

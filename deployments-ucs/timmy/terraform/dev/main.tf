@@ -34,7 +34,7 @@ module "timmy_request_portal" {
   service_account_email = local.function_service_account_email
   timeout_seconds       = 3600
   max_instance_count    = 1
-  
+
   secret_environment_variables = [
     {
       key        = "TIMMY_PORTAL"
@@ -43,7 +43,7 @@ module "timmy_request_portal" {
       version    = "latest"
     }
   ]
-  
+
   environment_variables = {
     FUNCTION_URL_TIMMY_CREATE_TENANT = module.timmy_create_tenant.uri
     FUNCTION_URL_TIMMY_DELETE_TENANT = module.timmy_delete_tenant.uri
@@ -80,7 +80,7 @@ module "timmy_create_tenant" {
   service_account_email = local.function_service_account_email
   timeout_seconds       = 3600
   max_instance_count    = 1000
-  
+
   secret_environment_variables = [
     {
       key        = "ARGOCD_PASSWORD"
@@ -102,7 +102,7 @@ module "timmy_create_tenant" {
       version    = "latest"
     }
   ]
-  
+
   environment_variables = {
     ARGOCD_URL                     = local.argocd_url
     ARGOCD_USERNAME                = "admin"
@@ -120,7 +120,7 @@ module "timmy_create_tenant" {
     SOURCE_REPO_URL                = "https://github.com/akeneo/pim-saas-k8s-artifacts.git"
     TENANT_CONTEXT_COLLECTION_NAME = var.tenant_context_collection_name
   }
-  
+
 }
 
 module "timmy_delete_tenant" {
@@ -136,7 +136,7 @@ module "timmy_delete_tenant" {
   service_account_email = local.function_service_account_email
   timeout_seconds       = 3600
   max_instance_count    = 1000
-  
+
   secret_environment_variables = [
     {
       key        = "ARGOCD_PASSWORD"
@@ -145,7 +145,7 @@ module "timmy_delete_tenant" {
       version    = "latest"
     },
   ]
-  
+
   environment_variables = {
 
     ARGOCD_URL                     = local.argocd_url
@@ -169,7 +169,7 @@ module "timmy_create_fire_document" {
   source_dir            = abspath("../../cloud-functions/timmy-firestore/create")
   location              = var.region
   service_account_email = local.function_service_account_email
-  
+
   secret_environment_variables = [
     {
       key        = "TENANT_CONTEXT_ENCRYPTION_KEY"
@@ -182,7 +182,7 @@ module "timmy_create_fire_document" {
     domain             = var.domain
     projectId          = var.project_id
     fireStoreProjectId = var.firestore_project_id
-    mailerBaseUrl      = "smtp://smtp.mailgun.org:2525"
+    mailerBaseDsn      = "smtp://smtp.mailgun.org:2525"
     tenantContext      = var.tenant_context_collection_name
   }
 }
@@ -198,7 +198,7 @@ module "timmy_delete_fire_document" {
   source_dir            = abspath("../../cloud-functions/timmy-firestore/delete")
   location              = var.region
   service_account_email = local.function_service_account_email
-  
+
   environment_variables = {
     projectId          = var.project_id
     fireStoreProjectId = var.firestore_project_id
@@ -225,7 +225,7 @@ terraform {
   backend "gcs" {
     bucket = "akecld-terraform-pim-saas-dev"
   }
-  
+
   required_providers {
     archive = {
       source  = "hashicorp/archive"

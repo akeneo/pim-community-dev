@@ -96,7 +96,7 @@ backup:
 mailer:
   login: ${MAILGUN_LOGIN}
   password: ${MAILGUN_PASSWORD}
-  base_mailer_url: "smtp://${MAILGUN_HOST}:${MAILGUN_PORT}"
+  base_mailer_dsn: "smtp://${MAILGUN_HOST}:${MAILGUN_PORT}"
   domain: ${MAILGUN_DOMAIN}
   api_key: ${MAILGUN_API_KEY}
 
