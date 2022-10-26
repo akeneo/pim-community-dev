@@ -18,3 +18,10 @@ services:
             - '@pim_connector.doctrine.cache_clearer'
         tags:
             - { name: console.command }
+
+    Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\V20221005122309CleanProductDraftsWithReadOnlyAttributesZddMigration:
+        arguments:
+            - '@database_connection'
+            - '@monolog.logger'
+        tags:
+            - { name: 'akeneo.pim.zdd_migration' }
