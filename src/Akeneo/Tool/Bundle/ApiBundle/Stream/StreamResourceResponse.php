@@ -3,6 +3,7 @@
 namespace Akeneo\Tool\Bundle\ApiBundle\Stream;
 
 use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueValuesSet;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -80,12 +81,17 @@ final class StreamResourceResponse
                         throw new UnprocessableEntityHttpException(sprintf('%s is missing.', ucfirst($this->identifierKey)));
                     }
 
+                    $identifierToReturn = $data[$this->identifierKey];
+                    if (Uuid::isValid($identifierToReturn)) {
+                        $identifierToReturn = Uuid::fromString($identifierToReturn)->toString();
+                    }
+
                     $response = [
                         'line'               => $lineNumber,
-                        $this->identifierKey => $data[$this->identifierKey],
+                        $this->identifierKey => $identifierToReturn,
                     ];
 
-                    $uriParameters[$this->uriParamName]  = $data[$this->identifierKey];
+                    $uriParameters[$this->uriParamName] = $data[$this->identifierKey];
                     $subResponse = $this->forward($uriParameters, $line);
 
                     if ('' !== $subResponse->getContent()) {
