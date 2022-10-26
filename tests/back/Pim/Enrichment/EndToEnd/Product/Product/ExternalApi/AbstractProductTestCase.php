@@ -16,6 +16,7 @@ use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -179,6 +180,16 @@ abstract class AbstractProductTestCase extends ApiTestCase
         }
 
         return \intval($id);
+    }
+
+    protected function getProductUuid(string $productIdentifier): UuidInterface
+    {
+        $productUuid = $this->get('database_connection')->executeQuery(
+            "SELECT BIN_TO_UUID(uuid) as uuid FROM pim_catalog_product WHERE identifier = :identifier;",
+            ['identifier' => $productIdentifier]
+        )->fetchOne();
+
+        return Uuid::fromString($productUuid);
     }
 
     /**

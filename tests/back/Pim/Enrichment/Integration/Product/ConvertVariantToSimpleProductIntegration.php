@@ -229,10 +229,10 @@ class ConvertVariantToSimpleProductIntegration extends TestCase
         foreach ($expectedAssociations as $associationTypeCode => $association) {
             Assert::assertTrue($product->hasAssociationForTypeCode($associationTypeCode));
 
-            $actualAssociatedProductIdentifiers = $product->getAssociatedProducts($associationTypeCode)->map(
-                fn (ProductInterface $associatedProduct): string => $associatedProduct->getIdentifier()
+            $actualAssociatedProductUuids = $product->getAssociatedProducts($associationTypeCode)->map(
+                fn (ProductInterface $associatedProduct): string => $associatedProduct->getUuid()->toString()
             )->toArray();
-            Assert::assertEqualsCanonicalizing($association['products'] ?? [], $actualAssociatedProductIdentifiers);
+            Assert::assertEqualsCanonicalizing($association['product_uuids'] ?? [], $actualAssociatedProductUuids);
 
             $actualAssociatedProductModelCodes = $product->getAssociatedProductModels($associationTypeCode)->map(
                 fn (ProductModelInterface $associatedProductModel): string => $associatedProductModel->getCode()

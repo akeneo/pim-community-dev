@@ -3,7 +3,6 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\FilterValues;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -44,7 +43,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         $structure = $parameters->get('filters')['structure'];
         $channel = $this->channelRepository->findOneByIdentifier($structure['scope']);
 
-        $productStandard = $this->normalizer->normalize($product, 'standard');
+        $productStandard = $this->normalizer->normalize($product, 'standard', ['with_association_uuids' => false]);
 
         // not done for product as it fill missing product values at the end for performance purpose
         // not done yet for product model export so we have to do it

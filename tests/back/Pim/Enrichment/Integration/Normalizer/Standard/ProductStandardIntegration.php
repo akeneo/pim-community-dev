@@ -252,10 +252,15 @@ class ProductStandardIntegration extends TestCase
                 'created'       => '2016-06-14T13:12:50+02:00',
                 'updated'       => '2016-06-14T13:12:50+02:00',
                 'associations'  => [
-                    'PACK'   => ['groups' => [], 'products' => ['bar', 'baz'], 'product_models' => []],
-                    'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
-                    'UPSELL' => ['groups' => ['groupA'], 'products' => [], 'product_models' => []],
-                    'X_SELL' => ['groups' => ['groupB'], 'products' => ['bar'], 'product_models' => []],
+                    'PACK'   => ['groups' => [], 'product_uuids' => [
+                        $this->getProductUuid('bar'),
+                        $this->getProductUuid('baz'),
+                    ], 'product_models' => []],
+                    'SUBSTITUTION' => ['groups' => [], 'product_uuids' => [], 'product_models' => []],
+                    'UPSELL' => ['groups' => ['groupA'], 'product_uuids' => [], 'product_models' => []],
+                    'X_SELL' => ['groups' => ['groupB'], 'product_uuids' => [
+                        $this->getProductUuid('bar')
+                    ], 'product_models' => []],
                 ],
                 'quantified_associations' => [
                     "PRODUCT_SET" => [
@@ -454,10 +459,15 @@ SQL;
                 'created'       => '2016-06-14T13:12:50+02:00',
                 'updated'       => '2016-06-14T13:12:50+02:00',
                 'associations'  => [
-                    'PACK'   => ['groups' => [], 'products' => ['bar', 'baz'], 'product_models' => []],
-                    'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
-                    'UPSELL' => ['groups' => ['groupA'], 'products' => [], 'product_models' => []],
-                    'X_SELL' => ['groups' => ['groupB'], 'products' => ['bar'], 'product_models' => []],
+                    'PACK'   => ['groups' => [], 'product_uuids' => [
+                        $this->getProductUuid('bar'),
+                        $this->getProductUuid('baz')
+                    ], 'product_models' => []],
+                    'SUBSTITUTION' => ['groups' => [], 'product_uuids' => [], 'product_models' => []],
+                    'UPSELL' => ['groups' => ['groupA'], 'product_uuids' => [], 'product_models' => []],
+                    'X_SELL' => ['groups' => ['groupB'], 'product_uuids' => [
+                        $this->getProductUuid('bar')
+                    ], 'product_models' => []],
                 ],
                 'quantified_associations' => [
                     "PRODUCT_SET" => [

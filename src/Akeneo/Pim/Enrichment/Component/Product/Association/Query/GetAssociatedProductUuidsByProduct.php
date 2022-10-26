@@ -14,5 +14,10 @@ interface GetAssociatedProductUuidsByProduct
     /**
      * @return string[]
      */
+    public function getIdentifiers(UuidInterface $productUuid, AssociationInterface $association): array;
+
+    /**
+     * @return string[]
+     */
     public function getUuids(UuidInterface $productUuid, AssociationInterface $association): array;
 }
