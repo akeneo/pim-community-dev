@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilesCount;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFiles;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFilesForSupplier;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\ListSupplierProductFiles\ListSupplierProductFiles as ListSupplierProductFilesQuery;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\ListSupplierProductFiles\ListSupplierProductFilesHandler;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListSupplierProductFiles as ListProductFilesForSupplierPort;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,16 +14,15 @@ use Symfony\Component\HttpFoundation\Request;
 final class ListSupplierProductFiles
 {
     public function __construct(
-        private ListProductFiles $getProductFiles,
-        private GetProductFilesCount $getProductFilesCount,
+        private ListSupplierProductFilesHandler $listSupplierProductFilesHandler,
     ) {
     }
 
     public function __invoke(Request $request, string $supplierIdentifier): JsonResponse
     {
-        $page = $request->query->getInt('page', 1);
-
-        $productFiles = ($this->getProductFiles)($supplierIdentifier, $page);
+        $productFiles = ($this->listSupplierProductFilesHandler)(
+            new ListSupplierProductFilesQuery($supplierIdentifier, $request->query->getInt('page', 1))
+        );
 
         return new JsonResponse([
             'product_files' => array_map(
@@ -33,10 +32,10 @@ final class ListSupplierProductFiles
 
                     return $productFile;
                 },
-                $productFiles,
+                $productFiles->productFiles,
             ),
-            'total' => ($this->getProductFilesCount)($supplierIdentifier),
-            'items_per_page' => ListProductFilesForSupplier::NUMBER_OF_PRODUCT_FILES_PER_PAGE,
+            'total' => $productFiles->totalProductFilesCount,
+            'items_per_page' => ListProductFilesForSupplierPort::NUMBER_OF_PRODUCT_FILES_PER_PAGE,
         ]);
     }
 }

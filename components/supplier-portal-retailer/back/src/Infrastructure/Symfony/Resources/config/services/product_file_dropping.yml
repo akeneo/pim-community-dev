@@ -7,17 +7,15 @@ services:
             - '@event_dispatcher'
             - '@security.token_storage'
 
-    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\AllProductFilesList:
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\ListProductFiles:
         public: true
         arguments:
-            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetAllProductFiles'
-            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetAllProductFilesCount'
+            - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\ListProductFiles\ListProductFilesHandler'
 
     Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\ListSupplierProductFiles:
         public: true
         arguments:
-            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFiles'
-            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilesCount'
+            - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\ListSupplierProductFiles\ListSupplierProductFilesHandler'
 
     Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\CommentProductFile:
         public: true
