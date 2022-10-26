@@ -39,7 +39,7 @@ class RestoreAdminRolePermissionsCommand extends Command
         $helper = $this->getHelper('question');
 
         $question = new ConfirmationQuestion(
-        '<question>You are about to restore all permissions to the ROLE_ADMINISTRATOR user role. Do you want to continue? [Y/n] </question>',
+            '<question>You are about to restore all permissions to the ROLE_ADMINISTRATOR user role. Do you want to continue? [Y/n] </question>',
         );
 
         if (!$helper->ask($input, $output, $question)) {
@@ -48,8 +48,7 @@ class RestoreAdminRolePermissionsCommand extends Command
 
         try {
             ($this->restoreAdminRolePermissions)((bool) $input->getOption('create'));
-        }
-        catch (UnknownUserRole $exception) {
+        } catch (UnknownUserRole $exception) {
             $output->writeln('<error>The ROLE_ADMINISTRATOR user role does not exist</error>');
             return Command::FAILURE;
         }
@@ -57,5 +56,4 @@ class RestoreAdminRolePermissionsCommand extends Command
         $output->writeln('<info>Permissions restored with success</info>');
         return Command::SUCCESS;
     }
-
 }

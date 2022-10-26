@@ -18,8 +18,7 @@ class RestoreAdminRolePermissions
         private RoleWithPermissionsFactory $roleWithPermissionsFactory,
         private RoleWithPermissionsRepository $roleWithPermissionsRepository,
         private RoleWithPermissionsSaver $roleWithPermissionsSaver,
-    )
-    {
+    ) {
     }
 
     public function __invoke(bool $forceCreation): void
@@ -65,7 +64,6 @@ class RestoreAdminRolePermissions
         $roleWithPermissions = $this->roleWithPermissionsFactory->create();
         $roleWithPermissions->role()->setRole($roleIdentifier);
         $roleWithPermissions->role()->setLabel($roleIdentifier);
-
 
         return $roleWithPermissions;
     }
