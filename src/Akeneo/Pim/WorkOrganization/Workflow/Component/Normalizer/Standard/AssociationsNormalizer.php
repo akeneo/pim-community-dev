@@ -88,6 +88,7 @@ class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMe
                     $data[$code]['groups'][] = $group->getCode();
                 }
 
+                // TODO Fix here
                 $data[$code]['products'] = $data[$code]['products'] ?? [];
                 if ($associationAwareEntity instanceof ProductModelInterface) {
                     foreach ($association->getProducts() as $product) {

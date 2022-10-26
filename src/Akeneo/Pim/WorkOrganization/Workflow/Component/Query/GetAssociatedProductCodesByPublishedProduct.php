@@ -15,6 +15,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Query;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 
+// TODO Do this too
 interface GetAssociatedProductCodesByPublishedProduct
 {
     /**
