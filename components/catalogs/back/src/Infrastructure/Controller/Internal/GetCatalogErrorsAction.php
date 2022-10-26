@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Infrastructure\Controller\Internal;
 
 use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
-use Akeneo\Catalogs\Application\Persistence\Catalog\FindOneCatalogByIdQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdatePayload;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,7 +23,6 @@ final class GetCatalogErrorsAction
 {
     public function __construct(
         private ValidatorInterface $validator,
-        private FindOneCatalogByIdQueryInterface $findOneCatalogByIdQuery,
         private NormalizerInterface $normalizer,
         private GetCatalogQueryInterface $getCatalogQuery,
     ) {
