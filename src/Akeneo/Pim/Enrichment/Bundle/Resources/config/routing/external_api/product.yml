@@ -41,7 +41,7 @@ pim_api_product_uuid_delete:
         _format: json
     methods: [DELETE]
     requirements:
-        uuid: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
+        uuid: '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
 
 pim_api_product_uuid_list:
     path: /products-uuid
@@ -57,7 +57,7 @@ pim_api_product_uuid_get:
         _format: json
     methods: [GET]
     requirements:
-        uuid: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
+        uuid: '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
 
 pim_api_product_uuid_create:
     path: /products-uuid
@@ -73,7 +73,7 @@ pim_api_product_uuid_partial_update:
         _format: json
     methods: [PATCH]
     requirements:
-        uuid: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
+        uuid: '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
 
 pim_api_product_uuid_partial_update_list:
     path: /products-uuid
