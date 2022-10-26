@@ -134,7 +134,7 @@ class QuantifiedAssociationsStructureValidatorSpec extends ObjectBehavior
         );
     }
 
-    public function it_throws_when_quantified_link_has_no_identifier()
+    public function it_throws_when_quantified_link_has_no_identifier_and_no_uuid()
     {
         $field = 'quantified_associations';
         $data = [
@@ -197,6 +197,54 @@ class QuantifiedAssociationsStructureValidatorSpec extends ObjectBehavior
             InvalidPropertyTypeException::validArrayStructureExpected(
                 $field,
                 'a quantified association should contain a valid identifier',
+                QuantifiedAssociationsStructureValidator::class,
+                $data
+            )
+        )->during(
+            'validate',
+            [$field, $data]
+        );
+    }
+
+    public function it_throws_when_quantified_link_uuid_is_not_a_string()
+    {
+        $field = 'quantified_associations';
+        $data = [
+            'PACK' => [
+                'products' => [
+                    ['uuid' => 1, 'quantity' => 3],
+                ],
+            ],
+        ];
+
+        $this->shouldThrow(
+            InvalidPropertyTypeException::validArrayStructureExpected(
+                $field,
+                'a quantified association should contain a valid uuid',
+                QuantifiedAssociationsStructureValidator::class,
+                $data
+            )
+        )->during(
+            'validate',
+            [$field, $data]
+        );
+    }
+
+    public function it_throws_when_quantified_link_uuid_is_not_a_valid_uuid()
+    {
+        $field = 'quantified_associations';
+        $data = [
+            'PACK' => [
+                'products' => [
+                    ['uuid' => 'invalid_uuid', 'quantity' => 3],
+                ],
+            ],
+        ];
+
+        $this->shouldThrow(
+            InvalidPropertyTypeException::validArrayStructureExpected(
+                $field,
+                'a quantified association should contain a valid uuid',
                 QuantifiedAssociationsStructureValidator::class,
                 $data
             )

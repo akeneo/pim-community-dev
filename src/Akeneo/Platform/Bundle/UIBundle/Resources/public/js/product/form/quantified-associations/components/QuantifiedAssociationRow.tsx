@@ -83,7 +83,13 @@ const QuantifiedAssociationRow = ({
       <Table.Cell rowTitle={!isProductModel}>
         {null === row.product ? <CellPlaceholder className="AknLoadingPlaceHolder" /> : row.product.label}
       </Table.Cell>
-      <Table.Cell>{row.quantifiedLink.identifier}</Table.Cell>
+      <Table.Cell>
+        {null === row.product ? (
+          <CellPlaceholder className="AknLoadingPlaceHolder" />
+        ) : (
+          row.product?.identifier ?? `[${row.product.id}]`
+        )}
+      </Table.Cell>
       {!isCompact && (
         <>
           <Table.Cell>

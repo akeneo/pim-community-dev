@@ -1,10 +1,115 @@
 akeneo_catalogs:
+  catalog_list:
+    catalogs_name: Nazwa katalogu
+    status: Status
+    enabled: włączone
+    disabled: wyłączone
+    empty: Nie ma katalogu
+    more_information: Więcej informacji znajdziesz w naszej pomocy.
+  catalog_edit:
+    tabs:
+      settings: Ustawienia katalogu
+      product_selection: Wybór produktów
+      more: Więcej
+      product_value_filters: Filtruj wartości
+      product_mapping: Mapowanie
   settings:
+    fields:
+      enabled: Włączony
     inputs:
       yes: Yes
       no: No
+  product_value_filters:
+    action:
+      open: Otwórz
+      remove: Usuń
+    filters:
+      channel:
+        label: Kanał
+        no_matches: Nie znaleziono dopasowań
+        placeholder: Wybierz kanał
+      locale:
+        label: Wersja językowa
+        no_matches: Nie znaleziono dopasowań
+        placeholder: Wybierz wersję językową
+      currency:
+        label: Waluta
+        no_matches: Nie znaleziono dopasowań
+        placeholder: Wybierz walutę
   product_selection:
+    empty: Dodaj kryteria wyboru, aby utworzyć wybór produktów
+    more_information: Więcej informacji znajdziesz w naszej pomocy.
+    add_criteria:
+      label: dodaj kryteria wyboru
+      search: Kryterium wyszukiwania
+      no_results: nie znaleziono dopasowań
+      section_system: system
+      section_attributes: atrybuty
+    action:
+      open: Otwórz
+      remove: Usuń
+    locale:
+      label: Wersja językowa
+      empty: Nie znaleziono wersji językowej
+    channel:
+      label: Kanał
+      empty: Nie znaleziono kanału
     criteria:
+      unknown: Ten atrybut został usunięty.
+      status:
+        label: Status
+        enabled: Włączony
+        disabled: Wyłączony
+      family:
+        label: Rodzina
+        no_matches: Nie znaleziono dopasowań
+        placeholder: Wybierz rodziny
+      completeness:
+        label: Kompletność
+      attribute_option:
+        no_matches: Nie znaleziono dopasowań
+        placeholder: Wybierz opcje
+      category:
+        label: Kategoria
+        remove: Usuń kategorię
+        category_tree: Drzewo kategorii
+      measurement:
+        search: Wybierz jednostkę
+        no_results: Nie znaleziono dopasowań
       boolean:
         yes: Yes
         no: No
+    operators:
+      "STARTS WITH": zaczyna się od
+      "ENDS WITH": kończy się na
+      "CONTAINS": zawiera
+      "DOES NOT CONTAIN": nie zawiera
+      "EMPTY": jest pusty
+      "NOT EMPTY": nie jest pusty
+      "IN": w
+      "NOT IN": nie w
+      "IN CHILDREN": w elementach podrzędnych
+      "NOT IN CHILDREN": nie w elementach podrzędnych
+      "UNCLASSIFIED": jest niesklasyfikowany
+      "IN OR UNCLASSIFIED": jest niesklasyfikowany lub w
+      "BETWEEN": pomiędzy
+      "NOT BETWEEN": nie pomiędzy
+      "=": jest równe
+      "!=": nie równa się
+      ">": większy niż
+      ">=": równy lub mniejszy niż
+      "<": mniej niż
+      "<=": równy lub mniejszy niż
+  product_mapping:
+    target:
+      title: Lista celów
+      filter:
+        label: Filtr
+        option:
+          all: Wszystkie
+      table:
+        target: Cel
+        source: Źródło
+    source:
+      placeholder:
+        title: Wybierz źródło
