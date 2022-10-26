@@ -77,13 +77,4 @@ final class GetProductUuidsHandlerWithPermissionsIntegration extends EnrichmentP
 
         return $productUuidCursor;
     }
-
-    private function getProductUuid(string $productIdentifier): string
-    {
-        $product = $this->productRepository->findOneByIdentifier($productIdentifier);
-        Assert::assertNotNull($product);
-        WebmozartAssert::isInstanceOf($product, Product::class);
-
-        return $product->getUuid()->toString();
-    }
 }
