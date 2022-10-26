@@ -27,7 +27,7 @@ class CreateTemplateController
     ) {
     }
 
-    public function __invoke(Request $request, string $templateCode, int $categoryTreeId): JsonResponse
+    public function __invoke(Request $request, int $categoryTreeId): JsonResponse
     {
         if ($this->securityFacade->isGranted('pim_enrich_product_category_template') === false) {
             throw new AccessDeniedException();

@@ -39,10 +39,4 @@ class GetTemplateController
 
         return new JsonResponse($template->normalize(), Response::HTTP_OK);
     }
-
-    public function getTemplateByCategoryTreeId(int $categoryId): JsonResponse
-    {
-
-        return new JsonResponse('toto');
-    }
 }

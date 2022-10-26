@@ -3,13 +3,13 @@ import {Button, Search, Table, useBooleanState} from 'akeneo-design-system';
 import {
   NotificationLevel,
   useDebounceCallback,
+  useFeatureFlags,
   useNotify,
   useRouter,
   useSecurity,
   useTranslate,
-  useFeatureFlags,
 } from '@akeneo-pim-community/shared';
-import {CategoryTreeModel} from '../../models';
+import {CategoryTreeModel, Template} from '../../models';
 import styled from 'styled-components';
 import {NoResults} from './NoResults';
 import {DeleteCategoryModal} from './DeleteCategoryModal';
@@ -32,7 +32,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
   const featureFlags = useFeatureFlags();
   const [isConfirmationModalOpen, openConfirmationModal, closeConfirmationModal] = useBooleanState();
   const [categoryTreeToDelete, setCategoryTreeToDelete] = useState<CategoryTreeModel | null>(null);
-
+  console.log('toto');
   const followCategoryTree = useCallback(
     (tree: CategoryTreeModel): void => {
       const url = router.generate('pim_enrich_categorytree_tree', {id: tree.id});
@@ -74,13 +74,20 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
   };
 
   const onCreateTemplate = (categoryTree: CategoryTreeModel) => {
-    const errors = createTemplate(categoryTree, router);
-    if (Object.keys(errors).length > 0) {
-      notify(NotificationLevel.ERROR, translate('akeneo.category.template.notification_error'));
-    } else {
-      notify(NotificationLevel.SUCCESS, translate('akeneo.category.template.notification_success'));
-      router.redirect('TBD');
-    }
+    createTemplate(categoryTree, router)
+        .then(response => {
+          response.json().then((template: Template) => {
+            if(template) {
+              notify(NotificationLevel.SUCCESS, translate('akeneo.category.template.notification_success'));
+              router.redirect(router.generate('pim_category_template_edit', {
+                treeId: categoryTree.id,
+                templateId: template.identifier
+              }));
+            }
+          })
+        }).catch(error => {
+          notify(NotificationLevel.ERROR, translate('akeneo.category.template.notification_error'));
+    });
   }
 
   const redirectToTemplate = (templateUuid: string) => {

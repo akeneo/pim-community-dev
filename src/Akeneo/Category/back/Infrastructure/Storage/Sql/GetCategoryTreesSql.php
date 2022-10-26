@@ -29,10 +29,10 @@ class GetCategoryTreesSql implements GetCategoryTreesInterface
         return $this->execute();
     }
 
-    public function byIds(array $categryTreeIds): ? array
+    public function byIds(array $categoryTreeIds): ?array
     {
         $condition['sqlAnd'] = 'AND category.id IN (:ids)';
-        $condition['params'] = ['ids' => $categryTreeIds];
+        $condition['params'] = ['ids' => $categoryTreeIds];
         $condition['types'] = ['ids' => Connection::PARAM_INT_ARRAY];
 
         return $this->execute($condition);
@@ -81,7 +81,7 @@ class GetCategoryTreesSql implements GetCategoryTreesInterface
             return null;
         }
 
-        return array_map(function ($result) {
+        return array_map(static function ($result) {
             return CategoryTree::fromDatabase($result);
         }, $results);
     }
