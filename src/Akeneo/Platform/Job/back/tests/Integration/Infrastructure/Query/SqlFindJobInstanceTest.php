@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Job\Test\Integration\Infrastructure\Query;
 
 use Akeneo\Platform\Job\ServiceApi\JobInstance\FindJobInstanceInterface;
+use Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstance;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstanceQuery;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstanceQueryPagination;
 use Akeneo\Platform\Job\Test\Integration\IntegrationTestCase;
@@ -31,22 +32,11 @@ class SqlFindJobInstanceTest extends IntegrationTestCase
         $query->pagination = $queryPagination;
 
         $expectedJobInstances = [
-            [
-                'code' => 'a_product_import',
-                'label' => 'A product import',
-            ],
-            [
-                'code' => 'a_scheduled_job',
-                'label' => 'A scheduled job',
-            ],
-            [
-                'code' => 'a_product_export',
-                'label' => 'A product export',
-            ],
-            [
-                'code' => 'a_quick_export',
-                'label' => 'A quick export',
-            ]
+            new JobInstance('a_product_import', 'A product import'),
+            new JobInstance('another_product_import', 'Another product import'),
+            new JobInstance('a_scheduled_job', 'A scheduled job'),
+            new JobInstance('a_product_export', 'A product export'),
+            new JobInstance('a_quick_export', 'A quick export'),
         ];
 
         $this->assertEquals($expectedJobInstances, $this->findJobInstanceQuery->fromQuery($query));
@@ -55,19 +45,19 @@ class SqlFindJobInstanceTest extends IntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_job_instances_filtered_on_type(): void
+    public function it_returns_job_instances_filtered_on_job_name(): void
     {
         $expectedJobInstances = [];
         $query = new JobInstanceQuery();
         $queryPagination = new JobInstanceQueryPagination();
 
         $query->pagination = $queryPagination;
-        $query->types = ['quick_export'];
+        $query->jobNames = ['a_product_import'];
 
-        $expectedJobInstances = [[
-            'code' => 'a_quick_export',
-            'label' => 'A quick export',
-        ]];
+        $expectedJobInstances = [
+            new JobInstance('a_product_import', 'A product import'),
+            new JobInstance('another_product_import', 'Another product import'),
+        ];
 
         $this->assertEquals($expectedJobInstances, $this->findJobInstanceQuery->fromQuery($query));
     }
@@ -84,10 +74,7 @@ class SqlFindJobInstanceTest extends IntegrationTestCase
         $query->search = 'a_product_import';
 
         $expectedJobInstances = [
-            [
-            'code' => 'a_product_import',
-            'label' => 'A product import',
-            ]
+            new JobInstance('a_product_import', 'A product import'),
         ];
 
         $this->assertEquals($expectedJobInstances, $this->findJobInstanceQuery->fromQuery($query));
@@ -105,14 +92,8 @@ class SqlFindJobInstanceTest extends IntegrationTestCase
         $query->pagination = $queryPagination;
 
         $expectedJobInstances = [
-            [
-                'code' => 'a_product_import',
-                'label' => 'A product import',
-            ],
-            [
-                'code' => 'a_scheduled_job',
-                'label' => 'A scheduled job',
-            ],
+            new JobInstance('a_product_import', 'A product import'),
+            new JobInstance('another_product_import', 'Another product import'),
         ];
 
         $this->assertEquals($expectedJobInstances, $this->findJobInstanceQuery->fromQuery($query));
@@ -123,14 +104,8 @@ class SqlFindJobInstanceTest extends IntegrationTestCase
         $query->pagination = $queryPagination;
 
         $expectedJobInstances = [
-            [
-                'code' => 'a_product_export',
-                'label' => 'A product export',
-            ],
-            [
-                'code' => 'a_quick_export',
-                'label' => 'A quick export',
-            ]
+            new JobInstance('a_scheduled_job', 'A scheduled job'),
+            new JobInstance('a_product_export', 'A product export'),
         ];
 
         $this->assertEquals($expectedJobInstances, $this->findJobInstanceQuery->fromQuery($query));
@@ -142,6 +117,13 @@ class SqlFindJobInstanceTest extends IntegrationTestCase
             'code' => 'a_product_import',
             'job_name' => 'a_product_import',
             'label' => 'A product import',
+            'type' => 'import',
+        ]);
+
+        $this->expectedJobInstances[] = $this->fixturesJobHelper->createJobInstance([
+            'code' => 'another_product_import',
+            'job_name' => 'a_product_import',
+            'label' => 'Another product import',
             'type' => 'import',
         ]);
 
