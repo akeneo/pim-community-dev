@@ -7,6 +7,7 @@ namespace Akeneo\Catalogs\Infrastructure\Controller\Public;
 use Akeneo\Catalogs\Infrastructure\Security\DenyAccessUnlessGrantedTrait;
 use Akeneo\Catalogs\Infrastructure\Security\GetCurrentUsernameTrait;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogDisabledException;
+use Akeneo\Catalogs\ServiceAPI\Exception\ProductSchemaMappingNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
@@ -64,6 +65,13 @@ final class GetMappedProductsAction
                         ' Note that you can get catalogs status with the GET /api/rest/v1/catalogs endpoint.',
                         $catalog->getId()
                     )
+                ],
+                Response::HTTP_OK,
+            );
+        } catch (ProductSchemaMappingNotFoundException) {
+            return new JsonResponse(
+                [
+                    'message' => 'Impossible to map products: no product mapping schema available for this catalog.',
                 ],
                 Response::HTTP_OK,
             );
