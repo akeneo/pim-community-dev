@@ -9,12 +9,11 @@ use Ramsey\Uuid\UuidInterface;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+// TODO rename
 interface GetAssociatedProductCodesByProduct
 {
     /**
-     * Return codes of associated products
-     *
      * @return string[]
      */
-    public function getCodes(UuidInterface $productUuid, AssociationInterface $association): array;
+    public function getUuids(UuidInterface $productUuid, AssociationInterface $association): array;
 }

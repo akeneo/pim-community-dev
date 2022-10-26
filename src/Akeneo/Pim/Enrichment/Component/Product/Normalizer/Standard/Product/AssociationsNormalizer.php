@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterfa
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Webmozart\Assert\Assert;
@@ -91,17 +92,17 @@ class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMe
                     $data[$code]['groups'][] = $group->getCode();
                 }
 
-                $data[$code]['products'] = $data[$code]['products'] ?? [];
+                $data[$code]['product_uuids'] = $data[$code]['product_uuids'] ?? [];
                 if ($associationAwareEntity instanceof ProductModelInterface) {
                     foreach ($association->getProducts() as $product) {
-                        $data[$code]['products'][] = $product->getReference();
+                        $data[$code]['product_uuids'][] = $product->getReference();
                     }
-                    sort($data[$code]['products']);
+                    sort($data[$code]['product_uuids']);
                 } elseif (\get_class($associationAwareEntity) === 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct') {
                     // do nothing, published product associations are computed in their own normalizer
                     // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment
                 } elseif ($associationAwareEntity instanceof ProductInterface) {
-                    $data[$code]['products'] = array_merge($data[$code]['products'], $this->getAssociatedProductCodeByProduct->getCodes(
+                    $data[$code]['product_uuids'] = array_merge($data[$code]['product_uuids'], $this->getAssociatedProductCodeByProduct->getUuids(
                         $associationAwareEntity->getUuid(),
                         $association
                     ));
@@ -117,7 +118,7 @@ class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMe
         }
 
         $data = array_map(function ($association) {
-            $association['products'] = array_values(array_unique($association['products']));
+            $association['product_uuids'] = array_values(array_unique($association['product_uuids']));
             return $association;
         }, $data);
 

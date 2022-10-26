@@ -293,7 +293,7 @@ define([
     manageProducts: function () {
       const deferred = $.Deferred();
 
-      FormBuilder.build('pim-associations-product-picker-form').then(form => {
+      FormBuilder.build('pim-associations-product-and-product-model-picker-modal').then(form => {
         FetcherRegistry.getFetcher('association-type')
           .fetch(this.getCurrentAssociationTypeCode())
           .then(associationType => {
