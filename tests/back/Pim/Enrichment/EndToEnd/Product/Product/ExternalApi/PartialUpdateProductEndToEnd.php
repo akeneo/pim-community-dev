@@ -710,22 +710,25 @@ JSON;
             'associations' => [
                 'PACK' => [
                     'groups' => ['groupA'],
-                    'products' => ['product_family', 'product_categories'],
+                    'product_uuids' => [
+                        $this->getProductUuid('product_family')->toString(),
+                        $this->getProductUuid('product_categories')->toString()
+                    ],
                     'product_models' => [],
                 ],
                 'SUBSTITUTION' => [
                     'groups' => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => ['a_product_model']
                 ],
                 'UPSELL' => [
                     'groups' => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
                 'X_SELL' => [
                     'groups' => ['groupA'],
-                    'products' => ['product_categories'],
+                    'product_uuids' => [$this->getProductUuid('product_categories')->toString()],
                     'product_models' => [],
                 ],
             ],
