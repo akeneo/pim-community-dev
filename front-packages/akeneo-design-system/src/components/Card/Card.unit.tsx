@@ -135,6 +135,18 @@ test('it displays a stack style when the card is marked as stacked', () => {
   expect(screen.getByTestId('stack')).toBeInTheDocument();
 });
 
+test('Card supports forwardRef', () => {
+  const ref = {current: null};
+
+  render(
+    <Card src="some.jpg" ref={ref}>
+      Card text
+    </Card>
+  );
+
+  expect(ref.current).not.toBe(null);
+});
+
 test('Card supports ...rest props', () => {
   render(
     <Card src="some.jpg" data-testid="my_value">
