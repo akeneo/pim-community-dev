@@ -10,6 +10,7 @@ use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
 /**
@@ -31,10 +32,28 @@ class GetMappedProductsActionTest extends IntegrationTestCase
         $this->commandBus = self::getContainer()->get(CommandBus::class);
 
         $this->purgeDataAndLoadMinimalCatalog();
+
+        $this->createUser('admin', ['IT support'], ['ROLE_ADMINISTRATOR']);
     }
 
     public function testItGetsPaginatedMappedProductsByCatalogId(): void
     {
+        // create products
+        $this->logAs('admin');
+        $this->createAttribute([
+            'code' => 'name',
+            'type' => 'pim_catalog_text',
+            'scopable' => true,
+            'localizable' => true,
+        ]);
+        $productBlue = $this->createProduct(Uuid::fromString('8985de43-08bc-484d-aee0-4489a56ba02d'), [
+            new SetTextValue('name', 'ecommerce', 'en_US', 'Blue'),
+        ]);
+        $productGreen = $this->createProduct(Uuid::fromString('00380587-3893-46e6-a8c2-8fee6404cc9e'), [
+            new SetTextValue('name', 'ecommerce', 'en_US', 'Green'),
+        ]);
+
+        // create catalog
         $this->client = $this->getAuthenticatedPublicApiClient([
             'read_catalogs', 'read_products',
         ]);
@@ -44,11 +63,12 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             'shopifi'
         ));
         $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+
+        // create catalog mapping
         $this->commandBus->execute(new UpdateProductMappingSchemaCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             \json_decode($this->getProductMappingSchemaRaw(), false, 512, JSON_THROW_ON_ERROR),
         ));
-
         $this->setCatalogProductMapping('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
             'uuid' => [
                 'source' => 'uuid',
@@ -62,21 +82,12 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             ],
         ]);
 
-        $this->createAttribute([
-            'code' => 'name',
-            'type' => 'pim_catalog_text',
-            'scopable' => true,
-            'localizable' => true,
-        ]);
-
-        $product = $this->createProduct('tshirt-blue', [
-            new SetTextValue('name', 'ecommerce', 'en_US', 'Blue'),
-        ]);
-
         $this->client->request(
             'GET',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapped-products',
-            [],
+            [
+                'limit' => 2,
+            ],
             [],
             [
                 'CONTENT_TYPE' => 'application/json',
@@ -85,13 +96,24 @@ class GetMappedProductsActionTest extends IntegrationTestCase
 
         $response = $this->client->getResponse();
         $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
-        $expectedMappedProducts = [[
-            'uuid' => $product->getUuid()->toString(),
-            'title' => 'Blue',
-        ]];
+        $expectedMappedProducts = [
+            [
+                'uuid' => $productGreen->getUuid()->toString(),
+                'title' => 'Green',
+            ],
+            [
+                'uuid' => $productBlue->getUuid()->toString(),
+                'title' => 'Blue',
+            ],
+        ];
 
         Assert::assertEquals(200, $response->getStatusCode());
-        Assert::assertEquals($expectedMappedProducts, $payload['_embedded']['items']);
+        Assert::assertCount(2, $payload['_embedded']['items']);
+        Assert::assertSame($expectedMappedProducts, $payload['_embedded']['items']);
+        Assert::assertEquals(\sprintf(
+            'http://localhost/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapped-products?search_after=%s&limit=2',
+            $productBlue->getUuid()->toString(),
+        ), $payload['_links']['next']['href']);
     }
 
     public function testItReturnsBadRequestWhenPaginationIsInvalid(): void

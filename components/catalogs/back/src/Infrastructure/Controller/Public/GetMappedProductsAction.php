@@ -69,7 +69,7 @@ final class GetMappedProductsAction
             );
         }
 
-        return new JsonResponse($this->paginate($catalog, $mappedProducts, $searchAfter, $limit), Response::HTTP_OK);
+        return new JsonResponse($this->paginate($catalog, $mappedProducts, $searchAfter, $limit, $updatedAfter, $updatedBefore), Response::HTTP_OK);
     }
 
     /**
@@ -117,7 +117,7 @@ final class GetMappedProductsAction
      *
      * @return array{_links: array{self: array{href: string}, first: array{href: string}, next?: array{href: string}}, _embedded: array{items: array<MappedProduct>}}
      */
-    private function paginate(Catalog $catalog, array $mappedProducts, ?string $searchAfter, int $limit): array
+    private function paginate(Catalog $catalog, array $mappedProducts, ?string $searchAfter, int $limit, ?string $updatedAfter, ?string $updatedBefore): array
     {
         $last = \end($mappedProducts);
 
@@ -129,13 +129,17 @@ final class GetMappedProductsAction
                         'catalogId' => $catalog->getId(),
                         'search_after' => $searchAfter,
                         'limit' => $limit,
-                    ]),
+                        'updated_after' => $updatedAfter,
+                        'updated_before' => $updatedBefore,
+                    ], RouterInterface::ABSOLUTE_URL),
                 ],
                 'first' => [
                     'href' => $this->router->generate('akeneo_catalogs_public_get_mapped_products', [
                         'catalogId' => $catalog->getId(),
                         'limit' => $limit,
-                    ]),
+                        'updated_after' => $updatedAfter,
+                        'updated_before' => $updatedBefore,
+                    ], RouterInterface::ABSOLUTE_URL),
                 ],
             ],
             '_embedded' => [
@@ -149,7 +153,9 @@ final class GetMappedProductsAction
                     'catalogId' => $catalog->getId(),
                     'search_after' => $last['uuid'],
                     'limit' => $limit,
-                ]),
+                    'updated_after' => $updatedAfter,
+                    'updated_before' => $updatedBefore,
+                ], RouterInterface::ABSOLUTE_URL),
             ];
         }
 

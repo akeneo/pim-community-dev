@@ -136,7 +136,7 @@ class GetProductsAction
                         'limit' => $limit,
                         'updated_after' => $updatedAfter,
                         'updated_before' => $updatedBefore,
-                    ]),
+                    ], RouterInterface::ABSOLUTE_URL),
                 ],
                 'first' => [
                     'href' => $this->router->generate('akeneo_catalogs_public_get_products', [
@@ -144,7 +144,7 @@ class GetProductsAction
                         'limit' => $limit,
                         'updated_after' => $updatedAfter,
                         'updated_before' => $updatedBefore,
-                    ]),
+                    ], RouterInterface::ABSOLUTE_URL),
                 ],
             ],
             '_embedded' => [
@@ -160,7 +160,7 @@ class GetProductsAction
                     'limit' => $limit,
                     'updated_after' => $updatedAfter,
                     'updated_before' => $updatedBefore,
-                ]),
+                ], RouterInterface::ABSOLUTE_URL),
             ];
         }
 
