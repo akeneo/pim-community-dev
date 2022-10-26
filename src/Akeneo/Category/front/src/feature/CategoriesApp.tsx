@@ -4,7 +4,7 @@ import {CategoriesIndex, CategoriesTreePage, CategoryEditPage} from './pages';
 import {EditCategoryProvider} from './components';
 import {useFeatureFlags} from '@akeneo-pim-community/shared';
 import {LegacyCategoryEditPage} from './legacy/pages/LegacyCategoryEditPage';
-import {TemplateIndex} from './pages/TemplateIndex';
+import {TemplateIndex} from './pages';
 
 type Props = {
   setCanLeavePage: (canLeavePage: boolean) => void;
@@ -24,9 +24,11 @@ const CategoriesApp: FC<Props> = ({setCanLeavePage}) => {
             {featureFlags.isEnabled('enriched_category') ? <CategoryEditPage /> : <LegacyCategoryEditPage />}
           </EditCategoryProvider>
         </Route>
-        <Route path="/:treeId/template/:templateId">
-          <TemplateIndex />
-        </Route>
+        {featureFlags.isEnabled('enriched_category') && (
+          <Route path="/:treeId/template/:templateId">
+            <TemplateIndex />
+          </Route>
+        )}
         <Route path="/">
           <CategoriesIndex />
         </Route>

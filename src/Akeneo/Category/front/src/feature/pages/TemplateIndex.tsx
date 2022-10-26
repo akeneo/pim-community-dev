@@ -1,20 +1,21 @@
-import React, {FC, useEffect, useState} from 'react';
-import {Breadcrumb, SkeletonPlaceholder, TabBar, useBooleanState, useTabBar} from 'akeneo-design-system';
+import React, {FC, useCallback, useEffect, useState} from 'react';
+import {Breadcrumb, SkeletonPlaceholder, TabBar, useTabBar} from 'akeneo-design-system';
 import {
   FullScreenError,
   PageContent,
   PageHeader,
   PimView,
   useRouter,
-  useSecurity,
   useSessionStorageState,
   useTranslate,
 } from '@akeneo-pim-community/shared';
 import {useCategoryTree} from '../hooks';
 import {useParams} from 'react-router';
 
-const attributeTabName = '#pim_enrich-template-tab-attribute';
-const propertyTabName = '#pim_enrich-template-tab-property';
+enum Tabs {
+  ATTRIBUTE = '#pim_enrich-category-tab-attribute',
+  PROPERTY = '#pim_enrich-category-tab-property',
+}
 
 type Params = {
   treeId: string;
@@ -25,28 +26,34 @@ const TemplateIndex: FC = () => {
   const {treeId, templateId} = useParams<Params>();
   const router = useRouter();
   const translate = useTranslate();
-  const [isModalOpen, openModal, closeModal] = useBooleanState();
-  const {isGranted} = useSecurity();
 
   const {tree, loadingStatus, loadTree} = useCategoryTree(parseInt(treeId), '-1');
   const templateLabel = 'Template Label';
 
   const [treeLabel, setTreeLabel] = useState<string>('');
-  const followSettingsIndex = () => router.redirect(router.generate('pim_settings_index'));
-  const followCategoriesIndex = () => router.redirect(router.generate('pim_enrich_categorytree_index'));
-  const followCategoryTree = () => {
+  const followSettingsIndex = useCallback(() => router.redirect(router.generate('pim_settings_index')), [router]);
+  const followCategoriesIndex = useCallback(
+    () => router.redirect(router.generate('pim_enrich_categorytree_index')),
+    [router]
+  );
+  const followCategoryTree = useCallback(() => {
     if (!tree) {
       return;
     }
     router.redirect(router.generate('pim_enrich_categorytree_tree', {id: tree.id}));
-  };
+  }, [router, tree]);
 
-  const [activeTab, setActiveTab] = useSessionStorageState(attributeTabName, 'pim_category_activeTab');
+  const [activeTab, setActiveTab] = useSessionStorageState<string>(Tabs.ATTRIBUTE, 'pim_category_template_activeTab');
   const [isCurrent, switchTo] = useTabBar(activeTab);
+
+  const handleSwitchTo = useCallback((tab: string) => {
+    setActiveTab(tab);
+    switchTo(tab);
+  }, [setActiveTab, switchTo]);
 
   useEffect(() => {
     loadTree();
-  }, [loadTree, treeId]);
+  }, [loadTree]);
 
   useEffect(() => {
     setTreeLabel(tree ? tree.label : '');
@@ -90,30 +97,27 @@ const TemplateIndex: FC = () => {
       <PageContent>
         <TabBar moreButtonTitle={'More'}>
           <TabBar.Tab
-            isActive={isCurrent(attributeTabName)}
+            isActive={isCurrent(Tabs.ATTRIBUTE)}
             onClick={() => {
-              setActiveTab(attributeTabName);
-              switchTo(attributeTabName);
+              handleSwitchTo(Tabs.ATTRIBUTE);
             }}
           >
             {translate('akeneo.category.attributes')}
           </TabBar.Tab>
           <TabBar.Tab
-            isActive={isCurrent(propertyTabName)}
+            isActive={isCurrent(Tabs.PROPERTY)}
             onClick={() => {
-              setActiveTab(propertyTabName);
-              switchTo(propertyTabName);
+              handleSwitchTo(Tabs.PROPERTY);
             }}
           >
             {translate('pim_common.properties')}
           </TabBar.Tab>
         </TabBar>
 
-        {isCurrent(attributeTabName) && tree && <h3>Create Attribute form</h3>}
+        {isCurrent(Tabs.ATTRIBUTE) && tree && <h3>Create Attribute form</h3>}
 
-        {isCurrent(propertyTabName) && tree && <h3>Create Property form</h3>}
+        {isCurrent(Tabs.PROPERTY) && tree && <h3>Create Property form</h3>}
       </PageContent>
-      {/*{isModalOpen && <NewCategoryModal closeModal={closeModal} onCreate={loadTrees} />}*/}
     </>
   );
 };
