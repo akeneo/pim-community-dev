@@ -88,7 +88,7 @@ class CategoryTree
 
     public function getTemplateLabel(string $localeCode): ?string
     {
-        $label = $this->templateLabels->getTranslation($localeCode);
+        $label = $this->templateLabels?->getTranslation($localeCode);
 
         if (!$label) {
             return null;
