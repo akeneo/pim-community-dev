@@ -4,24 +4,25 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetAllProductFiles;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetAllProductFilesCount;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\ListProductFiles\ListProductFiles as ListProductFilesQuery;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\ListProductFiles\ListProductFilesHandler;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFiles as ListProductFilesPort;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-final class AllProductFilesList
+final class ListProductFiles
 {
     public function __construct(
-        private GetAllProductFiles $getProductFiles,
-        private GetAllProductFilesCount $getProductFilesCount,
+        private ListProductFilesHandler $listProductFilesHandler,
     ) {
     }
 
     public function __invoke(Request $request): JsonResponse
     {
-        $page = $request->query->getInt('page', 1);
-        $productFiles = ($this->getProductFiles)($page);
+        $productFiles = ($this->listProductFilesHandler)(
+            new ListProductFilesQuery($request->query->getInt('page', 1))
+        );
 
         return new JsonResponse([
             'product_files' => array_map(
@@ -31,10 +32,10 @@ final class AllProductFilesList
 
                     return $productFile;
                 },
-                $productFiles,
+                $productFiles->productFiles,
             ),
-            'total' => ($this->getProductFilesCount)(),
-            'items_per_page' => GetAllProductFiles::NUMBER_OF_PRODUCT_FILES_PER_PAGE,
+            'total' => $productFiles->totalProductFilesCount,
+            'items_per_page' => ListProductFilesPort::NUMBER_OF_PRODUCT_FILES_PER_PAGE,
         ]);
     }
 }
