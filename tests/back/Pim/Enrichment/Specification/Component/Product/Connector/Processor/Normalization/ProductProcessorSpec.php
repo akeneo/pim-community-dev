@@ -92,7 +92,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $channel->getCode()->willReturn('foobar');
         $channel->getLocaleCodes()->willReturn(['en_US', 'de_DE']);
 
-        $normalizer->normalize($product, 'standard')
+        $normalizer->normalize($product, 'standard', ['with_association_uuids' => false])
             ->willReturn([
                 'enabled'    => true,
                 'categories' => ['cat1', 'cat2'],
@@ -193,7 +193,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $normalizer->normalize($product, 'standard')->willReturn($productStandard);
+        $normalizer->normalize($product, 'standard', ['with_association_uuids' => false])->willReturn($productStandard);
 
         $this->process($product)->shouldReturn($productStandard);
     }
@@ -232,7 +232,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $channel->getCode()->willReturn('foobar');
         $channel->getLocaleCodes()->willReturn(['en_US', 'de_DE']);
 
-        $normalizer->normalize($product, 'standard')->willReturn([
+        $normalizer->normalize($product, 'standard', ['with_association_uuids' => false])->willReturn([
             'enabled'    => true,
             'categories' => ['cat1', 'cat2'],
             'values' => [

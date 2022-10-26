@@ -24,9 +24,11 @@ use Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProductModels;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProducts;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use PhpParser\Node\Arg;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -279,8 +281,11 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
             ]
         ]])->shouldBeCalledOnce();
 
-        $getViewableProducts->fromProductUuids([$viewableProduct->getUuid(), $nonViewableProduct->getUuid()], 42)
-            ->shouldBeCalled()
+        $uuids = [$viewableProduct->getUuid()->toString(), $nonViewableProduct->getUuid()->toString()];
+        \sort($uuids);
+        $uuids = array_map(fn (string $uuid): UuidInterface => Uuid::fromString($uuid), $uuids);
+
+        $getViewableProducts->fromProductUuids($uuids, 42)
             ->willReturn([$viewableProduct->getUuid()]);
 
         $this->apply($collection, $product, 42);
