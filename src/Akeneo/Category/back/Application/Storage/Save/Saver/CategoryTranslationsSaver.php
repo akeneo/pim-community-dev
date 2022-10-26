@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Category\Application\Storage\Save\Saver;
 
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryTranslations;
-use Akeneo\Category\Domain\Model\Category;
+use Akeneo\Category\Domain\Model\Enrichment\Category;
 
 /**
  * This class is used to call the save query for label translations of the category (data stored in translation table).

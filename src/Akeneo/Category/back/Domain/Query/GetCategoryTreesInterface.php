@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Domain\Query;
 
-use Akeneo\Category\Domain\Model\CategoryTree;
+use Akeneo\Category\Domain\Model\Classification\CategoryTree;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)

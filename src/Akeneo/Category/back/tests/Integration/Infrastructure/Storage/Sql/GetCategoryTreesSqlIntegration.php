@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Sql;
 
-use Akeneo\Category\Domain\Model\CategoryTree;
+use Akeneo\Category\Domain\Model\Classification\CategoryTree;
 use Akeneo\Category\Domain\Query\GetCategoryTreesInterface;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface as CategoryDoctrine;
@@ -33,11 +33,11 @@ class GetCategoryTreesSqlIntegration extends TestCase
         $categoryTrees = $this->get(GetCategoryTreesInterface::class)->getAll();
         $this->assertCount(2, $categoryTrees);
         $this->assertSame('categoryParent', (string) $categoryTrees[0]->getCode());
-        $this->assertSame(self::TEMPLATE_UUID, (string) $categoryTrees[0]->getTemplateUuid());
+        $this->assertSame(self::TEMPLATE_UUID, (string) $categoryTrees[0]->getCategoryTreeTemplate()->getTemplateUuid());
         $this->assertSame([
             'en_US' => 'The template',
             'fr_FR' => 'Le modèle'
-        ],  $categoryTrees[0]->getTemplateLabels()->normalize());
+        ],  $categoryTrees[0]->getCategoryTreeTemplate()->getTemplateLabels()->normalize());
         $this->assertSame('master', (string) $categoryTrees[1]->getCode());
     }
 
@@ -45,11 +45,11 @@ class GetCategoryTreesSqlIntegration extends TestCase
     {
         $categoryTrees = $this->get(GetCategoryTreesInterface::class)->byIds([$this->categoryParent->getId()]);
         $this->assertSame('categoryParent', (string) $categoryTrees[0]->getCode());
-        $this->assertSame(self::TEMPLATE_UUID, (string) $categoryTrees[0]->getTemplateUuid());
+        $this->assertSame(self::TEMPLATE_UUID, (string) $categoryTrees[0]->getCategoryTreeTemplate()->getTemplateUuid());
         $this->assertSame([
             'en_US' => 'The template',
             'fr_FR' => 'Le modèle'
-        ],  $categoryTrees[0]->getTemplateLabels()->normalize());
+        ],  $categoryTrees[0]->getCategoryTreeTemplate()->getTemplateLabels()->normalize());
     }
 
     private function insertFixtures(): void
