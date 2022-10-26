@@ -97,6 +97,16 @@ services:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DownloadStoredProductFile'
             - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail'
 
+    Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\ListProductFiles\ListProductFilesHandler:
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFiles'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\CountProductFiles'
+
+    Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\ListSupplierProductFiles\ListSupplierProductFilesHandler:
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListSupplierProductFiles'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\CountProductFiles'
+
     # Queries
     Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileName:
         class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetProductFilePathAndFileName
@@ -108,8 +118,8 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFiles:
-        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseListProductFiles
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListSupplierProductFiles:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseListSupplierProductFiles
         arguments:
             - '@database_connection'
 
@@ -129,8 +139,8 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetAllProductFilesCount:
-        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetAllProductFilesCount
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\CountProductFiles:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseCountProductFiles
         arguments:
             - '@database_connection'
 
@@ -139,8 +149,8 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetAllProductFiles:
-        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetAllProductFiles
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFiles:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseListProductFiles
         arguments:
             - '@database_connection'
 
