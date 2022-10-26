@@ -422,7 +422,9 @@ define([
       _.each(associationTypes, function (assocType) {
         const association = quantified_associations[assocType.code] || associations[assocType.code];
 
-        assocType.productCount = association && association.products ? association.products.length : (association.product_uuids ? association.product_uuids.length : 0);
+        assocType.productCount = association && association.products
+          ? association.products.length
+          : (association.product_uuids ? association.product_uuids.length : 0);
 
         assocType.productModelCount = association && association.product_models ? association.product_models.length : 0;
 
