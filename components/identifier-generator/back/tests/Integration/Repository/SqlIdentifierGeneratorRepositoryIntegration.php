@@ -115,6 +115,7 @@ SQL;
     }
 
     /** @test */
+    /** @test */
     public function its_gets_all_identifier_generator(): void
     {
         $query = <<<SQL
@@ -139,6 +140,21 @@ SQL;
             'type' => 'free_text',
             'string' => 'default_structure',
         ],]);
+    }
+
+    /** @test */
+    public function it_can_delete_an_identifier_generator(): void
+    {
+        $query = <<<SQL
+INSERT INTO pim_catalog_identifier_generator (uuid, code, target, delimiter, labels, conditions, structure)
+VALUES (UUID_TO_BIN('2038e1c9-68ff-4833-b06f-01e42d206002'), 'default', 'sku_default', '-', '{"fr": "Structure par defaut"}', '{}', '[{"type": "free_text", "string": "default_structure"}]');
+SQL;
+
+        $this->connection->executeStatement($query);
+        Assert::assertEquals($this->identifierGeneratorRepository->count(), 1);
+
+        $this->identifierGeneratorRepository->delete('default');
+        Assert::assertEquals($this->identifierGeneratorRepository->count(), 0);
     }
 
     protected function getConfiguration(): Configuration
