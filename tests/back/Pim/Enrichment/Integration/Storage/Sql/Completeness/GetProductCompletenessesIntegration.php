@@ -240,16 +240,6 @@ class GetProductCompletenessesIntegration extends TestCase
         $this->get('pim_catalog.saver.product')->save($product);
     }
 
-    private function getProductUuid(string $identifier): ?UuidInterface
-    {
-        $productUuid = $this->get('database_connection')->executeQuery(
-            'SELECT BIN_TO_UUID(uuid) as uuid from pim_catalog_product where identifier = :identifier',
-            ['identifier' => $identifier]
-        )->fetchOne();
-
-        return $productUuid ? Uuid::fromString($productUuid) : null;
-    }
-
     private function getCompletenesses(UuidInterface $productUuid): ProductCompletenessCollection
     {
         return $this->get('akeneo.pim.enrichment.product.query.get_product_completenesses')

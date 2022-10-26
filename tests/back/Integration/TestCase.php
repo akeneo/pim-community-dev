@@ -193,13 +193,13 @@ abstract class TestCase extends KernelTestCase
         return $user;
     }
 
-    protected function getProductUuid(string $productIdentifier): UuidInterface
+    protected function getProductUuid(string $productIdentifier): ?UuidInterface
     {
         $productUuid = $this->get('database_connection')->executeQuery(
-            "SELECT BIN_TO_UUID(uuid) as uuid FROM pim_catalog_product WHERE identifier = :identifier;",
+            'SELECT BIN_TO_UUID(uuid) as uuid from pim_catalog_product where identifier = :identifier',
             ['identifier' => $productIdentifier]
         )->fetchOne();
 
-        return Uuid::fromString($productUuid);
+        return $productUuid ? Uuid::fromString($productUuid) : null;
     }
 }
