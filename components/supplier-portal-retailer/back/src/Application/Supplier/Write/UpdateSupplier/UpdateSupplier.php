@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Retailer\Application\Supplier\Write;
+namespace Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\UpdateSupplier;
 
-final class CreateSupplier
+final class UpdateSupplier
 {
     public function __construct(
-        public string $code,
+        public string $identifier,
         public string $label,
         public array $contributorEmails,
     ) {
