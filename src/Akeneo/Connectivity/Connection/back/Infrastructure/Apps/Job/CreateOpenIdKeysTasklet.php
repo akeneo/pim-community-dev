@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Bundle\Job;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Job;
 
 use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler;
@@ -16,15 +16,12 @@ final class CreateOpenIdKeysTasklet implements TaskletInterface
 {
     protected const JOB_CODE = 'create_openid_keys';
 
-    private StepExecution $stepExecution;
-
     public function __construct(private GenerateAsymmetricKeysHandler $generateAsymmetricKeysHandler)
     {
     }
 
     public function setStepExecution(StepExecution $stepExecution): void
     {
-        $this->stepExecution = $stepExecution;
     }
 
     public function execute(): void
