@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\Ui;
 
-use Akeneo\Category\Domain\Model\CategoryTree;
+use Akeneo\Category\Domain\Model\Classification\CategoryTree;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\Query\GetCategoryTreesInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
@@ -101,7 +101,7 @@ class CategoryTreeController extends AbstractController
                 'id' => (int) $tree->getId(),
                 'code' => (string) $tree->getCode(),
                 'label' => $tree->getLabel($this->userContext->getCurrentLocaleCode()),
-                'templateLabel' => $tree->getTemplateLabel($this->userContext->getCurrentLocaleCode()),
+                'templateLabel' => $tree->getCategoryTreeTemplate()?->getTemplateLabel($this->userContext->getCurrentLocaleCode()),
                 'selected' => (int) $tree->getId() === $selectedTreeId ? 'true' : 'false'
             ];
         }, $trees);

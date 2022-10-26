@@ -76,17 +76,6 @@ class CategoryTree
         return $this->categoryTreeTemplate;
     }
 
-    public function getTemplateLabel(string $localeCode): ?string
-    {
-        $label = $this->templateLabels?->getTranslation($localeCode);
-
-        if (!$label) {
-            return null;
-        }
-
-        return $label;
-    }
-
     public function setLabel(string $localeCode, string $label): void
     {
         $this->labels->setTranslation($localeCode, $label);
