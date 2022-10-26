@@ -22,7 +22,7 @@ class GetMappedProductsQuery implements QueryInterface
         private string $catalogId,
         #[Assert\Uuid]
         private ?string $searchAfter = null,
-        #[Assert\Range(min: 1, max: 1000)]
+        #[Assert\Range(min: 1, max: 100)]
         private int $limit = 100,
         #[Assert\DateTime(\DateTimeInterface::ATOM, 'ISO 8601 format is required.')]
         private ?string $updatedAfter = null,
