@@ -7,13 +7,9 @@ namespace Specification\Akeneo\Category\Application\Storage\Save;
 use Akeneo\Category\Api\Command\UserIntents\SetCode;
 use Akeneo\Category\Api\Command\UserIntents\SetLabel;
 use Akeneo\Category\Application\Storage\Save\CategorySaverRegistry;
-use Akeneo\Category\Application\Storage\Save\Saver\CategoryBaseSaver;
 use Akeneo\Category\Application\Storage\Save\Saver\CategorySaver;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTranslationsSaver;
-use Akeneo\Category\Domain\Model\Category;
-use Akeneo\Category\Domain\ValueObject\CategoryId;
-use Akeneo\Category\Domain\ValueObject\Code;
-use Akeneo\Category\Domain\ValueObject\LabelCollection;
+use Akeneo\Category\Domain\Model\Enrichment\Category;
 use PhpSpec\ObjectBehavior;
 
 /**
