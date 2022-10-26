@@ -105,9 +105,9 @@ class NotGrantedQuantifiedAssociationsMergerSpec extends ObjectBehavior
             'PRODUCTSET' => [
                 'products' => [
                     ['identifier' => 'product_b', 'quantity' => 1],
+                    ['uuid' => '92e85ee7-40c1-4164-abae-fca396165ed1', 'identifier' => null, 'quantity' => 69],
                     ['identifier' => 'product_c', 'quantity' => 12],
                     ['identifier' => 'product_d', 'quantity' => 15],
-                    ['uuid' => '92e85ee7-40c1-4164-abae-fca396165ed1', 'quantity' => 69],
                 ],
                 'product_models' => [
                     ['identifier' => 'product_model_a', 'quantity' => 13],
