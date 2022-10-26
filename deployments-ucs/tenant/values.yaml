@@ -369,14 +369,6 @@ pim:
     password: null # Fill me
     uiLocale: en_US  # Change me if needed
   jobs:
-    update-connectivity-audit-data:
-      enabled: true
-      pimCommand: "akeneo:connectivity-audit:update-data"
-      schedule: "1 * * * *"
-      resources:
-        requests:
-          cpu: "10m"
-          memory: "10Mi"
     purge-connectivity-connection-error:
       enabled: true
       pimCommand: "akeneo:connectivity-connection:purge-error"

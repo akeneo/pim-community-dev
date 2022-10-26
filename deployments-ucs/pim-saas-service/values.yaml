@@ -244,6 +244,11 @@ pim:
       pimJobName: "rule_engine_execute_rules"
       pimJobOptions: ""
       schedule: "0 5,11,17,23 * * *"
+    update-connectivity-audit-data:
+      enabled: true
+      pimJobName: "update_connectivity_audit_data"
+      pimJobOptions: ""
+      schedule: "1 * * * *"
   supplier_portal:
     settings:
       enabled: false
