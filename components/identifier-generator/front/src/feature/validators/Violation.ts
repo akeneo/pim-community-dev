@@ -1,5 +1,5 @@
 type Violation = {
-  path: string;
+  path?: string;
   message: string;
 };
 

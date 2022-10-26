@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Driver\Exception as DriverException;
 use Ramsey\Uuid\Uuid;
 use Webmozart\Assert\Assert;
 
@@ -67,12 +68,17 @@ SQL;
             return null;
         }
 
-        $stmt = $this->connection->prepare('select BIN_TO_UUID(uuid) AS uuid, code, conditions, structure, labels, target, delimiter from pim_catalog_identifier_generator where code=:code');
+        $sql = <<<SQL
+SELECT BIN_TO_UUID(uuid) AS uuid, code, conditions, structure, labels, target, delimiter
+FROM pim_catalog_identifier_generator
+WHERE code=:code
+SQL;
+        $stmt = $this->connection->prepare($sql);
         $stmt->bindParam('code', $identifierGeneratorCode, \PDO::PARAM_STR);
 
         try {
             $result = $stmt->executeQuery()->fetchAssociative();
-        } catch (\Doctrine\DBAL\Driver\Exception $e) {
+        } catch (DriverException) {
             throw new UnableToFetchIdentifierGeneratorException(sprintf('Cannot fetch the identifier generator "%s"', $identifierGeneratorCode));
         }
 
@@ -89,7 +95,7 @@ SQL;
         Assert::string($result['labels']);
         Assert::isArray(json_decode($result['labels'], true));
         Assert::string($result['target']);
-        Assert::string($result['delimiter']);
+        Assert::nullOrString($result['delimiter']);
 
         return new IdentifierGenerator(
             IdentifierGeneratorId::fromString($result['uuid']),
@@ -112,6 +118,6 @@ SQL;
 
     public function count(): int
     {
-        throw new \Exception('Not implemented yet');
+        return \intval($this->connection->fetchOne('SELECT COUNT(1) FROM pim_catalog_identifier_generator'));
     }
 }

@@ -479,6 +479,7 @@ akeneo_connectivity.connection:
       url: URL
       secret: Geheim
       enabled: Fout bij abonnement activatie
+      is_using_uuid: Product-UUID gebruiken in plaats van product-ID?
       test: Test
     error:
       wrong_url: Dit is geen geldige URL.

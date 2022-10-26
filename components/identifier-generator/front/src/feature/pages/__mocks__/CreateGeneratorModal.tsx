@@ -12,6 +12,10 @@ const CreateGeneratorModal: React.FC<CreateGeneratorModalProps> = ({onClose, onS
     labels: {
       en_US: 'A label',
     },
+    target: 'sku',
+    delimiter: null,
+    structure: [],
+    conditions: [],
   };
 
   return (

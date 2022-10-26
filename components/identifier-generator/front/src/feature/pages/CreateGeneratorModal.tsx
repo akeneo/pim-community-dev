@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import {AttributesIllustration, Button, Field, Modal, TextInput} from 'akeneo-design-system';
-import {IdentifierGenerator} from '../models';
+import {IdentifierGenerator, PROPERTY_NAMES} from '../models';
 import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {Styled} from '../components';
 import {useIdentifierAttributes} from '../hooks';
@@ -41,11 +41,17 @@ const CreateGeneratorModal: React.FC<CreateGeneratorModalProps> = ({onClose, onS
   }, []);
 
   const onConfirm = useCallback(() => {
-    onSave({
-      code,
-      target,
-      labels: {[uiLocale]: label},
-    });
+    if (target) {
+      onSave({
+        code,
+        target,
+        labels: {[uiLocale]: label},
+        conditions: [],
+        // Temporary
+        structure: [{type: PROPERTY_NAMES.FREE_TEXT, string: 'AKN'}],
+        delimiter: null,
+      });
+    }
   }, [code, label, onSave, uiLocale, target]);
 
   const isFormInvalid = React.useMemo(() => code === '', [code]);

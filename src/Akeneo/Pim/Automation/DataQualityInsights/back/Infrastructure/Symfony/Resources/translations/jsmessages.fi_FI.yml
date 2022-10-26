@@ -43,7 +43,6 @@ akeneo_data_quality_insights:
       day: päivä
     key_indicators:
       title: Avainmittarit
-      products_to_work_on: '{1}Sinulla on <button>1 tuote</button> työstettäväksi. |]1, 200[Sinulla on <button>{{ count }} tuotetta</button> työstettäväksi. |[200, Inf[Sinulla on <button>enemmän kuin {{ count }} tuotetta</button> työstettäväksi.'
       list:
         has_image:
           title: Tuotteet, joilla on kuva

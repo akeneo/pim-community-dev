@@ -22,13 +22,16 @@ final class ErrorList implements \Countable
         return count($this->errors);
     }
 
-    public function add(Error $error): void
+    /**
+     * @return array<array{message: string, path: string | null}>
+     */
+    public function normalize(): array
     {
-        $this->errors[] = $error;
+        return array_map(fn (Error $error): array => $error->normalize(), $this->errors);
     }
 
-    public function getMergedMessages(): string
+    public function __toString(): string
     {
-        return \join("\n", array_map(fn ($error) => $error->getMessage(), $this->errors));
+        return \join("\n", array_map(fn (Error $error): string => $error->__toString(), $this->errors));
     }
 }

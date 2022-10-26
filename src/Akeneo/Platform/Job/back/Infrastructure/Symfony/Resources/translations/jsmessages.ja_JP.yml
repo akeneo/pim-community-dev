@@ -13,6 +13,11 @@ akeneo_job:
     UNKNOWN: 不明
     IN_PROGRESS: 実行中
 akeneo_job_process_tracker:
+  last_operations:
+    title: 最後の操作
+    view_all: すべて表示
+    details: 詳細
+    no_result: 現在表示する操作はありません。
   last_executions:
     title: 最後の実行
   job_execution_list:
@@ -57,6 +62,7 @@ akeneo_job_process_tracker:
     all: すべて
     yes: Yes
     no: No
+    label: 自動化
   max_page_without_filter_helper: 最も関連性の高い結果を表示するには、検索を絞り込んでください。
   tracking:
     completed: "経過時間: {{ duration }}"
