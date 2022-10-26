@@ -18,6 +18,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Applier\DraftApplierInterface
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,6 +52,8 @@ final class GetProductDraftWithUuidController
         if (!$this->security->isGranted('pim_api_product_list')) {
             throw new AccessDeniedHttpException('Access forbidden. You are not allowed to list products.');
         }
+
+        $uuid = Uuid::fromString($uuid)->toString();
 
         try {
             $product = $this->productRepository->find($uuid);
