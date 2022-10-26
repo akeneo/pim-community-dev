@@ -6,7 +6,6 @@ namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
 use Akeneo\Category\Application\Query\GetTemplate;
 use Akeneo\Category\Domain\Model\Template;
-use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
 use Doctrine\DBAL\Connection;
 
@@ -35,14 +34,16 @@ class GetCategoryTemplateSql implements GetTemplate
     public function exists(TemplateCode $templateCode): bool
     {
         $query = <<<SQL
-            SELECT * FROM pim_catalog_template
+            SELECT count(1) FROM pim_catalog_template
             WHERE code=:template_code
         SQL;
 
-        return $this->connection->executeQuery(
+        $result = $this->connection->executeQuery(
             $query,
             ['template_code' => (string) $templateCode],
             ['template_code' => \PDO::PARAM_STR],
         )->fetchOne();
+
+        return (bool) $result;
     }
 }
