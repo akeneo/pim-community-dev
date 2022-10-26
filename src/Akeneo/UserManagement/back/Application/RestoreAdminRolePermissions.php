@@ -20,10 +20,9 @@ class RestoreAdminRolePermissions
         private RoleWithPermissionsSaver $roleWithPermissionsSaver,
     )
     {
-
     }
 
-    public function __invoke(bool $forceCreation = false): void
+    public function __invoke(bool $forceCreation): void
     {
         $roleWithPermissions = $this->findOrCreateRole($forceCreation);
         $permissions = $roleWithPermissions->permissions();

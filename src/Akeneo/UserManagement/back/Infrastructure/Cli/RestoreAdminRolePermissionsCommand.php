@@ -7,6 +7,7 @@ use Akeneo\UserManagement\Application\RestoreAdminRolePermissions;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
@@ -22,10 +23,12 @@ class RestoreAdminRolePermissionsCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription(
-                <<<DESC
-Restore all permissions to the ROLE_ADMINISTRATOR user role'
-DESC
+            ->setDescription('Restore all permissions to the <info>ROLE_ADMINISTRATOR</info> user role')
+            ->addOption(
+                'create',
+                'c',
+                InputOption::VALUE_NONE,
+                'Recreate the <info>ROLE_ADMINISTRATOR</info> user role if it does not exist'
             )
         ;
     }
@@ -44,7 +47,7 @@ DESC
         }
 
         try {
-            ($this->restoreAdminRolePermissions)(true);
+            ($this->restoreAdminRolePermissions)((bool) $input->getOption('create'));
         }
         catch (UnknownUserRole $exception) {
             $output->writeln('<error>The ROLE_ADMINISTRATOR user role does not exist</error>');

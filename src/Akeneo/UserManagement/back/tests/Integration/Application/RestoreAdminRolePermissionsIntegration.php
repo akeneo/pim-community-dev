@@ -19,7 +19,7 @@ class RestoreAdminRolePermissionsIntegration extends TestCase
 
         Assert::allFalse($adminRole->permissions());
 
-        ($this->get(RestoreAdminRolePermissions::class))();
+        ($this->get(RestoreAdminRolePermissions::class))(false);
 
         $restoredAdminRole = $this->getAdminRoleWithPermissions();
 
