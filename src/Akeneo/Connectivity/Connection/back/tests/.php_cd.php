@@ -33,6 +33,7 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated',
 
             'Webmozart\Assert\Assert',
+            'Ramsey\Uuid\Uuid',
         ]
     )->in('Akeneo\Connectivity\Connection\Domain'),
 
@@ -64,6 +65,7 @@ $rules = [
             // Exceptions
             'Akeneo\Connectivity\Connection\Domain\ValueObject',
             'Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode',
+            'Ramsey\Uuid\Uuid'
         ]
     )->in('Akeneo\Connectivity\Connection\Domain\ErrorManagement'),
 
