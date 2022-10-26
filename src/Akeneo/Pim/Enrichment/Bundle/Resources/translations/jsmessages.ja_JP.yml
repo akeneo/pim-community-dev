@@ -108,6 +108,7 @@ pim_enrich.entity.product:
       variant_products: バリエーション商品
       quantified:
         quantity: 数量
+        unlinked: リンク解除済み
       search:
         placeholder: ラベルまたは識別子で検索
       no_data: 関連商品はありません

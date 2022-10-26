@@ -1,5 +1,23 @@
 # 6.0.x
 
+# 6.0.46 (2022-10-20)
+
+## Bug fixes
+PIM-10670: Fix memory leak on creating combinations for currencies
+PIM-10679: Fix out of sort memory on ProductModelImagesFromCodes
+
+# 6.0.45 (2022-10-06)
+
+## Bug fixes
+
+- PIM-10652: [Backport PIM-10646] Fix export with label from a select attribute containing uppercase in its code exports code and not labels
+
+# 6.0.44 (2022-09-23)
+
+## Bug fixes
+
+- PIM-10435: [Backport] Fix search_after requests with codes using uppercase accented characters
+
 # 6.0.43 (2022-09-20)
 
 ## Improvements

@@ -40,10 +40,10 @@ class PimFrameworkBundle extends Bundle
 
             switch (strtolower($scheme)) {
                 case 'https':
-                    $requestContext->setHttpsPort($port);
+                    $requestContext->setHttpsPort($port ?: 443);
                     break;
                 case 'http':
-                    $requestContext->setHttpPort($port);
+                    $requestContext->setHttpPort($port ?: 80);
                     break;
             }
         }

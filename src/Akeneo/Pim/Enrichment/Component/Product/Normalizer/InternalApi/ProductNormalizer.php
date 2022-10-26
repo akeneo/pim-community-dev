@@ -136,6 +136,8 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
 
         $scopeCode = $context['channel'] ?? null;
         $normalizedProduct['parent_associations'] = $this->parentAssociationsNormalizer->normalize($product, $format, $context);
+        $normalizedProduct['quantified_associations'] = $this->formatQuantifiedAssociations($normalizedProduct['quantified_associations']);
+
         $completenesses = $this->getCompletenesses($product);
 
         $productImageScope = $context['catalogScope'] ?? $this->catalogContext->getScopeCode();
@@ -152,8 +154,8 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
             'completenesses' => $this->completenessCollectionNormalizer->normalize($completenesses),
             'required_missing_attributes' => $this->missingRequiredAttributesNormalizer->normalize($completenesses),
             'image' => $this->normalizeImage($product->getImage(), $productImageScope, $productImageLocale),
-            'quantified_associations_for_this_level' => $this->quantifiedAssociationsNormalizer->normalizeWithoutParentsAssociations($product, 'standard', $context),
-            'parent_quantified_associations' => $this->quantifiedAssociationsNormalizer->normalizeOnlyParentsAssociations($product, 'standard', $context),
+            'quantified_associations_for_this_level' => $this->formatQuantifiedAssociations($this->quantifiedAssociationsNormalizer->normalizeWithoutParentsAssociations($product, 'standard', $context)),
+            'parent_quantified_associations' => $this->formatQuantifiedAssociations($this->quantifiedAssociationsNormalizer->normalizeOnlyParentsAssociations($product, 'standard', $context)),
         ] + $this->getLabels($product, $scopeCode) + $this->getAssociationMeta($product);
 
         $normalizedProduct['meta']['ascendant_category_ids'] = $product->isVariant() ?
@@ -297,5 +299,18 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
         }
 
         return $meta;
+    }
+
+    private function formatQuantifiedAssociations(array $quantifiedAssociations): array
+    {
+        return array_map(static function (array $quantifiedAssociation) {
+            $quantifiedAssociation['products'] = array_map(static fn (array $productLink) => array_filter(
+                $productLink,
+                fn (string $key): bool => in_array($key, ['uuid', 'quantity']),
+                ARRAY_FILTER_USE_KEY
+            ), $quantifiedAssociation['products']);
+
+            return $quantifiedAssociation;
+        }, $quantifiedAssociations);
     }
 }

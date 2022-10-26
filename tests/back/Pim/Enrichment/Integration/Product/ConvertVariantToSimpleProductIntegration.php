@@ -73,6 +73,28 @@ class ConvertVariantToSimpleProductIntegration extends TestCase
 
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
         $productFromDb = $this->get('pim_catalog.repository.product')->findOneByIdentifier('variant');
+        $expectedQuantifiedAssociations = [
+            'quantified' => [
+                'products' => [
+                    [
+                        'uuid' => $this->getProductUuid('other'),
+                        'identifier' => 'other',
+                        'quantity' => 10,
+                    ],
+                    [
+                        'uuid' => $this->getProductUuid('random'),
+                        'identifier' => 'random',
+                        'quantity' => 2,
+                    ],
+                ],
+                'product_models' => [
+                    [
+                        'identifier' => 'pm_1',
+                        'quantity' => 5,
+                    ],
+                ],
+            ],
+        ];
 
         Assert::assertFalse($productFromDb->isVariant());
         Assert::assertNull($productFromDb->getFamilyVariant());
@@ -283,5 +305,13 @@ class ConvertVariantToSimpleProductIntegration extends TestCase
         }
 
         return \intval($id);
+    }
+
+    private function getProductUuid(string $identifier): ?string
+    {
+        return $this->get('database_connection')->executeQuery(
+                'SELECT BIN_TO_UUID(uuid) AS uuid FROM pim_catalog_product WHERE identifier = :identifier',
+                ['identifier' => $identifier]
+            )->fetchOne() ?: null;
     }
 }

@@ -10,7 +10,7 @@ services:
             - 'aggregate_volume_queries'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@Akeneo\Tool\Bundle\VersioningBundle\Job\RefreshVersioning'
+            - '@Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Job\AggregateVolumeQueries'
         public: false
 
     pim_volume_monitoring.job.aggregate_volume_queries:

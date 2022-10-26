@@ -19,6 +19,7 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
 {
     const ALLOWED_LINK_TYPES = [
         'products',
+        'product_uuids',
         'product_models',
     ];
 
@@ -67,6 +68,7 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
             }
 
             $this->validateProductsExist($targets['products'], $productsPropertyPath);
+            $this->validateProductsExist($targets['product_uuids'] ?? [], $productsPropertyPath);
             $this->validateProductModelsExist($targets['product_models'], $productModelsPropertyPath);
 
             $totalQuantifiedLinkCount = count($targets['product_models']) + count($targets['products']);

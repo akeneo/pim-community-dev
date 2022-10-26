@@ -192,7 +192,7 @@ JSON;
             'line_too_long_5' => str_repeat('a', $this->getBufferSize() * 2),
             'line_too_long_6' => str_repeat('a', $this->getBufferSize() * 5),
             'invalid_json_4'  => str_repeat('a', $this->getBufferSize()),
-            'invalid_uuid_datatype' => '{"uuid": 122345, "family": "familyA2", "values": {"sku": [{"locale": null, "scope": null, "data": "123456" }]}}',
+            'invalid_uuid_datatype' => '{"uuid": "122345", "family": "familyA2", "values": {"sku": [{"locale": null, "scope": null, "data": "123456" }]}}',
         ];
 
         $data =
@@ -222,7 +222,7 @@ JSON;
 {"line":8,"status_code":413,"message":"Line is too long."}
 {"line":9,"status_code":413,"message":"Line is too long."}
 {"line":10,"status_code":400,"message":"Invalid json message received"}
-{"line":11,"uuid":122345,"code":422,"message":"This is not a valid UUID. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products_uuid__uuid_"}}}
+{"line":11,"uuid":"122345","code":422,"message":"This is not a valid UUID. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products_uuid__uuid_"}}}
 JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/products-uuid', [], [], [], $data);
@@ -241,6 +241,7 @@ JSON;
     {"uuid": ""}
     {"uuid": " "}
     {}
+    {"values": {"sku": [{"locale": null, "scope": null, "data": "AKNSTK2"}]}, "family": "tshirts"}
 JSON;
 
         $expectedContent =
@@ -250,6 +251,7 @@ JSON;
 {"line":3,"status_code":422,"message":"Uuid is missing."}
 {"line":4,"status_code":422,"message":"Uuid is missing."}
 {"line":5,"status_code":422,"message":"Uuid is missing."}
+{"line":6,"status_code":422,"message":"Uuid is missing."}
 JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/products-uuid', [], [], [], $data);

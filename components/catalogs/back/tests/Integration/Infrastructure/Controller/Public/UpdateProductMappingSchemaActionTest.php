@@ -6,6 +6,8 @@ namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Controller\Public;
 
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
+use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
+use Akeneo\Catalogs\ServiceAPI\Query\GetProductMappingSchemaQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -21,12 +23,14 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
 {
     private ?KernelBrowser $client = null;
     private ?CommandBus $commandBus;
+    private ?QueryBus $queryBus;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->commandBus = self::getContainer()->get(CommandBus::class);
+        $this->queryBus = self::getContainer()->get(QueryBus::class);
 
         $this->purgeDataAndLoadMinimalCatalog();
     }
@@ -56,6 +60,14 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
         $response = $this->client->getResponse();
 
         Assert::assertEquals(204, $response->getStatusCode());
+
+        $productMappingSchema = $this->queryBus->execute(
+            new GetProductMappingSchemaQuery('db1079b6-f397-4a6a-bae4-8658e64ad47c')
+        );
+        Assert::assertJsonStringEqualsJsonString(
+            $this->getValidSchemaData(),
+            \json_encode($productMappingSchema, JSON_THROW_ON_ERROR)
+        );
     }
 
     public function testItReturnsForbiddenWhenMissingPermissions(): void
