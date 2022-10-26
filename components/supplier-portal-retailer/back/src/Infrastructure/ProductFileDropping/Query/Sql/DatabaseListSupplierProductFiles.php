@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetAllProductFiles;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListSupplierProductFiles;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFile;
 use Doctrine\DBAL\Connection;
 
-final class DatabaseGetAllProductFiles implements GetAllProductFiles
+final class DatabaseListSupplierProductFiles implements ListSupplierProductFiles
 {
     public function __construct(private Connection $connection)
     {
     }
 
-    public function __invoke(int $page = 1): array
+    public function __invoke(string $supplierIdentifier, int $page = 1): array
     {
         $page = max($page, 1);
 
         $sql = <<<SQL
-            SELECT product_file.identifier, original_filename, uploaded_by_contributor, supplier.label AS supplier, uploaded_at
+            SELECT product_file.identifier, original_filename, uploaded_by_contributor, uploaded_at
             FROM akeneo_supplier_portal_supplier_product_file product_file
-            INNER JOIN akeneo_supplier_portal_supplier supplier on product_file.uploaded_by_supplier = supplier.identifier
+            where uploaded_by_supplier = :supplierIdentifier
             ORDER BY uploaded_at DESC 
             LIMIT :limit
             OFFSET :offset
@@ -32,15 +32,17 @@ final class DatabaseGetAllProductFiles implements GetAllProductFiles
             $file['original_filename'],
             null,
             $file['uploaded_by_contributor'],
-            $file['supplier'],
+            $supplierIdentifier,
             $file['uploaded_at'],
         ), $this->connection->executeQuery(
             $sql,
             [
-                'offset' => GetAllProductFiles::NUMBER_OF_PRODUCT_FILES_PER_PAGE * ($page - 1),
-                'limit' => GetAllProductFiles::NUMBER_OF_PRODUCT_FILES_PER_PAGE,
+                'supplierIdentifier' => $supplierIdentifier,
+                'offset' => ListSupplierProductFiles::NUMBER_OF_PRODUCT_FILES_PER_PAGE * ($page - 1),
+                'limit' => ListSupplierProductFiles::NUMBER_OF_PRODUCT_FILES_PER_PAGE,
             ],
             [
+                'supplierIdentifier' => \PDO::PARAM_STR,
                 'offset' => \PDO::PARAM_INT,
                 'limit' => \PDO::PARAM_INT,
             ],
