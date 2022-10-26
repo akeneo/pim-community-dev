@@ -120,18 +120,18 @@ class NotGrantedAssociatedProductMerger implements NotGrantedDataMergerInterface
 
         foreach ($fullProduct->getAssociations() as $association) {
             $associationCodes[$association->getAssociationType()->getCode()] = [
-                'products' => [],
+                'product_uuids' => [],
                 'product_models' => [],
                 'groups' => [],
             ];
             $hasAssociations = true;
 
             $associatedProducts = $association->getProducts();
-            $grantedProductIds = \array_flip($this->productCategoryAccessQuery->getGrantedProductUuids($associatedProducts->toArray(), $user));
+            $grantedProductUuids = \array_flip($this->productCategoryAccessQuery->getGrantedProductUuids($associatedProducts->toArray(), $user));
 
             foreach ($associatedProducts as $associatedProduct) {
-                if (!isset($grantedProductIds[$associatedProduct->getUuid()->toString()])) {
-                    $associationCodes[$association->getAssociationType()->getCode()]['products'][] = $associatedProduct->getIdentifier();
+                if (!isset($grantedProductUuids[$associatedProduct->getUuid()->toString()])) {
+                    $associationCodes[$association->getAssociationType()->getCode()]['products_uuids'][] = $associatedProduct->getUuid()->toString();
                 }
             }
 
@@ -149,14 +149,14 @@ class NotGrantedAssociatedProductMerger implements NotGrantedDataMergerInterface
             $hasAssociations = true;
             if (!isset($associationCodes[$association->getAssociationType()->getCode()])) {
                 $associationCodes[$association->getAssociationType()->getCode()] = [
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                     'groups' => [],
                 ];
             }
 
             foreach ($association->getProducts() as $associatedProduct) {
-                $associationCodes[$association->getAssociationType()->getCode()]['products'][] = $associatedProduct->getIdentifier();
+                $associationCodes[$association->getAssociationType()->getCode()]['product_uuids'][] = $associatedProduct->getUuid()->toString();
             }
             foreach ($association->getProductModels() as $associatedProductModel) {
                 $associationCodes[$association->getAssociationType()->getCode()]['product_models'][] = $associatedProductModel->getCode();

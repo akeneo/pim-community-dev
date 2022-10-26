@@ -63,4 +63,43 @@ SQL;
 
         return $codes;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUuids(UuidInterface $productUuid, AssociationInterface $association): array
+    {
+        $user = $this->tokenStorage->getToken()->getUser();
+        Assert::implementsInterface($user, UserInterface::class);
+        $userGroupsIds = $user->getGroupsIds();
+
+        $sql = <<<SQL
+SELECT DISTINCT(BIN_TO_UUID(p.uuid)) as uuid
+FROM pim_catalog_association a
+    INNER JOIN pim_catalog_association_product ap ON a.id = ap.association_id
+    INNER JOIN pim_catalog_product p ON p.uuid = ap.product_uuid
+    LEFT JOIN pim_catalog_category_product cp on p.uuid = cp.product_uuid
+    LEFT JOIN pimee_security_product_category_access pca ON pca.category_id = cp.category_id AND pca.user_group_id IN (:userGroupsIds)
+WHERE a.owner_uuid = UUID_TO_BIN(:ownerUuid) AND a.association_type_id = :associationTypeId
+    AND (cp.category_id IS NULL OR pca.view_items = 1)
+ORDER BY uuid ASC;
+SQL;
+        $stmt = $this->connection->executeQuery(
+            $sql,
+            [
+                'userGroupsIds' => $userGroupsIds,
+                'ownerUuid' => $productUuid->toString(),
+                'associationTypeId' => $association->getAssociationType()->getId(),
+            ],
+            [
+                'userGroupsIds' => Connection::PARAM_INT_ARRAY,
+            ]
+        );
+
+        $uuids = array_map(function ($row) {
+            return $row['uuid'];
+        }, $stmt->fetchAllAssociative());
+
+        return $uuids;
+    }
 }

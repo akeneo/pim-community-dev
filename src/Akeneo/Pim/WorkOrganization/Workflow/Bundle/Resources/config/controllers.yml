@@ -169,7 +169,6 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductController'
         arguments:
             - '@pim_catalog.repository.product'
-            - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.updater.product'
             - '@pimee_workflow.saver.product_delegating'
