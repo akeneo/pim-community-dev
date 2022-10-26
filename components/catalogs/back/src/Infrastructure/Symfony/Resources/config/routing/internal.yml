@@ -3,6 +3,13 @@ akeneo_catalogs_internal_get_catalogs_by_owner:
     controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetAllCatalogsByOwnerAction
     methods: [ GET ]
 
+akeneo_catalogs_internal_get_catalog_errors:
+    path: '/rest/catalogs/{catalogId}/errors'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetCatalogErrorsAction
+    methods: [ GET ]
+    requirements:
+        catalogId: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+
 akeneo_catalogs_internal_get_catalog:
     path: '/rest/catalogs/{catalogId}'
     controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetCatalogAction
