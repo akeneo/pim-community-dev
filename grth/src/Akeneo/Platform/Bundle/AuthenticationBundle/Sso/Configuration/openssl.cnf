@@ -1,0 +1,5 @@
+# minimalist openssl.cnf file for use with phpseclib
+
+RANDFILE		= php://memory
+
+[ v3_ca ]

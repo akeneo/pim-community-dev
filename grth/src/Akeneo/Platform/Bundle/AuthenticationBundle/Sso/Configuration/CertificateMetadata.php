@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration;
 
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\CertificateExpirationDate;
-use phpseclib\File\X509;
+use phpseclib3\File\X509;
 
 final class CertificateMetadata
 {
-    /** @var CertificateExpirationDate */
-    private $expirationDate;
+    private ?CertificateExpirationDate $expirationDate;
 
     public function __construct(string $certificate)
     {
