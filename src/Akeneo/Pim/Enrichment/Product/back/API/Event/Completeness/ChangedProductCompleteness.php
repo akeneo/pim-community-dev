@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Product\back\API\Event\Completeness;
+namespace Akeneo\Pim\Enrichment\Product\API\Event\Completeness;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Product\back\Infrastructure;
+namespace Akeneo\Pim\Enrichment\Product\Infrastructure;
 
 use Akeneo\Pim\Enrichment\Product\Domain\Clock;
 

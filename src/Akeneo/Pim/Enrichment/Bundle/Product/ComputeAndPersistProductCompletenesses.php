@@ -10,9 +10,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletene
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Query\SaveProductCompletenesses;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
-use Akeneo\Pim\Enrichment\Product\back\API\Event\Completeness\ChangedProductCompleteness;
-use Akeneo\Pim\Enrichment\Product\back\API\Event\Completeness\ProductCompletenessCollectionWasChanged;
-use Akeneo\Pim\Enrichment\Product\back\API\Event\Completeness\ProductsCompletenessCollectionsWereChanged;
+use Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ChangedProductCompleteness;
+use Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ProductCompletenessCollectionWasChanged;
+use Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ProductsCompletenessCollectionsWereChanged;
 use Akeneo\Pim\Enrichment\Product\Domain\Clock;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
