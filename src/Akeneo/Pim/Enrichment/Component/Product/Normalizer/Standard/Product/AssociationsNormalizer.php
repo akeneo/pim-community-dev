@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product;
 
-use Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductCodesByProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductUuidsByProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductCodesByPublishedProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
@@ -24,7 +24,7 @@ use Webmozart\Assert\Assert;
 class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     public function __construct(
-        private GetAssociatedProductCodesByProduct $getAssociatedProductCodeByProduct
+        private GetAssociatedProductUuidsByProduct $getAssociatedProductCodeByProduct
     ) {
     }
 

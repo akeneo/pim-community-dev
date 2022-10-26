@@ -2,12 +2,12 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product;
 
-use Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductCodesByProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductUuidsByProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\UuidInterface;
 
-final class GetAssociatedProductCodesByProductFromDB implements GetAssociatedProductCodesByProduct
+final class GetAssociatedProductUuidsByProductFromDB implements GetAssociatedProductUuidsByProduct
 {
     public function __construct(private Connection $connection)
     {

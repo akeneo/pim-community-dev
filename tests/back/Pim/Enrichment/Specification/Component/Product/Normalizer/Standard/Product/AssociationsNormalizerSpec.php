@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product;
 
-use Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductCodesByProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductUuidsByProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AssociationsNormalizerSpec extends ObjectBehavior
 {
-    function let(GetAssociatedProductCodesByProduct $getAssociatedProductCodesByProduct)
+    function let(GetAssociatedProductUuidsByProduct $getAssociatedProductCodesByProduct)
     {
         $this->beConstructedWith($getAssociatedProductCodesByProduct);
     }
@@ -41,7 +41,7 @@ class AssociationsNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_product_associations_in_standard_format_only(
-        GetAssociatedProductCodesByProduct $getAssociatedProductCodesByProduct,
+        GetAssociatedProductUuidsByProduct $getAssociatedProductCodesByProduct,
         ProductInterface $product,
         AssociationInterface $association1,
         AssociationInterface $association2,
@@ -99,7 +99,7 @@ class AssociationsNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_product_associations_with_query_to_find_associated_products_codes(
-        GetAssociatedProductCodesByProduct $getAssociatedProductCodesByProduct,
+        GetAssociatedProductUuidsByProduct $getAssociatedProductCodesByProduct,
         ProductInterface $product,
         ProductModelInterface $productModel,
         AssociationInterface $association1,
