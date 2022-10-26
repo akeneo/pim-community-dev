@@ -44,6 +44,7 @@ $rules = [
             'Symfony\Component\HttpKernel\Bundle\Bundle',
             'Symfony\Component\HttpKernel\DependencyInjection\Extension',
             'Symfony\Component\HttpKernel\Exception\BadRequestHttpException',
+            'Symfony\Component\HttpKernel\Exception\NotFoundHttpException',
             'Symfony\Component\EventDispatcher\EventSubscriberInterface',
             'Symfony\Component\HttpFoundation',
             'Symfony\Component\Validator',
