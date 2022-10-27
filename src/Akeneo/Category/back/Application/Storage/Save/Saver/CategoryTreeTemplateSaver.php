@@ -2,7 +2,7 @@
 
 namespace Akeneo\Category\Application\Storage\Save\Saver;
 
-use Akeneo\Category\Domain\Model\Template;
+use Akeneo\Category\Domain\Model\Enrichment\Template;
 
 interface CategoryTreeTemplateSaver
 {

@@ -7,8 +7,8 @@ use Akeneo\Category\Application\Query\GetCategoryTreeByCategoryTemplate;
 use Akeneo\Category\Application\Query\GetTemplate;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver;
-use Akeneo\Category\Domain\Model\Category;
-use Akeneo\Category\Domain\Model\Template;
+use Akeneo\Category\Domain\Model\Enrichment\Category;
+use Akeneo\Category\Domain\Model\Enrichment\Template;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
@@ -79,7 +79,7 @@ class ActivateTemplate
         }
 
         // TODO either implement all the method of the SQL service or use a new service to check if templateCode already exists
-        if (!$this->getTemplate->isAlreadyExistingTemplateCode($templateCode)) {
+        if ($this->getTemplate->isAlreadyExistingTemplateCode($templateCode)) {
             return false;
         }
 

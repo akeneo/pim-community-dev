@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
 use Akeneo\Category\Application\Query\GetCategoryTreeByCategoryTemplate;
-use Akeneo\Category\Domain\Model\Category;
-use Akeneo\Category\Domain\Model\CategoryTree;
+use Akeneo\Category\Domain\Model\Classification\CategoryTree;
+use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Doctrine\DBAL\Connection;
 
