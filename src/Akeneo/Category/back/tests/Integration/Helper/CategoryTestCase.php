@@ -11,7 +11,6 @@ namespace Akeneo\Category\back\tests\Integration\Helper;
 
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryBase;
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryTranslations;
-use Akeneo\Category\Domain\Model\Attribute\Attribute;
 use Akeneo\Category\Domain\Model\Attribute\AttributeImage;
 use Akeneo\Category\Domain\Model\Attribute\AttributeRichText;
 use Akeneo\Category\Domain\Model\Attribute\AttributeText;
@@ -114,12 +113,9 @@ class CategoryTestCase extends TestCase
     }
 
     /**
-     * @param string|null $templateUuid
-     * @param string|null $templateCode
      * @param array<string, string>|null $templateLabels
-     * @param int|null $categoryTreeId
-     * @param array<array<string, string>>|null $templateAttributes
-     * @return Template
+     * @param array<array<string, mixed>>|null $templateAttributes
+     *
      * @throws \Exception
      */
     public function generateMockedCategoryTemplateModel(
@@ -127,7 +123,7 @@ class CategoryTestCase extends TestCase
         ?string $templateCode = null,
         ?array $templateLabels = null,
         ?int $categoryTreeId = null,
-        ?array $templateAttributes = null
+        ?array $templateAttributes = null,
     ): Template {
         $getTemplate = new GetTemplateInMemory();
         /** @var Template $defaultTemplate */
@@ -158,7 +154,7 @@ class CategoryTestCase extends TestCase
         }
 
         if ($templateAttributes === null) {
-            $templateAttributes = $defaultTemplate->getAttributeCollection()->normalize();
+            $templateAttributes = $defaultTemplate->getAttributeCollection();
         } else {
             $attributes = [];
             foreach ($templateAttributes as $attribute) {
@@ -186,7 +182,7 @@ class CategoryTestCase extends TestCase
                 $attributes[] = $attributeClass::create(
                     AttributeUuid::fromString($attribute['uuid']),
                     new AttributeCode($attribute['code']),
-                    AttributeOrder::fromInteger((int)$attribute['order']),
+                    AttributeOrder::fromInteger((int) $attribute['order']),
                     AttributeIsRequired::fromBoolean((bool) $attribute['is_required']),
                     AttributeIsScopable::fromBoolean((bool) $attribute['is_scopable']),
                     AttributeIsLocalizable::fromBoolean((bool) $attribute['is_localizable']),
@@ -203,7 +199,7 @@ class CategoryTestCase extends TestCase
             $templateCode,
             $templateLabels,
             $categoryTreeId,
-            $templateAttributes
+            $templateAttributes,
         );
     }
 
