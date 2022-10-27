@@ -22,7 +22,6 @@ const localStorage: LocalStorage = {
 const sftpStorage: SftpStorage = {
   type: 'sftp',
   host: 'example.com',
-  fingerprint: '',
   port: 22,
   username: 'test',
   password: 'test',
@@ -36,6 +35,7 @@ test('it says if a storage is a local storage', () => {
 
 test('it says if a storage is a sftp storage', () => {
   expect(isSftpStorage(sftpStorage)).toBe(true);
+  expect(isSftpStorage({...sftpStorage, fingerprint: 'c1:91:5e:42:55:5c:74:65:b6:12:32:7e:1f:6d:80:3e'})).toBe(true);
   expect(isSftpStorage(localStorage)).toBe(false);
 });
 

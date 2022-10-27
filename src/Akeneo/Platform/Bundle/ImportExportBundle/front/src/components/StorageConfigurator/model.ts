@@ -6,6 +6,7 @@ import {SftpStorageConfigurator} from './SftpStorageConfigurator';
 
 type StorageConfiguratorProps = {
   storage: Storage;
+  fileExtension: string;
   onStorageChange: (storage: Storage) => void;
   validationErrors: ValidationError[];
 };
@@ -46,7 +47,6 @@ const isSftpStorage = (storage: Storage): storage is SftpStorage => {
     'sftp' === storage.type &&
     'file_path' in storage &&
     'host' in storage &&
-    'fingerprint' in storage &&
     'port' in storage &&
     'username' in storage &&
     'password' in storage

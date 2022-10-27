@@ -11,7 +11,14 @@ test('it renders the local storage configurator', () => {
     file_path: '/tmp/file.xlsx',
   };
 
-  renderWithProviders(<LocalStorageConfigurator storage={storage} validationErrors={[]} onStorageChange={jest.fn()} />);
+  renderWithProviders(
+    <LocalStorageConfigurator
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={jest.fn()}
+    />
+  );
 
   expect(screen.getByDisplayValue('/tmp/file.xlsx')).toBeInTheDocument();
 });
@@ -24,7 +31,12 @@ test('it allows user to fill local storage file_path field', () => {
   const onStorageChange = jest.fn();
 
   renderWithProviders(
-    <LocalStorageConfigurator storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />
+    <LocalStorageConfigurator
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={onStorageChange}
+    />
   );
 
   const file_pathInput = screen.getByLabelText(
@@ -45,7 +57,6 @@ test('it throws an exception when passing a non-local storage', () => {
     type: 'sftp',
     file_path: '/tmp/file.xlsx',
     host: 'localhost',
-    fingerprint: '',
     port: 22,
     username: 'root',
     password: 'root',
@@ -53,7 +64,12 @@ test('it throws an exception when passing a non-local storage', () => {
 
   expect(() =>
     renderWithProviders(
-      <LocalStorageConfigurator storage={storage} validationErrors={[]} onStorageChange={jest.fn()} />
+      <LocalStorageConfigurator
+        storage={storage}
+        fileExtension="xlsx"
+        validationErrors={[]}
+        onStorageChange={jest.fn()}
+      />
     )
   ).toThrowError('Invalid storage type "sftp" for local storage configurator');
 
@@ -77,7 +93,12 @@ test('it displays validation errors', () => {
   ];
 
   renderWithProviders(
-    <LocalStorageConfigurator storage={storage} validationErrors={validationErrors} onStorageChange={jest.fn()} />
+    <LocalStorageConfigurator
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={validationErrors}
+      onStorageChange={jest.fn()}
+    />
   );
 
   expect(screen.getByText('error.key.a_file_path_error')).toBeInTheDocument();

@@ -10,15 +10,18 @@ test('it renders the sftp storage configurator', () => {
     type: 'sftp',
     file_path: '/tmp/file.xlsx',
     host: 'example.com',
-    fingerprint: '8653a85f112ca9286bd78fbe47606a23',
+    fingerprint: 'c1:91:5e:42:55:5c:74:65:b6:12:32:7e:1f:6d:80:3e',
     port: 22,
     username: 'root',
     password: 'root',
   };
 
-  renderWithProviders(<SftpStorageConfigurator storage={storage} validationErrors={[]} onStorageChange={jest.fn()} />);
+  renderWithProviders(
+    <SftpStorageConfigurator storage={storage} fileExtension="xlsx" validationErrors={[]} onStorageChange={jest.fn()} />
+  );
 
   expect(screen.getByDisplayValue('/tmp/file.xlsx')).toBeInTheDocument();
+  expect(screen.getByDisplayValue('c1:91:5e:42:55:5c:74:65:b6:12:32:7e:1f:6d:80:3e')).toBeInTheDocument();
 });
 
 test('it allows user to fill file_path field', () => {
@@ -26,7 +29,6 @@ test('it allows user to fill file_path field', () => {
     type: 'sftp',
     file_path: '/tmp/test.xls',
     host: '',
-    fingerprint: '',
     port: 22,
     username: '',
     password: '',
@@ -35,7 +37,12 @@ test('it allows user to fill file_path field', () => {
   const onStorageChange = jest.fn();
 
   renderWithProviders(
-    <SftpStorageConfigurator storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />
+    <SftpStorageConfigurator
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={onStorageChange}
+    />
   );
 
   const file_pathInput = screen.getByLabelText(
@@ -51,7 +58,6 @@ test('it allows user to fill host field', () => {
     type: 'sftp',
     file_path: '',
     host: 'example.co',
-    fingerprint: '',
     port: 22,
     username: '',
     password: '',
@@ -60,7 +66,12 @@ test('it allows user to fill host field', () => {
   const onStorageChange = jest.fn();
 
   renderWithProviders(
-    <SftpStorageConfigurator storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />
+    <SftpStorageConfigurator
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={onStorageChange}
+    />
   );
 
   const hostInput = screen.getByLabelText(
@@ -75,8 +86,7 @@ test('it allows user to fill fingerprint field', () => {
   const storage: SftpStorage = {
     type: 'sftp',
     file_path: '',
-    host: 'example.co',
-    fingerprint: '',
+    host: 'example.com',
     port: 22,
     username: '',
     password: '',
@@ -85,13 +95,53 @@ test('it allows user to fill fingerprint field', () => {
   const onStorageChange = jest.fn();
 
   renderWithProviders(
-    <SftpStorageConfigurator storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />
+    <SftpStorageConfigurator
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={onStorageChange}
+    />
   );
 
-  const hostInput = screen.getByLabelText('pim_import_export.form.job_instance.storage_form.fingerprint.label');
-  userEvent.paste(hostInput, '8653a85f112ca9286bd78fbe47606a23');
+  userEvent.paste(
+    screen.getByLabelText('pim_import_export.form.job_instance.storage_form.fingerprint.label'),
+    'c1:91:5e:42:55:5c:74:65:b6:12:32:7e:1f:6d:80:3e'
+  );
 
-  expect(onStorageChange).toHaveBeenLastCalledWith({...storage, fingerprint: '8653a85f112ca9286bd78fbe47606a23'});
+  expect(onStorageChange).toHaveBeenLastCalledWith({
+    ...storage,
+    fingerprint: 'c1:91:5e:42:55:5c:74:65:b6:12:32:7e:1f:6d:80:3e',
+  });
+});
+
+test('it removes fingerprint from model when clearing input', () => {
+  const storage: SftpStorage = {
+    type: 'sftp',
+    file_path: '',
+    host: 'example.com',
+    fingerprint: 'c1:91:5e:42:55:5c:74:65:b6:12:32:7e:1f:6d:80:3e',
+    port: 22,
+    username: '',
+    password: '',
+  };
+
+  const onStorageChange = jest.fn();
+
+  renderWithProviders(
+    <SftpStorageConfigurator
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={onStorageChange}
+    />
+  );
+
+  userEvent.clear(screen.getByLabelText('pim_import_export.form.job_instance.storage_form.fingerprint.label'));
+
+  expect(onStorageChange).toHaveBeenLastCalledWith({
+    ...storage,
+    fingerprint: undefined,
+  });
 });
 
 test('it allows user to fill port field', () => {
@@ -99,7 +149,6 @@ test('it allows user to fill port field', () => {
     type: 'sftp',
     file_path: '',
     host: '',
-    fingerprint: '',
     port: 2,
     username: '',
     password: '',
@@ -108,7 +157,12 @@ test('it allows user to fill port field', () => {
   const onStorageChange = jest.fn();
 
   renderWithProviders(
-    <SftpStorageConfigurator storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />
+    <SftpStorageConfigurator
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={onStorageChange}
+    />
   );
 
   const portInput = screen.getByLabelText(
@@ -124,7 +178,6 @@ test('it allows user to fill username field', () => {
     type: 'sftp',
     file_path: '',
     host: '',
-    fingerprint: '',
     port: 22,
     username: 'roo',
     password: '',
@@ -133,7 +186,12 @@ test('it allows user to fill username field', () => {
   const onStorageChange = jest.fn();
 
   renderWithProviders(
-    <SftpStorageConfigurator storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />
+    <SftpStorageConfigurator
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={onStorageChange}
+    />
   );
 
   const usernameInput = screen.getByLabelText(
@@ -149,7 +207,6 @@ test('it allows user to fill password field', () => {
     type: 'sftp',
     file_path: '',
     host: '',
-    fingerprint: '',
     port: 22,
     username: '',
     password: 'roo',
@@ -158,7 +215,12 @@ test('it allows user to fill password field', () => {
   const onStorageChange = jest.fn();
 
   renderWithProviders(
-    <SftpStorageConfigurator storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />
+    <SftpStorageConfigurator
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={onStorageChange}
+    />
   );
 
   const passwordInput = screen.getByLabelText(
@@ -178,7 +240,14 @@ test('it throws an exception when passing a non-sftp storage', () => {
   };
 
   expect(() =>
-    renderWithProviders(<SftpStorageConfigurator storage={storage} validationErrors={[]} onStorageChange={jest.fn()} />)
+    renderWithProviders(
+      <SftpStorageConfigurator
+        storage={storage}
+        fileExtension="xlsx"
+        validationErrors={[]}
+        onStorageChange={jest.fn()}
+      />
+    )
   ).toThrowError('Invalid storage type "local" for sftp storage configurator');
 
   mockedConsole.mockRestore();
@@ -189,7 +258,7 @@ test('it displays validation errors', () => {
     type: 'sftp',
     file_path: '/tmp/file.xlsx',
     host: 'example.com',
-    fingerprint: '',
+    fingerprint: 'invalid',
     port: 22,
     username: 'root',
     password: 'root',
@@ -209,6 +278,13 @@ test('it displays validation errors', () => {
       message: 'this is a host error',
       parameters: {},
       propertyPath: '[host]',
+    },
+    {
+      messageTemplate: 'error.key.a_fingerprint_error',
+      invalidValue: '',
+      message: 'this is a fingerprint error',
+      parameters: {},
+      propertyPath: '[fingerprint]',
     },
     {
       messageTemplate: 'error.key.a_port_error',
@@ -234,11 +310,17 @@ test('it displays validation errors', () => {
   ];
 
   renderWithProviders(
-    <SftpStorageConfigurator storage={storage} validationErrors={validationErrors} onStorageChange={jest.fn()} />
+    <SftpStorageConfigurator
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={validationErrors}
+      onStorageChange={jest.fn()}
+    />
   );
 
   expect(screen.getByText('error.key.a_file_path_error')).toBeInTheDocument();
   expect(screen.getByText('error.key.a_host_error')).toBeInTheDocument();
+  expect(screen.getByText('error.key.a_fingerprint_error')).toBeInTheDocument();
   expect(screen.getByText('error.key.a_port_error')).toBeInTheDocument();
   expect(screen.getByText('error.key.an_username_error')).toBeInTheDocument();
   expect(screen.getByText('error.key.a_password_error')).toBeInTheDocument();
@@ -249,7 +331,6 @@ test('it can check connection', async () => {
     type: 'sftp',
     file_path: '/tmp/file.xlsx',
     host: 'example.com',
-    fingerprint: '',
     port: 22,
     username: 'root',
     password: 'root',
@@ -260,7 +341,12 @@ test('it can check connection', async () => {
   const onStorageChange = jest.fn();
 
   renderWithProviders(
-    <SftpStorageConfigurator storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />
+    <SftpStorageConfigurator
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={onStorageChange}
+    />
   );
 
   const checkButton = screen.getByText('pim_import_export.form.job_instance.connection_checker.label');
@@ -276,7 +362,6 @@ test('it can check connection, display message if error', async () => {
     type: 'sftp',
     file_path: '/tmp/file.xlsx',
     host: 'example.com',
-    fingerprint: '',
     port: 22,
     username: 'root',
     password: 'root',
@@ -289,7 +374,12 @@ test('it can check connection, display message if error', async () => {
   const onStorageChange = jest.fn();
 
   renderWithProviders(
-    <SftpStorageConfigurator storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />
+    <SftpStorageConfigurator
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={onStorageChange}
+    />
   );
 
   const checkButton = screen.getByText('pim_import_export.form.job_instance.connection_checker.label');

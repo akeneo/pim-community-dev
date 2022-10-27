@@ -18,7 +18,12 @@ const CheckStorageConnection = styled.div`
   color: ${getColor('green', 100)};
 `;
 
-const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: StorageConfiguratorProps) => {
+const SftpStorageConfigurator = ({
+  storage,
+  fileExtension,
+  validationErrors,
+  onStorageChange,
+}: StorageConfiguratorProps) => {
   if (!isSftpStorage(storage)) {
     throw new Error(`Invalid storage type "${storage.type}" for sftp storage configurator`);
   }
@@ -33,6 +38,9 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
         required={true}
         value={storage.file_path}
         label={translate('pim_import_export.form.job_instance.storage_form.file_path.label')}
+        placeholder={translate('pim_import_export.form.job_instance.storage_form.file_path.placeholder', {
+          file_extension: fileExtension,
+        })}
         onChange={file_path => onStorageChange({...storage, file_path})}
         errors={filterErrors(validationErrors, '[file_path]')}
       />
@@ -40,14 +48,18 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
         required={true}
         value={storage.host}
         label={translate('pim_import_export.form.job_instance.storage_form.host.label')}
+        placeholder={translate('pim_import_export.form.job_instance.storage_form.host.placeholder')}
         onChange={host => onStorageChange({...storage, host})}
         errors={filterErrors(validationErrors, '[host]')}
       />
       <TextField
         required={false}
-        value={storage.fingerprint}
+        value={storage.fingerprint ?? ''}
         label={translate('pim_import_export.form.job_instance.storage_form.fingerprint.label')}
-        onChange={fingerprint => onStorageChange({...storage, fingerprint})}
+        placeholder={translate('pim_import_export.form.job_instance.storage_form.fingerprint.placeholder')}
+        onChange={fingerprint =>
+          onStorageChange({...storage, fingerprint: '' === fingerprint ? undefined : fingerprint})
+        }
         errors={filterErrors(validationErrors, '[fingerprint]')}
       />
       <Field
@@ -61,6 +73,7 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
           onChange={port => onStorageChange({...storage, port: parseInt(port, 10)})}
           invalid={0 < portValidationErrors.length}
           value={storage.port.toString()}
+          placeholder={translate('pim_import_export.form.job_instance.storage_form.port.placeholder')}
         />
         {portValidationErrors.map((error, key) => (
           <Helper key={key} level="error" inline={true}>
@@ -72,6 +85,7 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
         value={storage.username}
         required={true}
         label={translate('pim_import_export.form.job_instance.storage_form.username.label')}
+        placeholder={translate('pim_import_export.form.job_instance.storage_form.username.placeholder')}
         onChange={(username: string) => onStorageChange({...storage, username})}
         errors={filterErrors(validationErrors, '[username]')}
       />
@@ -80,6 +94,7 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
         required={true}
         type="password"
         label={translate('pim_import_export.form.job_instance.storage_form.password.label')}
+        placeholder={translate('pim_import_export.form.job_instance.storage_form.password.placeholder')}
         onChange={(password: string) => onStorageChange({...storage, password})}
         errors={filterErrors(validationErrors, '[password]')}
       />
