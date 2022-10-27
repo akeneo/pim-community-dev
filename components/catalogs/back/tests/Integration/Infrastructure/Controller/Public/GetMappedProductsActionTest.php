@@ -55,13 +55,11 @@ class GetMappedProductsActionTest extends IntegrationTestCase
 
         $this->createChannel('print', ['en_US', 'fr_FR']);
 
-        $productBlue = $this->createProduct(Uuid::fromString('8985de43-08bc-484d-aee0-4489a56ba02d'), [
-//            new SetTextValue('name', 'ecommerce', 'en_US', 'Blue print'),
+        $this->createProduct(Uuid::fromString('8985de43-08bc-484d-aee0-4489a56ba02d'), [
             new SetTextValue('name', 'print', 'en_US', 'Blue print'),
             new SetTextValue('description', 'print', null, 'Blue description'),
         ]);
-        $productGreen = $this->createProduct(Uuid::fromString('00380587-3893-46e6-a8c2-8fee6404cc9e'), [
-//            new SetTextValue('name', 'ecommerce', 'en_US', 'Green print'),
+        $this->createProduct(Uuid::fromString('00380587-3893-46e6-a8c2-8fee6404cc9e'), [
             new SetTextValue('name', 'print', 'en_US', 'Green print'),
             new SetTextValue('description', 'print', null, 'Green description'),
         ]);
@@ -71,8 +69,6 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             'read_products',
         ]);
 
-        $this->addGroupToUser('shopifi', 'IT support');
-
         $this->commandBus->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
@@ -80,7 +76,6 @@ class GetMappedProductsActionTest extends IntegrationTestCase
         ));
         $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
-        // create catalog mapping
         $this->commandBus->execute(new UpdateProductMappingSchemaCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             \json_decode($this->getProductMappingSchemaRaw(), false, 512, JSON_THROW_ON_ERROR),
@@ -133,10 +128,10 @@ class GetMappedProductsActionTest extends IntegrationTestCase
         Assert::assertEquals(200, $response->getStatusCode());
         Assert::assertCount(2, $payload['_embedded']['items']);
         Assert::assertSame($expectedMappedProducts, $payload['_embedded']['items']);
-        Assert::assertEquals(\sprintf(
-            'http://localhost/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapped-products?search_after=%s&limit=2',
-            $productBlue->getUuid()->toString(),
-        ), $payload['_links']['next']['href']);
+        Assert::assertEquals(
+            'http://localhost/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapped-products?search_after=8985de43-08bc-484d-aee0-4489a56ba02d&limit=2',
+            $payload['_links']['next']['href']
+        );
     }
 
     public function testItReturnsBadRequestWhenPaginationIsInvalid(): void
