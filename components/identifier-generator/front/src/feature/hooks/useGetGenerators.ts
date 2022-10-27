@@ -8,7 +8,6 @@ type Response = {
 };
 
 const useGetGenerators = (): Response => {
-
   const router = useRouter();
 
   const getGeneratorList = async () => {

@@ -1,10 +1,11 @@
 import React, {useCallback, useMemo} from 'react';
-import {Common} from '../components';
-import {PageHeader, PimView, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {AttributesIllustration, Breadcrumb, Button, Helper, Table, } from 'akeneo-design-system';
+import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {AttributesIllustration, Button, Helper, Table} from 'akeneo-design-system';
 import {useGetGenerators} from '../hooks/useGetGenerators';
 import {LabelCollection} from '../models';
 import {Styled} from './styles/ListPageStyled';
+import {ListSkeleton} from '../components/ListSkeleton';
+import {Header} from '../components/Header';
 
 type ListPageProps = {
   onCreate: () => void;
@@ -23,27 +24,11 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
 
   return (
     <>
-      <Common.Helper />
-      <PageHeader>
-        <PageHeader.Breadcrumb>
-          <Breadcrumb>
-            <Breadcrumb.Step href="#">{translate('pim_title.pim_settings_index')}</Breadcrumb.Step>
-            <Breadcrumb.Step href="#">{translate('pim_title.akeneo_identifier_generator_index')}</Breadcrumb.Step>
-          </Breadcrumb>
-        </PageHeader.Breadcrumb>
-        <PageHeader.UserActions>
-          <PimView
-            className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
-            viewName="pim-identifier-generator-user-navigation"
-          />
-        </PageHeader.UserActions>
-        <PageHeader.Actions>
-          <Button onClick={onCreate} disabled={!isGeneratorListEmpty}>
-            {translate('pim_common.create')}
-          </Button>
-        </PageHeader.Actions>
-        <PageHeader.Title>{translate('pim_title.akeneo_identifier_generator_index')}</PageHeader.Title>
-      </PageHeader>
+      <Header>
+        <Button onClick={onCreate} disabled={!isGeneratorListEmpty}>
+          {translate('pim_common.create')}
+        </Button>
+      </Header>
       <Styled.Container>
         <Table>
           <Table.Header>
@@ -64,28 +49,19 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
                 </Styled.HelpCenterLink>
               </Styled.NoIdentifierMessage>
             )}
-            {isLoading && (
-              <>
-                <Styled.SkeletonContainer>
-                  <Styled.Skeleton />
-                  <Styled.Skeleton />
-                  <Styled.Skeleton />
-                </Styled.SkeletonContainer>
-              </>
-            )}
+            {isLoading && <ListSkeleton />}
             {!isGeneratorListEmpty && (
               <>
                 <tr>
                   <td colSpan={3}>
                     <Helper level="info">
-                      It is only possible to create one Identifier Generator for the moment. You will soon be able to
-                      configure multiple generators matching all your usecases.{' '}
+                      {translate('pim_identifier_generator.list.create_info')}
                       <a
                         href="https://help.akeneo.com/pim/serenity/articles/understand-data-quality.html"
                         target="_blank"
                         rel="noreferrer"
                       >
-                        Check out our Help Center for more information.
+                        {translate('pim_identifier_generator.list.check_help_center')}
                       </a>
                     </Helper>
                   </td>
@@ -96,15 +72,10 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
                       <Styled.Label>{getCurrentLabel(labels, code)}</Styled.Label>
                     </Table.Cell>
                     <Table.Cell>{target}</Table.Cell>
-                    <Table.ActionCell>
-                      <Button ghost level="primary">
-                        Edit
-                      </Button>
-                    </Table.ActionCell>
                   </Table.Row>
                 ))}
-              </>)
-            }
+              </>
+            )}
           </Table.Body>
         </Table>
       </Styled.Container>

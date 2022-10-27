@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {getColor, SkeletonPlaceholder} from 'akeneo-design-system';
+import {getColor} from 'akeneo-design-system';
 
 const NoIdentifierMessage = styled.div`
   display: flex;
@@ -26,18 +26,6 @@ const Container = styled.div`
   margin: 40px 20px;
 `;
 
-const Skeleton = styled(SkeletonPlaceholder)`
-  width: 100%;
-  height: 50px;
-`;
-
-const SkeletonContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  width: 100%;
-`;
-
 const Label = styled.label`
   font-style: italic;
   color: ${getColor('brand', 100)};
@@ -48,9 +36,7 @@ const Styled = {
   Title,
   HelpCenterLink,
   Container,
-  Skeleton,
-  SkeletonContainer,
-  Label
+  Label,
 };
 
 export {Styled};
