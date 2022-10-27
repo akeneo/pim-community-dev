@@ -74,6 +74,8 @@ $rules = [
             'Akeneo\Tool\Component\Batch\Model\Warning',
             'Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface',
             'Akeneo\Tool\Component\Connector\Exception\InvalidItemFromViolationsException',
+            'Akeneo\Tool\Component\Connector\Reader\File\SpoutReaderFactory',
+            'Akeneo\Tool\Component\Connector\Writer\File\SpoutWriterFactory',
             'Akeneo\Tool\Component\Connector\Step\TaskletInterface',
             'Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface',
             'Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker',
@@ -86,6 +88,7 @@ $rules = [
             'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
 
             // External dependencies coupling
+            'OpenSpout\Common\Entity\Row',
             'OpenSpout\Common\Exception\IOException',
             'OpenSpout\Writer\Exception\WriterNotOpenedException',
             'Doctrine\DBAL\Connection',

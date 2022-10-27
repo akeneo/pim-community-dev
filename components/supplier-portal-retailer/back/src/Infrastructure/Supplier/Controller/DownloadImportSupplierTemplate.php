@@ -6,7 +6,6 @@ namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Controller;
 
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Encoder\SuppliersEncoder;
 use Akeneo\Tool\Component\Connector\Reader\File\SpoutReaderFactory;
-use Akeneo\Tool\Component\Connector\Writer\File\SpoutWriterFactory;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
 
