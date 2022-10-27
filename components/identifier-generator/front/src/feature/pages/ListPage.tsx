@@ -1,70 +1,20 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {Common} from '../components';
 import {PageHeader, PimView, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {
-  AttributesIllustration,
-  Breadcrumb,
-  Button,
-  getColor,
-  Helper,
-  SkeletonPlaceholder,
-  Table,
-} from 'akeneo-design-system';
+import {AttributesIllustration, Breadcrumb, Button, Helper, Table, } from 'akeneo-design-system';
 import {useGetGenerators} from '../hooks/useGetGenerators';
-import styled from 'styled-components';
 import {LabelCollection} from '../models';
+import {Styled} from './styles/ListPageStyled';
 
 type ListPageProps = {
   onCreate: () => void;
-  isCreateEnabled: boolean;
 };
 
-const NoIdentifierMessage = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-`;
-
-const Title = styled.div`
-  font-size: 28px;
-  font-weight: 400;
-  margin-top: 30px;
-`;
-
-const HelpCenterLink = styled.a`
-  font-size: ${({theme}) => theme.fontSize.big};
-  color: ${({theme}) => theme.color.purple100};
-  cursor: pointer;
-  margin-top: 5px;
-  text-decoration: underline;
-`;
-
-const Container = styled.div`
-  margin: 40px 20px;
-`;
-
-const Skeleton = styled(SkeletonPlaceholder)`
-  width: 100%;
-  height: 50px;
-`;
-
-const SkeletonContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  width: 100%;
-`;
-
-const Label = styled.label`
-  font-style: italic;
-  color: ${getColor('brand', 100)};
-`;
-
-const ListPage: React.FC<ListPageProps> = ({onCreate, isCreateEnabled}) => {
+const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
   const translate = useTranslate();
   const {data: generators, isLoading} = useGetGenerators();
   const locale = useUserContext().get('catalogLocale');
+  const isGeneratorListEmpty = useMemo(() => generators?.length === 0, [generators]);
 
   const getCurrentLabel = useCallback(
     (labels: LabelCollection, code: string) => labels[locale] || `[${code}]`,
@@ -88,13 +38,13 @@ const ListPage: React.FC<ListPageProps> = ({onCreate, isCreateEnabled}) => {
           />
         </PageHeader.UserActions>
         <PageHeader.Actions>
-          <Button onClick={onCreate} disabled={!isCreateEnabled}>
+          <Button onClick={onCreate} disabled={!isGeneratorListEmpty}>
             {translate('pim_common.create')}
           </Button>
         </PageHeader.Actions>
         <PageHeader.Title>{translate('pim_title.akeneo_identifier_generator_index')}</PageHeader.Title>
       </PageHeader>
-      <Container>
+      <Styled.Container>
         <Table>
           <Table.Header>
             <Table.HeaderCell>{translate('pim_common.label')}</Table.HeaderCell>
@@ -102,28 +52,28 @@ const ListPage: React.FC<ListPageProps> = ({onCreate, isCreateEnabled}) => {
             <Table.HeaderCell></Table.HeaderCell>
           </Table.Header>
           <Table.Body>
-            {generators.length === 0 && !isLoading && (
-              <NoIdentifierMessage>
+            {isGeneratorListEmpty && !isLoading && (
+              <Styled.NoIdentifierMessage>
                 <AttributesIllustration />
-                <Title>{translate('pim_identifier_generator.list.first_generator')}</Title>
-                <HelpCenterLink
+                <Styled.Title>{translate('pim_identifier_generator.list.first_generator')}</Styled.Title>
+                <Styled.HelpCenterLink
                   href="https://help.akeneo.com/pim/serenity/articles/understand-data-quality.html"
                   target="_blank"
                 >
                   {translate('pim_identifier_generator.list.check_help_center')}
-                </HelpCenterLink>
-              </NoIdentifierMessage>
+                </Styled.HelpCenterLink>
+              </Styled.NoIdentifierMessage>
             )}
             {isLoading && (
               <>
-                <SkeletonContainer>
-                  <Skeleton />
-                  <Skeleton />
-                  <Skeleton />
-                </SkeletonContainer>
+                <Styled.SkeletonContainer>
+                  <Styled.Skeleton />
+                  <Styled.Skeleton />
+                  <Styled.Skeleton />
+                </Styled.SkeletonContainer>
               </>
             )}
-            {
+            {!isGeneratorListEmpty && (
               <>
                 <tr>
                   <td colSpan={3}>
@@ -140,10 +90,10 @@ const ListPage: React.FC<ListPageProps> = ({onCreate, isCreateEnabled}) => {
                     </Helper>
                   </td>
                 </tr>
-                {generators.map(({labels, code, target}) => (
+                {generators?.map(({labels, code, target}) => (
                   <Table.Row key={code}>
                     <Table.Cell>
-                      <Label>{getCurrentLabel(labels, code)}</Label>
+                      <Styled.Label>{getCurrentLabel(labels, code)}</Styled.Label>
                     </Table.Cell>
                     <Table.Cell>{target}</Table.Cell>
                     <Table.ActionCell>
@@ -153,11 +103,11 @@ const ListPage: React.FC<ListPageProps> = ({onCreate, isCreateEnabled}) => {
                     </Table.ActionCell>
                   </Table.Row>
                 ))}
-              </>
+              </>)
             }
           </Table.Body>
         </Table>
-      </Container>
+      </Styled.Container>
     </>
   );
 };
