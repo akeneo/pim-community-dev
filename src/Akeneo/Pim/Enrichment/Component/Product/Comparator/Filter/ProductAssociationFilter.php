@@ -70,7 +70,7 @@ class ProductAssociationFilter implements FilterInterface
             $isImportingByUuids = false;
         }
 
-        $originalAssociations = $originalAssociations ?? $this->associationsNormalizer->normalize(
+        $originalAssociations = $this->associationsNormalizer->normalize(
             $product,
             'standard',
             ['with_association_uuids' => $isImportingByUuids]
