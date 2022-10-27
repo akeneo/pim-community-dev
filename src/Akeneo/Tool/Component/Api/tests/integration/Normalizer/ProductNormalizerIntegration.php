@@ -25,6 +25,7 @@ class ProductNormalizerIntegration extends TestCase
     public function testEmptyDisabledProduct()
     {
         $expected = [
+            'uuid'                    => $this->getUuidFromIdentifier('bar'),
             'identifier'              => 'bar',
             'family'                  => null,
             'parent'                  => null,
@@ -44,6 +45,7 @@ class ProductNormalizerIntegration extends TestCase
     public function testEmptyEnabledProduct()
     {
         $expected = [
+            'uuid'                    => $this->getUuidFromIdentifier('baz'),
             'identifier'              => 'baz',
             'family'                  => null,
             'parent'                  => null,
@@ -63,6 +65,7 @@ class ProductNormalizerIntegration extends TestCase
     public function testProductWithAllAttributes()
     {
         $expected = [
+            'uuid'                    => $this->getUuidFromIdentifier('foo'),
             'identifier'    => 'foo',
             'family'        => 'familyA',
             'parent'        => null,
@@ -275,6 +278,7 @@ class ProductNormalizerIntegration extends TestCase
     public function testProductWithFilteredAttributes()
     {
         $expected = [
+            'uuid'          => $this->getUuidFromIdentifier('foo'),
             'identifier'    => 'foo',
             'family'        => 'familyA',
             'parent'        => null,
@@ -427,5 +431,13 @@ class ProductNormalizerIntegration extends TestCase
         }
 
         return $data;
+    }
+
+    private function getUuidFromIdentifier(string $identifier): string
+    {
+        return $this->get('database_connection')->fetchOne(
+            'SELECT BIN_TO_UUID(uuid) AS uuid FROM pim_catalog_product WHERE identifier = :identifier',
+            ['identifier' => $identifier]
+        );
     }
 }

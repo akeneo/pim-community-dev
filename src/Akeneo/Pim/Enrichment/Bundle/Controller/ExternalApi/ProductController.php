@@ -76,6 +76,8 @@ use Webmozart\Assert\Assert;
  */
 class ProductController
 {
+    private const NO_IDENTIFIER_MESSAGE = 'Validation failed. The identifier field is required for this endpoint. If you want to manipulate products without identifiers, please use products-uuid endpoints.';
+
     public function __construct(
         protected NormalizerInterface $normalizer,
         protected IdentifiableObjectRepositoryInterface $channelRepository,
@@ -252,6 +254,14 @@ class ProductController
         $this->denyAccessUnlessAclIsGranted('pim_api_product_edit');
 
         $data = $this->getDecodedContent($request->getContent());
+
+        if (!isset($data['identifier']) || $data['identifier'] === '') {
+            throw new DocumentedHttpException(
+                Documentation::URL . 'post_products_uuid',
+                sprintf(self::NO_IDENTIFIER_MESSAGE)
+            );
+        }
+
         $violations = $this->validator->validate($data, new PayloadFormat());
         if (0 < $violations->count()) {
             $firstViolation = $violations->get(0);
@@ -312,6 +322,13 @@ class ProductController
         }
 
         $data = $this->getDecodedContent($request->getContent());
+
+        if (array_key_exists('identifier', $data) && (null === $data['identifier'] || '' === $data['identifier'])) {
+            throw new DocumentedHttpException(
+                Documentation::URL . 'patch_products_uuid__uuid_',
+                sprintf(self::NO_IDENTIFIER_MESSAGE)
+            );
+        }
 
         $violations = $this->validator->validate($data, new PayloadFormat());
         if (0 < $violations->count()) {

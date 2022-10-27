@@ -18,9 +18,9 @@ Feature: Filter products by label or identifier field
       | isbn        | pim_catalog_text | 1           | 0        | 1                      | other | isbn |
     And the following families:
       | code   | attribute_as_label | attributes    |
-      | office | name               | name,ean      |
-      | home   | ean                | name,ean      |
-      | book   | isbn               | name,ean,isbn |
+      | office | name               | sku,name,ean      |
+      | home   | ean                | sku,name,ean      |
+      | book   | isbn               | sku,name,ean,isbn |
     And the following products:
       | sku               | family | name-en_US-ecommerce | ean-ecommerce | isbn-en_US |
       | 125824            | office | Post it              | 2525          |            |
