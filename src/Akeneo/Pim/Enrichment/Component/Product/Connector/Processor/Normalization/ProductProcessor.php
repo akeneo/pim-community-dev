@@ -88,6 +88,28 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     }
 
     /**
+     * @TODO pullup 6.0 => master: Remove this function
+     */
+    protected function filterLocaleSpecificAttributes(array $values): array
+    {
+        if ($this->getAttributes === null) {
+            return $values;
+        }
+
+        $valuesToExport = [];
+        $jobLocales = $this->stepExecution->getJobParameters()->get('filters')['structure']['locales'];
+        foreach ($values as $code => $value) {
+            $attribute = $this->getAttributes->forCode($code);
+            if (!$attribute->isLocaleSpecific()
+                || !empty(array_intersect($jobLocales, $attribute->availableLocaleCodes()))) {
+                $valuesToExport[$code] = $value;
+            }
+        }
+
+        return $valuesToExport;
+    }
+
+    /**
      * It's possible to have a value not localizable, but locale specific.
      * In that case, it means the value is valid only for certain locales, but the locale is null.
      * So, it is necessary in that case to remove the attribute where the specific locales do not match

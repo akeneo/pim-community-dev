@@ -147,7 +147,7 @@ class ProductProcessorSpec extends ObjectBehavior
     ) {
         $getAttributes->forCode('picture')->willReturn($this->createAttribute('picture'));
         $getAttributes->forCode('pdf_description')->willReturn($this->createAttribute('pdf_description'));
-        
+
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filePath')->willReturn('/my/path/product.csv');
         $jobParameters->get('filters')->willReturn(
@@ -278,7 +278,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
     private function createAttribute(string $code): Attribute {
         return new Attribute(
-            '$code',
+            $code,
             AttributeTypes::NUMBER,
             [],
             true,
