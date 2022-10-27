@@ -6,10 +6,9 @@ namespace AkeneoTest\UserManagement\Integration\Bundle\Import;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance;
+use Akeneo\Tool\Component\Connector\Writer\File\SpoutWriterFactory;
 use Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface;
 use OpenSpout\Common\Entity\Row;
-use OpenSpout\Writer\Common\Creator\WriterEntityFactory;
-use OpenSpout\Writer\Common\Creator\WriterFactory;
 
 final class ImportUserGroupIntegration extends TestCase
 {
@@ -69,11 +68,11 @@ CSV;
     public function it_imports_user_groups_in_xlsx(): void
     {
         $temporaryFile = tempnam(sys_get_temp_dir(), 'test_user_group_import');
-        $writer = WriterFactory::createFromType('xlsx');
+        $writer = SpoutWriterFactory::create(SpoutWriterFactory::XLSX);
         $writer->openToFile($temporaryFile);
         $writer->addRows(
             \array_map(
-                fn (array $data): Row => WriterEntityFactory::createRowFromArray($data),
+                static fn (array $data): Row => Row::fromValues($data),
                 [
                     ['name'],
                     ['All'],
