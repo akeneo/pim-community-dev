@@ -19,8 +19,8 @@ import {CategoryToDelete, useCategoryTree, useDeleteCategory} from '../hooks';
 import {CategoryTree} from '../components';
 import {NewCategoryModal} from './NewCategoryModal';
 import {DeleteCategoryModal} from '../components/datagrids/DeleteCategoryModal';
-import {createTemplate} from "../components/templates/createTemplate";
-import {CategoryTreeModel, Template} from "../models";
+import {createTemplate} from '../components/templates/createTemplate';
+import {CategoryTreeModel, Template} from '../models';
 
 type Params = {
   treeId: string;
@@ -101,24 +101,27 @@ const CategoriesTreePage: FC = () => {
 
   const onCreateTemplate = (categoryTree: CategoryTreeModel) => {
     createTemplate(categoryTree, router)
-        .then(response => {
-          response.json().then((template: Template) => {
-            if(template) {
-              notify(NotificationLevel.SUCCESS, translate('akeneo.category.template.notification_success'));
-              redirectToTemplate(categoryTree.id, template.identifier);
-            }
-          })
-        }).catch(error => {
-      notify(NotificationLevel.ERROR, translate('akeneo.category.template.notification_error'));
-    });
+      .then(response => {
+        response.json().then((template: Template) => {
+          if (template) {
+            notify(NotificationLevel.SUCCESS, translate('akeneo.category.template.notification_success'));
+            redirectToTemplate(categoryTree.id, template.identifier);
+          }
+        });
+      })
+      .catch(error => {
+        notify(NotificationLevel.ERROR, translate('akeneo.category.template.notification_error'));
+      });
   };
 
   const redirectToTemplate = (treeId: number, templateId: string) => {
-    router.redirect(router.generate('pim_category_template_edit', {
-      treeId: treeId,
-      templateId: templateId
-    }));
-  }
+    router.redirect(
+      router.generate('pim_category_template_edit', {
+        treeId: treeId,
+        templateId: templateId,
+      })
+    );
+  };
 
   useEffect(() => {
     loadTree();
@@ -158,22 +161,19 @@ const CategoriesTreePage: FC = () => {
             className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
           />
         </PageHeader.UserActions>
-        {featureFlags.isEnabled('enriched_category')
-            && isGranted('pim_enrich_product_category_template')
-            && (
+        {featureFlags.isEnabled('enriched_category') && isGranted('pim_enrich_product_category_template') && (
           <PageHeader.Actions>
-            {tree &&
-            <Button
-                onClick={() => (tree.templateUuid) ? redirectToTemplate(tree.id, tree.templateUuid) : onCreateTemplate(tree)}
+            {tree && (
+              <Button
+                onClick={() =>
+                  tree.templateUuid ? redirectToTemplate(tree.id, tree.templateUuid) : onCreateTemplate(tree)
+                }
                 level="tertiary"
                 ghost
-            >
-              {translate((tree.templateUuid)
-                  ? 'akeneo.category.template.edit'
-                  : 'akeneo.category.template.create'
-              )}
-            </Button>
-            }
+              >
+                {translate(tree.templateUuid ? 'akeneo.category.template.edit' : 'akeneo.category.template.create')}
+              </Button>
+            )}
           </PageHeader.Actions>
         )}
         <PageHeader.Title>{tree?.label ?? treeId}</PageHeader.Title>
