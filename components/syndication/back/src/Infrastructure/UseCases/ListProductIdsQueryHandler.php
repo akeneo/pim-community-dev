@@ -10,12 +10,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
-use Akeneo\Pim\Enrichment\Component\Product\Query\FindId;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 use Akeneo\Tool\Component\Api\Exception\InvalidQueryException;
-use Akeneo\Tool\Component\Api\Pagination\PaginationTypes;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 
 /**
@@ -28,21 +26,14 @@ use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 final class ListProductIdsQueryHandler
 {
     private ApplyProductSearchQueryParametersToPQB $applyProductSearchQueryParametersToPQB;
-    private ProductQueryBuilderFactoryInterface $fromSizePqbFactory;
     private ProductQueryBuilderFactoryInterface $searchAfterPqbFactory;
-
-    private FindId $getProductId;
 
     public function __construct(
         ApplyProductSearchQueryParametersToPQB $applyProductSearchQueryParametersToPQB,
-        ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
-        ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
-        FindId $getProductId
+        ProductQueryBuilderFactoryInterface $searchAfterPqbFactory
     ) {
         $this->applyProductSearchQueryParametersToPQB = $applyProductSearchQueryParametersToPQB;
-        $this->fromSizePqbFactory = $fromSizePqbFactory;
         $this->searchAfterPqbFactory = $searchAfterPqbFactory;
-        $this->getProductId = $getProductId;
     }
 
     /**
@@ -72,30 +63,22 @@ final class ListProductIdsQueryHandler
             throw new InvalidQueryException($e->getMessage(), $e->getCode(), $e);
         }
 
-        $pqb->addSorter('identifier', Directions::ASCENDING);
+        $pqb->addSorter('id', Directions::ASCENDING);
 
         $result = $pqb->execute();
-        $identifiers = array_map(function (IdentifierResult $identifier) {
-            return $identifier->getIdentifier();
+        $uuids = array_map(function (IdentifierResult $identifier) {
+            return str_replace('product_', '', $identifier->getId());
         }, iterator_to_array($result));
 
-        return new ProductIdentifierList($result->count(), $identifiers);
+        return new ProductIdentifierList($result->count(), $uuids);
     }
 
     private function getSearchPQB(ListProductsQuery $query): ProductQueryBuilderInterface
     {
-        if (PaginationTypes::OFFSET === $query->paginationType) {
-            return $this->fromSizePqbFactory->create([
-                'limit' => (int)$query->limit,
-                'from' => ($query->page - 1) * $query->limit
-            ]);
-        }
-        $pqbOptions = ['limit' => (int)$query->limit];
+        $pqbOptions = ['limit' => (int) $query->limit];
 
         if (null !== $query->searchAfter) {
-            $id = $this->getProductId->fromIdentifier($query->searchAfter);
-            $pqbOptions['search_after_unique_key'] = null === $id ? '' : \sprintf('product_%s', $id);
-            $pqbOptions['search_after'] = [\strtolower($query->searchAfter)];
+            $pqbOptions['search_after'] = [\strtolower(sprintf('product_%s', $query->searchAfter))];
         }
 
         return $this->searchAfterPqbFactory->create($pqbOptions);

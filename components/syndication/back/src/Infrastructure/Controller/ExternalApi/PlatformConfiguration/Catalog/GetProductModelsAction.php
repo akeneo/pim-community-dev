@@ -117,37 +117,27 @@ class GetProductModelsAction
         }
 
         return new JsonResponse([
-            'products' => $this->normalizeProductsList($productModels, $query, $columnCollection, $catalog),
+            'products' => $this->normalizeProductsList($productModels, $columnCollection, $catalog),
             'family' => $catalog['code'], //TODO: will be changed when we will have multiple families per job configuration
         ]);
     }
 
-    private function normalizeProductsList(ConnectorProductModelList $connectorProductList, ListProductModelsQuery $query, ColumnCollection $columnCollection, array $catalog): array
+    private function normalizeProductsList(ConnectorProductModelList $connectorProductList, ColumnCollection $columnCollection, array $catalog): array
     {
-        $queryParameters = [
-            'with_count' => $query->withCount,
-            'pagination_type' => $query->paginationType,
-            'limit' => $query->limit,
-        ];
-
-        if ($query->search !== []) {
-            $queryParameters['search'] = json_encode($query->search);
-        }
-
         $connectorProductModels = $connectorProductList->connectorProductModels();
 
-        $mappedProducts = array_map(function (ConnectorProductModel $connectorProduct) use ($columnCollection) {
+        $mappedProducts = array_map(function (ConnectorProductModel $connectorProduct) use ($columnCollection, $catalog) {
             $valueCollection = $this->valueCollectionHydrator->hydrate($connectorProduct, $columnCollection);
 
             $mapValuesQuery = new MapValuesQuery($columnCollection, $valueCollection);
             $values = $this->mapValuesQueryHandler->handle($mapValuesQuery);
 
             return [
-                'identifier' => $connectorProduct->code(),
+                'identifier' => sprintf('product_model_%s', $connectorProduct->code()),
                 'type' => 'parent',
                 'values' => $values,
                 'rootParentCode' => $connectorProduct->parentCode(),
-                'uuid' => null
+                'family' => $catalog['code'], //TODO: will be changed when we will have multiple families per job configuration
             ];
         }, $connectorProductModels);
 

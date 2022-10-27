@@ -9,9 +9,7 @@ services:
         class: Akeneo\Platform\Syndication\Infrastructure\UseCases\ListProductIdsQueryHandler
         arguments:
             - '@akeneo.pim.enrichment.use_cases.apply_product_search_query_parameters_to_pqb'
-            - '@pim_catalog.query.product_query_builder_from_size_factory_external_api'
             - '@pim_catalog.query.product_query_builder_search_after_size_factory_external_api'
-            - '@akeneo.pim.enrichment.product.query.find_id'
 
     pim_syndication.connector.use_cases.handler.list_product_model_ids:
         class: Akeneo\Platform\Syndication\Infrastructure\UseCases\ListProductModelIdsQueryHandler
