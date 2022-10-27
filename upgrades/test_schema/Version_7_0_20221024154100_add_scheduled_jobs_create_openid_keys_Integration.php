@@ -47,7 +47,7 @@ final class Version_7_0_20221024154100_add_scheduled_jobs_create_openid_keys_Int
         return $match[1];
     }
 
-    private function deleteJobInstance(string $jobInstanceCode)
+    private function deleteJobInstance(string $jobInstanceCode): void
     {
         $this->connection->executeStatement(
             "DELETE FROM akeneo_batch_job_instance WHERE code = :job_instance_code",
