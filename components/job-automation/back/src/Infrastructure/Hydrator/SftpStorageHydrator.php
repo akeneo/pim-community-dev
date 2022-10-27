@@ -27,30 +27,6 @@ final class SftpStorageHydrator implements StorageHydratorInterface
 
     public function hydrate(array $normalizedStorage): StorageInterface
     {
-        return match ($normalizedStorage['login_type']) {
-            SftpStorage::LOGIN_TYPE_PASSWORD => $this->hydrateForPasswordLoginType($normalizedStorage),
-            SftpStorage::LOGIN_TYPE_PRIVATE_KEY => $this->hydrateForPrivateKeyLoginType($normalizedStorage),
-            default => throw new \LogicException(sprintf('Unsupported login type "%s"', $normalizedStorage['login_type'])),
-        };
-    }
-
-    private function hydrateForPasswordLoginType(array $normalizedStorage): StorageInterface
-    {
-        return new SftpStorage(
-            $normalizedStorage['host'],
-            $normalizedStorage['port'],
-            $normalizedStorage['login_type'],
-            $normalizedStorage['username'],
-            $normalizedStorage['password'],
-            $normalizedStorage['file_path'],
-            null,
-            null,
-            $normalizedStorage['fingerprint'] ?? null,
-        );
-    }
-
-    private function hydrateForPrivateKeyLoginType(array $normalizedStorage): StorageInterface
-    {
         $asymmetricKeys = $this->getAsymmetricKeysQuery->execute();
 
         return new SftpStorage(
@@ -58,7 +34,7 @@ final class SftpStorageHydrator implements StorageHydratorInterface
             $normalizedStorage['port'],
             $normalizedStorage['login_type'],
             $normalizedStorage['username'],
-            null,
+            $normalizedStorage['password'],
             $normalizedStorage['file_path'],
             $asymmetricKeys->getPrivateKey(),
             $asymmetricKeys->getPublicKey(),

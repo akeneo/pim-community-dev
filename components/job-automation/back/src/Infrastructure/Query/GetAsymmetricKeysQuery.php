@@ -29,8 +29,8 @@ final class GetAsymmetricKeysQuery implements GetAsymmetricKeysQueryInterface
     {
         $query = <<<SQL
             SELECT
-                JSON_VALUE(`values`, '$.public_key') as publicKey,
-                JSON_VALUE(`values`, '$.private_key') as privateKey
+                JSON_UNQUOTE(JSON_EXTRACT(`values`, '$.public_key')) as publicKey,
+                JSON_UNQUOTE(JSON_EXTRACT(`values`, '$.private_key')) as privateKey
             FROM pim_configuration
             WHERE code = :code
         SQL;

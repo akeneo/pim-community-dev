@@ -46,8 +46,11 @@ class SftpStorageHydratorSpec extends ObjectBehavior
         $this->supports(['type' => 'unknown'])->shouldReturn(false);
     }
 
-    public function it_hydrates_a_sftp_storage_with_password(GetAsymmetricKeysQueryInterface $getAsymmetricKeysQuery)
+    public function it_hydrates_a_sftp_storage(GetAsymmetricKeysQueryInterface $getAsymmetricKeysQuery)
     {
+        $asymmetricKeys = AsymmetricKeys::create('a_public_key', 'a_private_key');
+        $getAsymmetricKeysQuery->execute()->willReturn($asymmetricKeys);
+
         $this->hydrate([
             'type' => 'sftp',
             'host' => 'my_host',
@@ -63,32 +66,6 @@ class SftpStorageHydratorSpec extends ObjectBehavior
                 'password',
                 'user',
                 'my_favorite_password',
-                'upload',
-                null,
-                null,
-            ),
-        );
-    }
-
-    public function it_hydrates_a_sftp_storage_with_private_key(GetAsymmetricKeysQueryInterface $getAsymmetricKeysQuery)
-    {
-        $asymmetricKeys = AsymmetricKeys::create('a_public_key', 'a_private_key');
-        $getAsymmetricKeysQuery->execute()->willReturn($asymmetricKeys);
-
-        $this->hydrate([
-            'type' => 'sftp',
-            'host' => 'my_host',
-            'file_path' => 'upload',
-            'port' => 22,
-            'login_type' => 'private_key',
-            'username' => 'user',
-        ])->shouldBeLike(
-            new SftpStorage(
-                'my_host',
-                22,
-                'private_key',
-                'user',
-                null,
                 'upload',
                 'a_private_key',
                 'a_public_key',
