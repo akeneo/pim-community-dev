@@ -5,7 +5,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorRegistry;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\ProductNormalizer;
-use Akeneo\Pim\Enrichment\Product\Domain\Query\GetProductUuids;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -22,7 +21,6 @@ class ProductAssociationFilter implements FilterInterface
         private NormalizerInterface $associationsNormalizer,
         private NormalizerInterface $quantifiedAssociationsNormalizer,
         private ComparatorRegistry $comparatorRegistry,
-        private GetProductUuids $getProductUuids,
     ) {
     }
 
@@ -51,8 +49,8 @@ class ProductAssociationFilter implements FilterInterface
      */
     public function filter(EntityWithValuesInterface $product, array $newValues): array
     {
+        $isImportingByUuids = null;
         if (isset($newValues[ProductNormalizer::FIELD_ASSOCIATIONS])) {
-            $isImportingByUuids = null;
             foreach ($newValues[ProductNormalizer::FIELD_ASSOCIATIONS] as $associationsByCode) {
                 if (\array_key_exists('products', $associationsByCode)) {
                     if (true === $isImportingByUuids) {
@@ -67,12 +65,16 @@ class ProductAssociationFilter implements FilterInterface
                     $isImportingByUuids = true;
                 }
             }
-            if ($isImportingByUuids) {
-                //$newValues = $this->transformProductIdentifiersToUuids($newValues);
-                $originalAssociations = $this->associationsNormalizer->normalize($product, 'standard', ['with_association_uuids' => true]);
-            }
         }
-        $originalAssociations = $originalAssociations ?? $this->associationsNormalizer->normalize($product, 'standard', ['with_association_uuids' => false]);
+        if (null === $isImportingByUuids) {
+            $isImportingByUuids = false;
+        }
+
+        $originalAssociations = $originalAssociations ?? $this->associationsNormalizer->normalize(
+            $product,
+            'standard',
+            ['with_association_uuids' => $isImportingByUuids]
+        );
         $originalQuantifiedAssociations = $this->quantifiedAssociationsNormalizer->normalize($product, 'standard');
 
         if (
@@ -179,32 +181,5 @@ class ProductAssociationFilter implements FilterInterface
     protected function getOriginalAssociation(array $originalAssociations, string $type, string $key): array
     {
         return !isset($originalAssociations[$type][$key]) ? [] : $originalAssociations[$type][$key];
-    }
-
-    private function transformProductIdentifiersToUuids(array $newValues)
-    {
-        $result = [];
-
-        if (isset($newValues[ProductNormalizer::FIELD_ASSOCIATIONS])) {
-            $result[ProductNormalizer::FIELD_ASSOCIATIONS] = [];
-            foreach ($newValues[ProductNormalizer::FIELD_ASSOCIATIONS] as $associationCode => $associationsByCode) {
-                $result[ProductNormalizer::FIELD_ASSOCIATIONS][$associationCode] = [];
-                foreach ($associationsByCode as $associationType => $associationsByType) {
-                    if ($associationType === 'products') {
-                        $result[ProductNormalizer::FIELD_ASSOCIATIONS][$associationCode]['product_uuids'] = \array_map(
-                            fn (UuidInterface $uuid): string => $uuid->toString(),
-                            $this->getProductUuids->fromIdentifiers($associationsByType)
-                        );
-                    } else {
-                        $result[ProductNormalizer::FIELD_ASSOCIATIONS][$associationCode][$associationType] = $associationsByType;
-                    }
-                }
-            }
-        }
-        if (isset($newValues[ProductNormalizer::FIELD_QUANTIFIED_ASSOCIATIONS])) {
-            $result[ProductNormalizer::FIELD_QUANTIFIED_ASSOCIATIONS] = $newValues[ProductNormalizer::FIELD_QUANTIFIED_ASSOCIATIONS];
-        }
-
-        return $result;
     }
 }

@@ -23,7 +23,8 @@ SELECT DISTINCT(p.identifier) as identifier
 FROM pim_catalog_association a
     INNER JOIN pim_catalog_association_product ap ON a.id = ap.association_id
     INNER JOIN pim_catalog_product p ON p.uuid = ap.product_uuid
-WHERE a.owner_uuid = UUID_TO_BIN(:ownerUuid) AND a.association_type_id = :associationTypeId;
+WHERE a.owner_uuid = UUID_TO_BIN(:ownerUuid) AND a.association_type_id = :associationTypeId
+ORDER BY p.uuid;
 SQL;
         $stmt = $this->connection->executeQuery(
             $sql,
@@ -46,7 +47,8 @@ SELECT DISTINCT(BIN_TO_UUID(p.uuid)) as uuid
 FROM pim_catalog_association a
     INNER JOIN pim_catalog_association_product ap ON a.id = ap.association_id
     INNER JOIN pim_catalog_product p ON p.uuid = ap.product_uuid
-WHERE a.owner_uuid = UUID_TO_BIN(:ownerUuid) AND a.association_type_id = :associationTypeId;
+WHERE a.owner_uuid = UUID_TO_BIN(:ownerUuid) AND a.association_type_id = :associationTypeId
+ORDER BY p.uuid;
 SQL;
         $stmt = $this->connection->executeQuery(
             $sql,
