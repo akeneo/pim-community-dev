@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Domain\Model\Attribute;
 
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsLocalizable;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsRequired;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsScopable;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeOrder;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeType;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
@@ -23,18 +26,24 @@ class AttributeText extends Attribute
         AttributeCode $code,
         AttributeType $type,
         AttributeOrder $order,
+        AttributeIsRequired $isRequired,
+        AttributeIsScopable $isScopable,
         AttributeIsLocalizable $isLocalizable,
         LabelCollection $labelCollection,
         TemplateUuid $templateUuid,
+        AttributeAdditionalProperties $additionalProperties,
     ) {
         parent::__construct(
             $uuid,
             $code,
             $type,
             $order,
+            $isRequired,
+            $isScopable,
             $isLocalizable,
             $labelCollection,
             $templateUuid,
+            $additionalProperties,
         );
     }
 
@@ -42,18 +51,24 @@ class AttributeText extends Attribute
         AttributeUuid $uuid,
         AttributeCode $code,
         AttributeOrder $order,
+        AttributeIsRequired $isRequired,
+        AttributeIsScopable $isScopable,
         AttributeIsLocalizable $isLocalizable,
         LabelCollection $labelCollection,
         TemplateUuid $templateUuid,
+        AttributeAdditionalProperties $additionalProperties,
     ): AttributeText {
         return new self(
             $uuid,
             $code,
             new AttributeType(AttributeType::TEXT),
             $order,
+            $isRequired,
+            $isScopable,
             $isLocalizable,
             $labelCollection,
             $templateUuid,
+            $additionalProperties,
         );
     }
 
@@ -63,9 +78,12 @@ class AttributeText extends Attribute
      *     code: string,
      *     type: string,
      *     order: int,
+     *     is_required: bool,
      *     is_localizable: bool,
+     *     is_scopable: bool,
      *     labels: array<string, string>,
-     *     template_uuid: string
+     *     template_uuid: string,
+     *     additional_properties: array<string, mixed>
      * }
      */
     public function normalize(): array

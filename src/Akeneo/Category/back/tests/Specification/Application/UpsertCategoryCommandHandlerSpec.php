@@ -14,7 +14,7 @@ use Akeneo\Category\Application\Applier\UserIntentApplier;
 use Akeneo\Category\Application\Applier\UserIntentApplierRegistry;
 use Akeneo\Category\Application\Storage\Save\CategorySaverProcessor;
 use Akeneo\Category\Application\UpsertCategoryCommandHandler;
-use Akeneo\Category\Domain\Model\Category;
+use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;

@@ -15,9 +15,12 @@ use Akeneo\Category\Domain\Model\Attribute\AttributeTextArea;
 use Akeneo\Category\Domain\Query\GetAttribute;
 use Akeneo\Category\Domain\UserIntent\Factory\UserIntentFactory;
 use Akeneo\Category\Domain\UserIntent\Factory\ValueUserIntentFactory;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsLocalizable;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsRequired;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsScopable;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeOrder;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
@@ -85,33 +88,45 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
                 AttributeUuid::fromString('69e251b3-b876-48b5-9c09-92f54bfb528d'),
                 new AttributeCode('seo_meta_description'),
                 AttributeOrder::fromInteger(4),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeIsScopable::fromBoolean(true),
                 AttributeIsLocalizable::fromBoolean(true),
                 LabelCollection::fromArray(['en_US' => 'SEO Meta Description']),
-                $templateUuid
+                $templateUuid,
+                AttributeAdditionalProperties::fromArray([])
             ),
             AttributeRichText::create(
                 AttributeUuid::fromString('840fcd1a-f66b-4f0c-9bbd-596629732950'),
                 new AttributeCode('description'),
                 AttributeOrder::fromInteger(1),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeIsScopable::fromBoolean(true),
                 AttributeIsLocalizable::fromBoolean(true),
                 LabelCollection::fromArray(['en_US' => 'Description']),
-                $templateUuid
+                $templateUuid,
+                AttributeAdditionalProperties::fromArray([])
             ),
             AttributeText::create(
                 AttributeUuid::fromString('38439aaf-66a2-4b24-854e-29d7a467c7af'),
                 new AttributeCode('color'),
                 AttributeOrder::fromInteger(2),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeIsScopable::fromBoolean(true),
                 AttributeIsLocalizable::fromBoolean(true),
                 LabelCollection::fromArray(['en_US' => 'red']),
-                $templateUuid
+                $templateUuid,
+                AttributeAdditionalProperties::fromArray([])
             ),
             AttributeImage::create(
                 AttributeUuid::fromString('e0326684-0dff-44be-8283-9262deb9e4bc'),
                 new AttributeCode('banner'),
                 AttributeOrder::fromInteger(3),
-                AttributeIsLocalizable::fromBoolean(true),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeIsScopable::fromBoolean(false),
+                AttributeIsLocalizable::fromBoolean(false),
                 LabelCollection::fromArray(['en_US' => '3/7/7/e/377e7c2bad87efd2e71eb725006a9067918d5791_banner.jpg']),
-                $templateUuid
+                $templateUuid,
+                AttributeAdditionalProperties::fromArray([])
             ),
         ]);
 
@@ -184,9 +199,12 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
                 AttributeUuid::fromString('69e251b3-b876-48b5-9c09-92f54bfb528d'),
                 new AttributeCode('seo_meta_description'),
                 AttributeOrder::fromInteger(4),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeIsScopable::fromBoolean(true),
                 AttributeIsLocalizable::fromBoolean(true),
                 LabelCollection::fromArray(['en_US' => 'SEO Meta Description']),
-                $templateUuid
+                $templateUuid,
+                AttributeAdditionalProperties::fromArray([])
             )
         ]);
 
