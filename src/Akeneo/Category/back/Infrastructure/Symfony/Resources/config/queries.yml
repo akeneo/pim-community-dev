@@ -14,6 +14,11 @@ services:
     arguments:
       - '@database_connection'
 
+  Akeneo\Category\Application\Query\CheckTemplate:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\CheckTemplateSql
+    arguments:
+      - '@database_connection'
+
   Akeneo\Category\Domain\Query\GetAttribute:
     class: Akeneo\Category\Infrastructure\Storage\InMemory\GetAttributeInMemory
     arguments:

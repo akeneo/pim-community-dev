@@ -11,6 +11,7 @@ namespace Akeneo\Category\back\tests\Integration\Helper;
 
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryBase;
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryTranslations;
+use Akeneo\Category\Domain\Model\Attribute\Attribute;
 use Akeneo\Category\Domain\Model\Attribute\AttributeImage;
 use Akeneo\Category\Domain\Model\Attribute\AttributeRichText;
 use Akeneo\Category\Domain\Model\Attribute\AttributeText;
@@ -112,6 +113,15 @@ class CategoryTestCase extends TestCase
         return $createdCategory;
     }
 
+    /**
+     * @param string|null $templateUuid
+     * @param string|null $templateCode
+     * @param array<string, string>|null $templateLabels
+     * @param int|null $categoryTreeId
+     * @param array<array<string, string>>|null $templateAttributes
+     * @return Template
+     * @throws \Exception
+     */
     public function generateMockedCategoryTemplateModel(
         ?string $templateUuid = null,
         ?string $templateCode = null,
@@ -119,8 +129,8 @@ class CategoryTestCase extends TestCase
         ?int $categoryTreeId = null,
         ?array $templateAttributes = null
     ): Template {
-        /** @var Template $defaultTemplate */
         $getTemplate = new GetTemplateInMemory();
+        /** @var Template $defaultTemplate */
         $defaultTemplate = $getTemplate->byUuid('');
 
         if ($templateUuid === null) {
@@ -141,14 +151,14 @@ class CategoryTestCase extends TestCase
             $templateLabels = LabelCollection::fromArray($templateLabels);
         }
 
-        if ($categoryTreeId === null ) {
+        if ($categoryTreeId === null) {
             $categoryTreeId = $defaultTemplate->getCategoryTreeId();
         } else {
             $categoryTreeId = new CategoryId($categoryTreeId);
         }
 
-        if ($templateAttributes === null ) {
-            $templateAttributes = $defaultTemplate->getAttributeCollection();
+        if ($templateAttributes === null) {
+            $templateAttributes = $defaultTemplate->getAttributeCollection()->normalize();
         } else {
             $attributes = [];
             foreach ($templateAttributes as $attribute) {
@@ -173,13 +183,13 @@ class CategoryTestCase extends TestCase
                         throw new \Exception(sprintf('Can\'t generate mocked template: unknown attribute type "%s"', $attribute['type']));
                 }
 
-                $attributes[] = new $attributeClass(
+                $attributes[] = $attributeClass::create(
                     AttributeUuid::fromString($attribute['uuid']),
                     new AttributeCode($attribute['code']),
                     AttributeOrder::fromInteger((int)$attribute['order']),
-                    AttributeIsRequired::fromBoolean($attribute['is_required']),
-                    AttributeIsScopable::fromBoolean($attribute['is_scopable']),
-                    AttributeIsLocalizable::fromBoolean($attribute['is_localizable']),
+                    AttributeIsRequired::fromBoolean((bool) $attribute['is_required']),
+                    AttributeIsScopable::fromBoolean((bool) $attribute['is_scopable']),
+                    AttributeIsLocalizable::fromBoolean((bool) $attribute['is_localizable']),
                     LabelCollection::fromArray($attribute['labels']),
                     TemplateUuid::fromString($attribute['template_uuid']),
                     AttributeAdditionalProperties::fromArray($attribute['additional_properties']),

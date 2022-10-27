@@ -98,15 +98,4 @@ class GetTemplateInMemory implements GetTemplate
         );
         return $template;
     }
-
-    /**
-     * This is a InMemory service always returning false. The aim of this function is to find if a templateCode
-     * already exists in database.
-     * @param TemplateCode $templateCode
-     * @return bool
-     */
-    public function isAlreadyExistingTemplateCode(TemplateCode $templateCode): bool
-    {
-        return false;
-    }
 }
