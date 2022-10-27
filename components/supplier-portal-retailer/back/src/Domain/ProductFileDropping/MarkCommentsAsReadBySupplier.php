@@ -6,5 +6,5 @@ namespace Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping;
 
 interface MarkCommentsAsReadBySupplier
 {
-    public function __invoke(string $productFileIdentifier, \DateTimeInterface $readAt): void;
+    public function __invoke(string $productFileIdentifier, \DateTimeImmutable $readAt): void;
 }

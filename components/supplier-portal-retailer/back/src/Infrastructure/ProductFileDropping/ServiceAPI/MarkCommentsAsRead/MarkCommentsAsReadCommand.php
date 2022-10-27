@@ -8,7 +8,7 @@ final class MarkCommentsAsReadCommand
 {
     public function __construct(
         public string $productFileIdentifier,
-        public \DateTimeInterface $lastReadAt,
+        public \DateTimeImmutable $lastReadAt,
     ) {
     }
 }

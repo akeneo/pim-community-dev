@@ -13,7 +13,7 @@ final class DatabaseMarkCommentsAsReadBySupplier implements MarkCommentsAsReadBy
     {
     }
 
-    public function __invoke(string $productFileIdentifier, \DateTimeInterface $readAt): void
+    public function __invoke(string $productFileIdentifier, \DateTimeImmutable $readAt): void
     {
         $sql = <<<SQL
             REPLACE INTO akeneo_supplier_portal_product_file_comments_read_by_supplier (product_file_identifier, last_read_at)

@@ -7,7 +7,6 @@ namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Serv
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadBySupplier;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadBySupplierHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\ProductFileDoesNotExist;
-use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\MarkCommentsAsRead\Exception\ProductFileDoesNotExist as ProductFileDoesNotExistServiceAPI;
 
 final class MarkCommentsAsRead
 {
@@ -25,7 +24,7 @@ final class MarkCommentsAsRead
                 )
             );
         } catch (ProductFileDoesNotExist) {
-            throw new ProductFileDoesNotExistServiceAPI();
+            throw new Exception\ProductFileDoesNotExist();
         }
     }
 }

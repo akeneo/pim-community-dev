@@ -35,7 +35,7 @@ final class InMemoryRepository implements ProductFileRepository
         return $this->productFiles[(string) $identifier] ?? null;
     }
 
-    public function updateProductFileLastUnreadDate(Identifier $identifier, \DateTimeInterface $date): void
+    public function updateProductFileLastUnreadDate(Identifier $identifier, \DateTimeImmutable $date): void
     {
         $this->productFilesCommentsLastReadDates[(string) $identifier] = $date;
     }

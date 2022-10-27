@@ -14,7 +14,7 @@ final class InMemoryMarkCommentsAsReadBySupplier implements MarkCommentsAsReadBy
     {
     }
 
-    public function __invoke(string $productFileIdentifier, \DateTimeInterface $readAt): void
+    public function __invoke(string $productFileIdentifier, \DateTimeImmutable $readAt): void
     {
         $this->productFileRepository->updateProductFileLastUnreadDate(Identifier::fromString($productFileIdentifier), $readAt);
     }
