@@ -49,9 +49,14 @@ class GetProductsQuery implements GetProductsQueryInterface
             null,
         );
 
-        /** @var array<Product> $products */
         $products = $this->connectorProductWithUuidNormalizer->normalizeConnectorProductList($connectorProducts);
 
+        // If values is empty the normalizer return an object instead of an array, so we cast it to be consistent
+        foreach ($products as &$product) {
+            $product['values'] = (array) $product['values'];
+        }
+
+        /** @var array<Product> $products */
         return $products;
     }
 }

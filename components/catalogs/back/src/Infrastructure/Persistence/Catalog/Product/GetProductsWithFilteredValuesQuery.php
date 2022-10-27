@@ -72,8 +72,14 @@ class GetProductsWithFilteredValuesQuery implements GetProductsWithFilteredValue
             isset($filters['locales']) && !empty($filters['locales']) ? $filters['locales'] : null,
         );
 
+
         /** @var array<Product> $products */
         $products = $this->connectorProductWithUuidNormalizer->normalizeConnectorProductList($connectorProducts);
+        // If values is empty the normalizer returns an object instead of an array, so we cast it to be consistent
+        foreach ($products as &$product) {
+            $product['values'] = (array) $product['values'];
+        }
+
         $products = $this->filterNormalizedProperties($products, self::PROPERTIES);
         $products = $this->filterChannels($products, $filters['channels'] ?? null);
 

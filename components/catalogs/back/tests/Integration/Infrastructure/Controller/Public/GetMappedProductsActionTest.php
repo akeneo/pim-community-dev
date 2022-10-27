@@ -46,11 +46,25 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             'scopable' => true,
             'localizable' => true,
         ]);
+
+        $this->createAttribute([
+            'code' => 'description',
+            'type' => 'pim_catalog_text',
+            'scopable' => true,
+            'localizable' => false,
+        ]);
+
+        $this->createChannel('print', ['en_US', 'fr_FR']);
+
         $productBlue = $this->createProduct(Uuid::fromString('8985de43-08bc-484d-aee0-4489a56ba02d'), [
-            new SetTextValue('name', 'ecommerce', 'en_US', 'Blue'),
+            new SetTextValue('name', 'ecommerce', 'en_US', 'Blue ecommerce'),
+            new SetTextValue('name', 'print', 'en_US', 'Blue print'),
+            new SetTextValue('description', 'ecommerce', null, 'Blue description'),
         ]);
         $productGreen = $this->createProduct(Uuid::fromString('00380587-3893-46e6-a8c2-8fee6404cc9e'), [
-            new SetTextValue('name', 'ecommerce', 'en_US', 'Green'),
+            new SetTextValue('name', 'ecommerce', 'en_US', 'Green ecommerce'),
+            new SetTextValue('name', 'print', 'en_US', 'Green print'),
+            new SetTextValue('description', 'ecommerce', null, 'Green description'),
         ]);
 
         // create catalog
@@ -80,6 +94,11 @@ class GetMappedProductsActionTest extends IntegrationTestCase
                 'scope' => 'ecommerce',
                 'locale' => 'en_US',
             ],
+            'short_description' => [
+                'source' => 'description',
+                'scope' => 'ecommerce',
+                'locale' => null,
+            ],
         ]);
 
         $this->client->request(
@@ -99,11 +118,13 @@ class GetMappedProductsActionTest extends IntegrationTestCase
         $expectedMappedProducts = [
             [
                 'uuid' => $productGreen->getUuid()->toString(),
-                'title' => 'Green',
+                'title' => 'Green ecommerce',
+                'short_description' => 'Green description',
             ],
             [
                 'uuid' => $productBlue->getUuid()->toString(),
-                'title' => 'Blue',
+                'title' => 'Blue ecommerce',
+                'short_description' => 'Blue description',
             ],
         ];
 
@@ -219,6 +240,9 @@ class GetMappedProductsActionTest extends IntegrationTestCase
               "type": "string"
             },
             "title": {
+              "type": "string"
+            },
+            "short_description": {
               "type": "string"
             }
           }
