@@ -28,6 +28,7 @@ const CurrencySelector = ({value, onChange, channelReference, validationErrors}:
         emptyResultLabel={translate('pim_common.no_result')}
         openLabel={translate('pim_common.open')}
         invalid={0 < validationErrors.length}
+        clearable={false}
       >
         {currencyCodes.map((currencyCode: string) => (
           <SelectInput.Option key={currencyCode} value={currencyCode}>

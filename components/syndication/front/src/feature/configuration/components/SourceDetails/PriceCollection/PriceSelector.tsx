@@ -35,7 +35,7 @@ const PriceSelector = ({channelReference, selection, validationErrors, onSelecti
     >
       <Section>
         <CurrencySelector
-          value={selection.currency ?? null}
+          value={selection.currency ?? ''}
           onChange={updatedValue => onSelectionChange({...selection, currency: updatedValue})}
           channelReference={channelReference}
           validationErrors={currencyErrors}
