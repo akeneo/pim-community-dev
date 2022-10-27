@@ -2,12 +2,11 @@
 
 namespace Pim\Behat\Context\Domain\Spread;
 
+use Akeneo\Tool\Component\Connector\Reader\File\SpoutReaderFactory;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ExpectationException;
 use OpenSpout\Common\Entity\Row;
 use OpenSpout\Common\Exception\UnsupportedTypeException;
-use OpenSpout\Common\Type;
-use OpenSpout\Reader\Common\Creator\ReaderFactory;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 
@@ -26,7 +25,7 @@ class XlsxFileContext extends PimContext
         $jobContext = $this->getMainContext()->getSubcontext('job');
         $archivePath = $jobContext->getJobInstanceArchivePath($code, $number);
 
-        $reader = ReaderFactory::createFromType(Type::XLSX);
+        $reader = SpoutReaderFactory::create(SpoutReaderFactory::XLSX);
         $reader->open($jobContext->copyArchiveLocally($archivePath));
         $sheet = current(iterator_to_array($reader->getSheetIterator()));
         $actualLines = \array_map(
@@ -51,7 +50,7 @@ class XlsxFileContext extends PimContext
         $jobContext = $this->getMainContext()->getSubcontext('job');
         $archivePath = $jobContext->getJobInstanceArchivePath($code, $number);
 
-        $reader = ReaderFactory::createFromType(Type::XLSX);
+        $reader = SpoutReaderFactory::create(SpoutReaderFactory::XLSX);
         $reader->open($jobContext->copyArchiveLocally($archivePath));
         $sheet = current(iterator_to_array($reader->getSheetIterator()));
         $actualLines = \array_map(
@@ -77,7 +76,7 @@ class XlsxFileContext extends PimContext
         $expectedLines = $expectedLines->getRows();
         unset($expectedLines[0]);
 
-        $reader = ReaderFactory::createFromType(Type::XLSX);
+        $reader = SpoutReaderFactory::create(SpoutReaderFactory::XLSX);
 
         foreach ($archivePaths as $archivePath) {
             $reader->open($jobContext->copyArchiveLocally($archivePath));
@@ -115,7 +114,7 @@ class XlsxFileContext extends PimContext
         $jobContext = $this->getMainContext()->getSubcontext('job');
         $archivePath = $jobContext->getJobInstanceArchivePath($code);
 
-        $reader = ReaderFactory::createFromType(Type::XLSX);
+        $reader = SpoutReaderFactory::create(SpoutReaderFactory::XLSX);
         $reader->open($jobContext->copyArchiveLocally($archivePath));
         $sheet = current(iterator_to_array($reader->getSheetIterator()));
         $actualLines = \array_map(
@@ -142,7 +141,7 @@ class XlsxFileContext extends PimContext
             throw new ExpectationException(sprintf('File %s does not exist.', $fileName), $this->getSession());
         }
 
-        $reader = ReaderFactory::createFromType(Type::XLSX);
+        $reader = SpoutReaderFactory::create(SpoutReaderFactory::XLSX);
         $reader->open($fileName);
         $sheet = current(iterator_to_array($reader->getSheetIterator()));
         $actualLines = \array_map(
@@ -188,7 +187,7 @@ class XlsxFileContext extends PimContext
             $categories[] = $category;
         }
 
-        $reader = ReaderFactory::createFromType(Type::XLSX);
+        $reader = SpoutReaderFactory::create(SpoutReaderFactory::XLSX);
         $reader->open($fileName);
 
         $sheet = current(iterator_to_array($reader->getSheetIterator()));
