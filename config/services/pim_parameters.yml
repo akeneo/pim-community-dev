@@ -51,3 +51,5 @@ parameters:
     webhook_max_bulk_size: 10
     webhook_active_event_subscriptions_limit: 3
     webhook_requests_limit: 4000
+
+    openssl_config_path: '%pim_ce_dev_src_folder_location%/config/openssl.cnf'

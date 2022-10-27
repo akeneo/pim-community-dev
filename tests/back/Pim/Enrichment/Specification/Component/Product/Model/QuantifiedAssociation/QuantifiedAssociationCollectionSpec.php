@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\IdMappin
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\UuidMapping;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -131,14 +132,14 @@ class QuantifiedAssociationCollectionSpec extends ObjectBehavior
         $expectedRawQuantifiedAssociations = [
             'PACK' => [
                 'products'       => [
-                    ['id' => 1, 'quantity' => 1],
-                    ['id' => 2, 'quantity' => 2],
+                    ['id' => 1, 'uuid' => '3f090f5e-3f54-4f34-879c-87779297d130', 'quantity' => 1],
+                    ['id' => 2, 'uuid' => '52254bba-a2c8-40bb-abe1-195e3970bd93', 'quantity' => 2],
                 ],
                 'product_models' => [],
             ],
             'PRODUCT_SET' => [
                 'products' => [
-                    ['id' => 1, 'quantity' => 3],
+                    ['id' => 1, 'uuid' => '3f090f5e-3f54-4f34-879c-87779297d130', 'quantity' => 3],
                 ],
                 'product_models' => [],
             ]
@@ -537,7 +538,8 @@ class QuantifiedAssociationCollectionSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_merge_quantified_associations_and_overwrite_quantities_from_duplicated_identifiers() {
+    public function it_merge_quantified_associations_and_overwrite_quantities_from_duplicated_identifiers()
+    {
         $this->beConstructedThrough(
             'createFromNormalized',
             [

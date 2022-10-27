@@ -21,12 +21,7 @@ const useIdentifierAttributes: () => {
 
   const {error, data, isSuccess} = useQuery<FlattenAttribute[], Error, FlattenAttribute[]>(
     'getIdentifierAttributes',
-    getIdentifierAttributes,
-    {
-      keepPreviousData: true,
-      refetchOnWindowFocus: false,
-      retry: false,
-    }
+    getIdentifierAttributes
   );
 
   return {data, error, isSuccess};

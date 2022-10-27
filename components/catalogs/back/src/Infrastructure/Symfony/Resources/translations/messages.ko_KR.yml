@@ -1,0 +1,6 @@
+pim_api.acl_group.catalog: 카탈로그
+akeneo_catalogs:
+  acl:
+    catalog_list: 카탈로그 나열
+    catalog_edit: 카탈로그 만들기 및 업데이트
+    catalog_remove: 카탈로그 삭제

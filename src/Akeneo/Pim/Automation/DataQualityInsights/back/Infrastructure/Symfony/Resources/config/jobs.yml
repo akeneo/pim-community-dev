@@ -54,6 +54,22 @@ services:
         tags:
             - { name: akeneo_batch.job, connector: 'Data Quality Insights Connector', type: 'data_quality_insights' }
 
+    akeneo.pim.automation.data_quality_insights.job.schedule_periodic_tasks:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'schedule_dqi_periodic_tasks'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+              - '@Akeneo\Tool\Component\Connector\Step\CheckJobUniqueStep'
+              - '@akeneo.pim.automation.data_quality_insights.connector.step.schedule_periodic_tasks'
+            - false
+            - false
+        public: false
+        tags:
+            - name: akeneo_batch.job
+              connector: 'internal'
+              type: 'scheduled_job'
     #Steps
     akeneo.pim.automation.data_quality_insights.connector.step.recompute_products_scores:
         class: '%pim_connector.step.tasklet.class%'
@@ -103,6 +119,14 @@ services:
             - '@akeneo_batch.job_repository'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\PurgeOutdatedDataTasklet'
 
+    akeneo.pim.automation.data_quality_insights.connector.step.schedule_periodic_tasks:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'schedule_dqi_periodic_tasks'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\SchedulePeriodicTasksTasklet'
+
     #Tasklets
     akeneo.pim.automation.data_quality_insights.connector.tasklet.recompute_products_scores:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\RecomputeProductScoresTasklet
@@ -144,6 +168,11 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\PurgeOutdatedData'
             - '@logger'
 
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\SchedulePeriodicTasksTasklet:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobLauncher\SchedulePeriodicTasks'
+            - '@akeneo.pim.automation.data_quality_insights.feature'
+
     #Job parameters
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\PrepareEvaluationsParameters:
         tags:
@@ -156,6 +185,14 @@ services:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\RecomputeProductScoresParameters:
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    akeneo.pim.automation.data_quality_insights.infrastructure.connector.default_values_provider.schedule_periodic_tasks:
+        class: 'Akeneo\Tool\Component\Batch\Job\JobParameters\EmptyConstraintAndDefaultValuesProvider'
+        arguments:
+            - 'schedule_dqi_periodic_tasks'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
             - { name: akeneo_batch.job.job_parameters.default_values_provider }

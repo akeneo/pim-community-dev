@@ -114,4 +114,20 @@ class JobExecutionManager
         $stmt->bindValue('updated_time', new \DateTime('now', new \DateTimeZone('UTC')), Types::DATETIME_MUTABLE);
         $stmt->executeStatement();
     }
+
+    public function jobCodeFromJobExecutionId(int $jobExecutionId): string
+    {
+        $sql = <<< SQL
+            SELECT job_instance.code 
+            FROM akeneo_batch_job_execution job_execution
+            INNER JOIN akeneo_batch_job_instance job_instance ON job_instance.id = job_execution.job_instance_id
+            WHERE job_execution.id = :jobExecutionId;
+        SQL;
+
+
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindValue('jobExecutionId', $jobExecutionId);
+
+        return $stmt->executeQuery()->fetchOne();
+    }
 }

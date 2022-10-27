@@ -120,6 +120,7 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
 
         $normalizedProductModel['family'] = $productModel->getFamilyVariant()->getFamily()->getCode();
         $normalizedProductModel['values'] = $this->productValueConverter->convert($normalizedProductModel['values']);
+        $normalizedProductModel['quantified_associations'] = $this->formatQuantifiedAssociations($normalizedProductModel['quantified_associations']);
 
         $oldestLog = $this->versionManager->getOldestLogEntry($productModel);
         $newestLog = $this->versionManager->getNewestLogEntry($productModel);
@@ -175,8 +176,8 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
                 'ascendant_category_ids'    => $this->ascendantCategoriesQuery->getCategoryIds($productModel),
                 'required_missing_attributes' => $requiredMissingAttributes,
                 'level'                     => $productModel->getVariationLevel(),
-                'quantified_associations_for_this_level' => $this->quantifiedAssociationsNormalizer->normalizeWithoutParentsAssociations($productModel, 'standard', $context),
-                'parent_quantified_associations' => $this->quantifiedAssociationsNormalizer->normalizeOnlyParentsAssociations($productModel, 'standard', $context),
+                'quantified_associations_for_this_level' => $this->formatQuantifiedAssociations($this->quantifiedAssociationsNormalizer->normalizeWithoutParentsAssociations($productModel, 'standard', $context)),
+                'parent_quantified_associations' => $this->formatQuantifiedAssociations($this->quantifiedAssociationsNormalizer->normalizeOnlyParentsAssociations($productModel, 'standard', $context)),
             ] + $this->getLabels($productModel, $scopeCode) + $this->getAssociationMeta($productModel);
 
         return $normalizedProductModel;
@@ -245,5 +246,18 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
     private function normalizeImage(?ValueInterface $data, ?string $channelCode, ?string $localeCode = null): ?array
     {
         return $this->imageNormalizer->normalize($data, $localeCode, $channelCode);
+    }
+
+    private function formatQuantifiedAssociations(array $quantifiedAssociations): array
+    {
+        return array_map(static function (array $quantifiedAssociation) {
+            $quantifiedAssociation['products'] = array_map(static fn (array $productLink) => array_filter(
+                $productLink,
+                fn (string $key): bool => in_array($key, ['uuid', 'quantity']),
+                ARRAY_FILTER_USE_KEY
+            ), $quantifiedAssociation['products']);
+
+            return $quantifiedAssociation;
+        }, $quantifiedAssociations);
     }
 }
