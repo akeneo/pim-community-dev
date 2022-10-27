@@ -18,10 +18,6 @@ const FormContainer = styled.div`
   }
 `;
 
-// const ErrorMessage = styled(Helper)`
-//   margin: 20px 0 0 0;
-// `;
-
 const EditTemplatePropertiesForm = ({template, onChangeLabel}: Props) => {
   const translate = useTranslate();
   const {isGranted} = useSecurity();
@@ -66,7 +62,6 @@ const EditTemplatePropertiesForm = ({template, onChangeLabel}: Props) => {
     return (
       <Field label={localeName} key={localeCode}>
         <TextInput
-          //name={`${labelField}-${locale}`}
           // readOnly={!isGranted('pim_enrich_product_category_template')}
           readOnly={true}
           onChange={handleChange(localeCode)}
