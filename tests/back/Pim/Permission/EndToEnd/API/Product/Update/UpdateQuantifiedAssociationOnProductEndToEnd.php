@@ -105,9 +105,9 @@ JSON;
         $expectedQuantifiedAssociations = [
             'PRODUCTSET' => [
                 'products' => [
-                    ['uuid' => $this->getProductUuid('product_not_viewable_by_redactor'), 'identifier' => 'product_not_viewable_by_redactor', 'quantity' => 1],
-                    ['uuid' => $this->getProductUuid('product_viewable_by_everybody_1'), 'identifier' => 'product_viewable_by_everybody_1', 'quantity' => 2],
-                    ['uuid' => $this->getProductUuid('product_without_category'), 'identifier' => 'product_without_category', 'quantity' => 3],
+                    ['uuid' => $this->getProductUuid('product_not_viewable_by_redactor')->toString(), 'identifier' => 'product_not_viewable_by_redactor', 'quantity' => 1],
+                    ['uuid' => $this->getProductUuid('product_viewable_by_everybody_1')->toString(), 'identifier' => 'product_viewable_by_everybody_1', 'quantity' => 2],
+                    ['uuid' => $this->getProductUuid('product_without_category')->toString(), 'identifier' => 'product_without_category', 'quantity' => 3],
                 ],
                 'product_models' => [
                     ['identifier' => 'product_model_not_viewable_by_redactor', 'quantity' => 4],

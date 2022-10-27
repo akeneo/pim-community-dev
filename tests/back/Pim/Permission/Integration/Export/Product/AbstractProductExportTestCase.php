@@ -104,4 +104,16 @@ abstract class AbstractProductExportTestCase extends TestCase
 
         return $this->get('pim_catalog.repository.product')->find($uuid);
     }
+
+    /**
+     * @param string[] $associatedProductIdentifiers
+     * @return string
+     */
+    protected function getExpectedAssociations(array $associatedProductIdentifiers): string
+    {
+        $result = $associatedProductIdentifiers;
+        \usort($result, fn (string $id1, string $id2): int => $this->getProductUuid($id1)->compareTo($this->getProductUuid($id2)));
+
+        return \join(',', $result);
+    }
 }
