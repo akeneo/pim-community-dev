@@ -3,7 +3,6 @@
 namespace Akeneo\Platform\Bundle\NotificationBundle\Email;
 
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 
@@ -49,9 +48,9 @@ class MailNotifier implements MailNotifierInterface
                     'Recipients' => $email->getBcc(),
                 ]
             );
-        } catch (TransportExceptionInterface $e) {
+        } catch (\Exception $e) {
             $this->logger->error(
-                sprintf('Cannot sent mail : %s', $e),
+                sprintf('Cannot sent mail : %s', $e->getMessage()),
                 [
                     'Subject' => $email->getSubject(),
                     'Recipients' => $email->getBcc(),
