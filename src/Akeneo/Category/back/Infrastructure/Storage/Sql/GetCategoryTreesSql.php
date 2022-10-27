@@ -75,7 +75,7 @@ class GetCategoryTreesSql implements GetCategoryTreesInterface
             return null;
         }
 
-        return array_map(function ($result) {
+        return array_map(static function ($result) {
             return CategoryTree::fromDatabase($result);
         }, $results);
     }

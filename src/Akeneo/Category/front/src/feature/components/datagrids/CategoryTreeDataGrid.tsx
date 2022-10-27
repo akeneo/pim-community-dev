@@ -10,11 +10,12 @@ import {
   useTranslate,
   useUserContext,
 } from '@akeneo-pim-community/shared';
-import {CategoryTreeModel} from '../../models';
+import {CategoryTreeModel, Template} from '../../models';
 import styled from 'styled-components';
 import {NoResults} from './NoResults';
 import {DeleteCategoryModal} from './DeleteCategoryModal';
 import {deleteCategory} from '../../infrastructure';
+import {createTemplate} from "../templates/createTemplate";
 import {useCountCategoryTreesChildren} from '../../hooks';
 
 type Props = {
@@ -73,6 +74,27 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
     }
     closeConfirmationModal();
   };
+
+  const onCreateTemplate = (categoryTree: CategoryTreeModel) => {
+    createTemplate(categoryTree, router)
+        .then(response => {
+          response.json().then((template: Template) => {
+            if(template) {
+              notify(NotificationLevel.SUCCESS, translate('akeneo.category.template.notification_success'));
+              redirectToTemplate(categoryTree.id, template.identifier);
+            }
+          })
+        }).catch(error => {
+          notify(NotificationLevel.ERROR, translate('akeneo.category.template.notification_error'));
+    });
+  }
+
+  const redirectToTemplate = (treeId: number, templateId: string) => {
+    router.redirect(router.generate('pim_category_template_edit', {
+      treeId: treeId,
+      templateId: templateId
+    }));
+  }
 
   const onDeleteCategoryTree = (categoryTree: CategoryTreeModel) => {
     if (categoryTree.productsNumber && categoryTree.productsNumber > 100) {
@@ -155,7 +177,9 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
               {displayCategoryTemplatesColumn && (
                 <Table.HeaderCell>{translate('akeneo.category.tree_list.column.category_templates')}</Table.HeaderCell>
               )}
-              <Table.HeaderCell />
+              <Table.HeaderCell>
+                {translate('pim_enrich.entity.category.content.tree_list.columns.actions')}
+              </Table.HeaderCell>
             </Table.Header>
             <Table.Body>
               {filteredTrees.map(tree => (
@@ -173,19 +197,37 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                       )}
                   </Table.Cell>
                   {displayCategoryTemplatesColumn && <Table.Cell>{tree.templateLabel}</Table.Cell>}
-                  <TableActionCell>
+                  <Table.ActionCell
+                      style={{width: (featureFlags.isEnabled('enriched_category')) ? '400px' : '50px'}}
+                  >
+                    {featureFlags.isEnabled('enriched_category')
+                        && isGranted('pim_enrich_product_category_template')
+                        && (
+                        <StyleButton
+                            ghost
+                            level="tertiary"
+                            size={'small'}
+                            onClick={() => (tree.templateUuid) ? redirectToTemplate(tree.id, tree.templateUuid): onCreateTemplate(tree)}
+                            disabled={!tree.hasOwnProperty('productsNumber')}
+                        >
+                          {translate((tree.templateUuid)
+                              ? 'akeneo.category.template.edit'
+                              : 'akeneo.category.template.create'
+                          )}
+                        </StyleButton>
+                    )}
                     {isGranted('pim_enrich_product_category_remove') && (
-                      <Button
+                      <StyleButton
                         ghost
                         level="danger"
                         size={'small'}
                         onClick={() => onDeleteCategoryTree(tree)}
                         disabled={!tree.hasOwnProperty('productsNumber')}
                       >
-                        {translate('pim_common.delete')}
-                      </Button>
+                        {translate('akeneo.category.tree.delete')}
+                      </StyleButton>
                     )}
-                  </TableActionCell>
+                  </Table.ActionCell>
                 </Table.Row>
               ))}
             </Table.Body>
@@ -208,8 +250,8 @@ const StyledSearch = styled(Search)`
   margin-bottom: 20px;
 `;
 
-const TableActionCell = styled(Table.ActionCell)`
-  width: 50px;
-`;
+const StyleButton = styled(Button)`
+  margin-right: 10px;
+`
 
 export {CategoryTreesDataGrid};
