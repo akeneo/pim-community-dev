@@ -1,9 +1,7 @@
-const useIdentifierAttributes: () => {} = () => {
-  return {
-    data: [{code: 'sku', label: 'Sku'}],
-    error: null,
-    isSuccess: true,
-  };
-};
+const useIdentifierAttributes: () => {} = () => ({
+  data: [{code: 'sku', label: 'Sku'}],
+  error: null,
+  isSuccess: true,
+});
 
 export {useIdentifierAttributes};
