@@ -109,6 +109,29 @@ JSON;
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
     }
 
+    public function testCreateProductWithSameUppercaseUuid()
+    {
+        $client = $this->createAuthenticatedClient();
+        $uuid = Uuid::uuid4();
+        $uuidString = \strtoupper($uuid->toString());
+
+        $data =
+            <<<JSON
+    {
+        "uuid": "$uuidString",
+        "values": {
+            "sku": [{ "locale": null, "scope": null, "data": "new_identifier" }]
+        }
+    }
+JSON;
+
+        $client->request('PATCH', sprintf('api/rest/v1/products-uuid/%s', $uuidString), [], [], [], $data);
+
+        $response = $client->getResponse();
+        $this->assertSame('', $response->getContent());
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+    }
+
     public function testCreateProductWithDifferentUuid()
     {
         $client = $this->createAuthenticatedClient();

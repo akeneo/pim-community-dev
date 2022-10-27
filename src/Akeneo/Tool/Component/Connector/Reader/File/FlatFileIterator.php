@@ -6,10 +6,8 @@ use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use OpenSpout\Common\Entity\Row;
 use OpenSpout\Common\Exception\IOException;
 use OpenSpout\Common\Exception\UnsupportedTypeException;
-use OpenSpout\Common\Type;
-use OpenSpout\Reader\Common\Creator\ReaderFactory;
-use OpenSpout\Reader\IteratorInterface;
 use OpenSpout\Reader\ReaderInterface;
+use OpenSpout\Reader\RowIteratorInterface;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -30,7 +28,7 @@ class FlatFileIterator implements FileIteratorInterface
     protected ?ReaderInterface $reader = null;
     protected \SplFileInfo $fileInfo;
     protected ?string $archivePath = null;
-    protected IteratorInterface $rows;
+    protected RowIteratorInterface $rows;
     protected array $headers;
 
     /**
@@ -52,14 +50,11 @@ class FlatFileIterator implements FileIteratorInterface
         }
 
         $mimeType = finfo_file(finfo_open(FILEINFO_MIME_TYPE), $this->filePath);
-        if ('application/zip' === $mimeType && Type::XLSX !== $this->fileInfo->getExtension()) {
+        if ('application/zip' === $mimeType && SpoutReaderFactory::XLSX !== $this->fileInfo->getExtension()) {
             $this->extractZipArchive();
         }
 
-        $this->reader = ReaderFactory::createFromType($type);
-        if (isset($options['reader_options'])) {
-            $this->setReaderOptions($options['reader_options']);
-        }
+        $this->reader = SpoutReaderFactory::create($type, $options['reader_options'] ?? []);
 
         try {
             $this->reader->open($this->filePath);
@@ -208,25 +203,5 @@ class FlatFileIterator implements FileIteratorInterface
         $filesIterator->rewind();
 
         $this->filePath = $filesIterator->current()->getPathname();
-    }
-
-    /**
-     * Add options to Spout reader
-     *
-     * @param array $readerOptions
-     *
-     * @throws \InvalidArgumentException
-     */
-    protected function setReaderOptions(array $readerOptions = [])
-    {
-        foreach ($readerOptions as $name => $option) {
-            $setter = 'set' . ucfirst($name);
-            if (method_exists($this->reader, $setter)) {
-                $this->reader->$setter($option);
-            } else {
-                $message = sprintf('Option "%s" does not exist in reader "%s"', $setter, get_class($this->reader));
-                throw new \InvalidArgumentException($message);
-            }
-        }
     }
 }

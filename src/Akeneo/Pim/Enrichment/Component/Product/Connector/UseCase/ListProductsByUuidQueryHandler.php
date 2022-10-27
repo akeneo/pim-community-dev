@@ -17,6 +17,7 @@ use Akeneo\Tool\Component\Api\Exception\InvalidQueryException;
 use Akeneo\Tool\Component\Api\Pagination\PaginationTypes;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -109,7 +110,8 @@ final class ListProductsByUuidQueryHandler
         if (null !== $query->searchAfter) {
             // @see ListProductsQueryHandler comment
             $pqbOptions['search_after_unique_key'] = 'product_z';
-            $pqbOptions['search_after'] = [sprintf('product_%s', $query->searchAfter)];
+            $searchAfter = Uuid::isValid($query->searchAfter) ? Uuid::fromString($query->searchAfter)->toString() : $query->searchAfter;
+            $pqbOptions['search_after'] = [sprintf('product_%s', $searchAfter)];
         }
 
         return $this->searchAfterPqbFactory->create($pqbOptions);
