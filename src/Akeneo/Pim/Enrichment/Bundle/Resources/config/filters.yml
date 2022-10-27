@@ -48,7 +48,7 @@ services:
             - '@pim_catalog.normalizer.standard.product.associations'
             - '@pim_catalog.normalizer.standard.product.quantified_associations'
             - '@pim_catalog.comparator.registry'
-            - '@database_connection'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetProductUuids'
 
     pim_catalog.comparator.filter.product_field:
         class: '%pim_catalog.comparator.filter.entity_with_values_field.class%'

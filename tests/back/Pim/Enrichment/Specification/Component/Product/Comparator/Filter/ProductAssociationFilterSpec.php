@@ -3,17 +3,28 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
+use Akeneo\Pim\Enrichment\Product\Domain\Query\GetProductUuids;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorRegistry;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductAssociationFilterSpec extends ObjectBehavior
 {
-    function let(NormalizerInterface $associationsNormalizer, NormalizerInterface $quantifiedAssociationsNormalizer, ComparatorRegistry $comparatorRegistry)
-    {
-        $this->beConstructedWith($associationsNormalizer, $quantifiedAssociationsNormalizer, $comparatorRegistry);
+    function let(
+        NormalizerInterface $associationsNormalizer,
+        NormalizerInterface $quantifiedAssociationsNormalizer,
+        ComparatorRegistry $comparatorRegistry,
+        GetProductUuids $getProductUuids,
+    ) {
+        $this->beConstructedWith(
+            $associationsNormalizer,
+            $quantifiedAssociationsNormalizer,
+            $comparatorRegistry,
+            $getProductUuids
+        );
     }
 
     function it_is_a_filter()
@@ -51,7 +62,7 @@ class ProductAssociationFilterSpec extends ObjectBehavior
             ]
         ];
 
-        $associationsNormalizer->normalize($product, 'standard')
+        $associationsNormalizer->normalize($product, 'standard', ['with_association_uuids' => false])
             ->willReturn($originalAssociationsValues);
         $quantifiedAssociationsNormalizer->normalize($product, 'standard')
             ->willReturn($originalQuantifiedAssociationsValues);
@@ -115,7 +126,7 @@ class ProductAssociationFilterSpec extends ObjectBehavior
             'quantified_associations' => []
         ];
 
-        $associationsNormalizer->normalize($product, 'standard')
+        $associationsNormalizer->normalize($product, 'standard', ['with_association_uuids' => false])
             ->willReturn($originalAssociationsValues);
         $quantifiedAssociationsNormalizer->normalize($product, 'standard')
             ->willReturn(['quantified_associations' => []]);
@@ -163,7 +174,7 @@ class ProductAssociationFilterSpec extends ObjectBehavior
             'quantified_associations' => []
         ];
 
-        $associationsNormalizer->normalize($product, 'standard')
+        $associationsNormalizer->normalize($product, 'standard', ['with_association_uuids' => false])
             ->willReturn($originalAssociationsValues);
         $quantifiedAssociationsNormalizer->normalize($product, 'standard')
             ->willReturn(['quantified_associations' => []]);
@@ -217,7 +228,7 @@ class ProductAssociationFilterSpec extends ObjectBehavior
             ]
         ];
 
-        $associationsNormalizer->normalize($product, 'standard')
+        $associationsNormalizer->normalize($product, 'standard', ['with_association_uuids' => false])
             ->willReturn(['associations' => []]);
         $quantifiedAssociationsNormalizer->normalize($product, 'standard')
             ->willReturn($originalQuantifiedAssociationsValues);
@@ -233,5 +244,41 @@ class ProductAssociationFilterSpec extends ObjectBehavior
         )->willReturn(null);
 
         $this->filter($product, $newQuantifiedAssociationsValues)->shouldReturn([]);
+    }
+
+    /*
+    function it_does_things(
+        GetProductUuids $getProductUuids,
+        ProductInterface $product,
+    ) {
+        $uuid1 = Uuid::uuid4();
+        $uuid2 = Uuid::uuid4();
+        $newValues = [
+            'associations' => [
+                'XSELL' => [
+                    $uuid1->toString(),
+                    $uuid2->toString(),
+                ],
+            ],
+        ];
+
+
+        $this->filter($product, $newValues)->shouldReturn(['foo']);
+    }
+    */
+
+    function it_cannot_filter_with_both_products_and_product_uuids(
+        ProductInterface $product,
+    ) {
+        $uuid1 = Uuid::uuid4();
+        $newValues = [
+            'associations' => [
+                'XSELL' => [
+                    'product_uuids' => [$uuid1->toString()],
+                    'products' => ['a_product_identifier']
+                ],
+            ],
+        ];
+        $this->shouldThrow(\LogicException::class)->during('filter', [$product, $newValues]);
     }
 }
