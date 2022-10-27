@@ -61,8 +61,9 @@ const Discussion = ({comments, productFileIdentifier}: Props) => {
                 if (error instanceof NotFoundError) {
                     notify(
                         intl.formatMessage({
-                            defaultMessage: 'Sorry this product file does not exist anymore.',
-                            id: 'P/pV5X',
+                            defaultMessage:
+                                'Sorry this product file has been automatically deleted after 90 days and cannot be accessed anymore.',
+                            id: 'FtEtSR',
                         }),
                         'error'
                     );

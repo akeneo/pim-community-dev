@@ -197,11 +197,18 @@ final class ProductFileTest extends TestCase
         $productFileBuilder = new ProductFileBuilder();
         $productFile = $productFileBuilder->build();
 
-        self::assertFalse($productFile->hasComments());
-
         $productFile->addNewRetailerComment('content', 'julia@roberts.com', new \DateTimeImmutable('2022-09-07 00:00:00'));
 
         self::assertTrue($productFile->hasComments());
+    }
+
+    /** @test */
+    public function itChecksIfProductFileDoesNotHaveComments(): void
+    {
+        $productFileBuilder = new ProductFileBuilder();
+        $productFile = $productFileBuilder->build();
+
+        self::assertFalse($productFile->hasComments());
     }
 
     private function buildProductFile(Identifier $productFileIdentifier, array $retailerComments = [], array $supplierComments = []): ProductFile
