@@ -16,7 +16,6 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
   const {data: generators, isLoading} = useGetGenerators();
   const locale = useUserContext().get('catalogLocale');
   const isGeneratorListEmpty = useMemo(() => generators?.length === 0, [generators]);
-
   const getCurrentLabel = useCallback(
     (labels: LabelCollection, code: string) => labels[locale] || `[${code}]`,
     [locale]
