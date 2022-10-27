@@ -794,12 +794,22 @@ JSON;
 }
 JSON;
 
-        $expected = \strtr($expected, [
+        $this->assertListResponse($client->getResponse(), \strtr($expected, [
             '{searchAfterProductUuid}' => $sortedProducts[$searchAfterIndex]->getUuid()->toString(),
             '{lastProductUuid}' => $sortedProducts[$searchAfterIndex + 3]->getUuid()->toString(),
-        ]);
+        ]), false);
 
-        $this->assertListResponse($client->getResponse(), $expected, false);
+        // check that the search_after param is case-insensitive
+        $client->restart();
+        $client->request('GET', sprintf(
+            'api/rest/v1/products-uuid?pagination_type=search_after&limit=3&search_after=%s',
+            \mb_strtoupper($sortedProducts[$searchAfterIndex]->getUuid()->toString())
+        ));
+
+        $this->assertListResponse($client->getResponse(), \strtr($expected, [
+            '{searchAfterProductUuid}' => \mb_strtoupper($sortedProducts[$searchAfterIndex]->getUuid()->toString()),
+            '{lastProductUuid}' => $sortedProducts[$searchAfterIndex + 3]->getUuid()->toString(),
+        ]), false);
     }
 
     public function testSearchAfterPaginationLastPageOfTheListOfProducts()
