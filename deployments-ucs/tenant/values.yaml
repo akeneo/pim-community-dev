@@ -377,14 +377,6 @@ pim:
         requests:
           cpu: "10m"
           memory: "10Mi"
-    purge-connectivity-audit-error-count:
-      enabled: true
-      pimCommand: "akeneo:connectivity-audit:purge-error-count"
-      schedule: "40 12 * * *"
-      resources:
-        requests:
-          cpu: "10m"
-          memory: "10Mi"
     project-recalculate:
       enabled: true
       pimCommand: "pimee:project:recalculate"

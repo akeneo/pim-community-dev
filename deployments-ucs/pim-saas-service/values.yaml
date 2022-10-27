@@ -249,6 +249,11 @@ pim:
       pimJobName: "update_connectivity_audit_data"
       pimJobOptions: ""
       schedule: "1 * * * *"
+    connectivity-audit-purge-error:
+      enabled: true
+      pimJobName: "connectivity_audit_purge_error"
+      pimJobOptions: ""
+      schedule: "40 12 * * *"
   supplier_portal:
     settings:
       enabled: false
