@@ -13,7 +13,7 @@ Feature: Export products according to text attribute filter
       | title_3    | pim_catalog_text | Title 3        | other |
     And the following family:
       | code    | requirements-mobile | attributes                         |
-      | rangers | sku                 | comment,name,title,title_2,title_3 |
+      | rangers | sku                 | sku,comment,name,title,title_2,title_3 |
     And the following products:
       | sku      | enabled | family  | categories        | comment         | name-en_US | title        | title_2       | title_3    |
       | SNKRS-1B | 1       | rangers | summer_collection | Awesome         | Ranger 1B  | My title     | Awesome title |            |

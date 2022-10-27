@@ -81,17 +81,15 @@ class ProductIdentifierValidationIntegration extends TestCase
         );
     }
 
-    public function testNotBlankValidation()
+    public function testItCanCreateProductWithoutIdentifier()
     {
         $correctProduct = $this->createProduct('sku-001');
         $violations = $this->validateProduct($correctProduct);
         $this->assertCount(0, $violations);
 
-        $wrongProduct = $this->createProduct('');
-        $violations = $this->validateProduct($wrongProduct);
-        $this->assertCount(1, $violations);
-        $this->assertSame($violations->get(0)->getMessage(), 'The identifier attribute cannot be empty.');
-        $this->assertSame($violations->get(0)->getPropertyPath(), 'identifier');
+        $productWithoutIdentifier = $this->createProduct('');
+        $violations = $this->validateProduct($productWithoutIdentifier);
+        $this->assertCount(0, $violations);
     }
 
     /**

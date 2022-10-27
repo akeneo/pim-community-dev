@@ -13,7 +13,7 @@ Feature: Import media with products
       | Warranty    | pim_catalog_file  | txt, pdf           | 1             | other | warranty   |
     And the following family:
       | code         | attributes                         |
-      | media_family | frontView,name,userManual,warranty |
+      | media_family | sku,frontView,name,userManual,warranty |
     And I am logged in as "Julia"
 
   Scenario: Successfully import media

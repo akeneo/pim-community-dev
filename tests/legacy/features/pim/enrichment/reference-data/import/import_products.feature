@@ -8,7 +8,7 @@ Feature: Execute a job
     Given the "footwear" catalog configuration
     And the following family:
       | code      | attributes                         |
-      | new_heels | sole_fabric,lace_fabric,heel_color |
+      | new_heels | sku,sole_fabric,lace_fabric,heel_color |
     And I am logged in as "Julia"
 
   @critical

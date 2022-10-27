@@ -43,7 +43,7 @@ Feature: Create a product model
       | display_diagonal | pim_catalog_metric | other | Length        | CENTIMETER          | 0                | 0                |
     And the following families:
       | code     | attributes             | label-en_US |
-      | led_tvs  | name,display_diagonal  | LED TVs     |
+      | led_tvs  | sku,name,display_diagonal  | LED TVs     |
     And the following family variants:
       | code  | family  | variant-axes_1    | variant-attributes_1 | label-en_US |
       | tv    | led_tvs | display_diagonal  | name                 | LED TV      |
@@ -73,8 +73,8 @@ Feature: Create a product model
   Scenario: Display only families with variants
     When I create a product model
     And the following families:
-      | code |
-      | hats |
+      | code | attributes |
+      | hats | sku        |
     And I should see the Code, Family and Variant fields
     And the field Variant (required) should be disabled
     When I press the "Choose a family" button

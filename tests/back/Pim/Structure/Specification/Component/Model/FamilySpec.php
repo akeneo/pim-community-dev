@@ -40,18 +40,6 @@ class FamilySpec extends ObjectBehavior
         $this->hasAttribute($name)->shouldReturn(false);
     }
 
-    function it_throws_an_exception_when_removing_the_identifier_attribute(AttributeInterface $sku)
-    {
-        $sku->getType()->willReturn('pim_catalog_identifier');
-        $sku->getCode()->willReturn('code1');
-        $this->addAttribute($sku)->shouldReturn($this);
-        $this->hasAttribute($sku)->shouldReturn(true);
-        $this
-            ->shouldThrow(new \InvalidArgumentException('Identifier cannot be removed from a family.'))
-            ->duringRemoveAttribute($sku);
-        $this->hasAttribute($sku)->shouldReturn(true);
-    }
-
     function it_allows_defining_an_attribute_to_use_as_label(AttributeInterface $name)
     {
         $name->getCode()->willReturn('pim_catalog_text');

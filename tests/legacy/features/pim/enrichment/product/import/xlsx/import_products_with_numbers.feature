@@ -8,7 +8,7 @@ Feature: Import XLSX products with numbers
     Given the "footwear" catalog configuration
     And the following family:
       | code          | attributes                |
-      | number_family | number_in_stock,rate_sale |
+      | number_family | sku,number_in_stock,rate_sale |
     And I am logged in as "Julia"
 
   # @info If Excel opens a file containing numeric strings that match its locale config it will be transformed into real numbers

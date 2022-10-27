@@ -419,6 +419,7 @@ JSON;
             $familyA,
             [
                 'attributes' => [
+                    'sku',
                     'a_date',
                     'a_file',
                     'a_localizable_image',

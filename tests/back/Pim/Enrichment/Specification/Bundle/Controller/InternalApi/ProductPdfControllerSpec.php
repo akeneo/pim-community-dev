@@ -28,11 +28,9 @@ class ProductPdfControllerSpec extends ObjectBehavior
         $request->get('dataLocale', null)->willReturn('fr_FR');
         $request->get('dataScope', null)->willReturn('mobile');
 
-        $now = new \DateTime('now');
-
         $rendererRegistry->render($blender, 'pdf', Argument::type('array'))->shouldBeCalled();
 
-        $blender->getIdentifier()->shouldBeCalled();
+        $blender->getIdentifier()->shouldBeCalled()->willReturn('productIdentifier');
 
         $this->downloadPdfAction($request, 'df470d52-7723-4890-85a0-e79be625e2ed');
     }
@@ -61,8 +59,6 @@ class ProductPdfControllerSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_the_product_doesnt_exist(
         Request $request,
-        ProductInterface $blender,
-        $rendererRegistry,
         $productRepository
     ) {
         $productRepository->find('df470d52-7723-4890-85a0-e79be625e2ed')->willReturn(null);

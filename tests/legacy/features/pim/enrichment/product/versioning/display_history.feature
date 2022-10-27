@@ -10,7 +10,8 @@ Feature: Display the product history
     And I am on the products grid
     And I create a product
     And I fill in the following information in the popin:
-      | SKU | sandals-001 |
+      | Family | Boots       |
+      | SKU    | sandals-001 |
     And I press the "Save" button in the popin
     And I wait to be on the "sandals-001" product page
     And the history of the product "sandals-001" has been built

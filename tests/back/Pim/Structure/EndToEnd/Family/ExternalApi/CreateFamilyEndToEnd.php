@@ -68,7 +68,7 @@ JSON;
 <<<JSON
     {
         "code": "complete_family_creation",
-        "attributes": ["an_image", "a_metric", "a_price", "an_image"],
+        "attributes": ["sku", "an_image", "a_metric", "a_price", "an_image"],
         "attribute_as_label": "sku",
         "attribute_as_image": "an_image",
         "attribute_requirements": {

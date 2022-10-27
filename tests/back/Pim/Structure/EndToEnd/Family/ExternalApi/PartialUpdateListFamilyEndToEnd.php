@@ -14,7 +14,7 @@ class PartialUpdateListFamilyEndToEnd extends ApiTestCase
         $data =
 <<<JSON
     {"code": "familyA1","labels":{"en_US":"family A1"}}
-    {"code": "familyC","attributes":["a_yes_no"],"attribute_as_label":"sku"}
+    {"code": "familyC","attributes":["sku", "a_yes_no"],"attribute_as_label":"sku"}
 JSON;
 
         $expectedContent =
@@ -22,7 +22,6 @@ JSON;
 {"line":1,"code":"familyA1","status_code":204}
 {"line":2,"code":"familyC","status_code":201}
 JSON;
-
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/families', [], [], [], $data);
         $httpResponse = $response['http_response'];

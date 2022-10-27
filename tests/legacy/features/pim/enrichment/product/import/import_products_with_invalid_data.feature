@@ -116,7 +116,7 @@ Feature: Execute a job
       | User manual | pim_catalog_file  | txt, pdf           | other | userManual |
     And the following family:
       | code         | attributes                |
-      | media_family | frontView,name,userManual |
+      | media_family | sku,frontView,name,userManual |
     And the following CSV file to import:
       """
       sku;family;groups;frontView;name-en_US;userManual;categories

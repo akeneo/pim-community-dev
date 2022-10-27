@@ -20,8 +20,6 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
         uuid:
             - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsUuid4: ~
         identifier:
-            - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotBlank:
-                attributeCode: 'identifier'
             - Regex:
                 pattern: '/^(?!\s)[^,;]+(?<!\s)$/'
                 message: 'regex.comma_or_semicolon_or_surrounding_space.message'

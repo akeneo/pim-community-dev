@@ -176,11 +176,13 @@ final class UpsertProductIntegration extends TestCase
     }
 
     /** @test */
-    public function it_throws_an_exception_when_deleting_the_identifier_value()
+    public function it_allows_to_delete_the_identifier()
     {
-        $this->expectException(LegacyViolationsException::class);
-        $this->expectExceptionMessage('The identifier attribute cannot be empty.');
+        $this->updateProduct(new SetTextValue('a_text', null, null, 'foo'));
+        $productUuid = $this->productRepository->findOneByIdentifier('identifier')->getUuid();
         $this->updateProduct(new SetIdentifierValue('sku', ''));
+        Assert::assertNull($this->productRepository->findOneByIdentifier('identifier'));
+        Assert::assertEmpty($this->productRepository->find($productUuid)->getIdentifier());
     }
 
     /** @test */
@@ -1437,17 +1439,15 @@ final class UpsertProductIntegration extends TestCase
 
     /**
      * @test
-     * @TODO: remove this test once the identifier is rendered optional
      */
-    public function it_cannot_create_a_product_without_identifier_value(): void
+    public function it_can_create_a_product_without_identifier_value(): void
     {
-        $this->expectException(LegacyViolationsException::class);
-        $this->expectDeprecationMessageMatches('/The identifier attribute cannot be empty/');
-
+        $productCount = $this->productRepository->countAll();
         $this->messageBus->dispatch(UpsertProductCommand::createWithoutUuidNorIdentifier(
             userId: $this->getUserId('admin'),
             userIntents: [new SetEnabled(false)]
         ));
+        Assert::assertEquals($productCount + 1, $this->productRepository->countAll());
     }
 
     private function getUserId(string $username): int

@@ -152,16 +152,6 @@ Feature: Add children to product model
     And I confirm the child creation
     Then I should see the text "The product model code must not be empty."
 
-  Scenario: I cannot add a variant product without identifier
-    Given I am on the "apollon_blue" product model page
-    When I open the variant navigation children selector for level 2
-    And I press the "Add new" button and wait for modal
-    Then I should see the text "Add a new size"
-    When I fill in the following child information:
-      | Size (variant axis) | XL |
-    And I confirm the child creation
-    Then I should see the text "The identifier attribute cannot be empty."
-
   Scenario: I cannot add a sub product model without axis value
     Given I am on the "apollon" product model page
     When I open the variant navigation children selector for level 1

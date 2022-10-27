@@ -53,7 +53,7 @@
                 </td>
                 <% }) %><!-- end each channel -->
                 <td class="AknGrid-bodyCell AknGrid-bodyCell--right">
-                    <% if (identifierAttributeType !== attribute.type && !readOnly) { %>
+                    <% if (!readOnly) { %>
                     <span class="AknIconButton AknIconButton--small AknIconButton--trash remove-attribute" data-attribute="<%- attribute.code %>"></span>
                     <% } %>
                 </td>

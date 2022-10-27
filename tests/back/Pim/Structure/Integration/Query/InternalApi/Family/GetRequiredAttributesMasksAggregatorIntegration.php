@@ -61,7 +61,7 @@ final class GetRequiredAttributesMasksAggregatorIntegration extends AbstractGetR
             ],
             [
                 'code' => 'familyC',
-                'attribute_codes' => [],
+                'attribute_codes' => ['sku'],
             ]
         ]);
     }

@@ -68,6 +68,20 @@ class FamilyUpdater implements ObjectUpdaterInterface
             );
         }
 
+        // For imports, sku are automatically added to the attribute_requirements and data is directly sent to this update
+        // to keep this "automatic" behavior, we add sku on new families
+        if (null === $family->getCreated()) {
+            $channels = $this->channelRepository->findAll();
+            $identifierCode = $this->attributeRepository->getIdentifierCode();
+            /** @var ChannelInterface $channel */
+            foreach ($channels as $channel) {
+                $channelCode = $channel->getCode();
+                $data['attribute_requirements'][$channelCode] = \array_values(
+                    \array_unique(\array_merge([$identifierCode], $data['attribute_requirements'][$channelCode] ?? []))
+                );
+            }
+        }
+
         foreach ($data as $field => $value) {
             $this->validateDataType($field, $value);
             $this->setData($family, $field, $value);
@@ -175,7 +189,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
                 $this->setAttributeRequirements($family, $data);
                 break;
             case 'attributes':
-                $this->addAttributes($family, $data);
+                $this->setAttributes($family, $data);
                 break;
             case 'attribute_as_label':
                 $this->setAttributeAsLabel($family, $data);
@@ -332,7 +346,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
      *
      * @throws InvalidPropertyException
      */
-    protected function addAttributes(FamilyInterface $family, array $data)
+    protected function setAttributes(FamilyInterface $family, array $data)
     {
         $newAttributes = [];
         foreach ($data as $attributeCode) {
