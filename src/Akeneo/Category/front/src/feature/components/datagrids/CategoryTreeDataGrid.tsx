@@ -27,14 +27,12 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
   const router = useRouter();
   const featureFlags = useFeatureFlags();
   const {isGranted} = useSecurity();
-  const userContext = useUserContext();
   const [searchString, setSearchString] = useState('');
   const [filteredTrees, setFilteredTrees] = useState<CategoryTreeModel[]>(trees);
   const notify = useNotify();
   const [isConfirmationModalOpen, openConfirmationModal, closeConfirmationModal] = useBooleanState();
   const [categoryTreeToDelete, setCategoryTreeToDelete] = useState<CategoryTreeModel | null>(null);
-  const [hasTemplates, setHasTemplates] = useState<boolean>(false);
-  const catalogLocale = userContext.get('catalogLocale');
+  const [displayCategoryTemplatesColumn, setDisplayCategoryTemplatesColumn] = useState<boolean>(false);
 
   const followCategoryTree = useCallback(
     (tree: CategoryTreeModel): void => {
@@ -109,6 +107,8 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
   const countTreesChildren = useCountCategoryTreesChildren();
 
   useEffect(() => {
+    const hasRights =
+      isGranted('pim_enrich_product_category_template') || isGranted('pim_enrich_product_category_edit_attributes');
     let hasTemplates = false;
 
     filteredTrees.map(function (tree) {
@@ -119,15 +119,8 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
       return hasTemplates;
     });
 
-    setHasTemplates(hasTemplates);
+    setDisplayCategoryTemplatesColumn(featureFlags.isEnabled('enriched_category') && hasRights && hasTemplates);
   }, [filteredTrees]);
-
-  const displayCategoryTemplatesColumn = () => {
-    const hasRights =
-      isGranted('pim_enrich_product_category_template') || isGranted('pim_enrich_product_category_edit_attributes');
-
-    return featureFlags.isEnabled('enriched_category') && hasRights && hasTemplates;
-  };
 
   return (
     <>
@@ -159,7 +152,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
               <Table.HeaderCell>
                 {translate('pim_enrich.entity.category.content.tree_list.columns.number_of_categories')}
               </Table.HeaderCell>
-              {displayCategoryTemplatesColumn() && (
+              {displayCategoryTemplatesColumn && (
                 <Table.HeaderCell>{translate('akeneo.category.tree_list.column.category_templates')}</Table.HeaderCell>
               )}
               <Table.HeaderCell />
@@ -179,7 +172,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                         countTreesChildren.hasOwnProperty(tree.code) ? countTreesChildren[tree.code] : 0
                       )}
                   </Table.Cell>
-                  {displayCategoryTemplatesColumn() && <Table.Cell>{tree.templateLabel}</Table.Cell>}
+                  {displayCategoryTemplatesColumn && <Table.Cell>{tree.templateLabel}</Table.Cell>}
                   <TableActionCell>
                     {isGranted('pim_enrich_product_category_remove') && (
                       <Button
