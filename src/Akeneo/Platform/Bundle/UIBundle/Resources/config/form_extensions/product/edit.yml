@@ -168,7 +168,7 @@ extensions:
            postUrl: pimee_enrich_product_rest_duplicate
 
     pim-product-duplicate-sku-field:
-        module: pim/product-edit-form/creation/identifier
+        module: pim/product-edit-form/creation/identifier-regarding-family
         parent: pim-product-duplicate-modal
         targetZone: fields
         position: 10

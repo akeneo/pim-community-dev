@@ -13,8 +13,8 @@ Feature: Revert product attributes to a previous version
     When I am on the products grid
     And I create a product
     And I fill in the following information in the popin:
-      | SKU    | jeans |
       | Family | Pants |
+      | SKU    | jeans |
     And I press the "Save" button in the popin
     And I wait to be on the "jeans" product page
     And I visit the "Marketing" group
@@ -34,8 +34,8 @@ Feature: Revert product attributes to a previous version
     When I am on the products grid
     And I create a product
     And I fill in the following information in the popin:
-      | SKU    | t-shirt |
       | Family | Tees    |
+      | SKU    | t-shirt |
     And I press the "Save" button in the popin
     And I wait to be on the "t-shirt" product page
     And I visit the "Marketing" group
@@ -59,8 +59,8 @@ Feature: Revert product attributes to a previous version
     When I am on the products grid
     And I create a product
     And I fill in the following information in the popin:
-      | SKU    | marcel |
       | Family | Tees   |
+      | SKU    | marcel |
     And I press the "Save" button in the popin
     And I wait to be on the "marcel" product page
     And I visit the "Attributes" column tab

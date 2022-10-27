@@ -72,6 +72,7 @@ class ClassifyCategoryOnProductWithPermissionsEndToEnd extends AbstractProductTe
     private function assertProduct($identifier, array $categories)
     {
         $expectedProduct = [
+            'uuid'          => $this->getProductUuidFromIdentifier($identifier)->toString(),
             'identifier'    => $identifier,
             'family'        => null,
             'parent'        => null,

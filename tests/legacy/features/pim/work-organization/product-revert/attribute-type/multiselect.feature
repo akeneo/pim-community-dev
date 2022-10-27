@@ -12,8 +12,8 @@ Feature: Revert product attributes to a previous version
     When I am on the products grid
     And I create a product
     And I fill in the following information in the popin:
-      | SKU    | jean  |
       | Family | Pants |
+      | SKU    | jean  |
     And I press the "Save" button in the popin
     And I wait to be on the "jean" product page
     And I add a new option to the "Weather conditions" attribute:
@@ -47,8 +47,8 @@ Feature: Revert product attributes to a previous version
     When I am on the products grid
     And I create a product
     And I fill in the following information in the popin:
-      | SKU    | marcel  |
       | Family | Jackets |
+      | SKU    | marcel  |
     And I press the "Save" button in the popin
     And I wait to be on the "marcel" product page
     And I visit the "Attributes" column tab

@@ -503,6 +503,7 @@ JSON;
         $this->get('doctrine')->getManager()->clear();
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
         $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
+        unset($standardizedProduct['uuid']);
 
         NormalizedProductCleaner::clean($standardizedProduct);
         NormalizedProductCleaner::clean($expectedProduct);

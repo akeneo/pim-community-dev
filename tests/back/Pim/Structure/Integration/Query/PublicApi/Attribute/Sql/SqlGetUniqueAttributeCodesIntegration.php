@@ -55,7 +55,7 @@ class SqlGetUniqueAttributeCodesIntegration extends TestCase
             $family,
             [
                 'code' => $familyData['code'],
-                'attributes'  =>  $familyData['attribute_codes'],
+                'attributes'  =>  \array_unique(\array_merge(['sku'], $familyData['attribute_codes'])),
                 'attribute_requirements' => [],
             ]
         );

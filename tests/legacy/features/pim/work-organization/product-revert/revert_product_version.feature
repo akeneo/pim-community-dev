@@ -29,6 +29,7 @@ Feature: Revert a product to a previous version
     Given I am on the products grid
     And I create a product
     And I fill in the following information in the popin:
+      | Family | Jackets |
       | SKU    | shirt   |
     And I press the "Save" button in the popin
     And I wait to be on the "shirt" product page
@@ -48,6 +49,7 @@ Feature: Revert a product to a previous version
     Given I am on the products grid
     And I create a product
     And I fill in the following information in the popin:
+      | Family | Jackets |
       | SKU    | shirt   |
     And I press the "Save" button in the popin
     And I wait to be on the "shirt" product page
@@ -64,6 +66,7 @@ Feature: Revert a product to a previous version
     Given I am on the products grid
     And I create a product
     And I fill in the following information in the popin:
+      | Family | Jackets |
       | SKU    | shirt   |
     And I press the "Save" button in the popin
     And I wait to be on the "shirt" product page
@@ -82,8 +85,8 @@ Feature: Revert a product to a previous version
     Given I am on the products grid
     And I create a product
     And I fill in the following information in the popin:
-      | SKU    | jean  |
       | Family | Pants |
+      | SKU    | jean  |
     And I press the "Save" button in the popin
     And I wait to be on the "jean" product page
     And I am on the products grid
@@ -105,7 +108,8 @@ Feature: Revert a product to a previous version
     Given I am on the products grid
     And I create a product
     And I fill in the following information in the popin:
-      | SKU | sandals |
+      | Family | Jackets |
+      | SKU    | sandals |
     And I press the "Save" button in the popin
     And I wait to be on the "sandals" product page
     And I visit the "Categories" column tab

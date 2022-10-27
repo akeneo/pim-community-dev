@@ -257,8 +257,7 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
             $family,
             [
                 'code' => $familyCode,
-                'attributes'  =>  $attributeCodes,
-                'attribute_requirements' => [],
+                'attributes'  =>  \array_unique(\array_merge(['sku'],$attributeCodes)),
             ]
         );
 
