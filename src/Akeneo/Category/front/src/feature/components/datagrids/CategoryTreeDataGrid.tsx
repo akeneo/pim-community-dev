@@ -8,7 +8,6 @@ import {
   useRouter,
   useSecurity,
   useTranslate,
-  useUserContext,
 } from '@akeneo-pim-community/shared';
 import {CategoryTreeModel, Template} from '../../models';
 import styled from 'styled-components';
@@ -180,9 +179,9 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
               {displayCategoryTemplatesColumn && (
                 <Table.HeaderCell>{translate('akeneo.category.tree_list.column.category_templates')}</Table.HeaderCell>
               )}
-              <Table.HeaderCell>
+              <StyleActionHeader isEnrichedCategoryEnabled={featureFlags.isEnabled('enriched_category')}>
                 {translate('pim_enrich.entity.category.content.tree_list.columns.actions')}
-              </Table.HeaderCell>
+              </StyleActionHeader>
             </Table.Header>
             <Table.Body>
               {filteredTrees.map(tree => (
@@ -200,7 +199,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                       )}
                   </Table.Cell>
                   {displayCategoryTemplatesColumn && <Table.Cell>{tree.templateLabel}</Table.Cell>}
-                  <Table.ActionCell style={{width: featureFlags.isEnabled('enriched_category') ? '400px' : '50px'}}>
+                  <Table.ActionCell>
                     {featureFlags.isEnabled('enriched_category') && isGranted('pim_enrich_product_category_template') && (
                       <StyleButton
                         ghost
@@ -248,6 +247,10 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
 
 const StyledSearch = styled(Search)`
   margin-bottom: 20px;
+`;
+
+const StyleActionHeader = styled(Table.HeaderCell)<{isEnrichedCategoryEnabled: boolean}>`
+  width: ${({isEnrichedCategoryEnabled}) => (isEnrichedCategoryEnabled ? '400px' : '50px')};
 `;
 
 const StyleButton = styled(Button)`
