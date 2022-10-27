@@ -3,4 +3,4 @@ export * from './CategoriesTreePage';
 export * from './CategoryEditPage';
 export * from './NewCategoryModal';
 export * from './HistoryPimView';
-export * from './TemplateIndex';
+export * from './TemplatePage';

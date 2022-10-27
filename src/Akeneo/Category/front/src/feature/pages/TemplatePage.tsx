@@ -2,15 +2,20 @@ import React, {FC, useCallback, useEffect, useState} from 'react';
 import {Breadcrumb, SkeletonPlaceholder, TabBar, useTabBar} from 'akeneo-design-system';
 import {
   FullScreenError,
+  getLabel,
   PageContent,
   PageHeader,
   PimView,
   useRouter,
   useSessionStorageState,
   useTranslate,
+  useUserContext,
 } from '@akeneo-pim-community/shared';
-import {useCategoryTree} from '../hooks';
+import {useCategoryTree, useTemplate} from '../hooks';
 import {useParams} from 'react-router';
+import {EditTemplatePropertiesForm} from '../components/template/EditTemplatePropertiesForm';
+import {cloneDeep, set} from 'lodash/fp';
+import {Template} from '../models';
 
 enum Tabs {
   ATTRIBUTE = '#pim_enrich-category-tab-attribute',
@@ -22,15 +27,19 @@ type Params = {
   templateId: string;
 };
 
-const TemplateIndex: FC = () => {
+const TemplatePage: FC = () => {
   const {treeId, templateId} = useParams<Params>();
   const router = useRouter();
   const translate = useTranslate();
+  const userContext = useUserContext();
+
+  const catalogLocale = userContext.get('catalogLocale');
 
   const {tree, loadingStatus, loadTree} = useCategoryTree(parseInt(treeId), '-1');
-  const templateLabel = 'Template Label';
+  const [templateLabel, setTemplateLabel] = useState('');
 
   const [treeLabel, setTreeLabel] = useState<string>('');
+  const [templateEdited, setTemplateEdited] = useState<Template | null>(null);
   const followSettingsIndex = useCallback(() => router.redirect(router.generate('pim_settings_index')), [router]);
   const followCategoriesIndex = useCallback(
     () => router.redirect(router.generate('pim_enrich_categorytree_index')),
@@ -46,10 +55,22 @@ const TemplateIndex: FC = () => {
   const [activeTab, setActiveTab] = useSessionStorageState<string>(Tabs.ATTRIBUTE, 'pim_category_template_activeTab');
   const [isCurrent, switchTo] = useTabBar(activeTab);
 
-  const handleSwitchTo = useCallback((tab: string) => {
-    setActiveTab(tab);
-    switchTo(tab);
-  }, [setActiveTab, switchTo]);
+  const handleSwitchTo = useCallback(
+    (tab: string) => {
+      setActiveTab(tab);
+      switchTo(tab);
+    },
+    [setActiveTab, switchTo]
+  );
+
+  const {
+    data: fetchedTemplate,
+    status: templateFetchingStatus,
+    error: templateFetchingError,
+  } = useTemplate({
+    // TODO when available : use template uuid from category.template_id
+    uuid: '02274dac-e99a-4e1d-8f9b-794d4c3ba330',
+  });
 
   useEffect(() => {
     loadTree();
@@ -58,6 +79,30 @@ const TemplateIndex: FC = () => {
   useEffect(() => {
     setTreeLabel(tree ? tree.label : '');
   }, [tree]);
+
+  useEffect(() => {
+    if (templateFetchingStatus === 'success') {
+      if (fetchedTemplate) {
+        setTemplateEdited(cloneDeep(fetchedTemplate));
+      }
+    }
+  }, [catalogLocale, fetchedTemplate, templateFetchingStatus]);
+
+  useEffect(() => {
+    templateEdited && setTemplateLabel(getLabel(templateEdited.labels, catalogLocale, templateEdited.code));
+  }, [templateEdited]);
+
+  const onChangeTemplateLabel = useCallback(
+    (localeCode: string, label: string) => {
+      if (templateEdited === null) {
+        return;
+      } else {
+      }
+
+      templateEdited && setTemplateEdited(set(['labels', localeCode], label, templateEdited));
+    },
+    [catalogLocale, templateEdited]
+  );
 
   if (loadingStatus === 'error') {
     return (
@@ -92,7 +137,7 @@ const TemplateIndex: FC = () => {
             className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
           />
         </PageHeader.UserActions>
-        <PageHeader.Title>templateLabel</PageHeader.Title>
+        <PageHeader.Title>{templateLabel ?? templateId}</PageHeader.Title>
       </PageHeader>
       <PageContent>
         <TabBar moreButtonTitle={'More'}>
@@ -114,12 +159,14 @@ const TemplateIndex: FC = () => {
           </TabBar.Tab>
         </TabBar>
 
-        {isCurrent(Tabs.ATTRIBUTE) && tree && <h3>Create Attribute form</h3>}
+        {isCurrent(Tabs.ATTRIBUTE) && tree && fetchedTemplate && <h3>Work In Progress</h3>}
 
-        {isCurrent(Tabs.PROPERTY) && tree && <h3>Create Property form</h3>}
+        {isCurrent(Tabs.PROPERTY) && tree && templateEdited && (
+          <EditTemplatePropertiesForm template={templateEdited} onChangeLabel={onChangeTemplateLabel} />
+        )}
       </PageContent>
     </>
   );
 };
 
-export {TemplateIndex};
+export {TemplatePage};
