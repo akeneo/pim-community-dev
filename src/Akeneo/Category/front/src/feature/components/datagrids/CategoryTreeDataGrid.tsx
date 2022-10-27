@@ -1,5 +1,5 @@
 import React, {FC, useCallback, useEffect, useState} from 'react';
-import {AkeneoThemedProps, Button, Search, Table, useBooleanState} from 'akeneo-design-system';
+import {Button, Search, Table, useBooleanState} from 'akeneo-design-system';
 import {
   NotificationLevel,
   useDebounceCallback,
@@ -8,7 +8,6 @@ import {
   useRouter,
   useSecurity,
   useTranslate,
-  useUserContext,
 } from '@akeneo-pim-community/shared';
 import {CategoryTreeModel, Template} from '../../models';
 import styled from 'styled-components';
