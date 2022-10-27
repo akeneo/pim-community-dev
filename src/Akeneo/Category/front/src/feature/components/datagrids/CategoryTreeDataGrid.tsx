@@ -79,10 +79,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
           response.json().then((template: Template) => {
             if(template) {
               notify(NotificationLevel.SUCCESS, translate('akeneo.category.template.notification_success'));
-              router.redirect(router.generate('pim_category_template_edit', {
-                treeId: categoryTree.id,
-                templateId: template.identifier
-              }));
+              redirectToTemplate(categoryTree.id, template.identifier);
             }
           })
         }).catch(error => {
@@ -90,8 +87,11 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
     });
   }
 
-  const redirectToTemplate = (templateUuid: string) => {
-    router.redirect(router.generate('TBD', {templateUuid: templateUuid}));
+  const redirectToTemplate = (treeId: number, templateId: string) => {
+    router.redirect(router.generate('pim_category_template_edit', {
+      treeId: treeId,
+      templateId: templateId
+    }));
   }
 
   const onDeleteCategoryTree = (categoryTree: CategoryTreeModel) => {
@@ -185,7 +185,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                             ghost
                             level="tertiary"
                             size={'small'}
-                            onClick={() => (tree.templateUuid) ? redirectToTemplate(tree.templateUuid): onCreateTemplate(tree)}
+                            onClick={() => (tree.templateUuid) ? redirectToTemplate(tree.id, tree.templateUuid): onCreateTemplate(tree)}
                             disabled={!tree.hasOwnProperty('productsNumber')}
                         >
                           {translate((tree.templateUuid)

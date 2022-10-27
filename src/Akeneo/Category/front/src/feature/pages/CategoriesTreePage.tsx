@@ -20,7 +20,7 @@ import {CategoryTree} from '../components';
 import {NewCategoryModal} from './NewCategoryModal';
 import {DeleteCategoryModal} from '../components/datagrids/DeleteCategoryModal';
 import {createTemplate} from "../components/templates/createTemplate";
-import {CategoryTreeModel} from "../models";
+import {CategoryTreeModel, Template} from "../models";
 
 type Params = {
   treeId: string;
@@ -100,17 +100,24 @@ const CategoriesTreePage: FC = () => {
   };
 
   const onCreateTemplate = (categoryTree: CategoryTreeModel) => {
-    const errors = createTemplate(categoryTree, router);
-    if (Object.keys(errors).length > 0) {
+    createTemplate(categoryTree, router)
+        .then(response => {
+          response.json().then((template: Template) => {
+            if(template) {
+              notify(NotificationLevel.SUCCESS, translate('akeneo.category.template.notification_success'));
+              redirectToTemplate(categoryTree.id, template.identifier);
+            }
+          })
+        }).catch(error => {
       notify(NotificationLevel.ERROR, translate('akeneo.category.template.notification_error'));
-    } else {
-      notify(NotificationLevel.SUCCESS, translate('akeneo.category.template.notification_success'));
-      router.redirect('TBD');
-    }
-  }
+    });
+  };
 
-  const redirectToTemplate = (templateUuid: string) => {
-    router.redirect(router.generate('TBD', {templateUuid: templateUuid}));
+  const redirectToTemplate = (treeId: number, templateId: string) => {
+    router.redirect(router.generate('pim_category_template_edit', {
+      treeId: treeId,
+      templateId: templateId
+    }));
   }
 
   useEffect(() => {
@@ -157,7 +164,7 @@ const CategoriesTreePage: FC = () => {
           <PageHeader.Actions>
             {tree &&
             <Button
-                onClick={() => (tree.templateUuid) ? redirectToTemplate(tree.templateUuid) : onCreateTemplate(tree)}
+                onClick={() => (tree.templateUuid) ? redirectToTemplate(tree.id, tree.templateUuid) : onCreateTemplate(tree)}
                 level="tertiary"
                 ghost
             >
