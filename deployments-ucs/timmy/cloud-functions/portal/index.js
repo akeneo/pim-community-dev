@@ -283,7 +283,7 @@ functions.http('requestPortal', (req, res) => {
 
       logger.info(`Call the cloudfunction ${process.env.FUNCTION_URL_TIMMY_CREATE_TENANT} to create the tenant`);
       try {
-        await requestCloudFunction(process.env.FUNCTION_URL_TIMMY_CREATE_TENANT, "POST", payload);
+        await requestCloudFunction(process.env.FUNCTION_URL_TIMMY_CREATE_TENANT, "POST", payload)
           .then((response) => {
             logger.info(`Tenant ${instanceName} is created: ${response.data}`);
             updateInstanceStatusInPortal(instanceName, instanceId, TENANT_STATUS.ACTIVATED);
@@ -308,10 +308,10 @@ functions.http('requestPortal', (req, res) => {
 
       try {
         logger.info(`Call the cloudfunction ${process.env.FUNCTION_URL_TIMMY_DELETE_TENANT} to delete the tenant`);
-        const response = await requestCloudFunction(process.env.FUNCTION_URL_TIMMY_DELETE_TENANT, "POST", JSON.stringify({
+        const response = await requestCloudFunction(process.env.FUNCTION_URL_TIMMY_DELETE_TENANT, "POST", {
           instanceName: instanceName,
           branchName: branchName
-        }));
+        });
 
         logger.info(`Tenant ${instanceName} is deleted: ${response.data}`);
       } catch (error) {
