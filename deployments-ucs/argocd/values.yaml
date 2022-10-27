@@ -1,23 +1,16 @@
 ## Argo CD configuration
 ## Ref: https://github.com/argoproj/argo-cd
 ##
-
 nameOverride: argocd
 
 global:
   image:
     repository: quay.io/argoproj/argocd
-    tag: "v2.4.11"
+    tag: "v2.5.0"
     imagePullPolicy: IfNotPresent
 
 ## Argo Configs
 configs:
-  # -- Provide one or multiple [external cluster credentials]
-  # @default -- `[]` (See [values.yaml])
-  ## Ref:
-  ## - https://argoproj.github.io/argo-cd/operator-manual/declarative-setup/#clusters
-  ## - https://argoproj.github.io/argo-cd/operator-manual/security/#external-cluster-credentials
-
   # -- Repository credentials to be used as Templates for other repos
   ## Creates a secret for each key/value specified below to create repository credentials
   credentialTemplates:
@@ -40,7 +33,6 @@ server:
   ingress:
     enabled: false
 
-
 # helm-gcs plugin: https://argo-cd.readthedocs.io/en/stable/user-guide/helm/#using-initcontainers
 # Permissions to gcs bucket are granted with workload identity
 repoServer:
@@ -51,12 +43,12 @@ repoServer:
     - mountPath: /helm
       name: helm
   env:
-    - name: HELM_DATA_HOME
-      value: /helm
     - name: HELM_CACHE_HOME
       value: /helm/cache
     - name: HELM_CONFIG_HOME
       value: /helm/config
+    - name: HELM_DATA_HOME
+      value: /helm
     - name: HELM_PLUGINS
       value: /helm/plugins/
   serviceAccount:
@@ -70,16 +62,16 @@ repoServer:
         - mountPath: /helm
           name: helm
       env:
-        - name: HELM_DATA_HOME
-          value: /helm
         - name: HELM_CACHE_HOME
           value: /helm/cache
         - name: HELM_CONFIG_HOME
           value: /helm/config
+        - name: HELM_DATA_HOME
+          value: /helm
       command: ["/bin/sh", "-c"]
       args:
         - apk --no-cache add curl;
           helm plugin install https://github.com/hayorov/helm-gcs.git;
           helm repo add akeneo-charts gs://akeneo-pim-saas-charts-prod;
           helm repo update;
-          chmod -R 777 $HELM_DATA_HOME;
+          chmod -R 777 ${HELM_DATA_HOME};
