@@ -67,7 +67,8 @@ const EditTemplatePropertiesForm = ({template, onChangeLabel}: Props) => {
       <Field label={localeName} key={localeCode}>
         <TextInput
           //name={`${labelField}-${locale}`}
-          readOnly={!isGranted('pim_enrich_product_category_template')}
+          // readOnly={!isGranted('pim_enrich_product_category_template')}
+          readOnly={true}
           onChange={handleChange(localeCode)}
           value={value}
         />

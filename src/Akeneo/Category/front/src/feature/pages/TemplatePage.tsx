@@ -13,9 +13,9 @@ import {
 } from '@akeneo-pim-community/shared';
 import {useCategoryTree, useTemplate} from '../hooks';
 import {useParams} from 'react-router';
-import {EditTemplatePropertiesForm} from "../components/template/EditTemplatePropertiesForm";
-import {cloneDeep, set} from "lodash/fp";
-import {Template} from "../models";
+import {EditTemplatePropertiesForm} from '../components/template/EditTemplatePropertiesForm';
+import {cloneDeep, set} from 'lodash/fp';
+import {Template} from '../models';
 
 enum Tabs {
   ATTRIBUTE = '#pim_enrich-category-tab-attribute',
@@ -55,10 +55,13 @@ const TemplatePage: FC = () => {
   const [activeTab, setActiveTab] = useSessionStorageState<string>(Tabs.ATTRIBUTE, 'pim_category_template_activeTab');
   const [isCurrent, switchTo] = useTabBar(activeTab);
 
-  const handleSwitchTo = useCallback((tab: string) => {
-    setActiveTab(tab);
-    switchTo(tab);
-  }, [setActiveTab, switchTo]);
+  const handleSwitchTo = useCallback(
+    (tab: string) => {
+      setActiveTab(tab);
+      switchTo(tab);
+    },
+    [setActiveTab, switchTo]
+  );
 
   const {
     data: fetchedTemplate,
@@ -78,8 +81,8 @@ const TemplatePage: FC = () => {
   }, [tree]);
 
   useEffect(() => {
-    if(templateFetchingStatus === "success") {
-      if(fetchedTemplate) {
+    if (templateFetchingStatus === 'success') {
+      if (fetchedTemplate) {
         setTemplateEdited(cloneDeep(fetchedTemplate));
       }
     }
@@ -90,14 +93,15 @@ const TemplatePage: FC = () => {
   }, [templateEdited]);
 
   const onChangeTemplateLabel = useCallback(
-      (localeCode: string, label: string) => {
-        if (templateEdited === null) {
-          return;
-        } else {}
+    (localeCode: string, label: string) => {
+      if (templateEdited === null) {
+        return;
+      } else {
+      }
 
-        templateEdited && setTemplateEdited(set(['labels', localeCode], label, templateEdited));
-      },
-      [catalogLocale, templateEdited]
+      templateEdited && setTemplateEdited(set(['labels', localeCode], label, templateEdited));
+    },
+    [catalogLocale, templateEdited]
   );
 
   if (loadingStatus === 'error') {
@@ -157,7 +161,9 @@ const TemplatePage: FC = () => {
 
         {isCurrent(Tabs.ATTRIBUTE) && tree && fetchedTemplate && <h3>Work In Progress</h3>}
 
-        {isCurrent(Tabs.PROPERTY) && tree && templateEdited && <EditTemplatePropertiesForm template={templateEdited} onChangeLabel={onChangeTemplateLabel}/>}
+        {isCurrent(Tabs.PROPERTY) && tree && templateEdited && (
+          <EditTemplatePropertiesForm template={templateEdited} onChangeLabel={onChangeTemplateLabel} />
+        )}
       </PageContent>
     </>
   );
