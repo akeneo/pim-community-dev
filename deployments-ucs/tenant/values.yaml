@@ -417,14 +417,6 @@ pim:
         requests:
           cpu: "10m"
           memory: "10Mi"
-    data-quality-insights-periodic-tasks:
-      enabled: true
-      pimCommand: "pim:data-quality-insights:schedule-periodic-tasks"
-      schedule: "15 0 * * *"
-      resources:
-        requests:
-          cpu: "10m"
-          memory: "10Mi"
     data-quality-insights-prepare-evaluations:
       enabled: true
       pimCommand: "pim:data-quality-insights:prepare-evaluations"
