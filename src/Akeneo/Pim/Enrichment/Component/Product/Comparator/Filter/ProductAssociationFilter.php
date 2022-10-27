@@ -5,6 +5,8 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorRegistry;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\ProductNormalizer;
+use Doctrine\DBAL\Connection;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -28,7 +30,8 @@ class ProductAssociationFilter implements FilterInterface
     public function __construct(
         NormalizerInterface $associationsNormalizer,
         NormalizerInterface $quantifiedAssociationsNormalizer,
-        ComparatorRegistry $comparatorRegistry
+        ComparatorRegistry $comparatorRegistry,
+        private Connection $connection,
     ) {
         $this->associationsNormalizer = $associationsNormalizer;
         $this->quantifiedAssociationsNormalizer = $quantifiedAssociationsNormalizer;
@@ -51,6 +54,8 @@ class ProductAssociationFilter implements FilterInterface
         ) {
             return [];
         }
+
+        $newValues = $this->transform($newValues);
 
         $result = [];
 
@@ -95,7 +100,7 @@ class ProductAssociationFilter implements FilterInterface
         }
 
         foreach ($convertedItem['associations'] as $association) {
-            if (!empty($association['products']) || !empty($association['groups']) || !empty($association['product_models'])) {
+            if (!empty($association['products']) || !empty($association['groups']) || !empty($association['product_models']) || !empty($association['product_uuids'])) {
                 return true;
             }
         }
@@ -148,5 +153,38 @@ class ProductAssociationFilter implements FilterInterface
     protected function getOriginalAssociation(array $originalAssociations, string $type, string $key): array
     {
         return !isset($originalAssociations[$type][$key]) ? [] : $originalAssociations[$type][$key];
+    }
+
+    private function transform(array $newValues)
+    {
+        $result = [];
+
+        if (isset($newValues['associations'])) {
+            $result['associations'] = [];
+            foreach ($newValues['associations'] as $associationCode => $associationsByCode) {
+                $result['associations'][$associationCode] = [];
+                foreach ($associationsByCode as $associationType => $associationsByType) {
+                    if ($associationType === 'products') {
+                        $result['associations'][$associationCode]['product_uuids'] = array_map(fn(string $identifier): string => $this->getProductUuid($identifier), $associationsByType);
+                    } else {
+                        $result['associations'][$associationCode][$associationType] = $associationsByType;
+                    }
+                }
+            }
+        }
+        if (isset($newValues['quantified_associations'])) {
+            $result['quantified_associations'] = $newValues['quantified_associations'];
+        }
+
+        return $result;
+    }
+
+    // TODO Do this better
+    private function getProductUuid(string $identifier): ?string
+    {
+        return $this->connection->executeQuery(
+            'SELECT BIN_TO_UUID(uuid) AS uuid FROM pim_catalog_product WHERE identifier = :identifier',
+            ['identifier' => $identifier]
+        )->fetchOne() ?: null;
     }
 }

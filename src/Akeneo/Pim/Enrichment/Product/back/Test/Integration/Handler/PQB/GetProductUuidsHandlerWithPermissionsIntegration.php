@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\Test\Integration\Handler\PQB;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuidsQuery;
@@ -14,7 +13,6 @@ use Akeneo\Test\Pim\Enrichment\Product\Helper\FeatureHelper;
 use Akeneo\Test\Pim\Enrichment\Product\Integration\EnrichmentProductTestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
-use Webmozart\Assert\Assert as WebmozartAssert;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -61,9 +59,9 @@ final class GetProductUuidsHandlerWithPermissionsIntegration extends EnrichmentP
         }
 
         Assert::assertCount(2, $uuids);
-        Assert::assertContains($this->getProductUuid('product_always_visible'), $uuids);
-        Assert::assertContains($this->getProductUuid('product_visible_by_manager'), $uuids);
-        Assert::assertNotContains($this->getProductUuid('product_not_visible_by_manager'), $uuids);
+        Assert::assertContains($this->getProductUuid('product_always_visible')->toString(), $uuids);
+        Assert::assertContains($this->getProductUuid('product_visible_by_manager')->toString(), $uuids);
+        Assert::assertNotContains($this->getProductUuid('product_not_visible_by_manager')->toString(), $uuids);
     }
 
     private function launchPQBCommand(array $search, string $username): ProductUuidCursor
