@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Pim\Upgrade\Schema;
 
-use Akeneo\Platform\JobAutomation\Domain\Model\AsymmetricKeys;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
@@ -25,7 +24,7 @@ class Version_7_0_20221020140000_add_sftp_keys_into_pim_configuration extends Ab
 
         $this->connection->executeQuery($query, [
             'code' => 'SFTP_ASYMMETRIC_KEYS',
-            'asymmetricKeys' => $asymmetricKeys->normalize(),
+            'asymmetricKeys' => $asymmetricKeys,
         ], [
             'code' => Types::STRING,
             'asymmetricKeys' => Types::JSON,
@@ -37,7 +36,7 @@ class Version_7_0_20221020140000_add_sftp_keys_into_pim_configuration extends Ab
         $this->throwIrreversibleMigrationException();
     }
 
-    private function generate(): AsymmetricKeys
+    private function generate(): array
     {
         $privKey = new RSA();
         $keys = $privKey->createKey();
@@ -60,6 +59,9 @@ class Version_7_0_20221020140000_add_sftp_keys_into_pim_configuration extends Ab
         $x509 = new X509();
         $result = $x509->sign($issuer, $subject);
 
-        return AsymmetricKeys::create($x509->saveX509($result), $privateKey);
+        return [
+            'public_key' => $x509->saveX509($result),
+            'private_key' => $privateKey,
+        ];
     }
 }
