@@ -8,12 +8,19 @@ import {Operator} from '../../ProductSelection';
 import {useCatalogForm} from './useCatalogForm';
 import {useCatalog} from './useCatalog';
 import {SaveCatalog, useSaveCatalog} from './useSaveCatalog';
+import {useCatalogErrors} from './useCatalogErrors';
 
 test('it returns a placeholder when loading', () => {
     mocked(useCatalog).mockImplementation(() => ({
         isLoading: true,
         isError: false,
         data: undefined,
+        error: null,
+    }));
+    mocked(useCatalogErrors).mockImplementation(() => ({
+        isLoading: false,
+        isError: false,
+        data: [],
         error: null,
     }));
 
@@ -52,6 +59,13 @@ test('it returns the form values when catalog is loaded', () => {
             ],
             product_value_filters: {channels: ['ecommerce', 'print']},
         },
+        error: null,
+    }));
+
+    mocked(useCatalogErrors).mockImplementation(() => ({
+        isLoading: false,
+        isError: false,
+        data: [],
         error: null,
     }));
 
@@ -96,6 +110,12 @@ test('it calls the API when save is called', async () => {
             ],
             product_value_filters: {channels: ['ecommerce', 'print']},
         },
+        error: null,
+    }));
+    mocked(useCatalogErrors).mockImplementation(() => ({
+        isLoading: false,
+        isError: false,
+        data: [],
         error: null,
     }));
 
@@ -154,6 +174,13 @@ test('it returns validation errors if the API call failed', async () => {
         error: null,
     }));
 
+    mocked(useCatalogErrors).mockImplementation(() => ({
+        isLoading: false,
+        isError: false,
+        data: [],
+        error: null,
+    }));
+
     const {result} = renderHook(() => useCatalogForm('a4ecb5c7-7e80-44a8-baa1-549db0707f79'));
 
     /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
@@ -192,6 +219,12 @@ test('it returns dirty at true after dispatching a change', () => {
         },
         error: null,
     }));
+    mocked(useCatalogErrors).mockImplementation(() => ({
+        isLoading: false,
+        isError: false,
+        data: [],
+        error: null,
+    }));
 
     const {result} = renderHook(() => useCatalogForm('a4ecb5c7-7e80-44a8-baa1-549db0707f79'));
 
@@ -227,6 +260,12 @@ test("it forwards the action to dispatch when it's a non-altering event", () => 
         },
         error: null,
     }));
+    mocked(useCatalogErrors).mockImplementation(() => ({
+        isLoading: false,
+        isError: false,
+        data: [],
+        error: null,
+    }));
 
     const {result} = renderHook(() => useCatalogForm('a4ecb5c7-7e80-44a8-baa1-549db0707f79'));
 
@@ -255,4 +294,62 @@ test("it forwards the action to dispatch when it's a non-altering event", () => 
     [form, save, isDirty] = result.current;
 
     expect(isDirty).toBeFalsy();
+});
+
+test('it validates the catalog on first load', () => {
+    mocked(useCatalog).mockImplementation(() => ({
+        isLoading: false,
+        isError: false,
+        data: {
+            id: 'a4ecb5c7-7e80-44a8-baa1-549db0707f79',
+            name: 'Store US',
+            enabled: true,
+            product_selection_criteria: [
+                {
+                    field: 'color',
+                    operator: Operator.IN_LIST,
+                    value: ['blue', 'red'],
+                },
+            ],
+            product_value_filters: {channels: ['ecommerce', 'print']},
+        },
+        error: null,
+    }));
+    mocked(useCatalogErrors).mockImplementation(() => ({
+        isLoading: false,
+        isError: false,
+        data: [
+            {
+                propertyPath: '[color]',
+                message: 'blue does not exists.',
+            },
+        ],
+        error: null,
+    }));
+
+    const {result} = renderHook(() => useCatalogForm('a4ecb5c7-7e80-44a8-baa1-549db0707f79'));
+
+    expect(result.current).toMatchObject([
+        {
+            values: {
+                enabled: true,
+                product_selection_criteria: {
+                    a: {
+                        field: 'color',
+                        operator: Operator.IN_LIST,
+                        value: ['blue', 'red'],
+                    },
+                },
+                product_value_filters: {channels: ['ecommerce', 'print']},
+            },
+            errors: [
+                {
+                    propertyPath: '[color]',
+                    message: 'blue does not exists.',
+                },
+            ],
+        },
+        expect.any(Function),
+        false,
+    ]);
 });

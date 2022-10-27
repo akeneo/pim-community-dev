@@ -60,8 +60,6 @@ pim_catalog:
     attribute_does_not_belong_to_family: 'Attribuutti "%attribute%" ei kuulu perheeseen "%family%"'
     variant_product_invalid_family: 'Variantin perhe on oltava sama kuin ylätason tuotteella'
     not_null_family: Perhe ei voi olla "null", koska tuote, jolla on %sku% tunniste, on varianttituote.
-    variant_product_has_parent: 'Variantilla "%variant_product%" on oltava ylätason tuote'
-    invalid_variant_product_parent: 'Variantilla "%variant_product%" ei voi olla tuotemallia "%product_model%" ylätason tuotteena, (tähän tuotemalliin voi kuulua vain toisia tuotemalleja)'
     modified_variant_axis_value: 'Varianttiulottuvuutta "%variant_axis%" ei voi muokata arvolla "%provided_value%"'
     family_variant_axes_immutable: 'Varianttiulottuvuuksia ei voi muokata tasolla "%level%"'
     family_variant_axes_attribute_type_unique: Varianttiulottuvuus "%axis%" ei voi olla arvoltaan yksilöllinen tai tunniste
@@ -93,9 +91,9 @@ pim_catalog:
     204: Tämä kenttä vaatii merkkijonoarvon.
     205: Tapahtui sisäinen virhe
     300: Tämä kenttä vaatii kelvollisen entiteettikoodin.
-    301: Tämä kenttä vaatii kelvollisen kanavan ja lokaation.
-    302: Tämä kenttä vaatii kelvollisen kanavan.
-    303: Tämä kenttä vaatii kelvollisen tuoteliitoksen muodon.
+    301: Tämä kenttä vaatii kelvollisen laajuuden ja lokaation.
+    302: Tämä kenttä vaatii kelvollisen laajuuden.
+    303: Tämä kenttä vaatii kelvollisen assosiaatiomuodon.
     pim_immutable_product_model_validator: Sama tunnus on jo toisen tuotemallin käytössä.
     quantified_associations:
       unexpected_link_type: Linkkityyppiä "{{ value }}" ei ole olemassa. Voit liittää vain tuotteita tai tuotemalleja.

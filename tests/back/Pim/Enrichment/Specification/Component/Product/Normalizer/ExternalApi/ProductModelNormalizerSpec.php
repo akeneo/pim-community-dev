@@ -58,6 +58,16 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                     ]
                 ]
             ],
+            'quantified_associations' => [
+                'set' => [
+                    'products' => [
+                        ['uuid' => '79fc4791-86d6-4d3b-93c5-76b787af9497', 'identifier' => 'a_product', 'quantity' => 3],
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'a_product_model', 'quantity' => 10],
+                    ],
+                ],
+            ],
         ];
 
         $productModelApiFormat = [
@@ -83,6 +93,16 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                     ]
                 ]
             ],
+            'quantified_associations' => [
+                'set' => [
+                    'products' => [
+                        ['identifier' => 'a_product', 'quantity' => 3],
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'a_product_model', 'quantity' => 10],
+                    ],
+                ],
+            ],
             'family' => 'family_code',
         ];
 
@@ -107,7 +127,8 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $productStandard = [
             'identifier'   => 'foo',
             'values'       => [],
-            'associations' => []
+            'associations' => [],
+            'quantified_associations' => []
         ];
 
         $family = new Family();

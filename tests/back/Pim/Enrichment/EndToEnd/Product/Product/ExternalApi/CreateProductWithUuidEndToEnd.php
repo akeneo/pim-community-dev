@@ -335,6 +335,7 @@ JSON;
                 'QUANTIFIEDASSOCIATION' => [
                     'products' => [[
                         'uuid' => $this->getProductUuidFromIdentifier('simple')->toString(),
+                        'identifier' => 'simple',
                         'quantity' => 12,
                     ]],
                     'product_models' => [],
@@ -815,6 +816,36 @@ JSON;
         $this->assertSame($this->getProductUuidFromIdentifier('foo')->toString(), 'a48ca2b8-656d-4b2c-b9cc-b2243e876ebf');
     }
 
+    public function testItCreatesWithUppercaseUuid()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+            <<<JSON
+    {
+        "uuid": "A48CA2B8-656D-4b2c-b9cc-b2243e876ebf",
+        "values": {
+            "sku": [
+                {"locale": null, "scope": null, "data": "foo"}
+            ]
+        }
+    }
+JSON;
+
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
+        $response = $client->getResponse();
+
+        $this->assertSame('', $response->getContent());
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertArrayHasKey('location', $response->headers->all());
+        $this->assertSame(
+            'http://localhost/api/rest/v1/products-uuid/a48ca2b8-656d-4b2c-b9cc-b2243e876ebf',
+            $response->headers->get('location')
+        );
+
+        $this->assertSame($this->getProductUuidFromIdentifier('foo')->toString(), 'a48ca2b8-656d-4b2c-b9cc-b2243e876ebf');
+    }
+
     public function testResponseWhenIdentifierIsFilled()
     {
         $client = $this->createAuthenticatedClient();
@@ -1135,21 +1166,6 @@ JSON;
         $response = $client->getResponse();
 
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
-    }
-
-    /**
-     * @param array  $expectedProduct normalized data of the product that should be created
-     * @param string $identifier identifier of the product that should be created
-     */
-    protected function assertSameProducts(array $expectedProduct, $identifier): void
-    {
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
-        $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
-
-        NormalizedProductCleaner::clean($standardizedProduct);
-        NormalizedProductCleaner::clean($expectedProduct);
-
-        $this->assertSame($expectedProduct, $standardizedProduct);
     }
 
     /**

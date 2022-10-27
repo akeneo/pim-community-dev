@@ -4,8 +4,8 @@ batch_jobs:
     export: Vienti
     import: Tuonti
     validation: Tiedostojen validaatio
-    import_associations: Tuoteliitosten tuonti
-    import_model_associations: Tuoteliitosten tuonti
+    import_associations: Assosiaatioiden tuonti
+    import_model_associations: Assosiaatioiden tuonti
     import_root_product_model: Juuritason tuotemallin tuonti
     import_sub_product_model: Alatason tuotemallin tuonti
     compute_data_related_to_family_root_product_models: Käsittele ylätason tuotemallin tiedot
@@ -36,8 +36,8 @@ batch_jobs:
     label: Attribuuttien vaihtoehtojen vienti CSV-muodossa
     export.label: Attribuuttien vaihtoehtojen vienti
   csv_association_type_export:
-    label: Tuoteliitostyyppien vienti CSV-muodossa
-    export.label: Tuoteliitostyyppien vienti
+    label: Assosiaatiotyyppien vienti CSV-muodossa
+    export.label: Assosiaatiotyyppien vienti
   csv_group_export:
     label: Ryhmän vienti CSV-muodossa
     export.label: Ryhmän vienti
@@ -72,8 +72,8 @@ batch_jobs:
     label: Attribuuttien vaihtoehtojen tuonti CSV-muodossa
     import.label: Attribuuttien vaihtoehtojen tuonti
   csv_association_type_import:
-    label: Tuoteliitostyyppien tuonti CSV-muodossa
-    import.label: Tuoteliitostyyppien tuonti
+    label: Assosiaatiotyyppien tuonti CSV-muodossa
+    import.label: Assosiaatiotyyppien tuonti
   csv_family_import:
     label: Perheen tuonti CSV-muodossa
     import.label: Perhetuonti
@@ -109,8 +109,8 @@ batch_jobs:
     label: Kategorioiden tuonti XLSX-muodossa
     import.label: Kategorioiden tuonti
   xlsx_association_type_import:
-    label: Tuoteliitostyyppien tuonti XLSX-muodossa
-    import.label: Tuoteliitostyyppien tuonti
+    label: Assosiaatiotyyppien tuonti XLSX-muodossa
+    import.label: Assosiaatiotyyppien tuonti
   xlsx_attribute_import:
     label: Attribuuttien tuonti XLSX-muodossa
     import.label: Attribuuttien tuonti
@@ -157,8 +157,8 @@ batch_jobs:
     label: Attribuuttien vaihtoehtojen vienti XLSX-muodossa
     export.label: Attribuuttien määritteiden vienti XLSX-muodossa
   xlsx_association_type_export:
-    label: Tuoteliitostyyppien vienti XLSX-muodossa
-    export.label: Tuoteliitostyyppien vienti XLSX-muodossa
+    label: Assosiaatiotyyppien vienti XLSX-muodossa
+    export.label: Assosiaatiotyyppien vienti XLSX-muodossa
   xlsx_attribute_group_export:
     label: Attribuuttiryhmävienti XLSX-muodossa
     export.label: Attribuuttiryhmävienti

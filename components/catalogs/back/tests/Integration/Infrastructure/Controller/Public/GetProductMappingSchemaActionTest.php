@@ -141,6 +141,32 @@ class GetProductMappingSchemaActionTest extends IntegrationTestCase
         Assert::assertEquals(404, $response->getStatusCode());
     }
 
+    public function testItReturnsNotFoundWhenCatalogHasNoProductMappingSchema(): void
+    {
+        $this->client = $this->getAuthenticatedPublicApiClient([
+            'read_catalogs',
+        ]);
+        $this->commandBus->execute(new CreateCatalogCommand(
+            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            'Store US',
+            'shopifi',
+        ));
+
+        $this->client->request(
+            'GET',
+            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapping-schemas/product',
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+        );
+
+        $response = $this->client->getResponse();
+
+        Assert::assertEquals(404, $response->getStatusCode());
+    }
+
     private function getValidSchemaData(): string
     {
         return <<<'JSON_WRAP'

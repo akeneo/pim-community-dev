@@ -103,16 +103,17 @@ oro_config:
           title: Järjestelmä
       group:
         localization:
-          title: Lokalisointi
-          system_locale: Kieli
+          fields:
+            system_locale:
+              label: Kieli
         notification:
-          title: Ilmoitukset
-          system_notification: Versiopäivitykset
+          fields:
+            enabler:
+              label: Käytössä
         loading_message:
-          title: Latausviestit
-          label: Aktivoi latausviestit
-        loading_messages:
-          label: Käytettävät latausviestit
+          fields:
+            enabler:
+              label: Aktivoi latausviestit
 pim_ui:
   flash:
     unsaved_changes: 'Sinulla on tallentamattomia muutoksia. Haluatko poistua?'
@@ -312,8 +313,8 @@ pim_title:
   pim_enrich_locale_index: Lokaatiot
   pim_enrich_group_index: Ryhmät
   pim_enrich_group_edit: Ryhmä {{ group.label }} | Muokkaa
-  pim_enrich_associationtype_index: Tuoteliitostyypit
-  pim_enrich_associationtype_edit: Tuoteliitostyyppi {{ association type.label }} | Muokkaa
+  pim_enrich_associationtype_index: Assosiaatiotyypit
+  pim_enrich_associationtype_edit: Assosiaatiotyyppi {{ association type.label }} | Muokkaa
   pim_enrich_grouptype_index: Ryhmätyypit
   pim_enrich_grouptype_edit: Ryhmätyyppi {{ group type.label }} | Muokkaa
   pim_enrich_mass_edit_action_choose: Massamuokkaus | Valitse
@@ -336,7 +337,7 @@ pim_menu:
       title: Ohjeet
       helper: Akeneo Help center
   item:
-    association_type: Tuoteliitostyypit
+    association_type: Assosiaatiotyypit
     attribute_group: Attribuuttiryhmät
     channel: Kanavat
     currency: Valuutat

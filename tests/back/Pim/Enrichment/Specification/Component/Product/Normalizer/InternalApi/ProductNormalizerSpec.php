@@ -131,7 +131,17 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'prices'              => [['data' => 12.5, 'locale' => null, 'scope' => null]],
                 'date'                => [['data' => '2015-01-31', 'locale' => null, 'scope' => null]],
                 'picture'             => [['data' => 'a/b/c/my_picture.jpg', 'locale' => null, 'scope' => null]]
-            ]
+            ],
+            'quantified_associations' => [
+                'set' => [
+                    'products' => [
+                        ['uuid' => '79fc4791-86d6-4d3b-93c5-76b787af9497', 'identifier' => 'a_product', 'quantity' => 3],
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'a_product_model', 'quantity' => 10],
+                    ],
+                ],
+            ],
         ];
 
         $valuesLocalized = [
@@ -222,6 +232,16 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'categories' => ['kitchen'],
                 'family'     => '',
                 'values'     => $valuesConverted,
+                'quantified_associations' => [
+                    'set' => [
+                        'products' => [
+                            ['uuid' => '79fc4791-86d6-4d3b-93c5-76b787af9497', 'quantity' => 3],
+                        ],
+                        'product_models' => [
+                            ['identifier' => 'a_product_model', 'quantity' => 10],
+                        ],
+                    ],
+                ],
                 'parent_associations' => null,
                 'meta'       => [
                     'form'              => 'product-edit-form',
@@ -310,7 +330,17 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'prices'              => [['data' => 12.5, 'locale' => null, 'scope' => null]],
                 'date'                => [['data' => '2015-01-31', 'locale' => null, 'scope' => null]],
                 'picture'             => [['data' => 'a/b/c/my_picture.jpg', 'locale' => null, 'scope' => null]]
-            ]
+            ],
+            'quantified_associations' => [
+                'set' => [
+                    'products' => [
+                        ['uuid' => '79fc4791-86d6-4d3b-93c5-76b787af9497', 'identifier' => 'a_product', 'quantity' => 3],
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'a_product_model', 'quantity' => 10],
+                    ],
+                ],
+            ],
         ];
 
         $valuesLocalized = [
@@ -423,6 +453,16 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'categories' => ['kitchen'],
                 'family'     => '',
                 'values'     => $valuesConverted,
+                'quantified_associations' => [
+                    'set' => [
+                        'products' => [
+                            ['uuid' => '79fc4791-86d6-4d3b-93c5-76b787af9497', 'quantity' => 3],
+                        ],
+                        'product_models' => [
+                            ['identifier' => 'a_product_model', 'quantity' => 10],
+                        ],
+                    ],
+                ],
                 'parent_associations' => null,
                 'meta'       => [
                     'form'              => 'product-edit-form',

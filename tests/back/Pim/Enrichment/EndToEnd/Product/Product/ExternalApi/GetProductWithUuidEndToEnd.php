@@ -202,6 +202,20 @@ class GetProductWithUuidEndToEnd extends AbstractProductTestCase
         $this->assertResponse($response, $standardProduct);
     }
 
+    public function test_it_gets_a_product_with_uppercase_uuid()
+    {
+        $product = $this->createProduct('product', [new SetFamily('familyA1')]);
+
+        $client = $this->createAuthenticatedClient();
+        $client->request(
+            'GET',
+            sprintf('api/rest/v1/products-uuid/%s', \strtoupper($product->getUuid()->toString()))
+        );
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+    }
+
     public function test_it_throws_a_404_response_when_the_product_is_not_found()
     {
         $client = $this->createAuthenticatedClient();
