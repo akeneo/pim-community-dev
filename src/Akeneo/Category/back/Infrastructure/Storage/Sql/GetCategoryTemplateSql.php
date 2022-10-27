@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
 use Akeneo\Category\Application\Query\GetTemplate;
-use Akeneo\Category\Domain\Model\Template;
+use Akeneo\Category\Domain\Model\Enrichment\Template;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
 use Doctrine\DBAL\Connection;
 

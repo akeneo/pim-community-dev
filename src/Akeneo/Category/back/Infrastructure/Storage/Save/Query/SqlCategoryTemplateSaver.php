@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Category\Infrastructure\Storage\Save\Query;
 
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver;
-use Akeneo\Category\Domain\Model\Template;
+use Akeneo\Category\Domain\Model\Enrichment\Template;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Types\Types;
