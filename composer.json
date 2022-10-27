@@ -103,7 +103,7 @@
         "league/flysystem-memory": "^2.0",
         "liip/imagine-bundle": "2.6.1",
         "maennchen/zipstream-php": "^2.1",
-        "monolog/monolog": "1.25.5",
+        "monolog/monolog": "1.27.1",
         "ocramius/proxy-manager": "2.11.1",
         "oneup/flysystem-bundle": "^4.0.0",
         "openspout/openspout": "^4.8.0",
