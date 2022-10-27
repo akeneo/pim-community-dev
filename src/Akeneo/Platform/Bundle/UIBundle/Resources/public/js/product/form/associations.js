@@ -333,15 +333,15 @@ define([
           this.getRoot().trigger('pim_enrich:form:entity:update_state');
         },
         onOpenPicker: () =>
-          this.launchProductPicker().then(identifiers =>
+          this.launchProductAndProductModelPicker().then(identifiers =>
             identifiers.map(item => {
               const matchProductModel = item.match(/^product_model;(.*)$/);
+              const quantifiedLink = matchProductModel
+                ? {identifier: matchProductModel[1], quantity: 1}
+                : {uuid: item.match(/^product;(.*)$/)[1], quantity: 1};
 
               return {
-                quantifiedLink: {
-                  identifier: matchProductModel ? matchProductModel[1] : item.match(/^product;(.*)$/)[1],
-                  quantity: 1,
-                },
+                quantifiedLink: quantifiedLink,
                 productType: matchProductModel ? 'product_model' : 'product',
                 errors: [],
                 product: null,
@@ -816,6 +816,7 @@ define([
     },
 
     /**
+     * @TODO CPM-739: Do not use this function anymore
      * Launch the association product picker
      *
      * @return {Promise}
@@ -867,7 +868,50 @@ define([
 
       return deferred.promise();
     },
+    launchProductAndProductModelPicker: function () {
+      const deferred = $.Deferred();
 
+      FormBuilder.build('pim-associations-product-and-product-model-picker-modal').then(form => {
+        FetcherRegistry.getFetcher('association-type')
+          .fetch(this.getCurrentAssociationType())
+          .then(associationType => {
+            const formData = this.getFormData();
+            const locale = UserContext.get('catalogLocale');
+            const productLabel = getLabel(formData.meta.label, locale, formData.code || formData.identifier);
+
+            let modal = new Backbone.BootstrapModal({
+              modalOptions: {
+                backdrop: 'static',
+                keyboard: false,
+              },
+              okCloses: false,
+              title: __('pim_enrich.entity.product.module.associations.manage', {
+                associationType: getLabel(associationType.labels, locale, associationType.code),
+              }),
+              innerDescription: __('pim_enrich.entity.product.module.associations.manage_description', {productLabel}),
+              content: '',
+              okText: __('pim_common.confirm'),
+              template: this.modalTemplate,
+              innerClassName: 'AknFullPage--full',
+            });
+
+            modal.open();
+            form.setElement(modal.$('.modal-body')).render();
+
+            modal.on('cancel', deferred.reject);
+            modal.on('ok', () => {
+              const productsAndProductModels = form.getItems().sort((a, b) => {
+                return a.code < b.code;
+              });
+              modal.close();
+
+              deferred.resolve(productsAndProductModels);
+            });
+          });
+      });
+
+      return deferred.promise();
+    },
     getAssociationCount: function () {
       const {associations, quantified_associations} = this.getFormData();
 

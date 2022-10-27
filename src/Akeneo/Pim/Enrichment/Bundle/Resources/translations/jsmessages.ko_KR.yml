@@ -108,6 +108,7 @@ pim_enrich.entity.product:
       variant_products: 변형 제품
       quantified:
         quantity: 수량
+        unlinked: 연결 안 됨
       search:
         placeholder: 레이블 또는 식별자 검색
       no_data: 연결된 제품이 없습니다.

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Job\Infrastructure\Query;
 
 use Akeneo\Platform\Job\ServiceApi\JobInstance\FindJobInstanceInterface;
+use Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstance;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstanceQuery;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstanceQueryPagination;
 use Doctrine\DBAL\Connection;
@@ -29,7 +30,7 @@ class SqlFindJobInstance implements FindJobInstanceInterface
 
     private function buildSqlQuery(JobInstanceQuery $query): string
     {
-        $types = $query->types;
+        $jobNames = $query->jobNames;
         $search = $query->search;
         $pagination = $query->pagination;
 
@@ -42,18 +43,18 @@ class SqlFindJobInstance implements FindJobInstanceInterface
         %s
 SQL;
 
-        $sqlWherePart = $this->buildWherePart($types, $search);
+        $sqlWherePart = $this->buildWherePart($jobNames, $search);
         $sqlPaginationPart = $this->buildPaginationPart($pagination);
 
         return sprintf($sql, $sqlWherePart, $sqlPaginationPart);
     }
 
-    private function buildWherePart(?array $types, ?string $search): string
+    private function buildWherePart(?array $jobNames, ?string $search): string
     {
         $sqlWhereParts = [];
 
-        if (null !== $types) {
-            $sqlWhereParts[] = 'job_instance.type IN (:types)';
+        if (null !== $jobNames) {
+            $sqlWhereParts[] = 'job_instance.job_name IN (:job_names)';
         }
 
         if (null !== $search) {
@@ -82,25 +83,30 @@ SQL;
 
     private function fetchJobInstances(string $sql, JobInstanceQuery $query): array
     {
-        $types = $query->types;
+        $jobNames = $query->jobNames;
         $search = $query->search;
         $page = $query->pagination->page;
         $limit = $query->pagination->limit;
 
-        return $this->connection->executeQuery(
+        $results = $this->connection->executeQuery(
             $sql,
             [
-                'types' => $types,
+                'job_names' => $jobNames,
                 'search' => $search,
                 'offset' => ($page - 1) * $limit,
                 'limit' => $limit,
             ],
             [
-                'types' => Connection::PARAM_STR_ARRAY,
+                'job_names' => Connection::PARAM_STR_ARRAY,
                 'search' => \PDO::PARAM_STR,
                 'offset' => \PDO::PARAM_INT,
                 'limit' => \PDO::PARAM_INT,
             ],
         )->fetchAllAssociative();
+
+        return array_map(
+            static fn (array $jobInstance) => new JobInstance($jobInstance['code'], $jobInstance['label']),
+            $results,
+        );
     }
 }

@@ -25,6 +25,7 @@ $rules = [
 
         // Libs
         'Webmozart\Assert\Assert',
+        'Ramsey\Uuid\Uuid',
 
         // PIM
         'Akeneo\Pim\Structure\Component\AttributeTypes',
@@ -41,6 +42,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Product\Domain',
 
         // Libs
+        'Ramsey\Uuid',
         'Webmozart\Assert\Assert',
         'Symfony\Component\Validator',
         'Symfony\Component\EventDispatcher',

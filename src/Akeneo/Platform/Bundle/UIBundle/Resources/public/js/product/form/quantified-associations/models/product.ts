@@ -25,7 +25,7 @@ type Image = {
 };
 
 type Product = {
-  id: number;
+  id: number | string;
   identifier: string;
   label: string;
   document_type: ProductType;
