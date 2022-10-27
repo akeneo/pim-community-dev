@@ -14,6 +14,7 @@ namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Job;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Persistence\Query\GetProjectCode;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Run project calculations for all enrichment projects.
@@ -28,11 +29,14 @@ final class ProjectsRecalculationLauncher
         private string $projectCalculationJobName,
         private JobLauncherInterface $jobLauncher,
         private JobInstanceRepository $jobInstanceRepository,
+        private LoggerInterface $logger,
     ) {
     }
 
     public function launch(): void
     {
+        $this->logger->info('Start TWA projects recalculation');
+
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier('akeneo:batch:job');
 
         foreach ($this->allProjectCodes->fetchAll() as $projectCode) {
@@ -42,5 +46,6 @@ final class ProjectsRecalculationLauncher
             ];
             $this->jobLauncher->launch($jobInstance, null, $config);
         }
+        $this->logger->info('End TWA projects recalculation');
     }
 }

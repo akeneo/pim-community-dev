@@ -377,14 +377,6 @@ pim:
         requests:
           cpu: "10m"
           memory: "10Mi"
-    project-recalculate:
-      enabled: true
-      pimCommand: "pimee:project:recalculate"
-      schedule: "20 0 * * *"
-      resources:
-        requests:
-          cpu: "350m"
-          memory: "350Mi"
     project-notify-before-due-date:
       enabled: true
       pimCommand: "pimee:project:notify-before-due-date"

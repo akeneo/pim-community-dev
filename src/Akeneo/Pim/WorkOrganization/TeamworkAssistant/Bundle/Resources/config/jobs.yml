@@ -179,6 +179,7 @@ services:
             - '%pimee_teamwork_assistant.project_calculation.job_name%'
             - '@akeneo_batch.launcher.simple_job_launcher'
             - '@akeneo_batch.job.job_instance_repository'
+            - '@logger'
 
     ### Job Parameters
     pimee_teamwork_assistant.job.project_calculation_parameter:

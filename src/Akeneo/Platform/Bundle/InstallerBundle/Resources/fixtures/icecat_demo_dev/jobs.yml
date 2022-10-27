@@ -1426,3 +1426,8 @@ jobs:
         alias:     connectivity_audit_purge_error
         label:     Purge audit error table
         type:      scheduled_job
+    twa_projects_recalculate:
+        connector: internal
+        alias:     twa_projects_recalculate
+        label:     'Recalculate all enrichment projects'
+        type:      scheduled_job

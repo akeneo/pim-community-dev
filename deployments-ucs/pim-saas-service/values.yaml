@@ -264,6 +264,11 @@ pim:
       pimJobName: "connectivity_audit_purge_error"
       pimJobOptions: ""
       schedule: "40 12 * * *"
+    twa-projects-recalculate:
+      enabled: true
+      pimJobName: "twa_projects_recalculate"
+      pimJobOptions: ""
+      schedule: "20 0 * * *"
   supplier_portal:
     settings:
       enabled: false
