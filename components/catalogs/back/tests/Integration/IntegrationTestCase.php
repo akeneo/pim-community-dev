@@ -154,6 +154,8 @@ abstract class IntegrationTestCase extends WebTestCase
             $scopes,
         );
 
+        $this->addAllPermissionsUserGroup('app_shopifi');
+
         /** @var KernelBrowser $client */
         $client = self::getContainer()->get(KernelBrowser::class);
         $client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer ' . $connectedApp->getAccessToken());
@@ -181,6 +183,63 @@ abstract class IntegrationTestCase extends WebTestCase
         $client->getCookieJar()->set($cookie);
 
         return $client;
+    }
+
+    private function addAllPermissionsUserGroup(string $group): void
+    {
+        $this->callPermissionsSaver(
+            service: 'Akeneo\Pim\Permission\Bundle\Saver\UserGroupAttributeGroupPermissionsSaver',
+            group: $group,
+            permissions: [
+                'edit' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+                'view' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+            ]
+        );
+        $this->callPermissionsSaver(
+            service: 'Akeneo\Pim\Permission\Bundle\Saver\UserGroupLocalePermissionsSaver',
+            group: $group,
+            permissions: [
+                'edit' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+                'view' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+            ]
+        );
+        $this->callPermissionsSaver(
+            service: 'Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver',
+            group: $group,
+            permissions: [
+                'own' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+                'edit' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+                'view' => [
+                    'all' => true,
+                    'identifiers' => [],
+                ],
+            ]
+        );
+    }
+
+    private function callPermissionsSaver(string $service, string $group, array $permissions): void
+    {
+        if (self::getContainer()->has($service)) {
+            self::getContainer()->get($service)->save($group, $permissions);
+        }
     }
 
     protected function assertViolationsListContains(
@@ -242,20 +301,6 @@ abstract class IntegrationTestCase extends WebTestCase
         self::getContainer()->get('pim_user.saver.user')->save($user);
 
         return $user;
-    }
-
-    protected function addGroupToUser(string $username, string $group): void
-    {
-        $user = self::getContainer()->get('pim_user.repository.user')->findOneByIdentifier($username);
-
-        self::getContainer()->get('pim_user.updater.user')->update($user, [
-            'groups' => ['app_shopifi', $group],
-        ]);
-
-        $violations = self::getContainer()->get('validator')->validate($user);
-        Assert::count($violations, 0);
-
-        self::getContainer()->get('pim_user.saver.user')->save($user);
     }
 
     /**
@@ -460,6 +505,7 @@ abstract class IntegrationTestCase extends WebTestCase
         self::getContainer()->get('pim_catalog.updater.group')->update($group, $data);
         self::getContainer()->get('pim_catalog.saver.group')->save($group);
     }
+
     protected function createGroupType(array $data = []): void
     {
         /** @var GroupInterface $group */
