@@ -32,7 +32,6 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
   const featureFlags = useFeatureFlags();
   const [isConfirmationModalOpen, openConfirmationModal, closeConfirmationModal] = useBooleanState();
   const [categoryTreeToDelete, setCategoryTreeToDelete] = useState<CategoryTreeModel | null>(null);
-  console.log('toto');
   const followCategoryTree = useCallback(
     (tree: CategoryTreeModel): void => {
       const url = router.generate('pim_enrich_categorytree_tree', {id: tree.id});
