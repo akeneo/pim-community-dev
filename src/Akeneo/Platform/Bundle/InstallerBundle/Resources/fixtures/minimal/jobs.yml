@@ -186,3 +186,8 @@ jobs:
         alias:     connectivity_audit_purge_error
         label:     Purge audit error table
         type:      scheduled_job
+    purge_connection_error:
+        connector: internal
+        alias: purge_connection_error
+        label: Purge connection errors
+        type: scheduled_job

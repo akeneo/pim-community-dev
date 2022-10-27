@@ -21,18 +21,13 @@ class PurgeConnectionErrorsCommand extends Command
      * @var string
      */
     protected static $defaultName = 'akeneo:connectivity-connection:purge-error';
-
-    private SelectAllAuditableConnectionCodeQuery $selectAllAuditableConnectionCodes;
-
-    private PurgeConnectionErrorsQuery $purgeErrors;
+    protected static $defaultDescription = 'Purge connection errors over 100 and older than a week';
 
     public function __construct(
-        SelectAllAuditableConnectionCodeQuery $selectAllAuditableConnectionCodes,
-        PurgeConnectionErrorsQuery $purgeErrors
+        private SelectAllAuditableConnectionCodeQuery $selectAllAuditableConnectionCodes,
+        private PurgeConnectionErrorsQuery $purgeErrors
     ) {
         parent::__construct();
-        $this->selectAllAuditableConnectionCodes = $selectAllAuditableConnectionCodes;
-        $this->purgeErrors = $purgeErrors;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -40,6 +35,6 @@ class PurgeConnectionErrorsCommand extends Command
         $codes = $this->selectAllAuditableConnectionCodes->execute();
         $this->purgeErrors->execute($codes);
 
-        return 0;
+        return Command::SUCCESS;
     }
 }
