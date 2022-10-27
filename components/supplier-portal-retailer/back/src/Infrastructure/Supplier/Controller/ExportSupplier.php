@@ -6,7 +6,7 @@ namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Controller;
 
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetAllSuppliersWithContributors;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Encoder\SuppliersEncoder;
-use OpenSpout\Common\Type;
+use Akeneo\Tool\Component\Connector\Writer\File\SpoutWriterFactory;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -26,7 +26,7 @@ final class ExportSupplier
             'Content-Disposition' => sprintf(
                 'attachment; filename="%s.%s"',
                 self::EXPORT_FILENAME,
-                Type::XLSX,
+                SpoutWriterFactory::XLSX,
             ),
         ];
 

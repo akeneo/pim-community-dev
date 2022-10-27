@@ -1,5 +1,7 @@
 batch_jobs.xlsx_tailored_product_import.label: XSLX로 맞춤화된 제품 가져오기
 akeneo.tailored_import:
+  meta:
+    mapped_columns: "{0}매핑된 열 없음|{1}{{ count }}/{{ total }}개 열 매핑됨|]1, Inf[{{ count }}/{{ total }}개 열 매핑됨"
   global_settings:
     error_action:
       label: 오류 관리
@@ -49,12 +51,20 @@ akeneo.tailored_import:
       add: 작업 추가
       common:
         collapse: 축소
+      clean_html:
+        title: HTML 지우기
+        remove: HTML 태그 제거
+        decode: HTML 문자 디코딩
       change_case:
         title: 대소문자 변경
         select: 대소문자 선택
         uppercase: 대문자
         lowercase: 소문자
         capitalize: 첫 글자를 대문자로
+      remove_whitespace:
+        title: 공백 제거
+        consecutive: 연속 공백 지우기
+        trim: 시작과 끝의 공백 제거
       split:
         title: 나누기
         separator: 구분 기호 선택
@@ -64,9 +74,15 @@ akeneo.tailored_import:
       simple_select_replacement:
         title: 간단한 선택 대체
         option_labels: 옵션 레이블
+      simple_reference_entity_replacement:
+        title: 참조 엔터티 단일 링크 대체
+        option_labels: 레코드 레이블
       multi_select_replacement:
         title: 다중 선택 대체
         option_labels: 옵션 레이블
+      multi_reference_entity_replacement:
+        title: 참조 엔터티 다중 링크 대체
+        option_labels: 레코드 레이블
       categories_replacement:
         title: 카테고리 대체
         modal:
@@ -89,6 +105,7 @@ akeneo.tailored_import:
       replacement:
         to_placeholder: 파일 내 소스 값을 정의하십시오.
         modal:
+          records: 레코드 관리
           options: 옵션 관리
           subtitle: 대체
           no_result:
@@ -188,6 +205,9 @@ akeneo.tailored_import:
       property_should_exist: 속성 {{ attribute_code }}이(가) 없습니다. 생성하거나 다른 대상을 선택하십시오.
       source_configuration:
         unit_should_exist: 단위 {{ unit_code }}이(가) 측정 패밀리 {{ measurement_family_code }}에 없습니다. 유효한 단위를 선택하십시오.
+        currency_should_not_be_null: 통화를 선택하십시오.
+        currency_should_be_active: 통화 {{ currency_code }}은(는) 어떤 채널에도 연결되어 있지 않습니다.
+        currency_should_be_active_on_channel: 통화 {{ currency_code }}은(는) 채널 {{ channel_code }}에 대해 활성화되지 않았습니다.
     locale:
       should_be_active: 로케일 {{ locale_code }}이(가) 비활성화되었습니다. 다시 활성화하거나 다른 로케일을 선택하십시오.
       should_be_bound_to_channel: 로케일 {{ locale_code }}이(가) 채널 {{ channel_code }}에 대해 비활성화되었습니다. 다시 활성화하거나 다른 로케일을 선택하십시오.

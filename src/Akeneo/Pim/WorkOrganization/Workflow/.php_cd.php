@@ -166,6 +166,9 @@ $rules = [
         'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\CountImpactedProducts',
         'Akeneo\Pim\TableAttribute\Domain\Value\Table',
         'Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId',
+
+        // PIM-10628: Workflow add Zdd migration
+        'Akeneo\Platform\Bundle\InstallerBundle\Command\ZddMigration',
     ])->in('Akeneo\Pim\WorkOrganization\Workflow\Bundle'),
     $builder->only([
         'Doctrine\Common',

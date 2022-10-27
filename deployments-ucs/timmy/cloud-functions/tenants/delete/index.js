@@ -297,7 +297,7 @@ functions.http('deleteTenant', (req, res) => {
     'TENANT_CONTEXT_COLLECTION_NAME',
   ]);
 
-  const body = JSON.parse(req.body);
+  const body = JSON.parse(JSON.stringify(req.body));
   const branchName = body.branchName;
   const instanceName = body.instanceName;
 

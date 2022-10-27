@@ -72,6 +72,7 @@ jobs:
 
                   # tenant
                   rm -rf /tmp/pim-saas-k8s-artifacts/tenant
+                  yq w -i deployments-ucs/tenant/values.yaml image.pim.tag "${RELEASE_NAME}"
                   cp -r deployments-ucs/tenant /tmp/pim-saas-k8s-artifacts/tenant
 
                   # timmy

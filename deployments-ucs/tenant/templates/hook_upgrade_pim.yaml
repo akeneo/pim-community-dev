@@ -1,22 +1,16 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: pim-upgrader
+  generateName: pim-upgrader-{{ .Values.image.pim.tag }}-
   labels:
     component: "hook-upgrader"
     app.kubernetes.io/component: "hook-upgrader"
     {{- include "pim.standardLabels" . | indent 4 }}
     {{- include "pim.extraLabels" . | indent 4 }}
   annotations:
-    # This is what defines this resource as a hook. Without this line, the
-    # job is considered part of the release.
-    "helm.sh/hook": "post-upgrade"
-    {{- if .Values.pim.hook.intermediateUpgrades }}
-    "helm.sh/hook-weight": {{ add (len .Values.pim.hook.intermediateUpgrades) 1 | quote }} # After last intermediate upgrade (As index start to 0, length is last index + 1)
-    {{- else }}
-    "helm.sh/hook-weight": "1"
-    {{- end }}
-    "helm.sh/hook-delete-policy": "before-hook-creation"
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/sync-wave: "50"
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
 spec:
   template:
     metadata:

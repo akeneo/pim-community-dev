@@ -239,6 +239,31 @@ pim:
       pimJobName: "aggregate_volume_queries"
       pimJobOptions: ""
       schedule: "0 4 * * *"
+    rule-engine-execute-rules:
+      enabled: true
+      pimJobName: "rule_engine_execute_rules"
+      pimJobOptions: ""
+      schedule: "0 5,11,17,23 * * *"
+    update-connectivity-audit-data:
+      enabled: true
+      pimJobName: "update_connectivity_audit_data"
+      pimJobOptions: ""
+      schedule: "1 * * * *"
+    job-automation-push-scheduled-jobs-to-queue:
+      enabled: true
+      pimJobName: 'push_scheduled_jobs_to_queue'
+      pimJobOptions: ""
+      schedule: "*/10 * * * *"
+    data-quality-insights-periodic-tasks:
+      enabled: true
+      pimJobName: "schedule_dqi_periodic_tasks"
+      pimJobOptions: ""
+      schedule: "15 0 * * *"
+    connectivity-audit-purge-error:
+      enabled: true
+      pimJobName: "connectivity_audit_purge_error"
+      pimJobOptions: ""
+      schedule: "40 12 * * *"
   supplier_portal:
     settings:
       enabled: false

@@ -279,6 +279,8 @@ pim:
       enabled: true
     installPim:
       enabled: true
+    tests:
+      enabled: false
   storage:
     bucketName: null
     serviceAccountKey: null # Duplicate?
@@ -367,29 +369,6 @@ pim:
     password: null # Fill me
     uiLocale: en_US  # Change me if needed
   jobs:
-    versioning-purge:
-      enabled: true
-      pimCommand: "pim:versioning:purge --more-than-days 90 --no-interaction --force"
-      schedule: "0 1 * * 0"
-      resources:
-        requests:
-          cpu: "100m"
-          memory: "80Mi"
-    job_executions_purge:
-      enabled: true
-      schedule: "0 0 1 * *"
-      resources:
-        requests:
-          cpu: "200m"
-          memory: "192Mi"
-    update-connectivity-audit-data:
-      enabled: true
-      pimCommand: "akeneo:connectivity-audit:update-data"
-      schedule: "1 * * * *"
-      resources:
-        requests:
-          cpu: "10m"
-          memory: "10Mi"
     purge-connectivity-connection-error:
       enabled: true
       pimCommand: "akeneo:connectivity-connection:purge-error"
@@ -398,38 +377,6 @@ pim:
         requests:
           cpu: "10m"
           memory: "10Mi"
-    purge-connectivity-audit-error-count:
-      enabled: true
-      pimCommand: "akeneo:connectivity-audit:purge-error-count"
-      schedule: "40 12 * * *"
-      resources:
-        requests:
-          cpu: "10m"
-          memory: "10Mi"
-    rule-run:
-      enabled: true
-      pimCommand: "akeneo:rule:run"
-      schedule: "0 5,11,17,23 * * *"
-      resources:
-        requests:
-          cpu: "800m"
-          memory: "400Mi"
-    versionning-refresh:
-      enabled: true
-      pimCommand: "pim:versioning:refresh"
-      schedule: "0 3 * * *"
-      resources:
-        requests:
-          cpu: "300m"
-          memory: "256Mi"
-    volume-aggregate:
-      enabled: true
-      pimCommand: "pim:volume:aggregate"
-      schedule: "0 4 * * *"
-      resources:
-        requests:
-          cpu: "10m"
-          memory: "80Mi"
     project-recalculate:
       enabled: true
       pimCommand: "pimee:project:recalculate"
@@ -470,14 +417,6 @@ pim:
         requests:
           cpu: "10m"
           memory: "10Mi"
-    data-quality-insights-periodic-tasks:
-      enabled: true
-      pimCommand: "pim:data-quality-insights:schedule-periodic-tasks"
-      schedule: "15 0 * * *"
-      resources:
-        requests:
-          cpu: "10m"
-          memory: "10Mi"
     data-quality-insights-prepare-evaluations:
       enabled: true
       pimCommand: "pim:data-quality-insights:prepare-evaluations"
@@ -494,16 +433,6 @@ pim:
         requests:
           cpu: "20m"
           memory: "200Mi"
-    purge-events-api-logs:
-      enabled: true
-      pimCommand: "akeneo:connectivity-connection:purge-events-api-logs"
-      schedule: "5 * * * *"
-      resources:
-        limits:
-          memory: "128Mi"
-        requests:
-          cpu: "100m"
-          memory: "10Mi"
     reference-entity-migrate-records-index-mapping:
       enabled: true
       pimCommand: "akeneo:reference-entity:migrate-records-index-mapping --no-interaction"

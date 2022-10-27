@@ -3,8 +3,8 @@ locals {
   shared_vpc_name = "akecld-prd-shared-infra-dev-xpn"
   project_id      = "akecld-prd-pim-saas-sandbox"
   ci_sa           = "main-service-account@${local.project_id}.iam.gserviceaccount.com"
-  admins          = ["group:phoenix-squad@akeneo.com"]
-  viewers         = ["group:phoenix-squad@akeneo.com"]
+  admins          = ["group:ucs@akeneo.com"]
+  viewers         = ["group:ucs@akeneo.com"]
   regions         = ["europe-west1"]
   public_zone     = "pim-saas-sandbox.dev.cloud.akeneo.com"
   private_zone    = "pim-saas-sandbox.dev.local"

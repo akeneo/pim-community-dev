@@ -3,7 +3,7 @@ locals {
   main_sa    = "main-service-account@${local.project_id}.iam.gserviceaccount.com"
   ci_sa      = "main-service-account@akecld-prd-pim-saas-dev.iam.gserviceaccount.com"
   admins = [
-    "group:phoenix-squad@akeneo.com",
+    "group:ucs@akeneo.com",
     "serviceAccount:ci-service-account@akecld-prd-pim-saas-dev.iam.gserviceaccount.com" # To be able to push image in the registry
   ]
   viewers = [

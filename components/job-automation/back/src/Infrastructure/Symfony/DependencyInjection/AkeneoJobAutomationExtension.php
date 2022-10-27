@@ -31,6 +31,7 @@ class AkeneoJobAutomationExtension extends Extension
         $loader->load('event_subscribers.yml');
         $loader->load('handlers.yml');
         $loader->load('hydrators.yml');
+        $loader->load('jobs.yml');
         $loader->load('publisher.yml');
         $loader->load('queries.yml');
         $loader->load('services.yml');

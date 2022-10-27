@@ -670,7 +670,7 @@ jobs:
               echo "argocd app sync successfull"
 
               echo "============================"
-              echo "url : https://argocd.${GOOGLE_DOMAIN}"
+              echo "url : https://argocd-${GOOGLE_CLUSTER_REGION}.${GOOGLE_DOMAIN}"
               echo "user : admin"
               echo "password : ${ARGOCD_PASSWORD}"
               echo "============================"
@@ -689,6 +689,9 @@ jobs:
             CLUSTER_NEXT:
                 type: boolean
                 default: false
+            PIM_EDITION:
+                type: string
+                default: "serenity_instance"
         environment:
             <<: *envVarsDeployPIMSaaSDev
         <<: *dockerCloudDeployerUCS
@@ -716,6 +719,7 @@ jobs:
                       WORKLOAD_IDENTITY_KSA="${INSTANCE_NAME}-ksa-workload-identity"
                       GOOGLE_ZONE=${GOOGLE_COMPUTE_ZONE}
 
+                      echo export CIRCLE_BRANCH_LOWER=${CIRCLE_BRANCH_LOWER} >> $BASH_ENV
                       echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
                       echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
                       echo export WORKLOAD_IDENTITY_KSA=${WORKLOAD_IDENTITY_KSA} >> $BASH_ENV
@@ -740,10 +744,11 @@ jobs:
                   name: Deploy Tenant with Timmy
                   command: |
                       TENANT_STATUS_CODE=0
-                      JSON_BODY_STRING=$(printf "{\"branchName\":\"%s\"}\n" $CIRCLE_BRANCH)
+                      JSON_BODY_STRING=\''{"pim_edition":"'"<<parameters.PIM_EDITION>>"'","branchName":"'"${CIRCLE_BRANCH}"'","instanceName":"'"<<parameters.PRODUCT_TYPE>>-${INSTANCE_NAME}"'","dnsCloudDomain":"'"${GOOGLE_DOMAIN}"'","pim":{"defaultAdminUser":{"login":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","firstName":"'"${CIRCLE_BRANCH_LOWER}"'","lastName":"'"${CIRCLE_BRANCH_LOWER}"'","email":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","uiLocale":"en_US"},"api":{"namespace":"'"${PIM_NS}"'"},"web":{"namespace":"'"${PIM_NS}"'"}}}'
+                      JSON_BODY_STRING=${JSON_BODY_STRING:1}
                       echo $JSON_BODY_STRING
-                      gcloud  config unset auth/impersonate_service_account
-                      gcloud beta functions call ${REGION_PREFIX}-timmy-request-portal  --region=${GOOGLE_CLUSTER_REGION}  --data  $JSON_BODY_STRING  --gen2  || TENANT_STATUS_CODE=1
+                      FUNCTION_URL=$(gcloud beta functions describe ${REGION_PREFIX}-timmy-create-tenant --format='value(serviceConfig.uri)' --gen2 --region=${GOOGLE_CLUSTER_REGION})
+                      curl -m 3610 -X POST ${FUNCTION_URL} -H "Authorization: bearer $(gcloud auth print-identity-token)" -H "Content-Type: application/json" -d ${JSON_BODY_STRING} || TENANT_STATUS_CODE=1
                       exit ${TENANT_STATUS_CODE}
 
     deploy_tenant:
@@ -761,6 +766,9 @@ jobs:
         steps:
             - attach_workspace:
                   at: ~/
+            - add_ssh_keys:
+                fingerprints:
+                  - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
             - when:
                   condition:
                       equal: [true, << parameters.CLUSTER_NEXT >> ]
@@ -779,12 +787,15 @@ jobs:
                       FIRESTORE_COLLECTION="${GOOGLE_CLUSTER_REGION}/${PIM_NS}/tenant_contexts"
                       WORKLOAD_IDENTITY_KSA="${INSTANCE_NAME}-ksa-workload-identity"
                       GOOGLE_ZONE=${GOOGLE_COMPUTE_ZONE}
+
                       echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
                       echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
                       echo export WORKLOAD_IDENTITY_KSA=${WORKLOAD_IDENTITY_KSA} >> $BASH_ENV
                       echo export GOOGLE_ZONE=${GOOGLE_ZONE} >> $BASH_ENV
+                      echo export CIRCLE_BRANCH_LOWER=${CIRCLE_BRANCH_LOWER} >> $BASH_ENV
                       echo export PIM_NS=${PIM_NS} >> $BASH_ENV
                       echo export FIRESTORE_COLLECTION=${FIRESTORE_COLLECTION} >> $BASH_ENV
+
                       echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
                       echo "Instance name: ${INSTANCE_NAME}"
                       echo "Image tag: ${IMAGE_TAG}"
@@ -792,16 +803,53 @@ jobs:
                   name: DATADOG deployment Livetail logs page
                   command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
             - run:
-                  name: Change value file
-                  command: |
-                      yq w -i deployments-ucs/tenant/values.yaml common.workloadIdentityKSA "${WORKLOAD_IDENTITY_KSA}"
+                name: Get back the deployment branch
+                command: |
+                  ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                  export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                  git config --global user.email "pim_ci@akeneo.com"
+                  git config --global user.name "pim_ci_deployment"
+
+                  cd /tmp
+                  git clone -b ${CIRCLE_BRANCH} --depth 1 git@github.com:akeneo/pim-enterprise-dev.git
+                  git clone -b ${CIRCLE_BRANCH} git@github.com:akeneo/pim-saas-k8s-artifacts.git && cd pim-saas-k8s-artifacts || { git clone git@github.com:akeneo/pim-saas-k8s-artifacts.git && cd pim-saas-k8s-artifacts && git checkout -b ${CIRCLE_BRANCH}; }
+                  rm -rf /tmp/pim-saas-k8s-artifacts/tenant
+                  mv /tmp/pim-enterprise-dev/deployments-ucs/tenant /tmp/pim-saas-k8s-artifacts/tenant
+
+                  ## Create the values.yaml (values.yaml overide by values-${INSTANCE_NAME}-ci.yaml)
+                  cp /tmp/pim-enterprise-dev/deployments-ucs/config/values-tenant-ci.yaml /tmp/pim-saas-k8s-artifacts/tenant/values-${INSTANCE_NAME}-ci.yaml
+                  yq w -i /tmp/pim-saas-k8s-artifacts/tenant/values-${INSTANCE_NAME}-ci.yaml image.pim.tag "${IMAGE_TAG}"
+
+                  ## Charts
+                  yq w -i /tmp/pim-saas-k8s-artifacts/tenant/Chart.yaml appVersion ${IMAGE_TAG}
+
+                  ## ArgoCD
+                  yq w -i /tmp/pim-saas-k8s-artifacts/tenant/argocd-app/tenant-application.yaml spec.source.targetRevision ${CIRCLE_BRANCH}
+
+                  git add tenant || true
+                  git commit -m "Update tenant version" || true
+                  git push --set-upstream origin ${CIRCLE_BRANCH} || true
             - run:
-                  name: Deploy PIM on kubernetes
-                  command: |
-                      # Create the pim namespace if not exist because, we need to create a httproute in pim namespace
-                      kubectl create namespace ${PIM_NS} --dry-run=client -o yaml | kubectl apply -f -
-                      NS=${TYPE}-${INSTANCE_NAME} PHASE=install bash deployments-ucs/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
-                      make -C deployments-ucs/ deploy_tenant
+                name: Deploy tenant with argocd
+                command: |
+                  # Modify the parameters
+                  make -C deployments-ucs/ deploy_tenant
+
+                  # Better to store the password in CircleCI or other mecanisme
+                  ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+
+                  # Login to argocd call k8s
+                  kubectl config set-context --current --namespace=argocd
+                  argocd login --core argocd-${GOOGLE_CLUSTER_REGION}.${GOOGLE_DOMAIN} --username admin --password ${ARGOCD_PASSWORD}
+                  argocd app get ${TYPE}-${INSTANCE_NAME} --hard-refresh --core
+                  argocd app sync ${TYPE}-${INSTANCE_NAME} --core --prune|| (argocd app terminate-op ${TYPE}-${INSTANCE_NAME} --core  && argocd app wait --operation ${TYPE}-${INSTANCE_NAME} --core && argocd app sync ${TYPE}-${INSTANCE_NAME} --core --prune)
+                  echo "argocd app sync successfull"
+
+                  echo "============================"
+                  echo "url : https://argocd-${GOOGLE_CLUSTER_REGION}.${GOOGLE_DOMAIN}"
+                  echo "user : admin"
+                  echo "password : ${ARGOCD_PASSWORD}"
+                  echo "============================"
             - run:
                   name: Persist env vars for next jobs
                   command: |
@@ -818,29 +866,6 @@ jobs:
             - run:
                   name: Remove env on kubernetes
                   command: |
-                      DELETE_TENANT_STATUS_CODE=0
-                      for i in 1 2 3; do make -C deployments-ucs/ delete_tenant && DELETE_TENANT_STATUS_CODE=0 && break || DELETE_TENANT_STATUS_CODE=1; done
-                      exit ${DELETE_TENANT_STATUS_CODE}
+                      kubectl delete app ${TYPE}-${INSTANCE_NAME} -n argocd
+                      kubectl delete ns ${TYPE}-${INSTANCE_NAME}
                   when: on_fail
-
-    test_ucs_deploy:
-      parameters:
-        PRODUCT_TYPE:
-          type: string
-          default: "srnt"
-      environment:
-          <<: *envVarsDeployPIMSaaSDev
-      <<: *dockerCloudDeployerUCS
-      resource_class: small
-      steps:
-        - attach_workspace:
-            at: ~/
-        - add_ssh_keys:
-            fingerprints:
-              - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
-        - set_gcloud_config_pim_saas_dev
-        - restore_persisted_env_vars
-        - run:
-            name: Test PIM connexion on kubernetes
-            command: |
-              make -C deployments-ucs/ test-prod

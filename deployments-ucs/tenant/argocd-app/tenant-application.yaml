@@ -1,0 +1,158 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: null
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    instanceName: null
+    pfid: null
+    instance_dns_record: null
+    instance_dns_zone: null
+    papo_project_code: null
+    papo_project_code_truncated: null
+    papo_project_code_hashed: null
+    name: null
+    branch: null
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/akeneo/pim-saas-k8s-artifacts.git'
+    path: tenant
+    targetRevision: null
+    helm:
+      parameters:
+        - name: global.extraLabels.type
+          value: null
+        - name: global.extraLabels.instanceName
+          value: null
+        - name: global.extraLabels.pfid
+          value: null
+        - name: global.extraLabels.instance_dns_record
+          value: null
+        - name: global.extraLabels.instance_dns_zone
+          value: null
+        - name: global.extraLabels.papo_project_code
+          value: null
+        - name: global.extraLabels.papo_project_code_truncated
+          value: null
+        - name: global.extraLabels.papo_project_code_hashed
+          value: null
+        - name: elasticsearch.client.heapSize
+          value: null
+        - name: elasticsearch.client.resources.requests.cpu
+          value: null
+        - name: elasticsearch.client.resources.requests.memory
+          value: null
+        - name: elasticsearch.client.resources.limits.memory
+          value: null
+        - name: elasticsearch.master.heapSize
+          value: null
+        - name: elasticsearch.master.resources.requests.cpu
+          value: null
+        - name: elasticsearch.master.resources.requests.memory
+          value: null
+        - name: elasticsearch.master.resources.limits.memory
+          value: null
+        - name: elasticsearch.data.heapSize
+          value: null
+        - name: elasticsearch.data.resources.requests.cpu
+          value: null
+        - name: elasticsearch.data.resources.requests.memory
+          value: null
+        - name: elasticsearch.data.resources.limits.memory
+          value: null
+        - name: memcached.resources.limits.memory
+          value: null
+        - name: memcached.resources.requests.cpu
+          value: null
+        - name: memcached.resources.requests.memory
+          value: null
+        - name: mailer.login
+          value: null
+        - name: mailer.password
+          value: null
+        - name: mailer.base_mailer_dsn
+          value: null
+        - name: mailer.domain
+          value: null
+        - name: mailer.api_key
+          value: null
+        - name: backup.enabled
+          value: null
+        - name: common.gcpProjectID
+          value: null
+        - name: common.gcpFireStoreProjectID
+          value: null
+        - name: common.tenantContext
+          value: null
+        - name: common.googleZone
+          value: null
+        - name: common.pimMasterDomain
+          value: null
+        - name: common.dnsCloudDomain
+          value: null
+        - name: common.workloadIdentityKSA
+          value: null
+        - name: common.workloadIdentityGSA
+          value: null
+        - name: pim.defaultAdminUser.login
+          value: null
+        - name: pim.defaultAdminUser.firstName
+          value: null
+        - name: pim.defaultAdminUser.lastName
+          value: null
+        - name: pim.defaultAdminUser.email
+          value: null
+        - name: pim.defaultAdminUser.password
+          value: null
+        - name: pim.defaultAdminUser.uiLocale
+          value: null
+        - name: pim.monitoring.authenticationToken
+          value: null
+        - name: pim.api.namespace
+          value: null
+        - name: pim.web.namespace
+          value: null
+        - name: pim.secret
+          value: null
+        - name: pim.storage.bucketName
+          value: null
+        - name: pim.storage.location
+          value: null
+        - name: mysql.mysql.userPassword
+          value: null
+        - name: mysql.mysql.rootPassword
+          value: null
+        - name: mysql.mysql.dataDiskSize
+          value: null
+        - name: mysql.mysql.innodbBufferPoolSize
+          value: null
+        - name: mysql.mysql.resources.requests.cpu
+          value: null
+        - name: mysql.mysql.resources.requests.memory
+          value: null
+        - name: mysql.mysql.resources.limits.memory
+          value: null
+        - name: mysql.common.persistentDisks.0
+          value: null
+        - name: mysql.common.class
+          value: null
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: null
+  syncPolicy:
+    automated:
+      prune: true
+    syncOptions:
+      - Validate=true
+      - CreateNamespace=true
+      - PrunePropagationPolicy=foreground
+      - PruneLast=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m

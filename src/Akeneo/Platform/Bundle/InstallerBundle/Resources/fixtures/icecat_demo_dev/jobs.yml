@@ -1406,3 +1406,23 @@ jobs:
         alias:     aggregate_volume_queries
         label:     Aggregate volume monitoring queries
         type:      scheduled_job
+    push_scheduled_jobs_to_queue:
+        connector: internal
+        alias:     push_scheduled_jobs_to_queue
+        label:     Push schedule jobs to queue
+        type:      scheduled_job
+    schedule_dqi_periodic_tasks:
+        connector: internal
+        alias:     schedule_dqi_periodic_tasks
+        label:     Schedule the periodic tasks of Data-Quality-Insights.
+        type:      scheduled_job
+    update_connectivity_audit_data:
+        connector: internal
+        alias:     update_connectivity_audit_data
+        label:     'Akeneo connectivity - update audit data'
+        type:      scheduled_job
+    connectivity_audit_purge_error:
+        connector: internal
+        alias:     connectivity_audit_purge_error
+        label:     Purge audit error table
+        type:      scheduled_job

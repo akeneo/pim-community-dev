@@ -16,5 +16,5 @@ pim_pdf_generator_download_product_pdf:
     path: /enrich/product/{uuid}/download-pdf
     defaults: { _controller: pimee_security.controller.product:downloadPdfAction }
     requirements:
-        uuid: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
+        uuid: '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
     methods: [GET]

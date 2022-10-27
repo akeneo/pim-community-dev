@@ -1,0 +1,4 @@
+akeneo.job_automation:
+  notification:
+    invalid_job_instance: '다음 오류로 인해 {{ type }} 프로필 "{{ label }}"을(를) 시작할 수 없습니다: {{ error }}'
+    internal_error: 내부 시스템 실패. 인프라 문제로 인해 해당 작업을 시작할 수 없습니다. 나중에 다시 시도하십시오.

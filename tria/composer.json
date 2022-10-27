@@ -61,7 +61,7 @@
         "php-http/guzzle6-adapter": "^2.0",
         "http-interop/http-factory-guzzle": "^1.0",
         "league/flysystem-google-cloud-storage": "^2.0",
-        "league/flysystem-sftp": "^3.0"
+        "league/flysystem-sftp-v3": "^3.0"
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "^0.7.0",

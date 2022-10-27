@@ -62,6 +62,18 @@ JSON;
         $this->assertSame($expectedResponseContent, $response->getContent());
     }
 
+    public function testItMatchesUuidWithUppercase(): void
+    {
+        $expectedResponseContent =
+            <<<JSON
+{"code":403,"message":"You have ownership on the product \\"{$this->productWithDraftUuid}\\", you cannot send a draft for approval."}
+JSON;
+
+        $response = $this->getResponse(\strtoupper($this->productWithDraftUuid), 'julia');
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertSame($expectedResponseContent, $response->getContent());
+    }
+
     public function testProductHasNoDraft(): void
     {
         $expectedResponseContent =

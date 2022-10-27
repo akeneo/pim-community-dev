@@ -20,23 +20,11 @@ namespace Akeneo\Platform\Component\Authentication\Sso\Configuration;
  */
 final class ServiceProvider
 {
-    /** @var EntityId */
-    private $entityId;
-
-    /** @var Certificate */
-    private $certificate;
-
-    /** @var Certificate */
-    private $privateKey;
-
     public function __construct(
-        EntityId $entityId,
-        Certificate $certificate,
-        Certificate $privateKey
+        private EntityId $entityId,
+        private Certificate $certificate,
+        private Certificate $privateKey
     ) {
-        $this->entityId    = $entityId;
-        $this->certificate = $certificate;
-        $this->privateKey  = $privateKey;
     }
 
     public static function fromArray(array $content): self

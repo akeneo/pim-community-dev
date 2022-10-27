@@ -102,3 +102,5 @@ parameters:
     count_assets_limit: -1
     count_asset_categories_limit: -1
     count_asset_category_trees_limit: -1
+
+    openssl_config_path: '%pim_ce_dev_src_folder_location%/config/openssl.cnf'

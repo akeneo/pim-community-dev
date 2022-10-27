@@ -470,15 +470,13 @@ functions.http('createTenant', (req, res) => {
       'MAILER_API_KEY',
       'MAILER_BASE_URL',
       'MAILER_DOMAIN',
-      'PIM_IMAGE_REPOSITORY',
-      'PIM_IMAGE_TAG',
       'REGION',
       'SOURCE_PATH',
       'SOURCE_REPO_URL',
       'TENANT_CONTEXT_COLLECTION_NAME',
     ]);
 
-    const body = JSON.parse(req.body);
+    const body = JSON.parse(JSON.stringify(req.body));
     // If branchName is an empty string it is the default branch
     const branchName = body.branchName
     const instanceName = body.instanceName;
@@ -550,7 +548,6 @@ functions.http('createTenant', (req, res) => {
             googleZone: process.env.GOOGLE_ZONE,
             pimMasterDomain: pimMasterDomain,
             dnsCloudDomain: dnsCloudDomain,
-            workloadIdentityGSA: 'main-service-account',
             workloadIdentityKSA: `${pfid}-ksa-workload-identity`,
             tenantContext: firestoreCollection ,
           },
@@ -563,7 +560,6 @@ functions.http('createTenant', (req, res) => {
                   memory: "1024Mi"
                 },
                 limits: {
-                  cpu: "1",
                   memory: "1024Mi"
                 }
               }
@@ -576,7 +572,6 @@ functions.http('createTenant', (req, res) => {
                   memory: "768Mi"
                 },
                 limits: {
-                  cpu: "1",
                   memory: "768Mi"
                 }
               }
@@ -589,7 +584,6 @@ functions.http('createTenant', (req, res) => {
                   memory: "1536Mi"
                 },
                 limits: {
-                  cpu: "1",
                   memory: "1740Mi"
                 }
               }
@@ -607,12 +601,6 @@ functions.http('createTenant', (req, res) => {
               type: extraLabelType,
             }
           },
-          image: {
-            pim: {
-              repository: process.env.PIM_IMAGE_REPOSITORY,
-              tag: process.env.PIM_IMAGE_TAG,
-            }
-          },
           mailer: {
             login: `${instanceName}@${process.env.MAILER_DOMAIN}`,
             password: mailerPassword,
@@ -623,7 +611,6 @@ functions.http('createTenant', (req, res) => {
           memcached: {
             resources: {
               limits: {
-                cpu: "1",
                 memory: "32Mi"
               },
               requests: {
@@ -640,7 +627,6 @@ functions.http('createTenant', (req, res) => {
               innodbBufferPoolSize: "2G",
               resources: {
                 limits: {
-                  cpu: "1",
                   memory: "3584Mi"
                 },
                 requests: {

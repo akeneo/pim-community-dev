@@ -6,8 +6,7 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\Supplie
 
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\SupplierWithContributors;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Encoder\SuppliersEncoder;
-use OpenSpout\Common\Type;
-use OpenSpout\Reader\Common\Creator\ReaderFactory;
+use Akeneo\Tool\Component\Connector\Reader\File\SpoutReaderFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 final class XlsxSuppliersEncoderIntegration extends KernelTestCase
@@ -17,7 +16,7 @@ final class XlsxSuppliersEncoderIntegration extends KernelTestCase
     {
         $filepath = $this->getContainer()->get(SuppliersEncoder::class)([]);
 
-        $xlsxReader = ReaderFactory::createFromType(Type::XLSX);
+        $xlsxReader = SpoutReaderFactory::create(SpoutReaderFactory::XLSX);
         $xlsxReader->open($filepath);
         $sheet = current(iterator_to_array($xlsxReader->getSheetIterator()));
 
@@ -52,7 +51,7 @@ final class XlsxSuppliersEncoderIntegration extends KernelTestCase
 
         $filepath = $this->getContainer()->get(SuppliersEncoder::class)($suppliers);
 
-        $xlsxReader = ReaderFactory::createFromType(Type::XLSX);
+        $xlsxReader = SpoutReaderFactory::create(SpoutReaderFactory::XLSX);
         $xlsxReader->open($filepath);
         $sheet = current(iterator_to_array($xlsxReader->getSheetIterator()));
 

@@ -156,6 +156,12 @@ workflows:
                       - build_srnt_dev
                   context:
                       - octopus-slack
+            - test_back_supplier_portal:
+                requires:
+                  - build_srnt_dev
+            - test_front_supplier_portal:
+                requires:
+                  - build_srnt_dev
             - pull_request_success:
                   requires:
                       - test_back_behat_legacy
@@ -164,3 +170,5 @@ workflows:
                       - test_back_data_migrations
                       - test_grth
                       - test_tria
+                      - test_back_supplier_portal
+                      - test_front_supplier_portal

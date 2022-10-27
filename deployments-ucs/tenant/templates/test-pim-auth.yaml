@@ -1,3 +1,4 @@
+{{ if .Values.pim.hook.tests.enabled -}}
 apiVersion: v1
 kind: Pod
 metadata:
@@ -7,8 +8,21 @@ metadata:
     {{- include "pim.standardLabels" . | indent 4 }}
     {{- include "pim.extraLabels" . | indent 4 }}
   annotations:
-    "helm.sh/hook": test
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/sync-wave: "102"
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
+  initContainers:
+    - name: wait-dns
+      image:  {{ template "pim.imageNameAndTag" . }}
+      imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
+      command: ["sh", "/scripts-dir/wait-dns.sh"]
+      volumeMounts:
+        - name: pim-scripts-configmap
+          mountPath: /scripts-dir
+      env:
+        - name: PFID
+          value: {{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain }}
   containers:
   - name: test-pim-auth
     image: {{ .Values.image.curl.repository }}:{{ .Values.image.curl.tag }}
@@ -28,3 +42,4 @@ spec:
   - name: pim-scripts-configmap
     configMap:
       name:  pim-scripts-configmap
+{{- end }}

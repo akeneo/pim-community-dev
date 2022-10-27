@@ -13,18 +13,35 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema;
 
-use JsonSchema\Validator;
+use Opis\JsonSchema\Errors\ErrorFormatter;
+use Opis\JsonSchema\Errors\ValidationError;
+use Opis\JsonSchema\Helper;
+use Opis\JsonSchema\Validator;
 
 class SearchFiltersValidator
 {
     public function validate(array $searchFilters): array
     {
         $validator = new Validator();
-        $searchFiltersObject = Validator::arrayToObjectRecursive($searchFilters);
+        $validator->setMaxErrors(50);
 
-        $validator->validate($searchFiltersObject, $this->getJsonSchema());
+        $result = $validator->validate(
+            Helper::toJSON($searchFilters),
+            Helper::toJSON($this->getJsonSchema())
+        );
 
-        return $validator->getErrors();
+        if (!$result->hasError()) {
+            return [];
+        }
+
+        $errorFormatter = new ErrorFormatter();
+
+        $customFormatter = static fn (ValidationError $error) => [
+            'property' => $errorFormatter->formatErrorKey($error),
+            'message' => $errorFormatter->formatErrorMessage($error),
+        ];
+
+        return $errorFormatter->formatFlat($result->error(), $customFormatter);
     }
 
     private function getJsonSchema(): array
@@ -48,92 +65,106 @@ class SearchFiltersValidator
                         ],
                         'locales' => [
                             'type' => 'array',
-                            'items' => [
+                            'contains' => [
                                 'type' => 'string',
                             ],
-                            'minItems' => 1
+                            'minItems' => 1,
                         ],
-                    ]
+                    ],
                 ],
                 'updated' => [
                     'type' => 'array',
                     'minItems' => 1,
-                    'items' => [
-                        'oneOf' => [
-                            [
+                    'oneOf' => [
+                        [
+                            'items' => [
                                 'type' => 'object',
                                 'required' => ['operator', 'value'],
                                 'properties' => [
                                     'operator' => [
                                         'type' => 'string',
-                                        'enum' => ['>', '<']
+                                        'enum' => ['>', '<'],
                                     ],
                                     'value' => [
                                         'type' => 'string',
-                                        'format' => 'date-time'
-                                    ]
-                                ]
+                                        'format' => 'date-time',
+                                        '$filters' => [
+                                            '$func' => 'min-date',
+                                            '$vars' => [
+                                                'value' => '1970-01-01',
+                                            ],
+                                        ],
+                                    ],
+                                ],
                             ],
-                            [
+                        ],
+                        [
+                            'items' => [
                                 'type' => 'object',
                                 'required' => ['operator', 'value'],
                                 'properties' => [
                                     'operator' => [
                                         'type' => 'string',
-                                        'enum' => ['BETWEEN', 'NOT BETWEEN']
+                                        'enum' => ['BETWEEN', 'NOT BETWEEN'],
                                     ],
                                     'value' => [
                                         'type' => 'array',
-                                        "minItems" => 2,
-                                        "maxItems" => 2,
-                                        'items' => [
-                                            ['type' => 'string', 'format' => 'date-time'],
-                                            ['type' => 'string', 'format' => 'date-time'],
+                                        'minItems' => 2,
+                                        'maxItems' => 2,
+                                        'contains' => [
+                                            'type' => 'string',
+                                            'format' => 'date-time',
                                         ],
-                                    ]
-                                ]
+                                        '$filters' => [
+                                            '$func' => 'min-date',
+                                            '$vars' => [
+                                                'value' => '1970-01-01',
+                                            ],
+                                        ],
+                                    ],
+                                ],
                             ],
-                            [
+                        ],
+                        [
+                            'items' => [
                                 'type' => 'object',
                                 'required' => ['operator', 'value'],
                                 'properties' => [
                                     'operator' => [
                                         'type' => 'string',
-                                        'enum' => ['SINCE LAST N DAYS']
+                                        'enum' => ['SINCE LAST N DAYS'],
                                     ],
                                     'value' => [
                                         'type' => 'integer',
-                                    ]
-                                ]
+                                    ],
+                                ],
                             ],
-                        ]
+                        ],
                     ],
                 ],
                 'code' => [
                     'type' => 'array',
                     'minItems' => 1,
-                    'items' => [
-                        [
-                            'type' => 'object',
-                            'required' => ['operator', 'value'],
-                            'properties' => [
-                                'operator' => [
+                    'contains' => [
+                        'type' => 'object',
+                        'required' => ['operator', 'value'],
+                        'properties' => [
+                            'operator' => [
+                                'type' => 'string',
+                                'enum' => ['IN'],
+                            ],
+                            'value' => [
+                                'type' => 'array',
+                                'minItems' => 1,
+                                'items' => [
                                     'type' => 'string',
-                                    'enum' => ['IN'],
-                                ],
-                                'value' => [
-                                    'type' => 'array',
-                                    "minItems" => 1,
-                                    'items' => [
-                                        'type' => 'string',
-                                    ],
                                 ],
                             ],
                         ],
                     ],
                 ],
             ],
-            'additionalProperties' => false
+            'additionalProperties' => false,
         ];
     }
 }

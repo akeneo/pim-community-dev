@@ -3,6 +3,7 @@
 namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\Product\Update;
 
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\EntityWithQuantifiedAssociations\QuantifiedAssociationsTestCaseTrait;
 use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\PermissionFixturesLoader;
 use Symfony\Component\HttpFoundation\Response;
@@ -104,9 +105,9 @@ JSON;
         $expectedQuantifiedAssociations = [
             'PRODUCTSET' => [
                 'products' => [
-                    ['identifier' => 'product_not_viewable_by_redactor', 'quantity' => 1],
-                    ['identifier' => 'product_viewable_by_everybody_1', 'quantity' => 2],
-                    ['identifier' => 'product_without_category', 'quantity' => 3],
+                    ['uuid' => $this->getProductUuid('product_not_viewable_by_redactor'), 'identifier' => 'product_not_viewable_by_redactor', 'quantity' => 1],
+                    ['uuid' => $this->getProductUuid('product_viewable_by_everybody_1'), 'identifier' => 'product_viewable_by_everybody_1', 'quantity' => 2],
+                    ['uuid' => $this->getProductUuid('product_without_category'), 'identifier' => 'product_without_category', 'quantity' => 3],
                 ],
                 'product_models' => [
                     ['identifier' => 'product_model_not_viewable_by_redactor', 'quantity' => 4],
@@ -173,11 +174,25 @@ JSON;
 
     protected function assertSameQuantifiedAssociation(array $expectedQuantifiedAssociations, string $identifier)
     {
+        $this->getOrmCacheClearer()->clear();
         $product = $this->get('pim_catalog.repository.product_without_permission')->findOneByIdentifier($identifier);
 
         $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
         $actualQuantifiedAssociations = $standardizedProduct['quantified_associations'];
 
         $this->assertSame($expectedQuantifiedAssociations, $actualQuantifiedAssociations);
+    }
+
+    private function getProductUuid(string $identifier): ?string
+    {
+        return $this->get('database_connection')->executeQuery(
+            'SELECT BIN_TO_UUID(uuid) AS uuid FROM pim_catalog_product WHERE identifier = :identifier',
+            ['identifier' => $identifier]
+        )->fetchOne() ?: null;
+    }
+
+    private function getOrmCacheClearer(): EntityManagerClearerInterface
+    {
+        return $this->get('pim_connector.doctrine.cache_clearer');
     }
 }

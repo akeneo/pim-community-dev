@@ -1,10 +1,5 @@
 #!/bin/sh
 
-if [[ ${GOOGLE_DOMAIN} == "" ]]; then
-        echo "ERR : You must choose a Google domain to be able to call the argocd server"
-        exit 9
-fi
-
 TYPE=pim
 NS_LIST=$(kubectl get ns | grep Active | grep "${TYPE}-" | awk '{print $1}')
 

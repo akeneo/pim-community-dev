@@ -434,7 +434,7 @@ jobs:
                             command: |
                                 docker run --rm -v ${PWD}/last_good_ce:/app composer composer install
                                 CE_BRANCH=master
-                                CE_COMMIT_HASH=$(docker run --rm -v ${PWD}/last_good_ce:/app composer php get_last_good_ce_revision.php)
+                                CE_COMMIT_HASH=$(docker run --rm -e CIRCLECI_API_TOKEN -v ${PWD}/last_good_ce:/app composer php get_last_good_ce_revision.php)
 
                                 echo export CE_BRANCH=${CE_BRANCH} >> $BASH_ENV
                                 echo export CE_COMMIT_HASH=${CE_COMMIT_HASH} >> $BASH_ENV
@@ -539,7 +539,7 @@ jobs:
                             command: |
                                 docker run --rm -v ${PWD}/last_good_ce:/app composer composer install
                                 CE_BRANCH=master
-                                CE_COMMIT_HASH=$(docker run --rm -v ${PWD}/last_good_ce:/app composer php get_last_good_ce_revision.php)
+                                CE_COMMIT_HASH=$(docker run --rm -e CIRCLECI_API_TOKEN -v ${PWD}/last_good_ce:/app composer php get_last_good_ce_revision.php)
 
                                 echo export CE_BRANCH=${CE_BRANCH} >> $BASH_ENV
                                 echo export CE_COMMIT_HASH=${CE_COMMIT_HASH} >> $BASH_ENV

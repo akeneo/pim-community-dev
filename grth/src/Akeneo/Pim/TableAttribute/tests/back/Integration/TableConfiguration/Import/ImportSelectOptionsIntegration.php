@@ -20,9 +20,9 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance;
+use Akeneo\Tool\Component\Connector\Writer\File\SpoutWriterFactory;
 use Doctrine\DBAL\Connection;
-use OpenSpout\Writer\Common\Creator\WriterEntityFactory;
-use OpenSpout\Writer\Common\Creator\WriterFactory;
+use OpenSpout\Common\Entity\Row;
 use PHPUnit\Framework\Assert;
 
 class ImportSelectOptionsIntegration extends TestCase
@@ -75,12 +75,12 @@ CSV;
     public function it_imports_table_attributes_from_an_xlsx_file(): void
     {
         $temporaryFile = tempnam(sys_get_temp_dir(), 'test_user_import');
-        $writer = WriterFactory::createFromType('xlsx');
+        $writer = SpoutWriterFactory::create(SpoutWriterFactory::XLSX);
         $writer->openToFile($temporaryFile);
         $writer->addRows(
             [
-                WriterEntityFactory::createRowFromArray(['attribute', 'column', 'code', 'label-en_US']),
-                WriterEntityFactory::createRowFromArray([
+                Row::fromValues(['attribute', 'column', 'code', 'label-en_US']),
+                Row::fromValues([
                     'nutrition',
                     'ingredient',
                     'salt',

@@ -241,3 +241,7 @@ services:
             - '@database_connection'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Persistence\Query\GetProjectCode:
+        arguments:
+            - '@database_connection'

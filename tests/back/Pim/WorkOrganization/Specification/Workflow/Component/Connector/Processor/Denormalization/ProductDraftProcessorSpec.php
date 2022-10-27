@@ -5,6 +5,8 @@ namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Component\Connector
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\MediaStorer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Applier\DraftApplierInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory;
@@ -17,7 +19,9 @@ use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Model\Warning;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -39,7 +43,8 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         StepExecution $stepExecution,
         TokenStorageInterface $tokenStorage,
         MediaStorer $mediaStorer,
-        PimUserDraftSourceFactory $draftSourceFactory
+        PimUserDraftSourceFactory $draftSourceFactory,
+        CachedObjectRepositoryInterface $attributeRepository
     ) {
         $this->beConstructedWith(
             $repository,
@@ -50,7 +55,8 @@ class ProductDraftProcessorSpec extends ObjectBehavior
             $productDraftRepo,
             $tokenStorage,
             $mediaStorer,
-            $draftSourceFactory
+            $draftSourceFactory,
+            $attributeRepository
         );
         $this->setStepExecution($stepExecution);
     }
@@ -70,6 +76,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $tokenStorage,
         $mediaStorer,
         $draftSourceFactory,
+        $attributeRepository,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         EntityWithValuesDraftInterface $productDraft,
@@ -78,20 +85,29 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         TokenInterface $token,
         UserInterface $user,
         DraftSource $draftSource,
-        ExecutionContext $executionContext
+        ExecutionContext $executionContext,
+        AttributeInterface $attribute
     ) {
         $this->prepareDraftSource($tokenStorage, $token, $user, $draftSource, $draftSourceFactory);
 
         $repository->findOneByIdentifier('my-sku')->willReturn($product);
         $product->isVariant()->willReturn(false);
+
         $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW)->willReturn($productDraft);
 
-        $values = $this->getValues();
+        $productValues = $this->getProductValues($this->getValues());
 
-        $mediaStorer->store($values['values'])->willReturn($values['values']);
+        $attribute->getProperty('is_read_only')->willReturn(false);
+        $attributeRepository->findOneByIdentifier('sku')->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('main_color')->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('description')->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('release_date')->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('price')->willReturn($attribute);
+
+        $mediaStorer->store($productValues['values'])->willReturn($productValues['values']);
 
         $updater
-            ->update($product, $values)
+            ->update($product, $productValues)
             ->shouldBeCalled();
 
         $validator
@@ -105,7 +121,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $stepExecution->getExecutionContext()->willReturn($executionContext);
 
         $this
-            ->process($values)
+            ->process($productValues)
             ->shouldReturn($productDraft);
     }
 
@@ -118,6 +134,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $tokenStorage,
         $mediaStorer,
         $draftSourceFactory,
+        $attributeRepository,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         EntityWithValuesDraftInterface $productDraft,
@@ -128,7 +145,8 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         UserInterface $user,
         DraftSource $draftSource,
         ExecutionContext $executionContext,
-        WriteValueCollection $draftValues
+        WriteValueCollection $draftValues,
+        AttributeInterface $attribute
     )
     {
         $this->prepareDraftSource($tokenStorage, $token, $user, $draftSource, $draftSourceFactory);
@@ -137,12 +155,19 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $product->isVariant()->willReturn(false);
         $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW)->willReturn($productDraft);
 
-        $values = $this->getValues();
+        $productValues = $this->getProductValues($this->getValues());
 
-        $mediaStorer->store($values['values'])->willReturn($values['values']);
+        $attribute->getProperty('is_read_only')->willReturn(null);
+        $attributeRepository->findOneByIdentifier('sku')->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('main_color')->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('description')->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('release_date')->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('price')->willReturn($attribute);
+
+        $mediaStorer->store($productValues['values'])->willReturn($productValues['values']);
 
         $updater
-            ->update($product, $values)
+            ->update($product, $productValues)
             ->shouldBeCalled();
 
         $validator
@@ -159,27 +184,94 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $productDraft->getValues()->willReturn($draftValues);
         $previousProductDraft->setValues($draftValues)->shouldBeCalled();
 
-        $productDraft->getChanges()->willReturn($values);
-        $previousProductDraft->setChanges($values)->shouldBeCalled();
-
+        $productDraft->getChanges()->willReturn($productValues);
+        $previousProductDraft->setChanges($productValues)->shouldBeCalled();
 
         $this
-            ->process($values)
+            ->process($productValues)
             ->shouldReturn(null);
     }
 
     function it_skips_a_proposal_if_there_is_no_identifier()
     {
-        $values = $this->getValues();
+        $productValues = $this->getProductValues($this->getValues());
 
-        unset($values['identifier']);
+        unset($productValues['identifier']);
 
         $this
             ->shouldThrow(new \InvalidArgumentException('Column "identifier" is expected'))
             ->during(
                 'process',
-                [$values]
+                [$productValues]
             );
+    }
+
+    function it_skips_a_proposal_if_there_is_a_read_only_attribute(
+        $repository,
+        $updater,
+        $validator,
+        $productDraftBuilder,
+        $stepExecution,
+        $tokenStorage,
+        $mediaStorer,
+        $draftSourceFactory,
+        $attributeRepository,
+        ProductInterface $product,
+        ConstraintViolationListInterface $violationList,
+        EntityWithValuesDraftInterface $productDraft,
+        JobExecution $jobExecution,
+        JobInstance $jobInstance,
+        TokenInterface $token,
+        UserInterface $user,
+        DraftSource $draftSource,
+        ExecutionContext $executionContext,
+        AttributeInterface $attributeReadOnly,
+        AttributeInterface $attributeNotReadOnly,
+    ) {
+        $this->prepareDraftSource($tokenStorage, $token, $user, $draftSource, $draftSourceFactory);
+
+        $repository->findOneByIdentifier('my-sku')->willReturn($product);
+        $product->isVariant()->willReturn(false);
+
+        $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW)->willReturn($productDraft);
+
+        $values = $this->getValues();
+        $productValues = $this->getProductValues($values);
+
+        $attributeReadOnly->getProperty('is_read_only')->willReturn(true);
+        $attributeNotReadOnly->getProperty('is_read_only')->willReturn(false);
+        $attributeRepository->findOneByIdentifier('sku')->willReturn($attributeReadOnly);
+        $attributeRepository->findOneByIdentifier('main_color')->willReturn($attributeNotReadOnly);
+        $attributeRepository->findOneByIdentifier('description')->willReturn($attributeNotReadOnly);
+        $attributeRepository->findOneByIdentifier('release_date')->willReturn($attributeNotReadOnly);
+        $attributeRepository->findOneByIdentifier('price')->willReturn($attributeNotReadOnly);
+
+        $valuesWithoutReadOnlyAttributes = array_diff_key($values, ['sku' => null]);
+        $mediaStorer->store($valuesWithoutReadOnlyAttributes)->willReturn($valuesWithoutReadOnlyAttributes);
+
+        $productValuesWithoutReadOnlyAttribute = $this->getProductValues($valuesWithoutReadOnlyAttributes);
+
+        $updater
+            ->update($product, $productValuesWithoutReadOnlyAttribute)
+            ->shouldBeCalled();
+
+        $validator
+            ->validate($product)
+            ->willReturn($violationList);
+
+        $productDraftBuilder->build($product, $draftSource)->willReturn($productDraft);
+
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $stepExecution->getExecutionContext()->willReturn($executionContext);
+
+        $this
+            ->process($productValues)
+            ->shouldReturn($productDraft);
+
+        $nonBlockingwarnings = $this->flushNonBlockingWarnings();
+        $nonBlockingwarnings->shouldHaveCount(1);
+        $nonBlockingwarnings[0]->shouldBeAnInstanceOf(Warning::class);
     }
 
     function it_skips_a_proposal_if_product_does_not_exist(
@@ -188,7 +280,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
     ) {
         $repository->findOneByIdentifier('my-sku')->willReturn(null);
 
-        $values = $this->getValues();
+        $productValues = $this->getProductValues($this->getValues());
 
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
 
@@ -199,7 +291,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $this->shouldThrow(InvalidItemException::class)
             ->during(
                 'process',
-                [$values]
+                [$productValues]
             );
     }
 
@@ -212,24 +304,33 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $tokenStorage,
         $mediaStorer,
         $draftSourceFactory,
+        $attributeRepository,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobExecution $jobExecution,
         TokenInterface $token,
         UserInterface $user,
-        DraftSource $draftSource
+        DraftSource $draftSource,
+        AttributeInterface $attribute
     ) {
         $this->prepareDraftSource($tokenStorage, $token, $user, $draftSource, $draftSourceFactory);
 
         $repository->findOneByIdentifier('my-sku')->willReturn($product);
         $product->isVariant()->willReturn(false);
 
-        $values = $this->getValues();
+        $productValues = $this->getProductValues($this->getValues());
 
-        $mediaStorer->store($values['values'])->willReturn($values['values']);
+        $attribute->getProperty('is_read_only')->willReturn(null);
+        $attributeRepository->findOneByIdentifier('sku')->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('main_color')->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('description')->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('release_date')->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('price')->willReturn($attribute);
+
+        $mediaStorer->store($productValues['values'])->willReturn($productValues['values']);
 
         $updater
-            ->update($product, $values)
+            ->update($product, $productValues)
             ->shouldBeCalled();
 
         $validator
@@ -241,7 +342,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $stepExecution->incrementSummaryInfo('proposal_skipped')->shouldBeCalled();
 
-        $this->process($values)->shouldReturn(null);
+        $this->process($productValues)->shouldReturn(null);
     }
 
     public function it_ignores_the_parent_field_if_product_is_not_a_variant(
@@ -253,6 +354,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $tokenStorage,
         $mediaStorer,
         $draftSourceFactory,
+        $attributeRepository,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         EntityWithValuesDraftInterface $productDraft,
@@ -261,19 +363,28 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         TokenInterface $token,
         UserInterface $user,
         DraftSource $draftSource,
-        ExecutionContext $executionContext
+        ExecutionContext $executionContext,
+        AttributeInterface $attribute
     ){
         $this->prepareDraftSource($tokenStorage, $token, $user, $draftSource, $draftSourceFactory);
 
         $repository->findOneByIdentifier('my-sku')->willReturn($product);
         $product->isVariant()->willReturn(false);
         $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW)->willReturn($productDraft);
-        $values = $this->getValues();
 
-        $mediaStorer->store($values['values'])->willReturn($values['values']);
+        $productValues = $this->getProductValues($this->getValues());
+
+        $attribute->getProperty('is_read_only')->willReturn(null);
+        $attributeRepository->findOneByIdentifier('sku')->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('main_color')->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('description')->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('release_date')->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('price')->willReturn($attribute);
+
+        $mediaStorer->store($productValues['values'])->willReturn($productValues['values']);
 
         $updater
-            ->update($product, $values)
+            ->update($product, $productValues)
             ->shouldBeCalled();
         $validator
             ->validate($product)
@@ -284,65 +395,70 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $stepExecution->getExecutionContext()->willReturn($executionContext);
-        $values['parent'] = '';
+        $productValues['parent'] = '';
 
-        $this->process($values)->shouldReturn($productDraft);
+        $this->process($productValues)->shouldReturn($productDraft);
     }
 
-    function getValues()
+    private function getProductValues(array $values): array
     {
         return [
             'identifier' => 'my-sku',
-            'values' => [
-                'sku'          => [
-                    [
-                        'locale' => null,
-                        'scope'  => null,
-                        'data' => 'my-sku'
+            'values' => $values
+        ];
+    }
+
+    private function getValues(): array
+    {
+        return [
+            'sku' => [
+                [
+                    'locale' => null,
+                    'scope' => null,
+                    'data' => 'my-sku'
+                ]
+            ],
+            'main_color' => [
+                [
+                    'locale' => null,
+                    'scope' => null,
+                    'data' => 'white'
+                ]
+            ],
+            'description' => [
+                [
+                    'locale' => 'fr_FR',
+                    'scope' => 'ecommerce',
+                    'data' => '<p>description</p>'
+                ],
+                [
+                    'locale' => 'en_US',
+                    'scope' => 'ecommerce',
+                    'data' => '<p>description</p>'
+                ],
+            ],
+            'release_date' => [
+                [
+                    'locale' => null,
+                    'scope' => null,
+                    'data' => '1977-08-19'
+                ]
+            ],
+            'price' => [
+                [
+                    'locale' => null,
+                    'scope' => null,
+                    'data' => [
+                        [
+                            'currency' => 'EUR',
+                            'data' => '10.25'
+                        ],
+                        [
+                            'currency' => 'USD',
+                            'data' => '11.5'
+                        ],
                     ]
-                ],
-                'main_color'   => [
-                    [
-                        'locale' => null,
-                        'scope'  => null,
-                        'data'   =>'white'
-                    ]
-                ],
-                'description'  => [
-                    [
-                        'locale' => 'fr_FR',
-                        'scope'  => 'ecommerce',
-                        'data'   => '<p>description</p>'
-                    ],
-                    [
-                        'locale' => 'en_US',
-                        'scope'  => 'ecommerce',
-                        'data'   => '<p>description</p>'
-                    ],
-                ],
-                'release_date' => [
-                    [
-                        'locale' => null,
-                        'scope'  => null,
-                        'data'   => '1977-08-19'
-                    ]
-                ],
-                'price'        => [
-                    [
-                        'locale' => null,
-                        'scope'  => null,
-                        'data'   => [
-                            [
-                                'currency' => 'EUR',
-                                'data'     => '10.25'
-                            ],
-                            [
-                                'currency' => 'USD',
-                                'data'     => '11.5'
-                            ],
-                        ]
-                    ]
-                ],
+                ]
             ],
         ];
     }
@@ -359,7 +475,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
        TokenInterface $token,
        UserInterface $user,
        DraftSource $draftSource,
-       PimUserDraftSourceFactory $draftSourceFactory
+       PimUserDraftSourceFactory $draftSourceFactory,
     ): void {
         $fullName = 'Mary Smith';
         $username = 'mary';
