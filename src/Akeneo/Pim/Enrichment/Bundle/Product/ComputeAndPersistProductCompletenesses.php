@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompleteness;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodes;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Query\SaveProductCompletenesses;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
@@ -53,7 +54,7 @@ class ComputeAndPersistProductCompletenesses
     }
 
     /**
-     * @param array<string, ProductCompletenessCollection> $newProductsCompletenessCollections
+     * @param array<string, ProductCompletenessWithMissingAttributeCodesCollection> $newProductsCompletenessCollections
      * @param array<string, ProductCompletenessCollection> $previousProductsCompletenessCollections
      */
     private function buildEvent(
@@ -66,7 +67,7 @@ class ComputeAndPersistProductCompletenesses
             $previousProductCompletenessCollection = $previousProductsCompletenessCollections[$uuid] ?? null;
             $changedProductCompletenesses = [];
 
-            /** @var ProductCompleteness $newProductCompleteness */
+            /** @var ProductCompletenessWithMissingAttributeCodes $newProductCompleteness */
             foreach ($newProductCompletenessCollection as $newProductCompleteness) {
                 $previousProductCompleteness = $previousProductCompletenessCollection?->getCompletenessForChannelAndLocale(
                     $newProductCompleteness->channelCode(),
@@ -88,7 +89,7 @@ class ComputeAndPersistProductCompletenesses
 
             if ([] !== $changedProductCompletenesses) {
                 $changedProductsCompletenessCollections[] = new ProductCompletenessCollectionWasChanged(
-                    ProductUuid::fromUuid($newProductCompletenessCollection->productUuid()),
+                    ProductUuid::fromString($uuid),
                     $changedAt,
                     $changedProductCompletenesses
                 );

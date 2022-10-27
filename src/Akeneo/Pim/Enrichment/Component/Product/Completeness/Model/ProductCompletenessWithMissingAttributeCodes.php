@@ -54,6 +54,11 @@ final class ProductCompletenessWithMissingAttributeCodes
         return $this->requiredCount;
     }
 
+    public function missingCount(): int
+    {
+        return \count($this->missingAttributeCodes);
+    }
+
     public function missingAttributeCodes(): array
     {
         return $this->missingAttributeCodes;
