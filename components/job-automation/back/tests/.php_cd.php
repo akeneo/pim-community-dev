@@ -36,6 +36,7 @@ $rules = [
         [
             'Doctrine\DBAL\Connection',
             'Symfony\Component',
+            'Symfony\Contract',
             'Psr\Log\LoggerInterface',
 
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
@@ -50,8 +51,10 @@ $rules = [
             'Akeneo\Tool\Component\Batch\Event\JobExecutionEvent',
             'Akeneo\Tool\Component\Batch\Job',
             'Akeneo\Tool\Component\Batch\Model\JobInstance',
+            'Akeneo\Tool\Component\Batch\Model\StepExecution',
             'Akeneo\Tool\Component\Batch\Exception\InvalidJobException',
             'Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueue',
+            'Akeneo\Tool\Component\Connector\Step\TaskletInterface',
             'Akeneo\UserManagement\ServiceApi',
 
             'League\Flysystem\Filesystem',

@@ -298,6 +298,11 @@ jobs:
         alias:     aggregate_volume_queries
         label:     Aggregate volume monitoring queries
         type:      scheduled_job
+    push_scheduled_jobs_to_queue:
+        connector: internal
+        alias:     push_scheduled_jobs_to_queue
+        label:     Push schedule jobs to queue
+        type:      scheduled_job
     schedule_dqi_periodic_tasks:
         connector: internal
         alias:     schedule_dqi_periodic_tasks

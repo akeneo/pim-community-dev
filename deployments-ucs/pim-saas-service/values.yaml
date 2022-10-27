@@ -249,6 +249,11 @@ pim:
       pimJobName: "update_connectivity_audit_data"
       pimJobOptions: ""
       schedule: "1 * * * *"
+    job-automation-push-scheduled-jobs-to-queue:
+      enabled: true
+      pimJobName: 'push_scheduled_jobs_to_queue'
+      pimJobOptions: ""
+      schedule: "*/10 * * * *"
     data-quality-insights-periodic-tasks:
       enabled: true
       pimJobName: "schedule_dqi_periodic_tasks"
