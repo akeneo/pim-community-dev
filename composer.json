@@ -111,7 +111,7 @@
         "justinrainbow/json-schema": "^5.2.11",
         "league/flysystem-google-cloud-storage": "^2.3.0",
         "league/flysystem-sftp-v3": "^3.0",
-        "openspout/openspout": "^3.3.0",
+        "openspout/openspout": "^4.8.0",
         "symfony/password-hasher": "5.4.*",
         "tigitz/php-spellchecker": "0.4.0"
     },

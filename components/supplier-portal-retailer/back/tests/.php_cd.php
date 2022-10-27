@@ -87,9 +87,6 @@ $rules = [
 
             // External dependencies coupling
             'OpenSpout\Common\Exception\IOException',
-            'OpenSpout\Common\Type',
-            'OpenSpout\Writer\Common\Creator\WriterEntityFactory',
-            'OpenSpout\Writer\Common\Creator\WriterFactory',
             'OpenSpout\Writer\Exception\WriterNotOpenedException',
             'Doctrine\DBAL\Connection',
             'Doctrine\DBAL\Types\Types',
@@ -118,9 +115,8 @@ $rules = [
             // PIM coupling
             'Akeneo\Tool\Component\Batch\Job\JobParameters',
             'Akeneo\Tool\Component\Batch\Model\JobExecution',
+            'Akeneo\Tool\Component\Connector\Reader\File\SpoutReaderFactory',
             // External dependencies coupling
-            'OpenSpout\Common\Type',
-            'OpenSpout\Reader\Common\Creator\ReaderFactory',
             'Doctrine\DBAL\Connection',
             'Ramsey\Uuid\Uuid',
             'Symfony',

@@ -9,9 +9,8 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance;
+use Akeneo\Tool\Component\Connector\Reader\File\SpoutReaderFactory;
 use OpenSpout\Common\Entity\Row;
-use OpenSpout\Common\Type;
-use OpenSpout\Reader\Common\Creator\ReaderFactory;
 use PHPUnit\Framework\Assert;
 
 final class ExportProductTableValuesIntegration extends TestCase
@@ -44,7 +43,7 @@ CSV;
         $tmpfile = \tempnam(\sys_get_temp_dir(), 'test_table_values');
         \file_put_contents($tmpfile, $bin);
 
-        $reader = ReaderFactory::createFromType(Type::XLSX);
+        $reader = SpoutReaderFactory::create(SpoutReaderFactory::XLSX);
         $reader->open($tmpfile);
         $sheet = \current(\iterator_to_array($reader->getSheetIterator()));
         $actualRows = \array_map(

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Writer\File;
 
-use OpenSpout\Writer\Common\Creator\WriterFactory;
+use Akeneo\Tool\Component\Connector\Writer\File\SpoutWriterFactory;
 use OpenSpout\Writer\WriterInterface;
 
 class FileWriterFactory
@@ -25,16 +25,6 @@ class FileWriterFactory
 
     public function build(array $options): WriterInterface
     {
-        $writer = WriterFactory::createFromType($this->type);
-        foreach ($options as $name => $option) {
-            $setter = 'set'.ucfirst($name);
-            if (!method_exists($writer, $setter)) {
-                throw new \InvalidArgumentException(sprintf('Option "%s" does not exist in writer "%s"', $setter, $writer::class));
-            }
-
-            $writer->$setter($option);
-        }
-
-        return $writer;
+        return SpoutWriterFactory::create($this->type, $options);
     }
 }

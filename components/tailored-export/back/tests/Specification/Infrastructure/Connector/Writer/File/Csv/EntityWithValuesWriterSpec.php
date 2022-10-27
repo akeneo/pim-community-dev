@@ -26,7 +26,7 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
-use OpenSpout\Writer\Common\Creator\WriterEntityFactory;
+use OpenSpout\Common\Entity\Row;
 use OpenSpout\Writer\WriterInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Filesystem\Filesystem;
@@ -136,11 +136,11 @@ class EntityWithValuesWriterSpec extends ObjectBehavior
             'shouldAddBOM'   => false
         ])->willReturn($writer);
         $writer->openToFile('/tmp/CSV_Product_export_product.csv')->shouldBeCalled();
-        $writer->addRow(WriterEntityFactory::createRowFromArray(['sku' => 42, 'name' => 'bag']))->shouldBeCalled();
-        $writer->addRow(WriterEntityFactory::createRowFromArray(['sku' => 52, 'name' => 'sunglasses']))->shouldBeCalled();
-        $writer->addRow(WriterEntityFactory::createRowFromArray(['sku' => 62, 'name' => 'cap']))->shouldBeCalled();
-        $writer->addRow(WriterEntityFactory::createRowFromArray(['sku' => 72, 'name' => 'bob']))->shouldBeCalled();
-        $writer->addRow(WriterEntityFactory::createRowFromArray(['sku' => 82, 'name' => 'hat']))->shouldBeCalled();
+        $writer->addRow(Row::fromValues(['sku' => 42, 'name' => 'bag']))->shouldBeCalled();
+        $writer->addRow(Row::fromValues(['sku' => 52, 'name' => 'sunglasses']))->shouldBeCalled();
+        $writer->addRow(Row::fromValues(['sku' => 62, 'name' => 'cap']))->shouldBeCalled();
+        $writer->addRow(Row::fromValues(['sku' => 72, 'name' => 'bob']))->shouldBeCalled();
+        $writer->addRow(Row::fromValues(['sku' => 82, 'name' => 'hat']))->shouldBeCalled();
         $writer->close()->shouldBeCalled();
 
         $this->initialize();
@@ -186,12 +186,12 @@ class EntityWithValuesWriterSpec extends ObjectBehavior
             'shouldAddBOM'   => false
         ])->willReturn($writer);
         $writer->openToFile('/tmp/CSV_Product_export_product.csv')->shouldBeCalled();
-        $writer->addRow(WriterEntityFactory::createRowFromArray(['sku', 'name']))->shouldBeCalled();
-        $writer->addRow(WriterEntityFactory::createRowFromArray(['sku' => 42, 'name' => 'bag']))->shouldBeCalled();
-        $writer->addRow(WriterEntityFactory::createRowFromArray(['sku' => 52, 'name' => 'sunglasses']))->shouldBeCalled();
-        $writer->addRow(WriterEntityFactory::createRowFromArray(['sku' => 62, 'name' => 'cap']))->shouldBeCalled();
-        $writer->addRow(WriterEntityFactory::createRowFromArray(['sku' => 72, 'name' => 'bob']))->shouldBeCalled();
-        $writer->addRow(WriterEntityFactory::createRowFromArray(['sku' => 82, 'name' => 'hat']))->shouldBeCalled();
+        $writer->addRow(Row::fromValues(['sku', 'name']))->shouldBeCalled();
+        $writer->addRow(Row::fromValues(['sku' => 42, 'name' => 'bag']))->shouldBeCalled();
+        $writer->addRow(Row::fromValues(['sku' => 52, 'name' => 'sunglasses']))->shouldBeCalled();
+        $writer->addRow(Row::fromValues(['sku' => 62, 'name' => 'cap']))->shouldBeCalled();
+        $writer->addRow(Row::fromValues(['sku' => 72, 'name' => 'bob']))->shouldBeCalled();
+        $writer->addRow(Row::fromValues(['sku' => 82, 'name' => 'hat']))->shouldBeCalled();
         $writer->close()->shouldBeCalled();
 
         $this->initialize();
@@ -239,15 +239,15 @@ class EntityWithValuesWriterSpec extends ObjectBehavior
             'shouldAddBOM'   => false
         ])->willReturn($firstWriter, $secondWriter, $thirdWriter);
         $firstWriter->openToFile('/tmp/CSV_Product_export_product_1.csv')->shouldBeCalled();
-        $firstWriter->addRow(WriterEntityFactory::createRowFromArray(['sku' => 42, 'name' => 'bag']))->shouldBeCalled();
-        $firstWriter->addRow(WriterEntityFactory::createRowFromArray(['sku' => 52, 'name' => 'sunglasses']))->shouldBeCalled();
+        $firstWriter->addRow(Row::fromValues(['sku' => 42, 'name' => 'bag']))->shouldBeCalled();
+        $firstWriter->addRow(Row::fromValues(['sku' => 52, 'name' => 'sunglasses']))->shouldBeCalled();
         $firstWriter->close()->shouldBeCalled();
         $secondWriter->openToFile('/tmp/CSV_Product_export_product_2.csv')->shouldBeCalled();
-        $secondWriter->addRow(WriterEntityFactory::createRowFromArray(['sku' => 62, 'name' => 'cap']))->shouldBeCalled();
-        $secondWriter->addRow(WriterEntityFactory::createRowFromArray(['sku' => 72, 'name' => 'bob']))->shouldBeCalled();
+        $secondWriter->addRow(Row::fromValues(['sku' => 62, 'name' => 'cap']))->shouldBeCalled();
+        $secondWriter->addRow(Row::fromValues(['sku' => 72, 'name' => 'bob']))->shouldBeCalled();
         $secondWriter->close()->shouldBeCalled();
         $thirdWriter->openToFile('/tmp/CSV_Product_export_product_3.csv')->shouldBeCalled();
-        $thirdWriter->addRow(WriterEntityFactory::createRowFromArray(['sku' => 82, 'name' => 'hat']))->shouldBeCalled();
+        $thirdWriter->addRow(Row::fromValues(['sku' => 82, 'name' => 'hat']))->shouldBeCalled();
         $thirdWriter->close()->shouldBeCalled();
 
         $this->initialize();
@@ -303,13 +303,13 @@ class EntityWithValuesWriterSpec extends ObjectBehavior
         ])->willReturn($firstWriter, $secondWriter);
 
         $firstWriter->openToFile('/tmp/CSV_Product_export_product_1.csv')->shouldBeCalled();
-        $firstWriter->addRow(WriterEntityFactory::createRowFromArray(['sku' => 42, 'name' => 'bag']))->shouldBeCalled();
-        $firstWriter->addRow(WriterEntityFactory::createRowFromArray(['sku' => 52, 'name' => 'sunglasses']))->shouldBeCalled();
+        $firstWriter->addRow(Row::fromValues(['sku' => 42, 'name' => 'bag']))->shouldBeCalled();
+        $firstWriter->addRow(Row::fromValues(['sku' => 52, 'name' => 'sunglasses']))->shouldBeCalled();
         $firstWriter->close()->shouldBeCalled();
 
         $secondWriter->openToFile('/tmp/CSV_Product_export_product_2.csv')->shouldBeCalled();
-        $secondWriter->addRow(WriterEntityFactory::createRowFromArray(['sku' => 62, 'name' => 'bob']))->shouldBeCalled();
-        $secondWriter->addRow(WriterEntityFactory::createRowFromArray(['sku' => 72, 'name' => 'hat']))->shouldBeCalled();
+        $secondWriter->addRow(Row::fromValues(['sku' => 62, 'name' => 'bob']))->shouldBeCalled();
+        $secondWriter->addRow(Row::fromValues(['sku' => 72, 'name' => 'hat']))->shouldBeCalled();
         $secondWriter->close()->shouldBeCalled();
 
         $this->initialize();

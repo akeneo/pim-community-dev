@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Controller;
 
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Encoder\SuppliersEncoder;
-use OpenSpout\Common\Type;
+use Akeneo\Tool\Component\Connector\Reader\File\SpoutReaderFactory;
+use Akeneo\Tool\Component\Connector\Writer\File\SpoutWriterFactory;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -23,7 +24,7 @@ final class DownloadImportSupplierTemplate
             'Content-Disposition' => sprintf(
                 'attachment; filename="%s.%s"',
                 self::IMPORT_TEMPLATE_FILENAME,
-                Type::XLSX,
+                SpoutReaderFactory::XLSX,
             ),
         ];
 

@@ -16,14 +16,13 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Spout;
 use Akeneo\Platform\TailoredImport\Domain\Exception\FileNotFoundException;
 use Akeneo\Platform\TailoredImport\Domain\Exception\SheetNotFoundException;
 use Akeneo\Platform\TailoredImport\Domain\Query\Filesystem\XlsxFileReaderInterface;
-use OpenSpout\Reader\Common\Creator\ReaderFactory;
-use OpenSpout\Reader\ReaderInterface;
-use OpenSpout\Reader\SheetInterface;
+use Akeneo\Tool\Component\Connector\Reader\File\SpoutReaderFactory;
 use OpenSpout\Reader\XLSX\Reader;
+use OpenSpout\Reader\XLSX\Sheet;
 
 class XlsxFileReader implements XlsxFileReaderInterface
 {
-    private ReaderInterface $fileReader;
+    private Reader $fileReader;
 
     public function __construct(
         private string $filePath,
@@ -38,17 +37,18 @@ class XlsxFileReader implements XlsxFileReaderInterface
         $this->fileReader->close();
     }
 
-    private function openFile(): ReaderInterface
+    private function openFile(): Reader
     {
         $fileInfo = new \SplFileInfo($this->filePath);
         if (!$fileInfo->isFile()) {
             throw new FileNotFoundException($this->filePath);
         }
 
-        /** @var Reader $fileReader */
-        $fileReader = ReaderFactory::createFromType('xlsx');
-        $fileReader->setShouldPreserveEmptyRows(true);
-        $fileReader->setShouldFormatDates(true);
+        $fileReader = SpoutReaderFactory::create(SpoutReaderFactory::XLSX, [
+            'shouldFormatDates' => true,
+            'shouldPreserveEmptyRows' => true,
+        ]);
+
         $fileReader->open($this->filePath);
 
         return $fileReader;
@@ -109,7 +109,7 @@ class XlsxFileReader implements XlsxFileReaderInterface
         return $sheetList;
     }
 
-    private function selectSheet(?string $sheetName): SheetInterface
+    private function selectSheet(?string $sheetName): Sheet
     {
         $sheetIterator = $this->fileReader->getSheetIterator();
         $sheetIterator->rewind();

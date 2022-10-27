@@ -36,8 +36,7 @@ $rules = [
             'Symfony\Contracts',
             'Akeneo\Tool',
             'Webmozart\Assert\Assert',
-            'OpenSpout\Writer\Common\Creator\WriterEntityFactory',
-            'OpenSpout\Writer\Common\Creator\WriterFactory',
+            'OpenSpout\Common\Entity\Row',
             'OpenSpout\Writer\WriterInterface',
             'Ramsey\Uuid\UuidInterface',
 

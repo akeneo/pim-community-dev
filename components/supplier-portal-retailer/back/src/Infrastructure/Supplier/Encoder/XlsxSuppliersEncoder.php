@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Encoder;
 
+use Akeneo\Tool\Component\Connector\Writer\File\SpoutWriterFactory;
+use OpenSpout\Common\Entity\Row;
 use OpenSpout\Common\Exception\IOException;
-use OpenSpout\Common\Type;
-use OpenSpout\Writer\Common\Creator\WriterEntityFactory;
-use OpenSpout\Writer\Common\Creator\WriterFactory;
 use OpenSpout\Writer\Exception\WriterNotOpenedException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -27,16 +26,16 @@ final class XlsxSuppliersEncoder implements SuppliersEncoder
             uniqid('', true);
         $filesystem->mkdir($directory);
 
-        $writer = WriterFactory::createFromType(Type::XLSX);
+        $writer = SpoutWriterFactory::create(SpoutWriterFactory::XLSX);
 
         $filePath = tempnam($directory . DIRECTORY_SEPARATOR, 'suppliers_');
         try {
             $writer->openToFile($filePath);
-            $writer->addRow(WriterEntityFactory::createRowFromArray(self::HEADERS));
+            $writer->addRow(Row::fromValues(self::HEADERS));
 
             foreach ($suppliersWithContributors as $supplierWithContributors) {
                 $writer->addRow(
-                    WriterEntityFactory::createRowFromArray(
+                    Row::fromValues(
                         [
                             $supplierWithContributors->code,
                             $supplierWithContributors->label,
