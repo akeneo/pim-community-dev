@@ -28,7 +28,7 @@ class GetTemplateController
     {
         if ($this->securityFacade->isGranted('pim_enrich_product_category_edit') === false) {
             // even if this is a read endpoint, the user must be granted edition rights
-            // as this should only be used in the purpose of updating a category from the UI
+            // as this should only be used for the purpose of updating a category from the UI
             throw new AccessDeniedException();
         }
 

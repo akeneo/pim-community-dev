@@ -3,16 +3,18 @@ import {Button, Search, Table, useBooleanState} from 'akeneo-design-system';
 import {
   NotificationLevel,
   useDebounceCallback,
+  useFeatureFlags,
   useNotify,
   useRouter,
   useSecurity,
   useTranslate,
 } from '@akeneo-pim-community/shared';
-import {CategoryTreeModel} from '../../models';
+import {CategoryTreeModel, Template} from '../../models';
 import styled from 'styled-components';
 import {NoResults} from './NoResults';
 import {DeleteCategoryModal} from './DeleteCategoryModal';
 import {deleteCategory} from '../../infrastructure/removers';
+import {createTemplate} from "../templates/createTemplate";
 import {useCountCategoryTreesChildren} from '../../hooks';
 
 type Props = {
@@ -27,9 +29,9 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
   const [searchString, setSearchString] = useState('');
   const [filteredTrees, setFilteredTrees] = useState<CategoryTreeModel[]>(trees);
   const notify = useNotify();
+  const featureFlags = useFeatureFlags();
   const [isConfirmationModalOpen, openConfirmationModal, closeConfirmationModal] = useBooleanState();
   const [categoryTreeToDelete, setCategoryTreeToDelete] = useState<CategoryTreeModel | null>(null);
-
   const followCategoryTree = useCallback(
     (tree: CategoryTreeModel): void => {
       const url = router.generate('pim_enrich_categorytree_tree', {id: tree.id});
@@ -69,6 +71,27 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
     }
     closeConfirmationModal();
   };
+
+  const onCreateTemplate = (categoryTree: CategoryTreeModel) => {
+    createTemplate(categoryTree, router)
+        .then(response => {
+          response.json().then((template: Template) => {
+            if(template) {
+              notify(NotificationLevel.SUCCESS, translate('akeneo.category.template.notification_success'));
+              redirectToTemplate(categoryTree.id, template.identifier);
+            }
+          })
+        }).catch(error => {
+          notify(NotificationLevel.ERROR, translate('akeneo.category.template.notification_error'));
+    });
+  }
+
+  const redirectToTemplate = (treeId: number, templateId: string) => {
+    router.redirect(router.generate('pim_category_template_edit', {
+      treeId: treeId,
+      templateId: templateId
+    }));
+  }
 
   const onDeleteCategoryTree = (categoryTree: CategoryTreeModel) => {
     if (categoryTree.productsNumber && categoryTree.productsNumber > 100) {
@@ -132,7 +155,9 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
               <Table.HeaderCell>
                 {translate('pim_enrich.entity.category.content.tree_list.columns.number_of_categories')}
               </Table.HeaderCell>
-              <Table.HeaderCell />
+              <Table.HeaderCell>
+                {translate('pim_enrich.entity.category.content.tree_list.columns.actions')}
+              </Table.HeaderCell>
             </Table.Header>
             <Table.Body>
               {filteredTrees.map(tree => (
@@ -149,19 +174,37 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                         countTreesChildren.hasOwnProperty(tree.code) ? countTreesChildren[tree.code] : 0
                       )}
                   </Table.Cell>
-                  <TableActionCell>
+                  <Table.ActionCell
+                      style={{width: (featureFlags.isEnabled('enriched_category')) ? '400px' : '50px'}}
+                  >
+                    {featureFlags.isEnabled('enriched_category')
+                        && isGranted('pim_enrich_product_category_template')
+                        && (
+                        <StyleButton
+                            ghost
+                            level="tertiary"
+                            size={'small'}
+                            onClick={() => (tree.templateUuid) ? redirectToTemplate(tree.id, tree.templateUuid): onCreateTemplate(tree)}
+                            disabled={!tree.hasOwnProperty('productsNumber')}
+                        >
+                          {translate((tree.templateUuid)
+                              ? 'akeneo.category.template.edit'
+                              : 'akeneo.category.template.create'
+                          )}
+                        </StyleButton>
+                    )}
                     {isGranted('pim_enrich_product_category_remove') && (
-                      <Button
+                      <StyleButton
                         ghost
                         level="danger"
                         size={'small'}
                         onClick={() => onDeleteCategoryTree(tree)}
                         disabled={!tree.hasOwnProperty('productsNumber')}
                       >
-                        {translate('pim_common.delete')}
-                      </Button>
+                        {translate('akeneo.category.tree.delete')}
+                      </StyleButton>
                     )}
-                  </TableActionCell>
+                  </Table.ActionCell>
                 </Table.Row>
               ))}
             </Table.Body>
@@ -184,8 +227,8 @@ const StyledSearch = styled(Search)`
   margin-bottom: 20px;
 `;
 
-const TableActionCell = styled(Table.ActionCell)`
-  width: 50px;
-`;
+const StyleButton = styled(Button)`
+  margin-right: 10px;
+`
 
 export {CategoryTreesDataGrid};
