@@ -48,9 +48,9 @@ class CreateTemplateController
         $templateLabelCollection = LabelCollection::fromArray($data['labels']);
 
         $categoryTree = $this->getCategory->byId($categoryTreeId);
-        $template = ($this->activateTemplate)($categoryTree->getId(), $templateCode, $templateLabelCollection);
+        $templateUuid = ($this->activateTemplate)($categoryTree->getId(), $templateCode, $templateLabelCollection);
 
-        return new JsonResponse($template->normalize(), Response::HTTP_OK);
+        return new JsonResponse(['uuid' => (string) $templateUuid], Response::HTTP_OK);
     }
 
     private function getDecodedContent($content): array

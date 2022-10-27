@@ -2,7 +2,7 @@ services:
     Akeneo\Category\Application\ActivateTemplate:
         class: 'Akeneo\Category\Application\ActivateTemplate'
         arguments:
-            - '@Akeneo\Category\Application\Query\GetTemplate'
+            - '@Akeneo\Category\Application\Query\CheckTemplate'
             - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
             - '@Akeneo\Category\Application\Query\GetCategoryTemplateByCategoryTree'
             - '@Akeneo\Category\Application\Query\GetCategoryTreeByCategoryTemplate'

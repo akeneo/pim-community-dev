@@ -24,26 +24,4 @@ class GetCategoryTemplateSql implements GetTemplate
         // TODO implement byUuid method + then plug this class instead of GetTemplateInMemory
         return null;
     }
-
-    /**
-     * @param TemplateCode $templateCode
-     * @return bool
-     * @throws \Doctrine\DBAL\Driver\Exception
-     * @throws \Doctrine\DBAL\Exception
-     */
-    public function isAlreadyExistingTemplateCode(TemplateCode $templateCode): bool
-    {
-        $query = <<<SQL
-            SELECT count(1) FROM pim_catalog_template
-            WHERE code=:template_code
-        SQL;
-
-        $result = $this->connection->executeQuery(
-            $query,
-            ['template_code' => (string) $templateCode],
-            ['template_code' => \PDO::PARAM_STR],
-        )->fetchOne();
-
-        return (bool) $result;
-    }
 }

@@ -2,9 +2,9 @@
 
 namespace Akeneo\Category\Application;
 
+use Akeneo\Category\Application\Query\CheckTemplate;
 use Akeneo\Category\Application\Query\GetCategoryTemplateByCategoryTree;
 use Akeneo\Category\Application\Query\GetCategoryTreeByCategoryTemplate;
-use Akeneo\Category\Application\Query\GetTemplate;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
@@ -13,6 +13,7 @@ use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
+use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Category\Infrastructure\Builder\TemplateBuilder;
 
 /**
@@ -21,7 +22,7 @@ use Akeneo\Category\Infrastructure\Builder\TemplateBuilder;
 class ActivateTemplate
 {
     public function __construct(
-        private GetTemplate $getTemplate,
+        private CheckTemplate $checkTemplate,
         private GetCategoryInterface $getCategory,
         private GetCategoryTemplateByCategoryTree $getCategoryTemplateByCategoryTree,
         private GetCategoryTreeByCategoryTemplate $getCategoryTreeByCategoryTemplate,
@@ -39,7 +40,7 @@ class ActivateTemplate
         CategoryId $categoryTreeId,
         TemplateCode $templateCode,
         LabelCollection $templateLabelCollection,
-    ): ?Template {
+    ): ?TemplateUuid {
         $categoryTree = $this->getCategory->byId($categoryTreeId->getValue());
 
         if ($categoryTree === null) {
@@ -79,21 +80,22 @@ class ActivateTemplate
         }
 
         // TODO either implement all the method of the SQL service or use a new service to check if templateCode already exists
-        if ($this->getTemplate->isAlreadyExistingTemplateCode($templateCode)) {
+        if ($this->checkTemplate->codeExists($templateCode)) {
             return false;
         }
 
         return true;
     }
 
-    private function activateTemplate(Template $templateModel): Template
+    private function activateTemplate(Template $templateModel): TemplateUuid
     {
         $this->categoryTemplateSaver->insert($templateModel);
 
+        // TODO ensure the consistency of the transaction (if categoryTreeTemplateSaver->insert fails)
         if (($this->getCategoryTreeByCategoryTemplate)($templateModel->getUuid()) === null) {
             $this->categoryTreeTemplateSaver->insert($templateModel);
         }
 
-        return $this->getTemplate->byUuid((string) $templateModel->getUuid());
+        return $templateModel->getUuid();
     }
 }
