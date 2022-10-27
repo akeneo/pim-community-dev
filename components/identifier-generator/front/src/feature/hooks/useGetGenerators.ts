@@ -1,5 +1,6 @@
-import {useState} from 'react';
 import {IdentifierGenerator} from '../models';
+import {useRouter} from '@akeneo-pim-community/shared';
+import {useQuery} from 'react-query';
 
 type Response = {
   data: IdentifierGenerator[];
@@ -7,18 +8,22 @@ type Response = {
 };
 
 const useGetGenerators = (): Response => {
-  const [generators] = useState<IdentifierGenerator[]>([
-    {
-      code: 'code',
-      conditions: [],
-      delimiter: '',
-      labels: {en_US: 'Generating my identifiers for SKU'},
-      structure: [],
-      target: 'sku',
-    },
-  ]);
 
-  return {data: generators, isLoading: false};
+  const router = useRouter();
+
+  const getGeneratorList = async () => {
+    return fetch(router.generate('akeneo_identifier_generator_rest_list'), {
+      method: 'GET',
+      headers: [['X-Requested-With', 'XMLHttpRequest']],
+    }).then(res => {
+      if (!res.ok) throw new Error(res.statusText);
+      return res.json();
+    });
+  };
+
+  const {data, isLoading} = useQuery('getGeneratorList', getGeneratorList);
+
+  return {data, isLoading};
 };
 
 export {useGetGenerators};

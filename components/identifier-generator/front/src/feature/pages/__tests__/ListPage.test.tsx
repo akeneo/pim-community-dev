@@ -9,8 +9,8 @@ describe('ListPage', () => {
     expect(screen.getByText('pim_identifier_generator.list.first_generator')).toBeVisible();
     expect(screen.getByText('pim_identifier_generator.list.identifier')).not.toBeVisible();
   });
-  
+
   it('should display the generators list', () => {
-    render(<ListPage onCreate={jest.fn()} isCreateEnabled={true})
-  })
+    render(<ListPage onCreate={jest.fn()} isCreateEnabled={true}/>);
+  });
 });
