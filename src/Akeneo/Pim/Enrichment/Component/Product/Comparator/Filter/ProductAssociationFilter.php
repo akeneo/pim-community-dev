@@ -55,7 +55,28 @@ class ProductAssociationFilter implements FilterInterface
             return [];
         }
 
-        $newValues = $this->transform($newValues);
+        if (isset($newValues['associations'])) {
+            $isImportingByUuids = null;
+            foreach ($newValues['associations'] as $associationCode => $associationsByCode) {
+                if (\array_key_exists('products', $associationsByCode)) {
+                    if (true === $isImportingByUuids) {
+                        throw new \LogicException('You can not filter by uuid and by identifiers');
+                    }
+                    $isImportingByUuids = false;
+                }
+                if (\array_key_exists('product_uuids', $associationsByCode)) {
+                    if (false === $isImportingByUuids) {
+                        throw new \LogicException('You can not filter by uuid and by identifiers');
+                    }
+                    $isImportingByUuids = true;
+                }
+            }
+            if ($isImportingByUuids) {
+                $newValues = $this->transform($newValues);
+                $originalAssociations = $this->associationsNormalizer->normalize($product, 'standard', ['with_association_uuids' => true]);
+            }
+        }
+
 
         $result = [];
 
@@ -165,7 +186,7 @@ class ProductAssociationFilter implements FilterInterface
                 $result['associations'][$associationCode] = [];
                 foreach ($associationsByCode as $associationType => $associationsByType) {
                     if ($associationType === 'products') {
-                        $result['associations'][$associationCode]['product_uuids'] = array_map(fn(string $identifier): string => $this->getProductUuid($identifier), $associationsByType);
+                        $result['associations'][$associationCode]['product_uuids'] = array_map(fn (string $identifier): string => $this->getProductUuid($identifier), $associationsByType);
                     } else {
                         $result['associations'][$associationCode][$associationType] = $associationsByType;
                     }
