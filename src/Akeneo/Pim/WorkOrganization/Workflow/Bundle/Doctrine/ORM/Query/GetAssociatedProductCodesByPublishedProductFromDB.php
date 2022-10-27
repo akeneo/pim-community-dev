@@ -34,7 +34,7 @@ class GetAssociatedProductCodesByPublishedProductFromDB implements GetAssociated
         $userGroupsIds = $user->getGroupsIds();
 
         $sql = <<<SQL
-SELECT DISTINCT(p.identifier) as code
+SELECT DISTINCT(p.identifier) as code, p.uuid AS p_uuid
 FROM pimee_workflow_published_product_association a
     INNER JOIN pimee_workflow_published_product_association_published_product ap ON a.id = ap.association_id
     INNER JOIN pimee_workflow_published_product p ON p.id = ap.product_id
@@ -42,7 +42,7 @@ FROM pimee_workflow_published_product_association a
     LEFT JOIN pimee_security_product_category_access pca ON pca.category_id = cp.category_id AND pca.user_group_id IN (:userGroupsIds)
 WHERE a.owner_id = :ownerId AND a.association_type_id = :associationTypeId
     AND (cp.category_id IS NULL OR pca.view_items = 1)
-ORDER BY p.identifier ASC;
+ORDER BY p_uuid;
 SQL;
 
         $stmt = $this->connection->executeQuery(
@@ -72,7 +72,7 @@ SQL;
         $userGroupsIds = $user->getGroupsIds();
 
         $sql = <<<SQL
-SELECT DISTINCT(BIN_TO_UUID(p.uuid)) as uuid
+SELECT DISTINCT(BIN_TO_UUID(p.uuid)) as uuid, p.uuid AS p_uuid
 FROM pimee_workflow_published_product_association a
     INNER JOIN pimee_workflow_published_product_association_published_product ap ON a.id = ap.association_id
     INNER JOIN pimee_workflow_published_product p ON p.id = ap.product_id
@@ -80,6 +80,7 @@ FROM pimee_workflow_published_product_association a
     LEFT JOIN pimee_security_product_category_access pca ON pca.category_id = cp.category_id AND pca.user_group_id IN (:userGroupsIds)
 WHERE a.owner_id = :ownerId AND a.association_type_id = :associationTypeId
     AND (cp.category_id IS NULL OR pca.view_items = 1)
+ORDER BY p_uuid;
 SQL;
 
         $stmt = $this->connection->executeQuery(
