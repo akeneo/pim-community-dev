@@ -7,6 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
@@ -22,7 +23,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
  */
 class AssociationFieldAdder extends AbstractFieldAdder
 {
-    protected IdentifiableObjectRepositoryInterface $productRepository;
+    protected ProductRepositoryInterface $productRepository;
     protected IdentifiableObjectRepositoryInterface $productModelRepository;
     protected IdentifiableObjectRepositoryInterface $groupRepository;
     private MissingAssociationAdder $missingAssociationAdder;
@@ -30,7 +31,7 @@ class AssociationFieldAdder extends AbstractFieldAdder
     private TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater;
 
     public function __construct(
-        IdentifiableObjectRepositoryInterface $productRepository,
+        ProductRepositoryInterface $productRepository,
         IdentifiableObjectRepositoryInterface $productModelRepository,
         IdentifiableObjectRepositoryInterface $groupRepository,
         MissingAssociationAdder $missingAssociationAdder,
