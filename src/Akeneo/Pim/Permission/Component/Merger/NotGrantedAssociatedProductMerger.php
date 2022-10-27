@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Permission\Component\Merger;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\Query\ItemCategoryAccessQuery;
 use Akeneo\Pim\Permission\Component\NotGrantedDataMergerInterface;
@@ -60,6 +59,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class NotGrantedAssociatedProductMerger implements NotGrantedDataMergerInterface
 {
+    // TODO Remove this
     /** @var AuthorizationCheckerInterface */
     private $authorizationChecker;
 
@@ -131,7 +131,7 @@ class NotGrantedAssociatedProductMerger implements NotGrantedDataMergerInterface
 
             foreach ($associatedProducts as $associatedProduct) {
                 if (!isset($grantedProductUuids[$associatedProduct->getUuid()->toString()])) {
-                    $associationCodes[$association->getAssociationType()->getCode()]['products_uuids'][] = $associatedProduct->getUuid()->toString();
+                    $associationCodes[$association->getAssociationType()->getCode()]['product_uuids'][] = $associatedProduct->getUuid()->toString();
                 }
             }
 

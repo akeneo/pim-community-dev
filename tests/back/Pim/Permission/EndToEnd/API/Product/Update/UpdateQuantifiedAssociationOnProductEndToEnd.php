@@ -183,14 +183,6 @@ JSON;
         $this->assertSame($expectedQuantifiedAssociations, $actualQuantifiedAssociations);
     }
 
-    private function getProductUuid(string $identifier): ?string
-    {
-        return $this->get('database_connection')->executeQuery(
-            'SELECT BIN_TO_UUID(uuid) AS uuid FROM pim_catalog_product WHERE identifier = :identifier',
-            ['identifier' => $identifier]
-        )->fetchOne() ?: null;
-    }
-
     private function getOrmCacheClearer(): EntityManagerClearerInterface
     {
         return $this->get('pim_connector.doctrine.cache_clearer');

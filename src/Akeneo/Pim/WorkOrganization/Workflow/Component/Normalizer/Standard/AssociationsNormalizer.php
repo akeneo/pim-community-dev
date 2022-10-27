@@ -88,16 +88,15 @@ class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMe
                     $data[$code]['groups'][] = $group->getCode();
                 }
 
-                // TODO Fix here
-                $data[$code]['products'] = $data[$code]['products'] ?? [];
+                $data[$code]['product_uuids'] = $data[$code]['product_uuids'] ?? [];
                 if ($associationAwareEntity instanceof ProductModelInterface) {
                     foreach ($association->getProducts() as $product) {
-                        $data[$code]['products'][] = $product->getReference();
+                        $data[$code]['product_uuids'][] = $product->getUuid()->toString();
                     }
                 } else {
-                    $data[$code]['products'] = array_merge(
-                        $data[$code]['products'],
-                        $this->getAssociatedProductCodesByPublishedProduct->getCodes(
+                    $data[$code]['product_uuids'] = array_merge(
+                        $data[$code]['product_uuids'],
+                        $this->getAssociatedProductCodesByPublishedProduct->getUuids(
                             $associationAwareEntity->getId(),
                             $association
                         )
@@ -112,7 +111,7 @@ class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMe
         }
 
         $data = array_map(function ($association) {
-            $association['products'] = array_values(array_unique($association['products']));
+            $association['product_uuids'] = array_values(array_unique($association['product_uuids']));
             return $association;
         }, $data);
 

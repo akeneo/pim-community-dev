@@ -61,4 +61,41 @@ SQL;
 
         return $stmt->fetchFirstColumn();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getUuids(int $publishedProductId, AssociationInterface $association): array
+    {
+        $user = $this->tokenStorage->getToken()->getUser();
+        Assert::implementsInterface($user, UserInterface::class);
+        $userGroupsIds = $user->getGroupsIds();
+
+        $sql = <<<SQL
+SELECT DISTINCT(BIN_TO_UUID(p.uuid)) as uuid
+FROM pimee_workflow_published_product_association a
+    INNER JOIN pimee_workflow_published_product_association_published_product ap ON a.id = ap.association_id
+    INNER JOIN pimee_workflow_published_product p ON p.id = ap.product_id
+    LEFT JOIN pimee_workflow_category_published_product cp on p.id = cp.product_id
+    LEFT JOIN pimee_security_product_category_access pca ON pca.category_id = cp.category_id AND pca.user_group_id IN (:userGroupsIds)
+WHERE a.owner_id = :ownerId AND a.association_type_id = :associationTypeId
+    AND (cp.category_id IS NULL OR pca.view_items = 1)
+SQL;
+
+        $stmt = $this->connection->executeQuery(
+            $sql,
+            [
+                'userGroupsIds'     => $userGroupsIds,
+                'ownerId'           => $publishedProductId,
+                'associationTypeId' => $association->getAssociationType()->getId()
+            ],
+            [
+                'userGroupsIds'     => Connection::PARAM_INT_ARRAY,
+                'ownerId'           => \PDO::PARAM_INT,
+                'associationTypeId' => \PDO::PARAM_INT
+            ]
+        );
+
+        return $stmt->fetchFirstColumn();
+    }
 }

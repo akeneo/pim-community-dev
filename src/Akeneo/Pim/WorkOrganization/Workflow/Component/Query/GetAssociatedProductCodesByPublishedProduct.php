@@ -15,11 +15,15 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Query;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 
-// TODO Do this too
 interface GetAssociatedProductCodesByPublishedProduct
 {
     /**
      * @return string[]
      */
     public function getCodes(int $publishedProductId, AssociationInterface $association): array;
+
+    /**
+     * @return string[]
+     */
+    public function getUuids(int $publishedProductId, AssociationInterface $association): array;
 }

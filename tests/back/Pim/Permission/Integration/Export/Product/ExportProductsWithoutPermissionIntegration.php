@@ -42,6 +42,7 @@ CSV;
         $this->assertSame($expectedCsv, $csv);
     }
 
+    // TODO This test fail because ordering associations
     public function testProductViewableByManagerWithoutPermissionApplied()
     {
         $expectedCsv = <<<CSV
