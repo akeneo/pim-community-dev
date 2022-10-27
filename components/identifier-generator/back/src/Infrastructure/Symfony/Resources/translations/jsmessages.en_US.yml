@@ -22,3 +22,7 @@ pim_identifier_generator:
         create:
             success: 'The identifier generator "{{ code }}" was successfully created'
             error: 'The identifier generator could not be created'
+    list:
+        identifier: 'Identifier'
+        first_generator: 'Create your first identifier generator!'
+        check_help_center: 'Check out our help center for more information.'
