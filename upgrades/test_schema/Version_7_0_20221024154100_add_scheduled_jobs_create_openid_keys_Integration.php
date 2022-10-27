@@ -18,7 +18,7 @@ final class Version_7_0_20221024154100_add_scheduled_jobs_create_openid_keys_Int
         $this->connection = $this->get('database_connection');
     }
 
-    public function test_it_adds_an_instance_if_not_present()
+    public function test_it_adds_an_instance_if_not_present(): void
     {
         $this->deleteJobInstance('create_openid_keys');
         $this->assertNull($this->jobInstanceId('create_openid_keys'));
@@ -26,7 +26,7 @@ final class Version_7_0_20221024154100_add_scheduled_jobs_create_openid_keys_Int
         $this->assertNotNull($this->jobInstanceId('create_openid_keys'));
     }
 
-    public function test_it_does_not_adds_an_instance_if_present()
+    public function test_it_does_not_adds_an_instance_if_present(): void
     {
         $jobInstanceId = $this->jobInstanceId('create_openid_keys');
         $this->assertNotNull($jobInstanceId);
