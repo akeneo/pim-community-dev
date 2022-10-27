@@ -33,7 +33,7 @@ class MailNotifier implements Notifier
     {
         $emailsToNotify = $this->getEmailsToNotify();
 
-        if(empty($emailsToNotify)) {
+        if (empty($emailsToNotify)) {
             return;
         }
 
