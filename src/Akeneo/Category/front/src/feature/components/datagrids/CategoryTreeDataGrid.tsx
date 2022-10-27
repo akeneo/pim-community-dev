@@ -14,7 +14,7 @@ import styled from 'styled-components';
 import {NoResults} from './NoResults';
 import {DeleteCategoryModal} from './DeleteCategoryModal';
 import {deleteCategory} from '../../infrastructure/removers';
-import {createTemplate} from "../templates/createTemplate";
+import {createTemplate} from '../templates/createTemplate';
 import {useCountCategoryTreesChildren} from '../../hooks';
 
 type Props = {
@@ -74,24 +74,27 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
 
   const onCreateTemplate = (categoryTree: CategoryTreeModel) => {
     createTemplate(categoryTree, router)
-        .then(response => {
-          response.json().then((template: Template) => {
-            if(template) {
-              notify(NotificationLevel.SUCCESS, translate('akeneo.category.template.notification_success'));
-              redirectToTemplate(categoryTree.id, template.identifier);
-            }
-          })
-        }).catch(error => {
-          notify(NotificationLevel.ERROR, translate('akeneo.category.template.notification_error'));
-    });
-  }
+      .then(response => {
+        response.json().then((template: Template) => {
+          if (template) {
+            notify(NotificationLevel.SUCCESS, translate('akeneo.category.template.notification_success'));
+            redirectToTemplate(categoryTree.id, template.identifier);
+          }
+        });
+      })
+      .catch(error => {
+        notify(NotificationLevel.ERROR, translate('akeneo.category.template.notification_error'));
+      });
+  };
 
   const redirectToTemplate = (treeId: number, templateId: string) => {
-    router.redirect(router.generate('pim_category_template_edit', {
-      treeId: treeId,
-      templateId: templateId
-    }));
-  }
+    router.redirect(
+      router.generate('pim_category_template_edit', {
+        treeId: treeId,
+        templateId: templateId,
+      })
+    );
+  };
 
   const onDeleteCategoryTree = (categoryTree: CategoryTreeModel) => {
     if (categoryTree.productsNumber && categoryTree.productsNumber > 100) {
@@ -155,9 +158,9 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
               <Table.HeaderCell>
                 {translate('pim_enrich.entity.category.content.tree_list.columns.number_of_categories')}
               </Table.HeaderCell>
-              <Table.HeaderCell>
+              <StyleActionHeader isEnrichedCategoryEnabled={featureFlags.isEnabled('enriched_category')}>
                 {translate('pim_enrich.entity.category.content.tree_list.columns.actions')}
-              </Table.HeaderCell>
+              </StyleActionHeader>
             </Table.Header>
             <Table.Body>
               {filteredTrees.map(tree => (
@@ -174,24 +177,21 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                         countTreesChildren.hasOwnProperty(tree.code) ? countTreesChildren[tree.code] : 0
                       )}
                   </Table.Cell>
-                  <Table.ActionCell
-                      style={{width: (featureFlags.isEnabled('enriched_category')) ? '400px' : '50px'}}
-                  >
-                    {featureFlags.isEnabled('enriched_category')
-                        && isGranted('pim_enrich_product_category_template')
-                        && (
-                        <StyleButton
-                            ghost
-                            level="tertiary"
-                            size={'small'}
-                            onClick={() => (tree.templateUuid) ? redirectToTemplate(tree.id, tree.templateUuid): onCreateTemplate(tree)}
-                            disabled={!tree.hasOwnProperty('productsNumber')}
-                        >
-                          {translate((tree.templateUuid)
-                              ? 'akeneo.category.template.edit'
-                              : 'akeneo.category.template.create'
-                          )}
-                        </StyleButton>
+                  <Table.ActionCell>
+                    {featureFlags.isEnabled('enriched_category') && isGranted('pim_enrich_product_category_template') && (
+                      <StyleButton
+                        ghost
+                        level="tertiary"
+                        size={'small'}
+                        onClick={() =>
+                          tree.templateUuid ? redirectToTemplate(tree.id, tree.templateUuid) : onCreateTemplate(tree)
+                        }
+                        disabled={!tree.hasOwnProperty('productsNumber')}
+                      >
+                        {translate(
+                          tree.templateUuid ? 'akeneo.category.template.edit' : 'akeneo.category.template.create'
+                        )}
+                      </StyleButton>
                     )}
                     {isGranted('pim_enrich_product_category_remove') && (
                       <StyleButton
@@ -227,8 +227,12 @@ const StyledSearch = styled(Search)`
   margin-bottom: 20px;
 `;
 
+const StyleActionHeader = styled(Table.HeaderCell)<{isEnrichedCategoryEnabled: boolean}>`
+  width: ${({isEnrichedCategoryEnabled}) => (isEnrichedCategoryEnabled ? '400px' : '50px')};
+`;
+
 const StyleButton = styled(Button)`
   margin-right: 10px;
-`
+`;
 
 export {CategoryTreesDataGrid};
