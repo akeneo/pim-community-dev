@@ -11,6 +11,6 @@ describe('ListPage', () => {
   });
 
   it('should display the generators list', () => {
-    render(<ListPage onCreate={jest.fn()} isCreateEnabled={true}/>);
+    render(<ListPage onCreate={jest.fn()} isCreateEnabled={true} />);
   });
 });
