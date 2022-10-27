@@ -1,5 +1,5 @@
 import React, {FC, useCallback, useEffect, useState} from 'react';
-import {Button, Search, Table, useBooleanState} from 'akeneo-design-system';
+import {AkeneoThemedProps, Button, Search, Table, useBooleanState} from 'akeneo-design-system';
 import {
   NotificationLevel,
   useDebounceCallback,
@@ -177,9 +177,9 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
               {displayCategoryTemplatesColumn && (
                 <Table.HeaderCell>{translate('akeneo.category.tree_list.column.category_templates')}</Table.HeaderCell>
               )}
-              <Table.HeaderCell>
+              <StyleActionHeader isEnrichedCategoryEnabled={featureFlags.isEnabled('enriched_category')}>
                 {translate('pim_enrich.entity.category.content.tree_list.columns.actions')}
-              </Table.HeaderCell>
+              </StyleActionHeader>
             </Table.Header>
             <Table.Body>
               {filteredTrees.map(tree => (
@@ -197,9 +197,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                       )}
                   </Table.Cell>
                   {displayCategoryTemplatesColumn && <Table.Cell>{tree.templateLabel}</Table.Cell>}
-                  <Table.ActionCell
-                      style={{width: (featureFlags.isEnabled('enriched_category')) ? '400px' : '50px'}}
-                  >
+                  <Table.ActionCell>
                     {featureFlags.isEnabled('enriched_category')
                         && isGranted('pim_enrich_product_category_template')
                         && (
@@ -250,8 +248,12 @@ const StyledSearch = styled(Search)`
   margin-bottom: 20px;
 `;
 
+const StyleActionHeader = styled(Table.HeaderCell)<{isEnrichedCategoryEnabled: boolean}>`
+  width: ${({isEnrichedCategoryEnabled}) => (isEnrichedCategoryEnabled ? '400px' : '50px')};
+`;
+
 const StyleButton = styled(Button)`
   margin-right: 10px;
-`
+`;
 
 export {CategoryTreesDataGrid};
