@@ -98,6 +98,7 @@ class AssociationFieldAdder extends AbstractFieldAdder
                 );
             }
             $this->addAssociatedProducts($associationType, $items['products'] ?? [], $entity);
+            $this->addAssociatedProductUuids($associationType, $items['product_uuids'] ?? [], $entity);
             $this->addAssociatedGroups($associationType, $items['groups'] ?? [], $entity);
             $this->addAssociatedProductModels($associationType, $items['product_models'] ?? [], $entity);
         }
@@ -124,6 +125,37 @@ class AssociationFieldAdder extends AbstractFieldAdder
                     'The product does not exist',
                     static::class,
                     $productIdentifier
+                );
+            }
+            $entity->addAssociatedProduct($associatedProduct, $associationType->getCode());
+            if ($associationType->isTwoWay()) {
+                $this->twoWayAssociationUpdater->createInversedAssociation(
+                    $entity,
+                    $associationType->getCode(),
+                    $associatedProduct
+                );
+            }
+        }
+    }
+
+    /**
+     * @param string[] $productsUuids
+     * @param ProductInterface|ProductModelInterface $entity
+     */
+    protected function addAssociatedProductUuids(
+        AssociationTypeInterface $associationType,
+        array $productsUuids,
+        $entity
+    ): void {
+        foreach ($productsUuids as $productUuid) {
+            $associatedProduct = $this->productRepository->find($productUuid);
+            if (null === $associatedProduct) {
+                throw InvalidPropertyException::validEntityCodeExpected(
+                    'associations',
+                    'product uuid',
+                    'The product does not exist',
+                    static::class,
+                    $productUuid
                 );
             }
             $entity->addAssociatedProduct($associatedProduct, $associationType->getCode());

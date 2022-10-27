@@ -115,7 +115,7 @@ define([
           } else {
             $.when(
               FetcherRegistry.getFetcher('product-model').fetchByIdentifiers(value.product_models),
-              FetcherRegistry.getFetcher('product').fetchByIdentifiers(value.products)
+              FetcherRegistry.getFetcher('product').fetchByUuids(value.product_uuids)
             )
               .then((productModels, products) => {
                 const items = products.concat(productModels);
@@ -259,7 +259,7 @@ define([
      */
     addAssociations: function () {
       this.manageProducts().then(productAndProductModelIdentifiers => {
-        let productIds = [];
+        let productUuids = [];
         let productModelIds = [];
         productAndProductModelIdentifiers.forEach(item => {
           const matchProductModel = item.match(/^product_model;(.*)$/);
@@ -267,7 +267,7 @@ define([
             productModelIds.push(matchProductModel[1]);
           } else {
             const matchProduct = item.match(/^product;(.*)$/);
-            productIds.push(matchProduct[1]);
+            productUuids.push(matchProduct[1]);
           }
         });
 
@@ -275,7 +275,7 @@ define([
 
         const associations = {};
         associations[assocType] = {
-          products: productIds,
+          product_uuids: productUuids,
           product_models: productModelIds,
           groups: [],
         };
