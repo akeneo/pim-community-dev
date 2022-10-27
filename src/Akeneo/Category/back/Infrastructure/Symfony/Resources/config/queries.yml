@@ -4,6 +4,11 @@ services:
     arguments:
       - '@database_connection'
 
+  Akeneo\Category\Domain\Query\GetCategoryTreesInterface:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryTreesSql
+    arguments:
+      - '@database_connection'
+
   Akeneo\Category\Application\Query\GetTemplate:
     class: Akeneo\Category\Infrastructure\Storage\InMemory\GetTemplateInMemory
     arguments:
