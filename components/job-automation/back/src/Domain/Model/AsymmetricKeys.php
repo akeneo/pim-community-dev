@@ -27,6 +27,16 @@ class AsymmetricKeys
         return new self($publicKey, $privateKey);
     }
 
+    public function getPublicKey(): string
+    {
+        return $this->publicKey;
+    }
+
+    public function getPrivateKey(): string
+    {
+        return $this->privateKey;
+    }
+
     /**
      * @return array{public_key:string,private_key:string}
      */

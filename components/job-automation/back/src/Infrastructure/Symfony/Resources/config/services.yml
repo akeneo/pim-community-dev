@@ -49,3 +49,11 @@ services:
 
     akeneo.job_automation.infrastructure.public_api.list_users_handler:
         alias: Akeneo\UserManagement\ServiceApi\User\ListUsersHandlerInterface
+
+    Akeneo\Platform\JobAutomation\Infrastructure\AsymmetricKeysGenerator: ~
+
+    Akeneo\Platform\Job\Infrastructure\Installer\JobInstaller:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: kernel.event_subscriber }

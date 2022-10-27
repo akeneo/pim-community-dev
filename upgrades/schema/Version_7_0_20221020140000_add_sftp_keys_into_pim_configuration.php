@@ -23,14 +23,9 @@ class Version_7_0_20221020140000_add_sftp_keys_into_pim_configuration extends Ab
 
         $asymmetricKeys = $this->generate();
 
-        $now = new \DateTime('now', new \DateTimeZone('UTC'));
-
         $this->connection->executeQuery($query, [
             'code' => 'SFTP_ASYMMETRIC_KEYS',
-            'asymmetricKeys' => array_merge(
-                $asymmetricKeys->normalize(),
-                ['updated_at' => $now->format(\DateTimeInterface::ATOM)]
-            ),
+            'asymmetricKeys' => $asymmetricKeys->normalize(),
         ], [
             'code' => Types::STRING,
             'asymmetricKeys' => Types::JSON,

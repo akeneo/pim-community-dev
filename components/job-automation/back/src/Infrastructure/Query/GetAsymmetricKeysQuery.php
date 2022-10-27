@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\JobAutomation\Infrastructure\Query;
 
-use Akeneo\Platform\JobAutomation\Domain\Exception\AsymmetricKeyNotFoundException;
+use Akeneo\Platform\JobAutomation\Domain\Exception\AsymmetricKeysNotFoundException;
 use Akeneo\Platform\JobAutomation\Domain\Model\AsymmetricKeys;
 use Akeneo\Platform\JobAutomation\Domain\Query\GetAsymmetricKeysQueryInterface;
 use Doctrine\DBAL\Connection;
@@ -25,21 +25,22 @@ final class GetAsymmetricKeysQuery implements GetAsymmetricKeysQueryInterface
     ) {
     }
 
-    public function execute(string $code): AsymmetricKeys
+    public function execute(): AsymmetricKeys
     {
         $query = <<<SQL
-            SELECT `values` FROM pim_configuration
+            SELECT
+                JSON_VALUE(`values`, '$.public_key') as publicKey,
+                JSON_VALUE(`values`, '$.private_key') as privateKey
+            FROM pim_configuration
             WHERE code = :code
         SQL;
 
-        $result = $this->connection->fetchOne($query, ['code' => $code]);
+        $result = $this->connection->fetchAssociative($query, ['code' => SaveAsymmetricKeysQuery::OPTION_CODE]);
 
         if (!$result) {
-            throw new AsymmetricKeyNotFoundException($code);
+            throw new AsymmetricKeysNotFoundException();
         }
 
-        $keys = \json_decode($result, true);
-
-        return AsymmetricKeys::create($keys[AsymmetricKeys::PUBLIC_KEY], $keys[AsymmetricKeys::PRIVATE_KEY]);
+        return AsymmetricKeys::create($result['publicKey'], $result['privateKey']);
     }
 }

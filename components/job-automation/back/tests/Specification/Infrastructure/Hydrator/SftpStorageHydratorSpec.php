@@ -73,7 +73,7 @@ class SftpStorageHydratorSpec extends ObjectBehavior
     public function it_hydrates_a_sftp_storage_with_private_key(GetAsymmetricKeysQueryInterface $getAsymmetricKeysQuery)
     {
         $asymmetricKeys = AsymmetricKeys::create('a_public_key', 'a_private_key');
-        $getAsymmetricKeysQuery->execute('SFTP_ASYMMETRIC_KEYS')->willReturn($asymmetricKeys);
+        $getAsymmetricKeysQuery->execute()->willReturn($asymmetricKeys);
 
         $this->hydrate([
             'type' => 'sftp',

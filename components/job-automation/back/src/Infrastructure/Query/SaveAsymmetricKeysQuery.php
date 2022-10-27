@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\JobAutomation\Infrastructure\Query;
 
-use Akeneo\Platform\JobAutomation\Domain\ClockInterface;
 use Akeneo\Platform\JobAutomation\Domain\Model\AsymmetricKeys;
 use Akeneo\Platform\JobAutomation\Domain\Query\SaveAsymmetricKeysQueryInterface;
 use Doctrine\DBAL\Connection;
@@ -25,7 +24,6 @@ final class SaveAsymmetricKeysQuery implements SaveAsymmetricKeysQueryInterface
 
     public function __construct(
         private Connection $connection,
-        private ClockInterface $clock,
     ) {
     }
 
@@ -34,14 +32,12 @@ final class SaveAsymmetricKeysQuery implements SaveAsymmetricKeysQueryInterface
         $query = <<<SQL
             INSERT INTO pim_configuration (`code`,`values`)
             VALUES (:code, :asymmetricKeys)
-            ON DUPLICATE KEY UPDATE `values`= :asymmetricKeys
+            ON DUPLICATE KEY UPDATE `values` = :asymmetricKeys
         SQL;
-
-        $updatedAt = $this->clock->now()->format(\DateTimeInterface::ATOM);
 
         $this->connection->executeQuery($query, [
             'code' => self::OPTION_CODE,
-            'asymmetricKeys' => \array_merge($asymmetricKeys->normalize(), ['updated_at' => $updatedAt]),
+            'asymmetricKeys' => ['public_key' => $asymmetricKeys->getPublicKey(), 'private_key' => $asymmetricKeys->getPrivateKey()],
         ], [
             'code' => Types::STRING,
             'asymmetricKeys' => Types::JSON,

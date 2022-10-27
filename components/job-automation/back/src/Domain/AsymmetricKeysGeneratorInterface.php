@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\JobAutomation\Domain\Query;
+namespace Akeneo\Platform\JobAutomation\Domain;
 
 use Akeneo\Platform\JobAutomation\Domain\Model\AsymmetricKeys;
 
-interface GetAsymmetricKeysQueryInterface
+interface AsymmetricKeysGeneratorInterface
 {
-    public function execute(): AsymmetricKeys;
+    public function generate(): AsymmetricKeys;
 }

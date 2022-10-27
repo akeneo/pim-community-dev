@@ -15,7 +15,6 @@ namespace Akeneo\Platform\JobAutomation\Infrastructure\Hydrator;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageHydratorInterface;
-use Akeneo\Platform\JobAutomation\Domain\Model\AsymmetricKeys;
 use Akeneo\Platform\JobAutomation\Domain\Model\SftpStorage;
 use Akeneo\Platform\JobAutomation\Domain\Query\GetAsymmetricKeysQueryInterface;
 
@@ -52,7 +51,7 @@ final class SftpStorageHydrator implements StorageHydratorInterface
 
     private function hydrateForPrivateKeyLoginType(array $normalizedStorage): StorageInterface
     {
-        $asymmetricKeys = $this->getAsymmetricKeysQuery->execute(SftpStorage::ASYMMETRIC_KEYS)->normalize();
+        $asymmetricKeys = $this->getAsymmetricKeysQuery->execute();
 
         return new SftpStorage(
             $normalizedStorage['host'],
@@ -61,8 +60,8 @@ final class SftpStorageHydrator implements StorageHydratorInterface
             $normalizedStorage['username'],
             null,
             $normalizedStorage['file_path'],
-            $asymmetricKeys[AsymmetricKeys::PRIVATE_KEY],
-            $asymmetricKeys[AsymmetricKeys::PUBLIC_KEY],
+            $asymmetricKeys->getPrivateKey(),
+            $asymmetricKeys->getPublicKey(),
             $normalizedStorage['fingerprint'] ?? null,
         );
     }

@@ -43,7 +43,7 @@ final class SftpStorageClientProvider implements RemoteStorageClientProviderInte
 
         $encryptionKey = $this->getEncryptionKey($storage);
 
-        $connection = $this->getConnection(
+        $connection = $this->createConnectionProvider(
             loginType: $storage->getLoginType(),
             host: $storage->getHost(),
             username: $storage->getUsername(),
@@ -70,7 +70,7 @@ final class SftpStorageClientProvider implements RemoteStorageClientProviderInte
             throw new \InvalidArgumentException('The provider only support SftpStorage');
         }
 
-        return $this->getConnection(
+        return $this->createConnectionProvider(
             loginType: $storage->getLoginType(),
             host: $storage->getHost(),
             username: $storage->getUsername(),
@@ -94,7 +94,7 @@ final class SftpStorageClientProvider implements RemoteStorageClientProviderInte
         );
     }
 
-    private function getConnection(
+    private function createConnectionProvider(
         string $loginType,
         string $host,
         string $username,
@@ -109,11 +109,13 @@ final class SftpStorageClientProvider implements RemoteStorageClientProviderInte
         return match ($loginType) {
             SftpStorage::LOGIN_TYPE_CREDENTIALS => $this->getConnectionWithPassword($host, $username, $password, $port),
             SftpStorage::LOGIN_TYPE_PRIVATE_KEY => $this->getConnectionWithPrivateKey($host, $username, $privateKey, $port),
+            SftpStorage::LOGIN_TYPE_PASSWORD => $this->createConnectionProviderWithPassword($host, $username, $password, $port),
+            SftpStorage::LOGIN_TYPE_PRIVATE_KEY => $this->createConnectionProviderWithPrivateKey($host, $username, $privateKey, $port),
             default => throw new \LogicException(sprintf('Unsupported login type "%s"', $loginType)),
         };
     }
 
-    private function getConnectionWithPassword(
+    private function createConnectionProviderWithPassword(
         string $host,
         string $username,
         string $password,
@@ -132,7 +134,7 @@ final class SftpStorageClientProvider implements RemoteStorageClientProviderInte
         );
     }
 
-    private function getConnectionWithPrivateKey(
+    private function createConnectionProviderWithPrivateKey(
         string $host,
         string $username,
         string $privateKey,

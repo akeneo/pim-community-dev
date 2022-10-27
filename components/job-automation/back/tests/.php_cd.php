@@ -39,10 +39,13 @@ $rules = [
             'Symfony\Component',
             'Symfony\Contract',
             'Psr\Log\LoggerInterface',
+            'phpseclib\Crypt\RSA',
+            'phpseclib\File\X509',
 
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
             'Akeneo\Platform\Bundle\ImportExportBundle\Domain',
             'Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure',
+            'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
             'Akeneo\Platform\Bundle\NotificationBundle',
             'Akeneo\Platform\JobAutomation\Domain',
             'Akeneo\Platform\JobAutomation\Application',

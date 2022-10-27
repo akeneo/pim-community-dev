@@ -11,11 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\JobAutomation\Domain\Query;
+namespace Akeneo\Platform\JobAutomation\Domain\Exception;
 
-use Akeneo\Platform\JobAutomation\Domain\Model\AsymmetricKeys;
-
-interface GetAsymmetricKeysQueryInterface
+class AsymmetricKeysNotFoundException extends \Exception
 {
-    public function execute(): AsymmetricKeys;
+    public const MESSAGE = 'No asymmetric keys found';
+
+    public function __construct()
+    {
+        parent::__construct(self::MESSAGE);
+    }
 }

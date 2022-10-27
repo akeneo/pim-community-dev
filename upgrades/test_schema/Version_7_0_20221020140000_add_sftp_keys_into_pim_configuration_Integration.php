@@ -1,16 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Pim\Upgrade\Schema\Tests;
 
-use Akeneo\Platform\JobAutomation\Infrastructure\Query\SaveAsymmetricKeysQuery;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 
-/**
- * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
 class Version_7_0_20221020140000_add_sftp_keys_into_pim_configuration_Integration extends TestCase
 {
     use ExecuteMigrationTrait;

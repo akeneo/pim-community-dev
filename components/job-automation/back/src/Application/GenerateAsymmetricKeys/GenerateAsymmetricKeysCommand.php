@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -10,14 +11,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\JobAutomation\Domain\Exception;
+namespace Akeneo\Platform\JobAutomation\Application\GenerateAsymmetricKeys;
 
-class AsymmetricKeyNotFoundException extends \Exception
+class GenerateAsymmetricKeysCommand
 {
-    public const MESSAGE = 'No keys found for %s';
-
-    public function __construct(string $code)
-    {
-        parent::__construct(sprintf(self::MESSAGE, $code));
-    }
 }
