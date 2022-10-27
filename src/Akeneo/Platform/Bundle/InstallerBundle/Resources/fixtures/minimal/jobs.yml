@@ -181,3 +181,8 @@ jobs:
         alias: create_openid_keys
         label: Create or update a public/private openId key couple
         type: scheduled_job
+    connectivity_audit_purge_error:
+        connector: internal
+        alias:     connectivity_audit_purge_error
+        label:     Purge audit error table
+        type:      scheduled_job
