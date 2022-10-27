@@ -8,6 +8,7 @@ use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver;
 use Akeneo\Category\Domain\Model\Template;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -38,12 +39,12 @@ class SqlCategoryTemplateSaver implements CategoryTemplateSaver
             [
                 'uuid' => (string) $templateModel->getUuid(),
                 'code' => (string) $templateModel->getCode(),
-                'labels' => json_encode($templateModel->getLabelCollection()->normalize()),
+                'labels' => $templateModel->getLabelCollection()->normalize(),
             ],
             [
                 'uuid' => \PDO::PARAM_STR,
                 'code' => \PDO::PARAM_STR,
-                'labels' => \PDO::PARAM_STR,
+                'labels' => Types::JSON,
             ]
         );
     }

@@ -9,6 +9,7 @@ use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * Save values from model into pim_catalog_category table:
@@ -54,7 +55,7 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
 
         $attributeValues = $categoryModel->getAttributes();
         if (null !== $attributeValues) {
-            $attributeValues = json_encode($attributeValues->getValues());
+            $attributeValues = $attributeValues->getValues();
         }
 
         $this->connection->executeQuery(
@@ -75,7 +76,7 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
                 'lvl' => \PDO::PARAM_INT,
                 'lft' => \PDO::PARAM_INT,
                 'rgt' => \PDO::PARAM_INT,
-                'value_collection' => \PDO::PARAM_STR,
+                'value_collection' => Types::JSON,
             ]
         );
 

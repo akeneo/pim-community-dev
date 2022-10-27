@@ -18,11 +18,7 @@ class GetTemplateInMemoryIntegration extends CategoryTestCase
     {
         $templateUuid = '02274dac-e99a-4e1d-8f9b-794d4c3ba330';
         $expectedTemplate = $this->generateMockedCategoryTemplateModel(
-            $templateUuid,
-            null,
-            null,
-            null,
-            null
+            templateUuid: $templateUuid
         );
         $template = $this->get(GetTemplate::class)->byUuid($templateUuid);
         $this->assertEquals($expectedTemplate, $template);
@@ -31,7 +27,7 @@ class GetTemplateInMemoryIntegration extends CategoryTestCase
     public function testTemplateExists(): void
     {
         $templateCode = new TemplateCode('default_template');
-        $this->assertFalse($this->get(GetTemplate::class)->isExistingCategoryTemplate($templateCode));
+        $this->assertFalse($this->get(GetTemplate::class)->isAlreadyExistingTemplateCode($templateCode));
     }
 
     protected function getConfiguration()

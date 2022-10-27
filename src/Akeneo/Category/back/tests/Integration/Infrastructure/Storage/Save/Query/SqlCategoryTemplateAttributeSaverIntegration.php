@@ -18,13 +18,7 @@ class SqlCategoryTemplateAttributeSaverIntegration extends CategoryTestCase
 {
     public function testInsertNewCategoryAttributeInDatabase(): void
     {
-        $templateModel = $this->generateMockedCategoryTemplateModel(
-            null,
-            null,
-            null,
-            null,
-            null
-        );
+        $templateModel = $this->generateMockedCategoryTemplateModel();
 
         $this->get(CategoryTemplateSaver::class)->insert($templateModel);
 

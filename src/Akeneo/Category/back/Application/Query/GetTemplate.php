@@ -15,5 +15,5 @@ interface GetTemplate
 {
     public function byUuid(string $templateId): ?Template;
 
-    public function isExistingCategoryTemplate(TemplateCode $templateCode): bool;
+    public function isAlreadyExistingTemplateCode(TemplateCode $templateCode): bool;
 }

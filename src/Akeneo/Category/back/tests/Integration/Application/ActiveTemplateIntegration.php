@@ -18,11 +18,7 @@ class ActiveTemplateIntegration extends CategoryTestCase
         $masterCategory = $this->get(GetCategoryInterface::class)->byCode('master');
 
         $templateModel = $this->generateMockedCategoryTemplateModel(
-            null,
-            null,
-            null,
-            $masterCategory->getId()->getValue(),
-            null
+            categoryTreeId: $masterCategory->getId()->getValue()
         );
 
         $activateTemplateService = $this->get(ActivateTemplate::class);

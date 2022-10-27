@@ -113,14 +113,13 @@ class CategoryTestCase extends TestCase
     }
 
     public function generateMockedCategoryTemplateModel(
-        ?string $templateUuid,
-        ?string $templateCode,
-        ?array $templateLabels,
-        ?int $categoryTreeId,
-        ?array $templateAttributes
+        ?string $templateUuid = null,
+        ?string $templateCode = null,
+        ?array $templateLabels = null,
+        ?int $categoryTreeId = null,
+        ?array $templateAttributes = null
     ): Template {
         /** @var Template $defaultTemplate */
-        //$defaultTemplate = $this->get(GetTemplateInMemory::class)->byUuid('');
         $getTemplate = new GetTemplateInMemory();
         $defaultTemplate = $getTemplate->byUuid('');
 
