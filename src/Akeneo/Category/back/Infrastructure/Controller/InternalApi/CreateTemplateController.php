@@ -43,7 +43,7 @@ class CreateTemplateController
             throw new AccessDeniedException();
         }
 
-        $data = $this->getDecodedContent($request->toArray());
+        $data = $request->toArray();
         $templateCode = new TemplateCode($data['code']);
         $templateLabelCollection = LabelCollection::fromArray($data['labels']);
 
@@ -51,16 +51,5 @@ class CreateTemplateController
         $templateUuid = ($this->activateTemplate)($categoryTree->getId(), $templateCode, $templateLabelCollection);
 
         return new JsonResponse(['uuid' => (string) $templateUuid], Response::HTTP_OK);
-    }
-
-    private function getDecodedContent($content): array
-    {
-        $decodedContent = json_decode($content, true);
-
-        if (null === $decodedContent) {
-            throw new BadRequestHttpException('Invalid json message received');
-        }
-
-        return $decodedContent;
     }
 }
