@@ -10,8 +10,6 @@ final class Version_7_0_20221024154100_add_scheduled_jobs_create_openid_keys_Int
 {
     use ExecuteMigrationTrait;
 
-    private const MIGRATION_LABEL =  '_7_0_20221024154100_add_scheduled_jobs_create_openid_keys';
-
     private Connection $connection;
 
     protected function setUp(): void
@@ -24,7 +22,7 @@ final class Version_7_0_20221024154100_add_scheduled_jobs_create_openid_keys_Int
     {
         $this->deleteJobInstance('create_openid_keys');
         $this->assertNull($this->jobInstanceId('create_openid_keys'));
-        $this->reExecuteMigration(self::MIGRATION_LABEL);
+        $this->reExecuteMigration($this->migrationLabel());
         $this->assertNotNull($this->jobInstanceId('create_openid_keys'));
     }
 
@@ -32,13 +30,21 @@ final class Version_7_0_20221024154100_add_scheduled_jobs_create_openid_keys_Int
     {
         $jobInstanceId = $this->jobInstanceId('create_openid_keys');
         $this->assertNotNull($jobInstanceId);
-        $this->reExecuteMigration(self::MIGRATION_LABEL);
+        $this->reExecuteMigration($this->migrationLabel());
         $this->assertEquals($jobInstanceId, $this->jobInstanceId('create_openid_keys'));
     }
 
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
+    }
+
+    private function migrationLabel(): string
+    {
+        if (!preg_match('/Version(_[^\\\]+)_Integration/', self::class, $match)) {
+            throw new \RuntimeException('Unable to find migration label.');
+        }
+        return $match[1];
     }
 
     private function deleteJobInstance(string $jobInstanceCode): void
