@@ -63,7 +63,7 @@ class ActivateTemplate
      * A template activation is considered valid if:
      *  - the current category tree has no template attached
      *  - the attached category id is the root of a category tree
-     *  - the template code is not already in use.
+     *  - the template code is free to use.
      *
      * @throws \Doctrine\DBAL\Driver\Exception
      * @throws \Doctrine\DBAL\Exception
@@ -78,7 +78,8 @@ class ActivateTemplate
             return false;
         }
 
-        if ($this->getTemplate->isExistingCategoryTemplate($templateCode)) {
+        // TODO either implement all the method of the SQL service or use a new service to check if templateCode already exists
+        if (!$this->getTemplate->isAlreadyExistingTemplateCode($templateCode)) {
             return false;
         }
 

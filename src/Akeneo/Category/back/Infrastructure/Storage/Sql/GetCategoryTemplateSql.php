@@ -31,7 +31,7 @@ class GetCategoryTemplateSql implements GetTemplate
      * @throws \Doctrine\DBAL\Driver\Exception
      * @throws \Doctrine\DBAL\Exception
      */
-    public function isExistingCategoryTemplate(TemplateCode $templateCode): bool
+    public function isAlreadyExistingTemplateCode(TemplateCode $templateCode): bool
     {
         $query = <<<SQL
             SELECT count(1) FROM pim_catalog_template

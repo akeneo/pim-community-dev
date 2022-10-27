@@ -21,13 +21,7 @@ class GetCategoryTemplateSqlIntegration extends CategoryTestCase
     {
         /** @var Category $category */
         $category = $this->get(GetCategoryInterface::class)->byCode('master');
-        $templateModel = $this->generateMockedCategoryTemplateModel(
-            null,
-            null,
-            null,
-            $category->getId()->getValue(),
-            null
-        );
+        $templateModel = $this->generateMockedCategoryTemplateModel(categoryTreeId: $category->getId()->getValue());
 
         $this->get(CategoryTemplateSaver::class)->insert($templateModel);
 
