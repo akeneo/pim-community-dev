@@ -17,6 +17,7 @@ supplier_portal:
         title: 제공업체가 생성되었습니다.
         content: 이제 제공업체 관리 섹션에서 편집할 수 있습니다.
       error:
+        unknown_error: 제공업체를 생성하는 동안 오류가 발생했습니다.
         supplier_already_exists: '코드가 "{{ supplierCode }}"인 제공업체가 이미 있습니다.'
     supplier_list:
       menu_item: 제공업체
@@ -42,6 +43,7 @@ supplier_portal:
         title: 제공업체
         confirmation_question: 이 제공업체를 삭제하시겠습니까?
         warning: 이 제공업체를 삭제하면 저장되지 않은 보강이 손실됩니다.
+        unknown_error: 제공업체를 삭제하는 동안 오류가 발생했습니다.
     supplier_edit:
       tabs:
         configuration: 구성
@@ -68,7 +70,9 @@ supplier_portal:
           contributor_email_already_exists:
             title: 이 기여자를 추가하지 못했습니다.
             content: 이메일 {{ emailAddress }}은(는) 다른 제공업체에서 사용 중입니다. 여러 제공업체가 동일한 기여자를 가지는 것은 아직 지원되지 않습니다. 불편을 드려 죄송합니다.
+      loading_error: 제공업체를 로드하는 동안 오류가 발생했습니다.
       success_message: 제공업체가 업데이트되었습니다.
+      update_error: 제공업체를 업데이트하는 동안 오류가 발생했습니다.
       delete_label: 이 제공업체 삭제
   product_file_dropping:
     breadcrumb:
@@ -88,12 +92,26 @@ supplier_portal:
         error_loading_supplier_files:
           title: 제품 파일을 표시할 수 없습니다.
           content: 불편을 드려 죄송합니다. 잠시 후 다시 시도해주십시오.
+      tabs:
+        discussion: 토론
+      discussion:
+        import_file_button_label: 파일 가져오기
+        info: 제공업체와 정보를 교환해야 하는 경우 코멘트를 보내십시오.
+        comment_input_label: 새 코멘트 보내기
+        discussion_title: 토론
+        submit_button_label: 보내기
+        loading_error: 제품 파일을 로드하는 동안 오류가 발생했습니다.
+        comment_submit_error: 코멘트를 제출하는 동안 오류가 발생했습니다.
+        empty_content: 코멘트는 비워둘 수 없습니다.
+        max_comment_length_reached: 코멘트는 255자를 초과할 수 없습니다.
+        max_number_of_comments_reached: 코멘트 제한에 도달했습니다.
     pim_notification:
       button_label: 제품 파일 보기
 pim_title:
   supplier_portal_retailer_supplier_list: 제공업체
   supplier_portal_retailer_supplier_edit: 제공업체 편집
   supplier_portal_retailer_product_files_list: 제품 파일
+  supplier_portal_retailer_product_files_comment: 제품 파일
 batch_jobs.supplier_portal_xlsx_supplier_import.label: XLSX로 Supplier Portal 제공업체 가져오기
 pim_notification:
   supplier_portal:
