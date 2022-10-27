@@ -5,6 +5,7 @@ import {indexify} from '../utils/indexify';
 import {useSaveCatalog} from './useSaveCatalog';
 import {CatalogFormValues} from '../models/CatalogFormValues';
 import {CatalogFormErrors} from '../models/CatalogFormErrors';
+import {useCatalogErrors} from './useCatalogErrors';
 
 export type CatalogForm = {
     values: CatalogFormValues;
@@ -25,6 +26,13 @@ export const useCatalogForm = (id: string): Result => {
     const [dirty, setDirty] = useState<boolean>(false);
     const [errors, setErrors] = useState<CatalogFormErrors>([]);
     const saveCatalog = useSaveCatalog();
+    const {data: catalogErrors} = useCatalogErrors(id);
+
+    const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
+    if (isFirstLoad && catalogErrors !== undefined) {
+        setErrors(catalogErrors);
+        setIsFirstLoad(false);
+    }
 
     const [values, dispatch] = useReducer(CatalogFormReducer, {
         enabled: false,

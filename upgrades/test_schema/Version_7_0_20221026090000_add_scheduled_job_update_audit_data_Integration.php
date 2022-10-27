@@ -6,7 +6,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 
-final class Version_7_0_20221024154100_add_scheduled_jobs_create_openid_keys_Integration extends TestCase
+final class Version_7_0_20221026090000_add_scheduled_job_update_audit_data_Integration extends TestCase
 {
     use ExecuteMigrationTrait;
 
@@ -20,18 +20,18 @@ final class Version_7_0_20221024154100_add_scheduled_jobs_create_openid_keys_Int
 
     public function test_it_adds_an_instance_if_not_present()
     {
-        $this->deleteJobInstance('create_openid_keys');
-        $this->assertNull($this->jobInstanceId('create_openid_keys'));
+        $this->deleteJobInstance('update_connectivity_audit_data');
+        $this->assertNull($this->jobInstanceId('update_connectivity_audit_data'));
         $this->reExecuteMigration($this->migrationLabel());
-        $this->assertNotNull($this->jobInstanceId('create_openid_keys'));
+        $this->assertNotNull($this->jobInstanceId('update_connectivity_audit_data'));
     }
 
     public function test_it_does_not_adds_an_instance_if_present()
     {
-        $jobInstanceId = $this->jobInstanceId('create_openid_keys');
+        $jobInstanceId = $this->jobInstanceId('update_connectivity_audit_data');
         $this->assertNotNull($jobInstanceId);
         $this->reExecuteMigration($this->migrationLabel());
-        $this->assertEquals($jobInstanceId, $this->jobInstanceId('create_openid_keys'));
+        $this->assertEquals($jobInstanceId, $this->jobInstanceId('update_connectivity_audit_data'));
     }
 
     protected function getConfiguration(): Configuration
@@ -47,7 +47,7 @@ final class Version_7_0_20221024154100_add_scheduled_jobs_create_openid_keys_Int
         return $match[1];
     }
 
-    private function deleteJobInstance(string $jobInstanceCode): void
+    private function deleteJobInstance(string $jobInstanceCode)
     {
         $this->connection->executeStatement(
             "DELETE FROM akeneo_batch_job_instance WHERE code = :job_instance_code",
@@ -62,6 +62,6 @@ final class Version_7_0_20221024154100_add_scheduled_jobs_create_openid_keys_Int
         $sql = 'SELECT id FROM akeneo_batch_job_instance WHERE code = :jobCode';
 
         return $this->connection->executeQuery($sql, ['jobCode' => $jobCode])
-            ->fetchFirstColumn()[0] ?? null;
+                ->fetchFirstColumn()[0] ?? null;
     }
 }
