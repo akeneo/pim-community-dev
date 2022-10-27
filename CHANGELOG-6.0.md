@@ -1,5 +1,7 @@
 # 6.0.x
 
+# 6.0.47 (2022-10-27)
+
 ## Bug fixes
 
 - PIM-10677: [Backport PIM-10420 and PIM-10484] Fix job still shows under in progress when failed
