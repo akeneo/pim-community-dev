@@ -21,9 +21,4 @@ interface GetAssociatedProductCodesByPublishedProduct
      * @return string[]
      */
     public function getCodes(int $publishedProductId, AssociationInterface $association): array;
-
-    /**
-     * @return string[]
-     */
-    public function getUuids(int $publishedProductId, AssociationInterface $association): array;
 }
