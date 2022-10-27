@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\JobAutomation\Application\GenerateAsymmetricKeys;
 
-use Akeneo\Platform\JobAutomation\Application\GenerateAsymmetricKeys\GenerateAsymmetricKeysCommand;
 use Akeneo\Platform\JobAutomation\Application\GenerateAsymmetricKeys\GenerateAsymmetricKeysHandler;
 use Akeneo\Platform\JobAutomation\Domain\AsymmetricKeysGeneratorInterface;
 use Akeneo\Platform\JobAutomation\Domain\Model\AsymmetricKeys;
@@ -34,6 +33,6 @@ class GenerateAsymmetricKeysHandlerSpec extends ObjectBehavior
 
         $saveAsymmetricKeysQuery->execute($keys)->shouldBeCalled();
 
-        $this->handle(new GenerateAsymmetricKeysCommand());
+        $this->handle();
     }
 }

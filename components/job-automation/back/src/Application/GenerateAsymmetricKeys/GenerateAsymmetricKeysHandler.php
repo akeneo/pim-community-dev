@@ -18,11 +18,13 @@ use Akeneo\Platform\JobAutomation\Domain\Query\SaveAsymmetricKeysQueryInterface;
 
 class GenerateAsymmetricKeysHandler
 {
-    public function __construct(private AsymmetricKeysGeneratorInterface $asymmetricKeysGenerator, private SaveAsymmetricKeysQueryInterface $saveAsymmetricKeysQuery)
-    {
+    public function __construct(
+        private AsymmetricKeysGeneratorInterface $asymmetricKeysGenerator,
+        private SaveAsymmetricKeysQueryInterface $saveAsymmetricKeysQuery
+    ) {
     }
 
-    public function handle(GenerateAsymmetricKeysCommand $command): void
+    public function handle(): void
     {
         $keys = $this->asymmetricKeysGenerator->generate();
         $this->saveAsymmetricKeysQuery->execute($keys);

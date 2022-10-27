@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Platform\JobAutomation\Infrastructure\Installer;
 
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
-use Akeneo\Platform\JobAutomation\Application\GenerateAsymmetricKeys\GenerateAsymmetricKeysCommand;
 use Akeneo\Platform\JobAutomation\Application\GenerateAsymmetricKeys\GenerateAsymmetricKeysHandler;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -37,6 +36,6 @@ class JobInstaller implements EventSubscriberInterface
 
     public function loadFixtures(): void
     {
-        $this->generateAsymmetricKeysHandler->handle(new GenerateAsymmetricKeysCommand());
+        $this->generateAsymmetricKeysHandler->handle();
     }
 }

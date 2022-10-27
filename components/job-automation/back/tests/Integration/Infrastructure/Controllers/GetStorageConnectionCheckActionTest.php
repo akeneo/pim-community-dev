@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\JobAutomation\Test\Integration\Infrastructure\Controllers;
 
-use Akeneo\Platform\JobAutomation\Application\GenerateAsymmetricKeys\GenerateAsymmetricKeysCommand;
 use Akeneo\Platform\JobAutomation\Application\GenerateAsymmetricKeys\GenerateAsymmetricKeysHandler;
 use Akeneo\Platform\JobAutomation\Test\Integration\ControllerIntegrationTestCase;
 use Akeneo\Test\Integration\Configuration;
@@ -34,7 +33,7 @@ final class GetStorageConnectionCheckActionTest extends ControllerIntegrationTes
 
         /** @var GenerateAsymmetricKeysHandler $generateAsymmetricKeysHandler */
         $generateAsymmetricKeysHandler = $this->get('Akeneo\Platform\JobAutomation\Application\GenerateAsymmetricKeys\GenerateAsymmetricKeysHandler');
-        $generateAsymmetricKeysHandler->handle(new GenerateAsymmetricKeysCommand());
+        $generateAsymmetricKeysHandler->handle();
     }
 
     public function test_it_returns_a_400_if_content_is_wrong()
