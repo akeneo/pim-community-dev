@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-/*
+/**
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
  * (c) 2022 Akeneo SAS (http://www.akeneo.com)
@@ -36,14 +36,15 @@ final class RecordsComparator implements ComparatorInterface
     {
         $default = ['locale' => null, 'scope' => null, 'data' => []];
         $originals = \array_merge($default, $originals);
+        $data['data'] = \array_unique($data['data']);
 
         $originalsToLower = \array_map('strtolower', $originals['data']);
-        $data['data'] = \array_unique(\array_map('strtolower', $data['data'] ?? []));
+        $dataToLower = \array_unique(\array_map('strtolower', $data['data']));
 
         \sort($originalsToLower);
-        \sort($data['data']);
+        \sort($dataToLower);
 
-        if ($data['data'] === $originalsToLower) {
+        if ($dataToLower === $originalsToLower) {
             return null;
         }
 
