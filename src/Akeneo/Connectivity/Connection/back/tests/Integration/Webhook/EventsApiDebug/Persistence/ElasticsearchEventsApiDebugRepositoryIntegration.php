@@ -30,6 +30,7 @@ class ElasticsearchEventsApiDebugRepositoryIntegration extends TestCase
     public function test_it_saves_logs(): void
     {
         $this->elasticsearchEventsApiDebugRepository->persist([
+            'id' => 'test_id_1',
             'timestamp' => 631152000,
             'level' => 'info',
             'message' => 'An information message.',
@@ -43,6 +44,7 @@ class ElasticsearchEventsApiDebugRepositoryIntegration extends TestCase
             ],
         ]);
         $this->elasticsearchEventsApiDebugRepository->persist([
+            'id' => 'test_id_2',
             'timestamp' => 946684800,
             'level' => 'warning',
             'message' => 'A warning message!',
@@ -58,6 +60,7 @@ class ElasticsearchEventsApiDebugRepositoryIntegration extends TestCase
 
         Assert::assertEquals(
             [
+                'id' => 'test_id_1',
                 'timestamp' => 631152000,
                 'level' => 'info',
                 'message' => 'An information message.',
@@ -76,6 +79,7 @@ class ElasticsearchEventsApiDebugRepositoryIntegration extends TestCase
 
         Assert::assertEquals(
             [
+                'id' => 'test_id_2',
                 'timestamp' => 946684800,
                 'level' => 'warning',
                 'message' => 'A warning message!',

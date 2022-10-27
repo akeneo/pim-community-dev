@@ -160,6 +160,8 @@ $rules = [
             'FOS\RestBundle\Context\Context',
             'FOS\RestBundle\Serializer\Serializer',
 
+            'Ramsey\Uuid\Uuid',
+
             'Akeneo\Catalogs\ServiceAPI\Model\Catalog',
         ]
     )->in('Akeneo\Connectivity\Connection\Application'),
@@ -304,6 +306,8 @@ $rules = [
 
             'Psr\Log\LoggerInterface',
             'Psr\Http\Message\ResponseInterface',
+
+            'Ramsey\Uuid\Uuid',
         ]
     )->in('Akeneo\Connectivity\Connection\Application\Webhook'),
 
