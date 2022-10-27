@@ -244,6 +244,20 @@ abstract class IntegrationTestCase extends WebTestCase
         return $user;
     }
 
+    protected function addGroupToUser(string $username, string $group): void
+    {
+        $user = self::getContainer()->get('pim_user.repository.user')->findOneByIdentifier($username);
+
+        self::getContainer()->get('pim_user.updater.user')->update($user, [
+            'groups' => ['app_shopifi', $group],
+        ]);
+
+        $violations = self::getContainer()->get('validator')->validate($user);
+        Assert::count($violations, 0);
+
+        self::getContainer()->get('pim_user.saver.user')->save($user);
+    }
+
     /**
      * @param array<UserIntent> $intents
      */

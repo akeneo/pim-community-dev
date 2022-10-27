@@ -38,7 +38,6 @@ class GetMappedProductsActionTest extends IntegrationTestCase
 
     public function testItGetsPaginatedMappedProductsByCatalogId(): void
     {
-        // create products
         $this->logAs('admin');
         $this->createAttribute([
             'code' => 'name',
@@ -57,20 +56,23 @@ class GetMappedProductsActionTest extends IntegrationTestCase
         $this->createChannel('print', ['en_US', 'fr_FR']);
 
         $productBlue = $this->createProduct(Uuid::fromString('8985de43-08bc-484d-aee0-4489a56ba02d'), [
-            new SetTextValue('name', 'ecommerce', 'en_US', 'Blue ecommerce'),
+//            new SetTextValue('name', 'ecommerce', 'en_US', 'Blue print'),
             new SetTextValue('name', 'print', 'en_US', 'Blue print'),
-            new SetTextValue('description', 'ecommerce', null, 'Blue description'),
+            new SetTextValue('description', 'print', null, 'Blue description'),
         ]);
         $productGreen = $this->createProduct(Uuid::fromString('00380587-3893-46e6-a8c2-8fee6404cc9e'), [
-            new SetTextValue('name', 'ecommerce', 'en_US', 'Green ecommerce'),
+//            new SetTextValue('name', 'ecommerce', 'en_US', 'Green print'),
             new SetTextValue('name', 'print', 'en_US', 'Green print'),
-            new SetTextValue('description', 'ecommerce', null, 'Green description'),
+            new SetTextValue('description', 'print', null, 'Green description'),
         ]);
 
-        // create catalog
         $this->client = $this->getAuthenticatedPublicApiClient([
-            'read_catalogs', 'read_products',
+            'read_catalogs',
+            'read_products',
         ]);
+
+        $this->addGroupToUser('shopifi', 'IT support');
+
         $this->commandBus->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
@@ -91,12 +93,12 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             ],
             'title' => [
                 'source' => 'name',
-                'scope' => 'ecommerce',
+                'scope' => 'print',
                 'locale' => 'en_US',
             ],
             'short_description' => [
                 'source' => 'description',
-                'scope' => 'ecommerce',
+                'scope' => 'print',
                 'locale' => null,
             ],
         ]);
@@ -117,13 +119,13 @@ class GetMappedProductsActionTest extends IntegrationTestCase
         $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
         $expectedMappedProducts = [
             [
-                'uuid' => $productGreen->getUuid()->toString(),
-                'title' => 'Green ecommerce',
+                'uuid' => '00380587-3893-46e6-a8c2-8fee6404cc9e',
+                'title' => 'Green print',
                 'short_description' => 'Green description',
             ],
             [
-                'uuid' => $productBlue->getUuid()->toString(),
-                'title' => 'Blue ecommerce',
+                'uuid' => '8985de43-08bc-484d-aee0-4489a56ba02d',
+                'title' => 'Blue print',
                 'short_description' => 'Blue description',
             ],
         ];
