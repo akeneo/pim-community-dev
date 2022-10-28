@@ -30,7 +30,7 @@ services:
     Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\MarkCommentsAsRead:
         public: true
         arguments:
-            - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadByRetailerHandler'
+            - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadByRetailer\MarkCommentsAsReadByRetailerHandler'
 
     # GCS Bucket services
     Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\StoreProductsFile:
@@ -88,7 +88,7 @@ services:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\MarkCommentsAsReadBySupplier'
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'
 
-    Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadByRetailerHandler:
+    Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadByRetailer\MarkCommentsAsReadByRetailerHandler:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\MarkCommentsAsReadByRetailer'
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'
