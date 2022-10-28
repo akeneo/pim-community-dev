@@ -254,6 +254,11 @@ pim:
       pimJobName: 'push_scheduled_jobs_to_queue'
       pimJobOptions: ""
       schedule: "*/10 * * * *"
+    project-notify-before-due-date:
+      enabled: true
+      pimJobName: "project_notification_due_date"
+      pimJobOptions: ""
+      schedule: "0 2 * * *"
     data-quality-insights-periodic-tasks:
       enabled: true
       pimJobName: "schedule_dqi_periodic_tasks"
