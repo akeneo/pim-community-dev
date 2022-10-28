@@ -113,7 +113,7 @@ pim_title:
     supplier_portal_retailer_supplier_list: Suppliers
     supplier_portal_retailer_supplier_edit: Edit a supplier
     supplier_portal_retailer_product_files_list: Product files
-    supplier_portal_retailer_product_files_comment: Product file
+    supplier_portal_retailer_product_files_show: Product file
 
 batch_jobs.supplier_portal_xlsx_supplier_import.label: Supplier Portal Supplier import in XLSX
 

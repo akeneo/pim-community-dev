@@ -80,6 +80,11 @@ services:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'
             - '@validator'
 
+    Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadBySupplierHandler:
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\MarkCommentsAsReadBySupplier'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'
+
     # Query/Handlers
     Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\DownloadProductFileHandler:
         arguments:
@@ -141,6 +146,11 @@ services:
 
     Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithComments:
         class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetProductFileWithComments
+        arguments:
+            - '@database_connection'
+
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\MarkCommentsAsReadBySupplier:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseMarkCommentsAsReadBySupplier
         arguments:
             - '@database_connection'
 
@@ -242,3 +252,7 @@ services:
     Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\CommentProductFile\CommentProductFile:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFileHandlerForSupplier'
+
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\MarkCommentsAsRead\MarkCommentsAsRead:
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadBySupplierHandler'

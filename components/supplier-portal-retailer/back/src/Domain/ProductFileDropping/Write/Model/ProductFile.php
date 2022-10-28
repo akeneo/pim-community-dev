@@ -186,4 +186,9 @@ final class ProductFile
             throw new MaxCommentPerProductFileReached();
         }
     }
+
+    public function hasComments(): bool
+    {
+        return 0 < count($this->retailerComments()) || 0 < count($this->supplierComments());
+    }
 }

@@ -9,8 +9,7 @@ const productFile = {
     path: 'test/73d1078b-840c-4135-9564-682f8cbfb982-suppliers_export.xlsx',
     contributor: 'jimmy.punchline@los-pollos-hermanos.com',
     uploadedAt: '2022-09-21 08:34:00-00:00',
-    retailerComments: [],
-    supplierComments: [],
+    comments: [],
 };
 
 test('it renders the general product file information', () => {

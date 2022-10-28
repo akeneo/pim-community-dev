@@ -38,6 +38,8 @@ final class GetProductFiles
                             $comment['created_at'] = (new \DateTimeImmutable($comment['created_at']))->format('c');
                             return $comment;
                         }, $productFile['retailerComments']);
+                        $productFile['supplierLastReadAt'] = null === $productFile['supplierLastReadAt'] ? null : (new \DateTimeImmutable($productFile['supplierLastReadAt']))->format('c');
+                        $productFile['retailerLastReadAt'] = null === $productFile['retailerLastReadAt'] ? null : (new \DateTimeImmutable($productFile['retailerLastReadAt']))->format('c');
 
                         return $productFile;
                     },

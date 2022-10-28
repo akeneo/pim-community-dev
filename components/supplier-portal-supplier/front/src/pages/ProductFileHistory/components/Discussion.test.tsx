@@ -8,6 +8,7 @@ import {BadRequestError} from '../../../api/BadRequestError';
 
 jest.mock('../../../api/apiFetch');
 jest.mock('../../../api');
+jest.mock('../api/markCommentsAsRead');
 
 test('it renders a form to post a new comment', () => {
     renderWithProviders(<Discussion comments={[]} productFileIdentifier={'4b5ca8e4-0f89-4de0-9bc7-20c7617a9c86'} />);
