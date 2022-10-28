@@ -15,15 +15,8 @@ import {useCategoryTree, useTemplate} from '../hooks';
 import {useParams} from 'react-router';
 import {EditTemplatePropertiesForm} from '../components/templates/EditTemplatePropertiesForm';
 import {cloneDeep, set} from 'lodash/fp';
-import {
-  Attribute,
-  buildCompositeKey,
-  CategoryAttributeValueData,
-  Template,
-  TemplateAttributeValueData
-} from '../models';
-import {EditTemplateAttributesForm} from "../components/templates/EditTemplateAttributesForm";
-import {categoriesAreEqual, templatesAreEqual} from "../helpers";
+import {Template} from '../models';
+import {EditTemplateAttributesForm} from '../components/templates/EditTemplateAttributesForm';
 
 enum Tabs {
   ATTRIBUTE = '#pim_enrich-category-tab-attribute',
@@ -74,7 +67,6 @@ const TemplatePage: FC = () => {
   const {
     data: fetchedTemplate,
     status: templateFetchingStatus,
-    error: templateFetchingError,
   } = useTemplate({
     // TODO when available : use template uuid from category.template_id
     uuid: '02274dac-e99a-4e1d-8f9b-794d4c3ba330',
@@ -98,7 +90,7 @@ const TemplatePage: FC = () => {
 
   useEffect(() => {
     templateEdited && setTemplateLabel(getLabel(templateEdited.labels, catalogLocale, templateEdited.code));
-  }, [templateEdited]);
+  }, [catalogLocale, templateEdited]);
 
   const onChangeTemplateLabel = useCallback(
     (localeCode: string, label: string) => {
@@ -109,32 +101,7 @@ const TemplatePage: FC = () => {
 
       templateEdited && setTemplateEdited(set(['labels', localeCode], label, templateEdited));
     },
-    [catalogLocale, templateEdited]
-  );
-
-  const onChangeAttribute = useCallback(
-      (attribute: Attribute, localeCode: string | null, attributeValue: TemplateAttributeValueData) => {
-        if (templateEdited === null) {
-          return;
-        }
-
-        const compositeKey = buildCompositeKey(attribute, localeCode);
-        const compositeKeyWithoutLocale = buildCompositeKey(attribute);
-
-        const value = {
-          data: attributeValue,
-          locale: attribute.is_localizable ? localeCode : null,
-          attribute_code: compositeKeyWithoutLocale,
-        };
-
-        const newTemplateEdited = set(['attributes', compositeKey], value, templateEdited);
-        if (templatesAreEqual(templateEdited, newTemplateEdited)) {
-          return;
-        }
-
-        setTemplateEdited(newTemplateEdited);
-      },
-      [templateEdited]
+    [templateEdited]
   );
 
   if (loadingStatus === 'error') {
@@ -192,7 +159,9 @@ const TemplatePage: FC = () => {
           </TabBar.Tab>
         </TabBar>
 
-        {isCurrent(Tabs.ATTRIBUTE) && tree && templateEdited && <EditTemplateAttributesForm attributes={templateEdited.attributes} template={templateEdited} onAttributeValueChange={onChangeAttribute}/>}
+        {isCurrent(Tabs.ATTRIBUTE) && tree && templateEdited && (
+          <EditTemplateAttributesForm attributes={templateEdited.attributes} />
+        )}
 
         {isCurrent(Tabs.PROPERTY) && tree && templateEdited && (
           <EditTemplatePropertiesForm template={templateEdited} onChangeLabel={onChangeTemplateLabel} />

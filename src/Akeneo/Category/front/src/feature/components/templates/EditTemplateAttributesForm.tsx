@@ -1,34 +1,14 @@
-import React, {useCallback, useState, useMemo, useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import styled from 'styled-components';
-import {SectionTitle, Helper} from 'akeneo-design-system';
+import {SectionTitle, Table} from 'akeneo-design-system';
 import {LocaleSelector, useTranslate} from '@akeneo-pim-community/shared';
-import {
-  Attribute,
-  buildCompositeKey,
-  CategoryAttributeValueData,
-  CATEGORY_ATTRIBUTE_TYPE_RICHTEXT,
-  EnrichCategory,
-  isCategoryImageAttributeValueData,
-  RICH_TEXT_DEFAULT_VALUE,
-  Template, TemplateAttributeValueData,
-} from '../../models';
-import {attributeFieldFactory} from '../attributes/templateAttributesFactory';
-import {AttributeInputValue, buildDefaultAttributeInputValue, isImageAttributeInputValue} from '../attributes/types';
-import {
-  convertCategoryImageAttributeValueDataToFileInfo,
-  convertFileInfoToCategoryImageAttributeValueData,
-  getAttributeValue,
-} from '../../helpers';
+import {Attribute} from '../../models';
+import {getLabelFromAttribute} from '../attributes/templateAttributesFactory';
 import {EditCategoryContext} from '../providers';
+import {isEqual} from 'lodash/fp';
 
 interface Props {
   attributes: Attribute[];
-  template: Template;
-  onAttributeValueChange: (
-    attribute: Attribute,
-    locale: string | null,
-    attributeValue: TemplateAttributeValueData
-  ) => void;
 }
 
 const FormContainer = styled.div`
@@ -39,89 +19,18 @@ const FormContainer = styled.div`
   }
 `;
 
-function mustChangeBeSkipped(
-  newValue: AttributeInputValue,
-  currentValueInModel: CategoryAttributeValueData,
-  attribute: Attribute
-): boolean {
-  // The RichTextEditor component triggers a call to onChange when focusing while value prop is ''
-  // the bore value is then '<p></p>\n' and must be ignored or we will have
-  // warnings concerning unsaved changed altough the user did change nothing
-  return (
-    attribute.type === CATEGORY_ATTRIBUTE_TYPE_RICHTEXT && !currentValueInModel && newValue === RICH_TEXT_DEFAULT_VALUE
-  );
-}
-
-export const EditTemplateAttributesForm = ({attributes, template, onAttributeValueChange}: Props) => {
+export const EditTemplateAttributesForm = ({attributes}: Props) => {
   const [locale, setLocale] = useState('en_US');
   const {locales} = useContext(EditCategoryContext);
   const translate = useTranslate();
 
-  const handleChange = useCallback(
-    (attribute: Attribute) => (value: AttributeInputValue) => {
-      if (isImageAttributeInputValue(value)) {
-        onAttributeValueChange(attribute, locale, convertFileInfoToCategoryImageAttributeValueData(value));
-        return;
-      }
+  const [selectedAttribute, setSelectedAttribute] = useState<Attribute>();
 
-      // attribute has textual type
-      const currentValue = getAttributeValue(attributes, attribute, locale);
-      if (mustChangeBeSkipped(value, currentValue!, attribute)) {
-        return;
-      }
-
-      onAttributeValueChange(attribute, locale, value);
-    },
-    [attributes, locale, onAttributeValueChange]
-  );
-
-  const handlers = useMemo(() => {
-    const handlersMap: {[attributeUUID: string]: (value: AttributeInputValue) => void} = {};
-    template?.attributes.forEach((attribute: Attribute) => {
-      handlersMap[attribute.code] = handleChange(attribute);
-    });
-    return handlersMap;
-  }, [template, handleChange]);
-
-  const attributeFields = template?.attributes.map((attribute: Attribute) => {
-    const AttributeField = attributeFieldFactory(attribute);
-
-    if (AttributeField === null) {
-      return (
-        <Helper level="error">
-          {translate('akeneo.category.edition_form.template.fetching_failed', {type: attribute.type})}
-        </Helper>
-      );
+  useEffect(() => {
+    if (!selectedAttribute && attributes && attributes.length > 0) {
+      setSelectedAttribute(attributes[0]);
     }
-
-    const effectiveLocaleCode = attribute.is_localizable ? locale : null;
-    const compositeKey = buildCompositeKey(attribute, effectiveLocaleCode);
-
-    let value = attributes[compositeKey];
-
-    let dataForInput;
-    if (value) {
-      let {data: dataFromModel} = value;
-
-      if (isCategoryImageAttributeValueData(dataFromModel)) {
-        dataForInput = convertCategoryImageAttributeValueDataToFileInfo(dataFromModel);
-      } else {
-        dataForInput = dataFromModel;
-      }
-    } else {
-      dataForInput = buildDefaultAttributeInputValue(attribute.type);
-    }
-
-    return (
-      <AttributeField
-        readOnly={true}
-        locale={locale}
-        value={dataForInput}
-        onChange={handlers[attribute.code]}
-        key={attribute.uuid}
-      ></AttributeField>
-    );
-  });
+  }, [attributes, selectedAttribute]);
 
   return (
     <FormContainer>
@@ -130,7 +39,49 @@ export const EditTemplateAttributesForm = ({attributes, template, onAttributeVal
         <SectionTitle.Spacer />
         <LocaleSelector value={locale} values={Object.values(locales)} onChange={setLocale} />
       </SectionTitle>
-      {attributeFields}
+      <Container>
+        <TemplatesAttributeTable>
+          <Table.Header>
+            <Table.HeaderCell>{translate('akeneo.category.template_list.columns.header')}</Table.HeaderCell>
+            <Table.HeaderCell>{translate('akeneo.category.template_list.columns.code')}</Table.HeaderCell>
+            <Table.HeaderCell>{translate('akeneo.category.template_list.columns.type')}</Table.HeaderCell>
+          </Table.Header>
+          <Table.Body>
+            {attributes.map((attribute: Attribute) => (
+              <Table.Row
+                key={attribute.uuid}
+                onClick={() => {
+                  setSelectedAttribute(attribute);
+                }}
+                isSelected={isEqual(attribute, selectedAttribute)}
+              >
+                <Table.Cell rowTitle>{getLabelFromAttribute(attribute, locale)}</Table.Cell>
+                <Table.Cell>{attribute.code}</Table.Cell>
+                <Table.Cell>{attribute.type}</Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </TemplatesAttributeTable>
+        <DescriptionPanel>
+          <SectionTitle>
+            <SectionTitle.Title>{translate('akeneo.category.template.attribute.description_title')}</SectionTitle.Title>
+          </SectionTitle>
+          {selectedAttribute && <h3>{getLabelFromAttribute(selectedAttribute, locale)}</h3>}
+        </DescriptionPanel>
+      </Container>
     </FormContainer>
   );
 };
+
+const Container = styled.div`
+  display: flex;
+  gap: 40px;
+  padding-top: 10px;
+`;
+const TemplatesAttributeTable = styled(Table)`
+  flex-basis: 60%;
+  flex-grow: 1;
+`;
+const DescriptionPanel = styled.div`
+  flex-basis: 40%;
+`;

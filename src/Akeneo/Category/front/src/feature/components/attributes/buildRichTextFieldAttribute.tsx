@@ -1,6 +1,6 @@
-import React, {memo, useEffect} from 'react';
+import React from 'react';
 import {Field, TextAreaInput} from 'akeneo-design-system';
-import {AttributeFieldBuilder, AttributeInputValue, AttributeFieldProps} from './types';
+import {AttributeFieldBuilder, AttributeFieldProps, AttributeInputValue} from './types';
 import {getLabelFromAttribute} from './templateAttributesFactory';
 import styled from 'styled-components';
 import {memoize} from 'lodash/fp';
@@ -11,7 +11,6 @@ const Field960 = styled(Field)`
 
 const unMemoizedBuildRichTextFieldAttribute: AttributeFieldBuilder<AttributeInputValue> = attribute => {
   const Component: React.FC<AttributeFieldProps<AttributeInputValue>> = ({
-    readOnly,
     locale,
     value,
     onChange,
@@ -26,7 +25,7 @@ const unMemoizedBuildRichTextFieldAttribute: AttributeFieldBuilder<AttributeInpu
     // we have to force react to rebuild it when changing the value (when locale is changed for instance)
     return (
       <Field960 label={getLabelFromAttribute(attribute, locale)} locale={locale}>
-        <TextAreaInput readOnly={readOnly} key={locale} isRichText name={attribute.code} value={value} onChange={onChange} />
+        <TextAreaInput key={locale} isRichText name={attribute.code} value={value} onChange={onChange} />
       </Field960>
     );
   };

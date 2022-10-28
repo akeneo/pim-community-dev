@@ -13,7 +13,6 @@ export type AttributeFieldBuilder<ValueType extends AttributeInputValue> = (
 ) => React.FC<AttributeFieldProps<ValueType>>;
 
 export type AttributeFieldProps<ValueType> = {
-  readOnly?: boolean;
   locale: string;
   value: ValueType;
   onChange: (value: ValueType) => void;
