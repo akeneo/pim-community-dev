@@ -5,6 +5,7 @@ import {useQuery} from 'react-query';
 type Response = {
   data: IdentifierGenerator[];
   isLoading: boolean;
+  refetch: () => void;
 };
 
 const useGetGenerators = (): Response => {
@@ -20,9 +21,9 @@ const useGetGenerators = (): Response => {
     });
   };
 
-  const {data, isLoading} = useQuery('getGeneratorList', getGeneratorList);
+  const {data, isLoading, refetch} = useQuery('getGeneratorList', getGeneratorList);
 
-  return {data, isLoading};
+  return {data, isLoading, refetch};
 };
 
 export {useGetGenerators};
