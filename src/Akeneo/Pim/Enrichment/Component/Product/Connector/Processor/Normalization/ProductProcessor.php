@@ -32,7 +32,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         protected IdentifiableObjectRepositoryInterface $channelRepository,
         protected AttributeRepositoryInterface $attributeRepository,
         protected FillMissingValuesInterface $fillMissingProductModelValues,
-        // TODO: remove nullability after merge into master
+        // TODO: pull up master => remove nullability
         private ?GetAttributes $getAttributes = null,
         private ?GetProductsWithQualityScoresInterface $getProductsWithQualityScores = null,
     ) {
@@ -87,9 +87,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         $this->stepExecution = $stepExecution;
     }
 
-    /**
-     * @TODO pullup 6.0 => master: Remove this function
-     */
+    // TODO: pull up master => Remove this function
     protected function filterLocaleSpecificAttributes(array $values): array
     {
         if ($this->getAttributes === null) {
