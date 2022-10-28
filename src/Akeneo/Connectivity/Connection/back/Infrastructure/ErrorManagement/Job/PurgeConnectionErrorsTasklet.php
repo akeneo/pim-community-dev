@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Persistence\Pu
 use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Persistence\SelectAllAuditableConnectionCodeQuery;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Purge connection errors over 100 and older than a week
