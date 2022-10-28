@@ -4,7 +4,13 @@ services:
     arguments:
       - '@Akeneo\Platform\Job\ServiceApi\JobInstance\FindJobInstanceInterface'
 
+  # Query/Handlers
   Akeneo\SupplierPortal\Retailer\Application\ProductFileImport\Read\ListProductFileImports\ListProductFileImportsHandler:
     arguments:
       - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\FindAllProductFileImports'
 
+  # Controllers
+  Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\Controller\ListProductFileImports:
+    public: true
+    arguments:
+      - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileImport\Read\ListProductFileImports\ListProductFileImportsHandler'

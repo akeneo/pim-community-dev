@@ -5,3 +5,7 @@ supplier_portal_supplier:
 supplier_portal_supplier_product_file_dropping:
     resource: '@AkeneoSupplierPortalRetailerBundle/Resources/config/routing/product_file_dropping.yml'
     prefix: /product-file
+
+supplier_portal_supplier_product_file_import:
+    resource: '@AkeneoSupplierPortalRetailerBundle/Resources/config/routing/product_file_import.yml'
+    prefix: /product-file-import
