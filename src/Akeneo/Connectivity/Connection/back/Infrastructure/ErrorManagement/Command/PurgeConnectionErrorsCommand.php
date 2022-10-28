@@ -25,15 +25,20 @@ class PurgeConnectionErrorsCommand extends Command
 
     public function __construct(
         private SelectAllAuditableConnectionCodeQuery $selectAllAuditableConnectionCodes,
-        private PurgeConnectionErrorsQuery $purgeErrors
+        private PurgeConnectionErrorsQuery $purgeErrors,
+        private LoggerInterface $logger,
     ) {
         parent::__construct();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->logger->info('Start purge connection error');
+
         $codes = $this->selectAllAuditableConnectionCodes->execute();
         $this->purgeErrors->execute($codes);
+
+        $this->logger->info('End purge connection error');
 
         return Command::SUCCESS;
     }

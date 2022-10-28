@@ -21,7 +21,8 @@ class PurgeConnectionErrorsTasklet implements TaskletInterface
 
     public function __construct(
         private SelectAllAuditableConnectionCodeQuery $selectAllAuditableConnectionCodes,
-        private PurgeConnectionErrorsQuery $purgeErrors
+        private PurgeConnectionErrorsQuery $purgeErrors,
+        private LoggerInterface $logger,
     ) {
     }
 
@@ -31,7 +32,11 @@ class PurgeConnectionErrorsTasklet implements TaskletInterface
 
     public function execute(): void
     {
+        $this->logger->info('Start purge connection error');
+
         $codes = $this->selectAllAuditableConnectionCodes->execute();
         $this->purgeErrors->execute($codes);
+
+        $this->logger->info('End purge connection error');
     }
 }
