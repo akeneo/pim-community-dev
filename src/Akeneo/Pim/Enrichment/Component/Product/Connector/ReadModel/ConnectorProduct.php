@@ -351,19 +351,6 @@ final class ConnectorProduct
         );
     }
 
-    public function associatedProductIdentifiers(): array
-    {
-        $associatedProducts = [];
-        foreach ($this->associations as $associationType => $associations) {
-            $associatedProducts[] = array_map(
-                fn (array $associatedProduct): ?string => $associatedProduct['identifier'],
-                $associations['products']
-            );
-        }
-
-        return !empty($associatedProducts) ? array_unique(array_merge(...$associatedProducts)) : [];
-    }
-
     public function associatedProductUuids(): array
     {
         $associatedProducts = [];
