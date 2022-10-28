@@ -23,7 +23,7 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 final class GetProductModelIdsByAttributeOptionCodeQuery implements GetProductIdsByAttributeOptionCodeQueryInterface
 {
     public function __construct(
-        private Client                          $esClient,
+        private Client $esClient,
         private ProductEntityIdFactoryInterface $idFactory
     ) {
     }
@@ -34,19 +34,18 @@ final class GetProductModelIdsByAttributeOptionCodeQuery implements GetProductId
     public function execute(AttributeOptionCode $attributeOptionCode, int $bulkSize): \Generator
     {
         $query = [
-
             'bool' => [
                 'must' => [
                     [
                         'term' => [
-                            'document_type' => ProductModelInterface::class
+                            'document_type' => ProductModelInterface::class,
                         ],
                     ],
                     [
                         'query_string' => [
                             'default_field' => sprintf('values.%s-option*', $attributeOptionCode->getAttributeCode()),
-                            'query' => strval($attributeOptionCode)
-                        ]
+                            'query' => (string) $attributeOptionCode,
+                        ],
                     ],
                 ],
             ],
@@ -54,7 +53,7 @@ final class GetProductModelIdsByAttributeOptionCodeQuery implements GetProductId
         $searchQuery = [
             '_source' => ['id'],
             'size' => $bulkSize,
-            'sort' => ['_id' => 'asc'],
+            'sort' => ['id' => 'asc'],
             'query' => $query,
         ];
 
@@ -95,6 +94,6 @@ final class GetProductModelIdsByAttributeOptionCodeQuery implements GetProductId
             throw new \Exception('Failed to count the total number of product models by attribute option');
         }
 
-        return intval($countResult['count']);
+        return (int) $countResult['count'];
     }
 }
