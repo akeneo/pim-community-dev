@@ -14,8 +14,8 @@ Feature: Filter products
       | Description | 0           | 0        | 0                      | other | pim_catalog_text | description | 2          |
     And the following family:
       | code      | attributes                  |
-      | furniture | name,image,info,description |
-      | library   | name,image,info,description |
+      | furniture | sku,name,image,info,description |
+      | library   | sku,name,image,info,description |
     And the following products:
       | sku    | family    | enabled | name-en_US  | name-fr_FR   | info-en_US-ecommerce    | info-fr_FR-ecommerce     | info-fr_FR-mobile     | image-ecommerce  | image-mobile     |
       | postit | furniture | yes     | Post it     | Etiquette    | My ecommerce info       | Ma info ecommerce        | Ma info mobile        | large.jpeg       | small.jpeg       |

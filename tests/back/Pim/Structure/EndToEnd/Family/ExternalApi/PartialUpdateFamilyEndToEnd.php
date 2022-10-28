@@ -121,7 +121,7 @@ JSON;
 <<<JSON
     {
         "code": "complete_family_creation_code",
-        "attributes": ["an_image", "a_metric", "a_price", "an_image"],
+        "attributes": ["sku", "an_image", "a_metric", "a_price", "an_image"],
         "attribute_as_label": "sku",
         "attribute_as_image": "an_image",
         "attribute_requirements": {
@@ -167,7 +167,7 @@ JSON;
         $data =
 <<<JSON
     {
-        "attributes": ["an_image", "a_metric", "a_price"],
+        "attributes": ["sku", "an_image", "a_metric", "a_price"],
         "attribute_as_label": "sku",
         "attribute_as_image": "an_image",
         "attribute_requirements": {
@@ -378,7 +378,7 @@ JSON;
         $data =
 <<<JSON
     {
-        "attributes": [ ],
+        "attributes": ["sku"],
         "attribute_as_label": "sku",
         "attribute_as_image": null,
         "attribute_requirements": {

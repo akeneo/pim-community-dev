@@ -6,6 +6,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
+use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Integration tests to verify data from database are well formatted in the standard format
@@ -485,6 +487,9 @@ SQL;
 
         //TODO: why do we need that?
         $result = $this->sanitizeMediaAttributeData($result);
+        Assert::assertArrayHasKey('uuid', $result);
+        Assert::assertTrue(Uuid::isValid($result['uuid']));
+        unset($result['uuid']);
 
         //TODO: why do we need that?
         $expected = $this->sanitizeMediaAttributeData($expected);

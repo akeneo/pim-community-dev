@@ -12,13 +12,15 @@ extensions:
            routerKey: uuid
            entityIdentifierParamName: meta.id
 
-    pim-product-create-sku:
-        module: pim/product-edit-form/creation/identifier
+    pim-product-create-helper:
+        module: pim/common/simple-view
         parent: pim-product-create-modal
         targetZone: fields
         position: 10
         config:
-            identifier: identifier
+            template: pim/template/product/create-helper
+            templateParams:
+                link: "https://help.akeneo.com/pim/serenity/articles/about-product-identifiers.html"
 
     pim-product-create-family:
         module: pim/form/common/fields/simple-select-async
@@ -29,3 +31,11 @@ extensions:
             fieldName: family
             label: pim_enrich.entity.family.uppercase_label
             choiceRoute: pim_enrich_family_rest_index
+
+    pim-product-create-identifier:
+        module: pim/product-edit-form/creation/identifier-regarding-family
+        parent: pim-product-create-modal
+        targetZone: fields
+        position: 30
+        config:
+            identifier: identifier

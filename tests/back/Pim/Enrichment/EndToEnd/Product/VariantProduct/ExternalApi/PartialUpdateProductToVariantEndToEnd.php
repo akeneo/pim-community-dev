@@ -10,13 +10,15 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
-use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
+use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateProductToVariantEndToEnd extends AbstractProductTestCase
 {
     use AssertEventCountTrait;
+
+    private string $productUuid;
 
     public function testUpdateProductToVariant()
     {
@@ -31,6 +33,7 @@ JSON;
         $response = $client->getResponse();
 
         $expectedProduct = [
+            'uuid' => $this->productUuid,
             'identifier' => 'product_family_variant',
             'family' => 'familyA',
             'parent' => 'amor',
@@ -238,11 +241,11 @@ JSON;
                 'a_simple_select' => [['locale' => null, 'scope' => null, 'data' => 'optionB']]
             ],
         ]);
-        $this->createProduct('product_family_variant', [
+        $this->productUuid = $this->createProduct('product_family_variant', [
             new SetFamily('familyA'),
             new SetCategories(['categoryA2']),
             new SetBooleanValue('a_yes_no', null, null, true)
-        ]);
+        ])->getUuid()->toString();
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
         $this->get('doctrine.orm.default_entity_manager')->clear();
     }
