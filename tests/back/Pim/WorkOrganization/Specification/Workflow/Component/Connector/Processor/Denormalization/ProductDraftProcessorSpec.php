@@ -216,7 +216,6 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $draftSourceFactory,
         $attributeRepository,
         ProductInterface $product,
-        ConstraintViolationListInterface $violationList,
         EntityWithValuesDraftInterface $productDraft,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
@@ -227,6 +226,8 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         AttributeInterface $attributeReadOnly,
         AttributeInterface $attributeNotReadOnly,
     ) {
+        $violationList = new ConstraintViolationList();
+
         $this->prepareDraftSource($tokenStorage, $token, $user, $draftSource, $draftSourceFactory);
 
         $repository->findOneByIdentifier('my-sku')->willReturn($product);
