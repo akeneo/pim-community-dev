@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Controller;
 
-use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\ResetPassword as ResetPasswordCommand;
-use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\ResetPasswordHandler;
+use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\ResetPassword\ResetPassword as ResetPasswordCommand;
+use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Write\ResetPassword\ResetPasswordHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
