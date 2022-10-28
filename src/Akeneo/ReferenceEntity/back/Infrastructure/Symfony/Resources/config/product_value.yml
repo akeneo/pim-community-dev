@@ -25,13 +25,6 @@ services:
             - { name: pim_enrich.provider.field, priority: 100 }
             - { name: pim_enrich.provider.empty_value, priority: 80 }
 
-    akeneo_referenceentity.comparator.attribute.reference_entity_collection:
-        class: '%pim_catalog.comparator.attribute.options.class%'
-        arguments:
-            - ['akeneo_reference_entity_collection']
-        tags:
-            - { name: pim_catalog.attribute.comparator }
-
     akeneo_referenceentity.comparator.attribute.reference_entity:
         class: '%pim_catalog.comparator.attribute.option.class%'
         arguments:
