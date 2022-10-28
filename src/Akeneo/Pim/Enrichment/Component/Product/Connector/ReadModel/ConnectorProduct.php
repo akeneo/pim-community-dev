@@ -356,7 +356,20 @@ final class ConnectorProduct
         $associatedProducts = [];
         foreach ($this->associations as $associationType => $associations) {
             $associatedProducts[] = array_map(
-                fn (array $associatedProduct): string => $associatedProduct['identifier'],
+                fn (array $associatedProduct): ?string => $associatedProduct['identifier'],
+                $associations['products']
+            );
+        }
+
+        return !empty($associatedProducts) ? array_unique(array_merge(...$associatedProducts)) : [];
+    }
+
+    public function associatedProductUuids(): array
+    {
+        $associatedProducts = [];
+        foreach ($this->associations as $associationType => $associations) {
+            $associatedProducts[] = array_map(
+                fn (array $associatedProduct): string => $associatedProduct['uuid'],
                 $associations['products']
             );
         }
@@ -506,6 +519,37 @@ final class ConnectorProduct
             $filteredAssociations[$associationType]['products'] = array_values(array_filter(
                 $association['products'],
                 fn (array $associatedProduct): bool => in_array($associatedProduct['identifier'], $productIdentifiersToFilter)
+            ));
+            $filteredAssociations[$associationType]['product_models'] = $association['product_models'];
+            $filteredAssociations[$associationType]['groups'] = $association['groups'];
+        }
+
+        return new self(
+            $this->uuid,
+            $this->identifier,
+            $this->createdDate,
+            $this->updatedDate,
+            $this->enabled,
+            $this->familyCode,
+            $this->categoryCodes,
+            $this->groupCodes,
+            $this->parentProductModelCode,
+            $filteredAssociations,
+            $this->quantifiedAssociations,
+            $this->metadata,
+            $this->values,
+            $this->qualityScores,
+            $this->completenesses
+        );
+    }
+
+    public function filterAssociatedProductsByProductUuids(array $productUuidsToFilter): ConnectorProduct
+    {
+        $filteredAssociations = [];
+        foreach ($this->associations as $associationType => $association) {
+            $filteredAssociations[$associationType]['products'] = array_values(array_filter(
+                $association['products'],
+                fn (array $associatedProduct): bool => in_array($associatedProduct['uuid'], $productUuidsToFilter)
             ));
             $filteredAssociations[$associationType]['product_models'] = $association['product_models'];
             $filteredAssociations[$associationType]['groups'] = $association['groups'];
