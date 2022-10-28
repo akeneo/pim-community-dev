@@ -12,7 +12,8 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\
 final class InMemoryRepository implements ProductFileRepository
 {
     private array $productFiles = [];
-    private array $productFilesCommentsLastReadDates = [];
+    private array $productFilesCommentsLastReadDateForSupplier = [];
+    private array $productFilesCommentsLastReadDateForRetailer = [];
 
     public function save(ProductFile $productFile): void
     {
@@ -35,18 +36,37 @@ final class InMemoryRepository implements ProductFileRepository
         return $this->productFiles[(string) $identifier] ?? null;
     }
 
-    public function updateProductFileLastUnreadDate(Identifier $identifier, \DateTimeImmutable $date): void
+    public function updateProductFileLastReadAtDateForRetailer(Identifier $identifier, \DateTimeImmutable $date): void
     {
-        $this->productFilesCommentsLastReadDates[(string) $identifier] = $date;
+        $this->productFilesCommentsLastReadDateForRetailer[(string) $identifier] = $date;
     }
 
-    public function findProductFileWithUnreadComments(Identifier $identifier): ?array
+    public function updateProductFileLastReadAtDateForSupplier(Identifier $identifier, \DateTimeImmutable $date): void
+    {
+        $this->productFilesCommentsLastReadDateForSupplier[(string) $identifier] = $date;
+    }
+
+    public function findProductFileWithUnreadCommentsFromRetailer(Identifier $identifier): ?array
     {
         foreach ($this->productFiles as $productFile) {
             if ((string) $productFile->identifier() === (string) $identifier) {
                 return [
                     'productFile' => $productFile,
-                    'commentslastReadDate' => $this->productFilesCommentsLastReadDates[(string) $productFile->identifier()] ?? null,
+                    'commentslastReadDate' => $this->productFilesCommentsLastReadDateForSupplier[(string) $productFile->identifier()] ?? null,
+                ];
+            }
+        }
+
+        return null;
+    }
+
+    public function findProductFileWithUnreadCommentsFromSupplier(Identifier $identifier): ?array
+    {
+        foreach ($this->productFiles as $productFile) {
+            if ((string) $productFile->identifier() === (string) $identifier) {
+                return [
+                    'productFile' => $productFile,
+                    'commentslastReadDate' => $this->productFilesCommentsLastReadDateForRetailer[(string) $productFile->identifier()] ?? null,
                 ];
             }
         }

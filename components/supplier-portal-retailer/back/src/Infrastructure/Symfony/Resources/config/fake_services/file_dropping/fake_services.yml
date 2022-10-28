@@ -12,3 +12,8 @@ services:
         class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\InMemory\InMemoryMarkCommentsAsReadBySupplier
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'
+
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\MarkCommentsAsReadByRetailer:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\InMemory\InMemoryMarkCommentsAsReadByRetailer
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'
