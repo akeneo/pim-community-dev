@@ -55,7 +55,7 @@ function requiredEnvironmentVariables(names) {
   }
 }
 
-function initializeLogger(branchName, instanceName) {
+function initializeLogger(branchName, pfid) {
   logger = createLogger({
     level: process.env.LOG_LEVEL,
     defaultMeta: {
@@ -64,7 +64,7 @@ function initializeLogger(branchName, instanceName) {
       revision: process.env.K_REVISION,
       gcpProjectId: process.env.GCP_PROJECT_ID,
       gcpProjectFirestoreId: process.env.GCP_FIRESTORE_PROJECT_ID,
-      tenant: instanceName,
+      tenant: pfid,
       branchName: branchName
     },
     format: format.combine(
@@ -290,8 +290,10 @@ functions.http('deleteTenant', (req, res) => {
   const body = req.body;
   const branchName = body.branchName;
   const instanceName = body.instanceName;
+  const extraLabelType = 'srnt';
+  const pfid = `${extraLabelType}-${instanceName}`;
 
-  initializeLogger(branchName, instanceName);
+  initializeLogger(branchName, pfid);
 
   logger.info('Validation of the JSON schema of the request body');
   logger.debug(`HTTP request JSON body: ${JSON.stringify(req.body)}`);
@@ -315,35 +317,35 @@ functions.http('deleteTenant', (req, res) => {
   });
 
   const deleteTenant = async () => {
-    await updateFirestoreDocStatus(firestore, instanceName, FIRESTORE_STATUS.DELETION_IN_PREPARATION);
+    await updateFirestoreDocStatus(firestore, pfid, FIRESTORE_STATUS.DELETION_IN_PREPARATION);
     const token = await getArgoCdToken();
-    const app = await getArgoCdApp(token, instanceName)
+    const app = await getArgoCdApp(token, pfid)
 
     // Operation on ArgoCD app needs to be terminated before deleting the app
     if (app['status']['operationState']['phase'] === 'Running') {
-      await terminateArgoCdAppOperation(token, instanceName);
+      await terminateArgoCdAppOperation(token, pfid);
     }
 
-    await deleteArgoCdApp(token, instanceName);
-    await updateFirestoreDocStatus(firestore, instanceName, FIRESTORE_STATUS.DELETION_IN_PROGRESS);
-    await ensureArgoCdAppIsDeleted(token, instanceName);
+    await deleteArgoCdApp(token, pfid);
+    await updateFirestoreDocStatus(firestore, pfid, FIRESTORE_STATUS.DELETION_IN_PROGRESS);
+    await ensureArgoCdAppIsDeleted(token, pfid);
   }
 
 
   deleteTenant(res)
     .then(async () => {
-      await updateFirestoreDocStatus(firestore, instanceName, FIRESTORE_STATUS.DELETED);
+      await updateFirestoreDocStatus(firestore, pfid, FIRESTORE_STATUS.DELETED);
       logger.info('Successfully deleted the tenant');
       res.status(200).json({
         status_code: 200,
-        message: `Successfully deleted the tenant ${instanceName}`
+        message: `Successfully deleted the tenant ${pfid}`
       })
     })
     .catch((error) => {
       logger.error(`Failed to delete the tenant: ${error}`);
       res.status(500).json({
         status_code: 500,
-        message: `Failed to delete the tenant ${instanceName}: ${error}`
+        message: `Failed to delete the tenant ${pfid}: ${error}`
       })
     });
 });
