@@ -98,10 +98,9 @@ define([
             return _.findWhere(state.associationTypes, {code: associationType}).meta.id;
           }.bind(this),
           getModelIdentifier: function (model) {
-            if (model.get('document_type') === 'product_model') {
-              return model.get('identifier');
-            }
-            return model.get('id').replace('product-', '');
+            return model.get('document_type') === 'product_model'
+              ? model.get('identifier')
+              : model.get('id').replace('product-', '');
           },
         },
         groups: {
