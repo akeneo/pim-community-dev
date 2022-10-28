@@ -1,5 +1,9 @@
 # 6.0.x
 
+## Bug fixes
+
+- PIM-10691: Change method type for categories related method in rule engine to support very large number of categories
+
 # 6.0.50 (2022-11-02)
 
 # 6.0.49 (2022-10-31)
