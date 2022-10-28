@@ -74,8 +74,9 @@ services:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.product_model.fill_missing_values'
-            - '@akeneo.pim.structure.query.get_attributes'
+            # TODO: pull up master => invert parameters
             - '@akeneo.pim.enrichment.use_cases.get_products_with_quality_scores'
+            - '@akeneo.pim.structure.query.get_attributes'
 
     pim_connector.processor.normalization.product_model:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\ProductProcessor'
@@ -84,6 +85,8 @@ services:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.product_model.fill_missing_values'
+            # TODO: pull up master => remove next line (invert parameters and remove useless ~ alias of null)
+            - ~
             - '@akeneo.pim.structure.query.get_attributes'
 
     pim_connector.processor.attribute_filter.product_model:

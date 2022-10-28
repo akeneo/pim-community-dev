@@ -32,9 +32,9 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         protected IdentifiableObjectRepositoryInterface $channelRepository,
         protected AttributeRepositoryInterface $attributeRepository,
         protected FillMissingValuesInterface $fillMissingProductModelValues,
-        // TODO: pull up master => remove nullability
-        private ?GetAttributes $getAttributes = null,
         private ?GetProductsWithQualityScoresInterface $getProductsWithQualityScores = null,
+        // TODO: pull up master => remove nullability and inverted with previous line
+        private ?GetAttributes $getAttributes = null,
     ) {
     }
 
