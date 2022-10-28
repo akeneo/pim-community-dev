@@ -13,3 +13,6 @@ services:
         - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithComments'
         - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFileForSupplier\CommentProductFileHandlerForSupplier'
         - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadBySupplier\MarkCommentsAsReadBySupplierHandler'
+
+    Akeneo\SupplierPortal\Retailer\Test\Acceptance\Context\ProductFileImportContext:
+        - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\FindAllProductFileImports'
