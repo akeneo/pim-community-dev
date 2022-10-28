@@ -83,7 +83,9 @@ class GetProductsWithFilteredValuesQuery implements GetProductsWithFilteredValue
         $products = $this->filterChannels($products, $filters['channels'] ?? null);
 
         /** @var array<Product> $products */
-        return $this->filterCurrencies($products, $filters['currencies'] ?? null);
+        $products = $this->filterCurrencies($products, $filters['currencies'] ?? null);
+        
+        return $products;
     }
 
     /**
