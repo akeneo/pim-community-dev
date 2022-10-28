@@ -3,3 +3,8 @@ services:
     class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\ServiceApi\FindAllTailoredImportProfiles
     arguments:
       - '@Akeneo\Platform\Job\ServiceApi\JobInstance\FindJobInstanceInterface'
+
+  Akeneo\SupplierPortal\Retailer\Application\ProductFileImport\Read\ListProductFileImports\ListProductFileImportsHandler:
+    arguments:
+      - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\FindAllProductFileImports'
+

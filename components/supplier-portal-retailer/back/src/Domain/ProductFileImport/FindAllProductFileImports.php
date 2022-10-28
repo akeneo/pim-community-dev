@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFileImport;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Read\Model\ProductFileImport;
 
 interface FindAllProductFileImports
 {
