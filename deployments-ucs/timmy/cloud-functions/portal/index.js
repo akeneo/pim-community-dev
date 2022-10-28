@@ -25,7 +25,7 @@ const DEFAULT_BRANCH_NAME = 'master';
 const DEFAULT_PIM_NAMESPACE = 'pim';
 
 const TENANT_STATUS = {
-  ACTIVATED: 'activated'
+  ACTIVATED: 'activated',
   PENDING_CREATION: 'pending_creation',
   PENDING_DELETION: 'pending_deletion'
 }
