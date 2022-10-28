@@ -6,8 +6,6 @@ namespace Pim\Upgrade\Schema\Tests;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
-use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Doctrine\DBAL\Connection;
 
 class Version_7_0_20221020120000_update_job_instance_parameter_add_login_type_Integration extends TestCase
@@ -17,28 +15,25 @@ class Version_7_0_20221020120000_update_job_instance_parameter_add_login_type_In
     private const MIGRATION_LABEL = '_7_0_20221020120000_update_job_instance_parameter_add_login_type';
 
     private Connection $connection;
-    private JobInstanceRepository $jobInstanceRepository;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->connection = $this->get('database_connection');
-        $this->jobInstanceRepository = $this->get('akeneo_batch.job.job_instance_repository');
     }
 
-    public function test_it_is_idempotent(): void
+    public function test_it_add_login_type_to_raw_parameters(): void
     {
-        $this->createJob('a_csv_export');
-        $this->createJob('another_csv_export');
+        $this->createJob('a_csv_export', 'export');
+        $this->createJob('not_a_csv_export', 'mass_edit');
 
-        $this->assertFalse($this->jobIsMigrated('a_csv_export'));
-        $this->assertFalse($this->jobIsMigrated('another_csv_export'));
+        $this->assertFalse($this->isJobParametersHasLoginType('a_csv_export'));
+        $this->assertFalse($this->isJobParametersHasLoginType('not_a_csv_export'));
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
-        $this->reExecuteMigration(self::MIGRATION_LABEL);
 
-        $this->assertTrue($this->jobIsMigrated('a_csv_export'));
-        $this->assertTrue($this->jobIsMigrated('another_csv_export'));
+        $this->assertTrue($this->isJobParametersHasLoginType('a_csv_export'));
+        $this->assertFalse($this->isJobParametersHasLoginType('not_a_csv_export'));
     }
 
     protected function getConfiguration(): Configuration
@@ -46,7 +41,7 @@ class Version_7_0_20221020120000_update_job_instance_parameter_add_login_type_In
         return $this->catalog->useMinimalCatalog();
     }
 
-    private function createJob(string $jobCode): void
+    private function createJob(string $jobCode, string $type): void
     {
         $rawParameters = [
             'storage' => [
@@ -81,20 +76,27 @@ class Version_7_0_20221020120000_update_job_instance_parameter_add_login_type_In
         $sql = <<<SQL
             INSERT INTO `akeneo_batch_job_instance` (`code`, `label`, `job_name`, `status`, `connector`, `raw_parameters`, `type`)
             VALUES
-                (:job_code, :job_code, :job_code, 0, 'Akeneo CSV Connector', :raw_parameters, 'export');
+                (:job_code, :job_code, :job_code, 0, 'Akeneo CSV Connector', :raw_parameters, :type);
         SQL;
 
         $this->connection->executeStatement($sql, [
             'job_code' => $jobCode,
             'raw_parameters' => serialize($rawParameters),
+            'type' => $type
         ]);
     }
 
-    private function jobIsMigrated(string $jobCode): bool
+    private function isJobParametersHasLoginType(string $jobCode): bool
     {
-        /** @var JobInstance $jobInstance */
-        $jobInstance = $this->jobInstanceRepository->findOneByCode($jobCode);
-        $rawParameters = $jobInstance->getRawParameters();
+        $sql = <<<SQL
+            SELECT raw_parameters FROM akeneo_batch_job_instance WHERE code =  :jobCode;
+        SQL;
+
+        $result = $this->connection->executeQuery(
+            $sql,
+            ['jobCode' => $jobCode]
+        )->fetchAssociative();
+        $rawParameters = unserialize($result['raw_parameters']);
 
         return isset($rawParameters['storage']['login_type']);
     }

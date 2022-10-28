@@ -42,6 +42,7 @@ class Version_7_0_20221020120000_update_job_instance_parameter_add_login_type ex
         $sql = <<<SQL
             SELECT id, raw_parameters
             FROM akeneo_batch_job_instance
+            WHERE type IN ('import', 'export')
         SQL;
 
         $stmt = $connection->executeQuery($sql);
