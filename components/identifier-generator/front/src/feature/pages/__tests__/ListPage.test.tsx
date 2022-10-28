@@ -1,5 +1,5 @@
 import React from 'react';
-import {render, screen, waitFor} from '../../tests/test-utils';
+import {fireEvent, render, screen, waitFor} from '../../tests/test-utils';
 import {ListPage} from '../ListPage';
 import {IdentifierGenerator, PROPERTY_NAMES} from '../../models';
 import {useGetGenerators} from '../../hooks/useGetGenerators';
@@ -35,6 +35,7 @@ describe('ListPage', () => {
     mocked(useGetGenerators).mockReturnValue({
       data: [],
       isLoading: false,
+      refetch: jest.fn(),
     });
 
     render(<ListPage onCreate={jest.fn()} />);
@@ -48,6 +49,7 @@ describe('ListPage', () => {
     mocked(useGetGenerators).mockReturnValue({
       data: mockedList,
       isLoading: false,
+      refetch: jest.fn(),
     });
     render(<ListPage onCreate={jest.fn()} />);
 
@@ -80,5 +82,18 @@ describe('ListPage', () => {
       expect(mockHistoryPush).toHaveBeenCalledTimes(1);
       expect(mockHistoryPush).toHaveBeenCalledWith('/test');
     });
+  });
+
+  it('should display delete modal', () => {
+    mocked(useGetGenerators).mockReturnValue({
+      data: mockedList,
+      isLoading: false,
+      refetch: jest.fn(),
+    });
+    render(<ListPage onCreate={jest.fn()} />);
+
+    expect(screen.queryByText('pim_identifier_generator.deletion.operations')).toBeNull();
+    fireEvent.click(screen.getByText('pim_common.delete'));
+    expect(screen.queryByText('pim_identifier_generator.deletion.operations')).toBeVisible();
   });
 });

@@ -68,4 +68,22 @@ describe('CreateOrEditGeneratorPage', () => {
     expect(screen.getByText('a path: a message')).toBeInTheDocument();
     expect(screen.getByText('another message')).toBeInTheDocument();
   });
+
+  it('should display delete modal', () => {
+    const mainButtonCallback = jest.fn();
+    render(
+      <CreateOrEditGeneratorPage
+        initialGenerator={initialGenerator}
+        validationErrors={[{message: 'a message', path: 'a path'}, {message: 'another message'}]}
+        mainButtonCallback={mainButtonCallback}
+      />
+    );
+
+    expect(screen.queryByText('pim_identifier_generator.deletion.operations')).toBeNull();
+
+    const otherActionButton = screen.getAllByRole('button')[0];
+    fireEvent.click(otherActionButton);
+    fireEvent.click(screen.getByText('pim_common.delete'));
+    expect(screen.queryByText('pim_identifier_generator.deletion.operations')).toBeVisible();
+  });
 });

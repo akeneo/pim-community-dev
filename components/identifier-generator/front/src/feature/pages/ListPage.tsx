@@ -1,6 +1,6 @@
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {PageContent, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {AttributesIllustration, Button, Helper, Placeholder, Table} from 'akeneo-design-system';
+import {AttributesIllustration, Button, Helper, Placeholder, Table, useBooleanState} from 'akeneo-design-system';
 import {useGetGenerators} from '../hooks';
 import {LabelCollection} from '../models';
 import {Styled} from './styles/ListPageStyled';
@@ -8,6 +8,7 @@ import {ListSkeleton} from '../components/ListSkeleton';
 import {Header} from '../components/Header';
 import {useHistory} from 'react-router-dom';
 import {upperCase} from 'lodash';
+import {DeleteIdentifierGeneratorModal} from './DeleteGeneratorModal';
 
 type ListPageProps = {
   onCreate: () => void;
@@ -16,7 +17,7 @@ type ListPageProps = {
 const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
   const history = useHistory();
   const translate = useTranslate();
-  const {data: generators = [], isLoading} = useGetGenerators();
+  const {data: generators = [], isLoading, refetch} = useGetGenerators();
   const locale = useUserContext().get('catalogLocale');
   const isCreateDisabled = useMemo(() => generators?.length >= 1, [generators]);
   const isGeneratorListEmpty = useMemo(() => generators?.length === 0, [generators]);
@@ -26,6 +27,24 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
   );
   const goToEditPage = (code: string) => () => history.push(`/${code}`);
   const helpCenterUrl = 'https://help.akeneo.com/pim/serenity/articles/generate-product-identifiers.html';
+
+  const [generatorToDelete, setGeneratorToDelete] = useState<string>('');
+
+  const [isDeleteGeneratorModalOpen, openDeleteGeneratorModal, closeDeleteGeneratorModal] = useBooleanState();
+
+  const closeModal = (): void => {
+    closeDeleteGeneratorModal();
+  };
+
+  const refetchAndClose = (): void => {
+    refetch();
+    closeModal();
+  };
+
+  const onDelete = (code: string) => () => {
+    setGeneratorToDelete(code);
+    openDeleteGeneratorModal();
+  };
 
   return (
     <>
@@ -75,7 +94,12 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
                     <Table.Cell>
                       <Styled.Label>{getCurrentLabel(labels, code)}</Styled.Label>
                     </Table.Cell>
-                    <Table.Cell colSpan={2}>{upperCase(target)}</Table.Cell>
+                    <Table.Cell>{upperCase(target)}</Table.Cell>
+                    <Table.ActionCell>
+                      <Button onClick={onDelete(code)} ghost level="danger">
+                        {translate('pim_common.delete')}
+                      </Button>
+                    </Table.ActionCell>
                   </Table.Row>
                 ))}
               </>
@@ -83,6 +107,13 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
           </Table.Body>
         </Table>
       </PageContent>
+      {isDeleteGeneratorModalOpen && generatorToDelete !== null && (
+        <DeleteIdentifierGeneratorModal
+          generatorCode={generatorToDelete}
+          closeModal={closeModal}
+          deleteGenerator={refetchAndClose}
+        />
+      )}
     </>
   );
 };

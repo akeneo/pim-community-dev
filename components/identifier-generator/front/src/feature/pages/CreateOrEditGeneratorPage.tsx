@@ -1,10 +1,11 @@
 import React, {useCallback, useState} from 'react';
-import {Button, Helper, TabBar} from 'akeneo-design-system';
-import {PageContent, PageHeader, useTranslate} from '@akeneo-pim-community/shared';
+import {Button, Helper, TabBar, useBooleanState} from 'akeneo-design-system';
+import {PageContent, PageHeader, useTranslate, SecondaryActions, useRouter} from '@akeneo-pim-community/shared';
 import {GeneralPropertiesTab, Structure} from '../tabs';
 import {IdentifierGenerator} from '../models';
 import {Violation} from '../validators/Violation';
 import {Header} from '../components/Header';
+import {DeleteIdentifierGeneratorModal} from './DeleteGeneratorModal';
 
 enum Tabs {
   GENERAL,
@@ -25,14 +26,36 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
 }) => {
   const [currentTab, setCurrentTab] = useState(Tabs.GENERAL);
   const translate = useTranslate();
+  const router = useRouter();
   const [generator, setGenerator] = useState<IdentifierGenerator>(initialGenerator);
   const changeTab = useCallback(tabName => () => setCurrentTab(tabName), []);
   const onSave = useCallback(() => mainButtonCallback(generator), [generator, mainButtonCallback]);
+
+  const [generatorToDelete, setGeneratorToDelete] = useState<string>('');
+  const [isDeleteGeneratorModalOpen, openDeleteGeneratorModal, closeDeleteGeneratorModal] = useBooleanState();
+
+  const closeModal = (): void => {
+    closeDeleteGeneratorModal();
+  };
+  const redirectToList = (): void => {
+    closeModal();
+    router.redirect('/configuration/identifier-generator');
+  };
 
   return (
     <>
       <Header>
         <PageHeader.Actions>
+          <SecondaryActions>
+            <SecondaryActions.Item
+              onClick={() => {
+                setGeneratorToDelete(generator.code);
+                openDeleteGeneratorModal();
+              }}
+            >
+              {translate('pim_common.delete')}
+            </SecondaryActions.Item>
+          </SecondaryActions>
           <Button onClick={onSave}>{translate('pim_common.save')}</Button>
         </PageHeader.Actions>
       </Header>
@@ -68,6 +91,13 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
         )}
         {currentTab === Tabs.STRUCTURE && <Structure />}
       </PageContent>
+      {isDeleteGeneratorModalOpen && generatorToDelete !== null && (
+        <DeleteIdentifierGeneratorModal
+          generatorCode={generatorToDelete}
+          closeModal={closeModal}
+          deleteGenerator={redirectToList}
+        />
+      )}
     </>
   );
 };

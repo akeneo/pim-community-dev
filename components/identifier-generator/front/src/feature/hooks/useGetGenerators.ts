@@ -6,6 +6,7 @@ type Response = {
   data?: IdentifierGenerator[];
   isLoading: boolean;
   error: Error | null;
+  refetch: () => void;
 };
 
 const useGetGenerators = (): Response => {
@@ -25,12 +26,12 @@ const useGetGenerators = (): Response => {
     });
   };
 
-  const {data, isLoading, error} = useQuery<IdentifierGenerator[], Error, IdentifierGenerator[]>(
+  const {data, isLoading, error, refetch} = useQuery<IdentifierGenerator[], Error, IdentifierGenerator[]>(
     'getGeneratorList',
     getGeneratorList
   );
 
-  return {data, isLoading, error};
+  return {data, isLoading, error, refetch};
 };
 
 export {useGetGenerators};
