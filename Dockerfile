@@ -66,7 +66,7 @@ RUN apt-get update && \
         default-mysql-client \
         git \
         perceptualdiff \
-        php8.0-xdebug \
+        php8.1-xdebug \
         procps \
         unzip &&\
     apt-get clean && \
