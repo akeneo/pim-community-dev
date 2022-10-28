@@ -72,20 +72,27 @@ class GetProductsWithFilteredValuesQuery implements GetProductsWithFilteredValue
             isset($filters['locales']) && !empty($filters['locales']) ? $filters['locales'] : null,
         );
 
-
         $products = $this->connectorProductWithUuidNormalizer->normalizeConnectorProductList($connectorProducts);
-        // If values is empty the normalizer returns an object instead of an array, so we cast it to be consistent
+
+        /**
+         * If values is empty the normalizer return an object instead of an array, so we cast it to be consistent
+         * @psalm-suppress MixedAssignment
+         * @psalm-suppress MixedArrayAssignment
+         * @psalm-suppress MixedArrayAccess
+         */
         foreach ($products as &$product) {
             $product['values'] = (array) $product['values'];
         }
 
-        $products = $this->filterNormalizedProperties($products, self::PROPERTIES);
-        $products = $this->filterChannels($products, $filters['channels'] ?? null);
+        /**
+         * @var array<Product> $products
+         * @var array<Product> $productsWithFilteredValues
+         */
+        $productsWithFilteredValues = $this->filterNormalizedProperties($products, self::PROPERTIES);
+        $productsWithFilteredValues = $this->filterChannels($productsWithFilteredValues, $filters['channels'] ?? null);
+        $productsWithFilteredValues = $this->filterCurrencies($productsWithFilteredValues, $filters['currencies'] ?? null);
 
-        /** @var array<Product> $products */
-        $products = $this->filterCurrencies($products, $filters['currencies'] ?? null);
-
-        return $products;
+        return $productsWithFilteredValues;
     }
 
     /**
