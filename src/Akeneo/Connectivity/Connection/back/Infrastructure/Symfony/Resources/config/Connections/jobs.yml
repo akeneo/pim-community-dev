@@ -54,7 +54,7 @@ services:
     public: false
 
   akeneo_connectivity_connection.job.connectivity_create_openid_keys:
-    class: '%pim_connector.step.tasklet.class%'
+    class: '%pim_connector.job.simple_job.class%'
     arguments:
       - 'connectivity_create_openid_keys'
       - '@event_dispatcher'
