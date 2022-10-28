@@ -62,7 +62,7 @@ final class RoleWithPermissionsUpdater implements ObjectUpdaterInterface
 
         foreach ($aclPrivileges as $privilege) {
             if (self::ACL_DEFAULT_EXTENSION !== $privilege->getExtensionKey() ||
-                $privilege->getIdentity()->getName() === AclPrivilegeRepository::ROOT_PRIVILEGE_NAME) {
+                AclPrivilegeRepository::ROOT_PRIVILEGE_NAME === $privilege->getIdentity()->getName()) {
                 continue;
             }
             $privileges[$privilege->getIdentity()->getId()] = false;
