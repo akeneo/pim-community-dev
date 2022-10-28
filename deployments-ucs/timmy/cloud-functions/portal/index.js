@@ -25,6 +25,7 @@ const DEFAULT_BRANCH_NAME = 'master';
 const DEFAULT_PIM_NAMESPACE = 'pim';
 
 const TENANT_STATUS = {
+  ACTIVATED: 'activated'
   PENDING_CREATION: 'pending_creation',
   PENDING_DELETION: 'pending_deletion'
 }
@@ -165,12 +166,57 @@ async function requestCloudFunction(url, method, data = null) {
       return client.request({url: url, method: method, data: data});
     } else {
       logger.debug('Use Google default application credentials for authentication');
-      return auth.request({url: url, method: method, data: data});
+      return await auth.request({url: url, method: method, data: data});
     }
   } catch (error) {
     const msg = `Failed to call the cloud function ${url}: ${error}`;
     logger.error(msg);
     return Promise.reject(msg);
+  }
+}
+
+/**
+ * Update an instance status in the portal with a status and an optional status message
+ * @param instanceName
+ * @param instanceId
+ * @param status
+ * @param statusMessage
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+async function updateInstanceStatusInPortal(instanceName, instanceId, status, statusMessage = "") {
+  try {
+    const token = await refreshAccessToken();
+
+    const instance = axios.create({
+      baseURL: prefixUrlWithBranchName(process.env.HTTP_SCHEMA + '://' + process.env.PORTAL_HOSTNAME) + '/api/v2/',
+      timeout: 10000,
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    instance.interceptors.response.use((response) => {
+      return response;
+    }, async (error) => {
+      const originalRequest = error.config;
+
+      if (error.response.status === 403 && !originalRequest._retry) {
+        originalRequest._retry = true;
+        const accessToken = await refreshAccessToken();
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
+        return instance(originalRequest);
+      }
+
+      return Promise.reject(error);
+    });
+
+    logger.info(`Update the \`${instanceName}\` instance (id=${instanceId}) in the portal with \`${status}\` status`);
+
+    return instance.patch(`console/instances/${instanceId}/status/${status}/${encodeURIComponent(statusMessage)}`);
+  } catch (error) {
+    logger.error(`Failed to update ${instanceName} instance (id=${instanceId}) in the portal with \`${status}\` status: ${error}`);
+    return Promise.reject(error);
   }
 }
 
@@ -207,6 +253,7 @@ functions.http('requestPortal', (req, res) => {
     await Promise.allSettled(tenants.map(async tenant => {
       const subject = tenant['subject'];
       const cloudInstance = subject['cloud_instance'];
+      const instanceId = cloudInstance['id'];
       const instanceName = subject['instance_fqdn']['prefix'];
       const dnsCloudDomain = subject['instance_fqdn']['suffix'];
       const administrator = cloudInstance['administrator'];
@@ -236,8 +283,12 @@ functions.http('requestPortal', (req, res) => {
 
       logger.info(`Call the cloudfunction ${process.env.FUNCTION_URL_TIMMY_CREATE_TENANT} to create the tenant`);
       try {
-        const response = await requestCloudFunction(process.env.FUNCTION_URL_TIMMY_CREATE_TENANT, "POST", JSON.stringify(payload));
-        logger.info(`Tenant ${instanceName} is created: ${response.data}`);
+        await requestCloudFunction(process.env.FUNCTION_URL_TIMMY_CREATE_TENANT, "POST", payload)
+          .then((response) => {
+            logger.info(`Tenant ${instanceName} is created: ${response.data}`);
+            updateInstanceStatusInPortal(instanceName, instanceId, TENANT_STATUS.ACTIVATED);
+          })
+
       } catch (error) {
         logger.error(`Failed to call the cloudfunction ${process.env.FUNCTION_URL_TIMMY_CREATE_TENANT} to create the tenant: ${JSON.stringify(error)}`);
       }
@@ -257,10 +308,10 @@ functions.http('requestPortal', (req, res) => {
 
       try {
         logger.info(`Call the cloudfunction ${process.env.FUNCTION_URL_TIMMY_DELETE_TENANT} to delete the tenant`);
-        const response = await requestCloudFunction(process.env.FUNCTION_URL_TIMMY_DELETE_TENANT, "POST", JSON.stringify({
+        const response = await requestCloudFunction(process.env.FUNCTION_URL_TIMMY_DELETE_TENANT, "POST", {
           instanceName: instanceName,
           branchName: branchName
-        }));
+        });
 
         logger.info(`Tenant ${instanceName} is deleted: ${response.data}`);
       } catch (error) {

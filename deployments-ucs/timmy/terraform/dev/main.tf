@@ -20,7 +20,7 @@ module "timmy_request_portal" {
   project_id          = var.project_id
   name                = "${var.region_prefix}-timmy-request-portal"
   description         = "Request the portal to tenants to create/delete/update"
-  available_memory    = "128Mi"
+  available_memory    = "256Mi"
   bucket_name         = module.bucket.bucket_name
   entry_point         = "requestPortal"
   source_dir          = abspath("../../cloud-functions/portal")
@@ -66,7 +66,7 @@ module "timmy_create_tenant" {
   project_id          = var.project_id
   name                = "${var.region_prefix}-timmy-create-tenant"
   description         = "Create a new UCS tenant"
-  available_memory    = "128Mi"
+  available_memory    = "256Mi"
   bucket_name         = module.bucket.bucket_name
   entry_point         = "createTenant"
   source_dir          = abspath("../../cloud-functions/tenants/create")
@@ -126,7 +126,7 @@ module "timmy_delete_tenant" {
   project_id            = var.project_id
   name                  = "${var.region_prefix}-timmy-delete-tenant"
   description           = "Delete an UCS tenant"
-  available_memory      = "128Mi"
+  available_memory      = "256Mi"
   bucket_name           = module.bucket.bucket_name
   entry_point           = "deleteTenant"
   source_dir            = abspath("../../cloud-functions/tenants/delete")

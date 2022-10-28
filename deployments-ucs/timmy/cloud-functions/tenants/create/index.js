@@ -271,12 +271,15 @@ async function ensureArgoCdAppIsHealthy(token, appName, maxRetries = 60, retryIn
       logger.error(msg);
       return Promise.reject(msg);
     }
-
   }
 
-  msg = `Exceeded maximum attempts to ensure healthiness, please check the ArgoCD application status at ${url}/applications/${appName}`;
-  logger.error(msg);
-  return Promise.reject(msg);
+  if (healthStatus !== HEALTH_STATUS.HEALTHY) {
+    msg = `Exceeded maximum attempts to ensure healthiness, please check the ArgoCD application status at ${url}/applications/${appName}`;
+    logger.error(msg);
+    return Promise.reject(msg);
+  }
+
+  return Promise.resolve();
 }
 
 async function ensureArgoCdAppIsSynced(token, appName, maxRetries = 20, retryInterval = 10) {
@@ -334,10 +337,13 @@ async function ensureArgoCdAppIsSynced(token, appName, maxRetries = 20, retryInt
     }
   }
 
-  msg = `Exceeded maximum attempts to ensure synchronization, please check the ArgoCD application status at ${url}/applications/${appName}`;
+  if (syncStatus !== SYNC_STATUS.SYNCED) {
+    msg = `Exceeded maximum attempts to ensure synchronization, please check the ArgoCD application status at ${url}/applications/${appName}`;
+    logger.error(msg);
+    return Promise.reject(msg);
+  }
 
-  logger.error(msg);
-  return Promise.reject(msg);
+  return Promise.resolve();
 }
 
 /**
@@ -476,11 +482,11 @@ functions.http('createTenant', (req, res) => {
       'TENANT_CONTEXT_COLLECTION_NAME',
     ]);
 
-    const body = JSON.parse(JSON.stringify(req.body));
+    const body = req.body;
     // If branchName is an empty string it is the default branch
     const branchName = body.branchName
     const instanceName = body.instanceName;
-    const pimNamespace = (branchName === DEFAULT_BRANCH_NAME ? DEFAULT_PIM_NAMESPACE : DEFAULT_PIM_NAMESPACE+"-"+branchName.toLowerCase());
+    const pimNamespace = (branchName === DEFAULT_BRANCH_NAME ? DEFAULT_PIM_NAMESPACE : DEFAULT_PIM_NAMESPACE + "-" + branchName.toLowerCase());
 
     firestoreCollection = `${process.env.REGION}/${pimNamespace}/${process.env.TENANT_CONTEXT_COLLECTION_NAME}`;
 
