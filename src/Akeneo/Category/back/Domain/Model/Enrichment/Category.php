@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\Domain\Model;
+namespace Akeneo\Category\Domain\Model\Enrichment;
 
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
@@ -25,6 +25,35 @@ class Category
         private ?ValueCollection $attributes = null,
         private ?PermissionCollection $permissions = null,
     ) {
+    }
+
+    /**
+     * @param array{
+     *     id: int,
+     *     code: string,
+     *     translations: string|null,
+     *     parent_id: int|null,
+     *     root_id: int|null,
+     *     value_collection: string|null,
+     *     permissions: string|null
+     * } $result
+     */
+    public static function fromDatabase(array $result): self
+    {
+        $id = new CategoryId((int) $result['id']);
+        $code = new Code($result['code']);
+        $labelCollection = $result['translations'] ?
+            LabelCollection::fromArray(
+                json_decode($result['translations'], true, 512, JSON_THROW_ON_ERROR),
+            ) : null;
+        $parentId = $result['parent_id'] ? new CategoryId((int) $result['parent_id']) : null;
+        $rootId = $result['root_id'] ? new CategoryId((int) $result['root_id']) : null;
+        $attributes = $result['value_collection'] ?
+                ValueCollection::fromArray(json_decode($result['value_collection'], true)) : null;
+        $permissions = isset($result['permissions']) && $result['permissions'] ?
+            PermissionCollection::fromArray(json_decode($result['permissions'], true)) : null;
+
+        return new self($id, $code, $labelCollection, $parentId, $rootId, $attributes, $permissions);
     }
 
     public function getId(): ?CategoryId

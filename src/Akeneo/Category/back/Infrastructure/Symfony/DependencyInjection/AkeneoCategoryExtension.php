@@ -46,10 +46,12 @@ class AkeneoCategoryExtension extends Extension
         $loader->load('validators.yml');
         $loader->load('storage/save.yml');
         $loader->load('storage/base.yml');
+        $loader->load('storage/template.yml');
         $loader->load('storage/translations.yml');
         $loader->load('service_api/handler.yml');
         $loader->load('files.yml');
         $loader->load('parameters.yml');
         $loader->load('preview_generators.yml');
+        $loader->load('builders.yml');
     }
 }

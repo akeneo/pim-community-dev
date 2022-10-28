@@ -4,12 +4,32 @@ services:
     arguments:
       - '@database_connection'
 
+  Akeneo\Category\Domain\Query\GetCategoryTreesInterface:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryTreesSql
+    arguments:
+      - '@database_connection'
+
   Akeneo\Category\Application\Query\GetTemplate:
     class: Akeneo\Category\Infrastructure\Storage\InMemory\GetTemplateInMemory
     arguments:
       - '@database_connection'
 
+  Akeneo\Category\Application\Query\CheckTemplate:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\CheckTemplateSql
+    arguments:
+      - '@database_connection'
+
   Akeneo\Category\Domain\Query\GetAttribute:
     class: Akeneo\Category\Infrastructure\Storage\InMemory\GetAttributeInMemory
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Application\Query\GetCategoryTemplateByCategoryTree:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryTemplateByCategoryTreeSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Application\Query\GetCategoryTreeByCategoryTemplate:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryTreeByCategoryTemplateSql
     arguments:
       - '@database_connection'

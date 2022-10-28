@@ -4,3 +4,10 @@ pim_category_template_rest_get:
         _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\GetTemplateController
         _feature: enriched_category
     methods: [GET]
+
+pim_category_template_rest_create:
+    path: /rest/{categoryTreeId}
+    defaults:
+        _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\CreateTemplateController
+        _feature: enriched_category
+    methods: [POST]
