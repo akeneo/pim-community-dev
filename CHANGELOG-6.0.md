@@ -1,5 +1,7 @@
 # 6.0.x
 
+# 6.0.48 (2022-10-28)
+
 ## Bug fixes
 
 - PIM-10654: [Backport PIM-10473] Fix non-existing RE filter for PEF is not case-insensitive
