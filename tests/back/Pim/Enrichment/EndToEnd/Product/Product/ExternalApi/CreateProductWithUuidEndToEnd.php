@@ -8,7 +8,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\EntityWithQuantifiedAssociations\QuantifiedAssociationsTestCaseTrait;
-use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -82,6 +81,7 @@ JSON;
         $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $expectedProduct = [
+            'uuid'          => $this->getProductUuidFromIdentifier('product_creation_family')->toString(),
             'identifier'    => 'product_creation_family',
             'family'        => 'familyA',
             'parent'        => null,
@@ -129,6 +129,7 @@ JSON;
         $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $expectedProduct = [
+            'uuid'          => $this->getProductUuidFromIdentifier('product_creation_groups')->toString(),
             'identifier'    => 'product_creation_groups',
             'family'        => null,
             'parent'        => null,
@@ -174,6 +175,7 @@ JSON;
         $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $expectedProduct = [
+            'uuid'          => $this->getProductUuidFromIdentifier('product_creation_categories')->toString(),
             'identifier'    => 'product_creation_categories',
             'family'        => null,
             'parent'        => null,
@@ -236,6 +238,7 @@ JSON;
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
 
         $this->assertSameProducts([
+            'uuid' => $this->getProductUuidFromIdentifier('foo')->toString(),
             'identifier' => 'foo',
             'family' => 'familyA',
             'parent' => 'a_sub_product_model',
@@ -296,6 +299,7 @@ JSON;
         $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $expectedProduct = [
+            'uuid'          => $this->getProductUuidFromIdentifier('product_creation_associations')->toString(),
             'identifier'    => 'product_creation_associations',
             'family'        => null,
             'parent'        => null,
@@ -553,6 +557,7 @@ JSON;
         $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $expectedProduct = [
+            'uuid'          => $this->getProductUuidFromIdentifier('product_creation_product_values')->toString(),
             'identifier'    => 'product_creation_product_values',
             'family'        => 'familyA',
             'parent'        => null,
@@ -751,8 +756,10 @@ JSON;
         "updated": "2014-06-14T13:12:50+02:00"
     }
 JSON;
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $expectedProduct = [
+            'uuid'          => $this->getProductUuidFromIdentifier('foo')->toString(),
             'identifier'    => 'foo',
             'family'        => null,
             'parent'        => null,
@@ -770,11 +777,7 @@ JSON;
             'quantified_associations' => [],
         ];
 
-        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
-
         $response = $client->getResponse();
-
-
         $this->assertSame('', $response->getContent());
         $this->assertSameProducts($expectedProduct, 'foo');
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
@@ -794,6 +797,36 @@ JSON;
             <<<JSON
     {
         "uuid": "a48ca2b8-656d-4b2c-b9cc-b2243e876ebf",
+        "values": {
+            "sku": [
+                {"locale": null, "scope": null, "data": "foo"}
+            ]
+        }
+    }
+JSON;
+
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
+        $response = $client->getResponse();
+
+        $this->assertSame('', $response->getContent());
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertArrayHasKey('location', $response->headers->all());
+        $this->assertSame(
+            'http://localhost/api/rest/v1/products-uuid/a48ca2b8-656d-4b2c-b9cc-b2243e876ebf',
+            $response->headers->get('location')
+        );
+
+        $this->assertSame($this->getProductUuidFromIdentifier('foo')->toString(), 'a48ca2b8-656d-4b2c-b9cc-b2243e876ebf');
+    }
+
+    public function testItCreatesWithUppercaseUuid()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+            <<<JSON
+    {
+        "uuid": "A48CA2B8-656D-4b2c-b9cc-b2243e876ebf",
         "values": {
             "sku": [
                 {"locale": null, "scope": null, "data": "foo"}

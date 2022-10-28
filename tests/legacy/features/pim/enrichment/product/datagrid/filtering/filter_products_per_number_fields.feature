@@ -19,7 +19,7 @@ Feature: Filter products by number field
       | count_is_inferior_or_equals     | pim_catalog_number | 0           | 0        | 1                      | 0                | 0                | other | count_is_inferior_or_equals |
     And the following family:
       | code        | attributes      |
-      | family_foo  | count_is_empty,count_is_not_empty,count_is_superior,count_is_inferior,count_is_superior_or_equals,count_is_inferior_or_equals |
+      | family_foo  | sku,count_is_empty,count_is_not_empty,count_is_superior,count_is_inferior,count_is_superior_or_equals,count_is_inferior_or_equals |
     And the following products:
       | sku                             | family     | count_is_empty | count_is_not_empty | count_is_superior | count_is_inferior | count_is_inferior_or_equals | count_is_superior_or_equals |
       | ok_with_all_filters             | family_foo |                |        2           |       3           |         4         |             5               |                 6           |

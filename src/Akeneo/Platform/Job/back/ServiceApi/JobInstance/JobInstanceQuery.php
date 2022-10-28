@@ -11,7 +11,7 @@ namespace Akeneo\Platform\Job\ServiceApi\JobInstance;
 class JobInstanceQuery
 {
     public function __construct(
-        public ?array $types = null,
+        public ?array $jobNames = null,
         public ?string $search = null,
         public ?JobInstanceQueryPagination $pagination = null,
     ) {

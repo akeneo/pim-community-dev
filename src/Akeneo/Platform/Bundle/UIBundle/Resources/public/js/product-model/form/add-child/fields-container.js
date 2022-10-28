@@ -84,9 +84,18 @@ define([
                     return FetcherRegistry.getFetcher('attribute')
                       .getIdentifierAttribute()
                       .then(identifier => {
-                        return this.createAttributeField(identifier, false).then(identifierField =>
-                          fields.concat(identifierField)
+                        const familyAttributes = familyVariant.variant_attribute_sets.flatMap(
+                          ({attributes}) => attributes
                         );
+                        const hasSkuInFamilyAttributes =
+                          familyAttributes.find(item => item === identifier.code)?.length > 0;
+                        if (hasSkuInFamilyAttributes) {
+                          return this.createAttributeField(identifier, false).then(identifierField =>
+                            fields.concat(identifierField)
+                          );
+                        } else {
+                          return fields;
+                        }
                       });
                   }
 
