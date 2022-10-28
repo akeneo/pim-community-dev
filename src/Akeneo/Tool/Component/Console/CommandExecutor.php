@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Platform\Bundle\InstallerBundle;
+namespace Akeneo\Tool\Component\Console;
 
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -16,39 +16,17 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class CommandExecutor
 {
-    /**
-     * @var InputInterface
-     */
-    protected $input;
-
-    /**
-     * @var OutputInterface
-     */
-    protected $output;
-
-    /**
-     * @var Application
-     */
-    protected $application;
-
-    /**
-     * Constructor
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     * @param Application     $application
-     */
-    public function __construct(InputInterface $input, OutputInterface $output, Application $application)
-    {
-        $this->input = $input;
-        $this->output = $output;
-        $this->application = $application;
+    public function __construct(
+        protected InputInterface $input,
+        protected OutputInterface $output,
+        protected Application $application
+    ) {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function runCommand($command, $params = [])
+    public function runCommand($command, $params = []): static
     {
         $params = array_merge(
             ['command' => $command],
@@ -70,12 +48,7 @@ class CommandExecutor
         return $this;
     }
 
-    /**
-     * Get default parameters
-     *
-     * @return array
-     */
-    protected function getDefaultParams()
+    protected function getDefaultParams(): array
     {
         $defaultParams = ['--no-debug' => true];
 

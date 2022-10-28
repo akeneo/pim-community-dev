@@ -169,10 +169,6 @@ class Family implements FamilyInterface
      */
     public function removeAttribute(AttributeInterface $attribute)
     {
-        if (AttributeTypes::IDENTIFIER === $attribute->getType()) {
-            throw new \InvalidArgumentException('Identifier cannot be removed from a family.');
-        }
-
         $this->attributes->removeElement($attribute);
 
         return $this;
@@ -495,9 +491,7 @@ class Family implements FamilyInterface
             // removes attributes only from former attributes list
             foreach ($this->getAttributes() as $attribute) {
                 if (\in_array($attribute->getCode(), $attributeCodesToRemove)) {
-                    if (AttributeTypes::IDENTIFIER !== $attribute->getType()) {
-                        $this->removeAttribute($attribute);
-                    }
+                    $this->removeAttribute($attribute);
                 }
             }
 
