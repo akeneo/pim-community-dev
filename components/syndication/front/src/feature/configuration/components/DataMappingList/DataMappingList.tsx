@@ -42,7 +42,7 @@ const DataMappingList = ({
   const translate = useTranslate();
   const [searchValue, setSearchValue] = useState<string>('');
 
-  const globalErrors = useValidationErrors('[dataMappings]', true);
+  const globalErrors = useValidationErrors('[data_mappings]', true);
   const filteredRequirements = searchRequirements(requirements, searchValue);
 
   const shouldDisplayNoResults = 0 === filteredRequirements.length && '' !== searchValue;
