@@ -4,7 +4,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\Stand
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ProductValueConverter;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\QualityScoreConverter;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScoresInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\StandardToFlat\AbstractSimpleArrayConverter;
 
@@ -29,6 +28,9 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
     protected function convertProperty($property, $data, array $convertedItem, array $options)
     {
         switch ($property) {
+            case 'uuid':
+                // TODO CPM-592: export the uuid if the with_uuid option is true
+                break;
             case 'associations':
                 $convertedItem = $this->convertAssociations($data, $convertedItem);
                 break;
