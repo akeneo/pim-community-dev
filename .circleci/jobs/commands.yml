@@ -63,6 +63,21 @@ commands:
                         echo "WARN: There is no persisted_env_vars file"
                       fi
 
+    restore_persisted_timmy_env_vars:
+        description: "Restore env vars that have been persisted by the previous job."
+        steps:
+            - run:
+                  name: Restore persisted timmy env vars
+                  command: |
+                      if [[ -f persisted_timmy_env_vars ]]
+                      then
+                        echo "Persisted Timmy env vars:"
+                        cat persisted_timmy_env_vars
+                        cat persisted_timmy_env_vars >> $BASH_ENV
+                      else
+                        echo "WARN: There is no persisted_timmy_env_vars file"
+                      fi
+
     modify_cluster:
         description: "Modify cluster version if needed"
         steps:
@@ -75,6 +90,15 @@ commands:
                       echo export GOOGLE_COMPUTE_ZONE=${GOOGLE_COMPUTE_ZONE} >> $BASH_ENV
                       echo export CLUSTER_NAME=${CLUSTER_NAME} >> $BASH_ENV
                       echo export GOOGLE_CLUSTER_ZONE=${GOOGLE_CLUSTER_ZONE} >> $BASH_ENV
+
+    install_terrafrom:
+        description: "Install Terraform "
+        steps:
+            - run:
+                  name: Install Terraform v1.1.3
+                  command: |
+                      tfenv install 1.1.3
+                      tfenv use  1.1.3
 
     install_yq_v3:
         description: "Install yq (v3)"

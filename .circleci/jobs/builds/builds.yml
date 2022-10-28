@@ -1,5 +1,6 @@
 envVarsDeployDev: &envVarsDeployDev
 envVarsDeployPIMSaaSDev: &envVarsDeployPIMSaaSDev
+dockerCloudDeployerUCS: &dockerCloudDeployerUCS
 executor-machine: &executor-machine
 
 orbs:
@@ -496,6 +497,93 @@ jobs:
                   paths:
                       - project
 
+    build_timmy:
+        parameters:
+            PRODUCT_TYPE:
+                type: string
+                default: "srnt"
+            CLUSTER_NEXT:
+                type: boolean
+                default: false
+        environment:
+            <<: *envVarsDeployPIMSaaSDev
+        <<: *dockerCloudDeployerUCS
+        resource_class: small
+        steps:
+            - attach_workspace:
+                  at: ~/
+            - when:
+                  condition:
+                      equal: [true, << parameters.CLUSTER_NEXT >> ]
+                  steps:
+                      - modify_cluster
+            - set_gcloud_config_pim_saas_dev
+            - add_ssh_keys:
+                  fingerprints:
+                      - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+            -   run: 
+                    name: Check changes for Timmy
+                    command: |
+                        ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                        export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                        git config --global user.email "pim_ci@akeneo.com"
+                        git config --global user.name "pim_ci_deployment"
+                        git clone --depth 1 git@github.com:akeneo/pim-enterprise-dev.git /tmp/pim-enterprise-dev
+                        # The diff can send exit 1 
+                        FILES_LIST=$(diff -qr /tmp/pim-enterprise-dev/deployments-ucs/timmy deployments-ucs/timmy) || true
+                        SKIP_DEPLOY_TIMMY=false
+                        if [ -z "${FILES_LIST}" ]; then
+                          SKIP_DEPLOY_TIMMY=true
+                          circleci step halt
+                        fi
+                        echo export SKIP_DEPLOY_TIMMY=${SKIP_DEPLOY_TIMMY} >> persisted_timmy_env_vars
+                        echo "list change file : ${FILES_LIST}"
+            - install_terrafrom
+            - run:
+                  name: Define value for next steps
+                  command: |
+                      INSTANCE_NAME_PREFIX=ucs
+                      INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
+                      CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
+                      PIM_NS="pim-${CIRCLE_BRANCH_LOWER}"
+                      FIRESTORE_COLLECTION="${GOOGLE_CLUSTER_REGION}/${PIM_NS}/tenant_contexts"
+                      REGION_PREFIX=${REGION_PREFIX}
+                      WORKLOAD_IDENTITY_KSA="${INSTANCE_NAME}-ksa-workload-identity"
+                      GOOGLE_ZONE=${GOOGLE_COMPUTE_ZONE}
+                      TERRAFORM_PATH="deployments-ucs/timmy/terraform/${ENV_NAME}"
+
+                      echo export CIRCLE_BRANCH_LOWER=${CIRCLE_BRANCH_LOWER} >> $BASH_ENV
+                      echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
+                      echo export TERRAFORM_PATH=${TERRAFORM_PATH} >> $BASH_ENV
+                      echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+                      echo export WORKLOAD_IDENTITY_KSA=${WORKLOAD_IDENTITY_KSA} >> $BASH_ENV
+                      echo export GOOGLE_ZONE=${GOOGLE_ZONE} >> $BASH_ENV
+                      echo export PIM_NS=pim-${CIRCLE_BRANCH_LOWER} >> $BASH_ENV
+                      echo export FIRESTORE_COLLECTION=${FIRESTORE_COLLECTION} >> $BASH_ENV
+
+                      echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
+                      echo "Instance name: ${INSTANCE_NAME}"
+                      echo "Image tag: ${IMAGE_TAG}"
+                      echo "Path terraform: ${TERRAFORM_PATH}"
+            - run:
+                  name: Init and Plan terraform
+                  command: |
+                    cd ${TERRAFORM_PATH} 
+                    terraform init -backend-config=./backends/${GOOGLE_CLUSTER_REGION}.hcl -reconfigure  
+                    terraform workspace select ${CIRCLE_BRANCH_LOWER} || terraform workspace new ${CIRCLE_BRANCH_LOWER}
+                    terraform  plan -var-file=./vars/${GOOGLE_CLUSTER_REGION}.tfvars -var branch_name=${CIRCLE_BRANCH_LOWER}
+            - run:
+                  name: Init and Apply terraform
+                  command: |
+                      cd ${TERRAFORM_PATH} 
+                      terraform init -backend-config=./backends/${GOOGLE_CLUSTER_REGION}.hcl -reconfigure  
+                      terraform workspace select ${CIRCLE_BRANCH_LOWER} || terraform workspace new ${CIRCLE_BRANCH_LOWER}
+                      terraform  apply -auto-approve -input=false -var-file=./vars/${GOOGLE_CLUSTER_REGION}.tfvars -var branch_name=${CIRCLE_BRANCH_LOWER}
+            - persist_to_workspace:
+                  root: ~/
+                  paths:
+                      - project/persisted_timmy_env_vars
+
     build_tria:
         environment:
             <<: *envVarsDeployDev
@@ -785,6 +873,7 @@ jobs:
                       echo export RELEASE_NAME=${RELEASE_NAME} >> persisted_env_vars
                       echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> persisted_env_vars
                       echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> persisted_env_vars
+
             - persist_to_workspace:
                   root: ~/
                   paths:
