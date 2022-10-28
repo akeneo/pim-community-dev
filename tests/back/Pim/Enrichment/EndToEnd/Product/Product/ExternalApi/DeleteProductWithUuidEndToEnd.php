@@ -42,6 +42,21 @@ class DeleteProductWithUuidEndToEnd extends AbstractProductTestCase
         $this->assertEventCount(1, ProductRemoved::class);
     }
 
+    public function testDeleteAProductByUppercaseUuid()
+    {
+        $this->createAdminUser();
+        $client = $this->createAuthenticatedClient();
+
+        $testProduct = $this->createProduct('test_uuid', []);
+        $this->assertCount(8, $this->get('pim_catalog.repository.product')->findAll());
+
+        $this->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductUuids([$testProduct->getUuid()]);
+        $client->request('DELETE', 'api/rest/v1/products-uuid/' . \strtoupper($testProduct->getUuid()->toString()));
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+    }
+
     public function testProductUuidNotFound()
     {
         $this->createAdminUser();

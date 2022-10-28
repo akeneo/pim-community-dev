@@ -25,6 +25,7 @@ class ProductNormalizerIntegration extends TestCase
     public function testEmptyDisabledProduct()
     {
         $expected = [
+            'uuid'                    => $this->getUuidFromIdentifier('bar'),
             'identifier'              => 'bar',
             'family'                  => null,
             'parent'                  => null,
@@ -35,7 +36,7 @@ class ProductNormalizerIntegration extends TestCase
             'created'                 => '2016-06-14T13:12:50+02:00',
             'updated'                 => '2016-06-14T13:12:50+02:00',
             'associations'            => new \StdClass(),
-            'quantified_associations' => [],
+            'quantified_associations' => new \StdClass(),
         ];
 
         $this->assertProduct('bar', $expected, []);
@@ -44,6 +45,7 @@ class ProductNormalizerIntegration extends TestCase
     public function testEmptyEnabledProduct()
     {
         $expected = [
+            'uuid'                    => $this->getUuidFromIdentifier('baz'),
             'identifier'              => 'baz',
             'family'                  => null,
             'parent'                  => null,
@@ -54,7 +56,7 @@ class ProductNormalizerIntegration extends TestCase
             'created'                 => '2016-06-14T13:12:50+02:00',
             'updated'                 => '2016-06-14T13:12:50+02:00',
             'associations'            => new \StdClass(),
-            'quantified_associations' => [],
+            'quantified_associations' => new \StdClass(),
         ];
 
         $this->assertProduct('baz', $expected, []);
@@ -63,6 +65,7 @@ class ProductNormalizerIntegration extends TestCase
     public function testProductWithAllAttributes()
     {
         $expected = [
+            'uuid'                    => $this->getUuidFromIdentifier('foo'),
             'identifier'    => 'foo',
             'family'        => 'familyA',
             'parent'        => null,
@@ -260,7 +263,7 @@ class ProductNormalizerIntegration extends TestCase
             'quantified_associations' => [
                 "PRODUCT_SET" => [
                     "products" => [
-                        ["identifier" => 'bar', "quantity" => 3]
+                        ['identifier' => 'bar', "quantity" => 3]
                     ],
                     "product_models" => [
                         ["identifier" => 'baz', "quantity" => 2]
@@ -275,6 +278,7 @@ class ProductNormalizerIntegration extends TestCase
     public function testProductWithFilteredAttributes()
     {
         $expected = [
+            'uuid'          => $this->getUuidFromIdentifier('foo'),
             'identifier'    => 'foo',
             'family'        => 'familyA',
             'parent'        => null,
@@ -355,7 +359,7 @@ class ProductNormalizerIntegration extends TestCase
             'quantified_associations' => [
                 "PRODUCT_SET" => [
                     "products" => [
-                        ["identifier" => 'bar', "quantity" => 3]
+                        ['identifier' => 'bar', "quantity" => 3]
                     ],
                     "product_models" => [
                         ["identifier" => 'baz', "quantity" => 2]
@@ -427,5 +431,13 @@ class ProductNormalizerIntegration extends TestCase
         }
 
         return $data;
+    }
+
+    private function getUuidFromIdentifier(string $identifier): string
+    {
+        return $this->get('database_connection')->fetchOne(
+            'SELECT BIN_TO_UUID(uuid) AS uuid FROM pim_catalog_product WHERE identifier = :identifier',
+            ['identifier' => $identifier]
+        );
     }
 }

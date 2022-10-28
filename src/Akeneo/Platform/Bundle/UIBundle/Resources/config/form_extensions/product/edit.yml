@@ -8,7 +8,7 @@ extensions:
         targetZone: breadcrumbs
         config:
             tab: pim-menu-products
-            itemPath: identifier
+            itemPath: [identifier, "meta.id"]
 
     pim-product-edit-form-user-navigation:
         module: pim/menu/user-navigation
@@ -19,7 +19,6 @@ extensions:
             logout: pim_menu.user.logout
 
     pim-product-edit-form-main-image:
-        #module: pim/form/common/product/product-main-image
         module: pim/product-edit-form/main-image
         parent: pim-product-edit-form
         targetZone: main-image

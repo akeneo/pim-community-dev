@@ -35,6 +35,7 @@ JSON;
         $response = $client->getResponse();
 
         $expectedProduct = [
+            'uuid' => $this->productUuid->toString(),
             'identifier' => 'product_family_variant',
             'family' => 'familyA',
             'parent' => 'amor',

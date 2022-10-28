@@ -1,10 +1,115 @@
 akeneo_catalogs:
+  catalog_list:
+    catalogs_name: 카탈로그 이름
+    status: 상태
+    enabled: 활성화됨
+    disabled: 비활성화됨
+    empty: 카탈로그가 없습니다.
+    more_information: 자세한 내용은 도움말 센터를 확인하십시오.
+  catalog_edit:
+    tabs:
+      settings: 카탈로그 설정
+      product_selection: 제품 선택
+      more: 더 보기
+      product_value_filters: 값 필터링
+      product_mapping: 매핑
   settings:
+    fields:
+      enabled: 활성화됨
     inputs:
       yes: Yes
       no: No
+  product_value_filters:
+    action:
+      open: 열기
+      remove: 제거
+    filters:
+      channel:
+        label: 채널
+        no_matches: 일치 항목을 찾을 수 없음
+        placeholder: 채널 선택
+      locale:
+        label: 로케일
+        no_matches: 일치 항목을 찾을 수 없음
+        placeholder: 로케일 선택
+      currency:
+        label: 통화
+        no_matches: 일치 항목을 찾을 수 없음
+        placeholder: 통화 선택
   product_selection:
+    empty: 선택 조건을 추가하여 제품 선택 만들기
+    more_information: 자세한 내용은 도움말 센터를 확인하십시오.
+    add_criteria:
+      label: 선택 조건 추가
+      search: 검색 조건
+      no_results: 일치 항목을 찾을 수 없음
+      section_system: 시스템
+      section_attributes: 특성
+    action:
+      open: 열기
+      remove: 제거
+    locale:
+      label: 로케일
+      empty: 로케일을 찾을 수 없음
+    channel:
+      label: 채널
+      empty: 채널을 찾을 수 없음
     criteria:
+      unknown: 이 특성은 삭제되었습니다.
+      status:
+        label: 상태
+        enabled: 활성화됨
+        disabled: 비활성화됨
+      family:
+        label: 패밀리
+        no_matches: 일치 항목을 찾을 수 없음
+        placeholder: 패밀리 선택
+      completeness:
+        label: 완성도
+      attribute_option:
+        no_matches: 일치 항목을 찾을 수 없음
+        placeholder: 옵션 선택
+      category:
+        label: 카테고리
+        remove: 카테고리 제거
+        category_tree: 카테고리 트리
+      measurement:
+        search: 단위 선택
+        no_results: 일치 항목을 찾을 수 없음
       boolean:
         yes: Yes
         no: No
+    operators:
+      "STARTS WITH": 다음으로 시작
+      "ENDS WITH": 다음으로 끝남
+      "CONTAINS": 포함
+      "DOES NOT CONTAIN": 포함하지 않음
+      "EMPTY": 비어 있음
+      "NOT EMPTY": 비어 있지 않음
+      "IN": 있음
+      "NOT IN": 없음
+      "IN CHILDREN": 하위 항목에 있음
+      "NOT IN CHILDREN": 하위 항목에 없음
+      "UNCLASSIFIED": 미분류
+      "IN OR UNCLASSIFIED": 미분류 또는 있음
+      "BETWEEN": 사이
+      "NOT BETWEEN": 사이에 없음
+      "=": 같음
+      "!=": 같지 않음
+      ">": 보다 큼
+      ">=": 크거나 같음
+      "<": 보다 작음
+      "<=": 작거나 같음
+  product_mapping:
+    target:
+      title: 대상 목록
+      filter:
+        label: 필터
+        option:
+          all: 모두
+      table:
+        target: 대상
+        source: 소스
+    source:
+      placeholder:
+        title: 소스 선택

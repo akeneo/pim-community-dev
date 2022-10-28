@@ -51,6 +51,31 @@ class DownloadProductPdfEndToEnd extends InternalApiTestCase
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 
+    public function test_it_downloads_a_pdf_for_a_product_with_an_image_with_uppercase_uuid(): void
+    {
+        $product = $this->createProduct(
+            'simple',
+            'familyA',
+            [
+                new SetImageValue(
+                    'an_image',
+                    null,
+                    null,
+                    $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')))
+            ]
+        );
+
+        $url = $this->getRouter()->generate('pim_pdf_generator_download_product_pdf', [
+            'uuid' => \strtoupper($product->getUuid()->toString()),
+            'dataLocale' => 'en_US',
+            'dataScope' => 'ecommerce',
+        ]);
+
+        $this->client->request('GET', $url);
+
+        Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+    }
+
     public function test_it_downloads_a_pdf_for_a_product_without_family(): void
     {
         $product = $this->createProduct('simple', null, []);

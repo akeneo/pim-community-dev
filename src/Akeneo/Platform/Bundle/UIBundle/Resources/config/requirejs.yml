@@ -705,12 +705,14 @@ config:
     pim/product-edit-form/download-pdf:                      pimui/js/product/form/download-pdf
     pim/product-edit-form/attributes:                        pimui/js/product/form/attributes
     pim/product-edit-form/creation/identifier:               pimui/js/product/form/creation/identifier
+    pim/product-edit-form/creation/identifier-regarding-family: pimui/js/product/form/creation/identifier-regarding-family
     pim/product-edit-form/free-trial-start-copy:             pimui/js/product/form/free-trial-start-copy
     pim/product-edit-form/start-copy:                        pimui/js/product/form/start-copy
     pim/product-edit-form/convert-to-simple-product:         pimui/js/product/form/convert-to-simple-product.ts
     pim/product-edit-form/variant-navigation:                pimui/js/product/form/variant-navigation
     pim/product-edit-form/attributes/variant-axes:           pimui/js/product/form/attributes/variant-axes
     pim/product-edit-form/product-and-product-model-picker:  pimui/js/product/form/product-and-product-model-picker
+    pim/product-edit-form/legacy-product-and-product-model-picker:  pimui/js/product/form/legacy-product-and-product-model-picker
     pim/product-edit-form/attributes/read-only-parent-attributes: pimui/js/product/form/attributes/read-only-parent-attributes
     pim/product/product-grid-title:                          pimui/js/form/common/product/product-grid-title.ts
     pim/product/product-grid-view-title-context:                   pimui/js/form/common/product/product-grid-view-title-context.ts
@@ -1141,6 +1143,7 @@ config:
     pim/template/product-create-error:                   pimui/templates/product/create-error.html
     pim/template/product/create-button:                  pimui/templates/product/create-button.html
     pim/template/product/create-modal-content:           pimui/templates/product/create-modal-content.html
+    pim/template/product/create-helper:                  pimui/templates/product/create-helper.html
     pim/template/product/add-select/attribute/line:      pimui/templates/product/form/add-select/attribute/line.html
     pim/template/product/form/total-missing-required-attributes: pimui/templates/product/form/total-missing-required-attributes.html
     pim/template/product/form/variant-navigation/navigation: pimui/templates/product/form/variant-navigation/navigation.html

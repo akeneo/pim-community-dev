@@ -20,7 +20,7 @@ class Template
         private TemplateUuid $uuid,
         private TemplateCode $code,
         private LabelCollection $labelCollection,
-        private ?CategoryId $categoryTreeId,
+        private CategoryId $categoryTreeId,
         private AttributeCollection $attributeCollection,
     ) {
     }
@@ -40,7 +40,7 @@ class Template
         return $this->labelCollection;
     }
 
-    public function getCategoryTreeId(): ?CategoryId
+    public function getCategoryTreeId(): CategoryId
     {
         return $this->categoryTreeId;
     }
@@ -65,7 +65,7 @@ class Template
             'uuid' => (string) $this->uuid,
             'code' => (string) $this->code,
             'labels' => $this->labelCollection->normalize(),
-            'category_tree_identifier' => $this->categoryTreeId?->getValue(),
+            'category_tree_identifier' => $this->categoryTreeId->getValue(),
             'attributes' => $this->attributeCollection->normalize(),
         ];
     }

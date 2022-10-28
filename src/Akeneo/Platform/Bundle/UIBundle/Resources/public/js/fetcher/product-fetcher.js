@@ -1,13 +1,14 @@
 'use strict';
 
-define(['jquery', 'backbone', 'pim/base-fetcher', 'routing', 'oro/mediator', 'pim/cache-invalidator'], function (
-  $,
-  Backbone,
-  BaseFetcher,
-  Routing,
-  mediator,
-  CacheInvalidator
-) {
+define([
+  'jquery',
+  'underscore',
+  'backbone',
+  'pim/base-fetcher',
+  'routing',
+  'oro/mediator',
+  'pim/cache-invalidator',
+], function ($, _, Backbone, BaseFetcher, Routing, mediator, CacheInvalidator) {
   return BaseFetcher.extend({
     /**
      * Fetch a product or a product_model based on its id or uuid
@@ -32,6 +33,17 @@ define(['jquery', 'backbone', 'pim/base-fetcher', 'routing', 'oro/mediator', 'pi
 
           return product;
         })
+        .promise();
+    },
+
+    fetchByUuids: function (uuids, options) {
+      options = options || {};
+      if (0 === uuids.length) {
+        return Promise.resolve([]);
+      }
+
+      return this.getJSON(this.options.urls.list, _.extend({uuids: uuids.join(',')}, options))
+        .then(_.identity)
         .promise();
     },
 

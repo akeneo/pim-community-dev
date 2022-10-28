@@ -6,6 +6,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
+use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Integration tests to verify data from database are well formatted in the standard format
@@ -258,7 +260,7 @@ class ProductStandardIntegration extends TestCase
                 'quantified_associations' => [
                     "PRODUCT_SET" => [
                         "products" => [
-                            ["identifier" => 'bar', "quantity" => 3]
+                            ['identifier' => 'bar', "uuid" => $this->getProductUuid('bar'), "quantity" => 3]
                         ],
                         "product_models" => [
                             ["identifier" => 'baz', "quantity" => 2]
@@ -460,7 +462,7 @@ SQL;
                 'quantified_associations' => [
                     "PRODUCT_SET" => [
                         "products" => [
-                            ["identifier" => 'bar', "quantity" => 3]
+                            ['identifier' => 'bar', "uuid" => $this->getProductUuid('bar'), "quantity" => 3]
                         ],
                         "product_models" => [
                             ["identifier" => 'baz', "quantity" => 2]
@@ -485,6 +487,9 @@ SQL;
 
         //TODO: why do we need that?
         $result = $this->sanitizeMediaAttributeData($result);
+        Assert::assertArrayHasKey('uuid', $result);
+        Assert::assertTrue(Uuid::isValid($result['uuid']));
+        unset($result['uuid']);
 
         //TODO: why do we need that?
         $expected = $this->sanitizeMediaAttributeData($expected);
@@ -525,5 +530,13 @@ SQL;
         }
 
         return $data;
+    }
+
+    private function getProductUuid(string $identifier): string
+    {
+        $repository = $this->get('pim_catalog.repository.product');
+        $product = $repository->findOneByIdentifier($identifier);
+
+        return (string) $product->getUuid();
     }
 }

@@ -67,8 +67,8 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
 
     public function test_it_retrieves_key_indicators_for_the_products_of_a_given_family()
     {
-        $this->createFamily('family_A');
-        $this->createFamily('family_B');
+        $this->createFamily('family_A', ['attributes' => []]);
+        $this->createFamily('family_B', ['attributes' => []]);
 
         $this->givenAProductWithoutValues();
         $this->givenAProductWithoutValues(['family' => 'family_A']);

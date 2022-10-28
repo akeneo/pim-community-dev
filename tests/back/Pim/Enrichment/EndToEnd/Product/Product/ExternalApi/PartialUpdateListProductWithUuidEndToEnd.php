@@ -35,10 +35,12 @@ class PartialUpdateListProductWithUuidEndToEnd extends AbstractProductTestCase
     public function testCreateAndUpdateAListOfProducts()
     {
         $uuid = Uuid::uuid4();
+        $uppercaseUuid = \strtoupper($uuid->toString());
+        $productFamilyUppercaseUuid = \strtoupper($this->productFamilyUuid->toString());
         $data =
 <<<JSON
-    {"uuid": "{$this->productFamilyUuid->toString()}", "family": "familyA1", "values": {"sku": [{"locale": null, "scope": null, "data": "product_family" }]}}
-    {"uuid": "{$uuid->toString()}", "family": "familyA2", "values": {"sku": [{"locale": null, "scope": null, "data": "my_identifier" }]}}
+    {"uuid": "$productFamilyUppercaseUuid", "family": "familyA1", "values": {"sku": [{"locale": null, "scope": null, "data": "product_family" }]}}
+    {"uuid": "$uppercaseUuid", "family": "familyA2", "values": {"sku": [{"locale": null, "scope": null, "data": "my_identifier" }]}}
 JSON;
 
         $expectedContent =
@@ -241,6 +243,7 @@ JSON;
     {"uuid": ""}
     {"uuid": " "}
     {}
+    {"values": {"sku": [{"locale": null, "scope": null, "data": "AKNSTK2"}]}, "family": "tshirts"}
 JSON;
 
         $expectedContent =
@@ -250,6 +253,7 @@ JSON;
 {"line":3,"status_code":422,"message":"Uuid is missing."}
 {"line":4,"status_code":422,"message":"Uuid is missing."}
 {"line":5,"status_code":422,"message":"Uuid is missing."}
+{"line":6,"status_code":422,"message":"Uuid is missing."}
 JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/products-uuid', [], [], [], $data);

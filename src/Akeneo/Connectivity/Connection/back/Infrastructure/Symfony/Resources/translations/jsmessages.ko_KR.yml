@@ -479,6 +479,7 @@ akeneo_connectivity.connection:
       url: URL
       secret: 비밀번호
       enabled: 이벤트 구독 활성화
+      is_using_uuid: 제품 식별자 대신 제품 UUID를 사용하시겠습니까?
       test: 테스트
     error:
       wrong_url: 이 값은 유효한 URL이 아닙니다.
