@@ -241,13 +241,4 @@ SQL;
     {
         return $this->get('akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors');
     }
-
-    private function getProductUuid(string $productIdentifier): UuidInterface
-    {
-        $result = $this
-            ->get('database_connection')
-            ->fetchOne('SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier=:identifier', ['identifier' => $productIdentifier]);
-
-        return Uuid::fromString($result);
-    }
 }
