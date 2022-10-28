@@ -2,7 +2,7 @@
 
 namespace Akeneo\Platform\Bundle\InstallerBundle\Event;
 
-use Akeneo\Platform\Bundle\InstallerBundle\CommandExecutor;
+use Akeneo\Tool\Component\Console\CommandExecutor;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
