@@ -57,11 +57,11 @@ SQL;
             ]
         );
 
-        $uuids = array_map(function ($row) {
+        $identifiers = array_map(function ($row) {
             return $row['identifier'];
         }, $stmt->fetchAllAssociative());
 
-        return $uuids;
+        return $identifiers;
     }
 
     /**

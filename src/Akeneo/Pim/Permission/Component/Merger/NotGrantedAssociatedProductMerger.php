@@ -59,7 +59,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class NotGrantedAssociatedProductMerger implements NotGrantedDataMergerInterface
 {
-    // TODO Remove this
+    // TODO Remove this CPM-790
     /** @var AuthorizationCheckerInterface */
     private $authorizationChecker;
 
