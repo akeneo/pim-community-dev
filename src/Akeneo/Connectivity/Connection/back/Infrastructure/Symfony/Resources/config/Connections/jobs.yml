@@ -38,3 +38,34 @@ services:
     tags:
       - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
       - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+  Akeneo\Connectivity\Connection\Infrastructure\Apps\Job\CreateOpenIdKeysTasklet:
+    arguments:
+      - '@Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler'
+    public: false
+
+  akeneo_connectivity_connection.step.connectivity_create_openid_keys:
+    class: '%pim_connector.step.tasklet.class%'
+    arguments:
+      - 'create_openid_keys'
+      - '@event_dispatcher'
+      - '@akeneo_batch.job_repository'
+      -
+        - '@Akeneo\Tool\Component\Connector\Step\CheckJobUniqueStep'
+        - '@akeneo_connectivity_connection.step.connectivity_create_openid_keys'
+      - false
+      - false
+    public: false
+    tags:
+      -
+        name: akeneo_batch.job
+        connector: 'internal'
+        type: 'scheduled_job'
+
+  akeneo_connectivity_connection.job.job_parameters.default_values_provider.connectivity_create_openid_keys:
+    class: 'Akeneo\Tool\Component\Batch\Job\JobParameters\EmptyConstraintAndDefaultValuesProvider'
+    arguments:
+      - 'connectivity_create_openid_keys'
+    tags:
+      - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+      - { name: akeneo_batch.job.job_parameters.default_values_provider }
