@@ -274,6 +274,11 @@ pim:
       pimJobName: "twa_projects_recalculate"
       pimJobOptions: ""
       schedule: "20 0 * * *"
+    reference-entity-refresh-records:
+      enabled: true
+      pimJobName: "reference_entity_refresh_records"
+      pimJobOptions: ""
+      schedule: "0 23 * * *"
   supplier_portal:
     settings:
       enabled: false

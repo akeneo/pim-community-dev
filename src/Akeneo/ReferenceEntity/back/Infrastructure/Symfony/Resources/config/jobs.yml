@@ -68,6 +68,21 @@ services:
         tags:
             - { name: akeneo_batch.job, connector: 'internal', type: 'akeneo_referenceentity.mass_delete_records', feature: 'reference_entity' }
 
+    akeneo_referenceentity.job.refresh_records:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+        - 'reference_entity_refresh_records'
+        - '@event_dispatcher'
+        - '@akeneo_batch.job_repository'
+        -
+            - '@Akeneo\Tool\Component\Connector\Step\CheckJobUniqueStep'
+            - '@akeneo_referenceentity.step.refresh_records'
+        - false
+        - false
+        public: false
+        tags:
+            - { name: akeneo_batch.job, connector: 'internal', type: 'scheduled_job' }
+
     # Job providers
     akeneo_referenceentity.job.provider.csv_reference_entity_record_export:
         class: 'Akeneo\ReferenceEntity\Infrastructure\Connector\Provider\CsvReferenceEntityRecordExport'
@@ -115,6 +130,14 @@ services:
 
     akeneo_referenceentity.job.provider.mass_delete_records:
         class: 'Akeneo\ReferenceEntity\Infrastructure\Job\Provider\MassDeleteRecords'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    akeneo_referenceentity.job.job_parameters.default_values_provider.refresh_records:
+        class: 'Akeneo\Tool\Component\Batch\Job\JobParameters\EmptyConstraintAndDefaultValuesProvider'
+        arguments:
+        - 'reference_entity_refresh_records'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
             - { name: akeneo_batch.job.job_parameters.default_values_provider }

@@ -69,3 +69,21 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.query.enrich.find_records_used_as_product_variant_axis'
             - 1000
         public: false
+
+    akeneo_referenceentity.step.refresh_records:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'reference_entity_refresh_records'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo_referenceentity.tasklet.refresh_records'
+        public: false
+
+    akeneo_referenceentity.tasklet.refresh_records:
+        class: 'Akeneo\ReferenceEntity\Infrastructure\Job\RefreshRecordsTasklet'
+        arguments:
+            - '@logger'
+            - '@akeneo_referenceentity.infrastructure.persistence.cli.all_records_identifiers'
+            - '@akeneo_referenceentity.infrastructure.persistence.sql.record.refresh_records.refresh_record'
+            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.count_records'
+        public: false

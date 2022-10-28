@@ -328,3 +328,8 @@ jobs:
         alias:     twa_projects_recalculate
         label:     'Recalculate all enrichment projects'
         type:      scheduled_job
+    reference_entity_refresh_records:
+        connector: internal
+        alias:     reference_entity_refresh_records
+        label:     'Refresh all records referencing a deleted record or a deleted attribute option.'
+        type:      scheduled_job

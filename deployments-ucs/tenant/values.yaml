@@ -377,6 +377,14 @@ pim:
         requests:
           cpu: "10m"
           memory: "10Mi"
+    project-notify-before-due-date:
+      enabled: true
+      pimCommand: "pimee:project:notify-before-due-date"
+      schedule: "0 2 * * *"
+      resources:
+        requests:
+          cpu: "1m"
+          memory: "80Mi"
     reference-entity-refresh-records:
       enabled: true
       pimCommand: "akeneo:reference-entity:refresh-records"
