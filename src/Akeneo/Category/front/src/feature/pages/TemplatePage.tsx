@@ -64,12 +64,8 @@ const TemplatePage: FC = () => {
     [setActiveTab, switchTo]
   );
 
-  const {
-    data: fetchedTemplate,
-    status: templateFetchingStatus,
-  } = useTemplate({
-    // TODO when available : use template uuid from category.template_id
-    uuid: '02274dac-e99a-4e1d-8f9b-794d4c3ba330',
+  const {data: fetchedTemplate, status: templateFetchingStatus} = useTemplate({
+    uuid: templateId,
   });
 
   useEffect(() => {
@@ -96,7 +92,6 @@ const TemplatePage: FC = () => {
     (localeCode: string, label: string) => {
       if (templateEdited === null) {
         return;
-      } else {
       }
 
       templateEdited && setTemplateEdited(set(['labels', localeCode], label, templateEdited));
@@ -104,7 +99,7 @@ const TemplatePage: FC = () => {
     [templateEdited]
   );
 
-  if (loadingStatus === 'error') {
+  if (loadingStatus === 'error' || templateFetchingStatus === 'error') {
     return (
       <FullScreenError
         title={translate('error.exception', {status_code: '404'})}

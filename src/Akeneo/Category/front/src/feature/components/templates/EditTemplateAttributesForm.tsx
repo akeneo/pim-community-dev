@@ -47,7 +47,7 @@ export const EditTemplateAttributesForm = ({attributes}: Props) => {
             <Table.HeaderCell>{translate('akeneo.category.template_list.columns.type')}</Table.HeaderCell>
           </Table.Header>
           <Table.Body>
-            {attributes.map((attribute: Attribute) => (
+            {attributes?.map((attribute: Attribute) => (
               <Table.Row
                 key={attribute.uuid}
                 onClick={() => {
