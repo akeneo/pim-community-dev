@@ -10,3 +10,9 @@ services:
             - '@pim_catalog.repository.locale'
         tags:
             - { name: console.command }
+
+    Akeneo\UserManagement\Infrastructure\Cli\RestoreAdminRolePermissionsCommand:
+        arguments:
+            - '@Akeneo\UserManagement\Application\RestoreAdminRolePermissions'
+        tags:
+            - { name: console.command }

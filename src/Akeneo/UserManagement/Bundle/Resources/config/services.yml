@@ -42,3 +42,10 @@ services:
     security.user_checker:
         class: Akeneo\UserManagement\Bundle\Provider\CustomUserChecker
         abstract: false
+
+    Akeneo\UserManagement\Application\RestoreAdminRolePermissions:
+        arguments:
+            - '@oro_security.acl.manager'
+            - '@pim_user.factory.role_with_permissions'
+            - '@pim_user.repository.role_with_permissions'
+            - '@pim_user.saver.role_with_permissions'
