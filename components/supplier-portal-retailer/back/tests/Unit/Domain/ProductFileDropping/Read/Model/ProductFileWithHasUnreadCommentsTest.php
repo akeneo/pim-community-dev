@@ -48,4 +48,3 @@ final class ProductFileWithHasUnreadCommentsTest extends TestCase
         static::assertSame('hasUnreadComments', $properties[6]->getName());
     }
 }
-

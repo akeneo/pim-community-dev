@@ -13,7 +13,7 @@ final class ProductFileWithHasUnreadComments
         public ?string $uploadedByContributor,
         public string $uploadedBySupplier,
         public ?string $uploadedAt,
-        public bool $hasUnreadComments
+        public bool $hasUnreadComments,
     ) {
     }
 
