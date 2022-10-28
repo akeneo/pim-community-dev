@@ -1,7 +1,7 @@
 import React, {useCallback, useState, useMemo, useContext} from 'react';
 import styled from 'styled-components';
 import {SectionTitle, Helper} from 'akeneo-design-system';
-import {LocaleSelector, useTranslate} from '@akeneo-pim-community/shared';
+import {LocaleSelector, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {
   Attribute,
   buildCompositeKey,
@@ -53,7 +53,9 @@ function mustChangeBeSkipped(
 }
 
 export const EditAttributesForm = ({attributeValues, template, onAttributeValueChange}: Props) => {
-  const [locale, setLocale] = useState('en_US');
+  const userContext = useUserContext();
+  const catalogLocale = userContext.get('catalogLocale');
+  const [locale, setLocale] = useState(catalogLocale);
   const {locales} = useContext(EditCategoryContext);
   const translate = useTranslate();
 
