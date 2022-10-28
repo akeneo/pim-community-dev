@@ -98,7 +98,7 @@ class CategoryTreeController extends AbstractController
 
         $formatedTrees = array_map(function (CategoryTree $tree) use ($selectedTreeId) {
             return [
-                'id' => (int) $tree->getId(),
+                'id' => $tree->getId()->getValue(),
                 'code' => (string) $tree->getCode(),
                 'label' => $tree->getLabel($this->userContext->getCurrentLocaleCode()),
                 'templateLabel' => $tree->getCategoryTreeTemplate()?->getTemplateLabel($this->userContext->getCurrentLocaleCode()),
