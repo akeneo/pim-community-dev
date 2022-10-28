@@ -1,0 +1,5 @@
+services:
+  Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\FindAllProductFileImports:
+    class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileImport\ServiceApi\FindAllTailoredImportProfiles
+    arguments:
+      - '@Akeneo\Platform\Job\ServiceApi\JobInstance\FindJobInstanceInterface'
