@@ -1,4 +1,7 @@
 akeneo.category:
+    tree_list:
+        column:
+            category_templates: Category templates
     attributes: Attributes
     edition_form:
         error:

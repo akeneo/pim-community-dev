@@ -58,6 +58,13 @@ services:
             - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
             - '@Akeneo\Category\Application\ActivateTemplate'
 
+    Akeneo\Category\Infrastructure\Controller\InternalApi\CreateTemplateController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
+            - '@Akeneo\Category\Infrastructure\Builder\TemplateBuilder'
+
     Akeneo\Category\Infrastructure\Controller\InternalApi\UploadController:
         public: true
         arguments:

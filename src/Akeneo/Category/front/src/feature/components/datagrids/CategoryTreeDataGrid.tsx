@@ -8,12 +8,13 @@ import {
   useRouter,
   useSecurity,
   useTranslate,
+  useUserContext,
 } from '@akeneo-pim-community/shared';
 import {CategoryTreeModel, Template} from '../../models';
 import styled from 'styled-components';
 import {NoResults} from './NoResults';
 import {DeleteCategoryModal} from './DeleteCategoryModal';
-import {deleteCategory} from '../../infrastructure/removers';
+import {deleteCategory} from '../../infrastructure';
 import {createTemplate} from '../templates/createTemplate';
 import {useCountCategoryTreesChildren} from '../../hooks';
 
@@ -25,13 +26,15 @@ type Props = {
 const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
   const translate = useTranslate();
   const router = useRouter();
+  const featureFlags = useFeatureFlags();
   const {isGranted} = useSecurity();
   const [searchString, setSearchString] = useState('');
   const [filteredTrees, setFilteredTrees] = useState<CategoryTreeModel[]>(trees);
   const notify = useNotify();
-  const featureFlags = useFeatureFlags();
   const [isConfirmationModalOpen, openConfirmationModal, closeConfirmationModal] = useBooleanState();
   const [categoryTreeToDelete, setCategoryTreeToDelete] = useState<CategoryTreeModel | null>(null);
+  const [displayCategoryTemplatesColumn, setDisplayCategoryTemplatesColumn] = useState<boolean>(false);
+
   const followCategoryTree = useCallback(
     (tree: CategoryTreeModel): void => {
       const url = router.generate('pim_enrich_categorytree_tree', {id: tree.id});
@@ -128,6 +131,22 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
 
   const countTreesChildren = useCountCategoryTreesChildren();
 
+  useEffect(() => {
+    const hasRights =
+      isGranted('pim_enrich_product_category_template') || isGranted('pim_enrich_product_category_edit_attributes');
+    let hasTemplates = false;
+
+    filteredTrees.map(function (tree) {
+      if (tree.templateLabel) {
+        hasTemplates = true;
+      }
+
+      return hasTemplates;
+    });
+
+    setDisplayCategoryTemplatesColumn(featureFlags.isEnabled('enriched_category') && hasRights && hasTemplates);
+  }, [filteredTrees]);
+
   return (
     <>
       <StyledSearch
@@ -158,6 +177,9 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
               <Table.HeaderCell>
                 {translate('pim_enrich.entity.category.content.tree_list.columns.number_of_categories')}
               </Table.HeaderCell>
+              {displayCategoryTemplatesColumn && (
+                <Table.HeaderCell>{translate('akeneo.category.tree_list.column.category_templates')}</Table.HeaderCell>
+              )}
               <StyleActionHeader isEnrichedCategoryEnabled={featureFlags.isEnabled('enriched_category')}>
                 {translate('pim_enrich.entity.category.content.tree_list.columns.actions')}
               </StyleActionHeader>
@@ -177,6 +199,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                         countTreesChildren.hasOwnProperty(tree.code) ? countTreesChildren[tree.code] : 0
                       )}
                   </Table.Cell>
+                  {displayCategoryTemplatesColumn && <Table.Cell>{tree.templateLabel}</Table.Cell>}
                   <Table.ActionCell>
                     {featureFlags.isEnabled('enriched_category') && isGranted('pim_enrich_product_category_template') && (
                       <StyleButton

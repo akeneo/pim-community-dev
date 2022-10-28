@@ -87,7 +87,7 @@ class GetCategorySqlIntegration extends TestCase
 
     public function testGetCategoryById(): void
     {
-        $category = $this->get(GetCategoryInterface::class)->byCode($this->category->getCode());
+        $category = $this->get(GetCategoryInterface::class)->byId($this->category->getId());
         $this->assertInstanceOf(Category::class, $category);
         $this->assertSame('socks', (string)$category->getCode());
         $this->assertSame('Chaussettes', $category->getLabels()->getTranslation('fr_FR'));
