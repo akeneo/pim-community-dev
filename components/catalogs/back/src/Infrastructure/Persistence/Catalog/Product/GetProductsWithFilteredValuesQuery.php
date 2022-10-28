@@ -73,7 +73,6 @@ class GetProductsWithFilteredValuesQuery implements GetProductsWithFilteredValue
         );
 
 
-        /** @var array<Product> $products */
         $products = $this->connectorProductWithUuidNormalizer->normalizeConnectorProductList($connectorProducts);
         // If values is empty the normalizer returns an object instead of an array, so we cast it to be consistent
         foreach ($products as &$product) {
@@ -83,6 +82,7 @@ class GetProductsWithFilteredValuesQuery implements GetProductsWithFilteredValue
         $products = $this->filterNormalizedProperties($products, self::PROPERTIES);
         $products = $this->filterChannels($products, $filters['channels'] ?? null);
 
+        /** @var array<Product> $products */
         return $this->filterCurrencies($products, $filters['currencies'] ?? null);
     }
 
