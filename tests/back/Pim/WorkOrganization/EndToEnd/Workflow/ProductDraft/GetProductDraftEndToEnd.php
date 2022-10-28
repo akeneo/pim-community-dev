@@ -28,7 +28,7 @@ class GetProductDraftEndToEnd extends ApiTestCase
         $expectedResponse =
 <<<JSON
 {
-  "uuid": "{$this->getProductUuid('product_with_draft')}",
+  "uuid": "{$this->getProductUuid('product_with_draft')->toString()}",
   "identifier": "product_with_draft",
   "family": null,
   "parent": null,
@@ -262,13 +262,5 @@ JSON;
                 ],
             ]
         ]);
-    }
-
-    private function getProductUuid(string $identifier): string
-    {
-        return $this->get('database_connection')->fetchOne(
-            'SELECT BIN_TO_UUID(uuid) AS uuid FROM pim_catalog_product WHERE identifier = :identifier',
-            ['identifier' => $identifier],
-        );
     }
 }

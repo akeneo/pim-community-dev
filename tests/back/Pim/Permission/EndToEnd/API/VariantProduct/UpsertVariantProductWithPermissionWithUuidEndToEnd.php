@@ -70,22 +70,25 @@ JSON;
             'associations' => [
                 'PACK'       => [
                     'groups'   => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
                 'SUBSTITUTION' => [
                     'groups'   => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
                 'UPSELL'       => [
                     'groups'   => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
                 'X_SELL'       => [
                     'groups'   => [],
-                    'products' => ['product_no_view', 'product_own'],
+                    'product_uuids' => [
+                        $this->getProductUuid('product_no_view')->toString(),
+                        $this->getProductUuid('product_own')->toString()
+                    ],
                     'product_models' => [],
                 ],
             ],

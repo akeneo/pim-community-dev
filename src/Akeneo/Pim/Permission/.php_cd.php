@@ -25,7 +25,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query',
         'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\ChildCategory',
         'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\RootCategory',
-        'Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductCodesByProduct',
+        'Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductUuidsByProduct',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\FlatFileHeader',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromFamilyCodesInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromAttributeCodesInterface',

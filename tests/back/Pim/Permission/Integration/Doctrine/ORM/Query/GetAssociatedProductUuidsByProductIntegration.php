@@ -2,6 +2,7 @@
 
 namespace AkeneoTestEnterprise\Pim\Permission\Integration\Doctrine\ORM\Query;
 
+use Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductUuidsByProduct;
 use Akeneo\Test\Integration\TestCase;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
@@ -15,7 +16,7 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
  * | Manager  | View,Edit,Own | View,Edit,Own |
  * +----------+-------------------------------+
  */
-class GetAssociatedProductCodesByProductIntegration extends TestCase
+class GetAssociatedProductUuidsByProductIntegration extends TestCase
 {
     public function testQueryToGetAssociatedProductCodes()
     {
@@ -48,10 +49,10 @@ class GetAssociatedProductCodesByProductIntegration extends TestCase
             $productAssociations[$productAssociation->getAssociationType()->getCode()] = $productAssociation;
         }
 
-        $query = $this->get('pim_catalog.query.get_associated_product_codes_by_product');
-        $this->assertSame(['productView'], $query->getCodes($mainProduct->getUuid(), $productAssociations['X_SELL']));
-        $this->assertSame(['productWithoutCategory'], $query->getCodes($mainProduct->getUuid(), $productAssociations['PACK']));
-        $this->assertSame([], $query->getCodes($mainProduct->getUuid(), $productAssociations['UPSELL']));
+        $query = $this->getQuery();
+        $this->assertSame(['productView'], $query->getIdentifiers($mainProduct->getUuid(), $productAssociations['X_SELL']));
+        $this->assertSame(['productWithoutCategory'], $query->getIdentifiers($mainProduct->getUuid(), $productAssociations['PACK']));
+        $this->assertSame([], $query->getIdentifiers($mainProduct->getUuid(), $productAssociations['UPSELL']));
     }
 
     /**
@@ -70,5 +71,10 @@ class GetAssociatedProductCodesByProductIntegration extends TestCase
         $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
         $this->get('security.token_storage')->setToken($token);
+    }
+
+    private function getQuery(): GetAssociatedProductUuidsByProduct
+    {
+        return $this->get('pim_catalog.query.get_associated_product_uuids_by_product');
     }
 }
