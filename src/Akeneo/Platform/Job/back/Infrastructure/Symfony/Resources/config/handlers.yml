@@ -20,3 +20,11 @@ services:
             - '@akeneo_batch.job.job_parameters_validator'
             - '@validator'
             - '@akeneo_platform.saver.job_instance'
+
+    Akeneo\Platform\Job\Application\LaunchJobInstance\LaunchJobInstanceHandler:
+        public: true
+        arguments:
+            - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandlerInterface'
+            - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandlerInterface'
+            - '@Akeneo\Platform\Job\Domain\JobFileStorerInterface'
+            - '@Akeneo\Platform\Job\Application\LaunchJobInstance\GenerateJobExecutionUrlInterface'
