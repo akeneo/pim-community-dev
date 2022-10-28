@@ -51,7 +51,7 @@ class EventsApiDebugLoggerSpec extends ObjectBehavior
 
         $eventsApiDebugRepository->persist(
             Argument::that(function ($actual) {
-                if (!isset($actual['id']) || !is_string($actual['id'])) {
+                if (!isset($actual['id']) || !\is_string($actual['id'])) {
                     return false;
                 }
                 unset($actual['id']);
@@ -100,7 +100,7 @@ class EventsApiDebugLoggerSpec extends ObjectBehavior
 
         $eventsApiDebugRepository->persist(
             Argument::that(function ($actual) {
-                if (!isset($actual['id']) || !is_string($actual['id'])) {
+                if (!isset($actual['id']) || !\is_string($actual['id'])) {
                     return false;
                 }
                 unset($actual['id']);
@@ -138,7 +138,7 @@ class EventsApiDebugLoggerSpec extends ObjectBehavior
 
         $eventsApiDebugRepository->persist(
             Argument::that(function ($actual) {
-                if (!isset($actual['id']) || !is_string($actual['id'])) {
+                if (!isset($actual['id']) || !\is_string($actual['id'])) {
                     return false;
                 }
                 unset($actual['id']);
@@ -167,7 +167,7 @@ class EventsApiDebugLoggerSpec extends ObjectBehavior
         $this->shouldImplement(ApiEventBuildErrorLoggerInterface::class);
         $eventsApiDebugRepository->persist(
             Argument::that(function ($actual) {
-                if (!isset($actual['id']) || !is_string($actual['id'])) {
+                if (!isset($actual['id']) || !\is_string($actual['id'])) {
                     return false;
                 }
                 unset($actual['id']);
