@@ -84,7 +84,7 @@ class GetProductsWithFilteredValuesQuery implements GetProductsWithFilteredValue
 
         /** @var array<Product> $products */
         $products = $this->filterCurrencies($products, $filters['currencies'] ?? null);
-        
+
         return $products;
     }
 
