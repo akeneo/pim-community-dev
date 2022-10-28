@@ -32,6 +32,7 @@ final class DateFormat
         'dd-m-yy' => 'd-n-y',
         'dd/m/yy' => 'd/n/y',
         'dd.m.yy' => 'd.n.y',
+        'yyyymmdd' => 'Ymd',
     ];
 
     public static function getAvailableFormats(): array
