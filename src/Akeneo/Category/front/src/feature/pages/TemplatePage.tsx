@@ -13,9 +13,17 @@ import {
 } from '@akeneo-pim-community/shared';
 import {useCategoryTree, useTemplate} from '../hooks';
 import {useParams} from 'react-router';
-import {EditTemplatePropertiesForm} from '../components/template/EditTemplatePropertiesForm';
+import {EditTemplatePropertiesForm} from '../components/templates/EditTemplatePropertiesForm';
 import {cloneDeep, set} from 'lodash/fp';
-import {Template} from '../models';
+import {
+  Attribute,
+  buildCompositeKey,
+  CategoryAttributeValueData,
+  Template,
+  TemplateAttributeValueData
+} from '../models';
+import {EditTemplateAttributesForm} from "../components/templates/EditTemplateAttributesForm";
+import {categoriesAreEqual, templatesAreEqual} from "../helpers";
 
 enum Tabs {
   ATTRIBUTE = '#pim_enrich-category-tab-attribute',
@@ -104,6 +112,31 @@ const TemplatePage: FC = () => {
     [catalogLocale, templateEdited]
   );
 
+  const onChangeAttribute = useCallback(
+      (attribute: Attribute, localeCode: string | null, attributeValue: TemplateAttributeValueData) => {
+        if (templateEdited === null) {
+          return;
+        }
+
+        const compositeKey = buildCompositeKey(attribute, localeCode);
+        const compositeKeyWithoutLocale = buildCompositeKey(attribute);
+
+        const value = {
+          data: attributeValue,
+          locale: attribute.is_localizable ? localeCode : null,
+          attribute_code: compositeKeyWithoutLocale,
+        };
+
+        const newTemplateEdited = set(['attributes', compositeKey], value, templateEdited);
+        if (templatesAreEqual(templateEdited, newTemplateEdited)) {
+          return;
+        }
+
+        setTemplateEdited(newTemplateEdited);
+      },
+      [templateEdited]
+  );
+
   if (loadingStatus === 'error') {
     return (
       <FullScreenError
@@ -159,7 +192,7 @@ const TemplatePage: FC = () => {
           </TabBar.Tab>
         </TabBar>
 
-        {isCurrent(Tabs.ATTRIBUTE) && tree && fetchedTemplate && <h3>Work In Progress</h3>}
+        {isCurrent(Tabs.ATTRIBUTE) && tree && templateEdited && <EditTemplateAttributesForm attributes={templateEdited.attributes} template={templateEdited} onAttributeValueChange={onChangeAttribute}/>}
 
         {isCurrent(Tabs.PROPERTY) && tree && templateEdited && (
           <EditTemplatePropertiesForm template={templateEdited} onChangeLabel={onChangeTemplateLabel} />

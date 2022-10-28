@@ -31,12 +31,11 @@ export function permissionsAreEqual(cp1: CategoryPermissions, cp2: CategoryPermi
   );
 }
 
-function attributesAreEqual(a1: CategoryAttributes | Attribute[], a2: CategoryAttributes | Attribute[]): boolean {
+function attributesAreEqual(a1: CategoryAttributes, a2: CategoryAttributes): boolean {
   return isEqual(a1, a2);
 }
 
-
-function propertiesAreEqual(p1: CategoryProperties | Template, p2: CategoryProperties| Template): boolean {
+function propertiesAreEqual(p1: CategoryProperties, p2: CategoryProperties): boolean {
   return p1.code === p2.code && labelsAreEqual(p1.labels, p2.labels);
 }
 
@@ -49,16 +48,8 @@ export function categoriesAreEqual(c1: EnrichCategory, c2: EnrichCategory): bool
   );
 }
 
-export function templatesAreEqual(c1: Template, c2: Template): boolean {
-  return (
-      c1.uuid === c2.uuid &&
-      propertiesAreEqual(c1, c2) &&
-      attributesAreEqual(c1.attributes, c2.attributes)
-  );
-}
-
 export function getAttributeValue(
-  attributes: CategoryAttributes | Attribute[],
+  attributes: CategoryAttributes,
   attribute: Attribute,
   localeCode: LocaleCode
 ): CategoryAttributeValueData | undefined {
