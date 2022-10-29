@@ -113,6 +113,8 @@ class CategoryTestCase extends TestCase
     }
 
     /**
+     * TODO DELETE.
+     *
      * @param array<string, string>|null $templateLabels
      * @param array<array<string, mixed>>|null $templateAttributes
      *
@@ -127,7 +129,7 @@ class CategoryTestCase extends TestCase
     ): Template {
         $getTemplate = new GetTemplateInMemory();
         /** @var Template $defaultTemplate */
-        $defaultTemplate = $getTemplate->byUuid('');
+        $defaultTemplate = $getTemplate->byUuid(TemplateUuid::fromString('02274dac-e99a-4e1d-8f9b-794d4c3ba330'));
 
         if ($templateUuid === null) {
             $templateUuid = $defaultTemplate->getUuid();

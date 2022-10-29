@@ -20,8 +20,8 @@ class Template
         private TemplateUuid $uuid,
         private TemplateCode $code,
         private LabelCollection $labelCollection,
-        private CategoryId $categoryTreeId,
-        private AttributeCollection $attributeCollection,
+        private ?CategoryId $categoryTreeId = null,
+        private ?AttributeCollection $attributeCollection = null,
     ) {
     }
 
@@ -45,6 +45,11 @@ class Template
         return $this->categoryTreeId;
     }
 
+    public function setAttributeCollection(?AttributeCollection $attributeCollection): void
+    {
+        $this->attributeCollection = $attributeCollection;
+    }
+
     public function getAttributeCollection(): AttributeCollection
     {
         return $this->attributeCollection;
@@ -65,8 +70,29 @@ class Template
             'uuid' => (string) $this->uuid,
             'code' => (string) $this->code,
             'labels' => $this->labelCollection->normalize(),
-            'category_tree_identifier' => $this->categoryTreeId->getValue(),
-            'attributes' => $this->attributeCollection->normalize(),
+            'category_tree_identifier' => $this->categoryTreeId?->getValue(),
+            'attributes' => $this->attributeCollection?->normalize(),
         ];
+    }
+
+    /**
+     * @param array{
+     *     uuid: string,
+     *     code: string,
+     *     labels: string|null
+     * } $result
+     *
+     * @throws \JsonException
+     */
+    public static function fromDatabase(array $result): self
+    {
+        $id = TemplateUuid::fromString($result['uuid']);
+        $code = new TemplateCode($result['code']);
+        $labelCollection = $result['labels'] ?
+            LabelCollection::fromArray(
+                json_decode($result['labels'], true, 512, JSON_THROW_ON_ERROR),
+            ) : null;
+
+        return new self($id, $code, $labelCollection);
     }
 }

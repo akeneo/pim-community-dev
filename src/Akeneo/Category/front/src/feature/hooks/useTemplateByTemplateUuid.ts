@@ -17,8 +17,8 @@ interface UseTemplateParameters {
   enabled?: boolean;
 }
 
-export const useTemplate = ({uuid, enabled = true}: UseTemplateParameters): Result => {
-  const url = useRoute('pim_category_template_rest_get', {
+export const useTemplateByTemplateUuid = ({uuid, enabled = true}: UseTemplateParameters): Result => {
+  const url = useRoute('pim_category_template_rest_get_by_template_uuid', {
     templateUuid: uuid,
   });
 

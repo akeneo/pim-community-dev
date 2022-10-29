@@ -10,6 +10,11 @@ services:
       - '@database_connection'
 
   Akeneo\Category\Application\Query\GetTemplate:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryTemplateSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Application\Query\GetTemplateInMemory:
     class: Akeneo\Category\Infrastructure\Storage\InMemory\GetTemplateInMemory
     arguments:
       - '@database_connection'

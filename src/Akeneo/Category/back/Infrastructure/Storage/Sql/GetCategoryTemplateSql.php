@@ -6,8 +6,9 @@ namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
 use Akeneo\Category\Application\Query\GetTemplate;
 use Akeneo\Category\Domain\Model\Enrichment\Template;
-use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
+use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver\Exception;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -19,9 +20,38 @@ class GetCategoryTemplateSql implements GetTemplate
     {
     }
 
-    public function byUuid(string $templateUuid): ?Template
+    /**
+     * @throws Exception
+     * @throws \JsonException
+     * @throws \Doctrine\DBAL\Exception
+     */
+    public function byUuid(TemplateUuid $templateUuid): ?Template
     {
-        // TODO implement byUuid method + then plug this class instead of GetTemplateInMemory
-        return null;
+        $query = <<< SQL
+            SELECT
+                BIN_TO_UUID(uuid) as uuid,
+                code,
+                labels
+            FROM pim_catalog_category_template category_template
+            WHERE uuid=:template_uuid;
+        SQL;
+
+        $result = $this->connection->executeQuery(
+            $query,
+            [
+                'template_uuid' => $templateUuid->toBytes()
+            ],
+            [
+                'template_uuid' => \PDO::PARAM_STR
+            ]
+        )->fetchAssociative();
+
+        $category = null;
+
+        if ($result) {
+            $category = Template::fromDatabase($result);
+        }
+
+        return $category;
     }
 }

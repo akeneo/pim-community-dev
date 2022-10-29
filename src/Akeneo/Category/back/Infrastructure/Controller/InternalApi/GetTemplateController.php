@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
 use Akeneo\Category\Application\Query\GetTemplate;
+use Akeneo\Category\Domain\Query\GetAttribute;
+use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
+use Akeneo\Category\Infrastructure\Storage\InMemory\GetTemplateInMemory;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,11 +23,13 @@ class GetTemplateController
 {
     public function __construct(
         private SecurityFacade $securityFacade,
-        private GetTemplate $getTemplate
+        private GetTemplate $getTemplate,
+        private GetTemplateInMemory $getTemplateInMemory,
+        private GetAttribute $getAttribute,
     ) {
     }
 
-    public function __invoke(Request $request, string $templateUuid): JsonResponse
+    public function byTemplateUuid(Request $request, string $templateUuid): JsonResponse
     {
         if ($this->securityFacade->isGranted('pim_enrich_product_category_edit') === false) {
             // even if this is a read endpoint, the user must be granted edition rights
@@ -32,7 +37,25 @@ class GetTemplateController
             throw new AccessDeniedException();
         }
 
-        $template = $this->getTemplate->byUuid($templateUuid);
+        $template = $this->getTemplate->byUuid(TemplateUuid::fromString($templateUuid));
+        if (null === $template) {
+            throw new NotFoundHttpException();
+        }
+
+        $attributeCollection = $this->getAttribute->byIdentifiers([]);
+        $template->setAttributeCollection($attributeCollection);
+        return new JsonResponse($template->normalize(), Response::HTTP_OK);
+    }
+
+    public function byTemplateUuidInMemory(Request $request, string $templateUuid): JsonResponse
+    {
+        if ($this->securityFacade->isGranted('pim_enrich_product_category_edit') === false) {
+            // even if this is a read endpoint, the user must be granted edition rights
+            // as this should only be used for the purpose of updating a category from the UI
+            throw new AccessDeniedException();
+        }
+
+        $template = $this->getTemplateInMemory->byUuid(TemplateUuid::fromString($templateUuid));
         if (null === $template) {
             throw new NotFoundHttpException();
         }

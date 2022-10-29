@@ -7,7 +7,6 @@ namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 use Akeneo\Category\Domain\Query\GetAttribute;
 use Akeneo\Category\Infrastructure\FileSystem\PreviewGenerator\CouldNotGeneratePreviewException;
 use Akeneo\Category\Infrastructure\FileSystem\PreviewGenerator\PreviewGeneratorInterface;
-use Akeneo\Category\Infrastructure\Storage\InMemory\GetAttributeInMemory;
 use Liip\ImagineBundle\Binary\Loader\LoaderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

@@ -49,7 +49,8 @@ services:
         arguments:
             - '@oro_security.security_facade'
             - '@Akeneo\Category\Application\Query\GetTemplate'
-            - '@Akeneo\Category\Domain\Query\GetCategoryTreesInterface'
+            - '@Akeneo\Category\Application\Query\GetTemplateInMemory'
+            - '@Akeneo\Category\Domain\Query\GetAttribute'
 
     Akeneo\Category\Infrastructure\Controller\InternalApi\CreateTemplateController:
         public: true

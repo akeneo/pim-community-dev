@@ -11,7 +11,7 @@ import {
   useTranslate,
   useUserContext,
 } from '@akeneo-pim-community/shared';
-import {useCategoryTree, useTemplate} from '../hooks';
+import {useCategoryTree, useTemplateByTemplateUuid} from '../hooks';
 import {useParams} from 'react-router';
 import {EditTemplatePropertiesForm} from '../components/template/EditTemplatePropertiesForm';
 import {cloneDeep, set} from 'lodash/fp';
@@ -67,9 +67,9 @@ const TemplatePage: FC = () => {
     data: fetchedTemplate,
     status: templateFetchingStatus,
     error: templateFetchingError,
-  } = useTemplate({
-    // TODO when available : use template uuid from category.template_id
-    uuid: '02274dac-e99a-4e1d-8f9b-794d4c3ba330',
+  } = useTemplateByTemplateUuid({
+    // TODO do not commit
+    uuid: templateId,
   });
 
   useEffect(() => {
