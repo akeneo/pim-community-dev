@@ -8,6 +8,7 @@ import {
   useRouter,
   useSecurity,
   useTranslate,
+  useUserContext,
 } from '@akeneo-pim-community/shared';
 import {CategoryTreeModel, Template} from '../../models';
 import styled from 'styled-components';

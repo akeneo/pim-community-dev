@@ -8,13 +8,13 @@ Feature: Export products according to file media attribute
     Given an "apparel" catalog configuration
     And the following family:
       | code    | requirements-ecommerce | attributes                              |
-      | rangers | sku,name               | attachment,description,image,name,price |
+      | rangers | sku,name               | sku,attachment,description,image,name,price |
     And the following products:
-      | sku        | enabled | family  | categories      | image                     | attachment             |
-      | SNKRS-1C-s | 1       | rangers | 2014_collection | %fixtures%/SNKRS-1C-s.png | %fixtures%/akeneo.txt  |
-      | SNKRS-1C-t | 1       | rangers | 2014_collection | %fixtures%/SNKRS-1C-t.png | %fixtures%/akeneo.txt  |
-      | SNKRS-1R   | 1       | rangers | 2014_collection | %fixtures%/SNKRS-1R.png   |                        |
-      | SNKRS-1S   | 1       | rangers | 2014_collection |                           | %fixtures%/akeneo2.txt |
+      | uuid                                 | sku        | enabled | family  | categories      | image                     | attachment             |
+      | 4538ff80-9dbb-40e0-a899-8f1eaa89b849 | SNKRS-1C-s | 1       | rangers | 2014_collection | %fixtures%/SNKRS-1C-s.png | %fixtures%/akeneo.txt  |
+      | 166ff41b-76bf-4733-980c-f7366870bd8e | SNKRS-1C-t | 1       | rangers | 2014_collection | %fixtures%/SNKRS-1C-t.png | %fixtures%/akeneo.txt  |
+      |                                      | SNKRS-1R   | 1       | rangers | 2014_collection | %fixtures%/SNKRS-1R.png   |                        |
+      |                                      | SNKRS-1S   | 1       | rangers | 2014_collection |                           | %fixtures%/akeneo2.txt |
     And I am logged in as "Julia"
 
   Scenario: Successfully export products according to file value start
@@ -33,6 +33,6 @@ Feature: Export products according to file media attribute
     Then exported file of "ecommerce_product_export" should contain:
     """
     sku;attachment;categories;description-de_DE-ecommerce;description-en_GB-ecommerce;description-en_US-ecommerce;description-fr_FR-ecommerce;enabled;family;groups;image;name-de_DE;name-en_GB;name-en_US;name-fr_FR;price-EUR;price-GBP;price-USD
-    SNKRS-1C-s;files/SNKRS-1C-s/attachment/akeneo.txt;2014_collection;;;;;1;rangers;;files/SNKRS-1C-s/image/SNKRS-1C-s.png;;;;;;;
-    SNKRS-1C-t;files/SNKRS-1C-t/attachment/akeneo.txt;2014_collection;;;;;1;rangers;;files/SNKRS-1C-t/image/SNKRS-1C-t.png;;;;;;;
+    SNKRS-1C-s;files/4538ff80-9dbb-40e0-a899-8f1eaa89b849/attachment/akeneo.txt;2014_collection;;;;;1;rangers;;files/4538ff80-9dbb-40e0-a899-8f1eaa89b849/image/SNKRS-1C-s.png;;;;;;;
+    SNKRS-1C-t;files/166ff41b-76bf-4733-980c-f7366870bd8e/attachment/akeneo.txt;2014_collection;;;;;1;rangers;;files/166ff41b-76bf-4733-980c-f7366870bd8e/image/SNKRS-1C-t.png;;;;;;;
     """

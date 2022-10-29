@@ -7,9 +7,9 @@ Feature: Export products in XLSX
   Background:
     Given an "apparel" catalog configuration
     And the following products:
-      | sku          | family  | categories                   | price                 | size   | color | manufacturer     | material | country_of_manufacture |
-      | tshirt-white | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_M | white | american_apparel | cotton   | usa                    |
-      | tshirt-black | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_L | black | american_apparel | cotton   | usa                    |
+      | uuid                                 | sku          | family  | categories                   | price                 | size   | color | manufacturer     | material | country_of_manufacture |
+      | 46ed65fe-8a2d-4e12-9988-8b354f5cf8b5 | tshirt-white | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_M | white | american_apparel | cotton   | usa                    |
+      |                                      | tshirt-black | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_L | black | american_apparel | cotton   | usa                    |
     And the following product values:
       | product      | attribute       | value                                | locale | scope     |
       | tshirt-white | name            | White t-shirt                        | en_US  |           |
@@ -40,9 +40,9 @@ Feature: Export products in XLSX
     Given the following job "xlsx_tablet_product_export" configuration:
       | filters | {"structure":{"locales":["en_US"],"scope":"tablet","attributes":["price","size","color","cost","description","name","image","release_date","weight"]}, "data": []} |
     And the following products:
-      | sku           | family  | categories                   | price                 | size   | color  | manufacturer     | material | country_of_manufacture |
-      | tshirt-yellow | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_M | yellow | american_apparel | cotton   | usa                    |
-      | tshirt-green  | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_L | green  | american_apparel | cotton   | usa                    |
+      | uuid                                 | sku           | family  | categories                   | price                 | size   | color  | manufacturer     | material | country_of_manufacture |
+      | 09688529-9a6e-41c5-952d-c44a945e000c | tshirt-yellow | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_M | yellow | american_apparel | cotton   | usa                    |
+      |                                      | tshirt-green  | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_L | green  | american_apparel | cotton   | usa                    |
     And the following product values:
       | product       | attribute       | value                                | locale | scope     |
       | tshirt-yellow | name            | Yellow t-shirt                       | en_US  |           |
@@ -71,8 +71,8 @@ Feature: Export products in XLSX
     And I launch the export job
     And I wait for the "xlsx_tablet_product_export" job to finish
     And exported xlsx file of "xlsx_tablet_product_export" should contain:
-      | sku           | categories                 | color  | cost-EUR | cost-GBP | cost-USD | description-en_GB-tablet | description-en_US-tablet | enabled | family  | groups | image                                  | name-en_GB     | name-en_US     | price-EUR | price-GBP | price-USD | release_date-tablet | size   | weight | weight-unit |
-      | tshirt-white  | men_2013,men_2014,men_2015 | white  | 10.00    | 20.00    | 30.00    |                          | A stylish white t-shirt  | 1       | tshirts |        | files/tshirt-white/image/SNKRS-1R.png  | White t-shirt  | White t-shirt  | 10.00     | 9.00      | 15.00     | 2016-10-12          |        | 5      | KILOGRAM    |
-      | tshirt-black  | men_2013,men_2014,men_2015 | black  |          |          |          |                          |                          | 1       | tshirts |        |                                        | Black t-shirt  | Black t-shirt  | 10.00     | 9.00      | 15.00     |                     |        |        |             |
-      | tshirt-yellow | men_2013,men_2014,men_2015 | yellow | 10.00    | 20.00    | 30.00    |                          | A stylish yellow t-shirt | 1       | tshirts |        | files/tshirt-yellow/image/SNKRS-1R.png | Yellow t-shirt | Yellow t-shirt | 10.00     | 9.00      | 15.00     | 2016-10-12          | size_M | 5      | KILOGRAM    |
-      | tshirt-green  | men_2013,men_2014,men_2015 | green  |          |          |          |                          |                          | 1       | tshirts |        |                                        | Green t-shirt  | Green t-shirt  | 10.00     | 9.00      | 15.00     |                     | size_L |        |             |
+      | sku           | categories                 | color  | cost-EUR | cost-GBP | cost-USD | description-en_GB-tablet | description-en_US-tablet | enabled | family  | groups | image                                                         | name-en_GB     | name-en_US     | price-EUR | price-GBP | price-USD | release_date-tablet | size   | weight | weight-unit |
+      | tshirt-white  | men_2013,men_2014,men_2015 | white  | 10.00    | 20.00    | 30.00    |                          | A stylish white t-shirt  | 1       | tshirts |        | files/46ed65fe-8a2d-4e12-9988-8b354f5cf8b5/image/SNKRS-1R.png | White t-shirt  | White t-shirt  | 10.00     | 9.00      | 15.00     | 2016-10-12          |        | 5      | KILOGRAM    |
+      | tshirt-black  | men_2013,men_2014,men_2015 | black  |          |          |          |                          |                          | 1       | tshirts |        |                                                               | Black t-shirt  | Black t-shirt  | 10.00     | 9.00      | 15.00     |                     |        |        |             |
+      | tshirt-yellow | men_2013,men_2014,men_2015 | yellow | 10.00    | 20.00    | 30.00    |                          | A stylish yellow t-shirt | 1       | tshirts |        | files/09688529-9a6e-41c5-952d-c44a945e000c/image/SNKRS-1R.png | Yellow t-shirt | Yellow t-shirt | 10.00     | 9.00      | 15.00     | 2016-10-12          | size_M | 5      | KILOGRAM    |
+      | tshirt-green  | men_2013,men_2014,men_2015 | green  |          |          |          |                          |                          | 1       | tshirts |        |                                                               | Green t-shirt  | Green t-shirt  | 10.00     | 9.00      | 15.00     |                     | size_L |        |             |

@@ -10,6 +10,7 @@ use Akeneo\Category\Domain\ValueObject\Attribute\AttributeType;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
+use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
 use Akeneo\Category\Infrastructure\Builder\TemplateBuilder;
 use PhpSpec\ObjectBehavior;
 
@@ -29,21 +30,20 @@ class TemplateBuilderSpec extends ObjectBehavior
         $this->shouldHaveType(TemplateBuilder::class);
     }
 
-    public function it_generate_a_template_from_a_category_code(
+    public function it_generate_a_template_from_a_category_tree_id(
         GetCategoryInterface $getCategory,
         Category $categoryTree
     ) {
-        $categoryTreeCode = new Code('category_code');
-        $categoryId = new CategoryId(1);
+        $categoryTreeId = new CategoryId(1);
         $labelCollection = LabelCollection::fromArray(['en_US' => 'Category code']);
 
-        $getCategory->byCode((string)$categoryTreeCode)->shouldBeCalled()->willReturn($categoryTree);
+        $getCategory->byId($categoryTreeId->getValue())->shouldBeCalled()->willReturn($categoryTree);
 
-        $categoryTree->getCode()->willReturn($categoryTreeCode);
+        $categoryTree->getId()->willReturn($categoryTreeId);
+        $categoryTree->getCode()->willReturn(new Code('category_code'));
         $categoryTree->getLabels()->willReturn($labelCollection);
-        $categoryTree->getId()->willReturn($categoryId);
 
-        $template = $this->generateTemplate($categoryTreeCode, "", LabelCollection::fromArray([]));
+        $template = $this->generateTemplate($categoryTreeId, new TemplateCode("unused_code"), LabelCollection::fromArray([]));
 
         $template->getCode()->__toString()->shouldReturn('category_code_template');
         $template->getLabelCollection()->getTranslation('en_US')->shouldReturn('Category code template');
@@ -54,17 +54,16 @@ class TemplateBuilderSpec extends ObjectBehavior
         GetCategoryInterface $getCategory,
         Category $categoryTree
     ) {
-        $categoryTreeCode = new Code('category_code');
-        $categoryId = new CategoryId(1);
+        $categoryTreeId = new CategoryId(1);
         $labelCollection = LabelCollection::fromArray(['en_US' => 'Category code']);
 
-        $getCategory->byCode((string)$categoryTreeCode)->shouldBeCalled()->willReturn($categoryTree);
+        $getCategory->byId($categoryTreeId->getValue())->shouldBeCalled()->willReturn($categoryTree);
 
-        $categoryTree->getCode()->willReturn($categoryTreeCode);
+        $categoryTree->getId()->willReturn($categoryTreeId);
+        $categoryTree->getCode()->willReturn(new Code('category_code'));
         $categoryTree->getLabels()->willReturn($labelCollection);
-        $categoryTree->getId()->willReturn($categoryId);
 
-        $template = $this->generateTemplate($categoryTreeCode, "", LabelCollection::fromArray([]));
+        $template = $this->generateTemplate($categoryTreeId, new TemplateCode("unused_code"), LabelCollection::fromArray([]));
 
         $template->getCode()->__toString()->shouldReturn('category_code_template');
         $template->getLabelCollection()->getTranslation('en_US')->shouldReturn('Category code template');

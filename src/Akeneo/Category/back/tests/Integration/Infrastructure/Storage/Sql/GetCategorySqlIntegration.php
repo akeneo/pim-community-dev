@@ -80,7 +80,8 @@ class GetCategorySqlIntegration extends TestCase
 
     public function testDoNotGetCategoryById(): void
     {
-        $category = $this->get(GetCategoryInterface::class)->byId(999);
+        $nonExistingId = $this->getLastCategoryId() + 1;
+        $category = $this->get(GetCategoryInterface::class)->byId($nonExistingId);
         $this->assertNull($category);
     }
 
@@ -179,6 +180,16 @@ SQL;
             ], JSON_THROW_ON_ERROR),
             'code' => $code
         ]);
+    }
+
+    private function getLastCategoryId(): int
+    {
+        $query = <<<SQL
+SELECT id from pim_catalog_category ORDER BY id DESC
+LIMIT 1
+SQL;
+
+        return (int) $this->get('database_connection')->fetchOne('SELECT MAX(id) FROM pim_catalog_category');
     }
 
     protected function getConfiguration(): Configuration
