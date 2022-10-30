@@ -111,7 +111,6 @@ pim_title:
   supplier_portal_retailer_supplier_list: Leveranciers
   supplier_portal_retailer_supplier_edit: Een leverancier bewerken
   supplier_portal_retailer_product_files_list: Productbestanden
-  supplier_portal_retailer_product_files_comment: Productbestand
 batch_jobs.supplier_portal_xlsx_supplier_import.label: Import van leveranciers uit Supplier Portal in XLSX
 pim_notification:
   supplier_portal:

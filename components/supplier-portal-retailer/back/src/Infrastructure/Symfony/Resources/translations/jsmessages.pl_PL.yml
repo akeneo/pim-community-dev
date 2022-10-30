@@ -111,7 +111,6 @@ pim_title:
   supplier_portal_retailer_supplier_list: Dostawcy
   supplier_portal_retailer_supplier_edit: Edytuj dostawcę
   supplier_portal_retailer_product_files_list: Pliki produktowe
-  supplier_portal_retailer_product_files_comment: Plik produktowy
 batch_jobs.supplier_portal_xlsx_supplier_import.label: Import dostawców do Portalu dostawcy w formacie XLSX
 pim_notification:
   supplier_portal:

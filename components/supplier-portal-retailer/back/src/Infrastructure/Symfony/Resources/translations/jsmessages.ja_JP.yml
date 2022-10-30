@@ -111,7 +111,6 @@ pim_title:
   supplier_portal_retailer_supplier_list: サプライヤー
   supplier_portal_retailer_supplier_edit: サプライヤーを編集
   supplier_portal_retailer_product_files_list: 商品ファイル
-  supplier_portal_retailer_product_files_comment: 商品ファイル
 batch_jobs.supplier_portal_xlsx_supplier_import.label: サプライヤーポータルのサプライヤーをXLSX形式でインポート
 pim_notification:
   supplier_portal:

@@ -111,7 +111,6 @@ pim_title:
   supplier_portal_retailer_supplier_list: 제공업체
   supplier_portal_retailer_supplier_edit: 제공업체 편집
   supplier_portal_retailer_product_files_list: 제품 파일
-  supplier_portal_retailer_product_files_comment: 제품 파일
 batch_jobs.supplier_portal_xlsx_supplier_import.label: XLSX로 Supplier Portal 제공업체 가져오기
 pim_notification:
   supplier_portal:
