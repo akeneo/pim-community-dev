@@ -104,7 +104,6 @@ pim_title:
   supplier_portal_retailer_supplier_list: Proveïdors
   supplier_portal_retailer_supplier_edit: Editar un proveïdor
   supplier_portal_retailer_product_files_list: Arxius de producte
-  supplier_portal_retailer_product_files_comment: Arxiu de producte
 batch_jobs.supplier_portal_xlsx_supplier_import.label: Portal de proveïdors Importació de proveïdors a XLSX
 pim_notification:
   supplier_portal:

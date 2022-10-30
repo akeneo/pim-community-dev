@@ -111,7 +111,6 @@ pim_title:
   supplier_portal_retailer_supplier_list: 供应商
   supplier_portal_retailer_supplier_edit: 编辑供应商
   supplier_portal_retailer_product_files_list: 产品文件
-  supplier_portal_retailer_product_files_comment: 产品文件
 batch_jobs.supplier_portal_xlsx_supplier_import.label: 以 XLSX 格式导入供应商门户
 pim_notification:
   supplier_portal:
