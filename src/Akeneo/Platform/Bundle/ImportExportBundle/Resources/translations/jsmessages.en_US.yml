@@ -187,7 +187,7 @@ pim_import_export:
                 file_path:
                     unsupported_extension: Unsupported file extension
                 fingerprint:
-                    invalid_encoding: Host fingerprint should be a valid MD5 hash
+                    invalid_encoding: Host fingerprint should be a valid SHA-512 checksum hash with colon notation.
             connection_checker:
                 label: Test connection settings
                 exception: Connection can't be established, please check your settings.
