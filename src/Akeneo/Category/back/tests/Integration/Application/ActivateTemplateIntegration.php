@@ -32,8 +32,6 @@ class ActivateTemplateIntegration extends CategoryTestCase
         $template = $this->get(GetTemplate::class)->byUuid((string) $templateModel->getUuid());
 
         $this->assertEquals($templateModel->getCode(), $template->getCode());
-        // TODO change for existing categoryId when inMemory service replaced with sql service
-        //$this->assertEquals($templateModel->getCategoryTreeId(), $template->getCategoryTreeId());
         $this->assertEqualsCanonicalizing($templateModel->getLabelCollection(), $template->getLabelCollection());
         $this->assertEqualsCanonicalizing(
             array_keys($templateModel->getAttributeCollection()->getAttributes()),
