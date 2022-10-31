@@ -4,7 +4,7 @@ import type {EditCategoryForm} from '../models';
 import {EnrichCategory, Template} from '../models';
 import {populateCategory} from '../helpers';
 import {EditCategoryContext} from '../components';
-import {useTemplateByRootId} from './useTemplateByRootId';
+import {useTemplateByTemplateUuidInMemory} from './useTemplateByTemplateUuidInMemory';
 
 interface UseCategoryResponseCommon {
   load: () => Promise<void>;
@@ -42,7 +42,7 @@ const useCategory = (categoryId: number): UseCategoryResponse => {
     data: template,
     status: templateFetchingStatus,
     error: templateFetchingError,
-  } = useTemplateByRootId({
+  } = useTemplateByTemplateUuidInMemory({
     // TODO when available : use template uuid from category.template_id
     uuid: '02274dac-e99a-4e1d-8f9b-794d4c3ba330',
     enabled: categoryFetchingStatus === 'fetched',

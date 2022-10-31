@@ -11,7 +11,7 @@ import {
   useTranslate,
   useUserContext,
 } from '@akeneo-pim-community/shared';
-import {useCategoryTree, useTemplateByRootId, useTemplateByTemplateUuid} from '../hooks';
+import {useCategoryTree, useTemplateByTemplateUuidInMemory, useTemplateByTemplateUuid} from '../hooks';
 import {useParams} from 'react-router';
 import {EditTemplatePropertiesForm} from '../components/templates/EditTemplatePropertiesForm';
 import {cloneDeep, set} from 'lodash/fp';
@@ -64,7 +64,7 @@ const TemplatePage: FC = () => {
     [setActiveTab, switchTo]
   );
 
-  const {data: fetchedTemplate, status: templateFetchingStatus} = useTemplateByRootId({
+  const {data: fetchedTemplate, status: templateFetchingStatus} = useTemplateByTemplateUuidInMemory({
     uuid: templateId,
   });
 

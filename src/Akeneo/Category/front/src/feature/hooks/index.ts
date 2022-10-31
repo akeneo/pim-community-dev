@@ -9,5 +9,5 @@ export * from './useDragTreeNode';
 export * from './useDropTreeNode';
 export * from './useCountProductsBeforeDeleteCategory';
 export * from './useCountProductsByCategory';
-export * from './useTemplateByRootId';
+export * from './useTemplateByTemplateUuidInMemory';
 export * from './useTemplateByTemplateUuid';

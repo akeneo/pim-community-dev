@@ -17,9 +17,9 @@ interface UseTemplateParameters {
   enabled?: boolean;
 }
 
-export const useTemplateByRootId = ({uuid, enabled = true}: UseTemplateParameters): Result => {
-  const url = useRoute('pim_category_template_rest_get_by_category_id', {
-    categoryId: uuid,
+export const useTemplateByTemplateUuidInMemory = ({uuid, enabled = true}: UseTemplateParameters): Result => {
+  const url = useRoute('pim_category_template_rest_get_by_template_uuid_in_memory', {
+    templateUuid: uuid,
   });
 
   const fetchTemplate = useCallback(async () => {
