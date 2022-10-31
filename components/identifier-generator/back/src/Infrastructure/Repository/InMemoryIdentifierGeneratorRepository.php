@@ -54,4 +54,12 @@ class InMemoryIdentifierGeneratorRepository implements IdentifierGeneratorReposi
     {
         return count($this->generators);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function delete(string $identifierGeneratorCode): void
+    {
+        unset($this->generators[$identifierGeneratorCode]);
+    }
 }
