@@ -37,6 +37,14 @@ class InMemoryIdentifierGeneratorRepository implements IdentifierGeneratorReposi
     /**
      * {@inheritdoc}
      */
+    public function getAll(): array
+    {
+        return array_values($this->generators);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getNextId(): IdentifierGeneratorId
     {
         return IdentifierGeneratorId::fromString(Uuid::uuid4()->toString());

@@ -25,6 +25,12 @@ interface IdentifierGeneratorRepository
      */
     public function get(string $identifierGeneratorCode): ?IdentifierGenerator;
 
+    /**
+     * @throws UnableToFetchIdentifierGeneratorException
+     * @return IdentifierGenerator[]
+     */
+    public function getAll(): array;
+
     public function getNextId(): IdentifierGeneratorId;
 
     public function count(): int;
