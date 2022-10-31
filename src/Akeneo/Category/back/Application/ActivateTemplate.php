@@ -5,6 +5,7 @@ namespace Akeneo\Category\Application;
 use Akeneo\Category\Application\Query\CheckTemplate;
 use Akeneo\Category\Application\Query\GetCategoryTemplateByCategoryTree;
 use Akeneo\Category\Application\Query\GetCategoryTreeByCategoryTemplate;
+use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
@@ -29,6 +30,7 @@ class ActivateTemplate
         private TemplateBuilder $templateBuilder,
         private CategoryTemplateSaver $categoryTemplateSaver,
         private CategoryTreeTemplateSaver $categoryTreeTemplateSaver,
+        private CategoryTemplateAttributeSaver $categoryTemplateAttributeSaver,
     ) {
     }
 
@@ -95,6 +97,11 @@ class ActivateTemplate
         if (($this->getCategoryTreeByCategoryTemplate)($templateModel->getUuid()) === null) {
             $this->categoryTreeTemplateSaver->insert($templateModel);
         }
+
+        $this->categoryTemplateAttributeSaver->insert(
+            $templateModel->getUuid(),
+            $templateModel->getAttributeCollection(),
+        );
 
         return $templateModel->getUuid();
     }
