@@ -53,9 +53,6 @@ $rules = [
         'Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface',
         'Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface',
 
-        // Public APIs
-        'Akeneo\Pim\Structure\Component\AttributeTypes',
-
         // TODO: remove when Upsert product does not use token interface
         'Akeneo\UserManagement\Component\Model\UserInterface',
         'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface',

@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\Application\StandardFormat;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceCollectionValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Query\GetUserIntentsFromStandardFormat;
 use Akeneo\Pim\Enrichment\Product\Domain\UserIntent\UserIntentFactoryRegistry;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)

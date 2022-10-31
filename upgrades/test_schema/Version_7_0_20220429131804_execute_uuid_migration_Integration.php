@@ -170,7 +170,7 @@ final class Version_7_0_20220429131804_execute_uuid_migration_Integration extend
                 foreach ($quantifiedAssociation['products'] as $productInfo) {
                     Assert::assertArrayHasKey('id', $productInfo);
                     Assert::assertArrayHasKey('uuid', $productInfo);
-                    Assert::assertSame($this->getProductUuid((int) $productInfo['id']), $productInfo['uuid']);
+                    Assert::assertSame($this->getProductUuidFromId((int) $productInfo['id']), $productInfo['uuid']);
                 }
             }
         }
@@ -262,7 +262,7 @@ final class Version_7_0_20220429131804_execute_uuid_migration_Integration extend
         return $result !== 'NO';
     }
 
-    private function getProductUuid(int $id): ?string
+    private function getProductUuidFromId(int $id): ?string
     {
         $sql = 'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE id = :id';
 

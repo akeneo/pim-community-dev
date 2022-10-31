@@ -15,7 +15,6 @@ services:
     pim_catalog.updater.family:
         class: 'Akeneo\Pim\Structure\Component\Updater\FamilyUpdater'
         arguments:
-            - '@pim_catalog.repository.family'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.factory.attribute_requirement'

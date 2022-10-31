@@ -25,7 +25,7 @@ class RemoveQuantifiedAssociationsFromProductEndToEnd extends AbstractProductWit
             'PRODUCTSET' => [
                 'products' => [
                     [
-                        'uuid' => $this->getProductUuid('1111111111'),
+                        'uuid' => $this->getProductUuid('1111111111')->toString(),
                         'quantity' => 3,
                     ],
                 ],
