@@ -31,8 +31,10 @@ class GetCategoryTemplateSql implements GetTemplate
             SELECT
                 BIN_TO_UUID(uuid) as uuid,
                 code,
-                labels
+                labels,
+                category_tree_template.category_tree_id as category_id 
             FROM pim_catalog_category_template category_template
+            INNER JOIN pim_catalog_category_tree_template category_tree_template ON category_tree_template.category_template_uuid = category_template.uuid
             WHERE uuid=:template_uuid;
         SQL;
 
@@ -46,12 +48,16 @@ class GetCategoryTemplateSql implements GetTemplate
             ]
         )->fetchAssociative();
 
-        $category = null;
-
-        if ($result) {
-            $category = Template::fromDatabase($result);
+        if (empty($results)) {
+            return null;
         }
 
-        return $category;
+        $attributes = null;
+
+        if ($result) {
+            $attributes = Template::fromDatabase($result);
+        }
+
+        return $attributes;
     }
 }

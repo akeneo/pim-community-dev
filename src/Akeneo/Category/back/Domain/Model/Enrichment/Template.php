@@ -20,7 +20,7 @@ class Template
         private TemplateUuid $uuid,
         private TemplateCode $code,
         private LabelCollection $labelCollection,
-        private ?CategoryId $categoryTreeId = null,
+        private CategoryId $categoryTreeId,
         private ?AttributeCollection $attributeCollection = null,
     ) {
     }
@@ -92,7 +92,8 @@ class Template
             LabelCollection::fromArray(
                 json_decode($result['labels'], true, 512, JSON_THROW_ON_ERROR),
             ) : null;
+        $categoryId = new CategoryId((int) $result['category_id']);
 
-        return new self($id, $code, $labelCollection);
+        return new self($id, $code, $labelCollection, $categoryId);
     }
 }
