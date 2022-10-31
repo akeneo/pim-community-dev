@@ -11,6 +11,8 @@ use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
 use Akeneo\Test\IntegrationTestsBundle\Helper\ExperimentalTransactionHelper;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -189,5 +191,15 @@ abstract class TestCase extends KernelTestCase
         $this->get('pim_user.saver.user')->save($user);
 
         return $user;
+    }
+
+    protected function getProductUuid(string $productIdentifier): ?UuidInterface
+    {
+        $productUuid = $this->get('database_connection')->executeQuery(
+            'SELECT BIN_TO_UUID(uuid) as uuid from pim_catalog_product where identifier = :identifier',
+            ['identifier' => $productIdentifier]
+        )->fetchOne();
+
+        return $productUuid ? Uuid::fromString($productUuid) : null;
     }
 }

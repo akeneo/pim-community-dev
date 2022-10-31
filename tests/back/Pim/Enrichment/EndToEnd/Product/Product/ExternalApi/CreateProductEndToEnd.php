@@ -210,25 +210,25 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                "PACK"         => [
-                    "groups"   => [],
-                    "products" => [],
-                    "product_models" => [],
+                'PACK'         => [
+                    'groups'   => [],
+                    'product_uuids' => [],
+                    'product_models' => [],
                 ],
-                "SUBSTITUTION" => [
-                    "groups"   => [],
-                    "products" => [],
-                    "product_models" => [],
+                'SUBSTITUTION' => [
+                    'groups'   => [],
+                    'product_uuids' => [],
+                    'product_models' => [],
                 ],
-                "UPSELL"       => [
-                    "groups"   => [],
-                    "products" => [],
-                    "product_models" => ["a_product_model"],
+                'UPSELL'       => [
+                    'groups'   => [],
+                    'product_uuids' => [],
+                    'product_models' => ['a_product_model'],
                 ],
-                "X_SELL"       => [
-                    "groups"   => ["groupA"],
-                    "products" => ["simple"],
-                    "product_models" => [],
+                'X_SELL'       => [
+                    'groups'   => ['groupA'],
+                    'product_uuids' => [$this->getProductUuid('simple')->toString()],
+                    'product_models' => [],
                 ],
             ],
             'quantified_associations' => [],

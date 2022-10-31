@@ -202,14 +202,4 @@ class RemoveLocaleFromChannelEndToEnd extends InternalApiTestCase
         $this->validate($family);
         $this->get('pim_catalog.saver.family')->save($family);
     }
-
-    private function getProductUuid(string $productIdentifier): UuidInterface
-    {
-        $productUuid = $this->get('database_connection')->executeQuery(
-            "SELECT BIN_TO_UUID(uuid) as uuid FROM pim_catalog_product WHERE identifier = :identifier;",
-            ['identifier' => $productIdentifier]
-        )->fetchOne();
-
-        return Uuid::fromString($productUuid);
-    }
 }
