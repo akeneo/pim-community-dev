@@ -1,7 +1,6 @@
 import {
   getCronExpressionFromFrequencyOption,
   getFrequencyOptionFromCronExpression,
-  getTimeInUserTimezone,
   getWeekDayFromCronExpression,
   getWeeklyCronExpressionFromWeekDay,
 } from './Frequency';
