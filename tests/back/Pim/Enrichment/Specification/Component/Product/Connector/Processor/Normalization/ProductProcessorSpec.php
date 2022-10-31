@@ -44,8 +44,8 @@ class ProductProcessorSpec extends ObjectBehavior
             $channelRepository,
             $attributeRepository,
             $fillMissingProductModelValues,
-            $getNormalizedProductQualityScores,
             $getAttributes,
+            $getNormalizedProductQualityScores,
         );
 
         $this->setStepExecution($stepExecution);
