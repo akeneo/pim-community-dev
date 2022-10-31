@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cae4c771c1299f4e0acdc24a13d57d36",
+    "content-hash": "43a605dc1dc120641420b067e541b673",
     "packages": [
         {
             "name": "ass/xmlsecurity",
@@ -6680,23 +6680,23 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v4.4.25",
+            "version": "v4.4.48",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "0c79d5a65ace4fe66e49702658c024a419d2438b"
+                "reference": "cd4f478e67f7c8776a13b17e7d44241fd66261ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/0c79d5a65ace4fe66e49702658c024a419d2438b",
-                "reference": "0c79d5a65ace4fe66e49702658c024a419d2438b",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/cd4f478e67f7c8776a13b17e7d44241fd66261ad",
+                "reference": "cd4f478e67f7c8776a13b17e7d44241fd66261ad",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1.3",
                 "symfony/mime": "^4.3|^5.0",
                 "symfony/polyfill-mbstring": "~1.1",
-                "symfony/polyfill-php80": "^1.15"
+                "symfony/polyfill-php80": "^1.16"
             },
             "require-dev": {
                 "predis/predis": "~1.0",
@@ -6728,7 +6728,7 @@
             "description": "Defines an object-oriented layer for the HTTP specification",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/http-foundation/tree/v4.4.25"
+                "source": "https://github.com/symfony/http-foundation/tree/v4.4.48"
             },
             "funding": [
                 {
@@ -6744,7 +6744,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-26T11:20:16+00:00"
+            "time": "2022-10-12T09:40:54+00:00"
         },
         {
             "name": "symfony/http-kernel",
@@ -7165,16 +7165,16 @@
         },
         {
             "name": "symfony/mime",
-            "version": "v5.4.10",
+            "version": "v5.4.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/mime.git",
-                "reference": "02265e1e5111c3cd7480387af25e82378b7ab9cc"
+                "reference": "bb2ccf759e2b967dcd11bdee5bdf30dddd2290bd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/mime/zipball/02265e1e5111c3cd7480387af25e82378b7ab9cc",
-                "reference": "02265e1e5111c3cd7480387af25e82378b7ab9cc",
+                "url": "https://api.github.com/repos/symfony/mime/zipball/bb2ccf759e2b967dcd11bdee5bdf30dddd2290bd",
+                "reference": "bb2ccf759e2b967dcd11bdee5bdf30dddd2290bd",
                 "shasum": ""
             },
             "require": {
@@ -7228,7 +7228,7 @@
                 "mime-type"
             ],
             "support": {
-                "source": "https://github.com/symfony/mime/tree/v5.4.10"
+                "source": "https://github.com/symfony/mime/tree/v5.4.13"
             },
             "funding": [
                 {
@@ -7244,7 +7244,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-06-09T12:22:40+00:00"
+            "time": "2022-09-01T18:18:29+00:00"
         },
         {
             "name": "symfony/monolog-bridge",
@@ -15757,5 +15757,5 @@
         "ext-openssl": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.3.0"
 }
