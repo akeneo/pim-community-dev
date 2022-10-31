@@ -101,6 +101,7 @@ class CategoryTreeController extends AbstractController
                 'id' => $tree->getId()->getValue(),
                 'code' => (string) $tree->getCode(),
                 'label' => $tree->getLabel($this->userContext->getCurrentLocaleCode()),
+                'templateUuid' => (string) $tree->getCategoryTreeTemplate()?->getTemplateUuid(),
                 'templateLabel' => $tree->getCategoryTreeTemplate()?->getTemplateLabel($this->userContext->getCurrentLocaleCode()),
                 'selected' => (int) $tree->getId() === $selectedTreeId ? 'true' : 'false'
             ];
