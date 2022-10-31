@@ -20,8 +20,6 @@ const FormContainer = styled.div`
 
 const EditTemplatePropertiesForm = ({template, onChangeLabel}: Props) => {
   const translate = useTranslate();
-  const {isGranted} = useSecurity();
-
   const {locales, localesFetchFailed} = useContext(EditCategoryContext);
 
   const findLocaleName = useCallback(

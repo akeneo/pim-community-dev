@@ -5,11 +5,10 @@ import {useCallback} from 'react';
 
 const TEMPLATE_FETCH_STALE_TIME = 60 * 60 * 1000;
 
-type ResultError = Error | null;
 type Result = {
   status: 'idle' | 'loading' | 'success' | 'error';
   data: Template | undefined;
-  error: ResultError;
+  error: any;
 };
 
 interface UseTemplateParameters {
@@ -27,13 +26,9 @@ export const useTemplate = ({uuid, enabled = true}: UseTemplateParameters): Resu
       return {};
     }
 
-    const response = await fetch(url);
-
-    if (!response.ok) {
-      throw new Error();
-    }
-
-    return await response.json();
+    return fetch(url).then(response => {
+      return response.json();
+    });
   }, [uuid, url]);
 
   const options = {
@@ -41,5 +36,5 @@ export const useTemplate = ({uuid, enabled = true}: UseTemplateParameters): Resu
     staleTime: TEMPLATE_FETCH_STALE_TIME,
   };
 
-  return useQuery<Template, ResultError, Template>(['template'], fetchTemplate, options);
+  return useQuery<Template, any>(['template'], fetchTemplate, options);
 };
