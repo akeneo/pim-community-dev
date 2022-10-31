@@ -25,7 +25,7 @@ class GetCategoryTemplateSql implements GetTemplate
      * @throws \JsonException
      * @throws \Doctrine\DBAL\Exception
      */
-    public function byUuid(TemplateUuid $templateUuid): ?Template
+    public function byUuid(TemplateUuid $uuid): ?Template
     {
         $query = <<< SQL
             SELECT
@@ -41,7 +41,7 @@ class GetCategoryTemplateSql implements GetTemplate
         $result = $this->connection->executeQuery(
             $query,
             [
-                'template_uuid' => $templateUuid->toBytes()
+                'template_uuid' => $uuid->toBytes()
             ],
             [
                 'template_uuid' => \PDO::PARAM_STR

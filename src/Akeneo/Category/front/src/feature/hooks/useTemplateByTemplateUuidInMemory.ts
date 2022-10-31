@@ -2,12 +2,13 @@ import {useQuery} from 'react-query';
 import {Template} from '../models';
 import {useRoute} from '@akeneo-pim-community/shared';
 import {useCallback} from 'react';
+import {ResponseStatus} from '../models/ResponseStatus';
 
 const TEMPLATE_FETCH_STALE_TIME = 60 * 60 * 1000;
 
 type ResultError = Error | null;
 type Result = {
-  status: 'idle' | 'loading' | 'success' | 'error';
+  status: ResponseStatus;
   data: Template | undefined;
   error: ResultError;
 };

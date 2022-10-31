@@ -50,7 +50,7 @@ services:
             - '@oro_security.security_facade'
             - '@Akeneo\Category\Application\Query\GetTemplate'
             - '@Akeneo\Category\Application\Query\GetAttribute'
-            - '@Akeneo\Category\Application\Query\GetTemplateInMemory'
+            - '@Akeneo\Category\Infrastructure\Storage\InMemory\GetTemplateInMemory'
 
 
     Akeneo\Category\Infrastructure\Controller\InternalApi\CreateTemplateController:

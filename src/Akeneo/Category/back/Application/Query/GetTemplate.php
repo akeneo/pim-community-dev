@@ -13,5 +13,5 @@ use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
  */
 interface GetTemplate
 {
-    public function byUuid(TemplateUuid $templateId): ?Template;
+    public function byUuid(TemplateUuid $uuid): ?Template;
 }

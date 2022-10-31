@@ -66,6 +66,27 @@ abstract class Attribute
         ];
     }
 
+    public static function fromType(
+        AttributeType $type,
+        AttributeUuid $uuid,
+        AttributeCode $code,
+        AttributeOrder $order,
+        AttributeIsRequired $isRequired,
+        AttributeIsScopable $isScopable,
+        AttributeIsLocalizable $isLocalizable,
+        LabelCollection $labelCollection,
+        TemplateUuid $templateUuid,
+        AttributeAdditionalProperties $additionalProperties,
+    ): Attribute {
+        return match ($type->__toString()) {
+            AttributeType::RICH_TEXT => new AttributeRichText($uuid, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties),
+            AttributeType::TEXT => new AttributeText($uuid, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties),
+            AttributeType::IMAGE => new AttributeImage($uuid, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties),
+            AttributeType::TEXTAREA => new AttributeTextArea($uuid, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties),
+            default => throw new \LogicException(sprintf('Type not recognized: "%s"', $type)),
+        };
+    }
+
     public function getUuid(): AttributeUuid
     {
         return $this->uuid;
@@ -126,16 +147,6 @@ abstract class Attribute
 
     /**
      * @param array{
-     *     id: int,
-     *     code: string,
-     *     translations: string|null,
-     *     template_uuid: string|null,
-     *     template_labels: string|null
-     * } $result
-     */
-
-    /**
-     * @param array{
      *      uuid: string,
      *      code: string,
      *      attribute_type: string,
@@ -167,12 +178,6 @@ abstract class Attribute
                 json_decode($result['additional_properties'], true, 512, JSON_THROW_ON_ERROR),
             ) : null;
 
-        return match ($type->__toString()) {
-            AttributeType::RICH_TEXT => new AttributeRichText($id, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties),
-            AttributeType::TEXT => new AttributeText($id, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties),
-            AttributeType::IMAGE => new AttributeImage($id, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties),
-            AttributeType::TEXTAREA => new AttributeTextArea($id, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties),
-            default => throw new \LogicException(sprintf('Type not recognized: "%s"', $type)),
-        };
+        return Attribute::fromType($type, $id, $code, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties);
     }
 }

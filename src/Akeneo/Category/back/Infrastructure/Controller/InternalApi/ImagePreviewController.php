@@ -36,9 +36,9 @@ class ImagePreviewController
     private const ROOT_FLAG = '__root__';
 
     public function __construct(
-        private GetAttributeInMemory      $getAttribute,
+        private GetAttributeInMemory $getAttribute,
         private PreviewGeneratorInterface $previewGenerator,
-        private LoaderInterface           $imageLoader,
+        private LoaderInterface $imageLoader,
     ) {
     }
 

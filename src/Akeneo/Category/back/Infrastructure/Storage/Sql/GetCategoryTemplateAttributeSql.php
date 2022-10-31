@@ -26,7 +26,7 @@ class GetCategoryTemplateAttributeSql implements GetAttribute
      * @throws \JsonException
      * @throws \Doctrine\DBAL\Exception
      */
-    public function byTemplateUuid(TemplateUuid $templateUuid): AttributeCollection
+    public function byTemplateUuid(TemplateUuid $uuid): AttributeCollection
     {
         $query = <<< SQL
             SELECT 
@@ -47,7 +47,7 @@ class GetCategoryTemplateAttributeSql implements GetAttribute
         $results = $this->connection->executeQuery(
             $query,
             [
-                'template_uuid' => $templateUuid->toBytes()
+                'template_uuid' => $uuid->toBytes()
             ],
             [
                 'template_uuid' => \PDO::PARAM_STR

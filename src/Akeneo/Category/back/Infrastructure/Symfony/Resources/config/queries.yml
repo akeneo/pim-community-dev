@@ -14,7 +14,7 @@ services:
     arguments:
       - '@database_connection'
 
-  Akeneo\Category\Application\Query\GetTemplateInMemory:
+  Akeneo\Category\Infrastructure\Storage\InMemory\GetTemplateInMemory:
     class: Akeneo\Category\Infrastructure\Storage\InMemory\GetTemplateInMemory
     arguments:
       - '@database_connection'

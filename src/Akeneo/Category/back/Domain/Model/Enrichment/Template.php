@@ -21,7 +21,7 @@ class Template
         private TemplateCode $code,
         private LabelCollection $labelCollection,
         private CategoryId $categoryTreeId,
-        private ?AttributeCollection $attributeCollection = null,
+        private ?AttributeCollection $attributeCollection,
     ) {
     }
 
@@ -95,6 +95,6 @@ class Template
             ) : null;
         $categoryId = new CategoryId((int) $result['category_id']);
 
-        return new self($id, $code, $labelCollection, $categoryId);
+        return new self($id, $code, $labelCollection, $categoryId, null);
     }
 }

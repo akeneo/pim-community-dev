@@ -22,10 +22,10 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class GetTemplateController
 {
     public function __construct(
-        private SecurityFacade       $securityFacade,
-        private GetTemplate          $getTemplate,
-        private GetAttribute         $getAttribute,
-        private GetTemplateInMemory  $getTemplateInMemory,
+        private SecurityFacade $securityFacade,
+        private GetTemplate $getTemplate,
+        private GetAttribute $getAttribute,
+        private GetTemplateInMemory $getTemplateInMemory,
     ) {
     }
 

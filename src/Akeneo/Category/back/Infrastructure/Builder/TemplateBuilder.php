@@ -47,6 +47,7 @@ class TemplateBuilder
         TemplateCode $templateCode,
         LabelCollection $templateLabelCollection
     ) : Template {
+        // TODO mettre à jour
         $categoryTree = $this->getCategory->byId($categoryTreeId->getValue());
         $templateUuid = TemplateUuid::fromUuid(Uuid::uuid4());
 

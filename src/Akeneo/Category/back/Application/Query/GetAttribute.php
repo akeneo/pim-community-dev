@@ -15,5 +15,5 @@ use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
  */
 interface GetAttribute
 {
-    public function byTemplateUuid(TemplateUuid $identifiers): AttributeCollection;
+    public function byTemplateUuid(TemplateUuid $uuid): AttributeCollection;
 }
