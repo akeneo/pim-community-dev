@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Category\Domain\Query;
 
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
-use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -13,7 +12,10 @@ use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
  *
  * @phpstan-type Identifier string
  */
-interface GetAttribute
+interface GetAttributeInMemory
 {
-    public function byTemplateUuid(TemplateUuid $identifiers): AttributeCollection;
+    /**
+     * @param array<Identifier> $identifiers {example : [title|1234579-1354]}
+     */
+    public function byIdentifiers(array $identifiers): AttributeCollection;
 }

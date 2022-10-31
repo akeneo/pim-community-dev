@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
+use Akeneo\Category\Application\Query\GetAttribute;
 use Akeneo\Category\Application\Query\GetTemplate;
-use Akeneo\Category\Domain\Query\GetAttribute;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Category\Infrastructure\Storage\InMemory\GetTemplateInMemory;
 use Oro\Bundle\SecurityBundle\SecurityFacade;

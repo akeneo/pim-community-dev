@@ -24,13 +24,13 @@ services:
     arguments:
       - '@database_connection'
 
-  Akeneo\Category\Domain\Query\GetAttribute:
+  Akeneo\Category\Application\Query\GetAttribute:
     class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryTemplateAttributeSql
     arguments:
       - '@database_connection'
 
   Akeneo\Category\Domain\Query\GetAttributeInMemory:
-    class: Akeneo\Category\Infrastructure\Storage\InMemory\GetAttributeInMemory
+    class: Akeneo\Category\Infrastructure\Storage\InMemory\GetAttributeInMemoryImpl
     arguments:
       - '@database_connection'
 

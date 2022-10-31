@@ -48,12 +48,12 @@ class GetCategoryTemplateSql implements GetTemplate
             ]
         )->fetchAssociative();
 
-        $category = null;
+        $template = null;
 
         if ($result) {
-            $category = Template::fromDatabase($result);
+            $template = Template::fromDatabase($result);
         }
 
-        return $category;
+        return $template;
     }
 }

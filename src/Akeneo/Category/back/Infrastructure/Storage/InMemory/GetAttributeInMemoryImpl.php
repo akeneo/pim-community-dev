@@ -8,7 +8,7 @@ use Akeneo\Category\Domain\Model\Attribute\AttributeImage;
 use Akeneo\Category\Domain\Model\Attribute\AttributeRichText;
 use Akeneo\Category\Domain\Model\Attribute\AttributeText;
 use Akeneo\Category\Domain\Model\Attribute\AttributeTextArea;
-use Akeneo\Category\Domain\Query\GetAttribute;
+use Akeneo\Category\Domain\Query\GetAttributeInMemory;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
@@ -24,13 +24,13 @@ use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class GetAttributeInMemory implements GetAttribute
+class GetAttributeInMemoryImpl implements GetAttributeInMemory
 {
 
     /**
      * @inheritDoc
      */
-    public function byTemplateUuid(TemplateUuid $identifiers): AttributeCollection
+    public function byIdentifiers(array $identifiers): AttributeCollection
     {
         $templateUuid = TemplateUuid::fromString('02274dac-e99a-4e1d-8f9b-794d4c3ba330');
 

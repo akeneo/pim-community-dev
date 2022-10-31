@@ -168,10 +168,10 @@ abstract class Attribute
             ) : null;
 
         return match ($type->__toString()) {
-            'richtext' => new AttributeRichText($id, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties),
-            'text' => new AttributeText($id, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties),
-            'image' => new AttributeImage($id, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties),
-            'textarea' => new AttributeTextArea($id, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties),
+            AttributeType::RICH_TEXT => new AttributeRichText($id, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties),
+            AttributeType::TEXT => new AttributeText($id, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties),
+            AttributeType::IMAGE => new AttributeImage($id, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties),
+            AttributeType::TEXTAREA => new AttributeTextArea($id, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties),
             default => throw new \LogicException(sprintf('Type not recognized: "%s"', $type)),
         };
     }

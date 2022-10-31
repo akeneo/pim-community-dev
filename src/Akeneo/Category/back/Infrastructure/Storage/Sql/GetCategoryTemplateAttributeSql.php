@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
+use Akeneo\Category\Application\Query\GetAttribute;
 use Akeneo\Category\Domain\Model\Attribute\Attribute;
-use Akeneo\Category\Domain\Query\GetAttribute;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Doctrine\DBAL\Connection;
