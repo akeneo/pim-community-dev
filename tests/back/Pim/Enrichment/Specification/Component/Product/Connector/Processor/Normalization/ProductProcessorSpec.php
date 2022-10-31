@@ -35,8 +35,8 @@ class ProductProcessorSpec extends ObjectBehavior
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
         FillMissingValuesInterface $fillMissingProductModelValues,
-        GetNormalizedProductQualityScores $getNormalizedProductQualityScores,
         GetAttributes $getAttributes,
+        GetNormalizedProductQualityScores $getNormalizedProductQualityScores,
         StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
