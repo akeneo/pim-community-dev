@@ -44,15 +44,15 @@ final class RecomputeProductScoresTasklet implements TaskletInterface
             $lastProductId = $jobParameters->get(RecomputeProductScoresParameters::LAST_PRODUCT_ID);
 
             do {
-                $productIds = $this->getNextProductIds($lastProductId);
-                if (empty($productIds)) {
+                $uuids = $this->getNextProductUuids($lastProductId);
+                if (empty($uuids)) {
                     return;
                 }
 
                 $this->consolidateProductScores->consolidate(
-                    $this->idFactory->createCollection(array_map(fn ($productId) => (string) $productId, $productIds))
+                    $this->idFactory->createCollection(array_map(fn ($productId) => (string) $productId, $uuids))
                 );
-                $lastProductId = end($productIds);
+                $lastProductId = end($uuids);
             } while (false === $this->isTimeboxReached($startTime));
         } catch (\Exception $exception) {
             $this->stepExecution->addFailureException($exception);
@@ -67,20 +67,20 @@ final class RecomputeProductScoresTasklet implements TaskletInterface
     }
 
     /**
-     * @return int[]
+     * @return string[]
      */
-    private function getNextProductIds($lastProductId): array
+    private function getNextProductUuids($lastProductId): array
     {
         $stmt = $this->connection->executeQuery(
             sprintf(
-                'SELECT id FROM pim_catalog_product WHERE id > %d ORDER BY id LIMIT %d',
+                'SELECT BIN_TO_UUID(uuid) as uuid FROM pim_catalog_product WHERE id > %d ORDER BY id LIMIT %d',
                 $lastProductId,
                 self::BULK_SIZE
             )
         );
 
         return array_map(function ($resultRow) {
-            return (int) $resultRow['id'];
+            return (string) $resultRow['uuid'];
         }, $stmt->fetchAllAssociative());
     }
 
