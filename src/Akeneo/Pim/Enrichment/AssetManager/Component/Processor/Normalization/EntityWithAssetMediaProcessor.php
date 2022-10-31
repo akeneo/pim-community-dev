@@ -111,6 +111,49 @@ final class EntityWithAssetMediaProcessor implements ItemProcessorInterface, Ste
 
     private function resolveAssetMainMedia(array $entityStandard, ?array $scopeCodes, ?array $localeCodes): array
     {
+        $assetCollectionAttribute = $this->getAttributes->forType(AssetCollectionType::ASSET_COLLECTION);
+        $assetCollectionAttributeCodes = array_intersect_key($assetCollectionAttribute, $entityStandard['values']);
+
+        foreach ($assetCollectionAttributeCodes as $attributeCode => $attribute) {
+            foreach ($entityStandard['values'][$attributeCode] as $valueKey => $value) {
+                if (!$this->productValueSatisfiesLocaleAndScopeFilters($value, $scopeCodes, $localeCodes)) {
+                    continue;
+                }
+
+                if (empty($value['data'])) {
+                    continue;
+                }
+
+                $assetMainMediaValues = $this->getMainMediaValues(
+                    $attribute->properties()['reference_data_name'],
+                    $value['data']
+                );
+
+                $scopeCodesFilter = null !== $scopeCodes && null !== $value['scope'] ? [$value['scope']] : $scopeCodes;
+                $localeCodesFilter = null !== $localeCodes && null !== $value['locale'] ? [$value['locale']] : $localeCodes;
+
+                $filteredMainMedia = [];
+                foreach ($assetMainMediaValues as $assetMainMediaValue) {
+                    if (
+                        $this->assetValueSatisfiesLocaleAndScopeFilters(
+                            $assetMainMediaValue,
+                            $scopeCodesFilter,
+                            $localeCodesFilter
+                        )
+                    ) {
+                        $filteredMainMedia[] = $assetMainMediaValue;
+                    }
+                }
+
+                if (0 < count($filteredMainMedia)) {
+                    $entityStandard['values'][$attributeCode][$valueKey]['paths'] = \array_map(
+                        fn (array $mediaValue): string => $mediaValue['data']['filePath'] ?? $mediaValue['data'],
+                        $filteredMainMedia
+                    );
+                }
+            }
+        }
+
         foreach ($entityStandard['values'] as $attributeCode => $values) {
             foreach ($values as $valueKey => $value) {
                 if (!$this->productValueSatisfiesLocaleAndScopeFilters($value, $scopeCodes, $localeCodes)) {
