@@ -124,6 +124,30 @@ abstract class Attribute
         return $this->additionalProperties;
     }
 
+    /**
+     * @param array{
+     *     id: int,
+     *     code: string,
+     *     translations: string|null,
+     *     template_uuid: string|null,
+     *     template_labels: string|null
+     * } $result
+     */
+
+    /**
+     * @param array{
+     *      uuid: string,
+     *      code: string,
+     *      attribute_type: string,
+     *      attribute_order: int,
+     *      is_required: bool,
+     *      is_scopable: bool,
+     *      is_localizable: bool,
+     *      labels: string|null,
+     *      category_template_uuid: string,
+     *      additional_properties: string|null
+     * } $result
+     */
     public static function fromDatabase(array $result): self
     {
         $id = AttributeUuid::fromString($result['uuid']);
@@ -140,7 +164,7 @@ abstract class Attribute
         $templateUuid = TemplateUuid::fromString($result['category_template_uuid']);
         $additionalProperties = $result['additional_properties'] ?
             AttributeAdditionalProperties::fromArray(
-                json_decode($result['labels'], true, 512, JSON_THROW_ON_ERROR),
+                json_decode($result['additional_properties'], true, 512, JSON_THROW_ON_ERROR),
             ) : null;
 
         return match ($type->__toString()) {

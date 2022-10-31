@@ -12,6 +12,7 @@ use Akeneo\Category\Api\Command\UserIntents\UserIntent;
 use Akeneo\Category\Domain\Query\GetAttribute;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeType;
+use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
 use Akeneo\Category\Infrastructure\Converter\InternalApi\InternalApiToStd;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -72,7 +73,7 @@ final class ValueUserIntentFactory implements UserIntentFactory
     {
         $compositeKeys = $this->extractCompositeKeys(array_keys($attributes));
 
-        return $this->getAttribute->byTemplateUuid($compositeKeys);
+        return $this->getAttribute->byTemplateUuid(TemplateUuid::fromString(implode('-', $compositeKeys)));
     }
 
     /**

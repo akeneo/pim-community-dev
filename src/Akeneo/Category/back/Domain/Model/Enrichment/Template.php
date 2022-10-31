@@ -70,7 +70,7 @@ class Template
             'uuid' => (string) $this->uuid,
             'code' => (string) $this->code,
             'labels' => $this->labelCollection->normalize(),
-            'category_tree_identifier' => $this->categoryTreeId?->getValue(),
+            'category_tree_identifier' => $this->categoryTreeId->getValue(),
             'attributes' => $this->attributeCollection?->normalize(),
         ];
     }
@@ -79,7 +79,8 @@ class Template
      * @param array{
      *     uuid: string,
      *     code: string,
-     *     labels: string|null
+     *     labels: string|null,
+     *     category_id: string,
      * } $result
      *
      * @throws \JsonException
