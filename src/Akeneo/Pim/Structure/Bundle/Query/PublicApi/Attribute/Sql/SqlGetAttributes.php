@@ -87,4 +87,20 @@ SQL;
 
         return array_pop($forCodes);
     }
+
+    public function forType(string $attributeType): array
+    {
+        $query = <<<SQL
+            SELECT attribute.code
+            FROM pim_catalog_attribute attribute
+            WHERE attribute.attribute_type = (:attribute_type)
+        SQL;
+
+        $codes = $this->connection->executeQuery(
+            $query,
+            ['attribute_type' => $attributeType]
+        )->fetchFirstColumn();
+
+        return $this->forCodes($codes);
+    }
 }

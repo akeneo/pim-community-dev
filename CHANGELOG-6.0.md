@@ -7,6 +7,7 @@
 ## Bug fixes
 
 - PIM-10677: [Backport PIM-10420 and PIM-10484] Fix job still shows under in progress when failed
+- PIM-10683: Fix performance regression in CSV and XLSX product and product model export
 
 # 6.0.46 (2022-10-20)
 
