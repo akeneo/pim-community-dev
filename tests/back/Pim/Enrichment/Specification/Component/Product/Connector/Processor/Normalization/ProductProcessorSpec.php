@@ -37,7 +37,6 @@ class ProductProcessorSpec extends ObjectBehavior
         FillMissingValuesInterface $fillMissingProductModelValues,
         GetNormalizedProductQualityScores $getNormalizedProductQualityScores,
         GetAttributes $getAttributes,
-        GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
         StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
@@ -47,7 +46,6 @@ class ProductProcessorSpec extends ObjectBehavior
             $fillMissingProductModelValues,
             $getNormalizedProductQualityScores,
             $getAttributes,
-            $getProductsWithQualityScores,
         );
 
         $this->setStepExecution($stepExecution);

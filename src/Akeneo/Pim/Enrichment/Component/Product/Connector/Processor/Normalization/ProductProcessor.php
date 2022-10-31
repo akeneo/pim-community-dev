@@ -3,8 +3,6 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\FilterValues;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScoresInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
@@ -33,7 +31,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         protected AttributeRepositoryInterface $attributeRepository,
         protected FillMissingValuesInterface $fillMissingProductModelValues,
         private GetAttributes $getAttributes,
-        private ?GetProductsWithQualityScoresInterface $getProductsWithQualityScores = null,
+        private GetNormalizedQualityScoresInterface $getNormalizedQualityScores
     ) {
     }
 
@@ -67,8 +65,6 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
             ->filterByAttributeCodes($attributeCodes)
             ->execute($productStandard['values']);
 
-        $productStandard['values'] = $this->filterLocaleSpecificAttributes($productStandard['values']);
-
         if (!$parameters->has('with_media') || true !== $parameters->get('with_media')) {
             $mediaAttributes = $this->attributeRepository->findMediaAttributeCodes();
             $productStandard['values'] = array_filter(
@@ -80,10 +76,9 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
             );
         }
 
-        if (null !== $this->getProductsWithQualityScores && $product instanceof ProductInterface && $this->hasFilterOnQualityScore($parameters)) {
-            $productStandard = $this->getProductsWithQualityScores->fromNormalizedProduct(
-                $product->getIdentifier(),
-                $productStandard,
+        if ($this->hasFilterOnQualityScore($parameters)) {
+            $productStandard['quality_scores'] = ($this->getNormalizedQualityScores)(
+                $product instanceof ProductModelInterface ? $product->getCode() : $product->getUuid(),
                 $structure['scope'] ?? null,
                 $structure['locales'] ?? []
             );
