@@ -49,6 +49,9 @@ services:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.product_model.fill_missing_values'
+            # TODO: pull up master => remove next line (invert parameters and remove useless ~ alias of null)
+            - ~
+            - '@akeneo.pim.structure.query.get_attributes'
 
     pimee_workflow.processor.mark_product_draft_as_ready:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Processor\MarkProductDraftAsReadyProcessor'
