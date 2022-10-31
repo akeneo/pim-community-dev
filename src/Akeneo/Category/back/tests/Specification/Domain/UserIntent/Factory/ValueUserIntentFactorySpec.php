@@ -137,7 +137,7 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
             'banner' . ValueCollection::SEPARATOR . 'e0326684-0dff-44be-8283-9262deb9e4bc'
         ];
 
-        $getAttribute->byIdentifiers($identifiers)
+        $getAttribute->byTemplateUuid($identifiers)
             ->shouldBeCalledOnce()
             ->willReturn($attributes);
 
@@ -213,7 +213,7 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
             'description' . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950'
         ];
 
-        $getAttribute->byIdentifiers($identifiers)
+        $getAttribute->byTemplateUuid($identifiers)
             ->shouldBeCalledOnce()
             ->willReturn($valueCollection);
 

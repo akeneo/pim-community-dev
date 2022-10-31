@@ -22,10 +22,10 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class GetTemplateController
 {
     public function __construct(
-        private SecurityFacade $securityFacade,
-        private GetTemplate $getTemplate,
-        private GetTemplateInMemory $getTemplateInMemory,
-        private GetAttribute $getAttribute,
+        private SecurityFacade       $securityFacade,
+        private GetTemplate          $getTemplate,
+        private GetAttribute         $getAttribute,
+        private GetTemplateInMemory  $getTemplateInMemory,
     ) {
     }
 
@@ -42,7 +42,7 @@ class GetTemplateController
             throw new NotFoundHttpException();
         }
 
-        $attributeCollection = $this->getAttribute->byIdentifiers([]);
+        $attributeCollection = $this->getAttribute->byTemplateUuid(TemplateUuid::fromString($templateUuid));
         $template->setAttributeCollection($attributeCollection);
         return new JsonResponse($template->normalize(), Response::HTTP_OK);
     }

@@ -25,6 +25,11 @@ services:
       - '@database_connection'
 
   Akeneo\Category\Domain\Query\GetAttribute:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryTemplateAttributeSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Domain\Query\GetAttributeInMemory:
     class: Akeneo\Category\Infrastructure\Storage\InMemory\GetAttributeInMemory
     arguments:
       - '@database_connection'

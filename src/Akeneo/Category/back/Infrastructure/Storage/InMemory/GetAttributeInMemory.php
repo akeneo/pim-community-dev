@@ -30,7 +30,7 @@ class GetAttributeInMemory implements GetAttribute
     /**
      * @inheritDoc
      */
-    public function byIdentifiers(array $identifiers): AttributeCollection
+    public function byTemplateUuid(TemplateUuid $identifiers): AttributeCollection
     {
         $templateUuid = TemplateUuid::fromString('02274dac-e99a-4e1d-8f9b-794d4c3ba330');
 

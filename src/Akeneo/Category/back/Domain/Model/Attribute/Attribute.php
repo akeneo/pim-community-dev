@@ -123,4 +123,32 @@ abstract class Attribute
     {
         return $this->additionalProperties;
     }
+
+    public static function fromDatabase(array $result): self
+    {
+        $id = AttributeUuid::fromString($result['uuid']);
+        $code = new AttributeCode($result['code']);
+        $type = new AttributeType($result['attribute_type']);
+        $order = AttributeOrder::fromInteger((int) $result['attribute_order']);
+        $isRequired = AttributeIsRequired::fromBoolean((bool) $result['is_required']);
+        $isScopable = AttributeIsScopable::fromBoolean((bool) $result['is_scopable']);
+        $isLocalizable = AttributeIsLocalizable::fromBoolean((bool) $result['is_localizable']);
+        $labelCollection = $result['labels'] ?
+            LabelCollection::fromArray(
+                json_decode($result['labels'], true, 512, JSON_THROW_ON_ERROR),
+            ) : null;
+        $templateUuid = TemplateUuid::fromString($result['category_template_uuid']);
+        $additionalProperties = $result['additional_properties'] ?
+            AttributeAdditionalProperties::fromArray(
+                json_decode($result['labels'], true, 512, JSON_THROW_ON_ERROR),
+            ) : null;
+
+        return match ($type->__toString()) {
+            'richtext' => new AttributeRichText($id, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties),
+            'text' => new AttributeText($id, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties),
+            'image' => new AttributeImage($id, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties),
+            'textarea' => new AttributeTextArea($id, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties),
+            default => throw new \LogicException(sprintf('Type not recognized: "%s"', $type)),
+        };
+    }
 }

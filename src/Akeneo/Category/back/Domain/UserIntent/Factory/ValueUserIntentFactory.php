@@ -72,7 +72,7 @@ final class ValueUserIntentFactory implements UserIntentFactory
     {
         $compositeKeys = $this->extractCompositeKeys(array_keys($attributes));
 
-        return $this->getAttribute->byIdentifiers($compositeKeys);
+        return $this->getAttribute->byTemplateUuid($compositeKeys);
     }
 
     /**
