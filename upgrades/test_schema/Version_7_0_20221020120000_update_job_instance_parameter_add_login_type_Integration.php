@@ -24,16 +24,19 @@ class Version_7_0_20221020120000_update_job_instance_parameter_add_login_type_In
 
     public function test_it_add_login_type_to_raw_parameters(): void
     {
-        $this->createJob('a_csv_export', 'export');
-        $this->createJob('not_a_csv_export', 'mass_edit');
+        $this->createJob('a_csv_export_with_sftp_storage', 'export', 'a:13:{s:7:"storage";a:6:{s:4:"type";s:4:"sftp";s:9:"file_path";s:17:"/tmp/product.xlsx";s:4:"host";s:15:"sftp.akeneo.com";s:4:"port";i:22;s:8:"username";s:5:"admin";s:8:"password";s:5:"admin";}s:9:"delimiter";s:1:";";s:9:"enclosure";s:1:""";s:10:"withHeader";b:1;s:15:"users_to_notify";a:0:{}s:21:"is_user_authenticated";b:0;s:16:"decimalSeparator";s:1:".";s:10:"dateFormat";s:10:"yyyy-MM-dd";s:10:"with_media";b:1;s:10:"with_label";b:0;s:17:"header_with_label";b:0;s:11:"file_locale";N;s:7:"filters";a:0:{}}');
+        $this->createJob('a_csv_export_with_none_storage', 'export', 'a:13:{s:7:"storage";a:1:{s:4:"type";s:4:"none";}s:9:"delimiter";s:1:";";s:9:"enclosure";s:1:""";s:10:"withHeader";b:1;s:15:"users_to_notify";a:0:{}s:21:"is_user_authenticated";b:0;s:16:"decimalSeparator";s:1:".";s:10:"dateFormat";s:10:"yyyy-MM-dd";s:10:"with_media";b:1;s:10:"with_label";b:0;s:17:"header_with_label";b:0;s:11:"file_locale";N;s:7:"filters";a:0:{}}');
+        $this->createJob('not_a_csv_export', 'mass_edit', 'a:0:{}');
 
-        $this->assertFalse($this->isJobParametersHasLoginType('a_csv_export'));
-        $this->assertFalse($this->isJobParametersHasLoginType('not_a_csv_export'));
+        $this->assertFalse($this->jobParametersHasLoginType('a_csv_export_with_sftp_storage'));
+        $this->assertFalse($this->jobParametersHasLoginType('a_csv_export_with_none_storage'));
+        $this->assertFalse($this->jobParametersHasLoginType('not_a_csv_export'));
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
 
-        $this->assertTrue($this->isJobParametersHasLoginType('a_csv_export'));
-        $this->assertFalse($this->isJobParametersHasLoginType('not_a_csv_export'));
+        $this->assertTrue($this->jobParametersHasLoginType('a_csv_export_with_sftp_storage'));
+        $this->assertFalse($this->jobParametersHasLoginType('a_csv_export_with_none_storage'));
+        $this->assertFalse($this->jobParametersHasLoginType('not_a_csv_export'));
     }
 
     protected function getConfiguration(): Configuration
@@ -41,31 +44,8 @@ class Version_7_0_20221020120000_update_job_instance_parameter_add_login_type_In
         return $this->catalog->useMinimalCatalog();
     }
 
-    private function createJob(string $jobCode, string $type): void
+    private function createJob(string $jobCode, string $type, string $rawParameters): void
     {
-        $rawParameters = [
-            'storage' => [
-                'type' => 'sftp',
-                'file_path' => '/tmp/product.xlsx',
-                'host' => 'sftp.akeneo.com',
-                'port' => 22,
-                'username' => 'admin',
-                'password' => 'admin',
-            ],
-            'delimiter' => ';',
-            'enclosure' => '"',
-            'withHeader' => true,
-            'users_to_notify' => [],
-            'is_user_authenticated' => false,
-            'decimalSeparator' => '.',
-            'dateFormat' => 'yyyy-MM-dd',
-            'with_media' => true,
-            'with_label' => false,
-            'header_with_label' => false,
-            'file_locale' => NULL,
-            'filters' => [],
-        ];
-
         $this->connection->executeStatement(
             'DELETE FROM akeneo_batch_job_instance WHERE code = :job_code',
             [
@@ -81,12 +61,12 @@ class Version_7_0_20221020120000_update_job_instance_parameter_add_login_type_In
 
         $this->connection->executeStatement($sql, [
             'job_code' => $jobCode,
-            'raw_parameters' => serialize($rawParameters),
+            'raw_parameters' => $rawParameters,
             'type' => $type
         ]);
     }
 
-    private function isJobParametersHasLoginType(string $jobCode): bool
+    private function jobParametersHasLoginType(string $jobCode): bool
     {
         $sql = <<<SQL
             SELECT raw_parameters FROM akeneo_batch_job_instance WHERE code =  :jobCode;
