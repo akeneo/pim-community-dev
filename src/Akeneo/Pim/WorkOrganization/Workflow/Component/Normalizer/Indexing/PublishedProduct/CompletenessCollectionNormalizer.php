@@ -42,7 +42,7 @@ class CompletenessCollectionNormalizer implements NormalizerInterface, Cacheable
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof PublishedProductCompletenessCollection && in_array(
             $format,

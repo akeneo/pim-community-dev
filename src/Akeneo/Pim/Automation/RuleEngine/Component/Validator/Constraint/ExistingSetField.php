@@ -26,7 +26,7 @@ class ExistingSetField extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'pimee_set_field_validator';
     }

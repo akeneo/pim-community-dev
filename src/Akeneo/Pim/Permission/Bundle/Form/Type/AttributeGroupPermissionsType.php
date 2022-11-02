@@ -50,7 +50,7 @@ class AttributeGroupPermissionsType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'pimee_enrich_attribute_group_permissions';
     }

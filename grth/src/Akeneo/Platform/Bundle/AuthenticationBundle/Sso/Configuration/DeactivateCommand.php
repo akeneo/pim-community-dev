@@ -39,7 +39,7 @@ final class DeactivateCommand extends Command
             ->setDescription('Deactivate the SSO authentication for the PIM');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 

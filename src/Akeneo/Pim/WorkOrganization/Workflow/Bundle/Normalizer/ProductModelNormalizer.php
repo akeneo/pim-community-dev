@@ -86,7 +86,7 @@ class ProductModelNormalizer implements NormalizerInterface, SerializerAwareInte
         $canEdit = $this->authorizationChecker->isGranted(Attributes::EDIT, $productModel);
 
         if (!$isOwner && $canEdit) {
-            $username = $this->tokenStorage->getToken()->getUsername();
+            $username = $this->tokenStorage->getToken()->getUserIdentifier();
             $draft = $this->draftRepository->findUserEntityWithValuesDraft($productModel, $username);
             if ($draft instanceof EntityWithValuesDraftInterface) {
                 $draftStatus = $draft->getStatus();
@@ -113,7 +113,7 @@ class ProductModelNormalizer implements NormalizerInterface, SerializerAwareInte
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $this->normalizer->supportsNormalization($data, $format);
     }

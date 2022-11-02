@@ -39,7 +39,7 @@ final class TrackProposalSubscriber implements EventSubscriberInterface
         $this->logger = $logger;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             EntityWithValuesDraftEvents::POST_APPROVE => 'trackApprovedProposal',

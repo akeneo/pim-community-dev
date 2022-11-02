@@ -45,6 +45,6 @@ class NamingConventionLauncher implements NamingConventionLauncherInterface
     {
         $token = $this->tokenStorage->getToken();
 
-        return null !== $token ? $token->getUsername() : null;
+        return null !== $token ? $token->getUserIdentifier() : null;
     }
 }

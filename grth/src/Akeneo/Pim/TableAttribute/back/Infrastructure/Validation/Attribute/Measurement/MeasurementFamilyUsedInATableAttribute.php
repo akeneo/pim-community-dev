@@ -19,7 +19,7 @@ final class MeasurementFamilyUsedInATableAttribute extends Constraint
 {
     public string $message = 'pim_table_configuration.validation.table_configuration.measurement_family_unit_should_not_be_linked';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

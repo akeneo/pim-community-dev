@@ -56,7 +56,7 @@ class ExecuteMassActionHandlerSpec extends ObjectBehavior
         $rule2->getValue('code')->willReturn('second_rule');
 
         $token->getUser()->shouldBeCalled()->willReturn($johndoe);
-        $johndoe->getUsername()->willReturn('johndoe');
+        $johndoe->getUserIdentifier()->willReturn('johndoe');
 
         $jobLauncher->launch($executeRulesJob, $johndoe, [
             'rule_codes' => ['first_rule', 'second_rule'],

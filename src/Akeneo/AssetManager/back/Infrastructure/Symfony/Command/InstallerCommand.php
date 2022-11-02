@@ -90,7 +90,7 @@ class InstallerCommand extends Command implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->fixturesInstaller->createSchema();
         $this->fixturesInstaller->loadCatalog();

@@ -67,7 +67,7 @@ class ProjectNormalizer implements NormalizerInterface, SerializerAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($project, $format = null)
+    public function supportsNormalization($project, $format = null): bool
     {
         return $project instanceof ProjectInterface && in_array($format, $this->supportedFormats);
     }

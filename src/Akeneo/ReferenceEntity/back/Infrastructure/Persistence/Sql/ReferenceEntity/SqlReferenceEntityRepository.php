@@ -24,6 +24,7 @@ use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityNotFoundException;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -42,7 +43,7 @@ class SqlReferenceEntityRepository implements ReferenceEntityRepositoryInterface
 
     /**
      * @throws \RuntimeException
-     * @throws \Doctrine\DBAL\Exception
+     * @throws Exception
      */
     public function create(ReferenceEntity $referenceEntity): void
     {
@@ -76,7 +77,7 @@ SQL;
 
     /**
      * @throws \RuntimeException
-     * @throws \Doctrine\DBAL\Exception
+     * @throws Exception
      */
     public function update(ReferenceEntity $referenceEntity): void
     {

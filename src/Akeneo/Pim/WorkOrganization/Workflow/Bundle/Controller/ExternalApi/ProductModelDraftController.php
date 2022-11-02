@@ -83,7 +83,7 @@ class ProductModelDraftController
         $this->userHasViewPermissions($productModel, $code);
 
         $userToken = $this->tokenStorage->getToken();
-        $productModelDraft = $this->productModelDraftRepository->findUserEntityWithValuesDraft($productModel, $userToken->getUsername());
+        $productModelDraft = $this->productModelDraftRepository->findUserEntityWithValuesDraft($productModel, $userToken->getUserIdentifier());
 
         if (null === $productModelDraft) {
             throw new NotFoundHttpException(sprintf('There is no draft created for the product model "%s".', $code));

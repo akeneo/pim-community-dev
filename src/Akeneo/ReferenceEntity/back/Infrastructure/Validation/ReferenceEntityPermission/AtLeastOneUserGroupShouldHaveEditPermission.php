@@ -23,12 +23,12 @@ class AtLeastOneUserGroupShouldHaveEditPermission extends Constraint
 {
     public const ERROR_MESSAGE = 'pim_reference_entity.reference_entity.validation.reference_entity_permissions.at_least_one_user_group_should_have_edit_permission';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'akeneo_referenceentity.validator.reference_entity_permission.at_least_one_user_group_should_have_edit_permission';
     }

@@ -27,7 +27,7 @@ class ProjectCalculationJobLauncherSpec extends ObjectBehavior
 
         $project->getCode()->willReturn('project_code');
         $project->getOwner()->willReturn($user);
-        $user->getUsername()->willReturn('julia');
+        $user->getUserIdentifier()->willReturn('julia');
 
         $configuration = [
             'project_code' => 'project_code',

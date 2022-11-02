@@ -42,7 +42,7 @@ class JobProfilePermissionsType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'pimee_import_export_job_profile_permissions';
     }

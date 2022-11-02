@@ -31,8 +31,8 @@ class AttributeVoterSpec extends ObjectBehavior
         AttributeGroupInterface $group
     ) {
         $attribute->getGroup()->willReturn($group);
-        $voter->vote($token, $group, [Attributes::VIEW_ATTRIBUTES])->willReturn('expected vote');
+        $voter->vote($token, $group, [Attributes::VIEW_ATTRIBUTES])->willReturn(VoterInterface::ACCESS_GRANTED);
 
-        $this->vote($token, $attribute, [Attributes::VIEW_ATTRIBUTES])->shouldReturn('expected vote');
+        $this->vote($token, $attribute, [Attributes::VIEW_ATTRIBUTES])->shouldReturn(VoterInterface::ACCESS_GRANTED);
     }
 }

@@ -25,7 +25,7 @@ class IncludeChildrenOption extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'pimee_include_children_option_validator';
     }
@@ -33,7 +33,7 @@ class IncludeChildrenOption extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return static::CLASS_CONSTRAINT;
     }

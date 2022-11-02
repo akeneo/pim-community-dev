@@ -98,7 +98,7 @@ class ProductModelProposalController
         $this->userHasNotEditPermissions($productModel, $code);
 
         $userToken = $this->tokenStorage->getToken();
-        $productModelDraft = $this->productModelDraftRepository->findUserEntityWithValuesDraft($productModel, $userToken->getUsername());
+        $productModelDraft = $this->productModelDraftRepository->findUserEntityWithValuesDraft($productModel, $userToken->getUserIdentifier());
         if (null === $productModelDraft) {
             throw new UnprocessableEntityHttpException('You should create a draft before submitting it for approval.');
         }

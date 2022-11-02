@@ -38,7 +38,7 @@ class ComputeTransformationFromAssetFamilyIdentifierLauncher implements ComputeT
             'asset_manager_compute_transformations',
             $config,
             false,
-            null !== $token ? $token->getUsername() : null
+            null !== $token ? $token->getUserIdentifier() : null
         );
     }
 }

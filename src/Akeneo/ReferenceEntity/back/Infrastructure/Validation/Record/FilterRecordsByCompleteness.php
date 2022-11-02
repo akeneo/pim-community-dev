@@ -22,12 +22,12 @@ class FilterRecordsByCompleteness extends Constraint
     public const LOCALE_SHOULD_BE_ACTIVATED = 'Locale "locale_identifier" is not activated for the channel "channel_identifier".';
     public const LOCALES_SHOULD_BE_ACTIVATED = 'Locales "locale_identifier" are not activated for the channel "channel_identifier".';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'akeneo_referenceentity.infrastructure.validation.record.filter_records_by_completeness';
     }

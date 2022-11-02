@@ -47,7 +47,7 @@ class ProductDraftVoterSpec extends ObjectBehavior
         UserInterface $user
     ) {
         $token->getUser()->willReturn($user);
-        $user->getUsername()->willReturn('bob');
+        $user->getUserIdentifier()->willReturn('bob');
         $productDraft->getAuthor()->willReturn('bob');
 
         $this->vote($token, $productDraft, [SecurityAttributes::OWN])->shouldReturn(VoterInterface::ACCESS_GRANTED);
@@ -59,7 +59,7 @@ class ProductDraftVoterSpec extends ObjectBehavior
         UserInterface $user
     ) {
         $token->getUser()->willReturn($user);
-        $user->getUsername()->willReturn('bob');
+        $user->getUserIdentifier()->willReturn('bob');
         $productDraft->getAuthor()->willReturn('alice');
 
         $this->vote($token, $productDraft, [SecurityAttributes::OWN])->shouldReturn(VoterInterface::ACCESS_DENIED);

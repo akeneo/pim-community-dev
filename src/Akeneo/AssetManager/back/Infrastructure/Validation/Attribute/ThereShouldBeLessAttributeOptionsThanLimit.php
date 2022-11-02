@@ -19,12 +19,12 @@ class ThereShouldBeLessAttributeOptionsThanLimit extends Constraint
 {
     public const MESSAGE_TOO_MANY_OPTIONS = 'pim_asset_manager.attribute.validation.options.too_many';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'akeneo_assetmanager.validator.attribute.there_should_be_less_attribute_options_than_limit';
     }

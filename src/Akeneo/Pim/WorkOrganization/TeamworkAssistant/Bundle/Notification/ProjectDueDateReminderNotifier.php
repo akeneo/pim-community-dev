@@ -80,7 +80,7 @@ class ProjectDueDateReminderNotifier implements ProjectNotifierInterface
             ];
         $routeParams = ['identifier' => $project->getCode(), 'status' => 'contributor-todo'];
 
-        $message = $user->getUsername() === $project->getOwner()->getUsername()
+        $message = $user->getUserIdentifier() === $project->getOwner()->getUserIdentifier()
             ? 'teamwork_assistant.notification.due_date.owner'
             : 'teamwork_assistant.notification.due_date.contributor';
 

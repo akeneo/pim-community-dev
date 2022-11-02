@@ -114,7 +114,7 @@ class NotGrantedValuesMergerSpec extends ObjectBehavior
         UserInterface $user
     ) {
         $user->getId()->willReturn(null);
-        $user->getUsername()->willReturn(UserInterface::SYSTEM_USER_NAME);
+        $user->getUserIdentifier()->willReturn(UserInterface::SYSTEM_USER_NAME);
 
         $filteredProduct = (new Product())->setIdentifier('filtered');
         $newValues = new WriteValueCollection(

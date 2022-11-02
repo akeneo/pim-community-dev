@@ -47,7 +47,7 @@ final class SamlUserFactory implements SamlUserFactoryInterface
 
         try {
             $user = $this->createUserFromSamlToken($token);
-            $this->logger->info(sprintf("User '%s' created from free trial SSO authentication.", $token->getUsername()));
+            $this->logger->info(sprintf("User '%s' created from free trial SSO authentication.", $token->getUserIdentifier()));
         } catch (\Exception $exception) {
             $this->logger->error(
                 'Unable to create user from free trial SSO authentication',
@@ -57,7 +57,7 @@ final class SamlUserFactory implements SamlUserFactoryInterface
                 ]
             );
 
-            throw new UnknownUserException($token->getUsername(), 'Unable to create user');
+            throw new UnknownUserException($token->getUserIdentifier(), 'Unable to create user');
         }
 
         return $user;
@@ -68,7 +68,7 @@ final class SamlUserFactory implements SamlUserFactoryInterface
         $user = $this->userFactory->create();
 
         $this->userUpdater->update($user, [
-            'username' => $token->getUsername(),
+            'username' => $token->getUserIdentifier(),
             'email' => $this->getUserAttribute('akeneo_email', $token),
             'password' => $this->generatePassword(),
             'first_name' => $this->getUserAttribute('akeneo_firstname', $token),

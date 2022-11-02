@@ -12,12 +12,12 @@ use Symfony\Component\Validator\Constraint;
  */
 class EditCommands extends Constraint
 {
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'akeneo_referenceentity.validator.attribute.edit_command_validator';
     }

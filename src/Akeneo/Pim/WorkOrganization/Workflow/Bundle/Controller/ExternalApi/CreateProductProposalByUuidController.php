@@ -77,7 +77,7 @@ final class CreateProductProposalByUuidController
             );
         }
 
-        $productDraft = $this->productDraftRepository->findUserEntityWithValuesDraft($product, $user->getUsername());
+        $productDraft = $this->productDraftRepository->findUserEntityWithValuesDraft($product, $user->getUserIdentifier());
         if (null === $productDraft) {
             throw new UnprocessableEntityHttpException('You should create a draft before submitting it for approval.');
         }

@@ -35,7 +35,7 @@ class MassDeleteRecordsLauncher implements MassDeleteRecordsLauncherInterface
         RecordQuery $recordQuery
     ): void {
         $token = $this->tokenStorage->getToken();
-        $username = null !== $token ? $token->getUsername() : null;
+        $username = null !== $token ? $token->getUserIdentifier() : null;
 
         $config = [
             'reference_entity_identifier' => (string) $referenceEntityIdentifier,

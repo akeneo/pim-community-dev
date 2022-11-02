@@ -72,7 +72,7 @@ class ProjectCreatedNotifier implements ProjectNotifierInterface
                 'buttonLabel' => 'teamwork_assistant.notification.project_calculation.start'
             ];
 
-            if ($user->getUsername() !== $project->getOwner()->getUsername()) {
+            if ($user->getUserIdentifier() !== $project->getOwner()->getUserIdentifier()) {
                 $notification = $this->projectNotificationFactory->create(
                     ['identifier' => $project->getCode(), 'status' => 'contributor-todo'],
                     ['%project_label%' => $project->getLabel(), '%due_date%' => $formattedDate],

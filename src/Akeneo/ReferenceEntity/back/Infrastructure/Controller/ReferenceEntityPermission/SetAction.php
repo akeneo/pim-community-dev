@@ -86,7 +86,7 @@ class SetAction
     {
         $query = new CanEditReferenceEntityQuery(
             $referenceEntityIdentifier,
-            $this->tokenStorage->getToken()->getUser()->getUsername()
+            $this->tokenStorage->getToken()->getUser()->getUserIdentifier()
         );
         $isAllowedToEdit = ($this->canEditReferenceEntityQueryHandler)($query);
 

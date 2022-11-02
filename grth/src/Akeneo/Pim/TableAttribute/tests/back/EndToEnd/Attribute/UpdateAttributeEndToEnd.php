@@ -56,7 +56,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
         $client->request('PATCH', 'api/rest/v1/attributes/a_table_attribute', [], [], [], $data);
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
 
         $client = $this->createAuthenticatedClient();
         $client->request(Request::METHOD_GET, 'api/rest/v1/attributes/a_table_attribute');
@@ -109,7 +109,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
         $client->request('PATCH', 'api/rest/v1/attributes/a_table_attribute', [], [], [], $data);
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
 
         $client = $this->createAuthenticatedClient();
         $client->request(Request::METHOD_GET, 'api/rest/v1/attributes/a_table_attribute');

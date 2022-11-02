@@ -19,6 +19,7 @@ use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * Job profile access repository
@@ -82,7 +83,7 @@ class JobProfileAccessRepository extends EntityRepository implements
      * @param UserInterface $user
      * @param string        $accessLevel
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
     public function getGrantedJobsQB(UserInterface $user, $accessLevel)
     {
