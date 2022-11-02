@@ -26,6 +26,7 @@ class MarkCommentsAsReadBySupplierHandler
         if (null === $productFile) {
             throw new ProductFileDoesNotExist();
         }
+
         if (!$productFile->hasComments()) {
             return;
         }

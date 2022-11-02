@@ -23,9 +23,9 @@ final class MarkCommentsAsRead
                 new MarkCommentsAsReadByRetailer($productFileIdentifier, new \DateTimeImmutable()),
             );
         } catch (ProductFileDoesNotExist) {
-            return new JsonResponse('product_file_does_not_exist', Response::HTTP_INTERNAL_SERVER_ERROR);
+            return new JsonResponse('product_file_does_not_exist', Response::HTTP_NOT_FOUND);
         }
 
-        return new JsonResponse(null, Response::HTTP_OK);
+        return new JsonResponse();
     }
 }
