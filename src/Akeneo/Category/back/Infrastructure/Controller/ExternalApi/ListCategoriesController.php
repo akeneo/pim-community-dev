@@ -82,7 +82,11 @@ class ListCategoriesController
             'item_route_name'     => 'pim_api_category_get',
         ];
 
-        $count = true === $request->query->getBoolean('with_count') ? $this->repository->count($searchFilters) : null;
+        // TODO: Count the number of categories by the new ServiceApi
+        $count = null;
+        if ($request->query->getBoolean('with_count') === true) {
+            $count = !$this->featureFlags->isEnabled('enriched_category') ? $this->repository->count($searchFilters) : null;
+        }
 
         $paginatedCategories = $this->paginator->paginate(
             $this->normalizer->normalize(
