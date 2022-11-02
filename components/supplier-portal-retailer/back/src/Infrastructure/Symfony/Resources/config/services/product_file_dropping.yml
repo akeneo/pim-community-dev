@@ -259,9 +259,7 @@ services:
 
     Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\GetProductFiles\GetProductFiles:
         arguments:
-            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFilesForSupplier'
-            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail'
-            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilesCount'
+            - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\ListProductFilesForSupplier\ListProductFilesForSupplierHandler'
 
     Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\CommentProductFile\CommentProductFile:
         arguments:

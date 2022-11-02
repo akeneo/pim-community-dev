@@ -9,7 +9,7 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilesCou
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFilesForSupplier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail;
 
-final class ListProductFilesForSupplierHandler
+class ListProductFilesForSupplierHandler
 {
     public function __construct(
         private ListProductFilesForSupplier $listProductFilesForSupplier,
