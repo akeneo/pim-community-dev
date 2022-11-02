@@ -56,7 +56,7 @@ class AddRemoveVersionSubscriberSpec extends ObjectBehavior
     ) {
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($admin);
-        $admin->getUsername()->willReturn('admin');
+        $admin->getUserIdentifier()->willReturn('admin');
         $authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')->willReturn(true);
 
         $versionRepository->getNewestLogEntry(Argument::any(), 12, null)->willReturn($previousVersion);
@@ -92,7 +92,7 @@ class AddRemoveVersionSubscriberSpec extends ObjectBehavior
     ) {
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($admin);
-        $admin->getUsername()->willReturn('admin');
+        $admin->getUserIdentifier()->willReturn('admin');
         $authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')->willReturn(true);
 
         $versionSaver->save($removeVersion, Argument::any())->shouldNotBeCalled();

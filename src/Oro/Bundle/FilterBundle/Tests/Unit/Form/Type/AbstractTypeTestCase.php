@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\FilterBundle\Tests\Unit\Form\Type;
 
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\Test\FormIntegrationTestCase;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -9,7 +10,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 abstract class AbstractTypeTestCase extends FormIntegrationTestCase
 {
     /**
-     * @var \Symfony\Component\Form\FormFactory
+     * @var FormFactory
      */
     protected $factory;
 

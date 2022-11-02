@@ -7,6 +7,7 @@ use Akeneo\Channel\Infrastructure\Component\Event\ChannelEvent;
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Channel interface
@@ -59,7 +60,7 @@ interface ChannelInterface extends ReferableInterface, VersionableInterface, Tra
     public function setCategory(CategoryInterface $category);
 
     /**
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * @return ArrayCollection
      */
     public function getCurrencies();
 
@@ -90,7 +91,7 @@ interface ChannelInterface extends ReferableInterface, VersionableInterface, Tra
     public function hasCurrency(CurrencyInterface $currency);
 
     /**
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * @return ArrayCollection
      */
     public function getLocales();
 

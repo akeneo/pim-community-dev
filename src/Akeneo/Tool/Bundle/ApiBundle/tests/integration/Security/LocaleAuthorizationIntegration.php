@@ -22,7 +22,7 @@ class LocaleAuthorizationIntegration extends ApiTestCase
 JSON;
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
         $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 
@@ -50,7 +50,7 @@ JSON;
 JSON;
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
         $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 
@@ -78,7 +78,7 @@ JSON;
 JSON;
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
         $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 

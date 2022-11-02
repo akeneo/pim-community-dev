@@ -38,7 +38,7 @@ class AttributeRemovalSubscriber implements EventSubscriberInterface
         $this->tokenStorage = $tokenStorage;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             StorageEvents::POST_REMOVE => 'blacklistAttributeCodeAndLaunchJob',

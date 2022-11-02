@@ -4,6 +4,7 @@ namespace Akeneo\UserManagement\Bundle\Twig;
 
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Symfony\Component\Yaml\Yaml;
+use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 /**
@@ -13,7 +14,7 @@ use Twig\TwigFunction;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AclGroupsExtension extends \Twig\Extension\AbstractExtension
+class AclGroupsExtension extends AbstractExtension
 {
     public function __construct(
         protected array $bundles,

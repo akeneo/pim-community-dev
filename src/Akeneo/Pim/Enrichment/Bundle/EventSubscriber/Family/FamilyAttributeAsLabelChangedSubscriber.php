@@ -28,7 +28,7 @@ class FamilyAttributeAsLabelChangedSubscriber implements EventSubscriberInterfac
         $this->esClient = $esClient;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             StorageEvents::PRE_SAVE => 'storeFamilyCodeIfNeeded',

@@ -61,7 +61,7 @@ class AddRemoveVersionSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             StorageEvents::POST_REMOVE => 'addRemoveVersion',
@@ -83,7 +83,7 @@ class AddRemoveVersionSubscriber implements EventSubscriberInterface
         if (null !== ($token = $this->tokenStorage->getToken()) &&
             $this->authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')
         ) {
-            $author = $token->getUser()->getUsername();
+            $author = $token->getUser()->getUserIdentifier();
         }
 
         $resourceId = $this->shouldUseUuid($subject) ? null : ($subject->getId() ?? $event->getSubjectId());

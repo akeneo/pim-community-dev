@@ -1,6 +1,6 @@
 import React, {useState, useCallback} from 'react';
 import {Breadcrumb, Button, Helper, TabBar} from 'akeneo-design-system';
-import {PageHeader, PimView, useTranslate} from '@akeneo-pim-community/shared';
+import {PageContent, PageHeader, PimView, useTranslate} from '@akeneo-pim-community/shared';
 import {GeneralPropertiesTab} from '../tabs';
 import {IdentifierGenerator} from '../models';
 import {Common, Styled} from '../components';
@@ -50,7 +50,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
         </PageHeader.Actions>
         <PageHeader.Title>{translate('pim_title.akeneo_identifier_generator_index')}</PageHeader.Title>
       </PageHeader>
-      <Styled.TabContainer>
+      <PageContent>
         {validationErrors.length > 0 && (
           <Helper level="error">
             {validationErrors.map(({path, message}) => (
@@ -86,7 +86,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
             <div>{JSON.stringify(generator.structure)}</div>
           </>
         )}
-      </Styled.TabContainer>
+      </PageContent>
     </>
   );
 };

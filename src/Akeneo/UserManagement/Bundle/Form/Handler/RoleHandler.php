@@ -71,7 +71,7 @@ class RoleHandler
      * "Success" form handler
      *
      * @param Role                                      $entity
-     * @param \Akeneo\UserManagement\Component\Model\UserInterface[] $appendUsers
+     * @param UserInterface[] $appendUsers
      * @param UserInterface[]                           $removeUsers
      */
     protected function onSuccess(Role $entity, array $appendUsers, array $removeUsers)

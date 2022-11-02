@@ -79,7 +79,7 @@ class VersionedAttributeNormalizer implements NormalizerInterface, CacheableSupp
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof AttributeInterface && in_array($format, $this->supportedFormats);
     }

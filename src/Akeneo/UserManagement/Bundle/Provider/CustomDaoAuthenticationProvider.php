@@ -6,9 +6,9 @@ namespace Akeneo\UserManagement\Bundle\Provider;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\UserManagement\Bundle\Model\LockedAccountException;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface as SecurityUserInterface;
@@ -26,9 +26,17 @@ class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider
 
     private int $accountMaxConsecutiveFailure;
 
-    public function __construct(UserProviderInterface $userProvider, UserCheckerInterface $userChecker, string $providerKey, EncoderFactoryInterface $encoderFactory, UserManager $userManager, int $accountLockDuration, int $accountMaxConsecutiveFailure, bool $hideUserNotFoundExceptions = true)
-    {
-        parent::__construct($userProvider, $userChecker, $providerKey, $encoderFactory, $hideUserNotFoundExceptions);
+    public function __construct(
+        UserProviderInterface $userProvider,
+        UserCheckerInterface $userChecker,
+        string $providerKey,
+        PasswordHasherFactoryInterface $hasherFactory,
+        UserManager $userManager,
+        int $accountLockDuration,
+        int $accountMaxConsecutiveFailure,
+        bool $hideUserNotFoundExceptions = true
+    ) {
+        parent::__construct($userProvider, $userChecker, $providerKey, $hasherFactory, $hideUserNotFoundExceptions);
         $this->userManager = $userManager;
         $this->accountLockDuration = $accountLockDuration;
         $this->accountMaxConsecutiveFailure = $accountMaxConsecutiveFailure;

@@ -25,7 +25,7 @@ class TableCreator implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             InstallerEvents::POST_DB_CREATE => 'onPostDBCreate'

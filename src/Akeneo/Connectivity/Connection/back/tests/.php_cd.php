@@ -159,6 +159,8 @@ $rules = [
 
             'FOS\RestBundle\Context\Context',
             'FOS\RestBundle\Serializer\Serializer',
+
+            'Akeneo\Catalogs\ServiceAPI\Model\Catalog',
         ]
     )->in('Akeneo\Connectivity\Connection\Application'),
 
@@ -197,6 +199,8 @@ $rules = [
             'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
 
             'Symfony\Component\EventDispatcher\EventDispatcherInterface',
+
+            'Akeneo\Catalogs\ServiceAPI\Model\Catalog',
         ]
     )->in('Akeneo\Connectivity\Connection\Application\Apps'),
 

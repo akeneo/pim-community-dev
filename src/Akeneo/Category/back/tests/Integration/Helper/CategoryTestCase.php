@@ -34,13 +34,14 @@ use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Category\Infrastructure\Storage\InMemory\GetTemplateInMemory;
 use Akeneo\Test\Integration\TestCase;
+use Doctrine\DBAL\Driver\Exception;
 
 class CategoryTestCase extends TestCase
 {
     /**
      * @param array<string, string>|null $labels
      *
-     * @throws \Doctrine\DBAL\Driver\Exception
+     * @throws Exception
      * @throws \Doctrine\DBAL\Exception
      */
     protected function createOrUpdateCategory(

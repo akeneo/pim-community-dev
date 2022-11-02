@@ -44,7 +44,7 @@ class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMe
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof EntityWithAssociationsInterface && 'standard' === $format
             && get_class($data) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct';
