@@ -113,3 +113,6 @@ akeneo_catalogs:
         source:
             placeholder:
                 title: Select source
+                illustration_title: Click on a target in the right panel to configure your catalog mapping.
+                subtitle: Then you'll be able to match a PIM attribute with the selected target.
+                link: Check out our Help center for more information.
