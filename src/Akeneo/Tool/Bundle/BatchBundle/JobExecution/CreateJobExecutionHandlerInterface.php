@@ -2,7 +2,6 @@
 
 namespace Akeneo\Tool\Bundle\BatchBundle\JobExecution;
 
-
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 

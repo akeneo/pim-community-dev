@@ -8,8 +8,7 @@ class FakeJobExecution extends JobExecution
 {
     public function __construct(
         private int $fakeId,
-    )
-    {
+    ) {
         parent::__construct();
     }
 

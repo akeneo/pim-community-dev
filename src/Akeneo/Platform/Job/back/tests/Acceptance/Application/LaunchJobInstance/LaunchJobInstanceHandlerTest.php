@@ -27,7 +27,8 @@ class LaunchJobInstanceHandlerTest extends AcceptanceTestCase
     /**
      * @test
      */
-    public function it_launches_a_new_job_instance(): void {
+    public function it_launches_a_new_job_instance(): void
+    {
         $fileName = 'simple_import.xlsx';
         $file = fopen('php://temp', 'r');
 
