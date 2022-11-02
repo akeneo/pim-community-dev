@@ -71,3 +71,13 @@ services:
             - '@Akeneo\Category\Domain\Query\GetAttribute'
             - '@pim_category.infrastructure.registry.preview_generator'
             - '@Akeneo\Category\Infrastructure\FileSystem\Loader\ImageLoader'
+
+    Akeneo\Category\Infrastructure\Controller\ExternalApi\ListCategoriesController:
+        public: true
+        arguments:
+            - '@pim_api.repository.category'
+            - '@pim_external_api_serializer'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.pagination.parameter_validator'
+            - '@feature_flags'
+            - '%pim_api.configuration%'
