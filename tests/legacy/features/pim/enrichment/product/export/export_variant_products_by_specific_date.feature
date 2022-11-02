@@ -8,7 +8,7 @@ Feature: Export updated variant products according to a date
     Given a "catalog_modeling" catalog configuration
     And the following job "csv_catalog_modeling_product_export" configuration:
       | storage | {"type": "local", "file_path": "%tmp%/product_export/product_export.csv"} |
-      | filters  | {"structure":{"locales":["en_US"],"scope":"mobile","attributes":["brand","collection","color"]},"data":[{"field": "updated", "operator": "SINCE LAST JOB", "value": "csv_catalog_modeling_product_export"}]} |
+      | filters  | {"structure":{"locales":["en_US"],"scope":"mobile","attributes":["collection","color"]},"data":[{"field": "updated", "operator": "SINCE LAST JOB", "value": "csv_catalog_modeling_product_export"}]} |
     And I am logged in as "Julia"
     When I am on the "csv_catalog_modeling_product_export" export job page
     And I launch the export job
