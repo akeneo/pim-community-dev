@@ -81,3 +81,5 @@ services:
             - '@pim_api.pagination.parameter_validator'
             - '@feature_flags'
             - '%pim_api.configuration%'
+        calls:
+            - [ 'setContainer', [ '@service_container' ] ]

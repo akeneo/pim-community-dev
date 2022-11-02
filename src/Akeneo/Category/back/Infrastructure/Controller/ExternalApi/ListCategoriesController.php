@@ -8,6 +8,7 @@ use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Akeneo\Tool\Component\Api\Pagination\ParameterValidatorInterface;
 use Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -18,7 +19,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class ListCategoriesController
+class ListCategoriesController extends AbstractController
 {
     public function __construct(
         private ApiResourceRepositoryInterface $repository,
@@ -39,6 +40,13 @@ class ListCategoriesController
      */
     public function __invoke(Request $request)
     {
+        if (!$this->featureFlags->isEnabled('enriched_category')) {
+            $response = $this->forward('Akeneo\Category\Infrastructure\Controller\ExternalApi\CategoryController::listAction');
+
+            dump($response);
+            die;
+        }
+
         try {
             $this->parameterValidator->validate($request->query->all());
         } catch (PaginationParametersException $e) {
@@ -60,6 +68,7 @@ class ListCategoriesController
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
         $order = ['root' => 'ASC', 'left' => 'ASC'];
         try {
+            // TODO: Get the list of categories by the new ServiceApi
             $categories = [];
 
             if (!$this->featureFlags->isEnabled('enriched_category')) {
@@ -70,8 +79,6 @@ class ListCategoriesController
                     $offset
                 );
             }
-
-            // TODO: Get the list of categories by the new ServiceApi
         } catch (\InvalidArgumentException $exception) {
             throw new BadRequestHttpException($exception->getMessage(), $exception);
         }
