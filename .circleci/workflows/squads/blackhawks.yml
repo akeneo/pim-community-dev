@@ -85,9 +85,6 @@ workflows:
             - test_onboarder_bundle:
                   requires:
                       - build_srnt_dev
-            - test_grth:
-                  requires:
-                      - build_srnt_dev
             - test_tria:
                   requires:
                       - build_srnt_dev
@@ -98,7 +95,6 @@ workflows:
                       - test_onboarder_bundle
                       - test_database
                       - test_back_data_migrations
-                      - test_grth
                       - test_tria
                       # Blocking security tests
                       # - "Scan secrets in PR commits"
@@ -128,17 +124,13 @@ workflows:
                   name: "[<< matrix.PRODUCT_TYPE >>] Test helm generated k8s files"
                   matrix:
                       parameters:
-                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                          PRODUCT_TYPE: ["srnt", "tria"]
                   requires:
                       - checkout
             - build_srnt_prod:
                   name: "[srnt] Build"
                   requires:
                       - "[srnt] Test helm generated k8s files"
-            - build_grth:
-                  name: "[grth] Build"
-                  requires:
-                      - "[grth] Test helm generated k8s files"
             - build_tria:
                   name: "[tria] Build"
                   requires:
@@ -147,14 +139,14 @@ workflows:
                   name: "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
                   matrix:
                       parameters:
-                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                          PRODUCT_TYPE: ["srnt", "tria"]
                   requires:
                       - "[<< matrix.PRODUCT_TYPE >>] Build"
             - test_deploy:
                   name: "[<< matrix.PRODUCT_TYPE >>] Test deploy"
                   matrix:
                       parameters:
-                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                          PRODUCT_TYPE: ["srnt", "tria"]
                   requires:
                       - "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
             - create_release_candidate?:
@@ -162,28 +154,28 @@ workflows:
                   type: approval
                   matrix:
                       parameters:
-                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                          PRODUCT_TYPE: ["srnt", "tria"]
                   requires:
                       - "[<< matrix.PRODUCT_TYPE >>] Test deploy"
             - release:
                   name: "[<< matrix.PRODUCT_TYPE >>] Create release candidate"
                   matrix:
                       parameters:
-                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                          PRODUCT_TYPE: ["srnt", "tria"]
                   requires:
                       - "[<< matrix.PRODUCT_TYPE >>] Create release candidate?"
             - test_deploy_last_release:
                   name: "[<< matrix.PRODUCT_TYPE >>] Test deploy last release"
                   matrix:
                       parameters:
-                          PRODUCT_TYPE: ["srnt", "grth"]
+                          PRODUCT_TYPE: ["srnt"]
                   requires:
                       - "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
             - test_upgrade_from_last_release:
                   name: "[<< matrix.PRODUCT_TYPE >>] Test upgrade from last release"
                   matrix:
                       parameters:
-                          PRODUCT_TYPE: ["srnt", "grth"]
+                          PRODUCT_TYPE: ["srnt"]
                   requires:
                       - "[<< matrix.PRODUCT_TYPE >>] Test deploy last release"
             - deploy_pr_environment?:
@@ -197,12 +189,12 @@ workflows:
                               - /SDO-.*/
                   matrix:
                       parameters:
-                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                          PRODUCT_TYPE: ["srnt", "tria"]
             - deploy_pr_environment:
                   name: "[<< matrix.PRODUCT_TYPE >>] Deploy PR environment"
                   matrix:
                       parameters:
-                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                          PRODUCT_TYPE: ["srnt", "tria"]
                   requires:
                       - "[<< matrix.PRODUCT_TYPE >>] Deploy PR environment?"
                       - "[<< matrix.PRODUCT_TYPE >>] Build"
@@ -211,23 +203,21 @@ workflows:
                   type: approval
                   matrix:
                       parameters:
-                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                          PRODUCT_TYPE: ["srnt", "tria"]
                   requires:
                       - "[<< matrix.PRODUCT_TYPE >>] Deploy PR environment"
             - delete_pr_environment:
                   name: "[<< matrix.PRODUCT_TYPE >>] Delete PR environment"
                   matrix:
                       parameters:
-                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                          PRODUCT_TYPE: ["srnt", "tria"]
                   requires:
                       - "[<< matrix.PRODUCT_TYPE >>] Delete PR environment?"
             - pull_request_success:
                   requires:
                       - "[srnt] Test deploy"
-                      - "[grth] Test deploy"
                       - "[tria] Test deploy"
                       - "[srnt] Test upgrade from last release"
-                      - "[grth] Test upgrade from last release"
 
 
     # Description :
@@ -244,50 +234,10 @@ workflows:
                   name: "[<< matrix.PRODUCT_TYPE >>] build_env_vars"
                   matrix:
                       parameters:
-                          PRODUCT_TYPE: ["grth", "srnt"]
+                          PRODUCT_TYPE: ["srnt"]
                   requires:
                       - checkout
-            - test_clone_from_customer_db:
-                  name: "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
-                  matrix:
-                      parameters:
-                          PRODUCT_TYPE: ["grth"]
-                          SOURCE_PFID: *client-to-clone-grth
-                  requires:
-                      - "[<< matrix.PRODUCT_TYPE >>] build_env_vars"
-            - prepare_load_tests:
-                  name: "[grth] Prepare laod tests << matrix.PFID >>"
-                  matrix:
-                      parameters:
-                          PFID: *client-to-clone-grth
-                  requires:
-                      - "[grth] test_clone_from-<< matrix.PFID >>"
             # Currently useless, because we scale down all pods in dev and we did not test it long enough
-            - execute_load_tests:
-                  name: "[grth] Execute load tests << matrix.SOURCE_PFID >>"
-                  matrix:
-                      parameters:
-                          SOURCE_PFID: *client-to-clone-grth
-                          DURATION: ["5m"]
-                  requires:
-                      - "[grth] Prepare laod tests << matrix.SOURCE_PFID >>"
-            - test_upgrade_from_customer_db:
-                  name: "[<< matrix.PRODUCT_TYPE >>] test_upgrade_from-<< matrix.SOURCE_PFID >>"
-                  matrix:
-                      parameters:
-                          PRODUCT_TYPE: ["grth"]
-                          SOURCE_PFID: *client-to-clone-grth
-                  requires:
-                      - "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
-            - execute_load_tests:
-                  name: "[grth] Execute load tests << matrix.SOURCE_PFID >>"
-                  matrix:
-                      parameters:
-                          SOURCE_PFID: *client-to-clone-grth
-                          DURATION: ["5m"]
-                  requires:
-                      - "[grth] Prepare laod tests << matrix.SOURCE_PFID >>"
-                      - "[grth] test_upgrade_from-<< matrix.SOURCE_PFID >>"
             - test_clone_from_customer_db:
                   name: "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
                   matrix:
