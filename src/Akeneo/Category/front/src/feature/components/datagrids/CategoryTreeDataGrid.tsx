@@ -81,11 +81,11 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
         response.json().then((template: Template) => {
           if (template) {
             notify(NotificationLevel.SUCCESS, translate('akeneo.category.template.notification_success'));
-            redirectToTemplate(categoryTree.id, template.identifier);
+            redirectToTemplate(categoryTree.id, template.uuid);
           }
         });
       })
-      .catch(error => {
+      .catch(() => {
         notify(NotificationLevel.ERROR, translate('akeneo.category.template.notification_error'));
       });
   };
@@ -145,7 +145,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
     });
 
     setDisplayCategoryTemplatesColumn(featureFlags.isEnabled('enriched_category') && hasRights && hasTemplates);
-  }, [filteredTrees]);
+  }, [featureFlags, filteredTrees, isGranted]);
 
   return (
     <>

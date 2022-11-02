@@ -10,6 +10,6 @@ services:
 
     Akeneo\Category\Domain\UserIntent\Factory\ValueUserIntentFactory:
         arguments:
-            - '@Akeneo\Category\Domain\Query\GetAttribute'
+            - '@Akeneo\Category\Domain\Query\GetAttributeInMemory'
         tags:
             - { name: 'pim.category.user_intent_factory' }

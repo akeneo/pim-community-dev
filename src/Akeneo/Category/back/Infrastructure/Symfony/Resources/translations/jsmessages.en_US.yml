@@ -18,3 +18,10 @@ akeneo.category:
         delete: Delete template
         notification_success: Template activated successfully
         notification_error: Template could not be activated
+        attribute:
+            description_title: Description Settings
+    template_list:
+        columns:
+            header: Header
+            code: Code
+            type: Type
