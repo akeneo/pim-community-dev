@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Field, Helper, NumberInput, Button, CheckIcon, getColor} from 'akeneo-design-system';
+import {Field, Helper, NumberInput, Button, CheckIcon, getColor, SelectInput} from 'akeneo-design-system';
 import {TextField, useTranslate, filterErrors} from '@akeneo-pim-community/shared';
 import {StorageConfiguratorProps, isSftpStorage} from './model';
 import {useCheckStorageConnection} from '../../hooks/useCheckStorageConnection';
@@ -17,6 +17,10 @@ const CheckStorageConnection = styled.div`
   gap: 8.5px;
   color: ${getColor('green', 100)};
 `;
+
+type StorageLoginType = 'password' | 'private_key';
+
+const STORAGE_LOGIN_TYPES = ['password', 'private_key'];
 
 const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: StorageConfiguratorProps) => {
   if (!isSftpStorage(storage)) {
@@ -61,6 +65,28 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
           </Helper>
         ))}
       </Field>
+
+      <Field label={translate('pim_import_export.form.job_instance.storage_form.login_type.label')}>
+        <SelectInput
+          value={storage.login_type}
+          onChange={handleLoginTypeChange}
+          emptyResultLabel={translate('pim_common.no_result')}
+          openLabel={translate('pim_common.open')}
+          clearable={false}
+        >
+          {STORAGE_LOGIN_TYPES.map(loginType => (
+            <SelectInput.Option value={loginType} key={loginType}>
+              {translate(`pim_import_export.form.job_instance.storage_form.connection_type.${loginType}`)}
+            </SelectInput.Option>
+          ))}
+        </SelectInput>
+        {filterErrors(validationErrors, '[login_type]').map((error, index) => (
+          <Helper key={index} inline={true} level="error">
+            {translate(error.messageTemplate, error.parameters)}
+          </Helper>
+        ))}
+      </Field>
+
       <TextField
         value={storage.username}
         required={true}
@@ -68,14 +94,24 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
         onChange={(username: string) => onStorageChange({...storage, username})}
         errors={filterErrors(validationErrors, '[username]')}
       />
-      <TextField
-        value={storage.password}
-        required={true}
-        type="password"
-        label={translate('pim_import_export.form.job_instance.storage_form.password.label')}
-        onChange={(password: string) => onStorageChange({...storage, password})}
-        errors={filterErrors(validationErrors, '[password]')}
-      />
+
+      {storage.login_type === 'password' ? (
+        <TextField
+          value={storage.password ?? ''}
+          required={true}
+          type="password"
+          label={translate('pim_import_export.form.job_instance.storage_form.password.label')}
+          onChange={(password: string) => onStorageChange({...storage, password})}
+          errors={filterErrors(validationErrors, '[password]')}
+        />
+      ) : (
+        <TextField
+          value={storage.public_key ?? ''}
+          readOnly
+          label={translate('pim_import_export.form.job_instance.storage_form.public_key.label')}
+        />
+      )}
+
       <CheckStorageForm>
         <CheckStorageConnection>
           <Button onClick={checkReliability} disabled={!canCheckConnection} level="primary">
@@ -92,5 +128,7 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
     </>
   );
 };
+
+export type {StorageLoginType};
 
 export {SftpStorageConfigurator};

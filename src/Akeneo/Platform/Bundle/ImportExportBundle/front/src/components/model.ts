@@ -1,4 +1,5 @@
 import {FeatureFlags} from '@akeneo-pim-community/shared';
+import {StorageLoginType} from './StorageConfigurator';
 
 type JobType = 'import' | 'export';
 
@@ -12,8 +13,10 @@ type SftpStorage = {
   file_path: string;
   host: string;
   port: number;
+  login_type: StorageLoginType;
   username: string;
-  password: string;
+  password: string | null;
+  public_key: string | null;
 };
 
 type NoneStorage = {
@@ -61,8 +64,10 @@ const getDefaultStorage = (jobType: JobType, storageType: StorageType, fileExten
         file_path: getDefaultFilePath(jobType, fileExtension),
         host: '',
         port: 22,
+        login_type: 'password',
         username: '',
         password: '',
+        public_key: '',
       };
     case 'none':
       return {
