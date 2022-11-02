@@ -12,6 +12,7 @@ use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetUserConsente
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetUserConsentedAuthenticationUuidQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAccessTokenQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\IncreaseScopeLengthQuery;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use OAuth2\IOAuth2GrantCode;
@@ -35,6 +36,8 @@ class CreateAccessToken implements CreateAccessTokenInterface
         private GetUserConsentedAuthenticationUuidQueryInterface $getUserConsentedAuthenticationUuidQuery,
         private GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery,
         private GetAccessTokenQuery $getAccessTokenQuery,
+        // Pull-up master: do not keep this property
+        private ?IncreaseScopeLengthQuery $increaseScopeLengthQuery = null,
     ) {
     }
 
@@ -61,6 +64,15 @@ class CreateAccessToken implements CreateAccessTokenInterface
             $token = $this->randomCodeGenerator->generate();
 
             $appUser = $this->getAppUser($clientId);
+
+            /**
+             * Pull-up master: remove the call to `increaseScopeLength()`. It's a workaround to not
+             * create a migration on a released version.
+             */
+            if (null !== $this->increaseScopeLengthQuery) {
+                $this->increaseScopeLengthQuery->execute();
+            }
+
             /* @phpstan-ignore-next-line */
             $this->storage->createAccessToken($token, $client, $appUser, null, $authorizationScopesList->toScopeString());
         }
