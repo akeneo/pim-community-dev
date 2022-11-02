@@ -90,11 +90,11 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
       });
   };
 
-  const redirectToTemplate = (treeId: number, templateId: string) => {
+  const redirectToTemplate = (treeId: number, templateUuid: string) => {
     router.redirect(
       router.generate('pim_category_template_edit', {
         treeId: treeId,
-        templateId: templateId,
+        templateUuid: templateUuid,
       })
     );
   };
