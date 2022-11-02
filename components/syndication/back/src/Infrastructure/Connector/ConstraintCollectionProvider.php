@@ -20,8 +20,10 @@ use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderIn
 use Akeneo\Tool\Component\StorageUtils\Validator\Constraints\WritableDirectory;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\Validator\Constraints\Uuid;
 
 class ConstraintCollectionProvider implements ConstraintCollectionProviderInterface
 {
@@ -57,7 +59,9 @@ class ConstraintCollectionProvider implements ConstraintCollectionProviderInterf
 
         $catalogProjectionConstraint = new Assert\Collection([
             'fields' => [
+                'uuid' => new Assert\Optional(new Uuid()), // MIG: should not be optional
                 'code' => new Type('string'),
+                'label' => new Assert\Optional(new Type('string')),
                 'dataMappings' => new Columns(),
                 'filters' => new ProductFilters()
             ]
