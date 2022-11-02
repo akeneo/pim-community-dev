@@ -48,12 +48,6 @@ akeneo_connectivity_connection_marketplace_api_test_apps_delete:
     methods: [DELETE]
     defaults: { _list_in_root_endpoint: false }
 
-akeneo_connectivity_connection_marketplace_api_test_apps_get:
-    path: '/api/rest/v1/test-apps/{clientId}'
-    controller: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Controller\External\GetTestAppAction
-    methods: [get]
-    defaults: { _list_in_root_endpoint: false }
-
 # Front API
 akeneo_connectivity_connection_connect_marketplace:
     path: '/connect/app-store'

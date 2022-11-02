@@ -6,7 +6,6 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Con
 
 use Akeneo\Connectivity\Connection\Domain\Marketplace\TestApps\Persistence\GetTestAppsQueryInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
-use Akeneo\Tool\Component\Api\Pagination\OffsetHalPaginator;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,8 +21,6 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @internal This is an undocumented API endpoint used for internal purposes only
- *
- * @phpstan-import-type ExternalTestApp from GetTestAppsQueryInterface
  */
 final class GetTestAppsAction
 {
@@ -32,7 +29,6 @@ final class GetTestAppsAction
         private SecurityFacade $security,
         private TokenStorageInterface $tokenStorage,
         private GetTestAppsQueryInterface $getTestAppsQuery,
-        private OffsetHalPaginator $offsetPaginator,
     ) {
     }
 
@@ -51,29 +47,8 @@ final class GetTestAppsAction
             throw new BadRequestHttpException('Invalid user token.');
         }
 
-        $page = (int) $request->query->get('page', 1);
-        $limit = (int) $request->query->get('limit', 100);
+        $testApps = $this->getTestAppsQuery->execute($user->getId());
 
-        $testApps = $this->getTestAppsQuery->execute($user->getId(), $page, $limit);
-
-        return new JsonResponse($this->paginate($testApps, $page, $limit), Response::HTTP_OK);
-    }
-
-    /**
-     * @param array<ExternalTestApp> $testApps
-     * @return array<array-key, mixed>
-     */
-    private function paginate(array $testApps, int $page, int $limit): array
-    {
-        return $this->offsetPaginator->paginate($testApps, [
-            'query_parameters' => [
-                'page' => $page,
-                'limit' => $limit,
-            ],
-            'list_route_name' => 'akeneo_connectivity_connection_marketplace_api_test_apps_list',
-            'item_route_name' => 'akeneo_connectivity_connection_marketplace_api_test_apps_get',
-            'item_route_parameter' => 'clientId',
-            'item_identifier_key' => 'client_id',
-        ], null);
+        return new JsonResponse($testApps, Response::HTTP_OK);
     }
 }

@@ -83,7 +83,3 @@ services:
             - '@oro_security.security_facade'
             - '@security.token_storage'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\GetTestAppsQuery'
-            - '@pim_api.pagination.offset_hal_paginator'
-
-    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Controller\External\GetTestAppAction:
-        public: true

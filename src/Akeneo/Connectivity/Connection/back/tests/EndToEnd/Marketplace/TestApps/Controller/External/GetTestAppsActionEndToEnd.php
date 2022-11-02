@@ -42,8 +42,6 @@ class GetTestAppsActionEndToEnd extends ApiTestCase
 
     public function test_it_lists_test_apps(): void
     {
-        $clientId = 'test_client_id';
-
         $this->developerModeFeatureFlag->enable();
         $this->aclLoader->addAclToRoles('akeneo_connectivity_connection_manage_test_apps', ['ROLE_ADMINISTRATOR']);
 
@@ -65,27 +63,24 @@ class GetTestAppsActionEndToEnd extends ApiTestCase
         $client->request(
             'GET',
             '/api/rest/v1/test-apps',
-            [
-                'page' => 1,
-                'limit' => 2,
-            ],
+            [],
             [],
             [
                 'CONTENT_TYPE' => 'application/json',
             ],
         );
 
-        $result = \json_decode($client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        $results = \json_decode($client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
-        $items = $result['_embedded']['items'] ?? null;
-        Assert::assertNotNull($items);
 
-        Assert::assertCount(2, $items);
-        Assert::assertSame('3d5286d9-49b6-403f-aada-f891e18debc8', $items[0]['client_id']);
-        Assert::assertSame('test_app_1', $items[0]['name']);
-        Assert::assertSame('897fa702-7321-4417-9ba5-ea908a4612bf', $items[1]['client_id']);
-        Assert::assertSame('test_app_2', $items[1]['name']);
+        Assert::assertCount(3, $results);
+        Assert::assertSame('3d5286d9-49b6-403f-aada-f891e18debc8', $results[0]['client_id']);
+        Assert::assertSame('test_app_1', $results[0]['name']);
+        Assert::assertSame('897fa702-7321-4417-9ba5-ea908a4612bf', $results[1]['client_id']);
+        Assert::assertSame('test_app_2', $results[1]['name']);
+        Assert::assertSame('d2173d05-7748-4fc6-8467-55d1eb84872b', $results[2]['client_id']);
+        Assert::assertSame('test_app_3', $results[2]['name']);
     }
 
     private function getUserIdByUsername(string $username): int

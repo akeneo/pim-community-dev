@@ -21,11 +21,8 @@ class GetTestAppsQuery implements GetTestAppsQueryInterface
     /**
      * @inheritDoc
      */
-    public function execute(int $userId, int $page = 1, int $pageSize = 100): array
+    public function execute(int $userId): array
     {
-        $limit = \max($pageSize, 0);
-        $offset = \max(($page - 1) * $pageSize, 0);
-
         $query = <<<SQL
         SELECT 
             app.client_id,
@@ -35,20 +32,15 @@ class GetTestAppsQuery implements GetTestAppsQueryInterface
         FROM akeneo_connectivity_test_app AS app
         WHERE app.user_id = :user_id
         ORDER BY app.client_id
-        LIMIT :offset, :limit
         SQL;
 
         $results = $this->connection->fetchAllAssociative(
             $query,
             [
                 'user_id' => $userId,
-                'offset' => $offset,
-                'limit' => $limit,
             ],
             [
                 'user_id' => Types::INTEGER,
-                'limit' => Types::INTEGER,
-                'offset' => Types::INTEGER,
             ]
         );
 

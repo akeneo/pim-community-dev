@@ -20,5 +20,5 @@ interface GetTestAppsQueryInterface
     /**
      * @return array<ExternalTestApp>
      */
-    public function execute(int $userId, int $page = 1, int $pageSize = 100): array;
+    public function execute(int $userId): array;
 }

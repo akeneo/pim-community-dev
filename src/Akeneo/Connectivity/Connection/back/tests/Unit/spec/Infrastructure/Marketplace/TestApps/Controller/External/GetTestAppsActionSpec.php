@@ -7,7 +7,6 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApp
 use Akeneo\Connectivity\Connection\Domain\Marketplace\TestApps\Persistence\GetTestAppsQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Controller\External\GetTestAppsAction;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
-use Akeneo\Tool\Component\Api\Pagination\OffsetHalPaginator;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,14 +26,12 @@ class GetTestAppsActionSpec extends ObjectBehavior
         SecurityFacade $security,
         TokenStorageInterface $tokenStorage,
         GetTestAppsQueryInterface $getTestAppsQuery,
-        OffsetHalPaginator $offsetPaginator,
     ) {
         $this->beConstructedWith(
             $developerModeFeatureFlag,
             $security,
             $tokenStorage,
             $getTestAppsQuery,
-            $offsetPaginator,
         );
     }
 
