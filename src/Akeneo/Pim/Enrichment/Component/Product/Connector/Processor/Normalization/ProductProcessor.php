@@ -92,11 +92,6 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
      */
     protected function filterLocaleSpecificAttributeCodes(array $attributeCodes, array $jobLocales): array
     {
-        // TODO: remove after merge into master
-        if ($this->getAttributes === null) {
-            return $attributeCodes;
-        }
-
         return array_filter($attributeCodes, function (string $attributeCode) use ($jobLocales) {
             $attribute = $this->getAttributes->forCode($attributeCode);
             if (!$attribute->isLocaleSpecific()) {
