@@ -20,10 +20,10 @@ class GetCatalogProductsPerformance extends PerformanceTestCase
     public function testThatRetrievingProductsIsPerformant(): void
     {
         $this->config->setTitle('Get products from a Catalog');
-        $this->config->assert('main.wall_time < 350ms');
-        $this->config->assert('main.peak_memory < 10mb');
-        $this->config->assert('metrics.sql.queries.count < 15');
-        $this->config->assert('metrics.http.curl.requests.count == 1');
+        $this->config->assert('main.wall_time < 350ms', 'Wall time');
+        $this->config->assert('main.peak_memory < 10mb', 'Peak memory');
+        $this->config->assert('metrics.sql.queries.count < 15', 'SQL queries');
+        $this->config->assert('metrics.http.curl.requests.count == 1', 'ES queries');
 
         $this->logAs('admin'); // Creating products requires an authenticated user with higher permissions
         $this->createProduct(Uuid::fromString('8985de43-08bc-484d-aee0-4489a56ba02d'), [new SetEnabled(true)]);
