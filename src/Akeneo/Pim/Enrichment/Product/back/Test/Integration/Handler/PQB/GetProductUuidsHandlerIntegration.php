@@ -63,8 +63,8 @@ final class GetProductUuidsHandlerIntegration extends EnrichmentProductTestCase
         }
 
         Assert::assertCount(2, $uuids);
-        Assert::assertContains($this->getProductUuid('test1'), $uuids);
-        Assert::assertContains($this->getProductUuid('test2'), $uuids);
+        Assert::assertContains($this->getProductUuid('test1')->toString(), $uuids);
+        Assert::assertContains($this->getProductUuid('test2')->toString(), $uuids);
     }
 
     /** @test */
@@ -78,7 +78,7 @@ final class GetProductUuidsHandlerIntegration extends EnrichmentProductTestCase
         }
 
         Assert::assertCount(1, $uuids);
-        Assert::assertContains($this->getProductUuid('test2'), $uuids);
+        Assert::assertContains($this->getProductUuid('test2')->toString(), $uuids);
 
         $productUuidCursor = $this->launchPQBCommand(['a_text' => [['operator' => Operators::EQUALS, 'value' => 'bar']]]);
         Assert::assertCount(0, $productUuidCursor);
@@ -155,14 +155,5 @@ final class GetProductUuidsHandlerIntegration extends EnrichmentProductTestCase
         Assert::assertInstanceOf(ProductUuidCursor::class, $productUuidCursor);
 
         return $productUuidCursor;
-    }
-
-    private function getProductUuid(string $productIdentifier): string
-    {
-        $product = $this->productRepository->findOneByIdentifier($productIdentifier);
-        Assert::assertNotNull($product);
-        WebmozartAssert::isInstanceOf($product, Product::class);
-
-        return $product->getUuid()->toString();
     }
 }

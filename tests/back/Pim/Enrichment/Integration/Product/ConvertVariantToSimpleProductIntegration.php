@@ -77,12 +77,12 @@ class ConvertVariantToSimpleProductIntegration extends TestCase
             'quantified' => [
                 'products' => [
                     [
-                        'uuid' => $this->getProductUuid('other'),
+                        'uuid' => $this->getProductUuid('other')->toString(),
                         'identifier' => 'other',
                         'quantity' => 10,
                     ],
                     [
-                        'uuid' => $this->getProductUuid('random'),
+                        'uuid' => $this->getProductUuid('random')->toString(),
                         'identifier' => 'random',
                         'quantity' => 2,
                     ],
@@ -229,10 +229,10 @@ class ConvertVariantToSimpleProductIntegration extends TestCase
         foreach ($expectedAssociations as $associationTypeCode => $association) {
             Assert::assertTrue($product->hasAssociationForTypeCode($associationTypeCode));
 
-            $actualAssociatedProductIdentifiers = $product->getAssociatedProducts($associationTypeCode)->map(
-                fn (ProductInterface $associatedProduct): string => $associatedProduct->getIdentifier()
+            $actualAssociatedProductUuids = $product->getAssociatedProducts($associationTypeCode)->map(
+                fn (ProductInterface $associatedProduct): string => $associatedProduct->getUuid()->toString()
             )->toArray();
-            Assert::assertEqualsCanonicalizing($association['products'] ?? [], $actualAssociatedProductIdentifiers);
+            Assert::assertEqualsCanonicalizing($association['product_uuids'] ?? [], $actualAssociatedProductUuids);
 
             $actualAssociatedProductModelCodes = $product->getAssociatedProductModels($associationTypeCode)->map(
                 fn (ProductModelInterface $associatedProductModel): string => $associatedProductModel->getCode()
@@ -305,13 +305,5 @@ class ConvertVariantToSimpleProductIntegration extends TestCase
         }
 
         return \intval($id);
-    }
-
-    private function getProductUuid(string $identifier): ?string
-    {
-        return $this->get('database_connection')->executeQuery(
-                'SELECT BIN_TO_UUID(uuid) AS uuid FROM pim_catalog_product WHERE identifier = :identifier',
-                ['identifier' => $identifier]
-            )->fetchOne() ?: null;
     }
 }

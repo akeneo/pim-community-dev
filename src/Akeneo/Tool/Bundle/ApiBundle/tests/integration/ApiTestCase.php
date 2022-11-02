@@ -18,6 +18,8 @@ use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Model\AclPermission;
 use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
 use Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -391,5 +393,15 @@ abstract class ApiTestCase extends WebTestCase
         );
         $aclManager->flush();
         $aclManager->clearCache();
+    }
+
+    protected function getProductUuid(string $productIdentifier): ?UuidInterface
+    {
+        $productUuid = $this->get('database_connection')->executeQuery(
+            'SELECT BIN_TO_UUID(uuid) as uuid from pim_catalog_product where identifier = :identifier',
+            ['identifier' => $productIdentifier]
+        )->fetchOne();
+
+        return $productUuid ? Uuid::fromString($productUuid) : null;
     }
 }
