@@ -13,7 +13,7 @@ use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Security\AclLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -26,7 +26,7 @@ class NotifyOnDisabledCatalogEventSubscriberIntegration extends TestCase
     private AclLoader $aclLoader;
     private CommandBus $commandBus;
     private ConnectedAppLoader $connectedAppLoader;
-    private EventDispatcher $eventDispatcher;
+    private EventDispatcherInterface $eventDispatcher;
 
     protected function getConfiguration(): Configuration
     {
