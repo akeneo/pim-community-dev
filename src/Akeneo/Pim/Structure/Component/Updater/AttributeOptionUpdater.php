@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Structure\Component\Updater;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -90,9 +92,13 @@ class AttributeOptionUpdater implements ObjectUpdaterInterface
                     );
                 }
             }
-        } elseif (in_array($field, ['attribute', 'code', 'sort_order'])) {
+        } elseif (in_array($field, ['attribute', 'code'])) {
             if (null !== $data && !is_scalar($data)) {
                 throw InvalidPropertyTypeException::scalarExpected($field, static::class, $data);
+            }
+        } elseif ('sort_order' === $field) {
+            if (null !== $data && !\is_int($data)) {
+                throw InvalidPropertyTypeException::integerExpected($field, static::class, $data);
             }
         } else {
             throw UnknownPropertyException::unknownProperty($field);
@@ -145,15 +151,8 @@ class AttributeOptionUpdater implements ObjectUpdaterInterface
         }
     }
 
-    /**
-     * @param string $code
-     *
-     * @return AttributeInterface|null
-     */
-    protected function findAttribute($code)
+    protected function findAttribute(?string $code): ?AttributeInterface
     {
-        $attribute = $this->attributeRepository->findOneByIdentifier($code);
-
-        return $attribute;
+        return  $this->attributeRepository->findOneByIdentifier($code);
     }
 }
