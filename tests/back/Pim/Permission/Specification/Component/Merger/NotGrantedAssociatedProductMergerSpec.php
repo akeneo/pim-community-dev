@@ -20,19 +20,16 @@ use Akeneo\Pim\Permission\Component\NotGrantedDataMergerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class NotGrantedAssociatedProductMergerSpec extends ObjectBehavior
 {
     function let(
-        AuthorizationCheckerInterface $authorizationChecker,
         FieldSetterInterface $associationSetter,
         ItemCategoryAccessQuery $productCategoryAccessQuery,
         ItemCategoryAccessQuery $productModelCategoryAccessQuery,
         TokenStorageInterface $tokenStorage
     ) {
         $this->beConstructedWith(
-            $authorizationChecker,
             $associationSetter,
             $productCategoryAccessQuery,
             $productModelCategoryAccessQuery,

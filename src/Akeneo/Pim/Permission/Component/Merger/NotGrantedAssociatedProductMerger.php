@@ -59,10 +59,6 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class NotGrantedAssociatedProductMerger implements NotGrantedDataMergerInterface
 {
-    // TODO Remove this CPM-790
-    /** @var AuthorizationCheckerInterface */
-    private $authorizationChecker;
-
     /** @var FieldSetterInterface */
     private $associationSetter;
 
@@ -76,20 +72,17 @@ class NotGrantedAssociatedProductMerger implements NotGrantedDataMergerInterface
     private $tokenStorage;
 
     /**
-     * @param AuthorizationCheckerInterface $authorizationChecker
      * @param FieldSetterInterface          $associationSetter
      * @param ItemCategoryAccessQuery       $productCategoryAccessQuery
      * @param ItemCategoryAccessQuery       $productModelCategoryAccessQuery
      * @param TokenStorageInterface         $tokenStorage
      */
     public function __construct(
-        AuthorizationCheckerInterface $authorizationChecker,
         FieldSetterInterface $associationSetter,
         ItemCategoryAccessQuery $productCategoryAccessQuery,
         ItemCategoryAccessQuery $productModelCategoryAccessQuery,
         TokenStorageInterface $tokenStorage
     ) {
-        $this->authorizationChecker = $authorizationChecker;
         $this->associationSetter = $associationSetter;
         $this->productCategoryAccessQuery = $productCategoryAccessQuery;
         $this->productModelCategoryAccessQuery = $productModelCategoryAccessQuery;
