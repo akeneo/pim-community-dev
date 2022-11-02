@@ -13,7 +13,6 @@ use Akeneo\Test\IntegrationTestsBundle\Sanitizer\DateSanitizer;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 
 /**
  * Integration tests to check that the projection of the product is correctly fetched from the database.
@@ -756,10 +755,5 @@ class GetElasticsearchProductProjectionIntegration extends TestCase
         return $this->get('database_connection');
     }
 
-    private function getProductUuidFromIdentifier(string $productIdentifier): UuidInterface
-    {
-        return Uuid::fromString($this->get('database_connection')->fetchOne(
-            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?', [$productIdentifier]
-        ));
-    }
+
 }

@@ -14,8 +14,6 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 
 final class GetAncestorProductModelCodesIntegration extends TestCase
 {
@@ -139,12 +137,5 @@ final class GetAncestorProductModelCodesIntegration extends TestCase
     private function getAncestorProductModelCodes(): GetAncestorProductModelCodes
     {
         return $this->get('akeneo.pim.enrichment.product.query.get_ancestor_product_model_codes');
-    }
-
-    private function getProductUuidFromIdentifier(string $productIdentifier): UuidInterface
-    {
-        return Uuid::fromString($this->get('database_connection')->fetchOne(
-            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?', [$productIdentifier]
-        ));
     }
 }

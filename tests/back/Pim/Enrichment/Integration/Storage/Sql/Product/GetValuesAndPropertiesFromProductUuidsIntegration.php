@@ -9,8 +9,6 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -260,12 +258,5 @@ class GetValuesAndPropertiesFromProductUuidsIntegration extends TestCase
             return $group;
         }, $groupCodes);
         $this->get('pim_catalog.saver.group')->saveAll($groups);
-    }
-
-    private function getProductUuidFromIdentifier(string $productIdentifier): UuidInterface
-    {
-        return Uuid::fromString($this->get('database_connection')->fetchOne(
-            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?', [$productIdentifier]
-        ));
     }
 }

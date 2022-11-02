@@ -6,8 +6,6 @@ use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetCategoryCodesByProductUu
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\TestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Fixture\EntityBuilder;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Webmozart\Assert\Assert;
 
 class GetCategoryCodesByProductUuidsIntegration extends TestCase
@@ -166,12 +164,5 @@ class GetCategoryCodesByProductUuidsIntegration extends TestCase
     protected function getConfiguration()
     {
         return $this->catalog->useMinimalCatalog();
-    }
-
-    private function getProductUuidFromIdentifier(string $productIdentifier): UuidInterface
-    {
-        return Uuid::fromString($this->get('database_connection')->fetchOne(
-            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?', [$productIdentifier]
-        ));
     }
 }
