@@ -15,12 +15,12 @@ namespace Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\Transport\Dsn;
-use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransportFactory;
+use Symfony\Component\Mailer\Transport\TransportFactoryInterface;
 
 final class SmtpChecker
 {
     public function __construct(
-        private EsmtpTransportFactory $transportFactory,
+        private TransportFactoryInterface $transportFactory,
         private string $mailerDsn,
         private LoggerInterface $logger,
     ) {
@@ -30,12 +30,12 @@ final class SmtpChecker
     {
         try {
             $transport = $this->transportFactory->create(Dsn::fromString($this->mailerDsn));
-            $ping = $transport->executeCommand("NOOP\r\n", [250]);
+            $transport->executeCommand("NOOP\r\n", [250]);
         } catch (\Throwable $e) {
             $this->logger->error("Smtp ServiceCheck error", ['exception' => $e]);
             return ServiceStatus::notOk(sprintf('Unable to ping the mailer transport: "%s".', $e->getMessage()));
         }
 
-        return $ping ? ServiceStatus::ok() : ServiceStatus::notOk('Unable to ping the mailer transport.');
+        return ServiceStatus::ok();
     }
 }
