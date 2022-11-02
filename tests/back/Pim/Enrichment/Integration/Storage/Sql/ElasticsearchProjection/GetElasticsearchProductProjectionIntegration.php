@@ -754,6 +754,4 @@ class GetElasticsearchProductProjectionIntegration extends TestCase
     {
         return $this->get('database_connection');
     }
-
-
 }
