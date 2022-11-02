@@ -24,9 +24,6 @@ jobs:
             -   run:
                     name: Acceptance back
                     command: APP_ENV=test make catalogs-acceptance-back
-            -   run:
-                    name: Performance back
-                    command: APP_ENV=test make catalogs-performance-back
             -   when:
                     condition: << pipeline.parameters.run-database-tests >>
                     steps:
