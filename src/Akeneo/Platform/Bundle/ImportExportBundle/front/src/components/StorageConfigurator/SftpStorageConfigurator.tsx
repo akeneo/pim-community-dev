@@ -61,7 +61,9 @@ const SftpStorageConfigurator = ({
           onStorageChange({...storage, fingerprint: '' === fingerprint ? undefined : fingerprint})
         }
         errors={filterErrors(validationErrors, '[fingerprint]')}
-      />
+      >
+        <Helper>{translate('pim_import_export.form.job_instance.storage_form.fingerprint.helper')}</Helper>
+      </TextField>
       <Field
         label={`${translate('pim_import_export.form.job_instance.storage_form.port.label')} ${translate(
           'pim_common.required_label'
