@@ -11,9 +11,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletene
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Query\SaveProductCompletenesses;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
-use Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ChangedProductCompleteness;
-use Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ProductCompletenessCollectionWasChanged;
-use Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ProductsCompletenessCollectionsWereChanged;
+use Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ProductCompletenessWasChanged;
+use Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ProductsCompletenessWereChanged;
 use Akeneo\Pim\Enrichment\Product\Domain\Clock;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -53,7 +52,7 @@ class ComputeAndPersistProductCompletenessesSpec extends ObjectBehavior
         GetProductCompletenesses $getProductCompletenesses,
         EventDispatcher $eventDispatcher,
         Clock $clock,
-    ){
+    ) {
         $uuid1 = Uuid::uuid4();
         $uuid2 = Uuid::uuid4();
         $uuid3 = Uuid::uuid4();
@@ -105,22 +104,16 @@ class ComputeAndPersistProductCompletenessesSpec extends ObjectBehavior
         $changedAt = new \DateTimeImmutable('2022-10-01');
         $clock->now()->willReturn($changedAt);
 
-        $event = new ProductsCompletenessCollectionsWereChanged([
-            new ProductCompletenessCollectionWasChanged(
-                ProductUuid::fromUuid($uuid1),
-                $changedAt,
-                [
-                    new ChangedProductCompleteness('ecommerce', 'fr_FR', 10, 10, 6, 0, 40, 100),
-                ]
+        $event = new ProductsCompletenessWereChanged([
+            new ProductCompletenessWasChanged(
+                ProductUuid::fromUuid($uuid1), $changedAt, 'ecommerce', 'fr_FR', 10, 10, 6, 0, 40, 100
             ),
-            new ProductCompletenessCollectionWasChanged(
-                ProductUuid::fromUuid($uuid2),
-                $changedAt,
-                [
-                    new ChangedProductCompleteness('mobile', 'fr_FR', 10, 10, 8, 5, 20, 50),
-                    new ChangedProductCompleteness('ecommerce', 'en_US', 10, 10, 1, 0, 90, 100),
-                ]
-            )
+            new ProductCompletenessWasChanged(
+                ProductUuid::fromUuid($uuid2), $changedAt, 'mobile', 'fr_FR', 10, 10, 8, 5, 20, 50
+            ),
+            new ProductCompletenessWasChanged(
+                ProductUuid::fromUuid($uuid2), $changedAt, 'ecommerce', 'en_US', 10, 10, 1, 0, 90, 100
+            ),
         ]);
 
         $eventDispatcher->dispatch($event)->shouldBeCalledOnce();
@@ -138,7 +131,7 @@ class ComputeAndPersistProductCompletenessesSpec extends ObjectBehavior
         GetProductCompletenesses $getProductCompletenesses,
         EventDispatcher $eventDispatcher,
         Clock $clock,
-    ){
+    ) {
         $uuid1 = Uuid::uuid4();
 
         $getProductCompletenesses->fromProductUuids([

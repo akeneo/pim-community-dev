@@ -10,9 +10,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletene
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Query\SaveProductCompletenesses;
-use Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ChangedProductCompleteness;
-use Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ProductCompletenessCollectionWasChanged;
-use Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ProductsCompletenessCollectionsWereChanged;
+use Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ProductCompletenessWasChanged;
+use Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ProductsCompletenessWereChanged;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use Akeneo\Pim\Enrichment\Product\Domain\Clock;
 use Ramsey\Uuid\UuidInterface;
@@ -60,12 +59,12 @@ class ComputeAndPersistProductCompletenesses
     private function buildEvent(
         array $newProductsCompletenessCollections,
         array $previousProductsCompletenessCollections
-    ): ?ProductsCompletenessCollectionsWereChanged {
+    ): ?ProductsCompletenessWereChanged {
         $changedAt = $this->clock->now();
-        $changedProductsCompletenessCollections = [];
+        $changedProductsCompletenesses = [];
         foreach ($newProductsCompletenessCollections as $uuid => $newProductCompletenessCollection) {
+            $productUuid = ProductUuid::fromString($uuid);
             $previousProductCompletenessCollection = $previousProductsCompletenessCollections[$uuid] ?? null;
-            $changedProductCompletenesses = [];
 
             /** @var ProductCompletenessWithMissingAttributeCodes $newProductCompleteness */
             foreach ($newProductCompletenessCollection as $newProductCompleteness) {
@@ -74,7 +73,9 @@ class ComputeAndPersistProductCompletenesses
                     $newProductCompleteness->localeCode()
                 );
                 if (null === $previousProductCompleteness || $previousProductCompleteness->ratio() !== $newProductCompleteness->ratio()) {
-                    $changedProductCompletenesses[] = new ChangedProductCompleteness(
+                    $changedProductsCompletenesses[] = new ProductCompletenessWasChanged(
+                        $productUuid,
+                        $changedAt,
                         $newProductCompleteness->channelCode(),
                         $newProductCompleteness->localeCode(),
                         $previousProductCompleteness?->requiredCount(),
@@ -86,18 +87,10 @@ class ComputeAndPersistProductCompletenesses
                     );
                 }
             }
-
-            if ([] !== $changedProductCompletenesses) {
-                $changedProductsCompletenessCollections[] = new ProductCompletenessCollectionWasChanged(
-                    ProductUuid::fromString($uuid),
-                    $changedAt,
-                    $changedProductCompletenesses
-                );
-            }
         }
 
-        return [] !== $changedProductsCompletenessCollections
-            ? new ProductsCompletenessCollectionsWereChanged($changedProductsCompletenessCollections)
+        return [] !== $changedProductsCompletenesses
+            ? new ProductsCompletenessWereChanged($changedProductsCompletenesses)
             : null;
     }
 }

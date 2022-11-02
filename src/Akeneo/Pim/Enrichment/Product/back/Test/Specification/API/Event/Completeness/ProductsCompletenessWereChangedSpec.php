@@ -10,7 +10,7 @@ use PhpSpec\ObjectBehavior;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductsCompletenessCollectionsWereChangedSpec extends ObjectBehavior
+class ProductsCompletenessWereChangedSpec extends ObjectBehavior
 {
     public function it_cant_be_created_empty()
     {
@@ -18,7 +18,7 @@ class ProductsCompletenessCollectionsWereChangedSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_cant_be_created_with_invalid_products_completeness_collection()
+    public function it_cant_be_created_with_invalid_products_completeness()
     {
         $this->beConstructedWith(['completeness1','completeness2']);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
