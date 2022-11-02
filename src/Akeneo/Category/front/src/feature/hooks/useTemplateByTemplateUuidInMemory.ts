@@ -2,13 +2,15 @@ import {useQuery} from 'react-query';
 import {Template} from '../models';
 import {useRoute} from '@akeneo-pim-community/shared';
 import {useCallback} from 'react';
+import {ResponseStatus} from '../models/ResponseStatus';
 
 const TEMPLATE_FETCH_STALE_TIME = 60 * 60 * 1000;
 
+type ResultError = Error | null;
 type Result = {
-  status: 'idle' | 'loading' | 'success' | 'error';
+  status: ResponseStatus;
   data: Template | undefined;
-  error: any;
+  error: ResultError;
 };
 
 interface UseTemplateParameters {
@@ -16,8 +18,8 @@ interface UseTemplateParameters {
   enabled?: boolean;
 }
 
-export const useTemplate = ({uuid, enabled = true}: UseTemplateParameters): Result => {
-  const url = useRoute('pim_category_template_rest_get', {
+export const useTemplateByTemplateUuidInMemory = ({uuid, enabled = true}: UseTemplateParameters): Result => {
+  const url = useRoute('pim_category_template_rest_get_by_template_uuid_in_memory', {
     templateUuid: uuid,
   });
 
@@ -26,9 +28,13 @@ export const useTemplate = ({uuid, enabled = true}: UseTemplateParameters): Resu
       return {};
     }
 
-    return fetch(url).then(response => {
-      return response.json();
-    });
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error();
+    }
+
+    return await response.json();
   }, [uuid, url]);
 
   const options = {
@@ -36,5 +42,5 @@ export const useTemplate = ({uuid, enabled = true}: UseTemplateParameters): Resu
     staleTime: TEMPLATE_FETCH_STALE_TIME,
   };
 
-  return useQuery<Template, any>(['template'], fetchTemplate, options);
+  return useQuery<Template, ResultError, Template>(['template'], fetchTemplate, options);
 };

@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Storage\InMemory;
 
-use Akeneo\Category\Application\Query\GetTemplate;
 use Akeneo\Category\Domain\Model\Attribute\AttributeImage;
 use Akeneo\Category\Domain\Model\Attribute\AttributeRichText;
 use Akeneo\Category\Domain\Model\Attribute\AttributeText;
 use Akeneo\Category\Domain\Model\Attribute\AttributeTextArea;
-use Akeneo\Category\Domain\Model\Enrichment\Template;
+use Akeneo\Category\Domain\Query\GetAttributeInMemory;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
@@ -18,27 +17,24 @@ use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsRequired;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsScopable;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeOrder;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
-use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
-use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class GetTemplateInMemory implements GetTemplate
+class GetAttributeInMemoryImpl implements GetAttributeInMemory
 {
-    public function byUuid(TemplateUuid $uuid): ?Template
+
+    /**
+     * @inheritDoc
+     */
+    public function byIdentifiers(array $identifiers): AttributeCollection
     {
         $templateUuid = TemplateUuid::fromString('02274dac-e99a-4e1d-8f9b-794d4c3ba330');
 
-        $template = new Template(
-            $templateUuid,
-            new TemplateCode('default_template'),
-            LabelCollection::fromArray(['en_US' => 'Default template']),
-            new CategoryId(1),
-            AttributeCollection::fromArray([
+        return AttributeCollection::fromArray([
                 AttributeRichText::create(
                     AttributeUuid::fromString('840fcd1a-f66b-4f0c-9bbd-596629732950'),
                     new AttributeCode('description'),
@@ -94,8 +90,6 @@ class GetTemplateInMemory implements GetTemplate
                     $templateUuid,
                     AttributeAdditionalProperties::fromArray([])
                 ),
-            ])
-        );
-        return $template;
+            ]);
     }
 }

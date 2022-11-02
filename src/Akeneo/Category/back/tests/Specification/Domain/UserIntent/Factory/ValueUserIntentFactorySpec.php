@@ -12,7 +12,6 @@ use Akeneo\Category\Domain\Model\Attribute\AttributeImage;
 use Akeneo\Category\Domain\Model\Attribute\AttributeRichText;
 use Akeneo\Category\Domain\Model\Attribute\AttributeText;
 use Akeneo\Category\Domain\Model\Attribute\AttributeTextArea;
-use Akeneo\Category\Domain\Query\GetAttribute;
 use Akeneo\Category\Domain\UserIntent\Factory\UserIntentFactory;
 use Akeneo\Category\Domain\UserIntent\Factory\ValueUserIntentFactory;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
@@ -26,8 +25,8 @@ use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
+use Akeneo\Category\Infrastructure\Storage\InMemory\GetAttributeInMemoryImpl;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -35,9 +34,9 @@ use Prophecy\Argument;
  */
 class ValueUserIntentFactorySpec extends ObjectBehavior
 {
-    function let(GetAttribute $getAttribute)
+    function let(GetAttributeInMemoryImpl $getAttributeInMemory)
     {
-        $this->beConstructedWith($getAttribute);
+        $this->beConstructedWith($getAttributeInMemory);
     }
 
     function it_is_initializable(): void
@@ -51,7 +50,7 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
         $this->getSupportedFieldNames()->shouldReturn(['values']);
     }
 
-    function it_creates_a_list_of_value_intent_based_on_values_field(GetAttribute $getAttribute): void
+    function it_creates_a_list_of_value_intent_based_on_values_field(GetAttributeInMemoryImpl $getAttributeInMemory): void
     {
         $data = [
             'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d' . ValueCollection::SEPARATOR . 'en_US' => [
@@ -137,7 +136,7 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
             'banner' . ValueCollection::SEPARATOR . 'e0326684-0dff-44be-8283-9262deb9e4bc'
         ];
 
-        $getAttribute->byIdentifiers($identifiers)
+        $getAttributeInMemory->byIdentifiers($identifiers)
             ->shouldBeCalledOnce()
             ->willReturn($attributes);
 
@@ -178,7 +177,7 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
         ]);
     }
 
-    function it_does_not_add_value_user_intent_when_corresponding_attribute_type_no_found(GetAttribute $getAttribute): void
+    function it_does_not_add_value_user_intent_when_corresponding_attribute_type_no_found(GetAttributeInMemoryImpl $getAttributeInMemory): void
     {
         $data = [
             'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d' . ValueCollection::SEPARATOR . 'en_US' => [
@@ -213,7 +212,7 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
             'description' . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950'
         ];
 
-        $getAttribute->byIdentifiers($identifiers)
+        $getAttributeInMemory->byIdentifiers($identifiers)
             ->shouldBeCalledOnce()
             ->willReturn($valueCollection);
 

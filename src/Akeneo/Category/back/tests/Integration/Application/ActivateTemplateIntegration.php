@@ -3,10 +3,12 @@
 namespace Akeneo\Category\back\tests\Integration\Application;
 
 use Akeneo\Category\Application\ActivateTemplate;
+use Akeneo\Category\Application\Query\GetAttribute;
 use Akeneo\Category\Application\Query\GetTemplate;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
+use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Test\Integration\Configuration;
 
 class ActivateTemplateIntegration extends CategoryTestCase
@@ -22,20 +24,23 @@ class ActivateTemplateIntegration extends CategoryTestCase
 
         $activateTemplateService = $this->get(ActivateTemplate::class);
 
-        ($activateTemplateService)(
+        $templateUuid = ($activateTemplateService)(
             $templateModel->getCategoryTreeId(),
             $templateModel->getCode(),
             $templateModel->getLabelCollection()
         );
 
-        // TODO: activate SQL service instead of inMemory service in dependencies injection when GetTemplate->byUuid is implemented
-        $template = $this->get(GetTemplate::class)->byUuid((string) $templateModel->getUuid());
+        $template = $this->get(GetTemplate::class)->byUuid($templateUuid);
+        $attributes = $this->get(GetAttribute::class)->byTemplateUuid($templateUuid);
 
-        $this->assertEquals($templateModel->getCode(), $template->getCode());
-        $this->assertEqualsCanonicalizing($templateModel->getLabelCollection(), $template->getLabelCollection());
+        $attributesExpected = self::givenAttributes($templateUuid);
+
+        $this->assertEquals('master_template', $template->getCode());
+        $labelCollectionExpected = LabelCollection::fromArray(["en_US" => "Master catalog template"]);
+        $this->assertEqualsCanonicalizing($labelCollectionExpected, $template->getLabelCollection());
         $this->assertEqualsCanonicalizing(
-            array_keys($templateModel->getAttributeCollection()->getAttributes()),
-            array_keys($template->getAttributeCollection()->getAttributes()),
+            array_keys($attributesExpected->getAttributes()),
+            array_keys($attributes->getAttributes()),
         );
     }
 
