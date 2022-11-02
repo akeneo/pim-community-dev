@@ -1,6 +1,6 @@
 import React from 'react';
 import {Common} from '../components';
-import {PageHeader, PimView, useTranslate} from '@akeneo-pim-community/shared';
+import {PageContent, PageHeader, PimView, useTranslate} from '@akeneo-pim-community/shared';
 import {Breadcrumb, Button} from 'akeneo-design-system';
 
 type ListPageProps = {
@@ -34,6 +34,7 @@ const ListPage: React.FC<ListPageProps> = ({onCreate, isCreateEnabled}) => {
         </PageHeader.Actions>
         <PageHeader.Title>{translate('pim_title.akeneo_identifier_generator_index')}</PageHeader.Title>
       </PageHeader>
+      <PageContent />
     </>
   );
 };
