@@ -9,7 +9,7 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileImport\Read\Model\ProductFi
 
 class ListProductFileImportsHandler
 {
-    public function __construct(private FindAllProductFileImports $fileImports)
+    public function __construct(private FindAllProductFileImports $findAllProductFileImports)
     {
     }
 
@@ -18,6 +18,6 @@ class ListProductFileImportsHandler
      */
     public function __invoke(ListProductFileImports $fileImports): array
     {
-        return ($this->fileImports)();
+        return ($this->findAllProductFileImports)();
     }
 }
