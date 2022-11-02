@@ -7,3 +7,8 @@ services:
         class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\InMemory\InMemoryGetProductFileWithComments
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'
+
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\MarkCommentsAsReadBySupplier:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\InMemory\InMemoryMarkCommentsAsReadBySupplier
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ProductFileRepository'

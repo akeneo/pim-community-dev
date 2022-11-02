@@ -60,7 +60,7 @@ class UpdateDraftAuthorSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->updateProductDraftUsername->execute($event->getArgument('previous_username'), $user->getUsername());
+        $this->updateProductDraftUsername->execute($event->getArgument('previous_username'), $user->getUserIdentifier());
     }
 
     /**
@@ -73,6 +73,6 @@ class UpdateDraftAuthorSubscriber implements EventSubscriberInterface
         $user = $event->getSubject();
 
         return $event->getArgument('previous_username') !== null
-            && $user->getUsername() !== $event->getArgument('previous_username');
+            && $user->getUserIdentifier() !== $event->getArgument('previous_username');
     }
 }

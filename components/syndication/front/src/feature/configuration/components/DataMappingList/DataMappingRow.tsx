@@ -99,9 +99,9 @@ const DataMappingRow = memo(
     ({dataMapping, isSelected, onDataMappingSelected, ...rest}: DataMappingRowProps, ref) => {
       const translate = useTranslate();
 
-      const targetErrors = useValidationErrors(`[dataMappings][${dataMapping.uuid}][target]`, true);
+      const targetErrors = useValidationErrors(`[data_mappings][${dataMapping.uuid}][target]`, true);
       const hasError =
-        useValidationErrors(`[dataMappings][${dataMapping.uuid}]`).length > 0 && 0 === targetErrors.length;
+        useValidationErrors(`[data_mappings][${dataMapping.uuid}]`).length > 0 && 0 === targetErrors.length;
       const userContext = useUserContext();
       const catalogLocale = userContext.get('catalogLocale');
       const attributeCodes = useMemo(

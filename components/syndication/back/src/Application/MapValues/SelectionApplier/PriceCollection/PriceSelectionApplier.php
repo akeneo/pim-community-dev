@@ -36,7 +36,7 @@ class PriceSelectionApplier implements SelectionApplierInterface
         $priceCollection = $value->getPriceCollection();
         $currency = $selection->getCurrency();
 
-        $matchingPrices = array_filter($priceCollection, static fn (Price $price) => $price->getCurrency() === $currency);
+        $matchingPrices = array_values(array_filter($priceCollection, static fn (Price $price) => $price->getCurrency() === $currency));
 
         if (count($matchingPrices) === 0) {
             return null;

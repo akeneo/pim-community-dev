@@ -62,7 +62,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::EDIT, $productModel)->willReturn(true);
 
         $tokenStorage->getToken()->willReturn($token);
-        $token->getUsername()->willReturn('username');
+        $token->getUserIdentifier()->willReturn('username');
 
         $productModelDraft->getStatus()->willReturn(1);
 

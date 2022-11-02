@@ -66,22 +66,25 @@ JSON;
             'associations' => [
                 'PACK'       => [
                     'groups'   => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
                 'SUBSTITUTION' => [
                     'groups'   => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
                 'UPSELL'       => [
                     'groups'   => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
                 'X_SELL'       => [
                     'groups'   => [],
-                    'products' => ['product_no_view', 'product_own'],
+                    'product_uuids' => [
+                        $this->getProductUuid('product_no_view')->toString(),
+                        $this->getProductUuid('product_own')->toString(),
+                     ],
                     'product_models' => [],
                 ],
             ],
@@ -503,6 +506,7 @@ JSON;
         $this->get('doctrine')->getManager()->clear();
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
         $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
+        unset($standardizedProduct['uuid']);
 
         NormalizedProductCleaner::clean($standardizedProduct);
         NormalizedProductCleaner::clean($expectedProduct);

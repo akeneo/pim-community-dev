@@ -92,7 +92,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
 
         $tokenStorage->getToken()->willReturn($token);
-        $token->getUsername()->willReturn('Kevin');
+        $token->getUserIdentifier()->willReturn('Kevin');
 
         $productDraftRepository->findUserEntityWithValuesDraft($product, 'Kevin')->willReturn(null);
 
@@ -123,7 +123,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
 
         $tokenStorage->getToken()->willReturn($token);
-        $token->getUsername()->willReturn('Kevin');
+        $token->getUserIdentifier()->willReturn('Kevin');
 
         $productDraftRepository->findUserEntityWithValuesDraft($product, 'Kevin')->willReturn($productDraft);
         $productDraft->getStatus()->willReturn(EntityWithValuesDraftInterface::IN_PROGRESS);
@@ -155,7 +155,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
 
         $tokenStorage->getToken()->willReturn($token);
-        $token->getUsername()->willReturn('Kevin');
+        $token->getUserIdentifier()->willReturn('Kevin');
 
         $productDraftRepository->findUserEntityWithValuesDraft($product, 'Kevin')->willReturn($productDraft);
         $productDraft->getStatus()->willReturn(EntityWithValuesDraftInterface::READY);

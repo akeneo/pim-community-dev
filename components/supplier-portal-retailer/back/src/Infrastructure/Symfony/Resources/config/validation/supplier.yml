@@ -1,4 +1,4 @@
-Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\CreateSupplier:
+Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\CreateSupplier\CreateSupplier:
   properties:
     label:
       - NotBlank:
@@ -12,7 +12,7 @@ Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\CreateSupplier:
               mode: 'strict'
           - Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\Validation\UniqueContributorEmail: ~
 
-Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\UpdateSupplier:
+Akeneo\SupplierPortal\Retailer\Application\Supplier\Write\UpdateSupplier\UpdateSupplier:
   properties:
     label:
       - NotBlank:

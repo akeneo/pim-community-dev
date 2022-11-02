@@ -3,7 +3,6 @@
 namespace AkeneoTestEnterprise\Pim\Enrichment\Product\EndToEnd\InternalAPI;
 
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\SetGroups;
@@ -13,10 +12,10 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use Akeneo\UserManagement\Component\Model\User;
 use AkeneoTest\Pim\Enrichment\EndToEnd\InternalApiTestCase;
-use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
@@ -257,8 +256,7 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
             $family,
             [
                 'code' => $familyCode,
-                'attributes'  =>  $attributeCodes,
-                'attribute_requirements' => [],
+                'attributes'  =>  \array_unique(\array_merge(['sku'],$attributeCodes)),
             ]
         );
 
@@ -335,22 +333,22 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
                 'PACK' => [
                     'groups' => [],
                     'product_models' => [],
-                    'products' => [$associatedProductIdentifier]
+                    'product_uuids' => [$this->getProductUuid($associatedProductIdentifier)->toString()]
                 ],
                 'UPSELL' => [
                     'groups' => ['groupA'],
                     'product_models' => [],
-                    'products' => []
+                    'product_uuids' => []
                 ],
                 'X_SELL' => [
                     'groups' => ['groupB'],
                     'product_models' => [],
-                    'products' => [$associatedProductIdentifier]
+                    'product_uuids' => [$this->getProductUuid($associatedProductIdentifier)->toString()]
                 ],
                 'SUBSTITUTION' => [
                     'groups' => [],
                     'product_models' => [],
-                    'products' => []
+                    'product_uuids' => []
                 ]
             ]
         ];

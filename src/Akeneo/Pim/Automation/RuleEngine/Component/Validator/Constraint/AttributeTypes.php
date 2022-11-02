@@ -22,17 +22,17 @@ class AttributeTypes extends Constraint
 
     public $types = [];
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return AttributeTypesValidator::class;
     }
 
-    public function getRequiredOptions()
+    public function getRequiredOptions(): array
     {
         return ['types'];
     }
 
-    public function getDefaultOption()
+    public function getDefaultOption(): ?string
     {
         return 'types';
     }

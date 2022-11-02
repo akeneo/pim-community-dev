@@ -18,7 +18,7 @@ final class DispatchProductCreatedAndUpdatedEventSubscriber implements DispatchB
         $this->baseDispatcher = $baseDispatcher;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             StorageEvents::POST_SAVE => 'createAndDispatchPimEvents',

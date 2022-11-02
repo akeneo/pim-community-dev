@@ -14,12 +14,12 @@ class AttributeRecordTypeIsRequired extends Constraint
 {
     public const ERROR_MESSAGE = 'pim_reference_entity.attribute.validation.record_type.is_required';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'akeneo_referenceentity.validator.attribute.attribute_record_type_is_required';
     }

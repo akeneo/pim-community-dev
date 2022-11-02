@@ -27,40 +27,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 class NotificationDueDateWarningCommand extends Command
 {
     protected static $defaultName = 'pimee:project:notify-before-due-date';
-
-    /** @var ProjectRepositoryInterface */
-    private $projectRepository;
-
-    /** @var ProjectNotifierInterface */
-    private $projectNotifier;
-
-    /** @var ProjectCompletenessRepositoryInterface */
-    private $projectCompletenessRepository;
-
-    /** @var UserRepositoryInterface */
-    private $userRepository;
+    protected static $defaultDescription = 'Sends a notification to users with a close due date.';
 
     public function __construct(
-        ProjectRepositoryInterface $projectRepository,
-        ProjectNotifierInterface $projectNotifier,
-        ProjectCompletenessRepositoryInterface $projectCompletenessRepository,
-        UserRepositoryInterface $userRepository
+        private ProjectRepositoryInterface $projectRepository,
+        private ProjectNotifierInterface $projectNotifier,
+        private ProjectCompletenessRepositoryInterface $projectCompletenessRepository,
+        private UserRepositoryInterface $userRepository
     ) {
         parent::__construct();
-
-        $this->projectRepository = $projectRepository;
-        $this->projectNotifier = $projectNotifier;
-        $this->projectCompletenessRepository = $projectCompletenessRepository;
-        $this->userRepository = $userRepository;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
-    {
-        $this
-            ->setDescription('Sends a notification to users with a close due date.');
     }
 
     /**
@@ -76,7 +51,7 @@ class NotificationDueDateWarningCommand extends Command
                 $projectCompleteness = $this->projectCompletenessRepository
                     ->getProjectCompleteness($project, $user);
                 $this->projectNotifier->notifyUser($user, $project, $projectCompleteness);
-                $output->writeln(sprintf('User %s has been notified.', $user->getUsername()));
+                $output->writeln(sprintf('User %s has been notified.', $user->getUserIdentifier()));
             }
         }
 

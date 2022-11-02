@@ -77,7 +77,7 @@ class MigrateReferenceAttributeHavingOneValuePerChannel extends Command
             );
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->io = new SymfonyStyle($input, $output);
         $this->io->title('Convertion of reference attribute to non scopable reference attributes');

@@ -3,10 +3,10 @@
 namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\VariantProduct;
 
 use Akeneo\Test\Integration\Configuration;
-use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
-use PHPUnit\Framework\Assert;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\PermissionFixturesLoader;
+use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateVariantProductWithPermissionEndToEnd extends ApiTestCase
@@ -70,22 +70,22 @@ JSON;
             'associations' => [
                 'PACK'       => [
                     'groups'   => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
                 'SUBSTITUTION' => [
                     'groups'   => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
                 'UPSELL'       => [
                     'groups'   => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
                 'X_SELL'       => [
                     'groups'   => [],
-                    'products' => ['product_own'],
+                    'product_uuids' => [$this->getProductUuid('product_own')->toString()],
                     'product_models' => [],
                 ],
             ],
@@ -428,6 +428,7 @@ JSON;
         $this->get('doctrine')->getManager()->clear();
         $product = $this->get('pim_catalog.repository.product_without_permission')->findOneByIdentifier($identifier);
         $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
+        unset($standardizedProduct['uuid']);
 
         NormalizedProductCleaner::clean($standardizedProduct);
         NormalizedProductCleaner::clean($expectedProduct);

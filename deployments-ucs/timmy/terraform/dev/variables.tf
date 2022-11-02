@@ -44,3 +44,7 @@ variable "tenant_context_collection_name" {
   type    = string
   default = "tenant_contexts"
 }
+
+variable "branch_name" {
+  type    = string
+}

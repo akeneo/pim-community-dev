@@ -30,7 +30,7 @@ abstract class AbstractOrderedPass implements CompilerPassInterface
      * @param string           $tagName
      * @param int              $defaultPriority
      *
-     * @return \Symfony\Component\DependencyInjection\Reference[]
+     * @return Reference[]
      */
     protected function collectTaggedServices(ContainerBuilder $container, $tagName, $defaultPriority = 0)
     {

@@ -18,6 +18,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeyCollectionInterfac
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception;
 
 class SqlFindValueKeyCollection implements FindValueKeyCollectionInterface
 {
@@ -39,7 +40,7 @@ class SqlFindValueKeyCollection implements FindValueKeyCollectionInterface
     }
 
     /**
-     * @throws \Doctrine\DBAL\Exception
+     * @throws Exception
      */
     private function fetch(ReferenceEntityIdentifier $referenceEntityIdentifier): ValueKeyCollection
     {

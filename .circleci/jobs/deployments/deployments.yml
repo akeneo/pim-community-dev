@@ -681,7 +681,7 @@ jobs:
                   kubectl delete ns ${PIM_NS}
               when: on_fail
 
-    deploy_tenant_wb_timmy:
+    deploy_tenant_timmy:
         parameters:
             PRODUCT_TYPE:
                 type: string
@@ -706,6 +706,7 @@ jobs:
                       - modify_cluster
             - set_gcloud_config_pim_saas_dev
             - restore_persisted_env_vars
+            - restore_persisted_timmy_env_vars
             - install_yq_v3
             - run:
                   name: Define value for next steps
@@ -736,6 +737,7 @@ jobs:
                   name: Persist env vars for next jobs
                   command: |
                       echo export INSTANCE_NAME="${INSTANCE_NAME}" >> persisted_env_vars
+                      echo export CIRCLE_BRANCH_LOWER="${CIRCLE_BRANCH_LOWER}" >> persisted_env_vars
             - persist_to_workspace:
                   root: ~/
                   paths:
@@ -743,11 +745,17 @@ jobs:
             - run:
                   name: Deploy Tenant with Timmy
                   command: |
+                      FUNCTION_NAME=${REGION_PREFIX}-timmy-create-tenant
+                      if [ -n "${SKIP_DEPLOY_TIMMY}" -a "${SKIP_DEPLOY_TIMMY}" = "false" ]; then
+                        FUNCTION_NAME=${REGION_PREFIX}-${CIRCLE_BRANCH_LOWER}-timmy-create-tenant
+                      fi
                       TENANT_STATUS_CODE=0
                       JSON_BODY_STRING=\''{"pim_edition":"'"<<parameters.PIM_EDITION>>"'","branchName":"'"${CIRCLE_BRANCH}"'","instanceName":"'"<<parameters.PRODUCT_TYPE>>-${INSTANCE_NAME}"'","dnsCloudDomain":"'"${GOOGLE_DOMAIN}"'","pim":{"defaultAdminUser":{"login":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","firstName":"'"${CIRCLE_BRANCH_LOWER}"'","lastName":"'"${CIRCLE_BRANCH_LOWER}"'","email":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","uiLocale":"en_US"},"api":{"namespace":"'"${PIM_NS}"'"},"web":{"namespace":"'"${PIM_NS}"'"}}}'
                       JSON_BODY_STRING=${JSON_BODY_STRING:1}
-                      echo $JSON_BODY_STRING
-                      FUNCTION_URL=$(gcloud beta functions describe ${REGION_PREFIX}-timmy-create-tenant --format='value(serviceConfig.uri)' --gen2 --region=${GOOGLE_CLUSTER_REGION})
+
+                      FUNCTION_URL=$(gcloud beta functions describe ${FUNCTION_NAME} --format='value(serviceConfig.uri)' --gen2 --region=${GOOGLE_CLUSTER_REGION})
+                      echo ${FUNCTION_URL}
+                      echo ${JSON_BODY_STRING}
                       curl -m 3610 -X POST ${FUNCTION_URL} -H "Authorization: bearer $(gcloud auth print-identity-token)" -H "Content-Type: application/json" -d ${JSON_BODY_STRING} || TENANT_STATUS_CODE=1
                       exit ${TENANT_STATUS_CODE}
 

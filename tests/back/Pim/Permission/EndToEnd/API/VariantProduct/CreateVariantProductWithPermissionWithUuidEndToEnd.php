@@ -3,10 +3,10 @@
 namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\VariantProduct;
 
 use Akeneo\Test\Integration\Configuration;
-use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
-use PHPUnit\Framework\Assert;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\PermissionFixturesLoader;
+use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -49,6 +49,7 @@ JSON;
         $this->assertCreated($data);
 
         $expectedProduct = [
+            'uuid'         => $uuid,
             'identifier'   => 'variant_product_creation',
             'family'       => 'family_permission',
             'parent'       => 'sub_product_model',
@@ -74,22 +75,24 @@ JSON;
             'associations' => [
                 'PACK'       => [
                     'groups'   => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
                 'SUBSTITUTION' => [
                     'groups'   => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
                 'UPSELL'       => [
                     'groups'   => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
                 'X_SELL'       => [
                     'groups'   => [],
-                    'products' => ['product_own'],
+                    'product_uuids' => [
+                        $this->getProductUuid('product_own')->toString()
+                    ],
                     'product_models' => [],
                 ],
             ],

@@ -27,7 +27,7 @@ class PimUserDraftSourceFactorySpec extends ObjectBehavior
         $username = 'mary';
         $userFullName = 'Mary Smith';
 
-        $user->getUsername()->willReturn($username);
+        $user->getUserIdentifier()->willReturn($username);
         $user->getFullName()->willReturn($userFullName);
 
         $draftSource = $this->createFromUser($user);

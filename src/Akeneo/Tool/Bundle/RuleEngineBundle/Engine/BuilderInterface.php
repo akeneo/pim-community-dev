@@ -11,6 +11,7 @@
 
 namespace Akeneo\Tool\Bundle\RuleEngineBundle\Engine;
 
+use Akeneo\Tool\Bundle\RuleEngineBundle\Exception\BuilderException;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 
@@ -24,7 +25,7 @@ interface BuilderInterface
     /**
      * @param RuleDefinitionInterface $definition
      *
-     * @throws \Akeneo\Tool\Bundle\RuleEngineBundle\Exception\BuilderException
+     * @throws BuilderException
      *
      * @return RuleInterface
      */

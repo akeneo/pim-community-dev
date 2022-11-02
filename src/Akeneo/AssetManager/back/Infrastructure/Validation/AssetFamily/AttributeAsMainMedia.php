@@ -24,12 +24,12 @@ class AttributeAsMainMedia extends Constraint
     public const ATTRIBUTE_NOT_FOUND = 'pim_asset_manager.asset_family.validation.attribute_as_main_media.not_found';
     public const INVALID_ATTRIBUTE_TYPE = 'pim_asset_manager.asset_family.validation.attribute_as_main_media.invalid_type';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'akeneo_assetmanager.validator.asset_family.attribute_as_main_media';
     }

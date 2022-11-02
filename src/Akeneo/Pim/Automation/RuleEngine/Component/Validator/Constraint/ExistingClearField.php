@@ -27,7 +27,7 @@ final class ExistingClearField extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'pimee_clear_fields_validator';
     }

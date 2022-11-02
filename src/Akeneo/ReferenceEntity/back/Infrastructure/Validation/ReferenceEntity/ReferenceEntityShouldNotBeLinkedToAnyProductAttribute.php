@@ -23,12 +23,12 @@ class ReferenceEntityShouldNotBeLinkedToAnyProductAttribute extends Constraint
 {
     public const ERROR_MESSAGE = 'pim_reference_entity.reference_entity.validation.product_attributes.should_not_be_linked';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'akeneo_referenceentity.validator.reference_entity.should_not_be_linked_any_product_attribute';
     }

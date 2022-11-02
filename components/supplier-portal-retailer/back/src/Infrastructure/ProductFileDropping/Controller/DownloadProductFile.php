@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller;
 
-use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\DownloadProductFile as DownloadProductFileCommand;
-use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\DownloadProductFileHandler;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\DownloadProductFile\DownloadProductFile as DownloadProductFileCommand;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\DownloadProductFile\DownloadProductFileHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Event\ProductFileDownloaded;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Exception\ProductFileDoesNotExist;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Exception\UnableToReadProductFile;

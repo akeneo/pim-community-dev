@@ -111,14 +111,14 @@ class SearchFiltersValidator
                                         'type' => 'array',
                                         'minItems' => 2,
                                         'maxItems' => 2,
-                                        'contains' => [
+                                        'items' => [
                                             'type' => 'string',
                                             'format' => 'date-time',
-                                        ],
-                                        '$filters' => [
-                                            '$func' => 'min-date',
-                                            '$vars' => [
-                                                'value' => '1970-01-01',
+                                            '$filters' => [
+                                                '$func' => 'min-date',
+                                                '$vars' => [
+                                                    'value' => '1970-01-01',
+                                                ],
                                             ],
                                         ],
                                     ],

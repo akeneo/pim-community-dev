@@ -9,7 +9,6 @@ use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Doctrine\DBAL\Connection;
-use Pim\Upgrade\Schema\Tests\ExecuteMigrationTrait;
 
 final class Version_6_0_20210818141014_add_source_concatenation_Integration extends TestCase
 {
@@ -100,23 +99,27 @@ final class Version_6_0_20210818141014_add_source_concatenation_Integration exte
 
     private function createTailoredExportWithoutColumns()
     {
-        $this->createTailoredExport('{"filePath":"\/tmp\/export_%job_label%_%datetime%.xlsx","withHeader":true,"linesPerFile":10000,"user_to_notify":null,"is_user_authenticated":false,"with_media":true,"columns":[],"filters":{"data":[{"field":"enabled","operator":"=","value":true},{"field":"categories","operator":"NOT IN","value":[]},{"field":"completeness","operator":"ALL","value":100}]}}');
+        $this->createTailoredExport(
+            '{"filePath":"\/tmp\/export_%job_label%_%datetime%.xlsx","withHeader":true,"linesPerFile":10000,"user_to_notify":null,"is_user_authenticated":false,"with_media":true,"columns":[],"filters":{"data":[{"field":"enabled","operator":"=","value":true},{"field":"categories","operator":"NOT IN","value":[]},{"field":"completeness","operator":"ALL","value":100}]}}'
+        );
     }
 
     private function createTailoredExportWithColumns()
     {
-        $this->createTailoredExport('{"filePath":"\/tmp\/export_%job_label%_%datetime%.xlsx","withHeader":true,"linesPerFile":10000,"user_to_notify":null,"is_user_authenticated":false,"with_media":true,"columns":[{"uuid":"sku-column-uuid","target":"sku","sources":[{"uuid":"sku-source-uuid","code":"sku","type":"attribute","locale":null,"channel":null,"operations":[],"selection":{"type":"code"}}],"format":{"type":"concat","elements":[]}},{"uuid":"description-column-uuid","target":"description","sources":[{"uuid":"description-de_DE-source-uuid","code":"description","type":"attribute","locale":"de_DE","channel":"ecommerce","operations":[],"selection":{"type":"code"}}],"format":{"type":"concat","elements":[]}},{"uuid":"weight-column-uuid","target":"weight","sources":[{"uuid":"weight-value-source-uuid","code":"weight","type":"attribute","locale":null,"channel":null,"operations":[],"selection":{"type":"value"}},{"uuid":"weight-unit-source-uuid","code":"weight","type":"attribute","locale":null,"channel":null,"operations":[],"selection":{"type":"unit_code"}}],"format":{"type":"concat","elements":[]}},{"uuid":"title-column-uuid","target":"concatenation","sources":[{"uuid":"name-source-uuid","code":"name","type":"attribute","locale":null,"channel":null,"operations":[],"selection":{"type":"code"}},{"uuid":"size-source-uuid","code":"size","type":"attribute","locale":null,"channel":null,"operations":[],"selection":{"type":"code"}},{"uuid":"main_color-source-uuid","code":"main_color","type":"attribute","locale":null,"channel":null,"operations":[],"selection":{"type":"code"}},{"uuid":"brand-source-uuid","code":"brand","type":"attribute","locale":null,"channel":null,"operations":[],"selection":{"type":"code"}}],"format":{"type":"concat","elements":[]}}],"filters":{"data":[{"field":"enabled","operator":"=","value":true},{"field":"categories","operator":"NOT IN","value":[]},{"field":"completeness","operator":"ALL","value":100}]}}');
+        $this->createTailoredExport(
+            '{"filePath":"\/tmp\/export_%job_label%_%datetime%.xlsx","withHeader":true,"linesPerFile":10000,"user_to_notify":null,"is_user_authenticated":false,"with_media":true,"columns":[{"uuid":"sku-column-uuid","target":"sku","sources":[{"uuid":"sku-source-uuid","code":"sku","type":"attribute","locale":null,"channel":null,"operations":[],"selection":{"type":"code"}}],"format":{"type":"concat","elements":[]}},{"uuid":"description-column-uuid","target":"description","sources":[{"uuid":"description-de_DE-source-uuid","code":"description","type":"attribute","locale":"de_DE","channel":"ecommerce","operations":[],"selection":{"type":"code"}}],"format":{"type":"concat","elements":[]}},{"uuid":"weight-column-uuid","target":"weight","sources":[{"uuid":"weight-value-source-uuid","code":"weight","type":"attribute","locale":null,"channel":null,"operations":[],"selection":{"type":"value"}},{"uuid":"weight-unit-source-uuid","code":"weight","type":"attribute","locale":null,"channel":null,"operations":[],"selection":{"type":"unit_code"}}],"format":{"type":"concat","elements":[]}},{"uuid":"title-column-uuid","target":"concatenation","sources":[{"uuid":"name-source-uuid","code":"name","type":"attribute","locale":null,"channel":null,"operations":[],"selection":{"type":"code"}},{"uuid":"size-source-uuid","code":"size","type":"attribute","locale":null,"channel":null,"operations":[],"selection":{"type":"code"}},{"uuid":"main_color-source-uuid","code":"main_color","type":"attribute","locale":null,"channel":null,"operations":[],"selection":{"type":"code"}},{"uuid":"brand-source-uuid","code":"brand","type":"attribute","locale":null,"channel":null,"operations":[],"selection":{"type":"code"}}],"format":{"type":"concat","elements":[]}}],"filters":{"data":[{"field":"enabled","operator":"=","value":true},{"field":"categories","operator":"NOT IN","value":[]},{"field":"completeness","operator":"ALL","value":100}]}}'
+        );
     }
 
     private function createTailoredExport(string $rawParameters)
     {
         $sql = <<<SQL
-INSERT INTO `akeneo_batch_job_instance` (`id`, `code`, `label`, `job_name`, `status`, `connector`, `raw_parameters`, `type`)
-VALUES
-	(158, 'tailored_export', 'Tailored Export', 'xlsx_tailored_product_export', 0, 'Akeneo Tailored Export', :raw_parameters, 'export');
-SQL;
+        INSERT INTO `akeneo_batch_job_instance` (`code`, `label`, `job_name`, `status`, `connector`, `raw_parameters`, `type`)
+        VALUES
+            ('tailored_export', 'Tailored Export', 'xlsx_tailored_product_export', 0, 'Akeneo Tailored Export', :raw_parameters, 'export');
+        SQL;
 
-        $this->connection->executeUpdate($sql, [
+        $this->connection->executeStatement($sql, [
             'raw_parameters' => serialize(json_decode($rawParameters, true))
         ]);
     }

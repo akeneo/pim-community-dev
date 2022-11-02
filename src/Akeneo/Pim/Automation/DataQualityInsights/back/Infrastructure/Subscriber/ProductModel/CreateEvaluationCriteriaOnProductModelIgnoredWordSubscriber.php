@@ -37,7 +37,7 @@ class CreateEvaluationCriteriaOnProductModelIgnoredWordSubscriber implements Eve
     ) {
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             ProductModelWordIgnoredEvent::class => 'onIgnoredWord',

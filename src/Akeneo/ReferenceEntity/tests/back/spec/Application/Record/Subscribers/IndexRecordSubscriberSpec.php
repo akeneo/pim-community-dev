@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\ReferenceEntity\Application\Record\Subscribers;
 
+use Akeneo\ReferenceEntity\Application\Record\Subscribers\IndexRecordSubscriber;
 use Akeneo\ReferenceEntity\Application\Record\Subscribers\IndexByReferenceEntityInBackgroundInterface;
 use Akeneo\ReferenceEntity\Domain\Event\AttributeDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\RecordUpdatedEvent;
@@ -29,7 +30,7 @@ class IndexRecordSubscriberSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(\Akeneo\ReferenceEntity\Application\Record\Subscribers\IndexRecordSubscriber::class);
+        $this->shouldHaveType(IndexRecordSubscriber::class);
     }
 
     function it_subscribes_to_events()

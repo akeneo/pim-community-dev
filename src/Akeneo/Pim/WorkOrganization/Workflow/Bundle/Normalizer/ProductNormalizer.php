@@ -123,7 +123,7 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ProductInterface && !$data instanceof PublishedProductInterface && $format === 'internal_api';
     }
@@ -160,7 +160,7 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
      */
     protected function getUsername()
     {
-        return $this->tokenStorage->getToken()->getUsername();
+        return $this->tokenStorage->getToken()->getUserIdentifier();
     }
 
     /**

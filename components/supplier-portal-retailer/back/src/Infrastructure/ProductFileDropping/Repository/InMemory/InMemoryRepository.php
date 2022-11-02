@@ -12,6 +12,7 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\
 final class InMemoryRepository implements ProductFileRepository
 {
     private array $productFiles = [];
+    private array $productFilesCommentsLastReadDates = [];
 
     public function save(ProductFile $productFile): void
     {
@@ -32,5 +33,24 @@ final class InMemoryRepository implements ProductFileRepository
     public function find(Identifier $identifier): ?ProductFile
     {
         return $this->productFiles[(string) $identifier] ?? null;
+    }
+
+    public function updateProductFileLastUnreadDate(Identifier $identifier, \DateTimeImmutable $date): void
+    {
+        $this->productFilesCommentsLastReadDates[(string) $identifier] = $date;
+    }
+
+    public function findProductFileWithUnreadComments(Identifier $identifier): ?array
+    {
+        foreach ($this->productFiles as $productFile) {
+            if ((string) $productFile->identifier() === (string) $identifier) {
+                return [
+                    'productFile' => $productFile,
+                    'commentslastReadDate' => $this->productFilesCommentsLastReadDates[(string) $productFile->identifier()] ?? null,
+                ];
+            }
+        }
+
+        return null;
     }
 }

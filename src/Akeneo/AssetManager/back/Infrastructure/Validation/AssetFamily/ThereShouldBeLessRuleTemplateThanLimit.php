@@ -23,12 +23,12 @@ class ThereShouldBeLessRuleTemplateThanLimit extends Constraint
 {
     public const ERROR_MESSAGE = 'pim_asset_manager.asset_family.validation.rule_template.limit_reached';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'akeneo_assetmanager.validator.asset_family.there_should_be_less_rule_template_than_limit';
     }

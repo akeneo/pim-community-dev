@@ -20,6 +20,7 @@ const availableDateFormats = [
   'dd-m-yy',
   'dd/m/yy',
   'dd.m.yy',
+  'yyyymmdd',
 ];
 
 type DateOperations = {

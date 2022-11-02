@@ -20,12 +20,12 @@ use Symfony\Component\Validator\Constraint;
  */
 class EditAssetValueCommands extends Constraint
 {
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'akeneo_assetmanager.validator.asset.edit_asset_value_commands';
     }

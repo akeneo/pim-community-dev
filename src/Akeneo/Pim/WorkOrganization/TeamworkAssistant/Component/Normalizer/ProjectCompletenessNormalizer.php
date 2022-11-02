@@ -55,7 +55,7 @@ class ProjectCompletenessNormalizer implements NormalizerInterface, CacheableSup
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($projectCompleteness, $format = null)
+    public function supportsNormalization($projectCompleteness, $format = null): bool
     {
         return $projectCompleteness instanceof ProjectCompleteness && in_array($format, $this->supportedFormats);
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\Workflow\Doctrine\ORM\Query;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\GetAssociatedProductCodesByPublishedProduct;
 use Akeneo\Test\Integration\TestCase;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
@@ -46,7 +47,7 @@ class GetAssociatedProductCodesByPublishedProductIntegration extends TestCase
 
         $this->generateToken('mary');
 
-        $query = $this->get('pimee_workflow.query.get_associated_product_codes_by_published_product');
+        $query = $this->getQuery();
         $this->assertSame(['productView'], $query->getCodes($mainProduct->getId(), $associations['X_SELL']));
         $this->assertSame(['productWithoutCategory'], $query->getCodes($mainProduct->getId(), $associations['PACK']));
         $this->assertSame([], $query->getCodes($mainProduct->getId(), $associations['UPSELL']));
@@ -92,5 +93,10 @@ class GetAssociatedProductCodesByPublishedProductIntegration extends TestCase
         $this->get('pim_catalog.saver.product')->save($product);
 
         return $this->get('pimee_workflow.manager.published_product')->publish($product);
+    }
+
+    private function getQuery(): GetAssociatedProductCodesByPublishedProduct
+    {
+        return $this->get('pimee_workflow.query.get_associated_product_codes_by_published_product');
     }
 }

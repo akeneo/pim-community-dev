@@ -73,11 +73,14 @@ class NotGrantedAssociatedProductMergerSpec extends ObjectBehavior
         \ArrayIterator $productModelIterator
     ) {
         $user = new User();
-        $productB->getUuid()->willReturn(Uuid::fromString('b816e413-253e-4e63-ae1e-562deb93558f'));
+        $productBUuid = 'b816e413-253e-4e63-ae1e-562deb93558f';
+        $productB->getUuid()->willReturn(Uuid::fromString($productBUuid));
         $productB->getIdentifier()->willReturn('product_b');
-        $productC->getUuid()->willReturn(Uuid::fromString('6fc5f000-2c00-4eac-899b-a85e41d6a42d'));
+        $productCUuid = '6fc5f000-2c00-4eac-899b-a85e41d6a42d';
+        $productC->getUuid()->willReturn(Uuid::fromString($productCUuid));
         $productC->getIdentifier()->willReturn('product_c');
-        $productD->getUuid()->willReturn(Uuid::fromString('aab1fcbf-bacb-430c-8a90-b9d34db2d676'));
+        $productDUuid = 'aab1fcbf-bacb-430c-8a90-b9d34db2d676';
+        $productD->getUuid()->willReturn(Uuid::fromString($productDUuid));
         $productD->getIdentifier()->willReturn('product_d');
         $productModelA->getId()->willReturn(3);
         $productModelA->getCode()->willReturn('product_model_a');
@@ -130,7 +133,7 @@ class NotGrantedAssociatedProductMergerSpec extends ObjectBehavior
             'associations',
             [
                 'X_SELL' => [
-                    'products' => ['product_b', 'product_c', 'product_d'],
+                    'product_uuids' => [$productBUuid, $productCUuid, $productDUuid],
                     'product_models' => ['product_model_a', 'product_model_b'],
                     'groups' => [],
                 ],
@@ -163,11 +166,14 @@ class NotGrantedAssociatedProductMergerSpec extends ObjectBehavior
         \ArrayIterator $productModelIterator
     ) {
         $user = new User();
-        $productB->getUuid()->willReturn(Uuid::fromString('b816e413-253e-4e63-ae1e-562deb93558f'));
+        $productBUuid = 'b816e413-253e-4e63-ae1e-562deb93558f';
+        $productB->getUuid()->willReturn(Uuid::fromString($productBUuid));
         $productB->getIdentifier()->willReturn('product_b');
-        $productC->getUuid()->willReturn(Uuid::fromString('6fc5f000-2c00-4eac-899b-a85e41d6a42d'));
+        $productCUuid = '6fc5f000-2c00-4eac-899b-a85e41d6a42d';
+        $productC->getUuid()->willReturn(Uuid::fromString($productCUuid));
         $productC->getIdentifier()->willReturn('product_c');
-        $productD->getUuid()->willReturn(Uuid::fromString('aab1fcbf-bacb-430c-8a90-b9d34db2d676'));
+        $productDUuid = 'aab1fcbf-bacb-430c-8a90-b9d34db2d676';
+        $productD->getUuid()->willReturn(Uuid::fromString($productDUuid));
         $productD->getIdentifier()->willReturn('product_d');
         $productModelA->getId()->willReturn(1);
         $productModelA->getCode()->willReturn('product_model_a');
@@ -219,9 +225,13 @@ class NotGrantedAssociatedProductMergerSpec extends ObjectBehavior
             $fullProduct,
             'associations',
             [
-                'X_SELL' => ['products' => ['product_b'], 'product_models' => ['product_model_a'], 'groups' => []],
+                'X_SELL' => [
+                    'product_uuids' => [$productBUuid],
+                    'product_models' => ['product_model_a'],
+                    'groups' => []
+                ],
                 'UPSELL' => [
-                    'products' => ['product_c', 'product_d'],
+                    'product_uuids' => [$productCUuid, $productDUuid],
                     'product_models' => ['product_model_a'],
                     'groups' => [],
                 ],
@@ -232,7 +242,6 @@ class NotGrantedAssociatedProductMergerSpec extends ObjectBehavior
     }
 
     function it_merges_not_granted_associated_products_and_removes_granted_product(
-        $authorizationChecker,
         $associationSetter,
         $tokenStorage,
         $productCategoryAccessQuery,
@@ -254,9 +263,11 @@ class NotGrantedAssociatedProductMergerSpec extends ObjectBehavior
         \ArrayIterator $productModelIterator
     ) {
         $user = new User();
-        $productB->getUuid()->willReturn(Uuid::fromString('b816e413-253e-4e63-ae1e-562deb93558f'));
+        $productBUuid = 'b816e413-253e-4e63-ae1e-562deb93558f';
+        $productB->getUuid()->willReturn(Uuid::fromString($productBUuid));
         $productB->getIdentifier()->willReturn('product_b');
-        $productC->getUuid()->willReturn(Uuid::fromString('6fc5f000-2c00-4eac-899b-a85e41d6a42d'));
+        $productCUuid = '6fc5f000-2c00-4eac-899b-a85e41d6a42d';
+        $productC->getUuid()->willReturn(Uuid::fromString($productCUuid));
         $productC->getIdentifier()->willReturn('product_c');
         $productModelA->getId()->willReturn(1);
         $productModelA->getCode()->willReturn('product_model_a');
@@ -307,7 +318,7 @@ class NotGrantedAssociatedProductMergerSpec extends ObjectBehavior
             'associations',
             [
                 'X_SELL' => [
-                    'products' => ['product_b'],
+                    'product_uuids' => [$productBUuid],
                     'product_models' => ['product_model_b', 'product_model_a'],
                     'groups' => [],
                 ],

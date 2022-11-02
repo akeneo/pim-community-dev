@@ -44,7 +44,7 @@ class LocaleVoter extends Voter implements VoterInterface
     /**
      * {@inheritdoc}
      */
-    public function vote(TokenInterface $token, $locale, array $attributes)
+    public function vote(TokenInterface $token, $locale, array $attributes): int
     {
         $result = VoterInterface::ACCESS_ABSTAIN;
 

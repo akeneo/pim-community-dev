@@ -536,12 +536,8 @@ get-pim-community-cypress-command:
 .PHONY: test_deployment_e2e
 test_deployment_e2e: get-pim-community-cypress-command #Doc: Test srnt (c3po)/grth(r2d2) instances
 ifeq ($(TYPE),grth)
-	export PIM_BASEURL="https://r2d2.demo.cloud.akeneo.com/"
+	cd $(DEPLOYMENT_DIR)/test/e2e/ && docker-compose run --rm cypress --headless --config baseUrl="https://r2d2.demo.cloud.akeneo.com/" --env PRODUCT_TYPE=${TYPE},PIM_VERSION=${PIM_VERSION}
 endif
 ifeq ($(TYPE),srnt)
-	export PIM_BASEURL="https://c3po.demo.cloud.akeneo.com/"
+	cd $(DEPLOYMENT_DIR)/test/e2e/ && docker-compose run --rm cypress --headless --config baseUrl="https://c3po.demo.cloud.akeneo.com/" --env PRODUCT_TYPE=${TYPE},PIM_VERSION=${PIM_VERSION}
 endif
-ifeq ($(TYPE),tria)
-	export PIM_BASEURL="https://to.be.defined/"
-endif
-	cd $(DEPLOYMENT_DIR)/test/e2e/ && docker-compose run --rm cypress --headless --config baseUrl=${PIM_BASEURL} --env PRODUCT_TYPE=${TYPE},PIM_VERSION=${PIM_VERSION}

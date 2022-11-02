@@ -42,7 +42,7 @@ class ProductDraftNormalizer implements NormalizerInterface, CacheableSupportsMe
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof EntityWithValuesDraftInterface && in_array($format, $this->supportedFormats);
     }

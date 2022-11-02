@@ -6,7 +6,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
-use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -29,6 +28,7 @@ class GetProductDraftEndToEnd extends ApiTestCase
         $expectedResponse =
 <<<JSON
 {
+  "uuid": "{$this->getProductUuid('product_with_draft')->toString()}",
   "identifier": "product_with_draft",
   "family": null,
   "parent": null,

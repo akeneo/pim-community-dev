@@ -49,7 +49,7 @@ class RuleDefinitionNormalizer implements NormalizerInterface, CacheableSupports
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof RuleDefinitionInterface && in_array($format, $this->supportedFormats);
     }

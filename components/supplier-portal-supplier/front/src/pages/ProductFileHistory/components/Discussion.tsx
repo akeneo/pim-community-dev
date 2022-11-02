@@ -8,6 +8,9 @@ import {useUserContext} from '../../../contexts';
 import {apiFetch} from '../../../api/apiFetch';
 import {BadRequestError} from '../../../api/BadRequestError';
 import {useQueryClient} from 'react-query';
+import {markCommentsAsRead} from '../api/markCommentsAsRead';
+import {NotFoundError} from '../../../api/NotFoundError';
+import {useToaster} from '../../../utils/toaster';
 
 type Props = {comments: CommentReadModel[]; productFileIdentifier: string};
 
@@ -21,6 +24,7 @@ const Discussion = ({comments, productFileIdentifier}: Props) => {
     const [errorCode, setErrorCode] = useState('');
     const queryClient = useQueryClient();
     const commentsBlock: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
+    const notify = useToaster();
 
     const errorMessages: {[errorCode: string]: string} = {
         empty_comment: intl.formatMessage({
@@ -48,6 +52,26 @@ const Discussion = ({comments, productFileIdentifier}: Props) => {
             commentsBlock?.current?.scrollTo({top: height});
         }
     }, [comments]);
+
+    useEffect(() => {
+        (async () => {
+            try {
+                await markCommentsAsRead(productFileIdentifier);
+            } catch (error) {
+                if (error instanceof NotFoundError) {
+                    notify(
+                        intl.formatMessage({
+                            defaultMessage:
+                                'Sorry this product file has been automatically deleted after 90 days and cannot be accessed anymore.',
+                            id: 'FtEtSR',
+                        }),
+                        'error'
+                    );
+                }
+            }
+            await queryClient.invalidateQueries('fetchProductFiles');
+        })();
+    }, [intl, notify, productFileIdentifier, queryClient]);
 
     const saveComment = useCallback(
         async event => {

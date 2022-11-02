@@ -1,7 +1,7 @@
 supplier_portal_retailer_product_files_list:
     path: /
     defaults:
-        _controller: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\AllProductFilesList
+        _controller: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\ListProductFiles
         _feature: supplier_portal
     methods: [GET]
 
@@ -15,7 +15,7 @@ supplier_portal_retailer_download_file:
 supplier_portal_retailer_supplier_product_files_list:
     path: /supplier/{supplierIdentifier}
     defaults:
-        _controller: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\ProductFilesList
+        _controller: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\ListSupplierProductFiles
         _feature: supplier_portal
     requirements:
         supplierIdentifier: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'

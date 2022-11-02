@@ -26,7 +26,7 @@ class ExistingRemoveField extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'pimee_remove_field_validator';
     }

@@ -75,7 +75,7 @@ class ProjectFinishedNotifier implements ProjectNotifierInterface
                 'project_code'    => $project->getCode(),
             ];
 
-            $message = $user->getUsername() === $project->getOwner()->getUsername()
+            $message = $user->getUserIdentifier() === $project->getOwner()->getUserIdentifier()
                 ? 'teamwork_assistant.notification.project_finished.owner'
                 : 'teamwork_assistant.notification.project_finished.contributor';
 

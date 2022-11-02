@@ -50,7 +50,7 @@ class LocalePermissionsType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'pimee_enrich_locale_permissions';
     }

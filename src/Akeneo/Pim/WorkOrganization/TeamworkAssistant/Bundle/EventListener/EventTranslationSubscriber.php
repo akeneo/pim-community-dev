@@ -53,7 +53,7 @@ class EventTranslationSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             EventInterface::AFTER_JOB_EXECUTION => 'projectCalculated',

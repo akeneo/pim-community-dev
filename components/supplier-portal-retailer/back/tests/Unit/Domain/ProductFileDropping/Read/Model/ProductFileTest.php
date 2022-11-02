@@ -31,6 +31,8 @@ final class ProductFileTest extends TestCase
                 'uploadedAt' => '2022-07-12 14:55:46',
                 'retailerComments' => [],
                 'supplierComments' => [],
+                'retailerLastReadAt' => null,
+                'supplierLastReadAt' => null,
             ],
             $sut->toArray(),
         );
@@ -60,6 +62,8 @@ final class ProductFileTest extends TestCase
                     'created_at' => '2022-09-07 08:59:38',
                 ],
             ],
+            '2022-09-08 08:59:38',
+            null,
         );
 
         static::assertSame(
@@ -84,6 +88,8 @@ final class ProductFileTest extends TestCase
                         'created_at' => '2022-09-07 08:59:38',
                     ],
                 ],
+                'retailerLastReadAt' => '2022-09-08 08:59:38',
+                'supplierLastReadAt' => null,
             ],
             $sut->toArray(),
         );

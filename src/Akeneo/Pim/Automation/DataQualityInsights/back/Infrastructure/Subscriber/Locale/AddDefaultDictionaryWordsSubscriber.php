@@ -47,7 +47,7 @@ final class AddDefaultDictionaryWordsSubscriber implements EventSubscriberInterf
         $this->supportedLocaleValidator = $supportedLocaleValidator;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             StorageEvents::POST_SAVE => ['onSaveLocale'],

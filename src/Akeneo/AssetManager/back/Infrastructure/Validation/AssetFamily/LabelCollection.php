@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class LabelCollection extends Constraint
 {
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'akeneo_assetmanager.infrastructure.validation.asset_family.label_collection';
     }

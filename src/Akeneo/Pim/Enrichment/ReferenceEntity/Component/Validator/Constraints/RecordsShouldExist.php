@@ -20,7 +20,7 @@ final class RecordsShouldExist extends Constraint
     public $message = 'pim_reference_entity.product_value.validation.record_should_exist';
     public $messagePlural = 'pim_reference_entity.product_value.validation.records_should_exist';
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'akeneo_pim_enrichment_records_should_exist';
     }

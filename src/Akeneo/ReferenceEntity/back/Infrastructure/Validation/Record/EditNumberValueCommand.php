@@ -26,7 +26,7 @@ class EditNumberValueCommand extends Constraint
     public const INTEGER_TOO_LONG = 'pim_reference_entity.record.validation.number.integer_too_long';
     public const NUMBER_SHOULD_BE_NUMERIC = 'pim_reference_entity.record.validation.number.should_be_numeric';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

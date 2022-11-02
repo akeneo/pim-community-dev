@@ -15,12 +15,12 @@ class AssetsShouldBelongToAssetFamily extends Constraint
 {
     public const ERROR_MESSAGE = 'pim_asset_manager.product_value.validation.assets_should_belong_to_asset_family';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'pim_enrichment_assets_should_belong_to_asset_family';
     }

@@ -13,6 +13,7 @@ $builder = new RuleBuilder();
 $rules = [
     $builder->only([
         'Doctrine',
+        'Psr',
         'Symfony\Component',
         'Akeneo\Tool',
         'Sensio\Bundle\FrameworkExtraBundle',

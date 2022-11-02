@@ -30,7 +30,7 @@ class PimUserDraftSourceFactory
         return new DraftSource(
             self::PIM_SOURCE_CODE,
             self::PIM_SOURCE_LABEL,
-            $user->getUsername(),
+            $user->getUserIdentifier(),
             $user->getFullName()
         );
     }

@@ -23,12 +23,12 @@ class Operation extends Constraint
 {
     public const UNKNOWN_EXTRA_FIELD_ERROR = 'pim_asset_manager.asset_family.validation.transformation.unknown_extra_field';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return OperationValidator::class;
     }

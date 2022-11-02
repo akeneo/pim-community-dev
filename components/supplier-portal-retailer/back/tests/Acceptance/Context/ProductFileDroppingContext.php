@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Test\Acceptance\Context;
 
-use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFile;
-use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFileForSupplier;
-use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFileHandler;
-use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFileHandlerForSupplier;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFile\CommentProductFile;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFile\CommentProductFileHandler;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFileForSupplier\CommentProductFileForSupplier;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\CommentProductFileForSupplier\CommentProductFileHandlerForSupplier;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadBySupplier\MarkCommentsAsReadBySupplier;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadBySupplier\MarkCommentsAsReadBySupplierHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFileWithComments;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\CommentTooLong;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\EmptyComment;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\Exception\MaxCommentPerProductFileReached;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\ValueObject\Identifier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\InMemory\InMemoryRepository as InMemoryProductFileRepository;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository as InMemorySupplierRepository;
@@ -31,6 +34,7 @@ final class ProductFileDroppingContext implements Context
         private CommentProductFileHandler $commentProductFileHandler,
         private GetProductFileWithComments $getProductFileWithComments,
         private CommentProductFileHandlerForSupplier $commentProductFileHandlerForSupplier,
+        private MarkCommentsAsReadBySupplierHandler $markCommentsAsReadBySupplierHandler,
     ) {
     }
 
@@ -90,6 +94,15 @@ final class ProductFileDroppingContext implements Context
         }
 
         $this->productFileRepository->save($productFile);
+    }
+
+    /**
+     * @Given contributors have not read the comments yet
+     */
+    public function contributorsHaveNotReadTheCommentsYet(): void
+    {
+        $productFile = $this->productFileRepository->findProductFileWithUnreadComments(Identifier::fromString($this->productFileIdentifier));
+        Assert::assertNull($productFile['commentslastReadDate']);
     }
 
     /**
@@ -161,6 +174,16 @@ final class ProductFileDroppingContext implements Context
     }
 
     /**
+     * @When a contributor marks all comments of a product file as read
+     */
+    public function aContributorMarksAllCommentsAsRead(): void
+    {
+        ($this->markCommentsAsReadBySupplierHandler)(
+            new MarkCommentsAsReadBySupplier($this->productFileIdentifier, new \DateTimeImmutable())
+        );
+    }
+
+    /**
      * @Then I should have an error message telling that the comment should not be empty
      */
     public function iShouldHaveAnErrorForEmptyComment(): void
@@ -204,5 +227,14 @@ final class ProductFileDroppingContext implements Context
 
         Assert::assertCount(1, $productFile->supplierComments);
         Assert::assertSame($content, $productFile->supplierComments[0]->content());
+    }
+
+    /**
+     * @Then all comments should be marked as read for this product file
+     */
+    public function allCommentsShouldBeMarkedAsRead(): void
+    {
+        $productFile = $this->productFileRepository->findProductFileWithUnreadComments(Identifier::fromString($this->productFileIdentifier));
+        Assert::assertInstanceOf(\DateTimeImmutable::class, $productFile['commentslastReadDate']);
     }
 }

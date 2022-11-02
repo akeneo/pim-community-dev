@@ -15,10 +15,6 @@ security:
         akeneo_supplier_portal_contributor_account_user:
             id: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccountProvider
 
-    encoders:
-        Akeneo\UserManagement\Component\Model\User: sha512
-        Symfony\Component\Security\Core\User\User: plaintext
-
     firewalls:
         dev:
             pattern:                        ^/(_(profiler|wdt)|css|images|js)/
@@ -137,6 +133,8 @@ security:
 
     password_hashers:
         Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccount: 'auto'
+        Akeneo\UserManagement\Component\Model\User: sha512
+        Symfony\Component\Security\Core\User\User: plaintext
 
 acl:
     connection: default

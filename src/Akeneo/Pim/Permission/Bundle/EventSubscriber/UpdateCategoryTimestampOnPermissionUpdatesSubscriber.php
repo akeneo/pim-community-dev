@@ -23,7 +23,7 @@ class UpdateCategoryTimestampOnPermissionUpdatesSubscriber implements EventSubsc
         $this->categorySaver = $categorySaver;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             StorageEvents::POST_SAVE => 'updateCategoryTimestamp',

@@ -29,17 +29,17 @@ final class IsValidAttribute extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return IsValidAttributeValidator::class;
     }
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return [static::CLASS_CONSTRAINT];
     }
 
-    public function getRequiredOptions()
+    public function getRequiredOptions(): array
     {
         return ['attributeProperty', 'channelProperty', 'localeProperty'];
     }

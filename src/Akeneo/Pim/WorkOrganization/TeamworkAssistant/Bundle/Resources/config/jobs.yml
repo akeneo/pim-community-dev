@@ -179,6 +179,7 @@ services:
             - '%pimee_teamwork_assistant.project_calculation.job_name%'
             - '@akeneo_batch.launcher.simple_job_launcher'
             - '@akeneo_batch.job.job_instance_repository'
+            - '@logger'
 
     ### Job Parameters
     pimee_teamwork_assistant.job.project_calculation_parameter:
@@ -246,6 +247,50 @@ services:
         arguments:
             - '%pimee_teamwork_assistant.refresh_project_completeness_calculation.job_name%'
         public: false
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Job\NotificationDueDateWarningTasklet:
+        arguments:
+            - '@pimee_teamwork_assistant.repository.project'
+            - '@pimee_teamwork_assistant.notifier.project_due_date_reminder'
+            - '@pimee_teamwork_assistant.repository.project_completeness'
+            - '@pimee_teamwork_assistant.repository.user'
+        public: false
+
+    pimee_teamwork_assistant.step.project_notification_due_date:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'project_notification_due_date'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Job\NotificationDueDateWarningTasklet'
+        public: false
+
+    pimee_teamwork_assistant.job.project_notification_due_date:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'project_notification_due_date'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@Akeneo\Tool\Component\Connector\Step\CheckJobUniqueStep'
+                - '@pimee_teamwork_assistant.step.project_notification_due_date'
+            - false
+            - false
+        public: false
+        tags:
+            -
+                name: akeneo_batch.job
+                connector: 'internal'
+                type: 'scheduled_job'
+
+    pimee_teamwork_assistant.job.job_parameters.default_values_provider.project_notification_due_date:
+        class:
+            'Akeneo\Tool\Component\Batch\Job\JobParameters\EmptyConstraintAndDefaultValuesProvider'
+        arguments:
+            - 'project_notification_due_date'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
             - { name: akeneo_batch.job.job_parameters.default_values_provider }

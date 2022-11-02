@@ -85,7 +85,7 @@ class ProductImplementation implements Product {
   public static createFromNormalized(normalizedProduct: NormalizedProduct): Product {
     const id = createIdentifier(normalizedProduct.id);
     const type = normalizedProduct.type;
-    const identifier = createIdentifier(normalizedProduct.identifier);
+    const identifier = createIdentifier(normalizedProduct.identifier || '');
     const labelCollection = createLabelCollection(normalizedProduct.labels);
     const image = denormalizeFile(normalizedProduct.image);
     const completeness = denormalizeCompleteness(normalizedProduct.completeness);

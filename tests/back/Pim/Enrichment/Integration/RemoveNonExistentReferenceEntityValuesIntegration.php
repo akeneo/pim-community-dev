@@ -52,7 +52,7 @@ class RemoveNonExistentReferenceEntityValuesIntegration extends TestCase
         }
 
         $this->assertReferenceEntityValues('sunglasses', '');
-        $this->assertCompleteness('sunglasses', 0);
+        $this->assertCompleteness('sunglasses', 33);
     }
 
     /** @test */
@@ -72,7 +72,7 @@ class RemoveNonExistentReferenceEntityValuesIntegration extends TestCase
         }
 
         $this->assertReferenceEntityValues('sunglasses', '');
-        $this->assertCompleteness('sunglasses', 0);
+        $this->assertCompleteness('sunglasses', 33);
     }
 
     protected function setUp(): void
@@ -145,9 +145,9 @@ class RemoveNonExistentReferenceEntityValuesIntegration extends TestCase
 
         $this->createFamily([
             'code' => 'marketing',
-            'attributes' => ['fabric_color', 'palette'],
+            'attributes' => ['sku', 'fabric_color', 'palette'],
             'attribute_requirements' => [
-                'ecommerce' => ['fabric_color', 'palette'],
+                'ecommerce' => ['sku', 'fabric_color', 'palette'],
             ]
         ]);
 

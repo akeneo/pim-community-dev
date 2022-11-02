@@ -15,12 +15,12 @@ class AttributeOptions extends Constraint
     public const MESSAGE_TOO_MANY_OPTIONS = 'pim_reference_entity.attribute.validation.options.too_many';
     public const MESSAGE_OPTION_DUPLICATED = 'pim_reference_entity.attribute.validation.options.duplicated';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::PROPERTY_CONSTRAINT;
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'akeneo_referenceentity.validator.record.attribute_options';
     }
