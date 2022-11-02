@@ -15,7 +15,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class LaunchJobInstanceHandlerTest extends AcceptanceTestCase
 {
     public $handler;
-    private LaunchJobInstanceHandler $launchJobInstanceHandler;
     private InMemoryCreateJobExecutionHandler $createJobExecutionHandler;
 
     protected function setUp(): void

@@ -2,7 +2,6 @@
 
 namespace Akeneo\Platform\Job\Test\Integration\Infrastructure\FileStorage;
 
-use Akeneo\Platform\Job\Domain\JobFileStorerInterface;
 use Akeneo\Platform\Job\Infrastructure\FileStorage\JobFileStorer;
 use Akeneo\Platform\Job\Test\Integration\IntegrationTestCase;
 
