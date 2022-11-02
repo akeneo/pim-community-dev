@@ -26,6 +26,7 @@ use Psr\Log\Test\TestLogger;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactoryInterface;
 use Ramsey\Uuid\UuidInterface;
+use Ramsey\Uuid\Validator\GenericValidator;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -86,10 +87,9 @@ final class CreateProductFileHandlerTest extends TestCase
         $uuidInterface = $this->createMock(UuidInterface::class);
         $uuidInterface->method('toString')->willReturn('e36f227c-2946-11e8-b467-0ed5f89f718b');
         $factory = $this->createMock(UuidFactoryInterface::class);
-        $factory
-            ->method('uuid4')
-            ->willReturn($uuidInterface)
-        ;
+        $factory->method('uuid4')->willReturn($uuidInterface);
+        $factory->method('getValidator')->willReturn(new GenericValidator());
+
         $this->factory = Uuid::getFactory();
         Uuid::setFactory($factory);
 
