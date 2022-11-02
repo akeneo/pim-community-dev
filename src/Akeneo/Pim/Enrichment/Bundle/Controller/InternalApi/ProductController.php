@@ -22,7 +22,6 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
@@ -52,7 +51,6 @@ class ProductController
 {
     public function __construct(
         protected ProductRepositoryInterface $productRepository,
-        protected CursorableRepositoryInterface $cursorableRepository,
         protected AttributeRepositoryInterface $attributeRepository,
         protected ObjectUpdaterInterface $productUpdater,
         protected SaverInterface $productSaver,
@@ -80,14 +78,9 @@ class ProductController
      */
     public function indexAction(Request $request): JsonResponse
     {
-        /** @TODO CPM-739: Remove search by identifiers */
-        $productIdentifiers = explode(',', $request->get('identifiers'));
         $productUuids = explode(',', $request->get('uuids'));
 
-        $products = array_merge(
-            $this->cursorableRepository->getItemsFromIdentifiers($productIdentifiers),
-            $this->productRepository->getItemsFromUuids($productUuids),
-        );
+        $products = $this->productRepository->getItemsFromUuids($productUuids);
 
         $normalizedProducts = $this->normalizer->normalize(
             $products,

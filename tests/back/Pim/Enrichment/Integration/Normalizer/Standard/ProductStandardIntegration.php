@@ -252,15 +252,20 @@ class ProductStandardIntegration extends TestCase
                 'created'       => '2016-06-14T13:12:50+02:00',
                 'updated'       => '2016-06-14T13:12:50+02:00',
                 'associations'  => [
-                    'PACK'   => ['groups' => [], 'products' => ['bar', 'baz'], 'product_models' => []],
-                    'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
-                    'UPSELL' => ['groups' => ['groupA'], 'products' => [], 'product_models' => []],
-                    'X_SELL' => ['groups' => ['groupB'], 'products' => ['bar'], 'product_models' => []],
+                    'PACK'   => ['groups' => [], 'product_uuids' => [
+                        $this->getProductUuid('bar')->toString(),
+                        $this->getProductUuid('baz')->toString(),
+                    ], 'product_models' => []],
+                    'SUBSTITUTION' => ['groups' => [], 'product_uuids' => [], 'product_models' => []],
+                    'UPSELL' => ['groups' => ['groupA'], 'product_uuids' => [], 'product_models' => []],
+                    'X_SELL' => ['groups' => ['groupB'], 'product_uuids' => [
+                        $this->getProductUuid('bar')->toString()
+                    ], 'product_models' => []],
                 ],
                 'quantified_associations' => [
                     "PRODUCT_SET" => [
                         "products" => [
-                            ['identifier' => 'bar', "uuid" => $this->getProductUuid('bar'), "quantity" => 3]
+                            ['identifier' => 'bar', "uuid" => $this->getProductUuid('bar')->toString(), "quantity" => 3]
                         ],
                         "product_models" => [
                             ["identifier" => 'baz', "quantity" => 2]
@@ -454,15 +459,20 @@ SQL;
                 'created'       => '2016-06-14T13:12:50+02:00',
                 'updated'       => '2016-06-14T13:12:50+02:00',
                 'associations'  => [
-                    'PACK'   => ['groups' => [], 'products' => ['bar', 'baz'], 'product_models' => []],
-                    'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
-                    'UPSELL' => ['groups' => ['groupA'], 'products' => [], 'product_models' => []],
-                    'X_SELL' => ['groups' => ['groupB'], 'products' => ['bar'], 'product_models' => []],
+                    'PACK'   => ['groups' => [], 'product_uuids' => [
+                        $this->getProductUuid('bar')->toString(),
+                        $this->getProductUuid('baz')->toString()
+                    ], 'product_models' => []],
+                    'SUBSTITUTION' => ['groups' => [], 'product_uuids' => [], 'product_models' => []],
+                    'UPSELL' => ['groups' => ['groupA'], 'product_uuids' => [], 'product_models' => []],
+                    'X_SELL' => ['groups' => ['groupB'], 'product_uuids' => [
+                        $this->getProductUuid('bar')->toString()
+                    ], 'product_models' => []],
                 ],
                 'quantified_associations' => [
                     "PRODUCT_SET" => [
                         "products" => [
-                            ['identifier' => 'bar', "uuid" => $this->getProductUuid('bar'), "quantity" => 3]
+                            ['identifier' => 'bar', "uuid" => $this->getProductUuid('bar')->toString(), "quantity" => 3]
                         ],
                         "product_models" => [
                             ["identifier" => 'baz', "quantity" => 2]
@@ -530,13 +540,5 @@ SQL;
         }
 
         return $data;
-    }
-
-    private function getProductUuid(string $identifier): string
-    {
-        $repository = $this->get('pim_catalog.repository.product');
-        $product = $repository->findOneByIdentifier($identifier);
-
-        return (string) $product->getUuid();
     }
 }
