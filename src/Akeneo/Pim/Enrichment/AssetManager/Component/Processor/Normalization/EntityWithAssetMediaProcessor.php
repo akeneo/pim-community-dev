@@ -154,49 +154,6 @@ final class EntityWithAssetMediaProcessor implements ItemProcessorInterface, Ste
             }
         }
 
-        foreach ($entityStandard['values'] as $attributeCode => $values) {
-            foreach ($values as $valueKey => $value) {
-                if (!$this->productValueSatisfiesLocaleAndScopeFilters($value, $scopeCodes, $localeCodes)) {
-                    continue;
-                }
-
-                $attribute = $this->getAttributes->forCode((string) $attributeCode);
-                if (null === $attribute
-                    || $attribute->type() !== AssetCollectionType::ASSET_COLLECTION
-                    || empty($value['data'])
-                ) {
-                    continue;
-                }
-
-                $assetMainMediaValues = $this->getMainMediaValues(
-                    $attribute->properties()['reference_data_name'],
-                    $value['data']
-                );
-
-                $scopeCodesFilter = null !== $scopeCodes && null !== $value['scope'] ? [$value['scope']] : $scopeCodes;
-                $localeCodesFilter = null !== $localeCodes && null !== $value['locale'] ? [$value['locale']] : $localeCodes;
-
-                $filteredMainMedia = [];
-                foreach ($assetMainMediaValues as $assetMainMediaValue) {
-                    if ($this->assetValueSatisfiesLocaleAndScopeFilters(
-                        $assetMainMediaValue,
-                        $scopeCodesFilter,
-                        $localeCodesFilter
-                    )
-                    ) {
-                        $filteredMainMedia[] = $assetMainMediaValue;
-                    }
-                }
-
-                if (0 < count($filteredMainMedia)) {
-                    $entityStandard['values'][$attributeCode][$valueKey]['paths'] = \array_map(
-                        fn (array $mediaValue): string => $mediaValue['data']['filePath'] ?? $mediaValue['data'],
-                        $filteredMainMedia
-                    );
-                }
-            }
-        }
-
         return $entityStandard;
     }
 
