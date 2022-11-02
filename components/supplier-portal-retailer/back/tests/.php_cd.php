@@ -156,6 +156,7 @@ $rules = [
             'Psr\Log\Test\TestLogger',
             'Ramsey\Uuid\Uuid',
             'Symfony\Component\EventDispatcher\EventDispatcher',
+            'Symfony\Component\HttpFoundation\File\UploadedFile',
             'Symfony\Component\Validator\ConstraintViolationList',
             'Symfony\Component\Validator\Validator\ValidatorInterface',
         ],
