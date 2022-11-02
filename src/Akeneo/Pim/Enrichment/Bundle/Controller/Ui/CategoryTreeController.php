@@ -91,7 +91,7 @@ class CategoryTreeController extends AbstractController
         $trees = $this->getCategoryTrees->getAll();
 
         if ($selectNode instanceof CategoryTree) {
-            $selectedTreeId = (int) $selectNode->getId();
+            $selectedTreeId = $selectNode->getId()->getValue();
         } else {
             $selectedTreeId = $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot();
         }
