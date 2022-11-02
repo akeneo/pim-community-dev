@@ -11,7 +11,6 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -148,46 +147,6 @@ JSON;
         $this->assertSameProducts($expectedProduct, 'product_variant_creation_family');
 
         $this->assertEventCount(1, ProductCreated::class);
-    }
-
-    public function testProductVariantCreationWithFamilyAndWithoutIdentifier()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $data =
-            <<<JSON
-    {
-        "family": "familyA",
-        "parent": "amor",
-        "values": {
-          "a_yes_no": [
-            {
-              "locale": null,
-              "scope": null,
-              "data": true
-            }
-          ]
-        }
-    }
-JSON;
-
-        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
-
-        $expectedContent = [
-            'code'    => 422,
-            'message' => 'Validation failed.',
-            'errors'  => [
-                [
-                    'property'   => 'identifier',
-                    'message' => 'The identifier attribute cannot be empty.',
-                ],
-            ],
-        ];
-
-        $response = $client->getResponse();
-
-        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
     public function testProductVariantCreationWithFamilyNotSpecifiedInSentData()
@@ -735,25 +694,25 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                "PACK"         => [
-                    "groups"   => [],
-                    "products" => [],
-                    "product_models" => [],
+                'PACK'         => [
+                    'groups'   => [],
+                    'product_uuids' => [],
+                    'product_models' => [],
                 ],
-                "SUBSTITUTION" => [
-                    "groups"   => [],
-                    "products" => [],
-                    "product_models" => [],
+                'SUBSTITUTION' => [
+                    'groups'   => [],
+                    'product_uuids' => [],
+                    'product_models' => [],
                 ],
-                "UPSELL"       => [
-                    "groups"   => [],
-                    "products" => [],
-                    "product_models" => ["amor"],
+                'UPSELL'       => [
+                    'groups'   => [],
+                    'product_uuids' => [],
+                    'product_models' => ['amor'],
                 ],
-                "X_SELL"       => [
-                    "groups"   => ["groupA"],
-                    "products" => ["simple"],
-                    "product_models" => [],
+                'X_SELL'       => [
+                    'groups'   => ['groupA'],
+                    'product_uuids' => [$this->getProductUuid('simple')->toString()],
+                    'product_models' => [],
                 ],
             ],
             'quantified_associations' => [],

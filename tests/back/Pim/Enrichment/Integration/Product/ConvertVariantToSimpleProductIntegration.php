@@ -73,6 +73,28 @@ class ConvertVariantToSimpleProductIntegration extends TestCase
 
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
         $productFromDb = $this->get('pim_catalog.repository.product')->findOneByIdentifier('variant');
+        $expectedQuantifiedAssociations = [
+            'quantified' => [
+                'products' => [
+                    [
+                        'uuid' => $this->getProductUuid('other')->toString(),
+                        'identifier' => 'other',
+                        'quantity' => 10,
+                    ],
+                    [
+                        'uuid' => $this->getProductUuid('random')->toString(),
+                        'identifier' => 'random',
+                        'quantity' => 2,
+                    ],
+                ],
+                'product_models' => [
+                    [
+                        'identifier' => 'pm_1',
+                        'quantity' => 5,
+                    ],
+                ],
+            ],
+        ];
 
         Assert::assertFalse($productFromDb->isVariant());
         Assert::assertNull($productFromDb->getFamilyVariant());
@@ -207,10 +229,10 @@ class ConvertVariantToSimpleProductIntegration extends TestCase
         foreach ($expectedAssociations as $associationTypeCode => $association) {
             Assert::assertTrue($product->hasAssociationForTypeCode($associationTypeCode));
 
-            $actualAssociatedProductIdentifiers = $product->getAssociatedProducts($associationTypeCode)->map(
-                fn (ProductInterface $associatedProduct): string => $associatedProduct->getIdentifier()
+            $actualAssociatedProductUuids = $product->getAssociatedProducts($associationTypeCode)->map(
+                fn (ProductInterface $associatedProduct): string => $associatedProduct->getUuid()->toString()
             )->toArray();
-            Assert::assertEqualsCanonicalizing($association['products'] ?? [], $actualAssociatedProductIdentifiers);
+            Assert::assertEqualsCanonicalizing($association['product_uuids'] ?? [], $actualAssociatedProductUuids);
 
             $actualAssociatedProductModelCodes = $product->getAssociatedProductModels($associationTypeCode)->map(
                 fn (ProductModelInterface $associatedProductModel): string => $associatedProductModel->getCode()

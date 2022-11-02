@@ -8,6 +8,7 @@ use Akeneo\Catalogs\Application\Persistence\Catalog\UpsertCatalogQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Command\UpdateProductMappingSchemaCommand;
+use Akeneo\Catalogs\ServiceAPI\Exception\ProductSchemaMappingNotFoundException as ServiceApiProductSchemaMappingNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
@@ -140,7 +141,8 @@ class ApiContext implements Context
                         'value' => true,
                     ],
                 ],
-                []
+                [],
+                [],
             )
         );
 
@@ -648,5 +650,40 @@ class ApiContext implements Context
             JSON_WRAP,
             $this->response->getContent(),
         );
+    }
+
+    /**
+     * @When the external application deletes a catalog product mapping schema using the API
+     */
+    public function theExternalApplicationDeletesACatalogProductMappingSchemaUsingTheApi(): void
+    {
+        $this->authentication->logAs($this->getConnectedApp()->getUsername());
+
+        $this->getConnectedAppClient()->request(
+            method: 'DELETE',
+            uri: '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapping-schemas/product',
+            server: [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+        );
+
+        $this->response = $this->getConnectedAppClient()->getResponse();
+
+        Assert::assertEquals(204, $this->response->getStatusCode());
+    }
+
+    /**
+     * @Then the catalog product mapping schema should be empty in the PIM
+     */
+    public function theCatalogProductMappingSchemaShouldBeEmptyInThePim(): void
+    {
+        $productSchemaMappingNotFoundExceptionThrown = false;
+        try {
+            $this->queryBus->execute(new GetProductMappingSchemaQuery('db1079b6-f397-4a6a-bae4-8658e64ad47c'));
+        } catch (ServiceApiProductSchemaMappingNotFoundException) {
+            $productSchemaMappingNotFoundExceptionThrown = true;
+        }
+
+        Assert::assertTrue($productSchemaMappingNotFoundExceptionThrown);
     }
 }

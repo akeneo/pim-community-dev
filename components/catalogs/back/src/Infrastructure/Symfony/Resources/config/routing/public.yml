@@ -33,6 +33,11 @@ akeneo_catalogs_public_get_product_uuids:
     controller: Akeneo\Catalogs\Infrastructure\Controller\Public\GetProductUuidsAction
     methods: [ GET ]
 
+akeneo_catalogs_public_get_product:
+    path: '/api/rest/v1/catalogs/{id}/products/{uuid}'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Public\GetProductAction
+    methods: [ GET ]
+
 akeneo_catalogs_public_get_products:
     path: '/api/rest/v1/catalogs/{id}/products'
     controller: Akeneo\Catalogs\Infrastructure\Controller\Public\GetProductsAction
@@ -47,3 +52,8 @@ akeneo_catalogs_public_update_products_mapping_schema:
     path: '/api/rest/v1/catalogs/{catalogId}/mapping-schemas/product'
     controller: Akeneo\Catalogs\Infrastructure\Controller\Public\UpdateProductMappingSchemaAction
     methods: [ PUT ]
+
+akeneo_catalogs_public_delete_products_mapping_schema:
+    path: '/api/rest/v1/catalogs/{catalogId}/mapping-schemas/product'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Public\DeleteProductMappingSchemaAction
+    methods: [ DELETE ]

@@ -74,6 +74,8 @@ final class UpdateProductController
         } catch (ObjectNotFoundException) {
             throw new BadRequestHttpException();
         }
+
+        $data = $this->formatAssociatedProductUuids($data);
         try {
             $this->updateProduct($product, $data);
         } catch (ViolationsException | LegacyViolationsException $e) {
@@ -281,5 +283,19 @@ final class UpdateProductController
         $normalizedViolations = $this->normalizeViolations($violations, $product);
 
         return new JsonResponse($normalizedViolations, 400);
+    }
+
+    private function formatAssociatedProductUuids(array $data): array
+    {
+        if (isset($data['quantified_associations'])) {
+            foreach ($data['quantified_associations'] as $associationCode => $associations) {
+                if (isset($associations['products'])) {
+                    $data['quantified_associations'][$associationCode]['product_uuids'] = $associations['products'];
+                    unset($data['quantified_associations'][$associationCode]['products']);
+                }
+            }
+        }
+
+        return $data;
     }
 }

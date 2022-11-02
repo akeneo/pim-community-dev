@@ -197,6 +197,8 @@ pim_common:
   less_than: 보다 작음
   loading: 로드 중...
   media_upload: 끌어다 놓아 업로드하거나 여기를 클릭
+  media_uploading: 업로드 중...
+  media_upload_error: 업로드 중에 오류가 발생했습니다.
   more_actions: 작업 더보기
   more_than: 보다 큼
   next: 다음

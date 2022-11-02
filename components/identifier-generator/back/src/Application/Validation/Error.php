@@ -36,4 +36,24 @@ final class Error
     {
         return $this->path;
     }
+
+    /**
+     * @return array{path: string | null, message: string}
+     */
+    public function normalize(): array
+    {
+        return [
+            'path' => $this->path,
+            'message' => $this->message,
+        ];
+    }
+
+    public function __toString(): string
+    {
+        if (null !== $this->path && '' !== $this->path) {
+            return sprintf("%s: %s", $this->path, $this->message);
+        }
+
+        return $this->message;
+    }
 }

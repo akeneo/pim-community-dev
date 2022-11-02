@@ -194,7 +194,6 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductController'
         arguments:
             - '@pim_catalog.repository.product'
-            - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.updater.product'
             - '@pim_catalog.saver.product'
@@ -326,8 +325,8 @@ services:
         public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductAndProductModel\GetFromIdentifiersAction'
         arguments:
+            - '@akeneo.pim.enrichment.query.product_query_builder_from_size_factory.with_product_identifier_cursor'
             - '@akeneo.pim.enrichment.query.product_and_product_model_query_builder_from_size_factory.with_product_identifier_cursor'
-            - '@pim_catalog.query.product_model_query_builder_factory'
             - '@pim_enrich.normalizer.linked_product_normalizer'
             - '@akeneo.pim.enrichment.product.grid.query.fetch_product_and_product_model_rows'
             - '@validator'

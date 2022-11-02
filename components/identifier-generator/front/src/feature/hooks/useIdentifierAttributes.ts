@@ -1,13 +1,16 @@
 import {useQuery} from 'react-query';
 import {FlattenAttribute} from '../models';
+import {useRouter} from '@akeneo-pim-community/shared';
 
 const useIdentifierAttributes: () => {
   data?: FlattenAttribute[];
   error: Error | null;
   isSuccess: boolean;
 } = () => {
+  const router = useRouter();
+
   const getIdentifierAttributes = async () => {
-    return fetch('/identifier-generator/identifier-attributes', {
+    return fetch(router.generate('akeneo_identifier_generator_get_identifier_attributes'), {
       method: 'GET',
       headers: [['X-Requested-With', 'XMLHttpRequest']],
     }).then(res => {
@@ -18,12 +21,7 @@ const useIdentifierAttributes: () => {
 
   const {error, data, isSuccess} = useQuery<FlattenAttribute[], Error, FlattenAttribute[]>(
     'getIdentifierAttributes',
-    getIdentifierAttributes,
-    {
-      keepPreviousData: true,
-      refetchOnWindowFocus: false,
-      retry: false,
-    }
+    getIdentifierAttributes
   );
 
   return {data, error, isSuccess};

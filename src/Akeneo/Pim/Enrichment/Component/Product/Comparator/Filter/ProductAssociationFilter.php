@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorRegistry;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\ProductNormalizer;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -16,31 +17,64 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductAssociationFilter implements FilterInterface
 {
-    /** @var NormalizerInterface */
-    protected $associationsNormalizer;
-
-    /** @var NormalizerInterface */
-    protected $quantifiedAssociationsNormalizer;
-
-    /** @var ComparatorRegistry */
-    protected $comparatorRegistry;
-
     public function __construct(
-        NormalizerInterface $associationsNormalizer,
-        NormalizerInterface $quantifiedAssociationsNormalizer,
-        ComparatorRegistry $comparatorRegistry
+        private NormalizerInterface $associationsNormalizer,
+        private NormalizerInterface $quantifiedAssociationsNormalizer,
+        private ComparatorRegistry $comparatorRegistry,
     ) {
-        $this->associationsNormalizer = $associationsNormalizer;
-        $this->quantifiedAssociationsNormalizer = $quantifiedAssociationsNormalizer;
-        $this->comparatorRegistry = $comparatorRegistry;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * The $newValues contains an array like this
+     * [
+     *     ProductNormalizer::FIELD_ASSOCIATIONS => [
+     *         'XSELL' => [
+     *             'products' => ['an_identifier'], ...
+     *         ],
+     *     ProductNormalizer::FIELD_QUANTIFIED_ASSOCIATIONS => [ ... ]
+     * ]
+     * Or
+     * [
+     *     ProductNormalizer::FIELD_ASSOCIATIONS => [
+     *         'XSELL' => [
+     *             'product_uuids' => ['060309a1-8c7b-4cf3-9cd2-9acf545ff646'], ...
+     *         ],
+     *     ProductNormalizer::FIELD_QUANTIFIED_ASSOCIATIONS => [ ... ]
+     * ]
+     *
+     * The filtered values should contain products or product_uuids. We normalize the original product associations
+     * with products or product_uuids to filter items.
      */
     public function filter(EntityWithValuesInterface $product, array $newValues): array
     {
-        $originalAssociations = $this->associationsNormalizer->normalize($product, 'standard');
+        $isImportingByUuids = null;
+        if (isset($newValues[ProductNormalizer::FIELD_ASSOCIATIONS])) {
+            foreach ($newValues[ProductNormalizer::FIELD_ASSOCIATIONS] as $associationsByCode) {
+                if (\array_key_exists('products', $associationsByCode)) {
+                    if (true === $isImportingByUuids) {
+                        throw new \LogicException('You can not filter by uuid and by identifiers');
+                    }
+                    $isImportingByUuids = false;
+                }
+                if (\array_key_exists('product_uuids', $associationsByCode)) {
+                    if (false === $isImportingByUuids) {
+                        throw new \LogicException('You can not filter by uuid and by identifiers');
+                    }
+                    $isImportingByUuids = true;
+                }
+            }
+        }
+        if (null === $isImportingByUuids) {
+            $isImportingByUuids = false;
+        }
+
+        $originalAssociations = $this->associationsNormalizer->normalize(
+            $product,
+            'standard',
+            ['with_association_uuids' => $isImportingByUuids]
+        );
         $originalQuantifiedAssociations = $this->quantifiedAssociationsNormalizer->normalize($product, 'standard');
 
         if (
@@ -53,7 +87,6 @@ class ProductAssociationFilter implements FilterInterface
         }
 
         $result = [];
-
         if (!isset($newValues[ProductNormalizer::FIELD_ASSOCIATIONS])) {
             return $result;
         }
@@ -90,12 +123,12 @@ class ProductAssociationFilter implements FilterInterface
      */
     protected function hasNewAssociations(array $convertedItem): bool
     {
-        if (!isset($convertedItem['associations'])) {
+        if (!isset($convertedItem[ProductNormalizer::FIELD_ASSOCIATIONS])) {
             return false;
         }
 
-        foreach ($convertedItem['associations'] as $association) {
-            if (!empty($association['products']) || !empty($association['groups']) || !empty($association['product_models'])) {
+        foreach ($convertedItem[ProductNormalizer::FIELD_ASSOCIATIONS] as $association) {
+            if (!empty($association['products']) || !empty($association['groups']) || !empty($association['product_models']) || !empty($association['product_uuids'])) {
                 return true;
             }
         }
@@ -108,11 +141,11 @@ class ProductAssociationFilter implements FilterInterface
      */
     protected function hasNewQuantifiedAssociations(array $convertedItem): bool
     {
-        if (!isset($convertedItem['quantified_associations'])) {
+        if (!isset($convertedItem[ProductNormalizer::FIELD_QUANTIFIED_ASSOCIATIONS])) {
             return false;
         }
 
-        foreach ($convertedItem['quantified_associations'] as $association) {
+        foreach ($convertedItem[ProductNormalizer::FIELD_QUANTIFIED_ASSOCIATIONS] as $association) {
             if (!empty($association['products']) || !empty($association['product_models'])) {
                 return true;
             }

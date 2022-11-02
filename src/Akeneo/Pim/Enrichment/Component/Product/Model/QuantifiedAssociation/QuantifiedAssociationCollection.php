@@ -47,6 +47,7 @@ class QuantifiedAssociationCollection
                     if (isset($association['uuid'])) {
                         $quantifiedLink = QuantifiedLink::fromUuid(
                             $association['uuid'],
+                            $association['identifier'] ?? null,
                             $association['quantity']
                         );
                     } else {
@@ -86,20 +87,13 @@ class QuantifiedAssociationCollection
 
             foreach ($associations[self::PRODUCTS_QUANTIFIED_LINKS_KEY] ?? [] as $productAssociation) {
                 Assert::isArray($productAssociation);
-                if (!array_key_exists('id', $productAssociation) && !array_key_exists('uuid', $productAssociation)) {
-                    throw new \InvalidArgumentException('Expected one of the keys "id" or "uuid" to exist.');
-                }
+                Assert::keyExists($productAssociation, 'id');
                 Assert::keyExists($productAssociation, 'quantity');
 
                 if (isset($productAssociation['id']) && $mappedProductIds->hasIdentifierFromId($productAssociation['id'])) {
-                    $quantifiedLink = QuantifiedLink::fromIdentifier(
-                        $mappedProductIds->getIdentifierFromId($productAssociation['id']),
-                        $productAssociation['quantity']
-                    );
-                    $mappedQuantifiedAssociations[$associationType][self::PRODUCTS_QUANTIFIED_LINKS_KEY][] = $quantifiedLink;
-                } elseif (isset($productAssociation['uuid']) && $mappedProductIds->hasUuidFromUuid($productAssociation['uuid'])) {
                     $quantifiedLink = QuantifiedLink::fromUuid(
-                        $productAssociation['uuid'],
+                        $mappedProductIds->getUuidFromId($productAssociation['id']),
+                        $mappedProductIds->getIdentifierFromId($productAssociation['id']),
                         $productAssociation['quantity']
                     );
                     $mappedQuantifiedAssociations[$associationType][self::PRODUCTS_QUANTIFIED_LINKS_KEY][] = $quantifiedLink;
@@ -193,23 +187,58 @@ class QuantifiedAssociationCollection
 
     public function merge(QuantifiedAssociationCollection $quantifiedAssociations): self
     {
-        $currentQuantifiedAssociationsNormalizedByIdentifiers = $this->normalizeWithIndexedIdentifiers();
-        $quantifiedAssociationsToMergeNormalizedByIdentifiers = $quantifiedAssociations->normalizeWithIndexedIdentifiers();
-        $currentQuantifiedAssociationsNormalizedByUuids = $this->normalizeWithIndexedUuids();
-        $quantifiedAssociationsToMergeNormalizedByUuids = $quantifiedAssociations->normalizeWithIndexedUuids();
+        $currentQuantifiedAssociationsNormalized = $this->normalize();
+        $quantifiedAssociationsToMergeNormalized = $quantifiedAssociations->normalize();
 
-        $mergedQuantifiedAssociationsNormalized = array_merge_recursive(
-            array_replace_recursive(
-                $currentQuantifiedAssociationsNormalizedByIdentifiers,
-                $quantifiedAssociationsToMergeNormalizedByIdentifiers
-            ),
-            array_replace_recursive(
-                $currentQuantifiedAssociationsNormalizedByUuids,
-                $quantifiedAssociationsToMergeNormalizedByUuids
-            )
-        );
+        foreach ($quantifiedAssociationsToMergeNormalized as $associationType => $quantifiedAssociationToMergeNormalized) {
+            if (!isset($currentQuantifiedAssociationsNormalized[$associationType])) {
+                $currentQuantifiedAssociationsNormalized[$associationType] = $quantifiedAssociationToMergeNormalized;
+                continue;
+            }
 
-        return self::createFromNormalized($mergedQuantifiedAssociationsNormalized);
+            $currentQuantifiedLinks = $currentQuantifiedAssociationsNormalized[$associationType];
+            foreach ($quantifiedAssociationToMergeNormalized as $quantifiedLinkType => $quantifiedLinksToMerge) {
+                if (!isset($currentQuantifiedLinks[$quantifiedLinkType])) {
+                    $currentQuantifiedAssociationsNormalized[$associationType][$quantifiedLinkType] = $quantifiedLinksToMerge;
+                    continue;
+                }
+
+                $currentQuantifiedAssociationsNormalized[$associationType][$quantifiedLinkType] = $this->mergeQuantifiedLinks(
+                    $currentQuantifiedLinks[$quantifiedLinkType],
+                    $quantifiedLinksToMerge,
+                );
+            }
+        }
+
+        return self::createFromNormalized($currentQuantifiedAssociationsNormalized);
+    }
+
+    private function mergeQuantifiedLinks(array $currentQuantifiedLinks, array $quantifiedLinksToMerge): array
+    {
+        $mergedQuantifiedLinks = array_reverse(array_merge($currentQuantifiedLinks, $quantifiedLinksToMerge));
+
+        $uuidList = [];
+        $identifierList = [];
+
+        foreach ($mergedQuantifiedLinks as $index => $mergedQuantifiedLink) {
+            if (
+                isset($mergedQuantifiedLink['uuid']) && in_array($mergedQuantifiedLink['uuid'], $uuidList)
+                || isset($mergedQuantifiedLink['identifier']) && in_array($mergedQuantifiedLink['identifier'], $identifierList)
+            ) {
+                unset($mergedQuantifiedLinks[$index]);
+                continue;
+            }
+
+            if (isset($mergedQuantifiedLink['uuid'])) {
+                $uuidList[] = $mergedQuantifiedLink['uuid'];
+            }
+
+            if (isset($mergedQuantifiedLink['identifier'])) {
+                $identifierList[] = $mergedQuantifiedLink['identifier'];
+            }
+        }
+
+        return array_reverse(array_values($mergedQuantifiedLinks));
     }
 
     /**
@@ -378,45 +407,5 @@ class QuantifiedAssociationCollection
     private function getAssociationTypeCodes()
     {
         return array_keys($this->quantifiedAssociations);
-    }
-
-    private function normalizeWithIndexedIdentifiers()
-    {
-        $quantifiedAssociationsNormalized = $this->normalize();
-
-        $result = [];
-        foreach ($quantifiedAssociationsNormalized as $associationType => $associationsNormalized) {
-            foreach ($associationsNormalized as $quantifiedLinksType => $quantifiedLinksNormalized) {
-                $result[$associationType][$quantifiedLinksType] = [];
-                foreach ($quantifiedLinksNormalized as $quantifiedLinkNormalized) {
-                    if (array_key_exists('identifier', $quantifiedLinkNormalized)) {
-                        $result[$associationType][$quantifiedLinksType][$quantifiedLinkNormalized['identifier']] =
-                            $quantifiedLinkNormalized;
-                    }
-                }
-            }
-        }
-
-        return $result;
-    }
-
-    private function normalizeWithIndexedUuids()
-    {
-        $quantifiedAssociationsNormalized = $this->normalize();
-
-        $result = [];
-        foreach ($quantifiedAssociationsNormalized as $associationType => $associationsNormalized) {
-            foreach ($associationsNormalized as $quantifiedLinksType => $quantifiedLinksNormalized) {
-                $result[$associationType][$quantifiedLinksType] = [];
-                foreach ($quantifiedLinksNormalized as $quantifiedLinkNormalized) {
-                    if (array_key_exists('uuid', $quantifiedLinkNormalized)) {
-                        $result[$associationType][$quantifiedLinksType][$quantifiedLinkNormalized['uuid']] =
-                            $quantifiedLinkNormalized;
-                    }
-                }
-            }
-        }
-
-        return $result;
     }
 }

@@ -31,7 +31,7 @@ final class UpdateProductMappingSchemaHandler
         }
 
         $this->catalogsMappingStorage->write(
-            \sprintf('%d_product.json', $catalog->getId()),
+            \sprintf('%s_product.json', $catalog->getId()),
             \json_encode($command->getProductMappingSchema(), JSON_THROW_ON_ERROR),
         );
     }

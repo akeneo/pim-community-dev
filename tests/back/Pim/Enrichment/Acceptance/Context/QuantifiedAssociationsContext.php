@@ -417,8 +417,8 @@ final class QuantifiedAssociationsContext implements Context
         $expectedQuantifiedAssociations = [
             'PACK' => [
                 'products' => [
-                    ['identifier' => 'accessory', 'quantity' => 42],
                     ['identifier' => 'something_else', 'quantity' => 2],
+                    ['identifier' => 'accessory', 'quantity' => 42],
                 ],
                 'product_models' => [],
             ],
@@ -580,6 +580,26 @@ final class QuantifiedAssociationsContext implements Context
                 'PACK' => [
                     'products' => [
                         ['identifier' => 'accessory', 'quantity' => 1],
+                    ],
+                    'product_models' => [],
+                ],
+            ],
+        ];
+
+        $this->updateProduct($this->product, $fields);
+    }
+
+    /**
+     * @When /^I associate a nonexistent product uuid to this product with a quantity$/
+     */
+    public function iAssociateANonExistentProductUuidToThisProductWithAQuantity()
+    {
+        $this->createAndPersistQuantifiedAssociationType('PACK');
+        $fields = [
+            'quantified_associations' => [
+                'PACK' => [
+                    'product_uuids' => [
+                        ['uuid' => '5de1519f-85e8-4da8-9caf-937beeec0517', 'quantity' => 1],
                     ],
                     'product_models' => [],
                 ],

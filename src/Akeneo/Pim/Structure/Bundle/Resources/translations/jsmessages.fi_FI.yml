@@ -90,26 +90,26 @@ pim_enrich.entity.attribute_option:
         no_result:
           title: Haullasi ei löytynyt tuloksia.
 pim_enrich.entity.association_type:
-  label: tuoteliitostyyppi
+  label: assosiaatiotyyppi
   property:
     is_two_way: 2-suuntainen tuoteliitos
     is_quantified: Lukumäärällinen tuoteliitos
   flash:
     update:
-      success: Tuoteliitostyypin päivittäminen onnistui.
-      fail: Tuoteliitostyyppiä ei voitu päivittää.
-      fields_not_ready: "Tuoteliitostyyppiä ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
+      success: Assosiaatiotyypin päivittäminen onnistui.
+      fail: Assosiaatiotyyppiä ei voitu päivittää.
+      fields_not_ready: "Assosiaatiotyyppiä ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
     create:
-      success: Tuoteliitostyyppi luotu onnistuneesti
+      success: Assosiaatiotyyppi luotu onnistuneesti
     delete:
-      success: Tuoteliitostyyppi poistettu onnistuneesti
+      success: Assosiaatiotyyppi poistettu onnistuneesti
       fail: Liitostyyppiä ei voi poistaa
   page_title:
-    index: "]-Inf, 1] {{ count }} tuoteliitostyyppi|]1, Inf [{{ count }} tuoteliitostyyppiä"
+    index: "]-Inf, 1] {{ count }} assosiaatiotyyppi|]1, Inf [{{ count }} assosiaatiotyyppiä"
   module:
     create:
       title: Luo uusi tuoteliitostyyppi
-      button: Luo tuoteliitosyyppi
+      button: Luo assosiaatiotyyppi
       is_two_way:
         message_on_read_only: Tuoteliitostyyppi voi olla joko lukumäärällinen tai kaksisuuntainen, valitaksesi tämän, poista toinen valinta
       is_quantified:

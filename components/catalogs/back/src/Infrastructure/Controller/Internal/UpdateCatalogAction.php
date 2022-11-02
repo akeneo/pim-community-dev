@@ -73,6 +73,7 @@ final class UpdateCatalogAction
             $payload['enabled'],
             $payload['product_selection_criteria'],
             $payload['product_value_filters'],
+            $catalog->getProductMapping(),
         ));
 
         return new JsonResponse(null, 204);

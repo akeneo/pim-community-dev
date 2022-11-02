@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
-use Akeneo\Platform\Bundle\InstallerBundle\CommandExecutor;
 use Akeneo\Platform\Bundle\InstallerBundle\InstallStatusManager\InstallStatusManager;
+use Akeneo\Tool\Component\Console\CommandExecutor;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -21,17 +21,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 class InstallCommand extends Command
 {
     protected static $defaultName = 'pim:install';
+    protected static $defaultDescription = 'Akeneo PIM Application Installer.';
 
-    /** @var CommandExecutor */
-    private $commandExecutor;
+    private CommandExecutor $commandExecutor;
 
-    /** @var InstallStatusManager */
-    private $installStatusManager;
-
-    public function __construct(InstallStatusManager $installStatusManager)
+    public function __construct(private InstallStatusManager $installStatusManager)
     {
         parent::__construct();
-        $this->installStatusManager = $installStatusManager;
     }
 
     /**
@@ -40,7 +36,6 @@ class InstallCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Akeneo PIM Application Installer.')
             ->addOption('force', null, InputOption::VALUE_NONE, 'Force installation')
             ->addOption('symlink', null, InputOption::VALUE_NONE, 'Install assets as symlinks')
             ->addOption('clean', null, InputOption::VALUE_NONE, 'Clean previous install')
@@ -93,17 +88,16 @@ class InstallCommand extends Command
         $output->writeln('');
         $output->writeln('<info>Akeneo PIM Application has been successfully installed.</info>');
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     /**
      * Step where configuration is checked
      *
-     * @return InstallCommand
      * @throws \RuntimeException
      *
      */
-    protected function checkStep()
+    protected function checkStep(): self
     {
         $this->commandExecutor->runCommand('pim:installer:check-requirements');
 
@@ -122,12 +116,8 @@ class InstallCommand extends Command
 
     /**
      * Load only assets
-     *
-     * @param InputInterface $input
-     *
-     * @return InstallCommand
      */
-    protected function assetsStep(InputInterface $input)
+    protected function assetsStep(InputInterface $input): self
     {
         $options = false === $input->getOption('symlink') ? [] : ['--symlink' => true];
         $options = false === $input->getOption('clean') ? $options : array_merge($options, ['--clean' => true]);
@@ -137,11 +127,6 @@ class InstallCommand extends Command
         return $this;
     }
 
-    /**
-     * @param OutputInterface $output
-     *
-     * @return boolean
-     */
     protected function isPimInstalled(OutputInterface $output): bool
     {
         $output->writeln('<info>Check PIM installation</info>');

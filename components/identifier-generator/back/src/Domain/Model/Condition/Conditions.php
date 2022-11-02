@@ -33,6 +33,15 @@ final class Conditions
     }
 
     /**
+     * @param array<mixed> $normalizedConditions
+     */
+    public static function fromNormalized(array $normalizedConditions): self
+    {
+        // TODO
+        return new self([]);
+    }
+
+    /**
      * @return array<string, string>
      */
     public function normalize(): array
