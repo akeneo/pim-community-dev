@@ -1,26 +1,23 @@
 import {renderHook} from '@testing-library/react-hooks';
 import {useProductAndProductModelCount} from '../../../../../src/pages/EditRules/hooks';
 import {Router} from '../../../../../src/dependenciesTools';
-import {httpGet} from '../../../../../src/fetch';
+import {httpPost} from '../../../../../src/fetch';
 
 jest.mock('../../../../../src/fetch');
 
-jest.mock('react-hook-form', () => {
-  return {
-    useFormContext: () => {
-      return {
-        watch: jest.fn(),
-      };
-    },
-  };
-});
+jest.mock('react-hook-form', () => ({
+    useFormContext: () => ({
+      watch: jest.fn()
+    }),
+  }
+));
 
 describe('useProductAndProductModelCount', () => {
   test('it should get the products count according to the formValues', async () => {
     // Given
     // TODO Improve type here
-    const mockGet = httpGet as jest.Mock<any>;
-    mockGet.mockImplementationOnce(() =>
+    const mockPost = httpPost as jest.Mock<any>;
+    mockPost.mockImplementationOnce(() =>
       Promise.resolve({
         ok: true,
         json: () => ({
@@ -40,35 +37,33 @@ describe('useProductAndProductModelCount', () => {
       },
     };
     const router: Router = {
-      generate: jest.fn(
-        (route, conditions) =>
-          `${route}?conditions=${JSON.stringify(conditions)}`
-      ),
+      generate: jest.fn((route) => route),
       redirect: jest.fn(),
     };
 
     // When
-    const {result, wait} = renderHook(() =>
+    const {result, waitFor} = renderHook(() =>
       useProductAndProductModelCount(router, formValues)
     );
-    // Expect
-    await wait(() => {
-      expect(mockGet).toHaveBeenNthCalledWith(
-        1,
-        `pimee_enrich_rule_definition_get_impacted_product_count?conditions={"conditions":"[{\\"field\\":\\"family\\",\\"value\\":[\\"camcorders\\"],\\"operator\\":\\"IN\\"}]"}`
-      );
-    });
+
+    await waitFor(() => {
+      expect(mockPost).toHaveBeenNthCalledWith(1, `pimee_enrich_rule_definition_get_impacted_product_count`,
+        {
+          body: {"conditions": "[{\"field\":\"family\",\"value\":[\"camcorders\"],\"operator\":\"IN\"}]"},
+        });
+
     expect(result.current).toEqual({
       status: 2,
       productCount: 10,
       productModelCount: 20,
     });
+  })
   });
   test('it should return an error status', async () => {
     // Given
     // TODO Improve type here
-    const mockGet = httpGet as jest.Mock<any>;
-    mockGet.mockImplementationOnce(() =>
+    const mockPost = httpPost as jest.Mock<any>;
+    mockPost.mockImplementationOnce(() =>
       Promise.reject({
         ok: false,
       })
@@ -84,22 +79,22 @@ describe('useProductAndProductModelCount', () => {
       },
     };
     const router: Router = {
-      generate: jest.fn(
-        (route, conditions) =>
-          `${route}?conditions=${JSON.stringify(conditions)}`
-      ),
+      generate: jest.fn((route) => route),
       redirect: jest.fn(),
     };
 
     // When
-    const {result, wait} = renderHook(() =>
+    const {result, waitFor} = renderHook(() =>
       useProductAndProductModelCount(router, formValues)
     );
     // Expect
-    await wait(() =>
-      expect(mockGet).toHaveBeenNthCalledWith(
+    await waitFor(() =>
+      expect(mockPost).toHaveBeenNthCalledWith(
         1,
-        `pimee_enrich_rule_definition_get_impacted_product_count?conditions={"conditions":"[{\\"field\\":\\"family\\",\\"value\\":[\\"camcorders\\"],\\"operator\\":\\"IN\\"}]"}`
+        'pimee_enrich_rule_definition_get_impacted_product_count',
+        {
+          body: {"conditions": "[{\"field\":\"family\",\"value\":[\"camcorders\"],\"operator\":\"IN\"}]"},
+        }
       )
     );
     expect(result.current).toEqual({
