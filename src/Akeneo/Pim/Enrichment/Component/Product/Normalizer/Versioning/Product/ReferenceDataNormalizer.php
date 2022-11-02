@@ -31,7 +31,7 @@ class ReferenceDataNormalizer implements NormalizerInterface, CacheableSupportsM
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ReferenceDataInterface && in_array($format, $this->supportedFormats);
     }

@@ -118,7 +118,7 @@ class QueueJobLauncher implements JobLauncherInterface
 
         $jobExecution = $this->jobRepository->createJobExecution($job, $jobInstance, $jobParameters);
         if ($user) {
-            $jobExecution->setUser($user->getUsername());
+            $jobExecution->setUser($user->getUserIdentifier());
         }
 
         $this->jobRepository->updateJobExecution($jobExecution);

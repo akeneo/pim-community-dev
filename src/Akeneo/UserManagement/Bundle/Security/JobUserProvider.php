@@ -19,13 +19,21 @@ class JobUserProvider implements UserProviderInterface
     }
 
     /**
+     * @TODO: Remove this function when symfony will be in 6.0
+     */
+    public function loadUserByUsername(string $username)
+    {
+        return $this->loadUserByIdentifier($username);
+    }
+
+    /**
      * {@inheritdoc}
      */
-    public function loadUserByUsername($username)
+    public function loadUserByIdentifier(string $identifier): UserInterface
     {
-        $user = $this->userRepository->findOneByIdentifier($username);
+        $user = $this->userRepository->findOneByIdentifier($identifier);
         if (!$user || $user->isApiUser()) {
-            throw new UserNotFoundException(sprintf('User with username "%s" does not exist or is not a Job user.', $username));
+            throw new UserNotFoundException(sprintf('User with username "%s" does not exist or is not a Job user.', $identifier));
         }
 
         if (!$user->isEnabled()) {
@@ -38,7 +46,7 @@ class JobUserProvider implements UserProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function refreshUser(UserInterface $user)
+    public function refreshUser(UserInterface $user): UserInterface
     {
         if (!$this->supportsClass($user::class)) {
             throw new UnsupportedUserException(sprintf('User object of class "%s" is not supported.', $user::class));
@@ -55,7 +63,7 @@ class JobUserProvider implements UserProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsClass($class)
+    public function supportsClass($class): bool
     {
         return is_subclass_of($class, 'Akeneo\UserManagement\Component\Model\UserInterface');
     }

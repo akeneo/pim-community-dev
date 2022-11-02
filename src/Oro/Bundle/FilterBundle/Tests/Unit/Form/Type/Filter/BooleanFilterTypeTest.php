@@ -48,7 +48,7 @@ class BooleanFilterTypeTest extends AbstractTypeTestCase
 
     public function testGetName()
     {
-        $this->assertEquals(BooleanFilterType::NAME, $this->type->getName());
+        $this->assertEquals(BooleanFilterType::NAME, $this->type->getBlockPrefix());
     }
 
     /**

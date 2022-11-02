@@ -255,12 +255,11 @@ JSON;
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Validation failed.',
-            'errors'  => [
-                [
-                    'property' => 'identifier',
-                    'message'  => 'The identifier attribute cannot be empty.',
-                ],
+            'message' => 'Validation failed. The identifier field is required for this endpoint. If you want to manipulate products without identifiers, please use products-uuid endpoints.',
+            '_links' => [
+                'documentation' => [
+                    'href' => 'http://api.akeneo.com/api-reference.html#patch_products_uuid__uuid_'
+                ]
             ],
         ];
 
@@ -826,22 +825,22 @@ JSON;
             'associations' => [
                 'PACK' => [
                     'groups' => ['groupA'],
-                    'products' => ['apollon_optionb_false'],
+                    'product_uuids' => [$this->getProductUuid('apollon_optionb_false')->toString()],
                     'product_models' => [],
                 ],
                 'SUBSTITUTION' => [
                     'groups' => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => ['amor'],
                 ],
                 'UPSELL' => [
                     'groups' => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
                 'X_SELL' => [
                     'groups' => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
             ],
@@ -937,10 +936,10 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                'PACK'         => ['groups' => [], 'products' => [], 'product_models' => []],
-                'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
-                'UPSELL'       => ['groups' => [], 'products' => [], 'product_models' => []],
-                'X_SELL'       => ['groups' => [], 'products' => [], 'product_models' => []],
+                'PACK'         => ['groups' => [], 'product_uuids' => [], 'product_models' => []],
+                'SUBSTITUTION' => ['groups' => [], 'product_uuids' => [], 'product_models' => []],
+                'UPSELL'       => ['groups' => [], 'product_uuids' => [], 'product_models' => []],
+                'X_SELL'       => ['groups' => [], 'product_uuids' => [], 'product_models' => []],
             ],
             'quantified_associations' => [],
         ];
@@ -1034,10 +1033,10 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                'PACK'         => ['groups' => [], 'products' => [], 'product_models' => []],
-                'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
-                'UPSELL'       => ['groups' => [], 'products' => [], 'product_models' => []],
-                'X_SELL'       => ['groups' => [], 'products' => [], 'product_models' => []],
+                'PACK'         => ['groups' => [], 'product_uuids' => [], 'product_models' => []],
+                'SUBSTITUTION' => ['groups' => [], 'product_uuids' => [], 'product_models' => []],
+                'UPSELL'       => ['groups' => [], 'product_uuids' => [], 'product_models' => []],
+                'X_SELL'       => ['groups' => [], 'product_uuids' => [], 'product_models' => []],
             ],
             'quantified_associations' => [],
         ];

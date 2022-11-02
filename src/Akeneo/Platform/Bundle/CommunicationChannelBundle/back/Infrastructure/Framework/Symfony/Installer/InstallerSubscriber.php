@@ -23,7 +23,7 @@ class InstallerSubscriber implements EventSubscriberInterface
         $this->dbalConnection = $dbalConnection;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             InstallerEvents::POST_DB_CREATE => ['createCommunicationChannelTable'],

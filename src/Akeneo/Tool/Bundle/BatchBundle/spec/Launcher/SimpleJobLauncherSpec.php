@@ -53,7 +53,7 @@ class SimpleJobLauncherSpec extends ObjectBehavior
         $jobInstance->getJobName()->willReturn('job_instance_name');
         $jobInstance->getCode()->willReturn('job_instance_code');
         $jobInstance->getRawParameters()->willReturn(['foo' => 'bar']);
-        $user->getUsername()->willReturn('julia');
+        $user->getUserIdentifier()->willReturn('julia');
         $jobExecution->getId()->willReturn(1);
         $constraintViolationList->count()->willReturn(0);
 
@@ -85,7 +85,7 @@ class SimpleJobLauncherSpec extends ObjectBehavior
         $jobInstance->getJobName()->willReturn('job_instance_name');
         $jobInstance->getCode()->willReturn('job_instance_code');
         $jobInstance->getRawParameters()->willReturn(['foo' => 'bar']);
-        $user->getUsername()->willReturn('julia');
+        $user->getUserIdentifier()->willReturn('julia');
         $jobExecution->getId()->willReturn(1);
         $constraintViolationList->count()->willReturn(1);
 

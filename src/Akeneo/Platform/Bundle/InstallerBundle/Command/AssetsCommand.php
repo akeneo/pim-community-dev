@@ -2,8 +2,8 @@
 
 namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
-use Akeneo\Platform\Bundle\InstallerBundle\CommandExecutor;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
+use Akeneo\Tool\Component\Console\CommandExecutor;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -99,7 +99,7 @@ class AssetsCommand extends Command
                 $output->writeln(sprintf('<error>Error during PIM installation. %s</error>', $e->getMessage()));
                 $output->writeln('');
 
-                return $e->getCode();
+                return (int) $e->getCode();
             }
         }
 

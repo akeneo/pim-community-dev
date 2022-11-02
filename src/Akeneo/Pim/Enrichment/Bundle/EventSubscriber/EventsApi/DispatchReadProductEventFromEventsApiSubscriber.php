@@ -23,7 +23,7 @@ class DispatchReadProductEventFromEventsApiSubscriber implements EventSubscriber
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [EventsApiRequestSucceededEvent::class => 'dispatchReadProductOnProductEventsApiSaved'];
     }

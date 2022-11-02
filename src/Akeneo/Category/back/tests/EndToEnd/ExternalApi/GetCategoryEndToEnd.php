@@ -60,7 +60,7 @@ class GetCategoryEndToEnd extends ApiTestCase
         $client->request('GET', 'api/rest/v1/categories/not_found');
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
         $content = json_decode($response->getContent(), true);
         $this->assertCount(2, $content, 'response contains 2 items');
         $this->assertSame(Response::HTTP_NOT_FOUND, $content['code']);
@@ -98,7 +98,7 @@ class GetCategoryEndToEnd extends ApiTestCase
 
         $response = $client->getResponse();
 
-        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
         $this->assertSame(
             [
                 'code' => 400,

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Service;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Notifier;
 
-use Akeneo\Connectivity\Connection\Application\Apps\Service\AuthorizationRequestNotifierInterface;
+use Akeneo\Connectivity\Connection\Application\Apps\Notifier\AuthorizationRequestNotifierInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindAllUsernamesWithAclQueryInterface;
 use Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification;
@@ -36,7 +36,7 @@ final class AuthorizationRequestNotifier implements AuthorizationRequestNotifier
         $notification
             ->setType('warning')
             ->setMessage('pim_notification.connected_app_authorizations.message')
-            ->setMessageParams(['%app_name%' => $connectedApp->getName()])
+            ->setMessageParams(['{{ app_name }}' => $connectedApp->getName()])
             ->setRoute('akeneo_connectivity_connection_connect_connected_apps_open')
             ->setRouteParams(['connectionCode' => $connectedApp->getConnectionCode()])
             ->setContext([

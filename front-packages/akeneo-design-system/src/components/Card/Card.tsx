@@ -1,4 +1,4 @@
-import React, {isValidElement, ReactElement, ReactNode, MouseEvent} from 'react';
+import React, {isValidElement, ReactElement, ReactNode, MouseEvent, forwardRef, Ref} from 'react';
 import styled, {css} from 'styled-components';
 import {Checkbox, Link, LinkProps, Image} from '../../components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
@@ -159,6 +159,11 @@ type CardProps = Override<
     fit?: 'cover' | 'contain';
 
     /**
+     * Indicates how the browser should load the image
+     */
+    loading?: 'lazy' | 'eager';
+
+    /**
      * Whether or not the Card is selected.
      */
     isSelected?: boolean;
@@ -189,80 +194,89 @@ type CardProps = Override<
  * Cards are used to have a good visual representation of the items to display.
  * Cards can be used in a grid or in a collection.
  */
-const Card = ({
-  src,
-  fit = 'cover',
-  isSelected = false,
-  onSelect,
-  disabled = false,
-  children,
-  onClick,
-  stacked = false,
-  ...rest
-}: CardProps) => {
-  const nonLabelChildren: ReactElement[] = [];
-  const texts: string[] = [];
-  let linkProps: Partial<LinkProps> = {};
+const CardComponent = forwardRef<HTMLButtonElement, CardProps>(
+  (
+    {
+      src,
+      fit = 'cover',
+      loading = 'eager',
+      isSelected = false,
+      onSelect,
+      disabled = false,
+      children,
+      onClick,
+      stacked = false,
+      ...rest
+    }: CardProps,
+    forwardedRef: Ref<HTMLButtonElement>
+  ) => {
+    const nonLabelChildren: ReactElement[] = [];
+    const texts: string[] = [];
+    let linkProps: Partial<LinkProps> = {};
 
-  React.Children.forEach(children, child => {
-    if (typeof child === 'string') {
-      texts.push(child);
-    } else {
-      if (isValidElement<LinkProps>(child) && Link === child.type) {
-        linkProps = {...child.props, href: disabled ? undefined : child.props.href};
-      } else if (isValidElement<BadgeContainerProps>(child) && BadgeContainer === child.type) {
-        nonLabelChildren.push(React.cloneElement(child, {key: child.key, stacked}));
+    React.Children.forEach(children, child => {
+      if (typeof child === 'string') {
+        texts.push(child);
+      } else {
+        if (isValidElement<LinkProps>(child) && Link === child.type) {
+          linkProps = {...child.props, href: disabled ? undefined : child.props.href};
+        } else if (isValidElement<BadgeContainerProps>(child) && BadgeContainer === child.type) {
+          nonLabelChildren.push(React.cloneElement(child, {key: child.key, stacked}));
+        }
       }
-    }
-  });
+    });
 
-  const isLink = 'href' in linkProps;
-  const cardText = 'string' === typeof linkProps.children ? linkProps.children : texts[0];
+    const isLink = 'href' in linkProps;
+    const cardText = 'string' === typeof linkProps.children ? linkProps.children : texts[0];
 
-  const handleClick = (event: MouseEvent<HTMLDivElement>) => {
-    if (disabled) {
-      return;
-    }
+    const handleClick = (event: MouseEvent<HTMLDivElement>) => {
+      if (disabled) {
+        return;
+      }
 
-    if (undefined !== onClick) {
-      onClick(event);
+      if (undefined !== onClick) {
+        onClick(event);
 
-      return;
-    }
+        return;
+      }
 
-    if (undefined !== onSelect && !isLink) {
-      onSelect(!isSelected);
-    }
-  };
+      if (undefined !== onSelect && !isLink) {
+        onSelect(!isSelected);
+      }
+    };
 
-  return (
-    <CardContainer
-      isSelected={isSelected}
-      as={isLink ? 'a' : undefined}
-      actionable={isLink || undefined !== onClick}
-      onClick={handleClick}
-      disabled={disabled}
-      stacked={stacked}
-      isLoading={null === src}
-      {...linkProps}
-      {...rest}
-    >
-      <ImageContainer>
-        {stacked && <Stack isSelected={isSelected} data-testid="stack" />}
-        <Overlay stacked={stacked} />
-        <Image fit={fit} src={src} alt={cardText} />
-      </ImageContainer>
-      <CardLabel>
-        {undefined !== onSelect && (
-          <Checkbox aria-label={cardText} checked={isSelected} readOnly={disabled} onChange={onSelect} />
-        )}
-        <CardText title={cardText}>{cardText}</CardText>
-      </CardLabel>
-      {nonLabelChildren}
-    </CardContainer>
-  );
-};
+    return (
+      <CardContainer
+        ref={forwardedRef}
+        isSelected={isSelected}
+        as={isLink ? 'a' : undefined}
+        actionable={isLink || undefined !== onClick}
+        onClick={handleClick}
+        disabled={disabled}
+        stacked={stacked}
+        isLoading={null === src}
+        {...linkProps}
+        {...rest}
+      >
+        <ImageContainer>
+          {stacked && <Stack isSelected={isSelected} data-testid="stack" />}
+          <Overlay stacked={stacked} />
+          <Image fit={fit} src={src} alt={cardText} loading={loading} />
+        </ImageContainer>
+        <CardLabel>
+          {undefined !== onSelect && (
+            <Checkbox aria-label={cardText} checked={isSelected} readOnly={disabled} onChange={onSelect} />
+          )}
+          <CardText title={cardText}>{cardText}</CardText>
+        </CardLabel>
+        {nonLabelChildren}
+      </CardContainer>
+    );
+  }
+);
 
-Card.BadgeContainer = BadgeContainer;
+const Card = Object.assign(CardComponent, {
+  BadgeContainer: BadgeContainer,
+});
 
 export {Card, CardGrid};

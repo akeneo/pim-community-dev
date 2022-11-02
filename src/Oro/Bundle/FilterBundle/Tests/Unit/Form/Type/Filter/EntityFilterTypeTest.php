@@ -45,7 +45,7 @@ class EntityFilterTypeTest extends AbstractTypeTestCase
 
     public function testGetName()
     {
-        $this->assertEquals(EntityFilterType::NAME, $this->type->getName());
+        $this->assertEquals(EntityFilterType::NAME, $this->type->getBlockPrefix());
     }
 
     public function testGetParent()
