@@ -3,6 +3,7 @@
 namespace Context;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Platform\Bundle\ImportExportBundle\Test\MailAsserter;
 use Behat\ChainedStepsExtension\Step;
 use Behat\ChainedStepsExtension\Step\Then;
 use Behat\Gherkin\Node\PyStringNode;
@@ -2347,8 +2348,8 @@ class WebUser extends PimContext
      */
     public function anEmailToShouldHaveBeenSent($email)
     {
-        $recorder = $this->getMainContext()->getMailRecorder();
-        if (0 === count($recorder->getMailsSentTo($email))) {
+        $emailHasBeenSent = MailAsserter::assertEmailHasBeenSentToAddress($email);
+        if (!$emailHasBeenSent) {
             throw $this->createExpectationException(
                 sprintf(
                     'No emails were sent to %s.',
@@ -2471,12 +2472,12 @@ class WebUser extends PimContext
 
             return $field;
         }, 'System locale field was not found');
-      
+
         $selectInput->click();
 
         $optionElt =  $this->spin(function () use ($language) {
             $elt  =$this->getCurrentPage()->find('css', "[title~=\"$language\"]");
-           
+
             if (null === $elt) {
                 throw new ElementNotFoundException($this->getCurrentPage()->getDriver());
             }
