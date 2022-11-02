@@ -34,7 +34,7 @@ const ListPage: React.FC<ListPageProps> = ({onCreate, isCreateEnabled}) => {
         </PageHeader.Actions>
         <PageHeader.Title>{translate('pim_title.akeneo_identifier_generator_index')}</PageHeader.Title>
       </PageHeader>
-      <PageContent/>
+      <PageContent />
     </>
   );
 };
