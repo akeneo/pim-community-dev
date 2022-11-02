@@ -209,7 +209,7 @@ class ProductAndProductModelProcessor extends AbstractProcessor
     protected function initSecurityContext(StepExecution $stepExecution)
     {
         $username = $stepExecution->getJobExecution()->getUser();
-        $user = $this->userProvider->loadUserByUsername($username);
+        $user = $this->userProvider->loadUserByIdentifier($username);
 
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
         $this->tokenStorage->setToken($token);

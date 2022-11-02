@@ -25,6 +25,7 @@ class ProductNormalizerIntegration extends TestCase
     public function testEmptyDisabledProduct()
     {
         $expected = [
+            'uuid'                    => $this->getUuidFromIdentifier('bar'),
             'identifier'              => 'bar',
             'family'                  => null,
             'parent'                  => null,
@@ -44,6 +45,7 @@ class ProductNormalizerIntegration extends TestCase
     public function testEmptyEnabledProduct()
     {
         $expected = [
+            'uuid'                    => $this->getUuidFromIdentifier('baz'),
             'identifier'              => 'baz',
             'family'                  => null,
             'parent'                  => null,
@@ -63,6 +65,7 @@ class ProductNormalizerIntegration extends TestCase
     public function testProductWithAllAttributes()
     {
         $expected = [
+            'uuid'                    => $this->getUuidFromIdentifier('foo'),
             'identifier'    => 'foo',
             'family'        => 'familyA',
             'parent'        => null,
@@ -252,10 +255,15 @@ class ProductNormalizerIntegration extends TestCase
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                'PACK'   => ['groups' => [], 'products' => ['bar', 'baz'], 'product_models' => []],
-                'UPSELL' => ['groups' => ['groupA'], 'products' => [], 'product_models' => []],
-                'X_SELL' => ['groups' => ['groupB'], 'products' => ['bar'], 'product_models' => []],
-                'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
+                'PACK'   => ['groups' => [], 'product_uuids' => [
+                    $this->getProductUuid('bar')->toString(),
+                    $this->getProductUuid('baz')->toString()
+                ], 'product_models' => []],
+                'UPSELL' => ['groups' => ['groupA'], 'product_uuids' => [], 'product_models' => []],
+                'X_SELL' => ['groups' => ['groupB'], 'product_uuids' => [
+                    $this->getProductUuid('bar')->toString()
+                ], 'product_models' => []],
+                'SUBSTITUTION' => ['groups' => [], 'product_uuids' => [], 'product_models' => []],
             ],
             'quantified_associations' => [
                 "PRODUCT_SET" => [
@@ -275,6 +283,7 @@ class ProductNormalizerIntegration extends TestCase
     public function testProductWithFilteredAttributes()
     {
         $expected = [
+            'uuid'          => $this->getUuidFromIdentifier('foo'),
             'identifier'    => 'foo',
             'family'        => 'familyA',
             'parent'        => null,
@@ -347,10 +356,15 @@ class ProductNormalizerIntegration extends TestCase
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                'PACK'   => ['groups' => [], 'products' => ['bar', 'baz'], 'product_models' => []],
-                'UPSELL' => ['groups' => ['groupA'], 'products' => [], 'product_models' => []],
-                'X_SELL' => ['groups' => ['groupB'], 'products' => ['bar'], 'product_models' => []],
-                'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
+                'PACK'   => ['groups' => [], 'product_uuids' => [
+                    $this->getProductUuid('bar')->toString(),
+                    $this->getProductUuid('baz')->toString()
+                ], 'product_models' => []],
+                'UPSELL' => ['groups' => ['groupA'], 'product_uuids' => [], 'product_models' => []],
+                'X_SELL' => ['groups' => ['groupB'], 'product_uuids' => [
+                    $this->getProductUuid('bar')
+                ], 'product_models' => []],
+                'SUBSTITUTION' => ['groups' => [], 'product_uuids' => [], 'product_models' => []],
             ],
             'quantified_associations' => [
                 "PRODUCT_SET" => [
@@ -427,5 +441,13 @@ class ProductNormalizerIntegration extends TestCase
         }
 
         return $data;
+    }
+
+    private function getUuidFromIdentifier(string $identifier): string
+    {
+        return $this->get('database_connection')->fetchOne(
+            'SELECT BIN_TO_UUID(uuid) AS uuid FROM pim_catalog_product WHERE identifier = :identifier',
+            ['identifier' => $identifier]
+        );
     }
 }

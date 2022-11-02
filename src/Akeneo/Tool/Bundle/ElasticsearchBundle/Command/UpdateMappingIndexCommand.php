@@ -52,7 +52,7 @@ class UpdateMappingIndexCommand extends Command
         $this->addOption('all', 'a', InputOption::VALUE_NONE, "Use --all if you want to update all mappings of all indices", null);
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $indices = $input->getOption('all') ? [] : $input->getArgument('indices');
 

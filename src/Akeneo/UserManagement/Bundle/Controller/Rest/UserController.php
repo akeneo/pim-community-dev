@@ -25,8 +25,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -54,7 +54,7 @@ class UserController
     protected SaverInterface $saver;
     protected NormalizerInterface $constraintViolationNormalizer;
     protected SimpleFactoryInterface $factory;
-    protected UserPasswordEncoderInterface $encoder;
+    protected UserPasswordHasherInterface $encoder;
     private EventDispatcherInterface $eventDispatcher;
     private Session $session;
     private ObjectManager $objectManager;
@@ -72,7 +72,7 @@ class UserController
         SaverInterface $saver,
         NormalizerInterface $constraintViolationNormalizer,
         SimpleFactoryInterface $factory,
-        UserPasswordEncoderInterface $encoder,
+        UserPasswordHasherInterface $encoder,
         EventDispatcherInterface $eventDispatcher,
         Session $session,
         ObjectManager $objectManager,

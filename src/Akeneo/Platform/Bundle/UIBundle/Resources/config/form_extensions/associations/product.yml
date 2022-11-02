@@ -1,26 +1,4 @@
 extensions:
-    # @TODO CPM-739: Remove this extension
-    pim-associations-product-picker-form:
-        module: pim/product-edit-form/legacy-product-and-product-model-picker
-        config:
-            datagridName: association-product-picker-grid
-            categoryTreeRoute: pim_enrich_categorytree
-            columnName: identifier
-            fetcher: product
-
-    # @TODO CPM-739: Remove this extension
-    pim-association-product-picker-form-filters-list:
-        module: oro/datafilter/filters-list
-        parent: pim-associations-product-picker-form
-        targetZone: filters
-
-    # @TODO CPM-739: Remove this extension
-    pim-association-product-picker-form-filters-manage:
-        module: oro/datafilter/filters-button
-        parent: pim-association-product-picker-form-filters-list
-        config:
-            displayAsPanel: true
-
     pim-associations-product-and-product-model-picker-modal:
         module: pim/product-edit-form/product-and-product-model-picker
         config:

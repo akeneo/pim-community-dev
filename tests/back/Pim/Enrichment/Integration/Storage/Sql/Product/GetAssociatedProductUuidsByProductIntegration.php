@@ -4,7 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\Product;
 
 use Akeneo\Test\Integration\TestCase;
 
-class GetAssociatedProductCodesByProductIntegration extends TestCase
+class GetAssociatedProductUuidsByProductIntegration extends TestCase
 {
     public function testQueryToGetAssociatedProductCodes()
     {
@@ -29,10 +29,10 @@ class GetAssociatedProductCodesByProductIntegration extends TestCase
             $productAssociations[$productAssociation->getAssociationType()->getCode()] = $productAssociation;
         }
 
-        $query = $this->get('pim_catalog.query.get_associated_product_codes_by_product');
-        $this->assertSame(['productB'], $query->getCodes($productA->getUuid(), $productAssociations['X_SELL']));
-        $this->assertSame(['productC', 'productD'], $query->getCodes($productA->getUuid(), $productAssociations['PACK']));
-        $this->assertSame([], $query->getCodes($productA->getUuid(), $productAssociations['UPSELL']));
+        $query = $this->get('pim_catalog.query.get_associated_product_uuids_by_product');
+        $this->assertEqualsCanonicalizing([$productB->getUuid()->toString()], $query->getUuids($productA->getUuid(), $productAssociations['X_SELL']));
+        $this->assertEqualsCanonicalizing([$productC->getUuid()->toString(), $productD->getUuid()->toString()], $query->getUuids($productA->getUuid(), $productAssociations['PACK']));
+        $this->assertEqualsCanonicalizing([], $query->getUuids($productA->getUuid(), $productAssociations['UPSELL']));
     }
 
     /**

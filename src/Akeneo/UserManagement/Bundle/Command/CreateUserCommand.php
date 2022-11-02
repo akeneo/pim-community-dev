@@ -130,7 +130,7 @@ DESC
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!$input->isInteractive()) {
             $this->gatherArgumentsForNonInteractiveMode($input);

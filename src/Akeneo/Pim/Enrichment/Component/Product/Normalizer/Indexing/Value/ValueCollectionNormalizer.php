@@ -45,7 +45,7 @@ class ValueCollectionNormalizer implements NormalizerInterface, CacheableSupport
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof WriteValueCollection && (
             $format === self::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX

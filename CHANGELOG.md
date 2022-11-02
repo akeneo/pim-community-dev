@@ -95,6 +95,7 @@
 - PIM-10655: Fix format of empty completeness in API
 - PIM-10644: Fix identifier format check on multiple product update
 - PIM-10673: Fix media URL port display for Events API
+- PIM-10686: Fix percentage of inaccurate completeness in the activity dashboard
 
 ## Improvements
 

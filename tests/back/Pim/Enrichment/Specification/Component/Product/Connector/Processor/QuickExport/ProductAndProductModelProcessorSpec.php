@@ -66,7 +66,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
     ) {
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('admin');
-        $userProvider->loadUserByUsername('admin')->willReturn($user);
+        $userProvider->loadUserByIdentifier('admin')->willReturn($user);
         $user->getRoles()->willReturn([]);
         $tokenStorage->setToken(Argument::type(UsernamePasswordToken::class))->shouldBeCalled();
 
@@ -94,7 +94,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
     ) {
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('admin');
-        $userProvider->loadUserByUsername('admin')->willReturn($user);
+        $userProvider->loadUserByIdentifier('admin')->willReturn($user);
         $user->getRoles()->willReturn([]);
         $tokenStorage->setToken(Argument::type(UsernamePasswordToken::class))->shouldBeCalled();
 
@@ -146,7 +146,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
     ) {
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('admin');
-        $userProvider->loadUserByUsername('admin')->willReturn($user);
+        $userProvider->loadUserByIdentifier('admin')->willReturn($user);
         $user->getRoles()->willReturn([]);
         $tokenStorage->setToken(Argument::type(UsernamePasswordToken::class))->shouldBeCalled();
 
@@ -197,7 +197,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
     ) {
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('admin');
-        $userProvider->loadUserByUsername('admin')->willReturn($user);
+        $userProvider->loadUserByIdentifier('admin')->willReturn($user);
         $user->getRoles()->willReturn([]);
         $tokenStorage->setToken(Argument::type(UsernamePasswordToken::class))->shouldBeCalled();
 

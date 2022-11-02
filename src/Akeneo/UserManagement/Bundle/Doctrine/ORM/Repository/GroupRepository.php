@@ -57,7 +57,7 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
     /**
      * Create a QB to find all groups but the default one
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
     public function getAllButDefaultQB()
     {

@@ -29,7 +29,7 @@ class FilterTypeTest extends AbstractTypeTestCase
 
     public function testGetName()
     {
-        $this->assertEquals(FilterType::NAME, $this->type->getName());
+        $this->assertEquals(FilterType::NAME, $this->type->getBlockPrefix());
     }
 
     /**

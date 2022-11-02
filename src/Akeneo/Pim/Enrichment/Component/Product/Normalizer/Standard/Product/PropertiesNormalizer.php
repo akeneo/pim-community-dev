@@ -19,31 +19,20 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class PropertiesNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    const FIELD_IDENTIFIER = 'identifier';
-    const FIELD_LABEL = 'label';
-    const FIELD_FAMILY = 'family';
-    const FIELD_PARENT = 'parent';
-    const FIELD_GROUPS = 'groups';
-    const FIELD_CATEGORIES = 'categories';
-    const FIELD_ENABLED = 'enabled';
-    const FIELD_VALUES = 'values';
-    const FIELD_CREATED = 'created';
-    const FIELD_UPDATED = 'updated';
+    public const FIELD_UUID = 'uuid';
+    public const FIELD_IDENTIFIER = 'identifier';
+    public const FIELD_LABEL = 'label';
+    public const FIELD_FAMILY = 'family';
+    public const FIELD_PARENT = 'parent';
+    public const FIELD_GROUPS = 'groups';
+    public const FIELD_CATEGORIES = 'categories';
+    public const FIELD_ENABLED = 'enabled';
+    public const FIELD_VALUES = 'values';
+    public const FIELD_CREATED = 'created';
+    public const FIELD_UPDATED = 'updated';
 
-    /** @var CollectionFilterInterface */
-    private $filter;
-
-    /** @var NormalizerInterface */
-    private $normalizer;
-
-    /**
-     * @param CollectionFilterInterface $filter The collection filter
-     * @param NormalizerInterface $normalizer
-     */
-    public function __construct(CollectionFilterInterface $filter, NormalizerInterface $normalizer)
+    public function __construct(private CollectionFilterInterface $filter, private NormalizerInterface $normalizer)
     {
-        $this->filter = $filter;
-        $this->normalizer = $normalizer;
     }
 
     /**
@@ -54,6 +43,10 @@ class PropertiesNormalizer implements NormalizerInterface, CacheableSupportsMeth
         $context = array_merge(['filter_types' => ['pim.transform.product_value.structured']], $context);
         $data = [];
 
+        // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment
+        if (\get_class($product) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct') {
+            $data[self::FIELD_UUID] = $product->getUuid()->toString();
+        }
         $data[self::FIELD_IDENTIFIER] = $product->getIdentifier();
         $data[self::FIELD_FAMILY] = $product->getFamily() ? $product->getFamily()->getCode() : null;
         if ($product->isVariant() && null !== $product->getParent()) {
@@ -74,7 +67,7 @@ class PropertiesNormalizer implements NormalizerInterface, CacheableSupportsMeth
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ProductInterface && 'standard' === $format;
     }
@@ -99,8 +92,6 @@ class PropertiesNormalizer implements NormalizerInterface, CacheableSupportsMeth
             $values = $this->filter->filterCollection($values, $filterType, $context);
         }
 
-        $data = $this->normalizer->normalize($values, $format, $context);
-
-        return $data;
+        return $this->normalizer->normalize($values, $format, $context);
     }
 }
