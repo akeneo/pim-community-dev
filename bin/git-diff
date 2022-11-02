@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+OUTPUT=$(dirname $0)/../var/GIT_DIFF
+
+git diff --name-only origin/master > ${OUTPUT}
+git ls-files . --exclude-standard --others >> ${OUTPUT}
+
+# | grep -E '^components/catalogs'

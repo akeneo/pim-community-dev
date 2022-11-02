@@ -7,16 +7,8 @@
     },
     "mutators": {
         "@default": true,
-        "DecrementInteger": {
-            "ignoreSourceCodeByRegex": [
-                ".*json_decode.*"
-            ]
-        },
-        "IncrementInteger": {
-            "ignoreSourceCodeByRegex": [
-                ".*json_decode.*"
-            ]
-        }
+        "DecrementInteger": false,
+        "IncrementInteger": false
     },
     "phpUnit": {
         "configDir": ""

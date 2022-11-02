@@ -1,4 +1,9 @@
+includes:
+    - ../../../vendor/phpstan/phpstan-symfony/extension.neon
+
 parameters:
   treatPhpDocTypesAsCertain: false
+  symfony:
+    container_xml_path: ../../../var/cache/dev/KernelDevDebugContainer.xml
   excludePaths:
     - src/Infrastructure/TemporaryEnrichmentBridge/SearchAfterSizeUuidResultCursorFactory.php

@@ -71,6 +71,32 @@ final class Catalog
     }
 
     /**
+     * @return array<mixed>
+     */
+    public function getProductQueryBuilderFilters(): array
+    {
+        $filters = [];
+
+        foreach ($this->getProductSelectionCriteria() as $criterion) {
+            $filter = $criterion;
+
+            if (isset($criterion['scope'])) {
+                $filter['context']['scope'] = $criterion['scope'];
+            }
+
+            if (isset($criterion['locale'])) {
+                $filter['context']['locale'] = $criterion['locale'];
+            }
+
+            unset($filter['scope'], $filter['locale']);
+
+            $filters[] = $filter;
+        }
+
+        return $filters;
+    }
+
+    /**
      * @return ProductValueFilters
      */
     public function getProductValueFilters(): array

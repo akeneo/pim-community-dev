@@ -1,6 +1,8 @@
 CATALOGS_PATH ?= components/catalogs
 CATALOGS_BOOTSTRAP_PATH ?= /srv/pim/config/bootstrap.php
 CATALOGS_YARN = $(YARN_RUN)
+CATALOGS_GIT_DIFF := $(shell git ls-files . --exclude-standard --others | grep -E '^components/catalogs' > var/GIT_DIFF; echo 'var/GIT_DIFF')
+CATALOGS_GIT_DIFF_PHP_FILES := $(shell grep -E '\.php$$' ${CATALOGS_GIT_DIFF} | tr '\n' ' ')
 
 ifeq ($(CI),true)
 	BEHAT_ARGS += --no-snippets --no-interaction
@@ -14,6 +16,10 @@ ifneq (,$(wildcard /usr/bin/yarn))
 	CATALOGS_YARN = yarn
 endif
 endif
+
+define files_changed_in
+$(shell grep -E '$(1)' ${CATALOGS_GIT_DIFF} | tr '\n' ' ')
+endef
 
 # Main targets
 
@@ -31,6 +37,52 @@ catalogs-tests:
 	$(MAKE) catalogs-lint-front
 	$(MAKE) catalogs-unit-front
 	$(MAKE) catalogs-integration-front
+
+.PHONY: catalogs-tests-diff
+catalogs-tests-diff:
+ifneq ($(call files_changed_in,'components/catalogs/back/src'),)
+	$(PHP_RUN) vendor/bin/rector process $(RECTOR_ARGS) --dry-run \
+		--config=$(CATALOGS_PATH)/back/rector.php \
+		$(call files_changed_in,'components/catalogs/back/src')
+
+#		--output-format=json \
+#	$(PHP_RUN) vendor/bin/php-cs-fixer fix --diff --dry-run \
+#		--config=$(CATALOGS_PATH)/back/.php_cs.php \
+#		$(call files_changed_in,'components/catalogs/back/src')
+#
+#	$(PHP_RUN) vendor/bin/phpstan analyse \
+#		--configuration $(CATALOGS_PATH)/back/phpstan.neon \
+#		--level=8 \
+#		$(call files_changed_in,'components/catalogs/back/src')
+#
+#	$(PHP_RUN) vendor/bin/psalm $(PSALM_ARGS) \
+#		-c $(CATALOGS_PATH)/back/psalm.xml \
+#		$(call files_changed_in,'components/catalogs/back/src')
+#
+#	$(PHP_RUN) vendor/bin/php-coupling-detector detect \
+#		--config-file=$(CATALOGS_PATH)/back/.php_cd.php \
+#		$(CATALOGS_PATH)/back/src
+#
+#	XDEBUG_MODE=coverage APP_ENV=test EXPERIMENTAL_TEST_DATABASE=1 \
+#	$(PHP_RUN) vendor/bin/phpunit \
+#		--configuration $(CATALOGS_PATH)/back/ \
+#		--bootstrap $(CATALOGS_BOOTSTRAP_PATH) \
+#		--coverage-xml var/tests/phpunit/catalogs-diff/coverage-xml \
+#        --log-junit var/tests/phpunit/catalogs-diff/junit.xml \
+#		--coverage-filter $(CATALOGS_PATH)/back/src/ \
+#		$(call files_changed_in,'components/catalogs/back/tests')
+#
+#	XDEBUG_MODE=coverage APP_ENV=test EXPERIMENTAL_TEST_DATABASE=1 \
+#	$(PHP_RUN) var/infection.phar \
+#		--configuration=$(CATALOGS_PATH)/back/infection.json \
+#		--only-covered \
+#		--show-mutations \
+#		--skip-initial-tests \
+#		--coverage=../../../var/tests/phpunit/catalogs-diff
+endif
+ifneq ($(shell grep -E '\.(ts|tsx|js)$$' ${CATALOGS_GIT_DIFF}),)
+	#todo JS
+endif
 
 .PHONY: catalogs-cs-fix
 catalogs-cs-fix: catalogs-lint-front_fix catalogs-lint-back_fix
@@ -91,7 +143,8 @@ catalogs-coverage-back:
 	$(PHP_RUN) vendor/bin/phpunit \
 		--configuration $(CATALOGS_PATH)/back/ \
 		--bootstrap $(CATALOGS_BOOTSTRAP_PATH) \
-		--log-junit var/tests/phpunit/phpunit_catalogs_global.xml \
+		--coverage-xml var/tests/phpunit/catalogs/coverage-xml \
+        --log-junit var/tests/phpunit/catalogs/junit.xml \
 		--coverage-html coverage/Catalogs/Back/Global/ \
 		--coverage-filter $(CATALOGS_PATH)/back/src/
 

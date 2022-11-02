@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration;
 
+use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Locale\GetLocalesQueryInterface;
+use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\Test\Integration\Fakes\Clock;
@@ -282,14 +284,29 @@ abstract class IntegrationTestCase extends WebTestCase
         return self::getContainer()->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
     }
 
-    protected function createCatalog(string $id, string $name, string $ownerUsername): void
-    {
+    protected function createCatalog(
+        string $id,
+        string $name,
+        string $ownerUsername,
+        ?bool $enabled = null,
+        ?array $productSelection = null,
+    ): Catalog {
         $commandBus = self::getContainer()->get(CommandBus::class);
         $commandBus->execute(new CreateCatalogCommand(
             $id,
             $name,
             $ownerUsername,
         ));
+
+        if (true === $enabled) {
+            $this->enableCatalog($id);
+        }
+
+        if (null !== $productSelection) {
+            $this->setCatalogProductSelection($id, $productSelection);
+        }
+
+        return self::getContainer()->get(GetCatalogQueryInterface::class)->execute($id);
     }
 
     protected function enableCatalog(string $id): void
