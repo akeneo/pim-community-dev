@@ -94,6 +94,11 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     {
         return array_filter($attributeCodes, function (string $attributeCode) use ($jobLocales) {
             $attribute = $this->getAttributes->forCode($attributeCode);
+
+            if (null === $attribute) {
+                return false;
+            }
+
             if (!$attribute->isLocaleSpecific()) {
                 return true;
             }
