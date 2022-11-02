@@ -104,14 +104,15 @@ const useProductAndProductModelCount = (
   // Watch allows to subscribe input's change via event listener. We need that to trigger a new products count.
   watch(`content.conditions`);
 
+  const conditionsFormValues = formValues?.content?.conditions;
   const conditions = useMemo(() => {
     const filterConditions =
-      formValues?.content?.conditions?.filter(isConditionValid) || [];
+      conditionsFormValues?.filter(isConditionValid) || [];
     const formattedConditions = formatDateLocaleTimeConditionsToBackend(
       filterConditions
     );
     return JSON.stringify(formattedConditions);
-  }, [formValues.content.conditions]);
+  }, [conditionsFormValues]);
 
   useEffect(() => {
     getProductsCountUrlWithDebounce(url, setCount, conditions);
