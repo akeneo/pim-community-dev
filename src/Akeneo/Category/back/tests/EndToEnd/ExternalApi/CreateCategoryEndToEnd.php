@@ -23,7 +23,7 @@ JSON;
         $client->request('POST', 'api/rest/v1/categories', [], [], [], $data);
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
         $this->assertArrayHasKey('location', $response->headers->all());
         $this->assertSame('http://localhost/api/rest/v1/categories/new_category_headers', $response->headers->get('location'));
         $this->assertSame('', $response->getContent());
@@ -56,7 +56,7 @@ JSON;
         NormalizedCategoryCleaner::clean($categoryNormalized);
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
         $this->assertSame($categoryStandard, $categoryNormalized);
     }
 
@@ -97,7 +97,7 @@ JSON;
         NormalizedCategoryCleaner::clean($categoryNormalized);
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
         $this->assertSame($categoryStandard, $categoryNormalized);
     }
 
@@ -135,7 +135,7 @@ JSON;
         NormalizedCategoryCleaner::clean($categoryNormalized);
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
         $this->assertSame($categoryStandard, $categoryNormalized);
     }
 
@@ -152,7 +152,7 @@ JSON;
 
         $client->request('POST', 'api/rest/v1/categories', [], [], [], $data);
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
     }
 
@@ -169,7 +169,7 @@ JSON;
 
         $client->request('POST', 'api/rest/v1/categories', [], [], [], $data);
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
     }
 
@@ -198,7 +198,7 @@ JSON;
         $client->request('POST', 'api/rest/v1/categories', [], [], [], $data);
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
     }
 
@@ -227,7 +227,7 @@ JSON;
         $client->request('POST', 'api/rest/v1/categories', [], [], [], $data);
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
     }
 
@@ -256,7 +256,7 @@ JSON;
         $client->request('POST', 'api/rest/v1/categories', [], [], [], $data);
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
     }
 
@@ -284,7 +284,7 @@ JSON;
         $client->request('POST', 'api/rest/v1/categories', [], [], [], $data);
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
     }
 
@@ -316,7 +316,7 @@ JSON;
         $client->request('POST', 'api/rest/v1/categories', [], [], [], $data);
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
     }
 
@@ -348,7 +348,7 @@ JSON;
         $client->request('POST', 'api/rest/v1/categories', [], [], [], $data);
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
     }
 

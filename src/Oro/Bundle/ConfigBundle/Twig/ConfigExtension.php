@@ -3,9 +3,10 @@
 namespace Oro\Bundle\ConfigBundle\Twig;
 
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-class ConfigExtension extends \Twig\Extension\AbstractExtension
+class ConfigExtension extends AbstractExtension
 {
     /**
      * @var ConfigManager

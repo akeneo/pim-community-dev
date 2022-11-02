@@ -3,6 +3,7 @@
 namespace Akeneo\Platform\Bundle\UIBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
@@ -17,7 +18,7 @@ class UploadType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'upload';
     }
@@ -25,9 +26,9 @@ class UploadType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): ?string
     {
-        return 'form';
+        return FormType::class;
     }
 
     /**

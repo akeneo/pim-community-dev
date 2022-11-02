@@ -17,13 +17,14 @@ use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Test\Integration\TestCase;
+use Doctrine\DBAL\Driver\Exception;
 
 class CategoryTestCase extends TestCase
 {
     /**
      * @param array<string, string>|null $labels
      *
-     * @throws \Doctrine\DBAL\Driver\Exception
+     * @throws Exception
      * @throws \Doctrine\DBAL\Exception
      */
     protected function createOrUpdateCategory(

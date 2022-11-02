@@ -159,7 +159,7 @@ JSON;
         $client->request('GET', 'api/rest/v1/measure-families/not_found');
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
         $expected = '{"code":404,"message":"Measure family with code \"not_found\" does not exist."}';
         $this->assertSame($expected, $response->getContent());
     }

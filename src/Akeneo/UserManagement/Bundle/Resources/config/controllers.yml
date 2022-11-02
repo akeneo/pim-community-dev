@@ -16,7 +16,7 @@ services:
             - '@pim_user.saver.user'
             - '@pim_enrich.normalizer.violation'
             - '@pim_user.factory.user'
-            - '@security.password_encoder'
+            - '@security.password_hasher'
             - '@event_dispatcher'
             - '@session'
             - '@doctrine.orm.entity_manager'

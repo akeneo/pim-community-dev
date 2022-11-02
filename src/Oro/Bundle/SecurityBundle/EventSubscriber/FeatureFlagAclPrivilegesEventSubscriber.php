@@ -21,7 +21,7 @@ class FeatureFlagAclPrivilegesEventSubscriber implements EventSubscriberInterfac
     ) {
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [PrivilegesPostLoadEvent::class => 'disableAclIfFeatureIsDisabled'];
     }

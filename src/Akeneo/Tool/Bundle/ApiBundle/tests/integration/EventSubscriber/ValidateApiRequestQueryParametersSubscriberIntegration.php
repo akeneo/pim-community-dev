@@ -20,7 +20,7 @@ class ValidateApiRequestQueryParametersSubscriberIntegration extends ApiTestCase
         $client->request('GET', 'api/rest/v1/categories?array_parameter[]=bad');
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode(), 'Bracket syntax is not supported in query parameters.');
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
         $expected = <<<JSON
             {
                 "code": 400,
