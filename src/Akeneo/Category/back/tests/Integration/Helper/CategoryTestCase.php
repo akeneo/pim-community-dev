@@ -113,8 +113,6 @@ class CategoryTestCase extends TestCase
     }
 
     /**
-     * TODO DELETE.
-     *
      * @param array<string, string>|null $templateLabels
      * @param array<array<string, mixed>>|null $templateAttributes
      *

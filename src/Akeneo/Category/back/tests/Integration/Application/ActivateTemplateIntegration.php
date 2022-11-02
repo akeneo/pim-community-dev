@@ -6,22 +6,9 @@ use Akeneo\Category\Application\ActivateTemplate;
 use Akeneo\Category\Application\Query\GetAttribute;
 use Akeneo\Category\Application\Query\GetTemplate;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
-use Akeneo\Category\Domain\Model\Attribute\AttributeImage;
-use Akeneo\Category\Domain\Model\Attribute\AttributeRichText;
-use Akeneo\Category\Domain\Model\Attribute\AttributeText;
-use Akeneo\Category\Domain\Model\Attribute\AttributeTextArea;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
-use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
-use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
-use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
-use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsLocalizable;
-use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsRequired;
-use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsScopable;
-use Akeneo\Category\Domain\ValueObject\Attribute\AttributeOrder;
-use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
-use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Test\Integration\Configuration;
 
 class ActivateTemplateIntegration extends CategoryTestCase

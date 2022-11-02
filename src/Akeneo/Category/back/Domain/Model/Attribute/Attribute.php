@@ -78,7 +78,7 @@ abstract class Attribute
         TemplateUuid $templateUuid,
         AttributeAdditionalProperties $additionalProperties,
     ): Attribute {
-        return match ($type->__toString()) {
+        return match ((string) $type) {
             AttributeType::RICH_TEXT => new AttributeRichText($uuid, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties),
             AttributeType::TEXT => new AttributeText($uuid, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties),
             AttributeType::IMAGE => new AttributeImage($uuid, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties),
