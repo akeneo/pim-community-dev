@@ -18,7 +18,7 @@ internal_api_category_template:
 
 # This was done to stay consistent with existing routes
 pim_category_template_edit:
-    path: /enrich/product-category-tree/{treeId}/template/{templateId}
+    path: /enrich/product-category-tree/{treeId}/template/{templateUuid}
     requirements:
         treeId: \d+
-        templateId: '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
+        templateUuid: '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
