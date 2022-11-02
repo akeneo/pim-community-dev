@@ -103,7 +103,7 @@ jobs:
             - run:
                   name: Define value for next steps
                   command: |
-                      TENANT_ID="<<parameters.PRODUCT_TYPE>>-${INSTANCE_NAME}"
+                      TENANT_ID="${INSTANCE_NAME}"
                       REGION_PREFIX="eur-w-1b"
 
                       echo export TENANT_ID=${TENANT_ID} >> $BASH_ENV

@@ -507,7 +507,7 @@ functions.http('createTenant', (req, res) => {
 
     const dnsCloudDomain = body.dnsCloudDomain;
     const pim_edition = body.pim_edition;
-    const extraLabelType = 'ucs';
+    const extraLabelType = 'srnt';
     const pfid = `${extraLabelType}-${instanceName}`;
     const pimMasterDomain = `${instanceName}.${dnsCloudDomain}`;
 
@@ -543,7 +543,7 @@ functions.http('createTenant', (req, res) => {
           },
           destination: {
             server: 'https://kubernetes.default.svc',
-            namespace: instanceName
+            namespace: pfid
           },
           backup: {
             enabled: false

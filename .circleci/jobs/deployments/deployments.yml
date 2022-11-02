@@ -750,7 +750,7 @@ jobs:
                         FUNCTION_NAME=${REGION_PREFIX}-${CIRCLE_BRANCH_LOWER}-timmy-create-tenant
                       fi
                       TENANT_STATUS_CODE=0
-                      JSON_BODY_STRING=\''{"pim_edition":"'"<<parameters.PIM_EDITION>>"'","branchName":"'"${CIRCLE_BRANCH}"'","instanceName":"'"<<parameters.PRODUCT_TYPE>>-${INSTANCE_NAME}"'","dnsCloudDomain":"'"${GOOGLE_DOMAIN}"'","pim":{"defaultAdminUser":{"login":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","firstName":"'"${CIRCLE_BRANCH_LOWER}"'","lastName":"'"${CIRCLE_BRANCH_LOWER}"'","email":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","uiLocale":"en_US"},"api":{"namespace":"'"${PIM_NS}"'"},"web":{"namespace":"'"${PIM_NS}"'"}}}'
+                      JSON_BODY_STRING=\''{"pim_edition":"'"<<parameters.PIM_EDITION>>"'","branchName":"'"${CIRCLE_BRANCH}"'","instanceName":"'"${INSTANCE_NAME}"'","dnsCloudDomain":"'"${GOOGLE_DOMAIN}"'","pim":{"defaultAdminUser":{"login":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","firstName":"'"${CIRCLE_BRANCH_LOWER}"'","lastName":"'"${CIRCLE_BRANCH_LOWER}"'","email":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","uiLocale":"en_US"},"api":{"namespace":"'"${PIM_NS}"'"},"web":{"namespace":"'"${PIM_NS}"'"}}}'
                       JSON_BODY_STRING=${JSON_BODY_STRING:1}
 
                       FUNCTION_URL=$(gcloud beta functions describe ${FUNCTION_NAME} --format='value(serviceConfig.uri)' --gen2 --region=${GOOGLE_CLUSTER_REGION})
