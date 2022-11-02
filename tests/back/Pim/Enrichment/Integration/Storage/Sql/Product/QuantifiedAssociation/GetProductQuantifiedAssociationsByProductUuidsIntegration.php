@@ -61,14 +61,14 @@ class GetProductQuantifiedAssociationsByProductUuidsIntegration extends Abstract
             ],
         ]);
 
-        $uuidProductC = $this->getProductUuidFromIdentifier('productC');
+        $uuidProductC = $this->getProductUuid('productC');
         $actual = $this->getQuery()->fromProductUuids([$uuidProductC]);
         $expected = [
             $uuidProductC->toString() => [
                 'PRODUCT_SET' => [
                     'products' => [
-                        ['identifier' => 'productA', 'quantity' => 8, 'uuid' => $this->getProductUuidFromIdentifier('productA')->toString()],
-                        ['identifier' => 'productB', 'quantity' => 6, 'uuid' => $this->getProductUuidFromIdentifier('productB')->toString()],
+                        ['identifier' => 'productA', 'quantity' => 8, 'uuid' => $this->getProductUuid('productA')->toString()],
+                        ['identifier' => 'productB', 'quantity' => 6, 'uuid' => $this->getProductUuid('productB')->toString()],
                     ],
                 ],
             ],
@@ -133,32 +133,32 @@ class GetProductQuantifiedAssociationsByProductUuidsIntegration extends Abstract
         ]);
 
 
-        $uuidProductC = $this->getProductUuidFromIdentifier('productC');
-        $uuidProductD = $this->getProductUuidFromIdentifier('productD');
-        $uuidVariantProduct1 = $this->getProductUuidFromIdentifier('variant_product_1');
+        $uuidProductC = $this->getProductUuid('productC');
+        $uuidProductD = $this->getProductUuid('productD');
+        $uuidVariantProduct1 = $this->getProductUuid('variant_product_1');
         $actual = $this->getQuery()->fromProductUuids([$uuidProductC, $uuidProductD, $uuidVariantProduct1]);
         $expected = [
             $uuidProductC->toString() => [
                 'PRODUCT_SET' => [
                     'products' => [
-                        ['identifier' => 'productA', 'quantity' => 3, 'uuid' => $this->getProductUuidFromIdentifier('productA')->toString()],
-                        ['identifier' => 'productB', 'quantity' => 2, 'uuid' => $this->getProductUuidFromIdentifier('productB')->toString()],
+                        ['identifier' => 'productA', 'quantity' => 3, 'uuid' => $this->getProductUuid('productA')->toString()],
+                        ['identifier' => 'productB', 'quantity' => 2, 'uuid' => $this->getProductUuid('productB')->toString()],
                     ],
                 ],
             ],
             $uuidProductD->toString() => [
                 'PRODUCT_SET' => [
                     'products' => [
-                        ['identifier' => 'productB', 'quantity' => 1, 'uuid' => $this->getProductUuidFromIdentifier('productB')->toString()],
+                        ['identifier' => 'productB', 'quantity' => 1, 'uuid' => $this->getProductUuid('productB')->toString()],
                     ],
                 ],
             ],
             $uuidVariantProduct1->toString() => [
                 'PRODUCT_SET' => [
                     'products' => [
-                        ['identifier' => 'productA', 'quantity' => 5, 'uuid' => $this->getProductUuidFromIdentifier('productA')->toString()],
-                        ['identifier' => 'productC', 'quantity' => 6, 'uuid' => $this->getProductUuidFromIdentifier('productC')->toString()],
-                        ['identifier' => 'productB', 'quantity' => 7, 'uuid' => $this->getProductUuidFromIdentifier('productB')->toString()],
+                        ['identifier' => 'productA', 'quantity' => 5, 'uuid' => $this->getProductUuid('productA')->toString()],
+                        ['identifier' => 'productC', 'quantity' => 6, 'uuid' => $this->getProductUuid('productC')->toString()],
+                        ['identifier' => 'productB', 'quantity' => 7, 'uuid' => $this->getProductUuid('productB')->toString()],
                     ],
                 ],
             ],
@@ -201,13 +201,13 @@ class GetProductQuantifiedAssociationsByProductUuidsIntegration extends Abstract
             ],
         ]);
 
-        $uuidProductA = $this->getProductUuidFromIdentifier('productA');
+        $uuidProductA = $this->getProductUuid('productA');
         $actual = $this->getQuery()->fromProductUuids([$uuidProductA]);
         $expected = [
             $uuidProductA->toString() => [
                 'PRODUCT_SET' => [
                     'products' => [
-                        ['identifier' => 'associated_product', 'quantity' => 3, 'uuid' => $this->getProductUuidFromIdentifier('associated_product')->toString()],
+                        ['identifier' => 'associated_product', 'quantity' => 3, 'uuid' => $this->getProductUuid('associated_product')->toString()],
                     ],
                 ],
             ],
@@ -232,14 +232,14 @@ class GetProductQuantifiedAssociationsByProductUuidsIntegration extends Abstract
             ],
         ]);
 
-        $uuidProductA = $this->getProductUuidFromIdentifier('productA');
-        $uuidProductB = $this->getProductUuidFromIdentifier('productB');
+        $uuidProductA = $this->getProductUuid('productA');
+        $uuidProductB = $this->getProductUuid('productB');
         $actual = $this->getQuery()->fromProductUuids([$uuidProductA, $uuidProductB]);
         $expected = [
             $uuidProductB->toString() => [
                 'PRODUCT_SET' => [
                     'products' => [
-                        ['identifier' => 'productA', 'quantity' => 3, 'uuid' => $this->getProductUuidFromIdentifier('productA')->toString()],
+                        ['identifier' => 'productA', 'quantity' => 3, 'uuid' => $this->getProductUuid('productA')->toString()],
                     ],
                 ],
             ],
@@ -271,13 +271,13 @@ class GetProductQuantifiedAssociationsByProductUuidsIntegration extends Abstract
             ],
         ]);
 
-        $uuidProductB = $this->getProductUuidFromIdentifier('productB');
+        $uuidProductB = $this->getProductUuid('productB');
         $actual = $this->getQuery()->fromProductUuids([$uuidProductB]);
         $expected = [
             $uuidProductB->toString() => [
                 'PRODUCT_SET' => [
                     'products' => [
-                        ['identifier' => 'productA', 'quantity' => 3, 'uuid' => $this->getProductUuidFromIdentifier('productA')->toString()],
+                        ['identifier' => 'productA', 'quantity' => 3, 'uuid' => $this->getProductUuid('productA')->toString()],
                     ],
                 ],
             ],
@@ -305,8 +305,8 @@ class GetProductQuantifiedAssociationsByProductUuidsIntegration extends Abstract
             ],
         ]);
 
-        $uuidProductA = $this->getProductUuidFromIdentifier('productA');
-        $uuidProductB = $this->getProductUuidFromIdentifier('productB');
+        $uuidProductA = $this->getProductUuid('productA');
+        $uuidProductB = $this->getProductUuid('productB');
         $actual = $this->getQuery()->fromProductUuids([$uuidProductA, $uuidProductB]);
 
         $this->assertSame([], $actual);
@@ -329,7 +329,7 @@ class GetProductQuantifiedAssociationsByProductUuidsIntegration extends Abstract
         ]);
 
         $this->getProductRemover()->remove($productA);
-        $uuidProductB = $this->getProductUuidFromIdentifier('productB');
+        $uuidProductB = $this->getProductUuid('productB');
         $actual = $this->getQuery()->fromProductUuids([$uuidProductB]);
 
         $this->assertSame([], $actual);
@@ -353,7 +353,7 @@ class GetProductQuantifiedAssociationsByProductUuidsIntegration extends Abstract
 
         $associationType = $this->getAssociationTypeRepository()->findOneBy(['code' => 'PRODUCT_SET']);
         $this->getAssociationTypeRemover()->remove($associationType);
-        $uuidProductB = $this->getProductUuidFromIdentifier('productB');
+        $uuidProductB = $this->getProductUuid('productB');
         $actual = $this->getQuery()->fromProductUuids([$uuidProductB]);
 
         $this->assertSame([], $actual);
@@ -381,7 +381,7 @@ SQL;
 
         $connection->executeUpdate($query);
 
-        $uuidVariantProduct1 = $this->getProductUuidFromIdentifier('variant_product_1');
+        $uuidVariantProduct1 = $this->getProductUuid('variant_product_1');
         $actual = $this->getQuery()->fromProductUuids([$uuidVariantProduct1]);
         $this->assertSame([], $actual);
     }

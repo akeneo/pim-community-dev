@@ -713,7 +713,7 @@ class GetElasticsearchProductProjectionIntegration extends TestCase
 
     private function getProductProjection(string $identifier): ElasticsearchProductProjection
     {
-        $uuid = $this->getProductUuidFromIdentifier($identifier);
+        $uuid = $this->getProductUuid($identifier);
         $query = $this->get('akeneo.pim.enrichment.product.query.get_elasticsearch_product_projection');
         $productProjections = $query->fromProductUuids([$uuid]);
         if (!\is_array($productProjections)) {

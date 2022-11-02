@@ -23,8 +23,8 @@ final class GetAncestorProductModelCodesIntegration extends TestCase
             [],
             $this->getAncestorProductModelCodes()
                 ->fromProductUuids([
-                    $this->getProductUuidFromIdentifier('simple_product'),
-                    $this->getProductUuidFromIdentifier('another_product')
+                    $this->getProductUuid('simple_product'),
+                    $this->getProductUuid('another_product')
                 ])
         );
     }
@@ -35,10 +35,10 @@ final class GetAncestorProductModelCodesIntegration extends TestCase
             ['root_A1', 'subpm_A1_optionA', 'root_A2'],
             $this->getAncestorProductModelCodes()
                  ->fromProductUuids([
-                     $this->getProductUuidFromIdentifier('simple_product'),
-                     $this->getProductUuidFromIdentifier('variant_A1_A_no'),
-                     $this->getProductUuidFromIdentifier('variant_A1_A_yes'),
-                     $this->getProductUuidFromIdentifier('variant_A2_B_no')
+                     $this->getProductUuid('simple_product'),
+                     $this->getProductUuid('variant_A1_A_no'),
+                     $this->getProductUuid('variant_A1_A_yes'),
+                     $this->getProductUuid('variant_A2_B_no')
                  ])
         );
     }

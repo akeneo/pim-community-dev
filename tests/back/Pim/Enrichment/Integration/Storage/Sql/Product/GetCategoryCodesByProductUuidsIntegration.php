@@ -66,7 +66,7 @@ class GetCategoryCodesByProductUuidsIntegration extends TestCase
 
     public function testGetCategoryCodesForASimpleProduct(): void
     {
-        $uuidProductA = $this->getProductUuidFromIdentifier('productA');
+        $uuidProductA = $this->getProductUuid('productA');
         $expected = [$uuidProductA->toString() => ['men', 'shop_2019']];
         $actual = $this->getQuery()->fetchCategoryCodes([$uuidProductA]);
 
@@ -75,7 +75,7 @@ class GetCategoryCodesByProductUuidsIntegration extends TestCase
 
     public function testGetCategoryCodesForAVariantProduct(): void
     {
-        $uuidVariantProduct1 = $this->getProductUuidFromIdentifier('variant_product_1');
+        $uuidVariantProduct1 = $this->getProductUuid('variant_product_1');
         $expected = [$uuidVariantProduct1->toString() => ['trending', 'watch', 'famous', 'men']];
         $actual = $this->getQuery()->fetchCategoryCodes([$uuidVariantProduct1]);
 
@@ -84,9 +84,9 @@ class GetCategoryCodesByProductUuidsIntegration extends TestCase
 
     public function testGetCategoryCodesOnMultipleIdentifiers(): void
     {
-        $uuidVariantProduct1 = $this->getProductUuidFromIdentifier('variant_product_1');
-        $uuidProductA = $this->getProductUuidFromIdentifier('productA');
-        $uuidVariantProduct2 = $this->getProductUuidFromIdentifier('variant_product_2');
+        $uuidVariantProduct1 = $this->getProductUuid('variant_product_1');
+        $uuidProductA = $this->getProductUuid('productA');
+        $uuidVariantProduct2 = $this->getProductUuid('variant_product_2');
 
         $expected = [
             $uuidVariantProduct1->toString() => ['trending', 'watch', 'famous', 'men'],
@@ -104,7 +104,7 @@ class GetCategoryCodesByProductUuidsIntegration extends TestCase
 
     public function testGetCategoryCodesOnProductWithoutCategory(): void
     {
-        $uuidProductB = $this->getProductUuidFromIdentifier('productB');
+        $uuidProductB = $this->getProductUuid('productB');
         $expected = [$uuidProductB->toString() => []];
         $actual = $this->getQuery()->fetchCategoryCodes([$uuidProductB]);
 

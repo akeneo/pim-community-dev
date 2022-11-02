@@ -60,7 +60,7 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
             ],
         ]);
 
-        $uuidProductC = $this->getProductUuidFromIdentifier('productC');
+        $uuidProductC = $this->getProductUuid('productC');
         $actual = $this->getQuery()->fromProductUuids([$uuidProductC]);
         $expected = [
             $uuidProductC->toString() => [
@@ -110,7 +110,7 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
             ],
         ]);
 
-        $uuidProductA = $this->getProductUuidFromIdentifier('productA');
+        $uuidProductA = $this->getProductUuid('productA');
         $actual = $this->getQuery()->fromProductUuids([$uuidProductA]);
         $expected = [
             $uuidProductA->toString() => [
@@ -184,9 +184,9 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
             ],
         ]);
 
-        $uuidProductC = $this->getProductUuidFromIdentifier('productC');
-        $uuidProductD = $this->getProductUuidFromIdentifier('productD');
-        $uuidProductVariantProduct1 = $this->getProductUuidFromIdentifier('variant_product_1');
+        $uuidProductC = $this->getProductUuid('productC');
+        $uuidProductD = $this->getProductUuid('productD');
+        $uuidProductVariantProduct1 = $this->getProductUuid('variant_product_1');
         $actual = $this->getQuery()->fromProductUuids([$uuidProductC, $uuidProductD, $uuidProductVariantProduct1]);
         $expected = [
             $uuidProductC->toString() => [
@@ -235,8 +235,8 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
             ],
         ]);
 
-        $uuidProductA = $this->getProductUuidFromIdentifier('productA');
-        $uuidProductB = $this->getProductUuidFromIdentifier('productB');
+        $uuidProductA = $this->getProductUuid('productA');
+        $uuidProductB = $this->getProductUuid('productB');
         $actual = $this->getQuery()->fromProductUuids([$uuidProductA, $uuidProductB]);
         $expected = [
             $uuidProductB->toString() => [
@@ -274,7 +274,7 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
             ],
         ]);
 
-        $uuidProductB = $this->getProductUuidFromIdentifier('productB');
+        $uuidProductB = $this->getProductUuid('productB');
         $actual = $this->getQuery()->fromProductUuids([$uuidProductB]);
         $expected = [
             $uuidProductB->toString() => [
@@ -306,8 +306,8 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
             ],
         ]);
 
-        $uuidProductA = $this->getProductUuidFromIdentifier('productA');
-        $uuidProductB = $this->getProductUuidFromIdentifier('productB');
+        $uuidProductA = $this->getProductUuid('productA');
+        $uuidProductB = $this->getProductUuid('productB');
         $actual = $this->getQuery()->fromProductUuids([$uuidProductA, $uuidProductB]);
 
         $this->assertSame([], $actual);
@@ -329,7 +329,7 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
             ],
         ]);
 
-        $uuidProductB = $this->getProductUuidFromIdentifier('productB');
+        $uuidProductB = $this->getProductUuid('productB');
         $this->getProductModelRemover()->remove($productModelA);
         $actual = $this->getQuery()->fromProductUuids([$uuidProductB]);
 
@@ -354,7 +354,7 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
 
         $associationType = $this->getAssociationTypeRepository()->findOneBy(['code' => 'PRODUCT_SET']);
         $this->getAssociationTypeRemover()->remove($associationType);
-        $uuidProductB = $this->getProductUuidFromIdentifier('productB');
+        $uuidProductB = $this->getProductUuid('productB');
         $actual = $this->getQuery()->fromProductUuids([$uuidProductB]);
 
         $this->assertSame([], $actual);

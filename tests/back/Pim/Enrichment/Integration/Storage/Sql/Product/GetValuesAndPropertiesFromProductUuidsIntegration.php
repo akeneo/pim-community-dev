@@ -84,7 +84,7 @@ class GetValuesAndPropertiesFromProductUuidsIntegration extends TestCase
 
     public function testSingleProductProperties()
     {
-        $uuidProductA = $this->getProductUuidFromIdentifier('productA');
+        $uuidProductA = $this->getProductUuid('productA');
         $platform = $this->getDatabaseConnection()->getDatabasePlatform();
         $expected = [
             $uuidProductA->toString() => [
@@ -108,7 +108,7 @@ class GetValuesAndPropertiesFromProductUuidsIntegration extends TestCase
 
     public function testGroups()
     {
-        $uuidProductB = $this->getProductUuidFromIdentifier('productB');
+        $uuidProductB = $this->getProductUuid('productB');
         $this->assertEquals(
             ['group1', 'group2'],
             $this->getQuery()->fetchByProductUuids([$uuidProductB])[$uuidProductB->toString()]['group_codes']
@@ -117,7 +117,7 @@ class GetValuesAndPropertiesFromProductUuidsIntegration extends TestCase
 
     public function testVariantProductValues()
     {
-        $uuidVariantProductA = $this->getProductUuidFromIdentifier('VariantProductA');
+        $uuidVariantProductA = $this->getProductUuid('VariantProductA');
         $platform = $this->getDatabaseConnection()->getDatabasePlatform();
         $expected = [
             $uuidVariantProductA->toString() => [
@@ -179,7 +179,7 @@ class GetValuesAndPropertiesFromProductUuidsIntegration extends TestCase
                 ]
             ]
         );
-        $uuidVariantProductWithEmptyValuesFromPM = $this->getProductUuidFromIdentifier('VariantProductWithEmptyValuesFromPM');
+        $uuidVariantProductWithEmptyValuesFromPM = $this->getProductUuid('VariantProductWithEmptyValuesFromPM');
         $results = $this->getQuery()->fetchByProductUuids([$uuidVariantProductWithEmptyValuesFromPM]);
 
         $expected = [

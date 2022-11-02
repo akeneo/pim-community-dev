@@ -60,7 +60,7 @@ class GetProductAssociationsByProductUuidsIntegration extends TestCase
 
     public function testWithAProductContainingNoAssociation()
     {
-        $uuidProductE = $this->getProductUuidFromIdentifier('productE');
+        $uuidProductE = $this->getProductUuid('productE');
         $expected = [$uuidProductE->toString() => $this->getAssociationsFormattedAfterFetch()];
         $actual = $this->getQuery()->fetchByProductUuids([$uuidProductE]);
 
@@ -69,7 +69,7 @@ class GetProductAssociationsByProductUuidsIntegration extends TestCase
 
     public function testOnASingleProduct()
     {
-        $uuidProductD = $this->getProductUuidFromIdentifier('productD');
+        $uuidProductD = $this->getProductUuid('productD');
         $expected = [
             $uuidProductD->toString() => $this->getAssociationsFormattedAfterFetch(['productA', 'productB'], ['productC'])
         ];
@@ -80,9 +80,9 @@ class GetProductAssociationsByProductUuidsIntegration extends TestCase
 
     public function testOnMultipleSimpleProduct()
     {
-        $uuidProductE = $this->getProductUuidFromIdentifier('productE');
-        $uuidProductD = $this->getProductUuidFromIdentifier('productD');
-        $uuidProductC = $this->getProductUuidFromIdentifier('productC');
+        $uuidProductE = $this->getProductUuid('productE');
+        $uuidProductD = $this->getProductUuid('productD');
+        $uuidProductC = $this->getProductUuid('productC');
         $expected = [
             $uuidProductE->toString() => $this->getAssociationsFormattedAfterFetch(),
             $uuidProductD->toString() => $this->getAssociationsFormattedAfterFetch(['productA', 'productB'], ['productC']),
@@ -99,10 +99,10 @@ class GetProductAssociationsByProductUuidsIntegration extends TestCase
 
     public function testOnMultipleWithProductModels()
     {
-        $uuidProductE = $this->getProductUuidFromIdentifier('productE');
-        $uuidProductD = $this->getProductUuidFromIdentifier('productD');
-        $uuidProductC = $this->getProductUuidFromIdentifier('productC');
-        $uuidVariantProduct1 = $this->getProductUuidFromIdentifier('variant_product_1');
+        $uuidProductE = $this->getProductUuid('productE');
+        $uuidProductD = $this->getProductUuid('productD');
+        $uuidProductC = $this->getProductUuid('productC');
+        $uuidVariantProduct1 = $this->getProductUuid('variant_product_1');
         $expected = [
             $uuidProductE->toString() => $this->getAssociationsFormattedAfterFetch(),
             $uuidProductD->toString() => $this->getAssociationsFormattedAfterFetch(['productA', 'productB'], ['productC']),
@@ -205,7 +205,7 @@ class GetProductAssociationsByProductUuidsIntegration extends TestCase
 
     private function formatAssociation($identifiers): array
     {
-        return array_map(fn (string $identifier): array => ['uuid' => $this->getProductUuidFromIdentifier($identifier)->toString(), 'identifier' => $identifier], $identifiers);
+        return array_map(fn (string $identifier): array => ['uuid' => $this->getProductUuid($identifier)->toString(), 'identifier' => $identifier], $identifiers);
     }
 
     protected function getConfiguration()
