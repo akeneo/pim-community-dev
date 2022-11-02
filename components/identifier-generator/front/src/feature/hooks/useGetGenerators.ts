@@ -3,7 +3,7 @@ import {useRouter} from '@akeneo-pim-community/shared';
 import {useQuery} from 'react-query';
 
 type Response = {
-  data: IdentifierGenerator[];
+  data?: IdentifierGenerator[];
   isLoading: boolean;
 };
 
@@ -20,7 +20,10 @@ const useGetGenerators = (): Response => {
     });
   };
 
-  const {data, isLoading} = useQuery('getGeneratorList', getGeneratorList);
+  const {data, isLoading} = useQuery<IdentifierGenerator[], Error, IdentifierGenerator[]>(
+    'getGeneratorList',
+    getGeneratorList
+  );
 
   return {data, isLoading};
 };

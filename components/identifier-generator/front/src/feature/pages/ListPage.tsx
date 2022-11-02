@@ -1,7 +1,7 @@
 import React, {useCallback, useMemo} from 'react';
 import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {AttributesIllustration, Button, Helper, Table} from 'akeneo-design-system';
-import {useGetGenerators} from '../hooks/useGetGenerators';
+import {AttributesIllustration, Button, Helper, Placeholder, Table} from 'akeneo-design-system';
+import {useGetGenerators} from '../hooks';
 import {LabelCollection} from '../models';
 import {Styled} from './styles/ListPageStyled';
 import {ListSkeleton} from '../components/ListSkeleton';
@@ -13,18 +13,20 @@ type ListPageProps = {
 
 const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
   const translate = useTranslate();
-  const {data: generators, isLoading} = useGetGenerators();
+  const {data: generators = [], isLoading} = useGetGenerators();
   const locale = useUserContext().get('catalogLocale');
+  const isCreateDisabled = useMemo(() => generators?.length >= 1, [generators]);
   const isGeneratorListEmpty = useMemo(() => generators?.length === 0, [generators]);
   const getCurrentLabel = useCallback(
     (labels: LabelCollection, code: string) => labels[locale] || `[${code}]`,
     [locale]
   );
+  const helpCenterUrl = 'https://help.akeneo.com/pim/serenity/articles/generate-product-identifiers.html';
 
   return (
     <>
       <Header>
-        <Button onClick={onCreate} disabled={!isGeneratorListEmpty}>
+        <Button onClick={onCreate} disabled={isCreateDisabled}>
           {translate('pim_common.create')}
         </Button>
       </Header>
@@ -37,16 +39,19 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
           </Table.Header>
           <Table.Body>
             {isGeneratorListEmpty && !isLoading && (
-              <Styled.NoIdentifierMessage>
-                <AttributesIllustration />
-                <Styled.Title>{translate('pim_identifier_generator.list.first_generator')}</Styled.Title>
-                <Styled.HelpCenterLink
-                  href="https://help.akeneo.com/pim/serenity/articles/understand-data-quality.html"
-                  target="_blank"
-                >
-                  {translate('pim_identifier_generator.list.check_help_center')}
-                </Styled.HelpCenterLink>
-              </Styled.NoIdentifierMessage>
+              <tr>
+                <td colSpan={3}>
+                  <Placeholder
+                    illustration={<AttributesIllustration />}
+                    size="large"
+                    title={translate('pim_identifier_generator.list.first_generator')}
+                  >
+                    <Styled.HelpCenterLink href={helpCenterUrl} target="_blank">
+                      {translate('pim_identifier_generator.list.check_help_center')}
+                    </Styled.HelpCenterLink>
+                  </Placeholder>
+                </td>
+              </tr>
             )}
             {isLoading && <ListSkeleton />}
             {!isGeneratorListEmpty && (
@@ -55,11 +60,7 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
                   <td colSpan={3}>
                     <Helper level="info">
                       {translate('pim_identifier_generator.list.create_info')}
-                      <a
-                        href="https://help.akeneo.com/pim/serenity/articles/understand-data-quality.html"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
+                      <a href={helpCenterUrl} target="_blank" rel="noreferrer">
                         {translate('pim_identifier_generator.list.check_help_center')}
                       </a>
                     </Helper>

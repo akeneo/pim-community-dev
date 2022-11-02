@@ -3,7 +3,6 @@ import {Button, Helper, TabBar} from 'akeneo-design-system';
 import {PageContent, PageHeader, useTranslate} from '@akeneo-pim-community/shared';
 import {GeneralPropertiesTab} from '../tabs';
 import {IdentifierGenerator} from '../models';
-import {Styled} from '../components';
 import {Violation} from '../validators/Violation';
 import {Header} from '../components/Header';
 
