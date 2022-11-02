@@ -19,7 +19,7 @@ class MailAsserter
         $mailerMessages = self::getMailerMessages();
 
         foreach ($mailerMessages as $mailerMessage) {
-            if(!$mailerMessage instanceof Email) {
+            if (!$mailerMessage instanceof Email) {
                 continue;
             }
 
