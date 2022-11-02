@@ -20,7 +20,7 @@ class GetCatalogProductsPerformance extends PerformanceTestCase
     public function testThatRetrievingProductsIsPerformant(): void
     {
         $this->config->setTitle('Get products from a Catalog');
-        $this->config->assert('main.wall_time < 100ms');
+        $this->config->assert('main.wall_time < 350ms');
         $this->config->assert('main.peak_memory < 10mb');
         $this->config->assert('metrics.sql.queries.count < 15');
         $this->config->assert('metrics.http.curl.requests.count == 1');
