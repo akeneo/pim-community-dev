@@ -1,0 +1,18 @@
+workflows:
+    on_demand_deploy_timmy:
+        when:
+          not:
+              equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+        jobs:
+            - ready_to_build?:
+                type: approval
+                filters:
+                  branches:
+                    only:
+                      - master
+            - checkout:
+                  requires:
+                      - ready_to_build?
+            - build_timmy:
+                  requires:
+                      - checkout
