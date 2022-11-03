@@ -11,7 +11,7 @@ namespace Akeneo\Platform\Job\ServiceApi\JobInstance;
 class LaunchJobInstanceResult
 {
     public function __construct(
-        public string $jobExecutionId,
+        public int $jobExecutionId,
         public string $jobExecutionUrl,
     ) {
     }

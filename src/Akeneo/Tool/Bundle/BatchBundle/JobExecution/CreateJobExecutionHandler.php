@@ -23,10 +23,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * Create and persist a new JobExecution for the provided job code
  *
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
- * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/MIT MIT
  */
-class CreateJobExecutionHandler
+class CreateJobExecutionHandler implements CreateJobExecutionHandlerInterface
 {
     public function __construct(
         private JobRepositoryInterface $jobRepository,

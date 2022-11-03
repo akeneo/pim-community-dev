@@ -41,7 +41,7 @@ services:
             - '@akeneo_batch_queue.factory.job_execution_message'
             - '@event_dispatcher'
             - '@akeneo_batch.logger.batch_log_handler'
-            - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler'
+            - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandlerInterface'
 
     # override of the original Akeneo Batch simple job launcher
     akeneo_batch.launcher.simple_job_launcher:
@@ -72,7 +72,7 @@ services:
             - '@akeneo_batch_queue.manager.job_execution_manager'
             - '@logger'
             - '%kernel.project_dir%'
-            - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler'
+            - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandlerInterface'
             - '@pim_framework.lock.factory'
         tags:
             - { name: console.command }
