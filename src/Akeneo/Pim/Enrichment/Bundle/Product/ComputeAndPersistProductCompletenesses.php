@@ -6,13 +6,10 @@ namespace Akeneo\Pim\Enrichment\Bundle\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Query\SaveProductCompletenesses;
-use Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ProductCompletenessWasChanged;
 use Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ProductsCompletenessWereChanged;
-use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use Akeneo\Pim\Enrichment\Product\Domain\Clock;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -63,30 +60,12 @@ class ComputeAndPersistProductCompletenesses
         $changedAt = $this->clock->now();
         $changedProductsCompletenesses = [];
         foreach ($newProductsCompletenessCollections as $uuid => $newProductCompletenessCollection) {
-            $productUuid = ProductUuid::fromString($uuid);
             $previousProductCompletenessCollection = $previousProductsCompletenessCollections[$uuid] ?? null;
 
-            /** @var ProductCompletenessWithMissingAttributeCodes $newProductCompleteness */
-            foreach ($newProductCompletenessCollection as $newProductCompleteness) {
-                $previousProductCompleteness = $previousProductCompletenessCollection?->getCompletenessForChannelAndLocale(
-                    $newProductCompleteness->channelCode(),
-                    $newProductCompleteness->localeCode()
-                );
-                if (null === $previousProductCompleteness || $previousProductCompleteness->ratio() !== $newProductCompleteness->ratio()) {
-                    $changedProductsCompletenesses[] = new ProductCompletenessWasChanged(
-                        $productUuid,
-                        $changedAt,
-                        $newProductCompleteness->channelCode(),
-                        $newProductCompleteness->localeCode(),
-                        $previousProductCompleteness?->requiredCount(),
-                        $newProductCompleteness->requiredCount(),
-                        $previousProductCompleteness?->missingCount(),
-                        $newProductCompleteness->missingAttributesCount(),
-                        $previousProductCompleteness?->ratio(),
-                        $newProductCompleteness->ratio()
-                    );
-                }
-            }
+            $changedProductsCompletenesses = [
+                ...$changedProductsCompletenesses,
+                ...$newProductCompletenessCollection->buildProductCompletenessWasChangedEvents($changedAt, $previousProductCompletenessCollection)
+            ];
         }
 
         return [] !== $changedProductsCompletenesses

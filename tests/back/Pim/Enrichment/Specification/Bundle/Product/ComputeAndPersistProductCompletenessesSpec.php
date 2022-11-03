@@ -8,6 +8,8 @@ use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompleteness;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodes;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Query\SaveProductCompletenesses;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
@@ -72,22 +74,22 @@ class ComputeAndPersistProductCompletenessesSpec extends ObjectBehavior
                     new ProductCompleteness('ecommerce', 'en_US', 10, 1),
                 ]),
                 $uuid3->toString() => new ProductCompletenessCollection($uuid3, [
-                    new ProductCompleteness('mobile', 'fr_FR', 10, 8),
+                    new ProductCompleteness('mobile', 'fr_FR', 10, 2),
                 ]),
             ]
         );
 
         $newProductsCompletenesses = [
-            $uuid1->toString() => new ProductCompletenessCollection($uuid1, [
-                new ProductCompleteness('ecommerce', 'fr_FR', 10, 0),
-                new ProductCompleteness('ecommerce', 'en_US', 10, 0),
+            $uuid1->toString() => new ProductCompletenessWithMissingAttributeCodesCollection($uuid1->toString(), [
+                new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'fr_FR', 10, []),
+                new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 10, []),
             ]),
-            $uuid2->toString() => new ProductCompletenessCollection($uuid2, [
-                new ProductCompleteness('mobile', 'fr_FR', 10, 5),
-                new ProductCompleteness('ecommerce', 'en_US', 10, 0),
+            $uuid2->toString() => new ProductCompletenessWithMissingAttributeCodesCollection($uuid2->toString(), [
+                new ProductCompletenessWithMissingAttributeCodes('mobile', 'fr_FR', 10, ['name', 'title', 'short_title', 'weight', 'length']),
+                new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 10, []),
             ]),
-            $uuid3->toString() => new ProductCompletenessCollection($uuid3, [
-                new ProductCompleteness('mobile', 'fr_FR', 10, 8),
+            $uuid3->toString() => new ProductCompletenessWithMissingAttributeCodesCollection($uuid3->toString(), [
+                new ProductCompletenessWithMissingAttributeCodes('mobile', 'fr_FR', 10, ['name', 'title']),
             ]),
         ];
 
@@ -139,14 +141,14 @@ class ComputeAndPersistProductCompletenessesSpec extends ObjectBehavior
         ])->willReturn(
             [
                 $uuid1->toString() => new ProductCompletenessCollection($uuid1, [
-                    new ProductCompleteness('ecommerce', 'fr_FR', 10, 6),
+                    new ProductCompleteness('ecommerce', 'fr_FR', 10, 2),
                 ]),
             ]
         );
 
         $newProductsCompletenesses = [
-            $uuid1->toString() => new ProductCompletenessCollection($uuid1, [
-                new ProductCompleteness('ecommerce', 'fr_FR', 10, 6),
+            $uuid1->toString() => new ProductCompletenessWithMissingAttributeCodesCollection($uuid1->toString(), [
+                new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'fr_FR', 10, ['name', 'title']),
             ]),
         ];
 

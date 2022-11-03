@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Completeness\Model;
 
+use Akeneo\Pim\Enrichment\Product\API\Event\Completeness\ProductCompletenessWasChanged;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
+
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -45,6 +48,40 @@ final class ProductCompletenessWithMissingAttributeCodesCollection implements \I
     public function count(): int
     {
         return count($this->completenesses);
+    }
+
+    /**
+     * @return ProductCompletenessWasChanged[]
+     */
+    public function buildProductCompletenessWasChangedEvents(
+        \DateTimeImmutable $changedAt,
+        ?ProductCompletenessCollection $previousProductCompletenessCollection,
+    ): array {
+        $events = [];
+        $productUuid = ProductUuid::fromString($this->productId);
+
+        foreach ($this->completenesses as $newProductCompleteness) {
+            $previousProductCompleteness = $previousProductCompletenessCollection?->getCompletenessForChannelAndLocale(
+                $newProductCompleteness->channelCode(),
+                $newProductCompleteness->localeCode()
+            );
+            if (null === $previousProductCompleteness || $previousProductCompleteness->ratio() !== $newProductCompleteness->ratio()) {
+                $events[] = new ProductCompletenessWasChanged(
+                    $productUuid,
+                    $changedAt,
+                    $newProductCompleteness->channelCode(),
+                    $newProductCompleteness->localeCode(),
+                    $previousProductCompleteness?->requiredCount(),
+                    $newProductCompleteness->requiredCount(),
+                    $previousProductCompleteness?->missingCount(),
+                    $newProductCompleteness->missingAttributesCount(),
+                    $previousProductCompleteness?->ratio(),
+                    $newProductCompleteness->ratio()
+                );
+            }
+        }
+
+        return $events;
     }
 
     private function add(ProductCompletenessWithMissingAttributeCodes $completeness): void
