@@ -185,7 +185,6 @@ class GetProductIdentifiersAction
         $user = $this->tokenStorage->getToken()->getUser();
         Assert::isInstanceOf($user, UserInterface::class);
 
-        /** @phpstan-ignore-next-line */
         return $user;
     }
 }
