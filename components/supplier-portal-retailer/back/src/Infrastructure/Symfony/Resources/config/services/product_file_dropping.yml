@@ -105,6 +105,12 @@ services:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListSupplierProductFiles'
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\CountProductFiles'
 
+    Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\ListProductFilesForSupplier\ListProductFilesForSupplierHandler:
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFilesForSupplier'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilesCount'
+
     # Queries
     Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileName:
         class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetProductFilePathAndFileName
@@ -253,9 +259,7 @@ services:
 
     Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\GetProductFiles\GetProductFiles:
         arguments:
-            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFilesForSupplier'
-            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail'
-            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilesCount'
+            - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\ListProductFilesForSupplier\ListProductFilesForSupplierHandler'
 
     Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\CommentProductFile\CommentProductFile:
         arguments:

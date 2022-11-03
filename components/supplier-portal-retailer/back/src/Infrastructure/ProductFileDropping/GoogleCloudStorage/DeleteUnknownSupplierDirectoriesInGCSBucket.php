@@ -10,7 +10,7 @@ use League\Flysystem\FilesystemException;
 use League\Flysystem\UnableToDeleteFile;
 use Psr\Log\LoggerInterface;
 
-final class DeleteUnknownSupplierDirectoriesInGCSBucket
+class DeleteUnknownSupplierDirectoriesInGCSBucket
 {
     public function __construct(
         private FilesystemProvider $filesystemProvider,

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Infrastructure\ProductFileDropping\ServiceAPI\CommentProductFile;
+namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Infrastructure\ProductFileDropping\ServiceAPI\MarkCommentAsRead;
 
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadBySupplier\MarkCommentsAsReadBySupplier;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Write\MarkCommentsAsReadBySupplier\MarkCommentsAsReadBySupplierHandler;
@@ -23,9 +23,17 @@ final class MarkCommentsAsReadTest extends TestCase
         $commandHandler
             ->expects($this->once())
             ->method('__invoke')
-            ->with(new MarkCommentsAsReadBySupplier('e77c4413-a6d5-49e6-a102-8042cf5bd439', new \DateTimeImmutable('2022-10-20 02:38:45')));
+            ->with(new MarkCommentsAsReadBySupplier(
+                'e77c4413-a6d5-49e6-a102-8042cf5bd439',
+                new \DateTimeImmutable('2022-10-20 02:38:45'),
+            ));
 
-        ($serviceAPI)(new MarkCommentsAsReadCommand('e77c4413-a6d5-49e6-a102-8042cf5bd439', new \DateTimeImmutable('2022-10-20 02:38:45')));
+        ($serviceAPI)(
+            new MarkCommentsAsReadCommand(
+                'e77c4413-a6d5-49e6-a102-8042cf5bd439',
+                new \DateTimeImmutable('2022-10-20 02:38:45'),
+            )
+        );
     }
 
     /** @test */
@@ -40,7 +48,10 @@ final class MarkCommentsAsReadTest extends TestCase
             ->willThrowException(new ProductFileDoesNotExist());
 
         try {
-            ($serviceAPI)(new MarkCommentsAsReadCommand('e77c4413-a6d5-49e6-a102-8042cf5bd439', new \DateTimeImmutable('2022-10-20 02:38:45')));
+            ($serviceAPI)(new MarkCommentsAsReadCommand(
+                'e77c4413-a6d5-49e6-a102-8042cf5bd439',
+                new \DateTimeImmutable('2022-10-20 02:38:45'),
+            ));
         } catch (\Exception $e) {
             $this->assertInstanceOf(ProductFileDoesNotExistServiceApi::class, $e);
 

@@ -18,7 +18,7 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-final class CreateProductFileHandler
+class CreateProductFileHandler
 {
     public function __construct(
         private GetSupplierFromContributorEmail $getSupplierFromContributorEmail,
