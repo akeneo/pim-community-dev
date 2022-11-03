@@ -43,7 +43,7 @@ class ComputeAndPersistProductCompletenessesSpec extends ObjectBehavior
         );
     }
 
-    public function it_is_initialize()
+    public function it_can_be_initialized()
     {
         $this->shouldHaveType(ComputeAndPersistProductCompletenesses::class);
     }
