@@ -74,7 +74,7 @@ class GetImpactedProductCountControllerIntegration extends ControllerIntegration
             $this->client,
             static::ROUTE,
             [],
-            'GET',
+            'POST',
             ['conditions' => \json_encode([$invalidCondition])]
         );
 
@@ -87,7 +87,7 @@ class GetImpactedProductCountControllerIntegration extends ControllerIntegration
             $this->client,
             static::ROUTE,
             [],
-            'GET',
+            'POST',
             ['conditions' => \json_encode($conditions)]
         );
 
