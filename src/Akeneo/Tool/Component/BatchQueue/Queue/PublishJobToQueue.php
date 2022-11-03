@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Component\BatchQueue\Queue;
 
 use Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository;
-use Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler;
+use Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandlerInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
@@ -34,7 +34,7 @@ class PublishJobToQueue implements PublishJobToQueueInterface
         private JobExecutionMessageFactory $jobExecutionMessageFactory,
         private EventDispatcherInterface $eventDispatcher,
         private BatchLogHandler $batchLogHandler,
-        private CreateJobExecutionHandler $createJobExecutionHandler,
+        private CreateJobExecutionHandlerInterface $createJobExecutionHandler,
     ) {
     }
 
