@@ -63,6 +63,10 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             new SetTextValue('name', 'print', 'en_US', 'Green print'),
             new SetTextValue('description', 'print', null, 'Green description'),
         ]);
+        $this->createProduct(Uuid::fromString('9fe842c4-6185-470b-b9a8-abc2306b0e4b'), [
+            new SetTextValue('name', 'print', 'en_US', 'Red print'),
+            new SetTextValue('description', 'print', null, 'Red description'),
+        ]);
 
         $this->client = $this->getAuthenticatedPublicApiClient([
             'read_catalogs',
@@ -132,6 +136,32 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             'http://localhost/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapped-products?search_after=8985de43-08bc-484d-aee0-4489a56ba02d&limit=2',
             $payload['_links']['next']['href']
         );
+
+        $this->client->request(
+            'GET',
+            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapped-products?search_after=8985de43-08bc-484d-aee0-4489a56ba02d&limit=2',
+            [
+                'limit' => 2,
+            ],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+        );
+
+        $page2Response = $this->client->getResponse();
+        $payloadPage2 = \json_decode($page2Response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        $expectedMappedProducts2 = [
+            [
+                'uuid' => '9fe842c4-6185-470b-b9a8-abc2306b0e4b',
+                'title' => 'Red print',
+                'short_description' => 'Red description',
+            ],
+        ];
+
+        Assert::assertEquals(200, $page2Response->getStatusCode());
+        Assert::assertCount(1, $payloadPage2['_embedded']['items']);
+        Assert::assertSame($expectedMappedProducts2, $payloadPage2['_embedded']['items']);
     }
 
     public function testItReturnsBadRequestWhenPaginationIsInvalid(): void
