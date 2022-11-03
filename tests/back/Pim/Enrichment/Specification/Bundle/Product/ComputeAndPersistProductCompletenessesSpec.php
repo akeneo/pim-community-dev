@@ -127,7 +127,7 @@ class ComputeAndPersistProductCompletenessesSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_doesnt_dispatches_event_when_products_completeness_have_not_changed(
+    public function it_doesnt_dispatch_event_when_products_completenesses_have_not_changed(
         CompletenessCalculator $completenessCalculator,
         SaveProductCompletenesses $saveProductCompletenesses,
         GetProductCompletenesses $getProductCompletenesses,
