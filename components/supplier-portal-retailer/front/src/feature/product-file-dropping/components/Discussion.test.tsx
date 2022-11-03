@@ -136,3 +136,13 @@ test('it displays an error message', async () => {
     );
     expect(screen.getByText('error message')).toBeInTheDocument();
 });
+
+test('it marks the discussion as read', async () => {
+    global.fetch = jest.fn().mockImplementationOnce(async () => ({
+        ok: true,
+    }));
+
+    renderWithProviders(<Discussion productFile={productFile} saveComment={jest.fn()} validationError={null} />);
+
+    expect(global.fetch).toHaveBeenCalled();
+});

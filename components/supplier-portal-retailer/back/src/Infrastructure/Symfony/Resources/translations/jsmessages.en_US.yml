@@ -106,6 +106,7 @@ supplier_portal:
                 empty_content: The comment should not be empty.
                 max_comment_length_reached: The comment should not exceed 255 characters.
                 max_number_of_comments_reached: You've reached the comment limit.
+                product_file_does_not_exist_anymore: Sorry this product file has been automatically deleted after 90 days and cannot be accessed anymore.
         pim_notification:
             button_label: See the product files
 
