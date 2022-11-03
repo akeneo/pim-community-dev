@@ -110,7 +110,7 @@ const Page: FC = () => {
             <Field>
               <Checkbox checked={configuration.acls.pim_enrich_product_categories_view}>View a category</Checkbox>
             </Field>
-           <Field>
+            <Field>
               <Checkbox
                 checked={configuration.acls.pim_enrich_product_category_create}
                 onClick={() =>
@@ -126,51 +126,51 @@ const Page: FC = () => {
 
             <Field>
               <Checkbox
-                  checked={configuration.acls.pim_enrich_product_category_edit}
-                  onClick={() =>
-                      changeAcl('pim_enrich_product_category_edit', !configuration.acls.pim_enrich_product_category_edit)
-                  }
+                checked={configuration.acls.pim_enrich_product_category_edit}
+                onClick={() =>
+                  changeAcl('pim_enrich_product_category_edit', !configuration.acls.pim_enrich_product_category_edit)
+                }
               >
-                  Edit a category
+                Edit a category
               </Checkbox>
             </Field>
 
             <Field>
               <Checkbox
-                  checked={configuration.acls.pim_enrich_product_category_history}
-                  onClick={() =>
-                      changeAcl(
-                          'pim_enrich_product_category_history',
-                          !configuration.acls.pim_enrich_product_category_history
-                      )
-                  }
+                checked={configuration.acls.pim_enrich_product_category_history}
+                onClick={() =>
+                  changeAcl(
+                    'pim_enrich_product_category_history',
+                    !configuration.acls.pim_enrich_product_category_history
+                  )
+                }
               >
-                  View category history
+                View category history
               </Checkbox>
             </Field>
 
             <Field>
               <Checkbox
-                  checked={configuration.acls.pim_enrich_product_category_list}
-                  onClick={() =>
-                      changeAcl('pim_enrich_product_category_list', !configuration.acls.pim_enrich_product_category_list)
-                  }
+                checked={configuration.acls.pim_enrich_product_category_list}
+                onClick={() =>
+                  changeAcl('pim_enrich_product_category_list', !configuration.acls.pim_enrich_product_category_list)
+                }
               >
-                  List categories
+                List categories
               </Checkbox>
             </Field>
 
             <Field>
               <Checkbox
-                  checked={configuration.acls.pim_enrich_product_category_order_trees}
-                  onClick={() =>
-                      changeAcl(
-                          'pim_enrich_product_category_order_trees',
-                          !configuration.acls.pim_enrich_product_category_order_trees
-                      )
-                  }
+                checked={configuration.acls.pim_enrich_product_category_order_trees}
+                onClick={() =>
+                  changeAcl(
+                    'pim_enrich_product_category_order_trees',
+                    !configuration.acls.pim_enrich_product_category_order_trees
+                  )
+                }
               >
-                  Order/reorder trees in a category
+                Order/reorder trees in a category
               </Checkbox>
             </Field>
 
@@ -190,33 +190,33 @@ const Page: FC = () => {
 
             <Field>
               <Checkbox
-                  checked={configuration.acls.pim_enrich_product_category_template}
-                  onClick={() =>
-                      changeAcl(
-                          'pim_enrich_product_category_template',
-                          !configuration.acls.pim_enrich_product_category_template
-                      )
-                  }
+                checked={configuration.acls.pim_enrich_product_category_template}
+                onClick={() =>
+                  changeAcl(
+                    'pim_enrich_product_category_template',
+                    !configuration.acls.pim_enrich_product_category_template
+                  )
+                }
               >
-                  Manage category template
+                Manage category template
               </Checkbox>
             </Field>
 
             <Field>
               <Checkbox
-                  checked={configuration.acls.pim_enrich_product_category_edit_attributes}
-                  onClick={() =>
-                      changeAcl(
-                          'pim_enrich_product_category_edit_attributes',
-                          !configuration.acls.pim_enrich_product_category_edit_attributes
-                      )
-                  }
+                checked={configuration.acls.pim_enrich_product_category_edit_attributes}
+                onClick={() =>
+                  changeAcl(
+                    'pim_enrich_product_category_edit_attributes',
+                    !configuration.acls.pim_enrich_product_category_edit_attributes
+                  )
+                }
               >
-                  Edit category attributes
+                Edit category attributes
               </Checkbox>
             </Field>
 
-           <Field>
+            <Field>
               <Checkbox
                 checked={configuration.acls.pimee_enrich_category_edit_permissions}
                 onClick={() =>
