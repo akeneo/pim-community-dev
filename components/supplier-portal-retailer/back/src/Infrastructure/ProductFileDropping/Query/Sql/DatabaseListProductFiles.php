@@ -25,7 +25,7 @@ final class DatabaseListProductFiles implements ListProductFiles
                 uploaded_by_contributor, 
                 supplier.label AS supplier, 
                 uploaded_at,
-                IFNULL(last_comment_read_by_retailer.last_read_at < MAX(supplier_comments.created_at), 0) AS 'has_unread_comments'
+                IFNULL(COALESCE(last_comment_read_by_retailer.last_read_at, 0) < MAX(supplier_comments.created_at), 0) AS 'has_unread_comments'
             FROM akeneo_supplier_portal_supplier_product_file AS product_file
             INNER JOIN akeneo_supplier_portal_supplier AS supplier
                 ON product_file.uploaded_by_supplier = supplier.identifier

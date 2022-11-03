@@ -180,7 +180,7 @@ final class DatabaseListProductFilesIntegration extends SqlIntegrationTestCase
     }
 
     /** @test */
-    public function itReturnsFalseForHasUnreadCommentsIfThereIsNoLastReadAtDate(): void
+    public function itReturnsTrueForHasUnreadCommentsIfThereIsCommentsButNoLastReadAtDate(): void
     {
         $productFileRepository = $this->get(ProductFileRepository::class);
 
@@ -197,7 +197,7 @@ final class DatabaseListProductFilesIntegration extends SqlIntegrationTestCase
 
         $productFiles = $this->get(ListProductFiles::class)();
 
-        static::assertFalse($productFiles[0]->hasUnreadComments);
+        static::assertTrue($productFiles[0]->hasUnreadComments);
     }
 
     /** @test */
