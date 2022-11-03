@@ -72,7 +72,7 @@ final class GetMappedProductsHandler
             function (array $product) use ($productMappingSchema, $productMapping): array {
                 $mappedProduct = [];
 
-                /** @var string $key */
+                /** @var string $target */
                 foreach (\array_keys($productMappingSchema['properties']) as $target) {
                     $sourceValue = '';
 

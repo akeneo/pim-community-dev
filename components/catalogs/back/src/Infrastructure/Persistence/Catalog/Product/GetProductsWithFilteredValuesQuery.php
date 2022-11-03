@@ -90,9 +90,8 @@ class GetProductsWithFilteredValuesQuery implements GetProductsWithFilteredValue
          */
         $productsWithFilteredValues = $this->filterNormalizedProperties($products, self::PROPERTIES);
         $productsWithFilteredValues = $this->filterChannels($productsWithFilteredValues, $filters['channels'] ?? null);
-        $productsWithFilteredValues = $this->filterCurrencies($productsWithFilteredValues, $filters['currencies'] ?? null);
 
-        return $productsWithFilteredValues;
+        return $this->filterCurrencies($productsWithFilteredValues, $filters['currencies'] ?? null);
     }
 
     /**
