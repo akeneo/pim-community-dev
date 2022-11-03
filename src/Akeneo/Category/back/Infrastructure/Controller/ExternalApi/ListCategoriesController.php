@@ -6,11 +6,11 @@ use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Tool\Component\Api\Exception\PaginationParametersException;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Akeneo\Tool\Component\Api\Pagination\ParameterValidatorInterface;
-use Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -32,7 +32,7 @@ class ListCategoriesController extends AbstractController
 
     /**
      * @param Request $request
-     * @return JsonResponse
+     * @return Response|JsonResponse
      * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
      *
      * @AclAncestor("pim_api_category_list")
@@ -40,9 +40,7 @@ class ListCategoriesController extends AbstractController
     public function __invoke(Request $request)
     {
         if (!$this->featureFlags->isEnabled('enriched_category')) {
-            $response = $this->forward('pim_api.controller.category::listAction');
-
-            return new JsonResponse(json_decode($response->getContent(), true));
+            return $this->forward('pim_api.controller.category::listAction');
         }
 
         try {
@@ -85,6 +83,7 @@ class ListCategoriesController extends AbstractController
         }
 
         $paginatedCategories = $this->paginator->paginate(
+            // TODO: Adapt normalizer
             $this->normalizer->normalize(
                 $categories,
                 'external_api',
