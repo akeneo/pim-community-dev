@@ -31,6 +31,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
 
         $this->commandBus = self::getContainer()->get(CommandBus::class);
 
+        $this->disableExperimentalTestDatabase();
         $this->purgeDataAndLoadMinimalCatalog();
 
         $this->createUser('admin', ['IT support'], ['ROLE_ADMINISTRATOR']);
