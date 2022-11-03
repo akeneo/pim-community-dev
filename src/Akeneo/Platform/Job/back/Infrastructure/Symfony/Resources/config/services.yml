@@ -11,3 +11,13 @@ services:
 
     akeneo_platform.saver.job_instance:
         alias: 'akeneo_batch.saver.job_instance'
+
+    Akeneo\Platform\Job\Domain\JobFileStorerInterface:
+        class: Akeneo\Platform\Job\Infrastructure\FileStorage\JobFileStorer
+        arguments:
+            - '@oneup_flysystem.jobs_storage_filesystem'
+
+    Akeneo\Platform\Job\Application\LaunchJobInstance\GenerateJobExecutionUrlInterface:
+        class: Akeneo\Platform\Job\Infrastructure\Routing\GenerateJobExecutionUrl
+        arguments:
+            - '@router'

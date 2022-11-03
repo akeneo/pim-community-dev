@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\BatchQueueBundle\Command;
 
-use Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler;
+use Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandlerInterface;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -40,7 +40,7 @@ final class JobExecutionWatchdogCommand extends Command
         private JobExecutionManager $executionManager,
         private LoggerInterface $logger,
         private string $projectDir,
-        private CreateJobExecutionHandler $createJobExecutionHandler,
+        private CreateJobExecutionHandlerInterface $createJobExecutionHandler,
         protected LockFactory $lockFactory,
     ) {
         parent::__construct();

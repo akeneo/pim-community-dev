@@ -44,10 +44,9 @@ class UrlValidatorSpec extends ObjectBehavior
 
     public function it_allows_null_value(
         ExecutionContextInterface $context,
-        ConstraintViolationListInterface $constraintViolationList
     ): void {
         $constraint = new Url(['attributeCode' => 'a_code']);
-        $context->getViolations()->willReturn($constraintViolationList);
+        $context->getViolations()->willReturn(new ConstraintViolationList());
         $context
             ->buildViolation(Argument::any())
             ->shouldNotBeCalled();
@@ -57,10 +56,9 @@ class UrlValidatorSpec extends ObjectBehavior
 
     public function it_allows_empty_value(
         ExecutionContextInterface $context,
-        ConstraintViolationListInterface $constraintViolationList
     ): void {
         $constraint = new Url(['attributeCode' => 'a_code']);
-        $context->getViolations()->willReturn($constraintViolationList);
+        $context->getViolations()->willReturn(new ConstraintViolationList());
 
         $context
             ->buildViolation(Argument::any())
