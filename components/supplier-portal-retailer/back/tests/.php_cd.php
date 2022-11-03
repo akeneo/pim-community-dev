@@ -140,6 +140,7 @@ $rules = [
             // PIM coupling
             'Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification',
             'Akeneo\Platform\Bundle\NotificationBundle\Notifier',
+            'Akeneo\Tool\Component\Batch\Model\StepExecution',
             'Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker',
             'Akeneo\Tool\Component\FileStorage\FilesystemProvider',
             'Akeneo\Test\Acceptance\User\InMemoryUserRepository',
@@ -150,6 +151,7 @@ $rules = [
             'League\Flysystem\UnableToCheckFileExistence',
             'League\Flysystem\UnableToCreateDirectory',
             'League\Flysystem\UnableToReadFile',
+            'League\Flysystem\UnableToDeleteFile',
             'League\Flysystem\UnableToWriteFile',
             'PHPUnit\Framework',
             'Psr\Log\NullLogger',
