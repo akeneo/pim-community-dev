@@ -73,21 +73,21 @@ final class GetMappedProductsHandler
                 $mappedProduct = [];
 
                 /** @var string $key */
-                foreach (\array_keys($productMappingSchema['properties']) as $key) {
+                foreach (\array_keys($productMappingSchema['properties']) as $target) {
                     $sourceValue = '';
 
-                    if ('uuid' === $key) {
+                    if ('uuid' === $target) {
                         $sourceValue = $product['uuid'];
-                    } elseif (\array_key_exists($key, $productMapping)) {
+                    } elseif (\array_key_exists($target, $productMapping)) {
                         $sourceValue = $this->getProductAttributeValue(
                             $product,
-                            $productMapping[$key]['source'],
-                            $productMapping[$key]['locale'],
-                            $productMapping[$key]['scope']
+                            $productMapping[$target]['source'],
+                            $productMapping[$target]['locale'],
+                            $productMapping[$target]['scope']
                         );
                     }
 
-                    $mappedProduct[$key] = $sourceValue;
+                    $mappedProduct[$target] = $sourceValue;
                 }
 
                 return $mappedProduct;

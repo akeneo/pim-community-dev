@@ -735,7 +735,10 @@ class ApiContext implements Context
                     },
                     "title": {
                       "type": "string"
-                    }
+                    },
+                    "description": {
+                      "type": "string"
+                    },
                   }
                 }
                 JSON_WRAP,
@@ -840,10 +843,12 @@ class ApiContext implements Context
             [
                 'uuid' => '21a28f70-9cc8-4470-904f-aeda52764f73',
                 'title' => 'T-shirt blue',
+                'description' => '',
             ],
             [
                 'uuid' => 'a43209b0-cd39-4faf-ad1b-988859906030',
                 'title' => 'T-shirt red',
+                'description' => '',
             ],
         ];
 
