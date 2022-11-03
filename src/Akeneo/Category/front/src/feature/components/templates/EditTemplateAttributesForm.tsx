@@ -1,10 +1,9 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {SectionTitle, Table} from 'akeneo-design-system';
-import {LocaleSelector, useTranslate} from '@akeneo-pim-community/shared';
+import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {Attribute} from '../../models';
 import {getLabelFromAttribute} from '../attributes/templateAttributesFactory';
-import {EditCategoryContext} from '../providers';
 import {isEqual} from 'lodash/fp';
 
 interface Props {
@@ -20,8 +19,8 @@ const FormContainer = styled.div`
 `;
 
 export const EditTemplateAttributesForm = ({attributes}: Props) => {
-  const [locale, setLocale] = useState('en_US');
-  const {locales} = useContext(EditCategoryContext);
+  const userContext = useUserContext();
+  const catalogLocale = userContext.get('catalogLocale');
   const translate = useTranslate();
 
   const [selectedAttribute, setSelectedAttribute] = useState<Attribute>();
@@ -36,8 +35,6 @@ export const EditTemplateAttributesForm = ({attributes}: Props) => {
     <FormContainer>
       <SectionTitle>
         <SectionTitle.Title>{translate('Attributes')}</SectionTitle.Title>
-        <SectionTitle.Spacer />
-        <LocaleSelector value={locale} values={Object.values(locales)} onChange={setLocale} />
       </SectionTitle>
       <Container>
         <TemplatesAttributeTable>
@@ -55,7 +52,7 @@ export const EditTemplateAttributesForm = ({attributes}: Props) => {
                 }}
                 isSelected={isEqual(attribute, selectedAttribute)}
               >
-                <Table.Cell rowTitle>{getLabelFromAttribute(attribute, locale)}</Table.Cell>
+                <Table.Cell rowTitle>{getLabelFromAttribute(attribute, catalogLocale)}</Table.Cell>
                 <Table.Cell>{attribute.code}</Table.Cell>
                 <Table.Cell>{attribute.type}</Table.Cell>
               </Table.Row>
@@ -66,7 +63,7 @@ export const EditTemplateAttributesForm = ({attributes}: Props) => {
           <SectionTitle>
             <SectionTitle.Title>{translate('akeneo.category.template.attribute.description_title')}</SectionTitle.Title>
           </SectionTitle>
-          {selectedAttribute && <h3>{getLabelFromAttribute(selectedAttribute, locale)}</h3>}
+          {selectedAttribute && <h3>{getLabelFromAttribute(selectedAttribute, catalogLocale)}</h3>}
         </DescriptionPanel>
       </Container>
     </FormContainer>
