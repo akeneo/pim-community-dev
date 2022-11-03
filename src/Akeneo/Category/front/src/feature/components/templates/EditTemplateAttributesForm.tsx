@@ -22,14 +22,6 @@ export const EditTemplateAttributesForm = ({attributes}: Props) => {
   const [locale, setLocale] = useState('en_US');
   const {locales} = useContext(EditCategoryContext);
   const translate = useTranslate();
-  // TODO uncomment code for GRF-556
-  // const [selectedAttribute, setSelectedAttribute] = useState<Attribute>();
-
-  // useEffect(() => {
-  //   if (!selectedAttribute && attributes && attributes.length > 0) {
-  //     setSelectedAttribute(attributes[0]);
-  //   }
-  // }, [attributes, selectedAttribute]);
 
   return (
     <FormContainer>
@@ -38,9 +30,7 @@ export const EditTemplateAttributesForm = ({attributes}: Props) => {
         <SectionTitle.Spacer />
         <LocaleSelector value={locale} values={Object.values(locales)} onChange={setLocale} />
       </SectionTitle>
-      {/*<Container>*/}
       <Table>
-        {/*  <TemplatesAttributeTable>*/}
         <Table.Header>
           <Table.HeaderCell>{translate('akeneo.category.template_list.columns.header')}</Table.HeaderCell>
           <Table.HeaderCell>{translate('akeneo.category.template_list.columns.code')}</Table.HeaderCell>
@@ -50,10 +40,6 @@ export const EditTemplateAttributesForm = ({attributes}: Props) => {
           {attributes?.map((attribute: Attribute) => (
             <Table.Row
               key={attribute.uuid}
-              // onClick={() => {
-              //   setSelectedAttribute(attribute);
-              // }}
-              // isSelected={isEqual(attribute, selectedAttribute)}
             >
               <Table.Cell rowTitle>{getLabelFromAttribute(attribute, locale)}</Table.Cell>
               <Table.Cell>{attribute.code}</Table.Cell>
@@ -62,27 +48,6 @@ export const EditTemplateAttributesForm = ({attributes}: Props) => {
           ))}
         </Table.Body>
       </Table>
-      {/*</TemplatesAttributeTable>*/}
-      {/*<DescriptionPanel>*/}
-      {/*  <SectionTitle>*/}
-      {/*    <SectionTitle.Title>{translate('akeneo.category.template.attribute.description_title')}</SectionTitle.Title>*/}
-      {/*  </SectionTitle>*/}
-      {/*  {selectedAttribute && <h3>{getLabelFromAttribute(selectedAttribute, locale)}</h3>}*/}
-      {/*</DescriptionPanel>*/}
-      {/*</Container>*/}
     </FormContainer>
   );
 };
-
-// const Container = styled.div`
-//   display: flex;
-//   gap: 40px;
-//   padding-top: 10px;
-// `;
-// const TemplatesAttributeTable = styled(Table)`
-//   flex-basis: 60%;
-//   flex-grow: 1;
-// `;
-// const DescriptionPanel = styled.div`
-//   flex-basis: 40%;
-// `;
