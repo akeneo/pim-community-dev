@@ -30,3 +30,8 @@ extensions:
         parent: pim-product-edit-form
         targetZone: meta
         position: 90
+
+    pim-product-edit-form-liveblocks:
+        module: akeneo/liveblocks
+        parent: pim-product-edit-form
+        targetZone: user-menu

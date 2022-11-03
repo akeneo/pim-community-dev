@@ -38,3 +38,5 @@ config:
         ## Attribute group
         akeneo/data-quality-insights/infrastructure/attribute-group/dqi-activation: akeneodataqualityinsights/js/infrastructure/attribute-group/dqi-activation.tsx
 
+        ## Liveblocks
+        akeneo/liveblocks: akeneodataqualityinsights/js/infrastructure/liveblocks/view.ts

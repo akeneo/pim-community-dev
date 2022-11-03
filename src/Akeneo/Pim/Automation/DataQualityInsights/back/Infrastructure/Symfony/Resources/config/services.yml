@@ -285,3 +285,7 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Hydrator\hydrateCriterionEvaluationResult:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultIds'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\LiveblocksContentSecurityPolicyProvider:
+        tags:
+            - { name: akeneo.pim.security.content_security_policy_provider }

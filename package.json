@@ -59,6 +59,8 @@
     "url": "https://github.com/akeneo/pim-community-dev/issues"
   },
   "devDependencies": {
+    "@liveblocks/client": "^0.19.0",
+    "@liveblocks/react": "^0.19.0",
     "@babel/core": "^7.3.4",
     "@babel/preset-env": "^7.3.4",
     "@babel/preset-react": "^7.10.4",
