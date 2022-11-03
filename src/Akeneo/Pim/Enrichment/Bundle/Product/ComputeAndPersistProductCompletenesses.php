@@ -81,7 +81,7 @@ class ComputeAndPersistProductCompletenesses
                         $previousProductCompleteness?->requiredCount(),
                         $newProductCompleteness->requiredCount(),
                         $previousProductCompleteness?->missingCount(),
-                        $newProductCompleteness->missingCount(),
+                        $newProductCompleteness->missingAttributesCount(),
                         $previousProductCompleteness?->ratio(),
                         $newProductCompleteness->ratio()
                     );
