@@ -95,7 +95,7 @@ class ProductRuleExecutionSubscriberSpec extends ObjectBehavior
         $this->postSave(new SavedSubjectsEvent(new RuleDefinition(), [new Product(), new ProductModel()]));
     }
 
-    function it_(
+    function it_throws_a_job_interrupted_exception_after_saving_when_job_is_stopping()(
         StepExecution $stepExecution,
         JobRepositoryInterface $jobRepository,
         JobStopper $jobStopper,
