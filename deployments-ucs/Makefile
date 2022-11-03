@@ -238,7 +238,6 @@ generate_argocd_application: $(INSTANCE_DIR)
 
 .PHONY: deploy_tenant_argocd
 deploy_tenant_argocd:
-	yq w -i $(INSTANCE_DIR)/tenant-application.yaml spec.source.helm.valueFiles[+] values-$(INSTANCE_NAME)-ci.yaml
 	kubectl apply -f $(INSTANCE_DIR)/tenant-application.yaml -n argocd
 
 .PHONY: deploy_tenant_go

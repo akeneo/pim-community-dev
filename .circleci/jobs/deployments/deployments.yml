@@ -748,10 +748,6 @@ jobs:
                   command: |
                       echo export INSTANCE_NAME="${INSTANCE_NAME}" >> persisted_env_vars
                       echo export CIRCLE_BRANCH_LOWER="${CIRCLE_BRANCH_LOWER}" >> persisted_env_vars
-            - persist_to_workspace:
-                  root: ~/
-                  paths:
-                      - project/persisted_env_vars
             - run:
                   name: Deploy Tenant with Timmy
                   command: |
@@ -768,6 +764,10 @@ jobs:
                       echo ${JSON_BODY_STRING}
                       curl -m 3610 -X POST ${FUNCTION_URL} -H "Authorization: bearer $(gcloud auth print-identity-token)" -H "Content-Type: application/json" -d ${JSON_BODY_STRING} || TENANT_STATUS_CODE=1
                       exit ${TENANT_STATUS_CODE}
+            - persist_to_workspace:
+                  root: ~/
+                  paths:
+                      - project/persisted_env_vars
 
     deploy_tenant:
         parameters:
@@ -836,9 +836,9 @@ jobs:
                   rm -rf /tmp/pim-saas-k8s-artifacts/tenant
                   mv /tmp/pim-enterprise-dev/deployments-ucs/tenant /tmp/pim-saas-k8s-artifacts/tenant
 
-                  ## Create the values.yaml (values.yaml overide by values-${INSTANCE_NAME}-ci.yaml)
-                  cp /tmp/pim-enterprise-dev/deployments-ucs/config/values-tenant-ci.yaml /tmp/pim-saas-k8s-artifacts/tenant/values-${INSTANCE_NAME}-ci.yaml
-                  yq w -i /tmp/pim-saas-k8s-artifacts/tenant/values-${INSTANCE_NAME}-ci.yaml image.pim.tag "${IMAGE_TAG}"
+                  ## Update the values.yaml with the correct image tag to test
+                  yq w -i /tmp/pim-enterprise-dev/deployments-ucs/config/values-tenant-ci.yaml image.pim.tag "${IMAGE_TAG}"
+                  yq m -i -x /tmp/pim-saas-k8s-artifacts/tenant/values.yaml /tmp/pim-enterprise-dev/deployments-ucs/config/values-tenant-ci.yaml
 
                   ## Charts
                   yq w -i /tmp/pim-saas-k8s-artifacts/tenant/Chart.yaml appVersion ${IMAGE_TAG}
