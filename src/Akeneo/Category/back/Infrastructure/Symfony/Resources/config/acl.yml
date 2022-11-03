@@ -32,14 +32,14 @@ pim_enrich_product_category_template:
   type: action
   label: pim_enrich.acl.category.template
   group_name: pim_enrich.acl_group.category
-  order: 6
+  order: 7
   feature: enriched_category
 
 pim_enrich_product_category_edit_attributes:
   type: action
   label: pim_enrich.acl.category.edit_attributes
   group_name: pim_enrich.acl_group.category
-  order: 7
+  order: 8
   feature: enriched_category
 
 pim_enrich_product_category_order_trees:
