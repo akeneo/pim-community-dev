@@ -8,7 +8,6 @@ use Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\ElasticsearchCh
 use Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\FileStorageChecker;
 use Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\MysqlChecker;
 use Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\SmtpChecker;
-use Akeneo\Platform\Component\Monitoring\Exception\StatusCheckException;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use PHPUnit\Framework\Assert;
@@ -18,6 +17,9 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportException;
+use Symfony\Component\Mailer\Transport\Smtp\SmtpTransport;
+use Symfony\Component\Mailer\Transport\TransportFactoryInterface;
 
 final class ControllerIntegration extends KernelTestCase
 {
@@ -34,7 +36,17 @@ final class ControllerIntegration extends KernelTestCase
             'X-AUTH-TOKEN' => 'my_auth_token',
         ]);
 
-        $smtpCheckerKo = new SmtpChecker($this->createMock(\Swift_Transport::class), $this->createMock(LoggerInterface::class));
+        $transportMock = $this->createMock(SmtpTransport::class);
+        $transportMock->method('executeCommand')->willThrowException(new TransportException('ping error'));
+        $transportFactoryMock = $this->createConfiguredMock(TransportFactoryInterface::class, [
+            'create' => $transportMock,
+        ]);
+
+        $smtpCheckerKo = new SmtpChecker(
+            $transportFactoryMock,
+            'smtp://null',
+            $this->createMock(LoggerInterface::class)
+        );
 
         $this->controller = new Controller(
             self::getContainer()->get(MysqlChecker::class),
@@ -73,7 +85,7 @@ final class ControllerIntegration extends KernelTestCase
                 'smtp' => [
                     'ok' => false,
                     'optional' => true,
-                    'message' => 'Unable to ping the mailer transport.',
+                    'message' => 'Unable to ping the mailer transport: "ping error".',
                 ],
                 'pub_sub' => [
                     'ok' => true,
@@ -113,7 +125,7 @@ final class ControllerIntegration extends KernelTestCase
                 'smtp' => [
                     'ok' => false,
                     'optional' => true,
-                    'message' => 'Unable to ping the mailer transport.',
+                    'message' => 'Unable to ping the mailer transport: "ping error".',
                 ],
                 'pub_sub' => [
                     'ok' => true,
@@ -137,11 +149,22 @@ final class ControllerIntegration extends KernelTestCase
         $mockConnection->method('executeQuery')->willThrowException(new DBALException('mock message'));
         $mysqlCheckerKo = new MysqlChecker($mockConnection, $this->createMock(LoggerInterface::class));
 
+        $transportMock = $this->createMock(SmtpTransport::class);
+        $transportFactoryMock = $this->createConfiguredMock(TransportFactoryInterface::class, [
+            'create' => $transportMock,
+        ]);
+
+        $smtpChecker = new SmtpChecker(
+            $transportFactoryMock,
+            'smtp://null',
+            $this->createMock(LoggerInterface::class)
+        );
+
         $this->controller = new Controller(
             $mysqlCheckerKo,
             self::getContainer()->get(ElasticsearchChecker::class),
             self::getContainer()->get(FileStorageChecker::class),
-            self::getContainer()->get(SmtpChecker::class),
+            $smtpChecker,
             self::getContainer()->get('akeneo_monitoring.status_checker.pub_sub'),
             self::getContainer()->get('logger'),
             'my_auth_token'
