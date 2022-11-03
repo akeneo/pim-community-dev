@@ -61,8 +61,8 @@ $rules = [
             // Supplier Portal Supplier coupling
 
             // PIM coupling
-            'Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler',
-            'Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandler',
+            'Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandlerInterface',
+            'Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandlerInterface',
             'Akeneo\Tool\Component\Batch\Event\EventInterface',
             'Akeneo\Tool\Component\Batch\Event\InvalidItemEvent',
             'Akeneo\Tool\Component\Batch\Item\FileInvalidItem',
