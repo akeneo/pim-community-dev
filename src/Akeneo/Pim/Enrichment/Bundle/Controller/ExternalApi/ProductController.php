@@ -203,7 +203,7 @@ class ProductController
                 throw new ObjectNotFoundException();
             }
 
-            $productUuid = Uuid::fromString($uuidsFromIdentifiers[$code]);
+            $productUuid = $uuidsFromIdentifiers[$code];
             $product = $connectorProductsQuery->fromProductUuid($productUuid, $user->getId());
             $this->eventDispatcher->dispatch(new ReadProductsEvent(1));
 

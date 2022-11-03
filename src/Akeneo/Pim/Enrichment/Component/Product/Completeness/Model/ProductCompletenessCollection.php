@@ -27,7 +27,7 @@ final class ProductCompletenessCollection implements \IteratorAggregate, \Counta
         return $this->productUuid;
     }
 
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->completenesses);
     }
