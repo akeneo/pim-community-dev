@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\UnableToDeleteIdentifierGeneratorException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\UnableToFetchIdentifierGeneratorException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\UnableToSaveIdentifierGeneratorException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
@@ -86,6 +87,34 @@ SQL;
             return null;
         }
 
+        return $this->fromDatabaseToModel($result);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAll(): array
+    {
+        $sql = <<<SQL
+SELECT BIN_TO_UUID(uuid) AS uuid, code, conditions, structure, labels, target, delimiter
+FROM pim_catalog_identifier_generator
+SQL;
+        $stmt = $this->connection->prepare($sql);
+
+        try {
+            $result = $stmt->executeQuery()->fetchAllAssociative();
+        } catch (DriverException) {
+            throw new UnableToFetchIdentifierGeneratorException('Cannot fetch identifiers generators');
+        }
+
+        return array_map(fn ($data) => $this->fromDatabaseToModel($data), $result);
+    }
+
+    /**
+     * @param array<mixed> $result
+     */
+    private function fromDatabaseToModel(array $result): IdentifierGenerator
+    {
         Assert::string($result['uuid']);
         Assert::string($result['code']);
         Assert::string($result['conditions']);
@@ -119,5 +148,25 @@ SQL;
     public function count(): int
     {
         return \intval($this->connection->fetchOne('SELECT COUNT(1) FROM pim_catalog_identifier_generator'));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function delete(string $identifierGeneratorCode): void
+    {
+        $sql = <<<SQL
+DELETE FROM pim_catalog_identifier_generator
+WHERE code=:code
+LIMIT 1
+SQL;
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindParam('code', $identifierGeneratorCode, \PDO::PARAM_STR);
+
+        try {
+            $stmt->executeQuery();
+        } catch (DriverException) {
+            throw new UnableToDeleteIdentifierGeneratorException(sprintf('Cannot delete the identifier generator "%s"', $identifierGeneratorCode));
+        }
     }
 }

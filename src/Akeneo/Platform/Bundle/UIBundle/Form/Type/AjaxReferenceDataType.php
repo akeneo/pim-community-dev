@@ -14,7 +14,7 @@ class AjaxReferenceDataType extends AjaxEntityType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'pim_ajax_reference_data';
     }

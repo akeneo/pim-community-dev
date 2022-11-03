@@ -6,7 +6,17 @@ akeneo_identifier_generator_get_identifier_attributes:
     controller: Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetIdentifierAttributesController
     methods: [GET]
 
+akeneo_identifier_generator_rest_list:
+    path: '/rest/identifier-generator'
+    controller: Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\ListIdentifierGeneratorController
+    methods: [GET]
+
 akeneo_identifier_generator_rest_create:
     path: '/rest/identifier-generator'
     controller: Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\CreateIdentifierGeneratorController
     methods: [POST]
+
+akeneo_identifier_generator_rest_delete:
+    path: '/rest/identifier-generator/{code}'
+    controller: Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\DeleteIdentifierGeneratorController
+    methods: [DELETE]

@@ -27,7 +27,7 @@ class InitDataQualityInsightsJobsSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             InstallerEvents::PRE_LOAD_FIXTURES => 'initJobs',

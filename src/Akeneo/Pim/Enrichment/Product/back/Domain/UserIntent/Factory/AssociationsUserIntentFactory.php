@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProductUuids;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
@@ -44,6 +45,9 @@ class AssociationsUserIntentFactory implements UserIntentFactory
             }
             if (\array_key_exists('products', $associations)) {
                 $userIntents[] = new ReplaceAssociatedProducts((string) $associationType, $associations['products']);
+            }
+            if (\array_key_exists('product_uuids', $associations)) {
+                $userIntents[] = new ReplaceAssociatedProductUuids((string) $associationType, $associations['product_uuids']);
             }
             if (\array_key_exists('product_models', $associations)) {
                 $userIntents[] = new ReplaceAssociatedProductModels((string) $associationType, $associations['product_models']);

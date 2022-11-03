@@ -52,7 +52,7 @@ class DateTimeRangeFilterTypeTest extends AbstractTypeTestCase
 
     public function testGetName()
     {
-        $this->assertEquals(DateTimeRangeFilterType::NAME, $this->type->getName());
+        $this->assertEquals(DateTimeRangeFilterType::NAME, $this->type->getBlockPrefix());
     }
 
     /**

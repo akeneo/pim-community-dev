@@ -42,7 +42,7 @@ class CommentNormalizer implements NormalizerInterface, NormalizerAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof CommentInterface && $format === 'standard';
     }
@@ -82,7 +82,7 @@ class CommentNormalizer implements NormalizerInterface, NormalizerAwareInterface
 
         return [
 
-            'username' => $comment->getAuthor()->getUsername(),
+            'username' => $comment->getAuthor()->getUserIdentifier(),
             'fullName' => sprintf(
                 '%s %s',
                 $comment->getAuthor()->getFirstName(),

@@ -19,7 +19,7 @@ class AttributePropertyType extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }
@@ -27,7 +27,7 @@ class AttributePropertyType extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function getRequiredOptions()
+    public function getRequiredOptions(): array
     {
         return ['properties', 'type'];
     }
@@ -35,7 +35,7 @@ class AttributePropertyType extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'pim_structure_attribute_property_type_validator';
     }

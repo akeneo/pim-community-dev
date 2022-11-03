@@ -34,7 +34,7 @@ class ChoiceFilterTypeTest extends AbstractTypeTestCase
 
     public function testGetName()
     {
-        $this->assertEquals(ChoiceFilterType::NAME, $this->type->getName());
+        $this->assertEquals(ChoiceFilterType::NAME, $this->type->getBlockPrefix());
     }
 
     /**

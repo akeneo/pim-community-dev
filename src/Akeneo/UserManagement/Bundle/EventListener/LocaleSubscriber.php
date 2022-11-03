@@ -86,7 +86,7 @@ class LocaleSubscriber implements EventSubscriberInterface
     /**
      * @return array
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             UserEvent::POST_UPDATE => [['onPostUpdate']],

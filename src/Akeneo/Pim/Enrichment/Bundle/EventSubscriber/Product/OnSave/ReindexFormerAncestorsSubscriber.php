@@ -37,7 +37,7 @@ class ReindexFormerAncestorsSubscriber implements EventSubscriberInterface
         $this->productModelIndexer = $productModelIndexer;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             ParentHasBeenRemovedFromVariantProduct::class => 'store',

@@ -56,22 +56,22 @@ class ProductStandardSortedCollectionIntegration extends TestCase
             'associations' => [
                 'PACK' => [
                     'groups' => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
                 'SUBSTITUTION' => [
                     'groups' => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
                 'UPSELL' => [
                     'groups' => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
                 'X_SELL' => [
                     'groups' => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
             ],
@@ -113,22 +113,22 @@ class ProductStandardSortedCollectionIntegration extends TestCase
             'associations' => [
                 'PACK' => [
                     'groups' => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
                 'SUBSTITUTION' => [
                     'groups' => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
                 'UPSELL' => [
                     'groups' => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
                 'X_SELL' => [
                     'groups' => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
             ],
@@ -170,22 +170,22 @@ class ProductStandardSortedCollectionIntegration extends TestCase
             'associations' => [
                 'PACK' => [
                     'groups' => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
                 'SUBSTITUTION' => [
                     'groups' => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
                 'UPSELL' => [
                     'groups' => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
                 'X_SELL' => [
                     'groups' => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
             ],

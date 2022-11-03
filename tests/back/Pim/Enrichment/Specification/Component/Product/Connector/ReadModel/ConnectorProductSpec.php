@@ -103,9 +103,10 @@ class ConnectorProductSpec extends ObjectBehavior
         $connectorProduct->categoryCodes()->shouldReturn([]);
     }
 
-    function it_filters_associated_products_by_product_identifiers()
+    function it_filters_associated_products_by_product_uuids()
     {
-        $connectorProduct = $this->filterAssociatedProductsByProductIdentifiers(['product_code_1', 'product_code_7']);
+        $unknownUuid = '2e390798-7c62-4219-8591-85d26581b0f3';
+        $connectorProduct = $this->filterAssociatedProductsByProductUuids(['11cd5db0-c69f-4f12-819c-ab55240d5ac3', $unknownUuid]);
 
         $connectorProduct->associations()->shouldBeLike(
             [
@@ -298,7 +299,7 @@ class ConnectorProductSpec extends ObjectBehavior
             null
         );
 
-        $this->associatedProductIdentifiers()->shouldReturn([]);
+        $this->associatedProductUuids()->shouldReturn([]);
         $this->associatedProductModelCodes()->shouldReturn([]);
         $this->associatedWithQuantityProductIdentifiers()->shouldReturn([]);
         $this->associatedWithQuantityProductModelCodes()->shouldReturn([]);

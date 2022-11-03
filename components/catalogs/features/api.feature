@@ -57,19 +57,19 @@ Feature:
   Scenario: Get product's identifiers from a disabled catalog
     Given a disabled catalog
     When the external application retrieves the product's identifiers using the API
-    Then the response should contain an empty list
+    Then the response should contain an error message
 
   @database
   Scenario: Get product's uuids from a disabled catalog
     Given a disabled catalog
     When the external application retrieves the product's uuids using the API
-    Then the response should contain an empty list
+    Then the response should contain an error message
 
   @database
   Scenario: Get products from a disabled catalog
     Given a disabled catalog
     When the external application retrieves the products using the API
-    Then the response should contain an empty list
+    Then the response should contain an error message
 
   @database
   Scenario: Get product mapping schema of a catalog

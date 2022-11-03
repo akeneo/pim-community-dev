@@ -7,6 +7,7 @@ namespace Akeneo\Catalogs\Infrastructure\Controller\Public;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductsWithFilteredValuesQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Security\DenyAccessUnlessGrantedTrait;
 use Akeneo\Catalogs\Infrastructure\Security\GetCurrentUsernameTrait;
+use Akeneo\Catalogs\ServiceAPI\Exception\CatalogDisabledException;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
@@ -51,9 +52,34 @@ class GetProductsAction
         $this->denyAccessUnlessOwnerOfCatalog($catalog, $this->getCurrentUsername());
 
         [$searchAfter, $limit, $updatedAfter, $updatedBefore] = $this->getParameters($request);
-        $products = $this->getProducts($catalog, $searchAfter, $limit, $updatedAfter, $updatedBefore);
 
-        return new JsonResponse($this->paginate($catalog, $products, $searchAfter, $limit, $updatedAfter, $updatedBefore), Response::HTTP_OK);
+        try {
+            $products = $this->queryBus->execute(new GetProductsQuery(
+                $catalog->getId(),
+                $searchAfter,
+                $limit,
+                $updatedAfter,
+                $updatedBefore,
+            ));
+        } catch (ValidationFailedException $e) {
+            throw new ViolationHttpException($e->getViolations());
+        } catch (CatalogDisabledException) {
+            return new JsonResponse(
+                [
+                    'message' => \sprintf(
+                        'No products to synchronize. The catalog %s has been disabled on the PIM side.' .
+                        ' Note that you can get catalogs status with the GET /api/rest/v1/catalogs endpoint.',
+                        $catalog->getId()
+                    )
+                ],
+                Response::HTTP_OK,
+            );
+        }
+
+        return new JsonResponse(
+            $this->paginate($catalog, $products, $searchAfter, $limit, $updatedAfter, $updatedBefore),
+            Response::HTTP_OK,
+        );
     }
 
     private function getCatalog(string $id): Catalog
@@ -94,28 +120,6 @@ class GetProductsAction
         }
 
         return [$searchAfter, $limit, $updatedAfter, $updatedBefore];
-    }
-
-    /**
-     * @return array<Product>
-     */
-    private function getProducts(Catalog $catalog, ?string $searchAfter, int $limit, ?string $updatedAfter, ?string $updatedBefore): array
-    {
-        if (!$catalog->isEnabled()) {
-            return [];
-        }
-
-        try {
-            return $this->queryBus->execute(new GetProductsQuery(
-                $catalog->getId(),
-                $searchAfter,
-                $limit,
-                $updatedAfter,
-                $updatedBefore,
-            ));
-        } catch (ValidationFailedException $e) {
-            throw new ViolationHttpException($e->getViolations());
-        }
     }
 
     /**
