@@ -739,7 +739,7 @@ class ApiContext implements Context
                     },
                     "description": {
                       "type": "string"
-                    },
+                    }
                   }
                 }
                 JSON_WRAP,
