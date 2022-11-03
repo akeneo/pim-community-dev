@@ -207,12 +207,13 @@ const useCategoryTreeNode = (id: number) => {
   // When a category is created inside the node, force reload children and open it.
   const onCreateCategory = useCallback(() => {
     if (node) {
-      const updatedNodes = update(nodes, {
-        ...node,
-        childrenStatus: 'to-reload',
+      setNodes((nodes) => {
+        const updatedNodes = update(nodes, {
+          ...node,
+          childrenStatus: 'to-reload',
+        });
+        return [...updatedNodes];
       });
-
-      setNodes([...updatedNodes]);
       open();
     }
   }, [node]);
@@ -225,19 +226,19 @@ const useCategoryTreeNode = (id: number) => {
       return buildTreeNodeFromCategoryTree(convertToCategoryTree(child), node.identifier);
     });
 
-    const updatedNodes = update(nodes, {
-      ...node,
-      childrenIds: newChildren.map(child => child.identifier),
-      childrenStatus: 'loaded',
-      type: node.type !== 'root' ? (newChildren.length > 0 ? 'node' : 'leaf') : 'root',
-    });
+    setNodes((nodes: TreeNode<CategoryTreeModel>[]) => {
+      const updatedNodes = update(nodes, {
+        ...node,
+        childrenIds: newChildren.map(child => child.identifier),
+        childrenStatus: 'loaded',
+        type: node.type !== 'root' ? (newChildren.length > 0 ? 'node' : 'leaf') : 'root',
+      });
 
-    setNodes(
-      arrayUnique<TreeNode<CategoryTreeModel>>(
-        [...updatedNodes, ...newChildren],
-        (node, currentNode) => node.identifier === currentNode.identifier
-      )
-    );
+      return arrayUnique<TreeNode<CategoryTreeModel>>(
+          [...updatedNodes, ...newChildren],
+          (node, currentNode) => node.identifier === currentNode.identifier
+      );
+    });
   }, [childrenData]);
 
   useEffect(() => {
