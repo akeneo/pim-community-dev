@@ -22,7 +22,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class ListCategoriesController extends AbstractController
 {
     public function __construct(
-        private ApiResourceRepositoryInterface $repository,
         private NormalizerInterface $normalizer,
         private PaginatorInterface $paginator,
         private ParameterValidatorInterface $parameterValidator,
