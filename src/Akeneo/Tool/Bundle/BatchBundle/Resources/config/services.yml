@@ -123,13 +123,15 @@ services:
         tags:
           - { name: kernel.event_listener, event: console.command }
 
-    Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandler:
+    Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandlerInterface:
+        class: Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandler
         arguments:
             - '@akeneo_batch.logger.batch_log_handler'
             - '@akeneo_batch.job_repository'
             - '@akeneo_batch.job.job_registry'
 
-    Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler:
+    Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandlerInterface:
+        class: Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler
         arguments:
             - '@akeneo_batch.job_repository'
             - '@doctrine'
