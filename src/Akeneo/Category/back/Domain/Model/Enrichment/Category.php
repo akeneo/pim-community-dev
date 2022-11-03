@@ -8,6 +8,7 @@ use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\PermissionCollection;
+use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
 
 /**
@@ -19,6 +20,7 @@ class Category
     public function __construct(
         private ?CategoryId $id,
         private Code $code,
+        private ?TemplateUuid $templateUuid,
         private ?LabelCollection $labels = null,
         private ?CategoryId $parentId = null,
         private ?CategoryId $rootId = null,
@@ -35,25 +37,27 @@ class Category
      *     parent_id: int|null,
      *     root_id: int|null,
      *     value_collection: string|null,
-     *     permissions: string|null
-     * } $result
+     *     permissions: string|null,
+     *     template_uuid: string|null
+     * } $category
      */
-    public static function fromDatabase(array $result): self
+    public static function fromDatabase(array $category): self
     {
-        $id = new CategoryId((int) $result['id']);
-        $code = new Code($result['code']);
-        $labelCollection = $result['translations'] ?
+        $id = new CategoryId((int) $category['id']);
+        $code = new Code($category['code']);
+        $labelCollection = $category['translations'] ?
             LabelCollection::fromArray(
-                json_decode($result['translations'], true, 512, JSON_THROW_ON_ERROR),
+                json_decode($category['translations'], true, 512, JSON_THROW_ON_ERROR),
             ) : null;
-        $parentId = $result['parent_id'] ? new CategoryId((int) $result['parent_id']) : null;
-        $rootId = $result['root_id'] ? new CategoryId((int) $result['root_id']) : null;
-        $attributes = $result['value_collection'] ?
-                ValueCollection::fromArray(json_decode($result['value_collection'], true)) : null;
-        $permissions = isset($result['permissions']) && $result['permissions'] ?
-            PermissionCollection::fromArray(json_decode($result['permissions'], true)) : null;
+        $parentId = $category['parent_id'] ? new CategoryId((int) $category['parent_id']) : null;
+        $rootId = $category['root_id'] ? new CategoryId((int) $category['root_id']) : null;
+        $attributes = $category['value_collection'] ?
+                ValueCollection::fromArray(json_decode($category['value_collection'], true)) : null;
+        $permissions = isset($category['permissions']) && $category['permissions'] ?
+            PermissionCollection::fromArray(json_decode($category['permissions'], true)) : null;
+        $templateUuid = isset($category['template_uuid']) ? TemplateUuid::fromString($category['template_uuid']) : null;
 
-        return new self($id, $code, $labelCollection, $parentId, $rootId, $attributes, $permissions);
+        return new self($id, $code, $templateUuid, $labelCollection, $parentId, $rootId, $attributes, $permissions);
     }
 
     public function getId(): ?CategoryId
@@ -107,11 +111,17 @@ class Category
         $this->attributes = $attributes;
     }
 
+    public function getTemplateUuid(): ?TemplateUuid
+    {
+        return $this->templateUuid;
+    }
+
     /**
      * @return array{
      *     id: int|null,
      *     parent: int|null,
      *     root_id: int | null,
+     *     template_uuid: string | null,
      *     properties: array{
      *       code: string,
      *       labels: array<string, string>|null
@@ -126,6 +136,7 @@ class Category
             'id' => $this->getId()?->getValue(),
             'parent' => $this->getParentId()?->getValue(),
             'root_id' => $this->getRootId()?->getValue(),
+            'template_uuid' => $this->getTemplateUuid()?->getValue(),
             'properties' => [
                 'code' => (string) $this->getCode(),
                 'labels' => $this->getLabels()?->normalize(),

@@ -64,9 +64,7 @@ const TemplatePage: FC = () => {
     [setActiveTab, switchTo]
   );
 
-  const {data: fetchedTemplate, status: templateFetchingStatus} = useTemplateByTemplateUuid({
-    uuid: templateId,
-  });
+  const {data: fetchedTemplate, status: templateFetchingStatus} = useTemplateByTemplateUuid(templateId);
 
   useEffect(() => {
     loadTree();
