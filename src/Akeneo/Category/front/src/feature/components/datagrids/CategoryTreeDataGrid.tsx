@@ -8,7 +8,6 @@ import {
   useRouter,
   useSecurity,
   useTranslate,
-  useUserContext,
 } from '@akeneo-pim-community/shared';
 import {CategoryTreeModel, Template} from '../../models';
 import styled from 'styled-components';
@@ -202,22 +201,23 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                   {displayCategoryTemplatesColumn && <Table.Cell>{tree.templateLabel}</Table.Cell>}
                   <Table.ActionCell>
                     {featureFlags.isEnabled('enriched_category') && isGranted('pim_enrich_product_category_template') && (
-                      <StyleButton
+                      <Button
                         ghost
                         level="tertiary"
                         size={'small'}
-                        onClick={() =>
-                          tree.templateUuid ? redirectToTemplate(tree.id, tree.templateUuid) : onCreateTemplate(tree)
+                        onClick={() => {
+                          tree.templateUuid ? redirectToTemplate(tree.id, tree.templateUuid) : onCreateTemplate(tree);
+                          }
                         }
                         disabled={!tree.hasOwnProperty('productsNumber')}
                       >
                         {translate(
                           tree.templateUuid ? 'akeneo.category.template.edit' : 'akeneo.category.template.create'
                         )}
-                      </StyleButton>
+                      </Button>
                     )}
                     {isGranted('pim_enrich_product_category_remove') && (
-                      <StyleButton
+                      <Button
                         ghost
                         level="danger"
                         size={'small'}
@@ -225,7 +225,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                         disabled={!tree.hasOwnProperty('productsNumber')}
                       >
                         {translate('akeneo.category.tree.delete')}
-                      </StyleButton>
+                      </Button>
                     )}
                   </Table.ActionCell>
                 </Table.Row>
@@ -252,10 +252,6 @@ const StyledSearch = styled(Search)`
 
 const StyleActionHeader = styled(Table.HeaderCell)<{isEnrichedCategoryEnabled: boolean}>`
   width: ${({isEnrichedCategoryEnabled}) => (isEnrichedCategoryEnabled ? '400px' : '50px')};
-`;
-
-const StyleButton = styled(Button)`
-  margin-right: 10px;
 `;
 
 export {CategoryTreesDataGrid};
