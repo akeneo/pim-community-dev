@@ -32,7 +32,7 @@ class LocaleIdentifierCollection implements \IteratorAggregate
     /**
      * {@inheritdoc}
      */
-    public function getIterator(): \ArrayIterator
+    public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->localeIdentifiers);
     }

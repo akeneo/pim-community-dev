@@ -65,9 +65,9 @@ final class GenerateHeadersFromFamilyCodes implements GenerateFlatHeadersFromFam
             $headers[] = FlatFileHeader::buildFromAttributeData(
                 $attributeData["code"],
                 $attributeData["attribute_type"],
-                ("1" === $attributeData["is_scopable"]),
+                ('1' === $attributeData["is_scopable"]),
                 $channelCode,
-                ("1" === $attributeData["is_localizable"]),
+                ('1' === $attributeData["is_localizable"]),
                 $grantedLocaleCodes,
                 $channelCurrencyCodes,
                 null !== $attributeData['specific_to_locales'] ? json_decode($attributeData['specific_to_locales'], true) : []

@@ -44,7 +44,7 @@ abstract class AbstractCursor implements CursorInterface
     /**
      * {@inheritdoc}
      */
-    public function current()
+    public function current(): mixed
     {
         if (null === $this->items) {
             $this->rewind();
@@ -56,7 +56,7 @@ abstract class AbstractCursor implements CursorInterface
     /**
      * {@inheritdoc}
      */
-    public function key()
+    public function key(): mixed
     {
         if (null === $this->items) {
             $this->rewind();
@@ -68,7 +68,7 @@ abstract class AbstractCursor implements CursorInterface
     /**
      * {@inheritdoc}
      */
-    public function valid()
+    public function valid(): bool
     {
         if (null === $this->items) {
             $this->rewind();
@@ -80,7 +80,7 @@ abstract class AbstractCursor implements CursorInterface
     /**
      * {@inheritdoc}
      */
-    public function count()
+    public function count(): int
     {
         if (null === $this->items) {
             $this->rewind();
