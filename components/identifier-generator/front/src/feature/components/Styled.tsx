@@ -8,8 +8,20 @@ const FormContainer = styled.div`
   margin-bottom: 20px;
 `;
 
+const FullPageCenteredContent = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+  & svg {
+    width: 500px;
+  }
+`;
+
 const Styled = {
   FormContainer,
+  FullPageCenteredContent,
 };
 
 export {Styled};
