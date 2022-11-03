@@ -66,6 +66,27 @@ abstract class Attribute
         ];
     }
 
+    public static function fromType(
+        AttributeType $type,
+        AttributeUuid $uuid,
+        AttributeCode $code,
+        AttributeOrder $order,
+        AttributeIsRequired $isRequired,
+        AttributeIsScopable $isScopable,
+        AttributeIsLocalizable $isLocalizable,
+        LabelCollection $labelCollection,
+        TemplateUuid $templateUuid,
+        AttributeAdditionalProperties $additionalProperties,
+    ): Attribute {
+        return match ((string) $type) {
+            AttributeType::RICH_TEXT => new AttributeRichText($uuid, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties),
+            AttributeType::TEXT => new AttributeText($uuid, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties),
+            AttributeType::IMAGE => new AttributeImage($uuid, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties),
+            AttributeType::TEXTAREA => new AttributeTextArea($uuid, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties),
+            default => throw new \LogicException(sprintf('Type not recognized: "%s"', $type)),
+        };
+    }
+
     public function getUuid(): AttributeUuid
     {
         return $this->uuid;
@@ -122,5 +143,41 @@ abstract class Attribute
     public function getAdditionalProperties(): AttributeAdditionalProperties
     {
         return $this->additionalProperties;
+    }
+
+    /**
+     * @param array{
+     *      uuid: string,
+     *      code: string,
+     *      attribute_type: string,
+     *      attribute_order: int,
+     *      is_required: bool,
+     *      is_scopable: bool,
+     *      is_localizable: bool,
+     *      labels: string|null,
+     *      category_template_uuid: string,
+     *      additional_properties: string|null
+     * } $result
+     */
+    public static function fromDatabase(array $result): self
+    {
+        $id = AttributeUuid::fromString($result['uuid']);
+        $code = new AttributeCode($result['code']);
+        $type = new AttributeType($result['attribute_type']);
+        $order = AttributeOrder::fromInteger((int) $result['attribute_order']);
+        $isRequired = AttributeIsRequired::fromBoolean((bool) $result['is_required']);
+        $isScopable = AttributeIsScopable::fromBoolean((bool) $result['is_scopable']);
+        $isLocalizable = AttributeIsLocalizable::fromBoolean((bool) $result['is_localizable']);
+        $labelCollection = $result['labels'] ?
+            LabelCollection::fromArray(
+                json_decode($result['labels'], true, 512, JSON_THROW_ON_ERROR),
+            ) : null;
+        $templateUuid = TemplateUuid::fromString($result['category_template_uuid']);
+        $additionalProperties = $result['additional_properties'] ?
+            AttributeAdditionalProperties::fromArray(
+                json_decode($result['additional_properties'], true, 512, JSON_THROW_ON_ERROR),
+            ) : null;
+
+        return Attribute::fromType($type, $id, $code, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties);
     }
 }

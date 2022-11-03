@@ -45,7 +45,7 @@ final class UpdateAttributeGroupActivationSubscriber implements EventSubscriberI
         $this->logger = $logger;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             StorageEvents::POST_SAVE => ['createAttributeGroupActivation'],

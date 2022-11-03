@@ -91,7 +91,7 @@ class CategoryTreeController extends AbstractController
         $trees = $this->getCategoryTrees->getAll();
 
         if ($selectNode instanceof CategoryTree) {
-            $selectedTreeId = (int) $selectNode->getId();
+            $selectedTreeId = $selectNode->getId()->getValue();
         } else {
             $selectedTreeId = $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot();
         }
@@ -103,7 +103,7 @@ class CategoryTreeController extends AbstractController
                 'label' => $tree->getLabel($this->userContext->getCurrentLocaleCode()),
                 'templateUuid' => (string) $tree->getCategoryTreeTemplate()?->getTemplateUuid(),
                 'templateLabel' => $tree->getCategoryTreeTemplate()?->getTemplateLabel($this->userContext->getCurrentLocaleCode()),
-                'selected' => (int) $tree->getId() === $selectedTreeId ? 'true' : 'false'
+                'selected' => $tree->getId()?->getValue() === $selectedTreeId ? 'true' : 'false'
             ];
         }, $trees);
 

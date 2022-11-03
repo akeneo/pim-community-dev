@@ -29,7 +29,7 @@ use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
  */
 class GetTemplateInMemory implements GetTemplate
 {
-    public function byUuid(string $templateId): ?Template
+    public function byUuid(TemplateUuid $uuid): ?Template
     {
         $templateUuid = TemplateUuid::fromString('02274dac-e99a-4e1d-8f9b-794d4c3ba330');
 

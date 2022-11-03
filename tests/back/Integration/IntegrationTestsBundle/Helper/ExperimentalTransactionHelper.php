@@ -23,6 +23,18 @@ final class ExperimentalTransactionHelper
     ) {
     }
 
+    public function disable(): void
+    {
+        $this->enabled = false;
+
+        /** @var Connection $connection */
+        foreach ($this->doctrine->getConnections() as $connection) {
+            if ($connection->isTransactionActive()) {
+                $connection->commit();
+            }
+        }
+    }
+
     public function isEnabled(): bool
     {
         return $this->enabled;

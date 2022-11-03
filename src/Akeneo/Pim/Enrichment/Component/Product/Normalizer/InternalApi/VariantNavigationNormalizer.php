@@ -85,7 +85,7 @@ class VariantNavigationNormalizer implements NormalizerInterface, CacheableSuppo
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof EntityWithFamilyVariantInterface && in_array($format, $this->supportedFormat);
     }

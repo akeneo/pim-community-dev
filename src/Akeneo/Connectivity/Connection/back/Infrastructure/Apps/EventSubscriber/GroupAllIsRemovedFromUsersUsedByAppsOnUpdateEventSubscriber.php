@@ -16,7 +16,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class GroupAllIsRemovedFromUsersUsedByAppsOnUpdateEventSubscriber implements EventSubscriberInterface
 {
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [StorageEvents::PRE_SAVE => 'removeGroupAllFromUsersUsedByApps'];
     }

@@ -30,7 +30,7 @@ class AttributeOptionValueNormalizer implements NormalizerInterface, CacheableSu
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof AttributeOptionValueInterface && $format === 'array';
     }

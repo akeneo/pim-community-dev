@@ -18,7 +18,7 @@ class IsVariantAxisWithoutAvailableLocales extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }
@@ -26,7 +26,7 @@ class IsVariantAxisWithoutAvailableLocales extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'pim_structure.validator.constraint.available_locales.is_variant_axis_without_available_locales';
     }

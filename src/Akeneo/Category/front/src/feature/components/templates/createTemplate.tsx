@@ -1,5 +1,5 @@
 import {Router} from '@akeneo-pim-community/shared';
-import {CategoryTreeModel, Template} from '../../models';
+import {CategoryTreeModel} from '../../models';
 
 const createTemplate = async (categoryTree: CategoryTreeModel, router: Router) => {
   const data = {

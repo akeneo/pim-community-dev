@@ -105,11 +105,11 @@ const CategoriesTreePage: FC = () => {
         response.json().then((template: Template) => {
           if (template) {
             notify(NotificationLevel.SUCCESS, translate('akeneo.category.template.notification_success'));
-            redirectToTemplate(categoryTree.id, template.identifier);
+            redirectToTemplate(categoryTree.id, template.uuid);
           }
         });
       })
-      .catch(error => {
+      .catch(() => {
         notify(NotificationLevel.ERROR, translate('akeneo.category.template.notification_error'));
       });
   };

@@ -52,6 +52,7 @@ $rules = [
     ])->in('Akeneo\Pim\Structure\Bundle'),
     $builder->only([
         'Symfony\Component',
+        'Symfony\Contracts',
         'Doctrine\Common',
         'Doctrine\Persistence',
         'Webmozart\Assert\Assert',
