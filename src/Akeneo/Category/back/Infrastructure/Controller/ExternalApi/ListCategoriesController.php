@@ -41,10 +41,9 @@ class ListCategoriesController extends AbstractController
     public function __invoke(Request $request)
     {
         if (!$this->featureFlags->isEnabled('enriched_category')) {
-            $response = $this->forward('Akeneo\Category\Infrastructure\Controller\ExternalApi\CategoryController::listAction');
+            $response = $this->forward('pim_api.controller.category::listAction');
 
-            dump($response);
-            die;
+            return new JsonResponse(json_decode($response->getContent(), true));
         }
 
         try {
@@ -54,8 +53,8 @@ class ListCategoriesController extends AbstractController
         }
 
         $defaultParameters = [
-            'page'       => 1,
-            'limit'      => $this->apiConfiguration['pagination']['limit_by_default'],
+            'page' => 1,
+            'limit' => $this->apiConfiguration['pagination']['limit_by_default'],
             'with_count' => 'false',
         ];
 
@@ -70,29 +69,20 @@ class ListCategoriesController extends AbstractController
         try {
             // TODO: Get the list of categories by the new ServiceApi
             $categories = [];
-
-            if (!$this->featureFlags->isEnabled('enriched_category')) {
-                $categories = $this->repository->searchAfterOffset(
-                    $searchFilters,
-                    $order,
-                    $queryParameters['limit'],
-                    $offset
-                );
-            }
         } catch (\InvalidArgumentException $exception) {
             throw new BadRequestHttpException($exception->getMessage(), $exception);
         }
 
         $parameters = [
-            'query_parameters'    => $queryParameters,
-            'list_route_name'     => 'pim_api_category_list',
-            'item_route_name'     => 'pim_api_category_get',
+            'query_parameters' => $queryParameters,
+            'list_route_name' => 'pim_api_category_list',
+            'item_route_name' => 'pim_api_category_get',
         ];
 
         // TODO: Count the number of categories by the new ServiceApi
         $count = null;
         if ($request->query->getBoolean('with_count') === true) {
-            $count = !$this->featureFlags->isEnabled('enriched_category') ? $this->repository->count($searchFilters) : null;
+            $count = 0;
         }
 
         $paginatedCategories = $this->paginator->paginate(
