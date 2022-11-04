@@ -34,6 +34,10 @@ workflows:
                     name: ce_test_back
                     requires:
                         - ce_install_back_dependencies
+            -   test_performance_catalogs_ce:
+                    name: ce_test_performance
+                    requires:
+                        - ce_install_back_dependencies
             -   build_dev:
                     name: ce_build
                     is_ee_built: false
