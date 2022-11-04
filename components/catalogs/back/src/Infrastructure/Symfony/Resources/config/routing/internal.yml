@@ -82,3 +82,10 @@ akeneo_catalogs_internal_get_measurements_family_units:
     path: '/rest/catalogs/measurement-families/{code}/units'
     controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetMeasurementsFamilyUnitsAction
     methods: [ GET ]
+
+akeneo_catalogs_internal_get_targets:
+    path: '/rest/catalogs/targets/{catalogId}'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetTargetsAction
+    methods: [ GET ]
+    requirements:
+        catalogId: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'

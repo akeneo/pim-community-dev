@@ -110,6 +110,7 @@ akeneo_catalogs:
             table:
                 target: Target
                 source: Source
+                placeholder: Define a content source
         source:
             placeholder:
                 title: Select source

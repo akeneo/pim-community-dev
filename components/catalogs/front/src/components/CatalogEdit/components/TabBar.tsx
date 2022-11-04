@@ -1,7 +1,7 @@
 import React, {FC, PropsWithChildren} from 'react';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {Pill, TabBar as StyledTabBar} from 'akeneo-design-system';
-import {useProductMappingSchema} from '../../../hooks/useProductMappingSchema';
+import {useProductMappingSchemaExist} from '../../ProductMapping/hooks/useProductMappingSchemaExist';
 
 enum Tabs {
     SETTINGS = '#catalog-settings',
@@ -22,8 +22,7 @@ type Props = {
 const TabBar: FC<PropsWithChildren<Props>> = ({isCurrent, switchTo, invalid, id}) => {
     const translate = useTranslate();
 
-    const {data: mappingRequirements, isLoading} = useProductMappingSchema(id);
-    const catalogMappingExists = isLoading === false && mappingRequirements !== null;
+    const catalogMappingExists = useProductMappingSchemaExist(id);
 
     return (
         <>

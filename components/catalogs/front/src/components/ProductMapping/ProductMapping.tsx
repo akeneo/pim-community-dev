@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import {SectionTitle, SwitcherButton, Table} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {SourcePlaceholder} from './components/SourcePlaceholder';
+import {useTargetsQuery} from './hooks/useTargetsQuery';
+import {Target} from './models/Target';
 
 const MappingContainer = styled.div`
     display: flex;
@@ -19,18 +21,29 @@ const SourceContainer = styled.div`
 
 const TargetCell = styled(Table.Cell)`
     width: 215px;
+    color: #9452ba;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 13px;
 `;
 
-type Props = {};
+const PlaceholderCell = styled(Table.Cell)`
+    color: #a1a9b7;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 13px;
+`;
 
-export const ProductMapping: FC<Props> = () => {
+type Props = {
+    id: string;
+};
+
+export const ProductMapping: FC<Props> = ({id}) => {
     const translate = useTranslate();
-    const targets = [
-        {code: 'target1', name: 'Target One'},
-        {code: 'target2', name: 'Target Two'},
-    ];
 
-    const [selectedTarget, setSelectedTarget] = useState<string>();
+    const {data: targets} = useTargetsQuery(id);
+
+    const [selectedTarget, setSelectedTarget] = useState<Target>();
 
     return (
         <MappingContainer>
@@ -52,19 +65,23 @@ export const ProductMapping: FC<Props> = () => {
                         </Table.HeaderCell>
                     </Table.Header>
                     <Table.Body>
-                        {targets.map(target => {
-                            return (
-                                <Table.Row
-                                    key={target.code}
-                                    onClick={() => {
-                                        setSelectedTarget(target.code);
-                                    }}
-                                >
-                                    <TargetCell>{target.name}</TargetCell>
-                                    <Table.Cell></Table.Cell>
-                                </Table.Row>
-                            );
-                        })}
+                        {!Array.isArray(targets) && <p>no targets @todo</p>}
+                        {Array.isArray(targets) &&
+                            targets.map(target => {
+                                return (
+                                    <Table.Row
+                                        key={target.code}
+                                        onClick={() => {
+                                            setSelectedTarget(target);
+                                        }}
+                                    >
+                                        <TargetCell>{target.label}</TargetCell>
+                                        <PlaceholderCell>
+                                            {translate('akeneo_catalogs.product_mapping.target.table.placeholder')}
+                                        </PlaceholderCell>
+                                    </Table.Row>
+                                );
+                            })}
                     </Table.Body>
                 </Table>
             </TargetContainer>
@@ -72,7 +89,7 @@ export const ProductMapping: FC<Props> = () => {
                 {selectedTarget === undefined && <SourcePlaceholder />}
                 {selectedTarget && (
                     <SectionTitle>
-                        <SectionTitle.Title>Target Name</SectionTitle.Title>
+                        <SectionTitle.Title>{selectedTarget.label}</SectionTitle.Title>
                     </SectionTitle>
                 )}
             </SourceContainer>
