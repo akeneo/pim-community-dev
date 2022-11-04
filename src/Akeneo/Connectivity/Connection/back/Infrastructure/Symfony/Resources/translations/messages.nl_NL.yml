@@ -3,6 +3,3 @@ akeneo_connectivity.connection:
   acl.manage_apps: Apps beheren
   acl.manage_test_apps: Testapps beheren
   acl.open_apps: Apps openen
-pim_notification:
-  connected_app_authorizations:
-    message: 'De autorisatie voor app <strong>%app_name%</strong> moet worden bijgewerkt. Open de app om door te gaan.'

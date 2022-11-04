@@ -1,8 +1,0 @@
-parameters:
-    # @deprecated : These classes have been replaced for each use case and are no longer used in the PIM
-    akeneo_elasticsearch.cursor.cursor.class: Akeneo\Tool\Bundle\ElasticsearchBundle\Cursor\Cursor
-    akeneo_elasticsearch.cursor.search_after_size_cursor.class: Akeneo\Tool\Bundle\ElasticsearchBundle\Cursor\SearchAfterSizeCursor
-    akeneo_elasticsearch.cursor.from_size_cursor.class: Akeneo\Tool\Bundle\ElasticsearchBundle\Cursor\FromSizeCursor
-    akeneo_elasticsearch.cursor.cursor_factory.class: Akeneo\Tool\Bundle\ElasticsearchBundle\Cursor\CursorFactory
-    akeneo_elasticsearch.cursor.search_after_size_cursor_factory.class: Akeneo\Tool\Bundle\ElasticsearchBundle\Cursor\SearchAfterSizeCursorFactory
-    akeneo_elasticsearch.cursor.from_size_cursor_factory.class: Akeneo\Tool\Bundle\ElasticsearchBundle\Cursor\FromSizeCursorFactory

@@ -378,6 +378,39 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
     }
 
+    public function testResponseWhenSortOrderIsNotAnInteger()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+            <<<JSON
+    {
+        "attribute":"a_multi_select",
+        "code": "my_brand_new_attribute_option",
+        "sort_order": "123"
+    }
+JSON;
+
+        $expectedContent =
+            <<<JSON
+    {
+        "code": 422,
+        "message": "Property \"sort_order\" expects an integer as data, \"string\" given. Check the expected format on the API documentation.",
+        "_links": {
+            "documentation": {
+                 "href": "http://api.akeneo.com/api-reference.html#post_attributes__attribute_code__options"
+            }
+        }
+    }
+JSON;
+
+        $client->request('POST', 'api/rest/v1/attributes/a_multi_select/options', [], [], [], $data);
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
+    }
+
     /**
      * {@inheritdoc}
      */

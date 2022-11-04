@@ -240,7 +240,7 @@ JSON;
 <<<JSON
     {
         "attribute":"a_multi_select",
-        "sort_order":"100"
+        "sort_order":100
     }
 JSON;
 
