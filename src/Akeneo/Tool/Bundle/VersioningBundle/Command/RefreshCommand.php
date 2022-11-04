@@ -2,8 +2,8 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\Command;
 
-use Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler;
-use Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandler;
+use Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandlerInterface;
+use Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandlerInterface;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Symfony\Component\Console\Command\Command;
@@ -27,8 +27,8 @@ class RefreshCommand extends Command
     private const JOB_CODE = 'versioning_refresh';
 
     public function __construct(
-        private ExecuteJobExecutionHandler $jobExecutionRunner,
-        private CreateJobExecutionHandler $jobExecutionFactory,
+        private ExecuteJobExecutionHandlerInterface $jobExecutionRunner,
+        private CreateJobExecutionHandlerInterface $jobExecutionFactory,
     ) {
         parent::__construct();
     }
