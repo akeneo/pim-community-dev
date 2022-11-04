@@ -77,6 +77,53 @@ class ProductSchemaValidatorTest extends IntegrationTestCase
 }
 JSON_WRAP,
             ],
+            '0.0.2 with valid schema with uuid' => [
+                'schema' => <<<'JSON_WRAP'
+{
+  "$id": "https://example.com/product",
+  "$schema": "https://api.akeneo.com/mapping/product/0.0.2/schema",
+  "$comment": "My first schema !",
+  "title": "Product Mapping",
+  "description": "JSON Schema describing the structure of products expected by our application",
+  "type": "object",
+  "properties": {
+    "uuid": {
+        "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "body_html": {
+      "title": "Description",
+      "description": "Product description in raw HTML",
+      "type": "string"
+    }
+  }
+}
+JSON_WRAP,
+            ],
+            '0.0.2 with valid schema without uuid' => [
+                'schema' => <<<'JSON_WRAP'
+{
+  "$id": "https://example.com/product",
+  "$schema": "https://api.akeneo.com/mapping/product/0.0.2/schema",
+  "$comment": "My first schema !",
+  "title": "Product Mapping",
+  "description": "JSON Schema describing the structure of products expected by our application",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "body_html": {
+      "title": "Description",
+      "description": "Product description in raw HTML",
+      "type": "string"
+    }
+  }
+}
+JSON_WRAP,
+            ]
         ];
     }
 
@@ -101,6 +148,31 @@ JSON_WRAP,
   "$schema": "https://api.akeneo.com/mapping/product/0.0.1/schema",
   "properties": {
     "price": {}
+  }
+}
+JSON_WRAP,
+            ],
+            '0.0.2 with invalid uuid type' => [
+                'schema' => <<<'JSON_WRAP'
+{
+  "$schema": "https://api.akeneo.com/mapping/product/0.0.2/schema",
+  "properties": {
+    "uuid": {
+        "type": "boolean"
+    }
+  }
+}
+JSON_WRAP,
+            ],
+            '0.0.2 with invalid uuid extra fields' => [
+                'schema' => <<<'JSON_WRAP'
+{
+  "$schema": "https://api.akeneo.com/mapping/product/0.0.2/schema",
+  "properties": {
+    "uuid": {
+        "type": "boolean",
+        "title": "Description"
+    }
   }
 }
 JSON_WRAP,

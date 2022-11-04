@@ -76,6 +76,7 @@ final class ProductSchemaValidator extends ConstraintValidator
     {
         return match ($id) {
             'https://api.akeneo.com/mapping/product/0.0.1/schema' => __DIR__.'/../Symfony/Resources/meta-schemas/product-0.0.1.json',
+            'https://api.akeneo.com/mapping/product/0.0.2/schema' => __DIR__.'/../Symfony/Resources/meta-schemas/product-0.0.2.json',
             default => null,
         };
     }
