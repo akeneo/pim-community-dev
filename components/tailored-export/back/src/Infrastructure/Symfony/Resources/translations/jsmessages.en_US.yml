@@ -231,9 +231,3 @@ akeneo.tailored_export:
     currency:
       should_be_active: '{0} The currencies "{{ currency_codes }}" are not linked to any channel.|{1} The currency "{{ currency_codes }}" is not linked to any channel.|]1,Inf] The currencies "{{ currency_codes }}" are not linked to any channel.'
       should_be_active_on_channel: '{0} The currencies "{{ currency_codes }}" are not active for channel "{{ channel_code }}.|{1} The currency "{{ currency_codes }}" is not active for channel "{{ channel_code }}".|]1,Inf] The currencies "{{ currency_codes }}" are not active for channel "{{ channel_code }}".'
-
-pim_information:
-  export:
-    title: Discover mapping with Tailored Export
-    text: "This new export profile allows you to customize your product export structure through data mapping. It enables you to easily define and select sources, rename and reorder columns, and perform operations in order to transform your data."
-    link.text: Click here to read more.
