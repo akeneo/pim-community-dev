@@ -11,4 +11,6 @@ interface ProductFileRepository
 {
     public function save(ProductFile $productFile): void;
     public function find(Identifier $identifier): ?ProductFile;
+    public function deleteProductFileRetailerComments(string $productFileIdentifier): void;
+    public function deleteProductFileSupplierComments(string $productFileIdentifier): void;
 }

@@ -73,4 +73,14 @@ final class InMemoryRepository implements ProductFileRepository
 
         return null;
     }
+
+    public function deleteProductFileRetailerComments(string $productFileIdentifier): void
+    {
+        // Not implemented yet
+    }
+
+    public function deleteProductFileSupplierComments(string $productFileIdentifier): void
+    {
+        // Not implemented yet
+    }
 }

@@ -166,13 +166,41 @@ final class DatabaseRepository implements ProductFileRepository
             $productFile['uploaded_at'],
             (bool) $productFile['downloaded'],
             array_map(
-                fn (array $comment) => Comment::hydrate($comment['content'], $comment['author_email'], new \DateTimeImmutable($comment['created_at'])),
+                fn (array $comment) => Comment::hydrate(
+                    $comment['content'],
+                    $comment['author_email'],
+                    new \DateTimeImmutable($comment['created_at'])
+                ),
                 $retailerComments,
             ),
             array_map(
-                fn (array $comment) => Comment::hydrate($comment['content'], $comment['author_email'], new \DateTimeImmutable($comment['created_at'])),
+                fn (array $comment) => Comment::hydrate(
+                    $comment['content'],
+                    $comment['author_email'],
+                    new \DateTimeImmutable($comment['created_at'])
+                ),
                 $supplierComments,
             ),
         );
+    }
+
+    public function deleteProductFileRetailerComments(string $productFileIdentifier): void
+    {
+        $sql = <<<SQL
+            DELETE FROM akeneo_supplier_portal_product_file_retailer_comments
+            WHERE product_file_identifier = :productFileIdentifier
+        SQL;
+
+        $this->connection->executeStatement($sql, ['productFileIdentifier' => $productFileIdentifier]);
+    }
+
+    public function deleteProductFileSupplierComments(string $productFileIdentifier): void
+    {
+        $sql = <<<SQL
+            DELETE FROM akeneo_supplier_portal_product_file_supplier_comments
+            WHERE product_file_identifier = :productFileIdentifier
+        SQL;
+
+        $this->connection->executeStatement($sql, ['productFileIdentifier' => $productFileIdentifier]);
     }
 }

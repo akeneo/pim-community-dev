@@ -155,11 +155,11 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
             'jimmy@punchline.com',
             $supplierCommentDate,
         );
-        ($this->get(ProductFileRepository::class))->save($productFile);
+        $productFileRepository = $this->get(ProductFileRepository::class);
+        $productFileRepository->save($productFile);
 
-        $repository = $this->get(ProductFileRepository::class);
         /** @var ProductFile $productFile */
-        $productFile = $repository->find(Identifier::fromString('8d388bdc-8243-4e88-9c7c-6be0d7afb9df'));
+        $productFile = $productFileRepository->find(Identifier::fromString('8d388bdc-8243-4e88-9c7c-6be0d7afb9df'));
 
         static::assertSame('file.xlsx', $productFile->originalFilename());
         static::assertSame('path/to/file.xlsx', $productFile->path());
@@ -179,6 +179,72 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
         static::assertSame('Here are the products I\'ve got for you.', $productFile->supplierComments()[0]->content());
         static::assertSame('jimmy@punchline.com', $productFile->supplierComments()[0]->authorEmail());
         static::assertEquals($supplierCommentDate, $productFile->supplierComments()[0]->createdAt());
+    }
+
+    /** @test */
+    public function itDeletesProductFileRetailerComments(): void
+    {
+        $productFile = (new ProductFileBuilder())
+            ->withIdentifier('3a0c0ab8-9082-4275-8ba0-cf5921695f8b')
+            ->uploadedAt(new \DateTimeImmutable('2022-09-07 08:54:38'))
+            ->uploadedBySupplier(new Supplier(
+                'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7',
+                'supplier_code',
+                'Supplier label',
+            ))
+            ->build();
+        $retailerCommentDate = new \DateTimeImmutable('2022-09-07 00:00:00');
+        $productFile->addNewRetailerComment(
+            'Your product file is awesome!',
+            'julia@roberts.com',
+            $retailerCommentDate,
+        );
+        $supplierCommentDate = new \DateTimeImmutable('2022-09-07 00:00:01');
+        $productFile->addNewSupplierComment(
+            'Here are the products I\'ve got for you.',
+            'jimmy@punchline.com',
+            $supplierCommentDate,
+        );
+        $productFileRepository = $this->get(ProductFileRepository::class);
+        $productFileRepository->save($productFile);
+        $productFileRepository->deleteProductFileRetailerComments($productFile->identifier());
+        $productFile = $productFileRepository->find(Identifier::fromString('3a0c0ab8-9082-4275-8ba0-cf5921695f8b'));
+
+        static::assertCount(1, $productFile->supplierComments());
+        static::assertCount(0, $productFile->retailerComments());
+    }
+
+    /** @test */
+    public function itDeletesProductFileSupplierComments(): void
+    {
+        $productFile = (new ProductFileBuilder())
+            ->withIdentifier('24580328-66cd-4c5b-b0c9-4e83ed7af9bb')
+            ->uploadedAt(new \DateTimeImmutable('2022-09-07 08:54:38'))
+            ->uploadedBySupplier(new Supplier(
+                'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7',
+                'supplier_code',
+                'Supplier label',
+            ))
+            ->build();
+        $retailerCommentDate = new \DateTimeImmutable('2022-09-07 00:00:00');
+        $productFile->addNewRetailerComment(
+            'Your product file is awesome!',
+            'julia@roberts.com',
+            $retailerCommentDate,
+        );
+        $supplierCommentDate = new \DateTimeImmutable('2022-09-07 00:00:01');
+        $productFile->addNewSupplierComment(
+            'Here are the products I\'ve got for you.',
+            'jimmy@punchline.com',
+            $supplierCommentDate,
+        );
+        $productFileRepository = $this->get(ProductFileRepository::class);
+        $productFileRepository->save($productFile);
+        $productFileRepository->deleteProductFileSupplierComments($productFile->identifier());
+        $productFile = $productFileRepository->find(Identifier::fromString('24580328-66cd-4c5b-b0c9-4e83ed7af9bb'));
+
+        static::assertCount(0, $productFile->supplierComments());
+        static::assertCount(1, $productFile->retailerComments());
     }
 
     private function findProductFile(string $originalFilename): ?array
