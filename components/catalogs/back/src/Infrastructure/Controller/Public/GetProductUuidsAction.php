@@ -137,7 +137,7 @@ class GetProductUuidsAction
                         'limit' => $limit,
                         'updated_after' => $updatedAfter,
                         'updated_before' => $updatedBefore,
-                    ]),
+                    ], RouterInterface::ABSOLUTE_URL),
                 ],
                 'first' => [
                     'href' => $this->router->generate('akeneo_catalogs_public_get_product_uuids', [
@@ -145,7 +145,7 @@ class GetProductUuidsAction
                         'limit' => $limit,
                         'updated_after' => $updatedAfter,
                         'updated_before' => $updatedBefore,
-                    ]),
+                    ], RouterInterface::ABSOLUTE_URL),
                 ],
             ],
             '_embedded' => [
@@ -161,7 +161,7 @@ class GetProductUuidsAction
                     'limit' => $limit,
                     'updated_after' => $updatedAfter,
                     'updated_before' => $updatedBefore,
-                ]),
+                ], RouterInterface::ABSOLUTE_URL),
             ];
         }
 

@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Controller\Public;
 
-use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductsWithFilteredValuesQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Security\DenyAccessUnlessGrantedTrait;
 use Akeneo\Catalogs\Infrastructure\Security\GetCurrentUsernameTrait;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogDisabledException;
+use Akeneo\Catalogs\ServiceAPI\Exception\ProductSchemaMappingNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
-use Akeneo\Catalogs\ServiceAPI\Query\GetProductsQuery;
+use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductsQuery;
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,12 +27,12 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @phpstan-import-type Product from GetProductsWithFilteredValuesQueryInterface
+ * @phpstan-import-type MappedProduct from GetMappedProductsQuery
  */
-class GetProductsAction
+final class GetMappedProductsAction
 {
-    use GetCurrentUsernameTrait;
     use DenyAccessUnlessGrantedTrait;
+    use GetCurrentUsernameTrait;
 
     public function __construct(
         private QueryBus $queryBus,
@@ -42,25 +42,19 @@ class GetProductsAction
     ) {
     }
 
-    public function __invoke(Request $request, string $id): Response
+    public function __invoke(Request $request, string $catalogId): Response
     {
         $this->denyAccessUnlessGrantedToListCatalogs();
         $this->denyAccessUnlessGrantedToListProducts();
 
-        $catalog = $this->getCatalog($id);
+        $catalog = $this->getCatalog($catalogId);
 
         $this->denyAccessUnlessOwnerOfCatalog($catalog, $this->getCurrentUsername());
 
         [$searchAfter, $limit, $updatedAfter, $updatedBefore] = $this->getParameters($request);
 
         try {
-            $products = $this->queryBus->execute(new GetProductsQuery(
-                $catalog->getId(),
-                $searchAfter,
-                $limit,
-                $updatedAfter,
-                $updatedBefore,
-            ));
+            $mappedProducts = $this->queryBus->execute(new GetMappedProductsQuery($catalogId, $searchAfter, $limit, $updatedAfter, $updatedBefore));
         } catch (ValidationFailedException $e) {
             throw new ViolationHttpException($e->getViolations());
         } catch (CatalogDisabledException) {
@@ -74,27 +68,16 @@ class GetProductsAction
                 ],
                 Response::HTTP_OK,
             );
+        } catch (ProductSchemaMappingNotFoundException) {
+            return new JsonResponse(
+                [
+                    'message' => 'Impossible to map products: no product mapping schema available for this catalog.',
+                ],
+                Response::HTTP_OK,
+            );
         }
 
-        return new JsonResponse(
-            $this->paginate($catalog, $products, $searchAfter, $limit, $updatedAfter, $updatedBefore),
-            Response::HTTP_OK,
-        );
-    }
-
-    private function getCatalog(string $id): Catalog
-    {
-        try {
-            $catalog = $this->queryBus->execute(new GetCatalogQuery($id));
-        } catch (ValidationFailedException $e) {
-            throw new NotFoundHttpException(\sprintf('Catalog "%s" does not exist or you can\'t access it.', $id), $e);
-        }
-
-        if (null === $catalog) {
-            throw new NotFoundHttpException(\sprintf('Catalog "%s" does not exist or you can\'t access it.', $id));
-        }
-
-        return $catalog;
+        return new JsonResponse($this->paginate($catalog, $mappedProducts, $searchAfter, $limit, $updatedAfter, $updatedBefore), Response::HTTP_OK);
     }
 
     /**
@@ -122,20 +105,36 @@ class GetProductsAction
         return [$searchAfter, $limit, $updatedAfter, $updatedBefore];
     }
 
-    /**
-     * @param array<Product> $products
-     *
-     * @return array{_links: array{self: array{href: string}, first: array{href: string}, next?: array{href: string}}, _embedded: array{items: array<Product>}}
-     */
-    private function paginate(Catalog $catalog, array $products, ?string $searchAfter, int $limit, ?string $updatedAfter, ?string $updatedBefore): array
+    private function getCatalog(string $id): Catalog
     {
-        $last = \end($products);
+        try {
+            $catalog = $this->queryBus->execute(new GetCatalogQuery($id));
+        } catch (ValidationFailedException $e) {
+            throw new NotFoundHttpException(\sprintf('Catalog "%s" does not exist or you can\'t access it.', $id), $e);
+        }
+
+        if (null === $catalog) {
+            throw new NotFoundHttpException(\sprintf('Catalog "%s" does not exist or you can\'t access it.', $id));
+        }
+
+        return $catalog;
+    }
+
+    /**
+     * @param array<MappedProduct> $mappedProducts
+     *
+     * @return array{_links: array{self: array{href: string}, first: array{href: string}, next?: array{href: string}}, _embedded: array{items: array<MappedProduct>}}
+     */
+    private function paginate(Catalog $catalog, array $mappedProducts, ?string $searchAfter, int $limit, ?string $updatedAfter, ?string $updatedBefore): array
+    {
+        $last = \end($mappedProducts);
+
 
         $result = [
             '_links' => [
                 'self' => [
-                    'href' => $this->router->generate('akeneo_catalogs_public_get_products', [
-                        'id' => $catalog->getId(),
+                    'href' => $this->router->generate('akeneo_catalogs_public_get_mapped_products', [
+                        'catalogId' => $catalog->getId(),
                         'search_after' => $searchAfter,
                         'limit' => $limit,
                         'updated_after' => $updatedAfter,
@@ -143,8 +142,8 @@ class GetProductsAction
                     ], RouterInterface::ABSOLUTE_URL),
                 ],
                 'first' => [
-                    'href' => $this->router->generate('akeneo_catalogs_public_get_products', [
-                        'id' => $catalog->getId(),
+                    'href' => $this->router->generate('akeneo_catalogs_public_get_mapped_products', [
+                        'catalogId' => $catalog->getId(),
                         'limit' => $limit,
                         'updated_after' => $updatedAfter,
                         'updated_before' => $updatedBefore,
@@ -152,14 +151,14 @@ class GetProductsAction
                 ],
             ],
             '_embedded' => [
-                'items' => $products,
+                'items' => $mappedProducts,
             ],
         ];
 
-        if (false !== $last && \count($products) >= $limit) {
+        if (false !== $last && \count($mappedProducts) >= $limit) {
             $result['_links']['next'] = [
-                'href' => $this->router->generate('akeneo_catalogs_public_get_products', [
-                    'id' => $catalog->getId(),
+                'href' => $this->router->generate('akeneo_catalogs_public_get_mapped_products', [
+                    'catalogId' => $catalog->getId(),
                     'search_after' => $last['uuid'],
                     'limit' => $limit,
                     'updated_after' => $updatedAfter,

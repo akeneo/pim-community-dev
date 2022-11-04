@@ -17,8 +17,11 @@ use Akeneo\Connectivity\Connection\ServiceApi\Model\ConnectedAppWithValidToken;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use Behat\Behat\Context\Context;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Types;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -127,7 +130,7 @@ class ApiContext implements Context
         $connectedAppUserIdentifier = $this->getConnectedApp()->getUsername();
         $this->authentication->logAs($connectedAppUserIdentifier);
 
-        // create  enabled catalog with product selection criteria
+        // create enabled catalog with product selection criteria
         $this->upsertCatalogQuery->execute(
             new Catalog(
                 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
@@ -685,5 +688,208 @@ class ApiContext implements Context
         }
 
         Assert::assertTrue($productSchemaMappingNotFoundExceptionThrown);
+    }
+
+    /**
+     * @Given an existing catalog with a product mapping
+     */
+    public function anExistingCatalogWithAProductMapping(): void
+    {
+        $connectedAppUserIdentifier = $this->getConnectedApp()->getUsername();
+        $this->authentication->logAs($connectedAppUserIdentifier);
+
+        // create enabled catalog with product selection criteria
+        $this->upsertCatalogQuery->execute(
+            new Catalog(
+                'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+                'Store US',
+                $connectedAppUserIdentifier,
+                true,
+                [
+                    [
+                        'field' => 'enabled',
+                        'operator' => '=',
+                        'value' => true,
+                    ],
+                ],
+                [],
+                [],
+            )
+        );
+
+        // add product mapping schema
+        $commandBus = $this->container->get(CommandBus::class);
+        $commandBus->execute(new UpdateProductMappingSchemaCommand(
+            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            \json_decode(
+                <<<'JSON_WRAP'
+                {
+                  "$id": "https://example.com/product",
+                  "$schema": "https://api.akeneo.com/mapping/product/0.0.1/schema",
+                  "$comment": "My first schema !",
+                  "title": "Product Mapping",
+                  "description": "JSON Schema describing the structure of products expected by our application",
+                  "type": "object",
+                  "properties": {
+                    "uuid": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  }
+                }
+                JSON_WRAP,
+                false,
+                512,
+                JSON_THROW_ON_ERROR
+            ),
+        ));
+
+        // add product mapping to catalog
+        $this->setCatalogProductMapping('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
+            'uuid' => [
+                'source' => 'uuid',
+                'scope' => null,
+                'locale' => null,
+            ],
+            'title' => [
+                'source' => 'name',
+                'scope' => 'ecommerce',
+                'locale' => 'en_US',
+            ],
+        ]);
+
+        // create products
+        $adminUser = $this->authentication->getAdminUser();
+        $this->authentication->logAs($adminUser->getUserIdentifier());
+
+        $bus = $this->container->get('pim_enrich.product.message_bus');
+
+        $products = [
+            [
+                'uuid' => '21a28f70-9cc8-4470-904f-aeda52764f73',
+                'identifier' => 't-shirt blue',
+                'name' => 'T-shirt blue',
+                'enabled' => true,
+            ],
+            [
+                'uuid' => '62071b85-67af-44dd-8db1-9bc1dab393e7',
+                'identifier' => 't-shirt green',
+                'name' => 'T-shirt green',
+                'enabled' => false,
+            ],
+            [
+                'uuid' => 'a43209b0-cd39-4faf-ad1b-988859906030',
+                'identifier' => 't-shirt red',
+                'name' => 'T-shirt red',
+                'enabled' => true,
+            ],
+        ];
+
+        $this->createAttribute([
+            'code' => 'name',
+            'type' => 'pim_catalog_text',
+            'scopable' => true,
+            'localizable' => true,
+        ]);
+
+        foreach ($products as $product) {
+            $command = UpsertProductCommand::createWithUuid(
+                $adminUser->getId(),
+                ProductUuid::fromUuid(Uuid::fromString($product['uuid'])),
+                [
+                    new SetIdentifierValue('sku', $product['identifier']),
+                    new SetEnabled((bool) $product['enabled']),
+                    new SetTextValue('name', 'ecommerce', 'en_US', $product['name']),
+                ]
+            );
+
+            $bus->dispatch($command);
+        }
+
+        $this->container->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+    }
+
+    /**
+     * @When the external application gets mapped products using the API
+     */
+    public function theExternalApplicationGetsMappedProductsUsingTheApi(): void
+    {
+        $this->authentication->logAs($this->getConnectedApp()->getUsername());
+
+        $this->getConnectedAppClient()->request(
+            method: 'GET',
+            uri: '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapped-products',
+        );
+
+        $this->response = $this->getConnectedAppClient()->getResponse();
+
+        Assert::assertEquals(200, $this->response->getStatusCode());
+    }
+
+    /**
+     * @Then the response should contain the mapped products
+     */
+    public function theResponseShouldContainTheMappedProducts(): void
+    {
+        $payload = \json_decode($this->response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+        Assert::assertCount(2, $payload['_embedded']['items']);
+
+        $expectedMappedProducts = [
+            [
+                'uuid' => '21a28f70-9cc8-4470-904f-aeda52764f73',
+                'title' => 'T-shirt blue',
+                'description' => '',
+            ],
+            [
+                'uuid' => 'a43209b0-cd39-4faf-ad1b-988859906030',
+                'title' => 'T-shirt red',
+                'description' => '',
+            ],
+        ];
+
+        Assert::assertSame($expectedMappedProducts, $payload['_embedded']['items']);
+    }
+
+    /** @todo replace by a command bus when existing */
+    private function setCatalogProductMapping(string $id, array $productMapping): void
+    {
+        $connection = $this->container->get(Connection::class);
+        $connection->executeQuery(
+            'UPDATE akeneo_catalog SET product_mapping = :productMapping WHERE id = :id',
+            [
+                'id' => Uuid::fromString($id)->getBytes(),
+                'productMapping' => $productMapping,
+            ],
+            [
+                'productMapping' => Types::JSON,
+            ]
+        );
+    }
+
+    /**
+     * @param array{
+     *     code: string,
+     *     type: string,
+     *     available_locales?: array<string>,
+     *     group?: string,
+     *     scopable: bool,
+     *     localizable: bool,
+     * } $data
+     */
+    private function createAttribute(array $data): void
+    {
+        $data = \array_merge([
+            'group' => 'other',
+        ], $data);
+
+        $attribute = $this->container->get('pim_catalog.factory.attribute')->create();
+        $this->container->get('pim_catalog.updater.attribute')->update($attribute, $data);
+        $this->container->get('pim_catalog.saver.attribute')->save($attribute);
     }
 }
