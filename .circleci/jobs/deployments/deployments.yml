@@ -665,8 +665,10 @@ jobs:
               # Login to argocd call k8s
               kubectl config set-context --current --namespace=argocd
               argocd login --core argocd-${GOOGLE_CLUSTER_REGION}.${GOOGLE_DOMAIN} --username admin --password ${ARGOCD_PASSWORD}
+              # Stop operation in progress is exist
+              argocd app terminate-op ${PIM_NS} --core && argocd app wait --operation ${PIM_NS} --core || true
               argocd app get ${PIM_NS} --hard-refresh --core
-              argocd app sync ${PIM_NS} --core --prune|| (argocd app terminate-op ${PIM_NS} --core  && argocd app wait --operation ${PIM_NS} --core && argocd app sync ${PIM_NS} --core --prune)
+              argocd app wait --sync --health --operation ${PIM_NS} --core
               echo "argocd app sync successfull"
 
               echo "============================"
@@ -862,7 +864,7 @@ jobs:
                   kubectl config set-context --current --namespace=argocd
                   argocd login --core argocd-${GOOGLE_CLUSTER_REGION}.${GOOGLE_DOMAIN} --username admin --password ${ARGOCD_PASSWORD}
                   argocd app get ${TENANT_NS} --hard-refresh --core
-                  argocd app sync ${TENANT_NS} --core --prune|| (argocd app terminate-op ${TENANT_NS} --core  && argocd app wait --operation ${TENANT_NS} --core && argocd app sync ${TENANT_NS} --core --prune)
+                  argocd app wait --sync --health --operation ${TENANT_NS} --core
                   echo "argocd app sync successfull"
 
                   echo "============================"

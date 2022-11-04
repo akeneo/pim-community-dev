@@ -2,13 +2,13 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch;
 
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\FromSizeCursor;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\FromSizeCursor;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 
 class FromSizeCursorSpec extends ObjectBehavior
 {
@@ -28,7 +28,7 @@ class FromSizeCursorSpec extends ObjectBehavior
         $esClient->search([
             'from' => 0,
             'size' => 2,
-            'sort' => ['_id' => 'asc']
+            'sort' => ['id' => 'asc']
         ])
             ->willReturn([
                 'hits' => [
@@ -87,7 +87,7 @@ class FromSizeCursorSpec extends ObjectBehavior
         $esClient->search(
             [
                 'size' => 2,
-                'sort' => ['_id' => 'asc'],
+                'sort' => ['id' => 'asc'],
                 'from' => 2
             ])
             ->willReturn([
@@ -108,7 +108,7 @@ class FromSizeCursorSpec extends ObjectBehavior
         $esClient->search(
             [
                 'size' => 2,
-                'sort' => ['_id' => 'asc'],
+                'sort' => ['id' => 'asc'],
                 'from' => 3
             ])->willReturn([
             'hits' => [
@@ -160,7 +160,7 @@ class FromSizeCursorSpec extends ObjectBehavior
         $esClient->search(
             [
                 'size' => 2,
-                'sort' => ['_id' => 'asc'],
+                'sort' => ['id' => 'asc'],
                 'from' => 2
             ])
             ->willReturn([
@@ -181,7 +181,7 @@ class FromSizeCursorSpec extends ObjectBehavior
         $esClient->search(
             [
                 'size' => 2,
-                'sort' => ['_id' => 'asc'],
+                'sort' => ['id' => 'asc'],
                 'from' => 3
             ])->willReturn([
             'hits' => [
