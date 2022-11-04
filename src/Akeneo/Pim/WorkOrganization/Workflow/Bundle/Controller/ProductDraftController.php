@@ -127,7 +127,7 @@ class ProductDraftController
             'productDraftIds' => $filters['values']['product_draft_ids'],
             'productModelDraftIds' => $filters['values']['product_model_draft_ids'],
             'comment'  => $request->get('comment'),
-            'users_to_notify' => [$user->getUsername()],
+            'users_to_notify' => [$user->getUserIdentifier()],
         ];
 
         $jobExecution = $this->simpleJobLauncher->launch($jobInstance, $user, $configuration);
@@ -159,7 +159,7 @@ class ProductDraftController
             'productDraftIds' => $filters['values']['product_draft_ids'],
             'productModelDraftIds' => $filters['values']['product_model_draft_ids'],
             'comment'  => $request->get('comment'),
-            'users_to_notify' => [$user->getUsername()],
+            'users_to_notify' => [$user->getUserIdentifier()],
         ];
 
         $jobExecution = $this->simpleJobLauncher->launch($jobInstance, $user, $configuration);

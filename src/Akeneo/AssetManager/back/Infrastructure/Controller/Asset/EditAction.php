@@ -88,7 +88,7 @@ class EditAction
     {
         $query = new CanEditAssetFamilyQuery(
             $assetFamilyIdentifier,
-            $this->tokenStorage->getToken()->getUser()->getUsername()
+            $this->tokenStorage->getToken()->getUser()->getUserIdentifier()
         );
 
         return ($this->canEditAssetFamilyQueryHandler)($query);

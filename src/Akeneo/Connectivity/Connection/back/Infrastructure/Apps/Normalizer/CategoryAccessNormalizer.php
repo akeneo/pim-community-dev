@@ -17,7 +17,7 @@ class CategoryAccessNormalizer implements NormalizerInterface, CacheableSupports
     ) {
     }
 
-    public function supportsNormalization($data, string $format = null)
+    public function supportsNormalization($data, string $format = null): bool
     {
         return $this->categoryNormalizer->supportsNormalization($data, $format);
     }

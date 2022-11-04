@@ -9,6 +9,7 @@ export const updateChannels = (channelFetcher: any): Promise<any> => {
       .fetchAll({filter_locales: false})
       .then((backendChannels: any[]) => {
         const channels = hydrateAll<Channel>(hydrator)(backendChannels);
+
         resolve(channelsReceived(channels));
       })
       .fail(reject);

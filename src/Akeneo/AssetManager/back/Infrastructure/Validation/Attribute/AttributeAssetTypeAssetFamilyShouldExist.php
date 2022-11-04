@@ -19,12 +19,12 @@ class AttributeAssetTypeAssetFamilyShouldExist extends Constraint
 {
     public const ERROR_MESSAGE = 'pim_asset_manager.attribute.validation.asset_type.asset_family_should_exist';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'akeneo_assetmanager.validator.attribute.attribute_asset_type_asset_family_should_exist';
     }

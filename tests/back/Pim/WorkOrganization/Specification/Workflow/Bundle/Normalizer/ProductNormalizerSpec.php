@@ -152,7 +152,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
 
         $productDraft->getStatus()->willReturn(EntityWithValuesDraftInterface::READY);
-        $token->getUsername()->willReturn('mary');
+        $token->getUserIdentifier()->willReturn('mary');
         $draftRepository->findUserEntityWithValuesDraft($product, 'mary')->willReturn($productDraft);
         $draftApplier->applyAllChanges($product, $productDraft)->shouldBeCalled();
 

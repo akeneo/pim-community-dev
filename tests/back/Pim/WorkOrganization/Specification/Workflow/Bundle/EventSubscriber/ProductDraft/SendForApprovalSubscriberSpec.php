@@ -68,7 +68,7 @@ class SendForApprovalSubscriberSpec extends ObjectBehavior
 
         $author->getFirstName()->willReturn('Mary');
         $author->getLastName()->willReturn('Chobu');
-        $author->getUsername()->willReturn('mary');
+        $author->getUserIdentifier()->willReturn('mary');
         $author->getCatalogLocale()->willReturn($catalogLocale);
 
         $owner1 = new User();
@@ -150,7 +150,7 @@ class SendForApprovalSubscriberSpec extends ObjectBehavior
 
         $author->getFirstName()->willReturn('Mary');
         $author->getLastName()->willReturn('Chobu');
-        $author->getUsername()->willReturn('mary');
+        $author->getUserIdentifier()->willReturn('mary');
         $author->getCatalogLocale()->willReturn($catalogLocale);
 
         $owner1 = new User();

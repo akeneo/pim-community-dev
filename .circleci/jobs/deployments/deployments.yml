@@ -665,8 +665,10 @@ jobs:
               # Login to argocd call k8s
               kubectl config set-context --current --namespace=argocd
               argocd login --core argocd-${GOOGLE_CLUSTER_REGION}.${GOOGLE_DOMAIN} --username admin --password ${ARGOCD_PASSWORD}
+              # Stop operation in progress is exist
+              argocd app terminate-op ${PIM_NS} --core && argocd app wait --operation ${PIM_NS} --core || true
               argocd app get ${PIM_NS} --hard-refresh --core
-              argocd app sync ${PIM_NS} --core --prune|| (argocd app terminate-op ${PIM_NS} --core  && argocd app wait --operation ${PIM_NS} --core && argocd app sync ${PIM_NS} --core --prune)
+              argocd app wait --sync --health --operation ${PIM_NS} --core
               echo "argocd app sync successfull"
 
               echo "============================"
@@ -677,7 +679,17 @@ jobs:
         - run:
               name: Remove env on kubernetes
               command: |
-                  kubectl delete app ${PIM_NS} -n argocd
+                  ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+
+                  # Login to argocd call k8s
+                  kubectl config set-context --current --namespace=argocd
+                  argocd login --core argocd-${GOOGLE_CLUSTER_REGION}.${GOOGLE_DOMAIN} --username admin --password ${ARGOCD_PASSWORD}
+
+                  echo "      argocd app terminate-op ${PIM_NS} --core || true"
+                  echo "      kubectl delete app ${PIM_NS} -n argocd || true"
+                  echo "      kubectl delete ${PIM_NS}"
+                  argocd app terminate-op ${PIM_NS} --core || true
+                  kubectl delete app ${PIM_NS} -n argocd || true
                   kubectl delete ns ${PIM_NS}
               when: on_fail
 
@@ -738,10 +750,6 @@ jobs:
                   command: |
                       echo export INSTANCE_NAME="${INSTANCE_NAME}" >> persisted_env_vars
                       echo export CIRCLE_BRANCH_LOWER="${CIRCLE_BRANCH_LOWER}" >> persisted_env_vars
-            - persist_to_workspace:
-                  root: ~/
-                  paths:
-                      - project/persisted_env_vars
             - run:
                   name: Deploy Tenant with Timmy
                   command: |
@@ -750,7 +758,7 @@ jobs:
                         FUNCTION_NAME=${REGION_PREFIX}-${CIRCLE_BRANCH_LOWER}-timmy-create-tenant
                       fi
                       TENANT_STATUS_CODE=0
-                      JSON_BODY_STRING=\''{"pim_edition":"'"<<parameters.PIM_EDITION>>"'","branchName":"'"${CIRCLE_BRANCH}"'","instanceName":"'"<<parameters.PRODUCT_TYPE>>-${INSTANCE_NAME}"'","dnsCloudDomain":"'"${GOOGLE_DOMAIN}"'","pim":{"defaultAdminUser":{"login":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","firstName":"'"${CIRCLE_BRANCH_LOWER}"'","lastName":"'"${CIRCLE_BRANCH_LOWER}"'","email":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","uiLocale":"en_US"},"api":{"namespace":"'"${PIM_NS}"'"},"web":{"namespace":"'"${PIM_NS}"'"}}}'
+                      JSON_BODY_STRING=\''{"pim_edition":"'"<<parameters.PIM_EDITION>>"'","branchName":"'"${CIRCLE_BRANCH}"'","instanceName":"'"${INSTANCE_NAME}"'","dnsCloudDomain":"'"${GOOGLE_DOMAIN}"'","pim":{"defaultAdminUser":{"login":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","firstName":"'"${CIRCLE_BRANCH_LOWER}"'","lastName":"'"${CIRCLE_BRANCH_LOWER}"'","email":"'"${CIRCLE_BRANCH_LOWER}"'@akeneo.com","uiLocale":"en_US"},"api":{"namespace":"'"${PIM_NS}"'"},"web":{"namespace":"'"${PIM_NS}"'"}}}'
                       JSON_BODY_STRING=${JSON_BODY_STRING:1}
 
                       FUNCTION_URL=$(gcloud beta functions describe ${FUNCTION_NAME} --format='value(serviceConfig.uri)' --gen2 --region=${GOOGLE_CLUSTER_REGION})
@@ -758,6 +766,10 @@ jobs:
                       echo ${JSON_BODY_STRING}
                       curl -m 3610 -X POST ${FUNCTION_URL} -H "Authorization: bearer $(gcloud auth print-identity-token)" -H "Content-Type: application/json" -d ${JSON_BODY_STRING} || TENANT_STATUS_CODE=1
                       exit ${TENANT_STATUS_CODE}
+            - persist_to_workspace:
+                  root: ~/
+                  paths:
+                      - project/persisted_env_vars
 
     deploy_tenant:
         parameters:
@@ -790,6 +802,7 @@ jobs:
                   command: |
                       INSTANCE_NAME_PREFIX=ucs
                       INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
+                      TENANT_NS=${TYPE}-${INSTANCE_NAME}
                       CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
                       PIM_NS=pim-${CIRCLE_BRANCH_LOWER}
                       FIRESTORE_COLLECTION="${GOOGLE_CLUSTER_REGION}/${PIM_NS}/tenant_contexts"
@@ -798,6 +811,7 @@ jobs:
 
                       echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
                       echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+                      echo export TENANT_NS=${TENANT_NS} >> $BASH_ENV
                       echo export WORKLOAD_IDENTITY_KSA=${WORKLOAD_IDENTITY_KSA} >> $BASH_ENV
                       echo export GOOGLE_ZONE=${GOOGLE_ZONE} >> $BASH_ENV
                       echo export CIRCLE_BRANCH_LOWER=${CIRCLE_BRANCH_LOWER} >> $BASH_ENV
@@ -809,7 +823,7 @@ jobs:
                       echo "Image tag: ${IMAGE_TAG}"
             - run:
                   name: DATADOG deployment Livetail logs page
-                  command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
+                  command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TENANT_NS}"
             - run:
                 name: Get back the deployment branch
                 command: |
@@ -824,9 +838,9 @@ jobs:
                   rm -rf /tmp/pim-saas-k8s-artifacts/tenant
                   mv /tmp/pim-enterprise-dev/deployments-ucs/tenant /tmp/pim-saas-k8s-artifacts/tenant
 
-                  ## Create the values.yaml (values.yaml overide by values-${INSTANCE_NAME}-ci.yaml)
-                  cp /tmp/pim-enterprise-dev/deployments-ucs/config/values-tenant-ci.yaml /tmp/pim-saas-k8s-artifacts/tenant/values-${INSTANCE_NAME}-ci.yaml
-                  yq w -i /tmp/pim-saas-k8s-artifacts/tenant/values-${INSTANCE_NAME}-ci.yaml image.pim.tag "${IMAGE_TAG}"
+                  ## Update the values.yaml with the correct image tag to test
+                  yq w -i /tmp/pim-enterprise-dev/deployments-ucs/config/values-tenant-ci.yaml image.pim.tag "${IMAGE_TAG}"
+                  yq m -i -x /tmp/pim-saas-k8s-artifacts/tenant/values.yaml /tmp/pim-enterprise-dev/deployments-ucs/config/values-tenant-ci.yaml
 
                   ## Charts
                   yq w -i /tmp/pim-saas-k8s-artifacts/tenant/Chart.yaml appVersion ${IMAGE_TAG}
@@ -849,8 +863,8 @@ jobs:
                   # Login to argocd call k8s
                   kubectl config set-context --current --namespace=argocd
                   argocd login --core argocd-${GOOGLE_CLUSTER_REGION}.${GOOGLE_DOMAIN} --username admin --password ${ARGOCD_PASSWORD}
-                  argocd app get ${TYPE}-${INSTANCE_NAME} --hard-refresh --core
-                  argocd app sync ${TYPE}-${INSTANCE_NAME} --core --prune|| (argocd app terminate-op ${TYPE}-${INSTANCE_NAME} --core  && argocd app wait --operation ${TYPE}-${INSTANCE_NAME} --core && argocd app sync ${TYPE}-${INSTANCE_NAME} --core --prune)
+                  argocd app get ${TENANT_NS} --hard-refresh --core
+                  argocd app wait --sync --health --operation ${TENANT_NS} --core
                   echo "argocd app sync successfull"
 
                   echo "============================"
@@ -866,7 +880,7 @@ jobs:
                   root: ~/
                   paths:
                       - project/persisted_env_vars
-                      - project/deployments-ucs/instances/${TYPE}-${INSTANCE_NAME}/.kubeconfig
+                      - project/deployments-ucs/instances/${TENANT_NS}/.kubeconfig
             - run:
                   name: Display Deployment Errors
                   command: cat deployment.log
@@ -874,6 +888,16 @@ jobs:
             - run:
                   name: Remove env on kubernetes
                   command: |
-                      kubectl delete app ${TYPE}-${INSTANCE_NAME} -n argocd
-                      kubectl delete ns ${TYPE}-${INSTANCE_NAME}
+                      ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+
+                      # Login to argocd call k8s
+                      kubectl config set-context --current --namespace=argocd
+                      argocd login --core argocd-${GOOGLE_CLUSTER_REGION}.${GOOGLE_DOMAIN} --username admin --password ${ARGOCD_PASSWORD}
+
+                      echo "      argocd app terminate-op ${TENANT_NS} --core || true"
+                      echo "      kubectl delete app ${TENANT_NS} -n argocd || true"
+                      echo "      kubectl delete ${TENANT_NS}"
+                      argocd app terminate-op ${TENANT_NS} --core || true
+                      kubectl delete app ${TENANT_NS} -n argocd || true
+                      kubectl delete ns ${TENANT_NS}
                   when: on_fail

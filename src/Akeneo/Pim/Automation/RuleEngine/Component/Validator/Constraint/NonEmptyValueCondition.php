@@ -26,7 +26,7 @@ class NonEmptyValueCondition extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }
@@ -34,7 +34,7 @@ class NonEmptyValueCondition extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'pimee_non_empty_value_validator';
     }

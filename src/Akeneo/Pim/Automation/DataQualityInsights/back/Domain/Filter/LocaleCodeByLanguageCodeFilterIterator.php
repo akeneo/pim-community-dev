@@ -17,7 +17,7 @@ final class LocaleCodeByLanguageCodeFilterIterator extends \FilterIterator
         $this->languageCode = $languageCode;
     }
 
-    public function accept()
+    public function accept(): bool
     {
         $localeCode = $this->getInnerIterator()->current();
 

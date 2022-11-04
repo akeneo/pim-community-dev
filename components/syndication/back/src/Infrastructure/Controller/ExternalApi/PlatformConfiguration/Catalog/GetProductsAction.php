@@ -97,7 +97,7 @@ class GetProductsAction
         $identifiers = explode(',', $request->query->get('identifiers'));
 
         $query = new ListProductsQuery();
-        $query->search = ['identifier' => [['operator' => 'IN', 'value' => $identifiers]]];
+        $query->search = ['uuid' => [['operator' => 'IN', 'value' => $identifiers]]];
         $query->limit = $request->query->get('limit', $this->apiConfiguration['pagination']['limit_by_default']);
         $query->paginationType = PaginationTypes::SEARCH_AFTER;
         $query->withCount = $request->query->get('with_count', 'false');
@@ -117,37 +117,27 @@ class GetProductsAction
         }
 
         return new JsonResponse([
-            'products' => $this->normalizeProductsList($products, $query, $columnCollection),
+            'products' => $this->normalizeProductsList($products, $columnCollection, $catalog),
             'family' => $catalog['code'] //TODO: will be changed when we will have multiple families per job configuration
         ]);
     }
 
-    private function normalizeProductsList(ConnectorProductList $connectorProductList, ListProductsQuery $query, ColumnCollection $columnCollection): array
+    private function normalizeProductsList(ConnectorProductList $connectorProductList, ColumnCollection $columnCollection, array $catalog): array
     {
-        $queryParameters = [
-            'with_count' => $query->withCount,
-            'pagination_type' => $query->paginationType,
-            'limit' => $query->limit,
-        ];
-
-        if ($query->search !== []) {
-            $queryParameters['search'] = json_encode($query->search);
-        }
-
         $connectorProducts = $connectorProductList->connectorProducts();
 
-        $mappedProducts = array_map(function (ConnectorProduct $connectorProduct) use ($columnCollection) {
+        $mappedProducts = array_map(function (ConnectorProduct $connectorProduct) use ($columnCollection, $catalog) {
             $valueCollection = $this->valueCollectionHydrator->hydrate($connectorProduct, $columnCollection);
 
             $mapValuesQuery = new MapValuesQuery($columnCollection, $valueCollection);
             $values = $this->mapValuesQueryHandler->handle($mapValuesQuery);
 
             return [
-                'identifier' => $connectorProduct->identifier(),
+                'identifier' => sprintf('product_%s', $connectorProduct->uuid()),
                 'type' => null === $connectorProduct->parentProductModelCode() ? 'simple' : 'child',
                 'rootParentCode' => $connectorProduct->parentProductModelCode() ?? null,
-                'uuid' => $connectorProduct->uuid(),
                 'values' => $values,
+                'family' => $catalog['code'], //TODO: will be changed when we will have multiple families per job configuration
             ];
         }, $connectorProducts);
 
@@ -186,7 +176,7 @@ class GetProductsAction
 
             $this->apiProductAclLogger->warning(sprintf(
                 'User "%s" with roles %s is not granted "%s"',
-                $user->getUsername(),
+                $user->getUserIdentifier(),
                 implode(',', $user->getRoles()),
                 $acl
             ));
@@ -244,7 +234,6 @@ class GetProductsAction
         $user = $this->tokenStorage->getToken()->getUser();
         Assert::isInstanceOf($user, UserInterface::class);
 
-        /** @phpstan-ignore-next-line */
         return $user;
     }
 }

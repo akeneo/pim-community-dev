@@ -108,6 +108,6 @@ final class GetAttributeEndToEnd extends AbstractAttributeApiTestCase
         $client = $this->createAuthenticatedClient();
         $this->createValidTableAttribute($client);
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
     }
 }

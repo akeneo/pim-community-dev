@@ -79,11 +79,20 @@ jobs:
             - restore_persisted_env_vars
             - run:
                   name: Delete environments
-                  no_output_timeout: 30m
                   command: |
-                      DELETE_TENANT_STATUS_CODE=0
-                      for i in 1 2 3; do make -C deployments-ucs/ delete_tenant && DELETE_TENANT_STATUS_CODE=0 && break || DELETE_TENANT_STATUS_CODE=1; done
-                      exit ${DELETE_TENANT_STATUS_CODE}
+                      TENANT_NS=${TYPE}-${INSTANCE_NAME}
+                      ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+
+                      # Login to argocd call k8s
+                      kubectl config set-context --current --namespace=argocd
+                      argocd login --core argocd-${GOOGLE_CLUSTER_REGION}.${GOOGLE_DOMAIN} --username admin --password ${ARGOCD_PASSWORD}
+
+                      echo "      argocd app terminate-op ${TENANT_NS} --core || true"
+                      echo "      kubectl delete app ${TENANT_NS} -n argocd"
+                      echo "      kubectl delete ${TENANT_NS}"
+                      argocd app terminate-op ${TENANT_NS} --core || true
+                      kubectl delete app ${TENANT_NS} -n argocd
+                      kubectl delete ns ${TENANT_NS}
 
     delete_tenant_timmy:
         parameters:
@@ -103,7 +112,7 @@ jobs:
             - run:
                   name: Define value for next steps
                   command: |
-                      TENANT_ID="<<parameters.PRODUCT_TYPE>>-${INSTANCE_NAME}"
+                      TENANT_ID="${INSTANCE_NAME}"
                       REGION_PREFIX="eur-w-1b"
 
                       echo export TENANT_ID=${TENANT_ID} >> $BASH_ENV
@@ -148,9 +157,19 @@ jobs:
                   name: Delete environments
                   command: |
                       CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
+                      PIM_NS=pim-${CIRCLE_BRANCH_LOWER}
+                      ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 
-                      kubectl delete app pim-${CIRCLE_BRANCH_LOWER} -n argocd
-                      kubectl delete ns pim-${CIRCLE_BRANCH_LOWER}
+                      # Login to argocd call k8s
+                      kubectl config set-context --current --namespace=argocd
+                      argocd login --core argocd-${GOOGLE_CLUSTER_REGION}.${GOOGLE_DOMAIN} --username admin --password ${ARGOCD_PASSWORD}
+
+                      echo "      argocd app terminate-op ${PIM_NS} --core || true"
+                      echo "      kubectl delete app ${PIM_NS} -n argocd"
+                      echo "      kubectl delete ${PIM_NS}"
+                      argocd app terminate-op ${PIM_NS} --core || true
+                      kubectl delete app ${PIM_NS} -n argocd
+                      kubectl delete ns ${PIM_NS}
 
     delete_timmy:
         parameters:
@@ -176,8 +195,8 @@ jobs:
                   command: |
                       if [ "${SKIP_DEPLOY_TIMMY}" = "false" ]; then
                        TERRAFORM_PATH="deployments-ucs/timmy/terraform/${ENV_NAME}"
-                       cd ${TERRAFORM_PATH} 
-                       terraform init -backend-config=./backends/${GOOGLE_CLUSTER_REGION}.hcl -reconfigure  
+                       cd ${TERRAFORM_PATH}
+                       terraform init -backend-config=./backends/${GOOGLE_CLUSTER_REGION}.hcl -reconfigure
                        terraform workspace select ${CIRCLE_BRANCH_LOWER} || terraform workspace new ${CIRCLE_BRANCH_LOWER}
                        terraform  destroy -auto-approve -input=false -var-file=./vars/${GOOGLE_CLUSTER_REGION}.tfvars -var branch_name=${CIRCLE_BRANCH_LOWER}
                       fi

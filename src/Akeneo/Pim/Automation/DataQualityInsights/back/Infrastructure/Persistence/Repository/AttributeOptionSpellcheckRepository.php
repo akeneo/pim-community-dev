@@ -21,6 +21,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeOptionCode;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception;
 
 class AttributeOptionSpellcheckRepository implements AttributeOptionSpellcheckRepositoryInterface
 {
@@ -80,7 +81,7 @@ SQL;
      * Manages to clean DQI spellcheck table rows related to some attribute option(s)
      * @param string $attributeCode the code of the attribute whose option spellcheck rows are to be deleted
      * @param string|null $attributeOptionCode the code of the option to delete, if null then all rows will be deleted
-     * @throws \Doctrine\DBAL\Exception
+     * @throws Exception
      */
     public function deleteUnknownAttributeOption(string $attributeCode, ?string $attributeOptionCode = null): void
     {

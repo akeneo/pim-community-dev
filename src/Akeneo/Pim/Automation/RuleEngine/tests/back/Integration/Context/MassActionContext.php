@@ -111,7 +111,7 @@ final class MassActionContext implements Context
             'is_user_authenticated' => true,
         ];
 
-        $user = $this->userProvider->loadUserByUsername('admin');
+        $user = $this->userProvider->loadUserByIdentifier('admin');
         $jobExecution = $this->jobLauncher->launch($jobInstance, $user, $config);
         $this->jobLauncherTest->launchConsumerOnce();
         $this->jobLauncherTest->waitCompleteJobExecution($jobExecution);

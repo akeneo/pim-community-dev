@@ -76,8 +76,8 @@ class ProjectFinishedNotifierSpec extends ObjectBehavior
         $project->getCode()->willReturn('project-code');
 
         $project->getOwner()->willReturn($owner);
-        $user->getUsername()->willReturn('claude');
-        $owner->getUsername()->willReturn('claude');
+        $user->getUserIdentifier()->willReturn('claude');
+        $owner->getUserIdentifier()->willReturn('claude');
 
         $context = [
             'actionType'  => 'project_finished',
@@ -126,8 +126,8 @@ class ProjectFinishedNotifierSpec extends ObjectBehavior
         $project->getCode()->willReturn('project-code');
         $project->getDueDate()->willReturn('01/12/2030');
 
-        $contributor->getUsername()->willReturn('boby');
-        $owner->getUsername()->willReturn('claude');
+        $contributor->getUserIdentifier()->willReturn('boby');
+        $owner->getUserIdentifier()->willReturn('claude');
         $project->getOwner()->willReturn($owner);
 
         $context = [

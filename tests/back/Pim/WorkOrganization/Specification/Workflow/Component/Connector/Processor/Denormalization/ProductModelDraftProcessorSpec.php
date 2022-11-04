@@ -23,6 +23,7 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -73,7 +74,6 @@ class ProductModelDraftProcessorSpec extends ObjectBehavior
         $mediaStorer,
         $draftSourceFactory,
         ProductInterface $product,
-        ConstraintViolationListInterface $violationList,
         EntityWithValuesDraftInterface $productDraft,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
@@ -98,7 +98,7 @@ class ProductModelDraftProcessorSpec extends ObjectBehavior
 
         $validator
             ->validate($product)
-            ->willReturn($violationList);
+            ->willReturn(new ConstraintViolationList());
 
         $productDraftBuilder->build($product, $draftSource)->willReturn($productDraft);
 
@@ -156,7 +156,6 @@ class ProductModelDraftProcessorSpec extends ObjectBehavior
         $mediaStorer,
         $draftSourceFactory,
         ProductInterface $product,
-        ConstraintViolationListInterface $violationList,
         JobExecution $jobExecution,
         TokenInterface $token,
         UserInterface $user,
@@ -178,7 +177,7 @@ class ProductModelDraftProcessorSpec extends ObjectBehavior
 
         $validator
             ->validate($product)
-            ->willReturn($violationList);
+            ->willReturn(new ConstraintViolationList());
 
         $productDraftBuilder->build($product, $draftSource)->willReturn(null);
 
@@ -266,11 +265,11 @@ class ProductModelDraftProcessorSpec extends ObjectBehavior
         $sourceLabel = 'PIM';
 
         $user->getFullName()->willReturn($fullName);
-        $user->getUsername()->willReturn($username);
+        $user->getUserIdentifier()->willReturn($username);
 
         $tokenStorage->getToken()->willReturn($token);
 
-        $token->getUsername()->willReturn($username);
+        $token->getUserIdentifier()->willReturn($username);
         $token->getUser()->willReturn($user);
 
         $draftSource->getSource()->willReturn($source);

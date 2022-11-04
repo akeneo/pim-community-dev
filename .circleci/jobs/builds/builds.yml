@@ -530,7 +530,12 @@ jobs:
                         git config --global user.name "pim_ci_deployment"
                         git clone --depth 1 git@github.com:akeneo/pim-enterprise-dev.git /tmp/pim-enterprise-dev
                         # The diff can send exit 1 
-                        FILES_LIST=$(diff -qr /tmp/pim-enterprise-dev/deployments-ucs/timmy deployments-ucs/timmy) || true
+                        if [ ${CIRCLE_BRANCH}="master" ]; then 
+                          echo ${CIRCLE_BRANCH}
+                          FILES_LIST="Timmy must be build for the master Branch" 
+                        else
+                          FILES_LIST=$(diff -qr /tmp/pim-enterprise-dev/deployments-ucs/timmy deployments-ucs/timmy) || true
+                        fi 
                         SKIP_DEPLOY_TIMMY=false
                         if [ -z "${FILES_LIST}" ]; then
                           SKIP_DEPLOY_TIMMY=true

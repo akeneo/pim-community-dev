@@ -24,7 +24,7 @@ class ProjectIdentifier extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'project_identifier_validator';
     }

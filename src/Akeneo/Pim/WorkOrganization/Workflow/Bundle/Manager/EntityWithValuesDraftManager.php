@@ -332,7 +332,7 @@ class EntityWithValuesDraftManager
             throw new \LogicException('Current user cannot be resolved');
         }
         $user = $this->userContext->getUser();
-        $draft = $this->repository->findUserEntityWithValuesDraft($entityWithValues, $user->getUsername());
+        $draft = $this->repository->findUserEntityWithValuesDraft($entityWithValues, $user->getUserIdentifier());
 
         if (null === $draft) {
             $draft = $this->factory->createEntityWithValueDraft(

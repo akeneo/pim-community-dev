@@ -124,7 +124,7 @@ class GetProductIdentifiersAction
 
             $this->apiProductAclLogger->warning(sprintf(
                 'User "%s" with roles %s is not granted "%s"',
-                $user->getUsername(),
+                $user->getUserIdentifier(),
                 implode(',', $user->getRoles()),
                 $acl
             ));
@@ -185,7 +185,6 @@ class GetProductIdentifiersAction
         $user = $this->tokenStorage->getToken()->getUser();
         Assert::isInstanceOf($user, UserInterface::class);
 
-        /** @phpstan-ignore-next-line */
         return $user;
     }
 }

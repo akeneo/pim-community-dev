@@ -44,7 +44,7 @@ class RuleCollectionNormalizer implements NormalizerInterface, SerializerAwareIn
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return ((is_array($data) && current($data) instanceof RuleDefinitionInterface) ||
             ($data instanceof Collection && $data->first() instanceof RuleDefinitionInterface)) &&

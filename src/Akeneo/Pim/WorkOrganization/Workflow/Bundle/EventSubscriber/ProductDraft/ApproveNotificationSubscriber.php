@@ -27,7 +27,7 @@ class ApproveNotificationSubscriber extends AbstractProposalStateNotificationSub
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             EntityWithValuesDraftEvents::POST_APPROVE         => ['sendNotificationForApproval', 10],

@@ -24,7 +24,7 @@ class ProjectDueDate extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'project_due_date_validator';
     }
@@ -32,7 +32,7 @@ class ProjectDueDate extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

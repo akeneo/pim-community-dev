@@ -125,7 +125,7 @@ class CreateOrUpdateAssetFamilyAction
 
         $responseStatusCode = $shouldBeCreated ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
 
-        return Response::create('', $responseStatusCode, $headers);
+        return new Response('', $responseStatusCode, $headers);
     }
 
     private function shouldAssetFamilyBeCreated(AssetFamilyIdentifier $assetFamilyIdentifier): bool

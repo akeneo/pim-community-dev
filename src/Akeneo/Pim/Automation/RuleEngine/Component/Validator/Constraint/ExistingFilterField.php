@@ -26,7 +26,7 @@ class ExistingFilterField extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'pimee_filter_field_validator';
     }
@@ -34,7 +34,7 @@ class ExistingFilterField extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return static::CLASS_CONSTRAINT;
     }

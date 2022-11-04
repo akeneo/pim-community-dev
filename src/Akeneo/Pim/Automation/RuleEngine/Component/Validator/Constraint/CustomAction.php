@@ -20,12 +20,12 @@ class CustomAction extends Constraint
 {
     public $message = 'pimee_catalog_rule.rule_definition.validation.actions.custom.unkown_type';
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return CustomActionValidator::class;
     }
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return static::CLASS_CONSTRAINT;
     }

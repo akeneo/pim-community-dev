@@ -4,31 +4,26 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\GetProductFiles;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilesCount;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFilesForSupplier;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\ListProductFilesForSupplier\ListProductFilesForSupplier;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Read\ListProductFilesForSupplier\ListProductFilesForSupplierHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFile as ProductFileReadModel;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail;
 
 final class GetProductFiles
 {
     public function __construct(
-        private ListProductFilesForSupplier $listProductFilesForSupplier,
-        private GetSupplierFromContributorEmail $getSupplierFromContributorEmail,
-        private GetProductFilesCount $getProductFilesCount,
+        private ListProductFilesForSupplierHandler $listProductFilesForSupplierHandler,
     ) {
     }
 
     public function __invoke(GetProductFilesQuery $getProductFilesQuery): ProductFiles
     {
-        $supplier = ($this->getSupplierFromContributorEmail)($getProductFilesQuery->contributorEmail);
-
-        if (null === $supplier) {
-            return new ProductFiles([], 0);
-        }
+        $productFiles = ($this->listProductFilesForSupplierHandler)(
+            new ListProductFilesForSupplier($getProductFilesQuery->contributorEmail, $getProductFilesQuery->page)
+        );
 
         return new ProductFiles(array_map(
             fn (ProductFileReadModel $productFileReadModel) => ProductFile::fromReadModel($productFileReadModel),
-            ($this->listProductFilesForSupplier)($supplier->identifier, $getProductFilesQuery->page),
-        ), ($this->getProductFilesCount)($supplier->identifier));
+            $productFiles->productFiles,
+        ), $productFiles->totalProductFilesCount);
     }
 }

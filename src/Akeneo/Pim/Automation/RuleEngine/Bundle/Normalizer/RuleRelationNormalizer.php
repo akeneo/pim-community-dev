@@ -54,7 +54,7 @@ class RuleRelationNormalizer implements NormalizerInterface, CacheableSupportsMe
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof RuleRelationInterface && in_array($format, $this->supportedFormats);
     }

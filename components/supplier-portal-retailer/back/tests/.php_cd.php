@@ -61,8 +61,8 @@ $rules = [
             // Supplier Portal Supplier coupling
 
             // PIM coupling
-            'Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler',
-            'Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandler',
+            'Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandlerInterface',
+            'Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandlerInterface',
             'Akeneo\Tool\Component\Batch\Event\EventInterface',
             'Akeneo\Tool\Component\Batch\Event\InvalidItemEvent',
             'Akeneo\Tool\Component\Batch\Item\FileInvalidItem',
@@ -143,6 +143,7 @@ $rules = [
             // PIM coupling
             'Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification',
             'Akeneo\Platform\Bundle\NotificationBundle\Notifier',
+            'Akeneo\Tool\Component\Batch\Model\StepExecution',
             'Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker',
             'Akeneo\Tool\Component\FileStorage\FilesystemProvider',
             'Akeneo\Test\Acceptance\User\InMemoryUserRepository',
@@ -156,12 +157,15 @@ $rules = [
             'League\Flysystem\UnableToCheckFileExistence',
             'League\Flysystem\UnableToCreateDirectory',
             'League\Flysystem\UnableToReadFile',
+            'League\Flysystem\UnableToDeleteFile',
             'League\Flysystem\UnableToWriteFile',
             'PHPUnit\Framework',
             'Psr\Log\NullLogger',
             'Psr\Log\Test\TestLogger',
             'Ramsey\Uuid\Uuid',
+            'Ramsey\Uuid\Validator',
             'Symfony\Component\EventDispatcher\EventDispatcher',
+            'Symfony\Component\HttpFoundation\File\UploadedFile',
             'Symfony\Component\Validator\ConstraintViolationList',
             'Symfony\Component\Validator\Validator\ValidatorInterface',
         ],

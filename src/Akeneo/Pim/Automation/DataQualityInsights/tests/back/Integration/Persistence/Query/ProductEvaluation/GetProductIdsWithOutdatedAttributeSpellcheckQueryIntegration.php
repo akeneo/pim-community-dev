@@ -49,14 +49,16 @@ final class GetProductIdsWithOutdatedAttributeSpellcheckQueryIntegration extends
         $this->givenOneProductWithPendingAttributeSpellcheckEvaluation($spellcheckEvaluatedSince);
 
         $expectedProductsIds = $this->givenProductsWithOutdatedAttributeSpellcheckEvaluation($spellcheckEvaluatedSince);
+        $expectedProductsIds = array_map(static fn (ProductUuid $uuid) => $uuid->__toString(), $expectedProductsIds);
 
         $productsUuids = $this->get(GetProductIdsWithOutdatedAttributeSpellcheckQuery::class)
             ->evaluatedSince($spellcheckEvaluatedSince, 2);
         $productsUuids = iterator_to_array($productsUuids);
-        $productsUuids = array_map(fn (ProductUuidCollection $collection) => $collection->toArray(), $productsUuids);
+        $productsUuids = array_map(static fn (ProductUuidCollection $collection) => $collection->toArray(), $productsUuids);
+        $productsUuids = array_map(static fn (ProductUuid $uuid) => $uuid->__toString(), array_merge(...$productsUuids));
 
-        $this->assertCount(2, $productsUuids);
-        $this->assertEqualsCanonicalizing($expectedProductsIds, array_merge(...$productsUuids));
+        $this->assertCount(4, $productsUuids);
+        $this->assertEqualsCanonicalizing($expectedProductsIds, $productsUuids);
     }
 
     private function givenAttributesWithRecentSpellcheck(\DateTimeImmutable $evaluatedSince): void

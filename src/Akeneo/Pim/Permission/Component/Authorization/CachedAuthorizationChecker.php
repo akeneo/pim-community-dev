@@ -125,6 +125,6 @@ class CachedAuthorizationChecker implements AuthorizationCheckerInterface
         $user = $this->tokenStorage->getToken()->getUser();
         Assert::implementsInterface($user, UserInterface::class);
 
-        return sprintf('%s_%s', $user->getUsername(), (string) $user->getId());
+        return sprintf('%s_%s', $user->getUserIdentifier(), (string) $user->getId());
     }
 }

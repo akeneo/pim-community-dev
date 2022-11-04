@@ -24,17 +24,17 @@ class CurrencyKey extends Constraint
     public $attributeProperty;
     public $currencyProperty;
 
-    public function getRequiredOptions()
+    public function getRequiredOptions(): array
     {
         return ['attributeProperty', 'currencyProperty'];
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return CurrencyKeyValidator::class;
     }
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return static::CLASS_CONSTRAINT;
     }

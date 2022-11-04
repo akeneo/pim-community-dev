@@ -47,7 +47,7 @@ class UploadAction
             return new RedirectResponse('/');
         }
 
-        /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $uploadedFile */
+        /** @var UploadedFile $uploadedFile */
         $uploadedFile = $request->files->get('file');
         if (null === $uploadedFile) {
             return new JsonResponse([], 400);

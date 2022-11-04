@@ -45,7 +45,7 @@ class RefreshRecordsCommand extends Command
         $this->setDescription('Refresh all records referencing a deleted record or a deleted attribute option.');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $verbose = $input->getOption('verbose') ?: false;
 

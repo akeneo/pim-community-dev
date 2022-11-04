@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: "{{{global.extraLabels.instanceName}}}"
+  name: "{{{global.extraLabels.pfid}}}"
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io

@@ -36,7 +36,7 @@ class GetProductUuidFromProductIdentifierQueryIntegration extends TestCase
         );
         $result = $this->getProductUuidFromProductIdentifierQuery->execute($productIdentifier);
 
-        self::assertEquals($product->getUuid(), $result);
+        self::assertTrue($product->getUuid()->equals($result));
     }
 
     /**

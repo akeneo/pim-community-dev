@@ -15,7 +15,7 @@ final class ContributorAccountProvider implements UserProviderInterface
     {
     }
 
-    public function refreshUser(UserInterface $user)
+    public function refreshUser(UserInterface $user): UserInterface
     {
         if (!$user instanceof ContributorAccount) {
             throw new UnsupportedUserException(
@@ -26,7 +26,7 @@ final class ContributorAccountProvider implements UserProviderInterface
         return $this->loadUserByIdentifier($user->getUserIdentifier());
     }
 
-    public function supportsClass(string $class)
+    public function supportsClass(string $class): bool
     {
         return ContributorAccount::class === $class;
     }

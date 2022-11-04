@@ -38,7 +38,7 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         if (false === next($this->items)) {
             $this->from += count($this->items);
@@ -50,7 +50,7 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->from = $this->initialFrom;
         $this->to = $this->from + $this->limit;

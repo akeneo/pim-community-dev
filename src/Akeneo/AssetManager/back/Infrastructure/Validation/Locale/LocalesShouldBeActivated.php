@@ -24,12 +24,12 @@ class LocalesShouldBeActivated extends Constraint
     public const ERROR_MESSAGE_SINGULAR = 'Locale "locale_identifier" does not exist or is not activated.';
     public const ERROR_MESSAGE_PLURAL = 'Locales "locale_identifier" do not exist or are not activated.';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::PROPERTY_CONSTRAINT;
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'akeneo_assetmanager.validator.channel.locales_should_be_activated';
     }

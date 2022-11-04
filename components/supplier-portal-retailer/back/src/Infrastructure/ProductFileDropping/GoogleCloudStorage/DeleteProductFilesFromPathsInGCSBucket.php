@@ -10,7 +10,7 @@ use League\Flysystem\FilesystemException;
 use League\Flysystem\UnableToDeleteFile;
 use Psr\Log\LoggerInterface;
 
-final class DeleteProductFilesFromPathsInGCSBucket implements DeleteProductFilesFromPaths
+class DeleteProductFilesFromPathsInGCSBucket implements DeleteProductFilesFromPaths
 {
     public function __construct(private FilesystemProvider $filesystemProvider, private LoggerInterface $logger)
     {

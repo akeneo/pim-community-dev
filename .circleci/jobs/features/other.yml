@@ -306,11 +306,11 @@ jobs:
                   name: Execute end-to-end "Onboarder feature disabled" tests
                   command: PIM_CONTEXT=onboarder make test-end-to-end-onboarder-disabled
             - store_test_results:
-                  path: ~/project/pim/var/tests
+                  path: ~/project/var/tests
             - store_artifacts:
-                  path: ~/project/pim/var/tests
+                  path: ~/project/var/tests
             - store_artifacts:
-                  path: ~/project/pim/var/logs
+                  path: ~/project/var/logs
 
     test_back_performance:
         machine:

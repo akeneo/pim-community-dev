@@ -20,7 +20,7 @@ class ActiveCurrency extends Constraint
 {
     public $message = 'pimee_catalog_rule.rule_definition.validation.currency.unknown';
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return ActiveCurrencyValidator::class;
     }

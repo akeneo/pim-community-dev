@@ -14,7 +14,7 @@ namespace Akeneo\Platform\Bundle\InstallerBundle\DependencyInjection;
 use Akeneo\Platform\Bundle\InstallerBundle\DependencyInjection\PimInstallerExtension as BasePimInstallerExtension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 /**
  * This is the class that loads and manages your bundle configuration
@@ -30,7 +30,7 @@ class PimEnterpriseInstallerExtension extends BasePimInstallerExtension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('fixture_loader.yml');
         $loader->load('job_constraints.yml');
         $loader->load('job_defaults.yml');

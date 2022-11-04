@@ -357,7 +357,7 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
         ProductInterface $product,
         EntityWithValuesDraftInterface $productDraft
     ) {
-        $user->getUsername()->willReturn('peter');
+        $user->getUserIdentifier()->willReturn('peter');
         $userContext->getUser()->willReturn($user);
         $repository->findUserEntityWithValuesDraft($product, 'peter')->willReturn($productDraft);
 
@@ -379,7 +379,7 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
         $source = 'source';
         $sourceLabel = 'Source';
 
-        $user->getUsername()->willReturn($username);
+        $user->getUserIdentifier()->willReturn($username);
         $userContext->getUser()->willReturn($user);
         $repository->findUserEntityWithValuesDraft($product, $username)->willReturn(null);
 

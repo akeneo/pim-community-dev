@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Command;
 
-use Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler;
-use Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandler;
+use Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandlerInterface;
+use Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandlerInterface;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,8 +18,8 @@ final class CleanSupplierProductFilesCommand extends Command
     private const JOB_CODE = 'supplier_portal_supplier_product_files_clean';
 
     public function __construct(
-        private ExecuteJobExecutionHandler $jobExecutionRunner,
-        private CreateJobExecutionHandler $jobExecutionFactory,
+        private ExecuteJobExecutionHandlerInterface $jobExecutionRunner,
+        private CreateJobExecutionHandlerInterface $jobExecutionFactory,
     ) {
         parent::__construct();
     }

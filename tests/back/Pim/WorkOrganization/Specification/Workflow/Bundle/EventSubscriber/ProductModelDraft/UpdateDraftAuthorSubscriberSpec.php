@@ -38,7 +38,7 @@ class UpdateDraftAuthorSubscriberSpec extends ObjectBehavior
     ) {
         $event->getSubject()->willReturn($user);
         $event->getArgument('previous_username')->willReturn('foo');
-        $user->getUsername()->willReturn('foo');
+        $user->getUserIdentifier()->willReturn('foo');
 
         $updateProductModelDraftAuthor->execute(Argument::cetera())->shouldNotBeCalled();
 
@@ -52,7 +52,7 @@ class UpdateDraftAuthorSubscriberSpec extends ObjectBehavior
     ) {
         $event->getSubject()->willReturn($user);
         $event->getArgument('previous_username')->willReturn('foo');
-        $user->getUsername()->willReturn('baz');
+        $user->getUserIdentifier()->willReturn('baz');
 
         $updateProductModelDraftAuthor->execute('foo', 'baz')->shouldBeCalled();
 
